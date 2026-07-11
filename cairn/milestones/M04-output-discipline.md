@@ -1,9 +1,9 @@
 # M04: Skill conduct & output discipline
 
-- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** m04-output-discipline
 
 ## Goal
 
@@ -74,6 +74,11 @@ README install docs → release-prep candidate.
 - 2026-07-11: created by /milestone-plan. Lineage: M02/M03 pilot friction
   (candidate rows: output discipline & stage orientation; contextual chip
   construction; subagent title prefix — absorbed).
+- 2026-07-11: implementation started on m04-output-discipline; question
+  gate skipped — the plan pins format, placement, and file list; the only
+  open choice (new rulebook section vs. folding into the chips section) is
+  minor wording structure, resolved as a new section cross-referenced from
+  the gates section.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
