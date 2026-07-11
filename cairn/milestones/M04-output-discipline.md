@@ -1,6 +1,6 @@
 # M04: Skill conduct & output discipline
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** —
 - **Branch/PR:** m04-output-discipline
@@ -65,7 +65,7 @@ README install docs → release-prep candidate.
       cairn-release.
 - [x] Add the [S]/[O]/[F] prefix rule to the rulebook model-strategy
       section and the three spawning skills.
-- [ ] Coherence pass: reread rulebook + all skills for contradictions
+- [x] Coherence pass: reread rulebook + all skills for contradictions
       with the new section; verify caps.
 
 ## Work log
@@ -94,6 +94,9 @@ README install docs → release-prep candidate.
 - 2026-07-11: task 5 done — tier-tag rule in model-strategy section;
   [S]/[O] at implement delegation, [O] at review step 5, [F] at brief
   spawn gate.
+- 2026-07-11: task 6 done — full-diff + rulebook reread, no
+  contradictions (gates section defers to the new section; /milestone
+  stays the chip model); two line-wraps fixed; caps OK. Status → review.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->

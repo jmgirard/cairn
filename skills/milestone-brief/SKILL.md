@@ -30,7 +30,8 @@ makes the review reproducible and its findings ingestible.
    size estimate (files/lines Fable must read), and a reminder that Fable is
    token-billed. Options:
    - **Spawn Fable subagent** (recommended) — on approval, launch an Agent
-     with `model: "fable"` ([F]-tagged description) whose entire prompt is: read
+     with `model: "fable"` ([F]-tagged description) whose entire prompt
+     is: read
      `cairn/reviews/RB<NN>-<slug>.md` and follow its instructions exactly,
      writing findings to the RR path it specifies. When it returns, run
      ingestion (below) immediately in this session.

@@ -56,8 +56,8 @@ overrides — log the override).
    or split via `/milestone-plan`.
 
 5. **Independent fresh-context review.** Spawn an **Opus subagent**
-   ([O]-tagged description) that has
-   not seen the implementation to review the full diff
+   ([O]-tagged description) that has not seen the implementation to
+   review the full diff
    (`git diff main..HEAD`) against the acceptance criteria, DESIGN.md
    conventions, and DECISIONS.md. Triage its findings: fix now / spawn a
    follow-up (candidate row or milestone) / reject with reason — all logged
