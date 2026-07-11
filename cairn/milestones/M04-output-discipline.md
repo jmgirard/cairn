@@ -52,7 +52,7 @@ README install docs → release-prep candidate.
 
 ## Tasks
 
-- [ ] Draft the "Output & interaction discipline" section in
+- [x] Draft the "Output & interaction discipline" section in
       `skills/shared/tracking-rules.md` (banners, deltas, recaps, chip
       rules, contextual construction, chapter markers).
 - [ ] Add the stage-banner instruction to all eight `skills/*/SKILL.md`
@@ -79,6 +79,10 @@ README install docs → release-prep candidate.
   open choice (new rulebook section vs. folding into the chips section) is
   minor wording structure, resolved as a new section cross-referenced from
   the gates section.
+- 2026-07-11: task 1 done — "Output & interaction discipline" section in
+  tracking-rules (banners, deltas, outcome-first recaps, chip rules,
+  contextual construction, chapters, [S]/[O]/[F]); gates-section chip
+  paragraph now defers to it.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
