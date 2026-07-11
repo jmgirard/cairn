@@ -64,9 +64,9 @@ the right tier/skill instead of bypassing the rulebook.
 
 ## Tasks
 
-- [ ] Draft the classify-first router content and the acceptance rubric
+- [x] Draft the classify-first router content and the acceptance rubric
       checklist up front, so the prose is written to the rubric.
-- [ ] Rewrite `skills/shared/templates/claude-md-section.md` to the router,
+- [x] Rewrite `skills/shared/templates/claude-md-section.md` to the router,
       within the cap.
 - [ ] Update this repo's `CLAUDE.md` cairn section to match; confirm
       `skills/cairn-init/SKILL.md` §1 references to the section (it appends
@@ -84,6 +84,8 @@ the right tier/skill instead of bypassing the rulebook.
 - 2026-07-11: created by /milestone-plan. Promotes the "Skill-less routing
   guardrails" candidate (lineage: M02 openac pilot). Scope set at a 3-question
   gate: route-to-skill only, defer on-main hook, rubric + in-repo dry-runs.
+- 2026-07-11: rewrote claude-md-section.md as classify-first router (20 body
+  lines, under cap). Tasks 1–2 done.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
