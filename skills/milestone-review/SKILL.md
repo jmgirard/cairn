@@ -69,9 +69,13 @@ overrides — log the override).
    what the user is approving in plain words — what the milestone does or
    changes — then acceptance-criteria evidence, problems
    found and how each was handled, diffstat, anything the user should eyeball
-   directly. Ask remaining questions first (batched, with recommendations),
-   then ask plainly for authorization to merge. Approval withheld → log the
-   requested changes as tasks, status back to `in-progress`, stop.
+   directly. Ask any remaining clarifying questions first (batched, with
+   recommendations). Then put the merge authorization **itself** to the user
+   as an `AskUserQuestion` chip — this is the third gate (per tracking-rules),
+   never a prose yes/no: the recommended option merges (e.g. `Merge PR #N to
+   main`) and a decline option is present. Approval withheld (or declined at
+   the chip) → log the requested changes as tasks, status back to
+   `in-progress`, stop.
 
 8. **On approval — and only then:** record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
