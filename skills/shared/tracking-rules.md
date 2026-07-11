@@ -1,0 +1,224 @@
+# Tracking rules (shared by all rpkg-tracking skills)
+
+Read this before touching any tracking file. Every rpkg-tracking skill obeys
+these rules; skills state their own workflow but never restate or override
+this rulebook. Repo-specific hard rules in the repo's CLAUDE.md and
+conventions in `project/DESIGN.md` bind in addition to (never instead of)
+these rules.
+
+## File map and ownership boundaries
+
+All project state lives in markdown under `project/`. Substance lives in the
+owner; any other file gets at most a one-line cross-reference.
+
+| File | Owns | Does NOT own |
+|---|---|---|
+| `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `project/` | Status, TODOs, architecture rationale, history — anything time-varying rots here |
+| `project/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
+| `project/ROADMAP.md` | The milestone index — **the only authority on status** | Task details, acceptance criteria, narrative |
+| `project/milestones/M<NN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately, before other work) |
+| `project/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
+| `project/DECISIONS.md` | Append-only cross-cutting decisions (D-001, …), never renumbered — superseded by new entries | Milestone-local decisions (those live in the milestone file); deferrals ("not now" is a ROADMAP fact, not a decision) |
+| `project/reviews/` | RB<NN> briefs and RR<NN> reports for Fable escalation (+ `archive/` for resolved pairs) | Anything else |
+| `project/references/` | Source summaries (`<citekey>.md`), `INDEX.md`, gitignored `pdf/` | Anything else |
+| `project/legacy/` | Entombed pre-migration tracking files, verbatim | Anything live |
+
+Boundary rule: **Architecture → DESIGN · Status → ROADMAP · Tasks →
+milestone files · Decisions → DECISIONS · History → archive + git log.**
+
+Repo-specific extra files in `project/` are allowed (spec docs, coverage
+matrices); they declare their own scope and must not claim another file's
+ownership.
+
+## Weight caps
+
+- `CLAUDE.md` < 80 lines · `ROADMAP.md` < 60 lines · active milestone file
+  < 150 lines · archived summary ≤ 25 lines.
+- Work-log entries are one line each. Never paste command output or subagent
+  transcripts into tracking files — summarize.
+- Remedies when a cap is hit (never "let it grow"): over-cap ROADMAP →
+  graduate or prune candidates; over-cap milestone → split it or move
+  reference material to `references/`; over-cap CLAUDE.md → push content to
+  its owner per the table above.
+
+## Universal tracking rules
+
+- **Tracking travels with code.** Every commit that changes code also updates
+  the milestone checkboxes/work-log in the same commit.
+- **Absolute dates only** (YYYY-MM-DD). Never "yesterday" or "last week".
+- **Append, don't rewrite.** Work-logs and DECISIONS.md are append-only;
+  supersede, never edit history. Never fabricate history — if there is a
+  gap, add one catch-up entry summarizing `git log`.
+- **Stop points are commit points.** Never end a session or turn with
+  uncommitted work — checkpoint-commit code and tracking together (even
+  half-done, marked as such) so any future session resumes statelessly.
+- **Git is ground truth for code.** Commits made outside the system are
+  reconciled with a catch-up work-log line, never retroactive rewriting.
+- **User overrides are logged, never resisted.** If the user says to skip a
+  gate or bend a rule, comply and record it in the work-log ("merged without
+  CI at user request, YYYY-MM-DD"). An honest record keeps the next session
+  from mistaking an exception for a precedent.
+- **Tracking files outrank memory.** Claude's persistent memory never holds
+  project state (status, milestones, decisions, architecture). Memory is for
+  meta-context only; `project/` files win any conflict.
+
+## Milestone IDs and status
+
+- IDs are `M<NN>` (zero-padded to two digits), assigned at planning time,
+  monotonically increasing, **never reused** — including dropped milestones.
+  Past M99, IDs simply grow (M100).
+- **No completion-order requirement.** Work order is governed only by
+  `Depends on:` (a milestone is workable only when its dependencies are
+  `done`) and `Priority:` (high / normal / low).
+- The ROADMAP index is grouped by status, not sorted by ID.
+- User-facing materials (NEWS.md, README, vignettes, pkgdown) never
+  reference milestone numbers.
+
+Status vocabulary — exactly these seven, lowercase:
+
+| Status | Meaning | Set by (gatekeeper) |
+|---|---|---|
+| `candidate` | Idea captured as a ROADMAP row; usually no file, no ID yet | anyone, any time |
+| `planned` | File exists: goal, In/Out scope, verifiable criteria, ordered tasks, dependencies | `/milestone-plan` only |
+| `in-progress` | Being worked on a branch. **At most ONE at a time.** | `/milestone-implement` only |
+| `blocked` | Waiting on something external; work-log line names the blocker | any skill, reason logged |
+| `review` | Tasks done, local checks clean; awaiting verification + merge approval | `/milestone-implement` on completion |
+| `done` | Every criterion executed with fresh evidence; PR merged; file archived | `/milestone-review` only |
+| `dropped` | Deliberately abandoned; one-line reason archived | user decision, via any skill |
+
+Transitions: `candidate → planned → in-progress ⇄ blocked;
+in-progress → review → done` (review failures return to `in-progress`).
+Anything can go to `dropped`. No skipping except `candidate → dropped`.
+
+## Sizing and the work tiers
+
+One milestone = one reviewable PR ≈ 1–3 working sessions. Tasks are the only
+unit inside a milestone — no slices or sub-milestones; emerging internal
+structure means split, wiring the pieces with `Depends on:`. Split tripwires:
+>~7 acceptance criteria, >~10 tasks, a goal sentence needing "and", tasks
+shippable independently, or no hope of the 150-line cap. Prefer vertical
+slices (thin end-to-end capability) over horizontal layers; every milestone
+leaves main shippable. Splitting never discards the remainder.
+
+Work that isn't a milestone:
+
+- **Trivial** (no runtime surface — typos, tracking, comments): direct
+  commit to main. No tracking beyond the commit.
+- **Hotfix** (user-visible bug): `/hotfix` — regression test first, gate-lite,
+  PR, user approval. NEWS entry; no milestone file.
+- **Milestone**: needs more than one sitting, changes exported behavior
+  (beyond restoring documented behavior), or requires a design decision.
+
+Intake: GitHub issues and external PRs are inboxes, never a second tracking
+system. Issues → `candidate` rows or the hotfix path. External PRs → small
+and correct: review to the hotfix bar and merge on user approval; larger:
+becomes/joins a milestone. Candidates may be added conversationally by
+anyone at any time (one ROADMAP row).
+
+## Git and approval model
+
+- **main is a distribution channel** (`pak::pak()` installs it; pkgdown may
+  deploy from it). It stays installable at all times.
+- main accepts only: docs-only tracking commits and squash-merges of
+  milestone/hotfix branches. Never implement on main.
+- Milestone work on `m<nn>-<slug>`; hotfixes on `hotfix-<slug>`; both cut
+  from up-to-date main. Checkpoint commits are cheap — squash erases them.
+- Before branching or committing, check `git status`: a dirty tree with
+  unrelated changes means ask the user — never sweep strangers into a
+  checkpoint commit.
+- If main moves under an active branch (e.g., a hotfix merged), merge main
+  into the branch and re-run tests before continuing or reviewing.
+- **Nothing reaches main without the user's explicit approval at the review
+  gate.** Never force-push; never merge red or pending CI.
+
+Waiting on CI / background work:
+
+- Prefer one **blocking** wait (`gh pr checks <pr> --watch` with a timeout)
+  over background polling. At most one wait at a time, resolved within the
+  current turn; on timeout, report the fresh actual state, log one line, and
+  stop with nothing left watching.
+- **Resume is stateless.** Never trust a remembered "CI was running" — the
+  PR URL lives in the milestone header; re-derive status from `gh pr checks`
+  on demand.
+
+## Question gates and routing chips
+
+User interaction happens at exactly three gates — plan questions,
+pre-implementation questions, final merge approval — plus routing chips. At
+a gate, ask one batched round of 2–5 concrete decision questions via
+AskUserQuestion, each with a recommendation and brief pros/cons. Between
+gates, work autonomously; never drip questions one at a time.
+
+Every phase ends with a **routing chip**: an AskUserQuestion whose options
+include the natural next skill. Selecting a chip invokes that skill in the
+same session. A chip is an explicit user stop — never auto-proceed.
+
+## Model and agent strategy
+
+- Orchestrator: Opus, running these skills in the main session.
+- **Sonnet subagents**: well-specified self-contained work — fan-out
+  searches (Explore), mechanical migrations, test writing against a spec,
+  boilerplate. Give complete specs; verify their diffs before committing;
+  summarize results into one work-log line.
+- **Opus subagents**: design-sensitive implementation; always the
+  fresh-context review at `/milestone-review`.
+- **Never Haiku.** For anything.
+- **Fable subagents**: only through the RB/RR brief protocol
+  (`/milestone-brief`) and only after a per-instance approval gate — Fable
+  is token-billed; no standing authorization exists. Ad-hoc Fable spawning
+  is prohibited: the brief artifact is what makes escalation reproducible,
+  auditable, and ingestible.
+
+## Validation doctrine (statistical/numeric packages)
+
+Tests verify against ground truth, not against the code. Every
+numeric-results suite includes, in priority order: (1) hand-computed
+fixtures from published formulas, arithmetic in comments; (2) published
+reference values, cited; (3) independent recomputation with deliberately
+dumb explicit code; (4) invariant tests. Snapshots only on top, never as the
+sole oracle for a number.
+
+**Primary sources rule (hard stop):** never substitute secondary
+descriptions or model memory for a primary source on scoring/algorithmic
+content. Search (DOI, publisher, OSF); if inaccessible, stop and ask the
+user for the PDF.
+
+**Source ingestion:** PDF → `project/references/pdf/` (gitignored).
+Summary → `project/references/<citekey>.md` (committed): full citation,
+extracted values with page/table anchors, verbatim-critical values quoted
+exactly, which tests/oracles trace to it, open questions. One line in
+`INDEX.md`. Tests and milestones cite `citekey (p. N)`, never restate.
+
+## What gets a test
+
+No coverage-percentage target — test scope is set per milestone via
+acceptance criteria. Always: every exported function (happy path, every
+`cli_abort()` branch fired, R edge cases — zero rows, `NA`, length-one,
+factor vs. character, empty strings); every numeric result via an oracle;
+every bug fix via a regression test that fails before the fix; every
+documented claim. Indirect by default: internal helpers (direct tests only
+for independent logic). Never: print cosmetics beyond meaningful snapshots,
+trivial pass-throughs, dependency behavior, plots except `vdiffr` when the
+plot is the product. Test the contract, not the implementation — a test that
+breaks under a behavior-preserving refactor is a defect in the test. `covr`
+is a diagnostic, never a gate.
+
+## R package guardrails
+
+- After roxygen changes: `Rscript -e 'devtools::document()'`. After code
+  changes: `Rscript -e 'devtools::test()'`. At review: `devtools::check()`.
+- Never hand-edit `NAMESPACE`, `man/`, or `data/*.rda`; data regenerates
+  from `data-raw/` scripts.
+- README.md is knitted from README.Rmd (`devtools::build_readme()`).
+- **Dependency changes are never unilateral**: adding, removing, or moving a
+  package between Imports/Suggests is a question-gate item and gets a
+  D-entry.
+- Breaking changes to exported behavior follow a lifecycle deprecation cycle
+  unless the package is pre-1.0 and the user explicitly waives it.
+- Every newly exported object gets a `_pkgdown.yml` reference-index row in
+  the same commit that exports it.
+- New user-facing conditions use `cli::cli_abort()` / rlang, not assertthat.
+- New top-level tracked files/dirs need `.Rbuildignore` entries.
+
+These are advisory in the moment and **mechanically enforced by the
+consistency gate in `/milestone-review`**.

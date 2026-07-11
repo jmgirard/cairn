@@ -1,0 +1,110 @@
+# rpkg-tracking
+
+A Claude Code plugin for milestone-driven R package development. One
+canonical workflow — planning, implementation, review, hotfixes, releases,
+and expert escalation — with all project state in plain markdown under
+`project/`, kept honest by weight caps and a self-auditing health check.
+
+Born from maintaining many R packages with Claude Code and rebuilding
+similar-but-diverging tracking systems in each. This plugin centralizes the
+logic (skills, rules, templates) so every repo works identically; each repo
+holds only its own state.
+
+**Status: v0.1 — piloting.** Interfaces may change; see
+[CHANGELOG.md](CHANGELOG.md). The full design rationale lives in
+[DRAFT_2.md](DRAFT_2.md) (removed at 1.0).
+
+## Install (manual, for now)
+
+```bash
+git clone https://github.com/jmgirard/rpkg-tracking
+claude --plugin-dir /path/to/rpkg-tracking
+```
+
+Then, in your package repo, run `/rpkg-init`. Fresh repos get scaffolding;
+repos with an older tracking system get an interactive, PR-based migration.
+Run `/milestone` any time you're unsure where things stand.
+
+## The core loop
+
+Development is a cycle of milestones — PR-sized units of work with explicit
+acceptance criteria. You steer at defined gates; Claude works autonomously
+between them:
+
+```
+idea → /milestone-plan → /milestone-implement → /milestone-review → merged
+        (scope gate)      (choices gate)         (approval gate)
+```
+
+You rarely type the next command: each phase ends with clickable options
+(chips) that route to the natural next step. Typing the slash command
+directly always works too, e.g. to resume after a break.
+
+## Which skill, when
+
+| You want to… | Do this |
+|---|---|
+| See where the project stands / what to do next | `/milestone` — status snapshot + health audit + a suggested next action |
+| Capture an idea for later | Just say it: "add X to the candidates" (one ROADMAP row, no ceremony) |
+| Turn an idea into a real plan | `/milestone-plan <title>` — investigation, scoping questions, milestone file(s) with acceptance criteria |
+| Build a planned milestone | `/milestone-implement M<NN>` — branch, tests-first tasks, checkpoint commits; resumable across sessions |
+| Verify and ship a finished milestone | `/milestone-review M<NN>` — fresh evidence for every criterion, independent code review, merge on your approval |
+| Get a stronger model's judgment on a hard question | `/milestone-brief M<NN> <topic>` — writes a self-contained brief; you approve (or run) the Fable review |
+| Fix a reported bug quickly | `/hotfix` — or just describe the bug; regression test, fix, PR, your approval. Escalates to a milestone if it's bigger than it looked |
+| Fix a typo or tweak docs | Just ask — trivial edits commit directly to main, no tracking |
+| Prepare a CRAN release | `/rpkg-release` — the full checklist; you do the actual submission |
+| Adopt the system in another repo | `/rpkg-init` — idempotent; safe to re-run |
+
+## What lives where
+
+```
+your-package/
+├── CLAUDE.md                  # lean router; never holds status
+└── project/
+    ├── DESIGN.md              # architecture as it IS + principles
+    ├── ROADMAP.md             # milestone index — the only status authority
+    ├── DECISIONS.md           # append-only decision log
+    ├── milestones/            # one file per milestone (+ archive/)
+    ├── reviews/               # Fable review briefs & reports (+ archive/)
+    └── references/            # source summaries; PDFs gitignored
+```
+
+Boundary rule: **Architecture → DESIGN · Status → ROADMAP · Tasks →
+milestone files · Decisions → DECISIONS · History → archive + git log.**
+
+## What the system expects from you
+
+- **Answer the gates.** Questions arrive in small batches at three points
+  (planning scope, implementation choices, merge approval), each with a
+  recommendation. Between gates, expect autonomy — if you're being asked
+  questions mid-implementation, something is off.
+- **Merges are yours.** Nothing reaches main without your explicit approval
+  at review. "Proceed to review" is not "merge" — you get the evidence first.
+- **Supply primary sources.** If a formula, cutoff, or scoring key needs a
+  paper the model can't access, it will stop and ask you for the PDF rather
+  than work from memory. That stop is a feature; feed it the PDF.
+- **Fable costs real money.** Fable reviews are token-billed, so each one
+  asks your approval with a scope estimate first. Say no freely — the brief
+  file remains and can be run any time.
+- **Run `/milestone` when returning after time away.** It reconciles
+  tracking against git, flags stale work, and hands you a resume chip.
+
+## Habits that keep it healthy
+
+- One milestone in progress at a time. Tempted to start a second? Finish or
+  explicitly pause the first.
+- Let milestones be small. The plan skill will propose splitting oversized
+  ones — take the split; three small merges beat one sprawling branch.
+- Don't hand-maintain status in chat or memory: if it isn't in `project/`
+  files or git, it didn't happen. Hand-editing the files is fine —
+  ROADMAP.md wins any conflict.
+- Trust the archive. Done milestones compress to short summaries; the full
+  story stays in git history and the PR.
+
+## What this system deliberately does NOT do
+
+- Auto-merge, auto-release, or auto-submit to CRAN — every irreversible step
+  is gated on you.
+- Track status in CLAUDE.md, chat memory, or GitHub issues — `project/`
+  files are the single source of truth; issues are an inbox.
+- Run Fable, or any paid escalation, without a per-instance yes.
