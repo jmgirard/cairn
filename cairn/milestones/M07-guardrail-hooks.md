@@ -69,9 +69,10 @@ default install (D-007: manual until pilots pass) → future release prep.
 - [x] Implement + fixture-test PreToolUse merge guard incl. marker
       consumption; marker = `cairn/.merge-approved`, gitignored,
       single-use.
-- [ ] Update `/milestone-review` skill to write the marker at the approval
+- [x] Update `/milestone-review` skill to write the marker at the approval
       gate; update tracking-rules.md if the git/approval model section
-      needs the marker mentioned.
+      needs the marker mentioned (done; also /hotfix gate + /cairn-init
+      .gitignore scaffolding — discovered sub-tasks).
 - [ ] Verify hooks load via real plugin install; capture evidence.
 - [ ] README: install-paths section (marketplace vs symlink, hooks caveat).
 
@@ -81,6 +82,7 @@ default install (D-007: manual until pilots pass) → future release prep.
 - 2026-07-11: created by /milestone-plan.
 - 2026-07-11: task 1 — hook API contracts verified against official docs ([S] subagent); summary → references/claude-code-hooks.md.
 - 2026-07-11: tasks 2–5 — hooks.json + 3 hook scripts + shared helper; 17 fixture tests green; merge guard scoped to command-position git/gh (echo-style false positives excluded); missing cwd = strict no-op.
+- 2026-07-11: task 6 — marker protocol wired into /milestone-review + /hotfix approval gates, tracking-rules approval model, and /cairn-init .gitignore scaffolding (minor amendment: hotfix + init were discovered sub-tasks).
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->

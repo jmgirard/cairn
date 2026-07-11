@@ -148,6 +148,11 @@ anyone at any time (one ROADMAP row).
   into the branch and re-run tests before continuing or reviewing.
 - **Nothing reaches main without the user's explicit approval at the review
   gate.** Never force-push; never merge red or pending CI.
+- Approval is recorded on disk: the approving skill writes the single-use,
+  gitignored marker `cairn/.merge-approved` at the gate; the plugin's
+  merge-guard hook denies `gh pr merge`/`git merge`-to-main without it and
+  consumes it per merge attempt. Never write the marker except at an
+  explicit user approval.
 
 Waiting on CI / background work:
 

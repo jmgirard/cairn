@@ -70,7 +70,9 @@ Then:
 - Append `templates/claude-md-section.md` to CLAUDE.md (create CLAUDE.md if
   absent). If a conflicting section exists, show the diff and ask.
 - `.Rbuildignore`: add `^cairn$` (packages only).
-- `.gitignore`: add `cairn/references/pdf/`.
+- `.gitignore`: add `cairn/references/pdf/` and `cairn/.merge-approved`
+  (single-use merge-approval marker written at review gates, consumed by
+  the plugin's merge-guard hook — never committed).
 - Fill DESIGN.md's Purpose & Scope from DESCRIPTION and a quick read of
   `R/` — 5–10 honest lines, marked for the user to refine; never invent
   principles.
