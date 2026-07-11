@@ -51,6 +51,9 @@ repo.
 
 - 2026-07-11: built all v0.1 files from DRAFT_2.md in one session; set to
   review pending Jeff's read-through.
+- 2026-07-11: catch-up — post-review refinements landed on main (GP/IP
+  prefixes, rename to cairn, marketplace.json, git-model + context-hygiene
+  doctrine, recommended-option rule for chips); review gate still pending.
 
 ## Decisions
 
