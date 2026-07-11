@@ -35,9 +35,10 @@ template exists):
 ```
 cairn/
 ├── DESIGN.md          # skeleton: Purpose & Scope / Function Families /
-│                      # Conventions / Design Principles — GP<n> = Guiding
-│                      # (tradeable with justification), IP<n> = Inviolable
-│                      # (hard constraint) / Architecture / Known issues
+│                      # Conventions / Design Principles — IP<n> = Inviolable
+│                      # (hard constraint) block first, then GP<n> = Guiding
+│                      # (tradeable with justification); numbers never
+│                      # reused / Architecture / Known issues
 ├── ROADMAP.md         # empty index (below)
 ├── DECISIONS.md       # header + append-only note (see decision.md template)
 ├── milestones/archive/
@@ -57,6 +58,8 @@ _Last hygiene check: YYYY-MM-DD_
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+<!-- rows grouped by status, not sorted by ID; keep only the 5 most
+     recent done rows — older ones live in milestones/archive/ + git -->
 
 ## Candidates
 <!-- unnumbered ideas; one line each: idea — added YYYY-MM-DD — links -->
@@ -83,6 +86,17 @@ Governing principle: **migrate the living, entomb the dead.** Completed
 history is never converted — conversion of dozens of done milestones is
 where hallucination and loss happen, and git already preserves everything.
 Only *live* state gets translated.
+
+**Variant: adopt-in-place.** When the precursor is young (little completed
+history to protect) and its structure is already near-identical to cairn's
+(per-milestone files, an index with compatible statuses), full entombment
+is overkill: propose moving the live files into `cairn/` and adjusting
+them to the templates in place — keeping their IDs — instead of entombing
+and re-translating. Choosing this variant is a question-gate decision at
+step 3; present it alongside the default, never silently. Steps 4–5
+collapse into the in-place adoption; everything else — branch + PR, the
+no-invention rule, and the step-7 ledger + audit bar — applies unchanged.
+Lineage: M03 tidymedia pilot (PR #8).
 
 1. **Preconditions.** Clean working tree. Ideally nothing in flight — an
    in-progress item is either finished first (recommend it) or carried over

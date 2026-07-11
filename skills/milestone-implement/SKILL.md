@@ -39,7 +39,11 @@ run ingestion first (see `/milestone-brief`).
 3. **Question gate:** surface the implementation choices the plan left open
    (API shape, naming, dependency picks — dependency changes always need a
    gate + D-entry) with recommendations. Skip only if nothing is genuinely
-   open.
+   open. If the plan tags an item `(RB tripwire: <token>)` — or a new
+   tripwire emerges mid-work (same three categories; see tracking-rules) —
+   include an **Escalate via `/milestone-brief`** option on that question;
+   never offer escalation without a tripwire hit (Fable is gated per
+   instance — D-004).
 
 4. **Work tasks in order, autonomously.** For each task:
    - Tests first where feasible (testthat 3e); numeric results per the
