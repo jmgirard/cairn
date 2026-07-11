@@ -3,7 +3,7 @@
 - **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** —
-- **Branch/PR:** m06-competitive-landscape
+- **Branch/PR:** m06-competitive-landscape · https://github.com/jmgirard/cairn/pull/3
 
 ## Goal
 
@@ -117,3 +117,17 @@ supplies evidence); broad long-tail survey beyond the eight named systems
 ## Review
 <!-- filled by /milestone-review: evidence per criterion; consistency-gate
      results; independent-review findings and their triage -->
+
+Evidence 2026-07-11 (all by command, this session):
+- C1 ✓ 8 notes exist, each with workflow-model + steal + cairn-compare
+  sections and source URLs (grep counts: 4-5 sections, ≥1 URL each).
+- C2 ✓ all 3 hands-on notes have "Hands-on observations" sections citing
+  scratch-repo commands/artifacts.
+- C3 ✓ INDEX.md: 9 M06 rows (8 systems + synthesis).
+- C4 ✓ synthesis: 3 DEFENDED + 1 CONCEDED verdicts on the 4 named
+  differentiators, + emergent fifth.
+- C5 ✓ DESIGN positioning paragraph = 5 lines (after bounce-1 trim).
+- C6 ✓ 5 synthesis steal items + 3 note-level stragglers → 4 new + 1
+  amended candidate rows (7 rows cite references/).
+- C7 ✓ installed_plugins.json clean of all 8 trial systems; symlink
+  resolves to repo with 8 skills present.
