@@ -64,14 +64,36 @@ possible only *because* pass 1's answers existed:
     off explicitly ("output-overwrite defaults are a separate, tradeable
     matter") so each question stays decidable.
 
-## Proposed structure: the two-pass gold standard (Jeff, 2026-07-11)
+## Proposed structure: one interview, two phases (refined 2026-07-11)
 
-Pass 1 — overall design interview: elicit what can't be inferred (items
-1–5). Pass 2 — principle interview: reconcile, formalize, and propose
-(items 6–11). Sequencing is load-bearing: pass 2's best questions consume
-pass 1's answers (the GP1 collision doesn't exist until tidy-readers is
-chosen). A design-interview skill should encode both passes and the
-ordering, with a natural break between them.
+Originally framed as two passes (Jeff); refined after discussion to a
+single continuous interview with two phases and an explicit seam:
+
+- **Phase 1 — overall design interview:** elicit what can't be inferred
+  (items 1–5). Never asks for principle commitments; instead **banks**
+  proto-principles in a running ledger as they surface in answers
+  ("sounds like a principle — banking it for the principles round").
+- **Phase 2 — principle interview:** formalize and test (items 6–11):
+  propose the banked material plus domain-derived and git-mined
+  candidates, each with a strength recommendation; stress-test the full
+  set for collisions with phase-1 decisions.
+- **The seam:** at the phase boundary, summarize what was heard, write
+  the DESIGN draft + banked-candidates ledger to disk, checkpoint-commit
+  ("stop points are commit points"), and offer a routing chip: continue
+  into principles now (recommended) / pause here. Continuous by default,
+  pausable without loss; a later session resumes statelessly.
+
+Why principles wait for phase 2 (empirical): all three principles adopted
+in openac's early classification round (GP1/GP2/IP1) had to be reopened in
+the pass-2 stress-test — boundary redrawn, essence-vs-idiom split, scope
+extended. Commitments made before the fact base existed all got reworked
+after it existed; facts → principles is a one-way dependency.
+
+Why the seam stays explicit: (a) checkpoint + stateless resume; (b) exit
+ramp for interview fatigue (~25 decisions in openac's run); (c) it makes
+model elevation targetable — phase 2 is the judgment-heavy half, so a
+future variant could run phase 1 on Opus and elevate only phase 2 to Fable
+behind the standard approval gate.
 
 ## Levers to experiment with
 
