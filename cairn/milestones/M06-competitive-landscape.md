@@ -59,7 +59,7 @@ supplies evidence); broad long-tail survey beyond the eight named systems
       agents) → note.
 - [x] Study from repos/docs: spec-kit, Task Master, BMAD-METHOD,
       Backlog.md/Meridian → three or four notes.
-- [ ] Write competitive-landscape.md synthesis: steal-list + uniqueness
+- [x] Write competitive-landscape.md synthesis: steal-list + uniqueness
       case; update INDEX.md.
 - [ ] Add candidate rows for steal-list items; write DESIGN.md
       positioning paragraph; uninstall trial plugins and verify the cairn
@@ -90,6 +90,10 @@ supplies evidence); broad long-tail survey beyond the eight named systems
   cross-trial artifact contamination (agents treat any tracked planning
   file as binding) — empirical support for the one-tracking-system rule;
   hands-on sections written into both notes.
+- 2026-07-11: task 5 done — synthesis written: 3 of 4 differentiators
+  defended (gates the sharpest), markdown-state conceded as commodity,
+  emergent fifth (memory + change control combined); verdict: justified,
+  no refocus; 5-item ranked steal-list.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
