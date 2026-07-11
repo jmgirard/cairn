@@ -11,8 +11,8 @@ it (especially: sizing tripwires, status gatekeeping, question gates).
 
 ## Session start
 
-Read, in order: `project/ROADMAP.md`, any active milestone file,
-`project/DECISIONS.md`. If an un-ingested RR exists in `project/reviews/`,
+Read, in order: `cairn/ROADMAP.md`, any active milestone file,
+`cairn/DECISIONS.md`. If an un-ingested RR exists in `cairn/reviews/`,
 handle ingestion first (see `/milestone-brief`).
 
 ## Workflow

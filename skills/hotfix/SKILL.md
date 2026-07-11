@@ -7,7 +7,7 @@ argument-hint: "[description]"
 # /hotfix — the fast lane for real bugs
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
-it (especially: work tiers, git model). Read `project/ROADMAP.md` to check
+it (especially: work tiers, git model). Read `cairn/ROADMAP.md` to check
 whether an existing milestone already covers this.
 
 ## Workflow

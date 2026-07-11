@@ -11,8 +11,8 @@ it (especially: approval model, CI waiting rules, archive protocol).
 
 ## Session start
 
-Read, in order: `project/ROADMAP.md`, the target milestone file,
-`project/DECISIONS.md`. Status must be `review` (or the user explicitly
+Read, in order: `cairn/ROADMAP.md`, the target milestone file,
+`cairn/DECISIONS.md`. Status must be `review` (or the user explicitly
 overrides — log the override).
 
 ## Workflow
@@ -80,7 +80,7 @@ overrides — log the override).
    commits mean divergence to resolve before committing. Then compress the
    milestone file to a
    ≤25-line summary (goal, outcome, key decisions, PR link) and move it to
-   `project/milestones/archive/`; ROADMAP row → `done` + archive path;
+   `cairn/milestones/archive/`; ROADMAP row → `done` + archive path;
    archive any resolved RB/RR pairs; update "Last hygiene check"; verify
    weight caps. Docs-only commit: `review M<NN>: done`; push.
 

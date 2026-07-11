@@ -3,30 +3,30 @@
 Read this before touching any tracking file. Every cairn skill obeys
 these rules; skills state their own workflow but never restate or override
 this rulebook. Repo-specific hard rules in the repo's CLAUDE.md and
-conventions in `project/DESIGN.md` bind in addition to (never instead of)
+conventions in `cairn/DESIGN.md` bind in addition to (never instead of)
 these rules.
 
 ## File map and ownership boundaries
 
-All project state lives in markdown under `project/`. Substance lives in the
+All project state lives in markdown under `cairn/`. Substance lives in the
 owner; any other file gets at most a one-line cross-reference.
 
 | File | Owns | Does NOT own |
 |---|---|---|
-| `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `project/` | Status, TODOs, architecture rationale, history — anything time-varying rots here |
-| `project/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
-| `project/ROADMAP.md` | The milestone index — **the only authority on status** | Task details, acceptance criteria, narrative |
-| `project/milestones/M<NN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately, before other work) |
-| `project/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
-| `project/DECISIONS.md` | Append-only cross-cutting decisions (D-001, …), never renumbered — superseded by new entries | Milestone-local decisions (those live in the milestone file); deferrals ("not now" is a ROADMAP fact, not a decision) |
-| `project/reviews/` | RB<NN> briefs and RR<NN> reports for Fable escalation (+ `archive/` for resolved pairs) | Anything else |
-| `project/references/` | Source summaries (`<citekey>.md`), `INDEX.md`, gitignored `pdf/` | Anything else |
-| `project/legacy/` | Entombed pre-migration tracking files, verbatim | Anything live |
+| `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `cairn/` | Status, TODOs, architecture rationale, history — anything time-varying rots here |
+| `cairn/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
+| `cairn/ROADMAP.md` | The milestone index — **the only authority on status** | Task details, acceptance criteria, narrative |
+| `cairn/milestones/M<NN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately, before other work) |
+| `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
+| `cairn/DECISIONS.md` | Append-only cross-cutting decisions (D-001, …), never renumbered — superseded by new entries | Milestone-local decisions (those live in the milestone file); deferrals ("not now" is a ROADMAP fact, not a decision) |
+| `cairn/reviews/` | RB<NN> briefs and RR<NN> reports for Fable escalation (+ `archive/` for resolved pairs) | Anything else |
+| `cairn/references/` | Source summaries (`<citekey>.md`), `INDEX.md`, gitignored `pdf/` | Anything else |
+| `cairn/legacy/` | Entombed pre-migration tracking files, verbatim | Anything live |
 
 Boundary rule: **Architecture → DESIGN · Status → ROADMAP · Tasks →
 milestone files · Decisions → DECISIONS · History → archive + git log.**
 
-Repo-specific extra files in `project/` are allowed (spec docs, coverage
+Repo-specific extra files in `cairn/` are allowed (spec docs, coverage
 matrices); they declare their own scope and must not claim another file's
 ownership.
 
@@ -65,7 +65,7 @@ changing one requires an explicit user decision recorded as a D-entry.
   from mistaking an exception for a precedent.
 - **Tracking files outrank memory.** Claude's persistent memory never holds
   project state (status, milestones, decisions, architecture). Memory is for
-  meta-context only; `project/` files win any conflict.
+  meta-context only; `cairn/` files win any conflict.
 
 ## Milestone IDs and status
 
@@ -216,8 +216,8 @@ descriptions or model memory for a primary source on scoring/algorithmic
 content. Search (DOI, publisher, OSF); if inaccessible, stop and ask the
 user for the PDF.
 
-**Source ingestion:** PDF → `project/references/pdf/` (gitignored).
-Summary → `project/references/<citekey>.md` (committed): full citation,
+**Source ingestion:** PDF → `cairn/references/pdf/` (gitignored).
+Summary → `cairn/references/<citekey>.md` (committed): full citation,
 extracted values with page/table anchors, verbatim-critical values quoted
 exactly, which tests/oracles trace to it, open questions. One line in
 `INDEX.md`. Tests and milestones cite `citekey (p. N)`, never restate.

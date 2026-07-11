@@ -5,7 +5,7 @@
 A Claude Code plugin providing one canonical milestone-driven development
 workflow and markdown tracking system for R packages. Logic lives here
 (skills, rules, templates); state lives in each adopting repo under
-`project/`. Full design rationale: DRAFT_2.md (this file summarizes; the
+`cairn/`. Full design rationale: DRAFT_2.md (this file summarizes; the
 draft is removed at 1.0, at which point its still-relevant content moves
 here).
 

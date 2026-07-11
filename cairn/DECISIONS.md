@@ -69,3 +69,20 @@ structure. The M01 independent review flagged the unrecorded reversal.
 during pilots, but README advertises only manual install until pilots pass.
 **Consequences:** Partially supersedes the §2.3 deferral (structure now, promotion
 later); README install-path documentation remains a tracked candidate.
+
+### D-008 (2026-07-11): Tracking directory is `cairn/`, not `project/`
+
+**Context:** "Project directory" already means the repo root in RStudio
+parlance, `project/` is a plausible pre-existing dirname as cairn
+generalizes beyond R, and the rename is cheap only before the M02/M03
+pilots plant the layout in other repos.
+**Decision:** All tracking artifacts live under `cairn/` (tool-named, like
+`renv/` or `.github/`). Rejected: `tracking/` (telemetry connotation),
+`.cairn/` (hidden dirs signal machine-managed state, these are
+human-edited docs). Lineage A detection still keys on `project/` — that
+was the precursors' dirname. Earlier D-entries keep `project/` verbatim
+(append-only).
+**Consequences:** Dirname collisions and RStudio ambiguity eliminated;
+adoption detection is "does `cairn/ROADMAP.md` exist"; the dir name no
+longer self-describes its contents — the CLAUDE.md section, which names
+cairn and states the boundary rule, carries that load.

@@ -12,8 +12,8 @@ CI waiting rules).
 
 ## Session start
 
-Read, in order: `project/ROADMAP.md`, the target milestone file,
-`project/DECISIONS.md`. If an un-ingested RR exists for this milestone,
+Read, in order: `cairn/ROADMAP.md`, the target milestone file,
+`cairn/DECISIONS.md`. If an un-ingested RR exists for this milestone,
 run ingestion first (see `/milestone-brief`).
 
 ## Workflow

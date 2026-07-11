@@ -1,6 +1,6 @@
 ---
 name: cairn-init
-description: Adopt the cairn system in a repo - scaffold the project/ tracking files, CLAUDE.md section, and ignore entries; or migrate an existing precursor tracking system. Use when the user wants to set up, initialize, adopt, repair, or migrate to cairn in a repository.
+description: Adopt the cairn system in a repo - scaffold the cairn/ tracking files, CLAUDE.md section, and ignore entries; or migrate an existing precursor tracking system. Use when the user wants to set up, initialize, adopt, repair, or migrate to cairn in a repository.
 argument-hint: ""
 ---
 
@@ -19,7 +19,8 @@ damaged pieces and **never overwrite user content without asking**.
 - Existing tracking footprint → **migration** (§2). Recognize precursors by
   footprint: root-level `MILESTONES.md`/`DESIGN.md`/`ROADMAP.md` with
   status inside CLAUDE.md ("Lineage B"); an older `project/` layout with
-  `STATUS.md`/`LOG.md`/`PRINCIPLES.md` or per-milestone files ("Lineage A");
+  `STATUS.md`/`LOG.md`/`PRINCIPLES.md` or per-milestone files ("Lineage A" —
+  precursors used `project/`, not `cairn/`);
   repo-local milestone skills in `.claude/skills/`. Unrecognized footprints
   get an interview, not a guess.
 - Already on cairn → **repair mode**: verify every §1 piece exists
@@ -31,7 +32,7 @@ Create (from `${CLAUDE_PLUGIN_ROOT}/skills/shared/templates/` where a
 template exists):
 
 ```
-project/
+cairn/
 ├── DESIGN.md          # skeleton: Purpose & Scope / Function Families /
 │                      # Conventions / Design Principles — GP<n> = Guiding
 │                      # (tradeable with justification), IP<n> = Inviolable
@@ -64,8 +65,8 @@ Then:
 
 - Append `templates/claude-md-section.md` to CLAUDE.md (create CLAUDE.md if
   absent). If a conflicting section exists, show the diff and ask.
-- `.Rbuildignore`: add `^project$` (packages only).
-- `.gitignore`: add `project/references/pdf/`.
+- `.Rbuildignore`: add `^cairn$` (packages only).
+- `.gitignore`: add `cairn/references/pdf/`.
 - Fill DESIGN.md's Purpose & Scope from DESCRIPTION and a quick read of
   `R/` — 5–10 honest lines, marked for the user to refine; never invent
   principles.
@@ -97,8 +98,8 @@ Only *live* state gets translated.
    everything finished→entombed. Ambiguities are asked, not guessed.
 
 4. **Entomb history verbatim.** Legacy tracking files move whole and
-   unmodified to `project/legacy/` (committed). New ROADMAP.md carries one
-   header line: "Pre-migration history: see `project/legacy/` and git log."
+   unmodified to `cairn/legacy/` (committed). New ROADMAP.md carries one
+   header line: "Pre-migration history: see `cairn/legacy/` and git log."
    No completed milestone is ever rewritten into the new format — not even
    as a summary.
 
@@ -108,7 +109,7 @@ Only *live* state gets translated.
    - Live items → milestone files (template) or `candidate` rows.
    - **IDs are never renumbered.** New numbering continues from the legacy
      maximum (a repo at M53 starts at M54). Legacy decision IDs (ADR-0nn,
-     D-00n, DESIGN §refs) stay valid as citations into `project/legacy/`;
+     D-00n, DESIGN §refs) stay valid as citations into `cairn/legacy/`;
      DECISIONS.md starts fresh at D-001 with a header note pointing at the
      legacy log; only still-governing decisions are re-recorded (citing
      their legacy ID).
@@ -120,11 +121,11 @@ Only *live* state gets translated.
      invariants → DESIGN or CLAUDE hard rules; status slots and milestone
      indexes → deleted (ROADMAP owns status now); commands kept. Append the
      standard CLAUDE.md section.
-   - **Old repo-local skills and rulebooks move to `project/legacy/`** —
+   - **Old repo-local skills and rulebooks move to `cairn/legacy/`** —
      they must not remain in `.claude/skills/`, where they would collide
      with or contradict this plugin's skills.
    - Repo-specific assets with no canonical home (spec files, coverage
-     matrices, principles docs) stay in `project/` as declared
+     matrices, principles docs) stay in `cairn/` as declared
      repo-specific files — kept, not forced into canonical shapes.
    - Scaffold anything from §1 that's still missing (ignore entries, dirs).
 

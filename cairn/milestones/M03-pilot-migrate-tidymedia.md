@@ -1,6 +1,6 @@
 # M03: Pilot — migrate tidymedia
 
-- **Status:** planned   <!-- mirror; project/ROADMAP.md is the authority -->
+- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** M01
 - **Branch/PR:** — (work happens in tidymedia; this file tracks it)

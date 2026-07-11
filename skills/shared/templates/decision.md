@@ -1,4 +1,4 @@
-<!-- Append to project/DECISIONS.md. Never renumber; supersede with a new
+<!-- Append to cairn/DECISIONS.md. Never renumber; supersede with a new
      entry. D-entries record choices with rationale — including genuine
      rejections ("considered X, rejected because…"). They never record
      deferrals: "not now" is a ROADMAP fact (candidate row or future

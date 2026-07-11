@@ -13,8 +13,8 @@ itself — it routes.
 
 ## Session start
 
-Read, in order: `project/ROADMAP.md`, any active (`in-progress` / `blocked` /
-`review`) milestone file, `project/DECISIONS.md`. Check `project/reviews/`:
+Read, in order: `cairn/ROADMAP.md`, any active (`in-progress` / `blocked` /
+`review`) milestone file, `cairn/DECISIONS.md`. Check `cairn/reviews/`:
 if an `RR<NN>-*.md` exists for an open brief, tell the user and route to
 RR ingestion (see `/milestone-brief`) before anything else.
 
@@ -42,7 +42,7 @@ rest. Check:
   auto-delete).
 - **Orphans:** `done` milestones not archived; RRs not ingested; milestone
   files missing from ROADMAP or vice versa; uncommitted changes under
-  `project/`.
+  `cairn/`.
 - **Reconciliation with git:** commits since the last work-log entry that
   aren't reflected in tracking → add a one-line catch-up entry.
 - **ID uniqueness:** no M-number appears twice across active + archive.

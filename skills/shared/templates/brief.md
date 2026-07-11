@@ -1,7 +1,7 @@
 # RB<NN>: <Topic> (M<NN>)
 
 - **Date:** YYYY-MM-DD
-- **Output required:** write findings to `project/reviews/RR<NN>-<slug>.md`
+- **Output required:** write findings to `cairn/reviews/RR<NN>-<slug>.md`
 
 You are performing an independent expert review. This brief is fully
 self-contained — do not assume any conversation context. Read only what this
@@ -16,7 +16,7 @@ and why this question needs independent review.
 ## Materials
 
 Exact files (and lines where relevant) to examine. How to run relevant code
-or tests. Cite `project/references/<citekey>.md` summaries where sources
+or tests. Cite `cairn/references/<citekey>.md` summaries where sources
 matter.
 
 ## Questions

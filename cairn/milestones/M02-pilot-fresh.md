@@ -1,6 +1,6 @@
 # M02: Pilot — fresh adoption in one package repo
 
-- **Status:** planned   <!-- mirror; project/ROADMAP.md is the authority -->
+- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** M01
 - **Branch/PR:** — (work happens in the pilot repo; this file tracks it)

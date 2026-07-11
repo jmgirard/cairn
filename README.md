@@ -6,7 +6,7 @@ comes next.*
 A Claude Code plugin for milestone-driven R package development. One
 canonical workflow — planning, implementation, review, hotfixes, releases,
 and expert escalation — with all project state in plain markdown under
-`project/`, kept honest by weight caps and a self-auditing health check.
+`cairn/`, kept honest by weight caps and a self-auditing health check.
 Work lands as small stacked milestones, and any session — today's or next
 month's — can find the path from the files alone.
 
@@ -65,7 +65,7 @@ directly always works too, e.g. to resume after a break.
 ```
 your-package/
 ├── CLAUDE.md                  # lean router; never holds status
-└── project/
+└── cairn/
     ├── DESIGN.md              # architecture as it IS + principles
     ├── ROADMAP.md             # milestone index — the only status authority
     ├── DECISIONS.md           # append-only decision log
@@ -100,7 +100,7 @@ milestone files · Decisions → DECISIONS · History → archive + git log.**
   explicitly pause the first.
 - Let milestones be small. The plan skill will propose splitting oversized
   ones — take the split; three small merges beat one sprawling branch.
-- Don't hand-maintain status in chat or memory: if it isn't in `project/`
+- Don't hand-maintain status in chat or memory: if it isn't in `cairn/`
   files or git, it didn't happen. Hand-editing the files is fine —
   ROADMAP.md wins any conflict.
 - Trust the archive. Done milestones compress to short summaries; the full
@@ -110,6 +110,6 @@ milestone files · Decisions → DECISIONS · History → archive + git log.**
 
 - Auto-merge, auto-release, or auto-submit to CRAN — every irreversible step
   is gated on you.
-- Track status in CLAUDE.md, chat memory, or GitHub issues — `project/`
+- Track status in CLAUDE.md, chat memory, or GitHub issues — `cairn/`
   files are the single source of truth; issues are an inbox.
 - Run Fable, or any paid escalation, without a per-instance yes.

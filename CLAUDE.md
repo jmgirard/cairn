@@ -1,12 +1,12 @@
 # cairn (plugin repo)
 
 This repo IS the cairn plugin (skills/, templates, rulebook) and dogfoods
-its own tracking format by hand under `project/`. It is not an R package:
+its own tracking format by hand under `cairn/`. It is not an R package:
 R-specific gates (devtools, pkgdown, .Rbuildignore) are waived here.
 
 ## Project tracking (cairn)
 
-All project state lives in markdown under `project/`. Boundary rule:
+All project state lives in markdown under `cairn/`. Boundary rule:
 **Architecture → DESIGN · Status → ROADMAP · Tasks → milestone files ·
 Decisions → DECISIONS · History → archive + git.**
 

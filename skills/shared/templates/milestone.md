@@ -1,6 +1,6 @@
 # M<NN>: <Title>
 
-- **Status:** planned   <!-- mirror; project/ROADMAP.md is the authority -->
+- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- high | normal | low -->
 - **Depends on:** —   <!-- M<xx>, M<yy> or — -->
 - **Branch/PR:** —   <!-- m<nn>-<slug>; PR URL once opened -->
@@ -34,7 +34,7 @@ never "never".
 - YYYY-MM-DD: created by /milestone-plan.
 
 ## Decisions
-<!-- milestone-local; promote cross-cutting ones to project/DECISIONS.md -->
+<!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
 
 ## Review
 <!-- filled by /milestone-review: evidence per criterion; consistency-gate
