@@ -3,7 +3,7 @@
 - **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** M04   <!-- edits the same rulebook/skill text M04 reshapes -->
-- **Branch/PR:** m05-rulebook-conventions
+- **Branch/PR:** m05-rulebook-conventions · https://github.com/jmgirard/cairn/pull/2
 
 ## Goal
 
@@ -96,3 +96,27 @@ design-interview skill, skill-less routing, hooks → candidates (v0.3).
 
 ## Review
 <!-- filled by /milestone-review -->
+
+- 2026-07-11 criteria evidence (fresh reads/greps, PR #2):
+  - C1 adopt-in-place: cairn-init:90–99 — named variant, applicability,
+    step-3 gate, ledger/audit unchanged, M03/PR#8 lineage. PASS.
+  - C2 tripwires: tracking-rules:252–259 (3 categories, gated chip,
+    D-004); plan:67–70 (tagging); implement:42–46 (inheritance + option).
+    PASS.
+  - C3 cross-repo IDs: tracking-rules:85–87. PASS.
+  - C4 retention: tracking-rules:51–53 + cairn-init:61–62 mirror. PASS.
+  - C5 DESIGN ordering: tracking-rules:37–39 + cairn-init:37–41. PASS.
+  - C6 nits: RR pointer tracking-rules:251; session reads hotfix:11–13,
+    cairn-release:16–18; release chip :69–72; grouping note :61. PASS.
+- Consistency gate: R items waived (plugin repo); caps OK (ROADMAP 28/60,
+  this file <150, CLAUDE.md 17/80). CHANGELOG: per-release compilation by
+  precedent (M04 had no entry) — raised at approval gate, user to decide.
+- 2026-07-11 independent [O] review (PR #2 diff): all 6 criteria pass; no
+  blockers. Triage: (1) repo's own DESIGN.md ordered GP-before-IP,
+  contradicting the new convention — FIXED (reordered IP-first); (2) no
+  canonical tripwire tokens — FIXED (no-oracle | irreversible-api |
+  ip-touching, defined in tracking-rules, referenced in both skills);
+  (3) dangling mid-work cross-ref in implement — FIXED (rulebook now
+  covers mid-implementation hits). Adjacent pre-existing skeleton/DESIGN
+  section-list mismatch REJECTED: skeleton targets scaffolded package
+  repos; this repo's DESIGN legitimately deviates (plugin, not R pkg).

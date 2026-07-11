@@ -26,21 +26,22 @@ here).
 
 ## Design Principles
 
-GP<n> = Guiding Principle (default stance; tradeable with stated
-justification). IP<n> = Inviolable Principle (hard constraint; changing one
-requires an explicit user decision + D-entry).
+IP<n> = Inviolable Principle (hard constraint; changing one requires an
+explicit user decision + D-entry). GP<n> = Guiding Principle (default
+stance; tradeable with stated justification). IP block first; numbers run
+within each type and are never reused.
 
+- IP1: Nothing reaches main without explicit user approval at a gate.
+- IP2: Prior state is surfaced, never silently obeyed or silently
+  overridden.
+- IP3: Nothing the user asked for is silently dropped (conservation:
+  remainder ledger, migration ledger).
 - GP1: Efficient — store decisions and outcomes, not minutiae; caps +
   archiving keep always-read files small.
 - GP2: Reliable — one status authority; tracking travels with code;
   self-auditing; stateless resume.
 - GP3: Portable — identical across repos; one-command adoption; repo
   specifics layer on top without forking the core.
-- IP1: Nothing reaches main without explicit user approval at a gate.
-- IP2: Prior state is surfaced, never silently obeyed or silently
-  overridden.
-- IP3: Nothing the user asked for is silently dropped (conservation:
-  remainder ledger, migration ledger).
 
 ## Known issues
 

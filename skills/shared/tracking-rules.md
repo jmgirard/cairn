@@ -250,13 +250,15 @@ cairn skill is active.
   auditable, and ingestible. RR ingestion follows the protocol in
   `/milestone-brief` ("Ingesting an RR").
 - **RB tripwires** — the three question categories that warrant offering
-  Fable escalation: statistical/scoring correctness with no available
-  oracle; irreversible exported-API decisions; anything touching an IP.
-  `/milestone-plan` tags tripwire-hitting open questions inline on the
-  affected task or criterion — `(RB tripwire: <category>)` — and
-  `/milestone-implement` inherits the tags. An escalation chip option is
-  offered only on a tripwire hit, never as a standing menu item (D-004:
-  Fable is gated per instance).
+  Fable escalation, with their canonical tag tokens: statistical/scoring
+  correctness with no available oracle (`no-oracle`); irreversible
+  exported-API decisions (`irreversible-api`); anything touching an IP
+  (`ip-touching`). `/milestone-plan` tags tripwire-hitting open questions
+  inline on the affected task or criterion — `(RB tripwire: <token>)` —
+  and `/milestone-implement` inherits the tags; a tripwire can also fire
+  mid-implementation (same categories, no tag required). An escalation
+  chip option is offered only on a tripwire hit, never as a standing menu
+  item (D-004: Fable is gated per instance).
 
 ## Validation doctrine (statistical/numeric packages)
 
