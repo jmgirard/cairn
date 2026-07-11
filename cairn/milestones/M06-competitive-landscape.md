@@ -55,7 +55,7 @@ supplies evidence); broad long-tail survey beyond the eight named systems
       claude-md-management, code-review → three notes.
 - [ ] Hands-on trial: feature-dev and claude-md-management in a scratch
       repo; record what the workflow actually does.
-- [ ] Study + hands-on trial ccpm (GitHub-Issues PM, worktree parallel
+- [x] Study + hands-on trial ccpm (GitHub-Issues PM, worktree parallel
       agents) → note.
 - [ ] Study from repos/docs: spec-kit, Task Master, BMAD-METHOD,
       Backlog.md/Meridian → three or four notes.
@@ -75,6 +75,10 @@ supplies evidence); broad long-tail survey beyond the eight named systems
 - 2026-07-11: task 1 done — cloned claude-plugins-official @ dc72937,
   read all three plugins' full source, wrote three references/ notes +
   INDEX rows; flagged never-Haiku doctrine challenge for synthesis.
+- 2026-07-11: task 3 done — ccpm full skill source read; local flow
+  (PRD→epic→tasks) + 3 status scripts executed hands-on in scratch repo;
+  GitHub sync/execute from source only; note + INDEX row written;
+  deterministic-status-scripts flagged as biggest steal.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
