@@ -32,11 +32,13 @@ broad rollout.
 
 ## Tasks
 
-- [ ] Confirm tidymedia has nothing in flight (or carry over its one
+- [x] Confirm tidymedia has nothing in flight (or carry over its one
       in-progress item explicitly).
-- [ ] Run `/cairn-init` migration; review the proposal gate carefully.
+- [ ] Run `/cairn-init` migration (Jeff drives, in a tidymedia session);
+      review the proposal gate carefully.
 - [ ] Verify ledger, audit, and merge.
-- [ ] Ship one milestone post-migration; log friction as issues.
+- [ ] Ship one milestone post-migration (tidymedia M08); log friction as
+      cairn candidate rows.
 
 ## Work log
 
@@ -46,6 +48,11 @@ broad rollout.
 - 2026-07-11: pre-flight check — tidymedia clean, nothing in flight (M08
   planned, M09/M10 ideas, M01–M07 done); one unpushed docs commit
   (3494379, plan M08) to push before migration branches.
+- 2026-07-11: question gate — Jeff drives migration in tidymedia sessions
+  (M02 precedent, truest plugin UX test); tidymedia M08 is the
+  post-migration ship; task 4 amended issues→candidate rows (per M02).
+- 2026-07-11: task 1 done; pushed tidymedia 3494379 so migration cuts
+  from pushed master; legacy max ID M10 → new numbering starts M11.
 
 ## Decisions
 
