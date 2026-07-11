@@ -14,7 +14,7 @@ system.
 
 **In:** `/cairn-init` fresh scaffold; ≥3 full milestones (plan → implement →
 review); one `/milestone-brief` RB/RR escalation; one `/cairn-release` walk;
-friction captured as issues on this repo.
+friction captured as candidate rows on this repo (issues also accepted).
 
 **Out:** migration testing → M03. Fixing the friction found → v0.2 planning
 after both pilots.
@@ -26,13 +26,14 @@ after both pilots.
       each transition.
 - [ ] One RB/RR cycle completed and ingested.
 - [ ] One release walk completed to the handoff checklist.
-- [ ] Every friction point filed as an issue on cairn.
+- [ ] Every friction point captured as a candidate row on cairn (or filed
+      as an issue).
 
 ## Tasks
 
 - [x] Choose the pilot repo (a package without an existing system).
 - [x] Run `/cairn-init`; note anything manual.
-- [ ] Ship 3 milestones; log friction as issues.
+- [ ] Ship 3 milestones; log friction as candidates.
 - [ ] Run one RB/RR escalation; one release walk.
 - [ ] Summarize findings in this file's Review section.
 
@@ -59,6 +60,11 @@ after both pilots.
   cycles (2 of ≥3); M03–M05 planned; no RB/RR or release walk yet.
 - 2026-07-11: friction: openac scaffold predates D-008, uses project/ not
   cairn/ — rename disposition pending user decision.
+- 2026-07-11: gate: user approved renaming openac project/ → cairn/ now;
+  executed in openac (its D-007, commit 3c81c7b, pushed).
+- 2026-07-11: plan amendment (gate-approved): friction criterion changed
+  from "filed as issues" to "captured as candidate rows (or issues)" —
+  matches established practice (5 candidates banked, 0 issues).
 
 ## Decisions
 
