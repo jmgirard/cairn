@@ -9,6 +9,9 @@ Tasks → milestone files · Decisions → DECISIONS · History → archive + gi
 - Start with `/milestone` — status snapshot, health audit, suggested next
   action. Never record status or TODOs in this file; anything time-varying
   rots here.
+- All eight skills: `/milestone`, `/milestone-plan`, `/milestone-implement`,
+  `/milestone-review`, `/milestone-brief` (Fable escalation), `/hotfix`,
+  `/cairn-release`, `/cairn-init`.
 - Work tiers: trivial edits (no runtime surface) commit directly to main;
   user-visible bugs go through `/hotfix`; everything else is a milestone
   (`/milestone-plan` → `/milestone-implement` → `/milestone-review`).

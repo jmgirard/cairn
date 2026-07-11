@@ -20,7 +20,9 @@ run ingestion first (see `/milestone-brief`).
 
 1. Verify status is `planned` (fresh start) or `in-progress` / `blocked`
    with a resolved blocker (resume). Verify all `Depends on:` milestones are
-   `done`. Set `in-progress` in ROADMAP + header mirror.
+   `done`, and that no OTHER milestone is `in-progress` (at most one, ever —
+   if one exists, stop and route there or ask). Set `in-progress` in
+   ROADMAP + header mirror.
 
 2. **Branch.** Check `git status` first — a dirty tree with unrelated
    changes means ask the user; never sweep strangers into a checkpoint

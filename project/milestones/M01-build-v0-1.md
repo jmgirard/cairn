@@ -54,11 +54,34 @@ repo.
 - 2026-07-11: catch-up — post-review refinements landed on main (GP/IP
   prefixes, rename to cairn, marketplace.json, git-model + context-hygiene
   doctrine, recommended-option rule for chips); review gate still pending.
+- 2026-07-11: /milestone-review run — criteria evidence gathered, consistency
+  gate passed, independent Opus review triaged (see Review). Fixes committed
+  directly to main, matching M01's built-on-main exception; awaiting Jeff's
+  approval (AC5).
 
 ## Decisions
 
-See project/DECISIONS.md D-001 … D-005 (extracted from DRAFT_2 §10).
+See project/DECISIONS.md D-001 … D-007 (D-001…D-005 extracted from DRAFT_2
+§10; D-006 naming; D-007 marketplace.json timing).
 
 ## Review
 
-Pending: Jeff's read-through of skills + rulebook, then pilot via M02/M03.
+2026-07-11 evidence, gathered by command:
+
+- AC1 ✓ all 8 skills exist; frontmatter complete; each reads the shared
+  rulebook first (grep: 8/8 reference it at line 9).
+- AC2 ✓ rulebook headings cover all 11 required topic areas (heading list
+  checked against the criterion one-for-one).
+- AC3 ✓ four templates present; structure matches DRAFT_2 §6 (elaborations
+  only, no omissions; §6.4 skill-list gap found by review, fixed).
+- AC4 ✓ README covers all six §12 subsections + an Install section.
+- Consistency gate (plugin-adapted; R gates waived per ROADMAP note):
+  plugin.json + marketplace.json parse; name matches D-006; CHANGELOG has
+  the 0.1.0 entry.
+- Independent fresh-context review (Opus): 0 blockers, 3 should-fix,
+  7 nits; verdict fit-to-ship. Triage: fixed now — D-007 records the
+  marketplace.json timing (finding 1), full skill list added to
+  claude-md-section template (3), single-in-progress guard added to
+  /milestone-implement (4), stale D-ref updated (9). Already tracked as
+  candidates — README install paths (2), repo CLAUDE.md (10, audit flag).
+  Bundled into a new candidate row — nits 5–8 (v0.2 polish).

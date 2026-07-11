@@ -59,3 +59,13 @@ generic names (/milestone*, /hotfix); repo-level skills carry the brand
 **Consequences:** Known adjacencies accepted: CRAN's "Cairo" graphics
 package (one letter apart) and the Cairn tabletop RPG; no CRAN package
 claims "cairn". GitHub home: jmgirard/cairn.
+
+### D-007 (2026-07-11): Ship marketplace.json early; advertise manual install only
+
+**Context:** DRAFT_2 §2.3 deferred marketplace publishing until battle-tested;
+a marketplace.json was nonetheless committed 2026-07-11 to validate its
+structure. The M01 independent review flagged the unrecorded reversal.
+**Decision:** The file ships now so the one-command path can be validated
+during pilots, but README advertises only manual install until pilots pass.
+**Consequences:** Partially supersedes the §2.3 deferral (structure now, promotion
+later); README install-path documentation remains a tracked candidate.
