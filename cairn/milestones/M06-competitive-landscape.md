@@ -1,9 +1,9 @@
 # M06: Competitive-landscape research
 
-- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** —
-- **Branch/PR:** —   <!-- m06-competitive-landscape -->
+- **Branch/PR:** m06-competitive-landscape
 
 ## Goal
 

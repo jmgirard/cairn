@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M06 | Competitive-landscape research | planned | — | high | milestones/M06-competitive-landscape.md |
+| M06 | Competitive-landscape research | in-progress | — | high | milestones/M06-competitive-landscape.md |
 | M05 | Rulebook conventions & protocol gaps | done | M04 | high | milestones/archive/M05-rulebook-conventions.md |
 | M04 | Skill conduct & output discipline | done | — | high | milestones/archive/M04-output-discipline.md |
 | M03 | Pilot: migrate tidymedia | done | M01 | high | milestones/archive/M03-pilot-migrate-tidymedia.md |
