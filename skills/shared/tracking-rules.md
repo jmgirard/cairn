@@ -150,6 +150,30 @@ Waiting on CI / background work:
   PR URL lives in the milestone header; re-derive status from `gh pr checks`
   on demand.
 
+## Context hygiene
+
+Stateless resume makes conversation context disposable; exploit that at
+the seams. Only the user can `/clear` — skills mark the seams in their
+recaps, never assume continuation.
+
+- **The milestone boundary is the canonical `/clear` point.** After the
+  post-merge hygiene commit, everything load-bearing is on main; carrying
+  the finished milestone's transcript into the next one imports stale
+  state (superseded plans, old CI status), not insight. Prefer `/clear`
+  over `/compact` there — compaction keeps a lossy summary of what the
+  tracking files already record losslessly.
+- **Stop points are commit points are safe-clear points.** Never tidy
+  mid-task. A long implementation session ends by finishing the current
+  task, checkpoint-committing with an honest work-log line, and stopping;
+  resume fresh. If compaction threatens to lose something important,
+  that's a smell: write it to the milestone file instead.
+- Same-session implement → review is fine: criteria evidence is gathered
+  by command (never recall) and code review runs in a fresh subagent. The
+  seam that matters is milestone → milestone.
+- A fresh session stumbling on resume is a tracking-file gap, not a
+  reason to avoid clearing — report and fix the file, don't lean on
+  remembered context.
+
 ## Question gates and routing chips
 
 User interaction happens at exactly three gates — plan questions,

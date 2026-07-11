@@ -84,7 +84,11 @@ overrides — log the override).
    archive any resolved RB/RR pairs; update "Last hygiene check"; verify
    weight caps. Docs-only commit: `review M<NN>: done`; push.
 
-10. **Routing chip** (AskUserQuestion):
+10. **Routing chip** (AskUserQuestion). Precede it with one line: M<NN>
+    is archived and all state is on disk, so this is a natural `/clear`
+    point — selecting a chip continues this session; a fresh session
+    starts the next milestone with clean context (recommended when this
+    session already ran implement or is otherwise long).
     - **Plan the next milestone** → `/milestone-plan` (recommended when
       planned/candidate work exists)
     - Run a health audit → `/milestone`

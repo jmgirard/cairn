@@ -76,4 +76,7 @@ run ingestion first (see `/milestone-brief`).
    - **Adjust first** — changes on the branch before review
    - **Pause here** — stop; milestone stays at `review`
    Honor "Other" free-text as adjustment instructions. The chip is a stop,
-   never an auto-proceed.
+   never an auto-proceed. Note in the recap that the checkpoint makes this
+   a safe `/clear` point — review resumes statelessly in a fresh session
+   (same-session review via the chip is also fine; see tracking-rules
+   context hygiene).
