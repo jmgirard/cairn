@@ -33,7 +33,7 @@ after both pilots.
 
 - [x] Choose the pilot repo (a package without an existing system).
 - [x] Run `/cairn-init`; note anything manual.
-- [ ] Ship 3 milestones; log friction as candidates.
+- [x] Ship 3 milestones; log friction as candidates.
 - [ ] Run one RB/RR escalation; one release walk.
 - [ ] Summarize findings in this file's Review section.
 
@@ -73,6 +73,9 @@ after both pilots.
   technical — unclear what's being chosen and why it matters → folded into
   output-discipline candidate. Also: Desktop chips can be minimized without
   closing, softening the earlier chip-layout concern.
+- 2026-07-11: catch-up from openac git: M04 (check hygiene) shipped through
+  full plan→implement→review (PR #3, archived) — 3rd milestone criterion
+  met. Remaining: one RB/RR cycle, one release walk.
 
 ## Decisions
 
