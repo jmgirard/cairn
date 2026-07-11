@@ -9,6 +9,13 @@ workflow and markdown tracking system for R packages. Logic lives here
 draft is removed at 1.0, at which point its still-relevant content moves
 here).
 
+Positioning (M06 survey, references/competitive-landscape.md): cairn is
+change control + longitudinal project memory for agent-driven work — a
+niche none of the eight surveyed systems occupies. Markdown state is
+commodity; what differentiates cairn is governed state (sole status
+authority, caps, archives), skill-gated transitions, human-gated merges
+with fresh evidence, and a swappable domain-verification doctrine.
+
 ## Architecture
 
 - `.claude-plugin/plugin.json` — manifest.

@@ -1,6 +1,6 @@
 # M06: Competitive-landscape research
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** —
 - **Branch/PR:** m06-competitive-landscape
@@ -61,7 +61,7 @@ supplies evidence); broad long-tail survey beyond the eight named systems
       Backlog.md/Meridian → three or four notes.
 - [x] Write competitive-landscape.md synthesis: steal-list + uniqueness
       case; update INDEX.md.
-- [ ] Add candidate rows for steal-list items; write DESIGN.md
+- [x] Add candidate rows for steal-list items; write DESIGN.md
       positioning paragraph; uninstall trial plugins and verify the cairn
       symlink.
 
@@ -94,6 +94,12 @@ supplies evidence); broad long-tail survey beyond the eight named systems
   defended (gates the sharpest), markdown-state conceded as commodity,
   emergent fifth (memory + change control combined); verdict: justified,
   no refocus; 5-item ranked steal-list.
+- 2026-07-11: task 6 done — 3 new candidate rows + hooks candidate
+  amended (blocking enforcement); DESIGN positioning paragraph added;
+  nothing was installed (source-execution trials), symlink verified
+  resolving with all 8 skills; ROADMAP 32/60 lines. Status → review.
+  Note for merge: user's live install symlinks this repo — merge to
+  main promptly so other repos don't see branch state.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
