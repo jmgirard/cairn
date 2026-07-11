@@ -60,7 +60,7 @@ README install docs → release-prep candidate.
 - [x] Recast hardcoded routing-chip menus (grep `Routing chip` — at least
       cairn-init:75,139 and milestone-brief) as contextual construction
       with examples; align with `/milestone`'s phrasing (milestone:60–69).
-- [ ] Add outcome-first recap guidance to the completion steps of
+- [x] Add outcome-first recap guidance to the completion steps of
       milestone-implement (step 8), milestone-review (step 7/10), and
       cairn-release.
 - [ ] Add the [S]/[O]/[F] prefix rule to the rulebook model-strategy
@@ -88,6 +88,9 @@ README install docs → release-prep candidate.
 - 2026-07-11: task 3 done — six chip menus recast as contextual
   construction with e.g. menus (cairn-init ×2, brief, plan, implement,
   review); /milestone unchanged as the model.
+- 2026-07-11: task 4 done — outcome-first clauses at implement step 8
+  recap, review approval gate (step 7) + done recap (step 9), and the
+  cairn-release handoff.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->

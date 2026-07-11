@@ -64,7 +64,9 @@ overrides — log the override).
 
 6. Final checkpoint commit on the branch.
 
-7. **Final approval gate.** Present: acceptance-criteria evidence, problems
+7. **Final approval gate.** Present, outcome-first (per tracking-rules):
+   what the user is approving in plain words — what the milestone does or
+   changes — then acceptance-criteria evidence, problems
    found and how each was handled, diffstat, anything the user should eyeball
    directly. Ask remaining questions first (batched, with recommendations),
    then ask plainly for authorization to merge. Approval withheld → log the
@@ -83,7 +85,9 @@ overrides — log the override).
    ≤25-line summary (goal, outcome, key decisions, PR link) and move it to
    `cairn/milestones/archive/`; ROADMAP row → `done` + archive path;
    archive any resolved RB/RR pairs; update "Last hygiene check"; verify
-   weight caps. Docs-only commit: `review M<NN>: done`; push.
+   weight caps. Docs-only commit: `review M<NN>: done`; push. The done
+   recap leads with what shipped, in plain words; hygiene mechanics
+   compress to one line.
 
 10. **Routing chip**, composed from the post-merge state (chip rules per
     tracking-rules). Precede it with one line: M<NN>
