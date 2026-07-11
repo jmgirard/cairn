@@ -46,7 +46,10 @@ Phase header: `## Hotfix: <slug>` → `### <step>`.
    `gh pr checks --watch` wait). On approval, write the merge-guard
    marker first: `cairn/.merge-approved` (gitignored; one line:
    `hotfix <slug> approved YYYY-MM-DD`) — the plugin's hook denies
-   merges to main without it and consumes it per attempt.
+   merges to main without it and consumes it per attempt. Write the marker
+   in a **separate** step before the `gh pr merge` command — the hook checks
+   it before the command runs, so writing it in the same shell line is
+   denied.
 
 7. If the fix revealed deeper work, add a `candidate` row before closing
    out. If a milestone branch is currently active, remind the user that its

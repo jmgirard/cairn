@@ -82,7 +82,10 @@ overrides — log the override).
    `M<NN> approved YYYY-MM-DD`). The plugin's PreToolUse hook denies
    merges to main without this marker and consumes it per merge attempt;
    if a merge fails and is retried under the same approval, rewrite the
-   marker. Then mark the PR ready; require green CI
+   marker. Write the marker in a **separate** step before the `gh pr merge`
+   command — the hook checks it before the command runs, so writing it in
+   the same shell line as the merge is denied. Then mark the PR ready;
+   require green CI
    (`gh pr checks <pr> --watch` with a timeout — one blocking wait; on
    timeout report fresh state and stop). Red CI → fix on the branch,
    re-verify, re-request approval if the fix was nontrivial. When green:
