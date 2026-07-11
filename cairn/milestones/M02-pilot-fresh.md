@@ -1,6 +1,6 @@
 # M02: Pilot — fresh adoption in one package repo
 
-- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** M01
 - **Branch/PR:** — (work happens in the pilot repo; this file tracks it)
@@ -31,7 +31,7 @@ after both pilots.
 ## Tasks
 
 - [x] Choose the pilot repo (a package without an existing system).
-- [ ] Run `/cairn-init`; note anything manual.
+- [x] Run `/cairn-init`; note anything manual.
 - [ ] Ship 3 milestones; log friction as issues.
 - [ ] Run one RB/RR escalation; one release walk.
 - [ ] Summarize findings in this file's Review section.
@@ -53,6 +53,12 @@ after both pilots.
   output volume disorienting (stage unclear) and oversized question chips
   crowd out chat context → output-discipline/stage-orientation candidate
   added; chip minimize/side-by-side flagged as Desktop app feedback.
+- 2026-07-11: resumed via /milestone-implement; status in-progress.
+  Catch-up from openac git: scaffold complete and functioning; openac M01
+  (os_read) and M02 (of_read) shipped through full plan→implement→review
+  cycles (2 of ≥3); M03–M05 planned; no RB/RR or release walk yet.
+- 2026-07-11: friction: openac scaffold predates D-008, uses project/ not
+  cairn/ — rename disposition pending user decision.
 
 ## Decisions
 
