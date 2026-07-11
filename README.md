@@ -19,12 +19,38 @@ holds only its own state.
 [CHANGELOG.md](CHANGELOG.md). The full design rationale lives in
 [DRAFT_2.md](DRAFT_2.md) (removed at 1.0).
 
-## Install (manual, for now)
+## Install
+
+Two paths; pick one — running both installs the plugin twice and the
+duplicates will confuse skill routing.
+
+**Dev install (recommended while piloting):** clone and symlink into your
+skills directory. The plugin loads from your checkout, so `git pull`
+updates it with no re-install step:
 
 ```bash
 git clone https://github.com/jmgirard/cairn
-claude --plugin-dir /path/to/cairn
+ln -s /path/to/cairn ~/.claude/skills/cairn
 ```
+
+Footgun to respect: *live* means live — whatever branch the checkout has
+is what loads at your next session start, in every repo, including the
+enforcement hooks. Keep the checkout on `main` unless you're developing
+cairn itself. For a one-off trial without installing anything, use
+`claude --plugin-dir /path/to/cairn` (that session only).
+
+**Marketplace install:** a frozen snapshot; re-install to pick up new
+releases. In Claude Desktop: Customize → Plugins. From the CLI:
+
+```bash
+claude plugin marketplace add jmgirard/cairn
+claude plugin install cairn@cairn
+```
+
+Either way, the install includes the guardrail hooks (session-start
+tracking re-injection, the uncommitted-tracking stop guard, and the
+merge-approval guard); they activate at the next session start and are
+no-ops in repos that aren't cairn-tracked.
 
 Then, in your package repo, run `/cairn-init`. Fresh repos get scaffolding;
 repos with an older tracking system get an interactive, PR-based migration.

@@ -8,7 +8,13 @@ claude-code-guide subagent).
 
 - Plugin hooks live in `hooks/hooks.json` at the plugin root; loaded
   automatically when the plugin is enabled — `plugin.json` does not
-  reference them. **A skills-directory symlink install loads no hooks.**
+  reference them. Skills-directory plugins (`<name>@skills-dir`,
+  incl. symlinks) DO register hooks: `claude plugin details
+  cairn@skills-dir` lists `Hooks (4)` from this repo's hooks.json
+  (verified 2026-07-11; corrects the earlier subagent claim that only
+  marketplace installs load hooks). Symlink consequence: hooks go live
+  from whatever branch the checkout has, in every repo, at next session
+  start.
 - `${CLAUDE_PLUGIN_ROOT}` expands to the plugin install dir, in hook
   `command` fields only.
 

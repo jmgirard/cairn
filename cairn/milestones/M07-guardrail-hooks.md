@@ -22,8 +22,8 @@ merge guard denying `gh pr merge` / `git merge` into main unless an
 approval marker file exists (written by `/milestone-review` at the user
 approval gate, consumed by the merge); all hooks no-op in repos without
 `cairn/ROADMAP.md`; fixture-driven tests for every hook decision; verify
-hooks load via a real plugin install (marketplace path — the skills-dir
-symlink dev install loads skills only, not hooks); README install docs
+hooks load via a real plugin install (finding 2026-07-11: skills-dir
+installs register hooks too — see work log); README install docs
 contrasting the two install paths (absorbs the marketplace install-docs
 candidate).
 
@@ -74,7 +74,14 @@ default install (D-007: manual until pilots pass) → future release prep.
       needs the marker mentioned (done; also /hotfix gate + /cairn-init
       .gitignore scaffolding — discovered sub-tasks).
 - [ ] Verify hooks load via real plugin install; capture evidence.
-- [ ] README: install-paths section (marketplace vs symlink, hooks caveat).
+      (Half done: `claude plugin details cairn@skills-dir` lists all 4
+      hooks from this branch's hooks.json — loading evidence. Firing
+      evidence needs a live session; CLI is logged out (`claude auth
+      status`: loggedIn false), so headless `-p --plugin-dir` runs can't
+      start — needs user `claude login` or observation in a fresh
+      session.)
+- [x] README: install-paths section (symlink vs marketplace, hooks caveat,
+      branch-checkout footgun).
 
 ## Work log
 <!-- append-only; one line per entry; absolute dates -->
@@ -83,6 +90,8 @@ default install (D-007: manual until pilots pass) → future release prep.
 - 2026-07-11: task 1 — hook API contracts verified against official docs ([S] subagent); summary → references/claude-code-hooks.md.
 - 2026-07-11: tasks 2–5 — hooks.json + 3 hook scripts + shared helper; 17 fixture tests green; merge guard scoped to command-position git/gh (echo-style false positives excluded); missing cwd = strict no-op.
 - 2026-07-11: task 6 — marker protocol wired into /milestone-review + /hotfix approval gates, tracking-rules approval model, and /cairn-init .gitignore scaffolding (minor amendment: hotfix + init were discovered sub-tasks).
+- 2026-07-11: task 7 finding — skills-dir installs DO register hooks (`plugin details` shows Hooks (4)); corrected references/claude-code-hooks.md + Scope wording. Firing evidence blocked: CLI logged out, headless runs can't start.
+- 2026-07-11: task 8 — README install section rewritten (two paths, hooks activation note, keep-checkout-on-main footgun).
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
