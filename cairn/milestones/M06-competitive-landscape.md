@@ -100,6 +100,11 @@ supplies evidence); broad long-tail survey beyond the eight named systems
   resolving with all 8 skills; ROADMAP 32/60 lines. Status → review.
   Note for merge: user's live install symlinks this repo — merge to
   main promptly so other repos don't see branch state.
+- 2026-07-11: review bounce 1 (pre-evidence) — positioning paragraph was
+  6 lines vs ≤5 criterion (trimmed); 3 note-level steal items lacked
+  candidate rows (read_when folded into mechanics row; new rulebook-
+  tweaks row for cap-at-3, reading-list, different-model-review why).
+  Fixed on branch, back to review.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
