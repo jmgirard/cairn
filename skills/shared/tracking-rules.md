@@ -155,7 +155,7 @@ AskUserQuestion, each with a recommendation and brief pros/cons. Between
 gates, work autonomously; never drip questions one at a time.
 
 Every phase ends with a **routing chip**: an AskUserQuestion whose options
-include the natural next skill. Selecting a chip invokes that skill in the
+include the natural next skill, with the recommended option marked. Selecting a chip invokes that skill in the
 same session. A chip is an explicit user stop — never auto-proceed.
 
 ## Model and agent strategy
