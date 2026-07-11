@@ -84,6 +84,17 @@ history is never converted — conversion of dozens of done milestones is
 where hallucination and loss happen, and git already preserves everything.
 Only *live* state gets translated.
 
+**Variant: adopt-in-place.** When the precursor is young (little completed
+history to protect) and its structure is already near-identical to cairn's
+(per-milestone files, an index with compatible statuses), full entombment
+is overkill: propose moving the live files into `cairn/` and adjusting
+them to the templates in place — keeping their IDs — instead of entombing
+and re-translating. Choosing this variant is a question-gate decision at
+step 3; present it alongside the default, never silently. Steps 4–5
+collapse into the in-place adoption; everything else — branch + PR, the
+no-invention rule, and the step-7 ledger + audit bar — applies unchanged.
+Lineage: M03 tidymedia pilot (PR #8).
+
 1. **Preconditions.** Clean working tree. Ideally nothing in flight — an
    in-progress item is either finished first (recommend it) or carried over
    as the sole `in-progress` milestone, explicitly confirmed.

@@ -1,9 +1,9 @@
 # M05: Rulebook conventions & protocol gaps
 
-- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** M04   <!-- edits the same rulebook/skill text M04 reshapes -->
-- **Branch/PR:** —
+- **Branch/PR:** m05-rulebook-conventions
 
 ## Goal
 
@@ -55,7 +55,7 @@ design-interview skill, skill-less routing, hooks → candidates (v0.3).
 
 ## Tasks
 
-- [ ] Write the adopt-in-place variant into cairn-init §2 (detection,
+- [x] Write the adopt-in-place variant into cairn-init §2 (detection,
       gate, unchanged ledger/audit bar).
 - [ ] Add RB tripwires to tracking-rules; plan-time tagging to
       milestone-plan; tag inheritance + tripwire-gated chip option to
@@ -74,6 +74,9 @@ design-interview skill, skill-less routing, hooks → candidates (v0.3).
 - 2026-07-11: created by /milestone-plan. Lineage: candidate rows absorbed
   (adopt-in-place; RB self-solicitation; cross-repo IDs; done-row
   retention; DESIGN ordering; v0.2 polish nits from M01 review).
+- 2026-07-11: gate resolved: done-row retention = keep 5 newest; RB tags
+  inline on the affected task/criterion. Task 1: adopt-in-place variant
+  written into cairn-init §2.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
