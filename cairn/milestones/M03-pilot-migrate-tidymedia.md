@@ -22,13 +22,13 @@ broad rollout.
 
 ## Acceptance criteria
 
-- [ ] Migration lands as one PR with a complete ledger (every legacy file
+- [x] Migration lands as one PR with a complete ledger (every legacy file
       and live item dispositioned).
-- [ ] `/milestone` health audit passes clean on the migration branch.
-- [ ] Legacy `/milestone` skill deactivated; no skill-name collisions with
+- [x] `/milestone` health audit passes clean on the migration branch.
+- [x] Legacy `/milestone` skill deactivated; no skill-name collisions with
       the plugin.
-- [ ] Legacy IDs remain citable; new numbering continues from the legacy max.
-- [ ] One post-migration milestone ships normally.
+- [x] Legacy IDs remain citable; new numbering continues from the legacy max.
+- [x] One post-migration milestone ships normally.
 
 ## Tasks
 
@@ -77,3 +77,36 @@ broad rollout.
 ## Decisions
 
 ## Review
+
+### Criteria evidence (2026-07-11, fresh by command)
+
+1. **One PR + complete ledger** — PASS: tidymedia PR #8 MERGED (squash
+   c5eb4bb, 24 files); body ledger dispositions every legacy path
+   (ROADMAP, D001–D009, M08 planned, M09/M10→candidates, M01–M07
+   archives, empty briefs/, retired skill); nothing dropped.
+2. **Audit clean on migration branch** — PASS: on-branch clean run in the
+   work log; branch deleted post-merge, so re-verified on the merged tree
+   (= squash of it): mirrors agree, caps 51/23 OK, ignore entries
+   present, `.claude/` gone. Letter-vs-spirit gap accepted (F4).
+3. **Legacy skill deactivated, no collisions** — PASS: `.claude/` absent;
+   skill retired to `cairn/legacy/milestone-skill/` (outside load path).
+4. **Legacy IDs citable; numbering continues** — PASS: M01–M07 archives
+   verbatim; D001–D009 verbatim, D010/D011 appended; M09/M10 keep IDs as
+   candidate rows; next new milestone M11 (reserved; issuance untested, F3).
+5. **Post-migration milestone ships normally** — PASS: tidymedia M08
+   implement→review→merge (PR #9, 716c7d2)→archive→done under cairn.
+
+Consistency gate (adapted; R gates waived per CLAUDE.md): caps OK
+(CLAUDE.md 17/80, ROADMAP 35/60, this file /150); mirror = ROADMAP; main
+in sync with origin; docs-only on main (M02 precedent, logged 2026-07-11).
+
+### Independent review (2026-07-11, fresh-context Opus)
+
+Approve-with-fixes; all five criteria independently re-verified by
+command. Triage — fixed: F1 three migrated tidymedia archives at 26 lines
+vs ≤25 cap (trimmed, tidymedia 1eb4195). Accepted, no action: F2 M08 was
+planned by the legacy skill pre-migration — cairn drove
+implement→review→merge→archive but not plan (next tidymedia milestone
+exercises it); F3 M11 issuance reserved, not yet exercised (same); F4
+criterion-2 letter (branch deleted; merged-tree re-audit adequate); F5
+criteria boxes unchecked pre-review (expected; checked this pass).
