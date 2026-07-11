@@ -9,11 +9,13 @@ after the switch; transcript comparison confirmed a difference in *kind*.
 
 ## The failure mode (observed on Opus)
 
-Classification questions: the model drafts candidate principles itself,
+Ungrounded classification: the model drafts candidate principles itself,
 then asks the user to file each one into fixed buckets ("Inviolable /
-Guiding / Drop") — three questions in a row with identical option sets.
-The model never asks anything it doesn't already have a candidate answer
-for. Useful, but it only confirms drafts; it doesn't discover.
+Guiding / Drop") — three questions in a row with identical option sets, no
+recommendations, no evidence in the options, and *before* the design facts
+were elicited. (Correction from a later pass: classification per se is
+fine — the good pass-2 interview also used IP/GP/skip buckets. The failure
+is classifying before eliciting, with no grounding or recommendation.)
 
 ## What the better interview did (observed on Fable)
 
@@ -35,6 +37,41 @@ for. Useful, but it only confirms drafts; it doesn't discover.
 5. **Ask the wart question.** "What warts/fragilities do YOU know about
    that code-reading wouldn't reveal?" — with options that are evidence-based
    guesses (recent fixes, unmaintained upstreams, platform-biased testing).
+
+## Pass 2: the principle interview (observed on Fable, 2026-07-11)
+
+A second interview run after the overall design interview settled. Jeff
+judged it equally strong. It did categorically different work than pass 1 —
+possible only *because* pass 1's answers existed:
+
+6. **Stress-test adopted principles against later decisions.** Find
+   collisions between commitments the user endorsed separately (GP1 "thin
+   wrappers" vs. the pass-1 "tidy outputs" choice → "where's the line?").
+7. **Separate essence from accident.** Ask whether a principle is the
+   capability or the current idiom (GP2: batch *parity* vs. the `_dir`
+   API shape), citing recorded decisions (D-002 free-breakage) as leverage.
+8. **Probe the scope of each IP.** Offer extend / keep / downgrade for
+   every inviolable (IP1: extend to write locations?).
+9. **Mine git history for implicit principles.** Generalize ad-hoc fixes
+   into candidates (the "skip files without audio" fix → "resilient
+   batches").
+10. **Derive candidates from the domain, not just the code.** Irreplaceable
+    participant recordings → inputs-sacrosanct; IRB/consent → local-only
+    processing (with forward consequences stated: constrains future
+    HF wrappers to local inference); methods reporting → transparent calls.
+11. **Every candidate arrives classified.** Proposed strength (IP/GP/skip)
+    with a marked recommendation, and adjacent-but-separate matters fenced
+    off explicitly ("output-overwrite defaults are a separate, tradeable
+    matter") so each question stays decidable.
+
+## Proposed structure: the two-pass gold standard (Jeff, 2026-07-11)
+
+Pass 1 — overall design interview: elicit what can't be inferred (items
+1–5). Pass 2 — principle interview: reconcile, formalize, and propose
+(items 6–11). Sequencing is load-bearing: pass 2's best questions consume
+pass 1's answers (the GP1 collision doesn't exist until tidy-readers is
+chosen). A design-interview skill should encode both passes and the
+ordering, with a natural break between them.
 
 ## Levers to experiment with
 
