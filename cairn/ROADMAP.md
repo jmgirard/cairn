@@ -10,6 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M07 | Guardrail hooks (blocking enforcement + re-injection) | planned | — | high | milestones/M07-guardrail-hooks.md |
 | M06 | Competitive-landscape research | done | — | high | milestones/archive/M06-competitive-landscape.md |
 | M05 | Rulebook conventions & protocol gaps | done | M04 | high | milestones/archive/M05-rulebook-conventions.md |
 | M04 | Skill conduct & output discipline | done | — | high | milestones/archive/M04-output-discipline.md |
@@ -19,8 +20,6 @@ not an R package, so R-specific gates don't apply.
 ## Candidates
 
 - Stress-test migration on a Lineage B repo (ackwards or circumplex) — added 2026-07-11 — DRAFT_2 §11
-- Plugin hooks for immediate guardrail feedback (e.g., README.Rmd edit reminder); upgraded scope per M06: blocking enforcement (Stop hook denies ending with uncommitted work; PreToolUse denies merge without approval) + SessionStart re-injection of ROADMAP/active milestone, per Meridian's proven pattern — added 2026-07-11, amended 2026-07-11 — DRAFT_2 §9.2, references/backlog-meridian.md
-- Marketplace one-command install: marketplace.json shipped 2026-07-11 (validates); remaining: document install paths in README (incl. Desktop Customize → Plugins) + contrast dev install (skills-dir symlink: live with checkout, no update step, branch-checkout footgun) vs marketplace snapshot (frozen copy, manual re-fetch per release) — dual-install ambiguity bit the pilot 2026-07-11 — added 2026-07-11 — DRAFT_2 §2.3
 - Public release prep: LICENSE (MIT), README worked example, remove DRAFT files, tag v1.0 — added 2026-07-11 — DRAFT_2 §11
 - Design-interview skill: one interview, two phases (facts → principles) with banked proto-principles and a chip-gated seam; proposed gold standard — encode question-quality + reconciliation findings so interviews improve on Opus; complement: elevate phase 2 to Fable behind a gate — added 2026-07-11 — references/design-interview-notes.md
 - Skill-less routing guardrails: rulebook only loads when a skill fires, so plain conversation can bypass tiers/git model; make claude-md-section an imperative classify-first router ("not trivial → invoke the skill; unsure → /milestone; never implement on main"), pair with guardrail hooks (existing candidate); test empirically in openac first; also the sole delivery path for rulebook conduct (incl. contextual-chip principle) when milestone talk starts as plain conversation — persistent memory can't serve other cairn users — added 2026-07-11 — M02 pilot
