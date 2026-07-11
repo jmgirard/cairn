@@ -34,7 +34,8 @@ after both pilots.
 - [x] Choose the pilot repo (a package without an existing system).
 - [x] Run `/cairn-init`; note anything manual.
 - [x] Ship 3 milestones; log friction as candidates.
-- [ ] Run one RB/RR escalation; one release walk.
+- [ ] Run one RB/RR escalation; one release walk. (RB/RR done: RB01/RR01
+      reader-family-api ingested + archived in openac; release walk pending.)
 - [ ] Summarize findings in this file's Review section.
 
 ## Work log
@@ -82,6 +83,10 @@ after both pilots.
   self-solicited an RB during openac M03 despite an RB-worthy question —
   escalation hook is confidence-triggered → RB self-solicitation candidate
   banked (category tripwires + plan-time tagging + gate chip option).
+- 2026-07-11: catch-up from openac git: M03 merged (PR #4, archived);
+  RB01/RR01 (reader-family-api) spawned via gated Fable subagent, ingested,
+  archived — RB/RR criterion met. Release walk still missing (no
+  cran-comments, version unbumped); M02 stays in-progress.
 
 ## Decisions
 
