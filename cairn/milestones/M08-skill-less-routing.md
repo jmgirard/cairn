@@ -68,7 +68,7 @@ the right tier/skill instead of bypassing the rulebook.
       checklist up front, so the prose is written to the rubric.
 - [x] Rewrite `skills/shared/templates/claude-md-section.md` to the router,
       within the cap.
-- [ ] Update this repo's `CLAUDE.md` cairn section to match; confirm
+- [x] Update this repo's `CLAUDE.md` cairn section to match; confirm
       `skills/cairn-init/SKILL.md` §1 references to the section (it appends
       the template) still read correctly.
 - [ ] Record the rubric-to-text mapping and ≥3 dry-run scenarios in this
@@ -86,6 +86,8 @@ the right tier/skill instead of bypassing the rulebook.
   gate: route-to-skill only, defer on-main hook, rubric + in-repo dry-runs.
 - 2026-07-11: rewrote claude-md-section.md as classify-first router (20 body
   lines, under cap). Tasks 1–2 done.
+- 2026-07-11: dogfooded this repo's CLAUDE.md to the router form; cairn-init
+  §1 references still accurate. Task 3 done.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
