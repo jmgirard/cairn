@@ -7,7 +7,8 @@ argument-hint: "<id> <topic>"
 # /milestone-brief <id> <topic> — Fable escalation (RB → RR)
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
-it. Stage banner: `[cairn · brief · RB<NN> · <draft|gate|ingest>]`.
+it.
+Stage banner: `[cairn · brief · RB<NN> · <draft|gate|ingest>]`.
 Fable is token-billed pay-per-use: spawning it requires **explicit user
 approval, every time, with no standing authorization** — and only ever
 through this protocol. The brief artifact comes first either way; it is what

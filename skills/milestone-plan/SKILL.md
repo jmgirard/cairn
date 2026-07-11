@@ -23,7 +23,8 @@ handle ingestion first (see `/milestone-brief`).
 
 2. **Investigate first.** Read the relevant code and DECISIONS.md. For
    scopes touching more than a couple of files, fan out Explore subagents
-   with specific focuses; require file:line citations. Draft scope, tasks,
+   ([S]-tagged descriptions) with specific focuses; require file:line
+   citations. Draft scope, tasks,
    and the list of genuinely open decisions internally.
 
    **Collision check (mandatory).** Sweep the ROADMAP (all statuses), the

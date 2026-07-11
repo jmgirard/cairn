@@ -3,7 +3,7 @@
 - **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** —
-- **Branch/PR:** m04-output-discipline
+- **Branch/PR:** m04-output-discipline · https://github.com/jmgirard/cairn/pull/1
 
 ## Goal
 
@@ -102,4 +102,34 @@ README install docs → release-prep candidate.
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
 
 ## Review
-<!-- filled by /milestone-review -->
+
+### Criteria evidence (2026-07-11, fresh by command)
+
+1. **Rulebook section** — PASS: "Output & interaction discipline"
+   (tracking-rules:191) with all seven elements (banner, deltas,
+   outcome-first recaps, chip weight/plain-language, contextual
+   construction + invariants, chapter markers, tier tags).
+2. **Banner in all eight skills** — PASS: grep `Stage banner:` = 8/8.
+3. **No mandatory hardcoded menus** — PASS: every chip passage reads
+   "composed from <session state> — e.g." or is the /milestone model;
+   remaining greps are non-menu pointers (hotfix, implement step 7).
+4. **Tier tags** — PASS: model-strategy rule (tracking-rules:228) +
+   implement:54 ([S]/[O]), review:59 ([O]), brief:33 ([F]).
+5. **Caps + coherence** — PASS: CLAUDE.md 17/80, ROADMAP 28/60, this
+   file <150; full-diff reread found no contradictions (task 6).
+
+Consistency gate (adapted; R gates waived): mirror = ROADMAP (review);
+no new top-level files; branch + draft PR #1; main in sync with origin.
+
+### Independent review (2026-07-11, fresh-context Opus)
+
+Approve-with-fixes; all five criteria independently re-verified; key
+probe (weakened protocol invariants — Fable gate, chip stops) clean.
+Triage — fixed: F1 ≤4-cap vs /milestone's five-bullet example (annotated
+state-conditional, applicable subset only); F2 plan's Explore fan-out
+lacked a tier-tag reminder (added [S]); F4 brief's banner mid-sentence
+(own line now); F3 stale self-reported line count (generalized to <150).
+Resolved by process: F5 self-audit uncommitted (this checkpoint commits
+it). Accepted, no action: F6 implement completion chip says "in this
+order" — its three options are genuinely context-invariant and the stop
+invariant is preserved.
