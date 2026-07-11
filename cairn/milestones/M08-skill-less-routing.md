@@ -1,6 +1,6 @@
 # M08: Skill-less routing guardrails
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- high | normal | low -->
 - **Depends on:** —   <!-- M07 hooks already shipped; no hard dep -->
 - **Branch/PR:** m08-skill-less-routing   <!-- PR URL once opened -->
@@ -71,12 +71,12 @@ the right tier/skill instead of bypassing the rulebook.
 - [x] Update this repo's `CLAUDE.md` cairn section to match; confirm
       `skills/cairn-init/SKILL.md` §1 references to the section (it appends
       the template) still read correctly.
-- [ ] Record the rubric-to-text mapping and ≥3 dry-run scenarios in this
-      file's Review section.
-- [ ] Add `candidate` ROADMAP rows for the deferred on-main commit-guard
-      hook and the live-openac empirical test.
-- [ ] Verify: grep the router for each rubric element; confirm line count is
-      under cap.
+- [x] Record the rubric-to-text mapping and ≥3 dry-run scenarios in this
+      file's Review section. (In "Router rubric & dry-runs" section.)
+- [x] Add `candidate` ROADMAP rows for the deferred on-main commit-guard
+      hook and the live-openac empirical test. (Done at plan time, 454ba58.)
+- [x] Verify: grep the router for each rubric element; confirm line count is
+      under cap. (Template 20 body lines; all elements present; conduct absent.)
 
 ## Work log
 <!-- append-only; one line per entry; absolute dates -->
@@ -88,6 +88,8 @@ the right tier/skill instead of bypassing the rulebook.
   lines, under cap). Tasks 1–2 done.
 - 2026-07-11: dogfooded this repo's CLAUDE.md to the router form; cairn-init
   §1 references still accurate. Task 3 done.
+- 2026-07-11: added rubric + 5 dry-run scenarios; verified all rubric
+  elements present and conduct not restated. Tasks 4–6 done; status → review.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
@@ -95,6 +97,40 @@ the right tier/skill instead of bypassing the rulebook.
 - The router carries routing only, not conduct: the CLAUDE.md section makes a
   skill fire; `tracking-rules.md` delivers conduct once it does. Candidate for
   promotion to a D-entry at review (it's a cross-cutting delivery decision).
+
+## Router rubric & dry-runs (deliverable for criterion 5)
+
+Rubric — each required router element and where it lives in
+`skills/shared/templates/claude-md-section.md`:
+
+| Element | Location in template |
+|---|---|
+| Classify-first imperative | Opening: "Before acting on any request, classify it and route" |
+| Trivial → main | Bullet 1 |
+| User-visible bug → `/hotfix` | Bullet 2 |
+| New work / design decision / >1 sitting → `/milestone-plan` | Bullet 3 |
+| Status / "what's next" / unsure → `/milestone` | Bullet 4 |
+| Never implement code on main outside a branch | Bullet 5 |
+| Approval required at review gate | Bullet 5 |
+| Delivery-path rule (invoke skill first; rulebook + conduct load) | Closing paragraph |
+| Does NOT restate conduct — points to `tracking-rules.md` | Closing paragraph (no chip/output-discipline prose inlined) |
+| Boundary rule + memory-never-holds-state retained | Closing paragraph |
+
+Dry-run scenarios — the routing the router is intended to produce:
+
+1. *"Fix the bug where scoring returns NA for empty input."* → user-visible
+   bug → `/hotfix` (regression test first, branch, PR). Without the router,
+   plain conversation risks editing on main with no test.
+2. *"Let's add batch scoring."* → new work / more than one sitting →
+   `/milestone-plan`. Router stops code being written on main.
+3. *"Where do things stand — what should I do next?"* → status/unsure →
+   `/milestone`.
+4. *"Fix this typo in a code comment."* → trivial (no runtime surface) →
+   commit directly to main; the router keeps the fast path fast, not
+   everything funneled into ceremony.
+5. *"Quick, just change this threshold on main real fast."* → not trivial
+   (behavior change) → the never-implement-on-main rule fires; classify as
+   bug (`/hotfix`) or new work (`/milestone-plan`), branch first.
 
 ## Review
 <!-- filled by /milestone-review: evidence per criterion; consistency-gate
