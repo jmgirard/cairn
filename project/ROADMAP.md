@@ -21,3 +21,4 @@ not an R package, so R-specific gates don't apply.
 - Marketplace one-command install: marketplace.json shipped 2026-07-11 (validates); remaining: document install paths in README (incl. Desktop Customize → Plugins) — added 2026-07-11 — DRAFT_2 §2.3
 - Public release prep: LICENSE (MIT), README worked example, remove DRAFT files, tag v1.0 — added 2026-07-11 — DRAFT_2 §11
 - Design-interview skill: encode elicitation question-quality findings so DESIGN interviews improve on Opus; alternative/complement: Fable elevation behind a brief-style gate — added 2026-07-11 — references/design-interview-notes.md
+- DESIGN principle ordering: specify IP block first then GP, numeric within type, numbers never reused/renumbered (retire via D-entry) — in cairn-init skeleton + rulebook — added 2026-07-11 — M02 pilot (openac DESIGN interview)
