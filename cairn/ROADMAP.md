@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-11 (M08 planned; skill-less-routing candidate promoted)_
+_Last hygiene check: 2026-07-11 (M08 done+archived; M03 row pruned per 5-done retention)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,12 +10,11 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M08 | Skill-less routing guardrails | review | — | high | milestones/M08-skill-less-routing.md |
+| M08 | Skill-less routing guardrails | done | — | high | milestones/archive/M08-skill-less-routing.md |
 | M07 | Guardrail hooks (blocking enforcement + re-injection) | done | — | high | milestones/archive/M07-guardrail-hooks.md |
 | M06 | Competitive-landscape research | done | — | high | milestones/archive/M06-competitive-landscape.md |
 | M05 | Rulebook conventions & protocol gaps | done | M04 | high | milestones/archive/M05-rulebook-conventions.md |
 | M04 | Skill conduct & output discipline | done | — | high | milestones/archive/M04-output-discipline.md |
-| M03 | Pilot: migrate tidymedia | done | M01 | high | milestones/archive/M03-pilot-migrate-tidymedia.md |
 
 ## Candidates
 

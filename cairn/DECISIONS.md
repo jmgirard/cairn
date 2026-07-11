@@ -86,3 +86,18 @@ was the precursors' dirname. Earlier D-entries keep `project/` verbatim
 adoption detection is "does `cairn/ROADMAP.md` exist"; the dir name no
 longer self-describes its contents — the CLAUDE.md section, which names
 cairn and states the boundary rule, carries that load.
+
+### D-009 (2026-07-11): The CLAUDE.md router carries routing only, not conduct
+
+**Context:** The tracking rulebook (`tracking-rules.md`) loads only once a
+cairn skill fires, so plain conversation bypasses tiers and the git model.
+M08 made the always-loaded CLAUDE.md cairn section a classify-first router.
+The question was whether to also inline conduct (contextual chips, output
+discipline) so plain conversation gets it without a skill firing.
+**Decision:** The router routes only — classify, apply tiers, never on main,
+and invoke the skill *first*. Conduct stays in `tracking-rules.md`, delivered
+when a skill fires. The router's job is to make a skill fire early, not to
+restate conduct (which would also blow the ~20-line section cap).
+**Consequences:** A request handled entirely in plain conversation without
+triggering a skill still won't get chip/output conduct — an accepted residual;
+the router minimizes it by routing to a skill as early as possible.
