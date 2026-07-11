@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-11 (M07 done+archived; M02 row pruned per 5-done retention)_
+_Last hygiene check: 2026-07-11 (M08 planned; skill-less-routing candidate promoted)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,6 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M08 | Skill-less routing guardrails | planned | — | high | milestones/M08-skill-less-routing.md |
 | M07 | Guardrail hooks (blocking enforcement + re-injection) | done | — | high | milestones/archive/M07-guardrail-hooks.md |
 | M06 | Competitive-landscape research | done | — | high | milestones/archive/M06-competitive-landscape.md |
 | M05 | Rulebook conventions & protocol gaps | done | M04 | high | milestones/archive/M05-rulebook-conventions.md |
@@ -21,7 +22,8 @@ not an R package, so R-specific gates don't apply.
 - Stress-test migration on a Lineage B repo (ackwards or circumplex) — added 2026-07-11 — DRAFT_2 §11
 - Public release prep: LICENSE (MIT), README worked example, remove DRAFT files, tag v1.0 — added 2026-07-11 — DRAFT_2 §11
 - Design-interview skill: one interview, two phases (facts → principles) with banked proto-principles and a chip-gated seam; proposed gold standard — encode question-quality + reconciliation findings so interviews improve on Opus; complement: elevate phase 2 to Fable behind a gate — added 2026-07-11 — references/design-interview-notes.md
-- Skill-less routing guardrails: rulebook only loads when a skill fires, so plain conversation can bypass tiers/git model; make claude-md-section an imperative classify-first router ("not trivial → invoke the skill; unsure → /milestone; never implement on main"), pair with guardrail hooks (existing candidate); test empirically in openac first; also the sole delivery path for rulebook conduct (incl. contextual-chip principle) when milestone talk starts as plain conversation — persistent memory can't serve other cairn users — added 2026-07-11 — M02 pilot
+- On-main commit-guard hook: PreToolUse guard that warns/blocks git commits touching non-cairn code while on main with no milestone branch active; false-positive-prone (trivial edits ARE allowed on main) so needs its own design; complements M08's router text — added 2026-07-11 — M08 Out
+- Live-openac router test: run M08's classify-first router empirically in openac (plain-conversation requests should route to the right tier/skill); openac is a separate repo, no automated evidence lands here — added 2026-07-11 — M08 Out
 - Toolchain profiles (generalize beyond R): core is ~80% language-agnostic (this repo runs it sans R); concentrate R-ness into a profile with 6 slots (verify commands, consistency gate, test doctrine, release walk, init detection, greenfield opener questions), chosen at init, recorded in CLAUDE.md section; extraction method: diff what this repo waives vs what openac uses; keep domain doctrine (oracles) orthogonal to language profile; target v0.3 after pilots harden the R slots — added 2026-07-11 — M02 pilot
 - Deterministic tracking scripts: ship status/next/validate bash scripts over cairn/ files (instant, token-free, drift-proof) instead of LLM re-derivation each session; ccpm's script-first rule is the model — added 2026-07-11 — references/ccpm.md
 - Review pipeline upgrades: distinct-evidence reviewer fan-out (blame history, prior-PR comments), verbatim confidence rubric + false-positive taxonomy, evidence-before-checkbox AC fencing, criterion→task coverage table; includes user decision on relaxing never-Haiku for mechanical triage (Anthropic's own pipeline does) — added 2026-07-11 — references/anthropic-code-review.md, competitive-landscape.md
