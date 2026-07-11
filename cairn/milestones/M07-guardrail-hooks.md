@@ -1,9 +1,9 @@
 # M07: Guardrail hooks (blocking enforcement + context re-injection)
 
-- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** —
-- **Branch/PR:** —   <!-- m07-guardrail-hooks -->
+- **Branch/PR:** m07-guardrail-hooks
 
 ## Goal
 
@@ -58,7 +58,7 @@ default install (D-007: manual until pilots pass) → future release prep.
 
 ## Tasks
 
-- [ ] Research exact hook API contracts (SessionStart/PreCompact
+- [x] Research exact hook API contracts (SessionStart/PreCompact
       additionalContext, Stop block, PreToolUse deny JSON shapes; hooks.json
       schema for plugins) against current Claude Code docs.
 - [ ] Scaffold `hooks/hooks.json` + shared cairn-repo detection helper
@@ -78,6 +78,7 @@ default install (D-007: manual until pilots pass) → future release prep.
 <!-- append-only; one line per entry; absolute dates -->
 
 - 2026-07-11: created by /milestone-plan.
+- 2026-07-11: task 1 — hook API contracts verified against official docs ([S] subagent); summary → references/claude-code-hooks.md.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
