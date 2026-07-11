@@ -51,8 +51,8 @@ run ingestion first (see `/milestone-brief`).
 
 5. **Delegate** per tracking-rules (Sonnet for well-specified mechanical
    work; Opus for design-sensitive work; never Haiku; Fable only via
-   `/milestone-brief`). Verify subagent diffs yourself; one work-log line
-   per delegation.
+   `/milestone-brief`); tier-tag the Agent description ([S]/[O]). Verify
+   subagent diffs yourself; one work-log line per delegation.
 
 6. **Plan amendments** (implementation always learns things planning
    didn't know):

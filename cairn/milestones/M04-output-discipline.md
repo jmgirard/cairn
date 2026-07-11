@@ -63,7 +63,7 @@ README install docs → release-prep candidate.
 - [x] Add outcome-first recap guidance to the completion steps of
       milestone-implement (step 8), milestone-review (step 7/10), and
       cairn-release.
-- [ ] Add the [S]/[O]/[F] prefix rule to the rulebook model-strategy
+- [x] Add the [S]/[O]/[F] prefix rule to the rulebook model-strategy
       section and the three spawning skills.
 - [ ] Coherence pass: reread rulebook + all skills for contradictions
       with the new section; verify caps.
@@ -91,6 +91,9 @@ README install docs → release-prep candidate.
 - 2026-07-11: task 4 done — outcome-first clauses at implement step 8
   recap, review approval gate (step 7) + done recap (step 9), and the
   cairn-release handoff.
+- 2026-07-11: task 5 done — tier-tag rule in model-strategy section;
+  [S]/[O] at implement delegation, [O] at review step 5, [F] at brief
+  spawn gate.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->

@@ -225,6 +225,8 @@ cairn skill is active.
 ## Model and agent strategy
 
 - Orchestrator: Opus, running these skills in the main session.
+- Every spawned Agent's description starts with its tier tag —
+  `[S]`/`[O]`/`[F]` — per the output-discipline section.
 - **Sonnet subagents**: well-specified self-contained work — fan-out
   searches (Explore), mechanical migrations, test writing against a spec,
   boilerplate. Give complete specs; verify their diffs before committing;
