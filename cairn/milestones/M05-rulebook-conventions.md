@@ -57,7 +57,7 @@ design-interview skill, skill-less routing, hooks → candidates (v0.3).
 
 - [x] Write the adopt-in-place variant into cairn-init §2 (detection,
       gate, unchanged ledger/audit bar).
-- [ ] Add RB tripwires to tracking-rules; plan-time tagging to
+- [x] Add RB tripwires to tracking-rules; plan-time tagging to
       milestone-plan; tag inheritance + tripwire-gated chip option to
       milestone-implement.
 - [ ] Add conventions to tracking-rules (+ cairn-init skeletons where
@@ -77,6 +77,9 @@ design-interview skill, skill-less routing, hooks → candidates (v0.3).
 - 2026-07-11: gate resolved: done-row retention = keep 5 newest; RB tags
   inline on the affected task/criterion. Task 1: adopt-in-place variant
   written into cairn-init §2.
+- 2026-07-11: Task 2: RB tripwire categories + gated-chip rule in
+  tracking-rules (also RR-ingestion pointer, part of nit 1); tagging in
+  milestone-plan; inheritance + escalation option in milestone-implement.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->

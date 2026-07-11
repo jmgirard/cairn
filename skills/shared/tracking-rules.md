@@ -238,7 +238,16 @@ cairn skill is active.
   (`/milestone-brief`) and only after a per-instance approval gate — Fable
   is token-billed; no standing authorization exists. Ad-hoc Fable spawning
   is prohibited: the brief artifact is what makes escalation reproducible,
-  auditable, and ingestible.
+  auditable, and ingestible. RR ingestion follows the protocol in
+  `/milestone-brief` ("Ingesting an RR").
+- **RB tripwires** — the three question categories that warrant offering
+  Fable escalation: statistical/scoring correctness with no available
+  oracle; irreversible exported-API decisions; anything touching an IP.
+  `/milestone-plan` tags tripwire-hitting open questions inline on the
+  affected task or criterion — `(RB tripwire: <category>)` — and
+  `/milestone-implement` inherits the tags. An escalation chip option is
+  offered only on a tripwire hit, never as a standing menu item (D-004:
+  Fable is gated per instance).
 
 ## Validation doctrine (statistical/numeric packages)
 

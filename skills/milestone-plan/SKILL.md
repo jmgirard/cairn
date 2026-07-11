@@ -64,6 +64,10 @@ handle ingestion first (see `/milestone-brief`).
      gets a test" in tracking-rules): name the behavior that must be tested.
    - `Out:` items name where the excluded work lives instead.
    - Tasks ≤ one working session each, ordered by dependency.
+   - Open questions that hit an RB tripwire (see tracking-rules: no-oracle
+     stats/scoring, irreversible exported API, IP-touching) are tagged
+     inline on the affected task or criterion —
+     `(RB tripwire: <category>)` — so implement inherits them.
    Deferred chunks not yet plannable get `candidate` ROADMAP rows, not files.
 
 5. **Remainder ledger (conservation check).** Before committing, enumerate
