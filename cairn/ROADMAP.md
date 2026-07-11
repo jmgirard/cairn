@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-11 (M06 archived; M01 row pruned per 5-done retention)_
+_Last hygiene check: 2026-07-11 (M07 done+archived; M02 row pruned per 5-done retention)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,12 +10,11 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M07 | Guardrail hooks (blocking enforcement + re-injection) | review | — | high | milestones/M07-guardrail-hooks.md |
+| M07 | Guardrail hooks (blocking enforcement + re-injection) | done | — | high | milestones/archive/M07-guardrail-hooks.md |
 | M06 | Competitive-landscape research | done | — | high | milestones/archive/M06-competitive-landscape.md |
 | M05 | Rulebook conventions & protocol gaps | done | M04 | high | milestones/archive/M05-rulebook-conventions.md |
 | M04 | Skill conduct & output discipline | done | — | high | milestones/archive/M04-output-discipline.md |
 | M03 | Pilot: migrate tidymedia | done | M01 | high | milestones/archive/M03-pilot-migrate-tidymedia.md |
-| M02 | Pilot: fresh adoption in one package repo | done | M01 | high | milestones/archive/M02-pilot-fresh.md |
 
 ## Candidates
 

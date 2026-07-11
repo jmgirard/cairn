@@ -22,6 +22,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   rulebook first and never restates it.
 - `skills/shared/tracking-rules.md` — the single rulebook.
 - `skills/shared/templates/` — milestone, brief, decision, CLAUDE.md section.
+- `hooks/hooks.json` + python3 (stdlib) scripts (M07) — the enforcement
+  layer: SessionStart context injection, Stop-guard on uncommitted `cairn/`
+  tracking, PreToolUse merge-guard (single-use `cairn/.merge-approved`
+  marker) technically backing IP1. No-op outside cairn repos.
 
 ## Conventions
 
