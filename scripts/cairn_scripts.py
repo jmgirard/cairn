@@ -11,6 +11,7 @@ current working directory, then walks up to the enclosing cairn repo. Run
 outside a cairn repo, every script prints a clear message and exits 2.
 """
 
+import glob
 import os
 import re
 import sys
@@ -84,6 +85,33 @@ def rows(roadmap_text):
     return out
 
 
+_ID_RE = re.compile(r"(M\d+)")
+
+
+def _milestone_files(root, *parts):
+    out = {}
+    for path in glob.glob(os.path.join(root, "cairn", *parts, "M*.md")):
+        m = _ID_RE.match(os.path.basename(path))
+        if m:
+            out[m.group(1)] = path
+    return out
+
+
+def archive_files(root):
+    """{id: path} for milestone files under cairn/milestones/archive/."""
+    return _milestone_files(root, "milestones", "archive")
+
+
+def live_files(root):
+    """{id: path} for milestone files under cairn/milestones/ (not archive/)."""
+    return _milestone_files(root, "milestones")
+
+
+def id_num(mid):
+    """Numeric sort key for an ID; non-numeric IDs sort last, deterministically."""
+    return int(mid[1:]) if mid[1:].isdigit() else 10**9
+
+
 def parse_depends(cell):
     """Parse a 'Depends on' cell into a list of milestone IDs (— -> [])."""
     ids = []
@@ -100,7 +128,7 @@ def candidate_count(roadmap_text):
     in_section = False
     for line in roadmap_text.splitlines():
         if line.startswith("## "):
-            in_section = line.strip().lower() == "## candidates"
+            in_section = line.strip().lower().startswith("## candidates")
             continue
         if in_section and line.lstrip().startswith("- "):
             count += 1
@@ -138,9 +166,9 @@ def line_count(path):
 
 
 def sort_by_priority(row_list):
-    """Rows sorted high>normal>low, then by ID."""
+    """Rows sorted high>normal>low, then by numeric ID (M9 before M10)."""
     return sorted(
-        row_list, key=lambda r: (PRIORITY_ORDER.get(r["priority"], 1), r["id"])
+        row_list, key=lambda r: (PRIORITY_ORDER.get(r["priority"], 1), id_num(r["id"]))
     )
 
 

@@ -45,7 +45,8 @@ each active milestone, and open RBs and their age.
 Run `cairn_validate.py` first. It deterministically checks: **mirror
 agreement** (ROADMAP vs file header Status), **at most one `in-progress`**,
 **weight caps**, **done-row retention**, **status vocabulary**, **dependency
-existence**, **ROADMAP↔disk orphans**, and **ID uniqueness**. Treat every
+resolution** (targets exist and aren't `dropped`), **ROADMAP↔disk orphans**,
+and **ID uniqueness**. Treat every
 `FAIL` as a mechanical problem: fix it (docs-only commit to main; ROADMAP
 wins mirror conflicts; apply the tracking-rules cap remedies, never "let it
 grow"), then re-run to confirm green.

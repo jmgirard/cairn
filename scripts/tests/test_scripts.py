@@ -117,6 +117,34 @@ class TestNext(ScriptCase):
         # M03 depends on M01 (done) → workable.
         self.assertIn("M03 (high) — Live planned", out)
 
+    def test_archived_done_dependency_is_satisfied(self):
+        # Regression: a dep on a done milestone whose ROADMAP row was pruned
+        # under done-row retention (archive file only) must count as satisfied.
+        self.tree.rows = [
+            ("M20", "New", "planned", "M05", "high", "milestones/M20-new.md"),
+        ]
+        self.tree.files = {
+            "milestones/M20-new.md": live("planned"),
+            "milestones/archive/M05-old.md": archived("done"),  # no ROADMAP row
+        }
+        root = self.tree.build()
+        out = run("cairn_next.py", root).stdout
+        self.assertIn("Recommended: implement M20 → /milestone-implement M20", out)
+        self.assertIn("M20 (high) — New", out)
+        self.assertNotIn("Blocked by dependencies", out)
+
+    def test_ids_sort_numerically_past_m99(self):
+        self.tree.rows = [
+            ("M9", "Nine", "planned", "—", "normal", "milestones/M9.md"),
+            ("M100", "Hundred", "planned", "—", "normal", "milestones/M100.md"),
+        ]
+        self.tree.files = {
+            "milestones/M9.md": live("planned"),
+            "milestones/M100.md": live("planned"),
+        }
+        out = run("cairn_next.py", self.tree.build()).stdout
+        self.assertLess(out.index("M9 (normal)"), out.index("M100 (normal)"))
+
     def test_blocked_dependency_reported_not_workable(self):
         # M03 now depends on M02 (in-progress, not done) → not workable.
         self.tree.rows[0] = ("M03", "Live planned", "planned", "M02", "high", "milestones/M03-live.md")
@@ -172,7 +200,16 @@ class TestValidateFailures(ScriptCase):
 
     def test_dangling_dependency(self):
         self.tree.rows[0] = ("M03", "Live planned", "planned", "M99", "high", "milestones/M03-live.md")
-        self.assert_fails("dependency existence", self.tree.build())
+        out = self.assert_fails("dependency resolution", self.tree.build())
+        self.assertIn("does not exist", out)
+
+    def test_dependency_on_dropped_milestone(self):
+        # M03 depends on M04, which exists but is dropped → must be flagged.
+        self.tree.rows[0] = ("M03", "Live planned", "planned", "M04", "high", "milestones/M03-live.md")
+        self.tree.rows.append(("M04", "Abandoned", "dropped", "—", "normal", "milestones/M04-x.md"))
+        self.tree.files["milestones/M04-x.md"] = live("dropped")
+        out = self.assert_fails("dependency resolution", self.tree.build())
+        self.assertIn("is dropped", out)
 
     def test_row_points_to_missing_file(self):
         self.tree.rows.append(("M05", "Ghost", "planned", "—", "normal", "milestones/M05-ghost.md"))

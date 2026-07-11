@@ -3,7 +3,7 @@
 - **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- high | normal | low -->
 - **Depends on:** —   <!-- M<xx>, M<yy> or — -->
-- **Branch/PR:** m10-deterministic-scripts   <!-- PR URL once opened -->
+- **Branch/PR:** m10-deterministic-scripts · https://github.com/jmgirard/cairn/pull/7
 
 ## Goal
 
@@ -88,6 +88,10 @@ Snapshot/Audit/Route; a DESIGN.md bullet for the new layer.
 - 2026-07-11: wired /milestone SKILL.md to the three scripts (semantic
   checks kept LLM-owned); DESIGN.md architecture bullet added. All tasks
   done → review.
+- 2026-07-11: review — 6/6 criteria pass with fresh evidence; PR #7.
+  Independent Opus review found 1 med + 2 low, all fixed with regressions
+  (archived-dep resolution, dropped-dep flag, numeric ID sort); 18 script
+  tests green.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
@@ -98,5 +102,33 @@ Snapshot/Audit/Route; a DESIGN.md bullet for the new layer.
   row's "bash" wording (ccpm's model).
 
 ## Review
-<!-- filled by /milestone-review: evidence per criterion; consistency-gate
-     results; independent-review findings and their triage -->
+
+**Evidence (2026-07-11, PR #7):**
+- C1 status / C2 next / C3 validate-modes / C5 shared-parser: `scripts/tests`
+  15/15 pass; `hooks/tests` 18/18 pass (parser reuse didn't regress hooks).
+- C3 exit + counts: injected two-in-progress tree → `FAIL at most one
+  in-progress (1)`, exit 1; clean tree → exit 0. Count is accurate (no false
+  "0 failed").
+- C4 live tree: `cairn_validate.py` → "all checks passed", exit 0.
+- C5 no duplication: row-splitter appears only at `cairn_common.py:74`;
+  `cairn_scripts` imports `cairn_common`.
+- C6 wiring: SKILL.md invokes all three scripts (Snapshot/Audit/Route) and
+  retains the LLM-only checks (staleness, git reconciliation, CLAUDE.md
+  intact, untriaged inboxes); DESIGN.md Architecture documents `scripts/`;
+  scripts exit 2 outside a cairn repo.
+
+**Consistency gate:** R-specific steps waived (plugin, not a package). Both
+python `unittest` suites green; no generated docs to regenerate.
+
+**Independent review (Opus, fresh context):** 1 medium + 2 low, all fixed:
+- (med) `cairn_next` built its done-set from ROADMAP rows only → a dep on a
+  done-but-row-pruned (archived) milestone misfired; now folds in archive
+  files (agrees with validate). Regression test added.
+- (low) folding the dangling-dep bullet into validate dropped the
+  `dropped`-target case → `check_dependencies` now flags it (check renamed
+  "dependency resolution"). Regression test added.
+- (low) string ID sort breaks past M99 → `sort_by_priority` now sorts on
+  numeric ID. Regression test added.
+- Also hardened `candidate_count` header match (startswith). Refactored
+  archive/live-file lookup into shared `cairn_scripts` helpers (validate +
+  next now share one source). Script tests 15 → 18.

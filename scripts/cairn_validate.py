@@ -13,33 +13,10 @@ cairn repo.
     python3 scripts/cairn_validate.py [ROOT]
 """
 
-import glob
 import os
-import re
 import sys
 
 import cairn_scripts as cs
-
-_ID_RE = re.compile(r"(M\d+)")
-
-
-def _archive_ids(root):
-    ids = {}
-    for path in glob.glob(os.path.join(root, "cairn", "milestones", "archive", "M*.md")):
-        m = _ID_RE.match(os.path.basename(path))
-        if m:
-            ids[m.group(1)] = path
-    return ids
-
-
-def _live_files(root):
-    """Live milestone files: cairn/milestones/M*.md, excluding archive/."""
-    ids = {}
-    for path in glob.glob(os.path.join(root, "cairn", "milestones", "M*.md")):
-        m = _ID_RE.match(os.path.basename(path))
-        if m:
-            ids[m.group(1)] = path
-    return ids
 
 
 def check_mirror(root, rows):
@@ -94,13 +71,16 @@ def check_vocab(rows):
 
 def check_dependencies(root, rows):
     known = {r["id"] for r in rows}
-    known |= set(_archive_ids(root))
-    known |= set(_live_files(root))
+    known |= set(cs.archive_files(root))
+    known |= set(cs.live_files(root))
+    dropped = {r["id"] for r in rows if r["status"] == "dropped"}
     bad = []
     for r in rows:
         for dep in r["depends"]:
             if dep not in known:
                 bad.append(f"{r['id']} depends on {dep}, which does not exist")
+            elif dep in dropped:
+                bad.append(f"{r['id']} depends on {dep}, which is dropped (re-wire)")
     return bad
 
 
@@ -109,7 +89,7 @@ def check_orphans(root, rows):
     row_targets = {os.path.normpath(r["relpath"]) for r in rows}
     row_ids = {r["id"] for r in rows}
     # Every live milestone file has a row pointing at it.
-    for mid, path in _live_files(root).items():
+    for mid, path in cs.live_files(root).items():
         rel = os.path.normpath(os.path.relpath(path, os.path.join(root, "cairn")))
         if rel not in row_targets:
             bad.append(f"live file cairn/{rel} has no ROADMAP row")
@@ -130,7 +110,7 @@ def check_id_uniqueness(root, rows):
         if n > 1:
             bad.append(f"{mid} appears in {n} ROADMAP rows")
     # A milestone cannot be both live and archived.
-    live, arch = _live_files(root), _archive_ids(root)
+    live, arch = cs.live_files(root), cs.archive_files(root)
     for mid in set(live) & set(arch):
         bad.append(f"{mid} exists as both a live and an archived file")
     return bad
@@ -142,7 +122,7 @@ CHECKS = [
     ("weight caps", lambda root, rows: check_caps(root, rows)),
     ("done-row retention", lambda root, rows: check_done_retention(rows)),
     ("status vocabulary", lambda root, rows: check_vocab(rows)),
-    ("dependency existence", lambda root, rows: check_dependencies(root, rows)),
+    ("dependency resolution", lambda root, rows: check_dependencies(root, rows)),
     ("roadmap<->disk orphans", lambda root, rows: check_orphans(root, rows)),
     ("id uniqueness", lambda root, rows: check_id_uniqueness(root, rows)),
 ]
