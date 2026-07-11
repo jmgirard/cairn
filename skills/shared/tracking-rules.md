@@ -30,6 +30,11 @@ Repo-specific extra files in `project/` are allowed (spec docs, coverage
 matrices); they declare their own scope and must not claim another file's
 ownership.
 
+DESIGN.md principles come in two strengths: **GP<n> — Guiding Principle**, a
+default stance that may be traded off with stated justification; **IP<n> —
+Inviolable Principle**, a hard constraint never violated in implementation —
+changing one requires an explicit user decision recorded as a D-entry.
+
 ## Weight caps
 
 - `CLAUDE.md` < 80 lines · `ROADMAP.md` < 60 lines · active milestone file

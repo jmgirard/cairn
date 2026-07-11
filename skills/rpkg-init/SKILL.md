@@ -33,8 +33,9 @@ template exists):
 ```
 project/
 ├── DESIGN.md          # skeleton: Purpose & Scope / Function Families /
-│                      # Conventions / Design Principles (GP1…, IP1…) /
-│                      # Architecture / Known issues
+│                      # Conventions / Design Principles — GP<n> = Guiding
+│                      # (tradeable with justification), IP<n> = Inviolable
+│                      # (hard constraint) / Architecture / Known issues
 ├── ROADMAP.md         # empty index (below)
 ├── DECISIONS.md       # header + append-only note (see decision.md template)
 ├── milestones/archive/

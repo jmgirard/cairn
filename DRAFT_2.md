@@ -194,7 +194,7 @@ any other file gets at most a one-line cross-reference.
 | File | Owns | Does NOT own |
 |---|---|---|
 | `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `project/` | Status, TODOs, architecture rationale, history — anything time-varying rots here |
-| `project/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
+| `project/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP<n> = Guiding Principle, tradeable with justification; IP<n> = Inviolable Principle, a hard constraint changed only by explicit user decision + D-entry), architecture as it **is**, known issues | Future work, task lists, status |
 | `project/ROADMAP.md` | The milestone index table — ID, title, status, depends-on, priority. **The only authority on status.** | Task details, acceptance criteria, narrative |
 | `project/milestones/M<NN>-*.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header mirrors ROADMAP; on conflict ROADMAP wins, fix the mirror immediately), architecture |
 | `project/DECISIONS.md` | Append-only cross-cutting decisions (D-001), never renumbered or edited — superseded by new entries | Milestone-local decisions (those live in the milestone file) |

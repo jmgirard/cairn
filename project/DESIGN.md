@@ -26,6 +26,10 @@ here).
 
 ## Design Principles
 
+GP<n> = Guiding Principle (default stance; tradeable with stated
+justification). IP<n> = Inviolable Principle (hard constraint; changing one
+requires an explicit user decision + D-entry).
+
 - GP1: Efficient — store decisions and outcomes, not minutiae; caps +
   archiving keep always-read files small.
 - GP2: Reliable — one status authority; tracking travels with code;
