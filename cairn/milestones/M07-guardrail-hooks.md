@@ -1,6 +1,6 @@
 # M07: Guardrail hooks (blocking enforcement + context re-injection)
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** —
 - **Branch/PR:** m07-guardrail-hooks
@@ -73,14 +73,14 @@ default install (D-007: manual until pilots pass) → future release prep.
       gate; update tracking-rules.md if the git/approval model section
       needs the marker mentioned (done; also /hotfix gate + /cairn-init
       .gitignore scaffolding — discovered sub-tasks).
-- [ ] Verify hooks load via real plugin install; capture evidence.
-      (Loading evidence done: `plugin details` lists all 4 hooks.
-      Firing evidence diagnosed 2026-07-11: hooks snapshot at harness
-      *process* start; both running Desktop processes predate
-      hooks.json, and `/clear` reuses the process — so no session in
-      those processes can fire them. Script verified healthy by manual
-      run. Needs a brand-new Desktop conversation (fresh process) or
-      `claude login` + headless run.)
+- [x] Verify hooks load via real plugin install; capture evidence.
+      (Loading evidence: `plugin details` lists all 4 hooks. Firing
+      evidence CAPTURED 2026-07-11 in a brand-new Desktop conversation:
+      the SessionStart hook auto-injected the "# cairn tracking context
+      (auto-injected by the cairn plugin)" block carrying both
+      cairn/ROADMAP.md and the active M07 milestone file — header string
+      unique to hooks/session_context.py:18. Confirms both hook loading
+      AND firing via the live symlink install.)
 - [x] README: install-paths section (symlink vs marketplace, hooks caveat,
       branch-checkout footgun).
 
@@ -96,6 +96,7 @@ default install (D-007: manual until pilots pass) → future release prep.
 - 2026-07-11: user chose fresh-session verification for task 7. NEXT SESSION: if a "cairn tracking context" block was auto-injected at session start, that is the firing evidence — quote its header in the work log, check task 7 off, set status review, route to /milestone-review M07. If nothing was injected, hooks did not fire: investigate before review.
 - 2026-07-11: task 7 diagnosis — no injection + `gh pr merge --help` probe passed undented ⇒ hooks not executing here; cause: hooks snapshot at harness PROCESS start, both live Desktop processes (12:35, 16:17) predate hooks.json (16:27), and /clear reuses the process. Script healthy via manual run (emits injection JSON, exit 0). Supersedes prior NEXT SESSION line: evidence requires a BRAND-NEW Desktop conversation, not /clear.
 - 2026-07-11: user chose new-conversation verification (2nd attempt). NEXT SESSION (must be a brand-new Desktop conversation, fresh process): if the "cairn tracking context" block was auto-injected at session start, quote its header in the work log, check task 7 off, set status review, route to /milestone-review M07. If still nothing, hooks don't fire from skills-dir installs in Desktop despite registering — investigate that hypothesis next.
+- 2026-07-11: task 7 VERIFIED — brand-new Desktop conversation (fresh process) auto-injected at session start: `# cairn tracking context (auto-injected by the cairn plugin)`, carrying cairn/ROADMAP.md + the active M07 milestone file. Header string is unique to hooks/session_context.py:18, so the injection is unambiguously our hook firing (not /clear reuse of a pre-hooks process). Firing evidence captured; task 7 checked; all 8 tasks done. Status → review; routing to /milestone-review M07.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
