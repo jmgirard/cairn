@@ -9,6 +9,7 @@ argument-hint: "[patch | minor | major]"
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first. This
 skill prepares everything and hands the actual submission to the user —
 **it never self-submits to CRAN.**
+Stage banner: `[cairn · release · <version> · <step>]`.
 
 ## Preconditions
 
@@ -47,7 +48,9 @@ skill prepares everything and hands the actual submission to the user —
    (docs/metadata only) or via a short branch + PR if code had to change —
    user's call at the approval gate.
 
-7. **Handoff checklist** (present to the user; do not perform):
+7. **Handoff checklist** (present to the user; do not perform). Lead
+   outcome-first: what this release contains and why the version was
+   chosen, in plain words, before the checklist:
    - [ ] `devtools::submit_cran()` — run this yourself.
    - [ ] Confirm the CRAN email.
    - [ ] After acceptance: `usethis::use_github_release()` (or tag

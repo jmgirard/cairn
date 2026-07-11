@@ -10,6 +10,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it. This skill is read-mostly: it fixes mechanical tracking problems
 immediately, reports everything else, and never starts implementation work
 itself — it routes.
+Stage banner: `[cairn · milestone · <snapshot|audit|route>]`.
 
 ## Session start
 
@@ -58,7 +59,8 @@ Update "Last hygiene check: YYYY-MM-DD" in ROADMAP.md.
 ## 3. Route
 
 End with ONE routing chip (AskUserQuestion) offering the single most
-sensible next action first (recommended), e.g.:
+sensible next action first (recommended). The bullets below are
+state-conditional examples — only the applicable subset (≤4) is offered:
 
 - Resume M<NN> → `/milestone-implement M<NN>` (an `in-progress` milestone
   exists)

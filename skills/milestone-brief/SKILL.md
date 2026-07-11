@@ -7,7 +7,9 @@ argument-hint: "<id> <topic>"
 # /milestone-brief <id> <topic> — Fable escalation (RB → RR)
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
-it. Fable is token-billed pay-per-use: spawning it requires **explicit user
+it.
+Stage banner: `[cairn · brief · RB<NN> · <draft|gate|ingest>]`.
+Fable is token-billed pay-per-use: spawning it requires **explicit user
 approval, every time, with no standing authorization** — and only ever
 through this protocol. The brief artifact comes first either way; it is what
 makes the review reproducible and its findings ingestible.
@@ -29,7 +31,8 @@ makes the review reproducible and its findings ingestible.
    size estimate (files/lines Fable must read), and a reminder that Fable is
    token-billed. Options:
    - **Spawn Fable subagent** (recommended) — on approval, launch an Agent
-     with `model: "fable"` whose entire prompt is: read
+     with `model: "fable"` ([F]-tagged description) whose entire prompt
+     is: read
      `cairn/reviews/RB<NN>-<slug>.md` and follow its instructions exactly,
      writing findings to the RR path it specifies. When it returns, run
      ingestion (below) immediately in this session.
@@ -59,8 +62,9 @@ start (any skill) when a manual RR appears:
    (logged).
 4. Move the RB/RR pair to `cairn/reviews/archive/`; milestone status back
    to `in-progress`; commit (docs-only): `ingest RR<NN>`.
-5. Routing chip: **Resume implementation** → `/milestone-implement <id>`
-   (recommended) / Stop here.
+5. Routing chip, composed from where the RR left the milestone — e.g.
+   **Resume implementation** → `/milestone-implement <id>` (recommended) /
+   Stop here.
 
 Robustness:
 

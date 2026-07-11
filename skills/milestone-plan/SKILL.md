@@ -8,6 +8,7 @@ argument-hint: "[title or description]"
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it (especially: sizing tripwires, status gatekeeping, question gates).
+Stage banner: `[cairn · plan · <phase>]` (add `M<NN>` once assigned).
 
 ## Session start
 
@@ -22,7 +23,8 @@ handle ingestion first (see `/milestone-brief`).
 
 2. **Investigate first.** Read the relevant code and DECISIONS.md. For
    scopes touching more than a couple of files, fan out Explore subagents
-   with specific focuses; require file:line citations. Draft scope, tasks,
+   ([S]-tagged descriptions) with specific focuses; require file:line
+   citations. Draft scope, tasks,
    and the list of genuinely open decisions internally.
 
    **Collision check (mandatory).** Sweep the ROADMAP (all statuses), the
@@ -77,7 +79,8 @@ handle ingestion first (see `/milestone-brief`).
    (docs-only carve-out): `plan M<NN>[, M<NN>…]: <title>`; push. A session
    dying mid-plan must not leave a half-planned ghost.
 
-7. **Routing chip** (AskUserQuestion):
+7. **Routing chip**, composed from what was just planned (chip rules per
+   tracking-rules) — e.g.:
    - **Start implementing M<NN>** (the proximal one) → `/milestone-implement`
      (recommended)
    - Plan another milestone → `/milestone-plan`

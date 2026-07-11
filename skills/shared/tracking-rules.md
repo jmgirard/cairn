@@ -182,13 +182,51 @@ a gate, ask one batched round of 2–5 concrete decision questions via
 AskUserQuestion, each with a recommendation and brief pros/cons. Between
 gates, work autonomously; never drip questions one at a time.
 
-Every phase ends with a **routing chip**: an AskUserQuestion whose options
-include the natural next skill, with the recommended option marked. Selecting a chip invokes that skill in the
-same session. A chip is an explicit user stop — never auto-proceed.
+Every phase ends with a **routing chip**: an AskUserQuestion offering the
+single most sensible next action first, composed per the chip rules in
+"Output & interaction discipline" below. Selecting a chip invokes that
+skill in the same session. A chip is an explicit user stop — never
+auto-proceed.
+
+## Output & interaction discipline
+
+How skills talk to the user. These rules bind all chat output while any
+cairn skill is active.
+
+- **Stage banner.** Begin each substantive reply with one orientation
+  line: `[cairn · <skill> · M<NN> · <phase>]` — e.g.
+  `[cairn · implement · M07 · task 3/7]`. Drop parts that don't apply
+  (no milestone in scope → `[cairn · init · migration §4]`).
+- **Deltas, not dumps.** Between gates, report what changed since the
+  last report — findings, decisions, surprises, direction changes. Never
+  restate the plan or paste command output; the tracking files hold the
+  record.
+- **Outcome-first recaps.** Phase-completion recaps lead with what the
+  work did, changed, or accomplished, in plain words. Hygiene mechanics
+  (caps, hashes, archive paths, commit lists) follow compressed — one
+  line when they're clean. A recap the user must re-read to find out
+  what happened has failed.
+- **Chips carry choices, not evidence.** Supporting detail and technical
+  justification live in chat *above* the chip. Option labels are short;
+  each description says in plain language what is being chosen and why
+  it matters. At most 4 options per question.
+- **Contextual chip construction.** Compose options from the actual
+  session state — the specific issue found, the specific next action —
+  not from a fixed menu; chip menus listed in skills are examples, not
+  scripts. Invariants that never bend: recommended option first and
+  marked, ≤4 options, a stop/pause option present, and a chip is a user
+  stop — never auto-proceed.
+- **Chapter markers.** Where the harness supports conversation chapters,
+  mark phase transitions (session start is implicit).
+- **Subagent titles carry the model tier.** Prefix every Agent
+  description with `[S]`/`[O]`/`[F]` for Sonnet/Opus/Fable — task panes
+  show only the title, not the model.
 
 ## Model and agent strategy
 
 - Orchestrator: Opus, running these skills in the main session.
+- Every spawned Agent's description starts with its tier tag —
+  `[S]`/`[O]`/`[F]` — per the output-discipline section.
 - **Sonnet subagents**: well-specified self-contained work — fan-out
   searches (Explore), mechanical migrations, test writing against a spec,
   boilerplate. Give complete specs; verify their diffs before committing;
