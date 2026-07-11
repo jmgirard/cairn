@@ -139,16 +139,10 @@ Dry-run scenarios — the routing the router is intended to produce:
 is release-scoped (updated at /cairn-release, as for M04–M07); no entry due.
 Main in sync with origin; no CI workflows.
 
-**Independent review (Opus, fresh context):** change judged sound — taxonomy
-matches tracking-rules, caps met, dogfood consistent, all criteria satisfied.
-Findings triaged:
-- F1 (low) — router dropped "the plugin's" before `tracking-rules.md`; in an
-  adopted foreign repo there's no `skills/` at root. **Fixed** in template +
-  repo CLAUDE.md.
-- F2 (trivial) — C3 parenthetical named the old "~20-line" header after it
-  was loosened to ~25. **Fixed.**
-- F3 (trivial) — "20 body lines" vs 19 non-blank (heading counting).
-  Immaterial (under cap either way); **left as-is.**
-- Note (not a defect): rewrite intentionally drops the eight-skill
-  enumeration and the "add to candidates" intake line to hit the cap;
-  candidate-adding is a trivial tracking edit. Accepted trade-off.
+**Independent review (Opus, fresh context):** judged sound — taxonomy matches
+tracking-rules, caps met, dogfood consistent, all criteria satisfied. Triage:
+- F1 (low) — router dropped "the plugin's" before `tracking-rules.md` (foreign
+  repos have no `skills/` at root). **Fixed** in template + repo CLAUDE.md.
+- F2/F3 (trivial) — stale "~20-line" ref **fixed**; "20 vs 19 body lines"
+  immaterial, left. Note: dropping the eight-skill list + candidate-intake
+  line to hit the cap is an accepted trade-off (candidate-adding is trivial).
