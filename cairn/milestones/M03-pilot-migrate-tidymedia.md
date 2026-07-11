@@ -1,9 +1,10 @@
 # M03: Pilot — migrate tidymedia
 
-- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** M01
-- **Branch/PR:** — (work happens in tidymedia; this file tracks it)
+- **Branch/PR:** none in cairn — docs-only tracking commits on main (M02
+  precedent); the migration branch/PR lives in tidymedia
 
 ## Goal
 
@@ -40,6 +41,11 @@ broad rollout.
 ## Work log
 
 - 2026-07-11: planned as part of the v0.1 pilot plan (DRAFT_2 §11).
+- 2026-07-11: implementation started; no cairn branch (M02 precedent —
+  work happens in tidymedia, cairn tracks via docs-only commits on main).
+- 2026-07-11: pre-flight check — tidymedia clean, nothing in flight (M08
+  planned, M09/M10 ideas, M01–M07 done); one unpushed docs commit
+  (3494379, plan M08) to push before migration branches.
 
 ## Decisions
 
