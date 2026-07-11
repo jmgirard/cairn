@@ -92,6 +92,7 @@ default install (D-007: manual until pilots pass) → future release prep.
 - 2026-07-11: task 6 — marker protocol wired into /milestone-review + /hotfix approval gates, tracking-rules approval model, and /cairn-init .gitignore scaffolding (minor amendment: hotfix + init were discovered sub-tasks).
 - 2026-07-11: task 7 finding — skills-dir installs DO register hooks (`plugin details` shows Hooks (4)); corrected references/claude-code-hooks.md + Scope wording. Firing evidence blocked: CLI logged out, headless runs can't start.
 - 2026-07-11: task 8 — README install section rewritten (two paths, hooks activation note, keep-checkout-on-main footgun).
+- 2026-07-11: user chose fresh-session verification for task 7. NEXT SESSION: if a "cairn tracking context" block was auto-injected at session start, that is the firing evidence — quote its header in the work log, check task 7 off, set status review, route to /milestone-review M07. If nothing was injected, hooks did not fire: investigate before review.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
