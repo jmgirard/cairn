@@ -50,7 +50,7 @@ supplies evidence); broad long-tail survey beyond the eight named systems
 
 ## Tasks
 
-- [ ] Study Anthropic official plugins from source
+- [x] Study Anthropic official plugins from source
       (anthropics/claude-plugins-official): feature-dev,
       claude-md-management, code-review → three notes.
 - [ ] Hands-on trial: feature-dev and claude-md-management in a scratch
@@ -72,8 +72,17 @@ supplies evidence); broad long-tail survey beyond the eight named systems
   row; comparanda scoped at question gate to Anthropic + 5 community,
   hands-on top 3, deliverable DESIGN.md + references note).
 
+- 2026-07-11: task 1 done — cloned claude-plugins-official @ dc72937,
+  read all three plugins' full source, wrote three references/ notes +
+  INDEX rows; flagged never-Haiku doctrine challenge for synthesis.
+
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
+
+- 2026-07-11: hands-on trials run by source-execution in a scratch repo
+  (clone plugin source, execute its command workflows directly), not by
+  installing into the user's plugin config; ccpm GitHub-sync step
+  verified from docs only. (question gate)
 
 ## Review
 <!-- filled by /milestone-review: evidence per criterion; consistency-gate
