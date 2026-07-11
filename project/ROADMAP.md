@@ -10,9 +10,9 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M01 | Build plugin v0.1 from DRAFT_2 spec | review | — | high | milestones/M01-build-v0-1.md |
 | M02 | Pilot: fresh adoption in one package repo | planned | M01 | high | milestones/M02-pilot-fresh.md |
 | M03 | Pilot: migrate tidymedia | planned | M01 | high | milestones/M03-pilot-migrate-tidymedia.md |
+| M01 | Build plugin v0.1 from DRAFT_2 spec | done | — | high | milestones/archive/M01-build-v0-1.md |
 
 ## Candidates
 
