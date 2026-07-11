@@ -74,8 +74,8 @@ handle ingestion first (see `/milestone-brief`).
 
 6. **Commit atomically.** Update ROADMAP rows (`planned` / `candidate`) and
    commit files + rows together, directly to main, no branch, no PR
-   (docs-only carve-out): `plan M<NN>[, M<NN>…]: <title>`. A session dying
-   mid-plan must not leave a half-planned ghost.
+   (docs-only carve-out): `plan M<NN>[, M<NN>…]: <title>`; push. A session
+   dying mid-plan must not leave a half-planned ghost.
 
 7. **Routing chip** (AskUserQuestion):
    - **Start implementing M<NN>** (the proximal one) → `/milestone-implement`

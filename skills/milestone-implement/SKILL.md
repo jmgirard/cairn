@@ -24,8 +24,11 @@ run ingestion first (see `/milestone-brief`).
 
 2. **Branch.** Check `git status` first — a dirty tree with unrelated
    changes means ask the user; never sweep strangers into a checkpoint
-   commit. First session: update main, then `git checkout -b m<nn>-<slug>`;
-   record the branch in the milestone header. Resume sessions: check out the
+   commit. First session: sync main with origin first — `git fetch`, pull
+   (ff-only), and **push any unpushed local commits** — so the branch is cut
+   from pushed main and the PR diff will contain only milestone work; then
+   `git checkout -b m<nn>-<slug>`; record the branch in the milestone
+   header. Resume sessions: check out the
    existing branch; if main has moved since the branch was cut (e.g., a
    hotfix merged), merge main into the branch and re-run `devtools::test()`
    before continuing.

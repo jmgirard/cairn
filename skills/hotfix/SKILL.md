@@ -21,7 +21,8 @@ whether an existing milestone already covers this.
    overlap instead of racing it.
 
 2. **Branch.** Check `git status` (dirty tree with unrelated changes → ask).
-   Branch `hotfix-<slug>` from up-to-date main.
+   Branch `hotfix-<slug>` from up-to-date main (fetch, pull ff-only, push
+   any unpushed local commits — see tracking-rules git model).
 
 3. **Regression test first.** Write the test that fails because of the bug;
    confirm it fails; then fix; confirm it passes.

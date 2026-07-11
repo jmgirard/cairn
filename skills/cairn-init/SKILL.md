@@ -69,7 +69,8 @@ Then:
 - Fill DESIGN.md's Purpose & Scope from DESCRIPTION and a quick read of
   `R/` — 5–10 honest lines, marked for the user to refine; never invent
   principles.
-- Commit (docs-only, main): `cairn-init: scaffold tracking system`.
+- Commit (docs-only, main): `cairn-init: scaffold tracking system`; push
+  if a remote exists (origin/main is main — see tracking-rules git model).
 - Routing chip: **Plan the first milestone** → `/milestone-plan` /
   Run `/milestone` / Stop.
 

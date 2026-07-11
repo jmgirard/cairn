@@ -126,6 +126,10 @@ anyone at any time (one ROADMAP row).
   deploy from it). It stays installable at all times.
 - main accepts only: docs-only tracking commits and squash-merges of
   milestone/hotfix branches. Never implement on main.
+- **origin/main is main.** When a remote exists, push docs-only commits to
+  main immediately. A local-only main means branches get cut from commits
+  the PR base doesn't have — the squash-merge then duplicates them and main
+  diverges from origin ("ahead N, behind 1").
 - Milestone work on `m<nn>-<slug>`; hotfixes on `hotfix-<slug>`; both cut
   from up-to-date main. Checkpoint commits are cheap — squash erases them.
 - Before branching or committing, check `git status`: a dirty tree with

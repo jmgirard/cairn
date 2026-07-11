@@ -17,10 +17,11 @@ overrides — log the override).
 
 ## Workflow
 
-1. **Sync with main first.** If main has moved since the branch was cut,
-   merge main into the branch and re-run tests before gathering any
-   evidence — evidence from a stale branch is worthless and the squash-merge
-   would conflict anyway.
+1. **Sync with main first** — main means origin/main: `git fetch` before
+   comparing, and push main if it has unpushed local commits. If main has
+   moved since the branch was cut, merge main into the branch and re-run
+   tests before gathering any evidence — evidence from a stale branch is
+   worthless and the squash-merge would conflict anyway.
 
 2. Push the branch; open a **draft PR** (`gh pr create --draft`) so CI runs
    in the background while the review proceeds. Record the PR URL in the
@@ -74,11 +75,14 @@ overrides — log the override).
    re-verify, re-request approval if the fix was nontrivial. When green:
    `gh pr merge --squash --delete-branch` with a clean summary message.
 
-9. **Post-merge hygiene pass on main:** compress the milestone file to a
+9. **Post-merge hygiene pass on main:** check out main and pull first —
+   after a squash-merge, local main is behind origin and any leftover local
+   commits mean divergence to resolve before committing. Then compress the
+   milestone file to a
    ≤25-line summary (goal, outcome, key decisions, PR link) and move it to
    `project/milestones/archive/`; ROADMAP row → `done` + archive path;
    archive any resolved RB/RR pairs; update "Last hygiene check"; verify
-   weight caps. Docs-only commit: `review M<NN>: done`.
+   weight caps. Docs-only commit: `review M<NN>: done`; push.
 
 10. **Routing chip** (AskUserQuestion):
     - **Plan the next milestone** → `/milestone-plan` (recommended when
