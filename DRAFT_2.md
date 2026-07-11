@@ -1,4 +1,4 @@
-# rpkg-tracking — Canonical System Spec (Draft 2)
+# cairn — Canonical System Spec (Draft 2)
 
 Supersedes DRAFT_1.md. This document specifies the single, canonical Claude Code
 workflow + tracking system for R package development, to be built as a Claude
@@ -33,7 +33,7 @@ Priorities, in order:
 ### 2.1 Repo layout (this repo)
 
 ```
-rpkg-tracking/
+cairn/
 ├── .claude-plugin/
 │   └── plugin.json            # name, description, version
 ├── skills/
@@ -47,9 +47,9 @@ rpkg-tracking/
 │   │   └── SKILL.md
 │   ├── milestone-brief/       # Fable RB/RR protocol
 │   │   └── SKILL.md
-│   ├── rpkg-init/             # scaffold or migrate a repo into the system
+│   ├── cairn-init/             # scaffold or migrate a repo into the system
 │   │   └── SKILL.md
-│   ├── rpkg-release/          # CRAN release walk (adapted from circumplex)
+│   ├── cairn-release/          # CRAN release walk (adapted from circumplex)
 │   │   └── SKILL.md
 │   ├── hotfix/                # bug fix outside milestone machinery
 │   │   └── SKILL.md
@@ -70,7 +70,7 @@ by reading it (via `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md`) and
 must not restate its content — the ackwards/bsync failure mode was the same
 rules duplicated in CLAUDE.md and each skill, drifting apart.
 
-### 2.2 Adoption & migration: `/rpkg-init`
+### 2.2 Adoption & migration: `/cairn-init`
 
 Idempotent skill that brings any repo into the system:
 
@@ -93,7 +93,7 @@ Idempotent skill that brings any repo into the system:
 
 - The plugin is versioned in `plugin.json` + `CHANGELOG.md`. Repos don't pin
   versions; whatever plugin version is installed is the law. Breaking changes
-  to the state-file format ship with migration handling in `/rpkg-init`.
+  to the state-file format ship with migration handling in `/cairn-init`.
 - **Install is manual for now** (local plugin / direct install). Publishing a
   `marketplace.json` for one-command install is deferred until the system has
   been battle-tested across several repos.
@@ -162,7 +162,7 @@ Only *live* state gets translated into the new format.
 
 ## 3. Per-repo file map, ownership boundaries, weight caps
 
-### 3.1 File map (created by `/rpkg-init`)
+### 3.1 File map (created by `/cairn-init`)
 
 ```
 <package-repo>/
@@ -421,7 +421,7 @@ The "where am I?" command and the system's immune system.
      from ROADMAP or vice versa; uncommitted changes under `project/`.
    - **ID uniqueness:** no M-number appears twice across active + archive.
    - **CLAUDE.md section present and intact** (other tools can clobber it);
-     if damaged, offer repair via `/rpkg-init`.
+     if damaged, offer repair via `/cairn-init`.
 3. End with a routing chip: the single most sensible next action
    (e.g., "Resume M07 (implement)" / "Plan next milestone" / "Run review").
 
@@ -634,11 +634,11 @@ Two robustness rules:
   is marked unresolved and a fresh RB (new number) is drafted rather than
   re-ingesting a bad artifact.
 
-### 5.7 `/rpkg-init`
+### 5.7 `/cairn-init`
 
 As specified in §2.2.
 
-### 5.8 `/rpkg-release`
+### 5.8 `/cairn-release`
 
 CRAN release walk, adapted from circumplex's proven `/release-checklist`:
 version bump decision (patch/minor/major), NEWS.md consolidation for the
@@ -741,7 +741,7 @@ is a ROADMAP fact (`candidate` row or future milestone), not a decision
 
 ### 6.4 CLAUDE.md section — `claude-md-section.md`
 
-The block `/rpkg-init` appends: pointer to `project/`, the one-line boundary
+The block `/cairn-init` appends: pointer to `project/`, the one-line boundary
 rule, the skill list, and the "no status/TODOs in this file" warning.
 
 ---
@@ -870,7 +870,7 @@ original conversation).
   `pkgdown::check_pkgdown()`).
 - New user-facing conditions use `cli::cli_abort()` / rlang, not assertthat.
 - New top-level tracked files/dirs need `.Rbuildignore` entries (`^project$`
-  is added by `/rpkg-init`).
+  is added by `/cairn-init`).
 
 These guardrails are advisory in the moment but **mechanically enforced at
 the review consistency gate (§5.4)** — the reliable fix for habitual
@@ -934,7 +934,7 @@ Decisions from the first review, now folded into the spec above:
 3. **Weight caps** start at 80/60/150/25; adjust after real use.
 4. **Two-digit zero-padding** (M01); IDs grow naturally past M99 with only
    cosmetic file-sort impact (§4.1).
-5. **`/rpkg-release` included in v1** (§5.8), adapted from circumplex.
+5. **`/cairn-release` included in v1** (§5.8), adapted from circumplex.
 6. **Manual plugin install only** for now; marketplace publishing deferred
    (§2.3).
 7. **Fable subagents are possible and permitted** — but only via the RB/RR
@@ -1014,7 +1014,7 @@ Fourth review pass (2026-07-11) — edge-case hardening:
     remedies in the audit (§5.1).
 24. **Cheap robustness checks:** dirty-tree check before branching (§5.3),
     atomic planning commits (§5.2), ID-uniqueness and CLAUDE.md-section
-    checks in the audit (§5.1), non-package repo detection in `/rpkg-init`
+    checks in the audit (§5.1), non-package repo detection in `/cairn-init`
     (§2.2), pasted-RR normalization (§5.6), and user overrides logged, never
     resisted (§3.4).
 25. **Test-scope guidance** (§9.3): no coverage-percentage target — test
@@ -1060,7 +1060,7 @@ Fourth review pass (2026-07-11) — edge-case hardening:
    guide plus install instructions and a worked example, remove `DRAFT_*.md`
    (git history preserves them), tag v1.0. Marketplace publishing remains deferred (§2.3)
    until post-1.0.
-5. **Broad rollout:** run `/rpkg-init` across the remaining active package
+5. **Broad rollout:** run `/cairn-init` across the remaining active package
    repos, migrating their legacy tracking files.
 
 ---
@@ -1073,7 +1073,7 @@ section becomes the core of README.md at public release.
 ### Getting started
 
 1. Install the plugin (manual install for now; see repo instructions).
-2. In your package repo, run `/rpkg-init`. Fresh repos get scaffolding;
+2. In your package repo, run `/cairn-init`. Fresh repos get scaffolding;
    repos with an older tracking system get an interactive migration.
 3. Run `/milestone` any time you're unsure where things stand.
 
@@ -1104,8 +1104,8 @@ command directly always works too, e.g. to resume after a break.
 | Get a stronger model's judgment on a hard question | `/milestone-brief M<NN> <topic>` — writes a self-contained brief; you approve (or run) the Fable review |
 | Fix a reported bug quickly | `/hotfix` — or just describe the bug; regression test, fix, PR, your approval. Escalates to a milestone if it's bigger than it looked |
 | Fix a typo or tweak docs | Just ask — trivial edits commit directly to main, no tracking |
-| Prepare a CRAN release | `/rpkg-release` — the full checklist; you do the actual submission |
-| Adopt the system in another repo | `/rpkg-init` — idempotent; safe to re-run |
+| Prepare a CRAN release | `/cairn-release` — the full checklist; you do the actual submission |
+| Adopt the system in another repo | `/cairn-init` — idempotent; safe to re-run |
 
 ### What the system expects from you
 

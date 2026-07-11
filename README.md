@@ -1,9 +1,14 @@
-# rpkg-tracking
+# cairn
+
+*A cairn is built one stone at a time, and marks the trail for whoever
+comes next.*
 
 A Claude Code plugin for milestone-driven R package development. One
 canonical workflow — planning, implementation, review, hotfixes, releases,
 and expert escalation — with all project state in plain markdown under
 `project/`, kept honest by weight caps and a self-auditing health check.
+Work lands as small stacked milestones, and any session — today's or next
+month's — can find the path from the files alone.
 
 Born from maintaining many R packages with Claude Code and rebuilding
 similar-but-diverging tracking systems in each. This plugin centralizes the
@@ -17,11 +22,11 @@ holds only its own state.
 ## Install (manual, for now)
 
 ```bash
-git clone https://github.com/jmgirard/rpkg-tracking
-claude --plugin-dir /path/to/rpkg-tracking
+git clone https://github.com/jmgirard/cairn
+claude --plugin-dir /path/to/cairn
 ```
 
-Then, in your package repo, run `/rpkg-init`. Fresh repos get scaffolding;
+Then, in your package repo, run `/cairn-init`. Fresh repos get scaffolding;
 repos with an older tracking system get an interactive, PR-based migration.
 Run `/milestone` any time you're unsure where things stand.
 
@@ -52,8 +57,8 @@ directly always works too, e.g. to resume after a break.
 | Get a stronger model's judgment on a hard question | `/milestone-brief M<NN> <topic>` — writes a self-contained brief; you approve (or run) the Fable review |
 | Fix a reported bug quickly | `/hotfix` — or just describe the bug; regression test, fix, PR, your approval. Escalates to a milestone if it's bigger than it looked |
 | Fix a typo or tweak docs | Just ask — trivial edits commit directly to main, no tracking |
-| Prepare a CRAN release | `/rpkg-release` — the full checklist; you do the actual submission |
-| Adopt the system in another repo | `/rpkg-init` — idempotent; safe to re-run |
+| Prepare a CRAN release | `/cairn-release` — the full checklist; you do the actual submission |
+| Adopt the system in another repo | `/cairn-init` — idempotent; safe to re-run |
 
 ## What lives where
 

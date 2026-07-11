@@ -46,3 +46,16 @@ lossy summaries; git already preserves history.
 items are translated, under a no-invention rule; IDs never renumbered.
 **Consequences:** Migration is a small, reviewable, revertible PR; legacy
 citations stay valid.
+
+### D-006 (2026-07-11): Name the plugin "cairn"
+
+**Context:** "rpkg-tracking" was a placeholder. Candidates spanned trail
+markers (cairn, waymark, milepost), record keepers (roadbook, ledger), and
+roles (steward).
+**Decision:** cairn — built one stone at a time (milestones), marks the
+trail for whoever comes next (stateless session resume). Action skills keep
+generic names (/milestone*, /hotfix); repo-level skills carry the brand
+(/cairn-init, /cairn-release).
+**Consequences:** Known adjacencies accepted: CRAN's "Cairo" graphics
+package (one letter apart) and the Cairn tabletop RPG; no CRAN package
+claims "cairn". GitHub home: jmgirard/cairn.

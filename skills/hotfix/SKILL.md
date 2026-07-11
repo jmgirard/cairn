@@ -1,6 +1,6 @@
 ---
 name: hotfix
-description: Fix a user-visible bug in an rpkg-tracking repo without milestone ceremony - regression test first, gate-lite checks, PR, merge on user approval. Use whenever a bug is reported or described ("users report an error in X", "this crashes when...", "fix this bug") and no milestone already covers it.
+description: Fix a user-visible bug in a cairn repo without milestone ceremony - regression test first, gate-lite checks, PR, merge on user approval. Use whenever a bug is reported or described ("users report an error in X", "this crashes when...", "fix this bug") and no milestone already covers it.
 argument-hint: "[description]"
 ---
 

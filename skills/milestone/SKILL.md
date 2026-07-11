@@ -1,6 +1,6 @@
 ---
 name: milestone
-description: Project status snapshot, tracking health audit, and next-action routing for rpkg-tracking repos. Use when the user asks where the project stands, what to do next, "project status", "health check", when returning after time away, or when reconciliation between tracking files and git is needed.
+description: Project status snapshot, tracking health audit, and next-action routing for cairn repos. Use when the user asks where the project stands, what to do next, "project status", "health check", when returning after time away, or when reconciliation between tracking files and git is needed.
 argument-hint: ""
 ---
 
@@ -47,7 +47,7 @@ rest. Check:
   aren't reflected in tracking → add a one-line catch-up entry.
 - **ID uniqueness:** no M-number appears twice across active + archive.
 - **CLAUDE.md section present and intact**; if damaged, offer repair via
-  `/rpkg-init`.
+  `/cairn-init`.
 - A milestone at `review` with an open unmerged PR → re-check CI now
   (`gh pr checks`), report the fresh state (this is normal, not an error).
 - **Untriaged inboxes:** open GitHub issues or external PRs with no

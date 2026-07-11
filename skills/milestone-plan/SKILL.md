@@ -1,6 +1,6 @@
 ---
 name: milestone-plan
-description: Plan one or more milestones for an rpkg-tracking repo - investigate, scope, write acceptance criteria, and register them in the ROADMAP. Use when the user wants to plan a milestone, plan new work or a feature, turn an idea or candidate into a concrete plan, or asks "what would it take to build X".
+description: Plan one or more milestones for a cairn repo - investigate, scope, write acceptance criteria, and register them in the ROADMAP. Use when the user wants to plan a milestone, plan new work or a feature, turn an idea or candidate into a concrete plan, or asks "what would it take to build X".
 argument-hint: "[title or description]"
 ---
 

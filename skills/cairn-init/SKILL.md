@@ -1,10 +1,10 @@
 ---
-name: rpkg-init
-description: Adopt the rpkg-tracking system in a repo - scaffold the project/ tracking files, CLAUDE.md section, and ignore entries; or migrate an existing precursor tracking system. Use when the user wants to set up, initialize, adopt, repair, or migrate to rpkg-tracking in a repository.
+name: cairn-init
+description: Adopt the cairn system in a repo - scaffold the project/ tracking files, CLAUDE.md section, and ignore entries; or migrate an existing precursor tracking system. Use when the user wants to set up, initialize, adopt, repair, or migrate to cairn in a repository.
 argument-hint: ""
 ---
 
-# /rpkg-init — scaffold, repair, or migrate
+# /cairn-init — scaffold, repair, or migrate
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first.
 Idempotent: safe to re-run any time; re-runs report and repair missing or
@@ -22,7 +22,7 @@ damaged pieces and **never overwrite user content without asking**.
   `STATUS.md`/`LOG.md`/`PRINCIPLES.md` or per-milestone files ("Lineage A");
   repo-local milestone skills in `.claude/skills/`. Unrecognized footprints
   get an interview, not a guess.
-- Already on rpkg-tracking → **repair mode**: verify every §1 piece exists
+- Already on cairn → **repair mode**: verify every §1 piece exists
   and is intact; fix what's missing; report.
 
 ## 1. Fresh scaffold
@@ -69,7 +69,7 @@ Then:
 - Fill DESIGN.md's Purpose & Scope from DESCRIPTION and a quick read of
   `R/` — 5–10 honest lines, marked for the user to refine; never invent
   principles.
-- Commit (docs-only, main): `rpkg-init: scaffold tracking system`.
+- Commit (docs-only, main): `cairn-init: scaffold tracking system`.
 - Routing chip: **Plan the first milestone** → `/milestone-plan` /
   Run `/milestone` / Stop.
 
@@ -84,7 +84,7 @@ Only *live* state gets translated.
    in-progress item is either finished first (recommend it) or carried over
    as the sole `in-progress` milestone, explicitly confirmed.
 
-2. **Branch + PR.** All migration work on `rpkg-init-migration`, merged via
+2. **Branch + PR.** All migration work on `cairn-init-migration`, merged via
    PR — one reviewable, revertible diff. Never on main.
 
 3. **Inventory + proposal.** List every legacy tracking file and every live

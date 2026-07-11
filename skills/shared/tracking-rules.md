@@ -1,6 +1,6 @@
-# Tracking rules (shared by all rpkg-tracking skills)
+# Tracking rules (shared by all cairn skills)
 
-Read this before touching any tracking file. Every rpkg-tracking skill obeys
+Read this before touching any tracking file. Every cairn skill obeys
 these rules; skills state their own workflow but never restate or override
 this rulebook. Repo-specific hard rules in the repo's CLAUDE.md and
 conventions in `project/DESIGN.md` bind in addition to (never instead of)

@@ -1,5 +1,5 @@
 {
-  "name": "rpkg-tracking",
+  "name": "cairn",
   "version": "0.1.0",
   "description": "Milestone-driven development workflow and tracking system for R packages: plan/implement/review skills, hotfix and release paths, Fable review briefs, and a self-auditing project/ file system.",
   "author": {

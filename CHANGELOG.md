@@ -6,8 +6,8 @@ Initial build from the DRAFT_2.md spec.
 
 - Eight skills: `/milestone` (status + health audit + routing),
   `/milestone-plan`, `/milestone-implement`, `/milestone-review`,
-  `/milestone-brief` (Fable RB/RR protocol), `/hotfix`, `/rpkg-release`,
-  `/rpkg-init` (scaffold / repair / migration).
+  `/milestone-brief` (Fable RB/RR protocol), `/hotfix`, `/cairn-release`,
+  `/cairn-init` (scaffold / repair / migration).
 - Shared rulebook (`skills/shared/tracking-rules.md`) read by every skill:
   ownership boundaries, weight caps, status vocabulary, work tiers, git and
   approval model, CI waiting rules, model strategy, oracle doctrine, source

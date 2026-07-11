@@ -1,8 +1,8 @@
-<!-- Appended to the repo's CLAUDE.md by /rpkg-init. Keep under ~20 lines. -->
+<!-- Appended to the repo's CLAUDE.md by /cairn-init. Keep under ~20 lines. -->
 
-## Project tracking (rpkg-tracking)
+## Project tracking (cairn)
 
-This repo uses the rpkg-tracking plugin. All project state lives in markdown
+This repo uses the cairn plugin. All project state lives in markdown
 under `project/`. Boundary rule: **Architecture → DESIGN · Status → ROADMAP ·
 Tasks → milestone files · Decisions → DECISIONS · History → archive + git.**
 

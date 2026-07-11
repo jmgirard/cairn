@@ -1,6 +1,6 @@
 ---
 name: milestone-implement
-description: Implement a planned milestone in an rpkg-tracking repo on its own branch with tests-first tasks and checkpoint commits. Use when the user wants to start, resume, work on, or continue a milestone (e.g. "work on M07", "resume the milestone", "start implementing").
+description: Implement a planned milestone in a cairn repo on its own branch with tests-first tasks and checkpoint commits. Use when the user wants to start, resume, work on, or continue a milestone (e.g. "work on M07", "resume the milestone", "start implementing").
 argument-hint: "<id>"
 ---
 

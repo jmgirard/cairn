@@ -1,10 +1,10 @@
 ---
-name: rpkg-release
+name: cairn-release
 description: Prepare an R package release to CRAN - version bump, NEWS consolidation, full checks, cran-comments, and a final human checklist. Use when the user wants to release, submit to CRAN, cut a version, or prepare a release. Never self-submits.
 argument-hint: "[patch | minor | major]"
 ---
 
-# /rpkg-release — CRAN release walk
+# /cairn-release — CRAN release walk
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first. This
 skill prepares everything and hands the actual submission to the user —

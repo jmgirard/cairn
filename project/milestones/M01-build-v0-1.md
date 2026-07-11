@@ -42,8 +42,8 @@ repo.
 - [x] skills/milestone-review/SKILL.md
 - [x] skills/milestone-brief/SKILL.md
 - [x] skills/hotfix/SKILL.md
-- [x] skills/rpkg-release/SKILL.md
-- [x] skills/rpkg-init/SKILL.md
+- [x] skills/cairn-release/SKILL.md
+- [x] skills/cairn-init/SKILL.md
 - [x] README.md, CHANGELOG.md
 - [x] Dogfood project/ (ROADMAP, DECISIONS, this file)
 

@@ -12,7 +12,7 @@ nearest the canonical one.
 
 ## Scope
 
-**In:** full migration via `/rpkg-init` (entomb legacy files, translate live
+**In:** full migration via `/cairn-init` (entomb legacy files, translate live
 state, deactivate the repo-local `/milestone` skill, ledger + audit-gated
 PR); then ≥1 milestone shipped post-migration to confirm normal operation.
 
@@ -33,7 +33,7 @@ broad rollout.
 
 - [ ] Confirm tidymedia has nothing in flight (or carry over its one
       in-progress item explicitly).
-- [ ] Run `/rpkg-init` migration; review the proposal gate carefully.
+- [ ] Run `/cairn-init` migration; review the proposal gate carefully.
 - [ ] Verify ledger, audit, and merge.
 - [ ] Ship one milestone post-migration; log friction as issues.
 

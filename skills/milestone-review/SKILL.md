@@ -1,6 +1,6 @@
 ---
 name: milestone-review
-description: Verify and ship a finished milestone in an rpkg-tracking repo - fresh evidence for every acceptance criterion, consistency gate, independent code review, and merge on user approval. Use when the user wants to review, verify, finish, ship, or merge a milestone.
+description: Verify and ship a finished milestone in a cairn repo - fresh evidence for every acceptance criterion, consistency gate, independent code review, and merge on user approval. Use when the user wants to review, verify, finish, ship, or merge a milestone.
 argument-hint: "<id>"
 ---
 
