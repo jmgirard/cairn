@@ -11,17 +11,6 @@
         ]
       }
     ],
-    "PreCompact": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/session_context.py\"",
-            "timeout": 15
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "hooks": [

@@ -26,20 +26,21 @@ def main():
     if not dirty:
         return
     files = ", ".join(line[3:].strip() for line in dirty[:10])
+    # Stop/SubagentStop blocking uses TOP-LEVEL decision/reason — NOT nested
+    # under hookSpecificOutput (that key carries additionalContext only, and
+    # a nested decision is silently ignored). Verified against the official
+    # hooks docs; see references/claude-code-hooks.md.
     cc.emit(
         {
-            "hookSpecificOutput": {
-                "hookEventName": "Stop",
-                "decision": "block",
-                "reason": (
-                    "Uncommitted cairn tracking changes: "
-                    f"{files}. Stop points are commit points — commit the "
-                    "tracking update (work-log line + checkboxes) together "
-                    "with the work before ending the turn. If stopping "
-                    "half-done is intended, commit an honest checkpoint "
-                    "marked as such."
-                ),
-            }
+            "decision": "block",
+            "reason": (
+                "Uncommitted cairn tracking changes: "
+                f"{files}. Stop points are commit points — commit the "
+                "tracking update (work-log line + checkboxes) together "
+                "with the work before ending the turn. If stopping "
+                "half-done is intended, commit an honest checkpoint "
+                "marked as such."
+            ),
         }
     )
 

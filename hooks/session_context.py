@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
-"""SessionStart/PreCompact hook: re-inject cairn tracking context.
+"""SessionStart hook: inject cairn tracking context.
 
 Injects cairn/ROADMAP.md plus every active (in-progress / blocked /
-review) milestone file as additionalContext, so a fresh or compacted
-session starts oriented without relying on the skill remembering to
-read the files. No-op outside cairn repos.
+review) milestone file as additionalContext, so a fresh session starts
+oriented without relying on the skill remembering to read the files.
+No-op outside cairn repos.
+
+Wired to SessionStart only. Claude Code honors additionalContext on
+`source` startup/resume and ignores it on clear/compact — there is no
+hook that re-injects context on compaction (PreCompact is block-only),
+so we don't pretend to. Emitting on an ignored source is harmless.
+The event field is read generically so the script stays event-agnostic.
 """
 
 import os

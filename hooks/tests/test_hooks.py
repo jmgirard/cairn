@@ -5,6 +5,17 @@ stdout JSON out) against a throwaway git repo, mirroring how Claude
 Code invokes hooks. Run from the repo root:
 
     python3 -m unittest discover -s hooks/tests -v
+
+METHODOLOGY NOTE (learned the hard way, M07 review attempt 1): these
+tests assert the *shape of the JSON a hook prints*, not that Claude
+Code honors that shape. A wrong-but-self-consistent contract (e.g. a
+Stop block nested under hookSpecificOutput instead of top-level) passes
+here while doing nothing live. So the asserted shapes below are pinned
+to the official hooks contract (references/claude-code-hooks.md):
+  - SessionStart / PreToolUse: event output nested under hookSpecificOutput.
+  - Stop / SubagentStop block: TOP-LEVEL decision/reason.
+Changing an asserted envelope requires re-checking it against the docs
+and a live-fire, not just making the test green.
 """
 
 import ast
@@ -41,7 +52,13 @@ def run_hook(script, payload):
 
 
 def hook_json(proc):
+    """Event output nested under hookSpecificOutput (SessionStart, PreToolUse)."""
     return json.loads(proc.stdout)["hookSpecificOutput"]
+
+
+def hook_toplevel(proc):
+    """Full stdout JSON — for Stop/SubagentStop, whose block is top-level."""
+    return json.loads(proc.stdout)
 
 
 class RepoFixture(unittest.TestCase):
@@ -91,28 +108,22 @@ class TestSessionContext(RepoFixture):
         # only the active milestone's file is injected, not archived ones
         self.assertEqual(out["additionalContext"].count("## cairn/milestones/"), 1)
 
-    def test_precompact_reinjects_same(self):
-        proc = run_hook(
-            "session_context.py",
-            self.payload(hook_event_name="PreCompact", compaction_type="auto"),
-        )
-        out = hook_json(proc)
-        self.assertEqual(out["hookEventName"], "PreCompact")
-        self.assertIn(MILESTONE_SENTINEL, out["additionalContext"])
-
 
 class TestStopGuard(RepoFixture):
     def test_blocks_on_dirty_tracking(self):
         (self.root / "cairn" / "ROADMAP.md").write_text(ROADMAP + "edited\n")
         proc = run_hook("stop_guard.py", self.payload(stop_hook_active=False))
         self.assertEqual(proc.returncode, 0)
-        out = hook_json(proc)
+        out = hook_toplevel(proc)
+        # block MUST be top-level, not nested (a nested decision no-ops live)
+        self.assertNotIn("hookSpecificOutput", out)
         self.assertEqual(out["decision"], "block")
         self.assertIn("cairn/ROADMAP.md", out["reason"])
 
     def test_blocks_on_untracked_tracking_file(self):
         (self.root / "cairn" / "milestones" / "M99-new.md").write_text("draft\n")
-        out = hook_json(run_hook("stop_guard.py", self.payload()))
+        out = hook_toplevel(run_hook("stop_guard.py", self.payload()))
+        self.assertEqual(out["decision"], "block")
         self.assertIn("M99-new.md", out["reason"])
 
     def test_passes_on_clean_tree(self):

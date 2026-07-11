@@ -1,6 +1,6 @@
 # M07: Guardrail hooks (blocking enforcement + context re-injection)
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** —
 - **Branch/PR:** m07-guardrail-hooks · https://github.com/jmgirard/cairn/pull/4
@@ -43,8 +43,9 @@ default install (D-007: manual until pilots pass) → future release prep.
       blocked with a message naming the files; clean tree passes (fixture
       tests for both).
 - [ ] SessionStart injection: in a cairn repo, hook output contains
-      ROADMAP content and the active milestone file (fixture test);
-      PreCompact re-injects the same.
+      ROADMAP content and the active milestone file (fixture test).
+      (Amended 2026-07-11: dropped "PreCompact re-injects the same" — no
+      hook API re-injects on compaction; injection is startup/resume only.)
 - [ ] No-op guarantee: every hook exits permissively, quickly, and silently
       in a repo without `cairn/ROADMAP.md` (fixture test per hook).
 - [ ] Hook scripts run on python3 stdlib only (no third-party imports;
@@ -64,15 +65,16 @@ default install (D-007: manual until pilots pass) → future release prep.
 - [x] Scaffold `hooks/hooks.json` + shared cairn-repo detection helper
       (python3, stdlib); wire into plugin.json if required (not required —
       hooks.json auto-loads).
-- [~] Implement + fixture-test SessionStart/PreCompact re-injection.
-      REOPENED 2026-07-11 (review finding 2): drop dead PreCompact wiring +
-      gated criterion amendment. SessionStart-on-startup is fine.
-- [~] Implement + fixture-test Stop guard (uncommitted `cairn/` tracking).
-      REOPENED 2026-07-11 (review finding 1, blocker): emit top-level
-      decision/reason; fix the test to assert it.
-- [ ] Correct references/claude-code-hooks.md (Stop=top-level; PreCompact
-      has no additionalContext; SessionStart ignored on compact/clear) +
-      add live-fire check per guard. See Review attempt 1.
+- [x] Implement + fixture-test SessionStart injection (PreCompact dropped
+      2026-07-11 — API can't inject on compaction; hooks.json unwired,
+      criterion amended).
+- [x] Implement + fixture-test Stop guard (uncommitted `cairn/` tracking).
+      Fixed 2026-07-11: emits TOP-LEVEL decision/reason (was nested under
+      hookSpecificOutput → silently no-op'd); regression test asserts
+      top-level + absence of the nesting.
+- [x] Correct references/claude-code-hooks.md contracts (Stop top-level; no
+      compaction re-injection; SessionStart ignored on compact/clear) +
+      test-methodology note (fixtures prove print-shape, not live honoring).
 - [x] Implement + fixture-test PreToolUse merge guard incl. marker
       consumption; marker = `cairn/.merge-approved`, gitignored,
       single-use.
@@ -105,6 +107,7 @@ default install (D-007: manual until pilots pass) → future release prep.
 - 2026-07-11: user chose new-conversation verification (2nd attempt). NEXT SESSION (must be a brand-new Desktop conversation, fresh process): if the "cairn tracking context" block was auto-injected at session start, quote its header in the work log, check task 7 off, set status review, route to /milestone-review M07. If still nothing, hooks don't fire from skills-dir installs in Desktop despite registering — investigate that hypothesis next.
 - 2026-07-11: task 7 VERIFIED — brand-new Desktop conversation (fresh process) auto-injected at session start: `# cairn tracking context (auto-injected by the cairn plugin)`, carrying cairn/ROADMAP.md + the active M07 milestone file. Header string is unique to hooks/session_context.py:18, so the injection is unambiguously our hook firing (not /clear reuse of a pre-hooks process). Firing evidence captured; task 7 checked; all 8 tasks done. Status → review; routing to /milestone-review M07.
 - 2026-07-11: review attempt 1 FAILED (PR #4) → back to in-progress. Primary-source check (official hooks docs) + [O] fresh review found: (blocker) Stop guard nests decision/reason under hookSpecificOutput but the contract is top-level → block silently no-ops; (should-fix) PreCompact can't inject additionalContext and SessionStart ignores it on compact/clear → "PreCompact re-injects" criterion is unachievable as written, needs gated amendment. Root cause: task-1 research doc recorded wrong contracts; fixture tests only assert the script's own stdout so they masked both. Merge guard, no-op, stdlib, README, SessionStart-on-startup all sound. First trip back from review (thrash count 1/3). Next: /milestone-implement — fix Stop shape + test, drop dead PreCompact wiring + amend criterion, correct the research doc, add live-fire checks.
+- 2026-07-11: fixes applied (implement). Stop guard → top-level decision/reason (regression test asserts top-level + no nesting). PreCompact unwired from hooks.json + criterion amended (user gate: drop it) — SessionStart-only. Research doc contracts corrected + test-methodology note added. 16 fixture tests green (was 17; PreCompact test removed). Status → review. Stop-guard LIVE-FIRE is deferred to the review session: hooks snapshot at process start, so the new stop_guard.py only takes effect in a brand-new conversation — verify there by editing a cairn/ file and confirming turn-end blocks.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
@@ -119,19 +122,11 @@ default install (D-007: manual until pilots pass) → future release prep.
 
 ### Attempt 1 — 2026-07-11 (FAILED; back to in-progress). PR #4.
 
-Per-criterion (17 fixture tests green; all JSON shapes cross-checked vs
-official docs code.claude.com/docs/en/hooks.md):
-- Merge guard — PASS. PreToolUse `permissionDecision:deny` shape confirmed
-  correct; logic/regex sound; single-use consumption tested.
-- Stop guard — **FAIL (blocker)**. Wrong JSON shape (see finding 1).
-- SessionStart injection — PARTIAL. Startup injection correct + LIVE-verified
-  this session; PreCompact clause **FAILS** (finding 2).
-- No-op guarantee — PASS. find_cairn_root strict on bad cwd; git() never
-  raises (10s<15s timeout); all scripts exit 0; tested.
-- stdlib-only — PASS (json/os/subprocess/sys/re + local cairn_common).
-- Live verification — PARTIAL. SessionStart fired live; Stop/merge never
-  live-fired (and the Stop shape means it never would).
-- README both paths — PASS.
+Per-criterion (17 fixture tests green; JSON shapes cross-checked vs official
+docs): merge guard, no-op, stdlib, README — PASS; SessionStart startup
+injection PASS + live-verified this session. FAILED: Stop guard (finding 1),
+PreCompact clause of SessionStart criterion (finding 2). Live verification
+PARTIAL — only SessionStart fired live.
 
 Independent review ([O] fresh-context) findings + triage:
 1. BLOCKER — Stop emits `hookSpecificOutput.{decision,reason}`; contract is

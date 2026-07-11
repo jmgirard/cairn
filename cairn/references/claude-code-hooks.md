@@ -22,23 +22,41 @@ claude-code-guide subagent).
 
 Common: `session_id`, `cwd`, `hook_event_name`, `transcript_path`,
 `permission_mode`. Event-specific: SessionStart `source`
-(startup|resume|clear|compact); PreCompact `compaction_type`; Stop
+(startup|resume|clear|compact — additionalContext honored on the first
+two only); PreCompact `compaction_type`; Stop
 `stop_hook_active` (true ⇒ a prior Stop block already fired — must exit 0
 to avoid infinite loops); PreToolUse `tool_name` + `tool_input` (Bash
 command string at `tool_input.command`).
 
 ## Output (stdout JSON, exit 0)
 
-- SessionStart/PreCompact context injection:
-  `{"hookSpecificOutput": {"hookEventName": "<event>",
-  "additionalContext": "<text>"}}` (bare stdout text also works).
-- Stop block: `{"hookSpecificOutput": {"hookEventName": "Stop",
-  "decision": "block", "reason": "<told to Claude>"}}`.
+Two envelopes exist and they are NOT interchangeable — the M07 review
+found a Stop block nested in the wrong one, which silently no-ops.
+Verified against https://code.claude.com/docs/en/hooks.md (2026-07-11):
+event-specific output nests under `hookSpecificOutput`; **decision control
+(`decision`/`reason`) is TOP-LEVEL** for Stop, SubagentStop, PreCompact,
+PostToolUse, UserPromptSubmit, ConfigChange.
+
+- SessionStart context injection: `{"hookSpecificOutput":
+  {"hookEventName": "SessionStart", "additionalContext": "<text>"}}` (bare
+  stdout text also works). **Honored only when `source` is `startup` or
+  `resume`; IGNORED on `clear` and `compact`.**
+- Stop / SubagentStop block: **top-level** `{"decision": "block",
+  "reason": "<told to Claude>"}` — do NOT nest under hookSpecificOutput
+  (a nested `decision` is ignored). Stop/SubagentStop may also carry
+  `hookSpecificOutput.additionalContext` for non-blocking feedback.
 - PreToolUse deny: `{"hookSpecificOutput": {"hookEventName": "PreToolUse",
   "permissionDecision": "deny", "permissionDecisionReason": "<reason>"}}`
   (`allow` / `ask` also valid; prefer this over legacy `decision: block`).
+- PreCompact: block-only (top-level `decision: "block"`). It does **NOT**
+  support `additionalContext` — there is NO hook that re-injects context on
+  compaction (PreCompact fires before compaction with nowhere to attach;
+  SessionStart(compact) ignores additionalContext). cairn injects at
+  SessionStart(startup/resume) only.
 - Exit 2 = block with stderr as feedback; other nonzero = non-blocking
   error. Prefer exit 0 + structured JSON.
+- **Fixture tests prove only what a hook prints, not that Claude Code
+  honors it — pin asserted envelopes to this contract + one live-fire.**
 
 ## Matchers & execution
 
