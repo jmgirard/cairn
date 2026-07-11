@@ -76,6 +76,12 @@ after both pilots.
 - 2026-07-11: catch-up from openac git: M04 (check hygiene) shipped through
   full plan→implement→review (PR #3, archived) — 3rd milestone criterion
   met. Remaining: one RB/RR cycle, one release walk.
+- 2026-07-11: catch-up: openac M03 (whisper reader) at review; no RB/RR
+  artifacts yet.
+- 2026-07-11: friction (Jeff's deliberate experiment): skills never
+  self-solicited an RB during openac M03 despite an RB-worthy question —
+  escalation hook is confidence-triggered → RB self-solicitation candidate
+  banked (category tripwires + plan-time tagging + gate chip option).
 
 ## Decisions
 
