@@ -34,9 +34,10 @@ broad rollout.
 
 - [x] Confirm tidymedia has nothing in flight (or carry over its one
       in-progress item explicitly).
-- [ ] Run `/cairn-init` migration (Jeff drives, in a tidymedia session);
+- [x] Run `/cairn-init` migration (Jeff drives, in a tidymedia session);
       review the proposal gate carefully.
-- [ ] Verify ledger, audit, and merge.
+- [ ] Verify ledger, audit, and merge. (verify+audit done; merge awaits
+      approval)
 - [ ] Ship one milestone post-migration (tidymedia M08); log friction as
       cairn candidate rows.
 
@@ -53,6 +54,16 @@ broad rollout.
   post-migration ship; task 4 amended issues→candidate rows (per M02).
 - 2026-07-11: task 1 done; pushed tidymedia 3494379 so migration cuts
   from pushed master; legacy max ID M10 → new numbering starts M11.
+- 2026-07-11: task 2 done — Jeff ran /cairn-init in tidymedia (PR #8,
+  0f370a4); gate-approved deviation: adopt-in-place (1-day-old precursor
+  near-identical to cairn → translate in place, no legacy tomb except the
+  retired repo-local skill). Pilot finding → candidate row.
+- 2026-07-11: task 3 verify+audit done — ledger complete (every diff path
+  dispositioned; verbatim claims verified: 0-change renames, D001–D009
+  untouched, D010 appended); manual /milestone audit clean on branch
+  (mirrors agree, deps resolve, caps 23/51/105, no orphans/collisions,
+  .claude/skills gone, ignore entries present); CI 7/7 green. Merge
+  awaits user approval.
 
 ## Decisions
 

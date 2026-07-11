@@ -16,6 +16,7 @@ not an R package, so R-specific gates don't apply.
 
 ## Candidates
 
+- Codify adopt-in-place migration variant in cairn-init §2: young precursor near-identical to cairn → translate in place, no entombment tomb (gate-approved deviation in tidymedia pilot, PR #8) — added 2026-07-11 — M03 pilot
 - Stress-test migration on a Lineage B repo (ackwards or circumplex) — added 2026-07-11 — DRAFT_2 §11
 - Plugin hooks for immediate guardrail feedback (e.g., README.Rmd edit reminder) — added 2026-07-11 — DRAFT_2 §9.2
 - Marketplace one-command install: marketplace.json shipped 2026-07-11 (validates); remaining: document install paths in README (incl. Desktop Customize → Plugins) + contrast dev install (skills-dir symlink: live with checkout, no update step, branch-checkout footgun) vs marketplace snapshot (frozen copy, manual re-fetch per release) — dual-install ambiguity bit the pilot 2026-07-11 — added 2026-07-11 — DRAFT_2 §2.3
