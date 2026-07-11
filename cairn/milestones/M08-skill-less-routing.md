@@ -51,7 +51,7 @@ the right tier/skill instead of bypassing the rulebook.
       (Evidence: the instruction is present; no chip/output-discipline prose
       is duplicated into the section.)
 - [ ] **Within cap.** The template's section body stays within the weight
-      cap (≤ ~25 lines, per the ~20-line guidance in the template header).
+      cap (≤ ~25 lines, per the guidance in the template header).
       (Evidence: `wc -l`.)
 - [ ] **Dogfooded.** This repo's own `CLAUDE.md` cairn section is updated to
       the router form and is consistent with the template (same mappings,
@@ -133,5 +133,34 @@ Dry-run scenarios — the routing the router is intended to produce:
    bug (`/hotfix`) or new work (`/milestone-plan`), branch first.
 
 ## Review
-<!-- filled by /milestone-review: evidence per criterion; consistency-gate
-     results; independent-review findings and their triage -->
+
+**Fresh evidence (2026-07-11, /milestone-review):**
+- C1 (classify-first + tiers + never-on-main): all present in
+  `claude-md-section.md` — classify-first opener, four tier→destination
+  mappings, "Never implement code on main", approval-at-review. Grep-verified.
+- C2 (delivery-path rule; conduct not restated): "invoke the skill *first*
+  so the full rulebook loads" present; 0 matches for chip/output-discipline
+  prose. Verified.
+- C3 (within cap): 20 non-blank body lines (≤ ~25). `wc -l`.
+- C4 (dogfooded): repo `CLAUDE.md` carries the same router elements
+  (classify, /hotfix, /milestone-plan, never-on-main, tracking-rules ptr).
+- C5 (rubric + dry-runs): "Router rubric & dry-runs" section present; 5
+  dry-run scenarios.
+
+**Consistency gate:** R gates N/A (no DESCRIPTION — plugin repo). CHANGELOG
+is release-scoped (updated at /cairn-release, as for M04–M07); no entry due.
+Main in sync with origin; no CI workflows.
+
+**Independent review (Opus, fresh context):** change judged sound — taxonomy
+matches tracking-rules, caps met, dogfood consistent, all criteria satisfied.
+Findings triaged:
+- F1 (low) — router dropped "the plugin's" before `tracking-rules.md`; in an
+  adopted foreign repo there's no `skills/` at root. **Fixed** in template +
+  repo CLAUDE.md.
+- F2 (trivial) — C3 parenthetical named the old "~20-line" header after it
+  was loosened to ~25. **Fixed.**
+- F3 (trivial) — "20 body lines" vs 19 non-blank (heading counting).
+  Immaterial (under cap either way); **left as-is.**
+- Note (not a defect): rewrite intentionally drops the eight-skill
+  enumeration and the "add to candidates" intake line to hit the cap;
+  candidate-adding is a trivial tracking edit. Accepted trade-off.

@@ -21,8 +21,8 @@ first:
   reaches main without explicit user approval at the review gate.
 
 Anything but trivial → invoke the skill *first* so the full rulebook
-(`skills/shared/tracking-rules.md`) and its conduct load; don't reconstruct
-the rules from memory. State lives under `cairn/`: **Architecture → DESIGN ·
+(the plugin's `skills/shared/tracking-rules.md`) and its conduct load; don't
+reconstruct the rules from memory. State lives under `cairn/`: **Architecture → DESIGN ·
 Status → ROADMAP · Tasks → milestone files · Decisions → DECISIONS · History
 → archive + git**. Never record status or TODOs here; memory never holds
 project state — `cairn/` files win any conflict.
