@@ -1,6 +1,6 @@
 # M02: Pilot — fresh adoption in one package repo
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** M01
 - **Branch/PR:** — (work happens in the pilot repo; this file tracks it)
@@ -34,9 +34,9 @@ after both pilots.
 - [x] Choose the pilot repo (a package without an existing system).
 - [x] Run `/cairn-init`; note anything manual.
 - [x] Ship 3 milestones; log friction as candidates.
-- [ ] Run one RB/RR escalation; one release walk. (RB/RR done: RB01/RR01
-      reader-family-api ingested + archived in openac; release walk pending.)
-- [ ] Summarize findings in this file's Review section.
+- [x] Run one RB/RR escalation; one release walk. (RB01/RR01 ingested +
+      archived; release walk → openac 0.1.0, tagged, no-CRAN handoff.)
+- [x] Summarize findings in this file's Review section.
 
 ## Work log
 
@@ -90,7 +90,33 @@ after both pilots.
 - 2026-07-11: gate: Jeff runs /cairn-release in openac (walk to handoff
   checklist, no submission; stale vignettes may surface — acceptable pilot
   signal). Last open criterion; M02 → review on its completion.
+- 2026-07-11: catch-up from openac git: M05 (vignettes) shipped first
+  (PR #5, archived — 5 milestones total), then /cairn-release walked
+  0.0.0.9000 → 0.1.0 (NEWS consolidated, README rewritten, tag v0.1.0,
+  deliberate no-CRAN, dev re-bump). All criteria have evidence; findings
+  summarized in Review; status → review.
 
 ## Decisions
 
 ## Review
+
+### Pilot findings (implementation summary, 2026-07-11)
+
+The system worked end-to-end: /cairn-init scaffold, five openac milestones
+(M01–M05) through plan→implement→review with chips at every transition,
+one gated Fable RB/RR cycle (RB01 reader-family-api), one /cairn-release
+walk (0.1.0, tagged, deliberate no-CRAN handoff). Friction became 10+
+candidate rows on this ROADMAP rather than issues. Highest-signal findings:
+
+1. **RB self-solicitation gap** — skills never offered escalation
+   unprompted (confidence-triggered hook; validated by deliberate
+   experiment) → category-tripwire candidate.
+2. **Fable > Opus on elicitation quality** (DESIGN interviews) →
+   design-interview skill candidate.
+3. **Output discipline** — stage orientation unclear, chip option text too
+   technical → stage banners + plain-language chip candidate.
+4. **Contextual chips validated** — options composed from session findings
+   beat fixed menus → rulebook-principle candidate.
+5. **Structural gaps** — skill-less routing guardrails, cross-repo ID
+   ambiguity, toolchain-profile extraction (core proved ~80%
+   language-agnostic) → candidates for v0.2 planning.
