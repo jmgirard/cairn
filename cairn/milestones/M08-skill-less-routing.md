@@ -3,7 +3,7 @@
 - **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- high | normal | low -->
 - **Depends on:** —   <!-- M07 hooks already shipped; no hard dep -->
-- **Branch/PR:** m08-skill-less-routing   <!-- PR URL once opened -->
+- **Branch/PR:** m08-skill-less-routing · https://github.com/jmgirard/cairn/pull/5
 
 ## Goal
 
