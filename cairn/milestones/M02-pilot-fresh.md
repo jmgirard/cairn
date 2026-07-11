@@ -69,6 +69,10 @@ after both pilots.
   release walk) in openac Desktop sessions for pilot fidelity; openac M04
   (check hygiene) chosen next. This session tracks; catch-up from openac
   git on resume.
+- 2026-07-11: friction (openac + tidymedia): chip option descriptions too
+  technical — unclear what's being chosen and why it matters → folded into
+  output-discipline candidate. Also: Desktop chips can be minimized without
+  closing, softening the earlier chip-layout concern.
 
 ## Decisions
 
