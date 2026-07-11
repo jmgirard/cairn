@@ -65,6 +65,10 @@ after both pilots.
 - 2026-07-11: plan amendment (gate-approved): friction criterion changed
   from "filed as issues" to "captured as candidate rows (or issues)" —
   matches established practice (5 candidates banked, 0 issues).
+- 2026-07-11: gate: Jeff drives remaining pilot work (3rd milestone, RB/RR,
+  release walk) in openac Desktop sessions for pilot fidelity; openac M04
+  (check hygiene) chosen next. This session tracks; catch-up from openac
+  git on resume.
 
 ## Decisions
 
