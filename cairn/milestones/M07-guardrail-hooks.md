@@ -61,13 +61,14 @@ default install (D-007: manual until pilots pass) → future release prep.
 - [x] Research exact hook API contracts (SessionStart/PreCompact
       additionalContext, Stop block, PreToolUse deny JSON shapes; hooks.json
       schema for plugins) against current Claude Code docs.
-- [ ] Scaffold `hooks/hooks.json` + shared cairn-repo detection helper
-      (python3, stdlib); wire into plugin.json if required.
-- [ ] Implement + fixture-test SessionStart/PreCompact re-injection.
-- [ ] Implement + fixture-test Stop guard (uncommitted `cairn/` tracking).
-- [ ] Implement + fixture-test PreToolUse merge guard incl. marker
-      consumption; define marker path/format (e.g. `cairn/.merge-approved`,
-      gitignored).
+- [x] Scaffold `hooks/hooks.json` + shared cairn-repo detection helper
+      (python3, stdlib); wire into plugin.json if required (not required —
+      hooks.json auto-loads).
+- [x] Implement + fixture-test SessionStart/PreCompact re-injection.
+- [x] Implement + fixture-test Stop guard (uncommitted `cairn/` tracking).
+- [x] Implement + fixture-test PreToolUse merge guard incl. marker
+      consumption; marker = `cairn/.merge-approved`, gitignored,
+      single-use.
 - [ ] Update `/milestone-review` skill to write the marker at the approval
       gate; update tracking-rules.md if the git/approval model section
       needs the marker mentioned.
@@ -79,6 +80,7 @@ default install (D-007: manual until pilots pass) → future release prep.
 
 - 2026-07-11: created by /milestone-plan.
 - 2026-07-11: task 1 — hook API contracts verified against official docs ([S] subagent); summary → references/claude-code-hooks.md.
+- 2026-07-11: tasks 2–5 — hooks.json + 3 hook scripts + shared helper; 17 fixture tests green; merge guard scoped to command-position git/gh (echo-style false positives excluded); missing cwd = strict no-op.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
