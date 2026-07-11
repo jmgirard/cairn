@@ -63,7 +63,7 @@ design-interview skill, skill-less routing, hooks → candidates (v0.3).
 - [x] Add conventions to tracking-rules (+ cairn-init skeletons where
       noted): cross-repo IDs, done-row retention, DESIGN principle
       ordering.
-- [ ] Close the four M01-review nits (rulebook RR pointer; session-start
+- [x] Close the four M01-review nits (rulebook RR pointer; session-start
       reads in cairn-release + hotfix; cairn-release closing chip;
       skeleton status-grouping note).
 - [ ] Coherence pass across rulebook + touched skills; verify caps.
@@ -83,6 +83,9 @@ design-interview skill, skill-less routing, hooks → candidates (v0.3).
 - 2026-07-11: Task 3: cross-repo ID qualification, done-row retention
   (keep 5 newest), DESIGN IP-then-GP ordering — in tracking-rules and the
   cairn-init skeleton comments (ROADMAP comment also closes nit 4).
+- 2026-07-11: Task 4: nits 2+3 closed — DECISIONS/reviews session-start
+  reads in cairn-release + hotfix; cairn-release step-9 routing chip
+  (nits 1 and 4 closed in tasks 2 and 3).
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->

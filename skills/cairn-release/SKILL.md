@@ -13,6 +13,9 @@ Stage banner: `[cairn · release · <version> · <step>]`.
 
 ## Preconditions
 
+- Session start: read `cairn/ROADMAP.md` and `cairn/DECISIONS.md`
+  (standing constraints bind the release too); if an un-ingested RR sits
+  in `cairn/reviews/`, handle ingestion first (see `/milestone-brief`).
 - No milestone `in-progress` — release from a clean, green main. (A
   milestone at `review` should be merged or explicitly deferred first.)
 - Clean `git status`; local main up to date with origin.
@@ -62,3 +65,8 @@ Stage banner: `[cairn · release · <version> · <step>]`.
 8. Work-log/ROADMAP note: one line in ROADMAP ("Released <version>
    YYYY-MM-DD") is permitted as a Done-section annotation; nothing else in
    tracking changes.
+
+9. **Routing chip**, composed from the release's end state (chip rules per
+   tracking-rules) — e.g. **Stop here — run the submission checklist
+   yourself** (recommended) / Plan the next milestone → `/milestone-plan` /
+   Run a health check → `/milestone`.
