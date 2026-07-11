@@ -9,6 +9,7 @@ argument-hint: "[description]"
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it (especially: work tiers, git model). Read `cairn/ROADMAP.md` to check
 whether an existing milestone already covers this.
+Stage banner: `[cairn · hotfix · <slug> · <step>]`.
 
 ## Workflow
 

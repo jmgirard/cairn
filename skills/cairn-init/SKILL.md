@@ -9,6 +9,7 @@ argument-hint: ""
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first.
 Idempotent: safe to re-run any time; re-runs report and repair missing or
 damaged pieces and **never overwrite user content without asking**.
+Stage banner: `[cairn · init · <scaffold|repair|migration §n>]`.
 
 ## 0. Detect the situation
 

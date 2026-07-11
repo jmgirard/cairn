@@ -8,6 +8,7 @@ argument-hint: "[title or description]"
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it (especially: sizing tripwires, status gatekeeping, question gates).
+Stage banner: `[cairn · plan · <phase>]` (add `M<NN>` once assigned).
 
 ## Session start
 

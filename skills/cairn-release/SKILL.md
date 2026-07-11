@@ -9,6 +9,7 @@ argument-hint: "[patch | minor | major]"
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first. This
 skill prepares everything and hands the actual submission to the user —
 **it never self-submits to CRAN.**
+Stage banner: `[cairn · release · <version> · <step>]`.
 
 ## Preconditions
 

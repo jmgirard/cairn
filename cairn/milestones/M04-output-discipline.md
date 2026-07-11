@@ -55,7 +55,7 @@ README install docs → release-prep candidate.
 - [x] Draft the "Output & interaction discipline" section in
       `skills/shared/tracking-rules.md` (banners, deltas, recaps, chip
       rules, contextual construction, chapter markers).
-- [ ] Add the stage-banner instruction to all eight `skills/*/SKILL.md`
+- [x] Add the stage-banner instruction to all eight `skills/*/SKILL.md`
       files (one consistent line each).
 - [ ] Recast hardcoded routing-chip menus (grep `Routing chip` — at least
       cairn-init:75,139 and milestone-brief) as contextual construction
@@ -83,6 +83,8 @@ README install docs → release-prep candidate.
   tracking-rules (banners, deltas, outcome-first recaps, chip rules,
   contextual construction, chapters, [S]/[O]/[F]); gates-section chip
   paragraph now defers to it.
+- 2026-07-11: task 2 done — banner line in all eight SKILL.md openings,
+  each with its skill token and phase slot (grep-verified 8/8).
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->

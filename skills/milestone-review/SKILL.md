@@ -8,6 +8,7 @@ argument-hint: "<id>"
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it (especially: approval model, CI waiting rules, archive protocol).
+Stage banner: `[cairn · review · M<NN> · <step>]`.
 
 ## Session start
 
