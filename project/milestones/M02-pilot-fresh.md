@@ -49,6 +49,10 @@ after both pilots.
 - 2026-07-11: second (principle-focused) Fable interview also judged
   excellent; pass-2 moves distilled into the notes; Jeff proposes two-pass
   interview (overall → principles) as gold standard → candidate updated.
+- 2026-07-11: friction during first openac milestone implement: chat
+  output volume disorienting (stage unclear) and oversized question chips
+  crowd out chat context → output-discipline/stage-orientation candidate
+  added; chip minimize/side-by-side flagged as Desktop app feedback.
 
 ## Decisions
 
