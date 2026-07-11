@@ -17,9 +17,8 @@ subagent tier tags. Banner line in all eight skills; six hardcoded chip
 menus recast as contextual examples (/milestone kept as the model);
 outcome-first clauses at the three completion sites; tier tags at all
 spawn sites. Independent Opus review: approve-with-fixes, no blockers;
-invariant-weakening probe (Fable gate, chip stops) clean; F1/F2/F3/F4
-fixed on branch, F6 accepted (implement's three completion options are
-context-invariant).
+invariant-weakening probe (Fable gate, chip stops) clean; four findings
+fixed on branch, one accepted (context-invariant completion options).
 
 ## Key decisions / findings
 - Conduct rules live in one rulebook section; skills carry only their
