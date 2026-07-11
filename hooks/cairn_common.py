@@ -59,12 +59,14 @@ def git(args, cwd):
         return 1, ""
 
 
-def parse_roadmap_rows(roadmap_text):
-    """Yield (id, status, relpath) for each milestone table row.
+def parse_roadmap_rows_full(roadmap_text):
+    """Yield (id, title, status, depends, priority, relpath) per milestone row.
 
     Rows look like:
     | M07 | Title | in-progress | — | high | milestones/M07-....md |
-    relpath is relative to the cairn/ directory.
+    relpath is relative to the cairn/ directory. This is the single
+    row-splitter; parse_roadmap_rows is the (id, status, relpath) subset
+    the hooks use.
     """
     for line in roadmap_text.splitlines():
         if not line.lstrip().startswith("|"):
@@ -72,7 +74,15 @@ def parse_roadmap_rows(roadmap_text):
         cells = [c.strip() for c in line.split("|")][1:-1]
         if len(cells) < 6 or not cells[0].startswith("M"):
             continue
-        yield cells[0], cells[2].lower(), cells[5]
+        yield cells[0], cells[1], cells[2].lower(), cells[3], cells[4], cells[5]
+
+
+def parse_roadmap_rows(roadmap_text):
+    """Yield (id, status, relpath) for each milestone table row."""
+    for mid, _title, status, _dep, _pri, relpath in parse_roadmap_rows_full(
+        roadmap_text
+    ):
+        yield mid, status, relpath
 
 
 def emit(obj):

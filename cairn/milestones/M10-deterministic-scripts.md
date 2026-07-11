@@ -58,16 +58,16 @@ Snapshot/Audit/Route; a DESIGN.md bullet for the new layer.
 
 ## Tasks
 
-- [ ] Scaffold `scripts/` and make `cairn_common` importable from there
+- [x] Scaffold `scripts/` and make `cairn_common` importable from there
       without duplicating it (default: prepend `hooks/` to `sys.path`, leaving
       the enforcement layer untouched); confirm hook tests still green.
-- [ ] Implement `scripts/cairn_status.py` (snapshot from ROADMAP + milestone
+- [x] Implement `scripts/cairn_status.py` (snapshot from ROADMAP + milestone
       headers).
-- [ ] Implement `scripts/cairn_next.py` (Depends-on resolution against the
+- [x] Implement `scripts/cairn_next.py` (Depends-on resolution against the
       `done` set → workable/resume/review).
-- [ ] Implement `scripts/cairn_validate.py` (all mechanical checks above;
+- [x] Implement `scripts/cairn_validate.py` (all mechanical checks above;
       accurate per-check + summary counts; correct exit codes).
-- [ ] Write `scripts/tests/test_scripts.py`: fixture `cairn/` trees exercising
+- [x] Write `scripts/tests/test_scripts.py`: fixture `cairn/` trees exercising
       each script, one case per `validate` failure mode + a clean pass;
       confirm `test_hooks.py` still passes.
 - [ ] Wire `/milestone` SKILL.md to shell out to the three scripts for the
@@ -82,6 +82,9 @@ Snapshot/Audit/Route; a DESIGN.md bullet for the new layer.
 - 2026-07-11: created by /milestone-plan (promoted from the deterministic
   tracking scripts candidate; language=python3-stdlib reusing cairn_common,
   wiring scoped to /milestone per question gate).
+- 2026-07-11: shipped status/next/validate + shared cairn_scripts helper;
+  extended cairn_common with parse_roadmap_rows_full (hooks untouched, 18
+  hook tests green); 15 script tests pass; validate clean on live tree.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
