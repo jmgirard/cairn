@@ -207,10 +207,18 @@ auto-proceed.
 How skills talk to the user. These rules bind all chat output while any
 cairn skill is active.
 
-- **Stage banner.** Begin each substantive reply with one orientation
-  line: `[cairn · <skill> · M<NN> · <phase>]` — e.g.
-  `[cairn · implement · M07 · task 3/7]`. Drop parts that don't apply
-  (no milestone in scope → `[cairn · init · migration §4]`).
+- **Phase header.** Orient the user with Markdown headings, not an inline
+  banner. An `##` names the unit of work and its title; a `###` beneath it
+  names the phase. Milestone skills: `## Milestone <NN>: <title>` →
+  `### Plan` / `### Implement` / `### Review`. Other skills map onto the same
+  two levels: `## Hotfix: <slug>` → `### <step>`; `## cairn-init` →
+  `### Scaffold` / `### Repair` / `### Migration §n`; `## Release <version>`
+  → `### <step>`; `## Status` → `### Snapshot` / `### Audit` / `### Route`;
+  `## Review brief RB<NN>` → `### Draft` / `### Gate` / `### Ingest`. Emit the
+  `##` once, at the first phase entered in a session (a fresh post-`/clear`
+  session re-emits it so the reply stands alone); emit a `###` at each phase
+  entry — which usually coincides with a chapter marker. Replies within the
+  same phase run as plain deltas underneath — never a heading per reply.
 - **Deltas, not dumps.** Between gates, report what changed since the
   last report — findings, decisions, surprises, direction changes. Never
   restate the plan or paste command output; the tracking files hold the

@@ -9,7 +9,7 @@ argument-hint: "<id>"
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it (especially: git model, tracking-travels-with-code, delegation policy,
 CI waiting rules).
-Stage banner: `[cairn · implement · M<NN> · task <n>/<total>]`.
+Phase header: `## Milestone <NN>: <title>` → `### Implement`.
 
 ## Session start
 

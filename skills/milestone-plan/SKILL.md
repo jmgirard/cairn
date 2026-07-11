@@ -8,7 +8,8 @@ argument-hint: "[title or description]"
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it (especially: sizing tripwires, status gatekeeping, question gates).
-Stage banner: `[cairn · plan · <phase>]` (add `M<NN>` once assigned).
+Phase header: `## Milestone <NN>: <title>` → `### Plan` (before an ID is
+assigned, `## Planning`); see the tracking-rules Phase header rule.
 
 ## Session start
 
