@@ -100,23 +100,51 @@ after both pilots.
 
 ## Review
 
+### Criteria evidence (2026-07-11, fresh by command)
+
+1. **Scaffold, no manual fixes** — PASS w/ judgment call: nothing manual
+   recorded at scaffold time (only a Desktop install-path doc gap). The
+   later `project/`→`cairn/` rename (openac 3c81c7b, 13 files) was
+   upstream design change D-008, not a scaffold repair — but the shipping
+   post-D-008 init has not itself been executed: verified mechanically
+   (grep: zero non-legacy `project/` refs in cairn-init/templates); M03
+   (tidymedia) exercises it for real. Flagged to approval gate.
+2. **≥3 milestones, three phase skills, chips** — PASS: 5 archives on disk
+   (openac M01–M05), PRs #1–#5 all merged, plan/review commits per
+   milestone; chip use attested (user + screenshot; no disk artifact).
+3. **RB/RR cycle** — PASS: RB01/RR01 archived; ingested as openac D-entry
+   with consequences landed in code (speaker column, colClasses fix, test).
+4. **Release walk** — PASS: 0.0.0.9000→0.1.0 (d14e8e8), NEWS consolidated,
+   README rewritten, tag v0.1.0, no-CRAN call, dev re-bump 78a380e.
+5. **Friction → candidates** — PASS: 8 rows tagged M02 pilot + 2 derived
+   from pilot notes; every friction work-log line maps to a row; 0 issues.
+
+Consistency gate (adapted; R gates waived per CLAUDE.md): caps OK
+(CLAUDE.md 17/80, ROADMAP 34/60, this file /150); status mirror = ROADMAP;
+no README.Rmd/NEWS.md obligations (plugin repo). No branch/PR: docs-only
+meta-milestone on main (deviation logged 2026-07-11, planning).
+
+### Independent review (2026-07-11, fresh-context Opus)
+
+Approve-with-fixes; all criteria verified on disk; RB/RR called exemplary
+(RR01 caught a real csv-parity defect). Triage — fixed: F1 untested
+shipping init (mechanical grep above; M03 closes it empirically), F2 PR
+evidence understated (#1–#5 all merged), F3 candidate count (8+2 wording).
+Accepted: F4 chip use rests on attestation — noted for approver. Rejected:
+F5 "Fable-orchestrator rename breaches D-004" — D-004 governs spawned
+subagents; the orchestrator model is the user's Desktop choice and the
+rename was gate-approved (work log). Observations F6 (cap headroom →
+findings compressed), F7 (openac scaffold committed inside its M01
+commit; openac-internal): logged, no action.
+
 ### Pilot findings (implementation summary, 2026-07-11)
 
 The system worked end-to-end: /cairn-init scaffold, five openac milestones
-(M01–M05) through plan→implement→review with chips at every transition,
-one gated Fable RB/RR cycle (RB01 reader-family-api), one /cairn-release
-walk (0.1.0, tagged, deliberate no-CRAN handoff). Friction became 10+
-candidate rows on this ROADMAP rather than issues. Highest-signal findings:
-
-1. **RB self-solicitation gap** — skills never offered escalation
-   unprompted (confidence-triggered hook; validated by deliberate
-   experiment) → category-tripwire candidate.
-2. **Fable > Opus on elicitation quality** (DESIGN interviews) →
-   design-interview skill candidate.
-3. **Output discipline** — stage orientation unclear, chip option text too
-   technical → stage banners + plain-language chip candidate.
-4. **Contextual chips validated** — options composed from session findings
-   beat fixed menus → rulebook-principle candidate.
-5. **Structural gaps** — skill-less routing guardrails, cross-repo ID
-   ambiguity, toolchain-profile extraction (core proved ~80%
-   language-agnostic) → candidates for v0.2 planning.
+through plan→implement→review with chips at every transition, one gated
+Fable RB/RR cycle, one /cairn-release walk. Friction became candidate rows
+(8 tagged + 2 derived) rather than issues. Highest-signal: RB
+self-solicitation gap (confidence-triggered hook never fired; deliberate
+experiment); Fable > Opus elicitation quality; output discipline (stage
+orientation, plain-language chips); contextual-chip construction
+validated; structural gaps (skill-less routing, cross-repo IDs, toolchain
+profiles — core proved ~80% language-agnostic). All banked as candidates.
