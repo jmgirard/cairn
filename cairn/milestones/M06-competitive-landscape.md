@@ -53,11 +53,11 @@ supplies evidence); broad long-tail survey beyond the eight named systems
 - [x] Study Anthropic official plugins from source
       (anthropics/claude-plugins-official): feature-dev,
       claude-md-management, code-review → three notes.
-- [ ] Hands-on trial: feature-dev and claude-md-management in a scratch
+- [x] Hands-on trial: feature-dev and claude-md-management in a scratch
       repo; record what the workflow actually does.
 - [x] Study + hands-on trial ccpm (GitHub-Issues PM, worktree parallel
       agents) → note.
-- [ ] Study from repos/docs: spec-kit, Task Master, BMAD-METHOD,
+- [x] Study from repos/docs: spec-kit, Task Master, BMAD-METHOD,
       Backlog.md/Meridian → three or four notes.
 - [ ] Write competitive-landscape.md synthesis: steal-list + uniqueness
       case; update INDEX.md.
@@ -79,6 +79,17 @@ supplies evidence); broad long-tail survey beyond the eight named systems
   (PRD→epic→tasks) + 3 status scripts executed hands-on in scratch repo;
   GitHub sync/execute from source only; note + INDEX row written;
   deterministic-status-scripts flagged as biggest steal.
+- 2026-07-11: task 4 done — four [S] study agents fanned out (spec-kit,
+  Task Master, BMAD, Backlog.md+Meridian); load-bearing claims verified
+  against clones (spec-kit gates, Meridian blocking hook, BMAD ledger);
+  four notes + INDEX rows written. Task Master agent self-reported
+  deleting its own scratch clone (harmless, logged for honesty).
+- 2026-07-11: task 2 done — feature-dev all 7 phases executed on scratch
+  repo (6 [S] agents); claude-md-improver run end-to-end + read-only
+  rubric score of cairn's CLAUDE.md (~70/100); headline finding:
+  cross-trial artifact contamination (agents treat any tracked planning
+  file as binding) — empirical support for the one-tracking-system rule;
+  hands-on sections written into both notes.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->

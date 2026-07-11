@@ -46,6 +46,17 @@ architecture/gotcha content into CLAUDE.md against the <80-line cap and
 ownership table — the two systems' doctrines conflict on where project
 memory lives.
 
-## Hands-on observations
+## Hands-on observations (source-execution trial, 2026-07-11)
 
-(from source-execution trial, 2026-07-11 — see work log)
+Ran the improver workflow end-to-end on a scratch repo with a
+deliberately weak CLAUDE.md: discovery `find` → rubric scoring (came
+out ~20/100, F: vague "run with python", zero architecture, filler
+"be careful when editing") → report → targeted 21-line rewrite. The
+workflow is single-agent, linear, cheap; the rubric's weights made the
+rewrite priorities obvious rather than arbitrary. Also scored cairn's
+own CLAUDE.md read-only: ~70/100 (B) — the rubric docks points for
+missing inline architecture/commands, i.e., it penalizes exactly what
+cairn's boundary rule prescribes (pointers over content). Confirms the
+compatibility risk is real but moderate: an unsupervised improver run
+would recommend additions cairn routes elsewhere, though the
+report-before-write gate gives the user a natural veto point.

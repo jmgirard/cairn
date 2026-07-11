@@ -42,6 +42,29 @@ A feature-dev session that dies mid-phase leaves nothing resumable. It is
 a *session choreography*, orthogonal to project tracking — closest to
 cairn's plan→implement→review arc but evaporates on session end.
 
-## Hands-on observations
+## Hands-on observations (source-execution trial, 2026-07-11)
 
-(from source-execution trial, 2026-07-11 — see work log)
+Executed all 7 phases on a ~50-line scratch Python CLI (priority-levels
+feature): 2 explorers, 2 architects, 2 reviewers, all Sonnet (~215k
+subagent tokens — heavy choreography for small work; the workflow has
+no sizing tiers, everything gets the full ceremony). Findings:
+
+- Explorer fan-out overlapped ~60% on a tiny repo; both "reading
+  lists" were the entire codebase. Lenses need codebase mass to earn
+  their cost.
+- Architect lenses genuinely diverged (plain-str + module tuple vs.
+  enum + `__post_init__` + pure helper) and both were high quality;
+  the minimal lens correctly derived that backward compatibility falls
+  out of the existing `Item(**d)` load path with zero new code.
+- The confidence rubric demonstrably filtered: the correctness
+  reviewer found a real inconsistency (empty-string priority silently
+  defaulting), scored it ~50, and withheld it; the conventions reviewer
+  surfaced 2 findings ≥80, one a true omission (CLAUDE.md not updated).
+- **Cross-contamination**: both an architect and a reviewer treated
+  leftover artifacts from a *different* trial (ccpm's `.claude/epics/`
+  task files) as binding acceptance criteria and flagged "drift"
+  against them. Agents treat any tracked planning artifact as
+  authoritative — empirical support for cairn's one-tracking-system
+  rule (issues are inboxes, never a second system).
+- After phase 7 nothing persists: the clarifying-question answers,
+  chosen architecture, and review triage live only in the transcript.
