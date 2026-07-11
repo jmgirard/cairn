@@ -57,7 +57,7 @@ README install docs → release-prep candidate.
       rules, contextual construction, chapter markers).
 - [x] Add the stage-banner instruction to all eight `skills/*/SKILL.md`
       files (one consistent line each).
-- [ ] Recast hardcoded routing-chip menus (grep `Routing chip` — at least
+- [x] Recast hardcoded routing-chip menus (grep `Routing chip` — at least
       cairn-init:75,139 and milestone-brief) as contextual construction
       with examples; align with `/milestone`'s phrasing (milestone:60–69).
 - [ ] Add outcome-first recap guidance to the completion steps of
@@ -85,6 +85,9 @@ README install docs → release-prep candidate.
   paragraph now defers to it.
 - 2026-07-11: task 2 done — banner line in all eight SKILL.md openings,
   each with its skill token and phase slot (grep-verified 8/8).
+- 2026-07-11: task 3 done — six chip menus recast as contextual
+  construction with e.g. menus (cairn-init ×2, brief, plan, implement,
+  review); /milestone unchanged as the model.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->

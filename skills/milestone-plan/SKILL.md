@@ -78,7 +78,8 @@ handle ingestion first (see `/milestone-brief`).
    (docs-only carve-out): `plan M<NN>[, M<NN>…]: <title>`; push. A session
    dying mid-plan must not leave a half-planned ghost.
 
-7. **Routing chip** (AskUserQuestion):
+7. **Routing chip**, composed from what was just planned (chip rules per
+   tracking-rules) — e.g.:
    - **Start implementing M<NN>** (the proximal one) → `/milestone-implement`
      (recommended)
    - Plan another milestone → `/milestone-plan`

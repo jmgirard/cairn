@@ -73,8 +73,9 @@ Then:
   principles.
 - Commit (docs-only, main): `cairn-init: scaffold tracking system`; push
   if a remote exists (origin/main is main — see tracking-rules git model).
-- Routing chip: **Plan the first milestone** → `/milestone-plan` /
-  Run `/milestone` / Stop.
+- Routing chip, composed from what the scaffold found (chip rules per
+  tracking-rules) — e.g. **Plan the first milestone** → `/milestone-plan`
+  (recommended) / Run `/milestone` / Stop.
 
 ## 2. Migration protocol
 
@@ -137,5 +138,6 @@ Only *live* state gets translated.
    "dropped at user request". Nothing silently vanishes. The user approves
    the merge like any milestone.
 
-8. Routing chip: **Run a health audit** → `/milestone` (recommended) /
-   Plan a milestone → `/milestone-plan` / Stop.
+8. Routing chip, composed from the migration's actual end state — e.g.
+   **Run a health audit** → `/milestone` (recommended) / Plan a milestone
+   → `/milestone-plan` / Stop.
