@@ -40,7 +40,10 @@ Stage banner: `[cairn · hotfix · <slug> · <step>]`.
 6. **Approval gate:** present the diff, the regression-test evidence, and
    the NEWS line; merge (`gh pr merge --squash --delete-branch`) only on
    explicit user approval, with green CI (one blocking
-   `gh pr checks --watch` wait).
+   `gh pr checks --watch` wait). On approval, write the merge-guard
+   marker first: `cairn/.merge-approved` (gitignored; one line:
+   `hotfix <slug> approved YYYY-MM-DD`) — the plugin's hook denies
+   merges to main without it and consumes it per attempt.
 
 7. If the fix revealed deeper work, add a `candidate` row before closing
    out. If a milestone branch is currently active, remind the user that its

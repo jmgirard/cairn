@@ -73,7 +73,12 @@ overrides — log the override).
    then ask plainly for authorization to merge. Approval withheld → log the
    requested changes as tasks, status back to `in-progress`, stop.
 
-8. **On approval — and only then:** mark the PR ready; require green CI
+8. **On approval — and only then:** record the approval for the merge
+   guard — write `cairn/.merge-approved` (gitignored; one line:
+   `M<NN> approved YYYY-MM-DD`). The plugin's PreToolUse hook denies
+   merges to main without this marker and consumes it per merge attempt;
+   if a merge fails and is retried under the same approval, rewrite the
+   marker. Then mark the PR ready; require green CI
    (`gh pr checks <pr> --watch` with a timeout — one blocking wait; on
    timeout report fresh state and stop). Red CI → fix on the branch,
    re-verify, re-request approval if the fix was nontrivial. When green:
