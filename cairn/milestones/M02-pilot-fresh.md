@@ -7,8 +7,7 @@
 
 ## Goal
 
-Prove the system end-to-end in a package repo with no existing tracking
-system.
+Prove the system end-to-end in a package repo with no existing tracking system.
 
 ## Scope
 
