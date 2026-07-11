@@ -36,8 +36,7 @@ broad rollout.
       in-progress item explicitly).
 - [x] Run `/cairn-init` migration (Jeff drives, in a tidymedia session);
       review the proposal gate carefully.
-- [ ] Verify ledger, audit, and merge. (verify+audit done; merge awaits
-      approval)
+- [x] Verify ledger, audit, and merge.
 - [ ] Ship one milestone post-migration (tidymedia M08); log friction as
       cairn candidate rows.
 
@@ -64,6 +63,11 @@ broad rollout.
   (mirrors agree, deps resolve, caps 23/51/105, no orphans/collisions,
   .claude/skills gone, ignore entries present); CI 7/7 green. Merge
   awaits user approval.
+- 2026-07-11: task 3 done — PR #8 squash-merged (c5eb4bb) on user
+  approval; branch deleted; tidymedia is live on cairn. Friction: first
+  merge-gate recap was verification-mechanics-first, user couldn't tell
+  what was being approved — re-asked in plain words (feeds the existing
+  output-discipline candidate). Remaining: ship tidymedia M08 (task 4).
 
 ## Decisions
 
