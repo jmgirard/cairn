@@ -1,9 +1,9 @@
 # M10: Deterministic tracking scripts
 
-- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- high | normal | low -->
 - **Depends on:** —   <!-- M<xx>, M<yy> or — -->
-- **Branch/PR:** —   <!-- m10-deterministic-scripts; PR URL once opened -->
+- **Branch/PR:** m10-deterministic-scripts   <!-- PR URL once opened -->
 
 ## Goal
 
