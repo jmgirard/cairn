@@ -1,9 +1,9 @@
 # M09: Phase headers (H2/H3) replace the inline stage banner
 
-- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- high | normal | low -->
 - **Depends on:** —   <!-- extends M04 output discipline; no hard dep -->
-- **Branch/PR:** —   <!-- m09-phase-headers; PR URL once opened -->
+- **Branch/PR:** m09-phase-headers   <!-- PR URL once opened -->
 
 ## Goal
 
