@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M10 | Deterministic tracking scripts | in-progress | — | normal | milestones/M10-deterministic-scripts.md |
+| M10 | Deterministic tracking scripts | review | — | normal | milestones/M10-deterministic-scripts.md |
 | M09 | Phase headers (H2/H3) replace inline stage banner | done | — | normal | milestones/archive/M09-phase-headers.md |
 | M08 | Skill-less routing guardrails | done | — | high | milestones/archive/M08-skill-less-routing.md |
 | M07 | Guardrail hooks (blocking enforcement + re-injection) | done | — | high | milestones/archive/M07-guardrail-hooks.md |

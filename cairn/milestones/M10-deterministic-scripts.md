@@ -1,6 +1,6 @@
 # M10: Deterministic tracking scripts
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- high | normal | low -->
 - **Depends on:** —   <!-- M<xx>, M<yy> or — -->
 - **Branch/PR:** m10-deterministic-scripts   <!-- PR URL once opened -->
@@ -70,9 +70,9 @@ Snapshot/Audit/Route; a DESIGN.md bullet for the new layer.
 - [x] Write `scripts/tests/test_scripts.py`: fixture `cairn/` trees exercising
       each script, one case per `validate` failure mode + a clean pass;
       confirm `test_hooks.py` still passes.
-- [ ] Wire `/milestone` SKILL.md to shell out to the three scripts for the
+- [x] Wire `/milestone` SKILL.md to shell out to the three scripts for the
       mechanizable Snapshot/Audit/Route parts; keep the LLM-only checks.
-- [ ] Add the `scripts/` bullet to DESIGN.md Architecture; ensure each script
+- [x] Add the `scripts/` bullet to DESIGN.md Architecture; ensure each script
       handles being run outside a cairn repo; run `validate` on this repo's
       live tree.
 
@@ -85,6 +85,9 @@ Snapshot/Audit/Route; a DESIGN.md bullet for the new layer.
 - 2026-07-11: shipped status/next/validate + shared cairn_scripts helper;
   extended cairn_common with parse_roadmap_rows_full (hooks untouched, 18
   hook tests green); 15 script tests pass; validate clean on live tree.
+- 2026-07-11: wired /milestone SKILL.md to the three scripts (semantic
+  checks kept LLM-owned); DESIGN.md architecture bullet added. All tasks
+  done → review.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
