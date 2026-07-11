@@ -3,7 +3,7 @@
 - **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- high | normal | low -->
 - **Depends on:** —   <!-- extends M04 output discipline; no hard dep -->
-- **Branch/PR:** m09-phase-headers   <!-- PR URL once opened -->
+- **Branch/PR:** m09-phase-headers · https://github.com/jmgirard/cairn/pull/6
 
 ## Goal
 
