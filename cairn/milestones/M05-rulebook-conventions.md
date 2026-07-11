@@ -1,6 +1,6 @@
 # M05: Rulebook conventions & protocol gaps
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** M04   <!-- edits the same rulebook/skill text M04 reshapes -->
 - **Branch/PR:** m05-rulebook-conventions
@@ -66,7 +66,7 @@ design-interview skill, skill-less routing, hooks → candidates (v0.3).
 - [x] Close the four M01-review nits (rulebook RR pointer; session-start
       reads in cairn-release + hotfix; cairn-release closing chip;
       skeleton status-grouping note).
-- [ ] Coherence pass across rulebook + touched skills; verify caps.
+- [x] Coherence pass across rulebook + touched skills; verify caps.
 
 ## Work log
 <!-- append-only; one line per entry; absolute dates -->
@@ -86,6 +86,10 @@ design-interview skill, skill-less routing, hooks → candidates (v0.3).
 - 2026-07-11: Task 4: nits 2+3 closed — DECISIONS/reviews session-start
   reads in cairn-release + hotfix; cairn-release step-9 routing chip
   (nits 1 and 4 closed in tasks 2 and 3).
+- 2026-07-11: Task 5: coherence pass — tag format identical across 3
+  files; bare D-004 in milestone-implement glossed for consumer repos;
+  caps verified (ROADMAP 28/60, this file <150, CLAUDE.md 17/80). All
+  tasks done; status → review (R check gate waived: plugin repo).
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->

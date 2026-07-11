@@ -42,7 +42,8 @@ run ingestion first (see `/milestone-brief`).
    open. If the plan tags an item `(RB tripwire: <category>)` — or a new
    tripwire emerges mid-work (see tracking-rules) — include an
    **Escalate via `/milestone-brief`** option on that question; never
-   offer escalation without a tripwire hit (D-004).
+   offer escalation without a tripwire hit (Fable is gated per
+   instance — D-004).
 
 4. **Work tasks in order, autonomously.** For each task:
    - Tests first where feasible (testthat 3e); numeric results per the
