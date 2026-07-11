@@ -26,6 +26,12 @@ transitions, human-gated merges, and a domain verification doctrine.
   layer: SessionStart context injection, Stop-guard on uncommitted `cairn/`
   tracking, PreToolUse merge-guard (single-use `cairn/.merge-approved`
   marker) technically backing IP1. No-op outside cairn repos.
+- `scripts/` + python3 (stdlib) reporters (M10) — the deterministic read
+  layer: `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),
+  `cairn_validate` (mechanical consistency gate). Read-only; reuse the
+  hooks' `cairn_common` parser (no duplication); exit 2 outside a cairn
+  repo. `/milestone` invokes them instead of re-deriving status by LLM;
+  semantic checks stay LLM-owned.
 
 ## Conventions
 
