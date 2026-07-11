@@ -74,12 +74,13 @@ default install (D-007: manual until pilots pass) → future release prep.
       needs the marker mentioned (done; also /hotfix gate + /cairn-init
       .gitignore scaffolding — discovered sub-tasks).
 - [ ] Verify hooks load via real plugin install; capture evidence.
-      (Half done: `claude plugin details cairn@skills-dir` lists all 4
-      hooks from this branch's hooks.json — loading evidence. Firing
-      evidence needs a live session; CLI is logged out (`claude auth
-      status`: loggedIn false), so headless `-p --plugin-dir` runs can't
-      start — needs user `claude login` or observation in a fresh
-      session.)
+      (Loading evidence done: `plugin details` lists all 4 hooks.
+      Firing evidence diagnosed 2026-07-11: hooks snapshot at harness
+      *process* start; both running Desktop processes predate
+      hooks.json, and `/clear` reuses the process — so no session in
+      those processes can fire them. Script verified healthy by manual
+      run. Needs a brand-new Desktop conversation (fresh process) or
+      `claude login` + headless run.)
 - [x] README: install-paths section (symlink vs marketplace, hooks caveat,
       branch-checkout footgun).
 
@@ -93,6 +94,7 @@ default install (D-007: manual until pilots pass) → future release prep.
 - 2026-07-11: task 7 finding — skills-dir installs DO register hooks (`plugin details` shows Hooks (4)); corrected references/claude-code-hooks.md + Scope wording. Firing evidence blocked: CLI logged out, headless runs can't start.
 - 2026-07-11: task 8 — README install section rewritten (two paths, hooks activation note, keep-checkout-on-main footgun).
 - 2026-07-11: user chose fresh-session verification for task 7. NEXT SESSION: if a "cairn tracking context" block was auto-injected at session start, that is the firing evidence — quote its header in the work log, check task 7 off, set status review, route to /milestone-review M07. If nothing was injected, hooks did not fire: investigate before review.
+- 2026-07-11: task 7 diagnosis — no injection + `gh pr merge --help` probe passed undented ⇒ hooks not executing here; cause: hooks snapshot at harness PROCESS start, both live Desktop processes (12:35, 16:17) predate hooks.json (16:27), and /clear reuses the process. Script healthy via manual run (emits injection JSON, exit 0). Supersedes prior NEXT SESSION line: evidence requires a BRAND-NEW Desktop conversation, not /clear.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
