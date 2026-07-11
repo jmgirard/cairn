@@ -1,6 +1,6 @@
 # M03: Pilot — migrate tidymedia
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** high
 - **Depends on:** M01
 - **Branch/PR:** none in cairn — docs-only tracking commits on main (M02
@@ -37,7 +37,7 @@ broad rollout.
 - [x] Run `/cairn-init` migration (Jeff drives, in a tidymedia session);
       review the proposal gate carefully.
 - [x] Verify ledger, audit, and merge.
-- [ ] Ship one milestone post-migration (tidymedia M08); log friction as
+- [x] Ship one milestone post-migration (tidymedia M08); log friction as
       cairn candidate rows.
 
 ## Work log
@@ -68,6 +68,11 @@ broad rollout.
   merge-gate recap was verification-mechanics-first, user couldn't tell
   what was being approved — re-asked in plain words (feeds the existing
   output-discipline candidate). Remaining: ship tidymedia M08 (task 4).
+- 2026-07-11: task 4 done — tidymedia M08 shipped normally through the full
+  pipeline (plan gate → branch → 5 tasks → fresh-evidence review →
+  independent Opus review, 4 findings fixed on branch → PR #9 squash-merged
+  → archived, done). Clean run; no new friction beyond the recap-wording
+  item already banked. All tasks complete; status → review.
 
 ## Decisions
 
