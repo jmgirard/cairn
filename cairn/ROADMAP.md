@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-11 (M02 done)_
+_Last hygiene check: 2026-07-11 (M03 done)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M03 | Pilot: migrate tidymedia | review | M01 | high | milestones/M03-pilot-migrate-tidymedia.md |
+| M03 | Pilot: migrate tidymedia | done | M01 | high | milestones/archive/M03-pilot-migrate-tidymedia.md |
 | M02 | Pilot: fresh adoption in one package repo | done | M01 | high | milestones/archive/M02-pilot-fresh.md |
 | M01 | Build plugin v0.1 from DRAFT_2 spec | done | — | high | milestones/archive/M01-build-v0-1.md |
 
