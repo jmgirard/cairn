@@ -87,6 +87,9 @@ after both pilots.
   RB01/RR01 (reader-family-api) spawned via gated Fable subagent, ingested,
   archived — RB/RR criterion met. Release walk still missing (no
   cran-comments, version unbumped); M02 stays in-progress.
+- 2026-07-11: gate: Jeff runs /cairn-release in openac (walk to handoff
+  checklist, no submission; stale vignettes may surface — acceptable pilot
+  signal). Last open criterion; M02 → review on its completion.
 
 ## Decisions
 
