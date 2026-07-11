@@ -15,7 +15,7 @@ surface after sync (task files renamed to issue numbers).
 
 - **Script-first rule**: deterministic reads (status, standup, next,
   blocked, validate) are bash scripts over frontmatter, run verbatim —
-  LLM reserved for reasoning. 13 shipped scripts.
+  LLM reserved for reasoning. 14 shipped scripts.
 - **Task metadata for parallelism**: `depends_on`, `parallel`,
   `conflicts_with` arrays; an analysis step decomposes an issue into
   parallel "streams" (file-scoped lanes), each executed by an agent

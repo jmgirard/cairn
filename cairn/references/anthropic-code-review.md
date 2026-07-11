@@ -7,7 +7,7 @@ Code environments; cited here as `anthropic-code-review`.
 
 ## What it is
 
-A single 93-line `/code-review <PR>` command: a multi-agent pipeline that
+A single 92-line `/code-review <PR>` command: a multi-agent pipeline that
 reviews a GitHub PR and posts one formatted comment via `gh`.
 
 ## Pipeline (the interesting part)

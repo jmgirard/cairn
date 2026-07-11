@@ -39,9 +39,13 @@ differentiator; R is one profile of it.
 **Emergent fifth differentiator**: longitudinal memory + change
 control *combined*. spec-kit is strongest pre-implementation but has
 no cross-feature continuity by design; ccpm has throughput but no
-audit; feature-dev has choreography but no persistence. Cairn's niche
-— auditable project memory with human-gated change control — is
-genuinely unoccupied.
+audit; feature-dev has choreography but no persistence. The closest
+rival is Meridian — it has both memory re-injection and blocking
+enforcement — but it enforces *process*, not project state: no
+task/milestone concept of its own, no cross-milestone memory, no
+decision ledger; it re-injects docs without governing them. Cairn's
+niche — auditable, governed project memory with human-gated change
+control — is genuinely unoccupied.
 
 **Verdict: cairn is justified; no refocus needed.** Positioning should
 say "change control + project memory for agent-driven development",

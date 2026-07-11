@@ -131,3 +131,12 @@ Evidence 2026-07-11 (all by command, this session):
   amended candidate rows (7 rows cite references/).
 - C7 ✓ installed_plugins.json clean of all 8 trial systems; symlink
   resolves to repo with 8 skills present.
+
+Independent review ([O], fresh context, 2026-07-11): 4 findings, all
+fixed on branch — (1) important: C6 unmet as written, note-level steals
+uncovered → catch-all deferred-steals candidate row added, C6 re-verified;
+(2) important: unoccupied-niche claim didn't address Meridian → synthesis
+now names and distinguishes it; (3) minor: DESIGN said "swappable"
+doctrine (aspirational) → reworded to present tense; (4) minor: two count
+nits corrected (14 scripts; 92 lines). Factual layer, tracking-rules
+compliance, and C1–C5/C7 verified clean by reviewer.

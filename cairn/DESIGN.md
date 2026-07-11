@@ -13,7 +13,7 @@ Positioning (M06, references/competitive-landscape.md): cairn is change
 control + longitudinal project memory for agent-driven work — a niche no
 surveyed system occupies. Markdown state is commodity; the differentiators
 are governed state (sole authority, caps, archives), skill-gated
-transitions, human-gated merges, and swappable verification doctrine.
+transitions, human-gated merges, and a domain verification doctrine.
 
 ## Architecture
 
