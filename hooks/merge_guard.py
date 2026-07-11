@@ -7,10 +7,14 @@ single-use marker file, cairn/.merge-approved (gitignored); this hook
 denies `gh pr merge` and `git merge`-into-main when the marker is
 absent, and consumes it when present. No-op outside cairn repos.
 
-Known limitation (documented, accepted): the guard inspects one Bash
-command at a time — a compound `git checkout main && git merge X` sees
-the pre-checkout branch. The squash-merge convention (`gh pr merge`) is
-the covered path.
+Known limitations (documented, accepted): this is defense-in-depth behind
+the skill approval-gate + single-use marker, not an airtight sandbox, so
+the `git merge` detection is deliberately conservative rather than
+exhaustive. Known `git merge` bypasses: a compound `git checkout main &&
+git merge X` sees the pre-checkout branch; backtick command substitution
+isn't a command-position separator; `git -C <path> merge` merges in a repo
+the in-cwd branch check doesn't inspect. The covered, enforced path is the
+`gh pr merge` squash-merge convention, which the guard always catches.
 """
 
 import os

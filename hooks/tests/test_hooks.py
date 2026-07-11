@@ -142,6 +142,23 @@ class TestStopGuard(RepoFixture):
         self.assertEqual(proc.returncode, 0)
         self.assertEqual(proc.stdout.strip(), "")
 
+    def test_merge_marker_alone_never_blocks(self):
+        # The ephemeral approval marker must not block turn-end even when it
+        # is NOT gitignored (a repo that adopted the workflow without
+        # re-running /cairn-init) — otherwise the user is tempted to commit it.
+        (self.root / "cairn" / ".merge-approved").write_text("M07 approved 2026-07-11\n")
+        proc = run_hook("stop_guard.py", self.payload())
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(proc.stdout.strip(), "", "marker alone must not block")
+
+    def test_marker_does_not_mask_other_dirty_tracking(self):
+        (self.root / "cairn" / ".merge-approved").write_text("x\n")
+        (self.root / "cairn" / "ROADMAP.md").write_text(ROADMAP + "edited\n")
+        out = hook_toplevel(run_hook("stop_guard.py", self.payload()))
+        self.assertEqual(out["decision"], "block")
+        self.assertIn("cairn/ROADMAP.md", out["reason"])
+        self.assertNotIn(".merge-approved", out["reason"])
+
 
 class TestMergeGuard(RepoFixture):
     def merge_payload(self, command, **extra):

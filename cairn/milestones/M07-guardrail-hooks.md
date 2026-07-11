@@ -35,25 +35,25 @@ default install (D-007: manual until pilots pass) → future release prep.
 
 ## Acceptance criteria
 
-- [ ] Merge guard: with no approval marker, a `gh pr merge`/`git merge`
+- [x] Merge guard: with no approval marker, a `gh pr merge`/`git merge`
       Bash call in a cairn repo is denied (fixture test shows deny
       decision); with the marker present, it passes and the marker is
       consumed (single-use).
-- [ ] Stop guard: turn-end with uncommitted tracked `cairn/` changes is
+- [x] Stop guard: turn-end with uncommitted tracked `cairn/` changes is
       blocked with a message naming the files; clean tree passes (fixture
       tests for both).
-- [ ] SessionStart injection: in a cairn repo, hook output contains
+- [x] SessionStart injection: in a cairn repo, hook output contains
       ROADMAP content and the active milestone file (fixture test).
       (Amended 2026-07-11: dropped "PreCompact re-injects the same" — no
       hook API re-injects on compaction; injection is startup/resume only.)
-- [ ] No-op guarantee: every hook exits permissively, quickly, and silently
+- [x] No-op guarantee: every hook exits permissively, quickly, and silently
       in a repo without `cairn/ROADMAP.md` (fixture test per hook).
-- [ ] Hook scripts run on python3 stdlib only (no third-party imports;
+- [x] Hook scripts run on python3 stdlib only (no third-party imports;
       grep-verifiable) and every fixture test passes from a clean checkout.
-- [ ] Live verification: hooks demonstrably fire in a session using a real
+- [x] Live verification: hooks demonstrably fire in a session using a real
       plugin install of this repo (evidence: transcript/log line, install
       path documented).
-- [ ] README documents both install paths (marketplace snapshot vs
+- [x] README documents both install paths (marketplace snapshot vs
       dev symlink) and states that hooks require the plugin install;
       `/milestone-review`'s approval gate writes the marker file.
 
@@ -65,16 +65,12 @@ default install (D-007: manual until pilots pass) → future release prep.
 - [x] Scaffold `hooks/hooks.json` + shared cairn-repo detection helper
       (python3, stdlib); wire into plugin.json if required (not required —
       hooks.json auto-loads).
-- [x] Implement + fixture-test SessionStart injection (PreCompact dropped
-      2026-07-11 — API can't inject on compaction; hooks.json unwired,
-      criterion amended).
-- [x] Implement + fixture-test Stop guard (uncommitted `cairn/` tracking).
-      Fixed 2026-07-11: emits TOP-LEVEL decision/reason (was nested under
-      hookSpecificOutput → silently no-op'd); regression test asserts
-      top-level + absence of the nesting.
-- [x] Correct references/claude-code-hooks.md contracts (Stop top-level; no
-      compaction re-injection; SessionStart ignored on compact/clear) +
-      test-methodology note (fixtures prove print-shape, not live honoring).
+- [x] Implement + fixture-test SessionStart injection (PreCompact dropped —
+      no compaction re-injection API; see Review attempt 1).
+- [x] Implement + fixture-test Stop guard (top-level block; was nested →
+      no-op'd; regression test pins the shape; see Review attempt 1).
+- [x] Correct references/claude-code-hooks.md contracts + test-methodology
+      note (fixtures prove print-shape, not live honoring).
 - [x] Implement + fixture-test PreToolUse merge guard incl. marker
       consumption; marker = `cairn/.merge-approved`, gitignored,
       single-use.
@@ -109,6 +105,7 @@ default install (D-007: manual until pilots pass) → future release prep.
 - 2026-07-11: review attempt 1 FAILED (PR #4) → back to in-progress. Primary-source check (official hooks docs) + [O] fresh review found: (blocker) Stop guard nests decision/reason under hookSpecificOutput but the contract is top-level → block silently no-ops; (should-fix) PreCompact can't inject additionalContext and SessionStart ignores it on compact/clear → "PreCompact re-injects" criterion is unachievable as written, needs gated amendment. Root cause: task-1 research doc recorded wrong contracts; fixture tests only assert the script's own stdout so they masked both. Merge guard, no-op, stdlib, README, SessionStart-on-startup all sound. First trip back from review (thrash count 1/3). Next: /milestone-implement — fix Stop shape + test, drop dead PreCompact wiring + amend criterion, correct the research doc, add live-fire checks.
 - 2026-07-11: fixes applied (implement). Stop guard → top-level decision/reason (regression test asserts top-level + no nesting). PreCompact unwired from hooks.json + criterion amended (user gate: drop it) — SessionStart-only. Research doc contracts corrected + test-methodology note added. 16 fixture tests green (was 17; PreCompact test removed). Status → review.
 - 2026-07-11: Stop-guard LIVE-FIRE verified in this session. Command-type hooks run the current on-disk script per firing, and the Stop event was already registered at process start (SessionStart fired), so the fixed stop_guard.py executes live here. Dropped an untracked cairn/.livefire-probe, ended the turn; Claude Code BLOCKED turn-end and returned the guard's exact message ("Uncommitted cairn tracking changes: cairn/.livefire-probe…"). Confirms the top-level decision/block shape is honored — the blocker is fixed for real, not just green in fixtures. Probe deleted. Two of four hooks now live-fired (SessionStart + Stop).
+- 2026-07-11: review attempt 2 PASS (details in Review section). 18 fixture tests green; Stop + SessionStart live-fired; [O] fresh review = mergeable; 1 should-fix fixed (Stop excludes the ephemeral marker) + 2 nits (1 doc fix, 1 rejected). All 7 criteria checked. Awaiting user merge approval.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
@@ -121,25 +118,27 @@ default install (D-007: manual until pilots pass) → future release prep.
 <!-- filled by /milestone-review: evidence per criterion; consistency-gate
      results; independent-review findings and their triage -->
 
-### Attempt 1 — 2026-07-11 (FAILED; back to in-progress). PR #4.
+PR #4: https://github.com/jmgirard/cairn/pull/4
 
-Per-criterion (17 fixture tests green; JSON shapes cross-checked vs official
-docs): merge guard, no-op, stdlib, README — PASS; SessionStart startup
-injection PASS + live-verified this session. FAILED: Stop guard (finding 1),
-PreCompact clause of SessionStart criterion (finding 2). Live verification
-PARTIAL — only SessionStart fired live.
+### Attempt 1 — 2026-07-11 (FAILED → in-progress).
+[O] fresh review + primary-source doc check found two contract bugs from the
+task-1 research, masked by output-only fixture tests: Stop block nested under
+hookSpecificOutput (contract is top-level → silent no-op); PreCompact can't
+inject additionalContext and SessionStart ignores it on compact/clear (the
+"PreCompact re-injects" criterion was impossible). Both fixed in implement;
+criterion amended; research doc corrected (see work log + git history).
 
-Independent review ([O] fresh-context) findings + triage:
-1. BLOCKER — Stop emits `hookSpecificOutput.{decision,reason}`; contract is
-   top-level. Confirmed vs primary docs. → FIX (reopened task).
-2. SHOULD-FIX — PreCompact wiring is dead (no additionalContext support);
-   criterion built on false premise. Confirmed vs docs, incl. that
-   SessionStart additionalContext is ignored on compact/clear. → FIX +
-   gated criterion amendment (reopened task).
-3. NIT — `gh pr merge --help`/`--disable-auto` are treated as guarded and
-   consume the marker. → accept or tighten during fix; logged.
-4. NIT — marker consumed on attempt not success (documented trade-off). →
-   reject (intended; deny reason + skill cover the retry).
-Method finding (accepted): fixture tests assert the script's own stdout,
-not that Claude Code honors the shape — false confidence; add doc-contract
-checks + one live-fire per guard.
+### Attempt 2 — 2026-07-11 (PASS).
+Fresh evidence: 18 fixture tests green from clean checkout, JSON shapes pinned
+to official docs. Stop guard + SessionStart both LIVE-FIRED this session (real
+turn-end block; real session-start injection) via the symlink install; merge
+guard deny shape doc-verified (live-exercised at the merge below). No-op /
+stdlib / README PASS. Consistency gate clean (valid hooks.json, reference
+indexed, no stale PreCompact, caps hold; R gates waived — plugin repo).
+[O] fresh review of the fixed diff = mergeable: both prior bugs confirmed
+fixed & complete vs primary docs, PreCompact removal clean, no new blocker.
+Triage: (should-fix) Stop could block on the ephemeral .merge-approved marker
+in a repo that didn't gitignore it → FIXED (exclude marker basename; 2 tests).
+(nit) further `git merge` regex bypasses → FIXED (docstring; `gh pr merge`
+stays airtight). (nit) ref-doc PreCompact line → REJECTED (my doc fetch listed
+it in the top-level-decision table; unwired, zero runtime impact).

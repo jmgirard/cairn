@@ -7,9 +7,18 @@ diverges from disk breaks stateless resume. Honors stop_hook_active to
 avoid infinite block loops. No-op outside cairn repos.
 """
 
+import os
 import sys
 
 import cairn_common as cc
+
+# The merge-approval marker is intentionally ephemeral and single-use;
+# it is gitignored in cairn-scaffolded repos, but never depend on that —
+# a repo that adopted the marker workflow without re-running /cairn-init
+# would have it un-ignored, and blocking turn-end on it would tempt the
+# user to commit the very thing that must stay uncommitted. Exclude it
+# regardless of .gitignore state.
+MARKER_BASENAME = ".merge-approved"
 
 
 def main():
@@ -22,7 +31,12 @@ def main():
     rc, out = cc.git(["status", "--porcelain", "--", "cairn/"], root)
     if rc != 0:
         return
-    dirty = [line for line in out.splitlines() if line.strip()]
+    dirty = [
+        line
+        for line in out.splitlines()
+        if line.strip()
+        and os.path.basename(line[3:].strip()) != MARKER_BASENAME
+    ]
     if not dirty:
         return
     files = ", ".join(line[3:].strip() for line in dirty[:10])
