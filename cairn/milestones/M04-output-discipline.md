@@ -1,0 +1,82 @@
+# M04: Skill conduct & output discipline
+
+- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Priority:** high
+- **Depends on:** —
+- **Branch/PR:** —
+
+## Goal
+
+Encode the pilot-validated conduct findings — stage orientation, delta
+reporting, outcome-first recaps, plain-language contextual chips — in the
+rulebook and every skill, so cairn's output orients the user instead of
+dumping mechanics.
+
+## Scope
+
+**In:** a new "Output & interaction discipline" section in
+`skills/shared/tracking-rules.md` (single source of conduct rules); a
+stage-banner convention instructed by all eight skills; hardcoded routing
+chip menus recast as contextual construction with the fixed menus as
+examples; outcome-first recap guidance at phase completions; [S]/[O]/[F]
+model prefixes on spawned-subagent descriptions.
+
+**Out:** rule *content* changes (adopt-in-place, RB tripwires, ID
+conventions) → M05; plugin hooks for guardrail feedback → candidate;
+skill-less routing guardrails (claude-md-section router) → candidate;
+README install docs → release-prep candidate.
+
+## Acceptance criteria
+
+- [ ] `tracking-rules.md` has an output-discipline section covering: stage
+      banners, delta-not-dump reporting between gates, outcome-first
+      recaps (substance before hygiene mechanics), chip weight caps with
+      plain-language option text (technical detail in chat above the
+      chip), contextual chip construction (options composed from session
+      findings; invariants fixed: recommended-first, ≤4 options, Stop
+      present, never auto-proceed), chapter markers where the harness
+      supports them. Evidence: file read.
+- [ ] All eight SKILL.md files instruct the stage banner
+      (`[cairn · <skill> · M<NN> · <phase>]`), consistently formatted.
+      Evidence: grep across `skills/*/SKILL.md`.
+- [ ] No skill presents a hardcoded chip menu as mandatory; fixed menus
+      read as examples and contextual composition is licensed (the
+      `/milestone` "single most sensible next action, e.g." phrasing is
+      the model). Evidence: read of every `Routing chip` passage.
+- [ ] Skills that spawn subagents (milestone-implement, milestone-review,
+      milestone-brief) instruct the [S]/[O]/[F] description prefix, and
+      the rulebook model-strategy section states the rule. Evidence: grep.
+- [ ] Weight caps hold after edits (tracking-rules stays one coherent
+      rulebook; no skill contradicts the new section). Evidence: caps
+      check + coherence read in review.
+
+## Tasks
+
+- [ ] Draft the "Output & interaction discipline" section in
+      `skills/shared/tracking-rules.md` (banners, deltas, recaps, chip
+      rules, contextual construction, chapter markers).
+- [ ] Add the stage-banner instruction to all eight `skills/*/SKILL.md`
+      files (one consistent line each).
+- [ ] Recast hardcoded routing-chip menus (grep `Routing chip` — at least
+      cairn-init:75,139 and milestone-brief) as contextual construction
+      with examples; align with `/milestone`'s phrasing (milestone:60–69).
+- [ ] Add outcome-first recap guidance to the completion steps of
+      milestone-implement (step 8), milestone-review (step 7/10), and
+      cairn-release.
+- [ ] Add the [S]/[O]/[F] prefix rule to the rulebook model-strategy
+      section and the three spawning skills.
+- [ ] Coherence pass: reread rulebook + all skills for contradictions
+      with the new section; verify caps.
+
+## Work log
+<!-- append-only; one line per entry; absolute dates -->
+
+- 2026-07-11: created by /milestone-plan. Lineage: M02/M03 pilot friction
+  (candidate rows: output discipline & stage orientation; contextual chip
+  construction; subagent title prefix — absorbed).
+
+## Decisions
+<!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
+
+## Review
+<!-- filled by /milestone-review -->
