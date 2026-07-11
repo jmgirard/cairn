@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-11 (M03 done)_
+_Last hygiene check: 2026-07-11 (M04 done)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M04 | Skill conduct & output discipline | review | — | high | milestones/M04-output-discipline.md |
+| M04 | Skill conduct & output discipline | done | — | high | milestones/archive/M04-output-discipline.md |
 | M05 | Rulebook conventions & protocol gaps | planned | M04 | high | milestones/M05-rulebook-conventions.md |
 | M03 | Pilot: migrate tidymedia | done | M01 | high | milestones/archive/M03-pilot-migrate-tidymedia.md |
 | M02 | Pilot: fresh adoption in one package repo | done | M01 | high | milestones/archive/M02-pilot-fresh.md |
