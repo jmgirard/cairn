@@ -30,7 +30,7 @@ after both pilots.
 
 ## Tasks
 
-- [ ] Choose the pilot repo (a package without an existing system).
+- [x] Choose the pilot repo (a package without an existing system).
 - [ ] Run `/cairn-init`; note anything manual.
 - [ ] Ship 3 milestones; log friction as issues.
 - [ ] Run one RB/RR escalation; one release walk.
@@ -39,6 +39,13 @@ after both pilots.
 ## Work log
 
 - 2026-07-11: planned as part of the v0.1 pilot plan (DRAFT_2 §11).
+- 2026-07-11: openac chosen as pilot repo; installed in Claude Desktop via
+  Customize → Plugins (skills load un-namespaced; `/plugin` and
+  `--plugin-dir` are terminal-only — README should document this path).
+- 2026-07-11: /cairn-init scaffold + DESIGN interview underway in openac;
+  finding: DESIGN-elicitation question quality markedly better on Fable
+  than Opus (same AskUserQuestion format) → candidate row + notes in
+  references/design-interview-notes.md.
 
 ## Decisions
 
