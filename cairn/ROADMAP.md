@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-11 (M09 planned)_
+_Last hygiene check: 2026-07-11 (M09 done+archived; M04 row pruned per 5-done retention)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,12 +10,11 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M09 | Phase headers (H2/H3) replace inline stage banner | review | — | normal | milestones/M09-phase-headers.md |
+| M09 | Phase headers (H2/H3) replace inline stage banner | done | — | normal | milestones/archive/M09-phase-headers.md |
 | M08 | Skill-less routing guardrails | done | — | high | milestones/archive/M08-skill-less-routing.md |
 | M07 | Guardrail hooks (blocking enforcement + re-injection) | done | — | high | milestones/archive/M07-guardrail-hooks.md |
 | M06 | Competitive-landscape research | done | — | high | milestones/archive/M06-competitive-landscape.md |
 | M05 | Rulebook conventions & protocol gaps | done | M04 | high | milestones/archive/M05-rulebook-conventions.md |
-| M04 | Skill conduct & output discipline | done | — | high | milestones/archive/M04-output-discipline.md |
 
 ## Candidates
 

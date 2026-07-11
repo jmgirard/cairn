@@ -101,3 +101,20 @@ restate conduct (which would also blow the ~20-line section cap).
 **Consequences:** A request handled entirely in plain conversation without
 triggering a skill still won't get chip/output conduct — an accepted residual;
 the router minimizes it by routing to a skill as early as possible.
+
+### D-010 (2026-07-11): Phase headers (H2/H3) replace the inline stage banner
+
+**Context:** The M04-era output discipline oriented each reply with an inline
+`[cairn · <skill> · M<NN> · <phase>]` banner. Jeff found it hard to scan in
+the terminal.
+**Decision:** Skills orient with a two-level Markdown heading instead — an
+`##` names the unit of work and title, a `###` names the phase
+(`## Milestone <NN>: <title>` → `### Plan`/`### Implement`/`### Review`; other
+skills map onto the same two levels). The `##` is emitted once per **unit of
+work** (re-emitted on a routing chip into the next skill or a fresh
+post-`/clear` session), the `###` at each phase entry; replies within a phase
+are plain deltas. Rejected the flat single-`##`-per-phase form (doesn't group
+a milestone's phases) and keying the `##` to the session (breaks when one
+session spans multiple units via chips).
+**Consequences:** Supersedes the inline stage banner. Rule renamed "Stage
+banner" → "Phase header" in `tracking-rules.md`; all 8 skills updated (M09).
