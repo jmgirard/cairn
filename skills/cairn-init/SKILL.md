@@ -35,9 +35,10 @@ template exists):
 ```
 cairn/
 ├── DESIGN.md          # skeleton: Purpose & Scope / Function Families /
-│                      # Conventions / Design Principles — GP<n> = Guiding
-│                      # (tradeable with justification), IP<n> = Inviolable
-│                      # (hard constraint) / Architecture / Known issues
+│                      # Conventions / Design Principles — IP<n> = Inviolable
+│                      # (hard constraint) block first, then GP<n> = Guiding
+│                      # (tradeable with justification); numbers never
+│                      # reused / Architecture / Known issues
 ├── ROADMAP.md         # empty index (below)
 ├── DECISIONS.md       # header + append-only note (see decision.md template)
 ├── milestones/archive/
@@ -57,6 +58,8 @@ _Last hygiene check: YYYY-MM-DD_
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+<!-- rows grouped by status, not sorted by ID; keep only the 5 most
+     recent done rows — older ones live in milestones/archive/ + git -->
 
 ## Candidates
 <!-- unnumbered ideas; one line each: idea — added YYYY-MM-DD — links -->

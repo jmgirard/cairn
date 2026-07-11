@@ -34,6 +34,9 @@ DESIGN.md principles come in two strengths: **GP<n> — Guiding Principle**, a
 default stance that may be traded off with stated justification; **IP<n> —
 Inviolable Principle**, a hard constraint never violated in implementation —
 changing one requires an explicit user decision recorded as a D-entry.
+Ordering: the IP block comes first, then GPs; numbers run within each type
+(IP1…, GP1…) and are never reused or renumbered — retiring a principle
+takes a D-entry, and its number stays retired.
 
 ## Weight caps
 
@@ -42,9 +45,12 @@ changing one requires an explicit user decision recorded as a D-entry.
 - Work-log entries are one line each. Never paste command output or subagent
   transcripts into tracking files — summarize.
 - Remedies when a cap is hit (never "let it grow"): over-cap ROADMAP →
-  graduate or prune candidates; over-cap milestone → split it or move
-  reference material to `references/`; over-cap CLAUDE.md → push content to
-  its owner per the table above.
+  graduate or prune candidates and enforce done-row retention; over-cap
+  milestone → split it or move reference material to `references/`;
+  over-cap CLAUDE.md → push content to its owner per the table above.
+- Done-row retention: the ROADMAP table keeps only the 5 most recent
+  `done` rows; prune older ones as they accumulate — archive files and
+  git history stay authoritative. Standing hygiene, not just a cap remedy.
 
 ## Universal tracking rules
 
@@ -76,6 +82,9 @@ changing one requires an explicit user decision recorded as a D-entry.
   `Depends on:` (a milestone is workable only when its dependencies are
   `done`) and `Priority:` (high / normal / low).
 - The ROADMAP index is grouped by status, not sorted by ID.
+- Bare `M<NN>` is repo-local. Whenever more than one cairn-tracked repo is
+  in scope (cross-repo conversation, briefs, commits touching two repos),
+  qualify the ID with the repo name — "tidymedia M07", never bare "M07".
 - User-facing materials (NEWS.md, README, vignettes, pkgdown) never
   reference milestone numbers.
 
