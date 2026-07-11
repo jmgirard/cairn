@@ -97,5 +97,33 @@ so phase transitions are scannable in the terminal.
 | Non-ms skills → own units/steps | hotfix/init/release/milestone/brief SKILL.md banner lines |
 
 ## Review
-<!-- filled by /milestone-review: evidence per criterion; consistency-gate
-     results; independent-review findings and their triage -->
+
+**Fresh evidence (2026-07-11, /milestone-review):**
+- C1: `tracking-rules.md` has the "Phase header" rule (grep 1); "Stage
+  banner" gone (grep 0); ##/### hierarchy + once-per-session/per-phase
+  cadence + plain-deltas language present.
+- C2: 8 skills carry `Phase header:` lines; `[cairn ·` in `skills/` → 0;
+  "Stage banner" in `skills/` → 0.
+- C3: mappings correct — plan/implement/review → `## Milestone <NN>: <title>`
+  → `### Plan|Implement|Review`; hotfix/init/release/status/brief → their own
+  units/steps (verified against each SKILL.md banner line).
+- C4: "Verification rubric" section present with per-element locations.
+- Live-doc sweep: no stray "Stage banner"/bracket refs outside the M09 file
+  (DESIGN, README, CLAUDE, other skills clean).
+
+**Consistency gate:** R gates N/A (no DESCRIPTION). CHANGELOG release-scoped;
+no entry due. Main in sync with origin; no CI workflows.
+
+**Independent review (Opus, fresh context):** change judged sound; mappings
+verified against each skill's real workflow. Triage:
+- F1 (medium) — "emit the `##` once per session" misfires when one session
+  spans multiple units via routing chips (this very session did). **Fixed:**
+  reworded to once-per-unit, re-emitting on a chip into the next skill or a
+  post-`/clear` session.
+- F2 (low) — a plan run can create several milestones; header names one.
+  **Fixed:** rule now says a multi-milestone plan run stays under one
+  `## Planning`.
+- F3 (nit) — the session's first header has no chapter marker (session start
+  is implicit). **Fixed:** noted in the rule.
+- F4 (nit) — `## cairn-init` is bare (no title) unlike the other units.
+  **Left:** one init per repo, no meaningful title; accepted inconsistency.

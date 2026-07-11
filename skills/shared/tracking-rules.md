@@ -215,10 +215,14 @@ cairn skill is active.
   `### Scaffold` / `### Repair` / `### Migration §n`; `## Release <version>`
   → `### <step>`; `## Status` → `### Snapshot` / `### Audit` / `### Route`;
   `## Review brief RB<NN>` → `### Draft` / `### Gate` / `### Ingest`. Emit the
-  `##` once, at the first phase entered in a session (a fresh post-`/clear`
-  session re-emits it so the reply stands alone); emit a `###` at each phase
-  entry — which usually coincides with a chapter marker. Replies within the
-  same phase run as plain deltas underneath — never a heading per reply.
+  `##` once per unit of work — at that unit's first phase — re-emitting when
+  the unit changes: a routing chip into the next skill, or a fresh
+  post-`/clear` session, both start a new `##` so the reply stands alone (a
+  plan run that creates several milestones stays under one `## Planning`).
+  Emit a `###` at each phase entry — usually coincident with a chapter marker
+  (the session's very first header carries none: session start is implicit).
+  Replies within the same phase run as plain deltas underneath — never a
+  heading per reply.
 - **Deltas, not dumps.** Between gates, report what changed since the
   last report — findings, decisions, surprises, direction changes. Never
   restate the plan or paste command output; the tracking files hold the
