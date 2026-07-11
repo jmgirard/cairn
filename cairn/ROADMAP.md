@@ -18,7 +18,7 @@ not an R package, so R-specific gates don't apply.
 
 - Stress-test migration on a Lineage B repo (ackwards or circumplex) — added 2026-07-11 — DRAFT_2 §11
 - Plugin hooks for immediate guardrail feedback (e.g., README.Rmd edit reminder) — added 2026-07-11 — DRAFT_2 §9.2
-- Marketplace one-command install: marketplace.json shipped 2026-07-11 (validates); remaining: document install paths in README (incl. Desktop Customize → Plugins) — added 2026-07-11 — DRAFT_2 §2.3
+- Marketplace one-command install: marketplace.json shipped 2026-07-11 (validates); remaining: document install paths in README (incl. Desktop Customize → Plugins) + contrast dev install (skills-dir symlink: live with checkout, no update step, branch-checkout footgun) vs marketplace snapshot (frozen copy, manual re-fetch per release) — dual-install ambiguity bit the pilot 2026-07-11 — added 2026-07-11 — DRAFT_2 §2.3
 - Public release prep: LICENSE (MIT), README worked example, remove DRAFT files, tag v1.0 — added 2026-07-11 — DRAFT_2 §11
 - Design-interview skill: one interview, two phases (facts → principles) with banked proto-principles and a chip-gated seam; proposed gold standard — encode question-quality + reconciliation findings so interviews improve on Opus; complement: elevate phase 2 to Fable behind a gate — added 2026-07-11 — references/design-interview-notes.md
 - DESIGN principle ordering: specify IP block first then GP, numeric within type, numbers never reused/renumbered (retire via D-entry) — in cairn-init skeleton + rulebook — added 2026-07-11 — M02 pilot (openac DESIGN interview)
