@@ -33,6 +33,11 @@ _NON_ISO_DATE = re.compile(
     r")\b",
     re.IGNORECASE,
 )
+# Year-first dashed tokens that look like ISO but aren't (missing zero-pad,
+# e.g. 2026-7-11) — the most likely typo in this repo's own date format.
+# Matched then compared against the canonical form so valid ISO never trips.
+_ISO_LIKE = re.compile(r"\b\d{4}-\d{1,2}-\d{1,2}\b")
+_CANON_ISO = re.compile(r"\d{4}-\d{2}-\d{2}")
 
 
 def check_mirror(root, rows):
@@ -164,6 +169,9 @@ def check_dates(root):
             m = _NON_ISO_DATE.search(line)
             if m:
                 bad.append(f"{rel}:{i}: non-ISO date '{m.group(0)}'")
+            for m in _ISO_LIKE.finditer(line):
+                if not _CANON_ISO.fullmatch(m.group(0)):
+                    bad.append(f"{rel}:{i}: non-ISO date '{m.group(0)}'")
     return bad
 
 

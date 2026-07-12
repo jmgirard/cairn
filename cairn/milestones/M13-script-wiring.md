@@ -3,7 +3,7 @@
 - **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- high | normal | low -->
 - **Depends on:** —
-- **Branch/PR:** m13-script-wiring   <!-- PR URL once opened -->
+- **Branch/PR:** m13-script-wiring · https://github.com/jmgirard/cairn/pull/11
 
 ## Goal
 
@@ -78,6 +78,8 @@ date-format check to `cairn_validate`.
   non-ISO patterns) + test; suite 19 green; real-repo validate all-PASS.
 - 2026-07-11: T2-T4 — wired cairn_validate into review step 4, cairn_next
   into plan step 1; scripts 19 + skills 17 tests green. → review.
+- 2026-07-11: review fixes — malformed-ISO detection + skill check-list fix +
+  test hardening; scripts 21 + skills 17 green; real-repo validate exit 0.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
@@ -90,5 +92,24 @@ date-format check to `cairn_validate`.
   makes the gate cry wolf.
 
 ## Review
-<!-- filled by /milestone-review: evidence per criterion; consistency-gate
-     results; independent-review findings and their triage -->
+
+2026-07-11 · PR #11 · reviewer: Opus fresh-context.
+
+**Criteria (fresh evidence):**
+1. PASS — `milestone-review/SKILL.md:42` names `cairn_validate.py` at the gate.
+2. PASS — `milestone-plan/SKILL.md:23` names `cairn_next.py` at step 1.
+3. PASS — `test_non_iso_date*` fail on non-ISO input; clean tree (ISO
+   `2026-07-11`) passes. All four non-ISO branches + malformed-ISO covered.
+4. PASS — scripts suite 21 green.
+5. PASS — skills suite 17 green.
+
+**Consistency gate:** real-repo `cairn_validate` exit 0, all 9 checks PASS.
+
+**Independent review:** no blocking issues. Triage —
+- Fixed: skill check-list omitted "single in-progress" (8→9); added
+  malformed-ISO detection (`2026-7-11` now flagged via `_ISO_LIKE`/`_CANON_ISO`)
+  so the check honors its name; hardened tests to cover every non-ISO branch
+  plus a valid-ISO/non-date-tokens pass.
+- Rejected: guarding `1/2/3` and `N-N-NNNN` ranges (unrealistic in tracking
+  prose; would raise false-positive risk against the conservative doctrine);
+  scanning `cairn/reviews/` (RB/RR briefs quote code/data — FP risk).
