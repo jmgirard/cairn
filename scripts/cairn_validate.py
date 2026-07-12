@@ -229,6 +229,51 @@ def check_scaffold(root):
     return bad
 
 
+_AC_ITEM = re.compile(r"^\s*-\s*\[[ xX]\]")
+_AC_REF = re.compile(r"\bAC(\d+)\b")
+
+
+def _section_body(text, heading):
+    """Lines under the first `## <heading>` H2, up to the next H2 or EOF."""
+    out = []
+    in_sec = False
+    for line in text.splitlines():
+        if line.startswith("## "):
+            if in_sec:
+                break
+            in_sec = line[3:].strip().lower().startswith(heading.lower())
+            continue
+        if in_sec:
+            out.append(line)
+    return out
+
+
+def check_coverage_complete(root):
+    """Every acceptance criterion in a live milestone file is referenced in
+    that file's Coverage section, and no Coverage line cites a criterion that
+    does not exist. The runtime arm of M18's skill-text traceability
+    (test_ac_traceability.py owns the prose side). Live files only — archived
+    summaries are compressed and carry no Coverage section by design."""
+    bad = []
+    for mid, path in sorted(cs.live_files(root).items(), key=lambda kv: cs.id_num(kv[0])):
+        try:
+            with open(path, encoding="utf-8") as f:
+                text = f.read()
+        except Exception:
+            continue
+        n = sum(1 for line in _section_body(text, "Acceptance criteria") if _AC_ITEM.match(line))
+        if n == 0:
+            continue  # nothing to map (e.g. a stub); not this check's concern
+        refs = {int(m) for line in _section_body(text, "Coverage") for m in _AC_REF.findall(line)}
+        for k in range(1, n + 1):
+            if k not in refs:
+                bad.append(f"{mid}: AC{k} not referenced in Coverage")
+        for r in sorted(refs):
+            if r > n:
+                bad.append(f"{mid}: Coverage references AC{r} but file has {n} criteria")
+    return bad
+
+
 CHECKS = [
     ("mirror agreement", lambda root, rows: check_mirror(root, rows)),
     ("at most one in-progress", lambda root, rows: check_single_in_progress(rows)),
@@ -240,6 +285,7 @@ CHECKS = [
     ("id uniqueness", lambda root, rows: check_id_uniqueness(root, rows)),
     ("iso date format", lambda root, rows: check_dates(root)),
     ("scaffold present", lambda root, rows: check_scaffold(root)),
+    ("coverage complete", lambda root, rows: check_coverage_complete(root)),
 ]
 
 

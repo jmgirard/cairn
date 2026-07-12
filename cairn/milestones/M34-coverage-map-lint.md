@@ -2,10 +2,10 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M34: Mechanical coverage-map lint in cairn_validate
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** m34-coverage-map-lint
 
 ## Goal
 
@@ -55,25 +55,29 @@ candidate.
 
 ## Tasks
 
-- [ ] T1 — Add `check_coverage_complete(root, rows)` to `cairn_validate.py`:
+- [x] T1 — Add `check_coverage_complete(root)` to `cairn_validate.py`:
       for each live milestone file (reuse `cs.live_files(root)`), read the
       `## Acceptance criteria` section (count `- [ ]`/`- [x]` items → ACn)
       and the `## Coverage` section (collect `AC(\d+)` refs); emit a finding
       per unmapped ACk and per dangling ref (k > n). Register in `CHECKS`.
-- [ ] T2 — Extend `scripts/tests/test_scripts.py`: fixtures for a milestone
+- [x] T2 — Extend `scripts/tests/test_scripts.py`: fixtures for a milestone
       with an unmapped criterion (fails), one with a dangling Coverage ref
       (fails), a fully-mapped one (passes), and an archived file without
-      Coverage (exempt). Extend the shared `Tree.build()` fixture so every
-      existing validate test still represents a valid repo under the new
-      check (M24 lesson).
-- [ ] T3 — Run `python3 -m unittest discover -s scripts/tests` (no pytest
-      here — M32 lesson) and confirm this repo's own live files pass.
+      Coverage (exempt). The base `Tree.build()` fixture needed no change —
+      its `live()` bodies carry no criteria (0 ACs → exempt), so they stay
+      valid under the new check (M24 lesson: verified, not assumed).
+- [x] T3 — Ran `python3 -m unittest discover -s scripts/tests` (no pytest
+      here — M32 lesson): 49 pass. This repo's own live files (M34, M35)
+      pass the new check.
 
 ## Work log
 
 - 2026-07-12: created by /milestone-plan (backlog-polish set 1 of 2;
   runtime arm of M18's deferred mechanical coverage lint —
   `test_ac_traceability.py` guards the skill-text side).
+- 2026-07-12: T1–T3 done — `check_coverage_complete` added + registered in
+  `CHECKS`; 4 fixtures added (2 fail, 2 pass); suite 49/49; real repo 11/11.
+  All tasks done → status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->

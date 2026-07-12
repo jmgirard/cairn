@@ -32,6 +32,17 @@ def archived(status):
     return f"# M — {status}\n\n**Status:** {status} · approved 2026-07-11\n\n## Outcome\nx\n"
 
 
+def live_cov(status, n_criteria, coverage_refs):
+    """A live milestone body with `n_criteria` acceptance criteria and a
+    Coverage section citing each AC number in `coverage_refs`."""
+    acs = "\n".join(f"- [ ] criterion {i}" for i in range(1, n_criteria + 1))
+    cov = "\n".join(f"- AC{r} → T1" for r in coverage_refs)
+    return (
+        f"# M: Test milestone\n\n- **Status:** {status}   <!-- mirror -->\n\n"
+        f"## Acceptance criteria\n{acs}\n\n## Coverage\n{cov}\n\n## Tasks\n- [ ] T1\n"
+    )
+
+
 # id, title, status, depends, priority, relpath
 BASE_ROWS = [
     ("M03", "Live planned", "planned", "M01", "high", "milestones/M03-live.md"),
@@ -204,6 +215,24 @@ class TestValidateClean(ScriptCase):
         self.assertEqual(proc.returncode, 0, proc.stdout)
         self.assertIn("all checks passed", proc.stdout)
 
+    def test_fully_mapped_coverage_passes(self):
+        # Every criterion referenced in Coverage → coverage-complete passes.
+        self.tree.files["milestones/M03-live.md"] = live_cov("planned", 3, [1, 2, 3])
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  coverage complete", proc.stdout)
+
+    def test_archived_file_with_criteria_is_exempt(self):
+        # An archived (compressed) summary is never scanned: criteria but no
+        # Coverage section must not trip the check.
+        self.tree.files["milestones/archive/M01-old.md"] = (
+            "# M01 — done\n\n**Status:** done · approved 2026-07-11\n\n"
+            "## Acceptance criteria\n- [x] one\n- [x] two\n\n## Outcome\nx\n"
+        )
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  coverage complete", proc.stdout)
+
 
 class TestValidateFailures(ScriptCase):
     def assert_fails(self, check_label, root):
@@ -301,6 +330,18 @@ class TestValidateFailures(ScriptCase):
     def test_row_points_to_missing_file(self):
         self.tree.rows.append(("M05", "Ghost", "planned", "—", "normal", "milestones/M05-ghost.md"))
         self.assert_fails("roadmap<->disk orphans", self.tree.build())
+
+    def test_unmapped_criterion(self):
+        # AC2 has no Coverage line → the coverage-complete check flags it.
+        self.tree.files["milestones/M03-live.md"] = live_cov("planned", 2, [1])
+        out = self.assert_fails("coverage complete", self.tree.build())
+        self.assertIn("M03: AC2 not referenced in Coverage", out)
+
+    def test_dangling_coverage_reference(self):
+        # Coverage cites AC3 but only 2 criteria exist → dangling reference.
+        self.tree.files["milestones/M03-live.md"] = live_cov("planned", 2, [1, 2, 3])
+        out = self.assert_fails("coverage complete", self.tree.build())
+        self.assertIn("Coverage references AC3 but file has 2 criteria", out)
 
     def test_live_file_without_row(self):
         self.tree.files["milestones/M07-extra.md"] = live("planned")
