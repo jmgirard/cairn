@@ -55,8 +55,10 @@ overrides — log the override).
    - `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` passes
      (exit 0) — the mechanical cairn-file checks (mirror, single in-progress,
      caps, done-row retention, vocab, dependency resolution, orphans, ID
-     uniqueness, ISO dates). Run this first; a non-zero exit is a gate failure
-     like any other.
+     uniqueness, ISO dates, §1 scaffold present). Run this first; a non-zero
+     exit is a gate failure like any other. A `scaffold present` FAIL means
+     the repo's §1 scaffold has drifted (a missing tracking file or ignore
+     entry) — fix it by running `/cairn-init` (repair mode), not by hand-patching.
    - **Coverage completeness** — every acceptance criterion appears in the
      Coverage section mapped to ≥1 task that exists in the Tasks section. A
      criterion mapped to no task (or to a task number that isn't there) is a

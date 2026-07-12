@@ -78,7 +78,7 @@ to `/cairn-init` repair; a guard test.
       non-package `.Rbuildignore` behavior.
 - [x] T3: Implement `check_scaffold(root, rows)` in `cairn_validate.py` and
       register it in `CHECKS` (`scripts/cairn_validate.py:184`); make T2 green.
-- [ ] T4: Update the `/milestone` SKILL audit section (`skills/milestone/SKILL.md`,
+- [x] T4: Update the `/milestone` SKILL audit section (`skills/milestone/SKILL.md`,
       near the CLAUDE.md-section line ~64) and the `/milestone-review`
       consistency-gate reference: a scaffold FAIL routes to `/cairn-init`
       repair, not auto-fix.
@@ -97,6 +97,10 @@ to `/cairn-init` repair; a guard test.
   in cairn_validate registered in CHECKS ("scaffold present"); 10 fixture tests
   in test_scaffold_check.py (extended shared Tree to a full scaffold). 43/43
   script tests green; check PASSes on this repo.
+
+- 2026-07-12: T4 — /milestone audit + /milestone-review consistency-gate text
+  now list 'scaffold present' and route a scaffold FAIL to /cairn-init repair
+  (not hand-fixed). 58/58 skills guard tests green.
 
 ## Decisions
 
