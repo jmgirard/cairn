@@ -144,7 +144,7 @@ class TestNext(ScriptCase):
 
     def test_archived_done_dependency_is_satisfied(self):
         # Regression: a dep on a done milestone whose ROADMAP row was pruned
-        # under done-row retention (archive file only) must count as satisfied.
+        # under terminal-row retention (archive file only) must count as satisfied.
         self.tree.rows = [
             ("M20", "New", "planned", "M05", "high", "milestones/M20-new.md"),
         ]
@@ -255,13 +255,30 @@ class TestValidateFailures(ScriptCase):
         out = self.assert_fails("iso date format", root)
         self.assertIn("LESSONS.md", out)
 
-    def test_done_row_retention(self):
+    def test_terminal_row_retention(self):
+        # done rows still count toward the cap after the done→terminal generalization.
         for n in range(4, 10):  # M04..M09 → 7 done rows total with M01
             mid = f"M0{n}"
             rel = f"milestones/archive/{mid}-x.md"
             self.tree.rows.append((mid, "Done x", "done", "—", "normal", rel))
             self.tree.files[rel] = archived("done")
-        self.assert_fails("done-row retention", self.tree.build())
+        self.assert_fails("terminal-row retention", self.tree.build())
+
+    def test_dropped_rows_count_toward_retention(self):
+        # A dropped row counts like a done row: 5 done (at the cap) plus any
+        # dropped rows overflows the terminal cap. The old done-only rule would
+        # have passed this (done == 5) — this case fences the generalization.
+        for n in range(4, 8):  # M04..M07 done → 5 done total with M01 (== cap)
+            mid = f"M0{n}"
+            rel = f"milestones/archive/{mid}-x.md"
+            self.tree.rows.append((mid, "Done x", "done", "—", "normal", rel))
+            self.tree.files[rel] = archived("done")
+        for n in range(8, 10):  # M08, M09 dropped → 7 terminal total
+            mid = f"M0{n}"
+            rel = f"milestones/archive/{mid}-x.md"
+            self.tree.rows.append((mid, "Dropped x", "dropped", "—", "normal", rel))
+            self.tree.files[rel] = archived("dropped")
+        self.assert_fails("terminal-row retention", self.tree.build())
 
     def test_unknown_status(self):
         self.tree.rows[0] = ("M03", "Live planned", "planed", "M01", "high", "milestones/M03-live.md")

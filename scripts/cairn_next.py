@@ -18,7 +18,7 @@ def render(root):
     rows = cs.rows(cs.read_roadmap(root))
     by_id = {r["id"]: r for r in rows}
     # A dependency is satisfied if it is a done row OR a done milestone whose
-    # ROADMAP row was pruned under done-row retention but whose archive file
+    # ROADMAP row was pruned under terminal-row retention but whose archive file
     # remains (matches cairn_validate's dependency check).
     done = {r["id"] for r in rows if r["status"] == "done"} | set(cs.archive_files(root))
     lines = [f"cairn next — {root}", ""]

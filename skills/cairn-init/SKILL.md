@@ -69,8 +69,8 @@ _Last hygiene check: YYYY-MM-DD_
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-<!-- rows grouped by status, not sorted by ID; keep only the 5 most
-     recent done rows — older ones live in milestones/archive/ + git -->
+<!-- rows grouped by status, not sorted by ID; keep only the 5 most recent
+     terminal (done or dropped) rows — older ones live in milestones/archive/ + git -->
 
 ## Candidates
 <!-- unnumbered ideas; one line each: idea — added YYYY-MM-DD — links -->
