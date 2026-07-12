@@ -79,16 +79,16 @@ existing routing-chip guard the M26 lock missed.
 - [x] T2: Add the single-line `**Routing chip (AskUserQuestion)**` token to
       `milestone-brief` step 5 (`skills/milestone-brief/SKILL.md:65`),
       greening T1. Token inside the bold, one line (M26 lesson).
-- [ ] T3: Write `skills/tests/test_chapter_marker_mandate.py` — assert all
+- [x] T3: Write `skills/tests/test_chapter_marker_mandate.py` — assert all
       nine skills carry the chapter-marker directive token, and that
       tracking-rules declares both the per-phase mandate and the
       no-mechanism fallback (red until T4/T5). Assert phrases on single
       lines (M23 lesson).
-- [ ] T4: Rewrite the tracking-rules "Chapter markers" rule
+- [x] T4: Rewrite the tracking-rules "Chapter markers" rule
       (`skills/shared/tracking-rules.md:337`) to the per-phase mandate with
       the no-mechanism fallback clause; name the runtime mechanism
       (Claude Code `mark_chapter`) and cite D-020.
-- [ ] T5: Add the one-line chapter-marker directive to all nine skills
+- [x] T5: Add the one-line chapter-marker directive to all nine skills
       (parallel to each `Phase header:` directive), greening T3.
 - [ ] T6: Append the D-entry recording the mandate promotion (annotates
       D-020) to `cairn/DECISIONS.md`; run the full guard suite +
@@ -98,6 +98,7 @@ existing routing-chip guard the M26 lock missed.
 
 - 2026-07-12: created by /milestone-plan.
 - 2026-07-12: T1+T2 — `milestone-brief` step 5 now carries the `Routing chip (AskUserQuestion)` token; added to `NON_REVIEW_CHIP_SKILLS`; stale comment corrected. Gate-wording suite green (8/8).
+- 2026-07-12: T3+T4+T5 — chapter-marker rule promoted to a per-phase mandate + no-mechanism fallback; one-line directive added to all nine skills; new `test_chapter_marker_mandate.py`. Full suite green (71/71).
 
 ## Decisions
 
