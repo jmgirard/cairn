@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-12 (M36 — done; pruned M31 to the 5-terminal cap)_
+_Last hygiene check: 2026-07-12 (M37 — done; pruned M32 to the 5-terminal cap)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,12 +10,11 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M37 | Fence cairn subagents off the shared checkout (ref-based git only) | review | — | normal | milestones/M37-reviewer-shared-checkout-guard.md |
+| M37 | Fence cairn subagents off the shared checkout (ref-based git only) | done | — | normal | milestones/archive/M37-reviewer-shared-checkout-guard.md |
 | M36 | On-main commit-guard hook | done | — | normal | milestones/archive/M36-on-main-commit-guard.md |
 | M34 | Mechanical coverage-map lint in cairn_validate | done | — | normal | milestones/archive/M34-coverage-map-lint.md |
 | M35 | Rulebook & doc-wording polish batch | done | — | normal | milestones/archive/M35-rulebook-doc-polish.md |
 | M33 | Assess ackwards' oracle discipline and fold its generalizable core into cairn | done | — | normal | milestones/archive/M33-oracle-discipline-coordination.md |
-| M32 | Fold dropped rows into the ROADMAP retention cap (done-row → terminal-row) | done | — | normal | milestones/archive/M32-terminal-row-retention.md |
 
 ## Candidates
 
