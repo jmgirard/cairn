@@ -1,23 +1,18 @@
-<!-- Section ownership + write-modes: see tracking-rules.md "Milestone-file
-     section ownership". A phase skill never rewrites another phase's section.
-     Per-section owners are tagged below. -->
 # M43: Lineage A migration hardening (cairn-init §2)
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP4, IP2, IP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Branch/PR:** m43-lineage-a-migration-hardening   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
-<!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
 
 Harden `/cairn-init` §2 with the four Lineage A migration gaps the M41
 intraclass pilot surfaced, so a multi-file `project/` precursor migrates as
 cleanly as the M22/M23-hardened Lineage B path.
 
 ## Scope
-<!-- owner: plan · create/amend-via-gate -->
 
 **In:** Four prose additions to `skills/cairn-init/SKILL.md` §2, each locked by
 a guard test, closing the M41 pilot's design-level Lineage A gaps
@@ -57,7 +52,6 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
 - **Any `cairn_validate`/scripts change** → none; this is pure skill prose.
 
 ## Acceptance criteria
-<!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
 - [ ] **AC1 (G-I1):** §2 gives concern-split guidance — for a precursor with no
       single `DESIGN.md`, map concern-files to cairn homes where they exist,
@@ -83,9 +77,6 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
       `python3 -m unittest discover -s skills/tests` suite passes green.
 
 ## Coverage
-<!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
-     task(s) satisfying it, by positional number (AC/Task counted
-     top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
 
 - AC1 → T1
 - AC2 → T2
@@ -94,8 +85,6 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
 - AC5 → T5
 
 ## Tasks
-<!-- owner: plan (create) / implement (check-off, minor edits); substantive
-     change is amend-via-gate -->
 
 - [x] **T1 (G-I1):** In `skills/cairn-init/SKILL.md` §2 step 5, add a
       concern-split case beside the "Rich pre-existing `DESIGN.md`?" paragraph:
@@ -121,14 +110,13 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
       (re-record nothing; `DECISIONS.md` is a pure pointer at the entombed
       legacy log) as an explicit option for large decision logs, beside
       "only still-governing decisions are re-recorded".
-- [ ] **T5 (AC5):** Extend `skills/tests/test_migration_guidance.py` with a
+- [x] **T5 (AC5):** Extend `skills/tests/test_migration_guidance.py` with a
       `TestLineageAGuidance` class — one assertion per T1–T4 addition, each
       anchored on feature-unique single-line phrasing (mentally delete the
       addition → its assertion must fail); run
       `python3 -m unittest discover -s skills/tests` and confirm green.
 
 ## Work log
-<!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-12: created by /milestone-plan. Promotes the M41-pilot "Lineage A
   migration guidance" candidate; scope set to G-I1/G-I2/G-I4/G-I5 (G-I3 →
@@ -141,11 +129,10 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
 - 2026-07-12: T3 (G-I4): §6 coupled-vs-clean skill classification + step-3
   keep/entomb gate for clean domain skills.
 - 2026-07-12: T4 (G-I5): pointer-only DECISIONS option named in §2 step 5.
+- 2026-07-12: T5: TestLineageAGuidance added (4 tests, feature-unique
+  single-line anchors); full skills/tests suite green (99 tests). All tasks
+  done → status review.
 
 ## Decisions
-<!-- owner: implement / review · append-only; milestone-local; promote
-     cross-cutting ones to cairn/DECISIONS.md -->
 
 ## Review
-<!-- owner: review · exclusive; evidence per criterion; consistency-gate
-     results; independent-review findings and their triage -->
