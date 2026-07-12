@@ -135,7 +135,10 @@ Lineage: M03 tidymedia pilot (PR #8).
    `BLOCKED`→`blocked`, parking-lot/someday/candidates→`candidate` rows,
    everything finished→entombed. `READY`→`planned` holds only when the item
    carries acceptance criteria and ordered tasks — otherwise it is a
-   `candidate` (see step 5). Ambiguities are asked, not guessed.
+   `candidate` (see step 5). Ambiguities are asked, not guessed. **Clean
+   domain skills** — repo-local skills with domain value and no tracking
+   coupling (the §6 classification) — are surfaced here too, each with an
+   explicit keep-or-entomb choice.
 
 4. **Entomb history verbatim.** Legacy tracking files move whole and
    unmodified to `cairn/legacy/` (committed). New ROADMAP.md carries one
@@ -156,7 +159,12 @@ Lineage: M03 tidymedia pilot (PR #8).
      D-00n, DESIGN §refs) stay valid as citations into `cairn/legacy/`;
      DECISIONS.md starts fresh at D-001 with a header note pointing at the
      legacy log; only still-governing decisions are re-recorded (citing
-     their legacy ID).
+     their legacy ID). For a **large decision log** (dozens of ADRs),
+     **pointer-only** is an explicit and often cleanest disposition: re-record
+     *nothing* — `DECISIONS.md` is a pure pointer at the entombed legacy log,
+     and active work cites `ADR-0nn` into `cairn/legacy/` directly. It is the
+     most no-invention-safe choice for a log too large to re-record without
+     risking drift. Lineage: M41 intraclass (58 ADRs → pointer-only).
    - Unresolved open questions / known issues → `candidate` rows or DESIGN
      "Known issues", per the ownership table. A large legacy backlog that
      would blow the <60-line ROADMAP cap one-row-per-item clusters into
@@ -173,15 +181,37 @@ Lineage: M03 tidymedia pilot (PR #8).
      invention-prone. Either way, hard-constraint invariants embedded in the
      DESIGN are **not** forced into IP/GP shape at migration time — route
      their formalization to `/design-interview`, which is built for it.
+   - **Concern-split precursor (no single `DESIGN.md`)?** A Lineage A board
+     splits DESIGN concerns across dedicated files (a principles doc, a
+     decision log, references, coverage matrices, estimand/spec dirs) with no
+     single DESIGN to keep verbatim or entomb, so neither the entomb/translate
+     binary nor Compromise A fits. Map each concern-file to its cairn home
+     where one exists (references → `references/`; a decision log → the
+     `DECISIONS.md` pointer of this step), **keep repo-specific** where cairn
+     has no home (coverage matrices, estimand/spec dirs) as declared
+     repo-specific files under `cairn/`, and author a **thin `DESIGN.md` seed
+     that points to them** rather than duplicating their content. Lineage: M41
+     intraclass pilot (first Lineage A).
 
 6. **Redistribute and deactivate.**
    - Old CLAUDE.md content redistributed per the ownership table:
      invariants → DESIGN or CLAUDE hard rules; status slots and milestone
      indexes → deleted (ROADMAP owns status now); commands kept. Append the
      standard CLAUDE.md section.
-   - **Old repo-local skills and rulebooks move to `cairn/legacy/`** —
-     they must not remain in `.claude/skills/`, where they would collide
-     with or contradict this plugin's skills.
+   - **Repo-local skills — classify, then entomb or ask.** A precursor's
+     `.claude/skills/` holds two kinds. **Tracking-coupled** skills (they
+     drive the old board/gate model — next-task pickers, milestone movers,
+     release checklists) collide with or contradict this plugin's skills and
+     **move to `cairn/legacy/`**; they must not remain in `.claude/skills/`.
+     **Clean domain** skills (domain workflow with no tracking coupling — e.g.
+     an estimator scaffold, an oracle-verification runner) carry value this
+     plugin has no home for, so **surface them at the step-3 question gate for
+     an explicit keep-or-entomb decision** rather than entombing blindly. A
+     skill that is *both* domain and tracking-coupled entombs — the coupling
+     wins (it would contradict the plugin) — but note its domain value has no
+     cairn home yet, feeding the toolchain-profiles / oracle-registry
+     candidates. Lineage: M41 intraclass (all 6 skills coupled — 4 purely, 2
+     domain-but-coupled — so all entombed).
    - Repo-specific assets with no canonical home (spec files, coverage
      matrices, principles docs) stay in `cairn/` as declared
      repo-specific files — kept, not forced into canonical shapes.
@@ -194,6 +224,17 @@ Lineage: M03 tidymedia pilot (PR #8).
      hit takes one of two dispositions: **repoint** it to the new `cairn/`
      path, or **note-and-leave** when the content and anchors are preserved
      at the new path. Record which in the migration ledger.
+     **Numbered-principle refs are a forced note-and-leave.** When the
+     relocated file is a *principles doc cited by number* in package code
+     (e.g. `PRINCIPLES.md #N` — 70× across 29 files in the M41 intraclass
+     pilot), repoint is not available: folding those principles into
+     `DESIGN.md`'s IP/GP renumbers them, which strands every in-code ref or
+     forces a package-code touch that breaks the docs-only migration. Keep the
+     principles file at a `cairn/` path with its **numbering and basename
+     intact** (note-and-leave), and defer both the IP/GP formalization *and*
+     the eventual in-code repoint to `/design-interview` + a target-repo code
+     milestone. This is the blocking, larger form of the ~17-ref ackwards
+     `DESIGN.md s.N` case above (M20 G6).
    - **Post-move hygiene:** prune per-file `.Rbuildignore` entries for
      tracking files that just moved into `cairn/` (e.g. `^DESIGN\.md$`,
      `^ROADMAP\.md$`) — `^cairn$` now covers them, so a stale per-file entry
