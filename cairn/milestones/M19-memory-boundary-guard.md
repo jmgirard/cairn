@@ -3,10 +3,10 @@
      Per-section owners are tagged below. -->
 # M19: Memory-boundary write guard (GP4 enforcement)
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M18   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m19-memory-boundary-guard   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -112,6 +112,11 @@ to avoid a merge conflict (the user chose this sequencing).
   concern to GP4's general enforcement arm (durable knowledge → cairn/ files,
   not per-user memory) after the D-011 memory slip earlier this session.
   Gate: softest non-blocking nudge (prose-only fallback), Depends on M18.
+- 2026-07-12: /milestone-implement start; branch m19-memory-boundary-guard,
+  status in-progress. T1 investigation (official hooks docs): PreToolUse CAN
+  emit a non-blocking nudge via hookSpecificOutput.additionalContext
+  (permissionDecision optional) — plan of record holds, prose-only fallback
+  not needed.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
