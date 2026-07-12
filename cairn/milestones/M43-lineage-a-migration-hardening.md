@@ -4,7 +4,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP4, IP2, IP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** m43-lineage-a-migration-hardening   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m43-lineage-a-migration-hardening · PR #41   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 
@@ -53,24 +53,24 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
 
 ## Acceptance criteria
 
-- [ ] **AC1 (G-I1):** §2 gives concern-split guidance — for a precursor with no
+- [x] **AC1 (G-I1):** §2 gives concern-split guidance — for a precursor with no
       single `DESIGN.md`, map concern-files to cairn homes where they exist,
       keep repo-specific where none, and author a thin `DESIGN.md` seed that
       points to them; presented as a sibling to Compromise A, not a
       replacement. Evidence: the §2 prose + its guard assertion.
-- [ ] **AC2 (G-I2):** §2 gives numbered-principle note-and-leave guidance — when
+- [x] **AC2 (G-I2):** §2 gives numbered-principle note-and-leave guidance — when
       package code cites principles by number, keep the principles file
       (numbering + basename intact) rather than folding into IP/GP at migration,
       and defer formalization + the in-code repoint to `/design-interview` + a
       code milestone. Evidence: the §2 prose + its guard assertion.
-- [ ] **AC3 (G-I4):** §6 distinguishes tracking-coupled skills (entomb) from
+- [x] **AC3 (G-I4):** §6 distinguishes tracking-coupled skills (entomb) from
       clean domain skills, and §2 step 3 surfaces clean domain skills at the
       question gate for an explicit keep/entomb decision. Evidence: the §6/step-3
       prose + its guard assertion.
-- [ ] **AC4 (G-I5):** §2 step 5 names **pointer-only** as an explicit DECISIONS
+- [x] **AC4 (G-I5):** §2 step 5 names **pointer-only** as an explicit DECISIONS
       disposition for large decision logs. Evidence: the §2 prose + its guard
       assertion.
-- [ ] **AC5:** `test_migration_guidance.py` is extended with one assertion per
+- [x] **AC5:** `test_migration_guidance.py` is extended with one assertion per
       addition (AC1–AC4), each anchored on a phrase the feature *uniquely*
       introduces on a single line (M23 newline trap + M39/M40 false-coverage
       trap avoided — deleting an addition fails its assertion); the full
@@ -136,3 +136,38 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
 ## Decisions
 
 ## Review
+
+PR #41. Fresh evidence gathered 2026-07-12 on branch (main is ancestor, no
+divergence). Diff scoped to `skills/` + `cairn/` only (`git diff --name-only`).
+
+**Acceptance criteria (AC fencing — evidence then tick):**
+
+- AC1 (G-I1): §2 step 5 concern-split case present ("Concern-split precursor",
+  "thin `DESIGN.md` seed"); `test_concern_split_precursor_mapping` passes; both
+  anchors absent on `main` (branch-introduced). ✓
+- AC2 (G-I2): §2 step 6 "forced note-and-leave" + "the eventual in-code repoint"
+  present; `test_numbered_principle_forced_note_and_leave` passes; anchor absent
+  on `main`. ✓
+- AC3 (G-I4): §6 "classify, then entomb or ask" + step-3 "surfaced here too" /
+  "an explicit keep-or-entomb decision" present;
+  `test_coupled_vs_clean_skill_classification` passes; anchor absent on `main`. ✓
+- AC4 (G-I5): §2 step 5 "pointer-only" + "pure pointer at the entombed legacy
+  log" present; `test_pointer_only_decisions_for_large_logs` passes; anchor
+  absent on `main`. ✓
+- AC5: `TestLineageAGuidance` (4 tests) + full `skills/tests` suite green (99
+  tests). Each primary anchor is single-line (M23) and feature-unique (0 on
+  `main` → deleting the addition fails its assertion; M39/M40 trap proven
+  avoided). ✓
+
+**Consistency gate:**
+
+- `cairn_validate.py` → 12/12 PASS, exit 0.
+- Coverage completeness: AC1→T1, AC2→T2, AC3→T3, AC4→T4, AC5→T5 — every
+  criterion maps to an existing task.
+- Principle impact: Principles-touched (GP4/IP2/IP3) are *worked-under*, not
+  changed — `cairn/DESIGN.md` untouched, so `cairn_impact --changed` is N/A;
+  "principles slot valid" PASS.
+- R-package gates (document/README/pkgdown/NEWS/`.Rbuildignore`): waived —
+  plugin repo, no R machinery, diff touches no R files (CLAUDE.md).
+
+**Independent fresh-context review:** (below)
