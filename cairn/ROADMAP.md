@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-12 (M41+M42 planned — intraclass migration pilot + oracle-doctrine validation)_
+_Last hygiene check: 2026-07-12 (M41 done + archived; pruned M36 to the 5-terminal cap; M42 planned)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,13 +10,12 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M41 | Migration stress-test pilot — intraclass (first Lineage A) | review | — | normal | milestones/M41-migration-pilot-intraclass.md |
 | M42 | Oracle-doctrine validation against intraclass | planned | M41 | normal | milestones/M42-oracle-doctrine-validation-intraclass.md |
+| M41 | Migration stress-test pilot — intraclass (first Lineage A) | done | — | normal | milestones/archive/M41-migration-pilot-intraclass.md |
 | M40 | Prior-PR-comments reviewer lens | done | — | normal | milestones/archive/M40-prior-pr-comments-lens.md |
 | M39 | Search-first candidate creation | done | — | normal | milestones/archive/M39-search-first-candidate-creation.md |
 | M38 | Principles-touched slot in the milestone template | done | — | normal | milestones/archive/M38-principles-touched-slot.md |
 | M37 | Fence cairn subagents off the shared checkout (ref-based git only) | done | — | normal | milestones/archive/M37-reviewer-shared-checkout-guard.md |
-| M36 | On-main commit-guard hook | done | — | normal | milestones/archive/M36-on-main-commit-guard.md |
 
 ## Candidates
 
