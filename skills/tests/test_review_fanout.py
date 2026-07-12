@@ -88,5 +88,30 @@ class TestReviewFanout(unittest.TestCase):
         self.assertIn("diff-blindness", r)
 
 
+class TestSharedCheckoutGuard(unittest.TestCase):
+    """M37: cairn-spawned subagents share the primary checkout, so they use
+    ref-based git only — never a HEAD-moving command (checkout/worktree add)
+    in that tree (a reviewer that did so parked the checkout mid-M36-review).
+    This is locked in two places: the general subagent-conduct rule in the
+    shared rulebook, and the pointed reminder at the /milestone-review step.
+    Phrases are asserted case-insensitively and each lives on one physical
+    line (M23 newline, M26 bold-split lessons)."""
+
+    def test_tracking_rules_states_general_shared_checkout_rule(self):
+        r = rules().lower()
+        self.assertIn("ref-based git only", r)
+        self.assertIn("primary checkout", r)
+        # names the prohibited HEAD-moving commands, not just "no checkout"
+        self.assertIn("git checkout", r)
+        self.assertIn("git worktree add", r)
+
+    def test_review_fanout_reminds_reviewers_ref_based_only(self):
+        t = review().lower()
+        self.assertIn("ref-based git only", t)
+        self.assertIn("working tree", t)
+        self.assertIn("git checkout", t)
+        self.assertIn("git worktree add", t)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -369,6 +369,13 @@ cairn skill is active.
   it does not touch the Fable-subagent gate below.
 - Every spawned Agent's description starts with its tier tag —
   `[S]`/`[O]`/`[F]` — per the output-discipline section.
+- **Subagents share the primary checkout.** Every subagent cairn spawns runs
+  in the same working tree as the main session, so it uses ref-based git only
+  (`git diff`/`show`/`log`/`blame` against refs like `main..HEAD`) and never a
+  HEAD-moving command — `git checkout`, `git switch`, `git worktree add`,
+  `git reset` — in that shared tree, which would park the primary checkout on
+  another branch mid-task (hit in the M36 review). Binds every spawned agent:
+  Explore/Sonnet/Opus workers and the `/milestone-review` reviewers alike.
 - **Sonnet subagents**: well-specified self-contained work — fan-out
   searches (Explore), mechanical migrations, test writing against a spec,
   boilerplate. Give complete specs — for an Explore fan-out that means a

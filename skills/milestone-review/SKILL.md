@@ -91,7 +91,11 @@ overrides — log the override).
 
 5. **Independent fresh-context review — two lenses, then a scorer.** Spawn
    two reviewers that have not seen the implementation, in parallel, each with
-   a *distinct evidence base* (a shared base just finds the same things twice):
+   a *distinct evidence base* (a shared base just finds the same things twice).
+   **Reviewers share this working tree — ref-based git only:** `git diff`/`log`/`blame`
+   against refs (e.g. `git diff <default-branch>..HEAD`), never `git checkout`
+   or `git worktree add` in it, which parks the primary checkout on another
+   branch mid-review (tracking-rules subagent conduct; hit in M36). The two lenses:
    - **[O] diff-bug reviewer (Opus).** Reviews the full diff
      (`git diff <default-branch>..HEAD`) against the acceptance criteria, DESIGN.md
      conventions, and DECISIONS.md — correctness, contract, convention.
