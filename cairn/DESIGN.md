@@ -21,7 +21,8 @@ transitions, human-gated merges, and a domain verification doctrine.
 - `skills/<name>/SKILL.md` × 9 — workflow logic; each reads the shared
   rulebook first and never restates it. Includes `design-interview`, a
   standalone two-phase (facts → principles) DESIGN.md elicitation interview
-  (D-013), offered from `/cairn-init`'s routing chip.
+  (D-013), offered from `/cairn-init`'s routing chip; it recommends running
+  the session on Fable (D-014).
 - `skills/shared/tracking-rules.md` — the single rulebook.
 - `skills/shared/templates/` — milestone, brief, decision, CLAUDE.md section.
 - `hooks/hooks.json` + python3 (stdlib) scripts (M07) — the enforcement

@@ -18,6 +18,13 @@ dependency** — commitments made before the fact base exists get reworked
 once it does — so Phase 1 never asks the user to commit a principle; it only
 **banks** proto-principles for Phase 2.
 
+**Run this on Fable.** The interview is markedly better on Fable than on
+Opus — its questions land in plain language and its Phase-2 judgment is
+stronger (openac pilot, 2026-07-11; D-014). If the session is not already on
+Fable, recommend switching before starting; then proceed. This is the user's
+per-instance model choice (no cairn-spawned Fable subagent, so D-004 is
+unaffected), not a standing elevation.
+
 ## Session start
 
 Require `cairn/DESIGN.md` to exist; if there is no `cairn/`, stop and route
@@ -68,10 +75,8 @@ later session resumes statelessly); then a routing chip —
 - **Continue into principles** → Phase 2 (recommended)
 - **Pause here** — stop; resume statelessly later
 
-Continuous by default, pausable without loss. The seam also makes model
-elevation targetable: Phase 2 is the judgment-heavy half, so a future
-variant could elevate only it (via `/milestone-brief`, gated per instance —
-D-004); this skill runs both phases on the main Opus session.
+Continuous by default, pausable without loss. Both phases run in one
+session — best on Fable (see the note at the top).
 
 ## Phase 2 — Principles
 

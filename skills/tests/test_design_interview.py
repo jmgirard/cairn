@@ -54,6 +54,13 @@ class TestDesignInterviewSkill(unittest.TestCase):
         # Phase 1 must not ask for a principle commitment.
         self.assertIn("never ask", self.skill)
 
+    def test_recommends_running_on_fable(self):
+        # D-014: the interview defaults to Fable (openac pilot found Opus's
+        # questions too technical). Lock the steer so it can't silently drift
+        # back to an Opus default.
+        self.assertIn("fable", self.skill)
+        self.assertIn("d-014", self.skill)
+
     def test_seam_checkpoints_and_routes(self):
         self.assertIn("checkpoint-commit", self.skill)
         self.assertIn("continue into principles", self.skill)

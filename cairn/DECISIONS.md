@@ -164,3 +164,22 @@ deferred candidate, not part of this decision.
 **Consequences:** cairn-init stays lean; the interview is reusable beyond
 init. A ninth skill (`skills/<name>/SKILL.md × 9`). Locked by
 `skills/tests/test_design_interview.py` (M12).
+
+### D-014 (2026-07-11): /design-interview recommends running on Fable
+
+**Context:** D-013 planned an Opus-only v1, with Fable elevation deferred to
+a candidate. The openac pilot (M12 criterion 6) refuted that: on Opus the
+interview's questions were too technical and hard to parse; a Fable rerun was
+"a much better experience" (Jeff). An interactive multi-round interview can't
+be conducted by a subagent, so the only way to get Fable-quality live
+judgment is to run the whole session on Fable.
+**Decision:** `/design-interview` opens by recommending the user run the
+session on Fable (citing this pilot), then proceeds regardless — a soft steer,
+not a hard gate. This is the user's per-instance model choice; cairn spawns no
+Fable subagent, so **D-004 is unaffected** (it governs cairn-spawned Fable,
+not the user's own session model) and the "orchestrator: Opus" default stands
+for every other skill.
+**Consequences:** Supersedes D-013's Opus-only v1 and absorbs the deferred
+"phase-2-to-Fable elevation" candidate (dropped). The pilot passed on Fable,
+satisfying M12 criterion 6. Locked by
+`test_design_interview.py::test_recommends_running_on_fable`.

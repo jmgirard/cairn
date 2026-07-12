@@ -35,11 +35,16 @@ interview from `references/design-interview-notes.md` (items 1–11):
   `SKILLS_WITH_PHASE_HEADER`; DESIGN.md skill count `× 8` → `× 9`;
   DECISIONS.md D-entry for the standalone-skill choice.
 
+Model tier (amended 2026-07-11, D-014): the openac pilot found Opus's
+questions too technical; Fable was markedly better. The skill now recommends
+running the session on Fable (soft steer, user's per-instance choice). This
+absorbs the former "phase-2-to-Fable elevation" candidate (dropped).
+
 **Out:**
-- Phase-2-to-Fable elevation (the expensive lever) → `candidate` row;
-  Opus-only for v1.
 - Greenfield init opener-questions + toolchain-profile selection → stays
   the separate `Greenfield init flow` candidate (cross-referenced).
+- A hard model gate, or any cairn-spawned Fable subagent (D-004 stands) —
+  the steer is a soft recommendation only.
 - Any change to how the milestone skills write DESIGN.md, or auto-triggered
   DESIGN edits without the interview.
 
@@ -69,8 +74,12 @@ interview from `references/design-interview-notes.md` (items 1–11):
       (evidence: `python3 -m unittest discover -s skills/tests` green)
 - [ ] **Merge gate:** `/design-interview` run end-to-end on openac; Jeff
       judges the produced DESIGN draft + principle set acceptable and
-      records a one-line verdict, noting whether Opus quality is comparable
-      to the 2026-07-11 Fable pilot. (evidence: pilot verdict in Review)
+      records a one-line verdict. (evidence: pilot verdict in Review)
+      → **Met on Fable** 2026-07-11: Opus rejected (questions too technical);
+      Fable rerun "a much better experience" → skill now Fable-recommended
+      (D-014).
+- [ ] Skill recommends running on Fable at the top (soft steer, D-014).
+      (evidence: `test_recommends_running_on_fable` green)
 
 ## Tasks
 
@@ -85,9 +94,10 @@ interview from `references/design-interview-notes.md` (items 1–11):
 - [x] Add `design-interview` to `SKILLS_WITH_PHASE_HEADER`
       (`test_phase_header_levels.py:26`); write
       `skills/tests/test_design_interview.py`; run the suite green.
-- [ ] Live pilot on openac (Jeff-run); record the verdict; on pass proceed
-      to `/milestone-review`. **Merge gate (criterion 6) — Jeff-run; the
-      build (tasks 1–4) is complete and awaits this verification.**
+- [x] Live pilot on openac (Jeff-run); record the verdict. Done 2026-07-11:
+      Opus poor, Fable much better → skill defaults to Fable (D-014).
+- [x] Amendment (D-014): add the Fable recommendation to the skill top +
+      guard test; supersede D-013's Opus-only v1; drop the elevation candidate.
 
 ## Work log
 <!-- append-only; one line per entry; absolute dates -->
@@ -106,6 +116,10 @@ interview from `references/design-interview-notes.md` (items 1–11):
 - 2026-07-11: build complete (tasks 1–4), local checks green → status
   review. Criterion 6 (openac pilot) is the outstanding Jeff-run merge gate,
   verified at /milestone-review.
+- 2026-07-11: openac pilot — Opus questions too technical/hard to parse;
+  Fable rerun much better. Reopened in-progress; amended to Fable-recommended
+  (D-014, supersedes D-013's Opus-only); elevation candidate dropped. Suite
+  re-run green → back to review.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
@@ -113,8 +127,9 @@ interview from `references/design-interview-notes.md` (items 1–11):
 - Ship as a standalone `/design-interview` skill (not folded into
   cairn-init): reusable to deepen an existing DESIGN, keeps cairn-init lean.
   Promote to D-013 in the implementation commit that adds the skill.
-- Opus-only for v1; the openac pilot doubles as the Opus-vs-Fable quality
-  check. Fable-elevation of phase 2 is deferred to a candidate, not dropped.
+- Opus-only for v1 — **superseded 2026-07-11 by D-014** after the openac
+  pilot: the skill now recommends running on Fable (soft steer). The former
+  phase-2-elevation candidate is absorbed and dropped.
 
 ## Review
 <!-- filled by /milestone-review: evidence per criterion; consistency-gate
