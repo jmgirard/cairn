@@ -20,7 +20,8 @@ Entombed → `cairn/legacy/`: `MILESTONES.md` (1880 lines, M1–M53), old
 `ROADMAP.md`, 3 repo-local skills. Kept as canonical `cairn/DESIGN.md`:
 `DESIGN.md` verbatim (§14 decision log embedded). Authored: `cairn/ROADMAP.md`
 (no live milestones; IDs continue from M54), `cairn/DECISIONS.md` (15
-still-governing decisions, D-001..D-015, each citing DESIGN §14), `references/INDEX.md`.
+still-governing decisions, D-001..D-015, each citing its DESIGN source anchor —
+mostly §14, several §2–§12), `references/INDEX.md`.
 Redistributed `CLAUDE.md` (deleted milestone index + status slot; git model →
 cairn; defaults/deps/scope → DESIGN pointers; cairn section appended). Live
 state (release tail + 2 extension ideas) → candidate rows.
@@ -34,7 +35,7 @@ state (release tail + 2 extension ideas) → candidate rows.
 | G3 | Rich living `DESIGN.md` (885 lines, embedded §14 decision log + known issues) doesn't fit the entomb/translate binary; §5 only anticipates a thin DESIGN. Resolved at gate (Compromise A: keep verbatim, re-record still-governing decisions, defer full §14 extraction). | §5 | candidate |
 | G4 | No live milestones (all done/dropped) — clean; live state was only release tail + 2 ideas. | §3 | (clean) |
 | G5 | Invariants placement — hard constraints stayed as CLAUDE rules; IP/GP formalization routed to `/design-interview`. | §6 | candidate |
-| G6 | **15 R-source comments + 2 tests reference `DESIGN.md s.N` by name**; relocating strands them. §4/§6 silent on in-code refs. Left untouched (content/sections preserved at new path). | §4/§6 | candidate |
+| G6 | **~17 R-source comments across 9 files + 3 tests reference `DESIGN.md s.N` by name**; relocating strands them. §4/§6 silent on in-code refs. Left untouched (content/sections preserved at new path). | §4/§6 | candidate |
 | G7 | Stale per-file `.Rbuildignore` entries (`^DESIGN\.md$` etc.) after the move; §1 only says "add `^cairn$`", not "prune stale". Cleaned by hand. | §1/§6 | candidate |
 | G8 | **HEADLINE: cairn's `<80` CLAUDE.md cap doesn't survive a mature repo.** After deleting index+slot and collapsing DESIGN-duplicative sections, CLAUDE.md is still 187 lines — its legit dev doctrine (Dev workflow, DoD, Invariants, guardrails) plus the ~26-line appended cairn section floor well above 80. Audit FAILS. | weight-caps | candidate |
 | G9 | **cairn's git model + CLAUDE template are `main`-hardcoded** — no adaptation for a `master` repo; appending verbatim contradicts the repo. Adapted by hand. Old CLAUDE Git section's merge-mechanics also conflicted with cairn's approval-gate (rewrote to defer + keep repo-specifics). | §6 + tracking-rules | candidate |

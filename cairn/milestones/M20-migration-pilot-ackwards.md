@@ -153,3 +153,24 @@ the skill.
 completeness — every AC maps to an existing task (AC1→T1–6, AC2→T6, AC3→T3,T5,
 AC4→T7, AC5→T8, AC6→T9); no cairn DESIGN principle changed → Sync Impact Report
 skipped. R-package gates (devtools/README.Rmd/pkgdown/NEWS) waived per CLAUDE.md.
+
+**Independent fresh-context review** — 2 lenses ([O] diff-bug, [S] blame-history)
++ [S] scorer. 3 findings; scored:
+
+- **H1 (85, fixed)** — blame lens: the CLAUDE redistribution dropped ackwards'
+  dated owner decision that `master` is *not* branch-protected (non-release
+  milestones merge on local-green, CI advisory, no `--auto`, no CI-watch), which
+  cairn's rulebook reverses. Fixed: re-recorded it in ackwards CLAUDE.md Git
+  section as an explicit standing override of cairn's default gate (preserves
+  live governing state; owner can drop it consciously later).
+- **O1 (80, fixed)** — diff lens: the "each citing DESIGN §14" summary
+  overgeneralized (10/15 decisions cite §2–§12). Fixed in ackwards DECISIONS.md
+  preamble + pilot notes.
+- **O2 (62, excluded/logged)** — diff lens: G6's in-code-ref count (15+2)
+  undercounted vs actual (~17 across 9 files + 3 tests). Below the 80
+  threshold; corrected in the pilot note as hygiene, no further action.
+
+Clean per both lenses: entombment 100% verbatim, no package code touched, no
+live ROADMAP item dropped, no-invention rule honored (D-entries trace to
+source; unknown dates marked not fabricated), CLAUDE redistribution otherwise
+lossless.
