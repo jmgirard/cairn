@@ -71,10 +71,10 @@ to a `planned` milestone (that is a later plan-gate decision, fed by these findi
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Read intraclass's 34 `data-raw/oracle-*.R` scripts (+ the `tests/testthat`
+- [x] T1: Read intraclass's 34 `data-raw/oracle-*.R` scripts (+ the `tests/testthat`
       oracle tests that assert against them) and record what each oracle actually is
       — its source and how it is reproduced.
-- [ ] T2: Classify each script against the four cairn oracle types in a table with
+- [x] T2: Classify each script against the four cairn oracle types in a table with
       per-type counts; flag any that fit no type; compare intraclass `PRINCIPLES.md`
       #1 to cairn's ≥2-types bar with an agree/diverge verdict. Write both into a new
       `references/oracle-doctrine-intraclass-notes.md` (declares its own scope).
@@ -91,6 +91,7 @@ to a `planned` milestone (that is a later plan-gate decision, fed by these findi
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-12: created by /milestone-plan (oracle-doctrine reality-check; depends on M41 per user's follow-on choice).
+- 2026-07-12: T1+T2 — read all 34 intraclass oracle scripts + test consumption; wrote references/oracle-doctrine-intraclass-notes.md. Finding: 31/34 use simulation-coverage (SC), an oracle mapping to NONE of cairn's four types (defining oracle for 21). PRINCIPLES.md #1 AGREES on the ≥2-types bar, DIVERGES on taxonomy (its cat (c) = SC, unnamed by cairn). intraclass's frozen-when-expensive / live-when-cheap split corroborates D-024.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
