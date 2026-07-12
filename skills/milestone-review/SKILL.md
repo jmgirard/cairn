@@ -30,7 +30,10 @@ overrides — log the override).
 
 3. **Execute every acceptance criterion with fresh evidence** — actually run
    the tests, actually run `devtools::check()`; record results per criterion
-   in the milestone's Review section (summaries, never pasted output).
+   in the milestone's Review section (summaries, never pasted output). Write
+   only the Review section — review-exclusive per the tracking-rules
+   section-ownership table; never edit the plan-owned Goal/Scope/Acceptance
+   criteria (see the never-reinterpret rule next).
 
    **Criteria are never reinterpreted at review.** If the work seems right
    but a criterion as written fails, the criterion is wrong — send the

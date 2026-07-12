@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M14 | Section write allow-lists per skill | planned | — | normal | milestones/M14-section-allow-lists.md |
+| M14 | Section write allow-lists per skill | review | — | normal | milestones/M14-section-allow-lists.md |
 | M15 | Sync Impact Report on principle changes | planned | — | normal | milestones/M15-sync-impact-report.md |
 | M16 | Lessons loop (capture → harvest) | planned | — | normal | milestones/M16-lessons-loop.md |
 | M13 | Wire deterministic scripts into review + plan | done | — | normal | milestones/archive/M13-script-wiring.md |
