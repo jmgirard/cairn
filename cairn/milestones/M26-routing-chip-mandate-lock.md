@@ -3,10 +3,10 @@
      Per-section owners are tagged below. -->
 # M26: Lock the routing-chip mandate; exempt review as the chip-less phase
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** m26-routing-chip-mandate-lock
 
 ## Goal
 
