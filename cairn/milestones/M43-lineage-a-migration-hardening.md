@@ -111,7 +111,7 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
       defer both IP/GP formalization and the eventual in-code repoint to
       `/design-interview` + a target-repo code milestone. Cross-reference the
       smaller ackwards G6 version.
-- [ ] **T3 (G-I4):** In §6, distinguish tracking-coupled skills (drive the old
+- [x] **T3 (G-I4):** In §6, distinguish tracking-coupled skills (drive the old
       board/gate model → entomb) from clean domain skills (domain workflow value
       → keep or ask), and note the domain value may have no cairn home yet
       (feeds the toolchain-profiles / oracle-registry candidates); in §2 step 3,
@@ -138,6 +138,8 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
   added to §2 step 5.
 - 2026-07-12: T2 (G-I2, headline): numbered-principle forced note-and-leave
   added to the §2 step 6 reference sweep.
+- 2026-07-12: T3 (G-I4): §6 coupled-vs-clean skill classification + step-3
+  keep/entomb gate for clean domain skills.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

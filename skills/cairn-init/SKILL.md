@@ -135,7 +135,10 @@ Lineage: M03 tidymedia pilot (PR #8).
    `BLOCKED`→`blocked`, parking-lot/someday/candidates→`candidate` rows,
    everything finished→entombed. `READY`→`planned` holds only when the item
    carries acceptance criteria and ordered tasks — otherwise it is a
-   `candidate` (see step 5). Ambiguities are asked, not guessed.
+   `candidate` (see step 5). Ambiguities are asked, not guessed. **Clean
+   domain skills** — repo-local skills with domain value and no tracking
+   coupling (the §6 classification) — are surfaced here too, each with an
+   explicit keep-or-entomb choice.
 
 4. **Entomb history verbatim.** Legacy tracking files move whole and
    unmodified to `cairn/legacy/` (committed). New ROADMAP.md carries one
@@ -190,9 +193,20 @@ Lineage: M03 tidymedia pilot (PR #8).
      invariants → DESIGN or CLAUDE hard rules; status slots and milestone
      indexes → deleted (ROADMAP owns status now); commands kept. Append the
      standard CLAUDE.md section.
-   - **Old repo-local skills and rulebooks move to `cairn/legacy/`** —
-     they must not remain in `.claude/skills/`, where they would collide
-     with or contradict this plugin's skills.
+   - **Repo-local skills — classify, then entomb or ask.** A precursor's
+     `.claude/skills/` holds two kinds. **Tracking-coupled** skills (they
+     drive the old board/gate model — next-task pickers, milestone movers,
+     release checklists) collide with or contradict this plugin's skills and
+     **move to `cairn/legacy/`**; they must not remain in `.claude/skills/`.
+     **Clean domain** skills (domain workflow with no tracking coupling — e.g.
+     an estimator scaffold, an oracle-verification runner) carry value this
+     plugin has no home for, so **surface them at the step-3 question gate for
+     an explicit keep-or-entomb decision** rather than entombing blindly. A
+     skill that is *both* domain and tracking-coupled entombs — the coupling
+     wins (it would contradict the plugin) — but note its domain value has no
+     cairn home yet, feeding the toolchain-profiles / oracle-registry
+     candidates. Lineage: M41 intraclass (all 6 skills coupled — 4 purely, 2
+     domain-but-coupled — so all entombed).
    - Repo-specific assets with no canonical home (spec files, coverage
      matrices, principles docs) stay in `cairn/` as declared
      repo-specific files — kept, not forced into canonical shapes.
