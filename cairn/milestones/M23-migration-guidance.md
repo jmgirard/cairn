@@ -5,7 +5,7 @@
 - **Status:** review
 - **Priority:** normal
 - **Depends on:** M22
-- **Branch/PR:** m23-migration-guidance
+- **Branch/PR:** m23-migration-guidance · https://github.com/jmgirard/cairn/pull/20
 
 ## Goal
 
@@ -46,20 +46,20 @@ next real migration doesn't re-hit them.
 
 ## Acceptance criteria
 
-- [ ] `/cairn-init` §2/§5 carries explicit guidance for a rich living DESIGN.md
+- [x] `/cairn-init` §2/§5 carries explicit guidance for a rich living DESIGN.md
       with an embedded decision log: the keep-verbatim vs extract-to-DECISIONS
       choice (Compromise A/B) and routing hard-constraint invariants to
       `/design-interview` for IP/GP formalization. Evidence: skill diff naming
       both dispositions and citing the ackwards case.
-- [ ] §4/§6 gains a repoint-or-note sweep for (a) in-code references (source
+- [x] §4/§6 gains a repoint-or-note sweep for (a) in-code references (source
       comments/tests) naming relocated tracking files and (b) redistributed
       CLAUDE.md prose referencing just-entombed repo-local skills — the step
       names the sweep and the two dispositions. Evidence: skill diff.
-- [ ] Post-move hygiene is covered: §1/§6 instructs pruning stale per-file
+- [x] Post-move hygiene is covered: §1/§6 instructs pruning stale per-file
       `.Rbuildignore` entries after the move, and §0 Lineage B detection wording
       is widened to include a forward-only ROADMAP + explicit status slot.
       Evidence: skill/§0 diff.
-- [ ] Any new mechanical invariant (e.g. a required §2 sweep-step phrase the
+- [x] Any new mechanical invariant (e.g. a required §2 sweep-step phrase the
       section-allow-list test keys on) is guard-tested; suite green over
       `skills/tests/` and `scripts/tests/`. Evidence: test run output.
 
@@ -109,3 +109,29 @@ next real migration doesn't re-hit them.
 ## Decisions
 
 ## Review
+
+_2026-07-12, same-session implement→review (criteria evidence by command;
+independent review in fresh subagents). PR #20._
+
+**AC evidence:**
+- AC1 (rich-DESIGN §5 guidance): `git diff main..HEAD -- skills/cairn-init/SKILL.md`
+  shows the new step-5 bullet naming Compromise A (default, keep verbatim +
+  re-record still-governing decisions) and Compromise B (full extraction on
+  request), routing embedded invariants to `/design-interview`, and citing the
+  ackwards pilot. PASS.
+- AC2 (repoint-or-note sweep): same diff adds the step-6 "Reference sweep —
+  repoint or note" bullet covering (a) in-code refs (source/tests naming a
+  relocated tracking file, ~17 in ackwards) and (b) redistributed CLAUDE prose
+  naming an entombed skill, with repoint / note-and-leave dispositions. PASS.
+- AC3 (post-move hygiene): diff adds the step-6 `.Rbuildignore` prune bullet
+  (+ §1 cross-reference) and widens §0 Lineage B detection to a forward-only
+  `ROADMAP.md` + explicit status/`Current focus` slot. PASS.
+- AC4 (guard test + green suite): `test_migration_guidance.py` (5 cases) added;
+  `unittest discover` over `skills/tests` = 56 ok, over `scripts/tests` = 33 ok;
+  `test_section_allow_lists.py` untouched and passing. PASS.
+
+**Consistency gate:** `cairn_validate.py` → all 9 checks pass. Coverage
+complete (AC1→T1 … AC4→T4, all tasks present). No DESIGN principle touched →
+impact report skipped. R gates (document/README/pkgdown/NEWS/`.Rbuildignore`)
+waived — non-package repo per CLAUDE.md.
+
