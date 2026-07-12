@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M23: Migration-protocol §2 guidance hardening
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M22
 - **Branch/PR:** m23-migration-guidance
