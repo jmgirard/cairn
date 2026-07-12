@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M33 | Assess ackwards' oracle discipline and fold its generalizable core into cairn | planned | — | normal | milestones/M33-oracle-discipline-coordination.md |
+| M33 | Assess ackwards' oracle discipline and fold its generalizable core into cairn | in-progress | — | normal | milestones/M33-oracle-discipline-coordination.md |
 | M32 | Fold dropped rows into the ROADMAP retention cap (done-row → terminal-row) | done | — | normal | milestones/archive/M32-terminal-row-retention.md |
 | M31 | Mark the opening phase — drop the "session start implicit" carve-out | dropped | — | normal | milestones/archive/M31-opening-phase-chapter-marker.md |
 | M30 | Stop cairn_validate false-flagging R CMD check counts as non-ISO dates | done | — | normal | milestones/archive/M30-validate-slash-date-false-positive.md |
