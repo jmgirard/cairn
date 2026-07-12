@@ -99,5 +99,32 @@ class TestRoutingChipMandate(unittest.TestCase):
         self.assertIn("the sole phase whose end is deliberately chip-less", text)
 
 
+# The chip is a *user stop* (D-003), but selecting an option is a go: the
+# orchestrator, not the user, invokes the target skill (M29). This guard
+# locks that imperative and the `→ /skill` notation clarification so the rule
+# can't revert to the descriptive "selecting a chip invokes that skill" form.
+# Phrases are asserted case-insensitively (M26) and must each live on one
+# physical line (M23) — the file is read as a single string.
+class TestChipInvocationImperative(unittest.TestCase):
+    def test_rulebook_states_invoke_on_selection_imperative(self):
+        text = read("shared", "tracking-rules.md").lower()
+        self.assertIn(
+            "the orchestrator immediately invokes the target skill via the skill tool",
+            text,
+        )
+
+    def test_rulebook_says_never_hand_back_to_the_user(self):
+        text = read("shared", "tracking-rules.md").lower()
+        self.assertIn("does not stop to have the user type the command", text)
+
+    def test_rulebook_clarifies_arrow_notation_names_the_skill(self):
+        text = read("shared", "tracking-rules.md").lower()
+        self.assertIn(
+            "names the skill the orchestrator invokes on selection, "
+            "not a command for the user to run",
+            text,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

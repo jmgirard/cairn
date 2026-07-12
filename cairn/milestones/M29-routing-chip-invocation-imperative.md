@@ -73,7 +73,7 @@ the mechanism clarification as a D-entry annotating D-003.
 
 ## Tasks
 
-- [ ] T1: Add `TestChipInvocationImperative` to
+- [x] T1: Add `TestChipInvocationImperative` to
       `skills/tests/test_gate_wording.py` — assert tracking-rules carries the
       imperative sentence (invoke on selection; never hand back) and the
       notation clause. Single-line, case-insensitive assertions (M23/M26).
@@ -88,6 +88,8 @@ the mechanism clarification as a D-entry annotating D-003.
 ## Work log
 
 - 2026-07-12: created by /milestone-plan.
+- 2026-07-12: T1 — added `TestChipInvocationImperative` (3 assertions:
+  imperative, never-hand-back, notation clause); red until T2 as planned.
 
 ## Decisions
 
