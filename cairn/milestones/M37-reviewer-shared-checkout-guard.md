@@ -67,7 +67,7 @@ by the prose guard, like the rest of the fan-out.
       ref-based git (`diff`/`show`/`log`/`blame`) and never a HEAD-moving
       command (`checkout`/`switch`/`worktree add`/`reset`). Keep the wording on
       single lines the guard can anchor to.
-- [ ] T2 — Add a pointed one-line reminder to the step-5 reviewer spawn in
+- [x] T2 — Add a pointed one-line reminder to the step-5 reviewer spawn in
       `skills/milestone-review/SKILL.md`: reviewers use ref-based git only, no
       `git checkout`/`worktree add` in the shared tree. Anchor the sentinel
       inside any bold, not split across `**` (M26).
@@ -85,6 +85,8 @@ by the prose guard, like the rest of the fan-out.
   all shared-tree subagents at the plan gate.
 - 2026-07-12: T1 — added the "Subagents share the primary checkout" rule
   (ref-based git only) to tracking-rules.md model-strategy section.
+- 2026-07-12: T2 — added the pointed ref-based-git reminder to the step-5
+  reviewer fan-out in milestone-review/SKILL.md.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
