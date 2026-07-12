@@ -3,10 +3,10 @@
      Per-section owners are tagged below. -->
 # M29: Make routing-chip invocation an imperative on the orchestrator
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** m29-routing-chip-invocation-imperative
 
 ## Goal
 
