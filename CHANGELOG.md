@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Added
+- `/design-interview` — a standalone two-phase interview (facts → principles)
+  that fills or deepens a repo's `DESIGN.md`: Phase 1 elicits what code can't
+  show and banks proto-principles; Phase 2 formalizes and stress-tests
+  principles (IP/GP). `/cairn-init` hands off to it. Best run on Fable.
+
 ### Fixed
 - The final merge-approval step in `/milestone-review` and `/hotfix` now
   requests authorization through a selectable chip rather than a free-text

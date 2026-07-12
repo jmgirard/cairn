@@ -75,12 +75,17 @@ Then:
   the plugin's merge-guard hook — never committed).
 - Fill DESIGN.md's Purpose & Scope from DESCRIPTION and a quick read of
   `R/` — 5–10 honest lines, marked for the user to refine; never invent
-  principles.
+  principles. The deep version — eliciting the contract boundary,
+  conventions, and IP/GP principles the code can't show — is
+  `/design-interview`, offered on the routing chip below; this step only
+  seeds the file.
 - Commit (docs-only, main): `cairn-init: scaffold tracking system`; push
   if a remote exists (origin/main is main — see tracking-rules git model).
 - Routing chip, composed from what the scaffold found (chip rules per
-  tracking-rules) — e.g. **Plan the first milestone** → `/milestone-plan`
-  (recommended) / Run `/milestone` / Stop.
+  tracking-rules) — e.g. **Run the design interview** → `/design-interview`
+  (recommended for a fresh repo, to turn the seeded DESIGN.md into an
+  elicited one) / **Plan the first milestone** → `/milestone-plan` /
+  Run `/milestone` / Stop.
 
 ## 2. Migration protocol
 

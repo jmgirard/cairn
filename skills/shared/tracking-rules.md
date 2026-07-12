@@ -222,7 +222,8 @@ cairn skill is active.
   two levels: `# Hotfix: <slug>` → `## <step>`; `# cairn-init` →
   `## Scaffold` / `## Repair` / `## Migration §n`; `# Release <version>`
   → `## <step>`; `# Status` → `## Snapshot` / `## Audit` / `## Route`;
-  `# Review brief RB<NN>` → `## Draft` / `## Gate` / `## Ingest`. Emit the
+  `# Review brief RB<NN>` → `## Draft` / `## Gate` / `## Ingest`;
+  `# Design interview` → `## Facts` / `## Principles`. Emit the
   `#` once per unit of work — at that unit's first phase — re-emitting when
   the unit changes: a routing chip into the next skill, or a fresh
   post-`/clear` session, both start a new `#` so the reply stands alone (a
@@ -258,7 +259,10 @@ cairn skill is active.
 
 ## Model and agent strategy
 
-- Orchestrator: Opus, running these skills in the main session.
+- Orchestrator: Opus, running these skills in the main session. Exception:
+  `/design-interview` recommends the user run the *main session* on Fable
+  (D-014) — a per-instance session-model choice, not a spawned subagent, so
+  it does not touch the Fable-subagent gate below.
 - Every spawned Agent's description starts with its tier tag —
   `[S]`/`[O]`/`[F]` — per the output-discipline section.
 - **Sonnet subagents**: well-specified self-contained work — fan-out
