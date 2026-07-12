@@ -29,6 +29,11 @@ import sys
 import cairn_scripts as cs
 
 _PRINCIPLE = re.compile(r"\b[IG]P\d+\b")
+# A milestone's `Principles touched:` header slot — the authoritative
+# declaration of the principles a milestone touches (M38). A reference on
+# such a line is tagged `(declared)` so the report separates it from an
+# incidental prose citation, which can be inaccurate (M17).
+_SLOT_LINE = re.compile(r"^\s*-\s*\*\*Principles touched:\*\*", re.IGNORECASE)
 
 
 class Usage(Exception):
@@ -66,7 +71,10 @@ def references(root, pid):
         rel = os.path.relpath(path, root)
         for i, line in enumerate(lines, 1):
             if pat.search(line):
-                hits.append(f"{rel}:{i}")
+                ref = f"{rel}:{i}"
+                if _SLOT_LINE.match(line):
+                    ref += " (declared)"
+                hits.append(ref)
     return hits
 
 

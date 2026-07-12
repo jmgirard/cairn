@@ -458,6 +458,23 @@ class TestImpact(ScriptCase):
         self.assertIn("cairn/DESIGN.md:4", out)
         self.assertIn("cairn/DECISIONS.md:5", out)
 
+    def test_slot_reference_tagged_declared(self):
+        # A reference on a `Principles touched:` slot line is tagged
+        # (declared); an incidental prose citation of the same id is not (M38).
+        root = self.tree.build()
+        cairn = self.tree.root / "cairn"
+        (cairn / "DESIGN.md").write_text("# Design\n\n- IP2: prior state is surfaced.\n")
+        (cairn / "milestones" / "M51-slot.md").write_text(
+            "# M51\n\n- **Status:** planned\n- **Principles touched:** IP2\n\n"
+            "## Goal\nAlso mentions IP2 in prose here.\n"
+        )
+        out = run_impact(["IP2", "--root", str(root)]).stdout
+        cited = [ln for ln in out.splitlines() if "M51-slot.md" in ln]
+        declared = [ln for ln in cited if ln.rstrip().endswith("(declared)")]
+        prose = [ln for ln in cited if not ln.rstrip().endswith("(declared)")]
+        self.assertEqual(len(declared), 1, out)   # the slot line
+        self.assertEqual(len(prose), 1, out)      # the prose line, untagged
+
     def test_changed_derives_from_design_diff(self):
         if not shutil.which("git"):
             self.skipTest("git not available")

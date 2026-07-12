@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M38: Principles-touched slot in the milestone template
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Branch/PR:** m38-principles-touched-slot
@@ -66,10 +66,10 @@ fuzzy prose-citation linting (the slot is the fix, not prose rewriting).
       the slot is absent (so no `Tree.build` change per the M34 lesson); add
       targeted valid/bogus fixtures with a dedicated builder in
       `scripts/tests/test_scripts.py`.
-- [ ] T4 — Wire `cairn_impact` to tag slot-sourced references as declared in
+- [x] T4 — Wire `cairn_impact` to tag slot-sourced references as declared in
       its output; add a unit test covering a slot line vs a prose citation of
       the same principle.
-- [ ] T5 — Run both suites green; fix any fallout.
+- [x] T5 — Run both suites green; fix any fallout.
 
 ## Work log
 
@@ -78,6 +78,7 @@ fuzzy prose-citation linting (the slot is the fix, not prose rewriting).
 - 2026-07-12: T1 — added Principles touched slot to template + section-ownership row.
 - 2026-07-12: T2 — added Principles touched authoring directive to /milestone-plan step 4.
 - 2026-07-12: T3 — cairn_validate 'principles slot valid' check (validate-if-present) + 3 fixtures; suite 52 green.
+- 2026-07-12: T4 — cairn_impact tags slot-sourced refs '(declared)' + test; T5 — both suites green (53 scripts, 85 skills). Status → review.
 
 ## Decisions
 
