@@ -74,12 +74,12 @@ outside `cairn/`, is not date-scanned, and uses the unspaced literals verbatim.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — Add a failing test to the date-scan group in
+- [x] T1 — Add a failing test to the date-scan group in
       `scripts/tests/test_scripts.py` (~line 313): assert `0 / 0 / 0` and `0 / 1 / 2`
       on a tracked-file line pass the scan, and add a year-first `2026 / 07 / 11`
       case to the fail set. Confirm the count-triple case fails against
       current code.
-- [ ] T2 — Replace the slash branch in `_NON_ISO_DATE`
+- [x] T2 — Replace the slash branch in `_NON_ISO_DATE`
       (`cairn_validate.py:29`) with year-first `\d{4}/\d{1,2}/\d{1,2}` OR
       year-last `\d{1,2}/\d{1,2}/\d{4}`; update the conservative-design comment
       (lines 22-25) to state the 4-digit-year requirement and the accepted
@@ -94,6 +94,7 @@ outside `cairn/`, is not date-scanned, and uses the unspaced literals verbatim.
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-12: created by /milestone-plan (absorbs candidate G-C2).
+- 2026-07-12: T1+T2 — test-first count-triple case (fails on old code), then tightened the slash branch to require a 4-digit year; 34/34 tests green, validate clean.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

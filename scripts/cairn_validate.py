@@ -23,10 +23,16 @@ import cairn_scripts as cs
 # strong date signals only, so version numbers (4.8), page anchors (p. 12),
 # IDs (M13, D-005), and fractions (1/2) don't trip. A missed weird format is
 # preferred over a false positive that makes the gate cry wolf.
+# The slash branch requires a 4-digit year on one end (year-first or
+# year-last) so R CMD check count-notation (three slash-separated counts like
+# 0/0/0, errors/warnings/notes) doesn't trip (D-023). The accepted cost: a
+# 2-digit-year slash date (07/11/26) goes uncaught — structurally
+# indistinguishable from a count-triple, and none exist in this repo's ISO format.
 _MONTHS = "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec"
 _NON_ISO_DATE = re.compile(
     r"\b(?:"
-    r"\d{1,4}/\d{1,2}/\d{1,4}"                                       # 07/11/2026, 2026/07/11
+    r"\d{4}/\d{1,2}/\d{1,2}"                                         # 2026/07/11 (year-first)
+    r"|\d{1,2}/\d{1,2}/\d{4}"                                        # 07/11/2026 (year-last)
     r"|\d{1,2}-\d{1,2}-\d{4}"                                        # 11-07-2026 (year-last dashed)
     r"|(?:" + _MONTHS + r")[a-z]*\.?\s+\d{1,2}(?:st|nd|rd|th)?,?\s+\d{4}"  # Jul 11, 2026
     r"|\d{1,2}(?:st|nd|rd|th)?\s+(?:" + _MONTHS + r")[a-z]*\.?\s+\d{4}"    # 11 July 2026
