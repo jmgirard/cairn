@@ -102,7 +102,7 @@ candidates.
 - [x] T3 — Append the doctrine-maturation D-entry to `cairn/DECISIONS.md` (cites
       M57 + the assessment file; frames both deferrals as candidates).
 - [x] T4 — Add the two candidate rows to `cairn/ROADMAP.md`.
-- [ ] T5 — Add a guard test (e.g. `skills/tests/test_oracle_doctrine.py`) locking
+- [x] T5 — Add a guard test (e.g. `skills/tests/test_oracle_doctrine.py`) locking
       the new anchors; run the full unittest suite green (M32 lesson: this repo is
       unittest, not pytest).
 
@@ -113,6 +113,7 @@ candidates.
 - 2026-07-12: T1 — wrote references/oracle-discipline-notes.md (intraclass→ackwards lineage, 4-part system catalogue, E1–E8 gap ledger, disposition) + INDEX.md line. Finding: intraclass is not cairn-tracked — it originated the data-raw provenance-script practice; ackwards formalized the registry/taxonomy/guard.
 - 2026-07-12: T2 — folded E1–E4 into tracking-rules Validation doctrine: added the frozen/live/invariant/closed-form vocabulary + "live stronger than frozen", the ≥2-independent-types bar, and the reproducibility hard-stop. Priority list preserved; kept the additions self-contained (no cross-repo citation — shared rulebook).
 - 2026-07-12: T3 — appended D-024 (doctrine maturation; E5/E6 framed as candidates, not rejections). T4 — the two candidate rows (E5 ORACLES.md adoption, E6 R-profile provenance guard) already landed in the plan commit; verified present, no double-add.
+- 2026-07-12: T5 — added skills/tests/test_oracle_doctrine.py (4 tests: four type names, ≥2-independent-types bar, live-is-stronger, reproducibility hard-stop). Suites green: 4 new + 78 skills/tests + 45 scripts/tests.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
