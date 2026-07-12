@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-12 (M18 done+archived; M13 row pruned per 5-done retention; M19 now workable)_
+_Last hygiene check: 2026-07-12 (M19 done+archived; M14 row pruned per 5-done retention)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,12 +10,11 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M19 | Memory-boundary write guard (GP4 enforcement) | review | M18 | normal | milestones/M19-memory-boundary-guard.md |
+| M19 | Memory-boundary write guard (GP4 enforcement) | done | M18 | normal | milestones/archive/M19-memory-boundary-guard.md |
 | M18 | Acceptance-criteria traceability | done | M17 | normal | milestones/archive/M18-ac-traceability.md |
 | M17 | Review fan-out + confidence scoring | done | — | normal | milestones/archive/M17-review-fanout.md |
 | M16 | Lessons loop (capture → harvest) | done | — | normal | milestones/archive/M16-lessons-loop.md |
 | M15 | Sync Impact Report on principle changes | done | — | normal | milestones/archive/M15-sync-impact-report.md |
-| M14 | Section write allow-lists per skill | done | — | normal | milestones/archive/M14-section-allow-lists.md |
 
 ## Candidates
 
