@@ -64,7 +64,7 @@ guard test.
 
 ## Tasks
 
-- [ ] T1 — In `skills/shared/tracking-rules.md` "Question gates and routing
+- [x] T1 — In `skills/shared/tracking-rules.md` "Question gates and routing
       chips", add a single-line clarifier that a prose list of options is not
       a chip, and state review's end is the sole exception (chip-less `/clear`
       nudge). Keep asserted phrases on single lines (M23 lesson: prose guards
@@ -89,6 +89,8 @@ guard test.
 - 2026-07-12: created by /milestone-plan (absorbs candidates "End-of-review
   routing chip → /clear nudge" and "Lock the routing-chip mandate with a
   guard test", both 2026-07-12 Jeff feedback).
+- 2026-07-12: T1 — rulebook clarifier (prose list ≠ chip) + review-end
+  exception added to tracking-rules "Question gates and routing chips".
 
 ## Decisions
 
