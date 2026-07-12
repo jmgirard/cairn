@@ -10,6 +10,8 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M20 | Migration stress-test pilot — ackwards (Lineage B) | planned | — | normal | milestones/M20-migration-pilot-ackwards.md |
+| M21 | Migration stress-test pilot — circumplex (Lineage B) | planned | M20 | normal | milestones/M21-migration-pilot-circumplex.md |
 | M19 | Memory-boundary write guard (GP4 enforcement) | done | M18 | normal | milestones/archive/M19-memory-boundary-guard.md |
 | M18 | Acceptance-criteria traceability | done | M17 | normal | milestones/archive/M18-ac-traceability.md |
 | M17 | Review fan-out + confidence scoring | done | — | normal | milestones/archive/M17-review-fanout.md |
@@ -18,7 +20,6 @@ not an R package, so R-specific gates don't apply.
 
 ## Candidates
 
-- Stress-test migration on a Lineage B repo (ackwards or circumplex) — added 2026-07-11 — DRAFT_2 §11
 - Public release prep: LICENSE (MIT), README worked example, remove DRAFT files, tag v1.0 — added 2026-07-11 — DRAFT_2 §11
 - On-main commit-guard hook: PreToolUse guard that warns/blocks git commits touching non-cairn code while on main with no milestone branch active; false-positive-prone (trivial edits ARE allowed on main) so needs its own design; complements M08's router text — added 2026-07-11 — M08 Out
 - Live-openac router test: run M08's classify-first router empirically in openac (plain-conversation requests should route to the right tier/skill); openac is a separate repo, no automated evidence lands here — added 2026-07-11 — M08 Out
