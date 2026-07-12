@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M19 | Memory-boundary write guard (GP4 enforcement) | planned | M18 | normal | milestones/M19-memory-boundary-guard.md |
+| M19 | Memory-boundary write guard (GP4 enforcement) | review | M18 | normal | milestones/M19-memory-boundary-guard.md |
 | M18 | Acceptance-criteria traceability | done | M17 | normal | milestones/archive/M18-ac-traceability.md |
 | M17 | Review fan-out + confidence scoring | done | — | normal | milestones/archive/M17-review-fanout.md |
 | M16 | Lessons loop (capture → harvest) | done | — | normal | milestones/archive/M16-lessons-loop.md |

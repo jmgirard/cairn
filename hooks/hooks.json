@@ -32,6 +32,16 @@
             "timeout": 15
           }
         ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/memory_guard.py\"",
+            "timeout": 15
+          }
+        ]
       }
     ]
   }

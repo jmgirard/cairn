@@ -221,3 +221,28 @@ relaxing it to a narrow scoring carve-out.
 scorer are all Opus/Sonnet; the model-strategy section states the scorer stays
 on Sonnet. If review cost ever becomes pressing at scale, this is the entry to
 supersede.
+
+### D-017 (2026-07-12): memory_guard emits a non-blocking additionalContext nudge
+
+**Context:** M19 gives GP4 a runtime enforcement arm — a PreToolUse(Write)
+hook that reminds Claude of the memory→`cairn/`-files boundary when it writes
+to per-user memory in a cairn repo. The plan hedged the emission mechanism on
+a contract question (T1): if PreToolUse could not emit a *non-blocking* nudge,
+prose-only (tracking-rules alone, no hook) was the honest fallback.
+**Decision:** T1 (official hooks docs) confirmed PreToolUse supports
+`hookSpecificOutput.additionalContext` with `permissionDecision` optional, so
+the hook ships. It emits `additionalContext` **and no `permissionDecision`** —
+the softest lever: the reminder is injected as context Claude reads next turn
+while the Write proceeds through the normal permission flow untouched (no
+dialog via `ask`, no override via `allow`). Rejected `ask` (a per-write
+dialog is exactly the nag fatigue to avoid) and `allow`+context (would
+suppress any user-configured Write permission rules for no benefit). The
+prose-only fallback was not needed.
+**Consequences:** Enforces GP4 at write time for every adopting repo without
+friction; fail-permissive, so a missed nudge never blocks a write. The nudge
+fires unconditionally on any memory write in a cairn repo — if that proves too
+noisy, the "content-gated memory guard" candidate (inspect the write, fire
+only on durable-state signals) is the entry to supersede. Envelope is pinned
+to the documented contract + the unit test's asserted shape; a true live-fire
+(does Claude Code honor `additionalContext` from PreToolUse) needs a fresh
+session after merge, since hooks snapshot at process start.

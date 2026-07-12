@@ -214,6 +214,56 @@ class TestMergeGuard(RepoFixture):
         self.assertEqual(proc.stdout.strip(), "")
 
 
+class TestMemoryGuard(RepoFixture):
+    # A per-user memory path (independent of the repo) that should trip the
+    # guard when cwd is a cairn repo.
+    MEMORY_PATH = "/home/u/.claude/projects/-home-u-proj/memory/note.md"
+
+    def write_payload(self, file_path, **extra):
+        return self.payload(
+            hook_event_name="PreToolUse",
+            tool_name="Write",
+            tool_input={"file_path": file_path},
+            **extra,
+        )
+
+    def test_nudges_on_memory_write_in_cairn_repo(self):
+        proc = run_hook("memory_guard.py", self.write_payload(self.MEMORY_PATH))
+        self.assertEqual(proc.returncode, 0)
+        out = hook_json(proc)
+        self.assertEqual(out["hookEventName"], "PreToolUse")
+        self.assertIn("GP4", out["additionalContext"])
+        # Softest non-blocking lever: additionalContext with NO
+        # permissionDecision, so the Write is neither blocked, asked, nor
+        # force-allowed — the normal permission flow is untouched.
+        self.assertNotIn("permissionDecision", out)
+
+    def test_silent_on_non_memory_path(self):
+        proc = run_hook(
+            "memory_guard.py",
+            self.write_payload(str(self.root / "cairn" / "note.md")),
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(proc.stdout.strip(), "")
+
+    def test_silent_on_memory_lookalike_without_memory_segment(self):
+        # .claude/projects/<slug>/ but not under memory/ — must not fire.
+        proc = run_hook(
+            "memory_guard.py",
+            self.write_payload("/home/u/.claude/projects/-home-u-proj/todo.md"),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+
+    def test_silent_on_non_write_tool(self):
+        proc = run_hook(
+            "memory_guard.py",
+            self.payload(
+                tool_name="Edit", tool_input={"file_path": self.MEMORY_PATH}
+            ),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+
+
 class TestNonCairnNoOp(RepoFixture):
     cairn = False
 
@@ -223,6 +273,14 @@ class TestNonCairnNoOp(RepoFixture):
             "stop_guard.py": self.payload(),
             "merge_guard.py": self.payload(
                 tool_name="Bash", tool_input={"command": "gh pr merge 7"}
+            ),
+            # a genuine memory path: the ONLY reason to no-op here is the
+            # non-cairn cwd, so this exercises that branch specifically.
+            "memory_guard.py": self.payload(
+                tool_name="Write",
+                tool_input={
+                    "file_path": "/home/u/.claude/projects/x/memory/n.md"
+                },
             ),
         }
         (self.root / "junk.txt").write_text("dirty\n")  # dirty tree, still no-op
@@ -234,7 +292,12 @@ class TestNonCairnNoOp(RepoFixture):
                 self.assertEqual(proc.stderr.strip(), "")
 
     def test_garbage_stdin_is_permissive(self):
-        for script in ("session_context.py", "stop_guard.py", "merge_guard.py"):
+        for script in (
+            "session_context.py",
+            "stop_guard.py",
+            "merge_guard.py",
+            "memory_guard.py",
+        ):
             with self.subTest(script=script):
                 proc = subprocess.run(
                     [sys.executable, str(HOOKS_DIR / script)],

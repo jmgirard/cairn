@@ -111,6 +111,14 @@ takes a D-entry, and its number stays retired.
 - **Tracking files outrank memory.** Claude's persistent memory never holds
   project state (status, milestones, decisions, architecture). Memory is for
   meta-context only; `cairn/` files win any conflict.
+- **Memory intake gate (GP4).** Before writing to per-user memory, apply the
+  GP4 test to decide where the content actually belongs: durable project
+  knowledge (decisions, conventions, architecture, status) → the `cairn/`
+  files; a generalizable conduct or plugin defect → the plugin (skills,
+  `tracking-rules.md`, guard tests); only genuinely per-user meta-context
+  stays in memory. When a memory write happens inside a cairn repo the
+  `memory_guard.py` PreToolUse hook injects this reminder as a non-blocking
+  nudge — it prompts the test, it does not make the call.
 
 ## Milestone IDs and status
 

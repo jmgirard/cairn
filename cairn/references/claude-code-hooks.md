@@ -48,6 +48,17 @@ PostToolUse, UserPromptSubmit, ConfigChange.
 - PreToolUse deny: `{"hookSpecificOutput": {"hookEventName": "PreToolUse",
   "permissionDecision": "deny", "permissionDecisionReason": "<reason>"}}`
   (`allow` / `ask` also valid; prefer this over legacy `decision: block`).
+- PreToolUse non-blocking nudge: `{"hookSpecificOutput": {"hookEventName":
+  "PreToolUse", "additionalContext": "<text>"}}` — `additionalContext` is
+  honored on PreToolUse with `permissionDecision` **optional**; omitting it
+  injects the text as context Claude reads next turn while the tool proceeds
+  through the normal permission flow (no allow-override, no ask-dialog). This
+  is the softest PreToolUse lever; `memory_guard.py` (M19) uses it. Source:
+  official hooks docs (code.claude.com/docs/en/hooks.md), confirmed 2026-07-12
+  for M19 T1. Live-fire (does the running client honor an
+  `additionalContext`-only PreToolUse payload) still pending — hooks snapshot
+  at process start, so it needs a fresh session after the hook is registered
+  (D-017).
 - PreCompact: block-only (top-level `decision: "block"`). It does **NOT**
   support `additionalContext` — there is NO hook that re-injects context on
   compaction (PreCompact fires before compaction with nowhere to attach;
