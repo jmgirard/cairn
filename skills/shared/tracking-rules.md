@@ -215,18 +215,19 @@ How skills talk to the user. These rules bind all chat output while any
 cairn skill is active.
 
 - **Phase header.** Orient the user with Markdown headings, not an inline
-  banner. An `##` names the unit of work and its title; a `###` beneath it
-  names the phase. Milestone skills: `## Milestone <NN>: <title>` →
-  `### Plan` / `### Implement` / `### Review`. Other skills map onto the same
-  two levels: `## Hotfix: <slug>` → `### <step>`; `## cairn-init` →
-  `### Scaffold` / `### Repair` / `### Migration §n`; `## Release <version>`
-  → `### <step>`; `## Status` → `### Snapshot` / `### Audit` / `### Route`;
-  `## Review brief RB<NN>` → `### Draft` / `### Gate` / `### Ingest`. Emit the
-  `##` once per unit of work — at that unit's first phase — re-emitting when
+  banner. A `#` names the unit of work and its title; a `##` beneath it
+  names the phase. (Both levels land in Claude Desktop's table of contents,
+  which indexes only H1/H2.) Milestone skills: `# Milestone <NN>: <title>` →
+  `## Plan` / `## Implement` / `## Review`. Other skills map onto the same
+  two levels: `# Hotfix: <slug>` → `## <step>`; `# cairn-init` →
+  `## Scaffold` / `## Repair` / `## Migration §n`; `# Release <version>`
+  → `## <step>`; `# Status` → `## Snapshot` / `## Audit` / `## Route`;
+  `# Review brief RB<NN>` → `## Draft` / `## Gate` / `## Ingest`. Emit the
+  `#` once per unit of work — at that unit's first phase — re-emitting when
   the unit changes: a routing chip into the next skill, or a fresh
-  post-`/clear` session, both start a new `##` so the reply stands alone (a
-  plan run that creates several milestones stays under one `## Planning`).
-  Emit a `###` at each phase entry — usually coincident with a chapter marker
+  post-`/clear` session, both start a new `#` so the reply stands alone (a
+  plan run that creates several milestones stays under one `# Planning`).
+  Emit a `##` at each phase entry — usually coincident with a chapter marker
   (the session's very first header carries none: session start is implicit).
   Replies within the same phase run as plain deltas underneath — never a
   heading per reply.

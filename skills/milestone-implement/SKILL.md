@@ -9,7 +9,7 @@ argument-hint: "<id>"
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it (especially: git model, tracking-travels-with-code, delegation policy,
 CI waiting rules).
-Phase header: `## Milestone <NN>: <title>` → `### Implement`.
+Phase header: `# Milestone <NN>: <title>` → `## Implement`.
 
 ## Session start
 

@@ -10,7 +10,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it. This skill is read-mostly: it fixes mechanical tracking problems
 immediately, reports everything else, and never starts implementation work
 itself — it routes.
-Phase header: `## Status` → `### Snapshot` / `### Audit` / `### Route`.
+Phase header: `# Status` → `## Snapshot` / `## Audit` / `## Route`.
 
 **Deterministic scripts.** Snapshot, the mechanical audit checks, and the
 next-action derivation are shipped as read-only python3 scripts over the

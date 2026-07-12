@@ -11,7 +11,7 @@ it (especially: work tiers, git model). Read `cairn/ROADMAP.md` to check
 whether an existing milestone already covers this, and `cairn/DECISIONS.md`
 for standing constraints. If an un-ingested RR sits in `cairn/reviews/`,
 handle ingestion first (see `/milestone-brief`).
-Phase header: `## Hotfix: <slug>` → `### <step>`.
+Phase header: `# Hotfix: <slug>` → `## <step>`.
 
 ## Workflow
 
