@@ -3,10 +3,10 @@
      Per-section owners are tagged below. -->
 # M25: Parameterize the default branch in the operational skill steps
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M22   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m25-default-branch-operational-skills   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -79,7 +79,7 @@ Extend `test_default_branch_parameterized.py` to lock the four skills.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — Add the canonical runtime detection recipe to the tracking-rules
+- [x] T1 — Add the canonical runtime detection recipe to the tracking-rules
       git model (`skills/shared/tracking-rules.md`, "Git and approval model",
       near line 188 where it currently defers detection to cairn-init): one
       snippet giving `git symbolic-ref --short refs/remotes/origin/HEAD` (strip
@@ -110,6 +110,7 @@ Extend `test_default_branch_parameterized.py` to lock the four skills.
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-12: created by /milestone-plan (direction/detection/scope set at the plan gate: runtime-detect, all four skills, date-scan kept separate).
+- 2026-07-12: in-progress; cut m25-default-branch-operational-skills. T1 — added the canonical runtime detection recipe to the tracking-rules git model.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

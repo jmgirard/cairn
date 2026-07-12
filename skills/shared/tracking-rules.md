@@ -184,9 +184,19 @@ anyone at any time (one ROADMAP row).
 
 - **The default branch (`main`/`master`) is a distribution channel**
   (`pak::pak()` installs it; pkgdown may deploy from it). It stays installable
-  at all times. cairn does not assume the name is `main` — `/cairn-init`
-  detects the repo's actual default branch; everywhere below, "the default
-  branch" means that name.
+  at all times. cairn does not assume the name is `main`; everywhere below,
+  "the default branch" means the repo's actual default branch.
+- **Detecting the default branch (canonical recipe).** cairn never hardcodes
+  `main` in a git command. `/cairn-init` detects the name at adoption; every
+  operational skill (`/milestone-implement`, `/milestone-review`, `/hotfix`,
+  `/cairn-release`) re-detects it at runtime whenever it issues a
+  default-branch git command — cairn stores no branch name, so detection is
+  the single source of truth. Detect with
+  `git symbolic-ref --short refs/remotes/origin/HEAD` (strip the leading
+  `origin/`); if that fails (no remote, or `origin/HEAD` unset — a shallow
+  clone, a never-pushed repo), fall back to the local
+  `git symbolic-ref --short HEAD`, and if still ambiguous ask the user.
+  Substitute the detected name wherever a step below writes `<default-branch>`.
 - The default branch accepts only: docs-only tracking commits and
   squash-merges of milestone/hotfix branches. Never implement on it.
 - **The remote's default branch is authoritative.** When a remote exists, push
