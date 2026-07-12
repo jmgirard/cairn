@@ -60,7 +60,7 @@ review.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] Add the Coverage section to `skills/shared/templates/milestone.md`
+- [x] Add the Coverage section to `skills/shared/templates/milestone.md`
       (between Acceptance criteria and Tasks) with the ownership comment.
       ([template:25-31](../../skills/shared/templates/milestone.md))
 - [ ] Update `/milestone-plan` step 4 to author the criterion→task Coverage
@@ -77,6 +77,11 @@ review.
 
 - 2026-07-11: created by /milestone-plan (split from the "Review pipeline
   upgrades" candidate; sibling M17 covers reviewer fan-out).
+- 2026-07-11: started implement; branch m18-ac-traceability. Gate chose
+  positional-map Coverage format (AC1 → T1) — compact, cap-friendly,
+  mechanically lint-able for the deferred cairn_validate.py check.
+- 2026-07-11: T1 — added Coverage section to milestone template with
+  positional-numbering + AC-fencing ownership comment.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

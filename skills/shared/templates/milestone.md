@@ -29,6 +29,16 @@ never "never".
       that exists, `devtools::check()` output. Never vibes.
 - [ ] Code milestones always include: `devtools::check()` clean.
 
+## Coverage
+<!-- owner: plan · create/amend-via-gate; maps each acceptance criterion to
+     the task(s) that satisfy it. AC and Task numbers are positional
+     (top-to-bottom in their sections). Every criterion maps to ≥1 task; a
+     criterion with no task is a planning gap. Review reads this to fence
+     evidence — see tracking-rules "AC fencing". -->
+
+- AC1 → T1
+- AC2 → T2, T3
+
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
