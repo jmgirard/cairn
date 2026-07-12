@@ -12,6 +12,8 @@ of contents (outline), varying:
   second longer message.
 - **Format at H2** — bare phase word (`## Plan`) vs the unit form
   (`## Milestone 27: …`).
+- **Placement** — headers positioned mid-message (after leading prose),
+  end-of-message, and spread across two separate messages.
 - **Verbatim vs. paraphrase** — headers with unguessable nonsense strings
   (`## Sazerac Grommet 4471`) plus a header-free paragraph on an absurdly
   specific topic, to distinguish a markdown-header parser from an LLM
@@ -26,8 +28,11 @@ of contents (outline), varying:
    screenshot) but populated no outline.
 2. **Chapter marker → TOC.** One `mark_chapter` call produced a two-entry
    outline: "Session Start" (implicit) + "M27 chapter-TOC probe" (the marker).
-3. Because 0 headers indexed, the verbatim-vs-summarizer and level/format/
-   placement sub-questions are moot for this surface — nothing to compare.
+3. All three variants held the same result: no level (H1/H2/H3), no format
+   (`## Plan` vs `## Milestone 27`), and no placement (mid-message,
+   end-of-message, across two messages) produced any TOC entry. The result
+   is invariant to all three, so the verbatim-vs-summarizer question is moot
+   for this surface — nothing indexed to compare.
 
 ## Conclusion
 

@@ -6,7 +6,7 @@
 - **Status:** review
 - **Priority:** low
 - **Depends on:** —
-- **Branch/PR:** m27-desktop-toc-header-pickup
+- **Branch/PR:** m27-desktop-toc-header-pickup · PR #25
 
 ## Goal
 
@@ -33,10 +33,10 @@ it as a client-side limitation — with the finding written to disk either way.
 
 ## Acceptance criteria
 
-- [ ] Documented characterization of Desktop TOC behavior on the `##` phase
+- [x] Documented characterization of Desktop TOC behavior on the `##` phase
       headers across at least the three variants above, recorded in this
       milestone's Review section (or a `cairn/references/` note it links).
-- [ ] A recorded decision in `cairn/DECISIONS.md`: either (a) a header-format
+- [x] A recorded decision in `cairn/DECISIONS.md`: either (a) a header-format
       change that improves indexing, applied to `tracking-rules.md` + the
       affected skills (+ the header guard test), or (b) a conclusion that it
       is a client limitation, annotating D-012's "both levels index" claim.
@@ -80,4 +80,35 @@ it as a client-side limitation — with the finding written to disk either way.
 
 ## Decisions
 
+- 2026-07-12: TOC mechanism finding recorded cross-cutting as D-020 (annotates
+  D-012). Milestone-local: took AC2 option (b) — no header-format change — on
+  the evidence that no markdown header of any level/format/placement indexes
+  in cairn's Claude Code runtime.
+
 ## Review
+
+**Reviewed 2026-07-12 · branch `m27-desktop-toc-header-pickup` · PR #25.**
+
+Fresh evidence per acceptance criterion (AC fencing — box ticked only against
+a recorded evidence line):
+
+- **AC1 — characterization across ≥3 variants.** PASS. `references/desktop-toc-mechanism.md`
+  documents live probing in Claude Desktop viewing a Claude Code session,
+  varying header **level** (H1/H2/H3), **format** (`## Plan` vs
+  `## Milestone 27`), and **placement** (mid-message, end-of-message, across
+  two messages). Result invariant across all three: markdown headers → zero
+  TOC entries; one chapter marker → a two-entry outline. Note is linked from
+  `references/INDEX.md`.
+- **AC2 — recorded decision annotating D-012.** PASS. `DECISIONS.md` D-020
+  records the conclusion (option b: no header-format change; the header→TOC
+  mechanism does not apply to cairn's Claude Code runtime) and explicitly
+  annotates D-012's "both levels index" claim as surface-specific. The
+  now-false line in `tracking-rules.md` was corrected to credit the
+  chapter-marker rule.
+
+**Consistency gate (by command, 2026-07-12):** `cairn_validate` exit 0 (all 10
+checks). Coverage completeness: AC1→T1,T2 · AC2→T3, all tasks present and
+checked. skills guard tests 68/68, scripts tests 43/43. R-specific gates
+waived (plugin repo, CLAUDE.md); no DESIGN principle changed (impact report
+skipped); no user-facing behavior change (no NEWS entry). `test_phase_header_levels.py`
+still green — header levels unchanged, only the rationale text was corrected.
