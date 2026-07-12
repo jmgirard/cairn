@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M29: Make routing-chip invocation an imperative on the orchestrator
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Branch/PR:** m29-routing-chip-invocation-imperative
@@ -82,7 +82,7 @@ the mechanism clarification as a D-entry annotating D-003.
       `skills/shared/tracking-rules.md:279-281` to the imperative + preserved
       stop clause + notation clarification; green T1. Keep asserted phrases
       on single physical lines.
-- [ ] T3: Append D-022 annotating D-003 to `cairn/DECISIONS.md`; run the full
+- [x] T3: Append D-022 annotating D-003 to `cairn/DECISIONS.md`; run the full
       guard suite + `cairn_validate`; record evidence.
 
 ## Work log
@@ -94,6 +94,8 @@ the mechanism clarification as a D-entry annotating D-003.
   (invoke via Skill tool on selection; never hand back) + preserved
   never-auto-proceed stop + `→ /skill` notation clause; full 11-test
   `test_gate_wording` suite green.
+- 2026-07-12: T3 — appended D-022 (annotates D-003); full guard suite
+  (74 tests) + `cairn_validate` audit both clean. Status → review.
 
 ## Decisions
 

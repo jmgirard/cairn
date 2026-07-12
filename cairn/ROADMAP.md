@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M29 | Make routing-chip invocation an imperative on the orchestrator | in-progress | — | normal | milestones/M29-routing-chip-invocation-imperative.md |
+| M29 | Make routing-chip invocation an imperative on the orchestrator | review | — | normal | milestones/M29-routing-chip-invocation-imperative.md |
 | M28 | Harden the output-discipline mandate guards | done | — | normal | milestones/archive/M28-output-discipline-mandate-guards.md |
 | M26 | Lock the routing-chip mandate; exempt review as the chip-less phase | done | — | normal | milestones/archive/M26-routing-chip-mandate-lock.md |
 | M27 | Desktop TOC pickup of the `##` phase headers | done | — | low | milestones/archive/M27-desktop-toc-header-pickup.md |

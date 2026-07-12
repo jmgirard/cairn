@@ -342,3 +342,31 @@ TOC driver. The mandate's list (nine, review included) deliberately differs
 from `NON_REVIEW_CHIP_SKILLS` (seven — review excluded from that one). Guards are prose-guards, proving wording
 not runtime (M27 already characterized runtime behavior live). If a future
 harness needs a different fallback, this is the entry to supersede.
+
+### D-022 (2026-07-12): Selecting a routing chip is an imperative to invoke the target skill — annotates D-003
+
+**Context:** D-003 glued the phase skills with routing chips and described the
+mechanism as "selecting a chip invokes that skill in the same session." Read
+descriptively, that sentence left room for the orchestrator to *hand back* to
+the user — presenting the chosen option and waiting for the user to type the
+skill command — which is exactly the extra-typing friction D-003 exists to
+remove. An M28-era slip did this in practice. Per D-011/GP4 (generalizable
+fixes go in the plugin, not memory), the fix belongs in `tracking-rules.md`
+as an imperative, not in a per-user note.
+**Decision:** Rewrite the routing-chip rule as an imperative on the
+orchestrator: on selecting a routing-chip option the orchestrator immediately
+invokes the target skill via the Skill tool and does not stop to have the user
+type the command. The `→ /skill` chip-option notation names the skill the
+orchestrator invokes on selection, not a command for the user to run. The
+"chip is a user stop — never auto-proceed" clause is unchanged and does not
+contradict this: the stop is *before* selection; the selection is the go. A
+`test_gate_wording.py` guard (`TestChipInvocationImperative`) locks the
+imperative and notation phrasing against reversion to the descriptive form.
+Rejected per-skill invoke-on-selection tokens (the rule is uniform conduct,
+stated once centrally) and rewording the `→ /skill` arrows across the eight
+skills' menus (keep the arrows; clarify their meaning in the rule).
+**Consequences:** Annotates D-003 — its "separate skills glued by routing
+chips" stands; only the invocation *mechanism* is clarified from descriptive
+to imperative. The one-click-between-phases promise is now enforced wording,
+not just intent. Review's chip-less exception (D-019) and the merge-approval
+chip are untouched.
