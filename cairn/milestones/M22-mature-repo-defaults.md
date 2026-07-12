@@ -75,31 +75,16 @@ doctrine.
 
 ## Tasks
 
-- [x] **T1** — Settle the cap model: pick higher-flat vs size-tiered vs
-      soft-warn-not-fail vs profile-slot. Chose **cap only the cairn section**
-      (D-018) — drop the whole-file cap, hard-cap the `## Project tracking
-      (cairn)` block at 30 lines. Record the choice + rejected options as a
-      D-entry in `cairn/DECISIONS.md`.
-- [x] **T2** — Implement the cap change in `scripts/cairn_scripts.py`
-      (`LINE_CAPS` drops CLAUDE.md; new `CLAUDE_SECTION_CAP=30` +
-      `claude_section_line_count`) + `scripts/cairn_validate.py` `check_caps`
-      (section measurement) + `tracking-rules.md` weight-caps text + remedy;
-      `scripts/tests/` gains a mature-repo pass fixture and a bloated-section
-      fail fixture. 33 tests green.
-- [x] **T3** — Parameterized the default branch in the `tracking-rules.md` git
-      model + sizing/tiers/hygiene refs (12 doctrine `main` refs → "the default
-      branch"; gloss `main`/`master` at first mention). Left the two "main
-      session" (orchestrator) refs. Skills suite green (46).
-- [x] **T4** — Parameterized the default branch in `/cairn-init` (§0 detection
-      bullet via `git symbolic-ref refs/remotes/origin/HEAD` w/ current-branch
-      fallback; §1 commit lines; §2 step 2 branch/PR) and the
-      `claude-md-section.md` template. Template section = 24 lines (< 30 cap).
-- [x] **T5** — Added `skills/tests/test_default_branch_parameterized.py` (5
-      cases): git model + template + cairn-init use "the default branch", the
-      retired hardcoded-`main` phrases are gone, cairn-init detects via
-      `symbolic-ref`, and the weight-cap doctrine is section-scoped. Detection
-      command verified (`origin/main` → `main`). Full suite green: 51 skills +
-      33 scripts.
+- [x] **T1** — Cap model chosen: cap-only-cairn-section (D-018).
+- [x] **T2** — Cap change in `cairn_scripts.py` (`CLAUDE_SECTION_CAP=30`,
+      `claude_section_line_count`; `LINE_CAPS` drops CLAUDE.md) +
+      `cairn_validate.check_caps` + tracking-rules text/remedy; +2 fixtures.
+- [x] **T3** — Default branch parameterized in the tracking-rules git model +
+      adjacent doctrine (12 refs → "the default branch"; `main`/`master` gloss).
+- [x] **T4** — Default branch in `/cairn-init` (§0 detection, §1/§2 refs) and
+      the `claude-md-section.md` template (section = 24 lines).
+- [x] **T5** — `test_default_branch_parameterized.py` (5 cases) locks the
+      parameterization + section-scoped cap doctrine.
 
 ## Work log
 
