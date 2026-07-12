@@ -130,27 +130,21 @@ the skill.
 
 ## Review
 
-**Evidence (fresh, by command, 2026-07-12):** AC1 — ackwards PR #53 open with
-"Migration ledger" table (`gh pr view`). AC2 (amended) — `cairn_validate` on
-ackwards branch 8/9; sole FAIL = CLAUDE cap (documented, ROADMAP G8). AC3 —
-`git diff -M --summary`: DESIGN + MILESTONES + ROADMAP + 3 skills rename at 100%
-(verbatim); 0 files changed under `R/`/`tests/`/`DESCRIPTION`/`vignettes/`. AC4 —
-pilot-notes.md + INDEX row present. AC5 — 5 candidate rows; no `fix-here` emerged
-(gaps are design-level). AC6 — guard suites 46+31=77 green.
+**Evidence (fresh, by command, 2026-07-12):** AC1 — ackwards PR #53 with ledger
+table. AC2 (amended) — `cairn_validate` on ackwards 8/9; sole FAIL = CLAUDE cap
+(documented, ROADMAP G8). AC3 — `git diff -M`: DESIGN+MILESTONES+ROADMAP+3 skills
+rename 100% (verbatim); 0 files under `R/`/`tests/`/`DESCRIPTION`/`vignettes/`.
+AC4 — pilot-notes.md + INDEX row. AC5 — 5 candidates; no `fix-here` (gaps design-
+level). AC6 — guard suites 77 green. Consistency gate: `cairn_validate` (self)
+clean; coverage complete; no principle change; R-package gates waived.
 
-**Consistency gate:** `cairn_validate` (cairn self) clean; coverage complete
-(every AC → an existing task); no DESIGN principle changed → impact skipped;
-R-package gates waived per CLAUDE.md.
-
-**Independent review** — [O] diff-bug + [S] blame-history + [S] scorer, 3 findings:
+**Independent review** — [O] diff-bug + [S] blame + [S] scorer, 3 findings:
 - **H1 (85, fixed)** — redistribution dropped ackwards' dated owner decision
-  (`master` not branch-protected; non-release merge on local-green, CI advisory)
-  which cairn's rulebook reverses; re-recorded in CLAUDE.md as an explicit
-  standing override of cairn's gate.
+  (`master` not branch-protected; non-release merge on local-green) which cairn
+  reverses; re-recorded in CLAUDE.md as an explicit override of cairn's gate.
 - **O1 (80, fixed)** — "each citing §14" overgeneralized (10/15 cite §2–§12);
   reworded in DECISIONS preamble + pilot notes.
-- **O2 (62, excluded/logged)** — G6 in-code-ref count undercounted (~17+3 not
-  15+2); corrected as hygiene, no further action.
+- **O2 (62, excluded)** — G6 ref-count undercount (~17+3 not 15+2); corrected.
 
-Clean per both lenses: entombment verbatim, no package code touched, no live
-ROADMAP item dropped, no-invention rule honored.
+Both lenses otherwise clean: entombment verbatim, no package code touched, no
+live item dropped, no-invention honored.
