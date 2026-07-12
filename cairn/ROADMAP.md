@@ -12,12 +12,15 @@ not an R package, so R-specific gates don't apply.
 |---|---|---|---|---|---|
 | M23 | Migration-protocol §2 guidance hardening | done | M22 | normal | milestones/archive/M23-migration-guidance.md |
 | M22 | Generalize cairn beyond `main`; recalibrate the mature-repo CLAUDE.md cap | done | — | normal | milestones/archive/M22-mature-repo-defaults.md |
-| M21 | Migration stress-test pilot — circumplex (Lineage B) | in-progress | M23 | normal | milestones/M21-migration-pilot-circumplex.md |
+| M21 | Migration stress-test pilot — circumplex (Lineage B) | review | M23 | normal | milestones/M21-migration-pilot-circumplex.md |
 | M20 | Migration stress-test pilot — ackwards (Lineage B) | done | — | normal | milestones/archive/M20-migration-pilot-ackwards.md |
 | M19 | Memory-boundary write guard (GP4 enforcement) | done | M18 | normal | milestones/archive/M19-memory-boundary-guard.md |
 | M18 | Acceptance-criteria traceability | done | M17 | normal | milestones/archive/M18-ac-traceability.md |
 
 ## Candidates
+
+- `cairn_validate` ISO-date scan false-positives on R CMD check result notation (three slash-separated counts, errors/warnings/notes, commonly all-zero) — the `\d{1,4}/\d{1,2}/\d{1,4}` slash-date pattern matches it; a clean fix is ambiguous (requiring a 4-digit year regresses on 2-digit-year dates), so it needs deliberate design not a reflexive regex tweak — added 2026-07-12 — M21 circumplex pilot G-C2
+- Migration guidance for a mature backlog vs the <60-line ROADMAP cap: a large parking-lot (continuous track + deferred review findings + pre-release items) blows the candidate budget one-row-per-item; document the "cluster related backlog into grouped candidate rows pointing at the entombed legacy ROADMAP" remedy in §5/§6 — added 2026-07-12 — M21 circumplex pilot G-C4
 
 - Parameterize the default branch in the operational skill *steps*: `/milestone-implement` (sync/`checkout`/pull), `/milestone-review` (merge), `/hotfix`, `/cairn-release` still issue `main`-named git commands that break on a `master` repo; M22 scoped only the git-model doctrine + CLAUDE template + cairn-init §2, not the per-skill operational commands — added 2026-07-12 — M22 Out
 - Lock the routing-chip mandate with a guard test: extend `test_gate_wording.py` (which already locks the merge gate as an AskUserQuestion chip) to assert each phase skill's end-of-phase routing chip names `AskUserQuestion`, and add a rulebook clarifier that a prose list of options is not a chip; drift-prevention only — cannot enforce runtime emission (same limit as the M19 hook live-fire) — added 2026-07-12 — orchestrator wrote routing options as prose instead of a chip after M22 review

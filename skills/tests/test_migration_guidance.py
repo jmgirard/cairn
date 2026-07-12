@@ -51,6 +51,19 @@ class TestMigrationGuidance(unittest.TestCase):
         self.assertIn("forward-only `ROADMAP.md`", self.skill)
         self.assertIn("Current focus", self.skill)
 
+    # --- M21 circumplex-pilot fixes ---
+
+    def test_scaffold_creates_lessons_file(self):
+        # G-C1: the §1 fresh-scaffold tree must list LESSONS.md (a top-level
+        # tracking file per D-015) — the circumplex pilot found it omitted.
+        self.assertIn("LESSONS.md", self.skill)
+
+    def test_translate_planned_needs_criteria_else_candidate(self):
+        # G-C3: a legacy "planned" item without criteria/tasks maps to a
+        # candidate, not `planned` (no-invention).
+        self.assertIn("acceptance criteria and ordered tasks", self.skill)
+        self.assertIn("inventing criteria violates no-invention", self.skill)
+
 
 if __name__ == "__main__":
     unittest.main()

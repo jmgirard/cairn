@@ -50,6 +50,7 @@ cairn/
 │                      # reused / Architecture / Known issues
 ├── ROADMAP.md         # empty index (below)
 ├── DECISIONS.md       # header + append-only note (see decision.md template)
+├── LESSONS.md         # header + append-only note; repo lessons, capped 50 lines (D-015)
 ├── milestones/archive/
 ├── reviews/archive/
 └── references/pdf/    # plus empty INDEX.md
@@ -141,7 +142,11 @@ Lineage: M03 tidymedia pilot (PR #8).
 5. **Translate only live state** under a **no-invention rule**: never infer
    a status, date, or rationale that isn't written down — mark unknown or
    ask.
-   - Live items → milestone files (template) or `candidate` rows.
+   - Live items → milestone files (template) or `candidate` rows. A legacy
+     "planned"/`READY` item maps to cairn `planned` only if it carries
+     acceptance criteria and ordered tasks; a scoped item with neither maps to
+     a `candidate` row instead (inventing criteria violates no-invention) —
+     replan it later.
    - **IDs are never renumbered.** New numbering continues from the legacy
      maximum (a repo at M53 starts at M54). Legacy decision IDs (ADR-0nn,
      D-00n, DESIGN §refs) stay valid as citations into `cairn/legacy/`;
