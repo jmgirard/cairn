@@ -69,7 +69,7 @@ pattern (D-017) and reuses `cairn_common.py`.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1 — Write `hooks/commit_guard.py`: match `git commit` in command
+- [x] T1 — Write `hooks/commit_guard.py`: match `git commit` in command
       position (CMD_POS pattern per `merge_guard.py:31`); resolve the default
       branch via remote HEAD with `main`/`master` fallback and no-op when
       detection is inconclusive; compute the committed set
@@ -77,9 +77,9 @@ pattern (D-017) and reuses `cairn_common.py`.
       is present); if on the default branch and any path is outside `cairn/`,
       `cc.emit` an `additionalContext` nudge with no `permissionDecision`.
       Fail-permissive, stdlib-only.
-- [ ] T2 — Register the hook in `hooks/hooks.json` as a second PreToolUse
+- [x] T2 — Register the hook in `hooks/hooks.json` as a second PreToolUse
       `Bash` matcher entry alongside `merge_guard.py`.
-- [ ] T3 — Add `TestCommitGuard` to `hooks/tests/test_hooks.py` covering AC1–5
+- [x] T3 — Add `TestCommitGuard` to `hooks/tests/test_hooks.py` covering AC1–5
       (nudge on code commit / silent on cairn-only / silent off-default /
       trunk detection / `-a` modified-tracked / command-position + non-commit);
       extend `TestNonCairnNoOp` payloads and the garbage-stdin tuple to include
@@ -93,6 +93,10 @@ pattern (D-017) and reuses `cairn_common.py`.
   (top-level markdown deliberately excluded — this plugin's product is
   markdown skills); default-branch detection via remote HEAD. Absorbs the
   "On-main commit-guard hook" candidate (M08 Out).
+- 2026-07-12: T1–T3 done. Wrote `hooks/commit_guard.py`, registered it in
+  `hooks/hooks.json`, added `TestCommitGuard` (8 cases) + extended the shared
+  no-op/garbage suites. Full hook suite green (30 tests); live smoke on the
+  m36 branch correctly stays silent (feature branch ≠ default).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
