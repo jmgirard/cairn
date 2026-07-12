@@ -123,7 +123,8 @@ overrides — log the override).
    in the Review section (the count, plus one line each) — surfaced, never
    silently dropped (IP3). Triage each finding scoring **80 or above**: fix now
    / spawn a follow-up (candidate row or milestone) / reject with reason — all
-   logged in the Review section.
+   logged in the Review section. Spawning a follow-up candidate sweeps first per
+   the search-first candidate-creation rule (`tracking-rules.md`, Intake).
 
 6. Final checkpoint commit on the branch.
 

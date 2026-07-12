@@ -54,6 +54,7 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    denied.
 
 7. If the fix revealed deeper work, add a `candidate` row before closing
-   out. If a milestone branch is currently active, remind the user that its
+   out — sweep first per the search-first candidate-creation rule
+   (`tracking-rules.md`, Intake). If a milestone branch is currently active, remind the user that its
    next implement/review session will merge the default branch into it (the
    branch-sync rule) — nothing to do now.
