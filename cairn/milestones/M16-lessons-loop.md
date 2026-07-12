@@ -45,7 +45,7 @@ doc-routing frontmatter for `references/` → candidate row.
 
 ## Tasks
 
-- [ ] (implement gate) Decide the lessons home; create it / define the
+- [x] (implement gate) Decide the lessons home; create it / define the
       section; update `tracking-rules.md` file-map + weight-caps.
 - [ ] Add the capture step to `skills/milestone-review/SKILL.md` (and/or
       implement completion).
@@ -59,6 +59,7 @@ doc-routing frontmatter for `references/` → candidate row.
 
 - 2026-07-11: created by /milestone-plan.
 - 2026-07-11: /milestone-implement start; branch m16-lessons-loop cut from main; status → in-progress.
+- 2026-07-11: gate → dedicated cairn/LESSONS.md, cap 50, capture at /milestone-review post-merge; created LESSONS.md + rulebook file-map/boundary/weight-caps + CLAUDE.md boundary.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
