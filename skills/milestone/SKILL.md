@@ -46,10 +46,15 @@ Run `cairn_validate.py` first. It deterministically checks: **mirror
 agreement** (ROADMAP vs file header Status), **at most one `in-progress`**,
 **weight caps**, **done-row retention**, **status vocabulary**, **dependency
 resolution** (targets exist and aren't `dropped`), **ROADMAP↔disk orphans**,
-and **ID uniqueness**. Treat every
+**ID uniqueness**, and **§1 scaffold present** (required tracking files and
+ignore entries exist). Treat every
 `FAIL` as a mechanical problem: fix it (docs-only commit to main; ROADMAP
 wins mirror conflicts; apply the tracking-rules cap remedies, never "let it
-grow"), then re-run to confirm green.
+grow"), then re-run to confirm green. **Exception — a `scaffold present`
+FAIL** means the repo's §1 scaffold has drifted behind the spec (a missing
+tracking file or ignore entry, typically because the repo adopted cairn
+before a later scaffold addition); fix it by running `/cairn-init` (repair
+mode), which is the sole scaffolder — never hand-create the pieces here.
 
 The script deliberately does not judge these — do them yourself and report:
 
