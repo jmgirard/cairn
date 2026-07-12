@@ -205,6 +205,17 @@ Lineage: M03 tidymedia pilot (PR #8).
      hit takes one of two dispositions: **repoint** it to the new `cairn/`
      path, or **note-and-leave** when the content and anchors are preserved
      at the new path. Record which in the migration ledger.
+     **Numbered-principle refs are a forced note-and-leave.** When the
+     relocated file is a *principles doc cited by number* in package code
+     (e.g. `PRINCIPLES.md #N` — 70× across 29 files in the M41 intraclass
+     pilot), repoint is not available: folding those principles into
+     `DESIGN.md`'s IP/GP renumbers them, which strands every in-code ref or
+     forces a package-code touch that breaks the docs-only migration. Keep the
+     principles file at a `cairn/` path with its **numbering and basename
+     intact** (note-and-leave), and defer both the IP/GP formalization *and*
+     the eventual in-code repoint to `/design-interview` + a target-repo code
+     milestone. This is the blocking, larger form of the ~17-ref ackwards
+     `DESIGN.md s.N` case above (M20 G6).
    - **Post-move hygiene:** prune per-file `.Rbuildignore` entries for
      tracking files that just moved into `cairn/` (e.g. `^DESIGN\.md$`,
      `^ROADMAP\.md$`) — `^cairn$` now covers them, so a stale per-file entry

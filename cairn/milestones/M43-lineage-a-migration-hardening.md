@@ -104,7 +104,7 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
       keep repo-specific where cairn has none (coverage matrices, spec dirs) as
       declared repo-specific files, author a thin `DESIGN.md` seed that points
       to them. Cite the M41 intraclass lineage.
-- [ ] **T2 (G-I2):** In §2 step 6 (the repoint/note-and-leave reference sweep),
+- [x] **T2 (G-I2):** In §2 step 6 (the repoint/note-and-leave reference sweep),
       add the numbered-principle case: when package code cites principles by
       number, keep the principles file at a `cairn/` path with numbering +
       basename intact (note-and-leave), do not fold into IP/GP at migration, and
@@ -136,6 +136,8 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
 - 2026-07-12: implement start; branch m43. No question gate (plan left no open
   implementation choices, no dep/RB tripwires). T1 (G-I1): concern-split case
   added to §2 step 5.
+- 2026-07-12: T2 (G-I2, headline): numbered-principle forced note-and-leave
+  added to the §2 step 6 reference sweep.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
