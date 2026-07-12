@@ -269,7 +269,10 @@ User interaction happens at exactly three gates — plan questions,
 pre-implementation questions, final merge approval — plus routing chips. At
 a gate, ask one batched round of 2–5 concrete decision questions via
 AskUserQuestion, each with a recommendation and brief pros/cons. Between
-gates, work autonomously; never drip questions one at a time.
+gates, work autonomously; never drip questions one at a time. When more
+questions are genuinely open than one round holds, prioritize the blocking
+ones: flag at most 3 prioritized clarification markers at a single gate and
+defer the rest to a later gate — never more than three at once.
 
 The **final merge-approval gate is itself an AskUserQuestion chip** — a
 single approve/decline question (recommended option merges; a decline option

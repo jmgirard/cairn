@@ -63,7 +63,7 @@ only). The M06 "minor steals" bundle and the two dropped marginal candidates
       "Remedies when a cap is hit" list in `tracking-rules.md` (over-cap
       ROADMAP branch); add at most a one-line pointer from the `/cairn-init`
       §2 migration section without altering its M23-guarded wording.
-- [ ] T2 — Add the cap-at-3 clause for prioritized clarification markers to
+- [x] T2 — Add the cap-at-3 clause for prioritized clarification markers to
       the "Question gates and routing chips" section.
 - [ ] T3 — Add the Explore-subagent reading-list instruction to the "Model
       and agent strategy" section (Sonnet-subagents / Explore guidance).
@@ -82,6 +82,7 @@ only). The M06 "minor steals" bundle and the two dropped marginal candidates
 
 - 2026-07-12: created by /milestone-plan (backlog-polish set 2 of 2).
 - 2026-07-12: T1 — mature-backlog clustering remedy added to weight-caps; one-line pointer added in cairn-init §2 step 5 (M23-guarded wording untouched).
+- 2026-07-12: T2 — cap-at-3 prioritized-clarification-markers clause added to "Question gates and routing chips".
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
