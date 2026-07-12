@@ -226,9 +226,10 @@ class TestValidateFailures(ScriptCase):
         self.assert_fails("weight caps", self.tree.build())
 
     def test_over_cap_lessons(self):
-        # A LESSONS.md at/over its 50-line cap fails weight-caps. (A missing
-        # LESSONS.md still passes — proven by test_clean_tree_passes, which has
-        # no LESSONS.md; line_count returns None for absent files.)
+        # A LESSONS.md at/over its 50-line cap fails weight-caps. (An absent
+        # file is not a cap failure: line_count returns None for a missing
+        # path, so check_caps skips it — a missing LESSONS.md is now caught by
+        # check_scaffold instead, not by weight-caps.)
         root = self.tree.build()
         (root / "cairn" / "LESSONS.md").write_text("# Lessons\n" + "- x\n" * 55)
         out = self.assert_fails("weight caps", root)

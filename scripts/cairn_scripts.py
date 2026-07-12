@@ -61,6 +61,11 @@ CLAUDE_SECTION_HEADING = "## Project tracking"
 # cairn section stays LLM-owned by the /milestone audit, not duplicated here.
 REQUIRED_SCAFFOLD_FILES = (
     "cairn/DESIGN.md",
+    # ROADMAP.md is also the cairn-repo marker: a missing one makes
+    # resolve_root raise NotCairn (exit 2) before check_scaffold ever runs, so
+    # this entry is belt-and-suspenders — kept so the tuple is the complete §1
+    # file set (the deferred cairn-init-repair-consumes-this candidate wants
+    # that), not because the CLI branch is reachable.
     "cairn/ROADMAP.md",
     "cairn/DECISIONS.md",
     "cairn/LESSONS.md",
