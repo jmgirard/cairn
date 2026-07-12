@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M32: Fold dropped rows into the ROADMAP retention cap (done-row → terminal-row)
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Branch/PR:** m32-terminal-row-retention
@@ -90,10 +90,10 @@ pruned and counted like done ones.
 - [x] T6 — In `scripts/tests/test_scripts.py`, rename `test_done_row_retention`
       → `test_terminal_row_retention`, assert on the terminal count, add the
       done≤5 + dropped-over-cap case (AC2), and update the `assert_fails` label.
-- [ ] T7 — Prune `cairn/ROADMAP.md`: remove the two oldest terminal rows (M26,
+- [x] T7 — Prune `cairn/ROADMAP.md`: remove the two oldest terminal rows (M26,
       M27) so the terminal count is 5 once M32 is `done`; refresh the hygiene
       date line.
-- [ ] T8 — Run `python3 -m unittest discover -s scripts/tests` and
+- [x] T8 — Run `python3 -m unittest discover -s scripts/tests` and
       `cairn_validate` on this repo; confirm both clean.
 
 ## Work log
@@ -103,6 +103,7 @@ pruned and counted like done ones.
 - 2026-07-12: T2–T4, T6 — renamed constant/check to terminal-row retention (count done+dropped), updated cairn_next comment, renamed+extended retention test with a dropped-over-cap case; 45 unittest tests pass.
 - 2026-07-12: AC4/T8 wording fixed pytest→unittest (repo has no pytest; suite is unittest-based) — minor correction, verification intent unchanged.
 - 2026-07-12: T1, T5 — reworded the tracking-rules retention rule + remedy line and the cairn-init scaffold + /milestone + /milestone-review check-name refs to terminal-row retention; live-file grep for "done-row retention" is clean.
+- 2026-07-12: T7, T8 — pruned M26, M27 from ROADMAP (terminal count now 4, → 5 when M32 done); 45 unittest tests pass and cairn_validate is 10/10 green. All tasks done → status review.
 
 ## Decisions
 
