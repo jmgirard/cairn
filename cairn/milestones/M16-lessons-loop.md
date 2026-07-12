@@ -1,6 +1,6 @@
 # Milestone 16: Lessons loop (capture → harvest)
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal
 - **Depends on:** —
 - **Branch/PR:** m16-lessons-loop   <!-- PR URL once opened -->
@@ -64,6 +64,7 @@ doc-routing frontmatter for `references/` → candidate row.
 - 2026-07-11: added lessons harvest to /milestone-plan (session-start read + surface-before-gate step 2).
 - 2026-07-11: LINE_CAPS += cairn/LESSONS.md:50; date-scan covers LESSONS.md; over-cap fixture in scripts/tests (30 pass).
 - 2026-07-11: added skills/tests/test_lessons_loop.py (wiring + stated↔enforced cap lock); skills 27 + scripts 30 pass, cairn_validate exit 0; recorded D-015.
+- 2026-07-11: all tasks done; status → review.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
