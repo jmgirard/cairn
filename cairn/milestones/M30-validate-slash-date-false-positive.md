@@ -127,3 +127,17 @@ repo, per CLAUDE.md).
 Note: `50 / 3 / 2000` correctly FLAGS (a 4-digit-year date-shaped triple) — the
 plan's `Out:` deliberately declines month/day range validation, so this is
 expected, not a defect.
+
+Independent review — two fresh-context lenses, distinct evidence bases:
+- [O] diff-bug (Opus): **no findings.** Verified by direct probe that the new
+  arms are strict subsets of the old pattern (tightening can only remove
+  matches — no new false positives), no ReDoS, and the new test genuinely
+  fails on pre-change code.
+- [S] blame-history (Sonnet): **no findings.** Confirmed D-023 properly
+  supersedes the M13 "conservative by design" doctrine for the slash branch
+  only, traceable end-to-end (M13 origin → M21 G-C2 → M30 plan → D-023 →
+  tests).
+Zero findings survived → scorer not needed. One style nit (year-last
+`07/11/2026` is covered by both `test_non_iso_date` and the expanded
+`test_non_iso_date_formats`) was raised and dropped by both reviewers as a
+non-finding; harmless redundancy, no action.
