@@ -78,7 +78,7 @@ the mechanism clarification as a D-entry annotating D-003.
       imperative sentence (invoke on selection; never hand back) and the
       notation clause. Single-line, case-insensitive assertions (M23/M26).
       Red until T2.
-- [ ] T2: Rewrite the routing-chip paragraph in
+- [x] T2: Rewrite the routing-chip paragraph in
       `skills/shared/tracking-rules.md:279-281` to the imperative + preserved
       stop clause + notation clarification; green T1. Keep asserted phrases
       on single physical lines.
@@ -90,6 +90,10 @@ the mechanism clarification as a D-entry annotating D-003.
 - 2026-07-12: created by /milestone-plan.
 - 2026-07-12: T1 — added `TestChipInvocationImperative` (3 assertions:
   imperative, never-hand-back, notation clause); red until T2 as planned.
+- 2026-07-12: T2 — rewrote the routing-chip paragraph to the imperative
+  (invoke via Skill tool on selection; never hand back) + preserved
+  never-auto-proceed stop + `→ /skill` notation clause; full 11-test
+  `test_gate_wording` suite green.
 
 ## Decisions
 
