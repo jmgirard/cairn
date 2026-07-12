@@ -10,6 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M25 | Parameterize the default branch in the operational skill steps | planned | M22 | normal | milestones/M25-default-branch-operational-skills.md |
 | M24 | Scaffold-drift detection in the audit | done | — | normal | milestones/archive/M24-scaffold-drift-check.md |
 | M23 | Migration-protocol §2 guidance hardening | done | M22 | normal | milestones/archive/M23-migration-guidance.md |
 | M22 | Generalize cairn beyond `main`; recalibrate the mature-repo CLAUDE.md cap | done | — | normal | milestones/archive/M22-mature-repo-defaults.md |
@@ -21,8 +22,6 @@ not an R package, so R-specific gates don't apply.
 - `cairn_validate` ISO-date scan false-positives on R CMD check result notation (three slash-separated counts, errors/warnings/notes, commonly all-zero) — the `\d{1,4}/\d{1,2}/\d{1,4}` slash-date pattern matches it; a clean fix is ambiguous (requiring a 4-digit year regresses on 2-digit-year dates), so it needs deliberate design not a reflexive regex tweak — added 2026-07-12 — M21 circumplex pilot G-C2
 - Migration guidance for a mature backlog vs the <60-line ROADMAP cap: a large parking-lot (continuous track + deferred review findings + pre-release items) blows the candidate budget one-row-per-item; document the "cluster related backlog into grouped candidate rows pointing at the entombed legacy ROADMAP" remedy in §5/§6 — added 2026-07-12 — M21 circumplex pilot G-C4
 - Scaffold-spec version stamp / content-drift detection (Direction 2, deferred from M24): M24 detects *missing* §1 pieces but not a piece whose template *body* changed while the file still exists; stamp a scaffold-spec version into the adopted CLAUDE.md and compare against the plugin's current spec to catch content drift — needs a maintained spec version + changelog + a definition of "what counts as a bump"; promote only if content drift (as opposed to missing files) actually bites — added 2026-07-12 — M24 Out
-
-- Parameterize the default branch in the operational skill *steps*: `/milestone-implement` (sync/`checkout`/pull), `/milestone-review` (merge), `/hotfix`, `/cairn-release` still issue `main`-named git commands that break on a `master` repo; M22 scoped only the git-model doctrine + CLAUDE template + cairn-init §2, not the per-skill operational commands — added 2026-07-12 — M22 Out
 - Lock the routing-chip mandate with a guard test: extend `test_gate_wording.py` (which already locks the merge gate as an AskUserQuestion chip) to assert each phase skill's end-of-phase routing chip names `AskUserQuestion`, and add a rulebook clarifier that a prose list of options is not a chip; drift-prevention only — cannot enforce runtime emission (same limit as the M19 hook live-fire) — added 2026-07-12 — orchestrator wrote routing options as prose instead of a chip after M22 review
 - Public release prep: LICENSE (MIT), README worked example, remove DRAFT files, tag v1.0 — added 2026-07-11 — DRAFT_2 §11
 - On-main commit-guard hook: PreToolUse guard that warns/blocks git commits touching non-cairn code while on main with no milestone branch active; false-positive-prone (trivial edits ARE allowed on main) so needs its own design; complements M08's router text — added 2026-07-11 — M08 Out
