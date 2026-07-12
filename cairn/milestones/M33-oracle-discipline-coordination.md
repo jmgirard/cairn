@@ -95,7 +95,7 @@ candidates.
       lineage; catalogue the system; build the gap ledger mapping each element to
       cairn's Validation doctrine (tracking-rules.md:396–411) with a
       `fix-here | candidate | out` tag per row. Add its `references/INDEX.md` line.
-- [ ] T2 — Amend the "Validation doctrine" section of
+- [x] T2 — Amend the "Validation doctrine" section of
       `skills/shared/tracking-rules.md`: surgically add the four-type taxonomy +
       the "live stronger than frozen" nuance, the ≥2-independent-types bar, and the
       reproducibility rule, keeping the existing priority list intact.
@@ -111,6 +111,7 @@ candidates.
 
 - 2026-07-12: created by /milestone-plan.
 - 2026-07-12: T1 — wrote references/oracle-discipline-notes.md (intraclass→ackwards lineage, 4-part system catalogue, E1–E8 gap ledger, disposition) + INDEX.md line. Finding: intraclass is not cairn-tracked — it originated the data-raw provenance-script practice; ackwards formalized the registry/taxonomy/guard.
+- 2026-07-12: T2 — folded E1–E4 into tracking-rules Validation doctrine: added the frozen/live/invariant/closed-form vocabulary + "live stronger than frozen", the ≥2-independent-types bar, and the reproducibility hard-stop. Priority list preserved; kept the additions self-contained (no cross-repo citation — shared rulebook).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -399,6 +399,25 @@ reference values, cited; (3) independent recomputation with deliberately
 dumb explicit code; (4) invariant tests. Snapshots only on top, never as the
 sole oracle for a number.
 
+**Oracle types & the ≥2-types bar.** Name each oracle by *type*: **frozen** (an
+external/expensive reference value computed once and committed as a fixture
+*with* a reproducible generator), **live** (an independent implementation
+recomputed at test time), **invariant** (two independent internal routes that
+must agree — the agreement itself is the oracle, no external source),
+**closed-form** (a published/definitional formula recomputed with deliberately
+dumb explicit code). The four types refine the priority list, they don't
+replace it — (1)/(2) are frozen or closed-form, (3) is live, (4) is invariant.
+Every numeric result is backed by **≥2 *independent* oracle types**, never two
+instances of one type. A **live** independent implementation is the *stronger*
+form; a frozen copy of it is a regression pin, not a cross-check — prefer live,
+and freeze it only when it becomes expensive or network-bound.
+
+**Reproducibility (hard stop):** no unsourced *or unreproducible* reference
+value ships. A committed numeric fixture carries its regeneration recipe — a
+committed generator that reproduces it from scratch — so a stale or mis-sourced
+value fails a test rather than sitting as a silent pin. Sourcing is the
+primary-sources rule below; reproducibility is its second, independent half.
+
 **Primary sources rule (hard stop):** never substitute secondary
 descriptions or model memory for a primary source on scoring/algorithmic
 content. Search (DOI, publisher, OSF); if inaccessible, stop and ask the
