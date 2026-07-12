@@ -4,7 +4,7 @@
 
 - **Status:** planned
 - **Priority:** normal
-- **Depends on:** M20
+- **Depends on:** M23
 - **Branch/PR:** —
 
 ## Goal
@@ -17,8 +17,9 @@ does not, folding surfaced gaps back into the skill.
 
 **In:**
 - Execute `/cairn-init` §2 migration on **circumplex** on a
-  `cairn-init-migration` branch → real PR, CI exercised (with M20's fixes
-  already in the skill, so the second run compounds them). circumplex's own
+  `cairn-init-migration` branch → real PR, CI exercised (with the M20-derived
+  fixes from **M22/M23** already in the skill, so the second run compounds
+  them). circumplex's own
   IDs are qualified "circumplex M<nn>"; this milestone is cairn M21.
 - Deliberately exercise circumplex-specific edges: the **6 "active" items vs.
   the at-most-one-`in-progress` rule** (§2 step 3 disposition), the separate
@@ -96,6 +97,9 @@ does not, folding surfaced gaps back into the skill.
 
 - 2026-07-11: created by /milestone-plan (second half of the Lineage B
   migration stress-test; depends on M20 so its fixes compound here).
+- 2026-07-12: re-pointed Depends on M20 → M23 per the harden-before-pilot
+  decision — the M20 pilot landed no fixes; they now ship as M22 (defaults) +
+  M23 (§2 guidance), which must precede this pilot.
 
 ## Decisions
 

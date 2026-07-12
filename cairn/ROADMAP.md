@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-12 (M20 done+archived; M15 row pruned per 5-done retention)_
+_Last hygiene check: 2026-07-12 (M22/M23 planned from M20 pilot gaps; M21 re-pointed to depend on M23 — harden before pilot)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,7 +10,9 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M21 | Migration stress-test pilot — circumplex (Lineage B) | planned | M20 | normal | milestones/M21-migration-pilot-circumplex.md |
+| M23 | Migration-protocol §2 guidance hardening | planned | M22 | normal | milestones/M23-migration-guidance.md |
+| M22 | Generalize cairn beyond `main`; recalibrate the mature-repo CLAUDE.md cap | planned | — | normal | milestones/M22-mature-repo-defaults.md |
+| M21 | Migration stress-test pilot — circumplex (Lineage B) | planned | M23 | normal | milestones/M21-migration-pilot-circumplex.md |
 | M20 | Migration stress-test pilot — ackwards (Lineage B) | done | — | normal | milestones/archive/M20-migration-pilot-ackwards.md |
 | M19 | Memory-boundary write guard (GP4 enforcement) | done | M18 | normal | milestones/archive/M19-memory-boundary-guard.md |
 | M18 | Acceptance-criteria traceability | done | M17 | normal | milestones/archive/M18-ac-traceability.md |
@@ -19,11 +21,6 @@ not an R package, so R-specific gates don't apply.
 
 ## Candidates
 
-- Recalibrate the CLAUDE.md weight cap for mature repos: the `<80` cap fails on a real mature R package (ackwards CLAUDE.md was 187 lines after full redistribution — legit dev doctrine + the ~26-line appended cairn section floor well above 80); reconsider as a higher flat cap, size-tiered, or toolchain-profile-based — added 2026-07-12 — references/migration-pilot-notes.md G8 (M20)
-- Parameterize the default branch (main/master) across cairn: the git model, CLAUDE template, and cairn-init §2 are `main`-hardcoded; detect the repo's default branch at init and adapt, or say "default branch (main/master)" throughout — added 2026-07-12 — references/migration-pilot-notes.md G1/G9 (M20)
-- Migration guidance for a rich pre-existing DESIGN.md: §5 only anticipates a thin DESIGN; add guidance for a large living DESIGN with an embedded decision log (keep-verbatim vs extract-to-DECISIONS; the Compromise A/B split) and for routing invariants→IP/GP through /design-interview — added 2026-07-12 — references/migration-pilot-notes.md G3/G5 (M20)
-- Migration: handle in-code references to relocated tracking files: mature repos cite `DESIGN.md`/`MILESTONES.md` by name in source comments/tests (15+ in ackwards) and CLAUDE prose references the skills being entombed; add a repoint-or-note sweep step to §4/§6 — added 2026-07-12 — references/migration-pilot-notes.md G6/G10 (M20)
-- Migration hygiene tweaks: prune stale per-file `.Rbuildignore` entries after files move (§1 only says add `^cairn$`), and widen Lineage B detection wording to cover a repo that already has a forward-only ROADMAP + explicit status slot — added 2026-07-12 — references/migration-pilot-notes.md G7/G2 (M20)
 - Public release prep: LICENSE (MIT), README worked example, remove DRAFT files, tag v1.0 — added 2026-07-11 — DRAFT_2 §11
 - On-main commit-guard hook: PreToolUse guard that warns/blocks git commits touching non-cairn code while on main with no milestone branch active; false-positive-prone (trivial edits ARE allowed on main) so needs its own design; complements M08's router text — added 2026-07-11 — M08 Out
 - Live-openac router test: run M08's classify-first router empirically in openac (plain-conversation requests should route to the right tier/skill); openac is a separate repo, no automated evidence lands here — added 2026-07-11 — M08 Out
