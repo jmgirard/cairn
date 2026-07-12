@@ -80,6 +80,13 @@ class TestReviewFanout(unittest.TestCase):
         self.assertIn("fan-out", r)
         self.assertRegex(r, r"scorer \(Sonnet\)")
 
+    def test_fanout_states_why_a_fresh_model_reviews(self):
+        # M35 AC4: the fan-out states *why* review uses a fresh/different model
+        # — an author shares their own diff-blindness (M23: one physical line).
+        r = rules()
+        self.assertIn("fresh-context subagents", r)
+        self.assertIn("diff-blindness", r)
+
 
 if __name__ == "__main__":
     unittest.main()

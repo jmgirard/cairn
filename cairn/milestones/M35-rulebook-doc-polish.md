@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M35: Rulebook & doc-wording polish batch
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Branch/PR:** m35-rulebook-doc-polish
@@ -71,7 +71,7 @@ only). The M06 "minor steals" bundle and the two dropped marginal candidates
       bullet in "Model and agent strategy".
 - [x] T5 — Add the copy-run-commands-in-a-fenced-block rule to "Output &
       interaction discipline".
-- [ ] T6 — Lock all five: extend `test_gate_wording.py` (AC2) and
+- [x] T6 — Lock all five: extend `test_gate_wording.py` (AC2) and
       `test_review_fanout.py` (AC4) where topical; add a new
       `test_rulebook_polish.py` for AC1/AC3/AC5 (filename avoids the taken
       `test_migration_guidance.py`). Anchor every asserted phrase on a single
@@ -86,6 +86,7 @@ only). The M06 "minor steals" bundle and the two dropped marginal candidates
 - 2026-07-12: T3 — Explore reading-list instruction added to the Sonnet-subagents bullet in "Model and agent strategy".
 - 2026-07-12: T4 — why-fresh-model rationale (diff-blindness) prepended to the review fan-out bullet.
 - 2026-07-12: T5 — copy-run-commands-in-own-fenced-block rule added to "Output & interaction discipline".
+- 2026-07-12: T6 — guards added: AC2 in test_gate_wording.py, AC4 in test_review_fanout.py, AC1/AC3/AC5 in new test_rulebook_polish.py; full skills suite green (83 tests).
 
 ## Decisions
 <!-- owner: implement / review · append-only -->

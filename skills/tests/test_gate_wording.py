@@ -126,5 +126,14 @@ class TestChipInvocationImperative(unittest.TestCase):
         )
 
 
+# M35 AC2: a question gate carries at most 3 prioritized clarification
+# markers, so a gate can't balloon past a focused round. Phrase asserted
+# case-insensitively on one physical line (M23).
+class TestClarificationMarkerCap(unittest.TestCase):
+    def test_rulebook_caps_prioritized_clarification_markers_at_three(self):
+        text = read("shared", "tracking-rules.md").lower()
+        self.assertIn("at most 3 prioritized clarification markers", text)
+
+
 if __name__ == "__main__":
     unittest.main()
