@@ -72,9 +72,11 @@ guard test.
 - [x] T2 — Rewrite `skills/milestone-review/SKILL.md` step 10: replace the
       routing chip with a plain-prose `/clear` encouragement. Leave the
       step-6 merge-approval `AskUserQuestion` chip untouched.
-- [ ] T3 — In `milestone-plan` (step 7), `milestone-implement` (step 8),
-      `cairn-init` (step 8), `cairn-release` (step 9), `design-interview`
-      (Routing), name `AskUserQuestion` explicitly at the routing-chip step.
+- [x] T3 — In `milestone-plan` (step 7), `milestone-implement` (step 8),
+      `cairn-init` (steps for scaffold + migration), `cairn-release` (step 9),
+      `design-interview` (Routing), name `AskUserQuestion` explicitly at the
+      routing-chip step via the contiguous token `routing chip
+      (AskUserQuestion)`. (`milestone` already carried it.)
 - [ ] T4 — Extend `skills/tests/test_gate_wording.py`: loop the six
       non-review skills asserting `AskUserQuestion` at their routing-chip
       step; assert review's ending is a `/clear` nudge with no end chip while
@@ -93,6 +95,9 @@ guard test.
   exception added to tracking-rules "Question gates and routing chips".
 - 2026-07-12: T2 — review SKILL step 10 now a plain-prose `/clear` nudge,
   no end chip; step-6 merge gate untouched.
+- 2026-07-12: T3 — 6 non-review skills carry the contiguous token `routing
+  chip (AskUserQuestion)` at their routing-chip step (cairn-init in both
+  scaffold + migration endings).
 
 ## Decisions
 

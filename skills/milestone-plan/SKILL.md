@@ -103,8 +103,8 @@ Read, in order: `cairn/ROADMAP.md`, any active milestone file,
    (docs-only carve-out): `plan M<NN>[, M<NN>…]: <title>`; push. A session
    dying mid-plan must not leave a half-planned ghost.
 
-7. **Routing chip**, composed from what was just planned (chip rules per
-   tracking-rules) — e.g.:
+7. **Routing chip (AskUserQuestion)**, composed from what was just planned
+   (chip rules per tracking-rules) — e.g.:
    - **Start implementing M<NN>** (the proximal one) → `/milestone-implement`
      (recommended)
    - Plan another milestone → `/milestone-plan`

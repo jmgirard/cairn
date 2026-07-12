@@ -84,9 +84,9 @@ run ingestion first (see `/milestone-brief`).
    outcome-first (per tracking-rules): what the milestone now does or
    changes, in plain words, before the mechanics —
    file-level summary of the branch diff, test/check results, deviations
-   from plan, open concerns — and a **routing chip** (one question,
-   composed per the tracking-rules chip rules; the natural menu, in this
-   order):
+   from plan, open concerns — and a **routing chip (AskUserQuestion)**, one
+   question, composed per the tracking-rules chip rules; the natural menu, in
+   this order):
    - **Proceed to review** → `/milestone-review <id>` (recommended)
    - **Adjust first** — changes on the branch before review
    - **Pause here** — stop; milestone stays at `review`
