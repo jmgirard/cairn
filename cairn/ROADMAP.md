@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-12 (M24 done+archived; M19 row pruned per 5-done retention)_
+_Last hygiene check: 2026-07-12 (M25 done+archived; M20 row pruned per 5-done retention)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,12 +10,11 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M25 | Parameterize the default branch in the operational skill steps | review | M22 | normal | milestones/M25-default-branch-operational-skills.md |
+| M25 | Parameterize the default branch in the operational skill steps | done | M22 | normal | milestones/archive/M25-default-branch-operational-skills.md |
 | M24 | Scaffold-drift detection in the audit | done | — | normal | milestones/archive/M24-scaffold-drift-check.md |
 | M23 | Migration-protocol §2 guidance hardening | done | M22 | normal | milestones/archive/M23-migration-guidance.md |
 | M22 | Generalize cairn beyond `main`; recalibrate the mature-repo CLAUDE.md cap | done | — | normal | milestones/archive/M22-mature-repo-defaults.md |
 | M21 | Migration stress-test pilot — circumplex (Lineage B) | done | M23 | normal | milestones/archive/M21-migration-pilot-circumplex.md |
-| M20 | Migration stress-test pilot — ackwards (Lineage B) | done | — | normal | milestones/archive/M20-migration-pilot-ackwards.md |
 
 ## Candidates
 
