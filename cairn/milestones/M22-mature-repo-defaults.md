@@ -2,10 +2,10 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M22: Generalize cairn beyond `main`; recalibrate the mature-repo CLAUDE.md cap
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** m22-mature-repo-defaults
 
 ## Goal
 

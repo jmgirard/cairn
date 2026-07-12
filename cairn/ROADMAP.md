@@ -11,7 +11,7 @@ not an R package, so R-specific gates don't apply.
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M23 | Migration-protocol §2 guidance hardening | planned | M22 | normal | milestones/M23-migration-guidance.md |
-| M22 | Generalize cairn beyond `main`; recalibrate the mature-repo CLAUDE.md cap | planned | — | normal | milestones/M22-mature-repo-defaults.md |
+| M22 | Generalize cairn beyond `main`; recalibrate the mature-repo CLAUDE.md cap | in-progress | — | normal | milestones/M22-mature-repo-defaults.md |
 | M21 | Migration stress-test pilot — circumplex (Lineage B) | planned | M23 | normal | milestones/M21-migration-pilot-circumplex.md |
 | M20 | Migration stress-test pilot — ackwards (Lineage B) | done | — | normal | milestones/archive/M20-migration-pilot-ackwards.md |
 | M19 | Memory-boundary write guard (GP4 enforcement) | done | M18 | normal | milestones/archive/M19-memory-boundary-guard.md |
