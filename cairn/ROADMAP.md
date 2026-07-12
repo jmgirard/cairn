@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-12 (M31 planned)_
+_Last hygiene check: 2026-07-12 (M31 dropped — premise refuted at review)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M31 | Mark the opening phase — drop the "session start implicit" carve-out | planned | — | normal | milestones/M31-opening-phase-chapter-marker.md |
+| M31 | Mark the opening phase — drop the "session start implicit" carve-out | dropped | — | normal | milestones/archive/M31-opening-phase-chapter-marker.md |
 | M30 | Stop cairn_validate false-flagging R CMD check counts as non-ISO dates | done | — | normal | milestones/archive/M30-validate-slash-date-false-positive.md |
 | M29 | Make routing-chip invocation an imperative on the orchestrator | done | — | normal | milestones/archive/M29-routing-chip-invocation-imperative.md |
 | M28 | Harden the output-discipline mandate guards | done | — | normal | milestones/archive/M28-output-discipline-mandate-guards.md |
@@ -19,6 +19,7 @@ not an R package, so R-specific gates don't apply.
 
 ## Candidates
 
+- Descriptive label for a session's opening phase in the Claude Code TOC: today the opening phase shows as the generic implicit "Session Start" node, and a single-phase session that never calls `mark_chapter` shows an empty TOC. Marking the first message could give it a descriptive label / guarantee a node — but the `mark_chapter` docstring discourages marking the first message and the result is only verifiable by live Desktop probing (not observable agent-side, D-020). Promote only with a live-probe plan; keep the correct carve-out until then — added 2026-07-12 — M31 dropped (premise refuted)
 - Migration guidance for a mature backlog vs the <60-line ROADMAP cap: a large parking-lot (continuous track + deferred review findings + pre-release items) blows the candidate budget one-row-per-item; document the "cluster related backlog into grouped candidate rows pointing at the entombed legacy ROADMAP" remedy in §5/§6 — added 2026-07-12 — M21 circumplex pilot G-C4
 - Scaffold-spec version stamp / content-drift detection (Direction 2, deferred from M24): M24 detects *missing* §1 pieces but not a piece whose template *body* changed while the file still exists; stamp a scaffold-spec version into the adopted CLAUDE.md and compare against the plugin's current spec to catch content drift — needs a maintained spec version + changelog + a definition of "what counts as a bump"; promote only if content drift (as opposed to missing files) actually bites — added 2026-07-12 — M24 Out
 - Public release prep: LICENSE (MIT), README worked example, remove DRAFT files, tag v1.0 — added 2026-07-11 — DRAFT_2 §11
