@@ -39,6 +39,10 @@ overrides — log the override).
    for.
 
 4. **Consistency gate** — mechanical checks, by command, never recall:
+   - `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` passes
+     (exit 0) — the mechanical cairn-file checks (mirror, caps, done-row
+     retention, vocab, dependency resolution, orphans, ID uniqueness, ISO
+     dates). Run this first; a non-zero exit is a gate failure like any other.
    - `devtools::document()` produces no diff.
    - README.Rmd present and out of sync with README.md →
      `devtools::build_readme()`, commit.

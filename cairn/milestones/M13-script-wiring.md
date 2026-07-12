@@ -1,6 +1,6 @@
 # M13: Wire deterministic scripts into review + plan
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- high | normal | low -->
 - **Depends on:** —
 - **Branch/PR:** m13-script-wiring   <!-- PR URL once opened -->
@@ -61,12 +61,12 @@ date-format check to `cairn_validate`.
       false-positiving on prose/citations (see Decisions). Add `unittest`
       cases to `scripts/tests/test_scripts.py`: clean-tree pass + one injected
       non-ISO date. Run the suite.
-- [ ] Wire `cairn_validate.py` into `skills/milestone-review/SKILL.md` step 4
+- [x] Wire `cairn_validate.py` into `skills/milestone-review/SKILL.md` step 4
       as the first mechanical check; state that a FAIL returns status to
       `in-progress` (consistent with the existing gate-failure rule at :52).
-- [ ] Wire `cairn_next.py` into `skills/milestone-plan/SKILL.md` step 1 /
+- [x] Wire `cairn_next.py` into `skills/milestone-plan/SKILL.md` step 1 /
       collision-check readiness.
-- [ ] Run `python3 -m unittest discover -s scripts/tests` and the
+- [x] Run `python3 -m unittest discover -s scripts/tests` and the
       `skills/tests` suite; update work-log.
 
 ## Work log
@@ -76,6 +76,8 @@ date-format check to `cairn_validate`.
   "Deterministic-script wiring beyond /milestone" candidate (M10 Out).
 - 2026-07-11: T1 — added `check_dates` (9th validate check, conservative
   non-ISO patterns) + test; suite 19 green; real-repo validate all-PASS.
+- 2026-07-11: T2-T4 — wired cairn_validate into review step 4, cairn_next
+  into plan step 1; scripts 19 + skills 17 tests green. → review.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
