@@ -223,6 +223,31 @@ class TestValidateFailures(ScriptCase):
         self.tree.rows.append(("M03", "Dup", "planned", "M01", "high", "milestones/M03-live.md"))
         self.assert_fails("id uniqueness", self.tree.build())
 
+    def test_non_iso_date(self):
+        # A misformatted work-log date must be flagged; the clean tree's ISO
+        # date (archived M01, "approved 2026-07-11") already proves ISO passes.
+        self.tree.files["milestones/M03-live.md"] = live("planned") + "\n- 07/11/2026: did a thing\n"
+        out = self.assert_fails("iso date format", self.tree.build())
+        self.assertIn("non-ISO date '07/11/2026'", out)
+
+    def test_non_iso_date_formats(self):
+        # Each non-ISO branch is flagged: year-last dashed, both month-name
+        # orders, and the malformed-ISO (missing zero-pad) case.
+        for bad in ("11-07-2026", "Jul 11, 2026", "11 July 2026", "2026-7-11"):
+            with self.subTest(bad=bad):
+                self.tree = Tree(self._tmp.name)
+                self.tree.files["milestones/M03-live.md"] = live("planned") + f"\n- {bad}: x\n"
+                out = self.assert_fails("iso date format", self.tree.build())
+                self.assertIn(f"non-ISO date '{bad}'", out)
+
+    def test_valid_iso_and_non_dates_pass(self):
+        # Valid ISO plus tokens that must NOT be mistaken for dates.
+        self.tree.files["milestones/M03-live.md"] = (
+            live("planned") + "\n- 2026-12-31: v4.8 shipped, see p. 12, ratio 1/2, ID M13\n"
+        )
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+
 
 class TestOutsideCairn(unittest.TestCase):
     def test_all_scripts_exit_2(self):

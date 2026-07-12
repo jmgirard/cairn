@@ -19,8 +19,11 @@ handle ingestion first (see `/milestone-brief`).
 
 ## Workflow
 
-1. Confirm nothing else is `in-progress` — or get explicit user sign-off to
-   plan ahead anyway (planning ahead is fine; it just needs saying).
+1. Confirm nothing else is `in-progress` — run
+   `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_next.py"` for the mechanical
+   active/workable picture rather than eyeballing the ROADMAP. If it reports
+   an active milestone, get explicit user sign-off to plan ahead anyway
+   (planning ahead is fine; it just needs saying).
 
 2. **Investigate first.** Read the relevant code and DECISIONS.md. For
    scopes touching more than a couple of files, fan out Explore subagents
