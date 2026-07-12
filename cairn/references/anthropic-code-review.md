@@ -29,6 +29,7 @@ reviews a GitHub PR and posts one formatted comment via `gh`.
 - **Distinct-evidence-base fan-out** for `/milestone-review`'s independent
   review: cairn runs one fresh Opus reviewer; blame-history and
   prior-PR-comment lenses are cheap and orthogonal to a diff read.
+  *(Shipped: blame-history → M17; prior-PR-comments → M40.)*
 - **Separate scorer verifying reviewer output** — two-stage
   generate-then-verify with the rubric given verbatim.
 - The false-positive taxonomy, nearly verbatim, for review subagent
