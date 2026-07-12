@@ -96,7 +96,7 @@ overrides — log the override).
 
    Findings scoring **below 80 are excluded from the actioned list but logged**
    in the Review section (the count, plus one line each) — surfaced, never
-   silently dropped (IP2). Triage each finding scoring **80 or above**: fix now
+   silently dropped (IP3). Triage each finding scoring **80 or above**: fix now
    / spawn a follow-up (candidate row or milestone) / reject with reason — all
    logged in the Review section.
 

@@ -9,7 +9,7 @@ the load-bearing pieces against silent regression:
   * a Sonnet confidence scorer, independent of finding generation, with a
     numeric threshold;
   * sub-threshold findings excluded from the actioned list but *logged*, never
-    silently dropped (IP2);
+    silently dropped (IP3);
   * the false-positive taxonomy handed to the reviewers;
   * the model-strategy section describing the fan-out while keeping the blanket
     "Never Haiku" rule (D-016).
