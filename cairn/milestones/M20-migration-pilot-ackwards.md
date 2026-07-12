@@ -145,6 +145,4 @@ clean; coverage complete; no principle change; R-package gates waived.
 - **O1 (80, fixed)** — "each citing §14" overgeneralized (10/15 cite §2–§12);
   reworded in DECISIONS preamble + pilot notes.
 - **O2 (62, excluded)** — G6 ref-count undercount (~17+3 not 15+2); corrected.
-
-Both lenses otherwise clean: entombment verbatim, no package code touched, no
-live item dropped, no-invention honored.
+- Both lenses otherwise clean: entombment verbatim, no package code touched, no live item dropped, no-invention honored.
