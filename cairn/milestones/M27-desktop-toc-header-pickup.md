@@ -48,14 +48,14 @@ it as a client-side limitation — with the finding written to disk either way.
 
 ## Tasks
 
-- [ ] T1 — With Jeff on Claude Desktop, observe how the TOC treats the `##`
+- [x] T1 — With Jeff on Claude Desktop, observe how the TOC treats the `##`
       phase headers: reproduce the missing/unreliable indexing and note the
       conditions. (Evidence is manual — this milestone's data-gathering
       depends on the user's Desktop client; if Jeff is unavailable, status →
       `blocked` with a work-log line.)
-- [ ] T2 — Vary header level / exact format / placement to isolate what, if
+- [x] T2 — Vary header level / exact format / placement to isolate what, if
       anything, changes TOC pickup; record the variant results.
-- [ ] T3 — Conclude and record: apply the winning header change to
+- [x] T3 — Conclude and record: apply the winning header change to
       `tracking-rules.md` + affected skills (+ `test_phase_header_levels.py`)
       if one exists, else append a D-entry that it is a client limitation and
       annotate D-012. Update tracking accordingly.
@@ -68,6 +68,15 @@ it as a client-side limitation — with the finding written to disk either way.
 - 2026-07-12: /milestone-implement started; status → in-progress, branch
   m27-desktop-toc-header-pickup cut from main. T1/T2 are manual Desktop
   observations gathered live with Jeff.
+- 2026-07-12: T1/T2 — live probing in Jeff's Claude Desktop (viewing a Claude
+  Code session): H1/H2/H3 markdown headers across two messages produced zero
+  TOC; one chapter marker produced a two-entry outline. Characterization →
+  references/desktop-toc-mechanism.md.
+- 2026-07-12: T3 — finding: in Claude Code (cairn's runtime) the TOC is driven
+  by chapter markers, not markdown headers. Recorded D-020 (annotates D-012);
+  corrected the false "headers land in the TOC" line in tracking-rules; banked
+  a candidate to consider a hard chapter-marker mandate. AC2 option (b) taken;
+  no header-format change. Decision gate: Jeff chose "Record + fix false line".
 
 ## Decisions
 

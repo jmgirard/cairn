@@ -296,8 +296,11 @@ cairn skill is active.
 
 - **Phase header.** Orient the user with Markdown headings, not an inline
   banner. A `#` names the unit of work and its title; a `##` beneath it
-  names the phase. (Both levels land in Claude Desktop's table of contents,
-  which indexes only H1/H2.) Milestone skills: `# Milestone <NN>: <title>` →
+  names the phase. (These headers give in-transcript visual hierarchy; in
+  Claude Code — cairn's runtime — the navigable table of contents is built
+  from chapter markers, not markdown headers, so phases become navigable via
+  the "Chapter markers" rule below, not these headings — M27/D-020.)
+  Milestone skills: `# Milestone <NN>: <title>` →
   `## Plan` / `## Implement` / `## Review`. Other skills map onto the same
   two levels: `# Hotfix: <slug>` → `## <step>`; `# cairn-init` →
   `## Scaffold` / `## Repair` / `## Migration §n`; `# Release <version>`
