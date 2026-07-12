@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M42 | Oracle-doctrine validation against intraclass | planned | M41 | normal | milestones/M42-oracle-doctrine-validation-intraclass.md |
+| M42 | Oracle-doctrine validation against intraclass | in-progress | M41 | normal | milestones/M42-oracle-doctrine-validation-intraclass.md |
 | M41 | Migration stress-test pilot — intraclass (first Lineage A) | done | — | normal | milestones/archive/M41-migration-pilot-intraclass.md |
 | M40 | Prior-PR-comments reviewer lens | done | — | normal | milestones/archive/M40-prior-pr-comments-lens.md |
 | M39 | Search-first candidate creation | done | — | normal | milestones/archive/M39-search-first-candidate-creation.md |
