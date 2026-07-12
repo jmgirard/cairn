@@ -43,9 +43,9 @@ schemas for machine-written fragments" stays its M06-steal candidate row.
 
 ## Tasks
 
-- [ ] Draft the section → owner → write-mode table; add it to the ownership
+- [x] Draft the section → owner → write-mode table; add it to the ownership
       section of `skills/shared/tracking-rules.md`.
-- [ ] Update `skills/shared/templates/milestone.md` comments to name each
+- [x] Update `skills/shared/templates/milestone.md` comments to name each
       section's owner.
 - [ ] Add allow-list cross-references to plan/implement/review SKILL.md.
 - [ ] Write `skills/tests/test_section_allow_lists.py` (table ↔ template
@@ -57,6 +57,7 @@ schemas for machine-written fragments" stays its M06-steal candidate row.
 <!-- append-only; one line per entry; absolute dates -->
 
 - 2026-07-11: created by /milestone-plan.
+- 2026-07-11: section-ownership table added to tracking-rules.md; template comments tag each section's owner.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
