@@ -6,7 +6,7 @@
 - **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
-- **Branch/PR:** m36-on-main-commit-guard   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m36-on-main-commit-guard · https://github.com/jmgirard/cairn/pull/34   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 
@@ -37,23 +37,23 @@ pattern (D-017) and reuses `cairn_common.py`.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] On the default branch in a cairn repo, a `git commit` whose would-be-
+- [x] On the default branch in a cairn repo, a `git commit` whose would-be-
       committed set includes a non-`cairn/` path emits PreToolUse
       `additionalContext` (no `permissionDecision`) naming the git-model rule;
       a commit whose set is entirely under `cairn/` is silent. (test)
-- [ ] On a non-default branch, the hook is silent regardless of file set. (test)
-- [ ] The default branch is resolved via remote HEAD
+- [x] On a non-default branch, the hook is silent regardless of file set. (test)
+- [x] The default branch is resolved via remote HEAD
       (`refs/remotes/origin/HEAD`, else `git ls-remote --symref origin HEAD`),
       falling back to `main`/`master` only with no remote; a repo whose default
       is `trunk` is detected and a `trunk` commit nudges. (test)
-- [ ] `git commit -a`/`-am` counts modified-but-unstaged tracked files, not
+- [x] `git commit -a`/`-am` counts modified-but-unstaged tracked files, not
       only staged ones. (test)
-- [ ] Command-position matching: a `git commit` inside `echo`/as an argument,
+- [x] Command-position matching: a `git commit` inside `echo`/as an argument,
       and non-`git commit` git commands (`git status`), do not fire. (test)
-- [ ] `commit_guard.py` is silent+permissive outside cairn repos, on non-Bash
+- [x] `commit_guard.py` is silent+permissive outside cairn repos, on non-Bash
       tools, and on garbage stdin, and imports stdlib only — via the extended
       `TestNonCairnNoOp`, garbage-stdin, and `TestStdlibOnly` suites. (test)
-- [ ] Full hook suite green: `python3 -m unittest discover -s hooks/tests`.
+- [x] Full hook suite green: `python3 -m unittest discover -s hooks/tests`.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each AC → task(s), positional. -->
@@ -103,3 +103,26 @@ pattern (D-017) and reuses `cairn_common.py`.
 
 ## Review
 <!-- owner: review · exclusive -->
+
+**Reviewed 2026-07-12 · PR #34 · branch synced (main unmoved since cut).**
+
+Per-criterion evidence (fresh, by command; R gates waived — not an R package):
+
+- AC1 → `TestCommitGuard.test_nudges_on_noncairn_commit_on_default` (nudge,
+  `hookEventName` PreToolUse, no `permissionDecision`) +
+  `test_silent_on_cairn_only_commit` — pass.
+- AC2 → `test_silent_on_feature_branch` — pass.
+- AC3 → `test_default_branch_resolved_via_remote_head` (real bare-remote
+  `trunk` fixture; origin/HEAD→trunk) — pass.
+- AC4 → `test_stage_all_counts_modified_tracked` +
+  `test_unstaged_modified_ignored_without_dash_a` — pass.
+- AC5 → `test_command_position_and_non_commit_ignored` (echo/status/commit-tree)
+  + `test_ignores_other_tools` — pass.
+- AC6 → `TestNonCairnNoOp` (incl. commit_guard) + garbage-stdin + `TestStdlibOnly` — pass.
+- AC7 → full hook suite `python3 -m unittest discover -s hooks/tests` — 30 pass.
+
+Consistency gate: `cairn_validate` 11/11 (exit 0), incl. "coverage complete"
+(the mechanical AC→task Coverage-completeness check). DESIGN.md untouched → Sync
+Impact Report skipped. Whole-repo suites green: 30 hooks / 49 scripts / 83 skills.
+
+Independent fresh-context review (two lenses + Sonnet scorer): _pending_.
