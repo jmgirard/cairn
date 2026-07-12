@@ -121,11 +121,16 @@ class TestPriorPRLens(unittest.TestCase):
         self.assertRegex(t, r"[Aa]lways spawn")
         self.assertIn("no prior-PR evidence", t)
 
-    def test_feeds_the_existing_scorer_unchanged(self):
-        # the new lens routes into the same [S] scorer; the 80 cutoff stands
+    def test_new_lens_defers_scoring_to_shared_scorer(self):
+        # AC4: the prior-PR lens funnels into the single shared [S] scorer and
+        # introduces NO scoring of its own. This isolates the lens block and
+        # asserts it carries no "score" token — lens-specific and M40-dependent
+        # (deleting the lens makes the split raise, failing the test), unlike a
+        # bare "scorer"/"80" assertion that pre-exists and passes even with the
+        # lens removed (the M39 false-coverage trap; caught by M40's own review).
         t = review()
-        self.assertIn("scorer", t.lower())
-        self.assertRegex(t, r"\b80\b")
+        lens = t.split("prior-PR-comments reviewer (Sonnet)")[1].split("\n\n")[0]
+        self.assertNotIn("score", lens.lower())
 
 
 class TestSharedCheckoutGuard(unittest.TestCase):
