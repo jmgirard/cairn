@@ -24,8 +24,9 @@ Phase header: `# Hotfix: <slug>` → `## <step>`.
    overlap instead of racing it.
 
 2. **Branch.** Check `git status` (dirty tree with unrelated changes → ask).
-   Branch `hotfix-<slug>` from up-to-date main (fetch, pull ff-only, push
-   any unpushed local commits — see tracking-rules git model).
+   Branch `hotfix-<slug>` from the up-to-date default branch (detect it per
+   the tracking-rules git model; fetch, pull ff-only, push any unpushed local
+   commits).
 
 3. **Regression test first.** Write the test that fails because of the bug;
    confirm it fails; then fix; confirm it passes.
@@ -39,19 +40,19 @@ Phase header: `# Hotfix: <slug>` → `## <step>`.
 
 6. **Approval gate:** present the diff, the regression-test evidence, and
    the NEWS line; put the merge authorization to the user as an
-   `AskUserQuestion` chip (recommended = merge, e.g. `Merge PR #N to main`,
-   with a decline option) — never a prose yes/no, the same gate discipline
+   `AskUserQuestion` chip (recommended = merge, e.g. `Merge PR #N to
+   <default-branch>`, with a decline option) — never a prose yes/no, the same gate discipline
    as `/milestone-review`. Merge (`gh pr merge --squash --delete-branch`)
    only on explicit approval at that chip, with green CI (one blocking
    `gh pr checks --watch` wait). On approval, write the merge-guard
    marker first: `cairn/.merge-approved` (gitignored; one line:
    `hotfix <slug> approved YYYY-MM-DD`) — the plugin's hook denies
-   merges to main without it and consumes it per attempt. Write the marker
+   merges to the default branch without it and consumes it per attempt. Write the marker
    in a **separate** step before the `gh pr merge` command — the hook checks
    it before the command runs, so writing it in the same shell line is
    denied.
 
 7. If the fix revealed deeper work, add a `candidate` row before closing
    out. If a milestone branch is currently active, remind the user that its
-   next implement/review session will merge main into it (the branch-sync
-   rule) — nothing to do now.
+   next implement/review session will merge the default branch into it (the
+   branch-sync rule) — nothing to do now.
