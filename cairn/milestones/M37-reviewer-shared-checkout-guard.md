@@ -71,7 +71,7 @@ by the prose guard, like the rest of the fan-out.
       `skills/milestone-review/SKILL.md`: reviewers use ref-based git only, no
       `git checkout`/`worktree add` in the shared tree. Anchor the sentinel
       inside any bold, not split across `**` (M26).
-- [ ] T3 — Add the guard(s) to `skills/tests/test_review_fanout.py` locking the
+- [x] T3 — Add the guard(s) to `skills/tests/test_review_fanout.py` locking the
       T1 and T2 wording (single-line `assertIn`/`assertRegex`, case-insensitive;
       heed M23 newline + M26 bold-split lessons); run
       `python3 -m unittest discover -s skills/tests` and
@@ -87,6 +87,8 @@ by the prose guard, like the rest of the fan-out.
   (ref-based git only) to tracking-rules.md model-strategy section.
 - 2026-07-12: T2 — added the pointed ref-based-git reminder to the step-5
   reviewer fan-out in milestone-review/SKILL.md.
+- 2026-07-12: T3 — added TestSharedCheckoutGuard (2 guards) to
+  test_review_fanout.py; full suite 85/85 OK, cairn_validate exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
