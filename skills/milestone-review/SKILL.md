@@ -41,12 +41,26 @@ overrides — log the override).
    then re-review. A charitable reading silently destroys what criteria are
    for.
 
+   **AC fencing — evidence before the checkbox.** A criterion checkbox is
+   ticked only once its fresh evidence is recorded in the Review section:
+   no evidence line, no tick. An already-ticked criterion with no recorded
+   evidence is a gate failure, not a pass — treat it as unverified. This
+   fences the milestone's own acceptance boxes against optimistic
+   check-off; the Coverage completeness check in step 4 fences the plan.
+
 4. **Consistency gate** — mechanical checks, by command, never recall:
    - `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` passes
      (exit 0) — the mechanical cairn-file checks (mirror, single in-progress,
      caps, done-row retention, vocab, dependency resolution, orphans, ID
      uniqueness, ISO dates). Run this first; a non-zero exit is a gate failure
      like any other.
+   - **Coverage completeness** — every acceptance criterion appears in the
+     Coverage section mapped to ≥1 task that exists in the Tasks section. A
+     criterion mapped to no task (or to a task number that isn't there) is a
+     gate failure: the plan never established what would satisfy it. Read the
+     map, don't reinterpret it — a gap sends the milestone back to
+     `/milestone-implement` for a gated Coverage amendment, never a
+     review-side patch.
    - If the milestone changed a `DESIGN.md` principle (IPn/GPn):
      `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_impact.py" --changed` — a
      Sync Impact Report of every `cairn/` file:line citing a changed

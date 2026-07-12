@@ -65,7 +65,7 @@ review.
       ([template:25-31](../../skills/shared/templates/milestone.md))
 - [x] Update `/milestone-plan` step 4 to author the criterion→task Coverage
       map. ([SKILL.md](../../skills/milestone-plan/SKILL.md))
-- [ ] Update `/milestone-review` steps 3–4 to enforce AC fencing + the
+- [x] Update `/milestone-review` steps 3–4 to enforce AC fencing + the
       coverage check. ([SKILL.md:31-42](../../skills/milestone-review/SKILL.md))
 - [ ] Update `tracking-rules.md`: add the Coverage row to the section-ownership
       table and state the fencing rule in the review discipline.
@@ -84,6 +84,9 @@ review.
   positional-numbering + AC-fencing ownership comment.
 - 2026-07-11: T2 — /milestone-plan step 4 now authors the positional
   Coverage map; unmapped criterion is a planning gap.
+- 2026-07-11: T3 — /milestone-review step 3 fences evidence-before-checkbox;
+  step 4 gate adds a Coverage-completeness check (unmapped criterion = gate
+  failure, back to implement).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
