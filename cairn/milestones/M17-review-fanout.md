@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M17: Review fan-out + confidence scoring
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Branch/PR:** m17-review-fanout   <!-- owner: implement (branch) / review (PR URL) · create -->
@@ -75,7 +75,7 @@ fan-out plus a scoring pass:
 - [x] Append D-016 to `cairn/DECISIONS.md` (never-Haiku kept; scorer on Sonnet;
       rationale: review runs once per milestone, scorer gates what the user
       sees, blanket invariant is worth more than the marginal saving).
-- [ ] Write `skills/tests/test_review_fanout.py` locking the two lenses,
+- [x] Write `skills/tests/test_review_fanout.py` locking the two lenses,
       scorer + threshold, and logging mandate; run it green.
 
 ## Work log
@@ -88,6 +88,8 @@ fan-out plus a scoring pass:
   threshold 80, exclude-but-log). Tasks 1–2 done.
 - 2026-07-11: model-strategy section updated to describe the fan-out; D-016
   appended (never-Haiku kept, scorer on Sonnet). Tasks 3–4 done.
+- 2026-07-11: test_review_fanout.py added (9 checks); full suite 35/35 green.
+  Task 5 done; all tasks complete → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
