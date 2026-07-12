@@ -88,7 +88,7 @@ to avoid a merge conflict (the user chose this sequencing).
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Confirm the PreToolUse emission contract (what non-blocking levers
+- [x] T1: Confirm the PreToolUse emission contract (what non-blocking levers
       exist), then write `hooks/memory_guard.py` — detect a memory-dir `Write`
       in a cairn repo (reuse `cairn_common.find_cairn_root`), emit the softest
       reminder available, no-op otherwise. Pattern:
@@ -117,6 +117,10 @@ to avoid a merge conflict (the user chose this sequencing).
   emit a non-blocking nudge via hookSpecificOutput.additionalContext
   (permissionDecision optional) — plan of record holds, prose-only fallback
   not needed.
+- 2026-07-12: T1 — wrote hooks/memory_guard.py. Gate: silent context nudge
+  (additionalContext-only, no permissionDecision) per user "recommend me".
+  Smoke-tested: memory write in cairn repo nudges; non-memory / non-cairn /
+  non-Write / malformed input all silent no-op (exit 0).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
