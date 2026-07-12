@@ -3,7 +3,7 @@
 - **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** m16-lessons-loop   <!-- PR URL once opened -->
+- **Branch/PR:** m16-lessons-loop · https://github.com/jmgirard/cairn/pull/14
 
 ## Goal
 
@@ -75,3 +75,34 @@ doc-routing frontmatter for `references/` → candidate row.
 ## Review
 <!-- filled by /milestone-review: evidence per criterion; consistency-gate
      results; independent-review findings and their triage -->
+
+2026-07-11 — PR #14 (draft). Evidence per criterion:
+
+- **AC1 (lessons home + documented):** `cairn/LESSONS.md` exists (12 lines),
+  append-only one-line format documented in-file; tracking-rules file-map row
+  (L22), weight-caps `< 50 lines` (L70), boundary rule (L28). ✓
+- **AC2 (capture step):** `/milestone-review` step 9 post-merge hygiene has
+  the "Capture durable lessons" instruction (SKILL.md L114). ✓
+- **AC3 (harvest step):** `/milestone-plan` reads LESSONS.md at session start
+  (L17) and "Harvest recent lessons (before the gate)" in step 2 (L52). ✓
+- **AC4 (cap enforced):** `LINE_CAPS` includes `cairn/LESSONS.md: 50`;
+  `test_over_cap_lessons` proves a 55-line file fails weight-caps. ✓
+- **AC5 (lock + suites):** `test_lessons_loop.py` (6 tests, incl.
+  stated↔enforced cap lock) passes; skills/tests 27, scripts/tests 30,
+  `cairn_validate` exit 0. ✓
+
+Consistency gate: `cairn_validate` all checks passed. No DESIGN principle
+changed → `cairn_impact` skipped. R gates (devtools/README/pkgdown/NEWS/
+.Rbuildignore) waived — plugin repo, not an R package (CLAUDE.md).
+
+Independent Opus review (fresh context): no must-fix defects; all 5 ACs met,
+cap semantics correct, lessons↔decisions boundary consistent. Triage of 4
+nice-to-haves:
+- Wiring locks were substring-only → **fixed**: anchor on step text
+  ("Capture durable lessons" / "Harvest recent lessons").
+- Date-scan of LESSONS.md was unlocked → **fixed**: added
+  `test_non_iso_date_in_lessons` (scripts/tests, now 31).
+- Misleading comment in `test_over_cap_lessons` → **fixed** (reworded).
+- "50 lines" reads as fail threshold not last-allowed → **rejected**:
+  consistent with every other cap's `< N` phrasing (CLAUDE.md `< 80`, etc.).
+Post-fix: skills/tests 27, scripts/tests 31, `cairn_validate` exit 0.

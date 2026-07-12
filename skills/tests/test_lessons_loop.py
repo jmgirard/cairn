@@ -46,10 +46,18 @@ class TestLessonsLoop(unittest.TestCase):
         self.assertIn("YYYY-MM-DD (M<NN>)", lessons)  # documented one-line format
 
     def test_capture_wired_into_review(self):
-        self.assertIn("LESSONS.md", read(SKILLS / "milestone-review" / "SKILL.md"))
+        # Anchor on the step text, not a bare "LESSONS.md" mention — the file
+        # is named elsewhere, so a substring check wouldn't lock the step.
+        review = read(SKILLS / "milestone-review" / "SKILL.md")
+        self.assertIn("Capture durable lessons", review)
+        self.assertIn("LESSONS.md", review)
 
     def test_harvest_wired_into_plan(self):
-        self.assertIn("LESSONS.md", read(SKILLS / "milestone-plan" / "SKILL.md"))
+        # Likewise: LESSONS.md appears twice in plan (session-start read +
+        # harvest step); lock the harvest step by its own heading text.
+        plan = read(SKILLS / "milestone-plan" / "SKILL.md")
+        self.assertIn("Harvest recent lessons", plan)
+        self.assertIn("LESSONS.md", plan)
 
 
 if __name__ == "__main__":
