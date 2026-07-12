@@ -173,6 +173,17 @@ Lineage: M03 tidymedia pilot (PR #8).
      invention-prone. Either way, hard-constraint invariants embedded in the
      DESIGN are **not** forced into IP/GP shape at migration time — route
      their formalization to `/design-interview`, which is built for it.
+   - **Concern-split precursor (no single `DESIGN.md`)?** A Lineage A board
+     splits DESIGN concerns across dedicated files (a principles doc, a
+     decision log, references, coverage matrices, estimand/spec dirs) with no
+     single DESIGN to keep verbatim or entomb, so neither the entomb/translate
+     binary nor Compromise A fits. Map each concern-file to its cairn home
+     where one exists (references → `references/`; a decision log → the
+     `DECISIONS.md` pointer of this step), **keep repo-specific** where cairn
+     has no home (coverage matrices, estimand/spec dirs) as declared
+     repo-specific files under `cairn/`, and author a **thin `DESIGN.md` seed
+     that points to them** rather than duplicating their content. Lineage: M41
+     intraclass pilot (first Lineage A).
 
 6. **Redistribute and deactivate.**
    - Old CLAUDE.md content redistributed per the ownership table:

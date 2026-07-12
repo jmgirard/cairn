@@ -97,7 +97,7 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] **T1 (G-I1):** In `skills/cairn-init/SKILL.md` §2 step 5, add a
+- [x] **T1 (G-I1):** In `skills/cairn-init/SKILL.md` §2 step 5, add a
       concern-split case beside the "Rich pre-existing `DESIGN.md`?" paragraph:
       Lineage A precursors have no single DESIGN; map concern-files to cairn
       homes (references → `references/`, decisions → `DECISIONS.md` pointer),
@@ -133,6 +133,9 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
 - 2026-07-12: created by /milestone-plan. Promotes the M41-pilot "Lineage A
   migration guidance" candidate; scope set to G-I1/G-I2/G-I4/G-I5 (G-I3 →
   existing ORACLES.md candidate; /design-interview enhancement → new candidate).
+- 2026-07-12: implement start; branch m43. No question gate (plan left no open
+  implementation choices, no dep/RB tripwires). T1 (G-I1): concern-split case
+  added to §2 step 5.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
