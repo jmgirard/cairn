@@ -83,6 +83,11 @@ Read, in order: `cairn/ROADMAP.md`, any active milestone file,
      satisfies is a planning gap — add the missing task or cut the
      criterion, never ship an unmapped criterion. Review reads this map to
      fence evidence.
+   - **Principles touched** (header slot): fill it with the DESIGN.md
+     `IPn`/`GPn` ids this milestone adds, changes, or works under — or `—`
+     if none. It is the authoritative source `cairn_impact` and
+     `cairn_validate` read for principle impact; an accurate slot beats an
+     incidental `(IPn)` in prose (M17).
    - Open questions that hit an RB tripwire (see tracking-rules) are
      tagged inline on the affected task or criterion with the canonical
      token — `(RB tripwire: no-oracle | irreversible-api | ip-touching)` —
