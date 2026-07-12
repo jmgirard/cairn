@@ -443,9 +443,9 @@ type names + the ≥2-types bar). If a registry file is later adopted, or the
 (`references/oracle-doctrine-intraclass-notes.md`): 31/34 scripts use an oracle
 that maps to **none** of the four types — simulation from known population
 parameters, checking the estimator recovers the known value (point) and/or its
-interval covers it at the nominal rate. It is the *defining* oracle for 21
-scripts (every Bayesian CI oracle: "a CI method's oracle is coverage") and the
-missing cairn analog of intraclass's **inviolable** PRINCIPLES.md #1(c)
+interval covers it at the nominal rate. It leads every one of the 20 Bayesian CI
+oracles ("a CI method's oracle is coverage") plus the frequentist coverage
+oracles, and is the missing cairn analog of intraclass's **inviolable** PRINCIPLES.md #1(c)
 ("simulation with known population variance components"). The four types are all
 deterministic numeric-agreement oracles; this fifth is the one *probabilistic*
 (sampling-distribution) oracle, and without it a repo following cairn's doctrine

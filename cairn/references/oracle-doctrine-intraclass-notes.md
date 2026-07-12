@@ -41,8 +41,10 @@ internal routes agree: reduction pins, `fixed==random` on balanced data,
 single-level ties), **FZ** frozen (committed `.rds` w/ generator), **SC**
 simulation-coverage — recovery of a **known population parameter** and/or nominal
 Monte-Carlo interval **coverage**. Every script carries ≥2 independent mechanisms
-(the ≥2-types bar in practice); the **bold** code is the script's *defining*
-oracle.
+(the ≥2-types bar in practice); the **bold** code is the script's *lead* oracle
+per its provenance header (for a multi-oracle frequentist script, the header's
+first-listed / dominant oracle — a judgment call among co-equal oracles, not a
+countable per-type tally).
 
 | # | script (`oracle-…R`) | role | mechanisms |
 |---|---|---|---|
@@ -81,14 +83,21 @@ oracle.
 | 33 | nested-multilevel | O-NML Design 2/3 | LV, **SC**, IN |
 | 34 | sem | O-SEM lavaan engine | CF, LV, **IN** |
 
-**Per-mechanism count (scripts using it, of 34):** SC **31**, FZ 24, LV 16, IN 15,
-CF 7. **Defining oracle:** SC in **21** scripts (all 20 Bayesian CI oracles +
-`cluster-ck-coverage`), IN in 5, LV in 5, CF in 3.
+**Per-mechanism count (scripts using it — any-use, of 34):** SC **31**, FZ 24,
+LV 16, IN 16, CF 6. (Scripts are multi-oracle, so these sum past 34 — the
+≥2-types bar in practice.) A precise per-type *defining*-oracle tally is not
+reported: for the multi-oracle frequentist scripts the lead oracle among 2–3
+co-equal ones is a judgment call. What is unambiguous: SC leads all **20**
+Bayesian CI oracles plus every dedicated frequentist coverage oracle
+(`cluster-ck-coverage`, `nested-fixed-interval`, …) — each header states "a CI
+method's oracle is COVERAGE".
 
-**Doctrine-gap flag.** Three scripts fit cairn's four types cleanly on their
-defining oracle (22 LV, 27 IN, 34 IN). **The other 31 use SC — simulation-coverage
-— which maps to NONE of cairn's four types**, and SC is the *defining* oracle for
-21 of them. SC is neither frozen (nothing expensive is committed — the population
+**Doctrine-gap flag.** Only **3** scripts (22 `cluster-ck-incomplete` LV,
+27 `fixed-vs-random` IN, 34 `sem` CF/IN) use no SC at all — they rest entirely on
+cairn's four types. **The other 31 use SC — simulation-coverage — which maps to
+NONE of cairn's four types**, and it is the *lead* oracle for every one of the 20
+Bayesian CI oracles and the frequentist coverage oracles. SC is neither frozen
+(nothing expensive is committed — the population
 value is analytic), nor live (no independent implementation of the estimator), nor
 invariant (it checks against an **injected external truth**, not two agreeing
 internal routes), nor closed-form (the mechanism is a **probabilistic**
@@ -124,7 +133,7 @@ seed).")
   Conversely cairn's frozen and invariant are not named in #1 (though intraclass
   *uses* both heavily). So the two taxonomies **agree on the discipline and miss
   each other on membership** — and intraclass's category (c), the one cairn lacks,
-  is the defining oracle for 21/34 of its scripts.
+  is used by 31/34 of its scripts and leads all 20 Bayesian CI oracles.
 
 ## Deferred-candidate fit assessments (T3 / AC3)
 

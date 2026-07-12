@@ -94,6 +94,7 @@ to a `planned` milestone (that is a later plan-gate decision, fed by these findi
 - 2026-07-12: T1+T2 — read all 34 intraclass oracle scripts + test consumption; wrote references/oracle-doctrine-intraclass-notes.md. Finding: 31/34 use simulation-coverage (SC), an oracle mapping to NONE of cairn's four types (defining oracle for 21). PRINCIPLES.md #1 AGREES on the ≥2-types bar, DIVERGES on taxonomy (its cat (c) = SC, unnamed by cairn). intraclass's frozen-when-expensive / live-when-cheap split corroborates D-024.
 - 2026-07-12: T3 — both deferred candidate rows → REVISE/keep-deferred. Registry: shape matches + earns keep at scale, but intraclass proves a distributed shape and it's downstream of the taxonomy fix. R-provenance guard: content corroborated, but mechanism varies across the two exemplars (attr+guard vs. embedded-fields-no-guard) → mandate content, leave shape to the repo.
 - 2026-07-12: T4 — defect confirmed (not null). User chose fix framing at the implement gate: add simulation-coverage as the 5th oracle type (D-025). Updated test_oracle_doctrine.py to assert the 5th type (confirmed failing pre-fix), added it to the Validation doctrine (priority item (5) + type paragraph), added D-025. Both guard suites green (94→95 skills + 53 scripts); cairn_validate all-pass.
+- 2026-07-12: review — all 5 ACs verified fresh + ticked; consistency gate pass (R gates waived, no DESIGN principle text changed). PR #40 (no CI on repo). 3-lens review: blame-history + prior-PR 0 findings; diff-bug found 1 (count summary vs. table mismatch, leaked into D-025) — verified by recount (95), fixed (any-use IN 16/CF 6; dropped subjective defining tally; reworded D-025). Gap claim unaffected.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -136,4 +137,29 @@ _Reviewed 2026-07-12 on branch `m42-…`; PR #40._
   cairn is a plugin, not an R package (CLAUDE.md); no new top-level files (the new
   file is under `cairn/references/`).
 
-**Independent review (three lenses + scorer).**
+**Independent review (three lenses + scorer).** Three fresh-context reviewers,
+ref-based git only.
+
+- **[O] diff-bug (Opus):** 1 finding. Spot-checked the findings file's claims
+  about intraclass (34 scripts, no `ORACLES.md`, 24 fixtures, `PRINCIPLES.md`
+  #1(a)/(b)/(c) + #4, line citations) — all accurate; doctrine change internally
+  coherent; guard test non-fragile (asserted phrases on single physical lines);
+  D-025 accurate. **Finding (score 95, CONFIRMED by my own recount → fixed):**
+  the findings file's per-type count summary contradicted its own table — any-use
+  IN/CF were off by one (prose 15/7 vs. table 16/6) and the precise "defining
+  oracle: SC 21/IN 5/LV 5/CF 3" line didn't match the table's bold markers and
+  had leaked into D-025. Fixed: any-use corrected to IN 16 / CF 6 (SC 31, FZ 24,
+  LV 16 were right); the subjective per-type *defining* tally dropped for a robust
+  claim (SC used by 31/34, leads all 20 Bayesian CI oracles; only 3 scripts use no
+  SC); the D-025 echo reworded. The load-bearing gap claim (31/34 use SC, an
+  oracle cairn's four types don't name) was verified independently correct — the
+  decision to add the fifth type stands.
+- **[S] blame-history (Sonnet):** 0 findings. Confirmed the change is a strict
+  superset — all four prior guard phrases retained, D-024's taxonomy intact,
+  D-025 correctly additive/annotating (not a supersede).
+- **[S] prior-PR-comments (Sonnet):** 0 findings — no prior-PR evidence (this
+  repo reviews in-session, not via GitHub PR comments); clean no-op as designed.
+
+Scorer: the single finding is an objectively checkable count error, verified by
+direct recount rather than a confidence estimate (95, well above the 80 gate);
+actioned = fixed this review. No sub-threshold findings to log.
