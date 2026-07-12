@@ -3,10 +3,10 @@
      Per-section owners are tagged below. -->
 # M28: Harden the output-discipline mandate guards
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** m28-output-discipline-mandate-guards
 
 ## Goal
 
