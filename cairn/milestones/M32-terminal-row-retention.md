@@ -6,7 +6,7 @@
 - **Status:** review
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** m32-terminal-row-retention
+- **Branch/PR:** m32-terminal-row-retention · https://github.com/jmgirard/cairn/pull/30
 
 ## Goal
 
@@ -45,23 +45,23 @@ pruned and counted like done ones.
 
 ## Acceptance criteria
 
-- [ ] AC1 — `tracking-rules.md`'s retention rule and the weight-cap remedy line
+- [x] AC1 — `tracking-rules.md`'s retention rule and the weight-cap remedy line
       that names it state the cap counts terminal (`done` OR `dropped`) rows at
       a limit of 5; no "done-row retention" wording remains in the live
       rulebook.
-- [ ] AC2 — `cairn_validate` flags a ROADMAP with more than 5 terminal rows
+- [x] AC2 — `cairn_validate` flags a ROADMAP with more than 5 terminal rows
       even when 5 or fewer are `done`, proven by a `test_scripts.py` case where
       done+dropped exceeds 5 with done ≤ 5.
-- [ ] AC3 — the constant, validator function/check, and gate label are named
+- [x] AC3 — the constant, validator function/check, and gate label are named
       for terminal rows; a grep of the live scripts and skills (excluding
       `milestones/archive/`) finds no `DONE_ROW_RETENTION` /
       `check_done_retention` / "done-row retention" identifiers.
-- [ ] AC4 — `python3 -m unittest discover -s scripts/tests` passes (renamed +
+- [x] AC4 — `python3 -m unittest discover -s scripts/tests` passes (renamed +
       extended retention test plus the existing suite).
-- [ ] AC5 — `cairn_validate` passes on this repo with the terminal-row count at
+- [x] AC5 — `cairn_validate` passes on this repo with the terminal-row count at
       the cap after M32 is `done` (M26, M27 pruned). (This repo is not an R
       package — the template's `devtools::check()` line is waived per CLAUDE.md;
-      the pytest suite + `cairn_validate` are the clean-checks bar.)
+      the unittest suite + `cairn_validate` are the clean-checks bar.)
 
 ## Coverage
 
@@ -108,3 +108,32 @@ pruned and counted like done ones.
 ## Decisions
 
 ## Review
+
+PR #30 (draft). Consistency gate: `cairn_validate` 10/10 incl. `terminal-row
+retention`; Coverage complete (AC1→T1, AC2→T3/T6, AC3→T2/T3/T4/T5, AC4→T6/T8,
+AC5→T7/T8 — all tasks exist); no DESIGN principle changed (impact report
+skipped); R gates waived (plugin repo).
+
+Evidence per criterion:
+- AC1 — `tracking-rules.md:94-95` reads "Terminal-row retention … terminal
+  (`done` or `dropped`) rows combined"; remedy line (L89) says "terminal-row
+  retention"; live-rulebook grep for "done-row retention" is empty.
+- AC2 — `test_dropped_rows_count_toward_retention` (5 done at cap + 2 dropped →
+  fails "terminal-row retention") passes; the done-only rule would have passed
+  that ROADMAP.
+- AC3 — grep of `scripts/` + `skills/` (excl. archive) for
+  `DONE_ROW_RETENTION` / `check_done_retention` / "done-row retention" → empty.
+- AC4 — `python3 -m unittest discover -s scripts/tests` → 45 tests OK.
+- AC5 — `cairn_validate` PASS (terminal now 4 with M32=review); projected count
+  at M32=done is `[M31,M30,M29,M28,M32]` = 5 = cap.
+
+Independent fresh-context review (two distinct-evidence lenses, parallel):
+- [O] diff-bug (Opus): no findings. Confirmed all identifiers renamed + wired
+  (no `NameError` surface), AC2 test arithmetic genuinely fences the
+  generalization, and the M26/M27 prune trips no orphan/dependency check.
+- [S] blame-history (Sonnet): no findings. No D-entry ever recorded the `5` cap
+  or done-only scope as a deliberate choice (plain M10 constant), so no standing
+  decision is overridden; M26/M27 aren't cited as any live dependency. Noted the
+  `archive_files` dropped-dep quirk predates this branch (M31 exhibits it on
+  main) and is already in M32's Out scope — not introduced here.
+No findings to score; scorer step a no-op.
