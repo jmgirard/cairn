@@ -10,6 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M37 | Fence cairn subagents off the shared checkout (ref-based git only) | planned | — | normal | milestones/M37-reviewer-shared-checkout-guard.md |
 | M36 | On-main commit-guard hook | done | — | normal | milestones/archive/M36-on-main-commit-guard.md |
 | M34 | Mechanical coverage-map lint in cairn_validate | done | — | normal | milestones/archive/M34-coverage-map-lint.md |
 | M35 | Rulebook & doc-wording polish batch | done | — | normal | milestones/archive/M35-rulebook-doc-polish.md |
@@ -18,7 +19,6 @@ not an R package, so R-specific gates don't apply.
 
 ## Candidates
 
-- Harden the /milestone-review fan-out against shared-checkout disruption: reviewer subagents run in the same working tree, so a reviewer that runs `git checkout`/`git worktree add` can park the primary checkout on the default branch mid-review (hit in M36 review — no data lost, worktree auto-cleaned, but confusing and it briefly gave a spurious test-failure). Fix by instructing reviewers to use only ref-based git (`git diff/show/log main..HEAD`, no checkout) and/or spawning them with worktree isolation; a skill-prose or spawn-flag change to /milestone-review — added 2026-07-12 — M36 review
 - Adopt an oracle registry (`ORACLES.md`) as a cairn tracking file: ackwards' M57 proved a per-oracle registry (ID, type, asserting test:line, source, provenance) auditable against the ≥2-independent-types bar; adopting it into cairn means the D-015/M16 four-wiring-points path (file-map + weight-caps, `LINE_CAPS`, date-scan) plus a cap and an opt-in decision. Domain-specific (only statistical packages need it) and entangled with the toolchain-profiles split, which wants domain doctrine (oracles) orthogonal to the language profile — promote *with* that work, not standalone — added 2026-07-12 — M33 Out, references/oracle-discipline-notes.md
 - R-profile provenance guard: generalize ackwards' `provenance`-attr fixture convention + `test-oracle-provenance.R` guard (blocks any fixture lacking a structured provenance attr naming its `data-raw/` generator + source) into an R toolchain-profile slot; R/testthat-specific, so it belongs on the language side of the toolchain-profiles domain/language split — added 2026-07-12 — M33 Out, references/oracle-discipline-notes.md
 - Descriptive label for a session's opening phase in the Claude Code TOC: today the opening phase shows as the generic implicit "Session Start" node, and a single-phase session that never calls `mark_chapter` shows an empty TOC. Marking the first message could give it a descriptive label / guarantee a node — but the `mark_chapter` docstring discourages marking the first message and the result is only verifiable by live Desktop probing (not observable agent-side, D-020). Promote only with a live-probe plan; keep the correct carve-out until then — added 2026-07-12 — M31 dropped (premise refuted)
