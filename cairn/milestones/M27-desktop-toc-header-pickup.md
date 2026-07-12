@@ -112,3 +112,20 @@ checked. skills guard tests 68/68, scripts tests 43/43. R-specific gates
 waived (plugin repo, CLAUDE.md); no DESIGN principle changed (impact report
 skipped); no user-facing behavior change (no NEWS entry). `test_phase_header_levels.py`
 still green — header levels unchanged, only the rationale text was corrected.
+
+**Fresh-context review (2 lenses + scorer, 2026-07-12):**
+- **F2 (scored 88) — fixed.** `test_phase_header_levels.py`'s docstring still
+  carried the exact false "both land in Claude Desktop's TOC" claim that D-020
+  refutes and that `tracking-rules.md` was corrected for — a second live copy
+  left contradictory. Corrected the docstring to credit chapter markers
+  (M27/D-020); test assertions untouched, still 68/68.
+- **F1 (scored 75, below the 80 gate) — logged and actioned anyway.** D-020
+  and the reference note asserted D-012's claim "described a different surface
+  (regular claude.ai chat)" where headers *do* index — a positive claim M27
+  never tested. Reworded both to annotate D-012's claim as *unverified for
+  cairn's runtime*, not confirmed elsewhere. Below-threshold so not mandated,
+  but actioned because it hardens the honesty of a permanent append-only
+  record at one-clause cost; surfaced at the approval gate.
+- Both reviewers independently noted the archived `M11-phase-header-levels.md`
+  repeats the old phrasing; left as-is (historical milestone record, not live
+  rulebook text). No other findings.

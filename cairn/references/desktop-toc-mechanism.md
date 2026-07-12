@@ -39,8 +39,9 @@ of contents (outline), varying:
 In a **Claude Code session** (cairn's runtime, even when viewed inside
 Claude Desktop) the navigable TOC is built from **chapter markers**, not
 markdown `#`/`##` headers. D-012's "both H1/H2 land in Claude Desktop's TOC"
-described a **different surface** — a regular Desktop / claude.ai chat — and
-does not hold where cairn operates. The phase-header level convention (H1
+does not hold where cairn operates; whether it holds on any other Claude
+surface (a regular Desktop / claude.ai chat) was **not tested** here and stays
+unverified. The phase-header level convention (H1
 unit / H2 phase) is retained for in-transcript visual hierarchy, not TOC
 indexing; the chapter-marker discipline is the actual outline driver.
 

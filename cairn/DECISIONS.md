@@ -300,10 +300,11 @@ session — cairn's actual runtime. Two messages of `#`/`##`/`###` headers
 characterization: `references/desktop-toc-mechanism.md`.
 **Decision:** Record the mechanism as it is. In a Claude Code session the
 navigable TOC is built from **chapter markers**, not markdown `#`/`##`
-headers. D-012's "both levels index in Claude Desktop's TOC" described a
-**different surface** (a regular Desktop / claude.ai chat) and does not hold
-for cairn's runtime — its "both levels index" claim is annotated as
-surface-specific, not universal. No header-format change: the H1-unit /
+headers. D-012's "both levels index in Claude Desktop's TOC" does **not** hold
+for cairn's Claude Code runtime (tested here — zero headers indexed). Whether
+it holds on any other Claude surface (e.g. a regular claude.ai / Desktop chat)
+was not probed by M27; D-012's claim is annotated as **unverified for cairn's
+runtime**, not confirmed elsewhere. No header-format change: the H1-unit /
 H2-phase convention is **retained for in-transcript visual hierarchy**, which
 it does deliver (headers render as headings). The `tracking-rules.md`
 phase-header line that credited the markdown TOC is corrected to credit the
