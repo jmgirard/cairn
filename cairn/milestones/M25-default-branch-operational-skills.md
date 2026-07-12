@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M25: Parameterize the default branch in the operational skill steps
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M22   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Branch/PR:** m25-default-branch-operational-skills   <!-- owner: implement (branch) / review (PR URL) · create -->
@@ -101,7 +101,7 @@ Extend `test_default_branch_parameterized.py` to lock the four skills.
 - [x] T5 — Parameterize `/cairn-release` (`skills/cairn-release/
       SKILL.md:19,21,50`): release-from-clean-default, up-to-date-with-origin
       check, and the release-prep commit target.
-- [ ] T6 — Extend `skills/tests/test_default_branch_parameterized.py` with a
+- [x] T6 — Extend `skills/tests/test_default_branch_parameterized.py` with a
       per-operational-skill test asserting each of the four contains no
       hardcoded-`main` git command and references default-branch detection;
       run the full `skills/tests` + `scripts/tests` suites and confirm green.
@@ -113,6 +113,7 @@ Extend `test_default_branch_parameterized.py` to lock the four skills.
 - 2026-07-12: in-progress; cut m25-default-branch-operational-skills. T1 — added the canonical runtime detection recipe to the tracking-rules git model.
 - 2026-07-12: T2/T3 — parameterized /milestone-implement and /milestone-review git steps (incl. `git diff <default-branch>..HEAD` and the merge-gate chip label) to the detected default branch.
 - 2026-07-12: T4/T5 — parameterized /hotfix and /cairn-release git steps; all four operational skills now free of hardcoded `main` git commands.
+- 2026-07-12: T6 — extended test_default_branch_parameterized.py (5 new tests locking the 4 operational skills + the recipe); full skills/tests (63) + scripts/tests (43) + cairn_validate green. All tasks done → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

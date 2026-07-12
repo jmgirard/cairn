@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M25 | Parameterize the default branch in the operational skill steps | in-progress | M22 | normal | milestones/M25-default-branch-operational-skills.md |
+| M25 | Parameterize the default branch in the operational skill steps | review | M22 | normal | milestones/M25-default-branch-operational-skills.md |
 | M24 | Scaffold-drift detection in the audit | done | — | normal | milestones/archive/M24-scaffold-drift-check.md |
 | M23 | Migration-protocol §2 guidance hardening | done | M22 | normal | milestones/archive/M23-migration-guidance.md |
 | M22 | Generalize cairn beyond `main`; recalibrate the mature-repo CLAUDE.md cap | done | — | normal | milestones/archive/M22-mature-repo-defaults.md |
