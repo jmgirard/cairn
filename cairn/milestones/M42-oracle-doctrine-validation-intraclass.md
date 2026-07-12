@@ -83,7 +83,7 @@ to a `planned` milestone (that is a later plan-gate decision, fed by these findi
       match intraclass's oracles; does the `provenance`-attr + guard-test convention
       match intraclass's fixture practice — with a keep-deferred/revise/promote
       verdict each; update the two ROADMAP candidate rows to cite the findings.
-- [ ] T4: Fix any concrete Validation-doctrine defect the assessment exposes (with a
+- [x] T4: Fix any concrete Validation-doctrine defect the assessment exposes (with a
       `test_oracle_doctrine.py` update that fails first); if none, record the null
       result; run the cairn guard-test suites green.
 
@@ -93,6 +93,7 @@ to a `planned` milestone (that is a later plan-gate decision, fed by these findi
 - 2026-07-12: created by /milestone-plan (oracle-doctrine reality-check; depends on M41 per user's follow-on choice).
 - 2026-07-12: T1+T2 — read all 34 intraclass oracle scripts + test consumption; wrote references/oracle-doctrine-intraclass-notes.md. Finding: 31/34 use simulation-coverage (SC), an oracle mapping to NONE of cairn's four types (defining oracle for 21). PRINCIPLES.md #1 AGREES on the ≥2-types bar, DIVERGES on taxonomy (its cat (c) = SC, unnamed by cairn). intraclass's frozen-when-expensive / live-when-cheap split corroborates D-024.
 - 2026-07-12: T3 — both deferred candidate rows → REVISE/keep-deferred. Registry: shape matches + earns keep at scale, but intraclass proves a distributed shape and it's downstream of the taxonomy fix. R-provenance guard: content corroborated, but mechanism varies across the two exemplars (attr+guard vs. embedded-fields-no-guard) → mandate content, leave shape to the repo.
+- 2026-07-12: T4 — defect confirmed (not null). User chose fix framing at the implement gate: add simulation-coverage as the 5th oracle type (D-025). Updated test_oracle_doctrine.py to assert the 5th type (confirmed failing pre-fix), added it to the Validation doctrine (priority item (5) + type paragraph), added D-025. Both guard suites green (94→95 skills + 53 scripts); cairn_validate all-pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

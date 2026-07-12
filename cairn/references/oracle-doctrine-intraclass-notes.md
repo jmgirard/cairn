@@ -169,6 +169,12 @@ nominal Monte-Carlo interval coverage. This is the defining oracle for interval
 estimation and for any estimator lacking a closed form or reference implementation
 (31/34 of intraclass's scripts; the practice cairn descends from). A statistical
 repo following cairn's doctrine literally would have **no named home for its most
-important oracle**, and could not count coverage toward the ≥2-*types* bar. Fix
-recorded and guard-tested in the same milestone (see the M42 work log for the
-doctrine-text change and `test_oracle_doctrine.py` addition).
+important oracle**, and could not count coverage toward the ≥2-*types* bar.
+
+**Fix (D-025):** **simulation-coverage** added as the fifth first-class oracle
+type in the Validation doctrine — priority-list item (5) + the type paragraph —
+counting toward the ≥2-types bar like any other type, with the
+freeze-only-when-expensive nuance. Locked by `skills/tests/test_oracle_doctrine.py`
+(`test_names_the_five_oracle_types` + the coverage-oracle anchor), updated to
+assert the fifth type and confirmed failing against the pre-fix doctrine before
+the text was added. Not a null result.
