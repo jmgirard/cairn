@@ -163,12 +163,12 @@ structure means split, wiring the pieces with `Depends on:`. Split tripwires:
 >~7 acceptance criteria, >~10 tasks, a goal sentence needing "and", tasks
 shippable independently, or no hope of the 150-line cap. Prefer vertical
 slices (thin end-to-end capability) over horizontal layers; every milestone
-leaves main shippable. Splitting never discards the remainder.
+leaves the default branch shippable. Splitting never discards the remainder.
 
 Work that isn't a milestone:
 
 - **Trivial** (no runtime surface — typos, tracking, comments): direct
-  commit to main. No tracking beyond the commit.
+  commit to the default branch. No tracking beyond the commit.
 - **Hotfix** (user-visible bug): `/hotfix` — regression test first, gate-lite,
   PR, user approval. NEWS entry; no milestone file.
 - **Milestone**: needs more than one sitting, changes exported behavior
@@ -182,28 +182,33 @@ anyone at any time (one ROADMAP row).
 
 ## Git and approval model
 
-- **main is a distribution channel** (`pak::pak()` installs it; pkgdown may
-  deploy from it). It stays installable at all times.
-- main accepts only: docs-only tracking commits and squash-merges of
-  milestone/hotfix branches. Never implement on main.
-- **origin/main is main.** When a remote exists, push docs-only commits to
-  main immediately. A local-only main means branches get cut from commits
-  the PR base doesn't have — the squash-merge then duplicates them and main
-  diverges from origin ("ahead N, behind 1").
+- **The default branch (`main`/`master`) is a distribution channel**
+  (`pak::pak()` installs it; pkgdown may deploy from it). It stays installable
+  at all times. cairn does not assume the name is `main` — `/cairn-init`
+  detects the repo's actual default branch; everywhere below, "the default
+  branch" means that name.
+- The default branch accepts only: docs-only tracking commits and
+  squash-merges of milestone/hotfix branches. Never implement on it.
+- **The remote's default branch is authoritative.** When a remote exists, push
+  docs-only commits to the default branch immediately. A local-only default
+  branch means branches get cut from commits the PR base doesn't have — the
+  squash-merge then duplicates them and it diverges from origin ("ahead N,
+  behind 1").
 - Milestone work on `m<nn>-<slug>`; hotfixes on `hotfix-<slug>`; both cut
-  from up-to-date main. Checkpoint commits are cheap — squash erases them.
+  from the up-to-date default branch. Checkpoint commits are cheap — squash
+  erases them.
 - Before branching or committing, check `git status`: a dirty tree with
   unrelated changes means ask the user — never sweep strangers into a
   checkpoint commit.
-- If main moves under an active branch (e.g., a hotfix merged), merge main
-  into the branch and re-run tests before continuing or reviewing.
-- **Nothing reaches main without the user's explicit approval at the review
-  gate.** Never force-push; never merge red or pending CI.
+- If the default branch moves under an active branch (e.g., a hotfix merged),
+  merge it into the branch and re-run tests before continuing or reviewing.
+- **Nothing reaches the default branch without the user's explicit approval at
+  the review gate.** Never force-push; never merge red or pending CI.
 - Approval is recorded on disk: the approving skill writes the single-use,
   gitignored marker `cairn/.merge-approved` at the gate; the plugin's
-  merge-guard hook denies `gh pr merge`/`git merge`-to-main without it and
-  consumes it per merge attempt. Never write the marker except at an
-  explicit user approval.
+  merge-guard hook denies `gh pr merge`/`git merge` to the default branch
+  without it and consumes it per merge attempt. Never write the marker except
+  at an explicit user approval.
 
 Waiting on CI / background work:
 
@@ -222,7 +227,8 @@ the seams. Only the user can `/clear` — skills mark the seams in their
 recaps, never assume continuation.
 
 - **The milestone boundary is the canonical `/clear` point.** After the
-  post-merge hygiene commit, everything load-bearing is on main; carrying
+  post-merge hygiene commit, everything load-bearing is on the default branch;
+  carrying
   the finished milestone's transcript into the next one imports stale
   state (superseded plans, old CI status), not insight. Prefer `/clear`
   over `/compact` there — compaction keeps a lossy summary of what the

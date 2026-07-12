@@ -86,8 +86,10 @@ doctrine.
       (section measurement) + `tracking-rules.md` weight-caps text + remedy;
       `scripts/tests/` gains a mature-repo pass fixture and a bloated-section
       fail fixture. 33 tests green.
-- [ ] **T3** — Parameterize the default branch in the `tracking-rules.md` git
-      model (~15 `main` refs) — detected branch / "default branch (main/master)".
+- [x] **T3** — Parameterized the default branch in the `tracking-rules.md` git
+      model + sizing/tiers/hygiene refs (12 doctrine `main` refs → "the default
+      branch"; gloss `main`/`master` at first mention). Left the two "main
+      session" (orchestrator) refs. Skills suite green (46).
 - [ ] **T4** — Parameterize the default branch in `/cairn-init`
       (`skills/cairn-init/SKILL.md`: §2 step 2 + scaffold/commit lines) and the
       CLAUDE.md template; add default-branch detection at init (§0/§1).
