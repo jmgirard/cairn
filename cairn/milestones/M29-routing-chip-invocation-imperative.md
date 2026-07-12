@@ -6,7 +6,7 @@
 - **Status:** review
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** m29-routing-chip-invocation-imperative
+- **Branch/PR:** m29-routing-chip-invocation-imperative · https://github.com/jmgirard/cairn/pull/27
 
 ## Goal
 
@@ -43,23 +43,23 @@ the mechanism clarification as a D-entry annotating D-003.
 
 ## Acceptance criteria
 
-- [ ] The routing-chip rule states an imperative: on selecting a routing-chip
+- [x] The routing-chip rule states an imperative: on selecting a routing-chip
       option the orchestrator immediately invokes the target skill (via the
       Skill tool) and does not stop to have the user type the command.
       Evidence: rule text + guard assertion.
-- [ ] The rule preserves the "chip is a user stop — never auto-proceed"
+- [x] The rule preserves the "chip is a user stop — never auto-proceed"
       clause without contradicting the imperative (stop before selection;
       selection is the go). Evidence: rule text.
-- [ ] The rule clarifies that the `→ /skill` chip-option notation names the
+- [x] The rule clarifies that the `→ /skill` chip-option notation names the
       skill the orchestrator invokes, not a command for the user to run.
       Evidence: rule text + guard assertion.
-- [ ] A guard in `test_gate_wording.py` locks the imperative + notation
+- [x] A guard in `test_gate_wording.py` locks the imperative + notation
       phrasing and fails if the rule reverts to the descriptive form.
       Evidence: the new test passes; asserted phrases are single-line
       (M23) and matched case-insensitively (M26).
-- [ ] D-022 (annotating D-003) records the mechanism clarification with its
+- [x] D-022 (annotating D-003) records the mechanism clarification with its
       rationale. Evidence: the D-entry in `cairn/DECISIONS.md`.
-- [ ] Full guard suite (`python3 -m unittest discover -s skills/tests`) and
+- [x] Full guard suite (`python3 -m unittest discover -s skills/tests`) and
       `cairn_validate` audit both clean. Evidence: command output.
 
 ## Coverage
@@ -100,3 +100,31 @@ the mechanism clarification as a D-entry annotating D-003.
 ## Decisions
 
 ## Review
+
+2026-07-12 · PR #27 · branch `m29-routing-chip-invocation-imperative`.
+R gates waived (this repo is the plugin, not an R package); the equivalent
+gate is the guard suite + `cairn_validate`.
+
+**Acceptance-criteria evidence (fresh):**
+- AC1 (imperative): `tracking-rules.md:281–282` — "the orchestrator
+  immediately invokes the target skill via the Skill tool … does not stop to
+  have the user type the command"; guard
+  `TestChipInvocationImperative` (2 of 3 assertions) green.
+- AC2 (preserved stop): `tracking-rules.md:283` — "a chip is an explicit user
+  stop — never auto-proceed — but the stop is *before* selection".
+- AC3 (notation): `tracking-rules.md:286` — "names the skill the orchestrator
+  invokes on selection, not a command for the user to run"; guard assertion
+  green.
+- AC4 (guard): `TestChipInvocationImperative` runs 3/3 OK; phrases asserted
+  case-insensitively (`.lower()`) on single physical lines (M23/M26); a revert
+  to the descriptive form drops the imperative phrase → red.
+- AC5 (D-022): `DECISIONS.md:346` — D-022 present, annotates D-003, records
+  rationale (M28 slip, D-011/GP4).
+- AC6 (suites): `python3 -m unittest discover -s skills/tests` → 74 tests OK;
+  `cairn_validate.py` → exit 0, all 10 checks PASS.
+
+**Consistency gate:** `cairn_validate` exit 0. Coverage completeness — all six
+ACs map to existing tasks (AC1→T2,T1 · AC2→T2 · AC3→T2,T1 · AC4→T1 · AC5→T3 ·
+AC6→T3). No DESIGN principle changed (impact scan skipped). No R/README/pkgdown/
+NEWS surface in this repo.
+
