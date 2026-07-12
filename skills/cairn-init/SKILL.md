@@ -25,8 +25,10 @@ Phase header: `# cairn-init` → `## Scaffold` / `## Repair` / `## Migration §n
   abort. Never scaffold R machinery into a non-package repo silently.
 - No existing tracking → **fresh scaffold** (§1).
 - Existing tracking footprint → **migration** (§2). Recognize precursors by
-  footprint: root-level `MILESTONES.md`/`DESIGN.md`/`ROADMAP.md` with
-  status inside CLAUDE.md ("Lineage B"); an older `project/` layout with
+  footprint: root-level `MILESTONES.md`/`DESIGN.md`/`ROADMAP.md` with status
+  inside CLAUDE.md — or a forward-only `ROADMAP.md` plus an explicit status /
+  `Current focus` slot (as the ackwards pilot had), which maps to cairn more
+  cleanly than status-in-CLAUDE ("Lineage B"); an older `project/` layout with
   `STATUS.md`/`LOG.md`/`PRINCIPLES.md` or per-milestone files ("Lineage A" —
   precursors used `project/`, not `cairn/`);
   repo-local milestone skills in `.claude/skills/`. Unrecognized footprints
@@ -76,7 +78,8 @@ Then:
 
 - Append `templates/claude-md-section.md` to CLAUDE.md (create CLAUDE.md if
   absent). If a conflicting section exists, show the diff and ask.
-- `.Rbuildignore`: add `^cairn$` (packages only).
+- `.Rbuildignore`: add `^cairn$` (packages only). On a migration, also prune
+  stale per-file entries for tracking files that moved into `cairn/` (§2 step 6).
 - `.gitignore`: add `cairn/references/pdf/` and `cairn/.merge-approved`
   (single-use merge-approval marker written at review gates, consumed by
   the plugin's merge-guard hook — never committed).
@@ -170,6 +173,19 @@ Lineage: M03 tidymedia pilot (PR #8).
    - Repo-specific assets with no canonical home (spec files, coverage
      matrices, principles docs) stay in `cairn/` as declared
      repo-specific files — kept, not forced into canonical shapes.
+   - **Reference sweep — repoint or note.** Moving files in steps 4–5
+     strands references to them. Sweep for two kinds: (a) in-code references
+     (source comments, tests) that name a relocated tracking file (e.g.
+     `DESIGN.md s.N`, found in ~17 spots across ackwards' R sources and
+     tests), and (b) redistributed CLAUDE.md prose that still names a
+     just-entombed repo-local skill (e.g. "/plan-milestone step 8a"). Each
+     hit takes one of two dispositions: **repoint** it to the new `cairn/`
+     path, or **note-and-leave** when the content and anchors are preserved
+     at the new path. Record which in the migration ledger.
+   - **Post-move hygiene:** prune per-file `.Rbuildignore` entries for
+     tracking files that just moved into `cairn/` (e.g. `^DESIGN\.md$`,
+     `^ROADMAP\.md$`) — `^cairn$` now covers them, so a stale per-file entry
+     is dead weight that misleads the next reader.
    - Scaffold anything from §1 that's still missing (ignore entries, dirs).
 
 7. **Accept by audit + ledger.** The PR is mergeable only when: (a) the

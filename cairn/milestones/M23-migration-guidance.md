@@ -75,10 +75,10 @@ next real migration doesn't re-hit them.
 - [x] **T1** — Add §5 rich-DESIGN guidance to `skills/cairn-init/SKILL.md`:
       keep-verbatim vs extract-to-DECISIONS (Compromise A/B), invariants →
       `/design-interview`. Cite the ackwards pilot.
-- [ ] **T2** — Add the §4/§6 repoint-or-note sweep step (in-code refs to
+- [x] **T2** — Add the §4/§6 repoint-or-note sweep step (in-code refs to
       relocated tracking files + CLAUDE prose refs to entombed skills), with the
       two dispositions.
-- [ ] **T3** — Add §1/§6 `.Rbuildignore` prune guidance; widen §0 Lineage B
+- [x] **T3** — Add §1/§6 `.Rbuildignore` prune guidance; widen §0 Lineage B
       detection wording (forward-only ROADMAP + explicit status slot).
 - [ ] **T4** — Guard test any new mechanical invariant (keep the
       `test_section_allow_lists.py` literal-phrase invariants intact when
@@ -96,6 +96,12 @@ next real migration doesn't re-hit them.
   A (default, keep verbatim + re-record still-governing decisions) / B (full
   extraction on request), invariants routed to `/design-interview`; cites the
   ackwards pilot.
+- 2026-07-12: T2 — added the step-6 "Reference sweep — repoint or note" bullet
+  covering (a) in-code refs to relocated tracking files and (b) redistributed
+  CLAUDE prose naming entombed skills, with repoint / note-and-leave dispositions.
+- 2026-07-12: T3 — post-move hygiene: step-6 prune of stale per-file
+  `.Rbuildignore` entries (+ §1 cross-reference); widened §0 Lineage B
+  detection to a forward-only ROADMAP + explicit status/`Current focus` slot.
 
 ## Decisions
 
