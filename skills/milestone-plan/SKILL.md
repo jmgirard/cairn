@@ -74,6 +74,14 @@ Read, in order: `cairn/ROADMAP.md`, any active milestone file,
      gets a test" in tracking-rules): name the behavior that must be tested.
    - `Out:` items name where the excluded work lives instead.
    - Tasks ≤ one working session each, ordered by dependency.
+   - **Coverage map** (owner: plan): after the criteria and tasks are
+     written, author the Coverage section — one line per acceptance
+     criterion mapping it to the task(s) that satisfy it, by positional
+     number (`AC1 → T1, T3`; AC/Task numbers run top-to-bottom in their
+     sections). Every criterion maps to ≥1 task; a criterion no task
+     satisfies is a planning gap — add the missing task or cut the
+     criterion, never ship an unmapped criterion. Review reads this map to
+     fence evidence.
    - Open questions that hit an RB tripwire (see tracking-rules) are
      tagged inline on the affected task or criterion with the canonical
      token — `(RB tripwire: no-oracle | irreversible-api | ip-touching)` —

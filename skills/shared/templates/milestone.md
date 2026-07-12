@@ -29,6 +29,14 @@ never "never".
       that exists, `devtools::check()` output. Never vibes.
 - [ ] Code milestones always include: `devtools::check()` clean.
 
+## Coverage
+<!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
+     task(s) satisfying it, by positional number (AC/Task counted
+     top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
+
+- AC1 → T1
+- AC2 → T2, T3
+
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
