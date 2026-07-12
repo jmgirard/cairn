@@ -14,8 +14,8 @@ assigned, `# Planning`); see the tracking-rules Phase header rule.
 ## Session start
 
 Read, in order: `cairn/ROADMAP.md`, any active milestone file,
-`cairn/DECISIONS.md`. If an un-ingested RR exists in `cairn/reviews/`,
-handle ingestion first (see `/milestone-brief`).
+`cairn/DECISIONS.md`, `cairn/LESSONS.md`. If an un-ingested RR exists in
+`cairn/reviews/`, handle ingestion first (see `/milestone-brief`).
 
 ## Workflow
 
@@ -48,6 +48,12 @@ handle ingestion first (see `/milestone-brief`).
      proceed: **supersede, don't ignore** — append a superseding D-entry
      first. Never plan against a standing rejection without superseding it;
      never refuse merely because a rejection exists.
+
+   **Harvest recent lessons (before the gate).** Review `cairn/LESSONS.md`
+   (read at session start) and surface any lessons bearing on this scope —
+   build quirks, testing tricks, gotchas that should shape the tasks,
+   acceptance bar, or a gate question. Empty file → nothing to surface. This
+   is intake, not obedience: a lesson informs the plan, it doesn't dictate it.
 
 3. **Question gate** (one batched AskUserQuestion round, 2–5 questions, each
    with a recommendation): scope boundary, sequencing, acceptance bar, and
