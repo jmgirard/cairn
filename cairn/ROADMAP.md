@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M30 | Stop cairn_validate false-flagging R CMD check counts as non-ISO dates | planned | — | normal | milestones/M30-validate-slash-date-false-positive.md |
+| M30 | Stop cairn_validate false-flagging R CMD check counts as non-ISO dates | in-progress | — | normal | milestones/M30-validate-slash-date-false-positive.md |
 | M29 | Make routing-chip invocation an imperative on the orchestrator | done | — | normal | milestones/archive/M29-routing-chip-invocation-imperative.md |
 | M28 | Harden the output-discipline mandate guards | done | — | normal | milestones/archive/M28-output-discipline-mandate-guards.md |
 | M26 | Lock the routing-chip mandate; exempt review as the chip-less phase | done | — | normal | milestones/archive/M26-routing-chip-mandate-lock.md |
