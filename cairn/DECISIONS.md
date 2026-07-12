@@ -288,3 +288,31 @@ that a fresh context, not a route, is the right next step there).
 every other phase keeps its chip. D-003's blanket "every phase ends with a
 chip" is refined, not overturned. Locked by `TestRoutingChipMandate` in
 `skills/tests/test_gate_wording.py`.
+
+### D-020 (2026-07-12): In Claude Code the navigable TOC is driven by chapter markers, not markdown headers — annotates D-012
+
+**Context:** D-010/D-012 justified the phase-header level convention partly as
+"emit H1/H2 so both levels land in Claude Desktop's table of contents." M27
+tested that live in Jeff's Claude Desktop, viewing a **Claude Code** (cairn)
+session — cairn's actual runtime. Two messages of `#`/`##`/`###` headers
+(including a real `# PROBE-A1`) produced **zero** TOC entries; a single
+`mcp__ccd_session__mark_chapter` call produced a two-entry outline. Full
+characterization: `references/desktop-toc-mechanism.md`.
+**Decision:** Record the mechanism as it is. In a Claude Code session the
+navigable TOC is built from **chapter markers**, not markdown `#`/`##`
+headers. D-012's "both levels index in Claude Desktop's TOC" does **not** hold
+for cairn's Claude Code runtime (tested here — zero headers indexed). Whether
+it holds on any other Claude surface (e.g. a regular claude.ai / Desktop chat)
+was not probed by M27; D-012's claim is annotated as **unverified for cairn's
+runtime**, not confirmed elsewhere. No header-format change: the H1-unit /
+H2-phase convention is **retained for in-transcript visual hierarchy**, which
+it does deliver (headers render as headings). The `tracking-rules.md`
+phase-header line that credited the markdown TOC is corrected to credit the
+chapter-marker rule instead. Rejected AC2 option (a) (a header change — no
+markdown format indexes here) and "record but leave the false rulebook line."
+**Consequences:** The chapter-marker discipline (output-discipline "Chapter
+markers" rule) is the load-bearing TOC driver in cairn's runtime, not the
+phase headers — reinforcing that rule's importance. `test_phase_header_levels.py`
+is unaffected (levels unchanged). Whether to promote the chapter-marker rule
+from "where supported" to a hard per-phase mandate is banked as a ROADMAP
+candidate, not decided here.

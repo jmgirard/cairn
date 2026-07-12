@@ -1,9 +1,11 @@
 """Regression guard: phase headers are H1 (unit of work) / H2 (phase).
 
 Skills are prose, so this locks the convention M11 shifted (superseding
-D-010): the unit-of-work header is `#` and the phase header is `##`, so both
-land in Claude Desktop's table of contents (it indexes only H1/H2). A wording
-drift back to the old `## Milestone` / `### Plan` levels fails here.
+D-010): the unit-of-work header is `#` and the phase header is `##`. These
+levels give in-transcript visual hierarchy; the navigable TOC in cairn's
+Claude Code runtime is driven by chapter markers, not markdown headers
+(M27/D-020). A wording drift back to the old `## Milestone` / `### Plan`
+levels fails here.
 
     python3 -m unittest discover -s skills/tests -v
 """
