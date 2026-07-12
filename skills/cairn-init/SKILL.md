@@ -131,7 +131,9 @@ Lineage: M03 tidymedia pilot (PR #8).
    proposed disposition of each at one question gate. Fixed status mapping:
    `READY`→`planned`, `IN PROGRESS`/`active`→`in-progress`,
    `BLOCKED`→`blocked`, parking-lot/someday/candidates→`candidate` rows,
-   everything finished→entombed. Ambiguities are asked, not guessed.
+   everything finished→entombed. `READY`→`planned` holds only when the item
+   carries acceptance criteria and ordered tasks — otherwise it is a
+   `candidate` (see step 5). Ambiguities are asked, not guessed.
 
 4. **Entomb history verbatim.** Legacy tracking files move whole and
    unmodified to `cairn/legacy/` (committed). New ROADMAP.md carries one

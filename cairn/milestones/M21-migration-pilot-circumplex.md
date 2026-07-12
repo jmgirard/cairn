@@ -123,27 +123,21 @@ does not, folding surfaced gaps back into the skill.
 _2026-07-12, same-session implement→review. cairn PR #21; circumplex PR #31._
 
 **AC evidence (fresh, by command):**
-- AC1 (PR + ledger): `gh pr view 31` → OPEN, title "cairn-init: migrate tracking
-  to cairn/", body contains the Migration ledger table (every legacy file +
-  live item accounted for). PASS.
-- AC2 (at-most-one in-progress): circumplex `cairn/ROADMAP.md` on the branch has
-  **0** in-progress rows (release-prep → M7 `blocked`; M4 done; M6 + backlog →
-  candidates); the mapping is recorded in the PR ledger. `cairn_validate` "at
-  most one in-progress" PASS. PASS.
-- AC3 (audit clean + skill relocated): `cairn_validate` on the circumplex branch
-  → all 9 checks pass; `cairn/legacy/statistical-validation/SKILL.md` exists and
-  `.claude/skills/statistical-validation` is gone. PASS.
-- AC4 (pilot notes): `references/migration-pilot-notes.md` gains the "Pilot 2 —
-  circumplex (M21)" section — ledger summary, M22/M23-validation table, tagged
-  gap list (G-C1..G-C4), disposition. PASS.
-- AC5 (fix-here resolved + guard-tested; candidates filed): `cairn-init/SKILL.md`
-  diff adds LESSONS.md to §1 scaffold (G-C1) and the planned-needs-criteria note
-  to §2 step 5 (G-C3); `test_migration_guidance.py` gains 2 locking tests;
-  `cairn/ROADMAP.md` gains G-C2 + G-C4 candidate rows. PASS.
-- AC6 (suite green): `unittest discover` → skills/tests 58 ok, scripts/tests
-  33 ok. PASS.
+- AC1 — `gh pr view 31`: OPEN, migration-ledger table present. PASS.
+- AC2 — circumplex `cairn/ROADMAP.md`: **0** in-progress (M7 blocked, M4 done, M6+backlog candidates); mapping in the ledger. PASS.
+- AC3 — `cairn_validate` on circumplex branch 9/9; `cairn/legacy/statistical-validation/` exists, gone from `.claude/skills/`. PASS.
+- AC4 — pilot notes gain the "Pilot 2 — circumplex" section (ledger, validation table, G-C1..G-C4). PASS.
+- AC5 — SKILL.md adds G-C1 + G-C3; 2 guard tests added; ROADMAP gains G-C2 + G-C4 rows. PASS.
+- AC6 — `unittest discover`: 58 skill + 33 script ok. PASS.
 
 **Consistency gate:** `cairn_validate.py` (cairn) → 9/9. Coverage complete (all
 6 ACs map to existing tasks). No principle touched → impact skipped. R gates
 waived (non-package repo).
+
+**Independent review (2 lenses + scorer):** both reviewers converged on one
+newly-introduced wording tension (step-3 `READY`→`planned` vs the new step-5
+criteria condition; scored 80) + a doc nit (G-C3 row cited "§5" for a step-3
+table; scored 90). Both **fixed on-branch**: added a step-3 forward-ref to
+step 5, corrected the pilot-notes citation. No other findings; suite still
+green (58+33), validate 9/9.
 

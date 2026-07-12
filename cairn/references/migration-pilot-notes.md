@@ -90,7 +90,7 @@ pruned 4 stale per-file entries.
 |---|---|---|---|
 | G-C1 | **§1 fresh-scaffold omits `LESSONS.md`** — the scaffold tree lists DESIGN/ROADMAP/DECISIONS/dirs but not `LESSONS.md`, a top-level tracking file added in D-015 and present in the tracking-rules file-map. A fresh scaffold or migration never creates it. | §1 | **fix-here** |
 | G-C2 | `cairn_validate` ISO-date scan **false-positives on `0/0/0`** (R CMD check "0 errors/0 warnings/0 notes" notation) — the `\d{1,4}/\d{1,2}/\d{1,4}` slash-date pattern matches it. Worked around by rewording; a clean regex fix is ambiguous (requiring a 4-digit year would regress on 2-digit-year dates). | scripts | candidate |
-| G-C3 | **No-invention vs `planned`:** a legacy "planned" milestone with scope but no acceptance criteria/tasks (M6) can't become a valid cairn `planned` (which requires them) without invention → maps to `candidate`. §5's fixed mapping (`READY`→planned) is silent on this. | §5 | **fix-here** |
+| G-C3 | **No-invention vs `planned`:** a legacy "planned" milestone with scope but no acceptance criteria/tasks (M6) can't become a valid cairn `planned` (which requires them) without invention → maps to `candidate`. §2 step 3's fixed mapping (`READY`→planned) is silent on this; fixed with a step-3 forward-ref + a step-5 note. | §3/§5 | **fix-here** |
 | G-C4 | **Mature backlog vs the <60-line ROADMAP cap:** a mature repo's parking-lot (continuous track + deferred review findings + pre-release items, ~20 items) blows the candidate budget if each is its own row. Handled by clustering related backlog into grouped candidate rows pointing at the entombed legacy ROADMAP. | §5/§6 | candidate |
 
 ### Disposition
