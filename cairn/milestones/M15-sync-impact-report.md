@@ -1,6 +1,6 @@
 # Milestone 15: Sync Impact Report on principle changes
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal
 - **Depends on:** —
 - **Branch/PR:** m15-sync-impact-report   <!-- PR URL once opened -->
@@ -48,16 +48,17 @@ skills — that keys on plugin-internal structure, meaningful only in this repo
 - [x] Write `scripts/cairn_impact.py` (principle-id args + `--changed`), on
       the `cairn_scripts` parser and `resolve_root`/`NotCairn` idiom.
 - [x] Add fixture + cases to `scripts/tests/test_scripts.py`.
-- [ ] Add the invoke-when step to `skills/milestone-review/SKILL.md`
+- [x] Add the invoke-when step to `skills/milestone-review/SKILL.md`
       consistency gate.
-- [ ] Note the reporter in `cairn/DESIGN.md` Architecture (scripts layer).
-- [ ] Run all test suites + `cairn_validate`.
+- [x] Note the reporter in `cairn/DESIGN.md` Architecture (scripts layer).
+- [x] Run all test suites + `cairn_validate`.
 
 ## Work log
 <!-- append-only; one line per entry; absolute dates -->
 
 - 2026-07-11: created by /milestone-plan.
 - 2026-07-11: cairn_impact.py written (principle ids + --changed via git diff); 5 fixture cases added, scripts/tests 26 green.
+- 2026-07-11: review consistency gate runs cairn_impact --changed on principle-touching milestones; DESIGN Architecture notes the reporter. All suites + validate green.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
