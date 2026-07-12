@@ -367,8 +367,10 @@ cairn skill is active.
   `[S]`/`[O]`/`[F]` — per the output-discipline section.
 - **Sonnet subagents**: well-specified self-contained work — fan-out
   searches (Explore), mechanical migrations, test writing against a spec,
-  boilerplate. Give complete specs; verify their diffs before committing;
-  summarize results into one work-log line.
+  boilerplate. Give complete specs — for an Explore fan-out that means a
+  reading list naming the files or areas each subagent should read, so it
+  searches the right ground instead of guessing; verify their diffs before
+  committing; summarize results into one work-log line.
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of
   the fresh-context review at `/milestone-review`.
 - **The `/milestone-review` fan-out** (M17): two distinct-evidence reviewers —
