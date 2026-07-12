@@ -135,3 +135,14 @@ complete (AC1→T1 … AC4→T4, all tasks present). No DESIGN principle touched
 impact report skipped. R gates (document/README/pkgdown/NEWS/`.Rbuildignore`)
 waived — non-package repo per CLAUDE.md.
 
+**Independent review (two lenses + scorer):** [O] diff-bug reviewer (Opus) and
+[S] blame-history reviewer (Sonnet), each fresh-context with a distinct evidence
+base. Both returned **zero findings** after the false-positive taxonomy — no
+scorer pass needed (nothing to score). Diff-bug confirmed the guard test's
+anchor phrases are unique and load-bearing (no vacuous assertions) and the "(§2
+step 6)" cross-reference resolves; blame-history confirmed the additions are
+purely additive and contradict no D-entry (D-005 governs milestone history not a
+living DESIGN; D-013/D-014 reinforced; D-004/D-018 untouched). One non-blocking
+note (a redundant `/design-interview` assertion) explicitly not reported as a
+defect — left as-is; the sibling assertion is the lock.
+
