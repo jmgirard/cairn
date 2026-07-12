@@ -50,7 +50,7 @@ it once; skills bind through it per the "nothing is said twice" convention).
       at/near the Intake "Candidates may be added ... at any time" line.
 - [x] T2 — Add a brief pointer at `/hotfix` step 7 and the `/milestone-review`
       follow-up-candidate step referencing the rule.
-- [ ] T3 — Add a prose-guard test in `skills/tests/` asserting the rule text on
+- [x] T3 — Add a prose-guard test in `skills/tests/` asserting the rule text on
       a single line; run the skills guard suite green.
 
 ## Work log
@@ -58,6 +58,7 @@ it once; skills bind through it per the "nothing is said twice" convention).
 - 2026-07-12: created by /milestone-plan.
 - 2026-07-12: T1 — added the "Search-first candidate creation" rule to `tracking-rules.md` after the Intake paragraph; branch cut, status → in-progress.
 - 2026-07-12: T2 — one-line pointers at `/hotfix` step 7 and the `/milestone-review` follow-up-candidate triage step (pointers, not restatements).
+- 2026-07-12: T3 — added `test_search_first_candidates.py` (rule + both pointers); skills guard suite green (89 tests).
 
 ## Decisions
 
