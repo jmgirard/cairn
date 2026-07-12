@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M37 | Fence cairn subagents off the shared checkout (ref-based git only) | in-progress | — | normal | milestones/M37-reviewer-shared-checkout-guard.md |
+| M37 | Fence cairn subagents off the shared checkout (ref-based git only) | review | — | normal | milestones/M37-reviewer-shared-checkout-guard.md |
 | M36 | On-main commit-guard hook | done | — | normal | milestones/archive/M36-on-main-commit-guard.md |
 | M34 | Mechanical coverage-map lint in cairn_validate | done | — | normal | milestones/archive/M34-coverage-map-lint.md |
 | M35 | Rulebook & doc-wording polish batch | done | — | normal | milestones/archive/M35-rulebook-doc-polish.md |
