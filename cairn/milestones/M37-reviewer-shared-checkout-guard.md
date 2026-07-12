@@ -61,7 +61,7 @@ by the prose guard, like the rest of the fan-out.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — Add the general subagent-conduct rule to
+- [x] T1 — Add the general subagent-conduct rule to
       `skills/shared/tracking-rules.md`, adjacent to the subagent-orchestration
       bullets (~L375–391): a subagent sharing the primary checkout uses
       ref-based git (`diff`/`show`/`log`/`blame`) and never a HEAD-moving
@@ -83,6 +83,8 @@ by the prose guard, like the rest of the fan-out.
 - 2026-07-12: created by /milestone-plan. Absorbs the ROADMAP candidate added
   2026-07-12 from the M36 review; scope generalized from the review fan-out to
   all shared-tree subagents at the plan gate.
+- 2026-07-12: T1 — added the "Subagents share the primary checkout" rule
+  (ref-based git only) to tracking-rules.md model-strategy section.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
