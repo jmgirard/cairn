@@ -93,7 +93,7 @@ to avoid a merge conflict (the user chose this sequencing).
       in a cairn repo (reuse `cairn_common.find_cairn_root`), emit the softest
       reminder available, no-op otherwise. Pattern:
       ([merge_guard.py](../../hooks/merge_guard.py))
-- [ ] T2: Register the hook in `hooks/hooks.json` under PreToolUse with a
+- [x] T2: Register the hook in `hooks/hooks.json` under PreToolUse with a
       `Write` matcher. ([hooks.json:25-36](../../hooks/hooks.json))
 - [ ] T3: Add the memory→`cairn/`-files intake gate to `tracking-rules.md`
       beside the "Tracking files outrank memory" rule.
@@ -121,6 +121,9 @@ to avoid a merge conflict (the user chose this sequencing).
   (additionalContext-only, no permissionDecision) per user "recommend me".
   Smoke-tested: memory write in cairn repo nudges; non-memory / non-cairn /
   non-Write / malformed input all silent no-op (exit 0).
+- 2026-07-12: T2 — registered memory_guard.py in hooks.json under PreToolUse
+  with a Write matcher (second PreToolUse entry alongside merge_guard/Bash).
+  JSON validated.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
