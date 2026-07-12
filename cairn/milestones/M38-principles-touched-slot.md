@@ -61,7 +61,7 @@ fuzzy prose-citation linting (the slot is the fix, not prose rewriting).
       table in `shared/tracking-rules.md`.
 - [x] T2 — Add a `Principles touched:` authoring directive to
       `skills/milestone-plan/SKILL.md` (parallel to `Phase header:`).
-- [ ] T3 — Add a `cairn_validate` check parsing the slot on live milestone
+- [x] T3 — Add a `cairn_validate` check parsing the slot on live milestone
       files; every named id must be a current DESIGN.md principle. No-ops when
       the slot is absent (so no `Tree.build` change per the M34 lesson); add
       targeted valid/bogus fixtures with a dedicated builder in
@@ -77,6 +77,7 @@ fuzzy prose-citation linting (the slot is the fix, not prose rewriting).
 - 2026-07-12: started implementing; branch m38-principles-touched-slot.
 - 2026-07-12: T1 — added Principles touched slot to template + section-ownership row.
 - 2026-07-12: T2 — added Principles touched authoring directive to /milestone-plan step 4.
+- 2026-07-12: T3 — cairn_validate 'principles slot valid' check (validate-if-present) + 3 fixtures; suite 52 green.
 
 ## Decisions
 

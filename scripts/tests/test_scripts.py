@@ -32,6 +32,14 @@ def archived(status):
     return f"# M — {status}\n\n**Status:** {status} · approved 2026-07-11\n\n## Outcome\nx\n"
 
 
+def live_slot(status, slot):
+    """A live milestone header carrying a `Principles touched:` slot."""
+    return (
+        f"# M: Test milestone\n\n- **Status:** {status}   <!-- mirror -->\n"
+        f"- **Principles touched:** {slot}\n\n## Goal\nx\n"
+    )
+
+
 def live_cov(status, n_criteria, coverage_refs):
     """A live milestone body with `n_criteria` acceptance criteria and a
     Coverage section citing each AC number in `coverage_refs`."""
@@ -232,6 +240,34 @@ class TestValidateClean(ScriptCase):
         proc = run("cairn_validate.py", self.tree.build())
         self.assertEqual(proc.returncode, 0, proc.stdout)
         self.assertIn("PASS  coverage complete", proc.stdout)
+
+
+class TestPrinciplesSlot(ScriptCase):
+    DESIGN = "# Design\n\n## Design Principles\n\n- IP1: first\n- GP1: second\n"
+
+    def _build_with_design(self, slot):
+        self.tree.files["milestones/M03-live.md"] = live_slot("planned", slot)
+        root = self.tree.build()
+        (root / "cairn" / "DESIGN.md").write_text(self.DESIGN)
+        return root
+
+    def test_valid_slot_passes(self):
+        proc = run("cairn_validate.py", self._build_with_design("IP1, GP1"))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  principles slot valid", proc.stdout)
+
+    def test_dash_slot_noops(self):
+        # The template default '—' (and pre-slot files) must not trip the check.
+        proc = run("cairn_validate.py", self._build_with_design("—"))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  principles slot valid", proc.stdout)
+
+    def test_bogus_id_fails(self):
+        # GP9 is not defined in DESIGN.md → the slot check flags it.
+        proc = run("cairn_validate.py", self._build_with_design("IP1, GP9"))
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("FAIL  principles slot valid", proc.stdout)
+        self.assertIn("GP9", proc.stdout)
 
 
 class TestValidateFailures(ScriptCase):
