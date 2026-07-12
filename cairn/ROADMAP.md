@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-11 (M14–M16 planned from the milestone-file-mechanics candidate)_
+_Last hygiene check: 2026-07-11 (M14 done+archived; M09 row pruned per 5-done retention)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,14 +10,13 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M14 | Section write allow-lists per skill | review | — | normal | milestones/M14-section-allow-lists.md |
 | M15 | Sync Impact Report on principle changes | planned | — | normal | milestones/M15-sync-impact-report.md |
 | M16 | Lessons loop (capture → harvest) | planned | — | normal | milestones/M16-lessons-loop.md |
+| M14 | Section write allow-lists per skill | done | — | normal | milestones/archive/M14-section-allow-lists.md |
 | M13 | Wire deterministic scripts into review + plan | done | — | normal | milestones/archive/M13-script-wiring.md |
 | M12 | Design-interview skill (facts → principles) | done | — | normal | milestones/archive/M12-design-interview-skill.md |
 | M11 | Shift phase headers up one level (H1 unit / H2 phase) | done | — | normal | milestones/archive/M11-phase-header-levels.md |
 | M10 | Deterministic tracking scripts | done | — | normal | milestones/archive/M10-deterministic-scripts.md |
-| M09 | Phase headers (H2/H3) replace inline stage banner | done | — | normal | milestones/archive/M09-phase-headers.md |
 
 ## Candidates
 
