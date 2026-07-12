@@ -1,6 +1,3 @@
-<!-- Section ownership + write-modes: see tracking-rules.md "Milestone-file
-     section ownership". A phase skill never rewrites another phase's section.
-     Per-section owners are tagged below. -->
 # M36: On-main commit-guard hook
 
 - **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
