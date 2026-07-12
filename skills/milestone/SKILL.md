@@ -45,7 +45,7 @@ each active milestone, and open RBs and their age.
 
 Run `cairn_validate.py` first. It deterministically checks: **mirror
 agreement** (ROADMAP vs file header Status), **at most one `in-progress`**,
-**weight caps**, **done-row retention**, **status vocabulary**, **dependency
+**weight caps**, **terminal-row retention**, **status vocabulary**, **dependency
 resolution** (targets exist and aren't `dropped`), **ROADMAP↔disk orphans**,
 **ID uniqueness**, and **§1 scaffold present** (required tracking files and
 ignore entries exist). Treat every

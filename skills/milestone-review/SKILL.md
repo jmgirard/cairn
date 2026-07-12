@@ -56,7 +56,7 @@ overrides — log the override).
 4. **Consistency gate** — mechanical checks, by command, never recall:
    - `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` passes
      (exit 0) — the mechanical cairn-file checks (mirror, single in-progress,
-     caps, done-row retention, vocab, dependency resolution, orphans, ID
+     caps, terminal-row retention, vocab, dependency resolution, orphans, ID
      uniqueness, ISO dates, §1 scaffold present). Run this first; a non-zero
      exit is a gate failure like any other. A `scaffold present` FAIL means
      the repo's §1 scaffold has drifted (a missing tracking file or ignore

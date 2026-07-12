@@ -73,7 +73,7 @@ pruned and counted like done ones.
 
 ## Tasks
 
-- [ ] T1 — Reword `skills/shared/tracking-rules.md` retention rule (L94–96) and
+- [x] T1 — Reword `skills/shared/tracking-rules.md` retention rule (L94–96) and
       the remedy phrase "enforce done-row retention" (L89) to terminal-row
       semantics + name.
 - [x] T2 — Rename `DONE_ROW_RETENTION` → `TERMINAL_ROW_RETENTION` (value 5) in
@@ -83,7 +83,7 @@ pruned and counted like done ones.
       and the `CHECKS` tuple label at L233 to "terminal-row retention").
 - [x] T4 — Update the `scripts/cairn_next.py` comment (L20–22) to name
       terminal-row retention.
-- [ ] T5 — Update the cairn-init ROADMAP scaffold comment
+- [x] T5 — Update the cairn-init ROADMAP scaffold comment
       (`skills/cairn-init/SKILL.md:72`) and the consistency-gate check-name
       references in `skills/milestone/SKILL.md:48` and
       `skills/milestone-review/SKILL.md:59`.
@@ -102,6 +102,7 @@ pruned and counted like done ones.
 - 2026-07-12: in-progress on m32-terminal-row-retention.
 - 2026-07-12: T2–T4, T6 — renamed constant/check to terminal-row retention (count done+dropped), updated cairn_next comment, renamed+extended retention test with a dropped-over-cap case; 45 unittest tests pass.
 - 2026-07-12: AC4/T8 wording fixed pytest→unittest (repo has no pytest; suite is unittest-based) — minor correction, verification intent unchanged.
+- 2026-07-12: T1, T5 — reworded the tracking-rules retention rule + remedy line and the cairn-init scaffold + /milestone + /milestone-review check-name refs to terminal-row retention; live-file grep for "done-row retention" is clean.
 
 ## Decisions
 

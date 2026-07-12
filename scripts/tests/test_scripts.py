@@ -144,7 +144,7 @@ class TestNext(ScriptCase):
 
     def test_archived_done_dependency_is_satisfied(self):
         # Regression: a dep on a done milestone whose ROADMAP row was pruned
-        # under done-row retention (archive file only) must count as satisfied.
+        # under terminal-row retention (archive file only) must count as satisfied.
         self.tree.rows = [
             ("M20", "New", "planned", "M05", "high", "milestones/M20-new.md"),
         ]
