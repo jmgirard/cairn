@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M41   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** m42-oracle-doctrine-validation-intraclass   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m42-oracle-doctrine-validation-intraclass · https://github.com/jmgirard/cairn/pull/40   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -36,23 +36,23 @@ to a `planned` milestone (that is a later plan-gate decision, fed by these findi
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: Every `data-raw/oracle-*.R` script in intraclass is classified into one
+- [x] AC1: Every `data-raw/oracle-*.R` script in intraclass is classified into one
       of cairn's four oracle types (frozen/live/invariant/closed-form) in a table in
       the findings file, with a per-type count; any script fitting no type is flagged
       as a doctrine gap. (Evidence: the findings table + the script list it covers.)
-- [ ] AC2: intraclass `PRINCIPLES.md` #1 (≥2 independent oracle types) is compared
+- [x] AC2: intraclass `PRINCIPLES.md` #1 (≥2 independent oracle types) is compared
       against cairn's D-024 ≥2-types bar, with an explicit agree/diverge verdict
       citing `PRINCIPLES.md` #1 and the tracking-rules "Validation doctrine" section.
-- [ ] AC3: Each of the two deferred candidates (ORACLES.md registry; R-provenance
+- [x] AC3: Each of the two deferred candidates (ORACLES.md registry; R-provenance
       guard) is assessed for fit against intraclass's real system with a
       keep-deferred / revise / promote verdict, and its ROADMAP candidate row is
       updated to cite this evidence. (Evidence: the diff of the two candidate rows +
       the findings section.)
-- [ ] AC4: Any concrete defect the assessment exposes in cairn's Validation-doctrine
+- [x] AC4: Any concrete defect the assessment exposes in cairn's Validation-doctrine
       text (D-024) is fixed this milestone with a `test_oracle_doctrine.py` update
       that fails before the fix; if none is found, that null result is recorded in
       the findings file.
-- [ ] AC5: cairn's own guard-test suite passes
+- [x] AC5: cairn's own guard-test suite passes
       (`python3 -m unittest discover -s scripts/tests` and the `skills/tests`
       suite). (R gates are waived here — cairn is a plugin, not an R package.)
 
@@ -102,3 +102,38 @@ to a `planned` milestone (that is a later plan-gate decision, fed by these findi
 ## Review
 <!-- owner: review · exclusive; evidence per criterion; consistency-gate
      results; independent-review findings and their triage -->
+
+_Reviewed 2026-07-12 on branch `m42-…`; PR #40._
+
+**Acceptance criteria (fresh evidence).**
+
+- AC1 ✓ — `references/oracle-doctrine-intraclass-notes.md` classifies all **34**
+  scripts in a table (34 data rows verified); per-mechanism counts recorded
+  (SC 31, FZ 24, LV 16, IN 15, CF 7); 21 scripts whose defining oracle is
+  simulation-coverage are flagged as fitting none of the four types (the gap).
+- AC2 ✓ — the T2/AC2 section states an explicit **AGREE on the bar, DIVERGE on
+  the taxonomy** verdict, citing intraclass `PRINCIPLES.md #1` and cairn's
+  `tracking-rules.md` "Validation doctrine"/D-024 ≥2-types bar.
+- AC3 ✓ — both candidates assessed → **REVISE/keep-deferred**; both ROADMAP rows
+  carry the "M42 verdict: REVISE" text and cite `oracle-doctrine-intraclass-notes.md`
+  (grep: 2 rows each).
+- AC4 ✓ — defect **confirmed, not null**; fixed via D-025 (fifth type
+  `simulation-coverage`) with `test_oracle_doctrine.py` updated to assert it —
+  demonstrated failing against the pre-fix doctrine (`'**simulation-coverage**'
+  not found`) during implement, passing after the doctrine edit.
+- AC5 ✓ — `python3 -m unittest discover -s skills/tests` → 95 OK;
+  `… -s scripts/tests` → 53 OK.
+
+**Consistency gate.**
+
+- `cairn_validate.py` → exit 0, all checks pass.
+- Coverage completeness ✓ — AC1→T1,T2 · AC2→T2 · AC3→T3 · AC4→T4 · AC5→T4;
+  every AC maps to ≥1 existing task.
+- Principle-impact report — skipped: M42 touches GP4 conceptually but **changed
+  no `DESIGN.md` principle text** (diff touches no `DESIGN.md`), so no Sync
+  Impact Report is due.
+- R gates (`document()`, README knit, pkgdown, NEWS, `.Rbuildignore`) — **waived**:
+  cairn is a plugin, not an R package (CLAUDE.md); no new top-level files (the new
+  file is under `cairn/references/`).
+
+**Independent review (three lenses + scorer).**
