@@ -11,7 +11,7 @@ not an R package, so R-specific gates don't apply.
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M34 | Mechanical coverage-map lint in cairn_validate | done | — | normal | milestones/archive/M34-coverage-map-lint.md |
-| M35 | Rulebook & doc-wording polish batch | planned | — | normal | milestones/M35-rulebook-doc-polish.md |
+| M35 | Rulebook & doc-wording polish batch | in-progress | — | normal | milestones/M35-rulebook-doc-polish.md |
 | M33 | Assess ackwards' oracle discipline and fold its generalizable core into cairn | done | — | normal | milestones/archive/M33-oracle-discipline-coordination.md |
 | M32 | Fold dropped rows into the ROADMAP retention cap (done-row → terminal-row) | done | — | normal | milestones/archive/M32-terminal-row-retention.md |
 | M31 | Mark the opening phase — drop the "session start implicit" carve-out | dropped | — | normal | milestones/archive/M31-opening-phase-chapter-marker.md |

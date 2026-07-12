@@ -86,11 +86,14 @@ takes a D-entry, and its number stays retired.
 - Work-log entries are one line each. Never paste command output or subagent
   transcripts into tracking files — summarize.
 - Remedies when a cap is hit (never "let it grow"): over-cap ROADMAP →
-  graduate or prune candidates and enforce terminal-row retention; over-cap
-  milestone → split it or move reference material to `references/`;
-  over-cap cairn CLAUDE.md section → trim it back to the template (it is
-  routing boilerplate, not a content home); other CLAUDE.md content → its
-  owner per the table above.
+  graduate or prune candidates and enforce terminal-row retention — and when
+  a large legacy or parking-lot backlog blows the cap one-row-per-item,
+  cluster related items into grouped candidate rows that point at the
+  entombed legacy `ROADMAP.md` instead of listing each (M21 G-C4); over-cap
+  milestone → split it or move reference material to `references/`; over-cap
+  cairn CLAUDE.md section → trim it back to the template (it is routing
+  boilerplate, not a content home); other CLAUDE.md content → its owner per
+  the table above.
 - Terminal-row retention: the ROADMAP table keeps only the 5 most recent
   terminal (`done` or `dropped`) rows combined; prune older ones as they
   accumulate — archive files and git history stay authoritative. Standing

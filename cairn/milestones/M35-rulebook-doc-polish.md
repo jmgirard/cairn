@@ -2,10 +2,10 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M35: Rulebook & doc-wording polish batch
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** m35-rulebook-doc-polish
 
 ## Goal
 
@@ -59,7 +59,7 @@ only). The M06 "minor steals" bundle and the two dropped marginal candidates
 
 ## Tasks
 
-- [ ] T1 — Add the mature-backlog clustering remedy to the weight-caps
+- [x] T1 — Add the mature-backlog clustering remedy to the weight-caps
       "Remedies when a cap is hit" list in `tracking-rules.md` (over-cap
       ROADMAP branch); add at most a one-line pointer from the `/cairn-init`
       §2 migration section without altering its M23-guarded wording.
@@ -81,6 +81,7 @@ only). The M06 "minor steals" bundle and the two dropped marginal candidates
 ## Work log
 
 - 2026-07-12: created by /milestone-plan (backlog-polish set 2 of 2).
+- 2026-07-12: T1 — mature-backlog clustering remedy added to weight-caps; one-line pointer added in cairn-init §2 step 5 (M23-guarded wording untouched).
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
