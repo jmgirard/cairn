@@ -158,7 +158,10 @@ Lineage: M03 tidymedia pilot (PR #8).
      legacy log; only still-governing decisions are re-recorded (citing
      their legacy ID).
    - Unresolved open questions / known issues → `candidate` rows or DESIGN
-     "Known issues", per the ownership table.
+     "Known issues", per the ownership table. A large legacy backlog that
+     would blow the <60-line ROADMAP cap one-row-per-item clusters into
+     grouped candidate rows pointing at the entombed legacy `ROADMAP.md`
+     (tracking-rules weight-caps remedies), never a per-item dump.
    - **Rich pre-existing `DESIGN.md`?** A large living DESIGN (hundreds of
      lines, embedded decision log, known issues) fits neither entombment nor
      the thin §1 scaffold. Default (**Compromise A**, the ackwards pilot's

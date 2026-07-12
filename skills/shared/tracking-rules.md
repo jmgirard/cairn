@@ -86,11 +86,14 @@ takes a D-entry, and its number stays retired.
 - Work-log entries are one line each. Never paste command output or subagent
   transcripts into tracking files — summarize.
 - Remedies when a cap is hit (never "let it grow"): over-cap ROADMAP →
-  graduate or prune candidates and enforce terminal-row retention; over-cap
-  milestone → split it or move reference material to `references/`;
-  over-cap cairn CLAUDE.md section → trim it back to the template (it is
-  routing boilerplate, not a content home); other CLAUDE.md content → its
-  owner per the table above.
+  graduate or prune candidates and enforce terminal-row retention — and when
+  a large legacy or parking-lot backlog blows the cap one-row-per-item,
+  cluster related items into grouped candidate rows that point at the
+  entombed legacy `ROADMAP.md` instead of listing each (M21 G-C4); over-cap
+  milestone → split it or move reference material to `references/`; over-cap
+  cairn CLAUDE.md section → trim it back to the template (it is routing
+  boilerplate, not a content home); other CLAUDE.md content → its owner per
+  the table above.
 - Terminal-row retention: the ROADMAP table keeps only the 5 most recent
   terminal (`done` or `dropped`) rows combined; prune older ones as they
   accumulate — archive files and git history stay authoritative. Standing
@@ -266,7 +269,10 @@ User interaction happens at exactly three gates — plan questions,
 pre-implementation questions, final merge approval — plus routing chips. At
 a gate, ask one batched round of 2–5 concrete decision questions via
 AskUserQuestion, each with a recommendation and brief pros/cons. Between
-gates, work autonomously; never drip questions one at a time.
+gates, work autonomously; never drip questions one at a time. When more
+questions are genuinely open than one round holds, prioritize the blocking
+ones: flag at most 3 prioritized clarification markers at a single gate and
+defer the rest to a later gate — never more than three at once.
 
 The **final merge-approval gate is itself an AskUserQuestion chip** — a
 single approve/decline question (recommended option merges; a decline option
@@ -347,6 +353,10 @@ cairn skill is active.
   (M27/D-020). This is a hard per-phase requirement, not "only where supported."
   Fallback: where the runtime provides no chapter mechanism, no marker is emitted
   and the H1/H2 phase headers are the visual fallback — nothing breaks.
+- **Copy-run commands get their own fenced block.** A command the user is
+  meant to copy and run goes in its own fenced code block (it renders a copy
+  button), not inline backticks — inline backticks are for *naming* a command,
+  path, or symbol in prose, not for handing one over to run.
 - **Subagent titles carry the model tier.** Prefix every Agent
   description with `[S]`/`[O]`/`[F]` for Sonnet/Opus/Fable — task panes
   show only the title, not the model.
@@ -361,11 +371,17 @@ cairn skill is active.
   `[S]`/`[O]`/`[F]` — per the output-discipline section.
 - **Sonnet subagents**: well-specified self-contained work — fan-out
   searches (Explore), mechanical migrations, test writing against a spec,
-  boilerplate. Give complete specs; verify their diffs before committing;
-  summarize results into one work-log line.
+  boilerplate. Give complete specs — for an Explore fan-out that means a
+  reading list naming the files or areas each subagent should read, so it
+  searches the right ground instead of guessing; verify their diffs before
+  committing; summarize results into one work-log line.
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of
   the fresh-context review at `/milestone-review`.
-- **The `/milestone-review` fan-out** (M17): two distinct-evidence reviewers —
+- **The `/milestone-review` fan-out** (M17) runs in fresh-context subagents,
+  not the implementing session, because an author shares their own
+  diff-blindness — a reviewer that did not write the code catches the contract
+  and convention breaks the author reads straight past. Two distinct-evidence
+  reviewers —
   an **[O]** diff-bug reviewer (Opus, correctness/contract/convention) and an
   **[S]** blame-history reviewer (Sonnet, does the change undo deliberate prior
   work) — then an **[S]** confidence scorer (Sonnet) that scores each finding
