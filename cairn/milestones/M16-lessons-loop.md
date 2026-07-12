@@ -1,9 +1,9 @@
 # Milestone 16: Lessons loop (capture → harvest)
 
-- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —   <!-- m16-lessons-loop; PR URL once opened -->
+- **Branch/PR:** m16-lessons-loop   <!-- PR URL once opened -->
 
 ## Goal
 
@@ -58,6 +58,7 @@ doc-routing frontmatter for `references/` → candidate row.
 <!-- append-only; one line per entry; absolute dates -->
 
 - 2026-07-11: created by /milestone-plan.
+- 2026-07-11: /milestone-implement start; branch m16-lessons-loop cut from main; status → in-progress.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
