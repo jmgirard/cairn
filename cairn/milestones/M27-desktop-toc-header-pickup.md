@@ -3,10 +3,10 @@
      Per-section owners are tagged below. -->
 # M27: Desktop TOC pickup of the `##` phase headers
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** low
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** m27-desktop-toc-header-pickup
 
 ## Goal
 
@@ -65,6 +65,9 @@ it as a client-side limitation — with the finding written to disk either way.
 - 2026-07-12: created by /milestone-plan (absorbs candidate "Phase-header TOC
   pickup in Claude Desktop", 2026-07-12 Jeff feedback). Tension to resolve:
   D-012 claims both H1/H2 index in Desktop's TOC; this milestone tests that.
+- 2026-07-12: /milestone-implement started; status → in-progress, branch
+  m27-desktop-toc-header-pickup cut from main. T1/T2 are manual Desktop
+  observations gathered live with Jeff.
 
 ## Decisions
 
