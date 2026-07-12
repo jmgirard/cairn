@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M41: Migration stress-test pilot — intraclass (first Lineage A)
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP3, GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** cairn `m41-migration-pilot-intraclass`; intraclass migration on `cairn-init-migration` (PR TBD)   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** cairn `m41-migration-pilot-intraclass`; intraclass migration on `cairn-init-migration` → PR https://github.com/jmgirard/intraclass/pull/54   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -81,44 +81,23 @@ milestone. Reformatting intraclass's `PRINCIPLES.md` into IP/GP → `/design-int
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Preconditions — `cd` into `jmgirard/intraclass`; confirm clean tree and
-      no in-flight milestone (STATUS.md says none active); detect the default
-      branch (per the canonical recipe); cut `cairn-init-migration` from the
-      up-to-date default branch.
-- [ ] T2: Inventory + proposal — list every `project/` file, the 6 repo-local
-      `.claude/skills/`, and every live item (v0.1.0 release consolidation,
-      parking-lot candidates, open design questions); present the per-item
-      disposition at cairn-init's migration question gate (fixed status mapping;
-      no-invention rule).
-- [ ] T3: Entomb verbatim — move all `project/` tracking files + the 6 repo-local
-      skills whole to `cairn/legacy/`; verify each is a 100% rename.
-- [ ] T4: Translate live state — author `cairn/ROADMAP.md` (IDs continue from the
-      legacy max M47 → M48+; live items → `candidate` / `blocked` / `planned` per
-      no-invention), `DECISIONS.md` (still-governing ADRs re-recorded citing legacy
-      IDs; **Compromise A** default for the rich 4959-line decision log), `LESSONS.md`,
-      `references/INDEX.md`; keep `PRINCIPLES.md`/`COVERAGE.md`/`estimand-specs/`
-      as declared repo-specific files under `cairn/` (IP/GP formalization deferred
-      to `/design-interview`).
-- [ ] T5: Redistribute + deactivate — old `CLAUDE.md` per the ownership table (drop
-      status/index slots, keep commands + invariants, append the cairn section);
-      reference sweep (in-code refs naming a relocated `project/` file; CLAUDE prose
-      naming an entombed skill) → repoint or note-and-leave; prune stale per-file
-      `.Rbuildignore` entries; scaffold any missing §1 pieces.
-- [ ] T6: Health audit + ledger + PR — run `cairn_validate` (CWD = intraclass);
-      assemble the migration ledger; open the docs-only PR (record its URL in the
-      header). Do **not** merge — that is intraclass's own gate.
-- [ ] T7: Capture "Pilot 3 — intraclass" in `references/migration-pilot-notes.md` —
-      the Lineage A ledger summary + a gap table, each gap tagged
-      `fix-here | candidate | out`, contrasting Lineage A against the Lineage B
-      pilots (M20/M21).
-- [ ] T8: Fold `fix-here` gaps into cairn (skill edit + guard test that fails before
-      the fix); file each design-level gap as a ROADMAP candidate row; run the cairn
-      guard-test suites green.
+- [x] T1: Preconditions — cut `cairn-init-migration` from intraclass `main` @ 9a712c1; both trees clean; no in-flight milestone (M47 shipped).
+- [x] T2: Inventory + proposal — presented the disposition at the migration gate; user chose pointer-only DECISIONS + integrate-where-cairn-has-a-home; principles reversed to note-and-leave after the 70-in-code-ref finding.
+- [x] T3: Entomb verbatim — 27 moves, all 100% renames (status/history + 6 skills → `legacy/`; PRINCIPLES/REFERENCES/COVERAGE/estimand-specs → cairn homes). Evidence: `git diff -M --summary` all `rename … (100%)`, 0 ins/0 del.
+- [x] T4: Author fresh — `DESIGN.md` (seed), `ROADMAP.md` (legacy pointer + 3 candidates, IDs from M48), `DECISIONS.md` (**pointer-only**, per gate), `LESSONS.md`, `references/INDEX.md`. (Compromise A superseded by the gate: no DESIGN.md existed; concern-files kept in their cairn homes.)
+- [x] T5: Redistribute + sweep — `CLAUDE.md` repointed + cairn section appended; `.Rbuildignore` `^project$`→`^cairn$`; `.gitignore` += pdf/ + merge-approved; README roadmap ref repointed; 2 `tests/` path refs note-and-leave (docs-only).
+- [x] T6: Audit + ledger + PR — `cairn_validate` 12/12 clean (CWD=intraclass); ledger in PR #54 body; docs-only PR opened, not merged (intraclass's own gate).
+- [x] T7: "Pilot 3 — intraclass" written in `references/migration-pilot-notes.md` — Lineage A ledger + 5-row gap table (G-I1..G-I5), contrasted with the Lineage B pilots.
+- [x] T8: **No `fix-here` emerged** (M20-like — gaps are design-level + interconnected); filed one grouped "Lineage A migration guidance" candidate; cairn guard suites green (scripts 53, skills 94).
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-12: created by /milestone-plan (third migration pilot; first Lineage A; user chose live branch + real PR).
+- 2026-07-12: gate amendment (substantive) — no DESIGN.md existed in the Lineage A precursor; concern-files (PRINCIPLES/REFERENCES/COVERAGE/estimand-specs) integrated into cairn homes / kept repo-specific rather than entombed; DECISIONS **pointer-only** (user choice) not "re-record still-governing".
+- 2026-07-12: principles disposition reversed at gate — finding 70 in-code `PRINCIPLES.md #N` refs across 29 files blocks folding into DESIGN.md's IP/GP on a docs-only PR; kept `cairn/PRINCIPLES.md` note-and-leave, numbering intact.
+- 2026-07-12: migration executed on intraclass → PR #54 (docs-only, 0 package files, 27×100% renames); `cairn_validate` 12/12 clean. Confirmed IP3 (migration ledger accounts for every file) + GP3 (one-command adoption on a mature Lineage A repo).
+- 2026-07-12: no `fix-here` emerged (M20-like); 5 design-level gaps (G-I1..G-I5) → one grouped "Lineage A migration guidance" candidate. Cairn guard suites green (scripts 53, skills 94). Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

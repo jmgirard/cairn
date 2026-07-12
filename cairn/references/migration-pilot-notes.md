@@ -100,3 +100,53 @@ isolable `fix-here` gaps** (G-C1, G-C3) — a marked contrast with M20, where al
 gaps were design-level and interconnected. That is itself the result: M22/M23
 absorbed the design-level friction, leaving only mechanical residue. G-C1/G-C3
 fixed this milestone (skill edit + guard test); G-C2/G-C4 → ROADMAP candidates.
+
+## Pilot 3 — intraclass (M41) — first **Lineage A**
+
+- **Repo:** `jmgirard/intraclass`, R package, default branch **`main`**, pre-CRAN
+  (`0.0.0.9000`). Far larger precursor than M20/M21: **47 milestones**, a
+  **4959-line ADR log** (ADR-001..058), **34 `data-raw/oracle-*.R` scripts**, 4
+  estimation engines.
+- **First Lineage A pilot.** M20/M21 were Lineage B (status in CLAUDE.md / a
+  forward-only ROADMAP). intraclass has a full multi-file `project/` board —
+  `STATUS`/`MILESTONES`/`ROADMAP`/`DECISIONS`/`PRINCIPLES`/`COVERAGE`/`REFERENCES`
+  + `estimand-specs/` + 6 repo-local `.claude/skills/`. §2's mapping was hardened
+  against B, not A.
+- **Migration PR:** https://github.com/jmgirard/intraclass/pull/54 (docs/tracking
+  only — **0 package files touched**, verified `git diff main..HEAD`).
+- **Health audit:** `cairn_validate` **12/12 clean** on the branch — no documented
+  exception (contrast M20's 8/9; the D-018 cap fix + later hardening let a mature
+  Lineage A repo pass clean).
+
+### Ledger summary
+
+Entombed → `cairn/legacy/` (100% renames): `STATUS`, `MILESTONES` (M1–M47),
+`ROADMAP`, `DECISIONS` (ADR-001..058), `fable-brief-m32-s2`, the 6 repo-local
+skills. Relocated live (100% renames): `PRINCIPLES.md` → `cairn/PRINCIPLES.md`
+(numbering intact), `REFERENCES.md` → `cairn/references/`, `COVERAGE.md` +
+`estimand-specs/` → `cairn/` (repo-specific). Authored: `DESIGN.md` (seed),
+`ROADMAP.md` (legacy pointer + 3 candidates, IDs from **M48**), `DECISIONS.md`
+(**pointer-only**), `LESSONS.md`, `references/INDEX.md`. Live state: 0 in-progress
+(M47 shipped); release consolidation + parking lot + design/power question →
+candidates. Redistributed `CLAUDE.md`; repointed the README roadmap ref.
+
+### Gaps / friction (keyed to cairn-init §)
+
+| # | Gap | § | Tag |
+|---|---|---|---|
+| G-I1 | **Concern-split precursor.** Lineage A has *no* `DESIGN.md`; it splits DESIGN concerns across dedicated files (PRINCIPLES/DECISIONS/REFERENCES/COVERAGE/estimand-specs). §2/§5 assume a single (thin or rich-Compromise-A) DESIGN. Resolved at gate: integrate where cairn has a home (references → `references/`), keep repo-specific where it doesn't (COVERAGE, estimand-specs), author a thin `DESIGN.md` seed that *points* to the others. | §2/§5 | candidate |
+| G-I2 | **HEADLINE: principles cited by number in 70 in-code comments across 29 files** (`PRINCIPLES.md #N`). Folding them into `DESIGN.md`'s IP/GP (renumbering) strands all 70, or requires touching package code — breaking the docs-only rule. Forces **note-and-leave with numbering + basename preserved**; IP/GP formalization *and* the eventual in-code repoint defer to `/design-interview` + a **code** milestone. A bigger, blocking version of M20 G6. | §2/§6 | candidate |
+| G-I3 | **No cairn-canonical oracle-registry home.** intraclass ships a mature oracle registry (`REFERENCES.md`); cairn has the *doctrine* (D-024) but not a registry *file*. Migration parks it repo-specific. Directly the deferred `ORACLES.md` candidate — **cairn M42 assesses fit**. | §5 | candidate (existing) |
+| G-I4 | **§6 "entomb all repo-local skills" is too blunt — but right here.** 2 of 6 skills (`new-estimator`, `verify-estimator`) are *domain* workflow, yet tracking-**coupled** (they drive the `project/MILESTONES.md` board + old gate model), so entombing is correct. Their domain *value* (estimator scaffold, oracle-verification) has no cairn home → reinforces G-I3 + the R-provenance-guard candidate. §6 should distinguish coupled-tracking skills (entomb) from clean domain skills (keep/ask). | §6 | candidate |
+| G-I5 | **`pointer-only` DECISIONS is unnamed but worked.** §2 step 5 frames the disposition as "re-record only still-governing"; for a 58-ADR log, **pointer-only** (re-record nothing; cite `ADR-0nn` into legacy) was cleanest + most no-invention-safe. Name it as an explicit option for large decision logs. | §5 | candidate |
+
+### Disposition
+
+Like **M20** (not M21): the gaps are **predominantly design-level and
+interconnected** — Lineage A protocol guidance (concern-split mapping, numbered-
+principle handling, skill classification, pointer-only) is a coherent addition to
+`/cairn-init`, not a set of one-liners. Per the M22/M23 precedent (pilot findings →
+a dedicated hardening milestone), all five promote to a single **grouped ROADMAP
+candidate** for a deliberate Lineage A hardening milestone; **no `fix-here`
+emerged** (a valid outcome, as in M20). The oracle-registry gap (G-I3) is the
+existing `ORACLES.md` candidate, fed by cairn M42.
