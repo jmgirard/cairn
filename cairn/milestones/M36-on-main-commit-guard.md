@@ -125,4 +125,28 @@ Consistency gate: `cairn_validate` 11/11 (exit 0), incl. "coverage complete"
 (the mechanical AC→task Coverage-completeness check). DESIGN.md untouched → Sync
 Impact Report skipped. Whole-repo suites green: 30 hooks / 49 scripts / 83 skills.
 
-Independent fresh-context review (two lenses + Sonnet scorer): _pending_.
+Independent fresh-context review (two distinct-evidence lenses):
+
+- **[O] diff-bug reviewer (Opus)** — no findings. Verified the `GIT_COMMIT`
+  and `STAGE_ALL` regexes (positive+negative cases incl. `--amend`,
+  `commit-tree`, env-prefixed commits), default-branch resolution (slashed
+  branch names, detached HEAD, no-remote fallback), repo-root-relative path
+  handling, and the `hookSpecificOutput`/`additionalContext`-no-`permissionDecision`
+  envelope. Confirmed the `trunk` fixture is non-vacuous (branch ≠ main/master,
+  so a nudge can only come via the remote-HEAD path).
+- **[S] blame-history reviewer (Sonnet)** — no findings. Confirmed the change
+  is purely additive to `hooks.json` and `test_hooks.py` (existing
+  `merge_guard`/`memory_guard` registrations + assertions byte-identical),
+  envelope matches the M07-pinned contract, and design follows D-017 and the
+  M07/M19 hook lessons.
+
+Zero surviving findings → scorer/triage not needed (nothing to rank). Both
+lenses independently noted the same two conservative-by-design, already-
+documented non-defects (accepted, not findings): a pathspec-limited
+`git commit <file>` and a multi-token `git -C`/`-c` prefix are silent misses —
+warn-only, so neither can wrong-block, mirroring `merge_guard.py`'s documented
+stance.
+
+Process note: a reviewer subagent isolated itself in a git worktree, which
+parked the primary checkout on `main` mid-review; no data lost (all commits on
+the branch), worktree auto-cleaned, branch restored. Lesson captured at merge.
