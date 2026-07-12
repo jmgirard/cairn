@@ -91,9 +91,9 @@ class TestReviewFanout(unittest.TestCase):
 class TestSharedCheckoutGuard(unittest.TestCase):
     """M37: cairn-spawned subagents share the primary checkout, so they use
     ref-based git only — never a HEAD-moving command (checkout/worktree add)
-    in that tree (a reviewer that did parked the checkout mid-M36-review). This
-    is locked in two places: the general subagent-conduct rule in the shared
-    rulebook, and the pointed reminder at the /milestone-review fan-out step.
+    in that tree (a reviewer that did so parked the checkout mid-M36-review).
+    This is locked in two places: the general subagent-conduct rule in the
+    shared rulebook, and the pointed reminder at the /milestone-review step.
     Phrases are asserted case-insensitively and each lives on one physical
     line (M23 newline, M26 bold-split lessons)."""
 
@@ -109,6 +109,7 @@ class TestSharedCheckoutGuard(unittest.TestCase):
         t = review().lower()
         self.assertIn("ref-based git only", t)
         self.assertIn("working tree", t)
+        self.assertIn("git checkout", t)
         self.assertIn("git worktree add", t)
 
 
