@@ -16,29 +16,21 @@ pilot.
 **In:** A new `skills/design-interview/SKILL.md` encoding the gold-standard
 interview from `references/design-interview-notes.md` (items 1–11):
 
-- **Phase 1 (Facts):** elicit what can't be inferred from the repo;
-  chain each round on prior answers; ground every option in repo evidence
-  (files, Imports, git history); ask the wart question; **bank**
-  proto-principles in a running ledger — never classify in phase 1.
-- **Seam:** summarize what was heard, write the DESIGN draft +
-  banked-candidates ledger to disk, checkpoint-commit, and offer a routing
-  chip (continue into principles / pause). Continuous by default, pausable
-  without loss.
-- **Phase 2 (Principles):** propose banked + domain-derived + git-mined
-  candidates, each pre-classified (IP/GP/skip) with a marked recommendation;
-  stress-test the full set for collisions with phase-1 decisions; write
-  principles to DESIGN.md respecting IP-block-first ordering and
-  never-reuse numbering.
-- Runs entirely on Opus in the main session (the cheap lever).
-- Wiring: cairn-init's DESIGN-fill step keeps its quick honest lines and
-  adds a routing chip into `/design-interview`; skill registered in
-  `SKILLS_WITH_PHASE_HEADER`; DESIGN.md skill count `× 8` → `× 9`;
-  DECISIONS.md D-entry for the standalone-skill choice.
+- **Phase 1 (Facts):** elicit what code can't show; chain rounds on prior
+  answers; ground options in repo evidence; ask the wart question; **bank**
+  proto-principles — never classify in phase 1.
+- **Seam:** write DESIGN draft + banked ledger, checkpoint-commit, routing
+  chip (continue / pause). Continuous by default, pausable without loss.
+- **Phase 2 (Principles):** banked + domain-derived + git-mined candidates,
+  each pre-classified (IP/GP/skip) with a recommendation; stress-test against
+  phase-1 decisions; write to DESIGN.md (IP-block-first, never-reuse).
+- Wiring: cairn-init hand-off + routing chip; `SKILLS_WITH_PHASE_HEADER`;
+  DESIGN `× 8` → `× 9`; DECISIONS D-entry.
 
 Model tier (amended 2026-07-11, D-014): the openac pilot found Opus's
 questions too technical; Fable was markedly better. The skill now recommends
-running the session on Fable (soft steer, user's per-instance choice). This
-absorbs the former "phase-2-to-Fable elevation" candidate (dropped).
+running the session on Fable (soft steer, user's per-instance choice),
+absorbing the former "phase-2-to-Fable elevation" candidate (dropped).
 
 **Out:**
 - Greenfield init opener-questions + toolchain-profile selection → stays
@@ -134,16 +126,12 @@ absorbs the former "phase-2-to-Fable elevation" candidate (dropped).
 ## Review
 
 **Evidence (fresh, 2026-07-11):**
-- C1 skill exists / rulebook-first / phase-header / two phases + seam:
-  file present (6.3K); `test_design_interview` green. ✓
-- C2 Phase-1 five disciplines + banking: guard test green. ✓
-- C3 Phase-2 classified candidates + stress-test + write-out: guard green. ✓
-- C4 registration: phase-header guard passes; DESIGN reads `× 9`;
-  cairn-init routes to `/design-interview`. ✓
-- C5 guard test present + suite green (17/17). ✓
+- C1–C3, C5, Fable-steer: `test_design_interview` (12 cases) green — skill
+  file, both phases + seam, registration anchors, Fable recommendation. ✓
+- C4 registration: phase-header guard passes; DESIGN `× 9`; cairn-init
+  routes to `/design-interview`. ✓
 - C6 openac pilot: Opus rejected (questions too technical), Fable rerun
   "much better" → Fable-recommended (D-014). Passed on Fable. ✓
-- Fable-steer criterion: `test_recommends_running_on_fable` green. ✓
 
 **Consistency gate:** validate green (8/8); caps OK (ROADMAP 33, milestone
 <150, DESIGN 73); no README.Rmd/pkgdown (not an R package); CHANGELOG
