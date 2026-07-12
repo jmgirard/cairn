@@ -18,9 +18,10 @@ overrides — log the override).
 
 ## Workflow
 
-1. **Sync with main first** — main means origin/main: `git fetch` before
-   comparing, and push main if it has unpushed local commits. If main has
-   moved since the branch was cut, merge main into the branch and re-run
+1. **Sync with the default branch first** — detect it (tracking-rules git
+   model) and read it as its origin ref: `git fetch` before comparing, and
+   push the default branch if it has unpushed local commits. If it has
+   moved since the branch was cut, merge it into the branch and re-run
    tests before gathering any evidence — evidence from a stale branch is
    worthless and the squash-merge would conflict anyway.
 
@@ -91,7 +92,7 @@ overrides — log the override).
    two reviewers that have not seen the implementation, in parallel, each with
    a *distinct evidence base* (a shared base just finds the same things twice):
    - **[O] diff-bug reviewer (Opus).** Reviews the full diff
-     (`git diff main..HEAD`) against the acceptance criteria, DESIGN.md
+     (`git diff <default-branch>..HEAD`) against the acceptance criteria, DESIGN.md
      conventions, and DECISIONS.md — correctness, contract, convention.
    - **[S] blame-history reviewer (Sonnet).** Runs `git log` / `git blame` on
      the modified lines and judges the change *against the intent of the code
@@ -129,14 +130,14 @@ overrides — log the override).
    recommendations). Then put the merge authorization **itself** to the user
    as an `AskUserQuestion` chip — this is the third gate (per tracking-rules),
    never a prose yes/no: the recommended option merges (e.g. `Merge PR #N to
-   main`) and a decline option is present. Approval withheld (or declined at
+   <default-branch>`) and a decline option is present. Approval withheld (or declined at
    the chip) → log the requested changes as tasks, status back to
    `in-progress`, stop.
 
 8. **On approval — and only then:** record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
    `M<NN> approved YYYY-MM-DD`). The plugin's PreToolUse hook denies
-   merges to main without this marker and consumes it per merge attempt;
+   merges to the default branch without this marker and consumes it per merge attempt;
    if a merge fails and is retried under the same approval, rewrite the
    marker. Write the marker in a **separate** step before the `gh pr merge`
    command — the hook checks it before the command runs, so writing it in
@@ -147,8 +148,9 @@ overrides — log the override).
    re-verify, re-request approval if the fix was nontrivial. When green:
    `gh pr merge --squash --delete-branch` with a clean summary message.
 
-9. **Post-merge hygiene pass on main:** check out main and pull first —
-   after a squash-merge, local main is behind origin and any leftover local
+9. **Post-merge hygiene pass on the default branch:** check it out and pull
+   first — after a squash-merge, the local default branch is behind origin and
+   any leftover local
    commits mean divergence to resolve before committing. Then compress the
    milestone file to a
    ≤25-line summary (goal, outcome, key decisions, PR link) and move it to

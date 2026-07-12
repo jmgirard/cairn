@@ -86,11 +86,11 @@ Extend `test_default_branch_parameterized.py` to lock the four skills.
       `origin/`) + the local/ask fallback, noting operational skills detect at
       runtime. Do not reintroduce any retired hardcoded-`main` phrase the
       existing guard forbids.
-- [ ] T2 — Parameterize `/milestone-implement` (`skills/milestone-implement/
+- [x] T2 — Parameterize `/milestone-implement` (`skills/milestone-implement/
       SKILL.md:30,32,35,36`): sync-with-origin, branch-from, and the
       "if main has moved … merge main into the branch" branch-sync step now
       name the detected default branch.
-- [ ] T3 — Parameterize `/milestone-review` (`skills/milestone-review/
+- [x] T3 — Parameterize `/milestone-review` (`skills/milestone-review/
       SKILL.md`): sync step (21–23), the diff command `git diff main..HEAD`
       (94), the merge-gate chip label `Merge PR #N to main` (139/42-style),
       and the post-merge hygiene checkout/pull (150–151). Preserve the
@@ -111,6 +111,7 @@ Extend `test_default_branch_parameterized.py` to lock the four skills.
 
 - 2026-07-12: created by /milestone-plan (direction/detection/scope set at the plan gate: runtime-detect, all four skills, date-scan kept separate).
 - 2026-07-12: in-progress; cut m25-default-branch-operational-skills. T1 — added the canonical runtime detection recipe to the tracking-rules git model.
+- 2026-07-12: T2/T3 — parameterized /milestone-implement and /milestone-review git steps (incl. `git diff <default-branch>..HEAD` and the merge-gate chip label) to the detected default branch.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
