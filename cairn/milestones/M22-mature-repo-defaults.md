@@ -75,10 +75,10 @@ doctrine.
 
 ## Tasks
 
-- [ ] **T1** — Settle the cap model: pick higher-flat vs size-tiered vs
-      soft-warn-not-fail vs profile-slot (recommended default: soft-warn the
-      cairn-owned budget, don't hard-FAIL total lines, so legit doctrine passes
-      but drift is still surfaced). Record the choice + rejected options as a
+- [x] **T1** — Settle the cap model: pick higher-flat vs size-tiered vs
+      soft-warn-not-fail vs profile-slot. Chose **cap only the cairn section**
+      (D-018) — drop the whole-file cap, hard-cap the `## Project tracking
+      (cairn)` block at 30 lines. Record the choice + rejected options as a
       D-entry in `cairn/DECISIONS.md`.
 - [ ] **T2** — Implement the cap change in `scripts/cairn_scripts.py`
       `LINE_CAPS` (line 41) + `scripts/cairn_validate.py` `check_caps` +
@@ -100,6 +100,8 @@ doctrine.
   "Recalibrate the CLAUDE.md weight cap" (G8) and "Parameterize the default
   branch" (G1/G9), both from `references/migration-pilot-notes.md` (M20).
   Sequenced before M21 per the harden-before-pilot decision.
+- 2026-07-12: gate — cap model = cap-only-cairn-section (D-018); branch =
+  detect + generic rulebook. T1 done: D-018 recorded.
 
 ## Decisions
 
