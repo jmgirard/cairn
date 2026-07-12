@@ -38,14 +38,15 @@ once by the named skill), **append-only** (lines added, never rewritten),
 **amend-via-gate** (changed only through the implement amendment protocol,
 `/milestone-implement` step 6, or a review send-back — always with a work-log
 line), **mirror-update** (the status field is synced to `ROADMAP.md` by
-whichever skill makes the transition; ROADMAP wins any conflict), **exclusive**
-(only the named skill ever writes it).
+whichever skill makes the transition; ROADMAP wins any conflict),
+**check-off** (implement ticks task checkboxes and makes minor task edits),
+**exclusive** (only the named skill ever writes it).
 
 | Section | Writing skill | Write-mode |
 |---|---|---|
 | Status (header) | the transitioning skill (plan → implement → review) | mirror-update |
 | Priority, Depends on (header) | plan | create; amend-via-gate |
-| Branch/PR (header) | implement (branch), review (PR URL) | create-once |
+| Branch/PR (header) | implement (branch), review (PR URL) | create |
 | Goal | plan | create; a wrong goal returns to plan, never edited in place |
 | Scope (In/Out) | plan | create; amend-via-gate |
 | Acceptance criteria | plan | create; amend-via-gate — review reads, never reinterprets |
