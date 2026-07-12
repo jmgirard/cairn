@@ -80,7 +80,7 @@ next real migration doesn't re-hit them.
       two dispositions.
 - [x] **T3** — Add §1/§6 `.Rbuildignore` prune guidance; widen §0 Lineage B
       detection wording (forward-only ROADMAP + explicit status slot).
-- [ ] **T4** — Guard test any new mechanical invariant (keep the
+- [x] **T4** — Guard test any new mechanical invariant (keep the
       `test_section_allow_lists.py` literal-phrase invariants intact when
       editing SKILL prose — M18 lesson); run the full suite green; commit.
 
@@ -102,6 +102,9 @@ next real migration doesn't re-hit them.
 - 2026-07-12: T3 — post-move hygiene: step-6 prune of stale per-file
   `.Rbuildignore` entries (+ §1 cross-reference); widened §0 Lineage B
   detection to a forward-only ROADMAP + explicit status/`Current focus` slot.
+- 2026-07-12: T4 — added `skills/tests/test_migration_guidance.py` (5 cases)
+  locking the T1–T3 phrase invariants; full suite green (56 skill + 33 script).
+  `test_section_allow_lists.py` untouched and still passing.
 
 ## Decisions
 
