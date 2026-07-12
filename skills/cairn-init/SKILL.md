@@ -13,6 +13,13 @@ Phase header: `# cairn-init` → `## Scaffold` / `## Repair` / `## Migration §n
 
 ## 0. Detect the situation
 
+- **Default branch.** Detect the repo's default branch —
+  `git symbolic-ref --short refs/remotes/origin/HEAD` (strip the `origin/`
+  prefix), falling back to the current branch (`git branch --show-current`)
+  whenever that fails: no remote, or `origin/HEAD` unset (a shallow clone, a
+  fresh `git remote add`, or a CI checkout that never ran `set-head`). cairn
+  does not assume `main`; use the detected name wherever the steps below (and
+  the tracking-rules git model) say "the default branch".
 - No DESCRIPTION file → **non-package repo**: say so and ask — adapt
   (scaffold the tracking system minus R-specific guardrails/gates) or
   abort. Never scaffold R machinery into a non-package repo silently.
@@ -79,8 +86,9 @@ Then:
   conventions, and IP/GP principles the code can't show — is
   `/design-interview`, offered on the routing chip below; this step only
   seeds the file.
-- Commit (docs-only, main): `cairn-init: scaffold tracking system`; push
-  if a remote exists (origin/main is main — see tracking-rules git model).
+- Commit (docs-only, on the default branch): `cairn-init: scaffold tracking
+  system`; push if a remote exists (the remote's default branch is
+  authoritative — see tracking-rules git model).
 - Routing chip, composed from what the scaffold found (chip rules per
   tracking-rules) — e.g. **Run the design interview** → `/design-interview`
   (recommended for a fresh repo, to turn the seeded DESIGN.md into an
@@ -109,8 +117,9 @@ Lineage: M03 tidymedia pilot (PR #8).
    in-progress item is either finished first (recommend it) or carried over
    as the sole `in-progress` milestone, explicitly confirmed.
 
-2. **Branch + PR.** All migration work on `cairn-init-migration`, merged via
-   PR — one reviewable, revertible diff. Never on main.
+2. **Branch + PR.** All migration work on `cairn-init-migration`, cut from the
+   up-to-date default branch, merged via PR — one reviewable, revertible diff.
+   Never on the default branch.
 
 3. **Inventory + proposal.** List every legacy tracking file and every live
    item found (in-flight/planned work, backlog/parking-lot/someday items,

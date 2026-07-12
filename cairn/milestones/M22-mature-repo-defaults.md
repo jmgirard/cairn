@@ -2,10 +2,10 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M22: Generalize cairn beyond `main`; recalibrate the mature-repo CLAUDE.md cap
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** m22-mature-repo-defaults · https://github.com/jmgirard/cairn/pull/19
 
 ## Goal
 
@@ -45,25 +45,25 @@ doctrine.
 
 ## Acceptance criteria
 
-- [ ] cairn no longer hardcodes `main`: `/cairn-init` detects the repo's
+- [x] cairn no longer hardcodes `main`: `/cairn-init` detects the repo's
       default branch, and the git model (`tracking-rules.md`), the CLAUDE.md
       template, and `/cairn-init` §2 read correctly for a `master` repo (no bare
       `main`-only instruction that would contradict such a repo). Evidence: the
       ~18 refs updated; a guard test asserting the git-model + init branch
       language is not bare-`main`; a walk-through of §2 step 2 on a `master`
       repo producing correct branch text.
-- [ ] The `<80` CLAUDE.md hard cap is replaced by a model that does **not**
+- [x] The `<80` CLAUDE.md hard cap is replaced by a model that does **not**
       FAIL a legitimate mature repo (a ≥150-line real-doctrine CLAUDE.md fixture
       passes the audit) while still flagging genuine bloat. The chosen model is
       recorded as a D-entry in `cairn/DECISIONS.md`. Evidence: `cairn_validate`
       run against a mature-repo fixture (pass) and a bloated fixture (flag);
       the D-entry.
-- [ ] The cap model is consistent across all three wiring points —
+- [x] The cap model is consistent across all three wiring points —
       `tracking-rules.md` weight-caps text, `cairn_scripts.LINE_CAPS`, and
       `cairn_validate.check_caps` all agree (the M16 four-wiring-points lesson).
       Evidence: a `scripts/tests/` unit test on `check_caps` with both fixtures,
       plus the tracking-rules text matching the code.
-- [ ] Guard-test suite green over `skills/tests/` and `scripts/tests/`.
+- [x] Guard-test suite green over `skills/tests/` and `scripts/tests/`.
       Evidence: test run output.
 
 ## Coverage
@@ -75,24 +75,16 @@ doctrine.
 
 ## Tasks
 
-- [ ] **T1** — Settle the cap model: pick higher-flat vs size-tiered vs
-      soft-warn-not-fail vs profile-slot (recommended default: soft-warn the
-      cairn-owned budget, don't hard-FAIL total lines, so legit doctrine passes
-      but drift is still surfaced). Record the choice + rejected options as a
-      D-entry in `cairn/DECISIONS.md`.
-- [ ] **T2** — Implement the cap change in `scripts/cairn_scripts.py`
-      `LINE_CAPS` (line 41) + `scripts/cairn_validate.py` `check_caps` +
-      `tracking-rules.md` weight-caps text (line ~82); add a `scripts/tests/`
-      unit test with a mature-repo fixture (passes) and a bloated fixture
-      (flagged).
-- [ ] **T3** — Parameterize the default branch in the `tracking-rules.md` git
-      model (~15 `main` refs) — detected branch / "default branch (main/master)".
-- [ ] **T4** — Parameterize the default branch in `/cairn-init`
-      (`skills/cairn-init/SKILL.md`: §2 step 2 + scaffold/commit lines) and the
-      CLAUDE.md template; add default-branch detection at init (§0/§1).
-- [ ] **T5** — Guard test locking the new invariants (git model + init carry no
-      bare-`main` assumption; cap model shape); run the full suite green; commit
-      tracking + code together.
+- [x] **T1** — Cap model chosen: cap-only-cairn-section (D-018).
+- [x] **T2** — Cap change in `cairn_scripts.py` (`CLAUDE_SECTION_CAP=30`,
+      `claude_section_line_count`; `LINE_CAPS` drops CLAUDE.md) +
+      `cairn_validate.check_caps` + tracking-rules text/remedy; +2 fixtures.
+- [x] **T3** — Default branch parameterized in the tracking-rules git model +
+      adjacent doctrine (12 refs → "the default branch"; `main`/`master` gloss).
+- [x] **T4** — Default branch in `/cairn-init` (§0 detection, §1/§2 refs) and
+      the `claude-md-section.md` template (section = 24 lines).
+- [x] **T5** — `test_default_branch_parameterized.py` (5 cases) locks the
+      parameterization + section-scoped cap doctrine.
 
 ## Work log
 
@@ -100,7 +92,51 @@ doctrine.
   "Recalibrate the CLAUDE.md weight cap" (G8) and "Parameterize the default
   branch" (G1/G9), both from `references/migration-pilot-notes.md` (M20).
   Sequenced before M21 per the harden-before-pilot decision.
+- 2026-07-12: gate — cap model = cap-only-cairn-section (D-018); branch =
+  detect + generic rulebook. T1 done: D-018 recorded.
+- 2026-07-12: T2–T5 done. Cap now measures the cairn CLAUDE.md section (30),
+  whole file uncapped; default branch parameterized across git model + template
+  + cairn-init (detected via `symbolic-ref`). 51 skills + 33 scripts tests
+  green. Discovered follow-up: operational `main` git commands in the other
+  skills are out of scope → new ROADMAP candidate (M22 Out).
 
 ## Decisions
 
 ## Review
+
+Reviewed 2026-07-12 on branch `m22-mature-repo-defaults` (PR #19). R gates
+waived (plugin repo). No IP/GP changed → `cairn_impact` skipped.
+
+**Evidence per criterion**
+
+- **AC1 (default branch):** `git symbolic-ref --short refs/remotes/origin/HEAD`
+  → `origin/main` → detected `main`; on a `master` repo it resolves `master`,
+  with a current-branch fallback when no remote HEAD. The git model, CLAUDE
+  template, and cairn-init §2 all read "the default branch"; the only residual
+  bare `main` in tracking-rules is the intentional ``(`main`/`master`)`` gloss
+  (line 185) and the unrelated "main session" (orchestrator). Locked by
+  `test_default_branch_parameterized.py` (5 cases, green).
+- **AC2 (cap):** `test_mature_claude_md_whole_file_not_capped` — a 210-line
+  CLAUDE.md (would fail the old `<80`) passes; `test_over_cap_claude_section` —
+  a 36-line cairn section fails with `cap <30`. Model recorded as D-018.
+- **AC3 (three wiring points):** `cairn_scripts` (`CLAUDE_SECTION_CAP=30`,
+  `LINE_CAPS` drops `CLAUDE.md`), `cairn_validate.check_caps` (section
+  measurement), and tracking-rules text ("`## Project tracking` section … < 30")
+  all agree; both fixtures exercise `check_caps`.
+- **AC4 (suites):** 51 skills + 33 scripts tests green.
+
+**Consistency gate:** `cairn_validate` exit 0 (9/9). Coverage complete —
+AC1→T3,T4 · AC2→T1,T2 · AC3→T2,T5 · AC4→T5, all mapping to existing tasks.
+
+**Independent review** (two lenses + Sonnet scorer). 2 findings, both scored
+below the 80 actioned threshold — logged per IP3:
+- [65] cairn-init §0 detection fallback said "when there is no remote" but
+  `symbolic-ref` also fails on an unset `origin/HEAD` (shallow clone, fresh
+  `remote add`, CI checkout). Sub-threshold, but a trivial correct fix to
+  in-milestone text → **fixed**: fallback broadened to "whenever that fails".
+- [8] this repo's own root `CLAUDE.md` still says "main" — factually correct
+  (this repo's branch *is* `main`) and deliberately out of AC1's
+  template-scoped remit; no action. Reviewer also noted stale `<80` mentions
+  in `references/` study notes (historical record, not live enforcement) — no
+  action.
+No finding scored ≥80; nothing required triage-to-fix.

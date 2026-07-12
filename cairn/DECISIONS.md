@@ -246,3 +246,25 @@ only on durable-state signals) is the entry to supersede. Envelope is pinned
 to the documented contract + the unit test's asserted shape; a true live-fire
 (does Claude Code honor `additionalContext` from PreToolUse) needs a fresh
 session after merge, since hooks snapshot at process start.
+
+### D-018 (2026-07-12): The CLAUDE.md weight cap measures the cairn section, not the whole file
+
+**Context:** The `<80`-line CLAUDE.md cap in `cairn_validate` FAILed a
+legitimately mature repo — the M20 ackwards pilot's CLAUDE.md was 187 lines of
+real dev doctrine (dev workflow, definition-of-done, invariants, guardrails)
+plus the ~26-line appended cairn section. cairn was policing content it does
+not own. (references/migration-pilot-notes.md G8.)
+**Decision:** Drop the whole-file CLAUDE.md cap. Instead hard-cap only the
+`## Project tracking (cairn)` section cairn appends and owns, at **30 lines**
+(the template's stated target stays ~25). The repo's own dev doctrine above or
+below that section is not capped by cairn. Rejected: a higher flat whole-file
+cap (arbitrary — the next larger repo re-breaks it, and the flat cap is itself
+what the pilot flagged), and a soft non-failing warn (loses the hard signal on
+a genuinely bloated cairn section).
+**Consequences:** The audit passes on any mature repo while still hard-failing
+a bloated cairn section — the one part cairn controls. Reinforces D-009 (the
+router section carries routing only; a swelling section is the signal to trim,
+not to raise a cap). Wired in three places (M16 lesson): `tracking-rules.md`
+weight-caps text, `cairn_scripts.py` (new `CLAUDE_SECTION_CAP`; `LINE_CAPS`
+drops `CLAUDE.md`), and `cairn_validate.check_caps` (section measurement).
+Locked by `scripts/tests/`.

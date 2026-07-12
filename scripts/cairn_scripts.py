@@ -38,10 +38,18 @@ PRIORITY_ORDER = {"high": 0, "normal": 1, "low": 2}
 
 # Weight caps (tracking-rules): file -> max line count. A live milestone
 # file is < 150; an archived summary is <= 25 (handled separately by path).
-LINE_CAPS = {"CLAUDE.md": 80, "cairn/ROADMAP.md": 60, "cairn/LESSONS.md": 50}
+# CLAUDE.md is NOT whole-file capped (D-018): a mature repo's own dev doctrine
+# is not cairn's to police. Only the appended cairn section is capped, via
+# CLAUDE_SECTION_CAP + claude_section_line_count (handled separately).
+LINE_CAPS = {"cairn/ROADMAP.md": 60, "cairn/LESSONS.md": 50}
 MILESTONE_CAP = 150
 ARCHIVE_CAP = 25
 DONE_ROW_RETENTION = 5
+
+# Cap on the cairn-owned `## Project tracking (cairn)` block appended to a
+# repo's CLAUDE.md (D-018). Template target is ~25 lines; 30 gives headroom.
+CLAUDE_SECTION_CAP = 30
+CLAUDE_SECTION_HEADING = "## Project tracking"
 
 
 class NotCairn(Exception):
@@ -163,6 +171,32 @@ def line_count(path):
             return sum(1 for _ in f)
     except Exception:
         return None
+
+
+def claude_section_line_count(path):
+    """Line count of the cairn-owned `## Project tracking (cairn)` section in a
+    CLAUDE.md — the heading line through the line before the next H2 (`## `) or
+    EOF. Returns None if the file is unreadable or has no such section (e.g. a
+    repo mid-migration, or one that never adopted cairn); those are not a cap
+    failure here. See D-018."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            lines = f.read().splitlines()
+    except Exception:
+        return None
+    start = None
+    for i, line in enumerate(lines):
+        if line.startswith(CLAUDE_SECTION_HEADING):
+            start = i
+            break
+    if start is None:
+        return None
+    end = len(lines)
+    for j in range(start + 1, len(lines)):
+        if lines[j].startswith("## "):
+            end = j
+            break
+    return end - start
 
 
 def sort_by_priority(row_list):

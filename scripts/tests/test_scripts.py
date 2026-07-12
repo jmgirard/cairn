@@ -177,6 +177,21 @@ class TestValidateClean(ScriptCase):
         self.assertEqual(proc.returncode, 0, proc.stdout)
         self.assertIn("all checks passed", proc.stdout)
 
+    def test_mature_claude_md_whole_file_not_capped(self):
+        # D-018: a mature repo's own dev doctrine is not cairn's to cap. A
+        # 200+-line CLAUDE.md (would FAIL the old whole-file <80) passes so
+        # long as the appended cairn section is within its own cap.
+        root = self.tree.build()
+        (root / "CLAUDE.md").write_text(
+            "# Big mature repo\n\n"
+            + "legit dev doctrine line\n" * 200
+            + "\n## Project tracking (cairn)\n"
+            + "cairn router line\n" * 10
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("all checks passed", proc.stdout)
+
 
 class TestValidateFailures(ScriptCase):
     def assert_fails(self, check_label, root):
@@ -207,6 +222,17 @@ class TestValidateFailures(ScriptCase):
         out = self.assert_fails("weight caps", root)
         self.assertIn("cairn/LESSONS.md", out)
         self.assertIn("cap <50", out)
+
+    def test_over_cap_claude_section(self):
+        # D-018: a bloated `## Project tracking (cairn)` section (>= 30 lines)
+        # still hard-fails — that block is the part cairn owns.
+        root = self.tree.build()
+        (root / "CLAUDE.md").write_text(
+            "# repo\n\nlocal doctrine\n\n## Project tracking (cairn)\n" + "x\n" * 35
+        )
+        out = self.assert_fails("weight caps", root)
+        self.assertIn("CLAUDE.md cairn section", out)
+        self.assertIn("cap <30", out)
 
     def test_non_iso_date_in_lessons(self):
         # LESSONS.md entries carry dates (- YYYY-MM-DD (M<NN>): …); a
