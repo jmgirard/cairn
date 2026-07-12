@@ -78,7 +78,7 @@ to a `planned` milestone (that is a later plan-gate decision, fed by these findi
       per-type counts; flag any that fit no type; compare intraclass `PRINCIPLES.md`
       #1 to cairn's ≥2-types bar with an agree/diverge verdict. Write both into a new
       `references/oracle-doctrine-intraclass-notes.md` (declares its own scope).
-- [ ] T3: Assess the two deferred candidates against the real system — does the
+- [x] T3: Assess the two deferred candidates against the real system — does the
       `ORACLES.md` registry shape (ID, type, asserting test:line, source, provenance)
       match intraclass's oracles; does the `provenance`-attr + guard-test convention
       match intraclass's fixture practice — with a keep-deferred/revise/promote
@@ -92,6 +92,7 @@ to a `planned` milestone (that is a later plan-gate decision, fed by these findi
 
 - 2026-07-12: created by /milestone-plan (oracle-doctrine reality-check; depends on M41 per user's follow-on choice).
 - 2026-07-12: T1+T2 — read all 34 intraclass oracle scripts + test consumption; wrote references/oracle-doctrine-intraclass-notes.md. Finding: 31/34 use simulation-coverage (SC), an oracle mapping to NONE of cairn's four types (defining oracle for 21). PRINCIPLES.md #1 AGREES on the ≥2-types bar, DIVERGES on taxonomy (its cat (c) = SC, unnamed by cairn). intraclass's frozen-when-expensive / live-when-cheap split corroborates D-024.
+- 2026-07-12: T3 — both deferred candidate rows → REVISE/keep-deferred. Registry: shape matches + earns keep at scale, but intraclass proves a distributed shape and it's downstream of the taxonomy fix. R-provenance guard: content corroborated, but mechanism varies across the two exemplars (attr+guard vs. embedded-fields-no-guard) → mandate content, leave shape to the repo.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
