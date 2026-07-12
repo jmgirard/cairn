@@ -198,6 +198,15 @@ class TestValidateFailures(ScriptCase):
         self.tree.files["milestones/M03-live.md"] = live("planned") + "\nx" * 160 + "\n"
         self.assert_fails("weight caps", self.tree.build())
 
+    def test_over_cap_lessons(self):
+        # A LESSONS.md at/over its 50-line cap fails weight-caps; a missing
+        # LESSONS.md (the clean tree) does not — line_count skips absent files.
+        root = self.tree.build()
+        (root / "cairn" / "LESSONS.md").write_text("# Lessons\n" + "- x\n" * 55)
+        out = self.assert_fails("weight caps", root)
+        self.assertIn("cairn/LESSONS.md", out)
+        self.assertIn("cap <50", out)
+
     def test_done_row_retention(self):
         for n in range(4, 10):  # M04..M09 → 7 done rows total with M01
             mid = f"M0{n}"
