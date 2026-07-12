@@ -74,7 +74,7 @@ interview from `references/design-interview-notes.md` (items 1–11):
 
 ## Tasks
 
-- [ ] Draft `skills/design-interview/SKILL.md`: front-matter (trigger-tuned
+- [x] Draft `skills/design-interview/SKILL.md`: front-matter (trigger-tuned
       description), phase-header directive, Phase 1 (Facts) with items 1–5 +
       banking ledger, the seam (checkpoint-commit + routing chip), Phase 2
       (Principles) with items 6–11 + DESIGN-write rules.
@@ -93,6 +93,9 @@ interview from `references/design-interview-notes.md` (items 1–11):
 
 - 2026-07-11: created by /milestone-plan (promoted from the design-interview
   candidate; lineage references/design-interview-notes.md).
+- 2026-07-11: set in-progress; branch m12-design-interview-skill cut.
+- 2026-07-11: drafted skills/design-interview/SKILL.md (two phases + seam,
+  notes items 1–11) [task 1].
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
