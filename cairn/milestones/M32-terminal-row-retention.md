@@ -3,10 +3,10 @@
      Per-section owners are tagged below. -->
 # M32: Fold dropped rows into the ROADMAP retention cap (done-row → terminal-row)
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** m32-terminal-row-retention
 
 ## Goal
 
@@ -99,6 +99,7 @@ pruned and counted like done ones.
 ## Work log
 
 - 2026-07-12: created by /milestone-plan.
+- 2026-07-12: in-progress on m32-terminal-row-retention.
 
 ## Decisions
 
