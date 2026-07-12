@@ -67,7 +67,7 @@ only). The M06 "minor steals" bundle and the two dropped marginal candidates
       the "Question gates and routing chips" section.
 - [x] T3 — Add the Explore-subagent reading-list instruction to the "Model
       and agent strategy" section (Sonnet-subagents / Explore guidance).
-- [ ] T4 — Add the *why* of different-model review to the review fan-out
+- [x] T4 — Add the *why* of different-model review to the review fan-out
       bullet in "Model and agent strategy".
 - [ ] T5 — Add the copy-run-commands-in-a-fenced-block rule to "Output &
       interaction discipline".
@@ -84,6 +84,7 @@ only). The M06 "minor steals" bundle and the two dropped marginal candidates
 - 2026-07-12: T1 — mature-backlog clustering remedy added to weight-caps; one-line pointer added in cairn-init §2 step 5 (M23-guarded wording untouched).
 - 2026-07-12: T2 — cap-at-3 prioritized-clarification-markers clause added to "Question gates and routing chips".
 - 2026-07-12: T3 — Explore reading-list instruction added to the Sonnet-subagents bullet in "Model and agent strategy".
+- 2026-07-12: T4 — why-fresh-model rationale (diff-blindness) prepended to the review fan-out bullet.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->

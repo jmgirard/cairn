@@ -373,7 +373,11 @@ cairn skill is active.
   committing; summarize results into one work-log line.
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of
   the fresh-context review at `/milestone-review`.
-- **The `/milestone-review` fan-out** (M17): two distinct-evidence reviewers —
+- **The `/milestone-review` fan-out** (M17) runs in fresh-context subagents,
+  not the implementing session, because an author shares their own
+  diff-blindness — a reviewer that did not write the code catches the contract
+  and convention breaks the author reads straight past. Two distinct-evidence
+  reviewers —
   an **[O]** diff-bug reviewer (Opus, correctness/contract/convention) and an
   **[S]** blame-history reviewer (Sonnet, does the change undo deliberate prior
   work) — then an **[S]** confidence scorer (Sonnet) that scores each finding
