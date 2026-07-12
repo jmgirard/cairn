@@ -128,3 +128,15 @@ ACs map to existing tasks (AC1→T2,T1 · AC2→T2 · AC3→T2,T1 · AC4→T1 ·
 AC6→T3). No DESIGN principle changed (impact scan skipped). No R/README/pkgdown/
 NEWS surface in this repo.
 
+**Independent review (two lenses + scorer):**
+- [O] diff-bug (Opus): 1 finding — D-022 Context misattributed the quote
+  "selecting a chip invokes that skill in the same session" to D-003, when it
+  was the pre-M29 `tracking-rules.md` wording D-003 produced.
+- [S] blame-history (Sonnet): no findings — M29 is a strict tightening of the
+  M26/D-019 mandate; no prior work undone, no guard masking.
+- [S] scorer (Sonnet): scored the finding **93** (≥80 → actioned). Below-80
+  findings: 0.
+- Triage: **fixed now** — reworded D-022 Context to frame the quote as the
+  rulebook rule D-003 produced (not a quote from D-003 itself). Pre-merge
+  correction on the branch, not a rewrite of merged history.
+

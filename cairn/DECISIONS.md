@@ -345,8 +345,10 @@ harness needs a different fallback, this is the entry to supersede.
 
 ### D-022 (2026-07-12): Selecting a routing chip is an imperative to invoke the target skill — annotates D-003
 
-**Context:** D-003 glued the phase skills with routing chips and described the
-mechanism as "selecting a chip invokes that skill in the same session." Read
+**Context:** D-003 glued the phase skills with routing chips ("every phase
+ends with an AskUserQuestion chip routing to the next"); the routing-chip rule
+D-003 produced in `tracking-rules.md` then described the mechanism as
+"selecting a chip invokes that skill in the same session." Read
 descriptively, that sentence left room for the orchestrator to *hand back* to
 the user — presenting the chosen option and waiting for the user to type the
 skill command — which is exactly the extra-typing friction D-003 exists to
