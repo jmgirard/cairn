@@ -83,27 +83,27 @@ session — best on Fable (see the note at the top).
 Formalize and pressure-test. Sources for candidates: the banked ledger,
 plus two the interview must add itself —
 
-9. **Mine git history for implicit principles.** Generalize ad-hoc fixes
-   into candidates (a "skip files without audio" fix → "resilient batches").
-10. **Derive candidates from the domain, not just the code.** State forward
-    consequences (irreplaceable recordings → inputs-sacrosanct; IRB/consent
-    → local-only processing, which constrains future remote-inference
-    wrappers).
+- **Mine git history for implicit principles.** Generalize ad-hoc fixes
+  into candidates (a "skip files without audio" fix → "resilient batches").
+- **Derive candidates from the domain, not just the code.** State forward
+  consequences (irreplaceable recordings → inputs-sacrosanct; IRB/consent
+  → local-only processing, which constrains future remote-inference
+  wrappers).
 
 Then propose and test:
 
-11. **Every candidate arrives classified.** Proposed strength — **IP**
-    (inviolable) / **GP** (guiding) / **skip** — with a *marked
-    recommendation*, and adjacent-but-separate matters fenced off explicitly
-    ("output-overwrite defaults are a separate, tradeable matter") so each
-    question stays decidable.
-6. **Stress-test the adopted set against phase-1 decisions.** Surface
-    collisions between separately-endorsed commitments ("thin wrappers" vs.
-    a "tidy outputs" choice → where's the line?).
-7. **Separate essence from accident.** Ask whether a principle is the
-    capability or the current idiom, citing recorded decisions as leverage.
-8. **Probe the scope of each IP.** Offer extend / keep / downgrade for every
-    inviolable.
+- **Every candidate arrives classified.** Proposed strength — **IP**
+  (inviolable) / **GP** (guiding) / **skip** — with a *marked
+  recommendation*, and adjacent-but-separate matters fenced off explicitly
+  ("output-overwrite defaults are a separate, tradeable matter") so each
+  question stays decidable.
+- **Stress-test the adopted set against phase-1 decisions.** Surface
+  collisions between separately-endorsed commitments ("thin wrappers" vs.
+  a "tidy outputs" choice → where's the line?).
+- **Separate essence from accident.** Ask whether a principle is the
+  capability or the current idiom, citing recorded decisions as leverage.
+- **Probe the scope of each IP.** Offer extend / keep / downgrade for every
+  inviolable.
 
 **Write-out.** Record the settled principles in `cairn/DESIGN.md` under
 Design Principles: the **IP block first, then GPs**; numbers run within each

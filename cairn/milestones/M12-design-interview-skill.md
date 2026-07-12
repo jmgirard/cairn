@@ -3,7 +3,7 @@
 - **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- high | normal | low -->
 - **Depends on:** —
-- **Branch/PR:** m12-design-interview-skill   <!-- PR URL once opened -->
+- **Branch/PR:** m12-design-interview-skill · https://github.com/jmgirard/cairn/pull/10
 
 ## Goal
 
@@ -55,10 +55,10 @@ absorbs the former "phase-2-to-Fable elevation" candidate (dropped).
       `# Design interview` → `## Facts` / `## Principles`; the two phases
       and the checkpoint seam (write-to-disk + commit + routing chip) are
       all specified in the prose. (evidence: file + guard test)
-- [ ] Phase 1 prose instructs all of: elicit-don't-classify,
-      chain-on-prior-answers, repo-evidence-grounded options, the wart
-      question, and banking proto-principles into a running ledger
-      (notes items 1–5). (evidence: guard test)
+- [ ] Phase 1 prose instructs all five disciplines: elicit-don't-classify,
+      chain-on-prior-answers, repo-evidence-grounded options, options-as-
+      working-hypotheses, the wart question — plus banking proto-principles
+      into a running ledger (notes items 1–5). (evidence: guard test)
 - [ ] Phase 2 prose instructs: candidates arrive pre-classified
       (IP/GP/skip) each with a marked recommendation, drawn from banked +
       domain-derived + git-mined sources, stress-tested against phase-1
@@ -132,5 +132,29 @@ absorbs the former "phase-2-to-Fable elevation" candidate (dropped).
   phase-2-elevation candidate is absorbed and dropped.
 
 ## Review
-<!-- filled by /milestone-review: evidence per criterion; consistency-gate
-     results; independent-review findings and their triage -->
+
+**Evidence (fresh, 2026-07-11):**
+- C1 skill exists / rulebook-first / phase-header / two phases + seam:
+  file present (6.3K); `test_design_interview` green. ✓
+- C2 Phase-1 five disciplines + banking: guard test green. ✓
+- C3 Phase-2 classified candidates + stress-test + write-out: guard green. ✓
+- C4 registration: phase-header guard passes; DESIGN reads `× 9`;
+  cairn-init routes to `/design-interview`. ✓
+- C5 guard test present + suite green (17/17). ✓
+- C6 openac pilot: Opus rejected (questions too technical), Fable rerun
+  "much better" → Fable-recommended (D-014). Passed on Fable. ✓
+- Fable-steer criterion: `test_recommends_running_on_fable` green. ✓
+
+**Consistency gate:** validate green (8/8); caps OK (ROADMAP 33, milestone
+<150, DESIGN 73); no README.Rmd/pkgdown (not an R package); CHANGELOG
+Unreleased→Added entry present. ✓
+
+**Independent Opus review** (fresh context, git diff main..HEAD): all 11
+notes items encoded, registration + cross-refs clean, mirror consistent.
+Three findings, all fixed:
+- Rulebook model-strategy didn't echo the Fable exception → added a carve-out
+  line at `tracking-rules.md` (fix now).
+- Phase-2 list numbered 9,10,11,6,7,8 read as scrambled → reformatted to
+  bullets (fix now).
+- Guard test left items 4/7/8 unlocked → added anchors; criterion 2 reworded
+  to name all five Phase-1 disciplines (fix now).

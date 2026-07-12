@@ -44,6 +44,7 @@ class TestDesignInterviewSkill(unittest.TestCase):
             "elicit, don't classify",       # item 1
             "chain rounds on prior answers",  # item 2
             "ground every option in repo evidence",  # item 3
+            "hypotheses that do work",       # item 4
             "wart",                          # item 5
         ]:
             with self.subTest(anchor=anchor):
@@ -76,6 +77,8 @@ class TestDesignInterviewSkill(unittest.TestCase):
     def test_phase2_stress_tests_and_mines_sources(self):
         for anchor in [
             "stress-test",                        # item 6
+            "essence from accident",              # item 7
+            "scope of each ip",                   # item 8
             "mine git history",                   # item 9
             "derive candidates from the domain",  # item 10
         ]:

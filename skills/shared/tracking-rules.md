@@ -259,7 +259,10 @@ cairn skill is active.
 
 ## Model and agent strategy
 
-- Orchestrator: Opus, running these skills in the main session.
+- Orchestrator: Opus, running these skills in the main session. Exception:
+  `/design-interview` recommends the user run the *main session* on Fable
+  (D-014) — a per-instance session-model choice, not a spawned subagent, so
+  it does not touch the Fable-subagent gate below.
 - Every spawned Agent's description starts with its tier tag —
   `[S]`/`[O]`/`[F]` — per the output-discipline section.
 - **Sonnet subagents**: well-specified self-contained work — fan-out
