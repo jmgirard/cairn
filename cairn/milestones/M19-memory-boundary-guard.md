@@ -98,7 +98,7 @@ to avoid a merge conflict (the user chose this sequencing).
 - [x] T3: Add the memory→`cairn/`-files intake gate to `tracking-rules.md`
       beside the "Tracking files outrank memory" rule.
       ([tracking-rules.md:99](../../skills/shared/tracking-rules.md))
-- [ ] T4: Add `memory_guard` cases to `hooks/tests/test_hooks.py` (memory-path
+- [x] T4: Add `memory_guard` cases to `hooks/tests/test_hooks.py` (memory-path
       fires; non-memory / non-cairn / malformed no-op); run the hooks suite
       green. ([test_hooks.py](../../hooks/tests/test_hooks.py))
 - [ ] T5: Record the emission-mechanism D-entry (chosen mechanism +
@@ -128,6 +128,10 @@ to avoid a merge conflict (the user chose this sequencing).
   tracking-rules.md beside "Tracking files outrank memory"; states the GP4
   test (durable → cairn/, generalizable → plugin, meta-context → memory) and
   names the hook as prompting the test, not making the call.
+- 2026-07-12: T4 — added TestMemoryGuard (nudge fires w/ additionalContext &
+  no permissionDecision; non-memory, memory-lookalike-without-/memory/, and
+  non-Write no-op) and wired memory_guard.py into the non-cairn + garbage-stdin
+  shared tests. Full hooks suite green (22 tests).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
