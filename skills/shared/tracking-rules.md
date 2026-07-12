@@ -47,7 +47,7 @@ whichever skill makes the transition; ROADMAP wins any conflict),
 | Section | Writing skill | Write-mode |
 |---|---|---|
 | Status (header) | the transitioning skill (plan → implement → review) | mirror-update |
-| Priority, Depends on (header) | plan | create; amend-via-gate |
+| Priority, Depends on, Principles touched (header) | plan | create; amend-via-gate |
 | Branch/PR (header) | implement (branch), review (PR URL) | create |
 | Goal | plan | create; a wrong goal returns to plan, never edited in place |
 | Scope (In/Out) | plan | create; amend-via-gate |

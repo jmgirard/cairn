@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M38 | Principles-touched slot in the milestone template | planned | — | normal | milestones/M38-principles-touched-slot.md |
+| M38 | Principles-touched slot in the milestone template | in-progress | — | normal | milestones/M38-principles-touched-slot.md |
 | M39 | Search-first candidate creation | planned | — | normal | milestones/M39-search-first-candidate-creation.md |
 | M37 | Fence cairn subagents off the shared checkout (ref-based git only) | done | — | normal | milestones/archive/M37-reviewer-shared-checkout-guard.md |
 | M36 | On-main commit-guard hook | done | — | normal | milestones/archive/M36-on-main-commit-guard.md |

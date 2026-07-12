@@ -2,10 +2,10 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M38: Principles-touched slot in the milestone template
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** m38-principles-touched-slot
 
 ## Goal
 
@@ -56,7 +56,7 @@ fuzzy prose-citation linting (the slot is the fix, not prose rewriting).
 
 ## Tasks
 
-- [ ] T1 — Add the `Principles touched:` field to the milestone template (after
+- [x] T1 — Add the `Principles touched:` field to the milestone template (after
       `Depends on:`, plan-owner comment) and a row to the section-ownership
       table in `shared/tracking-rules.md`.
 - [ ] T2 — Add a `Principles touched:` authoring directive to
@@ -74,6 +74,8 @@ fuzzy prose-citation linting (the slot is the fix, not prose rewriting).
 ## Work log
 
 - 2026-07-12: created by /milestone-plan.
+- 2026-07-12: started implementing; branch m38-principles-touched-slot.
+- 2026-07-12: T1 — added Principles touched slot to template + section-ownership row.
 
 ## Decisions
 
