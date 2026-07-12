@@ -51,6 +51,30 @@ DONE_ROW_RETENTION = 5
 CLAUDE_SECTION_CAP = 30
 CLAUDE_SECTION_HEADING = "## Project tracking"
 
+# §1 scaffold pieces that must exist once a repo is on cairn (cairn-init §1).
+# Single source of truth for the machine-side drift check
+# (cairn_validate.check_scaffold): a missing piece means the repo predates a
+# later scaffold addition — route the user to /cairn-init repair. Only
+# always-tracked pieces are listed: git does not preserve empty dirs, so the
+# empty scaffold dirs (milestones/archive, reviews/archive, references/pdf)
+# are deliberately NOT checked — their absence is not drift. The CLAUDE.md
+# cairn section stays LLM-owned by the /milestone audit, not duplicated here.
+REQUIRED_SCAFFOLD_FILES = (
+    "cairn/DESIGN.md",
+    "cairn/ROADMAP.md",
+    "cairn/DECISIONS.md",
+    "cairn/LESSONS.md",
+    "cairn/references/INDEX.md",
+)
+# .gitignore entries every cairn repo carries (cairn-init §1).
+REQUIRED_GITIGNORE = (
+    "cairn/references/pdf/",
+    "cairn/.merge-approved",
+)
+# .Rbuildignore entry — package repos only (DESCRIPTION present); `^cairn$`
+# keeps the whole tracking dir out of the built package.
+REQUIRED_RBUILDIGNORE = ("^cairn$",)
+
 
 class NotCairn(Exception):
     """Raised when ROOT is not inside a cairn-tracked repo."""

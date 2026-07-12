@@ -181,6 +181,45 @@ def check_dates(root):
     return bad
 
 
+def _ignore_entries(path):
+    """Non-empty, non-comment lines of an ignore file as a set; empty set if
+    the file is absent (so a missing .gitignore reads as 'no entries')."""
+    if not os.path.isfile(path):
+        return set()
+    out = set()
+    with open(path, encoding="utf-8") as fh:
+        for line in fh:
+            s = line.strip()
+            if s and not s.startswith("#"):
+                out.add(s)
+    return out
+
+
+def check_scaffold(root):
+    """§1 scaffold presence (cairn-init §1), the deterministic arm of the
+    drift audit: a repo that adopted cairn before a later scaffold addition
+    is missing that piece. Findings route the user to /cairn-init repair
+    (the /milestone audit owns that routing text). Only always-tracked pieces
+    are checked — empty scaffold dirs are skipped (git drops empty dirs), and
+    the CLAUDE.md cairn section stays LLM-owned. Required-piece lists live in
+    cairn_scripts (single source of truth)."""
+    bad = []
+    for rel in cs.REQUIRED_SCAFFOLD_FILES:
+        if not os.path.isfile(os.path.join(root, rel)):
+            bad.append(f"missing scaffold file {rel}")
+    gitignore = _ignore_entries(os.path.join(root, ".gitignore"))
+    for entry in cs.REQUIRED_GITIGNORE:
+        if entry not in gitignore:
+            bad.append(f".gitignore missing entry '{entry}'")
+    # `^cairn$` is a package concern — only required when a DESCRIPTION exists.
+    if os.path.isfile(os.path.join(root, "DESCRIPTION")):
+        rbuild = _ignore_entries(os.path.join(root, ".Rbuildignore"))
+        for entry in cs.REQUIRED_RBUILDIGNORE:
+            if entry not in rbuild:
+                bad.append(f".Rbuildignore missing entry '{entry}'")
+    return bad
+
+
 CHECKS = [
     ("mirror agreement", lambda root, rows: check_mirror(root, rows)),
     ("at most one in-progress", lambda root, rows: check_single_in_progress(rows)),
@@ -191,6 +230,7 @@ CHECKS = [
     ("roadmap<->disk orphans", lambda root, rows: check_orphans(root, rows)),
     ("id uniqueness", lambda root, rows: check_id_uniqueness(root, rows)),
     ("iso date format", lambda root, rows: check_dates(root)),
+    ("scaffold present", lambda root, rows: check_scaffold(root)),
 ]
 
 

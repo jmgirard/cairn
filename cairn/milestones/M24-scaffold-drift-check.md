@@ -68,15 +68,15 @@ to `/cairn-init` repair; a guard test.
 
 ## Tasks
 
-- [ ] T1: Add a `REQUIRED_SCAFFOLD` spec to `cairn_scripts.py` (beside
+- [x] T1: Add a `REQUIRED_SCAFFOLD` spec to `cairn_scripts.py` (beside
       `LINE_CAPS`, ~line 44): required files, required `.gitignore` entries,
       and the package-only `.Rbuildignore` entry; add a package-detection
       helper (DESCRIPTION present) if none exists.
-- [ ] T2: Write `scripts/tests/test_scaffold_check.py` first (red): fixtures
+- [x] T2: Write `scripts/tests/test_scaffold_check.py` first (red): fixtures
       that drop each required piece → FAIL naming it; fully-scaffolded → PASS;
       empty scaffold dirs removed but files present → PASS; package vs
       non-package `.Rbuildignore` behavior.
-- [ ] T3: Implement `check_scaffold(root, rows)` in `cairn_validate.py` and
+- [x] T3: Implement `check_scaffold(root, rows)` in `cairn_validate.py` and
       register it in `CHECKS` (`scripts/cairn_validate.py:184`); make T2 green.
 - [ ] T4: Update the `/milestone` SKILL audit section (`skills/milestone/SKILL.md`,
       near the CLAUDE.md-section line ~64) and the `/milestone-review`
@@ -93,6 +93,10 @@ to `/cairn-init` repair; a guard test.
 - 2026-07-12: created by /milestone-plan (promotes the tidymedia-repair
   candidate; Direction 2 deferred as a candidate).
 - 2026-07-12: begin — status in-progress, branch m24-scaffold-drift-check.
+- 2026-07-12: T1–T3 — REQUIRED_SCAFFOLD lists in cairn_scripts; check_scaffold
+  in cairn_validate registered in CHECKS ("scaffold present"); 10 fixture tests
+  in test_scaffold_check.py (extended shared Tree to a full scaffold). 43/43
+  script tests green; check PASSes on this repo.
 
 ## Decisions
 

@@ -95,6 +95,18 @@ class Tree:
         cairn = self.root / "cairn"
         (cairn / "milestones" / "archive").mkdir(parents=True, exist_ok=True)
         (cairn / "ROADMAP.md").write_text(self.roadmap_text())
+        # §1 scaffold pieces the drift check (M24) requires — a valid cairn
+        # repo carries these, so the shared fixture must too. Empty scaffold
+        # dirs (reviews/, references/pdf/) are intentionally left uncreated:
+        # git drops empty dirs, and the check tolerates their absence.
+        (cairn / "DESIGN.md").write_text("# Design\n\nx\n")
+        (cairn / "DECISIONS.md").write_text("# Decisions\n\nx\n")
+        (cairn / "LESSONS.md").write_text("# Lessons\n\nx\n")
+        (cairn / "references").mkdir(parents=True, exist_ok=True)
+        (cairn / "references" / "INDEX.md").write_text("# Index\n")
+        (self.root / ".gitignore").write_text(
+            "cairn/references/pdf/\ncairn/.merge-approved\n"
+        )
         for rel, body in self.files.items():
             (cairn / rel).write_text(body)
         return self.root
