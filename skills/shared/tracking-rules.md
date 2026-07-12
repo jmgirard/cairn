@@ -396,11 +396,14 @@ cairn skill is active.
 - **The `/milestone-review` fan-out** (M17) runs in fresh-context subagents,
   not the implementing session, because an author shares their own
   diff-blindness — a reviewer that did not write the code catches the contract
-  and convention breaks the author reads straight past. Two distinct-evidence
-  reviewers —
-  an **[O]** diff-bug reviewer (Opus, correctness/contract/convention) and an
-  **[S]** blame-history reviewer (Sonnet, does the change undo deliberate prior
-  work) — then an **[S]** confidence scorer (Sonnet) that scores each finding
+  and convention breaks the author reads straight past.
+  Three distinct-evidence reviewers —
+  an **[O]** diff-bug reviewer (Opus, correctness/contract/convention),
+  an **[S]** blame-history reviewer (Sonnet, does the change undo deliberate
+  prior work), and an **[S]** prior-PR-comments reviewer (Sonnet, does the diff
+  regress a point a prior PR review raised on these files; always spawned,
+  no-ops when a repo has no prior-PR evidence — M40)
+  — then an **[S]** confidence scorer (Sonnet) that scores each finding
   0–100 and drops sub-threshold ones from the actioned list (logged, not
   discarded). The scorer gates what the user sees, so it stays on Sonnet, never
   Haiku.

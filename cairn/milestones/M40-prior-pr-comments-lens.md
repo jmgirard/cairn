@@ -88,20 +88,20 @@ model-strategy update (two → three reviewers) and the guard-test extension.
       tokens, narrow-scope phrasing, no-op-when-empty phrasing). Run it and
       confirm it fails red against the current SKILL (tests-first). Anchor each
       asserted phrase on a single contiguous line per the M23/M26/M39 lessons.
-- [ ] T2 — Add the `[S]` prior-PR-comments lens to
+- [x] T2 — Add the `[S]` prior-PR-comments lens to
       `skills/milestone-review/SKILL.md` step 5: discovery recipe, narrow
       "regression of a prior review comment" judgment scope, always-spawn /
       no-op-when-empty behavior, and the shared false-positive taxonomy +
       ref-based-git-only constraint. State that its findings flow into the
       existing scorer. (Satisfies AC1–AC3.)
-- [ ] T3 — Confirm/keep the scorer wiring unchanged: the new lens routes into
+- [x] T3 — Confirm/keep the scorer wiring unchanged: the new lens routes into
       the existing `[S]` scorer with no new threshold and no change to the 80
       cutoff or IP3 logging; adjust only the surrounding prose so the scorer
       reads all three lenses. (Satisfies AC4.)
-- [ ] T4 — Update `skills/shared/tracking-rules.md` model-strategy section:
+- [x] T4 — Update `skills/shared/tracking-rules.md` model-strategy section:
       "two distinct-evidence reviewers" → three, name the prior-PR lens, keep
       the "Never Haiku" blanket rule. (Satisfies AC5.)
-- [ ] T5 — Run `python3 -m unittest discover -s skills/tests`; confirm T1 now
+- [x] T5 — Run `python3 -m unittest discover -s skills/tests`; confirm T1 now
       passes and nothing else regressed. (Satisfies AC6 with T1.)
 - [ ] T6 — Conservation hygiene (executes at review post-merge): graduate the
       "Prior-PR-comments reviewer lens" candidate row into M40 lineage, and
@@ -117,6 +117,12 @@ model-strategy update (two → three reviewers) and the guard-test extension.
   regression scope, always-spawn/no-op-when-empty — all recommended, accepted.
 - 2026-07-12: T1 — extended test_review_fanout.py (new TestPriorPRLens + a
   three-reviewer rulebook lock); 5 red by design (tests-first), rest green.
+- 2026-07-12: T2–T5 — added the [S] prior-PR-comments lens to milestone-review
+  SKILL step 5 (recipe-in-prose, narrow regression scope, always-spawn/no-op),
+  updated tracking-rules model-strategy (two → three reviewers). T3 needed no
+  edit — the scorer already reads "every surviving finding", lens-agnostic.
+  Reflowed the rulebook so "Three distinct-evidence reviewers" is one physical
+  line (M23 rule, bit my own assertion). skills 94 + scripts 53 green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
