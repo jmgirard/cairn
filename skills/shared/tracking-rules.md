@@ -193,10 +193,14 @@ anyone at any time (one ROADMAP row).
   default-branch git command — cairn stores no branch name, so detection is
   the single source of truth. Detect with
   `git symbolic-ref --short refs/remotes/origin/HEAD` (strip the leading
-  `origin/`); if that fails (no remote, or `origin/HEAD` unset — a shallow
-  clone, a never-pushed repo), fall back to the local
-  `git symbolic-ref --short HEAD`, and if still ambiguous ask the user.
-  Substitute the detected name wherever a step below writes `<default-branch>`.
+  `origin/`); if that fails because `origin/HEAD` is unset locally (a shallow
+  clone, a `git remote add` without `set-head`) but a remote exists, query the
+  remote directly with `git ls-remote --symref origin HEAD` and read the
+  `ref: refs/heads/<name>` line. Only with **no remote at all** ask the user —
+  never guess the local current branch (`git symbolic-ref --short HEAD`), which
+  on a feature branch is the wrong answer, and operational skills run on the
+  feature branch. Substitute the detected name wherever a skill step writes
+  `<default-branch>`.
 - The default branch accepts only: docs-only tracking commits and
   squash-merges of milestone/hotfix branches. Never implement on it.
 - **The remote's default branch is authoritative.** When a remote exists, push
