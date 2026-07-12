@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M36 | On-main commit-guard hook | in-progress | — | normal | milestones/M36-on-main-commit-guard.md |
+| M36 | On-main commit-guard hook | review | — | normal | milestones/M36-on-main-commit-guard.md |
 | M34 | Mechanical coverage-map lint in cairn_validate | done | — | normal | milestones/archive/M34-coverage-map-lint.md |
 | M35 | Rulebook & doc-wording polish batch | done | — | normal | milestones/archive/M35-rulebook-doc-polish.md |
 | M33 | Assess ackwards' oracle discipline and fold its generalizable core into cairn | done | — | normal | milestones/archive/M33-oracle-discipline-coordination.md |
