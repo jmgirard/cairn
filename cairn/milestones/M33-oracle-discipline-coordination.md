@@ -89,7 +89,7 @@ candidates.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — Write `cairn/references/oracle-discipline-notes.md`: read the ackwards
+- [x] T1 — Write `cairn/references/oracle-discipline-notes.md`: read the ackwards
       sources (M57 archive, `cairn/ORACLES.md`, CLAUDE.md Invariant #8,
       `tests/testthat/test-oracle-provenance.R`) and the `intraclass` `data-raw/oracle-*.R`
       lineage; catalogue the system; build the gap ledger mapping each element to
@@ -110,6 +110,7 @@ candidates.
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-12: created by /milestone-plan.
+- 2026-07-12: T1 — wrote references/oracle-discipline-notes.md (intraclass→ackwards lineage, 4-part system catalogue, E1–E8 gap ledger, disposition) + INDEX.md line. Finding: intraclass is not cairn-tracked — it originated the data-raw provenance-script practice; ackwards formalized the registry/taxonomy/guard.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
