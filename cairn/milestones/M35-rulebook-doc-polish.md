@@ -69,7 +69,7 @@ only). The M06 "minor steals" bundle and the two dropped marginal candidates
       and agent strategy" section (Sonnet-subagents / Explore guidance).
 - [x] T4 — Add the *why* of different-model review to the review fan-out
       bullet in "Model and agent strategy".
-- [ ] T5 — Add the copy-run-commands-in-a-fenced-block rule to "Output &
+- [x] T5 — Add the copy-run-commands-in-a-fenced-block rule to "Output &
       interaction discipline".
 - [ ] T6 — Lock all five: extend `test_gate_wording.py` (AC2) and
       `test_review_fanout.py` (AC4) where topical; add a new
@@ -85,6 +85,7 @@ only). The M06 "minor steals" bundle and the two dropped marginal candidates
 - 2026-07-12: T2 — cap-at-3 prioritized-clarification-markers clause added to "Question gates and routing chips".
 - 2026-07-12: T3 — Explore reading-list instruction added to the Sonnet-subagents bullet in "Model and agent strategy".
 - 2026-07-12: T4 — why-fresh-model rationale (diff-blindness) prepended to the review fan-out bullet.
+- 2026-07-12: T5 — copy-run-commands-in-own-fenced-block rule added to "Output & interaction discipline".
 
 ## Decisions
 <!-- owner: implement / review · append-only -->

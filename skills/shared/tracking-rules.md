@@ -353,6 +353,10 @@ cairn skill is active.
   (M27/D-020). This is a hard per-phase requirement, not "only where supported."
   Fallback: where the runtime provides no chapter mechanism, no marker is emitted
   and the H1/H2 phase headers are the visual fallback — nothing breaks.
+- **Copy-run commands get their own fenced block.** A command the user is
+  meant to copy and run goes in its own fenced code block (it renders a copy
+  button), not inline backticks — inline backticks are for *naming* a command,
+  path, or symbol in prose, not for handing one over to run.
 - **Subagent titles carry the model tier.** Prefix every Agent
   description with `[S]`/`[O]`/`[F]` for Sonnet/Opus/Fable — task panes
   show only the title, not the model.
