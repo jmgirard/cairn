@@ -15,7 +15,9 @@ Phase header: `# cairn-init` → `## Scaffold` / `## Repair` / `## Migration §n
 
 - **Default branch.** Detect the repo's default branch —
   `git symbolic-ref --short refs/remotes/origin/HEAD` (strip the `origin/`
-  prefix), falling back to the current branch when there is no remote. cairn
+  prefix), falling back to the current branch (`git branch --show-current`)
+  whenever that fails: no remote, or `origin/HEAD` unset (a shallow clone, a
+  fresh `git remote add`, or a CI checkout that never ran `set-head`). cairn
   does not assume `main`; use the detected name wherever the steps below (and
   the tracking-rules git model) say "the default branch".
 - No DESCRIPTION file → **non-package repo**: say so and ask — adapt
