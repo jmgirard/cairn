@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M18: Acceptance-criteria traceability
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M17   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Branch/PR:** m18-ac-traceability   <!-- owner: implement (branch) / review (PR URL) · create -->
@@ -70,7 +70,7 @@ review.
 - [x] Update `tracking-rules.md`: add the Coverage row to the section-ownership
       table and state the fencing rule in the review discipline.
       ([tracking-rules.md:47-58](../../skills/shared/tracking-rules.md))
-- [ ] Write `skills/tests/test_ac_traceability.py`; run it green.
+- [x] Write `skills/tests/test_ac_traceability.py`; run it green.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
@@ -89,6 +89,8 @@ review.
   failure, back to implement).
 - 2026-07-11: T4 — tracking-rules gains the Coverage ownership row and an
   "AC fencing (review discipline)" paragraph.
+- 2026-07-11: T5 — added test_ac_traceability.py (11 assertions). Full skills
+  suite 46/46 green; cairn_validate.py exit 0. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

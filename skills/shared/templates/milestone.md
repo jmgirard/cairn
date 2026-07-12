@@ -30,11 +30,9 @@ never "never".
 - [ ] Code milestones always include: `devtools::check()` clean.
 
 ## Coverage
-<!-- owner: plan · create/amend-via-gate; maps each acceptance criterion to
-     the task(s) that satisfy it. AC and Task numbers are positional
-     (top-to-bottom in their sections). Every criterion maps to ≥1 task; a
-     criterion with no task is a planning gap. Review reads this to fence
-     evidence — see tracking-rules "AC fencing". -->
+<!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
+     task(s) satisfying it, by positional number (AC/Task counted
+     top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
 
 - AC1 → T1
 - AC2 → T2, T3

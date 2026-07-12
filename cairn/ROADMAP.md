@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M18 | Acceptance-criteria traceability | in-progress | M17 | normal | milestones/M18-ac-traceability.md |
+| M18 | Acceptance-criteria traceability | review | M17 | normal | milestones/M18-ac-traceability.md |
 | M17 | Review fan-out + confidence scoring | done | — | normal | milestones/archive/M17-review-fanout.md |
 | M16 | Lessons loop (capture → harvest) | done | — | normal | milestones/archive/M16-lessons-loop.md |
 | M15 | Sync Impact Report on principle changes | done | — | normal | milestones/archive/M15-sync-impact-report.md |
