@@ -2,10 +2,10 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M20: Migration stress-test pilot — ackwards (Lineage B)
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** m20-migration-pilot-ackwards (cairn side); ackwards PR TBD
+- **Branch/PR:** m20-migration-pilot-ackwards (cairn side); ackwards PR #53
 
 ## Goal
 
@@ -40,8 +40,11 @@ the skill.
       ledger** — every legacy file and every live item → new location /
       "entombed" / "dropped at user request" (§2 step 7b). Evidence: PR URL +
       ledger text.
-- [ ] The `/milestone` health audit runs **clean** on the ackwards migration
-      branch (§2 step 7a). Evidence: audit output captured in the pilot notes.
+- [ ] The `/milestone` health audit runs on the ackwards migration branch with
+      **only the documented CLAUDE-cap exception outstanding** — 8/9 checks pass;
+      the sole FAIL (CLAUDE.md 187 > `<80` cap) is a surfaced pilot finding filed
+      as a cairn candidate, not a migration defect (amended 2026-07-12 at user
+      gate; see Decisions). Evidence: audit output in pilot notes + ROADMAP G8 candidate.
 - [ ] Migration performed correctly: ackwards' completed history moved
       **verbatim** to `cairn/legacy/` (no completed milestone rewritten), and
       the 3 repo-local skills (`implement-milestone`, `plan-milestone`,
@@ -68,34 +71,34 @@ the skill.
 
 ## Tasks
 
-- [ ] **T1** — Preconditions + branch (§2 steps 1–2): confirm ackwards has a
+- [x] **T1** — Preconditions + branch (§2 steps 1–2): confirm ackwards has a
       clean tree and nothing genuinely in-flight (carry at most one
       `in-progress`, explicitly); cut `cairn-init-migration` from up-to-date
       ackwards main.
-- [ ] **T2** — Inventory + disposition (§2 step 3): list every legacy tracking
+- [x] **T2** — Inventory + disposition (§2 step 3): list every legacy tracking
       file and every live item; draft the status-mapping proposal. Note:
       ackwards' ROADMAP says "no scheduled milestones" — verify live state is
       mostly release-tail + unscheduled ideas (→ candidates), not planned work.
-- [ ] **T3** — Entomb history verbatim (§2 step 4): move legacy tracking files
+- [x] **T3** — Entomb history verbatim (§2 step 4): move legacy tracking files
       whole to ackwards `cairn/legacy/`; new ROADMAP header points at legacy +
       git log.
-- [ ] **T4** — Translate live state under the no-invention rule (§2 step 5):
+- [x] **T4** — Translate live state under the no-invention rule (§2 step 5):
       live items → milestone files / candidate rows; IDs continue from the
       legacy maximum; DECISIONS.md starts fresh at D-001 with a legacy pointer;
       re-record only still-governing decisions.
-- [ ] **T5** — Redistribute + deactivate (§2 step 6): CLAUDE.md content per the
+- [x] **T5** — Redistribute + deactivate (§2 step 6): CLAUDE.md content per the
       ownership table; relocate the 3 repo-local skills to `cairn/legacy/`;
       scaffold missing §1 pieces + ignore entries.
-- [ ] **T6** — Open the ackwards PR with the ledger in its description; run the
+- [x] **T6** — Open the ackwards PR with the ledger in its description; run the
       `/milestone` health audit on the branch; observe CI. Record PR URL,
       ledger, and audit output (§2 step 7).
-- [ ] **T7** — Write `cairn/references/migration-pilot-notes.md` here: ledger
+- [x] **T7** — Write `cairn/references/migration-pilot-notes.md` here: ledger
       summary + per-§2-step friction log + gap list (each tagged
       `fix-here | candidate | out`); add the `references/INDEX.md` row.
-- [ ] **T8** — Land `fix-here` gaps in `/cairn-init` SKILL and/or
+- [x] **T8** — Land `fix-here` gaps in `/cairn-init` SKILL and/or
       `tracking-rules.md`; add guard tests for any new mechanical invariant;
       file `candidate` gaps as ROADMAP rows.
-- [ ] **T9** — Run the guard-test suite green; commit cairn-side tracking +
+- [x] **T9** — Run the guard-test suite green; commit cairn-side tracking +
       code together.
 
 ## Work log
@@ -103,7 +106,26 @@ the skill.
 - 2026-07-11: created by /milestone-plan (promotes the "stress-test migration
   on a Lineage B repo" candidate, DRAFT_2 §11; lineage M03 tidymedia pilot).
 - 2026-07-11: in-progress; cut cairn branch m20-migration-pilot-ackwards.
+- 2026-07-12: ran /cairn-init §2 live on ackwards; migration branch + PR #53
+  (docs-only ledger); entombed M1–M53 history, kept DESIGN.md verbatim,
+  15 still-governing decisions → DECISIONS.md (Sonnet-extracted, verified).
+- 2026-07-12: health audit 8/9 — CLAUDE-cap FAIL accepted as documented
+  exception (AC2 amended at user gate); pilot notes + INDEX row written (T7);
+  10 gaps → 5 ROADMAP candidates (T8). No small isolable fix-here emerged.
 
 ## Decisions
+
+- 2026-07-12 (Compromise A, user gate): a rich pre-existing DESIGN.md is kept
+  verbatim as the canonical `cairn/DESIGN.md` with its §14 decision log embedded
+  as frozen history; DECISIONS.md re-records only still-governing cross-cutting
+  decisions citing §14. Full §14 extraction + inline-ref repoint (Compromise B)
+  deferred as a ROADMAP candidate. Invariants stay as CLAUDE hard rules;
+  IP/GP formalization routed to /design-interview (candidate).
+- 2026-07-12 (cap exception, user gate): the `<80` CLAUDE.md cap is not met by a
+  mature migrated repo even after full redistribution (ackwards 187 lines);
+  accepted as a documented audit exception for this migration and filed as a
+  cairn candidate (recalibrate the cap). The cap recalibration itself is a
+  cross-cutting cairn design change → belongs to a follow-up cairn milestone,
+  not a milestone-local D-entry here.
 
 ## Review
