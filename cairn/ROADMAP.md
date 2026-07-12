@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M24 | Scaffold-drift detection in the audit | in-progress | — | normal | milestones/M24-scaffold-drift-check.md |
+| M24 | Scaffold-drift detection in the audit | review | — | normal | milestones/M24-scaffold-drift-check.md |
 | M23 | Migration-protocol §2 guidance hardening | done | M22 | normal | milestones/archive/M23-migration-guidance.md |
 | M22 | Generalize cairn beyond `main`; recalibrate the mature-repo CLAUDE.md cap | done | — | normal | milestones/archive/M22-mature-repo-defaults.md |
 | M21 | Migration stress-test pilot — circumplex (Lineage B) | done | M23 | normal | milestones/archive/M21-migration-pilot-circumplex.md |

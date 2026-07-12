@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M24: Scaffold-drift detection in the audit
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Branch/PR:** `m24-scaffold-drift-check`
@@ -82,10 +82,10 @@ to `/cairn-init` repair; a guard test.
       near the CLAUDE.md-section line ~64) and the `/milestone-review`
       consistency-gate reference: a scaffold FAIL routes to `/cairn-init`
       repair, not auto-fix.
-- [ ] T5: ROADMAP rows — remove the absorbed "scaffold-drift detection"
+- [x] T5: ROADMAP rows — remove the absorbed "scaffold-drift detection"
       candidate (now M24), add the Direction-2 candidate (spec-version stamp /
       content drift), and add the M24 `planned` row.
-- [ ] T6: Run `cairn_validate.py` + the script test suite on this repo; confirm
+- [x] T6: Run `cairn_validate.py` + the script test suite on this repo; confirm
       green; refresh the ROADMAP hygiene date.
 
 ## Work log
@@ -97,10 +97,14 @@ to `/cairn-init` repair; a guard test.
   in cairn_validate registered in CHECKS ("scaffold present"); 10 fixture tests
   in test_scaffold_check.py (extended shared Tree to a full scaffold). 43/43
   script tests green; check PASSes on this repo.
-
 - 2026-07-12: T4 — /milestone audit + /milestone-review consistency-gate text
   now list 'scaffold present' and route a scaffold FAIL to /cairn-init repair
   (not hand-fixed). 58/58 skills guard tests green.
+
+- 2026-07-12: T5–T6 — ROADMAP rows already set at plan time (M24 row; absorbed
+  candidate removed; Direction-2 candidate added); validate green (exit 0),
+  43/43 script + 58/58 skills tests green; hygiene date already 2026-07-12. All
+  tasks done → status review.
 
 ## Decisions
 
