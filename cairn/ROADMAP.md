@@ -12,7 +12,7 @@ not an R package, so R-specific gates don't apply.
 |---|---|---|---|---|---|
 | M23 | Migration-protocol §2 guidance hardening | done | M22 | normal | milestones/archive/M23-migration-guidance.md |
 | M22 | Generalize cairn beyond `main`; recalibrate the mature-repo CLAUDE.md cap | done | — | normal | milestones/archive/M22-mature-repo-defaults.md |
-| M21 | Migration stress-test pilot — circumplex (Lineage B) | planned | M23 | normal | milestones/M21-migration-pilot-circumplex.md |
+| M21 | Migration stress-test pilot — circumplex (Lineage B) | in-progress | M23 | normal | milestones/M21-migration-pilot-circumplex.md |
 | M20 | Migration stress-test pilot — ackwards (Lineage B) | done | — | normal | milestones/archive/M20-migration-pilot-ackwards.md |
 | M19 | Memory-boundary write guard (GP4 enforcement) | done | M18 | normal | milestones/archive/M19-memory-boundary-guard.md |
 | M18 | Acceptance-criteria traceability | done | M17 | normal | milestones/archive/M18-ac-traceability.md |

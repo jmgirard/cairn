@@ -2,10 +2,10 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M21: Migration stress-test pilot — circumplex (Lineage B)
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M23
-- **Branch/PR:** —
+- **Branch/PR:** m21-migration-pilot-circumplex
 
 ## Goal
 
