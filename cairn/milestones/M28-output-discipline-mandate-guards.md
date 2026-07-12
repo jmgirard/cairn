@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M28: Harden the output-discipline mandate guards
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Branch/PR:** m28-output-discipline-mandate-guards
@@ -90,7 +90,7 @@ existing routing-chip guard the M26 lock missed.
       (Claude Code `mark_chapter`) and cite D-020.
 - [x] T5: Add the one-line chapter-marker directive to all nine skills
       (parallel to each `Phase header:` directive), greening T3.
-- [ ] T6: Append the D-entry recording the mandate promotion (annotates
+- [x] T6: Append the D-entry recording the mandate promotion (annotates
       D-020) to `cairn/DECISIONS.md`; run the full guard suite +
       `cairn_validate`; record evidence.
 
@@ -99,6 +99,7 @@ existing routing-chip guard the M26 lock missed.
 - 2026-07-12: created by /milestone-plan.
 - 2026-07-12: T1+T2 — `milestone-brief` step 5 now carries the `Routing chip (AskUserQuestion)` token; added to `NON_REVIEW_CHIP_SKILLS`; stale comment corrected. Gate-wording suite green (8/8).
 - 2026-07-12: T3+T4+T5 — chapter-marker rule promoted to a per-phase mandate + no-mechanism fallback; one-line directive added to all nine skills; new `test_chapter_marker_mandate.py`. Full suite green (71/71).
+- 2026-07-12: T6 — D-021 appended (annotates D-020). Evidence: guard suite 71/71, scripts 43/43, `cairn_validate` 10/10 all clean. All tasks done → status `review`.
 
 ## Decisions
 
