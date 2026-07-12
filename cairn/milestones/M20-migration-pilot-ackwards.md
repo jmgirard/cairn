@@ -5,7 +5,7 @@
 - **Status:** review
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** m20-migration-pilot-ackwards (cairn side); ackwards PR #53
+- **Branch/PR:** m20-migration-pilot-ackwards → cairn PR #18; ackwards PR #53
 
 ## Goal
 
@@ -35,29 +35,29 @@ the skill.
 
 ## Acceptance criteria
 
-- [ ] `/cairn-init` §2 executed on ackwards on a `cairn-init-migration`
+- [x] `/cairn-init` §2 executed on ackwards on a `cairn-init-migration`
       branch; PR opened; the PR description carries a complete **migration
       ledger** — every legacy file and every live item → new location /
       "entombed" / "dropped at user request" (§2 step 7b). Evidence: PR URL +
       ledger text.
-- [ ] The `/milestone` health audit runs on the ackwards migration branch with
+- [x] The `/milestone` health audit runs on the ackwards migration branch with
       **only the documented CLAUDE-cap exception outstanding** — 8/9 checks pass;
       the sole FAIL (CLAUDE.md 187 > `<80` cap) is a surfaced pilot finding filed
       as a cairn candidate, not a migration defect (amended 2026-07-12 at user
       gate; see Decisions). Evidence: audit output in pilot notes + ROADMAP G8 candidate.
-- [ ] Migration performed correctly: ackwards' completed history moved
+- [x] Migration performed correctly: ackwards' completed history moved
       **verbatim** to `cairn/legacy/` (no completed milestone rewritten), and
       the 3 repo-local skills (`implement-milestone`, `plan-milestone`,
       `post-milestone-review`) relocated out of `.claude/skills/`. Evidence:
       file listing / git diff in the pilot notes.
-- [ ] `cairn/references/migration-pilot-notes.md` committed in this repo with
+- [x] `cairn/references/migration-pilot-notes.md` committed in this repo with
       the ledger summary, per-§2-step friction log, and the tagged gap list;
       one row added to `references/INDEX.md`. Evidence: file + INDEX row.
-- [ ] Every gap tagged `fix-here` is resolved in this milestone (a `/cairn-init`
+- [x] Every gap tagged `fix-here` is resolved in this milestone (a `/cairn-init`
       and/or `tracking-rules.md` edit), each new mechanical invariant locked by
       a guard test; every `candidate` gap has a ROADMAP row. Evidence: diffs +
       passing tests + ROADMAP rows.
-- [ ] Guard-test suite green: `python3 -m pytest` (or the repo's runner) over
+- [x] Guard-test suite green: `python3 -m pytest` (or the repo's runner) over
       `skills/tests/` and `scripts/tests/`. Evidence: test run output.
 
 ## Coverage
@@ -129,3 +129,27 @@ the skill.
   not a milestone-local D-entry here.
 
 ## Review
+
+**Evidence (fresh, by command, 2026-07-12):**
+
+- **AC1** ✓ — ackwards PR #53 open; body contains the "Migration ledger" table
+  (verified via `gh pr view 53 --json body`). Ledger accounts for every legacy
+  file + live item.
+- **AC2** ✓ (as amended) — `cairn_validate` on the ackwards branch: 8/9 PASS;
+  sole FAIL is `weight caps` (CLAUDE.md 187 > `<80`), the documented pilot
+  finding filed as ROADMAP candidate G8. No other check fails.
+- **AC3** ✓ — `git diff -M --summary master..cairn-init-migration`: DESIGN.md,
+  MILESTONES.md, ROADMAP.md, and all 3 skills rename at **100% similarity**
+  (verbatim; no completed milestone rewritten). Package code untouched:
+  0 files changed under `R/`/`tests/`/`DESCRIPTION`/`vignettes/`.
+- **AC4** ✓ — `cairn/references/migration-pilot-notes.md` present (52 lines,
+  ledger summary + per-§ friction log + 10 tagged gaps); 1 INDEX.md row.
+- **AC5** ✓ — 5 M20-sourced candidate rows in ROADMAP; no `fix-here` gap
+  emerged (all surfaced gaps are design-level → candidates), so the fix-here
+  clause is vacuously satisfied and all candidates are filed.
+- **AC6** ✓ — guard suites green: skills/tests 46, scripts/tests 31 (77 total).
+
+**Consistency gate:** `cairn_validate` (cairn self) all checks pass; coverage
+completeness — every AC maps to an existing task (AC1→T1–6, AC2→T6, AC3→T3,T5,
+AC4→T7, AC5→T8, AC6→T9); no cairn DESIGN principle changed → Sync Impact Report
+skipped. R-package gates (devtools/README.Rmd/pkgdown/NEWS) waived per CLAUDE.md.
