@@ -87,10 +87,13 @@ def check_caps(root, rows):
     return bad
 
 
-def check_done_retention(rows):
-    done = [r["id"] for r in rows if r["status"] == "done"]
-    if len(done) > cs.DONE_ROW_RETENTION:
-        return [f"{len(done)} done rows (retention {cs.DONE_ROW_RETENTION}): {', '.join(done)}"]
+def check_terminal_retention(rows):
+    terminal = [r["id"] for r in rows if r["status"] in ("done", "dropped")]
+    if len(terminal) > cs.TERMINAL_ROW_RETENTION:
+        return [
+            f"{len(terminal)} terminal rows (retention {cs.TERMINAL_ROW_RETENTION}): "
+            f"{', '.join(terminal)}"
+        ]
     return []
 
 
@@ -230,7 +233,7 @@ CHECKS = [
     ("mirror agreement", lambda root, rows: check_mirror(root, rows)),
     ("at most one in-progress", lambda root, rows: check_single_in_progress(rows)),
     ("weight caps", lambda root, rows: check_caps(root, rows)),
-    ("done-row retention", lambda root, rows: check_done_retention(rows)),
+    ("terminal-row retention", lambda root, rows: check_terminal_retention(rows)),
     ("status vocabulary", lambda root, rows: check_vocab(rows)),
     ("dependency resolution", lambda root, rows: check_dependencies(root, rows)),
     ("roadmap<->disk orphans", lambda root, rows: check_orphans(root, rows)),

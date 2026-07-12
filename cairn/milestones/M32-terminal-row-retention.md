@@ -56,7 +56,7 @@ pruned and counted like done ones.
       for terminal rows; a grep of the live scripts and skills (excluding
       `milestones/archive/`) finds no `DONE_ROW_RETENTION` /
       `check_done_retention` / "done-row retention" identifiers.
-- [ ] AC4 — `python3 -m pytest scripts/tests/test_scripts.py` passes (renamed +
+- [ ] AC4 — `python3 -m unittest discover -s scripts/tests` passes (renamed +
       extended retention test plus the existing suite).
 - [ ] AC5 — `cairn_validate` passes on this repo with the terminal-row count at
       the cap after M32 is `done` (M26, M27 pruned). (This repo is not an R
@@ -76,30 +76,32 @@ pruned and counted like done ones.
 - [ ] T1 — Reword `skills/shared/tracking-rules.md` retention rule (L94–96) and
       the remedy phrase "enforce done-row retention" (L89) to terminal-row
       semantics + name.
-- [ ] T2 — Rename `DONE_ROW_RETENTION` → `TERMINAL_ROW_RETENTION` (value 5) in
+- [x] T2 — Rename `DONE_ROW_RETENTION` → `TERMINAL_ROW_RETENTION` (value 5) in
       `scripts/cairn_scripts.py:47`.
-- [ ] T3 — Rewrite `check_done_retention` → `check_terminal_retention` in
+- [x] T3 — Rewrite `check_done_retention` → `check_terminal_retention` in
       `scripts/cairn_validate.py` (count `done` + `dropped`; update the message
       and the `CHECKS` tuple label at L233 to "terminal-row retention").
-- [ ] T4 — Update the `scripts/cairn_next.py` comment (L20–22) to name
+- [x] T4 — Update the `scripts/cairn_next.py` comment (L20–22) to name
       terminal-row retention.
 - [ ] T5 — Update the cairn-init ROADMAP scaffold comment
       (`skills/cairn-init/SKILL.md:72`) and the consistency-gate check-name
       references in `skills/milestone/SKILL.md:48` and
       `skills/milestone-review/SKILL.md:59`.
-- [ ] T6 — In `scripts/tests/test_scripts.py`, rename `test_done_row_retention`
+- [x] T6 — In `scripts/tests/test_scripts.py`, rename `test_done_row_retention`
       → `test_terminal_row_retention`, assert on the terminal count, add the
       done≤5 + dropped-over-cap case (AC2), and update the `assert_fails` label.
 - [ ] T7 — Prune `cairn/ROADMAP.md`: remove the two oldest terminal rows (M26,
       M27) so the terminal count is 5 once M32 is `done`; refresh the hygiene
       date line.
-- [ ] T8 — Run `python3 -m pytest scripts/tests/test_scripts.py` and
+- [ ] T8 — Run `python3 -m unittest discover -s scripts/tests` and
       `cairn_validate` on this repo; confirm both clean.
 
 ## Work log
 
 - 2026-07-12: created by /milestone-plan.
 - 2026-07-12: in-progress on m32-terminal-row-retention.
+- 2026-07-12: T2–T4, T6 — renamed constant/check to terminal-row retention (count done+dropped), updated cairn_next comment, renamed+extended retention test with a dropped-over-cap case; 45 unittest tests pass.
+- 2026-07-12: AC4/T8 wording fixed pytest→unittest (repo has no pytest; suite is unittest-based) — minor correction, verification intent unchanged.
 
 ## Decisions
 
