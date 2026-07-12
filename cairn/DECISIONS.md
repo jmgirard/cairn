@@ -200,3 +200,24 @@ Lessons ≠ decisions: a *choice with rationale* stays a D-entry.
 shared across every adopting repo via the plugin. A fourth top-level tracking
 file (`LINE_CAPS`, date-scan, and the file-map extended for it). Locked by
 `skills/tests/test_lessons_loop.py` + the over-cap fixture in `scripts/tests/`.
+
+### D-016 (2026-07-11): Keep "Never Haiku" blanket; review scorer runs on Sonnet
+
+**Context:** M17 adds a generate-then-verify confidence scorer to
+`/milestone-review`. Anthropic's own code-review plugin
+(`references/anthropic-code-review.md`) uses Haiku for exactly this mechanical
+scoring step, which the reference flagged as counter-evidence to cairn's
+blanket "Never Haiku. For anything." rule. The question was whether to relax
+the rule for the scorer.
+**Decision:** Keep the blanket rule; the scorer runs on Sonnet. Two reasons
+beyond cost: cairn's review fires once per milestone (not per-PR at Anthropic's
+scale), so the saving is marginal; and the scorer *gates which findings reach
+the user*, so a weaker model can silently drop a real bug or bury the user in
+false positives — not the low-stakes step the "mechanical" framing implies. One
+clean, auditable invariant is worth more than the marginal saving. Rejected
+relaxing it to a narrow scoring carve-out.
+**Consequences:** Closes the doctrine challenge in
+`references/anthropic-code-review.md`. The `/milestone-review` fan-out and
+scorer are all Opus/Sonnet; the model-strategy section states the scorer stays
+on Sonnet. If review cost ever becomes pressing at scale, this is the entry to
+supersede.

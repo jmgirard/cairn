@@ -68,13 +68,37 @@ overrides — log the override).
    queue another retry — that's a mis-planned milestone; recommend re-plan
    or split via `/milestone-plan`.
 
-5. **Independent fresh-context review.** Spawn an **Opus subagent**
-   ([O]-tagged description) that has not seen the implementation to
-   review the full diff
-   (`git diff main..HEAD`) against the acceptance criteria, DESIGN.md
-   conventions, and DECISIONS.md. Triage its findings: fix now / spawn a
-   follow-up (candidate row or milestone) / reject with reason — all logged
-   in the Review section.
+5. **Independent fresh-context review — two lenses, then a scorer.** Spawn
+   two reviewers that have not seen the implementation, in parallel, each with
+   a *distinct evidence base* (a shared base just finds the same things twice):
+   - **[O] diff-bug reviewer (Opus).** Reviews the full diff
+     (`git diff main..HEAD`) against the acceptance criteria, DESIGN.md
+     conventions, and DECISIONS.md — correctness, contract, convention.
+   - **[S] blame-history reviewer (Sonnet).** Runs `git log` / `git blame` on
+     the modified lines and judges the change *against the intent of the code
+     it touches*: does it silently undo something a past milestone added
+     deliberately, resurrect a fixed bug, or contradict a recorded D-entry? It
+     reads history, not just the diff.
+
+   Give **both** reviewers this false-positive taxonomy verbatim and tell them
+   to drop anything matching it before reporting:
+   > Not a finding: a pre-existing issue the diff did not introduce; anything a
+   > linter or formatter would catch; a pure style nitpick; a complaint about
+   > an unmodified line; an intentional change the milestone's plan called for.
+
+   **Score before triage.** Pass every surviving finding to a **[S] scorer
+   (Sonnet)** — a fresh agent that did *not* generate the findings — with this
+   rubric verbatim:
+   > Score 0–100 your confidence that this is a real, in-scope defect the
+   > author would want to fix: 90–100 certain and load-bearing; 80–89 likely;
+   > 60–79 plausible but arguable; below 60 speculative or out of scope. Give
+   > the integer score and one sentence of justification per finding.
+
+   Findings scoring **below 80 are excluded from the actioned list but logged**
+   in the Review section (the count, plus one line each) — surfaced, never
+   silently dropped (IP3). Triage each finding scoring **80 or above**: fix now
+   / spawn a follow-up (candidate row or milestone) / reject with reason — all
+   logged in the Review section.
 
 6. Final checkpoint commit on the branch.
 

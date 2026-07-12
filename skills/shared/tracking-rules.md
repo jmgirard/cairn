@@ -296,8 +296,15 @@ cairn skill is active.
   searches (Explore), mechanical migrations, test writing against a spec,
   boilerplate. Give complete specs; verify their diffs before committing;
   summarize results into one work-log line.
-- **Opus subagents**: design-sensitive implementation; always the
-  fresh-context review at `/milestone-review`.
+- **Opus subagents**: design-sensitive implementation; the diff-bug lens of
+  the fresh-context review at `/milestone-review`.
+- **The `/milestone-review` fan-out** (M17): two distinct-evidence reviewers —
+  an **[O]** diff-bug reviewer (Opus, correctness/contract/convention) and an
+  **[S]** blame-history reviewer (Sonnet, does the change undo deliberate prior
+  work) — then an **[S]** confidence scorer (Sonnet) that scores each finding
+  0–100 and drops sub-threshold ones from the actioned list (logged, not
+  discarded). The scorer gates what the user sees, so it stays on Sonnet, never
+  Haiku.
 - **Never Haiku.** For anything.
 - **Fable subagents**: only through the RB/RR brief protocol
   (`/milestone-brief`) and only after a per-instance approval gate — Fable
