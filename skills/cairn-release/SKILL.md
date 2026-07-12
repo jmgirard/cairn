@@ -16,7 +16,7 @@ Phase header: `# Release <version>` → `## <step>`.
 - Session start: read `cairn/ROADMAP.md` and `cairn/DECISIONS.md`
   (standing constraints bind the release too); if an un-ingested RR sits
   in `cairn/reviews/`, handle ingestion first (see `/milestone-brief`).
-- No milestone `in-progress` — release from a clean, green default branch (A
+- No milestone `in-progress` — release from a clean, green default branch. (A
   milestone at `review` should be merged or explicitly deferred first.)
 - Clean `git status`; local default branch up to date with origin (detect it
   per the tracking-rules git model).
