@@ -32,6 +32,14 @@ def archived(status):
     return f"# M — {status}\n\n**Status:** {status} · approved 2026-07-11\n\n## Outcome\nx\n"
 
 
+def live_slot(status, slot):
+    """A live milestone header carrying a `Principles touched:` slot."""
+    return (
+        f"# M: Test milestone\n\n- **Status:** {status}   <!-- mirror -->\n"
+        f"- **Principles touched:** {slot}\n\n## Goal\nx\n"
+    )
+
+
 def live_cov(status, n_criteria, coverage_refs):
     """A live milestone body with `n_criteria` acceptance criteria and a
     Coverage section citing each AC number in `coverage_refs`."""
@@ -234,6 +242,34 @@ class TestValidateClean(ScriptCase):
         self.assertIn("PASS  coverage complete", proc.stdout)
 
 
+class TestPrinciplesSlot(ScriptCase):
+    DESIGN = "# Design\n\n## Design Principles\n\n- IP1: first\n- GP1: second\n"
+
+    def _build_with_design(self, slot):
+        self.tree.files["milestones/M03-live.md"] = live_slot("planned", slot)
+        root = self.tree.build()
+        (root / "cairn" / "DESIGN.md").write_text(self.DESIGN)
+        return root
+
+    def test_valid_slot_passes(self):
+        proc = run("cairn_validate.py", self._build_with_design("IP1, GP1"))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  principles slot valid", proc.stdout)
+
+    def test_dash_slot_noops(self):
+        # The template default '—' (and pre-slot files) must not trip the check.
+        proc = run("cairn_validate.py", self._build_with_design("—"))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  principles slot valid", proc.stdout)
+
+    def test_bogus_id_fails(self):
+        # GP9 is not defined in DESIGN.md → the slot check flags it.
+        proc = run("cairn_validate.py", self._build_with_design("IP1, GP9"))
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("FAIL  principles slot valid", proc.stdout)
+        self.assertIn("GP9", proc.stdout)
+
+
 class TestValidateFailures(ScriptCase):
     def assert_fails(self, check_label, root):
         proc = run("cairn_validate.py", root)
@@ -421,6 +457,23 @@ class TestImpact(ScriptCase):
         out = run_impact(["GP4", "--root", str(self._impact_tree())]).stdout
         self.assertIn("cairn/DESIGN.md:4", out)
         self.assertIn("cairn/DECISIONS.md:5", out)
+
+    def test_slot_reference_tagged_declared(self):
+        # A reference on a `Principles touched:` slot line is tagged
+        # (declared); an incidental prose citation of the same id is not (M38).
+        root = self.tree.build()
+        cairn = self.tree.root / "cairn"
+        (cairn / "DESIGN.md").write_text("# Design\n\n- IP2: prior state is surfaced.\n")
+        (cairn / "milestones" / "M51-slot.md").write_text(
+            "# M51\n\n- **Status:** planned\n- **Principles touched:** IP2\n\n"
+            "## Goal\nAlso mentions IP2 in prose here.\n"
+        )
+        out = run_impact(["IP2", "--root", str(root)]).stdout
+        cited = [ln for ln in out.splitlines() if "M51-slot.md" in ln]
+        declared = [ln for ln in cited if ln.rstrip().endswith("(declared)")]
+        prose = [ln for ln in cited if not ln.rstrip().endswith("(declared)")]
+        self.assertEqual(len(declared), 1, out)   # the slot line
+        self.assertEqual(len(prose), 1, out)      # the prose line, untagged
 
     def test_changed_derives_from_design_diff(self):
         if not shutil.which("git"):

@@ -2,10 +2,10 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M38: Principles-touched slot in the milestone template
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** m38-principles-touched-slot · https://github.com/jmgirard/cairn/pull/36
 
 ## Goal
 
@@ -29,21 +29,21 @@ fuzzy prose-citation linting (the slot is the fix, not prose rewriting).
 
 ## Acceptance criteria
 
-- [ ] The milestone template (`skills/shared/templates/milestone.md`) carries
+- [x] The milestone template (`skills/shared/templates/milestone.md`) carries
       a `Principles touched:` header field, plan-owned (create/amend-via-gate),
       defaulting to `—`; the tracking-rules section-ownership table has a row
       for it.
-- [ ] `/milestone-plan` SKILL directs the planner to fill the slot with the
+- [x] `/milestone-plan` SKILL directs the planner to fill the slot with the
       DESIGN principles the milestone touches (or `—`) — a `Principles touched:`
       directive line, parallel to the existing `Phase header:` directive.
-- [ ] `cairn_validate` FAILs when a live milestone's `Principles touched:` slot
+- [x] `cairn_validate` FAILs when a live milestone's `Principles touched:` slot
       names an id that is not a current DESIGN.md principle, and passes when the
       slot is absent or every named id is a real principle — proven by a unit
       test with both a valid-slot and a bogus-id fixture.
-- [ ] `cairn_impact`'s report distinguishes a reference that comes from a
+- [x] `cairn_impact`'s report distinguishes a reference that comes from a
       `Principles touched:` slot (tagged authoritative/declared) from an
       incidental prose citation — proven by a unit test.
-- [ ] Both suites pass: `python3 -m unittest discover -s scripts/tests` and the
+- [x] Both suites pass: `python3 -m unittest discover -s scripts/tests` and the
       skills guard tests (`skills/tests/`).
 
 ## Coverage
@@ -56,25 +56,43 @@ fuzzy prose-citation linting (the slot is the fix, not prose rewriting).
 
 ## Tasks
 
-- [ ] T1 — Add the `Principles touched:` field to the milestone template (after
+- [x] T1 — Add the `Principles touched:` field to the milestone template (after
       `Depends on:`, plan-owner comment) and a row to the section-ownership
       table in `shared/tracking-rules.md`.
-- [ ] T2 — Add a `Principles touched:` authoring directive to
+- [x] T2 — Add a `Principles touched:` authoring directive to
       `skills/milestone-plan/SKILL.md` (parallel to `Phase header:`).
-- [ ] T3 — Add a `cairn_validate` check parsing the slot on live milestone
+- [x] T3 — Add a `cairn_validate` check parsing the slot on live milestone
       files; every named id must be a current DESIGN.md principle. No-ops when
       the slot is absent (so no `Tree.build` change per the M34 lesson); add
       targeted valid/bogus fixtures with a dedicated builder in
       `scripts/tests/test_scripts.py`.
-- [ ] T4 — Wire `cairn_impact` to tag slot-sourced references as declared in
+- [x] T4 — Wire `cairn_impact` to tag slot-sourced references as declared in
       its output; add a unit test covering a slot line vs a prose citation of
       the same principle.
-- [ ] T5 — Run both suites green; fix any fallout.
+- [x] T5 — Run both suites green; fix any fallout.
 
 ## Work log
 
 - 2026-07-12: created by /milestone-plan.
+- 2026-07-12: started implementing; branch m38-principles-touched-slot.
+- 2026-07-12: T1 — added Principles touched slot to template + section-ownership row.
+- 2026-07-12: T2 — added Principles touched authoring directive to /milestone-plan step 4.
+- 2026-07-12: T3 — cairn_validate 'principles slot valid' check (validate-if-present) + 3 fixtures; suite 52 green.
+- 2026-07-12: T4 — cairn_impact tags slot-sourced refs '(declared)' + test; T5 — both suites green (53 scripts, 85 skills). Status → review.
 
 ## Decisions
 
 ## Review
+
+**Evidence (fresh, 2026-07-12, PR #36):**
+- AC1 — `milestone.md:9` carries `- **Principles touched:** —` (plan-owner comment); `tracking-rules.md:50` ownership row extended to "Priority, Depends on, Principles touched (header)".
+- AC2 — `milestone-plan/SKILL.md:86` authoring directive under step 4.
+- AC3 — `TestPrinciplesSlot`: valid-slot passes, `—` no-ops, bogus id (`GP9`) FAILs → all ok.
+- AC4 — `TestImpact.test_slot_reference_tagged_declared`: slot line tagged `(declared)`, prose line untagged → ok.
+- AC5 — scripts 53/53 ok; skills 85/85 ok; `cairn_validate` 11/11 (incl. `principles slot valid`) green.
+
+**Consistency gate:** `cairn_validate` exit 0; coverage-complete PASS (AC1–5 → T1–5 mapped). No DESIGN principle changed (diff does not touch `DESIGN.md`) → `cairn_impact --changed` N/A. R gates (document/README/pkgdown/NEWS/Rbuildignore) waived — plugin repo, not an R package.
+
+Diffstat: 8 files, +130/−10.
+
+**Independent review (2 lenses + scorer):** [O] diff-bug and [S] blame-history reviewers both returned **no findings** — verified clean against ACs, DESIGN conventions, DECISIONS, and the M17/M24/M34 lessons (validate no-op-when-absent honored; `(declared)` suffix doesn't disturb existing impact ref-format assertions; ownership-table row passes M18 owner-parity). Scorer step N/A (empty actioned list). Three sub-threshold observations logged, not actioned: (1) `cairn_impact.references()` docstring didn't mention the new `(declared)` suffix — **fixed** here; (2) `_SLOT_LINE`/id regex duplicated across the two standalone reporter scripts — left (pre-existing `_PRINCIPLE` duplication; not worth a shared-module change now); (3) M38's own file carries no slot — left, it predates the field (validate-if-present tolerates it, same as M39).

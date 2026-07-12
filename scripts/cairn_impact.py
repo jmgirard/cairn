@@ -29,6 +29,11 @@ import sys
 import cairn_scripts as cs
 
 _PRINCIPLE = re.compile(r"\b[IG]P\d+\b")
+# A milestone's `Principles touched:` header slot — the authoritative
+# declaration of the principles a milestone touches (M38). A reference on
+# such a line is tagged `(declared)` so the report separates it from an
+# incidental prose citation, which can be inaccurate (M17).
+_SLOT_LINE = re.compile(r"^\s*-\s*\*\*Principles touched:\*\*", re.IGNORECASE)
 
 
 class Usage(Exception):
@@ -54,7 +59,8 @@ def scan_files(root):
 
 def references(root, pid):
     """'cairn/rel:line' strings for every line citing pid, in scan order
-    (DESIGN, DECISIONS, ROADMAP, then milestones; deterministic)."""
+    (DESIGN, DECISIONS, ROADMAP, then milestones; deterministic). A ref whose
+    line is a `Principles touched:` slot carries a trailing ' (declared)'."""
     pat = re.compile(r"\b" + re.escape(pid) + r"\b")
     hits = []
     for path in scan_files(root):
@@ -66,7 +72,10 @@ def references(root, pid):
         rel = os.path.relpath(path, root)
         for i, line in enumerate(lines, 1):
             if pat.search(line):
-                hits.append(f"{rel}:{i}")
+                ref = f"{rel}:{i}"
+                if _SLOT_LINE.match(line):
+                    ref += " (declared)"
+                hits.append(ref)
     return hits
 
 

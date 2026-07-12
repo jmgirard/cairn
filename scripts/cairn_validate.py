@@ -274,6 +274,53 @@ def check_coverage_complete(root):
     return bad
 
 
+_PRINCIPLE_ID = re.compile(r"\b[IG]P\d+\b")
+_SLOT_LINE = re.compile(r"^\s*-\s*\*\*Principles touched:\*\*\s*(.*)$", re.IGNORECASE)
+_PRINCIPLE_DEF = re.compile(r"^\s*-\s*([IG]P\d+):")
+_HTML_COMMENT = re.compile(r"<!--.*?-->")
+
+
+def _design_principles(root):
+    """Ids of principles defined in DESIGN.md — lines like `- IP1: …`."""
+    ids = set()
+    try:
+        with open(os.path.join(root, "cairn", "DESIGN.md"), encoding="utf-8") as f:
+            for line in f:
+                m = _PRINCIPLE_DEF.match(line)
+                if m:
+                    ids.add(m.group(1))
+    except Exception:
+        pass
+    return ids
+
+
+def check_principles_slot(root):
+    """Each live milestone's `Principles touched:` slot names only current
+    DESIGN.md principles. No-op when the slot is absent or `—` (validate-if-
+    present, mirroring coverage — archived and pre-slot files carry none), so
+    a typo'd or retired-principle id is caught at the declaration point (M38)
+    rather than misattributing a Sync Impact Report line (M17)."""
+    defined = _design_principles(root)
+    bad = []
+    for mid, path in sorted(cs.live_files(root).items(), key=lambda kv: cs.id_num(kv[0])):
+        try:
+            with open(path, encoding="utf-8") as f:
+                text = f.read()
+        except Exception:
+            continue
+        for line in text.splitlines():
+            m = _SLOT_LINE.match(line)
+            if not m:
+                continue
+            body = _HTML_COMMENT.sub("", m.group(1)).strip()
+            if body and body != "—":
+                for pid in _PRINCIPLE_ID.findall(body):
+                    if pid not in defined:
+                        bad.append(f"{mid}: Principles touched cites {pid}, not a DESIGN.md principle")
+            break  # only the first slot line in the header
+    return bad
+
+
 CHECKS = [
     ("mirror agreement", lambda root, rows: check_mirror(root, rows)),
     ("at most one in-progress", lambda root, rows: check_single_in_progress(rows)),
@@ -286,6 +333,7 @@ CHECKS = [
     ("iso date format", lambda root, rows: check_dates(root)),
     ("scaffold present", lambda root, rows: check_scaffold(root)),
     ("coverage complete", lambda root, rows: check_coverage_complete(root)),
+    ("principles slot valid", lambda root, rows: check_principles_slot(root)),
 ]
 
 
