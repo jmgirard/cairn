@@ -130,47 +130,27 @@ the skill.
 
 ## Review
 
-**Evidence (fresh, by command, 2026-07-12):**
+**Evidence (fresh, by command, 2026-07-12):** AC1 — ackwards PR #53 open with
+"Migration ledger" table (`gh pr view`). AC2 (amended) — `cairn_validate` on
+ackwards branch 8/9; sole FAIL = CLAUDE cap (documented, ROADMAP G8). AC3 —
+`git diff -M --summary`: DESIGN + MILESTONES + ROADMAP + 3 skills rename at 100%
+(verbatim); 0 files changed under `R/`/`tests/`/`DESCRIPTION`/`vignettes/`. AC4 —
+pilot-notes.md + INDEX row present. AC5 — 5 candidate rows; no `fix-here` emerged
+(gaps are design-level). AC6 — guard suites 46+31=77 green.
 
-- **AC1** ✓ — ackwards PR #53 open; body contains the "Migration ledger" table
-  (verified via `gh pr view 53 --json body`). Ledger accounts for every legacy
-  file + live item.
-- **AC2** ✓ (as amended) — `cairn_validate` on the ackwards branch: 8/9 PASS;
-  sole FAIL is `weight caps` (CLAUDE.md 187 > `<80`), the documented pilot
-  finding filed as ROADMAP candidate G8. No other check fails.
-- **AC3** ✓ — `git diff -M --summary master..cairn-init-migration`: DESIGN.md,
-  MILESTONES.md, ROADMAP.md, and all 3 skills rename at **100% similarity**
-  (verbatim; no completed milestone rewritten). Package code untouched:
-  0 files changed under `R/`/`tests/`/`DESCRIPTION`/`vignettes/`.
-- **AC4** ✓ — `cairn/references/migration-pilot-notes.md` present (52 lines,
-  ledger summary + per-§ friction log + 10 tagged gaps); 1 INDEX.md row.
-- **AC5** ✓ — 5 M20-sourced candidate rows in ROADMAP; no `fix-here` gap
-  emerged (all surfaced gaps are design-level → candidates), so the fix-here
-  clause is vacuously satisfied and all candidates are filed.
-- **AC6** ✓ — guard suites green: skills/tests 46, scripts/tests 31 (77 total).
+**Consistency gate:** `cairn_validate` (cairn self) clean; coverage complete
+(every AC → an existing task); no DESIGN principle changed → impact skipped;
+R-package gates waived per CLAUDE.md.
 
-**Consistency gate:** `cairn_validate` (cairn self) all checks pass; coverage
-completeness — every AC maps to an existing task (AC1→T1–6, AC2→T6, AC3→T3,T5,
-AC4→T7, AC5→T8, AC6→T9); no cairn DESIGN principle changed → Sync Impact Report
-skipped. R-package gates (devtools/README.Rmd/pkgdown/NEWS) waived per CLAUDE.md.
+**Independent review** — [O] diff-bug + [S] blame-history + [S] scorer, 3 findings:
+- **H1 (85, fixed)** — redistribution dropped ackwards' dated owner decision
+  (`master` not branch-protected; non-release merge on local-green, CI advisory)
+  which cairn's rulebook reverses; re-recorded in CLAUDE.md as an explicit
+  standing override of cairn's gate.
+- **O1 (80, fixed)** — "each citing §14" overgeneralized (10/15 cite §2–§12);
+  reworded in DECISIONS preamble + pilot notes.
+- **O2 (62, excluded/logged)** — G6 in-code-ref count undercounted (~17+3 not
+  15+2); corrected as hygiene, no further action.
 
-**Independent fresh-context review** — 2 lenses ([O] diff-bug, [S] blame-history)
-+ [S] scorer. 3 findings; scored:
-
-- **H1 (85, fixed)** — blame lens: the CLAUDE redistribution dropped ackwards'
-  dated owner decision that `master` is *not* branch-protected (non-release
-  milestones merge on local-green, CI advisory, no `--auto`, no CI-watch), which
-  cairn's rulebook reverses. Fixed: re-recorded it in ackwards CLAUDE.md Git
-  section as an explicit standing override of cairn's default gate (preserves
-  live governing state; owner can drop it consciously later).
-- **O1 (80, fixed)** — diff lens: the "each citing DESIGN §14" summary
-  overgeneralized (10/15 decisions cite §2–§12). Fixed in ackwards DECISIONS.md
-  preamble + pilot notes.
-- **O2 (62, excluded/logged)** — diff lens: G6's in-code-ref count (15+2)
-  undercounted vs actual (~17 across 9 files + 3 tests). Below the 80
-  threshold; corrected in the pilot note as hygiene, no further action.
-
-Clean per both lenses: entombment 100% verbatim, no package code touched, no
-live ROADMAP item dropped, no-invention rule honored (D-entries trace to
-source; unknown dates marked not fabricated), CLAUDE redistribution otherwise
-lossless.
+Clean per both lenses: entombment verbatim, no package code touched, no live
+ROADMAP item dropped, no-invention rule honored.
