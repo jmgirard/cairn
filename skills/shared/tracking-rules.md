@@ -184,6 +184,15 @@ and correct: review to the hotfix bar and merge on user approval; larger:
 becomes/joins a milestone. Candidates may be added conversationally by
 anyone at any time (one ROADMAP row).
 
+**Search-first candidate creation.** Before adding a candidate row — by any
+skill or conversationally — sweep existing candidates + `milestones/archive/`
++ `DECISIONS.md` for overlap; on a hit, absorb into or cross-reference the
+existing row rather than add a duplicate. A standing rejection ("considered,
+declined") is itself recorded once and follows the supersede discipline —
+not re-litigated each time the idea recurs. This generalizes the plan-time
+collision check to every candidate-creation point (any skill, conversational
+adds alike).
+
 ## Git and approval model
 
 - **The default branch (`main`/`master`) is a distribution channel**

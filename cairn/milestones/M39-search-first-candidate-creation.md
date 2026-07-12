@@ -2,10 +2,10 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M39: Search-first candidate creation
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** m39-search-first-candidate-creation
 
 ## Goal
 
@@ -46,7 +46,7 @@ it once; skills bind through it per the "nothing is said twice" convention).
 
 ## Tasks
 
-- [ ] T1 — Add the search-first candidate-creation rule to `tracking-rules.md`,
+- [x] T1 — Add the search-first candidate-creation rule to `tracking-rules.md`,
       at/near the Intake "Candidates may be added ... at any time" line.
 - [ ] T2 — Add a brief pointer at `/hotfix` step 7 and the `/milestone-review`
       follow-up-candidate step referencing the rule.
@@ -56,6 +56,7 @@ it once; skills bind through it per the "nothing is said twice" convention).
 ## Work log
 
 - 2026-07-12: created by /milestone-plan.
+- 2026-07-12: T1 — added the "Search-first candidate creation" rule to `tracking-rules.md` after the Intake paragraph; branch cut, status → in-progress.
 
 ## Decisions
 
