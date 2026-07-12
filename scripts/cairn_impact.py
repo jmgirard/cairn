@@ -10,6 +10,11 @@ error), matching the other reporters.
     python3 scripts/cairn_impact.py IP2 GP4     # named principles
     python3 scripts/cairn_impact.py --changed   # derive from DESIGN.md diff
 
+`--changed` diffs DESIGN.md from the branch's merge-base with the default
+branch (origin/HEAD, then main, then master; HEAD if none resolves), so it
+sees principle edits already committed on the milestone branch — which is the
+state at the review gate, where implement has checkpoint-committed each task.
+
 A match is any whole-word occurrence of the id (`IP2` matches `IP2:` and
 `IP2)` but not `IP20`). The principle's own DESIGN.md definition line counts
 as a reference — showing it alongside the citations is exactly what reconciling
@@ -24,6 +29,10 @@ import sys
 import cairn_scripts as cs
 
 _PRINCIPLE = re.compile(r"\b[IG]P\d+\b")
+
+
+class Usage(Exception):
+    """Bad command-line arguments (exit 2, like the not-a-cairn-repo case)."""
 
 
 def scan_files(root):
@@ -44,7 +53,8 @@ def scan_files(root):
 
 
 def references(root, pid):
-    """Sorted 'cairn/rel:line' strings for every line citing principle pid."""
+    """'cairn/rel:line' strings for every line citing pid, in scan order
+    (DESIGN, DECISIONS, ROADMAP, then milestones; deterministic)."""
     pat = re.compile(r"\b" + re.escape(pid) + r"\b")
     hits = []
     for path in scan_files(root):
@@ -60,16 +70,34 @@ def references(root, pid):
     return hits
 
 
+def _base_commit(root):
+    """Merge-base of HEAD with the default branch (origin/HEAD, then main,
+    then master); HEAD if none resolves — e.g. on the default branch itself
+    or a fresh repo — so --changed still sees the working tree."""
+    for ref in ("origin/HEAD", "main", "master"):
+        r = subprocess.run(
+            ["git", "-C", root, "merge-base", "HEAD", ref],
+            capture_output=True, text=True,
+        )
+        if r.returncode == 0 and r.stdout.strip():
+            return r.stdout.strip()
+    return "HEAD"
+
+
 def changed_principles(root):
-    """Principle ids on added/removed lines of DESIGN.md vs HEAD, in order."""
+    """Principle ids on added/removed DESIGN.md lines since the branch base."""
     try:
-        diff = subprocess.run(
-            ["git", "-C", root, "diff", "HEAD", "--", "cairn/DESIGN.md"],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        ).stdout
+        base = _base_commit(root)
+        r = subprocess.run(
+            ["git", "-C", root, "diff", base, "--", "cairn/DESIGN.md"],
+            capture_output=True, text=True, timeout=30,
+        )
+        if r.returncode != 0:
+            sys.stderr.write("warning: git diff failed; --changed saw nothing\n")
+            return []
+        diff = r.stdout
     except Exception:
+        sys.stderr.write("warning: git unavailable; --changed saw nothing\n")
         return []
     ids = []
     for line in diff.splitlines():
@@ -101,8 +129,12 @@ def parse_args(argv):
         if a == "--changed":
             changed = True
         elif a == "--root":
+            if i + 1 >= len(argv):
+                raise Usage("--root requires a value")
             i += 1
-            root = argv[i] if i < len(argv) else None
+            root = argv[i]
+        elif a.startswith("-"):
+            raise Usage(f"unknown option {a}")
         else:
             principles.append(a.upper())
         i += 1
@@ -110,7 +142,11 @@ def parse_args(argv):
 
 
 def main(argv):
-    principles, changed, root_arg = parse_args(argv)
+    try:
+        principles, changed, root_arg = parse_args(argv)
+    except Usage as e:
+        sys.stderr.write(f"usage: cairn_impact.py [--changed] [IPn|GPn ...]\n{e}\n")
+        return 2
     try:
         root = cs.resolve_root(["cairn_impact"] + ([root_arg] if root_arg else []))
     except cs.NotCairn as e:
@@ -121,7 +157,7 @@ def main(argv):
             if pid not in principles:
                 principles.append(pid)
         if not principles:
-            print(f"cairn impact — {root}\n\nno changed principles in cairn/DESIGN.md (vs HEAD)")
+            print(f"cairn impact — {root}\n\nno changed principles in cairn/DESIGN.md")
             return 0
     if not principles:
         sys.stderr.write("usage: cairn_impact.py [--changed] [IPn|GPn ...]\n")

@@ -317,6 +317,44 @@ class TestImpact(ScriptCase):
         self.assertIn("cairn/DECISIONS.md:5", proc.stdout)  # its downstream ref
         self.assertNotIn("IP2 —", proc.stdout)              # unchanged → absent
 
+    def test_changed_sees_committed_branch_edit(self):
+        # The review-gate scenario: the principle edit is already committed on
+        # a milestone branch cut from the default branch. --changed must diff
+        # from the merge-base, not HEAD, or it reports nothing.
+        if not shutil.which("git"):
+            self.skipTest("git not available")
+        root = self._impact_tree()
+        git = ["git", "-C", str(root)]
+        who = ["-c", "user.email=t@t", "-c", "user.name=t"]
+        subprocess.run(["git", "init", "-q", "-b", "main", str(root)], check=True)
+        subprocess.run(git + ["add", "-A"], check=True)
+        subprocess.run(git + who + ["commit", "-q", "-m", "base"], check=True)
+        subprocess.run(git + ["checkout", "-q", "-b", "m99-x"], check=True)
+        (root / "cairn" / "DESIGN.md").write_text(
+            "# Design\n\n- IP2: prior state is surfaced.\n"
+            "- GP4: fixes live in the shared artifact, never per-user memory.\n"
+        )
+        subprocess.run(git + who + ["commit", "-qam", "edit GP4"], check=True)
+        proc = run_impact(["--changed", "--root", str(root)])
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("GP4 —", proc.stdout)                 # committed change seen
+        self.assertIn("cairn/DECISIONS.md:5", proc.stdout)  # its downstream ref
+        self.assertNotIn("IP2 —", proc.stdout)              # unchanged → absent
+
+    def test_whole_word_non_match(self):
+        root = self._impact_tree()
+        (self.tree.root / "cairn" / "milestones" / "M51-ip20.md").write_text(
+            "IP20 is a different, unrelated token.\n"
+        )
+        out = run_impact(["IP2", "--root", str(root)]).stdout
+        self.assertNotIn("M51-ip20.md", out)  # IP2 must not match IP20
+
+    def test_unknown_flag_is_usage_error(self):
+        # A typo'd flag must not read as a clean all-clear at the gate.
+        proc = run_impact(["--changd", "--root", str(self.tree.build())])
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("unknown option", proc.stderr)
+
     def test_no_args_is_usage_error(self):
         proc = run_impact(["--root", str(self.tree.build())])
         self.assertEqual(proc.returncode, 2)
