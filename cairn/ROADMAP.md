@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M40 | Prior-PR-comments reviewer lens | in-progress | — | normal | milestones/M40-prior-pr-comments-lens.md |
+| M40 | Prior-PR-comments reviewer lens | review | — | normal | milestones/M40-prior-pr-comments-lens.md |
 | M39 | Search-first candidate creation | done | — | normal | milestones/archive/M39-search-first-candidate-creation.md |
 | M38 | Principles-touched slot in the milestone template | done | — | normal | milestones/archive/M38-principles-touched-slot.md |
 | M37 | Fence cairn subagents off the shared checkout (ref-based git only) | done | — | normal | milestones/archive/M37-reviewer-shared-checkout-guard.md |
