@@ -67,7 +67,7 @@ review.
       map. ([SKILL.md](../../skills/milestone-plan/SKILL.md))
 - [x] Update `/milestone-review` steps 3–4 to enforce AC fencing + the
       coverage check. ([SKILL.md:31-42](../../skills/milestone-review/SKILL.md))
-- [ ] Update `tracking-rules.md`: add the Coverage row to the section-ownership
+- [x] Update `tracking-rules.md`: add the Coverage row to the section-ownership
       table and state the fencing rule in the review discipline.
       ([tracking-rules.md:47-58](../../skills/shared/tracking-rules.md))
 - [ ] Write `skills/tests/test_ac_traceability.py`; run it green.
@@ -87,6 +87,8 @@ review.
 - 2026-07-11: T3 — /milestone-review step 3 fences evidence-before-checkbox;
   step 4 gate adds a Coverage-completeness check (unmapped criterion = gate
   failure, back to implement).
+- 2026-07-11: T4 — tracking-rules gains the Coverage ownership row and an
+  "AC fencing (review discipline)" paragraph.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

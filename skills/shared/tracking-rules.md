@@ -52,10 +52,20 @@ whichever skill makes the transition; ROADMAP wins any conflict),
 | Goal | plan | create; a wrong goal returns to plan, never edited in place |
 | Scope (In/Out) | plan | create; amend-via-gate |
 | Acceptance criteria | plan | create; amend-via-gate — review reads, never reinterprets |
+| Coverage (criterion→task map) | plan | create; amend-via-gate — review reads to fence evidence, never reinterprets |
 | Tasks | plan (create), implement (check-off, minor edits) | create; check-off; amend-via-gate for substantive change |
 | Work log | any skill | append-only |
 | Decisions (milestone-local) | implement, review | append-only |
 | Review | review | exclusive |
+
+**AC fencing (review discipline).** At `/milestone-review`, an
+acceptance-criterion checkbox is ticked only against fresh evidence recorded
+in the Review section — no evidence line, no tick — and every criterion must
+map to ≥1 existing task via the Coverage section. An unmapped criterion (or
+one mapped to a task that isn't there) is a gate failure, returned to
+`/milestone-implement` for a gated Coverage amendment, never patched
+review-side. Fencing enforces what the Coverage map plans: evidence gates the
+checkbox, coverage gates the plan.
 
 DESIGN.md principles come in two strengths: **GP<n> — Guiding Principle**, a
 default stance that may be traded off with stated justification; **IP<n> —
