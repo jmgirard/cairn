@@ -1,6 +1,6 @@
 # Milestone 14: Section write allow-lists per skill
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- high | normal | low -->
 - **Depends on:** —
 - **Branch/PR:** m14-section-allow-lists   <!-- PR URL once opened -->
@@ -48,9 +48,9 @@ schemas for machine-written fragments" stays its M06-steal candidate row.
 - [x] Update `skills/shared/templates/milestone.md` comments to name each
       section's owner.
 - [x] Add allow-list cross-references to plan/implement/review SKILL.md.
-- [ ] Write `skills/tests/test_section_allow_lists.py` (table ↔ template
+- [x] Write `skills/tests/test_section_allow_lists.py` (table ↔ template
       section parity).
-- [ ] Run `skills/tests/` + `scripts/tests/` + `cairn_validate`; fix any
+- [x] Run `skills/tests/` + `scripts/tests/` + `cairn_validate`; fix any
       drift.
 
 ## Work log
@@ -59,6 +59,7 @@ schemas for machine-written fragments" stays its M06-steal candidate row.
 - 2026-07-11: created by /milestone-plan.
 - 2026-07-11: section-ownership table added to tracking-rules.md; template comments tag each section's owner.
 - 2026-07-11: plan/implement/review SKILL.md cross-reference their writable sections (no rule restated).
+- 2026-07-11: test_section_allow_lists.py locks table↔template parity; skills/tests (20) + scripts/tests (21) + cairn_validate all green.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
