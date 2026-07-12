@@ -3,10 +3,10 @@
      Per-section owners are tagged below. -->
 # M17: Review fan-out + confidence scoring
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m17-review-fanout   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -64,11 +64,11 @@ fan-out plus a scoring pass:
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] Rework `/milestone-review` step 5 into the two-lens fan-out: diff-bug
+- [x] Rework `/milestone-review` step 5 into the two-lens fan-out: diff-bug
       reviewer (Opus) + blame-history reviewer (Sonnet), each prompt naming its
       evidence base; embed the false-positive taxonomy.
       ([SKILL.md:71-78](../../skills/milestone-review/SKILL.md))
-- [ ] Add the generate-then-verify scorer sub-step: verbatim 0–100 rubric,
+- [x] Add the generate-then-verify scorer sub-step: verbatim 0–100 rubric,
       threshold 80, exclude-but-log wired into the Review-section write.
 - [ ] Update `tracking-rules.md` "Model and agent strategy" (lines ~288–307)
       to describe the fan-out + scorer tiers; keep the "Never Haiku" line.
@@ -83,6 +83,9 @@ fan-out plus a scoring pass:
 
 - 2026-07-11: created by /milestone-plan (split from the "Review pipeline
   upgrades" candidate; sibling M18 covers AC traceability).
+- 2026-07-11: in-progress on m17-review-fanout; step 5 reworked into two-lens
+  fan-out (Opus diff + Sonnet blame) + Sonnet confidence scorer (rubric,
+  threshold 80, exclude-but-log). Tasks 1–2 done.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
