@@ -34,11 +34,13 @@ class TestSearchFirstCandidateRule(unittest.TestCase):
         self.assertIn("absorb into or cross-reference", t)
 
     def test_rule_names_all_three_sweep_targets(self):
+        # Anchor on the rule's own contiguous sweep-list phrasing, not bare
+        # `milestones/archive/` / `decisions.md` — those substrings occur
+        # elsewhere in the file (file-map table, append-only rule) and would
+        # pass even if the rule dropped them from its sweep list.
         t = rules()
-        self.assertIn("milestones/archive/", t)
-        self.assertIn("decisions.md", t)
-        # existing candidates is the third target
-        self.assertIn("sweep existing candidates", t)
+        self.assertIn("sweep existing candidates + `milestones/archive/`", t)
+        self.assertIn("`decisions.md` for overlap", t)
 
 
 class TestSearchFirstPointers(unittest.TestCase):
