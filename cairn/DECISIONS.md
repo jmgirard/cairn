@@ -339,6 +339,6 @@ exception (D-019) — review is chip-less but still has navigable phases.
 **Consequences:** Annotates D-020 (executes its banked candidate) and
 reinforces the output-discipline "Chapter markers" rule as the load-bearing
 TOC driver. The mandate's list (nine, review included) deliberately differs
-from `NON_REVIEW_CHIP_SKILLS` (six). Guards are prose-guards, proving wording
+from `NON_REVIEW_CHIP_SKILLS` (seven — review excluded from that one). Guards are prose-guards, proving wording
 not runtime (M27 already characterized runtime behavior live). If a future
 harness needs a different fallback, this is the entry to supersede.

@@ -6,7 +6,7 @@
 - **Status:** review
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** m28-output-discipline-mandate-guards
+- **Branch/PR:** m28-output-discipline-mandate-guards · https://github.com/jmgirard/cairn/pull/26
 
 ## Goal
 
@@ -40,23 +40,23 @@ existing routing-chip guard the M26 lock missed.
 
 ## Acceptance criteria
 
-- [ ] The tracking-rules "Chapter markers" rule states a per-phase mandate:
+- [x] The tracking-rules "Chapter markers" rule states a per-phase mandate:
       a chapter is marked at each phase transition (session start implicit).
       Evidence: rule text + guard assertion.
-- [ ] The same rule states the no-mechanism fallback: where the runtime
+- [x] The same rule states the no-mechanism fallback: where the runtime
       provides no chapter mechanism the H1/H2 phase headers are the visual
       fallback and no marker is emitted (nothing breaks). Evidence: rule
       text + guard assertion.
-- [ ] All nine phase skills carry a one-line chapter-marker directive.
+- [x] All nine phase skills carry a one-line chapter-marker directive.
       Evidence: `test_chapter_marker_mandate.py` iterating the nine skills
       passes.
-- [ ] `milestone-brief` step 5 names its routing chip as `AskUserQuestion`
+- [x] `milestone-brief` step 5 names its routing chip as `AskUserQuestion`
       (carries the single-line `routing chip (AskUserQuestion)` token).
       Evidence: `TestRoutingChipMandate` passes with it in the list.
-- [ ] `milestone-brief` is in `NON_REVIEW_CHIP_SKILLS` and the stale
+- [x] `milestone-brief` is in `NON_REVIEW_CHIP_SKILLS` and the stale
       "no standalone terminal routing-chip step" comment is corrected.
       Evidence: guard-list membership + the corrected comment in the test.
-- [ ] Full guard suite (`python3 -m unittest discover -s skills/tests`) and
+- [x] Full guard suite (`python3 -m unittest discover -s skills/tests`) and
       `cairn_validate` audit both clean; the mandate-promotion D-entry
       (annotating D-020) is appended to `cairn/DECISIONS.md`. Evidence:
       command output + the D-entry.
@@ -104,3 +104,36 @@ existing routing-chip guard the M26 lock missed.
 ## Decisions
 
 ## Review
+
+**Evidence (fresh, 2026-07-12, PR #26):**
+
+- AC1 — `tracking-rules.md:337` reads `**Chapter markers (per-phase mandate).**
+  Mark a chapter at each phase transition`; `test_rulebook_declares_the_per_phase_mandate` passes.
+- AC2 — `tracking-rules.md:341-342` states the fallback ("where the runtime
+  provides no chapter mechanism … the H1/H2 phase headers are the visual
+  fallback"); `test_rulebook_declares_the_no_mechanism_fallback` passes.
+- AC3 — all 9 `skills/*/SKILL.md` carry the directive (grep count 9, none
+  missing); `test_each_skill_carries_the_chapter_marker_directive` passes.
+- AC4 — `milestone-brief/SKILL.md:66` carries `**Routing chip (AskUserQuestion)**`;
+  `TestRoutingChipMandate.test_non_review_skills_name_askuserquestion_at_routing_chip` passes.
+- AC5 — `test_gate_wording.py:60` lists `milestone-brief` in
+  `NON_REVIEW_CHIP_SKILLS`; comment at :51-52 corrected to name its RR-ingest chip.
+- AC6 — guard suite 71/71, scripts 43/43, `cairn_validate` 10/10 (exit 0),
+  all clean; D-021 present at `DECISIONS.md:320`.
+
+**Consistency gate:** `cairn_validate` 10/10 (exit 0). Coverage complete —
+AC1–AC6 each map to existing tasks T1–T6. No DESIGN principle changed →
+`cairn_impact` skipped. R gates (document/README/pkgdown/NEWS/.Rbuildignore)
+waived in this plugin repo per CLAUDE.md.
+
+**Independent fan-out ([O] diff-bug + [S] blame-history, distinct evidence
+bases):** both lenses independently surfaced one finding, both verified.
+- F1 (scored 92, CONFIRMED, **fixed**): D-021's Consequences said
+  `NON_REVIEW_CHIP_SKILLS (six)` but M28 adds `milestone-brief` → the list is
+  seven. Stale pre-M28 count in the new D-entry; risk that a future reader
+  "corrects" the guard back to six and reopens the M26 gap. Corrected to
+  "seven — review excluded from that one" (`DECISIONS.md:342`).
+- No other findings survived either lens (guard tokens all single-line and
+  non-vacuous; nine-vs-seven lists internally consistent in code/tests;
+  D-019 review chip-less exception untouched; comment correction backed by
+  the M26 lesson at `LESSONS.md:32`). Sub-80 excluded findings: none.
