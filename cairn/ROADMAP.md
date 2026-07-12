@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-11 (M16 done+archived; M11 row pruned per 5-done retention)_
+_Last hygiene check: 2026-07-11 (M17+M18 planned from the review-pipeline candidate)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,6 +10,8 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M17 | Review fan-out + confidence scoring | planned | — | normal | milestones/M17-review-fanout.md |
+| M18 | Acceptance-criteria traceability | planned | M17 | normal | milestones/M18-ac-traceability.md |
 | M16 | Lessons loop (capture → harvest) | done | — | normal | milestones/archive/M16-lessons-loop.md |
 | M15 | Sync Impact Report on principle changes | done | — | normal | milestones/archive/M15-sync-impact-report.md |
 | M14 | Section write allow-lists per skill | done | — | normal | milestones/archive/M14-section-allow-lists.md |
@@ -24,7 +26,8 @@ not an R package, so R-specific gates don't apply.
 - Live-openac router test: run M08's classify-first router empirically in openac (plain-conversation requests should route to the right tier/skill); openac is a separate repo, no automated evidence lands here — added 2026-07-11 — M08 Out
 - Toolchain profiles (generalize beyond R): core is ~80% language-agnostic (this repo runs it sans R); concentrate R-ness into a profile with 6 slots (verify commands, consistency gate, test doctrine, release walk, init detection, greenfield opener questions), chosen at init, recorded in CLAUDE.md section; extraction method: diff what this repo waives vs what openac uses; keep domain doctrine (oracles) orthogonal to language profile; target v0.3 after pilots harden the R slots — added 2026-07-11 — M02 pilot
 - Scripts --json output mode: add a machine-readable `--json` flag to the cairn_* scripts once a consumer exists (deferred from M13 as YAGNI — today the only readers are the skills, which parse text) — added 2026-07-11 — M13 Out
-- Review pipeline upgrades: distinct-evidence reviewer fan-out (blame history, prior-PR comments), verbatim confidence rubric + false-positive taxonomy, evidence-before-checkbox AC fencing, criterion→task coverage table; includes user decision on relaxing never-Haiku for mechanical triage (Anthropic's own pipeline does) — added 2026-07-11 — references/anthropic-code-review.md, competitive-landscape.md
+- Prior-PR-comments reviewer lens: add a third distinct-evidence lens to /milestone-review's fan-out that reads review comments on previous PRs touching the modified files; marginal until a repo has a thick PR history and needs `gh` API plumbing — split 2026-07-11 from the review-pipeline candidate (→ M17/M18) — references/anthropic-code-review.md
+- Mechanical coverage lint in cairn_validate.py: structural check that every acceptance criterion is referenced in a milestone's Coverage section; deferred from M18 (start with skill-text enforcement, add the script once the shape is proven) — added 2026-07-11 — M18 Out
 - Baseline-commit capture at implement start: record the base SHA in the milestone header so review diffs against a fixed point (marginal — review already syncs main and diffs `main..HEAD`) — split 2026-07-11 from milestone-file-mechanics (→ M14–M16) — references/competitive-landscape.md
 - read_when doc-routing frontmatter for references/: per-file frontmatter marking when to read a reference (marginal — `references/INDEX.md` already routes) — split 2026-07-11 from milestone-file-mechanics — references/competitive-landscape.md
 - M06 deferred minor steals (one row per C6; promote individually if wanted): scored-rubric hygiene audit for /milestone, conflicts_with/parallel task metadata, principles-touched slot in milestone template, explicit branch↔milestone mapping, complexity-scored split advisory, tiered tool exposure, strict schemas for machine-written fragments, focus-lens subagent fan-out, search-first candidate creation — added 2026-07-11 — references/competitive-landscape.md + per-system notes
