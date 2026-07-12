@@ -59,7 +59,8 @@ def scan_files(root):
 
 def references(root, pid):
     """'cairn/rel:line' strings for every line citing pid, in scan order
-    (DESIGN, DECISIONS, ROADMAP, then milestones; deterministic)."""
+    (DESIGN, DECISIONS, ROADMAP, then milestones; deterministic). A ref whose
+    line is a `Principles touched:` slot carries a trailing ' (declared)'."""
     pat = re.compile(r"\b" + re.escape(pid) + r"\b")
     hits = []
     for path in scan_files(root):
