@@ -13,3 +13,4 @@ rather than letting it grow; git history keeps the full record.
 
 - 2026-07-11 (M16): this repo has no CI — `gh pr checks --watch` returns "no checks reported" + exit 0; treat as no-CI and merge directly, never wait for green.
 - 2026-07-11 (M16): a new top-level `cairn/` tracking file needs 4 wiring points — tracking-rules file-map + weight-caps, `cairn_scripts.LINE_CAPS`, and (if its lines carry dates) the `cairn_validate` date-scan tuple.
+- 2026-07-11 (M17): `cairn_impact.py` traces principle citations by whole word, so an inaccurate `(IPn)`/`(GPn)` parenthetical is not cosmetic — it misattributes the line in the Sync Impact Report; cite the exact principle (M17 shipped an IP2→IP3 fix the review caught).

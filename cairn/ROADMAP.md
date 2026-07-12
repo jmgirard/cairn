@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-11 (M17+M18 planned from the review-pipeline candidate)_
+_Last hygiene check: 2026-07-11 (M17 done+archived; M12 row pruned per 5-done retention; M18 now workable)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,13 +10,12 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M17 | Review fan-out + confidence scoring | review | — | normal | milestones/M17-review-fanout.md |
 | M18 | Acceptance-criteria traceability | planned | M17 | normal | milestones/M18-ac-traceability.md |
+| M17 | Review fan-out + confidence scoring | done | — | normal | milestones/archive/M17-review-fanout.md |
 | M16 | Lessons loop (capture → harvest) | done | — | normal | milestones/archive/M16-lessons-loop.md |
 | M15 | Sync Impact Report on principle changes | done | — | normal | milestones/archive/M15-sync-impact-report.md |
 | M14 | Section write allow-lists per skill | done | — | normal | milestones/archive/M14-section-allow-lists.md |
 | M13 | Wire deterministic scripts into review + plan | done | — | normal | milestones/archive/M13-script-wiring.md |
-| M12 | Design-interview skill (facts → principles) | done | — | normal | milestones/archive/M12-design-interview-skill.md |
 
 ## Candidates
 
