@@ -58,6 +58,11 @@ within each type and are never reused.
   self-auditing; stateless resume.
 - GP3: Portable — identical across repos; one-command adoption; repo
   specifics layer on top without forking the core.
+- GP4: Generalizable fixes live in the shared artifact, not per-user memory.
+  A defect or lesson that would recur for other users is encoded in the
+  skills, rulebook, or a guard test; memory holds only per-user meta-context
+  and never substitutes for shared plugin logic (corollary of D-001, GP3;
+  see D-011).
 
 ## Known issues
 

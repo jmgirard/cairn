@@ -118,3 +118,18 @@ a milestone's phases) and keying the `##` to the session (breaks when one
 session spans multiple units via chips).
 **Consequences:** Supersedes the inline stage banner. Rule renamed "Stage
 banner" → "Phase header" in `tracking-rules.md`; all 8 skills updated (M09).
+
+### D-011 (2026-07-11): Generalizable fixes go in the plugin, not memory
+
+**Context:** M10's review surfaced a prose merge-approval gate that
+contradicted the rulebook. The reflex fix was a personal memory — which only
+helps one user, in one client, and reintroduces exactly the per-repo/per-user
+divergence D-001 exists to prevent. Jeff flagged it: solve it durably.
+**Decision:** Defects and lessons that generalize are encoded in the shared
+artifact (skills, `tracking-rules.md`, guard tests). Claude's memory holds
+only per-user meta-context and never substitutes for shared plugin logic.
+Adds GP4.
+**Consequences:** Durability for every user, not just the one who hit the
+bug; memory stops being a silent divergence vector; reinforces D-001 and GP3.
+The merge-gate hotfix (chip wording + guard test + marker-sequencing note in
+the skills) is the first application; the corresponding memory was retired.
