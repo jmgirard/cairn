@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M39: Search-first candidate creation
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Branch/PR:** m39-search-first-candidate-creation
@@ -59,6 +59,7 @@ it once; skills bind through it per the "nothing is said twice" convention).
 - 2026-07-12: T1 — added the "Search-first candidate creation" rule to `tracking-rules.md` after the Intake paragraph; branch cut, status → in-progress.
 - 2026-07-12: T2 — one-line pointers at `/hotfix` step 7 and the `/milestone-review` follow-up-candidate triage step (pointers, not restatements).
 - 2026-07-12: T3 — added `test_search_first_candidates.py` (rule + both pointers); skills guard suite green (89 tests).
+- 2026-07-12: all tasks done; skills (89) + scripts (53) suites green, cairn_validate clean; status → review.
 
 ## Decisions
 
