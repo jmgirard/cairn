@@ -84,6 +84,7 @@ directly always works too, e.g. to resume after a break.
 | Fix a reported bug quickly | `/hotfix` — or just describe the bug; regression test, fix, PR, your approval. Escalates to a milestone if it's bigger than it looked |
 | Fix a typo or tweak docs | Just ask — trivial edits commit directly to main, no tracking |
 | Prepare a CRAN release | `/cairn-release` — the full checklist; you do the actual submission |
+| Articulate a repo's design & principles | `/design-interview` — a two-phase interview (facts → principles) that fills `DESIGN.md`; best run on Fable |
 | Adopt the system in another repo | `/cairn-init` — idempotent; safe to re-run |
 
 ## What lives where
