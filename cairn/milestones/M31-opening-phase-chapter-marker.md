@@ -72,7 +72,7 @@ or the routing-chip mandate — untouched.
       asserts opening-phase inclusion (e.g. contains `"opening phase"`). Run to
       confirm it fails against current files (test-first). Keep asserted tokens
       on one physical line (M23/M26 lesson).
-- [ ] T2 — Reword the Chapter-markers rule in `tracking-rules.md` (~343-348):
+- [x] T2 — Reword the Chapter-markers rule in `tracking-rules.md` (~343-348):
       drop `(session start is implicit)`, add the opening-phase inclusion +
       the "no auto session-start node (M27/D-020)" rationale, keep
       `per-phase mandate`, `mark a chapter at each phase transition`, and the
@@ -93,6 +93,12 @@ or the routing-chip mandate — untouched.
 - 2026-07-12: T1 — extended test_chapter_marker_mandate.py with
   test_carve_out_phrase_absent_everywhere (9 skills + tracking-rules) and
   test_rulebook_includes_the_opening_phase; confirmed red against current files.
+- 2026-07-12: T2 — reworded the Chapter-markers rule (opening-phase inclusion +
+  no-auto-node rationale). Minor discovered amendment: the same carve-out also
+  lived in the Phase-header rule's parenthetical (~line 321); reworded it to
+  "the session's opening phase included" so the rulebook stays internally
+  consistent and the guard's carve-out-absent assertion holds. No H1/H2
+  convention change (Scope Out preserved).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

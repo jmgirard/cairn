@@ -317,10 +317,9 @@ cairn skill is active.
   the unit changes: a routing chip into the next skill, or a fresh
   post-`/clear` session, both start a new `#` so the reply stands alone (a
   plan run that creates several milestones stays under one `# Planning`).
-  Emit a `##` at each phase entry — usually coincident with a chapter marker
-  (the session's very first header carries none: session start is implicit).
-  Replies within the same phase run as plain deltas underneath — never a
-  heading per reply.
+  Emit a `##` at each phase entry — coincident with a chapter marker, the
+  session's opening phase included. Replies within the same phase run as plain
+  deltas underneath — never a heading per reply.
 - **Deltas, not dumps.** Between gates, report what changed since the
   last report — findings, decisions, surprises, direction changes. Never
   restate the plan or paste command output; the tracking files hold the
@@ -340,8 +339,10 @@ cairn skill is active.
   scripts. Invariants that never bend: recommended option first and
   marked, ≤4 options, a stop/pause option present, and a chip is a user
   stop — never auto-proceed.
-- **Chapter markers (per-phase mandate).** Mark a chapter at each phase transition
-  (session start is implicit) via the runtime's chapter mechanism — in Claude
+- **Chapter markers (per-phase mandate).** Mark a chapter at each phase
+  transition, including the session's opening phase — there is no auto
+  session-start chapter node (M27/D-020), so an unmarked opening phase is absent
+  from the navigable TOC. Use the runtime's chapter mechanism — in Claude
   Code, `mark_chapter`, which drives the navigable TOC, not the markdown headers
   (M27/D-020). This is a hard per-phase requirement, not "only where supported."
   Fallback: where the runtime provides no chapter mechanism, no marker is emitted
