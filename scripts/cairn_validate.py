@@ -63,6 +63,12 @@ def check_caps(root, rows):
         n = cs.line_count(os.path.join(root, rel))
         if n is not None and n >= cap:
             bad.append(f"{rel}: {n} lines (cap <{cap})")
+    # CLAUDE.md: cap only the appended cairn section, not the whole file (D-018).
+    sec = cs.claude_section_line_count(os.path.join(root, "CLAUDE.md"))
+    if sec is not None and sec >= cs.CLAUDE_SECTION_CAP:
+        bad.append(
+            f"CLAUDE.md cairn section: {sec} lines (cap <{cs.CLAUDE_SECTION_CAP})"
+        )
     for r in rows:
         n = cs.line_count(os.path.join(root, "cairn", r["relpath"]))
         if n is None:

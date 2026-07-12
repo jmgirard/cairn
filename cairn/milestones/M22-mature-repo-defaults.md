@@ -80,11 +80,12 @@ doctrine.
       (D-018) — drop the whole-file cap, hard-cap the `## Project tracking
       (cairn)` block at 30 lines. Record the choice + rejected options as a
       D-entry in `cairn/DECISIONS.md`.
-- [ ] **T2** — Implement the cap change in `scripts/cairn_scripts.py`
-      `LINE_CAPS` (line 41) + `scripts/cairn_validate.py` `check_caps` +
-      `tracking-rules.md` weight-caps text (line ~82); add a `scripts/tests/`
-      unit test with a mature-repo fixture (passes) and a bloated fixture
-      (flagged).
+- [x] **T2** — Implement the cap change in `scripts/cairn_scripts.py`
+      (`LINE_CAPS` drops CLAUDE.md; new `CLAUDE_SECTION_CAP=30` +
+      `claude_section_line_count`) + `scripts/cairn_validate.py` `check_caps`
+      (section measurement) + `tracking-rules.md` weight-caps text + remedy;
+      `scripts/tests/` gains a mature-repo pass fixture and a bloated-section
+      fail fixture. 33 tests green.
 - [ ] **T3** — Parameterize the default branch in the `tracking-rules.md` git
       model (~15 `main` refs) — detected branch / "default branch (main/master)".
 - [ ] **T4** — Parameterize the default branch in `/cairn-init`
