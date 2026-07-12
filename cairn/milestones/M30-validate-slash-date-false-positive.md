@@ -84,10 +84,10 @@ outside `cairn/`, is not date-scanned, and uses the unspaced literals verbatim.
       year-last `\d{1,2}/\d{1,2}/\d{4}`; update the conservative-design comment
       (lines 22-25) to state the 4-digit-year requirement and the accepted
       miss. Run the suite to green and `cairn_validate.py` clean.
-- [ ] T3 — Append a D-entry to `cairn/DECISIONS.md` recording the tightening
+- [x] T3 — Append a D-entry to `cairn/DECISIONS.md` recording the tightening
       and the accepted 2-digit-year-slash miss (supersedes the M13
       conservative-design rationale for this branch only).
-- [ ] T4 — Append a follow-up line to `cairn/LESSONS.md` noting the scanner now
+- [x] T4 — Append a follow-up line to `cairn/LESSONS.md` noting the scanner now
       accepts slash-form R CMD check results, retiring the M21 workaround.
 
 ## Work log
@@ -95,6 +95,7 @@ outside `cairn/`, is not date-scanned, and uses the unspaced literals verbatim.
 
 - 2026-07-12: created by /milestone-plan (absorbs candidate G-C2).
 - 2026-07-12: T1+T2 — test-first count-triple case (fails on old code), then tightened the slash branch to require a 4-digit year; 34/34 tests green, validate clean.
+- 2026-07-12: T3+T4 — recorded D-023 (tightening + accepted 2-digit-year miss) and appended the M30 LESSONS line retiring the M21 workaround; validate clean (D-023's own real-date examples spaced per the same convention).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

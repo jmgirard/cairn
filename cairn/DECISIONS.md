@@ -372,3 +372,30 @@ chips" stands; only the invocation *mechanism* is clarified from descriptive
 to imperative. The one-click-between-phases promise is now enforced wording,
 not just intent. Review's chip-less exception (D-019) and the merge-approval
 chip are untouched.
+
+### D-023 (2026-07-12): cairn_validate's slash-date matcher requires a 4-digit year — supersedes the M13 conservative-design rationale for that branch
+
+**Context:** `cairn_validate`'s ISO-date scan flagged R CMD check
+count-notation — three slash-separated counts (errors/warnings/notes) such as
+`0/0/0` — as a "non-ISO date," because the slash branch matched any three
+slash-separated numbers (the loose `\d{1,4}/\d{1,2}/\d{1,4}`). The gate cried
+wolf on legitimate check-result reporting (M21 circumplex pilot G-C2). A real
+slash *date* carries a 4-digit year on one end; a count-triple does not.
+**Decision:** Tighten the slash branch to require a 4-digit year — year-first
+(`2026 / 07 / 11`) or year-last (`07 / 11 / 2026`). Count-triples no longer match. The
+accepted cost: a 2-digit-year slash date (`07/11/26`) goes uncaught, because
+it is structurally indistinguishable from a count-triple. This is the right
+side of the "a missed weird format beats a false positive" doctrine (M13):
+zero 2-digit-year slash dates exist in this repo's strict-ISO format, so the
+miss is theoretical while the false positive was real. Rejected: month/day
+range validation of matched triples (over-engineering — the year requirement
+alone kills every realistic false positive here) and context-excluding
+check-result lines (brittle; the FP returns for any other count-triple).
+**Consequences:** Supersedes the M13 "conservative by design" rationale *for
+the slash branch only* — the other branches (dashed year-last, month-name
+orders, malformed-ISO) are unchanged. Retires the M21 workaround (tracking
+files may again write check results in slash form). Locked by
+`test_check_result_notation_passes` (count-triples pass) plus the year-first
+and year-last cases added to `test_non_iso_date_formats` (real slash dates
+still caught) in `scripts/tests/test_scripts.py`. If a 2-digit-year slash date
+ever needs catching, this is the entry to supersede.
