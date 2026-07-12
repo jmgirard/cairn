@@ -12,7 +12,7 @@ whether an existing milestone already covers this, and `cairn/DECISIONS.md`
 for standing constraints. If an un-ingested RR sits in `cairn/reviews/`,
 handle ingestion first (see `/milestone-brief`).
 Phase header: `# Hotfix: <slug>` → `## <step>`.
-Chapter markers: mark a chapter at each phase transition (session start implicit).
+Chapter markers: mark a chapter at each phase transition, including the session's opening phase.
 
 ## Workflow
 

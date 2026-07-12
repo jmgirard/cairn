@@ -9,7 +9,7 @@ argument-hint: "<id> <topic>"
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it.
 Phase header: `# Review brief RB<NN>` → `## Draft` / `## Gate` / `## Ingest`.
-Chapter markers: mark a chapter at each phase transition (session start implicit).
+Chapter markers: mark a chapter at each phase transition, including the session's opening phase.
 Fable is token-billed pay-per-use: spawning it requires **explicit user
 approval, every time, with no standing authorization** — and only ever
 through this protocol. The brief artifact comes first either way; it is what

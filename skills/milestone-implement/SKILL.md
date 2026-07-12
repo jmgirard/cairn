@@ -10,7 +10,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it (especially: git model, tracking-travels-with-code, delegation policy,
 CI waiting rules).
 Phase header: `# Milestone <NN>: <title>` → `## Implement`.
-Chapter markers: mark a chapter at each phase transition (session start implicit).
+Chapter markers: mark a chapter at each phase transition, including the session's opening phase.
 
 ## Session start
 

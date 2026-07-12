@@ -10,7 +10,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first.
 Idempotent: safe to re-run any time; re-runs report and repair missing or
 damaged pieces and **never overwrite user content without asking**.
 Phase header: `# cairn-init` → `## Scaffold` / `## Repair` / `## Migration §n`.
-Chapter markers: mark a chapter at each phase transition (session start implicit).
+Chapter markers: mark a chapter at each phase transition, including the session's opening phase.
 
 ## 0. Detect the situation
 

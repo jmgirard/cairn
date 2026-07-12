@@ -10,7 +10,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it (especially: question gates, contextual chip construction, the DESIGN.md
 ownership boundary, and IP/GP numbering).
 Phase header: `# Design interview` → `## Facts` / `## Principles`.
-Chapter markers: mark a chapter at each phase transition (session start implicit).
+Chapter markers: mark a chapter at each phase transition, including the session's opening phase.
 
 This skill does what code-reading cannot: it interviews the human for the
 intent behind the repo and writes it into `cairn/DESIGN.md`. It runs in two

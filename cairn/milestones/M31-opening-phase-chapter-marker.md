@@ -77,7 +77,7 @@ or the routing-chip mandate — untouched.
       the "no auto session-start node (M27/D-020)" rationale, keep
       `per-phase mandate`, `mark a chapter at each phase transition`, and the
       no-mechanism fallback lines intact (guard-asserted).
-- [ ] T3 — Update the `Chapter markers:` directive line in all 9 skills
+- [x] T3 — Update the `Chapter markers:` directive line in all 9 skills
       (milestone-plan, -implement, -review, -brief, hotfix, cairn-init,
       cairn-release, milestone, design-interview) to the new wording. Run the
       guard + full `skills/tests` suite to green.
@@ -99,6 +99,9 @@ or the routing-chip mandate — untouched.
   "the session's opening phase included" so the rulebook stays internally
   consistent and the guard's carve-out-absent assertion holds. No H1/H2
   convention change (Scope Out preserved).
+- 2026-07-12: T3 — rewrote the `Chapter markers:` directive in all 9 skills to
+  "...at each phase transition, including the session's opening phase." Chapter
+  guard (5) + full skills/tests suite (76) green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
