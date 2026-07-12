@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP3, GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** cairn `m41-migration-pilot-intraclass`; intraclass migration on `cairn-init-migration` → PR https://github.com/jmgirard/intraclass/pull/54   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** cairn `m41-migration-pilot-intraclass` → PR https://github.com/jmgirard/cairn/pull/39; intraclass migration on `cairn-init-migration` → PR https://github.com/jmgirard/intraclass/pull/54   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -38,29 +38,29 @@ milestone. Reformatting intraclass's `PRINCIPLES.md` into IP/GP → `/design-int
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: The §2 migration runs end-to-end on intraclass on a
+- [x] AC1: The §2 migration runs end-to-end on intraclass on a
       `cairn-init-migration` branch cut from intraclass's detected default
       branch, and a **docs-only PR** exists in `jmgirard/intraclass` (URL in the
       header + ledger) touching no package code — `git diff --stat <base>..<branch>`
       shows no change under `R/`, `tests/`, `data-raw/`, `man/`, `NAMESPACE`,
       `DESCRIPTION`.
-- [ ] AC2: Legacy entombment is **verbatim** — every `project/` tracking file and
+- [x] AC2: Legacy entombment is **verbatim** — every `project/` tracking file and
       every repo-local `.claude/skills/` skill moved to `cairn/legacy/` with no
       content change, provable by `git diff -M --summary <base>..<branch>` showing
       `rename … (100%)` for each (M20 lesson).
-- [ ] AC3: The `/milestone` health audit (`cairn_validate`) passes clean on the
+- [x] AC3: The `/milestone` health audit (`cairn_validate`) passes clean on the
       branch **run with CWD = intraclass** (M20 lesson), OR any FAIL is a
       documented, gate-accepted exception recorded in the ledger.
-- [ ] AC4: A **migration ledger** in the PR description accounts for every legacy
+- [x] AC4: A **migration ledger** in the PR description accounts for every legacy
       `project/` file and every live item (old→new location / entombed /
       candidate / dropped-at-user-request) — nothing silently vanishes (IP3).
-- [ ] AC5: The Lineage A findings are recorded as "Pilot 3 — intraclass" in
+- [x] AC5: The Lineage A findings are recorded as "Pilot 3 — intraclass" in
       `cairn/references/migration-pilot-notes.md`, each gap tagged
       `fix-here | candidate | out`.
-- [ ] AC6: Every `fix-here` gap is fixed in cairn this milestone with a guard test
+- [x] AC6: Every `fix-here` gap is fixed in cairn this milestone with a guard test
       that **fails before** the fix; every design-level gap is a ROADMAP candidate
       row. (Zero `fix-here` gaps is a valid outcome, recorded — as in M20.)
-- [ ] AC7: cairn's own guard-test suite passes
+- [x] AC7: cairn's own guard-test suite passes
       (`python3 -m unittest discover -s scripts/tests` and the `skills/tests`
       suite). (R gates are waived here — cairn is a plugin, not an R package.)
 
@@ -106,3 +106,14 @@ milestone. Reformatting intraclass's `PRINCIPLES.md` into IP/GP → `/design-int
 ## Review
 <!-- owner: review · exclusive; evidence per criterion; consistency-gate
      results; independent-review findings and their triage -->
+
+**AC evidence (fresh, 2026-07-12):**
+- AC1 ✓ — `gh pr view 54` OPEN (jmgirard/intraclass#54); `git diff --stat main..cairn-init-migration -- R/ tests/ data-raw/ man/ NAMESPACE DESCRIPTION` empty → 0 package files touched.
+- AC2 ✓ — `git diff -M --summary main..cairn-init-migration`: 27 moves, all `rename … (100%)`.
+- AC3 ✓ — `cairn_validate` (CWD=intraclass) 12/12 PASS, "all checks passed".
+- AC4 ✓ — PR #54 body carries the "Migration ledger"; `cairn/legacy/skills/` holds 6 entombed skills.
+- AC5 ✓ — "Pilot 3 — intraclass" section in `references/migration-pilot-notes.md` with gap rows G-I1..G-I5.
+- AC6 ✓ — "no `fix-here` emerged" recorded (M41 T8 + work log); one grouped "Lineage A migration guidance" candidate in ROADMAP.
+- AC7 ✓ — cairn guard suites green: `scripts/tests` (53) OK, `skills/tests` (94) OK.
+
+**Consistency gate:** `cairn_validate` (cairn repo) 12/12 PASS; Coverage map complete (AC1..AC7 all mapped to existing tasks); no DESIGN principle *changed* (M41 works under IP3/GP3, no text change → cairn_impact skipped); R gates waived (cairn is a plugin).
