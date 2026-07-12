@@ -1,9 +1,9 @@
 # M13: Wire deterministic scripts into review + plan
 
-- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- high | normal | low -->
 - **Depends on:** —
-- **Branch/PR:** —   <!-- m13-script-wiring; PR URL once opened -->
+- **Branch/PR:** m13-script-wiring   <!-- PR URL once opened -->
 
 ## Goal
 
