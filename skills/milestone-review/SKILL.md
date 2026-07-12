@@ -89,13 +89,13 @@ overrides — log the override).
    queue another retry — that's a mis-planned milestone; recommend re-plan
    or split via `/milestone-plan`.
 
-5. **Independent fresh-context review — two lenses, then a scorer.** Spawn
-   two reviewers that have not seen the implementation, in parallel, each with
+5. **Independent fresh-context review — three lenses, then a scorer.** Spawn
+   three reviewers that have not seen the implementation, in parallel, each with
    a *distinct evidence base* (a shared base just finds the same things twice).
    **Reviewers share this working tree — ref-based git only:** `git diff`/`log`/`blame`
    against refs (e.g. `git diff <default-branch>..HEAD`), never `git checkout`
    or `git worktree add` in it, which parks the primary checkout on another
-   branch mid-review (tracking-rules subagent conduct; hit in M36). The two lenses:
+   branch mid-review (tracking-rules subagent conduct; hit in M36). The three lenses:
    - **[O] diff-bug reviewer (Opus).** Reviews the full diff
      (`git diff <default-branch>..HEAD`) against the acceptance criteria, DESIGN.md
      conventions, and DECISIONS.md — correctness, contract, convention.
@@ -104,9 +104,22 @@ overrides — log the override).
      it touches*: does it silently undo something a past milestone added
      deliberately, resurrect a fixed bug, or contradict a recorded D-entry? It
      reads history, not just the diff.
+   - **[S] prior-PR-comments reviewer (Sonnet).** Reads review comments on
+     prior merged PRs that touched the modified files and flags only where the
+     current diff *reintroduces or contradicts* a point a past PR review raised
+     on those files — a regression of a lesson review already taught, not every
+     prior comment resurfaced as context. Discovery recipe (prose, not a
+     script): `git diff --name-only <default-branch>..HEAD` for the touched
+     files → the PRs that touched them (`gh pr list --state merged
+     --search "<path>"`, or map the touching commits to PRs via `git log`) →
+     `gh api repos/{owner}/{repo}/pulls/{n}/comments` for each PR's review
+     comments. **Always spawn this lens; it no-ops cleanly** — with no
+     prior-PR evidence (few or no merged PRs, or no GitHub remote) it reports
+     "no prior-PR evidence", contributes zero findings, and never errors or
+     blocks the gate.
 
-   Give **both** reviewers this false-positive taxonomy verbatim and tell them
-   to drop anything matching it before reporting:
+   Give **all three** reviewers this false-positive taxonomy verbatim and tell
+   them to drop anything matching it before reporting:
    > Not a finding: a pre-existing issue the diff did not introduce; anything a
    > linter or formatter would catch; a pure style nitpick; a complaint about
    > an unmodified line; an intentional change the milestone's plan called for.
