@@ -3,10 +3,10 @@
      Per-section owners are tagged below. -->
 # M24: Scaffold-drift detection in the audit
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m24-scaffold-drift-check`
 
 ## Goal
 
@@ -92,6 +92,7 @@ to `/cairn-init` repair; a guard test.
 
 - 2026-07-12: created by /milestone-plan (promotes the tidymedia-repair
   candidate; Direction 2 deferred as a candidate).
+- 2026-07-12: begin — status in-progress, branch m24-scaffold-drift-check.
 
 ## Decisions
 
