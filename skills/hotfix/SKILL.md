@@ -38,12 +38,18 @@ Phase header: `## Hotfix: <slug>` → `### <step>`.
    if a GitHub issue exists.
 
 6. **Approval gate:** present the diff, the regression-test evidence, and
-   the NEWS line; merge (`gh pr merge --squash --delete-branch`) only on
-   explicit user approval, with green CI (one blocking
+   the NEWS line; put the merge authorization to the user as an
+   `AskUserQuestion` chip (recommended = merge, e.g. `Merge PR #N to main`,
+   with a decline option) — never a prose yes/no, the same gate discipline
+   as `/milestone-review`. Merge (`gh pr merge --squash --delete-branch`)
+   only on explicit approval at that chip, with green CI (one blocking
    `gh pr checks --watch` wait). On approval, write the merge-guard
    marker first: `cairn/.merge-approved` (gitignored; one line:
    `hotfix <slug> approved YYYY-MM-DD`) — the plugin's hook denies
-   merges to main without it and consumes it per attempt.
+   merges to main without it and consumes it per attempt. Write the marker
+   in a **separate** step before the `gh pr merge` command — the hook checks
+   it before the command runs, so writing it in the same shell line is
+   denied.
 
 7. If the fix revealed deeper work, add a `candidate` row before closing
    out. If a milestone branch is currently active, remind the user that its

@@ -196,6 +196,13 @@ a gate, ask one batched round of 2–5 concrete decision questions via
 AskUserQuestion, each with a recommendation and brief pros/cons. Between
 gates, work autonomously; never drip questions one at a time.
 
+The **final merge-approval gate is itself an AskUserQuestion chip** — a
+single approve/decline question (recommended option merges; a decline option
+is always present), never a prose "do you authorize?" yes/no. A merge is
+outward-facing and irreversible; the chip makes consent explicit and
+auditable (a bare prose "yes" is weaker consent and can be read as answering
+something else).
+
 Every phase ends with a **routing chip**: an AskUserQuestion offering the
 single most sensible next action first, composed per the chip rules in
 "Output & interaction discipline" below. Selecting a chip invokes that

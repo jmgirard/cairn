@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+- The final merge-approval step in `/milestone-review` and `/hotfix` now
+  requests authorization through a selectable chip rather than a free-text
+  yes/no, matching the documented gate model. A regression guard locks the
+  wording so it can't drift back.
+
 ## 0.1.0 (2026-07-11)
 
 Initial build from the DRAFT_2.md spec.
