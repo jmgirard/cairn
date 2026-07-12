@@ -38,7 +38,7 @@ PRIORITY_ORDER = {"high": 0, "normal": 1, "low": 2}
 
 # Weight caps (tracking-rules): file -> max line count. A live milestone
 # file is < 150; an archived summary is <= 25 (handled separately by path).
-LINE_CAPS = {"CLAUDE.md": 80, "cairn/ROADMAP.md": 60}
+LINE_CAPS = {"CLAUDE.md": 80, "cairn/ROADMAP.md": 60, "cairn/LESSONS.md": 50}
 MILESTONE_CAP = 150
 ARCHIVE_CAP = 25
 DONE_ROW_RETENTION = 5

@@ -198,6 +198,24 @@ class TestValidateFailures(ScriptCase):
         self.tree.files["milestones/M03-live.md"] = live("planned") + "\nx" * 160 + "\n"
         self.assert_fails("weight caps", self.tree.build())
 
+    def test_over_cap_lessons(self):
+        # A LESSONS.md at/over its 50-line cap fails weight-caps. (A missing
+        # LESSONS.md still passes — proven by test_clean_tree_passes, which has
+        # no LESSONS.md; line_count returns None for absent files.)
+        root = self.tree.build()
+        (root / "cairn" / "LESSONS.md").write_text("# Lessons\n" + "- x\n" * 55)
+        out = self.assert_fails("weight caps", root)
+        self.assertIn("cairn/LESSONS.md", out)
+        self.assertIn("cap <50", out)
+
+    def test_non_iso_date_in_lessons(self):
+        # LESSONS.md entries carry dates (- YYYY-MM-DD (M<NN>): …); a
+        # misformatted one must be flagged by the ISO-date scan.
+        root = self.tree.build()
+        (root / "cairn" / "LESSONS.md").write_text("# Lessons\n\n- 07/11/2026 (M16): x\n")
+        out = self.assert_fails("iso date format", root)
+        self.assertIn("LESSONS.md", out)
+
     def test_done_row_retention(self):
         for n in range(4, 10):  # M04..M09 → 7 done rows total with M01
             mid = f"M0{n}"

@@ -183,3 +183,20 @@ for every other skill.
 "phase-2-to-Fable elevation" candidate (dropped). The pilot passed on Fable,
 satisfying M12 criterion 6. Locked by
 `test_design_interview.py::test_recommends_running_on_fable`.
+
+### D-015 (2026-07-11): Durable repo lessons live in `cairn/LESSONS.md`
+
+**Context:** Milestones recorded status, decisions, and tasks but not the
+durable "how this repo actually behaves" lessons — build quirks, testing
+tricks — a milestone teaches. Those were re-learned each time or lived only in
+per-user memory (a divergence vector D-011 warns against).
+**Decision:** Add `cairn/LESSONS.md` — append-only, one lesson per line
+(`- YYYY-MM-DD (M<NN>): …`), capped at 50 lines — captured at
+`/milestone-review` post-merge hygiene and surfaced at `/milestone-plan`
+before the question gate. Rejected a per-milestone Lessons section promoted at
+archive (scatters lessons across archive files; harvest would read them all).
+Lessons ≠ decisions: a *choice with rationale* stays a D-entry.
+**Consequences:** Durable cross-milestone memory, distinct from decisions and
+shared across every adopting repo via the plugin. A fourth top-level tracking
+file (`LINE_CAPS`, date-scan, and the file-map extended for it). Locked by
+`skills/tests/test_lessons_loop.py` + the over-cap fixture in `scripts/tests/`.

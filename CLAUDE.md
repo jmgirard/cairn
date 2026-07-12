@@ -23,6 +23,6 @@ first:
 Anything but trivial → invoke the skill *first* so the full rulebook
 (the plugin's `skills/shared/tracking-rules.md`) and its conduct load; don't
 reconstruct the rules from memory. State lives under `cairn/`: **Architecture → DESIGN ·
-Status → ROADMAP · Tasks → milestone files · Decisions → DECISIONS · History
-→ archive + git**. Never record status or TODOs here; memory never holds
+Status → ROADMAP · Tasks → milestone files · Decisions → DECISIONS · Lessons
+→ LESSONS · History → archive + git**. Never record status or TODOs here; memory never holds
 project state — `cairn/` files win any conflict.

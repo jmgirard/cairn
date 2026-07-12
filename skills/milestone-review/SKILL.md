@@ -111,7 +111,13 @@ overrides — log the override).
    ≤25-line summary (goal, outcome, key decisions, PR link) and move it to
    `cairn/milestones/archive/`; ROADMAP row → `done` + archive path;
    archive any resolved RB/RR pairs; update "Last hygiene check"; verify
-   weight caps. Docs-only commit: `review M<NN>: done`; push. The done
+   weight caps. **Capture durable lessons:** append any repo lessons this
+   milestone taught — build quirks, testing tricks, gotchas worth
+   remembering — to `cairn/LESSONS.md`, one per line
+   (`- YYYY-MM-DD (M<NN>): <lesson>`, append-only); lessons, not status or a
+   *choice* (a choice is a D-entry). None learned → skip; if the 50-line cap
+   is hit, prune the stalest lines in this same commit. Docs-only commit:
+   `review M<NN>: done`; push. The done
    recap leads with what shipped, in plain words; hygiene mechanics
    compress to one line.
 

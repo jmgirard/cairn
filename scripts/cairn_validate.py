@@ -144,7 +144,7 @@ def _date_scan_files(root):
     legacy/ (entombed verbatim, D-005 — must not be reformatted)."""
     cairn = os.path.join(root, "cairn")
     files = []
-    for name in ("ROADMAP.md", "DECISIONS.md", "DESIGN.md"):
+    for name in ("ROADMAP.md", "DECISIONS.md", "DESIGN.md", "LESSONS.md"):
         p = os.path.join(cairn, name)
         if os.path.isfile(p):
             files.append(p)

@@ -19,12 +19,14 @@ owner; any other file gets at most a one-line cross-reference.
 | `cairn/milestones/M<NN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately, before other work) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
 | `cairn/DECISIONS.md` | Append-only cross-cutting decisions (D-001, …), never renumbered — superseded by new entries | Milestone-local decisions (those live in the milestone file); deferrals ("not now" is a ROADMAP fact, not a decision) |
+| `cairn/LESSONS.md` | Durable, append-only, capped repo lessons (build quirks, testing tricks) — captured at milestone end, surfaced at plan time | Status, decisions (a *choice* is a D-entry), per-milestone task notes |
 | `cairn/reviews/` | RB<NN> briefs and RR<NN> reports for Fable escalation (+ `archive/` for resolved pairs) | Anything else |
 | `cairn/references/` | Source summaries (`<citekey>.md`), `INDEX.md`, gitignored `pdf/` | Anything else |
 | `cairn/legacy/` | Entombed pre-migration tracking files, verbatim | Anything live |
 
 Boundary rule: **Architecture → DESIGN · Status → ROADMAP · Tasks →
-milestone files · Decisions → DECISIONS · History → archive + git log.**
+milestone files · Decisions → DECISIONS · Lessons → LESSONS · History →
+archive + git log.**
 
 Repo-specific extra files in `cairn/` are allowed (spec docs, coverage
 matrices); they declare their own scope and must not claim another file's
@@ -65,8 +67,8 @@ takes a D-entry, and its number stays retired.
 
 ## Weight caps
 
-- `CLAUDE.md` < 80 lines · `ROADMAP.md` < 60 lines · active milestone file
-  < 150 lines · archived summary ≤ 25 lines.
+- `CLAUDE.md` < 80 lines · `ROADMAP.md` < 60 lines · `LESSONS.md` < 50 lines
+  · active milestone file < 150 lines · archived summary ≤ 25 lines.
 - Work-log entries are one line each. Never paste command output or subagent
   transcripts into tracking files — summarize.
 - Remedies when a cap is hit (never "let it grow"): over-cap ROADMAP →
