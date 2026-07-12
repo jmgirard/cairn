@@ -174,5 +174,5 @@ overrides — log the override).
     recommend starting the next milestone in a fresh session, naming the
     obvious next action inline (`/milestone-plan` when planned or candidate
     work exists, else `/milestone` for a health audit). Do **not** end review
-    with an AskUserQuestion — the step-6 merge-approval gate was the last
+    with an AskUserQuestion — the step-7 merge-approval gate was the last
     chip this phase emits.
