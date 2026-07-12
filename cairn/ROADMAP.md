@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-12 (M22 done+archived; M16 row pruned per 5-done retention; M23 now workable)_
+_Last hygiene check: 2026-07-12 (M23 done+archived; M17 row pruned per 5-done retention; M21 now workable)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,13 +10,12 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M23 | Migration-protocol §2 guidance hardening | review | M22 | normal | milestones/M23-migration-guidance.md |
+| M23 | Migration-protocol §2 guidance hardening | done | M22 | normal | milestones/archive/M23-migration-guidance.md |
 | M22 | Generalize cairn beyond `main`; recalibrate the mature-repo CLAUDE.md cap | done | — | normal | milestones/archive/M22-mature-repo-defaults.md |
 | M21 | Migration stress-test pilot — circumplex (Lineage B) | planned | M23 | normal | milestones/M21-migration-pilot-circumplex.md |
 | M20 | Migration stress-test pilot — ackwards (Lineage B) | done | — | normal | milestones/archive/M20-migration-pilot-ackwards.md |
 | M19 | Memory-boundary write guard (GP4 enforcement) | done | M18 | normal | milestones/archive/M19-memory-boundary-guard.md |
 | M18 | Acceptance-criteria traceability | done | M17 | normal | milestones/archive/M18-ac-traceability.md |
-| M17 | Review fan-out + confidence scoring | done | — | normal | milestones/archive/M17-review-fanout.md |
 
 ## Candidates
 
