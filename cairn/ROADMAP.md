@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-12 (M29 done+archived; M24 row pruned per 5-done retention)_
+_Last hygiene check: 2026-07-12 (M30 planned; candidate G-C2 absorbed into M30)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,6 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M30 | Stop cairn_validate false-flagging R CMD check counts as non-ISO dates | planned | — | normal | milestones/M30-validate-slash-date-false-positive.md |
 | M29 | Make routing-chip invocation an imperative on the orchestrator | done | — | normal | milestones/archive/M29-routing-chip-invocation-imperative.md |
 | M28 | Harden the output-discipline mandate guards | done | — | normal | milestones/archive/M28-output-discipline-mandate-guards.md |
 | M26 | Lock the routing-chip mandate; exempt review as the chip-less phase | done | — | normal | milestones/archive/M26-routing-chip-mandate-lock.md |
@@ -18,7 +19,6 @@ not an R package, so R-specific gates don't apply.
 
 ## Candidates
 
-- `cairn_validate` ISO-date scan false-positives on R CMD check result notation (three slash-separated counts, errors/warnings/notes, commonly all-zero) — the `\d{1,4}/\d{1,2}/\d{1,4}` slash-date pattern matches it; a clean fix is ambiguous (requiring a 4-digit year regresses on 2-digit-year dates), so it needs deliberate design not a reflexive regex tweak — added 2026-07-12 — M21 circumplex pilot G-C2
 - Migration guidance for a mature backlog vs the <60-line ROADMAP cap: a large parking-lot (continuous track + deferred review findings + pre-release items) blows the candidate budget one-row-per-item; document the "cluster related backlog into grouped candidate rows pointing at the entombed legacy ROADMAP" remedy in §5/§6 — added 2026-07-12 — M21 circumplex pilot G-C4
 - Scaffold-spec version stamp / content-drift detection (Direction 2, deferred from M24): M24 detects *missing* §1 pieces but not a piece whose template *body* changed while the file still exists; stamp a scaffold-spec version into the adopted CLAUDE.md and compare against the plugin's current spec to catch content drift — needs a maintained spec version + changelog + a definition of "what counts as a bump"; promote only if content drift (as opposed to missing files) actually bites — added 2026-07-12 — M24 Out
 - Public release prep: LICENSE (MIT), README worked example, remove DRAFT files, tag v1.0 — added 2026-07-11 — DRAFT_2 §11
