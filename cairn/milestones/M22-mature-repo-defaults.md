@@ -90,9 +90,10 @@ doctrine.
       model + sizing/tiers/hygiene refs (12 doctrine `main` refs → "the default
       branch"; gloss `main`/`master` at first mention). Left the two "main
       session" (orchestrator) refs. Skills suite green (46).
-- [ ] **T4** — Parameterize the default branch in `/cairn-init`
-      (`skills/cairn-init/SKILL.md`: §2 step 2 + scaffold/commit lines) and the
-      CLAUDE.md template; add default-branch detection at init (§0/§1).
+- [x] **T4** — Parameterized the default branch in `/cairn-init` (§0 detection
+      bullet via `git symbolic-ref refs/remotes/origin/HEAD` w/ current-branch
+      fallback; §1 commit lines; §2 step 2 branch/PR) and the
+      `claude-md-section.md` template. Template section = 24 lines (< 30 cap).
 - [ ] **T5** — Guard test locking the new invariants (git model + init carry no
       bare-`main` assumption; cap model shape); run the full suite green; commit
       tracking + code together.

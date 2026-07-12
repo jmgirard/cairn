@@ -8,13 +8,14 @@ starting work in plain conversation silently bypasses the work tiers and the
 git model. Classify first:
 
 - **Trivial** (no runtime surface — typo, comment, tracking edit): commit
-  directly to main.
+  directly to the default branch.
 - **User-visible bug**: invoke `/hotfix`.
 - **New work, a design decision, or more than one sitting**: invoke
   `/milestone-plan` (then `/milestone-implement` → `/milestone-review`).
 - **Status, "what's next", or unsure which tier**: invoke `/milestone`.
-- **Never implement code on main** outside a milestone/hotfix branch; nothing
-  reaches main without the user's explicit approval at the review gate.
+- **Never implement code on the default branch** outside a milestone/hotfix
+  branch; nothing reaches it without the user's explicit approval at the
+  review gate.
 
 Whenever the request is anything but trivial, invoke the skill *first* so the
 full rulebook (the plugin's `skills/shared/tracking-rules.md`) and its conduct
