@@ -95,7 +95,7 @@ to avoid a merge conflict (the user chose this sequencing).
       ([merge_guard.py](../../hooks/merge_guard.py))
 - [x] T2: Register the hook in `hooks/hooks.json` under PreToolUse with a
       `Write` matcher. ([hooks.json:25-36](../../hooks/hooks.json))
-- [ ] T3: Add the memory→`cairn/`-files intake gate to `tracking-rules.md`
+- [x] T3: Add the memory→`cairn/`-files intake gate to `tracking-rules.md`
       beside the "Tracking files outrank memory" rule.
       ([tracking-rules.md:99](../../skills/shared/tracking-rules.md))
 - [ ] T4: Add `memory_guard` cases to `hooks/tests/test_hooks.py` (memory-path
@@ -124,6 +124,10 @@ to avoid a merge conflict (the user chose this sequencing).
 - 2026-07-12: T2 — registered memory_guard.py in hooks.json under PreToolUse
   with a Write matcher (second PreToolUse entry alongside merge_guard/Bash).
   JSON validated.
+- 2026-07-12: T3 — added the "Memory intake gate (GP4)" bullet to
+  tracking-rules.md beside "Tracking files outrank memory"; states the GP4
+  test (durable → cairn/, generalizable → plugin, meta-context → memory) and
+  names the hook as prompting the test, not making the call.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
