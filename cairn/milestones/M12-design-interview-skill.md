@@ -1,9 +1,9 @@
 # M12: Design-interview skill (facts → principles)
 
-- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- high | normal | low -->
 - **Depends on:** —
-- **Branch/PR:** —   <!-- m12-design-interview-skill; PR URL once opened -->
+- **Branch/PR:** m12-design-interview-skill   <!-- PR URL once opened -->
 
 ## Goal
 
