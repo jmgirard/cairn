@@ -47,7 +47,7 @@ doc-routing frontmatter for `references/` → candidate row.
 
 - [x] (implement gate) Decide the lessons home; create it / define the
       section; update `tracking-rules.md` file-map + weight-caps.
-- [ ] Add the capture step to `skills/milestone-review/SKILL.md` (and/or
+- [x] Add the capture step to `skills/milestone-review/SKILL.md` (and/or
       implement completion).
 - [ ] Add the harvest step to `skills/milestone-plan/SKILL.md`.
 - [ ] If a new file: extend `cairn_scripts.LINE_CAPS` + confirm
@@ -60,6 +60,7 @@ doc-routing frontmatter for `references/` → candidate row.
 - 2026-07-11: created by /milestone-plan.
 - 2026-07-11: /milestone-implement start; branch m16-lessons-loop cut from main; status → in-progress.
 - 2026-07-11: gate → dedicated cairn/LESSONS.md, cap 50, capture at /milestone-review post-merge; created LESSONS.md + rulebook file-map/boundary/weight-caps + CLAUDE.md boundary.
+- 2026-07-11: added lessons-capture to /milestone-review post-merge hygiene (step 9).
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
