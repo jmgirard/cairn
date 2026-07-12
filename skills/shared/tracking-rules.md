@@ -278,7 +278,16 @@ Every phase ends with a **routing chip**: an AskUserQuestion offering the
 single most sensible next action first, composed per the chip rules in
 "Output & interaction discipline" below. Selecting a chip invokes that
 skill in the same session. A chip is an explicit user stop — never
-auto-proceed.
+auto-proceed. A routing chip is always an AskUserQuestion call:
+a prose list of options is not a routing chip, and emitting a prose list
+where a chip is required is a drift bug (locked by `test_gate_wording.py`).
+
+`/milestone-review`'s end is the **sole exception**. After a successful
+merge the natural next step is a fresh context, not an in-session route, so
+review closes with a plain-prose `/clear` nudge instead of a routing chip —
+it is the sole phase whose end is deliberately chip-less; every other phase
+skill ends with an AskUserQuestion routing chip. (This does not touch
+review's merge-approval gate, which stays an AskUserQuestion chip.)
 
 ## Output & interaction discipline
 

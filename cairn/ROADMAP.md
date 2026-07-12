@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M26 | Lock the routing-chip mandate; exempt review as the chip-less phase | planned | — | normal | milestones/M26-routing-chip-mandate-lock.md |
+| M26 | Lock the routing-chip mandate; exempt review as the chip-less phase | review | — | normal | milestones/M26-routing-chip-mandate-lock.md |
 | M27 | Desktop TOC pickup of the `##` phase headers | planned | — | low | milestones/M27-desktop-toc-header-pickup.md |
 | M25 | Parameterize the default branch in the operational skill steps | done | M22 | normal | milestones/archive/M25-default-branch-operational-skills.md |
 | M24 | Scaffold-drift detection in the audit | done | — | normal | milestones/archive/M24-scaffold-drift-check.md |
@@ -20,6 +20,7 @@ not an R package, so R-specific gates don't apply.
 
 ## Candidates
 
+- Extend the routing-chip mandate lock to `milestone-brief`: its RR-ingest phase ends with a "Routing chip" (step 5) that doesn't name `AskUserQuestion`, so M26's guard (`TestRoutingChipMandate`) leaves it uncovered — add the token + fold it into `NON_REVIEW_CHIP_SKILLS`; M26 scoped it out on a wrong premise ("ends on RR-ingest" — the ingest itself ends on a routing chip) — added 2026-07-12 — M26 review F2 (scored 65)
 - `cairn_validate` ISO-date scan false-positives on R CMD check result notation (three slash-separated counts, errors/warnings/notes, commonly all-zero) — the `\d{1,4}/\d{1,2}/\d{1,4}` slash-date pattern matches it; a clean fix is ambiguous (requiring a 4-digit year regresses on 2-digit-year dates), so it needs deliberate design not a reflexive regex tweak — added 2026-07-12 — M21 circumplex pilot G-C2
 - Migration guidance for a mature backlog vs the <60-line ROADMAP cap: a large parking-lot (continuous track + deferred review findings + pre-release items) blows the candidate budget one-row-per-item; document the "cluster related backlog into grouped candidate rows pointing at the entombed legacy ROADMAP" remedy in §5/§6 — added 2026-07-12 — M21 circumplex pilot G-C4
 - Scaffold-spec version stamp / content-drift detection (Direction 2, deferred from M24): M24 detects *missing* §1 pieces but not a piece whose template *body* changed while the file still exists; stamp a scaffold-spec version into the adopted CLAUDE.md and compare against the plugin's current spec to catch content drift — needs a maintained spec version + changelog + a definition of "what counts as a bump"; promote only if content drift (as opposed to missing files) actually bites — added 2026-07-12 — M24 Out

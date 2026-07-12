@@ -67,7 +67,8 @@ Phase header: `# Release <version>` → `## <step>`.
    YYYY-MM-DD") is permitted as a Done-section annotation; nothing else in
    tracking changes.
 
-9. **Routing chip**, composed from the release's end state (chip rules per
-   tracking-rules) — e.g. **Stop here — run the submission checklist
+9. **Routing chip (AskUserQuestion)**, composed from the release's end state
+   (chip rules per tracking-rules) — e.g. **Stop here — run the submission
+   checklist
    yourself** (recommended) / Plan the next milestone → `/milestone-plan` /
    Run a health check → `/milestone`.

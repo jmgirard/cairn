@@ -114,6 +114,6 @@ A genuine cross-cutting choice with rationale (not a deferral) becomes a
 
 ## Routing
 
-Close with a routing chip composed from what was produced — e.g.
+Close with a routing chip (AskUserQuestion) composed from what was produced — e.g.
 **Plan the first milestone** → `/milestone-plan` (recommended) /
 Run `/milestone` / Stop. A chip is a user stop; never auto-proceed.

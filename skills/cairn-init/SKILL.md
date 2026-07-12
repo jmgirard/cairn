@@ -93,8 +93,9 @@ Then:
 - Commit (docs-only, on the default branch): `cairn-init: scaffold tracking
   system`; push if a remote exists (the remote's default branch is
   authoritative — see tracking-rules git model).
-- Routing chip, composed from what the scaffold found (chip rules per
-  tracking-rules) — e.g. **Run the design interview** → `/design-interview`
+- Routing chip (AskUserQuestion), composed from what the scaffold found
+  (chip rules per tracking-rules) — e.g. **Run the design interview** →
+  `/design-interview`
   (recommended for a fresh repo, to turn the seeded DESIGN.md into an
   elicited one) / **Plan the first milestone** → `/milestone-plan` /
   Run `/milestone` / Stop.
@@ -202,6 +203,7 @@ Lineage: M03 tidymedia pilot (PR #8).
    "dropped at user request". Nothing silently vanishes. The user approves
    the merge like any milestone.
 
-8. Routing chip, composed from the migration's actual end state — e.g.
+8. Routing chip (AskUserQuestion), composed from the migration's actual end
+   state — e.g.
    **Run a health audit** → `/milestone` (recommended) / Plan a milestone
    → `/milestone-plan` / Stop.

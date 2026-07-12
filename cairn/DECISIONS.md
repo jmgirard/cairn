@@ -268,3 +268,23 @@ not to raise a cap). Wired in three places (M16 lesson): `tracking-rules.md`
 weight-caps text, `cairn_scripts.py` (new `CLAUDE_SECTION_CAP`; `LINE_CAPS`
 drops `CLAUDE.md`), and `cairn_validate.check_caps` (section measurement).
 Locked by `scripts/tests/`.
+
+### D-019 (2026-07-12): Review's end is exempt from the routing-chip mandate
+
+**Context:** D-003 established that every phase ends with an AskUserQuestion
+routing chip. Two things pushed on that: Jeff's feedback that at the close of
+a successful review/merge the natural next step is a fresh `/clear`, not
+another in-session route; and drift — most phase skills said "routing chip"
+without naming AskUserQuestion, which let an orchestrator emit prose options
+instead of a chip after M22 review.
+**Decision:** Refine D-003 in two parts. (1) Tighten the mandate: every phase
+skill that ends with a routing chip names `AskUserQuestion` at that step (a
+prose list of options is not a chip), locked by `test_gate_wording.py`.
+(2) `/milestone-review` is the sole exception — its end is a plain-prose
+`/clear` nudge with no routing chip. Review's separate merge-approval chip is
+untouched. Rejected keeping a minimal chip at review's end (the whole point is
+that a fresh context, not a route, is the right next step there).
+**Consequences:** Review is the one phase whose end is deliberately chip-less;
+every other phase keeps its chip. D-003's blanket "every phase ends with a
+chip" is refined, not overturned. Locked by `TestRoutingChipMandate` in
+`skills/tests/test_gate_wording.py`.
