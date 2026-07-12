@@ -52,7 +52,7 @@ doc-routing frontmatter for `references/` → candidate row.
 - [x] Add the harvest step to `skills/milestone-plan/SKILL.md`.
 - [x] If a new file: extend `cairn_scripts.LINE_CAPS` + confirm
       `cairn_validate` caps it; add a fixture case to `scripts/tests/`.
-- [ ] Add the lock test; run all suites + `cairn_validate`.
+- [x] Add the lock test; run all suites + `cairn_validate`.
 
 ## Work log
 <!-- append-only; one line per entry; absolute dates -->
@@ -63,9 +63,13 @@ doc-routing frontmatter for `references/` → candidate row.
 - 2026-07-11: added lessons-capture to /milestone-review post-merge hygiene (step 9).
 - 2026-07-11: added lessons harvest to /milestone-plan (session-start read + surface-before-gate step 2).
 - 2026-07-11: LINE_CAPS += cairn/LESSONS.md:50; date-scan covers LESSONS.md; over-cap fixture in scripts/tests (30 pass).
+- 2026-07-11: added skills/tests/test_lessons_loop.py (wiring + stated↔enforced cap lock); skills 27 + scripts 30 pass, cairn_validate exit 0; recorded D-015.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
+
+- Lessons home + capture/harvest loop promoted to **D-015** (cross-cutting:
+  new top-level tracking file inherited by every adopting repo).
 
 ## Review
 <!-- filled by /milestone-review: evidence per criterion; consistency-gate
