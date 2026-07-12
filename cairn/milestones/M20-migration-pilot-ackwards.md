@@ -2,10 +2,10 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M20: Migration stress-test pilot — ackwards (Lineage B)
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —
+- **Branch/PR:** m20-migration-pilot-ackwards (cairn side); ackwards PR TBD
 
 ## Goal
 
@@ -102,6 +102,7 @@ the skill.
 
 - 2026-07-11: created by /milestone-plan (promotes the "stress-test migration
   on a Lineage B repo" candidate, DRAFT_2 §11; lineage M03 tidymedia pilot).
+- 2026-07-11: in-progress; cut cairn branch m20-migration-pilot-ackwards.
 
 ## Decisions
 

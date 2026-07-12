@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M20 | Migration stress-test pilot — ackwards (Lineage B) | planned | — | normal | milestones/M20-migration-pilot-ackwards.md |
+| M20 | Migration stress-test pilot — ackwards (Lineage B) | in-progress | — | normal | milestones/M20-migration-pilot-ackwards.md |
 | M21 | Migration stress-test pilot — circumplex (Lineage B) | planned | M20 | normal | milestones/M21-migration-pilot-circumplex.md |
 | M19 | Memory-boundary write guard (GP4 enforcement) | done | M18 | normal | milestones/archive/M19-memory-boundary-guard.md |
 | M18 | Acceptance-criteria traceability | done | M17 | normal | milestones/archive/M18-ac-traceability.md |
