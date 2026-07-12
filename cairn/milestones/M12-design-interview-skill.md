@@ -78,9 +78,9 @@ interview from `references/design-interview-notes.md` (items 1–11):
       description), phase-header directive, Phase 1 (Facts) with items 1–5 +
       banking ledger, the seam (checkpoint-commit + routing chip), Phase 2
       (Principles) with items 6–11 + DESIGN-write rules.
-- [ ] Wire cairn-init: DESIGN-fill step keeps quick lines, adds a routing
+- [x] Wire cairn-init: DESIGN-fill step keeps quick lines, adds a routing
       chip to `/design-interview` (SKILL.md §1 + its routing chip).
-- [ ] Bump DESIGN.md skill count `× 8` → `× 9` + one architecture line;
+- [x] Bump DESIGN.md skill count `× 8` → `× 9` + one architecture line;
       add D-013 (standalone `/design-interview`) to DECISIONS.md.
 - [ ] Add `design-interview` to `SKILLS_WITH_PHASE_HEADER`
       (`test_phase_header_levels.py:28`); write
@@ -96,6 +96,10 @@ interview from `references/design-interview-notes.md` (items 1–11):
 - 2026-07-11: set in-progress; branch m12-design-interview-skill cut.
 - 2026-07-11: drafted skills/design-interview/SKILL.md (two phases + seam,
   notes items 1–11) [task 1].
+- 2026-07-11: wired cairn-init DESIGN-fill + routing chip to /design-interview;
+  added phase-header mapping to tracking-rules [task 2].
+- 2026-07-11: DESIGN skill count ×8→×9; DECISIONS D-013 (standalone skill)
+  [task 3].
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->

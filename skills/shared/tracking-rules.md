@@ -222,7 +222,8 @@ cairn skill is active.
   two levels: `# Hotfix: <slug>` → `## <step>`; `# cairn-init` →
   `## Scaffold` / `## Repair` / `## Migration §n`; `# Release <version>`
   → `## <step>`; `# Status` → `## Snapshot` / `## Audit` / `## Route`;
-  `# Review brief RB<NN>` → `## Draft` / `## Gate` / `## Ingest`. Emit the
+  `# Review brief RB<NN>` → `## Draft` / `## Gate` / `## Ingest`;
+  `# Design interview` → `## Facts` / `## Principles`. Emit the
   `#` once per unit of work — at that unit's first phase — re-emitting when
   the unit changes: a routing chip into the next skill, or a fresh
   post-`/clear` session, both start a new `#` so the reply stands alone (a

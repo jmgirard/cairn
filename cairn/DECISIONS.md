@@ -149,3 +149,18 @@ single level (loses the milestone→phase grouping in the TOC).
 historical). Both header levels index in Desktop's TOC. Applied across
 `tracking-rules.md` and all 8 skills; locked by
 `skills/tests/test_phase_header_levels.py` (M11).
+
+### D-013 (2026-07-11): Design elicitation is a standalone `/design-interview` skill
+
+**Context:** The openac pilot (references/design-interview-notes.md) found a
+gold-standard two-phase interview (facts → principles) far stronger than
+cairn-init's current "5–10 honest lines" DESIGN fill. The question was
+whether to fold that interview into `/cairn-init` or ship it separately.
+**Decision:** Ship it as a standalone `/design-interview` skill.
+`/cairn-init` keeps its quick seed lines and offers a routing chip into the
+interview; the skill is also re-runnable on an existing repo to deepen a
+thin DESIGN.md. v1 runs both phases on Opus; phase-2-to-Fable elevation is a
+deferred candidate, not part of this decision.
+**Consequences:** cairn-init stays lean; the interview is reusable beyond
+init. A ninth skill (`skills/<name>/SKILL.md × 9`). Locked by
+`skills/tests/test_design_interview.py` (M12).
