@@ -276,9 +276,15 @@ something else).
 
 Every phase ends with a **routing chip**: an AskUserQuestion offering the
 single most sensible next action first, composed per the chip rules in
-"Output & interaction discipline" below. Selecting a chip invokes that
-skill in the same session. A chip is an explicit user stop — never
-auto-proceed. A routing chip is always an AskUserQuestion call:
+"Output & interaction discipline" below. Selecting an option is an
+imperative on the orchestrator, not a suggestion for the user: on selecting
+a routing-chip option **the orchestrator immediately invokes the target skill via the Skill tool**
+and does not stop to have the user type the command. This does not weaken the
+stop: a chip is an explicit user stop — never auto-proceed — but the stop is
+*before* selection; the selection itself is the go, and executing it is the
+orchestrator's job. In a chip option, the `→ /skill` notation
+names the skill the orchestrator invokes on selection, not a command for the user to run.
+A routing chip is always an AskUserQuestion call:
 a prose list of options is not a routing chip, and emitting a prose list
 where a chip is required is a drift bug (locked by `test_gate_wording.py`).
 
