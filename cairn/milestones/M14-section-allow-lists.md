@@ -1,9 +1,9 @@
 # Milestone 14: Section write allow-lists per skill
 
-- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- high | normal | low -->
 - **Depends on:** —
-- **Branch/PR:** —   <!-- m14-section-allow-lists; PR URL once opened -->
+- **Branch/PR:** m14-section-allow-lists   <!-- PR URL once opened -->
 
 ## Goal
 
