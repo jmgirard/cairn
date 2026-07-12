@@ -264,6 +264,90 @@ class TestMemoryGuard(RepoFixture):
         self.assertEqual(proc.stdout.strip(), "")
 
 
+class TestCommitGuard(RepoFixture):
+    def commit_payload(self, command, **extra):
+        return self.payload(
+            hook_event_name="PreToolUse",
+            tool_name="Bash",
+            tool_input={"command": command},
+            **extra,
+        )
+
+    def test_nudges_on_noncairn_commit_on_default(self):
+        (self.root / "code.txt").write_text("changed\n")
+        self.git("add", "code.txt")
+        proc = run_hook("commit_guard.py", self.commit_payload("git commit -m wip"))
+        self.assertEqual(proc.returncode, 0)
+        out = hook_json(proc)
+        self.assertEqual(out["hookEventName"], "PreToolUse")
+        self.assertIn("default branch", out["additionalContext"])
+        # softest lever: additionalContext with NO permissionDecision
+        self.assertNotIn("permissionDecision", out)
+
+    def test_silent_on_cairn_only_commit(self):
+        (self.root / "cairn" / "ROADMAP.md").write_text(ROADMAP + "edit\n")
+        self.git("add", "cairn/ROADMAP.md")
+        proc = run_hook("commit_guard.py", self.commit_payload("git commit -m track"))
+        self.assertEqual(proc.stdout.strip(), "")
+
+    def test_silent_on_feature_branch(self):
+        self.git("checkout", "-q", "-b", "m99-feature")
+        (self.root / "code.txt").write_text("changed\n")
+        self.git("add", "code.txt")
+        proc = run_hook("commit_guard.py", self.commit_payload("git commit -m wip"))
+        self.assertEqual(proc.stdout.strip(), "")
+
+    def test_stage_all_counts_modified_tracked(self):
+        # code.txt is modified but NOT staged; -am stages+commits it, so the
+        # guard must count modified-tracked files, not just the (empty) index.
+        (self.root / "code.txt").write_text("changed\n")
+        proc = run_hook("commit_guard.py", self.commit_payload("git commit -am wip"))
+        out = hook_json(proc)
+        self.assertIn("default branch", out["additionalContext"])
+
+    def test_unstaged_modified_ignored_without_dash_a(self):
+        # same modified-not-staged file, but a plain commit only takes the
+        # index — nothing non-cairn is staged, so stay silent.
+        (self.root / "code.txt").write_text("changed\n")
+        proc = run_hook("commit_guard.py", self.commit_payload("git commit -m wip"))
+        self.assertEqual(proc.stdout.strip(), "")
+
+    def test_command_position_and_non_commit_ignored(self):
+        (self.root / "code.txt").write_text("changed\n")
+        self.git("add", "code.txt")
+        for cmd in ("echo git commit", "git status", "git commit-tree x"):
+            with self.subTest(cmd=cmd):
+                proc = run_hook("commit_guard.py", self.commit_payload(cmd))
+                self.assertEqual(proc.stdout.strip(), "", cmd)
+
+    def test_default_branch_resolved_via_remote_head(self):
+        # A repo whose default branch is `trunk`, advertised through
+        # refs/remotes/origin/HEAD — the guard must detect it (not hardcode
+        # main/master) and nudge on a non-cairn commit made on trunk.
+        bare = tempfile.TemporaryDirectory()
+        self.addCleanup(bare.cleanup)
+        subprocess.run(
+            ["git", "init", "-q", "--bare", bare.name],
+            check=True, capture_output=True,
+        )
+        self.git("branch", "-m", "trunk")
+        self.git("remote", "add", "origin", bare.name)
+        self.git("push", "-q", "-u", "origin", "trunk")
+        self.git("remote", "set-head", "origin", "trunk")
+        (self.root / "code.txt").write_text("changed\n")
+        self.git("add", "code.txt")
+        proc = run_hook("commit_guard.py", self.commit_payload("git commit -m wip"))
+        out = hook_json(proc)
+        self.assertIn("default branch", out["additionalContext"])
+
+    def test_ignores_other_tools(self):
+        proc = run_hook(
+            "commit_guard.py",
+            self.payload(tool_name="Edit", tool_input={"file_path": "x"}),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+
+
 class TestNonCairnNoOp(RepoFixture):
     cairn = False
 
@@ -273,6 +357,9 @@ class TestNonCairnNoOp(RepoFixture):
             "stop_guard.py": self.payload(),
             "merge_guard.py": self.payload(
                 tool_name="Bash", tool_input={"command": "gh pr merge 7"}
+            ),
+            "commit_guard.py": self.payload(
+                tool_name="Bash", tool_input={"command": "git commit -m x"}
             ),
             # a genuine memory path: the ONLY reason to no-op here is the
             # non-cairn cwd, so this exercises that branch specifically.
@@ -296,6 +383,7 @@ class TestNonCairnNoOp(RepoFixture):
             "session_context.py",
             "stop_guard.py",
             "merge_guard.py",
+            "commit_guard.py",
             "memory_guard.py",
         ):
             with self.subTest(script=script):
