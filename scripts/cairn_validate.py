@@ -14,9 +14,25 @@ cairn repo.
 """
 
 import os
+import re
 import sys
 
 import cairn_scripts as cs
+
+# Non-ISO calendar-date patterns. Conservative by design (M13 Decisions):
+# strong date signals only, so version numbers (4.8), page anchors (p. 12),
+# IDs (M13, D-005), and fractions (1/2) don't trip. A missed weird format is
+# preferred over a false positive that makes the gate cry wolf.
+_MONTHS = "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec"
+_NON_ISO_DATE = re.compile(
+    r"\b(?:"
+    r"\d{1,4}/\d{1,2}/\d{1,4}"                                       # 07/11/2026, 2026/07/11
+    r"|\d{1,2}-\d{1,2}-\d{4}"                                        # 11-07-2026 (year-last dashed)
+    r"|(?:" + _MONTHS + r")[a-z]*\.?\s+\d{1,2}(?:st|nd|rd|th)?,?\s+\d{4}"  # Jul 11, 2026
+    r"|\d{1,2}(?:st|nd|rd|th)?\s+(?:" + _MONTHS + r")[a-z]*\.?\s+\d{4}"    # 11 July 2026
+    r")\b",
+    re.IGNORECASE,
+)
 
 
 def check_mirror(root, rows):
@@ -116,6 +132,41 @@ def check_id_uniqueness(root, rows):
     return bad
 
 
+def _date_scan_files(root):
+    """Tracked status/decision files whose dates must be ISO (tracking-rules
+    absolute-dates rule): the top-level tracking files plus every milestone
+    file. Excludes references/ (external citation dates in many formats) and
+    legacy/ (entombed verbatim, D-005 — must not be reformatted)."""
+    cairn = os.path.join(root, "cairn")
+    files = []
+    for name in ("ROADMAP.md", "DECISIONS.md", "DESIGN.md"):
+        p = os.path.join(cairn, name)
+        if os.path.isfile(p):
+            files.append(p)
+    for dirpath, _dirs, names in os.walk(os.path.join(cairn, "milestones")):
+        files.extend(os.path.join(dirpath, n) for n in names if n.endswith(".md"))
+    return files
+
+
+def check_dates(root):
+    """Flag non-ISO calendar dates in the tracked status/decision files.
+    Catches misformatted dates only; prose relative dates ('yesterday') stay
+    LLM-owned in the semantic audit."""
+    bad = []
+    for path in _date_scan_files(root):
+        try:
+            with open(path, encoding="utf-8") as f:
+                text = f.read()
+        except Exception:
+            continue
+        rel = os.path.relpath(path, root)
+        for i, line in enumerate(text.splitlines(), 1):
+            m = _NON_ISO_DATE.search(line)
+            if m:
+                bad.append(f"{rel}:{i}: non-ISO date '{m.group(0)}'")
+    return bad
+
+
 CHECKS = [
     ("mirror agreement", lambda root, rows: check_mirror(root, rows)),
     ("at most one in-progress", lambda root, rows: check_single_in_progress(rows)),
@@ -125,6 +176,7 @@ CHECKS = [
     ("dependency resolution", lambda root, rows: check_dependencies(root, rows)),
     ("roadmap<->disk orphans", lambda root, rows: check_orphans(root, rows)),
     ("id uniqueness", lambda root, rows: check_id_uniqueness(root, rows)),
+    ("iso date format", lambda root, rows: check_dates(root)),
 ]
 
 

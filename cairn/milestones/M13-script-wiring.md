@@ -55,7 +55,7 @@ date-format check to `cairn_validate`.
 
 ## Tasks
 
-- [ ] Add `check_dates` to `scripts/cairn_validate.py` (new entry in `CHECKS`)
+- [x] Add `check_dates` to `scripts/cairn_validate.py` (new entry in `CHECKS`)
       that scans tracked cairn/ markdown for date-like tokens and flags any
       not in `YYYY-MM-DD` form; keep the pattern conservative to avoid
       false-positiving on prose/citations (see Decisions). Add `unittest`
@@ -74,6 +74,8 @@ date-format check to `cairn_validate`.
 
 - 2026-07-11: created by /milestone-plan. Promoted from the
   "Deterministic-script wiring beyond /milestone" candidate (M10 Out).
+- 2026-07-11: T1 — added `check_dates` (9th validate check, conservative
+  non-ISO patterns) + test; suite 19 green; real-repo validate all-PASS.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->

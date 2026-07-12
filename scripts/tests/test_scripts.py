@@ -223,6 +223,13 @@ class TestValidateFailures(ScriptCase):
         self.tree.rows.append(("M03", "Dup", "planned", "M01", "high", "milestones/M03-live.md"))
         self.assert_fails("id uniqueness", self.tree.build())
 
+    def test_non_iso_date(self):
+        # A misformatted work-log date must be flagged; the clean tree's ISO
+        # date (archived M01, "approved 2026-07-11") already proves ISO passes.
+        self.tree.files["milestones/M03-live.md"] = live("planned") + "\n- 07/11/2026: did a thing\n"
+        out = self.assert_fails("iso date format", self.tree.build())
+        self.assertIn("non-ISO date '07/11/2026'", out)
+
 
 class TestOutsideCairn(unittest.TestCase):
     def test_all_scripts_exit_2(self):
