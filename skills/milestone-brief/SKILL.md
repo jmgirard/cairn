@@ -9,6 +9,7 @@ argument-hint: "<id> <topic>"
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it.
 Phase header: `# Review brief RB<NN>` → `## Draft` / `## Gate` / `## Ingest`.
+Chapter markers: mark a chapter at each phase transition (session start implicit).
 Fable is token-billed pay-per-use: spawning it requires **explicit user
 approval, every time, with no standing authorization** — and only ever
 through this protocol. The brief artifact comes first either way; it is what
@@ -62,9 +63,9 @@ start (any skill) when a manual RR appears:
    (logged).
 4. Move the RB/RR pair to `cairn/reviews/archive/`; milestone status back
    to `in-progress`; commit (docs-only): `ingest RR<NN>`.
-5. Routing chip, composed from where the RR left the milestone — e.g.
-   **Resume implementation** → `/milestone-implement <id>` (recommended) /
-   Stop here.
+5. **Routing chip (AskUserQuestion)**, composed from where the RR left the
+   milestone — e.g. **Resume implementation** → `/milestone-implement <id>`
+   (recommended) / Stop here.
 
 Robustness:
 

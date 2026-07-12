@@ -334,8 +334,12 @@ cairn skill is active.
   scripts. Invariants that never bend: recommended option first and
   marked, ≤4 options, a stop/pause option present, and a chip is a user
   stop — never auto-proceed.
-- **Chapter markers.** Where the harness supports conversation chapters,
-  mark phase transitions (session start is implicit).
+- **Chapter markers (per-phase mandate).** Mark a chapter at each phase transition
+  (session start is implicit) via the runtime's chapter mechanism — in Claude
+  Code, `mark_chapter`, which drives the navigable TOC, not the markdown headers
+  (M27/D-020). This is a hard per-phase requirement, not "only where supported."
+  Fallback: where the runtime provides no chapter mechanism, no marker is emitted
+  and the H1/H2 phase headers are the visual fallback — nothing breaks.
 - **Subagent titles carry the model tier.** Prefix every Agent
   description with `[S]`/`[O]`/`[F]` for Sonnet/Opus/Fable — task panes
   show only the title, not the model.

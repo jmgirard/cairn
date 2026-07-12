@@ -316,3 +316,29 @@ phase headers — reinforcing that rule's importance. `test_phase_header_levels.
 is unaffected (levels unchanged). Whether to promote the chapter-marker rule
 from "where supported" to a hard per-phase mandate is banked as a ROADMAP
 candidate, not decided here.
+
+### D-021 (2026-07-12): The chapter-marker rule is a hard per-phase mandate — executes D-020's banked candidate
+
+**Context:** D-020 established that in cairn's Claude Code runtime the
+navigable TOC is driven by chapter markers, not markdown headers, and banked
+"promote the chapter-marker rule to a hard per-phase mandate" as a candidate.
+The output-discipline "Chapter markers" rule still read "where the harness
+supports conversation chapters" — optional, unenforced, and (like the
+routing-chip rule before M26) drift-prone because no guard checked it.
+**Decision:** Promote the rule to a **hard per-phase mandate**: mark a chapter
+at each phase transition (session start implicit). Three sub-choices, made at
+the M28 plan gate: (1) **enforcement** — a one-line `Chapter markers:`
+directive in every phase skill, parallel to the `Phase header:` directive,
+locked per-skill by `test_chapter_marker_mandate.py` (a central rule alone is
+what let the milestone-brief chip gap through); (2) **fallback** — the
+directive is unconditional; where the runtime provides no chapter mechanism
+the call is simply unavailable and the H1/H2 phase headers are the visual
+fallback, so nothing breaks; (3) **scope** — all nine skills including
+`/milestone-review`, since chapter markers are orthogonal to the routing-chip
+exception (D-019) — review is chip-less but still has navigable phases.
+**Consequences:** Annotates D-020 (executes its banked candidate) and
+reinforces the output-discipline "Chapter markers" rule as the load-bearing
+TOC driver. The mandate's list (nine, review included) deliberately differs
+from `NON_REVIEW_CHIP_SKILLS` (seven — review excluded from that one). Guards are prose-guards, proving wording
+not runtime (M27 already characterized runtime behavior live). If a future
+harness needs a different fallback, this is the entry to supersede.

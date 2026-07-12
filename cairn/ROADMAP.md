@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M28 | Harden the output-discipline mandate guards | planned | — | normal | milestones/M28-output-discipline-mandate-guards.md |
+| M28 | Harden the output-discipline mandate guards | review | — | normal | milestones/M28-output-discipline-mandate-guards.md |
 | M26 | Lock the routing-chip mandate; exempt review as the chip-less phase | done | — | normal | milestones/archive/M26-routing-chip-mandate-lock.md |
 | M27 | Desktop TOC pickup of the `##` phase headers | done | — | low | milestones/archive/M27-desktop-toc-header-pickup.md |
 | M25 | Parameterize the default branch in the operational skill steps | done | M22 | normal | milestones/archive/M25-default-branch-operational-skills.md |

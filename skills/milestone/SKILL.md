@@ -11,6 +11,7 @@ it. This skill is read-mostly: it fixes mechanical tracking problems
 immediately, reports everything else, and never starts implementation work
 itself — it routes.
 Phase header: `# Status` → `## Snapshot` / `## Audit` / `## Route`.
+Chapter markers: mark a chapter at each phase transition (session start implicit).
 
 **Deterministic scripts.** Snapshot, the mechanical audit checks, and the
 next-action derivation are shipped as read-only python3 scripts over the

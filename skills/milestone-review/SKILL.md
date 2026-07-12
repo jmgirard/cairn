@@ -9,6 +9,7 @@ argument-hint: "<id>"
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it (especially: approval model, CI waiting rules, archive protocol).
 Phase header: `# Milestone <NN>: <title>` → `## Review`.
+Chapter markers: mark a chapter at each phase transition (session start implicit).
 
 ## Session start
 
