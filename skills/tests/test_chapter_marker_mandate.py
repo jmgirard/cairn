@@ -39,6 +39,12 @@ SKILLS_WITH_CHAPTER_DIRECTIVE = [
 # case-insensitively (mirrors how each skill carries a `Phase header:` line).
 DIRECTIVE_TOKEN = "chapter markers: mark a chapter at each phase transition"
 
+# M31 dropped the "session start implicit" carve-out: the opening phase of a
+# session marks a chapter too (there is no auto session-start node — M27/D-020).
+# Neither spelling of the retired carve-out may survive in any skill or the
+# rulebook. Matched case-insensitively; kept on one physical line each.
+CARVE_OUT_PHRASES = ["session start implicit", "session start is implicit"]
+
 
 def read(*parts):
     return (SKILLS.joinpath(*parts)).read_text()
@@ -65,6 +71,24 @@ class TestChapterMarkerMandate(unittest.TestCase):
         text = read("shared", "tracking-rules.md").lower()
         self.assertIn("where the runtime provides no chapter mechanism", text)
         self.assertIn("phase headers are the visual fallback", text)
+
+    def test_carve_out_phrase_absent_everywhere(self):
+        targets = [(s, "SKILL.md") for s in SKILLS_WITH_CHAPTER_DIRECTIVE]
+        targets.append(("shared", "tracking-rules.md"))
+        for parts in targets:
+            text = read(*parts).lower()
+            for phrase in CARVE_OUT_PHRASES:
+                with self.subTest(target="/".join(parts), phrase=phrase):
+                    self.assertNotIn(
+                        phrase,
+                        text,
+                        f"{'/'.join(parts)}: retired carve-out '{phrase}' must "
+                        f"be gone (M31 — the opening phase marks a chapter)",
+                    )
+
+    def test_rulebook_includes_the_opening_phase(self):
+        text = read("shared", "tracking-rules.md").lower()
+        self.assertIn("opening phase", text)
 
 
 if __name__ == "__main__":

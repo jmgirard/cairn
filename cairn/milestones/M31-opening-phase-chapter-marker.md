@@ -66,7 +66,7 @@ or the routing-chip mandate — untouched.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — Extend `skills/tests/test_chapter_marker_mandate.py`: assert neither
+- [x] T1 — Extend `skills/tests/test_chapter_marker_mandate.py`: assert neither
       `"session start implicit"` nor `"session start is implicit"` appears in
       any of the 9 skills or in `tracking-rules.md`, and that tracking-rules
       asserts opening-phase inclusion (e.g. contains `"opening phase"`). Run to
@@ -90,6 +90,9 @@ or the routing-chip mandate — untouched.
 
 - 2026-07-12: created by /milestone-plan (from Jeff's observation that this
   session's own opening plan phase produced no TOC node).
+- 2026-07-12: T1 — extended test_chapter_marker_mandate.py with
+  test_carve_out_phrase_absent_everywhere (9 skills + tracking-rules) and
+  test_rulebook_includes_the_opening_phase; confirmed red against current files.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
