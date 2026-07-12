@@ -72,7 +72,7 @@ next real migration doesn't re-hit them.
 
 ## Tasks
 
-- [ ] **T1** — Add §5 rich-DESIGN guidance to `skills/cairn-init/SKILL.md`:
+- [x] **T1** — Add §5 rich-DESIGN guidance to `skills/cairn-init/SKILL.md`:
       keep-verbatim vs extract-to-DECISIONS (Compromise A/B), invariants →
       `/design-interview`. Cite the ackwards pilot.
 - [ ] **T2** — Add the §4/§6 repoint-or-note sweep step (in-code refs to
@@ -92,6 +92,10 @@ next real migration doesn't re-hit them.
   hygiene tweaks" (G7/G2), all from `references/migration-pilot-notes.md` (M20).
   Depends on M22 (shared cairn-init §2 edits sequence after the branch
   parameterization); sequenced before M21.
+- 2026-07-12: T1 — added rich-DESIGN guidance to migration step 5: Compromise
+  A (default, keep verbatim + re-record still-governing decisions) / B (full
+  extraction on request), invariants routed to `/design-interview`; cites the
+  ackwards pilot.
 
 ## Decisions
 

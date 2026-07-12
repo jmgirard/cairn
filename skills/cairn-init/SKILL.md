@@ -147,6 +147,17 @@ Lineage: M03 tidymedia pilot (PR #8).
      their legacy ID).
    - Unresolved open questions / known issues → `candidate` rows or DESIGN
      "Known issues", per the ownership table.
+   - **Rich pre-existing `DESIGN.md`?** A large living DESIGN (hundreds of
+     lines, embedded decision log, known issues) fits neither entombment nor
+     the thin §1 scaffold. Default (**Compromise A**, the ackwards pilot's
+     choice): keep it verbatim as `cairn/DESIGN.md` and re-record only
+     still-governing decisions into `DECISIONS.md` (each citing its DESIGN
+     anchor), deferring full decision-log extraction to the repo's own later
+     `/design-interview`. Offer **Compromise B** (extract the whole decision
+     log into `DECISIONS.md` now) only if the user asks — it is slower and
+     invention-prone. Either way, hard-constraint invariants embedded in the
+     DESIGN are **not** forced into IP/GP shape at migration time — route
+     their formalization to `/design-interview`, which is built for it.
 
 6. **Redistribute and deactivate.**
    - Old CLAUDE.md content redistributed per the ownership table:
