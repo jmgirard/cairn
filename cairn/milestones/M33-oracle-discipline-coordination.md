@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M33: Assess ackwards' oracle discipline and fold its generalizable core into cairn
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Branch/PR:** m33-oracle-discipline-coordination   <!-- owner: implement (branch) / review (PR URL) · create -->
