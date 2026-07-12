@@ -5,7 +5,7 @@
 - **Status:** review
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** m34-coverage-map-lint
+- **Branch/PR:** m34-coverage-map-lint · https://github.com/jmgirard/cairn/pull/32
 
 ## Goal
 
@@ -31,18 +31,18 @@ candidate.
 
 ## Acceptance criteria
 
-- [ ] `cairn_validate` gains a check (e.g. "coverage complete") that FAILs
+- [x] `cairn_validate` gains a check (e.g. "coverage complete") that FAILs
       when a live milestone file has an acceptance criterion absent from its
       Coverage section, and the finding names the file and the AC number.
-- [ ] The same check FAILs on a Coverage line referencing an AC number
+- [x] The same check FAILs on a Coverage line referencing an AC number
       greater than the file's criterion count (dangling reference), naming
       the file and the bad reference.
-- [ ] The check scans only live milestone files; an archived file with no
+- [x] The check scans only live milestone files; an archived file with no
       Coverage section (compressed summary) produces no finding.
-- [ ] A live milestone file whose every criterion is referenced in Coverage
+- [x] A live milestone file whose every criterion is referenced in Coverage
       produces no finding (no false positive), including this repo's own
       live milestone files.
-- [ ] The script test suite passes: `python3 -m unittest discover -s scripts/tests`.
+- [x] The script test suite passes: `python3 -m unittest discover -s scripts/tests`.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate -->
@@ -84,3 +84,38 @@ candidate.
 
 ## Review
 <!-- owner: review · exclusive -->
+
+**Fresh evidence (2026-07-12, PR #32):**
+
+- AC1 — `test_unmapped_criterion` passes: a live file with AC2 unmapped
+  yields FAIL `coverage complete` + exit 1, message `M03: AC2 not referenced
+  in Coverage`.
+- AC2 — `test_dangling_coverage_reference` passes: Coverage citing AC3 with
+  only 2 criteria yields FAIL + `Coverage references AC3 but file has 2
+  criteria`.
+- AC3 — `test_archived_file_with_criteria_is_exempt` passes: an archive/
+  file with criteria and no Coverage produces no finding (PASS).
+- AC4 — `test_fully_mapped_coverage_passes` passes; and the live repo's own
+  `python3 scripts/cairn_validate.py` shows `PASS coverage complete` /
+  `all checks passed` (M34 + M35 both mapped).
+- AC5 — `python3 -m unittest discover -s scripts/tests`: 49/49 OK.
+
+**Consistency gate:** `cairn_validate` exit 0 (11/11). Coverage completeness:
+AC1–AC5 all map to existing tasks T1–T3. No DESIGN principle changed (impact
+report skipped). R gates waived (plugin repo); no README.Rmd / NEWS surface.
+
+**Independent review (two lenses, fresh context):**
+
+- [O] diff-bug (Opus): no findings. Verified `_section_body` H2 delimiting
+  (a `### sub-header` does not break the section — `"### ".startswith("## ")`
+  is False), AC-item regex counts only checkbox bullets, `\bAC(\d+)\b` has no
+  over/under-match (`AC10`→10, not 1), `range(1, n+1)` off-by-one correct,
+  archive exempt via non-recursive `live_files` glob. Two hypotheticals
+  (range-notation / lowercase Coverage lines) dropped — forbidden by the
+  template, not defects.
+- [S] blame-history (Sonnet): no findings. No M24 fixture-coupling regression
+  (base `live()` = 0 ACs → skipped by construction, not luck), no D-023
+  date-scanner interaction (`live_cov` emits no dates), append-to-`CHECKS`
+  matches the M22/M24/M30 pattern; nothing depends on `CHECKS` order.
+
+Zero surviving findings → scorer step moot (no findings to score).
