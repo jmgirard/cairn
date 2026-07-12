@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M27: Desktop TOC pickup of the `##` phase headers
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** low
 - **Depends on:** —
 - **Branch/PR:** m27-desktop-toc-header-pickup

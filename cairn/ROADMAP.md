@@ -11,7 +11,7 @@ not an R package, so R-specific gates don't apply.
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M26 | Lock the routing-chip mandate; exempt review as the chip-less phase | done | — | normal | milestones/archive/M26-routing-chip-mandate-lock.md |
-| M27 | Desktop TOC pickup of the `##` phase headers | in-progress | — | low | milestones/M27-desktop-toc-header-pickup.md |
+| M27 | Desktop TOC pickup of the `##` phase headers | review | — | low | milestones/M27-desktop-toc-header-pickup.md |
 | M25 | Parameterize the default branch in the operational skill steps | done | M22 | normal | milestones/archive/M25-default-branch-operational-skills.md |
 | M24 | Scaffold-drift detection in the audit | done | — | normal | milestones/archive/M24-scaffold-drift-check.md |
 | M23 | Migration-protocol §2 guidance hardening | done | M22 | normal | milestones/archive/M23-migration-guidance.md |
