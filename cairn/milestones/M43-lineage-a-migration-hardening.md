@@ -170,4 +170,22 @@ divergence). Diff scoped to `skills/` + `cairn/` only (`git diff --name-only`).
 - R-package gates (document/README/pkgdown/NEWS/`.Rbuildignore`): waived —
   plugin repo, no R machinery, diff touches no R files (CLAUDE.md).
 
-**Independent fresh-context review:** (below)
+**Independent fresh-context review** (three lenses, ref-based, shared tree):
+
+- [O] diff-bug (Opus): **0 findings.** AC1–AC4 additions say what the criteria
+  claim, placed as siblings to existing §2 steps (no contradiction); guard
+  genuinely locks — every anchor is 0 on `main` (deleting an addition fails its
+  assertion; M39/M40 trap cleared) and single-line (M23); step 3 "choice" vs §6
+  "decision" don't collide; no GP4/IP2/IP3 or D-entry contradiction.
+- [S] blame-history (Sonnet): **0 findings.** The §6 "entomb all repo-local
+  skills" rule (origin `2a82bb5`, only renamed at D-008) was never
+  stress-tested until M41; the rewrite implements M41's own G-I4 recommendation
+  and preserves collision-avoidance via the "coupling wins" tiebreaker — nothing
+  silently weakened. No existing test asserts the old wording, so the append
+  didn't break `TestMigrationGuidance`.
+- [S] prior-PR-comments (Sonnet): **no prior-PR evidence** — PRs #19/#20/#21/
+  #24/#26/#30/#33 touched these files with empty review comments (M40 lesson).
+
+Scorer not run: no surviving findings to score. No fixes, follow-ups, or
+rejections needed.
+
