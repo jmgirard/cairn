@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-11 (M10 done+archived; M05 row pruned per 5-done retention)_
+_Last hygiene check: 2026-07-11 (M11 done+archived; M06 row pruned per 5-done retention)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,12 +10,11 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M11 | Shift phase headers up one level (H1 unit / H2 phase) | review | — | normal | milestones/M11-phase-header-levels.md |
+| M11 | Shift phase headers up one level (H1 unit / H2 phase) | done | — | normal | milestones/archive/M11-phase-header-levels.md |
 | M10 | Deterministic tracking scripts | done | — | normal | milestones/archive/M10-deterministic-scripts.md |
 | M09 | Phase headers (H2/H3) replace inline stage banner | done | — | normal | milestones/archive/M09-phase-headers.md |
 | M08 | Skill-less routing guardrails | done | — | high | milestones/archive/M08-skill-less-routing.md |
 | M07 | Guardrail hooks (blocking enforcement + re-injection) | done | — | high | milestones/archive/M07-guardrail-hooks.md |
-| M06 | Competitive-landscape research | done | — | high | milestones/archive/M06-competitive-landscape.md |
 
 ## Candidates
 
