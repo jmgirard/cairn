@@ -45,9 +45,9 @@ skills — that keys on plugin-internal structure, meaningful only in this repo
 
 ## Tasks
 
-- [ ] Write `scripts/cairn_impact.py` (principle-id args + `--changed`), on
+- [x] Write `scripts/cairn_impact.py` (principle-id args + `--changed`), on
       the `cairn_scripts` parser and `resolve_root`/`NotCairn` idiom.
-- [ ] Add fixture + cases to `scripts/tests/test_scripts.py`.
+- [x] Add fixture + cases to `scripts/tests/test_scripts.py`.
 - [ ] Add the invoke-when step to `skills/milestone-review/SKILL.md`
       consistency gate.
 - [ ] Note the reporter in `cairn/DESIGN.md` Architecture (scripts layer).
@@ -57,6 +57,7 @@ skills — that keys on plugin-internal structure, meaningful only in this repo
 <!-- append-only; one line per entry; absolute dates -->
 
 - 2026-07-11: created by /milestone-plan.
+- 2026-07-11: cairn_impact.py written (principle ids + --changed via git diff); 5 fixture cases added, scripts/tests 26 green.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
