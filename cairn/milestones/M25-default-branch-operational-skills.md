@@ -6,7 +6,7 @@
 - **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M22   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
-- **Branch/PR:** m25-default-branch-operational-skills   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m25-default-branch-operational-skills · https://github.com/jmgirard/cairn/pull/23   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -38,26 +38,26 @@ Extend `test_default_branch_parameterized.py` to lock the four skills.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] The tracking-rules git model carries a single canonical runtime
+- [x] The tracking-rules git model carries a single canonical runtime
       default-branch **detection recipe** (the `git symbolic-ref --short
       refs/remotes/origin/HEAD` command + its fallback), stated as what an
       operational skill runs when it needs the branch name. Evidence: the
       snippet is present and the four operational skills reference detection
       rather than re-specifying it.
-- [ ] `/milestone-implement`'s git steps (sync, branch-from, branch-sync
+- [x] `/milestone-implement`'s git steps (sync, branch-from, branch-sync
       merge) name the detected default branch, with no hardcoded-`main` git
       command. Evidence: grep of the skill + guard test.
-- [ ] `/milestone-review`'s git steps are parameterized — specifically the
+- [x] `/milestone-review`'s git steps are parameterized — specifically the
       diff command (`git diff main..HEAD` → default-branch form), the
       merge-approval **chip label** (`Merge PR #N to main` → default-branch
       form), the sync-with-origin step, and the post-merge hygiene
       checkout/pull. Evidence: grep + guard test.
-- [ ] `/hotfix`'s git steps (branch-from, merge chip label, branch-sync) name
+- [x] `/hotfix`'s git steps (branch-from, merge chip label, branch-sync) name
       the detected default branch. Evidence: grep + guard test.
-- [ ] `/cairn-release`'s git steps (release-from-clean, up-to-date check,
+- [x] `/cairn-release`'s git steps (release-from-clean, up-to-date check,
       release-prep commit) name the detected default branch. Evidence: grep +
       guard test.
-- [ ] `test_default_branch_parameterized.py` is extended with per-skill
+- [x] `test_default_branch_parameterized.py` is extended with per-skill
       assertions covering all four operational skills (no bare-`main` git
       command; default-branch detection referenced) and the whole
       `skills/tests` + `scripts/tests` suites pass. Evidence: `unittest`
@@ -122,3 +122,26 @@ Extend `test_default_branch_parameterized.py` to lock the four skills.
 ## Review
 <!-- owner: review · exclusive; evidence per criterion; consistency-gate
      results; independent-review findings and their triage -->
+
+_Reviewed 2026-07-12 · PR #23 · diff `main..HEAD`: 8 files, +122/−39._
+
+**Acceptance-criteria evidence (fresh):**
+
+- AC1 ✓ — recipe present in tracking-rules git model: `git symbolic-ref
+  --short refs/remotes/origin/HEAD` (line 195) + "re-detects it at runtime"
+  (line 192); all four skills reference "tracking-rules git model".
+- AC2 ✓ — `milestone-implement`: `grep -woc main` = 0.
+- AC3 ✓ — `milestone-review`: `grep -woc main` = 0; diff cmd is
+  `git diff <default-branch>..HEAD` (line 95); merge chip label is
+  `Merge PR #N to <default-branch>` (line 132–133).
+- AC4 ✓ — `hotfix`: `grep -woc main` = 0.
+- AC5 ✓ — `cairn-release`: `grep -woc main` = 0.
+- AC6 ✓ — guard test extended (+5 tests: 2 recipe, 3 per-skill); full suites
+  green — `skills/tests` 63, `scripts/tests` 43.
+
+**Consistency gate:** `cairn_validate.py` exit 0 (10/10 PASS). Coverage
+complete: AC1→T1 … AC6→T6, every criterion maps to an existing task. No
+DESIGN principle changed → `cairn_impact` skipped. R gates waived (plugin repo).
+
+**Independent fresh-context review:** two lenses (diff-bug [O] + blame-history
+[S]) then scorer [S] — results below.
