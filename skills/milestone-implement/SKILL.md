@@ -52,6 +52,10 @@ run ingestion first (see `/milestone-brief`).
      `devtools::test()` clean before checking the task off.
    - Checkpoint-commit per task on the branch, **including** the milestone
      file update (checkbox + one work-log line) in the same commit.
+   - Stay within implement-owned sections (per the tracking-rules
+     section-ownership table): check off Tasks, append Work log and
+     milestone-local Decisions, mirror Status/Branch. Goal, Scope, and
+     Acceptance criteria change only via the amendment gate (step 6).
 
 5. **Delegate** per tracking-rules (Sonnet for well-specified mechanical
    work; Opus for design-sensitive work; never Haiku; Fable only via

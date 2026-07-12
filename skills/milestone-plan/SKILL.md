@@ -72,6 +72,10 @@ handle ingestion first (see `/milestone-brief`).
      tagged inline on the affected task or criterion with the canonical
      token — `(RB tripwire: no-oracle | irreversible-api | ip-touching)` —
      so implement inherits them.
+   - Write only the plan-owned sections — Goal, Scope, Acceptance criteria,
+     Tasks, and the Priority/Depends-on header — per the section-ownership
+     table in tracking-rules; leave Work log, Decisions, and Review to their
+     owners.
    Deferred chunks not yet plannable get `candidate` ROADMAP rows, not files.
 
 5. **Remainder ledger (conservation check).** Before committing, enumerate
