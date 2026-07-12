@@ -62,9 +62,9 @@ start (any skill) when a manual RR appears:
    (logged).
 4. Move the RB/RR pair to `cairn/reviews/archive/`; milestone status back
    to `in-progress`; commit (docs-only): `ingest RR<NN>`.
-5. Routing chip, composed from where the RR left the milestone — e.g.
-   **Resume implementation** → `/milestone-implement <id>` (recommended) /
-   Stop here.
+5. **Routing chip (AskUserQuestion)**, composed from where the RR left the
+   milestone — e.g. **Resume implementation** → `/milestone-implement <id>`
+   (recommended) / Stop here.
 
 Robustness:
 

@@ -72,11 +72,11 @@ existing routing-chip guard the M26 lock missed.
 
 ## Tasks
 
-- [ ] T1: Extend `TestRoutingChipMandate` — add `milestone-brief` to
+- [x] T1: Extend `TestRoutingChipMandate` — add `milestone-brief` to
       `NON_REVIEW_CHIP_SKILLS` and correct the stale comment at
       `skills/tests/test_gate_wording.py:51` (test goes red: the SKILL lacks
       the token).
-- [ ] T2: Add the single-line `**Routing chip (AskUserQuestion)**` token to
+- [x] T2: Add the single-line `**Routing chip (AskUserQuestion)**` token to
       `milestone-brief` step 5 (`skills/milestone-brief/SKILL.md:65`),
       greening T1. Token inside the bold, one line (M26 lesson).
 - [ ] T3: Write `skills/tests/test_chapter_marker_mandate.py` — assert all
@@ -97,6 +97,7 @@ existing routing-chip guard the M26 lock missed.
 ## Work log
 
 - 2026-07-12: created by /milestone-plan.
+- 2026-07-12: T1+T2 — `milestone-brief` step 5 now carries the `Routing chip (AskUserQuestion)` token; added to `NON_REVIEW_CHIP_SKILLS`; stale comment corrected. Gate-wording suite green (8/8).
 
 ## Decisions
 

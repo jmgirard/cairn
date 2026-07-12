@@ -48,7 +48,8 @@ class TestMergeGateIsAChip(unittest.TestCase):
 
 # Phase skills whose end-of-phase routing chip must name AskUserQuestion.
 # `/milestone-review` is deliberately excluded — its end is chip-less (below).
-# `hotfix` / `milestone-brief` have no standalone terminal routing-chip step.
+# `hotfix` has no standalone terminal routing-chip step; `milestone-brief`
+# ends its RR-ingest phase on one (an M26 miss, brought under the guard in M28).
 NON_REVIEW_CHIP_SKILLS = [
     "milestone-plan",
     "milestone-implement",
@@ -56,6 +57,7 @@ NON_REVIEW_CHIP_SKILLS = [
     "cairn-init",
     "cairn-release",
     "design-interview",
+    "milestone-brief",
 ]
 
 # The canonical single-line token a routing-chip step carries; matched
