@@ -1,6 +1,6 @@
 # M11: Shift phase headers up one level (H1 unit / H2 phase)
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal
 - **Depends on:** —
 - **Branch/PR:** m11-phase-header-levels   <!-- PR URL once opened -->
@@ -52,9 +52,9 @@ the two-level nesting is preserved); reformatting the M09 archive summary
 - [x] Add `skills/tests/test_phase_header_levels.py` (mirror
       `test_gate_wording.py`): assert rulebook + skills use `#`/`##` and
       assert absence of `## Milestone <NN>` / `### Plan` forms.
-- [ ] Append D-012 to `cairn/DECISIONS.md` superseding D-010.
-- [ ] Remove `scannable-h2-phase-headers.md` and its `MEMORY.md` line.
-- [ ] Run the full test suite; confirm green.
+- [x] Append D-012 to `cairn/DECISIONS.md` superseding D-010.
+- [x] Remove `scannable-h2-phase-headers.md` and its `MEMORY.md` line.
+- [x] Run the full test suite; confirm green.
 
 ## Work log
 <!-- append-only; one line per entry; absolute dates -->
@@ -62,6 +62,8 @@ the two-level nesting is preserved); reformatting the M09 archive summary
 - 2026-07-11: created by /milestone-plan.
 - 2026-07-11: shifted rulebook + 8 skills to `#`/`##`; added guard test
   test_phase_header_levels.py; full suite green (6 tests).
+- 2026-07-11: appended D-012 (supersedes D-010); removed redundant memory
+  scannable-h2-phase-headers + index line; suite green; status → review.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->

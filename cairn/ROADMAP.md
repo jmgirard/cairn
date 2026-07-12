@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M11 | Shift phase headers up one level (H1 unit / H2 phase) | in-progress | — | normal | milestones/M11-phase-header-levels.md |
+| M11 | Shift phase headers up one level (H1 unit / H2 phase) | review | — | normal | milestones/M11-phase-header-levels.md |
 | M10 | Deterministic tracking scripts | done | — | normal | milestones/archive/M10-deterministic-scripts.md |
 | M09 | Phase headers (H2/H3) replace inline stage banner | done | — | normal | milestones/archive/M09-phase-headers.md |
 | M08 | Skill-less routing guardrails | done | — | high | milestones/archive/M08-skill-less-routing.md |
