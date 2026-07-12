@@ -81,7 +81,7 @@ or the routing-chip mandate — untouched.
       (milestone-plan, -implement, -review, -brief, hotfix, cairn-init,
       cairn-release, milestone, design-interview) to the new wording. Run the
       guard + full `skills/tests` suite to green.
-- [ ] T4 — Append **D-024** to `cairn/DECISIONS.md` annotating D-021: the
+- [x] T4 — Append **D-024** to `cairn/DECISIONS.md` annotating D-021: the
       carve-out is removed because M27/D-020 proved there is no auto
       session-start chapter, so the opening phase must mark explicitly.
 
@@ -102,6 +102,8 @@ or the routing-chip mandate — untouched.
 - 2026-07-12: T3 — rewrote the `Chapter markers:` directive in all 9 skills to
   "...at each phase transition, including the session's opening phase." Chapter
   guard (5) + full skills/tests suite (76) green.
+- 2026-07-12: T4 — appended D-024 to DECISIONS.md annotating D-021 (carve-out
+  removed; basis M27/D-020).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

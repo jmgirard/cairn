@@ -399,3 +399,29 @@ files may again write check results in slash form). Locked by
 and year-last cases added to `test_non_iso_date_formats` (real slash dates
 still caught) in `scripts/tests/test_scripts.py`. If a 2-digit-year slash date
 ever needs catching, this is the entry to supersede.
+
+### D-024 (2026-07-12): The chapter-marker mandate includes the session's opening phase — annotates D-021
+
+**Context:** D-021 promoted the chapter-marker rule to a hard per-phase
+mandate but carried "(session start implicit)" from the pre-mandate era — a
+carve-out exempting a session's opening phase from marking. D-020 established
+that in cairn's Claude Code runtime there is **no** auto session-start chapter
+node: the navigable TOC is built only from `mark_chapter` calls, so an unmarked
+opening phase is simply absent from the TOC (observed live — this repo's own M31
+plan session opened without a marker and produced no TOC entry for the plan
+phase). The carve-out therefore silently dropped the opening phase off the
+outline it was meant to be on.
+**Decision:** Drop the carve-out. The mandate marks a chapter at **every**
+phase transition, the session's opening phase included. The `Chapter markers:`
+directive in all nine skills and the output-discipline rule in
+`tracking-rules.md` are reworded to state opening-phase inclusion and the
+no-auto-node rationale (M27/D-020); the same carve-out phrasing in the
+Phase-header rule's parenthetical is reworded to match. The
+"per-phase mandate", "hard per-phase requirement", and no-mechanism-fallback
+framing are unchanged. Rejected: keeping the carve-out (it defeats the mandate
+for the one phase most likely to open a session).
+**Consequences:** Annotates D-021 — its promotion stands; only the opening-phase
+exemption is removed. Reinforces D-020 (chapter markers are the load-bearing TOC
+driver). Locked by `test_carve_out_phrase_absent_everywhere` and
+`test_rulebook_includes_the_opening_phase` in
+`skills/tests/test_chapter_marker_mandate.py`.
