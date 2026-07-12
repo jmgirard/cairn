@@ -94,9 +94,12 @@ doctrine.
       bullet via `git symbolic-ref refs/remotes/origin/HEAD` w/ current-branch
       fallback; §1 commit lines; §2 step 2 branch/PR) and the
       `claude-md-section.md` template. Template section = 24 lines (< 30 cap).
-- [ ] **T5** — Guard test locking the new invariants (git model + init carry no
-      bare-`main` assumption; cap model shape); run the full suite green; commit
-      tracking + code together.
+- [x] **T5** — Added `skills/tests/test_default_branch_parameterized.py` (5
+      cases): git model + template + cairn-init use "the default branch", the
+      retired hardcoded-`main` phrases are gone, cairn-init detects via
+      `symbolic-ref`, and the weight-cap doctrine is section-scoped. Detection
+      command verified (`origin/main` → `main`). Full suite green: 51 skills +
+      33 scripts.
 
 ## Work log
 
@@ -106,6 +109,11 @@ doctrine.
   Sequenced before M21 per the harden-before-pilot decision.
 - 2026-07-12: gate — cap model = cap-only-cairn-section (D-018); branch =
   detect + generic rulebook. T1 done: D-018 recorded.
+- 2026-07-12: T2–T5 done. Cap now measures the cairn CLAUDE.md section (30),
+  whole file uncapped; default branch parameterized across git model + template
+  + cairn-init (detected via `symbolic-ref`). 51 skills + 33 scripts tests
+  green. Discovered follow-up: operational `main` git commands in the other
+  skills are out of scope → new ROADMAP candidate (M22 Out).
 
 ## Decisions
 

@@ -21,6 +21,7 @@ not an R package, so R-specific gates don't apply.
 
 ## Candidates
 
+- Parameterize the default branch in the operational skill *steps*: `/milestone-implement` (sync/`checkout`/pull), `/milestone-review` (merge), `/hotfix`, `/cairn-release` still issue `main`-named git commands that break on a `master` repo; M22 scoped only the git-model doctrine + CLAUDE template + cairn-init §2, not the per-skill operational commands — added 2026-07-12 — M22 Out
 - Public release prep: LICENSE (MIT), README worked example, remove DRAFT files, tag v1.0 — added 2026-07-11 — DRAFT_2 §11
 - On-main commit-guard hook: PreToolUse guard that warns/blocks git commits touching non-cairn code while on main with no milestone branch active; false-positive-prone (trivial edits ARE allowed on main) so needs its own design; complements M08's router text — added 2026-07-11 — M08 Out
 - Live-openac router test: run M08's classify-first router empirically in openac (plain-conversation requests should route to the right tier/skill); openac is a separate repo, no automated evidence lands here — added 2026-07-11 — M08 Out
