@@ -133,3 +133,19 @@ Adds GP4.
 bug; memory stops being a silent divergence vector; reinforces D-001 and GP3.
 The merge-gate hotfix (chip wording + guard test + marker-sequencing note in
 the skills) is the first application; the corresponding memory was retired.
+
+### D-012 (2026-07-11): Phase headers shift up one level — H1 unit / H2 phase
+
+**Context:** D-010 set the phase header at two levels — `##` for the unit of
+work, `###` for the phase. Claude Desktop (Jeff's primary client) builds its
+table of contents from H1/H2 only, so the `###` phase headers never appeared
+in the TOC — defeating the scannability the headers exist for.
+**Decision:** Shift the whole convention up one level: `#` names the unit of
+work, `##` names the phase (`# Milestone <NN>` → `## Plan`, and the parallel
+mappings for every skill). The two-level nesting and the emission cadence
+(unit once, phase at each entry) are unchanged. Rejected flattening to a
+single level (loses the milestone→phase grouping in the TOC).
+**Consequences:** Supersedes D-010's level choice (its H2/H3 mapping is now
+historical). Both header levels index in Desktop's TOC. Applied across
+`tracking-rules.md` and all 8 skills; locked by
+`skills/tests/test_phase_header_levels.py` (M11).
