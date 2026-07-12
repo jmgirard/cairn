@@ -138,6 +138,6 @@ Independent review — two fresh-context lenses, distinct evidence bases:
   only, traceable end-to-end (M13 origin → M21 G-C2 → M30 plan → D-023 →
   tests).
 Zero findings survived → scorer not needed. One style nit (year-last
-`07/11/2026` is covered by both `test_non_iso_date` and the expanded
+`07 / 11 / 2026` is covered by both `test_non_iso_date` and the expanded
 `test_non_iso_date_formats`) was raised and dropped by both reviewers as a
 non-finding; harmless redundancy, no action.
