@@ -117,3 +117,9 @@ milestone. Reformatting intraclass's `PRINCIPLES.md` into IP/GP → `/design-int
 - AC7 ✓ — cairn guard suites green: `scripts/tests` (53) OK, `skills/tests` (94) OK.
 
 **Consistency gate:** `cairn_validate` (cairn repo) 12/12 PASS; Coverage map complete (AC1..AC7 all mapped to existing tasks); no DESIGN principle *changed* (M41 works under IP3/GP3, no text change → cairn_impact skipped); R gates waived (cairn is a plugin).
+
+**Independent review (3 lenses + scorer):** **0 findings.**
+- [O] diff-bug (Opus): independently re-verified every load-bearing claim — 0 package files touched, 27×100% renames, 12/12 intraclass audit, 70 `PRINCIPLES.md #N` refs / 29 files, 6 skills entombed; ROADMAP cap + mirror clean; the new Lineage A candidate does not duplicate the DONE M22/M23. No findings.
+- [S] blame-history (Sonnet): M22/M23 were Lineage B; the new candidate is Lineage A — distinct; D-024's oracle-registry deferral not reversed; Pilots 1/2 cited accurately; append-only files respected. No findings.
+- [S] prior-PR-comments (Sonnet): "no prior-PR evidence" — the touched files' prior PRs (#18/#20/#21) carry no inline review comments (expected, M40 lesson). No findings.
+- Scorer: not invoked — zero surviving findings to score.
