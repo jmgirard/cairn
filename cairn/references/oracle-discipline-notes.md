@@ -68,7 +68,7 @@ rule and source-ingestion. Element-by-element against ackwards:
 | E4 | "no **unreproducible** reference value ships" | primary-sources rule covers *sourced*, not *reproducible* (regenerable) | **fix-here** (M33) — the reproducibility half is new |
 | E5 | `ORACLES.md` registry file (per-oracle catalogue; asserted-state single-sourced to the test) | no registry concept | **candidate** — scaffold adoption, tied to toolchain-profiles |
 | E6 | `provenance` attr on fixtures + `test-oracle-provenance.R` guard | source-ingestion covers *reference* provenance, not fixture-object provenance; guard is R/testthat-specific | **candidate** — R toolchain-profile slot |
-| E7 | committed `data-raw/` generator per frozen fixture | "hand-computed fixtures" implies but doesn't mandate a committed regenerator | **split**: reproducibility *principle* → fix-here (E4); the R `data-raw/` *mechanism* → E6 candidate |
+| E7 | committed `data-raw/` generator per frozen fixture | "hand-computed fixtures" implies but doesn't mandate a committed regenerator | **fix-here** — the reproducibility *principle* folds via E4; the R `data-raw/` *mechanism* is deferred to the E6 candidate |
 | E8 | Invariant #8 as interim home, to fold into a DESIGN IP/GP later | ackwards-local (its own `/design-interview` pass) | **out** — not cairn's to move |
 
 ## Disposition

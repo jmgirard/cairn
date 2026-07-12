@@ -129,13 +129,14 @@ Two lenses (distinct evidence bases) + a Sonnet scorer. Two findings surfaced:
   PASS." The blame-history lens flagged it as the M19/M22 lesson recurring.
   Fixed on-branch by the M19 remedy (strip owner-scaffolding comments → 138
   lines); `cairn_validate` re-run clean.
-- **F1 (score 68, LOGGED — below the 80 action threshold, not fixed).** The
-  ledger row E7 in `oracle-discipline-notes.md` carries a `split` tag, a fourth
-  value outside AC1's stated `fix-here | candidate | out` vocabulary. Mitigated:
-  E7 legitimately straddles fix-here (principle) + candidate (R mechanism) and
-  the outcome is openly disclosed, so the scorer read it as an AC-wording gap,
-  not a defect in the work. Surfaced per IP3; if the strict three-value
-  vocabulary matters, amend AC1 via gate or split E7 — banked, not actioned.
+- **F1 (score 68, FIXED at user request).** The ledger row E7 carried a `split`
+  tag, a fourth value outside AC1's stated `fix-here | candidate | out`
+  vocabulary. Below the 80 threshold (an AC-wording gap, not a work defect —
+  E7's outcome was openly disclosed), so logged, not auto-actioned; the user
+  then elected to resolve it. Retagged E7 → `fix-here` (its primary disposition;
+  the R `data-raw/` mechanism-deferral stays as prose pointing at the E6
+  candidate), so all 8 ledger rows now use the three-value vocabulary AC1
+  specifies.
 
 No correctness, self-containment, or section-ownership defects found; the
 diff-bug lens confirmed the doctrine additions are self-contained and the guard
