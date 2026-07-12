@@ -63,7 +63,7 @@ review.
 - [x] Add the Coverage section to `skills/shared/templates/milestone.md`
       (between Acceptance criteria and Tasks) with the ownership comment.
       ([template:25-31](../../skills/shared/templates/milestone.md))
-- [ ] Update `/milestone-plan` step 4 to author the criterion→task Coverage
+- [x] Update `/milestone-plan` step 4 to author the criterion→task Coverage
       map. ([SKILL.md](../../skills/milestone-plan/SKILL.md))
 - [ ] Update `/milestone-review` steps 3–4 to enforce AC fencing + the
       coverage check. ([SKILL.md:31-42](../../skills/milestone-review/SKILL.md))
@@ -82,6 +82,8 @@ review.
   mechanically lint-able for the deferred cairn_validate.py check.
 - 2026-07-11: T1 — added Coverage section to milestone template with
   positional-numbering + AC-fencing ownership comment.
+- 2026-07-11: T2 — /milestone-plan step 4 now authors the positional
+  Coverage map; unmapped criterion is a planning gap.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
