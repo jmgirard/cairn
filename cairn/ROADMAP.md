@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-11 (M15 done+archived; M10 row pruned per 5-done retention)_
+_Last hygiene check: 2026-07-11 (M16 done+archived; M11 row pruned per 5-done retention)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,12 +10,11 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M16 | Lessons loop (capture → harvest) | review | — | normal | milestones/M16-lessons-loop.md |
+| M16 | Lessons loop (capture → harvest) | done | — | normal | milestones/archive/M16-lessons-loop.md |
 | M15 | Sync Impact Report on principle changes | done | — | normal | milestones/archive/M15-sync-impact-report.md |
 | M14 | Section write allow-lists per skill | done | — | normal | milestones/archive/M14-section-allow-lists.md |
 | M13 | Wire deterministic scripts into review + plan | done | — | normal | milestones/archive/M13-script-wiring.md |
 | M12 | Design-interview skill (facts → principles) | done | — | normal | milestones/archive/M12-design-interview-skill.md |
-| M11 | Shift phase headers up one level (H1 unit / H2 phase) | done | — | normal | milestones/archive/M11-phase-header-levels.md |
 
 ## Candidates
 
