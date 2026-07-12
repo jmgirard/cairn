@@ -47,6 +47,11 @@ overrides — log the override).
      caps, done-row retention, vocab, dependency resolution, orphans, ID
      uniqueness, ISO dates). Run this first; a non-zero exit is a gate failure
      like any other.
+   - If the milestone changed a `DESIGN.md` principle (IPn/GPn):
+     `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_impact.py" --changed` — a
+     Sync Impact Report of every `cairn/` file:line citing a changed
+     principle. Each listed reference is reconciled in this milestone, or the
+     divergence is deliberate and logged. No principle change → skip.
    - `devtools::document()` produces no diff.
    - README.Rmd present and out of sync with README.md →
      `devtools::build_readme()`, commit.

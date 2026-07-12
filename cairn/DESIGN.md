@@ -31,10 +31,12 @@ transitions, human-gated merges, and a domain verification doctrine.
   marker) technically backing IP1. No-op outside cairn repos.
 - `scripts/` + python3 (stdlib) reporters (M10) — the deterministic read
   layer: `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),
-  `cairn_validate` (mechanical consistency gate). Read-only; reuse the
-  hooks' `cairn_common` parser (no duplication); exit 2 outside a cairn
-  repo. `/milestone` invokes them instead of re-deriving status by LLM;
-  semantic checks stay LLM-owned.
+  `cairn_validate` (mechanical consistency gate), `cairn_impact` (principle
+  → citing `cairn/` file:line, for the Sync Impact Report on IPn/GPn changes;
+  M15). Read-only; reuse the hooks' `cairn_common` parser (no duplication);
+  exit 2 outside a cairn repo. `/milestone` invokes them instead of
+  re-deriving status by LLM; `/milestone-review` runs `cairn_impact --changed`
+  when a milestone touches a principle; semantic checks stay LLM-owned.
 
 ## Conventions
 

@@ -15,6 +15,7 @@ import ast
 import copy
 import os
 import pathlib
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -50,6 +51,18 @@ def run(script, root):
         capture_output=True,
         text=True,
         timeout=30,
+    )
+
+
+def run_impact(args, cwd=None):
+    """cairn_impact takes principle ids as positionals and the root via
+    --root (not the positional-root convention), so it needs its own runner."""
+    return subprocess.run(
+        [sys.executable, str(SCRIPTS_DIR / "cairn_impact.py"), *args],
+        capture_output=True,
+        text=True,
+        timeout=30,
+        cwd=cwd,
     )
 
 
@@ -249,6 +262,105 @@ class TestValidateFailures(ScriptCase):
         self.assertEqual(proc.returncode, 0, proc.stdout)
 
 
+class TestImpact(ScriptCase):
+    """cairn_impact: principle → citing cairn/ file:line."""
+
+    def _impact_tree(self):
+        root = self.tree.build()
+        cairn = self.tree.root / "cairn"
+        (cairn / "DESIGN.md").write_text(
+            "# Design\n\n- IP2: prior state is surfaced.\n"
+            "- GP4: fixes live in the shared artifact.\n"
+        )
+        (cairn / "DECISIONS.md").write_text(
+            "# Decisions\n\n### D-1\n\nThis one leans on GP4 here.\n"
+        )
+        (cairn / "milestones" / "M50-cite.md").write_text(
+            "IP2 appears on line 1 of this file.\n\n## Goal\nx\n"
+        )
+        return root
+
+    def test_named_principles_reported_with_lines(self):
+        root = self._impact_tree()
+        proc = run_impact(["IP2", "GP9", "--root", str(root)])
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        out = proc.stdout
+        self.assertIn("cairn/DESIGN.md:3", out)          # IP2 definition
+        self.assertIn("milestones/M50-cite.md:1", out)   # IP2 citation, line 1
+        self.assertIn("GP9 — no references", out)        # absent principle
+
+    def test_decisions_citation_reported(self):
+        out = run_impact(["GP4", "--root", str(self._impact_tree())]).stdout
+        self.assertIn("cairn/DESIGN.md:4", out)
+        self.assertIn("cairn/DECISIONS.md:5", out)
+
+    def test_changed_derives_from_design_diff(self):
+        if not shutil.which("git"):
+            self.skipTest("git not available")
+        root = self._impact_tree()
+        git = ["git", "-C", str(root)]
+        subprocess.run(["git", "init", "-q", str(root)], check=True)
+        subprocess.run(git + ["add", "-A"], check=True)
+        subprocess.run(
+            git + ["-c", "user.email=t@t", "-c", "user.name=t",
+                   "commit", "-q", "-m", "init"],
+            check=True,
+        )
+        # Edit only GP4's line; IP2 is untouched.
+        (root / "cairn" / "DESIGN.md").write_text(
+            "# Design\n\n- IP2: prior state is surfaced.\n"
+            "- GP4: fixes live in the shared artifact, never per-user memory.\n"
+        )
+        proc = run_impact(["--changed", "--root", str(root)])
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("GP4 —", proc.stdout)                 # changed → reported
+        self.assertIn("cairn/DECISIONS.md:5", proc.stdout)  # its downstream ref
+        self.assertNotIn("IP2 —", proc.stdout)              # unchanged → absent
+
+    def test_changed_sees_committed_branch_edit(self):
+        # The review-gate scenario: the principle edit is already committed on
+        # a milestone branch cut from the default branch. --changed must diff
+        # from the merge-base, not HEAD, or it reports nothing.
+        if not shutil.which("git"):
+            self.skipTest("git not available")
+        root = self._impact_tree()
+        git = ["git", "-C", str(root)]
+        who = ["-c", "user.email=t@t", "-c", "user.name=t"]
+        subprocess.run(["git", "init", "-q", "-b", "main", str(root)], check=True)
+        subprocess.run(git + ["add", "-A"], check=True)
+        subprocess.run(git + who + ["commit", "-q", "-m", "base"], check=True)
+        subprocess.run(git + ["checkout", "-q", "-b", "m99-x"], check=True)
+        (root / "cairn" / "DESIGN.md").write_text(
+            "# Design\n\n- IP2: prior state is surfaced.\n"
+            "- GP4: fixes live in the shared artifact, never per-user memory.\n"
+        )
+        subprocess.run(git + who + ["commit", "-qam", "edit GP4"], check=True)
+        proc = run_impact(["--changed", "--root", str(root)])
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("GP4 —", proc.stdout)                 # committed change seen
+        self.assertIn("cairn/DECISIONS.md:5", proc.stdout)  # its downstream ref
+        self.assertNotIn("IP2 —", proc.stdout)              # unchanged → absent
+
+    def test_whole_word_non_match(self):
+        root = self._impact_tree()
+        (self.tree.root / "cairn" / "milestones" / "M51-ip20.md").write_text(
+            "IP20 is a different, unrelated token.\n"
+        )
+        out = run_impact(["IP2", "--root", str(root)]).stdout
+        self.assertNotIn("M51-ip20.md", out)  # IP2 must not match IP20
+
+    def test_unknown_flag_is_usage_error(self):
+        # A typo'd flag must not read as a clean all-clear at the gate.
+        proc = run_impact(["--changd", "--root", str(self.tree.build())])
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("unknown option", proc.stderr)
+
+    def test_no_args_is_usage_error(self):
+        proc = run_impact(["--root", str(self.tree.build())])
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("usage:", proc.stderr)
+
+
 class TestOutsideCairn(unittest.TestCase):
     def test_all_scripts_exit_2(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -257,6 +369,12 @@ class TestOutsideCairn(unittest.TestCase):
                     proc = run(script, tmp)
                     self.assertEqual(proc.returncode, 2)
                     self.assertIn("not a cairn repo", proc.stderr)
+
+    def test_impact_exits_2_outside_cairn(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            proc = run_impact(["IP1", "--root", tmp])
+            self.assertEqual(proc.returncode, 2)
+            self.assertIn("not a cairn repo", proc.stderr)
 
 
 class TestStdlibOnly(unittest.TestCase):
