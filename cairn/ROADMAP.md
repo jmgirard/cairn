@@ -11,7 +11,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M12 | Design-interview skill (facts → principles) | in-progress | — | normal | milestones/M12-design-interview-skill.md |
+| M12 | Design-interview skill (facts → principles) | review | — | normal | milestones/M12-design-interview-skill.md |
 | M11 | Shift phase headers up one level (H1 unit / H2 phase) | done | — | normal | milestones/archive/M11-phase-header-levels.md |
 | M10 | Deterministic tracking scripts | done | — | normal | milestones/archive/M10-deterministic-scripts.md |
 | M09 | Phase headers (H2/H3) replace inline stage banner | done | — | normal | milestones/archive/M09-phase-headers.md |

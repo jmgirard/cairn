@@ -23,6 +23,7 @@ SKILLS_WITH_PHASE_HEADER = [
     "cairn-init",
     "cairn-release",
     "milestone",
+    "design-interview",
 ]
 
 # Old-form phase levels that must never reappear as a directive.

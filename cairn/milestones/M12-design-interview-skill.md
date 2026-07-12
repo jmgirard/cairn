@@ -1,6 +1,6 @@
 # M12: Design-interview skill (facts → principles)
 
-- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- high | normal | low -->
 - **Depends on:** —
 - **Branch/PR:** m12-design-interview-skill   <!-- PR URL once opened -->
@@ -82,11 +82,12 @@ interview from `references/design-interview-notes.md` (items 1–11):
       chip to `/design-interview` (SKILL.md §1 + its routing chip).
 - [x] Bump DESIGN.md skill count `× 8` → `× 9` + one architecture line;
       add D-013 (standalone `/design-interview`) to DECISIONS.md.
-- [ ] Add `design-interview` to `SKILLS_WITH_PHASE_HEADER`
-      (`test_phase_header_levels.py:28`); write
+- [x] Add `design-interview` to `SKILLS_WITH_PHASE_HEADER`
+      (`test_phase_header_levels.py:26`); write
       `skills/tests/test_design_interview.py`; run the suite green.
 - [ ] Live pilot on openac (Jeff-run); record the verdict; on pass proceed
-      to `/milestone-review`.
+      to `/milestone-review`. **Merge gate (criterion 6) — Jeff-run; the
+      build (tasks 1–4) is complete and awaits this verification.**
 
 ## Work log
 <!-- append-only; one line per entry; absolute dates -->
@@ -100,6 +101,11 @@ interview from `references/design-interview-notes.md` (items 1–11):
   added phase-header mapping to tracking-rules [task 2].
 - 2026-07-11: DESIGN skill count ×8→×9; DECISIONS D-013 (standalone skill)
   [task 3].
+- 2026-07-11: registered skill in phase-header guard; added
+  test_design_interview.py (10 assertions); suite green 16/16 [task 4].
+- 2026-07-11: build complete (tasks 1–4), local checks green → status
+  review. Criterion 6 (openac pilot) is the outstanding Jeff-run merge gate,
+  verified at /milestone-review.
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
