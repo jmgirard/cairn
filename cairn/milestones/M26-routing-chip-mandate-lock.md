@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M26: Lock the routing-chip mandate; exempt review as the chip-less phase
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Branch/PR:** m26-routing-chip-mandate-lock
@@ -83,7 +83,7 @@ guard test.
       the merge gate keeps `AskUserQuestion` (key on the ending, not the mere
       presence of the word); assert the rulebook clarifier. Run
       `python3 -m unittest discover -s skills/tests`.
-- [ ] T5 — Append a `cairn/DECISIONS.md` entry refining D-003 (every phase
+- [x] T5 — Append a `cairn/DECISIONS.md` entry refining D-003 (every phase
       ends with a chip → review exempted, chip-less `/clear` nudge).
 
 ## Work log
@@ -100,6 +100,8 @@ guard test.
   scaffold + migration endings).
 - 2026-07-12: T4 — `TestRoutingChipMandate` (5 tests) added to
   test_gate_wording.py; full skills/tests suite green (68 tests).
+- 2026-07-12: T5 — D-019 appended, refining D-003 (review exempt). All tasks
+  done; status → review.
 
 ## Decisions
 
