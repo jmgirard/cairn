@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-12 (M30 done+archived; M25 row pruned per 5-done retention)_
+_Last hygiene check: 2026-07-12 (M31 planned)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,6 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M31 | Mark the opening phase — drop the "session start implicit" carve-out | planned | — | normal | milestones/M31-opening-phase-chapter-marker.md |
 | M30 | Stop cairn_validate false-flagging R CMD check counts as non-ISO dates | done | — | normal | milestones/archive/M30-validate-slash-date-false-positive.md |
 | M29 | Make routing-chip invocation an imperative on the orchestrator | done | — | normal | milestones/archive/M29-routing-chip-invocation-imperative.md |
 | M28 | Harden the output-discipline mandate guards | done | — | normal | milestones/archive/M28-output-discipline-mandate-guards.md |
