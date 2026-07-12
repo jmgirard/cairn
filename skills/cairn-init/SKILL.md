@@ -159,7 +159,12 @@ Lineage: M03 tidymedia pilot (PR #8).
      D-00n, DESIGN §refs) stay valid as citations into `cairn/legacy/`;
      DECISIONS.md starts fresh at D-001 with a header note pointing at the
      legacy log; only still-governing decisions are re-recorded (citing
-     their legacy ID).
+     their legacy ID). For a **large decision log** (dozens of ADRs),
+     **pointer-only** is an explicit and often cleanest disposition: re-record
+     *nothing* — `DECISIONS.md` is a pure pointer at the entombed legacy log,
+     and active work cites `ADR-0nn` into `cairn/legacy/` directly. It is the
+     most no-invention-safe choice for a log too large to re-record without
+     risking drift. Lineage: M41 intraclass (58 ADRs → pointer-only).
    - Unresolved open questions / known issues → `candidate` rows or DESIGN
      "Known issues", per the ownership table. A large legacy backlog that
      would blow the <60-line ROADMAP cap one-row-per-item clusters into

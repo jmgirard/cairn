@@ -117,7 +117,7 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
       (feeds the toolchain-profiles / oracle-registry candidates); in §2 step 3,
       surface clean domain skills at the question gate for an explicit
       keep/entomb decision.
-- [ ] **T4 (G-I5):** In §2 step 5's decisions disposition, name **pointer-only**
+- [x] **T4 (G-I5):** In §2 step 5's decisions disposition, name **pointer-only**
       (re-record nothing; `DECISIONS.md` is a pure pointer at the entombed
       legacy log) as an explicit option for large decision logs, beside
       "only still-governing decisions are re-recorded".
@@ -140,6 +140,7 @@ a guard test, closing the M41 pilot's design-level Lineage A gaps
   added to the §2 step 6 reference sweep.
 - 2026-07-12: T3 (G-I4): §6 coupled-vs-clean skill classification + step-3
   keep/entomb gate for clean domain skills.
+- 2026-07-12: T4 (G-I5): pointer-only DECISIONS option named in §2 step 5.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
