@@ -3,7 +3,7 @@
 - **Status:** review   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** m11-phase-header-levels   <!-- PR URL once opened -->
+- **Branch/PR:** m11-phase-header-levels · https://github.com/jmgirard/cairn/pull/9
 
 ## Goal
 
@@ -64,6 +64,9 @@ the two-level nesting is preserved); reformatting the M09 archive summary
   test_phase_header_levels.py; full suite green (6 tests).
 - 2026-07-11: appended D-012 (supersedes D-010); removed redundant memory
   scannable-h2-phase-headers + index line; suite green; status → review.
+- 2026-07-11: review — all ACs verified fresh; PR #9; independent Opus
+  review SHIP; hardened guard for over-shift + Migration token per its
+  two low-severity flags; suite green (6 tests).
 
 ## Decisions
 <!-- milestone-local; promote cross-cutting ones to cairn/DECISIONS.md -->
@@ -72,4 +75,25 @@ the two-level nesting is preserved); reformatting the M09 archive summary
   D-010.
 
 ## Review
-<!-- filled by /milestone-review -->
+
+2026-07-11 · PR #9 · docs-only, no CI configured.
+
+**Acceptance criteria — all met (fresh evidence):**
+- Rulebook states `#` unit / `##` phase; `# Milestone <NN>: <title>` →
+  `## Plan` present, old `## Milestone <NN>: <title>` absent (grep: 0).
+- All 8 skills' `Phase header:` lines use `#`/`##`; no `###`, no unit-at-H2.
+- D-012 present in DECISIONS.md, "Supersedes D-010's level choice"; D-010
+  left verbatim (append-only respected).
+- Guard `test_phase_header_levels.py` passes; demonstrated to FAIL on both
+  an old-form revert (H3 phase) and an over-shift (phase at H1), pass when
+  restored.
+- Full suite green: 6 tests (3 existing + 3 new).
+- Memory `scannable-h2-phase-headers` file + `MEMORY.md` index line removed.
+
+**Independent Opus review (fresh context):** verdict SHIP, no correctness
+defects; convention shifted completely and consistently, no leaks in
+DESIGN/README/templates, decision hygiene correct. Flagged two low-severity
+guard gaps (over-shift not caught; `### Migration` token wouldn't
+substring-match alone) → **fixed now**: per-skill assertion split on `→`
+(unit must be H1, phase must be H2, not over-shifted), and forbidden-token
+match dropped the trailing backtick.

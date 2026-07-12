@@ -48,11 +48,17 @@ class TestPhaseHeaderLevels(unittest.TestCase):
     def test_each_skill_phase_header_is_h1_unit_h2_phase(self):
         for skill in SKILLS_WITH_PHASE_HEADER:
             line = phase_header_line(read(skill, "SKILL.md"))
+            unit, arrow, phase = line.partition("→")
             with self.subTest(skill=skill):
-                # H1 unit-of-work header present (`# Name`, not `## Name`).
-                self.assertIn("`# ", line)
-                # No H3 (old phase level) anywhere on the directive.
-                self.assertNotIn("###", line)
+                self.assertTrue(arrow, "phase-header directive lacks `→`")
+                # Unit of work is H1 (`# Name`), never H2.
+                self.assertIn("`# ", unit)
+                self.assertNotIn("`## ", unit)
+                # Phase is H2 (`## Name`): present, and neither over-shifted
+                # to H1 nor left at the old H3.
+                self.assertIn("`## ", phase)
+                self.assertNotIn("`# ", phase)
+                self.assertNotIn("###", phase)
 
     def test_rulebook_declares_h1_unit_h2_phase(self):
         text = read("shared", "tracking-rules.md")
@@ -64,7 +70,9 @@ class TestPhaseHeaderLevels(unittest.TestCase):
         text = read("shared", "tracking-rules.md")
         self.assertNotIn("`## Milestone <NN>: <title>`", text)
         for forbidden in FORBIDDEN_PHASE_LEVELS:
-            self.assertNotIn("`%s`" % forbidden, text)
+            # Leading backtick only — the trailing token varies (e.g.
+            # `### Migration §n`), so a closing backtick would miss it.
+            self.assertNotIn("`%s" % forbidden, text)
 
 
 if __name__ == "__main__":
