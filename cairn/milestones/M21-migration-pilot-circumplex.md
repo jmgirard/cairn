@@ -5,7 +5,7 @@
 - **Status:** review
 - **Priority:** normal
 - **Depends on:** M23
-- **Branch/PR:** m21-migration-pilot-circumplex · circumplex PR https://github.com/jmgirard/circumplex/pull/31
+- **Branch/PR:** m21-migration-pilot-circumplex · cairn PR https://github.com/jmgirard/cairn/pull/21 · circumplex PR https://github.com/jmgirard/circumplex/pull/31
 
 ## Goal
 
@@ -38,24 +38,24 @@ does not, folding surfaced gaps back into the skill.
 
 ## Acceptance criteria
 
-- [ ] `/cairn-init` §2 executed on circumplex on a `cairn-init-migration`
+- [x] `/cairn-init` §2 executed on circumplex on a `cairn-init-migration`
       branch; PR opened; PR description carries a complete **migration ledger**
       (§2 step 7b). Evidence: PR URL + ledger text.
-- [ ] The many-`active` disposition is resolved per the no-invention rule:
+- [x] The many-`active` disposition is resolved per the no-invention rule:
       **at most one** item becomes `in-progress`; the rest map to
       `planned`/`candidate` with the mapping recorded in the ledger (§2 steps
       3, 5). Evidence: ledger + ROADMAP on the branch.
-- [ ] The `/milestone` health audit runs **clean** on the circumplex migration
+- [x] The `/milestone` health audit runs **clean** on the circumplex migration
       branch, and the repo-local `statistical-validation` skill is relocated
       out of `.claude/skills/` to `cairn/legacy/` (§2 steps 6, 7a). Evidence:
       audit output + file listing in the pilot notes.
-- [ ] The circumplex section of `cairn/references/migration-pilot-notes.md` is
+- [x] The circumplex section of `cairn/references/migration-pilot-notes.md` is
       committed here with ledger summary, per-§2-step friction log, and tagged
       gap list. Evidence: file section (+ INDEX row already present from M20).
-- [ ] Every `fix-here` gap is resolved this milestone (skill/rulebook edit) with
+- [x] Every `fix-here` gap is resolved this milestone (skill/rulebook edit) with
       new mechanical invariants guard-tested; every `candidate` gap has a
       ROADMAP row. Evidence: diffs + passing tests + ROADMAP rows.
-- [ ] Guard-test suite green over `skills/tests/` and `scripts/tests/`.
+- [x] Guard-test suite green over `skills/tests/` and `scripts/tests/`.
       Evidence: test run output.
 
 ## Coverage
@@ -69,29 +69,15 @@ does not, folding surfaced gaps back into the skill.
 
 ## Tasks
 
-- [x] **T1** — Preconditions + branch (§2 steps 1–2): confirm circumplex clean
-      tree; cut `cairn-init-migration` from up-to-date circumplex main.
-- [x] **T2** — Inventory + disposition (§2 step 3), with explicit focus on the
-      6 `active` items: propose which single one (if any) carries over as
-      `in-progress` and where the others land; handle `MILESTONES-ARCHIVE.md`.
-- [x] **T3** — Entomb history verbatim (§2 step 4): legacy tracking files +
-      `MILESTONES-ARCHIVE.md` → circumplex `cairn/legacy/`; ROADMAP header
-      points at legacy + git.
-- [x] **T4** — Translate live state under the no-invention rule (§2 step 5):
-      the carried `in-progress` item + `planned`/`candidate` mappings; IDs
-      continue from legacy max; DECISIONS.md fresh with legacy pointer.
-- [x] **T5** — Redistribute + deactivate (§2 step 6): CLAUDE.md per ownership
-      table; relocate `next-task`, `release-checklist`, `statistical-validation`
-      skills to `cairn/legacy/`; scaffold missing §1 pieces + ignore entries.
-- [x] **T6** — Open the circumplex PR with ledger; run the `/milestone` health
-      audit on the branch; observe CI. Record PR URL, ledger, audit output.
-- [x] **T7** — Append the circumplex section to
-      `cairn/references/migration-pilot-notes.md`: ledger summary + friction
-      log + tagged gap list.
-- [x] **T8** — Land `fix-here` gaps in `/cairn-init` / `tracking-rules.md`; add
-      guard tests for new invariants; file `candidate` gaps as ROADMAP rows.
-- [x] **T9** — Run the guard-test suite green; commit cairn-side tracking +
-      code together.
+- [x] **T1** — Preconditions + branch (§2 steps 1–2).
+- [x] **T2** — Inventory + disposition of the active items (§2 step 3).
+- [x] **T3** — Entomb history verbatim → `cairn/legacy/` (§2 step 4).
+- [x] **T4** — Translate live state, no-invention; IDs from legacy max (§2 step 5).
+- [x] **T5** — Redistribute CLAUDE + relocate 3 skills + scaffold §1 (§2 step 6).
+- [x] **T6** — Open circumplex PR + ledger; health audit; observe CI.
+- [x] **T7** — Append the circumplex section to `references/migration-pilot-notes.md`.
+- [x] **T8** — Land fix-here gaps + guard tests; file candidate gaps as ROADMAP rows.
+- [x] **T9** — Guard suite green; commit cairn-side tracking + code.
 
 ## Work log
 
@@ -133,3 +119,31 @@ does not, folding surfaced gaps back into the skill.
   all-design-level gaps.
 
 ## Review
+
+_2026-07-12, same-session implement→review. cairn PR #21; circumplex PR #31._
+
+**AC evidence (fresh, by command):**
+- AC1 (PR + ledger): `gh pr view 31` → OPEN, title "cairn-init: migrate tracking
+  to cairn/", body contains the Migration ledger table (every legacy file +
+  live item accounted for). PASS.
+- AC2 (at-most-one in-progress): circumplex `cairn/ROADMAP.md` on the branch has
+  **0** in-progress rows (release-prep → M7 `blocked`; M4 done; M6 + backlog →
+  candidates); the mapping is recorded in the PR ledger. `cairn_validate` "at
+  most one in-progress" PASS. PASS.
+- AC3 (audit clean + skill relocated): `cairn_validate` on the circumplex branch
+  → all 9 checks pass; `cairn/legacy/statistical-validation/SKILL.md` exists and
+  `.claude/skills/statistical-validation` is gone. PASS.
+- AC4 (pilot notes): `references/migration-pilot-notes.md` gains the "Pilot 2 —
+  circumplex (M21)" section — ledger summary, M22/M23-validation table, tagged
+  gap list (G-C1..G-C4), disposition. PASS.
+- AC5 (fix-here resolved + guard-tested; candidates filed): `cairn-init/SKILL.md`
+  diff adds LESSONS.md to §1 scaffold (G-C1) and the planned-needs-criteria note
+  to §2 step 5 (G-C3); `test_migration_guidance.py` gains 2 locking tests;
+  `cairn/ROADMAP.md` gains G-C2 + G-C4 candidate rows. PASS.
+- AC6 (suite green): `unittest discover` → skills/tests 58 ok, scripts/tests
+  33 ok. PASS.
+
+**Consistency gate:** `cairn_validate.py` (cairn) → 9/9. Coverage complete (all
+6 ACs map to existing tasks). No principle touched → impact skipped. R gates
+waived (non-package repo).
+
