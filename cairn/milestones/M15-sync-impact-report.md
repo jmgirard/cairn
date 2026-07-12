@@ -1,9 +1,9 @@
 # Milestone 15: Sync Impact Report on principle changes
 
-- **Status:** planned   <!-- mirror; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- mirror; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal
 - **Depends on:** —
-- **Branch/PR:** —   <!-- m15-sync-impact-report; PR URL once opened -->
+- **Branch/PR:** m15-sync-impact-report   <!-- PR URL once opened -->
 
 ## Goal
 
