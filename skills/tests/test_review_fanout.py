@@ -1,11 +1,11 @@
-"""Regression guard: the M17 /milestone-review fan-out + confidence scorer.
+"""Regression guard: the /milestone-review fan-out + confidence scorer.
 
-The review gate's independent review is a two-lens fan-out (distinct evidence
+The review gate's independent review is a three-lens fan-out (distinct evidence
 bases) followed by a generate-then-verify confidence scorer. These are
 skill-text mechanics — nothing at runtime enforces them — so this test locks
 the load-bearing pieces against silent regression:
-  * two reviewers with *distinct* evidence bases, tier-tagged (Opus diff-bug,
-    Sonnet blame-history);
+  * three reviewers with *distinct* evidence bases, tier-tagged (Opus diff-bug,
+    Sonnet blame-history, Sonnet prior-PR-comments — M40);
   * a Sonnet confidence scorer, independent of finding generation, with a
     numeric threshold;
   * sub-threshold findings excluded from the actioned list but *logged*, never
@@ -36,10 +36,11 @@ def rules():
 
 
 class TestReviewFanout(unittest.TestCase):
-    def test_two_distinct_evidence_lenses(self):
+    def test_three_distinct_evidence_lenses(self):
         t = review()
         self.assertRegex(t, r"diff-bug reviewer \(Opus\)")
         self.assertRegex(t, r"blame-history reviewer \(Sonnet\)")
+        self.assertRegex(t, r"prior-PR-comments reviewer \(Sonnet\)")
 
     def test_evidence_bases_are_distinct_by_design(self):
         # the whole point of the fan-out — a shared base finds things twice
@@ -86,6 +87,45 @@ class TestReviewFanout(unittest.TestCase):
         r = rules()
         self.assertIn("fresh-context subagents", r)
         self.assertIn("diff-blindness", r)
+
+    def test_model_strategy_names_three_reviewers(self):
+        # M40: the fan-out grew a third distinct-evidence lens; the
+        # model-strategy section must count three and name the new lens.
+        r = rules()
+        self.assertRegex(r, r"[Tt]hree distinct-evidence reviewers")
+        self.assertIn("prior-PR", r)
+
+
+class TestPriorPRLens(unittest.TestCase):
+    """M40: the third distinct-evidence lens — a prior-PR-comments reviewer.
+    Plan gate settled three properties this locks: a recipe-in-prose discovery
+    path (not a helper script), a *narrow* regression-of-prior-review judgment
+    scope, and always-spawn/no-op-when-empty behavior. Each asserted phrase is
+    anchored on the lens's own contiguous line (M23/M26/M39 single-line rule).
+    """
+
+    def test_discovery_is_a_prose_gh_recipe(self):
+        # recipe-in-prose, not a cairn_* helper script (plan gate)
+        t = review()
+        self.assertIn("gh api", t)
+        self.assertRegex(t, r"pulls/\{n\}/comments")
+
+    def test_judgment_scope_is_narrow_regression(self):
+        # flags only where the diff regresses a prior review comment — not
+        # every prior comment surfaced as context (plan gate: narrow)
+        self.assertIn("reintroduces or contradicts", review())
+
+    def test_always_spawns_and_noops_when_empty(self):
+        # always spawn; no prior-PR evidence → zero findings, never blocks
+        t = review()
+        self.assertRegex(t, r"[Aa]lways spawn")
+        self.assertIn("no prior-PR evidence", t)
+
+    def test_feeds_the_existing_scorer_unchanged(self):
+        # the new lens routes into the same [S] scorer; the 80 cutoff stands
+        t = review()
+        self.assertIn("scorer", t.lower())
+        self.assertRegex(t, r"\b80\b")
 
 
 class TestSharedCheckoutGuard(unittest.TestCase):

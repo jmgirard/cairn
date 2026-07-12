@@ -82,7 +82,7 @@ model-strategy update (two → three reviewers) and the guard-test extension.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — Extend `skills/tests/test_review_fanout.py`: update
+- [x] T1 — Extend `skills/tests/test_review_fanout.py`: update
       `test_two_distinct_evidence_lenses` to assert **three** lenses, and add
       assertions for the prior-PR lens (Sonnet tier tag, discovery-recipe
       tokens, narrow-scope phrasing, no-op-when-empty phrasing). Run it and
@@ -115,6 +115,8 @@ model-strategy update (two → three reviewers) and the guard-test extension.
   reviewer lens" candidate (split 2026-07-11 from the review-pipeline
   candidate → M17/M18). Gate: recipe-in-prose (not a script), narrow
   regression scope, always-spawn/no-op-when-empty — all recommended, accepted.
+- 2026-07-12: T1 — extended test_review_fanout.py (new TestPriorPRLens + a
+  three-reviewer rulebook lock); 5 red by design (tests-first), rest green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
