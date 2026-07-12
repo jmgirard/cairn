@@ -70,9 +70,9 @@ fan-out plus a scoring pass:
       ([SKILL.md:71-78](../../skills/milestone-review/SKILL.md))
 - [x] Add the generate-then-verify scorer sub-step: verbatim 0–100 rubric,
       threshold 80, exclude-but-log wired into the Review-section write.
-- [ ] Update `tracking-rules.md` "Model and agent strategy" (lines ~288–307)
+- [x] Update `tracking-rules.md` "Model and agent strategy" (lines ~288–307)
       to describe the fan-out + scorer tiers; keep the "Never Haiku" line.
-- [ ] Append D-016 to `cairn/DECISIONS.md` (never-Haiku kept; scorer on Sonnet;
+- [x] Append D-016 to `cairn/DECISIONS.md` (never-Haiku kept; scorer on Sonnet;
       rationale: review runs once per milestone, scorer gates what the user
       sees, blanket invariant is worth more than the marginal saving).
 - [ ] Write `skills/tests/test_review_fanout.py` locking the two lenses,
@@ -86,6 +86,8 @@ fan-out plus a scoring pass:
 - 2026-07-11: in-progress on m17-review-fanout; step 5 reworked into two-lens
   fan-out (Opus diff + Sonnet blame) + Sonnet confidence scorer (rubric,
   threshold 80, exclude-but-log). Tasks 1–2 done.
+- 2026-07-11: model-strategy section updated to describe the fan-out; D-016
+  appended (never-Haiku kept, scorer on Sonnet). Tasks 3–4 done.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
