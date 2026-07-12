@@ -69,7 +69,7 @@ guard test.
       a chip, and state review's end is the sole exception (chip-less `/clear`
       nudge). Keep asserted phrases on single lines (M23 lesson: prose guards
       `assertIn` fail across newlines).
-- [ ] T2 — Rewrite `skills/milestone-review/SKILL.md` step 10: replace the
+- [x] T2 — Rewrite `skills/milestone-review/SKILL.md` step 10: replace the
       routing chip with a plain-prose `/clear` encouragement. Leave the
       step-6 merge-approval `AskUserQuestion` chip untouched.
 - [ ] T3 — In `milestone-plan` (step 7), `milestone-implement` (step 8),
@@ -91,6 +91,8 @@ guard test.
   guard test", both 2026-07-12 Jeff feedback).
 - 2026-07-12: T1 — rulebook clarifier (prose list ≠ chip) + review-end
   exception added to tracking-rules "Question gates and routing chips".
+- 2026-07-12: T2 — review SKILL step 10 now a plain-prose `/clear` nudge,
+  no end chip; step-6 merge gate untouched.
 
 ## Decisions
 

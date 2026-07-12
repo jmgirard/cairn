@@ -166,13 +166,13 @@ overrides — log the override).
    recap leads with what shipped, in plain words; hygiene mechanics
    compress to one line.
 
-10. **Routing chip**, composed from the post-merge state (chip rules per
-    tracking-rules). Precede it with one line: M<NN>
-    is archived and all state is on disk, so this is a natural `/clear`
-    point — selecting a chip continues this session; a fresh session
-    starts the next milestone with clean context (recommended when this
-    session already ran implement or is otherwise long). E.g.:
-    - **Plan the next milestone** → `/milestone-plan` (recommended when
-      planned/candidate work exists)
-    - Run a health audit → `/milestone`
-    - Stop here
+10. **Close with a `/clear` nudge — no routing chip.** Review is the one
+    phase whose end is deliberately chip-less (tracking-rules "Question gates
+    and routing chips"): M<NN> is archived and all state is on disk, so the
+    natural next step is a fresh context, not another in-session route.
+    Close in plain prose — tell the user this is a clean `/clear` point and
+    recommend starting the next milestone in a fresh session, naming the
+    obvious next action inline (`/milestone-plan` when planned or candidate
+    work exists, else `/milestone` for a health audit). Do **not** end review
+    with an AskUserQuestion — the step-6 merge-approval gate was the last
+    chip this phase emits.
