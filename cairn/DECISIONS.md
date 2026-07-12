@@ -399,3 +399,38 @@ files may again write check results in slash form). Locked by
 and year-last cases added to `test_non_iso_date_formats` (real slash dates
 still caught) in `scripts/tests/test_scripts.py`. If a 2-digit-year slash date
 ever needs catching, this is the entry to supersede.
+
+### D-024 (2026-07-12): Fold ackwards' oracle-type discipline into the Validation doctrine; defer the registry file and R guard as candidates
+
+**Context:** `jmgirard/ackwards` M57 ("Ossify oracles") built a mature oracle
+system — an `ORACLES.md` registry, a frozen/live/invariant/closed-form type
+taxonomy, a "≥2 independent oracle *types* per numeric result / nothing
+unsourced or unreproducible ships" standard (its Invariant #8), and a
+fixture-provenance guard test — itself a formalization of the reproducible
+`data-raw/oracle-*.R` practice originated in `jmgirard/intraclass`. cairn's own
+"Validation doctrine" section had an overlapping priority list but no named
+oracle-type vocabulary, no frozen/live distinction, no ≥2-*types* bar, and no
+reproducibility (as opposed to sourcing) mandate. Per GP4/D-011 the
+generalizable core belongs in the plugin, not re-derived per repo. Assessed in
+`references/oracle-discipline-notes.md` (E1–E8 gap ledger).
+**Decision:** Fold the four generalizable principles (ledger E1–E4) into
+`tracking-rules.md` "Validation doctrine": the frozen/live/invariant/closed-form
+vocabulary + "live independent-impl is the stronger form, don't freeze it into a
+regression pin unless expensive/network-bound", the ≥2-*independent-types* bar,
+and the reproducibility hard-stop. The existing priority list is preserved (the
+types refine it). The additions stay self-contained — no cross-repo citation in
+the shared rulebook. The two **structural** pieces are deferred as ROADMAP
+candidates, not rejected: adopting `ORACLES.md` as a cairn tracking file (E5 —
+the D-015/M16 four-wiring-points path, entangled with toolchain-profiles), and
+generalizing the R-specific `provenance`-attr + `test-oracle-provenance.R` guard
+(E6 — an R toolchain-profile slot). Rejected: adopting the registry file into
+core scaffold now (domain-specific; one-exemplar shape risk; pre-empts where the
+toolchain-profiles split should place domain files) and full type-list
+replacement (the priority list stays).
+**Consequences:** Every adopting statistical/numeric repo inherits the stronger
+oracle doctrine via the plugin. The registry-file question is intentionally
+open, tied to toolchain-profiles. ackwards keeps its Invariant #8 as its own
+interim home (folding it into an ackwards DESIGN IP/GP is ackwards-local, ledger
+E8 — out of scope here). Locked by `skills/tests/test_oracle_doctrine.py` (the
+type names + the ≥2-types bar). If a registry file is later adopted, or the
+≥2-types bar proves too strong a blanket, this is the entry to supersede.
