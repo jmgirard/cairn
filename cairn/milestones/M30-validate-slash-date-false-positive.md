@@ -3,10 +3,10 @@
      Per-section owners are tagged below. -->
 # M30: Stop cairn_validate false-flagging R CMD check counts as non-ISO dates
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m30-validate-slash-date · https://github.com/jmgirard/cairn/pull/28   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -41,21 +41,21 @@ outside `cairn/`, is not date-scanned, and uses the unspaced literals verbatim.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1 — R CMD check count-notation passes the date scan: `0 / 0 / 0` and
+- [x] AC1 — R CMD check count-notation passes the date scan: `0 / 0 / 0` and
       `0 / 1 / 2` on a line in a tracked milestone/tracking file yield exit 0 on
       the `iso date format` check. (behavior under test)
-- [ ] AC2 — Real misformatted slash dates are still caught: both `07 / 11 / 2026`
+- [x] AC2 — Real misformatted slash dates are still caught: both `07 / 11 / 2026`
       (year-last) and `2026 / 07 / 11` (year-first) still fail the `iso date
       format` check. (behavior under test)
-- [ ] AC3 — No regression on the other branches: the full
+- [x] AC3 — No regression on the other branches: the full
       `scripts/tests/test_scripts.py` suite passes (year-last dashed,
       month-name orders, malformed-ISO, and valid-ISO pass-through unchanged).
-- [ ] AC4 — `python3 scripts/cairn_validate.py` run in this repo passes clean
+- [x] AC4 — `python3 scripts/cairn_validate.py` run in this repo passes clean
       (consistency gate; this plugin's stand-in for `devtools::check()`).
-- [ ] AC5 — A `cairn/DECISIONS.md` D-entry records the 4-digit-year tightening
+- [x] AC5 — A `cairn/DECISIONS.md` D-entry records the 4-digit-year tightening
       and the accepted 2-digit-year-slash miss; the code comment at
       `cairn_validate.py:22-25` reflects the new rule.
-- [ ] AC6 — A `cairn/LESSONS.md` line notes the scanner now accepts slash-form
+- [x] AC6 — A `cairn/LESSONS.md` line notes the scanner now accepts slash-form
       check results, retiring the M21 workaround.
 
 ## Coverage
@@ -74,26 +74,28 @@ outside `cairn/`, is not date-scanned, and uses the unspaced literals verbatim.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — Add a failing test to the date-scan group in
+- [x] T1 — Add a failing test to the date-scan group in
       `scripts/tests/test_scripts.py` (~line 313): assert `0 / 0 / 0` and `0 / 1 / 2`
       on a tracked-file line pass the scan, and add a year-first `2026 / 07 / 11`
       case to the fail set. Confirm the count-triple case fails against
       current code.
-- [ ] T2 — Replace the slash branch in `_NON_ISO_DATE`
+- [x] T2 — Replace the slash branch in `_NON_ISO_DATE`
       (`cairn_validate.py:29`) with year-first `\d{4}/\d{1,2}/\d{1,2}` OR
       year-last `\d{1,2}/\d{1,2}/\d{4}`; update the conservative-design comment
       (lines 22-25) to state the 4-digit-year requirement and the accepted
       miss. Run the suite to green and `cairn_validate.py` clean.
-- [ ] T3 — Append a D-entry to `cairn/DECISIONS.md` recording the tightening
+- [x] T3 — Append a D-entry to `cairn/DECISIONS.md` recording the tightening
       and the accepted 2-digit-year-slash miss (supersedes the M13
       conservative-design rationale for this branch only).
-- [ ] T4 — Append a follow-up line to `cairn/LESSONS.md` noting the scanner now
+- [x] T4 — Append a follow-up line to `cairn/LESSONS.md` noting the scanner now
       accepts slash-form R CMD check results, retiring the M21 workaround.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-12: created by /milestone-plan (absorbs candidate G-C2).
+- 2026-07-12: T1+T2 — test-first count-triple case (fails on old code), then tightened the slash branch to require a 4-digit year; 34/34 tests green, validate clean.
+- 2026-07-12: T3+T4 — recorded D-023 (tightening + accepted 2-digit-year miss) and appended the M30 LESSONS line retiring the M21 workaround; validate clean (D-023's own real-date examples spaced per the same convention).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -102,3 +104,40 @@ outside `cairn/`, is not date-scanned, and uses the unspaced literals verbatim.
 ## Review
 <!-- owner: review · exclusive; evidence per criterion; consistency-gate
      results; independent-review findings and their triage -->
+
+**Reviewed 2026-07-12 · PR #28 · branch cut from `main@1ea46b7` (unmoved).**
+
+Evidence per criterion (fresh, this session):
+- AC1 — `test_check_result_notation_passes` passes; direct probe of
+  `_NON_ISO_DATE` on `0/0/0` and `0/1/2` → no match.
+- AC2 — `test_non_iso_date` + `test_non_iso_date_formats` (now incl. both slash
+  orders) pass; direct probe: `2026 / 07 / 11` and `07 / 11 / 2026` → FLAGGED.
+- AC3 — full `test_scripts.py` suite 34/34 OK; valid ISO `2026-07-11` and
+  fraction/version tokens still pass (`test_valid_iso_and_non_dates_pass`).
+- AC4 — `python3 scripts/cairn_validate.py` → "all checks passed" (exit 0).
+- AC5 — `grep` confirms D-023 present; code comment at
+  `cairn_validate.py:26` states the 4-digit-year requirement.
+- AC6 — `cairn/LESSONS.md:35` carries the M30 line retiring the M21 workaround.
+
+Consistency gate: `cairn_validate` exit 0 (all 10 checks). Coverage
+completeness: AC1–AC6 all map to existing tasks T1–T4. No `DESIGN.md`
+principle touched → `cairn_impact` skipped. R/devtools gates waived (plugin
+repo, per CLAUDE.md).
+
+Note: `50 / 3 / 2000` correctly FLAGS (a 4-digit-year date-shaped triple) — the
+plan's `Out:` deliberately declines month/day range validation, so this is
+expected, not a defect.
+
+Independent review — two fresh-context lenses, distinct evidence bases:
+- [O] diff-bug (Opus): **no findings.** Verified by direct probe that the new
+  arms are strict subsets of the old pattern (tightening can only remove
+  matches — no new false positives), no ReDoS, and the new test genuinely
+  fails on pre-change code.
+- [S] blame-history (Sonnet): **no findings.** Confirmed D-023 properly
+  supersedes the M13 "conservative by design" doctrine for the slash branch
+  only, traceable end-to-end (M13 origin → M21 G-C2 → M30 plan → D-023 →
+  tests).
+Zero findings survived → scorer not needed. One style nit (year-last
+`07 / 11 / 2026` is covered by both `test_non_iso_date` and the expanded
+`test_non_iso_date_formats`) was raised and dropped by both reviewers as a
+non-finding; harmless redundancy, no action.

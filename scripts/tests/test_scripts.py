@@ -302,8 +302,10 @@ class TestValidateFailures(ScriptCase):
 
     def test_non_iso_date_formats(self):
         # Each non-ISO branch is flagged: year-last dashed, both month-name
-        # orders, and the malformed-ISO (missing zero-pad) case.
-        for bad in ("11-07-2026", "Jul 11, 2026", "11 July 2026", "2026-7-11"):
+        # orders, the malformed-ISO (missing zero-pad) case, and both slash
+        # orders that carry a 4-digit year (year-last and year-first).
+        for bad in ("11-07-2026", "Jul 11, 2026", "11 July 2026", "2026-7-11",
+                    "07/11/2026", "2026/07/11"):
             with self.subTest(bad=bad):
                 self.tree = Tree(self._tmp.name)
                 self.tree.files["milestones/M03-live.md"] = live("planned") + f"\n- {bad}: x\n"
@@ -314,6 +316,17 @@ class TestValidateFailures(ScriptCase):
         # Valid ISO plus tokens that must NOT be mistaken for dates.
         self.tree.files["milestones/M03-live.md"] = (
             live("planned") + "\n- 2026-12-31: v4.8 shipped, see p. 12, ratio 1/2, ID M13\n"
+        )
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+
+    def test_check_result_notation_passes(self):
+        # R CMD check count-notation is three slash-separated counts with no
+        # 4-digit year (errors/warnings/notes); it must NOT be mistaken for a
+        # slash date. A real slash date carries a 4-digit year on one end;
+        # count-triples don't, so requiring the year distinguishes them.
+        self.tree.files["milestones/M03-live.md"] = (
+            live("planned") + "\n- 2026-12-31: R CMD check 0/0/0, earlier run 0/1/2\n"
         )
         proc = run("cairn_validate.py", self.tree.build())
         self.assertEqual(proc.returncode, 0, proc.stdout)
