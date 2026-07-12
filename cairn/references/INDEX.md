@@ -11,3 +11,4 @@
 - competitive-landscape.md — M06 synthesis: uniqueness case (gates + longitudinal memory defended; markdown-state conceded as commodity), ranked steal-list, empirical two-tracking-systems hazard.
 - design-interview-notes.md — what good DESIGN-elicitation questions look like, incl. the two-pass structure (overall → principles) proposed as gold standard (openac pilot findings, 2026-07-11); feeds a future design-interview skill.
 - claude-code-hooks.md — plugin hooks API contracts (hooks.json schema, stdin/stdout JSON shapes, matchers, exit codes) verified against official docs 2026-07-11; the oracle for M07's hook scripts.
+- migration-pilot-notes.md — findings from running /cairn-init §2 for real against mature Lineage B repos (Pilot 1: ackwards, M20 — PR #53); the gap ledger that feeds migration-protocol hardening candidates.
