@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M19: Memory-boundary write guard (GP4 enforcement)
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M18   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Branch/PR:** m19-memory-boundary-guard   <!-- owner: implement (branch) / review (PR URL) · create -->
@@ -101,7 +101,7 @@ to avoid a merge conflict (the user chose this sequencing).
 - [x] T4: Add `memory_guard` cases to `hooks/tests/test_hooks.py` (memory-path
       fires; non-memory / non-cairn / malformed no-op); run the hooks suite
       green. ([test_hooks.py](../../hooks/tests/test_hooks.py))
-- [ ] T5: Record the emission-mechanism D-entry (chosen mechanism +
+- [x] T5: Record the emission-mechanism D-entry (chosen mechanism +
       nag-fatigue rationale; prose-only fallback path).
       ([DECISIONS.md](../DECISIONS.md))
 
@@ -132,10 +132,17 @@ to avoid a merge conflict (the user chose this sequencing).
   no permissionDecision; non-memory, memory-lookalike-without-/memory/, and
   non-Write no-op) and wired memory_guard.py into the non-cairn + garbage-stdin
   shared tests. Full hooks suite green (22 tests).
+- 2026-07-12: T5 — recorded D-017 (non-blocking additionalContext nudge, no
+  permissionDecision; nag-fatigue rationale; prose-only fallback not needed).
+  All tasks done.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
      cross-cutting ones to cairn/DECISIONS.md -->
+
+- 2026-07-12: emission mechanism = non-blocking `additionalContext` nudge, no
+  `permissionDecision` (softest lever; T1 confirmed PreToolUse supports it).
+  Cross-cutting → promoted to D-017.
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion; consistency-gate
