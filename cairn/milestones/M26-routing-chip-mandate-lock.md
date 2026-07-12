@@ -77,7 +77,7 @@ guard test.
       `design-interview` (Routing), name `AskUserQuestion` explicitly at the
       routing-chip step via the contiguous token `routing chip
       (AskUserQuestion)`. (`milestone` already carried it.)
-- [ ] T4 — Extend `skills/tests/test_gate_wording.py`: loop the six
+- [x] T4 — Extend `skills/tests/test_gate_wording.py`: loop the six
       non-review skills asserting `AskUserQuestion` at their routing-chip
       step; assert review's ending is a `/clear` nudge with no end chip while
       the merge gate keeps `AskUserQuestion` (key on the ending, not the mere
@@ -98,6 +98,8 @@ guard test.
 - 2026-07-12: T3 — 6 non-review skills carry the contiguous token `routing
   chip (AskUserQuestion)` at their routing-chip step (cairn-init in both
   scaffold + migration endings).
+- 2026-07-12: T4 — `TestRoutingChipMandate` (5 tests) added to
+  test_gate_wording.py; full skills/tests suite green (68 tests).
 
 ## Decisions
 
