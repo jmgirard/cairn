@@ -431,8 +431,13 @@ Tests verify against ground truth, not against the code. Every
 numeric-results suite includes, in priority order: (1) hand-computed
 fixtures from published formulas, arithmetic in comments; (2) published
 reference values, cited; (3) independent recomputation with deliberately
-dumb explicit code; (4) invariant tests. Snapshots only on top, never as the
-sole oracle for a number.
+dumb explicit code; (4) invariant tests; (5) simulation from known population
+parameters — the estimator must recover the known value and/or its interval
+must cover it at the nominal rate. Items (1)–(4) are deterministic
+numeric-agreement oracles; (5) is the probabilistic one, and the appropriate
+primary oracle where no closed form or reference implementation exists and for
+interval methods — it is a rung on this list, not a lesser choice. Snapshots
+only on top, never as the sole oracle for a number.
 
 **Oracle types & the ≥2-types bar.** Name each oracle by *type*: **frozen** (an
 external/expensive reference value computed once and committed as a fixture
@@ -440,12 +445,23 @@ external/expensive reference value computed once and committed as a fixture
 recomputed at test time), **invariant** (two independent internal routes that
 must agree — the agreement itself is the oracle, no external source),
 **closed-form** (a published/definitional formula recomputed with deliberately
-dumb explicit code). The four types refine the priority list, they don't
-replace it — (1)/(2) are frozen or closed-form, (3) is live, (4) is invariant.
-Every numeric result is backed by **≥2 *independent* oracle types**, never two
-instances of one type. A **live** independent implementation is the *stronger*
-form; a frozen copy of it is a regression pin, not a cross-check — prefer live,
-and freeze it only when it becomes expensive or network-bound.
+dumb explicit code), **simulation-coverage** (data simulated from known
+population parameters; the estimator must recover the known value (point) and/or
+its interval must cover it at the nominal rate — the injected ground truth is
+the oracle). The five types refine the priority list, they don't replace it —
+(1)/(2) are frozen or closed-form, (3) is live, (4) is invariant, (5) is
+simulation-coverage. Every numeric result is backed by
+**≥2 *independent* oracle types**, never two instances of one type. A **live**
+independent implementation is the *stronger* form; a frozen copy of it is a
+regression pin, not a cross-check — prefer live, and freeze it only when it
+becomes expensive or network-bound. **simulation-coverage** is the one
+*probabilistic* oracle — a
+sampling-distribution check, not deterministic pointwise agreement — and the
+primary oracle for interval methods (**a CI method's oracle is coverage**) and
+for any estimator with no closed form or reference implementation; it counts
+toward the ≥2-types bar like any other type. Freeze a simulation-coverage
+oracle (commit its summary as a fixture) only when the run is expensive — a live
+refit or a many-replication sweep — else recompute it live.
 
 **Reproducibility (hard stop):** no unsourced *or unreproducible* reference
 value ships. A committed numeric fixture carries its regeneration recipe — a

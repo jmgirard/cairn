@@ -434,3 +434,39 @@ interim home (folding it into an ackwards DESIGN IP/GP is ackwards-local, ledger
 E8 — out of scope here). Locked by `skills/tests/test_oracle_doctrine.py` (the
 type names + the ≥2-types bar). If a registry file is later adopted, or the
 ≥2-types bar proves too strong a blanket, this is the entry to supersede.
+
+### D-025 (2026-07-12): Add simulation-coverage as the fifth oracle type — annotates D-024
+
+**Context:** M42 validated D-024's four-type oracle taxonomy
+(frozen/live/invariant/closed-form) against `jmgirard/intraclass`'s real
+34-script oracle system — the practice cairn's doctrine descends from. Finding
+(`references/oracle-doctrine-intraclass-notes.md`): 31/34 scripts use an oracle
+that maps to **none** of the four types — simulation from known population
+parameters, checking the estimator recovers the known value (point) and/or its
+interval covers it at the nominal rate. It leads every one of the 20 Bayesian CI
+oracles ("a CI method's oracle is coverage") plus the frequentist coverage
+oracles, and is the missing cairn analog of intraclass's **inviolable** PRINCIPLES.md #1(c)
+("simulation with known population variance components"). The four types are all
+deterministic numeric-agreement oracles; this fifth is the one *probabilistic*
+(sampling-distribution) oracle, and without it a repo following cairn's doctrine
+has no named home for a CI method's primary oracle and cannot count it toward
+the ≥2-*independent-types* bar. AC2 verdict: PRINCIPLES.md #1 and cairn's bar
+**agree** on "≥2 independent oracle types" but **diverge** on the type list —
+this is the divergence.
+**Decision:** Add **simulation-coverage** as a fifth first-class oracle type in
+the Validation doctrine (priority-list item (5) + the type paragraph), counting
+toward the ≥2-types bar like any other type, with the freeze-only-when-expensive
+nuance carried over. Chosen over (b) priority-list mention without type status
+(leaves a CI method's main oracle uncountable — doesn't close the defect) and
+(c) defer to a dedicated milestone (the fix is small, guard-testable text; AC4
+authorized fixing an exposed defect in-milestone). User-selected at the M42
+implement gate.
+**Consequences:** Every adopting statistical/numeric repo gains a named home for
+coverage/recovery oracles. The two deferred oracle candidates (registry file,
+R-provenance guard) are **downstream** of this — a registry's `type` column
+cannot describe intraclass's oracles without it (M42 T3 kept both deferred,
+rows sharpened). Annotates D-024 (its four-type list stands; a fifth is added,
+not a supersede). Locked by `skills/tests/test_oracle_doctrine.py`
+(`test_names_the_five_oracle_types` + the coverage-oracle anchor). If the fifth
+type ever needs splitting (point-recovery vs. interval-coverage) or the ≥2-types
+bar proves too strong for it, this is the entry to supersede.
