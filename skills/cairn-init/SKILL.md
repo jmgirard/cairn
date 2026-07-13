@@ -138,7 +138,10 @@ Then:
   `/design-interview` (offered on the chip), never duplicated here.
 - Fill DESIGN.md's Purpose & Scope from DESCRIPTION and a quick read of
   `R/` — 5–10 honest lines, marked for the user to refine; never invent
-  principles. The deep version — eliciting the contract boundary,
+  principles. **In a greenfield repo** there is no DESCRIPTION or source to
+  read and the greenfield openers above already seeded Purpose & Scope
+  (distribution ambition) and Conventions (oracle-on) — extend those honestly,
+  never overwrite them. The deep version — eliciting the contract boundary,
   conventions, and IP/GP principles the code can't show — is
   `/design-interview`, offered on the routing chip below; this step only
   seeds the file.
