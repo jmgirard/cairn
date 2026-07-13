@@ -116,6 +116,14 @@ REGISTRY = [
         target="skills/shared/profiles/python.md",
         block="self-submits nothing",
     ),
+    # Second entry for test_toolchain_profiles — the exact M47-lesson scenario
+    # (the generic release-walk `commit` step): a file may carry >1 entry.
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestReleaseSkillReadsProfile.test_generic_release_walk_defines_a_tag_path",
+        target="skills/shared/profiles/generic.md",
+        block="commit the release prep to the default",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

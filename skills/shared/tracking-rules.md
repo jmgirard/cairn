@@ -536,9 +536,12 @@ template) — gives *false coverage* when a phrase it asserts also occurs
 elsewhere: deleting the rule leaves the assertion satisfied, so the guard
 passes over a rule that is gone (the recurring M39/M40 trap). Verify by
 mutation, not by eye: cairn's own prose-guards register in the mutation
-harness (`skills/tests/test_mutation_harness.py`), which blanks each guard's
-protected block and asserts the guard fails; its completeness meta-test fails
-CI on any unregistered prose-guard.
+harness (`skills/tests/test_mutation_harness.py`), which blanks each
+registered block and asserts its guard fails; the completeness meta-test
+fails CI on any unregistered prose-guard *file*. Registration is per file
+(one or more exemplar blocks), **not** per assertion — a new `assertIn`
+added to an already-registered file still needs its own entry or the by-hand
+check ("would this pass against the pre-milestone content?").
 
 The language-mechanical specifics — which edge cases, which error mechanism,
 coverage-tool status, plot/snapshot conventions — live in the active profile's
