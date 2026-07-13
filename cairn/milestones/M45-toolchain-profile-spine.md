@@ -77,7 +77,7 @@ operational skill.
 
 ## Tasks
 
-- [ ] T1 — Author `skills/shared/profiles/generic.md` and `r-package.md`: the
+- [x] T1 — Author `skills/shared/profiles/generic.md` and `r-package.md`: the
       six-slot schema, `r-package` capturing current R commands verbatim
       (source of truth: grep the live command strings in the skills),
       `generic` the no-R path (verify = repo-declared test command,
@@ -102,7 +102,18 @@ operational skill.
 ## Work log
 
 - 2026-07-12: created by /milestone-plan (toolchain-profiles arc, milestone 1 of 3).
+- 2026-07-12: T1 — shipped `skills/shared/profiles/{generic,r-package}.md` (6 slots each; r-package captures current commands verbatim).
 
 ## Decisions
+
+- 2026-07-12 (T1): PROFILE.md schema = markdown `# Toolchain profile: <name>`
+  header + one `## <slot>` H2 per slot (freeform body: command block or prose),
+  matching every other cairn tracking file. Chosen over YAML frontmatter
+  (awkward for the prose slots test-doctrine/release-walk; breaks the
+  all-markdown convention) and freeform-no-structure (loses mechanical
+  slot-completeness checking). `cairn_validate` parses the H2s. The six slots:
+  verify, consistency-gate, test-doctrine, release-walk, init-detection,
+  greenfield-openers. The oracle/Validation doctrine is NOT a slot (universal,
+  orthogonal — D-024/D-025).
 
 ## Review
