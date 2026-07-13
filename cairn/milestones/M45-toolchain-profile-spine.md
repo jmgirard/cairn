@@ -90,7 +90,7 @@ operational skill.
 - [x] T3 — `cairn-init`: §0 detection recommends a profile; §1 instantiates the
       chosen reference into `cairn/PROFILE.md`; repair-mode backfills a missing
       declaration via DESCRIPTION inference.
-- [ ] T4 — `session_context` hook: read + inject the active profile name; no-op
+- [x] T4 — `session_context` hook: read + inject the active profile name; no-op
       when absent. Extend `hooks/tests/test_hooks.py`.
 - [ ] T5 — `cairn_validate`: profile presence / slot-completeness check (no-op
       when absent); register `PROFILE.md` in `cairn_scripts.LINE_CAPS`. Extend
@@ -106,6 +106,7 @@ operational skill.
 - 2026-07-12: T1 — shipped `skills/shared/profiles/{generic,r-package}.md` (6 slots each; r-package captures current commands verbatim).
 - 2026-07-12: T2 — tracking-rules "Toolchain profiles" section + PROFILE.md file-map row + weight-cap (<90) in rulebook and `cairn_scripts.LINE_CAPS`.
 - 2026-07-12: T3 — cairn-init selects profile (§0), instantiates cairn/PROFILE.md (§1 tree + step), repair-mode backfills by DESCRIPTION inference.
+- 2026-07-12: T4 — session_context injects the active profile name (no-op when PROFILE.md absent); +2 hook tests (present/absent).
 
 ## Decisions
 
