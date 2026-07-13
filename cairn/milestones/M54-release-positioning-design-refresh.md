@@ -91,7 +91,7 @@ adopter reads no longer say R-only and DESIGN audits clean (RR01 recs 1 + 5).
 - [x] T3 — Genericize `/hotfix` step 5 (`skills/hotfix/SKILL.md:39`): replace
       hardcoded `NEWS.md` with a reference to the profile's changelog (no slot;
       keep it honest that R-package uses `NEWS.md`).
-- [ ] T4 — Refresh `cairn/DESIGN.md`: hooks bullet → all 5 hooks; IP1 "main" →
+- [x] T4 — Refresh `cairn/DESIGN.md`: hooks bullet → all 5 hooks; IP1 "main" →
       "the default branch" (RB tripwire: ip-touching); rewrite Known-issues to
       the honest env list + the honor-system line.
 - [ ] T5 — Add `Lessons → LESSONS` to the boundary rule in
@@ -116,6 +116,9 @@ adopter reads no longer say R-only and DESIGN audits clean (RR01 recs 1 + 5).
 - 2026-07-13: T3 — /hotfix steps 5–6 genericized (NEWS.md → the profile's
   changelog); no slot added (deferred to rec 11). r-package profile keeps
   NEWS.md, so the R_COMMAND_TOKENS guard is untouched.
+- 2026-07-13: T4 — DESIGN refreshed: 5-hook list (added commit_guard,
+  memory_guard), IP1 "main" → "the default branch" (wording alignment),
+  Known-issues rewritten (single-author/single-OS/Windows + honor-system line).
 
 ## Decisions
 
