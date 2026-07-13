@@ -87,7 +87,7 @@ operational skill.
       six slots and the "absent `PROFILE.md` → infer from DESCRIPTION" default;
       add the `cairn/PROFILE.md` file-map row and its weight-caps line
       (+ `cairn_scripts.LINE_CAPS` entry — the M16 weight-cap second wiring point).
-- [ ] T3 — `cairn-init`: §0 detection recommends a profile; §1 instantiates the
+- [x] T3 — `cairn-init`: §0 detection recommends a profile; §1 instantiates the
       chosen reference into `cairn/PROFILE.md`; repair-mode backfills a missing
       declaration via DESCRIPTION inference.
 - [ ] T4 — `session_context` hook: read + inject the active profile name; no-op
@@ -105,6 +105,7 @@ operational skill.
 - 2026-07-12: created by /milestone-plan (toolchain-profiles arc, milestone 1 of 3).
 - 2026-07-12: T1 — shipped `skills/shared/profiles/{generic,r-package}.md` (6 slots each; r-package captures current commands verbatim).
 - 2026-07-12: T2 — tracking-rules "Toolchain profiles" section + PROFILE.md file-map row + weight-cap (<90) in rulebook and `cairn_scripts.LINE_CAPS`.
+- 2026-07-12: T3 — cairn-init selects profile (§0), instantiates cairn/PROFILE.md (§1 tree + step), repair-mode backfills by DESCRIPTION inference.
 
 ## Decisions
 

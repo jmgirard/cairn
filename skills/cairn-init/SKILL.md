@@ -22,8 +22,15 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
   does not assume `main`; use the detected name wherever the steps below (and
   the tracking-rules git model) say "the default branch".
 - No DESCRIPTION file → **non-package repo**: say so and ask — adapt
-  (scaffold the tracking system minus R-specific guardrails/gates) or
-  abort. Never scaffold R machinery into a non-package repo silently.
+  (scaffold the tracking system with the **generic** toolchain profile, minus
+  R-specific guardrails/gates) or abort. Never scaffold R machinery into a
+  non-package repo silently.
+- **Toolchain profile.** Select the repo's language profile: `DESCRIPTION`
+  present → **r-package**; otherwise → **generic**. cairn-init instantiates the
+  chosen reference (`${CLAUDE_PLUGIN_ROOT}/skills/shared/profiles/<name>.md`)
+  into `cairn/PROFILE.md` at §1; the operational skills read its slots for
+  language-specific commands (tracking-rules "Toolchain profiles"). Confirm the
+  recommended profile with the user before writing.
 - No existing tracking → **fresh scaffold** (§1).
 - Existing tracking footprint → **migration** (§2). Recognize precursors by
   footprint: root-level `MILESTONES.md`/`DESIGN.md`/`ROADMAP.md` with status
@@ -35,7 +42,11 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
   repo-local milestone skills in `.claude/skills/`. Unrecognized footprints
   get an interview, not a guess.
 - Already on cairn → **repair mode**: verify every §1 piece exists
-  and is intact; fix what's missing; report.
+  and is intact; fix what's missing; report. A **missing `cairn/PROFILE.md`**
+  (a repo that adopted cairn before profiles) is backfilled by inference —
+  `DESCRIPTION` present → r-package, else generic — restoring the explicit
+  declaration without changing behavior (the inference is exactly what the
+  skills fall back to when the file is absent).
 
 ## 1. Fresh scaffold
 
@@ -52,6 +63,8 @@ cairn/
 ├── ROADMAP.md         # empty index (below)
 ├── DECISIONS.md       # header + append-only note (see decision.md template)
 ├── LESSONS.md         # header + append-only note; repo lessons, capped 50 lines (D-015)
+├── PROFILE.md         # toolchain profile (r-package | generic), instantiated
+│                      # from skills/shared/profiles/<name>.md; capped 90 lines
 ├── milestones/archive/
 ├── reviews/archive/
 └── references/pdf/    # plus empty INDEX.md
@@ -85,6 +98,10 @@ Then:
 - `.gitignore`: add `cairn/references/pdf/` and `cairn/.merge-approved`
   (single-use merge-approval marker written at review gates, consumed by
   the plugin's merge-guard hook — never committed).
+- Instantiate `cairn/PROFILE.md` from the selected reference profile
+  (`${CLAUDE_PLUGIN_ROOT}/skills/shared/profiles/r-package.md` if DESCRIPTION
+  present, else `generic.md`) — copy it verbatim; the repo edits its slots
+  (notably `verify`) afterward as needed.
 - Fill DESIGN.md's Purpose & Scope from DESCRIPTION and a quick read of
   `R/` — 5–10 honest lines, marked for the user to refine; never invent
   principles. The deep version — eliciting the contract boundary,
