@@ -105,6 +105,18 @@ def check_vocab(rows):
     ]
 
 
+def check_priority_vocab(rows):
+    """Every ROADMAP row's Priority is one of the known values (the
+    `PRIORITY_ORDER` keys — high/normal/low), parallel to `check_vocab` for
+    status. A typo'd priority silently mis-sorts `cairn_next` (unknown falls
+    back to `normal`), so catch it at the declaration point."""
+    return [
+        f"{r['id']}: unknown priority '{r['priority']}'"
+        for r in rows
+        if r["priority"] not in cs.PRIORITY_ORDER
+    ]
+
+
 def check_dependencies(root, rows):
     known = {r["id"] for r in rows}
     known |= set(cs.archive_files(root))
@@ -321,12 +333,43 @@ def check_principles_slot(root):
     return bad
 
 
+# Split tripwires (tracking-rules "Sizing"): a milestone probably wants
+# splitting past these. Advisory, not hard limits — a milestone may exceed
+# them with stated justification — so check_sizing_advisory only WARNs.
+_CRIT_TRIPWIRE = 7
+_TASK_TRIPWIRE = 10
+
+
+def check_sizing_advisory(root):
+    """Advisory: a live milestone file whose acceptance-criteria count exceeds
+    7, or whose task count exceeds 10 (the tracking-rules "Sizing" split
+    tripwires), probably wants splitting. Advisory rather than a gate — the
+    tripwires are advisory (exceed-with-justification is legitimate) — so this
+    feeds ADVISORIES (WARN, exit-code-neutral), never CHECKS. Archived
+    summaries carry neither section and are skipped (live_files only)."""
+    out = []
+    for mid, path in sorted(cs.live_files(root).items(), key=lambda kv: cs.id_num(kv[0])):
+        try:
+            with open(path, encoding="utf-8") as f:
+                text = f.read()
+        except Exception:
+            continue
+        n_crit = sum(1 for line in _section_body(text, "Acceptance criteria") if _AC_ITEM.match(line))
+        n_task = sum(1 for line in _section_body(text, "Tasks") if _AC_ITEM.match(line))
+        if n_crit > _CRIT_TRIPWIRE:
+            out.append(f"{mid}: {n_crit} acceptance criteria (>{_CRIT_TRIPWIRE} tripwire) — consider splitting")
+        if n_task > _TASK_TRIPWIRE:
+            out.append(f"{mid}: {n_task} tasks (>{_TASK_TRIPWIRE} tripwire) — consider splitting")
+    return out
+
+
 CHECKS = [
     ("mirror agreement", lambda root, rows: check_mirror(root, rows)),
     ("at most one in-progress", lambda root, rows: check_single_in_progress(rows)),
     ("weight caps", lambda root, rows: check_caps(root, rows)),
     ("terminal-row retention", lambda root, rows: check_terminal_retention(rows)),
     ("status vocabulary", lambda root, rows: check_vocab(rows)),
+    ("priority vocabulary", lambda root, rows: check_priority_vocab(rows)),
     ("dependency resolution", lambda root, rows: check_dependencies(root, rows)),
     ("roadmap<->disk orphans", lambda root, rows: check_orphans(root, rows)),
     ("id uniqueness", lambda root, rows: check_id_uniqueness(root, rows)),
@@ -334,6 +377,13 @@ CHECKS = [
     ("scaffold present", lambda root, rows: check_scaffold(root)),
     ("coverage complete", lambda root, rows: check_coverage_complete(root)),
     ("principles slot valid", lambda root, rows: check_principles_slot(root)),
+]
+
+# Advisories are non-failing: they surface a judgment-call worth a look but
+# never fail the gate (exit code neutral), so they render WARN/OK, separate
+# from the PASS/FAIL CHECKS above.
+ADVISORIES = [
+    ("sizing (split tripwires)", lambda root, rows: check_sizing_advisory(root)),
 ]
 
 
@@ -350,11 +400,23 @@ def run(root):
                 lines.append(f"        {f}")
         else:
             lines.append(f"PASS  {name}")
+    warnings = 0
+    for name, fn in ADVISORIES:
+        findings = fn(root, rows)
+        if findings:
+            warnings += len(findings)
+            lines.append(f"WARN  {name} ({len(findings)})")
+            for f in findings:
+                lines.append(f"        {f}")
+        else:
+            lines.append(f"OK    {name}")
     lines.append("")
     if failures:
         lines.append(f"{failures} check(s) failed")
     else:
         lines.append("all checks passed")
+    if warnings:
+        lines.append(f"{warnings} advisory warning(s) — not gate failures")
     return "\n".join(lines), failures
 
 

@@ -82,20 +82,20 @@ check — turning two prose-only rules into deterministic script output.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1 — Tests-first, then add the advisory tier to `cairn_validate.run()`:
+- [x] T1 — Tests-first, then add the advisory tier to `cairn_validate.run()`:
       an `ADVISORIES` list rendered as `WARN`/`OK` lines, tallied separately
       from `failures` so the exit code is unaffected
       (`scripts/cairn_validate.py:340` `run`).
-- [ ] T2 — Implement `check_sizing_advisory`: count criteria via the existing
+- [x] T2 — Implement `check_sizing_advisory`: count criteria via the existing
       `_AC_ITEM`/`_section_body` helpers and count tasks via a task-checkbox
       matcher over the Tasks section; WARN over >7 / >10; skip archived files.
       Register in `ADVISORIES`. Add a dedicated `live_sized(status, n_crit,
       n_tasks)` builder rather than mutating `Tree.build` (M34/M38 lesson).
-- [ ] T3 — Implement `check_priority_vocab` (ROADMAP Priority ∈
+- [x] T3 — Implement `check_priority_vocab` (ROADMAP Priority ∈
       `PRIORITY_ORDER` keys), parallel to `check_vocab`; register in `CHECKS`.
       Tests: bad priority fails, valid passes (base fixture priorities are
       already valid, so `Tree.build` is untouched).
-- [ ] T4 — Run `python3 -m unittest discover -s scripts/tests` (M32: this
+- [x] T4 — Run `python3 -m unittest discover -s scripts/tests` (M32: this
       repo has no pytest); confirm the existing checks + clean-tree assertions
       stay green, fixing any output-assertion breakage caused by the new
       advisory section.
@@ -113,6 +113,9 @@ check — turning two prose-only rules into deterministic script output.
 
 - 2026-07-12: created by /milestone-plan (validator-hardening pair; folds the
   split-advisory + Priority-schema M06 steals, drops two low-fit steals).
+- 2026-07-12: T1–T4 — added the ADVISORIES WARN tier + `check_sizing_advisory`
+  + `check_priority_vocab` to cairn_validate; 58/58 script tests green, live
+  repo validates clean (13 PASS + OK sizing).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
