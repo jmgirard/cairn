@@ -320,6 +320,17 @@ class TestValidateProfile(ScriptCase):
         self.assertEqual(proc.returncode, 1, proc.stdout)
         self.assertIn("unrecognized slot '## verfiy'", proc.stdout)
 
+    def test_fenced_command_block_body_not_a_slot(self):
+        # Review finding (scored 91): a `## ` comment inside a fenced command
+        # block in a slot body must be body content, not a new slot.
+        text = VALID_PROFILE.replace(
+            "## verify\n- run tests\n",
+            "## verify\n```sh\n## build first\nmake test\n```\n",
+        )
+        proc = run("cairn_validate.py", self._profile(text))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  profile valid", proc.stdout)
+
     def test_shipped_reference_profiles_are_valid(self):
         # The plugin's own r-package + generic references must satisfy the check.
         import importlib.util

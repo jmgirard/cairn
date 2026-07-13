@@ -344,11 +344,22 @@ _REQUIRED_SLOTS = (
 
 
 def _profile_slots(text):
-    """Map each `## <slot>` H2 in a PROFILE.md to its (stripped) body lines."""
+    """Map each `## <slot>` H2 in a PROFILE.md to its (stripped) body lines.
+    Fence-aware: a `## ` line inside a ``` or ~~~ fenced code block is body
+    content, not a slot heading — the schema sanctions a command-block slot
+    body, and a shell `## comment` inside one must not be misread as a new
+    slot (review finding, scored 91)."""
     slots = {}
     cur = None
+    fence = None  # the open fence marker (``` or ~~~), or None outside a fence
     for line in text.splitlines():
-        if line.startswith("## "):
+        marker = line.lstrip()[:3]
+        if marker in ("```", "~~~"):
+            fence = None if fence == marker else (fence or marker)
+            if cur is not None:
+                slots[cur].append(line)
+            continue
+        if fence is None and line.startswith("## "):
             cur = line[3:].strip().lower()
             slots[cur] = []
         elif cur is not None:
