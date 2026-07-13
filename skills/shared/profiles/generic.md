@@ -34,8 +34,13 @@ contract-not-implementation, and the oracle doctrine for any numeric result.
 
 ## release-walk
 The release procedure `/cairn-release` follows. Generic default: a minimal
-language-agnostic walk — bump the version, consolidate the changelog/NEWS,
-tag the release. No package-registry submission.
+language-agnostic walk — no package-registry submission; the tag is the release:
+- Decide the version bump (patch/minor/major) from the changelog/NEWS.
+- Consolidate the changelog/NEWS: retitle the dev heading to the version,
+  group entries, prune noise.
+- Bump the repo's version marker and commit the release prep to the default
+  branch (docs/metadata only).
+- Tag `v<version>` and push the tag at the user's approval — no registry step.
 
 ## init-detection
 How `cairn-init` recognizes this toolchain. Generic is the **fallback**: no
