@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M52: r-package profile — GitHub Actions CI (R-CMD-check + Codecov)
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
@@ -74,11 +74,11 @@ never a gate" doctrine.
       `test-coverage`, and `codecov`, plus the diagnostic-only framing; anchor
       on the uniquely-new tokens and include a mental/actual deletion check so
       the test fails if the CI-pair block is removed. (Red first.)
-- [ ] T2 — Edit the `test-doctrine` slot of `skills/shared/profiles/r-package.md`
+- [x] T2 — Edit the `test-doctrine` slot of `skills/shared/profiles/r-package.md`
       to add the CI-pair + Codecov guidance (diagnostic-only) and the
       `^\.github$` `.Rbuildignore` note; retain the existing covr line. Make T1
       green.
-- [ ] T3 — Run all three unittest suites + `test_shipped_reference_profiles_are_valid`;
+- [x] T3 — Run all three unittest suites + `test_shipped_reference_profiles_are_valid`;
       confirm the six-slot schema still validates and nothing regressed.
 
 ## Work log
@@ -86,6 +86,8 @@ never a gate" doctrine.
 - 2026-07-12: created by /milestone-plan.
 - 2026-07-12: status → in-progress; branch m52-r-profile-codecov-ci cut from main.
 - 2026-07-12: T1 — guard test TestRPackageCodecovCI added (red: the CI-pair tokens check-standard/test-coverage/codecov/"never gates the merge" are absent pre-M52); the covr-line retention check is green.
+- 2026-07-12: T2 — r-package test-doctrine gains the usethis CI-pair (check-standard + test-coverage→Codecov) after the covr line, diagnostic-only framing, `^\.github$` .Rbuildignore note; T1 now green (red→green = the deletion sanity-check).
+- 2026-07-12: T3 — all three suites green (skills 134 / scripts 65 / hooks 32); test_shipped_reference_profiles_are_valid passes (six-slot schema intact); cairn_validate all checks pass. Status → review.
 
 ## Decisions
 
