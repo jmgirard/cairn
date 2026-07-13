@@ -78,7 +78,7 @@ dogfood the `generic` profile in this repo.
       universal".
 - [x] T2 — `milestone-implement`: verify steps read the profile `verify` slot.
 - [x] T3 — `hotfix`: gate-lite reads the profile `verify` slot.
-- [ ] T4 — `milestone-review`: split the consistency gate into universal
+- [x] T4 — `milestone-review`: split the consistency gate into universal
       (cairn-file) checks and the profile `consistency-gate` slot.
 - [ ] T5 — `milestone.md` template: profile-aware acceptance guidance.
 - [ ] T6 — Dogfood: add `cairn/PROFILE.md` (`generic`) to this repo; remove the
@@ -95,6 +95,7 @@ dogfood the `generic` profile in this repo.
 - 2026-07-12: T1 — relocated "R package guardrails" + R-mechanical "What gets a test" out of tracking-rules into the r-package profile (added the generated-file `NAMESPACE`/`man`/`data` guardrail there); universal floor genericized + framing added. Flipped `test_toolchain_profiles` source-of-truth to the profile; added `TestRulebookRelocation` (AC3). Guard-test updates fold into each task commit to keep the suite green per checkpoint (minor amendment to plan's separate-T8).
 - 2026-07-12: T2 — `milestone-implement` now runs the active profile's `verify` slot (per-task, resume, completion) and its `test-doctrine` slot for idioms; no `devtools::` left. Replaced M45 AC6 guard with growing `TestOperationalSkillsReadProfile` + `TestReleaseSkillUntouched` (M47 boundary).
 - 2026-07-12: T3 — `hotfix` gate-lite now runs the profile's `verify` slot; no `devtools::` left. Added `hotfix` to the rewired-skills guard. (NEWS.md changelog requirement left as-is — changelog-mechanism generalization is out of M46 scope.)
+- 2026-07-12: T4 — `milestone-review` consistency gate split into "Universal cairn-file checks" (validate/coverage/impact, unconditional) + the profile `consistency-gate` slot (toolchain checks; read-the-slot, no hardcoded R list); AC-evidence step de-hardcoded. Added `TestReviewGateSplit` (AC2); review joins rewired-skills guard. No R tokens left in the skill.
 
 ## Decisions
 

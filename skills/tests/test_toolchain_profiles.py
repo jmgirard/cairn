@@ -151,6 +151,7 @@ class TestInitSelection(unittest.TestCase):
 REWIRED_SKILLS = (
     ("milestone-implement", "SKILL.md"),
     ("hotfix", "SKILL.md"),
+    ("milestone-review", "SKILL.md"),
 )
 
 
@@ -165,6 +166,26 @@ class TestOperationalSkillsReadProfile(unittest.TestCase):
             self.assertIn("PROFILE.md", text, f"{a} should read the profile after M46")
             self.assertNotIn("devtools::", text,
                              f"{a} still hardcodes a devtools command after M46")
+
+
+class TestReviewGateSplit(unittest.TestCase):
+    """AC2: milestone-review's consistency gate splits into the universal
+    cairn-file checks (unconditional, every profile) and the profile
+    `consistency-gate` slot (toolchain checks). Both halves must be present, and
+    the universal checks must not have been gated behind the profile."""
+
+    def test_universal_checks_stay_unconditional(self):
+        text = read("milestone-review", "SKILL.md")
+        for tok in ("cairn_validate", "Coverage completeness", "cairn_impact"):
+            self.assertIn(tok, text, f"review lost the universal cairn-file check {tok}")
+        self.assertIn("Universal cairn-file checks", text,
+                      "review no longer labels the always-run universal checks")
+
+    def test_review_reads_the_profile_consistency_gate_slot(self):
+        text = read("milestone-review", "SKILL.md")
+        self.assertIn("consistency-gate", text,
+                      "review no longer reads the profile consistency-gate slot")
+        self.assertIn("PROFILE.md", text)
 
 
 class TestReleaseSkillUntouched(unittest.TestCase):
