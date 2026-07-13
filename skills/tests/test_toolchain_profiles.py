@@ -82,9 +82,28 @@ R_COMMAND_TOKENS = (
     "NEWS.md",
 )
 
+# Python-toolchain opinionation tokens the python profile must carry at
+# R-parity (M48 AC2) — one blessed pick per category, verifiable by token.
+PYTHON_TOOLCHAIN_TOKENS = (
+    "pyproject.toml",
+    "PEP 621",
+    "pytest",
+    "ruff",
+    "mypy",
+    "python -m build",
+    "twine",
+    "coverage.py",
+)
+
+# Python toolchain tokens that must NOT bleed into the generic profile (M48).
+# Deliberately excludes "pytest", which generic names as a bare *example*
+# verify command — the negative assertion keys on the python-specific picks.
+PYTHON_TOKENS_ABSENT_FROM_GENERIC = ("ruff", "mypy", "twine", "pyproject")
+
+
 class TestShippedProfiles(unittest.TestCase):
-    def test_both_profiles_define_all_six_slots(self):
-        for name in ("r-package", "generic"):
+    def test_all_profiles_define_all_six_slots(self):
+        for name in ("r-package", "python", "generic"):
             text = read("shared", "profiles", f"{name}.md").lower()
             for slot in SLOTS:
                 self.assertIn(f"## {slot}", text, f"{name} missing slot {slot}")
@@ -101,6 +120,41 @@ class TestShippedProfiles(unittest.TestCase):
     def test_generic_profile_has_no_r_toolchain(self):
         text = read("shared", "profiles", "generic.md").lower()
         for tok in ("devtools", "roxygen", "pkgdown", "cran"):
+            self.assertNotIn(tok, text, f"generic profile should carry no {tok}")
+
+
+class TestPythonProfile(unittest.TestCase):
+    """M48: the python profile ships at R-parity opinionation (AC1/AC2), the
+    generic profile stays free of the python toolchain, and the release-walk
+    hands off `twine upload` to the user and self-submits nothing."""
+
+    def test_python_profile_defines_exactly_the_six_slots(self):
+        """AC1: same schema cairn_validate enforces on a repo PROFILE.md — the
+        six known slots and no unrecognized `## ` heading."""
+        text = read("shared", "profiles", "python.md")
+        headings = [ln[3:].strip().lower() for ln in text.splitlines()
+                    if ln.startswith("## ")]
+        self.assertEqual(sorted(headings), sorted(SLOTS),
+                         f"python profile slots {headings} != the six known slots")
+
+    def test_python_profile_holds_its_toolchain_tokens(self):
+        """AC2: one blessed pick per category, verifiable by token."""
+        profile = read("shared", "profiles", "python.md")
+        for tok in PYTHON_TOOLCHAIN_TOKENS:
+            self.assertIn(tok, profile, f"python profile missing toolchain token {tok}")
+
+    def test_python_release_walk_hands_off_and_self_submits_nothing(self):
+        """AC2: the release-walk hands `twine upload` to the user and self-submits
+        nothing (parallel to the CRAN handoff)."""
+        body = section_body(read("shared", "profiles", "python.md"), "release-walk").lower()
+        self.assertTrue(body, "could not locate the python release-walk slot")
+        self.assertIn("twine upload", body, "release-walk should hand off twine upload")
+        self.assertIn("self-submits nothing", body,
+                      "release-walk should state cairn self-submits nothing")
+
+    def test_generic_profile_has_no_python_toolchain(self):
+        text = read("shared", "profiles", "generic.md").lower()
+        for tok in PYTHON_TOKENS_ABSENT_FROM_GENERIC:
             self.assertNotIn(tok, text, f"generic profile should carry no {tok}")
 
 
@@ -146,6 +200,19 @@ class TestInitSelection(unittest.TestCase):
         self.assertIn("generic", text)
         self.assertIn("backfill", text.lower())
         self.assertIn("cairn/PROFILE.md", text)
+
+    def test_init_selects_and_backfills_python(self):
+        """AC3: cairn-init selects `python` on a pyproject.toml (or setup.py/
+        setup.cfg) marker, DESCRIPTION retains precedence for a hybrid repo, and
+        the repair-mode backfill inference names the python branch."""
+        text = read("cairn-init", "SKILL.md")
+        self.assertIn("python", text)
+        self.assertIn("pyproject.toml", text)
+        for legacy in ("setup.py", "setup.cfg"):
+            self.assertIn(legacy, text, f"cairn-init should recognize {legacy}")
+        # DESCRIPTION still wins a hybrid, stated on one source line.
+        self.assertIn("outranks a `pyproject.toml`", text,
+                      "cairn-init should give DESCRIPTION precedence over pyproject in a hybrid")
 
 
 # Skills rewired to read the profile instead of hardcoding R commands: the
@@ -204,6 +271,26 @@ class TestTemplateProfileAware(unittest.TestCase):
         text = read("shared", "templates", "milestone.md")
         self.assertIn("PROFILE.md", text)
         self.assertIn("verify", text)
+
+
+class TestRulebookNamesThreeProfiles(unittest.TestCase):
+    """AC4: tracking-rules "Toolchain profiles" states three profiles ship and
+    its absent-PROFILE inference names `pyproject.toml → python` in the stated
+    order (DESCRIPTION → r-package, pyproject.toml → python, else generic)."""
+
+    def test_rulebook_names_three_profiles_and_python_inference(self):
+        body = section_body(read("shared", "tracking-rules.md"), "Toolchain profiles")
+        self.assertTrue(body, "could not locate the 'Toolchain profiles' section")
+        self.assertIn("Three profiles ship", body,
+                      "rulebook should state three profiles ship")
+        self.assertIn("pyproject.toml", body,
+                      "rulebook inference should name pyproject.toml")
+        self.assertIn("python", body)
+        # Order: DESCRIPTION precedes pyproject precedes the generic fallback.
+        desc_i = body.find("DESCRIPTION")
+        pyproj_i = body.find("pyproject.toml")
+        self.assertTrue(0 <= desc_i < pyproj_i,
+                        "inference should list DESCRIPTION -> r-package before pyproject -> python")
 
 
 class TestReleaseSkillReadsProfile(unittest.TestCase):

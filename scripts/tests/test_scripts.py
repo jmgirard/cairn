@@ -343,7 +343,7 @@ class TestValidateProfile(ScriptCase):
         sys.path.insert(0, str(plugin_root / "scripts"))
         try:
             spec.loader.exec_module(cv)
-            for name in ("r-package", "generic"):
+            for name in ("r-package", "python", "generic"):
                 text = (plugin_root / "skills" / "shared" / "profiles" / f"{name}.md").read_text()
                 slots = cv._profile_slots(text)
                 for slot in cv._REQUIRED_SLOTS:

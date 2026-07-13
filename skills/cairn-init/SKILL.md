@@ -21,14 +21,18 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
   fresh `git remote add`, or a CI checkout that never ran `set-head`). cairn
   does not assume `main`; use the detected name wherever the steps below (and
   the tracking-rules git model) say "the default branch".
-- No DESCRIPTION file → **non-package repo**: say so and ask — adapt
-  (scaffold the tracking system with the **generic** toolchain profile, minus
-  R-specific guardrails/gates) or abort. Never scaffold R machinery into a
-  non-package repo silently.
-- **Toolchain profile.** Select the repo's language profile: `DESCRIPTION`
-  present → **r-package**; otherwise → **generic**. cairn-init instantiates the
-  chosen reference (`${CLAUDE_PLUGIN_ROOT}/skills/shared/profiles/<name>.md`)
-  into `cairn/PROFILE.md` at §1; the operational skills read its slots for
+- No DESCRIPTION file → **not an R package**: say so and ask — adapt (scaffold
+  the tracking system with the **python** profile if a `pyproject.toml`/
+  `setup.py`/`setup.cfg` marks a Python package, else the **generic** profile,
+  minus R-specific guardrails/gates) or abort. Never scaffold R machinery into
+  a non-R repo silently.
+- **Toolchain profile.** Select the repo's language profile in this order:
+  `DESCRIPTION` present → **r-package**; else `pyproject.toml` (primary) /
+  `setup.py` / `setup.cfg` present → **python**; otherwise → **generic**.
+  `DESCRIPTION` outranks a `pyproject.toml` in a hybrid repo. cairn-init
+  instantiates the chosen reference
+  (`${CLAUDE_PLUGIN_ROOT}/skills/shared/profiles/<name>.md`) into
+  `cairn/PROFILE.md` at §1; the operational skills read its slots for
   language-specific commands (tracking-rules "Toolchain profiles"). Confirm the
   recommended profile with the user before writing.
 - No existing tracking → **fresh scaffold** (§1).
@@ -44,9 +48,10 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
 - Already on cairn → **repair mode**: verify every §1 piece exists
   and is intact; fix what's missing; report. A **missing `cairn/PROFILE.md`**
   (a repo that adopted cairn before profiles) is backfilled by inference —
-  `DESCRIPTION` present → r-package, else generic — restoring the explicit
-  declaration without changing behavior (the inference is exactly what the
-  skills fall back to when the file is absent).
+  `DESCRIPTION` present → r-package, else `pyproject.toml`/`setup.py`/
+  `setup.cfg` → python, else generic — restoring the explicit declaration
+  without changing behavior (the inference is exactly what the skills fall back
+  to when the file is absent).
 
 ## 1. Fresh scaffold
 
@@ -63,7 +68,7 @@ cairn/
 ├── ROADMAP.md         # empty index (below)
 ├── DECISIONS.md       # header + append-only note (see decision.md template)
 ├── LESSONS.md         # header + append-only note; repo lessons, capped 50 lines (D-015)
-├── PROFILE.md         # toolchain profile (r-package | generic), instantiated
+├── PROFILE.md         # toolchain profile (r-package | python | generic), instantiated
 │                      # from skills/shared/profiles/<name>.md; capped 90 lines
 ├── milestones/archive/
 ├── reviews/archive/
@@ -99,9 +104,9 @@ Then:
   (single-use merge-approval marker written at review gates, consumed by
   the plugin's merge-guard hook — never committed).
 - Instantiate `cairn/PROFILE.md` from the selected reference profile
-  (`${CLAUDE_PLUGIN_ROOT}/skills/shared/profiles/r-package.md` if DESCRIPTION
-  present, else `generic.md`) — copy it verbatim; the repo edits its slots
-  (notably `verify`) afterward as needed.
+  (`${CLAUDE_PLUGIN_ROOT}/skills/shared/profiles/<name>.md` — `r-package.md`,
+  `python.md`, or `generic.md` per the selection order above) — copy it
+  verbatim; the repo edits its slots (notably `verify`) afterward as needed.
 - Fill DESIGN.md's Purpose & Scope from DESCRIPTION and a quick read of
   `R/` — 5–10 honest lines, marked for the user to refine; never invent
   principles. The deep version — eliciting the contract boundary,
