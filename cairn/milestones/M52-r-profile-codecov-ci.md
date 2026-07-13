@@ -2,11 +2,11 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M52: r-package profile — GitHub Actions CI (R-CMD-check + Codecov)
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m52-r-profile-codecov-ci
 
 ## Goal
 
@@ -69,7 +69,7 @@ never a gate" doctrine.
 
 ## Tasks
 
-- [ ] T1 — Write the guard test in `skills/tests/test_toolchain_profiles.py`:
+- [x] T1 — Write the guard test in `skills/tests/test_toolchain_profiles.py`:
       assert the r-package `test-doctrine` names `check-standard`,
       `test-coverage`, and `codecov`, plus the diagnostic-only framing; anchor
       on the uniquely-new tokens and include a mental/actual deletion check so
@@ -84,6 +84,8 @@ never a gate" doctrine.
 ## Work log
 
 - 2026-07-12: created by /milestone-plan.
+- 2026-07-12: status → in-progress; branch m52-r-profile-codecov-ci cut from main.
+- 2026-07-12: T1 — guard test TestRPackageCodecovCI added (red: the CI-pair tokens check-standard/test-coverage/codecov/"never gates the merge" are absent pre-M52); the covr-line retention check is green.
 
 ## Decisions
 

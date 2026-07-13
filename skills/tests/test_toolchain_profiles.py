@@ -217,6 +217,45 @@ class TestRPackageFixtureProvenance(unittest.TestCase):
                           f"provenance mandate should name the {shape} shape option")
 
 
+class TestRPackageCodecovCI(unittest.TestCase):
+    """M52: the r-package test-doctrine documents the standard R GitHub Actions
+    CI pair — `use_github_action("check-standard")` (R CMD check) and
+    `use_github_action("test-coverage")` (covr → Codecov) — with coverage
+    reporting framed diagnostic-only (never a merge gate), coherent with the
+    retained "covr is a diagnostic, never a gate" line and tracking-rules' "no
+    coverage-percentage target". `check-standard`, `test-coverage`, `codecov`,
+    and "never gates the merge" are all absent from the pre-M52 profile, so each
+    assertion doubles as the M39/M40 deletion sanity-check: removing the CI-pair
+    block makes them fail (mentally deleting the feature ⇒ red)."""
+
+    def _doctrine(self):
+        body = section_body(read("shared", "profiles", "r-package.md"), "test-doctrine")
+        self.assertTrue(body, "could not locate the r-package test-doctrine slot")
+        return body
+
+    def test_names_the_standard_ci_pair(self):
+        body = self._doctrine().lower()
+        self.assertIn("check-standard", body,
+                      "test-doctrine should name the R CMD check GitHub Action")
+        self.assertIn("test-coverage", body,
+                      "test-doctrine should name the test-coverage GitHub Action")
+        self.assertIn("codecov", body,
+                      "test-doctrine should name Codecov as the coverage-report sink")
+
+    def test_coverage_reporting_is_diagnostic_only(self):
+        body = self._doctrine().lower()
+        self.assertIn("never gates the merge", body,
+                      "coverage reporting must be framed diagnostic-only (never a merge gate)")
+
+    def test_retains_the_covr_is_a_diagnostic_line(self):
+        # AC2: the pre-existing doctrine line stays — the CI addition must not
+        # silently drop it (this token predates M52, so it is a *retention*
+        # check, deliberately NOT the deletion anchor for the new guidance).
+        body = self._doctrine()
+        self.assertIn("`covr` is a diagnostic, never a gate", body,
+                      "the existing 'covr is a diagnostic, never a gate' line must be retained")
+
+
 class TestInitSelection(unittest.TestCase):
     def test_init_selects_and_backfills_profile(self):
         text = read("cairn-init", "SKILL.md")
