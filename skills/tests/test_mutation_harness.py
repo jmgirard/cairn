@@ -29,12 +29,92 @@ import mutation_engine as me
 # --------------------------------------------------------------------------
 Mutation = collections.namedtuple("Mutation", "guard test target block")
 
+RULES = "skills/shared/tracking-rules.md"
+
 REGISTRY = [
     Mutation(
         guard="test_search_first_candidates",
         test="TestSearchFirstCandidateRule.test_rule_names_all_three_sweep_targets",
-        target="skills/shared/tracking-rules.md",
+        target=RULES,
         block="sweep existing candidates + `milestones/archive/`",
+    ),
+    Mutation(
+        guard="test_ac_traceability",
+        test="TestTemplateCoverageSection.test_coverage_section_exists",
+        target="skills/shared/templates/milestone.md",
+        block="## Coverage",
+    ),
+    Mutation(
+        guard="test_chapter_marker_mandate",
+        test="TestChapterMarkerMandate.test_rulebook_declares_the_per_phase_mandate",
+        target=RULES,
+        block="Mark a chapter at each phase transition",
+    ),
+    Mutation(
+        guard="test_default_branch_parameterized",
+        test="TestDefaultBranchParameterized.test_git_model_uses_default_branch",
+        target=RULES,
+        block="The default branch (`main`/`master`) is a distribution",
+    ),
+    Mutation(
+        guard="test_design_interview",
+        test="TestDesignInterviewSkill.test_phase1_banks_never_classifies",
+        target="skills/design-interview/SKILL.md",
+        block="**banked-candidates ledger**",
+    ),
+    Mutation(
+        guard="test_gate_wording",
+        test="TestMergeGateIsAChip.test_rulebook_declares_merge_gate_a_chip",
+        target=RULES,
+        block="merge-approval gate is itself an AskUserQuestion chip",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestLessonsLoop.test_weight_caps_states_lessons_cap",
+        target=RULES,
+        block="`LESSONS.md` < 50 lines",
+    ),
+    Mutation(
+        guard="test_migration_guidance",
+        test="TestMigrationGuidance.test_reference_sweep_names_two_dispositions",
+        target="skills/cairn-init/SKILL.md",
+        block="Reference sweep",
+    ),
+    Mutation(
+        guard="test_oracle_doctrine",
+        test="TestOracleDoctrine.test_states_the_two_independent_types_bar",
+        target=RULES,
+        block="≥2 *independent* oracle types",
+    ),
+    Mutation(
+        guard="test_phase_header_levels",
+        test="TestPhaseHeaderLevels.test_rulebook_declares_h1_unit_h2_phase",
+        target=RULES,
+        block="A `#` names the unit of work",
+    ),
+    Mutation(
+        guard="test_review_fanout",
+        test="TestReviewFanout.test_fanout_states_why_a_fresh_model_reviews",
+        target=RULES,
+        block="fresh-context subagents",
+    ),
+    Mutation(
+        guard="test_rulebook_polish",
+        test="TestRulebookPolish.test_copy_run_commands_get_their_own_fenced_block",
+        target=RULES,
+        block="own fenced code block",
+    ),
+    Mutation(
+        guard="test_section_allow_lists",
+        test="TestSectionAllowLists.test_write_mode_legend_defines_core_verbs",
+        target=RULES,
+        block="**mirror-update**",
+    ),
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestPythonProfile.test_python_release_walk_hands_off_and_self_submits_nothing",
+        target="skills/shared/profiles/python.md",
+        block="self-submits nothing",
     ),
 ]
 

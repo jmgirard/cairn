@@ -51,7 +51,11 @@ class TestDesignInterviewSkill(unittest.TestCase):
                 self.assertIn(anchor, self.skill)
 
     def test_phase1_banks_never_classifies(self):
-        self.assertIn("banked-candidates ledger", self.skill)
+        # Anchor on the bolded introduction, not a bare "banked-candidates
+        # ledger": that phrase also occurs (whitespace-wrapped) further down,
+        # so a bare assert survives deletion of the actual rule — false
+        # coverage the M53 mutation harness flags.
+        self.assertIn("**banked-candidates ledger**", self.skill)
         # Phase 1 must not ask for a principle commitment.
         self.assertIn("never ask", self.skill)
 

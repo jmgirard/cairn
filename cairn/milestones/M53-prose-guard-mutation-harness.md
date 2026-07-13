@@ -94,7 +94,7 @@ time. Lessons don't execute; a harness does.
       file, block locator) and ship the self-test fixture pair — a
       false-coverage guard the harness must flag and a sound guard it must
       clear — proving both oracle directions. (AC1)
-- [ ] T3 — Register all existing prose-guards under `skills/tests/`; run the
+- [x] T3 — Register all existing prose-guards under `skills/tests/`; run the
       harness; re-anchor inline any false-coverage guard it flags (typically a
       one-line anchor fix per the M39/M40 discipline), card any needing real
       rework (see Out); log one work-log line per fix. (AC2)
@@ -122,7 +122,23 @@ time. Lessons don't execute; a harness does.
   guard and confirmed it fails when its block is blanked (real-guard pipeline
   validated). Target paths are repo-relative (guards read files outside
   `skills/` too, e.g. DESIGN.md).
+- 2026-07-13 (T3): registered all 14 prose-guards (one strong per file). The
+  harness flagged one genuine false-coverage guard on first run —
+  `test_design_interview.test_phase1_banks_never_classifies` asserted a bare
+  `banked-candidates ledger` that survives via a whitespace-wrapped second
+  mention; re-anchored inline onto the bolded introduction. 13/14 were sound.
+  3 suites green (skills 140).
 
 ## Decisions
+
+- 2026-07-13: Registry granularity is **one strong entry per guard file**
+  (the completeness bar), not one per assertion — a file may add more entries
+  per distinct block over time. The harness is meaningful for positive
+  (`assertIn`) assertions; `assertNotIn`/negative guards aren't blanked (their
+  oracle is absence, not presence).
+- 2026-07-13: First harness run found real false coverage in
+  `test_design_interview` (bare `banked-candidates ledger` survives via a
+  whitespace-wrapped duplicate); re-anchored onto `**banked-candidates
+  ledger**`. This is the milestone's thesis demonstrated on live code.
 
 ## Review
