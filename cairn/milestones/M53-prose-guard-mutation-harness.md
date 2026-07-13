@@ -90,7 +90,7 @@ time. Lessons don't execute; a harness does.
       `unittest.TestLoader`/`TestResult`, and assert failures+errors > 0.
       A locator that resolves to zero or >1 sites is a hard error (catches
       drift), not a silent pass.
-- [ ] T2 — Define the registry format (entries: guard module+test, target
+- [x] T2 — Define the registry format (entries: guard module+test, target
       file, block locator) and ship the self-test fixture pair — a
       false-coverage guard the harness must flag and a sound guard it must
       clear — proving both oracle directions. (AC1)
@@ -117,6 +117,11 @@ time. Lessons don't execute; a harness does.
   both oracle directions proven in `test_mutation_harness.py` — sound guard
   caught failing on deletion, weak guard flagged surviving. Fixture guards
   defined locally so `discover` doesn't collect them. 3 suites green.
+- 2026-07-13 (T2): `Mutation` registry record + `EXEMPT` map +
+  `TestRegisteredGuardsFailWhenBlanked` driver; seeded with the search-first
+  guard and confirmed it fails when its block is blanked (real-guard pipeline
+  validated). Target paths are repo-relative (guards read files outside
+  `skills/` too, e.g. DESIGN.md).
 
 ## Decisions
 

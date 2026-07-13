@@ -13,11 +13,36 @@ Two jobs:
 Run: python3 -m unittest discover -s skills/tests
 """
 
+import collections
 import pathlib
 import tempfile
 import unittest
 
 import mutation_engine as me
+
+
+# --------------------------------------------------------------------------
+# Registry: one entry per protected rule block. `block` is an exact substring
+# of `target` (repo-relative) that the named guard depends on; blanking it must
+# make `guard`.`test` fail. `test` is "ClassName.method". A guard file may have
+# several entries (one per distinct block it protects).
+# --------------------------------------------------------------------------
+Mutation = collections.namedtuple("Mutation", "guard test target block")
+
+REGISTRY = [
+    Mutation(
+        guard="test_search_first_candidates",
+        test="TestSearchFirstCandidateRule.test_rule_names_all_three_sweep_targets",
+        target="skills/shared/tracking-rules.md",
+        block="sweep existing candidates + `milestones/archive/`",
+    ),
+]
+
+# Prose-guard files deliberately NOT in the registry, each with a reason. The
+# completeness check (below) treats these as covered.
+EXEMPT = {
+    "test_mutation_harness": "the harness's own tests, not a prose-guard",
+}
 
 
 # --------------------------------------------------------------------------
@@ -96,6 +121,20 @@ class TestEngineOracle(unittest.TestCase):
                 str(self.path), _RULE_BLOCK, self.WeakGuard, "test_rule"
             )
         )
+
+
+class TestRegisteredGuardsFailWhenBlanked(unittest.TestCase):
+    def test_each_registered_guard_fails_when_its_block_is_blanked(self):
+        self.assertTrue(REGISTRY, "registry is empty")
+        for m in REGISTRY:
+            with self.subTest(guard=m.guard, test=m.test):
+                cls, method = me.load_case(m.guard, m.test)
+                self.assertTrue(
+                    me.guard_fails_when_blanked(m.target, m.block, cls, method),
+                    f"{m.guard}.{m.test} PASSED after blanking {m.block!r} in "
+                    f"{m.target} — false coverage. Re-anchor the guard on the "
+                    f"rule's own unique phrasing (M39/M40 discipline).",
+                )
 
 
 if __name__ == "__main__":
