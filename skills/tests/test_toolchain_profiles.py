@@ -206,5 +206,38 @@ class TestTemplateProfileAware(unittest.TestCase):
         self.assertIn("verify", text)
 
 
+class TestReleaseSkillReadsProfile(unittest.TestCase):
+    """M47: cairn-release reads the active profile's release-walk slot instead
+    of hardcoding the CRAN walk (AC1), and gates its toolchain preconditions on
+    the profile (AC3); the generic profile's release-walk defines a tag-based
+    path with no CRAN (AC2). The "no longer hardcodes devtools::" half of AC1
+    and the r-package text-equivalence of AC4 are covered by
+    TestOperationalSkillsReadProfile (now includes cairn-release) and
+    test_r_package_profile_holds_relocated_commands respectively."""
+
+    def test_skill_reads_the_release_walk_slot(self):
+        text = read("cairn-release", "SKILL.md")
+        self.assertIn("release-walk", text,
+                      "cairn-release should read the profile release-walk slot")
+        self.assertIn("PROFILE.md", text)
+
+    def test_skill_gates_preconditions_on_the_profile(self):
+        text = read("cairn-release", "SKILL.md")
+        # Anchor on the rewire's own single-line, non-bold-split phrasing (M23/M26/M39):
+        # this phrase exists only because preconditions now gate on the profile.
+        self.assertIn("Toolchain preconditions gate on the profile", text,
+                      "cairn-release should gate DESCRIPTION/devtools preconditions on the profile")
+
+    def test_generic_release_walk_defines_a_tag_path(self):
+        # Isolate the release-walk slot so an absent tag path fails (M40), rather
+        # than matching 'tag'/'version' elsewhere in the profile.
+        body = section_body(read("shared", "profiles", "generic.md"), "release-walk").lower()
+        self.assertTrue(body, "could not locate the generic release-walk slot")
+        self.assertIn("tag", body, "generic release-walk should define a tag-based release")
+        self.assertIn("version", body, "generic release-walk should bump the version")
+        for tok in ("cran", "devtools"):
+            self.assertNotIn(tok, body, f"generic release-walk should carry no {tok}")
+
+
 if __name__ == "__main__":
     unittest.main()
