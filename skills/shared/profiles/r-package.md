@@ -41,6 +41,15 @@ rules in tracking-rules:
 - Never test print cosmetics beyond meaningful snapshots, trivial pass-throughs,
   dependency behavior, or plots except `vdiffr` when the plot is the product.
 - `covr` is a diagnostic, never a gate.
+- GitHub Actions CI uses the standard usethis pair:
+  `usethis::use_github_action("check-standard")` runs `R CMD check` across
+  platforms (a normal CI check — cairn's git model never merges red or pending
+  CI), and `usethis::use_github_action("test-coverage")` runs `covr` and uploads
+  to Codecov (`covr::codecov()`). Coverage reporting is diagnostic-only: Codecov
+  annotates the PR, but coverage never gates the merge — the `covr` line above
+  and tracking-rules' "no coverage-percentage target" both hold. Give the
+  `.github/` workflow dir an `.Rbuildignore` `^\.github$` entry (usethis adds it)
+  so it stays out of the built package.
 - Dependency changes (Imports/Suggests) are never unilateral — question-gate + D-entry.
 - Breaking changes to exported behavior follow a deprecation cycle unless pre-1.0 and explicitly waived.
 - Every newly exported object gets a `_pkgdown.yml` reference-index row in the same commit.
