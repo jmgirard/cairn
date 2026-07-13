@@ -1,12 +1,14 @@
-"""Regression guards for the M45 toolchain-profile spine.
+"""Regression guards for the toolchain-profile mechanism (M45 spine, M46 rewire).
 
-Locks: the six slots present + non-empty in both shipped profiles (AC1); the
-r-package profile reproducing the live R command strings, i.e. token-level
-text-equivalence with the current skills (AC2); the generic profile carrying
-no R toolchain tokens; cairn-init's profile selection + repair backfill (AC3);
-and — the M45 boundary — the operational skills still hardcoding their commands
-with no profile read yet (AC6). M46/M47 rewire the skills and will update the
-AC6 guard.
+Locks: the six slots present + non-empty in both shipped profiles; the r-package
+profile as the single source of truth for the relocated R command strings
+(M46 flipped this from the skills); the generic profile carrying no R toolchain
+tokens; cairn-init's profile selection + repair backfill; the M46 rewire — the
+operational skills (implement/hotfix/review) read the active profile's slot and
+no longer hardcode `devtools::`, the review consistency gate splits into
+universal + profile halves, the R guardrails are relocated out of the rulebook
+into the r-package profile, and the milestone template is de-R'd; plus the M47
+boundary — cairn-release still hardcodes devtools until then.
 
 Skill-prose guards read the file as one string, so asserted phrases live on a
 single source line (M23) and steer clear of `**bold**` splits (M26).
@@ -22,6 +24,36 @@ SKILLS = pathlib.Path(__file__).resolve().parent.parent
 
 def read(*parts):
     return SKILLS.joinpath(*parts).read_text()
+
+
+def section_body(text, heading):
+    """The body of a `## <heading>` section, up to the next `## ` heading."""
+    lines = text.splitlines()
+    out, capturing = [], False
+    for line in lines:
+        if line.startswith("## "):
+            if capturing:
+                break
+            capturing = line[3:].strip().lower() == heading.lower()
+            continue
+        if capturing:
+            out.append(line)
+    return "\n".join(out)
+
+
+# R-toolchain gate tokens that M46 relocated out of the universal rulebook
+# sections into the r-package profile — they must not reappear in the
+# universal "What gets a test" floor (AC3).
+R_GATE_TOKENS = (
+    "devtools",
+    "roxygen",
+    "NAMESPACE",
+    "cli::cli_abort",
+    "_pkgdown",
+    ".Rbuildignore",
+    "vdiffr",
+    "covr",
+)
 
 
 SLOTS = (
@@ -49,14 +81,6 @@ R_COMMAND_TOKENS = (
     "NEWS.md",
 )
 
-OPERATIONAL_SKILLS = (
-    ("milestone-implement", "SKILL.md"),
-    ("milestone-review", "SKILL.md"),
-    ("hotfix", "SKILL.md"),
-    ("cairn-release", "SKILL.md"),
-)
-
-
 class TestShippedProfiles(unittest.TestCase):
     def test_both_profiles_define_all_six_slots(self):
         for name in ("r-package", "generic"):
@@ -64,19 +88,52 @@ class TestShippedProfiles(unittest.TestCase):
             for slot in SLOTS:
                 self.assertIn(f"## {slot}", text, f"{name} missing slot {slot}")
 
-    def test_r_package_reproduces_live_commands(self):
+    def test_r_package_profile_holds_relocated_commands(self):
+        """AC6 text-equivalence, source-of-truth flipped by M46: the r-package
+        profile is now the single home for the R command strings (relocated out
+        of the operational skills and the rulebook), so the profile — not the
+        skills — must reproduce each token."""
         profile = read("shared", "profiles", "r-package.md")
-        live = "".join(
-            read(a, b) for (a, b) in OPERATIONAL_SKILLS
-        ) + read("shared", "tracking-rules.md")
         for tok in R_COMMAND_TOKENS:
-            self.assertIn(tok, profile, f"r-package profile missing live token {tok}")
-            self.assertIn(tok, live, f"{tok} not in current skills — token drift")
+            self.assertIn(tok, profile, f"r-package profile missing relocated token {tok}")
 
     def test_generic_profile_has_no_r_toolchain(self):
         text = read("shared", "profiles", "generic.md").lower()
         for tok in ("devtools", "roxygen", "pkgdown", "cran"):
             self.assertNotIn(tok, text, f"generic profile should carry no {tok}")
+
+
+class TestRulebookRelocation(unittest.TestCase):
+    """AC3: the R-mechanical guardrails + the R half of "What gets a test" are
+    relocated into the r-package profile; the universal rulebook keeps only the
+    language-agnostic floor. The old "## R package guardrails" section is gone,
+    and the R gate tokens do not appear in the universal test-rules section."""
+
+    def test_r_package_guardrails_section_removed(self):
+        rules = read("shared", "tracking-rules.md")
+        self.assertNotIn("## R package guardrails", rules,
+                         "R package guardrails section should be relocated to the r-package profile")
+
+    def test_what_gets_a_test_has_no_r_gate_tokens(self):
+        body = section_body(read("shared", "tracking-rules.md"), "What gets a test")
+        self.assertTrue(body, "could not locate the 'What gets a test' section")
+        for tok in R_GATE_TOKENS:
+            self.assertNotIn(tok, body,
+                             f"universal 'What gets a test' still carries R gate token {tok}")
+
+    def test_r_gate_tokens_live_in_r_package_profile(self):
+        profile = read("shared", "profiles", "r-package.md")
+        for tok in R_GATE_TOKENS:
+            self.assertIn(tok, profile,
+                          f"r-package profile missing relocated gate token {tok}")
+
+    def test_relocated_guardrail_specifics_survive(self):
+        """AC6: the guardrail *specifics* moved out of the rulebook must still be
+        reproduced by the r-package profile, so no R adopter regresses."""
+        profile = read("shared", "profiles", "r-package.md")
+        for phrase in ("data-raw", "deprecation", "Imports/Suggests", "assertthat", "edition 3"):
+            self.assertIn(phrase, profile,
+                          f"r-package profile dropped relocated guardrail '{phrase}'")
 
 
 class TestInitSelection(unittest.TestCase):
@@ -90,20 +147,71 @@ class TestInitSelection(unittest.TestCase):
         self.assertIn("cairn/PROFILE.md", text)
 
 
-class TestOperationalSkillsUnchanged(unittest.TestCase):
-    """AC6: M45 ships the mechanism but does NOT rewire the operational skills —
-    they still hardcode their commands and read no profile. M46/M47 flip this;
-    this guard is expected to change then."""
+# Skills M46 rewires to read the profile instead of hardcoding R commands.
+# cairn-release is deliberately NOT here — its release-walk generalization is
+# M47; it still hardcodes devtools until then (see TestReleaseSkillUntouched).
+REWIRED_SKILLS = (
+    ("milestone-implement", "SKILL.md"),
+    ("hotfix", "SKILL.md"),
+    ("milestone-review", "SKILL.md"),
+)
 
-    def test_operational_skills_still_hardcode_devtools(self):
-        for a, b in OPERATIONAL_SKILLS:
-            text = read(a, b)
-            self.assertIn("devtools::", text, f"{a} lost its hardcoded devtools command")
 
-    def test_operational_skills_do_not_yet_read_profile(self):
-        for a, b in OPERATIONAL_SKILLS:
+class TestOperationalSkillsReadProfile(unittest.TestCase):
+    """AC1/AC2: M45 shipped the mechanism but left the operational skills
+    hardcoding their R commands; M46 flips that — the rewired skills name the
+    active profile's slot and no longer hardcode a `devtools::` command."""
+
+    def test_rewired_skills_read_a_profile_slot(self):
+        for a, b in REWIRED_SKILLS:
             text = read(a, b)
-            self.assertNotIn("PROFILE.md", text, f"{a} reads the profile before M46/M47")
+            self.assertIn("PROFILE.md", text, f"{a} should read the profile after M46")
+            self.assertNotIn("devtools::", text,
+                             f"{a} still hardcodes a devtools command after M46")
+
+
+class TestReviewGateSplit(unittest.TestCase):
+    """AC2: milestone-review's consistency gate splits into the universal
+    cairn-file checks (unconditional, every profile) and the profile
+    `consistency-gate` slot (toolchain checks). Both halves must be present, and
+    the universal checks must not have been gated behind the profile."""
+
+    def test_universal_checks_stay_unconditional(self):
+        text = read("milestone-review", "SKILL.md")
+        for tok in ("cairn_validate", "Coverage completeness", "cairn_impact"):
+            self.assertIn(tok, text, f"review lost the universal cairn-file check {tok}")
+        self.assertIn("Universal cairn-file checks", text,
+                      "review no longer labels the always-run universal checks")
+
+    def test_review_reads_the_profile_consistency_gate_slot(self):
+        text = read("milestone-review", "SKILL.md")
+        self.assertIn("consistency-gate", text,
+                      "review no longer reads the profile consistency-gate slot")
+        self.assertIn("PROFILE.md", text)
+
+
+class TestTemplateProfileAware(unittest.TestCase):
+    """AC4: the milestone template no longer hardcodes `devtools::check()` in
+    its acceptance guidance; it references the active profile's verify/check."""
+
+    def test_template_drops_hardcoded_devtools(self):
+        text = read("shared", "templates", "milestone.md")
+        self.assertNotIn("devtools", text, "template still hardcodes a devtools command")
+
+    def test_template_references_the_profile(self):
+        text = read("shared", "templates", "milestone.md")
+        self.assertIn("PROFILE.md", text)
+        self.assertIn("verify", text)
+
+
+class TestReleaseSkillUntouched(unittest.TestCase):
+    """M46 boundary: cairn-release's release-walk generalization is M47, so it
+    still hardcodes devtools and reads no profile until then. This guard flips
+    at M47."""
+
+    def test_cairn_release_still_hardcodes_devtools(self):
+        text = read("cairn-release", "SKILL.md")
+        self.assertIn("devtools::", text, "cairn-release lost its hardcoded command before M47")
 
 
 if __name__ == "__main__":

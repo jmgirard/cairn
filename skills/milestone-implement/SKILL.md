@@ -36,8 +36,8 @@ run ingestion first (see `/milestone-brief`).
    then `git checkout -b m<nn>-<slug>`; record the branch in the milestone
    header. Resume sessions: check out the
    existing branch; if the default branch has moved since the branch was cut
-   (e.g., a hotfix merged), merge it into the branch and re-run
-   `devtools::test()` before continuing.
+   (e.g., a hotfix merged), merge it into the branch and re-run the active
+   profile's `verify` slot before continuing.
 
 3. **Question gate:** surface the implementation choices the plan left open
    (API shape, naming, dependency picks — dependency changes always need a
@@ -49,10 +49,12 @@ run ingestion first (see `/milestone-brief`).
    instance — D-004).
 
 4. **Work tasks in order, autonomously.** For each task:
-   - Tests first where feasible (testthat 3e); numeric results per the
-     oracle doctrine; new user-facing conditions via `cli::cli_abort()`.
-   - After roxygen changes: `devtools::document()`. Gate:
-     `devtools::test()` clean before checking the task off.
+   - Tests first where feasible; numeric results per the oracle doctrine;
+     language-specific test and error-condition idioms per the active
+     profile's `test-doctrine` slot.
+   - Run the active profile's `verify` slot (`cairn/PROFILE.md`; absent →
+     infer per tracking-rules "Toolchain profiles") — its checks must be clean
+     before the task is checked off.
    - Checkpoint-commit per task on the branch, **including** the milestone
      file update (checkbox + one work-log line) in the same commit.
    - Stay within implement-owned sections per the tracking-rules
@@ -80,8 +82,10 @@ run ingestion first (see `/milestone-brief`).
    it, stop. Needs Fable-level judgment → routing chip to
    `/milestone-brief`, stop.
 
-8. **Completion.** When all tasks are checked and `devtools::check()` is
-   clean: set status `review`, checkpoint-commit, then stop with a recap —
+8. **Completion.** When all tasks are checked and the active profile's
+   `verify` slot passes clean (for a toolchain whose profile names a fuller
+   pre-review check, that check): set status `review`, checkpoint-commit, then
+   stop with a recap —
    outcome-first (per tracking-rules): what the milestone now does or
    changes, in plain words, before the mechanics —
    file-level summary of the branch diff, test/check results, deviations

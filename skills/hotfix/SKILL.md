@@ -32,8 +32,9 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
 3. **Regression test first.** Write the test that fails because of the bug;
    confirm it fails; then fix; confirm it passes.
 
-4. **Gate-lite:** `devtools::test()` clean; `devtools::document()` if
-   roxygen changed; `devtools::check()` if anything structural was touched.
+4. **Gate-lite:** run the active profile's `verify` slot (`cairn/PROFILE.md`;
+   absent → infer per tracking-rules "Toolchain profiles") — its gate-lite
+   checks must be clean before the fix is proposed for merge.
 
 5. NEWS.md entry under the development version (no milestone/issue jargon in
    the user-facing text). Push; open the PR — `Fixes #N` in the description

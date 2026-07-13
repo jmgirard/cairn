@@ -31,7 +31,8 @@ overrides — log the override).
    milestone header.
 
 3. **Execute every acceptance criterion with fresh evidence** — actually run
-   the tests, actually run `devtools::check()`; record results per criterion
+   the tests and the active profile's checks (its `verify` / `consistency-gate`
+   slots); record results per criterion
    in the milestone's Review section (summaries, never pasted output). Write
    the Review section — review-exclusive per the tracking-rules
    section-ownership table — and, under AC fencing, tick each verified
@@ -53,7 +54,12 @@ overrides — log the override).
    fences the milestone's own acceptance boxes against optimistic
    check-off; the Coverage completeness check in step 4 fences the plan.
 
-4. **Consistency gate** — mechanical checks, by command, never recall:
+4. **Consistency gate** — mechanical checks, by command, never recall. Two
+   halves: the **universal cairn-file checks** below run unconditionally in
+   every repo; the **toolchain checks** come from the active profile's
+   `consistency-gate` slot.
+
+   **Universal cairn-file checks (always, every profile):**
    - `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` passes
      (exit 0) — the mechanical cairn-file checks (mirror, single in-progress,
      caps, terminal-row retention, vocab, dependency resolution, orphans, ID
@@ -73,15 +79,13 @@ overrides — log the override).
      Sync Impact Report of every `cairn/` file:line citing a changed
      principle. Each listed reference is reconciled in this milestone, or the
      divergence is deliberate and logged. No principle change → skip.
-   - `devtools::document()` produces no diff.
-   - README.Rmd present and out of sync with README.md →
-     `devtools::build_readme()`, commit.
-   - pkgdown site present → `pkgdown::check_pkgdown()` passes (catches
-     exports missing from `_pkgdown.yml`).
-   - NEWS.md has an entry for this milestone's user-visible changes (no
-     milestone numbers in user-facing text).
-   - New top-level files have `.Rbuildignore` entries (check `check()`
-     NOTEs).
+
+   **Toolchain checks — the active profile's `consistency-gate` slot**
+   (`cairn/PROFILE.md`; absent → infer per tracking-rules "Toolchain
+   profiles"): run each check the slot names and record its result like any
+   other gate check. The slot is authoritative — read it, never recall a
+   hardcoded list. A profile whose slot names no toolchain checks (e.g.
+   `generic`) makes this half a clean no-op.
 
    Any criterion or gate failure → status back to `in-progress`, work-log
    line naming exactly what failed, stop. **Thrash rule:** if this is the
