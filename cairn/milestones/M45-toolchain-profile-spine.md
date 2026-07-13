@@ -1,10 +1,10 @@
 # M45: Toolchain-profile spine — mechanism, r-package + generic profiles, init selection
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** GP1, GP3
-- **Branch/PR:** —
+- **Branch/PR:** m45-toolchain-profile-spine
 
 ## Goal
 
