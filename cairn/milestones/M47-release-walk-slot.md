@@ -58,7 +58,7 @@ bump + NEWS + tag, no CRAN) release path.
 
 - [x] T1 — Move the CRAN walk into the `r-package` profile `release-walk` slot;
       author the `generic` `release-walk` (version bump + NEWS + tag path).
-- [ ] T2 — `cairn-release`: read the active profile's `release-walk` slot; gate
+- [x] T2 — `cairn-release`: read the active profile's `release-walk` slot; gate
       the preconditions (DESCRIPTION/devtools/clean-tree) on the profile.
 - [ ] T3 — Guard tests: CRAN content lives in the `r-package` slot, the generic
       tag path exists, precondition gating, and r-package text-equivalence.
@@ -68,6 +68,7 @@ bump + NEWS + tag, no CRAN) release path.
 - 2026-07-12: created by /milestone-plan (toolchain-profiles arc, milestone 3 of 3).
 - 2026-07-13: started /milestone-implement on m47-release-walk-slot; status → in-progress.
 - 2026-07-13: T1 — r-package release-walk slot already held the full CRAN walk (M45); enriched the generic release-walk from a one-line summary into a followable bump→NEWS→commit→tag walk (shipped generic.md + this repo's PROFILE.md); dropped the obsolete "lands in M47" note.
+- 2026-07-13: T2 — rewrote cairn-release/SKILL.md as a universal spine that reads the active profile's release-walk slot (r-package = CRAN walk, generic = tag walk) and gates toolchain preconditions on the profile; removed the hardcoded CRAN/devtools walk. Minor plan amendment (M46 lesson): folded the boundary-guard flip into this commit — added cairn-release to REWIRED_SKILLS and removed TestReleaseSkillUntouched, since removing devtools:: from the skill would otherwise leave that guard red mid-milestone.
 
 ## Decisions
 

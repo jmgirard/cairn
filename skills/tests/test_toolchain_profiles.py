@@ -8,7 +8,8 @@ operational skills (implement/hotfix/review) read the active profile's slot and
 no longer hardcode `devtools::`, the review consistency gate splits into
 universal + profile halves, the R guardrails are relocated out of the rulebook
 into the r-package profile, and the milestone template is de-R'd; plus the M47
-boundary — cairn-release still hardcodes devtools until then.
+rewire — cairn-release now reads the active profile's release-walk slot and no
+longer hardcodes the CRAN/devtools walk.
 
 Skill-prose guards read the file as one string, so asserted phrases live on a
 single source line (M23) and steer clear of `**bold**` splits (M26).
@@ -147,27 +148,28 @@ class TestInitSelection(unittest.TestCase):
         self.assertIn("cairn/PROFILE.md", text)
 
 
-# Skills M46 rewires to read the profile instead of hardcoding R commands.
-# cairn-release is deliberately NOT here — its release-walk generalization is
-# M47; it still hardcodes devtools until then (see TestReleaseSkillUntouched).
+# Skills rewired to read the profile instead of hardcoding R commands: the
+# operational trio at M46, and cairn-release at M47 (its release-walk slot).
 REWIRED_SKILLS = (
     ("milestone-implement", "SKILL.md"),
     ("hotfix", "SKILL.md"),
     ("milestone-review", "SKILL.md"),
+    ("cairn-release", "SKILL.md"),
 )
 
 
 class TestOperationalSkillsReadProfile(unittest.TestCase):
     """AC1/AC2: M45 shipped the mechanism but left the operational skills
-    hardcoding their R commands; M46 flips that — the rewired skills name the
-    active profile's slot and no longer hardcode a `devtools::` command."""
+    hardcoding their R commands; M46 flipped the operational trio and M47
+    cairn-release — the rewired skills name the active profile's slot and no
+    longer hardcode a `devtools::` command."""
 
     def test_rewired_skills_read_a_profile_slot(self):
         for a, b in REWIRED_SKILLS:
             text = read(a, b)
-            self.assertIn("PROFILE.md", text, f"{a} should read the profile after M46")
+            self.assertIn("PROFILE.md", text, f"{a} should read the profile")
             self.assertNotIn("devtools::", text,
-                             f"{a} still hardcodes a devtools command after M46")
+                             f"{a} still hardcodes a devtools command")
 
 
 class TestReviewGateSplit(unittest.TestCase):
@@ -202,16 +204,6 @@ class TestTemplateProfileAware(unittest.TestCase):
         text = read("shared", "templates", "milestone.md")
         self.assertIn("PROFILE.md", text)
         self.assertIn("verify", text)
-
-
-class TestReleaseSkillUntouched(unittest.TestCase):
-    """M46 boundary: cairn-release's release-walk generalization is M47, so it
-    still hardcodes devtools and reads no profile until then. This guard flips
-    at M47."""
-
-    def test_cairn_release_still_hardcodes_devtools(self):
-        text = read("cairn-release", "SKILL.md")
-        self.assertIn("devtools::", text, "cairn-release lost its hardcoded command before M47")
 
 
 if __name__ == "__main__":

@@ -1,75 +1,79 @@
 ---
 name: cairn-release
-description: Prepare an R package release to CRAN - version bump, NEWS consolidation, full checks, cran-comments, and a final human checklist. Use when the user wants to release, submit to CRAN, cut a version, or prepare a release. Never self-submits.
+description: Prepare a release following the active toolchain profile's release-walk - an r-package profile runs the CRAN walk (version bump, NEWS, checks, cran-comments, human submission checklist); a generic profile does a version bump + changelog + tag. Use when the user wants to release, submit to CRAN, cut a version, or prepare a release. Never self-submits.
 argument-hint: "[patch | minor | major]"
 ---
 
-# /cairn-release — CRAN release walk
+# /cairn-release — release walk (profile-driven)
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first. This
-skill prepares everything and hands the actual submission to the user —
-**it never self-submits to CRAN.**
+Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first. This skill
+prepares a release and hands any outward action to the user — **it never
+self-submits** (no registry submission, no tag push without approval). The
+toolchain-specific steps come from the active profile's `release-walk` slot;
+this skill is the universal spine around it.
 Phase header: `# Release <version>` → `## <step>`.
 Chapter markers: mark a chapter at each phase transition (session start implicit).
 
 ## Preconditions
 
-- Session start: read `cairn/ROADMAP.md` and `cairn/DECISIONS.md`
-  (standing constraints bind the release too); if an un-ingested RR sits
-  in `cairn/reviews/`, handle ingestion first (see `/milestone-brief`).
+- Session start: read `cairn/ROADMAP.md` and `cairn/DECISIONS.md` (standing
+  constraints bind the release too); if an un-ingested RR sits in
+  `cairn/reviews/`, handle ingestion first (see `/milestone-brief`).
 - No milestone `in-progress` — release from a clean, green default branch. (A
   milestone at `review` should be merged or explicitly deferred first.)
 - Clean `git status`; local default branch up to date with origin (detect it
   per the tracking-rules git model).
+- **Read the active profile's `release-walk` slot** (`cairn/PROFILE.md`; absent
+  → infer per tracking-rules "Toolchain profiles"): it names the release steps
+  for this repo's toolchain. Toolchain preconditions gate on the profile — a
+  `DESCRIPTION` file, a registry toolchain install — are required **only when
+  the profile's `release-walk` names them** (an r-package profile does; a
+  generic profile does not). Never assume a toolchain the profile doesn't
+  declare.
 
 ## Workflow
 
-1. **Version decision** (question gate, one round): review NEWS.md since the
-   last release and recommend patch / minor / major with rationale
+The `release-walk` slot is authoritative — read it, never recall a hardcoded
+walk. The steps below are the universal spine; the slot fills in the
+toolchain-specific work at step 3.
+
+1. **Version decision** (question gate, one round): review the changelog/NEWS
+   since the last release and recommend patch / minor / major with rationale
    (breaking changes force minor/major; pre-1.0 conventions per DESIGN.md).
    Confirm the target version with the user.
 
-2. **NEWS consolidation:** retitle the development heading to the release
-   version; group entries (breaking changes first, then new features,
+2. **Changelog/NEWS consolidation:** retitle the development heading to the
+   release version; group entries (breaking changes first, then new features,
    fixes); prune noise; no milestone numbers or internal jargon.
 
-3. **Full local verification:**
-   - `devtools::document()` — no diff.
-   - `devtools::test()` and `devtools::check()` — clean (0 errors,
-     0 warnings; justify any NOTEs).
-   - `devtools::build_readme()` if README.Rmd exists.
-   - `pkgdown::check_pkgdown()` if a site exists.
-   - `urlchecker::url_check()` for stale URLs.
-4. **Wide checks** as applicable: `devtools::check_win_devel()` and/or
-   R-hub; reverse-dependency checks (`revdepcheck`) if the package has
-   downstream dependents. These are slow — one blocking wait each, per the
-   CI waiting rules; report results when they arrive.
+3. **Follow the active profile's `release-walk` slot.** Run each step the slot
+   names, in order, recording results as you go:
+   - An **r-package** profile's slot is the CRAN walk — full local
+     verification, wide checks, `cran-comments.md`, the version bump, and a
+     human submission checklist. It is CRAN-flavored end to end and never
+     self-submits.
+   - A **generic** profile's slot is the minimal walk — bump the version marker,
+     commit the release prep to the default branch, and tag the release. The tag
+     is the release; there is no registry step.
+   For any slow checks the slot names (wide/registry checks, reverse-dependency
+   runs), follow the tracking-rules CI waiting rules — one blocking wait each,
+   report results when they arrive. Any outward action (submitting, pushing a
+   tag) is the user's to take at the approval gate; this skill prepares, it does
+   not push.
 
-5. **cran-comments.md:** update with test environments, check results, NOTE
-   justifications, and (for updates) reverse-dependency summary and any
-   CRAN-policy responses.
+4. **Handoff / final actions.** Lead outcome-first: what this release contains
+   and why the version was chosen, in plain words, before the mechanics. Then
+   present the slot's terminal actions as a checklist for the user to run
+   (r-package: the CRAN submission checklist — submit, confirm the email, then
+   tag the GitHub release and bump to the next dev version; generic: the
+   tag/push commands), never performed on their behalf. Offer to prepare the
+   post-acceptance steps as a follow-up when the user returns.
 
-6. Bump `Version:` in DESCRIPTION. Commit release prep directly to the
-   default branch (docs/metadata only) or via a short branch + PR if code had to change —
-   user's call at the approval gate.
-
-7. **Handoff checklist** (present to the user; do not perform). Lead
-   outcome-first: what this release contains and why the version was
-   chosen, in plain words, before the checklist:
-   - [ ] `devtools::submit_cran()` — run this yourself.
-   - [ ] Confirm the CRAN email.
-   - [ ] After acceptance: `usethis::use_github_release()` (or tag
-     `v<version>` manually), then bump to the next dev version
-     (`usethis::use_dev_version()`).
-   Offer to prepare the post-acceptance steps as a follow-up when the user
-   returns with the acceptance email.
-
-8. Work-log/ROADMAP note: one line in ROADMAP ("Released <version>
+5. Work-log/ROADMAP note: one line in ROADMAP ("Released <version>
    YYYY-MM-DD") is permitted as a Done-section annotation; nothing else in
    tracking changes.
 
-9. **Routing chip (AskUserQuestion)**, composed from the release's end state
-   (chip rules per tracking-rules) — e.g. **Stop here — run the submission
-   checklist
-   yourself** (recommended) / Plan the next milestone → `/milestone-plan` /
-   Run a health check → `/milestone`.
+6. **Routing chip (AskUserQuestion)**, composed from the release's end state
+   (chip rules per tracking-rules) — e.g. **Stop here — run the submission /
+   tag checklist yourself** (recommended) / Plan the next milestone →
+   `/milestone-plan` / Run a health check → `/milestone`.
