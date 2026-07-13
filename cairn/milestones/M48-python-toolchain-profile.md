@@ -72,7 +72,7 @@ stays tracking-only).
       build-exclude entry is needed (the python analog of R's `.Rbuildignore
       ^cairn$`); `greenfield-openers` a declared placeholder parallel to R.
       Stay under the 90-line PROFILE cap.
-- [ ] T2 — Wire `cairn-init` SKILL.md: detection recognizes `pyproject.toml`
+- [x] T2 — Wire `cairn-init` SKILL.md: detection recognizes `pyproject.toml`
       (primary) / `setup.py` / `setup.cfg` → python, `DESCRIPTION` still wins a
       hybrid; confirm the recommended profile with the user before writing;
       repair-mode backfill inference gains the python branch; update the
@@ -90,6 +90,7 @@ stays tracking-only).
 
 - 2026-07-13: created by /milestone-plan (paired with M49; independent, no dependency).
 - 2026-07-13: T1 — authored skills/shared/profiles/python.md (82 lines, six non-empty slots; pyproject/PEP621, pytest, ruff, mypy, build+twine, coverage-as-diagnostic; release-walk hands off twine upload + notes OIDC trusted-publishing, no self-submit).
+- 2026-07-13: T2 — wired cairn-init: selection order DESCRIPTION→r-package, pyproject/setup.py/setup.cfg→python (DESCRIPTION wins hybrids), else generic; repair-mode backfill gains the python branch; scaffold comment + instantiate step enumerate python; non-R-package bullet routes pyproject repos to python.
 
 ## Decisions
 
