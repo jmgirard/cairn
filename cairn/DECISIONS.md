@@ -494,3 +494,29 @@ candidate (contestable on the binary-gate-audit axis, but not a model mismatch).
 only the scored-rubric sub-item plus its shipped-item ledger. If cairn ever
 grows a parallel-execution or tool-tiering model, this is the entry to
 supersede.
+
+### D-027 (2026-07-12): Prune three candidates in a triage pass — refuted, YAGNI, and off-model — supersedes D-026's scored-rubric retention
+
+**Context:** A `/milestone-plan` candidate-triage pass sorted the 12 ROADMAP
+candidates into higher/lower priority and flagged three for removal. Two of the
+three were deliberately-kept state, so removing them supersedes prior decisions
+rather than merely pruning a deferral.
+**Decision:** Drop three candidate rows. (1) **Session opening-phase TOC label**
+— premise refuted: M31 was planned, built, and dropped, and its lesson records
+that the opening phase is already navigable (an implicit "Session Start" node)
+with first-message marking discouraged by the tool docstring; the residue is
+marginal and verifiable only by unobservable live Desktop probing (D-020).
+(2) **Scripts `--json` output mode** — speculative YAGNI with no consumer; the
+only readers (the skills) parse text fine, and none is planned. (3) **M06
+scored-rubric hygiene audit for `/milestone`** — rejected on principle: a scored
+rubric cuts against cairn's binary-gate audit model. This closes the last live
+sub-item of the M06 steal-list (the rest shipped via M38/M39/M44/M17 or were
+dropped in D-026), so the whole M06 row leaves the Candidates park. Rejected
+keeping any of the three as parked candidates — a recorded rejection is the
+honest state (search-first then finds it instead of re-adding the idea).
+**Consequences:** Candidates drop 12 → 9; the survivors are reordered
+higher-priority-first (toolchain profiles, public release prep, then seven
+gated/parked items). Supersedes D-026's "the scored-rubric sub-item is **not**
+dropped here" — it is now dropped. Higher/lower is advisory ordering, not a
+status field (candidates carry no Priority). Each removal is re-openable by
+superseding this entry.
