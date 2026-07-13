@@ -27,8 +27,10 @@ never "never".
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
 - [ ] Each objectively checkable with evidence — a test that passes, a file
-      that exists, `devtools::check()` output. Never vibes.
-- [ ] Code milestones always include: `devtools::check()` clean.
+      that exists, the active profile's verify/check output. Never vibes.
+- [ ] Code milestones always include: the active profile's `verify` slot clean
+      (`cairn/PROFILE.md`; for a toolchain whose profile names a fuller
+      pre-review check, that check too).
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the

@@ -188,6 +188,20 @@ class TestReviewGateSplit(unittest.TestCase):
         self.assertIn("PROFILE.md", text)
 
 
+class TestTemplateProfileAware(unittest.TestCase):
+    """AC4: the milestone template no longer hardcodes `devtools::check()` in
+    its acceptance guidance; it references the active profile's verify/check."""
+
+    def test_template_drops_hardcoded_devtools(self):
+        text = read("shared", "templates", "milestone.md")
+        self.assertNotIn("devtools", text, "template still hardcodes a devtools command")
+
+    def test_template_references_the_profile(self):
+        text = read("shared", "templates", "milestone.md")
+        self.assertIn("PROFILE.md", text)
+        self.assertIn("verify", text)
+
+
 class TestReleaseSkillUntouched(unittest.TestCase):
     """M46 boundary: cairn-release's release-walk generalization is M47, so it
     still hardcodes devtools and reads no profile until then. This guard flips

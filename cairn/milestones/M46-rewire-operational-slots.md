@@ -80,7 +80,7 @@ dogfood the `generic` profile in this repo.
 - [x] T3 — `hotfix`: gate-lite reads the profile `verify` slot.
 - [x] T4 — `milestone-review`: split the consistency gate into universal
       (cairn-file) checks and the profile `consistency-gate` slot.
-- [ ] T5 — `milestone.md` template: profile-aware acceptance guidance.
+- [x] T5 — `milestone.md` template: profile-aware acceptance guidance.
 - [ ] T6 — Dogfood: add `cairn/PROFILE.md` (`generic`) to this repo; remove the
       CLAUDE.md waiver note; update `DESIGN.md` Purpose & Scope; run full
       `cairn_validate` + the unittest suites.
@@ -96,6 +96,7 @@ dogfood the `generic` profile in this repo.
 - 2026-07-12: T2 — `milestone-implement` now runs the active profile's `verify` slot (per-task, resume, completion) and its `test-doctrine` slot for idioms; no `devtools::` left. Replaced M45 AC6 guard with growing `TestOperationalSkillsReadProfile` + `TestReleaseSkillUntouched` (M47 boundary).
 - 2026-07-12: T3 — `hotfix` gate-lite now runs the profile's `verify` slot; no `devtools::` left. Added `hotfix` to the rewired-skills guard. (NEWS.md changelog requirement left as-is — changelog-mechanism generalization is out of M46 scope.)
 - 2026-07-12: T4 — `milestone-review` consistency gate split into "Universal cairn-file checks" (validate/coverage/impact, unconditional) + the profile `consistency-gate` slot (toolchain checks; read-the-slot, no hardcoded R list); AC-evidence step de-hardcoded. Added `TestReviewGateSplit` (AC2); review joins rewired-skills guard. No R tokens left in the skill.
+- 2026-07-12: T5 — `milestone.md` template AC guidance de-R'd (no `devtools::check()`); references the active profile's `verify`/check. Added `TestTemplateProfileAware` (AC4).
 
 ## Decisions
 
