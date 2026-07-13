@@ -101,6 +101,7 @@ dogfood the `generic` profile in this repo.
 - 2026-07-12: T6 — dogfood: added `cairn/PROFILE.md` = `generic` (verify slot = this repo's three `python3 -m unittest` suites); replaced the CLAUDE.md R-waiver note with the declared generic profile; DESIGN.md Purpose & Scope + Architecture now name the language-agnostic core + profile mechanism. `cairn_validate` exit 0 (profile valid); suites 112/65/32 green.
 - 2026-07-12: T7 — confirmed the r-package profile reproduces every relocated guardrail (generated-file `NAMESPACE`/`man`/`data`, README.Rmd, dependency/deprecation, `.Rbuildignore`, `_pkgdown`, `cli_abort`); text-equivalence guard flipped to profile-as-source (T1) + `test_relocated_guardrail_specifics_survive` added (AC6).
 - 2026-07-12: T8 — guard tests for all splits folded into their task commits (`TestRulebookRelocation`, `TestOperationalSkillsReadProfile`, `TestReviewGateSplit`, `TestTemplateProfileAware`, `TestReleaseSkillUntouched`); whole-suite pass at completion.
+- 2026-07-12: review — ACs 1-6 verified with fresh evidence (boxes ticked); consistency gate clean (validate exit 0, coverage complete, generic toolchain no-op). Independent review: 1 diff-bug finding (scored 82) — `testthat` edition-3 convention dropped in relocation; fixed by adding it to the r-package `test-doctrine` slot + guard. Blame-history & prior-PR lenses clean.
 
 ## Decisions
 
@@ -144,3 +145,24 @@ _Reviewed 2026-07-12 · PR #44 · branch `m46-rewire-operational-slots` (8 commi
   names no checks → clean no-op.
 
 ### Independent review
+
+Three fresh-context lenses + a confidence scorer (all shared-tree, ref-based git):
+
+- **[O] diff-bug (Opus)** — 1 finding (below). Cleared: no R guardrail dropped,
+  review gate split correct, PROFILE.md conforms to the six-slot schema, guards
+  non-vacuous, no stale cross-reference.
+- **[S] blame-history (Sonnet)** — no findings. Confirmed nothing load-bearing
+  reversed; oracle doctrine correctly kept universal (D-024/D-025); CLAUDE.md
+  edits don't implicate D-018 or D-009.
+- **[S] prior-PR-comments (Sonnet)** — no prior-PR review evidence (clean no-op;
+  24 merged PRs checked, zero inline review comments on these files).
+
+**Finding (scored 82 → actioned, fixed):** the `testthat` **edition 3 (3e)**
+convention was genericized out of `milestone-implement` step 4 but never
+relocated into the r-package `test-doctrine` slot — dropped from both paths, an
+AC6 "no R adopter regresses" gap. **Fix:** added "Tests are written for
+`testthat` edition 3 (3e)." to the r-package profile's `test-doctrine` slot and
+extended `test_relocated_guardrail_specifics_survive` to lock the `edition 3`
+phrase. Suites re-run green; `cairn_validate` exit 0.
+
+No findings scored below 80 (none excluded/logged).

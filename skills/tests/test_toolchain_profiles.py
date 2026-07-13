@@ -131,7 +131,7 @@ class TestRulebookRelocation(unittest.TestCase):
         """AC6: the guardrail *specifics* moved out of the rulebook must still be
         reproduced by the r-package profile, so no R adopter regresses."""
         profile = read("shared", "profiles", "r-package.md")
-        for phrase in ("data-raw", "deprecation", "Imports/Suggests", "assertthat"):
+        for phrase in ("data-raw", "deprecation", "Imports/Suggests", "assertthat", "edition 3"):
             self.assertIn(phrase, profile,
                           f"r-package profile dropped relocated guardrail '{phrase}'")
 

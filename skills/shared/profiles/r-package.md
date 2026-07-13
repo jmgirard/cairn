@@ -33,6 +33,7 @@ cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`):
 ## test-doctrine
 R-mechanical test expectations layered on the universal "What gets a test"
 rules in tracking-rules:
+- Tests are written for `testthat` edition 3 (3e).
 - Every exported function: happy path, every `cli_abort()` branch fired, R
   edge cases — zero rows, `NA`, length-one, factor vs. character, empty strings.
 - New user-facing conditions use `cli::cli_abort()` / rlang, not assertthat.
