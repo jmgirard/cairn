@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-12 (M45 done + archived; pruned M40 to the 5-terminal cap; M46/M47 planned)_
+_Last hygiene check: 2026-07-13 (M46 done + archived; pruned M41 to the 5-terminal cap; M47 planned)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,13 +10,12 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M46 | Rewire operational slots (implement/review/hotfix/doctrine) + dogfood generic | review | M45 | normal | milestones/M46-rewire-operational-slots.md |
 | M47 | Release-walk slot — generalize cairn-release to read the profile | planned | M45 | normal | milestones/M47-release-walk-slot.md |
+| M46 | Rewire operational slots (implement/review/hotfix/doctrine) + dogfood generic | done | M45 | normal | milestones/archive/M46-rewire-operational-slots.md |
 | M45 | Toolchain-profile spine — mechanism + r-package/generic profiles + init selection | done | — | normal | milestones/archive/M45-toolchain-profile-spine.md |
 | M44 | Validator-hardening — sizing advisory + Priority-field schema | done | — | normal | milestones/archive/M44-validator-sizing-and-priority-checks.md |
 | M43 | Lineage A migration hardening (cairn-init §2) | done | — | normal | milestones/archive/M43-lineage-a-migration-hardening.md |
 | M42 | Oracle-doctrine validation against intraclass | done | M41 | normal | milestones/archive/M42-oracle-doctrine-validation-intraclass.md |
-| M41 | Migration stress-test pilot — intraclass (first Lineage A) | done | — | normal | milestones/archive/M41-migration-pilot-intraclass.md |
 
 ## Candidates
 
