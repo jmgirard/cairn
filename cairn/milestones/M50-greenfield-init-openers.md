@@ -1,10 +1,10 @@
 # M50: Greenfield init opener flow
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —   <!-- M45–M47 (toolchain profiles) are all done; the greenfield-openers slot they defined empty is filled here -->
 - **Principles touched:** IP3, GP3
-- **Branch/PR:** —
+- **Branch/PR:** m50-greenfield-init-openers
 
 ## Goal
 
