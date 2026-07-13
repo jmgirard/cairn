@@ -3,11 +3,17 @@
 ## Purpose & Scope
 
 A Claude Code plugin providing one canonical milestone-driven development
-workflow and markdown tracking system for R packages. Logic lives here
-(skills, rules, templates); state lives in each adopting repo under
-`cairn/`. Full design rationale: DRAFT_2.md (this file summarizes; the
-draft is removed at 1.0, at which point its still-relevant content moves
-here).
+workflow and markdown tracking system. The core is language-agnostic; each
+adopting repo declares a **toolchain profile** (`cairn/PROFILE.md`, six slots:
+verify, consistency-gate, test-doctrine, release-walk, init-detection,
+greenfield-openers) that supplies the language/toolchain-specific commands the
+operational skills read, instead of the core hardcoding one language (M45
+spine, M46 rewire, M47 release; D-024/D-025 keep the oracle doctrine universal,
+orthogonal to the profile). Two profiles ship — `r-package` (devtools/CRAN) and
+`generic`; this repo runs `generic`. Logic lives here (skills, rules,
+templates); state lives in each adopting repo under `cairn/`. Full design
+rationale: DRAFT_2.md (this file summarizes; the draft is removed at 1.0, at
+which point its still-relevant content moves here).
 
 Positioning (M06, references/competitive-landscape.md): cairn is change
 control + longitudinal project memory for agent-driven work — a niche no
@@ -25,6 +31,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   the session on Fable (D-014).
 - `skills/shared/tracking-rules.md` — the single rulebook.
 - `skills/shared/templates/` — milestone, brief, decision, CLAUDE.md section.
+- `skills/shared/profiles/` — the shipped reference toolchain profiles
+  (`r-package`, `generic`); `cairn-init` instantiates one into a repo's
+  `cairn/PROFILE.md`, and the operational skills read its slots.
 - `hooks/hooks.json` + python3 (stdlib) scripts (M07) — the enforcement
   layer: SessionStart context injection, Stop-guard on uncommitted `cairn/`
   tracking, PreToolUse merge-guard (single-use `cairn/.merge-approved`

@@ -1,8 +1,9 @@
 # cairn (plugin repo)
 
 This repo IS the cairn plugin (skills/, templates, rulebook) and dogfoods
-its own tracking format by hand under `cairn/`. It is not an R package:
-R-specific gates (devtools, pkgdown, .Rbuildignore) are waived here.
+its own tracking format by hand under `cairn/`. Its toolchain profile is
+`generic` (declared in `cairn/PROFILE.md`): the language-agnostic core with no
+R gates; `verify` is this repo's `python3 -m unittest` suites.
 
 ## Project tracking (cairn)
 

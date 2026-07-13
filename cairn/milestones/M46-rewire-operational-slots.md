@@ -81,7 +81,7 @@ dogfood the `generic` profile in this repo.
 - [x] T4 — `milestone-review`: split the consistency gate into universal
       (cairn-file) checks and the profile `consistency-gate` slot.
 - [x] T5 — `milestone.md` template: profile-aware acceptance guidance.
-- [ ] T6 — Dogfood: add `cairn/PROFILE.md` (`generic`) to this repo; remove the
+- [x] T6 — Dogfood: add `cairn/PROFILE.md` (`generic`) to this repo; remove the
       CLAUDE.md waiver note; update `DESIGN.md` Purpose & Scope; run full
       `cairn_validate` + the unittest suites.
 - [ ] T7 — Update the `r-package` profile with the relocated doctrine; update
@@ -97,6 +97,7 @@ dogfood the `generic` profile in this repo.
 - 2026-07-12: T3 — `hotfix` gate-lite now runs the profile's `verify` slot; no `devtools::` left. Added `hotfix` to the rewired-skills guard. (NEWS.md changelog requirement left as-is — changelog-mechanism generalization is out of M46 scope.)
 - 2026-07-12: T4 — `milestone-review` consistency gate split into "Universal cairn-file checks" (validate/coverage/impact, unconditional) + the profile `consistency-gate` slot (toolchain checks; read-the-slot, no hardcoded R list); AC-evidence step de-hardcoded. Added `TestReviewGateSplit` (AC2); review joins rewired-skills guard. No R tokens left in the skill.
 - 2026-07-12: T5 — `milestone.md` template AC guidance de-R'd (no `devtools::check()`); references the active profile's `verify`/check. Added `TestTemplateProfileAware` (AC4).
+- 2026-07-12: T6 — dogfood: added `cairn/PROFILE.md` = `generic` (verify slot = this repo's three `python3 -m unittest` suites); replaced the CLAUDE.md R-waiver note with the declared generic profile; DESIGN.md Purpose & Scope + Architecture now name the language-agnostic core + profile mechanism. `cairn_validate` exit 0 (profile valid); suites 112/65/32 green.
 
 ## Decisions
 
