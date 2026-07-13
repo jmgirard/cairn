@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M46 | Rewire operational slots (implement/review/hotfix/doctrine) + dogfood generic | planned | M45 | normal | milestones/M46-rewire-operational-slots.md |
+| M46 | Rewire operational slots (implement/review/hotfix/doctrine) + dogfood generic | in-progress | M45 | normal | milestones/M46-rewire-operational-slots.md |
 | M47 | Release-walk slot — generalize cairn-release to read the profile | planned | M45 | normal | milestones/M47-release-walk-slot.md |
 | M45 | Toolchain-profile spine — mechanism + r-package/generic profiles + init selection | done | — | normal | milestones/archive/M45-toolchain-profile-spine.md |
 | M44 | Validator-hardening — sizing advisory + Priority-field schema | done | — | normal | milestones/archive/M44-validator-sizing-and-priority-checks.md |

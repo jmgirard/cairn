@@ -1,10 +1,10 @@
 # M46: Rewire operational slots — implement/review/hotfix/doctrine read the profile; dogfood generic
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M45
 - **Principles touched:** GP3
-- **Branch/PR:** —
+- **Branch/PR:** m46-rewire-operational-slots
 
 ## Goal
 
