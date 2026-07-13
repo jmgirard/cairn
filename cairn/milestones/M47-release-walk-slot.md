@@ -1,10 +1,10 @@
 # M47: Release-walk slot — generalize cairn-release to read the profile
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M45
 - **Principles touched:** GP3
-- **Branch/PR:** —
+- **Branch/PR:** m47-release-walk-slot
 
 ## Goal
 
@@ -66,6 +66,7 @@ bump + NEWS + tag, no CRAN) release path.
 ## Work log
 
 - 2026-07-12: created by /milestone-plan (toolchain-profiles arc, milestone 3 of 3).
+- 2026-07-13: started /milestone-implement on m47-release-walk-slot; status → in-progress.
 
 ## Decisions
 
