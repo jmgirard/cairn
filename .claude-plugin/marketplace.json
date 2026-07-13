@@ -1,6 +1,6 @@
 {
   "name": "cairn",
-  "description": "Home marketplace for the cairn plugin — milestone-driven development and tracking for R packages.",
+  "description": "Home marketplace for the cairn plugin — milestone-driven development and tracking for Claude Code projects (language-agnostic core, per-repo toolchain profiles).",
   "owner": {
     "name": "Jeffrey Girard",
     "url": "https://github.com/jmgirard"
@@ -9,7 +9,7 @@
     {
       "name": "cairn",
       "source": "./",
-      "description": "Milestone-driven development workflow and tracking system for R packages: plan/implement/review skills, hotfix and release paths, Fable review briefs, and a self-auditing cairn/ file system.",
+      "description": "Milestone-driven development workflow and tracking system for Claude Code projects: a language-agnostic core with per-repo toolchain profiles (R, Python, or generic), plan/implement/review skills, hotfix and release paths, Fable review briefs, and a self-auditing cairn/ file system.",
       "version": "0.1.0",
       "author": {
         "name": "Jeffrey Girard",

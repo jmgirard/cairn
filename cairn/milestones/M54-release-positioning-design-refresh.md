@@ -80,7 +80,7 @@ adopter reads no longer say R-only and DESIGN audits clean (RR01 recs 1 + 5).
 
 ## Tasks
 
-- [ ] T1 — Reframe outward positioning: `.claude-plugin/plugin.json:4`
+- [x] T1 — Reframe outward positioning: `.claude-plugin/plugin.json:4`
       description and `README.md:6` ¶1 to the profile framing (derive wording
       from `DESIGN.md` Purpose & Scope). Then `git grep` the whole repo for
       other R-exclusive positioning strings and fix any found (M48
@@ -106,6 +106,10 @@ adopter reads no longer say R-only and DESIGN audits clean (RR01 recs 1 + 5).
 
 - 2026-07-13: created by /milestone-plan (RR01 recs 1 + 5; carved from the
   "Public release prep" candidate).
+- 2026-07-13: IP1 disposition gate → wording alignment, no D-entry (M25 owns
+  the semantics).
+- 2026-07-13: T1 — plugin.json + README ¶1 reframed to profile framing; M48
+  sweep caught `marketplace.json` (2 more R-only strings), both fixed.
 
 ## Decisions
 
