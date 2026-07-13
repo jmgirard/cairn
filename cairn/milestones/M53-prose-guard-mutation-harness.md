@@ -1,10 +1,10 @@
 # M53: Prose-guard mutation harness
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** GP2, GP4
-- **Branch/PR:** —
+- **Branch/PR:** m53-prose-guard-mutation-harness
 
 ## Goal
 
