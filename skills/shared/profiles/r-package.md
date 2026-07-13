@@ -69,8 +69,16 @@ root. Carries the `.Rbuildignore` `^cairn$` entry (keeps the tracking dir out
 of the built package).
 
 ## greenfield-openers
-Opener questions `cairn-init` asks in a new/empty R package: CRAN intent,
-compiled code (Rcpp/RcppArmadillo), and statistical calculations needing oracle
-verification. Currently a declared placeholder — the greenfield opener flow is
-a downstream candidate; this slot names the intended R questions but the flow
-that asks them ships later.
+Language-specific opener `cairn-init` asks in a new/empty R package. The
+universal openers — distribution ambition (rendered here as **CRAN intent**) and
+numeric-work-needs-oracle-verification — are asked by cairn-init's universal
+layer, so they are not repeated here.
+
+- **Compiled code?** Will the package include compiled code
+  (Rcpp / RcppArmadillo / C / C++ / Fortran)?
+  - Options: **pure R** (reversible default) · Rcpp · RcppArmadillo.
+  - Consequence: compiled ⇒ a `src/` dir, `LinkingTo`, a C/C++ toolchain, and
+    `R CMD check` compiling on every check. Adding compiled code later is
+    additive, so the reversible default is pure R.
+  - Lands in: DESIGN Conventions (a "compiled code via <pkg>" line) and informs
+    the `verify` / `test-doctrine` check surface.

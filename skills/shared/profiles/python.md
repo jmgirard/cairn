@@ -75,8 +75,21 @@ analog of R's `.Rbuildignore` `^cairn$` is unnecessary — `cairn/` is neither a
 package nor under a `src/` root).
 
 ## greenfield-openers
-Opener questions `cairn-init` asks in a new/empty Python package: PyPI intent,
-typing strictness (`mypy --strict` from the start?), and `src/` vs. flat layout.
-Currently a declared placeholder — the greenfield opener flow is a downstream
-candidate; this slot names the intended Python questions but the flow that asks
-them ships later.
+Language-specific openers `cairn-init` asks in a new/empty Python package. The
+universal openers — distribution ambition (rendered here as **PyPI intent**) and
+numeric-work-needs-oracle-verification — come from cairn-init's universal layer,
+so they are not repeated here.
+
+- **Typing strictness?** Run `mypy --strict` from the start?
+  - Options: **non-strict** (reversible default) · strict.
+  - Consequence: strict ⇒ every module must be fully typed from day one.
+    Tightening a non-strict package to `--strict` later is a bounded opt-in
+    cleanup, so the reversible default is non-strict.
+  - Lands in: the `verify` slot's `mypy` invocation (`mypy` vs `mypy --strict`)
+    and `test-doctrine`.
+- **Layout?** `src/` layout or flat layout?
+  - Options: **`src/`** (reversible default) · flat.
+  - Consequence: `src/` prevents importing the un-built package by accident and
+    is the modern default; flat is simpler for a tiny single-module repo, but
+    converting flat → `src/` later is a structural move.
+  - Lands in: DESIGN Conventions (the package layout convention).

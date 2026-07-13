@@ -85,7 +85,7 @@ and lands each answer in a durable home — filling the three profiles'
 
 ## Tasks
 
-- [ ] T1 — Fill all three profiles' `greenfield-openers` slots with concrete
+- [x] T1 — Fill all three profiles' `greenfield-openers` slots with concrete
       language-specific openers (r-package: compiled code; python: typing
       strictness + layout; generic: "the universal layer is the whole greenfield
       flow"); each language-specific opener names options + marked reversible
@@ -112,6 +112,7 @@ and lands each answer in a durable home — filling the three profiles'
 
 ## Work log
 
+- 2026-07-13: T1 — filled the three profiles' greenfield-openers slots with concrete openers (r-package: compiled code; python: typing strictness + `src/`-vs-flat; generic: universal layer is the whole flow); universal openers left to cairn-init, not duplicated. Existing test_toolchain_profiles.py (24 tests) still green.
 - 2026-07-13: created by /milestone-plan. Gate decisions: trigger = empty/new
   repo only (profile not inferable); architecture = universal opener layer +
   profile openers (oracle-on/distribution universal per D-024/D-025); undecided =
