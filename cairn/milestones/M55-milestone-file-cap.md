@@ -1,10 +1,10 @@
 # M55: Milestone-file cap exempts the Review section
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m55-milestone-file-cap
 
 ## Goal
 
