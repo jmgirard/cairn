@@ -93,6 +93,7 @@ stays tracking-only).
 - 2026-07-13: T2 — wired cairn-init: selection order DESCRIPTION→r-package, pyproject/setup.py/setup.cfg→python (DESCRIPTION wins hybrids), else generic; repair-mode backfill gains the python branch; scaffold comment + instantiate step enumerate python; non-R-package bullet routes pyproject repos to python.
 - 2026-07-13: T3 — tracking-rules "Toolchain profiles": "Two profiles ship" → three (added python); absent-PROFILE inference lists DESCRIPTION→r-package, pyproject→python, else generic. Swept: only the one mention.
 - 2026-07-13: T4 — added python guards to test_toolchain_profiles.py (exact-six-slots, toolchain tokens, release-walk handoff+no-self-submit, generic-negative, init select/backfill, rulebook three-profiles+inference-order). All three unittest suites green (121/65/32); cairn_validate all-pass.
+- 2026-07-13: review — 3-lens fresh-context review + scorer. Fixed 3 findings (all ≥80): DESIGN.md "Two profiles ship"→three (F1/93) + profile inventory +python (F2/82) — completing T3's missed sweep; test_scripts shipped-reference-profiles guard now loops python (F3/80), closing the AC1 real-validator gap. Suites re-green.
 
 ## Decisions
 
@@ -120,3 +121,16 @@ Consistency gate: `cairn_validate` all-pass (14 checks + sizing); coverage
 completeness — every AC maps to ≥1 existing task (AC1→T1,T4 · AC2→T1,T4 ·
 AC3→T2,T4 · AC4→T3,T4 · AC5→T4); profile `consistency-gate` slot is `generic`
 (no-op); no DESIGN principle changed (cairn_impact skipped).
+
+Independent fresh-context review (3 lenses + scorer). Prior-PR lens: no
+prior-PR evidence (#43/#44/#45 carry no review comments) — 0 findings. Diff-bug
++ blame-history lenses converged on one root cause: the T3 sweep missed
+mentions outside tracking-rules. Three findings, all scored ≥80, all fixed now:
+- F1 (score 93) — cairn/DESIGN.md:12 still said "Two profiles ship" →
+  contradicted this milestone's own "Three profiles ship". Fixed → three.
+- F2 (score 82) — cairn/DESIGN.md:35 profile inventory omitted `python`. Fixed.
+- F3 (score 80) — scripts/tests/test_scripts.py `test_shipped_reference_profiles_are_valid`
+  (the only guard running the *real* validator against shipped profiles) looped
+  only (r-package, generic), so python.md was never exercised by the authoritative
+  slot check AC1 cites. Fixed → added `python` to the tuple; guard green.
+All three suites re-run green after fixes; cairn_validate all-pass.

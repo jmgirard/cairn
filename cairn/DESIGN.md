@@ -9,8 +9,8 @@ verify, consistency-gate, test-doctrine, release-walk, init-detection,
 greenfield-openers) that supplies the language/toolchain-specific commands the
 operational skills read, instead of the core hardcoding one language (M45
 spine, M46 rewire, M47 release; D-024/D-025 keep the oracle doctrine universal,
-orthogonal to the profile). Two profiles ship — `r-package` (devtools/CRAN) and
-`generic`; this repo runs `generic`. Logic lives here (skills, rules,
+orthogonal to the profile). Three profiles ship — `r-package` (devtools/CRAN),
+`python` (pytest/PyPI), and `generic`; this repo runs `generic`. Logic lives here (skills, rules,
 templates); state lives in each adopting repo under `cairn/`. Full design
 rationale: DRAFT_2.md (this file summarizes; the draft is removed at 1.0, at
 which point its still-relevant content moves here).
@@ -32,7 +32,7 @@ transitions, human-gated merges, and a domain verification doctrine.
 - `skills/shared/tracking-rules.md` — the single rulebook.
 - `skills/shared/templates/` — milestone, brief, decision, CLAUDE.md section.
 - `skills/shared/profiles/` — the shipped reference toolchain profiles
-  (`r-package`, `generic`); `cairn-init` instantiates one into a repo's
+  (`r-package`, `python`, `generic`); `cairn-init` instantiates one into a repo's
   `cairn/PROFILE.md`, and the operational skills read its slots.
 - `hooks/hooks.json` + python3 (stdlib) scripts (M07) — the enforcement
   layer: SessionStart context injection, Stop-guard on uncommitted `cairn/`
