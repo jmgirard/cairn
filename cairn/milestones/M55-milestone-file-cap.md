@@ -62,12 +62,12 @@ agreement.
 
 ## Tasks
 
-- [ ] T1 — Add `milestone_body_line_count(path)` to `cairn_scripts.py`
+- [x] T1 — Add `milestone_body_line_count(path)` to `cairn_scripts.py`
       (mirroring `claude_section_line_count`, cairn_scripts.py:205): count lines
       up to — not including — the first `## Review` heading, tracking ```/~~~
       fence state so a fenced `## Review` in the body is not the boundary (M45);
       whole-file count when no `## Review`; None if unreadable.
-- [ ] T2 — In `check_caps` (cairn_validate.py:78-86), use
+- [x] T2 — In `check_caps` (cairn_validate.py:78-86), use
       `milestone_body_line_count` for the live-milestone branch instead of
       `line_count`; leave the archive branch and other caps untouched.
 - [ ] T3 — scripts/tests: add a `live()`-with-`## Review` fixture helper and
@@ -92,6 +92,9 @@ agreement.
   candidate (RR01 rec 3/Q8). Gate: exempt Review + keep 150 (not split/sub-cap);
   exempt only `## Review` (Decisions stays counted). A D-entry (parallel to
   D-018's CLAUDE.md-section cap) is expected at implement/review.
+- 2026-07-13 (T1/T2): added fence-aware `milestone_body_line_count` and rewired
+  `check_caps` to measure the plan-owned body for live milestones. Existing
+  scripts suite (65) green.
 
 ## Decisions
 

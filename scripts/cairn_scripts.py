@@ -228,6 +228,38 @@ def claude_section_line_count(path):
     return end - start
 
 
+def milestone_body_line_count(path):
+    """Line count of a live milestone file's plan-owned body — every line
+    before the first `## Review` heading. The review-exclusive `## Review`
+    section is exempt from the milestone weight cap (M55): review evidence
+    accumulates there at review time and must never scramble plan-owned content
+    (the recurring M19/M22/M33/M50 scramble). A file with no `## Review` section
+    counts whole (back-compat). Fenced code blocks are tracked so a literal
+    `## Review` inside a ``` or ~~~ block in the body is not mistaken for the
+    section boundary (M45). Returns None if the file is unreadable."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            lines = f.read().splitlines()
+    except Exception:
+        return None
+    fence = None
+    for i, line in enumerate(lines):
+        stripped = line.lstrip()
+        if fence is not None:
+            if stripped.startswith(fence):
+                fence = None
+            continue
+        if stripped.startswith("```"):
+            fence = "```"
+            continue
+        if stripped.startswith("~~~"):
+            fence = "~~~"
+            continue
+        if line.startswith("## ") and line[3:].strip().lower().startswith("review"):
+            return i
+    return len(lines)
+
+
 def sort_by_priority(row_list):
     """Rows sorted high>normal>low, then by numeric ID (M9 before M10)."""
     return sorted(

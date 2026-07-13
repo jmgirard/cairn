@@ -76,14 +76,20 @@ def check_caps(root, rows):
             f"CLAUDE.md cairn section: {sec} lines (cap <{cs.CLAUDE_SECTION_CAP})"
         )
     for r in rows:
-        n = cs.line_count(os.path.join(root, "cairn", r["relpath"]))
-        if n is None:
-            continue
+        path = os.path.join(root, "cairn", r["relpath"])
         if "archive/" in r["relpath"]:
-            if n > cs.ARCHIVE_CAP:
+            n = cs.line_count(path)
+            if n is not None and n > cs.ARCHIVE_CAP:
                 bad.append(f"cairn/{r['relpath']}: {n} lines (archive cap {cs.ARCHIVE_CAP})")
-        elif n >= cs.MILESTONE_CAP:
-            bad.append(f"cairn/{r['relpath']}: {n} lines (cap <{cs.MILESTONE_CAP})")
+        else:
+            # Live milestone: cap the plan-owned body only; the review-exclusive
+            # `## Review` section is exempt so review evidence never scrambles
+            # plan-owned content (M55).
+            n = cs.milestone_body_line_count(path)
+            if n is not None and n >= cs.MILESTONE_CAP:
+                bad.append(
+                    f"cairn/{r['relpath']}: {n} plan-owned lines (cap <{cs.MILESTONE_CAP})"
+                )
     return bad
 
 
