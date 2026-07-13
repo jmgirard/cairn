@@ -1,12 +1,14 @@
-"""Regression guards for the M45 toolchain-profile spine.
+"""Regression guards for the toolchain-profile mechanism (M45 spine, M46 rewire).
 
-Locks: the six slots present + non-empty in both shipped profiles (AC1); the
-r-package profile reproducing the live R command strings, i.e. token-level
-text-equivalence with the current skills (AC2); the generic profile carrying
-no R toolchain tokens; cairn-init's profile selection + repair backfill (AC3);
-and — the M45 boundary — the operational skills still hardcoding their commands
-with no profile read yet (AC6). M46/M47 rewire the skills and will update the
-AC6 guard.
+Locks: the six slots present + non-empty in both shipped profiles; the r-package
+profile as the single source of truth for the relocated R command strings
+(M46 flipped this from the skills); the generic profile carrying no R toolchain
+tokens; cairn-init's profile selection + repair backfill; the M46 rewire — the
+operational skills (implement/hotfix/review) read the active profile's slot and
+no longer hardcode `devtools::`, the review consistency gate splits into
+universal + profile halves, the R guardrails are relocated out of the rulebook
+into the r-package profile, and the milestone template is de-R'd; plus the M47
+boundary — cairn-release still hardcodes devtools until then.
 
 Skill-prose guards read the file as one string, so asserted phrases live on a
 single source line (M23) and steer clear of `**bold**` splits (M26).
@@ -79,14 +81,6 @@ R_COMMAND_TOKENS = (
     "NEWS.md",
 )
 
-OPERATIONAL_SKILLS = (
-    ("milestone-implement", "SKILL.md"),
-    ("milestone-review", "SKILL.md"),
-    ("hotfix", "SKILL.md"),
-    ("cairn-release", "SKILL.md"),
-)
-
-
 class TestShippedProfiles(unittest.TestCase):
     def test_both_profiles_define_all_six_slots(self):
         for name in ("r-package", "generic"):
@@ -132,6 +126,14 @@ class TestRulebookRelocation(unittest.TestCase):
         for tok in R_GATE_TOKENS:
             self.assertIn(tok, profile,
                           f"r-package profile missing relocated gate token {tok}")
+
+    def test_relocated_guardrail_specifics_survive(self):
+        """AC6: the guardrail *specifics* moved out of the rulebook must still be
+        reproduced by the r-package profile, so no R adopter regresses."""
+        profile = read("shared", "profiles", "r-package.md")
+        for phrase in ("data-raw", "deprecation", "Imports/Suggests", "assertthat"):
+            self.assertIn(phrase, profile,
+                          f"r-package profile dropped relocated guardrail '{phrase}'")
 
 
 class TestInitSelection(unittest.TestCase):
