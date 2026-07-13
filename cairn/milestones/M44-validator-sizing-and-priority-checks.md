@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M44: Validator-hardening — sizing advisory + Priority-field schema
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
@@ -99,14 +99,15 @@ check — turning two prose-only rules into deterministic script output.
       repo has no pytest); confirm the existing checks + clean-tree assertions
       stay green, fixing any output-assertion breakage caused by the new
       advisory section.
-- [ ] T5 — Update the `/milestone` SKILL Audit section to document the
+- [x] T5 — Update the `/milestone` SKILL Audit section to document the
       advisory output (report-but-don't-fail), anchoring any new guard
       assertion on phrasing the feature uniquely introduces (M39/M40 lesson).
-- [ ] T6 — Append the `DECISIONS.md` entry dropping parallel-task metadata +
+- [x] T6 — Append the `DECISIONS.md` entry dropping parallel-task metadata +
       tiered tool exposure (don't-fit-cairn rationale); update the M06
       candidate row (remove those two sub-items; note sizing advisory shipped
       here and Priority check fulfills the strict-schemas residual); update
-      ROADMAP status/rows.
+      ROADMAP status/rows. (D-026 + M06 row landed at the plan gate where the
+      drop was decided; branch inherits them — see work log.)
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
@@ -116,6 +117,12 @@ check — turning two prose-only rules into deterministic script output.
 - 2026-07-12: T1–T4 — added the ADVISORIES WARN tier + `check_sizing_advisory`
   + `check_priority_vocab` to cairn_validate; 58/58 script tests green, live
   repo validates clean (13 PASS + OK sizing).
+- 2026-07-12: T5 — documented the advisory output in the /milestone SKILL
+  Audit section (report-but-don't-fix; WARN never blocks the gate).
+- 2026-07-12: T6 — D-026 (drop parallel-task-metadata + tiered-tool-exposure)
+  and the M06 row rewrite were committed at the plan gate where the drop was
+  decided; the m44 branch was cut afterward and inherits them, so the drop is
+  in repo state (grep-verified) though not in the PR diff. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
