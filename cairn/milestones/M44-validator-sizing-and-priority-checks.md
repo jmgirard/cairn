@@ -49,21 +49,21 @@ check — turning two prose-only rules into deterministic script output.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1 — `cairn_validate` renders a distinct advisory section; a milestone
+- [x] AC1 — `cairn_validate` renders a distinct advisory section; a milestone
       file that exceeds a sizing tripwire yields a `WARN` line **and the exit
       code stays 0** (advisories never fail the gate). Test: a fixture with 8
       criteria / 11 tasks → WARN + exit 0.
-- [ ] AC2 — The sizing advisory fires at **>7 acceptance criteria** and
+- [x] AC2 — The sizing advisory fires at **>7 acceptance criteria** and
       **>10 tasks** per live milestone file, and no-ops for files within both
       tripwires and for archived files. Test: within-tripwire fixture → no
       WARN; each threshold exercised at boundary.
-- [ ] AC3 — A ROADMAP row whose Priority is outside `{high, normal, low}`
+- [x] AC3 — A ROADMAP row whose Priority is outside `{high, normal, low}`
       makes the Priority-vocab check `FAIL` (exit 1); valid priorities pass.
       Test: bad-priority fixture fails, valid-priority fixture passes.
-- [ ] AC4 — The pre-existing 12 checks and the clean-tree suite still pass
+- [x] AC4 — The pre-existing 12 checks and the clean-tree suite still pass
       unchanged — no regression to exit codes or output assertions from the
       new advisory section. Test: full `scripts/tests` suite green.
-- [ ] AC5 — Tracking updated: `/milestone` Audit documents the advisory
+- [x] AC5 — Tracking updated: `/milestone` Audit documents the advisory
       output; the two low-fit steals are removed from the ROADMAP with a
       `DECISIONS.md` entry recording the rationale; the M06 candidate row
       reflects the drops and this milestone. Evidence: grep of the skill,
@@ -130,3 +130,20 @@ check — turning two prose-only rules into deterministic script output.
 ## Review
 <!-- owner: review · exclusive; evidence per criterion; consistency-gate
      results; independent-review findings and their triage -->
+
+**Evidence (2026-07-12, fresh):**
+- AC1/AC2 — `TestSizingAdvisory` (4 tests) green; live over-tripwire fixture
+  (9 crit / 12 tasks) → `WARN sizing (2)` + `all checks passed` + exit 0; the
+  criteria (>7) and tasks (>10) thresholds each fired independently, 7/10
+  boundary produced `OK`, and archived files were skipped (function-level).
+- AC3 — `test_unknown_priority` fails on `urgent` with exit 1; clean tree
+  (valid priorities) passes `priority vocabulary`.
+- AC4 — full suite 58/58 green; live repo `cairn_validate` exit 0 (13 PASS +
+  `OK sizing`), no regression to the pre-existing checks.
+- AC5 — skill Audit documents advisories (SKILL.md:52+, "non-failing
+  advisories"; status+priority vocab at :48); `D-026` present; ROADMAP M06 row
+  records the two drops and M44/M38/M39 dispositions.
+
+**Consistency gate:** `cairn_validate` exit 0; Coverage complete (AC1→T1 …
+AC5→T5,T6, all mapped); no DESIGN principle changed (slot `—`) → cairn_impact
+skipped; R gates waived (plugin repo, per CLAUDE.md).
