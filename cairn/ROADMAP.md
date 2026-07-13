@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-13 (M46 done + archived; pruned M41 to the 5-terminal cap; M47 planned)_
+_Last hygiene check: 2026-07-13 (M47 done + archived — closes the toolchain-profiles arc; graduated the toolchain-profiles candidate; pruned M42 to the 5-terminal cap)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,18 +10,16 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M47 | Release-walk slot — generalize cairn-release to read the profile | review | M45 | normal | milestones/M47-release-walk-slot.md |
+| M47 | Release-walk slot — generalize cairn-release to read the profile | done | M45 | normal | milestones/archive/M47-release-walk-slot.md |
 | M46 | Rewire operational slots (implement/review/hotfix/doctrine) + dogfood generic | done | M45 | normal | milestones/archive/M46-rewire-operational-slots.md |
 | M45 | Toolchain-profile spine — mechanism + r-package/generic profiles + init selection | done | — | normal | milestones/archive/M45-toolchain-profile-spine.md |
 | M44 | Validator-hardening — sizing advisory + Priority-field schema | done | — | normal | milestones/archive/M44-validator-sizing-and-priority-checks.md |
 | M43 | Lineage A migration hardening (cairn-init §2) | done | — | normal | milestones/archive/M43-lineage-a-migration-hardening.md |
-| M42 | Oracle-doctrine validation against intraclass | done | M41 | normal | milestones/archive/M42-oracle-doctrine-validation-intraclass.md |
 
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
-- Toolchain profiles (generalize beyond R): core is ~80% language-agnostic (this repo runs it sans R); concentrate R-ness into a profile with 6 slots (verify commands, consistency gate, test doctrine, release walk, init detection, greenfield opener questions); keep domain doctrine (oracles) orthogonal to language profile; target v0.3 after pilots harden the R slots — added 2026-07-11 — M02 pilot — **promoted 2026-07-12 → planned as M45 (spine, `cairn/PROFILE.md` storage) + M46 (rewire) + M47 (release-walk); graduates at completion (M35 lesson)**
 - Public release prep: LICENSE (MIT), README worked example, remove DRAFT files, tag v1.0 — added 2026-07-11 — DRAFT_2 §11
 - Adopt an oracle registry (`ORACLES.md`) as a cairn tracking file: ackwards' M57 proved a per-oracle registry (ID, type, asserting test:line, source, provenance) auditable against the ≥2-independent-types bar; adopting it into cairn means the D-015/M16 four-wiring-points path (file-map + weight-caps, `LINE_CAPS`, date-scan) plus a cap and an opt-in decision. Domain-specific (only statistical packages need it) and entangled with the toolchain-profiles split, which wants domain doctrine (oracles) orthogonal to the language profile — promote *with* that work, not standalone. **M42 verdict: REVISE, keep deferred** — the column shape matches intraclass's per-oracle records and a central index earns its keep at scale (34 scripts, dozens of oracles, hard to audit ≥2-types across distributed headers), BUT (a) intraclass implements the registry *distributed* (structured `oracle-*.R` headers + embedded `.rds` fields, no `ORACLES.md`), so the central-file shape is not the only one, and (b) the `type` column can't describe intraclass's oracles until the taxonomy gains the simulation-coverage type (M42 T4) — the registry is downstream of that fix — added 2026-07-12 — M33 Out, references/oracle-discipline-notes.md, references/oracle-doctrine-intraclass-notes.md
 - R-profile provenance guard: generalize ackwards' `provenance`-attr fixture convention + `test-oracle-provenance.R` guard (blocks any fixture lacking a structured provenance attr naming its `data-raw/` generator + source) into an R toolchain-profile slot; R/testthat-specific, so it belongs on the language side of the toolchain-profiles domain/language split. **M42 verdict: REVISE, keep deferred** — the provenance *content* principle (source + generator + seed per fixture) is corroborated by intraclass, but the *mechanism* varies across the two exemplars (ackwards: `provenance`-attr + blocking guard test; intraclass: provenance as named fields *inside* the `.rds` — `source`/`generated`/`base_seed`/`dgp` — with NO guard). So the slot should mandate the required provenance *content* and leave the *shape* (attr vs. embedded fields vs. header) to the repo; the two-exemplar shape variance argues against promoting ackwards' exact attr+guard as the one form — added 2026-07-12 — M33 Out, references/oracle-discipline-notes.md, references/oracle-doctrine-intraclass-notes.md
