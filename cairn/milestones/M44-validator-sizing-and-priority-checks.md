@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** m44-validator-checks   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m44-validator-checks · https://github.com/jmgirard/cairn/pull/42   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 
