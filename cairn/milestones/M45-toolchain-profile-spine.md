@@ -1,6 +1,6 @@
 # M45: Toolchain-profile spine — mechanism, r-package + generic profiles, init selection
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** GP1, GP3
@@ -96,9 +96,10 @@ operational skill.
       when absent); register `PROFILE.md` in `cairn_scripts.LINE_CAPS` (done in
       T2). Base `Tree.build()` untouched (M34/M38 no-op-when-absent pattern);
       dedicated `TestValidateProfile` + a shipped-reference validity guard.
-- [ ] T6 — Guard tests: the six slot names per profile, the `r-package`
+- [x] T6 — Guard tests: the six slot names per profile, the `r-package`
       text-equivalence map, the init detection + backfill rule, and the
-      "operational skills still hardcoded" negative assertion.
+      "operational skills still hardcoded" negative assertion
+      (`skills/tests/test_toolchain_profiles.py`, +6).
 
 ## Work log
 
@@ -108,6 +109,7 @@ operational skill.
 - 2026-07-12: T3 — cairn-init selects profile (§0), instantiates cairn/PROFILE.md (§1 tree + step), repair-mode backfills by DESCRIPTION inference.
 - 2026-07-12: T4 — session_context injects the active profile name (no-op when PROFILE.md absent); +2 hook tests (present/absent).
 - 2026-07-12: T5 — cairn_validate `check_profile` (no-op absent; FAIL on missing/empty/unrecognized slot) + `TestValidateProfile` (+6) incl. shipped-reference validity.
+- 2026-07-12: T6 — `test_toolchain_profiles.py` (+6): six slots, r-package text-equivalence, generic-has-no-R, init select+backfill, AC6 operational-skills-unchanged.
 
 ## Decisions
 
