@@ -72,22 +72,10 @@ superseding D-entry (annotating D-024/D-025, citing D-028's precedent).
 
 ## Tasks
 
-- [x] T1 — In `skills/shared/tracking-rules.md`, add the registry-auditability
-      paragraph to the "Validation doctrine" section (after the ≥2-types
-      paragraph, ~line 493, before the Reproducibility hard-stop): the recorded
-      fields, the auditability rationale (single-source-to-the-test), and the
-      shape-freedom (central file / distributed headers / embedded fields). No
-      repo names.
-- [x] T2 — Extend `skills/tests/test_oracle_doctrine.py` with anchors for the
-      field list and the shape-free phrasing (single physical line each, lowercased
-      match per M23). Confirm each new assertion FAILS against the pre-T1 rulebook
-      before T1 lands (or by temporary revert), and record that check in the work
-      log — the M39/M40/M50 false-coverage discipline.
-- [x] T3 — Append D-029 to `cairn/DECISIONS.md`: the content-not-shape choice,
-      annotating D-024/D-025, citing D-028, rejecting the central-file shape as
-      this milestone's disposition.
-- [x] T4 — Run `python3 -m unittest discover -s skills/tests` and
-      `python3 -m unittest discover -s scripts/tests`; confirm both green.
+- [x] T1 — Add the registry-auditability paragraph to `tracking-rules.md` Validation doctrine (fields + rationale + shape-freedom; no repo names).
+- [x] T2 — Add two `test_oracle_doctrine.py` anchors (field list, shape-free phrasing), RED-first per the M39/M40/M50 false-coverage discipline.
+- [x] T3 — Append D-029 to `cairn/DECISIONS.md` (content-not-shape; annotates D-024/D-025, cites D-028, rejects the central-file shape).
+- [x] T4 — Run both suites (`skills/tests`, `scripts/tests`); confirm green.
 
 ## Work log
 
