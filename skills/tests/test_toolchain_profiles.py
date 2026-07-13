@@ -8,7 +8,8 @@ operational skills (implement/hotfix/review) read the active profile's slot and
 no longer hardcode `devtools::`, the review consistency gate splits into
 universal + profile halves, the R guardrails are relocated out of the rulebook
 into the r-package profile, and the milestone template is de-R'd; plus the M47
-boundary — cairn-release still hardcodes devtools until then.
+rewire — cairn-release now reads the active profile's release-walk slot and no
+longer hardcodes the CRAN/devtools walk.
 
 Skill-prose guards read the file as one string, so asserted phrases live on a
 single source line (M23) and steer clear of `**bold**` splits (M26).
@@ -147,27 +148,28 @@ class TestInitSelection(unittest.TestCase):
         self.assertIn("cairn/PROFILE.md", text)
 
 
-# Skills M46 rewires to read the profile instead of hardcoding R commands.
-# cairn-release is deliberately NOT here — its release-walk generalization is
-# M47; it still hardcodes devtools until then (see TestReleaseSkillUntouched).
+# Skills rewired to read the profile instead of hardcoding R commands: the
+# operational trio at M46, and cairn-release at M47 (its release-walk slot).
 REWIRED_SKILLS = (
     ("milestone-implement", "SKILL.md"),
     ("hotfix", "SKILL.md"),
     ("milestone-review", "SKILL.md"),
+    ("cairn-release", "SKILL.md"),
 )
 
 
 class TestOperationalSkillsReadProfile(unittest.TestCase):
     """AC1/AC2: M45 shipped the mechanism but left the operational skills
-    hardcoding their R commands; M46 flips that — the rewired skills name the
-    active profile's slot and no longer hardcode a `devtools::` command."""
+    hardcoding their R commands; M46 flipped the operational trio and M47
+    cairn-release — the rewired skills name the active profile's slot and no
+    longer hardcode a `devtools::` command."""
 
     def test_rewired_skills_read_a_profile_slot(self):
         for a, b in REWIRED_SKILLS:
             text = read(a, b)
-            self.assertIn("PROFILE.md", text, f"{a} should read the profile after M46")
+            self.assertIn("PROFILE.md", text, f"{a} should read the profile")
             self.assertNotIn("devtools::", text,
-                             f"{a} still hardcodes a devtools command after M46")
+                             f"{a} still hardcodes a devtools command")
 
 
 class TestReviewGateSplit(unittest.TestCase):
@@ -204,14 +206,41 @@ class TestTemplateProfileAware(unittest.TestCase):
         self.assertIn("verify", text)
 
 
-class TestReleaseSkillUntouched(unittest.TestCase):
-    """M46 boundary: cairn-release's release-walk generalization is M47, so it
-    still hardcodes devtools and reads no profile until then. This guard flips
-    at M47."""
+class TestReleaseSkillReadsProfile(unittest.TestCase):
+    """M47: cairn-release reads the active profile's release-walk slot instead
+    of hardcoding the CRAN walk (AC1), and gates its toolchain preconditions on
+    the profile (AC3); the generic profile's release-walk defines a tag-based
+    path with no CRAN (AC2). The "no longer hardcodes devtools::" half of AC1
+    and the r-package text-equivalence of AC4 are covered by
+    TestOperationalSkillsReadProfile (now includes cairn-release) and
+    test_r_package_profile_holds_relocated_commands respectively."""
 
-    def test_cairn_release_still_hardcodes_devtools(self):
+    def test_skill_reads_the_release_walk_slot(self):
         text = read("cairn-release", "SKILL.md")
-        self.assertIn("devtools::", text, "cairn-release lost its hardcoded command before M47")
+        self.assertIn("release-walk", text,
+                      "cairn-release should read the profile release-walk slot")
+        self.assertIn("PROFILE.md", text)
+
+    def test_skill_gates_preconditions_on_the_profile(self):
+        text = read("cairn-release", "SKILL.md")
+        # Anchor on the rewire's own single-line, non-bold-split phrasing (M23/M26/M39):
+        # this phrase exists only because preconditions now gate on the profile.
+        self.assertIn("Toolchain preconditions gate on the profile", text,
+                      "cairn-release should gate DESCRIPTION/devtools preconditions on the profile")
+
+    def test_generic_release_walk_defines_a_tag_path(self):
+        # Isolate the release-walk slot so an absent tag path fails (M40), rather
+        # than matching 'tag'/'version' elsewhere in the profile.
+        body = section_body(read("shared", "profiles", "generic.md"), "release-walk").lower()
+        self.assertTrue(body, "could not locate the generic release-walk slot")
+        self.assertIn("tag", body, "generic release-walk should define a tag-based release")
+        self.assertIn("version", body, "generic release-walk should bump the version")
+        # Lock T1's enrichment into a followable walk, not just the AC2 surface:
+        # the commit-to-default-branch step is unique to the multi-step walk (the
+        # pre-M47 one-line summary had bump/consolidate/tag but no commit step).
+        self.assertIn("commit", body, "generic release-walk should be a followable walk (commit step)")
+        for tok in ("cran", "devtools"):
+            self.assertNotIn(tok, body, f"generic release-walk should carry no {tok}")
 
 
 if __name__ == "__main__":
