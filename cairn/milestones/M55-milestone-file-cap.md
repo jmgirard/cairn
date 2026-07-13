@@ -70,10 +70,10 @@ agreement.
 - [x] T2 — In `check_caps` (cairn_validate.py:78-86), use
       `milestone_body_line_count` for the live-milestone branch instead of
       `line_count`; leave the archive branch and other caps untouched.
-- [ ] T3 — scripts/tests: add a `live()`-with-`## Review` fixture helper and
-      cases for AC1 (body<150 + Review over → PASS), AC2 (body≥150 → FAIL),
-      AC3 back-compat (no Review → whole file) and AC3 fence-safety (fenced
-      `## Review` in body not treated as boundary).
+- [x] T3 — scripts/tests: `TestMilestoneBodyLineCount` unit class (exemption,
+      back-compat, two fence-safety cases, unreadable→None) + integration cases
+      in `TestValidateFailures` for AC1 (body<150 + Review over → PASS) and AC2
+      (body≥150 → FAIL, asserts the "plan-owned lines" message).
 - [ ] T4 — Update the tracking-rules weight-caps line
       (tracking-rules.md:86) to state the `## Review` exemption; add a
       skills/tests prose-guard locking the wording + a stated↔enforced check
@@ -95,6 +95,7 @@ agreement.
 - 2026-07-13 (T1/T2): added fence-aware `milestone_body_line_count` and rewired
   `check_caps` to measure the plan-owned body for live milestones. Existing
   scripts suite (65) green.
+- 2026-07-13 (T3): added 7 tests (5 unit + 2 integration); scripts suite 72 green.
 
 ## Decisions
 
