@@ -83,29 +83,11 @@ time. Lessons don't execute; a harness does.
 
 ## Tasks
 
-- [x] T1 — Build the harness engine (e.g. `skills/tests/mutation_harness.py`):
-      given (target file path, block locator, guard test id), produce mutated
-      content with the block blanked, patch `pathlib.Path.read_text` to return
-      it for the target during a scoped re-run, execute the guard via
-      `unittest.TestLoader`/`TestResult`, and assert failures+errors > 0.
-      A locator that resolves to zero or >1 sites is a hard error (catches
-      drift), not a silent pass.
-- [x] T2 — Define the registry format (entries: guard module+test, target
-      file, block locator) and ship the self-test fixture pair — a
-      false-coverage guard the harness must flag and a sound guard it must
-      clear — proving both oracle directions. (AC1)
-- [x] T3 — Register all existing prose-guards under `skills/tests/`; run the
-      harness; re-anchor inline any false-coverage guard it flags (typically a
-      one-line anchor fix per the M39/M40 discipline), card any needing real
-      rework (see Out); log one work-log line per fix. (AC2)
-- [x] T4 — Completeness meta-test: discover every prose-guard test file under
-      `skills/tests/` and assert each is registered or in an explicit EXEMPT
-      set (with a reason string); prove it fails against a temporary
-      unregistered fixture. (AC3)
-- [ ] T5 — Add the "every prose-guard registers in the mutation harness" rule
-      to `tracking-rules.md` (near the guard/testing discipline / "What gets a
-      test"), keeping the file under its cap; append a `LESSONS.md` line
-      graduating the M39/M40 false-coverage class to mechanism. (AC4)
+- [x] T1 — Harness engine (`skills/tests/mutation_engine.py`): blank a block, re-run the guard via a scoped `Path.read_text` patch, assert it fails; ambiguous/missing locator is a hard error. (AC1)
+- [x] T2 — Registry format (`Mutation`) + self-test fixture pair proving both oracle directions. (AC1)
+- [x] T3 — Register all prose-guards; re-anchor inline any false-coverage guard flagged (one caught: `test_design_interview`); card large rework (none). (AC2)
+- [x] T4 — Completeness meta-test: every prose-guard registered or exempted, proven to fail on an unregistered fixture. (AC3)
+- [x] T5 — Rule in `tracking-rules.md` "What gets a test" (guard must fail when its rule is deleted) + `LESSONS.md` graduation line; caps held. (AC4)
 
 ## Work log
 
@@ -132,6 +114,11 @@ time. Lessons don't execute; a harness does.
   `test_*.py`, `unregistered()` reports any not registered/exempt; proven to
   flag a synthetic unregistered module and to reject stale entries. skills
   suite 143 green.
+- 2026-07-13 (T5): universal false-coverage rule in tracking-rules "What gets a
+  test" (plugin mechanism named, matching the existing `locked by …` style);
+  LESSONS graduation line, pruning the now-mechanized M39/M40/M47 lessons
+  (47/50). Compressed the Tasks block to reclaim review headroom vs the 150 cap
+  (M22/M50 remedy). 3 suites green.
 
 ## Decisions
 
