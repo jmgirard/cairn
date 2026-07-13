@@ -45,18 +45,18 @@ never a gate" doctrine.
 
 ## Acceptance criteria
 
-- [ ] The r-package `test-doctrine` slot documents both standard workflows —
+- [x] The r-package `test-doctrine` slot documents both standard workflows —
       R-CMD-check (`use_github_action("check-standard")`) and covr→Codecov
       test-coverage (`use_github_action("test-coverage")`).
-- [ ] The coverage-reporting guidance is explicitly diagnostic-only / never a
+- [x] The coverage-reporting guidance is explicitly diagnostic-only / never a
       merge gate, and the existing "covr is a diagnostic, never a gate" line is
       retained (no doctrine edit elsewhere in the profile or tracking-rules).
-- [ ] The six-slot schema is unchanged: `test_shipped_reference_profiles_are_valid`
+- [x] The six-slot schema is unchanged: `test_shipped_reference_profiles_are_valid`
       passes, `_REQUIRED_SLOTS` is untouched, and no slot is added or renamed.
-- [ ] A guard test in `test_toolchain_profiles.py` locks the guidance on
+- [x] A guard test in `test_toolchain_profiles.py` locks the guidance on
       uniquely-new tokens and fails if the CI-pair guidance is deleted
       (deletion sanity-check per the M47/M39/M40 false-coverage lessons).
-- [ ] The active profile's `verify` slot clean: all three unittest suites green
+- [x] The active profile's `verify` slot clean: all three unittest suites green
       (`skills/tests`, `scripts/tests`, `hooks/tests`).
 
 ## Coverage
@@ -107,4 +107,7 @@ PR: https://github.com/jmgirard/cairn/pull/50 · main in sync (0 behind, 2 ahead
 - Toolchain: this repo's active profile is `generic`; its consistency-gate slot names no toolchain checks → clean no-op.
 - No DESIGN principle changed (none exist) → `cairn_impact` skipped.
 
-**Independent review (3 lenses + scorer):**
+**Independent review (3 lenses + scorer):** all three fresh-context lenses returned **zero findings** → nothing to score, no triage.
+- [O] diff-bug (Opus): clean on all four axes — gate distinction (check-standard is a normal red-CI gate; only coverage is diagnostic-only), usethis-name accuracy, deletion sanity-check (every anchor exists only in the new block), cross-doctrine consistency. Dropped one taxonomy item (a red test-coverage *job* would still gate under "never merge red CI" — the plan-mandated diagnostic-only framing is about the coverage %, correct as written).
+- [S] blame-history (Sonnet): clean — insertion sits between the covr line and the dependency line, leaving M49/D-028 provenance content and M46 slot structure intact; no D-entry contradicted; new test asserts disjoint tokens from TestRPackageFixtureProvenance.
+- [S] prior-PR-comments (Sonnet): no prior-PR evidence (PRs #43–#48 touching these files carry zero inline review comments) — expected no-op on this repo.
