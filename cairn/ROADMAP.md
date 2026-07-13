@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-13 (M50 greenfield init opener flow done + archived; graduated the greenfield-init-flow candidate; pruned M45 under terminal-row retention)_
+_Last hygiene check: 2026-07-12 (M51 oracle-registry doctrine done + archived; graduated the oracle-registry candidate; pruned M46 under terminal-row retention)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,19 +10,17 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M51 | Oracle-registry doctrine (shape-free) | review | — | normal | milestones/M51-oracle-registry-doctrine.md |
+| M51 | Oracle-registry doctrine (shape-free) | done | — | normal | milestones/archive/M51-oracle-registry-doctrine.md |
 | M50 | Greenfield init opener flow | done | — | normal | milestones/archive/M50-greenfield-init-openers.md |
 | M49 | R fixture-provenance guard fold-in | done | — | normal | milestones/archive/M49-r-fixture-provenance-guard.md |
 | M48 | Python toolchain profile | done | — | normal | milestones/archive/M48-python-toolchain-profile.md |
 | M47 | Release-walk slot — generalize cairn-release to read the profile | done | M45 | normal | milestones/archive/M47-release-walk-slot.md |
-| M46 | Rewire operational slots (implement/review/hotfix/doctrine) + dogfood generic | done | M45 | normal | milestones/archive/M46-rewire-operational-slots.md |
 
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
 - Public release prep: LICENSE (MIT), README worked example, remove DRAFT files, tag v1.0 — added 2026-07-11 — DRAFT_2 §11
-- Adopt an oracle registry (`ORACLES.md`) as a cairn tracking file: ackwards' M57 proved a per-oracle registry (ID, type, asserting test:line, source, provenance) auditable against the ≥2-independent-types bar; adopting it into cairn means the D-015/M16 four-wiring-points path (file-map + weight-caps, `LINE_CAPS`, date-scan) plus a cap and an opt-in decision. Domain-specific (only statistical packages need it) and entangled with the toolchain-profiles split, which wants domain doctrine (oracles) orthogonal to the language profile — promote *with* that work, not standalone. **M42 verdict: REVISE, keep deferred** — the column shape matches intraclass's per-oracle records and a central index earns its keep at scale (34 scripts, dozens of oracles, hard to audit ≥2-types across distributed headers), BUT (a) intraclass implements the registry *distributed* (structured `oracle-*.R` headers + embedded `.rds` fields, no `ORACLES.md`), so the central-file shape is not the only one, and (b) the `type` column can't describe intraclass's oracles until the taxonomy gains the simulation-coverage type (M42 T4) — the registry is downstream of that fix — added 2026-07-12 — M33 Out, references/oracle-discipline-notes.md, references/oracle-doctrine-intraclass-notes.md
 - `/design-interview` note-and-leave ingestion: teach `/design-interview` to ingest a migration-preserved numbered-principles file (kept intact by M43's G-I2 note-and-leave) and drive its IP/GP formalization + the eventual in-code `PRINCIPLES.md #N` repoint (a target-repo code touch). Downstream of M43 (which writes the deferral) and gated on a real repo needing it; `/design-interview` already formalizes principles, so this is the migration-specific ingestion path, not net-new formalization — added 2026-07-12 — M43 Out (Q1), references/migration-pilot-notes.md Pilot 3 G-I2
 - Content-gated memory guard: make M19's memory-boundary hook inspect the write and fire only on durable-state signals (decisions, conventions, project facts), staying silent on pure per-user prefs; promote only if the unconditional soft nudge proves too noisy — added 2026-07-11 — M19 Out
 - Scaffold-spec version stamp / content-drift detection (Direction 2, deferred from M24): M24 detects *missing* §1 pieces but not a piece whose template *body* changed while the file still exists; stamp a scaffold-spec version into the adopted CLAUDE.md and compare against the plugin's current spec to catch content drift — needs a maintained spec version + changelog + a definition of "what counts as a bump"; promote only if content drift (as opposed to missing files) actually bites — added 2026-07-12 — M24 Out
