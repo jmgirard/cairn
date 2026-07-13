@@ -1,6 +1,6 @@
 # M53: Prose-guard mutation harness
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** GP2, GP4

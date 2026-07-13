@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M53 | Prose-guard mutation harness | in-progress | — | high | milestones/M53-prose-guard-mutation-harness.md |
+| M53 | Prose-guard mutation harness | review | — | high | milestones/M53-prose-guard-mutation-harness.md |
 | M52 | r-package profile — GitHub Actions CI (R-CMD-check + Codecov) | done | — | normal | milestones/archive/M52-r-profile-codecov-ci.md |
 | M51 | Oracle-registry doctrine (shape-free) | done | — | normal | milestones/archive/M51-oracle-registry-doctrine.md |
 | M50 | Greenfield init opener flow | done | — | normal | milestones/archive/M50-greenfield-init-openers.md |
