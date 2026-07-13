@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M48: Python toolchain profile
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
@@ -81,7 +81,7 @@ stays tracking-only).
 - [x] T3 — Update tracking-rules "Toolchain profiles": "Two profiles ship" →
       three; the "Absent `PROFILE.md` → infer" line gains `pyproject.toml →
       python` in the stated order; sweep for any other "two profiles" mention.
-- [ ] T4 — Add guard tests to `test_toolchain_profiles.py`: python profile
+- [x] T4 — Add guard tests to `test_toolchain_profiles.py`: python profile
       defines the six slots non-empty; holds its toolchain tokens; generic
       carries no python toolchain tokens; cairn-init selects/​backfills python;
       the rulebook inference names `pyproject.toml`. Run all three suites green.
@@ -92,6 +92,7 @@ stays tracking-only).
 - 2026-07-13: T1 — authored skills/shared/profiles/python.md (82 lines, six non-empty slots; pyproject/PEP621, pytest, ruff, mypy, build+twine, coverage-as-diagnostic; release-walk hands off twine upload + notes OIDC trusted-publishing, no self-submit).
 - 2026-07-13: T2 — wired cairn-init: selection order DESCRIPTION→r-package, pyproject/setup.py/setup.cfg→python (DESCRIPTION wins hybrids), else generic; repair-mode backfill gains the python branch; scaffold comment + instantiate step enumerate python; non-R-package bullet routes pyproject repos to python.
 - 2026-07-13: T3 — tracking-rules "Toolchain profiles": "Two profiles ship" → three (added python); absent-PROFILE inference lists DESCRIPTION→r-package, pyproject→python, else generic. Swept: only the one mention.
+- 2026-07-13: T4 — added python guards to test_toolchain_profiles.py (exact-six-slots, toolchain tokens, release-walk handoff+no-self-submit, generic-negative, init select/backfill, rulebook three-profiles+inference-order). All three unittest suites green (121/65/32); cairn_validate all-pass.
 
 ## Decisions
 
