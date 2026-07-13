@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M51 | Oracle-registry doctrine (shape-free) | in-progress | — | normal | milestones/M51-oracle-registry-doctrine.md |
+| M51 | Oracle-registry doctrine (shape-free) | review | — | normal | milestones/M51-oracle-registry-doctrine.md |
 | M50 | Greenfield init opener flow | done | — | normal | milestones/archive/M50-greenfield-init-openers.md |
 | M49 | R fixture-provenance guard fold-in | done | — | normal | milestones/archive/M49-r-fixture-provenance-guard.md |
 | M48 | Python toolchain profile | done | — | normal | milestones/archive/M48-python-toolchain-profile.md |

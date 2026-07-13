@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M51: Oracle-registry doctrine (shape-free)
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** GP4
@@ -83,10 +83,10 @@ superseding D-entry (annotating D-024/D-025, citing D-028's precedent).
       match per M23). Confirm each new assertion FAILS against the pre-T1 rulebook
       before T1 lands (or by temporary revert), and record that check in the work
       log — the M39/M40/M50 false-coverage discipline.
-- [ ] T3 — Append D-029 to `cairn/DECISIONS.md`: the content-not-shape choice,
+- [x] T3 — Append D-029 to `cairn/DECISIONS.md`: the content-not-shape choice,
       annotating D-024/D-025, citing D-028, rejecting the central-file shape as
       this milestone's disposition.
-- [ ] T4 — Run `python3 -m unittest discover -s skills/tests` and
+- [x] T4 — Run `python3 -m unittest discover -s skills/tests` and
       `python3 -m unittest discover -s scripts/tests`; confirm both green.
 
 ## Work log
@@ -98,6 +98,10 @@ superseding D-entry (annotating D-024/D-025, citing D-028's precedent).
   (RED, M39/M40 false-coverage check), then added the registry paragraph →
   7/7 green. Anchors are on new tokens absent from the pre-M51 file (grep: `registry`,
   `test:line`, `shape is the repo` all 0; avoided `auditable`, 2 pre-existing).
+- 2026-07-12: T3 — D-029 appended (content-not-shape, annotates D-024/D-025,
+  cites D-028, rejects the central-`ORACLES.md` file shape). T4 — full suites
+  green: `skills/tests` 131 OK, `scripts/tests` 65 OK; `cairn_validate` 14/14
+  PASS + sizing OK. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
