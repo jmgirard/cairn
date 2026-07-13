@@ -445,9 +445,11 @@ it is orthogonal to the language profile (D-024/D-025), stated once in
 "Validation doctrine" below. A profile carries *language mechanics*, never
 domain doctrine.
 
-Two profiles ship: `r-package` (devtools/roxygen/testthat/pkgdown, CRAN) and
-`generic` (no toolchain gates). **Absent `PROFILE.md` → infer**: a `DESCRIPTION`
-at the repo root means `r-package`, else `generic` — so a repo that adopted
+Three profiles ship: `r-package` (devtools/roxygen/testthat/pkgdown, CRAN),
+`python` (pyproject/pytest/ruff/mypy/build+twine, PyPI), and `generic` (no
+toolchain gates). **Absent `PROFILE.md` → infer** in order: a `DESCRIPTION` at
+the repo root means `r-package`, else a `pyproject.toml` (or legacy
+`setup.py`/`setup.cfg`) means `python`, else `generic` — so a repo that adopted
 cairn before profiles keeps working unchanged, and `cairn-init` repair backfills
 the explicit declaration. `cairn_validate` no-ops when `PROFILE.md` is absent
 and, when present, FAILs on a missing, empty, or unrecognized slot.

@@ -78,7 +78,7 @@ stays tracking-only).
       repair-mode backfill inference gains the python branch; update the
       scaffold comment lines that enumerate profile names
       (`r-package | generic` → add `python`).
-- [ ] T3 — Update tracking-rules "Toolchain profiles": "Two profiles ship" →
+- [x] T3 — Update tracking-rules "Toolchain profiles": "Two profiles ship" →
       three; the "Absent `PROFILE.md` → infer" line gains `pyproject.toml →
       python` in the stated order; sweep for any other "two profiles" mention.
 - [ ] T4 — Add guard tests to `test_toolchain_profiles.py`: python profile
@@ -91,6 +91,7 @@ stays tracking-only).
 - 2026-07-13: created by /milestone-plan (paired with M49; independent, no dependency).
 - 2026-07-13: T1 — authored skills/shared/profiles/python.md (82 lines, six non-empty slots; pyproject/PEP621, pytest, ruff, mypy, build+twine, coverage-as-diagnostic; release-walk hands off twine upload + notes OIDC trusted-publishing, no self-submit).
 - 2026-07-13: T2 — wired cairn-init: selection order DESCRIPTION→r-package, pyproject/setup.py/setup.cfg→python (DESCRIPTION wins hybrids), else generic; repair-mode backfill gains the python branch; scaffold comment + instantiate step enumerate python; non-R-package bullet routes pyproject repos to python.
+- 2026-07-13: T3 — tracking-rules "Toolchain profiles": "Two profiles ship" → three (added python); absent-PROFILE inference lists DESCRIPTION→r-package, pyproject→python, else generic. Swept: only the one mention.
 
 ## Decisions
 
