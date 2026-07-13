@@ -92,10 +92,10 @@ operational skill.
       declaration via DESCRIPTION inference.
 - [x] T4 — `session_context` hook: read + inject the active profile name; no-op
       when absent. Extend `hooks/tests/test_hooks.py`.
-- [ ] T5 — `cairn_validate`: profile presence / slot-completeness check (no-op
-      when absent); register `PROFILE.md` in `cairn_scripts.LINE_CAPS`. Extend
-      the shared `Tree.build()` fixture / add a dedicated builder per the
-      M24/M34 fixture pattern.
+- [x] T5 — `cairn_validate`: profile presence / slot-completeness check (no-op
+      when absent); register `PROFILE.md` in `cairn_scripts.LINE_CAPS` (done in
+      T2). Base `Tree.build()` untouched (M34/M38 no-op-when-absent pattern);
+      dedicated `TestValidateProfile` + a shipped-reference validity guard.
 - [ ] T6 — Guard tests: the six slot names per profile, the `r-package`
       text-equivalence map, the init detection + backfill rule, and the
       "operational skills still hardcoded" negative assertion.
@@ -107,6 +107,7 @@ operational skill.
 - 2026-07-12: T2 — tracking-rules "Toolchain profiles" section + PROFILE.md file-map row + weight-cap (<90) in rulebook and `cairn_scripts.LINE_CAPS`.
 - 2026-07-12: T3 — cairn-init selects profile (§0), instantiates cairn/PROFILE.md (§1 tree + step), repair-mode backfills by DESCRIPTION inference.
 - 2026-07-12: T4 — session_context injects the active profile name (no-op when PROFILE.md absent); +2 hook tests (present/absent).
+- 2026-07-12: T5 — cairn_validate `check_profile` (no-op absent; FAIL on missing/empty/unrecognized slot) + `TestValidateProfile` (+6) incl. shipped-reference validity.
 
 ## Decisions
 
