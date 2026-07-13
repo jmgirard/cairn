@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-13 (ingested RR01 whole-architecture retrospective — triaged 17 recs into grouped candidate rows + absorbed positioning/DESIGN fixes into the release-prep row; RB01/RR01 archived; rejects rec15/16/17 uphold D-003/D-029, no supersede)_
+_Last hygiene check: 2026-07-13 (ingested RR01 retrospective — triaged 17 recs into grouped candidate rows, absorbed positioning/DESIGN fixes into release-prep, archived RB01/RR01, rejects uphold D-003/D-029; then planned M53 from the mutation-harness candidate)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,6 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M53 | Prose-guard mutation harness | planned | — | high | milestones/M53-prose-guard-mutation-harness.md |
 | M52 | r-package profile — GitHub Actions CI (R-CMD-check + Codecov) | done | — | normal | milestones/archive/M52-r-profile-codecov-ci.md |
 | M51 | Oracle-registry doctrine (shape-free) | done | — | normal | milestones/archive/M51-oracle-registry-doctrine.md |
 | M50 | Greenfield init opener flow | done | — | normal | milestones/archive/M50-greenfield-init-openers.md |
@@ -21,7 +22,7 @@ not an R package, so R-specific gates don't apply.
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
 - Public release prep: LICENSE (MIT), README worked example + a human-facing "what cairn does without asking" section, **fix R-only positioning** (plugin.json description, README ¶1, `/hotfix` NEWS.md, cairn-init §0 "not an R package — adapt or abort" bullet → profile framing), **refresh DESIGN.md** (list all 5 hooks, rewrite the stale "Unpiloted" Known-issues to the honest single-author/single-OS list, IP1 "main" → "the default branch"), external de-risking (env check in cairn-init, migration dry-run mode), remove DRAFT files, tag v1.0 — added 2026-07-11, expanded 2026-07-13 (RR01 rec 1/5/14) — DRAFT_2 §11, reviews/archive/RR01
-- Guard-test mutation harness (RR01's single highest-leverage change): a meta-suite that deletes/blanks each registered rule block and asserts its guard fails — dissolves the 6+-incident false-coverage trap (M23/M26/M39/M40/M47/M48/M50) at authoring time instead of via the review lens milestones later; new prose-guards must register — added 2026-07-13 — RR01 rec 2/Q8/Q11
+- Guard-test mutation harness (RR01's single highest-leverage change): a meta-suite that deletes/blanks each registered rule block and asserts its guard fails — dissolves the 6+-incident false-coverage trap (M23/M26/M39/M40/M47/M48/M50) at authoring time instead of via the review lens milestones later; new prose-guards must register — added 2026-07-13 — RR01 rec 2/Q8/Q11 — **→ now M53 (planned)**; graduates at M53 completion
 - Milestone-file cap: exempt the review-exclusive `## Review` section from the 150-line cap (count the plan-owned body only, or split the budget 120/40 in `check_caps`) — ends the recurring end-of-milestone evidence-vs-cap scramble (M19/M22/M33/M50, twice damaging content) without loosening plan discipline — added 2026-07-13 — RR01 rec 3/Q8
 - Rulebook doctrine placement: move dependency-change gating + deprecation-cycle policy up from the r-package/python `test-doctrine` slots to the core rulebook (universal governance, today duplicated in 2 profiles + absent from generic); extract the Validation doctrine (+registry/sources/ingestion, ~60 lines) to `skills/shared/validation-doctrine.md` under a "new domain doctrine gets a module, not a rulebook section" norm (stays universal — D-024/D-025 is core-vs-profile, not single-file); add an oracle registry-pointer line (a repo with numeric work declares *where* its records live, shape still free) — added 2026-07-13 — RR01 rec 4/6/9
 - Skill/hook single-source-of-truth: align cairn-init §0's default-branch fallback to the canonical ls-remote recipe (never guess the current branch); stop enumerating cairn_validate's checks in `/milestone-review` step 4 + `/milestone` §2 (run-and-read, drop the now-mechanical "Coverage completeness" manual bullet); add a force-push-to-default-branch deny hook (reuse commit_guard's branch machinery); add a merge_guard PostToolUse companion that restores the marker on a failed merge (M33); progressive-disclose cairn-init §2 migration protocol to a shared file read only on footprint detection — added 2026-07-13 — RR01 rec 7/8/12/13/Q6/Q9
