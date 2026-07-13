@@ -35,6 +35,14 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
   `cairn/PROFILE.md` at §1; the operational skills read its slots for
   language-specific commands (tracking-rules "Toolchain profiles"). Confirm the
   recommended profile with the user before writing.
+- **Greenfield?** A new/empty repo — no source to read and no toolchain marker
+  (`DESCRIPTION` / `pyproject.toml` / `setup.py` / `setup.cfg`) — has no profile
+  to infer. When this fires, present a **project-type chip** (AskUserQuestion:
+  R package / Python package / generic; recommend per any weak signal, else
+  generic) to select the profile *explicitly* rather than silently defaulting to
+  generic, then run the greenfield opener flow (§1). A repo that has a marker or
+  existing source is **not** greenfield: infer the profile as above and skip the
+  openers.
 - No existing tracking → **fresh scaffold** (§1).
 - Existing tracking footprint → **migration** (§2). Recognize precursors by
   footprint: root-level `MILESTONES.md`/`DESIGN.md`/`ROADMAP.md` with status

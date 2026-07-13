@@ -91,7 +91,7 @@ and lands each answer in a durable home — filling the three profiles'
       flow"); each language-specific opener names options + marked reversible
       default + consequence + durable home; remove the "ships later" placeholder
       prose. Keep every slot non-empty (schema).
-- [ ] T2 — Wire `cairn-init` SKILL §1: greenfield trigger (new/empty repo, no
+- [x] T2 — Wire `cairn-init` SKILL §1: greenfield trigger (new/empty repo, no
       inferable profile) → project-type chip → profile selection + PROFILE.md
       instantiation. Leave the existing-code fresh-scaffold and migration paths
       unchanged (profile still inferred, openers skipped).
@@ -112,6 +112,7 @@ and lands each answer in a durable home — filling the three profiles'
 
 ## Work log
 
+- 2026-07-13: T2 — cairn-init §0 gains a greenfield-detection bullet (new/empty + no marker) → project-type chip selects the profile explicitly instead of defaulting to generic; non-greenfield/migration paths unchanged.
 - 2026-07-13: T1 — filled the three profiles' greenfield-openers slots with concrete openers (r-package: compiled code; python: typing strictness + `src/`-vs-flat; generic: universal layer is the whole flow); universal openers left to cairn-init, not duplicated. Existing test_toolchain_profiles.py (24 tests) still green.
 - 2026-07-13: created by /milestone-plan. Gate decisions: trigger = empty/new
   repo only (profile not inferable); architecture = universal opener layer +
