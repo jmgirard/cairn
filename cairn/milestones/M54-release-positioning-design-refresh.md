@@ -88,7 +88,7 @@ adopter reads no longer say R-only and DESIGN audits clean (RR01 recs 1 + 5).
 - [x] T2 — Delete `cairn-init` §0's "No DESCRIPTION file → not an R package"
       bullet (`skills/cairn-init/SKILL.md:24`); confirm the "Toolchain profile"
       bullet below still covers the DESCRIPTION-absent path.
-- [ ] T3 — Genericize `/hotfix` step 5 (`skills/hotfix/SKILL.md:39`): replace
+- [x] T3 — Genericize `/hotfix` step 5 (`skills/hotfix/SKILL.md:39`): replace
       hardcoded `NEWS.md` with a reference to the profile's changelog (no slot;
       keep it honest that R-package uses `NEWS.md`).
 - [ ] T4 — Refresh `cairn/DESIGN.md`: hooks bullet → all 5 hooks; IP1 "main" →
@@ -113,6 +113,9 @@ adopter reads no longer say R-only and DESIGN audits clean (RR01 recs 1 + 5).
 - 2026-07-13: T2 — removed cairn-init §0's R-centric bullet; the Toolchain
   profile bullet (confirm-before-write) owns the DESCRIPTION-absent case. No
   guard referenced the removed wording.
+- 2026-07-13: T3 — /hotfix steps 5–6 genericized (NEWS.md → the profile's
+  changelog); no slot added (deferred to rec 11). r-package profile keeps
+  NEWS.md, so the R_COMMAND_TOKENS guard is untouched.
 
 ## Decisions
 

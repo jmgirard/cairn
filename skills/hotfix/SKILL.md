@@ -36,12 +36,13 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    absent → infer per tracking-rules "Toolchain profiles") — its gate-lite
    checks must be clean before the fix is proposed for merge.
 
-5. NEWS.md entry under the development version (no milestone/issue jargon in
-   the user-facing text). Push; open the PR — `Fixes #N` in the description
-   if a GitHub issue exists.
+5. Add a changelog entry (the profile's changelog file — `NEWS.md` for
+   r-package, else the repo's `CHANGELOG.md` / convention) under the current
+   development version (no milestone/issue jargon in the user-facing text).
+   Push; open the PR — `Fixes #N` in the description if a GitHub issue exists.
 
 6. **Approval gate:** present the diff, the regression-test evidence, and
-   the NEWS line; put the merge authorization to the user as an
+   the changelog line; put the merge authorization to the user as an
    `AskUserQuestion` chip (recommended = merge, e.g. `Merge PR #N to
    <default-branch>`, with a decline option) — never a prose yes/no, the same gate discipline
    as `/milestone-review`. Merge (`gh pr merge --squash --delete-branch`)
