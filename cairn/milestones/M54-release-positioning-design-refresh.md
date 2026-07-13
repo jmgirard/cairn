@@ -2,11 +2,11 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M54: Release positioning + DESIGN refresh
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** IP1
-- **Branch/PR:** —
+- **Branch/PR:** m54-release-positioning-design-refresh
 
 ## Goal
 
