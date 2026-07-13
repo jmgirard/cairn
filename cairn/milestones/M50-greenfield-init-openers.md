@@ -1,6 +1,6 @@
 # M50: Greenfield init opener flow
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —   <!-- M45–M47 (toolchain profiles) are all done; the greenfield-openers slot they defined empty is filled here -->
 - **Principles touched:** IP3, GP3
@@ -106,12 +106,13 @@ and lands each answer in a durable home — filling the three profiles'
       profiles; extend any hardcoded profile list per M48) + cairn-init SKILL
       prose (anchored on phrasing the new work uniquely introduces, M39/M40);
       confirm `test_toolchain_profiles.py` slot-schema tests still pass.
-- [ ] T5 — Dry-run walkthrough against a scratch empty repo (project-type chip →
+- [x] T5 — Dry-run walkthrough against a scratch empty repo (project-type chip →
       universal + profile openers → answer homes → undecided path), recorded in
       the work log as review evidence (the interactive flow can't be unit-tested).
 
 ## Work log
 
+- 2026-07-13: T5 — dry-run against a scratch empty `git init` repo: detection confirmed greenfield (no DESCRIPTION/pyproject/setup marker, no source, no cairn/ → fresh scaffold + project-type chip). Traced the Python path: chip → instantiate python.md → universal openers (PyPI intent → DESIGN Purpose & Scope; oracle-on → DESIGN Conventions) + profile openers (typing strictness, `src/`-vs-flat), each rendering options + marked reversible default + consequence + named home; undecided ⇒ reversible default + one candidate row; no skeleton scaffolded. Interactive AskUserQuestion rounds are the acknowledged non-automatable part (evidence = prose-guards + this trace, per the plan gate).
 - 2026-07-13: T4 — added TestGreenfieldOpeners (3 profiles' slots filled, placeholder gone, language slots defer universal openers) + TestGreenfieldInitFlow (SKILL trigger/chip/universal-layer/undecided/tracking-only, anchored on M50-unique tokens). +6 tests; skills 129, scripts 65 green; existing slot-schema + shipped-profile validator still pass. Caught and fixed one over-strict assertion (slots reference the universal oracle opener to defer it, not duplicate it).
 - 2026-07-13: T3 — cairn-init §1 gains the greenfield opener flow (universal layer: distribution ambition per profile + oracle-on; profile layer: slot openers; undecided ⇒ reversible default + one candidate row); tracking-only guard, /design-interview boundary, chip surfaces the package skeleton as the first milestone. Full skills suite (123 tests) green.
 - 2026-07-13: T2 — cairn-init §0 gains a greenfield-detection bullet (new/empty + no marker) → project-type chip selects the profile explicitly instead of defaulting to generic; non-greenfield/migration paths unchanged.
