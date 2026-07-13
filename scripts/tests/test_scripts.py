@@ -659,6 +659,15 @@ class TestMilestoneBodyLineCount(unittest.TestCase):
         text = "\n".join(lines) + "\n"
         self.assertEqual(self.count(text), len(lines))
 
+    def test_review_prefixed_heading_is_not_the_boundary(self):
+        # Only an exact `## Review` heading is the boundary — a plan-body H2 that
+        # merely starts with "review" (e.g. `## Reviewers`) must not truncate the
+        # body, or an oversized plan could silently pass the cap (M55 review).
+        body_lines = ["# M", "", "## Reviewers", "- alice", "- bob", ""]
+        body = "\n".join(body_lines) + "\n"
+        text = body + "## Review\n" + "e\n" * 50
+        self.assertEqual(self.count(text), len(body_lines))
+
     def test_unreadable_returns_none(self):
         missing = pathlib.Path(self._tmp.name) / "nope.md"
         self.assertIsNone(self.cs.milestone_body_line_count(str(missing)))

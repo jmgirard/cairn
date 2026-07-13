@@ -4,7 +4,7 @@
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
-- **Branch/PR:** m55-milestone-file-cap
+- **Branch/PR:** m55-milestone-file-cap · https://github.com/jmgirard/cairn/pull/53
 
 ## Goal
 
@@ -32,24 +32,24 @@ agreement.
 
 ## Acceptance criteria
 
-- [ ] A live milestone file whose plan-owned body (lines before `## Review`) is
+- [x] A live milestone file whose plan-owned body (lines before `## Review`) is
       under 150 but whose *total* exceeds 150 because of Review evidence PASSES
       the weight-caps check — the recurring evidence-vs-cap scramble
       (M19/M22/M33/M50) is gone. Evidence: a scripts/tests fixture.
-- [ ] Plan discipline is unchanged: a live milestone whose plan-owned body is
+- [x] Plan discipline is unchanged: a live milestone whose plan-owned body is
       itself ≥150 lines still FAILS weight-caps. Evidence: a scripts/tests
       fixture (the existing `test_over_cap_milestone` no-Review case plus a
       with-Review case whose body alone is over).
-- [ ] Measurement is correct at the edges: a file with no `## Review` section
+- [x] Measurement is correct at the edges: a file with no `## Review` section
       measures the whole file exactly as today (back-compat), and a literal
       `## Review` line inside a fenced code block in the plan-owned body does
       not false-terminate the body scan (M45 fence-state trap). Evidence: two
       scripts/tests fixtures.
-- [ ] The tracking-rules weight-caps text states the `## Review` exemption, the
+- [x] The tracking-rules weight-caps text states the `## Review` exemption, the
       stated cap (150) equals the enforced `MILESTONE_CAP`, and a prose-guard
       locks the wording and is registered in the mutation harness (blanking it
       fails the guard). Evidence: skills/tests guard + a `Mutation(...)` entry.
-- [ ] `verify` slot clean: `python3 -m unittest discover -s scripts/tests` and
+- [x] `verify` slot clean: `python3 -m unittest discover -s scripts/tests` and
       `python3 -m unittest discover -s skills/tests` both pass.
 
 ## Coverage
@@ -100,6 +100,9 @@ agreement.
 - 2026-07-13 (T5): swept skills (no Review-trim instruction to reconcile);
   recorded D-030. All tasks done → status review. scripts 72 + skills 153 green;
   `cairn_validate .` all-pass (weight caps included).
+- 2026-07-13 (review): diff-bug lens (scored 82) → exact `## Review` match +
+  regression test (`## Reviewers` no longer truncates the body). AC boxes ticked
+  against fresh evidence. scripts 73 + skills 153 green.
 
 ## Decisions
 
@@ -108,3 +111,38 @@ agreement.
   `## Decisions`. Parallels D-018.
 
 ## Review
+
+Reviewed 2026-07-13 · PR #53 · fresh evidence per criterion below.
+
+**AC evidence (run fresh at review):**
+- AC1 — `test_review_evidence_over_cap_passes`: a ~307-line file (≈106 plan-body
+  + 200 Review lines) → validate exit 0, `PASS weight caps`. Pre-fix that file
+  failed the cap. ✓
+- AC2 — `test_over_cap_milestone_body_still_fails` (160-line body + a Review
+  section → FAIL, "plan-owned lines") + original `test_over_cap_milestone`
+  (no-Review 160-line file → FAIL). Plan discipline unchanged. ✓
+- AC3 — `TestMilestoneBodyLineCount`: exemption, no-Review→whole-file
+  back-compat, two fence-safety cases, the `## Reviewers` prefix case (added at
+  review), unreadable→None. All ✓.
+- AC4 — `test_milestone_cap_exemption.py`: exemption + plan-body-cap wording
+  present, stated 150 == `MILESTONE_CAP`; mutation harness (via
+  `discover -s skills/tests`) confirms both registered blocks fail when blanked;
+  registry-completeness passes with the new guard registered. ✓
+- AC5 — `discover -s scripts/tests` 73 OK · `discover -s skills/tests` 153 OK. ✓
+
+**Consistency gate:** `cairn_validate .` exit 0 — 14 CHECKS PASS incl. weight caps
++ coverage complete; sizing advisory OK. Profile `generic` → toolchain half is a
+clean no-op. No IPn/GPn changed (Principles touched: —) → `cairn_impact` skipped.
+
+**Independent review (3 lenses + scorer):**
+- Diff-bug [O]: 1 finding — the `## Review` boundary used `startswith("review")`,
+  so a plan-body H2 like `## Reviewers` would truncate the body scan (a
+  one-directional cap *loosening*, deviating from the docstring's "first
+  `## Review` heading"). **Scored 82 → fixed now:** exact match `== "review"` +
+  regression test `test_review_prefixed_heading_is_not_the_boundary`.
+- Blame-history [S]: no findings — D-018 logic untouched, `MILESTONE_CAP` still
+  150, archive branch unchanged, no prior weight-caps rule dropped; D-030
+  supersedes nothing (no prior whole-file-cap decision) and "parallels D-018" is
+  accurate.
+- Prior-PR [S]: no prior-PR evidence (cairn PRs carry ~0 inline comments) — no-op.
+- Sub-threshold (<80) findings: none.

@@ -255,7 +255,7 @@ def milestone_body_line_count(path):
         if stripped.startswith("~~~"):
             fence = "~~~"
             continue
-        if line.startswith("## ") and line[3:].strip().lower().startswith("review"):
+        if line.startswith("## ") and line[3:].strip().lower() == "review":
             return i
     return len(lines)
 
