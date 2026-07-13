@@ -530,6 +530,19 @@ snapshots, trivial pass-throughs, dependency behavior. Test the contract, not
 the implementation — a test that breaks under a behavior-preserving refactor
 is a defect in the test.
 
+**A guard must fail when the rule it locks is deleted.** A prose-guard — a
+test that locks wording by asserting substrings of a doc (skill, rulebook,
+template) — gives *false coverage* when a phrase it asserts also occurs
+elsewhere: deleting the rule leaves the assertion satisfied, so the guard
+passes over a rule that is gone (the recurring M39/M40 trap). Verify by
+mutation, not by eye: cairn's own prose-guards register in the mutation
+harness (`skills/tests/test_mutation_harness.py`), which blanks each
+registered block and asserts its guard fails; the completeness meta-test
+fails CI on any unregistered prose-guard *file*. Registration is per file
+(one or more exemplar blocks), **not** per assertion — a new `assertIn`
+added to an already-registered file still needs its own entry or the by-hand
+check ("would this pass against the pre-milestone content?").
+
 The language-mechanical specifics — which edge cases, which error mechanism,
 coverage-tool status, plot/snapshot conventions — live in the active profile's
 `test-doctrine` slot (`cairn/PROFILE.md`; absent → infer per "Toolchain
