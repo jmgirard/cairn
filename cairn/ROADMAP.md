@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-13 (M49 R fixture-provenance done + archived; graduated the R-profile provenance-guard candidate; pruned M44 under terminal-row retention)_
+_Last hygiene check: 2026-07-13 (M50 greenfield init opener flow planned — absorbs the greenfield-init-flow candidate, which graduates at M50 completion)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,6 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M50 | Greenfield init opener flow | planned | — | normal | milestones/M50-greenfield-init-openers.md |
 | M49 | R fixture-provenance guard fold-in | done | — | normal | milestones/archive/M49-r-fixture-provenance-guard.md |
 | M48 | Python toolchain profile | done | — | normal | milestones/archive/M48-python-toolchain-profile.md |
 | M47 | Release-walk slot — generalize cairn-release to read the profile | done | M45 | normal | milestones/archive/M47-release-walk-slot.md |
