@@ -4,7 +4,7 @@
 - **Priority:** normal
 - **Depends on:** M45
 - **Principles touched:** GP3
-- **Branch/PR:** m46-rewire-operational-slots
+- **Branch/PR:** m46-rewire-operational-slots · PR #44
 
 ## Goal
 
@@ -38,26 +38,26 @@ dogfood the `generic` profile in this repo.
 
 ## Acceptance criteria
 
-- [ ] `milestone-implement` and `hotfix` name the profile `verify` slot, not
+- [x] `milestone-implement` and `hotfix` name the profile `verify` slot, not
       `devtools::test()` literally. Evidence: skill prose + guard test.
-- [ ] `milestone-review`'s consistency gate reads the profile `consistency-gate`
+- [x] `milestone-review`'s consistency gate reads the profile `consistency-gate`
       slot for language checks while keeping the universal cairn-file checks
       (validate, coverage, impact) unconditional. Evidence: skill prose + a
       guard test asserting the split.
-- [ ] `tracking-rules` "R package guardrails" + the R-mechanical half of "What
+- [x] `tracking-rules` "R package guardrails" + the R-mechanical half of "What
       gets a test" are relocated into the `r-package` profile; the universal
       test rules remain in `tracking-rules`. Evidence: a guard test asserting
       the R tokens (`devtools`/`roxygen`/`NAMESPACE`) no longer appear in the
       universal sections and do appear in the `r-package` profile.
-- [ ] The `milestone.md` template no longer hardcodes `devtools::check()`; it
+- [x] The `milestone.md` template no longer hardcodes `devtools::check()`; it
       references the active profile's verify/check. Evidence: template diff +
       guard test.
-- [ ] This repo declares `cairn/PROFILE.md` = `generic`, the CLAUDE.md "R gates
+- [x] This repo declares `cairn/PROFILE.md` = `generic`, the CLAUDE.md "R gates
       waived here" note is gone, `DESIGN.md` names the profile mechanism, a full
       `cairn_validate` run passes (exit 0), and the script + skill suites are
       green under the generic profile. Evidence: `PROFILE.md` exists, CLAUDE.md
       + DESIGN.md diffs, validate exit 0, `python3 -m unittest` green.
-- [ ] The `r-package` profile still reproduces the pre-M46 R behavior after the
+- [x] The `r-package` profile still reproduces the pre-M46 R behavior after the
       relocation (no R adopter regresses). Evidence: the text-equivalence guard
       test, updated to the relocated slot content, passes.
 
@@ -105,3 +105,42 @@ dogfood the `generic` profile in this repo.
 ## Decisions
 
 ## Review
+
+_Reviewed 2026-07-12 · PR #44 · branch `m46-rewire-operational-slots` (8 commits)._
+
+### Acceptance-criteria evidence (fresh)
+
+- **AC1** — `milestone-implement` names the profile `verify` slot in 3 places
+  (per-task, resume, completion) and `test-doctrine` for idioms; `hotfix`
+  gate-lite names it once. Zero `devtools` tokens remain in either skill.
+  Guard: `TestOperationalSkillsReadProfile.test_rewired_skills_read_a_profile_slot`.
+- **AC2** — `milestone-review` gate labels "Universal cairn-file checks"
+  (validate/coverage/impact, unconditional) and reads the profile
+  `consistency-gate` slot for toolchain checks. Guards:
+  `TestReviewGateSplit.{test_universal_checks_stay_unconditional,test_review_reads_the_profile_consistency_gate_slot}`.
+- **AC3** — `## R package guardrails` section removed from `tracking-rules`;
+  the R gate tokens are absent from the universal "What gets a test" floor and
+  present in the `r-package` profile. Guards: `TestRulebookRelocation` (3).
+- **AC4** — `milestone.md` template AC guidance carries zero `devtools` tokens
+  and references `PROFILE.md`/`verify`. Guards: `TestTemplateProfileAware` (2).
+- **AC5** — `cairn/PROFILE.md` present (generic); CLAUDE.md waiver replaced;
+  DESIGN.md Purpose & Scope + Architecture name the profile mechanism.
+  `cairn_validate` exit 0 (profile valid, scaffold present, coverage complete);
+  suites **skills 113 / scripts 65 / hooks 32** green.
+- **AC6** — `r-package` profile reproduces every relocated command + guardrail
+  specific (`data-raw`, deprecation, Imports/Suggests, assertthat). Guards:
+  `test_r_package_profile_holds_relocated_commands`,
+  `test_relocated_guardrail_specifics_survive`.
+
+### Consistency gate
+
+- `cairn_validate` — exit 0, all 14 checks + sizing pass.
+- Coverage completeness — every AC maps to ≥1 existing task (AC1→T2,T3,T8;
+  AC2→T4,T8; AC3→T1,T7,T8; AC4→T5,T8; AC5→T6; AC6→T7,T8). Validated.
+- `cairn_impact` — GP3 is *touched* (the milestone instantiates portability)
+  but its DESIGN.md wording is unchanged (diff confirms), so no Sync Impact
+  Report is due. Skipped per the no-principle-change rule.
+- Toolchain checks — active profile is `generic`; its `consistency-gate` slot
+  names no checks → clean no-op.
+
+### Independent review
