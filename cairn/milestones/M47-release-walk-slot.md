@@ -96,3 +96,13 @@ under GP3, doesn't alter it.
 - **AC4** (r-package behavior preserved, text-equivalence) — PASS. r-package slot
   holds `submit_cran()`, `devtools::check()` (×3), `cran-comments`, `NEWS.md`.
   `test_r_package_profile_holds_relocated_commands`.
+
+**Independent review — three lenses + scorer.** [O] diff-bug, [S] blame-history,
+[S] prior-PR-comments: **zero actionable findings** (no scorer run — nothing to
+score). blame-history confirmed the `TestReleaseSkillUntouched` removal is the
+pre-declared M47 boundary flip with no behavior dropped; prior-PR lens no-op'd
+cleanly (repo carries zero inline PR review comments). One sub-threshold,
+non-blocking observation (surfaced per IP3): `test_generic_release_walk_defines_a_tag_path`
+locked AC2 but not T1's slot enrichment (the old one-liner already had tag/version).
+Fix-now: added an `assertIn("commit", …)` assertion anchoring on the enriched
+walk's unique step. Full skills suite green (115) after the hardening.

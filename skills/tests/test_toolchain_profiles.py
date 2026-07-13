@@ -235,6 +235,10 @@ class TestReleaseSkillReadsProfile(unittest.TestCase):
         self.assertTrue(body, "could not locate the generic release-walk slot")
         self.assertIn("tag", body, "generic release-walk should define a tag-based release")
         self.assertIn("version", body, "generic release-walk should bump the version")
+        # Lock T1's enrichment into a followable walk, not just the AC2 surface:
+        # the commit-to-default-branch step is unique to the multi-step walk (the
+        # pre-M47 one-line summary had bump/consolidate/tag but no commit step).
+        self.assertIn("commit", body, "generic release-walk should be a followable walk (commit step)")
         for tok in ("cran", "devtools"):
             self.assertNotIn(tok, body, f"generic release-walk should carry no {tok}")
 
