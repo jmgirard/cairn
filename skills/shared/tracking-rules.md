@@ -492,6 +492,15 @@ toward the ≥2-types bar like any other type. Freeze a simulation-coverage
 oracle (commit its summary as a fixture) only when the run is expensive — a live
 refit or a many-replication sweep — else recompute it live.
 
+**Oracle registry (auditability).** As oracles multiply across a suite, the
+≥2-types bar can only be checked if each oracle is recorded by
+**ID, type, asserting `test:line`, source, and provenance** — the asserting
+test is the single source of truth the record maps to, never a restated value.
+The record's **shape is the repo's choice** — a central registry file,
+distributed generator headers, or fields embedded in the committed fixture
+object all satisfy it — so long as the ≥2-types audit reads off it. Record an
+oracle only once its asserting test exists, never a planned one.
+
 **Reproducibility (hard stop):** no unsourced *or unreproducible* reference
 value ships. A committed numeric fixture carries its regeneration recipe — a
 committed generator that reproduces it from scratch — so a stale or mis-sourced

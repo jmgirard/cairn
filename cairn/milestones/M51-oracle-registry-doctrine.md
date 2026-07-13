@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M51: Oracle-registry doctrine (shape-free)
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** GP4
-- **Branch/PR:** —
+- **Branch/PR:** m51-oracle-registry-doctrine
 
 ## Goal
 
@@ -72,13 +72,13 @@ superseding D-entry (annotating D-024/D-025, citing D-028's precedent).
 
 ## Tasks
 
-- [ ] T1 — In `skills/shared/tracking-rules.md`, add the registry-auditability
+- [x] T1 — In `skills/shared/tracking-rules.md`, add the registry-auditability
       paragraph to the "Validation doctrine" section (after the ≥2-types
       paragraph, ~line 493, before the Reproducibility hard-stop): the recorded
       fields, the auditability rationale (single-source-to-the-test), and the
       shape-freedom (central file / distributed headers / embedded fields). No
       repo names.
-- [ ] T2 — Extend `skills/tests/test_oracle_doctrine.py` with anchors for the
+- [x] T2 — Extend `skills/tests/test_oracle_doctrine.py` with anchors for the
       field list and the shape-free phrasing (single physical line each, lowercased
       match per M23). Confirm each new assertion FAILS against the pre-T1 rulebook
       before T1 lands (or by temporary revert), and record that check in the work
@@ -93,6 +93,11 @@ superseding D-entry (annotating D-024/D-025, citing D-028's precedent).
 
 - 2026-07-12: created by /milestone-plan (disposition B, shape-free registry
   doctrine + prose+guard enforcement; both chosen at the plan question gate).
+- 2026-07-12: T2+T1 — wrote the two guard anchors first (`test:line` field list,
+  `shape is the repo's choice`); confirmed both FAIL against the pre-T1 rulebook
+  (RED, M39/M40 false-coverage check), then added the registry paragraph →
+  7/7 green. Anchors are on new tokens absent from the pre-M51 file (grep: `registry`,
+  `test:line`, `shape is the repo` all 0; avoided `auditable`, 2 pre-existing).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
