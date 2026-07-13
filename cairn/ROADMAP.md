@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M49 | R fixture-provenance guard fold-in | planned | — | normal | milestones/M49-r-fixture-provenance-guard.md |
+| M49 | R fixture-provenance guard fold-in | review | — | normal | milestones/M49-r-fixture-provenance-guard.md |
 | M48 | Python toolchain profile | done | — | normal | milestones/archive/M48-python-toolchain-profile.md |
 | M47 | Release-walk slot — generalize cairn-release to read the profile | done | M45 | normal | milestones/archive/M47-release-walk-slot.md |
 | M46 | Rewire operational slots (implement/review/hotfix/doctrine) + dogfood generic | done | M45 | normal | milestones/archive/M46-rewire-operational-slots.md |

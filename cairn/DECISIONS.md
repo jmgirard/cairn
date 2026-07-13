@@ -520,3 +520,32 @@ gated/parked items). Supersedes D-026's "the scored-rubric sub-item is **not**
 dropped here" — it is now dropped. Higher/lower is advisory ordering, not a
 status field (candidates carry no Priority). Each removal is re-openable by
 superseding this entry.
+
+### D-028 (2026-07-13): The r-package fixture-provenance mandate fixes the required content, not the shape
+
+**Context:** cairn's universal Validation doctrine carries a "Reproducibility
+(hard stop)" — a committed numeric fixture must ship with a generator that
+reproduces it from scratch. M49 folds the R-mechanical concretization of that
+rule into the r-package profile's `test-doctrine` slot. The two exemplars this
+descends from implement it in *different shapes*: `jmgirard/ackwards` uses a
+`provenance` attribute on the fixture plus a blocking `test-oracle-provenance.R`
+guard; `jmgirard/intraclass` embeds the provenance as named fields *inside* the
+`.rds` (`source`/`generated`/`base_seed`/`dgp`) with no guard. Mandating one
+exemplar's shape would reject the other's working practice.
+**Decision:** The r-package `test-doctrine` mandate fixes the required
+provenance *content* — source + committed generator (a `data-raw/` script that
+regenerates the fixture from scratch) + any seed — and leaves the *shape* to the
+adopting repo: a `provenance` attribute, embedded `.rds`/`.rda` fields, or a
+header comment all satisfy it. Rejected pinning ackwards' exact `provenance`-attr
++ guard-test form (the two-exemplar variance shows it is not the only working
+shape) and mandating only the universal principle without an R-mechanical bullet
+(leaves R adopters without the concrete "which pieces, in what" the profile
+exists to supply). No guard *test* is mandated on the adopting repo — the slot
+states the content bar; whether a repo enforces it with a guard test (ackwards)
+or by convention (intraclass) is its choice.
+**Consequences:** Every R adopter inherits the reproducibility content bar via
+the profile while keeping shape freedom; graduates the M42-revised "R-profile
+provenance guard" candidate. Locked by `TestRPackageFixtureProvenance` in
+`skills/tests/test_toolchain_profiles.py`. If a single canonical shape (or a
+mandated guard test) ever proves worth enforcing across R adopters, this is the
+entry to supersede.

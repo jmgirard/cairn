@@ -2,11 +2,11 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M49: R fixture-provenance guard fold-in
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m49-r-fixture-provenance-guard · https://github.com/jmgirard/cairn/pull/47
 
 ## Goal
 
@@ -33,16 +33,16 @@ not a code touch in an R package).
 
 ## Acceptance criteria
 
-- [ ] The r-package profile `test-doctrine` slot
+- [x] The r-package profile `test-doctrine` slot
       (`skills/shared/profiles/r-package.md`) mandates reproducible fixture
       provenance: source + committed generator + any seed per fixture, with the
       content required and the shape explicitly left to the repo — verifiable
       by guard-test tokens.
-- [ ] A `DECISIONS.md` entry records the decision to mandate provenance
+- [x] A `DECISIONS.md` entry records the decision to mandate provenance
       *content* while leaving the *shape* free, citing the two-exemplar
       variance (ackwards' `provenance`-attr+guard vs. intraclass's embedded
       `.rds` fields) as the rationale, with a stated supersede path.
-- [ ] A guard test locks the provenance-content mandate in the r-package
+- [x] A guard test locks the provenance-content mandate in the r-package
       profile; the active profile's `verify` slot is clean (all three
       `unittest` suites green). The "R-profile provenance guard" candidate row
       is graduated (removed) in the post-merge hygiene pass at completion.
@@ -55,15 +55,15 @@ not a code touch in an R package).
 
 ## Tasks
 
-- [ ] T1 — Add the reproducible-fixture-provenance requirement to the r-package
+- [x] T1 — Add the reproducible-fixture-provenance requirement to the r-package
       profile `test-doctrine` slot (content mandated: source + committed
       generator + seed; shape — attr / embedded field / header — left to the
       repo). Keep the file under the 90-line PROFILE cap.
-- [ ] T2 — Append the `DECISIONS.md` entry (next free D-id): mandate provenance
+- [x] T2 — Append the `DECISIONS.md` entry (next free D-id): mandate provenance
       content, leave shape free; rationale = two-exemplar shape variance;
       lineage = the M42-revised "R-profile provenance guard" candidate;
       supersede path stated.
-- [ ] T3 — Add a guard test (`test_toolchain_profiles.py`) asserting the
+- [x] T3 — Add a guard test (`test_toolchain_profiles.py`) asserting the
       r-package profile mandates the provenance content (source / generator /
       seed, shape-free). Run all three suites green. (Candidate-row graduation
       happens in review hygiene, not here — M35 lesson.)
@@ -71,7 +71,42 @@ not a code touch in an R package).
 ## Work log
 
 - 2026-07-13: created by /milestone-plan (paired with M48; independent, no dependency; promotes the M42-revised "R-profile provenance guard" candidate).
+- 2026-07-13: implement started; branch m49-r-fixture-provenance-guard cut from main (baseline 218 tests green).
+- 2026-07-13: T1 — added the reproducible-fixture-provenance bullet to the r-package profile test-doctrine slot (content: source + committed generator + seed; shape left free — attr / embedded field / header). Profile 76 lines (< 90 cap).
+- 2026-07-13: T2 — appended D-028 (mandate provenance content, leave shape free; rationale = ackwards-attr-guard vs. intraclass-embedded-fields variance; supersede path stated).
+- 2026-07-13: T3 — added TestRPackageFixtureProvenance (2 tests) locking the content mandate + shape-freedom; all three verify suites green (skills 123 / scripts 65 / hooks 32).
 
 ## Decisions
 
 ## Review
+
+- 2026-07-13: reviewed on branch m49-r-fixture-provenance-guard, PR #47 (draft).
+- **AC1 (evidence):** `skills/shared/profiles/r-package.md` test-doctrine slot now
+  carries the provenance bullet (source + committed generator + any seed;
+  shape — `provenance` attr / embedded `.rds`/`.rda` fields / header comment —
+  left to the repo). `TestRPackageFixtureProvenance` (2 tests) passes, asserting
+  the content tokens and shape-freedom. Profile 76 lines (< 90 cap). Verified.
+- **AC2 (evidence):** `cairn/DECISIONS.md` D-028 records the content-not-shape
+  choice, cites the two-exemplar variance (ackwards attr+guard vs. intraclass
+  embedded fields), rejects pinning ackwards' shape, and states the supersede
+  path. Verified.
+- **AC3 (evidence):** guard test present; verify slot clean — skills 123 /
+  scripts 65 / hooks 32, all green. `cairn_validate` exit 0 (all checks pass).
+  Candidate-row graduation deferred to post-merge hygiene (below). Verified.
+- **Consistency gate:** `cairn_validate` all-pass; Coverage completeness — AC1→T1,T3
+  · AC2→T2 · AC3→T3, all map to existing tasks. Profile is `generic` → toolchain
+  consistency-gate half is a no-op. No DESIGN principle changed → `cairn_impact`
+  skipped.
+- **Independent fresh-context review (three lenses):** all clean, zero findings —
+  no scorer triage needed.
+  - [O] diff-bug (Opus): no findings. Guard tokens all present on single source
+    lines and unique to the new bullet (removing it fails all assertions —
+    non-vacuous); `section_body` isolates the test-doctrine slot correctly;
+    D-028 is the correct next free id with a stated supersede path; no
+    contradiction with the `data/*.rda` consistency-gate line.
+  - [S] blame-history (Sonnet): no findings. M49/D-028 faithfully executes the
+    D-024/D-025-deferred R-provenance candidate (content-not-shape, declines to
+    pin ackwards' guard shape); M45 six-slot schema and M47 release-walk
+    untouched; no existing assertion regressed.
+  - [S] prior-PR-comments (Sonnet): no prior-PR evidence (no review comments on
+    any merged PR touching these files) — clean no-op.
