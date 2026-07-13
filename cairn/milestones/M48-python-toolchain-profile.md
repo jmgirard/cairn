@@ -2,11 +2,11 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M48: Python toolchain profile
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m48-python-toolchain-profile
 
 ## Goal
 
@@ -64,7 +64,7 @@ stays tracking-only).
 
 ## Tasks
 
-- [ ] T1 — Author `skills/shared/profiles/python.md`: six slots, opinionated
+- [x] T1 — Author `skills/shared/profiles/python.md`: six slots, opinionated
       modern toolchain (pyproject/PEP 621, pytest, ruff, mypy, build+twine,
       coverage-as-diagnostic); release-walk = local build + `twine check` +
       user-run `twine upload` (note trusted-publishing OIDC as the CI
@@ -89,6 +89,7 @@ stays tracking-only).
 ## Work log
 
 - 2026-07-13: created by /milestone-plan (paired with M49; independent, no dependency).
+- 2026-07-13: T1 — authored skills/shared/profiles/python.md (82 lines, six non-empty slots; pyproject/PEP621, pytest, ruff, mypy, build+twine, coverage-as-diagnostic; release-walk hands off twine upload + notes OIDC trusted-publishing, no self-submit).
 
 ## Decisions
 
