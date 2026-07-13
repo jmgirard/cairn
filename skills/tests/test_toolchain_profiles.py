@@ -150,6 +150,7 @@ class TestInitSelection(unittest.TestCase):
 # M47; it still hardcodes devtools until then (see TestReleaseSkillUntouched).
 REWIRED_SKILLS = (
     ("milestone-implement", "SKILL.md"),
+    ("hotfix", "SKILL.md"),
 )
 
 

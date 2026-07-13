@@ -77,7 +77,7 @@ dogfood the `generic` profile in this repo.
       framing "profiles supply language mechanics; oracle doctrine stays
       universal".
 - [x] T2 — `milestone-implement`: verify steps read the profile `verify` slot.
-- [ ] T3 — `hotfix`: gate-lite reads the profile `verify` slot.
+- [x] T3 — `hotfix`: gate-lite reads the profile `verify` slot.
 - [ ] T4 — `milestone-review`: split the consistency gate into universal
       (cairn-file) checks and the profile `consistency-gate` slot.
 - [ ] T5 — `milestone.md` template: profile-aware acceptance guidance.
@@ -94,6 +94,7 @@ dogfood the `generic` profile in this repo.
 - 2026-07-12: created by /milestone-plan (toolchain-profiles arc, milestone 2 of 3).
 - 2026-07-12: T1 — relocated "R package guardrails" + R-mechanical "What gets a test" out of tracking-rules into the r-package profile (added the generated-file `NAMESPACE`/`man`/`data` guardrail there); universal floor genericized + framing added. Flipped `test_toolchain_profiles` source-of-truth to the profile; added `TestRulebookRelocation` (AC3). Guard-test updates fold into each task commit to keep the suite green per checkpoint (minor amendment to plan's separate-T8).
 - 2026-07-12: T2 — `milestone-implement` now runs the active profile's `verify` slot (per-task, resume, completion) and its `test-doctrine` slot for idioms; no `devtools::` left. Replaced M45 AC6 guard with growing `TestOperationalSkillsReadProfile` + `TestReleaseSkillUntouched` (M47 boundary).
+- 2026-07-12: T3 — `hotfix` gate-lite now runs the profile's `verify` slot; no `devtools::` left. Added `hotfix` to the rewired-skills guard. (NEWS.md changelog requirement left as-is — changelog-mechanism generalization is out of M46 scope.)
 
 ## Decisions
 
