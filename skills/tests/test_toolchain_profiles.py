@@ -356,5 +356,84 @@ class TestReleaseSkillReadsProfile(unittest.TestCase):
             self.assertNotIn(tok, body, f"generic release-walk should carry no {tok}")
 
 
+# M50: the greenfield-openers slot is filled with concrete openers per profile.
+# Each token below is introduced by M50's fill — deleting the opener content
+# makes the assertion fail (M39/M40 false-coverage guard), and the shared
+# placeholder marker "downstream candidate" must be gone from every slot.
+GREENFIELD_OPENER_TOKENS = {
+    "r-package": ("Compiled code", "Rcpp", "RcppArmadillo", "reversible default"),
+    "python": ("Typing strictness", "mypy --strict", "src/", "flat", "reversible default"),
+    "generic": ("no language-specific openers", "universal opener layer"),
+}
+
+
+class TestGreenfieldOpeners(unittest.TestCase):
+    """M50: the greenfield-openers slot of every shipped profile is filled with
+    concrete, askable language-specific openers (not the M45 placeholder). The
+    universal openers (distribution ambition, oracle-on) live in cairn-init's
+    layer, not the slots, so each slot names only its language-specific
+    question(s) — or, for generic, states the universal layer is the whole
+    flow."""
+
+    def test_each_slot_names_its_openers_and_drops_the_placeholder(self):
+        for name, tokens in GREENFIELD_OPENER_TOKENS.items():
+            body = section_body(read("shared", "profiles", f"{name}.md"),
+                                "greenfield-openers")
+            self.assertTrue(body, f"could not locate {name} greenfield-openers slot")
+            self.assertNotIn("downstream candidate", body,
+                             f"{name} greenfield-openers still carries the placeholder")
+            for tok in tokens:
+                self.assertIn(tok, body,
+                              f"{name} greenfield-openers missing opener token {tok}")
+
+    def test_language_slots_defer_universal_openers_to_cairn_init(self):
+        """The universal openers (distribution ambition, oracle-verification) are
+        asked once by cairn-init's layer, not restated as a profile's own
+        question — the language slots say so explicitly ("not repeated here")."""
+        for name in ("r-package", "python"):
+            body = section_body(read("shared", "profiles", f"{name}.md"),
+                                "greenfield-openers").lower()
+            self.assertIn("not repeated here", body,
+                          f"{name} slot should defer the universal openers to cairn-init")
+
+
+class TestGreenfieldInitFlow(unittest.TestCase):
+    """M50: cairn-init runs a greenfield flow in a new/empty repo — a project-type
+    chip picks the profile, a universal opener layer + the profile's slot openers
+    are asked, answers land in durable homes, undecided takes a reversible default
+    + a candidate row, and the flow stays tracking-only (no package skeleton),
+    bounded distinct from /design-interview. Each phrase below is introduced by
+    M50; anchored on a single source line (M23) and clear of bold-splits (M26)."""
+
+    def setUp(self):
+        self.text = read("cairn-init", "SKILL.md")
+
+    def test_greenfield_trigger_and_project_type_chip(self):
+        self.assertIn("greenfield", self.text.lower(),
+                      "cairn-init should define a greenfield trigger")
+        self.assertIn("project-type chip", self.text,
+                      "greenfield detection should present a project-type chip")
+
+    def test_universal_opener_layer(self):
+        self.assertIn("universal", self.text.lower(),
+                      "greenfield flow should ask a universal opener layer")
+        self.assertIn("numeric-work-needs-oracle-verification", self.text,
+                      "universal layer should ask the oracle-verification opener")
+
+    def test_undecided_takes_reversible_default_and_banks_a_candidate_row(self):
+        self.assertIn("reversible default", self.text,
+                      "an undecided opener should take a reversible default")
+        self.assertIn("candidate` row", self.text,
+                      "an undecided opener should bank a candidate row (IP3 conservation)")
+
+    def test_stays_tracking_only_and_bounded_from_design_interview(self):
+        self.assertIn("tracking-only", self.text,
+                      "greenfield flow should stay tracking-only")
+        self.assertIn("package skeleton", self.text,
+                      "the skeleton should be surfaced as the first milestone, not scaffolded")
+        self.assertIn("toolchain-config only", self.text,
+                      "openers should be bounded distinct from /design-interview principle work")
+
+
 if __name__ == "__main__":
     unittest.main()

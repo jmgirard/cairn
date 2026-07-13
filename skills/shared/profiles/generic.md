@@ -48,5 +48,7 @@ How `cairn-init` recognizes this toolchain. Generic is the **fallback**: no
 
 ## greenfield-openers
 Opener questions `cairn-init` asks in a new/empty repo of this type. Generic
-default: **none** — the greenfield opener flow is a downstream candidate; this
-slot is a declared placeholder until it ships.
+default: **no language-specific openers** — the universal opener layer
+(distribution ambition, rendered here as a **tagged public release** vs.
+internal-only choice, and numeric-work-needs-oracle-verification) is the whole
+greenfield flow for a generic repo; a richer profile adds its own on top.
