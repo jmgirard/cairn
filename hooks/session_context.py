@@ -14,9 +14,12 @@ The event field is read generically so the script stays event-agnostic.
 """
 
 import os
+import re
 import sys
 
 import cairn_common as cc
+
+_PROFILE_HEADER = re.compile(r"#\s*Toolchain profile:\s*(\S+)")
 
 MAX_CHARS = 30000
 
@@ -29,9 +32,35 @@ PREAMBLE = (
 )
 
 
+def profile_name(root):
+    """Active toolchain profile name from cairn/PROFILE.md's
+    `# Toolchain profile: <name>` header, or None when the file is absent or
+    headerless. A repo that predates profiles has no PROFILE.md — the skills
+    infer from DESCRIPTION at point of use, so the hook stays silent (no-op)
+    rather than guessing here."""
+    path = os.path.join(root, "cairn", "PROFILE.md")
+    try:
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                m = _PROFILE_HEADER.match(line)
+                if m:
+                    return m.group(1)
+    except Exception:
+        return None
+    return None
+
+
 def build_context(root):
     cairn_dir = os.path.join(root, "cairn")
     parts = [PREAMBLE]
+    name = profile_name(root)
+    if name:
+        parts.append(
+            "## Active toolchain profile\n\n"
+            f"`{name}` (from cairn/PROFILE.md) — the operational skills read its "
+            "slots for language-specific commands (tracking-rules "
+            '"Toolchain profiles").'
+        )
     try:
         with open(os.path.join(cairn_dir, "ROADMAP.md"), encoding="utf-8") as f:
             roadmap = f.read()

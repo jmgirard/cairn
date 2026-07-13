@@ -271,6 +271,90 @@ class TestValidateClean(ScriptCase):
         self.assertIn("PASS  coverage complete", proc.stdout)
 
 
+VALID_PROFILE = (
+    "# Toolchain profile: generic\n\n"
+    "## verify\n- run tests\n\n"
+    "## consistency-gate\nnone\n\n"
+    "## test-doctrine\nnone beyond universal\n\n"
+    "## release-walk\nbump + tag\n\n"
+    "## init-detection\nfallback\n\n"
+    "## greenfield-openers\nnone\n"
+)
+
+
+class TestValidateProfile(ScriptCase):
+    """M45: cairn_validate's profile check is validate-if-present — it no-ops
+    when cairn/PROFILE.md is absent (back-compat) and FAILs on a missing,
+    empty, or unrecognized slot when present."""
+
+    def _profile(self, text):
+        root = self.tree.build()
+        (root / "cairn" / "PROFILE.md").write_text(text)
+        return root
+
+    def test_absent_profile_noops(self):
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  profile valid", proc.stdout)
+
+    def test_valid_profile_passes(self):
+        proc = run("cairn_validate.py", self._profile(VALID_PROFILE))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  profile valid", proc.stdout)
+
+    def test_missing_slot_fails(self):
+        text = VALID_PROFILE.replace("## release-walk\nbump + tag\n\n", "")
+        proc = run("cairn_validate.py", self._profile(text))
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("FAIL  profile valid", proc.stdout)
+        self.assertIn("missing slot '## release-walk'", proc.stdout)
+
+    def test_empty_slot_fails(self):
+        text = VALID_PROFILE.replace("## verify\n- run tests\n", "## verify\n")
+        proc = run("cairn_validate.py", self._profile(text))
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("slot '## verify' is empty", proc.stdout)
+
+    def test_unrecognized_slot_fails(self):
+        proc = run("cairn_validate.py", self._profile(VALID_PROFILE + "\n## verfiy\ntypo\n"))
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("unrecognized slot '## verfiy'", proc.stdout)
+
+    def test_fenced_command_block_body_not_a_slot(self):
+        # Review finding (scored 91): a `## ` comment inside a fenced command
+        # block in a slot body must be body content, not a new slot.
+        text = VALID_PROFILE.replace(
+            "## verify\n- run tests\n",
+            "## verify\n```sh\n## build first\nmake test\n```\n",
+        )
+        proc = run("cairn_validate.py", self._profile(text))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  profile valid", proc.stdout)
+
+    def test_shipped_reference_profiles_are_valid(self):
+        # The plugin's own r-package + generic references must satisfy the check.
+        import importlib.util
+
+        plugin_root = pathlib.Path(__file__).resolve().parents[2]
+        spec = importlib.util.spec_from_file_location(
+            "cairn_validate", plugin_root / "scripts" / "cairn_validate.py"
+        )
+        cv = importlib.util.module_from_spec(spec)
+        sys.path.insert(0, str(plugin_root / "scripts"))
+        try:
+            spec.loader.exec_module(cv)
+            for name in ("r-package", "generic"):
+                text = (plugin_root / "skills" / "shared" / "profiles" / f"{name}.md").read_text()
+                slots = cv._profile_slots(text)
+                for slot in cv._REQUIRED_SLOTS:
+                    self.assertIn(slot, slots, f"{name} missing {slot}")
+                    self.assertTrue(any(l.strip() for l in slots[slot]), f"{name} {slot} empty")
+                for slot in slots:
+                    self.assertIn(slot, cv._REQUIRED_SLOTS, f"{name} unrecognized {slot}")
+        finally:
+            sys.path.pop(0)
+
+
 class TestSizingAdvisory(ScriptCase):
     """M44: the sizing advisory WARNs over the split tripwires (>7 criteria,
     >10 tasks) but never fails the gate (exit-code neutral)."""

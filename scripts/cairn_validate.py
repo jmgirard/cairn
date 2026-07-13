@@ -333,6 +333,68 @@ def check_principles_slot(root):
     return bad
 
 
+_REQUIRED_SLOTS = (
+    "verify",
+    "consistency-gate",
+    "test-doctrine",
+    "release-walk",
+    "init-detection",
+    "greenfield-openers",
+)
+
+
+def _profile_slots(text):
+    """Map each `## <slot>` H2 in a PROFILE.md to its (stripped) body lines.
+    Fence-aware: a `## ` line inside a ``` or ~~~ fenced code block is body
+    content, not a slot heading — the schema sanctions a command-block slot
+    body, and a shell `## comment` inside one must not be misread as a new
+    slot (review finding, scored 91)."""
+    slots = {}
+    cur = None
+    fence = None  # the open fence marker (``` or ~~~), or None outside a fence
+    for line in text.splitlines():
+        marker = line.lstrip()[:3]
+        if marker in ("```", "~~~"):
+            fence = None if fence == marker else (fence or marker)
+            if cur is not None:
+                slots[cur].append(line)
+            continue
+        if fence is None and line.startswith("## "):
+            cur = line[3:].strip().lower()
+            slots[cur] = []
+        elif cur is not None:
+            slots[cur].append(line)
+    return slots
+
+
+def check_profile(root):
+    """cairn/PROFILE.md, when present, defines exactly the six known toolchain
+    slots, each non-empty. No-op when absent — a repo that adopted cairn before
+    profiles keeps working, and the skills infer the profile from DESCRIPTION at
+    point of use (tracking-rules "Toolchain profiles"). Validate-if-present,
+    mirroring the coverage/principles checks: a missing, empty, or misspelled
+    slot is caught at the declaration point rather than misfiring a skill."""
+    path = os.path.join(root, "cairn", "PROFILE.md")
+    if not os.path.isfile(path):
+        return []
+    try:
+        with open(path, encoding="utf-8") as f:
+            text = f.read()
+    except Exception:
+        return []
+    slots = _profile_slots(text)
+    bad = []
+    for slot in _REQUIRED_SLOTS:
+        if slot not in slots:
+            bad.append(f"PROFILE.md missing slot '## {slot}'")
+        elif not any(line.strip() for line in slots[slot]):
+            bad.append(f"PROFILE.md slot '## {slot}' is empty")
+    for slot in slots:
+        if slot not in _REQUIRED_SLOTS:
+            bad.append(f"PROFILE.md has unrecognized slot '## {slot}'")
+    return bad
+
+
 # Split tripwires (tracking-rules "Sizing"): a milestone probably wants
 # splitting past these. Advisory, not hard limits — a milestone may exceed
 # them with stated justification — so check_sizing_advisory only WARNs.
@@ -377,6 +439,7 @@ CHECKS = [
     ("scaffold present", lambda root, rows: check_scaffold(root)),
     ("coverage complete", lambda root, rows: check_coverage_complete(root)),
     ("principles slot valid", lambda root, rows: check_principles_slot(root)),
+    ("profile valid", lambda root, rows: check_profile(root)),
 ]
 
 # Advisories are non-failing: they surface a judgment-call worth a look but

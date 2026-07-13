@@ -15,6 +15,7 @@ owner; any other file gets at most a one-line cross-reference.
 |---|---|---|
 | `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `cairn/` | Status, TODOs, architecture rationale, history — anything time-varying rots here |
 | `cairn/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
+| `cairn/PROFILE.md` | The repo's toolchain profile — the six language/toolchain slots the operational skills read (see "Toolchain profiles") | Domain doctrine (oracles are universal), status, tasks, decisions |
 | `cairn/ROADMAP.md` | The milestone index — **the only authority on status** | Task details, acceptance criteria, narrative |
 | `cairn/milestones/M<NN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately, before other work) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
@@ -81,8 +82,8 @@ takes a D-entry, and its number stays retired.
 
 - the cairn `## Project tracking` section of `CLAUDE.md` < 30 lines (the repo's
   own dev doctrine outside that section is not cairn's to cap — D-018) ·
-  `ROADMAP.md` < 60 lines · `LESSONS.md` < 50 lines · active milestone file <
-  150 lines · archived summary ≤ 25 lines.
+  `ROADMAP.md` < 60 lines · `LESSONS.md` < 50 lines · `PROFILE.md` < 90 lines ·
+  active milestone file < 150 lines · archived summary ≤ 25 lines.
 - Work-log entries are one line each. Never paste command output or subagent
   transcripts into tracking files — summarize.
 - Remedies when a cap is hit (never "let it grow"): over-cap ROADMAP →
@@ -424,6 +425,32 @@ cairn skill is active.
   mid-implementation (same categories, no tag required). An escalation
   chip option is offered only on a tripwire hit, never as a standing menu
   item (D-004: Fable is gated per instance).
+
+## Toolchain profiles
+
+Language/toolchain specifics live in a **profile**, not in the core rules. A
+repo declares its profile in `cairn/PROFILE.md` (instantiated by `cairn-init`
+from a shipped reference under `skills/shared/profiles/`); the operational
+skills read its slots instead of hardcoding one language's commands. Six slots:
+
+- **verify** — the per-task test/check command(s) `/milestone-implement` and `/hotfix` run.
+- **consistency-gate** — toolchain checks `/milestone-review` runs *in addition to* the universal cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`).
+- **test-doctrine** — toolchain-specific test expectations layered on the universal "What gets a test" rules.
+- **release-walk** — the release procedure `/cairn-release` follows.
+- **init-detection** — how `cairn-init` recognizes the toolchain.
+- **greenfield-openers** — opener questions for a new/empty repo of this type.
+
+The **domain verification doctrine (oracles) is universal, not a profile slot**:
+it is orthogonal to the language profile (D-024/D-025), stated once in
+"Validation doctrine" below. A profile carries *language mechanics*, never
+domain doctrine.
+
+Two profiles ship: `r-package` (devtools/roxygen/testthat/pkgdown, CRAN) and
+`generic` (no toolchain gates). **Absent `PROFILE.md` → infer**: a `DESCRIPTION`
+at the repo root means `r-package`, else `generic` — so a repo that adopted
+cairn before profiles keeps working unchanged, and `cairn-init` repair backfills
+the explicit declaration. `cairn_validate` no-ops when `PROFILE.md` is absent
+and, when present, FAILs on a missing, empty, or unrecognized slot.
 
 ## Validation doctrine (statistical/numeric packages)
 

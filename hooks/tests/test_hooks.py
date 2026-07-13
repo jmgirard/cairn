@@ -108,6 +108,29 @@ class TestSessionContext(RepoFixture):
         # only the active milestone's file is injected, not archived ones
         self.assertEqual(out["additionalContext"].count("## cairn/milestones/"), 1)
 
+    def test_injects_profile_name_when_present(self):
+        (self.root / "cairn" / "PROFILE.md").write_text(
+            "# Toolchain profile: r-package\n\n## verify\n- x\n"
+        )
+        proc = run_hook(
+            "session_context.py",
+            self.payload(hook_event_name="SessionStart", source="startup"),
+        )
+        out = hook_json(proc)
+        self.assertIn("Active toolchain profile", out["additionalContext"])
+        self.assertIn("`r-package`", out["additionalContext"])
+
+    def test_no_profile_section_when_absent(self):
+        # RepoFixture writes no PROFILE.md — a pre-profile repo; the hook
+        # no-ops the profile section (AC4) and still injects the ROADMAP.
+        proc = run_hook(
+            "session_context.py",
+            self.payload(hook_event_name="SessionStart", source="startup"),
+        )
+        out = hook_json(proc)
+        self.assertNotIn("Active toolchain profile", out["additionalContext"])
+        self.assertIn("## cairn/ROADMAP.md", out["additionalContext"])
+
 
 class TestStopGuard(RepoFixture):
     def test_blocks_on_dirty_tracking(self):
