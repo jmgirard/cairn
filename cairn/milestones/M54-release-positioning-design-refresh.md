@@ -123,4 +123,15 @@ PR: https://github.com/jmgirard/cairn/pull/52 · reviewed 2026-07-13.
   CHECKS + sizing OK (exit 0). Generic profile consistency-gate: no extra
   toolchain checks (clean no-op).
 
-**Independent fresh-context review (3 lenses + scorer):** _pending._
+**Independent fresh-context review (3 lenses):** zero findings — no scorer/
+triage needed.
+- [O] diff-bug (Opus): no defects. Verified all 8 mutation blocks occur once
+  and their blanking breaks a live assert (genuine coverage); both JSON files
+  parse; cairn-init "confirm before writing" survives; R_COMMAND_TOKENS guard
+  untouched (reads r-package.md, not /hotfix); 5 hooks ship and the two nudges
+  emit no `permissionDecision` (advisory claim true).
+- [S] blame-history (Sonnet): consistent with history. IP1 "main" was a gap M25
+  left (it scoped itself to operational skills; M22 set the doctrine) — wording
+  alignment, no D-entry owed; hooks/Known-issues rewrite drops no live content.
+- [S] prior-PR-comments (Sonnet): no-op — all 26 prior PRs touching these files
+  have 0 inline review comments (expected, M40 lesson).
