@@ -74,12 +74,11 @@ agreement.
       back-compat, two fence-safety cases, unreadable→None) + integration cases
       in `TestValidateFailures` for AC1 (body<150 + Review over → PASS) and AC2
       (body≥150 → FAIL, asserts the "plan-owned lines" message).
-- [ ] T4 — Update the tracking-rules weight-caps line
-      (tracking-rules.md:86) to state the `## Review` exemption; add a
-      skills/tests prose-guard locking the wording + a stated↔enforced check
-      (150 == `MILESTONE_CAP`), modeled on `test_lessons_loop.py`; register the
-      guard block in `test_mutation_harness.py`. Note the exemption in the
-      milestone template's `## Review` comment.
+- [x] T4 — Updated the tracking-rules weight-caps text to state the plan-owned
+      body cap + `## Review` exemption; added `test_milestone_cap_exemption.py`
+      (exemption wording, plan-body-cap wording, stated↔enforced 150 ==
+      `MILESTONE_CAP`); registered both prose blocks in `test_mutation_harness.py`;
+      noted the exemption in the template's `## Review` comment.
 - [ ] T5 — Sweep `/milestone-review` (+ any skill/template wording) for
       instructions to trim the Review section to fit the cap; reconcile them
       with the exemption. Record the milestone-local D-entry (exemption +
@@ -96,6 +95,9 @@ agreement.
   `check_caps` to measure the plan-owned body for live milestones. Existing
   scripts suite (65) green.
 - 2026-07-13 (T3): added 7 tests (5 unit + 2 integration); scripts suite 72 green.
+- 2026-07-13 (T4): rulebook exemption wording + guard + mutation registration +
+  template note; skills suite 153 green. (Template comment kept to 3 lines — the
+  owner-tag check reads only 3 lines after an H2.)
 
 ## Decisions
 

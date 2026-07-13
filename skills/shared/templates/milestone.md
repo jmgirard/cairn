@@ -57,5 +57,6 @@ never "never".
      cross-cutting ones to cairn/DECISIONS.md -->
 
 ## Review
-<!-- owner: review · exclusive; evidence per criterion; consistency-gate
-     results; independent-review findings and their triage -->
+<!-- owner: review · exclusive; evidence per criterion, consistency-gate
+     results, review findings + triage. EXEMPT from the 150-line cap (M55):
+     only the plan-owned body above counts; evidence never scrambles it. -->
