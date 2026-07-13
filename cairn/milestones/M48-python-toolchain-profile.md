@@ -6,7 +6,7 @@
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
-- **Branch/PR:** m48-python-toolchain-profile
+- **Branch/PR:** m48-python-toolchain-profile · https://github.com/jmgirard/cairn/pull/46
 
 ## Goal
 
@@ -33,24 +33,24 @@ stays tracking-only).
 
 ## Acceptance criteria
 
-- [ ] `skills/shared/profiles/python.md` exists and defines exactly the six
+- [x] `skills/shared/profiles/python.md` exists and defines exactly the six
       known slots (`verify`, `consistency-gate`, `test-doctrine`,
       `release-walk`, `init-detection`, `greenfield-openers`), each non-empty —
       i.e. it satisfies the same `cairn_validate` slot schema the shipped
       profiles do.
-- [ ] The profile encodes the blessed python toolchain at R-parity
+- [x] The profile encodes the blessed python toolchain at R-parity
       opinionation: `pyproject.toml`/PEP 621, `pytest`, `ruff`, `mypy`,
       `python -m build`, `twine` — one pick per category, verifiable by
       guard-test tokens; the release-walk hands off `twine upload` to the user
       and self-submits nothing (parallel to the CRAN handoff).
-- [ ] cairn-init selects `python` on a `pyproject.toml` (or `setup.py`/
+- [x] cairn-init selects `python` on a `pyproject.toml` (or `setup.py`/
       `setup.cfg`) marker with `DESCRIPTION` retaining precedence for hybrid
       repos, and repair-mode inference backfills it — locked by a guard test.
-- [ ] tracking-rules "Toolchain profiles" states three profiles ship and its
+- [x] tracking-rules "Toolchain profiles" states three profiles ship and its
       absent-PROFILE inference lists `pyproject.toml → python` (order:
       `DESCRIPTION → r-package`, `pyproject.toml → python`, else `generic`) —
       locked by a guard test.
-- [ ] Guard tests added to `skills/tests/test_toolchain_profiles.py` lock the
+- [x] Guard tests added to `skills/tests/test_toolchain_profiles.py` lock the
       four criteria above; the active profile's `verify` slot is clean (all
       three `unittest` suites green).
 
@@ -97,3 +97,26 @@ stays tracking-only).
 ## Decisions
 
 ## Review
+
+**Reviewed 2026-07-13 · PR #46 · branch m48-python-toolchain-profile.**
+
+Acceptance-criterion evidence (fresh):
+- AC1 — `skills/shared/profiles/python.md` present, 82 lines (< 90 cap), exactly
+  six `## ` headings matching the required slots; run through `cairn_validate._profile_slots`
+  + `check_profile` logic: all six present & non-empty, zero unrecognized slots.
+- AC2 — toolchain tokens all present by grep: `pyproject.toml`, `PEP 621`,
+  `pytest`, `ruff`, `mypy`, `python -m build`, `twine check`, `twine upload`,
+  `coverage.py`; release-walk slot carries `twine upload` handoff + "self-submits
+  nothing" + "trusted-publishing" OIDC note.
+- AC3 — cairn-init SKILL.md selection order (DESCRIPTION → r-package; else
+  pyproject/setup.py/setup.cfg → python; else generic), "DESCRIPTION outranks a
+  pyproject.toml in a hybrid", and repair-mode backfill inference all present.
+- AC4 — tracking-rules "Toolchain profiles": "Three profiles ship", inference
+  order DESCRIPTION → r-package, pyproject → python, else generic.
+- AC5 — all three unittest suites green (skills 121, scripts 65, hooks 32); 7
+  python guards confirmed running (not skipped).
+
+Consistency gate: `cairn_validate` all-pass (14 checks + sizing); coverage
+completeness — every AC maps to ≥1 existing task (AC1→T1,T4 · AC2→T1,T4 ·
+AC3→T2,T4 · AC4→T3,T4 · AC5→T4); profile `consistency-gate` slot is `generic`
+(no-op); no DESIGN principle changed (cairn_impact skipped).
