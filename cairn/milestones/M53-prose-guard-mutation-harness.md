@@ -83,7 +83,7 @@ time. Lessons don't execute; a harness does.
 
 ## Tasks
 
-- [ ] T1 — Build the harness engine (e.g. `skills/tests/mutation_harness.py`):
+- [x] T1 — Build the harness engine (e.g. `skills/tests/mutation_harness.py`):
       given (target file path, block locator, guard test id), produce mutated
       content with the block blanked, patch `pathlib.Path.read_text` to return
       it for the target during a scoped re-run, execute the guard via
@@ -112,6 +112,11 @@ time. Lessons don't execute; a harness does.
 - 2026-07-13: created by /milestone-plan; promoted from the RR01 retrospective
   candidate (rec 2). Zero-touch read-interception mechanism chosen at plan
   after verifying no guard reads its source file at import time.
+- 2026-07-13 (T1): engine in `skills/tests/mutation_engine.py` (`blank_block`,
+  `_run_single` via scoped `Path.read_text` patch, `guard_fails_when_blanked`);
+  both oracle directions proven in `test_mutation_harness.py` — sound guard
+  caught failing on deletion, weak guard flagged surviving. Fixture guards
+  defined locally so `discover` doesn't collect them. 3 suites green.
 
 ## Decisions
 
