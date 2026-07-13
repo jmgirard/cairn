@@ -102,7 +102,7 @@ and lands each answer in a durable home — filling the three profiles'
       guard (no skeleton), the `/design-interview` boundary note, and update the
       closing routing chip to surface "plan the package skeleton" as the first
       milestone.
-- [ ] T4 — Guard tests: profile-slot content (iterate all three shipped
+- [x] T4 — Guard tests: profile-slot content (iterate all three shipped
       profiles; extend any hardcoded profile list per M48) + cairn-init SKILL
       prose (anchored on phrasing the new work uniquely introduces, M39/M40);
       confirm `test_toolchain_profiles.py` slot-schema tests still pass.
@@ -112,6 +112,7 @@ and lands each answer in a durable home — filling the three profiles'
 
 ## Work log
 
+- 2026-07-13: T4 — added TestGreenfieldOpeners (3 profiles' slots filled, placeholder gone, language slots defer universal openers) + TestGreenfieldInitFlow (SKILL trigger/chip/universal-layer/undecided/tracking-only, anchored on M50-unique tokens). +6 tests; skills 129, scripts 65 green; existing slot-schema + shipped-profile validator still pass. Caught and fixed one over-strict assertion (slots reference the universal oracle opener to defer it, not duplicate it).
 - 2026-07-13: T3 — cairn-init §1 gains the greenfield opener flow (universal layer: distribution ambition per profile + oracle-on; profile layer: slot openers; undecided ⇒ reversible default + one candidate row); tracking-only guard, /design-interview boundary, chip surfaces the package skeleton as the first milestone. Full skills suite (123 tests) green.
 - 2026-07-13: T2 — cairn-init §0 gains a greenfield-detection bullet (new/empty + no marker) → project-type chip selects the profile explicitly instead of defaulting to generic; non-greenfield/migration paths unchanged.
 - 2026-07-13: T1 — filled the three profiles' greenfield-openers slots with concrete openers (r-package: compiled code; python: typing strictness + `src/`-vs-flat; generic: universal layer is the whole flow); universal openers left to cairn-init, not duplicated. Existing test_toolchain_profiles.py (24 tests) still green.
