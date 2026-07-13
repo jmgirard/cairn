@@ -7,7 +7,7 @@
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** GP4
-- **Branch/PR:** m51-oracle-registry-doctrine
+- **Branch/PR:** m51-oracle-registry-doctrine · https://github.com/jmgirard/cairn/pull/49
 
 ## Goal
 
@@ -42,24 +42,24 @@ superseding D-entry (annotating D-024/D-025, citing D-028's precedent).
 
 ## Acceptance criteria
 
-- [ ] AC1 — The `tracking-rules.md` Validation doctrine names the oracle-registry
+- [x] AC1 — The `tracking-rules.md` Validation doctrine names the oracle-registry
       requirement: each oracle recorded by **ID, type, asserting `test:line`,
       source, and provenance**, so the ≥2-independent-types bar is auditable, with
       the asserting test as the single source of truth. Evidence: the text plus a
       passing `test_oracle_doctrine.py` anchor asserting these field names on one
       physical line.
-- [ ] AC2 — The doctrine states the record is **shape-free** — a central registry
+- [x] AC2 — The doctrine states the record is **shape-free** — a central registry
       file, distributed generator headers, or embedded fixture fields all satisfy
       it — and contains **no cross-repo citation** (no exemplar repo names) in the
       shared rulebook (D-024 self-contained rule). Evidence: a `test_oracle_doctrine.py`
       anchor on the three-shapes phrasing; the new assertions fail against the
       pre-M51 rulebook (M39/M40 false-coverage sanity check, recorded in the work log).
-- [ ] AC3 — A superseding D-entry (D-029) records the content-not-shape
+- [x] AC3 — A superseding D-entry (D-029) records the content-not-shape
       disposition: it annotates D-024/D-025 (their type list and deferral stand),
       cites D-028 as the precedent, and explicitly rejects the central-`ORACLES.md`
       tracking-file shape as this milestone's choice (re-openable by supersede).
       Evidence: the D-entry exists in `cairn/DECISIONS.md`.
-- [ ] AC4 — The generic profile's `verify` slot is clean: the full test suite
+- [x] AC4 — The generic profile's `verify` slot is clean: the full test suite
       passes (`python3 -m unittest discover -s skills/tests` and
       `-s scripts/tests`). Evidence: both runs report OK.
 
@@ -110,3 +110,42 @@ superseding D-entry (annotating D-024/D-025, citing D-028's precedent).
 ## Review
 <!-- owner: review · exclusive; evidence per criterion; consistency-gate
      results; independent-review findings and their triage -->
+
+Reviewed 2026-07-12 · PR #49 · branch base == origin/main (not stale).
+
+**Acceptance-criteria evidence (fresh):**
+- AC1 ✓ — `tracking-rules.md` Validation doctrine carries the "Oracle registry
+  (auditability)" paragraph naming the field list **ID, type, asserting
+  `test:line`, source, and provenance** + the single-source-to-the-test
+  rationale. `test_oracle_registry_records_the_audit_fields` passes.
+- AC2 ✓ — the paragraph states the record's **shape is the repo's choice**
+  (central file / distributed headers / embedded fixture fields);
+  `grep -ciE "ackwards|intraclass"` over the new paragraph = **0** (self-contained,
+  D-024). `test_oracle_registry_is_shape_free` passes.
+- AC3 ✓ — D-029 present in `cairn/DECISIONS.md`: annotates D-024/D-025, cites
+  D-028 as the content-not-shape precedent, rejects the central-`ORACLES.md`
+  file shape and a `cairn_validate` CHECK.
+- AC4 ✓ — `python3 -m unittest discover -s skills/tests` → 131 OK;
+  `-s scripts/tests` → 65 OK.
+
+**Consistency gate:** `cairn_validate` exit 0 — 14/14 PASS (incl. coverage
+completeness, weight caps, sizing OK). `generic` profile `consistency-gate`
+slot names no toolchain checks (clean no-op). DESIGN.md/GP4 unchanged on branch
+→ `cairn_impact` correctly skipped (no principle changed).
+
+**Independent review — three lenses, zero findings, no scorer needed:**
+- [O] diff-bug (Opus): no surviving findings. Confirmed both guard anchors are
+  absent from `origin/main`'s rulebook (genuine fail-on-removal, not false
+  coverage) and D-029 is internally consistent with D-024/D-025/D-028.
+- [S] blame-history (Sonnet): no findings. `git blame` confirms the ≥2-types
+  bar / five types / reproducibility hard-stop are byte-for-byte unchanged (pure
+  insertion); D-029's "annotates, not supersedes" framing verified against
+  history; no stale-count trap (7 test defs match the work log).
+- [S] prior-PR-comments (Sonnet): no prior-PR evidence — inline review-comment
+  corpus on the touched files is empty (verified access; expected per M40).
+
+**Sub-blocking note (not a finding, pre-existing):** the append-only D-log is
+non-monotonic — D-028 is labelled 2026-07-13 though its commit landed 2026-07-12
+(as did all M49/M50 work); D-029's 2026-07-12 is the correct date. D-028's label
+(and the ROADMAP "Last hygiene check: 2026-07-13") are pre-existing mislabels,
+out of M51's scope (append-only, already merged).
