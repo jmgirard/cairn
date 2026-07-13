@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-13 (M53 prose-guard mutation harness done + archived; graduated its candidate; pruned M48 under terminal-row retention. Earlier today: ingested RR01, triaged 17 recs into grouped candidates)_
+_Last hygiene check: 2026-07-13 (M54 release positioning + DESIGN refresh done + archived; struck the positioning/DESIGN slices from the release-prep candidate at plan; pruned M49 under terminal-row retention)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,12 +10,11 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M54 | Release positioning + DESIGN refresh | review | — | high | milestones/M54-release-positioning-design-refresh.md |
+| M54 | Release positioning + DESIGN refresh | done | — | high | milestones/archive/M54-release-positioning-design-refresh.md |
 | M53 | Prose-guard mutation harness | done | — | high | milestones/archive/M53-prose-guard-mutation-harness.md |
 | M52 | r-package profile — GitHub Actions CI (R-CMD-check + Codecov) | done | — | normal | milestones/archive/M52-r-profile-codecov-ci.md |
 | M51 | Oracle-registry doctrine (shape-free) | done | — | normal | milestones/archive/M51-oracle-registry-doctrine.md |
 | M50 | Greenfield init opener flow | done | — | normal | milestones/archive/M50-greenfield-init-openers.md |
-| M49 | R fixture-provenance guard fold-in | done | — | normal | milestones/archive/M49-r-fixture-provenance-guard.md |
 
 ## Candidates
 
