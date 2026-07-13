@@ -2,11 +2,11 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M49: R fixture-provenance guard fold-in
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m49-r-fixture-provenance-guard
 
 ## Goal
 
@@ -55,15 +55,15 @@ not a code touch in an R package).
 
 ## Tasks
 
-- [ ] T1 — Add the reproducible-fixture-provenance requirement to the r-package
+- [x] T1 — Add the reproducible-fixture-provenance requirement to the r-package
       profile `test-doctrine` slot (content mandated: source + committed
       generator + seed; shape — attr / embedded field / header — left to the
       repo). Keep the file under the 90-line PROFILE cap.
-- [ ] T2 — Append the `DECISIONS.md` entry (next free D-id): mandate provenance
+- [x] T2 — Append the `DECISIONS.md` entry (next free D-id): mandate provenance
       content, leave shape free; rationale = two-exemplar shape variance;
       lineage = the M42-revised "R-profile provenance guard" candidate;
       supersede path stated.
-- [ ] T3 — Add a guard test (`test_toolchain_profiles.py`) asserting the
+- [x] T3 — Add a guard test (`test_toolchain_profiles.py`) asserting the
       r-package profile mandates the provenance content (source / generator /
       seed, shape-free). Run all three suites green. (Candidate-row graduation
       happens in review hygiene, not here — M35 lesson.)
@@ -71,6 +71,10 @@ not a code touch in an R package).
 ## Work log
 
 - 2026-07-13: created by /milestone-plan (paired with M48; independent, no dependency; promotes the M42-revised "R-profile provenance guard" candidate).
+- 2026-07-13: implement started; branch m49-r-fixture-provenance-guard cut from main (baseline 218 tests green).
+- 2026-07-13: T1 — added the reproducible-fixture-provenance bullet to the r-package profile test-doctrine slot (content: source + committed generator + seed; shape left free — attr / embedded field / header). Profile 76 lines (< 90 cap).
+- 2026-07-13: T2 — appended D-028 (mandate provenance content, leave shape free; rationale = ackwards-attr-guard vs. intraclass-embedded-fields variance; supersede path stated).
+- 2026-07-13: T3 — added TestRPackageFixtureProvenance (2 tests) locking the content mandate + shape-freedom; all three verify suites green (skills 123 / scripts 65 / hooks 32).
 
 ## Decisions
 

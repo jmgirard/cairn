@@ -44,6 +44,11 @@ rules in tracking-rules:
 - Dependency changes (Imports/Suggests) are never unilateral — question-gate + D-entry.
 - Breaking changes to exported behavior follow a deprecation cycle unless pre-1.0 and explicitly waived.
 - Every newly exported object gets a `_pkgdown.yml` reference-index row in the same commit.
+- Every committed test fixture carries reproducible provenance: its source and
+  the committed generator (a `data-raw/` script) that regenerates it from scratch, plus any seed —
+  the R-mechanical form of the universal Reproducibility hard-stop. The required
+  content is fixed; the shape is the repo's choice — a `provenance` attribute,
+  embedded `.rds`/`.rda` fields, or a header comment naming source + generator + seed.
 
 ## release-walk
 Followed by `/cairn-release` — a CRAN release walk (never self-submits):

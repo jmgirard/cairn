@@ -191,6 +191,32 @@ class TestRulebookRelocation(unittest.TestCase):
                           f"r-package profile dropped relocated guardrail '{phrase}'")
 
 
+class TestRPackageFixtureProvenance(unittest.TestCase):
+    """M49: the r-package test-doctrine mandates reproducible fixture provenance
+    — source + committed generator + any seed per fixture — while leaving the
+    *shape* (attr / embedded field / header) to the adopting repo. This is the
+    R-mechanical concretization of the universal Reproducibility hard-stop; the
+    content-not-shape choice and its two-exemplar rationale are recorded in
+    DECISIONS.md (D-028)."""
+
+    def test_test_doctrine_mandates_provenance_content(self):
+        body = section_body(read("shared", "profiles", "r-package.md"), "test-doctrine")
+        self.assertTrue(body, "could not locate the r-package test-doctrine slot")
+        self.assertIn("reproducible provenance", body,
+                      "test-doctrine should mandate reproducible fixture provenance")
+        self.assertIn("committed generator", body,
+                      "provenance mandate should require a committed generator")
+        self.assertIn("seed", body, "provenance mandate should require any seed")
+
+    def test_provenance_shape_is_left_to_the_repo(self):
+        body = section_body(read("shared", "profiles", "r-package.md"), "test-doctrine")
+        self.assertIn("the shape is the repo's choice", body,
+                      "provenance mandate should leave the fixture shape to the repo")
+        for shape in ("attribute", "embedded", "header"):
+            self.assertIn(shape, body,
+                          f"provenance mandate should name the {shape} shape option")
+
+
 class TestInitSelection(unittest.TestCase):
     def test_init_selects_and_backfills_profile(self):
         text = read("cairn-init", "SKILL.md")
