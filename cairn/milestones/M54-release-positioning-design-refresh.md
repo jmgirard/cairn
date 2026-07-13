@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M54: Release positioning + DESIGN refresh
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** IP1
@@ -96,7 +96,7 @@ adopter reads no longer say R-only and DESIGN audits clean (RR01 recs 1 + 5).
       the honest env list + the honor-system line.
 - [x] T5 — Add `Lessons → LESSONS` to the boundary rule in
       `skills/shared/templates/claude-md-section.md:23`.
-- [ ] T6 — Add the positioning/DESIGN-hooks guard test (positive `assertIn`s,
+- [x] T6 — Add the positioning/DESIGN-hooks guard test (positive `assertIn`s,
       each phrase on a single line and outside `**bold**` per M23/M26), add its
       `Mutation` entries to `skills/tests/test_mutation_harness.py` REGISTRY,
       and run `python3 -m unittest discover` green including the completeness
@@ -122,6 +122,11 @@ adopter reads no longer say R-only and DESIGN audits clean (RR01 recs 1 + 5).
 - 2026-07-13: T5 — claude-md-section template boundary rule gains
   `Lessons → LESSONS`; the rule was unguarded, so T6 will add a guard for it
   too (minor amendment — a discovered sub-task within T6's guard file).
+- 2026-07-13: T6 — added `test_positioning_guard.py` (7 methods: positioning,
+  5-hook list, IP1 default-branch, Known-issues currency, template boundary
+  rule) + 8 mutation-harness entries; full suite green (150 skills + 65
+  scripts), cairn_validate 14/14, guard proven non-false-coverage by the
+  harness. Verify slot clean → status review.
 
 ## Decisions
 
