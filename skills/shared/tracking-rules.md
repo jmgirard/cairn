@@ -83,7 +83,12 @@ takes a D-entry, and its number stays retired.
 - the cairn `## Project tracking` section of `CLAUDE.md` < 30 lines (the repo's
   own dev doctrine outside that section is not cairn's to cap — D-018) ·
   `ROADMAP.md` < 60 lines · `LESSONS.md` < 50 lines · `PROFILE.md` < 90 lines ·
-  active milestone file < 150 lines · archived summary ≤ 25 lines.
+  archived summary ≤ 25 lines.
+- a live milestone file's **plan-owned body < 150 lines** — everything before
+  the review-exclusive `## Review` section. That `## Review` section is exempt
+  from the cap, so review evidence never scrambles plan-owned content (M55): its
+  evidence accumulates at review time and no longer competes with Scope, AC, or
+  Coverage for the budget. A file with no `## Review` section counts whole.
 - Work-log entries are one line each. Never paste command output or subagent
   transcripts into tracking files — summarize.
 - Remedies when a cap is hit (never "let it grow"): over-cap ROADMAP →

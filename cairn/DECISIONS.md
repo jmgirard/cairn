@@ -593,3 +593,30 @@ Locked by `test_oracle_registry_records_the_audit_fields` +
 If a cairn-tracked statistical repo later needs cairn to supply a central
 `ORACLES.md` shape (or a mechanical validate CHECK), this is the entry to
 supersede.
+
+### D-030 (2026-07-13): The milestone weight cap measures the plan-owned body only; the `## Review` section is exempt — parallels D-018
+
+**Context:** The 150-line milestone cap measured the whole file, so review
+evidence (written to the review-exclusive `## Review` section at review time)
+competed with plan-owned Scope/AC/Coverage for one budget. Because AC wording is
+plan-owned/amend-via-gate and cannot be trimmed, evidence overflow forced
+trimming elsewhere — a recurring end-of-milestone scramble that twice damaged
+content (M19/M22/M33/M50).
+**Decision:** `check_caps` measures only the plan-owned body — every line before
+the first `## Review` heading — against `MILESTONE_CAP` (kept at 150); the
+`## Review` section is exempt. A fence-aware `milestone_body_line_count` does the
+measure (tracking ```/~~~ so a fenced `## Review` in the body is not the
+boundary — M45); a file with no Review section counts whole (back-compat).
+Rejected: splitting the budget 120/40 and adding a separate Review sub-cap —
+both add a second number and complicate/tighten plan discipline for marginal
+benefit; the point is that plan discipline stays at 150, unchanged. Also
+rejected exempting the milestone-local `## Decisions` section (kept counted — it
+is meant to stay brief, with cross-cutting entries promoted here).
+**Consequences:** Review evidence no longer scrambles plan-owned content; plan
+discipline is unchanged. Parallels D-018 (cap only the part cairn's discipline
+governs). The `## Review` section is technically unbounded during the
+review→done window but compresses to ≤25 lines at archive and is governed by
+"never paste output — summarize." Locked by the over-cap fixtures in
+`scripts/tests` + `test_milestone_cap_exemption.py` (wording + stated↔enforced,
+mutation-registered). If an unbounded Review section ever bites, a Review
+sub-cap is the entry to supersede.

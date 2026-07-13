@@ -1,10 +1,10 @@
 # M55: Milestone-file cap exempts the Review section
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m55-milestone-file-cap · https://github.com/jmgirard/cairn/pull/53
 
 ## Goal
 
@@ -32,24 +32,24 @@ agreement.
 
 ## Acceptance criteria
 
-- [ ] A live milestone file whose plan-owned body (lines before `## Review`) is
+- [x] A live milestone file whose plan-owned body (lines before `## Review`) is
       under 150 but whose *total* exceeds 150 because of Review evidence PASSES
       the weight-caps check — the recurring evidence-vs-cap scramble
       (M19/M22/M33/M50) is gone. Evidence: a scripts/tests fixture.
-- [ ] Plan discipline is unchanged: a live milestone whose plan-owned body is
+- [x] Plan discipline is unchanged: a live milestone whose plan-owned body is
       itself ≥150 lines still FAILS weight-caps. Evidence: a scripts/tests
       fixture (the existing `test_over_cap_milestone` no-Review case plus a
       with-Review case whose body alone is over).
-- [ ] Measurement is correct at the edges: a file with no `## Review` section
+- [x] Measurement is correct at the edges: a file with no `## Review` section
       measures the whole file exactly as today (back-compat), and a literal
       `## Review` line inside a fenced code block in the plan-owned body does
       not false-terminate the body scan (M45 fence-state trap). Evidence: two
       scripts/tests fixtures.
-- [ ] The tracking-rules weight-caps text states the `## Review` exemption, the
+- [x] The tracking-rules weight-caps text states the `## Review` exemption, the
       stated cap (150) equals the enforced `MILESTONE_CAP`, and a prose-guard
       locks the wording and is registered in the mutation harness (blanking it
       fails the guard). Evidence: skills/tests guard + a `Mutation(...)` entry.
-- [ ] `verify` slot clean: `python3 -m unittest discover -s scripts/tests` and
+- [x] `verify` slot clean: `python3 -m unittest discover -s scripts/tests` and
       `python3 -m unittest discover -s skills/tests` both pass.
 
 ## Coverage
@@ -62,29 +62,27 @@ agreement.
 
 ## Tasks
 
-- [ ] T1 — Add `milestone_body_line_count(path)` to `cairn_scripts.py`
+- [x] T1 — Add `milestone_body_line_count(path)` to `cairn_scripts.py`
       (mirroring `claude_section_line_count`, cairn_scripts.py:205): count lines
       up to — not including — the first `## Review` heading, tracking ```/~~~
       fence state so a fenced `## Review` in the body is not the boundary (M45);
       whole-file count when no `## Review`; None if unreadable.
-- [ ] T2 — In `check_caps` (cairn_validate.py:78-86), use
+- [x] T2 — In `check_caps` (cairn_validate.py:78-86), use
       `milestone_body_line_count` for the live-milestone branch instead of
       `line_count`; leave the archive branch and other caps untouched.
-- [ ] T3 — scripts/tests: add a `live()`-with-`## Review` fixture helper and
-      cases for AC1 (body<150 + Review over → PASS), AC2 (body≥150 → FAIL),
-      AC3 back-compat (no Review → whole file) and AC3 fence-safety (fenced
-      `## Review` in body not treated as boundary).
-- [ ] T4 — Update the tracking-rules weight-caps line
-      (tracking-rules.md:86) to state the `## Review` exemption; add a
-      skills/tests prose-guard locking the wording + a stated↔enforced check
-      (150 == `MILESTONE_CAP`), modeled on `test_lessons_loop.py`; register the
-      guard block in `test_mutation_harness.py`. Note the exemption in the
-      milestone template's `## Review` comment.
-- [ ] T5 — Sweep `/milestone-review` (+ any skill/template wording) for
-      instructions to trim the Review section to fit the cap; reconcile them
-      with the exemption. Record the milestone-local D-entry (exemption +
-      rejected split/sub-cap alternatives) and promote it to DECISIONS.md. Run
-      both suites clean.
+- [x] T3 — scripts/tests: `TestMilestoneBodyLineCount` unit class (exemption,
+      back-compat, two fence-safety cases, unreadable→None) + integration cases
+      in `TestValidateFailures` for AC1 (body<150 + Review over → PASS) and AC2
+      (body≥150 → FAIL, asserts the "plan-owned lines" message).
+- [x] T4 — Updated the tracking-rules weight-caps text to state the plan-owned
+      body cap + `## Review` exemption; added `test_milestone_cap_exemption.py`
+      (exemption wording, plan-body-cap wording, stated↔enforced 150 ==
+      `MILESTONE_CAP`); registered both prose blocks in `test_mutation_harness.py`;
+      noted the exemption in the template's `## Review` comment.
+- [x] T5 — Swept skills: no standing instruction trims the Review section to
+      fit the cap (those were LESSONS, append-only history — left intact);
+      review step 9's "verify weight caps" stays correct. Recorded D-030 (+
+      promoted to DECISIONS.md). Both suites clean.
 
 ## Work log
 
@@ -92,7 +90,59 @@ agreement.
   candidate (RR01 rec 3/Q8). Gate: exempt Review + keep 150 (not split/sub-cap);
   exempt only `## Review` (Decisions stays counted). A D-entry (parallel to
   D-018's CLAUDE.md-section cap) is expected at implement/review.
+- 2026-07-13 (T1/T2): added fence-aware `milestone_body_line_count` and rewired
+  `check_caps` to measure the plan-owned body for live milestones. Existing
+  scripts suite (65) green.
+- 2026-07-13 (T3): added 7 tests (5 unit + 2 integration); scripts suite 72 green.
+- 2026-07-13 (T4): rulebook exemption wording + guard + mutation registration +
+  template note; skills suite 153 green. (Template comment kept to 3 lines — the
+  owner-tag check reads only 3 lines after an H2.)
+- 2026-07-13 (T5): swept skills (no Review-trim instruction to reconcile);
+  recorded D-030. All tasks done → status review. scripts 72 + skills 153 green;
+  `cairn_validate .` all-pass (weight caps included).
+- 2026-07-13 (review): diff-bug lens (scored 82) → exact `## Review` match +
+  regression test (`## Reviewers` no longer truncates the body). AC boxes ticked
+  against fresh evidence. scripts 73 + skills 153 green.
 
 ## Decisions
 
+- D-030 (promoted to cairn/DECISIONS.md): cap measures the plan-owned body only,
+  `## Review` exempt; rejected split-budget / Review sub-cap / exempting
+  `## Decisions`. Parallels D-018.
+
 ## Review
+
+Reviewed 2026-07-13 · PR #53 · fresh evidence per criterion below.
+
+**AC evidence (run fresh at review):**
+- AC1 — `test_review_evidence_over_cap_passes`: a ~307-line file (≈106 plan-body
+  + 200 Review lines) → validate exit 0, `PASS weight caps`. Pre-fix that file
+  failed the cap. ✓
+- AC2 — `test_over_cap_milestone_body_still_fails` (160-line body + a Review
+  section → FAIL, "plan-owned lines") + original `test_over_cap_milestone`
+  (no-Review 160-line file → FAIL). Plan discipline unchanged. ✓
+- AC3 — `TestMilestoneBodyLineCount`: exemption, no-Review→whole-file
+  back-compat, two fence-safety cases, the `## Reviewers` prefix case (added at
+  review), unreadable→None. All ✓.
+- AC4 — `test_milestone_cap_exemption.py`: exemption + plan-body-cap wording
+  present, stated 150 == `MILESTONE_CAP`; mutation harness (via
+  `discover -s skills/tests`) confirms both registered blocks fail when blanked;
+  registry-completeness passes with the new guard registered. ✓
+- AC5 — `discover -s scripts/tests` 73 OK · `discover -s skills/tests` 153 OK. ✓
+
+**Consistency gate:** `cairn_validate .` exit 0 — 14 CHECKS PASS incl. weight caps
++ coverage complete; sizing advisory OK. Profile `generic` → toolchain half is a
+clean no-op. No IPn/GPn changed (Principles touched: —) → `cairn_impact` skipped.
+
+**Independent review (3 lenses + scorer):**
+- Diff-bug [O]: 1 finding — the `## Review` boundary used `startswith("review")`,
+  so a plan-body H2 like `## Reviewers` would truncate the body scan (a
+  one-directional cap *loosening*, deviating from the docstring's "first
+  `## Review` heading"). **Scored 82 → fixed now:** exact match `== "review"` +
+  regression test `test_review_prefixed_heading_is_not_the_boundary`.
+- Blame-history [S]: no findings — D-018 logic untouched, `MILESTONE_CAP` still
+  150, archive branch unchanged, no prior weight-caps rule dropped; D-030
+  supersedes nothing (no prior whole-file-cap decision) and "parallels D-018" is
+  accurate.
+- Prior-PR [S]: no prior-PR evidence (cairn PRs carry ~0 inline comments) — no-op.
+- Sub-threshold (<80) findings: none.

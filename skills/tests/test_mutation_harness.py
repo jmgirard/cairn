@@ -74,6 +74,21 @@ REGISTRY = [
         target=RULES,
         block="`LESSONS.md` < 50 lines",
     ),
+    # M55: the milestone cap exempts the review-exclusive `## Review` section.
+    # Two blocks — the exemption rationale and the plan-owned-body cap number —
+    # each guarded by its own assert (one Mutation entry per positive assertIn).
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_weight_caps_states_review_exemption",
+        target=RULES,
+        block="review evidence never scrambles plan-owned content",
+    ),
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_weight_caps_states_the_plan_owned_body_cap",
+        target=RULES,
+        block="plan-owned body < 150 lines",
+    ),
     Mutation(
         guard="test_migration_guidance",
         test="TestMigrationGuidance.test_reference_sweep_names_two_dispositions",

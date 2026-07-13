@@ -93,6 +93,15 @@ def _load_validate():
     return mod
 
 
+def _load_scripts():
+    """Import cairn_scripts for direct-function tests of its helpers."""
+    if str(SCRIPTS_DIR) not in sys.path:
+        sys.path.insert(0, str(SCRIPTS_DIR))
+    import cairn_scripts
+
+    return cairn_scripts
+
+
 def run(script, root):
     return subprocess.run(
         [sys.executable, str(SCRIPTS_DIR / script), str(root)],
@@ -449,6 +458,24 @@ class TestValidateFailures(ScriptCase):
         self.tree.files["milestones/M03-live.md"] = live("planned") + "\nx" * 160 + "\n"
         self.assert_fails("weight caps", self.tree.build())
 
+    def test_over_cap_milestone_body_still_fails(self):
+        # M55/AC2: plan discipline is unchanged — a plan-owned body that is
+        # itself over 150 lines still FAILS, even with a Review section present.
+        body = live("planned") + "x\n" * 160
+        self.tree.files["milestones/M03-live.md"] = body + "## Review\n" + "e\n" * 5
+        out = self.assert_fails("weight caps", self.tree.build())
+        self.assertIn("plan-owned lines", out)
+
+    def test_review_evidence_over_cap_passes(self):
+        # M55/AC1: plan-owned body under 150 but the file total over 150 because
+        # of Review evidence — the file PASSES weight-caps (the recurring
+        # M19/M22/M33/M50 evidence-vs-cap scramble is gone).
+        body = live("planned") + "x\n" * 100
+        self.tree.files["milestones/M03-live.md"] = body + "## Review\n" + "e\n" * 200
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  weight caps", proc.stdout)
+
     def test_over_cap_lessons(self):
         # A LESSONS.md at/over its 50-line cap fails weight-caps. (An absent
         # file is not a cap failure: line_count returns None for a missing
@@ -590,6 +617,60 @@ class TestValidateFailures(ScriptCase):
         )
         proc = run("cairn_validate.py", self.tree.build())
         self.assertEqual(proc.returncode, 0, proc.stdout)
+
+
+class TestMilestoneBodyLineCount(unittest.TestCase):
+    """M55: the milestone weight cap measures the plan-owned body only — every
+    line before the `## Review` heading — so review evidence never counts
+    against the plan-discipline cap. A file with no Review section counts whole
+    (back-compat); a fenced `## Review` in the body is not the boundary (M45)."""
+
+    def setUp(self):
+        self.cs = _load_scripts()
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        self.path = pathlib.Path(self._tmp.name) / "M.md"
+
+    def count(self, text):
+        self.path.write_text(text)
+        return self.cs.milestone_body_line_count(str(self.path))
+
+    def test_review_section_is_exempt(self):
+        body = "# M\n\n## Goal\nx\n\n"  # 5 lines
+        n_body = len(body.splitlines())
+        text = body + "## Review\n" + "e\n" * 200
+        self.assertEqual(self.count(text), n_body)
+
+    def test_no_review_section_counts_whole_file(self):
+        text = "# M\n\n## Goal\nx\n## Tasks\n- [ ] T1\n"
+        self.assertEqual(self.count(text), len(text.splitlines()))
+
+    def test_fenced_review_heading_is_not_the_boundary(self):
+        # The body quotes `## Review` inside a fenced block; the real section
+        # comes after. Without fence tracking this would stop at the fenced line.
+        body_lines = ["# M", "", "## Tasks", "- [ ] T1", "```", "## Review",
+                      "```", "after fence", ""]
+        body = "\n".join(body_lines) + "\n"
+        text = body + "## Review\n" + "e\n" * 50
+        self.assertEqual(self.count(text), len(body_lines))
+
+    def test_fenced_review_without_real_section_counts_whole(self):
+        lines = ["# M", "", "## Tasks", "```", "## Review", "```", "done", ""]
+        text = "\n".join(lines) + "\n"
+        self.assertEqual(self.count(text), len(lines))
+
+    def test_review_prefixed_heading_is_not_the_boundary(self):
+        # Only an exact `## Review` heading is the boundary — a plan-body H2 that
+        # merely starts with "review" (e.g. `## Reviewers`) must not truncate the
+        # body, or an oversized plan could silently pass the cap (M55 review).
+        body_lines = ["# M", "", "## Reviewers", "- alice", "- bob", ""]
+        body = "\n".join(body_lines) + "\n"
+        text = body + "## Review\n" + "e\n" * 50
+        self.assertEqual(self.count(text), len(body_lines))
+
+    def test_unreadable_returns_none(self):
+        missing = pathlib.Path(self._tmp.name) / "nope.md"
+        self.assertIsNone(self.cs.milestone_body_line_count(str(missing)))
 
 
 class TestImpact(ScriptCase):
