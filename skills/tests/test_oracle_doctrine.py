@@ -64,6 +64,19 @@ class TestOracleDoctrine(unittest.TestCase):
         # Sourcing is necessary but not sufficient — the value must regenerate.
         self.assertIn("unsourced *or unreproducible*", rulebook())
 
+    def test_oracle_registry_records_the_audit_fields(self):
+        # M51/D-029: at scale the ≥2-types bar is only checkable if each oracle
+        # is recorded — the per-oracle field list, single-sourced to its test.
+        self.assertIn(
+            "**id, type, asserting `test:line`, source, and provenance**",
+            rulebook(),
+        )
+
+    def test_oracle_registry_is_shape_free(self):
+        # M51/D-029: content not shape — a central file, distributed headers,
+        # or embedded fixture fields all satisfy the registry requirement.
+        self.assertIn("shape is the repo's choice", rulebook())
+
 
 if __name__ == "__main__":
     unittest.main()

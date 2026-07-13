@@ -549,3 +549,47 @@ provenance guard" candidate. Locked by `TestRPackageFixtureProvenance` in
 `skills/tests/test_toolchain_profiles.py`. If a single canonical shape (or a
 mandated guard test) ever proves worth enforcing across R adopters, this is the
 entry to supersede.
+
+### D-029 (2026-07-12): The oracle registry generalizes as shape-free content doctrine, not a central `ORACLES.md` tracking file — annotates D-024/D-025
+
+**Context:** D-024 deferred adopting ackwards' `cairn/ORACLES.md` registry as a
+cairn tracking file (ledger E5); D-025 (M42) kept it deferred, sharpening the
+row with two findings: (a) the `type` column could not describe intraclass's
+oracles until the taxonomy gained the simulation-coverage type — which D-025
+itself then added, clearing that gate — and (b) intraclass implements the same
+per-oracle registry *content* **distributed** (structured `oracle-*.R`
+provenance headers + fields embedded in the `.rds`), with **no** central file,
+proving the central-file shape is not the only working one. Both original
+deferral gates are now down: the fifth type shipped (D-025) and the
+toolchain-profiles split that the row was entangled with is built out
+(M45–M49). The question at the M51 plan gate was *how* to adopt it — a central
+`ORACLES.md` tracking file (ackwards' shape) vs. shape-free content doctrine.
+**Decision:** Fold a **shape-free registry requirement** into the
+`tracking-rules.md` Validation doctrine — every oracle is recorded by ID, type,
+asserting `test:line`, source, and provenance so the ≥2-independent-types bar
+stays auditable at scale, the asserting test being the single source of truth
+the record maps to — and leave the *shape* (a central registry file,
+distributed generator headers, or embedded fixture fields) to the adopting
+repo. This is the symmetric move to D-028: fix the required *content*, not the
+*shape*, since the two exemplars (ackwards central / intraclass distributed)
+show the central file is not the only working form. **Rejected** adopting a
+central `ORACLES.md` as a new cairn tracking file: it would over-fit one
+exemplar exactly as D-028 refused to for provenance, it is an *optional,
+statistical-only* file that does not fit the universal-scaffold model (the
+D-015/M16 four-wiring-points path + a cap + an opt-in), and no cairn-tracked
+repo currently needs cairn to *supply* the central index (ackwards hand-built
+its own; intraclass is not cairn-tracked). Also rejected a `cairn_validate`
+CHECK — the whole Validation doctrine is advisory prose enforced by review
+judgment, never a validate gate (M33/M42/M49).
+**Consequences:** Annotates D-024/D-025 — their four/five-type taxonomy and the
+E6 provenance graduation (D-028) stand; only the E5 registry disposition is
+resolved here, as doctrine rather than a file. Every adopting statistical/numeric
+repo inherits the auditability requirement via the plugin while keeping shape
+freedom. The rulebook text stays self-contained — no cross-repo citation
+(D-024) — so exemplar grounding lives here and in `references/oracle-*-notes.md`.
+Graduates the ROADMAP "oracle registry" candidate (at post-merge hygiene, M35).
+Locked by `test_oracle_registry_records_the_audit_fields` +
+`test_oracle_registry_is_shape_free` in `skills/tests/test_oracle_doctrine.py`.
+If a cairn-tracked statistical repo later needs cairn to supply a central
+`ORACLES.md` shape (or a mechanical validate CHECK), this is the entry to
+supersede.
