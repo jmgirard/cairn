@@ -6,7 +6,7 @@
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
-- **Branch/PR:** m49-r-fixture-provenance-guard
+- **Branch/PR:** m49-r-fixture-provenance-guard · https://github.com/jmgirard/cairn/pull/47
 
 ## Goal
 
@@ -33,16 +33,16 @@ not a code touch in an R package).
 
 ## Acceptance criteria
 
-- [ ] The r-package profile `test-doctrine` slot
+- [x] The r-package profile `test-doctrine` slot
       (`skills/shared/profiles/r-package.md`) mandates reproducible fixture
       provenance: source + committed generator + any seed per fixture, with the
       content required and the shape explicitly left to the repo — verifiable
       by guard-test tokens.
-- [ ] A `DECISIONS.md` entry records the decision to mandate provenance
+- [x] A `DECISIONS.md` entry records the decision to mandate provenance
       *content* while leaving the *shape* free, citing the two-exemplar
       variance (ackwards' `provenance`-attr+guard vs. intraclass's embedded
       `.rds` fields) as the rationale, with a stated supersede path.
-- [ ] A guard test locks the provenance-content mandate in the r-package
+- [x] A guard test locks the provenance-content mandate in the r-package
       profile; the active profile's `verify` slot is clean (all three
       `unittest` suites green). The "R-profile provenance guard" candidate row
       is graduated (removed) in the post-merge hygiene pass at completion.
@@ -79,3 +79,22 @@ not a code touch in an R package).
 ## Decisions
 
 ## Review
+
+- 2026-07-13: reviewed on branch m49-r-fixture-provenance-guard, PR #47 (draft).
+- **AC1 (evidence):** `skills/shared/profiles/r-package.md` test-doctrine slot now
+  carries the provenance bullet (source + committed generator + any seed;
+  shape — `provenance` attr / embedded `.rds`/`.rda` fields / header comment —
+  left to the repo). `TestRPackageFixtureProvenance` (2 tests) passes, asserting
+  the content tokens and shape-freedom. Profile 76 lines (< 90 cap). Verified.
+- **AC2 (evidence):** `cairn/DECISIONS.md` D-028 records the content-not-shape
+  choice, cites the two-exemplar variance (ackwards attr+guard vs. intraclass
+  embedded fields), rejects pinning ackwards' shape, and states the supersede
+  path. Verified.
+- **AC3 (evidence):** guard test present; verify slot clean — skills 123 /
+  scripts 65 / hooks 32, all green. `cairn_validate` exit 0 (all checks pass).
+  Candidate-row graduation deferred to post-merge hygiene (below). Verified.
+- **Consistency gate:** `cairn_validate` all-pass; Coverage completeness — AC1→T1,T3
+  · AC2→T2 · AC3→T3, all map to existing tasks. Profile is `generic` → toolchain
+  consistency-gate half is a no-op. No DESIGN principle changed → `cairn_impact`
+  skipped.
+- **Independent fresh-context review:** _(pending — three reviewers running)_
