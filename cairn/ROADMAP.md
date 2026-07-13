@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-12 (M44 planned; D-026 dropped 2 low-fit M06 steals)_
+_Last hygiene check: 2026-07-13 (M44 done + archived; pruned M39 to the 5-terminal cap)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,12 +10,11 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M44 | Validator-hardening — sizing advisory + Priority-field schema | review | — | normal | milestones/M44-validator-sizing-and-priority-checks.md |
+| M44 | Validator-hardening — sizing advisory + Priority-field schema | done | — | normal | milestones/archive/M44-validator-sizing-and-priority-checks.md |
 | M43 | Lineage A migration hardening (cairn-init §2) | done | — | normal | milestones/archive/M43-lineage-a-migration-hardening.md |
 | M42 | Oracle-doctrine validation against intraclass | done | M41 | normal | milestones/archive/M42-oracle-doctrine-validation-intraclass.md |
 | M41 | Migration stress-test pilot — intraclass (first Lineage A) | done | — | normal | milestones/archive/M41-migration-pilot-intraclass.md |
 | M40 | Prior-PR-comments reviewer lens | done | — | normal | milestones/archive/M40-prior-pr-comments-lens.md |
-| M39 | Search-first candidate creation | done | — | normal | milestones/archive/M39-search-first-candidate-creation.md |
 
 ## Candidates
 
