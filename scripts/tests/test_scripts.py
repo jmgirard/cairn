@@ -51,6 +51,19 @@ def live_cov(status, n_criteria, coverage_refs):
     )
 
 
+def live_sized(status, n_criteria, n_tasks):
+    """A live milestone body with `n_criteria` fully-mapped acceptance criteria
+    and `n_tasks` tasks — for the sizing advisory (M44). Coverage maps every
+    criterion so coverage-complete passes and only the advisory can fire."""
+    acs = "\n".join(f"- [ ] criterion {i}" for i in range(1, n_criteria + 1))
+    cov = "\n".join(f"- AC{i} → T1" for i in range(1, n_criteria + 1))
+    tasks = "\n".join(f"- [ ] T{i}" for i in range(1, n_tasks + 1))
+    return (
+        f"# M: Test milestone\n\n- **Status:** {status}   <!-- mirror -->\n\n"
+        f"## Acceptance criteria\n{acs}\n\n## Coverage\n{cov}\n\n## Tasks\n{tasks}\n"
+    )
+
+
 # id, title, status, depends, priority, relpath
 BASE_ROWS = [
     ("M03", "Live planned", "planned", "M01", "high", "milestones/M03-live.md"),
@@ -62,6 +75,22 @@ BASE_FILES = {
     "milestones/M02-active.md": live("in-progress"),
     "milestones/archive/M01-old.md": archived("done"),
 }
+
+
+def _load_validate():
+    """Import cairn_validate for the rare direct-function test (most tests use
+    the subprocess `run` below). Needs SCRIPTS_DIR on the path for its
+    `import cairn_scripts`."""
+    import importlib.util
+
+    if str(SCRIPTS_DIR) not in sys.path:
+        sys.path.insert(0, str(SCRIPTS_DIR))
+    spec = importlib.util.spec_from_file_location(
+        "cairn_validate", SCRIPTS_DIR / "cairn_validate.py"
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
 
 
 def run(script, root):
@@ -242,6 +271,52 @@ class TestValidateClean(ScriptCase):
         self.assertIn("PASS  coverage complete", proc.stdout)
 
 
+class TestSizingAdvisory(ScriptCase):
+    """M44: the sizing advisory WARNs over the split tripwires (>7 criteria,
+    >10 tasks) but never fails the gate (exit-code neutral)."""
+
+    def _add_sized(self, n_criteria, n_tasks):
+        self.tree.rows.append(("M04", "Big", "planned", "—", "normal", "milestones/M04-big.md"))
+        self.tree.files["milestones/M04-big.md"] = live_sized("planned", n_criteria, n_tasks)
+        return self.tree.build()
+
+    def test_criteria_over_tripwire_warns_but_passes(self):
+        # 8 criteria (>7), tasks within → WARN, and the exit code stays 0.
+        proc = run("cairn_validate.py", self._add_sized(8, 5))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  sizing", proc.stdout)
+        self.assertIn("M04: 8 acceptance criteria (>7 tripwire)", proc.stdout)
+        self.assertNotIn("tasks (>10 tripwire)", proc.stdout)
+        self.assertIn("all checks passed", proc.stdout)
+        self.assertIn("advisory warning(s) — not gate failures", proc.stdout)
+
+    def test_tasks_over_tripwire_warns_but_passes(self):
+        # 11 tasks (>10), criteria within → WARN, exit 0.
+        proc = run("cairn_validate.py", self._add_sized(3, 11))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  sizing", proc.stdout)
+        self.assertIn("M04: 11 tasks (>10 tripwire)", proc.stdout)
+        self.assertNotIn("acceptance criteria (>7 tripwire)", proc.stdout)
+
+    def test_within_tripwire_no_warn(self):
+        # Boundary: 7 criteria and 10 tasks are AT the tripwire, not over it.
+        proc = run("cairn_validate.py", self._add_sized(7, 10))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    sizing", proc.stdout)
+        self.assertNotIn("consider splitting", proc.stdout)
+
+    def test_advisory_skips_archived(self):
+        # An archived summary is never scanned (check_sizing_advisory iterates
+        # live_files only). Asserted at the function level: an archived file
+        # large enough to exceed the tripwires would also blow the 25-line
+        # archive cap, so a full-run assertion is impossible by construction —
+        # which is exactly why the advisory only ever needs to see live files.
+        self.tree.files["milestones/archive/M01-old.md"] = live_sized("done", 12, 12)
+        root = self.tree.build()
+        cv = _load_validate()
+        self.assertEqual(cv.check_sizing_advisory(str(root)), [])
+
+
 class TestPrinciplesSlot(ScriptCase):
     DESIGN = "# Design\n\n## Design Principles\n\n- IP1: first\n- GP1: second\n"
 
@@ -349,6 +424,13 @@ class TestValidateFailures(ScriptCase):
         self.tree.rows[0] = ("M03", "Live planned", "planed", "M01", "high", "milestones/M03-live.md")
         self.tree.files["milestones/M03-live.md"] = live("planed")  # keep mirror agreeing
         self.assert_fails("status vocabulary", self.tree.build())
+
+    def test_unknown_priority(self):
+        # A Priority outside {high, normal, low} fails the priority-vocab check
+        # (M44) — priority is not policed by any other check, so this isolates it.
+        self.tree.rows[0] = ("M03", "Live planned", "planned", "M01", "urgent", "milestones/M03-live.md")
+        out = self.assert_fails("priority vocabulary", self.tree.build())
+        self.assertIn("unknown priority 'urgent'", out)
 
     def test_dangling_dependency(self):
         self.tree.rows[0] = ("M03", "Live planned", "planned", "M99", "high", "milestones/M03-live.md")

@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M44 | Validator-hardening — sizing advisory + Priority-field schema | planned | — | normal | milestones/M44-validator-sizing-and-priority-checks.md |
+| M44 | Validator-hardening — sizing advisory + Priority-field schema | review | — | normal | milestones/M44-validator-sizing-and-priority-checks.md |
 | M43 | Lineage A migration hardening (cairn-init §2) | done | — | normal | milestones/archive/M43-lineage-a-migration-hardening.md |
 | M42 | Oracle-doctrine validation against intraclass | done | M41 | normal | milestones/archive/M42-oracle-doctrine-validation-intraclass.md |
 | M41 | Migration stress-test pilot — intraclass (first Lineage A) | done | — | normal | milestones/archive/M41-migration-pilot-intraclass.md |

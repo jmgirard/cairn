@@ -45,10 +45,10 @@ each active milestone, and open RBs and their age.
 
 Run `cairn_validate.py` first. It deterministically checks: **mirror
 agreement** (ROADMAP vs file header Status), **at most one `in-progress`**,
-**weight caps**, **terminal-row retention**, **status vocabulary**, **dependency
-resolution** (targets exist and aren't `dropped`), **ROADMAP↔disk orphans**,
-**ID uniqueness**, and **§1 scaffold present** (required tracking files and
-ignore entries exist). Treat every
+**weight caps**, **terminal-row retention**, **status** and **priority
+vocabulary**, **dependency resolution** (targets exist and aren't `dropped`),
+**ROADMAP↔disk orphans**, **ID uniqueness**, and **§1 scaffold present**
+(required tracking files and ignore entries exist). Treat every
 `FAIL` as a mechanical problem: fix it (docs-only commit to main; ROADMAP
 wins mirror conflicts; apply the tracking-rules cap remedies, never "let it
 grow"), then re-run to confirm green. **Exception — a `scaffold present`
@@ -56,6 +56,13 @@ FAIL** means the repo's §1 scaffold has drifted behind the spec (a missing
 tracking file or ignore entry, typically because the repo adopted cairn
 before a later scaffold addition); fix it by running `/cairn-init` (repair
 mode), which is the sole scaffolder — never hand-create the pieces here.
+
+The script also emits non-failing **advisories** (`WARN` lines, exit-code
+neutral) — e.g. a milestone over the split tripwires (>7 criteria / >10
+tasks). An advisory is a judgment call surfaced for the user, **not** a
+mechanical problem to auto-fix: report it and let the user decide (a
+milestone may legitimately exceed a tripwire with justification, or it may
+want splitting via `/milestone-plan`). A `WARN` never blocks the gate.
 
 The script deliberately does not judge these — do them yourself and report:
 
