@@ -94,7 +94,7 @@ adopter reads no longer say R-only and DESIGN audits clean (RR01 recs 1 + 5).
 - [x] T4 — Refresh `cairn/DESIGN.md`: hooks bullet → all 5 hooks; IP1 "main" →
       "the default branch" (RB tripwire: ip-touching); rewrite Known-issues to
       the honest env list + the honor-system line.
-- [ ] T5 — Add `Lessons → LESSONS` to the boundary rule in
+- [x] T5 — Add `Lessons → LESSONS` to the boundary rule in
       `skills/shared/templates/claude-md-section.md:23`.
 - [ ] T6 — Add the positioning/DESIGN-hooks guard test (positive `assertIn`s,
       each phrase on a single line and outside `**bold**` per M23/M26), add its
@@ -119,6 +119,9 @@ adopter reads no longer say R-only and DESIGN audits clean (RR01 recs 1 + 5).
 - 2026-07-13: T4 — DESIGN refreshed: 5-hook list (added commit_guard,
   memory_guard), IP1 "main" → "the default branch" (wording alignment),
   Known-issues rewritten (single-author/single-OS/Windows + honor-system line).
+- 2026-07-13: T5 — claude-md-section template boundary rule gains
+  `Lessons → LESSONS`; the rule was unguarded, so T6 will add a guard for it
+  too (minor amendment — a discovered sub-task within T6's guard file).
 
 ## Decisions
 
