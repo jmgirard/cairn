@@ -85,7 +85,7 @@ adopter reads no longer say R-only and DESIGN audits clean (RR01 recs 1 + 5).
       from `DESIGN.md` Purpose & Scope). Then `git grep` the whole repo for
       other R-exclusive positioning strings and fix any found (M48
       "sweep all mentions" lesson).
-- [ ] T2 — Delete `cairn-init` §0's "No DESCRIPTION file → not an R package"
+- [x] T2 — Delete `cairn-init` §0's "No DESCRIPTION file → not an R package"
       bullet (`skills/cairn-init/SKILL.md:24`); confirm the "Toolchain profile"
       bullet below still covers the DESCRIPTION-absent path.
 - [ ] T3 — Genericize `/hotfix` step 5 (`skills/hotfix/SKILL.md:39`): replace
@@ -110,6 +110,9 @@ adopter reads no longer say R-only and DESIGN audits clean (RR01 recs 1 + 5).
   the semantics).
 - 2026-07-13: T1 — plugin.json + README ¶1 reframed to profile framing; M48
   sweep caught `marketplace.json` (2 more R-only strings), both fixed.
+- 2026-07-13: T2 — removed cairn-init §0's R-centric bullet; the Toolchain
+  profile bullet (confirm-before-write) owns the DESCRIPTION-absent case. No
+  guard referenced the removed wording.
 
 ## Decisions
 

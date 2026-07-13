@@ -21,11 +21,6 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
   fresh `git remote add`, or a CI checkout that never ran `set-head`). cairn
   does not assume `main`; use the detected name wherever the steps below (and
   the tracking-rules git model) say "the default branch".
-- No DESCRIPTION file → **not an R package**: say so and ask — adapt (scaffold
-  the tracking system with the **python** profile if a `pyproject.toml`/
-  `setup.py`/`setup.cfg` marks a Python package, else the **generic** profile,
-  minus R-specific guardrails/gates) or abort. Never scaffold R machinery into
-  a non-R repo silently.
 - **Toolchain profile.** Select the repo's language profile in this order:
   `DESCRIPTION` present → **r-package**; else `pyproject.toml` (primary) /
   `setup.py` / `setup.cfg` present → **python**; otherwise → **generic**.
