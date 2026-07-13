@@ -6,7 +6,7 @@
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
-- **Branch/PR:** m52-r-profile-codecov-ci
+- **Branch/PR:** m52-r-profile-codecov-ci · https://github.com/jmgirard/cairn/pull/50
 
 ## Goal
 
@@ -92,3 +92,19 @@ never a gate" doctrine.
 ## Decisions
 
 ## Review
+
+PR: https://github.com/jmgirard/cairn/pull/50 · main in sync (0 behind, 2 ahead at review).
+
+**Acceptance-criteria evidence** (fresh, by command):
+- AC1 ✓ — r-package `test-doctrine` names both workflows: `use_github_action("check-standard")` and `use_github_action("test-coverage")`→Codecov ([r-package.md](skills/shared/profiles/r-package.md) test-doctrine slot).
+- AC2 ✓ — coverage framed diagnostic-only ("coverage never gates the merge"); the `covr` is a diagnostic, never a gate line retained; no edit to tracking-rules or other profiles (diff scope confined to the r-package slot).
+- AC3 ✓ — `test_shipped_reference_profiles_are_valid` passes; `_REQUIRED_SLOTS` untouched; no `## ` heading added/renamed (edit is body-only).
+- AC4 ✓ — `TestRPackageCodecovCI` (3 tests) green; the CI-pair tokens were red pre-edit (2 failures) and green post-edit — the red→green transition is the deletion sanity-check.
+- AC5 ✓ — all three suites green: skills 134 / scripts 65 / hooks 32.
+
+**Consistency gate:**
+- Universal: `cairn_validate` → all checks passed (exit 0). Coverage completeness: AC1→T2, AC2→T2, AC3→T3, AC4→T1, AC5→T3 — every criterion maps to an existing task.
+- Toolchain: this repo's active profile is `generic`; its consistency-gate slot names no toolchain checks → clean no-op.
+- No DESIGN principle changed (none exist) → `cairn_impact` skipped.
+
+**Independent review (3 lenses + scorer):**
