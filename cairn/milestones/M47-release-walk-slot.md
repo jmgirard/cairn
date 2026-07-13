@@ -4,7 +4,7 @@
 - **Priority:** normal
 - **Depends on:** M45
 - **Principles touched:** GP3
-- **Branch/PR:** m47-release-walk-slot
+- **Branch/PR:** m47-release-walk-slot · https://github.com/jmgirard/cairn/pull/45
 
 ## Goal
 
@@ -32,18 +32,18 @@ bump + NEWS + tag, no CRAN) release path.
 
 ## Acceptance criteria
 
-- [ ] `cairn-release`'s CRAN walk is expressed as the `r-package` profile's
+- [x] `cairn-release`'s CRAN walk is expressed as the `r-package` profile's
       `release-walk` slot, and the skill reads the active profile's slot rather
       than hardcoding CRAN. Evidence: skill prose + `r-package` profile content +
       guard test.
-- [ ] The `generic` profile defines a `release-walk` (version bump + NEWS + tag,
+- [x] The `generic` profile defines a `release-walk` (version bump + NEWS + tag,
       no CRAN), and `cairn-release` run against a generic profile follows it
       without invoking devtools/CRAN. Evidence: `generic` profile content +
       skill prose + guard test.
-- [ ] `cairn-release` preconditions no longer assume DESCRIPTION/devtools
+- [x] `cairn-release` preconditions no longer assume DESCRIPTION/devtools
       unconditionally — they gate on the active profile. Evidence: skill diff +
       guard test.
-- [ ] Existing R release behavior is preserved for an `r-package` repo (the CRAN
+- [x] Existing R release behavior is preserved for an `r-package` repo (the CRAN
       steps are the same content, now sourced from the slot). Evidence: a
       text-equivalence guard test.
 
@@ -74,3 +74,25 @@ bump + NEWS + tag, no CRAN) release path.
 ## Decisions
 
 ## Review
+
+**2026-07-13 — evidence (PR #45).** Verify slot green: skills 115 · scripts 65 · hooks 32.
+`cairn_validate` 14/14 PASS + sizing OK. Consistency gate: generic profile names
+no toolchain `consistency-gate` checks → that half is a clean no-op; universal
+checks (validate, coverage complete, cairn_impact) done. No DESIGN.md principle
+text changed (diff touches 0 DESIGN files) → `cairn_impact` skipped; M47 works
+under GP3, doesn't alter it.
+
+- **AC1** (skill reads the `release-walk` slot, not hardcoded CRAN) — PASS.
+  Skill: 6 `release-walk` refs, 1 `PROFILE.md` ref, **0** `devtools::`.
+  `test_skill_reads_the_release_walk_slot` + `TestOperationalSkillsReadProfile`
+  (now includes cairn-release: PROFILE.md present, no `devtools::`) +
+  `test_r_package_profile_holds_relocated_commands` (CRAN content in the slot).
+- **AC2** (generic profile defines a release-walk, tag path, no CRAN) — PASS.
+  Generic slot is a 4-step bump→NEWS→commit→tag walk; 0 CRAN/devtools tokens.
+  `test_generic_release_walk_defines_a_tag_path` (slot-isolated).
+- **AC3** (preconditions gate on the active profile) — PASS. Skill line 28
+  "Toolchain preconditions gate on the profile"; `DESCRIPTION`/registry required
+  only when the slot names them. `test_skill_gates_preconditions_on_the_profile`.
+- **AC4** (r-package behavior preserved, text-equivalence) — PASS. r-package slot
+  holds `submit_cran()`, `devtools::check()` (×3), `cran-comments`, `NEWS.md`.
+  `test_r_package_profile_holds_relocated_commands`.
