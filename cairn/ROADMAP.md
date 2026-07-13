@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-13 (planned M48 python profile + M49 R fixture-provenance guard; promoted the provenance-guard candidate to M49)_
+_Last hygiene check: 2026-07-13 (M48 python profile done + archived; pruned M43 under terminal-row retention)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,13 +10,12 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M48 | Python toolchain profile | review | — | normal | milestones/M48-python-toolchain-profile.md |
 | M49 | R fixture-provenance guard fold-in | planned | — | normal | milestones/M49-r-fixture-provenance-guard.md |
+| M48 | Python toolchain profile | done | — | normal | milestones/archive/M48-python-toolchain-profile.md |
 | M47 | Release-walk slot — generalize cairn-release to read the profile | done | M45 | normal | milestones/archive/M47-release-walk-slot.md |
 | M46 | Rewire operational slots (implement/review/hotfix/doctrine) + dogfood generic | done | M45 | normal | milestones/archive/M46-rewire-operational-slots.md |
 | M45 | Toolchain-profile spine — mechanism + r-package/generic profiles + init selection | done | — | normal | milestones/archive/M45-toolchain-profile-spine.md |
 | M44 | Validator-hardening — sizing advisory + Priority-field schema | done | — | normal | milestones/archive/M44-validator-sizing-and-priority-checks.md |
-| M43 | Lineage A migration hardening (cairn-init §2) | done | — | normal | milestones/archive/M43-lineage-a-migration-hardening.md |
 
 ## Candidates
 
