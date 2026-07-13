@@ -115,6 +115,27 @@ Then:
   (`${CLAUDE_PLUGIN_ROOT}/skills/shared/profiles/<name>.md` — `r-package.md`,
   `python.md`, or `generic.md` per the selection order above) — copy it
   verbatim; the repo edits its slots (notably `verify`) afterward as needed.
+- **Greenfield openers (new/empty repos only).** When §0 flagged the repo
+  greenfield, after instantiating `PROFILE.md` ask the opener set in batched
+  AskUserQuestion rounds (question-gate rules) — each option marked with its
+  consequence and a recommended **reversible default**:
+  - **Universal layer** (every profile): distribution ambition — rendered per
+    the selected profile (r-package → CRAN vs GitHub-only; python → PyPI vs
+    private; generic → tagged public release vs internal-only), landing in
+    DESIGN Purpose & Scope; and **numeric-work-needs-oracle-verification**
+    (universal — D-024/D-025), landing in DESIGN Conventions (a line committing
+    numeric results to the oracle doctrine's ≥2-types bar).
+  - **Profile layer:** the selected profile's `greenfield-openers` slot
+    questions, each landing in the durable home the slot names (a PROFILE slot,
+    DESIGN Conventions). The generic profile adds none.
+  - **Undecided** on any opener ⇒ take that opener's marked reversible default
+    now and bank **one** ROADMAP `candidate` row recording the deferred choice
+    (IP3 — nothing silently locked in).
+  Stay **tracking-only**: record answers in `cairn/` files; never scaffold a
+  package skeleton (`DESCRIPTION` / `pyproject.toml` / `R/` / `src/`) — that is
+  the repo's obvious first milestone, surfaced on the routing chip below. The
+  openers are toolchain-config only; DESIGN *principle* elicitation stays
+  `/design-interview` (offered on the chip), never duplicated here.
 - Fill DESIGN.md's Purpose & Scope from DESCRIPTION and a quick read of
   `R/` — 5–10 honest lines, marked for the user to refine; never invent
   principles. The deep version — eliciting the contract boundary,
@@ -128,7 +149,8 @@ Then:
   (chip rules per tracking-rules) — e.g. **Run the design interview** →
   `/design-interview`
   (recommended for a fresh repo, to turn the seeded DESIGN.md into an
-  elicited one) / **Plan the first milestone** → `/milestone-plan` /
+  elicited one) / **Plan the first milestone** → `/milestone-plan` (for a
+  greenfield repo, the package skeleton is the obvious first milestone) /
   Run `/milestone` / Stop.
 
 ## 2. Migration protocol

@@ -95,7 +95,7 @@ and lands each answer in a durable home — filling the three profiles'
       inferable profile) → project-type chip → profile selection + PROFILE.md
       instantiation. Leave the existing-code fresh-scaffold and migration paths
       unchanged (profile still inferred, openers skipped).
-- [ ] T3 — Wire the opener flow in cairn-init: the universal opener layer
+- [x] T3 — Wire the opener flow in cairn-init: the universal opener layer
       (distribution ambition rendered per profile; oracle-on) → the selected
       profile's slot openers → answer-landing into the named durable homes →
       undecided ⇒ reversible default + one candidate row. Add the tracking-only
@@ -112,6 +112,7 @@ and lands each answer in a durable home — filling the three profiles'
 
 ## Work log
 
+- 2026-07-13: T3 — cairn-init §1 gains the greenfield opener flow (universal layer: distribution ambition per profile + oracle-on; profile layer: slot openers; undecided ⇒ reversible default + one candidate row); tracking-only guard, /design-interview boundary, chip surfaces the package skeleton as the first milestone. Full skills suite (123 tests) green.
 - 2026-07-13: T2 — cairn-init §0 gains a greenfield-detection bullet (new/empty + no marker) → project-type chip selects the profile explicitly instead of defaulting to generic; non-greenfield/migration paths unchanged.
 - 2026-07-13: T1 — filled the three profiles' greenfield-openers slots with concrete openers (r-package: compiled code; python: typing strictness + `src/`-vs-flat; generic: universal layer is the whole flow); universal openers left to cairn-init, not duplicated. Existing test_toolchain_profiles.py (24 tests) still green.
 - 2026-07-13: created by /milestone-plan. Gate decisions: trigger = empty/new
