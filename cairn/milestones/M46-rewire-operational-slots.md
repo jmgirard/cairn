@@ -72,7 +72,7 @@ dogfood the `generic` profile in this repo.
 
 ## Tasks
 
-- [ ] T1 — `tracking-rules`: relocate "R package guardrails" + the R-mechanical
+- [x] T1 — `tracking-rules`: relocate "R package guardrails" + the R-mechanical
       test rules into the `r-package` profile; keep the universal rules; add the
       framing "profiles supply language mechanics; oracle doctrine stays
       universal".
@@ -92,6 +92,7 @@ dogfood the `generic` profile in this repo.
 ## Work log
 
 - 2026-07-12: created by /milestone-plan (toolchain-profiles arc, milestone 2 of 3).
+- 2026-07-12: T1 — relocated "R package guardrails" + R-mechanical "What gets a test" out of tracking-rules into the r-package profile (added the generated-file `NAMESPACE`/`man`/`data` guardrail there); universal floor genericized + framing added. Flipped `test_toolchain_profiles` source-of-truth to the profile; added `TestRulebookRelocation` (AC3). Guard-test updates fold into each task commit to keep the suite green per checkpoint (minor amendment to plan's separate-T8).
 
 ## Decisions
 

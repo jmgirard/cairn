@@ -21,7 +21,10 @@ Run by `/milestone-implement` (per task) and `/hotfix` (gate-lite):
 Toolchain checks `/milestone-review` runs *in addition to* the universal
 cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`):
 - `devtools::document()` produces no diff.
-- README.Rmd present and out of sync with README.md → `devtools::build_readme()`, commit.
+- Generated files are never hand-edited: `NAMESPACE`, `man/`, and `data/*.rda`
+  regenerate from roxygen and `data-raw/` scripts (the no-diff `document()`
+  check catches drift).
+- README.md is knitted from README.Rmd; present and out of sync with README.md → `devtools::build_readme()`, commit.
 - pkgdown site present → `pkgdown::check_pkgdown()` passes (catches exports missing from `_pkgdown.yml`).
 - NEWS.md has an entry for this milestone's user-visible changes (no milestone numbers in user-facing text).
 - New top-level files have `.Rbuildignore` entries (check `check()` NOTEs).

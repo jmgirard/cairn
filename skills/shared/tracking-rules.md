@@ -510,33 +510,25 @@ exactly, which tests/oracles trace to it, open questions. One line in
 ## What gets a test
 
 No coverage-percentage target — test scope is set per milestone via
-acceptance criteria. Always: every exported function (happy path, every
-`cli_abort()` branch fired, R edge cases — zero rows, `NA`, length-one,
-factor vs. character, empty strings); every numeric result via an oracle;
-every bug fix via a regression test that fails before the fix; every
-documented claim. Indirect by default: internal helpers (direct tests only
-for independent logic). Never: print cosmetics beyond meaningful snapshots,
-trivial pass-throughs, dependency behavior, plots except `vdiffr` when the
-plot is the product. Test the contract, not the implementation — a test that
-breaks under a behavior-preserving refactor is a defect in the test. `covr`
-is a diagnostic, never a gate.
+acceptance criteria. Always: every exported/public function (happy path,
+every error branch fired, the language's edge cases); every numeric result
+via an oracle; every bug fix via a regression test that fails before the fix;
+every documented claim. Indirect by default: internal helpers (direct tests
+only for independent logic). Never: cosmetic output beyond meaningful
+snapshots, trivial pass-throughs, dependency behavior. Test the contract, not
+the implementation — a test that breaks under a behavior-preserving refactor
+is a defect in the test.
 
-## R package guardrails
+The language-mechanical specifics — which edge cases, which error mechanism,
+coverage-tool status, plot/snapshot conventions — live in the active profile's
+`test-doctrine` slot (`cairn/PROFILE.md`; absent → infer per "Toolchain
+profiles"); the rules here are the universal floor. **Profiles supply language
+mechanics; the oracle / Validation doctrine above stays universal** (D-024/D-025),
+never a profile slot.
 
-- After roxygen changes: `Rscript -e 'devtools::document()'`. After code
-  changes: `Rscript -e 'devtools::test()'`. At review: `devtools::check()`.
-- Never hand-edit `NAMESPACE`, `man/`, or `data/*.rda`; data regenerates
-  from `data-raw/` scripts.
-- README.md is knitted from README.Rmd (`devtools::build_readme()`).
-- **Dependency changes are never unilateral**: adding, removing, or moving a
-  package between Imports/Suggests is a question-gate item and gets a
-  D-entry.
-- Breaking changes to exported behavior follow a lifecycle deprecation cycle
-  unless the package is pre-1.0 and the user explicitly waives it.
-- Every newly exported object gets a `_pkgdown.yml` reference-index row in
-  the same commit that exports it.
-- New user-facing conditions use `cli::cli_abort()` / rlang, not assertthat.
-- New top-level tracked files/dirs need `.Rbuildignore` entries.
-
-These are advisory in the moment and **mechanically enforced by the
-consistency gate in `/milestone-review`**.
+The language/toolchain guardrails that were once stated here — package-build
+rules, generated-file conventions, dependency-change and deprecation policy,
+error-condition idioms — now live in the active profile's `test-doctrine` and
+`consistency-gate` slots (for the R toolchain, `skills/shared/profiles/r-package.md`);
+they are advisory in the moment and mechanically enforced by the
+`consistency-gate` slot at `/milestone-review`.

@@ -24,6 +24,36 @@ def read(*parts):
     return SKILLS.joinpath(*parts).read_text()
 
 
+def section_body(text, heading):
+    """The body of a `## <heading>` section, up to the next `## ` heading."""
+    lines = text.splitlines()
+    out, capturing = [], False
+    for line in lines:
+        if line.startswith("## "):
+            if capturing:
+                break
+            capturing = line[3:].strip().lower() == heading.lower()
+            continue
+        if capturing:
+            out.append(line)
+    return "\n".join(out)
+
+
+# R-toolchain gate tokens that M46 relocated out of the universal rulebook
+# sections into the r-package profile — they must not reappear in the
+# universal "What gets a test" floor (AC3).
+R_GATE_TOKENS = (
+    "devtools",
+    "roxygen",
+    "NAMESPACE",
+    "cli::cli_abort",
+    "_pkgdown",
+    ".Rbuildignore",
+    "vdiffr",
+    "covr",
+)
+
+
 SLOTS = (
     "verify",
     "consistency-gate",
@@ -64,19 +94,44 @@ class TestShippedProfiles(unittest.TestCase):
             for slot in SLOTS:
                 self.assertIn(f"## {slot}", text, f"{name} missing slot {slot}")
 
-    def test_r_package_reproduces_live_commands(self):
+    def test_r_package_profile_holds_relocated_commands(self):
+        """AC6 text-equivalence, source-of-truth flipped by M46: the r-package
+        profile is now the single home for the R command strings (relocated out
+        of the operational skills and the rulebook), so the profile — not the
+        skills — must reproduce each token."""
         profile = read("shared", "profiles", "r-package.md")
-        live = "".join(
-            read(a, b) for (a, b) in OPERATIONAL_SKILLS
-        ) + read("shared", "tracking-rules.md")
         for tok in R_COMMAND_TOKENS:
-            self.assertIn(tok, profile, f"r-package profile missing live token {tok}")
-            self.assertIn(tok, live, f"{tok} not in current skills — token drift")
+            self.assertIn(tok, profile, f"r-package profile missing relocated token {tok}")
 
     def test_generic_profile_has_no_r_toolchain(self):
         text = read("shared", "profiles", "generic.md").lower()
         for tok in ("devtools", "roxygen", "pkgdown", "cran"):
             self.assertNotIn(tok, text, f"generic profile should carry no {tok}")
+
+
+class TestRulebookRelocation(unittest.TestCase):
+    """AC3: the R-mechanical guardrails + the R half of "What gets a test" are
+    relocated into the r-package profile; the universal rulebook keeps only the
+    language-agnostic floor. The old "## R package guardrails" section is gone,
+    and the R gate tokens do not appear in the universal test-rules section."""
+
+    def test_r_package_guardrails_section_removed(self):
+        rules = read("shared", "tracking-rules.md")
+        self.assertNotIn("## R package guardrails", rules,
+                         "R package guardrails section should be relocated to the r-package profile")
+
+    def test_what_gets_a_test_has_no_r_gate_tokens(self):
+        body = section_body(read("shared", "tracking-rules.md"), "What gets a test")
+        self.assertTrue(body, "could not locate the 'What gets a test' section")
+        for tok in R_GATE_TOKENS:
+            self.assertNotIn(tok, body,
+                             f"universal 'What gets a test' still carries R gate token {tok}")
+
+    def test_r_gate_tokens_live_in_r_package_profile(self):
+        profile = read("shared", "profiles", "r-package.md")
+        for tok in R_GATE_TOKENS:
+            self.assertIn(tok, profile,
+                          f"r-package profile missing relocated gate token {tok}")
 
 
 class TestInitSelection(unittest.TestCase):
