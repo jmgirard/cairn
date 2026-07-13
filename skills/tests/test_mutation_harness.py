@@ -203,6 +203,46 @@ class TestEngineOracle(unittest.TestCase):
         )
 
 
+def prose_guard_modules():
+    """Every `test_*.py` under skills/tests. This directory holds only
+    prose-guards by design, so each file must be registered or exempted."""
+    return {p.stem for p in me.ENGINE_DIR.glob("test_*.py")}
+
+
+def unregistered(discovered, registered, exempt):
+    """Prose-guard modules that are neither registered nor exempt."""
+    return set(discovered) - set(registered) - set(exempt)
+
+
+class TestRegistryCompleteness(unittest.TestCase):
+    def test_every_prose_guard_is_registered_or_exempt(self):
+        missing = unregistered(
+            prose_guard_modules(), {m.guard for m in REGISTRY}, EXEMPT
+        )
+        self.assertEqual(
+            missing,
+            set(),
+            f"prose-guard files not covered by the mutation harness — add a "
+            f"Mutation entry or an EXEMPT reason: {sorted(missing)}",
+        )
+
+    def test_no_registry_or_exempt_entry_points_at_a_missing_file(self):
+        discovered = prose_guard_modules()
+        stale = ({m.guard for m in REGISTRY} | set(EXEMPT)) - discovered
+        self.assertEqual(
+            stale, set(), f"registry/EXEMPT names a nonexistent guard: {sorted(stale)}"
+        )
+
+    def test_completeness_flags_an_unregistered_guard(self):
+        # The mechanism itself: an unregistered, unexempted module is reported.
+        self.assertEqual(
+            unregistered({"test_a", "test_b"}, {"test_a"}, {}), {"test_b"}
+        )
+        self.assertEqual(
+            unregistered({"test_a", "test_b"}, {"test_a"}, {"test_b": "why"}), set()
+        )
+
+
 class TestRegisteredGuardsFailWhenBlanked(unittest.TestCase):
     def test_each_registered_guard_fails_when_its_block_is_blanked(self):
         self.assertTrue(REGISTRY, "registry is empty")

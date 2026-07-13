@@ -98,7 +98,7 @@ time. Lessons don't execute; a harness does.
       harness; re-anchor inline any false-coverage guard it flags (typically a
       one-line anchor fix per the M39/M40 discipline), card any needing real
       rework (see Out); log one work-log line per fix. (AC2)
-- [ ] T4 — Completeness meta-test: discover every prose-guard test file under
+- [x] T4 — Completeness meta-test: discover every prose-guard test file under
       `skills/tests/` and assert each is registered or in an explicit EXEMPT
       set (with a reason string); prove it fails against a temporary
       unregistered fixture. (AC3)
@@ -128,6 +128,10 @@ time. Lessons don't execute; a harness does.
   `banked-candidates ledger` that survives via a whitespace-wrapped second
   mention; re-anchored inline onto the bolded introduction. 13/14 were sound.
   3 suites green (skills 140).
+- 2026-07-13 (T4): `TestRegistryCompleteness` — `prose_guard_modules()` globs
+  `test_*.py`, `unregistered()` reports any not registered/exempt; proven to
+  flag a synthetic unregistered module and to reject stale entries. skills
+  suite 143 green.
 
 ## Decisions
 
