@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-12 (M43 done + archived; pruned M38 to the 5-terminal cap)_
+_Last hygiene check: 2026-07-12 (M44 planned; D-026 dropped 2 low-fit M06 steals)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,6 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M44 | Validator-hardening — sizing advisory + Priority-field schema | planned | — | normal | milestones/M44-validator-sizing-and-priority-checks.md |
 | M43 | Lineage A migration hardening (cairn-init §2) | done | — | normal | milestones/archive/M43-lineage-a-migration-hardening.md |
 | M42 | Oracle-doctrine validation against intraclass | done | M41 | normal | milestones/archive/M42-oracle-doctrine-validation-intraclass.md |
 | M41 | Migration stress-test pilot — intraclass (first Lineage A) | done | — | normal | milestones/archive/M41-migration-pilot-intraclass.md |
@@ -27,6 +28,6 @@ not an R package, so R-specific gates don't apply.
 - Toolchain profiles (generalize beyond R): core is ~80% language-agnostic (this repo runs it sans R); concentrate R-ness into a profile with 6 slots (verify commands, consistency gate, test doctrine, release walk, init detection, greenfield opener questions), chosen at init, recorded in CLAUDE.md section; extraction method: diff what this repo waives vs what openac uses; keep domain doctrine (oracles) orthogonal to language profile; target v0.3 after pilots harden the R slots — added 2026-07-11 — M02 pilot
 - Scripts --json output mode: add a machine-readable `--json` flag to the cairn_* scripts once a consumer exists (deferred from M13 as YAGNI — today the only readers are the skills, which parse text) — added 2026-07-11 — M13 Out
 - Content-gated memory guard: make M19's memory-boundary hook inspect the write and fire only on durable-state signals (decisions, conventions, project facts), staying silent on pure per-user prefs; promote only if the unconditional soft nudge proves too noisy — added 2026-07-11 — M19 Out
-- M06 deferred minor steals (one row per C6; promote individually if wanted): scored-rubric hygiene audit for /milestone, conflicts_with/parallel task metadata, complexity-scored split advisory, tiered tool exposure, strict schemas for machine-written fragments — added 2026-07-11; principles-touched slot shipped as M38 2026-07-12; search-first candidate creation shipped as M39 2026-07-12; 2 items pruned 2026-07-12 as already shipped (branch↔milestone mapping → milestone Branch/PR field; focus-lens fan-out → M17) — references/competitive-landscape.md + per-system notes
+- M06 deferred minor steals (promote individually if wanted): remaining sub-item is **scored-rubric hygiene audit for /milestone** (contestable — cuts against cairn's binary-gate audit; not built in M44). Shipped/decided: principles-touched slot → M38; search-first candidate creation → M39; complexity-scored split advisory + strict-schemas residual (Priority-field) → M44 2026-07-12; branch↔milestone mapping → Branch/PR field; focus-lens fan-out → M17; strict-schemas core → check_coverage_complete/check_principles_slot. Dropped 2026-07-12 (D-026, don't fit cairn's execution model): conflicts_with/parallel task metadata, tiered tool exposure — added 2026-07-11 — references/competitive-landscape.md + per-system notes
 - `/design-interview` note-and-leave ingestion: teach `/design-interview` to ingest a migration-preserved numbered-principles file (kept intact by M43's G-I2 note-and-leave) and drive its IP/GP formalization + the eventual in-code `PRINCIPLES.md #N` repoint (a target-repo code touch). Downstream of M43 (which writes the deferral) and gated on a real repo needing it; `/design-interview` already formalizes principles, so this is the migration-specific ingestion path, not net-new formalization — added 2026-07-12 — M43 Out (Q1), references/migration-pilot-notes.md Pilot 3 G-I2
 - Greenfield init flow (builds on toolchain profiles): when cairn-init runs in a new/empty repo, open with a project-type chip → selects the toolchain profile → profile supplies fixed opener questions (R profile: CRAN intent, compiled code Rcpp/RcppArmadillo, statistical calcs needing oracle verification; conventions like {cli} folded into one defaults question or deferred to first milestone-plan); each question carries a marked recommended option, each option states its consequence, every answer lands in a durable home (profile slots / DESIGN Conventions / test doctrine), "undecided" defaults to the reversible choice and is banked as a candidate row; cairn-init stays tracking-only — package skeleton is the obvious first milestone — added 2026-07-11 — toolchain-profiles candidate, references/design-interview-notes.md

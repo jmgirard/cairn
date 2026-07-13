@@ -470,3 +470,27 @@ not a supersede). Locked by `skills/tests/test_oracle_doctrine.py`
 (`test_names_the_five_oracle_types` + the coverage-oracle anchor). If the fifth
 type ever needs splitting (point-recovery vs. interval-coverage) or the ≥2-types
 bar proves too strong for it, this is the entry to supersede.
+
+### D-026 (2026-07-12): Drop the parallel-task-metadata and tiered-tool-exposure M06 steals — they don't fit cairn's execution model
+
+**Context:** The M06 competitive survey banked five "minor steals" as
+candidate sub-items (`references/competitive-landscape.md`, steal-list C6).
+Three have since been decided — principles-touched slot (M38), search-first
+candidate creation (M39), and now the sizing advisory + Priority-field schema
+(M44). Planning M44 surfaced that two of the remaining sub-items are structural
+mismatches, not deferrals: **conflicts_with / parallel task metadata**
+(task-master) presumes a parallel-agent execution model, and **tiered tool
+exposure** presumes per-tier tool gating.
+**Decision:** Drop both. cairn runs one milestone at a time, human-gated, with
+tasks ordered by dependency inside a single reviewable PR — there is no
+parallel-agent scheduler for `conflicts_with` metadata to feed, and tools are
+already scoped per spawned agent by the model-strategy section, so a tiering
+layer adds ceremony with no gate it serves. Rejected keeping them as parked
+candidates (they are not "not yet" — they contradict the execution model, so a
+recorded rejection is the honest state, re-openable by superseding this entry).
+The scored-rubric hygiene-audit sub-item is **not** dropped here — it stays a
+candidate (contestable on the binary-gate-audit axis, but not a model mismatch).
+**Consequences:** The M06 candidate row loses two sub-items; the row now tracks
+only the scored-rubric sub-item plus its shipped-item ledger. If cairn ever
+grows a parallel-execution or tool-tiering model, this is the entry to
+supersede.
