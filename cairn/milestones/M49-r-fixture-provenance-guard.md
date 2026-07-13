@@ -97,4 +97,16 @@ not a code touch in an R package).
   · AC2→T2 · AC3→T3, all map to existing tasks. Profile is `generic` → toolchain
   consistency-gate half is a no-op. No DESIGN principle changed → `cairn_impact`
   skipped.
-- **Independent fresh-context review:** _(pending — three reviewers running)_
+- **Independent fresh-context review (three lenses):** all clean, zero findings —
+  no scorer triage needed.
+  - [O] diff-bug (Opus): no findings. Guard tokens all present on single source
+    lines and unique to the new bullet (removing it fails all assertions —
+    non-vacuous); `section_body` isolates the test-doctrine slot correctly;
+    D-028 is the correct next free id with a stated supersede path; no
+    contradiction with the `data/*.rda` consistency-gate line.
+  - [S] blame-history (Sonnet): no findings. M49/D-028 faithfully executes the
+    D-024/D-025-deferred R-provenance candidate (content-not-shape, declines to
+    pin ackwards' guard shape); M45 six-slot schema and M47 release-walk
+    untouched; no existing assertion regressed.
+  - [S] prior-PR-comments (Sonnet): no prior-PR evidence (no review comments on
+    any merged PR touching these files) — clean no-op.
