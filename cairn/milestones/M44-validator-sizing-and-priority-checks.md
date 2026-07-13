@@ -1,6 +1,3 @@
-<!-- Section ownership + write-modes: see tracking-rules.md "Milestone-file
-     section ownership". A phase skill never rewrites another phase's section.
-     Per-section owners are tagged below. -->
 # M44: Validator-hardening — sizing advisory + Priority-field schema
 
 - **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
@@ -47,7 +44,6 @@ check — turning two prose-only rules into deterministic script output.
   candidate rows; each awaits its own recorded trigger.
 
 ## Acceptance criteria
-<!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
 - [x] AC1 — `cairn_validate` renders a distinct advisory section; a milestone
       file that exceeds a sizing tripwire yields a `WARN` line **and the exit
@@ -70,8 +66,6 @@ check — turning two prose-only rules into deterministic script output.
       ROADMAP, and DECISIONS.
 
 ## Coverage
-<!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
-     task(s) satisfying it, by positional number. -->
 
 - AC1 → T1
 - AC2 → T2
@@ -80,7 +74,6 @@ check — turning two prose-only rules into deterministic script output.
 - AC5 → T5, T6
 
 ## Tasks
-<!-- owner: plan (create) / implement (check-off, minor edits) -->
 
 - [x] T1 — Tests-first, then add the advisory tier to `cairn_validate.run()`:
       an `ADVISORIES` list rendered as `WARN`/`OK` lines, tallied separately
@@ -110,7 +103,6 @@ check — turning two prose-only rules into deterministic script output.
       drop was decided; branch inherits them — see work log.)
 
 ## Work log
-<!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-12: created by /milestone-plan (validator-hardening pair; folds the
   split-advisory + Priority-schema M06 steals, drops two low-fit steals).
@@ -125,11 +117,8 @@ check — turning two prose-only rules into deterministic script output.
   in repo state (grep-verified) though not in the PR diff. Status → review.
 
 ## Decisions
-<!-- owner: implement / review · append-only; milestone-local -->
 
 ## Review
-<!-- owner: review · exclusive; evidence per criterion; consistency-gate
-     results; independent-review findings and their triage -->
 
 **Evidence (2026-07-12, fresh):**
 - AC1/AC2 — `TestSizingAdvisory` (4 tests) green; live over-tripwire fixture
@@ -147,3 +136,13 @@ check — turning two prose-only rules into deterministic script output.
 **Consistency gate:** `cairn_validate` exit 0; Coverage complete (AC1→T1 …
 AC5→T5,T6, all mapped); no DESIGN principle changed (slot `—`) → cairn_impact
 skipped; R gates waived (plugin repo, per CLAUDE.md).
+
+**Independent review (3 lenses, fresh-context):** zero findings.
+[O] diff-bug (Opus) — verified thresholds (strict `>`, 7/10 boundary), section
+parsing, exit-code neutrality, priority-field/set, CHECKS/ADVISORIES wiring, and
+that no consumer parses `run()` text (all assertions are `assertIn`/returncode);
+tests are not false-coverage (each fails if its feature is removed).
+[S] blame-history (Sonnet) — `run()` contract preserved, registration follows
+the `check_vocab` pattern, `live_sized` honors the M34/M38 don't-mutate-Tree.build
+lesson; no D-entry/lesson contradicted. [S] prior-PR-comments (Sonnet) — no
+prior-PR evidence, lens no-ops (expected, M40). Nothing to score/triage.
