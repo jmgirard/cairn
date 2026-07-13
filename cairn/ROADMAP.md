@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M55 | Milestone-file cap exempts the Review section | in-progress | — | normal | milestones/M55-milestone-file-cap.md |
+| M55 | Milestone-file cap exempts the Review section | review | — | normal | milestones/M55-milestone-file-cap.md |
 | M54 | Release positioning + DESIGN refresh | done | — | high | milestones/archive/M54-release-positioning-design-refresh.md |
 | M53 | Prose-guard mutation harness | done | — | high | milestones/archive/M53-prose-guard-mutation-harness.md |
 | M52 | r-package profile — GitHub Actions CI (R-CMD-check + Codecov) | done | — | normal | milestones/archive/M52-r-profile-codecov-ci.md |

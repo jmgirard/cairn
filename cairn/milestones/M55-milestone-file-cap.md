@@ -1,6 +1,6 @@
 # M55: Milestone-file cap exempts the Review section
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
@@ -79,11 +79,10 @@ agreement.
       (exemption wording, plan-body-cap wording, stated↔enforced 150 ==
       `MILESTONE_CAP`); registered both prose blocks in `test_mutation_harness.py`;
       noted the exemption in the template's `## Review` comment.
-- [ ] T5 — Sweep `/milestone-review` (+ any skill/template wording) for
-      instructions to trim the Review section to fit the cap; reconcile them
-      with the exemption. Record the milestone-local D-entry (exemption +
-      rejected split/sub-cap alternatives) and promote it to DECISIONS.md. Run
-      both suites clean.
+- [x] T5 — Swept skills: no standing instruction trims the Review section to
+      fit the cap (those were LESSONS, append-only history — left intact);
+      review step 9's "verify weight caps" stays correct. Recorded D-030 (+
+      promoted to DECISIONS.md). Both suites clean.
 
 ## Work log
 
@@ -98,7 +97,14 @@ agreement.
 - 2026-07-13 (T4): rulebook exemption wording + guard + mutation registration +
   template note; skills suite 153 green. (Template comment kept to 3 lines — the
   owner-tag check reads only 3 lines after an H2.)
+- 2026-07-13 (T5): swept skills (no Review-trim instruction to reconcile);
+  recorded D-030. All tasks done → status review. scripts 72 + skills 153 green;
+  `cairn_validate .` all-pass (weight caps included).
 
 ## Decisions
+
+- D-030 (promoted to cairn/DECISIONS.md): cap measures the plan-owned body only,
+  `## Review` exempt; rejected split-budget / Review sub-cap / exempting
+  `## Decisions`. Parallels D-018.
 
 ## Review
