@@ -35,9 +35,12 @@ transitions, human-gated merges, and a domain verification doctrine.
   (`r-package`, `python`, `generic`); `cairn-init` instantiates one into a repo's
   `cairn/PROFILE.md`, and the operational skills read its slots.
 - `hooks/hooks.json` + python3 (stdlib) scripts (M07) — the enforcement
-  layer: SessionStart context injection, Stop-guard on uncommitted `cairn/`
-  tracking, PreToolUse merge-guard (single-use `cairn/.merge-approved`
-  marker) technically backing IP1. No-op outside cairn repos.
+  layer, all no-op outside cairn repos. Five hooks: `session_context`
+  (SessionStart context injection); `stop_guard` (Stop-guard on uncommitted
+  `cairn/` tracking); and three PreToolUse guards — `merge_guard` (single-use
+  `cairn/.merge-approved` marker, technically backing IP1), `commit_guard`
+  (nudge against committing on the default branch), and `memory_guard` (GP4
+  memory-boundary nudge, D-017). The two nudges are advisory, never blocking.
 - `scripts/` + python3 (stdlib) reporters (M10) — the deterministic read
   layer: `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),
   `cairn_validate` (mechanical consistency gate), `cairn_impact` (principle
@@ -61,7 +64,8 @@ explicit user decision + D-entry). GP<n> = Guiding Principle (default
 stance; tradeable with stated justification). IP block first; numbers run
 within each type and are never reused.
 
-- IP1: Nothing reaches main without explicit user approval at a gate.
+- IP1: Nothing reaches the default branch without explicit user approval at a
+  gate.
 - IP2: Prior state is surfaced, never silently obeyed or silently
   overridden.
 - IP3: Nothing the user asked for is silently dropped (conservation:
@@ -80,5 +84,15 @@ within each type and are never reused.
 
 ## Known issues
 
-- Unpiloted (see M02/M03). Expect trigger-description tuning and cap
-  adjustments after real use.
+- Single-author, single-environment: every workflow has been exercised only by
+  the author, on macOS + Claude Code with the full model roster, and only on
+  repos the author shaped. No external adopter, and no external-repo migration,
+  has run yet.
+- Hooks are unverified on Windows: `hooks.json` invokes `python3`, which stock
+  Windows lacks on PATH (it is `py`/`python`) — the guardrail hooks may fail
+  silently there until a launcher fallback lands.
+- Conduct rules (question gates, routing chips, chapter markers, AC fencing)
+  are enforced as prose: guard tests lock the skill/rulebook wording, not the
+  runtime behavior, and live honoring is only spot-verified (hooks snapshot at
+  process start, so a rule's runtime effect needs a fresh session to observe).
+  A deliberate architectural bet, noted plainly rather than papered over.

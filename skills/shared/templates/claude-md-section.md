@@ -21,6 +21,7 @@ Whenever the request is anything but trivial, invoke the skill *first* so the
 full rulebook (the plugin's `skills/shared/tracking-rules.md`) and its conduct
 load — do not reconstruct the rules here from memory. All project state lives under
 `cairn/` (**Architecture → DESIGN · Status → ROADMAP · Tasks → milestone
-files · Decisions → DECISIONS · History → archive + git**); never record
+files · Decisions → DECISIONS · Lessons → LESSONS · History → archive +
+git**); never record
 status or TODOs in this file. Claude's persistent memory never holds project
 state; `cairn/` files win any conflict.

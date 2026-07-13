@@ -124,6 +124,56 @@ REGISTRY = [
         target="skills/shared/profiles/generic.md",
         block="commit the release prep to the default",
     ),
+    # M54 positioning + DESIGN-honesty guards (RR01 recs 1/5). One or more
+    # exemplar blocks per protected file; blanking each fails its guard method.
+    Mutation(
+        guard="test_positioning_guard",
+        test="TestOutwardPositioning.test_plugin_json_uses_profile_framing",
+        target=".claude-plugin/plugin.json",
+        block="language-agnostic core with per-repo toolchain profiles",
+    ),
+    Mutation(
+        guard="test_positioning_guard",
+        test="TestOutwardPositioning.test_marketplace_uses_profile_framing",
+        target=".claude-plugin/marketplace.json",
+        block="language-agnostic core, per-repo toolchain profiles",
+    ),
+    Mutation(
+        guard="test_positioning_guard",
+        test="TestOutwardPositioning.test_readme_para1_uses_profile_framing",
+        target="README.md",
+        block="language-agnostic",
+    ),
+    Mutation(
+        guard="test_positioning_guard",
+        test="TestDesignArchitectureHonesty.test_design_lists_all_five_hooks",
+        target="cairn/DESIGN.md",
+        block="commit_guard",
+    ),
+    Mutation(
+        guard="test_positioning_guard",
+        test="TestDesignArchitectureHonesty.test_design_lists_all_five_hooks",
+        target="cairn/DESIGN.md",
+        block="memory_guard",
+    ),
+    Mutation(
+        guard="test_positioning_guard",
+        test="TestDesignArchitectureHonesty.test_ip1_names_the_default_branch",
+        target="cairn/DESIGN.md",
+        block="Nothing reaches the default branch",
+    ),
+    Mutation(
+        guard="test_positioning_guard",
+        test="TestDesignArchitectureHonesty.test_known_issues_are_current",
+        target="cairn/DESIGN.md",
+        block="enforced as prose",
+    ),
+    Mutation(
+        guard="test_positioning_guard",
+        test="TestTemplateBoundaryRule.test_template_names_the_lessons_home",
+        target="skills/shared/templates/claude-md-section.md",
+        block="Lessons → LESSONS",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
