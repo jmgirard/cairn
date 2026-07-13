@@ -145,20 +145,35 @@ class TestInitSelection(unittest.TestCase):
         self.assertIn("cairn/PROFILE.md", text)
 
 
-class TestOperationalSkillsUnchanged(unittest.TestCase):
-    """AC6: M45 ships the mechanism but does NOT rewire the operational skills —
-    they still hardcode their commands and read no profile. M46/M47 flip this;
-    this guard is expected to change then."""
+# Skills M46 rewires to read the profile instead of hardcoding R commands.
+# cairn-release is deliberately NOT here — its release-walk generalization is
+# M47; it still hardcodes devtools until then (see TestReleaseSkillUntouched).
+REWIRED_SKILLS = (
+    ("milestone-implement", "SKILL.md"),
+)
 
-    def test_operational_skills_still_hardcode_devtools(self):
-        for a, b in OPERATIONAL_SKILLS:
-            text = read(a, b)
-            self.assertIn("devtools::", text, f"{a} lost its hardcoded devtools command")
 
-    def test_operational_skills_do_not_yet_read_profile(self):
-        for a, b in OPERATIONAL_SKILLS:
+class TestOperationalSkillsReadProfile(unittest.TestCase):
+    """AC1/AC2: M45 shipped the mechanism but left the operational skills
+    hardcoding their R commands; M46 flips that — the rewired skills name the
+    active profile's slot and no longer hardcode a `devtools::` command."""
+
+    def test_rewired_skills_read_a_profile_slot(self):
+        for a, b in REWIRED_SKILLS:
             text = read(a, b)
-            self.assertNotIn("PROFILE.md", text, f"{a} reads the profile before M46/M47")
+            self.assertIn("PROFILE.md", text, f"{a} should read the profile after M46")
+            self.assertNotIn("devtools::", text,
+                             f"{a} still hardcodes a devtools command after M46")
+
+
+class TestReleaseSkillUntouched(unittest.TestCase):
+    """M46 boundary: cairn-release's release-walk generalization is M47, so it
+    still hardcodes devtools and reads no profile until then. This guard flips
+    at M47."""
+
+    def test_cairn_release_still_hardcodes_devtools(self):
+        text = read("cairn-release", "SKILL.md")
+        self.assertIn("devtools::", text, "cairn-release lost its hardcoded command before M47")
 
 
 if __name__ == "__main__":
