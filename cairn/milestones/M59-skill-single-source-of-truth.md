@@ -1,10 +1,10 @@
 # M59: Skill single-source-of-truth — canonical fallback, de-enumerated checks, migration module
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** GP1, GP2
-- **Branch/PR:** —
+- **Branch/PR:** m59-skill-single-source-of-truth
 
 ## Goal
 
