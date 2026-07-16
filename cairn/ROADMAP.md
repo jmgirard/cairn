@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M66 | cairn-init migration gates show the proposal — D-037 wiring extension | planned | — | high | milestones/M66-init-gate-preview.md |
+| M66 | cairn-init migration gates show the proposal — D-037 wiring extension | in-progress | — | high | milestones/M66-init-gate-preview.md |
 | M65 | Gate-time conclusion preview — acceptance chips show what's accepted | done | — | high | milestones/archive/M65-gate-conclusion-preview.md |
 | M64 | Durable-record preview — verbatim in-chat preview before docs-only commits | done | — | high | milestones/archive/M64-durable-record-preview.md |
 | M63 | /design-interview note-and-leave ingestion — detect, formalize with #N lineage, bank the repoint | done | — | normal | milestones/archive/M63-design-interview-ingestion.md |

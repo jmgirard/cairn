@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M66: cairn-init migration gates show the proposal — D-037 wiring extension
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m66-init-gate-preview   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -70,7 +70,7 @@ guards, like M64/M65.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: extend the Acceptance-chips rule enumeration in
+- [x] T1: extend the Acceptance-chips rule enumeration in
       `skills/shared/tracking-rules.md` (keep D-037's guard-anchored
       phrases intact; new phrase on one physical line — M59/M64/M65
       reflow lessons).
@@ -91,6 +91,8 @@ guards, like M64/M65.
 
 - 2026-07-16: created by /milestone-plan (evidence: hitop cairn-init
   migration fired the step-3 disposition chip with no proposal in chat).
+- 2026-07-16: T1 — rule enumeration extended (proposed disposition/action
+  plan, D-038 cite); skills suite 208 OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
