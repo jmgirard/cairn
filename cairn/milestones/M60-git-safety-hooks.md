@@ -4,7 +4,7 @@
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** IP1, GP2
-- **Branch/PR:** m60-git-safety-hooks
+- **Branch/PR:** m60-git-safety-hooks · https://github.com/jmgirard/cairn/pull/58
 
 ## Goal
 
@@ -39,18 +39,18 @@ guarded merge no longer consumes the approval marker (RR01 recs 8 + 13).
 
 ## Acceptance criteria
 
-- [ ] Unit tests prove force_push_guard denies `git push --force`/`-f` (flag
+- [x] Unit tests prove force_push_guard denies `git push --force`/`-f` (flag
       order and `--force-with-lease` variants) targeting the default branch —
       both explicit-ref and on-default-branch forms — and passes through
       feature-branch force-pushes, plain pushes, and non-push commands.
-- [ ] Unit tests prove merge_guard_post restores a consumed
+- [x] Unit tests prove merge_guard_post restores a consumed
       `cairn/.merge-approved` when the guarded merge command exits nonzero,
       leaves it consumed on success, and no-ops on non-merge commands.
       (RB tripwire: ip-touching)
-- [ ] Both hooks registered in hooks/hooks.json with the existing
+- [x] Both hooks registered in hooks/hooks.json with the existing
       python3/timeout envelope shape; all three unittest suites green from
       the repo root.
-- [ ] DESIGN.md's hooks bullet names all seven hooks; the rulebook's
+- [x] DESIGN.md's hooks bullet names all seven hooks; the rulebook's
       force-push line reflects the new enforcement (guard re-anchors in the
       same commit, M46).
 
@@ -136,3 +136,27 @@ guarded merge no longer consumes the approval marker (RR01 recs 8 + 13).
   scope amendment: touches merge_guard.py + widens the gitignore pattern.
 
 ## Review
+
+2026-07-16 — fresh evidence, all by command:
+
+- AC1: TestForcePushGuard green (verbose run) — deny cases:
+  flag variants incl. --force-with-lease[=v], --force-if-includes, -uf
+  cluster, both flag orders; +refspec/+refs/heads, feature:main, HEAD:main;
+  on-default-branch form (`git push --force`, `-f origin`, `-f origin HEAD`);
+  remote-HEAD `trunk` fixture (denies trunk, passes main there). Pass-through:
+  feature force-pushes (flags and +), plain pushes, -u, non-push,
+  command-position lookalikes, feature-branch no-refspec form.
+- AC2: TestMergeGuardPost green — failure restores marker intact (content
+  compared), success deletes pending (stays consumed), no-mint without
+  pending, no-op on non-merge commands/other events/other tools;
+  TestMergeGuard.test_allows_and_consumes_marker proves rename-consume.
+- AC3: TestHooksRegistration green (4 tests) — force_push_guard under
+  PreToolUse(Bash); merge_guard_post under both PostToolUse and
+  PostToolUseFailure; python3/${CLAUDE_PLUGIN_ROOT}/timeout envelope on
+  every entry; every hook script registered. Suites from repo root:
+  hooks 52, scripts exit 0, skills exit 0 — all green, raw exit codes.
+- AC4: test_positioning_guard (HOOKS=7) + test_git_safety_hooks green
+  (20 tests with mutation harness); 8 new/re-anchored mutation entries.
+- Consistency gate: cairn_validate all checks passed, exit 0. Profile
+  `generic` → no toolchain checks. No IP/GP text changed (DESIGN edit is
+  the Architecture bullet only) → cairn_impact not required.
