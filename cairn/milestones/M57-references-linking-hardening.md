@@ -76,11 +76,11 @@ candidate (absorbed there by M56); IP/GP-token tracing → already shipped
       gitignored) + register in `CHECKS`; dedicated fixture-builder tests
       (M34/M45 pattern) for orphan-note / missing-target / agreement; keep
       the shared `Tree.build()` valid for the new check (M24).
-- [ ] T3: implement `check_dangling_ids`: known-ID set = ROADMAP row IDs ∪
+- [x] T3: implement `check_dangling_ids`: known-ID set = ROADMAP row IDs ∪
       live/archive milestone-file IDs ∪ `### D-NNN` headers; scan
       `\bM\d{2,}\b` / `\bD-\d{3}\b` over committed `cairn/**/*.md` minus
       `legacy/`; register in `ADVISORIES`.
-- [ ] T4: tolerance heuristics + hazard fixtures: skip tokens numerically
+- [x] T4: tolerance heuristics + hazard fixtures: skip tokens numerically
       above the repo's max assigned ID (M99 class); skip repo-qualified
       cites (qualifier heuristic — exact shape is implement's; the fixtures
       pin behavior, D-023: prefer a miss over an FP).
@@ -102,6 +102,10 @@ candidate (absorbed there by M56); IP/GP-token tracing → already shipped
 - 2026-07-16: T2 done — `check_references` in CHECKS (no-ops sans INDEX.md,
   M45 pattern); 4 fixture tests both directions + agreement + independence;
   live tree passes (INDEX already accurate).
+- 2026-07-16: T3+T4 done (tolerance rules folded into T3's function — a few
+  lines each, M46 fold-don't-defer; T4 = the 5 fixtures). Gate-chosen
+  same-line slug rule is deliberately loose (skips path-bearing lines too —
+  preferred miss, D-023). Gapped-set fixtures via archived M05 + gap M04.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

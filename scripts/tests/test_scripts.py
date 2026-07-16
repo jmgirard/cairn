@@ -329,6 +329,84 @@ class TestReferencesCheck(ScriptCase):
         self.assertIn("FAIL  scaffold present", proc.stdout)
 
 
+class TestDanglingIds(ScriptCase):
+    """M57: the dangling-ID-token advisory. Known IDs = ROADMAP rows ∪
+    live/archive milestone files ∪ D-entry headers; a bare unresolvable token
+    WARNs (exit-neutral). Tolerance rules per D-023: above-max tokens skip
+    (the M99 example-prose class), and unresolved tokens on a line carrying an
+    owner/repo slug skip (the "ackwards M57" cross-repo class). Fixtures use a
+    *gapped* known-ID set — M05 exists but M04 was never assigned here — the
+    shape a migrated adopter repo can carry."""
+
+    def _gap(self):
+        # Extend the base tree (M01–M03) with archived M05: max=5, gap at M04.
+        self.tree.rows.append(
+            ("M05", "Old thing", "done", "—", "normal",
+             "milestones/archive/M05-old.md")
+        )
+        self.tree.files["milestones/archive/M05-old.md"] = (
+            "# M05: Old thing (done 2026-07-11)\n\n**Goal:** old.\n"
+        )
+
+    def test_true_dangler_warns_but_stays_exit_neutral(self):
+        self._gap()
+        self.tree.files["milestones/M03-live.md"] += "\nSee M04 for background.\n"
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)  # WARN, never FAIL
+        self.assertIn("WARN  dangling id tokens", proc.stdout)
+        self.assertIn(
+            "M04 resolves to no ROADMAP row, milestone file, or D-entry",
+            proc.stdout,
+        )
+
+    def test_above_max_example_token_is_silent(self):
+        # The M99 class: an ID never assigned anywhere (99 > max) is example
+        # or forward prose, not a broken link.
+        self.tree.files["milestones/M03-live.md"] += "\nIDs grow past M99.\n"
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    dangling id tokens", proc.stdout)
+
+    def test_repo_qualified_cite_is_silent(self):
+        # The "ackwards M57" class: same gapped M04, but the line carries an
+        # owner/repo slug — a cross-repo cite, not a local dangler.
+        self._gap()
+        self.tree.files["milestones/M03-live.md"] += (
+            "\nSee jmgirard/otherrepo M04 for the upstream fix.\n"
+        )
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    dangling id tokens", proc.stdout)
+
+    def test_d_token_dangler_warns(self):
+        root_ = self.tree.build()
+        (root_ / "cairn" / "DECISIONS.md").write_text(
+            "# Decisions\n\n### D-001 (2026-07-11): a\n\nx\n\n"
+            "### D-003 (2026-07-11): b\n\nx\n"
+        )
+        (root_ / "cairn" / "DESIGN.md").write_text(
+            "# Design\n\nPer D-002 we do X.\n"
+        )
+        proc = run("cairn_validate.py", root_)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  dangling id tokens", proc.stdout)
+        self.assertIn(
+            "D-002 resolves to no ROADMAP row, milestone file, or D-entry",
+            proc.stdout,
+        )
+
+    def test_legacy_is_excluded(self):
+        # Entombed pre-migration files are never scanned (D-005).
+        self._gap()
+        root_ = self.tree.build()
+        legacy = root_ / "cairn" / "legacy"
+        legacy.mkdir()
+        (legacy / "OLD_BOARD.md").write_text("# old\n\nSee M04 someday.\n")
+        proc = run("cairn_validate.py", root_)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    dangling id tokens", proc.stdout)
+
+
 VALID_PROFILE = (
     "# Toolchain profile: generic\n\n"
     "## verify\n- run tests\n\n"

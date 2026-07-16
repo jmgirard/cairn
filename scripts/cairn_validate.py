@@ -463,6 +463,81 @@ def check_sizing_advisory(root):
     return out
 
 
+# ID-token shapes (M57): zero-padded milestone/decision IDs as written in
+# tracking prose. Unpadded forms (M7) don't occur in cairn's ID format.
+_M_TOKEN = re.compile(r"\bM(\d{2,})\b")
+_D_TOKEN = re.compile(r"\bD-(\d{3,})\b")
+# An owner/repo-shaped slug — the cross-repo qualifier signal. Deliberately
+# loose (also matches file paths): an unresolved token sharing a line with
+# any slug is skipped, a preferred miss under the D-023 doctrine.
+_REPO_SLUG = re.compile(r"\b[\w.-]+/[\w.-]+\b")
+_D_HEADER = re.compile(r"^### (D-\d{3,})", re.MULTILINE)
+
+
+def _known_ids(root, rows):
+    """The resolvable ID universe: ROADMAP rows ∪ live/archive milestone
+    files (M), and DECISIONS.md entry headers (D)."""
+    m_ids = (
+        {r["id"] for r in rows}
+        | set(cs.live_files(root))
+        | set(cs.archive_files(root))
+    )
+    d_ids = set()
+    dpath = os.path.join(root, "cairn", "DECISIONS.md")
+    if os.path.isfile(dpath):
+        with open(dpath, encoding="utf-8") as f:
+            d_ids = set(_D_HEADER.findall(f.read()))
+    return m_ids, d_ids
+
+
+def check_dangling_ids(root, rows):
+    """Advisory: M<NN>/D-<NNN> tokens in committed cairn/ markdown that
+    resolve to no ROADMAP row, milestone file, or D-entry (M57 — the link
+    syntax is bare ID tokens, so a dangler is a broken wiki link). Two
+    tolerance rules, per D-023 (a missed weird format beats a false
+    positive): tokens numerically above the max assigned ID are skipped
+    (example/forward prose — the M99 class), and unresolved tokens on a line
+    carrying an owner/repo slug are skipped (repo-qualified cross-repo
+    cites — the "ackwards M57" class). legacy/ is excluded (entombed
+    verbatim, D-005). WARN tier: feeds ADVISORIES, never fails the gate."""
+    out = []
+    m_ids, d_ids = _known_ids(root, rows)
+    m_max = max((cs.id_num(i) for i in m_ids), default=0)
+    d_max = max((int(i.split("-")[1]) for i in d_ids), default=0)
+    for dirpath, dirs, names in os.walk(os.path.join(root, "cairn")):
+        dirs[:] = [d for d in dirs if d != "legacy"]
+        for name in sorted(names):
+            if not name.endswith(".md"):
+                continue
+            path = os.path.join(dirpath, name)
+            rel = os.path.relpath(path, root)
+            try:
+                with open(path, encoding="utf-8") as f:
+                    lines = f.readlines()
+            except Exception:
+                continue
+            for lineno, line in enumerate(lines, 1):
+                hits = [
+                    "M" + m.group(1)
+                    for m in _M_TOKEN.finditer(line)
+                    if "M" + m.group(1) not in m_ids
+                    and int(m.group(1)) <= m_max
+                ]
+                hits += [
+                    m.group(0)
+                    for m in _D_TOKEN.finditer(line)
+                    if m.group(0) not in d_ids and int(m.group(1)) <= d_max
+                ]
+                if not hits or _REPO_SLUG.search(line):
+                    continue
+                out.extend(
+                    f"{rel}:{lineno}: {tok} resolves to no ROADMAP row, "
+                    f"milestone file, or D-entry"
+                    for tok in hits
+                )
+    return out
+
+
 CHECKS = [
     ("mirror agreement", lambda root, rows: check_mirror(root, rows)),
     ("at most one in-progress", lambda root, rows: check_single_in_progress(rows)),
@@ -486,6 +561,7 @@ CHECKS = [
 # from the PASS/FAIL CHECKS above.
 ADVISORIES = [
     ("sizing (split tripwires)", lambda root, rows: check_sizing_advisory(root)),
+    ("dangling id tokens", lambda root, rows: check_dangling_ids(root, rows)),
 ]
 
 
