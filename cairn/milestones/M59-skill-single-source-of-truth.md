@@ -1,6 +1,6 @@
 # M59: Skill single-source-of-truth — canonical fallback, de-enumerated checks, migration module
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** GP1, GP2
@@ -83,7 +83,7 @@ protocol is progressively disclosed out of the common scaffold path
 - [x] T5: Repo-wide grep sweep for pointers to the protocol's old home
       (tracking-rules, templates, DESIGN, references — live files only);
       update each.
-- [ ] T6: Run all three suites from the repo root (M56: no exit-blind pipes);
+- [x] T6: Run all three suites from the repo root (M56: no exit-blind pipes);
       register new mutation blocks or record the M47 by-hand check.
 
 ## Work log
@@ -107,6 +107,8 @@ protocol is progressively disclosed out of the common scaffold path
   resolves: cairn-init §2 remains the protocol via the pointer stub);
   DESIGN Architecture gained the shared-modules line (also closing M58's
   unlisted validation-doctrine.md gap).
+- 2026-07-16: T6 done — 171+83+32 tests green from repo root, validate
+  clean; all new asserts mutation-registered. Status → review.
 
 ## Decisions
 
