@@ -74,10 +74,10 @@ guards, like M64/M65.
       `skills/shared/tracking-rules.md` (keep D-037's guard-anchored
       phrases intact; new phrase on one physical line — M59/M64/M65
       reflow lessons).
-- [ ] T2: add the step-3 directive to
+- [x] T2: add the step-3 directive to
       `skills/shared/migration-protocol.md` (directive name unwrapped on
       one line).
-- [ ] T3: add the step-7 directive to
+- [x] T3: add the step-7 directive to
       `skills/shared/migration-protocol.md`.
 - [ ] T4: extend `skills/tests/test_gate_conclusion_preview.py` with a
       migration-gates class + the rule-enumeration assert; add
@@ -93,6 +93,8 @@ guards, like M64/M65.
   migration fired the step-3 disposition chip with no proposal in chat).
 - 2026-07-16: T1 — rule enumeration extended (proposed disposition/action
   plan, D-038 cite); skills suite 208 OK.
+- 2026-07-16: T2+T3 — step-3 and step-7 acceptance-chips directives added
+  to migration-protocol.md; skills suite 208 OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
