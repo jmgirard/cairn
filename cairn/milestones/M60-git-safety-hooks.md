@@ -1,6 +1,6 @@
 # M60: Git-safety hooks — force-push deny, merge-marker restore
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** IP1, GP2
@@ -76,7 +76,7 @@ guarded merge no longer consumes the approval marker (RR01 recs 8 + 13).
 - [x] T4: Update DESIGN.md hooks bullet (5 → 7) and the rulebook's
       "Never force-push" line; re-anchor any guards on either (M46), register
       mutation blocks (M53/M54).
-- [ ] T5: Run all three suites from the repo root (M56: no exit-blind
+- [x] T5: Run all three suites from the repo root (M56: no exit-blind
       pipes); add the post-merge live-fire note to the work log (fresh
       conversation; retry flow per RR01 rec 13's caution).
 
@@ -114,6 +114,15 @@ guarded merge no longer consumes the approval marker (RR01 recs 8 + 13).
   (HOOKS → 7, test renamed) and new test_git_safety_hooks.py added; 8
   mutation entries registered (2 DESIGN blocks + 4 rulebook blocks + 2
   renamed-test re-anchors). Skills suite 175 green.
+- 2026-07-16: T5 done — all three suites green with raw exit codes 0/0/0
+  (52/84/175 tests); cairn_validate all checks passed, exit 0. Status →
+  review. POST-MERGE LIVE-FIRE (fresh conversation — hooks snapshot at
+  process start, M19/D-017): (1) force_push_guard denies a real
+  `git push --force origin main` and passes a feature-branch force-push;
+  (2) the retry flow per RR01 rec 13's caution — deny a marker-less merge,
+  approve, fail a merge (e.g. draft PR), confirm the marker was restored
+  and the retry passes without rewriting it, then confirm a successful
+  merge leaves it consumed.
 
 ## Decisions
 
