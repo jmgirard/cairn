@@ -503,6 +503,14 @@ class TestValidateProfile(ScriptCase):
                     self.assertTrue(any(l.strip() for l in slots[slot]), f"{name} {slot} empty")
                 for slot in slots:
                     self.assertIn(slot, cv._REQUIRED_SLOTS, f"{name} unrecognized {slot}")
+                # M61: cairn-init copies the reference verbatim into
+                # cairn/PROFILE.md, so every shipped profile must fit the
+                # instantiation cap or a fresh adopter fails validate on
+                # first contact (the pre-M61 latent bug: 97 lines vs <90).
+                import cairn_scripts as cs_mod
+                cap = cs_mod.LINE_CAPS["cairn/PROFILE.md"]
+                n = len(text.splitlines())
+                self.assertLess(n, cap, f"{name}.md is {n} lines (cap <{cap})")
         finally:
             sys.path.pop(0)
 

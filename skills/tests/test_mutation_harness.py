@@ -349,6 +349,21 @@ REGISTRY = [
         target="skills/shared/templates/claude-md-section.md",
         block="Lessons → LESSONS",
     ),
+    # M61: python profile CI-pair parity (graduates the M52-banked
+    # candidate) — one entry per new positive assert (M53 discipline); the
+    # retention assert rides on the pre-existing line.
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestPythonCodecovCI.test_names_the_python_ci_pair",
+        target="skills/shared/profiles/python.md",
+        block="`pytest --cov` (pytest-cov) and uploads to Codecov",
+    ),
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestPythonCodecovCI.test_coverage_reporting_is_diagnostic_only",
+        target="skills/shared/profiles/python.md",
+        block="never gates the merge",
+    ),
     # M61: migration dry-run mode (RR01 §10.3) — one entry per positive
     # assert (M53 discipline).
     Mutation(

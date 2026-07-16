@@ -93,7 +93,7 @@ cairn/
 ├── DECISIONS.md       # header + append-only note (see decision.md template)
 ├── LESSONS.md         # header + append-only note; repo lessons, capped 50 lines (D-015)
 ├── PROFILE.md         # toolchain profile (r-package | python | generic), instantiated
-│                      # from skills/shared/profiles/<name>.md; capped 90 lines
+│                      # from skills/shared/profiles/<name>.md; capped 120 lines
 ├── milestones/archive/
 ├── reviews/archive/
 └── references/pdf/    # plus empty INDEX.md

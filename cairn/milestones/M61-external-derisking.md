@@ -87,7 +87,7 @@ candidate if wanted.
 - [x] T3: Add the dry-run mode to `skills/shared/migration-protocol.md`
       (read-only inventory + ledger; offer chip at migration entry) + guard
       test.
-- [ ] T4: Mirror the CI-pair guidance into `python.md` `test-doctrine`
+- [x] T4: Mirror the CI-pair guidance into `python.md` `test-doctrine`
       (pytest-cov + Codecov action line beside `coverage.py` diagnostic) +
       extend the profile guards.
 - [ ] T5: Mutation-register every new prose-guard block (one physical line
@@ -110,6 +110,12 @@ candidate if wanted.
 - 2026-07-16: T3 done — dry-run mode block in migration-protocol.md (step-3
   inventory+ledger only, write nothing, own routing chip); 4 asserts + 4
   mutation entries.
+- 2026-07-16: amendment (gated): T4 exposed shipped profiles (97 lines) over
+  the 90-line PROFILE.md instantiation cap — cap raised to <120 + shipped
+  references now cap-coupled in test_scripts.py (D-034).
+- 2026-07-16: T4 done — python test-doctrine gains the pytest-cov→Codecov CI
+  pair (diagnostic-only); TestPythonCodecovCI (3 tests) + 2 mutation entries;
+  python.md 104/<120.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

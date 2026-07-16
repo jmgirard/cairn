@@ -82,7 +82,7 @@ takes a D-entry, and its number stays retired.
 
 - the cairn `## Project tracking` section of `CLAUDE.md` < 30 lines (the repo's
   own dev doctrine outside that section is not cairn's to cap — D-018) ·
-  `ROADMAP.md` < 60 lines · `LESSONS.md` < 50 lines · `PROFILE.md` < 90 lines ·
+  `ROADMAP.md` < 60 lines · `LESSONS.md` < 50 lines · `PROFILE.md` < 120 lines ·
   archived summary ≤ 25 lines.
 - a live milestone file's **plan-owned body < 150 lines** — everything before
   the review-exclusive `## Review` section. That `## Review` section is exempt

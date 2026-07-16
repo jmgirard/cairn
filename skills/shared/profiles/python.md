@@ -47,6 +47,13 @@ rules in tracking-rules:
 - Never test string-formatting cosmetics beyond meaningful snapshots, trivial
   pass-throughs, or dependency behavior.
 - `coverage.py` is a diagnostic, never a gate.
+- GitHub Actions CI uses the standard pair (the r-package profile's
+  covr→Codecov analog — M52): a test workflow runs `pytest` on push/PR (a
+  normal CI check — cairn's git model never merges red or pending CI), and a
+  coverage workflow runs `pytest --cov` (pytest-cov) and uploads to Codecov.
+  Coverage reporting is diagnostic-only: Codecov annotates the PR, but it
+  never gates the merge — the `coverage.py` line above and tracking-rules'
+  "no coverage-percentage target" both hold.
 - Change governance renders here as: the dependency surface is `pyproject.toml`
   dependencies/optional-dependencies; a breaking-change deprecation cycle emits
   `DeprecationWarning` before removal. The gates themselves — question-gate +
