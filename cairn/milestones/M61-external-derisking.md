@@ -79,7 +79,7 @@ candidate if wanted.
 - [x] T1: Author the env-check step in `skills/cairn-init/SKILL.md` §0
       (python3/git/gh/remote; degradation path per piece; all three entry
       modes) + guard test.
-- [ ] T2: Decide and land the Windows launcher story (fallback command in
+- [x] T2: Decide and land the Windows launcher story (fallback command in
       `hooks/hooks.json` vs documented limitation; update DESIGN Known
       issues if wording changes) + milestone Decision line. Note: a
       hooks.json *registration* change only live-fires in a fresh
@@ -104,9 +104,18 @@ candidate if wanted.
 - 2026-07-16: T1 done — env check opens cairn-init §0, 4 probes + degradation
   paths; test_env_check.py (5 tests) mutation-registered; guards read
   per-test, never setUpClass-cached (harness runs single methods).
+- 2026-07-16: T2 done — all 8 hooks.json commands chain `|| py -3 <same
+  script>`; guard test asserts same-script fallback; DESIGN Known issues
+  updated; command-string change live-fires next fresh conversation (M60).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
+
+- 2026-07-16 (T2): Windows launcher = chained ` || py -3` fallback in
+  hooks.json, user-gated. Safe on macOS/Linux because every hook exits 0
+  and denies via JSON stdout (`permissionDecision`/`decision: block`), so
+  the fallback fires only when `python3` is missing or crashes; shipped
+  best-effort, Windows-unverified (DESIGN Known issues says so).
 
 ## Review
 <!-- owner: review · exclusive; EXEMPT from the 150-line cap (M55) -->
