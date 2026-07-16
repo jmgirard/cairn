@@ -78,6 +78,16 @@ class TestMigrationGuidance(unittest.TestCase):
         self.assertIn("acceptance criteria and ordered tasks", self.protocol)
         self.assertIn("inventing criteria violates no-invention", self.protocol)
 
+    def test_dry_run_mode_is_read_only_and_offered_at_entry(self):
+        # M61 (RR01 §10.3): a read-only inventory+ledger pass, offered on the
+        # migration-entry chip, recommended for unrecognized footprints,
+        # writing nothing.
+        self.assertIn("**Dry-run mode (read-only first contact", self.protocol)
+        self.assertIn("Offer a dry run on", self.protocol)
+        self.assertIn("no branch, no file moves, no commits", self.protocol)
+        self.assertIn("unrecognized or outside the known precursor lineages",
+                      self.protocol)
+
 
 class TestProgressiveDisclosure(unittest.TestCase):
     """M59 (RR01 rec 12): the protocol is its own module, read only when §0

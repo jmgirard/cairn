@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M61 | External de-risking — env check, migration dry-run, Windows story, python CI parity | planned | — | high | milestones/M61-external-derisking.md |
+| M61 | External de-risking — env check, migration dry-run, Windows story, python CI parity | review | — | high | milestones/M61-external-derisking.md |
 | M62 | Release docs — LICENSE, README worked example + framing, DRAFT removal | planned | M61 | high | milestones/M62-release-docs.md |
 | M60 | Git-safety hooks — force-push deny, merge-marker restore | done | — | normal | milestones/archive/M60-git-safety-hooks.md |
 | M59 | Skill single-source-of-truth — canonical fallback, de-enumerated checks, migration module | done | — | normal | milestones/archive/M59-skill-single-source-of-truth.md |

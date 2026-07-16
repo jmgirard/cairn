@@ -711,6 +711,28 @@ class TestHooksRegistration(unittest.TestCase):
                         )
                         self.assertIsInstance(h["timeout"], int)
 
+    def test_every_hook_chains_the_windows_py_fallback(self):
+        # M61 (RR01 §10.2): stock Windows has no `python3` on PATH, so each
+        # command chains `|| py -3 <same script>`. Safe on macOS/Linux: every
+        # hook exits 0 and denies via JSON stdout — each guard suite asserts
+        # returncode 0 on its deny path (e.g. TestMergeGuard.
+        # test_denies_gh_pr_merge_without_marker) — so the fallback fires
+        # only when python3 itself is missing or crashes.
+        for event, entries in self.config.items():
+            for entry in entries:
+                for h in entry["hooks"]:
+                    with self.subTest(event=event, command=h["command"]):
+                        first, sep, fallback = h["command"].partition(" || ")
+                        self.assertTrue(sep, "command must chain a py fallback")
+                        self.assertTrue(
+                            fallback.startswith('py -3 "${CLAUDE_PLUGIN_ROOT}/hooks/')
+                        )
+                        self.assertEqual(
+                            fallback.split(" ", 2)[2],
+                            first.split(" ", 1)[1],
+                            "fallback must invoke the same script",
+                        )
+
     def test_every_hook_script_is_registered(self):
         registered = "".join(
             h["command"]

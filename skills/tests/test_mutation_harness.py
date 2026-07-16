@@ -349,6 +349,91 @@ REGISTRY = [
         target="skills/shared/templates/claude-md-section.md",
         block="Lessons → LESSONS",
     ),
+    # M61: python profile CI-pair parity (graduates the M52-banked
+    # candidate) — one entry per new positive assert (M53 discipline); the
+    # retention assert rides on the pre-existing line.
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestPythonCodecovCI.test_names_the_python_ci_pair",
+        target="skills/shared/profiles/python.md",
+        block="`pytest --cov` (pytest-cov) and uploads to Codecov",
+    ),
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestPythonCodecovCI.test_coverage_reporting_is_diagnostic_only",
+        target="skills/shared/profiles/python.md",
+        block="never gates the merge",
+    ),
+    # M61: migration dry-run mode (RR01 §10.3) — one entry per positive
+    # assert (M53 discipline).
+    Mutation(
+        guard="test_migration_guidance",
+        test="TestMigrationGuidance.test_dry_run_mode_is_read_only_and_offered_at_entry",
+        target="skills/shared/migration-protocol.md",
+        block="**Dry-run mode (read-only first contact",
+    ),
+    Mutation(
+        guard="test_migration_guidance",
+        test="TestMigrationGuidance.test_dry_run_mode_is_read_only_and_offered_at_entry",
+        target="skills/shared/migration-protocol.md",
+        block="Offer a dry run on",
+    ),
+    Mutation(
+        guard="test_migration_guidance",
+        test="TestMigrationGuidance.test_dry_run_mode_is_read_only_and_offered_at_entry",
+        target="skills/shared/migration-protocol.md",
+        block="no branch, no file moves, no commits",
+    ),
+    Mutation(
+        guard="test_migration_guidance",
+        test="TestMigrationGuidance.test_dry_run_mode_is_read_only_and_offered_at_entry",
+        target="skills/shared/migration-protocol.md",
+        block="unrecognized or outside the known precursor lineages",
+    ),
+    # M61: cairn-init §0 environment check (RR01 §10.2) — one entry per
+    # positive assert (M53 discipline).
+    Mutation(
+        guard="test_env_check",
+        test="TestEnvCheck.test_env_check_opens_section_0",
+        target="skills/cairn-init/SKILL.md",
+        block="**Environment check (RR01 §10.2).**",
+    ),
+    Mutation(
+        guard="test_env_check",
+        test="TestEnvCheck.test_only_git_is_fatal",
+        target="skills/cairn-init/SKILL.md",
+        block="only a missing `git` is fatal",
+    ),
+    Mutation(
+        guard="test_env_check",
+        test="TestEnvCheck.test_only_git_is_fatal",
+        target="skills/cairn-init/SKILL.md",
+        block="cairn is git-based; there is nothing to adopt",
+    ),
+    Mutation(
+        guard="test_env_check",
+        test="TestEnvCheck.test_python3_gap_names_hooks_fallback_and_scripts",
+        target="skills/cairn-init/SKILL.md",
+        block="unverified on Windows",
+    ),
+    Mutation(
+        guard="test_env_check",
+        test="TestEnvCheck.test_python3_gap_names_hooks_fallback_and_scripts",
+        target="skills/cairn-init/SKILL.md",
+        block="the registered hooks fall back to the `py` launcher",
+    ),
+    Mutation(
+        guard="test_env_check",
+        test="TestEnvCheck.test_gh_gap_names_the_honor_system_degradation",
+        target="skills/cairn-init/SKILL.md",
+        block="the approval model becomes honor-system",
+    ),
+    Mutation(
+        guard="test_env_check",
+        test="TestEnvCheck.test_no_remote_names_local_only_mode",
+        target="skills/cairn-init/SKILL.md",
+        block="local-only mode",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

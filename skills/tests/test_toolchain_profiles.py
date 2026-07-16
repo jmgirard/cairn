@@ -297,6 +297,39 @@ class TestRPackageCodecovCI(unittest.TestCase):
                       "the existing 'covr is a diagnostic, never a gate' line must be retained")
 
 
+class TestPythonCodecovCI(unittest.TestCase):
+    """M61 (graduating the M52-banked candidate): the python test-doctrine
+    mirrors the r-package CI pair — a pytest test workflow and a
+    pytest-cov → Codecov coverage workflow — framed diagnostic-only (never a
+    merge gate), coherent with the retained "coverage.py is a diagnostic,
+    never a gate" line. `pytest --cov`, `codecov`, and "never gates the
+    merge" are all absent from the pre-M61 python profile, so each assertion
+    doubles as the M39/M40 deletion sanity-check."""
+
+    def _doctrine(self):
+        body = section_body(read("shared", "profiles", "python.md"), "test-doctrine")
+        self.assertTrue(body, "could not locate the python test-doctrine slot")
+        return body
+
+    def test_names_the_python_ci_pair(self):
+        body = self._doctrine().lower()
+        self.assertIn("pytest --cov", body,
+                      "test-doctrine should name the pytest-cov coverage run")
+        self.assertIn("codecov", body,
+                      "test-doctrine should name Codecov as the coverage-report sink")
+
+    def test_coverage_reporting_is_diagnostic_only(self):
+        body = self._doctrine().lower()
+        self.assertIn("never gates the merge", body,
+                      "coverage reporting must be framed diagnostic-only (never a merge gate)")
+
+    def test_retains_the_coverage_py_diagnostic_line(self):
+        # the pre-existing doctrine line stays — the CI addition must not
+        # silently drop it (retention check, not the deletion anchor).
+        body = self._doctrine()
+        self.assertIn("`coverage.py` is a diagnostic, never a gate", body)
+
+
 class TestInitSelection(unittest.TestCase):
     def test_init_selects_and_backfills_profile(self):
         text = read("cairn-init", "SKILL.md")

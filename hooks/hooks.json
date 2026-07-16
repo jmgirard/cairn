@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/session_context.py\"",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/session_context.py\" || py -3 \"${CLAUDE_PLUGIN_ROOT}/hooks/session_context.py\"",
             "timeout": 15
           }
         ]
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/stop_guard.py\"",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/stop_guard.py\" || py -3 \"${CLAUDE_PLUGIN_ROOT}/hooks/stop_guard.py\"",
             "timeout": 15
           }
         ]
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/merge_guard.py\"",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/merge_guard.py\" || py -3 \"${CLAUDE_PLUGIN_ROOT}/hooks/merge_guard.py\"",
             "timeout": 15
           }
         ]
@@ -38,7 +38,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/commit_guard.py\"",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/commit_guard.py\" || py -3 \"${CLAUDE_PLUGIN_ROOT}/hooks/commit_guard.py\"",
             "timeout": 15
           }
         ]
@@ -48,7 +48,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/force_push_guard.py\"",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/force_push_guard.py\" || py -3 \"${CLAUDE_PLUGIN_ROOT}/hooks/force_push_guard.py\"",
             "timeout": 15
           }
         ]
@@ -58,7 +58,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/memory_guard.py\"",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/memory_guard.py\" || py -3 \"${CLAUDE_PLUGIN_ROOT}/hooks/memory_guard.py\"",
             "timeout": 15
           }
         ]
@@ -70,7 +70,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/merge_guard_post.py\"",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/merge_guard_post.py\" || py -3 \"${CLAUDE_PLUGIN_ROOT}/hooks/merge_guard_post.py\"",
             "timeout": 15
           }
         ]
@@ -82,7 +82,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/merge_guard_post.py\"",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/merge_guard_post.py\" || py -3 \"${CLAUDE_PLUGIN_ROOT}/hooks/merge_guard_post.py\"",
             "timeout": 15
           }
         ]

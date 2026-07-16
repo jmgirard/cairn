@@ -22,6 +22,15 @@ collapse into the in-place adoption; everything else — branch + PR, the
 no-invention rule, and the step-7 ledger + audit bar — applies unchanged.
 Lineage: M03 tidymedia pilot (PR #8).
 
+**Dry-run mode (read-only first contact — RR01 §10.3).** Offer a dry run on
+the chip at migration entry, and recommend it whenever the footprint is
+unrecognized or outside the known precursor lineages: run step 3's inventory
+and proposed-disposition ledger only, present them in chat, and **write
+nothing** — no branch, no file moves, no commits, no CLAUDE.md edits. The
+dry run makes first contact safe by construction; it ends with its own
+routing chip — proceed to the real migration (steps 1–8, reusing the
+presented ledger at the step-3 gate), adjust the proposal first, or stop.
+
 1. **Preconditions.** Clean working tree. Ideally nothing in flight — an
    in-progress item is either finished first (recommend it) or carried over
    as the sole `in-progress` milestone, explicitly confirmed.

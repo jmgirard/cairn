@@ -41,7 +41,7 @@ PRIORITY_ORDER = {"high": 0, "normal": 1, "low": 2}
 # CLAUDE.md is NOT whole-file capped (D-018): a mature repo's own dev doctrine
 # is not cairn's to police. Only the appended cairn section is capped, via
 # CLAUDE_SECTION_CAP + claude_section_line_count (handled separately).
-LINE_CAPS = {"cairn/ROADMAP.md": 60, "cairn/LESSONS.md": 50, "cairn/PROFILE.md": 90}
+LINE_CAPS = {"cairn/ROADMAP.md": 60, "cairn/LESSONS.md": 50, "cairn/PROFILE.md": 120}
 MILESTONE_CAP = 150
 ARCHIVE_CAP = 25
 TERMINAL_ROW_RETENTION = 5  # done + dropped rows share one ROADMAP cap

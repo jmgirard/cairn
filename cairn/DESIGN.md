@@ -100,9 +100,11 @@ within each type and are never reused.
   the author, on macOS + Claude Code with the full model roster, and only on
   repos the author shaped. No external adopter, and no external-repo migration,
   has run yet.
-- Hooks are unverified on Windows: `hooks.json` invokes `python3`, which stock
-  Windows lacks on PATH (it is `py`/`python`) — the guardrail hooks may fail
-  silently there until a launcher fallback lands.
+- Hooks are unverified on Windows: stock Windows lacks `python3` on PATH (it
+  is `py`/`python`), so `hooks.json` chains a best-effort `py -3` launcher
+  fallback after each `python3` invocation (M61) — a no-op on macOS/Linux
+  (every hook exits 0 and denies via JSON stdout), but no Windows run has
+  verified it.
 - Conduct rules (question gates, routing chips, chapter markers, AC fencing)
   are enforced as prose: guard tests lock the skill/rulebook wording, not the
   runtime behavior, and live honoring is only spot-verified (hooks snapshot at

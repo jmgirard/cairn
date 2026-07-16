@@ -694,3 +694,29 @@ rot, and search-first will find this entry if the idea recurs.
 historical Out note. If router misrouting is ever actually observed in an
 adopting repo, that observation arrives as its own candidate/hotfix — or
 supersede this entry to reinstate a deliberate probe.
+
+### D-034 (2026-07-16): PROFILE.md weight cap raised to <120 — supersedes M45's <90
+
+**Context:** M61 T4 (python CI-pair parity) surfaced a latent first-contact
+bug: both shipped reference profiles had grown to 97 lines (M49 provenance +
+M52 CI blocks landed after the pilots instantiated theirs), while
+`cairn/PROFILE.md` — which `cairn-init` copies verbatim from the reference —
+was capped at <90. A fresh python/R adopter would fail `cairn_validate`'s
+weight-caps check immediately, before ever editing a slot. Exactly the
+first-contact breakage M61 exists to prevent, discovered because T4's
+addition would have widened it.
+**Decision:** Raise the cap to **<120** (tracking-rules weight caps,
+`cairn_scripts.LINE_CAPS`, cairn-init §1 comment), and mechanically couple
+shipped references to the instantiation cap:
+`test_shipped_reference_profiles_are_valid` now asserts every shipped
+profile fits under `LINE_CAPS["cairn/PROFILE.md"]`, so profile growth can
+never silently outrun the cap again. Rejected: trimming both profiles under
+90 (risks mangling guard-locked doctrine across two files; r-package was out
+of M61's scope) and banking a candidate while shipping the collision (leaves
+first-contact validate broken — the failure mode under repair). User-gated
+at the M61 implement amendment gate.
+**Consequences:** Profiles keep honest headroom (97 and 104 vs 120); the
+coupling test turns the next overrun into a red suite at authoring time.
+Supersedes the M45 `<90` choice; if profiles ever approach 120 the remedy
+conversation is "move doctrine to a module" (M58 norm), not another silent
+raise.
