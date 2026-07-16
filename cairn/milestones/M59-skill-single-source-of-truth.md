@@ -71,7 +71,7 @@ protocol is progressively disclosed out of the common scaffold path
       (skills/cairn-init/SKILL.md:17-19) to the canonical recipe; re-anchor
       test_default_branch_parameterized.py in the same commit; sweep
       `git grep -n "show-current"` repo-wide (M48).
-- [ ] T2: De-enumerate `/milestone-review` step 4
+- [x] T2: De-enumerate `/milestone-review` step 4
       (skills/milestone-review/SKILL.md:63-70): run-and-read; delete the
       manual Coverage-completeness bullet; re-anchor
       test_toolchain_profiles.py:356 and test_ac_traceability.py:86.
@@ -93,6 +93,9 @@ protocol is progressively disclosed out of the common scaffold path
 - 2026-07-16: T1 done — §0 fallback now canonical (ls-remote rung, never
   guess); guard extended test-first + 2 mutation entries; hooks'
   `--show-current` uses verified legitimate (current-branch checks).
+- 2026-07-16: T2 done — review step 4 run-and-read; Coverage completeness
+  kept as validate-output disposition (guard tokens survive), manual bullet
+  gone; new guard file test_run_and_read_checks.py + 2 mutation entries.
 
 ## Decisions
 

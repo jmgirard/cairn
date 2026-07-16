@@ -104,6 +104,20 @@ REGISTRY = [
         target=RULES,
         block="plan-owned body < 150 lines",
     ),
+    # M59 (RR01 rec 7): run-and-read — skills never enumerate validate's
+    # internals; one entry per positive assert, negatives ride along (M54).
+    Mutation(
+        guard="test_run_and_read_checks",
+        test="TestReviewRunsAndReads.test_review_runs_and_reads_never_restates",
+        target="skills/milestone-review/SKILL.md",
+        block="restate or recall its internals",
+    ),
+    Mutation(
+        guard="test_run_and_read_checks",
+        test="TestReviewRunsAndReads.test_coverage_completeness_is_validate_output_not_manual",
+        target="skills/milestone-review/SKILL.md",
+        block="mechanical since M34",
+    ),
     Mutation(
         guard="test_migration_guidance",
         test="TestMigrationGuidance.test_reference_sweep_names_two_dispositions",

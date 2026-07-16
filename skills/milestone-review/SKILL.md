@@ -61,19 +61,17 @@ overrides — log the override).
 
    **Universal cairn-file checks (always, every profile):**
    - `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` passes
-     (exit 0) — the mechanical cairn-file checks (mirror, single in-progress,
-     caps, terminal-row retention, vocab, dependency resolution, orphans, ID
-     uniqueness, ISO dates, §1 scaffold present). Run this first; a non-zero
-     exit is a gate failure like any other. A `scaffold present` FAIL means
-     the repo's §1 scaffold has drifted (a missing tracking file or ignore
-     entry) — fix it by running `/cairn-init` (repair mode), not by hand-patching.
-   - **Coverage completeness** — every acceptance criterion appears in the
-     Coverage section mapped to ≥1 task that exists in the Tasks section. A
-     criterion mapped to no task (or to a task number that isn't there) is a
-     gate failure: the plan never established what would satisfy it. Read the
-     map, don't reinterpret it — a gap sends the milestone back to
-     `/milestone-implement` for a gated Coverage amendment, never a
-     review-side patch.
+     (exit 0). Run it first and read its output — one line per check; never
+     restate or recall its internals (a restated list is a stale-count trap,
+     M28). Any non-zero exit is a gate failure like any other. Two FAILs
+     carry their own disposition: a `scaffold present` FAIL means the repo's
+     §1 scaffold has drifted (a missing tracking file or ignore entry) — fix
+     it by running `/cairn-init` (repair mode), never by hand-patching; a
+     **Coverage completeness** FAIL (mechanical since M34: every acceptance
+     criterion maps in the Coverage section to ≥1 task that exists) is a
+     plan gap — it sends the milestone back to `/milestone-implement` for a
+     gated Coverage amendment, never a review-side patch. Read the map,
+     don't reinterpret it.
    - If the milestone changed a `DESIGN.md` principle (IPn/GPn):
      `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_impact.py" --changed` — a
      Sync Impact Report of every `cairn/` file:line citing a changed
