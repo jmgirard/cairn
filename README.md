@@ -19,16 +19,15 @@ similar-but-diverging tracking systems in each. This plugin centralizes the
 logic (skills, rules, templates) so every repo works identically; each repo
 holds only its own state.
 
-**Status: v0.1 — piloting.** Interfaces may change; see
-[CHANGELOG.md](CHANGELOG.md). The full design rationale lives in
-[DRAFT_2.md](DRAFT_2.md) (removed at 1.0).
+Release history lives in [CHANGELOG.md](CHANGELOG.md); design rationale in
+`cairn/DESIGN.md` and the append-only decision log it points to.
 
 ## Install
 
 Two paths; pick one — running both installs the plugin twice and the
 duplicates will confuse skill routing.
 
-**Dev install (recommended while piloting):** clone and symlink into your
+**Dev install (recommended):** clone and symlink into your
 skills directory. The plugin loads from your checkout, so `git pull`
 updates it with no re-install step:
 

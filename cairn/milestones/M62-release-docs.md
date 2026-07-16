@@ -80,7 +80,7 @@ external de-risking → M61.
       the existing language-agnostic positioning are both locked.
 - [x] T4: Tighten the "without asking" surface + bail-out story in the
       README's expectations/non-goals sections.
-- [ ] T5: Delete `DRAFT_2.md`; repo-wide `git grep` sweep (M48/M58
+- [x] T5: Delete `DRAFT_2.md`; repo-wide `git grep` sweep (M48/M58
       lessons — exempt history files only); reword the README status
       paragraph.
 - [ ] T6: Mutation-register new guard blocks; run both suites from the
@@ -104,6 +104,11 @@ external de-risking → M61.
   test_readme_carries_the_llm_wiki_framing guard; skills suite 185 OK.
 - 2026-07-16: T4 done — chips-are-stops bullet, merge-guard-backed
   approval wording, no-lock-in bail-out bullet (pause/drop/uninstall).
+- 2026-07-16: T5 done — DRAFT_2.md deleted; skim found one true gap, ported
+  to DESIGN Conventions (repos never pin plugin versions; breaking
+  state-format changes ship with /cairn-init migration handling); DESIGN
+  promise sentence + README status ¶/piloting framing reworded; sweep
+  clean bar the AC5-exempt tracking lines.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
