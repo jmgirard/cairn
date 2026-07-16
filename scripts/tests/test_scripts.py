@@ -318,6 +318,21 @@ class TestReferencesCheck(ScriptCase):
         self.assertEqual(proc.returncode, 0, proc.stdout)
         self.assertIn("PASS  references index<->disk", proc.stdout)
 
+    def test_decorated_index_lines_pass(self):
+        # Review F1 (85): a semantically correct entry with a backticked or
+        # markdown-linked filename must not trip the hard CHECK (D-023 — no
+        # false positive on formatting alone).
+        root = self.tree.build()
+        (root / "cairn" / "references" / "tick.md").write_text("# t\n")
+        (root / "cairn" / "references" / "link.md").write_text("# l\n")
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- `tick.md` — backticked entry\n"
+            "- [link.md](link.md) — linked entry\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  references index<->disk", proc.stdout)
+
     def test_absent_index_no_ops(self):
         # Independence: a missing INDEX.md is scaffold-present's failure; the
         # references check itself stays PASS (M45 validate-if-present pattern).

@@ -4,7 +4,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP2   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** m57-references-linking-hardening   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m57-references-linking-hardening · https://github.com/jmgirard/cairn/pull/55   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -37,21 +37,21 @@ candidate (absorbed there by M56); IP/GP-token tracing → already shipped
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: the tracking-rules file map names both committed `references/`
+- [x] AC1: the tracking-rules file map names both committed `references/`
       page types — source notes (`<citekey>.md`) and synthesis notes —
       locked by a mutation-registered prose guard (M53).
-- [ ] AC2: `cairn_validate` FAILs a committed references note with no INDEX
+- [x] AC2: `cairn_validate` FAILs a committed references note with no INDEX
       line AND an INDEX line pointing to a missing file (fixture-proven,
       both directions), PASSes when INDEX↔disk agree; registered in `CHECKS`.
-- [ ] AC3: on a fixture with a gapped known-ID set, a bare unresolvable
+- [x] AC3: on a fixture with a gapped known-ID set, a bare unresolvable
       `M<NN>` or `D-<NNN>` token yields a WARN; registered in `ADVISORIES`
       (exit-code-neutral).
-- [ ] AC4: fixtures prove both M56 hazard classes stay silent — an
+- [x] AC4: fixtures prove both M56 hazard classes stay silent — an
       above-max example/forward token (the M99 class) and a repo-qualified
       cross-repo cite (the "ackwards M57" class, references/llm-wiki.md).
-- [ ] AC5: full `cairn_validate` on this repo's tree at review: all CHECKS
+- [x] AC5: full `cairn_validate` on this repo's tree at review: all CHECKS
       (existing + new) PASS and zero advisory WARNs — the zero-noise bar.
-- [ ] AC6: the profile `verify` slot clean — all three unittest suites green
+- [x] AC6: the profile `verify` slot clean — all three unittest suites green
       from the repo root, exit-code-gated (M56 lesson: no `| tail`).
 
 ## Coverage
@@ -118,3 +118,39 @@ candidate (absorbed there by M56); IP/GP-token tracing → already shipped
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55). -->
+
+**Evidence (2026-07-16, fresh, by command):**
+
+- AC1: `test_references_pages` 3/3 OK (file map both types, ingestion
+  definition, page⇒INDEX-line rule); mutation harness 9/9 OK — all three
+  new `Mutation(...)` entries driven (blank ⇒ guard fails), completeness
+  meta-test covers the new file.
+- AC2: `TestReferencesCheck` 4/4 OK — orphan-note FAIL, missing-target
+  FAIL, agreement PASS, absent-INDEX independence (references check PASS
+  while scaffold FAILs); registered in CHECKS.
+- AC3: `TestDanglingIds::test_true_dangler_warns_but_stays_exit_neutral` OK
+  (gapped set M05/gap-M04: bare M04 WARNs, exit 0) +
+  `test_d_token_dangler_warns` OK (D-002 gap WARNs); registered in
+  ADVISORIES.
+- AC4: `test_above_max_example_token_is_silent` OK (M99 class) +
+  `test_repo_qualified_cite_is_silent` OK (slug class, gapped M04);
+  `test_legacy_is_excluded` OK (D-005).
+- AC5: live-tree `cairn_validate`: 15/15 CHECKS PASS (references
+  index<->disk among them), advisories 2/2 OK — zero WARNs.
+- AC6: three suites green from repo root, exit-code-gated: skills 156,
+  scripts 82, hooks 32.
+
+**Consistency gate:** `cairn_validate` exit 0 (above); coverage complete
+(mechanical check PASS; map read: AC1→T1, AC2→T2, AC3→T3, AC4→T4,
+AC5/AC6→T5, all tasks present); no IPn/GPn text changed → `cairn_impact`
+skipped; `generic` profile consistency-gate slot: none (clean no-op).
+
+**Independent review (3 lenses + scorer):** diff-bug [O] — 1 finding;
+blame-history [S] — none (additive diff, M44/M45/M53/D-005/D-023 intents
+preserved); prior-PR [S] — no-op (53 merged PRs touching these files, zero
+inline comments). Sub-80 findings: none. Triage:
+- F1 (85, fixed): `_INDEX_LINE` captured markdown decoration
+  (`` `notes.md` ``, `[name](name)`) so a correct decorated INDEX entry
+  double-FAILed the hard CHECK — the D-023 cry-wolf class. Fixed: capture
+  excludes decoration chars; regression test `test_decorated_index_lines_pass`.
+  Post-fix: 3 suites green (scripts now 83), live tree 15/15 + zero WARNs.

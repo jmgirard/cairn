@@ -154,8 +154,11 @@ def check_orphans(root, rows):
     return bad
 
 
-# An INDEX.md catalog line: `- <name>.md — one-line summary`.
-_INDEX_LINE = re.compile(r"^\s*[-*]\s+(\S+\.md)\b")
+# An INDEX.md catalog line: `- <name>.md — one-line summary`. The filename
+# may be decorated (backticks, a [name](name) markdown link) — a semantically
+# correct entry must never trip a hard CHECK on formatting alone (D-023;
+# review F1/85), so the capture excludes decoration characters.
+_INDEX_LINE = re.compile(r"^\s*[-*]\s+[\[`]?([\w.-]+\.md)\b")
 
 
 def check_references(root):
