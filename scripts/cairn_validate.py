@@ -154,6 +154,38 @@ def check_orphans(root, rows):
     return bad
 
 
+# An INDEX.md catalog line: `- <name>.md — one-line summary`.
+_INDEX_LINE = re.compile(r"^\s*[-*]\s+(\S+\.md)\b")
+
+
+def check_references(root):
+    """Every committed top-level cairn/references/*.md (except INDEX.md) has
+    an INDEX.md line, and every INDEX.md line's target exists on disk — the
+    references sibling of the roadmap<->disk orphan check (M57). No-ops when
+    references/INDEX.md is absent (scaffold-present owns that failure)."""
+    bad = []
+    refdir = os.path.join(root, "cairn", "references")
+    index = os.path.join(refdir, "INDEX.md")
+    if not os.path.isfile(index):
+        return bad
+    with open(index, encoding="utf-8") as f:
+        listed = [m.group(1) for line in f if (m := _INDEX_LINE.match(line))]
+    for name in sorted(os.listdir(refdir)):
+        if (
+            name.endswith(".md")
+            and name != "INDEX.md"
+            and os.path.isfile(os.path.join(refdir, name))
+            and name not in listed
+        ):
+            bad.append(f"cairn/references/{name} has no INDEX.md line")
+    for name in listed:
+        if not os.path.isfile(os.path.join(refdir, name)):
+            bad.append(
+                f"INDEX.md lists {name} but no such file in cairn/references/"
+            )
+    return bad
+
+
 def check_id_uniqueness(root, rows):
     bad = []
     seen = {}
@@ -440,6 +472,7 @@ CHECKS = [
     ("priority vocabulary", lambda root, rows: check_priority_vocab(rows)),
     ("dependency resolution", lambda root, rows: check_dependencies(root, rows)),
     ("roadmap<->disk orphans", lambda root, rows: check_orphans(root, rows)),
+    ("references index<->disk", lambda root, rows: check_references(root)),
     ("id uniqueness", lambda root, rows: check_id_uniqueness(root, rows)),
     ("iso date format", lambda root, rows: check_dates(root)),
     ("scaffold present", lambda root, rows: check_scaffold(root)),

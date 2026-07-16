@@ -280,6 +280,55 @@ class TestValidateClean(ScriptCase):
         self.assertIn("PASS  coverage complete", proc.stdout)
 
 
+class TestReferencesCheck(ScriptCase):
+    """M57: the references index<->disk check — every committed top-level
+    references note has an INDEX.md line and every INDEX line's target exists
+    (the references sibling of roadmap<->disk orphans). Dedicated fixtures on
+    top of the base tree (M34 pattern); the base Tree.build() ships an empty
+    INDEX + no notes, which must stay valid for this check."""
+
+    def test_orphan_note_fails(self):
+        root = self.tree.build()
+        (root / "cairn" / "references" / "stray.md").write_text("# stray\n")
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("FAIL  references index<->disk", proc.stdout)
+        self.assertIn(
+            "cairn/references/stray.md has no INDEX.md line", proc.stdout
+        )
+
+    def test_missing_target_fails(self):
+        root = self.tree.build()
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- gone.md — a note that was deleted\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(
+            "INDEX.md lists gone.md but no such file", proc.stdout
+        )
+
+    def test_agreement_passes(self):
+        root = self.tree.build()
+        (root / "cairn" / "references" / "notes.md").write_text("# notes\n")
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- notes.md — a real note\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  references index<->disk", proc.stdout)
+
+    def test_absent_index_no_ops(self):
+        # Independence: a missing INDEX.md is scaffold-present's failure; the
+        # references check itself stays PASS (M45 validate-if-present pattern).
+        root = self.tree.build()
+        (root / "cairn" / "references" / "INDEX.md").unlink()
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("PASS  references index<->disk", proc.stdout)
+        self.assertIn("FAIL  scaffold present", proc.stdout)
+
+
 VALID_PROFILE = (
     "# Toolchain profile: generic\n\n"
     "## verify\n- run tests\n\n"

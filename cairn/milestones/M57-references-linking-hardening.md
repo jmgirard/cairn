@@ -71,7 +71,7 @@ candidate (absorbed there by M56); IP/GP-token tracing → already shipped
 - [x] T1: widen the file-map `references/` row + Source-ingestion section in
       `tracking-rules.md` to name synthesis notes; prose guard with its own
       `Mutation(...)` entry (M53/M54), single-line anchors (M23/M26).
-- [ ] T2: implement `check_references` in `scripts/cairn_validate.py`
+- [x] T2: implement `check_references` in `scripts/cairn_validate.py`
       (top-level committed `*.md` only; skips `INDEX.md` itself; `pdf/` is
       gitignored) + register in `CHECKS`; dedicated fixture-builder tests
       (M34/M45 pattern) for orphan-note / missing-target / agreement; keep
@@ -99,6 +99,9 @@ candidate (absorbed there by M56); IP/GP-token tracing → already shipped
 - 2026-07-16: T1 done — file map + ingestion name synthesis notes; README
   tree comment updated (repo-wide sweep, M48); guard + 3 Mutation entries;
   3 suites green.
+- 2026-07-16: T2 done — `check_references` in CHECKS (no-ops sans INDEX.md,
+  M45 pattern); 4 fixture tests both directions + agreement + independence;
+  live tree passes (INDEX already accurate).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
