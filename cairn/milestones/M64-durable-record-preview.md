@@ -30,25 +30,25 @@ checkbox ticks, status mirrors → exempt mechanical noise (D-036).
 
 ## Acceptance criteria
 
-- [ ] AC1: tracking-rules.md Output & interaction discipline contains a
+- [x] AC1: tracking-rules.md Output & interaction discipline contains a
       Durable-record preview rule naming the covered record types (D-entries;
       plan-owned milestone sections, new + gated amendments; LESSONS lines;
       archive summaries; ROADMAP candidate/graduation rows), the mechanic
       (verbatim in chat immediately before the commit, same turn, no new
       stop), and the exemptions (work-log one-liners, checkbox ticks, status
       mirrors, PR-branch content).
-- [ ] AC2: the "Deltas, not dumps" rule names the preview carve-out (drafted
+- [x] AC2: the "Deltas, not dumps" rule names the preview carve-out (drafted
       durable text is the deliverable, not a dump) so the two rules cannot be
       read as contradicting.
-- [ ] AC3: each of the four covered skills carries a one-line preview
+- [x] AC3: each of the four covered skills carries a one-line preview
       directive at its durable-record commit step(s): milestone-plan step 6,
       milestone-review post-merge hygiene, milestone-implement Decisions
       appends + amendment protocol, milestone-brief RR ingestion — evidenced
       by file:line grep hits scoped to `skills/*/SKILL.md`.
-- [ ] AC4: `skills/tests/test_durable_record_preview.py` exists, asserts
+- [x] AC4: `skills/tests/test_durable_record_preview.py` exists, asserts
       AC1–AC3 with unique single-line anchors, and is registered in the
       mutation harness (harness + completeness meta-test green).
-- [ ] AC5: verify clean — all three suites (`skills/tests`, `scripts/tests`,
+- [x] AC5: verify clean — all three suites (`skills/tests`, `scripts/tests`,
       `hooks/tests`) discover-run exit 0 from the repo root.
 
 ## Coverage
@@ -93,7 +93,35 @@ checkbox ticks, status mirrors → exempt mechanical noise (D-036).
 - 2026-07-16: T4 done — sweep found no live contradiction (remaining "never
   paste" hits govern tracking files, not chat); all three suites + validate
   green; status → review.
+- 2026-07-16: review F1 (93) correction — the guard file has 8 tests, not
+  the 9 claimed in the T3 line above and AC4 evidence (evidence fixed).
 
 ## Decisions
 
 ## Review
+
+PR: https://github.com/jmgirard/cairn/pull/62 (draft; base main @ a2271b0).
+
+- AC1 (2026-07-16): rule at tracking-rules.md:362–369 — types, mechanic
+  ("shown verbatim in chat immediately before", "same turn, no added stop"),
+  exemptions all grepped; guard TestDurableRecordPreviewRule green.
+- AC2 (2026-07-16): carve-out at tracking-rules.md:361 ("not a dump — see
+  the Durable-record preview rule below."); guard green.
+- AC3 (2026-07-16): directive grep hits — plan:107, review:186,
+  implement:63+79, brief:65. First grep missed review (directive wrapped
+  mid-name, M59 reflow trap); fixed on branch: reflowed + guard/mutation
+  re-anchored, suite re-run green.
+- AC4 (2026-07-16): guard file exists (8 tests); 10 Mutation entries;
+  harness + completeness meta-test green (skills suite 200 tests OK).
+- AC5 (2026-07-16): skills/tests, scripts/tests, hooks/tests all OK from
+  repo root; cairn_validate all checks passed.
+- Consistency gate (2026-07-16): validate exit 0; generic profile
+  consistency-gate slot names no toolchain checks (clean no-op); no
+  IP/GP changed → cairn_impact skipped.
+- Fan-out (2026-07-16): diff-bug 2 findings; blame + prior-PR lenses clean
+  (prior-PR: no inline-comment evidence, expected no-op). Scored: F1 93
+  (record said "9 tests", guard has 8) → fixed (evidence corrected,
+  work-log correction appended); F2 70 (rule's PR-branch exemption drops
+  D-036's hotfix-scoping parenthetical; implement's own directive is
+  unconditional so no practical gap) → sub-threshold, logged not actioned;
+  surfaced at the approval gate.
