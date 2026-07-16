@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-16 (M58 done + archived; graduated its candidate row; pruned M53 under terminal-row retention)_
+_Last hygiene check: 2026-07-16 (M59 done + archived; pruned M54 under terminal-row retention; M60 next)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,13 +10,12 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M59 | Skill single-source-of-truth — canonical fallback, de-enumerated checks, migration module | review | — | normal | milestones/M59-skill-single-source-of-truth.md |
 | M60 | Git-safety hooks — force-push deny, merge-marker restore | planned | — | normal | milestones/M60-git-safety-hooks.md |
+| M59 | Skill single-source-of-truth — canonical fallback, de-enumerated checks, migration module | done | — | normal | milestones/archive/M59-skill-single-source-of-truth.md |
 | M58 | Rulebook doctrine placement — governance up, validation doctrine out, registry pointer | done | — | normal | milestones/archive/M58-rulebook-doctrine-placement.md |
 | M57 | references/ + linking hardening — synthesis notes, INDEX lint, dangling-ID advisory | done | — | normal | milestones/archive/M57-references-linking-hardening.md |
 | M56 | LLM Wiki investigation — references/ + linking fit assessment | done | — | normal | milestones/archive/M56-llm-wiki-investigation.md |
 | M55 | Milestone-file cap exempts the Review section | done | — | normal | milestones/archive/M55-milestone-file-cap.md |
-| M54 | Release positioning + DESIGN refresh | done | — | high | milestones/archive/M54-release-positioning-design-refresh.md |
 
 ## Candidates
 
