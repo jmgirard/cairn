@@ -77,7 +77,7 @@ protocol is progressively disclosed out of the common scaffold path
       test_toolchain_profiles.py:356 and test_ac_traceability.py:86.
 - [x] T3: De-enumerate `/milestone` §2 (skills/milestone/SKILL.md:46):
       run-and-read.
-- [ ] T4: Move cairn-init §2 → `skills/shared/migration-protocol.md`; add the
+- [x] T4: Move cairn-init §2 → `skills/shared/migration-protocol.md`; add the
       read-on-footprint-detection directive to §0; re-anchor
       test_migration_guidance.py in the same commit (M46).
 - [ ] T5: Repo-wide grep sweep for pointers to the protocol's old home
@@ -99,6 +99,10 @@ protocol is progressively disclosed out of the common scaffold path
 - 2026-07-16: T3 done — /milestone §2 run-and-read (+1 guard test, +1
   mutation entry). Minor amendment: fixed adjacent "docs-only commit to
   main" → "to the default branch" in the same rewritten paragraph.
+- 2026-07-16: T4 done — §2 body verbatim-moved (diff-clean) to the module;
+  cairn-init 304→164 lines; pointer directive in the retained §2 stub;
+  guards split-retargeted (protocol→module, §0/§1→skill) + 3 mutation
+  entries retargeted/added, same commit (M46).
 
 ## Decisions
 

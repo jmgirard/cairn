@@ -124,11 +124,26 @@ REGISTRY = [
         target="skills/milestone/SKILL.md",
         block="read its output — one line per check",
     ),
+    # M59 (RR01 rec 12): the protocol body moved to its own module — the
+    # blanked block moves with it, and the new progressive-disclosure seam
+    # gets its own entries (M58 precedent).
     Mutation(
         guard="test_migration_guidance",
         test="TestMigrationGuidance.test_reference_sweep_names_two_dispositions",
-        target="skills/cairn-init/SKILL.md",
+        target="skills/shared/migration-protocol.md",
         block="Reference sweep",
+    ),
+    Mutation(
+        guard="test_migration_guidance",
+        test="TestProgressiveDisclosure.test_module_carries_the_protocol",
+        target="skills/shared/migration-protocol.md",
+        block="migrate the living, entomb the dead",
+    ),
+    Mutation(
+        guard="test_migration_guidance",
+        test="TestProgressiveDisclosure.test_skill_points_at_module_on_footprint_only",
+        target="skills/cairn-init/SKILL.md",
+        block="migration-protocol.md",
     ),
     # M58: the doctrine body moved to its own module; the ≥2-types block now
     # lives (and is blanked) there. The rulebook keeps a reference + the
