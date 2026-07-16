@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M63: /design-interview note-and-leave ingestion
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M43 is done -->
 - **Principles touched:** IP3, IP4   <!-- owner: plan · worked-under (conservation of ingested principles; numbering never rewritten); none changed -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m63-design-interview-ingestion   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -77,7 +77,7 @@ mechanics (M43 shipped them; only the cross-ref sweep here, T4).
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Author session-start detection + Phase-2 ingestion prose in
+- [x] T1: Author session-start detection + Phase-2 ingestion prose in
       `skills/design-interview/SKILL.md` — detection keyed to the
       migration-protocol note-and-leave shape (numbered principles doc at a
       `cairn/` path, numbering + basename intact); ingestion feeds Phase 2's
@@ -98,6 +98,7 @@ mechanics (M43 shipped them; only the cross-ref sweep here, T4).
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-16: created by /milestone-plan (promotes the 2026-07-12 candidate row; lineage M43 Out / migration-pilot-notes Pilot 3 G-I2).
+- 2026-07-16: T1 — session-start detection + "Ingesting a note-and-leave principles file" section (ingestion + conservation) added to design-interview SKILL.md; question gate skipped (nothing open).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

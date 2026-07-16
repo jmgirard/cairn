@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M63 | /design-interview note-and-leave ingestion — detect, formalize with #N lineage, bank the repoint | planned | — | normal | milestones/M63-design-interview-ingestion.md |
+| M63 | /design-interview note-and-leave ingestion — detect, formalize with #N lineage, bank the repoint | in-progress | — | normal | milestones/M63-design-interview-ingestion.md |
 | M62 | Release docs — LICENSE, README worked example + framing, DRAFT removal | done | M61 | high | milestones/archive/M62-release-docs.md |
 | M61 | External de-risking — env check, migration dry-run, Windows story, python CI parity | done | — | high | milestones/archive/M61-external-derisking.md |
 | M60 | Git-safety hooks — force-push deny, merge-marker restore | done | — | normal | milestones/archive/M60-git-safety-hooks.md |
