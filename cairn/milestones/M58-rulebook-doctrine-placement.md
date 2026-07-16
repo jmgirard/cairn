@@ -2,7 +2,7 @@
      section ownership". -->
 # M58: Rulebook doctrine placement — governance up, validation doctrine out, registry pointer
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** GP1, GP3
@@ -113,7 +113,7 @@ oracle registry gains a declared pointer (RR01 recs 4/6/9).
       test-doctrine line, tracking-rules "What gets a test" tail + profiles
       preamble, DESIGN.md:11 to name the module.
 - [x] T5: Append the D-entry (module-placement norm; annotates D-024/D-029).
-- [ ] T6: Run all three suites from the repo root; fix any missed anchor
+- [x] T6: Run all three suites from the repo root; fix any missed anchor
       (M23/M26 single-line/inside-bold matchability applies to moved text).
 
 ## Work log
@@ -133,6 +133,8 @@ oracle registry gains a declared pointer (RR01 recs 4/6/9).
   + 2 tracking-rules lines now name the module; DECISIONS/CHANGELOG/DRAFT_2
   left as history; DESIGN.md:11 makes no location claim, unchanged.
 - 2026-07-16: T5 done — D-031 appended (module norm; annotates D-024/D-025/D-029).
+- 2026-07-16: T6 done — 3 suites green, cairn_validate all-pass, body 138/150;
+  status → review.
 
 ## Decisions
 
