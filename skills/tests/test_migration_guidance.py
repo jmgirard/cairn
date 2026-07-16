@@ -1,5 +1,10 @@
-"""Regression guard: the /cairn-init §2 migration protocol keeps the M23
-hardening from the M20 ackwards pilot (references/migration-pilot-notes.md).
+"""Regression guard: the migration protocol keeps the M23 hardening from the
+M20 ackwards pilot (references/migration-pilot-notes.md).
+
+M59 (RR01 rec 12): the protocol body moved from cairn-init §2 to
+`skills/shared/migration-protocol.md`, read only on footprint detection —
+protocol-content tests read the module; §0 detection and §1 scaffold tests
+still read the skill.
 
 The pilot found four migration gaps that live only in skill prose, so a drift
 that drops any of them fails here (the same limit as every skill-prose guard:
@@ -34,27 +39,29 @@ def read(*parts):
 class TestMigrationGuidance(unittest.TestCase):
     def setUp(self):
         self.skill = read("cairn-init", "SKILL.md")
+        self.protocol = read("shared", "migration-protocol.md")
 
     def test_rich_design_names_both_dispositions(self):
         # Keep-verbatim vs extract-to-DECISIONS: both compromises named.
-        self.assertIn("Compromise A", self.skill)
-        self.assertIn("Compromise B", self.skill)
+        self.assertIn("Compromise A", self.protocol)
+        self.assertIn("Compromise B", self.protocol)
 
     def test_invariants_route_to_design_interview(self):
         # Hard-constraint invariants are not IP/GP-formalized at migration
         # time; that judgement is routed to /design-interview (G5).
-        self.assertIn("forced into IP/GP shape", self.skill)
-        self.assertIn("/design-interview", self.skill)
+        self.assertIn("forced into IP/GP shape", self.protocol)
+        self.assertIn("/design-interview", self.protocol)
 
     def test_reference_sweep_names_two_dispositions(self):
-        self.assertIn("Reference sweep", self.skill)
-        self.assertIn("repoint", self.skill)
-        self.assertIn("note-and-leave", self.skill)
+        self.assertIn("Reference sweep", self.protocol)
+        self.assertIn("repoint", self.protocol)
+        self.assertIn("note-and-leave", self.protocol)
 
     def test_post_move_rbuildignore_prune(self):
-        self.assertIn("prune per-file `.Rbuildignore`", self.skill)
+        self.assertIn("prune per-file `.Rbuildignore`", self.protocol)
 
     def test_lineage_b_detection_widened(self):
+        # §0 detection text — stays in the skill.
         self.assertIn("forward-only `ROADMAP.md`", self.skill)
         self.assertIn("Current focus", self.skill)
 
@@ -68,8 +75,22 @@ class TestMigrationGuidance(unittest.TestCase):
     def test_translate_planned_needs_criteria_else_candidate(self):
         # G-C3: a legacy "planned" item without criteria/tasks maps to a
         # candidate, not `planned` (no-invention).
-        self.assertIn("acceptance criteria and ordered tasks", self.skill)
-        self.assertIn("inventing criteria violates no-invention", self.skill)
+        self.assertIn("acceptance criteria and ordered tasks", self.protocol)
+        self.assertIn("inventing criteria violates no-invention", self.protocol)
+
+
+class TestProgressiveDisclosure(unittest.TestCase):
+    """M59 (RR01 rec 12): the protocol is its own module, read only when §0
+    detects a precursor footprint — the common scaffold path never loads it."""
+
+    def test_module_carries_the_protocol(self):
+        mod = read("shared", "migration-protocol.md")
+        self.assertIn("migrate the living, entomb the dead", mod)
+
+    def test_skill_points_at_module_on_footprint_only(self):
+        skill = read("cairn-init", "SKILL.md")
+        self.assertIn("migration-protocol.md", skill)
+        self.assertIn("when (and only when)", skill)
 
 
 class TestLineageAGuidance(unittest.TestCase):
@@ -79,7 +100,7 @@ class TestLineageAGuidance(unittest.TestCase):
     false-coverage trap)."""
 
     def setUp(self):
-        self.skill = read("cairn-init", "SKILL.md")
+        self.skill = read("shared", "migration-protocol.md")
 
     def test_concern_split_precursor_mapping(self):
         # G-I1: no single DESIGN.md → map to cairn homes, keep repo-specific,

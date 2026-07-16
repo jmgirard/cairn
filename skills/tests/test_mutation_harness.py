@@ -56,6 +56,21 @@ REGISTRY = [
         target=RULES,
         block="The default branch (`main`/`master`) is a distribution",
     ),
+    # M59 (RR01 rec 7): cairn-init §0's fallback follows the canonical recipe —
+    # one Mutation entry per new positive assert (M53 discipline); the paired
+    # assertNotIn("show-current") rides on these positives (M54 lesson).
+    Mutation(
+        guard="test_default_branch_parameterized",
+        test="TestDefaultBranchParameterized.test_cairn_init_fallback_matches_canonical_recipe",
+        target="skills/cairn-init/SKILL.md",
+        block="git ls-remote --symref origin HEAD",
+    ),
+    Mutation(
+        guard="test_default_branch_parameterized",
+        test="TestDefaultBranchParameterized.test_cairn_init_fallback_matches_canonical_recipe",
+        target="skills/cairn-init/SKILL.md",
+        block="never guess the local current branch",
+    ),
     Mutation(
         guard="test_design_interview",
         test="TestDesignInterviewSkill.test_phase1_banks_never_classifies",
@@ -89,11 +104,46 @@ REGISTRY = [
         target=RULES,
         block="plan-owned body < 150 lines",
     ),
+    # M59 (RR01 rec 7): run-and-read — skills never enumerate validate's
+    # internals; one entry per positive assert, negatives ride along (M54).
+    Mutation(
+        guard="test_run_and_read_checks",
+        test="TestReviewRunsAndReads.test_review_runs_and_reads_never_restates",
+        target="skills/milestone-review/SKILL.md",
+        block="restate or recall its internals",
+    ),
+    Mutation(
+        guard="test_run_and_read_checks",
+        test="TestReviewRunsAndReads.test_coverage_completeness_is_validate_output_not_manual",
+        target="skills/milestone-review/SKILL.md",
+        block="mechanical since M34",
+    ),
+    Mutation(
+        guard="test_run_and_read_checks",
+        test="TestMilestoneRunsAndReads.test_milestone_audit_runs_and_reads_never_restates",
+        target="skills/milestone/SKILL.md",
+        block="read its output — one line per check",
+    ),
+    # M59 (RR01 rec 12): the protocol body moved to its own module — the
+    # blanked block moves with it, and the new progressive-disclosure seam
+    # gets its own entries (M58 precedent).
     Mutation(
         guard="test_migration_guidance",
         test="TestMigrationGuidance.test_reference_sweep_names_two_dispositions",
-        target="skills/cairn-init/SKILL.md",
+        target="skills/shared/migration-protocol.md",
         block="Reference sweep",
+    ),
+    Mutation(
+        guard="test_migration_guidance",
+        test="TestProgressiveDisclosure.test_module_carries_the_protocol",
+        target="skills/shared/migration-protocol.md",
+        block="migrate the living, entomb the dead",
+    ),
+    Mutation(
+        guard="test_migration_guidance",
+        test="TestProgressiveDisclosure.test_skill_points_at_module_on_footprint_only",
+        target="skills/cairn-init/SKILL.md",
+        block="migration-protocol.md",
     ),
     # M58: the doctrine body moved to its own module; the ≥2-types block now
     # lives (and is blanked) there. The rulebook keeps a reference + the
