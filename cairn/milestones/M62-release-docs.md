@@ -139,3 +139,11 @@ Evidence gathered fresh 2026-07-16 on m62-release-docs (PR #60):
 - Consistency gate: cairn_validate exit 0 (15 PASS, 2 OK advisories);
   generic profile consistency-gate slot names no toolchain checks; no
   IPn/GPn change → cairn_impact skipped.
+- Fan-out 2026-07-16, zero findings on all three lenses: [O] diff-bug —
+  AC re-verification + README prose-claim audit against SKILL.md/hook
+  behavior, four borderline items dropped under the taxonomy; [S]
+  blame-history — every tripwire checked (D-007 untouched, M54 guard only
+  extended, M56 "you gate it" adaptation faithful, IP4 honored, DESIGN
+  port verbatim); [S] prior-PR — "no prior-PR evidence" (0 inline
+  comments across all 58 merged PRs). No findings → scorer no-op;
+  nothing sub-threshold to log.
