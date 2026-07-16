@@ -554,6 +554,81 @@ REGISTRY = [
         target="skills/milestone-brief/SKILL.md",
         block="durable-record preview (tracking-rules): show the",
     ),
+    # M65 (D-037): the acceptance-chips rule, its cross-reference, the
+    # previously-unguarded base chip rule, and the five per-skill
+    # directives — one entry per distinct block (M53 discipline).
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAcceptanceChipsRule.test_rule_present_with_verbatim_bar",
+        target=RULES,
+        block="requires that conclusion's substance",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAcceptanceChipsRule.test_rule_present_with_verbatim_bar",
+        target=RULES,
+        block="verbatim in chat above the chip (D-037): the verdict and each actioned",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAcceptanceChipsRule.test_rule_present_with_verbatim_bar",
+        target=RULES,
+        block="verbatim plus the file path for the rest; a paraphrase never stands in",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAcceptanceChipsRule.test_chips_carry_choices_rule_present",
+        target=RULES,
+        block="Chips carry choices, not evidence.** Supporting detail and technical",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAcceptanceChipsRule.test_cross_reference_present",
+        target=RULES,
+        block="a summary never substitutes for the accepted text.",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestPerSkillDirectives.test_plan_question_gate",
+        target="skills/milestone-plan/SKILL.md",
+        block="Acceptance chips (tracking-rules): a question resting on a produced",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestPerSkillDirectives.test_implement_gate_and_mini_gate",
+        target="skills/milestone-implement/SKILL.md",
+        block="conclusion shows its substance verbatim above the chip.",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestPerSkillDirectives.test_implement_gate_and_mini_gate",
+        target="skills/milestone-implement/SKILL.md",
+        block="mini gate's chip (acceptance chips, tracking-rules)",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestPerSkillDirectives.test_review_approval_gate",
+        target="skills/milestone-review/SKILL.md",
+        block="Acceptance chips (tracking-rules): each actioned finding's text appears",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestPerSkillDirectives.test_brief_rb_gate_and_rr_routing",
+        target="skills/milestone-brief/SKILL.md",
+        block="Acceptance chips (tracking-rules): show the drafted RB's",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestPerSkillDirectives.test_brief_rb_gate_and_rr_routing",
+        target="skills/milestone-brief/SKILL.md",
+        block="the RR's conclusions/verdict section is shown verbatim above the chip.",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestPerSkillDirectives.test_milestone_route_triage",
+        target="skills/milestone/SKILL.md",
+        block="Acceptance chips (tracking-rules): a triage option that accepts an audit",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

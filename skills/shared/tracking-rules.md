@@ -357,8 +357,9 @@ cairn skill is active.
 - **Deltas, not dumps.** Between gates, report what changed since the
   last report — findings, decisions, surprises, direction changes. Never
   restate the plan or paste command output; the tracking files hold the
-  record. One exception: drafted durable-record text is the deliverable,
-  not a dump — see the Durable-record preview rule below.
+  record. Two exceptions: (1) drafted durable-record text is the deliverable,
+  not a dump — see the Durable-record preview rule below. (2) conclusion
+  text above an acceptance chip — see the Acceptance chips rule.
 - **Durable-record preview.** Newly authored durable-record text — a
   D-entry, a milestone file's plan-owned sections (new or via a gated
   amendment), a LESSONS line, an archive summary, a ROADMAP
@@ -376,7 +377,16 @@ cairn skill is active.
 - **Chips carry choices, not evidence.** Supporting detail and technical
   justification live in chat *above* the chip. Option labels are short;
   each description says in plain language what is being chosen and why
-  it matters. At most 4 options per question.
+  it matters. At most 4 options per question. When a chip asks acceptance
+  of a produced conclusion, the Acceptance chips rule below sets the bar —
+  a summary never substitutes for the accepted text.
+- **Acceptance chips show what's accepted.** A chip option that accepts or
+  approves a produced conclusion — review findings, a subagent's verdict,
+  an audit result, amended text — requires that conclusion's substance
+  verbatim in chat above the chip (D-037): the verdict and each actioned
+  finding appear verbatim; a long artifact shows its conclusions section
+  verbatim plus the file path for the rest; a paraphrase never stands in
+  for the text being accepted.
 - **Contextual chip construction.** Compose options from the actual
   session state — the specific issue found, the specific next action —
   not from a fixed menu; chip menus listed in skills are examples, not
@@ -417,7 +427,9 @@ cairn skill is active.
   boilerplate. Give complete specs — for an Explore fan-out that means a
   reading list naming the files or areas each subagent should read, so it
   searches the right ground instead of guessing; verify their diffs before
-  committing; summarize results into one work-log line.
+  committing; summarize results into one work-log line — the log line
+  compresses, but an acceptance chip built on those results still shows
+  them verbatim (Acceptance chips rule).
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of
   the fresh-context review at `/milestone-review`.
 - **The `/milestone-review` fan-out** (M17) runs in fresh-context subagents,

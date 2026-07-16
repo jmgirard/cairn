@@ -58,7 +58,10 @@ Read, in order: `cairn/ROADMAP.md`, any active milestone file,
 
 3. **Question gate** (one batched AskUserQuestion round, 2–5 questions, each
    with a recommendation): scope boundary, sequencing, acceptance bar, and
-   any collision dispositions. Every proposed scope cut must state **where
+   any collision dispositions.
+   Acceptance chips (tracking-rules): a question resting on a produced
+   conclusion — subagent findings, a collision verdict — shows that
+   conclusion's substance verbatim above the chip. Every proposed scope cut must state **where
    the remainder goes** — never "M12 covers A and B" alone, but "M12 covers
    A and B; C becomes M13 (planned now, depends on M12); D becomes a
    candidate row; E sounds unwanted — drop entirely?".

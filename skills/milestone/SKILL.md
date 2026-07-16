@@ -85,7 +85,9 @@ Update "Last hygiene check: YYYY-MM-DD" in ROADMAP.md.
 Run `cairn_next.py` for the mechanical recommendation (resume / review /
 implement a workable milestone / plan) and lead the chip with it. End with
 ONE routing chip (AskUserQuestion) offering the single most sensible next
-action first (recommended). The bullets below are state-conditional
+action first (recommended).
+Acceptance chips (tracking-rules): a triage option that accepts an audit
+conclusion shows that conclusion's text verbatim above the chip. The bullets below are state-conditional
 examples — only the applicable subset (≤4) is offered:
 
 - Resume M<NN> → `/milestone-implement M<NN>` (an `in-progress` milestone
