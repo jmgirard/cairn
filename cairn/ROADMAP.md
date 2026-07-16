@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M64 | Durable-record preview — verbatim in-chat preview before docs-only commits | planned | — | high | milestones/M64-durable-record-preview.md |
+| M64 | Durable-record preview — verbatim in-chat preview before docs-only commits | in-progress | — | high | milestones/M64-durable-record-preview.md |
 | M63 | /design-interview note-and-leave ingestion — detect, formalize with #N lineage, bank the repoint | done | — | normal | milestones/archive/M63-design-interview-ingestion.md |
 | M62 | Release docs — LICENSE, README worked example + framing, DRAFT removal | done | M61 | high | milestones/archive/M62-release-docs.md |
 | M61 | External de-risking — env check, migration dry-run, Windows story, python CI parity | done | — | high | milestones/archive/M61-external-derisking.md |

@@ -1,10 +1,10 @@
 # M64: Durable-record preview — show authored record text verbatim before docs-only commits
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** GP4
-- **Branch/PR:** —
+- **Branch/PR:** m64-durable-record-preview
 
 ## Goal
 
@@ -61,7 +61,7 @@ checkbox ticks, status mirrors → exempt mechanical noise (D-036).
 
 ## Tasks
 
-- [ ] T1: Author the Durable-record preview rule in tracking-rules.md
+- [x] T1: Author the Durable-record preview rule in tracking-rules.md
       (Output & interaction discipline) + the carve-out clause in "Deltas,
       not dumps" — single-line unique anchor phrases (M59/M23), tokens
       inside bold (M26).
@@ -83,6 +83,8 @@ checkbox ticks, status mirrors → exempt mechanical noise (D-036).
 
 - 2026-07-16: created by /milestone-plan (promotes the durable-record-preview
   candidate row banked 2026-07-16; row graduates at completion per M35).
+- 2026-07-16: T1 done — preview rule + Deltas-not-dumps carve-out in
+  tracking-rules.md; all three suites green.
 
 ## Decisions
 
