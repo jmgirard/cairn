@@ -37,6 +37,13 @@ For a repo spanning many files, fan out `[S]`-tagged Explore subagents with
 specific focuses and require file:line citations. Draft your grounded
 option sets internally before asking anything.
 
+Also check for a migration-preserved **numbered-principles file** — a
+note-and-leave doc at a `cairn/` path (e.g. `cairn/PRINCIPLES.md`) kept with
+numbering and basename intact because package code cites it by number; the
+migration ledger and the DESIGN seed point to it. When present, announce
+that this run will ingest it — see "Ingesting a note-and-leave principles
+file" below.
+
 ## Phase 1 — Facts
 
 Elicit what cannot be inferred from the repo; **do not classify anything**.
@@ -112,6 +119,37 @@ type and are **never reused or renumbered** (retiring one takes a D-entry).
 A genuine cross-cutting choice with rationale (not a deferral) becomes a
 `cairn/DECISIONS.md` D-entry. Deferred candidates become ROADMAP
 `candidate` rows — nothing the user surfaced is silently dropped.
+
+## Ingesting a note-and-leave principles file
+
+A Lineage A migration may have preserved a numbered-principles doc at a
+`cairn/` path with numbering and basename intact, because in-code citations
+(`PRINCIPLES.md #N` — 70× across 29 files in the M41 intraclass pilot) make
+folding it into DESIGN's IP/GP a renumbering that strands every ref (the
+migration protocol's forced note-and-leave). When session start found one,
+run these additions on top of the normal two phases:
+
+- **Every numbered principle enters Phase 2 as a candidate.** Each arrives
+  classified like any other candidate (proposed IP / GP / skip with a marked
+  recommendation) and carries its `#N` lineage in the option text, so the
+  user always sees which preserved principle is being formalized. The banked
+  ledger, history mining, and domain derivation still run — ingestion adds
+  candidates, it never replaces the other sources.
+- **Conservation: no ingested principle is silently dropped.** Every `#N`
+  ends the interview with an explicit disposition — formalized as an IP or
+  GP, merged into another candidate, or retired at the user's say-so (IP3).
+  A `#N` with no disposition is an unfinished interview, not a skip.
+- **Write-out records the lineage map.** Under Design Principles in the
+  target `cairn/DESIGN.md`, record an old-`#N` → new-id mapping table
+  (`#N → IPn | GPn | retired | merged into …`) alongside the principles, so
+  every in-code citation has a written bridge to its formalized successor.
+- **The preserved file stays intact.** Its numbering and basename are never
+  edited, renumbered, or deleted by this interview (IP4) — in-code citations
+  must keep resolving against it until the repoint ships.
+- **Bank the repoint; never touch code.** The eventual in-code repoint
+  (`PRINCIPLES.md #N` → `DESIGN.md IPn/GPn`) is a target-repo **code**
+  milestone: bank it as a candidate row in that repo's ROADMAP at write-out.
+  The interview itself performs no code edits.
 
 ## Routing
 
