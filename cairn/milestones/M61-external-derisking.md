@@ -7,7 +7,7 @@
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** m61-external-derisking   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m61-external-derisking · https://github.com/jmgirard/cairn/pull/59   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -44,23 +44,23 @@ candidate if wanted.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] `/cairn-init` §0 contains an environment-check step covering
+- [x] `/cairn-init` §0 contains an environment-check step covering
       `python3`, `git`, `gh`, and remote presence, each with a named
       degradation path; a prose-guard test in `skills/tests/` locks it.
-- [ ] The Windows `python3`-launcher gap is closed by an implemented
+- [x] The Windows `python3`-launcher gap is closed by an implemented
       fallback in `hooks.json` **or** an explicitly documented degradation
       path; the chosen artifact exists and a milestone Decision line records
       the choice with rationale.
-- [ ] `migration-protocol.md` defines a read-only dry-run mode (inventory +
+- [x] `migration-protocol.md` defines a read-only dry-run mode (inventory +
       proposed ledger, nothing written) offered before a real migration; a
       prose-guard test locks it.
-- [ ] `python.md` `test-doctrine` carries the CI-pair Codecov analog
+- [x] `python.md` `test-doctrine` carries the CI-pair Codecov analog
       (diagnostic-only, never gates the merge), mirroring
       `r-package.md`; the profile guard suite covers it.
-- [ ] All new prose-guards are mutation-registered
+- [x] All new prose-guards are mutation-registered
       (`skills/tests/test_mutation_harness.py` green, completeness meta-test
       passes).
-- [ ] Verify clean: `python3 -m unittest discover -s skills/tests` and
+- [x] Verify clean: `python3 -m unittest discover -s skills/tests` and
       `discover -s scripts/tests` both green from the repo root.
 
 ## Coverage
@@ -131,3 +131,22 @@ candidate if wanted.
 
 ## Review
 <!-- owner: review · exclusive; EXEMPT from the 150-line cap (M55) -->
+
+PR: https://github.com/jmgirard/cairn/pull/59 (draft). Evidence 2026-07-16:
+
+- AC1: test_env_check (5 tests) OK; step opens §0 at SKILL.md:17 with 4
+  probes + per-gap degradation paths.
+- AC2: 8/8 hooks.json commands carry `|| py -3`; TestHooksRegistration
+  (5 tests incl. same-script fallback assert) OK; Decision line recorded
+  (fallback chosen at gate; safe since hooks exit 0 / deny via JSON).
+- AC3: test_migration_guidance (14 tests) OK; dry-run block at
+  migration-protocol.md:25, read-only + entry-chip offer locked.
+- AC4: TestPythonCodecovCI (3 tests) OK — CI pair named, diagnostic-only
+  framing, coverage.py line retained.
+- AC5: mutation harness (9 tests) OK — 11 new M61 entries all
+  fail-when-blanked; completeness meta-test green.
+- AC6: full suites from repo root — skills 184 OK, scripts 84 OK, hooks
+  55 OK.
+- Consistency gate: cairn_validate exit 0, all checks passed. cairn_impact
+  skipped — no IPn/GPn changed (DESIGN Known-issues wording only). Generic
+  profile consistency-gate slot: none (its stated default).
