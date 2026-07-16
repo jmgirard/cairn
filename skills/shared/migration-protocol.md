@@ -146,7 +146,11 @@ presented ledger at the step-3 gate), adjust the proposal first, or stop.
      intact** (note-and-leave), and defer both the IP/GP formalization *and*
      the eventual in-code repoint to `/design-interview` + a target-repo code
      milestone. This is the blocking, larger form of the ~17-ref ackwards
-     `DESIGN.md s.N` case above (M20 G6).
+     `DESIGN.md s.N` case above (M20 G6). The deferral lands on a real step:
+     `/design-interview` detects the preserved file at session start and runs
+     its "Ingesting a note-and-leave principles file" additions —
+     formalization with `#N` lineage, the written mapping, and the banked
+     repoint (M63).
    - **Post-move hygiene:** prune per-file `.Rbuildignore` entries for
      tracking files that just moved into `cairn/` (e.g. `^DESIGN\.md$`,
      `^ROADMAP\.md$`) — `^cairn$` now covers them, so a stale per-file entry

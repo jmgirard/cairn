@@ -90,7 +90,7 @@ mechanics (M43 shipped them; only the cross-ref sweep here, T4).
 - [x] T3: Extend `skills/tests/test_design_interview.py` with a new TestCase
       for the ingestion path; mutation-register each new block; run both
       unittest suites from the repo root (M56).
-- [ ] T4: Whole-repo grep sweep (M48) for the deferral phrasing; align
+- [x] T4: Whole-repo grep sweep (M48) for the deferral phrasing; align
       `skills/shared/migration-protocol.md`'s cross-ref so the deferral lands
       on the now-real ingestion step.
 
@@ -101,6 +101,7 @@ mechanics (M43 shipped them; only the cross-ref sweep here, T4).
 - 2026-07-16: T1 — session-start detection + "Ingesting a note-and-leave principles file" section (ingestion + conservation) added to design-interview SKILL.md; question gate skipped (nothing open).
 - 2026-07-16: T2 — write-out lineage map, preserved-file-intact rule, and target-repo repoint banking appended to the ingestion section.
 - 2026-07-16: T3 — TestNoteAndLeaveIngestion (7 guards) + 7 Mutation registrations; both suites green (192 skills / 84 scripts).
+- 2026-07-16: T4 — repo-wide sweep: migration-protocol deferral now names the ingestion step (appended, no anchored-line reflow); LESSONS/pilot-notes hits are append-only history, note-and-leave.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
