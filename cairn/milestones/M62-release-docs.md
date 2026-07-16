@@ -110,7 +110,7 @@ external de-risking → M61.
   promise sentence + README status ¶/piloting framing reworded; sweep
   clean bar the AC5-exempt tracking lines.
 - 2026-07-16: T6 done — two Mutation entries for the LLM-Wiki framing
-  guard; skills (187) + scripts suites OK from repo root; validate passes.
+  guard; skills (185) + scripts suites OK from repo root; validate passes.
   All tasks complete → status review.
 
 ## Decisions
