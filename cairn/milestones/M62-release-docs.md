@@ -72,7 +72,7 @@ external de-risking → M61.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Add the MIT `LICENSE` (holder: Jeffrey Girard, year 2026).
+- [x] T1: Add the MIT `LICENSE` (holder: Jeffrey Girard, year 2026).
 - [ ] T2: Write the README worked-example section (one milestone,
       three gates, chip-driven flow).
 - [ ] T3: Weave the governed-LLM-Wiki framing into the README intro;
@@ -97,6 +97,7 @@ external de-risking → M61.
   example = fictional generic repo; status ¶ drops version claims (points at
   CHANGELOG); DRAFT_2 disposition = skim, port true gaps only, drop the
   DESIGN.md "content moves here" promise sentence.
+- 2026-07-16: T1 done — MIT LICENSE at root (Jeffrey Girard, 2026).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
