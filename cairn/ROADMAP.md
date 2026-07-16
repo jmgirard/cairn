@@ -10,6 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M56 | LLM Wiki investigation — references/ + linking fit assessment | planned | — | normal | milestones/M56-llm-wiki-investigation.md |
 | M55 | Milestone-file cap exempts the Review section | done | — | normal | milestones/archive/M55-milestone-file-cap.md |
 | M54 | Release positioning + DESIGN refresh | done | — | high | milestones/archive/M54-release-positioning-design-refresh.md |
 | M53 | Prose-guard mutation harness | done | — | high | milestones/archive/M53-prose-guard-mutation-harness.md |
