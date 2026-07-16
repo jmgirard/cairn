@@ -60,12 +60,24 @@ class TestScaffoldFailures(ScriptCase):
     def test_missing_merge_approved_gitignore_entry(self):
         # The other tidymedia gap — .merge-approved ignore line absent.
         root = self.tree.build()
-        set_gitignore(root, ["cairn/references/pdf/"])
+        set_gitignore(
+            root, ["cairn/references/pdf/", "cairn/.merge-approved.pending"]
+        )
         self.assert_scaffold_fail(root, "cairn/.merge-approved")
+
+    def test_missing_pending_gitignore_entry(self):
+        # The consumed-but-unresolved marker state (M60) is required too —
+        # and the exact-line check must not let the plain marker entry
+        # satisfy it.
+        root = self.tree.build()
+        set_gitignore(root, ["cairn/references/pdf/", "cairn/.merge-approved"])
+        self.assert_scaffold_fail(root, "cairn/.merge-approved.pending")
 
     def test_missing_pdf_gitignore_entry(self):
         root = self.tree.build()
-        set_gitignore(root, ["cairn/.merge-approved"])
+        set_gitignore(
+            root, ["cairn/.merge-approved", "cairn/.merge-approved.pending"]
+        )
         self.assert_scaffold_fail(root, "cairn/references/pdf/")
 
     def test_gitignore_absent_entirely(self):

@@ -67,7 +67,7 @@ guarded merge no longer consumes the approval marker (RR01 recs 8 + 13).
       commit_guard branch detection) + unit tests: deny cases and the
       false-positive matrix. (RB tripwire: ip-touching — this hardens IP1's
       perimeter; deny wording and scope must not block legitimate work.)
-- [ ] T2: Write `hooks/merge_guard_post.py` + unit tests (restore on fail,
+- [x] T2: Write `hooks/merge_guard_post.py` + unit tests (restore on fail,
       consumed on success, no-op otherwise). Touches the IP1 approval-marker
       lifecycle — keep single-use semantics: restore only what a *failed*
       attempt consumed, never mint approval.
@@ -94,6 +94,16 @@ guarded merge no longer consumes the approval marker (RR01 recs 8 + 13).
   Bash nonzero exit fires PostToolUseFailure (PostToolUse = success only;
   PreToolUse-denied calls fire neither) — merge_guard_post keys on the
   event name, no exit-code parsing; registers under both events.
+- 2026-07-16: T2 done — rename lifecycle shipped (merge_guard consumes by
+  rename → .pending; post hook restores on failure with an
+  additionalContext note, deletes on success; never mints);
+  is_guarded_merge + marker paths moved to cairn_common so both ends share
+  one detection; stop_guard excludes the pending basename. Minor
+  amendment: `cairn/.merge-approved.pending` added to this repo's
+  .gitignore, REQUIRED_GITIGNORE (scaffold spec — adopters pick it up via
+  the M24 drift check + init repair), and the cairn-init gitignore bullet;
+  contract facts pinned into references/claude-code-hooks.md. Suites
+  48/84/171 green.
 
 ## Decisions
 

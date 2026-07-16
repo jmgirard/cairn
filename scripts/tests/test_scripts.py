@@ -163,6 +163,7 @@ class Tree:
         (cairn / "references" / "INDEX.md").write_text("# Index\n")
         (self.root / ".gitignore").write_text(
             "cairn/references/pdf/\ncairn/.merge-approved\n"
+            "cairn/.merge-approved.pending\n"
         )
         for rel, body in self.files.items():
             (cairn / rel).write_text(body)

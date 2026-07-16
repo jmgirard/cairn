@@ -14,6 +14,40 @@ import sys
 # Statuses whose milestone files count as "active" for context injection.
 ACTIVE_STATUSES = {"in-progress", "blocked", "review"}
 
+# The single-use merge-approval marker and its consumed-but-unresolved
+# state. merge_guard.py consumes the marker by renaming it to the pending
+# path when it lets a guarded merge through; merge_guard_post.py restores
+# it (failed attempt) or deletes it (successful merge). Both are ignored
+# by stop_guard and gitignored in scaffolded repos.
+MARKER_RELPATH = os.path.join("cairn", ".merge-approved")
+PENDING_RELPATH = os.path.join("cairn", ".merge-approved.pending")
+
+# Command position only: start of string or right after a shell separator
+# (;, &, |, ( , newline) — a plain space before "git"/"gh" means it's an
+# argument to something else (e.g. `echo git merge`), not a command.
+CMD_POS = r"(?:^|[;&|(\n])\s*"
+GH_PR_MERGE = re.compile(CMD_POS + r"gh\s+pr\s+merge(?!\S)")
+GIT_MERGE = re.compile(CMD_POS + r"git(?:\s+-\S+)*\s+merge(?!\S)")
+MERGE_HOUSEKEEPING = re.compile(r"--(?:abort|continue|quit)\b")
+
+
+def is_guarded_merge(command, cwd):
+    """True when the command would merge into main/master.
+
+    Shared by merge_guard.py (PreToolUse deny/consume) and
+    merge_guard_post.py (PostToolUse/PostToolUseFailure resolve), so both
+    ends of the marker lifecycle key on the same detection.
+    """
+    if GH_PR_MERGE.search(command):
+        return True
+    if GIT_MERGE.search(command) and not MERGE_HOUSEKEEPING.search(command):
+        # `git merge main` on a feature branch (syncing main into the
+        # branch) is required by the git model — only guard merges made
+        # while sitting on main/master.
+        rc, branch = git(["branch", "--show-current"], cwd)
+        return rc == 0 and branch.strip() in ("main", "master")
+    return False
+
 
 def read_input():
     """Parse the hook's stdin JSON; permissive on garbage."""

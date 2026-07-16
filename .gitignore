@@ -1,4 +1,5 @@
 .DS_Store
 cairn/references/pdf/
 cairn/.merge-approved
+cairn/.merge-approved.pending
 __pycache__/

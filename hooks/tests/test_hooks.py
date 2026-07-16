@@ -207,6 +207,13 @@ class TestMergeGuard(RepoFixture):
         proc = run_hook("merge_guard.py", self.merge_payload("gh pr merge 7 --squash"))
         self.assertEqual(proc.stdout.strip(), "")
         self.assertFalse(self.marker().exists(), "marker must be single-use")
+        # consumption is a rename, not a delete: merge_guard_post resolves
+        # the pending file by outcome (restore on failure, delete on success)
+        pending = self.root / "cairn" / ".merge-approved.pending"
+        self.assertEqual(
+            pending.read_text(), "M07 approved 2026-07-11\n",
+            "consumed marker must move to .pending intact",
+        )
 
     def test_denies_git_merge_while_on_main(self):
         out = hook_json(
@@ -235,6 +242,115 @@ class TestMergeGuard(RepoFixture):
             self.payload(tool_name="Edit", tool_input={"file_path": "x"}),
         )
         self.assertEqual(proc.stdout.strip(), "")
+
+
+class TestMergeGuardPost(RepoFixture):
+    """The PostToolUse/PostToolUseFailure companion (M60). For Bash, a
+    nonzero exit fires PostToolUseFailure and PostToolUse fires only on
+    success (official hooks docs; references/claude-code-hooks.md) — so
+    the hook keys on the event name, never an exit-code field."""
+
+    APPROVAL = "M07 approved 2026-07-11\n"
+
+    def post_payload(self, command, event="PostToolUseFailure", **extra):
+        return self.payload(
+            hook_event_name=event,
+            tool_name="Bash",
+            tool_input={"command": command},
+            **extra,
+        )
+
+    def marker(self):
+        return self.root / "cairn" / ".merge-approved"
+
+    def pending(self):
+        return self.root / "cairn" / ".merge-approved.pending"
+
+    def test_failure_restores_consumed_marker(self):
+        self.pending().write_text(self.APPROVAL)
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.post_payload("gh pr merge 7 --squash"),
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(self.marker().read_text(), self.APPROVAL,
+                         "failed attempt must restore the marker intact")
+        self.assertFalse(self.pending().exists())
+        out = hook_json(proc)
+        self.assertEqual(out["hookEventName"], "PostToolUseFailure")
+        self.assertIn("restored", out["additionalContext"])
+
+    def test_success_deletes_pending_marker_stays_consumed(self):
+        self.pending().write_text(self.APPROVAL)
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.post_payload("gh pr merge 7 --squash", event="PostToolUse"),
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.marker().exists(),
+                         "a successful merge's approval stays consumed")
+        self.assertFalse(self.pending().exists())
+
+    def test_never_mints_without_pending(self):
+        # No pending file (no real approval was consumed): a failed guarded
+        # merge must NOT create a marker out of thin air.
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.post_payload("gh pr merge 7 --squash"),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.marker().exists(), "must never mint approval")
+
+    def test_noop_on_non_merge_commands(self):
+        self.pending().write_text(self.APPROVAL)
+        for cmd in ("git status", "git merge --abort", "echo gh pr merge"):
+            for event in ("PostToolUse", "PostToolUseFailure"):
+                with self.subTest(cmd=cmd, event=event):
+                    proc = run_hook(
+                        "merge_guard_post.py",
+                        self.post_payload(cmd, event=event),
+                    )
+                    self.assertEqual(proc.stdout.strip(), "")
+        self.assertTrue(self.pending().exists(),
+                        "non-merge commands must not touch the pending file")
+        self.assertFalse(self.marker().exists())
+
+    def test_noop_on_other_events_and_tools(self):
+        self.pending().write_text(self.APPROVAL)
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.post_payload("gh pr merge 7", event="PreToolUse"),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.payload(
+                hook_event_name="PostToolUseFailure",
+                tool_name="Edit",
+                tool_input={"file_path": "x"},
+            ),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertTrue(self.pending().exists())
+
+    def test_failed_git_merge_on_main_restores(self):
+        # the git-merge form of a guarded merge (sitting on main)
+        self.pending().write_text(self.APPROVAL)
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.post_payload("git merge m07-branch"),
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertTrue(self.marker().exists())
+
+    def test_stop_guard_ignores_pending_marker(self):
+        # the transient pending state must not block turn-end, marker-style
+        self.pending().write_text(self.APPROVAL)
+        proc = run_hook("stop_guard.py", self.payload())
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(proc.stdout.strip(), "",
+                         "pending marker alone must not block")
 
 
 class TestForcePushGuard(RepoFixture):
@@ -488,6 +604,11 @@ class TestNonCairnNoOp(RepoFixture):
             "merge_guard.py": self.payload(
                 tool_name="Bash", tool_input={"command": "gh pr merge 7"}
             ),
+            "merge_guard_post.py": self.payload(
+                hook_event_name="PostToolUseFailure",
+                tool_name="Bash",
+                tool_input={"command": "gh pr merge 7"},
+            ),
             "commit_guard.py": self.payload(
                 tool_name="Bash", tool_input={"command": "git commit -m x"}
             ),
@@ -517,6 +638,7 @@ class TestNonCairnNoOp(RepoFixture):
             "session_context.py",
             "stop_guard.py",
             "merge_guard.py",
+            "merge_guard_post.py",
             "commit_guard.py",
             "force_push_guard.py",
             "memory_guard.py",
