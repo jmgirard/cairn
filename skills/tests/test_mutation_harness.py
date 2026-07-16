@@ -349,6 +349,32 @@ REGISTRY = [
         target="skills/shared/templates/claude-md-section.md",
         block="Lessons → LESSONS",
     ),
+    # M61: migration dry-run mode (RR01 §10.3) — one entry per positive
+    # assert (M53 discipline).
+    Mutation(
+        guard="test_migration_guidance",
+        test="TestMigrationGuidance.test_dry_run_mode_is_read_only_and_offered_at_entry",
+        target="skills/shared/migration-protocol.md",
+        block="**Dry-run mode (read-only first contact",
+    ),
+    Mutation(
+        guard="test_migration_guidance",
+        test="TestMigrationGuidance.test_dry_run_mode_is_read_only_and_offered_at_entry",
+        target="skills/shared/migration-protocol.md",
+        block="Offer a dry run on",
+    ),
+    Mutation(
+        guard="test_migration_guidance",
+        test="TestMigrationGuidance.test_dry_run_mode_is_read_only_and_offered_at_entry",
+        target="skills/shared/migration-protocol.md",
+        block="no branch, no file moves, no commits",
+    ),
+    Mutation(
+        guard="test_migration_guidance",
+        test="TestMigrationGuidance.test_dry_run_mode_is_read_only_and_offered_at_entry",
+        target="skills/shared/migration-protocol.md",
+        block="unrecognized or outside the known precursor lineages",
+    ),
     # M61: cairn-init §0 environment check (RR01 §10.2) — one entry per
     # positive assert (M53 discipline).
     Mutation(

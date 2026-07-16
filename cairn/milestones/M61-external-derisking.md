@@ -84,7 +84,7 @@ candidate if wanted.
       issues if wording changes) + milestone Decision line. Note: a
       hooks.json *registration* change only live-fires in a fresh
       conversation (M60 lesson) — fixture-test what the hook prints.
-- [ ] T3: Add the dry-run mode to `skills/shared/migration-protocol.md`
+- [x] T3: Add the dry-run mode to `skills/shared/migration-protocol.md`
       (read-only inventory + ledger; offer chip at migration entry) + guard
       test.
 - [ ] T4: Mirror the CI-pair guidance into `python.md` `test-doctrine`
@@ -107,6 +107,9 @@ candidate if wanted.
 - 2026-07-16: T2 done — all 8 hooks.json commands chain `|| py -3 <same
   script>`; guard test asserts same-script fallback; DESIGN Known issues
   updated; command-string change live-fires next fresh conversation (M60).
+- 2026-07-16: T3 done — dry-run mode block in migration-protocol.md (step-3
+  inventory+ledger only, write nothing, own routing chip); 4 asserts + 4
+  mutation entries.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
