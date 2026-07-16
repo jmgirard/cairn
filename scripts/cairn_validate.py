@@ -154,6 +154,41 @@ def check_orphans(root, rows):
     return bad
 
 
+# An INDEX.md catalog line: `- <name>.md — one-line summary`. The filename
+# may be decorated (backticks, a [name](name) markdown link) — a semantically
+# correct entry must never trip a hard CHECK on formatting alone (D-023;
+# review F1/85), so the capture excludes decoration characters.
+_INDEX_LINE = re.compile(r"^\s*[-*]\s+[\[`]?([\w.-]+\.md)\b")
+
+
+def check_references(root):
+    """Every committed top-level cairn/references/*.md (except INDEX.md) has
+    an INDEX.md line, and every INDEX.md line's target exists on disk — the
+    references sibling of the roadmap<->disk orphan check (M57). No-ops when
+    references/INDEX.md is absent (scaffold-present owns that failure)."""
+    bad = []
+    refdir = os.path.join(root, "cairn", "references")
+    index = os.path.join(refdir, "INDEX.md")
+    if not os.path.isfile(index):
+        return bad
+    with open(index, encoding="utf-8") as f:
+        listed = [m.group(1) for line in f if (m := _INDEX_LINE.match(line))]
+    for name in sorted(os.listdir(refdir)):
+        if (
+            name.endswith(".md")
+            and name != "INDEX.md"
+            and os.path.isfile(os.path.join(refdir, name))
+            and name not in listed
+        ):
+            bad.append(f"cairn/references/{name} has no INDEX.md line")
+    for name in listed:
+        if not os.path.isfile(os.path.join(refdir, name)):
+            bad.append(
+                f"INDEX.md lists {name} but no such file in cairn/references/"
+            )
+    return bad
+
+
 def check_id_uniqueness(root, rows):
     bad = []
     seen = {}
@@ -431,6 +466,81 @@ def check_sizing_advisory(root):
     return out
 
 
+# ID-token shapes (M57): zero-padded milestone/decision IDs as written in
+# tracking prose. Unpadded forms (M7) don't occur in cairn's ID format.
+_M_TOKEN = re.compile(r"\bM(\d{2,})\b")
+_D_TOKEN = re.compile(r"\bD-(\d{3,})\b")
+# An owner/repo-shaped slug — the cross-repo qualifier signal. Deliberately
+# loose (also matches file paths): an unresolved token sharing a line with
+# any slug is skipped, a preferred miss under the D-023 doctrine.
+_REPO_SLUG = re.compile(r"\b[\w.-]+/[\w.-]+\b")
+_D_HEADER = re.compile(r"^### (D-\d{3,})", re.MULTILINE)
+
+
+def _known_ids(root, rows):
+    """The resolvable ID universe: ROADMAP rows ∪ live/archive milestone
+    files (M), and DECISIONS.md entry headers (D)."""
+    m_ids = (
+        {r["id"] for r in rows}
+        | set(cs.live_files(root))
+        | set(cs.archive_files(root))
+    )
+    d_ids = set()
+    dpath = os.path.join(root, "cairn", "DECISIONS.md")
+    if os.path.isfile(dpath):
+        with open(dpath, encoding="utf-8") as f:
+            d_ids = set(_D_HEADER.findall(f.read()))
+    return m_ids, d_ids
+
+
+def check_dangling_ids(root, rows):
+    """Advisory: M<NN>/D-<NNN> tokens in committed cairn/ markdown that
+    resolve to no ROADMAP row, milestone file, or D-entry (M57 — the link
+    syntax is bare ID tokens, so a dangler is a broken wiki link). Two
+    tolerance rules, per D-023 (a missed weird format beats a false
+    positive): tokens numerically above the max assigned ID are skipped
+    (example/forward prose — the M99 class), and unresolved tokens on a line
+    carrying an owner/repo slug are skipped (repo-qualified cross-repo
+    cites — the "ackwards M57" class). legacy/ is excluded (entombed
+    verbatim, D-005). WARN tier: feeds ADVISORIES, never fails the gate."""
+    out = []
+    m_ids, d_ids = _known_ids(root, rows)
+    m_max = max((cs.id_num(i) for i in m_ids), default=0)
+    d_max = max((int(i.split("-")[1]) for i in d_ids), default=0)
+    for dirpath, dirs, names in os.walk(os.path.join(root, "cairn")):
+        dirs[:] = [d for d in dirs if d != "legacy"]
+        for name in sorted(names):
+            if not name.endswith(".md"):
+                continue
+            path = os.path.join(dirpath, name)
+            rel = os.path.relpath(path, root)
+            try:
+                with open(path, encoding="utf-8") as f:
+                    lines = f.readlines()
+            except Exception:
+                continue
+            for lineno, line in enumerate(lines, 1):
+                hits = [
+                    "M" + m.group(1)
+                    for m in _M_TOKEN.finditer(line)
+                    if "M" + m.group(1) not in m_ids
+                    and int(m.group(1)) <= m_max
+                ]
+                hits += [
+                    m.group(0)
+                    for m in _D_TOKEN.finditer(line)
+                    if m.group(0) not in d_ids and int(m.group(1)) <= d_max
+                ]
+                if not hits or _REPO_SLUG.search(line):
+                    continue
+                out.extend(
+                    f"{rel}:{lineno}: {tok} resolves to no ROADMAP row, "
+                    f"milestone file, or D-entry"
+                    for tok in hits
+                )
+    return out
+
+
 CHECKS = [
     ("mirror agreement", lambda root, rows: check_mirror(root, rows)),
     ("at most one in-progress", lambda root, rows: check_single_in_progress(rows)),
@@ -440,6 +550,7 @@ CHECKS = [
     ("priority vocabulary", lambda root, rows: check_priority_vocab(rows)),
     ("dependency resolution", lambda root, rows: check_dependencies(root, rows)),
     ("roadmap<->disk orphans", lambda root, rows: check_orphans(root, rows)),
+    ("references index<->disk", lambda root, rows: check_references(root)),
     ("id uniqueness", lambda root, rows: check_id_uniqueness(root, rows)),
     ("iso date format", lambda root, rows: check_dates(root)),
     ("scaffold present", lambda root, rows: check_scaffold(root)),
@@ -453,6 +564,7 @@ CHECKS = [
 # from the PASS/FAIL CHECKS above.
 ADVISORIES = [
     ("sizing (split tripwires)", lambda root, rows: check_sizing_advisory(root)),
+    ("dangling id tokens", lambda root, rows: check_dangling_ids(root, rows)),
 ]
 
 
