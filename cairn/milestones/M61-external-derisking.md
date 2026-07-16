@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M61: External de-risking — env check, migration dry-run, Windows story, python CI parity
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate -->
@@ -90,7 +90,7 @@ candidate if wanted.
 - [x] T4: Mirror the CI-pair guidance into `python.md` `test-doctrine`
       (pytest-cov + Codecov action line beside `coverage.py` diagnostic) +
       extend the profile guards.
-- [ ] T5: Mutation-register every new prose-guard block (one physical line
+- [x] T5: Mutation-register every new prose-guard block (one physical line
       each — M59 lesson); run both suites from the repo root (M56 lesson).
 
 ## Work log
@@ -116,6 +116,9 @@ candidate if wanted.
 - 2026-07-16: T4 done — python test-doctrine gains the pytest-cov→Codecov CI
   pair (diagnostic-only); TestPythonCodecovCI (3 tests) + 2 mutation entries;
   python.md 104/<120.
+- 2026-07-16: T5 done — 11 mutation entries registered across the branch;
+  skills (184) + scripts (84) + hooks (55) suites and cairn_validate all
+  green from the repo root; status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
