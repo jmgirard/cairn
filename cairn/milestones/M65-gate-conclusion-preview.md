@@ -98,6 +98,10 @@ appears there). Commit-time preview → shipped in M64. Chip form/invariants
 - 2026-07-16: T4 done — sweep found one licensing phrase (delegation rule's
   "summarize results into one work-log line"), clarified log-line-only;
   all three suites + validate green; status → review.
+- 2026-07-16: gate F1 fix initially broke M64's registered block (period →
+  semicolon) AND shipped on a tail-piped exit-blind chain (M56 recurrence,
+  self-caught); wording fixed with the period preserved, suite re-run with
+  explicit exit code: 208 tests OK.
 
 ## Decisions
 
