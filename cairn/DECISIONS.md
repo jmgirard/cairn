@@ -804,3 +804,37 @@ evidence in view; the previously-unguarded chip rule gains a guarded,
 cross-referenced sibling. Delivered by M65. If a conclusion chip ever
 appears in one of the four unwired skills, extend the wiring by
 superseding this entry.
+
+### D-038 (2026-07-16): cairn-init's migration gates are acceptance chips — supersedes D-037's init exclusion
+
+**Context:** D-037 wired the acceptance-chips rule into the five
+conclusion-feeding skills and rejected the other four on the premise that
+their chips "choose among user-known options — dead weight," while
+pre-authorizing extension: "If a conclusion chip ever appears in one of the
+four unwired skills, extend the wiring by superseding this entry." Hit live
+in the hitop repo (2026-07-16): a `/cairn-init` migration ran the step-3
+inventory sweep, then fired the disposition gate's AskUserQuestion with no
+proposal text in chat (transcript: mark_chapter → two AskUserQuestion calls,
+no intervening prose). The premise fails for the migration gates: the
+step-3 disposition proposal and the step-7 merge ledger are *produced*
+content, not user-known options. A secondary loophole: a disposition
+*proposal* is arguably not a "produced conclusion," so the rule's
+enumeration could be read as not applying at all.
+**Decision:** Extend the wiring to `/cairn-init`'s two migration gates —
+step 3 (inventory + proposed-disposition ledger verbatim in chat above the
+chip, the adopt-in-place variant included) and step 7 (the migration ledger
+in chat above the merge-approval chip, not only in the PR description) —
+and extend the rule's enumeration to name a proposed disposition or action
+plan awaiting confirmation, closing the proposal-isn't-a-conclusion
+reading. Rejected a standalone third rule (the mechanism — substance
+verbatim above the chip — is identical to D-037's; a parallel rule would
+restate it) and leaving the decision record untouched (planning against a
+standing rejection without superseding it). The rejection's premise stands
+elsewhere: init's profile/opener/routing chips, release's version confirm,
+hotfix's merge chip (diff reviewable at the PR), and `/design-interview`
+(co-authors in chat by construction) stay unwired.
+**Consequences:** Migration gates become decisions made with the proposal
+in view; the dry-run path's existing "present them in chat" bar now binds
+the real path's gates too. Supersedes D-037's wiring scope only — its rule
+form and verbatim bar stand. Delivered by M66. If a produced-content chip
+surfaces in a still-unwired skill, extend by superseding this entry.
