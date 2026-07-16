@@ -71,7 +71,7 @@ guarded merge no longer consumes the approval marker (RR01 recs 8 + 13).
       consumed on success, no-op otherwise). Touches the IP1 approval-marker
       lifecycle — keep single-use semantics: restore only what a *failed*
       attempt consumed, never mint approval.
-- [ ] T3: Register both in hooks/hooks.json; extend hooks/tests registration
+- [x] T3: Register both in hooks/hooks.json; extend hooks/tests registration
       fixtures if any assert the hook list.
 - [ ] T4: Update DESIGN.md hooks bullet (5 → 7) and the rulebook's
       "Never force-push" line; re-anchor any guards on either (M46), register
@@ -104,6 +104,10 @@ guarded merge no longer consumes the approval marker (RR01 recs 8 + 13).
   the M24 drift check + init repair), and the cairn-init gitignore bullet;
   contract facts pinned into references/claude-code-hooks.md. Suites
   48/84/171 green.
+- 2026-07-16: T3 done — force_push_guard registered PreToolUse(Bash);
+  merge_guard_post under BOTH PostToolUse and PostToolUseFailure (Bash);
+  no fixture asserted the hook list, so added TestHooksRegistration
+  (per-hook registration, standard envelope, every-script-registered).
 
 ## Decisions
 

@@ -655,6 +655,67 @@ class TestNonCairnNoOp(RepoFixture):
                 self.assertEqual(proc.stdout.strip(), "")
 
 
+class TestHooksRegistration(unittest.TestCase):
+    """hooks.json registers every guard with the python3/timeout envelope
+    (M60 AC3). Hooks snapshot at process start, so a registration gap
+    fails silently live — this is the mechanical check."""
+
+    def setUp(self):
+        self.config = json.loads((HOOKS_DIR / "hooks.json").read_text())["hooks"]
+
+    def commands(self, event, matcher):
+        return [
+            h["command"]
+            for entry in self.config.get(event, ())
+            if entry.get("matcher", "*") == matcher or event == "SessionStart"
+            for h in entry["hooks"]
+        ]
+
+    def test_force_push_guard_registered_pretooluse_bash(self):
+        cmds = self.commands("PreToolUse", "Bash")
+        self.assertTrue(
+            any("force_push_guard.py" in c for c in cmds), cmds
+        )
+
+    def test_merge_guard_post_registered_on_both_post_events(self):
+        # the outcome signal is the event name, so BOTH events are needed:
+        # PostToolUse alone never restores; PostToolUseFailure alone never
+        # finalizes a success
+        for event in ("PostToolUse", "PostToolUseFailure"):
+            with self.subTest(event=event):
+                cmds = self.commands(event, "Bash")
+                self.assertTrue(
+                    any("merge_guard_post.py" in c for c in cmds), (event, cmds)
+                )
+
+    def test_every_registered_hook_uses_the_standard_envelope(self):
+        for event, entries in self.config.items():
+            for entry in entries:
+                for h in entry["hooks"]:
+                    with self.subTest(event=event, command=h.get("command")):
+                        self.assertEqual(h["type"], "command")
+                        self.assertTrue(
+                            h["command"].startswith(
+                                'python3 "${CLAUDE_PLUGIN_ROOT}/hooks/'
+                            )
+                        )
+                        self.assertIsInstance(h["timeout"], int)
+
+    def test_every_hook_script_is_registered(self):
+        registered = "".join(
+            h["command"]
+            for entries in self.config.values()
+            for entry in entries
+            for h in entry["hooks"]
+        )
+        scripts = {
+            p.name for p in HOOKS_DIR.glob("*.py") if p.name != "cairn_common.py"
+        }
+        for script in scripts:
+            with self.subTest(script=script):
+                self.assertIn(script, registered)
+
+
 class TestStdlibOnly(unittest.TestCase):
     ALLOWED = {"ast", "json", "os", "pathlib", "re", "subprocess", "sys", "cairn_common"}
 
