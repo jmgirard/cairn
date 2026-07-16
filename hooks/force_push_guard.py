@@ -18,14 +18,19 @@ legitimate work).
 
 Known, accepted limitations (conservative like merge_guard.py /
 commit_guard.py): multi-token global options (`git -C <path> push`)
-aren't matched; a separate-value flag (`-o <val>`) shifts naive token
-parsing, which can only misread *which* token is the remote, never
-invent a force; `--dry-run` force-pushes are denied like real ones
-(harmless to deny — no legitimate workflow dry-runs a force-push to the
-default branch); `push.default=upstream` mapping a differently-named
-local branch onto the default branch is not resolved (the current-
-branch check covers the conventional case). No-op outside cairn repos;
-fail-permissive.
+aren't matched; git push's known separate-value flags (`-o`, `--repo`,
+…) have their values skipped during token parsing, but an *unknown*
+future value-taking flag could still be misread as a refspec;
+matching is remote-agnostic — a force-push to a same-named branch on a
+secondary remote (`git push -f fork main`) is denied too (accepted:
+mirrors of the default branch deserve the same protection, and the deny
+is recoverable); a `)` ends a span, so a force-push whose refspec
+literally contains `)` is missed; `--dry-run` force-pushes are denied
+like real ones (harmless to deny — no legitimate workflow dry-runs a
+force-push to the default branch); `push.default=upstream` mapping a
+differently-named local branch onto the default branch is not resolved
+(the current-branch check covers the conventional case). No-op outside
+cairn repos; fail-permissive.
 """
 
 import os
@@ -48,7 +53,16 @@ FORCE_FLAG = re.compile(
     r"(?<![-\w])(?:--force(?:-with-lease(?:=\S*)?|-if-includes)?(?![-\w])"
     r"|-[A-Za-z]*f[A-Za-z]*(?![-\w]))"
 )
-SPAN_END = re.compile(r"[;&|\n]")
+# `)` ends a span too: CMD_POS treats `(` as a command position (subshell),
+# so the matching close-paren must not glue itself onto the last refspec
+# token — `(git push -f origin main)` would otherwise tokenize `main)` and
+# slip past the name match (M60 review F4a).
+SPAN_END = re.compile(r"[;&|\n)]")
+
+# git push flags that take a *separate* value token; the value must not be
+# read as a refspec (`git push -f origin feat -o main` is a feature-branch
+# push, not one targeting main — M60 review F4b).
+VALUE_FLAGS = {"-o", "--push-option", "--repo", "--receive-pack", "--exec"}
 
 
 def push_spans(command):
@@ -58,6 +72,22 @@ def push_spans(command):
         rest = command[m.end():]
         stop = SPAN_END.search(rest)
         yield rest[: stop.start()] if stop else rest
+
+
+def push_args(span):
+    """The span's non-flag tokens (remote, then refspecs), with known
+    separate-value flags' values skipped."""
+    args = []
+    skip_next = False
+    for tok in span.split():
+        if skip_next:
+            skip_next = False
+            continue
+        if tok.startswith("-"):
+            skip_next = tok in VALUE_FLAGS
+            continue
+        args.append(tok)
+    return args
 
 
 def refspec_dst(token):
@@ -72,17 +102,20 @@ def refspec_dst(token):
 def is_guarded_force_push(span, root):
     """True when this push's arguments force-update the default branch."""
     has_force_flag = bool(FORCE_FLAG.search(span))
-    tokens = [t for t in span.split() if not t.startswith("-")]
-    refspecs = tokens[1:]  # first non-flag token is the remote
-    default = cc.default_branch(root)
-    names = {default} if default else {"main", "master"}
+    refspecs = push_args(span)[1:]  # first non-flag token is the remote
     if not refspecs:
         # `git push [-f] [remote]`: targets the current branch.
         return has_force_flag and cc.on_default_branch(root)
-    for spec in refspecs:
-        forced = has_force_flag or spec.startswith("+")
-        if not forced:
-            continue
+    forced = refspecs if has_force_flag else [
+        s for s in refspecs if s.startswith("+")
+    ]
+    if not forced:
+        return False  # nothing forced: no branch detection, no git calls
+        # (a plain push must stay zero-cost — default_branch can be a
+        # network ls-remote when origin/HEAD is unset; M60 review F5)
+    default = cc.default_branch(root)
+    names = {default} if default else {"main", "master"}
+    for spec in forced:
         dst = refspec_dst(spec)
         if dst in names:
             return True

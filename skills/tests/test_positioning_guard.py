@@ -63,9 +63,14 @@ class TestOutwardPositioning(unittest.TestCase):
 
 class TestDesignArchitectureHonesty(unittest.TestCase):
     def test_design_lists_all_seven_hooks(self):
+        # Word-bounded: `merge_guard` inside `merge_guard_post` must NOT
+        # satisfy the standalone merge_guard check (M60 review F1 — the
+        # M39/M40 substring-shadowing false-coverage trap).
         text = read(DESIGN)
         for hook in HOOKS:
-            self.assertIn(hook, text, f"DESIGN.md hooks list missing {hook}")
+            self.assertRegex(
+                text, rf"\b{hook}\b", f"DESIGN.md hooks list missing {hook}"
+            )
 
     def test_ip1_names_the_default_branch(self):
         text = read(DESIGN)

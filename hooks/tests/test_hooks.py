@@ -452,6 +452,16 @@ class TestForcePushGuard(RepoFixture):
     def test_compound_command_push_segment_is_caught(self):
         self.assert_denied("git fetch && git push --force origin main")
 
+    def test_subshell_wrapped_force_push_is_caught(self):
+        # M60 review F4a: `)` must end the span, not glue onto the refspec
+        self.assert_denied("(git push -f origin main)")
+
+    def test_separate_value_flag_never_invents_a_deny(self):
+        # M60 review F4b: -o's value token is not a refspec — this is a
+        # feature-branch force-push and must pass
+        self.assert_passes("git push -f origin my-feature -o main")
+        self.assert_denied("git push -f origin main -o ci.skip")
+
     def test_ignores_other_tools(self):
         proc = run_hook(
             "force_push_guard.py",

@@ -283,7 +283,16 @@ REGISTRY = [
         target="cairn/DESIGN.md",
         block="memory_guard",
     ),
-    # M60 git-safety hooks: DESIGN must name both new hooks…
+    # M60 git-safety hooks: DESIGN must name both new hooks… and the
+    # standalone merge_guard mention is registrable only via a longer
+    # unique anchor (bare "merge_guard" occurs twice as a substring; the
+    # guard's word-bounded regex is what makes blanking this block fail).
+    Mutation(
+        guard="test_positioning_guard",
+        test="TestDesignArchitectureHonesty.test_design_lists_all_seven_hooks",
+        target="cairn/DESIGN.md",
+        block="`merge_guard` (single-use",
+    ),
     Mutation(
         guard="test_positioning_guard",
         test="TestDesignArchitectureHonesty.test_design_lists_all_seven_hooks",

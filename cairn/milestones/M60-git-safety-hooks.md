@@ -160,3 +160,20 @@ guarded merge no longer consumes the approval marker (RR01 recs 8 + 13).
 - Consistency gate: cairn_validate all checks passed, exit 0. Profile
   `generic` → no toolchain checks. No IP/GP text changed (DESIGN edit is
   the Architecture bullet only) → cairn_impact not required.
+- Independent review (3 lenses + scorer): [S] blame-history — no findings;
+  [S] prior-PR-comments — no prior-PR evidence (0 GitHub review comments
+  repo-wide); [O] diff-bug — 5 findings, scored by fresh [S] scorer.
+- Actioned (≥80): F1 (90) seven-hook guard's bare `merge_guard` assertIn
+  shadowed by merge_guard_post → word-bounded assertRegex + unique-anchor
+  mutation entry; F4 (85) parse edges — `)` now ends a span (subshell
+  force-push denied) and known separate-value flags' values skipped
+  (`-o main` no longer invents a deny), docstring corrected, 2 regression
+  tests; F5 (80) plain pushes now return before default-branch detection
+  (no ls-remote network call on the safe path).
+- Logged, not actioned (<80): F2 (65) remote-agnostic refspec match denies
+  force-pushing a same-named branch on a secondary remote — accepted +
+  documented in the docstring (mirrors of the default branch deserve the
+  protection; deny recoverable); F3 (55) two composed compound-command
+  bypasses could revive a stale pending marker — speculative (shapes the
+  skills never emit; defense-in-depth layer), left as-is.
+- Post-fix: suites 54/84/175, exit codes 0/0/0.
