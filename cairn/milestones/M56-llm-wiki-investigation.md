@@ -69,12 +69,12 @@ same. Fable escalation → offered only on a live RB-tripwire hit
 - [x] T2: Ecosystem scan — LangChain OpenWiki, nvk/llm-wiki, SamurAIGPT
       llm-wiki-agent, DeepWiki/AutoWiki (light), community hardening patterns
       (provenance headers, page-vs-edit heuristic); add the scan section.
-- [ ] T3: Fit assessment, target 1 — references/ formalism: element-by-element
+- [x] T3: Fit assessment, target 1 — references/ formalism: element-by-element
       map + verdicts against tracking-rules "Source ingestion".
-- [ ] T4: Fit assessment, target 2 — cross-file linking: `git grep` the
+- [x] T4: Fit assessment, target 2 — cross-file linking: `git grep` the
       current link-token practice across `cairn/`; verdict on a linking
       convention + dangling-link lint (note `cairn_impact`'s existing tracing).
-- [ ] T5: Fit assessment, target 3 — agent-memory angle vs. `session_context`
+- [x] T5: Fit assessment, target 3 — agent-memory angle vs. `session_context`
       hook + the stateless-resume doctrine; verdict.
 - [ ] T6: Disposition ledger: bank candidates (search-first), add the
       `INDEX.md` line, run `cairn_validate`.
@@ -88,6 +88,14 @@ same. Fable escalation → offered only on a live RB-tripwire hit
 - 2026-07-16: T2 done — scan of openwiki/nvk/SamurAIGPT/DeepWiki; convergent
   hardening: wikilinks de-facto, lint mechanized, log universal, schema
   human-owned (ecosystem re-derived cairn-style governance).
+- 2026-07-16: T3 done — references/ map: two real deltas (name the synthesis
+  page type; add a references lint), rest already-have or reject.
+- 2026-07-16: T4 done — grep survey: 480 M / 249 D / 96 IP-GP tokens, zero
+  true dangling; wikilinks rejected (bare IDs are the link syntax);
+  dangling-ref ADVISORY adopted (M57/M99 = FP hazards to tolerate).
+- 2026-07-16: T5 done — cairn IS a governed LLM Wiki for project state;
+  structural steals rejected, positioning framing adopted → release prep.
+  T3–T5 committed together (one file, three sections — minor fold).
 
 ## Decisions
 

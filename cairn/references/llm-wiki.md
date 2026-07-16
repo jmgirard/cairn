@@ -97,3 +97,76 @@ index drift) rather than staying an LLM judgment pass; (3) append-only
 `log.md` is universal; (4) the schema/conventions file trends
 **human-owned** with agent-proposed amendments — the ecosystem
 independently arrived at cairn-style governance.
+
+## Fit assessment 1: the references/ feature set
+
+Element-by-element, LLM Wiki → cairn's `references/` (tracking-rules
+"Source ingestion"), with verdicts:
+
+| LLM Wiki element | cairn today | Verdict |
+|---|---|---|
+| `raw/` immutable, committed | `references/pdf/`, immutable but **gitignored** | **Adapt (keep cairn's)** — immutability already holds; gitignoring is a copyright necessity for published PDFs. Reject committing raw sources. |
+| Per-source summary pages | `<citekey>.md` with page/table anchors | **Already have** — cairn's version is stronger (verbatim-critical values quoted, tests/oracles trace to it). |
+| `index.md` catalog, updated per ingest | `INDEX.md`, one line per note | **Already have** — same shape. |
+| Entity/concept pages (cross-source synthesis) | Not in the stated formalism — but practice already outgrew it: `competitive-landscape.md` (M06 synthesis), `migration-pilot-notes.md` (cross-pilot ledger) are concept pages living in `references/` unnamed | **Adopt (name it)** — legitimize the existing second page type: source notes (`<citekey>.md`) + synthesis notes. A one-line widening of the file-map entry, not new machinery. |
+| `log.md` append-only op record | None; ingestion recorded in milestone work-logs + git | **Reject** — duplicates state the boundary rule already places ("History → archive + git log"); a second log is a divergence vector. |
+| **Ingest** op | The Source-ingestion recipe (pdf → summary → INDEX line) | **Already have** — leaner, equivalent. |
+| **Query** op (+ answers filed back) | No formal op; but "answers filed back as pages" is already practice (M42's and this note's fit assessments *are* filed-back query answers) | **Reject formalizing**; the filed-back norm already operates. |
+| **Lint** op | **Nothing** — `cairn_validate` has zero `references/` checks (no INDEX↔disk orphan check; the roadmap↔disk orphan check has no references sibling) | **Adopt** — the one genuine gap. A mechanized INDEX↔disk check fits the existing validate architecture. |
+| Schema file (human-owned, co-evolved) | `tracking-rules.md` — plugin-shipped, guard-tested, amended via D-entries | **Already have, stronger** — cairn ships the schema as a versioned artifact with mutation-tested guards; the ecosystem's "human-owned, proposal-only amendments" is cairn's model re-derived. |
+
+**Headline:** cairn's `references/` is already a small LLM Wiki; the real
+deltas are just two — *name the synthesis page type* and *add a references
+lint*. The formalism validates the design rather than replacing it.
+
+## Fit assessment 2: cross-file linking
+
+Current practice (grep survey, 2026-07-16): the implicit link graph is
+dense — **480 `M<NN>` tokens, 249 `D-<NNN>` tokens, 96 `IPn`/`GPn` tokens**
+across `cairn/`. These bare tokens are true stable identifiers (append-only,
+never renumbered, never reused — stronger link targets than file paths), and
+`cairn_impact` already resolves principle tokens whole-word to citing
+file:line. Dangling-ref audit: zero true dangling IDs today; the two
+non-existent-here IDs found are `M57` (qualified cross-repo cite, "ackwards
+M57") and `M99` (example prose about ID growth in the M10 archive) — both
+false-positive hazards a naive checker must tolerate.
+
+- **`[[wikilink]]` syntax: Reject.** Bare ID tokens already resolve
+  unambiguously; wikilinks would break plain-markdown/GitHub rendering (nvk
+  needed a dual-link workaround for a problem bare tokens don't have), and
+  retrofitting ~800 existing tokens would rewrite append-only history.
+  cairn's link syntax *is* the ID vocabulary.
+- **Dangling-reference lint: Adopt, as an advisory.** A `cairn_validate`
+  ADVISORY (WARN tier, M44) scanning `cairn/` for `M<NN>`/`D-<NNN>` tokens
+  that resolve to no ROADMAP row, archive file, or D-entry — tolerating
+  repo-qualified refs and example prose per the two hazards above (the
+  D-023 "missed weird format beats a false positive" doctrine). Sibling of
+  the existing roadmap↔disk orphan check and `cairn_impact` tracing.
+- **Graph/hub tooling: Reject.** On-demand `grep` answers "what cites
+  D-024" already; a graph artifact is state that rots.
+
+## Fit assessment 3: the agent-memory angle
+
+The ecosystem frames a maintained wiki as agent memory (semantic = durable
+facts, entity = pages, episodic = logs). Mapping cairn onto it: **cairn is
+already a governed LLM Wiki specialized to project state** — schema =
+`tracking-rules.md` (plugin-shipped), wiki = the `cairn/` file map with
+ownership boundaries, raw = the repo + git history, ingest = the phase
+skills, lint = `cairn_validate` + the `/milestone` audit, query =
+`/milestone` + `cairn_status`/`cairn_next`, log = work-logs + DECISIONS.
+Session memory = the `session_context` hook injecting ROADMAP + active
+milestone at session start; stateless resume is the discipline that makes
+the wiki, not the transcript, the memory.
+
+- **Structural steals: Reject.** Free-form agent-created pages are the
+  *opposite* of cairn's differentiator — governed state (fixed file map,
+  sole status authority, caps, gates; M06 positioning). Where LLM Wiki lets
+  the agent own the wiki layer entirely, cairn deliberately gates every
+  transition; that difference is the product.
+- **Positioning framing: Adopt.** "A governed LLM Wiki for project state —
+  the agent maintains it, the human gates it" is a stronger one-line
+  explanation of cairn than any current README phrasing, and the pattern's
+  name now carries recognition (Karpathy, LangChain). Feed into the
+  public-release-prep README work; independent convergence on human-owned
+  schemas + mechanized lint (ecosystem scan above) is third-party
+  validation of the design bet.
