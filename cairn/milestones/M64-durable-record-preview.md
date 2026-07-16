@@ -65,7 +65,7 @@ checkbox ticks, status mirrors → exempt mechanical noise (D-036).
       (Output & interaction discipline) + the carve-out clause in "Deltas,
       not dumps" — single-line unique anchor phrases (M59/M23), tokens
       inside bold (M26).
-- [ ] T2: Add the one-line preview directive at each commit step:
+- [x] T2: Add the one-line preview directive at each commit step:
       milestone-plan/SKILL.md step 6; milestone-review/SKILL.md post-merge
       hygiene (~L175–185); milestone-implement/SKILL.md Decisions append +
       amendment protocol (step 6); milestone-brief/SKILL.md RR-ingestion
@@ -85,6 +85,9 @@ checkbox ticks, status mirrors → exempt mechanical noise (D-036).
   candidate row banked 2026-07-16; row graduates at completion per M35).
 - 2026-07-16: T1 done — preview rule + Deltas-not-dumps carve-out in
   tracking-rules.md; all three suites green.
+- 2026-07-16: T2 done — preview directives in plan (step 6), review
+  (post-merge hygiene), implement (task loop + substantive amendments),
+  brief (RR ingestion step 4); skills suite green.
 
 ## Decisions
 

@@ -182,7 +182,10 @@ overrides — log the override).
    remembering — to `cairn/LESSONS.md`, one per line
    (`- YYYY-MM-DD (M<NN>): <lesson>`, append-only); lessons, not status or a
    *choice* (a choice is a D-entry). None learned → skip; if the 50-line cap
-   is hit, prune the stalest lines in this same commit. Docs-only commit:
+   is hit, prune the stalest lines in this same commit. Durable-record
+   preview (tracking-rules): show the archive summary, each LESSONS line,
+   any D-entry, and any candidate graduation verbatim in chat before the
+   commit. Docs-only commit:
    `review M<NN>: done`; push. The done
    recap leads with what shipped, in plain words; hygiene mechanics
    compress to one line.

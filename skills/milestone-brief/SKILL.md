@@ -62,7 +62,9 @@ start (any skill) when a manual RR appears:
    out-of-scope ones), each triaged: apply / consider / reject-with-reason
    (logged).
 4. Move the RB/RR pair to `cairn/reviews/archive/`; milestone status back
-   to `in-progress`; commit (docs-only): `ingest RR<NN>`.
+   to `in-progress`; durable-record preview (tracking-rules): show the
+   Decisions entries, D-entries, and candidate rows the ingestion wrote
+   verbatim in chat before the commit; commit (docs-only): `ingest RR<NN>`.
 5. **Routing chip (AskUserQuestion)**, composed from where the RR left the
    milestone — e.g. **Resume implementation** → `/milestone-implement <id>`
    (recommended) / Stop here.

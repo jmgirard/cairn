@@ -60,6 +60,9 @@ run ingestion first (see `/milestone-brief`).
    - Stay within implement-owned sections per the tracking-rules
      section-ownership table; Goal, Scope, and Acceptance criteria change
      only via the amendment gate (step 6).
+   - Durable-record preview (tracking-rules): a milestone-local Decisions
+     entry or promoted D-entry is shown verbatim in chat before its
+     checkpoint commit (work-log one-liners and checkbox ticks are exempt).
 
 5. **Delegate** per tracking-rules (Sonnet for well-specified mechanical
    work; Opus for design-sensitive work; never Haiku; Fable only via
@@ -72,7 +75,8 @@ run ingestion first (see `/milestone-brief`).
      edit the milestone file; one work-log line.
    - *Substantive* (a criterion or scope must change): mini question gate
      with a recommendation; record the amendment as a dated work-log line
-     (+ D-entry if cross-cutting).
+     (+ D-entry if cross-cutting); show the amended criterion/scope text
+     verbatim in chat before its commit (durable-record preview).
    - *The goal itself is wrong*: stop; status back to `planned`; routing
      chip to `/milestone-plan` for a proper re-cut.
    Never silently deliver something other than what the plan promised —
