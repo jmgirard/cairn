@@ -1,0 +1,98 @@
+<!-- Section ownership + write-modes: see tracking-rules.md "Milestone-file
+     section ownership". A phase skill never rewrites another phase's section.
+     Per-section owners are tagged below. -->
+# M62: Release docs — LICENSE, README worked example + framing, DRAFT removal
+
+- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
+- **Depends on:** M61   <!-- owner: plan · create/amend-via-gate -->
+- **Principles touched:** —   <!-- owner: plan · create/amend-via-gate -->
+- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+
+## Goal
+<!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
+
+Make the repo publicly presentable for v1.0: MIT LICENSE, a README with a
+worked example and the governed-LLM-Wiki framing, and DRAFT_2.md removed.
+
+## Scope
+<!-- owner: plan · create/amend-via-gate -->
+
+**In:**
+- `LICENSE` (MIT) at the repo root (DRAFT_2 §11 step 4).
+- README worked example: one milestone walked end-to-end (idea →
+  plan gate → implement → review → merge chip), short and concrete.
+- README intro adopts the governed-LLM-Wiki framing (M56 verdict,
+  `references/llm-wiki.md` — "a governed LLM Wiki for project state").
+- Tighten the human-facing "what cairn does without asking" surface (RR01
+  §10.5): the existing "expects from you" / "does NOT do" sections gain the
+  missing pieces — chips are stops, merges need explicit approval, and how
+  to bail out (pause/drop a milestone, uninstall).
+- Remove `DRAFT_2.md`; repo-wide sweep for references (README Status ¶
+  cites it today) — history files exempt (DECISIONS/CHANGELOG/legacy/
+  reviews archive only — M58 lesson); reword the README status paragraph
+  off "piloting"/DRAFT framing.
+- Depends on M61 so the README documents the shipped env check and dry-run
+  honestly.
+
+**Out:** version bump, CHANGELOG consolidation, and the v1.0 tag →
+`/cairn-release` run after this merges (generic release-walk); marketplace
+promotion beyond what D-007 already ships → post-1.0, stays with D-007;
+external de-risking → M61.
+
+## Acceptance criteria
+<!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
+
+- [ ] `LICENSE` exists at the repo root containing the MIT license text
+      with the correct holder and year.
+- [ ] README contains a worked example section walking one milestone
+      end-to-end through the three gates.
+- [ ] README intro carries the governed-LLM-Wiki framing traceable to
+      `references/llm-wiki.md`; `test_positioning_guard.py` (extended)
+      stays green.
+- [ ] README states what cairn does and won't do without asking, including
+      an explicit bail-out path (RR01 §10.5).
+- [ ] `DRAFT_2.md` is deleted and `git grep -i draft_2` over live files
+      returns only history-file hits (DECISIONS/CHANGELOG/legacy/reviews
+      archive).
+- [ ] Verify clean: both unittest suites green from the repo root; any
+      new/extended prose-guards mutation-registered.
+
+## Coverage
+<!-- owner: plan · create/amend-via-gate; AC/Task counted top-to-bottom -->
+
+- AC1 → T1
+- AC2 → T2
+- AC3 → T3
+- AC4 → T4
+- AC5 → T5
+- AC6 → T6
+
+## Tasks
+<!-- owner: plan (create) / implement (check-off, minor edits) -->
+
+- [ ] T1: Add the MIT `LICENSE` (holder: Jeffrey Girard, year 2026).
+- [ ] T2: Write the README worked-example section (one milestone,
+      three gates, chip-driven flow).
+- [ ] T3: Weave the governed-LLM-Wiki framing into the README intro;
+      extend `skills/tests/test_positioning_guard.py` so the framing and
+      the existing language-agnostic positioning are both locked.
+- [ ] T4: Tighten the "without asking" surface + bail-out story in the
+      README's expectations/non-goals sections.
+- [ ] T5: Delete `DRAFT_2.md`; repo-wide `git grep` sweep (M48/M58
+      lessons — exempt history files only); reword the README status
+      paragraph.
+- [ ] T6: Mutation-register new guard blocks; run both suites from the
+      repo root.
+
+## Work log
+<!-- owner: any skill · append-only; one line per entry; absolute dates -->
+
+- 2026-07-16: created by /milestone-plan (carved from the "Public release
+  prep" candidate row with M61; v1.0 tag stays a /cairn-release run).
+
+## Decisions
+<!-- owner: implement / review · append-only; milestone-local -->
+
+## Review
+<!-- owner: review · exclusive; EXEMPT from the 150-line cap (M55) -->

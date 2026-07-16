@@ -675,3 +675,22 @@ stay blind to it) — the candidate row's own framing.
 history-integrity work; the number IP4 is assigned and never reused.
 Graduates the "Name IP4" candidate row. If the wording ever needs weakening,
 that change is itself IP-touching and requires a superseding D-entry.
+
+### D-033 (2026-07-16): Drop the live-openac router-test candidate
+
+**Context:** M08's Out banked "run the classify-first router empirically in
+openac" as a candidate. By its own wording, openac is a separate repo and no
+automated evidence can land here — the row could never be crossed off, only
+informally remembered. Surfaced at the 2026-07-16 pre-release candidate
+triage (`/milestone-plan`), same pattern as the D-027 prunes.
+**Decision:** Drop the row, at the user's explicit choice at the plan gate.
+Rationale: the router is exercised naturally by every plain-conversation
+request in every cairn-adopting repo; a routing defect surfaces as lived
+friction and comes back as a concrete bug report or candidate, which is
+strictly better evidence than a one-off staged probe. Rejected keeping it as
+a parked reminder — a row that cannot ever produce evidence in this repo is
+rot, and search-first will find this entry if the idea recurs.
+**Consequences:** Candidates drop by one; the M08 archive summary keeps the
+historical Out note. If router misrouting is ever actually observed in an
+adopting repo, that observation arrives as its own candidate/hotfix — or
+supersede this entry to reinstate a deliberate probe.
