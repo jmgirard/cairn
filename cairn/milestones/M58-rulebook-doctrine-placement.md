@@ -159,3 +159,13 @@ Evidence gathered fresh 2026-07-16 (PR #56, branch synced — main unmoved since
 Consistency gate: `cairn_validate` all checks passed (fresh); coverage map
 complete (AC1–5 → existing T1–T6); no DESIGN principle text changed →
 `cairn_impact` skipped; generic profile consistency-gate slot = none (no-op).
+
+Fresh-context fan-out (2026-07-16): [O] diff-bug — verbatim-move verified,
+all mutation locators unique, 1 finding; [S] blame-history — 0 findings
+(profile trims lose only the two governance rules; registry cross-checked
+vs main); [S] prior-PR — no prior-PR evidence (expected, M40). Scorer: F1 =
+stale doctrine-location claims in live references pages (T4 sweep wrongly
+excluded `cairn/references/`), scored 85 → fixed: dated M58/D-031
+annotations in oracle-discipline-notes.md + oracle-doctrine-intraclass-notes.md
+(scorer-surfaced sibling); remaining grep hits are location-claim-free
+history. No sub-80 findings logged (none reported).

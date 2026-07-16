@@ -1,7 +1,8 @@
 # Oracle doctrine validated against intraclass (M42)
 
 _Scope: a read-only fit assessment of cairn's D-024 oracle-type doctrine (the
-`tracking-rules.md` "Validation doctrine" section) against `jmgirard/intraclass`'s
+`tracking-rules.md` "Validation doctrine" section; since M58, 2026-07-16,
+extracted to `skills/shared/validation-doctrine.md` — D-031) against `jmgirard/intraclass`'s
 real oracle system — the practice cairn's doctrine descends from (D-024). Records
 findings that sharpen the doctrine and the two deferred oracle candidates; builds
 nothing. Not a cairn tracking authority — status lives in ROADMAP, decisions in
