@@ -147,7 +147,9 @@ overrides — log the override).
    what the user is approving in plain words — what the milestone does or
    changes — then acceptance-criteria evidence, problems
    found and how each was handled, diffstat, anything the user should eyeball
-   directly. Ask any remaining clarifying questions first (batched, with
+   directly.
+   Acceptance chips (tracking-rules): each actioned finding's text appears
+   verbatim in this presentation, never only a summary. Ask any remaining clarifying questions first (batched, with
    recommendations). Then put the merge authorization **itself** to the user
    as an `AskUserQuestion` chip — this is the third gate (per tracking-rules),
    never a prose yes/no: the recommended option merges (e.g. `Merge PR #N to

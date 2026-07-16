@@ -30,7 +30,9 @@ makes the review reproducible and its findings ingestible.
 
 3. **Approval gate** (AskUserQuestion): present the brief's scope, a rough
    size estimate (files/lines Fable must read), and a reminder that Fable is
-   token-billed. Options:
+   token-billed. Acceptance chips (tracking-rules): show the drafted RB's
+   question and scope text verbatim above the gate, never only a
+   description. Options:
    - **Spawn Fable subagent** (recommended) — on approval, launch an Agent
      with `model: "fable"` ([F]-tagged description) whose entire prompt
      is: read
@@ -67,7 +69,8 @@ start (any skill) when a manual RR appears:
    verbatim in chat before the commit; commit (docs-only): `ingest RR<NN>`.
 5. **Routing chip (AskUserQuestion)**, composed from where the RR left the
    milestone — e.g. **Resume implementation** → `/milestone-implement <id>`
-   (recommended) / Stop here.
+   (recommended) / Stop here. Acceptance chips (tracking-rules):
+   the RR's conclusions/verdict section is shown verbatim above the chip.
 
 Robustness:
 

@@ -42,7 +42,9 @@ run ingestion first (see `/milestone-brief`).
 3. **Question gate:** surface the implementation choices the plan left open
    (API shape, naming, dependency picks — dependency changes always need a
    gate + D-entry) with recommendations. Skip only if nothing is genuinely
-   open. If the plan tags an item `(RB tripwire: <token>)` — or a new
+   open.
+   Acceptance chips (tracking-rules): a question resting on a produced
+   conclusion shows its substance verbatim above the chip. If the plan tags an item `(RB tripwire: <token>)` — or a new
    tripwire emerges mid-work (same three categories; see tracking-rules) —
    include an **Escalate via `/milestone-brief`** option on that question;
    never offer escalation without a tripwire hit (Fable is gated per
@@ -74,7 +76,9 @@ run ingestion first (see `/milestone-brief`).
    - *Minor* (reorder tasks, refine wording, add a discovered sub-task):
      edit the milestone file; one work-log line.
    - *Substantive* (a criterion or scope must change): mini question gate
-     with a recommendation; record the amendment as a dated work-log line
+     with a recommendation, the proposed text shown verbatim above the
+     mini gate's chip (acceptance chips, tracking-rules); record the
+     amendment as a dated work-log line
      (+ D-entry if cross-cutting); show the amended criterion/scope text
      verbatim in chat before its commit (durable-record preview).
    - *The goal itself is wrong*: stop; status back to `planned`; routing

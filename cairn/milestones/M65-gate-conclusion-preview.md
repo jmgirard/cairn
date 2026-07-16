@@ -69,7 +69,7 @@ appears there). Commit-time preview → shipped in M64. Chip form/invariants
       carry choices, not evidence" — single-line anchors (M59/M64 lesson:
       multi-word names on ONE physical line), tokens inside bold (M26);
       re-run the suite after any reflow near registered blocks.
-- [ ] T2: Add the one-line directive at each conclusion-chip step:
+- [x] T2: Add the one-line directive at each conclusion-chip step:
       milestone-plan step 3; milestone-implement steps 3 + 6;
       milestone-review step 7; milestone-brief RB gate + ingestion step 5;
       milestone §3 Route (triage chips).
@@ -89,6 +89,9 @@ appears there). Commit-time preview → shipped in M64. Chip form/invariants
   hit; row graduates at completion per M35).
 - 2026-07-16: T1 done — Acceptance chips rule + cross-ref in Chips carry
   choices; all three suites green.
+- 2026-07-16: T2 done — directives at plan gate, implement gate + mini
+  gate, review approval gate, brief RB gate + RR routing, milestone Route;
+  suite green.
 
 ## Decisions
 
