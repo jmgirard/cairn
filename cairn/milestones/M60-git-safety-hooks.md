@@ -73,7 +73,7 @@ guarded merge no longer consumes the approval marker (RR01 recs 8 + 13).
       attempt consumed, never mint approval.
 - [x] T3: Register both in hooks/hooks.json; extend hooks/tests registration
       fixtures if any assert the hook list.
-- [ ] T4: Update DESIGN.md hooks bullet (5 → 7) and the rulebook's
+- [x] T4: Update DESIGN.md hooks bullet (5 → 7) and the rulebook's
       "Never force-push" line; re-anchor any guards on either (M46), register
       mutation blocks (M53/M54).
 - [ ] T5: Run all three suites from the repo root (M56: no exit-blind
@@ -108,6 +108,12 @@ guarded merge no longer consumes the approval marker (RR01 recs 8 + 13).
   merge_guard_post under BOTH PostToolUse and PostToolUseFailure (Bash);
   no fixture asserted the hook list, so added TestHooksRegistration
   (per-hook registration, standard envelope, every-script-registered).
+- 2026-07-16: T4 done — DESIGN bullet now names all seven hooks; rulebook
+  force-push line names force_push_guard as its enforcement and the marker
+  paragraph records the restore lifecycle; positioning guard re-anchored
+  (HOOKS → 7, test renamed) and new test_git_safety_hooks.py added; 8
+  mutation entries registered (2 DESIGN blocks + 4 rulebook blocks + 2
+  renamed-test re-anchors). Skills suite 175 green.
 
 ## Decisions
 

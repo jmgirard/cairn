@@ -24,9 +24,18 @@ README = "README.md"
 DESIGN = "cairn/DESIGN.md"
 TEMPLATE = "skills/shared/templates/claude-md-section.md"
 
-# The five shipped hooks (DESIGN Architecture must name each — the M54 fix
-# added commit_guard + memory_guard, which the stale three-hook bullet omitted).
-HOOKS = ("session_context", "stop_guard", "merge_guard", "commit_guard", "memory_guard")
+# The seven shipped hooks (DESIGN Architecture must name each — the M54 fix
+# added commit_guard + memory_guard, which the stale three-hook bullet
+# omitted; M60 added force_push_guard + merge_guard_post).
+HOOKS = (
+    "session_context",
+    "stop_guard",
+    "merge_guard",
+    "commit_guard",
+    "memory_guard",
+    "force_push_guard",
+    "merge_guard_post",
+)
 
 
 def read(rel):
@@ -53,7 +62,7 @@ class TestOutwardPositioning(unittest.TestCase):
 
 
 class TestDesignArchitectureHonesty(unittest.TestCase):
-    def test_design_lists_all_five_hooks(self):
+    def test_design_lists_all_seven_hooks(self):
         text = read(DESIGN)
         for hook in HOOKS:
             self.assertIn(hook, text, f"DESIGN.md hooks list missing {hook}")

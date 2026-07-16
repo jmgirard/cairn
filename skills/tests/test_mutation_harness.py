@@ -273,15 +273,54 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_positioning_guard",
-        test="TestDesignArchitectureHonesty.test_design_lists_all_five_hooks",
+        test="TestDesignArchitectureHonesty.test_design_lists_all_seven_hooks",
         target="cairn/DESIGN.md",
         block="commit_guard",
     ),
     Mutation(
         guard="test_positioning_guard",
-        test="TestDesignArchitectureHonesty.test_design_lists_all_five_hooks",
+        test="TestDesignArchitectureHonesty.test_design_lists_all_seven_hooks",
         target="cairn/DESIGN.md",
         block="memory_guard",
+    ),
+    # M60 git-safety hooks: DESIGN must name both new hooks…
+    Mutation(
+        guard="test_positioning_guard",
+        test="TestDesignArchitectureHonesty.test_design_lists_all_seven_hooks",
+        target="cairn/DESIGN.md",
+        block="force_push_guard",
+    ),
+    Mutation(
+        guard="test_positioning_guard",
+        test="TestDesignArchitectureHonesty.test_design_lists_all_seven_hooks",
+        target="cairn/DESIGN.md",
+        block="merge_guard_post",
+    ),
+    # …and the rulebook must keep recording their mechanical backing
+    # (test_git_safety_hooks, one entry per new positive assert — M53).
+    Mutation(
+        guard="test_git_safety_hooks",
+        test="TestForcePushLine.test_never_force_push_names_its_mechanical_backing",
+        target=RULES,
+        block="force_push_guard hook mechanically denies",
+    ),
+    Mutation(
+        guard="test_git_safety_hooks",
+        test="TestForcePushLine.test_feature_branches_stay_unblocked",
+        target=RULES,
+        block="(feature branches are not blocked)",
+    ),
+    Mutation(
+        guard="test_git_safety_hooks",
+        test="TestMarkerRestoreLifecycle.test_marker_paragraph_records_the_restore",
+        target=RULES,
+        block="restored automatically (merge_guard_post)",
+    ),
+    Mutation(
+        guard="test_git_safety_hooks",
+        test="TestMarkerRestoreLifecycle.test_single_use_semantics_survive",
+        target=RULES,
+        block="survives failed retries but never a successful merge",
     ),
     Mutation(
         guard="test_positioning_guard",

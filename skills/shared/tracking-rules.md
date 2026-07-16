@@ -243,12 +243,16 @@ adds alike).
 - If the default branch moves under an active branch (e.g., a hotfix merged),
   merge it into the branch and re-run tests before continuing or reviewing.
 - **Nothing reaches the default branch without the user's explicit approval at
-  the review gate.** Never force-push; never merge red or pending CI.
+  the review gate.** Never force-push — the plugin's
+  force_push_guard hook mechanically denies a force-push to the default branch
+  (feature branches are not blocked); never merge red or pending CI.
 - Approval is recorded on disk: the approving skill writes the single-use,
   gitignored marker `cairn/.merge-approved` at the gate; the plugin's
   merge-guard hook denies `gh pr merge`/`git merge` to the default branch
-  without it and consumes it per merge attempt. Never write the marker except
-  at an explicit user approval.
+  without it and consumes it per merge attempt. A failed attempt's consumed
+  marker is restored automatically (merge_guard_post), so one approval
+  survives failed retries but never a successful merge. Never write the
+  marker except at an explicit user approval.
 
 Waiting on CI / background work:
 
