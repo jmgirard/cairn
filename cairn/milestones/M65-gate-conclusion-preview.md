@@ -4,7 +4,7 @@
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** GP4
-- **Branch/PR:** m65-gate-conclusion-preview
+- **Branch/PR:** m65-gate-conclusion-preview · https://github.com/jmgirard/cairn/pull/63
 
 ## Goal
 
@@ -34,25 +34,25 @@ appears there). Commit-time preview → shipped in M64. Chip form/invariants
 
 ## Acceptance criteria
 
-- [ ] AC1: tracking-rules.md contains an Acceptance chips rule stating that
+- [x] AC1: tracking-rules.md contains an Acceptance chips rule stating that
       a chip option accepting/approving a produced conclusion requires that
       conclusion's substance verbatim in chat above the chip — verdict +
       each actioned finding verbatim; long artifacts: conclusions section
       verbatim + file path; never a paraphrase in place of the accepted
       text (D-037).
-- [ ] AC2: the "Chips carry choices, not evidence" rule cross-references
+- [x] AC2: the "Chips carry choices, not evidence" rule cross-references
       the Acceptance chips rule so the pair cannot be read as license to
       compress the text being accepted.
-- [ ] AC3: each of the five covered skills carries a one-line directive at
+- [x] AC3: each of the five covered skills carries a one-line directive at
       its conclusion-chip step(s): plan step 3, implement steps 3 + 6,
       review step 7, brief RB gate + RR-ingestion routing, milestone
       route/triage — evidenced by file:line grep hits scoped to
       `skills/*/SKILL.md`.
-- [ ] AC4: `skills/tests/test_gate_conclusion_preview.py` exists, asserts
+- [x] AC4: `skills/tests/test_gate_conclusion_preview.py` exists, asserts
       AC1–AC3 with unique single-line anchors, is mutation-registered, and
       the "Chips carry choices, not evidence" block gains its own
       registered guard (harness + completeness meta-test green).
-- [ ] AC5: verify clean — all three suites (`skills/tests`, `scripts/tests`,
+- [x] AC5: verify clean — all three suites (`skills/tests`, `scripts/tests`,
       `hooks/tests`) discover-run exit 0 from the repo root.
 
 ## Coverage
@@ -102,3 +102,28 @@ appears there). Commit-time preview → shipped in M64. Chip form/invariants
 ## Decisions
 
 ## Review
+
+PR: https://github.com/jmgirard/cairn/pull/63 (draft; base = origin/main).
+
+- AC1 (2026-07-16): rule at tracking-rules.md:382–388 — substance
+  requirement, D-037 verbatim bar, paraphrase prohibition all grepped;
+  guard TestAcceptanceChipsRule green.
+- AC2 (2026-07-16): cross-ref at tracking-rules.md:381 ("a summary never
+  substitutes for the accepted text."); guard green.
+- AC3 (2026-07-16): directive grep hits — plan:62, implement:46+80,
+  review:151, brief:33+72, milestone:89. All names on one physical line
+  (M64 lesson applied at authoring).
+- AC4 (2026-07-16): guard file exists (8 tests, counted by command); 12
+  Mutation entries incl. the chips-carry-choices block; harness +
+  completeness green (skills suite 208 tests OK).
+- AC5 (2026-07-16): skills/scripts/hooks suites all OK from repo root;
+  cairn_validate all checks passed.
+- Consistency gate (2026-07-16): validate exit 0; generic profile
+  consistency-gate slot names no toolchain checks (clean no-op); no IP/GP
+  changed → cairn_impact skipped.
+- Fan-out (2026-07-16): diff-bug 1 finding; blame + prior-PR lenses clean
+  (prior-PR: zero inline comments incl. fresh PR #62 — expected no-op).
+  Scored: F1 65 ("Deltas, not dumps" still says "One exception" though M65
+  adds a second verbatim-mandating rule; per-skill directives blunt any
+  practical risk) → sub-threshold, logged not actioned; surfaced at the
+  approval gate for an optional one-sentence fix.
