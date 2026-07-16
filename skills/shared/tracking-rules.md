@@ -376,7 +376,16 @@ cairn skill is active.
 - **Chips carry choices, not evidence.** Supporting detail and technical
   justification live in chat *above* the chip. Option labels are short;
   each description says in plain language what is being chosen and why
-  it matters. At most 4 options per question.
+  it matters. At most 4 options per question. When a chip asks acceptance
+  of a produced conclusion, the Acceptance chips rule below sets the bar —
+  a summary never substitutes for the accepted text.
+- **Acceptance chips show what's accepted.** A chip option that accepts or
+  approves a produced conclusion — review findings, a subagent's verdict,
+  an audit result, amended text — requires that conclusion's substance
+  verbatim in chat above the chip (D-037): the verdict and each actioned
+  finding appear verbatim; a long artifact shows its conclusions section
+  verbatim plus the file path for the rest; a paraphrase never stands in
+  for the text being accepted.
 - **Contextual chip construction.** Compose options from the actual
   session state — the specific issue found, the specific next action —
   not from a fixed menu; chip menus listed in skills are examples, not

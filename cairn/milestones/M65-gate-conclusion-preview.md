@@ -1,10 +1,10 @@
 # M65: Gate-time conclusion preview — acceptance chips show what's accepted
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** GP4
-- **Branch/PR:** —
+- **Branch/PR:** m65-gate-conclusion-preview
 
 ## Goal
 
@@ -65,7 +65,7 @@ appears there). Commit-time preview → shipped in M64. Chip form/invariants
 
 ## Tasks
 
-- [ ] T1: Author the Acceptance chips rule + the cross-reference in "Chips
+- [x] T1: Author the Acceptance chips rule + the cross-reference in "Chips
       carry choices, not evidence" — single-line anchors (M59/M64 lesson:
       multi-word names on ONE physical line), tokens inside bold (M26);
       re-run the suite after any reflow near registered blocks.
@@ -87,6 +87,8 @@ appears there). Commit-time preview → shipped in M64. Chip form/invariants
 - 2026-07-16: created by /milestone-plan (promotes the gate-time
   conclusion-preview candidate banked 2026-07-16 after the circumplex live
   hit; row graduates at completion per M35).
+- 2026-07-16: T1 done — Acceptance chips rule + cross-ref in Chips carry
+  choices; all three suites green.
 
 ## Decisions
 
