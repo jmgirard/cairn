@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M62: Release docs — LICENSE, README worked example + framing, DRAFT removal
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M61   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -83,7 +83,7 @@ external de-risking → M61.
 - [x] T5: Delete `DRAFT_2.md`; repo-wide `git grep` sweep (M48/M58
       lessons — exempt history files only); reword the README status
       paragraph.
-- [ ] T6: Mutation-register new guard blocks; run both suites from the
+- [x] T6: Mutation-register new guard blocks; run both suites from the
       repo root.
 
 ## Work log
@@ -109,6 +109,9 @@ external de-risking → M61.
   state-format changes ship with /cairn-init migration handling); DESIGN
   promise sentence + README status ¶/piloting framing reworded; sweep
   clean bar the AC5-exempt tracking lines.
+- 2026-07-16: T6 done — two Mutation entries for the LLM-Wiki framing
+  guard; skills (187) + scripts suites OK from repo root; validate passes.
+  All tasks complete → status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

@@ -305,6 +305,20 @@ REGISTRY = [
         target="cairn/DESIGN.md",
         block="merge_guard_post",
     ),
+    # M62: the governed-LLM-Wiki README framing (M56 verdict) — one entry per
+    # new positive assert (M53); both phrases sit on one physical line (M59).
+    Mutation(
+        guard="test_positioning_guard",
+        test="TestOutwardPositioning.test_readme_carries_the_llm_wiki_framing",
+        target="README.md",
+        block="governed LLM Wiki for project state",
+    ),
+    Mutation(
+        guard="test_positioning_guard",
+        test="TestOutwardPositioning.test_readme_carries_the_llm_wiki_framing",
+        target="README.md",
+        block="the agent maintains it, you gate it",
+    ),
     # …and the rulebook must keep recording their mechanical backing
     # (test_git_safety_hooks, one entry per new positive assert — M53).
     Mutation(
