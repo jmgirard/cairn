@@ -1,10 +1,10 @@
 # M57: references/ + linking hardening — synthesis notes, INDEX lint, dangling-ID advisory
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP2   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m57-references-linking-hardening   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -68,7 +68,7 @@ candidate (absorbed there by M56); IP/GP-token tracing → already shipped
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: widen the file-map `references/` row + Source-ingestion section in
+- [x] T1: widen the file-map `references/` row + Source-ingestion section in
       `tracking-rules.md` to name synthesis notes; prose guard with its own
       `Mutation(...)` entry (M53/M54), single-line anchors (M23/M26).
 - [ ] T2: implement `check_references` in `scripts/cairn_validate.py`
@@ -94,6 +94,11 @@ candidate (absorbed there by M56); IP/GP-token tracing → already shipped
 
 - 2026-07-16: created by /milestone-plan (promotes the "references/ +
   linking hardening" candidate, M56 dispositions).
+- 2026-07-16: in-progress; branch cut. Gate: tolerance = above-max + slug
+  check (both rules named, per-class fixtures).
+- 2026-07-16: T1 done — file map + ingestion name synthesis notes; README
+  tree comment updated (repo-wide sweep, M48); guard + 3 Mutation entries;
+  3 suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

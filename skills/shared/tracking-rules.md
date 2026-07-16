@@ -22,7 +22,7 @@ owner; any other file gets at most a one-line cross-reference.
 | `cairn/DECISIONS.md` | Append-only cross-cutting decisions (D-001, …), never renumbered — superseded by new entries | Milestone-local decisions (those live in the milestone file); deferrals ("not now" is a ROADMAP fact, not a decision) |
 | `cairn/LESSONS.md` | Durable, append-only, capped repo lessons (build quirks, testing tricks) — captured at milestone end, surfaced at plan time | Status, decisions (a *choice* is a D-entry), per-milestone task notes |
 | `cairn/reviews/` | RB<NN> briefs and RR<NN> reports for Fable escalation (+ `archive/` for resolved pairs) | Anything else |
-| `cairn/references/` | Source summaries (`<citekey>.md`), `INDEX.md`, gitignored `pdf/` | Anything else |
+| `cairn/references/` | Source notes (`<citekey>.md`), synthesis notes (cross-source analyses — fit assessments, surveys, pilot ledgers), `INDEX.md` (one line per committed page), gitignored `pdf/` | Anything else |
 | `cairn/legacy/` | Entombed pre-migration tracking files, verbatim | Anything live |
 
 Boundary rule: **Architecture → DESIGN · Status → ROADMAP · Tasks →
@@ -522,6 +522,12 @@ Summary → `cairn/references/<citekey>.md` (committed): full citation,
 extracted values with page/table anchors, verbatim-critical values quoted
 exactly, which tests/oracles trace to it, open questions. One line in
 `INDEX.md`. Tests and milestones cite `citekey (p. N)`, never restate.
+
+**Synthesis notes** are the second committed `references/` page type —
+cross-source analyses (a fit assessment, a comparative survey, a pilot
+ledger) that no single `<citekey>.md` owns; same rules apply: committed,
+one line in `INDEX.md`. Every committed `references/` page carries its
+`INDEX.md` line — mechanized by `cairn_validate`'s references check (M57).
 
 ## What gets a test
 

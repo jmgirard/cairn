@@ -107,6 +107,26 @@ REGISTRY = [
         target=RULES,
         block="A `#` names the unit of work",
     ),
+    # M57: the two references/ page types + the page⇒INDEX-line rule. One
+    # Mutation entry per positive assertIn (M53 discipline).
+    Mutation(
+        guard="test_references_pages",
+        test="TestReferencesPages.test_file_map_names_both_page_types",
+        target=RULES,
+        block="Source notes (`<citekey>.md`), synthesis notes",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestReferencesPages.test_ingestion_defines_synthesis_notes",
+        target=RULES,
+        block="the second committed `references/` page type",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestReferencesPages.test_every_committed_page_carries_an_index_line",
+        target=RULES,
+        block="Every committed `references/` page carries its",
+    ),
     Mutation(
         guard="test_review_fanout",
         test="TestReviewFanout.test_fanout_states_why_a_fresh_model_reviews",
