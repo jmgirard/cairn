@@ -112,7 +112,7 @@ oracle registry gains a declared pointer (RR01 recs 4/6/9).
       profile header comments (r-package/python/generic), generic.md
       test-doctrine line, tracking-rules "What gets a test" tail + profiles
       preamble, DESIGN.md:11 to name the module.
-- [ ] T5: Append the D-entry (module-placement norm; annotates D-024/D-029).
+- [x] T5: Append the D-entry (module-placement norm; annotates D-024/D-029).
 - [ ] T6: Run all three suites from the repo root; fix any missed anchor
       (M23/M26 single-line/inside-bold matchability applies to moved text).
 
@@ -132,6 +132,7 @@ oracle registry gains a declared pointer (RR01 recs 4/6/9).
 - 2026-07-16: T4 done — swept repo: 3 shipped profile headers + cairn/PROFILE.md
   + 2 tracking-rules lines now name the module; DECISIONS/CHANGELOG/DRAFT_2
   left as history; DESIGN.md:11 makes no location claim, unchanged.
+- 2026-07-16: T5 done — D-031 appended (module norm; annotates D-024/D-025/D-029).
 
 ## Decisions
 

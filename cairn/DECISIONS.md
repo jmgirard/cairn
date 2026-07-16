@@ -620,3 +620,37 @@ review→done window but compresses to ≤25 lines at archive and is governed by
 `scripts/tests` + `test_milestone_cap_exemption.py` (wording + stated↔enforced,
 mutation-registered). If an unbounded Review section ever bites, a Review
 sub-cap is the entry to supersede.
+
+### D-031 (2026-07-16): New domain doctrine gets a module, not a rulebook section — annotates D-024/D-025/D-029
+
+**Context:** The Validation doctrine (+ oracle registry, reproducibility and
+primary-sources hard stops, source ingestion) had grown to ~68 always-read
+rulebook lines that apply only to repos with numeric/scoring work — ~11% of
+every non-numeric session's core read (RR01 §5/rec 9). RR01's counter-case for
+splitting the rulebook (one rules-home, guard-test anchoring, whole-read
+guarantees) argues against *fragmenting the cross-skill contract*, not against
+extracting a self-contained, conditionally-relevant domain block. M58 executed
+the extraction with the mutation harness (M53) in place to keep the guard
+re-anchor honest.
+**Decision:** Domain doctrine lives in its own module under `skills/shared/`
+(`validation-doctrine.md`), referenced from the rulebook in a short section
+that states what it covers and when to read it; the norm for the future is
+**new domain doctrine gets a module, not a rulebook section**. Wiring is
+rulebook-reference-only — skills read the rulebook whole, so the pointer
+travels everywhere; no per-skill read directives (that would restate the
+pointer in four places, the drift pattern RR01 rec 7 fixes elsewhere). The
+boundary is domain-conditional vs. universal: the M57 references/ page-type
+rules stayed in core (a new "References pages" section) because they are
+universal file-family rules this very non-numeric repo uses — refining RR01
+rec 9's literal "through Source ingestion" cut, which predates M57. The
+cross-skill contract (file map, caps, status, git model, gates, output
+discipline, profiles mechanism) stays monolithic per RR01 rec 15.
+**Consequences:** Annotates D-024/D-025 (universal-vs-profile stands; the
+doctrine's *packaging* is now a module) and D-029 (the shape-free registry
+gains a declared pointer: a numeric-work repo names where its records live in
+DESIGN.md Conventions; absence is the audit finding — still no validate
+CHECK). Non-numeric sessions stop paying for doctrine that never applies.
+Locked by `TestModuleExtraction`/`TestRegistryPointer` in
+`test_oracle_doctrine.py` (mutation-registered). If a second domain module
+ever needs skills to read it unprompted, per-skill wiring is the entry to
+supersede.
