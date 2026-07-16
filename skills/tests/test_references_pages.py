@@ -4,8 +4,11 @@ M56 found practice had outgrown the file map's "Source summaries" phrasing —
 cross-source synthesis notes (competitive-landscape.md, migration-pilot-notes.md)
 already live in `references/` unnamed. M57 legitimizes the second page type:
 the file map names both committed page types (source notes + synthesis notes),
-and the Source-ingestion section defines synthesis notes under the same
-one-line-in-INDEX rule, mechanized by `cairn_validate`'s references check.
+defined under the same one-line-in-INDEX rule, mechanized by `cairn_validate`'s
+references check. M58 moved the definitions from the (extracted)
+Source-ingestion section to the rulebook's own "References pages" section —
+the page-type rules are universal file-family rules, not numeric-conditional
+doctrine, so they stay in core.
 
 Guard tests read the file as one string, so an asserted phrase must live on one
 physical line (M23 lesson); phrases are lowercased before matching.
@@ -32,7 +35,8 @@ class TestReferencesPages(unittest.TestCase):
         )
 
     def test_ingestion_defines_synthesis_notes(self):
-        # The Source-ingestion section defines the second page type in place.
+        # The "References pages" section defines the second page type (M58
+        # moved it there from Source ingestion; the rule itself is unchanged).
         self.assertIn(
             "the second committed `references/` page type", rulebook()
         )

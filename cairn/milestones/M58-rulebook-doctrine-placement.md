@@ -98,14 +98,14 @@ oracle registry gains a declared pointer (RR01 recs 4/6/9).
       mechanical renderings keeping the guarded tokens; add the core guard +
       `Mutation(...)` entry. Guard edits ship in this commit (M46 lesson:
       source-of-truth flip lands in the first relocating commit).
-- [ ] T2: Extract the module. Create `skills/shared/validation-doctrine.md`
+- [x] T2: Extract the module. Create `skills/shared/validation-doctrine.md`
       (doctrine through Source ingestion, minus the Synthesis-notes
       paragraph); leave the ~3-line rulebook reference; reword the
       Synthesis-notes paragraph to define both references/ page types
       stand-alone; re-anchor `test_oracle_doctrine.py` to the module and
       `test_references_pages.py` to the reworded text; update their
       `Mutation(...)` targets — all in this commit.
-- [ ] T3: Add the registry-pointer requirement to the module's registry
+- [x] T3: Add the registry-pointer requirement to the module's registry
       paragraph + its guard assert + `Mutation(...)` entry.
 - [ ] T4: Cross-reference sweep — `git grep -i` for `Validation doctrine`,
       `stated once in tracking-rules`, `oracle doctrine` repo-wide; update
@@ -123,6 +123,12 @@ oracle registry gains a declared pointer (RR01 recs 4/6/9).
 - 2026-07-16: T1 done — governance bullets in Universal tracking rules;
   r-package/python trimmed to renderings; TestUniversalChangeGovernance +
   2 Mutation entries; "What gets a test" tail corrected; 3 suites green.
+- 2026-07-16: T2+T3 done (folded, one commit — pointer authored with the
+  module): validation-doctrine.md created; rulebook keeps reference + norm +
+  new "References pages" section; oracle guards read the module; registry
+  pointer + TestModuleExtraction/TestRegistryPointer + 5 Mutation entries
+  (path assert narrowed to the unique reference phrase — bare path occurs
+  twice in the rulebook, would defeat blank-one-block); 3 suites green.
 
 ## Decisions
 

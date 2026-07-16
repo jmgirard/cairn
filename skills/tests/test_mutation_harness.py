@@ -95,11 +95,39 @@ REGISTRY = [
         target="skills/cairn-init/SKILL.md",
         block="Reference sweep",
     ),
+    # M58: the doctrine body moved to its own module; the ≥2-types block now
+    # lives (and is blanked) there. The rulebook keeps a reference + the
+    # placement norm, and the module gains the registry pointer — one
+    # Mutation entry per new positive assert (M53 discipline).
     Mutation(
         guard="test_oracle_doctrine",
         test="TestOracleDoctrine.test_states_the_two_independent_types_bar",
-        target=RULES,
+        target="skills/shared/validation-doctrine.md",
         block="≥2 *independent* oracle types",
+    ),
+    Mutation(
+        guard="test_oracle_doctrine",
+        test="TestModuleExtraction.test_rulebook_points_at_the_module",
+        target=RULES,
+        block="lives in `skills/shared/validation-doctrine.md`, a module of",
+    ),
+    Mutation(
+        guard="test_oracle_doctrine",
+        test="TestModuleExtraction.test_rulebook_states_the_module_norm",
+        target=RULES,
+        block="gets a module, not a rulebook",
+    ),
+    Mutation(
+        guard="test_oracle_doctrine",
+        test="TestRegistryPointer.test_registry_pointer_is_required",
+        target="skills/shared/validation-doctrine.md",
+        block="declares *where* its oracle records live",
+    ),
+    Mutation(
+        guard="test_oracle_doctrine",
+        test="TestRegistryPointer.test_pointer_absence_is_the_audit_finding",
+        target="skills/shared/validation-doctrine.md",
+        block="absence of the line in a repo with numeric work is itself the audit",
     ),
     Mutation(
         guard="test_phase_header_levels",
