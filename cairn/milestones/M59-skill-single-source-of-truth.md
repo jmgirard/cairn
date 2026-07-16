@@ -75,7 +75,7 @@ protocol is progressively disclosed out of the common scaffold path
       (skills/milestone-review/SKILL.md:63-70): run-and-read; delete the
       manual Coverage-completeness bullet; re-anchor
       test_toolchain_profiles.py:356 and test_ac_traceability.py:86.
-- [ ] T3: De-enumerate `/milestone` §2 (skills/milestone/SKILL.md:46):
+- [x] T3: De-enumerate `/milestone` §2 (skills/milestone/SKILL.md:46):
       run-and-read.
 - [ ] T4: Move cairn-init §2 → `skills/shared/migration-protocol.md`; add the
       read-on-footprint-detection directive to §0; re-anchor
@@ -96,6 +96,9 @@ protocol is progressively disclosed out of the common scaffold path
 - 2026-07-16: T2 done — review step 4 run-and-read; Coverage completeness
   kept as validate-output disposition (guard tokens survive), manual bullet
   gone; new guard file test_run_and_read_checks.py + 2 mutation entries.
+- 2026-07-16: T3 done — /milestone §2 run-and-read (+1 guard test, +1
+  mutation entry). Minor amendment: fixed adjacent "docs-only commit to
+  main" → "to the default branch" in the same rewritten paragraph.
 
 ## Decisions
 

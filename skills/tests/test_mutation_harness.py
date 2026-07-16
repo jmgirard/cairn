@@ -119,6 +119,12 @@ REGISTRY = [
         block="mechanical since M34",
     ),
     Mutation(
+        guard="test_run_and_read_checks",
+        test="TestMilestoneRunsAndReads.test_milestone_audit_runs_and_reads_never_restates",
+        target="skills/milestone/SKILL.md",
+        block="read its output — one line per check",
+    ),
+    Mutation(
         guard="test_migration_guidance",
         test="TestMigrationGuidance.test_reference_sweep_names_two_dispositions",
         target="skills/cairn-init/SKILL.md",

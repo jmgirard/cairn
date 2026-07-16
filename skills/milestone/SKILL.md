@@ -43,15 +43,12 @@ each active milestone, and open RBs and their age.
 
 ## 2. Health audit
 
-Run `cairn_validate.py` first. It deterministically checks: **mirror
-agreement** (ROADMAP vs file header Status), **at most one `in-progress`**,
-**weight caps**, **terminal-row retention**, **status** and **priority
-vocabulary**, **dependency resolution** (targets exist and aren't `dropped`),
-**ROADMAP↔disk orphans**, **ID uniqueness**, and **§1 scaffold present**
-(required tracking files and ignore entries exist). Treat every
-`FAIL` as a mechanical problem: fix it (docs-only commit to main; ROADMAP
-wins mirror conflicts; apply the tracking-rules cap remedies, never "let it
-grow"), then re-run to confirm green. **Exception — a `scaffold present`
+Run `cairn_validate.py` first and
+read its output — one line per check; never restate or recall its
+internals (a restated list is a stale-count trap, M28). Treat every
+`FAIL` as a mechanical problem: fix it (docs-only commit to the default
+branch; ROADMAP wins mirror conflicts; apply the tracking-rules cap
+remedies, never "let it grow"), then re-run to confirm green. **Exception — a `scaffold present`
 FAIL** means the repo's §1 scaffold has drifted behind the spec (a missing
 tracking file or ignore entry, typically because the repo adopted cairn
 before a later scaffold addition); fix it by running `/cairn-init` (repair

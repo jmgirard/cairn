@@ -34,5 +34,13 @@ class TestReviewRunsAndReads(unittest.TestCase):
         self.assertNotIn("- **Coverage completeness** —", norm)
 
 
+class TestMilestoneRunsAndReads(unittest.TestCase):
+    def test_milestone_audit_runs_and_reads_never_restates(self):
+        norm = normalized("milestone", "SKILL.md")
+        self.assertIn("read its output — one line per check", norm)
+        # The retired enumeration's framing.
+        self.assertNotIn("deterministically checks:", norm)
+
+
 if __name__ == "__main__":
     unittest.main()
