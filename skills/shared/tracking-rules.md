@@ -357,7 +357,17 @@ cairn skill is active.
 - **Deltas, not dumps.** Between gates, report what changed since the
   last report — findings, decisions, surprises, direction changes. Never
   restate the plan or paste command output; the tracking files hold the
-  record.
+  record. One exception: drafted durable-record text is the deliverable,
+  not a dump — see the Durable-record preview rule below.
+- **Durable-record preview.** Newly authored durable-record text — a
+  D-entry, a milestone file's plan-owned sections (new or via a gated
+  amendment), a LESSONS line, an archive summary, a ROADMAP
+  candidate/graduation row — is shown verbatim in chat immediately before
+  the docs-only commit that lands it: same turn, no added stop; objections
+  are handled by amend/supersede right after (D-036). Exempt as mechanical
+  noise: work-log one-liners, checkbox ticks, status-mirror updates, and
+  hotfix/code-branch content (NEWS entries, code) already reviewable at
+  the PR merge gate — not a milestone branch's tracking records (D-036).
 - **Outcome-first recaps.** Phase-completion recaps lead with what the
   work did, changed, or accomplished, in plain words. Hygiene mechanics
   (caps, hashes, archive paths, commit lists) follow compressed — one

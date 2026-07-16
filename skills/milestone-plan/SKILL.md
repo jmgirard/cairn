@@ -104,7 +104,10 @@ Read, in order: `cairn/ROADMAP.md`, any active milestone file,
    genuine rejections with rationale; postponement lives in the ROADMAP.
    Include the ledger in the plan summary presented to the user.
 
-6. **Commit atomically.** Update ROADMAP rows (`planned` / `candidate`) and
+6. **Commit atomically.** Durable-record preview first (tracking-rules):
+   show each drafted durable text — the milestone files' plan-owned
+   sections, any D-entry, new ROADMAP rows — verbatim in chat before the
+   commit. Then update ROADMAP rows (`planned` / `candidate`) and
    commit files + rows together, directly to main, no branch, no PR
    (docs-only carve-out): `plan M<NN>[, M<NN>…]: <title>`; push. A session
    dying mid-plan must not leave a half-planned ghost.

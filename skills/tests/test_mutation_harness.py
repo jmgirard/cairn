@@ -492,6 +492,68 @@ REGISTRY = [
         target="skills/cairn-init/SKILL.md",
         block="local-only mode",
     ),
+    # M64 (D-036): the durable-record preview rule + its four per-skill
+    # directives — one entry per distinct block (M53 discipline).
+    Mutation(
+        guard="test_durable_record_preview",
+        test="TestDurableRecordPreviewRule.test_rule_present_with_mechanic",
+        target=RULES,
+        block="Newly authored durable-record text",
+    ),
+    Mutation(
+        guard="test_durable_record_preview",
+        test="TestDurableRecordPreviewRule.test_rule_present_with_mechanic",
+        target=RULES,
+        block="is shown verbatim in chat immediately before",
+    ),
+    Mutation(
+        guard="test_durable_record_preview",
+        test="TestDurableRecordPreviewRule.test_rule_names_the_covered_record_types",
+        target=RULES,
+        block="a LESSONS line, an archive summary, a ROADMAP",
+    ),
+    Mutation(
+        guard="test_durable_record_preview",
+        test="TestDurableRecordPreviewRule.test_rule_names_the_exemptions",
+        target=RULES,
+        block="noise: work-log one-liners, checkbox ticks, status-mirror updates",
+    ),
+    Mutation(
+        guard="test_durable_record_preview",
+        test="TestDurableRecordPreviewRule.test_deltas_not_dumps_names_the_carve_out",
+        target=RULES,
+        block="not a dump — see the Durable-record preview rule below.",
+    ),
+    Mutation(
+        guard="test_durable_record_preview",
+        test="TestPerSkillDirectives.test_plan_commit_step",
+        target="skills/milestone-plan/SKILL.md",
+        block="Durable-record preview first (tracking-rules):",
+    ),
+    Mutation(
+        guard="test_durable_record_preview",
+        test="TestPerSkillDirectives.test_review_hygiene_step",
+        target="skills/milestone-review/SKILL.md",
+        block="Durable-record preview (tracking-rules): show the archive summary,",
+    ),
+    Mutation(
+        guard="test_durable_record_preview",
+        test="TestPerSkillDirectives.test_implement_decisions_and_amendments",
+        target="skills/milestone-implement/SKILL.md",
+        block="Durable-record preview (tracking-rules): a milestone-local Decisions",
+    ),
+    Mutation(
+        guard="test_durable_record_preview",
+        test="TestPerSkillDirectives.test_implement_decisions_and_amendments",
+        target="skills/milestone-implement/SKILL.md",
+        block="verbatim in chat before its commit (durable-record preview).",
+    ),
+    Mutation(
+        guard="test_durable_record_preview",
+        test="TestPerSkillDirectives.test_brief_rr_ingestion",
+        target="skills/milestone-brief/SKILL.md",
+        block="durable-record preview (tracking-rules): show the",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
