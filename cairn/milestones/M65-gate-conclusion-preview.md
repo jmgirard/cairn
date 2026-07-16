@@ -73,7 +73,7 @@ appears there). Commit-time preview → shipped in M64. Chip form/invariants
       milestone-plan step 3; milestone-implement steps 3 + 6;
       milestone-review step 7; milestone-brief RB gate + ingestion step 5;
       milestone §3 Route (triage chips).
-- [ ] T3: Write skills/tests/test_gate_conclusion_preview.py (central-rule
+- [x] T3: Write skills/tests/test_gate_conclusion_preview.py (central-rule
       + five per-skill asserts, per-test reads — M61) and register
       Mutation(...) entries, including a new entry anchoring the existing
       "Chips carry choices, not evidence" block.
@@ -92,6 +92,9 @@ appears there). Commit-time preview → shipped in M64. Chip form/invariants
 - 2026-07-16: T2 done — directives at plan gate, implement gate + mini
   gate, review approval gate, brief RB gate + RR routing, milestone Route;
   suite green.
+- 2026-07-16: T3 done — guard file (8 tests, count by command) + 12
+  Mutation entries incl. the previously-unguarded chips-carry-choices
+  block; skills suite 208 tests green.
 
 ## Decisions
 
