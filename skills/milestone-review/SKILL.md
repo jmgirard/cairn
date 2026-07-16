@@ -67,9 +67,9 @@ overrides — log the override).
      carry their own disposition: a `scaffold present` FAIL means the repo's
      §1 scaffold has drifted (a missing tracking file or ignore entry) — fix
      it by running `/cairn-init` (repair mode), never by hand-patching; a
-     **Coverage completeness** FAIL (mechanical since M34: every acceptance
-     criterion maps in the Coverage section to ≥1 task that exists) is a
-     plan gap — it sends the milestone back to `/milestone-implement` for a
+     `coverage complete` FAIL (the Coverage completeness map —
+     mechanical since M34: every acceptance criterion maps in the Coverage
+     section to ≥1 task that exists) is a plan gap — it sends the milestone back to `/milestone-implement` for a
      gated Coverage amendment, never a review-side patch. Read the map,
      don't reinterpret it.
    - If the milestone changed a `DESIGN.md` principle (IPn/GPn):

@@ -135,4 +135,16 @@ protocol is progressively disclosed out of the common scaffold path
   - Consistency gate: cairn_validate all checks passed; generic profile
     consistency-gate slot = none (clean no-op); no IPn/GPn changed → impact
     report skipped.
+- 2026-07-16 fan-out ([O] diff-bug / [S] blame / [S] prior-PR + [S] scorer):
+  - F1 (diff-bug, scored 85 → fixed): step 4 named the FAIL "Coverage
+    completeness" but validate emits `coverage complete` — reworded to the
+    emitted label with the concept phrase kept (guards pin it); fix's own
+    line wrap tripped the mutation harness (block split), reflowed — live
+    proof of the M53 oracle.
+  - Blame lens: 0 findings — confirmed §0's old fallback predated M25's
+    recipe (latent bug, not an undo) and the retired enumeration was already
+    5 checks stale.
+  - Prior-PR lens: no prior-PR evidence (15 merged PRs, zero review
+    comments) — expected no-op.
+  - Sub-80 findings: none (1 finding total, scored 85).
 
