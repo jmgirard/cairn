@@ -58,3 +58,42 @@ and think about what it all means. The LLM's job is everything else."
 burden grows faster than the value. LLMs don't get bored, don't forget to
 update a cross-reference, and can touch 15 files in one pass. The wiki stays
 maintained because the cost of maintenance is near zero."
+
+## Ecosystem scan (what survived contact with real use)
+
+Surveyed 2026-07-16, lighter touch than the gist:
+
+- **langchain-ai/openwiki** (https://github.com/langchain-ai/openwiki,
+  shipped 2026-07-01) — the repo-documentation specialization: a CLI that
+  generates an `openwiki/` wiki for a codebase, refreshes it via `--update`
+  (CI templates open PRs with doc updates), and wires agents to it by
+  maintaining a fenced `<!-- OPENWIKI:START -->…<!-- OPENWIKI:END -->` block
+  in CLAUDE.md/AGENTS.md, "leav[ing] the rest of your content untouched."
+  Notable parallels to cairn: owned-section discipline inside CLAUDE.md, and
+  a human-authored brief (`INSTRUCTIONS.md`) separate from generated pages.
+- **nvk/llm-wiki** (https://github.com/nvk/llm-wiki) — the most hardened
+  community build. Adds: a **dual-link format** (`[[slug|Label]]` +
+  a plain relative-path markdown link) so links resolve in Obsidian *and*
+  plain viewers; `/wiki:lint` mechanized (broken links, orphan articles,
+  registry drift; `--fix`); a trust `/wiki:audit` with evidence-chain
+  tracing; per-article confidence ratings from source quality; and a
+  **human-owned advisory `schema.md`** with "proposal-only" convention
+  updates — the agent proposes, the human owns the schema.
+- **SamurAIGPT/llm-wiki-agent** (https://github.com/SamurAIGPT/llm-wiki-agent)
+  — canonical `[[wikilinks]]` throughout; typed YAML frontmatter
+  (`type: source`, tags); auto entity/concept pages; a two-pass graph builder
+  (explicit wikilinks = deterministic edges, then inferred edges tagged with
+  confidence); contradictions flagged at *ingest* time; query answers filed
+  back only on user choice.
+- **DeepWiki (Cognition) / AutoWiki (Factory)** — hosted auto-generated
+  wikis for GitHub repos; credited by OpenWiki as inspiration. Fully
+  generated from code, no curation loop — the opposite pole from cairn's
+  human-gated model; noted for positioning only.
+
+**Convergent hardening across implementations:** (1) wikilinks became the
+de-facto link syntax, with nvk's dual-link form solving plain-markdown
+rendering; (2) lint got *mechanized* everywhere (broken links, orphans,
+index drift) rather than staying an LLM judgment pass; (3) append-only
+`log.md` is universal; (4) the schema/conventions file trends
+**human-owned** with agent-proposed amendments — the ecosystem
+independently arrived at cairn-style governance.
