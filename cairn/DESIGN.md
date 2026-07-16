@@ -70,6 +70,9 @@ within each type and are never reused.
   overridden.
 - IP3: Nothing the user asked for is silently dropped (conservation:
   remainder ledger, migration ledger).
+- IP4: History is never fabricated, rewritten, or renumbered — append-only
+  work-logs and DECISIONS (supersede, never edit), no-invention migration,
+  entomb-verbatim, IDs never reused (D-032).
 - GP1: Efficient — store decisions and outcomes, not minutiae; caps +
   archiving keep always-read files small.
 - GP2: Reliable — one status authority; tracking travels with code;

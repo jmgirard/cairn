@@ -654,3 +654,24 @@ Locked by `TestModuleExtraction`/`TestRegistryPointer` in
 `test_oracle_doctrine.py` (mutation-registered). If a second domain module
 ever needs skills to read it unprompted, per-skill wiring is the entry to
 supersede.
+
+### D-032 (2026-07-16): History integrity is named IP4
+
+**Context:** RR01 (Q7/rec 10) found "never fabricate, never rewrite, never
+renumber" treated as inviolable in at least five places — append-only
+work-logs/DECISIONS ("supersede, never edit history"), IDs never reused, the
+migration no-invention rule, entomb-verbatim (D-005), catch-up-line
+reconciliation — yet unnamed in DESIGN.md's IP list, which is what
+`/design-interview`, `cairn_impact`, and the RB `ip-touching` tripwire key
+on: work weakening the no-invention rule would not have tripped the tripwire.
+Banked as a candidate row pending the user decision an IP change requires.
+**Decision:** Name it **IP4** ("History is never fabricated, rewritten, or
+renumbered — append-only work-logs and DECISIONS, no-invention migration,
+entomb-verbatim, IDs never reused"), approved by the user at the 2026-07-16
+plan gate. Docs-only: the practice was already inviolable; this assigns the
+checkable id. Rejected leaving it unnamed (the tripwire and impact tracing
+stay blind to it) — the candidate row's own framing.
+**Consequences:** The `ip-touching` RB tripwire and `cairn_impact` now cover
+history-integrity work; the number IP4 is assigned and never reused.
+Graduates the "Name IP4" candidate row. If the wording ever needs weakening,
+that change is itself IP-touching and requires a superseding D-entry.

@@ -1,0 +1,90 @@
+# M60: Git-safety hooks — force-push deny, merge-marker restore
+
+- **Status:** planned
+- **Priority:** normal
+- **Depends on:** —
+- **Principles touched:** IP1, GP2
+- **Branch/PR:** —
+
+## Goal
+
+The two honor-system git rules with cheap mechanical teeth get hooks: a
+force-push to the default branch is denied at PreToolUse, and a failed
+guarded merge no longer consumes the approval marker (RR01 recs 8 + 13).
+
+## Scope
+
+**In:**
+
+- New `hooks/force_push_guard.py`: PreToolUse(Bash) **deny** (not nudge) of
+  `git push --force`/`-f` variants targeting the default branch, reusing
+  commit_guard's default-branch detection machinery; false-positive-free by
+  design (D-023 doctrine): force-pushes to feature branches and plain pushes
+  pass through.
+- New `hooks/merge_guard_post.py`: PostToolUse(Bash) companion that restores
+  `cairn/.merge-approved` when a guarded merge command exits nonzero (ends
+  the M33 rewrite-the-marker manual step); a successful merge stays consumed.
+- Register both in `hooks/hooks.json`; unit tests in `hooks/tests/`.
+- DESIGN.md Architecture hooks bullet updated to list all seven hooks;
+  rulebook "never force-push" line notes its mechanical backing.
+
+**Out:**
+
+- Windows launcher fallback for hooks.json → release-prep candidate row.
+- Mechanizing AC fencing or CI-state checks → not planned (RR01 Q6: leave
+  honor-system).
+- Live runtime verification of hook honoring → post-merge follow-up in a
+  fresh conversation (M19: hooks snapshot at process start), recorded as a
+  work-log note at review, not an AC.
+
+## Acceptance criteria
+
+- [ ] Unit tests prove force_push_guard denies `git push --force`/`-f` (flag
+      order and `--force-with-lease` variants) targeting the default branch —
+      both explicit-ref and on-default-branch forms — and passes through
+      feature-branch force-pushes, plain pushes, and non-push commands.
+- [ ] Unit tests prove merge_guard_post restores a consumed
+      `cairn/.merge-approved` when the guarded merge command exits nonzero,
+      leaves it consumed on success, and no-ops on non-merge commands.
+      (RB tripwire: ip-touching)
+- [ ] Both hooks registered in hooks/hooks.json with the existing
+      python3/timeout envelope shape; all three unittest suites green from
+      the repo root.
+- [ ] DESIGN.md's hooks bullet names all seven hooks; the rulebook's
+      force-push line reflects the new enforcement (guard re-anchors in the
+      same commit, M46).
+
+## Coverage
+
+- AC1 → T1
+- AC2 → T2
+- AC3 → T3, T5
+- AC4 → T4
+
+## Tasks
+
+- [ ] T1: Write `hooks/force_push_guard.py` (reuse cairn_common /
+      commit_guard branch detection) + unit tests: deny cases and the
+      false-positive matrix. (RB tripwire: ip-touching — this hardens IP1's
+      perimeter; deny wording and scope must not block legitimate work.)
+- [ ] T2: Write `hooks/merge_guard_post.py` + unit tests (restore on fail,
+      consumed on success, no-op otherwise). Touches the IP1 approval-marker
+      lifecycle — keep single-use semantics: restore only what a *failed*
+      attempt consumed, never mint approval.
+- [ ] T3: Register both in hooks/hooks.json; extend hooks/tests registration
+      fixtures if any assert the hook list.
+- [ ] T4: Update DESIGN.md hooks bullet (5 → 7) and the rulebook's
+      "Never force-push" line; re-anchor any guards on either (M46), register
+      mutation blocks (M53/M54).
+- [ ] T5: Run all three suites from the repo root (M56: no exit-blind
+      pipes); add the post-merge live-fire note to the work log (fresh
+      conversation; retry flow per RR01 rec 13's caution).
+
+## Work log
+
+- 2026-07-16: created by /milestone-plan (promoted from the RR01 rec
+  8/13 half of the skill/hook candidate row; recs 7/12 → M59).
+
+## Decisions
+
+## Review
