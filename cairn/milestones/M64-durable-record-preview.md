@@ -124,4 +124,5 @@ PR: https://github.com/jmgirard/cairn/pull/62 (draft; base main @ a2271b0).
   work-log correction appended); F2 70 (rule's PR-branch exemption drops
   D-036's hotfix-scoping parenthetical; implement's own directive is
   unconditional so no practical gap) → sub-threshold, logged not actioned;
-  surfaced at the approval gate.
+  surfaced at the approval gate. Gate: user directed the F2 fix — exemption
+  scoped to hotfix/code-branch content per D-036; suite re-run green.

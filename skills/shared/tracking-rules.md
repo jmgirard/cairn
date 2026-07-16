@@ -366,7 +366,8 @@ cairn skill is active.
   the docs-only commit that lands it: same turn, no added stop; objections
   are handled by amend/supersede right after (D-036). Exempt as mechanical
   noise: work-log one-liners, checkbox ticks, status-mirror updates, and
-  branch content that already passes PR review at the merge gate.
+  hotfix/code-branch content (NEWS entries, code) already reviewable at
+  the PR merge gate — not a milestone branch's tracking records (D-036).
 - **Outcome-first recaps.** Phase-completion recaps lead with what the
   work did, changed, or accomplished, in plain words. Hygiene mechanics
   (caps, hashes, archive paths, commit lists) follow compressed — one
