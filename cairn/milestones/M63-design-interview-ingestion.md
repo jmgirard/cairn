@@ -83,7 +83,7 @@ mechanics (M43 shipped them; only the cross-ref sweep here, T4).
       `cairn/` path, numbering + basename intact); ingestion feeds Phase 2's
       existing "every candidate arrives classified" discipline with `#N`
       lineage carried on each candidate and a conservation rule.
-- [ ] T2: Author the write-out additions — the `#N` → `IPn`/`GPn`/retired
+- [x] T2: Author the write-out additions — the `#N` → `IPn`/`GPn`/retired
       mapping table recorded in the target DESIGN.md, the
       preserved-file-stays-intact rule (until the repoint ships), and the
       target-repo repoint candidate-row banking.
@@ -99,6 +99,7 @@ mechanics (M43 shipped them; only the cross-ref sweep here, T4).
 
 - 2026-07-16: created by /milestone-plan (promotes the 2026-07-12 candidate row; lineage M43 Out / migration-pilot-notes Pilot 3 G-I2).
 - 2026-07-16: T1 — session-start detection + "Ingesting a note-and-leave principles file" section (ingestion + conservation) added to design-interview SKILL.md; question gate skipped (nothing open).
+- 2026-07-16: T2 — write-out lineage map, preserved-file-intact rule, and target-repo repoint banking appended to the ingestion section.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

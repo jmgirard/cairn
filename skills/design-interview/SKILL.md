@@ -139,6 +139,17 @@ run these additions on top of the normal two phases:
   ends the interview with an explicit disposition — formalized as an IP or
   GP, merged into another candidate, or retired at the user's say-so (IP3).
   A `#N` with no disposition is an unfinished interview, not a skip.
+- **Write-out records the lineage map.** Under Design Principles in the
+  target `cairn/DESIGN.md`, record an old-`#N` → new-id mapping table
+  (`#N → IPn | GPn | retired | merged into …`) alongside the principles, so
+  every in-code citation has a written bridge to its formalized successor.
+- **The preserved file stays intact.** Its numbering and basename are never
+  edited, renumbered, or deleted by this interview (IP4) — in-code citations
+  must keep resolving against it until the repoint ships.
+- **Bank the repoint; never touch code.** The eventual in-code repoint
+  (`PRINCIPLES.md #N` → `DESIGN.md IPn/GPn`) is a target-repo **code**
+  milestone: bank it as a candidate row in that repo's ROADMAP at write-out.
+  The interview itself performs no code edits.
 
 ## Routing
 
