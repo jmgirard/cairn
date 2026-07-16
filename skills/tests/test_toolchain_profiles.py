@@ -191,6 +191,47 @@ class TestRulebookRelocation(unittest.TestCase):
                           f"r-package profile dropped relocated guardrail '{phrase}'")
 
 
+class TestUniversalChangeGovernance(unittest.TestCase):
+    """M58 (RR01 rec 4): dependency-change gating and the deprecation-cycle
+    policy are universal governance, stated once in the core rulebook's
+    Universal tracking rules; the r-package/python profiles keep only the
+    mechanical renderings (dependency surface, deprecation mechanism). Before
+    M58 both rules sat near-verbatim in two `test-doctrine` slots and were
+    absent from generic — a generic adopter had no stated dependency gate."""
+
+    def test_core_states_the_dependency_gate(self):
+        rules = read("shared", "tracking-rules.md")
+        self.assertIn("Dependency changes are never unilateral", rules,
+                      "core rulebook must state the universal dependency-change gate")
+
+    def test_core_states_the_deprecation_cycle(self):
+        rules = read("shared", "tracking-rules.md")
+        self.assertIn("follow a deprecation cycle", rules,
+                      "core rulebook must state the deprecation-cycle policy")
+        self.assertIn("pre-1.0", rules,
+                      "the deprecation-cycle policy must carry the pre-1.0 waiver")
+
+    def test_profiles_do_not_restate_the_gate(self):
+        # Negative regression guard (not mutation-registrable — M54 lesson);
+        # its positive pair is the two core asserts above.
+        for name in ("r-package.md", "python.md"):
+            body = section_body(read("shared", "profiles", name), "test-doctrine")
+            self.assertNotIn("never unilateral", body,
+                             f"{name} test-doctrine restates the universal gate")
+
+    def test_profiles_keep_the_mechanical_renderings(self):
+        r = section_body(read("shared", "profiles", "r-package.md"), "test-doctrine")
+        py = section_body(read("shared", "profiles", "python.md"), "test-doctrine")
+        self.assertIn("Imports/Suggests", r,
+                      "r-package rendering must name the dependency surface")
+        self.assertIn("deprecation cycle", r,
+                      "r-package rendering must name the deprecation mechanics")
+        self.assertIn("dependencies/optional-dependencies", py,
+                      "python rendering must name the dependency surface")
+        self.assertIn("DeprecationWarning", py,
+                      "python rendering must name the deprecation mechanism")
+
+
 class TestRPackageFixtureProvenance(unittest.TestCase):
     """M49: the r-package test-doctrine mandates reproducible fixture provenance
     — source + committed generator + any seed per fixture — while leaving the

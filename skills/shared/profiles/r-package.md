@@ -50,8 +50,11 @@ rules in tracking-rules:
   and tracking-rules' "no coverage-percentage target" both hold. Give the
   `.github/` workflow dir an `.Rbuildignore` `^\.github$` entry (usethis adds it)
   so it stays out of the built package.
-- Dependency changes (Imports/Suggests) are never unilateral — question-gate + D-entry.
-- Breaking changes to exported behavior follow a deprecation cycle unless pre-1.0 and explicitly waived.
+- Change governance renders here as: the dependency surface is DESCRIPTION
+  Imports/Suggests; a breaking-change deprecation cycle warns via `lifecycle`
+  (`deprecate_warn()`) before removal. The gates themselves — question-gate +
+  D-entry for dependencies, pre-1.0 waiver rule — are universal
+  (tracking-rules "Universal tracking rules").
 - Every newly exported object gets a `_pkgdown.yml` reference-index row in the same commit.
 - Every committed test fixture carries reproducible provenance: its source and
   the committed generator (a `data-raw/` script) that regenerates it from scratch, plus any seed —

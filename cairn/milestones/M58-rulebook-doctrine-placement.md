@@ -2,11 +2,11 @@
      section ownership". -->
 # M58: Rulebook doctrine placement — governance up, validation doctrine out, registry pointer
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** GP1, GP3
-- **Branch/PR:** —
+- **Branch/PR:** m58-rulebook-doctrine-placement
 
 ## Goal
 
@@ -92,7 +92,7 @@ oracle registry gains a declared pointer (RR01 recs 4/6/9).
 
 ## Tasks
 
-- [ ] T1: Move governance up. Add the two rules as bullets in Universal
+- [x] T1: Move governance up. Add the two rules as bullets in Universal
       tracking rules; trim [r-package.md:53-54](../../skills/shared/profiles/r-package.md)
       and [python.md:49-52](../../skills/shared/profiles/python.md) to
       mechanical renderings keeping the guarded tokens; add the core guard +
@@ -120,6 +120,9 @@ oracle registry gains a declared pointer (RR01 recs 4/6/9).
 
 - 2026-07-16: created by /milestone-plan (gate: boundary = oracle+ingestion,
   core home = Universal tracking rules, pointer-only, rulebook-only wiring).
+- 2026-07-16: T1 done — governance bullets in Universal tracking rules;
+  r-package/python trimmed to renderings; TestUniversalChangeGovernance +
+  2 Mutation entries; "What gets a test" tail corrected; 3 suites green.
 
 ## Decisions
 

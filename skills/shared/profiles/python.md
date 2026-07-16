@@ -46,10 +46,11 @@ rules in tracking-rules:
 - Never test string-formatting cosmetics beyond meaningful snapshots, trivial
   pass-throughs, or dependency behavior.
 - `coverage.py` is a diagnostic, never a gate.
-- Dependency changes (`pyproject.toml` dependencies/optional-dependencies) are
-  never unilateral — question-gate + D-entry.
-- Breaking changes to public API follow a deprecation cycle (`DeprecationWarning`)
-  unless pre-1.0 and explicitly waived.
+- Change governance renders here as: the dependency surface is `pyproject.toml`
+  dependencies/optional-dependencies; a breaking-change deprecation cycle emits
+  `DeprecationWarning` before removal. The gates themselves — question-gate +
+  D-entry for dependencies, pre-1.0 waiver rule — are universal
+  (tracking-rules "Universal tracking rules").
 
 ## release-walk
 Followed by `/cairn-release` — a PyPI release walk (never self-submits):

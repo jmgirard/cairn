@@ -159,6 +159,20 @@ REGISTRY = [
         target="skills/shared/profiles/generic.md",
         block="commit the release prep to the default",
     ),
+    # M58 (RR01 rec 4): universal change-governance stated once in core; one
+    # Mutation entry per positive core assert (M53 discipline).
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestUniversalChangeGovernance.test_core_states_the_dependency_gate",
+        target=RULES,
+        block="Dependency changes are never unilateral",
+    ),
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestUniversalChangeGovernance.test_core_states_the_deprecation_cycle",
+        target=RULES,
+        block="follow a deprecation cycle",
+    ),
     # M54 positioning + DESIGN-honesty guards (RR01 recs 1/5). One or more
     # exemplar blocks per protected file; blanking each fails its guard method.
     Mutation(

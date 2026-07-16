@@ -122,6 +122,13 @@ takes a D-entry, and its number stays retired.
   gate or bend a rule, comply and record it in the work-log ("merged without
   CI at user request, YYYY-MM-DD"). An honest record keeps the next session
   from mistaking an exception for a precedent.
+- **Dependency changes are never unilateral.** Adding, removing, or re-pinning
+  a dependency — in any toolchain — goes through a question gate and is
+  recorded as a D-entry; the active profile's `test-doctrine` slot names the
+  mechanical dependency surface.
+- **Breaking changes to public behavior follow a deprecation cycle** unless
+  the project is pre-1.0 and the user explicitly waives it; the active
+  profile names the language's deprecation mechanics.
 - **Tracking files outrank memory.** Claude's persistent memory never holds
   project state (status, milestones, decisions, architecture). Memory is for
   meta-context only; `cairn/` files win any conflict.
@@ -562,8 +569,10 @@ mechanics; the oracle / Validation doctrine above stays universal** (D-024/D-025
 never a profile slot.
 
 The language/toolchain guardrails that were once stated here — package-build
-rules, generated-file conventions, dependency-change and deprecation policy,
-error-condition idioms — now live in the active profile's `test-doctrine` and
-`consistency-gate` slots (for the R toolchain, `skills/shared/profiles/r-package.md`);
-they are advisory in the moment and mechanically enforced by the
-`consistency-gate` slot at `/milestone-review`.
+rules, generated-file conventions, error-condition idioms — now live in the
+active profile's `test-doctrine` and `consistency-gate` slots (for the R
+toolchain, `skills/shared/profiles/r-package.md`); they are advisory in the
+moment and mechanically enforced by the `consistency-gate` slot at
+`/milestone-review`. The dependency-change gate and the deprecation-cycle
+policy are universal governance (see "Universal tracking rules"); profiles
+carry only their mechanical renderings.
