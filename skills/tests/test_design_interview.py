@@ -104,5 +104,48 @@ class TestDesignInterviewSkill(unittest.TestCase):
         self.assertIn("/design-interview", norm("cairn-init", "SKILL.md"))
 
 
+class TestNoteAndLeaveIngestion(unittest.TestCase):
+    """M63: the migration-preserved numbered-principles ingestion path.
+
+    M43's note-and-leave keeps a numbered-principles file intact and defers
+    its formalization to /design-interview; these lock the ingestion path so
+    the deferral always lands somewhere real. Reads per-test (setUp, never a
+    class-level cache — M61 mutation-harness lesson).
+    """
+
+    def setUp(self):
+        self.skill = norm("design-interview", "SKILL.md")
+
+    def test_session_start_detects_preserved_file(self):
+        self.assertIn("check for a migration-preserved", self.skill)
+        self.assertIn("numbered-principles file", self.skill)
+
+    def test_ingestion_section_exists(self):
+        self.assertIn("## ingesting a note-and-leave principles file",
+                      self.skill)
+
+    def test_ingested_candidates_carry_lineage(self):
+        # Ingested principles ride Phase 2's arrive-classified discipline.
+        self.assertIn("like any other candidate", self.skill)
+        self.assertIn("carries its `#n` lineage", self.skill)
+
+    def test_conservation_no_silent_drop(self):
+        # IP3: every #N ends with an explicit disposition.
+        self.assertIn("no ingested principle is silently dropped", self.skill)
+        self.assertIn("explicit disposition", self.skill)
+
+    def test_writeout_records_lineage_map(self):
+        self.assertIn("old-`#n` → new-id mapping table", self.skill)
+
+    def test_preserved_file_stays_intact_until_repoint(self):
+        # IP4: numbering/basename never rewritten; refs resolve until repoint.
+        self.assertIn("the preserved file stays intact", self.skill)
+        self.assertIn("until the repoint ships", self.skill)
+
+    def test_repoint_banked_never_code_edits(self):
+        self.assertIn("bank the repoint; never touch code", self.skill)
+        self.assertIn("performs no code edits", self.skill)
+
+
 if __name__ == "__main__":
     unittest.main()

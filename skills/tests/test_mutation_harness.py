@@ -77,6 +77,50 @@ REGISTRY = [
         target="skills/design-interview/SKILL.md",
         block="**banked-candidates ledger**",
     ),
+    # M63: the note-and-leave ingestion path — one entry per positive assert's
+    # primary block (secondary asserts ride along; none passes pre-M63 text).
+    Mutation(
+        guard="test_design_interview",
+        test="TestNoteAndLeaveIngestion.test_session_start_detects_preserved_file",
+        target="skills/design-interview/SKILL.md",
+        block="check for a migration-preserved",
+    ),
+    Mutation(
+        guard="test_design_interview",
+        test="TestNoteAndLeaveIngestion.test_ingestion_section_exists",
+        target="skills/design-interview/SKILL.md",
+        block="## Ingesting a note-and-leave principles file",
+    ),
+    Mutation(
+        guard="test_design_interview",
+        test="TestNoteAndLeaveIngestion.test_ingested_candidates_carry_lineage",
+        target="skills/design-interview/SKILL.md",
+        block="carries its `#N` lineage",
+    ),
+    Mutation(
+        guard="test_design_interview",
+        test="TestNoteAndLeaveIngestion.test_conservation_no_silent_drop",
+        target="skills/design-interview/SKILL.md",
+        block="**Conservation: no ingested principle is silently dropped.**",
+    ),
+    Mutation(
+        guard="test_design_interview",
+        test="TestNoteAndLeaveIngestion.test_writeout_records_lineage_map",
+        target="skills/design-interview/SKILL.md",
+        block="old-`#N` → new-id mapping table",
+    ),
+    Mutation(
+        guard="test_design_interview",
+        test="TestNoteAndLeaveIngestion.test_preserved_file_stays_intact_until_repoint",
+        target="skills/design-interview/SKILL.md",
+        block="**The preserved file stays intact.**",
+    ),
+    Mutation(
+        guard="test_design_interview",
+        test="TestNoteAndLeaveIngestion.test_repoint_banked_never_code_edits",
+        target="skills/design-interview/SKILL.md",
+        block="**Bank the repoint; never touch code.**",
+    ),
     Mutation(
         guard="test_gate_wording",
         test="TestMergeGateIsAChip.test_rulebook_declares_merge_gate_a_chip",

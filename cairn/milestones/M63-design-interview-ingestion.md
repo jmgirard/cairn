@@ -87,7 +87,7 @@ mechanics (M43 shipped them; only the cross-ref sweep here, T4).
       mapping table recorded in the target DESIGN.md, the
       preserved-file-stays-intact rule (until the repoint ships), and the
       target-repo repoint candidate-row banking.
-- [ ] T3: Extend `skills/tests/test_design_interview.py` with a new TestCase
+- [x] T3: Extend `skills/tests/test_design_interview.py` with a new TestCase
       for the ingestion path; mutation-register each new block; run both
       unittest suites from the repo root (M56).
 - [ ] T4: Whole-repo grep sweep (M48) for the deferral phrasing; align
@@ -100,6 +100,7 @@ mechanics (M43 shipped them; only the cross-ref sweep here, T4).
 - 2026-07-16: created by /milestone-plan (promotes the 2026-07-12 candidate row; lineage M43 Out / migration-pilot-notes Pilot 3 G-I2).
 - 2026-07-16: T1 — session-start detection + "Ingesting a note-and-leave principles file" section (ingestion + conservation) added to design-interview SKILL.md; question gate skipped (nothing open).
 - 2026-07-16: T2 — write-out lineage map, preserved-file-intact rule, and target-repo repoint banking appended to the ingestion section.
+- 2026-07-16: T3 — TestNoteAndLeaveIngestion (7 guards) + 7 Mutation registrations; both suites green (192 skills / 84 scripts).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
