@@ -78,7 +78,7 @@ external de-risking → M61.
 - [x] T3: Weave the governed-LLM-Wiki framing into the README intro;
       extend `skills/tests/test_positioning_guard.py` so the framing and
       the existing language-agnostic positioning are both locked.
-- [ ] T4: Tighten the "without asking" surface + bail-out story in the
+- [x] T4: Tighten the "without asking" surface + bail-out story in the
       README's expectations/non-goals sections.
 - [ ] T5: Delete `DRAFT_2.md`; repo-wide `git grep` sweep (M48/M58
       lessons — exempt history files only); reword the README status
@@ -102,6 +102,8 @@ external de-risking → M61.
   three gates, chips) added after "The core loop".
 - 2026-07-16: T3 done — LLM-Wiki framing in README ¶1; new
   test_readme_carries_the_llm_wiki_framing guard; skills suite 185 OK.
+- 2026-07-16: T4 done — chips-are-stops bullet, merge-guard-backed
+  approval wording, no-lock-in bail-out bullet (pause/drop/uninstall).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

@@ -145,8 +145,13 @@ milestone files · Decisions → DECISIONS · History → archive + git log.**
   (planning scope, implementation choices, merge approval), each with a
   recommendation. Between gates, expect autonomy — if you're being asked
   questions mid-implementation, something is off.
-- **Merges are yours.** Nothing reaches main without your explicit approval
-  at review. "Proceed to review" is not "merge" — you get the evidence first.
+- **Chips are stops, not automation.** When clickable options appear,
+  nothing proceeds until you pick one; walking away mid-chip is always
+  safe, and the last checkpoint commit holds the state for next time.
+- **Merges are yours.** Nothing reaches your default branch without your
+  explicit approval at review — a guard hook mechanically blocks merges
+  that lack a recorded approval. "Proceed to review" is not "merge"; you
+  get the evidence first.
 - **Supply primary sources.** If a formula, cutoff, or scoring key needs a
   paper the model can't access, it will stop and ask you for the PDF rather
   than work from memory. That stop is a feature; feed it the PDF.
@@ -175,3 +180,8 @@ milestone files · Decisions → DECISIONS · History → archive + git log.**
 - Track status in CLAUDE.md, chat memory, or GitHub issues — `cairn/`
   files are the single source of truth; issues are an inbox.
 - Run Fable, or any paid escalation, without a per-instance yes.
+- Lock you in. Pausing costs nothing (stop any time; checkpoint commits
+  keep the branch resumable), dropping a milestone is one sentence —
+  "drop M07" — with the reason archived, and uninstalling is removing the
+  plugin or symlink: your `cairn/` files are plain markdown that stay
+  readable (or deletable) without it.
