@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M65 | Gate-time conclusion preview — acceptance chips show what's accepted | in-progress | — | high | milestones/M65-gate-conclusion-preview.md |
+| M65 | Gate-time conclusion preview — acceptance chips show what's accepted | review | — | high | milestones/M65-gate-conclusion-preview.md |
 | M64 | Durable-record preview — verbatim in-chat preview before docs-only commits | done | — | high | milestones/archive/M64-durable-record-preview.md |
 | M63 | /design-interview note-and-leave ingestion — detect, formalize with #N lineage, bank the repoint | done | — | normal | milestones/archive/M63-design-interview-ingestion.md |
 | M62 | Release docs — LICENSE, README worked example + framing, DRAFT removal | done | M61 | high | milestones/archive/M62-release-docs.md |

@@ -1,6 +1,6 @@
 # M65: Gate-time conclusion preview — acceptance chips show what's accepted
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** GP4
@@ -77,7 +77,7 @@ appears there). Commit-time preview → shipped in M64. Chip form/invariants
       + five per-skill asserts, per-test reads — M61) and register
       Mutation(...) entries, including a new entry anchoring the existing
       "Chips carry choices, not evidence" block.
-- [ ] T4: Sweep live surfaces for phrasings that could be read as licensing
+- [x] T4: Sweep live surfaces for phrasings that could be read as licensing
       compressed acceptance (e.g. summarize-results wording feeding gates) —
       exclusions may name only history files (M48/M58); run all three
       suites from the repo root with exit codes gating the chain (M56).
@@ -95,6 +95,9 @@ appears there). Commit-time preview → shipped in M64. Chip form/invariants
 - 2026-07-16: T3 done — guard file (8 tests, count by command) + 12
   Mutation entries incl. the previously-unguarded chips-carry-choices
   block; skills suite 208 tests green.
+- 2026-07-16: T4 done — sweep found one licensing phrase (delegation rule's
+  "summarize results into one work-log line"), clarified log-line-only;
+  all three suites + validate green; status → review.
 
 ## Decisions
 

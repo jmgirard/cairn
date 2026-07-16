@@ -426,7 +426,9 @@ cairn skill is active.
   boilerplate. Give complete specs — for an Explore fan-out that means a
   reading list naming the files or areas each subagent should read, so it
   searches the right ground instead of guessing; verify their diffs before
-  committing; summarize results into one work-log line.
+  committing; summarize results into one work-log line — the log line
+  compresses, but an acceptance chip built on those results still shows
+  them verbatim (Acceptance chips rule).
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of
   the fresh-context review at `/milestone-review`.
 - **The `/milestone-review` fan-out** (M17) runs in fresh-context subagents,
