@@ -150,3 +150,12 @@ PR: https://github.com/jmgirard/cairn/pull/59 (draft). Evidence 2026-07-16:
 - Consistency gate: cairn_validate exit 0, all checks passed. cairn_impact
   skipped — no IPn/GPn changed (DESIGN Known-issues wording only). Generic
   profile consistency-gate slot: none (its stated default).
+
+Fan-out (2026-07-16): [O] diff-bug 2 findings; [S] blame-history 0 (verified
+fallback deny-safety + M59 recipe untouched independently); [S] prior-PR "no
+prior-PR evidence" (expected no-op). Scorer: F1/85 (test_hooks.py fallback
+comment cited nonexistent TestExitCodes class) → fixed: points at the real
+per-hook returncode-0 deny asserts. F2/88 (env-check registry comment claimed
+one-entry-per-positive-assert but 2 of 7 asserts unregistered) → fixed: both
+blocks registered (M61 mutation entries now 13). Sub-80 findings: none.
+Suites re-run green after fixes.

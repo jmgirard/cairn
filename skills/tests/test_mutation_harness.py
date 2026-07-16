@@ -406,6 +406,18 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_env_check",
+        test="TestEnvCheck.test_only_git_is_fatal",
+        target="skills/cairn-init/SKILL.md",
+        block="cairn is git-based; there is nothing to adopt",
+    ),
+    Mutation(
+        guard="test_env_check",
+        test="TestEnvCheck.test_python3_gap_names_hooks_fallback_and_scripts",
+        target="skills/cairn-init/SKILL.md",
+        block="unverified on Windows",
+    ),
+    Mutation(
+        guard="test_env_check",
         test="TestEnvCheck.test_python3_gap_names_hooks_fallback_and_scripts",
         target="skills/cairn-init/SKILL.md",
         block="the registered hooks fall back to the `py` launcher",
