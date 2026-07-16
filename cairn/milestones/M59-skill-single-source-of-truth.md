@@ -80,7 +80,7 @@ protocol is progressively disclosed out of the common scaffold path
 - [x] T4: Move cairn-init §2 → `skills/shared/migration-protocol.md`; add the
       read-on-footprint-detection directive to §0; re-anchor
       test_migration_guidance.py in the same commit (M46).
-- [ ] T5: Repo-wide grep sweep for pointers to the protocol's old home
+- [x] T5: Repo-wide grep sweep for pointers to the protocol's old home
       (tracking-rules, templates, DESIGN, references — live files only);
       update each.
 - [ ] T6: Run all three suites from the repo root (M56: no exit-blind pipes);
@@ -103,6 +103,10 @@ protocol is progressively disclosed out of the common scaffold path
   cairn-init 304→164 lines; pointer directive in the retained §2 stub;
   guards split-retargeted (protocol→module, §0/§1→skill) + 3 mutation
   entries retargeted/added, same commit (M46).
+- 2026-07-16: T5 done — sweep found 4 note-and-leave hits ("§2" still
+  resolves: cairn-init §2 remains the protocol via the pointer stub);
+  DESIGN Architecture gained the shared-modules line (also closing M58's
+  unlisted validation-doctrine.md gap).
 
 ## Decisions
 
