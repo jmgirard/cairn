@@ -45,42 +45,6 @@ GIT_COMMIT = re.compile(CMD_POS + r"git(?:\s+-\S+)*\s+commit(?!\S)")
 STAGE_ALL = re.compile(r"(?<![-\w])(?:--all(?![-\w])|-[A-Za-z]*a[A-Za-z]*)")
 
 
-def default_branch(cwd):
-    """The repo's default branch name, resolved via the remote HEAD.
-
-    Prefers the local `refs/remotes/origin/HEAD` symbolic-ref (instant);
-    falls back to `git ls-remote --symref origin HEAD` (network) when it is
-    unset. Returns None when no remote resolves — the caller then treats
-    main/master as the default (tracking-rules canonical recipe).
-    """
-    rc, out = cc.git(
-        ["symbolic-ref", "--short", "refs/remotes/origin/HEAD"], cwd
-    )
-    if rc == 0 and out.strip():
-        return out.strip().split("/", 1)[-1]  # strip leading "origin/"
-    rc, out = cc.git(["ls-remote", "--symref", "origin", "HEAD"], cwd)
-    if rc == 0:
-        for line in out.splitlines():
-            m = re.match(r"ref:\s+refs/heads/(\S+)\s+HEAD", line.strip())
-            if m:
-                return m.group(1)
-    return None
-
-
-def on_default_branch(cwd):
-    """True when the current branch is the repo's default branch."""
-    rc, cur = cc.git(["branch", "--show-current"], cwd)
-    if rc != 0:
-        return False
-    cur = cur.strip()
-    if not cur:
-        return False  # detached HEAD — not a normal on-default commit
-    default = default_branch(cwd)
-    if default is not None:
-        return cur == default
-    return cur in ("main", "master")  # no remote: canonical fallback
-
-
 def committed_paths(command, cwd):
     """Repo-root-relative paths the commit would include (best effort)."""
     files = set()
@@ -118,7 +82,7 @@ def main():
         return
     # Run git from the repo root so --name-only paths are repo-root-relative
     # (cwd-relative output in a subdir would break the cairn/ prefix test).
-    if not on_default_branch(root):
+    if not cc.on_default_branch(root):
         return
     non_cairn = [p for p in committed_paths(command, root)
                  if not p.startswith("cairn/")]

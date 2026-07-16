@@ -237,6 +237,113 @@ class TestMergeGuard(RepoFixture):
         self.assertEqual(proc.stdout.strip(), "")
 
 
+class TestForcePushGuard(RepoFixture):
+    def push_payload(self, command, **extra):
+        return self.payload(
+            hook_event_name="PreToolUse",
+            tool_name="Bash",
+            tool_input={"command": command},
+            **extra,
+        )
+
+    def assert_denied(self, command):
+        proc = run_hook("force_push_guard.py", self.push_payload(command))
+        self.assertEqual(proc.returncode, 0)
+        out = hook_json(proc)
+        self.assertEqual(out["permissionDecision"], "deny", command)
+        self.assertIn("force-push", out["permissionDecisionReason"])
+
+    def assert_passes(self, command):
+        proc = run_hook("force_push_guard.py", self.push_payload(command))
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(proc.stdout.strip(), "", command)
+
+    def test_denies_force_flag_variants_to_default(self):
+        # explicit-ref form: every force spelling, either flag order
+        for cmd in (
+            "git push --force origin main",
+            "git push -f origin main",
+            "git push origin main --force",
+            "git push --force-with-lease origin main",
+            "git push --force-with-lease=main:abc123 origin main",
+            "git push --force-if-includes --force-with-lease origin main",
+            "git push -uf origin main",
+        ):
+            with self.subTest(cmd=cmd):
+                self.assert_denied(cmd)
+
+    def test_denies_plus_refspec_force_syntax(self):
+        # the flagless force form; also qualified and src:dst spellings
+        for cmd in (
+            "git push origin +main",
+            "git push origin +refs/heads/main",
+            "git push -f origin feature:main",
+            "git push -f origin HEAD:main",
+        ):
+            with self.subTest(cmd=cmd):
+                self.assert_denied(cmd)
+
+    def test_denies_on_default_branch_form(self):
+        # no refspec: the push targets the branch we're sitting on
+        self.assert_denied("git push --force")
+        self.assert_denied("git push -f origin")
+        self.assert_denied("git push -f origin HEAD")
+
+    def test_passes_feature_branch_force_pushes(self):
+        for cmd in (
+            "git push -f origin m07-feature",
+            "git push --force-with-lease origin m07-feature",
+            "git push origin +m07-feature",
+            "git push -f origin fix:renamed-fix",
+        ):
+            with self.subTest(cmd=cmd):
+                self.assert_passes(cmd)
+
+    def test_passes_on_feature_branch_no_refspec_form(self):
+        self.git("checkout", "-q", "-b", "m07-feature")
+        self.assert_passes("git push --force")
+        self.assert_passes("git push -f origin HEAD")
+
+    def test_passes_plain_pushes_and_non_push(self):
+        for cmd in (
+            "git push origin main",
+            "git push -u origin main",
+            "git push",
+            "echo git push --force origin main",
+            "git pushx --force origin main",
+            "git status",
+        ):
+            with self.subTest(cmd=cmd):
+                self.assert_passes(cmd)
+
+    def test_default_branch_resolved_via_remote_head(self):
+        # default branch `trunk` advertised via refs/remotes/origin/HEAD:
+        # force-pushing trunk is denied, and `main` (now just a feature
+        # name) passes — detection, not hardcoding (commit_guard's fixture).
+        bare = tempfile.TemporaryDirectory()
+        self.addCleanup(bare.cleanup)
+        subprocess.run(
+            ["git", "init", "-q", "--bare", bare.name],
+            check=True, capture_output=True,
+        )
+        self.git("branch", "-m", "trunk")
+        self.git("remote", "add", "origin", bare.name)
+        self.git("push", "-q", "-u", "origin", "trunk")
+        self.git("remote", "set-head", "origin", "trunk")
+        self.assert_denied("git push --force origin trunk")
+        self.assert_passes("git push --force origin main")
+
+    def test_compound_command_push_segment_is_caught(self):
+        self.assert_denied("git fetch && git push --force origin main")
+
+    def test_ignores_other_tools(self):
+        proc = run_hook(
+            "force_push_guard.py",
+            self.payload(tool_name="Edit", tool_input={"file_path": "x"}),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+
+
 class TestMemoryGuard(RepoFixture):
     # A per-user memory path (independent of the repo) that should trip the
     # guard when cwd is a cairn repo.
@@ -384,6 +491,10 @@ class TestNonCairnNoOp(RepoFixture):
             "commit_guard.py": self.payload(
                 tool_name="Bash", tool_input={"command": "git commit -m x"}
             ),
+            "force_push_guard.py": self.payload(
+                tool_name="Bash",
+                tool_input={"command": "git push --force origin main"},
+            ),
             # a genuine memory path: the ONLY reason to no-op here is the
             # non-cairn cwd, so this exercises that branch specifically.
             "memory_guard.py": self.payload(
@@ -407,6 +518,7 @@ class TestNonCairnNoOp(RepoFixture):
             "stop_guard.py",
             "merge_guard.py",
             "commit_guard.py",
+            "force_push_guard.py",
             "memory_guard.py",
         ):
             with self.subTest(script=script):

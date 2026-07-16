@@ -7,6 +7,7 @@ must never block the user's session.
 
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -57,6 +58,40 @@ def git(args, cwd):
         return result.returncode, result.stdout
     except Exception:
         return 1, ""
+
+
+def default_branch(cwd):
+    """The repo's default branch name, resolved via the remote HEAD.
+
+    Prefers the local `refs/remotes/origin/HEAD` symbolic-ref (instant);
+    falls back to `git ls-remote --symref origin HEAD` (network) when it is
+    unset. Returns None when no remote resolves — the caller then treats
+    main/master as the default (tracking-rules canonical recipe).
+    """
+    rc, out = git(["symbolic-ref", "--short", "refs/remotes/origin/HEAD"], cwd)
+    if rc == 0 and out.strip():
+        return out.strip().split("/", 1)[-1]  # strip leading "origin/"
+    rc, out = git(["ls-remote", "--symref", "origin", "HEAD"], cwd)
+    if rc == 0:
+        for line in out.splitlines():
+            m = re.match(r"ref:\s+refs/heads/(\S+)\s+HEAD", line.strip())
+            if m:
+                return m.group(1)
+    return None
+
+
+def on_default_branch(cwd):
+    """True when the current branch is the repo's default branch."""
+    rc, cur = git(["branch", "--show-current"], cwd)
+    if rc != 0:
+        return False
+    cur = cur.strip()
+    if not cur:
+        return False  # detached HEAD — not a normal on-default state
+    default = default_branch(cwd)
+    if default is not None:
+        return cur == default
+    return cur in ("main", "master")  # no remote: canonical fallback
 
 
 def parse_roadmap_rows_full(roadmap_text):

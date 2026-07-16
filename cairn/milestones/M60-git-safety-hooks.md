@@ -1,10 +1,10 @@
 # M60: Git-safety hooks — force-push deny, merge-marker restore
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** IP1, GP2
-- **Branch/PR:** —
+- **Branch/PR:** m60-git-safety-hooks
 
 ## Goal
 
@@ -63,7 +63,7 @@ guarded merge no longer consumes the approval marker (RR01 recs 8 + 13).
 
 ## Tasks
 
-- [ ] T1: Write `hooks/force_push_guard.py` (reuse cairn_common /
+- [x] T1: Write `hooks/force_push_guard.py` (reuse cairn_common /
       commit_guard branch detection) + unit tests: deny cases and the
       false-positive matrix. (RB tripwire: ip-touching — this hardens IP1's
       perimeter; deny wording and scope must not block legitimate work.)
@@ -84,7 +84,26 @@ guarded merge no longer consumes the approval marker (RR01 recs 8 + 13).
 
 - 2026-07-16: created by /milestone-plan (promoted from the RR01 rec
   8/13 half of the skill/hook candidate row; recs 7/12 → M59).
+- 2026-07-16: gate passed both recommendations (+refspec covered; rename
+  lifecycle for the marker); T1 done — force_push_guard denies all three
+  force forms (flags, +refspec, HEAD-form) in explicit-ref and
+  on-default-branch shapes; default_branch/on_default_branch lifted from
+  commit_guard into cairn_common for reuse (stdlib-only import rule); all
+  three suites green (41/83/171).
+- 2026-07-16: [S] claude-code-guide docs check pinned the T2 contract:
+  Bash nonzero exit fires PostToolUseFailure (PostToolUse = success only;
+  PreToolUse-denied calls fire neither) — merge_guard_post keys on the
+  event name, no exit-code parsing; registers under both events.
 
 ## Decisions
+
+- 2026-07-16 (gate): force_push_guard also denies the `+refspec` force
+  syntax (`git push origin +main`) — the `+` prefix only ever means force,
+  so covering it closes a real bypass with zero false-positive risk.
+- 2026-07-16 (gate): marker restore uses a rename lifecycle — merge_guard
+  consumes by renaming `.merge-approved` → `.merge-approved.pending`;
+  merge_guard_post renames back on failed merge, deletes on success. Can
+  never mint approval (only restores what a real approval created). Minor
+  scope amendment: touches merge_guard.py + widens the gitignore pattern.
 
 ## Review
