@@ -744,3 +744,33 @@ system: one line, no file, no ID, no sub-status. Trigger conditions continue
 to live in row prose. If the candidate list ever sustainably outgrows
 triage-by-ordering (D-027 handled 12 rows without grouping), this is the
 entry to supersede.
+
+### D-036 (2026-07-16): Durable-record preview is show-then-commit, four skills, per-skill wired
+
+**Context:** D-035's rationale reached main sight-unseen — `/milestone-plan`
+authors D-entries and milestone files post-gate ("solidify autonomously"),
+and "deltas, not dumps" biased recaps toward compressing exactly the text
+that outlives the chat. The user flagged it live (2026-07-16); per GP4/D-011
+the fix is plugin conduct, not memory. Three design choices at the M64 plan
+gate.
+**Decision:** (1) **Mechanics:** show the drafted text verbatim in chat
+immediately before its commit — same turn, no new approval stop; objections
+are handled by amend/supersede right after. Rejected a hard pre-commit chip
+(adds a stop to every plan/review closeout, against
+work-autonomously-between-gates) and summary-only preview (summaries are what
+compressed the text away today). (2) **Coverage:** the four gap skills
+(plan, review, implement, brief) over D-entries, plan-owned milestone
+sections (new + gated amendments), LESSONS lines, archive summaries, and
+ROADMAP candidate/graduation rows; exempt work-log one-liners, checkbox
+ticks, status mirrors, and PR-branch content (hotfix NEWS/code — reviewable
+at the PR), `/design-interview` (co-authors in chat by construction), and
+`/cairn-init` (template boilerplate). Rejected extending to `/cairn-release`
+changelog consolidation — it mostly reorganizes entries the user already saw
+land; re-raise via a candidate if release-time text surprises. (3) **Wiring:**
+central rule + a per-skill directive at each commit step, per-skill
+guard-locked — the D-021 pattern, because conduct-at-specific-steps drifted
+under central-only rules before (M26/M28).
+**Consequences:** The pre-commit moment becomes a review moment without a new
+gate; "Deltas, not dumps" gains an explicit carve-out. Delivered by M64. If
+show-then-commit proves too weak (a veto before main is wanted), the
+hard-stop option is the entry to supersede.
