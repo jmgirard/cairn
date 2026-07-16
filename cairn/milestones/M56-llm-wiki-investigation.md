@@ -4,7 +4,7 @@
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
-- **Branch/PR:** m56-llm-wiki-investigation
+- **Branch/PR:** m56-llm-wiki-investigation · https://github.com/jmgirard/cairn/pull/54
 
 ## Goal
 
@@ -31,26 +31,26 @@ same. Fable escalation → offered only on a live RB-tripwire hit
 
 ## Acceptance criteria
 
-- [ ] AC1: `cairn/references/llm-wiki.md` exists with full citation of the
+- [x] AC1: `cairn/references/llm-wiki.md` exists with full citation of the
       gist (primary source read directly, per the primary-sources rule), the
       formalism (three layers, page schema, ingest/query/lint operations,
       schema-file role), and ecosystem-scan findings, all with URL anchors.
-- [ ] AC2: The note's fit assessment maps LLM Wiki elements to cairn's
+- [x] AC2: The note's fit assessment maps LLM Wiki elements to cairn's
       references/ feature set element-by-element (raw/↔pdf/, index, log,
       lint, linking, entity pages, ingest workflow), each element carrying an
       adopt / adapt / reject verdict with reason.
-- [ ] AC3: The fit assessment covers cross-file linking: current de-facto
+- [x] AC3: The fit assessment covers cross-file linking: current de-facto
       link-token practice (M<NN>, D-<NNN>, IPn/GPn; `cairn_impact` whole-word
       tracing) surveyed by `git grep`, assessed against a wikilink-style
       convention + a dangling-link lint — verdict with rationale.
-- [ ] AC4: The fit assessment covers the agent-memory angle: wiki-as-memory
+- [x] AC4: The fit assessment covers the agent-memory angle: wiki-as-memory
       framing vs. cairn's session-context injection + stateless-resume
       doctrine — verdict with rationale.
-- [ ] AC5: Disposition ledger complete — every adopt/adapt verdict lands as a
+- [x] AC5: Disposition ledger complete — every adopt/adapt verdict lands as a
       ROADMAP candidate row (search-first sweep applied) or a named follow-up
       milestone proposal; every reject carries its reason in the note; no
       element left verdict-less.
-- [ ] AC6: `cairn_validate` passes after the additions (note + INDEX line +
+- [x] AC6: `cairn_validate` passes after the additions (note + INDEX line +
       candidate rows respect caps and date rules).
 
 ## Coverage
@@ -104,3 +104,33 @@ same. Fable escalation → offered only on a live RB-tripwire hit
 ## Decisions
 
 ## Review
+
+Evidence gathered fresh by command, 2026-07-16 (PR #54):
+
+- AC1: note exists; gist citation (hash) present ×2; 4 URL anchors; the three
+  ops each defined; `## Ecosystem scan` section present. PASS.
+- AC2: element map table = 9 element rows + header, 12 bolded verdicts, each
+  row carries adopt/adapt/reject/already-have + reason. PASS.
+- AC3: grep survey figures (480/249/96) in the note; 8 verdict bullets across
+  assessments 2–3 incl. wikilink reject + dangling-ref advisory adopt, both
+  with rationale (M57/M99 FP hazards named). PASS.
+- AC4: `## Fit assessment 3` present — memory-type mapping, structural reject
+  + positioning adopt with rationale. PASS.
+- AC5: `## Disposition ledger` complete; grouped candidate row in ROADMAP;
+  release-prep row absorbed the positioning framing (search-first: absorbed,
+  not duplicated); INDEX line added; 6 rejects with reasons in the note. PASS.
+- AC6 + consistency gate: `cairn_validate` all 14 checks pass + sizing OK;
+  three unittest suites OK. Coverage completeness: AC1–AC6 all mapped, T1–T6
+  all exist. No principle change → `cairn_impact` skipped. Toolchain half:
+  generic profile names none — clean no-op.
+
+Independent review (three lenses + scorer, 2026-07-16): diff-bug [O] verified
+every checkable claim (gist quotes verbatim, grep counts reproduce at the T4
+tree state, validate/orphan-check/ADVISORY claims accurate, ledger conserves
+all verdicts) — 1 finding; blame-history [S] — no findings (release-prep
+amendment consistent with M54's carve-out; no rejected idea re-added; one
+count-drift observation discarded as taxonomy noise); prior-PR [S] — no
+prior-PR evidence (52 merged PRs, zero inline comments), clean no-op.
+Scored ≥80 (actioned): F1/88 — DeepWiki/AutoWiki bullet lacked the URL
+anchors AC1 requires → fixed (deepwiki.com + the OpenWiki announcement
+anchoring the "credited as inspiration" claim). Below 80 (logged): none.

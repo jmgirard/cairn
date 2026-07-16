@@ -86,9 +86,10 @@ Surveyed 2026-07-16, lighter touch than the gist:
   confidence); contradictions flagged at *ingest* time; query answers filed
   back only on user choice.
 - **DeepWiki (Cognition) / AutoWiki (Factory)** — hosted auto-generated
-  wikis for GitHub repos; credited by OpenWiki as inspiration. Fully
-  generated from code, no curation loop — the opposite pole from cairn's
-  human-gated model; noted for positioning only.
+  wikis for GitHub repos (https://deepwiki.com); credited by OpenWiki as
+  inspiration (https://www.langchain.com/blog/introducing-openwiki-an-open-source-agent-for-repo-documentation).
+  Fully generated from code, no curation loop — the opposite pole from
+  cairn's human-gated model; noted for positioning only.
 
 **Convergent hardening across implementations:** (1) wikilinks became the
 de-facto link syntax, with nvk's dual-link form solving plain-markdown
