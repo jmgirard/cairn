@@ -454,8 +454,8 @@ skills read its slots instead of hardcoding one language's commands. Six slots:
 
 The **domain verification doctrine (oracles) is universal, not a profile slot**:
 it is orthogonal to the language profile (D-024/D-025), stated once in
-"Validation doctrine" below. A profile carries *language mechanics*, never
-domain doctrine.
+`skills/shared/validation-doctrine.md` (see "Validation doctrine" below). A
+profile carries *language mechanics*, never domain doctrine.
 
 Three profiles ship: `r-package` (devtools/roxygen/testthat/pkgdown, CRAN),
 `python` (pyproject/pytest/ruff/mypy/build+twine, PyPI), and `generic` (no
@@ -519,7 +519,7 @@ The language-mechanical specifics — which edge cases, which error mechanism,
 coverage-tool status, plot/snapshot conventions — live in the active profile's
 `test-doctrine` slot (`cairn/PROFILE.md`; absent → infer per "Toolchain
 profiles"); the rules here are the universal floor. **Profiles supply language
-mechanics; the oracle / Validation doctrine above stays universal** (D-024/D-025),
+mechanics; the oracle / Validation doctrine module stays universal** (D-024/D-025),
 never a profile slot.
 
 The language/toolchain guardrails that were once stated here — package-build

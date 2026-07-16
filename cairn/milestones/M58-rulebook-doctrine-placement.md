@@ -107,7 +107,7 @@ oracle registry gains a declared pointer (RR01 recs 4/6/9).
       `Mutation(...)` targets — all in this commit.
 - [x] T3: Add the registry-pointer requirement to the module's registry
       paragraph + its guard assert + `Mutation(...)` entry.
-- [ ] T4: Cross-reference sweep — `git grep -i` for `Validation doctrine`,
+- [x] T4: Cross-reference sweep — `git grep -i` for `Validation doctrine`,
       `stated once in tracking-rules`, `oracle doctrine` repo-wide; update
       profile header comments (r-package/python/generic), generic.md
       test-doctrine line, tracking-rules "What gets a test" tail + profiles
@@ -129,6 +129,9 @@ oracle registry gains a declared pointer (RR01 recs 4/6/9).
   pointer + TestModuleExtraction/TestRegistryPointer + 5 Mutation entries
   (path assert narrowed to the unique reference phrase — bare path occurs
   twice in the rulebook, would defeat blank-one-block); 3 suites green.
+- 2026-07-16: T4 done — swept repo: 3 shipped profile headers + cairn/PROFILE.md
+  + 2 tracking-rules lines now name the module; DECISIONS/CHANGELOG/DRAFT_2
+  left as history; DESIGN.md:11 makes no location claim, unchanged.
 
 ## Decisions
 

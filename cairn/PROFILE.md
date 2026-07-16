@@ -5,7 +5,8 @@
      not an R package, so it runs the language-agnostic core with no R gates;
      the `verify` slot names this repo's own test command. The oracle /
      Validation doctrine is UNIVERSAL and deliberately NOT a slot — it is the
-     orthogonal domain axis (D-024/D-025), stated once in tracking-rules. All
+     orthogonal domain axis (D-024/D-025), stated once in the plugin's
+     skills/shared/validation-doctrine.md (referenced from tracking-rules). All
      six `## <slot>` sections are defined; cairn_validate FAILs on a missing,
      empty, or unrecognized slot. -->
 

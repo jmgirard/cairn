@@ -4,7 +4,8 @@
      operational skills read. cairn-init instantiates this into the repo's
      `cairn/PROFILE.md`. The oracle / Validation doctrine is UNIVERSAL and
      deliberately NOT a slot here — it is the orthogonal domain axis
-     (D-024/D-025), stated once in tracking-rules. All six `## <slot>` sections
+     (D-024/D-025), stated once in skills/shared/validation-doctrine.md
+     (referenced from tracking-rules). All six `## <slot>` sections
      are defined; cairn_validate FAILs on a missing or empty slot. -->
 
 The Python-package toolchain: PEP 621 `pyproject.toml`, pytest, ruff, mypy,
