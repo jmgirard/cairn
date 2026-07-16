@@ -720,3 +720,27 @@ coupling test turns the next overrun into a red suite at authoring time.
 Supersedes the M45 `<90` choice; if profiles ever approach 120 the remedy
 conversation is "move doctrine to a module" (M58 norm), not another silent
 raise.
+
+### D-035 (2026-07-16): Candidates stay a flat list — no category grouping in ROADMAP.md
+
+**Context:** A `/milestone-plan` evaluation asked whether the ROADMAP
+Candidates section should group rows into categories like "parked" or
+"blocked". The parked/actionable signal already exists per row: D-027's
+advisory higher-priority-first ordering plus inline trigger prose ("promote
+when/if …") on every gated row, which is richer than any category label.
+**Decision:** Reject grouping; the flat one-line-per-candidate list stands.
+Category names would become de facto sub-statuses (candidates deliberately
+carry none — D-027), "blocked" would overload an existing status-vocabulary
+word that means something else (in-flight, external blocker, work-log line),
+grouping creates a two-places-encode-one-fact drift surface (section
+placement vs. trigger prose), and `candidate_count()` plus new validate/audit
+machinery would have to learn the convention — structure serving a list the
+60-line ROADMAP cap already keeps small (cap remedies cluster rows, never
+section them). Also rejected the middle path (a mandated uniform
+"promote when:" opener): current rows already state triggers clearly;
+formalizing the phrasing is ceremony without new information.
+**Consequences:** The Candidates section stays the lightest object in the
+system: one line, no file, no ID, no sub-status. Trigger conditions continue
+to live in row prose. If the candidate list ever sustainably outgrows
+triage-by-ordering (D-027 handled 12 rows without grouping), this is the
+entry to supersede.
