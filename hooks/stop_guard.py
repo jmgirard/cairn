@@ -12,13 +12,14 @@ import sys
 
 import cairn_common as cc
 
-# The merge-approval marker is intentionally ephemeral and single-use;
-# it is gitignored in cairn-scaffolded repos, but never depend on that —
-# a repo that adopted the marker workflow without re-running /cairn-init
-# would have it un-ignored, and blocking turn-end on it would tempt the
-# user to commit the very thing that must stay uncommitted. Exclude it
+# The merge-approval marker (and its consumed-but-unresolved .pending
+# state, M60) is intentionally ephemeral and single-use; both are
+# gitignored in cairn-scaffolded repos, but never depend on that — a repo
+# that adopted the marker workflow without re-running /cairn-init would
+# have them un-ignored, and blocking turn-end on them would tempt the
+# user to commit the very thing that must stay uncommitted. Exclude them
 # regardless of .gitignore state.
-MARKER_BASENAME = ".merge-approved"
+MARKER_BASENAMES = (".merge-approved", ".merge-approved.pending")
 
 
 def main():
@@ -35,7 +36,7 @@ def main():
         line
         for line in out.splitlines()
         if line.strip()
-        and os.path.basename(line[3:].strip()) != MARKER_BASENAME
+        and os.path.basename(line[3:].strip()) not in MARKER_BASENAMES
     ]
     if not dirty:
         return

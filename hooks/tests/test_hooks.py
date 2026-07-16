@@ -207,6 +207,13 @@ class TestMergeGuard(RepoFixture):
         proc = run_hook("merge_guard.py", self.merge_payload("gh pr merge 7 --squash"))
         self.assertEqual(proc.stdout.strip(), "")
         self.assertFalse(self.marker().exists(), "marker must be single-use")
+        # consumption is a rename, not a delete: merge_guard_post resolves
+        # the pending file by outcome (restore on failure, delete on success)
+        pending = self.root / "cairn" / ".merge-approved.pending"
+        self.assertEqual(
+            pending.read_text(), "M07 approved 2026-07-11\n",
+            "consumed marker must move to .pending intact",
+        )
 
     def test_denies_git_merge_while_on_main(self):
         out = hook_json(
@@ -232,6 +239,232 @@ class TestMergeGuard(RepoFixture):
     def test_ignores_other_tools(self):
         proc = run_hook(
             "merge_guard.py",
+            self.payload(tool_name="Edit", tool_input={"file_path": "x"}),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+
+
+class TestMergeGuardPost(RepoFixture):
+    """The PostToolUse/PostToolUseFailure companion (M60). For Bash, a
+    nonzero exit fires PostToolUseFailure and PostToolUse fires only on
+    success (official hooks docs; references/claude-code-hooks.md) — so
+    the hook keys on the event name, never an exit-code field."""
+
+    APPROVAL = "M07 approved 2026-07-11\n"
+
+    def post_payload(self, command, event="PostToolUseFailure", **extra):
+        return self.payload(
+            hook_event_name=event,
+            tool_name="Bash",
+            tool_input={"command": command},
+            **extra,
+        )
+
+    def marker(self):
+        return self.root / "cairn" / ".merge-approved"
+
+    def pending(self):
+        return self.root / "cairn" / ".merge-approved.pending"
+
+    def test_failure_restores_consumed_marker(self):
+        self.pending().write_text(self.APPROVAL)
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.post_payload("gh pr merge 7 --squash"),
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(self.marker().read_text(), self.APPROVAL,
+                         "failed attempt must restore the marker intact")
+        self.assertFalse(self.pending().exists())
+        out = hook_json(proc)
+        self.assertEqual(out["hookEventName"], "PostToolUseFailure")
+        self.assertIn("restored", out["additionalContext"])
+
+    def test_success_deletes_pending_marker_stays_consumed(self):
+        self.pending().write_text(self.APPROVAL)
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.post_payload("gh pr merge 7 --squash", event="PostToolUse"),
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.marker().exists(),
+                         "a successful merge's approval stays consumed")
+        self.assertFalse(self.pending().exists())
+
+    def test_never_mints_without_pending(self):
+        # No pending file (no real approval was consumed): a failed guarded
+        # merge must NOT create a marker out of thin air.
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.post_payload("gh pr merge 7 --squash"),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.marker().exists(), "must never mint approval")
+
+    def test_noop_on_non_merge_commands(self):
+        self.pending().write_text(self.APPROVAL)
+        for cmd in ("git status", "git merge --abort", "echo gh pr merge"):
+            for event in ("PostToolUse", "PostToolUseFailure"):
+                with self.subTest(cmd=cmd, event=event):
+                    proc = run_hook(
+                        "merge_guard_post.py",
+                        self.post_payload(cmd, event=event),
+                    )
+                    self.assertEqual(proc.stdout.strip(), "")
+        self.assertTrue(self.pending().exists(),
+                        "non-merge commands must not touch the pending file")
+        self.assertFalse(self.marker().exists())
+
+    def test_noop_on_other_events_and_tools(self):
+        self.pending().write_text(self.APPROVAL)
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.post_payload("gh pr merge 7", event="PreToolUse"),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.payload(
+                hook_event_name="PostToolUseFailure",
+                tool_name="Edit",
+                tool_input={"file_path": "x"},
+            ),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertTrue(self.pending().exists())
+
+    def test_failed_git_merge_on_main_restores(self):
+        # the git-merge form of a guarded merge (sitting on main)
+        self.pending().write_text(self.APPROVAL)
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.post_payload("git merge m07-branch"),
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertTrue(self.marker().exists())
+
+    def test_stop_guard_ignores_pending_marker(self):
+        # the transient pending state must not block turn-end, marker-style
+        self.pending().write_text(self.APPROVAL)
+        proc = run_hook("stop_guard.py", self.payload())
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(proc.stdout.strip(), "",
+                         "pending marker alone must not block")
+
+
+class TestForcePushGuard(RepoFixture):
+    def push_payload(self, command, **extra):
+        return self.payload(
+            hook_event_name="PreToolUse",
+            tool_name="Bash",
+            tool_input={"command": command},
+            **extra,
+        )
+
+    def assert_denied(self, command):
+        proc = run_hook("force_push_guard.py", self.push_payload(command))
+        self.assertEqual(proc.returncode, 0)
+        out = hook_json(proc)
+        self.assertEqual(out["permissionDecision"], "deny", command)
+        self.assertIn("force-push", out["permissionDecisionReason"])
+
+    def assert_passes(self, command):
+        proc = run_hook("force_push_guard.py", self.push_payload(command))
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(proc.stdout.strip(), "", command)
+
+    def test_denies_force_flag_variants_to_default(self):
+        # explicit-ref form: every force spelling, either flag order
+        for cmd in (
+            "git push --force origin main",
+            "git push -f origin main",
+            "git push origin main --force",
+            "git push --force-with-lease origin main",
+            "git push --force-with-lease=main:abc123 origin main",
+            "git push --force-if-includes --force-with-lease origin main",
+            "git push -uf origin main",
+        ):
+            with self.subTest(cmd=cmd):
+                self.assert_denied(cmd)
+
+    def test_denies_plus_refspec_force_syntax(self):
+        # the flagless force form; also qualified and src:dst spellings
+        for cmd in (
+            "git push origin +main",
+            "git push origin +refs/heads/main",
+            "git push -f origin feature:main",
+            "git push -f origin HEAD:main",
+        ):
+            with self.subTest(cmd=cmd):
+                self.assert_denied(cmd)
+
+    def test_denies_on_default_branch_form(self):
+        # no refspec: the push targets the branch we're sitting on
+        self.assert_denied("git push --force")
+        self.assert_denied("git push -f origin")
+        self.assert_denied("git push -f origin HEAD")
+
+    def test_passes_feature_branch_force_pushes(self):
+        for cmd in (
+            "git push -f origin m07-feature",
+            "git push --force-with-lease origin m07-feature",
+            "git push origin +m07-feature",
+            "git push -f origin fix:renamed-fix",
+        ):
+            with self.subTest(cmd=cmd):
+                self.assert_passes(cmd)
+
+    def test_passes_on_feature_branch_no_refspec_form(self):
+        self.git("checkout", "-q", "-b", "m07-feature")
+        self.assert_passes("git push --force")
+        self.assert_passes("git push -f origin HEAD")
+
+    def test_passes_plain_pushes_and_non_push(self):
+        for cmd in (
+            "git push origin main",
+            "git push -u origin main",
+            "git push",
+            "echo git push --force origin main",
+            "git pushx --force origin main",
+            "git status",
+        ):
+            with self.subTest(cmd=cmd):
+                self.assert_passes(cmd)
+
+    def test_default_branch_resolved_via_remote_head(self):
+        # default branch `trunk` advertised via refs/remotes/origin/HEAD:
+        # force-pushing trunk is denied, and `main` (now just a feature
+        # name) passes — detection, not hardcoding (commit_guard's fixture).
+        bare = tempfile.TemporaryDirectory()
+        self.addCleanup(bare.cleanup)
+        subprocess.run(
+            ["git", "init", "-q", "--bare", bare.name],
+            check=True, capture_output=True,
+        )
+        self.git("branch", "-m", "trunk")
+        self.git("remote", "add", "origin", bare.name)
+        self.git("push", "-q", "-u", "origin", "trunk")
+        self.git("remote", "set-head", "origin", "trunk")
+        self.assert_denied("git push --force origin trunk")
+        self.assert_passes("git push --force origin main")
+
+    def test_compound_command_push_segment_is_caught(self):
+        self.assert_denied("git fetch && git push --force origin main")
+
+    def test_subshell_wrapped_force_push_is_caught(self):
+        # M60 review F4a: `)` must end the span, not glue onto the refspec
+        self.assert_denied("(git push -f origin main)")
+
+    def test_separate_value_flag_never_invents_a_deny(self):
+        # M60 review F4b: -o's value token is not a refspec — this is a
+        # feature-branch force-push and must pass
+        self.assert_passes("git push -f origin my-feature -o main")
+        self.assert_denied("git push -f origin main -o ci.skip")
+
+    def test_ignores_other_tools(self):
+        proc = run_hook(
+            "force_push_guard.py",
             self.payload(tool_name="Edit", tool_input={"file_path": "x"}),
         )
         self.assertEqual(proc.stdout.strip(), "")
@@ -381,8 +614,17 @@ class TestNonCairnNoOp(RepoFixture):
             "merge_guard.py": self.payload(
                 tool_name="Bash", tool_input={"command": "gh pr merge 7"}
             ),
+            "merge_guard_post.py": self.payload(
+                hook_event_name="PostToolUseFailure",
+                tool_name="Bash",
+                tool_input={"command": "gh pr merge 7"},
+            ),
             "commit_guard.py": self.payload(
                 tool_name="Bash", tool_input={"command": "git commit -m x"}
+            ),
+            "force_push_guard.py": self.payload(
+                tool_name="Bash",
+                tool_input={"command": "git push --force origin main"},
             ),
             # a genuine memory path: the ONLY reason to no-op here is the
             # non-cairn cwd, so this exercises that branch specifically.
@@ -406,7 +648,9 @@ class TestNonCairnNoOp(RepoFixture):
             "session_context.py",
             "stop_guard.py",
             "merge_guard.py",
+            "merge_guard_post.py",
             "commit_guard.py",
+            "force_push_guard.py",
             "memory_guard.py",
         ):
             with self.subTest(script=script):
@@ -419,6 +663,67 @@ class TestNonCairnNoOp(RepoFixture):
                 )
                 self.assertEqual(proc.returncode, 0)
                 self.assertEqual(proc.stdout.strip(), "")
+
+
+class TestHooksRegistration(unittest.TestCase):
+    """hooks.json registers every guard with the python3/timeout envelope
+    (M60 AC3). Hooks snapshot at process start, so a registration gap
+    fails silently live — this is the mechanical check."""
+
+    def setUp(self):
+        self.config = json.loads((HOOKS_DIR / "hooks.json").read_text())["hooks"]
+
+    def commands(self, event, matcher):
+        return [
+            h["command"]
+            for entry in self.config.get(event, ())
+            if entry.get("matcher", "*") == matcher or event == "SessionStart"
+            for h in entry["hooks"]
+        ]
+
+    def test_force_push_guard_registered_pretooluse_bash(self):
+        cmds = self.commands("PreToolUse", "Bash")
+        self.assertTrue(
+            any("force_push_guard.py" in c for c in cmds), cmds
+        )
+
+    def test_merge_guard_post_registered_on_both_post_events(self):
+        # the outcome signal is the event name, so BOTH events are needed:
+        # PostToolUse alone never restores; PostToolUseFailure alone never
+        # finalizes a success
+        for event in ("PostToolUse", "PostToolUseFailure"):
+            with self.subTest(event=event):
+                cmds = self.commands(event, "Bash")
+                self.assertTrue(
+                    any("merge_guard_post.py" in c for c in cmds), (event, cmds)
+                )
+
+    def test_every_registered_hook_uses_the_standard_envelope(self):
+        for event, entries in self.config.items():
+            for entry in entries:
+                for h in entry["hooks"]:
+                    with self.subTest(event=event, command=h.get("command")):
+                        self.assertEqual(h["type"], "command")
+                        self.assertTrue(
+                            h["command"].startswith(
+                                'python3 "${CLAUDE_PLUGIN_ROOT}/hooks/'
+                            )
+                        )
+                        self.assertIsInstance(h["timeout"], int)
+
+    def test_every_hook_script_is_registered(self):
+        registered = "".join(
+            h["command"]
+            for entries in self.config.values()
+            for entry in entries
+            for h in entry["hooks"]
+        )
+        scripts = {
+            p.name for p in HOOKS_DIR.glob("*.py") if p.name != "cairn_common.py"
+        }
+        for script in scripts:
+            with self.subTest(script=script):
+                self.assertIn(script, registered)
 
 
 class TestStdlibOnly(unittest.TestCase):

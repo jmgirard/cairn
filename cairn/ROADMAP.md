@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M60 | Git-safety hooks — force-push deny, merge-marker restore | planned | — | normal | milestones/M60-git-safety-hooks.md |
+| M60 | Git-safety hooks — force-push deny, merge-marker restore | review | — | normal | milestones/M60-git-safety-hooks.md |
 | M59 | Skill single-source-of-truth — canonical fallback, de-enumerated checks, migration module | done | — | normal | milestones/archive/M59-skill-single-source-of-truth.md |
 | M58 | Rulebook doctrine placement — governance up, validation doctrine out, registry pointer | done | — | normal | milestones/archive/M58-rulebook-doctrine-placement.md |
 | M57 | references/ + linking hardening — synthesis notes, INDEX lint, dangling-ID advisory | done | — | normal | milestones/archive/M57-references-linking-hardening.md |

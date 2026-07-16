@@ -7,11 +7,46 @@ must never block the user's session.
 
 import json
 import os
+import re
 import subprocess
 import sys
 
 # Statuses whose milestone files count as "active" for context injection.
 ACTIVE_STATUSES = {"in-progress", "blocked", "review"}
+
+# The single-use merge-approval marker and its consumed-but-unresolved
+# state. merge_guard.py consumes the marker by renaming it to the pending
+# path when it lets a guarded merge through; merge_guard_post.py restores
+# it (failed attempt) or deletes it (successful merge). Both are ignored
+# by stop_guard and gitignored in scaffolded repos.
+MARKER_RELPATH = os.path.join("cairn", ".merge-approved")
+PENDING_RELPATH = os.path.join("cairn", ".merge-approved.pending")
+
+# Command position only: start of string or right after a shell separator
+# (;, &, |, ( , newline) — a plain space before "git"/"gh" means it's an
+# argument to something else (e.g. `echo git merge`), not a command.
+CMD_POS = r"(?:^|[;&|(\n])\s*"
+GH_PR_MERGE = re.compile(CMD_POS + r"gh\s+pr\s+merge(?!\S)")
+GIT_MERGE = re.compile(CMD_POS + r"git(?:\s+-\S+)*\s+merge(?!\S)")
+MERGE_HOUSEKEEPING = re.compile(r"--(?:abort|continue|quit)\b")
+
+
+def is_guarded_merge(command, cwd):
+    """True when the command would merge into main/master.
+
+    Shared by merge_guard.py (PreToolUse deny/consume) and
+    merge_guard_post.py (PostToolUse/PostToolUseFailure resolve), so both
+    ends of the marker lifecycle key on the same detection.
+    """
+    if GH_PR_MERGE.search(command):
+        return True
+    if GIT_MERGE.search(command) and not MERGE_HOUSEKEEPING.search(command):
+        # `git merge main` on a feature branch (syncing main into the
+        # branch) is required by the git model — only guard merges made
+        # while sitting on main/master.
+        rc, branch = git(["branch", "--show-current"], cwd)
+        return rc == 0 and branch.strip() in ("main", "master")
+    return False
 
 
 def read_input():
@@ -57,6 +92,40 @@ def git(args, cwd):
         return result.returncode, result.stdout
     except Exception:
         return 1, ""
+
+
+def default_branch(cwd):
+    """The repo's default branch name, resolved via the remote HEAD.
+
+    Prefers the local `refs/remotes/origin/HEAD` symbolic-ref (instant);
+    falls back to `git ls-remote --symref origin HEAD` (network) when it is
+    unset. Returns None when no remote resolves — the caller then treats
+    main/master as the default (tracking-rules canonical recipe).
+    """
+    rc, out = git(["symbolic-ref", "--short", "refs/remotes/origin/HEAD"], cwd)
+    if rc == 0 and out.strip():
+        return out.strip().split("/", 1)[-1]  # strip leading "origin/"
+    rc, out = git(["ls-remote", "--symref", "origin", "HEAD"], cwd)
+    if rc == 0:
+        for line in out.splitlines():
+            m = re.match(r"ref:\s+refs/heads/(\S+)\s+HEAD", line.strip())
+            if m:
+                return m.group(1)
+    return None
+
+
+def on_default_branch(cwd):
+    """True when the current branch is the repo's default branch."""
+    rc, cur = git(["branch", "--show-current"], cwd)
+    if rc != 0:
+        return False
+    cur = cur.strip()
+    if not cur:
+        return False  # detached HEAD — not a normal on-default state
+    default = default_branch(cwd)
+    if default is not None:
+        return cur == default
+    return cur in ("main", "master")  # no remote: canonical fallback
 
 
 def parse_roadmap_rows_full(roadmap_text):

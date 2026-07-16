@@ -106,9 +106,10 @@ Then:
   absent). If a conflicting section exists, show the diff and ask.
 - `.Rbuildignore`: add `^cairn$` (packages only). On a migration, also prune
   stale per-file entries for tracking files that moved into `cairn/` (§2 step 6).
-- `.gitignore`: add `cairn/references/pdf/` and `cairn/.merge-approved`
-  (single-use merge-approval marker written at review gates, consumed by
-  the plugin's merge-guard hook — never committed).
+- `.gitignore`: add `cairn/references/pdf/`, `cairn/.merge-approved`, and
+  `cairn/.merge-approved.pending` (the single-use merge-approval marker
+  written at review gates and its consumed-but-unresolved state — the
+  plugin's merge-guard hooks manage both; never committed).
 - Instantiate `cairn/PROFILE.md` from the selected reference profile
   (`${CLAUDE_PLUGIN_ROOT}/skills/shared/profiles/<name>.md` — `r-package.md`,
   `python.md`, or `generic.md` per the selection order above) — copy it

@@ -75,6 +75,7 @@ REQUIRED_SCAFFOLD_FILES = (
 REQUIRED_GITIGNORE = (
     "cairn/references/pdf/",
     "cairn/.merge-approved",
+    "cairn/.merge-approved.pending",
 )
 # .Rbuildignore entry — package repos only (DESCRIPTION present); `^cairn$`
 # keeps the whole tracking dir out of the built package.

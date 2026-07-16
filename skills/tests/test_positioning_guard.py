@@ -24,9 +24,18 @@ README = "README.md"
 DESIGN = "cairn/DESIGN.md"
 TEMPLATE = "skills/shared/templates/claude-md-section.md"
 
-# The five shipped hooks (DESIGN Architecture must name each — the M54 fix
-# added commit_guard + memory_guard, which the stale three-hook bullet omitted).
-HOOKS = ("session_context", "stop_guard", "merge_guard", "commit_guard", "memory_guard")
+# The seven shipped hooks (DESIGN Architecture must name each — the M54 fix
+# added commit_guard + memory_guard, which the stale three-hook bullet
+# omitted; M60 added force_push_guard + merge_guard_post).
+HOOKS = (
+    "session_context",
+    "stop_guard",
+    "merge_guard",
+    "commit_guard",
+    "memory_guard",
+    "force_push_guard",
+    "merge_guard_post",
+)
 
 
 def read(rel):
@@ -53,10 +62,15 @@ class TestOutwardPositioning(unittest.TestCase):
 
 
 class TestDesignArchitectureHonesty(unittest.TestCase):
-    def test_design_lists_all_five_hooks(self):
+    def test_design_lists_all_seven_hooks(self):
+        # Word-bounded: `merge_guard` inside `merge_guard_post` must NOT
+        # satisfy the standalone merge_guard check (M60 review F1 — the
+        # M39/M40 substring-shadowing false-coverage trap).
         text = read(DESIGN)
         for hook in HOOKS:
-            self.assertIn(hook, text, f"DESIGN.md hooks list missing {hook}")
+            self.assertRegex(
+                text, rf"\b{hook}\b", f"DESIGN.md hooks list missing {hook}"
+            )
 
     def test_ip1_names_the_default_branch(self):
         text = read(DESIGN)

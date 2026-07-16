@@ -1,8 +1,9 @@
-# Claude Code plugin hooks API (contracts used by M07)
+# Claude Code plugin hooks API (contracts used by M07, M60)
 
 Sources: https://code.claude.com/docs/en/hooks-guide.md and
 https://code.claude.com/docs/en/hooks.md (fetched 2026-07-11 via [S]
-claude-code-guide subagent).
+claude-code-guide subagent; PostToolUse/PostToolUseFailure facts fetched
+2026-07-16 the same way, for M60).
 
 ## Placement
 
@@ -66,6 +67,27 @@ PostToolUse, UserPromptSubmit, ConfigChange.
   SessionStart(startup/resume) only.
 - Exit 2 = block with stderr as feedback; other nonzero = non-blocking
   error. Prefer exit 0 + structured JSON.
+
+## PostToolUse / PostToolUseFailure (M60, fetched 2026-07-16)
+
+- **Outcome routing**: PostToolUse fires "after a tool call succeeds";
+  PostToolUseFailure "after a tool call fails". **For Bash specifically,
+  "a failure occurs when the command exits with a non-zero exit status"**
+  (docs, verbatim) — so a nonzero-exit command fires PostToolUseFailure,
+  not PostToolUse. No exit-code field is needed or documented for the
+  success case: the event name IS the outcome signal. `merge_guard_post.py`
+  keys on this.
+- A PreToolUse-denied call fires **neither** (a separate PermissionDenied
+  event exists for that); both Post events are observational — nothing
+  they output can un-run the tool. Decision control: top-level
+  `decision: "block"`/`reason`; `hookSpecificOutput.additionalContext`
+  also honored.
+- Failure input carries `tool_input` plus `tool_output`
+  (`{"isError": true, "text": "..."}`); the success-case `tool_output`
+  shape for Bash is NOT documented — don't parse it, key on the event.
+- Registration envelope in hooks.json is identical to PreToolUse
+  (`{"matcher": "Bash", "hooks": [{"type": "command", ...}]}`) under the
+  `PostToolUse` / `PostToolUseFailure` keys.
 - **Fixture tests prove only what a hook prints, not that Claude Code
   honors it — pin asserted envelopes to this contract + one live-fire.**
 
