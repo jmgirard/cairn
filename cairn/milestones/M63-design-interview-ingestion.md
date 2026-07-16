@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M63: /design-interview note-and-leave ingestion
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M43 is done -->
 - **Principles touched:** IP3, IP4   <!-- owner: plan · worked-under (conservation of ingested principles; numbering never rewritten); none changed -->
