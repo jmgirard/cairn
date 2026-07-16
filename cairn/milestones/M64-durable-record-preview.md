@@ -1,6 +1,6 @@
 # M64: Durable-record preview — show authored record text verbatim before docs-only commits
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** GP4
@@ -74,7 +74,7 @@ checkbox ticks, status mirrors → exempt mechanical noise (D-036).
       assert + four per-skill asserts, word-bounded) and register
       Mutation(...) entries; read targets per-test, never setUpClass cache
       (M61).
-- [ ] T4: Whole-repo grep sweep for contradicting phrasings ("never paste",
+- [x] T4: Whole-repo grep sweep for contradicting phrasings ("never paste",
       "deltas, not dumps") on live surfaces — exclusions may name only
       history files (M48/M58); run all three suites from the repo root with
       exit codes gating the chain (M56).
@@ -90,6 +90,9 @@ checkbox ticks, status mirrors → exempt mechanical noise (D-036).
   brief (RR ingestion step 4); skills suite green.
 - 2026-07-16: T3 done — guard file (9 tests) + 10 Mutation entries; skills
   suite 200 tests green (harness proves each block fails when blanked).
+- 2026-07-16: T4 done — sweep found no live contradiction (remaining "never
+  paste" hits govern tracking files, not chat); all three suites + validate
+  green; status → review.
 
 ## Decisions
 
