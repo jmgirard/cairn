@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-16 (M59 done + archived; pruned M54 under terminal-row retention; M60 next)_
+_Last hygiene check: 2026-07-16 (M60 done + archived; M55 pruned under terminal-row retention; skill/hook single-source-of-truth candidate graduated)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,19 +10,17 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M60 | Git-safety hooks — force-push deny, merge-marker restore | review | — | normal | milestones/M60-git-safety-hooks.md |
+| M60 | Git-safety hooks — force-push deny, merge-marker restore | done | — | normal | milestones/archive/M60-git-safety-hooks.md |
 | M59 | Skill single-source-of-truth — canonical fallback, de-enumerated checks, migration module | done | — | normal | milestones/archive/M59-skill-single-source-of-truth.md |
 | M58 | Rulebook doctrine placement — governance up, validation doctrine out, registry pointer | done | — | normal | milestones/archive/M58-rulebook-doctrine-placement.md |
 | M57 | references/ + linking hardening — synthesis notes, INDEX lint, dangling-ID advisory | done | — | normal | milestones/archive/M57-references-linking-hardening.md |
 | M56 | LLM Wiki investigation — references/ + linking fit assessment | done | — | normal | milestones/archive/M56-llm-wiki-investigation.md |
-| M55 | Milestone-file cap exempts the Review section | done | — | normal | milestones/archive/M55-milestone-file-cap.md |
 
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
 - Public release prep: LICENSE (MIT), README worked example + a human-facing "what cairn does without asking" section (candidate framing: a governed LLM Wiki for project state — M56, references/llm-wiki.md), external de-risking (env check in cairn-init, migration dry-run mode), remove DRAFT files, tag v1.0 — **positioning + DESIGN refresh carved to M54** (RR01 rec 1/5); remainder here is rec 14/§10 — added 2026-07-11, expanded 2026-07-13/2026-07-16 — DRAFT_2 §11, reviews/archive/RR01
-- Skill/hook single-source-of-truth: **whole row promoted 2026-07-16 — recs 7/12 → M59, recs 8/13 → M60** (graduates when both complete, M35) — added 2026-07-13 — RR01 rec 7/8/12/13/Q6/Q9
 - Changelog profile slot: when the next non-R/non-Python profile is authored, add a changelog declaration (file name or "none") read by `/hotfix`, `/cairn-release`, and the consistency-gate — the changelog is a toolchain fact with no slot today; until then the release-prep hotfix-wording fix suffices — added 2026-07-13 — RR01 rec 11/Q2
 - `/design-interview` note-and-leave ingestion: teach `/design-interview` to ingest a migration-preserved numbered-principles file (kept intact by M43's G-I2 note-and-leave) and drive its IP/GP formalization + the eventual in-code `PRINCIPLES.md #N` repoint (a target-repo code touch). Downstream of M43 (which writes the deferral) and gated on a real repo needing it; `/design-interview` already formalizes principles, so this is the migration-specific ingestion path, not net-new formalization — added 2026-07-12 — M43 Out (Q1), references/migration-pilot-notes.md Pilot 3 G-I2
 - Content-gated memory guard: make M19's memory-boundary hook inspect the write and fire only on durable-state signals (decisions, conventions, project facts), staying silent on pure per-user prefs; promote only if the unconditional soft nudge proves too noisy — added 2026-07-11 — M19 Out
