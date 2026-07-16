@@ -1,10 +1,10 @@
 # M56: LLM Wiki investigation — references/ + linking fit assessment
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m56-llm-wiki-investigation
 
 ## Goal
 
@@ -64,7 +64,7 @@ same. Fable escalation → offered only on a live RB-tripwire hit
 
 ## Tasks
 
-- [ ] T1: Deep-read the Karpathy gist (primary source); draft the formalism
+- [x] T1: Deep-read the Karpathy gist (primary source); draft the formalism
       section of `references/llm-wiki.md` with verbatim-critical rules quoted.
 - [ ] T2: Ecosystem scan — LangChain OpenWiki, nvk/llm-wiki, SamurAIGPT
       llm-wiki-agent, DeepWiki/AutoWiki (light), community hardening patterns
@@ -83,6 +83,8 @@ same. Fable escalation → offered only on a live RB-tripwire hit
 
 - 2026-07-16: created by /milestone-plan (gate: investigation-only; gist +
   ecosystem scan; all three targets; Opus, not Fable — no RB tripwire fires).
+- 2026-07-16: T1 done — gist read raw (primary source); formalism section of
+  references/llm-wiki.md drafted with verbatim rules; gist states no date.
 
 ## Decisions
 
