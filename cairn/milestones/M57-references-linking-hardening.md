@@ -1,6 +1,6 @@
 # M57: references/ + linking hardening — synthesis notes, INDEX lint, dangling-ID advisory
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP2   <!-- owner: plan · create/amend-via-gate -->
@@ -84,7 +84,7 @@ candidate (absorbed there by M56); IP/GP-token tracing → already shipped
       above the repo's max assigned ID (M99 class); skip repo-qualified
       cites (qualifier heuristic — exact shape is implement's; the fixtures
       pin behavior, D-023: prefer a miss over an FP).
-- [ ] T5: live-tree run — full validate PASS + zero WARNs; all three suites
+- [x] T5: live-tree run — full validate PASS + zero WARNs; all three suites
       from the repo root; log the M57 self-resolution quirk (once this file
       exists, the live "ackwards M57" tokens resolve locally — the fixture
       carries the hazard case regardless).
@@ -106,6 +106,10 @@ candidate (absorbed there by M56); IP/GP-token tracing → already shipped
   lines each, M46 fold-don't-defer; T4 = the 5 fixtures). Gate-chosen
   same-line slug rule is deliberately loose (skips path-bearing lines too —
   preferred miss, D-023). Gapped-set fixtures via archived M05 + gap M04.
+- 2026-07-16: T5 done — live tree 15/15 PASS + zero WARNs; 3 suites green
+  from repo root. Quirk logged: live "ackwards M57" now self-resolves (this
+  milestone took M57), M99 skips via above-max; fixtures carry both hazard
+  classes independently. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
