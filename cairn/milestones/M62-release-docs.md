@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M62: Release docs — LICENSE, README worked example + framing, DRAFT removal
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M61   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m62-release-docs   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -54,7 +54,8 @@ external de-risking → M61.
       an explicit bail-out path (RR01 §10.5).
 - [ ] `DRAFT_2.md` is deleted and `git grep -i draft_2` over live files
       returns only history-file hits (DECISIONS/CHANGELOG/legacy/reviews
-      archive).
+      archive/milestone archives) and tracking lines recording this
+      removal (the M62 file, the ROADMAP lineage citation).
 - [ ] Verify clean: both unittest suites green from the repo root; any
       new/extended prose-guards mutation-registered.
 
@@ -90,6 +91,12 @@ external de-risking → M61.
 
 - 2026-07-16: created by /milestone-plan (carved from the "Public release
   prep" candidate row with M61; v1.0 tag stays a /cairn-release run).
+- 2026-07-16: implement started; branch m62-release-docs.
+- 2026-07-16: gate: AC5 amended (exempt milestone archives + tracking lines
+  recording the removal — the grep otherwise hits its own record); worked
+  example = fictional generic repo; status ¶ drops version claims (points at
+  CHANGELOG); DRAFT_2 disposition = skim, port true gaps only, drop the
+  DESIGN.md "content moves here" promise sentence.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
