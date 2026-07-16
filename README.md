@@ -3,10 +3,12 @@
 *A cairn is built one stone at a time, and marks the trail for whoever
 comes next.*
 
-A Claude Code plugin for milestone-driven development. One canonical
-workflow — planning, implementation, review, hotfixes, releases, and expert
-escalation — with all project state in plain markdown under `cairn/`, kept
-honest by weight caps and a self-auditing health check. The core is
+A Claude Code plugin for milestone-driven development: a
+governed LLM Wiki for project state — the agent maintains it, you gate it.
+One canonical workflow — planning, implementation, review, hotfixes,
+releases, and expert escalation — with all project state in plain markdown
+under `cairn/`, kept honest by weight caps and a self-auditing health
+check. The core is
 language-agnostic; each repo declares a toolchain profile (R, Python, or
 generic) that supplies its language-specific commands. Work lands as small
 stacked milestones, and any session — today's or next month's — can find
@@ -17,16 +19,15 @@ similar-but-diverging tracking systems in each. This plugin centralizes the
 logic (skills, rules, templates) so every repo works identically; each repo
 holds only its own state.
 
-**Status: v0.1 — piloting.** Interfaces may change; see
-[CHANGELOG.md](CHANGELOG.md). The full design rationale lives in
-[DRAFT_2.md](DRAFT_2.md) (removed at 1.0).
+Release history lives in [CHANGELOG.md](CHANGELOG.md); design rationale in
+`cairn/DESIGN.md` and the append-only decision log it points to.
 
 ## Install
 
 Two paths; pick one — running both installs the plugin twice and the
 duplicates will confuse skill routing.
 
-**Dev install (recommended while piloting):** clone and symlink into your
+**Dev install (recommended):** clone and symlink into your
 skills directory. The plugin loads from your checkout, so `git pull`
 updates it with no re-install step:
 
@@ -73,6 +74,37 @@ You rarely type the next command: each phase ends with clickable options
 (chips) that route to the natural next step. Typing the slash command
 directly always works too, e.g. to resume after a break.
 
+## A worked example
+
+Say your repo is a small CLI tool and you want a `--dry-run` flag.
+
+**1. Plan it.** You say: *"plan a milestone: add a --dry-run flag to the
+sync command."* Claude reads the roadmap, decisions, and the relevant code,
+then asks one short batch of scoping questions, each with a recommendation
+— should `--dry-run` cover `sync` only or every mutating subcommand? is
+printing the would-be actions enough, or must exit codes match a real run?
+You click answers (or type your own). Claude writes
+`cairn/milestones/M07-dry-run-flag.md` — goal, in/out scope, verifiable
+acceptance criteria, ordered tasks — registers it in the ROADMAP as
+`planned`, commits, and offers a chip: **Start implementing M07**.
+
+**2. Build it.** `/milestone-implement M07` cuts a branch, asks any
+implementation choices the plan left open (flag naming, output format),
+then works the tasks in order: tests first, one checkpoint commit per
+task, each commit updating the milestone file's checkboxes alongside the
+code. Between the gate and the finish you aren't asked anything. When all
+tasks pass, status flips to `review` and you get a diff summary and a
+chip: **Proceed to review**.
+
+**3. Ship it.** `/milestone-review M07` re-runs every check fresh, gathers
+evidence for each acceptance criterion (no evidence, no tick), and hands
+the diff to independent reviewer agents that didn't write it. Then — the
+one moment that matters — it opens a PR and asks *you* to merge, with the
+evidence in front of you. Nothing reaches your default branch until you
+say yes. After the merge, the milestone compresses to a short summary in
+the archive, the ROADMAP row flips to `done`, and the next session —
+tomorrow or next month — picks up the trail from the files alone.
+
 ## Which skill, when
 
 | You want to… | Do this |
@@ -112,8 +144,13 @@ milestone files · Decisions → DECISIONS · History → archive + git log.**
   (planning scope, implementation choices, merge approval), each with a
   recommendation. Between gates, expect autonomy — if you're being asked
   questions mid-implementation, something is off.
-- **Merges are yours.** Nothing reaches main without your explicit approval
-  at review. "Proceed to review" is not "merge" — you get the evidence first.
+- **Chips are stops, not automation.** When clickable options appear,
+  nothing proceeds until you pick one; walking away mid-chip is always
+  safe, and the last checkpoint commit holds the state for next time.
+- **Merges are yours.** Nothing reaches your default branch without your
+  explicit approval at review — a guard hook mechanically blocks merges
+  that lack a recorded approval. "Proceed to review" is not "merge"; you
+  get the evidence first.
 - **Supply primary sources.** If a formula, cutoff, or scoring key needs a
   paper the model can't access, it will stop and ask you for the PDF rather
   than work from memory. That stop is a feature; feed it the PDF.
@@ -142,3 +179,8 @@ milestone files · Decisions → DECISIONS · History → archive + git log.**
 - Track status in CLAUDE.md, chat memory, or GitHub issues — `cairn/`
   files are the single source of truth; issues are an inbox.
 - Run Fable, or any paid escalation, without a per-instance yes.
+- Lock you in. Pausing costs nothing (stop any time; checkpoint commits
+  keep the branch resumable), dropping a milestone is one sentence —
+  "drop M07" — with the reason archived, and uninstalling is removing the
+  plugin or symlink: your `cairn/` files are plain markdown that stay
+  readable (or deletable) without it.

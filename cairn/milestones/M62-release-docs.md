@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M62: Release docs — LICENSE, README worked example + framing, DRAFT removal
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M61   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m62-release-docs · https://github.com/jmgirard/cairn/pull/60   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -43,19 +43,20 @@ external de-risking → M61.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] `LICENSE` exists at the repo root containing the MIT license text
+- [x] `LICENSE` exists at the repo root containing the MIT license text
       with the correct holder and year.
-- [ ] README contains a worked example section walking one milestone
+- [x] README contains a worked example section walking one milestone
       end-to-end through the three gates.
-- [ ] README intro carries the governed-LLM-Wiki framing traceable to
+- [x] README intro carries the governed-LLM-Wiki framing traceable to
       `references/llm-wiki.md`; `test_positioning_guard.py` (extended)
       stays green.
-- [ ] README states what cairn does and won't do without asking, including
+- [x] README states what cairn does and won't do without asking, including
       an explicit bail-out path (RR01 §10.5).
-- [ ] `DRAFT_2.md` is deleted and `git grep -i draft_2` over live files
+- [x] `DRAFT_2.md` is deleted and `git grep -i draft_2` over live files
       returns only history-file hits (DECISIONS/CHANGELOG/legacy/reviews
-      archive).
-- [ ] Verify clean: both unittest suites green from the repo root; any
+      archive/milestone archives) and tracking lines recording this
+      removal (the M62 file, the ROADMAP lineage citation).
+- [x] Verify clean: both unittest suites green from the repo root; any
       new/extended prose-guards mutation-registered.
 
 ## Coverage
@@ -71,18 +72,18 @@ external de-risking → M61.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Add the MIT `LICENSE` (holder: Jeffrey Girard, year 2026).
-- [ ] T2: Write the README worked-example section (one milestone,
+- [x] T1: Add the MIT `LICENSE` (holder: Jeffrey Girard, year 2026).
+- [x] T2: Write the README worked-example section (one milestone,
       three gates, chip-driven flow).
-- [ ] T3: Weave the governed-LLM-Wiki framing into the README intro;
+- [x] T3: Weave the governed-LLM-Wiki framing into the README intro;
       extend `skills/tests/test_positioning_guard.py` so the framing and
       the existing language-agnostic positioning are both locked.
-- [ ] T4: Tighten the "without asking" surface + bail-out story in the
+- [x] T4: Tighten the "without asking" surface + bail-out story in the
       README's expectations/non-goals sections.
-- [ ] T5: Delete `DRAFT_2.md`; repo-wide `git grep` sweep (M48/M58
+- [x] T5: Delete `DRAFT_2.md`; repo-wide `git grep` sweep (M48/M58
       lessons — exempt history files only); reword the README status
       paragraph.
-- [ ] T6: Mutation-register new guard blocks; run both suites from the
+- [x] T6: Mutation-register new guard blocks; run both suites from the
       repo root.
 
 ## Work log
@@ -90,9 +91,59 @@ external de-risking → M61.
 
 - 2026-07-16: created by /milestone-plan (carved from the "Public release
   prep" candidate row with M61; v1.0 tag stays a /cairn-release run).
+- 2026-07-16: implement started; branch m62-release-docs.
+- 2026-07-16: gate: AC5 amended (exempt milestone archives + tracking lines
+  recording the removal — the grep otherwise hits its own record); worked
+  example = fictional generic repo; status ¶ drops version claims (points at
+  CHANGELOG); DRAFT_2 disposition = skim, port true gaps only, drop the
+  DESIGN.md "content moves here" promise sentence.
+- 2026-07-16: T1 done — MIT LICENSE at root (Jeffrey Girard, 2026).
+- 2026-07-16: T2 done — worked example (fictional CLI --dry-run milestone,
+  three gates, chips) added after "The core loop".
+- 2026-07-16: T3 done — LLM-Wiki framing in README ¶1; new
+  test_readme_carries_the_llm_wiki_framing guard; skills suite 185 OK.
+- 2026-07-16: T4 done — chips-are-stops bullet, merge-guard-backed
+  approval wording, no-lock-in bail-out bullet (pause/drop/uninstall).
+- 2026-07-16: T5 done — DRAFT_2.md deleted; skim found one true gap, ported
+  to DESIGN Conventions (repos never pin plugin versions; breaking
+  state-format changes ship with /cairn-init migration handling); DESIGN
+  promise sentence + README status ¶/piloting framing reworded; sweep
+  clean bar the AC5-exempt tracking lines.
+- 2026-07-16: T6 done — two Mutation entries for the LLM-Wiki framing
+  guard; skills (185) + scripts suites OK from repo root; validate passes.
+  All tasks complete → status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
 
 ## Review
 <!-- owner: review · exclusive; EXEMPT from the 150-line cap (M55) -->
+
+Evidence gathered fresh 2026-07-16 on m62-release-docs (PR #60):
+
+- AC1: LICENSE present at root; MIT grant text; "Copyright (c) 2026
+  Jeffrey Girard".
+- AC2: `## A worked example` at README:77; three numbered gate steps
+  (plan / build / ship) walking one milestone end-to-end.
+- AC3: framing line at README:7 ("governed LLM Wiki for project state —
+  the agent maintains it, you gate it"); test_positioning_guard OK
+  including the new test_readme_carries_the_llm_wiki_framing.
+- AC4: chips-are-stops bullet (README:147), guard-backed merge approval
+  (README:151), no-lock-in bail-out pause/drop/uninstall (README:182).
+- AC5: DRAFT_2.md absent; `git grep -li draft_2` hits only history files
+  (CHANGELOG, DECISIONS, milestone/reviews archives) plus the two
+  exempted tracking lines (ROADMAP lineage citation, this file) per the
+  gated 2026-07-16 amendment.
+- AC6: skills suite 185 OK + scripts suite OK from repo root; two
+  Mutation entries registered for the new framing guard.
+- Consistency gate: cairn_validate exit 0 (15 PASS, 2 OK advisories);
+  generic profile consistency-gate slot names no toolchain checks; no
+  IPn/GPn change → cairn_impact skipped.
+- Fan-out 2026-07-16, zero findings on all three lenses: [O] diff-bug —
+  AC re-verification + README prose-claim audit against SKILL.md/hook
+  behavior, four borderline items dropped under the taxonomy; [S]
+  blame-history — every tripwire checked (D-007 untouched, M54 guard only
+  extended, M56 "you gate it" adaptation faithful, IP4 honored, DESIGN
+  port verbatim); [S] prior-PR — "no prior-PR evidence" (0 inline
+  comments across all 58 merged PRs). No findings → scorer no-op;
+  nothing sub-threshold to log.

@@ -11,9 +11,9 @@ operational skills read, instead of the core hardcoding one language (M45
 spine, M46 rewire, M47 release; D-024/D-025 keep the oracle doctrine universal,
 orthogonal to the profile). Three profiles ship — `r-package` (devtools/CRAN),
 `python` (pytest/PyPI), and `generic`; this repo runs `generic`. Logic lives here (skills, rules,
-templates); state lives in each adopting repo under `cairn/`. Full design
-rationale: DRAFT_2.md (this file summarizes; the draft is removed at 1.0, at
-which point its still-relevant content moves here).
+templates); state lives in each adopting repo under `cairn/`. The founding
+spec is superseded by this file, the shared rulebook, and DECISIONS.md; git
+history preserves it (removed at v1.0, M62).
 
 Positioning (M06, references/competitive-landscape.md): cairn is change
 control + longitudinal project memory for agent-driven work — a niche no
@@ -65,6 +65,10 @@ transitions, human-gated merges, and a domain verification doctrine.
 - Skill descriptions are written for trigger accuracy: `/hotfix`
   auto-triggers on bug reports; phase skills trigger on explicit
   intent/chips.
+- Repos never pin plugin versions — whatever plugin version is installed is
+  the law; a breaking change to the state-file format ships with migration
+  handling in `/cairn-init` (ported from the founding spec at its removal,
+  M62).
 
 ## Design Principles
 
