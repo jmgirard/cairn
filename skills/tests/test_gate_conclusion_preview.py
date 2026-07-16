@@ -57,6 +57,13 @@ class TestAcceptanceChipsRule(unittest.TestCase):
             rules(),
         )
 
+    def test_enumeration_names_proposals(self):
+        # M66/D-038: closes the proposal-isn't-a-conclusion loophole.
+        self.assertIn(
+            "a proposed disposition or action plan awaiting confirmation (d-038)",
+            rules(),
+        )
+
 
 class TestPerSkillDirectives(unittest.TestCase):
     def test_plan_question_gate(self):
@@ -97,6 +104,34 @@ class TestPerSkillDirectives(unittest.TestCase):
         self.assertIn(
             "acceptance chips (tracking-rules): a triage option that accepts an audit",
             read("milestone", "SKILL.md"),
+        )
+
+
+class TestMigrationGateDirectives(unittest.TestCase):
+    """M66/D-038: cairn-init's migration gates join the wired set —
+    the step-3 disposition proposal and the step-7 merge ledger are
+    produced content, not user-known options (hit live, hitop repo)."""
+
+    def test_step3_disposition_gate(self):
+        t = read("shared", "migration-protocol.md")
+        self.assertIn(
+            "acceptance chips (tracking-rules): the inventory and each item's",
+            t,
+        )
+        self.assertIn(
+            "never only inside chip options, and a paraphrase never stands in for",
+            t,
+        )
+
+    def test_step7_merge_ledger(self):
+        t = read("shared", "migration-protocol.md")
+        self.assertIn(
+            "acceptance chips (tracking-rules): the ledger's substance appears",
+            t,
+        )
+        self.assertIn(
+            "verbatim in chat above the merge-approval chip — the pr description",
+            t,
         )
 
 

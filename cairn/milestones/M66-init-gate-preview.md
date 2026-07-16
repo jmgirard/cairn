@@ -79,7 +79,7 @@ guards, like M64/M65.
       one line).
 - [x] T3: add the step-7 directive to
       `skills/shared/migration-protocol.md`.
-- [ ] T4: extend `skills/tests/test_gate_conclusion_preview.py` with a
+- [x] T4: extend `skills/tests/test_gate_conclusion_preview.py` with a
       migration-gates class + the rule-enumeration assert; add
       `Mutation(...)` entries for each new assert (M53: per-assert, not
       per-file).
@@ -95,6 +95,8 @@ guards, like M64/M65.
   plan, D-038 cite); skills suite 208 OK.
 - 2026-07-16: T2+T3 — step-3 and step-7 acceptance-chips directives added
   to migration-protocol.md; skills suite 208 OK.
+- 2026-07-16: T4 — 3 guard tests + 6 Mutation entries added; skills suite
+  211 OK (harness blanks each new block and its guard fails).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
