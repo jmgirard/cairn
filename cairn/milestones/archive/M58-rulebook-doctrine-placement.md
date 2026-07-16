@@ -22,5 +22,4 @@ added/retargeted.
 section; rulebook-reference-only wiring (annotates D-024/D-025/D-029).
 
 **Review.** 5/5 ACs on fresh evidence; suites 165/83/32 OK; fan-out: 1 finding
-(F1/85 — stale doctrine-location claims in two live references pages; the T4
-sweep had excluded `cairn/references/`) fixed with dated annotations; 0 others.
+(F1/85, stale location claims in two references pages) annotated + fixed; 0 others.
