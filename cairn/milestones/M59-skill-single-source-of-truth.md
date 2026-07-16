@@ -4,7 +4,7 @@
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** GP1, GP2
-- **Branch/PR:** m59-skill-single-source-of-truth
+- **Branch/PR:** m59-skill-single-source-of-truth · https://github.com/jmgirard/cairn/pull/57
 
 ## Goal
 
@@ -38,20 +38,22 @@ protocol is progressively disclosed out of the common scaffold path
 
 ## Acceptance criteria
 
-- [ ] cairn-init §0's default-branch detection states the canonical recipe
-      (ls-remote rung, then ask); `git grep -n "show-current" skills/` returns
-      nothing.
-- [ ] Neither `/milestone-review` step 4 nor `/milestone` §2 enumerates
+- [x] cairn-init §0's default-branch detection states the canonical recipe
+      (ls-remote rung, then ask); `git grep -n "show-current" -- 'skills/*/SKILL.md'
+      skills/shared/` returns nothing (evidence command amended via gate
+      2026-07-16 — the original all-of-`skills/` form tripped on the guard's
+      own absence-assert).
+- [x] Neither `/milestone-review` step 4 nor `/milestone` §2 enumerates
       cairn_validate's individual checks, and review step 4 carries no manual
       "Coverage completeness" bullet — validate is run-and-read in both.
-- [ ] The migration protocol lives in `skills/shared/migration-protocol.md`;
+- [x] The migration protocol lives in `skills/shared/migration-protocol.md`;
       cairn-init §0 directs reading it only on footprint detection; the moved
       text is verbatim-relocated except heading/pointer edits (diff recorded
       in Review).
-- [ ] Repo-wide pointer sweep done: no live file still points at "cairn-init
+- [x] Repo-wide pointer sweep done: no live file still points at "cairn-init
       §2" as the protocol's home (history files excluded per the M58 lesson —
       exclusion list may name only DECISIONS/CHANGELOG/legacy/reviews-archive).
-- [ ] All three unittest suites green from the repo root (skills/tests,
+- [x] All three unittest suites green from the repo root (skills/tests,
       scripts/tests, hooks/tests), including re-anchored guards
       (test_migration_guidance.py, test_default_branch_parameterized.py,
       test_toolchain_profiles.py, test_ac_traceability.py); mutation-harness
@@ -109,7 +111,28 @@ protocol is progressively disclosed out of the common scaffold path
   unlisted validation-doctrine.md gap).
 - 2026-07-16: T6 done — 171+83+32 tests green from repo root, validate
   clean; all new asserts mutation-registered. Status → review.
+- 2026-07-16: AC1 amended via review-gate mini-gate (user-approved): evidence
+  grep scoped to skill prose — the all-of-skills/ form tripped on the guard's
+  own assertNotIn in skills/tests/. Substance unchanged.
 
 ## Decisions
 
 ## Review
+
+- 2026-07-16 evidence (all commands run fresh on the branch, PR #57):
+  - AC1: §0 states the canonical recipe (ls-remote rung line present, 1 hit);
+    amended grep over skill prose returns nothing (exit 1).
+  - AC2: grep for the retired enumerations ("mirror, single in-progress" /
+    "deterministically checks") empty in both skills; 0 manual
+    Coverage-completeness bullets in review step 4.
+  - AC3: module exists; §2 stub reads "when (and only when) §0 detects";
+    verbatim diff clean against the pre-move commit (4932385).
+  - AC4: sweep (history files excluded) → 2 hits, both accurate present-tense
+    (DESIGN's new module line; INDEX's historical pilot claim) — none names
+    the old home as current.
+  - AC5: 171 + 83 + 32 tests OK from repo root; mutation harness green with
+    the 8 added/retargeted entries.
+  - Consistency gate: cairn_validate all checks passed; generic profile
+    consistency-gate slot = none (clean no-op); no IPn/GPn changed → impact
+    report skipped.
+
