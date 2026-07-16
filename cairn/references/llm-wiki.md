@@ -170,3 +170,19 @@ the wiki, not the transcript, the memory.
   public-release-prep README work; independent convergence on human-owned
   schemas + mechanized lint (ecosystem scan above) is third-party
   validation of the design bet.
+
+## Disposition ledger (M56)
+
+Every adopt/adapt verdict lands somewhere; every reject carries its reason
+above.
+
+- **Adopted → grouped ROADMAP candidate** ("references/ + linking
+  hardening"): (1) name the synthesis-note page type in the file map;
+  (2) references lint (INDEX↔disk orphan check) in `cairn_validate`;
+  (3) dangling M/D-token ADVISORY (WARN tier, FP-tolerant per the M57/M99
+  hazards).
+- **Adopted → absorbed into the existing public-release-prep candidate:**
+  the governed-LLM-Wiki positioning framing for the README.
+- **Rejected, reasons above (no prior state contradicted, so no D-entry):**
+  committed raw sources; a `references/log.md`; `[[wikilink]]` syntax; a
+  formal query op; graph/hub tooling; structural free-form-page steals.

@@ -1,6 +1,6 @@
 # M56: LLM Wiki investigation — references/ + linking fit assessment
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
@@ -76,7 +76,7 @@ same. Fable escalation → offered only on a live RB-tripwire hit
       convention + dangling-link lint (note `cairn_impact`'s existing tracing).
 - [x] T5: Fit assessment, target 3 — agent-memory angle vs. `session_context`
       hook + the stateless-resume doctrine; verdict.
-- [ ] T6: Disposition ledger: bank candidates (search-first), add the
+- [x] T6: Disposition ledger: bank candidates (search-first), add the
       `INDEX.md` line, run `cairn_validate`.
 
 ## Work log
@@ -96,6 +96,10 @@ same. Fable escalation → offered only on a live RB-tripwire hit
 - 2026-07-16: T5 done — cairn IS a governed LLM Wiki for project state;
   structural steals rejected, positioning framing adopted → release prep.
   T3–T5 committed together (one file, three sections — minor fold).
+- 2026-07-16: T3–T5 verify ran late — a lingering `cd cairn` broke discover
+  and `tail -1` masked it; re-ran green from root before T6. Lesson banked.
+- 2026-07-16: T6 done — grouped candidate row added; positioning framing
+  absorbed into the release-prep row (search-first); INDEX line; validate.
 
 ## Decisions
 
