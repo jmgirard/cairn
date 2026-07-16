@@ -534,7 +534,7 @@ REGISTRY = [
         guard="test_durable_record_preview",
         test="TestPerSkillDirectives.test_review_hygiene_step",
         target="skills/milestone-review/SKILL.md",
-        block="preview (tracking-rules): show the archive summary, each LESSONS line,",
+        block="Durable-record preview (tracking-rules): show the archive summary,",
     ),
     Mutation(
         guard="test_durable_record_preview",

@@ -4,7 +4,7 @@
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** GP4
-- **Branch/PR:** m64-durable-record-preview
+- **Branch/PR:** m64-durable-record-preview · https://github.com/jmgirard/cairn/pull/62
 
 ## Goal
 

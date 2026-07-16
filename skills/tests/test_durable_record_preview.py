@@ -65,7 +65,7 @@ class TestPerSkillDirectives(unittest.TestCase):
 
     def test_review_hygiene_step(self):
         self.assertIn(
-            "preview (tracking-rules): show the archive summary, each lessons line,",
+            "durable-record preview (tracking-rules): show the archive summary,",
             read("milestone-review", "SKILL.md"),
         )
 
