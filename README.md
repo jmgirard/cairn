@@ -73,6 +73,37 @@ You rarely type the next command: each phase ends with clickable options
 (chips) that route to the natural next step. Typing the slash command
 directly always works too, e.g. to resume after a break.
 
+## A worked example
+
+Say your repo is a small CLI tool and you want a `--dry-run` flag.
+
+**1. Plan it.** You say: *"plan a milestone: add a --dry-run flag to the
+sync command."* Claude reads the roadmap, decisions, and the relevant code,
+then asks one short batch of scoping questions, each with a recommendation
+— should `--dry-run` cover `sync` only or every mutating subcommand? is
+printing the would-be actions enough, or must exit codes match a real run?
+You click answers (or type your own). Claude writes
+`cairn/milestones/M07-dry-run-flag.md` — goal, in/out scope, verifiable
+acceptance criteria, ordered tasks — registers it in the ROADMAP as
+`planned`, commits, and offers a chip: **Start implementing M07**.
+
+**2. Build it.** `/milestone-implement M07` cuts a branch, asks any
+implementation choices the plan left open (flag naming, output format),
+then works the tasks in order: tests first, one checkpoint commit per
+task, each commit updating the milestone file's checkboxes alongside the
+code. Between the gate and the finish you aren't asked anything. When all
+tasks pass, status flips to `review` and you get a diff summary and a
+chip: **Proceed to review**.
+
+**3. Ship it.** `/milestone-review M07` re-runs every check fresh, gathers
+evidence for each acceptance criterion (no evidence, no tick), and hands
+the diff to independent reviewer agents that didn't write it. Then — the
+one moment that matters — it opens a PR and asks *you* to merge, with the
+evidence in front of you. Nothing reaches your default branch until you
+say yes. After the merge, the milestone compresses to a short summary in
+the archive, the ROADMAP row flips to `done`, and the next session —
+tomorrow or next month — picks up the trail from the files alone.
+
 ## Which skill, when
 
 | You want to… | Do this |

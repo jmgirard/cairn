@@ -73,7 +73,7 @@ external de-risking → M61.
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
 - [x] T1: Add the MIT `LICENSE` (holder: Jeffrey Girard, year 2026).
-- [ ] T2: Write the README worked-example section (one milestone,
+- [x] T2: Write the README worked-example section (one milestone,
       three gates, chip-driven flow).
 - [ ] T3: Weave the governed-LLM-Wiki framing into the README intro;
       extend `skills/tests/test_positioning_guard.py` so the framing and
@@ -98,6 +98,8 @@ external de-risking → M61.
   CHANGELOG); DRAFT_2 disposition = skim, port true gaps only, drop the
   DESIGN.md "content moves here" promise sentence.
 - 2026-07-16: T1 done — MIT LICENSE at root (Jeffrey Girard, 2026).
+- 2026-07-16: T2 done — worked example (fictional CLI --dry-run milestone,
+  three gates, chips) added after "The core loop".
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
