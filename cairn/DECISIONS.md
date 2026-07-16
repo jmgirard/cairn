@@ -774,3 +774,33 @@ under central-only rules before (M26/M28).
 gate; "Deltas, not dumps" gains an explicit carve-out. Delivered by M64. If
 show-then-commit proves too weak (a veto before main is wanted), the
 hard-stop option is the entry to supersede.
+
+### D-037 (2026-07-16): Acceptance chips show what's accepted — gate-time sibling of D-036
+
+**Context:** Hit live in the circumplex repo (2026-07-16): a
+`/milestone-plan` session ran a review, then asked the user to accept its
+conclusion without the substance ever appearing in chat. "Chips carry
+choices, not evidence" states the principle but is the only chip-conduct
+rule with no guard and no per-skill wiring, and summarize-don't-paste
+pressure compresses exactly the text being accepted — D-036's failure mode,
+one gate earlier. Three design choices at the M65 plan gate.
+**Decision:** (1) **Form:** a new standalone "Acceptance chips" rule
+adjacent to "Chips carry choices, not evidence", plus a cross-reference
+from that rule — cleanly anchorable for guards, parallel to M64. Rejected
+folding a clause into the existing rule (denser, weaker anchors).
+(2) **Wiring:** the five conclusion-feeding skills — plan (question gate),
+implement (gate + amendment mini-gates), review (approval gate / fan-out
+findings), brief (RB gate + RR routing), milestone (audit triage). Rejected
+all nine chip-emitting skills (init/release/hotfix/design-interview chips
+choose among user-known options — dead weight) and central-rule-only (the
+unwired shape is what drifted here and in the chip/chapter-marker history).
+(3) **Verbatim bar:** the verdict and each actioned finding appear
+verbatim; a long artifact shows its conclusions section verbatim + the
+file path for the rest; a paraphrase never stands in for the accepted
+text. Rejected full-text-always (floods chat on big reports) and
+summary+path (a summary is what hid the circumplex conclusion).
+**Consequences:** Every conclusion gate becomes a decision made with the
+evidence in view; the previously-unguarded chip rule gains a guarded,
+cross-referenced sibling. Delivered by M65. If a conclusion chip ever
+appears in one of the four unwired skills, extend the wiring by
+superseding this entry.
