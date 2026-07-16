@@ -56,6 +56,21 @@ REGISTRY = [
         target=RULES,
         block="The default branch (`main`/`master`) is a distribution",
     ),
+    # M59 (RR01 rec 7): cairn-init §0's fallback follows the canonical recipe —
+    # one Mutation entry per new positive assert (M53 discipline); the paired
+    # assertNotIn("show-current") rides on these positives (M54 lesson).
+    Mutation(
+        guard="test_default_branch_parameterized",
+        test="TestDefaultBranchParameterized.test_cairn_init_fallback_matches_canonical_recipe",
+        target="skills/cairn-init/SKILL.md",
+        block="git ls-remote --symref origin HEAD",
+    ),
+    Mutation(
+        guard="test_default_branch_parameterized",
+        test="TestDefaultBranchParameterized.test_cairn_init_fallback_matches_canonical_recipe",
+        target="skills/cairn-init/SKILL.md",
+        block="never guess the local current branch",
+    ),
     Mutation(
         guard="test_design_interview",
         test="TestDesignInterviewSkill.test_phase1_banks_never_classifies",

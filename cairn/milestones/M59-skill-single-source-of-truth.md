@@ -67,7 +67,7 @@ protocol is progressively disclosed out of the common scaffold path
 
 ## Tasks
 
-- [ ] T1: Align cairn-init §0's default-branch bullet
+- [x] T1: Align cairn-init §0's default-branch bullet
       (skills/cairn-init/SKILL.md:17-19) to the canonical recipe; re-anchor
       test_default_branch_parameterized.py in the same commit; sweep
       `git grep -n "show-current"` repo-wide (M48).
@@ -90,6 +90,9 @@ protocol is progressively disclosed out of the common scaffold path
 
 - 2026-07-16: created by /milestone-plan (promoted from the RR01 rec
   7/12 half of the skill/hook candidate row; recs 8/13 → M60).
+- 2026-07-16: T1 done — §0 fallback now canonical (ls-remote rung, never
+  guess); guard extended test-first + 2 mutation entries; hooks'
+  `--show-current` uses verified legitimate (current-branch checks).
 
 ## Decisions
 

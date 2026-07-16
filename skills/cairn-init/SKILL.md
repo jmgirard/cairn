@@ -14,13 +14,16 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
 
 ## 0. Detect the situation
 
-- **Default branch.** Detect the repo's default branch —
-  `git symbolic-ref --short refs/remotes/origin/HEAD` (strip the `origin/`
-  prefix), falling back to the current branch (`git branch --show-current`)
-  whenever that fails: no remote, or `origin/HEAD` unset (a shallow clone, a
-  fresh `git remote add`, or a CI checkout that never ran `set-head`). cairn
-  does not assume `main`; use the detected name wherever the steps below (and
-  the tracking-rules git model) say "the default branch".
+- **Default branch.** Detect the repo's default branch per the canonical
+  recipe in the tracking-rules git model: `git symbolic-ref --short
+  refs/remotes/origin/HEAD` (strip the `origin/` prefix); if that fails but a
+  remote exists — `origin/HEAD` unset locally (a shallow clone, a fresh
+  `git remote add`, a CI checkout that never ran `set-head`) — query the
+  remote with `git ls-remote --symref origin HEAD` and read the
+  `ref: refs/heads/<name>` line. Only with no remote at all ask the user —
+  never guess the local current branch. cairn does not assume `main`; use the
+  detected name wherever the steps below (and the tracking-rules git model)
+  say "the default branch".
 - **Toolchain profile.** Select the repo's language profile in this order:
   `DESCRIPTION` present → **r-package**; else `pyproject.toml` (primary) /
   `setup.py` / `setup.cfg` present → **python**; otherwise → **generic**.

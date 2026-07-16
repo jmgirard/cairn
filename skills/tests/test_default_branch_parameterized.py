@@ -66,6 +66,14 @@ class TestDefaultBranchParameterized(unittest.TestCase):
         self.assertNotIn("Never on main", text)
         self.assertNotIn("origin/main is main", text)
 
+    def test_cairn_init_fallback_matches_canonical_recipe(self):
+        # M59 (RR01 rec 7): §0 carries the rulebook's ls-remote rung and the
+        # no-guessing rule; the retired current-branch fallback is gone.
+        norm = normalized("cairn-init", "SKILL.md")
+        self.assertIn("git ls-remote --symref origin HEAD", norm)
+        self.assertIn("never guess the local current branch", norm)
+        self.assertNotIn("show-current", norm)
+
     def test_claude_md_template_uses_default_branch(self):
         text = read("shared", "templates", "claude-md-section.md")
         self.assertIn("the default branch", text)
