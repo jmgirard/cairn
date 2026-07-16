@@ -70,7 +70,7 @@ checkbox ticks, status mirrors → exempt mechanical noise (D-036).
       hygiene (~L175–185); milestone-implement/SKILL.md Decisions append +
       amendment protocol (step 6); milestone-brief/SKILL.md RR-ingestion
       commit (~L65).
-- [ ] T3: Write skills/tests/test_durable_record_preview.py (central-rule
+- [x] T3: Write skills/tests/test_durable_record_preview.py (central-rule
       assert + four per-skill asserts, word-bounded) and register
       Mutation(...) entries; read targets per-test, never setUpClass cache
       (M61).
@@ -88,6 +88,8 @@ checkbox ticks, status mirrors → exempt mechanical noise (D-036).
 - 2026-07-16: T2 done — preview directives in plan (step 6), review
   (post-merge hygiene), implement (task loop + substantive amendments),
   brief (RR ingestion step 4); skills suite green.
+- 2026-07-16: T3 done — guard file (9 tests) + 10 Mutation entries; skills
+  suite 200 tests green (harness proves each block fails when blanked).
 
 ## Decisions
 
