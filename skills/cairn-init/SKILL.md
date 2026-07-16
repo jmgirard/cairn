@@ -14,6 +14,24 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
 
 ## 0. Detect the situation
 
+- **Environment check (RR01 §10.2).** Before anything else, probe the
+  external tools cairn leans on (`command -v git python3 gh`; `git remote`)
+  and report each gap with its degradation path — one line per gap, then
+  proceed (only a missing `git` is fatal):
+  - `git` absent → stop: cairn is git-based; there is nothing to adopt.
+  - `python3` absent → the plugin's hooks and the `scripts/` health checks
+    (`cairn_validate`, `cairn_next`) are unavailable; skills degrade to
+    by-hand file reads against the tracking files. On Windows (no `python3`
+    on PATH by default) the registered hooks fall back to the `py` launcher
+    (hooks.json) — best-effort, unverified on Windows (DESIGN Known
+    issues); install Python 3 for the scripts either way.
+  - `gh` absent or unauthenticated → PR creation, `gh pr checks`, and the
+    mechanical merge gate are unavailable: PRs and merges happen in the
+    GitHub UI and the approval model becomes honor-system (the merge-guard
+    hook sees only agent Bash). Recommend `gh auth login`.
+  - no git remote → local-only mode: PR flows degrade to local branch
+    merges and push steps no-op; recommend adding a remote before the
+    first milestone.
 - **Default branch.** Detect the repo's default branch per the canonical
   recipe in the tracking-rules git model: `git symbolic-ref --short
   refs/remotes/origin/HEAD` (strip the `origin/` prefix); if that fails but a

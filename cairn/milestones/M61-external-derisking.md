@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M61: External de-risking — env check, migration dry-run, Windows story, python CI parity
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m61-external-derisking   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -76,7 +76,7 @@ candidate if wanted.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Author the env-check step in `skills/cairn-init/SKILL.md` §0
+- [x] T1: Author the env-check step in `skills/cairn-init/SKILL.md` §0
       (python3/git/gh/remote; degradation path per piece; all three entry
       modes) + guard test.
 - [ ] T2: Decide and land the Windows launcher story (fallback command in
@@ -99,6 +99,11 @@ candidate if wanted.
 - 2026-07-16: created by /milestone-plan (carved from the "Public release
   prep" candidate row with M62; absorbs the "Python profile Codecov/CI
   parallel" candidate row).
+- 2026-07-16: gate: user chose the chained `|| py -3` hooks fallback over
+  documented-limitation-only (T2).
+- 2026-07-16: T1 done — env check opens cairn-init §0, 4 probes + degradation
+  paths; test_env_check.py (5 tests) mutation-registered; guards read
+  per-test, never setUpClass-cached (harness runs single methods).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

@@ -349,6 +349,38 @@ REGISTRY = [
         target="skills/shared/templates/claude-md-section.md",
         block="Lessons → LESSONS",
     ),
+    # M61: cairn-init §0 environment check (RR01 §10.2) — one entry per
+    # positive assert (M53 discipline).
+    Mutation(
+        guard="test_env_check",
+        test="TestEnvCheck.test_env_check_opens_section_0",
+        target="skills/cairn-init/SKILL.md",
+        block="**Environment check (RR01 §10.2).**",
+    ),
+    Mutation(
+        guard="test_env_check",
+        test="TestEnvCheck.test_only_git_is_fatal",
+        target="skills/cairn-init/SKILL.md",
+        block="only a missing `git` is fatal",
+    ),
+    Mutation(
+        guard="test_env_check",
+        test="TestEnvCheck.test_python3_gap_names_hooks_fallback_and_scripts",
+        target="skills/cairn-init/SKILL.md",
+        block="the registered hooks fall back to the `py` launcher",
+    ),
+    Mutation(
+        guard="test_env_check",
+        test="TestEnvCheck.test_gh_gap_names_the_honor_system_degradation",
+        target="skills/cairn-init/SKILL.md",
+        block="the approval model becomes honor-system",
+    ),
+    Mutation(
+        guard="test_env_check",
+        test="TestEnvCheck.test_no_remote_names_local_only_mode",
+        target="skills/cairn-init/SKILL.md",
+        block="local-only mode",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
