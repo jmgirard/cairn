@@ -3,10 +3,12 @@
 *A cairn is built one stone at a time, and marks the trail for whoever
 comes next.*
 
-A Claude Code plugin for milestone-driven development. One canonical
-workflow — planning, implementation, review, hotfixes, releases, and expert
-escalation — with all project state in plain markdown under `cairn/`, kept
-honest by weight caps and a self-auditing health check. The core is
+A Claude Code plugin for milestone-driven development: a
+governed LLM Wiki for project state — the agent maintains it, you gate it.
+One canonical workflow — planning, implementation, review, hotfixes,
+releases, and expert escalation — with all project state in plain markdown
+under `cairn/`, kept honest by weight caps and a self-auditing health
+check. The core is
 language-agnostic; each repo declares a toolchain profile (R, Python, or
 generic) that supplies its language-specific commands. Work lands as small
 stacked milestones, and any session — today's or next month's — can find

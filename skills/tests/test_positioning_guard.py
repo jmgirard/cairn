@@ -60,6 +60,13 @@ class TestOutwardPositioning(unittest.TestCase):
         self.assertIn("toolchain profile", text)
         self.assertNotIn("milestone-driven R package development", text)
 
+    def test_readme_carries_the_llm_wiki_framing(self):
+        # M62: the governed-LLM-Wiki positioning (M56 verdict,
+        # cairn/references/llm-wiki.md) — each phrase on one line (M23).
+        text = read(README)
+        self.assertIn("governed LLM Wiki for project state", text)
+        self.assertIn("the agent maintains it, you gate it", text)
+
 
 class TestDesignArchitectureHonesty(unittest.TestCase):
     def test_design_lists_all_seven_hooks(self):

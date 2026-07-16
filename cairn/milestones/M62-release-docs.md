@@ -75,7 +75,7 @@ external de-risking → M61.
 - [x] T1: Add the MIT `LICENSE` (holder: Jeffrey Girard, year 2026).
 - [x] T2: Write the README worked-example section (one milestone,
       three gates, chip-driven flow).
-- [ ] T3: Weave the governed-LLM-Wiki framing into the README intro;
+- [x] T3: Weave the governed-LLM-Wiki framing into the README intro;
       extend `skills/tests/test_positioning_guard.py` so the framing and
       the existing language-agnostic positioning are both locked.
 - [ ] T4: Tighten the "without asking" surface + bail-out story in the
@@ -100,6 +100,8 @@ external de-risking → M61.
 - 2026-07-16: T1 done — MIT LICENSE at root (Jeffrey Girard, 2026).
 - 2026-07-16: T2 done — worked example (fictional CLI --dry-run milestone,
   three gates, chips) added after "The core loop".
+- 2026-07-16: T3 done — LLM-Wiki framing in README ¶1; new
+  test_readme_carries_the_llm_wiki_framing guard; skills suite 185 OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
