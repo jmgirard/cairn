@@ -122,6 +122,13 @@ takes a D-entry, and its number stays retired.
   gate or bend a rule, comply and record it in the work-log ("merged without
   CI at user request, YYYY-MM-DD"). An honest record keeps the next session
   from mistaking an exception for a precedent.
+- **Dependency changes are never unilateral.** Adding, removing, or re-pinning
+  a dependency — in any toolchain — goes through a question gate and is
+  recorded as a D-entry; the active profile's `test-doctrine` slot names the
+  mechanical dependency surface.
+- **Breaking changes to public behavior follow a deprecation cycle** unless
+  the project is pre-1.0 and the user explicitly waives it; the active
+  profile names the language's deprecation mechanics.
 - **Tracking files outrank memory.** Claude's persistent memory never holds
   project state (status, milestones, decisions, architecture). Memory is for
   meta-context only; `cairn/` files win any conflict.
@@ -447,8 +454,8 @@ skills read its slots instead of hardcoding one language's commands. Six slots:
 
 The **domain verification doctrine (oracles) is universal, not a profile slot**:
 it is orthogonal to the language profile (D-024/D-025), stated once in
-"Validation doctrine" below. A profile carries *language mechanics*, never
-domain doctrine.
+`skills/shared/validation-doctrine.md` (see "Validation doctrine" below). A
+profile carries *language mechanics*, never domain doctrine.
 
 Three profiles ship: `r-package` (devtools/roxygen/testthat/pkgdown, CRAN),
 `python` (pyproject/pytest/ruff/mypy/build+twine, PyPI), and `generic` (no
@@ -459,74 +466,28 @@ cairn before profiles keeps working unchanged, and `cairn-init` repair backfills
 the explicit declaration. `cairn_validate` no-ops when `PROFILE.md` is absent
 and, when present, FAILs on a missing, empty, or unrecognized slot.
 
-## Validation doctrine (statistical/numeric packages)
+## Validation doctrine (statistical/numeric work)
 
-Tests verify against ground truth, not against the code. Every
-numeric-results suite includes, in priority order: (1) hand-computed
-fixtures from published formulas, arithmetic in comments; (2) published
-reference values, cited; (3) independent recomputation with deliberately
-dumb explicit code; (4) invariant tests; (5) simulation from known population
-parameters — the estimator must recover the known value and/or its interval
-must cover it at the nominal rate. Items (1)–(4) are deterministic
-numeric-agreement oracles; (5) is the probabilistic one, and the appropriate
-primary oracle where no closed form or reference implementation exists and for
-interval methods — it is a rung on this list, not a lesser choice. Snapshots
-only on top, never as the sole oracle for a number.
+The domain-verification doctrine — oracle priority list, the five oracle
+types, the ≥2-independent-types bar, the oracle registry + its declared
+pointer, the reproducibility and primary-sources hard stops, and source
+ingestion — lives in `skills/shared/validation-doctrine.md`, a module of
+this rulebook (M58: new domain doctrine gets a module, not a rulebook
+section). It is universal domain doctrine, never a profile slot
+(D-024/D-025). Read the module whenever a milestone touches a numeric
+result or scoring/algorithmic content.
 
-**Oracle types & the ≥2-types bar.** Name each oracle by *type*: **frozen** (an
-external/expensive reference value computed once and committed as a fixture
-*with* a reproducible generator), **live** (an independent implementation
-recomputed at test time), **invariant** (two independent internal routes that
-must agree — the agreement itself is the oracle, no external source),
-**closed-form** (a published/definitional formula recomputed with deliberately
-dumb explicit code), **simulation-coverage** (data simulated from known
-population parameters; the estimator must recover the known value (point) and/or
-its interval must cover it at the nominal rate — the injected ground truth is
-the oracle). The five types refine the priority list, they don't replace it —
-(1)/(2) are frozen or closed-form, (3) is live, (4) is invariant, (5) is
-simulation-coverage. Every numeric result is backed by
-**≥2 *independent* oracle types**, never two instances of one type. A **live**
-independent implementation is the *stronger* form; a frozen copy of it is a
-regression pin, not a cross-check — prefer live, and freeze it only when it
-becomes expensive or network-bound. **simulation-coverage** is the one
-*probabilistic* oracle — a
-sampling-distribution check, not deterministic pointwise agreement — and the
-primary oracle for interval methods (**a CI method's oracle is coverage**) and
-for any estimator with no closed form or reference implementation; it counts
-toward the ≥2-types bar like any other type. Freeze a simulation-coverage
-oracle (commit its summary as a fixture) only when the run is expensive — a live
-refit or a many-replication sweep — else recompute it live.
+## References pages
 
-**Oracle registry (auditability).** As oracles multiply across a suite, the
-≥2-types bar can only be checked if each oracle is recorded by
-**ID, type, asserting `test:line`, source, and provenance** — the asserting
-test is the single source of truth the record maps to, never a restated value.
-The record's **shape is the repo's choice** — a central registry file,
-distributed generator headers, or fields embedded in the committed fixture
-object all satisfy it — so long as the ≥2-types audit reads off it. Record an
-oracle only once its asserting test exists, never a planned one.
-
-**Reproducibility (hard stop):** no unsourced *or unreproducible* reference
-value ships. A committed numeric fixture carries its regeneration recipe — a
-committed generator that reproduces it from scratch — so a stale or mis-sourced
-value fails a test rather than sitting as a silent pin. Sourcing is the
-primary-sources rule below; reproducibility is its second, independent half.
-
-**Primary sources rule (hard stop):** never substitute secondary
-descriptions or model memory for a primary source on scoring/algorithmic
-content. Search (DOI, publisher, OSF); if inaccessible, stop and ask the
-user for the PDF.
-
-**Source ingestion:** PDF → `cairn/references/pdf/` (gitignored).
-Summary → `cairn/references/<citekey>.md` (committed): full citation,
-extracted values with page/table anchors, verbatim-critical values quoted
-exactly, which tests/oracles trace to it, open questions. One line in
-`INDEX.md`. Tests and milestones cite `citekey (p. N)`, never restate.
-
-**Synthesis notes** are the second committed `references/` page type —
+Committed `cairn/references/` pages come in two types. **Source notes**
+(`<citekey>.md`) each own one primary source — citation, extracted values
+with page/table anchors, what traces to it (the ingestion workflow is in
+`skills/shared/validation-doctrine.md`). **Synthesis notes** are
+the second committed `references/` page type —
 cross-source analyses (a fit assessment, a comparative survey, a pilot
-ledger) that no single `<citekey>.md` owns; same rules apply: committed,
-one line in `INDEX.md`. Every committed `references/` page carries its
+ledger) that no single `<citekey>.md` owns. Same rules for both: committed,
+cited (`citekey (p. N)` / page name), never restated into tracking files.
+Every committed `references/` page carries its
 `INDEX.md` line — mechanized by `cairn_validate`'s references check (M57).
 
 ## What gets a test
@@ -558,12 +519,14 @@ The language-mechanical specifics — which edge cases, which error mechanism,
 coverage-tool status, plot/snapshot conventions — live in the active profile's
 `test-doctrine` slot (`cairn/PROFILE.md`; absent → infer per "Toolchain
 profiles"); the rules here are the universal floor. **Profiles supply language
-mechanics; the oracle / Validation doctrine above stays universal** (D-024/D-025),
+mechanics; the oracle / Validation doctrine module stays universal** (D-024/D-025),
 never a profile slot.
 
 The language/toolchain guardrails that were once stated here — package-build
-rules, generated-file conventions, dependency-change and deprecation policy,
-error-condition idioms — now live in the active profile's `test-doctrine` and
-`consistency-gate` slots (for the R toolchain, `skills/shared/profiles/r-package.md`);
-they are advisory in the moment and mechanically enforced by the
-`consistency-gate` slot at `/milestone-review`.
+rules, generated-file conventions, error-condition idioms — now live in the
+active profile's `test-doctrine` and `consistency-gate` slots (for the R
+toolchain, `skills/shared/profiles/r-package.md`); they are advisory in the
+moment and mechanically enforced by the `consistency-gate` slot at
+`/milestone-review`. The dependency-change gate and the deprecation-cycle
+policy are universal governance (see "Universal tracking rules"); profiles
+carry only their mechanical renderings.

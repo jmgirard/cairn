@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M58 | Rulebook doctrine placement — governance up, validation doctrine out, registry pointer | planned | — | normal | milestones/M58-rulebook-doctrine-placement.md |
+| M58 | Rulebook doctrine placement — governance up, validation doctrine out, registry pointer | review | — | normal | milestones/M58-rulebook-doctrine-placement.md |
 | M57 | references/ + linking hardening — synthesis notes, INDEX lint, dangling-ID advisory | done | — | normal | milestones/archive/M57-references-linking-hardening.md |
 | M56 | LLM Wiki investigation — references/ + linking fit assessment | done | — | normal | milestones/archive/M56-llm-wiki-investigation.md |
 | M55 | Milestone-file cap exempts the Review section | done | — | normal | milestones/archive/M55-milestone-file-cap.md |

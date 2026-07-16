@@ -2,11 +2,11 @@
      section ownership". -->
 # M58: Rulebook doctrine placement — governance up, validation doctrine out, registry pointer
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** GP1, GP3
-- **Branch/PR:** —
+- **Branch/PR:** m58-rulebook-doctrine-placement · https://github.com/jmgirard/cairn/pull/56
 
 ## Goal
 
@@ -52,7 +52,7 @@ oracle registry gains a declared pointer (RR01 recs 4/6/9).
 
 ## Acceptance criteria
 
-- [ ] AC1: Dependency-change gating ("never unilateral — question-gate +
+- [x] AC1: Dependency-change gating ("never unilateral — question-gate +
       D-entry") and deprecation-cycle policy ("breaking changes follow a
       deprecation cycle unless pre-1.0 and explicitly waived") are stated in
       the core rulebook's Universal tracking rules; the r-package and python
@@ -60,24 +60,24 @@ oracle registry gains a declared pointer (RR01 recs 4/6/9).
       `test_relocated_guardrail_specifics_survive`'s `deprecation` +
       `Imports/Suggests` token asserts); a new mutation-registered guard locks
       the core statement (RR01 §3).
-- [ ] AC2: `skills/shared/validation-doctrine.md` exists and owns the
+- [x] AC2: `skills/shared/validation-doctrine.md` exists and owns the
       validation doctrine (priority list, five oracle types, ≥2-types bar,
       registry fields + shape freedom, reproducibility hard stop,
       primary-sources hard stop, source ingestion); the rulebook retains only
       a ~3-line reference to it; the references/ page-type rules remain in the
       core rulebook and read stand-alone (no dangling "second page type"
       back-reference into the module).
-- [ ] AC3: The module's registry paragraph requires the registry pointer —
+- [x] AC3: The module's registry paragraph requires the registry pointer —
       declared location in the adopting repo's DESIGN.md Conventions, absence
       in a numeric repo = audit finding (RR01 §4) — locked by a
       mutation-registered guard.
-- [ ] AC4: All three unittest suites green (`python3 -m unittest discover -s
+- [x] AC4: All three unittest suites green (`python3 -m unittest discover -s
       skills/tests`, `-s scripts/tests`, `-s hooks/tests` from the repo root —
       M56 lesson); `test_oracle_doctrine.py` reads the module,
       `test_references_pages.py` matches the reworded core text, and every
       affected `Mutation(...)` registry entry targets the file its guard now
       reads.
-- [ ] AC5: A DECISIONS.md entry records the module-placement norm annotating
+- [x] AC5: A DECISIONS.md entry records the module-placement norm annotating
       D-024/D-029, and `git grep` finds no remaining prose locating the
       validation doctrine inside tracking-rules (profile header comments,
       generic.md test-doctrine, "What gets a test" tail, DESIGN.md swept).
@@ -92,35 +92,80 @@ oracle registry gains a declared pointer (RR01 recs 4/6/9).
 
 ## Tasks
 
-- [ ] T1: Move governance up. Add the two rules as bullets in Universal
+- [x] T1: Move governance up. Add the two rules as bullets in Universal
       tracking rules; trim [r-package.md:53-54](../../skills/shared/profiles/r-package.md)
       and [python.md:49-52](../../skills/shared/profiles/python.md) to
       mechanical renderings keeping the guarded tokens; add the core guard +
       `Mutation(...)` entry. Guard edits ship in this commit (M46 lesson:
       source-of-truth flip lands in the first relocating commit).
-- [ ] T2: Extract the module. Create `skills/shared/validation-doctrine.md`
+- [x] T2: Extract the module. Create `skills/shared/validation-doctrine.md`
       (doctrine through Source ingestion, minus the Synthesis-notes
       paragraph); leave the ~3-line rulebook reference; reword the
       Synthesis-notes paragraph to define both references/ page types
       stand-alone; re-anchor `test_oracle_doctrine.py` to the module and
       `test_references_pages.py` to the reworded text; update their
       `Mutation(...)` targets — all in this commit.
-- [ ] T3: Add the registry-pointer requirement to the module's registry
+- [x] T3: Add the registry-pointer requirement to the module's registry
       paragraph + its guard assert + `Mutation(...)` entry.
-- [ ] T4: Cross-reference sweep — `git grep -i` for `Validation doctrine`,
+- [x] T4: Cross-reference sweep — `git grep -i` for `Validation doctrine`,
       `stated once in tracking-rules`, `oracle doctrine` repo-wide; update
       profile header comments (r-package/python/generic), generic.md
       test-doctrine line, tracking-rules "What gets a test" tail + profiles
       preamble, DESIGN.md:11 to name the module.
-- [ ] T5: Append the D-entry (module-placement norm; annotates D-024/D-029).
-- [ ] T6: Run all three suites from the repo root; fix any missed anchor
+- [x] T5: Append the D-entry (module-placement norm; annotates D-024/D-029).
+- [x] T6: Run all three suites from the repo root; fix any missed anchor
       (M23/M26 single-line/inside-bold matchability applies to moved text).
 
 ## Work log
 
 - 2026-07-16: created by /milestone-plan (gate: boundary = oracle+ingestion,
   core home = Universal tracking rules, pointer-only, rulebook-only wiring).
+- 2026-07-16: T1 done — governance bullets in Universal tracking rules;
+  r-package/python trimmed to renderings; TestUniversalChangeGovernance +
+  2 Mutation entries; "What gets a test" tail corrected; 3 suites green.
+- 2026-07-16: T2+T3 done (folded, one commit — pointer authored with the
+  module): validation-doctrine.md created; rulebook keeps reference + norm +
+  new "References pages" section; oracle guards read the module; registry
+  pointer + TestModuleExtraction/TestRegistryPointer + 5 Mutation entries
+  (path assert narrowed to the unique reference phrase — bare path occurs
+  twice in the rulebook, would defeat blank-one-block); 3 suites green.
+- 2026-07-16: T4 done — swept repo: 3 shipped profile headers + cairn/PROFILE.md
+  + 2 tracking-rules lines now name the module; DECISIONS/CHANGELOG/DRAFT_2
+  left as history; DESIGN.md:11 makes no location claim, unchanged.
+- 2026-07-16: T5 done — D-031 appended (module norm; annotates D-024/D-025/D-029).
+- 2026-07-16: T6 done — 3 suites green, cairn_validate all-pass, body 138/150;
+  status → review.
 
 ## Decisions
 
 ## Review
+
+Evidence gathered fresh 2026-07-16 (PR #56, branch synced — main unmoved since cut):
+
+- AC1: `TestUniversalChangeGovernance` 4/4 ok (core states gate + cycle;
+  profiles don't restate; renderings keep Imports/Suggests +
+  DeprecationWarning); `test_relocated_guardrail_specifics_survive` still ok.
+- AC2: `skills/shared/validation-doctrine.md` exists (82 lines);
+  `TestModuleExtraction` 3/3 ok (rulebook points at module, states norm, no
+  doctrine body); `TestReferencesPages` 3/3 ok against the reworded core
+  "References pages" section.
+- AC3: `TestRegistryPointer` 2/2 ok (pointer required; absence = audit finding).
+- AC4: three suites OK (skills 165, scripts 83, hooks 32);
+  `TestRegisteredGuardsFailWhenBlanked` ok — every Mutation entry (incl. the 3
+  retargeted to the module) blanks and fails its guard.
+- AC5: D-031 at DECISIONS.md:624; `git grep "stated once in tracking-rules"` →
+  0 live hits (history files excluded).
+
+Consistency gate: `cairn_validate` all checks passed (fresh); coverage map
+complete (AC1–5 → existing T1–T6); no DESIGN principle text changed →
+`cairn_impact` skipped; generic profile consistency-gate slot = none (no-op).
+
+Fresh-context fan-out (2026-07-16): [O] diff-bug — verbatim-move verified,
+all mutation locators unique, 1 finding; [S] blame-history — 0 findings
+(profile trims lose only the two governance rules; registry cross-checked
+vs main); [S] prior-PR — no prior-PR evidence (expected, M40). Scorer: F1 =
+stale doctrine-location claims in live references pages (T4 sweep wrongly
+excluded `cairn/references/`), scored 85 → fixed: dated M58/D-031
+annotations in oracle-discipline-notes.md + oracle-doctrine-intraclass-notes.md
+(scorer-surfaced sibling); remaining grep hits are location-claim-free
+history. No sub-80 findings logged (none reported).

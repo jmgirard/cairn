@@ -55,7 +55,8 @@ its own scope). Cross-cutting outcome recorded as D-024.
 ## Gap ledger — mapped to cairn's Validation doctrine
 
 cairn's current doctrine (`tracking-rules.md` "Validation doctrine
-(statistical/numeric packages)") has a priority-ordered oracle list —
+(statistical/numeric packages)"; since M58, 2026-07-16, extracted to
+`skills/shared/validation-doctrine.md` — D-031) has a priority-ordered oracle list —
 (1) hand-computed fixtures, (2) published reference values cited,
 (3) independent recomputation, (4) invariant tests — plus the primary-sources
 rule and source-ingestion. Element-by-element against ackwards:

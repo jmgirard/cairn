@@ -4,7 +4,8 @@
      operational skills read. cairn-init instantiates this into the repo's
      `cairn/PROFILE.md`. The oracle / Validation doctrine is UNIVERSAL and
      deliberately NOT a slot here — it is the orthogonal domain axis
-     (D-024/D-025), stated once in tracking-rules. All six `## <slot>` sections
+     (D-024/D-025), stated once in skills/shared/validation-doctrine.md
+     (referenced from tracking-rules). All six `## <slot>` sections
      are defined; cairn_validate FAILs on a missing or empty slot. -->
 
 The Python-package toolchain: PEP 621 `pyproject.toml`, pytest, ruff, mypy,
@@ -46,10 +47,11 @@ rules in tracking-rules:
 - Never test string-formatting cosmetics beyond meaningful snapshots, trivial
   pass-throughs, or dependency behavior.
 - `coverage.py` is a diagnostic, never a gate.
-- Dependency changes (`pyproject.toml` dependencies/optional-dependencies) are
-  never unilateral — question-gate + D-entry.
-- Breaking changes to public API follow a deprecation cycle (`DeprecationWarning`)
-  unless pre-1.0 and explicitly waived.
+- Change governance renders here as: the dependency surface is `pyproject.toml`
+  dependencies/optional-dependencies; a breaking-change deprecation cycle emits
+  `DeprecationWarning` before removal. The gates themselves — question-gate +
+  D-entry for dependencies, pre-1.0 waiver rule — are universal
+  (tracking-rules "Universal tracking rules").
 
 ## release-walk
 Followed by `/cairn-release` — a PyPI release walk (never self-submits):
