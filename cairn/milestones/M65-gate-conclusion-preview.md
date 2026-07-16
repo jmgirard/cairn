@@ -126,4 +126,6 @@ PR: https://github.com/jmgirard/cairn/pull/63 (draft; base = origin/main).
   Scored: F1 65 ("Deltas, not dumps" still says "One exception" though M65
   adds a second verbatim-mandating rule; per-skill directives blunt any
   practical risk) → sub-threshold, logged not actioned; surfaced at the
-  approval gate for an optional one-sentence fix.
+  approval gate for an optional one-sentence fix. Gate: user directed the
+  F1 fix — "One exception" → "Two exceptions" naming both rules; M64's
+  registered block preserved intact; suite re-run green.

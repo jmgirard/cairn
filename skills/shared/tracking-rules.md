@@ -357,8 +357,9 @@ cairn skill is active.
 - **Deltas, not dumps.** Between gates, report what changed since the
   last report — findings, decisions, surprises, direction changes. Never
   restate the plan or paste command output; the tracking files hold the
-  record. One exception: drafted durable-record text is the deliverable,
-  not a dump — see the Durable-record preview rule below.
+  record. Two exceptions: (1) drafted durable-record text is the deliverable,
+  not a dump — see the Durable-record preview rule below; (2) conclusion
+  text above an acceptance chip — see the Acceptance chips rule.
 - **Durable-record preview.** Newly authored durable-record text — a
   D-entry, a milestone file's plan-owned sections (new or via a gated
   amendment), a LESSONS line, an archive summary, a ROADMAP
