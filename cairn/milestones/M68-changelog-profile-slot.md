@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M68: Changelog profile slot — required seventh slot, "none" legal
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate -->
@@ -110,6 +110,7 @@ in each adopting repo at its next `/milestone`.
 - 2026-07-16: T4 done — /hotfix step 5 reads the slot (none → skip; absent PROFILE → infer), /cairn-release steps 1–2 read the declared changelog (none → git history / skip consolidation).
 - 2026-07-16: T5 done — TestChangelogSlot (5 guards over profiles/rulebook/consumers) + 6 Mutation entries; skills suite 219 OK.
 - 2026-07-16: T6 done — sweep caught one straggler (tracking-rules file-map row "six slots", the M48-class miss); remaining hits are this milestone's own record (exempt per AC5).
+- 2026-07-16: all tasks done; three suites + cairn_validate clean; status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M68 | Changelog profile slot — required seventh slot, "none" legal (D-040) | in-progress | — | normal | milestones/M68-changelog-profile-slot.md |
+| M68 | Changelog profile slot — required seventh slot, "none" legal (D-040) | review | — | normal | milestones/M68-changelog-profile-slot.md |
 | M67 | Narration discipline — outcomes, not deliberation (D-039) | done | — | high | milestones/archive/M67-narration-discipline.md |
 | M66 | cairn-init migration gates show the proposal — D-037 wiring extension | done | — | high | milestones/archive/M66-init-gate-preview.md |
 | M65 | Gate-time conclusion preview — acceptance chips show what's accepted | done | — | high | milestones/archive/M65-gate-conclusion-preview.md |
