@@ -36,9 +36,12 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    absent → infer per tracking-rules "Toolchain profiles") — its gate-lite
    checks must be clean before the fix is proposed for merge.
 
-5. Add a changelog entry (the profile's changelog file — `NEWS.md` for
-   r-package, else the repo's `CHANGELOG.md` / convention) under the current
-   development version (no milestone/issue jargon in the user-facing text).
+5. Add a changelog entry to the file the active profile's `changelog` slot
+   declares (`cairn/PROFILE.md`; a slot value of "none" → skip the entry;
+   PROFILE.md absent → infer per tracking-rules "Toolchain profiles":
+   `NEWS.md` for r-package, else the repo's `CHANGELOG.md` / convention)
+   under the current development version (no milestone/issue jargon in the
+   user-facing text).
    Push; open the PR — `Fixes #N` in the description if a GitHub issue exists.
 
 6. **Approval gate:** present the diff, the regression-test evidence, and

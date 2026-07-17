@@ -90,7 +90,7 @@ in each adopting repo at its next `/milestone`.
       repoint their release-walk + consistency-gate changelog bullets at the
       declared file; add the slot to this repo's `cairn/PROFILE.md`
       (`CHANGELOG.md`).
-- [ ] T4: consumers — `/hotfix` step 5 reads the slot (inference becomes the
+- [x] T4: consumers — `/hotfix` step 5 reads the slot (inference becomes the
       absent-PROFILE fallback per tracking-rules "Toolchain profiles");
       `/cairn-release` wording reads the declared changelog.
 - [ ] T5: guards — extend `SLOTS` in `skills/tests/test_toolchain_profiles.py`
@@ -107,6 +107,7 @@ in each adopting repo at its next `/milestone`.
 - 2026-07-16: minor amendment — T1+T3 folded into one checkpoint with T5's SLOTS-tuple edit (schema/profiles/guard-tuple are atomically coupled: each alone reds a suite — M46 fold-don't-defer).
 - 2026-07-16: T1+T3 done; mutation harness caught "commit history" wording giving the generic release-walk guard false coverage — reworded to "git history"; all suites green.
 - 2026-07-16: T2 done — seven-slot list + changelog bullet (none-semantics, one physical line) in tracking-rules; DESIGN six→seven.
+- 2026-07-16: T4 done — /hotfix step 5 reads the slot (none → skip; absent PROFILE → infer), /cairn-release steps 1–2 read the declared changelog (none → git history / skip consolidation).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
