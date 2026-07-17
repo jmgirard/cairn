@@ -15,7 +15,7 @@ owner; any other file gets at most a one-line cross-reference.
 |---|---|---|
 | `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `cairn/` | Status, TODOs, architecture rationale, history — anything time-varying rots here |
 | `cairn/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
-| `cairn/PROFILE.md` | The repo's toolchain profile — the six language/toolchain slots the operational skills read (see "Toolchain profiles") | Domain doctrine (oracles are universal), status, tasks, decisions |
+| `cairn/PROFILE.md` | The repo's toolchain profile — the seven language/toolchain slots the operational skills read (see "Toolchain profiles") | Domain doctrine (oracles are universal), status, tasks, decisions |
 | `cairn/ROADMAP.md` | The milestone index — **the only authority on status** | Task details, acceptance criteria, narrative |
 | `cairn/milestones/M<NN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately, before other work) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |

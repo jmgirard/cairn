@@ -96,7 +96,7 @@ in each adopting repo at its next `/milestone`.
 - [x] T5: guards — extend `SLOTS` in `skills/tests/test_toolchain_profiles.py`
       + new slot/consumer/doctrine asserts; mutation-register the new prose
       guards (M53/M54: per-file `Mutation(...)` entries, run via discover).
-- [ ] T6: sweep — `git grep -i` the whole repo for surviving six-slot claims
+- [x] T6: sweep — `git grep -i` the whole repo for surviving six-slot claims
       (M48 whole-repo rule), exempting history files and this milestone's own
       record (M62 lesson).
 
@@ -109,6 +109,7 @@ in each adopting repo at its next `/milestone`.
 - 2026-07-16: T2 done — seven-slot list + changelog bullet (none-semantics, one physical line) in tracking-rules; DESIGN six→seven.
 - 2026-07-16: T4 done — /hotfix step 5 reads the slot (none → skip; absent PROFILE → infer), /cairn-release steps 1–2 read the declared changelog (none → git history / skip consolidation).
 - 2026-07-16: T5 done — TestChangelogSlot (5 guards over profiles/rulebook/consumers) + 6 Mutation entries; skills suite 219 OK.
+- 2026-07-16: T6 done — sweep caught one straggler (tracking-rules file-map row "six slots", the M48-class miss); remaining hits are this milestone's own record (exempt per AC5).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
