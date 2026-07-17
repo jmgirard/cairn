@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M66: cairn-init migration gates show the proposal — D-037 wiring extension
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -83,7 +83,7 @@ guards, like M64/M65.
       migration-gates class + the rule-enumeration assert; add
       `Mutation(...)` entries for each new assert (M53: per-assert, not
       per-file).
-- [ ] T5: run both suites from the repo root, exit-code-gated, before
+- [x] T5: run both suites from the repo root, exit-code-gated, before
       the final checkpoint commit (M56/M65).
 
 ## Work log
@@ -97,6 +97,8 @@ guards, like M64/M65.
   to migration-protocol.md; skills suite 208 OK.
 - 2026-07-16: T4 — 3 guard tests + 6 Mutation entries added; skills suite
   211 OK (harness blanks each new block and its guard fails).
+- 2026-07-16: T5 — both suites green from repo root (scripts_exit=0,
+  skills_exit=0); status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
