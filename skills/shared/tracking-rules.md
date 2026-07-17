@@ -499,14 +499,20 @@ it is orthogonal to the language profile (D-024/D-025), stated once in
 `skills/shared/validation-doctrine.md` (see "Validation doctrine" below). A
 profile carries *language mechanics*, never domain doctrine.
 
-Three profiles ship: `r-package` (devtools/roxygen/testthat/pkgdown, CRAN),
-`python` (pyproject/pytest/ruff/mypy/build+twine, PyPI), and `generic` (no
+Four profiles ship: `r-package` (devtools/roxygen/testthat/pkgdown, CRAN),
+`python` (pyproject/pytest/ruff/mypy/build+twine, PyPI), `docker-image`
+(hadolint/`docker build`/buildx, a container registry), and `generic` (no
 toolchain gates). **Absent `PROFILE.md` → infer** in order: a `DESCRIPTION` at
 the repo root means `r-package`, else a `pyproject.toml` (or legacy
-`setup.py`/`setup.cfg`) means `python`, else `generic` — so a repo that adopted
+`setup.py`/`setup.cfg`) means `python`, else a `Dockerfile` as the sole
+toolchain marker means `docker-image`, else `generic` — so a repo that adopted
 cairn before profiles keeps working unchanged, and `cairn-init` repair backfills
-the explicit declaration. `cairn_validate` no-ops when `PROFILE.md` is absent
-and, when present, FAILs on a missing, empty, or unrecognized slot.
+the explicit declaration. Inference has no user, so a hybrid repo carrying both
+a `Dockerfile` and a language marker keeps the language marker (the language
+branches rank first); `cairn-init`'s disambiguation gate, where a user is
+present, is the only place the image-vs-package choice is asked.
+`cairn_validate` no-ops when `PROFILE.md` is absent and, when present, FAILs on
+a missing, empty, or unrecognized slot.
 
 ## Validation doctrine (statistical/numeric work)
 

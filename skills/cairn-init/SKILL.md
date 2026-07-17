@@ -42,20 +42,27 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
   never guess the local current branch. cairn does not assume `main`; use the
   detected name wherever the steps below (and the tracking-rules git model)
   say "the default branch".
-- **Toolchain profile.** Select the repo's language profile in this order:
+- **Toolchain profile.** Select the repo's profile in this order:
   `DESCRIPTION` present → **r-package**; else `pyproject.toml` (primary) /
-  `setup.py` / `setup.cfg` present → **python**; otherwise → **generic**.
-  `DESCRIPTION` outranks a `pyproject.toml` in a hybrid repo. cairn-init
-  instantiates the chosen reference
+  `setup.py` / `setup.cfg` present → **python**; else a `Dockerfile` as the
+  **only** toolchain marker → **docker-image**; otherwise → **generic**.
+  `DESCRIPTION` outranks a `pyproject.toml` in a hybrid repo. A repo carrying
+  **both** a `Dockerfile` and a language marker (`DESCRIPTION` /
+  `pyproject.toml` / `setup.py` / `setup.cfg`) is a hybrid image+package repo.
+  Run a **disambiguation gate** (AskUserQuestion)
+  asking which is the primary deliverable — the language package or the
+  container image — and select the chosen profile rather than guessing (the
+  language markers keep their order above on the language side). cairn-init instantiates the chosen reference
   (`${CLAUDE_PLUGIN_ROOT}/skills/shared/profiles/<name>.md`) into
   `cairn/PROFILE.md` at §1; the operational skills read its slots for
   language-specific commands (tracking-rules "Toolchain profiles"). Confirm the
   recommended profile with the user before writing.
 - **Greenfield?** A new/empty repo — no source to read and no toolchain marker
-  (`DESCRIPTION` / `pyproject.toml` / `setup.py` / `setup.cfg`) — has no profile
-  to infer. When this fires, present a **project-type chip** (AskUserQuestion:
-  R package / Python package / generic; recommend per any weak signal, else
-  generic) to select the profile *explicitly* rather than silently defaulting to
+  (`DESCRIPTION` / `pyproject.toml` / `setup.py` / `setup.cfg` / `Dockerfile`) —
+  has no profile to infer. When this fires, present a **project-type chip**
+  (AskUserQuestion: R package / Python package / Docker image / generic;
+  recommend per any weak signal, else generic) to select the profile
+  *explicitly* rather than silently defaulting to
   generic, then run the greenfield opener flow (§1). A repo that has a marker or
   existing source is **not** greenfield: infer the profile as above and skip the
   openers.
@@ -73,9 +80,11 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
   and is intact; fix what's missing; report. A **missing `cairn/PROFILE.md`**
   (a repo that adopted cairn before profiles) is backfilled by inference —
   `DESCRIPTION` present → r-package, else `pyproject.toml`/`setup.py`/
-  `setup.cfg` → python, else generic — restoring the explicit declaration
-  without changing behavior (the inference is exactly what the skills fall back
-  to when the file is absent).
+  `setup.cfg` → python, else a `Dockerfile` (sole marker) → docker-image, else
+  generic — restoring the explicit declaration without changing behavior (the
+  inference is exactly what the skills fall back to when the file is absent;
+  with no user present, a hybrid `Dockerfile`+language-marker repo keeps the
+  language marker — the disambiguation gate is a cairn-init-time step only).
 
 ## 1. Fresh scaffold
 
@@ -92,7 +101,7 @@ cairn/
 ├── ROADMAP.md         # empty index (below)
 ├── DECISIONS.md       # header + append-only note (see decision.md template)
 ├── LESSONS.md         # header + append-only note; repo lessons, capped 50 lines (D-015)
-├── PROFILE.md         # toolchain profile (r-package | python | generic), instantiated
+├── PROFILE.md         # toolchain profile (r-package | python | docker-image | generic), instantiated
 │                      # from skills/shared/profiles/<name>.md; capped 120 lines
 ├── milestones/archive/
 ├── reviews/archive/
@@ -130,7 +139,7 @@ Then:
   plugin's merge-guard hooks manage both; never committed).
 - Instantiate `cairn/PROFILE.md` from the selected reference profile
   (`${CLAUDE_PLUGIN_ROOT}/skills/shared/profiles/<name>.md` — `r-package.md`,
-  `python.md`, or `generic.md` per the selection order above) — copy it
+  `python.md`, `docker-image.md`, or `generic.md` per the selection order above) — copy it
   verbatim; the repo edits its slots (notably `verify`) afterward as needed.
 - **Greenfield openers (new/empty repos only).** When §0 flagged the repo
   greenfield, after instantiating `PROFILE.md` ask the opener set in batched
