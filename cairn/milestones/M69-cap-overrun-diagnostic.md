@@ -1,0 +1,104 @@
+<!-- Section ownership + write-modes: see tracking-rules.md "Milestone-file
+     section ownership". A phase skill never rewrites another phase's section.
+     Per-section owners are tagged below. -->
+# M69: Cap-overrun diagnostic — per-section breakdown + single-pass compression discipline
+
+- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
+- **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
+- **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
+- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+
+## Goal
+
+When a milestone plan-body exceeds the 150-line cap, the cap check names which
+section is heavy and by how much, and the rulebook mandates one targeted
+rewrite — so trimming is a single step, not a nibble-and-recount loop.
+
+## Scope
+
+**In:** A per-section line breakdown of an over-cap milestone's plan-owned body,
+emitted by the cap check, and a central rulebook remedy that turns the breakdown
+into one compression pass.
+
+- A `cairn_scripts` helper returns each plan-owned `## ` section's line count
+  (fence-aware, same plan-owned/`## Review` boundary as
+  `milestone_body_line_count`).
+- `check_caps` uses it: for each over-cap live milestone it emits the sections
+  heaviest-first plus the overage (`+N over`), alongside today's total line.
+- tracking-rules "Weight caps" remedies gain the single-pass compression
+  discipline: read the breakdown, compress the single heaviest plan-owned
+  section in one rewrite (never iterative Edit-then-recount), and
+  cross-reference durable records (DECISIONS/DESIGN) instead of restating their
+  substance in the milestone.
+
+**Out:**
+- Budget-first / up-front per-section budgets (prevention) → ROADMAP candidate,
+  reassessed after this ships (user-flagged at the plan gate).
+- Any change to *what* is counted or a second budget number → governed by
+  D-030; not touched.
+- Work-log cap exemption → rejected at this plan gate; the work log stays
+  counted (parallels D-030 keeping the milestone-local `## Decisions` counted).
+
+## Acceptance criteria
+<!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
+
+- [ ] When a live milestone's plan-owned body ≥ 150 lines, `cairn_validate`
+      output includes a per-section breakdown — each plan-owned `## ` section
+      with its line count, heaviest-first — plus the overage (`+N over`).
+- [ ] The breakdown is fence-aware and uses the same plan-owned/`## Review`
+      boundary as `milestone_body_line_count`: a fenced `## Review` in the body
+      is not the boundary, and the exempt `## Review` section is excluded from
+      the breakdown.
+- [ ] A milestone under cap produces no breakdown; the breakdown appears only
+      for over-cap live milestones (archived summaries unaffected).
+- [ ] tracking-rules "Weight caps" remedies state the single-pass compression
+      discipline: use the breakdown, compress the heaviest section in one
+      rewrite (not iterative nibbling), and cross-reference durable records
+      rather than restate them.
+- [ ] `verify` slot clean: `python3 -m unittest discover -s scripts/tests` and
+      `-s skills/tests` both pass.
+
+## Coverage
+<!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
+     task(s) satisfying it, by positional number. -->
+
+- AC1 → T2
+- AC2 → T1
+- AC3 → T1, T2
+- AC4 → T3
+- AC5 → T4
+
+## Tasks
+<!-- owner: plan (create) / implement (check-off, minor edits) -->
+
+- [ ] T1 — Add `milestone_section_line_counts(path)` to `scripts/cairn_scripts.py`:
+      fence-aware, returns ordered `(heading, line_count)` for each plan-owned
+      `## ` section up to the `## Review` boundary (reuse the M45 fence logic
+      that `milestone_body_line_count` uses). Unit tests in
+      `scripts/tests/test_scripts.py`: present, fenced-`## Review`-in-body,
+      no-`## Review`, and Review-excluded cases.
+- [ ] T2 — Wire the breakdown into `check_caps` (`scripts/cairn_validate.py:88`):
+      on an over-cap live milestone append a heaviest-first section breakdown +
+      `+N over` to the emitted line(s). Tests assert the breakdown appears
+      over-cap and is absent under-cap, reusing the existing over-cap fixtures.
+- [ ] T3 — Add the single-pass compression remedy to the tracking-rules
+      "Weight caps" "Remedies when a cap is hit" bullet; add a
+      mutation-registered guard (likely
+      `skills/tests/test_milestone_cap_exemption.py`, which already reads the
+      weight-caps text) and register the block in the mutation harness.
+- [ ] T4 — Run both suites from repo root; confirm green.
+
+## Work log
+<!-- owner: any skill · append-only; one line per entry; absolute dates -->
+
+- 2026-07-17: created by /milestone-plan (+candidate: budget-first drafting, to reassess).
+
+## Decisions
+<!-- owner: implement / review · append-only; milestone-local; promote
+     cross-cutting ones to cairn/DECISIONS.md -->
+
+## Review
+<!-- owner: review · exclusive; evidence per criterion, consistency-gate
+     results, review findings + triage. EXEMPT from the 150-line cap (M55):
+     only the plan-owned body above counts; evidence never scrambles it. -->
