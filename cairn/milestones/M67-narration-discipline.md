@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M67: Narration discipline — outcomes, not deliberation
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate -->

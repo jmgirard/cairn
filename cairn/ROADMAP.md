@@ -10,7 +10,7 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M67 | Narration discipline — outcomes, not deliberation (D-039) | in-progress | — | high | milestones/M67-narration-discipline.md |
+| M67 | Narration discipline — outcomes, not deliberation (D-039) | review | — | high | milestones/M67-narration-discipline.md |
 | M66 | cairn-init migration gates show the proposal — D-037 wiring extension | done | — | high | milestones/archive/M66-init-gate-preview.md |
 | M65 | Gate-time conclusion preview — acceptance chips show what's accepted | done | — | high | milestones/archive/M65-gate-conclusion-preview.md |
 | M64 | Durable-record preview — verbatim in-chat preview before docs-only commits | done | — | high | milestones/archive/M64-durable-record-preview.md |
