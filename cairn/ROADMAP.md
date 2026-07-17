@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-16 (M67 done + archived; M62 pruned under terminal-row retention)_
+_Last hygiene check: 2026-07-16 (M68 done + archived; candidate row graduated; M63 pruned under terminal-row retention)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,18 +10,16 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M68 | Changelog profile slot — required seventh slot, "none" legal (D-040) | review | — | normal | milestones/M68-changelog-profile-slot.md |
+| M68 | Changelog profile slot — required seventh slot, "none" legal (D-040) | done | — | normal | milestones/archive/M68-changelog-profile-slot.md |
 | M67 | Narration discipline — outcomes, not deliberation (D-039) | done | — | high | milestones/archive/M67-narration-discipline.md |
 | M66 | cairn-init migration gates show the proposal — D-037 wiring extension | done | — | high | milestones/archive/M66-init-gate-preview.md |
 | M65 | Gate-time conclusion preview — acceptance chips show what's accepted | done | — | high | milestones/archive/M65-gate-conclusion-preview.md |
 | M64 | Durable-record preview — verbatim in-chat preview before docs-only commits | done | — | high | milestones/archive/M64-durable-record-preview.md |
-| M63 | /design-interview note-and-leave ingestion — detect, formalize with #N lineage, bank the repoint | done | — | normal | milestones/archive/M63-design-interview-ingestion.md |
 
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
 - v1.0 release: release prep shipped (M54 positioning, M61 de-risking, M62 release docs, all done 2026-07-16); remaining = a `/cairn-release` run (generic release-walk: version bump, changelog, tag) — user-triggered — added 2026-07-16 (converted from the 2026-07-11 public-release-prep row at its graduation)
-- Changelog profile slot: when the next non-R/non-Python profile is authored, add a changelog declaration (file name or "none") read by `/hotfix`, `/cairn-release`, and the consistency-gate — the changelog is a toolchain fact with no slot today; until then the release-prep hotfix-wording fix suffices — added 2026-07-13 — RR01 rec 11/Q2
 - Content-gated memory guard: make M19's memory-boundary hook inspect the write and fire only on durable-state signals (decisions, conventions, project facts), staying silent on pure per-user prefs; promote only if the unconditional soft nudge proves too noisy — added 2026-07-11 — M19 Out
 - Scaffold-spec version stamp / content-drift detection (Direction 2, deferred from M24): M24 detects *missing* §1 pieces but not a piece whose template *body* changed while the file still exists; stamp a scaffold-spec version into the adopted CLAUDE.md and compare against the plugin's current spec to catch content drift — needs a maintained spec version + changelog + a definition of "what counts as a bump"; promote only if content drift (as opposed to missing files) actually bites — added 2026-07-12 — M24 Out
