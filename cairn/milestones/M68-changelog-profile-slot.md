@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** m68-changelog-profile-slot   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m68-changelog-profile-slot · https://github.com/jmgirard/cairn/pull/66   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -39,27 +39,27 @@ in each adopting repo at its next `/milestone`.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: `cairn_validate` FAILs a PROFILE.md whose `## changelog` slot is
+- [x] AC1: `cairn_validate` FAILs a PROFILE.md whose `## changelog` slot is
       missing or empty and passes one declaring a file name or "none" —
       scripts-suite fixture tests for present/missing/empty.
-- [ ] AC2: all three shipped reference profiles and this repo's
+- [x] AC2: all three shipped reference profiles and this repo's
       `cairn/PROFILE.md` define a non-empty `## changelog` (`NEWS.md` /
       `CHANGELOG.md` / declare-or-none instructions / `CHANGELOG.md`), each
       under the <120 cap — `test_shipped_reference_profiles_are_valid` green
       + full `cairn_validate` green on this repo.
-- [ ] AC3: the three consumers read the declaration — `/hotfix` step 5 names
+- [x] AC3: the three consumers read the declaration — `/hotfix` step 5 names
       the changelog slot with the NEWS/CHANGELOG inference as the
       absent-PROFILE fallback only; the r-package and python release-walk and
       consistency-gate bullets reference the declared changelog rather than
       hardcoding the file name again — guard asserts in the skills suite.
-- [ ] AC4: the tracking-rules slot list names seven slots and states the
+- [x] AC4: the tracking-rules slot list names seven slots and states the
       "none" semantics (hotfix skips the entry; the release-walk skips
       consolidation and derives the bump from commit history) — guard
       assert, mutation-registered.
-- [ ] AC5: no live "six slots" claim survives repo-wide (case-insensitive
+- [x] AC5: no live "six slots" claim survives repo-wide (case-insensitive
       grep) outside history files (DECISIONS, archives, legacy, reviews) and
       this milestone's own tracking record.
-- [ ] AC6: both suites green from the repo root —
+- [x] AC6: both suites green from the repo root —
       `python3 -m unittest discover -s scripts/tests` and
       `python3 -m unittest discover -s skills/tests` (this repo's verify),
       incl. the mutation harness covering the new prose guards.
@@ -119,3 +119,28 @@ in each adopting repo at its next `/milestone`.
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55). -->
+
+Evidence (2026-07-16, all fresh-run this review):
+
+- AC1: scripts suite 86 OK incl. `test_changelog_slot_missing_fails` +
+  `test_changelog_declares_file_passes` (verbose run shows both ok).
+- AC2: `test_all_profiles_define_all_seven_slots` +
+  `test_shipped_reference_profiles_are_valid` ok; `wc -l`: generic 63,
+  python 108, r-package 101, cairn/PROFILE.md 63 — all < 120 (D-034);
+  `cairn_validate` on this repo: all checks passed.
+- AC3: `TestChangelogSlot` hotfix/release/consistency-gate guards all ok
+  (verbose run).
+- AC4: `test_rulebook_states_the_none_semantics` ok; mutation-registered
+  (harness green inside the 219-test skills suite).
+- AC5: exemption-scoped `git grep -inE "six (known|slots)|all six|the six
+  slots"` → no hits outside this milestone's record (exit 1).
+- AC6: scripts 86 OK · skills 219 OK · hooks 55 OK, from the repo root.
+
+Consistency gate: `cairn_validate` exit 0 (all pass). No IPn/GPn text
+changed (GP3 worked-under only) → `cairn_impact --changed` skipped. Generic
+profile's consistency-gate slot names no toolchain checks → no-op.
+
+Note: AC4's parenthetical says "derives the bump from commit history"; the
+shipped bullet says "git history" (work-log 2026-07-16 mutation fix). The
+criterion mandates the semantics, not that literal token — identical meaning,
+recorded here rather than silently passed.
