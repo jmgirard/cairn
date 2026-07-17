@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M69: Cap-overrun diagnostic — per-section breakdown + single-pass compression discipline
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
@@ -72,7 +72,7 @@ into one compression pass.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1 — Add `milestone_section_line_counts(path)` to `scripts/cairn_scripts.py`:
+- [x] T1 — Add `milestone_section_line_counts(path)` to `scripts/cairn_scripts.py`:
       fence-aware, returns ordered `(heading, line_count)` for each plan-owned
       `## ` section up to the `## Review` boundary (reuse the M45 fence logic
       that `milestone_body_line_count` uses). Unit tests in
@@ -93,6 +93,7 @@ into one compression pass.
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-17: created by /milestone-plan (+candidate: budget-first drafting, to reassess).
+- 2026-07-17: T1 — milestone_section_line_counts helper + 7 tests; preamble+sections==body invariant holds; both suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
