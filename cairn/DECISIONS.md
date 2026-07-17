@@ -900,3 +900,28 @@ everywhere it is needed; profiles grow ~5 lines each, staying under D-034's
 (early promotion, user-gated at the M68 plan chip). Delivered by M68. If a
 repo ever needs a multi-file or per-package changelog declaration, this is
 the entry to supersede.
+
+### D-041 (2026-07-17): No auto-increment of the r-package dev version; `.9000` is set once at release
+
+**Context:** A `/milestone-plan` session asked whether the r-package profile
+should auto-increment the dev-version suffix as commits land
+(`0.1.0.9000 → .9001 → …`). cairn today touches the version only at release —
+the `release-walk` slot bumps `Version:` and the handoff has the user run
+`usethis::use_dev_version()`, which sets `.9000` once.
+**Decision:** No auto-increment, per commit or per milestone. The documented R
+convention (usethis / *R Packages*) sets `.9000` once via `use_dev_version()`
+and bumps the fourth component only when a downstream package must *detect* a
+feature via a version check — not on a commit or milestone cadence. Three
+reasons beyond convention: the git SHA already uniquely identifies any dev
+build (`remotes`/`pak` record `RemoteSha` on install), so a counter is
+redundant; rewriting DESCRIPTION on every checkpoint commit churns the file and
+makes it a merge-conflict magnet; and it would require a new content-mutating
+pre-commit hook class cairn deliberately lacks (its hooks are advisory/guard).
+Rejected the per-milestone middle variant (keys the counter to a real unit but
+still exceeds the convention for a modest payoff) and the literal per-commit
+form.
+**Consequences:** The r-package profile's single-`.9000`-at-release model
+stands unchanged; no profile edit, no milestone. If a cairn-tracked R package
+ever needs machine-detectable dev increments (e.g. a downstream that gates on a
+mid-cycle feature), the maintainer bumps the suffix by hand per the convention
+— or supersede this entry to add cadence machinery.
