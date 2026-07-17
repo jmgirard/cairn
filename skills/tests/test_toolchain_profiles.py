@@ -429,6 +429,20 @@ class TestInitSelection(unittest.TestCase):
         self.assertIn("outranks a `pyproject.toml`", text,
                       "cairn-init should give DESCRIPTION precedence over pyproject in a hybrid")
 
+    def test_init_selects_docker_and_runs_the_disambiguation_gate(self):
+        """M70: cairn-init selects `docker-image` when a `Dockerfile` is the only
+        toolchain marker, and a `Dockerfile`+language-marker hybrid runs a
+        disambiguation gate (never guesses) rather than defaulting silently. The
+        greenfield project-type chip offers a Docker-image option, and the
+        repair-mode backfill keeps the language marker on a hybrid (no user)."""
+        text = read("cairn-init", "SKILL.md")
+        self.assertIn("docker-image", text, "cairn-init should name the docker-image profile")
+        self.assertIn("Dockerfile", text, "cairn-init should detect a Dockerfile marker")
+        self.assertIn("asking which is the primary deliverable", text,
+                      "a Dockerfile+language hybrid should run a disambiguation gate")
+        self.assertIn("Docker image", text,
+                      "the greenfield project-type chip should offer a Docker-image option")
+
 
 # Skills rewired to read the profile instead of hardcoding R commands: the
 # operational trio at M46, and cairn-release at M47 (its release-walk slot).

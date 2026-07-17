@@ -103,7 +103,7 @@ inference, count-claim, greenfield-chip, and shipped-profile-test wiring.
       `test_shipped_reference_profiles_are_valid` iteration to include
       `docker-image`; add a docker-token positive test and a generic-no-docker
       negative test; mutation-register the new prose-guards. Suite green.
-- [ ] T2 — Wire init-detection in `skills/cairn-init/SKILL.md` (Dockerfile-only
+- [x] T2 — Wire init-detection in `skills/cairn-init/SKILL.md` (Dockerfile-only
       → docker-image; Dockerfile + language marker → disambiguation gate) and
       add the fourth greenfield project-type chip option; ship the gate-wording
       guard in cairn-init's test file, mutation-registered. Suite green.
@@ -118,6 +118,7 @@ inference, count-claim, greenfield-chip, and shipped-profile-test wiring.
 
 - 2026-07-17: created by /milestone-plan.
 - 2026-07-17: T1 — authored docker-image.md (113 lines, <120 cap); extended both shipped-profile enumeration tuples (test_toolchain_profiles + test_scripts); added TestDockerImageProfile + 2 mutation registrations. All three suites green (227/96/55).
+- 2026-07-17: T2 — cairn-init init-detection: Dockerfile-only → docker-image, Dockerfile+language-marker → disambiguation gate; greenfield project-type chip gains a Docker-image option; repair backfill keeps language marker on a hybrid. Guard + mutation added; caught the M59 reflow trap (anchor phrase wrapped mid-line, reflowed). Suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

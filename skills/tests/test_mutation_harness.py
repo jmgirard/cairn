@@ -362,6 +362,12 @@ REGISTRY = [
         target="skills/shared/profiles/docker-image.md",
         block="cairn pushes nothing",
     ),
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestInitSelection.test_init_selects_docker_and_runs_the_disambiguation_gate",
+        target="skills/cairn-init/SKILL.md",
+        block="asking which is the primary deliverable",
+    ),
     # M58 (RR01 rec 4): universal change-governance stated once in core; one
     # Mutation entry per positive core assert (M53 discipline).
     Mutation(
