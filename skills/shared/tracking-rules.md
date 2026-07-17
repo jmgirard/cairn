@@ -360,6 +360,14 @@ cairn skill is active.
   record. Two exceptions: (1) drafted durable-record text is the deliverable,
   not a dump — see the Durable-record preview rule below. (2) conclusion
   text above an acceptance chip — see the Acceptance chips rule.
+- **Narrate outcomes, not deliberation.** Between tool calls, chat carries
+  findings, decisions, and the mandated previews —
+  never a running readout of reasoning (no "now I'll check whether…",
+  no weighing of options aloud, no italicized play-by-play commentary).
+  A one-line signpost before a long step is fine;
+  a compact summary where a question needs context is fine (D-039).
+  This never licenses compressing mandated substance: the Durable-record
+  preview and Acceptance chips rules still show their text verbatim.
 - **Durable-record preview.** Newly authored durable-record text — a
   D-entry, a milestone file's plan-owned sections (new or via a gated
   amendment), a LESSONS line, an archive summary, a ROADMAP
