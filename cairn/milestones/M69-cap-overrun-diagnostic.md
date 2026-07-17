@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m69-cap-overrun-diagnostic / https://github.com/jmgirard/cairn/pull/67   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 
@@ -43,20 +43,20 @@ into one compression pass.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] When a live milestone's plan-owned body ≥ 150 lines, `cairn_validate`
+- [x] When a live milestone's plan-owned body ≥ 150 lines, `cairn_validate`
       output includes a per-section breakdown — each plan-owned `## ` section
       with its line count, heaviest-first — plus the overage (`+N over`).
-- [ ] The breakdown is fence-aware and uses the same plan-owned/`## Review`
+- [x] The breakdown is fence-aware and uses the same plan-owned/`## Review`
       boundary as `milestone_body_line_count`: a fenced `## Review` in the body
       is not the boundary, and the exempt `## Review` section is excluded from
       the breakdown.
-- [ ] A milestone under cap produces no breakdown; the breakdown appears only
+- [x] A milestone under cap produces no breakdown; the breakdown appears only
       for over-cap live milestones (archived summaries unaffected).
-- [ ] tracking-rules "Weight caps" remedies state the single-pass compression
+- [x] tracking-rules "Weight caps" remedies state the single-pass compression
       discipline: use the breakdown, compress the heaviest section in one
       rewrite (not iterative nibbling), and cross-reference durable records
       rather than restate them.
-- [ ] `verify` slot clean: `python3 -m unittest discover -s scripts/tests` and
+- [x] `verify` slot clean: `python3 -m unittest discover -s scripts/tests` and
       `-s skills/tests` both pass.
 
 ## Coverage
@@ -106,3 +106,26 @@ into one compression pass.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55):
      only the plan-owned body above counts; evidence never scrambles it. -->
+
+**Evidence per criterion (fresh, PR #67):**
+- AC1 ✓ — `test_over_cap_shows_heaviest_first_breakdown` passes: an over-cap
+  live milestone emits `heaviest first: …` + `shed ≥N`, sections in
+  descending line order (Tasks before Scope before Work log).
+- AC2 ✓ — `TestMilestoneSectionLineCounts` (7/7): fence-aware; a fenced
+  `## Review` in the body is not the boundary; the exempt `## Review` section
+  is excluded; `preamble + Σsections == milestone_body_line_count`.
+- AC3 ✓ — `test_under_cap_shows_no_breakdown` passes: a passing repo emits no
+  breakdown (exit 0, no `heaviest first:`).
+- AC4 ✓ — `test_weight_caps_states_single_pass_compression` and
+  `test_weight_caps_states_cross_reference_not_restate` pass; both blocks are
+  mutation-registered (harness `TestRegisteredGuardsFailWhenBlanked` green).
+- AC5 ✓ — scripts 96 / skills 221, both green from repo root.
+
+**Consistency gate:**
+- `cairn_validate.py` exit 0 — all checks pass (incl. weight caps, coverage
+  complete). Recorded below.
+- No IPn/GPn principle changed (works under GP1, adds none) → `cairn_impact`
+  skipped per protocol.
+- Profile `generic` names no toolchain consistency-gate checks → clean no-op.
+
+**Independent review:** _pending fan-out._
