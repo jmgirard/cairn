@@ -96,7 +96,12 @@ takes a D-entry, and its number stays retired.
   a large legacy or parking-lot backlog blows the cap one-row-per-item,
   cluster related items into grouped candidate rows that point at the
   entombed legacy `ROADMAP.md` instead of listing each (M21 G-C4); over-cap
-  milestone → split it or move reference material to `references/`; over-cap
+  milestone → the `cairn_validate` breakdown names the heaviest plan-owned
+  section and the lines to shed, so compress that one section in a single
+  rewrite, never a nibble-and-recount loop; cross-reference a durable record
+  rather than restate its substance in the milestone (a milestone restating a
+  DECISIONS entry is the classic overrun); split it or move reference material
+  to `references/` only when no single section can carry the cut; over-cap
   cairn CLAUDE.md section → trim it back to the template (it is routing
   boilerplate, not a content home); other CLAUDE.md content → its owner per
   the table above.

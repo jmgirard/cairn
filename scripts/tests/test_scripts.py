@@ -642,6 +642,33 @@ class TestValidateFailures(ScriptCase):
         out = self.assert_fails("weight caps", self.tree.build())
         self.assertIn("plan-owned lines", out)
 
+    def test_over_cap_shows_heaviest_first_breakdown(self):
+        # M69: the over-cap finding names each plan-owned section heaviest-first
+        # plus the lines to shed, so trimming targets the fat in one pass.
+        body = (
+            "# M: Test milestone\n\n- **Status:** planned   <!-- mirror -->\n\n"
+            "## Scope\n" + "s\n" * 30 + "\n"
+            "## Tasks\n" + "t\n" * 120 + "\n"
+            "## Work log\n" + "w\n" * 10 + "\n"
+        )
+        self.tree.files["milestones/M03-live.md"] = body + "## Review\n" + "e\n" * 5
+        out = self.assert_fails("weight caps", self.tree.build())
+        self.assertIn("heaviest first:", out)
+        self.assertIn("shed ≥", out)
+        # Tasks (121 lines) is fattest, so it must precede Scope and Work log.
+        bd = out[out.index("heaviest first:"):]
+        self.assertLess(bd.index("Tasks"), bd.index("Scope"))
+        self.assertLess(bd.index("Scope"), bd.index("Work log"))
+        # The exempt Review section is never in the breakdown.
+        self.assertNotIn("Review", bd)
+
+    def test_under_cap_shows_no_breakdown(self):
+        # The breakdown appears only for over-cap milestones; a passing repo
+        # never emits it.
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertNotIn("heaviest first:", proc.stdout)
+
     def test_review_evidence_over_cap_passes(self):
         # M55/AC1: plan-owned body under 150 but the file total over 150 because
         # of Review evidence — the file PASSES weight-caps (the recurring
@@ -847,6 +874,66 @@ class TestMilestoneBodyLineCount(unittest.TestCase):
     def test_unreadable_returns_none(self):
         missing = pathlib.Path(self._tmp.name) / "nope.md"
         self.assertIsNone(self.cs.milestone_body_line_count(str(missing)))
+
+
+class TestMilestoneSectionLineCounts(unittest.TestCase):
+    """M69: the diagnostic breakdown of an over-cap plan-owned body — each
+    `## ` section with its line count, so trimming targets the heaviest section
+    in one pass instead of a nibble-and-recount loop. Shares the plan-owned/
+    `## Review` boundary and fence logic with `milestone_body_line_count`."""
+
+    def setUp(self):
+        self.cs = _load_scripts()
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        self.path = pathlib.Path(self._tmp.name) / "M.md"
+
+    def counts(self, text):
+        self.path.write_text(text)
+        return self.cs.milestone_section_line_counts(str(self.path))
+
+    def body(self, text):
+        self.path.write_text(text)
+        return self.cs.milestone_body_line_count(str(self.path))
+
+    def test_counts_each_section_in_document_order(self):
+        text = "# M\n\n## Goal\nx\n\n## Tasks\n- [ ] T1\n- [ ] T2\n\n## Review\n" + "e\n" * 50
+        self.assertEqual(self.counts(text), [("Goal", 3), ("Tasks", 4)])
+
+    def test_review_section_excluded(self):
+        text = "# M\n\n## Goal\nx\n\n## Review\n" + "e\n" * 50
+        headings = [h for h, _ in self.counts(text)]
+        self.assertNotIn("Review", headings)
+
+    def test_preamble_plus_sections_sum_to_body_count(self):
+        # The invariant that makes the breakdown trustworthy: nothing is
+        # double-counted or lost — preamble (title + status block) + section
+        # counts == the authoritative plan-owned body total.
+        text = "# M\n\n- **Status:** planned\n\n## Goal\nx\ny\n\n## Tasks\n- [ ] T1\n\n## Review\n" + "e\n" * 9
+        sections = self.counts(text)
+        # preamble = lines before the first `## ` heading.
+        lines = text.splitlines()
+        preamble = next(i for i, ln in enumerate(lines) if ln.startswith("## "))
+        self.assertEqual(preamble + sum(n for _, n in sections), self.body(text))
+
+    def test_fenced_review_heading_is_not_the_boundary(self):
+        body_lines = ["# M", "", "## Tasks", "- [ ] T1", "```", "## Review",
+                      "```", "after fence", ""]
+        text = "\n".join(body_lines) + "\n## Review\n" + "e\n" * 50
+        # The whole fenced block stays inside the Tasks section (7 lines: heading
+        # through the blank before the real `## Review`).
+        self.assertEqual(self.counts(text), [("Tasks", 7)])
+
+    def test_review_prefixed_heading_is_not_the_boundary(self):
+        text = "# M\n\n## Reviewers\n- alice\n- bob\n\n## Review\n" + "e\n" * 50
+        self.assertEqual(self.counts(text), [("Reviewers", 4)])
+
+    def test_no_sections_returns_empty(self):
+        self.assertEqual(self.counts("# M\n\njust prose, no H2\n"), [])
+
+    def test_unreadable_returns_none(self):
+        missing = pathlib.Path(self._tmp.name) / "nope.md"
+        self.assertIsNone(self.cs.milestone_section_line_counts(str(missing)))
 
 
 class TestImpact(ScriptCase):

@@ -261,6 +261,57 @@ def milestone_body_line_count(path):
     return len(lines)
 
 
+def milestone_section_line_counts(path):
+    """Ordered `(heading, line_count)` for each plan-owned `## ` section of a
+    live milestone file — the diagnostic companion to
+    `milestone_body_line_count`: when a plan-owned body is over cap, the caller
+    reports which section carries the weight so trimming is one targeted pass,
+    not a nibble-and-recount loop (M69). A section spans its `## ` heading
+    through the line before the next `## ` heading (or the plan-owned/`## Review`
+    boundary, or EOF). Lines before the first `## ` heading (title + status
+    block) are preamble, attributed to no section, so preamble + the section
+    counts sum to `milestone_body_line_count`. Fence-aware like that function: a
+    `## ` inside a ``` or ~~~ block is content, and a fenced `## Review` is not
+    the boundary (M45); the review-exclusive `## Review` section is excluded
+    (M55). Returns None if the file is unreadable, [] if it has no `## ` section."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            lines = f.read().splitlines()
+    except Exception:
+        return None
+    sections = []
+    fence = None
+    start = None  # index of the current open section's `## ` heading
+    heading = None
+    for i, line in enumerate(lines):
+        stripped = line.lstrip()
+        if fence is not None:
+            if stripped.startswith(fence):
+                fence = None
+            continue
+        if stripped.startswith("```"):
+            fence = "```"
+            continue
+        if stripped.startswith("~~~"):
+            fence = "~~~"
+            continue
+        if line.startswith("## "):
+            title = line[3:].strip()
+            if title.lower() == "review":
+                if start is not None:
+                    sections.append((heading, i - start))
+                    start = None
+                break
+            if start is not None:
+                sections.append((heading, i - start))
+            start, heading = i, title
+    else:
+        # No `## Review` boundary hit — close the final open section at EOF.
+        if start is not None:
+            sections.append((heading, len(lines) - start))
+    return sections
+
+
 def sort_by_priority(row_list):
     """Rows sorted high>normal>low, then by numeric ID (M9 before M10)."""
     return sorted(

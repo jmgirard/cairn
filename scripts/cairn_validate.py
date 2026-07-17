@@ -87,9 +87,20 @@ def check_caps(root, rows):
             # plan-owned content (M55).
             n = cs.milestone_body_line_count(path)
             if n is not None and n >= cs.MILESTONE_CAP:
-                bad.append(
-                    f"cairn/{r['relpath']}: {n} plan-owned lines (cap <{cs.MILESTONE_CAP})"
+                # Report which plan-owned section carries the weight, heaviest
+                # first, so trimming is one targeted pass, not a nibble-and-
+                # recount loop (M69). `shed` is the lines to drop to pass (<cap).
+                shed = n - cs.MILESTONE_CAP + 1
+                finding = (
+                    f"cairn/{r['relpath']}: {n} plan-owned lines "
+                    f"(cap <{cs.MILESTONE_CAP}; shed ≥{shed})"
                 )
+                sections = cs.milestone_section_line_counts(path)
+                if sections:
+                    ranked = sorted(sections, key=lambda s: s[1], reverse=True)
+                    breakdown = " · ".join(f"{h} {c}" for h, c in ranked)
+                    finding += f"\n        heaviest first: {breakdown}"
+                bad.append(finding)
     return bad
 
 

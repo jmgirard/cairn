@@ -148,6 +148,20 @@ REGISTRY = [
         target=RULES,
         block="plan-owned body < 150 lines",
     ),
+    # M69: the single-pass compression remedy — one Mutation entry per new
+    # positive assert (M53 discipline); both anchors sit on one physical line.
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_weight_caps_states_single_pass_compression",
+        target=RULES,
+        block="never a nibble-and-recount loop",
+    ),
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_weight_caps_states_cross_reference_not_restate",
+        target=RULES,
+        block="cross-reference a durable record",
+    ),
     # M59 (RR01 rec 7): run-and-read — skills never enumerate validate's
     # internals; one entry per positive assert, negatives ride along (M54).
     Mutation(

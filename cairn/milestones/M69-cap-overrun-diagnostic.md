@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M69: Cap-overrun diagnostic — per-section breakdown + single-pass compression discipline
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m69-cap-overrun-diagnostic / https://github.com/jmgirard/cairn/pull/67   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 
@@ -25,7 +25,8 @@ into one compression pass.
   (fence-aware, same plan-owned/`## Review` boundary as
   `milestone_body_line_count`).
 - `check_caps` uses it: for each over-cap live milestone it emits the sections
-  heaviest-first plus the overage (`+N over`), alongside today's total line.
+  heaviest-first plus the lines to shed to pass (`shed ≥N`), alongside today's
+  total line.
 - tracking-rules "Weight caps" remedies gain the single-pass compression
   discipline: read the breakdown, compress the single heaviest plan-owned
   section in one rewrite (never iterative Edit-then-recount), and
@@ -43,20 +44,21 @@ into one compression pass.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] When a live milestone's plan-owned body ≥ 150 lines, `cairn_validate`
+- [x] When a live milestone's plan-owned body ≥ 150 lines, `cairn_validate`
       output includes a per-section breakdown — each plan-owned `## ` section
-      with its line count, heaviest-first — plus the overage (`+N over`).
-- [ ] The breakdown is fence-aware and uses the same plan-owned/`## Review`
+      with its line count, heaviest-first — plus the lines to shed to pass
+      (`shed ≥N`).
+- [x] The breakdown is fence-aware and uses the same plan-owned/`## Review`
       boundary as `milestone_body_line_count`: a fenced `## Review` in the body
       is not the boundary, and the exempt `## Review` section is excluded from
       the breakdown.
-- [ ] A milestone under cap produces no breakdown; the breakdown appears only
+- [x] A milestone under cap produces no breakdown; the breakdown appears only
       for over-cap live milestones (archived summaries unaffected).
-- [ ] tracking-rules "Weight caps" remedies state the single-pass compression
+- [x] tracking-rules "Weight caps" remedies state the single-pass compression
       discipline: use the breakdown, compress the heaviest section in one
       rewrite (not iterative nibbling), and cross-reference durable records
       rather than restate them.
-- [ ] `verify` slot clean: `python3 -m unittest discover -s scripts/tests` and
+- [x] `verify` slot clean: `python3 -m unittest discover -s scripts/tests` and
       `-s skills/tests` both pass.
 
 ## Coverage
@@ -72,27 +74,32 @@ into one compression pass.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1 — Add `milestone_section_line_counts(path)` to `scripts/cairn_scripts.py`:
+- [x] T1 — Add `milestone_section_line_counts(path)` to `scripts/cairn_scripts.py`:
       fence-aware, returns ordered `(heading, line_count)` for each plan-owned
       `## ` section up to the `## Review` boundary (reuse the M45 fence logic
       that `milestone_body_line_count` uses). Unit tests in
       `scripts/tests/test_scripts.py`: present, fenced-`## Review`-in-body,
       no-`## Review`, and Review-excluded cases.
-- [ ] T2 — Wire the breakdown into `check_caps` (`scripts/cairn_validate.py:88`):
+- [x] T2 — Wire the breakdown into `check_caps` (`scripts/cairn_validate.py:88`):
       on an over-cap live milestone append a heaviest-first section breakdown +
-      `+N over` to the emitted line(s). Tests assert the breakdown appears
+      `shed ≥N` to the emitted line(s). Tests assert the breakdown appears
       over-cap and is absent under-cap, reusing the existing over-cap fixtures.
-- [ ] T3 — Add the single-pass compression remedy to the tracking-rules
+- [x] T3 — Add the single-pass compression remedy to the tracking-rules
       "Weight caps" "Remedies when a cap is hit" bullet; add a
       mutation-registered guard (likely
       `skills/tests/test_milestone_cap_exemption.py`, which already reads the
       weight-caps text) and register the block in the mutation harness.
-- [ ] T4 — Run both suites from repo root; confirm green.
+- [x] T4 — Run both suites from repo root; confirm green.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-17: created by /milestone-plan (+candidate: budget-first drafting, to reassess).
+- 2026-07-17: T1 — milestone_section_line_counts helper + 7 tests; preamble+sections==body invariant holds; both suites green.
+- 2026-07-17: T2 — check_caps emits heaviest-first breakdown + `shed ≥N` on over-cap milestones; 2 tests (multi-section ordering, under-cap absence); scripts 96 green.
+- 2026-07-17: T3 — single-pass compression remedy in tracking-rules "Weight caps" (breakdown-driven, never nibble, cross-reference not restate); 2 guard asserts + 2 mutation-registry entries; skills 221 green.
+- 2026-07-17: T4 — both suites green from repo root (scripts 96, skills 221); all tasks done → status review.
+- 2026-07-17: review F1 amendment (gated, user-approved) — AC1/Scope/T2 overage token `+N over` → `shed ≥N` to match the delivered (more actionable) output; code unchanged; AC1 re-verified against amended wording.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -102,3 +109,44 @@ into one compression pass.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55):
      only the plan-owned body above counts; evidence never scrambles it. -->
+
+**Evidence per criterion (fresh, PR #67):**
+- AC1 ✓ — `test_over_cap_shows_heaviest_first_breakdown` passes: an over-cap
+  live milestone emits `heaviest first: …` + `shed ≥N`, sections in
+  descending line order (Tasks before Scope before Work log).
+- AC2 ✓ — `TestMilestoneSectionLineCounts` (7/7): fence-aware; a fenced
+  `## Review` in the body is not the boundary; the exempt `## Review` section
+  is excluded; `preamble + Σsections == milestone_body_line_count`.
+- AC3 ✓ — `test_under_cap_shows_no_breakdown` passes: a passing repo emits no
+  breakdown (exit 0, no `heaviest first:`).
+- AC4 ✓ — `test_weight_caps_states_single_pass_compression` and
+  `test_weight_caps_states_cross_reference_not_restate` pass; both blocks are
+  mutation-registered (harness `TestRegisteredGuardsFailWhenBlanked` green).
+- AC5 ✓ — scripts 96 / skills 221, both green from repo root.
+
+**Consistency gate:**
+- `cairn_validate.py` exit 0 — all checks pass (incl. weight caps, coverage
+  complete). Recorded below.
+- No IPn/GPn principle changed (works under GP1, adds none) → `cairn_impact`
+  skipped per protocol.
+- Profile `generic` names no toolchain consistency-gate checks → clean no-op.
+
+**Independent review (three lenses + inline scoring):**
+- [O] diff-bug (Opus): section-counting logic verified correct — fence
+  handling byte-faithful to `milestone_body_line_count`, `i-start` off-by-one
+  free, `preamble+Σsections==body` invariant holds, `shed=n-CAP+1` arithmetic
+  right, stable sort. 1 finding (below).
+- [S] blame-history (Sonnet): D-030 second-budget-number rejection intact (the
+  breakdown is additive diagnostic, not a second cap), M55 Review boundary
+  unshifted, M68 duplicate-token risk avoided (both anchors unique). Same 1
+  finding, CONFIRMED.
+- [S] prior-PR-comments (Sonnet): no prior-PR evidence — the touched files'
+  merged PRs carry no inline review comments. Zero findings (clean no-op).
+- Scorer: F1 = 95 (CONFIRMED by two lenses, string-verifiable, load-bearing).
+
+**F1 (score 95) — overage token mismatch, resolved by gated AC amendment:**
+Code emits `shed ≥N` (`cairn_validate.py:96`); AC1/Scope/T2 as planned said
+`+N over`. `shed ≥N` (lines to drop to pass) is the more actionable number and
+is the delivered behavior; the plan text was amended to match via the implement
+step-6 gate (user-approved 2026-07-17) rather than downgrading the code. AC1
+re-verified against the amended wording. See work log.
