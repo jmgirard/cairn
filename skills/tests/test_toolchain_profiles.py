@@ -470,6 +470,45 @@ class TestReleaseSkillReadsProfile(unittest.TestCase):
             self.assertNotIn(tok, body, f"generic release-walk should carry no {tok}")
 
 
+class TestChangelogSlot(unittest.TestCase):
+    """M68 (D-040): changelog is the required seventh slot — each shipped
+    profile declares its file (or the generic declare-or-none instructions),
+    the consistency-gate bullets read the declaration instead of restating a
+    file name, the rulebook states the "none" semantics, and both consumers
+    (/hotfix, /cairn-release) read the slot."""
+
+    def test_each_profile_declares_its_changelog(self):
+        r = section_body(read("shared", "profiles", "r-package.md"), "changelog")
+        self.assertIn("NEWS.md", r, "r-package changelog slot should declare NEWS.md")
+        py = section_body(read("shared", "profiles", "python.md"), "changelog")
+        self.assertIn("CHANGELOG.md", py, "python changelog slot should declare CHANGELOG.md")
+        g = section_body(read("shared", "profiles", "generic.md"), "changelog")
+        self.assertIn("declare it here", g, "generic changelog slot should instruct declaration")
+        self.assertIn('"none"', g, "generic changelog slot should permit a none declaration")
+
+    def test_consistency_gates_read_the_declared_changelog(self):
+        for name in ("r-package", "python"):
+            body = section_body(read("shared", "profiles", f"{name}.md"), "consistency-gate")
+            self.assertIn("The declared changelog (`## changelog` slot)", body,
+                          f"{name} consistency-gate should read the declaration")
+
+    def test_rulebook_states_the_none_semantics(self):
+        rules = read("shared", "tracking-rules.md")
+        self.assertIn("Seven slots:", rules)
+        self.assertIn('"none" is legal — hotfix skips the changelog entry', rules)
+        self.assertIn("derives the version bump from git history", rules)
+
+    def test_hotfix_reads_the_changelog_slot(self):
+        skill = read("hotfix", "SKILL.md")
+        self.assertIn("the file the active profile's `changelog` slot", skill)
+        self.assertIn('a slot value of "none" → skip the entry', skill)
+
+    def test_release_reads_the_declared_changelog(self):
+        skill = read("cairn-release", "SKILL.md")
+        self.assertIn("the file the active profile's `changelog` slot names", skill)
+        self.assertIn('a "none" declaration skips', skill)
+
+
 # M50: the greenfield-openers slot is filled with concrete openers per profile.
 # Each token below is introduced by M50's fill — deleting the opener content
 # makes the assertion fail (M39/M40 false-coverage guard), and the shared

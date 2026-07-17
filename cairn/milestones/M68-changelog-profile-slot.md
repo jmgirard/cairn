@@ -93,7 +93,7 @@ in each adopting repo at its next `/milestone`.
 - [x] T4: consumers — `/hotfix` step 5 reads the slot (inference becomes the
       absent-PROFILE fallback per tracking-rules "Toolchain profiles");
       `/cairn-release` wording reads the declared changelog.
-- [ ] T5: guards — extend `SLOTS` in `skills/tests/test_toolchain_profiles.py`
+- [x] T5: guards — extend `SLOTS` in `skills/tests/test_toolchain_profiles.py`
       + new slot/consumer/doctrine asserts; mutation-register the new prose
       guards (M53/M54: per-file `Mutation(...)` entries, run via discover).
 - [ ] T6: sweep — `git grep -i` the whole repo for surviving six-slot claims
@@ -108,6 +108,7 @@ in each adopting repo at its next `/milestone`.
 - 2026-07-16: T1+T3 done; mutation harness caught "commit history" wording giving the generic release-walk guard false coverage — reworded to "git history"; all suites green.
 - 2026-07-16: T2 done — seven-slot list + changelog bullet (none-semantics, one physical line) in tracking-rules; DESIGN six→seven.
 - 2026-07-16: T4 done — /hotfix step 5 reads the slot (none → skip; absent PROFILE → infer), /cairn-release steps 1–2 read the declared changelog (none → git history / skip consolidation).
+- 2026-07-16: T5 done — TestChangelogSlot (5 guards over profiles/rulebook/consumers) + 6 Mutation entries; skills suite 219 OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
