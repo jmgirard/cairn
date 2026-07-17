@@ -82,7 +82,7 @@ in each adopting repo at its next `/milestone`.
       the docstring six→seven; extend the shared `Tree.build()` PROFILE.md
       fixture (M24 lesson) and add present/missing/empty fixture tests in
       `scripts/tests/`.
-- [ ] T2: tracking-rules "Toolchain profiles" — "Six slots:" → seven, add the
+- [x] T2: tracking-rules "Toolchain profiles" — "Six slots:" → seven, add the
       changelog slot bullet with the "none" semantics kept on one physical
       line (M64 reflow lesson); `DESIGN.md` Purpose six→seven.
 - [x] T3: the three reference profiles gain `## changelog` (r-package:
@@ -106,6 +106,7 @@ in each adopting repo at its next `/milestone`.
 - 2026-07-16: created by /milestone-plan — promoted early from the RR01 rec 11/Q2 candidate row (pre-v1.0 schema argument), user-approved at the scope chip; shape decisions in D-040.
 - 2026-07-16: minor amendment — T1+T3 folded into one checkpoint with T5's SLOTS-tuple edit (schema/profiles/guard-tuple are atomically coupled: each alone reds a suite — M46 fold-don't-defer).
 - 2026-07-16: T1+T3 done; mutation harness caught "commit history" wording giving the generic release-walk guard false coverage — reworded to "git history"; all suites green.
+- 2026-07-16: T2 done — seven-slot list + changelog bullet (none-semantics, one physical line) in tracking-rules; DESIGN six→seven.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
