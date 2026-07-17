@@ -107,7 +107,7 @@ inference, count-claim, greenfield-chip, and shipped-profile-test wiring.
       → docker-image; Dockerfile + language marker → disambiguation gate) and
       add the fourth greenfield project-type chip option; ship the gate-wording
       guard in cairn-init's test file, mutation-registered. Suite green.
-- [ ] T3 — Update the inference fallback + "three→four" count-claim in
+- [x] T3 — Update the inference fallback + "three→four" count-claim in
       `tracking-rules.md` "Toolchain profiles" (deterministic language-wins at
       inference), with its guard update. Suite green.
 - [ ] T4 — Bump the `DESIGN.md` count-claims (Purpose & Scope + Architecture)
@@ -119,6 +119,7 @@ inference, count-claim, greenfield-chip, and shipped-profile-test wiring.
 - 2026-07-17: created by /milestone-plan.
 - 2026-07-17: T1 — authored docker-image.md (113 lines, <120 cap); extended both shipped-profile enumeration tuples (test_toolchain_profiles + test_scripts); added TestDockerImageProfile + 2 mutation registrations. All three suites green (227/96/55).
 - 2026-07-17: T2 — cairn-init init-detection: Dockerfile-only → docker-image, Dockerfile+language-marker → disambiguation gate; greenfield project-type chip gains a Docker-image option; repair backfill keeps language marker on a hybrid. Guard + mutation added; caught the M59 reflow trap (anchor phrase wrapped mid-line, reflowed). Suites green.
+- 2026-07-17: T3 — tracking-rules "Toolchain profiles": three→four profiles, inference order gains a Dockerfile-sole-marker branch (language ranks first at inference). Renamed the guard class Three→Four, added order+count asserts and a "Four profiles ship" mutation. Suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

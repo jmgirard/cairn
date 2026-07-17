@@ -502,24 +502,38 @@ class TestTemplateProfileAware(unittest.TestCase):
         self.assertIn("verify", text)
 
 
-class TestRulebookNamesThreeProfiles(unittest.TestCase):
-    """AC4: tracking-rules "Toolchain profiles" states three profiles ship and
-    its absent-PROFILE inference names `pyproject.toml → python` in the stated
-    order (DESCRIPTION → r-package, pyproject.toml → python, else generic)."""
+class TestRulebookNamesFourProfiles(unittest.TestCase):
+    """AC4/AC6: tracking-rules "Toolchain profiles" states four profiles ship
+    (r-package, python, docker-image, generic) and its absent-PROFILE inference
+    names the order DESCRIPTION → r-package, pyproject.toml → python, a
+    Dockerfile-sole-marker → docker-image, else generic — with the language
+    markers ranking first so a hybrid keeps its language marker at inference."""
 
-    def test_rulebook_names_three_profiles_and_python_inference(self):
+    def _body(self):
         body = section_body(read("shared", "tracking-rules.md"), "Toolchain profiles")
         self.assertTrue(body, "could not locate the 'Toolchain profiles' section")
-        self.assertIn("Three profiles ship", body,
-                      "rulebook should state three profiles ship")
+        return body
+
+    def test_rulebook_names_four_profiles(self):
+        body = self._body()
+        self.assertIn("Four profiles ship", body,
+                      "rulebook should state four profiles ship")
+        self.assertIn("docker-image", body,
+                      "rulebook should name the docker-image profile")
+
+    def test_rulebook_inference_order(self):
+        body = self._body()
         self.assertIn("pyproject.toml", body,
                       "rulebook inference should name pyproject.toml")
-        self.assertIn("python", body)
-        # Order: DESCRIPTION precedes pyproject precedes the generic fallback.
-        desc_i = body.find("DESCRIPTION")
-        pyproj_i = body.find("pyproject.toml")
-        self.assertTrue(0 <= desc_i < pyproj_i,
-                        "inference should list DESCRIPTION -> r-package before pyproject -> python")
+        self.assertIn("Dockerfile", body,
+                      "rulebook inference should name the Dockerfile marker")
+        # Order: DESCRIPTION precedes pyproject precedes Dockerfile (language
+        # markers rank first, so a hybrid keeps its language marker at inference).
+        desc_i = body.find("means `r-package`")
+        pyproj_i = body.find("means `python`")
+        docker_i = body.find("means `docker-image`")
+        self.assertTrue(0 <= desc_i < pyproj_i < docker_i,
+                        "inference should rank r-package before python before docker-image")
 
 
 class TestReleaseSkillReadsProfile(unittest.TestCase):

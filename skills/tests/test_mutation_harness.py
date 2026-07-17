@@ -368,6 +368,12 @@ REGISTRY = [
         target="skills/cairn-init/SKILL.md",
         block="asking which is the primary deliverable",
     ),
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestRulebookNamesFourProfiles.test_rulebook_names_four_profiles",
+        target=RULES,
+        block="Four profiles ship",
+    ),
     # M58 (RR01 rec 4): universal change-governance stated once in core; one
     # Mutation entry per positive core assert (M53 discipline).
     Mutation(
