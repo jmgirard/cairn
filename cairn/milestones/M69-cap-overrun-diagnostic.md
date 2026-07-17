@@ -78,7 +78,7 @@ into one compression pass.
       that `milestone_body_line_count` uses). Unit tests in
       `scripts/tests/test_scripts.py`: present, fenced-`## Review`-in-body,
       no-`## Review`, and Review-excluded cases.
-- [ ] T2 — Wire the breakdown into `check_caps` (`scripts/cairn_validate.py:88`):
+- [x] T2 — Wire the breakdown into `check_caps` (`scripts/cairn_validate.py:88`):
       on an over-cap live milestone append a heaviest-first section breakdown +
       `+N over` to the emitted line(s). Tests assert the breakdown appears
       over-cap and is absent under-cap, reusing the existing over-cap fixtures.
@@ -94,6 +94,7 @@ into one compression pass.
 
 - 2026-07-17: created by /milestone-plan (+candidate: budget-first drafting, to reassess).
 - 2026-07-17: T1 — milestone_section_line_counts helper + 7 tests; preamble+sections==body invariant holds; both suites green.
+- 2026-07-17: T2 — check_caps emits heaviest-first breakdown + `shed ≥N` on over-cap milestones; 2 tests (multi-section ordering, under-cap absence); scripts 96 green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
