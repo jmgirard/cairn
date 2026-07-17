@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-17 (M69 done + archived; M64 pruned under terminal-row retention; M26 lesson pruned at LESSONS 50-line cap)_
+_Last hygiene check: 2026-07-17 (M70 done + archived; M65 pruned under terminal-row retention; M20 lesson pruned at LESSONS 50-line cap)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M70 | Docker-image toolchain profile — fourth profile for pure-image repos | review | — | normal | milestones/M70-docker-image-profile.md |
+| M70 | Docker-image toolchain profile — fourth profile for pure-image repos | done | — | normal | milestones/archive/M70-docker-image-profile.md |
 | M69 | Cap-overrun diagnostic — per-section breakdown + single-pass compression discipline | done | — | normal | milestones/archive/M69-cap-overrun-diagnostic.md |
 | M68 | Changelog profile slot — required seventh slot, "none" legal (D-040) | done | — | normal | milestones/archive/M68-changelog-profile-slot.md |
 | M67 | Narration discipline — outcomes, not deliberation (D-039) | done | — | high | milestones/archive/M67-narration-discipline.md |
 | M66 | cairn-init migration gates show the proposal — D-037 wiring extension | done | — | high | milestones/archive/M66-init-gate-preview.md |
-| M65 | Gate-time conclusion preview — acceptance chips show what's accepted | done | — | high | milestones/archive/M65-gate-conclusion-preview.md |
 
 ## Candidates
 
