@@ -838,3 +838,34 @@ in view; the dry-run path's existing "present them in chat" bar now binds
 the real path's gates too. Supersedes D-037's wiring scope only — its rule
 form and verbatim bar stand. Delivered by M66. If a produced-content chip
 surfaces in a still-unwired skill, extend by superseding this entry.
+
+### D-039 (2026-07-16): Narration discipline — outcomes and signposts, never a deliberation readout; central rule only
+
+**Context:** Observed live in the hitop repo (2026-07-16): a `/cairn-init`
++ `/design-interview` session narrated its reasoning in italic running
+commentary between tool calls. No skill text invites this; the only
+adjacent rule, "Deltas, not dumps," governs recaps between gates and says
+nothing about the space between tool calls. The M64–M66 verbatim-show
+mandates (D-036/D-037/D-038) push sessions toward "show more," and without
+a counterweight the showing spills from artifact text into deliberation.
+Three choices at the M67 plan gate (2026-07-16).
+**Decision:** (1) **Bar:** interstitial chat carries findings, decisions,
+and the mandated previews; a one-line signpost before a long step is fine;
+a compact summary where a question needs context is fine; a running
+readout of reasoning is never emitted. Rejected strict outcome-only (long
+silent stretches read as stalled) and banning only the italic format (the
+same readout in plain text would comply). (2) **Wiring:** central rule
+only, in the rulebook's Output & interaction discipline adjacent to
+"Deltas, not dumps" — narration discipline is continuous conduct with no
+step to anchor a per-skill directive to, unlike the preview rules (commit
+steps, gates). Rejected wiring init/design-interview (no skill text
+invited the narration; the conduct is orchestrator-generic) — a deliberate
+deviation from the D-036/D-037 per-skill pattern, which exists for
+conduct-at-specific-steps. (3) **Carve-outs:** the rule names the
+Durable-record preview and Acceptance chips rules as mandated substance it
+never licenses compressing; no design-interview carve-out (its grounding
+context above question rounds is already mandated by the chip rules).
+**Consequences:** Sessions stop reading as a reasoning transcript while
+gates keep their verbatim substance. Delivered by M67. If central-only
+drifts (narration returns despite the rule), per-skill wiring is the entry
+to supersede.
