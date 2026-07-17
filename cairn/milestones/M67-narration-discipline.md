@@ -7,7 +7,7 @@
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** m67-narration-discipline   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m67-narration-discipline · https://github.com/jmgirard/cairn/pull/65   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -34,7 +34,7 @@ cairn governs what the orchestrator writes, not what the client renders).
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: The "Output & interaction discipline" section of
+- [x] AC1: The "Output & interaction discipline" section of
       `skills/shared/tracking-rules.md` contains a rule named
       **Narrate outcomes, not deliberation** (name on one physical line —
       M59/M64 reflow lesson) stating: interstitial chat carries findings,
@@ -43,11 +43,11 @@ cairn governs what the orchestrator writes, not what the client renders).
       fine; a running readout of reasoning is not — and naming the
       Durable-record preview and Acceptance chips rules as mandated
       substance this rule never licenses compressing.
-- [ ] AC2: A prose-guard (`skills/tests/test_narration_discipline.py`)
+- [x] AC2: A prose-guard (`skills/tests/test_narration_discipline.py`)
       locks the rule's name and its load-bearing phrases, and is registered
       in the mutation harness — blanking the rule block makes the guard
       fail.
-- [ ] AC3: All three verify suites green from the repo root
+- [x] AC3: All three verify suites green from the repo root
       (`python3 -m unittest discover -s skills/tests | scripts/tests |
       hooks/tests`), exit codes checked explicitly (M56/M65: never
       tail-piped).
@@ -92,3 +92,29 @@ cairn governs what the orchestrator writes, not what the client renders).
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55). -->
+
+2026-07-16 evidence (PR #65):
+
+- AC1: `grep -in "Narrate outcomes, not deliberation" skills/shared/tracking-rules.md`
+  → line 363, name on one physical line; rule states the bar (readout of
+  reasoning, italicized play-by-play), both allowances (signpost;
+  summary-for-questions, D-039), and the Durable-record/Acceptance-chips
+  carve-out (lines 363–370). PASS.
+- AC2: `test_narration_discipline.py` runs 3/3 OK; mutation harness green
+  with the 2 new `Mutation(...)` entries ("never a running readout of
+  reasoning", "This never licenses compressing mandated substance") —
+  blanking each makes the guard fail (TestRegisteredGuardsFailWhenBlanked,
+  part of the 214-test skills suite, exit 0 via pipefail). PASS.
+- AC3: all three suites green from repo root, exit codes read via
+  zsh `pipestatus[1]` (never tail's): skills 0, scripts 0, hooks 0. PASS.
+- Consistency gate: `cairn_validate` exit 0 (15 PASS, 2 OK advisories);
+  no principle changed (GP1 worked-under, not amended) → `cairn_impact`
+  skipped; generic profile → no toolchain checks.
+- Fan-out: [O] diff-bug 1 finding; [S] blame-history no findings (carve-out
+  preserves M64–M66 mandates, purely additive); [S] prior-PR no evidence
+  (zero review comments across candidate PRs — expected). Scored findings
+  <80 (logged, not actioned): 1 — F1/78: mutation block at
+  test_mutation_harness.py:205 omits its trailing colon, deviating from the
+  M65 include-trailing-punctuation guidance T2 itself cites; registration
+  is sound today (blanking fails the guard), risk is a low-probability
+  future locator staleness.
