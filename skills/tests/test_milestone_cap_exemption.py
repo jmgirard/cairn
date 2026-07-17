@@ -37,6 +37,17 @@ class TestMilestoneCapExemption(unittest.TestCase):
     def test_weight_caps_states_the_plan_owned_body_cap(self):
         self.assertIn("plan-owned body < 150 lines", self.rules)
 
+    def test_weight_caps_states_single_pass_compression(self):
+        # M69: over-cap trimming is one targeted pass driven by the breakdown,
+        # never a nibble-and-recount loop — the discipline that keeps a session
+        # from slowing to a crawl at the cap.
+        self.assertIn("never a nibble-and-recount loop", self.rules)
+
+    def test_weight_caps_states_cross_reference_not_restate(self):
+        # M69: the classic overrun is a milestone restating a durable record's
+        # substance; the remedy is to cross-reference it, not retype it.
+        self.assertIn("cross-reference a durable record", self.rules)
+
     def test_stated_cap_matches_enforced_cap(self):
         # The rulebook's human-readable cap and the scripts' machine-enforced cap
         # are two encodings of one number; drift between them is the defect.

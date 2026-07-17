@@ -82,7 +82,7 @@ into one compression pass.
       on an over-cap live milestone append a heaviest-first section breakdown +
       `+N over` to the emitted line(s). Tests assert the breakdown appears
       over-cap and is absent under-cap, reusing the existing over-cap fixtures.
-- [ ] T3 — Add the single-pass compression remedy to the tracking-rules
+- [x] T3 — Add the single-pass compression remedy to the tracking-rules
       "Weight caps" "Remedies when a cap is hit" bullet; add a
       mutation-registered guard (likely
       `skills/tests/test_milestone_cap_exemption.py`, which already reads the
@@ -95,6 +95,7 @@ into one compression pass.
 - 2026-07-17: created by /milestone-plan (+candidate: budget-first drafting, to reassess).
 - 2026-07-17: T1 — milestone_section_line_counts helper + 7 tests; preamble+sections==body invariant holds; both suites green.
 - 2026-07-17: T2 — check_caps emits heaviest-first breakdown + `shed ≥N` on over-cap milestones; 2 tests (multi-section ordering, under-cap absence); scripts 96 green.
+- 2026-07-17: T3 — single-pass compression remedy in tracking-rules "Weight caps" (breakdown-driven, never nibble, cross-reference not restate); 2 guard asserts + 2 mutation-registry entries; skills 221 green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
