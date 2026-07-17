@@ -869,3 +869,34 @@ context above question rounds is already mandated by the chip rules).
 gates keep their verbatim substance. Delivered by M67. If central-only
 drifts (narration returns despite the rule), per-skill wiring is the entry
 to supersede.
+
+### D-040 (2026-07-16): `changelog` is a required seventh profile slot; "none" legal; all three consumers read the declaration
+
+**Context:** The changelog file was a toolchain fact with no slot: `/hotfix`
+step 5 hardcoded "`NEWS.md` for r-package, else the repo's `CHANGELOG.md` /
+convention," and each richer profile hardcoded its file name in both its
+release-walk and consistency-gate bullets. RR01 rec 11/Q2 banked the slot for
+"when the next non-R/non-Python profile is authored." The v1.0 release will
+freeze the adopter-facing profile schema, so the M68 plan gate (2026-07-16)
+promoted the row early — a schema addition costs one audit-fix line per
+adopting repo today versus a repair pass across every adopter after v1.0.
+**Decision:** (1) `changelog` is a **required** seventh slot —
+`cairn_validate` FAILs a missing/empty slot. Uniform schema over an optional
+two-shape form: the profile doctrine already requires a slot with nothing to
+declare to say so explicitly. Accepted migration cost: an existing adopting
+repo's PROFILE.md gets one FAIL, fixed by an ordinary one-line `/milestone`
+audit commit — no cairn-init repair machinery. (2) **"none" is a legal
+value**: `/hotfix` skips the changelog-entry step; the release-walk skips
+consolidation and derives the version bump from commit history. Rejected
+forbidding it (forces ceremony on internal-only repos). (3) **All three
+consumers read the declaration** — `/hotfix` step 5 (today's inference
+demoted to the absent-PROFILE fallback), and the richer profiles'
+release-walk + consistency-gate bullets point at the declared file instead
+of restating it. Rejected hotfix-only minimal wiring (leaves the same fact
+in three places per profile — the drift the slot exists to end).
+**Consequences:** The changelog becomes a declared toolchain fact read
+everywhere it is needed; profiles grow ~5 lines each, staying under D-034's
+<120. Supersedes the candidate row's own wait-for-next-profile trigger
+(early promotion, user-gated at the M68 plan chip). Delivered by M68. If a
+repo ever needs a multi-file or per-package changelog declaration, this is
+the entry to supersede.
