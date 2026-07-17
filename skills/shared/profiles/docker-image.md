@@ -34,7 +34,8 @@ cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`):
 - The base image is pinned (a digest `@sha256:…` or explicit version tag, never
   a bare `latest`) so the build is reproducible.
 - No secrets are baked into layers (no credentials/tokens in `ENV`/`COPY`);
-  build secrets use `--secret`/build args, not committed files.
+  build-time secrets use BuildKit `--secret` mounts (which never persist in the
+  image), never `--build-arg` (visible in `docker history`) or committed files.
 - A `.dockerignore` is present and excludes build-context noise (`.git`, local
   caches) — stray context is drift.
 - The declared changelog (`## changelog` slot) has an entry for this milestone's
