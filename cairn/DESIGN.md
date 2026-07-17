@@ -4,9 +4,9 @@
 
 A Claude Code plugin providing one canonical milestone-driven development
 workflow and markdown tracking system. The core is language-agnostic; each
-adopting repo declares a **toolchain profile** (`cairn/PROFILE.md`, six slots:
+adopting repo declares a **toolchain profile** (`cairn/PROFILE.md`, seven slots:
 verify, consistency-gate, test-doctrine, release-walk, init-detection,
-greenfield-openers) that supplies the language/toolchain-specific commands the
+greenfield-openers, changelog) that supplies the language/toolchain-specific commands the
 operational skills read, instead of the core hardcoding one language (M45
 spine, M46 rewire, M47 release; D-024/D-025 keep the oracle doctrine universal,
 orthogonal to the profile). Three profiles ship — `r-package` (devtools/CRAN),

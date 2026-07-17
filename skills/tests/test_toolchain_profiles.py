@@ -1,6 +1,6 @@
 """Regression guards for the toolchain-profile mechanism (M45 spine, M46 rewire).
 
-Locks: the six slots present + non-empty in both shipped profiles; the r-package
+Locks: the seven slots present + non-empty in both shipped profiles; the r-package
 profile as the single source of truth for the relocated R command strings
 (M46 flipped this from the skills); the generic profile carrying no R toolchain
 tokens; cairn-init's profile selection + repair backfill; the M46 rewire — the
@@ -64,6 +64,7 @@ SLOTS = (
     "release-walk",
     "init-detection",
     "greenfield-openers",
+    "changelog",
 )
 
 # R command strings that appear in the live skills today; the r-package profile
@@ -102,7 +103,7 @@ PYTHON_TOKENS_ABSENT_FROM_GENERIC = ("ruff", "mypy", "twine", "pyproject")
 
 
 class TestShippedProfiles(unittest.TestCase):
-    def test_all_profiles_define_all_six_slots(self):
+    def test_all_profiles_define_all_seven_slots(self):
         for name in ("r-package", "python", "generic"):
             text = read("shared", "profiles", f"{name}.md").lower()
             for slot in SLOTS:
@@ -128,14 +129,14 @@ class TestPythonProfile(unittest.TestCase):
     generic profile stays free of the python toolchain, and the release-walk
     hands off `twine upload` to the user and self-submits nothing."""
 
-    def test_python_profile_defines_exactly_the_six_slots(self):
+    def test_python_profile_defines_exactly_the_seven_slots(self):
         """AC1: same schema cairn_validate enforces on a repo PROFILE.md — the
-        six known slots and no unrecognized `## ` heading."""
+        seven known slots and no unrecognized `## ` heading."""
         text = read("shared", "profiles", "python.md")
         headings = [ln[3:].strip().lower() for ln in text.splitlines()
                     if ln.startswith("## ")]
         self.assertEqual(sorted(headings), sorted(SLOTS),
-                         f"python profile slots {headings} != the six known slots")
+                         f"python profile slots {headings} != the seven known slots")
 
     def test_python_profile_holds_its_toolchain_tokens(self):
         """AC2: one blessed pick per category, verifiable by token."""
@@ -467,6 +468,45 @@ class TestReleaseSkillReadsProfile(unittest.TestCase):
         self.assertIn("commit", body, "generic release-walk should be a followable walk (commit step)")
         for tok in ("cran", "devtools"):
             self.assertNotIn(tok, body, f"generic release-walk should carry no {tok}")
+
+
+class TestChangelogSlot(unittest.TestCase):
+    """M68 (D-040): changelog is the required seventh slot — each shipped
+    profile declares its file (or the generic declare-or-none instructions),
+    the consistency-gate bullets read the declaration instead of restating a
+    file name, the rulebook states the "none" semantics, and both consumers
+    (/hotfix, /cairn-release) read the slot."""
+
+    def test_each_profile_declares_its_changelog(self):
+        r = section_body(read("shared", "profiles", "r-package.md"), "changelog")
+        self.assertIn("NEWS.md", r, "r-package changelog slot should declare NEWS.md")
+        py = section_body(read("shared", "profiles", "python.md"), "changelog")
+        self.assertIn("CHANGELOG.md", py, "python changelog slot should declare CHANGELOG.md")
+        g = section_body(read("shared", "profiles", "generic.md"), "changelog")
+        self.assertIn("declare it here", g, "generic changelog slot should instruct declaration")
+        self.assertIn('"none"', g, "generic changelog slot should permit a none declaration")
+
+    def test_consistency_gates_read_the_declared_changelog(self):
+        for name in ("r-package", "python"):
+            body = section_body(read("shared", "profiles", f"{name}.md"), "consistency-gate")
+            self.assertIn("The declared changelog (`## changelog` slot)", body,
+                          f"{name} consistency-gate should read the declaration")
+
+    def test_rulebook_states_the_none_semantics(self):
+        rules = read("shared", "tracking-rules.md")
+        self.assertIn("Seven slots:", rules)
+        self.assertIn('"none" is legal — hotfix skips the changelog entry', rules)
+        self.assertIn("derives the version bump from git history", rules)
+
+    def test_hotfix_reads_the_changelog_slot(self):
+        skill = read("hotfix", "SKILL.md")
+        self.assertIn("the file the active profile's `changelog` slot", skill)
+        self.assertIn('a slot value of "none" → skip the entry', skill)
+
+    def test_release_reads_the_declared_changelog(self):
+        skill = read("cairn-release", "SKILL.md")
+        self.assertIn("the file the active profile's `changelog` slot names", skill)
+        self.assertIn('a "none" declaration skips', skill)
 
 
 # M50: the greenfield-openers slot is filled with concrete openers per profile.

@@ -37,14 +37,16 @@ The `release-walk` slot is authoritative — read it, never recall a hardcoded
 walk. The steps below are the universal spine; the slot fills in the
 toolchain-specific work at step 3.
 
-1. **Version decision** (question gate, one round): review the changelog/NEWS
-   since the last release and recommend patch / minor / major with rationale
-   (breaking changes force minor/major; pre-1.0 conventions per DESIGN.md).
-   Confirm the target version with the user.
+1. **Version decision** (question gate, one round): review the declared
+   changelog — the file the active profile's `changelog` slot names ("none" →
+   review git history since the last tag instead) — and recommend patch /
+   minor / major with rationale (breaking changes force minor/major; pre-1.0
+   conventions per DESIGN.md). Confirm the target version with the user.
 
-2. **Changelog/NEWS consolidation:** retitle the development heading to the
-   release version; group entries (breaking changes first, then new features,
-   fixes); prune noise; no milestone numbers or internal jargon.
+2. **Changelog consolidation** (the declared file; a "none" declaration skips
+   this step): retitle the development heading to the release version; group
+   entries (breaking changes first, then new features, fixes); prune noise;
+   no milestone numbers or internal jargon.
 
 3. **Follow the active profile's `release-walk` slot.** Run each step the slot
    names, in order, recording results as you go:

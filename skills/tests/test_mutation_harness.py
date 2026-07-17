@@ -296,6 +296,44 @@ REGISTRY = [
         target="skills/shared/profiles/generic.md",
         block="commit the release prep to the default",
     ),
+    # M68 (D-040): the changelog seventh slot — one entry per positive assert
+    # across the six surfaces the milestone adds (M53 discipline).
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestChangelogSlot.test_each_profile_declares_its_changelog",
+        target="skills/shared/profiles/r-package.md",
+        block="**`NEWS.md`** (the R-package convention)",
+    ),
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestChangelogSlot.test_each_profile_declares_its_changelog",
+        target="skills/shared/profiles/python.md",
+        block="**`CHANGELOG.md`**",
+    ),
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestChangelogSlot.test_each_profile_declares_its_changelog",
+        target="skills/shared/profiles/generic.md",
+        block="**declare it here**",
+    ),
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestChangelogSlot.test_rulebook_states_the_none_semantics",
+        target=RULES,
+        block='"none" is legal — hotfix skips the changelog entry',
+    ),
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestChangelogSlot.test_hotfix_reads_the_changelog_slot",
+        target="skills/hotfix/SKILL.md",
+        block="the file the active profile's `changelog` slot",
+    ),
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestChangelogSlot.test_release_reads_the_declared_changelog",
+        target="skills/cairn-release/SKILL.md",
+        block="the file the active profile's `changelog` slot names",
+    ),
     # M58 (RR01 rec 4): universal change-governance stated once in core; one
     # Mutation entry per positive core assert (M53 discipline).
     Mutation(

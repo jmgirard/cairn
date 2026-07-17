@@ -381,6 +381,7 @@ _REQUIRED_SLOTS = (
     "release-walk",
     "init-detection",
     "greenfield-openers",
+    "changelog",
 )
 
 
@@ -409,7 +410,7 @@ def _profile_slots(text):
 
 
 def check_profile(root):
-    """cairn/PROFILE.md, when present, defines exactly the six known toolchain
+    """cairn/PROFILE.md, when present, defines exactly the seven known toolchain
     slots, each non-empty. No-op when absent — a repo that adopted cairn before
     profiles keeps working, and the skills infer the profile from DESCRIPTION at
     point of use (tracking-rules "Toolchain profiles"). Validate-if-present,

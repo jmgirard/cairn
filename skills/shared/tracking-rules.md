@@ -15,7 +15,7 @@ owner; any other file gets at most a one-line cross-reference.
 |---|---|---|
 | `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `cairn/` | Status, TODOs, architecture rationale, history — anything time-varying rots here |
 | `cairn/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
-| `cairn/PROFILE.md` | The repo's toolchain profile — the six language/toolchain slots the operational skills read (see "Toolchain profiles") | Domain doctrine (oracles are universal), status, tasks, decisions |
+| `cairn/PROFILE.md` | The repo's toolchain profile — the seven language/toolchain slots the operational skills read (see "Toolchain profiles") | Domain doctrine (oracles are universal), status, tasks, decisions |
 | `cairn/ROADMAP.md` | The milestone index — **the only authority on status** | Task details, acceptance criteria, narrative |
 | `cairn/milestones/M<NN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately, before other work) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
@@ -479,7 +479,7 @@ cairn skill is active.
 Language/toolchain specifics live in a **profile**, not in the core rules. A
 repo declares its profile in `cairn/PROFILE.md` (instantiated by `cairn-init`
 from a shipped reference under `skills/shared/profiles/`); the operational
-skills read its slots instead of hardcoding one language's commands. Six slots:
+skills read its slots instead of hardcoding one language's commands. Seven slots:
 
 - **verify** — the per-task test/check command(s) `/milestone-implement` and `/hotfix` run.
 - **consistency-gate** — toolchain checks `/milestone-review` runs *in addition to* the universal cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`).
@@ -487,6 +487,7 @@ skills read its slots instead of hardcoding one language's commands. Six slots:
 - **release-walk** — the release procedure `/cairn-release` follows.
 - **init-detection** — how `cairn-init` recognizes the toolchain.
 - **greenfield-openers** — opener questions for a new/empty repo of this type.
+- **changelog** — the repo's changelog file (or "none"), read by `/hotfix`, `/cairn-release`'s release-walk, and the consistency-gate; "none" is legal — hotfix skips the changelog entry, and the release-walk skips consolidation and derives the version bump from git history.
 
 The **domain verification doctrine (oracles) is universal, not a profile slot**:
 it is orthogonal to the language profile (D-024/D-025), stated once in

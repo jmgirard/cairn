@@ -6,7 +6,7 @@
      doctrine is UNIVERSAL and deliberately NOT a slot here — it is the
      orthogonal domain axis (D-024/D-025), stated once in
      skills/shared/validation-doctrine.md (referenced from tracking-rules).
-     Every profile defines all six `## <slot>` sections below; a slot with no
+     Every profile defines all seven `## <slot>` sections below; a slot with no
      toolchain-specific content says so explicitly rather than being omitted
      (cairn_validate FAILs on a missing or empty slot). -->
 
@@ -36,9 +36,10 @@ contract-not-implementation, and the oracle doctrine for any numeric result.
 ## release-walk
 The release procedure `/cairn-release` follows. Generic default: a minimal
 language-agnostic walk — no package-registry submission; the tag is the release:
-- Decide the version bump (patch/minor/major) from the changelog/NEWS.
-- Consolidate the changelog/NEWS: retitle the dev heading to the version,
-  group entries, prune noise.
+- Decide the version bump (patch/minor/major) from the declared changelog
+  (`## changelog` slot; "none" → derive the bump from git history).
+- Consolidate the declared changelog: retitle the dev heading to the version,
+  group entries, prune noise ("none" → skip this step).
 - Bump the repo's version marker and commit the release prep to the default
   branch (docs/metadata only).
 - Tag `v<version>` and push the tag at the user's approval — no registry step.
@@ -53,3 +54,10 @@ default: **no language-specific openers** — the universal opener layer
 (distribution ambition, rendered here as a **tagged public release** vs.
 internal-only choice, and numeric-work-needs-oracle-verification) is the whole
 greenfield flow for a generic repo; a richer profile adds its own on top.
+
+## changelog
+The repo's changelog file, read by `/hotfix`, the release-walk, and the
+consistency-gate — **declare it here** (e.g. `CHANGELOG.md`), or "none" if the
+repo keeps no changelog: `/hotfix` then skips the changelog entry and the
+release-walk skips consolidation, deriving the version bump from git
+history.

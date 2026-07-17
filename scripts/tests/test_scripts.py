@@ -430,7 +430,8 @@ VALID_PROFILE = (
     "## test-doctrine\nnone beyond universal\n\n"
     "## release-walk\nbump + tag\n\n"
     "## init-detection\nfallback\n\n"
-    "## greenfield-openers\nnone\n"
+    "## greenfield-openers\nnone\n\n"
+    "## changelog\nnone\n"
 )
 
 
@@ -466,6 +467,30 @@ class TestValidateProfile(ScriptCase):
         proc = run("cairn_validate.py", self._profile(text))
         self.assertEqual(proc.returncode, 1, proc.stdout)
         self.assertIn("slot '## verify' is empty", proc.stdout)
+
+    def test_changelog_slot_missing_fails(self):
+        # M68: changelog is the required seventh slot (D-040) — a PROFILE.md
+        # without it FAILs like any other missing slot.
+        text = VALID_PROFILE.replace("\n## changelog\nnone\n", "")
+        proc = run("cairn_validate.py", self._profile(text))
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("missing slot '## changelog'", proc.stdout)
+
+    def test_changelog_slot_empty_fails(self):
+        # M68 review F1 (scored 80): AC1's "empty" leg gets its own changelog
+        # fixture rather than riding the slot-generic empty check.
+        text = VALID_PROFILE.replace("## changelog\nnone\n", "## changelog\n")
+        proc = run("cairn_validate.py", self._profile(text))
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("slot '## changelog' is empty", proc.stdout)
+
+    def test_changelog_declares_file_passes(self):
+        # M68: a file-name declaration is as valid as the "none" the base
+        # fixture pins (both are non-empty bodies).
+        text = VALID_PROFILE.replace("## changelog\nnone\n", "## changelog\nCHANGELOG.md\n")
+        proc = run("cairn_validate.py", self._profile(text))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  profile valid", proc.stdout)
 
     def test_unrecognized_slot_fails(self):
         proc = run("cairn_validate.py", self._profile(VALID_PROFILE + "\n## verfiy\ntypo\n"))

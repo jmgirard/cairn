@@ -5,7 +5,7 @@
      `cairn/PROFILE.md`. The oracle / Validation doctrine is UNIVERSAL and
      deliberately NOT a slot here — it is the orthogonal domain axis
      (D-024/D-025), stated once in skills/shared/validation-doctrine.md
-     (referenced from tracking-rules). All six `## <slot>` sections
+     (referenced from tracking-rules). All seven `## <slot>` sections
      are defined; cairn_validate FAILs on a missing or empty slot. -->
 
 The R-package toolchain: devtools/roxygen/testthat/pkgdown, CRAN release.
@@ -27,7 +27,7 @@ cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`):
   check catches drift).
 - README.md is knitted from README.Rmd; present and out of sync with README.md → `devtools::build_readme()`, commit.
 - pkgdown site present → `pkgdown::check_pkgdown()` passes (catches exports missing from `_pkgdown.yml`).
-- NEWS.md has an entry for this milestone's user-visible changes (no milestone numbers in user-facing text).
+- The declared changelog (`## changelog` slot) has an entry for this milestone's user-visible changes (no milestone numbers in user-facing text).
 - New top-level files have `.Rbuildignore` entries (check `check()` NOTEs).
 - Full check at review: `Rscript -e 'devtools::check()'` clean (0 errors, 0 warnings; justify NOTEs).
 
@@ -65,8 +65,8 @@ rules in tracking-rules:
 
 ## release-walk
 Followed by `/cairn-release` — a CRAN release walk (never self-submits):
-- Version decision (patch/minor/major) from NEWS.md; pre-1.0 conventions per DESIGN.md.
-- NEWS consolidation: retitle the dev heading to the version; group entries; prune noise.
+- Version decision (patch/minor/major) from the declared changelog; pre-1.0 conventions per DESIGN.md.
+- Changelog consolidation (the declared file): retitle the dev heading to the version; group entries; prune noise.
 - Full local verification: `devtools::document()` (no diff), `devtools::test()`
   and `devtools::check()` clean, `devtools::build_readme()`, `pkgdown::check_pkgdown()`,
   `urlchecker::url_check()`.
@@ -95,3 +95,7 @@ layer, so they are not repeated here.
     additive, so the reversible default is pure R.
   - Lands in: DESIGN Conventions (a "compiled code via <pkg>" line) and informs
     the `verify` / `test-doctrine` check surface.
+
+## changelog
+The repo's changelog file, read by `/hotfix`, the release-walk, and the
+consistency-gate: **`NEWS.md`** (the R-package convention).
