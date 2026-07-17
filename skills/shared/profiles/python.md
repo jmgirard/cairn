@@ -5,7 +5,7 @@
      `cairn/PROFILE.md`. The oracle / Validation doctrine is UNIVERSAL and
      deliberately NOT a slot here — it is the orthogonal domain axis
      (D-024/D-025), stated once in skills/shared/validation-doctrine.md
-     (referenced from tracking-rules). All six `## <slot>` sections
+     (referenced from tracking-rules). All seven `## <slot>` sections
      are defined; cairn_validate FAILs on a missing or empty slot. -->
 
 The Python-package toolchain: PEP 621 `pyproject.toml`, pytest, ruff, mypy,
@@ -31,8 +31,8 @@ cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`):
   render valid for PyPI).
 - Generated/vendored files are never hand-edited; lockfiles regenerate from
   their tool (`uv lock`, `pip-compile`) — a stray diff is drift.
-- CHANGELOG has an entry for this milestone's user-visible changes (no
-  milestone numbers in user-facing text).
+- The declared changelog (`## changelog` slot) has an entry for this
+  milestone's user-visible changes (no milestone numbers in user-facing text).
 
 ## test-doctrine
 Python-mechanical test expectations layered on the universal "What gets a test"
@@ -62,10 +62,10 @@ rules in tracking-rules:
 
 ## release-walk
 Followed by `/cairn-release` — a PyPI release walk (never self-submits):
-- Version decision (patch/minor/major) from the CHANGELOG; pre-1.0 conventions
-  per DESIGN.md.
-- CHANGELOG consolidation: retitle the dev heading to the version; group
-  entries; prune noise.
+- Version decision (patch/minor/major) from the declared changelog; pre-1.0
+  conventions per DESIGN.md.
+- Changelog consolidation (the declared file): retitle the dev heading to the
+  version; group entries; prune noise.
 - Full local verification: `pytest`, `ruff check`, `ruff format --check`, and
   `mypy` clean; `python -m build`; `twine check dist/*` passes.
 - Bump the version (`project.version` in `pyproject.toml`, or the `__version__`
@@ -102,3 +102,7 @@ so they are not repeated here.
     is the modern default; flat is simpler for a tiny single-module repo, but
     converting flat → `src/` later is a structural move.
   - Lands in: DESIGN Conventions (the package layout convention).
+
+## changelog
+The repo's changelog file, read by `/hotfix`, the release-walk, and the
+consistency-gate: **`CHANGELOG.md`**.

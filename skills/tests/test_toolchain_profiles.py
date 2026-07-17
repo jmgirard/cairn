@@ -1,6 +1,6 @@
 """Regression guards for the toolchain-profile mechanism (M45 spine, M46 rewire).
 
-Locks: the six slots present + non-empty in both shipped profiles; the r-package
+Locks: the seven slots present + non-empty in both shipped profiles; the r-package
 profile as the single source of truth for the relocated R command strings
 (M46 flipped this from the skills); the generic profile carrying no R toolchain
 tokens; cairn-init's profile selection + repair backfill; the M46 rewire — the
@@ -64,6 +64,7 @@ SLOTS = (
     "release-walk",
     "init-detection",
     "greenfield-openers",
+    "changelog",
 )
 
 # R command strings that appear in the live skills today; the r-package profile
@@ -102,7 +103,7 @@ PYTHON_TOKENS_ABSENT_FROM_GENERIC = ("ruff", "mypy", "twine", "pyproject")
 
 
 class TestShippedProfiles(unittest.TestCase):
-    def test_all_profiles_define_all_six_slots(self):
+    def test_all_profiles_define_all_seven_slots(self):
         for name in ("r-package", "python", "generic"):
             text = read("shared", "profiles", f"{name}.md").lower()
             for slot in SLOTS:
@@ -128,14 +129,14 @@ class TestPythonProfile(unittest.TestCase):
     generic profile stays free of the python toolchain, and the release-walk
     hands off `twine upload` to the user and self-submits nothing."""
 
-    def test_python_profile_defines_exactly_the_six_slots(self):
+    def test_python_profile_defines_exactly_the_seven_slots(self):
         """AC1: same schema cairn_validate enforces on a repo PROFILE.md — the
-        six known slots and no unrecognized `## ` heading."""
+        seven known slots and no unrecognized `## ` heading."""
         text = read("shared", "profiles", "python.md")
         headings = [ln[3:].strip().lower() for ln in text.splitlines()
                     if ln.startswith("## ")]
         self.assertEqual(sorted(headings), sorted(SLOTS),
-                         f"python profile slots {headings} != the six known slots")
+                         f"python profile slots {headings} != the seven known slots")
 
     def test_python_profile_holds_its_toolchain_tokens(self):
         """AC2: one blessed pick per category, verifiable by token."""

@@ -7,7 +7,7 @@
      Validation doctrine is UNIVERSAL and deliberately NOT a slot — it is the
      orthogonal domain axis (D-024/D-025), stated once in the plugin's
      skills/shared/validation-doctrine.md (referenced from tracking-rules). All
-     six `## <slot>` sections are defined; cairn_validate FAILs on a missing,
+     seven `## <slot>` sections are defined; cairn_validate FAILs on a missing,
      empty, or unrecognized slot. -->
 
 The language-agnostic default: cairn's core with no toolchain-specific gates.
@@ -42,8 +42,9 @@ doctrine applies here. Nothing beyond the universal rules otherwise.
 ## release-walk
 The release procedure `/cairn-release` follows. Generic default: a minimal
 language-agnostic walk — no package-registry submission; the tag is the release:
-- Decide the version bump (patch/minor/major) from the changelog/NEWS.
-- Consolidate the changelog/NEWS: retitle the dev heading to the version,
+- Decide the version bump (patch/minor/major) from the declared changelog
+  (`## changelog` slot).
+- Consolidate the declared changelog: retitle the dev heading to the version,
   group entries, prune noise.
 - Bump the repo's version marker and commit the release prep to the default
   branch (docs/metadata only).
@@ -57,3 +58,6 @@ How `cairn-init` recognizes this toolchain. Generic is the **fallback**: no
 Opener questions `cairn-init` asks in a new/empty repo of this type. Generic
 default: **none** — the greenfield opener flow is a downstream candidate; this
 slot is a declared placeholder until it ships.
+
+## changelog
+`CHANGELOG.md` — read by `/hotfix`, the release-walk, and the consistency-gate.

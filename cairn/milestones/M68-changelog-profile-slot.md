@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M68: Changelog profile slot — required seventh slot, "none" legal
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m68-changelog-profile-slot   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -78,14 +78,14 @@ in each adopting repo at its next `/milestone`.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: `cairn_validate.py` — add `changelog` to `_REQUIRED_SLOTS`; update
+- [x] T1: `cairn_validate.py` — add `changelog` to `_REQUIRED_SLOTS`; update
       the docstring six→seven; extend the shared `Tree.build()` PROFILE.md
       fixture (M24 lesson) and add present/missing/empty fixture tests in
       `scripts/tests/`.
 - [ ] T2: tracking-rules "Toolchain profiles" — "Six slots:" → seven, add the
       changelog slot bullet with the "none" semantics kept on one physical
       line (M64 reflow lesson); `DESIGN.md` Purpose six→seven.
-- [ ] T3: the three reference profiles gain `## changelog` (r-package:
+- [x] T3: the three reference profiles gain `## changelog` (r-package:
       `NEWS.md`; python: `CHANGELOG.md`; generic: declare-here-or-"none");
       repoint their release-walk + consistency-gate changelog bullets at the
       declared file; add the slot to this repo's `cairn/PROFILE.md`
@@ -104,6 +104,8 @@ in each adopting repo at its next `/milestone`.
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-16: created by /milestone-plan — promoted early from the RR01 rec 11/Q2 candidate row (pre-v1.0 schema argument), user-approved at the scope chip; shape decisions in D-040.
+- 2026-07-16: minor amendment — T1+T3 folded into one checkpoint with T5's SLOTS-tuple edit (schema/profiles/guard-tuple are atomically coupled: each alone reds a suite — M46 fold-don't-defer).
+- 2026-07-16: T1+T3 done; mutation harness caught "commit history" wording giving the generic release-walk guard false coverage — reworded to "git history"; all suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
