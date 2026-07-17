@@ -101,10 +101,27 @@ PYTHON_TOOLCHAIN_TOKENS = (
 # verify command — the negative assertion keys on the python-specific picks.
 PYTHON_TOKENS_ABSENT_FROM_GENERIC = ("ruff", "mypy", "twine", "pyproject")
 
+# Docker-image toolchain tokens the docker-image profile must carry (M70) — one
+# blessed pick per category, verifiable by token.
+DOCKER_TOOLCHAIN_TOKENS = (
+    "Dockerfile",
+    "hadolint",
+    "docker build",
+    "docker buildx",
+    "container-structure-test",
+    "trivy",
+    "docker push",
+    "GHCR",
+    "Docker Hub",
+)
+
+# Docker toolchain tokens that must NOT bleed into the generic profile (M70).
+DOCKER_TOKENS_ABSENT_FROM_GENERIC = ("hadolint", "docker build", "buildx", "dockerfile", "ghcr")
+
 
 class TestShippedProfiles(unittest.TestCase):
     def test_all_profiles_define_all_seven_slots(self):
-        for name in ("r-package", "python", "generic"):
+        for name in ("r-package", "python", "generic", "docker-image"):
             text = read("shared", "profiles", f"{name}.md").lower()
             for slot in SLOTS:
                 self.assertIn(f"## {slot}", text, f"{name} missing slot {slot}")
@@ -156,6 +173,64 @@ class TestPythonProfile(unittest.TestCase):
     def test_generic_profile_has_no_python_toolchain(self):
         text = read("shared", "profiles", "generic.md").lower()
         for tok in PYTHON_TOKENS_ABSENT_FROM_GENERIC:
+            self.assertNotIn(tok, text, f"generic profile should carry no {tok}")
+
+
+class TestDockerImageProfile(unittest.TestCase):
+    """M70: the docker-image profile is the fourth shipped profile, for repos
+    whose sole deliverable is a container image — seven slots at parity, a
+    lint+build verify gate with a recommended-but-optional scan, a
+    container-registry release-walk that self-pushes nothing, and no docker
+    toolchain bleeding into the generic profile. The verify-gate and
+    self-pushes-nothing anchors are absent from every pre-M70 profile, so each
+    doubles as the M39/M40 deletion sanity-check."""
+
+    def test_docker_profile_defines_exactly_the_seven_slots(self):
+        """AC1: same schema cairn_validate enforces on a repo PROFILE.md — the
+        seven known slots and no unrecognized `## ` heading."""
+        text = read("shared", "profiles", "docker-image.md")
+        headings = [ln[3:].strip().lower() for ln in text.splitlines()
+                    if ln.startswith("## ")]
+        self.assertEqual(sorted(headings), sorted(SLOTS),
+                         f"docker-image profile slots {headings} != the seven known slots")
+
+    def test_docker_profile_holds_its_toolchain_tokens(self):
+        """AC2: one blessed pick per category, verifiable by token."""
+        profile = read("shared", "profiles", "docker-image.md")
+        for tok in DOCKER_TOOLCHAIN_TOKENS:
+            self.assertIn(tok, profile, f"docker-image profile missing toolchain token {tok}")
+
+    def test_docker_verify_gates_lint_and_build_scan_optional(self):
+        """AC2: verify names hadolint + docker build as the hard gate and a
+        vulnerability scan + container-structure-test as recommended-but-optional."""
+        body = section_body(read("shared", "profiles", "docker-image.md"), "verify")
+        self.assertTrue(body, "could not locate the docker-image verify slot")
+        self.assertIn("`hadolint Dockerfile` clean and `docker build` succeeds", body,
+                      "verify should name hadolint + docker build as the hard gate")
+        self.assertIn("recommended-but-optional", body,
+                      "verify should frame the scan as recommended-but-optional")
+        for tok in ("trivy", "container-structure-test"):
+            self.assertIn(tok, body, f"verify should name the optional {tok}")
+
+    def test_docker_release_walk_pushes_to_registry_and_self_pushes_nothing(self):
+        """AC3: the release-walk hands off `docker push` to a container registry
+        and self-pushes nothing (parallel to the CRAN/PyPI handoff)."""
+        body = section_body(read("shared", "profiles", "docker-image.md"), "release-walk")
+        self.assertTrue(body, "could not locate the docker-image release-walk slot")
+        self.assertIn("docker push", body, "release-walk should hand off docker push")
+        for tok in ("GHCR", "Docker Hub"):
+            self.assertIn(tok, body, f"release-walk should name the {tok} registry")
+        self.assertIn("cairn pushes nothing", body,
+                      "release-walk should state cairn pushes nothing")
+
+    def test_docker_changelog_declares_changelog_md(self):
+        body = section_body(read("shared", "profiles", "docker-image.md"), "changelog")
+        self.assertIn("CHANGELOG.md", body,
+                      "docker-image changelog slot should declare CHANGELOG.md")
+
+    def test_generic_profile_has_no_docker_toolchain(self):
+        text = read("shared", "profiles", "generic.md").lower()
+        for tok in DOCKER_TOKENS_ABSENT_FROM_GENERIC:
             self.assertNotIn(tok, text, f"generic profile should carry no {tok}")
 
 

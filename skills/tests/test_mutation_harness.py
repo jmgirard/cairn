@@ -348,6 +348,20 @@ REGISTRY = [
         target="skills/cairn-release/SKILL.md",
         block="the file the active profile's `changelog` slot names",
     ),
+    # M70: the docker-image profile — deletion anchors for its two distinctive
+    # slots (the verify lint+build gate and the self-pushes-nothing release-walk).
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestDockerImageProfile.test_docker_verify_gates_lint_and_build_scan_optional",
+        target="skills/shared/profiles/docker-image.md",
+        block="`hadolint Dockerfile` clean and `docker build` succeeds",
+    ),
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestDockerImageProfile.test_docker_release_walk_pushes_to_registry_and_self_pushes_nothing",
+        target="skills/shared/profiles/docker-image.md",
+        block="cairn pushes nothing",
+    ),
     # M58 (RR01 rec 4): universal change-governance stated once in core; one
     # Mutation entry per positive core assert (M53 discipline).
     Mutation(

@@ -97,7 +97,7 @@ inference, count-claim, greenfield-chip, and shipped-profile-test wiring.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — Author `skills/shared/profiles/docker-image.md` (seven slots, per
+- [x] T1 — Author `skills/shared/profiles/docker-image.md` (seven slots, per
       Scope), and ship its guards in the same commit: extend
       `test_toolchain_profiles.py`'s shipped-profile tuple + the
       `test_shipped_reference_profiles_are_valid` iteration to include
@@ -117,6 +117,7 @@ inference, count-claim, greenfield-chip, and shipped-profile-test wiring.
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-17: created by /milestone-plan.
+- 2026-07-17: T1 — authored docker-image.md (113 lines, <120 cap); extended both shipped-profile enumeration tuples (test_toolchain_profiles + test_scripts); added TestDockerImageProfile + 2 mutation registrations. All three suites green (227/96/55).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
