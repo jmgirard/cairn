@@ -25,7 +25,8 @@ into one compression pass.
   (fence-aware, same plan-owned/`## Review` boundary as
   `milestone_body_line_count`).
 - `check_caps` uses it: for each over-cap live milestone it emits the sections
-  heaviest-first plus the overage (`+N over`), alongside today's total line.
+  heaviest-first plus the lines to shed to pass (`shed ≥N`), alongside today's
+  total line.
 - tracking-rules "Weight caps" remedies gain the single-pass compression
   discipline: read the breakdown, compress the single heaviest plan-owned
   section in one rewrite (never iterative Edit-then-recount), and
@@ -45,7 +46,8 @@ into one compression pass.
 
 - [x] When a live milestone's plan-owned body ≥ 150 lines, `cairn_validate`
       output includes a per-section breakdown — each plan-owned `## ` section
-      with its line count, heaviest-first — plus the overage (`+N over`).
+      with its line count, heaviest-first — plus the lines to shed to pass
+      (`shed ≥N`).
 - [x] The breakdown is fence-aware and uses the same plan-owned/`## Review`
       boundary as `milestone_body_line_count`: a fenced `## Review` in the body
       is not the boundary, and the exempt `## Review` section is excluded from
@@ -80,7 +82,7 @@ into one compression pass.
       no-`## Review`, and Review-excluded cases.
 - [x] T2 — Wire the breakdown into `check_caps` (`scripts/cairn_validate.py:88`):
       on an over-cap live milestone append a heaviest-first section breakdown +
-      `+N over` to the emitted line(s). Tests assert the breakdown appears
+      `shed ≥N` to the emitted line(s). Tests assert the breakdown appears
       over-cap and is absent under-cap, reusing the existing over-cap fixtures.
 - [x] T3 — Add the single-pass compression remedy to the tracking-rules
       "Weight caps" "Remedies when a cap is hit" bullet; add a
@@ -97,6 +99,7 @@ into one compression pass.
 - 2026-07-17: T2 — check_caps emits heaviest-first breakdown + `shed ≥N` on over-cap milestones; 2 tests (multi-section ordering, under-cap absence); scripts 96 green.
 - 2026-07-17: T3 — single-pass compression remedy in tracking-rules "Weight caps" (breakdown-driven, never nibble, cross-reference not restate); 2 guard asserts + 2 mutation-registry entries; skills 221 green.
 - 2026-07-17: T4 — both suites green from repo root (scripts 96, skills 221); all tasks done → status review.
+- 2026-07-17: review F1 amendment (gated, user-approved) — AC1/Scope/T2 overage token `+N over` → `shed ≥N` to match the delivered (more actionable) output; code unchanged; AC1 re-verified against amended wording.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -128,4 +131,22 @@ into one compression pass.
   skipped per protocol.
 - Profile `generic` names no toolchain consistency-gate checks → clean no-op.
 
-**Independent review:** _pending fan-out._
+**Independent review (three lenses + inline scoring):**
+- [O] diff-bug (Opus): section-counting logic verified correct — fence
+  handling byte-faithful to `milestone_body_line_count`, `i-start` off-by-one
+  free, `preamble+Σsections==body` invariant holds, `shed=n-CAP+1` arithmetic
+  right, stable sort. 1 finding (below).
+- [S] blame-history (Sonnet): D-030 second-budget-number rejection intact (the
+  breakdown is additive diagnostic, not a second cap), M55 Review boundary
+  unshifted, M68 duplicate-token risk avoided (both anchors unique). Same 1
+  finding, CONFIRMED.
+- [S] prior-PR-comments (Sonnet): no prior-PR evidence — the touched files'
+  merged PRs carry no inline review comments. Zero findings (clean no-op).
+- Scorer: F1 = 95 (CONFIRMED by two lenses, string-verifiable, load-bearing).
+
+**F1 (score 95) — overage token mismatch, resolved by gated AC amendment:**
+Code emits `shed ≥N` (`cairn_validate.py:96`); AC1/Scope/T2 as planned said
+`+N over`. `shed ≥N` (lines to drop to pass) is the more actionable number and
+is the delivered behavior; the plan text was amended to match via the implement
+step-6 gate (user-approved 2026-07-17) rather than downgrading the code. AC1
+re-verified against the amended wording. See work log.
