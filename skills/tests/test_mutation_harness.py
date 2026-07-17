@@ -189,6 +189,21 @@ REGISTRY = [
         target="skills/cairn-init/SKILL.md",
         block="migration-protocol.md",
     ),
+    # M67 (D-039): the narration-discipline rule — one entry per positive
+    # assert's primary block (M53 discipline); the allowance asserts ride on
+    # the bar and carve-out blocks.
+    Mutation(
+        guard="test_narration_discipline",
+        test="TestNarrationDisciplineRule.test_rule_present_with_deliberation_bar",
+        target=RULES,
+        block="never a running readout of reasoning",
+    ),
+    Mutation(
+        guard="test_narration_discipline",
+        test="TestNarrationDisciplineRule.test_preview_carveout",
+        target=RULES,
+        block="This never licenses compressing mandated substance",
+    ),
     # M58: the doctrine body moved to its own module; the ≥2-types block now
     # lives (and is blanked) there. The rulebook keeps a reference + the
     # placement norm, and the module gains the registry pointer — one

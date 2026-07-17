@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M67: Narration discipline — outcomes, not deliberation
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m67-narration-discipline   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -65,15 +65,15 @@ cairn governs what the orchestrator writes, not what the client renders).
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Author the rule in `skills/shared/tracking-rules.md`, placed
+- [x] T1: Author the rule in `skills/shared/tracking-rules.md`, placed
       immediately after "Deltas, not dumps"; keep the rule name and each
       guard-anchor phrase on one physical line.
-- [ ] T2: Add `skills/tests/test_narration_discipline.py` (pattern:
+- [x] T2: Add `skills/tests/test_narration_discipline.py` (pattern:
       `test_gate_conclusion_preview.py`) + a `Mutation(...)` entry in
       `skills/tests/test_mutation_harness.py` anchoring a unique block of
       the new rule (M58: anchor a phrase unique in the file; M65: block
       includes trailing punctuation).
-- [ ] T3: Run the three verify suites from the repo root; confirm green by
+- [x] T3: Run the three verify suites from the repo root; confirm green by
       exit code.
 
 ## Work log
@@ -81,6 +81,9 @@ cairn governs what the orchestrator writes, not what the client renders).
 
 - 2026-07-16: created by /milestone-plan (with D-039); prompted by the
   hitop cairn-init/design-interview session's italic running commentary.
+- 2026-07-16: T1–T3 done in one sitting — rule authored after "Deltas, not
+  dumps", guard + 2 mutation entries added, all three suites green (214
+  skills tests incl. harness); question gate skipped (nothing open).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
