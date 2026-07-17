@@ -45,7 +45,8 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    Push; open the PR — `Fixes #N` in the description if a GitHub issue exists.
 
 6. **Approval gate:** present the diff, the regression-test evidence, and
-   the changelog line; put the merge authorization to the user as an
+   the changelog line (when the `changelog` slot declares a file); put the
+   merge authorization to the user as an
    `AskUserQuestion` chip (recommended = merge, e.g. `Merge PR #N to
    <default-branch>`, with a decline option) — never a prose yes/no, the same gate discipline
    as `/milestone-review`. Merge (`gh pr merge --squash --delete-branch`)

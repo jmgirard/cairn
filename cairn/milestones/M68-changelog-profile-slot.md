@@ -144,3 +144,20 @@ Note: AC4's parenthetical says "derives the bump from commit history"; the
 shipped bullet says "git history" (work-log 2026-07-16 mutation fix). The
 criterion mandates the semantics, not that literal token — identical meaning,
 recorded here rather than silently passed.
+
+Independent review (three lenses + scorer, 2026-07-16):
+
+- [O] diff-bug: 3 findings, all minor, no correctness bugs. [S] blame-history:
+  no findings. [S] prior-PR: "no prior-PR evidence", zero findings (65 merged
+  PRs, zero inline comments).
+- Actioned (≥80): F1/80 — AC1's "empty" leg had no changelog-specific fixture
+  (rode the slot-generic empty check) → fixed, `test_changelog_slot_empty_fails`
+  added. F2/87 — /hotfix step 6 demanded "the changelog line" unconditionally,
+  incoherent for a "none" repo after step 5's skip → fixed, qualified "(when
+  the `changelog` slot declares a file)".
+- Logged below threshold (1): F3/75 — generic profile's + this repo's
+  PROFILE.md changelog-slot text says "read by … the consistency-gate," but
+  the generic consistency-gate slot is "none" (accurate only for the richer
+  profiles); documentation-accuracy nit, not a functional break.
+- Post-fix: scripts suite (now 87) + skills 219 + hooks 55 all OK;
+  `cairn_validate` all-pass.

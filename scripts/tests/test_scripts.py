@@ -476,6 +476,14 @@ class TestValidateProfile(ScriptCase):
         self.assertEqual(proc.returncode, 1, proc.stdout)
         self.assertIn("missing slot '## changelog'", proc.stdout)
 
+    def test_changelog_slot_empty_fails(self):
+        # M68 review F1 (scored 80): AC1's "empty" leg gets its own changelog
+        # fixture rather than riding the slot-generic empty check.
+        text = VALID_PROFILE.replace("## changelog\nnone\n", "## changelog\n")
+        proc = run("cairn_validate.py", self._profile(text))
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("slot '## changelog' is empty", proc.stdout)
+
     def test_changelog_declares_file_passes(self):
         # M68: a file-name declaration is as valid as the "none" the base
         # fixture pins (both are non-empty bodies).
