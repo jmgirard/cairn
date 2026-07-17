@@ -8,6 +8,8 @@ not an R package, so R-specific gates don't apply.
 
 ## Milestones
 
+_Released 1.0.0 2026-07-16 (tag v1.0.0)._
+
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M68 | Changelog profile slot — required seventh slot, "none" legal (D-040) | done | — | normal | milestones/archive/M68-changelog-profile-slot.md |
@@ -20,6 +22,5 @@ not an R package, so R-specific gates don't apply.
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
-- v1.0 release: release prep shipped (M54 positioning, M61 de-risking, M62 release docs, all done 2026-07-16); remaining = a `/cairn-release` run (generic release-walk: version bump, changelog, tag) — user-triggered — added 2026-07-16 (converted from the 2026-07-11 public-release-prep row at its graduation)
 - Content-gated memory guard: make M19's memory-boundary hook inspect the write and fire only on durable-state signals (decisions, conventions, project facts), staying silent on pure per-user prefs; promote only if the unconditional soft nudge proves too noisy — added 2026-07-11 — M19 Out
 - Scaffold-spec version stamp / content-drift detection (Direction 2, deferred from M24): M24 detects *missing* §1 pieces but not a piece whose template *body* changed while the file still exists; stamp a scaffold-spec version into the adopted CLAUDE.md and compare against the plugin's current spec to catch content drift — needs a maintained spec version + changelog + a definition of "what counts as a bump"; promote only if content drift (as opposed to missing files) actually bites — added 2026-07-12 — M24 Out
