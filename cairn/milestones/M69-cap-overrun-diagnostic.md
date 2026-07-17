@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M69: Cap-overrun diagnostic — per-section breakdown + single-pass compression discipline
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
@@ -87,7 +87,7 @@ into one compression pass.
       mutation-registered guard (likely
       `skills/tests/test_milestone_cap_exemption.py`, which already reads the
       weight-caps text) and register the block in the mutation harness.
-- [ ] T4 — Run both suites from repo root; confirm green.
+- [x] T4 — Run both suites from repo root; confirm green.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
@@ -96,6 +96,7 @@ into one compression pass.
 - 2026-07-17: T1 — milestone_section_line_counts helper + 7 tests; preamble+sections==body invariant holds; both suites green.
 - 2026-07-17: T2 — check_caps emits heaviest-first breakdown + `shed ≥N` on over-cap milestones; 2 tests (multi-section ordering, under-cap absence); scripts 96 green.
 - 2026-07-17: T3 — single-pass compression remedy in tracking-rules "Weight caps" (breakdown-driven, never nibble, cross-reference not restate); 2 guard asserts + 2 mutation-registry entries; skills 221 green.
+- 2026-07-17: T4 — both suites green from repo root (scripts 96, skills 221); all tasks done → status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
