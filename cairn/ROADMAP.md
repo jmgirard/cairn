@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-16 (M66 done + archived; M61 pruned under terminal-row retention)_
+_Last hygiene check: 2026-07-16 (M67 done + archived; M62 pruned under terminal-row retention)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -10,12 +10,11 @@ not an R package, so R-specific gates don't apply.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M67 | Narration discipline — outcomes, not deliberation (D-039) | review | — | high | milestones/M67-narration-discipline.md |
+| M67 | Narration discipline — outcomes, not deliberation (D-039) | done | — | high | milestones/archive/M67-narration-discipline.md |
 | M66 | cairn-init migration gates show the proposal — D-037 wiring extension | done | — | high | milestones/archive/M66-init-gate-preview.md |
 | M65 | Gate-time conclusion preview — acceptance chips show what's accepted | done | — | high | milestones/archive/M65-gate-conclusion-preview.md |
 | M64 | Durable-record preview — verbatim in-chat preview before docs-only commits | done | — | high | milestones/archive/M64-durable-record-preview.md |
 | M63 | /design-interview note-and-leave ingestion — detect, formalize with #N lineage, bank the repoint | done | — | normal | milestones/archive/M63-design-interview-ingestion.md |
-| M62 | Release docs — LICENSE, README worked example + framing, DRAFT removal | done | M61 | high | milestones/archive/M62-release-docs.md |
 
 ## Candidates
 
