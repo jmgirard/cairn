@@ -629,6 +629,36 @@ REGISTRY = [
         target="skills/milestone/SKILL.md",
         block="Acceptance chips (tracking-rules): a triage option that accepts an audit",
     ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAcceptanceChipsRule.test_enumeration_names_proposals",
+        target=RULES,
+        block="a proposed disposition or action plan awaiting confirmation (D-038)",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestMigrationGateDirectives.test_step3_disposition_gate",
+        target="skills/shared/migration-protocol.md",
+        block="Acceptance chips (tracking-rules): the inventory and each item's",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestMigrationGateDirectives.test_step3_disposition_gate",
+        target="skills/shared/migration-protocol.md",
+        block="never only inside chip options, and a paraphrase never stands in for",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestMigrationGateDirectives.test_step7_merge_ledger",
+        target="skills/shared/migration-protocol.md",
+        block="Acceptance chips (tracking-rules): the ledger's substance appears",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestMigrationGateDirectives.test_step7_merge_ledger",
+        target="skills/shared/migration-protocol.md",
+        block="verbatim in chat above the merge-approval chip — the PR description",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

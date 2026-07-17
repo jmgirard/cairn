@@ -42,7 +42,12 @@ presented ledger at the step-3 gate), adjust the proposal first, or stop.
 3. **Inventory + proposal.** List every legacy tracking file and every live
    item found (in-flight/planned work, backlog/parking-lot/someday items,
    open questions, decisions still governing active work). Present the
-   proposed disposition of each at one question gate. Fixed status mapping:
+   proposed disposition of each at one question gate.
+   Acceptance chips (tracking-rules): the inventory and each item's
+   proposed disposition appear verbatim in chat above the gate's chip —
+   never only inside chip options, and a paraphrase never stands in for
+   the proposal (D-038); the adopt-in-place variant choice is part of
+   this gate and shows its proposal the same way. Fixed status mapping:
    `READY`→`planned`, `IN PROGRESS`/`active`→`in-progress`,
    `BLOCKED`→`blocked`, parking-lot/someday/candidates→`candidate` rows,
    everything finished→entombed. `READY`→`planned` holds only when the item
@@ -163,6 +168,9 @@ presented ledger at the step-3 gate), adjust the proposal first, or stop.
    file and every live item — old location → new location, "entombed", or
    "dropped at user request". Nothing silently vanishes. The user approves
    the merge like any milestone.
+   Acceptance chips (tracking-rules): the ledger's substance appears
+   verbatim in chat above the merge-approval chip — the PR description
+   alone never carries it (D-038).
 
 8. Routing chip (AskUserQuestion), composed from the migration's actual end
    state — e.g.

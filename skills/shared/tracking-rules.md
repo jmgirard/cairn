@@ -382,7 +382,9 @@ cairn skill is active.
   a summary never substitutes for the accepted text.
 - **Acceptance chips show what's accepted.** A chip option that accepts or
   approves a produced conclusion — review findings, a subagent's verdict,
-  an audit result, amended text — requires that conclusion's substance
+  an audit result, amended text, or
+  a proposed disposition or action plan awaiting confirmation (D-038)
+  — requires that conclusion's substance
   verbatim in chat above the chip (D-037): the verdict and each actioned
   finding appear verbatim; a long artifact shows its conclusions section
   verbatim plus the file path for the rest; a paraphrase never stands in
