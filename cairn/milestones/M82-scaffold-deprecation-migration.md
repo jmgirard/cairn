@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M82: Scaffold-deprecation migration — repair mode acts on the advisory it inherits
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP3, IP2   <!-- owner: plan · create/amend-via-gate -->
@@ -93,7 +93,7 @@ never fix, so the actor is skill prose. Migrating a repo's *committed*
 - [x] T4: New prose-guard `skills/tests/test_scaffold_migration.py` locking
       AC1–AC5; register it in the mutation harness (per file, ≥1 exemplar
       block on one unwrapped physical line — M53/M54).
-- [ ] T5: Run both suites from the repo root, checking each exit code
+- [x] T5: Run both suites from the repo root, checking each exit code
       explicitly — never piped through `tail` (M56/M65).
 
 ## Work log
@@ -103,6 +103,7 @@ never fix, so the actor is skill prose. Migrating a repo's *committed*
 - 2026-07-18: T1+T2 — `## 3. Repair` added to cairn-init; §0's repair bullet reduced to a pointer; migration step written against the `scaffold deprecations` advisory output (generic over the plugin's superseded-entry map, no rename named in the prose).
 - 2026-07-18: T3 — whole-repo sweep (history excluded per M58) found no prose asserting cairn-init's section inventory; nothing to fix. `§1`/`§2` citations in `migration-protocol.md` and two test docstrings stay correct, as the milestone-local decision intended.
 - 2026-07-18: T4 — `skills/tests/test_scaffold_migration.py` (10 tests) + 4 mutation entries; two asserts initially hit the M23 wrapped-phrase trap and were re-anchored to single physical lines. Entries proven live: pointing one block at absent text errors the harness, exit 1.
+- 2026-07-18: T5 — verify clean from repo root, exit codes checked separately: scripts 147 OK (exit 0), skills 353 OK (exit 0), `cairn_validate` exit 0. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
