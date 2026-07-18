@@ -98,7 +98,7 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
       `references/claude-code-hooks.md:105` to the split-then-exact-match rule.
       Read the corrected rule out of `references/claude-code-hooks.md`'s
       verified dispatch section, never restated from a work-log (M75).
-- [ ] T5 — guards for AC1/AC2 in `skills/tests/test_lessons_loop.py` (its
+- [x] T5 — guards for AC1/AC2 in `skills/tests/test_lessons_loop.py` (its
       subject is the LESSONS contract) + `Mutation(...)` entries per positive
       assert, not per file (M53).
 - [ ] T6 — full verify: the three suites green, `cairn_validate.py` green,
@@ -132,6 +132,10 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
   `(corrected M76)` — the new rule's first application, dogfooded. Left
   `:121` alone: it verbatim-quotes Claude Code's own shipped warning, which is
   accurate for the narrower `mcp__server` case it describes.
+- 2026-07-18: T5 — `TestRecordCorrectionRule` (6 asserts) + 5 mutation entries;
+  skills suite 289 -> 295. Falsifiability proven twice: mutation harness green
+  on blanking, and a by-hand LABEL SWAP (history <-> current knowledge) went
+  red as required — the check the harness structurally cannot make (M74/F3).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

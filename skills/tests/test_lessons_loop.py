@@ -60,5 +60,48 @@ class TestLessonsLoop(unittest.TestCase):
         self.assertIn("LESSONS.md", plan)
 
 
+class TestRecordCorrectionRule(unittest.TestCase):
+    """M76 (D-045): the rulebook states how a record proven false is fixed.
+
+    Every assert here is LABEL-INCLUSIVE (M74/F3): each block carries the
+    category name *and* its remedy on one physical line, so swapping the two
+    labels — inverting the rule — fails the guard. Pinning only "corrected in
+    place" would survive that inversion, which is exactly the false coverage
+    the M74 review proved live.
+    """
+
+    def setUp(self):
+        self.rules = read(SKILLS / "shared" / "tracking-rules.md")
+
+    def test_rule_is_named(self):
+        self.assertIn("Correcting a record proven false", self.rules)
+
+    def test_current_knowledge_is_corrected_in_place(self):
+        self.assertIn("current knowledge is corrected in place", self.rules)
+
+    def test_history_is_superseded_never_edited(self):
+        self.assertIn("history is superseded and never edited", self.rules)
+
+    def test_rule_rules_out_leaving_the_wrong_text_readable(self):
+        # The whole point: appending a correction is not enough, because a
+        # false lesson is harvested into every later plan.
+        self.assertIn(
+            "appending a correction while leaving the wrong text readable",
+            self.rules,
+        )
+
+    def test_file_map_no_longer_calls_lessons_append_only(self):
+        # Paired with the positive assert below: the negative alone can't be
+        # mutation-proven (blanking cannot restore an absence — M54).
+        row = next(
+            line for line in self.rules.splitlines()
+            if line.startswith("| `cairn/LESSONS.md`")
+        )
+        self.assertNotIn("append-only", row.lower())
+
+    def test_file_map_names_the_lessons_write_mode(self):
+        self.assertIn("a lesson proven false is corrected in place", self.rules)
+
+
 if __name__ == "__main__":
     unittest.main()
