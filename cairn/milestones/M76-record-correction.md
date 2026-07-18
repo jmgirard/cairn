@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M76: Record correction — history vs. current knowledge, and the correct-in-place protocol
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP4, GP2   <!-- owner: plan · create/amend-via-gate -->
@@ -101,7 +101,7 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
 - [x] T5 — guards for AC1/AC2 in `skills/tests/test_lessons_loop.py` (its
       subject is the LESSONS contract) + `Mutation(...)` entries per positive
       assert, not per file (M53).
-- [ ] T6 — full verify: the three suites green, `cairn_validate.py` green,
+- [x] T6 — full verify: the three suites green, `cairn_validate.py` green,
       caps clean. Run from the repo root, exit codes gating the chain, never
       piped through `tail` (M56/M65).
 
@@ -136,6 +136,10 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
   skills suite 289 -> 295. Falsifiability proven twice: mutation harness green
   on blanking, and a by-hand LABEL SWAP (history <-> current knowledge) went
   red as required — the check the harness structurally cannot make (M74/F3).
+- 2026-07-18: T6 — all six tasks done; skills 295 / scripts 96 / hooks 72 all
+  exit 0, cairn_validate exit 0, caps and sizing clean. `cairn/DESIGN.md` is
+  absent from the branch diff entirely, so AC4's IP4-untouched bar holds at its
+  strongest. Status -> review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
