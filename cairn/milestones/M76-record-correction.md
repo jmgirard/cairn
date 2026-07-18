@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M76: Record correction — history vs. current knowledge, and the correct-in-place protocol
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP4, GP2   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m76-record-correction`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -82,7 +82,7 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — author D-045 in `cairn/DECISIONS.md`: the correct-in-place
+- [x] T1 — author D-045 in `cairn/DECISIONS.md`: the correct-in-place
       mechanism, the history/current-knowledge split, the IP4 reading, and the
       declined validate CHECK. Annotates D-015; leaves IP4 untouched.
 - [ ] T2 — `skills/shared/tracking-rules.md`: add the correction rule to
@@ -112,6 +112,10 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
   candidate row (M75 review G4/91 + G2/78). Four gate decisions: correct in
   place marked; general history/knowledge split; record the IP4 reading without
   amending IP4; fold the matcher sweep in.
+- 2026-07-18: branch `m76-record-correction` cut from main; status -> in-progress.
+- 2026-07-18: minor amendment — T1 ticked as already satisfied: /milestone-plan
+  authors D-entries in its own commit, so D-045 landed in 9ac2311 at plan time.
+  No re-authoring; AC4's evidence reads the committed entry.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
