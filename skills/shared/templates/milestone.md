@@ -48,7 +48,9 @@ never "never".
       references where known.
 
 ## Work log
-<!-- owner: any skill · append-only; one line per entry; absolute dates -->
+<!-- owner: any skill · append-only; one line per entry; absolute dates.
+     EXEMPT from the 150-line cap (D-046): history under D-045, never edited,
+     so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
 - YYYY-MM-DD: created by /milestone-plan.
 
@@ -58,5 +60,5 @@ never "never".
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
-     results, review findings + triage. EXEMPT from the 150-line cap (M55):
-     only the plan-owned body above counts; evidence never scrambles it. -->
+     results, review findings + triage. EXEMPT from the 150-line cap (M55),
+     as is the work log (D-046); evidence never scrambles plan-owned content. -->

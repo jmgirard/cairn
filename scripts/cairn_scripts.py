@@ -51,6 +51,13 @@ TERMINAL_ROW_RETENTION = 5  # done + dropped rows share one ROADMAP cap
 CLAUDE_SECTION_CAP = 30
 CLAUDE_SECTION_HEADING = "## Project tracking"
 
+# The plan-owned milestone section the weight cap does not measure (D-046/M77).
+# `## Review` is already outside the cap by the body boundary itself (M55, a
+# different reason: it is review-owned). The work log is exempt because D-045
+# classifies it as history — never edited — so counting it could leave an
+# over-cap file fixable only by an edit IP4 forbids. Matched exactly, lowercased.
+WORKLOG_HEADING = "work log"
+
 # §1 scaffold pieces that must exist once a repo is on cairn (cairn-init §1).
 # Single source of truth for the machine-side drift check
 # (cairn_validate.check_scaffold): a missing piece means the repo predates a
@@ -229,21 +236,26 @@ def claude_section_line_count(path):
     return end - start
 
 
-def milestone_body_line_count(path):
-    """Line count of a live milestone file's plan-owned body — every line
-    before the first `## Review` heading. The review-exclusive `## Review`
-    section is exempt from the milestone weight cap (M55): review evidence
-    accumulates there at review time and must never scramble plan-owned content
-    (the recurring M19/M22/M33/M50 scramble). A file with no `## Review` section
-    counts whole (back-compat). Fenced code blocks are tracked so a literal
-    `## Review` inside a ``` or ~~~ block in the body is not mistaken for the
-    section boundary (M45). Returns None if the file is unreadable."""
+def _plan_owned_scan(path):
+    """Shared fence-aware scan behind both milestone cap counters. Returns
+    `(boundary, sections)` where `boundary` is the end of the plan-owned region
+    (the index of the first real `## Review` heading, else the file length) and
+    `sections` is `[(heading, line_count)]` for every `## ` section before it,
+    **work log included** — the callers decide what to exempt. Fenced ``` / ~~~
+    blocks are tracked so a `## ` inside one is content, and a fenced
+    `## Review` is not the boundary (M45). Only an exact `## Review` heading
+    ends the region, so `## Reviewers` cannot truncate it (M55 review).
+    Returns None if the file is unreadable."""
     try:
         with open(path, encoding="utf-8") as f:
             lines = f.read().splitlines()
     except Exception:
         return None
+    sections = []
     fence = None
+    start = None  # index of the current open section's `## ` heading
+    heading = None
+    boundary = len(lines)
     for i, line in enumerate(lines):
         stripped = line.lstrip()
         if fence is not None:
@@ -256,9 +268,81 @@ def milestone_body_line_count(path):
         if stripped.startswith("~~~"):
             fence = "~~~"
             continue
-        if line.startswith("## ") and line[3:].strip().lower() == "review":
-            return i
-    return len(lines)
+        if not line.startswith("## "):
+            continue
+        title = line[3:].strip()
+        if title.lower() == "review":
+            boundary = i
+            if start is not None:
+                sections.append((heading, i - start))
+                start = None
+            break
+        if start is not None:
+            sections.append((heading, i - start))
+        start, heading = i, title
+    if start is not None:  # close the final open section at the boundary
+        sections.append((heading, boundary - start))
+    return boundary, sections
+
+
+def milestone_body_line_count(path):
+    """Line count of a live milestone file's **capped** plan-owned body: every
+    line before the first `## Review` heading, less the `## Work log` section.
+    Two sections sit outside the milestone weight cap, for two different
+    reasons. `## Review` is review-owned and accumulates evidence at review
+    time, which must never scramble plan-owned content (M55, the recurring
+    M19/M22/M33/M50 scramble). The **work log** is exempt because D-045
+    classifies it as history — never edited — so counting it could leave an
+    over-cap file fixable only by an edit IP4 forbids (D-046/M77); the
+    wrapped-entry advisory in `cairn_validate`, not the cap, is what keeps the
+    now-unbudgeted section honest. A file with no `## Review` section counts to
+    EOF — still less its work log, which is exempt wherever it sits, so this is
+    back-compatible only for the pre-M77 case of a file with no work log. A
+    fenced `## Review` or `## Work log` is content, not a boundary (M45), and
+    only exact headings match — `## Work log notes` stays counted. Returns None
+    if the file is unreadable."""
+    scan = _plan_owned_scan(path)
+    if scan is None:
+        return None
+    boundary, sections = scan
+    exempt = sum(n for h, n in sections if h.strip().lower() == WORKLOG_HEADING)
+    return boundary - exempt
+
+
+def milestone_worklog_lines(path):
+    """`[(lineno, text)]` for the body of a milestone file's `## Work log`
+    section, 1-indexed, heading excluded. Shares `WORKLOG_HEADING` and the
+    fence rules with the cap counters **on purpose**: the section the cap stops
+    measuring and the section the wrapped-entry advisory polices must be the
+    same one, or the exemption would open a hole the advisory never looks at
+    (D-046/M77). Returns [] when the file has no work log, None if unreadable."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            lines = f.read().splitlines()
+    except Exception:
+        return None
+    out = []
+    fence = None
+    in_log = False
+    for i, line in enumerate(lines, start=1):
+        stripped = line.lstrip()
+        if fence is not None:
+            if stripped.startswith(fence):
+                fence = None
+            if in_log:  # both delimiters belong to the section, like the
+                out.append((i, line))  # cap counters count them (M77 review F2)
+            continue
+        if stripped.startswith("```") or stripped.startswith("~~~"):
+            fence = "```" if stripped.startswith("```") else "~~~"
+            if in_log:
+                out.append((i, line))
+            continue
+        if line.startswith("## "):
+            in_log = line[3:].strip().lower() == WORKLOG_HEADING
+            continue
+        if in_log:
+            out.append((i, line))
+    return out
 
 
 def milestone_section_line_counts(path):
@@ -270,46 +354,20 @@ def milestone_section_line_counts(path):
     through the line before the next `## ` heading (or the plan-owned/`## Review`
     boundary, or EOF). Lines before the first `## ` heading (title + status
     block) are preamble, attributed to no section, so preamble + the section
-    counts sum to `milestone_body_line_count`. Fence-aware like that function: a
-    `## ` inside a ``` or ~~~ block is content, and a fenced `## Review` is not
-    the boundary (M45); the review-exclusive `## Review` section is excluded
-    (M55). Returns None if the file is unreadable, [] if it has no `## ` section."""
-    try:
-        with open(path, encoding="utf-8") as f:
-            lines = f.read().splitlines()
-    except Exception:
+    counts sum to `milestone_body_line_count`. Both cap-exempt sections are
+    excluded, so the breakdown only ever names sections the operator may
+    actually trim: the review-exclusive `## Review` (M55) and the `## Work log`,
+    which D-045 makes history — naming it would aim the cap remedy at an edit
+    IP4 forbids (D-046/M77). Dropping it here and from the body count together
+    is what preserves the preamble+sections==body invariant. Fence-aware like
+    that function: a `## ` inside a ``` or ~~~ block is content, and a fenced
+    `## Review` is not the boundary (M45). Returns None if the file is
+    unreadable, [] if it has no trimmable `## ` section."""
+    scan = _plan_owned_scan(path)
+    if scan is None:
         return None
-    sections = []
-    fence = None
-    start = None  # index of the current open section's `## ` heading
-    heading = None
-    for i, line in enumerate(lines):
-        stripped = line.lstrip()
-        if fence is not None:
-            if stripped.startswith(fence):
-                fence = None
-            continue
-        if stripped.startswith("```"):
-            fence = "```"
-            continue
-        if stripped.startswith("~~~"):
-            fence = "~~~"
-            continue
-        if line.startswith("## "):
-            title = line[3:].strip()
-            if title.lower() == "review":
-                if start is not None:
-                    sections.append((heading, i - start))
-                    start = None
-                break
-            if start is not None:
-                sections.append((heading, i - start))
-            start, heading = i, title
-    else:
-        # No `## Review` boundary hit — close the final open section at EOF.
-        if start is not None:
-            sections.append((heading, len(lines) - start))
-    return sections
+    _, sections = scan
+    return [(h, n) for h, n in sections if h.strip().lower() != WORKLOG_HEADING]
 
 
 def sort_by_priority(row_list):

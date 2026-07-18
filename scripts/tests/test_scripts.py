@@ -586,6 +586,109 @@ class TestSizingAdvisory(ScriptCase):
         self.assertEqual(cv.check_sizing_advisory(str(root)), [])
 
 
+class TestWorkLogFormatAdvisory(ScriptCase):
+    """M77/D-046: the work log is exempt from the milestone cap, so nothing
+    budgetary polices it any more — this advisory is what keeps the rulebook's
+    one-line-per-entry mandate honest. WARN, never a gate failure: once the
+    section costs no budget a wrapped entry is untidiness, not damage, and a
+    hard FAIL would block a milestone over formatting."""
+
+    def _with_worklog(self, body):
+        self.tree.rows.append(("M04", "Logged", "planned", "—", "normal", "milestones/M04-logged.md"))
+        self.tree.files["milestones/M04-logged.md"] = (
+            "# M04: Logged\n\n- **Status:** planned   <!-- mirror -->\n\n"
+            "## Work log\n<!-- owner: any skill · append-only -->\n\n"
+            + body
+            + "\n## Review\nevidence\n"
+        )
+        return self.tree.build()
+
+    def test_wrapped_entry_warns_but_passes(self):
+        root = self._with_worklog(
+            "- 2026-07-18: first entry, all on one line.\n"
+            "- 2026-07-18: second entry that the author hard-wrapped\n"
+            "  onto a continuation line, quadrupling its cost.\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  work-log format", proc.stdout)
+        self.assertIn("M04", proc.stdout)
+        self.assertIn("all checks passed", proc.stdout)
+        self.assertIn("advisory warning(s) — not gate failures", proc.stdout)
+
+    def test_one_line_entries_are_ok(self):
+        root = self._with_worklog(
+            "- 2026-07-18: one line.\n- 2026-07-18: also one line.\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    work-log format", proc.stdout)
+
+    def test_blank_lines_and_comments_are_not_continuations(self):
+        # Structural lines carry no entry text, so they must never warn.
+        root = self._with_worklog(
+            "- 2026-07-18: one line.\n\n<!-- a note -->\n- 2026-07-18: two.\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertIn("OK    work-log format", proc.stdout)
+
+    def test_reports_the_offending_line_number(self):
+        root = self._with_worklog("- 2026-07-18: entry.\n  continuation here.\n")
+        cv = _load_validate()
+        findings = cv.check_worklog_format(str(root))
+        self.assertEqual(len(findings), 1)
+        self.assertIn("continuation here", findings[0])
+        self.assertRegex(findings[0], r":\d+:")
+
+    def test_advisory_skips_archived(self):
+        # Archived summaries are compressed narratives, not work logs.
+        self.tree.files["milestones/archive/M01-old.md"] = (
+            "# M01\n\n## Work log\n- 2026-07-18: entry\n  wrapped\n"
+        )
+        root = self.tree.build()
+        cv = _load_validate()
+        self.assertEqual(cv.check_worklog_format(str(root)), [])
+
+    def test_no_work_log_section_is_ok(self):
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    work-log format", proc.stdout)
+
+    def test_the_shipped_template_does_not_trip_the_advisory(self):
+        # M77 review F1: T6 rewrote the template's work-log owner comment to
+        # three physical lines while T4's comment matcher was single-line only,
+        # so every milestone born from the shipped template warned three times
+        # before its first entry was written — the milestone's own two halves
+        # contradicting each other. Nothing paired the shipped template against
+        # the shipped advisory, which is why the suite stayed green. This is
+        # that pairing: it reads the REAL template, not a fixture copy, so the
+        # two can never drift apart again.
+        repo = pathlib.Path(__file__).resolve().parent.parent.parent
+        template = (repo / "skills" / "shared" / "templates" / "milestone.md").read_text()
+        self.tree.rows.append(("M04", "From template", "planned", "—", "normal", "milestones/M04-tmpl.md"))
+        self.tree.files["milestones/M04-tmpl.md"] = template
+        root = self.tree.build()
+        cv = _load_validate()
+        self.assertEqual(cv.check_worklog_format(str(root)), [])
+
+    def test_multi_line_comment_is_not_a_continuation(self):
+        # The general form of F1: an HTML comment is structure, however many
+        # physical lines it spans.
+        root = self._with_worklog(
+            "- 2026-07-18: one.\n<!-- a comment\n     spanning lines -->\n- 2026-07-18: two.\n"
+        )
+        cv = _load_validate()
+        self.assertEqual(cv.check_worklog_format(str(root)), [])
+
+    def test_fenced_block_reports_every_line_including_both_delimiters(self):
+        # M77 review F2: the opening delimiter was collected and the closing one
+        # dropped, so a 3-line offense surfaced as 2 findings and the section
+        # disagreed with what the cap counters measure.
+        root = self._with_worklog("- 2026-07-18: entry.\n```\npasted output\n```\n")
+        cv = _load_validate()
+        self.assertEqual(len(cv.check_worklog_format(str(root))), 3)
+
+
 class TestPrinciplesSlot(ScriptCase):
     DESIGN = "# Design\n\n## Design Principles\n\n- IP1: first\n- GP1: second\n"
 
@@ -649,18 +752,22 @@ class TestValidateFailures(ScriptCase):
             "# M: Test milestone\n\n- **Status:** planned   <!-- mirror -->\n\n"
             "## Scope\n" + "s\n" * 30 + "\n"
             "## Tasks\n" + "t\n" * 120 + "\n"
-            "## Work log\n" + "w\n" * 10 + "\n"
+            "## Goal\n" + "g\n" * 5 + "\n"
+            "## Work log\n" + "- 2026-07-18: w\n" * 10 + "\n"
         )
         self.tree.files["milestones/M03-live.md"] = body + "## Review\n" + "e\n" * 5
         out = self.assert_fails("weight caps", self.tree.build())
         self.assertIn("heaviest first:", out)
         self.assertIn("shed ≥", out)
-        # Tasks (121 lines) is fattest, so it must precede Scope and Work log.
+        # Tasks (121 lines) is fattest, so it must precede Scope and Goal.
         bd = out[out.index("heaviest first:"):]
         self.assertLess(bd.index("Tasks"), bd.index("Scope"))
-        self.assertLess(bd.index("Scope"), bd.index("Work log"))
-        # The exempt Review section is never in the breakdown.
+        self.assertLess(bd.index("Scope"), bd.index("Goal"))
+        # Both exempt sections stay out of the breakdown: `## Review` because it
+        # is review-owned (M55), the work log because D-045 makes it history and
+        # the remedy must never aim at an edit IP4 forbids (D-046/M77).
         self.assertNotIn("Review", bd)
+        self.assertNotIn("Work log", bd)
 
     def test_under_cap_shows_no_breakdown(self):
         # The breakdown appears only for over-cap milestones; a passing repo
@@ -875,6 +982,36 @@ class TestMilestoneBodyLineCount(unittest.TestCase):
         missing = pathlib.Path(self._tmp.name) / "nope.md"
         self.assertIsNone(self.cs.milestone_body_line_count(str(missing)))
 
+    def test_work_log_section_is_exempt(self):
+        # M77/D-046: the work log is history under D-045 — never edited — so the
+        # cap must not count it, or an over-cap file could only be fixed by an
+        # edit IP4 forbids.
+        body = "# M\n\n## Goal\nx\n\n"  # 5 lines
+        n_body = len(body.splitlines())
+        text = body + "## Work log\n" + "- 2026-07-18: e\n" * 80 + "\n## Review\ne\n"
+        self.assertEqual(self.count(text), n_body)
+
+    def test_work_log_exempt_with_no_review_section(self):
+        # The exemption is independent of the `## Review` boundary (M55).
+        body_lines = ["# M", "", "## Goal", "x", ""]
+        text = "\n".join(body_lines) + "\n## Work log\n" + "- 2026-07-18: e\n" * 40
+        self.assertEqual(self.count(text), len(body_lines))
+
+    def test_fenced_work_log_heading_is_not_the_section(self):
+        # A `## Work log` quoted inside a fence is content, not the exempt
+        # section — so it stays counted (M45 fence-awareness).
+        lines = ["# M", "", "## Tasks", "- [ ] T1", "```", "## Work log",
+                 "```", "after fence", ""]
+        text = "\n".join(lines) + "\n"
+        self.assertEqual(self.count(text), len(lines))
+
+    def test_work_log_prefixed_heading_is_still_counted(self):
+        # Only an exact `## Work log` heading is exempt — a plan-owned H2 that
+        # merely starts with it must not smuggle lines past the cap.
+        lines = ["# M", "", "## Work log notes", "- a", "- b", ""]
+        text = "\n".join(lines) + "\n"
+        self.assertEqual(self.count(text), len(lines))
+
 
 class TestMilestoneSectionLineCounts(unittest.TestCase):
     """M69: the diagnostic breakdown of an over-cap plan-owned body — each
@@ -934,6 +1071,25 @@ class TestMilestoneSectionLineCounts(unittest.TestCase):
     def test_unreadable_returns_none(self):
         missing = pathlib.Path(self._tmp.name) / "nope.md"
         self.assertIsNone(self.cs.milestone_section_line_counts(str(missing)))
+
+    def test_work_log_excluded_from_the_breakdown(self):
+        # M77/D-046: the heaviest-first breakdown drives the cap remedy, so it
+        # must never name the work log — the operator may not trim it (IP4).
+        text = ("# M\n\n## Goal\nx\n\n## Work log\n" + "- 2026-07-18: e\n" * 40
+                + "\n## Review\n" + "e\n" * 10)
+        headings = [h for h, _ in self.counts(text)]
+        self.assertNotIn("Work log", headings)
+        self.assertIn("Goal", headings)
+
+    def test_preamble_plus_sections_still_sum_to_body_with_a_work_log(self):
+        # The no-double-count invariant must survive the work-log exemption:
+        # both functions drop the same section, so the sum still reconciles.
+        text = ("# M\n\n- **Status:** planned\n\n## Goal\nx\ny\n\n## Work log\n"
+                "- 2026-07-18: a\n- 2026-07-18: b\n\n## Review\n" + "e\n" * 9)
+        sections = self.counts(text)
+        lines = text.splitlines()
+        preamble = next(i for i, ln in enumerate(lines) if ln.startswith("## "))
+        self.assertEqual(preamble + sum(n for _, n in sections), self.body(text))
 
 
 class TestImpact(ScriptCase):

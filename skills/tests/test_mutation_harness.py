@@ -32,6 +32,7 @@ Mutation = collections.namedtuple("Mutation", "guard test target block")
 RULES = "skills/shared/tracking-rules.md"
 HOTFIX = "skills/hotfix/SKILL.md"
 MILESTONE = "skills/milestone/SKILL.md"
+TEMPLATE = "skills/shared/templates/milestone.md"
 
 REGISTRY = [
     Mutation(
@@ -240,6 +241,52 @@ REGISTRY = [
         test="TestMilestoneCapExemption.test_weight_caps_states_cross_reference_not_restate",
         target=RULES,
         block="cross-reference a durable record",
+    ),
+    # M77/D-046: the work-log exemption. One entry per new positive assert
+    # (M53). Blanking proves deletion is caught; the set-membership assert
+    # additionally survives a SWAP, which blanking cannot simulate (M76) —
+    # that half is proven by the by-hand swap recorded in the work log.
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_weight_caps_names_the_exempt_set_with_both_members",
+        target=RULES,
+        block="The cap-exempt sections are exactly `## Review` (review-owned, M55) and `## Work log` (history under D-045, D-046)",
+    ),
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_weight_caps_states_the_work_log_exemption_reason",
+        target=RULES,
+        block="The `## Work log` is exempt because D-045 makes it history — never edited — so counting it could leave an over-cap file fixable only by an edit IP4 forbids (D-046).",
+    ),
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_weight_caps_states_the_wrapped_entry_advisory_warns",
+        target=RULES,
+        block="advisory WARNs on any work-log line that is not a one-line `- ` entry",
+    ),
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_remedy_never_aims_at_an_exempt_section",
+        target=RULES,
+        block="both cap-exempt sections are omitted, so the remedy can never aim",
+    ),
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_template_work_log_comment_states_the_exemption",
+        target=TEMPLATE,
+        block="EXEMPT from the 150-line cap (D-046)",
+    ),
+    # The stated↔enforced label coupling registers too, unlike its cap-number
+    # sibling: that one compares two computed numbers, but this one's rulebook
+    # half IS a prose block, so blanking the label proves the guard catches its
+    # deletion. Registered because M77's AC4 says every new assert registers —
+    # the "computed couplings are exempt" reading would have been a review-time
+    # reinterpretation of the criterion.
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_stated_advisory_label_matches_the_emitted_label",
+        target=RULES,
+        block="`work-log format`",
     ),
     # M59 (RR01 rec 7): run-and-read — skills never enumerate validate's
     # internals; one entry per positive assert, negatives ride along (M54).
