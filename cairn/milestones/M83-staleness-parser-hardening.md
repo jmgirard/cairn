@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP2   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** `m83-staleness-parser-hardening`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m83-staleness-parser-hardening` · https://github.com/jmgirard/cairn/pull/81   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 
@@ -38,26 +38,26 @@ opposite protections against the same parser).
 
 ## Acceptance criteria
 
-- [ ] F3: a status whose leading clause claims a dated verification and whose
+- [x] F3: a status whose leading clause claims a dated verification and whose
       later prose mentions a prior unverified state classifies `ambiguous`,
       not `never`, and the advisory names the page and says the status
       contradicts itself. Regression test uses the 2026-07-18 `task-master.md`
       wording verbatim and fails against the pre-fix function.
-- [ ] F4: `never verified against the source` no longer classifies `ok`,
+- [x] F4: `never verified against the source` no longer classifies `ok`,
       **and** all three shipped `partly verified at ingestion` pages
       (`bmad-method`, `backlog-meridian`, `spec-kit`) still classify `ok`.
       Both directions are tested — the second is the M79-F5 trap this fix
       must not walk into.
-- [ ] F5: a verified date later than today WARNs with its own diagnostic
+- [x] F5: a verified date later than today WARNs with its own diagnostic
       instead of producing a negative age and a permanent exemption.
-- [ ] No shipped page is reclassified silently: the milestone file records a
+- [x] No shipped page is reclassified silently: the milestone file records a
       before/after state for all 16 committed `references/` pages, and every
       page whose state changes carries a one-line justification. A change is
       allowed; an unexplained one is not (IP2).
-- [ ] Blast radius holds: `_last_verified` still has exactly one caller, and
+- [x] Blast radius holds: `_last_verified` still has exactly one caller, and
       `check_references` output over the 16 pages is byte-identical before
       and after.
-- [ ] `verify` clean — all three suites green:
+- [x] `verify` clean — all three suites green:
       `python3 -m unittest discover -s scripts/tests`,
       `-s skills/tests`, `-s hooks/tests`.
 
@@ -105,6 +105,7 @@ opposite protections against the same parser).
 - 2026-07-18: `git merge main` into this branch was denied by merge_guard (direction-blind containment match) though tracking-rules prescribes exactly that when main moves; synced by rebase instead, which never touches main. Reported, not worked around silently.
 - 2026-07-18: T7 — 0 of 16 pages reclassified (14 ok, 2 exempt, unchanged); `_last_verified` still has exactly one caller; `check_references` output identical. All three suites green by explicit exit code.
 - 2026-07-18: out-of-scope defect found and left alone: `_provenance_block` joins collected blocks with no blank line (`cairn_validate.py:294`), so a body line matching the provenance heading starts a second block that the extraction status then absorbs — `oracle-discipline-notes.md`'s status parses as 652 chars, not 186. Candidate row added; no classification changes today.
+- 2026-07-18: review — PR #81 opened (draft); all six criteria carry fresh evidence recorded in the Review section, consistency gate green; prior-PR lens returned no findings, diff-bug and blame lenses still running.
 
 ## Decisions
 
@@ -126,3 +127,39 @@ opposite protections against the same parser).
   sanctioned form into a contradiction.
 
 ## Review
+
+**PR** https://github.com/jmgirard/cairn/pull/81 · reviewed 2026-07-18.
+
+### Acceptance-criteria evidence (fresh, by command)
+
+- **AC1 (F3 ambiguous).** `test_dated_verification_with_a_prior_unverified_note_is_ambiguous`
+  passes, using the verbatim status `task-master.md` carried on 2026-07-18.
+  Pre-fix evidence gathered at review by restoring `main`'s
+  `cairn_validate.py` under the new tests: suite exits 1 with this test
+  among 6 failing methods; restored, exits 0.
+- **AC2 (F4 both directions).** `test_negative_synonym_no_longer_reads_as_verified`
+  and `test_partly_verified_pages_are_not_swept_up` both pass — the second
+  runs the three shipped `partly verified at ingestion` statuses
+  (`backlog-meridian`, `bmad-method`, `spec-kit`) and asserts each stays
+  clean, which is the M79-F5 trap direction.
+- **AC3 (F5 future).** `test_future_verification_date_is_flagged_not_silently_exempt`
+  passes; a date 30 days ahead reports `dated <date>, in the future` instead
+  of a negative age.
+- **AC4 (no silent reclassification).** `test_every_shipped_page_keeps_its_pinned_state`
+  passes over the real `cairn/references/` tree: 0 of 16 pages changed state
+  (14 ok, 2 exempt, before and after). No page changed, so no justifications
+  are owed.
+- **AC5 (blast radius).** `_last_verified` occurs twice in the file — one
+  definition, one call site (the advisory). `check_references` output over
+  the 16 pages is identical pre and post.
+- **AC6 (verify clean).** All three suites green by explicit exit code, not
+  through a pipe (LESSONS M56+M65): scripts 155 / skills 356 / hooks 72,
+  each `rc=0`.
+
+### Consistency gate
+
+- `cairn_validate.py` exit 0 — 15 PASS, no FAIL, no WARN.
+- Profile `generic`: the `consistency-gate` slot names no toolchain checks,
+  so that half is a clean no-op.
+- No `DESIGN.md` principle changed (IP2 is worked *under*, not modified), so
+  `cairn_impact.py --changed` is skipped per the gate's own condition.
