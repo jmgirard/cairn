@@ -478,6 +478,42 @@ def check_sizing_advisory(root):
     return out
 
 
+# A work-log entry opens with a `- ` bullet (tracking-rules: one line each,
+# absolute dates). Anything else non-blank in the section is a continuation.
+_LOG_ENTRY = re.compile(r"^\s*-\s")
+_LOG_COMMENT = re.compile(r"^\s*<!--.*-->\s*$")
+_LOG_PREVIEW = 60
+
+
+def check_worklog_format(root):
+    """Advisory: a work-log line that is not a one-line `- ` entry — i.e. a
+    hard-wrapped continuation. The rulebook has always mandated one line per
+    entry, but nothing enforced it, and D-046 removed the budgetary pressure
+    that used to surface violations indirectly: M76's work log measured 58
+    lines wrapped versus 21 reflowed, which is what pushed that milestone over
+    cap. Now that the section is cap-exempt (M77), this advisory is the only
+    thing keeping it honest — so it WARNs rather than FAILs: an unbudgeted
+    wrap is untidiness, and a gate failure over formatting would block a
+    milestone for no correctness reason. Live files only; archived summaries
+    are compressed narratives, not work logs."""
+    out = []
+    for mid, path in sorted(cs.live_files(root).items(), key=lambda kv: cs.id_num(kv[0])):
+        lines = cs.milestone_worklog_lines(path)
+        if not lines:
+            continue
+        for lineno, text in lines:
+            if not text.strip() or _LOG_ENTRY.match(text) or _LOG_COMMENT.match(text):
+                continue
+            preview = text.strip()
+            if len(preview) > _LOG_PREVIEW:
+                preview = preview[:_LOG_PREVIEW].rstrip() + "…"
+            out.append(
+                f"{mid}:{lineno}: work-log line is not a one-line entry "
+                f'— "{preview}"'
+            )
+    return out
+
+
 # ID-token shapes (M57): zero-padded milestone/decision IDs as written in
 # tracking prose. Unpadded forms (M7) don't occur in cairn's ID format.
 _M_TOKEN = re.compile(r"\bM(\d{2,})\b")
@@ -576,6 +612,7 @@ CHECKS = [
 # from the PASS/FAIL CHECKS above.
 ADVISORIES = [
     ("sizing (split tripwires)", lambda root, rows: check_sizing_advisory(root)),
+    ("work-log format", lambda root, rows: check_worklog_format(root)),
     ("dangling id tokens", lambda root, rows: check_dangling_ids(root, rows)),
 ]
 

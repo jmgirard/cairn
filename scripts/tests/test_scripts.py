@@ -586,6 +586,75 @@ class TestSizingAdvisory(ScriptCase):
         self.assertEqual(cv.check_sizing_advisory(str(root)), [])
 
 
+class TestWorkLogFormatAdvisory(ScriptCase):
+    """M77/D-046: the work log is exempt from the milestone cap, so nothing
+    budgetary polices it any more — this advisory is what keeps the rulebook's
+    one-line-per-entry mandate honest. WARN, never a gate failure: once the
+    section costs no budget a wrapped entry is untidiness, not damage, and a
+    hard FAIL would block a milestone over formatting."""
+
+    def _with_worklog(self, body):
+        self.tree.rows.append(("M04", "Logged", "planned", "—", "normal", "milestones/M04-logged.md"))
+        self.tree.files["milestones/M04-logged.md"] = (
+            "# M04: Logged\n\n- **Status:** planned   <!-- mirror -->\n\n"
+            "## Work log\n<!-- owner: any skill · append-only -->\n\n"
+            + body
+            + "\n## Review\nevidence\n"
+        )
+        return self.tree.build()
+
+    def test_wrapped_entry_warns_but_passes(self):
+        root = self._with_worklog(
+            "- 2026-07-18: first entry, all on one line.\n"
+            "- 2026-07-18: second entry that the author hard-wrapped\n"
+            "  onto a continuation line, quadrupling its cost.\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  work-log format", proc.stdout)
+        self.assertIn("M04", proc.stdout)
+        self.assertIn("all checks passed", proc.stdout)
+        self.assertIn("advisory warning(s) — not gate failures", proc.stdout)
+
+    def test_one_line_entries_are_ok(self):
+        root = self._with_worklog(
+            "- 2026-07-18: one line.\n- 2026-07-18: also one line.\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    work-log format", proc.stdout)
+
+    def test_blank_lines_and_comments_are_not_continuations(self):
+        # Structural lines carry no entry text, so they must never warn.
+        root = self._with_worklog(
+            "- 2026-07-18: one line.\n\n<!-- a note -->\n- 2026-07-18: two.\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertIn("OK    work-log format", proc.stdout)
+
+    def test_reports_the_offending_line_number(self):
+        root = self._with_worklog("- 2026-07-18: entry.\n  continuation here.\n")
+        cv = _load_validate()
+        findings = cv.check_worklog_format(str(root))
+        self.assertEqual(len(findings), 1)
+        self.assertIn("continuation here", findings[0])
+        self.assertRegex(findings[0], r":\d+:")
+
+    def test_advisory_skips_archived(self):
+        # Archived summaries are compressed narratives, not work logs.
+        self.tree.files["milestones/archive/M01-old.md"] = (
+            "# M01\n\n## Work log\n- 2026-07-18: entry\n  wrapped\n"
+        )
+        root = self.tree.build()
+        cv = _load_validate()
+        self.assertEqual(cv.check_worklog_format(str(root)), [])
+
+    def test_no_work_log_section_is_ok(self):
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    work-log format", proc.stdout)
+
+
 class TestPrinciplesSlot(ScriptCase):
     DESIGN = "# Design\n\n## Design Principles\n\n- IP1: first\n- GP1: second\n"
 

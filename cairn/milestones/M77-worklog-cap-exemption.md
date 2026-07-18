@@ -84,10 +84,10 @@ monotonic growth of an un-editable section).
 - [x] T3: `scripts/tests/test_scripts.py` — extend the shared `Tree.build()`
       fixture first (M24: a stricter counter reddens every reusing test), then
       add the AC1 fixtures (over-cap-without-exemption, no-work-log, fenced).
-- [ ] T4: `scripts/cairn_validate.py` — add `check_worklog_format` and register
+- [x] T4: `scripts/cairn_validate.py` — add `check_worklog_format` and register
       it in `ADVISORIES` (`:577`), never `CHECKS`; an entry opens with `- ` and
       a continuation is any following non-blank line that does not.
-- [ ] T5: fixtures for T4 — wrapped entry warns and names the entry, one-line
+- [x] T5: fixtures for T4 — wrapped entry warns and names the entry, one-line
       entries render `OK`, exit code neutral in both.
 - [ ] T6: `skills/shared/tracking-rules.md` weight-caps bullet + cap-remedy
       text, and `skills/shared/templates/milestone.md`'s work-log owner comment.
@@ -104,6 +104,9 @@ monotonic growth of an un-editable section).
 - 2026-07-18: T1 ticked as already satisfied — /milestone-plan commits its own D-entries, so D-046 landed in 1a6c808 at plan time and AC6 reads the committed entry.
 - 2026-07-18: T2+T3 worked as a pair, tests-first (3 new asserts failed, then passed); the two counters now share one fence-aware `_plan_owned_scan`, replacing duplicated scan logic rather than adding a third copy.
 - 2026-07-18: T3 — the shared `Tree.build()` fixture needed no change (M24 risk did not materialize: the exemption loosens the counter, it does not add a required file); the M69 breakdown test DID need updating — it used the work log as its third-ranked section, the exact behavior this milestone removes.
+- 2026-07-18: T4 — added `cs.milestone_worklog_lines` rather than a second scanner in validate, so the section the cap exempts and the section the advisory polices are one definition (`WORKLOG_HEADING`); a divergence there would be a silent hole.
+- 2026-07-18: T4/T5 — advisory registered in ADVISORIES (never CHECKS); 6 fixtures; scripts suite 102 -> 108, exit 0; `cairn_validate` on this repo reports `OK work-log format`, exit 0.
+- 2026-07-18: T5 live-fire against real history — M76's plan-commit revision shows 3 wrapped continuation lines the advisory would flag, and its merged revision 1 (a stray non-entry prose line); M76's body measures 100 under the exemption versus the 121 it measured under the old rules. The 58-line peak itself is unreachable (squash-merge erased the branch commits).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

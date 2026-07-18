@@ -307,6 +307,42 @@ def milestone_body_line_count(path):
     return boundary - exempt
 
 
+def milestone_worklog_lines(path):
+    """`[(lineno, text)]` for the body of a milestone file's `## Work log`
+    section, 1-indexed, heading excluded. Shares `WORKLOG_HEADING` and the
+    fence rules with the cap counters **on purpose**: the section the cap stops
+    measuring and the section the wrapped-entry advisory polices must be the
+    same one, or the exemption would open a hole the advisory never looks at
+    (D-046/M77). Returns [] when the file has no work log, None if unreadable."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            lines = f.read().splitlines()
+    except Exception:
+        return None
+    out = []
+    fence = None
+    in_log = False
+    for i, line in enumerate(lines, start=1):
+        stripped = line.lstrip()
+        if fence is not None:
+            if stripped.startswith(fence):
+                fence = None
+            elif in_log:
+                out.append((i, line))
+            continue
+        if stripped.startswith("```") or stripped.startswith("~~~"):
+            fence = "```" if stripped.startswith("```") else "~~~"
+            if in_log:
+                out.append((i, line))
+            continue
+        if line.startswith("## "):
+            in_log = line[3:].strip().lower() == WORKLOG_HEADING
+            continue
+        if in_log:
+            out.append((i, line))
+    return out
+
+
 def milestone_section_line_counts(path):
     """Ordered `(heading, line_count)` for each plan-owned `## ` section of a
     live milestone file — the diagnostic companion to
