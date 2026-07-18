@@ -36,7 +36,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   `migration-protocol.md` (cairn-init §2's body, read only on precursor
   footprint detection — M59).
 - `skills/shared/templates/` — milestone, brief, decision, CLAUDE.md section,
-  source note.
+  source note, synthesis note.
 - `skills/shared/profiles/` — the shipped reference toolchain profiles
   (`r-package`, `python`, `docker-image`, `generic`); `cairn-init` instantiates one into a repo's
   `cairn/PROFILE.md`, and the operational skills read its slots.
