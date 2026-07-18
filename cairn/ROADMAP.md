@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-18 (M78 done + archived; M73 pruned under terminal-row retention; two LESSONS pairs consolidated to make room for M78's; M79 planned and workable)_
+_Last hygiene check: 2026-07-18 (M79 done + archived; M74 pruned under terminal-row retention; M57's LESSONS line extended in place with M79's parser findings; shelf-rename migration banked as a candidate)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,17 +12,17 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M74 | Issue triage — /milestone enumerates untriaged inboxes into candidate rows | done | M73 | normal | milestones/archive/M74-issue-triage.md |
 | M75 | Record consistency — the `leave` disposition and MCP-matcher semantics (D-044) | done | — | normal | milestones/archive/M75-record-consistency.md |
 | M76 | Record correction — history vs. current knowledge, and the correct-in-place protocol (D-045) | done | — | normal | milestones/archive/M76-record-correction.md |
 | M77 | Work-log cap exemption — the budget stops counting a section IP4 forbids editing (D-046) | done | — | normal | milestones/archive/M77-worklog-cap-exemption.md |
 | M78 | Source-note shape — dated observations and page provenance | done | — | high | milestones/archive/M78-source-note-shape.md |
-| M79 | References content check — the lint stops being a filename census | review | M78 | normal | milestones/M79-references-content-check.md |
+| M79 | References content check — the lint stops being a filename census | done | M78 | normal | milestones/archive/M79-references-content-check.md |
 
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
+- Source-shelf rename migration for adopting repos: M79/D-047 renamed `cairn/references/pdf/` → `sources/` behind a deprecation advisory, but nothing migrates an existing repo — `/cairn-init` repair does not rename the directory or the `.gitignore` entry, so every adopter carries the advisory until a maintainer acts by hand; swept: no existing row covers it, and the concurrent-operator row is unrelated; promote when a second repo actually adopts the new shelf, or fold into the next `/cairn-init` repair milestone — added 2026-07-18 — M79 review
 - Citekey resolution + dependent discovery: `citekey (p. N)` is mandated (`validation-doctrine.md:79`) but never parsed in either direction — a citekey naming no page and a page nothing cites both pass — and `cairn_impact.py:45` excludes `references/`, so the one record type designated "current knowledge, corrected in place" (`tracking-rules.md:137-139`) is the one with no impact tooling; blocked on a standing rejection — M56 rejected "a formal query op" and "graph tooling" (`archive/M56-llm-wiki-investigation.md:17-19`), which a superseding D-entry must narrow before this is planned; promote if restatement drift produces a live wrong value (intraclass's Koo-bands and unbacked-Cicchetti chains are the candidates) — added 2026-07-18 — M79 Out
 - references/ ingestion completeness (grouped): three gaps from the M78 audit — (1) no skill owns ingestion, so PDF→page is 8 lines of prose at `validation-doctrine.md:75-82` read conditionally, with D-031 having removed per-skill read directives; (2) no synthesis-note template (M78 ships the source-note one only); (3) no re-verification loop — no page records when it was last checked against its PDF and no skill re-checks, so pages are write-once in practice; promote once M78's template is in use and shows which gap actually bites — added 2026-07-18 — M78/M79 Out
 - Concurrent-cairn-operator hardening: if two people ever run cairn in the same repo at once the tracking files race — milestone IDs and D-numbers are model-picked with no allocator, duplicate D-numbers auto-merge and validate GREEN (`cairn_validate.py:500-506` uses a `set`), `/milestone-plan` commits to the default branch with no fetch/pull at any step, and `check_single_in_progress` (`cairn_validate.py:61-64`) is a hard FAIL two operators trip by construction; cheapest standalone piece is a `check_d_uniqueness`; swept: no existing row or D-entry covers it — promote if a second cairn operator actually appears — added 2026-07-18 — M72 Out (D-043)
