@@ -30,6 +30,7 @@ import mutation_engine as me
 Mutation = collections.namedtuple("Mutation", "guard test target block")
 
 RULES = "skills/shared/tracking-rules.md"
+HOTFIX = "skills/hotfix/SKILL.md"
 
 REGISTRY = [
     Mutation(
@@ -805,6 +806,92 @@ REGISTRY = [
         test="TestReadmeCollaboratorSurface.test_readme_has_the_collaborators_section",
         target="README.md",
         block="## Working with collaborators",
+    ),
+    # M73 (D-043): the PR door. Entries cover every block whose deletion
+    # would silently reopen the gap M73 closes — checkout-not-branch, the
+    # naming exemption, the adopted test sequence and its worktree cleanup,
+    # the fork fallback (including the user gate on closing someone else's
+    # PR, and the never-merge-untested line), and the two routing surfaces
+    # (description frontmatter + the Intake paragraph). The remaining asserts
+    # in that guard file are corollaries of these blocks; all of its asserted
+    # phrases were separately confirmed to occur exactly once in their target.
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestAdoptionPath.test_branch_step_checks_the_pr_out",
+        target=HOTFIX,
+        block="*Adopting a PR:* run `gh pr checkout <N>`",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestAdoptionPath.test_branch_step_states_the_naming_exemption",
+        target=HOTFIX,
+        block="name is **exempt** from the `hotfix-<slug>` contract",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestAdoptionPath.test_rulebook_carries_the_same_exemption",
+        target=RULES,
+        block="**An adopted external PR is the exception:**",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestAdoptedRegressionTest.test_step_names_the_adopted_sequence",
+        target=HOTFIX,
+        block="on the PR head**. Prove both directions",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestForkFallback.test_step_names_the_no_push_fallback",
+        target=HOTFIX,
+        block="**When the head branch cannot be pushed to:**",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestForkFallback.test_fallback_asks_the_contributor_first",
+        target=HOTFIX,
+        block="PR to add the missing pieces — it is their work",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestForkFallback.test_closing_a_contributors_pr_is_user_gated",
+        target=HOTFIX,
+        block="and irreversible from the contributor's side, so it is **never** done",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestForkFallback.test_second_pr_prohibition_admits_the_fallback",
+        target=HOTFIX,
+        block="never open a second one, except",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestForkFallback.test_fallback_never_trades_away_the_regression_test",
+        target=HOTFIX,
+        block="Never merge a fix whose regression test",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestAdoptedRegressionTest.test_worktree_recipe_is_located_and_cleaned_up",
+        target=HOTFIX,
+        block="throwaway worktree of the default branch created **outside the repo**",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestForkFallback.test_delete_branch_caveat_for_forks",
+        target=HOTFIX,
+        block="drop `--delete-branch` on a",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestIntakeRouting.test_description_frontmatter_fires_on_an_incoming_pr",
+        target=HOTFIX,
+        block="or adopt an incoming external PR that fixes one",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestIntakeRouting.test_intake_paragraph_names_hotfix_as_the_door",
+        target=RULES,
+        block="**`/hotfix` is the door**",
     ),
 ]
 
