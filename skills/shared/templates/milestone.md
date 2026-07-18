@@ -60,5 +60,5 @@ never "never".
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
-     results, review findings + triage. EXEMPT from the 150-line cap (M55):
-     only the plan-owned body above counts; evidence never scrambles it. -->
+     results, review findings + triage. EXEMPT from the 150-line cap (M55),
+     as is the work log (D-046); evidence never scrambles plan-owned content. -->

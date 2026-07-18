@@ -654,6 +654,40 @@ class TestWorkLogFormatAdvisory(ScriptCase):
         self.assertEqual(proc.returncode, 0, proc.stdout)
         self.assertIn("OK    work-log format", proc.stdout)
 
+    def test_the_shipped_template_does_not_trip_the_advisory(self):
+        # M77 review F1: T6 rewrote the template's work-log owner comment to
+        # three physical lines while T4's comment matcher was single-line only,
+        # so every milestone born from the shipped template warned three times
+        # before its first entry was written — the milestone's own two halves
+        # contradicting each other. Nothing paired the shipped template against
+        # the shipped advisory, which is why the suite stayed green. This is
+        # that pairing: it reads the REAL template, not a fixture copy, so the
+        # two can never drift apart again.
+        repo = pathlib.Path(__file__).resolve().parent.parent.parent
+        template = (repo / "skills" / "shared" / "templates" / "milestone.md").read_text()
+        self.tree.rows.append(("M04", "From template", "planned", "—", "normal", "milestones/M04-tmpl.md"))
+        self.tree.files["milestones/M04-tmpl.md"] = template
+        root = self.tree.build()
+        cv = _load_validate()
+        self.assertEqual(cv.check_worklog_format(str(root)), [])
+
+    def test_multi_line_comment_is_not_a_continuation(self):
+        # The general form of F1: an HTML comment is structure, however many
+        # physical lines it spans.
+        root = self._with_worklog(
+            "- 2026-07-18: one.\n<!-- a comment\n     spanning lines -->\n- 2026-07-18: two.\n"
+        )
+        cv = _load_validate()
+        self.assertEqual(cv.check_worklog_format(str(root)), [])
+
+    def test_fenced_block_reports_every_line_including_both_delimiters(self):
+        # M77 review F2: the opening delimiter was collected and the closing one
+        # dropped, so a 3-line offense surfaced as 2 findings and the section
+        # disagreed with what the cap counters measure.
+        root = self._with_worklog("- 2026-07-18: entry.\n```\npasted output\n```\n")
+        cv = _load_validate()
+        self.assertEqual(len(cv.check_worklog_format(str(root))), 3)
+
 
 class TestPrinciplesSlot(ScriptCase):
     DESIGN = "# Design\n\n## Design Principles\n\n- IP1: first\n- GP1: second\n"

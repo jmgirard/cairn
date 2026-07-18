@@ -82,9 +82,11 @@ def check_caps(root, rows):
             if n is not None and n > cs.ARCHIVE_CAP:
                 bad.append(f"cairn/{r['relpath']}: {n} lines (archive cap {cs.ARCHIVE_CAP})")
         else:
-            # Live milestone: cap the plan-owned body only; the review-exclusive
-            # `## Review` section is exempt so review evidence never scrambles
-            # plan-owned content (M55).
+            # Live milestone: cap the plan-owned body only. Two sections are
+            # exempt — the review-exclusive `## Review`, so review evidence never
+            # scrambles plan-owned content (M55), and the `## Work log`, which
+            # D-045 makes history so the cap must never demand an edit IP4
+            # forbids (D-046). Both are absent from the breakdown below.
             n = cs.milestone_body_line_count(path)
             if n is not None and n >= cs.MILESTONE_CAP:
                 # Report which plan-owned section carries the weight, heaviest
@@ -479,9 +481,13 @@ def check_sizing_advisory(root):
 
 
 # A work-log entry opens with a `- ` bullet (tracking-rules: one line each,
-# absolute dates). Anything else non-blank in the section is a continuation.
+# absolute dates). Anything else non-blank in the section is a continuation —
+# except an HTML comment, which is structure carrying no entry text. Comment
+# detection is stateful across lines, not a single-line regex: the milestone
+# template's own owner comment spans three physical lines, so a one-line-only
+# matcher made the shipped template warn three times on every milestone it
+# created — the two halves of M77 contradicting each other (M77 review F1).
 _LOG_ENTRY = re.compile(r"^\s*-\s")
-_LOG_COMMENT = re.compile(r"^\s*<!--.*-->\s*$")
 _LOG_PREVIEW = 60
 
 
@@ -501,8 +507,18 @@ def check_worklog_format(root):
         lines = cs.milestone_worklog_lines(path)
         if not lines:
             continue
+        in_comment = False
         for lineno, text in lines:
-            if not text.strip() or _LOG_ENTRY.match(text) or _LOG_COMMENT.match(text):
+            stripped = text.strip()
+            if in_comment:
+                if "-->" in stripped:
+                    in_comment = False
+                continue
+            if not stripped or _LOG_ENTRY.match(text):
+                continue
+            if stripped.startswith("<!--"):
+                if "-->" not in stripped:
+                    in_comment = True
                 continue
             preview = text.strip()
             if len(preview) > _LOG_PREVIEW:

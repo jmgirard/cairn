@@ -91,7 +91,8 @@ takes a D-entry, and its number stays retired.
   review evidence never scrambles plan-owned content (M55): it accumulates at
   review time and no longer competes with Scope, AC, or Coverage for the budget.
   The `## Work log` is exempt because D-045 makes it history — never edited — so counting it could leave an over-cap file fixable only by an edit IP4 forbids (D-046).
-  A file with no `## Review` section counts whole.
+  A file with no `## Review` section counts up to EOF — still less its work log,
+  which is exempt wherever it sits.
 - Work-log entries are one line each — a hard-wrapped entry costs several lines
   of a budget it no longer pays into, so `cairn_validate`'s `work-log format`
   advisory WARNs on any work-log line that is not a one-line `- ` entry. It

@@ -113,11 +113,15 @@ monotonic growth of an un-editable section).
 - 2026-07-18: T5 live-fire against real history — M76's plan-commit revision shows 3 wrapped continuation lines the advisory would flag, and its merged revision 1 (a stray non-entry prose line); M76's body measures 100 under the exemption versus the 121 it measured under the old rules. The 58-line peak itself is unreachable (squash-merge erased the branch commits).
 - 2026-07-18: review trip 1 — gate FAILED on AC4: six new guard asserts but only five mutation entries; `test_stated_advisory_label_matches_the_emitted_label` was unregistered. Status -> in-progress; draft PR #75 opened.
 - 2026-07-18: AC4 fix — registered the sixth entry (block `` `work-log format` ``, unique in the rulebook). Declined the available charitable reading (that computed stated<->enforced couplings are exempt by the `test_stated_cap_matches_enforced_cap` precedent) — the criterion says every new assert, and reinterpreting it at review is what AC fencing forbids. Registry 153 -> 154; skills stays 304, exit 0.
+- 2026-07-18: review trip 2 — fan-out: blame no findings, prior-PR no evidence (clean no-op), diff-bug 3 findings all real and all reproduced before fixing; F4 raised by the orchestrator. All four fixed on the branch; scripts 108 -> 111.
+- 2026-07-18: F1 was the serious one — this milestone's own T6 and T4 contradicted each other, so the shipped template would have warned three times on every new milestone; the missing test was the one pairing the shipped template against the shipped advisory, now added reading the real file.
 - 2026-07-18: T8 — all eight tasks done; skills 304 / scripts 108 / hooks 72 exit 0, cairn_validate exit 0 with `OK work-log format`; M77's own body measures 102 under the new rules versus 118 under the old, and its breakdown no longer lists the work log; status -> review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
      cross-cutting ones to cairn/DECISIONS.md -->
+
+- 2026-07-18: supersedes M69's milestone-local decision that the work log "stays counted (not exempted like `## Review`; parallels D-030 keeping `## Decisions` counted)" (`milestones/archive/M69-cap-overrun-diagnostic.md:16`). M69 recorded it with no D-entry as working under GP1, so it is superseded here in the same milestone-local form — D-046 is history under IP4 and cannot be edited to add the citation. What changed is M69's premise, not its reasoning: D-045 landed after M69 and reclassified the work log as history, and a section that may never be edited cannot serve as a cap remedy. Surfaced by the review fan-out; D-046 quotes D-030's rejection but not M69's, which is the gap this closes.
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
@@ -167,3 +171,51 @@ Returned to `in-progress`; fixed by registering the sixth entry (block
 altered, and `cairn/DESIGN.md` is absent from the branch diff entirely, which
 is the strongest form of the IP4-untouched claim.
 Toolchain `consistency-gate` slot: `generic` names no checks — clean no-op.
+
+### Fan-out (2026-07-18)
+
+Blame-history lens: no findings — traced M45/M55/M69 and D-030/D-045/IP4 and
+found the change faithful, including that `## Decisions` stays counted.
+Prior-PR lens: no prior-PR evidence (this repo records findings in archived
+`## Review` sections, not GitHub comments) — clean no-op.
+Diff-bug lens: 3 findings, all real, all confirmed by the orchestrator by
+direct execution before fixing. A fourth was raised by the orchestrator.
+
+- **F1 — the shipped template tripped the shipped advisory.** T6 wrote a
+  three-physical-line owner comment; T4's `_LOG_COMMENT` matched only a
+  one-line comment, so every milestone born from the template emitted three
+  spurious WARNs before its first entry. Reproduced verbatim against a
+  template-derived file. **Fixed:** stateful multi-line comment tracking in
+  `check_worklog_format`, plus `test_the_shipped_template_does_not_trip_the_advisory`,
+  which reads the REAL template so the two halves can never drift again — the
+  pairing whose absence let this ship.
+- **F2 — `milestone_worklog_lines` collected the opening fence delimiter but
+  not the closing one**, so a 3-line fenced offense surfaced as 2 findings and
+  the function disagreed with the cap counters about the section it shares with
+  them. Reproduced. **Fixed:** `elif in_log` → `if in_log`, plus a regression
+  test asserting 3 findings for a 3-line block.
+- **F3 — retained prose made false by this diff.** "A file with no `## Review`
+  section counts whole" is wrong once a work log is exempt, and three further
+  spots still described a one-section exemption. **Fixed** in all four:
+  rulebook, `milestone_body_line_count` docstring, `check_caps` comment,
+  template `## Review` comment.
+- **F4 (orchestrator) — M69's on-point prior rejection was never superseded.**
+  `archive/M69-cap-overrun-diagnostic.md:16` records "work log stays counted
+  (not exempted like `## Review`…)"; D-046 quotes D-030's rejection but never
+  M69's, so M77 planned against a standing rejection without citing it. Both
+  fan-out lenses saw it and ruled it intentional; the substance is, but the
+  record was incomplete. **Fixed:** milestone-local `## Decisions` entry above,
+  the same form M69 used — D-046 is history under IP4 and cannot be edited.
+
+**Scorer:** returned 5 / 5 / 8 / 10, on the explicit ground that each finding
+was *already fixed in the working tree* when it looked. It confirmed all four
+were real (verifying F1 by execution). The scores measure "anything left to
+fix", not the rubric's "is this a real defect" — a race artifact of fixing
+during scoring, recorded here so the numbers are not later misread as false
+positives. No finding was dropped on score; all four were actioned on
+operator judgment (M73).
+
+### Final verification (2026-07-18, post-fix)
+
+skills 304 / scripts 111 / hooks 72, all exit 0; `cairn_validate` exit 0 with
+`OK work-log format`. Template probe: zero findings.

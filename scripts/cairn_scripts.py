@@ -295,10 +295,12 @@ def milestone_body_line_count(path):
     classifies it as history — never edited — so counting it could leave an
     over-cap file fixable only by an edit IP4 forbids (D-046/M77); the
     wrapped-entry advisory in `cairn_validate`, not the cap, is what keeps the
-    now-unbudgeted section honest. A file with no `## Review` section counts
-    whole (back-compat); a fenced `## Review` or `## Work log` is content, not
-    a boundary (M45), and only exact headings match — `## Work log notes` stays
-    counted. Returns None if the file is unreadable."""
+    now-unbudgeted section honest. A file with no `## Review` section counts to
+    EOF — still less its work log, which is exempt wherever it sits, so this is
+    back-compatible only for the pre-M77 case of a file with no work log. A
+    fenced `## Review` or `## Work log` is content, not a boundary (M45), and
+    only exact headings match — `## Work log notes` stays counted. Returns None
+    if the file is unreadable."""
     scan = _plan_owned_scan(path)
     if scan is None:
         return None
@@ -327,8 +329,8 @@ def milestone_worklog_lines(path):
         if fence is not None:
             if stripped.startswith(fence):
                 fence = None
-            elif in_log:
-                out.append((i, line))
+            if in_log:  # both delimiters belong to the section, like the
+                out.append((i, line))  # cap counters count them (M77 review F2)
             continue
         if stripped.startswith("```") or stripped.startswith("~~~"):
             fence = "```" if stripped.startswith("```") else "~~~"
