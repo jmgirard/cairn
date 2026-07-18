@@ -73,10 +73,38 @@ content. Search (DOI, publisher, OSF); if inaccessible, stop and ask the
 user for the PDF.
 
 **Source ingestion:** PDF → `cairn/references/pdf/` (gitignored).
-Summary → `cairn/references/<citekey>.md` (committed): full citation,
+Summary → `cairn/references/<citekey>.md` (committed), authored from
+`skills/shared/templates/source-note.md`: full citation,
 extracted values with page/table anchors, verbatim-critical values quoted
 exactly, which tests/oracles trace to it, open questions. One line in
 `INDEX.md`. Tests and milestones cite `citekey (p. N)`, never restate.
 (The `references/` page *types* and the page⇒INDEX-line rule are universal
 file-family rules and live in tracking-rules "References pages"; this
 workflow is the numeric/scoring-source instance of them.)
+
+**Standing facts vs. dated observations.** A committed `references/` page —
+source note and synthesis note alike — makes two kinds of claim, and they age
+differently.
+A **standing fact** is a claim about the *source*: an extracted value, a printed formula, a verbatim wording, a page or table anchor.
+A **dated observation** is a claim about the *repo's own state*: what is on the shelf, what has or has not been read, what another page does or does not yet say, what a later task must still check.
+A standing fact holds as long as the source does. A dated observation is true
+at a moment and can go stale within the hour — `cairn/references/pdf/` is a
+live directory the maintainer adds to mid-session, and a note written by a
+subagent is a snapshot of the repo at write time, not at merge time. So a
+dated observation carries `— observed YYYY-MM-DD` inline on the claim itself,
+where a reader meets it, and is never recorded as a standing fact. The
+undated absence claim — "not present", "not retrieved", "not yet checked",
+"must be verified when X is written" — is the specific failure this rule
+exists to stop; it reads as durable, is believed by every later plan-time
+harvest, and is routinely false by merge time.
+
+**Page provenance.** Every committed `references/` page carries a
+`**Provenance.**` block naming: citekey, full citation, source pointer (the
+shelf PDF path, or the URL and retrieval record for a non-PDF source),
+ingested date, ingesting milestone, pagination basis (`—` where the source is
+unpaginated), and extraction-verified status — whether the extracted values
+have been re-read against the source, or are an unverified first pass.
+The block is prose in the page's own idiom, not frontmatter.
+Provenance is what lets a reader judge a page's age without opening the
+source; the verified status is what keeps an unchecked subagent extraction
+from reading like a confirmed one.
