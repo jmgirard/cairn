@@ -1142,6 +1142,70 @@ REGISTRY = [
         target=RULES,
         block="never anything genuinely new (D-044)",
     ),
+    # M82: /cairn-init §3 performs the rename its own `scaffold deprecations`
+    # advisory names. One entry per independently-load-bearing block: the
+    # advisory-driven generality (blanking it re-narrows the step to the one
+    # rename D-047 made), and each of the three consent rules, whose label and
+    # rule are fused into one bold token so a swap cannot survive (M74/M76).
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestDeprecationMigration.test_step_is_driven_by_advisory_output_not_a_named_rename",
+        target="skills/cairn-init/SKILL.md",
+        block="Act on every line the advisory prints, never on a pair named in this text",
+    ),
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestDeprecationMigration.test_successor_entry_is_added_without_an_ask",
+        target="skills/cairn-init/SKILL.md",
+        block="**Add the successor entry, no ask.**",
+    ),
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestDeprecationMigration.test_directory_move_is_gated_on_an_explicit_ask",
+        target="skills/cairn-init/SKILL.md",
+        block="**Only the old directory present: move it only after an explicit ask.**",
+    ),
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestDeprecationMigration.test_both_directories_present_is_never_clobbered",
+        target="skills/cairn-init/SKILL.md",
+        block="**Both directories present: surface, never clobber.**",
+    ),
+    # M82 review send-back. F1: the shelf must stay covered at every moment, so
+    # the removal rule is load-bearing on its own. F3: the cases are only safe
+    # as exclusive states — as a sequence the move preceded the clobber check.
+    # F2: the closing paragraph must keep saying what the check cannot prove.
+    # F6: AC1's §0 pointer was independently load-bearing and unregistered.
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestDeprecationMigration.test_superseded_entry_survives_until_its_directory_is_gone",
+        target="skills/cairn-init/SKILL.md",
+        block="**Remove `<old>` from `.gitignore` only once the old directory is gone from disk.**",
+    ),
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestDeprecationMigration.test_cases_are_mutually_exclusive_and_chosen_before_any_move",
+        target="skills/cairn-init/SKILL.md",
+        block="Then take **exactly one** of the cases below, chosen by what is on disk",
+    ),
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestDeprecationMigration.test_closing_check_does_not_claim_to_verify_the_directory",
+        target="skills/cairn-init/SKILL.md",
+        block="**A quiet advisory confirms the entry, not the directory** — `check_gitignore_deprecations` reads `.gitignore` alone and never the filesystem,",
+    ),
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestDeprecationMigration.test_repair_commit_cannot_sweep_an_unmigrated_shelf",
+        target="skills/cairn-init/SKILL.md",
+        block="**stage the files repair touched by path, never `git add -A` or `.`**",
+    ),
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestRepairSection.test_repair_has_its_own_section",
+        target="skills/cairn-init/SKILL.md",
+        block="- Already on cairn → **repair mode** (§3).",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
