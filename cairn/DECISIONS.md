@@ -959,3 +959,54 @@ boundary-nudge family, so the pattern is now a family, not a one-off.
 Delivered by M71. Live-fire waits for a brand-new conversation (hook
 registrations snapshot at process start — M60). If the nudge proves noisy, or
 a channel needs blocking rather than pairing, this is the entry to supersede.
+
+### D-043 (2026-07-18): cairn's collaboration model is one operator plus outside contributions — the single-writer assumption is stated, not engineered away
+
+**Context:** Asked how cairn would survive a collaborative workflow with
+occasional outside PRs and issues, three Explore sweeps found the
+single-writer assumption is nowhere stated (`solo|team|concurrent|contributor`
+returns zero hits in `tracking-rules.md`, `DESIGN.md`, and `README.md`) and
+therefore nowhere reasoned about. Two distinct failure families surfaced.
+(a) **Intake:** the doctrine names a destination with no door — external PRs
+are to be "reviewed to the hotfix bar" (`tracking-rules.md:199-203`) but
+`/hotfix` is branch-creation-first (`skills/hotfix/SKILL.md:27-30,45`), its
+`description:` fires only on bug *reports*, and no skill or script ever reads
+GitHub (zero `gh`/`urllib` hits across all five `scripts/*.py`). (b)
+**Concurrency:** two operators race the tracking files — no ID allocator,
+duplicate D-numbers auto-merge and validate green, `/milestone-plan` never
+fetches, and `check_single_in_progress` is a hard FAIL they trip by
+construction. Separately, RR01 §10 rec 4 had already recorded that a
+GitHub-UI merge, a merge queue, or an unplugged contributor bypasses
+`merge_guard` entirely; it was never actioned.
+
+**Decision:** cairn's supported collaboration model is **one cairn operator,
+with contributions arriving from people who do not run cairn**. Three choices
+follow. (1) **Boundary over machinery:** where enforcement is
+agent-session-scoped and degrades to honor-system, cairn says so in the
+rulebook and README rather than pretending otherwise — every guard is a
+PreToolUse hook on the local agent's own Bash calls, so no amount of prose
+makes it cover a UI merge. Closes RR01 rec 4. (2) **The marker gains a
+binding:** `merge_guard` today only checks that `cairn/.merge-approved`
+*exists* (`hooks/merge_guard.py:46-60`) and never reads it, so a marker
+written for one PR authorizes any merge in that clone; it will parse the body
+and refuse a `gh pr merge` for a PR the marker does not name, with the
+no-PR-token body keeping today's behavior for back-compat. (3) **Intake gets
+a door, not a new skill:** `/hotfix` learns to adopt an existing PR
+(`gh pr checkout`) rather than always creating one, and `/milestone` learns to
+enumerate open issues; a tenth skill was rejected — most steps would duplicate
+`/hotfix`, and the DESIGN skills count is guard-asserted. Rejected: writing
+the doctrine down without the marker fix (leaves a live forgery-adjacent hole
+the same milestone is documenting); a standalone `/pr-intake` skill; and
+solving concurrency now (it is not the described need — postponed in the
+ROADMAP, which is where postponement lives, not rejected here).
+
+**Consequences:** The single-writer assumption stops being invisible. The
+approval marker becomes a token about a specific PR rather than a bare
+presence bit. `/hotfix` becomes bidirectional — it can author a fix or adopt
+one — which makes the intake paragraph's hotfix-bar disposition executable for
+the first time. Delivered by M72 (boundary + binding), M73 (the PR door), M74
+(issue enumeration). IP1 is touched only in its documentation and mechanical
+backing, never weakened. If a second cairn operator ever appears, the
+concurrent-operator candidate row is the entry point; if the marker binding
+proves too strict for a workflow that merges without `gh pr merge`, this is
+the entry to supersede.
