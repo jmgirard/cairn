@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M83: Staleness-parser hardening — the extraction status stops being guessed at
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP2   <!-- owner: plan · create/amend-via-gate -->
@@ -95,6 +95,14 @@ opposite protections against the same parser).
 - [x] T7. Run the real advisory over the real 16 pages, reconcile against
       T1's baseline, record the before/after in this file with
       justifications, and run all three suites.
+- [ ] T8. Gated Scope amendment (added at the 2026-07-18 merge gate, user
+      declined to merge until the plan text matches what shipped). Scope's
+      "Classification moves to the status's leading clause … `ambiguous`
+      (leading token contradicted later)" describes the superseded first cut;
+      the shipped mechanism is clause-scoped negation across every clause, per
+      M83-D3. Amend via `/milestone-implement` step 6 — Scope is
+      amend-via-gate, not review-owned — then re-review. No code change: every
+      criterion already passes as written.
 
 ## Work log
 
@@ -107,6 +115,7 @@ opposite protections against the same parser).
 - 2026-07-18: out-of-scope defect found and left alone: `_provenance_block` joins collected blocks with no blank line (`cairn_validate.py:294`), so a body line matching the provenance heading starts a second block that the extraction status then absorbs — `oracle-discipline-notes.md`'s status parses as 652 chars, not 186. Candidate row added; no classification changes today.
 - 2026-07-18: review — PR #81 opened (draft); all six criteria carry fresh evidence recorded in the Review section, consistency gate green; prior-PR lens returned no findings, diff-bug and blame lenses still running.
 - 2026-07-18: review findings — 3 lenses + scorer; 5 diff-bug findings, 3 scored >=80 and 4 sub-threshold, all fixed on the branch (F1/F2/F3 were one root cause: negation read as a phrase list instead of a clause property). 4 regression tests added; shipped-page classification unchanged.
+- 2026-07-18: merge gate — approval WITHHELD by user; not a gate failure (all six criteria pass as written, consistency gate green). Requested: amend Scope so the plan text describes the shipped clause-scoped mechanism rather than the superseded leading-clause one. Status back to in-progress, logged as T8; PR #81 stays open.
 
 ## Decisions
 
