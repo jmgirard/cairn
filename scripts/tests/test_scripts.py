@@ -912,6 +912,72 @@ class TestReferencesStaleness(ScriptCase):
                             proc, "extraction status contradicts itself"
                         )
 
+    # --- M83 review findings: negation is a property of the clause ----------
+
+    def test_negated_verb_reads_as_never_not_as_a_verification(self):
+        # Review F1/92 + F2/92. The first cut matched an affirmative verb set
+        # against a fixed list of negative PHRASES, and the list covered only
+        # the word `verified` — so a negated `checked against` / `read against`
+        # read as an affirmative VERIFICATION. That broke both ways at once:
+        # a plainly-never page was reported as self-contradicting, and a page
+        # saying in plain words it was never checked was cleared via the
+        # ingested-date fallback.
+        for status in (
+            # verbatim the prior-status prose task-master.md carried 2026-07-18
+            "unverified — [S] subagent study of the clone and docs, with no "
+            "claim checked against the source at ingestion",
+            "not checked against the source at ingestion — [S] subagent study",
+            "nothing was checked against the source",
+            "no section was verified against the source",
+            "unverified — nothing read against the source",
+        ):
+            with self.subTest(status=status[:46]):
+                proc = self.install(
+                    self.tree.build(),
+                    ingested=days_ago(400),
+                    status=f"{status} — observed {days_ago(0)}.",
+                )
+                self.assertFlagged(proc, "records no verified re-check")
+
+    def test_affirmative_re_verification_is_not_read_as_negated(self):
+        # Review F3/76. Excluding a `re-` prefix wholesale — the first fix for
+        # the template's `not yet re-read against the source` — also rejected
+        # the affirmative form of the same verb, so a genuine re-verification
+        # with no date in its status was flagged `unrecognized`. The negator,
+        # not the hyphen, is what distinguishes them.
+        for status in (
+            "re-verified against the source; no changes found",
+            "re-checked against the source at ingestion",
+        ):
+            with self.subTest(status=status[:40]):
+                proc = self.install(
+                    self.tree.build(),
+                    ingested=days_ago(3),
+                    status=f"{status} — observed {days_ago(0)}.",
+                )
+                self.assertClean(proc)
+
+    def test_forward_looking_date_does_not_hijack_the_future_flag(self):
+        # Review F4/83. Taking max() over every date in the status let an
+        # unrelated forward-looking date ("next re-check due …") report a page
+        # verified weeks ago as dated in the future. Only a status whose dates
+        # are ALL future is a future-dated page.
+        proc = self.install(
+            self.tree.build(),
+            status=f"verified {days_ago(17)} against the source; next re-check "
+            f"due {days_ago(-140)} — observed {days_ago(0)}.",
+        )
+        self.assertClean(proc)
+
+    def test_a_status_dated_only_in_the_future_is_still_flagged(self):
+        # The other side of F4: fixing it must not silence F5 itself.
+        ahead = days_ago(-30)
+        proc = self.install(
+            self.tree.build(),
+            status=f"verified {ahead} against the source — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, f"dated {ahead}, in the future")
+
     # --- AC2: the three axes, varied independently ---------------------------
 
     def test_decoration_layout_and_phrasing_vary_independently(self):

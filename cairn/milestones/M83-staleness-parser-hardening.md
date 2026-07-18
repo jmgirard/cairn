@@ -106,6 +106,7 @@ opposite protections against the same parser).
 - 2026-07-18: T7 — 0 of 16 pages reclassified (14 ok, 2 exempt, unchanged); `_last_verified` still has exactly one caller; `check_references` output identical. All three suites green by explicit exit code.
 - 2026-07-18: out-of-scope defect found and left alone: `_provenance_block` joins collected blocks with no blank line (`cairn_validate.py:294`), so a body line matching the provenance heading starts a second block that the extraction status then absorbs — `oracle-discipline-notes.md`'s status parses as 652 chars, not 186. Candidate row added; no classification changes today.
 - 2026-07-18: review — PR #81 opened (draft); all six criteria carry fresh evidence recorded in the Review section, consistency gate green; prior-PR lens returned no findings, diff-bug and blame lenses still running.
+- 2026-07-18: review findings — 3 lenses + scorer; 5 diff-bug findings, 3 scored >=80 and 4 sub-threshold, all fixed on the branch (F1/F2/F3 were one root cause: negation read as a phrase list instead of a clause property). 4 regression tests added; shipped-page classification unchanged.
 
 ## Decisions
 
@@ -125,6 +126,22 @@ opposite protections against the same parser).
   `read against` matching inside `re-read against` — the source-note
   template's own unverified wording, which would have turned the template's
   sanctioned form into a contradiction.
+
+- **M83-D3 (supersedes M83-D1 and M83-D2; review, 2026-07-18).** Both earlier
+  decisions describe the first cut, which the review broke in both directions
+  (F1/92, F2/92). The shipped mechanism is neither "leading clause decides"
+  (D1) nor "strip never-phrases, then look for a verification" (D2): a status
+  is split into clauses, and **every** verification-verb occurrence in each
+  clause is read as affirmative or negated according to whether a negator
+  precedes it *in that clause*. Both a `never` and a `verified` claim anywhere
+  → `ambiguous`. D1 and D2 stand as the record of what was tried; this is what
+  ships. Consequence for the plan text: Scope and AC1 describe classification
+  in leading-clause terms. Every acceptance criterion still passes **as
+  written** — the behavior AC1 names is delivered — but the Scope sentence
+  "Classification moves to the status's leading clause" now describes the
+  superseded mechanism rather than the shipped one. Surfaced at the merge gate
+  rather than silently reinterpreted (IP2); Scope is amend-via-gate and was
+  deliberately not edited review-side.
 
 ## Review
 
@@ -146,9 +163,32 @@ opposite protections against the same parser).
   passes; a date 30 days ahead reports `dated <date>, in the future` instead
   of a negative age.
 - **AC4 (no silent reclassification).** `test_every_shipped_page_keeps_its_pinned_state`
-  passes over the real `cairn/references/` tree: 0 of 16 pages changed state
-  (14 ok, 2 exempt, before and after). No page changed, so no justifications
-  are owed.
+  passes over the real `cairn/references/` tree. The criterion asks *this
+  file* to carry the before/after state, so it is recorded here rather than
+  left in the test's `EXPECTED` map (review F7/58: the states lived only in
+  the test, and ticking the box on the strength of a summary line would have
+  been the charitable reading the never-reinterpret rule forbids). `before` is
+  `main`'s `_last_verified`, `after` is this branch's, both over the same 16
+  pages. 0 changed, so no justifications are owed.
+
+  | Page | Before | After |
+  |---|---|---|
+  | `anthropic-code-review.md` | ok | ok |
+  | `backlog-meridian.md` | ok | ok |
+  | `bmad-method.md` | ok | ok |
+  | `ccpm.md` | ok | ok |
+  | `claude-code-hooks.md` | ok | ok |
+  | `claude-md-management.md` | ok | ok |
+  | `competitive-landscape.md` | ok | ok |
+  | `design-interview-notes.md` | exempt | exempt |
+  | `desktop-toc-mechanism.md` | ok | ok |
+  | `feature-dev.md` | ok | ok |
+  | `llm-wiki.md` | ok | ok |
+  | `migration-pilot-notes.md` | exempt | exempt |
+  | `oracle-discipline-notes.md` | ok | ok |
+  | `oracle-doctrine-intraclass-notes.md` | ok | ok |
+  | `spec-kit.md` | ok | ok |
+  | `task-master.md` | ok | ok |
 - **AC5 (blast radius).** `_last_verified` occurs twice in the file — one
   definition, one call site (the advisory). `check_references` output over
   the 16 pages is identical pre and post.
@@ -163,3 +203,58 @@ opposite protections against the same parser).
   so that half is a clean no-op.
 - No `DESIGN.md` principle changed (IP2 is worked *under*, not modified), so
   `cairn_impact.py --changed` is skipped per the gate's own condition.
+
+### Independent review — 3 lenses + scorer
+
+Blame-history: faithful to prior intent (M81's `for_extraction` separation and
+paragraph-collection both untouched; the M81 precedence is superseded openly,
+not overwritten). Prior-PR: no findings — this repo records review findings in
+milestone archives, not GitHub comments, and none is regressed. Diff-bug: five
+findings, all reproduced by the orchestrator before triage.
+
+**Actioned (≥80), all fixed on the branch:**
+
+- **F1/92** — the contradiction test stripped only negations of the word
+  `verified`, so a negated `checked against` / `read against` survived and read
+  as an independent verification. `unverified — … with no claim checked against
+  the source at ingestion` — verbatim the prose `task-master.md` carried on
+  2026-07-18 — reported "extraction status contradicts itself". A false
+  positive on the very wording that motivated the milestone (D-023).
+- **F2/92** — the same gap in the other direction: `not checked against the
+  source at ingestion` read as verified and reached the ingested-date fallback,
+  so a page saying in plain words it was never checked got a clean bill. F4's
+  own failure shape, surviving under the verbs M83 itself added.
+- **F4/83** — the future guard took `max()` over every date in the status, so
+  `verified <date>; next re-check due <later date>` reported a page verified 17
+  days ago as dated in the future.
+
+**Sub-threshold, folded into the same fix rather than deferred** (LESSONS M73 —
+the score gates the actioned list, not the operator's judgment):
+
+- **F3/76** — excluding a `re-` prefix wholesale also rejected affirmative
+  re-verifications (`re-verified against the source` → `unrecognized`). Same
+  root cause as F1/F2: negation belongs to the clause, not to a phrase list.
+- **F5/72** — `_split_status` was provably dead for the outcome (0 divergences
+  over 104 reachable combinations) while the docstring documented it as the
+  mechanism deciding ambiguity. Replaced by the clause scan it now describes.
+- **F6/74** — `_UNVERIFIED` left unreferenced above a comment asserting the
+  premise F3 disproved. Now carries its own negation and is referenced again.
+- **F7/58** — AC4 asked *this file* for the before/after state; the states
+  lived only in the test's `EXPECTED` map. Recorded above rather than waved
+  through on a charitable reading.
+
+**Root cause.** F1–F3 were one defect: the fix matched affirmative verbs against
+a fixed list of negative phrases, and the list only covered `verified`.
+Negation is a property of a clause, so it is now detected as one —
+`_clause_claims` reads every verb occurrence and asks whether a negator
+precedes it in that clause. Clause scope is what keeps it narrow: the three
+`partly verified at ingestion` pages carry `not re-read since` in a *later*
+clause, which a status-wide negation search would have swept up.
+
+The `wrapped-at-boundary` fixture earned its place twice — it failed the first
+review-fix too, catching a first-match-wins read that reproduced F3 one layer
+down once the rejoined wrap put both claims in a single clause.
+
+4 regression tests added (159 tests, was 155); 3 of the 4 fail against the
+pre-review-fix code, the fourth is a no-regression guard for F5. Shipped-page
+classification is unchanged by the review fixes: still 14 ok, 2 exempt.

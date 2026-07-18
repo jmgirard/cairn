@@ -697,37 +697,42 @@ _ISO_DATE = re.compile(r"(?<!\d)(\d{4})-(\d{2})-(\d{2})(?!\d)")
 # An explicit assertion that the page was never checked against its source.
 # The two states are mutually exclusive by template design — the shipped forms
 # are `|`-separated alternatives — so this is read before any date.
-_UNVERIFIED = re.compile(r"(?<![A-Za-z0-9])unverified(?![A-Za-z0-9])", re.I)
-# M83: the state token is read from the status's LEADING CLAUSE, because that
-# is where every shipped page and both templates put it. Scanning the whole
-# status (M81's shape) let one word anywhere override a dated claim above it —
-# a page reading "verified 2026-07-18 … (prior status: unverified)" reported no
-# verified re-check at all (F3, hit live 2026-07-18). Testing dates first
-# instead only mirrors the bug, so the two are compared and a disagreement is
+# M83: a status is classified CLAUSE BY CLAUSE, and each clause's claim is read
+# as the verb it uses plus whether that verb is negated. M81 scanned the whole
+# status for one word, so a single `unverified` anywhere overrode a dated
+# verification above it — a page reading "verified 2026-07-18 … (prior status:
+# unverified)" reported no verified re-check at all (F3, hit live 2026-07-18).
+# Testing dates first instead only mirrors the bug, so contradicting clauses are
 # reported rather than silently resolved.
-_CLAUSE_BOUNDARY = re.compile(r"\s+—\s+|;\s+")
-# Narrow by design. `not re-read since` is about re-reading, not about initial
-# verification, and three shipped `partly verified at ingestion` pages carry it
-# in their remainder — widening this to catch "not …" reclassifies all three,
-# the M79-F5 trap the M81 row warned about (LESSONS: widening a capture class
-# admits non-targets too).
-_NEVER_TOKEN = re.compile(
-    r"(?<![A-Za-z0-9])(?:unverified|(?:never|not)(?:\s+been)?\s+verified)"
-    r"(?![A-Za-z0-9])",
-    re.I,
-)
+#
+# The first cut of this fix matched an affirmative verb set and a separate
+# never-phrase set, which the M83 review caught failing in both directions
+# (F1/92, F2/92): the never-set negated only the word `verified`, so `no claim
+# checked against the source` read as a VERIFICATION — inventing a
+# contradiction on the very prose that motivated the milestone, and clearing a
+# page that says in plain words it was never checked. Negation is a property of
+# the clause, not a fixed phrase list, so it is detected as one.
+_CLAUSE_BOUNDARY = re.compile(r"\s+—\s+|[;,]\s+")
 # The verification verbs the shipped corpus actually uses, not just the two the
 # templates sanction. The lookbehind keeps `verified` from matching inside
-# `unverified`; `partly verified` is deliberately a MATCH — a partial
-# verification is a verification with a scope note, and its remainder says so.
-# The hyphen in the lookbehind is load-bearing and the suite proved it: without
-# it `read against` matches inside `not yet re-read against the source`, the
-# template's own unverified wording, turning a plainly-never page into a
-# self-contradiction. A `re-` prefix negates the claim the verb makes.
-_VERIFIED_TOKEN = re.compile(
-    r"(?<![-A-Za-z0-9])(?:verified|read\s+against|checked\s+against|"
+# `unverified`, which carries its own negation. A `re-` prefix is deliberately
+# NOT excluded here (review F3/76): `re-verified against the source` is an
+# affirmative re-verification, and the template's `not yet re-read against the
+# source` is caught by its negator instead of by the hyphen.
+_VERIFY_VERB = re.compile(
+    r"(?<![A-Za-z0-9])(?:re-)?(?:verified|read\s+against|checked\s+against|"
     r"read\s+directly)(?![A-Za-z0-9])",
     re.I,
+)
+# `unverified` is a verb carrying its own negator.
+_UNVERIFIED = re.compile(r"(?<![A-Za-z0-9])unverified(?![A-Za-z0-9])", re.I)
+# Negators, matched only WITHIN the clause holding the verb and only BEFORE it.
+# Clause-scoping is what keeps this narrow: three shipped `partly verified at
+# ingestion` pages carry `not re-read since` in a LATER clause, and a status-wide
+# negation search would sweep all three up — the M79-F5 trap the M81 row warned
+# about (LESSONS: widening a capture class admits non-targets too).
+_NEGATOR = re.compile(
+    r"(?<![A-Za-z0-9])(?:never|not|nothing|none|no)(?![A-Za-z0-9])", re.I
 )
 # A first-hand record has no external source to re-read, so asking it to
 # re-verify asks the impossible. The exemption is earned by the status SAYING
@@ -799,28 +804,50 @@ def _extraction_status(block):
     return None
 
 
-def _split_status(status):
-    """An extraction status as (leading clause, remainder). The boundary is the
-    first em-dash or semicolon — the two separators every shipped page and both
-    templates use between the state claim and its qualifications
-    (`verified at ingestion — full source read`, `verified by live probe
-    2026-07-12; a re-probe would be needed`). No boundary means the whole
-    status is the leading clause and the remainder is empty."""
-    parts = _CLAUSE_BOUNDARY.split(status, 1)
-    return parts[0], parts[1] if len(parts) > 1 else ""
+def _clauses(status):
+    """An extraction status split into its clauses, on em-dash, semicolon or
+    comma — the separators every shipped page and both templates use between a
+    state claim and its qualifications (`verified at ingestion — full source
+    read`, `verified by live probe 2026-07-12; a re-probe would be needed`).
+
+    Clause scope is what keeps negation detection narrow. Three shipped
+    `partly verified at ingestion` pages carry `not re-read since` in a later
+    clause; a status-wide negation search would read that as negating their
+    verification and sweep all three up (the M79-F5 trap)."""
+    return [c for c in _CLAUSE_BOUNDARY.split(status) if c.strip()]
 
 
-def _state_token(text):
-    """The verification state `text` asserts — "never" / "verified" / None.
-    Never-family is tested first so `never verified` cannot be read as a
-    verification by the substring `verified` inside it."""
-    if not text:
-        return None
-    if _NEVER_TOKEN.search(text):
-        return "never"
-    if _VERIFIED_TOKEN.search(text):
-        return "verified"
-    return None
+def _clause_claims(clause):
+    """Every claim one clause makes, as a set of "never" / "verified".
+
+    A claim is a verification verb plus whether it is negated, and the negator
+    must sit in this clause BEFORE the verb. Reading a fixed list of negative
+    PHRASES instead is what the M83 review broke twice (F1/92, F2/92): the list
+    covered only the word `verified`, so `no claim checked against the source`
+    parsed as an affirmative verification.
+
+    EVERY occurrence is read, not the first: a status hard-wrapped at its
+    em-dash is rejoined by `_extraction_status` with the separator gone, so a
+    contradiction that was written across two clauses arrives inside one. A
+    first-match-wins read answers with whichever claim it happens to meet
+    first — the F3 bug, one layer down. The boundary-wrap fixture caught this
+    twice, once against each shape of the fix."""
+    out = set()
+    if _UNVERIFIED.search(clause):
+        out.add("never")  # carries its own negator
+    for verb in _VERIFY_VERB.finditer(clause):
+        out.add(
+            "never" if _NEGATOR.search(clause[: verb.start()]) else "verified"
+        )
+    return out
+
+
+def _status_claims(status):
+    """The set of claims a status makes across all its clauses."""
+    out = set()
+    for clause in _clauses(status):
+        out |= _clause_claims(clause)
+    return out
 
 
 def _last_verified(block, today=None):
@@ -832,23 +859,27 @@ def _last_verified(block, today=None):
     Precedence (M81 implement gate; restructured at M83):
       1. an explicit "nothing to re-verify" → exempt. Searched over the WHOLE
          status: two shipped pages put the phrase in a trailing clause;
-      2. the state token from the LEADING clause, with the remainder read the
-         same way. The two disagreeing → ambiguous, never a silent pick (M83,
-         F3): whichever one is tested first, testing one first is the bug;
-      3. `never` → never; `verified` → the freshest date in the status, or the
-         block's ingested date ("verified at ingestion", the commonest shipped
-         form, literally names it, and demanding an explicit date there would
-         falsely flag five template-sanctioned pages);
-      4. no state token at all, but a date → ok on that date. This is how
+      2. the claims its clauses make, each read as a verification verb plus
+         whether that verb is negated in its own clause. Both a `never` and a
+         `verified` claim → ambiguous, never a silent pick (M83, F3): whichever
+         one is tested first, testing one first is the bug;
+      3. `never` → never; `verified` → the freshest non-future date in the
+         status, or the block's ingested date ("verified at ingestion", the
+         commonest shipped form, literally names it, and demanding an explicit
+         date there would falsely flag five template-sanctioned pages);
+      4. no claim at all, but a date → ok on that date. This is how
          `derived — … none re-read since 2026-07-11` and `a 2026-07-12
          snapshot` classify: neither claims verification, both date themselves;
-      5. no state token and no date → unrecognized (M83, F4). Before, this fell
+      5. no claim and no date → unrecognized (M83, F4). Before, this fell
          through to the ingested date and read as a confirmed verification, so
          `never verified against the source` classified `ok`.
 
-    A chosen date later than `today` is returned as `future` (M83, F5): it made
-    the age negative, which no threshold can exceed, so the page was exempt
-    forever with nothing said."""
+    `future` (M83, F5) is returned only when EVERY date in the status is later
+    than `today`. A future date made the age negative, which no threshold can
+    exceed, so the page was exempt forever with nothing said — but a status may
+    legitimately carry a forward-looking date beside its verification ("verified
+    2026-07-01; next re-check due 2026-12-01"), and taking the max there
+    reported a page verified weeks ago as dated in the future (review F4/83)."""
     raw = _extraction_status(block)
     if not raw:
         return "missing", None
@@ -857,28 +888,28 @@ def _last_verified(block, today=None):
     if _NOTHING_TO_VERIFY.search(status):
         return "exempt", None
 
-    # Contradiction is tested over the WHOLE status, not across the clause
-    # boundary, because the boundary is not always there to test across: a
-    # status hard-wrapped at its em-dash comes back from `_extraction_status`
-    # with the lines joined by a space and the separator gone, so both claims
-    # land in the leading clause and the lead alone would answer "never" — the
-    # F3 bug in wrapped form. Caught by the boundary-wrap fixture, which is the
-    # M81 lesson paying off: the midpoint-wrap axis could not reach this.
-    # The never-phrases are removed before looking for an independent
-    # verification claim: `never verified` contains `verified`, and reading it
-    # as both families would make every plainly-never page a contradiction.
-    if _NEVER_TOKEN.search(status) and _VERIFIED_TOKEN.search(
-        _NEVER_TOKEN.sub(" ", status)
-    ):
+    # Claims are gathered from every clause, not just the leading one: a status
+    # hard-wrapped at its em-dash comes back from `_extraction_status` with the
+    # lines joined by a space and the separator gone, so a lead-only read sees
+    # both claims at once and answers with whichever is tested first — the F3
+    # bug in wrapped form. Caught by the boundary-wrap fixture, which is the M81
+    # lesson paying off: the midpoint-wrap axis could not reach it.
+    claims = _status_claims(status)
+    if len(claims) > 1:
         return "ambiguous", None
-    lead, rest = _split_status(status)
-    state = _state_token(lead) or _state_token(rest)
+    state = next(iter(claims), None)
 
     if state == "never":
         return "never", None
 
     dates = _iso(status)
-    when = max(dates) if dates else None
+    past = [d for d in dates if d <= today]
+    if past:
+        when = max(past)
+    elif dates:
+        return "future", max(dates)
+    else:
+        when = None
     if when is None and state == "verified":
         ingested = _PROV_INGESTED.search(block)
         if ingested:
@@ -886,7 +917,9 @@ def _last_verified(block, today=None):
             if found:
                 when = found[0]
     if when is not None:
-        return ("future" if when > today else "ok"), when
+        # `when` is already known to be <= today: a future-only status returned
+        # above, and the ingested date is historical by construction.
+        return "ok", when
     if state is None:
         return "unrecognized", None
     # A status naming no date over a block naming no ingested date: the
