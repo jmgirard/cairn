@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M83: Staleness-parser hardening — the extraction status stops being guessed at
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP2   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m83-staleness-parser-hardening`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 
@@ -72,7 +72,7 @@ opposite protections against the same parser).
 
 ## Tasks
 
-- [ ] T1. Characterization test pinning the current `_last_verified` state of
+- [x] T1. Characterization test pinning the current `_last_verified` state of
       each of the 16 committed pages, as the AC4 baseline. Written and green
       against the *unmodified* function first.
 - [ ] T2. Restructure `_last_verified` to split the status into a leading
@@ -99,6 +99,7 @@ opposite protections against the same parser).
 ## Work log
 
 - 2026-07-18: created by /milestone-plan. Absorbs the grouped M81 candidate row (F3/68, F4/63, F5/62); F3 confirmed live 2026-07-18 during the task-master re-verification.
+- 2026-07-18: T1 — ledger test pins all 16 shipped pages (14 ok, 2 exempt); green against the unmodified function, mutation-checked (flipping one entry fails).
 
 ## Decisions
 

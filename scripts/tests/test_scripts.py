@@ -906,6 +906,62 @@ class TestReferencesStaleness(ScriptCase):
         self.assertGreaterEqual(found, 5, "template alternatives not parsed")
 
 
+class TestShippedPageStateLedger(unittest.TestCase):
+    """M83 AC4: the classification every committed page ACTUALLY gets, pinned.
+
+    This is a characterization test over the real `cairn/references/` tree,
+    not a fixture: M77's lesson is that the fixture copy is not the artifact,
+    and a parser change is exactly the kind of edit whose blast radius shows
+    up only against the shipped corpus.
+
+    It is meant to be updated — but only deliberately. A page whose state
+    changes here is a page whose staleness reporting changed, so the update
+    lands together with a one-line justification in the milestone/work log.
+    An unexplained edit to this map is the failure mode the test exists to
+    prevent (IP2: prior state is surfaced, never silently overridden)."""
+
+    # Baseline computed 2026-07-18 against the pre-M83 `_last_verified`.
+    EXPECTED = {
+        "anthropic-code-review.md": "ok",
+        "backlog-meridian.md": "ok",
+        "bmad-method.md": "ok",
+        "ccpm.md": "ok",
+        "claude-code-hooks.md": "ok",
+        "claude-md-management.md": "ok",
+        "competitive-landscape.md": "ok",
+        "design-interview-notes.md": "exempt",
+        "desktop-toc-mechanism.md": "ok",
+        "feature-dev.md": "ok",
+        "llm-wiki.md": "ok",
+        "migration-pilot-notes.md": "exempt",
+        "oracle-discipline-notes.md": "ok",
+        "oracle-doctrine-intraclass-notes.md": "ok",
+        "spec-kit.md": "ok",
+        "task-master.md": "ok",
+    }
+
+    def test_every_shipped_page_keeps_its_pinned_state(self):
+        mod = _load_validate()
+        refdir = SCRIPTS_DIR.parent / "cairn" / "references"
+        pages = sorted(
+            p for p in refdir.glob("*.md") if p.name != "INDEX.md"
+        )
+        # A glob that silently matched nothing would make every subTest below
+        # vacuous — the M79 vacuity trap in its cheapest form.
+        self.assertEqual(
+            {p.name for p in pages},
+            set(self.EXPECTED),
+            "committed references pages differ from the pinned ledger — add "
+            "the new page with its state, or remove the deleted one",
+        )
+        for page in pages:
+            with self.subTest(page=page.name):
+                block = mod._provenance_block(str(page), for_extraction=True)
+                self.assertIsNotNone(block, f"{page.name}: no provenance block")
+                state, _ = mod._last_verified(block)
+                self.assertEqual(state, self.EXPECTED[page.name])
+
+
 class TestDanglingIds(ScriptCase):
     """M57: the dangling-ID-token advisory. Known IDs = ROADMAP rows ∪
     live/archive milestone files ∪ D-entry headers; a bare unresolvable token
