@@ -17,7 +17,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 | M78 | Source-note shape — dated observations and page provenance | done | — | high | milestones/archive/M78-source-note-shape.md |
 | M79 | References content check — the lint stops being a filename census | done | M78 | normal | milestones/archive/M79-references-content-check.md |
 | M80 | References-page authoring — the ingestion trigger and the synthesis-note template | done | — | normal | milestones/archive/M80-references-authoring.md |
-| M81 | References staleness advisory — the provenance block gets a reader | planned | M80 | normal | milestones/M81-references-staleness-advisory.md |
+| M81 | References staleness advisory — the provenance block gets a reader | in-progress | M80 | normal | milestones/M81-references-staleness-advisory.md |
 
 ## Candidates
 
