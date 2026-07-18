@@ -81,7 +81,7 @@ issues — the scripts stay offline and stdlib-only
       the PR equivalent), the search-first cross-check, and the degradation
       clause. Keep it inside the "script deliberately does not judge these"
       block (`:64`) — this stays model judgment over a mechanical listing.
-- [ ] T2 — Add the triage disposition chip to §3 (`:83-101`), with the
+- [x] T2 — Add the triage disposition chip to §3 (`:83-101`), with the
       verbatim-above-the-chip requirement stated at the step; route the PR
       dispositions to `/hotfix` per M73.
 - [ ] T3 — Write the guard test; register it in the mutation harness; re-run
@@ -102,6 +102,7 @@ issues — the scripts stay offline and stdlib-only
 - 2026-07-18: /milestone-plan gated amendment — absorbed the M73-review-F5 candidate (stale `/hotfix` trigger prose in DESIGN + README) as AC6/T4 at user request; prior AC6 verify renumbered AC7/T5.
 - 2026-07-18: implement started on m74-issue-triage; gate settled three open choices (bullet not subsection, extend §3's existing triage option not a second chip, new guard file).
 - 2026-07-18: T1 — §2 untriaged-inboxes bullet is now a concrete step (both `gh` commands, search-first cross-check, three-case degradation clause); kept inside the `:64` judgment block per plan. Skills suite green (267).
+- 2026-07-18: T2 — §3 resolves the sweep: four named dispositions (candidate row / `/hotfix` / `/milestone-plan` / leave), PRs routed to M73's door, verbatim-above-the-chip stated; extended the existing triage option rather than adding a second chip. Both registered blocks verified still unique.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->

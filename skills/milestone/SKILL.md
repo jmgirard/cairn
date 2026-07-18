@@ -106,7 +106,23 @@ examples — only the applicable subset (≤4) is offered:
 - Review M<NN> → `/milestone-review M<NN>` (a milestone sits at `review`)
 - Plan the next milestone → `/milestone-plan` (nothing in flight; planned or
   candidate items exist)
-- Triage the flagged items (audit found problems needing user decisions)
+- Triage the flagged items (audit found problems needing user decisions,
+  including any untriaged inbox item §2 surfaced)
 - Stop here
+
+The §2 inbox sweep resolves here, and nowhere else. Each item takes exactly
+one disposition — you propose, the user chooses:
+
+- **candidate row** — the default for anything real but not urgent; one
+  ROADMAP row, search-first already applied at §2.
+- **`/hotfix`** — a user-visible bug, or an external PR that meets the
+  hotfix bar. This is the door M73 opened; route to it rather than inventing
+  a second intake mechanism.
+- **`/milestone-plan`** — anything larger than the hotfix bar.
+- **leave** — no row, no action, with the reason stated.
+
+Show every proposed disposition verbatim above the chip, never a count or a
+summary of them: the dispositions are what the user is accepting, so a
+paraphrase would have them approve text they never saw.
 
 Selecting a chip invokes that skill in this session. Never auto-proceed.
