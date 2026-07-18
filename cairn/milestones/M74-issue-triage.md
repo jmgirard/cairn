@@ -24,7 +24,9 @@ disposition for each.
 DECISIONS per the search-first rule); a triage acceptance chip in §3 showing
 each proposed disposition verbatim per D-037/D-038; clean degradation when
 `gh` is absent, unauthenticated, or the repo has no remote — report and skip,
-never fail the audit.
+never fail the audit; and the doc surfaces that still describe the pre-M73
+`/hotfix` trigger (`cairn/DESIGN.md:69-70`, `README.md:118` and `:194`),
+brought in line with the bidirectional description M73 shipped.
 
 **Out:** any writing to GitHub (labels, comments, closing issues) — cairn
 reads the inbox, it never manages it. Auto-creating candidate rows without the
@@ -51,7 +53,13 @@ issues — the scripts stay offline and stdlib-only
       registered in `skills/tests/test_mutation_harness.py` with the
       completeness meta-test green; `test_gate_conclusion_preview.py` still
       passes with the new chip wording.
-- [ ] AC6 — the `verify` slot is clean: all three `unittest discover` suites
+- [ ] AC6 — `cairn/DESIGN.md`'s Conventions bullet no longer says `/hotfix`
+      triggers only on bug reports, and README's `/hotfix` row + contributions
+      bullet name PR adoption; all three read consistently with the shipped
+      `skills/hotfix/SKILL.md` `description:`. Evidence: the passages quoted
+      beside that description, plus a repo-wide `git grep` for surviving
+      pre-M73 trigger prose (history files excepted, per M58).
+- [ ] AC7 — the `verify` slot is clean: all three `unittest discover` suites
       pass from the repo root.
 
 ## Coverage
@@ -63,6 +71,7 @@ issues — the scripts stay offline and stdlib-only
 - AC4 → T2
 - AC5 → T3
 - AC6 → T4
+- AC7 → T5
 
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
@@ -78,12 +87,19 @@ issues — the scripts stay offline and stdlib-only
 - [ ] T3 — Write the guard test; register it in the mutation harness; re-run
       `test_gate_wording.py` and `test_gate_conclusion_preview.py`, which
       assert on `/milestone`'s chip wording.
-- [ ] T4 — Run all three suites from the repo root.
+- [ ] T4 — Bring the doc surfaces in line with M73: rewrite
+      `cairn/DESIGN.md:69-70`'s trigger clause and `README.md:118`/`:194` so
+      the PR door is described where a reader looks for architecture. `git
+      grep` the whole repo for other pre-M73 trigger prose (M48/M58: sweep
+      live files, excluding only history — DECISIONS, CHANGELOG, legacy,
+      reviews archive).
+- [ ] T5 — Run all three suites from the repo root.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-18: created by /milestone-plan.
+- 2026-07-18: /milestone-plan gated amendment — absorbed the M73-review-F5 candidate (stale `/hotfix` trigger prose in DESIGN + README) as AC6/T4 at user request; prior AC6 verify renumbered AC7/T5.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
