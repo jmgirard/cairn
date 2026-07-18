@@ -90,7 +90,7 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
       confirm the marker line matches M72's bound form (no divergence).
 - [x] T5 — Update the frontmatter `description:` (`:3`) and the Intake
       paragraph (`tracking-rules.md:199-203`).
-- [ ] T6 — Write the guard tests; register in the mutation harness; re-run
+- [x] T6 — Write the guard tests; register in the mutation harness; re-run
       `test_search_first_candidates.py` and `test_idea_intake_gate.py`, both of
       which assert Intake-adjacent substrings.
 - [ ] T7 — Run all three suites from the repo root.
@@ -113,6 +113,9 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
   already matches M72's PR-bound form, left unchanged. verify clean.
 - 2026-07-18: T5 — /hotfix description names incoming PRs; Intake paragraph
   names /hotfix as the door. verify clean.
+- 2026-07-18: T6 — test_external_pr_intake.py (17 tests) + 9 mutation-registry
+  entries; completeness meta-test green; the two Intake-adjacent guards
+  (search-first, idea-intake) still pass. skills suite 246 → 263.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
