@@ -925,3 +925,37 @@ stands unchanged; no profile edit, no milestone. If a cairn-tracked R package
 ever needs machine-detectable dev increments (e.g. a downstream that gates on a
 mid-cycle feature), the maintainer bumps the suffix by hand per the convention
 — or supersede this entry to add cadence machinery.
+
+### D-042 (2026-07-18): Out-of-band idea capture is paired with a candidate row, never forbidden — rulebook rule + a D-017-shaped hook
+
+**Context:** Hit live in the circumplex repo: an idea surfaced as a
+background-task ("suggested fix") chip and was never logged through cairn, so
+the only record of it lived in a runtime affordance the tracking files know
+nothing about. The escape happened in plain conversation with no cairn skill
+active — precisely the residual D-009 accepts, which is why the memory
+boundary needed a hook (M19/D-017) rather than prose alone. Four choices at
+the M71 plan gate (2026-07-18).
+**Decision:** (1) **Enforcement:** rulebook rule **and** hook. Prose alone
+would not have caught this instance, since `tracking-rules.md` never loaded;
+hook alone would leave no citable, guard-testable doctrine. Rejected both
+single-layer forms. (2) **Stance:** the chip is *paired*, not forbidden — it
+usefully spins work into its own session; the defect was it being the sole
+record. The rule denies it record-of-record status and requires the idea to
+also land as a ROADMAP candidate row (search-first applies). Rejected
+discouraging chips in cairn repos (throws away a working affordance to fix a
+bookkeeping gap). (3) **Scope:** the rule is written channel-agnostically —
+any out-of-band capture channel (task chips, scratch TODOs, ad-hoc notes) —
+while the hook wires the one channel that mechanically exists today, so a
+future channel inherits the doctrine without a rulebook edit. Rejected naming
+the chip tool in the rule (the next channel repeats the escape).
+(4) **Strength:** the softest lever, D-017's exactly — `additionalContext`
+with no `permissionDecision`, so the chip is created normally and Claude
+reads the reminder next turn. Rejected a per-chip confirmation dialog (the
+nag fatigue D-017 already rejected).
+**Consequences:** Ideas stop having a second, invisible home; IP3's
+conservation guarantee extends from "what the user asked for" to "what the
+session surfaced." A second guard joins `memory_guard` in the
+boundary-nudge family, so the pattern is now a family, not a one-off.
+Delivered by M71. Live-fire waits for a brand-new conversation (hook
+registrations snapshot at process start — M60). If the nudge proves noisy, or
+a channel needs blocking rather than pairing, this is the entry to supersede.

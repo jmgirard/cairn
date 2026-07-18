@@ -12,6 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M71 | Idea-capture intake gate — out-of-band ideas also land as candidates (D-042) | planned | — | high | milestones/M71-idea-capture-intake-gate.md |
 | M70 | Docker-image toolchain profile — fourth profile for pure-image repos | done | — | normal | milestones/archive/M70-docker-image-profile.md |
 | M69 | Cap-overrun diagnostic — per-section breakdown + single-pass compression discipline | done | — | normal | milestones/archive/M69-cap-overrun-diagnostic.md |
 | M68 | Changelog profile slot — required seventh slot, "none" legal (D-040) | done | — | normal | milestones/archive/M68-changelog-profile-slot.md |
