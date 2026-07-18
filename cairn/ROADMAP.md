@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-18 (M74 done + archived; M69 pruned under terminal-row retention; M73-F5 doc candidate graduated into M74; M33 and M36 lessons pruned at the LESSONS cap)_
+_Last hygiene check: 2026-07-18 (M75 done + archived; M70 pruned under terminal-row retention; M71-F3 and M74-F5 candidates absorbed into M75; durable-record-correction candidate added from M75 review G4)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -16,17 +16,14 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 | M73 | External-PR intake — /hotfix adopts a PR it did not author | done | M72 | high | milestones/archive/M73-external-pr-intake.md |
 | M74 | Issue triage — /milestone enumerates untriaged inboxes into candidate rows | done | M73 | normal | milestones/archive/M74-issue-triage.md |
 | M71 | Idea-capture intake gate — out-of-band ideas also land as candidates (D-042) | done | — | high | milestones/archive/M71-idea-capture-intake-gate.md |
-| M70 | Docker-image toolchain profile — fourth profile for pure-image repos | done | — | normal | milestones/archive/M70-docker-image-profile.md |
-| M75 | Record consistency — the `leave` disposition and MCP-matcher semantics (D-044) | review | — | normal | milestones/M75-record-consistency.md |
+| M75 | Record consistency — the `leave` disposition and MCP-matcher semantics (D-044) | done | — | normal | milestones/archive/M75-record-consistency.md |
 
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
-- `leave` as a fourth issue disposition is skill-only doctrine: M74's `/milestone` §3 offers candidate row / `/hotfix` / `/milestone-plan` / **leave**, but the rulebook's Intake enumeration (`tracking-rules.md:200`) says only "Issues → `candidate` rows or the hotfix path", so an acknowledged-but-left item persists with the GitHub issue as its only record — which sits awkwardly beside D-042's "an inbox feeds the ROADMAP, it never substitutes for it"; needs a rulebook line legitimizing `leave` (probably narrowed to noise/duplicates/already-cross-referenced) or a narrowing of the skill — swept: no existing row or D-entry covers it — added 2026-07-18 — M74 review F5 (40, sub-threshold; AC3 named `leave`, so review declined to reinterpret the criterion)
 - Correcting a durable record later proven false: no rule says what to do with a `LESSONS.md` line that turns out to be factually wrong — D-015 and the file-map row call the file append-only, yet the 50-line cap already deletes lines, so it was never append-only in the DECISIONS sense; M75 corrected `LESSONS.md:41` in place (marked `(M71, corrected M75)`) because appending would leave the wrong rule readable to every plan-time harvest, and review accepted that as the lesser evil while noting no rule sanctions it; also sweep the same wrong matcher rule still sitting in `hooks/tests/test_hooks.py:912` (M75 review G2, 78) — swept: no existing row, D-entry, or archive file covers it — added 2026-07-18 — M75 review G4 (91) + G2 (78)
 - Concurrent-cairn-operator hardening: if two people ever run cairn in the same repo at once the tracking files race — milestone IDs and D-numbers are model-picked with no allocator, duplicate D-numbers auto-merge and validate GREEN (`cairn_validate.py:500-506` uses a `set`), `/milestone-plan` commits to the default branch with no fetch/pull at any step, and `check_single_in_progress` (`cairn_validate.py:61-64`) is a hard FAIL two operators trip by construction; cheapest standalone piece is a `check_d_uniqueness`; swept: no existing row or D-entry covers it — promote if a second cairn operator actually appears — added 2026-07-18 — M72 Out (D-043)
-- MCP-matcher semantics in `references/claude-code-hooks.md`: the reference's Matchers section never mentions MCP tool names, so the M71 T1 finding (a word-chars-only matcher is an EXACT-string compare, hence the regex form) survives only in a work log that compresses at archive — swept: no existing row or D-entry covers it; the M19/D-017 precedent put its T1 finding in this same file — added 2026-07-18 — M71 review F3 (63)
 - Budget-first drafting (cap prevention): up-front per-section line budgets in the milestone template/rulebook so first drafts land under the 150-line cap by construction, rather than compressing after — reassess once M69's diagnostic + single-pass discipline is in use and we can see whether the cure suffices — added 2026-07-17 — M69 Out
 - Content-gated memory guard: make M19's memory-boundary hook inspect the write and fire only on durable-state signals (decisions, conventions, project facts), staying silent on pure per-user prefs; promote only if the unconditional soft nudge proves too noisy — added 2026-07-11 — M19 Out
 - Contributor-facing scaffold: cairn ships nothing a repo can hand an outsider — no CONTRIBUTING, PR template, or issue template (`git ls-files` matches zero; there is no `.github/` in this repo), so a contributor learns the branch/commit/tracking conventions only by being told; would be a `/cairn-init` opt-in, not a core scaffold addition — promote once M72's README subsection is in use and proves insufficient — added 2026-07-18 — M72 Out
