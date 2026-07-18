@@ -102,7 +102,7 @@ element and lost in scoping. This milestone executes the remainder, so it does
       it in `skills/tests/test_references_pages.py` and register the anchor in
       the mutation harness, on its own physical line (LESSONS `:27`).
 - [x] T4: Record the milestone-local decision in `## Decisions` below.
-- [ ] T5: Run the advisory over `cairn/references/`; record the output summary
+- [x] T5: Run the advisory over `cairn/references/`; record the output summary
       (counts, not pasted output) and one disposition line per flagged page.
 - [ ] T6: Run the three suites and `cairn_validate`, checking each exit code
       individually.
@@ -112,41 +112,51 @@ element and lost in scoping. This milestone executes the remainder, so it does
 
 - 2026-07-18: created by /milestone-plan; planned alongside M80 from the M78/M79 grouped candidate row.
 - 2026-07-18: implement gate settled the three open parse decisions — 180-day threshold, undated "at ingestion" ages from the ingested date, exemption earned by the explicit "nothing to re-verify" phrase.
+- 2026-07-18: T5 — first run over the repo's 16 pages: 13 ok, 2 exempt, 1 flagged (`task-master.md` → new ROADMAP candidate row); `migration-pilot-notes.md`'s status aligned to the sanctioned exemption phrase, heading off a false positive scheduled for ~174 days out.
+- 2026-07-18: T5 — the run's new sections put the file 11 lines over cap; Decisions and the run summary compressed in one pass (cross-referencing `_last_verified`'s docstring and the ROADMAP row rather than restating them). Plan-owned sections untouched.
 - 2026-07-18: T4 — M81-D1 (WARN-tier severity, argued against D-029 + M79-D1) and M81-D2 (the three gate-settled parse decisions) recorded milestone-locally.
 - 2026-07-18: T3 — "Re-verification." paragraph added to tracking-rules "References pages"; 6 guards in `TestReVerification` and both anchors mutation-registered, each on its own physical line.
 - 2026-07-18: T2 — 15 fixtures + a 36-cell decoration×layout×phrasing cross-product; it caught a real false positive (a label-alone `Extraction:` reported as no status at all), fixed by adding the extraction field to `_provenance_block`'s continuation test. Fixture dates are relative to today, never literal, so the suite cannot rot past the threshold.
 - 2026-07-18: T1 — `check_references_staleness` written and registered in `ADVISORIES`; stdlib allowlist extended for `datetime`; first run flags 1 of 16 pages, exit 0.
 
+## First run over this repo (T5, 2026-07-18)
+
+16 committed pages: **13 ok** (last verified 2026-07-11 → 2026-07-18, none past
+the 180-day threshold), **2 exempt** (nothing to re-verify against), **1
+flagged**. `cairn_validate` exit 0. Dispositions:
+
+- `task-master.md` — flagged, never verified: an [S] subagent study with no
+  claim checked against the source. Re-reading the source is not this
+  milestone's work → **ROADMAP candidate row**, added 2026-07-18.
+- `migration-pilot-notes.md` — not flagged today, but a scheduled false
+  positive: a first-hand record carrying no exemption phrase, so it would have
+  aged from its ingested date and flagged in ~174 days. Wording aligned in
+  place to the template's sanctioned "nothing to re-verify against"; the claim
+  is unchanged, so this is phrasing, not a D-045 correction.
+
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
 
 **M81-D1 (2026-07-18): the staleness reader is a WARN-tier advisory, never a
-`CHECKS` entry.** D-029 rules that judgment "is never a validate gate", and
-M79-D1's structural-vs-judgment test says which side a rule falls on: block
-*presence* is structural — a page either carries a `**Provenance.**` block or
-it does not — so M79 made it a hard CHECK. "This page has not been re-read in
-180 days" is a judgment about evidence quality: the page may be perfectly
-correct, the source may not have moved, and the maintainer may have excellent
-reasons to leave it. A gate that fails on it would block an unrelated
-milestone's merge over the age of a reference page, which is exactly the
-cry-wolf failure D-023 and D-029 both guard against. Recorded milestone-locally
-rather than as a D-entry because both precedents it argues from — D-029's
-application here and M79-D1 — are themselves milestone-local, and a
-cross-cutting entry that rests on milestone-local reasoning strands its own
-justification (LESSONS `:47`).
+`CHECKS` entry.** D-029 rules that judgment "is never a validate gate";
+M79-D1's structural-vs-judgment test says which side this falls on. Block
+*presence* is structural — a page carries a `**Provenance.**` block or it does
+not — which is why M79 made that a hard CHECK. "Not re-read in 180 days" is a
+judgment about evidence quality: the page may be correct, the source may not
+have moved, and a FAIL would block an unrelated milestone's merge over a
+reference page's age — the cry-wolf failure D-023 and D-029 both guard
+against. Milestone-local rather than a D-entry because both precedents it
+argues from are themselves milestone-local (LESSONS `:47`).
 
 **M81-D2 (2026-07-18): the three parse decisions, settled at the implement
-gate.** (i) The threshold is 180 days — long enough that a page touched in a
-normal year of work never trips it. (ii) A status naming no date of its own
+gate.** (i) 180-day threshold. (ii) A status naming no date of its own
 ("verified at ingestion", the commonest shipped form) ages from the block's
-ingested date, which that wording literally names; demanding an explicit date
-would falsely flag five template-sanctioned pages, the D-023 false positive.
-(iii) A first-hand record with no external source is exempt, earned by the
-status carrying the sanctioned "nothing to re-verify against" phrase — never
-by page type, since a *derived* synthesis note does age and says so with a
-date. The `— observed YYYY-MM-DD` write stamp is stripped before any date is
-read out of a status: left in, it is always the freshest date on the line and
-the advisory would read its own freshness and never fire.
+ingested date, which that wording literally names — demanding an explicit
+date would falsely flag five template-sanctioned pages (D-023). (iii) A
+first-hand record is exempt by *saying* "nothing to re-verify against", never
+by page type: a derived synthesis note does age. The reasoning is carried
+where it acts — `_last_verified`'s docstring — and the rulebook's
+"Re-verification" paragraph states (i)–(iii) for readers.
 
 ## Review
 <!-- owner: review · exclusive; EXEMPT from the 150-line cap (M55). -->
