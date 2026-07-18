@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-18 (M77 done + archived; M71 pruned under terminal-row retention; work-log-vs-cap candidate graduated into M77; two LESSONS pairs consolidated and the M76 cap lesson corrected in place under D-045)_
+_Last hygiene check: 2026-07-18 (M78 done + archived; M73 pruned under terminal-row retention; two LESSONS pairs consolidated to make room for M78's; M79 planned and workable)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M73 | External-PR intake — /hotfix adopts a PR it did not author | done | M72 | high | milestones/archive/M73-external-pr-intake.md |
 | M74 | Issue triage — /milestone enumerates untriaged inboxes into candidate rows | done | M73 | normal | milestones/archive/M74-issue-triage.md |
 | M75 | Record consistency — the `leave` disposition and MCP-matcher semantics (D-044) | done | — | normal | milestones/archive/M75-record-consistency.md |
 | M76 | Record correction — history vs. current knowledge, and the correct-in-place protocol (D-045) | done | — | normal | milestones/archive/M76-record-correction.md |
 | M77 | Work-log cap exemption — the budget stops counting a section IP4 forbids editing (D-046) | done | — | normal | milestones/archive/M77-worklog-cap-exemption.md |
-| M78 | Source-note shape — dated observations and page provenance | review | — | high | milestones/M78-source-note-shape.md |
+| M78 | Source-note shape — dated observations and page provenance | done | — | high | milestones/archive/M78-source-note-shape.md |
 | M79 | References content check — the lint stops being a filename census | planned | M78 | normal | milestones/M79-references-content-check.md |
 
 ## Candidates
