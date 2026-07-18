@@ -630,6 +630,15 @@ def prov_page(status, ingested=None, deco="{}", layout="inline", decoy=False):
     elif layout == "wrapped":
         cut = status.find(" ", len(status) // 2)
         text += f"{label} {status[:cut]}\n{status[cut + 1:]}\n"
+    elif layout == "wrapped-at-boundary":
+        # M83: wrap exactly where the leading clause ends. The midpoint split
+        # above never lands here, so it cannot exercise a classifier that
+        # reads the lead separately from the remainder — M81's lesson that an
+        # axis can be varied everywhere and still be vacuous where it counts.
+        cut = status.find(" — ")
+        if cut == -1:
+            raise AssertionError("boundary layout needs an em-dash status")
+        text += f"{label} {status[:cut]}\n{status[cut + 3:]}\n"
     else:
         text += f"{label} {status}\n"
     return text + "\n"
@@ -789,6 +798,186 @@ class TestReferencesStaleness(ScriptCase):
             "extraction status"
         )
 
+    # --- M83: the state token is read from the leading clause ---------------
+
+    # The status `cairn/references/task-master.md` actually carried on
+    # 2026-07-18, before it was reworded to dodge this defect. Verbatim on
+    # purpose (AC1): a paraphrase would not prove the live case is fixed.
+    TASK_MASTER_2026_07_18 = (
+        "verified {when} against a fresh shallow clone at `task-master-ai` "
+        "v0.43.1 — every claim below re-read against source; three were wrong "
+        "and are corrected in place and marked — observed {obs}. (Prior "
+        "status: unverified — [S] subagent study of the clone and docs, with "
+        "no claim checked against the source at ingestion.)"
+    )
+
+    def test_dated_verification_with_a_prior_unverified_note_is_ambiguous(self):
+        # F3, hit live 2026-07-18. Pre-M83 this reported "records no verified
+        # re-check" — the page had been read against its source that day.
+        proc = self.install(
+            self.tree.build(),
+            status=self.TASK_MASTER_2026_07_18.format(
+                when=days_ago(0), obs=days_ago(0)
+            ),
+        )
+        self.assertFlagged(proc, "extraction status contradicts itself")
+
+    def test_unverified_lead_with_a_dated_claim_after_is_also_ambiguous(self):
+        # The other direction. Testing dates before the unverified token — the
+        # "obvious" fix — turns THIS case into a false clean bill of health,
+        # which is why neither is tested first and a disagreement is reported.
+        proc = self.install(
+            self.tree.build(),
+            status=f"unverified — first pass; the appendix was verified "
+            f"{days_ago(3)} — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, "extraction status contradicts itself")
+
+    def test_negative_synonym_no_longer_reads_as_verified(self):
+        # F4: pre-M83 this had no recognized token and no date, so it fell
+        # through to the INGESTED date and classified `ok` — a page saying in
+        # plain words that it was never checked reported as verified.
+        proc = self.install(
+            self.tree.build(),
+            status=f"never verified against the source — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, "records no verified re-check")
+
+    def test_partly_verified_pages_are_not_swept_up(self):
+        # The M79-F5 trap the M81 candidate row warned about: widening the
+        # never-family to catch "not ..." reclassifies these three shipped
+        # forms wholesale. Verbatim from the pages, less their citations.
+        for status in (
+            "partly verified at ingestion — the Meridian blocking-hook claim "
+            "was checked against `scripts/stop-checklist.py:69`; the rest is "
+            "an [S] subagent study of clones, not re-read since",
+            "partly verified at ingestion — the sprint-status claim was "
+            "checked against `bmad-sprint-planning/SKILL.md:8`; the rest is "
+            "an [S] subagent study, not re-read since",
+            "partly verified at ingestion — key claims checked against a "
+            "clone (`specify.md:124-128`); not re-read since",
+        ):
+            with self.subTest(status=status[:48]):
+                proc = self.install(
+                    self.tree.build(),
+                    ingested=days_ago(3),
+                    status=f"{status} — observed {days_ago(0)}.",
+                )
+                self.assertClean(proc)
+
+    def test_status_claiming_neither_verification_nor_date_is_flagged(self):
+        # F4's general case: silence is not a verification. Pre-M83 the
+        # ingested-date fallback applied to ANY unrecognized status.
+        proc = self.install(
+            self.tree.build(),
+            status=f"an [S] subagent study of the clone — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, "records neither a verification nor a date")
+
+    def test_future_verification_date_is_flagged_not_silently_exempt(self):
+        # F5: a future date makes the age negative, and no threshold is ever
+        # exceeded by a negative number — the page was exempt forever, silently.
+        ahead = days_ago(-30)
+        proc = self.install(
+            self.tree.build(),
+            status=f"verified {ahead} against the source — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, f"dated {ahead}, in the future")
+
+    def test_contradiction_is_caught_wherever_it_sits_and_however_wrapped(self):
+        # M81's lesson: vary the axis where the value under test lives. What
+        # decides this classification is the CLAUSE BOUNDARY, so the wrap is
+        # forced onto the boundary itself — a wrap elsewhere (the M81 fixture's
+        # midpoint split) cannot exercise it. Decoration and the contradicting
+        # token's distance from the lead vary alongside.
+        tails = (
+            "the appendix remains unverified",
+            "one section was never verified against the source",
+            "prior pass unverified; see git for the original status",
+        )
+        for deco in DECORATIONS:
+            for tail in tails:
+                for layout in (
+                    "inline", "label-alone", "wrapped", "wrapped-at-boundary"
+                ):
+                    with self.subTest(deco=deco, tail=tail[:30], layout=layout):
+                        proc = self.install(
+                            self.tree.build(),
+                            deco=deco,
+                            layout=layout,
+                            status=f"verified {days_ago(2)} against the "
+                            f"source — {tail} — observed {days_ago(0)}.",
+                        )
+                        self.assertFlagged(
+                            proc, "extraction status contradicts itself"
+                        )
+
+    # --- M83 review findings: negation is a property of the clause ----------
+
+    def test_negated_verb_reads_as_never_not_as_a_verification(self):
+        # Review F1/92 + F2/92. The first cut matched an affirmative verb set
+        # against a fixed list of negative PHRASES, and the list covered only
+        # the word `verified` — so a negated `checked against` / `read against`
+        # read as an affirmative VERIFICATION. That broke both ways at once:
+        # a plainly-never page was reported as self-contradicting, and a page
+        # saying in plain words it was never checked was cleared via the
+        # ingested-date fallback.
+        for status in (
+            # verbatim the prior-status prose task-master.md carried 2026-07-18
+            "unverified — [S] subagent study of the clone and docs, with no "
+            "claim checked against the source at ingestion",
+            "not checked against the source at ingestion — [S] subagent study",
+            "nothing was checked against the source",
+            "no section was verified against the source",
+            "unverified — nothing read against the source",
+        ):
+            with self.subTest(status=status[:46]):
+                proc = self.install(
+                    self.tree.build(),
+                    ingested=days_ago(400),
+                    status=f"{status} — observed {days_ago(0)}.",
+                )
+                self.assertFlagged(proc, "records no verified re-check")
+
+    def test_affirmative_re_verification_is_not_read_as_negated(self):
+        # Review F3/76. Excluding a `re-` prefix wholesale — the first fix for
+        # the template's `not yet re-read against the source` — also rejected
+        # the affirmative form of the same verb, so a genuine re-verification
+        # with no date in its status was flagged `unrecognized`. The negator,
+        # not the hyphen, is what distinguishes them.
+        for status in (
+            "re-verified against the source; no changes found",
+            "re-checked against the source at ingestion",
+        ):
+            with self.subTest(status=status[:40]):
+                proc = self.install(
+                    self.tree.build(),
+                    ingested=days_ago(3),
+                    status=f"{status} — observed {days_ago(0)}.",
+                )
+                self.assertClean(proc)
+
+    def test_forward_looking_date_does_not_hijack_the_future_flag(self):
+        # Review F4/83. Taking max() over every date in the status let an
+        # unrelated forward-looking date ("next re-check due …") report a page
+        # verified weeks ago as dated in the future. Only a status whose dates
+        # are ALL future is a future-dated page.
+        proc = self.install(
+            self.tree.build(),
+            status=f"verified {days_ago(17)} against the source; next re-check "
+            f"due {days_ago(-140)} — observed {days_ago(0)}.",
+        )
+        self.assertClean(proc)
+
+    def test_a_status_dated_only_in_the_future_is_still_flagged(self):
+        # The other side of F4: fixing it must not silence F5 itself.
+        ahead = days_ago(-30)
+        proc = self.install(
+            self.tree.build(),
+            status=f"verified {ahead} against the source — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, f"dated {ahead}, in the future")
+
     # --- AC2: the three axes, varied independently ---------------------------
 
     def test_decoration_layout_and_phrasing_vary_independently(self):
@@ -904,6 +1093,62 @@ class TestReferencesStaleness(ScriptCase):
         # A `next()` that found no line, or a split that yielded one branch,
         # would make every subTest above vacuous.
         self.assertGreaterEqual(found, 5, "template alternatives not parsed")
+
+
+class TestShippedPageStateLedger(unittest.TestCase):
+    """M83 AC4: the classification every committed page ACTUALLY gets, pinned.
+
+    This is a characterization test over the real `cairn/references/` tree,
+    not a fixture: M77's lesson is that the fixture copy is not the artifact,
+    and a parser change is exactly the kind of edit whose blast radius shows
+    up only against the shipped corpus.
+
+    It is meant to be updated — but only deliberately. A page whose state
+    changes here is a page whose staleness reporting changed, so the update
+    lands together with a one-line justification in the milestone/work log.
+    An unexplained edit to this map is the failure mode the test exists to
+    prevent (IP2: prior state is surfaced, never silently overridden)."""
+
+    # Baseline computed 2026-07-18 against the pre-M83 `_last_verified`.
+    EXPECTED = {
+        "anthropic-code-review.md": "ok",
+        "backlog-meridian.md": "ok",
+        "bmad-method.md": "ok",
+        "ccpm.md": "ok",
+        "claude-code-hooks.md": "ok",
+        "claude-md-management.md": "ok",
+        "competitive-landscape.md": "ok",
+        "design-interview-notes.md": "exempt",
+        "desktop-toc-mechanism.md": "ok",
+        "feature-dev.md": "ok",
+        "llm-wiki.md": "ok",
+        "migration-pilot-notes.md": "exempt",
+        "oracle-discipline-notes.md": "ok",
+        "oracle-doctrine-intraclass-notes.md": "ok",
+        "spec-kit.md": "ok",
+        "task-master.md": "ok",
+    }
+
+    def test_every_shipped_page_keeps_its_pinned_state(self):
+        mod = _load_validate()
+        refdir = SCRIPTS_DIR.parent / "cairn" / "references"
+        pages = sorted(
+            p for p in refdir.glob("*.md") if p.name != "INDEX.md"
+        )
+        # A glob that silently matched nothing would make every subTest below
+        # vacuous — the M79 vacuity trap in its cheapest form.
+        self.assertEqual(
+            {p.name for p in pages},
+            set(self.EXPECTED),
+            "committed references pages differ from the pinned ledger — add "
+            "the new page with its state, or remove the deleted one",
+        )
+        for page in pages:
+            with self.subTest(page=page.name):
+                block = mod._provenance_block(str(page), for_extraction=True)
+                self.assertIsNotNone(block, f"{page.name}: no provenance block")
+                state, _ = mod._last_verified(block)
+                self.assertEqual(state, self.EXPECTED[page.name])
 
 
 class TestDanglingIds(ScriptCase):
