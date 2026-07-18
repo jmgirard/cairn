@@ -51,11 +51,16 @@ enumerate templates. Guard tests, mutation-registered.
       field words `Ingested` and `Extraction: `; a scope paragraph disclaiming
       tracking authority; an evidence snapshot; a ledger with stable row IDs
       and a stated tag vocabulary; a Disposition section.
-- [ ] AC3: a test runs the **real** shipped synthesis template through the
-      **real** `check_references` (`cairn_validate.py:304`) and the **real**
+- [ ] AC3: a test reads the **real** shipped synthesis template, instantiates
+      it (placeholder dates substituted for real ones) as a page in a temporary
+      `cairn/references/` tree with its `INDEX.md` line, and runs the **real**
+      `check_references` (`cairn_validate.py:304`) and the **real**
       extraction-date assertion (`test_source_note_template.py:213-227`, whose
-      glob is type-blind and already binds synthesis notes) and both pass —
-      the M77 pairing rule, LESSONS `:46`.
+      glob is type-blind and already binds synthesis notes) over it — both
+      clean. The template is read from disk, never copied into the test
+      (M77 pairing rule, LESSONS `:46`). Amended at the implement gate
+      2026-07-18: the original wording required the template *itself* to pass,
+      which its `YYYY-MM-DD` placeholders make impossible.
 - [ ] AC4: the template inventories naming the shipped set are updated:
       `cairn/DESIGN.md:38-39` and `README.md:136`.
 - [ ] AC5: every new positive prose assertion is registered in
@@ -96,7 +101,7 @@ enumerate templates. Guard tests, mutation-registered.
       `test_source_note_template.py:139-188`), plus the AC1 core-vs-module
       placement asserts. Author every anchor phrase on its own physical line
       (LESSONS `:27`).
-- [ ] T4: Add the pairing test required by AC3 — the real checker and the real
+- [x] T4: Add the pairing test required by AC3 — the real checker and the real
       extraction guard over the real shipped template, not a fixture copy.
 - [ ] T5: Update the `cairn/DESIGN.md` templates bullet and the `README.md`
       references line (the latter is also stale on `pdf/` → `sources/`; fix in
@@ -110,6 +115,8 @@ enumerate templates. Guard tests, mutation-registered.
 - 2026-07-18: created by /milestone-plan; promoted the M78/M79 grouped candidate row ahead of its "promote once M78's template is in use" gate — the gate is self-blocking, since nothing triggers the template's use and that is the very gap being fixed.
 - 2026-07-18: /milestone-implement started; branch `m80-references-authoring` cut from synced main.
 - 2026-07-18: T1 — trigger + both template paths into tracking-rules "References pages"; validation-doctrine's parenthetical now defers the trigger instead of restating it. Gate answers: a page is owed when the repo relies on the source; a synthesis note when the analysis outlives its milestone.
+- 2026-07-18: T4 — pairing test instantiates the shipped template into a temp tree and runs the real check_references + real dated-extraction guard; AC3 amended at the implement gate (placeholder dates cannot satisfy the date regex, so the criterion tested the wrong subject). Extracted DATED_EXTRACTION/extraction_line into one shared definition so template and repo-page checks cannot drift.
+- 2026-07-18: T4 caught a live defect in the template T2 had just shipped — the wrapped `Extraction:` status lost its `— observed` stamp, so every page authored from it would have failed the repo's own guard; fixed to one physical line, exactly the M77 pairing failure this test exists to catch.
 - 2026-07-18: T3 — added TestAuthoringTrigger (core-vs-module placement, positive defer-assert paired with the negative absence-assert per M54) and TestShippedSynthesisTemplate (12 fields, read from the shipped file); skills suite 324 → 333, exit 0.
 - 2026-07-18: T2 — shipped `skills/shared/templates/synthesis-note.md`; sections drawn from the six existing synthesis pages, `Ingested`/`Extraction:` field words kept verbatim so the references check and the dated-observation guard both still parse.
 - 2026-07-18: T1 hit LESSONS :27 live — the reflow duplicated a mutation-registered anchor in validation-doctrine.md; reworded the new prose rather than re-anchoring the guard (LESSONS :32).

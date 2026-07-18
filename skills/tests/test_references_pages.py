@@ -16,10 +16,30 @@ physical line (M23 lesson); phrases are lowercased before matching.
     python3 -m unittest discover -s skills/tests -v
 """
 
+import importlib.util
 import pathlib
+import re
+import sys
+import tempfile
 import unittest
 
+from test_source_note_template import DATED_EXTRACTION, extraction_line
+
 SKILLS = pathlib.Path(__file__).resolve().parent.parent
+SCRIPTS = SKILLS.parent / "scripts"
+
+
+def _load_validate():
+    """The REAL cairn_validate, so AC3's pairing test runs the shipped checker
+    rather than a reimplementation of it."""
+    if str(SCRIPTS) not in sys.path:
+        sys.path.insert(0, str(SCRIPTS))
+    spec = importlib.util.spec_from_file_location(
+        "cairn_validate", SCRIPTS / "cairn_validate.py"
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
 
 
 def rulebook():
@@ -146,6 +166,60 @@ class TestShippedSynthesisTemplate(unittest.TestCase):
         # field is repurposed to a currency claim about the derivation. A
         # template offering only "verified against the source" would not fit.
         self.assertIn("derived — no external source of its own", self.text)
+
+
+class TestTemplateProducesAValidPage(unittest.TestCase):
+    """AC3 — the M77 pairing rule: one task authored the template, another
+    authored nothing that checks it, so nothing proved a page written from it
+    would survive the checkers already in the repo. This instantiates the
+    SHIPPED template and runs the REAL `check_references` and the REAL
+    dated-extraction guard over the result.
+
+    The template itself cannot pass: its dates are `YYYY-MM-DD` placeholders,
+    which the date regex rightly refuses. Instantiating is what a page author
+    does, so instantiating is what the pairing test does (AC3 amended at the
+    implement gate, 2026-07-18).
+    """
+
+    PAGE = "synthesis-example.md"
+
+    def instantiate(self):
+        """The shipped template with its placeholders filled, as an author
+        would. Read from disk every call — never a fixture copy."""
+        text = SYNTHESIS_TEMPLATE.read_text()
+        text = re.sub(r"YYYY-MM-DD", "2026-07-18", text)
+        text = text.replace("M<NN>", "M80")
+        return text
+
+    def _tree(self, tmp):
+        root = pathlib.Path(tmp)
+        refs = root / "cairn" / "references"
+        refs.mkdir(parents=True)
+        (refs / self.PAGE).write_text(self.instantiate())
+        (refs / "INDEX.md").write_text(
+            f"# References index\n\n- {self.PAGE} — an instantiated synthesis note.\n"
+        )
+        return root
+
+    def test_instantiated_page_passes_the_real_references_check(self):
+        validate = _load_validate()
+        with tempfile.TemporaryDirectory() as tmp:
+            findings = validate.check_references(str(self._tree(tmp)))
+        self.assertEqual(
+            findings, [], f"a page authored from the template fails: {findings}"
+        )
+
+    def test_instantiated_page_passes_the_real_extraction_guard(self):
+        line = extraction_line(self.instantiate())
+        self.assertIsNotNone(line, "template yields no Extraction status line")
+        self.assertRegex(line, DATED_EXTRACTION)
+
+    def test_uninstantiated_template_is_what_fails(self):
+        # Proves the test above is not vacuous: the placeholder form really
+        # does fail the date guard, which is why instantiation is the subject.
+        line = extraction_line(SYNTHESIS_TEMPLATE.read_text())
+        self.assertIsNotNone(line)
+        self.assertNotRegex(line, DATED_EXTRACTION)
 
 
 if __name__ == "__main__":

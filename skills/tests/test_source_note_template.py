@@ -49,6 +49,19 @@ RULES = SKILLS / "shared" / "tracking-rules.md"
 DOCTRINE = SKILLS / "shared" / "validation-doctrine.md"
 
 
+# The dated-extraction rule, defined once. M80's AC3 pairing test imports
+# these rather than restating them, so the template check and the repo-page
+# check can never drift into two different rules.
+DATED_EXTRACTION = re.compile(r"— observed \d{4}-\d{2}-\d{2}\.$")
+
+
+def extraction_line(text):
+    """The `Extraction: ` status line of a references page, or None."""
+    return next(
+        (ln for ln in text.splitlines() if ln.startswith("Extraction: ")), None
+    )
+
+
 def doctrine_flat():
     """Doctrine text, lowercased, with runs of whitespace collapsed to one
     space — so an assert pins wording, not line breaks."""
@@ -216,12 +229,9 @@ class TestBackfilledPages(unittest.TestCase):
         # re-reads the page — the exact failure M78 exists to stop.
         for p in self.PAGES:
             with self.subTest(page=p.name):
-                line = next(
-                    (ln for ln in p.read_text().splitlines()
-                     if ln.startswith("Extraction: ")), None
-                )
+                line = extraction_line(p.read_text())
                 self.assertIsNotNone(line, f"{p.name}: no Extraction status")
                 self.assertRegex(
-                    line, r"— observed \d{4}-\d{2}-\d{2}\.$",
+                    line, DATED_EXTRACTION,
                     f"{p.name}: extraction status is an undated repo-state claim",
                 )
