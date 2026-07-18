@@ -96,7 +96,7 @@ docs-only direct pushes → candidate row.
 - [x] T4 — Extend `TestMergeGuard` in `hooks/tests/test_hooks.py:186-292`:
       match allows+consumes, mismatch denies, PR-less body allows. Check
       `merge_guard_post`'s restore path still keys on the identical detection.
-- [ ] T5 — New guard test for the T1 passage; register it in
+- [x] T5 — New guard test for the T1 passage; register it in
       `skills/tests/test_mutation_harness.py` (per-file registration, ≥1
       exemplar block on ONE physical line — M59/M65).
 - [ ] T6 — Run all three suites from the repo root; update `cairn/DESIGN.md`'s
@@ -113,6 +113,7 @@ docs-only direct pushes → candidate row.
 - 2026-07-18: T2 — README "Working with collaborators" section; the "Merges are yours" bullet's unqualified "mechanically blocks" claim corrected to name its scope.
 - 2026-07-18: AC3/AC4 amended via the implement gate — the plan assumed the merge command named a PR, but both skills merged bare (`gh pr merge --squash`), so the binding needed a deny-on-unnamed rule and the skills' merge commands changed; user chose this at the step-3 gate.
 - 2026-07-18: T3 — `gh_merge_pr_number`/`marker_pr_number` in `cairn_common`; `merge_guard` denies mismatched and unnamed PRs without consuming the marker; both approval-writing skills updated to the bound marker + explicit-number merge. T3+T4 landed in one commit (implementation inseparable from its tests).
+- 2026-07-18: T5 — `test_collaboration_boundary.py` (12 tests across boundary, PR binding, README); five mutation entries registered, all proven; skills suite 234 → 246.
 - 2026-07-18: T4 — six `TestMergeGuard` cases (mismatch, bare, match, URL/value-flag parsing, branch-name argument, `git merge` exemption); `shlex` added to the stdlib allowlist in `TestStdlibOnly`.
 
 ## Decisions
