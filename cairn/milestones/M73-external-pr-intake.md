@@ -121,3 +121,49 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
+
+## Review
+<!-- owner: review · exclusive -->
+
+**PR:** https://github.com/jmgirard/cairn/pull/71 · reviewed 2026-07-18
+
+### Acceptance-criteria evidence
+
+- AC1 — `SKILL.md:19-42` quoted: step 1 tier-checks the PR's own diff via
+  `gh pr view/diff <N>`; step 2's *Adopting a PR* branch runs
+  `gh pr checkout <N>` ("never cut a fresh branch, which would orphan work
+  that already exists") and states the name is "**exempt** from the
+  `hotfix-<slug>` contract". Mirrored at `tracking-rules.md:255-259`.
+- AC2 — `SKILL.md:43-54` quoted: the adopted form states the author-side
+  sequence "is unreachable", the test is "**added**", and it must fail
+  against the default branch and pass on the PR head, with a scratch-worktree
+  recipe for proving the first direction.
+- AC3 — `SKILL.md:68-80` quoted: contributor-entry-present (check + edit in
+  place, no duplicate) and none-present (add one); the no-push fallback asks
+  the contributor first, then re-lands locally with `Co-authored-by:` credit,
+  and never merges a fix missing its regression test.
+- AC4 — `SKILL.md:82-100` quoted: `--delete-branch` dropped for fork PRs;
+  the marker line and approval chip are M72's, unchanged. Guard
+  `test_no_second_approval_mechanism` asserts exactly one
+  `cairn/.merge-approved` mention — no second approval mechanism.
+- AC5 — `SKILL.md:3` frontmatter names incoming PRs ("or adopt an incoming
+  external PR that fixes one" + the `"adopt PR #12"` trigger phrases);
+  `tracking-rules.md:199-205` Intake names "**`/hotfix` is the door**" and
+  keeps the larger-PR route to `/milestone-plan`.
+- AC6 — `test_external_pr_intake.py`: 17 tests, all pass. 9 blocks registered
+  in the mutation harness; `test_each_registered_guard_fails_when_its_block_is_blanked`
+  and `test_every_prose_guard_is_registered_or_exempt` both green.
+  False-coverage check by script: all 18 asserted phrases occur exactly once
+  in their target file (0 non-unique). `test_search_first_candidates.py` (4)
+  and `test_idea_intake_gate.py` (5) still pass.
+- AC7 — verify slot clean from the repo root: skills 263, scripts 96,
+  hooks 72 — all OK.
+
+### Consistency gate
+
+- `cairn_validate.py` exit 0 — all 17 checks passed.
+- `consistency-gate` slot (`generic`) names no toolchain checks — clean no-op.
+- No DESIGN principle changed (Principles touched: —) → `cairn_impact` skipped.
+- No `.github/` in the repo: there is no CI, so the green-CI wait is a no-op.
+
+### Independent review (three lenses + scorer)
