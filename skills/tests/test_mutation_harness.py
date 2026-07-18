@@ -33,6 +33,7 @@ RULES = "skills/shared/tracking-rules.md"
 HOTFIX = "skills/hotfix/SKILL.md"
 MILESTONE = "skills/milestone/SKILL.md"
 TEMPLATE = "skills/shared/templates/milestone.md"
+DOCTRINE = "skills/shared/validation-doctrine.md"
 
 REGISTRY = [
     Mutation(
@@ -403,6 +404,34 @@ REGISTRY = [
         test="TestReferencesPages.test_every_committed_page_carries_an_index_line",
         target=RULES,
         block="Every committed `references/` page carries its",
+    ),
+    # M80: the authoring trigger — WHEN a page is owed — lives in core, not in
+    # the numeric-gated module (LESSONS :49). One entry per positive assertIn;
+    # the absence-assert on the module has no entry, since blanking cannot
+    # restore an absence (M54) — its positive twin below is what locks it.
+    Mutation(
+        guard="test_references_pages",
+        test="TestAuthoringTrigger.test_core_states_when_a_source_owes_a_page",
+        target=RULES,
+        block="A page is owed once the repo *relies* on the source",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestAuthoringTrigger.test_core_states_when_analysis_earns_a_synthesis_note",
+        target=RULES,
+        block="an analysis that will outlive its milestone",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestAuthoringTrigger.test_core_names_both_shipped_templates",
+        target=RULES,
+        block="Author from the shipped templates:",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestAuthoringTrigger.test_module_defers_the_trigger_instead_of_restating_it",
+        target=DOCTRINE,
+        block="Do not restate the trigger here",
     ),
     # M78: the standing-fact / dated-observation split + page provenance.
     # Each definition is registered separately and each block is the label
