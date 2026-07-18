@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, GP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** `m80-references-authoring`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m80-references-authoring` · https://github.com/jmgirard/cairn/pull/78   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -127,6 +127,7 @@ template's.
 - 2026-07-18: /milestone-implement started; branch `m80-references-authoring` cut from synced main.
 - 2026-07-18: T1 — trigger + both template paths into tracking-rules "References pages"; validation-doctrine's parenthetical now defers the trigger instead of restating it. Gate answers: a page is owed when the repo relies on the source; a synthesis note when the analysis outlives its milestone.
 - 2026-07-18: T4 — pairing test instantiates the shipped template into a temp tree and runs the real check_references + real dated-extraction guard; AC3 amended at the implement gate (placeholder dates cannot satisfy the date regex, so the criterion tested the wrong subject). Extracted DATED_EXTRACTION/extraction_line into one shared definition so template and repo-page checks cannot drift.
+- 2026-07-18: /milestone-review started; draft PR #78 opened; branch confirmed current with origin/main (0 behind). Consistency gate clean: cairn_validate exit 0, generic profile names no toolchain checks, no IP/GP text changed so cairn_impact skipped. Three review lenses spawned; Review section pending their findings.
 - 2026-07-18: T6 — four Mutation entries registered (three on the rulebook, one on the module) with a DOCTRINE target constant added; each block verified to occur exactly once. Suites: skills 336, scripts 128, hooks 72, each exit 0 checked individually; cairn_validate exit 0. Status → review. (AC boxes left unticked: fencing makes those review's verification marks, not implement's.)
 - 2026-07-18: T5 — DESIGN templates bullet gains the synthesis note; README's references line fixed from the stale `PDFs gitignored` to `sources/ gitignored` (D-047). Repo-wide sweep (LESSONS :18): CHANGELOG's template list is a shipped release entry and stays as history; remaining `references/pdf` hits are the D-047 deprecation path and history.
 - 2026-07-18: scope amended at the implement gate — AC7 added after the pairing test proved M78's shipped source-note template emits a page failing M78's own dated-extraction guard (wrapped line, no `— observed` stamp). Same fix; the pairing test now covers both templates.
