@@ -47,16 +47,16 @@ template's.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: `tracking-rules.md` "References pages" states the authoring trigger
+- [x] AC1: `tracking-rules.md` "References pages" states the authoring trigger
       and names both template paths; the trigger sentence is absent from
       `validation-doctrine.md`. A guard asserts both the presence in core and
       the absence from the conditional module (LESSONS `:49` placement test).
-- [ ] AC2: `skills/shared/templates/synthesis-note.md` exists carrying: an H1
+- [x] AC2: `skills/shared/templates/synthesis-note.md` exists carrying: an H1
       naming the owning milestone; a `**Provenance.**` block using the literal
       field words `Ingested` and `Extraction: `; a scope paragraph disclaiming
       tracking authority; an evidence snapshot; a ledger with stable row IDs
       and a stated tag vocabulary; a Disposition section.
-- [ ] AC3: a test reads the **real** shipped synthesis template, instantiates
+- [x] AC3: a test reads the **real** shipped synthesis template, instantiates
       it (placeholder dates substituted for real ones) as a page in a temporary
       `cairn/references/` tree with its `INDEX.md` line, and runs the **real**
       `check_references` (`cairn_validate.py:304`) and the **real**
@@ -66,15 +66,20 @@ template's.
       (M77 pairing rule, LESSONS `:46`). Amended at the implement gate
       2026-07-18: the original wording required the template *itself* to pass,
       which its `YYYY-MM-DD` placeholders make impossible.
-- [ ] AC4: the template inventories naming the shipped set are updated:
-      `cairn/DESIGN.md:38-39` and `README.md:136`.
-- [ ] AC5: every new positive prose assertion is registered in
+- [x] AC4: the one template inventory naming the shipped set —
+      `cairn/DESIGN.md:38-39` — gains the synthesis note. `README.md` names no
+      template set at all (verified at review, 2026-07-18: it contains no
+      listing of shipped templates); its `references/` tree line is corrected
+      for D-047's shelf rename as an in-passing fix, not as inventory
+      evidence. Amended at review 2026-07-18: the original criterion asserted
+      README:136 was a template inventory, which it never was.
+- [x] AC5: every new positive prose assertion is registered in
       `skills/tests/test_mutation_harness.py`, and its completeness meta-test
       is green (registration is per file *and* per new assertion — LESSONS `:20`).
-- [ ] AC6: verify clean — `python3 -m unittest discover` for `skills/tests`,
+- [x] AC6: verify clean — `python3 -m unittest discover` for `skills/tests`,
       `scripts/tests`, `hooks/tests` each exit 0, checked individually and
       never through a pipe (LESSONS `:23`); `cairn_validate` exit 0.
-- [ ] AC7: a page instantiated from `skills/shared/templates/source-note.md`
+- [x] AC7: a page instantiated from `skills/shared/templates/source-note.md`
       passes the same real `check_references` and real dated-extraction guard
       as AC3's synthesis page — the pairing test covers **both** shipped
       templates, so neither can regress alone. Added at the implement gate
@@ -127,6 +132,7 @@ template's.
 - 2026-07-18: /milestone-implement started; branch `m80-references-authoring` cut from synced main.
 - 2026-07-18: T1 — trigger + both template paths into tracking-rules "References pages"; validation-doctrine's parenthetical now defers the trigger instead of restating it. Gate answers: a page is owed when the repo relies on the source; a synthesis note when the analysis outlives its milestone.
 - 2026-07-18: T4 — pairing test instantiates the shipped template into a temp tree and runs the real check_references + real dated-extraction guard; AC3 amended at the implement gate (placeholder dates cannot satisfy the date regex, so the criterion tested the wrong subject). Extracted DATED_EXTRACTION/extraction_line into one shared definition so template and repo-page checks cannot drift.
+- 2026-07-18: review fan-out — 4 findings from the diff-bug lens (F2/83, F4/80, F1/76, F3/65), all four actioned and fixed; blame-history and prior-PR lenses clean. AC4 amended at the review gate (it named README as a template inventory; README lists no templates) rather than reinterpreted. All 7 criteria evidenced and ticked.
 - 2026-07-18: /milestone-review started; draft PR #78 opened; branch confirmed current with origin/main (0 behind). Consistency gate clean: cairn_validate exit 0, generic profile names no toolchain checks, no IP/GP text changed so cairn_impact skipped. Three review lenses spawned; Review section pending their findings.
 - 2026-07-18: T6 — four Mutation entries registered (three on the rulebook, one on the module) with a DOCTRINE target constant added; each block verified to occur exactly once. Suites: skills 336, scripts 128, hooks 72, each exit 0 checked individually; cairn_validate exit 0. Status → review. (AC boxes left unticked: fencing makes those review's verification marks, not implement's.)
 - 2026-07-18: T5 — DESIGN templates bullet gains the synthesis note; README's references line fixed from the stale `PDFs gitignored` to `sources/ gitignored` (D-047). Repo-wide sweep (LESSONS :18): CHANGELOG's template list is a shipped release entry and stays as history; remaining `references/pdf` hits are the D-047 deprecation path and history.
@@ -141,3 +147,56 @@ template's.
 
 ## Review
 <!-- owner: review · exclusive; EXEMPT from the 150-line cap (M55). -->
+
+**Criterion evidence** (fresh, by command 2026-07-18; PR #78).
+
+- AC1 — `grep` counts 1 each in `tracking-rules.md` for the trigger sentence,
+  the template-pointer sentence, and `templates/synthesis-note.md`; 0 in
+  `validation-doctrine.md` for the trigger. Differential against `main`: all
+  three anchors absent there, so the guards are not vacuous. 5 tests in
+  `TestAuthoringTrigger` pass.
+- AC2 — template shipped, 74 lines; `TestShippedSynthesisTemplate` 4 tests
+  pass over the real file (11 field anchors after the F3 fix).
+- AC3 — `TestTemplateProducesAValidPage` 3 tests pass: instantiated page
+  clean through the real `check_references`, clean through the real
+  `DATED_EXTRACTION` guard, and the uninstantiated template proven to fail
+  (non-vacuity check).
+- AC4 — amended at review (see the criterion). `cairn/DESIGN.md:39` reads
+  "source note, synthesis note". README verified to contain no template
+  listing, so it is recorded as a D-047 in-passing fix, not inventory
+  evidence.
+- AC5 — 4 `Mutation` entries registered; each block verified to occur exactly
+  once in its target; completeness meta-test green. The module absence-assert
+  is deliberately unregistered (M54: blanking cannot restore an absence) and
+  carries a positive twin.
+- AC6 — skills 337, scripts 128, hooks 72, each exit 0 checked individually,
+  no pipes; `cairn_validate` exit 0, all 15 CHECKS PASS, 4 advisories OK.
+- AC7 — the pairing test covers both templates. Differential: `main`'s
+  source-note template, instantiated, fails the dated guard — the bug was
+  real, not suspected.
+
+**Consistency gate.** `cairn_validate` exit 0. Profile `generic` names no
+toolchain checks (clean no-op). No IP/GP text changed, so `cairn_impact`
+correctly skipped. No CI in this repo (LESSONS `:14`).
+
+**Fan-out.** Three lenses + scorer. Blame-history: no findings — independently
+confirmed the AC7 bug by reading the template at M78 (`0b4e2ce`) and on `main`
+(`db0e704`), and confirmed the guard refactor is behaviour-identical.
+Prior-PR: no findings — no inline PR comments exist in this repo, so it used
+archived Review sections, and checked all five previously-caught trap classes.
+Diff-bug: 4 findings, all actioned.
+
+- F2 (83) — the AC7 guard-mechanics note sat in body prose, so every page
+  authored from either template would commit a sentence about a test guard.
+  Fixed: moved into the HTML header comment.
+- F4 (80) — AC4 named README as a template inventory; it lists no templates.
+  Fixed by gated criterion amendment, not by reinterpretation.
+- F1 (76) — actioned though sub-threshold (LESSONS `:39`): `source-note.md`'s
+  header still routed synthesis notes into itself, in a file this milestone
+  edited. Fixed to point at `synthesis-note.md`.
+- F3 (65) — actioned though sub-threshold: the `"extraction:"` field anchor
+  was false coverage (the phrase also occurs in the header comment, so
+  deleting the real field left the guard green). Fixed with a guard pinning
+  the field line at column 0; closure proven by mutation.
+
+Nothing was logged-and-dropped: all four findings were fixed.
