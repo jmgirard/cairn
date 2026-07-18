@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M77: Work-log cap exemption — the budget stops counting a section IP4 forbids editing
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m77-worklog-cap-exemption`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -100,6 +100,7 @@ monotonic growth of an un-editable section).
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-18: created by /milestone-plan; promotes the work-log-vs-cap candidate (M76 review); gate chose exempt-plus-guard, advisory severity, and keeping the milestone-local Decisions section counted.
+- 2026-07-18: branch `m77-worklog-cap-exemption` cut from main; status -> in-progress.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
