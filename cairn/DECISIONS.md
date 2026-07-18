@@ -1096,3 +1096,49 @@ narrowed in nothing — it is read as already excluding LESSONS. Delivered by
 M76. If a correction marker ever needs to be machine-checkable, or if
 in-place correction is observed erasing something git alone did not preserve,
 this is the entry to supersede.
+
+### D-046 (2026-07-18): The milestone cap exempts the work log too; wrapped entries warn rather than fail — annotates D-030
+
+**Context:** D-030 narrowed the 150-line milestone cap to the plan-owned body
+and exempted the review-exclusive `## Review` section, because evidence written
+at review time was scrambling plan-owned content. D-045 then classified the work
+log as **history** — never edited. The two meet badly: the work log is inside
+the plan-owned body, so the sanctioned cap remedy ("compress the heaviest
+section") can land on a section IP4 forbids touching. M76 hit it live at
+158/150 with the work log the heaviest section at 58 lines, and escaped by
+reflowing every entry to the one-physical-line format the rulebook already
+mandates — no entry removed, no substance changed — while recording that the
+escape is finite and spinning the gap off as a candidate. Measurement at the
+M77 plan gate (2026-07-18) put the mechanism beyond doubt: across M72–M76 the
+work log runs 15–24 lines and is never the heaviest section *once reflowed*,
+and M76's own 15 entries measured 58 lines wrapped versus 21 reflowed. The leak
+is hard-wrapping — this repo writes ~80-column prose, the rulebook says
+"Work-log entries are one line each", and nothing distinguished the two.
+
+**Decision:** Three choices at the M77 plan gate. (1) **Exempt the work log**
+from the plan-owned cap, as `## Review` already is, and drop it from the
+heaviest-first diagnostic so the breakdown never names a section the operator
+may not trim. This removes the collision structurally rather than relying on an
+author noticing that the heaviest section is off-limits. (2) **Add a
+wrapped-entry advisory, not a check** — a work-log entry spanning more than one
+physical line renders `WARN`, exit-code neutral. The guard is what keeps a
+now-unbudgeted section from filling with pasted output, but once the section
+costs no budget a wrap is untidiness, not damage; a hard FAIL would block a
+milestone at the gate over formatting. Rejected FAIL severity for that reason,
+and rejected shipping the exemption bare (nothing would then notice bloat, since
+the one-line mandate has never had enforcement). (3) **The milestone-local
+`## Decisions` section stays counted** — D-030 rejected exempting it because it
+is meant to stay brief with cross-cutting entries promoted to this file, and
+that release valve is real and absent from the work log. Also rejected: a
+separate work-log sub-cap, which reprises exactly the second-number complexity
+D-030 declined for `## Review`.
+
+**Consequences:** Annotates D-030 — its plan-owned-body scoping and `## Review`
+exemption stand; the exempt set gains one member for a different reason
+(un-editable rather than differently-owned). The cap stops being able to demand
+an IP4 violation, so M76's reflow escape stops being load-bearing. IP4 is
+untouched in wording and in reading. Graduates the work-log-vs-cap candidate at
+post-merge hygiene (M35). The adjacent budget-first-drafting candidate is
+unaffected — it concerns first drafts landing under cap, not monotonic growth.
+Delivered by M77. If an unbudgeted work log is ever observed absorbing pasted
+output despite the advisory, the FAIL severity is the entry to supersede.
