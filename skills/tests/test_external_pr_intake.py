@@ -137,11 +137,16 @@ class TestIntakeRouting(unittest.TestCase):
         # M75/D-044. The assert carries the LABEL, not just the clause: per
         # the M74 F3 lesson a clause-only assert stays green after the label
         # is swapped to something else entirely, so the guard would survive
-        # an inversion of the very rule it names. Label + narrowing together
-        # are the unit — widening the narrowing has to fail this too, since
-        # the narrowing is what keeps IP3's conservation intact.
+        # an inversion of the very rule it names.
+        #
+        # Scope of this guard, stated honestly (M75 review F4): it catches a
+        # label swap, a blanking, and any edit to the three eligible
+        # categories or to the "in cairn" locus D-044 rests on. It does NOT
+        # catch a *widening* by appended text — `assertIn` is a substring
+        # match, so "…in cairn, or anything the user declines to file —"
+        # still passes. Widening is caught by review reading D-044, not here.
         self.assertIn(
-            "`leave` is legal only for noise, duplicates, or already-covered items",
+            "`leave` is legal only for noise, duplicates, or items already cross-referenced in cairn",
             rules(),
         )
 

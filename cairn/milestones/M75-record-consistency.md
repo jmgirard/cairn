@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M75: Record consistency — the `leave` disposition and MCP-matcher semantics
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP3   <!-- owner: plan · create/amend-via-gate -->
@@ -59,10 +59,18 @@ what IP3 forbids. Implement inherits the answer, not the question.
       contradiction, and §3's four dispositions are unchanged by this
       milestone (`git diff` over `skills/milestone/SKILL.md` touches no
       disposition text).
-- [ ] AC4 — `cairn/references/claude-code-hooks.md`'s "Matchers & execution"
-      section states that a matcher of only word chars, `-`, space, `,` or
-      `|` is compared as an exact string, so an MCP tool matcher must carry a
-      metacharacter; its `INDEX.md` line still describes the page accurately.
+- [ ] AC4 — *(amended 2026-07-18 at the implement gate; the original wording
+      mandated a factually wrong rule — M75 review F1)*
+      `cairn/references/claude-code-hooks.md`'s "Matchers & execution"
+      section states matcher dispatch as implemented: `*`/empty matches every
+      tool; a matcher of only `[a-zA-Z0-9_|]` (or `[a-zA-Z0-9_|, -]`) takes a
+      literal path that splits on `|`/`,` and requires an exact match per
+      alternative; any other character sends the whole matcher to an
+      **unanchored** `new RegExp`, and an unparseable pattern matches
+      nothing. It states the MCP consequence — a literal MCP name binds to
+      one server, `|` does **not** buy regex treatment, a metacharacter
+      (`mcp__.*__spawn_task`) does — and its `INDEX.md` line describes the
+      page accurately.
 - [x] AC5 — a guard asserts the new rulebook line *including its `leave`
       label* (M74/F3: a clause-only assert survives a label swap), with a
       mutation-harness entry whose anchor phrase is unique within
@@ -76,11 +84,11 @@ what IP3 forbids. Implement inherits the answer, not the question.
      task(s) satisfying it, by positional number (AC/Task counted
      top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
 
-- AC1 → T1
+- AC1 → T1, T5
 - AC2 → T2
 - AC3 → T1
-- AC4 → T3
-- AC5 → T4
+- AC4 → T3, T5
+- AC5 → T4, T5
 - AC6 → T4
 
 ## Tasks
@@ -102,6 +110,13 @@ what IP3 forbids. Implement inherits the answer, not the question.
       a label-inclusive assert plus a `Mutation(...)` entry in
       `test_mutation_harness.py`. Run all three suites and `cairn_validate.py`;
       check exit codes explicitly, never through a pipe (M56/M65).
+- [x] T5 — *(added 2026-07-18 after the failed review gate)* Correct the
+      matcher rule everywhere it is now known wrong: the hooks reference
+      bullet (F1), `tracking-rules.md`'s dropped "in cairn" locus (F2), the
+      guard comment's overclaimed coverage (F4), and `LESSONS.md:41`, which
+      carries the same wrong rule inherited from M71. Move the guard assert
+      and mutation anchor to follow F2's new wording without reflowing
+      M73's adjacent guarded phrases (M59/M64).
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
@@ -112,6 +127,9 @@ what IP3 forbids. Implement inherits the answer, not the question.
 - 2026-07-18: T3 — MCP-matcher bullet added to the hooks reference; exemplar verified live against hooks.json:67 + idea_guard.py:28 (same suffix shape); INDEX line amended to record the non-official-docs provenance.
 - 2026-07-18: T4 — two label-inclusive guards + two mutation entries; label swap (`leave`→`ignore`) proven to fail the suite, not just blanking. Verify clean: scripts 96 / skills 289 / hooks 72, cairn_validate 0, exit codes checked unpiped (M56/M65).
 - 2026-07-18: all tasks done; status → review.
+- 2026-07-18: AC4 amended at the implement gate (user-approved): its original wording mandated the wrong matcher rule, so correcting the page would have failed the criterion as written. T5 added as a discovered task.
+- 2026-07-18: T5 — F1 rewritten from the shipped matcher `GFy` (literal path = split on `|`/`,` + per-alternative exact match; regex path unanchored); F2 restored D-044's "in cairn" locus; F4 comment now states what the assert does NOT catch; LESSONS.md:41 corrected in place. Guard re-proven against BOTH locus removal and label swap. Ragged wrap left alone deliberately: reflowing would split M73's guarded `/milestone-plan` phrase (M59/M64).
+- 2026-07-18: all F1/F2/F4 fixes in; verify clean 96/289/72 + validate 0; status → review (second trip).
 - 2026-07-18: review GATE FAILED → in-progress. F1: the hooks-reference matcher rule is factually wrong (literal path splits on `|`/`,` and compares each part; verified in binary 2.1.207) and AC4's own wording mandates the error — needs a gated AC4 amendment. F2: `tracking-rules.md:202` dropped D-044's "in cairn" locus. F4: a guard comment overclaims coverage `assertIn` does not give. AC1/AC4 unticked.
 
 ## Decisions

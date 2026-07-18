@@ -98,11 +98,27 @@ PostToolUse, UserPromptSubmit, ConfigChange.
   matcher. Hooks matching one event run in parallel; default command
   timeout 600s (`"timeout"` per hook, seconds); cwd = session cwd (not
   necessarily repo root — walk up to find `cairn/ROADMAP.md`).
-- **MCP tool names inherit that exact-vs-regex rule, and it bites.** A
-  matcher of only word chars, `-`, space, `,` or `|` is compared as an
-  EXACT string — and `_` is a word char, so a literal
-  `mcp__ccd_session__spawn_task` is an exact compare that binds the hook to
-  one server and silently unwires on a server rename. Give an MCP matcher a
-  metacharacter to get regex treatment (`mcp__.*__spawn_task`), and keep the
-  hook's own tool-name regex the same suffix shape so matcher and hook agree
-  (M71 T1; the `idea_guard` wiring is the live exemplar).
+- **Matcher dispatch, as implemented** (read out of the shipped binary,
+  2.1.207 — the `GFy` matcher; not from the docs, which state it loosely).
+  Three paths: `*` or empty matches every tool. Otherwise a matcher made up
+  ONLY of `[a-zA-Z0-9_|]` (or `[a-zA-Z0-9_|, -]` in the variant that admits
+  commas/spaces/dashes) takes the **literal** path — it is split on `|`/`,`,
+  each alternative is trimmed and alias-expanded, and the tool name must
+  **equal one of them exactly**. So `Edit|Write` matches both Edit and Write:
+  the literal path is per-alternative set membership, NOT a whole-string
+  compare. Any character outside that class (`.`, `*`, `(` …) sends the whole
+  matcher to `new RegExp(t)`, tested **unanchored** against the tool name and
+  its aliases; an unparseable pattern logs `Invalid regex pattern in hook
+  matcher` and matches nothing.
+- **What that means for MCP tool names.** `_` is in the literal class, so a
+  bare `mcp__ccd_session__spawn_task` is an exact compare bound to one server
+  and silently unwires on a server rename. Adding `|` does NOT buy regex
+  treatment — it keeps the matcher on the literal path with more
+  alternatives. Only a metacharacter escapes it: `mcp__.*__spawn_task`. Claude
+  Code ships its own warning for the narrower case of a matcher like
+  `mcp__server` with no second `__`: "matches no tool (it is compared as an
+  exact string). To match all tools from this server, use `mcp__server__.*`."
+  Because the regex path is unanchored, keep patterns tight — a bare `Edit`
+  as regex would also hit `NotebookEdit` and `MultiEdit`. Keep the hook's own
+  tool-name regex the same suffix shape as its matcher so the two agree
+  (`hooks.json:67` + `idea_guard.py:28` are the live exemplar).

@@ -947,7 +947,7 @@ REGISTRY = [
         guard="test_external_pr_intake",
         test="TestIntakeRouting.test_intake_paragraph_names_leave_with_its_narrowing",
         target=RULES,
-        block="`leave` is legal only for noise, duplicates, or already-covered items",
+        block="`leave` is legal only for noise, duplicates, or items already cross-referenced in cairn",
     ),
     Mutation(
         guard="test_external_pr_intake",

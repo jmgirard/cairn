@@ -199,7 +199,7 @@ Work that isn't a milestone:
 Intake: GitHub issues and external PRs are inboxes, never a second tracking
 system. Issues → `candidate` rows or the hotfix path; or, as the fourth
 disposition `/milestone` §3 offers,
-`leave` is legal only for noise, duplicates, or already-covered items —
+`leave` is legal only for noise, duplicates, or items already cross-referenced in cairn —
 no row, no action, reason stated, never anything genuinely new (D-044).
 External PRs → small
 and correct: **`/hotfix` is the door** — it adopts the PR (`gh pr checkout`

@@ -17,7 +17,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 | M74 | Issue triage — /milestone enumerates untriaged inboxes into candidate rows | done | M73 | normal | milestones/archive/M74-issue-triage.md |
 | M71 | Idea-capture intake gate — out-of-band ideas also land as candidates (D-042) | done | — | high | milestones/archive/M71-idea-capture-intake-gate.md |
 | M70 | Docker-image toolchain profile — fourth profile for pure-image repos | done | — | normal | milestones/archive/M70-docker-image-profile.md |
-| M75 | Record consistency — the `leave` disposition and MCP-matcher semantics (D-044) | in-progress | — | normal | milestones/M75-record-consistency.md |
+| M75 | Record consistency — the `leave` disposition and MCP-matcher semantics (D-044) | review | — | normal | milestones/M75-record-consistency.md |
 
 ## Candidates
 
