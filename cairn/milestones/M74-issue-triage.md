@@ -109,6 +109,8 @@ issues — the scripts stay offline and stdlib-only
 - 2026-07-18: T4 — DESIGN Conventions bullet now says `/hotfix` is bidirectional; README gained an outside-PR row and the contributions bullet names both doors. Repo-wide sweep found the stale claim in live prose only at `DESIGN.md:69` (README's two spots were incomplete, not wrong).
 - 2026-07-18: T4 amendment (step-6 gate, user approved) — AC6's evidence grep hit this milestone's own AC text (M62 trap); criterion amended to except it alongside the M58 history files.
 - 2026-07-18: T5 — all three suites green from the repo root (scripts 96, skills 285, hooks 72); `cairn_validate` all checks passed. Status → review.
+- 2026-07-18: review — PR #72 opened; all 7 criteria verified with fresh evidence; consistency gate clean.
+- 2026-07-18: review fan-out — 5 findings (diff-bug), 0 (blame), 0 (prior-PR, no evidence). Fixed F1/80 (own-PR filter), F3/92 (label-bound disposition asserts — proven false coverage, reproduced independently), F4/63 (overridden sub-threshold per M73 lesson). F2/30 rejected as thin, F5/40 → candidate row. Suites re-run green (skills 287).
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
@@ -160,3 +162,52 @@ recalled — M28). Profile is `generic`; its `consistency-gate` slot names no
 toolchain checks, so that half is a clean no-op by design. No IP/GP principle
 text changed (M74 works *under* IP3, does not alter it), so `cairn_impact`
 is skipped per step 4.
+
+### Independent fan-out — 3 lenses + scorer
+
+[O] diff-bug: 5 findings. [S] blame-history: none (traced §2's run-and-read
+discipline, §3's ONE-chip lineage, DESIGN's founding-commit bullet, M72's
+README section, and the M53/M59/M60/M68 registry lessons — all clean).
+[S] prior-PR-comments: no prior-PR evidence — 17 merged PRs touching these
+files carry zero inline comments (single-operator merge pattern); clean
+no-op, zero findings.
+
+**Actioned (≥80):**
+
+- **F1 (80) — fixed.** §2's PR sweep had no "external" filter: the bullet
+  said "external PRs" and fetched `author`, but nothing used it, so
+  `gh pr list --state open` returned every open PR. Reachable in cairn's own
+  steady state — the audit would re-report the in-review milestone PR as
+  inbox and could propose adopting a PR the session authored. Fix: the step
+  now drops PRs authored by the operator or on `m<nn>-*`/`hotfix-*` branches
+  before the sweep, with two guards + a mutation entry.
+- **F3 (92) — fixed.** `test_candidate_row_is_the_default` and
+  `test_larger_work_routes_to_milestone_plan` asserted only their clause,
+  never the disposition *label* that carries the routing rule. Proven false
+  coverage: inverting the labels (`candidate row`→`do nothing`,
+  `/milestone-plan`→`/hotfix`) left all 18 tests green. Reproduced
+  independently at review before fixing. All five disposition asserts now
+  bind their label; the same inversion now fails 2 tests. One label
+  registered in the mutation harness.
+- **F4 (63) — fixed despite sub-threshold score (operator judgment, M73
+  lesson).** The chip guard's comment claimed it "pins that choice so a
+  later edit doesn't fork the chip", but the assert was a presence check on
+  pre-existing text. Same false-coverage family as F3 and a two-line fix, so
+  the score was overridden rather than logged. Now asserts the singular
+  framing (`end with\none routing chip`) plus a count of exactly 1, and the
+  comment states its real scope.
+
+**Sub-threshold, logged not actioned (IP3 — surfaced, never dropped):**
+
+- **F2 (30)** — §3 doesn't state whether mixed dispositions are accepted as
+  a batch or per-item, nor who writes the candidate row. Scorer: largely
+  covered by the rulebook's pre-existing search-first and durable-record
+  preview rules, which M74 shouldn't restate. Rejected as thin; re-open if
+  an agent actually improvises here.
+- **F4 (63)** — see actioned above; fixed on operator judgment.
+- **F5 (40)** — the `leave` disposition isn't in the rulebook's "Issues →
+  `candidate` rows or the hotfix path" enumeration
+  (`tracking-rules.md:200`). Rejected as a review-side change: AC3 names
+  `leave` explicitly, and review never reinterprets a criterion. The
+  doctrine divergence is real but small → candidate row for a rulebook
+  decision.

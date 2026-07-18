@@ -922,6 +922,23 @@ REGISTRY = [
         target=MILESTONE,
         block="This is the door M73 opened; route to it rather than inventing",
     ),
+    # M74 review F1: the own-PR filter is what makes the PR list an inbox
+    # rather than a list of cairn's own in-flight work.
+    Mutation(
+        guard="test_issue_triage",
+        test="TestInboxEnumeration.test_own_prs_are_filtered_out_before_the_sweep",
+        target=MILESTONE,
+        block="drop this session's own work from the PR list",
+    ),
+    # M74 review F3: the disposition LABEL carries the routing rule. Blanking
+    # the label must fail the guard — asserting the clause alone let the label
+    # be swapped with every test still green.
+    Mutation(
+        guard="test_issue_triage",
+        test="TestDispositions.test_candidate_row_is_the_default",
+        target=MILESTONE,
+        block="**candidate row** — the default for anything real but not urgent",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

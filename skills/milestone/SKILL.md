@@ -79,6 +79,13 @@ The script deliberately does not judge these — do them yourself and report:
   candidate row or hotfix disposition yet. Enumerate both inboxes —
   `gh issue list --state open --json number,title,url` for issues,
   `gh pr list --state open --json number,title,url,author` for PRs — then
+  drop this session's own work from the PR list, which is what the `author`
+  field is for: a PR you opened, or one whose head branch is `m<nn>-*` or
+  `hotfix-*`, is cairn's own in-flight work — already tracked by its
+  milestone and already reported two bullets up. Only what survives that
+  filter is inbox; without it the audit re-reports the milestone PR you are
+  reviewing right now and can propose adopting a PR this session authored.
+  Then
   apply the search-first rule to every hit before proposing anything: sweep
   the existing `candidate` rows, `milestones/archive/`, and `DECISIONS.md`,
   so an item already covered is cross-referenced, never duplicated as a
@@ -110,8 +117,8 @@ examples — only the applicable subset (≤4) is offered:
   including any untriaged inbox item §2 surfaced)
 - Stop here
 
-The §2 inbox sweep resolves here, and nowhere else. Each item takes exactly
-one disposition — you propose, the user chooses:
+The §2 inbox sweep resolves here, and nowhere else.
+Each item takes exactly one disposition — you propose, the user chooses:
 
 - **candidate row** — the default for anything real but not urgent; one
   ROADMAP row, search-first already applied at §2.

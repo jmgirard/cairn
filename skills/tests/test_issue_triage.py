@@ -67,6 +67,20 @@ class TestInboxEnumeration(unittest.TestCase):
             milestone(),
         )
 
+    def test_own_prs_are_filtered_out_before_the_sweep(self):
+        # M74 review F1: the bullet says "external" PRs and fetches `author`,
+        # but nothing used it — so the audit enumerated cairn's own in-review
+        # milestone PR as an inbox item and could propose adopting a PR this
+        # session authored. The filter is what makes the list an *inbox*.
+        t = milestone()
+        self.assertIn("drop this session's own work from the pr list", t)
+        self.assertIn("is cairn's own in-flight work", t)
+
+    def test_own_pr_filter_names_the_branch_shapes(self):
+        # Author alone is not enough: an operator's own milestone PR is
+        # authored by them, so the branch shape is the reliable signal.
+        self.assertIn("one whose head branch is `m<nn>-*` or", milestone())
+
     def test_sweep_is_read_only_against_github(self):
         # Scope guard: cairn reads the inbox, it never manages it.
         self.assertIn("never write to", milestone())
@@ -99,13 +113,25 @@ class TestDispositions(unittest.TestCase):
         self.assertIn("the §2 inbox sweep resolves here, and nowhere else.", milestone())
 
     def test_each_item_takes_exactly_one_disposition(self):
-        self.assertIn("each item takes exactly", milestone())
+        # "exactly one" is the rule; asserting the bare prefix would survive
+        # an edit to "exactly two dispositions".
+        self.assertIn("each item takes exactly one disposition", milestone())
 
     def test_candidate_row_is_the_default(self):
-        self.assertIn("the default for anything real but not urgent", milestone())
+        # The LABEL is the routing rule, so it is part of the assertion: a
+        # clause pinned without its label survives having the label swapped
+        # (caught at M74 review — the guard passed against `candidate row`
+        # rewritten to `do nothing`).
+        self.assertIn(
+            "**candidate row** — the default for anything real but not urgent",
+            milestone(),
+        )
 
     def test_hotfix_disposition_covers_bugs_and_external_prs(self):
-        self.assertIn("a user-visible bug, or an external pr that meets the", milestone())
+        self.assertIn(
+            "**`/hotfix`** — a user-visible bug, or an external pr that meets the",
+            milestone(),
+        )
 
     def test_pr_routing_reuses_m73s_door(self):
         # AC4 / D-043: the door already exists. A second intake mechanism is
@@ -113,10 +139,13 @@ class TestDispositions(unittest.TestCase):
         self.assertIn("this is the door m73 opened; route to it rather than inventing", milestone())
 
     def test_larger_work_routes_to_milestone_plan(self):
-        self.assertIn("anything larger than the hotfix bar.", milestone())
+        self.assertIn(
+            "**`/milestone-plan`** — anything larger than the hotfix bar.",
+            milestone(),
+        )
 
     def test_leave_disposition_requires_a_reason(self):
-        self.assertIn("no row, no action, with the reason stated.", milestone())
+        self.assertIn("**leave** — no row, no action, with the reason stated.", milestone())
 
 
 class TestVerbatimBar(unittest.TestCase):
@@ -131,10 +160,16 @@ class TestVerbatimBar(unittest.TestCase):
         # rule for a summary line.
         self.assertIn("paraphrase would have them approve text they never saw.", milestone())
 
-    def test_route_step_still_carries_one_routing_chip(self):
+    def test_route_step_still_carries_exactly_one_routing_chip(self):
         # M74 extended the existing triage option rather than adding a second
-        # chip; this pins that choice so a later edit doesn't fork the chip.
-        self.assertIn("one routing chip (askuserquestion)", milestone())
+        # chip. Scope of this guard, stated honestly (M74 review F4): it pins
+        # the singular framing and that the token appears once — it cannot
+        # detect an unrelated AskUserQuestion block added elsewhere, and does
+        # not claim to. A bare assertIn on the token would have been a
+        # presence check on pre-existing text, locking nothing M74 added.
+        t = milestone()
+        self.assertIn("end with\none routing chip (askuserquestion)", t)
+        self.assertEqual(t.count("routing chip (askuserquestion)"), 1)
 
 
 if __name__ == "__main__":
