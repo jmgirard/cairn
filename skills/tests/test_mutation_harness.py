@@ -404,6 +404,46 @@ REGISTRY = [
         target=RULES,
         block="Every committed `references/` page carries its",
     ),
+    # M78: the standing-fact / dated-observation split + page provenance.
+    # Each definition is registered separately and each block is the label
+    # WITH its enumeration, so blanking one cannot leave the other's assert
+    # standing in for it (M74/M76: a label→SET guard must pin both).
+    Mutation(
+        guard="test_source_note_template",
+        test="TestClaimSplitDoctrine.test_standing_fact_label_carries_its_members",
+        target=RULES,
+        block="A **standing fact** is a claim about the *source*: an extracted value, a printed formula, a verbatim wording, a page or table anchor.",
+    ),
+    Mutation(
+        guard="test_source_note_template",
+        test="TestClaimSplitDoctrine.test_dated_observation_label_carries_its_members",
+        target=RULES,
+        block="A **dated observation** is a claim about the *repo's own state*: what is on the shelf, what has or has not been read, what another page does or does not yet say, what a later task must still check.",
+    ),
+    Mutation(
+        guard="test_source_note_template",
+        test="TestClaimSplitDoctrine.test_undated_absence_claim_is_named_as_the_failure",
+        target=RULES,
+        block="undated absence claim",
+    ),
+    Mutation(
+        guard="test_source_note_template",
+        test="TestClaimSplitDoctrine.test_provenance_block_is_prose_not_frontmatter",
+        target=RULES,
+        block="The block is prose in the page's own idiom, not frontmatter.",
+    ),
+    Mutation(
+        guard="test_source_note_template",
+        test="TestClaimSplitDoctrine.test_extraction_status_must_carry_its_own_date",
+        target=RULES,
+        block="an extraction status carries its own",
+    ),
+    Mutation(
+        guard="test_source_note_template",
+        test="TestClaimSplitDoctrine.test_module_defers_the_universal_rules_to_the_rulebook",
+        target="skills/shared/validation-doctrine.md",
+        block='are universal file-family rules and live in tracking-rules',
+    ),
     Mutation(
         guard="test_review_fanout",
         test="TestReviewFanout.test_fanout_states_why_a_fresh_model_reviews",

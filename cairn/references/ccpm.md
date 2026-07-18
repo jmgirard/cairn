@@ -1,5 +1,9 @@
 # ccpm — Claude Code Project Manager (automazeio)
 
+**Provenance.** Citekey `ccpm` · ingested 2026-07-11 by M06 from https://github.com/automazeio/ccpm.
+Pagination: —.
+Extraction: verified at ingestion — full skill source read and the local flow executed hands-on; not re-read since — observed 2026-07-18.
+
 Source: https://github.com/automazeio/ccpm (~8k stars; studied
 2026-07-11, full skill source read + local flow executed hands-on).
 

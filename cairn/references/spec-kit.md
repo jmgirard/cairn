@@ -1,5 +1,9 @@
 # spec-kit (GitHub)
 
+**Provenance.** Citekey `spec-kit` · ingested 2026-07-11 by M06 from https://github.com/github/spec-kit.
+Pagination: —.
+Extraction: partly verified at ingestion — key claims checked against a clone (`specify.md:124-128`, `constitution.md:87`, `plan-template.md:39,106`); not re-read since — observed 2026-07-18.
+
 Source: https://github.com/github/spec-kit (studied 2026-07-11; [S]
 subagent study, key claims verified against clone: specify.md:124-128,
 constitution.md:87, plan-template.md:39,106).

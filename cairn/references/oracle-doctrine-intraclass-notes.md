@@ -1,5 +1,9 @@
 # Oracle doctrine validated against intraclass (M42)
 
+**Provenance.** Citekey `oracle-doctrine-intraclass-notes` · ingested 2026-07-12 by M42 from synthesis note — read-only fit assessment of cairn's D-024 doctrine against `jmgirard/intraclass`'s 34-script oracle system.
+Pagination: —.
+Extraction: read against the intraclass suite at assessment time; that repo has moved on independently since, so the 31/34 classification is a 2026-07-12 snapshot — observed 2026-07-18.
+
 _Scope: a read-only fit assessment of cairn's D-024 oracle-type doctrine (the
 `tracking-rules.md` "Validation doctrine" section; since M58, 2026-07-16,
 extracted to `skills/shared/validation-doctrine.md` — D-031) against `jmgirard/intraclass`'s

@@ -1,5 +1,9 @@
 # Oracle-discipline assessment — ackwards M57
 
+**Provenance.** Citekey `oracle-discipline-notes` · ingested 2026-07-12 by M33 from synthesis note — assessment of `jmgirard/ackwards`' M57 oracle system, plus the intraclass lineage.
+Pagination: —.
+Extraction: read against the ackwards artifacts at assessment time; the assessed repo has moved on independently since, so the catalogue is a 2026-07-12 snapshot — observed 2026-07-18.
+
 An assessment of the oracle discipline `jmgirard/ackwards` built in its M57
 ("Ossify oracles"), and a ledger of what generalizes back into cairn's own
 validation doctrine. Same idiom as `migration-pilot-notes.md`: catalogue the

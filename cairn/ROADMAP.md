@@ -17,7 +17,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 | M75 | Record consistency — the `leave` disposition and MCP-matcher semantics (D-044) | done | — | normal | milestones/archive/M75-record-consistency.md |
 | M76 | Record correction — history vs. current knowledge, and the correct-in-place protocol (D-045) | done | — | normal | milestones/archive/M76-record-correction.md |
 | M77 | Work-log cap exemption — the budget stops counting a section IP4 forbids editing (D-046) | done | — | normal | milestones/archive/M77-worklog-cap-exemption.md |
-| M78 | Source-note shape — dated observations and page provenance | planned | — | high | milestones/M78-source-note-shape.md |
+| M78 | Source-note shape — dated observations and page provenance | review | — | high | milestones/M78-source-note-shape.md |
 | M79 | References content check — the lint stops being a filename census | planned | M78 | normal | milestones/M79-references-content-check.md |
 
 ## Candidates

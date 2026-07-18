@@ -73,10 +73,17 @@ content. Search (DOI, publisher, OSF); if inaccessible, stop and ask the
 user for the PDF.
 
 **Source ingestion:** PDF → `cairn/references/pdf/` (gitignored).
-Summary → `cairn/references/<citekey>.md` (committed): full citation,
+Summary → `cairn/references/<citekey>.md` (committed), authored from
+`skills/shared/templates/source-note.md`: full citation,
 extracted values with page/table anchors, verbatim-critical values quoted
 exactly, which tests/oracles trace to it, open questions. One line in
 `INDEX.md`. Tests and milestones cite `citekey (p. N)`, never restate.
 (The `references/` page *types* and the page⇒INDEX-line rule are universal
 file-family rules and live in tracking-rules "References pages"; this
 workflow is the numeric/scoring-source instance of them.)
+
+The claim-ageing rules that govern every committed page — standing facts vs.
+dated observations, and the `**Provenance.**` block —
+are universal file-family rules and live in tracking-rules "References pages" (D-031).
+A numeric source note is bound by them like any other page; the ingestion
+workflow above is the numeric/scoring-source instance.

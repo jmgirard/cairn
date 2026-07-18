@@ -1,5 +1,9 @@
 # LLM Wiki (Karpathy) — formalism + cairn fit assessment (M56)
 
+**Provenance.** Citekey `llm-wiki` · ingested 2026-07-16 by M56 from https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f (no date stated in the document).
+Pagination: —.
+Extraction: verified at ingestion — read directly as raw text 2026-07-16; the surveyed ecosystem projects were not read to the same depth — observed 2026-07-18.
+
 **Citation:** Karpathy, A. *LLM Wiki*. GitHub gist
 `karpathy/442a6bf555914893e9891c11519de94f`
 (https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f), no date
