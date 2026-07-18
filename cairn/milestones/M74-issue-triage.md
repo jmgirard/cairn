@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M74: Issue triage — /milestone enumerates untriaged inboxes into candidate rows
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M73   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** IP3   <!-- owner: plan · create/amend-via-gate -->
@@ -95,7 +95,7 @@ issues — the scripts stay offline and stdlib-only
       grep` the whole repo for other pre-M73 trigger prose (M48/M58: sweep
       live files, excluding only history — DECISIONS, CHANGELOG, legacy,
       reviews archive).
-- [ ] T5 — Run all three suites from the repo root.
+- [x] T5 — Run all three suites from the repo root.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
@@ -108,6 +108,7 @@ issues — the scripts stay offline and stdlib-only
 - 2026-07-18: T3 — new `test_issue_triage.py` (18 tests) + 4 mutation entries (commands, search-first ordering, degradation floor, PR routing), each block verified unique and proven to fail when blanked. Hit the M23/M64 reflow trap live: the degradation directive wrapped mid-phrase, so the prose was reflowed to keep it on one line rather than weakening the assert. Skills suite 285 green.
 - 2026-07-18: T4 — DESIGN Conventions bullet now says `/hotfix` is bidirectional; README gained an outside-PR row and the contributions bullet names both doors. Repo-wide sweep found the stale claim in live prose only at `DESIGN.md:69` (README's two spots were incomplete, not wrong).
 - 2026-07-18: T4 amendment (step-6 gate, user approved) — AC6's evidence grep hit this milestone's own AC text (M62 trap); criterion amended to except it alongside the M58 history files.
+- 2026-07-18: T5 — all three suites green from the repo root (scripts 96, skills 285, hooks 72); `cairn_validate` all checks passed. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->

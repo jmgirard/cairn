@@ -14,7 +14,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 |---|---|---|---|---|---|
 | M72 | Collaboration boundary — what survives a merge outside cairn, plus PR-bound approval (D-043) | done | — | high | milestones/archive/M72-collaboration-boundary.md |
 | M73 | External-PR intake — /hotfix adopts a PR it did not author | done | M72 | high | milestones/archive/M73-external-pr-intake.md |
-| M74 | Issue triage — /milestone enumerates untriaged inboxes into candidate rows | in-progress | M73 | normal | milestones/M74-issue-triage.md |
+| M74 | Issue triage — /milestone enumerates untriaged inboxes into candidate rows | review | M73 | normal | milestones/M74-issue-triage.md |
 | M71 | Idea-capture intake gate — out-of-band ideas also land as candidates (D-042) | done | — | high | milestones/archive/M71-idea-capture-intake-gate.md |
 | M70 | Docker-image toolchain profile — fourth profile for pure-image repos | done | — | normal | milestones/archive/M70-docker-image-profile.md |
 | M69 | Cap-overrun diagnostic — per-section breakdown + single-pass compression discipline | done | — | normal | milestones/archive/M69-cap-overrun-diagnostic.md |
