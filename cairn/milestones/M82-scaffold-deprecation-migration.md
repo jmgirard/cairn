@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M82: Scaffold-deprecation migration — repair mode acts on the advisory it inherits
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP3, IP2   <!-- owner: plan · create/amend-via-gate -->
@@ -49,13 +49,18 @@ never fix, so the actor is skill prose. Migrating a repo's *committed*
 - [x] The step is written against the advisory's output rather than a
       hardcoded `pdf/`→`sources/` pair; prose states that generality, and a
       guard fails if it is narrowed to the one rename.
-- [ ] Three actions are pinned to their rules: the `.gitignore` entry is
-      rewritten without asking; the directory move happens only after an
+- [x] Three actions are pinned to their rules: the `.gitignore` successor
+      entry is added without asking, and the superseded one removed only once
+      the old directory is gone; the directory move happens only after an
       explicit user ask; both-directories-exist is surfaced and never
-      clobbered. Each guard pins the action label together with its rule on
-      one physical line (M74/M76).
-- [ ] The step closes by re-running the check and confirming the advisory is
-      quiet, so repair reports a verified outcome rather than an attempted one.
+      clobbered — and the case that governs is chosen before any move, not
+      after. Each guard pins the action label together with its rule on one
+      physical line (M74/M76).
+- [x] The step closes by re-running the check and states what a quiet advisory
+      does and does not prove: `check_gitignore_deprecations` reads
+      `.gitignore` alone, so repair reports the directory outcome — moved,
+      declined, or awaiting a choice — separately, never inferred from the
+      check going quiet.
 - [x] A prose-guard file covering the above registers in
       `skills/tests/test_mutation_harness.py` and fails when its registered
       block is blanked.
@@ -95,22 +100,22 @@ never fix, so the actor is skill prose. Migrating a repo's *committed*
       block on one unwrapped physical line — M53/M54).
 - [x] T5: Run both suites from the repo root, checking each exit code
       explicitly — never piped through `tail` (M56/M65).
-- [ ] T6 (review send-back, F1/84): keep the shelf covered at every moment —
+- [x] T6 (review send-back, F1/84): keep the shelf covered at every moment —
       *add* the new `.gitignore` entry and remove the old one only once the old
       directory is gone, so a declined move never un-ignores it
       (`test_both_entries_present_is_silent` shows both-present is already
       silent). Scope §3's commit bullet so a repair commit can never sweep an
       un-migrated shelf.
-- [ ] T7 (review send-back, F3/62 — actioned per M73): re-shape §3's steps 2–4
+- [x] T7 (review send-back, F3/62 — actioned per M73): re-shape §3's steps 2–4
       from a numbered sequence into explicit mutually-exclusive cases, so the
       both-present clobber check is reached *before* any move, not after.
-- [ ] T8 (review send-back, F2/92): AC5 needs a gated amendment at implement
+- [x] T8 (review send-back, F2/92): AC5 needs a gated amendment at implement
       step 6 — `check_gitignore_deprecations` reads only `.gitignore` and can
       never distinguish a verified migration from an attempted one, so either
       the closing check becomes a filesystem check or the criterion drops the
       "verified outcome" claim. Delete the false sentence at `SKILL.md:231-232`
       either way.
-- [ ] T9 (review send-back, F5/58 + F6/62, cheap while in there): anchor the
+- [x] T9 (review send-back, F5/58 + F6/62, cheap while in there): anchor the
       advisory-label assert to the instruction that consumes it, and register
       the AC5 closing block and AC1 pointer line in the mutation harness.
 
@@ -124,6 +129,10 @@ never fix, so the actor is skill prose. Migrating a repo's *committed*
 - 2026-07-18: T5 — verify clean from repo root, exit codes checked separately: scripts 147 OK (exit 0), skills 353 OK (exit 0), `cairn_validate` exit 0. Status → review.
 - 2026-07-18: review in progress — draft PR #80 opened; AC1–AC7 evidence gathered; consistency gate clean; blame-history lens reported zero findings; diff-bug + prior-PR lenses still running. Checkpoint only, gate not yet reached.
 - 2026-07-18: review gate FAILED — AC4 (both-present clobber protection unreachable in the mandated step order, F3) and AC5 (the named check cannot distinguish a verified migration from an attempted one, F2) fail as written; F1 (declined move un-ignores a copyright-sensitive shelf) actioned alongside. Status → in-progress; T6–T9 added; PR #80 stays draft, unmerged. First trip back (thrash rule: 1 of 3).
+- 2026-07-18: T6+T7 — §3's migration step restructured: the successor `.gitignore` entry is now ADDED (old one retained), the four numbered steps became three mutually-exclusive on-disk cases chosen before any move (clobber case first in reading order), and `<old>` is removed only once its directory is gone. Verified F1/F3's premise in code: `check_gitignore_deprecations` (`cairn_validate.py:663`) fires only when `old in gitignore and new not in gitignore`, so both-present is genuinely silent and the shelf stays covered throughout. §3's commit bullet now mandates staging by path, never `git add -A`.
+- 2026-07-18: T8 — AC4 + AC5 amended via the step-6 gate (fork chosen by the user at the plan-gate: drop the verified-outcome claim, keep `scripts/` report-only per Scope's Out). AC5 now requires the prose to state what a quiet advisory does NOT prove; the false sentence "a still-firing advisory means a step above was declined or failed" is deleted and an `assertNotIn` guards its return.
+- 2026-07-18: T9 — advisory-label assert re-anchored to the one instruction consuming it (script + label fused on a single physical line, M80 shape); mutation registry grew 4 → 8 `test_scaffold_migration` entries, adding the removal rule, the case-exclusivity block, the AC5 closing paragraph, the commit-scoping rule, and AC1's §0 pointer.
+- 2026-07-18: verify clean from repo root, exit codes checked separately (never piped — M56/M65): skills 356 OK (exit 0), scripts 147 OK (exit 0). Mutation entries proven live: pointing the new removal-rule block at absent text errors the harness `found 0`, exit 1; reverted. One authoring slip caught by the suite — reflowing the move case wrapped the guarded phrase `via AskUserQuestion before moving anything` (M23/M78 trap, third recurrence); fixed in the prose, not by loosening the assert. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

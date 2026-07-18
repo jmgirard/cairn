@@ -207,32 +207,45 @@ never rewrites content the repo authored.
   it** — `/milestone`'s audit surfaces advisories and never auto-fixes them,
   so an un-migrated repo carries the WARN until repair runs.
 
-  Run `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` and read its
-  `scaffold deprecations` advisory. Each line names one superseded entry and
-  its successor (`'<old>' is superseded by '<new>'`).
+  Run `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` and read its `scaffold deprecations` advisory.
+  Each line names one superseded entry and its successor
+  (`'<old>' is superseded by '<new>'`).
   Act on every line the advisory prints, never on a pair named in this text — the advisory is generated from the plugin's own map of superseded entries, so a rename added after this was written migrates with no edit here.
-  Per line, in order:
+  Per line:
 
-  1. **Rewrite the entry, no ask.** The `.gitignore` line goes `<old>` → `<new>` in place.
-     It is cairn's own scaffold line, not one the repo authored, and the
-     rewrite touches nothing git tracks — so it needs no gate.
-  2. **Move the directory only after an explicit ask.** The shelf is gitignored, so its contents are untracked and git cannot restore them.
-     Show what is on the shelf (file count, and the names when few) and ask
-     via AskUserQuestion before moving anything. A declined move is reported
-     and the directory left alone — the renamed entry still stands.
-  3. **Both directories present: surface, never clobber.** Never merge or overwrite one shelf with the other unasked.
-     Report what each holds and let the user choose — merge old into new,
-     keep both and skip, or stop.
-  4. **Old directory absent:** the entry rewrite *is* the migration. Nothing
-     to move, nothing to ask.
+  **Add the successor entry, no ask.** `<new>` joins `.gitignore` and `<old>` stays for now.
+  It is cairn's own scaffold line, not one the repo authored, and adding
+  touches nothing git tracks — so it needs no gate. Both entries present is
+  silent to the advisory, so the shelf stays ignored for as long as the old
+  directory still holds files.
 
-  Close by re-running `cairn_validate.py` and confirming the
-  `scaffold deprecations` advisory is quiet. Report the verified result, not
-  the attempted one; a still-firing advisory means a step above was declined
-  or failed, and says which.
+  Then take **exactly one** of the cases below, chosen by what is on disk
+  *before* anything moves. They are mutually exclusive states, not a sequence —
+  reading them in order would put a move ahead of the check meant to stop it.
 
-- Commit (docs-only, on the default branch): `cairn-init: repair scaffold`;
-  push if a remote exists. Nothing to fix → report that and skip the commit.
+  - **Both directories present: surface, never clobber.** Never merge or overwrite one shelf with the other unasked.
+    Report what each holds and let the user choose — merge old into new, keep
+    both and skip, or stop.
+  - **Only the old directory present: move it only after an explicit ask.** The shelf is gitignored, so its contents are untracked and git cannot restore them.
+    Show what is on the shelf (file count, and the names when few) and ask
+    via AskUserQuestion before moving anything. A declined move is reported
+    and the directory left alone.
+  - **Old directory absent: the entry change *is* the migration.** Nothing to
+    move, nothing to ask.
+
+  **Remove `<old>` from `.gitignore` only once the old directory is gone from disk.** A declined or deferred move keeps both entries, and both entries keep the shelf ignored;
+  dropping the superseded entry while its directory still holds files would
+  un-ignore untracked contents the repo may be keeping out of git deliberately.
+
+  Close by re-running `cairn_validate.py`. **A quiet advisory confirms the entry, not the directory** — `check_gitignore_deprecations` reads `.gitignore` alone and never the filesystem,
+  so it falls silent as soon as `<new>` is present, whether or not anything
+  moved. Report the directory outcome on its own: what moved, what was
+  declined, and what still awaits a choice.
+
+- Commit (docs-only, on the default branch): **stage the files repair touched by path, never `git add -A` or `.`** — a mid-migration shelf is untracked
+  by design, and a blanket stage would commit the very files the entry above
+  keeps ignored. Then `cairn-init: repair scaffold`; push if a remote exists.
+  Nothing to fix → report that and skip the commit.
 - Routing chip (AskUserQuestion), composed from what repair found (chip rules
   per tracking-rules) — e.g. **Run `/milestone`** (recommended, to re-audit a
   repo that just changed) / **Plan a milestone** → `/milestone-plan` / Stop.

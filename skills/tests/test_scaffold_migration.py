@@ -65,11 +65,14 @@ class TestDeprecationMigration(unittest.TestCase):
         return self.text.split("## 3. Repair", 1)[1]
 
     def test_step_names_the_emitting_script_and_the_advisory_label(self):
+        # M80/F5: the label occurs several times in §3, so asserting it bare is
+        # satisfiable by prose that merely mentions it. Pin it to the ONE
+        # instruction that consumes it, script and label fused on one line.
         self.assertIn(
-            'python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"',
+            'Run `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` '
+            f"and read its `{ADVISORY}` advisory.",
             self.section,
         )
-        self.assertIn(f"`{ADVISORY}`", self.section)
 
     def test_advisory_label_matches_the_one_validate_emits(self):
         # pairs the authored prose with the real checker it consumes (M77):
@@ -84,13 +87,26 @@ class TestDeprecationMigration(unittest.TestCase):
         )
         self.assertIn("migrates with no edit here", self.section)
 
-    def test_entry_rewrite_needs_no_ask(self):
-        self.assertIn("**Rewrite the entry, no ask.**", self.section)
-        self.assertIn("rewrite touches nothing git tracks — so it needs no gate.", self.section)
+    def test_successor_entry_is_added_without_an_ask(self):
+        self.assertIn(
+            "**Add the successor entry, no ask.** `<new>` joins `.gitignore` and `<old>` stays for now.",
+            self.section,
+        )
+        self.assertIn("touches nothing git tracks — so it needs no gate.", self.section)
+
+    def test_superseded_entry_survives_until_its_directory_is_gone(self):
+        # F1: removing `<old>` while the shelf still holds files un-ignores
+        # untracked contents a repo may keep out of git deliberately. The
+        # removal rule and its trigger are fused on one line (M74/M76).
+        self.assertIn(
+            "**Remove `<old>` from `.gitignore` only once the old directory is gone from disk.**",
+            self.section,
+        )
+        self.assertIn("both entries keep the shelf ignored", self.section)
 
     def test_directory_move_is_gated_on_an_explicit_ask(self):
         self.assertIn(
-            "**Move the directory only after an explicit ask.** The shelf is gitignored, so its contents are untracked and git cannot restore them.",
+            "**Only the old directory present: move it only after an explicit ask.** The shelf is gitignored, so its contents are untracked and git cannot restore them.",
             self.section,
         )
         self.assertIn("via AskUserQuestion before moving anything", self.section)
@@ -101,12 +117,41 @@ class TestDeprecationMigration(unittest.TestCase):
             self.section,
         )
 
-    def test_absent_old_directory_completes_without_an_ask(self):
-        self.assertIn("**Old directory absent:** the entry rewrite *is* the migration.", self.section)
+    def test_cases_are_mutually_exclusive_and_chosen_before_any_move(self):
+        # F3: as a numbered sequence, the move was reached before the
+        # clobber check. The exclusivity and its timing are the rule.
+        self.assertIn(
+            "Then take **exactly one** of the cases below, chosen by what is on disk",
+            self.section,
+        )
+        self.assertIn("*before* anything moves", self.section)
+        self.assertIn("mutually exclusive states, not a sequence", self.section)
+        # the clobber case must precede the move case in reading order too
+        self.assertLess(
+            self.section.index("**Both directories present:"),
+            self.section.index("**Only the old directory present:"),
+        )
 
-    def test_step_confirms_the_advisory_went_quiet(self):
-        self.assertIn("Report the verified result, not", self.section)
-        self.assertIn("advisory is quiet", self.section)
+    def test_absent_old_directory_completes_without_an_ask(self):
+        self.assertIn("**Old directory absent: the entry change *is* the migration.**", self.section)
+
+    def test_closing_check_does_not_claim_to_verify_the_directory(self):
+        # F2/AC5: check_gitignore_deprecations reads .gitignore alone, so a
+        # quiet advisory cannot distinguish a completed move from a declined
+        # one. The prose must say so rather than claim a verified outcome.
+        self.assertIn(
+            "**A quiet advisory confirms the entry, not the directory** — `check_gitignore_deprecations` reads `.gitignore` alone and never the filesystem,",
+            self.section,
+        )
+        self.assertIn("Report the directory outcome on its own", self.section)
+        # the superseded false claim must not come back
+        self.assertNotIn("a still-firing advisory means a step above", self.section)
+
+    def test_repair_commit_cannot_sweep_an_unmigrated_shelf(self):
+        self.assertIn(
+            "**stage the files repair touched by path, never `git add -A` or `.`**",
+            self.section,
+        )
 
 
 if __name__ == "__main__":
