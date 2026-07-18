@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M81: References staleness advisory — the provenance block gets a reader
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M80   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP2   <!-- owner: plan · create/amend-via-gate -->
@@ -104,7 +104,7 @@ element and lost in scoping. This milestone executes the remainder, so it does
 - [x] T4: Record the milestone-local decision in `## Decisions` below.
 - [x] T5: Run the advisory over `cairn/references/`; record the output summary
       (counts, not pasted output) and one disposition line per flagged page.
-- [ ] T6: Run the three suites and `cairn_validate`, checking each exit code
+- [x] T6: Run the three suites and `cairn_validate`, checking each exit code
       individually.
 
 ## Work log
@@ -112,6 +112,7 @@ element and lost in scoping. This milestone executes the remainder, so it does
 
 - 2026-07-18: created by /milestone-plan; planned alongside M80 from the M78/M79 grouped candidate row.
 - 2026-07-18: implement gate settled the three open parse decisions — 180-day threshold, undated "at ingestion" ages from the ingested date, exemption earned by the explicit "nothing to re-verify" phrase.
+- 2026-07-18: T6 — skills 343, scripts 143, hooks 72 tests, each run unpiped with its exit code read individually: all 0; `cairn_validate` exit 0 with 1 advisory warning. Status → review.
 - 2026-07-18: T5 — first run over the repo's 16 pages: 13 ok, 2 exempt, 1 flagged (`task-master.md` → new ROADMAP candidate row); `migration-pilot-notes.md`'s status aligned to the sanctioned exemption phrase, heading off a false positive scheduled for ~174 days out.
 - 2026-07-18: T5 — the run's new sections put the file 11 lines over cap; Decisions and the run summary compressed in one pass (cross-referencing `_last_verified`'s docstring and the ROADMAP row rather than restating them). Plan-owned sections untouched.
 - 2026-07-18: T4 — M81-D1 (WARN-tier severity, argued against D-029 + M79-D1) and M81-D2 (the three gate-settled parse decisions) recorded milestone-locally.
