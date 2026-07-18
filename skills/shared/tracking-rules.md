@@ -85,11 +85,18 @@ takes a D-entry, and its number stays retired.
   `ROADMAP.md` < 60 lines · `LESSONS.md` < 50 lines · `PROFILE.md` < 120 lines ·
   archived summary ≤ 25 lines.
 - a live milestone file's **plan-owned body < 150 lines** — everything before
-  the review-exclusive `## Review` section. That `## Review` section is exempt
-  from the cap, so review evidence never scrambles plan-owned content (M55): its
-  evidence accumulates at review time and no longer competes with Scope, AC, or
-  Coverage for the budget. A file with no `## Review` section counts whole.
-- Work-log entries are one line each. Never paste command output or subagent
+  the review-exclusive `## Review` section, less the `## Work log`.
+  The cap-exempt sections are exactly `## Review` (review-owned, M55) and `## Work log` (history under D-045, D-046); every other plan-owned section counts.
+  They are exempt for two different reasons. `## Review` is exempt so that
+  review evidence never scrambles plan-owned content (M55): it accumulates at
+  review time and no longer competes with Scope, AC, or Coverage for the budget.
+  The `## Work log` is exempt because D-045 makes it history — never edited — so counting it could leave an over-cap file fixable only by an edit IP4 forbids (D-046).
+  A file with no `## Review` section counts whole.
+- Work-log entries are one line each — a hard-wrapped entry costs several lines
+  of a budget it no longer pays into, so `cairn_validate`'s `work-log format`
+  advisory WARNs on any work-log line that is not a one-line `- ` entry. It
+  warns and never fails: the cap no longer counts the section, so a wrap is
+  untidiness, not damage (D-046). Never paste command output or subagent
   transcripts into tracking files — summarize.
 - Remedies when a cap is hit (never "let it grow"): over-cap ROADMAP →
   graduate or prune candidates and enforce terminal-row retention — and when
@@ -98,7 +105,9 @@ takes a D-entry, and its number stays retired.
   entombed legacy `ROADMAP.md` instead of listing each (M21 G-C4); over-cap
   milestone → the `cairn_validate` breakdown names the heaviest plan-owned
   section and the lines to shed, so compress that one section in a single
-  rewrite, never a nibble-and-recount loop; cross-reference a durable record
+  rewrite, never a nibble-and-recount loop; the breakdown lists only trimmable
+  sections — both cap-exempt sections are omitted, so the remedy can never aim
+  at history (D-046); cross-reference a durable record
   rather than restate its substance in the milestone (a milestone restating a
   DECISIONS entry is the classic overrun); split it or move reference material
   to `references/` only when no single section can carry the cut; over-cap

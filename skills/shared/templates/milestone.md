@@ -48,7 +48,9 @@ never "never".
       references where known.
 
 ## Work log
-<!-- owner: any skill · append-only; one line per entry; absolute dates -->
+<!-- owner: any skill · append-only; one line per entry; absolute dates.
+     EXEMPT from the 150-line cap (D-046): history under D-045, never edited,
+     so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
 - YYYY-MM-DD: created by /milestone-plan.
 
