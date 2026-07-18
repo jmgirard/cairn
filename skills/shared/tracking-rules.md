@@ -120,12 +120,16 @@ takes a D-entry, and its number stays retired.
   gap, add one catch-up entry summarizing `git log`.
 - **Correcting a record proven false.** The tracking files split by purpose,
   and the split sets the remedy: current knowledge is corrected in place,
-  history is superseded and never edited. History — `DECISIONS.md`,
-  work-logs, milestone IDs, entombed `legacy/` files — records what was
-  decided or done at a time (IP4). Current knowledge — `LESSONS.md`,
-  `references/` pages, `DESIGN.md` — records what is true *now* and is read
-  to act on, so a line later proven false is fixed where it sits, the
-  correction marked (`(M71, corrected M75)`) and git holding the original.
+  history is superseded and never edited.
+  History — `DECISIONS.md`, work-logs, milestone IDs, `milestones/archive/`,
+  `reviews/archive/`, entombed `legacy/` files — records what was decided or
+  done at a time, and is never edited (IP4).
+  Current knowledge — `LESSONS.md`, `references/` pages, `DESIGN.md` —
+  records what is true *now* and is read to act on, so a line later proven
+  false is fixed where it sits, the correction marked (`(M71, corrected M75)`)
+  and git holding the original. **Exception — `DESIGN.md`'s IP/GP block:** a
+  wrong *principle* is not a wrong fact, and still changes only by explicit
+  user decision recorded as a D-entry (see the IP/GP paragraph above).
   Ruled out: appending a correction while leaving the wrong text readable —
   a false lesson is harvested into every later plan (D-045).
 - **Stop points are commit points.** Never end a session or turn with

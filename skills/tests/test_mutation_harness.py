@@ -185,6 +185,27 @@ REGISTRY = [
         target=RULES,
         block="appending a correction while leaving the wrong text readable",
     ),
+    # M76/F1: the mechanism asserts left the ENUMERATIONS unguarded — a
+    # reviewer proved a set-swap kept all six green. These three pin label
+    # and members together, so an inversion breaks the anchor.
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestRecordCorrectionRule.test_history_set_is_enumerated_under_its_own_label",
+        target=RULES,
+        block="History — `DECISIONS.md`, work-logs, milestone IDs, `milestones/archive/`,",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestRecordCorrectionRule.test_current_knowledge_set_is_enumerated_under_its_own_label",
+        target=RULES,
+        block="Current knowledge — `LESSONS.md`, `references/` pages, `DESIGN.md` —",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestRecordCorrectionRule.test_design_principles_are_carved_out_of_in_place_correction",
+        target=RULES,
+        block="wrong *principle* is not a wrong fact",
+    ),
     Mutation(
         guard="test_lessons_loop",
         test="TestRecordCorrectionRule.test_file_map_names_the_lessons_write_mode",

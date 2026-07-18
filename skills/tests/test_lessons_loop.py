@@ -82,6 +82,29 @@ class TestRecordCorrectionRule(unittest.TestCase):
     def test_history_is_superseded_never_edited(self):
         self.assertIn("history is superseded and never edited", self.rules)
 
+    def test_history_set_is_enumerated_under_its_own_label(self):
+        # AC1 requires the rule to name the SETS, not just the mechanism.
+        # Label and members share one physical line, so swapping the two
+        # enumerations breaks this anchor — the M76/F1 gap, which the
+        # mechanism asserts alone did not cover.
+        self.assertIn(
+            "History — `DECISIONS.md`, work-logs, milestone IDs, "
+            "`milestones/archive/`,",
+            self.rules,
+        )
+
+    def test_current_knowledge_set_is_enumerated_under_its_own_label(self):
+        self.assertIn(
+            "Current knowledge — `LESSONS.md`, `references/` pages, "
+            "`DESIGN.md` —",
+            self.rules,
+        )
+
+    def test_design_principles_are_carved_out_of_in_place_correction(self):
+        # Without this, the rule would authorise editing an IP/GP line in
+        # place, bypassing the user-decision + D-entry gate (M76/F2).
+        self.assertIn("wrong *principle* is not a wrong fact", self.rules)
+
     def test_rule_rules_out_leaving_the_wrong_text_readable(self):
         # The whole point: appending a correction is not enough, because a
         # false lesson is harvested into every later plan.
