@@ -1,0 +1,11 @@
+# M83 — Staleness-parser hardening: the extraction status stops being guessed at
+
+**Status:** done · approved 2026-07-18 · PR https://github.com/jmgirard/cairn/pull/81
+
+**Goal.** Make `_last_verified` classify an extraction status from what the status actually claims, and say so when it cannot tell, instead of silently resolving a contradiction the author never sees.
+
+**Outcome.** Classification is clause-scoped: the status splits on em-dash/semicolon/comma, and every verification-verb occurrence is read as affirmative or negated by whether a negator precedes it *in its own clause*. Both a `never` and a `verified` claim anywhere → `ambiguous`. Three new WARN states — `ambiguous`, `unrecognized` (no claim and no date, which previously inherited the ingested date and read as confirmed), and `future` (a date after today made the age negative, exempting the page silently forever). Fixes the three M81 review findings F3/68, F4/63, F5/62, absorbing their grouped candidate row; F3 had been hit live on 2026-07-18 during the `task-master.md` re-verification and worked around by rewording the page. Confined to `_last_verified` (one caller) — the hard `references` CHECK is untouched and its output unchanged. 0 of 16 shipped pages reclassified (14 ok, 2 exempt), recorded as a before/after table.
+
+**Decisions.** M83-D1/D2 record the first cut (leading-clause classification; strip never-phrases then look for a verification). M83-D3 supersedes both: the review broke that design in both directions, and negation is detected as a clause property instead.
+
+**Review.** Two trips, 3 lenses + scorer. Trip 1: 7 findings, all fixed on the branch — F1/92 and F2/92 were one root cause (the never-set negated only the word `verified`, so `no claim checked against the source` read as an affirmative verification — a false positive on the very prose that motivated the milestone, *and* a clean bill for a page saying it was never checked); F4/83 (the future guard took `max()` over all dates, so a forward-looking "next re-check due" hijacked it); F3/76, F5/72, F6/74, F7/58 folded in rather than deferred. Trip 2: merge approval withheld pending a gated Scope amendment (T8) so the plan text described the shipped mechanism; documentation-only, no code change. 4 regression tests added (159 total, was 155).
