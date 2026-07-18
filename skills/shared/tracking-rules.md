@@ -640,6 +640,18 @@ from reading like a confirmed one. Because "when this was last checked" is
 itself a claim about the repo's state, an extraction status carries its own
 `— observed YYYY-MM-DD`.
 
+**Re-verification.** An extraction status is written once and then ages, so a page the repo still relies on is re-checked against its source as it gets old, and a page never checked against its source at all keeps saying so.
+A re-check marks inline in the provenance block, on the extraction status itself — never in a new file, a new section, or a log.
+A second record of when a page was last read is a divergence vector (the
+reason M56 rejected a central ledger), and the block is where a reader
+already looks. `cairn_validate`'s `references staleness` advisory reads that
+status and WARNs on a page recording no verified re-check, and on one last
+verified more than 180 days ago; a status naming no date of its own ages from
+the block's ingested date, and a first-hand record with nothing to re-verify
+against is exempt by saying so. It stays an advisory and never a check
+because "this page is too old" is a judgment about evidence quality, not a
+structural fact a gate can settle.
+
 ## What gets a test
 
 No coverage-percentage target — test scope is set per milestone via
