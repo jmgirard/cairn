@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M82: Scaffold-deprecation migration — repair mode acts on the advisory it inherits
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP3, IP2   <!-- owner: plan · create/amend-via-gate -->
@@ -40,13 +40,13 @@ never fix, so the actor is skill prose. Migrating a repo's *committed*
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] `skills/cairn-init/SKILL.md` carries a `## 3. Repair` section; §0's
+- [x] `skills/cairn-init/SKILL.md` carries a `## 3. Repair` section; §0's
       "Already on cairn" bullet is a pointer to it, and the section carries the
       scaffold-piece repair and `PROFILE.md` backfill substance §0 states today.
-- [ ] The migration step names the emitting script and the advisory's label
+- [x] The migration step names the emitting script and the advisory's label
       verbatim in backticks (`scaffold deprecations`), so a reader can run the
       check the step consumes.
-- [ ] The step is written against the advisory's output rather than a
+- [x] The step is written against the advisory's output rather than a
       hardcoded `pdf/`→`sources/` pair; prose states that generality, and a
       guard fails if it is narrowed to the one rename.
 - [ ] Three actions are pinned to their rules: the `.gitignore` entry is
@@ -56,10 +56,10 @@ never fix, so the actor is skill prose. Migrating a repo's *committed*
       one physical line (M74/M76).
 - [ ] The step closes by re-running the check and confirming the advisory is
       quiet, so repair reports a verified outcome rather than an attempted one.
-- [ ] A prose-guard file covering the above registers in
+- [x] A prose-guard file covering the above registers in
       `skills/tests/test_mutation_harness.py` and fails when its registered
       block is blanked.
-- [ ] Both suites green from the repo root, exit codes checked separately:
+- [x] Both suites green from the repo root, exit codes checked separately:
       `python3 -m unittest discover -s scripts/tests` and
       `python3 -m unittest discover -s skills/tests` (profile `verify` slot).
 
@@ -95,6 +95,24 @@ never fix, so the actor is skill prose. Migrating a repo's *committed*
       block on one unwrapped physical line — M53/M54).
 - [x] T5: Run both suites from the repo root, checking each exit code
       explicitly — never piped through `tail` (M56/M65).
+- [ ] T6 (review send-back, F1/84): keep the shelf covered at every moment —
+      *add* the new `.gitignore` entry and remove the old one only once the old
+      directory is gone, so a declined move never un-ignores it
+      (`test_both_entries_present_is_silent` shows both-present is already
+      silent). Scope §3's commit bullet so a repair commit can never sweep an
+      un-migrated shelf.
+- [ ] T7 (review send-back, F3/62 — actioned per M73): re-shape §3's steps 2–4
+      from a numbered sequence into explicit mutually-exclusive cases, so the
+      both-present clobber check is reached *before* any move, not after.
+- [ ] T8 (review send-back, F2/92): AC5 needs a gated amendment at implement
+      step 6 — `check_gitignore_deprecations` reads only `.gitignore` and can
+      never distinguish a verified migration from an attempted one, so either
+      the closing check becomes a filesystem check or the criterion drops the
+      "verified outcome" claim. Delete the false sentence at `SKILL.md:231-232`
+      either way.
+- [ ] T9 (review send-back, F5/58 + F6/62, cheap while in there): anchor the
+      advisory-label assert to the instruction that consumes it, and register
+      the AC5 closing block and AC1 pointer line in the mutation harness.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -105,6 +123,7 @@ never fix, so the actor is skill prose. Migrating a repo's *committed*
 - 2026-07-18: T4 — `skills/tests/test_scaffold_migration.py` (10 tests) + 4 mutation entries; two asserts initially hit the M23 wrapped-phrase trap and were re-anchored to single physical lines. Entries proven live: pointing one block at absent text errors the harness, exit 1.
 - 2026-07-18: T5 — verify clean from repo root, exit codes checked separately: scripts 147 OK (exit 0), skills 353 OK (exit 0), `cairn_validate` exit 0. Status → review.
 - 2026-07-18: review in progress — draft PR #80 opened; AC1–AC7 evidence gathered; consistency gate clean; blame-history lens reported zero findings; diff-bug + prior-PR lenses still running. Checkpoint only, gate not yet reached.
+- 2026-07-18: review gate FAILED — AC4 (both-present clobber protection unreachable in the mandated step order, F3) and AC5 (the named check cannot distinguish a verified migration from an attempted one, F2) fail as written; F1 (declined move un-ignores a copyright-sensitive shelf) actioned alongside. Status → in-progress; T6–T9 added; PR #80 stays draft, unmerged. First trip back (thrash rule: 1 of 3).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -116,4 +135,67 @@ never fix, so the actor is skill prose. Migrating a repo's *committed*
   while renumbering buys a sweep M48/M58 say is where things get missed.
 
 ## Review
+
+**Outcome: gate FAILED 2026-07-18 — returned to `in-progress`.** AC4 and AC5
+fail as written; PR #80 left open as draft, not merged.
+
+**Evidence per criterion** (fresh, by command, on `m82-…` @ 8b8d1c7):
+
+- AC1 ✓ — `## 3. Repair` at `SKILL.md:186`; §0 reduced to the pointer at `:79`;
+  moved block at `:192-200` diffs identical to `main`'s `:79-87` except the
+  bold lead-in.
+- AC2 ✓ — `${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py` at `:210`,
+  `` `scaffold deprecations` `` at `:211`; label matches the emitted string at
+  `cairn_validate.py:664` verbatim.
+- AC3 ✓ — generality sentence at `:213`; `references/pdf` occurs **0 times** in
+  the skill (grep -c), so no rename is named in the prose.
+- AC4 ✗ — the three labels are pinned (`:216`, `:219`, `:223`) and guarded, but
+  the third rule is **unreachable in the mandated execution order** (F3): steps
+  2–4 are mutually-exclusive directory states presented under "Per line, in
+  order", so the move in step 2 precedes step 3's clobber protection.
+- AC5 ✗ — the step re-runs the check (`:229-232`), but
+  `check_gitignore_deprecations` reads only `.gitignore` content and never the
+  filesystem, so step 1 alone silences the advisory (F2). "Verified outcome
+  rather than an attempted one" is not deliverable by the named mechanism, and
+  the shipped sentence "a still-firing advisory means a step above was declined
+  or failed" is false.
+- AC6 ✓ — 4 `test_scaffold_migration` entries registered; harness and
+  completeness meta-test both exit 0; pointing a block at absent text errors
+  the harness (exit 1), proving the entries live.
+- AC7 ✓ — from repo root, exit codes checked separately: scripts 147 OK (0),
+  skills 353 OK (0), `cairn_validate` 15 PASS (0).
+
+**Consistency gate:** `cairn_validate` exit 0. Generic profile's
+`consistency-gate` slot names no toolchain checks → universal half only.
+DESIGN untouched, so `cairn_impact` correctly skipped. No CI on this repo (M16).
+
+**Fan-out:** [O] diff-bug 6 findings · [S] blame-history 0 · [S] prior-PR 0
+(this repo records review findings in archives, not GitHub PR comments; the
+`gh api` comment endpoints were empty across all 12 relevant PRs).
+
+**Actioned (≥80, plus one sub-threshold by M73):**
+
+- F1 (84) — step 1's unconditional `.gitignore` rewrite un-ignores the old
+  shelf while its untracked contents remain; §3's own commit bullet then
+  follows with no `git add` scoping, so a declined move can publish files
+  `references/llm-wiki.md:113` records as gitignored out of copyright
+  necessity. `check_references` skips both shelf names, so no check catches it.
+- F2 (92) — the closing re-run cannot distinguish verified from attempted; the
+  prose states a falsehood. Drives the AC5 failure.
+- F3 (62, actioned anyway) — sub-80 but authorizes an irreversible action
+  (`mv` over untracked files git cannot restore), the exact class M73's lesson
+  says to fix regardless of score. Drives the AC4 failure.
+
+**Logged, not actioned (<80):**
+
+- F4 (28) — "fix what's missing" → "create what is missing" leaves a damaged
+  (present-but-corrupt) piece with no remedy, against `SKILL.md:10-11`'s
+  "missing or damaged" promise. Pre-existing: the original §0 wording covered
+  only the missing case too, so this diff is lateral, not a regression.
+- F5 (58) — the advisory-label assert is satisfiable by any of three
+  occurrences in §3 (`:205`, `:211`, `:230`), so it does not pin the label to
+  the instruction that consumes it (M80 shape); not mutation-registered.
+- F6 (62) — AC5's closing paragraph and AC1's §0 pointer are independently
+  load-bearing but unregistered; the registry comment claims one entry per such
+  block. AC6 as literally written is still satisfied (registration is per file).
 <!-- owner: review · exclusive -->
