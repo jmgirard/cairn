@@ -131,7 +131,6 @@ class TestShippedSynthesisTemplate(unittest.TestCase):
         ("ingested date", "ingested yyyy-mm-dd"),
         ("ingesting milestone", "by m<nn>"),
         ("pagination basis", "pagination:"),
-        ("extraction status", "extraction:"),
         ("evidence snapshot", "**evidence snapshot.**"),
         ("tracking disclaimer", "status lives in `roadmap.md`, decisions in `decisions.md`,"),
         ("gap-ledger tag vocabulary", "`fix-here` | `candidate` | `out` — for a gap ledger."),
@@ -155,6 +154,16 @@ class TestShippedSynthesisTemplate(unittest.TestCase):
         for field, phrase in self.FIELDS:
             with self.subTest(field=field):
                 self.assertIn(phrase, self.text, f"missing field: {field}")
+
+    def test_extraction_status_is_a_real_provenance_field(self):
+        # NOT a substring anchor on "extraction:" — that phrase also occurs in
+        # the header comment, so deleting the actual Provenance field line left
+        # the field guard green (review F3). Pin the line itself, at column 0,
+        # which is the only form the dated-extraction guard can read.
+        line = extraction_line(SYNTHESIS_TEMPLATE.read_text())
+        self.assertIsNotNone(
+            line, "no `Extraction: ` field line in the Provenance block"
+        )
 
     def test_dated_observation_form_is_carried(self):
         # These pages are bound by the standing-facts/dated-observations split

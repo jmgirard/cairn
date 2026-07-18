@@ -1,8 +1,14 @@
 <!-- Template for a committed cairn/references/<citekey>.md source note.
-     Doctrine: skills/shared/validation-doctrine.md — "Source ingestion",
-     "Standing facts vs. dated observations", "Page provenance".
-     A synthesis note (a cross-source analysis no single citekey owns) uses
-     the same Provenance block, naming its input pages as the source pointer.
+     Doctrine: skills/shared/tracking-rules.md — "References pages", whose
+     "When a page is owed" rule is the trigger; the numeric/scoring instance
+     of the ingestion workflow is in skills/shared/validation-doctrine.md.
+     A cross-source or first-hand analysis that no single citekey owns is a
+     SYNTHESIS note and uses templates/synthesis-note.md instead — it needs a
+     scope disclaimer, an evidence snapshot, an ID'd ledger, and a
+     disposition, none of which this template carries.
+     The `Extraction:` status is one physical line, however long — the guard
+     that enforces the dated form reads the line it starts on, so a wrapped
+     status silently loses its `— observed` stamp.
      Every committed page also carries its one line in references/INDEX.md. -->
 # <citekey> — <what this source is for, in a few words>
 
@@ -11,10 +17,6 @@
 the URL plus how it was retrieved and by whom.
 Pagination: <journal pages | preprint pages | PDF pages | —>.
 Extraction: <verified YYYY-MM-DD against the source | unverified — first pass, values not yet re-read against the source> — observed YYYY-MM-DD.
-
-The `Extraction:` status is one physical line, however long — the guard that
-enforces the dated form reads the line it starts on, so a wrapped status
-silently loses its `— observed` stamp.
 
 **Citation.** Full citation as printed: authors, year, exact title, venue,
 volume/issue/pages, DOI. Note anything the source prints differently from how

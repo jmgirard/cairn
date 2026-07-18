@@ -9,6 +9,9 @@
      The field words `Ingested` and `Extraction:` are load-bearing — the
      references check and the dated-observation guard both parse them — so
      keep them even though nothing was ingested from a shelf here.
+     The `Extraction:` status is one physical line, however long — the guard
+     that enforces the dated form reads the line it starts on, so a wrapped
+     status silently loses its `— observed` stamp.
      Every committed page also carries its one line in references/INDEX.md. -->
 # <what this analyses> (M<NN>)
 
@@ -18,10 +21,6 @@ path: the input `references/` pages by filename | the activity performed
 repo or artifact read read-only, with its path and commit>.
 Pagination: —.
 Extraction: <derived — no external source of its own, only as current as its inputs, none re-read since YYYY-MM-DD | first-hand record, nothing to re-verify against | a YYYY-MM-DD snapshot; the assessed artifact has moved on independently since> — observed YYYY-MM-DD.
-
-The `Extraction:` status is one physical line, however long — the guard that
-enforces the dated form reads the line it starts on, so a wrapped status
-silently loses its `— observed` stamp.
 
 **Scope.** What this page is and is not. Say plainly that it is not a source
 summary, and what it deliberately builds nothing of. Then the tracking
