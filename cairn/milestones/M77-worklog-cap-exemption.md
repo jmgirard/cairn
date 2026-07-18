@@ -75,13 +75,13 @@ monotonic growth of an un-editable section).
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: D-046 — written by `/milestone-plan` at the plan commit; implement
+- [x] T1: D-046 — written by `/milestone-plan` at the plan commit; implement
       verifies the committed entry rather than re-authoring it.
-- [ ] T2: `scripts/cairn_scripts.py` — subtract the `## Work log` section from
+- [x] T2: `scripts/cairn_scripts.py` — subtract the `## Work log` section from
       `milestone_body_line_count` (`:232`) and drop it from
       `milestone_section_line_counts` (`:264`); keep both fence-aware and
       back-compatible when the section is absent.
-- [ ] T3: `scripts/tests/test_scripts.py` — extend the shared `Tree.build()`
+- [x] T3: `scripts/tests/test_scripts.py` — extend the shared `Tree.build()`
       fixture first (M24: a stricter counter reddens every reusing test), then
       add the AC1 fixtures (over-cap-without-exemption, no-work-log, fenced).
 - [ ] T4: `scripts/cairn_validate.py` — add `check_worklog_format` and register
@@ -101,6 +101,9 @@ monotonic growth of an un-editable section).
 
 - 2026-07-18: created by /milestone-plan; promotes the work-log-vs-cap candidate (M76 review); gate chose exempt-plus-guard, advisory severity, and keeping the milestone-local Decisions section counted.
 - 2026-07-18: branch `m77-worklog-cap-exemption` cut from main; status -> in-progress.
+- 2026-07-18: T1 ticked as already satisfied — /milestone-plan commits its own D-entries, so D-046 landed in 1a6c808 at plan time and AC6 reads the committed entry.
+- 2026-07-18: T2+T3 worked as a pair, tests-first (3 new asserts failed, then passed); the two counters now share one fence-aware `_plan_owned_scan`, replacing duplicated scan logic rather than adding a third copy.
+- 2026-07-18: T3 — the shared `Tree.build()` fixture needed no change (M24 risk did not materialize: the exemption loosens the counter, it does not add a required file); the M69 breakdown test DID need updating — it used the work log as its third-ranked section, the exact behavior this milestone removes.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

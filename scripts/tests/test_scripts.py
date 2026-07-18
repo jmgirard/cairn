@@ -649,18 +649,22 @@ class TestValidateFailures(ScriptCase):
             "# M: Test milestone\n\n- **Status:** planned   <!-- mirror -->\n\n"
             "## Scope\n" + "s\n" * 30 + "\n"
             "## Tasks\n" + "t\n" * 120 + "\n"
-            "## Work log\n" + "w\n" * 10 + "\n"
+            "## Goal\n" + "g\n" * 5 + "\n"
+            "## Work log\n" + "- 2026-07-18: w\n" * 10 + "\n"
         )
         self.tree.files["milestones/M03-live.md"] = body + "## Review\n" + "e\n" * 5
         out = self.assert_fails("weight caps", self.tree.build())
         self.assertIn("heaviest first:", out)
         self.assertIn("shed ≥", out)
-        # Tasks (121 lines) is fattest, so it must precede Scope and Work log.
+        # Tasks (121 lines) is fattest, so it must precede Scope and Goal.
         bd = out[out.index("heaviest first:"):]
         self.assertLess(bd.index("Tasks"), bd.index("Scope"))
-        self.assertLess(bd.index("Scope"), bd.index("Work log"))
-        # The exempt Review section is never in the breakdown.
+        self.assertLess(bd.index("Scope"), bd.index("Goal"))
+        # Both exempt sections stay out of the breakdown: `## Review` because it
+        # is review-owned (M55), the work log because D-045 makes it history and
+        # the remedy must never aim at an edit IP4 forbids (D-046/M77).
         self.assertNotIn("Review", bd)
+        self.assertNotIn("Work log", bd)
 
     def test_under_cap_shows_no_breakdown(self):
         # The breakdown appears only for over-cap milestones; a passing repo
@@ -875,6 +879,36 @@ class TestMilestoneBodyLineCount(unittest.TestCase):
         missing = pathlib.Path(self._tmp.name) / "nope.md"
         self.assertIsNone(self.cs.milestone_body_line_count(str(missing)))
 
+    def test_work_log_section_is_exempt(self):
+        # M77/D-046: the work log is history under D-045 — never edited — so the
+        # cap must not count it, or an over-cap file could only be fixed by an
+        # edit IP4 forbids.
+        body = "# M\n\n## Goal\nx\n\n"  # 5 lines
+        n_body = len(body.splitlines())
+        text = body + "## Work log\n" + "- 2026-07-18: e\n" * 80 + "\n## Review\ne\n"
+        self.assertEqual(self.count(text), n_body)
+
+    def test_work_log_exempt_with_no_review_section(self):
+        # The exemption is independent of the `## Review` boundary (M55).
+        body_lines = ["# M", "", "## Goal", "x", ""]
+        text = "\n".join(body_lines) + "\n## Work log\n" + "- 2026-07-18: e\n" * 40
+        self.assertEqual(self.count(text), len(body_lines))
+
+    def test_fenced_work_log_heading_is_not_the_section(self):
+        # A `## Work log` quoted inside a fence is content, not the exempt
+        # section — so it stays counted (M45 fence-awareness).
+        lines = ["# M", "", "## Tasks", "- [ ] T1", "```", "## Work log",
+                 "```", "after fence", ""]
+        text = "\n".join(lines) + "\n"
+        self.assertEqual(self.count(text), len(lines))
+
+    def test_work_log_prefixed_heading_is_still_counted(self):
+        # Only an exact `## Work log` heading is exempt — a plan-owned H2 that
+        # merely starts with it must not smuggle lines past the cap.
+        lines = ["# M", "", "## Work log notes", "- a", "- b", ""]
+        text = "\n".join(lines) + "\n"
+        self.assertEqual(self.count(text), len(lines))
+
 
 class TestMilestoneSectionLineCounts(unittest.TestCase):
     """M69: the diagnostic breakdown of an over-cap plan-owned body — each
@@ -934,6 +968,25 @@ class TestMilestoneSectionLineCounts(unittest.TestCase):
     def test_unreadable_returns_none(self):
         missing = pathlib.Path(self._tmp.name) / "nope.md"
         self.assertIsNone(self.cs.milestone_section_line_counts(str(missing)))
+
+    def test_work_log_excluded_from_the_breakdown(self):
+        # M77/D-046: the heaviest-first breakdown drives the cap remedy, so it
+        # must never name the work log — the operator may not trim it (IP4).
+        text = ("# M\n\n## Goal\nx\n\n## Work log\n" + "- 2026-07-18: e\n" * 40
+                + "\n## Review\n" + "e\n" * 10)
+        headings = [h for h, _ in self.counts(text)]
+        self.assertNotIn("Work log", headings)
+        self.assertIn("Goal", headings)
+
+    def test_preamble_plus_sections_still_sum_to_body_with_a_work_log(self):
+        # The no-double-count invariant must survive the work-log exemption:
+        # both functions drop the same section, so the sum still reconciles.
+        text = ("# M\n\n- **Status:** planned\n\n## Goal\nx\ny\n\n## Work log\n"
+                "- 2026-07-18: a\n- 2026-07-18: b\n\n## Review\n" + "e\n" * 9)
+        sections = self.counts(text)
+        lines = text.splitlines()
+        preamble = next(i for i, ln in enumerate(lines) if ln.startswith("## "))
+        self.assertEqual(preamble + sum(n for _, n in sections), self.body(text))
 
 
 class TestImpact(ScriptCase):
