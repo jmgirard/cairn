@@ -215,6 +215,81 @@ class TestMergeGuard(RepoFixture):
             "consumed marker must move to .pending intact",
         )
 
+    # --- PR binding (M72): the marker names the PR it approves ---
+
+    APPROVAL_PR7 = "M72 approved 2026-07-18 for PR #7\n"
+
+    def test_denies_merge_of_a_pr_the_marker_does_not_name(self):
+        self.marker().write_text(self.APPROVAL_PR7)
+        out = hook_json(
+            run_hook("merge_guard.py", self.merge_payload("gh pr merge 9 --squash"))
+        )
+        self.assertEqual(out["permissionDecision"], "deny")
+        reason = out["permissionDecisionReason"]
+        self.assertIn("#7", reason, "deny reason must name the approved PR")
+        self.assertIn("#9", reason, "deny reason must name the attempted PR")
+        self.assertEqual(
+            self.marker().read_text(), self.APPROVAL_PR7,
+            "a denied merge must not consume the approval",
+        )
+
+    def test_denies_bare_merge_that_names_no_pr(self):
+        self.marker().write_text(self.APPROVAL_PR7)
+        out = hook_json(
+            run_hook(
+                "merge_guard.py",
+                self.merge_payload("gh pr merge --squash --delete-branch"),
+            )
+        )
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn("does not name a PR", out["permissionDecisionReason"])
+        self.assertEqual(
+            self.marker().read_text(), self.APPROVAL_PR7,
+            "a denied merge must not consume the approval",
+        )
+
+    def test_allows_and_consumes_when_pr_matches(self):
+        self.marker().write_text(self.APPROVAL_PR7)
+        proc = run_hook(
+            "merge_guard.py",
+            self.merge_payload("gh pr merge 7 --squash --delete-branch"),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.marker().exists())
+        pending = self.root / "cairn" / ".merge-approved.pending"
+        self.assertEqual(pending.read_text(), self.APPROVAL_PR7)
+
+    def test_pr_number_survives_url_and_value_flags(self):
+        for command in (
+            "gh pr merge https://github.com/o/r/pull/7 --squash",
+            'gh pr merge --subject "fix issue 9" 7 --squash',
+            "gh pr merge -t 'bump to 9' 7",
+        ):
+            with self.subTest(command=command):
+                self.marker().write_text(self.APPROVAL_PR7)
+                proc = run_hook("merge_guard.py", self.merge_payload(command))
+                self.assertEqual(proc.stdout.strip(), "", command)
+                (self.root / "cairn" / ".merge-approved.pending").unlink()
+
+    def test_branch_name_argument_is_treated_as_naming_no_pr(self):
+        # `gh pr merge <branch>` is legal but the guard cannot resolve a
+        # branch to a PR offline — it must deny, not guess.
+        self.marker().write_text(self.APPROVAL_PR7)
+        out = hook_json(
+            run_hook(
+                "merge_guard.py", self.merge_payload("gh pr merge m72-branch --squash")
+            )
+        )
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertTrue(self.marker().exists())
+
+    def test_git_merge_is_exempt_from_the_pr_check(self):
+        # A `git merge` has no PR to name; the marker's existence governs it.
+        self.marker().write_text(self.APPROVAL_PR7)
+        proc = run_hook("merge_guard.py", self.merge_payload("git merge m72-branch"))
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.marker().exists(), "marker is still single-use")
+
     def test_denies_git_merge_while_on_main(self):
         out = hook_json(
             run_hook("merge_guard.py", self.merge_payload("git merge m07-branch"))
@@ -819,7 +894,10 @@ class TestHooksRegistration(unittest.TestCase):
 
 
 class TestStdlibOnly(unittest.TestCase):
-    ALLOWED = {"ast", "json", "os", "pathlib", "re", "subprocess", "sys", "cairn_common"}
+    ALLOWED = {
+        "ast", "json", "os", "pathlib", "re", "shlex", "subprocess", "sys",
+        "cairn_common",
+    }
 
     def test_hook_imports_are_stdlib_only(self):
         for script in HOOKS_DIR.glob("*.py"):

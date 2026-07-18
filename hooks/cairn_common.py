@@ -8,6 +8,7 @@ must never block the user's session.
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 
@@ -47,6 +48,75 @@ def is_guarded_merge(command, cwd):
         rc, branch = git(["branch", "--show-current"], cwd)
         return rc == 0 and branch.strip() in ("main", "master")
     return False
+
+
+# Flags of `gh pr merge` that consume the following token as their value —
+# so a number sitting after one of them is that flag's value, not the PR.
+_GH_MERGE_VALUE_FLAGS = {
+    "-b", "--body", "-t", "--subject", "-F", "--body-file",
+    "-m", "--match-head-commit", "--author-email",
+}
+# Trailing number of a PR URL, e.g. https://github.com/o/r/pull/57
+_PR_URL_TAIL = re.compile(r"/pull/(\d+)/?$")
+# A `#57` reference anywhere in the approval marker's body.
+_MARKER_PR = re.compile(r"#(\d+)")
+# Command separators that end the `gh pr merge …` segment.
+_SEGMENT_END = re.compile(r"[;&|\n]")
+
+
+def gh_merge_pr_number(command):
+    """The PR number a `gh pr merge` command names, or None.
+
+    None means the command did not name a PR (a bare `gh pr merge`, which
+    lets gh infer it from the current branch, or a branch-name argument the
+    guard cannot resolve offline). Never raises — an unparseable command
+    yields None, and the caller decides what that means.
+    """
+    match = GH_PR_MERGE.search(command or "")
+    if not match:
+        return None
+    segment = command[match.end():]
+    end = _SEGMENT_END.search(segment)
+    if end:
+        segment = segment[:end.start()]
+    try:
+        tokens = shlex.split(segment)
+    except Exception:
+        tokens = segment.split()
+    skip_next = False
+    for token in tokens:
+        if skip_next:
+            skip_next = False
+            continue
+        if token in _GH_MERGE_VALUE_FLAGS:
+            skip_next = True
+            continue
+        if token.startswith("-"):
+            continue
+        if token.isdigit():
+            return token
+        url = _PR_URL_TAIL.search(token)
+        if url:
+            return url.group(1)
+        # A positional that is neither — a branch name. Not resolvable here.
+        return None
+    return None
+
+
+def marker_pr_number(path):
+    """The PR number the approval marker names, or None.
+
+    None means the marker predates the PR-binding convention (or the file
+    could not be read) — the caller falls back to a bare existence check,
+    so an old marker is never rejected for lacking a number.
+    """
+    try:
+        with open(path, "r", encoding="utf-8", errors="replace") as handle:
+            body = handle.read()
+    except Exception:
+        return None
+    match = _MARKER_PR.search(body)
+    return match.group(1) if match else None
 
 
 def read_input():

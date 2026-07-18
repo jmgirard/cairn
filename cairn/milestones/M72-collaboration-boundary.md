@@ -46,12 +46,17 @@ docs-only direct pushes → candidate row.
 - [ ] AC2 — `README.md` carries a human-facing subsection saying the same in
       plain words: what cairn will block, and what it cannot see.
 - [ ] AC3 — `hooks/merge_guard.py` denies `gh pr merge <N>` when the marker
-      body names a different PR, and the deny reason names both numbers.
-      Evidence: a new `TestMergeGuard` case.
-- [ ] AC4 — the same hook allows-and-consumes when the marker names the same
-      PR, and still allows when the marker body names no PR at all
-      (back-compat for `git merge` and legacy markers). Evidence: two
-      `TestMergeGuard` cases.
+      body names a different PR, with the deny reason naming both numbers; it
+      also denies a `gh pr merge` that names no PR at all, since an approval
+      that cannot be checked against a command is not an approval. Neither
+      denial consumes the marker. Evidence: three `TestMergeGuard` cases.
+      *(Amended 2026-07-18 at the implement gate — the plan assumed the merge
+      command carried a PR number; both skills in fact merged bare.)*
+- [ ] AC4 — the same hook allows-and-consumes when command and marker name the
+      same PR, still allows when the marker body names no PR (back-compat for
+      markers predating the convention), and leaves the guarded `git merge`
+      path unchanged — it has no PR to name. Evidence: three `TestMergeGuard`
+      cases.
 - [ ] AC5 — `/milestone-review` and `/hotfix` write the PR-bound marker form
       at their approval gates. Evidence: grep of the two SKILL.md files
       (tracking lines in this milestone file are not evidence).
@@ -82,13 +87,13 @@ docs-only direct pushes → candidate row.
       backing stops.)*
 - [x] T2 — Add the README subsection. Plain words, no rulebook jargon; this is
       the surface a collaborator reads.
-- [ ] T3 — Bind the marker: `hooks/merge_guard.py` parses a PR number from the
+- [x] T3 — Bind the marker: `hooks/merge_guard.py` parses a PR number from the
       marker body and compares it to the `gh pr merge <N>` target
       (`hooks/cairn_common.py:29` `GH_PR_MERGE` is the existing detection);
       mismatch → deny; no PR token in the body → today's existence check.
       Update the marker-write lines in `skills/milestone-review/SKILL.md` and
       `skills/hotfix/SKILL.md:54-57` to the bound form.
-- [ ] T4 — Extend `TestMergeGuard` in `hooks/tests/test_hooks.py:186-292`:
+- [x] T4 — Extend `TestMergeGuard` in `hooks/tests/test_hooks.py:186-292`:
       match allows+consumes, mismatch denies, PR-less body allows. Check
       `merge_guard_post`'s restore path still keys on the identical detection.
 - [ ] T5 — New guard test for the T1 passage; register it in
@@ -106,6 +111,9 @@ docs-only direct pushes → candidate row.
 - 2026-07-18: implement gate — marker binding requires the explicit PR number in the merge command (bare `gh pr merge` denied); marker stays prose with `for PR #<N>` appended; ip-touching tripwire on T1 not escalated (user choice).
 - 2026-07-18: T1 — boundary passage + PR-binding bullet added to tracking-rules "Git and approval model"; three single-line mutation anchors verified unique.
 - 2026-07-18: T2 — README "Working with collaborators" section; the "Merges are yours" bullet's unqualified "mechanically blocks" claim corrected to name its scope.
+- 2026-07-18: AC3/AC4 amended via the implement gate — the plan assumed the merge command named a PR, but both skills merged bare (`gh pr merge --squash`), so the binding needed a deny-on-unnamed rule and the skills' merge commands changed; user chose this at the step-3 gate.
+- 2026-07-18: T3 — `gh_merge_pr_number`/`marker_pr_number` in `cairn_common`; `merge_guard` denies mismatched and unnamed PRs without consuming the marker; both approval-writing skills updated to the bound marker + explicit-number merge. T3+T4 landed in one commit (implementation inseparable from its tests).
+- 2026-07-18: T4 — six `TestMergeGuard` cases (mismatch, bare, match, URL/value-flag parsing, branch-name argument, `git merge` exemption); `shlex` added to the stdlib allowlist in `TestStdlibOnly`.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
