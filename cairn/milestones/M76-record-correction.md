@@ -89,7 +89,7 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
       "Universal tracking rules" adjacent to "Append, don't rewrite" (:118),
       and fix the `cairn/LESSONS.md` file-map row (:23). Author the rule's
       label on ONE physical line (M59/M64 reflow trap — AC6's guard greps it).
-- [ ] T3 — sweep the three remaining live "append-only" labels for LESSONS:
+- [x] T3 — sweep the three remaining live "append-only" labels for LESSONS:
       `skills/cairn-init/SKILL.md:103`, `cairn/LESSONS.md:8` (the file's own
       header), `skills/tests/test_lessons_loop.py:3` (docstring). Verify with a
       repo-wide `git grep` per AC3's exemption list, not a per-file read (M48).
@@ -119,6 +119,14 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
 - 2026-07-18: T2 — "Correcting a record proven false" added to Universal
   tracking rules (:121-130); LESSONS file-map row no longer says append-only.
   Both label->rule mappings authored on single physical lines for the guards.
+- 2026-07-18: T3 — minor amendment: the repo-wide sweep found FOUR live LESSONS
+  "append-only" labels, not the three T3 named; `skills/milestone-review/
+  SKILL.md:189` (the capture step) was the extra. All four corrected. Vindicates
+  M48 (sweep repo-wide, never per-file).
+- 2026-07-18: T3 — documenting the rule inside `cairn/LESSONS.md` blew its own
+  <50 cap (49 -> 51). Compressed the header back to 3 lines rather than prune
+  real lessons for boilerplate; file now 49. The cap remedy landed on the file
+  whose mis-labelling started the milestone.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

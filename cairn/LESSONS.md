@@ -5,9 +5,9 @@ remembering next time — captured at milestone end and surfaced at plan time.
 Not status, not decisions: a lesson is a reusable "how this repo actually
 behaves" note. Cross-cutting *choices* still go to `DECISIONS.md`.
 
-Append-only; one line per lesson: `- YYYY-MM-DD (M<NN>): <lesson>`. Capped at
-50 lines (tracking-rules weight-caps) — when full, prune the stalest lessons
-rather than letting it grow; git history keeps the full record.
+One line per lesson: `- YYYY-MM-DD (M<NN>): <lesson>`. Capped at 50 lines
+(tracking-rules weight-caps) — when full, prune the stalest; git keeps the
+record. Current knowledge: a lesson proven false is corrected in place (D-045).
 
 <!-- lessons appended below by /milestone-review post-merge hygiene -->
 

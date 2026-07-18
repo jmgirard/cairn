@@ -186,7 +186,7 @@ overrides — log the override).
    weight caps. **Capture durable lessons:** append any repo lessons this
    milestone taught — build quirks, testing tricks, gotchas worth
    remembering — to `cairn/LESSONS.md`, one per line
-   (`- YYYY-MM-DD (M<NN>): <lesson>`, append-only); lessons, not status or a
+   (`- YYYY-MM-DD (M<NN>): <lesson>`, one line each); lessons, not status or a
    *choice* (a choice is a D-entry). None learned → skip; if the 50-line cap
    is hit, prune the stalest lines in this same commit.
    Durable-record preview (tracking-rules): show the archive summary,

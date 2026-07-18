@@ -1,6 +1,6 @@
 """Lock: the lessons loop (M16) stays wired end to end.
 
-`cairn/LESSONS.md` is the durable, append-only, capped lessons home; the
+`cairn/LESSONS.md` is the durable, capped, correct-in-place lessons home; the
 capture step lives in `/milestone-review` post-merge hygiene, the harvest step
 in `/milestone-plan` before the gate, and the 50-line cap is stated in two
 places that must not drift — the tracking-rules weight-caps line and
