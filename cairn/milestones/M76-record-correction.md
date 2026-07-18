@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M76: Record correction — history vs. current knowledge, and the correct-in-place protocol
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP4, GP2   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** `m76-record-correction`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m76-record-correction` · https://github.com/jmgirard/cairn/pull/74   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -140,6 +140,10 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
   exit 0, cairn_validate exit 0, caps and sizing clean. `cairn/DESIGN.md` is
   absent from the branch diff entirely, so AC4's IP4-untouched bar holds at its
   strongest. Status -> review.
+- 2026-07-18: review trip 1 — gate FAILED on AC3: the criterion's exemption
+  list omits the guard's own `assertNotIn` (M59 trap). AC1/AC2/AC4/AC5 pass
+  with fresh evidence; consistency gate clean. Status -> in-progress for a
+  gated amendment. Draft PR #74 opened.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -149,3 +153,46 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55):
      only the plan-owned body above counts; evidence never scrambles it. -->
+
+### Trip 1 — 2026-07-18 — gate FAILED on AC3
+
+PR #74 (draft): https://github.com/jmgirard/cairn/pull/74
+
+**Evidence gathered (all fresh, by command):**
+
+- AC1 — PASS. `tracking-rules.md:121-130` carries "Correcting a record proven
+  false"; names the history set (DECISIONS, work-logs, IDs, `legacy/`) and the
+  current-knowledge set (LESSONS, `references/`, DESIGN); states the mechanism
+  ("current knowledge is corrected in place, history is superseded and never
+  edited") and rules out leaving wrong text readable.
+- AC2 — PASS. File-map row `:23` reads "current knowledge, so a lesson proven
+  false is corrected in place and marked (D-045)"; `grep -c append-only` on
+  that row returns 0.
+- AC3 — **FAIL.** The criterion's grep returns one hit outside its stated
+  exemption list: `skills/tests/test_lessons_loop.py:100`
+  (`self.assertNotIn("append-only", row.lower())`). The hit is the guard's own
+  absence-assert, not a file calling LESSONS append-only, so the criterion's
+  *substance* holds — but its exemption list is incomplete, and dismissing the
+  hit at review would be reinterpreting the criterion. This is the M59 trap
+  (an AC evidence grep over a directory containing the guard tests trips on
+  the absence-assert), which M59 resolved by gated amendment. Planning defect:
+  M59 was harvested at plan time and the exemption list still omitted it.
+- AC4 — PASS. `cairn/DECISIONS.md` carries exactly one `### D-045`.
+  `git diff main..HEAD -- cairn/DESIGN.md` is empty — DESIGN.md never opened,
+  so IP4 is byte-identical at the strongest available bar.
+- AC5 — PASS. `hooks/tests/test_hooks.py:911-918` and
+  `references/claude-code-hooks.md:105` both state split-on-`|`/`,`-then-
+  exact-match. `git grep "compared as an EXACT string\|plain string = exact"`
+  returns nothing. `:121` retained deliberately — a verbatim quote of Claude
+  Code's own shipped warning, accurate for the narrower `mcp__server` case.
+- AC6 — PASS on substance, pending re-run after the amendment. skills 295 /
+  scripts 96 / hooks 72, all exit 0; 5 `TestRecordCorrectionRule` mutation
+  entries registered; `test_lessons_loop` 12 tests ok.
+
+**Consistency gate:** `cairn_validate` exit 0, all 17 checks pass. Profile
+`generic` names no toolchain checks — clean no-op. `cairn_impact` skipped
+correctly: the header names IP4/GP2 as *touched*, but no principle *changed*.
+
+**Disposition:** status -> in-progress for a gated AC3 amendment (implement
+step 6). Fan-out not yet spawned — deferred to trip 2 so it reviews the final
+diff.
