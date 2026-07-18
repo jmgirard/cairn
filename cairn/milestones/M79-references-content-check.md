@@ -113,13 +113,13 @@ doctrine or template shape → M78 owns those.
       correct any failing page in place with the correction marked (D-045).
 - [ ] T6. Run the three suites from the repo root, check each exit code
       explicitly before any commit; append the work-log line.
-- [ ] T7. Rename `pdf/` → `sources/` across the plugin:
+- [x] T7. Rename `pdf/` → `sources/` across the plugin:
       `cairn_scripts.REQUIRED_GITIGNORE` + the scaffold-dirs comment,
       `cairn-init` §1 tree + gitignore bullet, `tracking-rules.md` file map +
       dated-observations rule, `validation-doctrine.md` source ingestion,
       `source-note.md` template, and this repo's own `.gitignore`. Record as
       D-047 (post-1.0 scaffold-contract change).
-- [ ] T8. Add the legacy-`pdf/` deprecation path to `check_scaffold`, with
+- [x] T8. Add the legacy-`pdf/` deprecation path to `check_scaffold`, with
       fixtures in `scripts/tests/test_scaffold_check.py`; re-point
       `skills/tests/test_source_note_template.py`'s source-pointer assertion.
 
@@ -130,6 +130,7 @@ doctrine or template shape → M78 owns those.
 
 - 2026-07-18: created by /milestone-plan. Gaps sourced from the M78-planning audit of `cairn_validate.py:177-202` — the check is a filename census, so an empty page with an INDEX line passes clean.
 - 2026-07-18: /milestone-implement started; branch `m79-references-content-check` cut from main. Baseline verify green (skills 324, scripts 111, hooks 72; each exit 0).
+- 2026-07-18: T7-T8 done — source shelf renamed `references/pdf/` → `references/sources/` across scaffold, gitignore, rulebook, ingestion recipe, template and cairn-init; recorded as D-047. Legacy entry accepted by `check_scaffold` with a new non-failing `scaffold deprecations` advisory (post-1.0 deprecation cycle); `check_references` skips both shelf names when walking.
 - 2026-07-18: T2-T5 done — `check_references` now walks `references/` recursively, parses M78's provenance block (ingested date + `from` source pointer) decoration-tolerantly, and reports an absent INDEX.md over real pages instead of passing. Word-boundary note: `_` is a word char in Python regex, so `__Provenance__` needs non-alnum lookarounds, not `\b`.
 - 2026-07-18: T5 evidence — all 16 committed pages in this repo pass the new check unmodified; no page needed a D-045 in-place correction, so nothing is grandfathered.
 - 2026-07-18: T1 done — hard CHECK, user-selected at the implement gate; recorded as M79-D1 (milestone-local: the severity is this check's, not cairn-wide doctrine).

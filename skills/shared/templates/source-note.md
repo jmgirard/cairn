@@ -7,7 +7,7 @@
 # <citekey> — <what this source is for, in a few words>
 
 **Provenance.** Ingested YYYY-MM-DD by M<NN> from
-`cairn/references/pdf/<citekey>.pdf` (gitignored) — or, for a non-PDF source,
+`cairn/references/sources/<citekey>.pdf` (gitignored) — or, for a non-PDF source,
 the URL plus how it was retrieved and by whom.
 Pagination: <journal pages | preprint pages | PDF pages | —>.
 Extraction: <verified YYYY-MM-DD against the source | unverified — first pass,

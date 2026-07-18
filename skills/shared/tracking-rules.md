@@ -22,7 +22,7 @@ owner; any other file gets at most a one-line cross-reference.
 | `cairn/DECISIONS.md` | Append-only cross-cutting decisions (D-001, …), never renumbered — superseded by new entries | Milestone-local decisions (those live in the milestone file); deferrals ("not now" is a ROADMAP fact, not a decision) |
 | `cairn/LESSONS.md` | Durable, capped repo lessons (build quirks, testing tricks) — captured at milestone end, surfaced at plan time; current knowledge, so a lesson proven false is corrected in place and marked (D-045) | Status, decisions (a *choice* is a D-entry), per-milestone task notes |
 | `cairn/reviews/` | RB<NN> briefs and RR<NN> reports for Fable escalation (+ `archive/` for resolved pairs) | Anything else |
-| `cairn/references/` | Source notes (`<citekey>.md`), synthesis notes (cross-source analyses — fit assessments, surveys, pilot ledgers), `INDEX.md` (one line per committed page), gitignored `pdf/` | Anything else |
+| `cairn/references/` | Source notes (`<citekey>.md`), synthesis notes (cross-source analyses — fit assessments, surveys, pilot ledgers), `INDEX.md` (one line per committed page), the gitignored source shelf `sources/` (renamed from `pdf/` at M79 — the shelf holds any source, not only PDFs) | Anything else |
 | `cairn/legacy/` | Entombed pre-migration tracking files, verbatim | Anything live |
 
 Boundary rule: **Architecture → DESIGN · Status → ROADMAP · Tasks →
@@ -604,7 +604,7 @@ differently.
 A **standing fact** is a claim about the *source*: an extracted value, a printed formula, a verbatim wording, a page or table anchor.
 A **dated observation** is a claim about the *repo's own state*: what is on the shelf, what has or has not been read, what another page does or does not yet say, what a later task must still check.
 A standing fact holds as long as the source does. A dated observation is true
-at a moment and can go stale within the hour — `cairn/references/pdf/` is a
+at a moment and can go stale within the hour — `cairn/references/sources/` is a
 live directory the maintainer adds to mid-session, and a note written by a
 subagent is a snapshot of the repo at write time, not at merge time. So a
 dated observation carries `— observed YYYY-MM-DD` inline on the claim itself,

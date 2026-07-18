@@ -63,7 +63,7 @@ WORKLOG_HEADING = "work log"
 # (cairn_validate.check_scaffold): a missing piece means the repo predates a
 # later scaffold addition — route the user to /cairn-init repair. Only
 # always-tracked pieces are listed: git does not preserve empty dirs, so the
-# empty scaffold dirs (milestones/archive, reviews/archive, references/pdf)
+# empty scaffold dirs (milestones/archive, reviews/archive, references/sources)
 # are deliberately NOT checked — their absence is not drift. The CLAUDE.md
 # cairn section stays LLM-owned by the /milestone audit, not duplicated here.
 REQUIRED_SCAFFOLD_FILES = (
@@ -80,10 +80,19 @@ REQUIRED_SCAFFOLD_FILES = (
 )
 # .gitignore entries every cairn repo carries (cairn-init §1).
 REQUIRED_GITIGNORE = (
-    "cairn/references/pdf/",
+    "cairn/references/sources/",
     "cairn/.merge-approved",
     "cairn/.merge-approved.pending",
 )
+# Superseded .gitignore entries, old -> new. cairn is post-1.0, so a scaffold
+# rename follows the deprecation cycle (tracking-rules "Universal tracking
+# rules"): a repo still carrying only the old entry satisfies check_scaffold
+# and gets a non-failing deprecation advisory naming the new one, rather than
+# a hard FAIL it did nothing to earn. Renamed at M79 (D-047) because the shelf
+# holds any source, not only PDFs.
+DEPRECATED_GITIGNORE = {
+    "cairn/references/pdf/": "cairn/references/sources/",
+}
 # .Rbuildignore entry — package repos only (DESCRIPTION present); `^cairn$`
 # keeps the whole tracking dir out of the built package.
 REQUIRED_RBUILDIGNORE = ("^cairn$",)

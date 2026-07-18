@@ -72,7 +72,9 @@ descriptions or model memory for a primary source on scoring/algorithmic
 content. Search (DOI, publisher, OSF); if inaccessible, stop and ask the
 user for the PDF.
 
-**Source ingestion:** PDF → `cairn/references/pdf/` (gitignored).
+**Source ingestion:** the source itself → `cairn/references/sources/`
+(gitignored) — a PDF where there is one, otherwise whatever was retrieved
+(the shelf was named `pdf/` before M79; it holds any source, not only PDFs).
 Summary → `cairn/references/<citekey>.md` (committed), authored from
 `skills/shared/templates/source-note.md`: full citation,
 extracted values with page/table anchors, verbatim-critical values quoted

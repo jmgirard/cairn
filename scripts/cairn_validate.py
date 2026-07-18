@@ -359,9 +359,16 @@ def check_scaffold(root):
         if not os.path.isfile(os.path.join(root, rel)):
             bad.append(f"missing scaffold file {rel}")
     gitignore = _ignore_entries(os.path.join(root, ".gitignore"))
+    superseded = {new: old for old, new in cs.DEPRECATED_GITIGNORE.items()}
     for entry in cs.REQUIRED_GITIGNORE:
-        if entry not in gitignore:
-            bad.append(f".gitignore missing entry '{entry}'")
+        if entry in gitignore:
+            continue
+        # A repo still carrying only the pre-rename entry is not drifted, it
+        # is un-migrated: the deprecation advisory names it, this check does
+        # not fail it (post-1.0 deprecation cycle — D-047).
+        if superseded.get(entry) in gitignore:
+            continue
+        bad.append(f".gitignore missing entry '{entry}'")
     # `^cairn$` is a package concern — only required when a DESCRIPTION exists.
     if os.path.isfile(os.path.join(root, "DESCRIPTION")):
         rbuild = _ignore_entries(os.path.join(root, ".Rbuildignore"))
@@ -563,6 +570,25 @@ def check_sizing_advisory(root):
 # template's own owner comment spans three physical lines, so a one-line-only
 # matcher made the shipped template warn three times on every milestone it
 # created — the two halves of M77 contradicting each other (M77 review F1).
+def check_gitignore_deprecations(root):
+    """Advisory arm of the scaffold deprecation cycle: a repo carrying a
+    superseded .gitignore entry is told its new name without being failed.
+    Exit-code neutral by design — the rename is cairn's, not the repo's, so a
+    hard FAIL would block a milestone over a scaffold change the maintainer
+    never made (D-047; the D-040 migration-cost precedent, one severity
+    softer because a rename has a mechanical successor a slot addition
+    lacks)."""
+    bad = []
+    gitignore = _ignore_entries(os.path.join(root, ".gitignore"))
+    for old, new in cs.DEPRECATED_GITIGNORE.items():
+        if old in gitignore and new not in gitignore:
+            bad.append(
+                f".gitignore entry '{old}' is superseded by '{new}' — "
+                f"rename the entry and the directory"
+            )
+    return bad
+
+
 _LOG_ENTRY = re.compile(r"^\s*-\s")
 _LOG_PREVIEW = 60
 
@@ -704,6 +730,10 @@ CHECKS = [
 # from the PASS/FAIL CHECKS above.
 ADVISORIES = [
     ("sizing (split tripwires)", lambda root, rows: check_sizing_advisory(root)),
+    (
+        "scaffold deprecations",
+        lambda root, rows: check_gitignore_deprecations(root),
+    ),
     ("work-log format", lambda root, rows: check_worklog_format(root)),
     ("dangling id tokens", lambda root, rows: check_dangling_ids(root, rows)),
 ]
