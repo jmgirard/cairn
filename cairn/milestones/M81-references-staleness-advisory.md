@@ -49,29 +49,29 @@ element and lost in scoping. This milestone executes the remainder, so it does
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: a new advisory is registered in `ADVISORIES` (`cairn_validate.py:797-806`)
+- [x] AC1: a new advisory is registered in `ADVISORIES` (`cairn_validate.py:797-806`)
       and never in `CHECKS`; `cairn_validate`'s exit code is unchanged when it
       fires. It flags (i) a page whose extraction status records no verified
       re-check and (ii) a page whose last verified re-check predates the
       threshold this milestone states. Fixtures prove both flags fire and that
       a recently verified page is not flagged.
-- [ ] AC2: the parser's fixtures vary decoration, phrasing, and layout
+- [x] AC2: the parser's fixtures vary decoration, phrasing, and layout
       *independently* — including a label alone on its line and a decoy
       `## Provenance` heading — and no page the shipped templates sanction is
       falsely flagged (D-023; LESSONS `:24`, where varying one axis alone
       passed vacuously on the others).
-- [ ] AC3: `tracking-rules.md` "References pages" states the re-verification
+- [x] AC3: `tracking-rules.md` "References pages" states the re-verification
       expectation and that a re-check marks inline in the provenance block,
       never in a new file or section; guard-locked and mutation-registered.
-- [ ] AC4: a milestone-local decision records WARN-tier severity with its
+- [x] AC4: a milestone-local decision records WARN-tier severity with its
       reasoning against D-029 and M79-D1 — recorded milestone-locally because
       both precedents it argues from are themselves milestone-local
       (LESSONS `:47`).
-- [ ] AC5: the advisory is run over this repo's 16 committed pages; its output
+- [x] AC5: the advisory is run over this repo's 16 committed pages; its output
       is recorded in this file and every flagged page carries a stated
       disposition — re-verified here, or a named ROADMAP candidate row. The
       milestone runs its own new rule over its own artifacts (LESSONS `:48`).
-- [ ] AC6: verify clean — `python3 -m unittest discover` for `skills/tests`,
+- [x] AC6: verify clean — `python3 -m unittest discover` for `skills/tests`,
       `scripts/tests`, `hooks/tests` each exit 0, checked individually and
       never through a pipe (LESSONS `:23`); `cairn_validate` exit 0.
 
@@ -112,6 +112,8 @@ element and lost in scoping. This milestone executes the remainder, so it does
 
 - 2026-07-18: created by /milestone-plan; planned alongside M80 from the M78/M79 grouped candidate row.
 - 2026-07-18: implement gate settled the three open parse decisions — 180-day threshold, undated "at ingestion" ages from the ingested date, exemption earned by the explicit "nothing to re-verify" phrase.
+- 2026-07-18: review — 3 lenses + scorer; 2 findings ≥80 both fixed on the branch (F1/93 the widened continuation test erased M79 CHECK failures — widening made advisory-only; F2/87 a wrapped status invented staleness — status now read to end of paragraph), 4 regression tests added, suites 343/147/72 all exit 0.
+- 2026-07-18: review — F3/68, F4/63, F5/62 logged not actioned (IP3), grouped into one ROADMAP candidate row; all six acceptance criteria ticked against recorded evidence.
 - 2026-07-18: T6 — skills 343, scripts 143, hooks 72 tests, each run unpiped with its exit code read individually: all 0; `cairn_validate` exit 0 with 1 advisory warning. Status → review.
 - 2026-07-18: T5 — first run over the repo's 16 pages: 13 ok, 2 exempt, 1 flagged (`task-master.md` → new ROADMAP candidate row); `migration-pilot-notes.md`'s status aligned to the sanctioned exemption phrase, heading off a false positive scheduled for ~174 days out.
 - 2026-07-18: T5 — the run's new sections put the file 11 lines over cap; Decisions and the run summary compressed in one pass (cross-referencing `_last_verified`'s docstring and the ROADMAP row rather than restating them). Plan-owned sections untouched.
@@ -221,3 +223,70 @@ principle changed → `cairn_impact` correctly skipped. Toolchain checks: the
 **CI:** this repo configures no workflows (`.github/workflows/` absent), so
 `gh pr checks` reports none and the local suites above are the verification of
 record. Noted rather than waited on.
+
+### Independent fresh-context review (3 lenses + scorer)
+
+- **[S] prior-PR-comments — 0 findings.** Established that this repo carries
+  *no* inline PR review comments at all (`pulls/{78,77,76,55,54,51}/comments`
+  each returned `[]`); its review record lives in the archive files' Review
+  sections and `LESSONS.md`, which it used as the prior-review base.
+- **[S] blame-history — 0 findings.** Verified the M56 "second log is a
+  divergence vector" citation is verbatim-accurate, and that the
+  `migration-pilot-notes.md` edit is a template-vocabulary retrofit rather
+  than a D-045 correction. Corrected a provenance detail: `_provenance_block`
+  is **M79's** (`8d4fd8e`), not M78's — M78 defined only the block schema.
+- **[O] diff-bug — 2 findings, both actioned.** Both reproduced independently
+  by the scorer before triage.
+
+**F1 (93) — FIXED.** *Widening `_provenance_block`'s continuation test
+silently weakens M79's hard `references index<->disk` CHECK.* The docstring's
+claim ("no page that passed before can fail now") was true but the **wrong
+invariant**: that CHECK asks only existence questions, so a wider block cannot
+create a FAIL — it **erases** FAILs. A page whose provenance names no source
+pointer passed once the following `**Citation.**` paragraph was absorbed,
+because `_PROV_LOCATOR`'s `[\w.-]+/[\w.-]` arm matches the `volume/issue/pages`
+the shipped source-note template itself prints. Three reviewers and the
+implementing session all verified the *stated* invariant and missed the one
+that mattered. Fixed by making the widening opt-in
+(`_provenance_block(..., for_extraction=True)`): the hard CHECK keeps M79's
+two-field test untouched, and only the advisory passes the flag. The root
+cause of the blind spot is locked too — the `page()` fixture always put the
+provenance block last, so no test in the class had a trailing paragraph to
+absorb; two regression tests now supply one, one per erasable arm.
+
+**F2 (87) — FIXED.** *`_extraction_status` "never invents staleness" was
+false; it invents staleness on exactly the pages that were re-verified.*
+Reading only the line the status starts on lost a wrapped continuation and
+fell back to the **ingested** date, which for a re-verified page is older than
+the verification — a page re-read 17 days ago reported as 929 days stale, a
+D-023 false positive rather than the claimed preferred miss. The `wrapped`
+axis in the 36-cell cross-product could not catch it: the split point put the
+date before the cut in all three phrasings, so the axis was exercised but
+never where wrapping changes the answer. Fixed by reading the status to the
+end of its **paragraph**, stopping at a blank line or the next
+`Label:`/bolded field so it cannot swallow the citation below it. Both
+directions are now tested.
+
+Both fixes verified against the reviewers' own counterexamples, and proven
+non-vacuous: the CHECK's narrowed block finds no source pointer where the
+wide one does. The repo's 16 pages classify identically before and after
+(13 ok / 2 exempt / 1 flagged) — no real page's outcome changed.
+
+**Logged, below the 80 threshold — surfaced, not actioned (IP3):**
+
+- **F3 (68)** — `_UNVERIFIED` is tested before any date, so a partly-verified
+  status that happens to contain the word ("verified 2026-07-15 …; the
+  appendix remains unverified") reports "no verified re-check". Dormant: all
+  three real partly-verified pages avoid the token. Not actioned because the
+  reordering that fixes it re-opens the opposite misread ("unverified — first
+  pass 2026-01-01" would then read as verified).
+- **F4 (63)** — synonyms escape the flag: "never verified against the source"
+  classifies `ok`. A false negative (D-023's preferred direction), and
+  widening risks flagging partial-verification prose wholesale.
+- **F5 (62)** — a future date ("verified 2099-01-01") yields a negative age
+  and permanently exempts a page with no diagnostic. Narrow, and no other
+  date field in the codebase is sanity-checked against today either.
+
+F3–F5 share one shape — the parser trusting free prose further than the
+templates sanction — and are carried as a single ROADMAP candidate row rather
+than three.

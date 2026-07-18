@@ -537,6 +537,55 @@ class TestReferencesCheck(ScriptCase):
             "cairn/references/ holds 1 page(s) but no INDEX.md", proc.stdout
         )
 
+    def test_trailing_paragraph_cannot_erase_a_missing_source_pointer(self):
+        # M81 review F1 (scored 93). M81 widened `_provenance_block`'s
+        # continuation test for its staleness advisory; shared with this CHECK
+        # it ERASED failures rather than creating them — this CHECK asks only
+        # existence questions, so a wider block can only satisfy them. Here the
+        # `**Citation.**` paragraph would be absorbed and `_PROV_LOCATOR`'s
+        # `[\w.-]+/[\w.-]` arm matches `volume/issue/pages` — which the shipped
+        # source-note template itself prints — so a page genuinely missing its
+        # source pointer passed. The widening is now advisory-only.
+        #
+        # The whole class missed this because `page()` puts the provenance
+        # block LAST, so no fixture had a following paragraph to absorb. Real
+        # template-authored pages always do.
+        root = self.tree.build()
+        (root / "cairn" / "references" / "notes.md").write_text(
+            "# note\n\n**Provenance.** Ingested 2026-07-18 by M79.\n"
+            "Pagination: 1-10.\n\n"
+            "**Citation.** Smith, J. (2020). A title. "
+            "Journal, 4(2), 1-10. https://doi.org/10.1/xyz\n"
+        )
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- notes.md — a committed page\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(
+            "cairn/references/notes.md provenance names no source pointer",
+            proc.stdout,
+        )
+
+    def test_trailing_paragraph_cannot_erase_a_missing_ingested_date(self):
+        # The same erasure via the other arm: a following paragraph carrying
+        # the word "ingested" and a date would have satisfied the date test.
+        root = self.tree.build()
+        (root / "cairn" / "references" / "notes.md").write_text(
+            "# note\n\n**Provenance.** Ingested by M79 from "
+            "`cairn/references/sources/note.pdf`.\n\n"
+            "**Role.** This page was ingested during the 2026-07-18 sweep.\n"
+        )
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- notes.md — a committed page\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(
+            "cairn/references/notes.md provenance names no ingested date",
+            proc.stdout,
+        )
+
     def test_absent_index_over_empty_dir_no_ops(self):
         # The M45 no-op is kept exactly where it is a genuine not-adopted
         # signal: no INDEX and no pages. scaffold-present owns that failure.
@@ -786,6 +835,44 @@ class TestReferencesStaleness(ScriptCase):
             f"— observed {days_ago(0)}.",
         )
         self.assertClean(proc)
+
+    # --- review F2 (87): a wrapped status must not invent staleness ----------
+
+    def test_wrapped_status_reads_its_continuation_line(self):
+        # The status is read to the end of its PARAGRAPH, not just the line it
+        # starts on. Reading one line fell back to the INGESTED date, which for
+        # a re-verified page is older than the verification — a page re-read 3
+        # days ago was reported 900 days stale. A manufactured false positive,
+        # not the "preferred miss" the old docstring claimed.
+        root = self.tree.build()
+        (root / "cairn" / "references" / "notes.md").write_text(
+            "# page\n\n**Provenance.** Ingested "
+            f"{days_ago(900)} by M20 from `cairn/references/sources/x.pdf`.\n"
+            "Pagination: —.\n"
+            "Extraction: fully re-read and verified against the source on\n"
+            f"{days_ago(3)}, every value confirmed — observed {days_ago(0)}.\n"
+        )
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- notes.md — a committed page\n"
+        )
+        self.assertClean(run("cairn_validate.py", root))
+
+    def test_status_does_not_swallow_the_following_field(self):
+        # The other half: collection stops at the next bolded/labelled field,
+        # so the status cannot read a date out of the citation paragraph and
+        # call it a verification.
+        root = self.tree.build()
+        (root / "cairn" / "references" / "notes.md").write_text(
+            "# page\n\n**Provenance.** Ingested "
+            f"{days_ago(1)} by M20 from `cairn/references/sources/x.pdf`.\n"
+            f"Extraction: unverified — first pass — observed {days_ago(0)}.\n"
+            "**Citation.** Smith (2020). Journal 4(2). 2099-01-01\n"
+        )
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- notes.md — a committed page\n"
+        )
+        self.assertFlagged(run("cairn_validate.py", root),
+                           "records no verified re-check")
 
     # --- AC2: no shipped-template form is falsely flagged --------------------
 

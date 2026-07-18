@@ -243,7 +243,7 @@ _PROV_SOURCE = re.compile(
 _PROV_LOCATOR = re.compile(r"https?://\S|[\w.-]+/[\w.-]")
 
 
-def _provenance_block(path):
+def _provenance_block(path, for_extraction=False):
     """The provenance prose of a references page. M78 calls the block "prose
     in the page's own idiom, not frontmatter", so the parser is generous
     about layout (review F2/F3):
@@ -252,15 +252,22 @@ def _provenance_block(path):
       a decoy line — a `## Provenance` section heading above the real block —
       cannot swallow the page's provenance and fail it.
     - A run is the heading line plus the following non-blank lines; when that
-      yields neither semantic field — or, since M81, no extraction status —
-      the next paragraph is pulled in too, so a label alone on its own line
-      still finds its body below the blank. M81 added the third field to the
-      continuation test because the two-field version stopped at the blank
-      whenever the ingested date had already been found, leaving a page whose
-      `Extraction:` label sat alone reported as carrying no status at all —
-      a false positive on a page that has one. Extending a run only ever
-      makes the parser more generous, so no page that passed before can fail
-      now (D-023: a miss beats a false positive).
+      yields neither semantic field the next paragraph is pulled in too, so a
+      label alone on its own line still finds its body below the blank.
+
+    `for_extraction` widens that continuation test by one field — the run also
+    extends when it names no extraction status — and **only the M81 staleness
+    advisory passes it.** The hard `references index<->disk` CHECK keeps M79's
+    two-field test untouched, because the two callers need opposite
+    protections and one shared rule cannot give both (M81 review F1, scored
+    93). That CHECK asks only *existence* questions, so a wider block cannot
+    make it FAIL — it ERASES FAILs: absorbing the next paragraph lets an
+    unrelated `**Citation.**` line satisfy the source-pointer test, and
+    `_PROV_LOCATOR`'s `[\\w.-]+/[\\w.-]` arm matches any slash, including the
+    `volume/issue/pages` the source-note template itself prints. A page
+    genuinely missing its source pointer would then pass. The advisory can
+    afford the wider read because its own failure mode is the opposite one: a
+    missed status there is a quiet WARN, not a silently-erased gate failure.
 
     Returns None when the page carries no provenance heading at all."""
     with open(path, encoding="utf-8") as f:
@@ -274,10 +281,10 @@ def _provenance_block(path):
             run.append(lines[j])
             j += 1
         text = "\n".join(run)
-        if not (
-            (_PROV_INGESTED.search(text) or _PROV_SOURCE.search(text))
-            and _extraction_status(text)
-        ):
+        complete = _PROV_INGESTED.search(text) or _PROV_SOURCE.search(text)
+        if for_extraction:
+            complete = complete and _extraction_status(text)
+        if not complete:
             while j < len(lines) and not lines[j].strip():
                 j += 1
             while j < len(lines) and lines[j].strip():
@@ -696,6 +703,10 @@ _UNVERIFIED = re.compile(r"(?<![A-Za-z0-9])unverified(?![A-Za-z0-9])", re.I)
 # so (the synthesis template's sanctioned phrase), never by page type — a
 # synthesis note derived from other pages does age, and says so with a date.
 _NOTHING_TO_VERIFY = re.compile(r"nothing to re-?verify", re.I)
+# Where a status's paragraph ends: the next `Label:` field (`Pagination:`,
+# `Citation:`) or a bolded field opener (`**Citation.**`). Without this the
+# status would absorb the citation paragraph and read dates out of it.
+_FIELD_START = re.compile(r"^[\s>*_`#]*(?:\*\*|[A-Za-z][A-Za-z -]{0,24}:)")
 # 180 days ≈ six months: long enough that a page touched in a normal year of
 # work never trips it, short enough that one nobody has looked at since is
 # surfaced (M81 implement gate).
@@ -717,25 +728,43 @@ def _iso(text):
 def _extraction_status(block):
     """The `Extraction:` status text of a provenance block, or None when the
     block carries no such field. A label alone on its line takes the next
-    non-blank line as its body — M78 calls the block "prose in the page's own
-    idiom", and `_provenance_block` already reads a label-alone layout that
-    same generous way, so the sub-field must not be stricter than its block.
-    Only the line the status STARTS on is read: the shipped templates state
-    the status is one physical line however long, and a wrapped continuation
-    is a preferred miss (D-023), never a false flag — an unread continuation
-    falls through to the ingested date, which never invents staleness."""
+    paragraph as its body — M78 calls the block "prose in the page's own
+    idiom", and `_provenance_block` reads a label-alone layout that same
+    generous way, so the sub-field must not be stricter than its block.
+
+    The status is read to the END of its own paragraph, not just the physical
+    line it starts on. Reading one line looked like a safe D-023 miss and was
+    not (M81 review F2, scored 87): a wrapped status loses whatever sits on
+    the continuation, and the fallback is the INGESTED date — which for a
+    re-verified page is by definition older than the verification. A page
+    re-read 17 days ago was reported 929 days stale, a manufactured false
+    positive, exactly what D-023 forbids. Collection stops at a blank line or
+    at the next `Label:`/bolded field, so the status never swallows a
+    neighbouring field or the citation paragraph below it."""
     lines = block.splitlines()
     for i, line in enumerate(lines):
         m = _PROV_EXTRACTION.match(line)
         if not m:
             continue
+        parts, j = [], i + 1
         rest = m.group(1).strip(" *_`")
         if rest:
-            return rest
-        for nxt in lines[i + 1:]:
-            if nxt.strip():
-                return nxt.strip()
-        return ""
+            parts.append(rest)
+        else:
+            # Label alone: its body is the next paragraph, whose first line is
+            # the status itself and so is taken without the field-start test.
+            while j < len(lines) and not lines[j].strip():
+                j += 1
+            if j < len(lines):
+                parts.append(lines[j].strip())
+                j += 1
+        while j < len(lines) and lines[j].strip():
+            nxt = lines[j].strip()
+            if _FIELD_START.match(nxt):
+                break
+            parts.append(nxt)
+            j += 1
+        return " ".join(parts)
     return None
 
 
@@ -790,7 +819,7 @@ def check_references_staleness(root, today=None):
     if not os.path.isdir(refdir):
         return out
     for rel in _reference_pages(refdir):
-        block = _provenance_block(os.path.join(refdir, rel))
+        block = _provenance_block(os.path.join(refdir, rel), for_extraction=True)
         if block is None:
             continue  # the references CHECK reports a missing block
         state, when = _last_verified(block)
