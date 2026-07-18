@@ -81,7 +81,7 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
       hotfix bar first (too large → route to `/milestone-plan`, unchanged),
       then `gh pr checkout <N>`; state the branch-name exemption and mirror it
       in `tracking-rules.md:253` and `hooks/commit_guard.py:67`'s nudge text.
-- [ ] T2 — Rewrite step 3 (`:32-33`) to carry both forms: author-side
+- [x] T2 — Rewrite step 3 (`:32-33`) to carry both forms: author-side
       (fail→fix→pass) and adopted-side (add test; fail on default branch, pass
       on PR head).
 - [ ] T3 — Extend step 5 (`:39-45`) for the adopted case, incl. the
@@ -105,6 +105,8 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
   text is unreachable there). All three user-selected.
 - 2026-07-18: T1 — /hotfix steps 1–2 carry the adopt-a-PR form; branch-name
   exemption stated in tracking-rules git model. verify clean.
+- 2026-07-18: T2 — step 3 states both sequences; adopted form is add-the-test
+  + prove fail-on-default / pass-on-head via a scratch worktree. verify clean.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->

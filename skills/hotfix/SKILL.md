@@ -40,8 +40,18 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    model): the branch is theirs, renaming it breaks the PR, and the PR
    number is the identifier that matters.
 
-3. **Regression test first.** Write the test that fails because of the bug;
-   confirm it fails; then fix; confirm it passes.
+3. **Regression test first.** The bug gets a test either way; only the
+   sequence differs.
+   *Authoring a fix:* write the test that fails because of the bug; confirm
+   it fails; then fix; confirm it passes.
+   *Adopting a PR:* the fix already exists, so the author-side
+   "fails before the fix" sequence is unreachable — the test is **added**,
+   and it earns its keep by **failing against the default branch and passing
+   on the PR head**. Prove both directions: run it on the PR head, then in a
+   scratch worktree of the default branch (`git worktree add`) with only the
+   test file applied. A test that passes on both proves nothing about the
+   bug. A test the contributor already wrote goes through that same two-way
+   check — adopting a PR means verifying its evidence, not inheriting it.
 
 4. **Gate-lite:** run the active profile's `verify` slot (`cairn/PROFILE.md`;
    absent → infer per tracking-rules "Toolchain profiles") — its gate-lite
