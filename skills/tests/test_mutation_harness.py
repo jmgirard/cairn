@@ -455,6 +455,21 @@ REGISTRY = [
         target=RULES,
         block="undated absence claim",
     ),
+    # M81: the re-verification expectation and its recording location. Two
+    # entries, because the expectation without the location reads as satisfied
+    # by the central ledger M56 rejected.
+    Mutation(
+        guard="test_references_pages",
+        test="TestReVerification.test_core_states_the_re_verification_expectation",
+        target=RULES,
+        block="a page the repo still relies on is re-checked against its source as it gets old, and a page never checked against its source at all keeps saying so.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestReVerification.test_a_re_check_marks_inline_and_nowhere_else",
+        target=RULES,
+        block="A re-check marks inline in the provenance block, on the extraction status itself — never in a new file, a new section, or a log.",
+    ),
     Mutation(
         guard="test_source_note_template",
         test="TestClaimSplitDoctrine.test_provenance_block_is_prose_not_frontmatter",

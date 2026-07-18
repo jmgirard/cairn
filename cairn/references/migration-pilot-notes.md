@@ -2,7 +2,7 @@
 
 **Provenance.** Citekey `migration-pilot-notes` · ingested 2026-07-12 by M20 from synthesis note — first-hand findings from running `/cairn-init` §2 against mature Lineage B repos (Pilot 1: ackwards, M20).
 Pagination: —.
-Extraction: first-hand pilot record, not an extraction; each gap is tagged and traced to its ROADMAP disposition — observed 2026-07-18.
+Extraction: first-hand pilot record, not an extraction — nothing to re-verify against; each gap is tagged and traced to its ROADMAP disposition — observed 2026-07-18.
 
 Findings from running `/cairn-init` §2 (migration) for real against mature
 Lineage B repos, to harden the protocol. Captured per milestone; each gap is

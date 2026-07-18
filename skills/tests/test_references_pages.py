@@ -250,5 +250,65 @@ class TestTemplateProducesAValidPage(unittest.TestCase):
                 self.assertNotRegex(line, DATED_EXTRACTION)
 
 
+class TestReVerification(unittest.TestCase):
+    """M81: the extraction status gets a reader, and the rulebook states the
+    expectation behind it. Both anchors are pinned WITH the thing they rule
+    out — a re-check marks inline, never in a new file — because a guard on
+    the expectation alone survives the recording location being moved to the
+    central ledger M56 rejected (M74/M76: pin the label with its members)."""
+
+    def test_core_states_the_re_verification_expectation(self):
+        self.assertIn(
+            "a page the repo still relies on is re-checked against its source "
+            "as it gets old, and a page never checked against its source at "
+            "all keeps saying so",
+            rulebook(),
+        )
+
+    def test_a_re_check_marks_inline_and_nowhere_else(self):
+        # The location half. Without "never in a new file, a new section, or a
+        # log", the rule reads as satisfied by a references/log.md.
+        self.assertIn(
+            "a re-check marks inline in the provenance block, on the "
+            "extraction status itself — never in a new file, a new section, "
+            "or a log",
+            rulebook(),
+        )
+
+    def test_each_anchor_sits_on_one_physical_line(self):
+        # The mutation harness blanks by physical line; a reflow would
+        # "found 0"-error both entries (LESSONS :27).
+        lines = [ln.lower() for ln in
+                 (SKILLS / "shared" / "tracking-rules.md").read_text().splitlines()]
+        for anchor in (
+            "a page the repo still relies on is re-checked",
+            "a re-check marks inline in the provenance block",
+        ):
+            hits = [ln for ln in lines if anchor in ln]
+            self.assertEqual(len(hits), 1, f"{anchor!r} must sit on one line")
+
+    def test_advisory_is_named_by_its_emitted_label(self):
+        # M28/LESSONS :27: prose naming a validate finding uses the emitted
+        # label verbatim, so a reader can grep the output for it.
+        self.assertIn("`references staleness` advisory", rulebook())
+        self.assertIn(
+            "references staleness",
+            [name for name, _ in _load_validate().ADVISORIES],
+        )
+
+    def test_severity_is_advisory_not_a_check(self):
+        # M81-D1 / D-029: the rulebook states WHY this is not a gate, so a
+        # later milestone cannot promote it by forgetting the reasoning.
+        self.assertIn(
+            "it stays an advisory and never a check", rulebook()
+        )
+
+    def test_the_threshold_prose_matches_the_shipped_constant(self):
+        # The pairing rule (M77) applied to a NUMBER: prose stating 180 days
+        # over code comparing something else is the drift this catches.
+        self.assertIn("more than 180 days ago", rulebook())
+        self.assertEqual(_load_validate()._STALE_DAYS, 180)
+
+
 if __name__ == "__main__":
     unittest.main()

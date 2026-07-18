@@ -13,6 +13,7 @@ cairn repo.
     python3 scripts/cairn_validate.py [ROOT]
 """
 
+import datetime
 import os
 import re
 import sys
@@ -242,7 +243,7 @@ _PROV_SOURCE = re.compile(
 _PROV_LOCATOR = re.compile(r"https?://\S|[\w.-]+/[\w.-]")
 
 
-def _provenance_block(path):
+def _provenance_block(path, for_extraction=False):
     """The provenance prose of a references page. M78 calls the block "prose
     in the page's own idiom, not frontmatter", so the parser is generous
     about layout (review F2/F3):
@@ -251,8 +252,22 @@ def _provenance_block(path):
       a decoy line — a `## Provenance` section heading above the real block —
       cannot swallow the page's provenance and fail it.
     - A run is the heading line plus the following non-blank lines; when that
-      yields neither semantic field, the next paragraph is pulled in too, so
-      a label alone on its own line still finds its body below the blank.
+      yields neither semantic field the next paragraph is pulled in too, so a
+      label alone on its own line still finds its body below the blank.
+
+    `for_extraction` widens that continuation test by one field — the run also
+    extends when it names no extraction status — and **only the M81 staleness
+    advisory passes it.** The hard `references index<->disk` CHECK keeps M79's
+    two-field test untouched, because the two callers need opposite
+    protections and one shared rule cannot give both (M81 review F1, scored
+    93). That CHECK asks only *existence* questions, so a wider block cannot
+    make it FAIL — it ERASES FAILs: absorbing the next paragraph lets an
+    unrelated `**Citation.**` line satisfy the source-pointer test, and
+    `_PROV_LOCATOR`'s `[\\w.-]+/[\\w.-]` arm matches any slash, including the
+    `volume/issue/pages` the source-note template itself prints. A page
+    genuinely missing its source pointer would then pass. The advisory can
+    afford the wider read because its own failure mode is the opposite one: a
+    missed status there is a quiet WARN, not a silently-erased gate failure.
 
     Returns None when the page carries no provenance heading at all."""
     with open(path, encoding="utf-8") as f:
@@ -266,7 +281,10 @@ def _provenance_block(path):
             run.append(lines[j])
             j += 1
         text = "\n".join(run)
-        if not (_PROV_INGESTED.search(text) or _PROV_SOURCE.search(text)):
+        complete = _PROV_INGESTED.search(text) or _PROV_SOURCE.search(text)
+        if for_extraction:
+            complete = complete and _extraction_status(text)
+        if not complete:
             while j < len(lines) and not lines[j].strip():
                 j += 1
             while j < len(lines) and lines[j].strip():
@@ -660,6 +678,172 @@ _LOG_ENTRY = re.compile(r"^\s*-\s")
 _LOG_PREVIEW = 60
 
 
+# --- references staleness (M81) ---------------------------------------------
+# M78 gave every committed references page an `Extraction:` status; until now
+# nothing read it, so a page recording an unchecked subagent pass rendered
+# exactly like a confirmed one. These read that status the same
+# decoration-tolerant way `_provenance_block` reads its heading.
+_PROV_EXTRACTION = re.compile(
+    rf"^[\s>*_`#]*extraction(?![A-Za-z0-9]){_D}:(.*)$", re.I
+)
+# The `— observed YYYY-MM-DD` stamp records when the STATUS was written, not
+# when the source was re-read. It is stripped before any date is taken out of
+# the line: left in, it is always the freshest date present, and the advisory
+# would read its own write stamp and never fire.
+_OBSERVED_STAMP = re.compile(
+    rf"(?<![A-Za-z0-9])observed(?![A-Za-z0-9]){_D}\d{{4}}-\d{{2}}-\d{{2}}", re.I
+)
+_ISO_DATE = re.compile(r"(?<!\d)(\d{4})-(\d{2})-(\d{2})(?!\d)")
+# An explicit assertion that the page was never checked against its source.
+# The two states are mutually exclusive by template design — the shipped forms
+# are `|`-separated alternatives — so this is read before any date.
+_UNVERIFIED = re.compile(r"(?<![A-Za-z0-9])unverified(?![A-Za-z0-9])", re.I)
+# A first-hand record has no external source to re-read, so asking it to
+# re-verify asks the impossible. The exemption is earned by the status SAYING
+# so (the synthesis template's sanctioned phrase), never by page type — a
+# synthesis note derived from other pages does age, and says so with a date.
+_NOTHING_TO_VERIFY = re.compile(r"nothing to re-?verify", re.I)
+# Where a status's paragraph ends: the next `Label:` field (`Pagination:`,
+# `Citation:`) or a bolded field opener (`**Citation.**`). Without this the
+# status would absorb the citation paragraph and read dates out of it.
+_FIELD_START = re.compile(r"^[\s>*_`#]*(?:\*\*|[A-Za-z][A-Za-z -]{0,24}:)")
+# 180 days ≈ six months: long enough that a page touched in a normal year of
+# work never trips it, short enough that one nobody has looked at since is
+# surfaced (M81 implement gate).
+_STALE_DAYS = 180
+
+
+def _iso(text):
+    """Every well-formed ISO date in `text`, as date objects. A date-shaped
+    run that is not a real date (2026-13-45) is skipped, not raised on."""
+    out = []
+    for y, m, d in _ISO_DATE.findall(text):
+        try:
+            out.append(datetime.date(int(y), int(m), int(d)))
+        except ValueError:
+            continue
+    return out
+
+
+def _extraction_status(block):
+    """The `Extraction:` status text of a provenance block, or None when the
+    block carries no such field. A label alone on its line takes the next
+    paragraph as its body — M78 calls the block "prose in the page's own
+    idiom", and `_provenance_block` reads a label-alone layout that same
+    generous way, so the sub-field must not be stricter than its block.
+
+    The status is read to the END of its own paragraph, not just the physical
+    line it starts on. Reading one line looked like a safe D-023 miss and was
+    not (M81 review F2, scored 87): a wrapped status loses whatever sits on
+    the continuation, and the fallback is the INGESTED date — which for a
+    re-verified page is by definition older than the verification. A page
+    re-read 17 days ago was reported 929 days stale, a manufactured false
+    positive, exactly what D-023 forbids. Collection stops at a blank line or
+    at the next `Label:`/bolded field, so the status never swallows a
+    neighbouring field or the citation paragraph below it."""
+    lines = block.splitlines()
+    for i, line in enumerate(lines):
+        m = _PROV_EXTRACTION.match(line)
+        if not m:
+            continue
+        parts, j = [], i + 1
+        rest = m.group(1).strip(" *_`")
+        if rest:
+            parts.append(rest)
+        else:
+            # Label alone: its body is the next paragraph, whose first line is
+            # the status itself and so is taken without the field-start test.
+            while j < len(lines) and not lines[j].strip():
+                j += 1
+            if j < len(lines):
+                parts.append(lines[j].strip())
+                j += 1
+        while j < len(lines) and lines[j].strip():
+            nxt = lines[j].strip()
+            if _FIELD_START.match(nxt):
+                break
+            parts.append(nxt)
+            j += 1
+        return " ".join(parts)
+    return None
+
+
+def _last_verified(block):
+    """When this page's extraction was last checked against its source, as
+    ("ok", date) / ("never", None) / ("exempt", None) / ("missing", None) /
+    ("undated", None).
+
+    Precedence, fixed at the M81 implement gate:
+      1. an explicit "nothing to re-verify" → exempt;
+      2. an explicit `unverified` → never;
+      3. a date in the status (`verified 2026-07-12`, `none re-read since
+         2026-07-11`, `a 2026-07-12 snapshot`) → the freshest one;
+      4. otherwise the block's ingested date — "verified at ingestion", the
+         commonest shipped form, literally names it, and demanding an explicit
+         date there would falsely flag five template-sanctioned pages."""
+    raw = _extraction_status(block)
+    if not raw:
+        return "missing", None
+    status = _OBSERVED_STAMP.sub("", raw)
+    if _NOTHING_TO_VERIFY.search(status):
+        return "exempt", None
+    if _UNVERIFIED.search(status):
+        return "never", None
+    dates = _iso(status)
+    if dates:
+        return "ok", max(dates)
+    ingested = _PROV_INGESTED.search(block)
+    if ingested:
+        found = _iso(ingested.group(1))
+        if found:
+            return "ok", found[0]
+    # A status naming no date over a block naming no ingested date: the
+    # references CHECK already FAILs that block, so the advisory stays quiet
+    # rather than pile a second finding on one cause.
+    return "undated", None
+
+
+def check_references_staleness(root, today=None):
+    """Advisory: a committed references page whose extraction has never been
+    checked against its source, or was last checked longer ago than
+    `_STALE_DAYS`. M56 surveyed LLM Wiki's Lint op and adopted it; M57 shipped
+    only the INDEX↔disk half, and the "stale claims" clause was lost in
+    scoping — this is the remainder.
+
+    WARN, never a CHECK (M81-D1): block *presence* is structural and fails the
+    gate, but "this page is too old" is a judgment about evidence quality, and
+    D-029 keeps judgment out of the validate gate."""
+    out = []
+    today = today or datetime.date.today()
+    refdir = os.path.join(root, "cairn", "references")
+    if not os.path.isdir(refdir):
+        return out
+    for rel in _reference_pages(refdir):
+        block = _provenance_block(os.path.join(refdir, rel), for_extraction=True)
+        if block is None:
+            continue  # the references CHECK reports a missing block
+        state, when = _last_verified(block)
+        if state in ("exempt", "undated"):
+            continue
+        if state == "never":
+            out.append(
+                f"cairn/references/{rel}: extraction records no verified "
+                f"re-check against the source"
+            )
+        elif state == "missing":
+            out.append(
+                f"cairn/references/{rel}: provenance records no extraction status"
+            )
+        else:
+            age = (today - when).days
+            if age > _STALE_DAYS:
+                out.append(
+                    f"cairn/references/{rel}: last verified {when.isoformat()}, "
+                    f"{age} days ago (threshold {_STALE_DAYS})"
+                )
+    return out
+
+
 def check_worklog_format(root):
     """Advisory: a work-log line that is not a one-line `- ` entry — i.e. a
     hard-wrapped continuation. The rulebook has always mandated one line per
@@ -803,6 +987,10 @@ ADVISORIES = [
     ),
     ("work-log format", lambda root, rows: check_worklog_format(root)),
     ("dangling id tokens", lambda root, rows: check_dangling_ids(root, rows)),
+    (
+        "references staleness",
+        lambda root, rows: check_references_staleness(root),
+    ),
 ]
 
 
