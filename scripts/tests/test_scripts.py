@@ -411,6 +411,74 @@ class TestReferencesCheck(ScriptCase):
                     "PASS  references index<->disk", proc.stdout
                 )
 
+    # --- M79 review findings: parser false positives (F2-F5) --------------
+
+    def test_decoy_provenance_heading_does_not_swallow_the_block(self):
+        # F2/95: `_provenance_block` committed to the first heading-like line,
+        # so a `## Provenance` section heading above the real block hard-FAILed
+        # a textbook-correct page. Every headed run is collected now.
+        proc = self._one_page(
+            "## Provenance\n\n"
+            "**Provenance.** Ingested 2026-07-18 by M79 from `x.pdf`.\n"
+        )
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  references index<->disk", proc.stdout)
+
+    def test_label_on_its_own_line_finds_its_body(self):
+        # F3/92: the run ended at the first blank line, so a label alone on a
+        # line lost the paragraph carrying every semantic token.
+        proc = self._one_page(
+            "**Provenance.**\n\nIngested 2026-07-18 by M79 from `x.pdf`.\n"
+        )
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  references index<->disk", proc.stdout)
+
+    def test_non_from_source_phrasings_pass(self):
+        # F4/90: requiring the literal token "from" failed a page whose
+        # pointer is phrased the way M78's template sanctions for a non-PDF
+        # source ("the URL plus how it was retrieved and by whom").
+        for prov in (
+            "**Provenance.** Ingested 2026-07-18 by M79; retrieved via "
+            "https://x.test on 2026-07-18.\n",
+            "**Provenance.** Ingested 2026-07-18 by M79. Source: "
+            "`cairn/references/sources/x.pdf`.\n",
+            "**Provenance.** Ingested 2026-07-18 by M79, downloaded by Jeff "
+            "from the publisher.\n",
+        ):
+            with self.subTest(prov=prov):
+                proc = self._one_page(prov)
+                self.assertEqual(proc.returncode, 0, proc.stdout)
+
+    def test_index_prose_bullet_is_not_a_catalog_entry(self):
+        # F5/85, first half: widening the capture to accept paths turned a
+        # "see also" bullet into a phantom entry and a spurious hard FAIL.
+        root = self.tree.build()
+        (root / "cairn" / "references" / "notes.md").write_text(page())
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- notes.md — a real note\n"
+            "- cairn/DESIGN.md — see also, not a page entry\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertNotIn("cairn/DESIGN.md", proc.stdout)
+
+    def test_index_entry_cannot_escape_the_references_tree(self):
+        # F5/85, second half: an unnormalized join let `../../DESIGN.md` be
+        # satisfied by a real file OUTSIDE cairn/references/, so the entry
+        # passed silently. It must not be treated as a catalog entry at all.
+        root = self.tree.build()
+        (root / "cairn" / "references" / "notes.md").write_text(page())
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- notes.md — a real note\n"
+            "- ../../DESIGN.md — escapes the references tree\n"
+        )
+        # cairn/DESIGN.md exists in the fixture, which is what made the
+        # escaping entry resolve before the fix.
+        self.assertTrue((root / "cairn" / "DESIGN.md").is_file())
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertNotIn("DESIGN.md", proc.stdout)
+
     def test_nested_page_is_enforced(self):
         # Pre-M79 the flat os.listdir made any nesting silently unenforced,
         # so this page passed. It must not.

@@ -173,6 +173,40 @@ def check_orphans(root, rows):
 # hard CHECK on formatting alone (D-023; review F1/85), so the capture excludes
 # decoration characters.
 _INDEX_LINE = re.compile(r"^\s*[-*]\s+[\[`]*([\w./-]+\.md)\b")
+
+
+def _catalog_entries(refdir, index):
+    """The INDEX.md lines that are catalog entries for committed pages.
+
+    Widening the capture to accept subdirectory paths (M79) also let two
+    non-entries through, both closed here (review F5):
+
+    - A path escaping the references tree (`../../DESIGN.md`) is dropped. It
+      is not a catalog entry, and joining it unnormalized let a file OUTSIDE
+      cairn/references/ silently satisfy the existence check below.
+    - A path whose directory does not exist under refdir (`cairn/DESIGN.md`
+      in a "see also" bullet) is dropped rather than reported as a missing
+      target — an INDEX.md may carry prose, and a hard CHECK must not fire on
+      a bullet that was never a page reference (D-023). The cost is a miss:
+      deleting a whole subdirectory hides its entries instead of flagging
+      them, which is the tolerated side of the doctrine.
+    """
+    entries = []
+    with open(index, encoding="utf-8") as f:
+        for line in f:
+            m = _INDEX_LINE.match(line)
+            if not m:
+                continue
+            rel = m.group(1)
+            target = os.path.normpath(os.path.join(refdir, rel))
+            if os.path.commonpath(
+                [os.path.abspath(refdir), os.path.abspath(target)]
+            ) != os.path.abspath(refdir):
+                continue
+            if not os.path.isdir(os.path.dirname(target)):
+                continue
+            entries.append(rel)
+    return entries
 # The M78 provenance block's three semantic tokens, read decoration-tolerantly
 # (M79-D1: D-023's no-false-positive doctrine is honoured in the parser, not
 # the severity). Leading `>`/`*`/`_`/`#`/backticks are stripped before the
@@ -187,31 +221,65 @@ _D = r"[\s*_`]*"  # inline decoration between a keyword and its value
 # Both fields are searched across the whole block rather than pinned to the
 # heading line: M78 calls the block "prose in the page's own idiom", so a
 # hard-wrapped pointer must still read. The cost is a miss — an Extraction
-# line that happens to say "from" satisfies the source-pointer test — which is
-# the right side of D-023's "a missed weird format beats a false positive".
+# line that happens to name a source satisfies the pointer test — which is the
+# right side of D-023's "a missed weird format beats a false positive".
 _PROV_HEAD = re.compile(r"^[\s>*_`#]*provenance(?![A-Za-z0-9])", re.I)
 _PROV_INGESTED = re.compile(
     rf"(?<![A-Za-z0-9])ingested(?![A-Za-z0-9]){_D}(\d{{4}}-\d{{2}}-\d{{2}})",
     re.I,
 )
-_PROV_SOURCE = re.compile(rf"(?<![A-Za-z0-9])from(?![A-Za-z0-9]){_D}\S", re.I)
+# The source pointer is deliberately permissive (review F4): M78's template
+# sanctions "the URL plus how it was retrieved and by whom" for a non-PDF
+# source, which need not contain the word "from" — and a hard CHECK that
+# fails a template-compliant page is the false positive M79-D1 promised the
+# parser would absorb. This field's job is to catch a block naming no source
+# at all; the ingested date is the crisp field.
+_PROV_SOURCE = re.compile(
+    rf"(?<![A-Za-z0-9])(?:from|via|retrieved|downloaded|accessed|source)"
+    rf"(?![A-Za-z0-9]){_D}\S",
+    re.I,
+)
+_PROV_LOCATOR = re.compile(r"https?://\S|[\w.-]+/[\w.-]")
 
 
 def _provenance_block(path):
-    """The provenance paragraph of a references page: the `**Provenance.**`
-    line through to the next blank line (M78's block is prose in the page's
-    own idiom, not frontmatter, so the paragraph is the unit). Returns None
-    when the page carries no provenance heading at all."""
-    block = []
+    """The provenance prose of a references page. M78 calls the block "prose
+    in the page's own idiom, not frontmatter", so the parser is generous
+    about layout (review F2/F3):
+
+    - EVERY `**Provenance.**`-headed run is collected, not just the first, so
+      a decoy line — a `## Provenance` section heading above the real block —
+      cannot swallow the page's provenance and fail it.
+    - A run is the heading line plus the following non-blank lines; when that
+      yields neither semantic field, the next paragraph is pulled in too, so
+      a label alone on its own line still finds its body below the blank.
+
+    Returns None when the page carries no provenance heading at all."""
     with open(path, encoding="utf-8") as f:
-        for line in f:
-            if block:
-                if not line.strip():
-                    break
-                block.append(line)
-            elif _PROV_HEAD.match(line):
-                block.append(line)
-    return "".join(block) if block else None
+        lines = f.read().splitlines()
+    blocks = []
+    for i, line in enumerate(lines):
+        if not _PROV_HEAD.match(line):
+            continue
+        run, j = [line], i + 1
+        while j < len(lines) and lines[j].strip():
+            run.append(lines[j])
+            j += 1
+        text = "\n".join(run)
+        if not (_PROV_INGESTED.search(text) or _PROV_SOURCE.search(text)):
+            while j < len(lines) and not lines[j].strip():
+                j += 1
+            while j < len(lines) and lines[j].strip():
+                run.append(lines[j])
+                j += 1
+        blocks.append("\n".join(run))
+    return "\n".join(blocks) if blocks else None
+
+
+def _has_source_pointer(block):
+    """A provenance block names a source when it carries an attribution verb
+    with something after it, or a bare URL/path locator (review F4)."""
+    return bool(_PROV_SOURCE.search(block) or _PROV_LOCATOR.search(block))
 
 
 def _reference_pages(refdir):
@@ -253,8 +321,7 @@ def check_references(root):
                 f"cairn/references/ holds {len(pages)} page(s) but no INDEX.md"
             )
         return bad
-    with open(index, encoding="utf-8") as f:
-        listed = [m.group(1) for line in f if (m := _INDEX_LINE.match(line))]
+    listed = _catalog_entries(refdir, index)
     for rel in pages:
         if rel not in listed:
             bad.append(f"cairn/references/{rel} has no INDEX.md line")
@@ -266,7 +333,7 @@ def check_references(root):
             bad.append(
                 f"cairn/references/{rel} provenance names no ingested date"
             )
-        if not _PROV_SOURCE.search(block):
+        if not _has_source_pointer(block):
             bad.append(
                 f"cairn/references/{rel} provenance names no source pointer"
             )
@@ -563,13 +630,6 @@ def check_sizing_advisory(root):
     return out
 
 
-# A work-log entry opens with a `- ` bullet (tracking-rules: one line each,
-# absolute dates). Anything else non-blank in the section is a continuation —
-# except an HTML comment, which is structure carrying no entry text. Comment
-# detection is stateful across lines, not a single-line regex: the milestone
-# template's own owner comment spans three physical lines, so a one-line-only
-# matcher made the shipped template warn three times on every milestone it
-# created — the two halves of M77 contradicting each other (M77 review F1).
 def check_gitignore_deprecations(root):
     """Advisory arm of the scaffold deprecation cycle: a repo carrying a
     superseded .gitignore entry is told its new name without being failed.
@@ -589,6 +649,13 @@ def check_gitignore_deprecations(root):
     return bad
 
 
+# A work-log entry opens with a `- ` bullet (tracking-rules: one line each,
+# absolute dates). Anything else non-blank in the section is a continuation —
+# except an HTML comment, which is structure carrying no entry text. Comment
+# detection is stateful across lines, not a single-line regex: the milestone
+# template's own owner comment spans three physical lines, so a one-line-only
+# matcher made the shipped template warn three times on every milestone it
+# created — the two halves of M77 contradicting each other (M77 review F1).
 _LOG_ENTRY = re.compile(r"^\s*-\s")
 _LOG_PREVIEW = 60
 

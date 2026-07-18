@@ -45,29 +45,29 @@ doctrine or template shape → M78 owns those.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] `check_references` reports a committed `references/` page that carries
+- [x] `check_references` reports a committed `references/` page that carries
       no `**Provenance.**` block, one whose provenance names no ingested date,
       and one whose provenance names no source pointer, at the severity T1
       selects, with the emitted label used verbatim in any prose that names it
       (M64).
-- [ ] The check reads `references/` recursively, so a page in a subdirectory
+- [x] The check reads `references/` recursively, so a page in a subdirectory
       is enforced exactly as a top-level page is — proven by a fixture with a
       nested page that currently passes and must not.
-- [ ] A `references/` directory holding committed pages but no `INDEX.md` no
+- [x] A `references/` directory holding committed pages but no `INDEX.md` no
       longer renders PASS from this check.
-- [ ] The parser tolerates cosmetic decoration on every semantic token it
+- [x] The parser tolerates cosmetic decoration on every semantic token it
       reads — backticks, markdown links, bold — pinned by fixtures for the
       decorated variants, not only the bare format (M57 / D-023).
-- [ ] Every existing page in this repo's own `cairn/references/` passes the
+- [x] Every existing page in this repo's own `cairn/references/` passes the
       new check, or is corrected in place under D-045 with the correction
       marked; no page is grandfathered silently.
-- [ ] `scripts/tests/test_scripts.py`'s shared `Tree.build()` fixture is
+- [x] `scripts/tests/test_scripts.py`'s shared `Tree.build()` fixture is
       extended so the stricter check does not fail unrelated validate tests
       (M24), and the full suite is green.
-- [ ] Verify clean per `cairn/PROFILE.md`: `python3 -m unittest discover` over
+- [x] Verify clean per `cairn/PROFILE.md`: `python3 -m unittest discover` over
       `skills/tests`, `scripts/tests`, and `hooks/tests`, each exit 0, run from
       the repo root and not tail-piped (M56/M65).
-- [ ] `cairn/references/pdf/` is renamed to `cairn/references/sources/`
+- [x] `cairn/references/pdf/` is renamed to `cairn/references/sources/`
       everywhere cairn writes it — scaffold dirs, the required `.gitignore`
       entry, the rulebook file map and dated-observations rule, the ingestion
       recipe, the source-note template, and `cairn-init`'s tree — with no live
@@ -130,6 +130,8 @@ doctrine or template shape → M78 owns those.
 
 - 2026-07-18: created by /milestone-plan. Gaps sourced from the M78-planning audit of `cairn_validate.py:177-202` — the check is a filename census, so an empty page with an INDEX line passes clean.
 - 2026-07-18: /milestone-implement started; branch `m79-references-content-check` cut from main. Baseline verify green (skills 324, scripts 111, hooks 72; each exit 0).
+- 2026-07-18: review — the 2026-07-18 audit line below says "17 committed pages"; the correct count is 16 (17 files in `references/`, of which `INDEX.md` is not a page). Superseded here rather than edited, per IP4. The 16/16 provenance figures and the AC5 conclusion are unaffected.
+- 2026-07-18: review — [O] diff-bug lens returned 5 findings (F1 80, F2 95, F3 92, F4 90, F5 85), all fixed on the branch with regression fixtures; blame-history and prior-PR lenses returned none. Post-fix: skills 324, scripts 128, hooks 72, each exit 0; validate exit 0.
 - 2026-07-18: T6 done — final verify from the repo root, each suite's exit code read explicitly and not tail-piped: skills 324 exit 0, scripts 123 exit 0, hooks 72 exit 0. Status → review.
 - 2026-07-18: T7-T8 done — source shelf renamed `references/pdf/` → `references/sources/` across scaffold, gitignore, rulebook, ingestion recipe, template and cairn-init; recorded as D-047. Legacy entry accepted by `check_scaffold` with a new non-failing `scaffold deprecations` advisory (post-1.0 deprecation cycle); `check_references` skips both shelf names when walking.
 - 2026-07-18: T2-T5 done — `check_references` now walks `references/` recursively, parses M78's provenance block (ingested date + `from` source pointer) decoration-tolerantly, and reports an absent INDEX.md over real pages instead of passing. Word-boundary note: `_` is a word char in Python regex, so `__Provenance__` needs non-alnum lookarounds, not `\b`.
@@ -225,3 +227,73 @@ fails, fix the parser; if the severity is wrong, supersede here.
   registered and its guards still fail under mutation; the M79 edit changed an
   existing assertion's string rather than adding one, so no new registration
   is owed.
+- No CI is configured on this repo (`gh pr checks 77` → "no checks reported"),
+  so the three verify suites are the whole mechanical gate.
+
+### Independent review — three lenses + scorer
+
+**[S] blame-history: no findings.** Traced M57 (`b5a57cd`, the F1/85
+decoration fix), M24 (`707c684`, the `pdf/` gitignore entry) and M60
+(`ab4cdef`, the pending marker). Confirmed the M45 no-op narrowing is the
+planned AC3/T3 supersede with the genuine not-adopted case preserved, the
+decoration capture is strictly more permissive than M57's, `DECISIONS.md` is a
+pure append, and the milestone file's history sections are append-only.
+
+**[S] prior-PR-comments: no findings.** No inline GitHub review comments exist
+on this repo's merged PRs; the lens fell back to the `## Review` sections of
+`milestones/archive/`. Every prior lesson touching these files is complied
+with, not regressed — M57 F1/85, M78 F1/87 and F3/90, M24's shared-fixture
+rule. It also found that the `\b`-vs-`_` regex trap is **already recorded** in
+`LESSONS.md` from M60, so it is not a new lesson to capture at hygiene.
+
+**[O] diff-bug: five findings, all scored ≥80 by the [S] scorer, all fixed on
+the branch.** Nothing scored below threshold, so nothing was excluded. Each
+was reproduced against the shipped code before and after the fix.
+
+- **F1 (80) — orphaned rationale comment.** `check_gitignore_deprecations` was
+  inserted between the M77-review-F1 comment explaining `_LOG_ENTRY` and
+  `_LOG_ENTRY` itself, misdocumenting one function and stripping the other's
+  explanation. *Fixed:* function relocated above the comment block.
+- **F2 (95) — decoy heading swallowed the block.** `_provenance_block`
+  committed to the first heading-like line with no fallback, so a `## Provenance`
+  section heading above a textbook-correct block hard-FAILed the page.
+  *Fixed:* every provenance-headed run is collected, not just the first.
+- **F3 (92) — label on its own line lost its body.** The run ended at the
+  first blank line, so `**Provenance.**\n\nIngested … from …` failed on both
+  fields. *Fixed:* a run carrying neither field pulls in the next paragraph.
+- **F4 (90) — the literal token `from` was required.** M78's template
+  sanctions "the URL plus how it was retrieved and by whom" for a non-PDF
+  source, so a template-compliant page hard-FAILed. The AC4 fixtures varied
+  decoration only, never phrasing, so they passed vacuously here. *Fixed:*
+  the pointer test accepts an attribution verb (from/via/retrieved/downloaded/
+  accessed/source) or a bare URL/path locator, with a new fixture varying
+  phrasing.
+- **F5 (85) — widened INDEX capture admitted non-entries.** A "see also"
+  prose bullet beginning with a path became a phantom catalog entry and a
+  spurious FAIL; worse, a `..` path was joined unnormalized, so a real file
+  *outside* `cairn/references/` silently satisfied a catalog entry (verified:
+  the check returned PASS). *Fixed:* a new `_catalog_entries` drops any entry
+  resolving outside the references tree or naming a directory that does not
+  exist under it.
+
+F2, F3 and F4 are the false-positive class M79-D1 explicitly promised to
+absorb in the parser rather than the severity — the decision's own remedy
+clause ("if a semantically sound page ever fails, fix the parser") is what was
+applied, so the hard-CHECK severity stands unchanged.
+
+Post-fix re-verify: `skills/tests` 324 exit 0 · `scripts/tests` 128 exit 0 ·
+`hooks/tests` 72 exit 0 · `cairn_validate` exit 0.
+
+### Note for the approval gate — AC8's first clause
+
+AC8 requires "no live `references/pdf` string left in the plugin outside
+history", and the deprecation path the same criterion mandates necessarily
+keeps that string in code: `cairn_scripts.DEPRECATED_GITIGNORE`,
+`cairn_validate._reference_pages`'s shelf-skip list, and the deprecation
+test's docstring. None is a history file. Both independent lenses that
+examined the question read the clause as satisfied ("the only surviving
+occurrences are … test fixtures that intentionally exercise the legacy
+string"); the criterion was written at the amendment gate before the
+deprecation path was designed, which is what created the tension. Recorded
+rather than resolved review-side — the criterion's wording is plan-owned and
+was put to the user at the merge gate.
