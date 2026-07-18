@@ -161,3 +161,63 @@ where it acts — `_last_verified`'s docstring — and the rulebook's
 
 ## Review
 <!-- owner: review · exclusive; EXEMPT from the 150-line cap (M55). -->
+
+**Reviewed 2026-07-18 · PR #79 · branch `m81-references-staleness-advisory`
+(8 commits, 8 files, +578/−14).** `main` was in sync with origin and had not
+moved under the branch; no merge was needed before gathering evidence.
+
+### Acceptance-criteria evidence (fresh, by command)
+
+- **AC1 — registered in `ADVISORIES`, never `CHECKS`; exit unchanged; both
+  flags fire.** Introspected the shipped module: `references staleness` is in
+  `ADVISORIES` = True, in `CHECKS` = False, `_STALE_DAYS` = 180. Run over this
+  repo it emits 1 WARN and exits **0** — the advisory fires without moving the
+  exit code. Both flags proven by fixture:
+  `test_never_verified_page_is_flagged` (flag i) and
+  `test_long_unverified_page_is_flagged` (flag ii), with
+  `test_recently_verified_page_is_not_flagged` and
+  `test_page_just_inside_the_threshold_is_not_flagged` proving a fresh page
+  stays quiet. 15 tests in `TestReferencesStaleness`, exit 0.
+- **AC2 — axes varied independently; no sanctioned page falsely flagged.**
+  `test_decoration_layout_and_phrasing_vary_independently` crosses 4
+  decorations × 3 layouts × 3 phrasings = **36 cells** (verified non-vacuous:
+  the 12 deco×layout combinations render 12 *distinct* pages). Includes the
+  label-alone layout and the decoy `## Provenance` heading, the latter with
+  both halves — it must not swallow a real block
+  (`test_decoy_provenance_heading_does_not_swallow_the_block`) and must not
+  manufacture one (`test_decoy_heading_over_a_fresh_page_stays_quiet`).
+  `test_no_shipped_template_status_is_falsely_flagged` reads the **real**
+  shipped templates (M77 pairing), extracts every `|`-separated sanctioned
+  alternative, and asserts none is falsely flagged — with a floor assert so a
+  failed parse cannot make the subTests vacuous.
+- **AC3 — doctrine stated, guard-locked, mutation-registered.** The
+  "Re-verification." paragraph is in `tracking-rules.md` "References pages"; 6
+  guards in `TestReVerification` pass. Mutation coverage proven **directly**,
+  not by eye: blanking each registered anchor makes its guard fail (both
+  returned True from `mutation_engine.guard_fails_when_blanked`). Each anchor
+  verified to sit on exactly one physical line.
+- **AC4 — WARN-tier severity recorded milestone-locally.** M81-D1 (`:141`)
+  argues the severity against D-029 and M79-D1's structural-vs-judgment test
+  and states why it is milestone-local; M81-D2 (`:152`) records the three
+  gate-settled parse decisions.
+- **AC5 — first run recorded, every flagged page dispositioned.** Re-run at
+  review: 16 pages → **13 ok, 2 exempt, 1 flagged**, findings list containing
+  exactly `task-master.md`. Recorded in "First run over this repo" (`:123`)
+  with a disposition line per page; the `task-master.md` ROADMAP candidate row
+  is present (1 match).
+- **AC6 — verify clean, each exit code read individually, never through a
+  pipe.** skills 343 tests exit 0 · scripts 143 exit 0 · hooks 72 exit 0 ·
+  `cairn_validate` exit 0. Re-run a second time at gate time from the repo
+  root after a stray `cd` was caught mid-review (LESSONS `:23` live again).
+
+### Consistency gate
+
+Universal cairn-file checks: the plugin's `cairn_validate` exits **0** — 15
+PASS, 4 OK, 1 WARN (`references staleness`, the milestone's own advisory
+reporting `task-master.md`). `DESIGN.md` is untouched by the diff, so no
+principle changed → `cairn_impact` correctly skipped. Toolchain checks: the
+`generic` profile's `consistency-gate` slot names none — a clean no-op.
+
+**CI:** this repo configures no workflows (`.github/workflows/` absent), so
+`gh pr checks` reports none and the local suites above are the verification of
+record. Noted rather than waited on.
