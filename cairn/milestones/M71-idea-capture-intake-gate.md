@@ -38,26 +38,26 @@ snapshot at process start (M60); this milestone's evidence is fixture-level.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] `skills/shared/tracking-rules.md`'s Intake paragraph states a
+- [x] `skills/shared/tracking-rules.md`'s Intake paragraph states a
       channel-agnostic rule: an idea surfaced through any out-of-band capture
       channel also lands as a ROADMAP candidate row (search-first applies),
       and such a capture is never the record of record. Evidence: the rule
       text quoted from the file.
-- [ ] `hooks/idea_guard.py`, given a chip-tool PreToolUse payload with a cwd
+- [x] `hooks/idea_guard.py`, given a chip-tool PreToolUse payload with a cwd
       inside a cairn repo, emits `hookSpecificOutput.additionalContext` naming
       the candidate-row requirement and emits **no** `permissionDecision`.
       Evidence: a passing hook test asserting both.
-- [ ] The hook is fail-permissive: exit 0 with empty stdout/stderr for a
+- [x] The hook is fail-permissive: exit 0 with empty stdout/stderr for a
       non-cairn cwd, a non-matching tool name, and garbage stdin — proven by
       `idea_guard.py` entries in `TestNonCairnNoOp`'s two payload collections
       in `hooks/tests/test_hooks.py`.
-- [ ] `hooks/hooks.json` registers `idea_guard.py` under PreToolUse with the
+- [x] `hooks/hooks.json` registers `idea_guard.py` under PreToolUse with the
       matcher T1 establishes and the `python3 … || py -3 …` + `timeout`
       envelope, asserted by a new test in `TestHooksRegistration`.
-- [ ] A prose guard locks the new rulebook rule, is registered in
+- [x] A prose guard locks the new rulebook rule, is registered in
       `skills/tests/test_mutation_harness.py`, and the completeness meta-test
       passes (the guard fails when its block is blanked).
-- [ ] `verify` clean: `python3 -m unittest discover` green for `scripts/tests`,
+- [x] `verify` clean: `python3 -m unittest discover` green for `scripts/tests`,
       `skills/tests`, and `hooks/tests`, each run from the repo root with its
       exit code read directly (M56/M65).
 
@@ -118,3 +118,57 @@ snapshot at process start (M60); this milestone's evidence is fixture-level.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55):
      only the plan-owned body above counts; evidence never scrambles it. -->
+
+**Evidence (2026-07-18, fresh runs, exit codes read directly — no pipes):**
+
+- AC1 — rule present. `sed` extract of the "Out-of-band idea capture" block in
+  `skills/shared/tracking-rules.md` shows the channel-agnostic wording, the
+  paired-candidate-row requirement, and the "channel stays usable" clause.
+- AC2 — emission shape. `TestIdeaGuard.test_nudges_on_chip_creation_in_cairn_repo`
+  passes: `hookEventName` PreToolUse, `additionalContext` names `candidate` +
+  `cairn/ROADMAP.md`, and `assertNotIn("permissionDecision")` holds.
+  `test_fires_regardless_of_mcp_server_name` proves the suffix match.
+- AC3 — fail-permissive. `TestNonCairnNoOp.test_every_hook_is_silent_and_permissive`
+  and `test_garbage_stdin_is_permissive` both pass with `idea_guard.py` in their
+  collections; `test_silent_on_non_chip_tool` covers 3 non-matching tool names.
+- AC4 — registration. `test_idea_guard_registered_with_a_regex_mcp_matcher` passes
+  (single entry, `spawn_task` suffix, matcher retains a regex metacharacter); the
+  pre-existing envelope + `py -3` fallback tests iterate it automatically.
+- AC5 — mutation proof. `TestRegisteredGuardsFailWhenBlanked` passes over the 3 new
+  registrations; `TestRegistryCompleteness` passes (new guard file registered);
+  `test_idea_intake_gate` 5/5.
+- AC6 — verify clean. scripts 96, skills 234, hooks 60 — exit 0 each, re-run after
+  the F1/F2 fixes.
+
+**Consistency gate:** `cairn_validate` exit 0, all 15 CHECKS PASS + 2 advisories OK.
+`cairn_impact` skipped — no IP/GP definition changed (the DESIGN diff reflows a GP4
+*citation* in the hooks inventory). Profile `generic`: `consistency-gate` slot
+declares **none**, so the toolchain half is a clean no-op.
+
+**Independent fan-out (3 lenses + scorer):** [O] diff-bug — 3 findings; [S] blame —
+no findings, change historically consistent with the M07→M19/D-017→M60 hook family
+and D-042's four choices; [S] prior-PR — "no prior-PR evidence" (expected no-op,
+cairn PRs carry no inline comments).
+
+**Actioned (score ≥80):**
+
+- **F1 (87) — `tracking-rules.md`, the new rule's justification clause.** "since
+  nothing outside `cairn/` is read at plan time" overclaimed and contradicted the
+  Intake sentence 6 lines above (issues/PRs are inboxes, read at intake), and
+  `/milestone-plan` step 2 explicitly reads code and DECISIONS. **Fixed:** narrowed
+  to "because nothing outside `cairn/` is authoritative tracking state — an inbox
+  (issues, PRs) or a chip feeds the ROADMAP, it never substitutes for it." Suites
+  re-run after the reflow; no mutation-registered block was split (M59 trap).
+
+**Below threshold — logged, not actioned (IP3: surfaced, never silently dropped):**
+
+- **F2 (55)** — `test_positioning_guard.py`'s `HOOKS` tuple is hand-maintained and
+  checked only against DESIGN's prose, not derived from `hooks/`, so a future hook
+  can leave DESIGN's inventory stale. Scored as a known, accepted trade-off. The
+  *design* was not changed; the misleading clause in the comment introduced by this
+  diff was corrected to state the limitation plainly (disclosed, not actioned).
+- **F3 (63)** — the T1 matcher finding (MCP names are matchable; a word-chars-only
+  matcher is an exact-string compare) lives only in the work log, which compresses
+  at archive, while `references/claude-code-hooks.md` is its durable home per the
+  M19/D-017 precedent. Arguable: the plan's T1 called for exactly one work-log line.
+  → candidate row at post-merge hygiene.
