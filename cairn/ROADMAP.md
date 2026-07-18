@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-18 (M75 done + archived; M70 pruned under terminal-row retention; M71-F3 and M74-F5 candidates absorbed into M75; durable-record-correction candidate added from M75 review G4)_
+_Last hygiene check: 2026-07-18 (M76 done + archived; M72 pruned under terminal-row retention; durable-record-correction candidate graduated into M76; work-log-vs-cap candidate added from M76 review)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,18 +12,17 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M72 | Collaboration boundary — what survives a merge outside cairn, plus PR-bound approval (D-043) | done | — | high | milestones/archive/M72-collaboration-boundary.md |
 | M73 | External-PR intake — /hotfix adopts a PR it did not author | done | M72 | high | milestones/archive/M73-external-pr-intake.md |
 | M74 | Issue triage — /milestone enumerates untriaged inboxes into candidate rows | done | M73 | normal | milestones/archive/M74-issue-triage.md |
 | M71 | Idea-capture intake gate — out-of-band ideas also land as candidates (D-042) | done | — | high | milestones/archive/M71-idea-capture-intake-gate.md |
 | M75 | Record consistency — the `leave` disposition and MCP-matcher semantics (D-044) | done | — | normal | milestones/archive/M75-record-consistency.md |
-| M76 | Record correction — history vs. current knowledge, and the correct-in-place protocol (D-045) | review | — | normal | milestones/M76-record-correction.md |
+| M76 | Record correction — history vs. current knowledge, and the correct-in-place protocol (D-045) | done | — | normal | milestones/archive/M76-record-correction.md |
 
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
-- Correcting a durable record later proven false: no rule says what to do with a `LESSONS.md` line that turns out to be factually wrong — D-015 and the file-map row call the file append-only, yet the 50-line cap already deletes lines, so it was never append-only in the DECISIONS sense; M75 corrected `LESSONS.md:41` in place (marked `(M71, corrected M75)`) because appending would leave the wrong rule readable to every plan-time harvest, and review accepted that as the lesser evil while noting no rule sanctions it; also sweep the same wrong matcher rule still sitting in `hooks/tests/test_hooks.py:912` (M75 review G2, 78) — swept: no existing row, D-entry, or archive file covers it — added 2026-07-18 — M75 review G4 (91) + G2 (78) — planned as M76, graduates at its post-merge hygiene
+- Work-log growth vs. the milestone cap: a work log is history under D-045 (never edited) yet counts against the 150-line plan-owned cap and grows every review trip, so when it becomes the heaviest section the sanctioned "compress the heaviest section" remedy collides with IP4 — M76 escaped by reflowing entries to the one-physical-line format the rulebook already mandates (no entry lost), but that escape is finite; options are exempting the work log like `## Review` (D-030), or capping entries mechanically; swept: adjacent to the budget-first-drafting row below (that one is about first drafts landing under the cap; this is about monotonic growth of an un-editable section) — cross-referenced, not duplicated — added 2026-07-18 — M76 review
 - Concurrent-cairn-operator hardening: if two people ever run cairn in the same repo at once the tracking files race — milestone IDs and D-numbers are model-picked with no allocator, duplicate D-numbers auto-merge and validate GREEN (`cairn_validate.py:500-506` uses a `set`), `/milestone-plan` commits to the default branch with no fetch/pull at any step, and `check_single_in_progress` (`cairn_validate.py:61-64`) is a hard FAIL two operators trip by construction; cheapest standalone piece is a `check_d_uniqueness`; swept: no existing row or D-entry covers it — promote if a second cairn operator actually appears — added 2026-07-18 — M72 Out (D-043)
 - Budget-first drafting (cap prevention): up-front per-section line budgets in the milestone template/rulebook so first drafts land under the 150-line cap by construction, rather than compressing after — reassess once M69's diagnostic + single-pass discipline is in use and we can see whether the cure suffices — added 2026-07-17 — M69 Out
 - Content-gated memory guard: make M19's memory-boundary hook inspect the write and fire only on durable-state signals (decisions, conventions, project facts), staying silent on pure per-user prefs; promote only if the unconditional soft nudge proves too noisy — added 2026-07-11 — M19 Out
