@@ -47,7 +47,7 @@ what IP3 forbids. Implement inherits the answer, not the question.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1 — `tracking-rules.md`'s Intake paragraph names `leave` as a legal
+- [x] AC1 — `tracking-rules.md`'s Intake paragraph names `leave` as a legal
       fourth disposition with its narrowing (noise, duplicates, already
       cross-referenced) stated on one physical line; the pre-M75 three-way
       sentence no longer stands as the whole enumeration.
@@ -59,7 +59,7 @@ what IP3 forbids. Implement inherits the answer, not the question.
       contradiction, and §3's four dispositions are unchanged by this
       milestone (`git diff` over `skills/milestone/SKILL.md` touches no
       disposition text).
-- [ ] AC4 — *(amended 2026-07-18 at the implement gate; the original wording
+- [x] AC4 — *(amended 2026-07-18 at the implement gate; the original wording
       mandated a factually wrong rule — M75 review F1)*
       `cairn/references/claude-code-hooks.md`'s "Matchers & execution"
       section states matcher dispatch as implemented: `*`/empty matches every
@@ -130,6 +130,8 @@ what IP3 forbids. Implement inherits the answer, not the question.
 - 2026-07-18: AC4 amended at the implement gate (user-approved): its original wording mandated the wrong matcher rule, so correcting the page would have failed the criterion as written. T5 added as a discovered task.
 - 2026-07-18: T5 — F1 rewritten from the shipped matcher `GFy` (literal path = split on `|`/`,` + per-alternative exact match; regex path unanchored); F2 restored D-044's "in cairn" locus; F4 comment now states what the assert does NOT catch; LESSONS.md:41 corrected in place. Guard re-proven against BOTH locus removal and label swap. Ragged wrap left alone deliberately: reflowing would split M73's guarded `/milestone-plan` phrase (M59/M64).
 - 2026-07-18: all F1/F2/F4 fixes in; verify clean 96/289/72 + validate 0; status → review (second trip).
+- 2026-07-18: review trip 2 — all six ACs verified fresh by command; F1/F2/F4 fixes confirmed landed; matcher rule independently re-verified against binary 2.1.207 (`GFy`).
+- 2026-07-18: review trip 2 fan-out — G1 (93) fixed in review (the unanchored-regex worked example used a matcher that never reaches the regex path); G4 (91) accepted with deviation logged (LESSONS.md:41 corrected in place, not appended — no rule sanctions it, reverting would restore a wrong record); G2 (78) + G3 (58) + F3 (40) logged sub-threshold. Candidate row added for the durable-record-correction rulebook gap.
 - 2026-07-18: review GATE FAILED → in-progress. F1: the hooks-reference matcher rule is factually wrong (literal path splits on `|`/`,` and compares each part; verified in binary 2.1.207) and AC4's own wording mandates the error — needs a gated AC4 amendment. F2: `tracking-rules.md:202` dropped D-044's "in cairn" locus. F4: a guard comment overclaims coverage `assertIn` does not give. AC1/AC4 unticked.
 
 ## Decisions
@@ -144,37 +146,41 @@ what IP3 forbids. Implement inherits the answer, not the question.
 **PR:** https://github.com/jmgirard/cairn/pull/73 · reviewed 2026-07-18 ·
 no CI on this repo (`gh pr checks 73` → "no checks reported", exit 0; M16).
 
-### Criterion evidence (fresh, by command)
+### Criterion evidence (trip 2, fresh, by command — 2026-07-18)
 
 - **AC1** — `tracking-rules.md:202` carries the narrowing on one physical
-  line; the surrounding paragraph (`:199-207`) shows the pre-M75 three-way
-  sentence now continues into the fourth disposition rather than standing
-  alone.
+  line, now with D-044's "in cairn" locus restored (trip-1 F2):
+  "`leave` is legal only for noise, duplicates, or items already
+  cross-referenced in cairn". The surrounding paragraph (`:199-207`) shows
+  the pre-M75 three-way sentence continuing into the fourth disposition.
 - **AC2** — `DECISIONS.md:1014` opens D-044; the entry states the IP3
   reading (silent-drop vs. reason-stated), the narrowing, and both rejected
   alternatives (drop `leave` from the skill; legitimize it unnarrowed).
 - **AC3** — `git diff --stat main..HEAD -- skills/milestone/SKILL.md` is
   empty: no disposition text touched. The two texts read together —
-  rulebook: "`leave` is legal only for noise, duplicates, or already-covered
-  items — no row, no action, reason stated, never anything genuinely new";
-  skill `SKILL.md:129`: "**leave** — no row, no action, with the reason
-  stated." The skill states the mechanics, the rulebook adds the eligibility
-  bar; no contradiction.
-- **AC4** — `claude-code-hooks.md:101-108` states the exact-vs-regex rule for
-  MCP names, that `_` is a word char, and the metacharacter remedy. Exemplar
-  verified live: `hooks.json:67` = `"mcp__.*__spawn_task"`,
-  `idea_guard.py:28` = `^mcp__.+__spawn_task$` — same suffix shape as
-  claimed. `INDEX.md:13` amended to record the non-official-docs provenance.
-- **AC5** — two asserts at `test_external_pr_intake.py:144,152`, both
+  rulebook (above); skill `SKILL.md:129`: "**leave** — no row, no action,
+  with the reason stated." The skill states the mechanics, the rulebook adds
+  the eligibility bar; no contradiction.
+- **AC4** — `claude-code-hooks.md:101-125` states all three dispatch paths as
+  implemented: `*`/empty matches all; the `[a-zA-Z0-9_|]` / `[a-zA-Z0-9_|, -]`
+  literal path splitting on `|`/`,` with per-alternative exact match; any
+  other character to an unanchored `new RegExp`, unparseable matching
+  nothing. MCP consequence stated (literal name binds one server; `|` does
+  not buy regex; `mcp__.*__spawn_task` does). **Independently verified** by
+  the diff-bug lens against the shipped binary at
+  `~/.local/share/claude/versions/2.1.207` (function `GFy`) — the extracted
+  source matches the page clause for clause. Exemplar live: `hooks.json:67` =
+  `"mcp__.*__spawn_task"`, `idea_guard.py:28` = `^mcp__.+__spawn_task$`.
+- **AC5** — two asserts at `test_external_pr_intake.py:144,157`, both
   label-inclusive; both anchors occur exactly once in `tracking-rules.md`
-  (M58). Falsifiability proven beyond blanking: swapping the label
-  `leave`→`ignore` turned the suite red (1 failure + 1 harness hard-error),
-  which is the M74/F3 mode blanking alone cannot reach.
+  (M58, re-counted this trip). Falsifiability proven beyond blanking: the
+  label swap `leave`→`ignore` turns the suite red, the M74/F3 mode blanking
+  alone cannot reach.
 - **AC6** — scripts 96 / skills 289 / hooks 72 all `OK`; `cairn_validate`
   exit 0, 17 checks. Exit codes captured directly, never through a pipe
-  (M56/M65).
+  (M56/M65). Re-run after the trip-2 G1 fix: still green.
 
-### Fan-out findings (2026-07-18) — GATE FAILED, returned to implement
+### Fan-out findings — trip 1 (2026-07-18) — GATE FAILED, returned to implement
 
 Three lenses. Blame-history: 0 findings. Prior-PR-comments: 0 findings
 (no inline PR comments exist on #69–#72; it read the archive files instead).
@@ -211,16 +217,61 @@ Diff-bug [O]: 4 findings. Scorer [S] gave 35 / 82 / 40 / 78.
   phrasing explicitly scopes the numbering to §3, so this is largely
   readability — but the missing issue-route remains true.
 
-**Gate disposition.** AC4 is worded to require the page state the *wrong*
-rule ("compared as an exact string"). Correcting the prose makes AC4 fail as
-written, and review never reinterprets a criterion — so M75 returns to
-`in-progress` for a gated AC4 amendment plus the F1/F2/F4 fixes, then
-re-review. First trip back (thrash rule: not triggered).
+**Trip-1 gate disposition.** AC4 was worded to require the page state the
+*wrong* rule ("compared as an exact string"). Correcting the prose would have
+failed AC4 as written, and review never reinterprets a criterion — so M75
+returned to `in-progress` for a gated AC4 amendment plus the F1/F2/F4 fixes.
+All three fixes verified landed this trip.
+
+### Fan-out findings — trip 2 (2026-07-18)
+
+Three lenses, distinct evidence. Diff-bug [O]: 3 findings (and an independent
+binary verification of the corrected matcher rule — it holds).
+Blame-history [S]: 1 finding. Prior-PR-comments [S]: "no prior-PR evidence" —
+clean no-op, zero findings. Scorer [S] gave 93 / 78 / 58 / 91.
+
+**Actioned:**
+
+- **G1 (93) — fixed now.** `claude-code-hooks.md:121-122`: the worked example
+  for the unanchored-regex warning used a matcher that can never reach the
+  regex path — "a bare `Edit` as regex would also hit `NotebookEdit` and
+  `MultiEdit`", but bare `Edit` is pure `[a-zA-Z0-9_|]` and takes the literal
+  path, exact-matching only `Edit`. A reader of the repo's matcher oracle
+  would infer the inverse of the rule stated three bullets above. Introduced
+  by T5 — the very commit meant to retire this class of error. Rewritten to
+  `Edit.*` (a real metacharacter), which does hit both, with the bare-`Edit`
+  contrast stated explicitly.
+- **G4 (91) — accepted with the deviation logged; rulebook gap spun off.**
+  `LESSONS.md:41`: T5 rewrote the M71 matcher lesson *in place* rather than
+  appending a superseding line, and D-015 / the file-map row call LESSONS
+  append-only. Reverting was rejected: it would restore a factually wrong
+  durable record that every future `/milestone-plan` harvest reads, which is
+  the worse failure. The edit is marked in-line (`(M71, corrected M75)`) and
+  git history holds the original, so nothing is destroyed. The real gap is
+  doctrinal — LESSONS is already prunable at the 50-line cap, so it was never
+  append-only in the DECISIONS sense, and no rule says what to do with a
+  lesson later proven false. Spun off as a candidate row (swept: no existing
+  row, D-entry, or archive file covers it).
+
+**Logged, sub-threshold, not actioned:**
+
+- **G2 (78).** `hooks/tests/test_hooks.py:912` still carries the pre-M75
+  wrong rule in a comment ("compared as an EXACT string"). Real and
+  on-theme — T5 said "everywhere it is now known wrong" — but the file sits
+  outside M75's Scope In, which is why it scored just under. Folded into the
+  spun-off candidate row.
+- **G3 (58).** `references/INDEX.md:13` glosses the page as "the M71
+  MCP-matcher exact-vs-regex finding". Arguable: the literal/regex dichotomy
+  survives T5's fix, only the literal side's mechanics changed, so the gloss
+  is coarse rather than wrong.
+- **F3 (40, trip 1, unchanged).** "the fourth disposition" counts §3's list,
+  not the rulebook's, and the rulebook never names `/milestone-plan` as an
+  *issue* route. Phrasing scopes the numbering to §3 explicitly.
 
 ### Consistency gate
 
-`cairn_validate` exit 0 (all checks pass, incl. `coverage complete`).
-Profile is `generic`, whose `consistency-gate` slot names no toolchain
-checks — that half is a clean no-op. `cairn_impact --changed`: "no changed
-principles" — M75 reasons about IP3 but changes no principle text, so no
-reconciliation was owed.
+`cairn_validate` exit 0 — 17 checks, all pass, incl. `coverage complete` and
+`scaffold present`. Profile is `generic`, whose `consistency-gate` slot names
+no toolchain checks — that half is a clean no-op. `cairn_impact --changed`:
+"no changed principles in cairn/DESIGN.md" — M75 reasons about IP3 but
+changes no principle text, so no reconciliation was owed.

@@ -118,7 +118,8 @@ PostToolUse, UserPromptSubmit, ConfigChange.
   Code ships its own warning for the narrower case of a matcher like
   `mcp__server` with no second `__`: "matches no tool (it is compared as an
   exact string). To match all tools from this server, use `mcp__server__.*`."
-  Because the regex path is unanchored, keep patterns tight — a bare `Edit`
-  as regex would also hit `NotebookEdit` and `MultiEdit`. Keep the hook's own
+  Because the regex path is unanchored, keep patterns tight — `Edit.*` (a
+  metacharacter, so genuinely regex) also hits `NotebookEdit` and `MultiEdit`;
+  a bare `Edit` does not, because it never leaves the literal path. Keep the hook's own
   tool-name regex the same suffix shape as its matcher so the two agree
   (`hooks.json:67` + `idea_guard.py:28` are the live exemplar).
