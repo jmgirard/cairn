@@ -154,7 +154,7 @@ class Tree:
         (cairn / "ROADMAP.md").write_text(self.roadmap_text())
         # §1 scaffold pieces the drift check (M24) requires — a valid cairn
         # repo carries these, so the shared fixture must too. Empty scaffold
-        # dirs (reviews/, references/pdf/) are intentionally left uncreated:
+        # dirs (reviews/, references/sources/) are intentionally left uncreated:
         # git drops empty dirs, and the check tolerates their absence.
         (cairn / "DESIGN.md").write_text("# Design\n\nx\n")
         (cairn / "DECISIONS.md").write_text("# Decisions\n\nx\n")
@@ -162,7 +162,7 @@ class Tree:
         (cairn / "references").mkdir(parents=True, exist_ok=True)
         (cairn / "references" / "INDEX.md").write_text("# Index\n")
         (self.root / ".gitignore").write_text(
-            "cairn/references/pdf/\ncairn/.merge-approved\n"
+            "cairn/references/sources/\ncairn/.merge-approved\n"
             "cairn/.merge-approved.pending\n"
         )
         for rel, body in self.files.items():
@@ -281,16 +281,32 @@ class TestValidateClean(ScriptCase):
         self.assertIn("PASS  coverage complete", proc.stdout)
 
 
+def page(body="# note\n", prov=None):
+    """A committed references page carrying M78's provenance block. The
+    default block is the minimum the M79 content check accepts: a
+    `**Provenance.**` heading naming an ingested date and a `from` source
+    pointer. Tests that exercise a missing or malformed field pass `prov`."""
+    if prov is None:
+        prov = (
+            "**Provenance.** Ingested 2026-07-18 by M79 from "
+            "`cairn/references/sources/note.pdf` (gitignored).\n"
+            "Pagination: —.\nExtraction: unverified — first pass.\n"
+        )
+    return f"{body}\n{prov}\n"
+
+
 class TestReferencesCheck(ScriptCase):
-    """M57: the references index<->disk check — every committed top-level
-    references note has an INDEX.md line and every INDEX line's target exists
-    (the references sibling of roadmap<->disk orphans). Dedicated fixtures on
-    top of the base tree (M34 pattern); the base Tree.build() ships an empty
-    INDEX + no notes, which must stay valid for this check."""
+    """M57: the references index<->disk check — every committed references
+    page has an INDEX.md line and every INDEX line's target exists (the
+    references sibling of roadmap<->disk orphans). M79 gave it content teeth
+    (provenance: ingested date + source pointer), made the walk recursive, and
+    ended the absent-INDEX free pass. Dedicated fixtures on top of the base
+    tree (M34 pattern); the base Tree.build() ships an empty INDEX + no pages,
+    which must stay valid for this check."""
 
     def test_orphan_note_fails(self):
         root = self.tree.build()
-        (root / "cairn" / "references" / "stray.md").write_text("# stray\n")
+        (root / "cairn" / "references" / "stray.md").write_text(page())
         proc = run("cairn_validate.py", root)
         self.assertEqual(proc.returncode, 1, proc.stdout)
         self.assertIn("FAIL  references index<->disk", proc.stdout)
@@ -311,7 +327,7 @@ class TestReferencesCheck(ScriptCase):
 
     def test_agreement_passes(self):
         root = self.tree.build()
-        (root / "cairn" / "references" / "notes.md").write_text("# notes\n")
+        (root / "cairn" / "references" / "notes.md").write_text(page())
         (root / "cairn" / "references" / "INDEX.md").write_text(
             "# Index\n\n- notes.md — a real note\n"
         )
@@ -324,8 +340,8 @@ class TestReferencesCheck(ScriptCase):
         # markdown-linked filename must not trip the hard CHECK (D-023 — no
         # false positive on formatting alone).
         root = self.tree.build()
-        (root / "cairn" / "references" / "tick.md").write_text("# t\n")
-        (root / "cairn" / "references" / "link.md").write_text("# l\n")
+        (root / "cairn" / "references" / "tick.md").write_text(page())
+        (root / "cairn" / "references" / "link.md").write_text(page())
         (root / "cairn" / "references" / "INDEX.md").write_text(
             "# Index\n\n- `tick.md` — backticked entry\n"
             "- [link.md](link.md) — linked entry\n"
@@ -334,9 +350,194 @@ class TestReferencesCheck(ScriptCase):
         self.assertEqual(proc.returncode, 0, proc.stdout)
         self.assertIn("PASS  references index<->disk", proc.stdout)
 
-    def test_absent_index_no_ops(self):
-        # Independence: a missing INDEX.md is scaffold-present's failure; the
-        # references check itself stays PASS (M45 validate-if-present pattern).
+    # --- M79: content checks over M78's provenance shape -------------------
+
+    def _one_page(self, prov):
+        root = self.tree.build()
+        (root / "cairn" / "references" / "notes.md").write_text(
+            page(prov=prov)
+        )
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- notes.md — a real note\n"
+        )
+        return run("cairn_validate.py", root)
+
+    def test_missing_provenance_block_fails(self):
+        # The failure M79 exists for: an INDEX line over an empty page.
+        proc = self._one_page("")
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("FAIL  references index<->disk", proc.stdout)
+        self.assertIn(
+            "cairn/references/notes.md has no provenance block", proc.stdout
+        )
+
+    def test_missing_ingested_date_fails(self):
+        proc = self._one_page(
+            "**Provenance.** Ingested by M79 from `sources/note.pdf`.\n"
+        )
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(
+            "cairn/references/notes.md provenance names no ingested date",
+            proc.stdout,
+        )
+
+    def test_missing_source_pointer_fails(self):
+        proc = self._one_page(
+            "**Provenance.** Ingested 2026-07-18 by M79.\n"
+        )
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(
+            "cairn/references/notes.md provenance names no source pointer",
+            proc.stdout,
+        )
+
+    def test_decorated_provenance_variants_pass(self):
+        # D-023 / M79-D1: the no-false-positive doctrine is honoured in the
+        # parser, not the severity — every semantic token reads through
+        # cosmetic decoration, so these bare/underscored/backticked forms
+        # must all pass rather than fail on formatting alone.
+        for prov in (
+            "**Provenance.** Ingested 2026-07-18 by M79 from `a/b.pdf`.\n",
+            "__Provenance__ ingested 2026-07-18 by M79 from https://x.test\n",
+            "Provenance. Ingested **2026-07-18** by M79 from "
+            "[a source](https://x.test)\n",
+            "> **Provenance.** ingested `2026-07-18` from live probing in "
+            "Claude Desktop\n",
+        ):
+            with self.subTest(prov=prov):
+                proc = self._one_page(prov)
+                self.assertEqual(proc.returncode, 0, proc.stdout)
+                self.assertIn(
+                    "PASS  references index<->disk", proc.stdout
+                )
+
+    # --- M79 review findings: parser false positives (F2-F5) --------------
+
+    def test_decoy_provenance_heading_does_not_swallow_the_block(self):
+        # F2/95: `_provenance_block` committed to the first heading-like line,
+        # so a `## Provenance` section heading above the real block hard-FAILed
+        # a textbook-correct page. Every headed run is collected now.
+        proc = self._one_page(
+            "## Provenance\n\n"
+            "**Provenance.** Ingested 2026-07-18 by M79 from `x.pdf`.\n"
+        )
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  references index<->disk", proc.stdout)
+
+    def test_label_on_its_own_line_finds_its_body(self):
+        # F3/92: the run ended at the first blank line, so a label alone on a
+        # line lost the paragraph carrying every semantic token.
+        proc = self._one_page(
+            "**Provenance.**\n\nIngested 2026-07-18 by M79 from `x.pdf`.\n"
+        )
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  references index<->disk", proc.stdout)
+
+    def test_non_from_source_phrasings_pass(self):
+        # F4/90: requiring the literal token "from" failed a page whose
+        # pointer is phrased the way M78's template sanctions for a non-PDF
+        # source ("the URL plus how it was retrieved and by whom").
+        for prov in (
+            "**Provenance.** Ingested 2026-07-18 by M79; retrieved via "
+            "https://x.test on 2026-07-18.\n",
+            "**Provenance.** Ingested 2026-07-18 by M79. Source: "
+            "`cairn/references/sources/x.pdf`.\n",
+            "**Provenance.** Ingested 2026-07-18 by M79, downloaded by Jeff "
+            "from the publisher.\n",
+        ):
+            with self.subTest(prov=prov):
+                proc = self._one_page(prov)
+                self.assertEqual(proc.returncode, 0, proc.stdout)
+
+    def test_index_prose_bullet_is_not_a_catalog_entry(self):
+        # F5/85, first half: widening the capture to accept paths turned a
+        # "see also" bullet into a phantom entry and a spurious hard FAIL.
+        root = self.tree.build()
+        (root / "cairn" / "references" / "notes.md").write_text(page())
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- notes.md — a real note\n"
+            "- cairn/DESIGN.md — see also, not a page entry\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertNotIn("cairn/DESIGN.md", proc.stdout)
+
+    def test_index_entry_cannot_escape_the_references_tree(self):
+        # F5/85, second half: an unnormalized join let `../../DESIGN.md` be
+        # satisfied by a real file OUTSIDE cairn/references/, so the entry
+        # passed silently. It must not be treated as a catalog entry at all.
+        root = self.tree.build()
+        (root / "cairn" / "references" / "notes.md").write_text(page())
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- notes.md — a real note\n"
+            "- ../../DESIGN.md — escapes the references tree\n"
+        )
+        # cairn/DESIGN.md exists in the fixture, which is what made the
+        # escaping entry resolve before the fix.
+        self.assertTrue((root / "cairn" / "DESIGN.md").is_file())
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertNotIn("DESIGN.md", proc.stdout)
+
+    def test_nested_page_is_enforced(self):
+        # Pre-M79 the flat os.listdir made any nesting silently unenforced,
+        # so this page passed. It must not.
+        root = self.tree.build()
+        sub = root / "cairn" / "references" / "topic"
+        sub.mkdir()
+        (sub / "nested.md").write_text(page(prov=""))
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- topic/nested.md — a nested page\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(
+            "cairn/references/topic/nested.md has no provenance block",
+            proc.stdout,
+        )
+
+    def test_nested_page_with_index_line_passes(self):
+        root = self.tree.build()
+        sub = root / "cairn" / "references" / "topic"
+        sub.mkdir()
+        (sub / "nested.md").write_text(page())
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- topic/nested.md — a nested page\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  references index<->disk", proc.stdout)
+
+    def test_source_shelf_is_not_walked(self):
+        # The gitignored shelf holds sources, not pages; a stray .md in it (or
+        # in a legacy pdf/ shelf an un-migrated repo still carries) is neither
+        # an orphan nor a provenance failure.
+        root = self.tree.build()
+        for shelf in ("sources", "pdf"):
+            d = root / "cairn" / "references" / shelf
+            d.mkdir()
+            (d / "scratch.md").write_text("# not a page\n")
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  references index<->disk", proc.stdout)
+
+    def test_absent_index_over_real_pages_fails(self):
+        # M79 AC3: the pre-M79 outright PASS let a directory full of pages
+        # escape the check entirely. Scaffold-present still fails too; what
+        # changed is that this check no longer renders PASS over it.
+        root = self.tree.build()
+        (root / "cairn" / "references" / "notes.md").write_text(page())
+        (root / "cairn" / "references" / "INDEX.md").unlink()
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("FAIL  references index<->disk", proc.stdout)
+        self.assertIn(
+            "cairn/references/ holds 1 page(s) but no INDEX.md", proc.stdout
+        )
+
+    def test_absent_index_over_empty_dir_no_ops(self):
+        # The M45 no-op is kept exactly where it is a genuine not-adopted
+        # signal: no INDEX and no pages. scaffold-present owns that failure.
         root = self.tree.build()
         (root / "cairn" / "references" / "INDEX.md").unlink()
         proc = run("cairn_validate.py", root)

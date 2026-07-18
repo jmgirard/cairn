@@ -143,7 +143,7 @@ class TestShippedTemplate(unittest.TestCase):
     FIELDS = (
         ("citekey", "# <citekey>"),
         ("full citation", "**citation.**"),
-        ("source pointer", "cairn/references/pdf/<citekey>.pdf"),
+        ("source pointer", "cairn/references/sources/<citekey>.pdf"),
         ("non-pdf source pointer", "the url plus how it was retrieved"),
         ("ingested date", "ingested yyyy-mm-dd"),
         ("ingesting milestone", "by m<nn>"),

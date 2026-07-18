@@ -1142,3 +1142,33 @@ post-merge hygiene (M35). The adjacent budget-first-drafting candidate is
 unaffected — it concerns first drafts landing under cap, not monotonic growth.
 Delivered by M77. If an unbudgeted work log is ever observed absorbing pasted
 output despite the advisory, the FAIL severity is the entry to supersede.
+
+### D-047 (2026-07-18): The gitignored source shelf is `references/sources/`, not `references/pdf/` — a post-1.0 scaffold rename on a deprecation cycle
+
+**Context:** M78 shipped a `**Provenance.**` block whose source pointer is
+explicitly either a shelf path *or* "the URL plus how it was retrieved" for a
+non-PDF source — but the shelf cairn scaffolds is named `pdf/`, so a retrieved
+HTML page, dataset, or transcript has no home that matches its name. The name
+was cairn's own from the start (`cairn_scripts.REQUIRED_GITIGNORE`, the
+`cairn-init` §1 tree, the rulebook file map, the ingestion recipe, the
+source-note template), not an adopting repo's choice, so every adopter
+inherited the mismatch. Raised by the user at the M79 implement gate and
+folded into that milestone's scope.
+**Decision:** Rename to `cairn/references/sources/` everywhere cairn writes
+it. Because cairn is post-1.0 (v1.0.0, 2026-07-16) and the required
+`.gitignore` entry is adopter-facing behavior, the rename follows the
+deprecation cycle rather than breaking adopters: `check_scaffold` accepts the
+legacy `cairn/references/pdf/` entry in place of the new one, and a new
+non-failing `scaffold deprecations` advisory names the successor. Rejected a
+hard FAIL on the old entry (the D-040 `changelog`-slot precedent, but that was
+a slot a repo had to author — this is a rename with a mechanical successor, so
+failing a repo for cairn's own rename is the wrong severity) and keeping
+`pdf/` with prose explaining it holds non-PDFs (the name is the documentation;
+prose that contradicts it is the defect).
+**Consequences:** The shelf name stops contradicting the provenance block
+above it. Adopting repos keep passing until they migrate, then the advisory
+goes quiet; `check_references` skips both shelf names when walking, so an
+un-migrated repo's shelf is never mistaken for pages. Delivered by M79. If a
+second scaffold entry is ever renamed, `DEPRECATED_GITIGNORE` is the map to
+extend; if the deprecation window should ever close into a hard FAIL,
+supersede here.

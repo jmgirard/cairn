@@ -167,33 +167,176 @@ def check_orphans(root, rows):
     return bad
 
 
-# An INDEX.md catalog line: `- <name>.md — one-line summary`. The filename
-# may be decorated (backticks, a [name](name) markdown link) — a semantically
-# correct entry must never trip a hard CHECK on formatting alone (D-023;
-# review F1/85), so the capture excludes decoration characters.
-_INDEX_LINE = re.compile(r"^\s*[-*]\s+[\[`]?([\w.-]+\.md)\b")
+# An INDEX.md catalog line: `- <name>.md — one-line summary`. The name may be
+# decorated (backticks, a [name](name) markdown link) and, since M79, may be a
+# path into a subdirectory — a semantically correct entry must never trip a
+# hard CHECK on formatting alone (D-023; review F1/85), so the capture excludes
+# decoration characters.
+_INDEX_LINE = re.compile(r"^\s*[-*]\s+[\[`]*([\w./-]+\.md)\b")
+
+
+def _catalog_entries(refdir, index):
+    """The INDEX.md lines that are catalog entries for committed pages.
+
+    Widening the capture to accept subdirectory paths (M79) also let two
+    non-entries through, both closed here (review F5):
+
+    - A path escaping the references tree (`../../DESIGN.md`) is dropped. It
+      is not a catalog entry, and joining it unnormalized let a file OUTSIDE
+      cairn/references/ silently satisfy the existence check below.
+    - A path whose directory does not exist under refdir (`cairn/DESIGN.md`
+      in a "see also" bullet) is dropped rather than reported as a missing
+      target — an INDEX.md may carry prose, and a hard CHECK must not fire on
+      a bullet that was never a page reference (D-023). The cost is a miss:
+      deleting a whole subdirectory hides its entries instead of flagging
+      them, which is the tolerated side of the doctrine.
+    """
+    entries = []
+    with open(index, encoding="utf-8") as f:
+        for line in f:
+            m = _INDEX_LINE.match(line)
+            if not m:
+                continue
+            rel = m.group(1)
+            target = os.path.normpath(os.path.join(refdir, rel))
+            if os.path.commonpath(
+                [os.path.abspath(refdir), os.path.abspath(target)]
+            ) != os.path.abspath(refdir):
+                continue
+            if not os.path.isdir(os.path.dirname(target)):
+                continue
+            entries.append(rel)
+    return entries
+# The M78 provenance block's three semantic tokens, read decoration-tolerantly
+# (M79-D1: D-023's no-false-positive doctrine is honoured in the parser, not
+# the severity). Leading `>`/`*`/`_`/`#`/backticks are stripped before the
+# heading match, so `**Provenance.**`, `__Provenance__`, and a bare
+# `Provenance.` all read alike; the date and the `from` pointer tolerate
+# bold/backtick decoration around them.
+# `\b` is the wrong boundary here: `_` is a word character in Python regex, so
+# `__Provenance__` would not match a trailing `\b`. Decoration boundaries are
+# therefore "not alphanumeric" lookarounds, which read through `*`, `_`, and
+# backticks alike.
+_D = r"[\s*_`]*"  # inline decoration between a keyword and its value
+# Both fields are searched across the whole block rather than pinned to the
+# heading line: M78 calls the block "prose in the page's own idiom", so a
+# hard-wrapped pointer must still read. The cost is a miss — an Extraction
+# line that happens to name a source satisfies the pointer test — which is the
+# right side of D-023's "a missed weird format beats a false positive".
+_PROV_HEAD = re.compile(r"^[\s>*_`#]*provenance(?![A-Za-z0-9])", re.I)
+_PROV_INGESTED = re.compile(
+    rf"(?<![A-Za-z0-9])ingested(?![A-Za-z0-9]){_D}(\d{{4}}-\d{{2}}-\d{{2}})",
+    re.I,
+)
+# The source pointer is deliberately permissive (review F4): M78's template
+# sanctions "the URL plus how it was retrieved and by whom" for a non-PDF
+# source, which need not contain the word "from" — and a hard CHECK that
+# fails a template-compliant page is the false positive M79-D1 promised the
+# parser would absorb. This field's job is to catch a block naming no source
+# at all; the ingested date is the crisp field.
+_PROV_SOURCE = re.compile(
+    rf"(?<![A-Za-z0-9])(?:from|via|retrieved|downloaded|accessed|source)"
+    rf"(?![A-Za-z0-9]){_D}\S",
+    re.I,
+)
+_PROV_LOCATOR = re.compile(r"https?://\S|[\w.-]+/[\w.-]")
+
+
+def _provenance_block(path):
+    """The provenance prose of a references page. M78 calls the block "prose
+    in the page's own idiom, not frontmatter", so the parser is generous
+    about layout (review F2/F3):
+
+    - EVERY `**Provenance.**`-headed run is collected, not just the first, so
+      a decoy line — a `## Provenance` section heading above the real block —
+      cannot swallow the page's provenance and fail it.
+    - A run is the heading line plus the following non-blank lines; when that
+      yields neither semantic field, the next paragraph is pulled in too, so
+      a label alone on its own line still finds its body below the blank.
+
+    Returns None when the page carries no provenance heading at all."""
+    with open(path, encoding="utf-8") as f:
+        lines = f.read().splitlines()
+    blocks = []
+    for i, line in enumerate(lines):
+        if not _PROV_HEAD.match(line):
+            continue
+        run, j = [line], i + 1
+        while j < len(lines) and lines[j].strip():
+            run.append(lines[j])
+            j += 1
+        text = "\n".join(run)
+        if not (_PROV_INGESTED.search(text) or _PROV_SOURCE.search(text)):
+            while j < len(lines) and not lines[j].strip():
+                j += 1
+            while j < len(lines) and lines[j].strip():
+                run.append(lines[j])
+                j += 1
+        blocks.append("\n".join(run))
+    return "\n".join(blocks) if blocks else None
+
+
+def _has_source_pointer(block):
+    """A provenance block names a source when it carries an attribution verb
+    with something after it, or a bare URL/path locator (review F4)."""
+    return bool(_PROV_SOURCE.search(block) or _PROV_LOCATOR.search(block))
+
+
+def _reference_pages(refdir):
+    """Every committed .md page under cairn/references/, as paths relative to
+    that directory, INDEX.md excluded. Walks recursively (M79): a page in a
+    subdirectory is enforced exactly as a top-level page is. The gitignored
+    source shelf holds PDFs, not pages, and is skipped along with its legacy
+    `pdf/` name so an un-migrated repo's shelf is never walked."""
+    pages = []
+    for dirpath, dirnames, filenames in os.walk(refdir):
+        if dirpath == refdir:
+            dirnames[:] = [d for d in dirnames if d not in ("sources", "pdf")]
+        for name in filenames:
+            if not name.endswith(".md"):
+                continue
+            rel = os.path.relpath(os.path.join(dirpath, name), refdir)
+            if rel != "INDEX.md":
+                pages.append(rel.replace(os.sep, "/"))
+    return sorted(pages)
 
 
 def check_references(root):
-    """Every committed top-level cairn/references/*.md (except INDEX.md) has
-    an INDEX.md line, and every INDEX.md line's target exists on disk — the
-    references sibling of the roadmap<->disk orphan check (M57). No-ops when
-    references/INDEX.md is absent (scaffold-present owns that failure)."""
+    """Every committed cairn/references/ page (except INDEX.md) has an
+    INDEX.md line and a provenance block naming an ingested date and a source
+    pointer; every INDEX.md line's target exists on disk. The references
+    sibling of the roadmap<->disk orphan check (M57), given content teeth by
+    M79 so the check stops being a filename census. No-ops only when the
+    directory holds no pages at all — a genuinely not-adopted signal (M45);
+    an INDEX.md missing beneath real pages is reported here, not passed."""
     bad = []
     refdir = os.path.join(root, "cairn", "references")
+    if not os.path.isdir(refdir):
+        return bad
+    pages = _reference_pages(refdir)
     index = os.path.join(refdir, "INDEX.md")
     if not os.path.isfile(index):
+        if pages:
+            bad.append(
+                f"cairn/references/ holds {len(pages)} page(s) but no INDEX.md"
+            )
         return bad
-    with open(index, encoding="utf-8") as f:
-        listed = [m.group(1) for line in f if (m := _INDEX_LINE.match(line))]
-    for name in sorted(os.listdir(refdir)):
-        if (
-            name.endswith(".md")
-            and name != "INDEX.md"
-            and os.path.isfile(os.path.join(refdir, name))
-            and name not in listed
-        ):
-            bad.append(f"cairn/references/{name} has no INDEX.md line")
+    listed = _catalog_entries(refdir, index)
+    for rel in pages:
+        if rel not in listed:
+            bad.append(f"cairn/references/{rel} has no INDEX.md line")
+        block = _provenance_block(os.path.join(refdir, rel))
+        if block is None:
+            bad.append(f"cairn/references/{rel} has no provenance block")
+            continue
+        if not _PROV_INGESTED.search(block):
+            bad.append(
+                f"cairn/references/{rel} provenance names no ingested date"
+            )
+        if not _has_source_pointer(block):
+            bad.append(
+                f"cairn/references/{rel} provenance names no source pointer"
+            )
     for name in listed:
         if not os.path.isfile(os.path.join(refdir, name)):
             bad.append(
@@ -283,9 +426,16 @@ def check_scaffold(root):
         if not os.path.isfile(os.path.join(root, rel)):
             bad.append(f"missing scaffold file {rel}")
     gitignore = _ignore_entries(os.path.join(root, ".gitignore"))
+    superseded = {new: old for old, new in cs.DEPRECATED_GITIGNORE.items()}
     for entry in cs.REQUIRED_GITIGNORE:
-        if entry not in gitignore:
-            bad.append(f".gitignore missing entry '{entry}'")
+        if entry in gitignore:
+            continue
+        # A repo still carrying only the pre-rename entry is not drifted, it
+        # is un-migrated: the deprecation advisory names it, this check does
+        # not fail it (post-1.0 deprecation cycle — D-047).
+        if superseded.get(entry) in gitignore:
+            continue
+        bad.append(f".gitignore missing entry '{entry}'")
     # `^cairn$` is a package concern — only required when a DESCRIPTION exists.
     if os.path.isfile(os.path.join(root, "DESCRIPTION")):
         rbuild = _ignore_entries(os.path.join(root, ".Rbuildignore"))
@@ -480,6 +630,25 @@ def check_sizing_advisory(root):
     return out
 
 
+def check_gitignore_deprecations(root):
+    """Advisory arm of the scaffold deprecation cycle: a repo carrying a
+    superseded .gitignore entry is told its new name without being failed.
+    Exit-code neutral by design — the rename is cairn's, not the repo's, so a
+    hard FAIL would block a milestone over a scaffold change the maintainer
+    never made (D-047; the D-040 migration-cost precedent, one severity
+    softer because a rename has a mechanical successor a slot addition
+    lacks)."""
+    bad = []
+    gitignore = _ignore_entries(os.path.join(root, ".gitignore"))
+    for old, new in cs.DEPRECATED_GITIGNORE.items():
+        if old in gitignore and new not in gitignore:
+            bad.append(
+                f".gitignore entry '{old}' is superseded by '{new}' — "
+                f"rename the entry and the directory"
+            )
+    return bad
+
+
 # A work-log entry opens with a `- ` bullet (tracking-rules: one line each,
 # absolute dates). Anything else non-blank in the section is a continuation —
 # except an HTML comment, which is structure carrying no entry text. Comment
@@ -628,6 +797,10 @@ CHECKS = [
 # from the PASS/FAIL CHECKS above.
 ADVISORIES = [
     ("sizing (split tripwires)", lambda root, rows: check_sizing_advisory(root)),
+    (
+        "scaffold deprecations",
+        lambda root, rows: check_gitignore_deprecations(root),
+    ),
     ("work-log format", lambda root, rows: check_worklog_format(root)),
     ("dangling id tokens", lambda root, rows: check_dangling_ids(root, rows)),
 ]

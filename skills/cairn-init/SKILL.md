@@ -105,7 +105,7 @@ cairn/
 │                      # from skills/shared/profiles/<name>.md; capped 120 lines
 ├── milestones/archive/
 ├── reviews/archive/
-└── references/pdf/    # plus empty INDEX.md
+└── references/sources/    # plus empty INDEX.md
 ```
 
 ROADMAP.md skeleton (keep under 60 lines forever):
@@ -133,7 +133,7 @@ Then:
   absent). If a conflicting section exists, show the diff and ask.
 - `.Rbuildignore`: add `^cairn$` (packages only). On a migration, also prune
   stale per-file entries for tracking files that moved into `cairn/` (§2 step 6).
-- `.gitignore`: add `cairn/references/pdf/`, `cairn/.merge-approved`, and
+- `.gitignore`: add `cairn/references/sources/`, `cairn/.merge-approved`, and
   `cairn/.merge-approved.pending` (the single-use merge-approval marker
   written at review gates and its consumed-but-unresolved state — the
   plugin's merge-guard hooks manage both; never committed).
