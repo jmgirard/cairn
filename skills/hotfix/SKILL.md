@@ -86,7 +86,9 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    <default-branch>`, with a decline option) — never a prose yes/no, the same gate discipline
    as `/milestone-review`. Merge (`gh pr merge <N> --squash --delete-branch`
    — name the PR number explicitly; a bare `gh pr merge` is denied because the
-   approval cannot be checked against it)
+   approval cannot be checked against it; **drop `--delete-branch` on a
+   fork PR** — that branch lives in the contributor's repo and is not ours
+   to delete)
    only on explicit approval at that chip, with green CI (one blocking
    `gh pr checks --watch` wait). On approval, write the merge-guard
    marker first: `cairn/.merge-approved` (gitignored; one line:

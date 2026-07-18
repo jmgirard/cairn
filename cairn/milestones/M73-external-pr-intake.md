@@ -86,7 +86,7 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
       on PR head).
 - [x] T3 — Extend step 5 (`:39-45`) for the adopted case, incl. the
       no-push-to-fork fallback.
-- [ ] T4 — Extend step 6 (`:47-60`) with the fork `--delete-branch` caveat;
+- [x] T4 — Extend step 6 (`:47-60`) with the fork `--delete-branch` caveat;
       confirm the marker line matches M72's bound form (no divergence).
 - [ ] T5 — Update the frontmatter `description:` (`:3`) and the Intake
       paragraph (`tracking-rules.md:199-203`).
@@ -109,6 +109,8 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
   + prove fail-on-default / pass-on-head via a scratch worktree. verify clean.
 - 2026-07-18: T3 — step 5 covers entry-already-present / none-present and the
   no-push-to-fork fallback (ask, then re-land locally). verify clean.
+- 2026-07-18: T4 — step 6 drops --delete-branch on a fork PR; marker line
+  already matches M72's PR-bound form, left unchanged. verify clean.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
