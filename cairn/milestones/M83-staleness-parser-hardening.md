@@ -75,19 +75,19 @@ opposite protections against the same parser).
 - [x] T1. Characterization test pinning the current `_last_verified` state of
       each of the 16 committed pages, as the AC4 baseline. Written and green
       against the *unmodified* function first.
-- [ ] T2. Restructure `_last_verified` to split the status into a leading
+- [x] T2. Restructure `_last_verified` to split the status into a leading
       clause and a remainder, and classify from the leading clause. Keep the
       `nothing to re-verify` exemption at precedence 1. Define the clause
       boundary explicitly (em-dash / semicolon / end-of-status) and test it.
-- [ ] T3. `ambiguous` state + diagnostic (F3) — leading clause says verified,
+- [x] T3. `ambiguous` state + diagnostic (F3) — leading clause says verified,
       remainder contradicts it.
-- [ ] T4. `unrecognized` state + diagnostic (F4) — no recognized state token
+- [x] T4. `unrecognized` state + diagnostic (F4) — no recognized state token
       and no date. Verified-family must cover the verification verbs the
       corpus actually uses (`verified`, `read against`, `checked against`),
       or T7 will surface the newly-flagged pages for a decision.
-- [ ] T5. Future-date guard (F5): a verified date after today gets its own
+- [x] T5. Future-date guard (F5): a verified date after today gets its own
       WARN, never a negative age.
-- [ ] T6. Fixture matrix over the axes this classification is free in —
+- [x] T6. Fixture matrix over the axes this classification is free in —
       where the contradicting token sits, wrapping *at the clause boundary*,
       decoration on the token. Per M81's lesson, vary the axis where the
       value under test lives: a wrap that does not fall at the boundary
@@ -99,6 +99,7 @@ opposite protections against the same parser).
 ## Work log
 
 - 2026-07-18: created by /milestone-plan. Absorbs the grouped M81 candidate row (F3/68, F4/63, F5/62); F3 confirmed live 2026-07-18 during the task-master re-verification.
+- 2026-07-18: T2-T6 — classifier reads the leading clause; contradiction/unrecognized/future states added; 5 regression tests + a 48-cell matrix, all failing pre-fix. Two defects found by the tests themselves: `read against` matched inside `re-read against` (template's own unverified wording), and a status wrapped AT the clause boundary rejoins with the separator gone, so contradiction is tested over the whole status.
 - 2026-07-18: T1 — ledger test pins all 16 shipped pages (14 ok, 2 exempt); green against the unmodified function, mutation-checked (flipping one entry fails).
 
 ## Decisions

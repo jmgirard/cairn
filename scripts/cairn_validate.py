@@ -698,6 +698,37 @@ _ISO_DATE = re.compile(r"(?<!\d)(\d{4})-(\d{2})-(\d{2})(?!\d)")
 # The two states are mutually exclusive by template design — the shipped forms
 # are `|`-separated alternatives — so this is read before any date.
 _UNVERIFIED = re.compile(r"(?<![A-Za-z0-9])unverified(?![A-Za-z0-9])", re.I)
+# M83: the state token is read from the status's LEADING CLAUSE, because that
+# is where every shipped page and both templates put it. Scanning the whole
+# status (M81's shape) let one word anywhere override a dated claim above it —
+# a page reading "verified 2026-07-18 … (prior status: unverified)" reported no
+# verified re-check at all (F3, hit live 2026-07-18). Testing dates first
+# instead only mirrors the bug, so the two are compared and a disagreement is
+# reported rather than silently resolved.
+_CLAUSE_BOUNDARY = re.compile(r"\s+—\s+|;\s+")
+# Narrow by design. `not re-read since` is about re-reading, not about initial
+# verification, and three shipped `partly verified at ingestion` pages carry it
+# in their remainder — widening this to catch "not …" reclassifies all three,
+# the M79-F5 trap the M81 row warned about (LESSONS: widening a capture class
+# admits non-targets too).
+_NEVER_TOKEN = re.compile(
+    r"(?<![A-Za-z0-9])(?:unverified|(?:never|not)(?:\s+been)?\s+verified)"
+    r"(?![A-Za-z0-9])",
+    re.I,
+)
+# The verification verbs the shipped corpus actually uses, not just the two the
+# templates sanction. The lookbehind keeps `verified` from matching inside
+# `unverified`; `partly verified` is deliberately a MATCH — a partial
+# verification is a verification with a scope note, and its remainder says so.
+# The hyphen in the lookbehind is load-bearing and the suite proved it: without
+# it `read against` matches inside `not yet re-read against the source`, the
+# template's own unverified wording, turning a plainly-never page into a
+# self-contradiction. A `re-` prefix negates the claim the verb makes.
+_VERIFIED_TOKEN = re.compile(
+    r"(?<![-A-Za-z0-9])(?:verified|read\s+against|checked\s+against|"
+    r"read\s+directly)(?![A-Za-z0-9])",
+    re.I,
+)
 # A first-hand record has no external source to re-read, so asking it to
 # re-verify asks the impossible. The exemption is earned by the status SAYING
 # so (the synthesis template's sanctioned phrase), never by page type — a
@@ -768,35 +799,96 @@ def _extraction_status(block):
     return None
 
 
-def _last_verified(block):
+def _split_status(status):
+    """An extraction status as (leading clause, remainder). The boundary is the
+    first em-dash or semicolon — the two separators every shipped page and both
+    templates use between the state claim and its qualifications
+    (`verified at ingestion — full source read`, `verified by live probe
+    2026-07-12; a re-probe would be needed`). No boundary means the whole
+    status is the leading clause and the remainder is empty."""
+    parts = _CLAUSE_BOUNDARY.split(status, 1)
+    return parts[0], parts[1] if len(parts) > 1 else ""
+
+
+def _state_token(text):
+    """The verification state `text` asserts — "never" / "verified" / None.
+    Never-family is tested first so `never verified` cannot be read as a
+    verification by the substring `verified` inside it."""
+    if not text:
+        return None
+    if _NEVER_TOKEN.search(text):
+        return "never"
+    if _VERIFIED_TOKEN.search(text):
+        return "verified"
+    return None
+
+
+def _last_verified(block, today=None):
     """When this page's extraction was last checked against its source, as
     ("ok", date) / ("never", None) / ("exempt", None) / ("missing", None) /
-    ("undated", None).
+    ("undated", None) / ("ambiguous", None) / ("unrecognized", None) /
+    ("future", date).
 
-    Precedence, fixed at the M81 implement gate:
-      1. an explicit "nothing to re-verify" → exempt;
-      2. an explicit `unverified` → never;
-      3. a date in the status (`verified 2026-07-12`, `none re-read since
-         2026-07-11`, `a 2026-07-12 snapshot`) → the freshest one;
-      4. otherwise the block's ingested date — "verified at ingestion", the
-         commonest shipped form, literally names it, and demanding an explicit
-         date there would falsely flag five template-sanctioned pages."""
+    Precedence (M81 implement gate; restructured at M83):
+      1. an explicit "nothing to re-verify" → exempt. Searched over the WHOLE
+         status: two shipped pages put the phrase in a trailing clause;
+      2. the state token from the LEADING clause, with the remainder read the
+         same way. The two disagreeing → ambiguous, never a silent pick (M83,
+         F3): whichever one is tested first, testing one first is the bug;
+      3. `never` → never; `verified` → the freshest date in the status, or the
+         block's ingested date ("verified at ingestion", the commonest shipped
+         form, literally names it, and demanding an explicit date there would
+         falsely flag five template-sanctioned pages);
+      4. no state token at all, but a date → ok on that date. This is how
+         `derived — … none re-read since 2026-07-11` and `a 2026-07-12
+         snapshot` classify: neither claims verification, both date themselves;
+      5. no state token and no date → unrecognized (M83, F4). Before, this fell
+         through to the ingested date and read as a confirmed verification, so
+         `never verified against the source` classified `ok`.
+
+    A chosen date later than `today` is returned as `future` (M83, F5): it made
+    the age negative, which no threshold can exceed, so the page was exempt
+    forever with nothing said."""
     raw = _extraction_status(block)
     if not raw:
         return "missing", None
+    today = today or datetime.date.today()
     status = _OBSERVED_STAMP.sub("", raw)
     if _NOTHING_TO_VERIFY.search(status):
         return "exempt", None
-    if _UNVERIFIED.search(status):
+
+    # Contradiction is tested over the WHOLE status, not across the clause
+    # boundary, because the boundary is not always there to test across: a
+    # status hard-wrapped at its em-dash comes back from `_extraction_status`
+    # with the lines joined by a space and the separator gone, so both claims
+    # land in the leading clause and the lead alone would answer "never" — the
+    # F3 bug in wrapped form. Caught by the boundary-wrap fixture, which is the
+    # M81 lesson paying off: the midpoint-wrap axis could not reach this.
+    # The never-phrases are removed before looking for an independent
+    # verification claim: `never verified` contains `verified`, and reading it
+    # as both families would make every plainly-never page a contradiction.
+    if _NEVER_TOKEN.search(status) and _VERIFIED_TOKEN.search(
+        _NEVER_TOKEN.sub(" ", status)
+    ):
+        return "ambiguous", None
+    lead, rest = _split_status(status)
+    state = _state_token(lead) or _state_token(rest)
+
+    if state == "never":
         return "never", None
+
     dates = _iso(status)
-    if dates:
-        return "ok", max(dates)
-    ingested = _PROV_INGESTED.search(block)
-    if ingested:
-        found = _iso(ingested.group(1))
-        if found:
-            return "ok", found[0]
+    when = max(dates) if dates else None
+    if when is None and state == "verified":
+        ingested = _PROV_INGESTED.search(block)
+        if ingested:
+            found = _iso(ingested.group(1))
+            if found:
+                when = found[0]
+    if when is not None:
+        return ("future" if when > today else "ok"), when
+    if state is None:
+        return "unrecognized", None
     # A status naming no date over a block naming no ingested date: the
     # references CHECK already FAILs that block, so the advisory stays quiet
     # rather than pile a second finding on one cause.
@@ -822,7 +914,7 @@ def check_references_staleness(root, today=None):
         block = _provenance_block(os.path.join(refdir, rel), for_extraction=True)
         if block is None:
             continue  # the references CHECK reports a missing block
-        state, when = _last_verified(block)
+        state, when = _last_verified(block, today=today)
         if state in ("exempt", "undated"):
             continue
         if state == "never":
@@ -833,6 +925,24 @@ def check_references_staleness(root, today=None):
         elif state == "missing":
             out.append(
                 f"cairn/references/{rel}: provenance records no extraction status"
+            )
+        elif state == "ambiguous":
+            out.append(
+                f"cairn/references/{rel}: extraction status contradicts itself "
+                f"— it claims a verification and also says it was never "
+                f"verified; say which is current"
+            )
+        elif state == "unrecognized":
+            out.append(
+                f"cairn/references/{rel}: extraction status records neither a "
+                f"verification nor a date, so nothing says whether this page "
+                f"was ever checked against its source"
+            )
+        elif state == "future":
+            out.append(
+                f"cairn/references/{rel}: extraction is dated "
+                f"{when.isoformat()}, in the future — a page cannot have been "
+                f"verified later than today"
             )
         else:
             age = (today - when).days

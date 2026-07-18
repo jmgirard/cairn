@@ -630,6 +630,15 @@ def prov_page(status, ingested=None, deco="{}", layout="inline", decoy=False):
     elif layout == "wrapped":
         cut = status.find(" ", len(status) // 2)
         text += f"{label} {status[:cut]}\n{status[cut + 1:]}\n"
+    elif layout == "wrapped-at-boundary":
+        # M83: wrap exactly where the leading clause ends. The midpoint split
+        # above never lands here, so it cannot exercise a classifier that
+        # reads the lead separately from the remainder — M81's lesson that an
+        # axis can be varied everywhere and still be vacuous where it counts.
+        cut = status.find(" — ")
+        if cut == -1:
+            raise AssertionError("boundary layout needs an em-dash status")
+        text += f"{label} {status[:cut]}\n{status[cut + 3:]}\n"
     else:
         text += f"{label} {status}\n"
     return text + "\n"
@@ -788,6 +797,120 @@ class TestReferencesStaleness(ScriptCase):
             proc, "cairn/references/notes.md: provenance records no "
             "extraction status"
         )
+
+    # --- M83: the state token is read from the leading clause ---------------
+
+    # The status `cairn/references/task-master.md` actually carried on
+    # 2026-07-18, before it was reworded to dodge this defect. Verbatim on
+    # purpose (AC1): a paraphrase would not prove the live case is fixed.
+    TASK_MASTER_2026_07_18 = (
+        "verified {when} against a fresh shallow clone at `task-master-ai` "
+        "v0.43.1 — every claim below re-read against source; three were wrong "
+        "and are corrected in place and marked — observed {obs}. (Prior "
+        "status: unverified — [S] subagent study of the clone and docs, with "
+        "no claim checked against the source at ingestion.)"
+    )
+
+    def test_dated_verification_with_a_prior_unverified_note_is_ambiguous(self):
+        # F3, hit live 2026-07-18. Pre-M83 this reported "records no verified
+        # re-check" — the page had been read against its source that day.
+        proc = self.install(
+            self.tree.build(),
+            status=self.TASK_MASTER_2026_07_18.format(
+                when=days_ago(0), obs=days_ago(0)
+            ),
+        )
+        self.assertFlagged(proc, "extraction status contradicts itself")
+
+    def test_unverified_lead_with_a_dated_claim_after_is_also_ambiguous(self):
+        # The other direction. Testing dates before the unverified token — the
+        # "obvious" fix — turns THIS case into a false clean bill of health,
+        # which is why neither is tested first and a disagreement is reported.
+        proc = self.install(
+            self.tree.build(),
+            status=f"unverified — first pass; the appendix was verified "
+            f"{days_ago(3)} — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, "extraction status contradicts itself")
+
+    def test_negative_synonym_no_longer_reads_as_verified(self):
+        # F4: pre-M83 this had no recognized token and no date, so it fell
+        # through to the INGESTED date and classified `ok` — a page saying in
+        # plain words that it was never checked reported as verified.
+        proc = self.install(
+            self.tree.build(),
+            status=f"never verified against the source — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, "records no verified re-check")
+
+    def test_partly_verified_pages_are_not_swept_up(self):
+        # The M79-F5 trap the M81 candidate row warned about: widening the
+        # never-family to catch "not ..." reclassifies these three shipped
+        # forms wholesale. Verbatim from the pages, less their citations.
+        for status in (
+            "partly verified at ingestion — the Meridian blocking-hook claim "
+            "was checked against `scripts/stop-checklist.py:69`; the rest is "
+            "an [S] subagent study of clones, not re-read since",
+            "partly verified at ingestion — the sprint-status claim was "
+            "checked against `bmad-sprint-planning/SKILL.md:8`; the rest is "
+            "an [S] subagent study, not re-read since",
+            "partly verified at ingestion — key claims checked against a "
+            "clone (`specify.md:124-128`); not re-read since",
+        ):
+            with self.subTest(status=status[:48]):
+                proc = self.install(
+                    self.tree.build(),
+                    ingested=days_ago(3),
+                    status=f"{status} — observed {days_ago(0)}.",
+                )
+                self.assertClean(proc)
+
+    def test_status_claiming_neither_verification_nor_date_is_flagged(self):
+        # F4's general case: silence is not a verification. Pre-M83 the
+        # ingested-date fallback applied to ANY unrecognized status.
+        proc = self.install(
+            self.tree.build(),
+            status=f"an [S] subagent study of the clone — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, "records neither a verification nor a date")
+
+    def test_future_verification_date_is_flagged_not_silently_exempt(self):
+        # F5: a future date makes the age negative, and no threshold is ever
+        # exceeded by a negative number — the page was exempt forever, silently.
+        ahead = days_ago(-30)
+        proc = self.install(
+            self.tree.build(),
+            status=f"verified {ahead} against the source — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, f"dated {ahead}, in the future")
+
+    def test_contradiction_is_caught_wherever_it_sits_and_however_wrapped(self):
+        # M81's lesson: vary the axis where the value under test lives. What
+        # decides this classification is the CLAUSE BOUNDARY, so the wrap is
+        # forced onto the boundary itself — a wrap elsewhere (the M81 fixture's
+        # midpoint split) cannot exercise it. Decoration and the contradicting
+        # token's distance from the lead vary alongside.
+        tails = (
+            "the appendix remains unverified",
+            "one section was never verified against the source",
+            "prior pass unverified; see git for the original status",
+        )
+        for deco in DECORATIONS:
+            for tail in tails:
+                for layout in (
+                    "inline", "label-alone", "wrapped", "wrapped-at-boundary"
+                ):
+                    with self.subTest(deco=deco, tail=tail[:30], layout=layout):
+                        proc = self.install(
+                            self.tree.build(),
+                            deco=deco,
+                            layout=layout,
+                            status=f"verified {days_ago(2)} against the "
+                            f"source — {tail} — observed {days_ago(0)}.",
+                        )
+                        self.assertFlagged(
+                            proc, "extraction status contradicts itself"
+                        )
 
     # --- AC2: the three axes, varied independently ---------------------------
 
