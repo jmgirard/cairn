@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M71: Idea-capture intake gate — out-of-band ideas also land as candidates
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP3, GP2, GP4   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m71-idea-capture-intake-gate`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -77,25 +77,25 @@ snapshot at process start (M60); this milestone's evidence is fixture-level.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — Establish from the official hooks docs whether a PreToolUse
+- [x] T1 — Establish from the official hooks docs whether a PreToolUse
       `matcher` matches an MCP tool name (`mcp__ccd_session__spawn_task`). If
       not, fall back to a broad matcher with in-hook `tool_name` filtering.
       Record the finding in one work-log line (the D-017 T1 pattern).
-- [ ] T2 — Write the rule into `skills/shared/tracking-rules.md`'s Intake
+- [x] T2 — Write the rule into `skills/shared/tracking-rules.md`'s Intake
       paragraph (~line 199), next to search-first. Keep the guard's anchor
       phrase on ONE physical line (M59/M64 reflow trap).
-- [ ] T3 — Implement `hooks/idea_guard.py` on the `memory_guard.py` skeleton:
+- [x] T3 — Implement `hooks/idea_guard.py` on the `memory_guard.py` skeleton:
       `cairn_common.read_input` / `find_cairn_root`, `additionalContext` only,
       no `permissionDecision`, silent no-op on every other path.
-- [ ] T4 — Register the hook in `hooks/hooks.json` per T1; extend
+- [x] T4 — Register the hook in `hooks/hooks.json` per T1; extend
       `TestHooksRegistration` with its assertion.
-- [ ] T5 — Hook tests: a `TestIdeaGuard` emission class, plus `idea_guard.py`
+- [x] T5 — Hook tests: a `TestIdeaGuard` emission class, plus `idea_guard.py`
       added to BOTH `TestNonCairnNoOp` payload collections
       (`test_every_hook_is_silent_and_permissive` and
       `test_garbage_stdin_is_permissive`).
-- [ ] T6 — Prose guard for the rulebook rule + its `Mutation(...)` entry in
+- [x] T6 — Prose guard for the rulebook rule + its `Mutation(...)` entry in
       `skills/tests/test_mutation_harness.py`; confirm by mutation, not by eye.
-- [ ] T7 — Run all three suites from the repo root, checking exit codes before
+- [x] T7 — Run all three suites from the repo root, checking exit codes before
       any commit; update `cairn/DESIGN.md`'s hook inventory line (~line 49,
       which enumerates the shipped hooks) in the same commit.
 
@@ -103,6 +103,12 @@ snapshot at process start (M60); this milestone's evidence is fixture-level.
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-18: created by /milestone-plan; four plan-gate choices recorded as D-042.
+- 2026-07-18: branch `m71-idea-capture-intake-gate` cut from main; status in-progress.
+- 2026-07-18: T1 — hooks docs confirm MCP tool names ARE matchable; a matcher of only word chars is compared as an EXACT string, so the server-agnostic `mcp__.*__spawn_task` regex is used rather than the bare tool name.
+- 2026-07-18: T2–T7 landed in one checkpoint rather than per-task commits — deviation from the per-task cadence, recorded honestly; no task was skipped.
+- 2026-07-18: minor amendment — T7 grew to include `skills/tests/test_positioning_guard.py`'s hardcoded `HOOKS` tuple (the M48 registered-kind trap: it is the only check that DESIGN's inventory tracks `hooks/`).
+- 2026-07-18: verify clean — scripts 96, skills 234, hooks 60 (exit 0 each, read directly, no pipes); `cairn_validate` all-PASS.
+- 2026-07-18: status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -520,6 +520,53 @@ class TestMemoryGuard(RepoFixture):
         self.assertEqual(proc.stdout.strip(), "")
 
 
+class TestIdeaGuard(RepoFixture):
+    """The chip is paired with a candidate row, never blocked (D-042)."""
+
+    CHIP_TOOL = "mcp__ccd_session__spawn_task"
+
+    def chip_payload(self, tool_name, **extra):
+        return self.payload(
+            hook_event_name="PreToolUse",
+            tool_name=tool_name,
+            tool_input={"title": "Fix the thing", "prompt": "..."},
+            **extra,
+        )
+
+    def test_nudges_on_chip_creation_in_cairn_repo(self):
+        proc = run_hook("idea_guard.py", self.chip_payload(self.CHIP_TOOL))
+        self.assertEqual(proc.returncode, 0)
+        out = hook_json(proc)
+        self.assertEqual(out["hookEventName"], "PreToolUse")
+        # The nudge must name the durable home it is redirecting toward,
+        # not merely disapprove of the chip.
+        self.assertIn("candidate", out["additionalContext"])
+        self.assertIn("cairn/ROADMAP.md", out["additionalContext"])
+        # Softest non-blocking lever (D-042 choice 4, D-017's shape): the
+        # chip is created through the normal permission flow untouched.
+        self.assertNotIn("permissionDecision", out)
+
+    def test_fires_regardless_of_mcp_server_name(self):
+        # The matcher is suffix-shaped so a server rename cannot silently
+        # unwire the guard.
+        proc = run_hook(
+            "idea_guard.py", self.chip_payload("mcp__some_other_server__spawn_task")
+        )
+        self.assertIn("candidate", hook_json(proc)["additionalContext"])
+
+    def test_silent_on_non_chip_tool(self):
+        for tool in ("Write", "mcp__ccd_session__mark_chapter", "spawn_task"):
+            with self.subTest(tool=tool):
+                proc = run_hook("idea_guard.py", self.chip_payload(tool))
+                self.assertEqual(proc.returncode, 0)
+                self.assertEqual(proc.stdout.strip(), "")
+
+    def test_silent_on_missing_tool_name(self):
+        proc = run_hook("idea_guard.py", self.payload(hook_event_name="PreToolUse"))
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(proc.stdout.strip(), "")
+
+
 class TestCommitGuard(RepoFixture):
     def commit_payload(self, command, **extra):
         return self.payload(
@@ -634,6 +681,12 @@ class TestNonCairnNoOp(RepoFixture):
                     "file_path": "/home/u/.claude/projects/x/memory/n.md"
                 },
             ),
+            # a genuine chip tool name: the ONLY reason to no-op here is the
+            # non-cairn cwd, so this exercises that branch specifically.
+            "idea_guard.py": self.payload(
+                tool_name="mcp__ccd_session__spawn_task",
+                tool_input={"title": "Fix the thing"},
+            ),
         }
         (self.root / "junk.txt").write_text("dirty\n")  # dirty tree, still no-op
         for script, payload in payloads.items():
@@ -652,6 +705,7 @@ class TestNonCairnNoOp(RepoFixture):
             "commit_guard.py",
             "force_push_guard.py",
             "memory_guard.py",
+            "idea_guard.py",
         ):
             with self.subTest(script=script):
                 proc = subprocess.run(
@@ -697,6 +751,22 @@ class TestHooksRegistration(unittest.TestCase):
                 self.assertTrue(
                     any("merge_guard_post.py" in c for c in cmds), (event, cmds)
                 )
+
+    def test_idea_guard_registered_with_a_regex_mcp_matcher(self):
+        matchers = [
+            entry.get("matcher", "*")
+            for entry in self.config.get("PreToolUse", ())
+            if any("idea_guard.py" in h["command"] for h in entry["hooks"])
+        ]
+        self.assertEqual(len(matchers), 1, matchers)
+        matcher = matchers[0]
+        self.assertTrue(matcher.endswith("spawn_task"), matcher)
+        # Documented matcher semantics: a matcher of only letters, digits,
+        # `_`, `-`, spaces, `,` and `|` is compared as an EXACT string, so a
+        # bare `mcp__ccd_session__spawn_task` would wire the guard to one
+        # server and silently miss a renamed one. A regex metacharacter is
+        # what makes it a pattern — this asserts the matcher stays one.
+        self.assertRegex(matcher, r"[^\w\-, |]", matcher)
 
     def test_every_registered_hook_uses_the_standard_envelope(self):
         for event, entries in self.config.items():

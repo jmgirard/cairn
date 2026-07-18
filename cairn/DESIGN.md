@@ -40,16 +40,17 @@ transitions, human-gated merges, and a domain verification doctrine.
   (`r-package`, `python`, `docker-image`, `generic`); `cairn-init` instantiates one into a repo's
   `cairn/PROFILE.md`, and the operational skills read its slots.
 - `hooks/hooks.json` + python3 (stdlib) scripts (M07) — the enforcement
-  layer, all no-op outside cairn repos. Seven hooks: `session_context`
+  layer, all no-op outside cairn repos. Eight hooks: `session_context`
   (SessionStart context injection); `stop_guard` (Stop-guard on uncommitted
-  `cairn/` tracking); four PreToolUse guards — `merge_guard` (single-use
+  `cairn/` tracking); five PreToolUse guards — `merge_guard` (single-use
   `cairn/.merge-approved` marker, technically backing IP1),
   `force_push_guard` (denies force-pushes to the default branch — IP1's
   never-force-push line, mechanically backed; M60), `commit_guard`
-  (nudge against committing on the default branch), and `memory_guard` (GP4
-  memory-boundary nudge, D-017); and one PostToolUse/PostToolUseFailure
+  (nudge against committing on the default branch), `memory_guard` (GP4
+  memory-boundary nudge, D-017), and `idea_guard` (out-of-band idea-capture
+  nudge toward a candidate row, D-042); and one PostToolUse/PostToolUseFailure
   companion — `merge_guard_post` (restores the approval marker a failed
-  guarded merge consumed, deletes it on success; M60). The two nudges are
+  guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
 - `scripts/` + python3 (stdlib) reporters (M10) — the deterministic read
   layer: `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),
