@@ -167,33 +167,109 @@ def check_orphans(root, rows):
     return bad
 
 
-# An INDEX.md catalog line: `- <name>.md — one-line summary`. The filename
-# may be decorated (backticks, a [name](name) markdown link) — a semantically
-# correct entry must never trip a hard CHECK on formatting alone (D-023;
-# review F1/85), so the capture excludes decoration characters.
-_INDEX_LINE = re.compile(r"^\s*[-*]\s+[\[`]?([\w.-]+\.md)\b")
+# An INDEX.md catalog line: `- <name>.md — one-line summary`. The name may be
+# decorated (backticks, a [name](name) markdown link) and, since M79, may be a
+# path into a subdirectory — a semantically correct entry must never trip a
+# hard CHECK on formatting alone (D-023; review F1/85), so the capture excludes
+# decoration characters.
+_INDEX_LINE = re.compile(r"^\s*[-*]\s+[\[`]*([\w./-]+\.md)\b")
+# The M78 provenance block's three semantic tokens, read decoration-tolerantly
+# (M79-D1: D-023's no-false-positive doctrine is honoured in the parser, not
+# the severity). Leading `>`/`*`/`_`/`#`/backticks are stripped before the
+# heading match, so `**Provenance.**`, `__Provenance__`, and a bare
+# `Provenance.` all read alike; the date and the `from` pointer tolerate
+# bold/backtick decoration around them.
+# `\b` is the wrong boundary here: `_` is a word character in Python regex, so
+# `__Provenance__` would not match a trailing `\b`. Decoration boundaries are
+# therefore "not alphanumeric" lookarounds, which read through `*`, `_`, and
+# backticks alike.
+_D = r"[\s*_`]*"  # inline decoration between a keyword and its value
+# Both fields are searched across the whole block rather than pinned to the
+# heading line: M78 calls the block "prose in the page's own idiom", so a
+# hard-wrapped pointer must still read. The cost is a miss — an Extraction
+# line that happens to say "from" satisfies the source-pointer test — which is
+# the right side of D-023's "a missed weird format beats a false positive".
+_PROV_HEAD = re.compile(r"^[\s>*_`#]*provenance(?![A-Za-z0-9])", re.I)
+_PROV_INGESTED = re.compile(
+    rf"(?<![A-Za-z0-9])ingested(?![A-Za-z0-9]){_D}(\d{{4}}-\d{{2}}-\d{{2}})",
+    re.I,
+)
+_PROV_SOURCE = re.compile(rf"(?<![A-Za-z0-9])from(?![A-Za-z0-9]){_D}\S", re.I)
+
+
+def _provenance_block(path):
+    """The provenance paragraph of a references page: the `**Provenance.**`
+    line through to the next blank line (M78's block is prose in the page's
+    own idiom, not frontmatter, so the paragraph is the unit). Returns None
+    when the page carries no provenance heading at all."""
+    block = []
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            if block:
+                if not line.strip():
+                    break
+                block.append(line)
+            elif _PROV_HEAD.match(line):
+                block.append(line)
+    return "".join(block) if block else None
+
+
+def _reference_pages(refdir):
+    """Every committed .md page under cairn/references/, as paths relative to
+    that directory, INDEX.md excluded. Walks recursively (M79): a page in a
+    subdirectory is enforced exactly as a top-level page is. The gitignored
+    source shelf holds PDFs, not pages, and is skipped along with its legacy
+    `pdf/` name so an un-migrated repo's shelf is never walked."""
+    pages = []
+    for dirpath, dirnames, filenames in os.walk(refdir):
+        if dirpath == refdir:
+            dirnames[:] = [d for d in dirnames if d not in ("sources", "pdf")]
+        for name in filenames:
+            if not name.endswith(".md"):
+                continue
+            rel = os.path.relpath(os.path.join(dirpath, name), refdir)
+            if rel != "INDEX.md":
+                pages.append(rel.replace(os.sep, "/"))
+    return sorted(pages)
 
 
 def check_references(root):
-    """Every committed top-level cairn/references/*.md (except INDEX.md) has
-    an INDEX.md line, and every INDEX.md line's target exists on disk — the
-    references sibling of the roadmap<->disk orphan check (M57). No-ops when
-    references/INDEX.md is absent (scaffold-present owns that failure)."""
+    """Every committed cairn/references/ page (except INDEX.md) has an
+    INDEX.md line and a provenance block naming an ingested date and a source
+    pointer; every INDEX.md line's target exists on disk. The references
+    sibling of the roadmap<->disk orphan check (M57), given content teeth by
+    M79 so the check stops being a filename census. No-ops only when the
+    directory holds no pages at all — a genuinely not-adopted signal (M45);
+    an INDEX.md missing beneath real pages is reported here, not passed."""
     bad = []
     refdir = os.path.join(root, "cairn", "references")
+    if not os.path.isdir(refdir):
+        return bad
+    pages = _reference_pages(refdir)
     index = os.path.join(refdir, "INDEX.md")
     if not os.path.isfile(index):
+        if pages:
+            bad.append(
+                f"cairn/references/ holds {len(pages)} page(s) but no INDEX.md"
+            )
         return bad
     with open(index, encoding="utf-8") as f:
         listed = [m.group(1) for line in f if (m := _INDEX_LINE.match(line))]
-    for name in sorted(os.listdir(refdir)):
-        if (
-            name.endswith(".md")
-            and name != "INDEX.md"
-            and os.path.isfile(os.path.join(refdir, name))
-            and name not in listed
-        ):
-            bad.append(f"cairn/references/{name} has no INDEX.md line")
+    for rel in pages:
+        if rel not in listed:
+            bad.append(f"cairn/references/{rel} has no INDEX.md line")
+        block = _provenance_block(os.path.join(refdir, rel))
+        if block is None:
+            bad.append(f"cairn/references/{rel} has no provenance block")
+            continue
+        if not _PROV_INGESTED.search(block):
+            bad.append(
+                f"cairn/references/{rel} provenance names no ingested date"
+            )
+        if not _PROV_SOURCE.search(block):
+            bad.append(
+                f"cairn/references/{rel} provenance names no source pointer"
+            )
     for name in listed:
         if not os.path.isfile(os.path.join(refdir, name)):
             bad.append(

@@ -101,15 +101,15 @@ doctrine or template shape → M78 owns those.
       entirely. Human-authored markdown argues advisory; the shipped M78
       template argues enforceable. (RB tripwire: ip-touching — the answer sets
       whether a repo can be blocked by its own reference prose.)
-- [ ] T2. Implement the citation and ingested-date content checks against
+- [x] T2. Implement the citation and ingested-date content checks against
       M78's template shape, decoration-tolerant per D-023.
-- [ ] T3. Replace the flat `os.listdir` (`cairn_validate.py:189`) with a
+- [x] T3. Replace the flat `os.listdir` (`cairn_validate.py:189`) with a
       recursive walk, and remove the absent-`INDEX.md` PASS (`:185-186`) —
       keeping the M45 no-op only where it is genuinely a not-adopted signal.
-- [ ] T4. Extend `scripts/tests/test_scripts.py`: fixtures for the nested
+- [x] T4. Extend `scripts/tests/test_scripts.py`: fixtures for the nested
       page, the missing-INDEX directory, the decorated variants, and each new
       failing condition. Extend the shared `Tree.build()` fixture first (M24).
-- [ ] T5. Run the new check over this repo's real `cairn/references/` pages;
+- [x] T5. Run the new check over this repo's real `cairn/references/` pages;
       correct any failing page in place with the correction marked (D-045).
 - [ ] T6. Run the three suites from the repo root, check each exit code
       explicitly before any commit; append the work-log line.
@@ -130,6 +130,8 @@ doctrine or template shape → M78 owns those.
 
 - 2026-07-18: created by /milestone-plan. Gaps sourced from the M78-planning audit of `cairn_validate.py:177-202` — the check is a filename census, so an empty page with an INDEX line passes clean.
 - 2026-07-18: /milestone-implement started; branch `m79-references-content-check` cut from main. Baseline verify green (skills 324, scripts 111, hooks 72; each exit 0).
+- 2026-07-18: T2-T5 done — `check_references` now walks `references/` recursively, parses M78's provenance block (ingested date + `from` source pointer) decoration-tolerantly, and reports an absent INDEX.md over real pages instead of passing. Word-boundary note: `_` is a word char in Python regex, so `__Provenance__` needs non-alnum lookarounds, not `\b`.
+- 2026-07-18: T5 evidence — all 16 committed pages in this repo pass the new check unmodified; no page needed a D-045 in-place correction, so nothing is grandfathered.
 - 2026-07-18: T1 done — hard CHECK, user-selected at the implement gate; recorded as M79-D1 (milestone-local: the severity is this check's, not cairn-wide doctrine).
 - 2026-07-18: AMENDMENT (gated) — AC1 now checks a Provenance source pointer, not a citation line: M78's template scopes `**Citation.**` to published primary sources, so a blanket check contradicts it. Goal's "and a citation" clause is narrowed by this AC, not re-cut; Goal text left untouched (plan-owned, no amend mode).
 - 2026-07-18: AMENDMENT (gated) — `references/pdf/` → `references/sources/` rename folded into Scope In as AC8 / T7-T8, user-chosen at the implement gate. 8 ACs sits at the ~7 split tripwire; accepted as one coherent change rather than a split.
