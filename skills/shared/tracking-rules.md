@@ -252,7 +252,10 @@ adds alike).
   behind 1").
 - Milestone work on `m<nn>-<slug>`; hotfixes on `hotfix-<slug>`; both cut
   from the up-to-date default branch. Checkpoint commits are cheap — squash
-  erases them.
+  erases them. **An adopted external PR is the exception:** `/hotfix` checks
+  the contributor's branch out (`gh pr checkout <N>`) and leaves its name
+  alone — the branch is theirs, renaming it breaks the PR, and the PR number
+  is the identifier that matters.
 - Before branching or committing, check `git status`: a dirty tree with
   unrelated changes means ask the user — never sweep strangers into a
   checkpoint commit.

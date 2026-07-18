@@ -76,7 +76,7 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1 — Add the incoming-PR branch to `/hotfix` steps 1–2
+- [x] T1 — Add the incoming-PR branch to `/hotfix` steps 1–2
       (`skills/hotfix/SKILL.md:19-30`): tier-check the PR's diff against the
       hotfix bar first (too large → route to `/milestone-plan`, unchanged),
       then `gh pr checkout <N>`; state the branch-name exemption and mirror it
@@ -99,6 +99,12 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-18: created by /milestone-plan.
+- 2026-07-18: implement gate — inline both forms in steps 1–6; fork fallback
+  is ask-then-re-land-locally; commit_guard nudge mirror dropped (T1
+  amendment: the hook returns early off the default branch, so the exemption
+  text is unreachable there). All three user-selected.
+- 2026-07-18: T1 — /hotfix steps 1–2 carry the adopt-a-PR form; branch-name
+  exemption stated in tracking-rules git model. verify clean.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->

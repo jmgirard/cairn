@@ -16,18 +16,29 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
 
 ## Workflow
 
-1. **Tier check first.** Reproduce or at least localize the bug. This stays
+1. **Tier check first.** Reproduce or at least localize the bug. When the
+   input is a PR reference instead of a bug report (`#N`, a PR URL, "adopt
+   PR 12"), read the contributor's work first — `gh pr view <N>`,
+   `gh pr diff <N>` — and tier-check *that* diff. Either way this stays
    a hotfix only if it restores documented behavior and fits one sitting.
    If it needs a design decision, changes exported behavior beyond
    restoring what was documented, or won't fit one sitting — stop: add a
    `candidate` row (or offer a routing chip to `/milestone-plan` if it's
-   urgent) and say why. If an active milestone covers this code, flag the
-   overlap instead of racing it.
+   urgent) and say why. An incoming PR over the hotfix bar takes that same
+   route and becomes (or joins) a milestone — the disposition is unchanged,
+   only the entry point is new. If an active milestone covers this code,
+   flag the overlap instead of racing it.
 
-2. **Branch.** Check `git status` (dirty tree with unrelated changes → ask).
-   Branch `hotfix-<slug>` from the up-to-date default branch (detect it per
-   the tracking-rules git model; fetch, pull ff-only, push any unpushed local
-   commits).
+2. **Branch — cut one, or adopt the PR's.** Check `git status` (dirty tree
+   with unrelated changes → ask).
+   *Authoring a fix:* branch `hotfix-<slug>` from the up-to-date default
+   branch (detect it per the tracking-rules git model; fetch, pull ff-only,
+   push any unpushed local commits).
+   *Adopting a PR:* run `gh pr checkout <N>` — never cut a fresh branch,
+   which would orphan work that already exists. The contributor's branch
+   name is **exempt** from the `hotfix-<slug>` contract (tracking-rules, git
+   model): the branch is theirs, renaming it breaks the PR, and the PR
+   number is the identifier that matters.
 
 3. **Regression test first.** Write the test that fails because of the bug;
    confirm it fails; then fix; confirm it passes.
