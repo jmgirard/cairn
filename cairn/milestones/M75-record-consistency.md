@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M75: Record consistency — the `leave` disposition and MCP-matcher semantics
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP3   <!-- owner: plan · create/amend-via-gate -->
@@ -97,7 +97,7 @@ what IP3 forbids. Implement inherits the answer, not the question.
       `cairn/references/claude-code-hooks.md:94-100`, alongside the existing
       exact-vs-regex bullet. Re-read the page's `INDEX.md` line and confirm
       it still describes the page.
-- [ ] T4 — Guard T1 in `skills/tests/test_external_pr_intake.py` (it already
+- [x] T4 — Guard T1 in `skills/tests/test_external_pr_intake.py` (it already
       reads `tracking-rules.md` and owns the intake paragraph's PR half):
       a label-inclusive assert plus a `Mutation(...)` entry in
       `test_mutation_harness.py`. Run all three suites and `cairn_validate.py`;
@@ -110,6 +110,8 @@ what IP3 forbids. Implement inherits the answer, not the question.
 - 2026-07-18: T1 — rulebook Intake paragraph names `leave`, narrowed per D-044; phrase unique in file; 96/287/72 suites green.
 - 2026-07-18: T2 — no branch work needed: D-044 landed in the plan commit a00653d, before the branch was cut. Ticked as satisfied, not re-authored.
 - 2026-07-18: T3 — MCP-matcher bullet added to the hooks reference; exemplar verified live against hooks.json:67 + idea_guard.py:28 (same suffix shape); INDEX line amended to record the non-official-docs provenance.
+- 2026-07-18: T4 — two label-inclusive guards + two mutation entries; label swap (`leave`→`ignore`) proven to fail the suite, not just blanking. Verify clean: scripts 96 / skills 289 / hooks 72, cairn_validate 0, exit codes checked unpiped (M56/M65).
+- 2026-07-18: all tasks done; status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
