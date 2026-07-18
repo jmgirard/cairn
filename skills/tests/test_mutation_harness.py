@@ -31,6 +31,7 @@ Mutation = collections.namedtuple("Mutation", "guard test target block")
 
 RULES = "skills/shared/tracking-rules.md"
 HOTFIX = "skills/hotfix/SKILL.md"
+MILESTONE = "skills/milestone/SKILL.md"
 
 REGISTRY = [
     Mutation(
@@ -892,6 +893,34 @@ REGISTRY = [
         test="TestIntakeRouting.test_intake_paragraph_names_hotfix_as_the_door",
         target=RULES,
         block="**`/hotfix` is the door**",
+    ),
+    # M74 (D-043, third deliverable): the audit's inbox sweep. Four distinct
+    # rules, four entries — the commands, the search-first ordering, the
+    # degradation floor, and the PR routing each carry the step independently,
+    # so a single exemplar would leave three of them unproven.
+    Mutation(
+        guard="test_issue_triage",
+        test="TestInboxEnumeration.test_step_names_the_issue_command",
+        target=MILESTONE,
+        block="`gh issue list --state open --json number,title,url` for issues,",
+    ),
+    Mutation(
+        guard="test_issue_triage",
+        test="TestInboxEnumeration.test_step_applies_search_first_before_proposing",
+        target=MILESTONE,
+        block="apply the search-first rule to every hit before proposing",
+    ),
+    Mutation(
+        guard="test_issue_triage",
+        test="TestDegradation.test_degradation_is_never_an_audit_failure",
+        target=MILESTONE,
+        block="An unreachable inbox is a reported gap, never an audit `FAIL`.",
+    ),
+    Mutation(
+        guard="test_issue_triage",
+        test="TestDispositions.test_pr_routing_reuses_m73s_door",
+        target=MILESTONE,
+        block="This is the door M73 opened; route to it rather than inventing",
     ),
 ]
 

@@ -85,9 +85,9 @@ The script deliberately does not judge these — do them yourself and report:
   second row. Carry one proposed disposition per item to §3, where the user
   decides; reading the inbox is the whole mandate here — never write to
   GitHub (no labels, comments, or closes) and never add a row unprompted.
-  **When `gh` is missing, unauthenticated, or the repo has no remote:** name
-  which of the three it was, skip the sweep, and carry on with the rest of
-  the audit — an unreachable inbox is a reported gap, never an audit `FAIL`.
+  **When `gh` is missing, unauthenticated, or the repo has no remote:**
+  name which of the three it was, skip the sweep, and finish the audit.
+  An unreachable inbox is a reported gap, never an audit `FAIL`.
 
 Update "Last hygiene check: YYYY-MM-DD" in ROADMAP.md.
 

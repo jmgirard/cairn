@@ -84,7 +84,7 @@ issues — the scripts stay offline and stdlib-only
 - [x] T2 — Add the triage disposition chip to §3 (`:83-101`), with the
       verbatim-above-the-chip requirement stated at the step; route the PR
       dispositions to `/hotfix` per M73.
-- [ ] T3 — Write the guard test; register it in the mutation harness; re-run
+- [x] T3 — Write the guard test; register it in the mutation harness; re-run
       `test_gate_wording.py` and `test_gate_conclusion_preview.py`, which
       assert on `/milestone`'s chip wording.
 - [ ] T4 — Bring the doc surfaces in line with M73: rewrite
@@ -103,6 +103,7 @@ issues — the scripts stay offline and stdlib-only
 - 2026-07-18: implement started on m74-issue-triage; gate settled three open choices (bullet not subsection, extend §3's existing triage option not a second chip, new guard file).
 - 2026-07-18: T1 — §2 untriaged-inboxes bullet is now a concrete step (both `gh` commands, search-first cross-check, three-case degradation clause); kept inside the `:64` judgment block per plan. Skills suite green (267).
 - 2026-07-18: T2 — §3 resolves the sweep: four named dispositions (candidate row / `/hotfix` / `/milestone-plan` / leave), PRs routed to M73's door, verbatim-above-the-chip stated; extended the existing triage option rather than adding a second chip. Both registered blocks verified still unique.
+- 2026-07-18: T3 — new `test_issue_triage.py` (18 tests) + 4 mutation entries (commands, search-first ordering, degradation floor, PR routing), each block verified unique and proven to fail when blanked. Hit the M23/M64 reflow trap live: the degradation directive wrapped mid-phrase, so the prose was reflowed to keep it on one line rather than weakening the assert. Skills suite 285 green.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
