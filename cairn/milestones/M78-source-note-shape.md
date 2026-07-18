@@ -7,7 +7,7 @@
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** `m78-source-note-shape`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m78-source-note-shape` · https://github.com/jmgirard/cairn/pull/76   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -46,31 +46,31 @@ candidate row, against M56's standing rejection.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] `skills/shared/validation-doctrine.md` states the standing-fact vs
+- [x] `skills/shared/validation-doctrine.md` states the standing-fact vs
       dated-observation split, naming both categories with their members on
       one physical line (the M74/M76 label→SET guard shape), and binds it to
       both committed page types.
-- [ ] `skills/shared/templates/source-note.md` exists and carries all seven
+- [x] `skills/shared/templates/source-note.md` exists and carries all seven
       provenance fields — citekey, full citation, source pointer (the shelf
       PDF path, or the URL and retrieval record for a non-PDF source),
       ingested date, ingesting milestone, pagination basis (`—` where the
       source is unpaginated), extraction-verified status — plus the content
       elements at `validation-doctrine.md:76-79` and a dated `## Open
       questions` section.
-- [ ] The Source ingestion paragraph names the template path, so the page shape
+- [x] The Source ingestion paragraph names the template path, so the page shape
       is reachable from the doctrine that mandates it.
-- [ ] A prose guard locks the doctrine rule and is registered in
+- [x] A prose guard locks the doctrine rule and is registered in
       `skills/tests/test_mutation_harness.py`; blanking its block fails the
       guard.
-- [ ] A test runs the real field check over the **shipped**
+- [x] A test runs the real field check over the **shipped**
       `skills/shared/templates/source-note.md` (not a fixture copy) and fails
       when a mandated field is removed — the M77 pairing rule.
-- [ ] `cairn/DESIGN.md:38`'s template inventory names the new template, and a
+- [x] `cairn/DESIGN.md:38`'s template inventory names the new template, and a
       repo-wide grep confirms no other inventory or count word went stale.
-- [ ] Verify clean per `cairn/PROFILE.md`: `python3 -m unittest discover` over
+- [x] Verify clean per `cairn/PROFILE.md`: `python3 -m unittest discover` over
       `skills/tests`, `scripts/tests`, and `hooks/tests`, each exit 0, run from
       the repo root and not tail-piped (M56/M65).
-- [ ] All 16 committed pages in this repo's `cairn/references/` carry a
+- [x] All 16 committed pages in this repo's `cairn/references/` carry a
       `**Provenance.**` block whose ingested date and ingesting milestone
       match `git log --diff-filter=A` for that file (`--follow` where
       renamed). No date or milestone is asserted that git does not evidence,
@@ -163,3 +163,62 @@ nothing detects the omission.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as is the work log (D-046); evidence never scrambles plan-owned content. -->
+
+### Acceptance-criteria evidence (2026-07-18, fresh)
+
+- **AC1** — `validation-doctrine.md:88,89`: each definition present exactly once
+  and complete on one physical line; `:86` binds both page types
+  ("source note and synthesis note alike"). Falsifiability proven by live
+  mutation: inverting which label owns which enumeration failed both label
+  asserts (`test_standing_fact_label_carries_its_members`,
+  `test_dated_observation_label_carries_its_members`); file restored byte-clean.
+  This closes the M74/M76 label→SET trap for this rule.
+- **AC2** — field-by-field check over the shipped template: all seven
+  provenance fields present, plus all six content elements from
+  `validation-doctrine.md:76-79` (dated `## Open questions`, `— observed
+  YYYY-MM-DD` marker, `## Traces to`, `## Extracted values`, verbatim quoting,
+  page/table anchors).
+- **AC3** — `validation-doctrine.md:77` names
+  `skills/shared/templates/source-note.md` inside the Source ingestion
+  paragraph.
+- **AC4** — `test_mutation_harness.py` 9 tests rc=0; the four M78 registrations
+  each blank cleanly and fail their guard. Registry-completeness meta-test
+  green (it FAILed before registration, which is how the gap was found).
+- **AC5** — demonstrated by deletion, not by construction: removing the
+  `Extraction:` field from the SHIPPED template failed 2 tests
+  (`test_every_provenance_field_is_present` at
+  `field='extraction-verified status'`, and
+  `test_unverified_extraction_is_an_expressible_state`); restore returned the
+  suite to rc=0 with an empty diff.
+- **AC6** — `DESIGN.md:38-39` names the new template. Repo-wide sweep for
+  other inventories/count words: `DESIGN.md:38` is the only one;
+  `test_positioning_guard.py`'s hardcoded tuple is hooks-only, not templates.
+- **AC7** — from the repo root, unpiped, exit codes read explicitly:
+  skills 319 rc=0 · scripts 111 rc=0 · hooks 72 rc=0.
+- **AC8** — a verification script re-derived citekey, ingested date and
+  ingesting milestone for all 16 pages from
+  `git log --follow --diff-filter=A`: 16/16 match, 0 problems, every block
+  carrying `Pagination:` and `Extraction:`. Diff is `+64 / -0` across the 16
+  files, so D-045's added-not-rewritten discipline is proven mechanically, not
+  asserted. 5 pages now carry an unverified or partly-verified extraction
+  status that was previously indistinguishable from a verified one.
+
+### Consistency gate
+
+`cairn_validate` rc=0 — 15 PASS, 3 advisory OK, and one advisory WARN:
+`M78: 8 acceptance criteria (>7 tripwire)`. The WARN was raised and accepted at
+implement with the rationale logged (AC8 is a compliance backfill for the rule
+this milestone ships, not independent capability; deferring it would merge a
+rule the repo itself breaks). Not a gate failure.
+Profile is `generic` — its `consistency-gate` slot names no toolchain checks,
+so that half is a clean no-op. No IP/GP line changed in the diff, so
+`cairn_impact` is not run (step 4).
+
+### Independent review — three lenses + scorer
+
+- **[S] prior-PR-comments lens:** clean no-op. 7 PRs that previously touched
+  these files examined (#31, #40, #51, #55, #56, #63, #74) — 0 inline review
+  comments, 0 review bodies. A repo-wide search confirmed exactly one PR in
+  cairn's history carries any comment at all (#29, dropped, unrelated
+  substance). Zero findings; no lesson regressed.
+
