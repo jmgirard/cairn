@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** `m77-worklog-cap-exemption`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m77-worklog-cap-exemption` / https://github.com/jmgirard/cairn/pull/75   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -37,26 +37,26 @@ monotonic growth of an un-editable section).
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: a fixture milestone whose `## Work log` would push it over cap
+- [x] AC1: a fixture milestone whose `## Work log` would push it over cap
       measures under cap, and the heaviest-first breakdown emitted by
       `check_caps` never contains the work-log heading; a fixture with no work
       log counts exactly as before (back-compat), and a fenced `## Work log`
       inside a ``` block is not treated as the section (M45 fence-awareness).
-- [ ] AC2: `cairn_validate` renders a `WARN` naming each work-log entry that
+- [x] AC2: `cairn_validate` renders a `WARN` naming each work-log entry that
       spans more than one physical line, renders `OK` when every entry is one
       line, and its exit code is unchanged in both cases.
-- [ ] AC3: `skills/shared/tracking-rules.md` states the work log is exempt from
+- [x] AC3: `skills/shared/tracking-rules.md` states the work log is exempt from
       the milestone cap with the D-045/IP4 rationale, its cap-remedy text no
       longer directs the heaviest-section trim at the work log, and the
       milestone template's `## Work log` owner comment states the exemption.
-- [ ] AC4: every new guard assertion is registered in
+- [x] AC4: every new guard assertion is registered in
       `skills/tests/test_mutation_harness.py` and the harness passes; the
       exemption's label→rule mapping is pinned label-inclusively on one physical
       line of the target (M74/M76), verified by a by-hand swap check.
-- [ ] AC5: the `generic` profile's verify slot is clean — all three suites
+- [x] AC5: the `generic` profile's verify slot is clean — all three suites
       (`scripts/tests`, `skills/tests`, `hooks/tests`) exit 0 — and
       `cairn_validate.py` exits 0 on this repo.
-- [ ] AC6: `cairn/DECISIONS.md` carries D-046 annotating D-030, recording the
+- [x] AC6: `cairn/DECISIONS.md` carries D-046 annotating D-030, recording the
       exemption, the warn-not-fail severity, and the Decisions-section rejection.
 
 ## Coverage
@@ -111,6 +111,8 @@ monotonic growth of an un-editable section).
 - 2026-07-18: T7 — 6 new guards + 5 mutation entries (added `TEMPLATE` target); skills 298 -> 304. Set-membership assert pins both members on one physical line per M74/M76.
 - 2026-07-18: T7 — by-hand SWAP check (blanking cannot simulate a swap): exchanging `## Review` and `## Work log` in the exempt-set line fails the guard, exit 1; file restored, suite green.
 - 2026-07-18: T5 live-fire against real history — M76's plan-commit revision shows 3 wrapped continuation lines the advisory would flag, and its merged revision 1 (a stray non-entry prose line); M76's body measures 100 under the exemption versus the 121 it measured under the old rules. The 58-line peak itself is unreachable (squash-merge erased the branch commits).
+- 2026-07-18: review trip 1 — gate FAILED on AC4: six new guard asserts but only five mutation entries; `test_stated_advisory_label_matches_the_emitted_label` was unregistered. Status -> in-progress; draft PR #75 opened.
+- 2026-07-18: AC4 fix — registered the sixth entry (block `` `work-log format` ``, unique in the rulebook). Declined the available charitable reading (that computed stated<->enforced couplings are exempt by the `test_stated_cap_matches_enforced_cap` precedent) — the criterion says every new assert, and reinterpreting it at review is what AC fencing forbids. Registry 153 -> 154; skills stays 304, exit 0.
 - 2026-07-18: T8 — all eight tasks done; skills 304 / scripts 108 / hooks 72 exit 0, cairn_validate exit 0 with `OK work-log format`; M77's own body measures 102 under the new rules versus 118 under the old, and its breakdown no longer lists the work log; status -> review.
 
 ## Decisions
@@ -121,3 +123,47 @@ monotonic growth of an un-editable section).
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55):
      only the plan-owned body above counts; evidence never scrambles it. -->
+
+### Trip 1 (2026-07-18) — FAILED on AC4
+
+AC4 requires every new guard assertion to be mutation-registered. Six new
+asserts shipped with five entries; `test_stated_advisory_label_matches_the_emitted_label`
+was unregistered. A charitable reading was available — the pre-existing
+`test_stated_cap_matches_enforced_cap` is also unregistered, so computed
+stated↔enforced couplings look exempt by precedent — and was declined, because
+reinterpreting a criterion at review is exactly what AC fencing forbids.
+Returned to `in-progress`; fixed by registering the sixth entry (block
+`` `work-log format` ``, verified unique in the rulebook); registry 153 → 154.
+
+### Trip 2 (2026-07-18) — evidence per criterion
+
+- **AC1 — PASS.** `TestMilestoneBodyLineCount` + `TestMilestoneSectionLineCounts`
+  19 tests OK. Over-cap-with-work-log measures under cap; no-work-log and
+  no-Review files count as before; fenced `## Work log` stays content;
+  `## Work log notes` stays counted (exact match only). `check_caps`
+  breakdown test asserts both `Review` and `Work log` absent, OK.
+  Invariant `preamble + sum(sections) == body` re-proven with a work log present.
+- **AC2 — PASS.** `TestWorkLogFormatAdvisory` 6 tests OK: wrapped entry emits
+  `WARN work-log format` with exit 0 and "all checks passed"; one-line entries
+  emit `OK`; blanks/comments are not continuations; finding carries `file:line`;
+  archived summaries skipped.
+- **AC3 — PASS.** Greps against the shipped surface return the exempt-set
+  sentence (1 occurrence), the advisory-warns clause, the
+  "both cap-exempt sections are omitted, so the remedy can never aim" remedy
+  clause, and the template's "EXEMPT from the 150-line cap (D-046)".
+- **AC4 — PASS (after trip 1).** `test_milestone_cap_exemption` 11 tests OK;
+  mutation harness OK via `discover` (dotted-name run dies on `import
+  mutation_engine` — M54). 10 registered entries for this guard, 6 of them new.
+  Swap check by hand: exchanging `## Review` and `## Work log` in the exempt-set
+  line fails the guard (exit 1); file restored, suite green.
+- **AC5 — PASS.** skills 304 / scripts 108 / hooks 72, all exit 0;
+  `cairn_validate.py` exit 0, `OK work-log format`.
+- **AC6 — PASS.** `cairn/DECISIONS.md:1100` carries D-046 annotating D-030.
+
+### Consistency gate (2026-07-18)
+
+`cairn_validate` exit 0, all checks passed, 3 advisories OK.
+`cairn_impact --changed`: no changed principles — IP4 is worked *under*, not
+altered, and `cairn/DESIGN.md` is absent from the branch diff entirely, which
+is the strongest form of the IP4-untouched claim.
+Toolchain `consistency-gate` slot: `generic` names no checks — clean no-op.

@@ -276,6 +276,18 @@ REGISTRY = [
         target=TEMPLATE,
         block="EXEMPT from the 150-line cap (D-046)",
     ),
+    # The stated↔enforced label coupling registers too, unlike its cap-number
+    # sibling: that one compares two computed numbers, but this one's rulebook
+    # half IS a prose block, so blanking the label proves the guard catches its
+    # deletion. Registered because M77's AC4 says every new assert registers —
+    # the "computed couplings are exempt" reading would have been a review-time
+    # reinterpretation of the criterion.
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_stated_advisory_label_matches_the_emitted_label",
+        target=RULES,
+        block="`work-log format`",
+    ),
     # M59 (RR01 rec 7): run-and-read — skills never enumerate validate's
     # internals; one entry per positive assert, negatives ride along (M54).
     Mutation(
