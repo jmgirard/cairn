@@ -93,7 +93,7 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
       `skills/cairn-init/SKILL.md:103`, `cairn/LESSONS.md:8` (the file's own
       header), `skills/tests/test_lessons_loop.py:3` (docstring). Verify with a
       repo-wide `git grep` per AC3's exemption list, not a per-file read (M48).
-- [ ] T4 — sweep the stale matcher rule: rewrite the comment at
+- [x] T4 — sweep the stale matcher rule: rewrite the comment at
       `hooks/tests/test_hooks.py:912` and the loose echo at
       `references/claude-code-hooks.md:105` to the split-then-exact-match rule.
       Read the corrected rule out of `references/claude-code-hooks.md`'s
@@ -127,6 +127,11 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
   <50 cap (49 -> 51). Compressed the header back to 3 lines rather than prune
   real lessons for boilerplate; file now 49. The cap remedy landed on the file
   whose mis-labelling started the milestone.
+- 2026-07-18: T4 — matcher rule corrected at `hooks/tests/test_hooks.py:912`
+  and `references/claude-code-hooks.md:105`, the latter marked
+  `(corrected M76)` — the new rule's first application, dogfooded. Left
+  `:121` alone: it verbatim-quotes Claude Code's own shipped warning, which is
+  accurate for the narrower `mcp__server` case it describes.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
