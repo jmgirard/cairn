@@ -123,6 +123,7 @@ opposite protections against the same parser).
 - 2026-07-18: review findings — 3 lenses + scorer; 5 diff-bug findings, 3 scored >=80 and 4 sub-threshold, all fixed on the branch (F1/F2/F3 were one root cause: negation read as a phrase list instead of a clause property). 4 regression tests added; shipped-page classification unchanged.
 - 2026-07-18: merge gate — approval WITHHELD by user; not a gate failure (all six criteria pass as written, consistency gate green). Requested: amend Scope so the plan text describes the shipped clause-scoped mechanism rather than the superseded leading-clause one. Status back to in-progress, logged as T8; PR #81 stays open.
 - 2026-07-18: T8 — Scope amended via the step-6 gate: the mechanism sentence now states the shipped clause-scoped rule instead of the superseded leading-clause one, and the stale `:771-803` line reference is dropped. User chose Scope-only; AC1 and T2 left as written, with the amendment note recording why. Documentation only, no code change. Status back to review.
+- 2026-07-18: review trip 2 — diff since the trip-1 gate is documentation-only (one file, no code), so the lenses were not re-spawned; all six criteria re-executed green and the consistency gate re-confirmed by command. No criterion wording or Coverage mapping moved.
 
 ## Decisions
 
@@ -161,7 +162,23 @@ opposite protections against the same parser).
 
 ## Review
 
-**PR** https://github.com/jmgirard/cairn/pull/81 · reviewed 2026-07-18.
+**PR** https://github.com/jmgirard/cairn/pull/81 · reviewed 2026-07-18
+(two trips — trip 2 after the T8 Scope amendment).
+
+### Trip 2 (2026-07-18) — re-confirmation after a documentation-only amendment
+
+Trip 1 withheld merge approval pending the T8 Scope amendment, not on any
+gate or criterion failure. The diff since the trip-1 gate touches one file
+(`cairn/milestones/M83-…md`, +20/−4) and no code, so the trip-1 lens findings
+and their fixes stand unchanged; the lenses were not re-spawned over an
+identical code diff.
+
+Re-confirmed by command: all six criteria re-executed green (suites 159 / 356
+/ 72, each `rc=0`; the eight targeted criterion tests each `rc=0`; one
+`_last_verified` call site); consistency gate `cairn_validate` exit 0, 15
+PASS, no FAIL, no WARN. No acceptance-criterion text and no Coverage mapping
+changed in the amendment — the only ticked line touched is task T8 — so every
+tick still stands against the evidence recorded below.
 
 ### Acceptance-criteria evidence (fresh, by command)
 
