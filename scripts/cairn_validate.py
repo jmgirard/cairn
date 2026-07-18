@@ -252,8 +252,15 @@ def _provenance_block(path):
       a decoy line — a `## Provenance` section heading above the real block —
       cannot swallow the page's provenance and fail it.
     - A run is the heading line plus the following non-blank lines; when that
-      yields neither semantic field, the next paragraph is pulled in too, so
-      a label alone on its own line still finds its body below the blank.
+      yields neither semantic field — or, since M81, no extraction status —
+      the next paragraph is pulled in too, so a label alone on its own line
+      still finds its body below the blank. M81 added the third field to the
+      continuation test because the two-field version stopped at the blank
+      whenever the ingested date had already been found, leaving a page whose
+      `Extraction:` label sat alone reported as carrying no status at all —
+      a false positive on a page that has one. Extending a run only ever
+      makes the parser more generous, so no page that passed before can fail
+      now (D-023: a miss beats a false positive).
 
     Returns None when the page carries no provenance heading at all."""
     with open(path, encoding="utf-8") as f:
@@ -267,7 +274,10 @@ def _provenance_block(path):
             run.append(lines[j])
             j += 1
         text = "\n".join(run)
-        if not (_PROV_INGESTED.search(text) or _PROV_SOURCE.search(text)):
+        if not (
+            (_PROV_INGESTED.search(text) or _PROV_SOURCE.search(text))
+            and _extraction_status(text)
+        ):
             while j < len(lines) and not lines[j].strip():
                 j += 1
             while j < len(lines) and lines[j].strip():
@@ -667,7 +677,7 @@ _LOG_PREVIEW = 60
 # exactly like a confirmed one. These read that status the same
 # decoration-tolerant way `_provenance_block` reads its heading.
 _PROV_EXTRACTION = re.compile(
-    rf"^[\s>*_`#]*extraction(?![A-Za-z0-9]){_D}:(.*)$", re.I | re.M
+    rf"^[\s>*_`#]*extraction(?![A-Za-z0-9]){_D}:(.*)$", re.I
 )
 # The `— observed YYYY-MM-DD` stamp records when the STATUS was written, not
 # when the source was re-read. It is stripped before any date is taken out of
@@ -704,6 +714,31 @@ def _iso(text):
     return out
 
 
+def _extraction_status(block):
+    """The `Extraction:` status text of a provenance block, or None when the
+    block carries no such field. A label alone on its line takes the next
+    non-blank line as its body — M78 calls the block "prose in the page's own
+    idiom", and `_provenance_block` already reads a label-alone layout that
+    same generous way, so the sub-field must not be stricter than its block.
+    Only the line the status STARTS on is read: the shipped templates state
+    the status is one physical line however long, and a wrapped continuation
+    is a preferred miss (D-023), never a false flag — an unread continuation
+    falls through to the ingested date, which never invents staleness."""
+    lines = block.splitlines()
+    for i, line in enumerate(lines):
+        m = _PROV_EXTRACTION.match(line)
+        if not m:
+            continue
+        rest = m.group(1).strip(" *_`")
+        if rest:
+            return rest
+        for nxt in lines[i + 1:]:
+            if nxt.strip():
+                return nxt.strip()
+        return ""
+    return None
+
+
 def _last_verified(block):
     """When this page's extraction was last checked against its source, as
     ("ok", date) / ("never", None) / ("exempt", None) / ("missing", None) /
@@ -717,10 +752,10 @@ def _last_verified(block):
       4. otherwise the block's ingested date — "verified at ingestion", the
          commonest shipped form, literally names it, and demanding an explicit
          date there would falsely flag five template-sanctioned pages."""
-    m = _PROV_EXTRACTION.search(block)
-    if not m:
+    raw = _extraction_status(block)
+    if not raw:
         return "missing", None
-    status = _OBSERVED_STAMP.sub("", m.group(1))
+    status = _OBSERVED_STAMP.sub("", raw)
     if _NOTHING_TO_VERIFY.search(status):
         return "exempt", None
     if _UNVERIFIED.search(status):

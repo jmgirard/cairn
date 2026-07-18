@@ -13,8 +13,10 @@ known-bad tree would be the failure that matters.
 
 import ast
 import copy
+import datetime
 import os
 import pathlib
+import re
 import shutil
 import subprocess
 import sys
@@ -544,6 +546,277 @@ class TestReferencesCheck(ScriptCase):
         self.assertEqual(proc.returncode, 1, proc.stdout)
         self.assertIn("PASS  references index<->disk", proc.stdout)
         self.assertIn("FAIL  scaffold present", proc.stdout)
+
+
+def days_ago(n):
+    """An ISO date n days before today. Fixture dates are RELATIVE, never
+    literal: a literal date fixture silently changes meaning as the calendar
+    moves, so a suite green today would start flagging its own fixtures once
+    they aged past the threshold."""
+    return (datetime.date.today() - datetime.timedelta(days=n)).isoformat()
+
+
+# The three axes AC2 varies INDEPENDENTLY (LESSONS :24 — varying one axis at a
+# time passes vacuously on the others, so these are crossed, not walked).
+DECORATIONS = ("{}", "**{}**", "_{}_", "`{}`")
+LAYOUTS = ("inline", "label-alone", "wrapped")
+
+
+def prov_page(status, ingested=None, deco="{}", layout="inline", decoy=False):
+    """A committed references page whose provenance block carries `status` as
+    its extraction status, rendered at one point of the decoration × layout
+    grid. `decoy` prepends a `## Provenance` SECTION heading above the real
+    block — the shape that must not swallow the page's provenance."""
+    ingested = ingested or days_ago(1)
+    head, label = deco.format("Provenance."), deco.format("Extraction:")
+    text = "# page\n\n"
+    if decoy:
+        text += "## Provenance\n\nA section heading, not the block itself.\n\n"
+    text += (
+        f"{head} Ingested {ingested} by M81 from "
+        "`cairn/references/sources/x.pdf` (gitignored).\nPagination: —.\n"
+    )
+    if layout == "label-alone":
+        text += f"{label}\n\n{status}\n"
+    elif layout == "wrapped":
+        cut = status.find(" ", len(status) // 2)
+        text += f"{label} {status[:cut]}\n{status[cut + 1:]}\n"
+    else:
+        text += f"{label} {status}\n"
+    return text + "\n"
+
+
+class TestReferencesStaleness(ScriptCase):
+    """M81: the provenance block's `Extraction:` status gets a reader. M56
+    adopted LLM Wiki's Lint op; M57 shipped only its INDEX↔disk half and the
+    "stale claims" clause was lost in scoping — this is the remainder.
+
+    WARN-tier throughout (M81-D1): every case below asserts exit 0 alongside
+    its finding, because an advisory that moved the exit code would be the
+    validate gate making the judgment call D-029 keeps out of it."""
+
+    ADVISORY = "references staleness"
+
+    def install(self, root, name="notes.md", **kw):
+        (root / "cairn" / "references" / name).write_text(prov_page(**kw))
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            f"# Index\n\n- {name} — a committed page\n"
+        )
+        return run("cairn_validate.py", root)
+
+    def assertFlagged(self, proc, fragment):
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn(f"WARN  {self.ADVISORY}", proc.stdout)
+        self.assertIn(fragment, proc.stdout)
+
+    def assertClean(self, proc):
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn(f"OK    {self.ADVISORY}", proc.stdout)
+
+    # --- the two flags, and the case that must stay quiet -------------------
+
+    def test_never_verified_page_is_flagged(self):
+        proc = self.install(
+            self.tree.build(),
+            status="unverified — first pass, values not yet re-read against "
+            f"the source — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(
+            proc, "cairn/references/notes.md: extraction records no verified "
+            "re-check against the source"
+        )
+
+    def test_long_unverified_page_is_flagged(self):
+        old = days_ago(400)
+        proc = self.install(
+            self.tree.build(),
+            ingested=old,
+            status=f"verified {old} against the source — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, f"cairn/references/notes.md: last verified {old}")
+        self.assertIn("(threshold 180)", proc.stdout)
+
+    def test_recently_verified_page_is_not_flagged(self):
+        proc = self.install(
+            self.tree.build(),
+            status=f"verified {days_ago(3)} against the source "
+            f"— observed {days_ago(0)}.",
+        )
+        self.assertClean(proc)
+
+    def test_page_just_inside_the_threshold_is_not_flagged(self):
+        # The boundary is `> 180`, not `>= 180`: a page verified exactly at the
+        # threshold has not yet passed it.
+        proc = self.install(
+            self.tree.build(),
+            ingested=days_ago(180),
+            status=f"verified {days_ago(180)} against the source "
+            f"— observed {days_ago(0)}.",
+        )
+        self.assertClean(proc)
+
+    # --- the parse decisions settled at the implement gate -------------------
+
+    def test_observed_stamp_is_not_read_as_a_verification_date(self):
+        # THE defeat-the-check case. Every status ends `— observed <today>`,
+        # which is when the STATUS was written, not when the source was
+        # re-read. Left in, it is always the freshest date on the line and the
+        # advisory would read its own write stamp and never fire again.
+        old = days_ago(400)
+        proc = self.install(
+            self.tree.build(),
+            ingested=old,
+            status=f"verified {old} against the source — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, f"last verified {old}")
+
+    def test_undated_at_ingestion_status_ages_from_the_ingested_date(self):
+        # "verified at ingestion" is the commonest shipped form and names no
+        # date of its own; it ages from the date the block already records.
+        proc = self.install(
+            self.tree.build(),
+            ingested=days_ago(400),
+            status="verified at ingestion — full source read; not re-read "
+            f"since — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, f"last verified {days_ago(400)}")
+
+    def test_undated_at_ingestion_status_is_quiet_while_recent(self):
+        proc = self.install(
+            self.tree.build(),
+            ingested=days_ago(5),
+            status="verified at ingestion — full source read; not re-read "
+            f"since — observed {days_ago(0)}.",
+        )
+        self.assertClean(proc)
+
+    def test_nothing_to_reverify_is_exempt_however_old(self):
+        # A first-hand record has no external source to re-read; asking it to
+        # re-verify asks the impossible. Exemption is earned by the status
+        # SAYING so, never by page type.
+        proc = self.install(
+            self.tree.build(),
+            ingested=days_ago(4000),
+            status="first-hand record, nothing to re-verify against "
+            f"— observed {days_ago(0)}.",
+        )
+        self.assertClean(proc)
+
+    def test_derived_synthesis_note_still_ages(self):
+        # The exemption is NOT "synthesis notes don't age": a derived page is
+        # only as current as its inputs, and says so with a date.
+        old = days_ago(400)
+        proc = self.install(
+            self.tree.build(),
+            status="derived — no external source of its own, only as current "
+            f"as its inputs, none re-read since {old} — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, f"last verified {old}")
+
+    def test_freshest_date_in_a_multi_date_status_wins(self):
+        # A page corrected in place after ingestion has been re-read since;
+        # the status records both dates and the later one is the answer.
+        proc = self.install(
+            self.tree.build(),
+            ingested=days_ago(400),
+            status=f"verified against the docs {days_ago(400)}; the matcher "
+            f"section was corrected in place at M75 ({days_ago(2)}) "
+            f"— observed {days_ago(0)}.",
+        )
+        self.assertClean(proc)
+
+    def test_page_with_no_extraction_status_is_flagged(self):
+        root = self.tree.build()
+        (root / "cairn" / "references" / "notes.md").write_text(
+            "# page\n\n**Provenance.** Ingested "
+            f"{days_ago(1)} by M81 from `cairn/references/sources/x.pdf`.\n"
+        )
+        (root / "cairn" / "references" / "INDEX.md").write_text(
+            "# Index\n\n- notes.md — a committed page\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertFlagged(
+            proc, "cairn/references/notes.md: provenance records no "
+            "extraction status"
+        )
+
+    # --- AC2: the three axes, varied independently ---------------------------
+
+    def test_decoration_layout_and_phrasing_vary_independently(self):
+        # Crossed, not walked: M79's lesson is that holding two axes at their
+        # default while moving the third passes vacuously on the pair.
+        old = days_ago(400)
+        phrasings = {
+            f"verified {old} against the source": f"last verified {old}",
+            f"a {old} snapshot; the assessed artifact has moved on since":
+                f"last verified {old}",
+            "unverified — first pass, values not yet re-read":
+                "records no verified re-check",
+        }
+        for deco in DECORATIONS:
+            for layout in LAYOUTS:
+                for status, expected in phrasings.items():
+                    with self.subTest(deco=deco, layout=layout, status=status):
+                        proc = self.install(
+                            self.tree.build(),
+                            ingested=old,
+                            deco=deco,
+                            layout=layout,
+                            status=f"{status} — observed {days_ago(0)}.",
+                        )
+                        self.assertFlagged(proc, expected)
+
+    def test_decoy_provenance_heading_does_not_swallow_the_block(self):
+        # The M79 review's F2 shape, at this milestone's field: a `## Provenance`
+        # SECTION heading above the real block must not become the block read.
+        proc = self.install(
+            self.tree.build(),
+            decoy=True,
+            status="unverified — first pass, values not yet re-read "
+            f"— observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, "records no verified re-check")
+
+    def test_decoy_heading_over_a_fresh_page_stays_quiet(self):
+        # The other half: the decoy must not manufacture a finding either.
+        proc = self.install(
+            self.tree.build(),
+            decoy=True,
+            status=f"verified {days_ago(3)} against the source "
+            f"— observed {days_ago(0)}.",
+        )
+        self.assertClean(proc)
+
+    # --- AC2: no shipped-template form is falsely flagged --------------------
+
+    def test_no_shipped_template_status_is_falsely_flagged(self):
+        # Pairs to the REAL templates, not a copy (M77): if a template gains a
+        # sanctioned status form the parser cannot read, this fails. The
+        # `unverified` alternative is the one form that MUST flag — that is the
+        # advisory's whole purpose, not a false positive.
+        templates = SCRIPTS_DIR.parent / "skills" / "shared" / "templates"
+        found = 0
+        for name in ("source-note.md", "synthesis-note.md"):
+            line = next(
+                ln for ln in (templates / name).read_text().splitlines()
+                if ln.startswith("Extraction: <")
+            )
+            alts = re.match(r"^Extraction: <(.+)> — observed", line).group(1)
+            for alt in alts.split(" | "):
+                found += 1
+                status = alt.replace("YYYY-MM-DD", days_ago(3))
+                with self.subTest(template=name, alt=alt[:40]):
+                    proc = self.install(
+                        self.tree.build(),
+                        status=f"{status} — observed {days_ago(0)}.",
+                    )
+                    if "unverified" in alt:
+                        self.assertFlagged(proc, "records no verified re-check")
+                    else:
+                        self.assertClean(proc)
+        # A `next()` that found no line, or a split that yielded one branch,
+        # would make every subTest above vacuous.
+        self.assertGreaterEqual(found, 5, "template alternatives not parsed")
 
 
 class TestDanglingIds(ScriptCase):

@@ -95,7 +95,7 @@ element and lost in scoping. This milestone executes the remainder, so it does
       and the ingested date `_PROV_INGESTED` (`:227`) already captures into
       group 1 and discards. **The threshold value is the one open decision;
       confirm it at the implement gate before writing the comparison.**
-- [ ] T2: Fixtures in `scripts/tests/test_scripts.py` covering both flags, the
+- [x] T2: Fixtures in `scripts/tests/test_scripts.py` covering both flags, the
       clean case, and the three variation axes. Extend the shared `Tree.build()`
       fixture if the advisory needs pages present (LESSONS `:15`).
 - [ ] T3: Add the doctrine line to `tracking-rules.md` "References pages"; guard
@@ -112,6 +112,7 @@ element and lost in scoping. This milestone executes the remainder, so it does
 
 - 2026-07-18: created by /milestone-plan; planned alongside M80 from the M78/M79 grouped candidate row.
 - 2026-07-18: implement gate settled the three open parse decisions — 180-day threshold, undated "at ingestion" ages from the ingested date, exemption earned by the explicit "nothing to re-verify" phrase.
+- 2026-07-18: T2 — 15 fixtures + a 36-cell decoration×layout×phrasing cross-product; it caught a real false positive (a label-alone `Extraction:` reported as no status at all), fixed by adding the extraction field to `_provenance_block`'s continuation test. Fixture dates are relative to today, never literal, so the suite cannot rot past the threshold.
 - 2026-07-18: T1 — `check_references_staleness` written and registered in `ADVISORIES`; stdlib allowlist extended for `datetime`; first run flags 1 of 16 pages, exit 0.
 
 ## Decisions
