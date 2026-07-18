@@ -2,11 +2,7 @@
 
 **Provenance.** Citekey `task-master` · ingested 2026-07-11 by M06 from https://github.com/eyaltoledano/claude-task-master.
 Pagination: —.
-Extraction: verified 2026-07-18 against a fresh shallow clone at
-`task-master-ai` v0.43.1 — every claim below re-read against source; three
-were wrong and are corrected in place and marked — observed 2026-07-18.
-The M06 first pass was an [S] subagent study of the clone and docs with no
-claim checked against the source; git holds that prior status.
+Extraction: verified 2026-07-18 against a fresh shallow clone at `task-master-ai` v0.43.1 — every claim below re-read against source, three were wrong and are corrected in place and marked; the M06 first pass checked nothing against the source and git holds that prior status — observed 2026-07-18.
 
 Source: https://github.com/eyaltoledano/claude-task-master (studied
 2026-07-11; [S] subagent study of clone + docs; re-verified 2026-07-18 at
