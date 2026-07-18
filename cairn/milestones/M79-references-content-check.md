@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M79: References content check — the lint stops being a filename census
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M78   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m79-references-content-check`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create/amend-via-gate -->
@@ -102,6 +102,8 @@ doctrine or template shape → M78 owns those.
      so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
 - 2026-07-18: created by /milestone-plan. Gaps sourced from the M78-planning audit of `cairn_validate.py:177-202` — the check is a filename census, so an empty page with an INDEX line passes clean.
+- 2026-07-18: /milestone-implement started; branch `m79-references-content-check` cut from main. Baseline verify green (skills 324, scripts 111, hooks 72; each exit 0).
+- 2026-07-18: audit of this repo's 17 committed pages — 17/17 carry Provenance + an ingested date, 1/17 carries a labelled Citation. AC1's citation half fires on 16 pages; surfaced at the question gate.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
