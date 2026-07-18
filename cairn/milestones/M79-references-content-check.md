@@ -142,27 +142,22 @@ doctrine or template shape → M78 owns those.
 ### M79-D1 (2026-07-18): The references content conditions are a hard CHECK
 
 **Context:** T1 was tagged `(RB tripwire: ip-touching)` — the answer sets
-whether a repo can be blocked by its own reference prose. D-023 tolerates a
-miss over a false positive; D-029 kept the oracle registry out of the
-validator entirely, and M33/M42/M49 established that advisory doctrine is
-never a validate gate.
-**Decision:** Hard CHECK, user-selected at the M79 implement gate. The D-029
-precedent does not transfer: an oracle registry entry is a *judgment* about
-evidence quality, while a `**Provenance.**` block naming an ingested date and
-a source pointer is a *structural* field of a shipped M78 template — the same
-class of thing as the INDEX.md line the check already hard-fails on. D-023's
-no-false-positive doctrine is honoured in the parser, not the severity: every
-semantic token is read decoration-tolerantly (AC4), so a correctly-provenanced
-page never fails on formatting. Rejected advisory WARN (the M78 template's
-whole point is an enforceable shape; an unenforced check is one nobody fixes)
-and the split CHECK-block/WARN-fields form (two severities for one template,
-and the empty-block case is exactly as broken as the absent one).
-**Consequences:** A committed `references/` page without provenance fails
-`cairn_validate`. Adopting repos with pre-M78 pages will hit this on first run
-after upgrade — the same accepted one-FAIL migration cost D-040 took for the
-`changelog` slot, fixed by filling the block. If the check is ever observed
-failing a semantically sound page, the parser is the entry to fix; if the
-severity itself proves wrong, supersede here.
+whether a repo can be blocked by its own reference prose. D-029 kept the
+oracle registry out of the validator; M33/M42/M49 made advisory doctrine never
+a validate gate.
+**Decision:** Hard CHECK, user-selected at the M79 implement gate. D-029 does
+not transfer: a registry entry is a *judgment* about evidence quality, while a
+`**Provenance.**` block naming an ingested date and a source pointer is a
+*structural* field of a shipped template — the class of thing this check
+already hard-fails on for `INDEX.md`. D-023's no-false-positive doctrine is
+honoured in the parser, not the severity (AC4's decoration tolerance).
+Rejected advisory WARN (an unenforced check is one nobody fixes) and a split
+CHECK-block/WARN-fields form (two severities for one template; an empty block
+is as broken as an absent one).
+**Consequences:** A committed page without provenance fails `cairn_validate`;
+adopting repos with pre-M78 pages hit one FAIL on upgrade — the migration cost
+D-040 accepted for the `changelog` slot. If a semantically sound page ever
+fails, fix the parser; if the severity is wrong, supersede here.
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
