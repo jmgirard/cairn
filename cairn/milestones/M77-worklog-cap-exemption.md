@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M77: Work-log cap exemption — the budget stops counting a section IP4 forbids editing
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
@@ -93,7 +93,7 @@ monotonic growth of an un-editable section).
       text, and `skills/shared/templates/milestone.md`'s work-log owner comment.
 - [x] T7: guards in `skills/tests/` for the T6 wording + their
       `test_mutation_harness.py` entries (per file, ≥1 exemplar block).
-- [ ] T8: run all three suites and `cairn_validate` from the repo root; check
+- [x] T8: run all three suites and `cairn_validate` from the repo root; check
       exit codes explicitly, never through a pipe (M56/M65).
 
 ## Work log
@@ -111,6 +111,7 @@ monotonic growth of an un-editable section).
 - 2026-07-18: T7 — 6 new guards + 5 mutation entries (added `TEMPLATE` target); skills 298 -> 304. Set-membership assert pins both members on one physical line per M74/M76.
 - 2026-07-18: T7 — by-hand SWAP check (blanking cannot simulate a swap): exchanging `## Review` and `## Work log` in the exempt-set line fails the guard, exit 1; file restored, suite green.
 - 2026-07-18: T5 live-fire against real history — M76's plan-commit revision shows 3 wrapped continuation lines the advisory would flag, and its merged revision 1 (a stray non-entry prose line); M76's body measures 100 under the exemption versus the 121 it measured under the old rules. The 58-line peak itself is unreachable (squash-merge erased the branch commits).
+- 2026-07-18: T8 — all eight tasks done; skills 304 / scripts 108 / hooks 72 exit 0, cairn_validate exit 0 with `OK work-log format`; M77's own body measures 102 under the new rules versus 118 under the old, and its breakdown no longer lists the work log; status -> review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
