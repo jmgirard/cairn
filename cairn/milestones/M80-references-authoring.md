@@ -25,6 +25,11 @@ named there (today neither is). A shipped
 `skills/shared/templates/synthesis-note.md`, drawn from the six synthesis pages
 already in this repo. Registration of the new template in the inventories that
 enumerate templates. Guard tests, mutation-registered.
+Also fixes the shipped `source-note.md` template, whose `Extraction:` line
+wraps and carries no `— observed` stamp, so a page authored from it fails the
+dated-extraction guard M78 shipped alongside it (proven at the M80 implement
+gate, 2026-07-18). Same defect class and same one-line fix as the synthesis
+template's.
 
 **Out:**
 - The staleness advisory → M81 (planned now, depends on this).
@@ -69,6 +74,11 @@ enumerate templates. Guard tests, mutation-registered.
 - [ ] AC6: verify clean — `python3 -m unittest discover` for `skills/tests`,
       `scripts/tests`, `hooks/tests` each exit 0, checked individually and
       never through a pipe (LESSONS `:23`); `cairn_validate` exit 0.
+- [ ] AC7: a page instantiated from `skills/shared/templates/source-note.md`
+      passes the same real `check_references` and real dated-extraction guard
+      as AC3's synthesis page — the pairing test covers **both** shipped
+      templates, so neither can regress alone. Added at the implement gate
+      2026-07-18; the defect was proven, not suspected.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; review reads to fence evidence. -->
@@ -79,6 +89,7 @@ enumerate templates. Guard tests, mutation-registered.
 - AC4 → T5
 - AC5 → T6
 - AC6 → T6
+- AC7 → T4
 
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
@@ -116,6 +127,7 @@ enumerate templates. Guard tests, mutation-registered.
 - 2026-07-18: /milestone-implement started; branch `m80-references-authoring` cut from synced main.
 - 2026-07-18: T1 — trigger + both template paths into tracking-rules "References pages"; validation-doctrine's parenthetical now defers the trigger instead of restating it. Gate answers: a page is owed when the repo relies on the source; a synthesis note when the analysis outlives its milestone.
 - 2026-07-18: T4 — pairing test instantiates the shipped template into a temp tree and runs the real check_references + real dated-extraction guard; AC3 amended at the implement gate (placeholder dates cannot satisfy the date regex, so the criterion tested the wrong subject). Extracted DATED_EXTRACTION/extraction_line into one shared definition so template and repo-page checks cannot drift.
+- 2026-07-18: scope amended at the implement gate — AC7 added after the pairing test proved M78's shipped source-note template emits a page failing M78's own dated-extraction guard (wrapped line, no `— observed` stamp). Same fix; the pairing test now covers both templates.
 - 2026-07-18: T4 caught a live defect in the template T2 had just shipped — the wrapped `Extraction:` status lost its `— observed` stamp, so every page authored from it would have failed the repo's own guard; fixed to one physical line, exactly the M77 pairing failure this test exists to catch.
 - 2026-07-18: T3 — added TestAuthoringTrigger (core-vs-module placement, positive defer-assert paired with the negative absence-assert per M54) and TestShippedSynthesisTemplate (12 fields, read from the shipped file); skills suite 324 → 333, exit 0.
 - 2026-07-18: T2 — shipped `skills/shared/templates/synthesis-note.md`; sections drawn from the six existing synthesis pages, `Ingested`/`Extraction:` field words kept verbatim so the references check and the dated-observation guard both still parse.

@@ -181,45 +181,64 @@ class TestTemplateProducesAValidPage(unittest.TestCase):
     implement gate, 2026-07-18).
     """
 
-    PAGE = "synthesis-example.md"
+    # Both shipped templates, so neither can regress alone. AC7 was added at
+    # the implement gate after this test's synthesis half proved the
+    # source-note template — shipped by M78 — emits a page that fails the
+    # dated-extraction guard M78 shipped in the same milestone.
+    TEMPLATES = (
+        ("synthesis", SYNTHESIS_TEMPLATE),
+        ("source", SKILLS / "shared" / "templates" / "source-note.md"),
+    )
 
-    def instantiate(self):
+    def instantiate(self, template):
         """The shipped template with its placeholders filled, as an author
         would. Read from disk every call — never a fixture copy."""
-        text = SYNTHESIS_TEMPLATE.read_text()
+        text = template.read_text()
         text = re.sub(r"YYYY-MM-DD", "2026-07-18", text)
         text = text.replace("M<NN>", "M80")
         return text
 
-    def _tree(self, tmp):
+    def _tree(self, tmp, template, page):
         root = pathlib.Path(tmp)
         refs = root / "cairn" / "references"
         refs.mkdir(parents=True)
-        (refs / self.PAGE).write_text(self.instantiate())
+        (refs / page).write_text(self.instantiate(template))
         (refs / "INDEX.md").write_text(
-            f"# References index\n\n- {self.PAGE} — an instantiated synthesis note.\n"
+            f"# References index\n\n- {page} — an instantiated note.\n"
         )
         return root
 
     def test_instantiated_page_passes_the_real_references_check(self):
         validate = _load_validate()
-        with tempfile.TemporaryDirectory() as tmp:
-            findings = validate.check_references(str(self._tree(tmp)))
-        self.assertEqual(
-            findings, [], f"a page authored from the template fails: {findings}"
-        )
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                page = f"{kind}-example.md"
+                with tempfile.TemporaryDirectory() as tmp:
+                    findings = validate.check_references(
+                        str(self._tree(tmp, template, page))
+                    )
+                self.assertEqual(
+                    findings, [],
+                    f"a page authored from the {kind} template fails: {findings}",
+                )
 
     def test_instantiated_page_passes_the_real_extraction_guard(self):
-        line = extraction_line(self.instantiate())
-        self.assertIsNotNone(line, "template yields no Extraction status line")
-        self.assertRegex(line, DATED_EXTRACTION)
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                line = extraction_line(self.instantiate(template))
+                self.assertIsNotNone(
+                    line, f"{kind} template yields no Extraction status line"
+                )
+                self.assertRegex(line, DATED_EXTRACTION)
 
     def test_uninstantiated_template_is_what_fails(self):
         # Proves the test above is not vacuous: the placeholder form really
         # does fail the date guard, which is why instantiation is the subject.
-        line = extraction_line(SYNTHESIS_TEMPLATE.read_text())
-        self.assertIsNotNone(line)
-        self.assertNotRegex(line, DATED_EXTRACTION)
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                line = extraction_line(template.read_text())
+                self.assertIsNotNone(line)
+                self.assertNotRegex(line, DATED_EXTRACTION)
 
 
 if __name__ == "__main__":

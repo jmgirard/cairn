@@ -10,8 +10,11 @@
 `cairn/references/sources/<citekey>.pdf` (gitignored) — or, for a non-PDF source,
 the URL plus how it was retrieved and by whom.
 Pagination: <journal pages | preprint pages | PDF pages | —>.
-Extraction: <verified YYYY-MM-DD against the source | unverified — first pass,
-values not yet re-read against the source>.
+Extraction: <verified YYYY-MM-DD against the source | unverified — first pass, values not yet re-read against the source> — observed YYYY-MM-DD.
+
+The `Extraction:` status is one physical line, however long — the guard that
+enforces the dated form reads the line it starts on, so a wrapped status
+silently loses its `— observed` stamp.
 
 **Citation.** Full citation as printed: authors, year, exact title, venue,
 volume/issue/pages, DOI. Note anything the source prints differently from how
