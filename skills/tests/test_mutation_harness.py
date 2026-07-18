@@ -156,6 +156,62 @@ REGISTRY = [
         target=RULES,
         block="`LESSONS.md` < 50 lines",
     ),
+    # M76 (D-045): one entry per positive assert. The two label->rule blocks
+    # are deliberately label-INCLUSIVE — registration is per file, so sound
+    # entries elsewhere in this file would mask a clause-only pin (M74/F3).
+    # The paired `assertNotIn` (file map no longer says append-only) carries
+    # no entry: blanking cannot restore an absence (M54).
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestRecordCorrectionRule.test_rule_is_named",
+        target=RULES,
+        block="Correcting a record proven false",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestRecordCorrectionRule.test_current_knowledge_is_corrected_in_place",
+        target=RULES,
+        block="current knowledge is corrected in place",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestRecordCorrectionRule.test_history_is_superseded_never_edited",
+        target=RULES,
+        block="history is superseded and never edited",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestRecordCorrectionRule.test_rule_rules_out_leaving_the_wrong_text_readable",
+        target=RULES,
+        block="appending a correction while leaving the wrong text readable",
+    ),
+    # M76/F1: the mechanism asserts left the ENUMERATIONS unguarded — a
+    # reviewer proved a set-swap kept all six green. These three pin label
+    # and members together, so an inversion breaks the anchor.
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestRecordCorrectionRule.test_history_set_is_enumerated_under_its_own_label",
+        target=RULES,
+        block="History — `DECISIONS.md`, work-logs, milestone IDs, `milestones/archive/`,",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestRecordCorrectionRule.test_current_knowledge_set_is_enumerated_under_its_own_label",
+        target=RULES,
+        block="Current knowledge — `LESSONS.md`, `references/` pages, `DESIGN.md` —",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestRecordCorrectionRule.test_design_principles_are_carved_out_of_in_place_correction",
+        target=RULES,
+        block="wrong *principle* is not a wrong fact",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestRecordCorrectionRule.test_file_map_names_the_lessons_write_mode",
+        target=RULES,
+        block="a lesson proven false is corrected in place",
+    ),
     # M55: the milestone cap exempts the review-exclusive `## Review` section.
     # Two blocks — the exemption rationale and the plan-owned-body cap number —
     # each guarded by its own assert (one Mutation entry per positive assertIn).

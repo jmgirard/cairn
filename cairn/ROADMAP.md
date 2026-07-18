@@ -17,7 +17,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 | M74 | Issue triage — /milestone enumerates untriaged inboxes into candidate rows | done | M73 | normal | milestones/archive/M74-issue-triage.md |
 | M71 | Idea-capture intake gate — out-of-band ideas also land as candidates (D-042) | done | — | high | milestones/archive/M71-idea-capture-intake-gate.md |
 | M75 | Record consistency — the `leave` disposition and MCP-matcher semantics (D-044) | done | — | normal | milestones/archive/M75-record-consistency.md |
-| M76 | Record correction — history vs. current knowledge, and the correct-in-place protocol (D-045) | planned | — | normal | milestones/M76-record-correction.md |
+| M76 | Record correction — history vs. current knowledge, and the correct-in-place protocol (D-045) | review | — | normal | milestones/M76-record-correction.md |
 
 ## Candidates
 

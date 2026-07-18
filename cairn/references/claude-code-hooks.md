@@ -93,8 +93,9 @@ PostToolUse, UserPromptSubmit, ConfigChange.
 
 ## Matchers & execution
 
-- PreToolUse matcher `"Bash"` scopes to Bash calls (plain string = exact;
-  regex chars ⇒ JS regex). SessionStart matches on `source`; Stop needs no
+- PreToolUse matcher `"Bash"` scopes to Bash calls (a literal matcher is split
+  on `|`/`,` and each alternative exact-matched; a regex metacharacter ⇒ JS
+  regex — full dispatch below) (corrected M76). SessionStart matches on `source`; Stop needs no
   matcher. Hooks matching one event run in parallel; default command
   timeout 600s (`"timeout"` per hook, seconds); cwd = session cwd (not
   necessarily repo root — walk up to find `cairn/ROADMAP.md`).

@@ -908,11 +908,14 @@ class TestHooksRegistration(unittest.TestCase):
         self.assertEqual(len(matchers), 1, matchers)
         matcher = matchers[0]
         self.assertTrue(matcher.endswith("spawn_task"), matcher)
-        # Documented matcher semantics: a matcher of only letters, digits,
-        # `_`, `-`, spaces, `,` and `|` is compared as an EXACT string, so a
-        # bare `mcp__ccd_session__spawn_task` would wire the guard to one
-        # server and silently miss a renamed one. A regex metacharacter is
-        # what makes it a pattern — this asserts the matcher stays one.
+        # Documented matcher semantics (references/claude-code-hooks.md,
+        # read out of binary 2.1.207): a matcher of only letters, digits,
+        # `_`, `-`, spaces, `,` and `|` takes the LITERAL path — it is split
+        # on `|`/`,` and each alternative is exact-matched, so `|` buys more
+        # alternatives, never regex treatment. A bare
+        # `mcp__ccd_session__spawn_task` would therefore wire the guard to one
+        # server and silently miss a renamed one; only a metacharacter reaches
+        # `new RegExp`. This asserts the matcher keeps one.
         self.assertRegex(matcher, r"[^\w\-, |]", matcher)
 
     def test_every_registered_hook_uses_the_standard_envelope(self):
