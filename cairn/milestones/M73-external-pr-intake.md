@@ -88,7 +88,7 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
       no-push-to-fork fallback.
 - [x] T4 — Extend step 6 (`:47-60`) with the fork `--delete-branch` caveat;
       confirm the marker line matches M72's bound form (no divergence).
-- [ ] T5 — Update the frontmatter `description:` (`:3`) and the Intake
+- [x] T5 — Update the frontmatter `description:` (`:3`) and the Intake
       paragraph (`tracking-rules.md:199-203`).
 - [ ] T6 — Write the guard tests; register in the mutation harness; re-run
       `test_search_first_candidates.py` and `test_idea_intake_gate.py`, both of
@@ -111,6 +111,8 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
   no-push-to-fork fallback (ask, then re-land locally). verify clean.
 - 2026-07-18: T4 — step 6 drops --delete-branch on a fork PR; marker line
   already matches M72's PR-bound form, left unchanged. verify clean.
+- 2026-07-18: T5 — /hotfix description names incoming PRs; Intake paragraph
+  names /hotfix as the door. verify clean.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
