@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M76: Record correction — history vs. current knowledge, and the correct-in-place protocol
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP4, GP2   <!-- owner: plan · create/amend-via-gate -->
@@ -48,8 +48,10 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
 - [ ] AC3 — a repo-wide `git grep` finds no live file calling `LESSONS.md`
       append-only. Exempt from the sweep: history files (`cairn/DECISIONS.md`,
       `cairn/milestones/archive/`, `cairn/reviews/archive/`, `cairn/legacy/`),
-      the `cairn/ROADMAP.md` candidate row that quotes the defect, and this
-      milestone file's own Scope (M62 — the sweep hits the text it must write).
+      the `cairn/ROADMAP.md` candidate row that quotes the defect, this
+      milestone file itself (M62 — the sweep hits the text it must write), and
+      the guards' own absence-asserts under `skills/tests/` (M59 — an
+      `assertNotIn` is a hit for the token whose absence it locks).
 - [ ] AC4 — `cairn/DECISIONS.md` carries D-045 recording the mechanism, the
       history/current-knowledge split, and the IP4 reading; `cairn/DESIGN.md`'s
       IP4 line is byte-identical to its pre-milestone text (`git diff` on that
@@ -82,28 +84,15 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [x] T1 — author D-045 in `cairn/DECISIONS.md`: the correct-in-place
-      mechanism, the history/current-knowledge split, the IP4 reading, and the
-      declined validate CHECK. Annotates D-015; leaves IP4 untouched.
-- [x] T2 — `skills/shared/tracking-rules.md`: add the correction rule to
-      "Universal tracking rules" adjacent to "Append, don't rewrite" (:118),
-      and fix the `cairn/LESSONS.md` file-map row (:23). Author the rule's
-      label on ONE physical line (M59/M64 reflow trap — AC6's guard greps it).
-- [x] T3 — sweep the three remaining live "append-only" labels for LESSONS:
-      `skills/cairn-init/SKILL.md:103`, `cairn/LESSONS.md:8` (the file's own
-      header), `skills/tests/test_lessons_loop.py:3` (docstring). Verify with a
-      repo-wide `git grep` per AC3's exemption list, not a per-file read (M48).
-- [x] T4 — sweep the stale matcher rule: rewrite the comment at
-      `hooks/tests/test_hooks.py:912` and the loose echo at
-      `references/claude-code-hooks.md:105` to the split-then-exact-match rule.
-      Read the corrected rule out of `references/claude-code-hooks.md`'s
-      verified dispatch section, never restated from a work-log (M75).
-- [x] T5 — guards for AC1/AC2 in `skills/tests/test_lessons_loop.py` (its
-      subject is the LESSONS contract) + `Mutation(...)` entries per positive
-      assert, not per file (M53).
-- [x] T6 — full verify: the three suites green, `cairn_validate.py` green,
-      caps clean. Run from the repo root, exit codes gating the chain, never
-      piped through `tail` (M56/M65).
+Task detail compressed 2026-07-18 as a cap remedy (implement-owned minor
+edit); full wording in git history and the per-task commit messages.
+
+- [x] T1 — author D-045 (mechanism, split, IP4 reading, declined CHECK).
+- [x] T2 — rulebook correction rule + `cairn/LESSONS.md` file-map row.
+- [x] T3 — sweep every live "append-only" label for LESSONS, repo-wide.
+- [x] T4 — sweep the stale M71 matcher rule from test + reference page.
+- [x] T5 — label-inclusive guards + `Mutation(...)` entry per positive assert.
+- [x] T6 — full verify: three suites, `cairn_validate`, caps.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
@@ -144,6 +133,14 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
   list omits the guard's own `assertNotIn` (M59 trap). AC1/AC2/AC4/AC5 pass
   with fresh evidence; consistency gate clean. Status -> in-progress for a
   gated amendment. Draft PR #74 opened.
+- 2026-07-18: AC3 amended at the implement step-6 gate (user-approved): the
+  exemption list gains the guards' absence-asserts under `skills/tests/` (M59)
+  and widens the milestone-file exemption from Scope to the whole file.
+  Rejected: narrowing the grep to prose surfaces (would not have caught the
+  fourth site) and dropping AC3.
+- 2026-07-18: cap remedy — plan-owned body hit 151/150 once trip-1 evidence
+  landed; compressed the Tasks section (implement-owned) rather than the work
+  log, which D-045 itself classifies as history. Back to green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
