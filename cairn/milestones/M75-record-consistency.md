@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M75: Record consistency — the `leave` disposition and MCP-matcher semantics
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m75-record-consistency`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -87,7 +87,7 @@ what IP3 forbids. Implement inherits the answer, not the question.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — Add the `leave` line to the Intake paragraph,
+- [x] T1 — Add the `leave` line to the Intake paragraph,
       `skills/shared/tracking-rules.md:199-205`. Keep the guarded phrase on
       one physical line (M23) and clear of `**bold**` splits (M26). Do not
       touch `skills/milestone/SKILL.md`.
@@ -107,6 +107,7 @@ what IP3 forbids. Implement inherits the answer, not the question.
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-18: created by /milestone-plan; absorbs the M74-F5 and M71-F3 candidate rows.
+- 2026-07-18: T1 — rulebook Intake paragraph names `leave`, narrowed per D-044; phrase unique in file; 96/287/72 suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
