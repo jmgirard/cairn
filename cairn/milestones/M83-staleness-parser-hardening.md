@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M83: Staleness-parser hardening — the extraction status stops being guessed at
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP2   <!-- owner: plan · create/amend-via-gate -->
@@ -92,16 +92,37 @@ opposite protections against the same parser).
       decoration on the token. Per M81's lesson, vary the axis where the
       value under test lives: a wrap that does not fall at the boundary
       proves nothing here.
-- [ ] T7. Run the real advisory over the real 16 pages, reconcile against
+- [x] T7. Run the real advisory over the real 16 pages, reconcile against
       T1's baseline, record the before/after in this file with
       justifications, and run all three suites.
 
 ## Work log
 
 - 2026-07-18: created by /milestone-plan. Absorbs the grouped M81 candidate row (F3/68, F4/63, F5/62); F3 confirmed live 2026-07-18 during the task-master re-verification.
-- 2026-07-18: T2-T6 — classifier reads the leading clause; contradiction/unrecognized/future states added; 5 regression tests + a 48-cell matrix, all failing pre-fix. Two defects found by the tests themselves: `read against` matched inside `re-read against` (template's own unverified wording), and a status wrapped AT the clause boundary rejoins with the separator gone, so contradiction is tested over the whole status.
 - 2026-07-18: T1 — ledger test pins all 16 shipped pages (14 ok, 2 exempt); green against the unmodified function, mutation-checked (flipping one entry fails).
+- 2026-07-18: T2-T6 — classifier restructured; ambiguous/unrecognized/future states added; 5 regression tests + a 48-cell matrix, all failing pre-fix. Two defects found by the tests themselves, recorded as M83-D1/D2.
+- 2026-07-18: fixed a red main of my own making — the 2026-07-18 task-master re-verification wrapped its Extraction status over five lines, which M78's one-physical-line guard rejects; I ran cairn_validate then but not the suites. Fixed on main (be19ff4), branch rebased onto it.
+- 2026-07-18: `git merge main` into this branch was denied by merge_guard (direction-blind containment match) though tracking-rules prescribes exactly that when main moves; synced by rebase instead, which never touches main. Reported, not worked around silently.
+- 2026-07-18: T7 — 0 of 16 pages reclassified (14 ok, 2 exempt, unchanged); `_last_verified` still has exactly one caller; `check_references` output identical. All three suites green by explicit exit code.
+- 2026-07-18: out-of-scope defect found and left alone: `_provenance_block` joins collected blocks with no blank line (`cairn_validate.py:294`), so a body line matching the provenance heading starts a second block that the extraction status then absorbs — `oracle-discipline-notes.md`'s status parses as 652 chars, not 186. Candidate row added; no classification changes today.
 
 ## Decisions
+
+- **M83-D1: the contradiction test reads the whole status; the clause split
+  only picks the state.** The plan said "classify from the leading clause".
+  That alone is not enough: `_extraction_status` rejoins a hard-wrapped status
+  with a space, so a status wrapped *at* its em-dash arrives with the
+  separator gone and both claims sitting in the leading clause — the F3 bug
+  intact. So a never-claim and an independent verification claim anywhere in
+  the status is `ambiguous`, and the leading/remainder split only decides
+  which single state applies when there is no contradiction. Found by the
+  boundary-wrap fixture, not by reading — the pre-existing midpoint-wrap axis
+  could not reach it (M81's "vary the axis where the value lives").
+- **M83-D2: never-phrases are removed before testing for a verification
+  claim.** `never verified` contains `verified`; read naively, every plainly-
+  never page becomes a self-contradiction. The suite caught this, as it caught
+  `read against` matching inside `re-read against` — the source-note
+  template's own unverified wording, which would have turned the template's
+  sanctioned form into a contradiction.
 
 ## Review
