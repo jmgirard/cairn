@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M74: Issue triage — /milestone enumerates untriaged inboxes into candidate rows
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M73   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** IP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m74-issue-triage   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -76,7 +76,7 @@ issues — the scripts stay offline and stdlib-only
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1 — Rewrite the §2 bullet (`skills/milestone/SKILL.md:78-79`) as a
+- [x] T1 — Rewrite the §2 bullet (`skills/milestone/SKILL.md:78-79`) as a
       concrete step: `gh issue list --state open --json number,title,url` (and
       the PR equivalent), the search-first cross-check, and the degradation
       clause. Keep it inside the "script deliberately does not judge these"
@@ -100,6 +100,8 @@ issues — the scripts stay offline and stdlib-only
 
 - 2026-07-18: created by /milestone-plan.
 - 2026-07-18: /milestone-plan gated amendment — absorbed the M73-review-F5 candidate (stale `/hotfix` trigger prose in DESIGN + README) as AC6/T4 at user request; prior AC6 verify renumbered AC7/T5.
+- 2026-07-18: implement started on m74-issue-triage; gate settled three open choices (bullet not subsection, extend §3's existing triage option not a second chip, new guard file).
+- 2026-07-18: T1 — §2 untriaged-inboxes bullet is now a concrete step (both `gh` commands, search-first cross-check, three-case degradation clause); kept inside the `:64` judgment block per plan. Skills suite green (267).
 
 ## Decisions
 <!-- owner: implement / review · append-only -->

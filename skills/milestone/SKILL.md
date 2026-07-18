@@ -75,8 +75,19 @@ The script deliberately does not judge these — do them yourself and report:
   `/cairn-init`.
 - A milestone at `review` with an open unmerged PR → re-check CI now
   (`gh pr checks`), report the fresh state (this is normal, not an error).
-- **Untriaged inboxes:** open GitHub issues or external PRs with no
-  candidate row / hotfix disposition → list them for triage.
+- **Untriaged inboxes:** open GitHub issues and external PRs carrying no
+  candidate row or hotfix disposition yet. Enumerate both inboxes —
+  `gh issue list --state open --json number,title,url` for issues,
+  `gh pr list --state open --json number,title,url,author` for PRs — then
+  apply the search-first rule to every hit before proposing anything: sweep
+  the existing `candidate` rows, `milestones/archive/`, and `DECISIONS.md`,
+  so an item already covered is cross-referenced, never duplicated as a
+  second row. Carry one proposed disposition per item to §3, where the user
+  decides; reading the inbox is the whole mandate here — never write to
+  GitHub (no labels, comments, or closes) and never add a row unprompted.
+  **When `gh` is missing, unauthenticated, or the repo has no remote:** name
+  which of the three it was, skip the sweep, and carry on with the rest of
+  the audit — an unreachable inbox is a reported gap, never an audit `FAIL`.
 
 Update "Last hygiene check: YYYY-MM-DD" in ROADMAP.md.
 
