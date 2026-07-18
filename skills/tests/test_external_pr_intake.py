@@ -133,6 +133,29 @@ class TestIntakeRouting(unittest.TestCase):
     def test_intake_paragraph_keeps_the_larger_pr_route(self):
         self.assertIn("becomes/joins a milestone via `/milestone-plan`", rules())
 
+    def test_intake_paragraph_names_leave_with_its_narrowing(self):
+        # M75/D-044. The assert carries the LABEL, not just the clause: per
+        # the M74 F3 lesson a clause-only assert stays green after the label
+        # is swapped to something else entirely, so the guard would survive
+        # an inversion of the very rule it names.
+        #
+        # Scope of this guard, stated honestly (M75 review F4): it catches a
+        # label swap, a blanking, and any edit to the three eligible
+        # categories or to the "in cairn" locus D-044 rests on. It does NOT
+        # catch a *widening* by appended text — `assertIn` is a substring
+        # match, so "…in cairn, or anything the user declines to file —"
+        # still passes. Widening is caught by review reading D-044, not here.
+        self.assertIn(
+            "`leave` is legal only for noise, duplicates, or items already cross-referenced in cairn",
+            rules(),
+        )
+
+    def test_leave_never_absorbs_a_genuinely_new_item(self):
+        # The exclusion is the load-bearing half of D-044: without it `leave`
+        # re-opens the D-042 substitution, where a real idea's only record is
+        # the GitHub issue.
+        self.assertIn("never anything genuinely new (d-044)", rules())
+
     def test_no_second_approval_mechanism(self):
         # M73 reuses M72's PR-bound marker; a second marker file or a prose
         # yes/no would fork the approval path IP1 depends on.

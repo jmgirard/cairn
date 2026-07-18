@@ -939,6 +939,22 @@ REGISTRY = [
         target=MILESTONE,
         block="**candidate row** — the default for anything real but not urgent",
     ),
+    # M75 (D-044): the rulebook's fourth disposition. Two entries, because the
+    # label→rule mapping and the exclusion carry the rule independently — the
+    # narrowing is what keeps `leave` compatible with IP3, and blanking either
+    # half alone must fail. Anchors are unique in the rulebook (M58).
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestIntakeRouting.test_intake_paragraph_names_leave_with_its_narrowing",
+        target=RULES,
+        block="`leave` is legal only for noise, duplicates, or items already cross-referenced in cairn",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestIntakeRouting.test_leave_never_absorbs_a_genuinely_new_item",
+        target=RULES,
+        block="never anything genuinely new (D-044)",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
