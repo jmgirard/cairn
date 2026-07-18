@@ -95,7 +95,7 @@ doctrine or template shape → M78 owns those.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1. Decide hard-CHECK vs ADVISORY for the content conditions and record
+- [x] T1. Decide hard-CHECK vs ADVISORY for the content conditions and record
       it as a milestone-local decision: D-023 tolerates a miss over a false
       positive, and D-029 kept the oracle registry out of the validator
       entirely. Human-authored markdown argues advisory; the shipped M78
@@ -130,6 +130,7 @@ doctrine or template shape → M78 owns those.
 
 - 2026-07-18: created by /milestone-plan. Gaps sourced from the M78-planning audit of `cairn_validate.py:177-202` — the check is a filename census, so an empty page with an INDEX line passes clean.
 - 2026-07-18: /milestone-implement started; branch `m79-references-content-check` cut from main. Baseline verify green (skills 324, scripts 111, hooks 72; each exit 0).
+- 2026-07-18: T1 done — hard CHECK, user-selected at the implement gate; recorded as M79-D1 (milestone-local: the severity is this check's, not cairn-wide doctrine).
 - 2026-07-18: AMENDMENT (gated) — AC1 now checks a Provenance source pointer, not a citation line: M78's template scopes `**Citation.**` to published primary sources, so a blanket check contradicts it. Goal's "and a citation" clause is narrowed by this AC, not re-cut; Goal text left untouched (plan-owned, no amend mode).
 - 2026-07-18: AMENDMENT (gated) — `references/pdf/` → `references/sources/` rename folded into Scope In as AC8 / T7-T8, user-chosen at the implement gate. 8 ACs sits at the ~7 split tripwire; accepted as one coherent change rather than a split.
 - 2026-07-18: audit of this repo's 17 committed pages — 17/17 carry Provenance + an ingested date, 1/17 carries a labelled Citation. AC1's citation half fires on 16 pages; surfaced at the question gate.
@@ -137,6 +138,31 @@ doctrine or template shape → M78 owns those.
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
      cross-cutting ones to cairn/DECISIONS.md -->
+
+### M79-D1 (2026-07-18): The references content conditions are a hard CHECK
+
+**Context:** T1 was tagged `(RB tripwire: ip-touching)` — the answer sets
+whether a repo can be blocked by its own reference prose. D-023 tolerates a
+miss over a false positive; D-029 kept the oracle registry out of the
+validator entirely, and M33/M42/M49 established that advisory doctrine is
+never a validate gate.
+**Decision:** Hard CHECK, user-selected at the M79 implement gate. The D-029
+precedent does not transfer: an oracle registry entry is a *judgment* about
+evidence quality, while a `**Provenance.**` block naming an ingested date and
+a source pointer is a *structural* field of a shipped M78 template — the same
+class of thing as the INDEX.md line the check already hard-fails on. D-023's
+no-false-positive doctrine is honoured in the parser, not the severity: every
+semantic token is read decoration-tolerantly (AC4), so a correctly-provenanced
+page never fails on formatting. Rejected advisory WARN (the M78 template's
+whole point is an enforceable shape; an unenforced check is one nobody fixes)
+and the split CHECK-block/WARN-fields form (two severities for one template,
+and the empty-block case is exactly as broken as the absent one).
+**Consequences:** A committed `references/` page without provenance fails
+`cairn_validate`. Adopting repos with pre-M78 pages will hit this on first run
+after upgrade — the same accepted one-FAIL migration cost D-040 took for the
+`changelog` slot, fixed by filling the block. If the check is ever observed
+failing a semantically sound page, the parser is the entry to fix; if the
+severity itself proves wrong, supersede here.
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
