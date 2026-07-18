@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-18 (M71 done + archived; M66 pruned under terminal-row retention; two M25 lessons pruned at the LESSONS cap)_
+_Last hygiene check: 2026-07-18 (M72 done + archived; M67 pruned under terminal-row retention; M41 and M44 lessons pruned at the LESSONS cap)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,14 +12,13 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M72 | Collaboration boundary — what survives a merge outside cairn, plus PR-bound approval (D-043) | review | — | high | milestones/M72-collaboration-boundary.md |
+| M72 | Collaboration boundary — what survives a merge outside cairn, plus PR-bound approval (D-043) | done | — | high | milestones/archive/M72-collaboration-boundary.md |
 | M73 | External-PR intake — /hotfix adopts a PR it did not author | planned | M72 | high | milestones/M73-external-pr-intake.md |
 | M74 | Issue triage — /milestone enumerates untriaged inboxes into candidate rows | planned | M73 | normal | milestones/M74-issue-triage.md |
 | M71 | Idea-capture intake gate — out-of-band ideas also land as candidates (D-042) | done | — | high | milestones/archive/M71-idea-capture-intake-gate.md |
 | M70 | Docker-image toolchain profile — fourth profile for pure-image repos | done | — | normal | milestones/archive/M70-docker-image-profile.md |
 | M69 | Cap-overrun diagnostic — per-section breakdown + single-pass compression discipline | done | — | normal | milestones/archive/M69-cap-overrun-diagnostic.md |
 | M68 | Changelog profile slot — required seventh slot, "none" legal (D-040) | done | — | normal | milestones/archive/M68-changelog-profile-slot.md |
-| M67 | Narration discipline — outcomes, not deliberation (D-039) | done | — | high | milestones/archive/M67-narration-discipline.md |
 
 ## Candidates
 
