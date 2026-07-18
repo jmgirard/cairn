@@ -598,6 +598,17 @@ cited (`citekey (p. N)` / page name), never restated into tracking files.
 Every committed `references/` page carries its
 `INDEX.md` line — mechanized by `cairn_validate`'s references check (M57).
 
+**When a page is owed.** A source consulted in passing owes nothing.
+A page is owed once the repo *relies* on the source — a claim, value, convention, or decision here traces back to it — and it is authored in the milestone that takes the dependency, never left for later.
+Repo-internal analysis earns the second page type by the same test applied to time:
+an analysis that will outlive its milestone — a fit assessment, a comparative survey, a pilot ledger — is a synthesis note, while analysis serving only the milestone in hand stays in the milestone file.
+The over-cap remedy above is a separate last-resort route into `references/`, not this one.
+Author from the shipped templates: `skills/shared/templates/source-note.md` for a source note, `skills/shared/templates/synthesis-note.md` for a synthesis note.
+This trigger is universal — it fires in a repo with no numeric work at all,
+which is why it lives here and not in the conditionally-read domain module;
+`skills/shared/validation-doctrine.md` carries only the numeric/scoring
+instance of the workflow, where the source is a paper backing a number.
+
 **Standing facts vs. dated observations.** A committed `references/` page —
 source note and synthesis note alike — makes two kinds of claim, and they age
 differently.

@@ -133,7 +133,7 @@ your-package/
     ├── DECISIONS.md           # append-only decision log
     ├── milestones/            # one file per milestone (+ archive/)
     ├── reviews/               # Fable review briefs & reports (+ archive/)
-    └── references/            # source + synthesis notes; PDFs gitignored
+    └── references/            # source + synthesis notes; sources/ gitignored
 ```
 
 Boundary rule: **Architecture → DESIGN · Status → ROADMAP · Tasks →
