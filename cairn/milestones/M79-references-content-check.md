@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M78   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** `m79-references-content-check`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m79-references-content-check` · https://github.com/jmgirard/cairn/pull/77   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create/amend-via-gate -->
@@ -167,3 +167,61 @@ fails, fix the parser; if the severity is wrong, supersede here.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as is the work log (D-046); evidence never scrambles plan-owned content. -->
+
+**Reviewed 2026-07-18 · PR https://github.com/jmgirard/cairn/pull/77 · branch `m79-references-content-check` @ bfdb7c5.**
+
+### Acceptance-criteria evidence
+
+- **AC1** — `test_scripts.TestReferencesCheck`, 13/13 ok. Three dedicated
+  cases fire one condition each and assert the emitted text:
+  `test_missing_provenance_block_fails` → "has no provenance block",
+  `test_missing_ingested_date_fails` → "provenance names no ingested date",
+  `test_missing_source_pointer_fails` → "provenance names no source pointer".
+  Severity is hard CHECK per M79-D1: each case asserts `returncode == 1` and
+  `FAIL  references index<->disk`. The emitted label is used verbatim
+  wherever prose names it (M64).
+- **AC2** — proven differentially, not by assertion alone. The same nested
+  fixture was run against `main`'s `check_references` and this branch's:
+  pre-M79 returned no findings (the page passed); post-M79 returns
+  `cairn/references/topic/nested.md has no provenance block`. Pinned by
+  `test_nested_page_is_enforced` + `test_nested_page_with_index_line_passes`.
+- **AC3** — same differential method. A `references/` dir holding one page and
+  no `INDEX.md`: pre-M79 no findings (rendered PASS); post-M79
+  `cairn/references/ holds 1 page(s) but no INDEX.md`. The M45 no-op is kept
+  where it is a genuine not-adopted signal, pinned by
+  `test_absent_index_over_empty_dir_no_ops` (still PASS, scaffold-present
+  owns the failure).
+- **AC4** — `test_decorated_provenance_variants_pass` subtests four forms:
+  `**bold**`, `__underscored__`, a bare heading with a bolded date and a
+  markdown-linked pointer, and a blockquoted heading with a backticked date.
+  All PASS. Implementation note found during work: `\b` is the wrong boundary
+  because `_` is a word character in Python regex, so the parser uses
+  non-alphanumeric lookarounds.
+- **AC5** — `cairn_validate` on this repo: `PASS  references index<->disk`
+  over all 16 committed pages, unmodified. No page needed a D-045 in-place
+  correction; nothing is grandfathered.
+- **AC6** — the shared `Tree.build()` fixture ships an empty INDEX and no
+  pages, so it stays valid under the stricter check; a module-level `page()`
+  helper supplies the provenance block to the dedicated fixtures. Full
+  `scripts/tests` suite 123 ok, up from 111.
+- **AC7** — run from the repo root, each exit code read explicitly, not
+  tail-piped: `skills/tests` 324 exit 0 · `scripts/tests` 123 exit 0 ·
+  `hooks/tests` 72 exit 0.
+- **AC8** — second clause verified: `test_scaffold_check.TestGitignoreDeprecation`,
+  4/4 ok — a repo carrying only the legacy entry passes `check_scaffold`, WARNs
+  with the successor name, and a migrated or both-entries repo is silent.
+  **First clause fails as written** — see the send-back note below.
+
+### Consistency gate
+
+- `cairn_validate` exit 0 — every CHECK PASS. One advisory: `sizing (split
+  tripwires)` WARNs that M79 carries 8 acceptance criteria (>7), accepted
+  deliberately at the amendment gate and exit-code neutral.
+- Profile `generic`: the `consistency-gate` slot names no toolchain checks —
+  clean no-op.
+- `DESIGN.md` is untouched by the diff (no IPn/GPn changed), so
+  `cairn_impact --changed` does not apply.
+- `test_mutation_harness` 9/9 ok — `test_source_note_template` stays
+  registered and its guards still fail under mutation; the M79 edit changed an
+  existing assertion's string rather than adding one, so no new registration
+  is owed.
