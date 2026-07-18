@@ -52,14 +52,25 @@ def is_guarded_merge(command, cwd):
 
 # Flags of `gh pr merge` that consume the following token as their value —
 # so a number sitting after one of them is that flag's value, not the PR.
+#
+# `-m` is deliberately absent: for this command it is the short form of
+# `--merge`, a boolean, so treating it as value-taking would swallow the PR
+# number that follows it (M72 review F5). `--match-head-commit` has no short
+# form. `--repo`/`-R` are gh globals that DO take a value (F2).
 _GH_MERGE_VALUE_FLAGS = {
     "-b", "--body", "-t", "--subject", "-F", "--body-file",
-    "-m", "--match-head-commit", "--author-email",
+    "--match-head-commit", "--author-email", "-R", "--repo",
 }
 # Trailing number of a PR URL, e.g. https://github.com/o/r/pull/57
 _PR_URL_TAIL = re.compile(r"/pull/(\d+)/?$")
-# A `#57` reference anywhere in the approval marker's body.
-_MARKER_PR = re.compile(r"#(\d+)")
+# The PR the approval marker names. Anchored on the convention's own
+# "for PR #<N>" tail rather than any `#<N>` in the body: a marker label may
+# carry an unrelated reference (`hotfix #43-null-deref approved … for PR #70`)
+# and a bare first-match would read 43 — denying the approved merge, or worse
+# authorizing an unapproved one (M72 review F1). A body that does not follow
+# the convention yields None and falls back to the bare existence check, the
+# same as a marker predating it.
+_MARKER_PR = re.compile(r"for\s+PR\s*#(\d+)", re.IGNORECASE)
 # Command separators that end the `gh pr merge …` segment.
 _SEGMENT_END = re.compile(r"[;&|\n]")
 

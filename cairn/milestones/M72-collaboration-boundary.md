@@ -117,6 +117,7 @@ docs-only direct pushes → candidate row.
 - 2026-07-18: T5 — `test_collaboration_boundary.py` (12 tests across boundary, PR binding, README); five mutation entries registered, all proven; skills suite 234 → 246.
 - 2026-07-18: T4 — six `TestMergeGuard` cases (mismatch, bare, match, URL/value-flag parsing, branch-name argument, `git merge` exemption); `shlex` added to the stdlib allowlist in `TestStdlibOnly`.
 - 2026-07-18: review — PR #70 opened; all seven criteria executed with fresh evidence; consistency gate clean; three-lens fan-out + scorer ran (prior-PR lens no-opped, no corpus). F4 (82) fixed on the branch: multi-occurrence PR check, 3 regression tests, hooks 66 → 69. Five sub-80 findings logged in the Review section.
+- 2026-07-18: review — F1/F2/F5 additionally fixed at the user's direction at the approval gate (marker regex anchored on `for PR #<N>`; `--repo`/`-R` added and `-m` removed from the value-flag set); three more regression tests, hooks 69 → 72.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
@@ -188,18 +189,27 @@ findings). Scored by a fresh [S] scorer.
   Three regression tests added, incl. one proving a repeat of the *approved*
   PR is still allowed (over-correction guard). Verified by probe.
 
-**Below threshold — logged, not actioned (surfaced per IP3):**
+**Below threshold but fixed at the user's direction at the approval gate**
+(one-line fixes in the function F4 already reworked; F1 is an authorization
+hole whose trigger the scorer judged unlikely rather than impossible):
 
 - F2 (78) — `--repo`/`-R` absent from `_GH_MERGE_VALUE_FLAGS`, so passing
-  `--repo owner/name` before the number denies with a message telling the
-  operator to spell out a number they already spelled out. Fail-closed;
-  cairn's skills never pass `--repo`.
-- F5 (74) — `-m` is listed as value-taking but for this command it means
-  `--merge` (boolean), so `-m 7` falsely denies. Fail-closed.
-- F1 (68) — `_MARKER_PR` takes the first `#N` in the marker, but the
+  `--repo owner/name` before the number denied with a message telling the
+  operator to spell out a number they already spelled out. **Fixed:** both
+  spellings added to the value-flag set.
+- F5 (74) — `-m` was listed as value-taking but for this command it means
+  `--merge` (boolean), so `-m 7` falsely denied. **Fixed:** removed, with a
+  comment recording why it must not return.
+- F1 (68) — `_MARKER_PR` took the first `#N` in the marker, but the
   convention writes the PR last; a hotfix slug containing `#43` would both
   deadlock the approved merge and (inversely) authorize an unapproved one.
-  Scorer judged the trigger unlikely (the slug also becomes a branch name).
+  **Fixed:** anchored on the convention's `for PR #<N>` tail; a body that
+  does not follow the convention yields None and falls back to the existence
+  check, as a pre-convention marker does. Three regression tests (approved
+  merge allowed despite a label reference; a label reference cannot authorize
+  an unapproved merge; `--repo`/`-R`/`-m` parse correctly). Hooks 69 → 72.
+
+**Below threshold — logged, not actioned (surfaced per IP3):**
 - F7 (68) — the milestone's `## Decisions` section was empty though the
   implement-gate choice narrowed D-043's back-compat wording. Recorded above.
 - F6 (62) — two new assertions carry no `Mutation(...)` entry; scorer noted

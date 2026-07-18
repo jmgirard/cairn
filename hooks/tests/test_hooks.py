@@ -323,6 +323,38 @@ class TestMergeGuard(RepoFixture):
         )
         self.assertEqual(proc.stdout.strip(), "")
 
+    def test_unrelated_reference_in_the_marker_label_is_not_the_pr(self):
+        # M72 review F1: a first-match regex read the label's issue number
+        # instead of the approved PR, denying the approved merge (and, with
+        # the numbers reversed, authorizing an unapproved one).
+        self.marker().write_text(
+            "hotfix #43-null-deref approved 2026-07-18 for PR #70\n"
+        )
+        proc = run_hook("merge_guard.py", self.merge_payload("gh pr merge 70 --squash"))
+        self.assertEqual(proc.stdout.strip(), "", "approved merge must not be denied")
+        self.assertFalse(self.marker().exists())
+
+    def test_unrelated_reference_cannot_authorize_an_unapproved_merge(self):
+        self.marker().write_text("hotfix #70-crash approved 2026-07-18 for PR #71\n")
+        out = hook_json(
+            run_hook("merge_guard.py", self.merge_payload("gh pr merge 70 --squash"))
+        )
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn("#71", out["permissionDecisionReason"])
+
+    def test_repo_flag_value_is_not_mistaken_for_the_pr(self):
+        # M72 review F2 (--repo/-R take a value) and F5 (-m is boolean).
+        for command in (
+            "gh pr merge --repo jmgirard/cairn 7 --squash",
+            "gh pr merge -R jmgirard/cairn 7 --squash",
+            "gh pr merge -m 7",
+        ):
+            with self.subTest(command=command):
+                self.marker().write_text(self.APPROVAL_PR7)
+                proc = run_hook("merge_guard.py", self.merge_payload(command))
+                self.assertEqual(proc.stdout.strip(), "", command)
+                (self.root / "cairn" / ".merge-approved.pending").unlink()
+
     def test_git_merge_is_exempt_from_the_pr_check(self):
         # A `git merge` has no PR to name; the marker's existence governs it.
         self.marker().write_text(self.APPROVAL_PR7)
