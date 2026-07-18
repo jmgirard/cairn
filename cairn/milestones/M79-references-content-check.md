@@ -20,13 +20,20 @@ escape the check entirely.
 <!-- owner: plan · create/amend-via-gate -->
 
 **In:** `cairn_validate.check_references` (`cairn_validate.py:177-202`) gains
-content checks over M78's shipped shape — a page must carry a citation line
-and an ingested-date provenance field. Plus the two gaps found in the M78
-audit: the flat `os.listdir` at `:189`, which makes any nesting under
-`references/` silently unenforced, and the outright PASS at `:185-186` when
-`INDEX.md` is absent. Advisory-vs-hard placement is decided in T1 against
-D-023's no-false-positive doctrine and D-029's precedent that the oracle
-registry stays review-judgment, never a CHECK.
+content checks over M78's shipped shape — a page must carry a `**Provenance.**`
+block naming both an ingested date and a source pointer. Plus the two gaps
+found in the M78 audit: the flat `os.listdir` at `:189`, which makes any
+nesting under `references/` silently unenforced, and the outright PASS at
+`:185-186` when `INDEX.md` is absent. Advisory-vs-hard placement is decided in
+T1 against D-023's no-false-positive doctrine and D-029's precedent that the
+oracle registry stays review-judgment, never a CHECK.
+
+Folded in at the implement gate (2026-07-18): the `cairn/references/pdf/` →
+`cairn/references/sources/` rename. The name is under-general now that M78
+ships non-PDF provenance (a URL plus retrieval record), and it is cairn's own
+scaffold name, not an adopting repo's choice. Post-1.0, the legacy `pdf/`
+gitignore entry stays accepted with a deprecation notice rather than failing
+an adopting repo.
 
 **Out:** citekey resolution and dependent discovery — un-excluding
 `references/` from `cairn_impact.py:45` so a corrected page surfaces its
@@ -39,9 +46,10 @@ doctrine or template shape → M78 owns those.
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
 - [ ] `check_references` reports a committed `references/` page that carries
-      no citation line and one that carries no ingested-date field, at the
-      severity T1 selects, with the emitted label used verbatim in any prose
-      that names it (M64).
+      no `**Provenance.**` block, one whose provenance names no ingested date,
+      and one whose provenance names no source pointer, at the severity T1
+      selects, with the emitted label used verbatim in any prose that names it
+      (M64).
 - [ ] The check reads `references/` recursively, so a page in a subdirectory
       is enforced exactly as a top-level page is — proven by a fixture with a
       nested page that currently passes and must not.
@@ -59,6 +67,15 @@ doctrine or template shape → M78 owns those.
 - [ ] Verify clean per `cairn/PROFILE.md`: `python3 -m unittest discover` over
       `skills/tests`, `scripts/tests`, and `hooks/tests`, each exit 0, run from
       the repo root and not tail-piped (M56/M65).
+- [ ] `cairn/references/pdf/` is renamed to `cairn/references/sources/`
+      everywhere cairn writes it — scaffold dirs, the required `.gitignore`
+      entry, the rulebook file map and dated-observations rule, the ingestion
+      recipe, the source-note template, and `cairn-init`'s tree — with no live
+      `references/pdf` string left in the plugin outside history
+      (`DECISIONS.md`, `milestones/archive/`, `legacy/`, and existing
+      `references/` pages, which IP4 and D-045 govern); and an adopting repo
+      carrying only the legacy `pdf/` gitignore entry still passes
+      `check_scaffold` with a deprecation notice, pinned by a fixture.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -72,6 +89,7 @@ doctrine or template shape → M78 owns those.
 - AC5 → T5
 - AC6 → T4
 - AC7 → T6
+- AC8 → T7, T8
 
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
@@ -95,6 +113,15 @@ doctrine or template shape → M78 owns those.
       correct any failing page in place with the correction marked (D-045).
 - [ ] T6. Run the three suites from the repo root, check each exit code
       explicitly before any commit; append the work-log line.
+- [ ] T7. Rename `pdf/` → `sources/` across the plugin:
+      `cairn_scripts.REQUIRED_GITIGNORE` + the scaffold-dirs comment,
+      `cairn-init` §1 tree + gitignore bullet, `tracking-rules.md` file map +
+      dated-observations rule, `validation-doctrine.md` source ingestion,
+      `source-note.md` template, and this repo's own `.gitignore`. Record as
+      D-047 (post-1.0 scaffold-contract change).
+- [ ] T8. Add the legacy-`pdf/` deprecation path to `check_scaffold`, with
+      fixtures in `scripts/tests/test_scaffold_check.py`; re-point
+      `skills/tests/test_source_note_template.py`'s source-pointer assertion.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -103,6 +130,8 @@ doctrine or template shape → M78 owns those.
 
 - 2026-07-18: created by /milestone-plan. Gaps sourced from the M78-planning audit of `cairn_validate.py:177-202` — the check is a filename census, so an empty page with an INDEX line passes clean.
 - 2026-07-18: /milestone-implement started; branch `m79-references-content-check` cut from main. Baseline verify green (skills 324, scripts 111, hooks 72; each exit 0).
+- 2026-07-18: AMENDMENT (gated) — AC1 now checks a Provenance source pointer, not a citation line: M78's template scopes `**Citation.**` to published primary sources, so a blanket check contradicts it. Goal's "and a citation" clause is narrowed by this AC, not re-cut; Goal text left untouched (plan-owned, no amend mode).
+- 2026-07-18: AMENDMENT (gated) — `references/pdf/` → `references/sources/` rename folded into Scope In as AC8 / T7-T8, user-chosen at the implement gate. 8 ACs sits at the ~7 split tripwire; accepted as one coherent change rather than a split.
 - 2026-07-18: audit of this repo's 17 committed pages — 17/17 carry Provenance + an ingested date, 1/17 carries a labelled Citation. AC1's citation half fires on 16 pages; surfaced at the question gate.
 
 ## Decisions
