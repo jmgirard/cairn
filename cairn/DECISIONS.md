@@ -1010,3 +1010,40 @@ backing, never weakened. If a second cairn operator ever appears, the
 concurrent-operator candidate row is the entry point; if the marker binding
 proves too strict for a workflow that merges without `gh pr merge`, this is
 the entry to supersede.
+
+### D-044 (2026-07-18): `leave` is a legal fourth issue disposition, narrowed to noise/duplicates/already-covered — annotates D-042
+
+**Context:** M74 shipped `/milestone` §3 with four dispositions (candidate
+row / `/hotfix` / `/milestone-plan` / **leave**), but the rulebook's Intake
+enumeration (`tracking-rules.md:199-200`) names only "`candidate` rows or the
+hotfix path". M74 knew and deferred it — its archive records "`leave` shipped
+though the rulebook's Intake enumeration omits it → candidate row" — and its
+review scored the finding 40 (sub-threshold) because AC3 named `leave`, so
+review correctly declined to reinterpret its own criterion. The gap is not
+cosmetic: an acknowledged-but-left item persists with the GitHub issue as its
+only record, which sits awkwardly beside D-042's "an inbox feeds the ROADMAP,
+it never substitutes for it" and beside that entry's extension of IP3's
+conservation guarantee from "what the user asked for" to "what the session
+surfaced".
+**Decision:** Legitimize `leave` in the rulebook, **narrowed** to noise,
+duplicates, and items already cross-referenced in cairn — never anything
+genuinely new. The IP3 reading this rests on: IP3 forbids a *silent* drop,
+and a `leave` is neither silent nor unilateral — it is proposed verbatim
+above an acceptance chip (D-037/D-038) and chosen by the user with a stated
+reason. What the narrowing adds is that the only items eligible are ones
+cairn's record already covers or that carry no information to conserve, so
+conservation is preserved in substance rather than merely in ceremony.
+Rejected: **dropping `leave` from the skill** to match the rulebook's
+three-way form (forces a ROADMAP row for spam and duplicate issues — row
+rot, and D-035 keeps candidates a flat list precisely because the section
+stays small); and **legitimizing it unnarrowed** with only "state the reason"
+as the bar (leaves the D-042 tension intact — a real idea could be left with
+the GitHub issue as its only record, which is the substitution D-042
+forbids). Settled in-session rather than escalated to Fable at the M75 plan
+gate; the question is narrow and the narrowing is what answers it.
+**Consequences:** Annotates D-042 — its inbox-never-substitutes rule stands
+and is *sharpened*: what may be left is exactly what the ROADMAP would learn
+nothing from. The skill's four dispositions are unchanged; the rulebook moves
+to meet what M74 shipped. Delivered by M75, guarded label-inclusively per the
+M74/F3 lesson. If `leave` is ever observed absorbing items that were
+genuinely new, the narrowing is the entry to tighten — supersede here.
