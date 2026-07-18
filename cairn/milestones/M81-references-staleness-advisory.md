@@ -88,7 +88,7 @@ element and lost in scoping. This milestone executes the remainder, so it does
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Write the advisory function in `scripts/cairn_validate.py` beside
+- [x] T1: Write the advisory function in `scripts/cairn_validate.py` beside
       `check_worklog_format` (`:663`) and register it in `ADVISORIES`. It reads
       the `Extraction:` line — today parsed by nothing; the word appears once
       in the file, inside a comment describing a tolerated miss (`:223-225`) —
@@ -111,6 +111,8 @@ element and lost in scoping. This milestone executes the remainder, so it does
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
 
 - 2026-07-18: created by /milestone-plan; planned alongside M80 from the M78/M79 grouped candidate row.
+- 2026-07-18: implement gate settled the three open parse decisions — 180-day threshold, undated "at ingestion" ages from the ingested date, exemption earned by the explicit "nothing to re-verify" phrase.
+- 2026-07-18: T1 — `check_references_staleness` written and registered in `ADVISORIES`; stdlib allowlist extended for `datetime`; first run flags 1 of 16 pages, exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

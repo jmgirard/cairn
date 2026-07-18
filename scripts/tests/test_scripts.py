@@ -1427,7 +1427,7 @@ class TestOutsideCairn(unittest.TestCase):
 
 class TestStdlibOnly(unittest.TestCase):
     ALLOWED = {
-        "ast", "copy", "glob", "json", "os", "pathlib", "re",
+        "ast", "copy", "datetime", "glob", "json", "os", "pathlib", "re",
         "subprocess", "sys", "tempfile", "unittest",
         "cairn_common", "cairn_scripts",
     }
