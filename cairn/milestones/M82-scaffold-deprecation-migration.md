@@ -133,6 +133,7 @@ never fix, so the actor is skill prose. Migrating a repo's *committed*
 - 2026-07-18: T8 — AC4 + AC5 amended via the step-6 gate (fork chosen by the user at the plan-gate: drop the verified-outcome claim, keep `scripts/` report-only per Scope's Out). AC5 now requires the prose to state what a quiet advisory does NOT prove; the false sentence "a still-firing advisory means a step above was declined or failed" is deleted and an `assertNotIn` guards its return.
 - 2026-07-18: T9 — advisory-label assert re-anchored to the one instruction consuming it (script + label fused on a single physical line, M80 shape); mutation registry grew 4 → 8 `test_scaffold_migration` entries, adding the removal rule, the case-exclusivity block, the AC5 closing paragraph, the commit-scoping rule, and AC1's §0 pointer.
 - 2026-07-18: verify clean from repo root, exit codes checked separately (never piped — M56/M65): skills 356 OK (exit 0), scripts 147 OK (exit 0). Mutation entries proven live: pointing the new removal-rule block at absent text errors the harness `found 0`, exit 1; reverted. One authoring slip caught by the suite — reflowing the move case wrapped the guarded phrase `via AskUserQuestion before moving anything` (M23/M78 trap, third recurrence); fixed in the prose, not by loosening the assert. Status → review.
+- 2026-07-18: review trip 2 — gate PASSED. All seven criteria re-verified fresh on 729dd55 (AC4/AC5 judged as amended); full `verify` slot run including the third suite AC7 omits (`hooks/tests` 72 OK); `cairn_validate` exit 0. Fan-out: diff-bug 1 finding (F1/85), blame-history 0, prior-PR 0. F1 (advisory silenced by its own first action, so a declined move is never re-offered) triaged to a follow-up rather than a third send-back — the fix changes the step's driver, which contradicts AC3 and Scope as written and needs a plan-time amendment, and `main` carries no migrator at all so M82 is a strict improvement either way. Awaiting merge approval.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -145,66 +146,79 @@ never fix, so the actor is skill prose. Migrating a repo's *committed*
 
 ## Review
 
-**Outcome: gate FAILED 2026-07-18 — returned to `in-progress`.** AC4 and AC5
-fail as written; PR #80 left open as draft, not merged.
+**Outcome: gate PASSED 2026-07-18 (trip 2).** All seven criteria verified with
+fresh evidence on `729dd55`. One finding scored ≥80 — triaged to a follow-up,
+not a third send-back; see the disposition below.
 
-**Evidence per criterion** (fresh, by command, on `m82-…` @ 8b8d1c7):
+**Evidence per criterion** (fresh, by command, on `m82-…` @ 729dd55):
 
 - AC1 ✓ — `## 3. Repair` at `SKILL.md:186`; §0 reduced to the pointer at `:79`;
-  moved block at `:192-200` diffs identical to `main`'s `:79-87` except the
-  bold lead-in.
-- AC2 ✓ — `${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py` at `:210`,
-  `` `scaffold deprecations` `` at `:211`; label matches the emitted string at
-  `cairn_validate.py:664` verbatim.
-- AC3 ✓ — generality sentence at `:213`; `references/pdf` occurs **0 times** in
-  the skill (grep -c), so no rename is named in the prose.
-- AC4 ✗ — the three labels are pinned (`:216`, `:219`, `:223`) and guarded, but
-  the third rule is **unreachable in the mandated execution order** (F3): steps
-  2–4 are mutually-exclusive directory states presented under "Per line, in
-  order", so the move in step 2 precedes step 3's clobber protection.
-- AC5 ✗ — the step re-runs the check (`:229-232`), but
-  `check_gitignore_deprecations` reads only `.gitignore` content and never the
-  filesystem, so step 1 alone silences the advisory (F2). "Verified outcome
-  rather than an attempted one" is not deliverable by the named mechanism, and
-  the shipped sentence "a still-firing advisory means a step above was declined
-  or failed" is false.
-- AC6 ✓ — 4 `test_scaffold_migration` entries registered; harness and
-  completeness meta-test both exit 0; pointing a block at absent text errors
-  the harness (exit 1), proving the entries live.
+  the scaffold-piece and `PROFILE.md` backfill substance at `:192-194`.
+- AC2 ✓ — script and label fused on one physical line at `:210`; the label
+  matches validate's registered check name (`cairn_validate.py:985`), emitted
+  as `OK scaffold deprecations`.
+- AC3 ✓ — generality sentence at `:213`; `references/pdf` occurs **0 times**
+  in the skill (`grep -c`).
+- AC4 ✓ (as amended) — four label+rule pairs, each fused on one physical line:
+  `:216`, `:226`, `:229`, `:236`. Exclusivity and the before-any-move rule at
+  `:222-223`. The clobber case (`:226`) now precedes the move case (`:229`) in
+  reading order, and `assertLess` locks that order.
+- AC5 ✓ (as amended) — closing at `:240-243` names the check and states what a
+  quiet advisory does *not* prove; the false sentence occurs **0 times**, with
+  an `assertNotIn` guarding its return.
+- AC6 ✓ — 9 `test_scaffold_migration` entries registered; harness exit 0.
+  Proven live this trip: pointing the AC5 closing block at absent text errors
+  the harness (`found 0`, exit 1); reverted, suite re-green.
 - AC7 ✓ — from repo root, exit codes checked separately: scripts 147 OK (0),
-  skills 353 OK (0), `cairn_validate` 15 PASS (0).
+  skills 356 OK (0).
 
-**Consistency gate:** `cairn_validate` exit 0. Generic profile's
+**Consistency gate:** `cairn_validate` exit 0, 15 PASS. The single
+`references staleness` WARN is the pre-existing `task-master.md` item, already
+a candidate row, untouched by this branch. Generic profile's
 `consistency-gate` slot names no toolchain checks → universal half only.
-DESIGN untouched, so `cairn_impact` correctly skipped. No CI on this repo (M16).
+DESIGN untouched, so `cairn_impact` correctly skipped. No CI (M16).
 
-**Fan-out:** [O] diff-bug 6 findings · [S] blame-history 0 · [S] prior-PR 0
-(this repo records review findings in archives, not GitHub PR comments; the
-`gh api` comment endpoints were empty across all 12 relevant PRs).
+**Beyond the criteria** (recorded, not gate failures): AC7's parenthetical
+calls its two commands "profile `verify` slot", but `PROFILE.md:17-27` names
+**three** suites; the third was run for the gate — `hooks/tests` 72 OK (0). The
+Coverage map still routes AC4/AC5 → T2, T4, though the amended criteria were
+satisfied by T6–T9; `coverage complete` PASSes and Coverage is plan-owned, so
+it is flagged, not edited. A work-log line records the mutation registry
+growing "4 → 8"; the actual count is **9** (`grep -c`).
 
-**Actioned (≥80, plus one sub-threshold by M73):**
+**Fan-out:** [O] diff-bug 1 finding + 1 sub-threshold · [S] blame-history 0 ·
+[S] prior-PR 0 ("no prior-PR evidence" — this repo records findings in
+milestone markdown; the lens fell back to the archives and found nothing
+reintroduced).
 
-- F1 (84) — step 1's unconditional `.gitignore` rewrite un-ignores the old
-  shelf while its untracked contents remain; §3's own commit bullet then
-  follows with no `git add` scoping, so a declined move can publish files
-  `references/llm-wiki.md:113` records as gitignored out of copyright
-  necessity. `check_references` skips both shelf names, so no check catches it.
-- F2 (92) — the closing re-run cannot distinguish verified from attempted; the
-  prose states a falsehood. Drives the AC5 failure.
-- F3 (62, actioned anyway) — sub-80 but authorizes an irreversible action
-  (`mv` over untracked files git cannot restore), the exact class M73's lesson
-  says to fix regardless of score. Drives the AC4 failure.
+**Actioned (≥80):**
+
+- F1 (85) — the add-then-remove protocol makes an incomplete migration
+  permanently invisible. The step is scoped to "Act on every line the advisory
+  prints" (`SKILL.md:213-214`), but its first action — adding `<new>`
+  (`:216`) — is exactly what silences `check_gitignore_deprecations`, which
+  appends a finding only when `old in gitignore and new not in gitignore`
+  (`cairn_validate.py:662`). A declined move (`:229`) or a "keep both and skip"
+  (`:226`) therefore leaves the old directory on disk and the old entry in
+  `.gitignore`, with **no** later repair run or `/milestone` audit ever
+  surfacing it again. `:218-220` compounds this by telling the agent the
+  silence is expected and beneficial.
+  **Disposition: follow-up candidate row, not a third send-back.** The fix
+  changes the step's *driver* from the advisory's output to the superseded-entry
+  map plus a filesystem check — which contradicts AC3 and the Scope's
+  "driven by the advisory's own output" as literally written, so it needs a
+  gated amendment, not a review-side patch. Against `main` this is not a
+  regression: `main` carries no migration step at all (0 occurrences of the
+  advisory in its `cairn-init`), so M82 is a strict improvement either way, and
+  the gap is bounded — `DEPRECATED_GITIGNORE` holds exactly one pair today and
+  this repo is already fully migrated. Swept per the search-first rule: no
+  existing row covers repair resumability.
 
 **Logged, not actioned (<80):**
 
-- F4 (28) — "fix what's missing" → "create what is missing" leaves a damaged
-  (present-but-corrupt) piece with no remedy, against `SKILL.md:10-11`'s
-  "missing or damaged" promise. Pre-existing: the original §0 wording covered
-  only the missing case too, so this diff is lateral, not a regression.
-- F5 (58) — the advisory-label assert is satisfiable by any of three
-  occurrences in §3 (`:205`, `:211`, `:230`), so it does not pin the label to
-  the instruction that consumes it (M80 shape); not mutation-registered.
-- F6 (62) — AC5's closing paragraph and AC1's §0 pointer are independently
-  load-bearing but unregistered; the registry comment claims one entry per such
-  block. AC6 as literally written is still satisfied (registration is per file).
+- F2 (60) — AC3's guard asserts only that the generality *sentence* is present
+  (`test_scaffold_migration.py:82-88`), so an edit keeping that sentence while
+  adding an illustrative `references/pdf` example would pass every guard; an
+  `assertNotIn` would close it. Unchanged this trip, and AC3 as literally
+  written is satisfied. Same guard-precision class as trip 1's F5/F6.
 <!-- owner: review · exclusive -->
