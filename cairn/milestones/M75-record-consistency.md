@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M75: Record consistency — the `leave` disposition and MCP-matcher semantics
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP3   <!-- owner: plan · create/amend-via-gate -->
@@ -47,7 +47,7 @@ what IP3 forbids. Implement inherits the answer, not the question.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [x] AC1 — `tracking-rules.md`'s Intake paragraph names `leave` as a legal
+- [ ] AC1 — `tracking-rules.md`'s Intake paragraph names `leave` as a legal
       fourth disposition with its narrowing (noise, duplicates, already
       cross-referenced) stated on one physical line; the pre-M75 three-way
       sentence no longer stands as the whole enumeration.
@@ -59,7 +59,7 @@ what IP3 forbids. Implement inherits the answer, not the question.
       contradiction, and §3's four dispositions are unchanged by this
       milestone (`git diff` over `skills/milestone/SKILL.md` touches no
       disposition text).
-- [x] AC4 — `cairn/references/claude-code-hooks.md`'s "Matchers & execution"
+- [ ] AC4 — `cairn/references/claude-code-hooks.md`'s "Matchers & execution"
       section states that a matcher of only word chars, `-`, space, `,` or
       `|` is compared as an exact string, so an MCP tool matcher must carry a
       metacharacter; its `INDEX.md` line still describes the page accurately.
@@ -112,6 +112,7 @@ what IP3 forbids. Implement inherits the answer, not the question.
 - 2026-07-18: T3 — MCP-matcher bullet added to the hooks reference; exemplar verified live against hooks.json:67 + idea_guard.py:28 (same suffix shape); INDEX line amended to record the non-official-docs provenance.
 - 2026-07-18: T4 — two label-inclusive guards + two mutation entries; label swap (`leave`→`ignore`) proven to fail the suite, not just blanking. Verify clean: scripts 96 / skills 289 / hooks 72, cairn_validate 0, exit codes checked unpiped (M56/M65).
 - 2026-07-18: all tasks done; status → review.
+- 2026-07-18: review GATE FAILED → in-progress. F1: the hooks-reference matcher rule is factually wrong (literal path splits on `|`/`,` and compares each part; verified in binary 2.1.207) and AC4's own wording mandates the error — needs a gated AC4 amendment. F2: `tracking-rules.md:202` dropped D-044's "in cairn" locus. F4: a guard comment overclaims coverage `assertIn` does not give. AC1/AC4 unticked.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -154,6 +155,49 @@ no CI on this repo (`gh pr checks 73` → "no checks reported", exit 0; M16).
 - **AC6** — scripts 96 / skills 289 / hooks 72 all `OK`; `cairn_validate`
   exit 0, 17 checks. Exit codes captured directly, never through a pipe
   (M56/M65).
+
+### Fan-out findings (2026-07-18) — GATE FAILED, returned to implement
+
+Three lenses. Blame-history: 0 findings. Prior-PR-comments: 0 findings
+(no inline PR comments exist on #69–#72; it read the archive files instead).
+Diff-bug [O]: 4 findings. Scorer [S] gave 35 / 82 / 40 / 78.
+
+**Actioned:**
+
+- **F1 (scored 35 — score overridden, operator judgment; M73 lesson).**
+  `claude-code-hooks.md:101-105` states the matcher rule wrongly. Verified
+  against the installed binary (2.1.207): the literal path is
+  `/^[a-zA-Z0-9_|, -]+$/` followed by `e.split(/[|,]/)`, so it splits on `|`
+  and `,` and exact-compares each alternative — not a whole-string exact
+  compare. `Edit|Write` matches both. The bullet names `,` and `|` in its own
+  character list and then calls the result "an EXACT string". The scorer
+  agreed the mechanism splits, objecting only that the single-name worked
+  example is accurate; for a page being promoted to oracle here, a general
+  rule wrong for two of five named characters is load-bearing. The error is
+  inherited verbatim from `LESSONS.md:41`, so **M71's lesson is also wrong**.
+- **F2 (82).** `tracking-rules.md:202` dropped the "in cairn" locus: D-044
+  narrows `leave` to items "already cross-referenced **in cairn**" and AC1
+  says "already cross-referenced", but the delivered line reads
+  "already-covered items". An issue tracked only on an upstream board reads
+  as covered, gets `leave`, and its sole record is the GitHub issue — the
+  D-042 substitution the narrowing exists to forbid.
+- **F4 (78).** `test_external_pr_intake.py:141` comment claims "widening the
+  narrowing has to fail this too". `assertIn` is a substring match, so an
+  appended fourth category leaves both guards green — verified directly by
+  the scorer. The label-swap and blanking claims in the same comment hold.
+
+**Logged, sub-threshold, not actioned:**
+
+- **F3 (40).** "the fourth disposition" counts §3's list, not the rulebook's,
+  and the rulebook never names `/milestone-plan` as an *issue* route. The
+  phrasing explicitly scopes the numbering to §3, so this is largely
+  readability — but the missing issue-route remains true.
+
+**Gate disposition.** AC4 is worded to require the page state the *wrong*
+rule ("compared as an exact string"). Correcting the prose makes AC4 fail as
+written, and review never reinterprets a criterion — so M75 returns to
+`in-progress` for a gated AC4 amendment plus the F1/F2/F4 fixes, then
+re-review. First trip back (thrash rule: not triggered).
 
 ### Consistency gate
 
