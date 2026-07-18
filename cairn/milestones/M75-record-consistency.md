@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** `m75-record-consistency`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m75-record-consistency` · https://github.com/jmgirard/cairn/pull/73   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -47,27 +47,27 @@ what IP3 forbids. Implement inherits the answer, not the question.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1 — `tracking-rules.md`'s Intake paragraph names `leave` as a legal
+- [x] AC1 — `tracking-rules.md`'s Intake paragraph names `leave` as a legal
       fourth disposition with its narrowing (noise, duplicates, already
       cross-referenced) stated on one physical line; the pre-M75 three-way
       sentence no longer stands as the whole enumeration.
-- [ ] AC2 — `cairn/DECISIONS.md` carries D-044 recording the IP3/D-042
+- [x] AC2 — `cairn/DECISIONS.md` carries D-044 recording the IP3/D-042
       reading, the chosen narrowing, and the two rejected alternatives
       (drop `leave` from the skill; legitimize it unnarrowed).
-- [ ] AC3 — the rulebook line and `/milestone` §3's `leave` bullet agree:
+- [x] AC3 — the rulebook line and `/milestone` §3's `leave` bullet agree:
       both texts quoted side by side in the Review section show no
       contradiction, and §3's four dispositions are unchanged by this
       milestone (`git diff` over `skills/milestone/SKILL.md` touches no
       disposition text).
-- [ ] AC4 — `cairn/references/claude-code-hooks.md`'s "Matchers & execution"
+- [x] AC4 — `cairn/references/claude-code-hooks.md`'s "Matchers & execution"
       section states that a matcher of only word chars, `-`, space, `,` or
       `|` is compared as an exact string, so an MCP tool matcher must carry a
       metacharacter; its `INDEX.md` line still describes the page accurately.
-- [ ] AC5 — a guard asserts the new rulebook line *including its `leave`
+- [x] AC5 — a guard asserts the new rulebook line *including its `leave`
       label* (M74/F3: a clause-only assert survives a label swap), with a
       mutation-harness entry whose anchor phrase is unique within
       `tracking-rules.md` (M58).
-- [ ] AC6 — verify clean: `python3 -m unittest discover` green for
+- [x] AC6 — verify clean: `python3 -m unittest discover` green for
       `scripts/tests`, `skills/tests`, and `hooks/tests`; `cairn_validate.py`
       exits 0.
 
@@ -121,3 +121,44 @@ what IP3 forbids. Implement inherits the answer, not the question.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55):
      only the plan-owned body above counts; evidence never scrambles it. -->
+
+**PR:** https://github.com/jmgirard/cairn/pull/73 · reviewed 2026-07-18 ·
+no CI on this repo (`gh pr checks 73` → "no checks reported", exit 0; M16).
+
+### Criterion evidence (fresh, by command)
+
+- **AC1** — `tracking-rules.md:202` carries the narrowing on one physical
+  line; the surrounding paragraph (`:199-207`) shows the pre-M75 three-way
+  sentence now continues into the fourth disposition rather than standing
+  alone.
+- **AC2** — `DECISIONS.md:1014` opens D-044; the entry states the IP3
+  reading (silent-drop vs. reason-stated), the narrowing, and both rejected
+  alternatives (drop `leave` from the skill; legitimize it unnarrowed).
+- **AC3** — `git diff --stat main..HEAD -- skills/milestone/SKILL.md` is
+  empty: no disposition text touched. The two texts read together —
+  rulebook: "`leave` is legal only for noise, duplicates, or already-covered
+  items — no row, no action, reason stated, never anything genuinely new";
+  skill `SKILL.md:129`: "**leave** — no row, no action, with the reason
+  stated." The skill states the mechanics, the rulebook adds the eligibility
+  bar; no contradiction.
+- **AC4** — `claude-code-hooks.md:101-108` states the exact-vs-regex rule for
+  MCP names, that `_` is a word char, and the metacharacter remedy. Exemplar
+  verified live: `hooks.json:67` = `"mcp__.*__spawn_task"`,
+  `idea_guard.py:28` = `^mcp__.+__spawn_task$` — same suffix shape as
+  claimed. `INDEX.md:13` amended to record the non-official-docs provenance.
+- **AC5** — two asserts at `test_external_pr_intake.py:144,152`, both
+  label-inclusive; both anchors occur exactly once in `tracking-rules.md`
+  (M58). Falsifiability proven beyond blanking: swapping the label
+  `leave`→`ignore` turned the suite red (1 failure + 1 harness hard-error),
+  which is the M74/F3 mode blanking alone cannot reach.
+- **AC6** — scripts 96 / skills 289 / hooks 72 all `OK`; `cairn_validate`
+  exit 0, 17 checks. Exit codes captured directly, never through a pipe
+  (M56/M65).
+
+### Consistency gate
+
+`cairn_validate` exit 0 (all checks pass, incl. `coverage complete`).
+Profile is `generic`, whose `consistency-gate` slot names no toolchain
+checks — that half is a clean no-op. `cairn_impact --changed`: "no changed
+principles" — M75 reasons about IP3 but changes no principle text, so no
+reconciliation was owed.
