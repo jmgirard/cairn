@@ -91,7 +91,7 @@ enumerate templates. Guard tests, mutation-registered.
       `Extraction: ` — `cairn_validate.py:227` and
       `test_source_note_template.py:221` hard-require them, so any other
       wording is a coordinated validator + guard change.
-- [ ] T3: Extend `skills/tests/test_references_pages.py` with a
+- [x] T3: Extend `skills/tests/test_references_pages.py` with a
       `TestShippedSynthesisTemplate` reading the real shipped file (mirror
       `test_source_note_template.py:139-188`), plus the AC1 core-vs-module
       placement asserts. Author every anchor phrase on its own physical line
@@ -110,6 +110,7 @@ enumerate templates. Guard tests, mutation-registered.
 - 2026-07-18: created by /milestone-plan; promoted the M78/M79 grouped candidate row ahead of its "promote once M78's template is in use" gate — the gate is self-blocking, since nothing triggers the template's use and that is the very gap being fixed.
 - 2026-07-18: /milestone-implement started; branch `m80-references-authoring` cut from synced main.
 - 2026-07-18: T1 — trigger + both template paths into tracking-rules "References pages"; validation-doctrine's parenthetical now defers the trigger instead of restating it. Gate answers: a page is owed when the repo relies on the source; a synthesis note when the analysis outlives its milestone.
+- 2026-07-18: T3 — added TestAuthoringTrigger (core-vs-module placement, positive defer-assert paired with the negative absence-assert per M54) and TestShippedSynthesisTemplate (12 fields, read from the shipped file); skills suite 324 → 333, exit 0.
 - 2026-07-18: T2 — shipped `skills/shared/templates/synthesis-note.md`; sections drawn from the six existing synthesis pages, `Ingested`/`Extraction:` field words kept verbatim so the references check and the dated-observation guard both still parse.
 - 2026-07-18: T1 hit LESSONS :27 live — the reflow duplicated a mutation-registered anchor in validation-doctrine.md; reworded the new prose rather than re-anchoring the guard (LESSONS :32).
 
