@@ -80,7 +80,7 @@ docs-only direct pushes → candidate row.
       `:265-271`). Keep it ≤10 lines; the rulebook is already long.
       *(RB tripwire: ip-touching — the passage states where IP1's mechanical
       backing stops.)*
-- [ ] T2 — Add the README subsection. Plain words, no rulebook jargon; this is
+- [x] T2 — Add the README subsection. Plain words, no rulebook jargon; this is
       the surface a collaborator reads.
 - [ ] T3 — Bind the marker: `hooks/merge_guard.py` parses a PR number from the
       marker body and compares it to the `gh pr merge <N>` target
@@ -105,6 +105,7 @@ docs-only direct pushes → candidate row.
 - 2026-07-18: in-progress on `m72-collaboration-boundary`.
 - 2026-07-18: implement gate — marker binding requires the explicit PR number in the merge command (bare `gh pr merge` denied); marker stays prose with `for PR #<N>` appended; ip-touching tripwire on T1 not escalated (user choice).
 - 2026-07-18: T1 — boundary passage + PR-binding bullet added to tracking-rules "Git and approval model"; three single-line mutation anchors verified unique.
+- 2026-07-18: T2 — README "Working with collaborators" section; the "Merges are yours" bullet's unqualified "mechanically blocks" claim corrected to name its scope.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
