@@ -75,8 +75,26 @@ The script deliberately does not judge these — do them yourself and report:
   `/cairn-init`.
 - A milestone at `review` with an open unmerged PR → re-check CI now
   (`gh pr checks`), report the fresh state (this is normal, not an error).
-- **Untriaged inboxes:** open GitHub issues or external PRs with no
-  candidate row / hotfix disposition → list them for triage.
+- **Untriaged inboxes:** open GitHub issues and external PRs carrying no
+  candidate row or hotfix disposition yet. Enumerate both inboxes —
+  `gh issue list --state open --json number,title,url` for issues,
+  `gh pr list --state open --json number,title,url,author` for PRs — then
+  drop this session's own work from the PR list, which is what the `author`
+  field is for: a PR you opened, or one whose head branch is `m<nn>-*` or
+  `hotfix-*`, is cairn's own in-flight work — already tracked by its
+  milestone and already reported two bullets up. Only what survives that
+  filter is inbox; without it the audit re-reports the milestone PR you are
+  reviewing right now and can propose adopting a PR this session authored.
+  Then
+  apply the search-first rule to every hit before proposing anything: sweep
+  the existing `candidate` rows, `milestones/archive/`, and `DECISIONS.md`,
+  so an item already covered is cross-referenced, never duplicated as a
+  second row. Carry one proposed disposition per item to §3, where the user
+  decides; reading the inbox is the whole mandate here — never write to
+  GitHub (no labels, comments, or closes) and never add a row unprompted.
+  **When `gh` is missing, unauthenticated, or the repo has no remote:**
+  name which of the three it was, skip the sweep, and finish the audit.
+  An unreachable inbox is a reported gap, never an audit `FAIL`.
 
 Update "Last hygiene check: YYYY-MM-DD" in ROADMAP.md.
 
@@ -95,7 +113,23 @@ examples — only the applicable subset (≤4) is offered:
 - Review M<NN> → `/milestone-review M<NN>` (a milestone sits at `review`)
 - Plan the next milestone → `/milestone-plan` (nothing in flight; planned or
   candidate items exist)
-- Triage the flagged items (audit found problems needing user decisions)
+- Triage the flagged items (audit found problems needing user decisions,
+  including any untriaged inbox item §2 surfaced)
 - Stop here
+
+The §2 inbox sweep resolves here, and nowhere else.
+Each item takes exactly one disposition — you propose, the user chooses:
+
+- **candidate row** — the default for anything real but not urgent; one
+  ROADMAP row, search-first already applied at §2.
+- **`/hotfix`** — a user-visible bug, or an external PR that meets the
+  hotfix bar. This is the door M73 opened; route to it rather than inventing
+  a second intake mechanism.
+- **`/milestone-plan`** — anything larger than the hotfix bar.
+- **leave** — no row, no action, with the reason stated.
+
+Show every proposed disposition verbatim above the chip, never a count or a
+summary of them: the dispositions are what the user is accepting, so a
+paraphrase would have them approve text they never saw.
 
 Selecting a chip invokes that skill in this session. Never auto-proceed.
