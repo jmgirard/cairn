@@ -1,5 +1,9 @@
 # code-review (Anthropic official plugin)
 
+**Provenance.** Citekey `anthropic-code-review` · ingested 2026-07-11 by M06 from https://github.com/anthropics/claude-plugins-official `plugins/code-review/` @ dc72937.
+Pagination: —.
+Extraction: verified at ingestion — full source read; not re-read since.
+
 Source: https://github.com/anthropics/claude-plugins-official
 `plugins/code-review/` @ dc72937 (studied 2026-07-11, full source read).
 Note: distinct from the built-in `/code-review` skill in current Claude

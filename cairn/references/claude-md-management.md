@@ -1,5 +1,9 @@
 # claude-md-management (Anthropic official plugin)
 
+**Provenance.** Citekey `claude-md-management` · ingested 2026-07-11 by M06 from https://github.com/anthropics/claude-plugins-official `plugins/claude-md-management/` @ dc72937.
+Pagination: —.
+Extraction: verified at ingestion — full source read; not re-read since.
+
 Source: https://github.com/anthropics/claude-plugins-official
 `plugins/claude-md-management/` @ dc72937 (studied 2026-07-11, full
 source read).

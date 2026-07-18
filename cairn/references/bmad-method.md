@@ -1,5 +1,9 @@
 # BMAD-METHOD (bmad-code-org)
 
+**Provenance.** Citekey `bmad-method` · ingested 2026-07-11 by M06 from https://github.com/bmad-code-org/BMAD-METHOD (V6 clone).
+Pagination: —.
+Extraction: partly verified at ingestion — the sprint-status claim was checked against `bmad-sprint-planning/SKILL.md:8`; the rest is an [S] subagent study, not re-read since.
+
 Source: https://github.com/bmad-code-org/BMAD-METHOD (studied
 2026-07-11; [S] subagent study of V6 clone; sprint-status claim
 verified: bmad-sprint-planning/SKILL.md:8).

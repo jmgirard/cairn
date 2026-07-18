@@ -1,5 +1,9 @@
 # Claude Code plugin hooks API (contracts used by M07, M60)
 
+**Provenance.** Citekey `claude-code-hooks` · ingested 2026-07-11 by M07 from https://code.claude.com/docs/en/hooks-guide.md and https://code.claude.com/docs/en/hooks.md.
+Pagination: —.
+Extraction: verified against the official docs 2026-07-11; extended for M60 on 2026-07-16; the matcher-dispatch section was proven wrong and corrected in place at M75 (2026-07-18).
+
 Sources: https://code.claude.com/docs/en/hooks-guide.md and
 https://code.claude.com/docs/en/hooks.md (fetched 2026-07-11 via [S]
 claude-code-guide subagent; PostToolUse/PostToolUseFailure facts fetched

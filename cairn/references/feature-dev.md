@@ -1,5 +1,9 @@
 # feature-dev (Anthropic official plugin)
 
+**Provenance.** Citekey `feature-dev` · ingested 2026-07-11 by M06 from https://github.com/anthropics/claude-plugins-official `plugins/feature-dev/` @ dc72937.
+Pagination: —.
+Extraction: verified at ingestion — full source read; not re-read since.
+
 Source: https://github.com/anthropics/claude-plugins-official
 `plugins/feature-dev/` @ dc72937 (studied 2026-07-11, full source read).
 

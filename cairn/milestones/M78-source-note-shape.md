@@ -29,6 +29,12 @@ recorded as standing fact. The rule binds both committed page types. Plus
 provenance header, the content sections already mandated at
 `validation-doctrine.md:76-79`, and a dated `## Open questions` shape. Plus
 guards, mutation registration, and the `DESIGN.md:38` template inventory.
+Plus a backfill of this repo's own 16 committed `references/` pages with a
+`**Provenance.**` block, so cairn does not ship a rule its own repo breaks.
+Each block's ingested date and ingesting milestone are derived from
+`git log --diff-filter=A` for that file (`--follow` where the page was
+renamed), never invented; the extraction-verified status records what the
+page itself evidences, defaulting to unverified.
 
 **Out:** content mechanization — a `check_references` that verifies a page has
 a citation and provenance rather than merely existing, and the two enforcement
@@ -64,6 +70,12 @@ candidate row, against M56's standing rejection.
 - [ ] Verify clean per `cairn/PROFILE.md`: `python3 -m unittest discover` over
       `skills/tests`, `scripts/tests`, and `hooks/tests`, each exit 0, run from
       the repo root and not tail-piped (M56/M65).
+- [ ] All 16 committed pages in this repo's `cairn/references/` carry a
+      `**Provenance.**` block whose ingested date and ingesting milestone
+      match `git log --diff-filter=A` for that file (`--follow` where
+      renamed). No date or milestone is asserted that git does not evidence,
+      and a page whose extraction has not been re-read against its source
+      says so.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -77,6 +89,7 @@ candidate row, against M56's standing rejection.
 - AC5 → T4
 - AC6 → T6
 - AC7 → T7
+- AC8 → T8
 
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
@@ -105,6 +118,12 @@ candidate row, against M56's standing rejection.
       covers live directories, `cairn/references/` included (M48/M58).
 - [x] T7. Run the three suites from the repo root, check each exit code
       explicitly before any commit; append the work-log line.
+- [x] T8. Backfill the 16 pages. Derive date and milestone per file from git;
+      take the source pointer from the page's own existing prose; set
+      extraction status to what the page evidences — `claude-code-hooks.md`
+      records a 2026-07-11 verification, the rest default to unverified.
+      These pages are current knowledge under D-045: the block is *added*,
+      existing text is not rewritten.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -117,7 +136,12 @@ candidate row, against M56's standing rejection.
 - 2026-07-18: T1–T3 — doctrine rule + `Provenance.` block spec authored in `validation-doctrine.md`; Source ingestion now names the template path; `skills/shared/templates/source-note.md` shipped, modelled on `koo2016.md`/`mehta2018.md`'s existing bold-label idiom.
 - 2026-07-18: T4 — the shipped-artifact field check (M77) caught a live mismatch on its first run: the template's `Pagination:` field wrapped mid-line, so the `—` option sat on the next physical line. Tightened the template's option list rather than loosening the assert.
 - 2026-07-18: T5 — mutation registration hit the M59/M64 reflow trap ("found 0"): the frontmatter sentence spanned a line break. Reflowed the provenance paragraph so each registered block is one physical line. Four blocks registered; skills suite 319 tests green.
+- 2026-07-18: scope amended via step-6 gate at the user's direction — the milestone shipped a rule this repo itself broke (16 pages, zero provenance blocks). Backfill pulled forward from M79 T5 as AC8/T8; status returned review → in-progress.
 - 2026-07-18: T6–T7 — `DESIGN.md:38` template inventory updated (the only inventory in the repo; no test pins it, and `test_positioning_guard.py`'s hardcoded tuple is hooks-only). Three suites rc=0 from the repo root, unpiped; validate 18/18.
+
+- 2026-07-18: T8 — 16 pages backfilled, purely additive (`git diff --numstat`: 4 added / 0 removed on every file), so D-045's added-not-rewritten discipline holds mechanically. A verification script re-derives each block from `git log --follow --diff-filter=A`: 16/16 match on citekey, ingested date and ingesting milestone; nothing asserted that git does not evidence.
+- 2026-07-18: sizing tripwire WARNs at 8 ACs (>7). Accepted, not split: AC8 is a compliance backfill for the rule this milestone ships, not independent capability, and deferring it would merge a rule the repo itself breaks. Recorded rather than silently tolerated.
+- 2026-07-18: known cosmetic overlap for review — on the M06 comparanda the new `Provenance.` pointer restates the URL already in the page's `Source:` line. Left as-is because collapsing them means rewriting existing text, which D-045 forbids here.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

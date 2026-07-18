@@ -1,5 +1,9 @@
 # Task Master (claude-task-master, eyaltoledano)
 
+**Provenance.** Citekey `task-master` · ingested 2026-07-11 by M06 from https://github.com/eyaltoledano/claude-task-master.
+Pagination: —.
+Extraction: unverified — [S] subagent study of the clone and docs, with no claim checked against the source at ingestion.
+
 Source: https://github.com/eyaltoledano/claude-task-master (studied
 2026-07-11; [S] subagent study of clone + docs).
 
