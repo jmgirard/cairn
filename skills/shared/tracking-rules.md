@@ -20,7 +20,7 @@ owner; any other file gets at most a one-line cross-reference.
 | `cairn/milestones/M<NN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately, before other work) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
 | `cairn/DECISIONS.md` | Append-only cross-cutting decisions (D-001, …), never renumbered — superseded by new entries | Milestone-local decisions (those live in the milestone file); deferrals ("not now" is a ROADMAP fact, not a decision) |
-| `cairn/LESSONS.md` | Durable, append-only, capped repo lessons (build quirks, testing tricks) — captured at milestone end, surfaced at plan time | Status, decisions (a *choice* is a D-entry), per-milestone task notes |
+| `cairn/LESSONS.md` | Durable, capped repo lessons (build quirks, testing tricks) — captured at milestone end, surfaced at plan time; current knowledge, so a lesson proven false is corrected in place and marked (D-045) | Status, decisions (a *choice* is a D-entry), per-milestone task notes |
 | `cairn/reviews/` | RB<NN> briefs and RR<NN> reports for Fable escalation (+ `archive/` for resolved pairs) | Anything else |
 | `cairn/references/` | Source notes (`<citekey>.md`), synthesis notes (cross-source analyses — fit assessments, surveys, pilot ledgers), `INDEX.md` (one line per committed page), gitignored `pdf/` | Anything else |
 | `cairn/legacy/` | Entombed pre-migration tracking files, verbatim | Anything live |
@@ -118,6 +118,16 @@ takes a D-entry, and its number stays retired.
 - **Append, don't rewrite.** Work-logs and DECISIONS.md are append-only;
   supersede, never edit history. Never fabricate history — if there is a
   gap, add one catch-up entry summarizing `git log`.
+- **Correcting a record proven false.** The tracking files split by purpose,
+  and the split sets the remedy: current knowledge is corrected in place,
+  history is superseded and never edited. History — `DECISIONS.md`,
+  work-logs, milestone IDs, entombed `legacy/` files — records what was
+  decided or done at a time (IP4). Current knowledge — `LESSONS.md`,
+  `references/` pages, `DESIGN.md` — records what is true *now* and is read
+  to act on, so a line later proven false is fixed where it sits, the
+  correction marked (`(M71, corrected M75)`) and git holding the original.
+  Ruled out: appending a correction while leaving the wrong text readable —
+  a false lesson is harvested into every later plan (D-045).
 - **Stop points are commit points.** Never end a session or turn with
   uncommitted work — checkpoint-commit code and tracking together (even
   half-done, marked as such) so any future session resumes statelessly.

@@ -85,7 +85,7 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
 - [x] T1 — author D-045 in `cairn/DECISIONS.md`: the correct-in-place
       mechanism, the history/current-knowledge split, the IP4 reading, and the
       declined validate CHECK. Annotates D-015; leaves IP4 untouched.
-- [ ] T2 — `skills/shared/tracking-rules.md`: add the correction rule to
+- [x] T2 — `skills/shared/tracking-rules.md`: add the correction rule to
       "Universal tracking rules" adjacent to "Append, don't rewrite" (:118),
       and fix the `cairn/LESSONS.md` file-map row (:23). Author the rule's
       label on ONE physical line (M59/M64 reflow trap — AC6's guard greps it).
@@ -116,6 +116,9 @@ has never been a validate gate (M33/M42/M49), so no candidate row.
 - 2026-07-18: minor amendment — T1 ticked as already satisfied: /milestone-plan
   authors D-entries in its own commit, so D-045 landed in 9ac2311 at plan time.
   No re-authoring; AC4's evidence reads the committed entry.
+- 2026-07-18: T2 — "Correcting a record proven false" added to Universal
+  tracking rules (:121-130); LESSONS file-map row no longer says append-only.
+  Both label->rule mappings authored on single physical lines for the guards.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
