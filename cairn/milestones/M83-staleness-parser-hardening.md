@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M83: Staleness-parser hardening — the extraction status stops being guessed at
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP2   <!-- owner: plan · create/amend-via-gate -->
@@ -17,16 +17,26 @@ resolving a contradiction the author never sees.
 
 ## Scope
 
-**In:** `_last_verified` in `scripts/cairn_validate.py:771-803` and its
+**In:** `_last_verified` in `scripts/cairn_validate.py` and its
 `references staleness` advisory. Three M81 review findings, all in that one
 function: F3 (`_UNVERIFIED` tested before any date, so a dated `verified`
 status with any later mention of a prior unverified state reports "no
 verified re-check"), F4 (negative-verified synonyms escape the flag and fall
 through to the ingested-date fallback, classifying `ok`), F5 (a future
 verified date yields a negative age and permanently exempts the page with no
-diagnostic). Classification moves to the status's leading clause, with two
-new diagnostic states — `ambiguous` (leading token contradicted later) and
-`unrecognized` (no state token and no date) — both WARN.
+diagnostic). Classification becomes **clause-scoped**: the status is split on
+em-dash, semicolon and comma, and every verification-verb occurrence is read
+as affirmative or negated according to whether a negator precedes it *in its
+own clause*. Two new diagnostic states — `ambiguous` (both a `never` and a
+`verified` claim present anywhere) and `unrecognized` (no claim and no date)
+— both WARN.
+
+_Amended 2026-07-18 at the merge gate (T8). The original text said
+"Classification moves to the status's leading clause … `ambiguous` (leading
+token contradicted later)", which described the first cut; review findings
+F1/92 and F2/92 replaced it with the clause-scoped rule above (M83-D3). AC1
+and T2 were deliberately left unamended — AC1 names an outcome that ships
+exactly, and T2 records what was attempted._
 
 **Out:** widening either note template's sanctioned vocabulary → stays a
 candidate row (the parser is being made to fit the prose that already
@@ -95,14 +105,10 @@ opposite protections against the same parser).
 - [x] T7. Run the real advisory over the real 16 pages, reconcile against
       T1's baseline, record the before/after in this file with
       justifications, and run all three suites.
-- [ ] T8. Gated Scope amendment (added at the 2026-07-18 merge gate, user
-      declined to merge until the plan text matches what shipped). Scope's
-      "Classification moves to the status's leading clause … `ambiguous`
-      (leading token contradicted later)" describes the superseded first cut;
-      the shipped mechanism is clause-scoped negation across every clause, per
-      M83-D3. Amend via `/milestone-implement` step 6 — Scope is
-      amend-via-gate, not review-owned — then re-review. No code change: every
-      criterion already passes as written.
+- [x] T8. Gated Scope amendment (added at the 2026-07-18 merge gate). Scope
+      described the superseded leading-clause mechanism; amended via step 6 to
+      state the shipped clause-scoped rule. Documentation only — see the
+      amendment note under Scope and M83-D3.
 
 ## Work log
 
@@ -116,6 +122,7 @@ opposite protections against the same parser).
 - 2026-07-18: review — PR #81 opened (draft); all six criteria carry fresh evidence recorded in the Review section, consistency gate green; prior-PR lens returned no findings, diff-bug and blame lenses still running.
 - 2026-07-18: review findings — 3 lenses + scorer; 5 diff-bug findings, 3 scored >=80 and 4 sub-threshold, all fixed on the branch (F1/F2/F3 were one root cause: negation read as a phrase list instead of a clause property). 4 regression tests added; shipped-page classification unchanged.
 - 2026-07-18: merge gate — approval WITHHELD by user; not a gate failure (all six criteria pass as written, consistency gate green). Requested: amend Scope so the plan text describes the shipped clause-scoped mechanism rather than the superseded leading-clause one. Status back to in-progress, logged as T8; PR #81 stays open.
+- 2026-07-18: T8 — Scope amended via the step-6 gate: the mechanism sentence now states the shipped clause-scoped rule instead of the superseded leading-clause one, and the stale `:771-803` line reference is dropped. User chose Scope-only; AC1 and T2 left as written, with the amendment note recording why. Documentation only, no code change. Status back to review.
 
 ## Decisions
 
