@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M73   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** IP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** m74-issue-triage   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m74-issue-triage · https://github.com/jmgirard/cairn/pull/72   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -112,3 +112,51 @@ issues — the scripts stay offline and stdlib-only
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
+
+## Review
+<!-- owner: review · exclusive; exempt from the 150-line plan-owned cap (M55) -->
+
+**PR:** https://github.com/jmgirard/cairn/pull/72 · reviewed 2026-07-18
+**CI:** none configured — `gh pr checks 72` reports "no checks reported", exit 0 (M16: treat as no-CI, never wait for green).
+
+### Acceptance-criteria evidence (fresh, by command)
+
+- **AC1 ✓** — the `:78-79` bullet is gone; §2 now carries a step naming both
+  commands (`gh issue list --state open --json number,title,url`,
+  `gh pr list --state open --json number,title,url,author`) and the
+  search-first cross-check over `candidate` rows + `milestones/archive/` +
+  `DECISIONS.md`. Verified still inside the `:64` judgment block (block opens
+  `:64`, section closes `:92`); step quoted at review.
+- **AC2 ✓** — degradation clause present and names all three modes: "When
+  `gh` is missing, unauthenticated, or the repo has no remote: name which of
+  the three it was, skip the sweep, and finish the audit. An unreachable
+  inbox is a reported gap, never an audit `FAIL`."
+- **AC3 ✓** — §3 names all four dispositions (candidate row / `/hotfix` /
+  `/milestone-plan` / leave) and states the bar: "Show every proposed
+  disposition verbatim above the chip, never a count or a summary of them"
+  (1 occurrence).
+- **AC4 ✓** — PR disposition routes to `/hotfix` ("This is the door M73
+  opened; route to it rather than inventing a second intake mechanism").
+  Grep confirms `/milestone` introduces no `gh pr checkout` and no second
+  intake path of its own.
+- **AC5 ✓** — `test_issue_triage.py` (18 tests) green; 4 mutation entries
+  registered, each block verified unique (count 1) and proven to fail when
+  blanked via `test_each_registered_guard_fails_when_its_block_is_blanked`;
+  `test_every_prose_guard_is_registered_or_exempt` green. 23 gate-test
+  methods across `test_gate_conclusion_preview` / `test_gate_wording` ran,
+  0 non-ok.
+- **AC6 ✓** — DESIGN's Conventions bullet now reads bidirectional and
+  matches the shipped `skills/hotfix/SKILL.md` `description:`; README gained
+  a "Take in an outside pull request" row (`:119`) and the contributions
+  bullet names both doors. Repo-wide sweep with AC6's exclusions returns
+  clean — no surviving pre-M73 trigger prose in live files.
+- **AC7 ✓** — all three suites green from the repo root, exit-gated with no
+  tail-pipe hiding status (M56/M65): scripts 96, skills 285, hooks 72.
+
+### Consistency gate
+
+`cairn_validate.py` exit 0, all checks passed (run at review, output read not
+recalled — M28). Profile is `generic`; its `consistency-gate` slot names no
+toolchain checks, so that half is a clean no-op by design. No IP/GP principle
+text changed (M74 works *under* IP3, does not alter it), so `cairn_impact`
+is skipped per step 4.
