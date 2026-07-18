@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M72 | Collaboration boundary — what survives a merge outside cairn, plus PR-bound approval (D-043) | in-progress | — | high | milestones/M72-collaboration-boundary.md |
+| M72 | Collaboration boundary — what survives a merge outside cairn, plus PR-bound approval (D-043) | review | — | high | milestones/M72-collaboration-boundary.md |
 | M73 | External-PR intake — /hotfix adopts a PR it did not author | planned | M72 | high | milestones/M73-external-pr-intake.md |
 | M74 | Issue triage — /milestone enumerates untriaged inboxes into candidate rows | planned | M73 | normal | milestones/M74-issue-triage.md |
 | M71 | Idea-capture intake gate — out-of-band ideas also land as candidates (D-042) | done | — | high | milestones/archive/M71-idea-capture-intake-gate.md |

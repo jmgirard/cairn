@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M72: Collaboration boundary — what survives a merge outside cairn, plus PR-bound approval
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP1   <!-- owner: plan · create/amend-via-gate -->
@@ -99,7 +99,7 @@ docs-only direct pushes → candidate row.
 - [x] T5 — New guard test for the T1 passage; register it in
       `skills/tests/test_mutation_harness.py` (per-file registration, ≥1
       exemplar block on ONE physical line — M59/M65).
-- [ ] T6 — Run all three suites from the repo root; update `cairn/DESIGN.md`'s
+- [x] T6 — Run all three suites from the repo root; update `cairn/DESIGN.md`'s
       "Known issues" honor-system bullet to cite the new passage instead of
       restating it.
 
@@ -113,6 +113,7 @@ docs-only direct pushes → candidate row.
 - 2026-07-18: T2 — README "Working with collaborators" section; the "Merges are yours" bullet's unqualified "mechanically blocks" claim corrected to name its scope.
 - 2026-07-18: AC3/AC4 amended via the implement gate — the plan assumed the merge command named a PR, but both skills merged bare (`gh pr merge --squash`), so the binding needed a deny-on-unnamed rule and the skills' merge commands changed; user chose this at the step-3 gate.
 - 2026-07-18: T3 — `gh_merge_pr_number`/`marker_pr_number` in `cairn_common`; `merge_guard` denies mismatched and unnamed PRs without consuming the marker; both approval-writing skills updated to the bound marker + explicit-number merge. T3+T4 landed in one commit (implementation inseparable from its tests).
+- 2026-07-18: T6 — DESIGN known-issues + hook-inventory bullets cross-reference the rulebook passage rather than restate it; all three suites green (246/96/66), `cairn_validate` all-pass, `cairn_impact --changed` traces IP1 to the declared slot; plan-owned body 120/150.
 - 2026-07-18: T5 — `test_collaboration_boundary.py` (12 tests across boundary, PR binding, README); five mutation entries registered, all proven; skills suite 234 → 246.
 - 2026-07-18: T4 — six `TestMergeGuard` cases (mismatch, bare, match, URL/value-flag parsing, branch-name argument, `git merge` exemption); `shlex` added to the stdlib allowlist in `TestStdlibOnly`.
 
