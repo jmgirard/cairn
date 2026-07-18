@@ -200,3 +200,24 @@ actioned; logged here per IP3.**
    trigger. Scorer: neither file is in M73's Scope In; the DESIGN line is
    incomplete rather than false — candidate-row-worthy, not an in-scope
    defect.
+
+**Triage (user-directed at the merge gate, 2026-07-18):** the user elected to
+fix findings 1, 2 and 4 before merge despite their sub-threshold scores —
+review flagged disagreement with the scorer on #2 (closing a third party's PR
+is not equivalent to opening one's own). Fixed on the branch:
+
+- F2 — re-landing is now `AskUserQuestion`-gated with the closing comment's
+  text shown in chat first; declined → the contributor's PR is left open.
+  Guarded by `test_closing_a_contributors_pr_is_user_gated` +
+  `test_declining_the_re_land_leaves_the_pr_alone`.
+- F1 — the second-PR prohibition now carves out the gated fallback
+  (`test_second_pr_prohibition_admits_the_fallback`).
+- F4 — the worktree recipe names a path outside the repo and mandates
+  `git worktree remove`, cleanup-on-failure included
+  (`test_worktree_recipe_is_located_and_cleaned_up`).
+- F3 — partially addressed while adjacent: the overstated registry comment is
+  corrected and 4 further blocks registered (9 → 13 entries).
+- F5 — not actioned (out of Scope In); swept and filed as a candidate row.
+
+Post-fix re-verification: skills 267 / scripts 96 / hooks 72 all OK;
+`cairn_validate` exit 0; all 24 asserted phrases still unique in their target.

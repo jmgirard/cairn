@@ -72,6 +72,13 @@ class TestAdoptedRegressionTest(unittest.TestCase):
     def test_step_says_the_author_side_sequence_is_unreachable(self):
         self.assertIn('"fails before the fix" sequence is unreachable', hotfix())
 
+    def test_worktree_recipe_is_located_and_cleaned_up(self):
+        # A worktree created inside the repo lingers as an untracked dir and
+        # trips step 2's own dirty-tree check on the next /hotfix run.
+        t = hotfix()
+        self.assertIn("throwaway worktree of the default branch created **outside the repo**", t)
+        self.assertIn("test file copied in — then `git worktree remove` it.", t)
+
     def test_contributor_supplied_tests_are_reverified(self):
         # Adopting evidence on trust is how an untested fix reaches main.
         self.assertIn("check — adopting a pr means verifying its evidence", hotfix())
@@ -84,10 +91,27 @@ class TestForkFallback(unittest.TestCase):
     def test_step_names_the_no_push_fallback(self):
         self.assertIn("**when the head branch cannot be pushed to:**", hotfix())
 
-    def test_fallback_asks_before_re_landing(self):
+    def test_fallback_asks_the_contributor_first(self):
         # Order matters: the contributor's work stays theirs unless they go
         # silent. A re-land-first fallback would take credit by default.
-        self.assertIn("don't respond, re-land it locally: recreate their", hotfix())
+        self.assertIn("pr to add the missing pieces — it is their work", hotfix())
+
+    def test_closing_a_contributors_pr_is_user_gated(self):
+        # M73 review finding 2: re-landing closes someone else's PR under the
+        # user's GitHub identity. Outward-facing and irreversible from their
+        # side, so it never happens without an explicit chip — the same
+        # consent discipline the merge itself gets (IP1).
+        t = hotfix()
+        self.assertIn("and irreversible from the contributor's side, so it is **never** done", t)
+        self.assertIn("= re-land, with a decline option), showing the closing comment's text in", t)
+
+    def test_declining_the_re_land_leaves_the_pr_alone(self):
+        self.assertIn("declined → leave their pr open and stop.", hotfix())
+
+    def test_second_pr_prohibition_admits_the_fallback(self):
+        # Without the carve-out the step forbids at :68 what it requires at
+        # :78 — a future agent either deadlocks or reports a rule violation.
+        self.assertIn("never open a second one, except", hotfix())
 
     def test_fallback_never_trades_away_the_regression_test(self):
         self.assertIn("never merge a fix whose regression test", hotfix())

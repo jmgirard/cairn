@@ -807,11 +807,14 @@ REGISTRY = [
         target="README.md",
         block="## Working with collaborators",
     ),
-    # M73 (D-043): the PR door. One entry per block that independently
-    # carries the path — checkout-not-branch, the naming exemption, the
-    # adopted test sequence, the fork fallback, and the two routing surfaces
-    # (description frontmatter + the Intake paragraph). A guard surviving any
-    # one of these deletions would pass over a dead entry point.
+    # M73 (D-043): the PR door. Entries cover every block whose deletion
+    # would silently reopen the gap M73 closes — checkout-not-branch, the
+    # naming exemption, the adopted test sequence and its worktree cleanup,
+    # the fork fallback (including the user gate on closing someone else's
+    # PR, and the never-merge-untested line), and the two routing surfaces
+    # (description frontmatter + the Intake paragraph). The remaining asserts
+    # in that guard file are corollaries of these blocks; all of its asserted
+    # phrases were separately confirmed to occur exactly once in their target.
     Mutation(
         guard="test_external_pr_intake",
         test="TestAdoptionPath.test_branch_step_checks_the_pr_out",
@@ -844,9 +847,33 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_external_pr_intake",
-        test="TestForkFallback.test_fallback_asks_before_re_landing",
+        test="TestForkFallback.test_fallback_asks_the_contributor_first",
         target=HOTFIX,
-        block="don't respond, re-land it locally: recreate their",
+        block="PR to add the missing pieces — it is their work",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestForkFallback.test_closing_a_contributors_pr_is_user_gated",
+        target=HOTFIX,
+        block="and irreversible from the contributor's side, so it is **never** done",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestForkFallback.test_second_pr_prohibition_admits_the_fallback",
+        target=HOTFIX,
+        block="never open a second one, except",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestForkFallback.test_fallback_never_trades_away_the_regression_test",
+        target=HOTFIX,
+        block="Never merge a fix whose regression test",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestAdoptedRegressionTest.test_worktree_recipe_is_located_and_cleaned_up",
+        target=HOTFIX,
+        block="throwaway worktree of the default branch created **outside the repo**",
     ),
     Mutation(
         guard="test_external_pr_intake",

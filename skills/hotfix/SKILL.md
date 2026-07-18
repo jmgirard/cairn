@@ -48,8 +48,12 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    "fails before the fix" sequence is unreachable — the test is **added**,
    and it earns its keep by **failing against the default branch and passing
    on the PR head**. Prove both directions: run it on the PR head, then in a
-   scratch worktree of the default branch (`git worktree add`) with only the
-   test file applied. A test that passes on both proves nothing about the
+   throwaway worktree of the default branch created **outside the repo**
+   (`git worktree add /tmp/<repo>-verify <default-branch>`) with only the
+   test file copied in — then `git worktree remove` it. Clean up even when
+   the check fails: a leftover worktree inside the repo becomes an untracked
+   directory that trips step 2's own dirty-tree check on the next run.
+   A test that passes on both proves nothing about the
    bug. A test the contributor already wrote goes through that same two-way
    check — adopting a PR means verifying its evidence, not inheriting it.
 
@@ -65,18 +69,25 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    user-facing text).
    *Authoring a fix:* push; open the PR — `Fixes #N` in the description if a
    GitHub issue exists.
-   *Adopting a PR:* the PR already exists — never open a second one. If the
+   *Adopting a PR:* the PR already exists — never open a second one, except
+   through the user-gated fallback below. If the
    contributor added an entry, check it against the declared file and the
    user-facing-text rule and edit it in place rather than appending a
    duplicate; if none is present, add one. Push the test and the entry to the
    PR's head branch — this works on a fork when the contributor left
    "allow edits by maintainers" on (GitHub's default).
    **When the head branch cannot be pushed to:** ask the contributor on the
-   PR to add the missing pieces — it is their work and their credit. If they
-   don't respond, re-land it locally: recreate their commits on a
+   PR to add the missing pieces — it is their work and their credit.
+   If they go quiet, re-landing the work locally is the fallback, but it
+   closes another person's PR under the user's GitHub identity — outward-facing
+   and irreversible from the contributor's side, so it is **never** done
+   unilaterally. Put it to the user as an `AskUserQuestion` chip (recommended
+   = re-land, with a decline option), showing the closing comment's text in
+   chat first. Only on approval: recreate their commits on a
    `hotfix-<slug>` branch (`git cherry-pick`), add the test and changelog
-   there, and open a PR that credits them (`Co-authored-by:`) and closes
-   theirs with a comment saying why. Never merge a fix whose regression test
+   there, open a PR crediting them (`Co-authored-by:`), and close theirs with
+   that comment. Declined → leave their PR open and stop.
+   Never merge a fix whose regression test
    is still missing — that is the one gate this path exists to enforce.
 
 6. **Approval gate:** present the diff, the regression-test evidence, and
