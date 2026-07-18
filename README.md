@@ -149,8 +149,10 @@ milestone files · Decisions → DECISIONS · History → archive + git log.**
   safe, and the last checkpoint commit holds the state for next time.
 - **Merges are yours.** Nothing reaches your default branch without your
   explicit approval at review — a guard hook mechanically blocks merges
-  that lack a recorded approval. "Proceed to review" is not "merge"; you
-  get the evidence first.
+  that lack a recorded approval, and the approval names the one PR it
+  covers. "Proceed to review" is not "merge"; you get the evidence first.
+  (The guard watches what Claude runs, not what you do — see *Working with
+  collaborators*.)
 - **Supply primary sources.** If a formula, cutoff, or scoring key needs a
   paper the model can't access, it will stop and ask you for the PDF rather
   than work from memory. That stop is a feature; feed it the PDF.
@@ -171,6 +173,33 @@ milestone files · Decisions → DECISIONS · History → archive + git log.**
   ROADMAP.md wins any conflict.
 - Trust the archive. Done milestones compress to short summaries; the full
   story stays in git history and the PR.
+
+## Working with collaborators
+
+cairn is built for **one person running these skills**, with contributions
+arriving from people who don't. That works fine — but be clear about where
+the guardrails actually reach.
+
+- **The guards only watch this session.** Every protection is a hook on the
+  commands Claude runs for you. If you merge a PR in the GitHub web UI, or a
+  merge queue does it, or a collaborator merges from their own machine
+  without the plugin, cairn sees none of it: the merge-approval requirement
+  and the never-force-push rule become promises rather than blocks, and the
+  post-merge bookkeeping happens late or not at all. Nothing breaks — you
+  just lose the mechanical net. Run `/milestone` afterwards to reconcile.
+- **Everything else was always a promise.** Evidence before ticking a
+  criterion, tracking updates riding along with code, the review fan-out —
+  those are conduct rules Claude follows, not things a hook enforces. They
+  hold as long as the work goes through the skills.
+- **Contributions come in through you.** An outside PR or issue is an inbox
+  item, not a second tracking system: you triage it into a candidate row, a
+  hotfix, or a milestone, and your session's guards govern the merge. The
+  contributor needs no plugin, no `cairn/` knowledge, and no special branch
+  name.
+- **Two people both running cairn is not supported yet.** The tracking files
+  would race — milestone IDs and decision numbers are picked by reading the
+  files, so two people planning at once can pick the same one. If you need
+  this, say so; it's a tracked candidate, not a solved problem.
 
 ## What this system deliberately does NOT do
 

@@ -159,7 +159,9 @@ overrides — log the override).
 
 8. **On approval — and only then:** record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
-   `M<NN> approved YYYY-MM-DD`). The plugin's PreToolUse hook denies
+   `M<NN> approved YYYY-MM-DD for PR #<N>` — the marker names the PR it
+   approves, and the guard refuses a merge that names a different PR or
+   none). The plugin's PreToolUse hook denies
    merges to the default branch without this marker and consumes it per merge attempt;
    if a merge fails and is retried under the same approval, rewrite the
    marker. Write the marker in a **separate** step before the `gh pr merge`
@@ -169,7 +171,9 @@ overrides — log the override).
    (`gh pr checks <pr> --watch` with a timeout — one blocking wait; on
    timeout report fresh state and stop). Red CI → fix on the branch,
    re-verify, re-request approval if the fix was nontrivial. When green:
-   `gh pr merge --squash --delete-branch` with a clean summary message.
+   `gh pr merge <N> --squash --delete-branch` with a clean summary message —
+   name the PR number explicitly; a bare `gh pr merge` is denied by the guard
+   because the approval cannot be checked against it.
 
 9. **Post-merge hygiene pass on the default branch:** check it out and pull
    first — after a squash-merge, the local default branch is behind origin and

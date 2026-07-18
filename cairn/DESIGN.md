@@ -43,7 +43,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   layer, all no-op outside cairn repos. Eight hooks: `session_context`
   (SessionStart context injection); `stop_guard` (Stop-guard on uncommitted
   `cairn/` tracking); five PreToolUse guards — `merge_guard` (single-use
-  `cairn/.merge-approved` marker, technically backing IP1),
+  `cairn/.merge-approved` marker, bound to the PR it approves since M72,
+  technically backing IP1),
   `force_push_guard` (denies force-pushes to the default branch — IP1's
   never-force-push line, mechanically backed; M60), `commit_guard`
   (nudge against committing on the default branch), `memory_guard` (GP4
@@ -105,7 +106,10 @@ within each type and are never reused.
 - Single-author, single-environment: every workflow has been exercised only by
   the author, on macOS + Claude Code with the full model roster, and only on
   repos the author shaped. No external adopter, and no external-repo migration,
-  has run yet.
+  has run yet. The supported collaboration model — one operator, contributions
+  from people who do not run cairn — and the enforcement boundary it implies
+  are stated in the rulebook's "Git and approval model" (D-043, M72); two
+  concurrent cairn operators remain unsupported (ROADMAP candidate).
 - Hooks are unverified on Windows: stock Windows lacks `python3` on PATH (it
   is `py`/`python`), so `hooks.json` chains a best-effort `py -3` launcher
   fallback after each `python3` invocation (M61) — a no-op on macOS/Linux

@@ -773,6 +773,39 @@ REGISTRY = [
         target="skills/shared/migration-protocol.md",
         block="verbatim in chat above the merge-approval chip — the PR description",
     ),
+    # M72 (D-043): the boundary passage and the PR binding each carry a
+    # distinct rule, and the README half is a separate target — one entry
+    # per positive assert's block, per the M53 per-block discipline.
+    Mutation(
+        guard="test_collaboration_boundary",
+        test="TestEnforcementBoundary.test_rulebook_states_the_boundary",
+        target=RULES,
+        block="Enforcement boundary — what survives a merge made outside a cairn session.",
+    ),
+    Mutation(
+        guard="test_collaboration_boundary",
+        test="TestEnforcementBoundary.test_boundary_names_the_paths_that_escape_the_guards",
+        target=RULES,
+        block="or by a contributor without the plugin installed is invisible to",
+    ),
+    Mutation(
+        guard="test_collaboration_boundary",
+        test="TestEnforcementBoundary.test_boundary_states_the_single_operator_assumption",
+        target=RULES,
+        block="governed by that operator's session, never the contributor's.",
+    ),
+    Mutation(
+        guard="test_collaboration_boundary",
+        test="TestPRBinding.test_rulebook_states_the_binding",
+        target=RULES,
+        block="the guard refuses a `gh pr merge` whose PR the marker does not name",
+    ),
+    Mutation(
+        guard="test_collaboration_boundary",
+        test="TestReadmeCollaboratorSurface.test_readme_has_the_collaborators_section",
+        target="README.md",
+        block="## Working with collaborators",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
