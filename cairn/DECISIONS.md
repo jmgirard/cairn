@@ -1047,3 +1047,52 @@ nothing from. The skill's four dispositions are unchanged; the rulebook moves
 to meet what M74 shipped. Delivered by M75, guarded label-inclusively per the
 M74/F3 lesson. If `leave` is ever observed absorbing items that were
 genuinely new, the narrowing is the entry to tighten — supersede here.
+
+### D-045 (2026-07-18): Tracking files split into history and current knowledge; current-knowledge records are corrected in place, marked — annotates D-015
+
+**Context:** M75 found `LESSONS.md:41` (written by M71) stated the Claude Code
+hook matcher rule wrongly, and corrected it in place — marked
+`(M71, corrected M75)` — because appending a correction would leave the wrong
+rule readable to every plan-time harvest, which is the only thing the file is
+read for. Review accepted that as the lesser evil while recording that **no
+rule sanctions it**, and spun the gap off as a candidate. The gap is real and
+self-contradictory: D-015 and the file map both call `LESSONS.md`
+"append-only", yet the same sentence caps it at 50 lines and instructs pruning
+the stalest entries — the file has never been append-only in the DECISIONS
+sense, and at 49/50 lines a prune was already due. Separately, M75 also
+corrected `references/claude-code-hooks.md` in place with no rule covering
+that either, so the gap was already wider than LESSONS.
+
+**Decision:** Split the tracking files by what they are for. **History** —
+`DECISIONS.md`, work-logs, milestone IDs, entombed `legacy/` files — records
+what was decided or done at a time, and is never edited: supersede, never
+rewrite. **Current knowledge** — `LESSONS.md`, `references/` pages,
+`DESIGN.md` — records what is true *now*, is read to act on, and is
+**corrected in place when proven false**, with the correction marked
+(`(M71, corrected M75)`) and git holding the original. Three sub-choices at
+the M76 plan gate (2026-07-18). (1) **Mechanism:** correct in place, marked.
+Rejected appending a superseding line and deleting the old (same end state,
+loses the visible link) and strike-through-keep-both (burns two lines of a
+50-line cap per correction and leaves the wrong text readable — the failure
+being fixed). (2) **Scope:** the general split, not a LESSONS-only protocol —
+M75's reference-page correction proves the narrow form leaves the same hole.
+Rejected extending the milestone-file write-mode table to every tracking file
+(over the sizing tripwires for the payoff). (3) **IP4:** record the reading,
+do not amend the principle. IP4 enumerates "append-only work-logs and
+DECISIONS … no-invention migration, entomb-verbatim, IDs never reused" —
+`LESSONS.md` was never in that set, so M75's in-place correction never
+violated IP4; what was wrong was the file map's loose "append-only" label.
+IP4's wording is unchanged. Also rejected: a `cairn_validate` CHECK for
+correction markers — **declined, not deferred** — since advisory doctrine has
+never been a validate gate (M33/M42/M49) and a marker is prose a reviewer
+reads, not a parseable invariant.
+
+**Consequences:** Annotates D-015 — its lessons-loop, one-line format, and
+50-line cap stand; only the "append-only" label is corrected, to the mode the
+file always actually had. Correcting a false lesson stops being an unsanctioned
+deviation and becomes the documented path, which matters because a wrong lesson
+is *actively* misleading: it is harvested into every subsequent plan. IP4 is
+narrowed in nothing — it is read as already excluding LESSONS. Delivered by
+M76. If a correction marker ever needs to be machine-checkable, or if
+in-place correction is observed erasing something git alone did not preserve,
+this is the entry to supersede.
