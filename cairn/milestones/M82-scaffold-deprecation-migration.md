@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M82: Scaffold-deprecation migration — repair mode acts on the advisory it inherits
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP3, IP2   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m82-scaffold-deprecation-migration`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -77,20 +77,20 @@ never fix, so the actor is skill prose. Migrating a repo's *committed*
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Add `## 3. Repair` to `skills/cairn-init/SKILL.md` after §2; move the
+- [x] T1: Add `## 3. Repair` to `skills/cairn-init/SKILL.md` after §2; move the
       repair substance out of §0's bullet ([SKILL.md:79-87](skills/cairn-init/SKILL.md:79))
       leaving a one-line pointer in its place, matching how §0 dispatches to
       §1 and §2 today.
-- [ ] T2: Write the deprecation-migration step inside §3: run
+- [x] T2: Write the deprecation-migration step inside §3: run
       `cairn_validate.py`, read each `scaffold deprecations` line
       ([cairn_validate.py:651](scripts/cairn_validate.py:651)), rewrite the
       `.gitignore` entry, ask before moving the shelf directory, surface the
       both-exist case, re-run to confirm quiet.
-- [ ] T3: Sweep the repo for prose asserting cairn-init's section inventory
+- [x] T3: Sweep the repo for prose asserting cairn-init's section inventory
       that a third section makes stale — whole-repo `git grep`, excluding only
       history (`DECISIONS.md`, `milestones/archive/`, `reviews/archive/`,
       `legacy/`) per M58; fix live hits.
-- [ ] T4: New prose-guard `skills/tests/test_scaffold_migration.py` locking
+- [x] T4: New prose-guard `skills/tests/test_scaffold_migration.py` locking
       AC1–AC5; register it in the mutation harness (per file, ≥1 exemplar
       block on one unwrapped physical line — M53/M54).
 - [ ] T5: Run both suites from the repo root, checking each exit code
@@ -100,6 +100,9 @@ never fix, so the actor is skill prose. Migrating a repo's *committed*
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
 
 - 2026-07-18: created by /milestone-plan.
+- 2026-07-18: T1+T2 — `## 3. Repair` added to cairn-init; §0's repair bullet reduced to a pointer; migration step written against the `scaffold deprecations` advisory output (generic over the plugin's superseded-entry map, no rename named in the prose).
+- 2026-07-18: T3 — whole-repo sweep (history excluded per M58) found no prose asserting cairn-init's section inventory; nothing to fix. `§1`/`§2` citations in `migration-protocol.md` and two test docstrings stay correct, as the milestone-local decision intended.
+- 2026-07-18: T4 — `skills/tests/test_scaffold_migration.py` (10 tests) + 4 mutation entries; two asserts initially hit the M23 wrapped-phrase trap and were re-anchored to single physical lines. Entries proven live: pointing one block at absent text errors the harness, exit 1.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

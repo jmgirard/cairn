@@ -76,15 +76,7 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
   precursors used `project/`, not `cairn/`);
   repo-local milestone skills in `.claude/skills/`. Unrecognized footprints
   get an interview, not a guess.
-- Already on cairn → **repair mode**: verify every §1 piece exists
-  and is intact; fix what's missing; report. A **missing `cairn/PROFILE.md`**
-  (a repo that adopted cairn before profiles) is backfilled by inference —
-  `DESCRIPTION` present → r-package, else `pyproject.toml`/`setup.py`/
-  `setup.cfg` → python, else a `Dockerfile` (sole marker) → docker-image, else
-  generic — restoring the explicit declaration without changing behavior (the
-  inference is exactly what the skills fall back to when the file is absent;
-  with no user present, a hybrid `Dockerfile`+language-marker repo keeps the
-  language marker — the disambiguation gate is a cairn-init-time step only).
+- Already on cairn → **repair mode** (§3).
 
 ## 1. Fresh scaffold
 
@@ -190,3 +182,57 @@ full when (and only when) §0 detects an existing tracking footprint
 (progressive disclosure, M59: a greenfield scaffold or repair run never
 loads it). Follow its steps 1–8 as this skill's §2; the `## Migration §n`
 phase headers and the chapter-marker directive apply to them unchanged.
+
+## 3. Repair
+
+Reached from §0 when the repo is already on cairn. Repair restores §1 pieces
+that are missing and migrates scaffold names **cairn itself** renamed; it
+never rewrites content the repo authored.
+
+- **Missing §1 pieces.** Verify every §1 piece exists and is intact; create
+  what is missing; report each fix. A **missing `cairn/PROFILE.md`**
+  (a repo that adopted cairn before profiles) is backfilled by inference —
+  `DESCRIPTION` present → r-package, else `pyproject.toml`/`setup.py`/
+  `setup.cfg` → python, else a `Dockerfile` (sole marker) → docker-image, else
+  generic — restoring the explicit declaration without changing behavior (the
+  inference is exactly what the skills fall back to when the file is absent;
+  with no user present, a hybrid `Dockerfile`+language-marker repo keeps the
+  language marker — the disambiguation gate is a cairn-init-time step only).
+
+- **Scaffold deprecations.** cairn is post-1.0, so a scaffold name cairn
+  renames follows the deprecation cycle rather than breaking adopters
+  (D-047): the old `.gitignore` entry keeps satisfying `scaffold present`,
+  and a non-failing `scaffold deprecations` advisory names its successor.
+  The advisory names the fix; **this step is the only place cairn performs
+  it** — `/milestone`'s audit surfaces advisories and never auto-fixes them,
+  so an un-migrated repo carries the WARN until repair runs.
+
+  Run `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` and read its
+  `scaffold deprecations` advisory. Each line names one superseded entry and
+  its successor (`'<old>' is superseded by '<new>'`).
+  Act on every line the advisory prints, never on a pair named in this text — the advisory is generated from the plugin's own map of superseded entries, so a rename added after this was written migrates with no edit here.
+  Per line, in order:
+
+  1. **Rewrite the entry, no ask.** The `.gitignore` line goes `<old>` → `<new>` in place.
+     It is cairn's own scaffold line, not one the repo authored, and the
+     rewrite touches nothing git tracks — so it needs no gate.
+  2. **Move the directory only after an explicit ask.** The shelf is gitignored, so its contents are untracked and git cannot restore them.
+     Show what is on the shelf (file count, and the names when few) and ask
+     via AskUserQuestion before moving anything. A declined move is reported
+     and the directory left alone — the renamed entry still stands.
+  3. **Both directories present: surface, never clobber.** Never merge or overwrite one shelf with the other unasked.
+     Report what each holds and let the user choose — merge old into new,
+     keep both and skip, or stop.
+  4. **Old directory absent:** the entry rewrite *is* the migration. Nothing
+     to move, nothing to ask.
+
+  Close by re-running `cairn_validate.py` and confirming the
+  `scaffold deprecations` advisory is quiet. Report the verified result, not
+  the attempted one; a still-firing advisory means a step above was declined
+  or failed, and says which.
+
+- Commit (docs-only, on the default branch): `cairn-init: repair scaffold`;
+  push if a remote exists. Nothing to fix → report that and skip the commit.
+- Routing chip (AskUserQuestion), composed from what repair found (chip rules
+  per tracking-rules) — e.g. **Run `/milestone`** (recommended, to re-audit a
+  repo that just changed) / **Plan a milestone** → `/milestone-plan` / Stop.

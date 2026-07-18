@@ -1142,6 +1142,35 @@ REGISTRY = [
         target=RULES,
         block="never anything genuinely new (D-044)",
     ),
+    # M82: /cairn-init §3 performs the rename its own `scaffold deprecations`
+    # advisory names. One entry per independently-load-bearing block: the
+    # advisory-driven generality (blanking it re-narrows the step to the one
+    # rename D-047 made), and each of the three consent rules, whose label and
+    # rule are fused into one bold token so a swap cannot survive (M74/M76).
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestDeprecationMigration.test_step_is_driven_by_advisory_output_not_a_named_rename",
+        target="skills/cairn-init/SKILL.md",
+        block="Act on every line the advisory prints, never on a pair named in this text",
+    ),
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestDeprecationMigration.test_entry_rewrite_needs_no_ask",
+        target="skills/cairn-init/SKILL.md",
+        block="**Rewrite the entry, no ask.**",
+    ),
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestDeprecationMigration.test_directory_move_is_gated_on_an_explicit_ask",
+        target="skills/cairn-init/SKILL.md",
+        block="**Move the directory only after an explicit ask.**",
+    ),
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestDeprecationMigration.test_both_directories_present_is_never_clobbered",
+        target="skills/cairn-init/SKILL.md",
+        block="**Both directories present: surface, never clobber.**",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
