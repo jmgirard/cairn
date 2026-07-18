@@ -269,6 +269,22 @@ adds alike).
   marker is restored automatically (merge_guard_post), so one approval
   survives failed retries but never a successful merge. Never write the
   marker except at an explicit user approval.
+- The marker names the PR it approves (`… approved YYYY-MM-DD for PR #<N>`) and
+  the guard refuses a `gh pr merge` whose PR the marker does not name — a bare
+  `gh pr merge` with no PR argument included, because an approval that cannot be
+  checked is not an approval. Spell the number out: `gh pr merge <N> --squash`.
+
+**Enforcement boundary — what survives a merge made outside a cairn session.**
+Every guard is a PreToolUse hook on *this* session's own Bash calls, so it sees
+only what an agent runs here. A merge performed in the GitHub web UI, by a merge
+queue, or by a contributor without the plugin installed is invisible to
+`merge_guard` and `force_push_guard`: on those paths IP1's approval requirement
+and the never-force-push line degrade to honor-system, and the post-merge
+hygiene pass runs late or not at all. The rest of the conduct — AC fencing,
+tracking-travels-with-code, question gates, the review fan-out — is prose with
+no mechanical backing on any path. cairn assumes **one operator running these
+skills**; outside contributions come in through the intake path above and are
+governed by that operator's session, never the contributor's.
 
 Waiting on CI / background work:
 

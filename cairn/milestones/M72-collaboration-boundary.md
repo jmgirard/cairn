@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M72: Collaboration boundary — what survives a merge outside cairn, plus PR-bound approval
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP1   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m72-collaboration-boundary`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -75,7 +75,7 @@ docs-only direct pushes → candidate row.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1 — Write the boundary passage into `skills/shared/tracking-rules.md`
+- [x] T1 — Write the boundary passage into `skills/shared/tracking-rules.md`
       "Git and approval model" (after the `.merge-approved` paragraph,
       `:265-271`). Keep it ≤10 lines; the rulebook is already long.
       *(RB tripwire: ip-touching — the passage states where IP1's mechanical
@@ -102,6 +102,9 @@ docs-only direct pushes → candidate row.
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-18: created by /milestone-plan.
+- 2026-07-18: in-progress on `m72-collaboration-boundary`.
+- 2026-07-18: implement gate — marker binding requires the explicit PR number in the merge command (bare `gh pr merge` denied); marker stays prose with `for PR #<N>` appended; ip-touching tripwire on T1 not escalated (user choice).
+- 2026-07-18: T1 — boundary passage + PR-binding bullet added to tracking-rules "Git and approval model"; three single-line mutation anchors verified unique.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
