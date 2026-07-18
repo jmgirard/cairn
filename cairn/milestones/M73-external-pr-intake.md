@@ -84,7 +84,7 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
 - [x] T2 — Rewrite step 3 (`:32-33`) to carry both forms: author-side
       (fail→fix→pass) and adopted-side (add test; fail on default branch, pass
       on PR head).
-- [ ] T3 — Extend step 5 (`:39-45`) for the adopted case, incl. the
+- [x] T3 — Extend step 5 (`:39-45`) for the adopted case, incl. the
       no-push-to-fork fallback.
 - [ ] T4 — Extend step 6 (`:47-60`) with the fork `--delete-branch` caveat;
       confirm the marker line matches M72's bound form (no divergence).
@@ -107,6 +107,8 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
   exemption stated in tracking-rules git model. verify clean.
 - 2026-07-18: T2 — step 3 states both sequences; adopted form is add-the-test
   + prove fail-on-default / pass-on-head via a scratch worktree. verify clean.
+- 2026-07-18: T3 — step 5 covers entry-already-present / none-present and the
+  no-push-to-fork fallback (ask, then re-land locally). verify clean.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->

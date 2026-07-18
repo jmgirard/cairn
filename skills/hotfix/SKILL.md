@@ -63,7 +63,21 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    `NEWS.md` for r-package, else the repo's `CHANGELOG.md` / convention)
    under the current development version (no milestone/issue jargon in the
    user-facing text).
-   Push; open the PR — `Fixes #N` in the description if a GitHub issue exists.
+   *Authoring a fix:* push; open the PR — `Fixes #N` in the description if a
+   GitHub issue exists.
+   *Adopting a PR:* the PR already exists — never open a second one. If the
+   contributor added an entry, check it against the declared file and the
+   user-facing-text rule and edit it in place rather than appending a
+   duplicate; if none is present, add one. Push the test and the entry to the
+   PR's head branch — this works on a fork when the contributor left
+   "allow edits by maintainers" on (GitHub's default).
+   **When the head branch cannot be pushed to:** ask the contributor on the
+   PR to add the missing pieces — it is their work and their credit. If they
+   don't respond, re-land it locally: recreate their commits on a
+   `hotfix-<slug>` branch (`git cherry-pick`), add the test and changelog
+   there, and open a PR that credits them (`Co-authored-by:`) and closes
+   theirs with a comment saying why. Never merge a fix whose regression test
+   is still missing — that is the one gate this path exists to enforce.
 
 6. **Approval gate:** present the diff, the regression-test evidence, and
    the changelog line (when the `changelog` slot declares a file); put the
