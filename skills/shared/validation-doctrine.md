@@ -80,9 +80,11 @@ Summary → `cairn/references/<citekey>.md` (committed), authored from
 extracted values with page/table anchors, verbatim-critical values quoted
 exactly, which tests/oracles trace to it, open questions. One line in
 `INDEX.md`. Tests and milestones cite `citekey (p. N)`, never restate.
-(The `references/` page *types* and the page⇒INDEX-line rule are universal
-file-family rules and live in tracking-rules "References pages"; this
-workflow is the numeric/scoring-source instance of them.)
+(The `references/` page *types*, the page⇒INDEX-line rule, and **when a page is
+owed at all** belong to the universal file family, stated in the core rulebook
+under "References pages"; this workflow is the numeric/scoring-source instance
+of them. Do not restate the trigger here — a numeric session reaches it through
+the rulebook it already reads whole.)
 
 The claim-ageing rules that govern every committed page — standing facts vs.
 dated observations, and the `**Provenance.**` block —

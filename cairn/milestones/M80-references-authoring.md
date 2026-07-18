@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M80: References-page authoring — the ingestion trigger and the synthesis-note template
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, GP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m80-references-authoring`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -78,7 +78,7 @@ enumerate templates. Guard tests, mutation-registered.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Author the trigger and both template pointers into
+- [x] T1: Author the trigger and both template pointers into
       `tracking-rules.md` "References pages"; reconcile
       `validation-doctrine.md:75-91` so its numeric recipe defers to core for
       the trigger without restating it. Watch the always-read line budget —
@@ -108,6 +108,9 @@ enumerate templates. Guard tests, mutation-registered.
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
 
 - 2026-07-18: created by /milestone-plan; promoted the M78/M79 grouped candidate row ahead of its "promote once M78's template is in use" gate — the gate is self-blocking, since nothing triggers the template's use and that is the very gap being fixed.
+- 2026-07-18: /milestone-implement started; branch `m80-references-authoring` cut from synced main.
+- 2026-07-18: T1 — trigger + both template paths into tracking-rules "References pages"; validation-doctrine's parenthetical now defers the trigger instead of restating it. Gate answers: a page is owed when the repo relies on the source; a synthesis note when the analysis outlives its milestone.
+- 2026-07-18: T1 hit LESSONS :27 live — the reflow duplicated a mutation-registered anchor in validation-doctrine.md; reworded the new prose rather than re-anchoring the guard (LESSONS :32).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
