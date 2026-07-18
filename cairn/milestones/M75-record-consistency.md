@@ -91,9 +91,9 @@ what IP3 forbids. Implement inherits the answer, not the question.
       `skills/shared/tracking-rules.md:199-205`. Keep the guarded phrase on
       one physical line (M23) and clear of `**bold**` splits (M26). Do not
       touch `skills/milestone/SKILL.md`.
-- [ ] T2 — Append D-044 to `cairn/DECISIONS.md` (text drafted at the plan
+- [x] T2 — Append D-044 to `cairn/DECISIONS.md` (text drafted at the plan
       gate; append-only, never renumber).
-- [ ] T3 — Add the MCP-matcher bullet to the "Matchers & execution" section,
+- [x] T3 — Add the MCP-matcher bullet to the "Matchers & execution" section,
       `cairn/references/claude-code-hooks.md:94-100`, alongside the existing
       exact-vs-regex bullet. Re-read the page's `INDEX.md` line and confirm
       it still describes the page.
@@ -108,6 +108,8 @@ what IP3 forbids. Implement inherits the answer, not the question.
 
 - 2026-07-18: created by /milestone-plan; absorbs the M74-F5 and M71-F3 candidate rows.
 - 2026-07-18: T1 — rulebook Intake paragraph names `leave`, narrowed per D-044; phrase unique in file; 96/287/72 suites green.
+- 2026-07-18: T2 — no branch work needed: D-044 landed in the plan commit a00653d, before the branch was cut. Ticked as satisfied, not re-authored.
+- 2026-07-18: T3 — MCP-matcher bullet added to the hooks reference; exemplar verified live against hooks.json:67 + idea_guard.py:28 (same suffix shape); INDEX line amended to record the non-official-docs provenance.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

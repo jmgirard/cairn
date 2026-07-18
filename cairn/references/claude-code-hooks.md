@@ -98,3 +98,11 @@ PostToolUse, UserPromptSubmit, ConfigChange.
   matcher. Hooks matching one event run in parallel; default command
   timeout 600s (`"timeout"` per hook, seconds); cwd = session cwd (not
   necessarily repo root — walk up to find `cairn/ROADMAP.md`).
+- **MCP tool names inherit that exact-vs-regex rule, and it bites.** A
+  matcher of only word chars, `-`, space, `,` or `|` is compared as an
+  EXACT string — and `_` is a word char, so a literal
+  `mcp__ccd_session__spawn_task` is an exact compare that binds the hook to
+  one server and silently unwires on a server rename. Give an MCP matcher a
+  metacharacter to get regex treatment (`mcp__.*__spawn_task`), and keep the
+  hook's own tool-name regex the same suffix shape so matcher and hook agree
+  (M71 T1; the `idea_guard` wiring is the live exemplar).
