@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M73: External-PR intake — /hotfix adopts a PR it did not author
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M72   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -93,7 +93,7 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
 - [x] T6 — Write the guard tests; register in the mutation harness; re-run
       `test_search_first_candidates.py` and `test_idea_intake_gate.py`, both of
       which assert Intake-adjacent substrings.
-- [ ] T7 — Run all three suites from the repo root.
+- [x] T7 — Run all three suites from the repo root.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
@@ -116,6 +116,8 @@ CONTRIBUTING scaffold → candidate rows (see M72 Out).
 - 2026-07-18: T6 — test_external_pr_intake.py (17 tests) + 9 mutation-registry
   entries; completeness meta-test green; the two Intake-adjacent guards
   (search-first, idea-intake) still pass. skills suite 246 → 263.
+- 2026-07-18: T7 — verify slot clean (263/96/72 across the three suites);
+  cairn_validate all checks passed. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
