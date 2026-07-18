@@ -24,9 +24,13 @@ README = "README.md"
 DESIGN = "cairn/DESIGN.md"
 TEMPLATE = "skills/shared/templates/claude-md-section.md"
 
-# The seven shipped hooks (DESIGN Architecture must name each — the M54 fix
+# The eight shipped hooks (DESIGN Architecture must name each — the M54 fix
 # added commit_guard + memory_guard, which the stale three-hook bullet
-# omitted; M60 added force_push_guard + merge_guard_post).
+# omitted; M60 added force_push_guard + merge_guard_post; M71 added
+# idea_guard). Ship a new hook, extend this tuple by hand — it is checked
+# against DESIGN's prose only, NOT derived from hooks/, so a new hook missing
+# from here leaves DESIGN's inventory silently stale (M48 registered-kind
+# trap; deriving it from the directory is a live candidate).
 HOOKS = (
     "session_context",
     "stop_guard",
@@ -35,6 +39,7 @@ HOOKS = (
     "memory_guard",
     "force_push_guard",
     "merge_guard_post",
+    "idea_guard",
 )
 
 

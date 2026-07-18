@@ -62,6 +62,16 @@
             "timeout": 15
           }
         ]
+      },
+      {
+        "matcher": "mcp__.*__spawn_task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/idea_guard.py\" || py -3 \"${CLAUDE_PLUGIN_ROOT}/hooks/idea_guard.py\"",
+            "timeout": 15
+          }
+        ]
       }
     ],
     "PostToolUse": [

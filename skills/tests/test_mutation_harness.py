@@ -38,6 +38,27 @@ REGISTRY = [
         target=RULES,
         block="sweep existing candidates + `milestones/archive/`",
     ),
+    # M71 (D-042): one entry per positive assert's block — the enumeration,
+    # the pairing requirement, and the named enforcement arm each carry the
+    # rule independently, so each needs its own mutation proof.
+    Mutation(
+        guard="test_idea_intake_gate",
+        test="TestOutOfBandIdeaCaptureRule.test_rule_names_the_capture_channels_generically",
+        target=RULES,
+        block="a background-task chip, a scratch TODO, an ad-hoc note",
+    ),
+    Mutation(
+        guard="test_idea_intake_gate",
+        test="TestOutOfBandIdeaCaptureRule.test_rule_requires_the_paired_candidate_row",
+        target=RULES,
+        block="The idea also lands as a `candidate` ROADMAP row",
+    ),
+    Mutation(
+        guard="test_idea_intake_gate",
+        test="TestOutOfBandIdeaCaptureRule.test_rule_names_its_runtime_enforcement_arm",
+        target=RULES,
+        block="`idea_guard.py` PreToolUse hook injects this reminder",
+    ),
     Mutation(
         guard="test_ac_traceability",
         test="TestTemplateCoverageSection.test_coverage_section_exists",

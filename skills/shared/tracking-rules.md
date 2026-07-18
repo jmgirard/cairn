@@ -202,6 +202,17 @@ and correct: review to the hotfix bar and merge on user approval; larger:
 becomes/joins a milestone. Candidates may be added conversationally by
 anyone at any time (one ROADMAP row).
 
+**Out-of-band idea capture.** A capture channel that is not a cairn tracking
+file — a background-task chip, a scratch TODO, an ad-hoc note — is never the
+record of record for an idea. The idea also lands as a `candidate` ROADMAP row
+in the same turn (search-first applies below), and the out-of-band item is at
+most a convenience pointer to that row. The channel stays usable; what it may
+not do is be the only place the idea exists, because nothing outside `cairn/`
+is authoritative tracking state — an inbox (issues, PRs) or a chip feeds the
+ROADMAP, it never substitutes for it. When a chip-creating tool fires in a
+cairn repo the `idea_guard.py` PreToolUse hook injects this reminder as a
+non-blocking nudge — it prompts the pairing, it does not make the call.
+
 **Search-first candidate creation.** Before adding a candidate row — by any
 skill or conversationally — sweep existing candidates + `milestones/archive/`
 + `DECISIONS.md` for overlap; on a hit, absorb into or cross-reference the
