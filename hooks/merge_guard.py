@@ -67,28 +67,34 @@ def main():
     # same one. A `git merge` has no PR to name and is exempt from this
     # check — its guarded case (merging while sitting on main) is already
     # covered by the marker's existence.
-    if cc.GH_PR_MERGE.search(command):
-        command_pr = cc.gh_merge_pr_number(command)
+    command_prs = cc.gh_merge_pr_numbers(command)
+    if command_prs:
         marker_pr = cc.marker_pr_number(marker)
-        if command_pr is None:
+        # Every occurrence must clear the check — a chained
+        # `gh pr merge 7 && gh pr merge 9` must not ride through on the
+        # first one's approval (M72 review F4).
+        if any(pr is None for pr in command_prs):
             deny(
                 "This merge does not name a PR, so the recorded approval "
                 "cannot be checked against it (tracking-rules, Git and "
                 "approval model: an approval that cannot be checked is not "
                 "an approval). Spell the number out — "
                 "`gh pr merge <N> --squash --delete-branch` — using the PR "
-                "the user approved at the gate. The approval marker is "
-                "untouched; rerun with the number."
+                "the user approved at the gate. Every `gh pr merge` in the "
+                "command must name its PR, chained ones included. The "
+                "approval marker is untouched; rerun with the number."
             )
             return
-        if marker_pr is not None and marker_pr != command_pr:
+        unapproved = [pr for pr in command_prs if pr != marker_pr]
+        if marker_pr is not None and unapproved:
             deny(
                 "The recorded approval is for PR #%s, but this command "
-                "merges PR #%s. An approval authorizes exactly the PR it "
+                "merges PR %s. An approval authorizes exactly the PR it "
                 "names (tracking-rules, Git and approval model). Either "
-                "merge PR #%s, or take PR #%s back to its own approval "
-                "gate — never rewrite the marker to match the command."
-                % (marker_pr, command_pr, marker_pr, command_pr)
+                "merge PR #%s alone, or take the other PR back to its own "
+                "approval gate — never rewrite the marker to match the "
+                "command."
+                % (marker_pr, ", ".join("#" + pr for pr in unapproved), marker_pr)
             )
             return
         # marker_pr is None: a marker written before the PR-binding

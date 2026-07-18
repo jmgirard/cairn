@@ -7,7 +7,7 @@
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP1   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** `m72-collaboration-boundary`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m72-collaboration-boundary` · https://github.com/jmgirard/cairn/pull/70   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -37,33 +37,33 @@ docs-only direct pushes → candidate row.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1 — `skills/shared/tracking-rules.md` "Git and approval model" states
+- [x] AC1 — `skills/shared/tracking-rules.md` "Git and approval model" states
       which guarantees are enforced only inside a cairn-equipped session and
       which degrade to honor-system when the merge happens elsewhere (GitHub
       UI, merge queue, unplugged contributor), naming `merge_guard` and
       `force_push_guard` as agent-session-scoped. Evidence: the passage quoted
       + its guard test green.
-- [ ] AC2 — `README.md` carries a human-facing subsection saying the same in
+- [x] AC2 — `README.md` carries a human-facing subsection saying the same in
       plain words: what cairn will block, and what it cannot see.
-- [ ] AC3 — `hooks/merge_guard.py` denies `gh pr merge <N>` when the marker
+- [x] AC3 — `hooks/merge_guard.py` denies `gh pr merge <N>` when the marker
       body names a different PR, with the deny reason naming both numbers; it
       also denies a `gh pr merge` that names no PR at all, since an approval
       that cannot be checked against a command is not an approval. Neither
       denial consumes the marker. Evidence: three `TestMergeGuard` cases.
       *(Amended 2026-07-18 at the implement gate — the plan assumed the merge
       command carried a PR number; both skills in fact merged bare.)*
-- [ ] AC4 — the same hook allows-and-consumes when command and marker name the
+- [x] AC4 — the same hook allows-and-consumes when command and marker name the
       same PR, still allows when the marker body names no PR (back-compat for
       markers predating the convention), and leaves the guarded `git merge`
       path unchanged — it has no PR to name. Evidence: three `TestMergeGuard`
       cases.
-- [ ] AC5 — `/milestone-review` and `/hotfix` write the PR-bound marker form
+- [x] AC5 — `/milestone-review` and `/hotfix` write the PR-bound marker form
       at their approval gates. Evidence: grep of the two SKILL.md files
       (tracking lines in this milestone file are not evidence).
-- [ ] AC6 — the new prose-guard file is registered in
+- [x] AC6 — the new prose-guard file is registered in
       `skills/tests/test_mutation_harness.py`; the completeness meta-test is
       green.
-- [ ] AC7 — the `verify` slot is clean: all three `unittest discover` suites
+- [x] AC7 — the `verify` slot is clean: all three `unittest discover` suites
       (`skills/tests`, `scripts/tests`, `hooks/tests`) pass from the repo root.
 
 ## Coverage
@@ -116,6 +116,96 @@ docs-only direct pushes → candidate row.
 - 2026-07-18: T6 — DESIGN known-issues + hook-inventory bullets cross-reference the rulebook passage rather than restate it; all three suites green (246/96/66), `cairn_validate` all-pass, `cairn_impact --changed` traces IP1 to the declared slot; plan-owned body 120/150.
 - 2026-07-18: T5 — `test_collaboration_boundary.py` (12 tests across boundary, PR binding, README); five mutation entries registered, all proven; skills suite 234 → 246.
 - 2026-07-18: T4 — six `TestMergeGuard` cases (mismatch, bare, match, URL/value-flag parsing, branch-name argument, `git merge` exemption); `shlex` added to the stdlib allowlist in `TestStdlibOnly`.
+- 2026-07-18: review — PR #70 opened; all seven criteria executed with fresh evidence; consistency gate clean; three-lens fan-out + scorer ran (prior-PR lens no-opped, no corpus). F4 (82) fixed on the branch: multi-occurrence PR check, 3 regression tests, hooks 66 → 69. Five sub-80 findings logged in the Review section.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
+
+- 2026-07-18 (implement gate, surfaced by review F7): the PR binding denies an
+  unnamed merge *before* consulting the marker, so D-043's "no-PR-token body
+  keeping today's behavior for back-compat" is narrower than written — a
+  legacy marker still authorizes a numbered merge, but never a bare one.
+  Deliberate: an approval that cannot be checked is not an approval, and a
+  legacy marker is no reason to skip the check. Not cross-cutting enough to
+  supersede D-043; AC3/AC4 carry the amendment note.
+
+## Review
+<!-- owner: review · exclusive -->
+
+**PR:** https://github.com/jmgirard/cairn/pull/70 · reviewed 2026-07-18 ·
+branch 5 ahead / 0 behind `origin/main` at review start.
+
+### Acceptance-criteria evidence
+
+- AC1 — passage read back from `tracking-rules.md:277-287`: names the web-UI /
+  merge-queue / unplugged-contributor paths, both guards by filename, the
+  honor-system degradation, and the one-operator assumption. Guard test
+  `TestEnforcementBoundary` (5 tests) green.
+- AC2 — `README.md` "Working with collaborators" read back; four bullets
+  (guards watch this session; the rest was always conduct; contributions come
+  in through the operator; concurrent operators unsupported).
+  `TestReadmeCollaboratorSurface` (3 tests) green.
+- AC3 — `TestMergeGuard` named cases green: mismatch denies naming both
+  numbers, bare merge denies, branch-name argument denies; each asserts the
+  marker text is intact after the denial. Extended at review for chained
+  commands (see F4).
+- AC4 — green: `test_allows_and_consumes_when_pr_matches`,
+  `test_allows_and_consumes_marker` (legacy `#`-less marker, back-compat),
+  `test_git_merge_is_exempt_from_the_pr_check`,
+  `test_repeated_merge_of_the_approved_pr_still_allowed`.
+- AC5 — `grep` over the two SKILL.md files: `milestone-review:162` and
+  `hotfix:58` write the `for PR #<N>` marker form; `milestone-review:174` and
+  `hotfix:52` merge with the number spelled out. No other skill writes the
+  marker.
+- AC6 — `TestRegistryCompleteness` + `TestRegisteredGuardsFailWhenBlanked`
+  green: all five M72 blocks proven to fail their guard when blanked; the
+  completeness meta-test accepts the new file.
+- AC7 — three suites from the repo root: skills 246, scripts 96, hooks 69 —
+  all OK.
+
+### Consistency gate
+
+`cairn_validate` exit 0, all 15 checks PASS + 2 advisories OK.
+`cairn_impact --changed` traces IP1 to 12 references incl. the declared slot.
+The `generic` profile's `consistency-gate` slot names no toolchain checks —
+clean no-op.
+
+### Independent review — three lenses + scorer
+
+[O] diff-bug (3 findings), [S] blame-history (3 findings), [S] prior-PR
+(**no prior-PR evidence** — 0 inline comments across all 69 merged PRs; this
+repo reviews in-session, so the lens has no corpus; expected no-op, zero
+findings). Scored by a fresh [S] scorer.
+
+**Actioned (≥80):**
+
+- **F4 (82) — chained-merge bypass.** The detection read only the first
+  merge in a command, so a chained second merge rode through on the first
+  one's approval — fail-open in exactly the property M72 exists to create.
+  **Fixed:** `gh_merge_pr_number` → `gh_merge_pr_numbers` (`finditer`, one
+  entry per occurrence); the guard denies if any occurrence names no PR or
+  names an unapproved one, and lists every unapproved number in the reason.
+  Three regression tests added, incl. one proving a repeat of the *approved*
+  PR is still allowed (over-correction guard). Verified by probe.
+
+**Below threshold — logged, not actioned (surfaced per IP3):**
+
+- F2 (78) — `--repo`/`-R` absent from `_GH_MERGE_VALUE_FLAGS`, so passing
+  `--repo owner/name` before the number denies with a message telling the
+  operator to spell out a number they already spelled out. Fail-closed;
+  cairn's skills never pass `--repo`.
+- F5 (74) — `-m` is listed as value-taking but for this command it means
+  `--merge` (boolean), so `-m 7` falsely denies. Fail-closed.
+- F1 (68) — `_MARKER_PR` takes the first `#N` in the marker, but the
+  convention writes the PR last; a hotfix slug containing `#43` would both
+  deadlock the approved merge and (inversely) authorize an unapproved one.
+  Scorer judged the trigger unlikely (the slug also becomes a branch name).
+- F7 (68) — the milestone's `## Decisions` section was empty though the
+  implement-gate choice narrowed D-043's back-compat wording. Recorded above.
+- F6 (62) — two new assertions carry no `Mutation(...)` entry; scorer noted
+  the finding inverts M53 (registration is per *file*, ≥1 exemplar block), so
+  the completeness meta-test is legitimately green — a comment-accuracy nit.
+- F3 (55) — "Every guard is a PreToolUse hook on *this* session's own Bash
+  calls" is over-broad (5 of 8 hooks are PreToolUse; `stop_guard` is a Stop
+  hook, `merge_guard_post` PostToolUse). Scorer noted the wording is D-043's
+  own and that the mutation anchors sit on other sentences.

@@ -283,6 +283,46 @@ class TestMergeGuard(RepoFixture):
         self.assertEqual(out["permissionDecision"], "deny")
         self.assertTrue(self.marker().exists())
 
+    def test_chained_merge_cannot_ride_on_the_first_approval(self):
+        # M72 review F4: checking only the first `gh pr merge` let a second,
+        # unapproved merge through on the strength of the first.
+        self.marker().write_text(self.APPROVAL_PR7)
+        out = hook_json(
+            run_hook(
+                "merge_guard.py",
+                self.merge_payload(
+                    "gh pr merge 7 --squash && gh pr merge 9 --squash"
+                ),
+            )
+        )
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn("#9", out["permissionDecisionReason"])
+        self.assertEqual(self.marker().read_text(), self.APPROVAL_PR7)
+
+    def test_chained_bare_merge_is_denied_too(self):
+        # The same bypass against the deny-on-unnamed rule.
+        self.marker().write_text(self.APPROVAL_PR7)
+        out = hook_json(
+            run_hook(
+                "merge_guard.py",
+                self.merge_payload("gh pr merge 7 --squash && gh pr merge --squash"),
+            )
+        )
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn("does not name a PR", out["permissionDecisionReason"])
+        self.assertEqual(self.marker().read_text(), self.APPROVAL_PR7)
+
+    def test_repeated_merge_of_the_approved_pr_still_allowed(self):
+        # Not every chain is an escape: the same approved PR twice is odd
+        # but authorized, and must not be denied by the multi-occurrence
+        # check (guards against over-correcting F4 into a false positive).
+        self.marker().write_text(self.APPROVAL_PR7)
+        proc = run_hook(
+            "merge_guard.py",
+            self.merge_payload("gh pr merge 7 --squash || gh pr merge 7 --admin"),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+
     def test_git_merge_is_exempt_from_the_pr_check(self):
         # A `git merge` has no PR to name; the marker's existence governs it.
         self.marker().write_text(self.APPROVAL_PR7)

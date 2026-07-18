@@ -98,12 +98,14 @@ class TestPRBinding(unittest.TestCase):
     def test_the_guard_implements_the_check(self):
         # stated<->enforced the other direction: the rule describes behavior
         # that must exist in code, not just prose.
+        # Word-bounded: a bare assertIn on a shorter name is satisfied by a
+        # longer one that contains it (the M60 substring trap).
         common = HOOKS.joinpath("cairn_common.py").read_text()
-        self.assertIn("def gh_merge_pr_number", common)
-        self.assertIn("def marker_pr_number", common)
+        self.assertRegex(common, r"\bdef gh_merge_pr_numbers\b")
+        self.assertRegex(common, r"\bdef marker_pr_number\b")
         guard = HOOKS.joinpath("merge_guard.py").read_text()
-        self.assertIn("gh_merge_pr_number", guard)
-        self.assertIn("marker_pr_number", guard)
+        self.assertRegex(guard, r"\bgh_merge_pr_numbers\b")
+        self.assertRegex(guard, r"\bmarker_pr_number\b")
 
 
 class TestReadmeCollaboratorSurface(unittest.TestCase):

@@ -64,25 +64,37 @@ _MARKER_PR = re.compile(r"#(\d+)")
 _SEGMENT_END = re.compile(r"[;&|\n]")
 
 
-def gh_merge_pr_number(command):
-    """The PR number a `gh pr merge` command names, or None.
+def gh_merge_pr_numbers(command):
+    """The PR number named by EVERY `gh pr merge` in the command.
 
-    None means the command did not name a PR (a bare `gh pr merge`, which
-    lets gh infer it from the current branch, or a branch-name argument the
-    guard cannot resolve offline). Never raises — an unparseable command
-    yields None, and the caller decides what that means.
+    Returns one entry per occurrence, in order; an entry is None when that
+    occurrence named no PR (a bare `gh pr merge`, which lets gh infer it
+    from the current branch, or a branch-name argument the guard cannot
+    resolve offline). An empty list means the command contains no
+    `gh pr merge` at all.
+
+    Every occurrence is parsed, not just the first: a chained
+    `gh pr merge 7 && gh pr merge 9` must not smuggle the second merge
+    through on the strength of the first (M72 review F4). Never raises — an
+    unparseable occurrence yields None, and the caller decides what that
+    means.
     """
-    match = GH_PR_MERGE.search(command or "")
-    if not match:
-        return None
-    segment = command[match.end():]
-    end = _SEGMENT_END.search(segment)
-    if end:
-        segment = segment[:end.start()]
-    try:
-        tokens = shlex.split(segment)
-    except Exception:
-        tokens = segment.split()
+    found = []
+    for match in GH_PR_MERGE.finditer(command or ""):
+        segment = command[match.end():]
+        end = _SEGMENT_END.search(segment)
+        if end:
+            segment = segment[:end.start()]
+        try:
+            tokens = shlex.split(segment)
+        except Exception:
+            tokens = segment.split()
+        found.append(_first_pr_token(tokens))
+    return found
+
+
+def _first_pr_token(tokens):
+    """The PR a single `gh pr merge`'s argument list names, or None."""
     skip_next = False
     for token in tokens:
         if skip_next:
