@@ -116,6 +116,7 @@ tomorrow or next month — picks up the trail from the files alone.
 | Verify and ship a finished milestone | `/milestone-review M<NN>` — fresh evidence for every criterion, independent code review, merge on your approval |
 | Get a stronger model's judgment on a hard question | `/milestone-brief M<NN> <topic>` — writes a self-contained brief; you approve (or run) the Fable review |
 | Fix a reported bug quickly | `/hotfix` — or just describe the bug; regression test, fix, PR, your approval. Escalates to a milestone if it's bigger than it looked |
+| Take in an outside pull request | `/hotfix` again — it adopts the contributor's PR (`gh pr checkout`), holds it to the same bar, and merges on your approval |
 | Fix a typo or tweak docs | Just ask — trivial edits commit directly to main, no tracking |
 | Prepare a CRAN release | `/cairn-release` — the full checklist; you do the actual submission |
 | Articulate a repo's design & principles | `/design-interview` — a two-phase interview (facts → principles) that fills `DESIGN.md`; best run on Fable |
@@ -195,7 +196,8 @@ the guardrails actually reach.
   item, not a second tracking system: you triage it into a candidate row, a
   hotfix, or a milestone, and your session's guards govern the merge. The
   contributor needs no plugin, no `cairn/` knowledge, and no special branch
-  name.
+  name. `/milestone`'s health audit enumerates both inboxes and proposes a
+  disposition per item; `/hotfix` is the door an adopted PR comes through.
 - **Two people both running cairn is not supported yet.** The tracking files
   would race — milestone IDs and decision numbers are picked by reading the
   files, so two people planning at once can pick the same one. If you need

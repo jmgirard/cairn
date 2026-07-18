@@ -58,7 +58,9 @@ issues — the scripts stay offline and stdlib-only
       bullet name PR adoption; all three read consistently with the shipped
       `skills/hotfix/SKILL.md` `description:`. Evidence: the passages quoted
       beside that description, plus a repo-wide `git grep` for surviving
-      pre-M73 trigger prose (history files excepted, per M58).
+      pre-M73 trigger prose (history files excepted per M58, and this
+      milestone's own file — which necessarily quotes the prose it
+      removes, M62).
 - [ ] AC7 — the `verify` slot is clean: all three `unittest discover` suites
       pass from the repo root.
 
@@ -87,7 +89,7 @@ issues — the scripts stay offline and stdlib-only
 - [x] T3 — Write the guard test; register it in the mutation harness; re-run
       `test_gate_wording.py` and `test_gate_conclusion_preview.py`, which
       assert on `/milestone`'s chip wording.
-- [ ] T4 — Bring the doc surfaces in line with M73: rewrite
+- [x] T4 — Bring the doc surfaces in line with M73: rewrite
       `cairn/DESIGN.md:69-70`'s trigger clause and `README.md:118`/`:194` so
       the PR door is described where a reader looks for architecture. `git
       grep` the whole repo for other pre-M73 trigger prose (M48/M58: sweep
@@ -104,6 +106,8 @@ issues — the scripts stay offline and stdlib-only
 - 2026-07-18: T1 — §2 untriaged-inboxes bullet is now a concrete step (both `gh` commands, search-first cross-check, three-case degradation clause); kept inside the `:64` judgment block per plan. Skills suite green (267).
 - 2026-07-18: T2 — §3 resolves the sweep: four named dispositions (candidate row / `/hotfix` / `/milestone-plan` / leave), PRs routed to M73's door, verbatim-above-the-chip stated; extended the existing triage option rather than adding a second chip. Both registered blocks verified still unique.
 - 2026-07-18: T3 — new `test_issue_triage.py` (18 tests) + 4 mutation entries (commands, search-first ordering, degradation floor, PR routing), each block verified unique and proven to fail when blanked. Hit the M23/M64 reflow trap live: the degradation directive wrapped mid-phrase, so the prose was reflowed to keep it on one line rather than weakening the assert. Skills suite 285 green.
+- 2026-07-18: T4 — DESIGN Conventions bullet now says `/hotfix` is bidirectional; README gained an outside-PR row and the contributions bullet names both doors. Repo-wide sweep found the stale claim in live prose only at `DESIGN.md:69` (README's two spots were incomplete, not wrong).
+- 2026-07-18: T4 amendment (step-6 gate, user approved) — AC6's evidence grep hit this milestone's own AC text (M62 trap); criterion amended to except it alongside the M58 history files.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
