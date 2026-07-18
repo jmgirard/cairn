@@ -222,3 +222,59 @@ so that half is a clean no-op. No IP/GP line changed in the diff, so
   cairn's history carries any comment at all (#29, dropped, unrelated
   substance). Zero findings; no lesson regressed.
 
+- **[O] diff-bug lens (Opus)** and **[S] blame-history lens (Sonnet)**: 5
+  findings, scored by a fresh **[S] scorer** that did not generate them.
+
+**Actioned.**
+- **F1 (87) — module placement violated D-031.** The two new sections were
+  written into `validation-doctrine.md`, a domain-conditional module read only
+  "whenever a milestone touches a numeric result or scoring/algorithmic
+  content" — but the rule is universal, and this milestone proved it by
+  backfilling 16 non-numeric pages in a `generic`-profile repo with no numeric
+  work. The unmodified sentence directly above the insertion point states the
+  same boundary. Consequence: a session editing a non-numeric references page
+  would never be pointed at the anti-staleness rule — self-defeating.
+  *Fixed:* both sections moved to `tracking-rules.md` "References pages" (the
+  universal home D-031 designates); the module keeps a pointer. Guard and all
+  four mutation registrations retargeted; a new assert locks the deferral.
+- **F3 (90) — the backfill introduced the very failure this milestone stops.**
+  The 16 `Extraction:` lines said "not re-read since" with no date — verbatim
+  the doctrine's own dated-observation category ("what has or has not been
+  read"). Re-read a page later without touching that line and it stays
+  readable and becomes false: the M63/M64/M65 pattern, reintroduced by the
+  compliance fix for it. *Fixed:* all 16 dated `— observed 2026-07-18`; the
+  rulebook now states explicitly that an extraction status carries its own
+  date; `TestBackfilledPages.test_every_extraction_status_is_dated` guards it,
+  proven falsifiable by un-dating one page (fails on `page='spec-kit.md'`).
+- **F2 (74) — actioned over the threshold, by operator judgment (M73).** The
+  doctrine said the Provenance block "names citekey, full citation", but the
+  template puts citekey in the H1 and the citation in its own block, and the
+  field check matches anywhere in the file so structure went unchecked. The
+  scorer correctly docked it for overstating M79's dependency; the
+  contradiction is still real and M79 would inherit it. *Fixed:* the rulebook
+  now describes what the block records and says the citekey and citation are
+  carried by the page itself. AC2 is unaffected — it requires the template to
+  carry the seven fields, not to nest them all in one block.
+
+**Logged, not actioned (sub-threshold, surfaced per IP3).**
+- **F4 (52)** — delivered extraction vocabulary ("verified at ingestion",
+  "partly verified") is richer than T8's "default to unverified". Rejected:
+  the plan-owned Scope says the status "records what the page itself
+  evidences, defaulting to unverified", which permits evidence-based
+  variation, and the granular wording is honest rather than overstated.
+- **F5 (22)** — `references/INDEX.md` carries no Provenance block though the
+  rule says "every committed page". Rejected: the file map governs `INDEX.md`
+  as a distinct artifact (one line per page), not as a page.
+
+**Verified clean by both lenses.** The M74/M76 label→SET trap is closed
+(independently re-mutated: swapping the two labels fails both asserts). AC8's
+provenance derivation re-checked against `git log --follow` — all 16 match,
+additive only, D-045 holds. M56's rejections cleared: a governed template is
+the opposite of the "free-form-page structural steals" it declined. M57's
+INDEX rule untouched. Prior-PR lens: 0 findings from 7 PRs.
+
+### Re-verification after fixes
+
+skills 324 rc=0 (up from 319: 3 new asserts + the backfill guard) · scripts
+111 rc=0 · hooks 72 rc=0 · `cairn_validate` rc=0 with the one accepted sizing
+advisory. Both fixes proven by live mutation, each file restored byte-clean.

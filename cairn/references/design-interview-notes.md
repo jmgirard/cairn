@@ -2,7 +2,7 @@
 
 **Provenance.** Citekey `design-interview-notes` · ingested 2026-07-11 by M02 from repo-specific findings note — the openac pilot session (same session, same AskUserQuestion format; model switched Opus 4.8 → Fable 5 partway through).
 Pagination: —.
-Extraction: first-hand session record, not an extraction from an external source; nothing to re-verify against.
+Extraction: first-hand session record, not an extraction from an external source; nothing to re-verify against — observed 2026-07-18.
 
 **Scope:** repo-specific findings note (not a source summary). Raw material
 for a future design-interview skill or an elicitation upgrade to

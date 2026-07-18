@@ -14,7 +14,10 @@ shape plus a seven-field Provenance block.
 
 Two distinct guards live here:
 
-  TestClaimSplitDoctrine   — prose guards on validation-doctrine.md. Each
+  TestClaimSplitDoctrine   — prose guards on tracking-rules.md, where the
+      rules live: they are UNIVERSAL file-family rules, not domain-conditional
+      doctrine, so D-031 puts them in core rather than in the conditionally
+      read validation-doctrine.md module (caught by the M78 blame lens). Each
       label is asserted TOGETHER WITH its members, so swapping the two
       definitions fails (M74/M76: pinning only the mechanism sentence leaves
       the sets swappable AND deletable with every assert green).
@@ -22,6 +25,12 @@ Two distinct guards live here:
       template file, not a fixture copy (M77: when one task authors content
       and another authors its checker, nothing pairs them unless a test reads
       the shipped artifact).
+
+  TestBackfilledPages      — the repo's own committed references/ pages obey
+      the rule this milestone ships. An extraction status is itself a claim
+      about the repo's state ("not re-read since"), so it must carry its own
+      `— observed YYYY-MM-DD`; the M78 backfill shipped 16 undated ones and
+      the diff-bug lens caught it (F3, scored 90).
 
 Doctrine text is read with whitespace normalized, so an assert survives a
 reflow of the wrapped prose; the mutation-registered anchors are separately
@@ -36,19 +45,20 @@ import unittest
 
 SKILLS = pathlib.Path(__file__).resolve().parent.parent
 TEMPLATE = SKILLS / "shared" / "templates" / "source-note.md"
+RULES = SKILLS / "shared" / "tracking-rules.md"
 DOCTRINE = SKILLS / "shared" / "validation-doctrine.md"
 
 
 def doctrine_flat():
     """Doctrine text, lowercased, with runs of whitespace collapsed to one
     space — so an assert pins wording, not line breaks."""
-    return re.sub(r"\s+", " ", DOCTRINE.read_text().lower())
+    return re.sub(r"\s+", " ", RULES.read_text().lower())
 
 
 def doctrine_lines():
     """Physical lines, lowercased — for asserts that must prove a phrase sits
     on ONE line (the mutation harness blanks by physical line)."""
-    return [ln.lower() for ln in DOCTRINE.read_text().splitlines()]
+    return [ln.lower() for ln in RULES.read_text().splitlines()]
 
 
 class TestClaimSplitDoctrine(unittest.TestCase):
@@ -98,10 +108,28 @@ class TestClaimSplitDoctrine(unittest.TestCase):
         )
 
     def test_ingestion_names_the_template_path(self):
-        # Without this the shipped shape is unreachable from the doctrine
-        # that mandates it.
+        # Source ingestion stays in the domain module (D-031); the template
+        # path must remain reachable from it.
         self.assertIn(
-            "skills/shared/templates/source-note.md", doctrine_flat()
+            "skills/shared/templates/source-note.md",
+            re.sub(r"\s+", " ", DOCTRINE.read_text().lower()),
+        )
+
+    def test_module_defers_the_universal_rules_to_the_rulebook(self):
+        # D-031: the claim-ageing rules are universal file-family rules and
+        # live in core, not in this conditionally-read domain module.
+        self.assertIn(
+            "are universal file-family rules and live in tracking-rules "
+            '"references pages" (d-031)',
+            re.sub(r"\s+", " ", DOCTRINE.read_text().lower()),
+        )
+
+    def test_extraction_status_must_carry_its_own_date(self):
+        # The status is a repo-state claim, so the rule that governs repo-state
+        # claims governs it too — stated explicitly, not left to inference.
+        self.assertIn(
+            "an extraction status carries its own `— observed yyyy-mm-dd`",
+            doctrine_flat(),
         )
 
     def test_provenance_block_is_prose_not_frontmatter(self):
@@ -162,3 +190,38 @@ class TestShippedTemplate(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestBackfilledPages(unittest.TestCase):
+    """This repo's own references/ pages obey the rule the milestone ships."""
+
+    PAGES = sorted(
+        p for p in (SKILLS.parent / "cairn" / "references").glob("*.md")
+        if p.name != "INDEX.md"
+    )
+
+    def test_pages_were_found(self):
+        # A glob that silently matches nothing would make every test below
+        # vacuously pass.
+        self.assertGreater(len(self.PAGES), 0, "no references pages found")
+
+    def test_every_page_carries_a_provenance_block(self):
+        for p in self.PAGES:
+            with self.subTest(page=p.name):
+                self.assertIn("**Provenance.**", p.read_text())
+
+    def test_every_extraction_status_is_dated(self):
+        # F3 (scored 90): "not re-read since" is a claim about the repo's own
+        # state. Undated, it reads durable and goes false the moment someone
+        # re-reads the page — the exact failure M78 exists to stop.
+        for p in self.PAGES:
+            with self.subTest(page=p.name):
+                line = next(
+                    (ln for ln in p.read_text().splitlines()
+                     if ln.startswith("Extraction: ")), None
+                )
+                self.assertIsNotNone(line, f"{p.name}: no Extraction status")
+                self.assertRegex(
+                    line, r"— observed \d{4}-\d{2}-\d{2}\.$",
+                    f"{p.name}: extraction status is an undated repo-state claim",
+                )

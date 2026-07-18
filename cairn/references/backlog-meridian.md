@@ -2,7 +2,7 @@
 
 **Provenance.** Citekey `backlog-meridian` · ingested 2026-07-11 by M06 from https://github.com/MrLesk/Backlog.md and https://github.com/markmdev/meridian.
 Pagination: —.
-Extraction: partly verified at ingestion — the Meridian blocking-hook claim was checked against `scripts/stop-checklist.py:69`; the rest is an [S] subagent study of clones, not re-read since.
+Extraction: partly verified at ingestion — the Meridian blocking-hook claim was checked against `scripts/stop-checklist.py:69`; the rest is an [S] subagent study of clones, not re-read since — observed 2026-07-18.
 
 Sources: https://github.com/MrLesk/Backlog.md and
 https://github.com/markmdev/meridian (studied 2026-07-11; [S] subagent

@@ -2,7 +2,7 @@
 
 **Provenance.** Citekey `desktop-toc-mechanism` · ingested 2026-07-12 by M27 from live probing in Claude Desktop viewing a Claude Code session — the surface where cairn skills run.
 Pagination: —.
-Extraction: verified by live probe 2026-07-12; a re-probe would be needed to confirm the mechanism still holds in the current client.
+Extraction: verified by live probe 2026-07-12; a re-probe would be needed to confirm the mechanism still holds in the current client — observed 2026-07-18.
 
 **Date:** 2026-07-12 · **Method:** live probing in Jeff's Claude Desktop,
 viewing a Claude Code (cairn) session — the surface where cairn skills run.

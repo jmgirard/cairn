@@ -2,7 +2,7 @@
 
 **Provenance.** Citekey `competitive-landscape` · ingested 2026-07-11 by M06 from synthesis note — its inputs are the eight per-system pages in this directory (feature-dev, claude-md-management, anthropic-code-review, ccpm, spec-kit, task-master, bmad-method, backlog-meridian).
 Pagination: —.
-Extraction: derived — no external source of its own; its claims are only as current as the eight input pages, none re-read since 2026-07-11.
+Extraction: derived — no external source of its own; its claims are only as current as the eight input pages, none re-read since 2026-07-11 — observed 2026-07-18.
 
 Sources: the eight per-system notes in this directory (feature-dev,
 claude-md-management, anthropic-code-review, ccpm, spec-kit,
