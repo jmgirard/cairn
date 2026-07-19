@@ -1302,3 +1302,55 @@ blocker, work-log line)" — that reasoning is about candidate rows and affirms
 what `blocked` means on a real milestone; this decision widens the "external"
 gloss, which had been read as CI/upstream only. If an expiry model is ever
 needed — a declared window going stale — this is the entry to supersede.
+
+### D-051 (2026-07-19): Lessons retire by enforcement or ownership — LESSONS.md gets an outflow, not just a ceiling — annotates D-015
+
+**Context:** `cairn/LESSONS.md` had one way out — D-015's "prune the stalest
+when full" — and it fires only at the cap, ranks by age, and loses content
+outright. Everything else was inflow. The file reached both its limits at once:
+49 lines against `LINE_CAPS` `<50` (`check_caps` FAILs at `>=`, so 49 is the
+last permitted count) and 20,466 chars against the 20,500 threshold D-049 set —
+zero item headroom, 34 characters of weight headroom. The next milestone's
+post-merge hygiene could not capture a lesson without failing the hard `weight
+caps` CHECK, and could not compress its way in either. Meanwhile the practice
+this entry formalizes already existed unsanctioned: M53 graduated M39/M40/M47
+when the mutation harness mechanized the trap they warned about
+(`archive/M53-prose-guard-mutation-harness.md:17`), by hand, with no criterion —
+so it was unrepeatable and invisible to every later pass. And the file's real
+redundancy is invisible to age: `LESSONS.md:16` taught the three unittest
+commands `cairn/PROFILE.md`'s `verify` slot already stated.
+
+**Decision:** A lesson leaves `LESSONS.md` on either of two criteria.
+**Enforcement** — a test *fails on the mistake the lesson warns about*. The
+discriminating word is *fails*, not *exists*: a guard in the same area is not
+enforcement, because most guard-naming lessons here teach the judgment the
+guard does not make, and `LESSONS.md:34` says so in its own words ("The harness
+catches neither"). **Ownership** — another tracking file's slot owns the
+content; the retiring milestone may *move* it there, not merely find it already
+duplicated. A lesson covered only in part is **trimmed to its uncovered
+remainder**, never kept whole. A retired lesson leaves no line behind: it is
+deleted, git holds the original, and the retiring milestone's archive summary
+names what it graduated — the form M53 already used. The check runs at
+`/milestone-review` post-merge hygiene beside capture, **scoped to what the
+milestone shipped**, never as a full re-sweep. Rejected: (1) an in-file
+graduation breadcrumb — D-049 already retired that pattern as restating
+archive-owned history, and it spends the budget it exists to free; (2) a
+separate graduated-lessons file — a second record of what LESSONS holds, the
+divergence vector M56 rejected; (3) mechanizing age-based retirement — D-015's
+prune stands as the last resort, but age is the weakest signal and automating it
+would evict load-bearing lessons by date; (4) re-evaluating every lesson each
+hygiene pass — that taxes every milestone with judgment over records it never
+touched, the cost D-049 objected to in the compression remedy.
+
+**Consequences:** Annotates D-015 — its one-line format, its 50-line cap, and
+its prune-when-full all stand; retirement is a second and stronger outflow that
+runs first, so pruning by age becomes the genuine last resort it was always
+meant to be. Distinct from D-045, and the distinction is load-bearing: a
+retired lesson is **not a false one**. Correction fixes what is wrong;
+retirement removes what is redundant. Conflating them would license deleting a
+lesson merely disputed, which is why the criteria are about coverage and
+ownership, never about whether the lesson still reads as true. Serves GP1 by
+giving the cap an outflow rather than only a ceiling, and GP4 by making the
+guard the lesson's endpoint instead of a parallel record of the same rule.
+Delivered by M92. If retirement is ever observed removing a lesson whose trap
+then recurs, this is the entry to supersede.

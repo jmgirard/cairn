@@ -77,7 +77,7 @@ alone do not reach the bar.
 
 ## Tasks
 
-- [ ] T1: Draft `D-051` in `cairn/DECISIONS.md`: both criteria and their
+- [x] T1: Draft `D-051` in `cairn/DECISIONS.md`: both criteria and their
       discriminating tests; the archive-summary tombstone; the rejected
       alternatives (in-file breadcrumbs — D-049 already retired that pattern as
       restating archive-owned history; a separate graduated file — the
@@ -117,6 +117,7 @@ alone do not reach the bar.
 - 2026-07-19: created by /milestone-plan.
 - 2026-07-19: in-progress on `m92-lesson-retirement`, cut from main at 16289bf.
 - 2026-07-19: step-3 gate amended Scope + AC1 + T7 — ownership permits MOVING content to its owner (not duplication-only), a partly-covered lesson is trimmed to its uncovered remainder, and consolidation (not D-015 prune) is AC5's headroom fallback. Preliminary sweep showed strict enforcement alone retires ~0 lessons, putting AC5 at risk; user chose all three recommendations.
+- 2026-07-19: T1 — D-051 appended: enforcement + ownership criteria, trim-to-remainder for partial coverage, archive-summary tombstone; four alternatives rejected with rationale.
 
 ## Decisions
 
