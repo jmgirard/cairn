@@ -49,10 +49,17 @@ claude plugin marketplace add jmgirard/cairn
 claude plugin install cairn@cairn
 ```
 
-Either way, the install includes the guardrail hooks (session-start
-tracking re-injection, the uncommitted-tracking stop guard, and the
-merge-approval guard); they activate at the next session start and are
-no-ops in repos that aren't cairn-tracked.
+Either way, the install includes the guardrail hooks: the blocking ones
+(merge approval, a force-push guard on your default branch), the
+housekeeping ones (session-start tracking re-injection, the
+uncommitted-tracking stop guard),
+plus two advisory nudges
+— one when an idea gets captured somewhere other than the roadmap, one when
+something durable is headed for Claude's memory instead of your tracking
+files —
+neither of which blocks anything
+you're doing. They activate at the next session start and are no-ops in
+repos that aren't cairn-tracked.
 
 Then, in your package repo, run `/cairn-init`. Fresh repos get scaffolding;
 repos with an older tracking system get an interactive, PR-based migration.
@@ -117,7 +124,7 @@ tomorrow or next month — picks up the trail from the files alone.
 | Fix a reported bug quickly | `/hotfix` — or just describe the bug; regression test, fix, PR, your approval. Escalates to a milestone if it's bigger than it looked |
 | Take in an outside pull request | `/hotfix` again — it adopts the contributor's PR (`gh pr checkout`), holds it to the same bar, and merges on your approval |
 | Fix a typo or tweak docs | Just ask — trivial edits commit directly to main, no tracking |
-| Prepare a CRAN release | `/cairn-release` — the full checklist; you do the actual submission |
+| Prepare a release | `/cairn-release` — follows your repo's profile (a CRAN walk, a registry walk, or a version bump and tag); you take the final outward step |
 | Articulate a repo's design & principles | `/design-interview` — a two-phase interview (facts → principles) that fills `DESIGN.md`; best run on Fable |
 | Adopt the system in another repo | `/cairn-init` — idempotent; safe to re-run |
 
@@ -130,13 +137,48 @@ your-package/
     ├── DESIGN.md              # architecture as it IS + principles
     ├── ROADMAP.md             # milestone index — the only status authority
     ├── DECISIONS.md           # append-only decision log
+    ├── LESSONS.md             # durable repo lessons, capped and pruned
     ├── milestones/            # one file per milestone (+ archive/)
     ├── reviews/               # Fable review briefs & reports (+ archive/)
     └── references/            # source + synthesis notes; sources/ gitignored
 ```
 
-Boundary rule: **Architecture → DESIGN · Status → ROADMAP · Tasks →
-milestone files · Decisions → DECISIONS · History → archive + git log.**
+Boundary rule:
+**Architecture → DESIGN · Status → ROADMAP · Tasks → milestone files · Decisions → DECISIONS · Lessons → LESSONS · History → archive + git log.**
+
+## Keeping track of sources
+
+When something in your repo rests on knowledge from outside it — a formula
+from a paper, a cutoff from a standard, another tool's documented behavior —
+cairn asks you to write that source down as a page under `cairn/references/`.
+This is not a feature for statistical work only; any repo that takes a fact
+from somewhere else accumulates these.
+
+- **A page is owed when you start relying on the source.** Reading something
+  in passing owes nothing. Once a value, convention, or decision in the repo
+  traces back to it, the page gets written in the same piece of work that
+  takes the dependency — not left for a tidy-up later that never comes.
+- **A page says where it came from and whether anyone has checked it.** Each
+  one records the source it came from, when it was read, and — the part that
+  carries the weight — whether its extracted values have actually been re-read
+  against the original, or are still a first pass nobody has confirmed. An
+  unchecked extraction that reads like a confirmed one is the failure this
+  exists to prevent.
+- **Facts about the source outlive notes about your repo.** "Table 3 gives
+  0.75" stays true as long as the paper does. "We haven't pulled that one
+  yet" is true for an afternoon. The second kind gets stamped with the date
+  it was written, so a later reader doesn't inherit it as though it were
+  permanent.
+- **The health check tells you when a page has gone stale.** `/milestone`
+  warns about pages never checked against their source, pages last checked
+  over six months ago, and pages whose own status is too vague to tell —
+  including ones only partly verified.
+  These are warnings, never gate failures:
+  whether the evidence is good enough is your call, not a rule a script can
+  settle.
+
+Two templates ship for authoring these, one per page type; `/cairn-init` puts
+the directory in place and the shelf of original files stays out of git.
 
 ## What the system expects from you
 
@@ -206,6 +248,12 @@ the guardrails actually reach.
 
 - Auto-merge, auto-release, or auto-submit to CRAN — every irreversible step
   is gated on you.
+- Propose, plan, or nominate a release. cairn will prepare one when you ask
+  and never brings it up on its own — no "you're ready to ship" suggestions,
+  no release work queued into the roadmap unprompted. A release is ready when
+  you say it is, not when a dependency list goes green, so
+  release timing is yours to declare
+  and cairn stays quiet about it until you do.
 - Track status in CLAUDE.md, chat memory, or GitHub issues — `cairn/`
   files are the single source of truth; issues are an inbox.
 - Run Fable, or any paid escalation, without a per-instance yes.

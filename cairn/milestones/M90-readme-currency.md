@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M90: README currency — the front door catches up with what shipped
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP2, GP3   <!-- owner: plan · create/amend-via-gate -->
@@ -93,17 +93,17 @@ README ¶1 and both `.claude-plugin` manifests.
 - [x] T2 — Fix README.md:12's enumeration to name all four profiles; T1 goes
       green. Keep ¶1's existing anchors (`language-agnostic`,
       `toolchain profile`) intact and singular.
-- [ ] T3 — Author the reference-pages section. Plain words; no page may reuse
+- [x] T3 — Author the reference-pages section. Plain words; no page may reuse
       an existing guard anchor phrase (see T7). Add its prose-guard.
-- [ ] T4 — Add the release-timing promise to the "deliberately does NOT do"
+- [x] T4 — Add the release-timing promise to the "deliberately does NOT do"
       list, beside the existing auto-release line; add its prose-guard.
-- [ ] T5 — Extend the install section's hook description to cover the advisory
+- [x] T5 — Extend the install section's hook description to cover the advisory
       nudges; add its prose-guard.
-- [ ] T6 — Two small currency fixes in one pass: the `/cairn-release` table row
+- [x] T6 — Two small currency fixes in one pass: the `/cairn-release` table row
       goes profile-neutral, and `LESSONS.md` joins the directory tree and the
       boundary rule. Guard the boundary rule as a label→member pairing on one
       physical line (`LESSONS.md:34` — pin the label with its members).
-- [ ] T7 — Anchor-collision sweep and verification: grep every phrase the two
+- [x] T7 — Anchor-collision sweep and verification: grep every phrase the two
       existing README guards assert, confirm each still occurs exactly once,
       verify by inversion. Register every new prose-guard in
       `test_mutation_harness.py` (per file, ≥1 exemplar block, each anchor on
@@ -117,6 +117,9 @@ README ¶1 and both `.claude-plugin` manifests.
 - 2026-07-19: T1+T2 landed in one commit — T1's deliverable is a RED run and committing it alone would leave the branch failing at checkoff, which the verify rule forbids. AC4 differential evidence captured before the fix: `AssertionError: 'Docker image' not found in ...` on README ¶1, both manifests already passing.
 - 2026-07-19: T1 hit LESSONS.md:23's wrap trap in the milestone whose own AC7 is anchor hygiene — "Docker image" straddled a line break. Resolved by normalizing whitespace within the read paragraph (label still matched exactly), NOT by loosening the assertion; M64's one-physical-line rule binds mutation blocks and M74's binds label→rule pairings, neither of which this presence check is. README reflowed too.
 - 2026-07-19: verified the guard is fail-closed by adding an unmapped profile file — one clean failure (`Lists differ: ['zz-fake-profile'] != []`); tightened the two surface tests to skip unmapped profiles so the dedicated label test owns that signal alone.
+- 2026-07-19: T3–T6 authored the four prose changes; new guard file `skills/tests/test_readme_currency.py` (12 tests across 5 classes), 12 mutation registrations added. The profile-enumeration guard is deliberately NOT mutation-registered — its block is a derived list, so blanking one label leaves three passing; its falsifiability rests on the differential red run and the fail-closed unmapped check instead, recorded in the registry comment.
+- 2026-07-19: T7 anchor sweep — all 7 pre-existing README anchors still occur exactly once (4 raw, 3 against the lowercased read `test_collaboration_boundary.py:36` uses). Verified by inversion, not by eye: relabelling "The guards only watch this session" → "watch every session" reddened its guard, restored green. The mutation suite passing is a second mechanical proof, since `blank_block` raises on any block matching twice.
+- 2026-07-19: verify slot clean at completion — skills 419 / scripts 196 / hooks 72, each exit 0 checked separately (not piped); `cairn_validate` exit 0. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

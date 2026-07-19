@@ -1466,6 +1466,84 @@ REGISTRY = [
         target=SYNTHESIS_NOTE,
         block="it is reported rather than assumed verified.",
     ),
+    # M90 README currency — one entry per positive assert (M53). The
+    # profile-enumeration guard is NOT registered here: its block is a
+    # derived list, not a fixed phrase, and blanking any single label leaves
+    # the other three passing. Its falsifiability was proven differentially
+    # instead (run red against the pre-fix README) and by the fail-closed
+    # unmapped-profile check.
+    Mutation(
+        guard="test_readme_currency",
+        test="TestReferencePagesSection.test_readme_has_the_sources_section",
+        target="README.md",
+        block="## Keeping track of sources",
+    ),
+    Mutation(
+        guard="test_readme_currency",
+        test="TestReferencePagesSection.test_readme_states_when_a_page_is_owed",
+        target="README.md",
+        block="A page is owed when you start relying on the source.",
+    ),
+    Mutation(
+        guard="test_readme_currency",
+        test="TestReferencePagesSection.test_readme_states_pages_record_whether_they_were_rechecked",
+        target="README.md",
+        block="whether its extracted values have actually been re-read",
+    ),
+    Mutation(
+        guard="test_readme_currency",
+        test="TestReferencePagesSection.test_readme_distinguishes_source_facts_from_repo_notes",
+        target="README.md",
+        block="Facts about the source outlive notes about your repo.",
+    ),
+    Mutation(
+        guard="test_readme_currency",
+        test="TestReferencePagesSection.test_readme_states_staleness_warnings_are_not_failures",
+        target="README.md",
+        block="These are warnings, never gate failures:",
+    ),
+    Mutation(
+        guard="test_readme_currency",
+        test="TestFileMapCurrency.test_readme_tree_lists_the_lessons_file",
+        target="README.md",
+        block="LESSONS.md             # durable repo lessons",
+    ),
+    Mutation(
+        guard="test_readme_currency",
+        test="TestFileMapCurrency.test_readme_boundary_rule_names_every_home",
+        target="README.md",
+        block="Decisions → DECISIONS · Lessons → LESSONS · History →",
+    ),
+    Mutation(
+        guard="test_readme_currency",
+        test="TestReleaseRowIsProfileNeutral.test_release_row_is_not_cran_only",
+        target="README.md",
+        block="follows your repo's profile",
+    ),
+    Mutation(
+        guard="test_readme_currency",
+        test="TestReleaseTimingPromise.test_readme_states_cairn_never_proposes_a_release",
+        target="README.md",
+        block="Propose, plan, or nominate a release",
+    ),
+    Mutation(
+        guard="test_readme_currency",
+        test="TestReleaseTimingPromise.test_readme_names_release_timing_as_the_maintainers_call",
+        target="README.md",
+        block="release timing is yours to declare",
+    ),
+    Mutation(
+        guard="test_readme_currency",
+        test="TestAdvisoryNudges.test_readme_install_section_names_the_advisory_nudges",
+        target="README.md",
+        block="plus two advisory nudges",
+    ),
+    Mutation(
+        guard="test_readme_currency",
+        test="TestAdvisoryNudges.test_readme_says_nudges_never_block",
+        target="README.md",
+        block="neither of which blocks anything",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
