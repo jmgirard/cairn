@@ -336,11 +336,32 @@ class TestTemplatesTeachTheShapeRule(unittest.TestCase):
                     self.text(template),
                 )
 
+    # Each taught qualifier is run through the classifier in several clause
+    # SHAPES, because one shape is not a test of the rule (review F1, scored
+    # 95). The original guard used only the first of these: it hands the
+    # qualifier an independent verb, so it passed on
+    # `spot-checked verified against the source` — a string no author writes —
+    # while the phrasing the templates actually teach,
+    # `spot-checked against the source`, classified as a full verification.
+    # The second shape is the one that catches a qualifier OVERLAPPING its
+    # verb; the third pairs it with a different verb entirely.
+    QUALIFIER_SHAPES = (
+        "{q} verified against the source",
+        "{q} against the source",
+        "{q} read against the source",
+    )
+
     def test_each_taught_partiality_qualifier_classifies_as_partial(self):
         """The taught set run through the REAL classifier, one member at a
         time (M75/M85): a set tested as a whole passes on its first member and
         says nothing about the rest, so a qualifier the templates teach but
         the implementation cannot read would ship unnoticed.
+
+        The invariant is that no taught qualifier may ever yield a bare
+        `verified` — that is the false green AC1 exists to close — and that
+        each one reaches `partial` in at least one shape an author would
+        actually write. A shape that makes no claim at all (no verb) is not a
+        failure; a shape that makes a FULL verification claim is.
 
         The members are lifted OUT of the template line, not restated, so a
         template that renamed one is tested on the new name — a hardcoded copy
@@ -355,15 +376,24 @@ class TestTemplatesTeachTheShapeRule(unittest.TestCase):
         taught = re.findall(r"`([^`]+)`", line)
         self.assertEqual(len(taught), 4, f"expected four qualifiers in {line!r}")
         for qualifier in taught:
-            with self.subTest(qualifier=qualifier):
-                self.assertEqual(
-                    validate._resolve_claims(
-                        validate._clause_claims(
-                            f"{qualifier} verified against the source"
-                        )
-                    ),
-                    "partial",
-                )
+            reached = []
+            for shape in self.QUALIFIER_SHAPES:
+                clause = shape.format(q=qualifier)
+                with self.subTest(qualifier=qualifier, clause=clause):
+                    state = validate._resolve_claims(
+                        validate._clause_claims(clause)
+                    )
+                    self.assertNotEqual(
+                        state, "verified",
+                        f"{clause!r} reads as a FULL verification — the "
+                        f"templates teach this qualifier as partial",
+                    )
+                    reached.append(state)
+            self.assertIn(
+                "partial", reached,
+                f"no shape reached `partial` for {qualifier!r}, so this "
+                f"member is taught but unreadable",
+            )
 
     def test_each_template_says_the_alternatives_are_not_the_accepted_list(self):
         for kind, template in self.TEMPLATES:

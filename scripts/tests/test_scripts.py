@@ -948,8 +948,33 @@ class TestReferencesStaleness(ScriptCase):
         "checked against `bmad-sprint-planning/SKILL.md:8`; the rest is "
         "an [S] subagent study, not re-read since",
         "partly verified at ingestion — key claims checked against a "
-        "clone (`specify.md:124-128`); not re-read since",
+        "clone (`specify.md:124-128`, `constitution.md:87`, "
+        "`plan-template.md:39,106`); not re-read since",
     )
+
+    def test_a_qualifier_fused_to_its_verb_still_reads_as_partial(self):
+        # Review F1 (95). `spot-checked` CONTAINS `checked`, and the verb
+        # pattern matches `checked against` starting inside it, so a qualifier
+        # search cut at the verb's start saw only `spot-` and found nothing —
+        # the phrasing both templates teach as the partial form classified as
+        # a complete verification, with a fresh date, on a page that had had
+        # one passage looked at. Both spellings, and the ingestion fallback
+        # that made it worst: there the date came from the block, so the page
+        # read as verified on a day nobody verified anything.
+        for status in (
+            f"spot-checked against the source {days_ago(2)}",
+            f"spot checked against the source {days_ago(2)}",
+            "spot-checked against the source at ingestion",
+        ):
+            with self.subTest(status=status[:44]):
+                proc = self.install(
+                    self.tree.build(),
+                    ingested=days_ago(3),
+                    status=f"{status} — observed {days_ago(0)}.",
+                )
+                self.assertFlagged(
+                    proc, "records only a partial verification"
+                )
 
     def test_partly_verified_pages_report_partial_not_ok(self):
         # M89 defect A, live on all three of this repo's `partly` pages: the

@@ -42,22 +42,22 @@ neither defect here touches it. Citekey resolution → stays a candidate row.
 
 ## Acceptance criteria
 
-- [ ] A status whose verification verb carries a partiality qualifier in its own
+- [x] A status whose verification verb carries a partiality qualifier in its own
       clause resolves to a new `partial` state, never `ok`; the advisory WARNs
       naming the page as only partly checked, distinct from the `never` message.
-- [ ] Negation still beats partiality: a negated verb in a clause that also
+- [x] Negation still beats partiality: a negated verb in a clause that also
       carries a partiality qualifier resolves `never`, not `partial`.
-- [ ] The M79-F5 trap is not reintroduced — the shipped pages carrying
+- [x] The M79-F5 trap is not reintroduced — the shipped pages carrying
       `not re-read since` in a *later* clause are not swept up by the new
       qualifier search, proven by a fixture per page.
-- [ ] A provenance block whose ingested date matches `_PROV_INGESTED` but yields
+- [x] A provenance block whose ingested date matches `_PROV_INGESTED` but yields
       no parseable ISO date is reported by exactly one of the gate or the
       advisory, and by name — never silently skipped by both.
-- [ ] Every new fixture is built from wording that shipped: the four intraclass
+- [x] Every new fixture is built from wording that shipped: the four intraclass
       note statuses and this repo's three `partly` pages, quoted as-is.
-- [ ] `source-note.md` and `synthesis-note.md` teach the partial form in their
+- [x] `source-note.md` and `synthesis-note.md` teach the partial form in their
       verb-set comments, and each new prose guard is mutation-registered.
-- [ ] Profile `verify` clean: `python3 -m unittest discover -s scripts/tests`,
+- [x] Profile `verify` clean: `python3 -m unittest discover -s scripts/tests`,
       `-s skills/tests`, `-s hooks/tests` (each exit code checked separately,
       from the repo root, unpiped — M56/M65), and `cairn_validate.py` exit 0.
 
@@ -108,7 +108,8 @@ neither defect here touches it. Citekey resolution → stays a candidate row.
 - 2026-07-19: T6–T7 — both templates teach the partiality set and its no-date-clears-it consequence; three new guards, five mutation entries (per template, per test), and an inversion check (`partly` → `mostly` in place) turned 4 guards red before restore.
 - 2026-07-19: T8 — `references staleness` on this repo goes OK (0) → WARN (3); all three are true positives whose statuses already say what was and was not checked, so nothing is corrected in place and clearing them needs a re-read of three external clones (out of scope).
 - 2026-07-19: all tasks done, three verify suites green and validate exit 0 — status → review.
-
+- 2026-07-19: review — 3 lenses (1 finding scored 95, actioned; 2 clean), consistency gate clean, all 7 criteria verified with fresh evidence; AC5 initially failed on one fixture (spec-kit anchors abbreviated) and was fixed before the tick.
+- 2026-07-19: review F1 fixed on branch — a partiality qualifier overlapping its verb (`spot-checked against`) read as a full verification; `_qualified_partial` now searches to `verb.end()`, and the T6 guard runs three clause shapes per qualifier.
 ## Decisions
 
 ### M89-D1 (2026-07-19): The verification lattice is never > partial > verified; `{never, verified}` alone stays ambiguous
@@ -131,3 +132,96 @@ Rejected: any-mixture-is-ambiguous, which would report this repo's three
 `partly` pages as self-contradicting when they are simply honest.
 
 ## Review
+
+_Reviewed 2026-07-19. PR: https://github.com/jmgirard/cairn/pull/88_
+
+### Acceptance-criteria evidence
+
+- **AC1** — `_last_verified` on each of the three shipped `partly` statuses returns
+  `("partial", None)`, never `ok`, with a recent ingest so staleness cannot be
+  what fires; advisory message is its own string ("records only a partial
+  verification"), distinct from the `never` text.
+  `test_partly_verified_pages_report_partial_not_ok`,
+  `test_a_partial_page_is_flagged_however_fresh_its_dates`,
+  `test_a_qualifier_fused_to_its_verb_still_reads_as_partial`.
+- **AC2** — the four shipped intraclass spot-check notes each resolve `never`, and
+  the advisory text contains no "partial verification"; the synthetic
+  `{never, partial}` pair also resolves `never`. Lattice enumerated over all 8
+  subsets of `{never, partial, verified}` — matches M89-D1 exactly.
+  `test_negation_beats_partiality_on_the_shipped_spot_check_notes`,
+  `test_a_never_clause_beside_a_partial_clause_resolves_never`.
+- **AC3** — one fixture per page: all three `partly` pages carry `not re-read
+  since` in a later clause and none is reported `never`; a fully-verified page
+  with the same trailing clause still resolves `ok`. A 15-status misfire sweep
+  by the diff-bug reviewer found no case where a partiality word qualifying
+  something else leaked across a clause boundary.
+  `test_partly_verified_pages_are_not_swept_up_as_never`,
+  `test_a_fully_verified_page_with_a_later_not_clause_stays_ok`.
+- **AC4** — `Ingested 2026-13-45`: `_PROV_INGESTED` matches the shape,
+  `_ingested_date` returns None, the CHECK FAILs naming the value
+  ("ingested date 2026-13-45 is not a real date"), and the advisory prints no
+  line for the page — reported by exactly one reader, by name. A valid
+  leap-day date still passes, so the predicate is not over-tightened.
+  `test_impossible_ingested_date_fails_by_name`,
+  `test_impossible_ingested_date_is_reported_by_exactly_one_reader`,
+  `test_real_ingested_date_still_passes_the_tightened_predicate`.
+- **AC5** — verified mechanically, not by eye: all seven fixture strings are
+  exact substrings of the live `Extraction:` lines (three pages here, four in
+  intraclass at commit `dea301f`). This initially FAILED on one fixture — the
+  spec-kit string dropped two of its three anchors — and was fixed on the
+  branch before the tick.
+- **AC6** — both templates carry the partiality set and its consequence, each
+  pinned label-with-members; 5 mutation entries registered (per template, per
+  test) out of a 214-entry registry, and the harness blanks each and requires
+  its guard to fail. Inversion check: `partly` → `mostly` in place turned 4
+  guards red. `test_each_template_names_the_partiality_set_with_its_label`,
+  `test_each_template_says_a_partial_claim_is_never_cleared`,
+  `test_each_taught_partiality_qualifier_classifies_as_partial`.
+- **AC7** — each exit code checked separately, unpiped, from the repo root:
+  `scripts/tests` 0, `skills/tests` 0, `hooks/tests` 0, `cairn_validate.py` 0.
+
+### Consistency gate
+
+`cairn_validate.py` (plugin copy): 15 CHECKs PASS, exit 0; advisories OK except
+`references staleness` WARN (3) — the three pages this milestone exists to
+surface. Profile is `generic`, whose `consistency-gate` slot names no toolchain
+checks, so that half is a clean no-op. No `DESIGN.md` principle changed, so
+`cairn_impact --changed` was not run. No CI is configured in this repo (no
+`.github/`), so the CI wait is a genuine no-op and the three local suites are
+the whole gate.
+
+### Independent review — three lenses, then a scorer
+
+- **[O] diff-bug (Opus):** 1 finding, scored **95**, actioned (below). Its clean
+  probes: the 8-subset lattice, a 15-status `_PARTIAL` misfire sweep, state
+  reachability around the `partial` early return, `_ingested_date`'s
+  forward reference to `_iso`, the double-`Ingested` block, and
+  no new CHECK failures.
+- **[S] blame-history (Sonnet):** 0 findings. Confirmed the repurposed
+  `..._not_swept_up_as_never` test still defends what it always defended (these
+  pages must never land in `never`; `ok` was merely the only other state that
+  existed), that the ledger edit met its deliberate-update bar, and that D-023
+  is not violated — `_iso` rejects only calendar-impossible dates, never a
+  valid-but-odd format.
+- **[S] prior-PR-comments (Sonnet):** no prior-PR evidence — zero review
+  comments across ~90 merged PRs. Clean no-op; already covered by the standing
+  candidate row about this lens.
+- Findings below the 80 threshold: none logged (none were produced).
+
+**F1 (95, fixed on the branch) — `spot-checked` could not fire as a qualifier
+on the phrasing the templates teach.** `spot-checked` contains `checked`, and
+`_VERIFY_VERB` matches `checked against` starting inside it (the hyphen
+satisfies its lookbehind), so searching `clause[:verb.start()]` cut the
+qualifier in half and left `spot-`, which matches nothing.
+`spot-checked against the source 2026-07-15` returned `("ok", 2026-07-15)`, and
+the at-ingestion form took the block's date — a page with one passage looked at
+reading as fully verified on a day nobody verified anything. Worse, both
+templates had just started teaching `spot-checked` as a partial form, so an
+author following the instruction would land exactly there. The T6 guard missed
+it because every fixture was built as `{qualifier} verified against the
+source`, which supplies an independent verb and passes on a string no author
+writes. Fixed by `_qualified_partial`, which searches to `verb.end()` and
+counts a match beginning at or before the verb, plus `spot[-\s]check` so the
+unhyphenated spelling reads too; the guard now runs each qualifier through
+three clause shapes and forbids a bare `verified` in any of them. Inversion:
+reverting the predicate turns 3 scripts tests and 1 skills test red.

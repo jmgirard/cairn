@@ -829,8 +829,11 @@ _NEGATOR = re.compile(
 # capture class, and the M79-F5 lesson is that widening admits non-targets.
 # These four cover every partial form the shipped corpus actually writes; a
 # fifth is added when a page needing it appears, not in anticipation.
+#
+# `spot[-\s]check` takes a hyphen OR a space: both spellings are the same word,
+# and the hyphen is not what makes it a qualifier.
 _PARTIAL = re.compile(
-    r"(?<![A-Za-z0-9])(?:partly|partially|in\s+part|spot-check(?:ed)?)"
+    r"(?<![A-Za-z0-9])(?:partly|partially|in\s+part|spot[-\s]check(?:ed)?)"
     r"(?![A-Za-z0-9])",
     re.I,
 )
@@ -946,14 +949,35 @@ def _clause_claims(clause):
     if _UNVERIFIED.search(clause):
         out.add("never")  # carries its own negator
     for verb in _VERIFY_VERB.finditer(clause):
-        before = clause[: verb.start()]
-        if _NEGATOR.search(before):
+        if _NEGATOR.search(clause[: verb.start()]):
             out.add("never")
-        elif _PARTIAL.search(before):
+        elif _qualified_partial(clause, verb):
             out.add("partial")
         else:
             out.add("verified")
     return out
+
+
+def _qualified_partial(clause, verb):
+    """Whether a partiality qualifier governs this verb occurrence.
+
+    The qualifier may OVERLAP the verb rather than merely precede it, which is
+    why this is not a search of `clause[: verb.start()]` (review F1, scored 95).
+    `spot-checked` contains `checked`, and `_VERIFY_VERB` matches
+    `checked against` starting inside it — the hyphen satisfies its lookbehind
+    — so slicing at `verb.start()` cuts the qualifier in half and leaves
+    `spot-`, which matches nothing. `spot-checked against the source` therefore
+    read as a full verification, on the exact phrasing both templates teach as
+    the partial form.
+
+    So the search runs to `verb.end()` and a match counts when it BEGINS at or
+    before the verb does. Beginning-at-or-before is what keeps this from
+    widening: a qualifier wholly inside the verb text governs nothing, and no
+    match after the verb is considered at all."""
+    return any(
+        m.start() <= verb.start()
+        for m in _PARTIAL.finditer(clause[: verb.end()])
+    )
 
 
 def _status_claims(status):
