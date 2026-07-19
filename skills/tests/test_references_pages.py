@@ -310,6 +310,91 @@ class TestTemplatesTeachTheShapeRule(unittest.TestCase):
                     self.text(template),
                 )
 
+    def test_each_template_names_the_partiality_set_with_its_label(self):
+        """M89. Pinned label→SET, exactly like the verb-set guard above: a
+        guard that pinned only "a partiality qualifier" would leave the four
+        members swappable, which is the M74/M76 trap."""
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertIn(
+                    "A partiality qualifier before the verb in that same "
+                    "clause — `partly`, `partially`, `in part`, "
+                    "`spot-checked` — makes the claim a PARTIAL verification.",
+                    self.text(template),
+                )
+
+    def test_each_template_says_a_partial_claim_is_never_cleared(self):
+        """The consequence half. Naming the state without saying it cannot be
+        aged out leaves an author expecting a fresh date to close it — which
+        is precisely what the defect did on their behalf."""
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertIn(
+                    "A partial claim is reported, never cleared: no date "
+                    "closes it, because what is missing is coverage rather "
+                    "than freshness.",
+                    self.text(template),
+                )
+
+    # Each taught qualifier is run through the classifier in several clause
+    # SHAPES, because one shape is not a test of the rule (review F1, scored
+    # 95). The original guard used only the first of these: it hands the
+    # qualifier an independent verb, so it passed on
+    # `spot-checked verified against the source` — a string no author writes —
+    # while the phrasing the templates actually teach,
+    # `spot-checked against the source`, classified as a full verification.
+    # The second shape is the one that catches a qualifier OVERLAPPING its
+    # verb; the third pairs it with a different verb entirely.
+    QUALIFIER_SHAPES = (
+        "{q} verified against the source",
+        "{q} against the source",
+        "{q} read against the source",
+    )
+
+    def test_each_taught_partiality_qualifier_classifies_as_partial(self):
+        """The taught set run through the REAL classifier, one member at a
+        time (M75/M85): a set tested as a whole passes on its first member and
+        says nothing about the rest, so a qualifier the templates teach but
+        the implementation cannot read would ship unnoticed.
+
+        The invariant is that no taught qualifier may ever yield a bare
+        `verified` — that is the false green AC1 exists to close — and that
+        each one reaches `partial` in at least one shape an author would
+        actually write. A shape that makes no claim at all (no verb) is not a
+        failure; a shape that makes a FULL verification claim is.
+
+        The members are lifted OUT of the template line, not restated, so a
+        template that renamed one is tested on the new name — a hardcoded copy
+        here would keep testing the old one and pass.
+        """
+        validate = _load_validate()
+        template = SKILLS / "shared" / "templates" / "source-note.md"
+        line = next(
+            ln for ln in self.text(template).splitlines()
+            if "makes the claim a PARTIAL verification" in ln
+        )
+        taught = re.findall(r"`([^`]+)`", line)
+        self.assertEqual(len(taught), 4, f"expected four qualifiers in {line!r}")
+        for qualifier in taught:
+            reached = []
+            for shape in self.QUALIFIER_SHAPES:
+                clause = shape.format(q=qualifier)
+                with self.subTest(qualifier=qualifier, clause=clause):
+                    state = validate._resolve_claims(
+                        validate._clause_claims(clause)
+                    )
+                    self.assertNotEqual(
+                        state, "verified",
+                        f"{clause!r} reads as a FULL verification — the "
+                        f"templates teach this qualifier as partial",
+                    )
+                    reached.append(state)
+            self.assertIn(
+                "partial", reached,
+                f"no shape reached `partial` for {qualifier!r}, so this "
+                f"member is taught but unreadable",
+            )
+
     def test_each_template_says_the_alternatives_are_not_the_accepted_list(self):
         for kind, template in self.TEMPLATES:
             with self.subTest(template=kind):
@@ -344,7 +429,7 @@ class StatusClassificationMixin:
     # Every state the classifier can return, so a typo'd expectation cannot
     # quietly pass by naming a state that does not exist.
     STATES = {
-        "ok", "never", "exempt", "missing", "undated",
+        "ok", "never", "partial", "exempt", "missing", "undated",
         "ambiguous", "unrecognized", "future",
     }
 
@@ -482,30 +567,39 @@ class TestUnlistedShippedFormsSatisfyTheShapeRule(
     """
 
     # Each form as a shipped page writes it, paired with a pattern that finds
-    # it among this repo's real statuses. The pattern is what keeps the list
-    # from going fictional: a form no page writes any more fails, rather than
-    # sitting here as a phrase the templates are being measured against.
+    # it among this repo's real statuses and the state it must classify as.
+    # The pattern is what keeps the list from going fictional: a form no page
+    # writes any more fails, rather than sitting here as a phrase the
+    # templates are being measured against.
+    #
+    # "Readable" is the shape rule, not "clean" (M89): the `partly` form was
+    # pinned at `ok` here while it meant the opposite, which is how it went on
+    # reading as a completed verification. Each form now names its own state.
     FORMS = (
         (
             "verified at ingestion — full source read; not re-read since",
             r"^verified at ingestion",
+            "ok",
         ),
         (
             "partly verified at ingestion — the sprint-status claim was "
             "checked against `bmad-sprint-planning/SKILL.md:8`; the rest is "
             "an [S] subagent study, not re-read since",
             r"^partly verified at ingestion",
+            "partial",
         ),
         (
             "read against the ackwards artifacts at assessment time; the "
             "assessed repo has moved on independently since, so the "
             "catalogue is a 2026-07-12 snapshot",
             r"^read against .* at assessment time",
+            "ok",
         ),
         (
             "verified by live probe 2026-07-12; a re-probe would be needed "
             "to confirm the mechanism still holds in the current client",
             r"^verified by live probe",
+            "ok",
         ),
     )
     SOURCE_TEMPLATE = SKILLS / "shared" / "templates" / "source-note.md"
@@ -525,13 +619,15 @@ class TestUnlistedShippedFormsSatisfyTheShapeRule(
 
     def test_each_unlisted_form_is_readable(self):
         base = self.instantiate(self.SOURCE_TEMPLATE)
-        for status, _ in self.FORMS:
+        for status, _, state in self.FORMS:
             with self.subTest(form=status[:40]):
-                self.assertEqual(self.classify(self.choose(base, status)), "ok")
+                self.assertEqual(
+                    self.classify(self.choose(base, status)), state
+                )
 
     def test_each_unlisted_form_is_still_written_by_a_page(self):
         statuses = self.shipped_statuses()
-        for status, pattern in self.FORMS:
+        for status, pattern, _ in self.FORMS:
             with self.subTest(form=status[:40]):
                 self.assertTrue(
                     any(re.match(pattern, s, re.I) for s in statuses),
@@ -554,7 +650,7 @@ class TestUnlistedShippedFormsSatisfyTheShapeRule(
         offered = []
         for _, template in self.TEMPLATES:
             offered.extend(self.alternatives(self.instantiate(template)))
-        for status, pattern in self.FORMS:
+        for status, pattern, _ in self.FORMS:
             with self.subTest(form=status[:40]):
                 self.assertFalse(
                     [a for a in offered if re.match(pattern, a, re.I)],

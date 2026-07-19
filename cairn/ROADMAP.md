@@ -17,7 +17,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 | M86 | Copy-run command wiring — the handoff rule reaches the steps that hand over | done | — | normal | milestones/archive/M86-copy-run-command-wiring.md |
 | M87 | Density-threshold recalibration — the weight axis is derived from what records actually cost | done | — | normal | milestones/archive/M87-density-threshold-recalibration.md |
 | M88 | Release timing is user-declared — a release milestone stops nominating itself | done | — | high | milestones/archive/M88-release-timing-user-declared.md |
-| M89 | Partial verification is a state — the staleness advisory stops failing toward green | planned | — | high | milestones/M89-partial-verification-false-green.md |
+| M89 | Partial verification is a state — the staleness advisory stops failing toward green | review | — | high | milestones/M89-partial-verification-false-green.md |
 
 ## Candidates
 
