@@ -50,14 +50,37 @@ ARCHIVE_CAP = 25
 # read positionally; D-015 defines LESSONS as one lesson per line) — so a line
 # count cannot see prose accumulating INSIDE a line. cairn's LESSONS.md held 49
 # lines, one under its <50 cap, across M78-M83 while its mass grew 16,567 ->
-# 18,729 chars: the item cap was saturated and reported nothing. Each threshold
-# is its item cap x a per-file target mean line length (M84-D1) — ROADMAP
-# 60 x 150, LESSONS 50 x 340, the higher mean because a lesson is a paragraph
-# of hard-won detail where a ROADMAP row is a table row. PROFILE.md is
-# deliberately absent: surveyed at M84, no density problem, item cap alone.
-# Advisory only (check_record_density WARNs, never FAILs): unlike an item
-# count, "too dense" is a judgment about prose quality, not a structural fact.
-CHAR_CAPS = {"cairn/ROADMAP.md": 9000, "cairn/LESSONS.md": 17000}
+# 18,729 chars: the item cap was saturated and reported nothing. (That state is
+# the ITEM axis's blind spot, and it is caught by the item cap it was one line
+# from tripping — not by this advisory, which stays quiet there. The two axes
+# divide labour; neither backstops the other's saturation — M87 review F3.)
+#
+# Each threshold is the mass its OWN line cap permits at MEASURED item length
+# (M87, superseding M84-D1's item_cap x target_mean): non-item mass + capacity x
+# measured mean item length, rounded up to the next 500, where capacity is
+# (line cap - 1) - the file's fixed non-item lines. The -1 is because check_caps
+# FAILs on `n >= cap`, so the permitted line counts are 49 and 59, not 50 and 60
+# (M87 review F5). M84-D1 assumed target means instead of measuring — LESSONS
+# 50 x 340 against a real mean of 581, ROADMAP 60 x 150 against a real blended
+# mean of 497 (its 150 described the table rows; candidate rows run 4.3x that)
+# — so both thresholds bound BEFORE their line caps (LESSONS at 83% of item
+# capacity, ROADMAP at 40%) and the advisory fired at ordinary density.
+# Re-derive by MEASURING, never by assuming a mean: the prescribed weight
+# remedy is compression, and consolidating items RAISES the mean, so a mean
+# copied from a previous milestone is stale by construction.
+#
+# ROADMAP's mean is blended over a BIMODAL population — table rows ~158,
+# candidate rows ~683 — so it tracks composition as well as prose length, and a
+# re-measurement checks the mix, not just the mean (M87 review F2; this is the
+# mirror of the error M84-D1 made by describing only the rows). And because a
+# threshold is capacity at FULL item count, a file below its item cap carries
+# slack proportional to its unused slots.
+#
+# PROFILE.md is deliberately absent: surveyed at M84, no density problem, item
+# cap alone. Advisory only (check_record_density WARNs, never FAILs): unlike an
+# item count, "too dense" is a judgment about prose quality, not a structural
+# fact.
+CHAR_CAPS = {"cairn/ROADMAP.md": 21000, "cairn/LESSONS.md": 20500}
 TERMINAL_ROW_RETENTION = 5  # done + dropped rows share one ROADMAP cap
 
 # Cap on the cairn-owned `## Project tracking (cairn)` block appended to a

@@ -92,9 +92,16 @@ takes a D-entry, and its number stays retired.
   its character mass grew 13% and nothing reported it. The second axis is
   **weight** — total character mass over the same whole file, reported by
   `cairn_validate`'s `record density` advisory against
-  per-file character thresholds — `ROADMAP.md` < 9,000 · `LESSONS.md` < 17,000
-  — each its item cap × a target mean line length (the means differ: a lesson
-  is a paragraph of hard-won detail where a ROADMAP row is a table row).
+  per-file character thresholds — `ROADMAP.md` < 21,000 · `LESSONS.md` < 20,500
+  — each the mass its own line cap permits at measured item length: non-item
+  mass plus capacity × the measured mean item length, rounded up, where capacity
+  is (line cap − 1, since the cap fails at `>=`) less the file's fixed non-item
+  lines. Measure that mean, never assume one: compression is
+  the weight remedy and consolidating items raises the mean, so a mean carried
+  over from last time is stale by construction — and a threshold set below what
+  the line cap permits stops backstopping that cap and silently becomes the real
+  one, firing at ordinary density (M87, superseding M84-D1's assumed means,
+  which did exactly that on both files).
   The two axes take opposite remedies: an over-count file graduates or prunes items, an over-weight file compresses them in place.
   The two also differ in severity, and the labels say which is which: the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the weight axis is the `record density` advisory and only ever WARNs.
   Density warns rather than fails because an item count is a structural fact but

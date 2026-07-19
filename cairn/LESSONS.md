@@ -7,7 +7,7 @@ behaves" note. Cross-cutting *choices* still go to `DECISIONS.md`.
 
 One line per lesson: `- YYYY-MM-DD (M<NN>): <lesson>`. Two caps, two remedies
 (tracking-rules weight-caps): 50 lines — prune the stalest when full — and
-17,000 characters, where the fix is compressing or consolidating in place, not
+20,500 characters, where the fix is compressing or consolidating in place, not
 evicting. Current knowledge: a lesson proven false is corrected in place (D-045).
 
 <!-- lessons appended below by /milestone-review post-merge hygiene -->

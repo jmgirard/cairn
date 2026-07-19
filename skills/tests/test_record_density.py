@@ -100,6 +100,22 @@ class TestRecordDensityRule(unittest.TestCase):
         }
         self.assertEqual(rulebook, enforced)
 
+    def test_lessons_header_states_its_own_enforced_threshold(self):
+        # The THIRD encoding of the number (M87 review F1/90). LESSONS.md's own
+        # header teaches its two caps, and it is what a maintainer reads at
+        # post-merge hygiene while deciding whether to compress — so a stale
+        # figure there sends them on the exact compression run the threshold
+        # was raised to remove, with `cairn_validate` reporting OK throughout.
+        # The coupling above pairs only the rulebook and CHAR_CAPS, which is
+        # why this drifted through M87's own first pass.
+        scripts = read(ROOT / "scripts" / "cairn_scripts.py")
+        body = re.search(r"CHAR_CAPS = \{(.*?)\}", scripts, re.S)
+        enforced = {
+            k: int(v) for k, v in re.findall(r'"([^"]+)": (\d+)', body.group(1))
+        }["cairn/LESSONS.md"]
+        header = read(ROOT / "cairn" / "LESSONS.md")[:1200]
+        self.assertIn(f"{enforced:,} characters", header)
+
     def test_stated_advisory_label_matches_the_emitted_label(self):
         # M59/M78: prose naming a validate finding must use the label the
         # script actually emits, or run-and-read sends the reader hunting for
