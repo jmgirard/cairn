@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M89: Partial verification is a state — the staleness advisory stops failing toward green
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** GP2
@@ -96,7 +96,7 @@ neither defect here touches it. Citekey resolution → stays a candidate row.
 - [x] T7 — Mutation-register each new prose guard; author every anchor on its own
       physical line, unwrapped, with trailing punctuation (M78/M82), and verify
       by inversion — relabel the rule in place, require red, restore and diff (M74).
-- [ ] T8 — Re-run the advisory over this repo, report the count delta, and
+- [x] T8 — Re-run the advisory over this repo, report the count delta, and
       resolve any page the fix newly surfaces (D-045: corrected in place).
 
 ## Work log
@@ -105,9 +105,29 @@ neither defect here touches it. Citekey resolution → stays a candidate row.
 - 2026-07-19: implement gate settled three open choices — the never > partial > verified lattice ({never, verified} stays ambiguous), a tight qualifier set (partly | partially | in part | spot-check(ed)), and defect B fixed by tightening the CHECK behind a shared `_ingested_date` predicate.
 - 2026-07-19: T2–T5 — `_PARTIAL` qualifier + `_resolve_claims` lattice + a `partial` advisory branch + one shared `_ingested_date` predicate behind both readers; all three verify suites green, validate exit 0.
 - 2026-07-19: T1 — 10 regression fixtures red across both defects; the four intraclass note statuses (donner2002, konishi1989, naik2007, young1998, commit dea301f) and this repo's three `partly` pages quoted as shipped.
-
 - 2026-07-19: T6–T7 — both templates teach the partiality set and its no-date-clears-it consequence; three new guards, five mutation entries (per template, per test), and an inversion check (`partly` → `mostly` in place) turned 4 guards red before restore.
+- 2026-07-19: T8 — `references staleness` on this repo goes OK (0) → WARN (3); all three are true positives whose statuses already say what was and was not checked, so nothing is corrected in place and clearing them needs a re-read of three external clones (out of scope).
+- 2026-07-19: all tasks done, three verify suites green and validate exit 0 — status → review.
 
 ## Decisions
+
+### M89-D1 (2026-07-19): The verification lattice is never > partial > verified; `{never, verified}` alone stays ambiguous
+
+**Context:** Adding a third state to `_last_verified` forced a rule for every
+pair. M83 had answered the one pair that existed by reporting `{never,
+verified}` as `ambiguous` — whichever is tested first is the bug.
+**Decision:** Collapse claims most-conservative-first: `never` beats `partial`
+beats `verified`. `{never, partial}` → `never`, because the four intraclass
+notes that motivated this lead `unverified` and then record a spot-check, and
+letting partiality win would UPGRADE a page that says plainly it was never
+checked. `{partial, verified}` → `partial`, not `ambiguous`: a page saying
+"the appendix was only partly checked" beside "verified against the source"
+is qualifying itself, not contradicting itself. `{never, verified}` keeps
+M83's `ambiguous`; partiality does not dissolve it.
+**Consequences:** No qualification anywhere in a status can be cleared by an
+unqualified clause elsewhere, and `partial` returns before any date is read —
+what a partial pass lacks is coverage, which no threshold can age out.
+Rejected: any-mixture-is-ambiguous, which would report this repo's three
+`partly` pages as self-contradicting when they are simply honest.
 
 ## Review
