@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M88: Release timing is user-declared — a release milestone stops nominating itself
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP2, GP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m88-release-timing-user-declared`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -88,7 +88,7 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — `tracking-rules.md`: widen the `blocked` row of the status table and
+- [x] T1 — `tracking-rules.md`: widen the `blocked` row of the status table and
       the surrounding prose to name the unopened release window as a blocker;
       amend the transition line (`:225`) to admit `planned → blocked` and
       `review → blocked`. Author each guarded anchor on its own physical line,
@@ -120,6 +120,8 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
      so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
 - 2026-07-19: created by /milestone-plan.
+- 2026-07-19: status planned->in-progress; branch cut; no open implementation choices, question gate skipped.
+- 2026-07-19: T1 — rulebook widens `blocked` to the unopened release window, legalizes planned/review -> blocked, and adds the release-timing governance rule; skills suite 386 green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

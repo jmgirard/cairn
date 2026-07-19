@@ -183,6 +183,14 @@ takes a D-entry, and its number stays retired.
 - **Breaking changes to public behavior follow a deprecation cycle** unless
   the project is pre-1.0 and the user explicitly waives it; the active
   profile names the language's deprecation mechanics.
+- **Release timing is user-declared, never agent-proposed** (D-050). cairn never proposes a release, never plans a release milestone unprompted, and never nominates one as the next action.
+  A release's readiness condition is a maintainer judgment about when to ship —
+  never a dependency graph going green, which says only that the *bundle* is
+  complete. So a release milestone whose window the maintainer has not opened
+  is parked as `blocked`, where no routing surface nominates it, and it stays
+  parked until the maintainer opens the window. The release *act* is already
+  user-triggered — `/cairn-release` never self-submits — and this rule extends
+  the same authority upstream, to whether the release is even queued.
 - **Tracking files outrank memory.** Claude's persistent memory never holds
   project state (status, milestones, decisions, architecture). Memory is for
   meta-context only; `cairn/` files win any conflict.
@@ -217,13 +225,14 @@ Status vocabulary — exactly these seven, lowercase:
 | `candidate` | Idea captured as a ROADMAP row; usually no file, no ID yet | anyone, any time |
 | `planned` | File exists: goal, In/Out scope, verifiable criteria, ordered tasks, dependencies | `/milestone-plan` only |
 | `in-progress` | Being worked on a branch. **At most ONE at a time.** | `/milestone-implement` only |
-| `blocked` | Waiting on something external; work-log line names the blocker | any skill, reason logged |
+| `blocked` | Waiting on something external — a maintainer who has not opened the release window counts; work-log line names the blocker | any skill, reason logged |
 | `review` | Tasks done, local checks clean; awaiting verification + merge approval | `/milestone-implement` on completion |
 | `done` | Every criterion executed with fresh evidence; PR merged; file archived | `/milestone-review` only |
 | `dropped` | Deliberately abandoned; one-line reason archived | user decision, via any skill |
 
 Transitions: `candidate → planned → in-progress ⇄ blocked;
 in-progress → review → done` (review failures return to `in-progress`).
+Parking reaches every routable status: `planned → blocked` and `review → blocked` are both legal, because a milestone can wait on a human before work starts as well as after it finishes.
 Anything can go to `dropped`. No skipping except `candidate → dropped`.
 
 ## Sizing and the work tiers
