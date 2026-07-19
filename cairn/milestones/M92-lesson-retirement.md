@@ -17,11 +17,16 @@ Give `cairn/LESSONS.md` an outflow, so the file stops being append-only-in-pract
 
 **In:** Two retirement criteria stated as a named rulebook rule — **enforcement**
 (a test fails on the mistake the lesson warns about) and **ownership** (another
-tracking file's slot already owns the content); the check wired into
-`/milestone-review` post-merge hygiene, scoped to what the milestone shipped;
-a D-entry recording both criteria, the tombstone disposition, and the rejected
-alternatives; a guard test with mutation registration; and a first application
-pass over the current 49 lessons that leaves real headroom on both axes.
+tracking file's slot owns the content, which this milestone may *move* there
+rather than requiring it already be duplicated) — plus a **partial
+disposition**: a lesson covered only in part is trimmed to its uncovered
+remainder, never kept whole. The check wired into `/milestone-review` post-merge
+hygiene, scoped to what the milestone shipped; a D-entry recording the criteria,
+the partial disposition, the tombstone, and the rejected alternatives; a guard
+test with mutation registration; and a first application pass over the current
+49 lessons that leaves real headroom on both axes, relocating owned content into
+`cairn/PROFILE.md`'s slots and consolidating related lessons where the criteria
+alone do not reach the bar.
 
 **Out:**
 - Age-based retirement beyond D-015's existing "prune the stalest when full" →
@@ -39,8 +44,11 @@ pass over the current 49 lessons that leaves real headroom on both axes.
 - [ ] AC1: `skills/shared/tracking-rules.md` states the retirement rule under its
       own name, giving both criteria with their *discriminating* tests —
       enforcement is "a test fails on the mistake the lesson warns about", never
-      "a guard exists in this area" — and stating that retirement is distinct
-      from D-045's in-place correction, since a retired lesson is not a false one.
+      "a guard exists in this area"; ownership covers content this milestone
+      moves into its owner, not only content already duplicated there — plus the
+      partial disposition (a partly-covered lesson is trimmed to its uncovered
+      remainder), and stating that retirement is distinct from D-045's in-place
+      correction, since a retired lesson is not a false one.
 - [ ] AC2: `skills/milestone-review/SKILL.md`'s post-merge hygiene performs the
       retirement check beside the existing capture step, scoped to what the
       milestone shipped rather than sweeping all lessons.
@@ -93,9 +101,11 @@ pass over the current 49 lessons that leaves real headroom on both axes.
       one entry per new positive assertion, not one per file (M53) — and run the
       driver to confirm each blanked block reddens.
 - [ ] T7: First application pass: evaluate all 49 lessons against both criteria,
-      retire what qualifies, and collect the graduation list for the archive
-      summary. Where the criteria do not reach AC5's headroom bar, apply D-015's
-      existing consolidate/prune rather than stretching a criterion to fit. Use
+      retire or trim what qualifies, relocating owned content into the matching
+      `cairn/PROFILE.md` slot as part of the move, and collect the graduation
+      list for the archive summary. Where the criteria do not reach AC5's
+      headroom bar, consolidate related lessons rather than stretching a
+      criterion to fit; D-015's prune-by-age stays the untouched last resort. Use
       targeted `Edit` calls, never a bulk string script (M61), and never
       `replace_all` on a line whose indentation varies (M90).
 - [ ] T8: Run all three suites and `cairn_validate` from the repo root, checking
@@ -106,6 +116,7 @@ pass over the current 49 lessons that leaves real headroom on both axes.
 
 - 2026-07-19: created by /milestone-plan.
 - 2026-07-19: in-progress on `m92-lesson-retirement`, cut from main at 16289bf.
+- 2026-07-19: step-3 gate amended Scope + AC1 + T7 — ownership permits MOVING content to its owner (not duplication-only), a partly-covered lesson is trimmed to its uncovered remainder, and consolidation (not D-015 prune) is AC5's headroom fallback. Preliminary sweep showed strict enforcement alone retires ~0 lessons, putting AC5 at risk; user chose all three recommendations.
 
 ## Decisions
 
