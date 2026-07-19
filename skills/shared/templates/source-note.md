@@ -9,6 +9,19 @@
      The `Extraction:` status is one physical line, however long — the guard
      that enforces the dated form reads the line it starts on, so a wrapped
      status silently loses its `— observed` stamp.
+     The status is READ, not merely stored: the `references staleness`
+     advisory classifies it. Whatever wording you choose, it must
+     claim a verification, or carry a date, or say there is nothing to re-verify.
+     A verification claim is a verb — `verified`, `checked against`,
+     `read against`, `read directly`, or `unverified` — and it counts as
+     negated when a negator precedes it in that same clause, so
+     `not re-read since` in a LATER clause qualifies a claim without undoing it.
+     A status doing none of the three says nothing the advisory can read, and
+     it is reported rather than assumed verified.
+     The alternatives below are examples of that shape, not the accepted list.
+     Pick ONE alternative and delete the others — left unchosen, the two
+     below state a verification and its absence at once and read as
+     self-contradicting.
      Every committed page also carries its one line in references/INDEX.md. -->
 # <citekey> — <what this source is for, in a few words>
 

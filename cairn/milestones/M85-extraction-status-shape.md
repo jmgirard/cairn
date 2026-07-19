@@ -74,7 +74,7 @@ row.
       instantiated templates and over the four shipped forms, capturing the
       states in the work log so the milestone's before/after is evidence, not
       recall (the M83 before/after table is the precedent).
-- [ ] T2. Write the shape rule into both templates' `Extraction:` guidance
+- [x] T2. Write the shape rule into both templates' `Extraction:` guidance
       (`source-note.md:19`, `synthesis-note.md:23` and their comment headers).
       Anchor any guarded phrase on one physical line, column 0 where it is a
       field — LESSONS M60/M78/M80 — and re-run the skills suite after any
@@ -96,6 +96,7 @@ row.
 
 - 2026-07-18: created by /milestone-plan. Promoted from the "References note-template vocabulary" candidate; the plan gate superseded that row's list-the-phrases framing with a shape rule after investigation found M83's parser is generative, and folded in the live pairing-test gap (instantiated templates classify `ambiguous` / `exempt`).
 - 2026-07-18: T1 baseline via the real `_last_verified` — unchosen: source `ambiguous`, synthesis `exempt`; each chosen alternative: source `ok`/`never`, synthesis `ok`/`exempt`/`ok`, all as their wording intends; all four shipped forms `ok`. The templates are correct once a choice is made; only the unchosen form collapses.
+- 2026-07-18: T2 wrote the shape rule into both templates' comment headers (not body prose — M80 F2: a page authored from the template must not commit a sentence about a test guard). Both templates now state the three-way shape, name the verb set and clause-scoped negation, and say the alternatives are examples rather than the accepted list. Three suites + validate exit 0.
 
 ## Decisions
 
