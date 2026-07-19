@@ -581,13 +581,14 @@ class TestUnlistedShippedFormsSatisfyTheShapeRule(
             r"^verified at ingestion",
             "ok",
         ),
-        (
-            "partly verified at ingestion — the sprint-status claim was "
-            "checked against `bmad-sprint-planning/SKILL.md:8`; the rest is "
-            "an [S] subagent study, not re-read since",
-            r"^partly verified at ingestion",
-            "partial",
-        ),
+        # The `partly verified at ingestion` form was retired from the corpus
+        # by M91, which re-read all three pages that wrote it against their
+        # sources; no committed page carries it any more, so per this class's
+        # own rule it stops being a phrase the templates are measured against.
+        # The classifier's reading of it is not lost — `partial` keeps its
+        # dedicated coverage in scripts/tests/test_scripts.py
+        # (test_partly_verified_pages_report_partial_not_ok and the three
+        # fixtures beside it), which is where the state was proven to begin with.
         (
             "read against the ackwards artifacts at assessment time; the "
             "assessed repo has moved on independently since, so the "

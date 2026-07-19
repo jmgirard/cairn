@@ -1349,7 +1349,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # now records a completed verification rather than a partial one.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
-        "backlog-meridian.md": "partial",
+        "backlog-meridian.md": "ok",
         "bmad-method.md": "ok",
         "ccpm.md": "ok",
         "claude-code-hooks.md": "ok",
