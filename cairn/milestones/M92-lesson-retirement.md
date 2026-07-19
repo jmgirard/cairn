@@ -88,9 +88,9 @@ alone do not reach the bar.
       weight-caps remedies and the `cairn/LESSONS.md` file-map row. Author each
       anchor on its own physical line with its label and members together
       (M74/M90); do not reflow neighbouring registered blocks (M78/M82).
-- [ ] T3: Wire the check into `skills/milestone-review/SKILL.md` post-merge
+- [x] T3: Wire the check into `skills/milestone-review/SKILL.md` post-merge
       hygiene, beside "Capture durable lessons", scoped to what shipped.
-- [ ] T4: Correct `cairn/LESSONS.md`'s own header prose, which currently teaches
+- [x] T4: Correct `cairn/LESSONS.md`'s own header prose, which currently teaches
       the 50-line prune as the file's only outflow — a third encoding of the
       rule, the shape M87/F1 caught teaching a retired number.
 - [ ] T5: Extend `skills/tests/test_lessons_loop.py` with the retirement guard:
@@ -117,6 +117,7 @@ alone do not reach the bar.
 - 2026-07-19: created by /milestone-plan.
 - 2026-07-19: in-progress on `m92-lesson-retirement`, cut from main at 16289bf.
 - 2026-07-19: step-3 gate amended Scope + AC1 + T7 — ownership permits MOVING content to its owner (not duplication-only), a partly-covered lesson is trimmed to its uncovered remainder, and consolidation (not D-015 prune) is AC5's headroom fallback. Preliminary sweep showed strict enforcement alone retires ~0 lessons, putting AC5 at risk; user chose all three recommendations.
+- 2026-07-19: T3+T4 — retirement wired into review hygiene beside capture (scoped to what shipped, prune demoted to last resort); LESSONS header corrected. First header draft restated the whole rule and cost 6 of a zero-headroom budget — compressed to a 3-line pointer (171 chars), since tracking-rules owns the substance. LESSONS is intentionally over both caps (52 lines / 20,637 chars) until T7's pass frees budget. Task order: T7 moved ahead of T5/T6 to close that window in one commit.
 - 2026-07-19: T2 — rule written into tracking-rules beside "Correcting a record proven false" (the contrast D-051 turns on) + the LESSONS file-map row; 7 anchors verified unique and unwrapped; `archive summary`/`post-merge hygiene` each gained an occurrence, checked against every guard anchor (M85) — both existing guards use longer phrases, no degradation.
 - 2026-07-19: T1 — D-051 appended: enforcement + ownership criteria, trim-to-remainder for partial coverage, archive-summary tombstone; four alternatives rejected with rationale.
 
