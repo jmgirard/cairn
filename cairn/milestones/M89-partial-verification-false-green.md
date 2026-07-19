@@ -73,7 +73,7 @@ neither defect here touches it. Citekey resolution → stays a candidate row.
 
 ## Tasks
 
-- [ ] T1 — Regression fixtures first: reproduce both defects as failing tests in
+- [x] T1 — Regression fixtures first: reproduce both defects as failing tests in
       `scripts/tests/`, quoting the live intraclass and in-repo wording verbatim.
       Give every false-positive fixture a realistic value on the axis it defends
       (M88) and check the test helper for defaulted parameters before believing
@@ -102,6 +102,8 @@ neither defect here touches it. Citekey resolution → stays a candidate row.
 ## Work log
 
 - 2026-07-19: created by /milestone-plan; both defects found live in the intraclass session, with partial-state semantics, defect-B inclusion, and the evidence bar set at the question gate.
+- 2026-07-19: implement gate settled three open choices — the never > partial > verified lattice ({never, verified} stays ambiguous), a tight qualifier set (partly | partially | in part | spot-check(ed)), and defect B fixed by tightening the CHECK behind a shared `_ingested_date` predicate.
+- 2026-07-19: T1 — 10 regression fixtures red across both defects; the four intraclass note statuses (donner2002, konishi1989, naik2007, young1998, commit dea301f) and this repo's three `partly` pages quoted as shipped.
 
 ## Decisions
 

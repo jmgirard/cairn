@@ -383,6 +383,47 @@ class TestReferencesCheck(ScriptCase):
             proc.stdout,
         )
 
+    def test_impossible_ingested_date_fails_by_name(self):
+        # M89 defect B: `_PROV_INGESTED` tests the SHAPE `\d{4}-\d{2}-\d{2}`,
+        # so `2026-13-45` matched and this CHECK passed — while `_iso` refuses
+        # to build a date from it, so the staleness advisory classified the
+        # block `undated` and skipped it on the stated ground that "the
+        # references CHECK already FAILs that block". Neither reported it. The
+        # two now share one predicate, so they cannot disagree again.
+        proc = self._one_page(
+            "**Provenance.** Ingested 2026-13-45 by M89 from `sources/n.pdf`.\n"
+            "Extraction: verified at ingestion — full source read.\n"
+        )
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(
+            "cairn/references/notes.md provenance ingested date 2026-13-45 "
+            "is not a real date",
+            proc.stdout,
+        )
+
+    def test_impossible_ingested_date_is_reported_by_exactly_one_reader(self):
+        # AC4's other half. The advisory keeps its `undated` skip — one cause
+        # earns one finding — but the skip is only honest because the CHECK
+        # above now actually fires. Asserting the silence pins that pairing:
+        # loosen the CHECK back and this passes while the page goes unreported
+        # by both, which is the defect.
+        proc = self._one_page(
+            "**Provenance.** Ingested 2026-13-45 by M89 from `sources/n.pdf`.\n"
+            "Extraction: verified at ingestion — full source read.\n"
+        )
+        self.assertNotIn("cairn/references/notes.md:", proc.stdout)
+
+    def test_real_ingested_date_still_passes_the_tightened_predicate(self):
+        # The over-tightening guard: a date-shaped run that IS a date must
+        # still satisfy the CHECK. A predicate that rejected both would fail
+        # every shipped page and read as "the fix works" on the case above.
+        proc = self._one_page(
+            "**Provenance.** Ingested 2024-02-29 by M89 from `sources/n.pdf`.\n"
+            "Extraction: verified at ingestion — full source read.\n"
+        )
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  references index<->disk", proc.stdout)
+
     def test_missing_source_pointer_fails(self):
         proc = self._one_page(
             "**Provenance.** Ingested 2026-07-18 by M79.\n"
@@ -895,27 +936,139 @@ class TestReferencesStaleness(ScriptCase):
         )
         self.assertFlagged(proc, "records no verified re-check")
 
-    def test_partly_verified_pages_are_not_swept_up(self):
-        # The M79-F5 trap the M81 candidate row warned about: widening the
-        # never-family to catch "not ..." reclassifies these three shipped
-        # forms wholesale. Verbatim from the pages, less their citations.
-        for status in (
-            "partly verified at ingestion — the Meridian blocking-hook claim "
-            "was checked against `scripts/stop-checklist.py:69`; the rest is "
-            "an [S] subagent study of clones, not re-read since",
-            "partly verified at ingestion — the sprint-status claim was "
-            "checked against `bmad-sprint-planning/SKILL.md:8`; the rest is "
-            "an [S] subagent study, not re-read since",
-            "partly verified at ingestion — key claims checked against a "
-            "clone (`specify.md:124-128`); not re-read since",
-        ):
+    # --- M89: partiality is its own state -----------------------------------
+
+    # Verbatim from `backlog-meridian.md`, `bmad-method.md` and `spec-kit.md`,
+    # less their citations. One fixture per page (AC3, AC5).
+    PARTLY_VERIFIED_PAGES = (
+        "partly verified at ingestion — the Meridian blocking-hook claim "
+        "was checked against `scripts/stop-checklist.py:69`; the rest is "
+        "an [S] subagent study of clones, not re-read since",
+        "partly verified at ingestion — the sprint-status claim was "
+        "checked against `bmad-sprint-planning/SKILL.md:8`; the rest is "
+        "an [S] subagent study, not re-read since",
+        "partly verified at ingestion — key claims checked against a "
+        "clone (`specify.md:124-128`); not re-read since",
+    )
+
+    def test_partly_verified_pages_report_partial_not_ok(self):
+        # M89 defect A, live on all three of this repo's `partly` pages: the
+        # qualifier was never read, so the affirmative verb carried the whole
+        # status, fell through to the block's INGESTED date, and returned `ok`
+        # — a page whose own words say most of it was never checked reported
+        # as fully verified. The ingest is deliberately RECENT (M88): staleness
+        # cannot be what fires here, so only the partial state can be.
+        for status in self.PARTLY_VERIFIED_PAGES:
             with self.subTest(status=status[:48]):
                 proc = self.install(
                     self.tree.build(),
                     ingested=days_ago(3),
                     status=f"{status} — observed {days_ago(0)}.",
                 )
-                self.assertClean(proc)
+                self.assertFlagged(
+                    proc, "cairn/references/notes.md: extraction records only "
+                    "a partial verification"
+                )
+
+    def test_partly_verified_pages_are_not_swept_up_as_never(self):
+        # The M79-F5 trap the M81 candidate row warned about, at M89's field:
+        # each of these pages carries `not re-read since` in a LATER clause,
+        # and a qualifier search that reached across clauses — or a negation
+        # search widened to catch "not ..." — reclassifies all three wholesale
+        # as never-verified, discarding the part that WAS checked.
+        for status in self.PARTLY_VERIFIED_PAGES:
+            with self.subTest(status=status[:48]):
+                proc = self.install(
+                    self.tree.build(),
+                    ingested=days_ago(3),
+                    status=f"{status} — observed {days_ago(0)}.",
+                )
+                self.assertNotIn("records no verified re-check", proc.stdout)
+
+    # Verbatim from `intraclass`'s `donner2002.md`, `konishi1989.md`,
+    # `naik2007.md` and `young1998.md` as shipped 2026-07-19 (AC5). These are
+    # the four notes whose partial-verification wording dropped that repo's
+    # advisory 15 → 11 while one passage had been checked in each.
+    INTRACLASS_SPOT_CHECKED_NOTES = (
+        "unverified — first pass, values not yet re-read against the source. "
+        "One point was spot-checked at the M67 review send-back (p. 367 "
+        "prints no DOI); the page as a whole remains unchecked",
+        "unverified — first pass, values not yet re-read against the source. "
+        "Two passages were spot-corrected at the M67 review send-back (the "
+        "title page's AMS classification and journal heading; pp. 99–101's "
+        "`χ²₁` recovery conditions); the page as a whole remains unchecked",
+        "unverified — first pass, values not yet re-read against the source. "
+        "One passage was spot-corrected at the M67 review send-back (p. 6503's "
+        "negative-LRT quotation and its \"may lead to difficulties\" "
+        "qualifier); the page as a whole remains unchecked",
+        "unverified — first pass, values not yet re-read against the source. "
+        "One passage was spot-corrected at the M67 review send-back (p. 1363's "
+        "journal heading and quoted passages); the page as a whole remains "
+        "unchecked",
+    )
+
+    def test_negation_beats_partiality_on_the_shipped_spot_check_notes(self):
+        # AC2. These four say BOTH things: never verified as a whole, and one
+        # passage spot-checked. A partiality reading that outranked negation
+        # would upgrade a page that states plainly it was never checked into
+        # the softer partial message — the false-green direction this
+        # milestone exists to close, one lattice rung further down.
+        for status in self.INTRACLASS_SPOT_CHECKED_NOTES:
+            with self.subTest(status=status[:52]):
+                proc = self.install(
+                    self.tree.build(),
+                    ingested=days_ago(3),
+                    status=f"{status} — observed {days_ago(0)}.",
+                )
+                self.assertFlagged(proc, "records no verified re-check")
+                self.assertNotIn("partial verification", proc.stdout)
+
+    def test_a_never_clause_beside_a_partial_clause_resolves_never(self):
+        # The synthetic form of the case above, with the negation carried by a
+        # verb rather than by `unverified`: never outranks partial.
+        proc = self.install(
+            self.tree.build(),
+            ingested=days_ago(3),
+            status="partly verified at ingestion — nothing else has been "
+            f"checked against the source — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, "records no verified re-check")
+
+    def test_a_partial_clause_beside_a_verified_clause_resolves_partial(self):
+        # The other rung: partial outranks a plain verification, so a status
+        # that qualifies itself anywhere cannot be cleared by an unqualified
+        # clause elsewhere. Not `ambiguous` — a page saying "the appendix was
+        # only partly checked" is not contradicting itself.
+        proc = self.install(
+            self.tree.build(),
+            status=f"verified {days_ago(3)} against the source; the appendix "
+            f"was partially verified — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, "records only a partial verification")
+
+    def test_a_partial_page_is_flagged_however_fresh_its_dates(self):
+        # AC1's core: partial never resolves to `ok`. A partial verification
+        # dated TODAY still warns, because what is missing is coverage, not
+        # freshness — no threshold can ever clear it.
+        proc = self.install(
+            self.tree.build(),
+            status="partly verified against the source "
+            f"{days_ago(0)} — observed {days_ago(0)}.",
+        )
+        self.assertFlagged(proc, "records only a partial verification")
+
+    def test_a_fully_verified_page_with_a_later_not_clause_stays_ok(self):
+        # The false-positive guard for the qualifier search, on the wording it
+        # is most likely to overreach into: `anthropic-code-review.md` and four
+        # siblings say they were fully read and not re-read SINCE. That is a
+        # complete verification with an age, not a partial one.
+        proc = self.install(
+            self.tree.build(),
+            ingested=days_ago(3),
+            status="verified at ingestion — full source read; not re-read "
+            f"since — observed {days_ago(0)}.",
+        )
+        self.assertClean(proc)
 
     def test_status_claiming_neither_verification_nor_date_is_flagged(self):
         # F4's general case: silence is not a verification. Pre-M83 the
@@ -1162,10 +1315,13 @@ class TestShippedPageStateLedger(unittest.TestCase):
     prevent (IP2: prior state is surfaced, never silently overridden)."""
 
     # Baseline computed 2026-07-18 against the pre-M83 `_last_verified`.
+    # M89 moved three pages `ok` → `partial`: each says in its own words that
+    # part of it was checked and the rest was not, and each was reading as a
+    # completed verification dated at ingestion.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
-        "backlog-meridian.md": "ok",
-        "bmad-method.md": "ok",
+        "backlog-meridian.md": "partial",
+        "bmad-method.md": "partial",
         "ccpm.md": "ok",
         "claude-code-hooks.md": "ok",
         "claude-md-management.md": "ok",
@@ -1177,7 +1333,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "migration-pilot-notes.md": "exempt",
         "oracle-discipline-notes.md": "ok",
         "oracle-doctrine-intraclass-notes.md": "ok",
-        "spec-kit.md": "ok",
+        "spec-kit.md": "partial",
         "task-master.md": "ok",
     }
 
