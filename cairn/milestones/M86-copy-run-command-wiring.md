@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M86: Copy-run command wiring — the handoff rule reaches the steps that hand over
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP3, GP4   <!-- owner: plan · create/amend-via-gate -->
@@ -107,7 +107,7 @@ those are not handoffs and stay inline.
       `/milestone-implement:108` mention-stays-inline assert; pair the negative
       assert with a positive framing assert so it can carry a mutation entry
       (M53), and register the file in `test_mutation_harness.py`.
-- [ ] T6 — Run the three suites from the repo root, checking each exit code
+- [x] T6 — Run the three suites from the repo root, checking each exit code
       separately and never through a pipe (M56/M65), plus `cairn_validate.py`.
 
 ## Work log
@@ -119,6 +119,7 @@ those are not handoffs and stay inline.
 - 2026-07-18: T3 — AC3 amended via the step-6 gate (its grep-for-"inline" evidence self-hit the fix, M58/M59/M62); review step 10 rewritten to emit the handoff fenced.
 - 2026-07-18: T4 — brief's manual-run prompt moved from a blockquote to a fenced block; release step 4's checklist names the fenced form.
 - 2026-07-18: T5 — new `test_copy_run_handoffs.py` (7 tests) locks all three directives plus implement's mention-stays-inline; three mutation entries registered, all blank-and-fail verified. skills 383/383.
+- 2026-07-18: T6 — verify slot clean, exit codes checked separately: skills 383 (0), scripts 174 (0), hooks 72 (0), cairn_validate (0). Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
