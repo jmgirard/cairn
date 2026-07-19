@@ -451,6 +451,58 @@ class TestReferencesCheck(ScriptCase):
                 proc = self._one_page(prov)
                 self.assertEqual(proc.returncode, 0, proc.stdout)
 
+    def test_wrapped_prose_is_not_a_provenance_heading(self):
+        # Reported from intraclass: a page with NO provenance block was
+        # reported as having an incomplete one, because `_PROV_HEAD` matched
+        # any line *beginning* with the word "provenance" — which hard-wrapped
+        # prose does by accident. The phantom block is worse than a bad
+        # message: prose discussing ingestion satisfies both field tests, so
+        # the block-missing FAIL is erased and the page passes.
+        proc = self._one_page(
+            "This page discusses the concept of\n"
+            "provenance at length, and the hard wrap happens to put the word\n"
+            "at the start of a line, retrieved from nowhere in particular,\n"
+            "ingested 2026-07-18 by nobody.\n"
+        )
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(
+            "cairn/references/notes.md has no provenance block", proc.stdout
+        )
+
+    def test_prose_heading_lookalikes_are_not_headings(self):
+        # The same defect's other shapes, all live in cairn's own
+        # references/: a backticked mention opening a line, a hyphenated
+        # compound, and the word opening a wrapped clause. None is a label.
+        for prov in (
+            "`provenance` attr naming their generator, ingested 2026-07-18\n",
+            "`provenance`-attr, but with no guard test, from a real source\n",
+            "provenance as named fields, retrieved 2026-07-18 by M79\n",
+            "provenance): REVISE, keep deferred, ingested 2026-07-18 from x\n",
+        ):
+            with self.subTest(prov=prov):
+                proc = self._one_page(prov)
+                self.assertEqual(proc.returncode, 1, proc.stdout)
+                self.assertIn(
+                    "cairn/references/notes.md has no provenance block",
+                    proc.stdout,
+                )
+
+    def test_label_terminator_variants_still_read_as_headings(self):
+        # The tightening must not cost a genuine label its heading: a colon
+        # label, an em-dash label, and a decorated label alone on its line
+        # (whose body follows the blank) all stay readable.
+        for prov in (
+            "**Provenance:** Ingested 2026-07-18 by M79 from `a/b.pdf`.\n",
+            "**Provenance** — ingested 2026-07-18 by M79 from `a/b.pdf`.\n",
+            "__Provenance__\n\nIngested 2026-07-18 by M79 from `a/b.pdf`.\n",
+        ):
+            with self.subTest(prov=prov):
+                proc = self._one_page(prov)
+                self.assertEqual(proc.returncode, 0, proc.stdout)
+                self.assertIn(
+                    "PASS  references index<->disk", proc.stdout
+                )
+
     def test_index_prose_bullet_is_not_a_catalog_entry(self):
         # F5/85, first half: widening the capture to accept paths turned a
         # "see also" bullet into a phantom entry and a spurious hard FAIL.

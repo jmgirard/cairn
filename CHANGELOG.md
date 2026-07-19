@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Fixed: a references page with no provenance block could be reported as
+  having an incomplete one — or pass the check outright — when ordinary
+  prose happened to wrap so that a line began with the word "provenance".
+  The block heading is now recognized as a label rather than as any line
+  starting with that word.
+
 ## 1.0.0 (2026-07-16)
 
 First stable release. cairn is a milestone-driven development workflow and
