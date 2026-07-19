@@ -16,6 +16,7 @@ physical line (M23 lesson); phrases are lowercased before matching.
     python3 -m unittest discover -s skills/tests -v
 """
 
+import datetime
 import importlib.util
 import pathlib
 import re
@@ -248,6 +249,318 @@ class TestTemplateProducesAValidPage(unittest.TestCase):
                 line = extraction_line(template.read_text())
                 self.assertIsNotNone(line)
                 self.assertNotRegex(line, DATED_EXTRACTION)
+
+
+class TestTemplatesTeachTheShapeRule(unittest.TestCase):
+    """M85 AC1 — both templates state the SHAPE, not a list of phrases.
+
+    The candidate row this milestone came from proposed listing the forms the
+    repo writes. M83's classifier reads a shape, so a list would be wrong the
+    moment someone writes a sixth phrasing; what an author needs is the rule
+    the classifier actually applies. These are prose-guards over shipped
+    templates, so each asserted phrase sits on one physical line (M23), and
+    the verb set is pinned together with its label on that line (M74/M76: a
+    label→SET guard that pins only the label leaves the members swappable).
+    """
+
+    TEMPLATES = (
+        ("source", SKILLS / "shared" / "templates" / "source-note.md"),
+        ("synthesis", SKILLS / "shared" / "templates" / "synthesis-note.md"),
+    )
+
+    def text(self, template):
+        """Read per-test, never cached on the class — a setUpClass cache reads
+        the unmutated file under the mutation harness (M61)."""
+        return template.read_text()
+
+    def test_each_template_states_the_three_way_shape(self):
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertIn(
+                    "claim a verification, or carry a date, or say there is "
+                    "nothing to re-verify.",
+                    self.text(template),
+                )
+
+    def test_each_template_names_the_verb_set_with_its_label(self):
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertIn(
+                    "A verification claim is one of these verbs — `verified`, "
+                    "`checked against`, `read against`, `read directly`.",
+                    self.text(template),
+                )
+
+    def test_each_template_marks_unverified_as_self_negating(self):
+        """M85 review F2/80. The first draft listed `unverified` among the four
+        affirmative verbs and then said a verb is negated only when a negator
+        precedes it — wrong for the one member that carries its own negation
+        (`_UNVERIFIED` in cairn_validate adds "never" unconditionally, before
+        the negator loop runs). An author following that rule would write
+        `unverified pending a second pass`, expect an affirmative, and get
+        `never`. The rule is the deliverable, so the exception is stated and
+        guarded rather than left for the author to discover.
+        """
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertIn(
+                    "`unverified` is the exception — it carries its own "
+                    "negation and always reads as never-verified, with or "
+                    "without a negator.",
+                    self.text(template),
+                )
+
+    def test_each_template_says_the_alternatives_are_not_the_accepted_list(self):
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertIn(
+                    "The alternatives below are examples of that shape, not "
+                    "the accepted list.",
+                    self.text(template),
+                )
+
+    def test_each_template_says_an_unreadable_status_is_reported(self):
+        """The consequence half of the rule. Without it the shape reads as
+        advice; with it the author knows the advisory will say so."""
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertIn(
+                    "it is reported rather than assumed verified.",
+                    self.text(template),
+                )
+
+
+class StatusClassificationMixin:
+    """Shared machinery for the two classes below, so the template's own
+    alternatives and the unlisted shipped forms are judged by exactly the same
+    reader. A plain mixin, not a TestCase: subclassing a TestCase to reuse
+    helpers re-runs the parent's tests under every child's name.
+    """
+
+    TEMPLATES = (
+        ("synthesis", SYNTHESIS_TEMPLATE),
+        ("source", SKILLS / "shared" / "templates" / "source-note.md"),
+    )
+    # Every state the classifier can return, so a typo'd expectation cannot
+    # quietly pass by naming a state that does not exist.
+    STATES = {
+        "ok", "never", "exempt", "missing", "undated",
+        "ambiguous", "unrecognized", "future",
+    }
+
+    def instantiate(self, template):
+        """The shipped template with its placeholders filled, read from disk
+        every call — never a fixture copy (M77/M80)."""
+        text = re.sub(r"YYYY-MM-DD", "2026-07-18", template.read_text())
+        return text.replace("M<NN>", "M85")
+
+    def alternatives(self, text):
+        """The choices offered inside the `Extraction:` field's `<a | b | c>`."""
+        line = extraction_line(text)
+        self.assertIsNotNone(line, "template yields no Extraction status line")
+        offered = re.search(r"<(.+)>", line)
+        self.assertIsNotNone(
+            offered, f"Extraction field offers no <a | b | c> choice: {line}"
+        )
+        return [a.strip() for a in offered.group(1).split("|")]
+
+    def choose(self, text, alternative):
+        """The page an author produces by keeping one alternative."""
+        return re.sub(
+            r"^Extraction:.*$",
+            f"Extraction: {alternative} — observed 2026-07-18.",
+            text, count=1, flags=re.M,
+        )
+
+    def classify(self, page_text):
+        """The REAL classifier's verdict on a page, via the REAL block reader."""
+        validate = _load_validate()
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "page.md"
+            path.write_text(page_text)
+            block = validate._provenance_block(str(path), for_extraction=True)
+        self.assertIsNotNone(block, "no provenance block was read from the page")
+        state, _ = validate._last_verified(block, datetime.date(2026, 7, 18))
+        # Positive signal that the classifier path actually ran (M84 lesson:
+        # an absence-assert alone is satisfied by a crash producing nothing).
+        self.assertIn(state, self.STATES, f"classifier returned {state!r}")
+        return state
+
+
+class TestEachSanctionedStatusClassifies(
+    StatusClassificationMixin, unittest.TestCase
+):
+    """M85 AC2/AC3 — instantiating the dates is not instantiating the CHOICE.
+
+    M80's pairing test filled `YYYY-MM-DD` and `M<NN>` and then ran only
+    `check_references` and the dated-extraction regex, both of which ask
+    existence questions. It never asked the one reader that interprets the
+    status — `_last_verified`, the classifier M83 built — so nothing proved a
+    page authored from either template says what its author meant. The
+    templates classified correctly by luck, not by test.
+
+    What the `<a | b | c>` field offers is a CHOICE, and the classifier reads
+    the choice, so the test makes one. Each alternative is selected in turn,
+    a page is built from it, and the state the real classifier returns is
+    asserted against what that wording intends.
+    """
+
+    # What each sanctioned alternative MEANS, keyed by a substring that
+    # matches exactly one of them. A new alternative added to a template
+    # matches nothing here and fails, which is deliberate: an author adding a
+    # status form must say what it should classify as.
+    INTENT = {
+        "unverified": "never",
+        "verified 2026-07-18": "ok",
+        "derived": "ok",
+        "nothing to re-verify": "exempt",
+        "snapshot": "ok",
+    }
+
+    def intended(self, alternative):
+        hits = [v for k, v in self.INTENT.items() if k in alternative]
+        self.assertEqual(
+            len(hits), 1,
+            f"expected exactly one intent for {alternative!r}, matched {hits}",
+        )
+        return hits[0]
+
+    def test_every_alternative_classifies_as_its_wording_intends(self):
+        for kind, template in self.TEMPLATES:
+            text = self.instantiate(template)
+            for alternative in self.alternatives(text):
+                with self.subTest(template=kind, alternative=alternative[:40]):
+                    self.assertEqual(
+                        self.classify(self.choose(text, alternative)),
+                        self.intended(alternative),
+                    )
+
+    def test_no_alternative_is_unreadable(self):
+        """The two states that mean "the advisory cannot tell" — neither may be
+        reachable by an author who followed the template."""
+        for kind, template in self.TEMPLATES:
+            text = self.instantiate(template)
+            for alternative in self.alternatives(text):
+                with self.subTest(template=kind, alternative=alternative[:40]):
+                    state = self.classify(self.choose(text, alternative))
+                    self.assertNotIn(state, ("ambiguous", "unrecognized"))
+
+    def test_the_unchosen_template_is_what_collapses(self):
+        """Non-vacuity, and the reason the templates now say pick ONE.
+
+        Left unchosen, the source template states a verification and its
+        absence at once (`ambiguous`), and the synthesis template's
+        `nothing to re-verify` clause — searched across the whole status —
+        exempts the page from staleness no matter which alternative was meant.
+        These are positive assertions on specific states, so they fail rather
+        than pass if the classifier path breaks.
+        """
+        collapse = {"source": "ambiguous", "synthesis": "exempt"}
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertEqual(
+                    self.classify(self.instantiate(template)), collapse[kind]
+                )
+
+
+class TestUnlistedShippedFormsSatisfyTheShapeRule(
+    StatusClassificationMixin, unittest.TestCase
+):
+    """M85 AC4 — the vocabulary the repo writes, which neither template lists.
+
+    The M85 candidate row's original framing was that these four forms should
+    be ADDED to the templates as accepted phrases. The plan gate rejected
+    that: M83's classifier reads a shape (a verification verb, a date, or an
+    explicit nothing-to-re-verify), not a whitelist, so enumerating four more
+    phrases would re-open the same gap at the fifth. What the templates teach
+    instead is the shape — and what this class proves is that the shape rule
+    is honest, by classifying the four unlisted forms through the real
+    classifier and showing each is already readable.
+
+    Sharing the mixin above is deliberate: these forms must be judged by
+    exactly the machinery that judges the template's own alternatives.
+    """
+
+    # Each form as a shipped page writes it, paired with a pattern that finds
+    # it among this repo's real statuses. The pattern is what keeps the list
+    # from going fictional: a form no page writes any more fails, rather than
+    # sitting here as a phrase the templates are being measured against.
+    FORMS = (
+        (
+            "verified at ingestion — full source read; not re-read since",
+            r"^verified at ingestion",
+        ),
+        (
+            "partly verified at ingestion — the sprint-status claim was "
+            "checked against `bmad-sprint-planning/SKILL.md:8`; the rest is "
+            "an [S] subagent study, not re-read since",
+            r"^partly verified at ingestion",
+        ),
+        (
+            "read against the ackwards artifacts at assessment time; the "
+            "assessed repo has moved on independently since, so the "
+            "catalogue is a 2026-07-12 snapshot",
+            r"^read against .* at assessment time",
+        ),
+        (
+            "verified by live probe 2026-07-12; a re-probe would be needed "
+            "to confirm the mechanism still holds in the current client",
+            r"^verified by live probe",
+        ),
+    )
+    SOURCE_TEMPLATE = SKILLS / "shared" / "templates" / "source-note.md"
+
+    def shipped_statuses(self):
+        """Every `Extraction:` status this repo's committed pages carry."""
+        refs = SKILLS.parent / "cairn" / "references"
+        out = []
+        for page in sorted(refs.glob("*.md")):
+            if page.name == "INDEX.md":
+                continue
+            line = extraction_line(page.read_text())
+            if line:
+                out.append(line[len("Extraction:"):].strip())
+        self.assertTrue(out, "no shipped references statuses were found")
+        return out
+
+    def test_each_unlisted_form_is_readable(self):
+        base = self.instantiate(self.SOURCE_TEMPLATE)
+        for status, _ in self.FORMS:
+            with self.subTest(form=status[:40]):
+                self.assertEqual(self.classify(self.choose(base, status)), "ok")
+
+    def test_each_unlisted_form_is_still_written_by_a_page(self):
+        statuses = self.shipped_statuses()
+        for status, pattern in self.FORMS:
+            with self.subTest(form=status[:40]):
+                self.assertTrue(
+                    any(re.match(pattern, s, re.I) for s in statuses),
+                    f"no committed page writes a status matching {pattern!r} "
+                    f"— the form list above has gone stale",
+                )
+
+    def test_no_unlisted_form_is_offered_by_a_template(self):
+        """These are the forms the templates do NOT list — the premise of the
+        class. If one is ever added to a template, it belongs to the class
+        above (which asserts an intent for every offered alternative) and this
+        one stops being about unlisted vocabulary.
+
+        Matched on the form's distinguishing PREFIX, not by exact string
+        equality (M85 review F3/62). Equality only caught a byte-exact paste of
+        the whole 60–200-char shipped status; the realistic way one of these
+        arrives in a template is shortened or re-dated, and every such variant
+        slipped through a premise this test claims to defend.
+        """
+        offered = []
+        for _, template in self.TEMPLATES:
+            offered.extend(self.alternatives(self.instantiate(template)))
+        for status, pattern in self.FORMS:
+            with self.subTest(form=status[:40]):
+                self.assertFalse(
+                    [a for a in offered if re.match(pattern, a, re.I)],
+                    f"a template now offers a form matching {pattern!r}; it "
+                    f"belongs to TestEachSanctionedStatusClassifies",
+                )
 
 
 class TestReVerification(unittest.TestCase):

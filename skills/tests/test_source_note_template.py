@@ -189,7 +189,16 @@ class TestShippedTemplate(unittest.TestCase):
     def test_unverified_extraction_is_an_expressible_state(self):
         # The field that flags an unchecked subagent pass is the whole point;
         # a template offering only "verified" would defeat it.
-        self.assertIn("unverified", self.text)
+        #
+        # Anchored on the Extraction FIELD, not the whole file (M85 review
+        # F1/93). A bare `assertIn("unverified", self.text)` went false-covering
+        # the moment M85's header prose named the verb set: the word then
+        # occurred twice, so deleting the `| unverified — …` alternative left
+        # the assert satisfied by a sentence in a comment. Same trap as M80's
+        # F3/65 one word over — anchor a template field on its own line.
+        line = extraction_line(TEMPLATE.read_text())
+        self.assertIsNotNone(line, "template yields no Extraction status line")
+        self.assertIn("unverified", line.lower())
 
     def test_open_questions_section_carries_the_dated_form(self):
         self.assertIn("## open questions", self.text)

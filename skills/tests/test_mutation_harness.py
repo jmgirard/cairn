@@ -34,6 +34,8 @@ HOTFIX = "skills/hotfix/SKILL.md"
 MILESTONE = "skills/milestone/SKILL.md"
 TEMPLATE = "skills/shared/templates/milestone.md"
 DOCTRINE = "skills/shared/validation-doctrine.md"
+SOURCE_NOTE = "skills/shared/templates/source-note.md"
+SYNTHESIS_NOTE = "skills/shared/templates/synthesis-note.md"
 
 REGISTRY = [
     Mutation(
@@ -1249,6 +1251,71 @@ REGISTRY = [
         test="TestRepairSection.test_repair_has_its_own_section",
         target="skills/cairn-init/SKILL.md",
         block="- Already on cairn → **repair mode** (§3).",
+    ),
+    # M85: the extraction-status shape rule, in BOTH templates. Registered per
+    # (test, template) pair rather than once per test: each guard asserts the
+    # rule in both files, so an entry against only one leaves the other's copy
+    # deletable with the guard still green — the false-coverage shape M39/M40
+    # exist to catch, one file over.
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_states_the_three_way_shape",
+        target=SOURCE_NOTE,
+        block="claim a verification, or carry a date, or say there is nothing to re-verify.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_states_the_three_way_shape",
+        target=SYNTHESIS_NOTE,
+        block="claim a verification, or carry a date, or say there is nothing to re-verify.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_names_the_verb_set_with_its_label",
+        target=SOURCE_NOTE,
+        block="A verification claim is one of these verbs — `verified`, `checked against`, `read against`, `read directly`.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_names_the_verb_set_with_its_label",
+        target=SYNTHESIS_NOTE,
+        block="A verification claim is one of these verbs — `verified`, `checked against`, `read against`, `read directly`.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_marks_unverified_as_self_negating",
+        target=SOURCE_NOTE,
+        block="`unverified` is the exception — it carries its own negation and always reads as never-verified, with or without a negator.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_marks_unverified_as_self_negating",
+        target=SYNTHESIS_NOTE,
+        block="`unverified` is the exception — it carries its own negation and always reads as never-verified, with or without a negator.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_says_the_alternatives_are_not_the_accepted_list",
+        target=SOURCE_NOTE,
+        block="The alternatives below are examples of that shape, not the accepted list.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_says_the_alternatives_are_not_the_accepted_list",
+        target=SYNTHESIS_NOTE,
+        block="The alternatives below are examples of that shape, not the accepted list.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_says_an_unreadable_status_is_reported",
+        target=SOURCE_NOTE,
+        block="it is reported rather than assumed verified.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_says_an_unreadable_status_is_reported",
+        target=SYNTHESIS_NOTE,
+        block="it is reported rather than assumed verified.",
     ),
 ]
 
