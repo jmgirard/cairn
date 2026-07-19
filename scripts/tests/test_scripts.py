@@ -1495,34 +1495,34 @@ class TestRecordDensityAdvisory(ScriptCase):
     # --- the two thresholds ------------------------------------------------
 
     def test_over_threshold_roadmap_warns(self):
-        proc = self.roadmap(22000)
-        self.assertFlagged(proc, "cairn/ROADMAP.md: 22,000 chars")
-        self.assertIn("threshold <21,500", proc.stdout)
-
-    def test_over_threshold_lessons_warns(self):
-        proc = self.lessons(21500)
-        self.assertFlagged(proc, "cairn/LESSONS.md: 21,500 chars")
+        proc = self.roadmap(21500)
+        self.assertFlagged(proc, "cairn/ROADMAP.md: 21,500 chars")
         self.assertIn("threshold <21,000", proc.stdout)
 
+    def test_over_threshold_lessons_warns(self):
+        proc = self.lessons(21000)
+        self.assertFlagged(proc, "cairn/LESSONS.md: 21,000 chars")
+        self.assertIn("threshold <20,500", proc.stdout)
+
     def test_under_threshold_is_quiet(self):
-        self.assertClean(self.roadmap(20000))
+        self.assertClean(self.roadmap(19000))
 
     def test_each_file_has_its_own_threshold(self):
-        # One mass, opposite verdicts: 21,200 is over LESSONS' 21,000 and under
-        # ROADMAP's 21,500, so the same number must WARN on one file and stay
+        # One mass, opposite verdicts: 20,700 is over LESSONS' 20,500 and under
+        # ROADMAP's 21,000, so the same number must WARN on one file and stay
         # quiet on the other. The thresholds are per-file because each is its
         # OWN line cap's capacity at its OWN measured item length (M87-D1) —
-        # ROADMAP carries more items (41 vs 36) of shorter mean length.
-        self.assertFlagged(self.lessons(21200), "cairn/LESSONS.md: 21,200 chars")
-        self.assertClean(self.roadmap(21200))
+        # ROADMAP carries more items (40 vs 35) of shorter mean length.
+        self.assertFlagged(self.lessons(20700), "cairn/LESSONS.md: 20,700 chars")
+        self.assertClean(self.roadmap(20700))
 
     # --- boundary, matching the LINE_CAPS `>=` convention ------------------
 
     def test_at_threshold_warns(self):
-        self.assertFlagged(self.roadmap(21500), "cairn/ROADMAP.md: 21,500 chars")
+        self.assertFlagged(self.roadmap(21000), "cairn/ROADMAP.md: 21,000 chars")
 
     def test_one_char_under_threshold_is_quiet(self):
-        self.assertClean(self.roadmap(21499))
+        self.assertClean(self.roadmap(20999))
 
     # --- the regression anchor (AC2) ---------------------------------------
 
@@ -1534,23 +1534,27 @@ class TestRecordDensityAdvisory(ScriptCase):
         # parenthetical because they restated history the archive owns — a
         # BOUNDARY-rule fix, not a density one, and its own message says "the
         # density defect stays unfixed here". That file held 15 items against
-        # a line cap permitting 37 (41%), so flagging it was the advisory
+        # a line cap permitting 36 (42%), so flagging it was the advisory
         # firing at ordinary density — the defect M87 fixes. It is clean now.
         self.assertClean(self.roadmap(9691))
-        # The anchor is the derivation instead (M87-D1): quiet up to the mass
-        # the file's own line cap permits at measured item length, WARN past
-        # it. 16,998 is cairn's real LESSONS at 29 lessons — 81% of the 36 its
-        # line cap permits, and the state the OLD threshold flagged.
-        # Anchored on sizes, not hashes, so a later rebase cannot break it.
+        # What this brackets, precisely (M87 review F4): the two assertClean
+        # lines are REAL repo states the threshold must not flag — 9,691 the
+        # pre-prune ROADMAP, 16,998 cairn's LESSONS at 29 lessons (83% of the
+        # 35 its line cap permits, and the state the OLD threshold squeezed).
+        # The WARN side restates the constant and so only pins the boundary;
+        # it does NOT validate the derivation, and no assertion here can — a
+        # test recomputing capacity x measured mean would fire whenever the
+        # mean drifts, which is the mean-drift test rejected at the M87 plan
+        # gate. Anchored on sizes, not hashes, so a rebase cannot break it.
         self.assertClean(self.lessons(16998))
-        self.assertFlagged(self.lessons(21000), "cairn/LESSONS.md: 21,000 chars")
+        self.assertFlagged(self.lessons(20500), "cairn/LESSONS.md: 20,500 chars")
 
     # --- exit-code neutrality (AC4) ----------------------------------------
 
     def test_advisory_never_moves_the_exit_code(self):
         # A tree tripping ONLY this advisory: the gate still reports success
         # and exits 0, so a dense file can never block a milestone.
-        proc = self.roadmap(22000)
+        proc = self.roadmap(21500)
         self.assertEqual(proc.returncode, 0, proc.stdout)
         self.assertIn("all checks passed", proc.stdout)
         self.assertIn("advisory warning(s) — not gate failures", proc.stdout)
@@ -1559,13 +1563,13 @@ class TestRecordDensityAdvisory(ScriptCase):
     def test_shed_names_the_chars_to_drop(self):
         # The remedy is compression, so the finding says how much mass to
         # shed — the `shed ≥N` idiom check_caps already uses for lines (M69).
-        proc = self.lessons(21500)
+        proc = self.lessons(21000)
         self.assertIn("shed ≥501", proc.stdout)
 
     def test_finding_shows_the_line_count_too(self):
         # Both axes in one finding: the point is that the item count looks
         # fine. The fixture's LESSONS is 4 lines, nowhere near the <50 cap.
-        proc = self.lessons(21500)
+        proc = self.lessons(21000)
         self.assertIn("PASS  weight caps", proc.stdout)
         self.assertIn("4 lines", proc.stdout)
 

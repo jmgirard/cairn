@@ -92,10 +92,11 @@ takes a D-entry, and its number stays retired.
   its character mass grew 13% and nothing reported it. The second axis is
   **weight** — total character mass over the same whole file, reported by
   `cairn_validate`'s `record density` advisory against
-  per-file character thresholds — `ROADMAP.md` < 21,500 · `LESSONS.md` < 21,000
+  per-file character thresholds — `ROADMAP.md` < 21,000 · `LESSONS.md` < 20,500
   — each the mass its own line cap permits at measured item length: non-item
-  mass plus (line cap − the file's fixed non-item lines) × the measured mean
-  item length, rounded up. Measure that mean, never assume one: compression is
+  mass plus capacity × the measured mean item length, rounded up, where capacity
+  is (line cap − 1, since the cap fails at `>=`) less the file's fixed non-item
+  lines. Measure that mean, never assume one: compression is
   the weight remedy and consolidating items raises the mean, so a mean carried
   over from last time is stale by construction — and a threshold set below what
   the line cap permits stops backstopping that cap and silently becomes the real
