@@ -35,9 +35,15 @@ class TestLessonsLoop(unittest.TestCase):
     def test_stated_cap_matches_enforced_cap(self):
         # The rulebook's human-readable cap and the scripts' machine-enforced
         # cap are two encodings of one number; drift between them is the defect.
+        # Anchored to the LINE_CAPS block, not to the bare key: since M84 the
+        # key `"cairn/LESSONS.md"` also appears in CHAR_CAPS, so an unanchored
+        # search reads whichever dict is declared first and would compare this
+        # LINE cap against the CHARACTER threshold if the two were ever
+        # reordered (M84 review F3).
         stated = int(re.search(r"`LESSONS\.md`\s*<\s*(\d+)\s*lines", self.rules).group(1))
         scripts = read(ROOT / "scripts" / "cairn_scripts.py")
-        enforced = int(re.search(r'"cairn/LESSONS\.md":\s*(\d+)', scripts).group(1))
+        line_caps = re.search(r"LINE_CAPS\s*=\s*\{(.*?)\}", scripts, re.S).group(1)
+        enforced = int(re.search(r'"cairn/LESSONS\.md":\s*(\d+)', line_caps).group(1))
         self.assertEqual(stated, enforced)
 
     def test_lessons_home_exists_with_entry_format(self):

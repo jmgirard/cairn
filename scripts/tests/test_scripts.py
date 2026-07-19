@@ -1445,12 +1445,12 @@ class TestRecordDensityAdvisory(ScriptCase):
     def test_over_threshold_roadmap_warns(self):
         proc = self.roadmap(9500)
         self.assertFlagged(proc, "cairn/ROADMAP.md: 9,500 chars")
-        self.assertIn("threshold 9,000", proc.stdout)
+        self.assertIn("threshold <9,000", proc.stdout)
 
     def test_over_threshold_lessons_warns(self):
         proc = self.lessons(17500)
         self.assertFlagged(proc, "cairn/LESSONS.md: 17,500 chars")
-        self.assertIn("threshold 17,000", proc.stdout)
+        self.assertIn("threshold <17,000", proc.stdout)
 
     def test_under_threshold_is_quiet(self):
         self.assertClean(self.roadmap(8000))
@@ -1472,14 +1472,17 @@ class TestRecordDensityAdvisory(ScriptCase):
     # --- the regression anchor (AC2) ---------------------------------------
 
     def test_anchored_on_the_real_prune(self):
-        # cairn's own ROADMAP measured 9,807 chars before the M83 breadcrumb
-        # prune (`git show dbf1068^:cairn/ROADMAP.md`) and 8,106 after
-        # (`dbf1068`). The threshold is calibrated so the state a human judged
-        # bloated enough to prune WARNs, and the pruned state does not —
-        # asserted on the byte sizes, so it survives any later rebase of those
-        # hashes.
-        self.assertFlagged(self.roadmap(9807), "cairn/ROADMAP.md: 9,807 chars")
-        self.assertClean(self.roadmap(8106))
+        # cairn's own ROADMAP measured 9,691 CHARACTERS before the M83
+        # breadcrumb prune (`git show dbf1068^:cairn/ROADMAP.md`) and 8,001
+        # after (`dbf1068`). The threshold is calibrated so the state a
+        # maintainer judged bloated enough to prune WARNs and the pruned state
+        # does not. Anchored on the sizes rather than the hashes, so it
+        # survives any later rebase of those commits — and on the CHARACTER
+        # figures, because characters are what the advisory measures: the
+        # `wc -c` byte figures (9,807 / 8,106) are ~1% larger and would exercise
+        # a state the anchor does not actually name (M84 review F6).
+        self.assertFlagged(self.roadmap(9691), "cairn/ROADMAP.md: 9,691 chars")
+        self.assertClean(self.roadmap(8001))
 
     # --- exit-code neutrality (AC4) ----------------------------------------
 
@@ -1510,10 +1513,21 @@ class TestRecordDensityAdvisory(ScriptCase):
     def test_missing_file_is_not_a_finding(self):
         # line_count/char_count return None for an absent path; a missing
         # LESSONS.md is check_scaffold's finding, not this advisory's.
+        # Asserted POSITIVELY (`OK` + exit 0), never as a bare assertNotIn: an
+        # empty stdout satisfies an absence-assert, so a crash in the advisory
+        # would leave this test — the one whose whole job is the absent-file
+        # path — green while every validate run in such a repo tracebacks.
+        # Proven live at M84 review (F2/90): raising inside the `n is None`
+        # branch kept all 12 tests in this class passing.
+        # The exit code is 1 here for an UNRELATED reason — a missing
+        # LESSONS.md is a `scaffold present` FAIL — so `OK record density`
+        # is the positive signal that the advisory ran to completion.
         root = self.tree.build()
         (root / "cairn" / "LESSONS.md").unlink()
         proc = run("cairn_validate.py", root)
+        self.assertIn(f"OK    {self.ADVISORY}", proc.stdout)
         self.assertNotIn(f"WARN  {self.ADVISORY}", proc.stdout)
+        self.assertIn("FAIL  scaffold present", proc.stdout)
 
     def test_profile_is_not_measured(self):
         # M84 Scope: PROFILE.md was surveyed and has no density problem (max

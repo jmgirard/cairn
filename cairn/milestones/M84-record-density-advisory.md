@@ -51,23 +51,23 @@ cairn's own ROADMAP and LESSONS under the resulting thresholds.
 
 ## Acceptance criteria
 
-- [ ] AC1: `cairn_validate` emits a new advisory reporting total character
+- [x] AC1: `cairn_validate` emits a new advisory reporting total character
       mass for `cairn/ROADMAP.md` and `cairn/LESSONS.md` against a per-file
       threshold, with its emitted label used verbatim in any prose naming it
       (M78).
-- [ ] AC2: The thresholds are derived from a recorded survey of both repos,
+- [x] AC2: The thresholds are derived from a recorded survey of both repos,
       and regression-anchored: the ROADMAP threshold WARNs on the pre-prune
       state (`git show dbf1068^:cairn/ROADMAP.md`, 9,807 bytes / 9,691 chars)
       and passes on the post-prune state (`dbf1068`, 8,106 / 8,001).
-- [ ] AC3: cairn's `ROADMAP.md` and `LESSONS.md` both pass the new advisory
+- [x] AC3: cairn's `ROADMAP.md` and `LESSONS.md` both pass the new advisory
       after an in-milestone prune, evidenced by a before/after mass table.
-- [ ] AC4: The advisory is exit-code neutral — `cairn_validate` exits 0 on a
+- [x] AC4: The advisory is exit-code neutral — `cairn_validate` exits 0 on a
       repo tripping only it — covered by a test asserting the exit code, not
       just the output.
-- [ ] AC5: The `tracking-rules` weight-caps section documents both axes and
+- [x] AC5: The `tracking-rules` weight-caps section documents both axes and
       their distinct remedies (graduate/prune for count, compress for weight),
       locked by a prose-guard registered in the mutation harness.
-- [ ] AC6: Verify slot clean — all three unittest suites green
+- [x] AC6: Verify slot clean — all three unittest suites green
       (`scripts/tests`, `skills/tests`, `hooks/tests`), run from the repo root
       with exit codes checked individually (M56/M65).
 
@@ -150,4 +150,99 @@ hyphens. They differ ~1% here and no threshold call changes: cairn 8,386 /
 9,691 pre-prune and 8,001 post-prune — still astride 9,000. Corrected
 2026-07-18, before the thresholds shipped.
 
+- 2026-07-18: review — 3 lenses (7 findings, all from the diff-bug lens; blame and prior-PR clean) + scorer. F2/90, F4/82, F7/80 actioned and fixed; F5/62, F6/58, F3/50 also fixed (F3/F6 were landmines this diff introduced); F1/78 resolved by recording AC3's table as review evidence. All six criteria verified against fresh evidence.
+
 ## Review
+
+Reviewed 2026-07-18. PR: https://github.com/jmgirard/cairn/pull/82
+
+### Acceptance-criteria evidence
+
+- **AC1** — `cairn_validate` emits `OK    record density` in the ADVISORIES
+  block; on an over-threshold fixture it emits one finding per file naming
+  chars, lines, item cap, threshold and shed. Label used verbatim in prose at
+  `tracking-rules.md:94`, and `test_stated_advisory_label_matches_the_emitted_label`
+  couples the rulebook string to the ADVISORIES registration.
+- **AC2** — survey + derivation recorded as M84-D1. Anchor re-run live against
+  both git states: pre-prune `dbf1068^` (9,691 chars) → WARN `shed ≥692`;
+  post-prune `dbf1068` (8,001) → clean. Locked by
+  `test_anchored_on_the_real_prune` on the character figures.
+- **AC3** — both files pass; before/after mass table:
+
+  | File | Before (main) | After | Threshold | Headroom | Lines |
+  |---|---|---|---|---|---|
+  | `cairn/ROADMAP.md` | 8,382 | 8,381 | < 9,000 | +619 | 35 → 35 |
+  | `cairn/LESSONS.md` | 18,607 | 16,272 | < 17,000 | +728 | 49 → 42 |
+
+  ROADMAP needed no prune. LESSONS shed 2,335 chars (13%) by compression:
+  36 lessons folded into 28, all 38 unique milestone tags retained
+  (verified by the blame lens with `comm`: zero lost, zero new).
+- **AC4** — `test_advisory_never_moves_the_exit_code` asserts `returncode == 0`
+  plus `all checks passed` on a tree tripping only this advisory; 12 tests in
+  `TestRecordDensityAdvisory`, all green.
+- **AC5** — `tracking-rules.md:87-105` states both axes, their opposite
+  remedies, and (post-review) each axis's label and severity; guarded by
+  `skills/tests/test_record_density.py` (7 asserts), 6 blocks registered in the
+  mutation harness and proven to fail when blanked.
+- **AC6** — three suites run from the repo root, exit codes checked
+  individually and unpiped: scripts 171 (exit 0), skills 363 (exit 0), hooks 72
+  (exit 0). `cairn_validate` all checks passed, exit 0.
+
+### Consistency gate
+
+`cairn_validate` exit 0 — all 15 checks PASS including `coverage complete` and
+`scaffold present`; 6 advisories OK. Profile `generic`: its `consistency-gate`
+slot names no toolchain checks, a clean no-op. No `DESIGN.md` principle
+changed, so no Sync Impact Report is owed.
+
+### Independent review — three lenses + scorer
+
+[O] diff-bug: 7 findings. [S] blame-history: 0. [S] prior-PR-comments: 0
+(no GitHub review comments on the touched files; archive review sections read
+instead — this repo records findings there).
+
+Actioned (scored ≥80):
+
+- **F2 (90)** — `test_missing_file_is_not_a_finding` was vacuous: its only
+  assertion was an `assertNotIn`, which an empty stdout satisfies, so the test
+  could not tell "handled gracefully" from "crashed". Proven live by two
+  agents independently (raising inside the `n is None` branch left all 12
+  tests green while validate tracebacked). **Fixed** — now asserts the
+  positive `OK    record density` plus the expected `FAIL  scaffold present`
+  (exit is 1 here for that unrelated reason, so exit 0 would be the wrong
+  signal).
+- **F4 (82)** — "weight" named both the failing and the non-failing axis: the
+  section is `## Weight caps`, the hard CHECK is labelled `weight caps` and
+  measures lines, yet the new prose asserted "Weight WARNs and never fails".
+  **Fixed** — the false sentence is replaced, and a new sentence maps each
+  axis to its label and severity, pinned label-with-severity for both pairs on
+  one physical line (M74/M76) and registered.
+- **F7 (80)** — the ADVISORIES placement comment claimed the advisory sits
+  "directly under the `weight caps` CHECK", but `run()` prints all 15 CHECKS
+  before any advisory; the sentence was also garbled. **Fixed.**
+
+Logged, below the 80 threshold — substance read per the M73 lesson, and three
+fixed anyway because two were landmines this diff itself introduced:
+
+- **F1 (78)** — AC3's "before/after mass table" existed only as prose.
+  **Resolved** by recording the table above as review evidence, which is where
+  AC fencing puts acceptance evidence; no criterion text changed.
+- **F5 (62)** — the threshold printed as a bare `threshold 9,000` while the
+  comparison is `>=`, unlike every neighbouring cap (`cap <60`). **Fixed** —
+  emits `threshold <9,000`; rulebook states `< 9,000`; guard regex widened.
+- **F6 (58)** — the AC2 anchor test padded to the `wc -c` BYTE figures
+  (9,807/8,106) though the advisory measures characters, right after a gated
+  AC amendment made to fix exactly that byte/char confusion. **Fixed** — now
+  anchors on 9,691/8,001.
+- **F3 (50)** — introduced by this diff: `CHAR_CAPS` reuses the key
+  `"cairn/LESSONS.md"`, and `test_lessons_loop`'s unanchored regex was correct
+  only because `LINE_CAPS` happens to be declared first. **Fixed** — anchored
+  to the `LINE_CAPS` block.
+- Borderline, not a defect, no action: the LESSONS compression genericized
+  M79's F5 example and reduced M47's question to a pointer. The reviewer
+  confirmed every dropped token's rule survives, and the `..`-normalization
+  gotcha still lives at its enforcement site.
+
+A fix for F4 tripped the M78 exactly-once trap live — adding the severity
+sentence gave `` `record density` `` a second occurrence, breaking its
+mutation registration; re-anchored on the unique introducing phrase.

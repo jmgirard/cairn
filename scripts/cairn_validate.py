@@ -137,9 +137,13 @@ def check_record_density(root):
         axis = f"{lines} lines" if lines is not None else "line count unknown"
         if lines is not None and item_cap is not None:
             axis += f", item cap <{item_cap}"
+        # `threshold <N`, not a bare N: every neighbouring cap prints its
+        # strictness marker (`cap <60`), and the comparison here is `>=`, so a
+        # bare number would tell an author 9,000 was the permitted ceiling
+        # while a 9,000-char file WARNs with `shed ≥1` (M84 review F5).
         out.append(
             f"{rel}: {n:,} chars over {axis} "
-            f"(threshold {cap:,}; shed ≥{n - cap + 1:,}) — compress entries, "
+            f"(threshold <{cap:,}; shed ≥{n - cap + 1:,}) — compress entries, "
             f"don't evict them"
         )
     return out
@@ -1161,9 +1165,11 @@ CHECKS = [
 # never fail the gate (exit code neutral), so they render WARN/OK, separate
 # from the PASS/FAIL CHECKS above.
 ADVISORIES = [
-    # First among the advisories, directly under the `weight caps` CHECK it is
-    # the second axis of (M84): the two measures read as siblings over the same
-    # files, one structural and failing, one a judgment call and not.
+    # First among the advisories (M84). `run()` prints every CHECK before any
+    # advisory, so this is NOT adjacent to the `weight caps` CHECK it is the
+    # second axis of — the two measures cover the same files, one structural
+    # and failing, one a judgment call and not, and the rulebook's weight-caps
+    # section is what pairs them for a reader.
     ("record density", lambda root, rows: check_record_density(root)),
     ("sizing (split tripwires)", lambda root, rows: check_sizing_advisory(root)),
     (

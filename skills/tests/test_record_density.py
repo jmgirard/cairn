@@ -54,10 +54,21 @@ class TestRecordDensityRule(unittest.TestCase):
         # belt-and-braces on the first, and the next cap squeeze drops it.
         self.assertIn("structurally blind to prose accumulating", self.rules)
 
-    def test_rule_states_that_weight_warns_and_never_fails(self):
+    def test_rule_states_that_density_warns_rather_than_fails(self):
         # The severity IS the decision (M84 Scope, distinguishing D-018): an
         # item count is a structural fact, density is a judgment about prose.
-        self.assertIn("Weight WARNs and never fails", self.rules)
+        self.assertIn("Density warns rather than fails", self.rules)
+
+    def test_rule_maps_each_axis_to_its_label_and_severity(self):
+        # M84 review F4: "weight" names the section, the hard CHECK, AND the
+        # new axis, so a reader hitting `FAIL weight caps` could read the
+        # advisory's severity as covering it. Pinned label-WITH-severity for
+        # BOTH axes on one physical line (M74/M76): pinning one pair alone
+        # leaves the other swappable, which is the inversion that misleads.
+        self.assertIn(
+            "the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the weight axis is the `record density` advisory and only ever WARNs",
+            self.rules,
+        )
 
     def test_rule_records_why_a_per_line_warn_was_rejected(self):
         # A rejected alternative recorded once, so it is not re-litigated: a
@@ -73,7 +84,7 @@ class TestRecordDensityRule(unittest.TestCase):
         # is checked too, not just the values — a third file added to
         # CHAR_CAPS without a rulebook line would otherwise pass silently.
         stated = re.search(
-            r"per-file character thresholds — `(\w+\.md)` ([\d,]+) · `(\w+\.md)` ([\d,]+)",
+            r"per-file character thresholds — `(\w+\.md)` < ([\d,]+) · `(\w+\.md)` < ([\d,]+)",
             self.rules,
         )
         self.assertIsNotNone(stated, "the weight-caps text states no thresholds")
@@ -100,7 +111,12 @@ class TestRecordDensityRule(unittest.TestCase):
         self.assertIsNotNone(
             emitted, "check_record_density is not registered in ADVISORIES"
         )
-        self.assertIn(f"`{emitted.group(1)}`", self.rules)
+        # Anchored on the phrase that INTRODUCES the label, not on the bare
+        # backticked label: since the F4 severity sentence the label occurs
+        # twice in the rulebook, and a block occurring more than once cannot
+        # be mutation-registered (blanking one leaves the other, which is
+        # false coverage — M60's "register a longer unique anchor").
+        self.assertIn(f"`cairn_validate`'s `{emitted.group(1)}` advisory", self.rules)
 
 
 if __name__ == "__main__":

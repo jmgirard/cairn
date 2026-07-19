@@ -311,9 +311,15 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_record_density",
-        test="TestRecordDensityRule.test_rule_states_that_weight_warns_and_never_fails",
+        test="TestRecordDensityRule.test_rule_states_that_density_warns_rather_than_fails",
         target=RULES,
-        block="Weight WARNs and never fails",
+        block="Density warns rather than fails",
+    ),
+    Mutation(
+        guard="test_record_density",
+        test="TestRecordDensityRule.test_rule_maps_each_axis_to_its_label_and_severity",
+        target=RULES,
+        block="the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the weight axis is the `record density` advisory and only ever WARNs",
     ),
     Mutation(
         guard="test_record_density",
@@ -325,7 +331,7 @@ REGISTRY = [
         guard="test_record_density",
         test="TestRecordDensityRule.test_stated_advisory_label_matches_the_emitted_label",
         target=RULES,
-        block="`record density`",
+        block="`cairn_validate`'s `record density` advisory",
     ),
     # M59 (RR01 rec 7): run-and-read — skills never enumerate validate's
     # internals; one entry per positive assert, negatives ride along (M54).
