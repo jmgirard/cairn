@@ -16,6 +16,7 @@ physical line (M23 lesson); phrases are lowercased before matching.
     python3 -m unittest discover -s skills/tests -v
 """
 
+import datetime
 import importlib.util
 import pathlib
 import re
@@ -248,6 +249,128 @@ class TestTemplateProducesAValidPage(unittest.TestCase):
                 line = extraction_line(template.read_text())
                 self.assertIsNotNone(line)
                 self.assertNotRegex(line, DATED_EXTRACTION)
+
+
+class TestEachSanctionedStatusClassifies(unittest.TestCase):
+    """M85 AC2/AC3 — instantiating the dates is not instantiating the CHOICE.
+
+    M80's pairing test filled `YYYY-MM-DD` and `M<NN>` and then ran only
+    `check_references` and the dated-extraction regex, both of which ask
+    existence questions. It never asked the one reader that interprets the
+    status — `_last_verified`, the classifier M83 built — so nothing proved a
+    page authored from either template says what its author meant. The
+    templates classified correctly by luck, not by test.
+
+    What the `<a | b | c>` field offers is a CHOICE, and the classifier reads
+    the choice, so the test makes one. Each alternative is selected in turn,
+    a page is built from it, and the state the real classifier returns is
+    asserted against what that wording intends.
+    """
+
+    TEMPLATES = (
+        ("synthesis", SYNTHESIS_TEMPLATE),
+        ("source", SKILLS / "shared" / "templates" / "source-note.md"),
+    )
+    # What each sanctioned alternative MEANS, keyed by a substring that
+    # matches exactly one of them. A new alternative added to a template
+    # matches nothing here and fails, which is deliberate: an author adding a
+    # status form must say what it should classify as.
+    INTENT = {
+        "unverified": "never",
+        "verified 2026-07-18": "ok",
+        "derived": "ok",
+        "nothing to re-verify": "exempt",
+        "snapshot": "ok",
+    }
+    # Every state the classifier can return, so a typo'd expectation above
+    # cannot quietly pass by naming a state that does not exist.
+    STATES = {
+        "ok", "never", "exempt", "missing", "undated",
+        "ambiguous", "unrecognized", "future",
+    }
+
+    def instantiate(self, template):
+        """The shipped template with its placeholders filled, read from disk
+        every call — never a fixture copy (M77/M80)."""
+        text = re.sub(r"YYYY-MM-DD", "2026-07-18", template.read_text())
+        return text.replace("M<NN>", "M85")
+
+    def alternatives(self, text):
+        """The choices offered inside the `Extraction:` field's `<a | b | c>`."""
+        line = extraction_line(text)
+        self.assertIsNotNone(line, "template yields no Extraction status line")
+        offered = re.search(r"<(.+)>", line)
+        self.assertIsNotNone(
+            offered, f"Extraction field offers no <a | b | c> choice: {line}"
+        )
+        return [a.strip() for a in offered.group(1).split("|")]
+
+    def choose(self, text, alternative):
+        """The page an author produces by keeping one alternative."""
+        return re.sub(
+            r"^Extraction:.*$",
+            f"Extraction: {alternative} — observed 2026-07-18.",
+            text, count=1, flags=re.M,
+        )
+
+    def classify(self, page_text):
+        """The REAL classifier's verdict on a page, via the REAL block reader."""
+        validate = _load_validate()
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "page.md"
+            path.write_text(page_text)
+            block = validate._provenance_block(str(path), for_extraction=True)
+        self.assertIsNotNone(block, "no provenance block was read from the page")
+        state, _ = validate._last_verified(block, datetime.date(2026, 7, 18))
+        # Positive signal that the classifier path actually ran (M84 lesson:
+        # an absence-assert alone is satisfied by a crash producing nothing).
+        self.assertIn(state, self.STATES, f"classifier returned {state!r}")
+        return state
+
+    def intended(self, alternative):
+        hits = [v for k, v in self.INTENT.items() if k in alternative]
+        self.assertEqual(
+            len(hits), 1,
+            f"expected exactly one intent for {alternative!r}, matched {hits}",
+        )
+        return hits[0]
+
+    def test_every_alternative_classifies_as_its_wording_intends(self):
+        for kind, template in self.TEMPLATES:
+            text = self.instantiate(template)
+            for alternative in self.alternatives(text):
+                with self.subTest(template=kind, alternative=alternative[:40]):
+                    self.assertEqual(
+                        self.classify(self.choose(text, alternative)),
+                        self.intended(alternative),
+                    )
+
+    def test_no_alternative_is_unreadable(self):
+        """The two states that mean "the advisory cannot tell" — neither may be
+        reachable by an author who followed the template."""
+        for kind, template in self.TEMPLATES:
+            text = self.instantiate(template)
+            for alternative in self.alternatives(text):
+                with self.subTest(template=kind, alternative=alternative[:40]):
+                    state = self.classify(self.choose(text, alternative))
+                    self.assertNotIn(state, ("ambiguous", "unrecognized"))
+
+    def test_the_unchosen_template_is_what_collapses(self):
+        """Non-vacuity, and the reason the templates now say pick ONE.
+
+        Left unchosen, the source template states a verification and its
+        absence at once (`ambiguous`), and the synthesis template's
+        `nothing to re-verify` clause — searched across the whole status —
+        exempts the page from staleness no matter which alternative was meant.
+        These are positive assertions on specific states, so they fail rather
+        than pass if the classifier path breaks.
+        """
+        collapse = {"source": "ambiguous", "synthesis": "exempt"}
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertEqual(
+                    self.classify(self.instantiate(template)), collapse[kind]
+                )
 
 
 class TestReVerification(unittest.TestCase):

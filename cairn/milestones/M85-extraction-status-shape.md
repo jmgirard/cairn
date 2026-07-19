@@ -79,7 +79,7 @@ row.
       Anchor any guarded phrase on one physical line, column 0 where it is a
       field — LESSONS M60/M78/M80 — and re-run the skills suite after any
       rewording near a registered block.
-- [ ] T3. Extend `TestTemplateProducesAValidPage` to split each template's
+- [x] T3. Extend `TestTemplateProducesAValidPage` to split each template's
       `Extraction:` field on the `|` bar, build one page per alternative, and
       assert the real `_last_verified` state for each; add the non-vacuity
       guard that the unchosen whole-template form collapses to
@@ -97,6 +97,7 @@ row.
 - 2026-07-18: created by /milestone-plan. Promoted from the "References note-template vocabulary" candidate; the plan gate superseded that row's list-the-phrases framing with a shape rule after investigation found M83's parser is generative, and folded in the live pairing-test gap (instantiated templates classify `ambiguous` / `exempt`).
 - 2026-07-18: T1 baseline via the real `_last_verified` — unchosen: source `ambiguous`, synthesis `exempt`; each chosen alternative: source `ok`/`never`, synthesis `ok`/`exempt`/`ok`, all as their wording intends; all four shipped forms `ok`. The templates are correct once a choice is made; only the unchosen form collapses.
 - 2026-07-18: T2 wrote the shape rule into both templates' comment headers (not body prose — M80 F2: a page authored from the template must not commit a sentence about a test guard). Both templates now state the three-way shape, name the verb set and clause-scoped negation, and say the alternatives are examples rather than the accepted list. Three suites + validate exit 0.
+- 2026-07-18: T3 added `TestEachSanctionedStatusClassifies` (3 tests) — it selects each alternative the `<a | b | c>` field offers, builds a page from it, and asserts the real `_last_verified` state against an INTENT table, so a new alternative matching no entry fails rather than passing unexamined. Landed in a new class rather than extending `TestTemplateProducesAValidPage`, whose subject is the existence checkers; falsified by mutation (swapping one alternative for unreadable wording failed all 3, restored green).
 
 ## Decisions
 
