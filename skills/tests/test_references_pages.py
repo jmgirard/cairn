@@ -553,14 +553,19 @@ class TestUnlistedShippedFormsSatisfyTheShapeRule(
 ):
     """M85 AC4 — the vocabulary the repo writes, which neither template lists.
 
-    The M85 candidate row's original framing was that these four forms should
+    The M85 candidate row's original framing was that these forms should
     be ADDED to the templates as accepted phrases. The plan gate rejected
     that: M83's classifier reads a shape (a verification verb, a date, or an
-    explicit nothing-to-re-verify), not a whitelist, so enumerating four more
-    phrases would re-open the same gap at the fifth. What the templates teach
-    instead is the shape — and what this class proves is that the shape rule
-    is honest, by classifying the four unlisted forms through the real
-    classifier and showing each is already readable.
+    explicit nothing-to-re-verify), not a whitelist, so enumerating more
+    phrases would re-open the same gap at the next one. What the templates
+    teach instead is the shape — and what this class proves is that the shape
+    rule is honest, by classifying each unlisted form through the real
+    classifier and showing it is already readable.
+
+    The list shrinks as the corpus changes: M85 opened with four forms and
+    M91 retired one by re-reading the pages that wrote it, which is the
+    removal rule below working rather than a gap. Count the tuples; this
+    prose deliberately names no total.
 
     Sharing the mixin above is deliberate: these forms must be judged by
     exactly the machinery that judges the template's own alternatives.

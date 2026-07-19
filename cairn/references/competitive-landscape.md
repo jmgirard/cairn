@@ -2,7 +2,7 @@
 
 **Provenance.** Citekey `competitive-landscape` · ingested 2026-07-11 by M06 from synthesis note — its inputs are the eight per-system pages in this directory (feature-dev, claude-md-management, anthropic-code-review, ccpm, spec-kit, task-master, bmad-method, backlog-meridian).
 Pagination: —.
-Extraction: derived — no external source of its own; its claims are only as current as the eight input pages. Four of those inputs have since been re-read against their sources: task-master at M83 (2026-07-18), and spec-kit, bmad-method and backlog-meridian at M91 (2026-07-19); the conclusions below were walked against those corrections on 2026-07-19. The other four (feature-dev, claude-md-management, anthropic-code-review, ccpm) still rest on their 2026-07-11 reading — observed 2026-07-19.
+Extraction: derived — no external source of its own, only as current as its eight input pages; four of them (task-master at M83, and spec-kit, bmad-method and backlog-meridian at M91) have since been re-read against their sources and this page's conclusions walked against the corrections, but the other four — feature-dev, claude-md-management, anthropic-code-review, ccpm — have none re-read since 2026-07-11, which is therefore how current this page is. Dates and per-conclusion dispositions are in the M91 reconciliation below — observed 2026-07-19.
 
 *(M06, corrected M91: this status previously said the eight inputs had
 "none re-read since 2026-07-11", which M83's task-master re-read had
@@ -66,8 +66,11 @@ say "change control + project memory for agent-driven development",
 not generic "project tracking".
 
 *M91 reconciliation (2026-07-19).* Each conclusion above was walked
-against the four re-read inputs. **1** unaffected — all four systems
-still keep state in markdown. **2** corrected in wording only; the
+against the four re-read inputs. **1** unaffected — BMAD, spec-kit and
+Backlog.md still keep state in markdown and Task Master still keeps its
+in JSON, which is what the differentiator asserts; ccpm was not re-read,
+and nothing in the four that were disturbs the conclusion. **2**
+corrected in wording only; the
 conclusion stands. **3** corrected and *strengthened* — Backlog.md
 requires no evidence citation. **4** unaffected — nothing in the
 re-read sources gestures at domain verification doctrine. **5**

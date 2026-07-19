@@ -117,6 +117,7 @@ of it; a parser defect found here is reported and routed, not fixed inline.
 - 2026-07-19: `TestUnlistedShippedFormsSatisfyTheShapeRule.FORMS` dropped its `partly verified at ingestion` entry — M91 retired that form from the corpus, and the class's own rule is that a form no page writes must fail rather than sit there as a phrase templates are measured against. `partial` keeps its dedicated parser coverage in scripts/tests. Advisory now OK (0); suites green (each exit checked).
 - 2026-07-19: T4 done — competitive-landscape's false "none re-read since 2026-07-11" corrected (M83's task-master re-read had falsified it the same day it was dated). All five differentiators walked against the corrections and their dispositions recorded on the page: #2 corrected in wording, #3 corrected and strengthened (Backlog.md requires no evidence citation), #1/#4/#5 unaffected.
 - 2026-07-19: T5 done — advisory `references staleness` WARN (3) → OK (0); per-page states proven by running TestShippedPageStateLedger against the live pages, not by reading status wording. All three suites exit 0, checked separately; cairn_validate exits 0 with every CHECK PASS.
+- 2026-07-19: review fan-out — blame-history 0 findings, prior-PR 0 findings (no prior-PR evidence exists: 11 merged PRs, zero comments), diff-bug 6 scored 88/85/80/78/62/45. Fixed F4/F3/F2 (actioned) plus F1 against its 78 score; rejected F5/F6 with reasons. All fixes verified by command; suites and validate green after.
 - 2026-07-19: AC3 amended via the step-6 gate — its premise ("both moved under templates/commands/ since ingestion", "constitution.md now resolves to two candidate paths") was false: `git log --follow` puts templates/commands/specify.md at that path since the initial checkin 2025-08-22, and the second constitution.md hit is a different file (.specify/memory/). The M06 page cited bare filenames. Criterion reworded to the checkable requirement; required work unchanged.
 
 ## Decisions
@@ -166,3 +167,47 @@ needed. Evidence is the classifier's own output, not a reading of the wording.
 **AC6 — verify slot clean.** Three suites run from the repo root with exit codes
 checked separately, never piped: skills 420 tests exit 0, scripts 196 exit 0,
 hooks 72 exit 0.
+
+**Independent review — 3 lenses + scorer.** Blame-history: zero findings; it
+verified M89 left the WARNs as a stated TODO rather than a design commitment,
+that the FORMS removal is the documented trigger in that class's own docstring,
+and that nothing IP4 classifies as history was edited. Prior-PR: zero findings
+and **no prior-PR evidence exists** — zero inline comments and zero review
+bodies across all 11 merged PRs touching these files; it fell back to the
+archived `## Review` sections (M78/M79/M81/M83/M85/M87/M89) and found nothing
+regressed. Diff-bug (Opus): 6 findings, scored 88/85/80/78/62/45.
+
+*Actioned (≥80), all fixed on the branch:*
+- **F4 (88)** — the derived page's status restarted its 180-day staleness clock
+  at 2026-07-19 though only four of its eight inputs were re-read: structurally
+  the false-green shape M89 exists to prevent. Rewritten to the template's
+  derived form so it ages from `none re-read since 2026-07-11`, the oldest
+  input reading. Proven by running `_last_verified` directly: the page now
+  returns `('ok', 2026-07-11)` while the three genuinely re-read pages keep
+  2026-07-19.
+- **F3 (85)** — `TestUnlistedShippedFormsSatisfyTheShapeRule`'s docstring still
+  said "four forms" after the list dropped to three: the very staleness the
+  class exists to catch, one level up. Docstring now states the removal rule
+  and deliberately names no total, so the next removal cannot re-stale it.
+- **F2 (80)** — the reconciliation justified differentiator 1 with "all four
+  systems still keep state in markdown", false under both readings (Task Master
+  is JSON; ccpm was not re-read). Rewritten to name each system and its actual
+  storage, and to say plainly that ccpm was not re-read. The conclusion itself
+  was unaffected; only its stated justification was wrong.
+
+*Below threshold (logged, not silently dropped):*
+- **F1 (78)** — fixed anyway, against the score. The diff added "now a separate
+  installable repo" to the Test Architect claim, asserting drift never verified
+  against the source, in the milestone whose whole purpose is removing
+  unverified claims from these pages (the M78 pattern). The unverified
+  qualifier is removed, restoring M06's still-accurate wording, and the status
+  now says explicitly that its third mark records a propagated correction
+  rather than a third wrong claim.
+- **F5 (62)** — `competitive-landscape.md`'s `Sources:` line still reads
+  2026-07-11 while sibling pages gained re-read dates. Rejected: for a derived
+  page that line lists internal page names, not an external repo and commit, so
+  2026-07-11 remains the correct derivation date.
+- **F6 (45)** — the reconciliation paragraph dates itself at its head rather
+  than stamping each claim about another page's state. Rejected: no page in the
+  corpus stamps individual body claims, and the paragraph is already headed
+  with its date.
