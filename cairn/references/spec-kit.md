@@ -2,18 +2,22 @@
 
 **Provenance.** Citekey `spec-kit` · ingested 2026-07-11 by M06 from https://github.com/github/spec-kit.
 Pagination: —.
-Extraction: partly verified at ingestion — key claims checked against a clone (`specify.md:124-128`, `constitution.md:87`, `plan-template.md:39,106`); not re-read since — observed 2026-07-18.
+Extraction: verified 2026-07-19 against a fresh shallow clone at spec-kit 0.13.1.dev0 (commit `57cc518`, 2026-07-18; latest release 0.13.0, 2026-07-17) — every claim below re-read against source and all held; the three citations gained their full paths and the command inventory was completed, neither being a correction to a claim. The M06 first pass checked three claims and git holds that prior status — observed 2026-07-19.
 
-Source: https://github.com/github/spec-kit (studied 2026-07-11; [S]
-subagent study, key claims verified against clone: specify.md:124-128,
-constitution.md:87, plan-template.md:39,106).
+Source: https://github.com/github/spec-kit (studied 2026-07-11, re-read
+2026-07-19; citations `templates/commands/specify.md:124-128`,
+`templates/commands/constitution.md:87`,
+`templates/plan-template.md:39,106` — all three still exact).
 
 ## What it is
 
 GitHub's spec-driven development toolkit: a `specify` CLI bootstraps
-`.specify/` (constitution, templates, scripts) and renders ~10 slash
-commands per agent (30+ agents supported): constitution → specify →
-clarify → plan → tasks → analyze → implement → converge. Specs are meant
+`.specify/` (constitution, templates, scripts) and renders 10 slash
+commands per agent (30+ agents supported), namespaced `/speckit.*`. The
+pipeline is constitution → specify → clarify → plan → tasks → analyze →
+implement → converge; two further commands sit outside it (`checklist`,
+a custom per-feature checklist generator, and `taskstoissues`, which
+converts tasks into dependency-ordered GitHub issues). Specs are meant
 to *generate* code, not merely guide it.
 
 ## Workflow model

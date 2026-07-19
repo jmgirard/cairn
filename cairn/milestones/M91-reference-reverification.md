@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M91: Reference re-verification — the three partial extractions get read against their sources
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP4, GP2   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m91-reference-reverification` · https://github.com/jmgirard/cairn/pull/90   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -42,26 +42,26 @@ of it; a parser defect found here is reported and routed, not fixed inline.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] Every factual claim in each of the three pages has been read against a
+- [x] Every factual claim in each of the three pages has been read against a
       fresh clone of its source; each page's extraction status names the
       pinned version (tag, release, or commit SHA) and the date checked.
-- [ ] Every claim found false is corrected in place and marked in the M83
+- [x] Every claim found false is corrected in place and marked in the M83
       style (`(M06, corrected M91)`), with git holding the original; no claim
       is deleted to avoid correcting it.
-- [ ] `spec-kit.md`'s three cited paths are re-anchored to their current
-      locations or the claims resting on them are corrected — `specify.md`
-      and `constitution.md` have both moved under `templates/commands/` since
-      ingestion, and `constitution.md` now resolves to two candidate paths.
-- [ ] `competitive-landscape.md`'s false "none re-read since 2026-07-11"
+- [x] `spec-kit.md`'s three citations are re-anchored from bare filenames to
+      full repository paths, and each line anchor is re-checked against the
+      current source; where an anchor no longer resolves, the claim resting
+      on it is corrected.
+- [x] `competitive-landscape.md`'s false "none re-read since 2026-07-11"
       claim is corrected, and every conclusion resting on a fact corrected by
       T1–T3 is revisited — each either updated or explicitly recorded as
       unaffected.
-- [ ] `cairn_validate` is run and its `references staleness` output recorded
+- [x] `cairn_validate` is run and its `references staleness` output recorded
       before and after; each rewritten status classifies as authored, proven
       by that command output naming the per-page state rather than by reading
       the status wording. Honest status is the bar: a page still WARNing
       ships with a stated reason its true status warrants the warning.
-- [ ] The `verify` slot is clean — all three suites green
+- [x] The `verify` slot is clean — all three suites green
       (`skills/tests`, `scripts/tests`, `hooks/tests`), each exit code
       checked separately.
 
@@ -80,27 +80,27 @@ of it; a parser defect found here is reported and routed, not fixed inline.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — `spec-kit.md`: clone github/spec-kit, pin the version, re-read all
+- [x] T1 — `spec-kit.md`: clone github/spec-kit, pin the version, re-read all
       claims (the `specify`/`constitution`/`plan-template` citations, the
       ~10-command list, the `[NEEDS CLARIFICATION]` cap of 3, the
       Constitution Check gate, `/analyze` and `/converge` behavior). Correct
       and mark; rewrite the status. HEAD was 2026-07-18 at 0.13.1.dev0 with
       0.13.0 released 2026-07-17, so drift is expected, not hypothetical.
-- [ ] T2 — `bmad-method.md`: clone bmad-code-org/BMAD-METHOD, pin the
+- [x] T2 — `bmad-method.md`: clone bmad-code-org/BMAD-METHOD, pin the
       version, re-read all claims (the four phases, `sprint-status.yaml` as
       state-machine ledger, section-level write permissions, the adversarial
       review agent, `bmad-help` routing). Correct and mark; rewrite the
       status. Note the page cites a V6 clone — confirm the current major.
-- [ ] T3 — `backlog-meridian.md`: two repos, MrLesk/Backlog.md and
+- [x] T3 — `backlog-meridian.md`: two repos, MrLesk/Backlog.md and
       markmdev/meridian. Re-read both halves (Backlog.md's per-task files,
       `<!-- AC:BEGIN/END -->` fencing, three staged guides; Meridian's
       SessionStart/PreCompact re-injection, the blocking Stop hook at
       `scripts/stop-checklist.py:69`, the reviewer-score plan gate). Correct
       and mark; rewrite the status naming both pinned versions.
-- [ ] T4 — `competitive-landscape.md`: correct the false re-read claim, then
+- [x] T4 — `competitive-landscape.md`: correct the false re-read claim, then
       walk each numbered differentiator against the corrections from T1–T3
       and record the disposition of each.
-- [ ] T5 — run `cairn_validate` and the three suites from the repo root,
+- [x] T5 — run `cairn_validate` and the three suites from the repo root,
       checking each exit code separately (never piped — M56/M78 lesson).
       Record the advisory's before/after output. If a rewritten status
       classifies differently than authored, fix the wording, not the
@@ -110,6 +110,15 @@ of it; a parser defect found here is reported and routed, not fixed inline.
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
 
 - 2026-07-19: created by /milestone-plan. Follows through on M89, whose archive records the three WARNs as true positives needing "a re-read of three external clones". Four gate answers: re-read against current source (M83 precedent), synthesis note in scope, steal lists frozen except where a corrected fact breaks one, honest status over zero-warnings.
+- 2026-07-19: T1 done — spec-kit re-read at 0.13.1.dev0 (commit 57cc518). Every claim held; zero corrections. All three line anchors still exact (specify.md:128, constitution.md:87, plan-template.md:39,106); citations re-anchored to full paths and the command inventory completed (10 templates, `/speckit.*` namespace, `checklist`/`taskstoissues` added).
+- 2026-07-19: `TestShippedPageStateLedger.EXPECTED` updated spec-kit.md `partial` → `ok` per the ledger's own deliberate-update protocol — the page was re-read in full against its source, so the classification change is the intended result, not parser drift. Suites green (skills/scripts/hooks all exit 0, checked separately).
+- 2026-07-19: T2 done — bmad-method re-read at v6.10.0 (commit c23f234); still the V6 line, cited sprint-planning SKILL.md:8 still exact. Two claims wrong, corrected in place and marked: (a) "Quick Flow" was removed (removals.txt; CHANGELOG #2177/#2179/#2186 consolidated the personas into the Developer agent), its role now filled by `bmad-quick-dev`; (b) `bmad-help` is NOT auto-run at every workflow end — 1 of 26 non-agent skills invokes it at close, and it is otherwise user-invoked. Correction (b) undercut the "BMAD validates the pattern" steal, which is rewritten per the gate's break-a-steal rule. Ledger bmad-method.md `partial` → `ok`; suites green (each exit checked).
+- 2026-07-19: T3 done — Backlog.md re-read at v1.48.0 (commit babd1d2), Meridian at commit d9b8775 (dormant since 2026-03-10). Meridian: all claims held, `scripts/stop-checklist.py:69` still the exact line returning `"decision": "block"`, plan-reviewer 9+ gate exact. Backlog.md: three lifecycle claims wrong and corrected — the three staged guides are now one `agent-guidelines.md` with Creation/Implementation/Wrap-up phases; the agent is instructed to check its own ACs and set Done (not forbidden); and follow-up tasks are an offered route, not gated on user approval. The evidence-before-checkbox steal rested on the corrected finalization rule and is rewritten as cairn's own extension.
+- 2026-07-19: `TestUnlistedShippedFormsSatisfyTheShapeRule.FORMS` dropped its `partly verified at ingestion` entry — M91 retired that form from the corpus, and the class's own rule is that a form no page writes must fail rather than sit there as a phrase templates are measured against. `partial` keeps its dedicated parser coverage in scripts/tests. Advisory now OK (0); suites green (each exit checked).
+- 2026-07-19: T4 done — competitive-landscape's false "none re-read since 2026-07-11" corrected (M83's task-master re-read had falsified it the same day it was dated). All five differentiators walked against the corrections and their dispositions recorded on the page: #2 corrected in wording, #3 corrected and strengthened (Backlog.md requires no evidence citation), #1/#4/#5 unaffected.
+- 2026-07-19: T5 done — advisory `references staleness` WARN (3) → OK (0); per-page states proven by running TestShippedPageStateLedger against the live pages, not by reading status wording. All three suites exit 0, checked separately; cairn_validate exits 0 with every CHECK PASS.
+- 2026-07-19: review fan-out — blame-history 0 findings, prior-PR 0 findings (no prior-PR evidence exists: 11 merged PRs, zero comments), diff-bug 6 scored 88/85/80/78/62/45. Fixed F4/F3/F2 (actioned) plus F1 against its 78 score; rejected F5/F6 with reasons. All fixes verified by command; suites and validate green after.
+- 2026-07-19: AC3 amended via the step-6 gate — its premise ("both moved under templates/commands/ since ingestion", "constitution.md now resolves to two candidate paths") was false: `git log --follow` puts templates/commands/specify.md at that path since the initial checkin 2025-08-22, and the second constitution.md hit is a different file (.specify/memory/). The M06 page cited bare filenames. Criterion reworded to the checkable requirement; required work unchanged.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -118,3 +127,87 @@ of it; a parser defect found here is reported and routed, not fixed inline.
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. -->
+
+**Consistency gate (2026-07-19).** `cairn_validate` exit 0 — every CHECK PASS,
+every advisory OK, including `coverage complete` and `references staleness`.
+Profile is `generic`, whose `consistency-gate` slot names no toolchain checks:
+clean no-op. No `DESIGN.md` principle changed, so `cairn_impact` was skipped.
+
+**AC1 — every claim re-read; status names pinned version + date.** Each status
+line carries `verified 2026-07-19` plus a pinned source: spec-kit 0.13.1.dev0
+commit `57cc518`; bmad-method v6.10.0 commit `c23f234`; backlog-meridian
+Backlog.md v1.48.0 commit `babd1d2` and Meridian commit `d9b8775`. Extracted by
+command from line 5 of each page.
+
+**AC2 — false claims corrected in place and marked.** `corrected M91` marks:
+bmad-method 3, backlog-meridian 2, competitive-landscape 4, spec-kit 0. The
+spec-kit zero is the honest result, not a gap — no claim on that page was found
+false, and the criterion requires marks only for claims found false. Spot-checked
+that no claim was deleted rather than corrected: each mark quotes the superseded
+wording inline, so the original stays legible per D-045.
+
+**AC3 — citations re-anchored, anchors re-checked.** All four anchors resolve
+exactly against the pinned clone: `templates/commands/specify.md:128` (the
+`LIMIT: Maximum 3` line), `templates/commands/constitution.md:87` (Sync Impact
+Report), `templates/plan-template.md:39` (Constitution Check) and `:106`
+(Complexity Tracking). None had moved, so no dependent claim needed correcting.
+
+**AC4 — synthesis note reconciled.** The false "none re-read since 2026-07-11"
+no longer appears as a live claim; it survives only quoted inside the correction
+note, which is the D-045 convention. All five differentiators carry a recorded
+disposition: 1 unaffected, 2 corrected in wording, 3 corrected and strengthened,
+4 unaffected, 5 unaffected and re-confirmed.
+
+**AC5 — classification proven by command.** Ran the real `_last_verified`
+classifier over every committed page. The four M91 pages return `ok` dated
+2026-07-19; the advisory reports `OK references staleness`, from WARN (3) at the
+branch point. No page still warns, so the honest-status escape clause was not
+needed. Evidence is the classifier's own output, not a reading of the wording.
+
+**AC6 — verify slot clean.** Three suites run from the repo root with exit codes
+checked separately, never piped: skills 420 tests exit 0, scripts 196 exit 0,
+hooks 72 exit 0.
+
+**Independent review — 3 lenses + scorer.** Blame-history: zero findings; it
+verified M89 left the WARNs as a stated TODO rather than a design commitment,
+that the FORMS removal is the documented trigger in that class's own docstring,
+and that nothing IP4 classifies as history was edited. Prior-PR: zero findings
+and **no prior-PR evidence exists** — zero inline comments and zero review
+bodies across all 11 merged PRs touching these files; it fell back to the
+archived `## Review` sections (M78/M79/M81/M83/M85/M87/M89) and found nothing
+regressed. Diff-bug (Opus): 6 findings, scored 88/85/80/78/62/45.
+
+*Actioned (≥80), all fixed on the branch:*
+- **F4 (88)** — the derived page's status restarted its 180-day staleness clock
+  at 2026-07-19 though only four of its eight inputs were re-read: structurally
+  the false-green shape M89 exists to prevent. Rewritten to the template's
+  derived form so it ages from `none re-read since 2026-07-11`, the oldest
+  input reading. Proven by running `_last_verified` directly: the page now
+  returns `('ok', 2026-07-11)` while the three genuinely re-read pages keep
+  2026-07-19.
+- **F3 (85)** — `TestUnlistedShippedFormsSatisfyTheShapeRule`'s docstring still
+  said "four forms" after the list dropped to three: the very staleness the
+  class exists to catch, one level up. Docstring now states the removal rule
+  and deliberately names no total, so the next removal cannot re-stale it.
+- **F2 (80)** — the reconciliation justified differentiator 1 with "all four
+  systems still keep state in markdown", false under both readings (Task Master
+  is JSON; ccpm was not re-read). Rewritten to name each system and its actual
+  storage, and to say plainly that ccpm was not re-read. The conclusion itself
+  was unaffected; only its stated justification was wrong.
+
+*Below threshold (logged, not silently dropped):*
+- **F1 (78)** — fixed anyway, against the score. The diff added "now a separate
+  installable repo" to the Test Architect claim, asserting drift never verified
+  against the source, in the milestone whose whole purpose is removing
+  unverified claims from these pages (the M78 pattern). The unverified
+  qualifier is removed, restoring M06's still-accurate wording, and the status
+  now says explicitly that its third mark records a propagated correction
+  rather than a third wrong claim.
+- **F5 (62)** — `competitive-landscape.md`'s `Sources:` line still reads
+  2026-07-11 while sibling pages gained re-read dates. Rejected: for a derived
+  page that line lists internal page names, not an external repo and commit, so
+  2026-07-11 remains the correct derivation date.
+- **F6 (45)** — the reconciliation paragraph dates itself at its head rather
+  than stamping each claim about another page's state. Rejected: no page in the
+  corpus stamps individual body claims, and the paragraph is already headed
+  with its date.

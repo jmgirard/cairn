@@ -553,14 +553,19 @@ class TestUnlistedShippedFormsSatisfyTheShapeRule(
 ):
     """M85 AC4 — the vocabulary the repo writes, which neither template lists.
 
-    The M85 candidate row's original framing was that these four forms should
+    The M85 candidate row's original framing was that these forms should
     be ADDED to the templates as accepted phrases. The plan gate rejected
     that: M83's classifier reads a shape (a verification verb, a date, or an
-    explicit nothing-to-re-verify), not a whitelist, so enumerating four more
-    phrases would re-open the same gap at the fifth. What the templates teach
-    instead is the shape — and what this class proves is that the shape rule
-    is honest, by classifying the four unlisted forms through the real
-    classifier and showing each is already readable.
+    explicit nothing-to-re-verify), not a whitelist, so enumerating more
+    phrases would re-open the same gap at the next one. What the templates
+    teach instead is the shape — and what this class proves is that the shape
+    rule is honest, by classifying each unlisted form through the real
+    classifier and showing it is already readable.
+
+    The list shrinks as the corpus changes: M85 opened with four forms and
+    M91 retired one by re-reading the pages that wrote it, which is the
+    removal rule below working rather than a gap. Count the tuples; this
+    prose deliberately names no total.
 
     Sharing the mixin above is deliberate: these forms must be judged by
     exactly the machinery that judges the template's own alternatives.
@@ -581,13 +586,14 @@ class TestUnlistedShippedFormsSatisfyTheShapeRule(
             r"^verified at ingestion",
             "ok",
         ),
-        (
-            "partly verified at ingestion — the sprint-status claim was "
-            "checked against `bmad-sprint-planning/SKILL.md:8`; the rest is "
-            "an [S] subagent study, not re-read since",
-            r"^partly verified at ingestion",
-            "partial",
-        ),
+        # The `partly verified at ingestion` form was retired from the corpus
+        # by M91, which re-read all three pages that wrote it against their
+        # sources; no committed page carries it any more, so per this class's
+        # own rule it stops being a phrase the templates are measured against.
+        # The classifier's reading of it is not lost — `partial` keeps its
+        # dedicated coverage in scripts/tests/test_scripts.py
+        # (test_partly_verified_pages_report_partial_not_ok and the three
+        # fixtures beside it), which is where the state was proven to begin with.
         (
             "read against the ackwards artifacts at assessment time; the "
             "assessed repo has moved on independently since, so the "
