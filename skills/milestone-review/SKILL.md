@@ -193,9 +193,10 @@ overrides — log the override).
    existing lesson (tracking-rules "Retiring a lesson that no longer earns its
    line"): a test that now **fails on the mistake a lesson warns about** retires
    it, as does content another file's slot now owns; a partly-covered lesson is
-   trimmed to its uncovered remainder. **Scope this to what the milestone
-   shipped — never re-sweep every lesson.** Delete the retired line and name
-   what was graduated in the archive summary; nothing else records it.
+   trimmed to its uncovered remainder.
+   **Scope this to what the milestone shipped — never re-sweep every lesson.**
+   Delete the retired line and name what was graduated in the archive summary;
+   nothing else records it.
    Retirement runs before the cap bites, and only if it cannot free the budget
    is the 50-line cap met by pruning the stalest lines in this same commit.
    Durable-record preview (tracking-rules): show the archive summary,

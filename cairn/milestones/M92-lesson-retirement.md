@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M92: Lesson retirement — a lesson leaves LESSONS.md when a guard enforces it or another file owns it
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** GP1, GP4
@@ -93,11 +93,11 @@ alone do not reach the bar.
 - [x] T4: Correct `cairn/LESSONS.md`'s own header prose, which currently teaches
       the 50-line prune as the file's only outflow — a third encoding of the
       rule, the shape M87/F1 caught teaching a retired number.
-- [ ] T5: Extend `skills/tests/test_lessons_loop.py` with the retirement guard:
+- [x] T5: Extend `skills/tests/test_lessons_loop.py` with the retirement guard:
       label-inclusive asserts (M74), word-bounded `assertRegex` where a new name
       could be a substring of an existing anchor (M60/M80/M85), target read
       per-test rather than cached in `setUpClass` (M61).
-- [ ] T6: Register the new blocks in `skills/tests/test_mutation_harness.py` —
+- [x] T6: Register the new blocks in `skills/tests/test_mutation_harness.py` —
       one entry per new positive assertion, not one per file (M53) — and run the
       driver to confirm each blanked block reddens.
 - [x] T7: First application pass: evaluate all 49 lessons against both criteria,
@@ -108,7 +108,7 @@ alone do not reach the bar.
       criterion to fit; D-015's prune-by-age stays the untouched last resort. Use
       targeted `Edit` calls, never a bulk string script (M61), and never
       `replace_all` on a line whose indentation varies (M90).
-- [ ] T8: Run all three suites and `cairn_validate` from the repo root, checking
+- [x] T8: Run all three suites and `cairn_validate` from the repo root, checking
       each exit code explicitly (M56/M65); grep every word the new prose adds
       against the anchors existing guards assert on (M85).
 
@@ -117,6 +117,7 @@ alone do not reach the bar.
 - 2026-07-19: created by /milestone-plan.
 - 2026-07-19: in-progress on `m92-lesson-retirement`, cut from main at 16289bf.
 - 2026-07-19: step-3 gate amended Scope + AC1 + T7 — ownership permits MOVING content to its owner (not duplication-only), a partly-covered lesson is trimmed to its uncovered remainder, and consolidation (not D-015 prune) is AC5's headroom fallback. Preliminary sweep showed strict enforcement alone retires ~0 lessons, putting AC5 at risk; user chose all three recommendations.
+- 2026-07-19: T5+T6+T8 — `TestLessonRetirement` added (11 asserts, label-inclusive, targets read per-test); 11 mutation entries registered, driver blanks all 20 `test_lessons_loop` blocks green. Verified by INVERSION beyond blanking (M74): transposing retirement/correction, softening `fails`→`exists`, relabelling ownership→enforcement, and inverting the re-sweep rule each redden. One anchor was authored wrapped and the WRAP was fixed, not the assert. Suites 431/196/72, validate exit 0 no FAIL/WARN; no existing guard anchors bare on the new vocabulary (M85).
 - 2026-07-19: T7 — application pass over 35 lessons: 2 retired by ownership (M16 no-CI → PROFILE consistency-gate; M32 pytest/unittest → PROFILE verify + test-doctrine), 2 trimmed to uncovered remainder by enforcement (M53, M58+M59+M64+M65), 3 pairs consolidated as the AC5 fallback (M72, M87, M71). Strict enforcement retired nothing outright, confirming the step-3 gate's premise. LESSONS 52→47 lines (headroom 2) and 20,637→19,640 chars (headroom 860); AC5 met, all three suites + validate green.
 - 2026-07-19: T3+T4 — retirement wired into review hygiene beside capture (scoped to what shipped, prune demoted to last resort); LESSONS header corrected. First header draft restated the whole rule and cost 6 of a zero-headroom budget — compressed to a 3-line pointer (171 chars), since tracking-rules owns the substance. LESSONS is intentionally over both caps (52 lines / 20,637 chars) until T7's pass frees budget. Task order: T7 moved ahead of T5/T6 to close that window in one commit.
 - 2026-07-19: T2 — rule written into tracking-rules beside "Correcting a record proven false" (the contrast D-051 turns on) + the LESSONS file-map row; 7 anchors verified unique and unwrapped; `archive summary`/`post-merge hygiene` each gained an occurrence, checked against every guard anchor (M85) — both existing guards use longer phrases, no degradation.
