@@ -184,11 +184,9 @@ takes a D-entry, and its number stays retired.
   the project is pre-1.0 and the user explicitly waives it; the active
   profile names the language's deprecation mechanics.
 - **Release timing is user-declared, never agent-proposed** (D-050). cairn never proposes a release, never plans a release milestone unprompted, and never nominates one as the next action.
-  A release's readiness condition is a maintainer judgment about when to ship —
-  never a dependency graph going green, which says only that the *bundle* is
-  complete. So a release milestone whose window the maintainer has not opened
-  is parked as `blocked`, where no routing surface nominates it, and it stays
-  parked until the maintainer opens the window. The release *act* is already
+  A release's readiness condition is a maintainer judgment about when to ship, never a dependency graph going green — deps going green says only that the *bundle* is complete.
+  So a release milestone whose window the maintainer has not opened is parked as `blocked`, where no routing surface nominates it.
+  It stays parked until the maintainer opens the window. The release *act* is already
   user-triggered — `/cairn-release` never self-submits — and this rule extends
   the same authority upstream, to whether the release is even queued.
 - **Tracking files outrank memory.** Claude's persistent memory never holds

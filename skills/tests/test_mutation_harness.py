@@ -74,6 +74,89 @@ REGISTRY = [
         target="skills/shared/templates/milestone.md",
         block="## Coverage",
     ),
+    # M88 (D-050): release timing is the maintainer's to declare. Three
+    # surfaces carry the rule independently — the governance rule, the
+    # `blocked` widening plus its transitions, and the two skills that would
+    # otherwise nominate a release — so each protected block gets its own
+    # mutation proof (M53 per-block discipline).
+    Mutation(
+        guard="test_release_timing",
+        test="TestReleaseTimingRule.test_rule_states_who_declares_release_timing",
+        target=RULES,
+        block="Release timing is user-declared, never agent-proposed",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestReleaseTimingRule.test_rule_forbids_all_three_agent_initiatives",
+        target=RULES,
+        block="never proposes a release, never plans a release milestone unprompted, and never nominates one as the next action",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestReleaseTimingRule.test_rule_rejects_the_dependency_graph_as_a_readiness_signal",
+        target=RULES,
+        block="a maintainer judgment about when to ship, never a dependency graph going green",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestReleaseTimingRule.test_rule_names_blocked_as_the_parking_state",
+        target=RULES,
+        block="is parked as `blocked`, where no routing surface nominates it",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestBlockedCoversTheReleaseWindow.test_blocked_row_names_the_unopened_release_window",
+        target=RULES,
+        block="a maintainer who has not opened the release window counts",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestBlockedCoversTheReleaseWindow.test_parking_transitions_are_legal_from_both_routable_states",
+        target=RULES,
+        block="`planned → blocked` and `review → blocked` are both legal",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestPlanReleaseTripwire.test_tripwire_is_declared_with_its_authority",
+        target="skills/milestone-plan/SKILL.md",
+        block="Release timing is user-declared, never agent-proposed (tracking-rules; D-050)",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestPlanReleaseTripwire.test_tripwire_default_is_no",
+        target="skills/milestone-plan/SKILL.md",
+        block="the default answer is no — absent a declaration the work lands as a `candidate` row, never as a `planned` milestone",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestPlanReleaseTripwire.test_tripwire_exempts_release_tooling",
+        target="skills/milestone-plan/SKILL.md",
+        block="Work *about* release tooling — a release-walk slot, release docs — is ordinary milestone work, not a release.",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestMilestoneAuditWiring.test_audit_reports_the_warn_without_arguing",
+        target=MILESTONE,
+        block="A `release window` WARN is reported, never argued with.",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestMilestoneAuditWiring.test_audit_refuses_to_treat_the_warn_as_a_prompt_to_ship",
+        target=MILESTONE,
+        block="Never treat it as a prompt to get the release moving.",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestMilestoneAuditWiring.test_route_offers_the_park_option",
+        target=MILESTONE,
+        block="Park M<NN> as `blocked` → the release window is not open",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestMilestoneAuditWiring.test_park_leads_the_chip_when_the_advisory_fired",
+        target=MILESTONE,
+        block="in that case lead the chip with parking rather than with the release milestone `cairn_next` names",
+    ),
     Mutation(
         guard="test_chapter_marker_mandate",
         test="TestChapterMarkerMandate.test_rulebook_declares_the_per_phase_mandate",

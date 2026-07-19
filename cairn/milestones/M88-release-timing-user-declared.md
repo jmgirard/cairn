@@ -111,7 +111,7 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
       (`blocked`, silent), actively released (recent work log, silent), stale
       routable release (WARN), the three tooling-title false-positive fixtures,
       the two true-positive fixtures, and exit-code neutrality on every path.
-- [ ] T6 — `skills/tests/`: prose guards for T1, T2, and T4; register each
+- [x] T6 — `skills/tests/`: prose guards for T1, T2, and T4; register each
       guard *file* in `test_mutation_harness.py` with at least one exemplar
       block, and pair any `assertNotIn` with a positive framing assert
       (LESSONS M53).
@@ -130,6 +130,7 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
 - 2026-07-19: T3 — `release window` advisory added to cairn_validate; AC3 amended at the implement gate (M88-D1) after the planned idle-only rule proved silent on intraclass M48; live-fire: M48 WARNs, circumplex M7 silent (actively shipped), cairn silent; three suites green.
 - 2026-07-19: T4 — /milestone §2 reports the `release window` WARN without arguing with it; §3 gains the park-as-`blocked` chip option, which leads the chip when the advisory fired (cairn_next's own recommendation is the nag in that case).
 - 2026-07-19: T5 — 10 advisory tests added (scripts suite 174->184, all green); verified by inversion — dropping the version requirement turned all three release-tooling-title cases red, then restored.
+- 2026-07-19: T6 — test_release_timing.py adds 13 prose guards over the three surfaces; all 13 blocks registered in the mutation harness and proven load-bearing; reflowed two wrapped anchors onto single lines first (LESSONS M74/M78); M60 duplicate-anchor scan clean.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
