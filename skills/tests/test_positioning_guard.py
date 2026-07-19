@@ -149,9 +149,9 @@ class TestShippedProfilesAreAdvertised(unittest.TestCase):
     def test_manifests_name_every_shipped_profile(self):
         for rel in (PLUGIN, MARKETPLACE):
             text = " ".join(read(rel).split())
-            # Unmapped profiles are the dedicated label test's business; skipping
-        # them here keeps that one failure clean instead of adding KeyErrors.
-        for profile in (p for p in self.shipped() if p in self.LABELS):
+            # Unmapped profiles are the dedicated label test's business;
+            # skipping them here keeps that one failure clean.
+            for profile in (p for p in self.shipped() if p in self.LABELS):
                 self.assertIn(
                     self.LABELS[profile],
                     text,

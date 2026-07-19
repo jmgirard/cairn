@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP2, GP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** `m90-readme-currency`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m90-readme-currency` · https://github.com/jmgirard/cairn/pull/89   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -40,34 +40,34 @@ README ¶1 and both `.claude-plugin` manifests.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1 — README carries a dedicated section on reference pages covering, in
+- [x] AC1 — README carries a dedicated section on reference pages covering, in
       plain words with no milestone numbers or internal jargon: what a page
       records, when one is owed (the repo relies on a source), that a page
       states where it came from and whether it has been re-checked, and that
       the health check warns about pages never checked or long unchecked.
-- [ ] AC2 — README's "What this system deliberately does NOT do" list states
+- [x] AC2 — README's "What this system deliberately does NOT do" list states
       that cairn never proposes, plans, or nominates a release — release
       timing is the maintainer's declaration.
-- [ ] AC3 — README's install section describes the advisory nudges (out-of-band
+- [x] AC3 — README's install section describes the advisory nudges (out-of-band
       idea capture, memory boundary) alongside the blocking guards, so the
       described hook behavior matches what an adopter will actually see fire.
-- [ ] AC4 — A guard reads the shipped profile filenames from
+- [x] AC4 — A guard reads the shipped profile filenames from
       `skills/shared/profiles/` and fails if any shipped profile is absent from
       README ¶1, `.claude-plugin/plugin.json`, or
       `.claude-plugin/marketplace.json`; README ¶1 names all four. Proven by
       running the new guard against `main`'s README (three profiles) and
       requiring red.
-- [ ] AC5 — The `/cairn-release` row in the "Which skill, when" table is
+- [x] AC5 — The `/cairn-release` row in the "Which skill, when" table is
       profile-neutral: no CRAN-only framing on a walk that has been
       profile-driven since 1.0.0.
-- [ ] AC6 — `LESSONS.md` appears in both the directory tree and the boundary
+- [x] AC6 — `LESSONS.md` appears in both the directory tree and the boundary
       rule in "What lives where".
-- [ ] AC7 — No existing README guard anchor is degraded by the new prose:
+- [x] AC7 — No existing README guard anchor is degraded by the new prose:
       each phrase asserted by `test_positioning_guard.py` and
       `test_collaboration_boundary.py` against README is verified still
       uniquely matchable, by inversion (relabel/negate in place, require red,
       restore) — not by eye. Every new prose-guard is mutation-registered.
-- [ ] AC8 — The `generic` profile's `verify` slot is clean: all three
+- [x] AC8 — The `generic` profile's `verify` slot is clean: all three
       `unittest` suites green, and `cairn_validate` exit 0.
 
 ## Coverage
@@ -120,6 +120,7 @@ README ¶1 and both `.claude-plugin` manifests.
 - 2026-07-19: T3–T6 authored the four prose changes; new guard file `skills/tests/test_readme_currency.py` (12 tests across 5 classes), 12 mutation registrations added. The profile-enumeration guard is deliberately NOT mutation-registered — its block is a derived list, so blanking one label leaves three passing; its falsifiability rests on the differential red run and the fail-closed unmapped check instead, recorded in the registry comment.
 - 2026-07-19: T7 anchor sweep — all 7 pre-existing README anchors still occur exactly once (4 raw, 3 against the lowercased read `test_collaboration_boundary.py:36` uses). Verified by inversion, not by eye: relabelling "The guards only watch this session" → "watch every session" reddened its guard, restored green. The mutation suite passing is a second mechanical proof, since `blank_block` raises on any block matching twice.
 - 2026-07-19: verify slot clean at completion — skills 419 / scripts 196 / hooks 72, each exit 0 checked separately (not piped); `cairn_validate` exit 0. Status → review.
+- 2026-07-19: review — draft PR #89 opened; all 8 criteria evidenced fresh; consistency gate clean. Fan-out found 2 defects, both scored ≥80 and both fixed on the branch (F1/96 plugin.json never checked; F2/82 wrong nudge count). Nothing below threshold. Suites re-run after fixes: skills 420 / scripts 196 / hooks 72, each exit 0; `cairn_validate` exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -127,4 +128,76 @@ README ¶1 and both `.claude-plugin` manifests.
 - M90-D1 (plan gate): the profile enumeration becomes a *derived* guard rather than a hand-maintained tuple. README ¶1 went stale at M70 because `test_positioning_guard.py:62-66` pins the framing (`language-agnostic`, `toolchain profile`) but never the list, so shipping a fourth profile left three positioning surfaces green and wrong — the M87 lesson that a number restated in a file's own prose is itself an encoding. A hand-maintained tuple was rejected as the same pattern that just failed. Deriving from `hooks/` on the hook axis stays Out, as its comment already names it a live candidate.
 
 ## Review
+
+**Verified 2026-07-19 · PR #89 · reviewed at `cc298bc`, fixes at `HEAD`.**
+
+### Acceptance-criteria evidence
+
+- **AC1** — `## Keeping track of sources` present with all four required
+  points as separate bullets (owed-when, records-its-own-verification,
+  source-facts-vs-repo-notes, staleness-warns). No milestone numbers or
+  internal jargon in the section. 5 guards in `test_readme_currency.py`.
+- **AC2** — `README.md:251` "Propose, plan, or nominate a release" in the
+  "deliberately does NOT do" list; `:255` "release timing is yours to
+  declare". Consistent with D-050 (verified by the diff-bug lens).
+- **AC3** — install section names each nudge trigger by what fires it.
+  Amended during review: shipped as a wrong COUNT (see F2), now countless
+  and naming all three triggers, each separately mutation-registered.
+- **AC4** — differential: the new guard run against `main`'s README fails
+  `'Docker image' not found ... README ¶1 does not name the docker-image
+  profile`; green on the branch. After F2's fix, re-proven per-surface —
+  breaking `plugin.json` and `marketplace.json` each independently redden
+  it. Fail-closed on an unmapped profile confirmed with a fake profile file
+  (one clean failure).
+- **AC5** — `README.md:127` row reads "Prepare a release … follows your
+  repo's profile"; `| Prepare a CRAN release |` occurs zero times.
+- **AC6** — `README.md:140` tree line, and the boundary rule carries
+  `Lessons → LESSONS` pinned with its full member set on one physical line.
+- **AC7** — 10 anchors (4 raw positioning, 3 lowercased collaboration, 3 new)
+  each occur exactly once. Verified by inversion, not by eye: relabelling
+  "The guards only watch this session" reddened its guard; restored green,
+  no residual diff. The mutation suite passing is a second mechanical proof,
+  since `blank_block` raises on any block matching twice.
+- **AC8** — skills 420 / scripts 196 / hooks 72, each exit 0 checked
+  separately; `cairn_validate` exit 0.
+
+### Consistency gate
+
+`cairn_validate` exit 0, all CHECKs PASS including `coverage complete`.
+Advisories (non-failing): `sizing` WARNs at 8 ACs — accepted at plan, AC8
+being the standard verify-slot criterion; `references staleness` WARNs on 3
+pages that predate this branch and are untouched by it. Profile is `generic`,
+whose `consistency-gate` slot names no toolchain checks — that half is a
+clean no-op. No `DESIGN.md` principle changed, so no impact report.
+
+### Fan-out — 3 lenses + scorer
+
+Diff-bug **[O]** and blame-history **[S]** independently found the same two
+defects, both reproduced by execution. Prior-PR **[S]**: clean no-op — every
+`pulls/{n}/comments`, `/reviews`, and `issues/{n}/comments` call across PRs
+#4, #10, #51, #52, #55, #58, #60, #69, #70, #72, #78 returned empty; this
+repo's review record lives in archived milestone files, not PR threads.
+Nothing scored below 80, so nothing was logged-and-dropped.
+
+**F1 (96) — FIXED.** `test_manifests_name_every_shipped_profile` never
+checked `plugin.json`. The inner `for profile` loop sat at the same
+indentation as the outer `for rel in (PLUGIN, MARKETPLACE)` loop, so it ran
+once after the outer loop finished, against whatever `text` the last
+iteration left bound — `marketplace.json`. `plugin.json` was read and
+discarded. Proven live: stripping two profile labels from `plugin.json` left
+the guard green. Introduced by a `replace_all` edit applying one fixed
+indentation to two methods needing different depths; Python accepted the
+dedent as closing the outer loop. Fixed by nesting; each manifest now
+reddens independently.
+
+**F2 (82) — FIXED.** README claimed "two advisory nudges"; three ship
+(`commit_guard`, `idea_guard`, `memory_guard` — only `merge_guard` and
+`force_push_guard` deny), and `DESIGN.md:55` already states "The three
+nudges are advisory, never blocking." The prose contradicted the
+architecture doc it ships beside and omitted the nudge an adopter is most
+likely to see fire. It was also already mutation-registered, so the wrong
+count was pinned. Fixed by dropping the count entirely and naming all three
+triggers instead: `DESIGN.md` owns that number, and a second encoding of it
+in README is precisely the stale-number trap M90-D1 was written to avoid.
+
 <!-- owner: review · exclusive -->

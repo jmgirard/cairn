@@ -101,10 +101,22 @@ class TestAdvisoryNudges(unittest.TestCase):
     def test_readme_install_section_names_the_advisory_nudges(self):
         # The install section previously listed only blocking guards, so the
         # nudges an adopter actually sees fire were undocumented.
-        self.assertIn("plus two advisory nudges", readme())
+        self.assertIn("and the advisory nudges", readme())
+
+    def test_readme_names_each_nudge_trigger(self):
+        # Named, never counted. DESIGN.md already owns the nudge COUNT
+        # ("The three nudges are advisory"); restating a number here would
+        # make README a second encoding of it — the stale-number trap M90-D1
+        # exists to avoid, and the M87 lesson that prose restating a number
+        # IS an encoding. Review caught this shipping as a wrong count that a
+        # mutation-registered guard would then have pinned in place.
+        text = readme()
+        self.assertIn("when an idea gets captured somewhere other than the", text)
+        self.assertIn("something durable is headed for Claude's memory", text)
+        self.assertIn("when a commit on your default branch reaches outside", text)
 
     def test_readme_says_nudges_never_block(self):
-        self.assertIn("neither of which blocks anything", readme())
+        self.assertIn("none of which block anything", readme())
 
 
 if __name__ == "__main__":

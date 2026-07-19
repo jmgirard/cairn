@@ -53,11 +53,11 @@ Either way, the install includes the guardrail hooks: the blocking ones
 (merge approval, a force-push guard on your default branch), the
 housekeeping ones (session-start tracking re-injection, the
 uncommitted-tracking stop guard),
-plus two advisory nudges
-— one when an idea gets captured somewhere other than the roadmap, one when
+and the advisory nudges
+— when an idea gets captured somewhere other than the roadmap, when
 something durable is headed for Claude's memory instead of your tracking
-files —
-neither of which blocks anything
+files, and when a commit on your default branch reaches outside `cairn/` —
+none of which block anything
 you're doing. They activate at the next session start and are no-ops in
 repos that aren't cairn-tracked.
 

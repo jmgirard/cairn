@@ -1536,13 +1536,33 @@ REGISTRY = [
         guard="test_readme_currency",
         test="TestAdvisoryNudges.test_readme_install_section_names_the_advisory_nudges",
         target="README.md",
-        block="plus two advisory nudges",
+        block="and the advisory nudges",
     ),
     Mutation(
         guard="test_readme_currency",
         test="TestAdvisoryNudges.test_readme_says_nudges_never_block",
         target="README.md",
-        block="neither of which blocks anything",
+        block="none of which block anything",
+    ),
+    # Each nudge trigger registered separately: blanking any ONE must redden,
+    # which a single anchor on the shared preamble would not prove.
+    Mutation(
+        guard="test_readme_currency",
+        test="TestAdvisoryNudges.test_readme_names_each_nudge_trigger",
+        target="README.md",
+        block="when an idea gets captured somewhere other than the",
+    ),
+    Mutation(
+        guard="test_readme_currency",
+        test="TestAdvisoryNudges.test_readme_names_each_nudge_trigger",
+        target="README.md",
+        block="something durable is headed for Claude's memory",
+    ),
+    Mutation(
+        guard="test_readme_currency",
+        test="TestAdvisoryNudges.test_readme_names_each_nudge_trigger",
+        target="README.md",
+        block="when a commit on your default branch reaches outside",
     ),
 ]
 
