@@ -84,7 +84,7 @@ row.
       assert the real `_last_verified` state for each; add the non-vacuity
       guard that the unchosen whole-template form collapses to
       `ambiguous`/`exempt`.
-- [ ] T4. Add the shipped-form classification test covering the four forms in
+- [x] T4. Add the shipped-form classification test covering the four forms in
       AC4, so the vocabulary the repo actually writes is pinned against a
       future parser or template change.
 - [ ] T5. Register the new prose-guard blocks in
@@ -98,6 +98,7 @@ row.
 - 2026-07-18: T1 baseline via the real `_last_verified` — unchosen: source `ambiguous`, synthesis `exempt`; each chosen alternative: source `ok`/`never`, synthesis `ok`/`exempt`/`ok`, all as their wording intends; all four shipped forms `ok`. The templates are correct once a choice is made; only the unchosen form collapses.
 - 2026-07-18: T2 wrote the shape rule into both templates' comment headers (not body prose — M80 F2: a page authored from the template must not commit a sentence about a test guard). Both templates now state the three-way shape, name the verb set and clause-scoped negation, and say the alternatives are examples rather than the accepted list. Three suites + validate exit 0.
 - 2026-07-18: T3 added `TestEachSanctionedStatusClassifies` (3 tests) — it selects each alternative the `<a | b | c>` field offers, builds a page from it, and asserts the real `_last_verified` state against an INTENT table, so a new alternative matching no entry fails rather than passing unexamined. Landed in a new class rather than extending `TestTemplateProducesAValidPage`, whose subject is the existence checkers; falsified by mutation (swapping one alternative for unreadable wording failed all 3, restored green).
+- 2026-07-18: T4 added `TestUnlistedShippedFormsSatisfyTheShapeRule` (3 tests) — the four unlisted forms each classify `ok`, each is still written by a committed page (so the list cannot go fictional), and none is offered by a template (the class premise). Refactored the shared helpers into `StatusClassificationMixin` first: the class had inherited the T3 TestCase, which re-ran its 3 tests under the child's name. Falsified by mutating a shipped page's status prefix. Skills 369 (was 363), scripts 174, hooks 72, validate all exit 0.
 
 ## Decisions
 
