@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M91: Reference re-verification — the three partial extractions get read against their sources
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP4, GP2   <!-- owner: plan · create/amend-via-gate -->
@@ -97,10 +97,10 @@ of it; a parser defect found here is reported and routed, not fixed inline.
       SessionStart/PreCompact re-injection, the blocking Stop hook at
       `scripts/stop-checklist.py:69`, the reviewer-score plan gate). Correct
       and mark; rewrite the status naming both pinned versions.
-- [ ] T4 — `competitive-landscape.md`: correct the false re-read claim, then
+- [x] T4 — `competitive-landscape.md`: correct the false re-read claim, then
       walk each numbered differentiator against the corrections from T1–T3
       and record the disposition of each.
-- [ ] T5 — run `cairn_validate` and the three suites from the repo root,
+- [x] T5 — run `cairn_validate` and the three suites from the repo root,
       checking each exit code separately (never piped — M56/M78 lesson).
       Record the advisory's before/after output. If a rewritten status
       classifies differently than authored, fix the wording, not the
@@ -115,6 +115,8 @@ of it; a parser defect found here is reported and routed, not fixed inline.
 - 2026-07-19: T2 done — bmad-method re-read at v6.10.0 (commit c23f234); still the V6 line, cited sprint-planning SKILL.md:8 still exact. Two claims wrong, corrected in place and marked: (a) "Quick Flow" was removed (removals.txt; CHANGELOG #2177/#2179/#2186 consolidated the personas into the Developer agent), its role now filled by `bmad-quick-dev`; (b) `bmad-help` is NOT auto-run at every workflow end — 1 of 26 non-agent skills invokes it at close, and it is otherwise user-invoked. Correction (b) undercut the "BMAD validates the pattern" steal, which is rewritten per the gate's break-a-steal rule. Ledger bmad-method.md `partial` → `ok`; suites green (each exit checked).
 - 2026-07-19: T3 done — Backlog.md re-read at v1.48.0 (commit babd1d2), Meridian at commit d9b8775 (dormant since 2026-03-10). Meridian: all claims held, `scripts/stop-checklist.py:69` still the exact line returning `"decision": "block"`, plan-reviewer 9+ gate exact. Backlog.md: three lifecycle claims wrong and corrected — the three staged guides are now one `agent-guidelines.md` with Creation/Implementation/Wrap-up phases; the agent is instructed to check its own ACs and set Done (not forbidden); and follow-up tasks are an offered route, not gated on user approval. The evidence-before-checkbox steal rested on the corrected finalization rule and is rewritten as cairn's own extension.
 - 2026-07-19: `TestUnlistedShippedFormsSatisfyTheShapeRule.FORMS` dropped its `partly verified at ingestion` entry — M91 retired that form from the corpus, and the class's own rule is that a form no page writes must fail rather than sit there as a phrase templates are measured against. `partial` keeps its dedicated parser coverage in scripts/tests. Advisory now OK (0); suites green (each exit checked).
+- 2026-07-19: T4 done — competitive-landscape's false "none re-read since 2026-07-11" corrected (M83's task-master re-read had falsified it the same day it was dated). All five differentiators walked against the corrections and their dispositions recorded on the page: #2 corrected in wording, #3 corrected and strengthened (Backlog.md requires no evidence citation), #1/#4/#5 unaffected.
+- 2026-07-19: T5 done — advisory `references staleness` WARN (3) → OK (0); per-page states proven by running TestShippedPageStateLedger against the live pages, not by reading status wording. All three suites exit 0, checked separately; cairn_validate exits 0 with every CHECK PASS.
 - 2026-07-19: AC3 amended via the step-6 gate — its premise ("both moved under templates/commands/ since ingestion", "constitution.md now resolves to two candidate paths") was false: `git log --follow` puts templates/commands/specify.md at that path since the initial checkin 2025-08-22, and the second constitution.md hit is a different file (.specify/memory/). The M06 page cited bare filenames. Criterion reworded to the checkable requirement; required work unchanged.
 
 ## Decisions

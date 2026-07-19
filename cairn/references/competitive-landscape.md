@@ -2,7 +2,12 @@
 
 **Provenance.** Citekey `competitive-landscape` · ingested 2026-07-11 by M06 from synthesis note — its inputs are the eight per-system pages in this directory (feature-dev, claude-md-management, anthropic-code-review, ccpm, spec-kit, task-master, bmad-method, backlog-meridian).
 Pagination: —.
-Extraction: derived — no external source of its own; its claims are only as current as the eight input pages, none re-read since 2026-07-11 — observed 2026-07-18.
+Extraction: derived — no external source of its own; its claims are only as current as the eight input pages. Four of those inputs have since been re-read against their sources: task-master at M83 (2026-07-18), and spec-kit, bmad-method and backlog-meridian at M91 (2026-07-19); the conclusions below were walked against those corrections on 2026-07-19. The other four (feature-dev, claude-md-management, anthropic-code-review, ccpm) still rest on their 2026-07-11 reading — observed 2026-07-19.
+
+*(M06, corrected M91: this status previously said the eight inputs had
+"none re-read since 2026-07-11", which M83's task-master re-read had
+already falsified on 2026-07-18 — the correction to an input page had
+not been carried to the page derived from it.)*
 
 Sources: the eight per-system notes in this directory (feature-dev,
 claude-md-management, anthropic-code-review, ccpm, spec-kit,
@@ -21,8 +26,10 @@ grow unboundedly or scatter status across files.
 **2. Status gatekeeping — DEFENDED.** No surveyed system binds status
 transitions to dedicated gatekeeping skills. ccpm and Task Master
 statuses are freely settable writes; BMAD's dev agent self-polices;
-Backlog.md's staged guides are prose. Cairn's "only /milestone-review
-sets done" is unique in kind. Caveat: Meridian proves enforcement can
+Backlog.md's phase discipline is prose (*"staged guides" as M06 wrote
+it — now one consolidated guide; the conclusion is unaffected, the
+discipline is still prose, M06, corrected M91*). Cairn's "only
+/milestone-review sets done" is unique in kind. Caveat: Meridian proves enforcement can
 be *technical* (blocking hooks) rather than conventional — cairn's
 version is currently the weaker form.
 
@@ -30,8 +37,11 @@ version is currently the weaker form.
 mandatory human merge approval with fresh-evidence criteria
 verification exists in none of the eight. ccpm merges on instruction;
 BMAD hands off agent-to-agent; spec-kit's git extension can
-auto-commit; Backlog.md asks for evidence in prose with no aggregation
-or gate. The trial showed why this matters: feature-dev's reviewers
+auto-commit; Backlog.md has the implementing agent check its own
+criteria with no evidence citation required (*M06 read this as "asks
+for evidence in prose"; the re-read found completion checks, not
+evidence — which strengthens rather than weakens this differentiator,
+M06, corrected M91*). The trial showed why this matters: feature-dev's reviewers
 are good, but their findings evaporate with the transcript.
 
 **4. R-toolchain doctrine (oracles, primary sources) — DEFENDED,
@@ -55,6 +65,19 @@ control — is genuinely unoccupied.
 say "change control + project memory for agent-driven development",
 not generic "project tracking".
 
+*M91 reconciliation (2026-07-19).* Each conclusion above was walked
+against the four re-read inputs. **1** unaffected — all four systems
+still keep state in markdown. **2** corrected in wording only; the
+conclusion stands. **3** corrected and *strengthened* — Backlog.md
+requires no evidence citation. **4** unaffected — nothing in the
+re-read sources gestures at domain verification doctrine. **5**
+unaffected and re-confirmed: Meridian's claims all held on re-read, and
+it still has no task or milestone concept of its own. Two BMAD facts
+this page never relied on did change (its "Quick Flow" was removed, and
+`bmad-help` is user-invoked rather than auto-run at every workflow end);
+the second retires the "BMAD validates the pattern" note on
+`bmad-method.md`'s steal list, but no conclusion here rested on either.
+
 ## Where the field is ahead of cairn (steal-list, ranked)
 
 1. **Deterministic tracking scripts** (ccpm): status/next/validate as
@@ -67,8 +90,10 @@ not generic "project tracking".
 3. **Review pipeline mechanics** (anthropic-code-review, feature-dev,
    Backlog.md, spec-kit): distinct-evidence-base reviewer fan-out
    (blame history, prior-PR comments), verbatim confidence rubric +
-   false-positive taxonomy, evidence-before-checkbox AC fencing,
-   criterion→task coverage table. Also: revisit the blanket never-Haiku
+   false-positive taxonomy, machine-checkable AC fencing (*the
+   evidence-before-checkbox half is cairn's own extension of
+   Backlog.md's markers, not a practice observed there — M06,
+   corrected M91*), criterion→task coverage table. Also: revisit the blanket never-Haiku
    rule — Anthropic's own pipeline uses Haiku for mechanical
    triage/scoring (D-entry question for the user).
 4. **Milestone file mechanics** (BMAD, spec-kit, Task Master):
