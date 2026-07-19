@@ -37,26 +37,26 @@ row.
 
 ## Acceptance criteria
 
-- [ ] Both templates state the readable-status shape — a verification claim, a
+- [x] Both templates state the readable-status shape — a verification claim, a
       date, or an explicit nothing-to-re-verify — as a rule an author can apply
       to wording the template does not list, not as an enumeration of accepted
       phrases.
-- [ ] The pairing test selects each alternative offered by each template's
+- [x] The pairing test selects each alternative offered by each template's
       `Extraction:` field and asserts the state the real
       `cairn_validate._last_verified` returns for it; every sanctioned
       alternative classifies as its wording intends (no `ambiguous`, no
       `unrecognized`).
-- [ ] A guard proves the whole-template (unchosen) form is what collapses:
+- [x] A guard proves the whole-template (unchosen) form is what collapses:
       the source template reads `ambiguous` and the synthesis template reads
       `exempt` before a choice is made, so the per-choice assertions are shown
       non-vacuous. Paired with a positive signal that the classifier path
       actually ran, per the M84 lesson.
-- [ ] The four forms this repo's own pages write that neither template lists —
+- [x] The four forms this repo's own pages write that neither template lists —
       `verified at ingestion`, `partly verified at ingestion`, `read against
       the … artifacts at assessment time`, `verified by live probe DATE` — each
       satisfy the stated shape rule, demonstrated by a test that classifies
       them through the real classifier.
-- [ ] `verify` clean per `cairn/PROFILE.md` (the three `python3 -m unittest`
+- [x] `verify` clean per `cairn/PROFILE.md` (the three `python3 -m unittest`
       suites, each run from the repo root with its exit code checked — LESSONS
       M56/M65), and `cairn_validate` exit 0.
 
@@ -101,6 +101,7 @@ row.
 - 2026-07-18: T3 added `TestEachSanctionedStatusClassifies` (3 tests) — it selects each alternative the `<a | b | c>` field offers, builds a page from it, and asserts the real `_last_verified` state against an INTENT table, so a new alternative matching no entry fails rather than passing unexamined. Landed in a new class rather than extending `TestTemplateProducesAValidPage`, whose subject is the existence checkers; falsified by mutation (swapping one alternative for unreadable wording failed all 3, restored green).
 - 2026-07-18: T4 added `TestUnlistedShippedFormsSatisfyTheShapeRule` (3 tests) — the four unlisted forms each classify `ok`, each is still written by a committed page (so the list cannot go fictional), and none is offered by a template (the class premise). Refactored the shared helpers into `StatusClassificationMixin` first: the class had inherited the T3 TestCase, which re-ran its 3 tests under the child's name. Falsified by mutating a shipped page's status prefix. Skills 369 (was 363), scripts 174, hooks 72, validate all exit 0.
 - 2026-07-18: T5 minor amendment — the task presupposed the prose-guards existed, but T2 had written the shape rule with nothing asserting it, so AC1 had no evidence and the rule was silently deletable; T5 now authors the guard as well as registering it. Added `TestTemplatesTeachTheShapeRule` (4 tests) and 8 harness entries, one per (test, template) pair so blanking either template's copy fails. Reflowed the verb set onto one physical line first (M74/M76: a label→SET guard pins label and members together). Skills 373, scripts 174, hooks 72, validate all exit 0.
+- 2026-07-18: review — 3 lenses + scorer. Two lenses clean; the diff-bug lens found 3, scored 93/80/62, all reproduced independently and all fixed on the branch (F1 false coverage introduced in a pre-existing guard, F2 the taught rule wrong about `unverified`, F3 an exact-equality test not enforcing its docstring). Each fix falsified by mutation after landing. Skills 374, scripts 174, hooks 72, validate exit 0; all 5 criteria ticked against recorded evidence.
 
 ## Decisions
 
@@ -142,4 +143,54 @@ row.
 **Consistency gate.** `cairn_validate` exit 0. Profile is `generic`, whose
 `consistency-gate` slot names no toolchain checks, so that half is a clean
 no-op. `Principles touched: —`, so `cairn_impact` was not run. Mutation
-harness: 189 entries total, 8 added here — one per (test, template) pair.
+harness: 191 entries total, 10 added here — one per (test, template) pair.
+
+**Independent review — 3 lenses + scorer.** Blame-history: no findings (it
+confirmed the M80 F2/F3 boundaries hold, `cairn_validate.py` has zero diff so
+M83's scoped-out territory was not re-entered, and the verb-set reflow preceded
+any harness entry referencing it). Prior-PR: no findings; no inline PR-comment
+evidence exists for these files across 11 merged PRs, so that half no-opped as
+designed, and it mined the archived Review paragraphs instead. Diff-bug lens:
+three findings, all reproduced independently before triage.
+
+- **F1/93 — fixed.** The new header sentence naming the verb set added a
+  SECOND occurrence of `unverified` to `source-note.md`, degrading the
+  pre-existing `test_unverified_extraction_is_an_expressible_state` (a bare
+  `assertIn("unverified", <whole template>)`) into false coverage: the
+  `| unverified — first pass, …` alternative could be deleted outright and the
+  guard stayed green, where on `main` that deletion failed it. This milestone
+  introduced the regression, and it is M80's F3/65 trap one word over.
+  Re-anchored the guard on the `Extraction:` field line via `extraction_line()`;
+  deleting the alternative now fails it with the header prose still present.
+- **F2/80 — fixed.** Both templates taught a rule the classifier does not
+  implement: they listed `unverified` among the four affirmative verbs and then
+  said a verb "counts as negated when a negator precedes it in that same
+  clause". `unverified` is `_UNVERIFIED`, not `_VERIFY_VERB`, and
+  `_clause_claims` adds `never` for it unconditionally — so
+  `Extraction: unverified pending a second pass`, with no negator anywhere,
+  classifies `never`, the opposite of what the taught rule implies. Because the
+  rule IS AC1's deliverable and was already pinned by a guard and two registry
+  entries, the error was locked in on both templates. Removed `unverified` from
+  the verb list and stated the exception explicitly, with a new guard
+  (`test_each_template_marks_unverified_as_self_negating`) and two more registry
+  entries. Verified after: all four listed verbs now behave exactly as stated
+  (bare → `verified`, negated → `never`).
+- **F3/62 — below threshold, fixed anyway.** `test_no_unlisted_form_is_offered_by_a_template`
+  compared a whole `FORMS` string against the offered alternatives by exact
+  equality, so only a byte-exact paste tripped it; a shortened variant
+  (`verified at ingestion — full source read`) passed, though the docstring
+  claimed the premise was enforced. The sibling INTENT table did fail loudly on
+  the same input, so the premise was defended — by a different test. Actioned
+  despite the score because the fix is one line and the alternative was leaving
+  an overclaiming docstring in place. Now matched on the form's distinguishing
+  prefix; the variant that slipped through is caught.
+
+Nothing was logged-and-dropped. Each fix was falsified by mutation after
+landing, not accepted on inspection. Re-verified: skills 374, scripts 174,
+hooks 72, `cairn_validate` — each exit 0.
+
+**One judgment call left visible for the gate.** `TestUnlistedShippedFormsSatisfyTheShapeRule`
+asserts against this repo's own `cairn/references/` pages, so a plugin test
+reads repo content. There is precedent (`TestBackfilledPages`), and it is what
+stops the four-form list going fictional, but it is the seam most likely to
+behave differently in an adopting repo.

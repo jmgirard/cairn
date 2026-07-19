@@ -1273,13 +1273,25 @@ REGISTRY = [
         guard="test_references_pages",
         test="TestTemplatesTeachTheShapeRule.test_each_template_names_the_verb_set_with_its_label",
         target=SOURCE_NOTE,
-        block="A verification claim is one of these verbs — `verified`, `checked against`, `read against`, `read directly`, `unverified`.",
+        block="A verification claim is one of these verbs — `verified`, `checked against`, `read against`, `read directly`.",
     ),
     Mutation(
         guard="test_references_pages",
         test="TestTemplatesTeachTheShapeRule.test_each_template_names_the_verb_set_with_its_label",
         target=SYNTHESIS_NOTE,
-        block="A verification claim is one of these verbs — `verified`, `checked against`, `read against`, `read directly`, `unverified`.",
+        block="A verification claim is one of these verbs — `verified`, `checked against`, `read against`, `read directly`.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_marks_unverified_as_self_negating",
+        target=SOURCE_NOTE,
+        block="`unverified` is the exception — it carries its own negation and always reads as never-verified, with or without a negator.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_marks_unverified_as_self_negating",
+        target=SYNTHESIS_NOTE,
+        block="`unverified` is the exception — it carries its own negation and always reads as never-verified, with or without a negator.",
     ),
     Mutation(
         guard="test_references_pages",

@@ -287,8 +287,26 @@ class TestTemplatesTeachTheShapeRule(unittest.TestCase):
             with self.subTest(template=kind):
                 self.assertIn(
                     "A verification claim is one of these verbs — `verified`, "
-                    "`checked against`, `read against`, `read directly`, "
-                    "`unverified`.",
+                    "`checked against`, `read against`, `read directly`.",
+                    self.text(template),
+                )
+
+    def test_each_template_marks_unverified_as_self_negating(self):
+        """M85 review F2/80. The first draft listed `unverified` among the four
+        affirmative verbs and then said a verb is negated only when a negator
+        precedes it — wrong for the one member that carries its own negation
+        (`_UNVERIFIED` in cairn_validate adds "never" unconditionally, before
+        the negator loop runs). An author following that rule would write
+        `unverified pending a second pass`, expect an affirmative, and get
+        `never`. The rule is the deliverable, so the exception is stated and
+        guarded rather than left for the author to discover.
+        """
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertIn(
+                    "`unverified` is the exception — it carries its own "
+                    "negation and always reads as never-verified, with or "
+                    "without a negator.",
                     self.text(template),
                 )
 
@@ -525,13 +543,24 @@ class TestUnlistedShippedFormsSatisfyTheShapeRule(
         """These are the forms the templates do NOT list — the premise of the
         class. If one is ever added to a template, it belongs to the class
         above (which asserts an intent for every offered alternative) and this
-        one stops being about unlisted vocabulary."""
+        one stops being about unlisted vocabulary.
+
+        Matched on the form's distinguishing PREFIX, not by exact string
+        equality (M85 review F3/62). Equality only caught a byte-exact paste of
+        the whole 60–200-char shipped status; the realistic way one of these
+        arrives in a template is shortened or re-dated, and every such variant
+        slipped through a premise this test claims to defend.
+        """
         offered = []
         for _, template in self.TEMPLATES:
             offered.extend(self.alternatives(self.instantiate(template)))
-        for status, _ in self.FORMS:
+        for status, pattern in self.FORMS:
             with self.subTest(form=status[:40]):
-                self.assertNotIn(status, offered)
+                self.assertFalse(
+                    [a for a in offered if re.match(pattern, a, re.I)],
+                    f"a template now offers a form matching {pattern!r}; it "
+                    f"belongs to TestEachSanctionedStatusClassifies",
+                )
 
 
 class TestReVerification(unittest.TestCase):

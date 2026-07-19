@@ -12,9 +12,10 @@
      The status is READ, not merely stored: the `references staleness`
      advisory classifies it. Whatever wording you choose, it must
      claim a verification, or carry a date, or say there is nothing to re-verify.
-     A verification claim is one of these verbs — `verified`, `checked against`, `read against`, `read directly`, `unverified`.
+     A verification claim is one of these verbs — `verified`, `checked against`, `read against`, `read directly`.
      It counts as negated when a negator precedes it in that same clause, so
      `not re-read since` in a LATER clause qualifies a claim without undoing it.
+     `unverified` is the exception — it carries its own negation and always reads as never-verified, with or without a negator.
      A status doing none of the three says nothing the advisory can read, and
      it is reported rather than assumed verified.
      The alternatives below are examples of that shape, not the accepted list.
