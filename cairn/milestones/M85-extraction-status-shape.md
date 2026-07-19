@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M85: Extraction-status shape — the templates teach what the classifier reads
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m85-extraction-status-shape`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 
@@ -70,7 +70,7 @@ row.
 
 ## Tasks
 
-- [ ] T1. Record the classification baseline: run `_last_verified` over both
+- [x] T1. Record the classification baseline: run `_last_verified` over both
       instantiated templates and over the four shipped forms, capturing the
       states in the work log so the milestone's before/after is evidence, not
       recall (the M83 before/after table is the precedent).
@@ -95,6 +95,7 @@ row.
 ## Work log
 
 - 2026-07-18: created by /milestone-plan. Promoted from the "References note-template vocabulary" candidate; the plan gate superseded that row's list-the-phrases framing with a shape rule after investigation found M83's parser is generative, and folded in the live pairing-test gap (instantiated templates classify `ambiguous` / `exempt`).
+- 2026-07-18: T1 baseline via the real `_last_verified` — unchosen: source `ambiguous`, synthesis `exempt`; each chosen alternative: source `ok`/`never`, synthesis `ok`/`exempt`/`ok`, all as their wording intends; all four shipped forms `ok`. The templates are correct once a choice is made; only the unchosen form collapses.
 
 ## Decisions
 
