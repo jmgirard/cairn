@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** `m85-extraction-status-shape`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m85-extraction-status-shape` · https://github.com/jmgirard/cairn/pull/84   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 
@@ -105,3 +105,41 @@ row.
 ## Decisions
 
 ## Review
+
+**Reviewed 2026-07-18 · PR #84 · no CI on this repo (LESSONS M16).**
+
+**Criterion evidence** (all fresh, by command, from the repo root):
+
+- **AC1** — `TestTemplatesTeachTheShapeRule`, 4 tests, exit 0. Both templates
+  state the three-way shape, name the verb set on one physical line with its
+  label, mark the alternatives as examples rather than the accepted list, and
+  state the consequence (an unreadable status is reported, not assumed
+  verified). Falsified: deleting the rule line from the **synthesis** template
+  alone failed the guard, proving the per-template registration is not carried
+  by the source template's copy.
+- **AC2** — `TestEachSanctionedStatusClassifies`, 3 tests, exit 0. All five
+  offered alternatives (2 source, 3 synthesis) are selected in turn and
+  classified by the real `cairn_validate._last_verified`: `ok`/`never` and
+  `ok`/`exempt`/`ok`, each matching its INTENT entry; none classifies
+  `ambiguous` or `unrecognized`. Falsified: swapping one alternative for
+  unreadable wording (`reviewed at ingestion`) failed all 3.
+- **AC3** — `test_the_unchosen_template_is_what_collapses` asserts the
+  unchosen instantiated source template is `ambiguous` and the synthesis
+  template `exempt` — positive equality assertions on named states, not
+  absence-asserts. The positive signal the M84 lesson requires is
+  `assertIn(state, STATES)` in `classify()`, which fails on a crash producing
+  no verdict rather than passing vacuously.
+- **AC4** — `TestUnlistedShippedFormsSatisfyTheShapeRule`, 3 tests, exit 0.
+  Each of the four forms classifies `ok` through the real classifier; each is
+  still written by a committed page; none is offered by a template. Falsified:
+  rewording `desktop-toc-mechanism.md`'s status prefix failed the
+  stale-list guard.
+- **AC5** — skills 373 (was 363 on `main`), scripts 174, hooks 72; each
+  discovered from the repo root and each exit code read individually, never
+  piped (LESSONS M56/M65). `cairn_validate` exit 0, 15 PASS + 6 advisories all
+  `OK`.
+
+**Consistency gate.** `cairn_validate` exit 0. Profile is `generic`, whose
+`consistency-gate` slot names no toolchain checks, so that half is a clean
+no-op. `Principles touched: —`, so `cairn_impact` was not run. Mutation
+harness: 189 entries total, 8 added here — one per (test, template) pair.
