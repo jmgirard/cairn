@@ -50,14 +50,25 @@ ARCHIVE_CAP = 25
 # read positionally; D-015 defines LESSONS as one lesson per line) — so a line
 # count cannot see prose accumulating INSIDE a line. cairn's LESSONS.md held 49
 # lines, one under its <50 cap, across M78-M83 while its mass grew 16,567 ->
-# 18,729 chars: the item cap was saturated and reported nothing. Each threshold
-# is its item cap x a per-file target mean line length (M84-D1) — ROADMAP
-# 60 x 150, LESSONS 50 x 340, the higher mean because a lesson is a paragraph
-# of hard-won detail where a ROADMAP row is a table row. PROFILE.md is
-# deliberately absent: surveyed at M84, no density problem, item cap alone.
-# Advisory only (check_record_density WARNs, never FAILs): unlike an item
-# count, "too dense" is a judgment about prose quality, not a structural fact.
-CHAR_CAPS = {"cairn/ROADMAP.md": 9000, "cairn/LESSONS.md": 17000}
+# 18,729 chars: the item cap was saturated and reported nothing.
+#
+# Each threshold is the mass its OWN line cap permits at MEASURED item length
+# (M87, superseding M84-D1's item_cap x target_mean): non-item mass + (line cap
+# - the file's fixed non-item lines) x measured mean item length, rounded up to
+# the next 500. M84-D1 assumed target means instead of measuring — LESSONS
+# 50 x 340 against a real mean of 581, ROADMAP 60 x 150 against a real blended
+# mean of 498 (its 150 described the table rows; candidate rows run 4.4x that)
+# — so both thresholds bound BEFORE their line caps (LESSONS at 81% of item
+# capacity, ROADMAP at 39%) and the advisory fired at ordinary density.
+# Re-derive by MEASURING, never by assuming a mean: the prescribed weight
+# remedy is compression, and consolidating items RAISES the mean, so a mean
+# copied from a previous milestone is stale by construction.
+#
+# PROFILE.md is deliberately absent: surveyed at M84, no density problem, item
+# cap alone. Advisory only (check_record_density WARNs, never FAILs): unlike an
+# item count, "too dense" is a judgment about prose quality, not a structural
+# fact.
+CHAR_CAPS = {"cairn/ROADMAP.md": 21500, "cairn/LESSONS.md": 21000}
 TERMINAL_ROW_RETENTION = 5  # done + dropped rows share one ROADMAP cap
 
 # Cap on the cairn-owned `## Project tracking (cairn)` block appended to a

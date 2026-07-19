@@ -101,24 +101,24 @@ small-keeper; the advisory returns to flagging genuine intra-line bloat.
       threshold, rounded value. Expect ≈ LESSONS 20,881 → **21,000** and ROADMAP
       21,368 → **21,500**; re-measure at implement rather than trusting these —
       the ROADMAP figure moves when this milestone's own candidate row graduates.
-- [ ] T2 Update `CHAR_CAPS` (`scripts/cairn_scripts.py:60`) to the T1 values and
+- [x] T2 Update `CHAR_CAPS` (`scripts/cairn_scripts.py:60`) to the T1 values and
       rewrite the basis comment (`:48-59`), which currently states the
       `60 x 150` / `50 x 340` target means, to the measured derivation.
-- [ ] T3 Update `skills/shared/tracking-rules.md:94-97`: new thresholds and the
+- [x] T3 Update `skills/shared/tracking-rules.md:94-97`: new thresholds and the
       replacement basis sentence. Before editing, `grep` the paragraph against
       the two registered blocks (`test_mutation_harness.py:327,339`) — each must
       stay on one physical line, occur exactly once, with trailing punctuation
       intact (M58/M64); re-run the skills suite after any rewording near them.
-- [ ] T4 Update the numeric fixtures in `scripts/tests/test_scripts.py:1500-1519`
+- [x] T4 Update the numeric fixtures in `scripts/tests/test_scripts.py:1500-1519`
       (`threshold <9,000` / `<17,000`, the 9,500 mid-band case that relies on one
       file being over and the other under, and the boundary case asserting a
       file exactly at the threshold WARNs) to the new numbers, preserving both
       directions and AC4's positive-signal pairing.
-- [ ] T5 Run `test_record_density.py` and confirm the stated↔enforced coupling
+- [x] T5 Run `test_record_density.py` and confirm the stated↔enforced coupling
       still binds; if the reworded sentence no longer matches its regex
       (`:86-101`), fix the regex to the new wording — never loosen it to a
       values-only match, which would drop the membership check.
-- [ ] T6 Run the three suites from the repo root with explicit exit codes, plus
+- [x] T6 Run the three suites from the repo root with explicit exit codes, plus
       `cairn_validate`, and record the `record density` line for both files.
 - [ ] T7 Author the D-entry: supersedes M84-D1's basis, records both files'
       falsified numbers and the rejected drift test.
@@ -127,6 +127,8 @@ small-keeper; the advisory returns to flagging genuine intra-line bloat.
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
 
 - 2026-07-18: created by /milestone-plan; thresholds derived from measured practice, prose-only safeguard, both files in scope (gate answers).
+- 2026-07-18: T2-T6 landed the new thresholds (CHAR_CAPS + rulebook basis + fixtures); all three suites green (174/385/72, exit 0 each) and `cairn_validate` now reports `OK record density`.
+- 2026-07-18: T4 retired M84's prune regression anchor at a mini-gate — dbf1068 was a boundary-rule cleanup (graduation breadcrumbs restating archive-owned history), not a density judgment, so M84 calibrated on a misread signal; re-based on the M87-D1 derivation.
 - 2026-07-18: T1 measured both files; derivations 20,881 / 21,122 → set 21,000 / 21,500 (M87-D1). Rejected shipping a re-runnable measurement script — the gate chose prose-only, and a new shipped script is machinery.
 - 2026-07-18: registering this milestone tripped the advisory live — ROADMAP 9,187 chars at 36 lines against a 60-line item cap (60% of the item budget), remedy "compress entries". Left uncompressed: it is evidence for AC1/AC5, not a defect to absorb.
 
