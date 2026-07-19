@@ -95,6 +95,70 @@ class TestDesignArchitectureHonesty(unittest.TestCase):
         self.assertIn("enforced as prose", text)      # the honor-system bet, noted plainly
 
 
+class TestShippedProfilesAreAdvertised(unittest.TestCase):
+    """M90: the profile ENUMERATION is derived, not hand-listed.
+
+    M54 pinned ¶1's framing (`language-agnostic`, `toolchain profile`) but
+    never the list, so when M70 shipped `docker-image` all three positioning
+    surfaces stayed green while still saying "R, Python, or generic". The
+    trigger here is the shipped-profiles directory itself: add a profile and
+    this guard fails until every surface names it.
+
+    LABELS maps a profile filename to the human label the prose uses. It is
+    hand-maintained BY DESIGN and fail-closed — an unmapped profile file is a
+    hard failure telling you to add its label, never a silent skip. That is
+    the difference from the HOOKS tuple above, which goes stale silently.
+    """
+
+    def shipped(self):
+        d = REPO / "skills/shared/profiles"
+        return sorted(p.stem for p in d.glob("*.md"))
+
+    # profile filename -> the label an adopter reads in prose
+    LABELS = {
+        "r-package": "R",
+        "python": "Python",
+        "docker-image": "Docker image",
+        "generic": "generic",
+    }
+
+    def test_every_shipped_profile_has_a_label(self):
+        unmapped = [p for p in self.shipped() if p not in self.LABELS]
+        self.assertEqual(
+            unmapped, [], f"shipped profile(s) with no prose label: {unmapped}"
+        )
+
+    def test_readme_para1_names_every_shipped_profile(self):
+        # Whitespace is normalized before matching: a two-word label like
+        # "Docker image" straddles a line break whenever anyone reflows the
+        # paragraph, and reddening on a cosmetic re-wrap would train the next
+        # author to loosen the assert. The LABEL is still matched exactly —
+        # this is not the M64 one-physical-line rule (that binds
+        # mutation-registered blocks) nor the M74 label->rule pairing rule
+        # (where collapsing lines could pair a label with a distant rule).
+        para1 = " ".join(read(README).split("\n\n")[2].split())
+        # Unmapped profiles are the dedicated label test's business; skipping
+        # them here keeps that one failure clean instead of adding KeyErrors.
+        for profile in (p for p in self.shipped() if p in self.LABELS):
+            self.assertIn(
+                self.LABELS[profile],
+                para1,
+                f"README ¶1 does not name the {profile} profile",
+            )
+
+    def test_manifests_name_every_shipped_profile(self):
+        for rel in (PLUGIN, MARKETPLACE):
+            text = " ".join(read(rel).split())
+            # Unmapped profiles are the dedicated label test's business;
+            # skipping them here keeps that one failure clean.
+            for profile in (p for p in self.shipped() if p in self.LABELS):
+                self.assertIn(
+                    self.LABELS[profile],
+                    text,
+                    f"{rel} does not name the {profile} profile",
+                )
+
+
 class TestTemplateBoundaryRule(unittest.TestCase):
     def test_template_names_the_lessons_home(self):
         self.assertIn("Lessons → LESSONS", read(TEMPLATE))
