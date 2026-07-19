@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M84: Record-density advisory — the item caps gain a weight axis
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, GP3   <!-- owner: plan · create/amend-via-gate -->
@@ -117,6 +117,8 @@ cairn's own ROADMAP and LESSONS under the resulting thresholds.
 
 - 2026-07-18: T7 prune — LESSONS.md 18,607 → 16,272 chars (-2,335, 13%) and 49 → 42 lines; compressed, not evicted: 36 lessons folded into 28 by consolidating five explicit continuation pairs (M53+M54, M57+M79+M81, M60+M80, M74+M76, M81+M82) and two topic pairs, with every milestone tag still present (46 → 47). ROADMAP.md needed no prune: 8,386 chars, 614 under threshold. Header now states both caps and both remedies.
 - 2026-07-18: T8 verify — three suites green from the repo root, exit codes checked individually (scripts 171, skills 362, hooks 72); `cairn_validate` all checks passed, `OK record density`, exit 0.
+
+- 2026-07-18: all tasks done, verify clean → status `review`. Anchor re-verified live: pre-prune ROADMAP (9,691 chars over 38 lines, 22 UNDER its item cap) WARNs; post-prune (8,001) clean.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -17,7 +17,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 | M81 | References staleness advisory — the provenance block gets a reader | done | M80 | normal | milestones/archive/M81-references-staleness-advisory.md |
 | M82 | Scaffold-deprecation migration — repair mode acts on the advisory it inherits | done | — | normal | milestones/archive/M82-scaffold-deprecation-migration.md |
 | M83 | Staleness-parser hardening — the extraction status stops being guessed at | done | — | normal | milestones/archive/M83-staleness-parser-hardening.md |
-| M84 | Record-density advisory — the item caps gain a weight axis | in-progress | — | normal | milestones/M84-record-density-advisory.md |
+| M84 | Record-density advisory — the item caps gain a weight axis | review | — | normal | milestones/M84-record-density-advisory.md |
 
 ## Candidates
 
