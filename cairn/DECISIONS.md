@@ -1172,3 +1172,38 @@ un-migrated repo's shelf is never mistaken for pages. Delivered by M79. If a
 second scaffold entry is ever renamed, `DEPRECATED_GITIGNORE` is the map to
 extend; if the deprecation window should ever close into a hard FAIL,
 supersede here.
+
+### D-048 (2026-07-18): The copy-run rule names three cases, and wires per-skill at the steps that hand over
+
+**Context:** M35 shipped "copy-run commands get their own fenced block" into
+`tracking-rules.md` as one of five wording tweaks, guard-locked centrally and
+mutation-registered — but with no per-skill wiring. It drifted exactly as
+D-021/D-036/D-037/D-038 each found a central-only conduct rule does:
+`/milestone-review` step 10 came to instruct the violation outright ("naming
+the obvious next action **inline**"), `/milestone-brief`'s manual-run option
+hands over a Fable prompt in a blockquote (no copy button), and
+`/cairn-release` step 4 gives its terminal-actions checklist no format
+directive at all. Reported by the user (2026-07-18) as post-review messages
+suggesting commands the user cannot copy.
+**Decision:** (1) **Rule text:** state three cases, not two — a command handed
+to the user to run gets its own fenced block; naming a command, path, or
+symbol in prose gets inline backticks; a routing-chip arrow gets
+neither, because the orchestrator invokes it on selection (D-022). The third
+case was true but unstated, which is what let the boundary blur. Slash
+commands (`/clear`, `/milestone-plan`) are named as covered, since every
+observed instance is a slash command and "a command" read as shell-only.
+(2) **Wiring:** the three skills that actually hand a command over, not all
+nine — the D-036/D-037 scoping, on the grounds that a directive in six skills
+that never hand over is dead text that dilutes the signal.
+(3) **Handoff vs. mention:** `/milestone-implement`'s "a safe `/clear` point"
+stays inline. It states a property of the moment rather than telling the user
+to act, and a routing chip sits immediately beside it offering the routes; a
+guard asserts it stays inline so a later over-fire is caught mechanically
+rather than left to judgment. Rejected fencing every command the user might
+type (uniform but fences description, not instruction) and central-rule-only
+(the shape that already drifted once).
+**Consequences:** The handoff moment becomes copyable at every step that has
+one. Delivered by M86. If a fourth handoff site appears in a still-unwired
+skill, extend the wiring by superseding this entry; if the three-way
+distinction proves too fine to apply, the two-case form is the entry to
+supersede.
