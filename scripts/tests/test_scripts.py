@@ -1350,7 +1350,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "backlog-meridian.md": "partial",
-        "bmad-method.md": "partial",
+        "bmad-method.md": "ok",
         "ccpm.md": "ok",
         "claude-code-hooks.md": "ok",
         "claude-md-management.md": "ok",
