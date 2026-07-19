@@ -61,6 +61,11 @@ mechanical problem to auto-fix: report it and let the user decide (a
 milestone may legitimately exceed a tripwire with justification, or it may
 want splitting via `/milestone-plan`). A `WARN` never blocks the gate.
 
+A `release window` WARN is reported, never argued with — release timing is the user's to declare (D-050), so carry a park disposition to §3 and never treat the WARN as a prompt to get the release moving.
+It also **owns** the idleness question for the milestone it names: a release
+the advisory has already flagged is not re-reported under the Staleness bullet
+below, or one stalled release arrives as two separate items.
+
 The script deliberately does not judge these — do them yourself and report:
 
 - **Staleness:** `in-progress` with no work-log entry in 14+ days; open RB
@@ -115,7 +120,19 @@ examples — only the applicable subset (≤4) is offered:
   candidate items exist)
 - Triage the flagged items (audit found problems needing user decisions,
   including any untriaged inbox item §2 surfaced)
+- Park M<NN> as `blocked` → the release window is not open (a `release window` WARN fired in §2)
 - Stop here
+
+Parking sets the milestone to `blocked` and writes a work-log line naming the
+maintainer's unopened release window as the blocker. It is reachable from
+`planned` and from `review` (tracking-rules transitions), it closes no PR, and
+it is reversed by the user declaring the window — never by cairn deciding the
+release looks ready. Offer parking whenever the advisory fired, and lead the chip with it only when `cairn_next`'s own recommendation names that same release milestone.
+`cairn_next` reads status and priority alone, so where it names the flagged
+release its recommendation *is* the nag D-050 exists to stop and parking
+displaces it. Where it names something else — an unrelated `in-progress`
+milestone outranks a workable planned one in its precedence order —
+that recommendation is legitimate and keeps the lead, with parking offered alongside it.
 
 The §2 inbox sweep resolves here, and nowhere else.
 Each item takes exactly one disposition — you propose, the user chooses:

@@ -66,6 +66,20 @@ Read, in order: `cairn/ROADMAP.md`, any active milestone file,
    A and B; C becomes M13 (planned now, depends on M12); D becomes a
    candidate row; E sounds unwanted — drop entirely?".
 
+   **Release-shaped tripwire.** Release timing is user-declared, never agent-proposed (tracking-rules; D-050) — so a release-framed scope stops here for an explicit window declaration.
+   It fires when the scope in hand would ship a version: a release, a CRAN or
+   registry submission, a "prepare/consolidate for vX.Y.Z". On a hit, the gate
+   asks the user to declare the window in so many words, and
+   the default answer is no — absent a declaration the work lands as a `candidate` row, never as a `planned` milestone, and never at `Priority: high`.
+   A declared window is the user saying to queue this release now; the
+   dependency list going green is not, since it says only that the bundle is
+   complete.
+   Two things the tripwire does not touch.
+   Work *about* release tooling — a release-walk slot, release docs — is ordinary milestone work, not a release.
+   And a milestone the user has already declared a window for plans normally.
+   When a release milestone exists but its window is not open, its home is
+   `blocked` — park it there rather than planning around it.
+
 4. **Solidify autonomously** (no further questions). Create **one or more**
    milestone files from
    `${CLAUDE_PLUGIN_ROOT}/skills/shared/templates/milestone.md` — when the

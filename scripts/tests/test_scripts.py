@@ -2260,5 +2260,179 @@ class TestStdlibOnly(unittest.TestCase):
                     self.assertIn(name, self.ALLOWED, f"{script.name} imports {name}")
 
 
+# --- release window advisory (M88) ------------------------------------------
+# Titles taken from real milestones so the false-positive axis is tested where
+# it actually bit: this repo's own release-TOOLING milestones must stay silent,
+# while the two downstream release milestones that motivated M88 must warn.
+TOOLING_TITLES = [
+    "Release-walk slot — generalize cairn-release to read the profile",
+    "Release positioning + DESIGN refresh",
+    "Release docs — LICENSE, README worked example + framing",
+]
+RELEASE_TITLES = [
+    "v0.1.0 release consolidation — CRAN submission-ready",
+    "v2.0.0 CRAN release preparation",
+]
+
+
+def live_release(status, goal="Ship it.", worklog=()):
+    """A live milestone body for the release-window advisory: a Goal the
+    detector reads plus a dated work log."""
+    log = "".join(f"- {d}: {txt}\n" for d, txt in worklog)
+    return (
+        f"# M: Test milestone\n\n- **Status:** {status}   <!-- mirror -->\n\n"
+        f"## Goal\n{goal}\n\n## Work log\n{log}"
+    )
+
+
+def _days_ago(n):
+    return (datetime.date.today() - datetime.timedelta(days=n)).isoformat()
+
+
+class TestReleaseWindowAdvisory(ScriptCase):
+    """The advisory is exit-code neutral in every case below — a release the
+    maintainer has not queued is a judgment call, never a gate failure."""
+
+    def _tree(self, title, status, depends="—", worklog=(), goal="Ship it."):
+        self.tree.rows.append(
+            ("M09", title, status, depends, "high", "milestones/M09-rel.md")
+        )
+        self.tree.files["milestones/M09-rel.md"] = live_release(
+            status, goal=goal, worklog=worklog
+        )
+        return self.tree.build()
+
+    def test_planned_release_with_satisfied_deps_warns(self):
+        """The intraclass M48 case: planned, every dependency done, so
+        cairn_next names it as the next action."""
+        root = self._tree(RELEASE_TITLES[0], "planned", depends="M01")
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("WARN  release window", proc.stdout)
+        self.assertIn("every dependency satisfied", proc.stdout)
+        self.assertIn("park it as `blocked` (D-050)", proc.stdout)
+
+    def test_planned_release_with_unmet_deps_is_silent(self):
+        """Not yet nominated: a dependency is still open, so no surface is
+        recommending it and there is nothing to park."""
+        root = self._tree(RELEASE_TITLES[0], "planned", depends="M03")
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("OK    release window", proc.stdout)
+
+    def test_blocked_release_is_silent(self):
+        """The parked state the advisory recommends — warning here would nag
+        about the very remedy it just prescribed."""
+        root = self._tree(RELEASE_TITLES[1], "blocked", worklog=[(_days_ago(300), "parked")])
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("OK    release window", proc.stdout)
+
+    def test_review_release_worked_recently_is_silent(self):
+        """The circumplex M7 case: the maintainer is actively shipping it."""
+        root = self._tree(
+            RELEASE_TITLES[1], "review", worklog=[(_days_ago(1), "T4 done")]
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("OK    release window", proc.stdout)
+
+    def test_review_release_gone_idle_warns(self):
+        root = self._tree(
+            RELEASE_TITLES[1], "review", worklog=[(_days_ago(40), "T4 done")]
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("WARN  release window", proc.stdout)
+        self.assertIn("idle 40 days", proc.stdout)
+
+    def test_routable_release_with_no_dated_worklog_warns(self):
+        # `review`, not `in-progress`: the base fixture already carries an
+        # in-progress milestone, and a second one FAILs the single-in-progress
+        # CHECK — an exit code of 1 for a reason that has nothing to do with
+        # this advisory (LESSONS M84).
+        root = self._tree(RELEASE_TITLES[1], "review", worklog=())
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("WARN  release window", proc.stdout)
+        self.assertIn("no dated work-log entry", proc.stdout)
+
+    def test_release_tooling_titles_never_fire(self):
+        """A release token WITHOUT a shipping version names work about release
+        tooling, which is ordinary milestone work. Each title is checked in the
+        state that would warn if only the token were required.
+
+        Each goal carries an ordinary prose decimal — a supported-R version, a
+        section reference, a threshold. The permissive `v?\\d+\\.\\d+` this
+        started with matched all three, so the fixtures passed only because the
+        helper handed them a stub goal and the version axis was never actually
+        exercised where the detector reads it (M88 review F6; the vacuous-axis
+        trap of LESSONS M57)."""
+        goals = [
+            "Generalize cairn-release. See D-050 and section 2.1 of the spec.",
+            "Reposition the README. Coverage threshold 0.8 vs 0.5.",
+            "Document the walk; the profile targets R 4.3 and drops 3.6.",
+        ]
+        for title, goal in zip(TOOLING_TITLES, goals):
+            with self.subTest(title=title):
+                self.tree = Tree(self._tmp.name)
+                root = self._tree(title, "planned", depends="M01", goal=goal)
+                proc = run("cairn_validate.py", root)
+                self.assertEqual(proc.returncode, 0, proc.stderr)
+                self.assertIn("OK    release window", proc.stdout)
+
+    def test_resubmission_is_a_release_token(self):
+        """`\\bsubmissions?\\b` has no boundary inside "Resubmission", so a
+        resubmission milestone naming no other release token slipped through
+        entirely (M88 review F5)."""
+        root = self._tree(
+            "Resubmit v1.2.3 after reviewer feedback", "planned", depends="M01"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("WARN  release window", proc.stdout)
+
+    def test_ordinary_decimals_are_not_shipping_versions(self):
+        """The version half must discriminate, not wave everything through."""
+        mod = _load_validate()
+        for prose in ("targets R 4.3", "section 2.1", "threshold 0.8"):
+            with self.subTest(prose=prose):
+                self.assertFalse(mod._release_shaped("Release docs", prose))
+        for prose in ("ships v0.1.0", "ships v2.0.0", "the 1.2.3 package"):
+            with self.subTest(prose=prose):
+                self.assertTrue(mod._release_shaped("Release docs", prose))
+
+    def test_real_release_titles_each_fire_once(self):
+        for title in RELEASE_TITLES:
+            with self.subTest(title=title):
+                self.tree = Tree(self._tmp.name)
+                root = self._tree(title, "planned", depends="M01")
+                proc = run("cairn_validate.py", root)
+                self.assertEqual(proc.returncode, 0, proc.stderr)
+                self.assertIn("WARN  release window (1)", proc.stdout)
+
+    def test_version_in_goal_alone_is_enough(self):
+        """Detection reads title AND goal — a bare title still trips when the
+        goal names the version being shipped."""
+        root = self._tree(
+            "Consolidation pass", "planned", depends="M01",
+            goal="Ship the accumulated work to CRAN as one v2.0.0 release.",
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("WARN  release window", proc.stdout)
+
+    def test_clean_tree_prints_the_positive_signal(self):
+        """M84: an absence-assert alone is vacuous against a crash, so the
+        clean path must emit a signal proving the check actually ran."""
+        root = self.tree.build()
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("OK    release window", proc.stdout)
+        self.assertNotIn("WARN  release window", proc.stdout)
+        self.assertIn("all checks passed", proc.stdout)
+
+
+
 if __name__ == "__main__":
     unittest.main()
