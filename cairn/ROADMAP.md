@@ -17,6 +17,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 | M82 | Scaffold-deprecation migration — repair mode acts on the advisory it inherits | done | — | normal | milestones/archive/M82-scaffold-deprecation-migration.md |
 | M83 | Staleness-parser hardening — the extraction status stops being guessed at | done | — | normal | milestones/archive/M83-staleness-parser-hardening.md |
 | M84 | Record-density advisory — the item caps gain a weight axis | done | — | normal | milestones/archive/M84-record-density-advisory.md |
+| M85 | Extraction-status shape — the templates teach what the classifier reads | planned | — | normal | milestones/M85-extraction-status-shape.md |
 
 ## Candidates
 
