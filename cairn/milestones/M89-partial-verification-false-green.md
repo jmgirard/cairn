@@ -2,11 +2,11 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M89: Partial verification is a state — the staleness advisory stops failing toward green
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** GP2
-- **Branch/PR:** —
+- **Branch/PR:** m89-partial-verification-false-green
 
 ## Goal
 
