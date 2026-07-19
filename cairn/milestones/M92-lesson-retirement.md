@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M92: Lesson retirement — a lesson leaves LESSONS.md when a guard enforces it or another file owns it
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** GP1, GP4
-- **Branch/PR:** —
+- **Branch/PR:** `m92-lesson-retirement`
 
 ## Goal
 
@@ -105,6 +105,7 @@ pass over the current 49 lessons that leaves real headroom on both axes.
 ## Work log
 
 - 2026-07-19: created by /milestone-plan.
+- 2026-07-19: in-progress on `m92-lesson-retirement`, cut from main at 16289bf.
 
 ## Decisions
 
