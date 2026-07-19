@@ -20,7 +20,7 @@ owner; any other file gets at most a one-line cross-reference.
 | `cairn/milestones/M<NN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately, before other work) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
 | `cairn/DECISIONS.md` | Append-only cross-cutting decisions (D-001, …), never renumbered — superseded by new entries | Milestone-local decisions (those live in the milestone file); deferrals ("not now" is a ROADMAP fact, not a decision) |
-| `cairn/LESSONS.md` | Durable, capped repo lessons (build quirks, testing tricks) — captured at milestone end, surfaced at plan time; current knowledge, so a lesson proven false is corrected in place and marked (D-045) | Status, decisions (a *choice* is a D-entry), per-milestone task notes |
+| `cairn/LESSONS.md` | Durable, capped repo lessons (build quirks, testing tricks) — captured at milestone end, surfaced at plan time; current knowledge, so a lesson proven false is corrected in place and marked (D-045), and retired once a test enforces it or another file owns it (D-051) | Status, decisions (a *choice* is a D-entry), per-milestone task notes |
 | `cairn/reviews/` | RB<NN> briefs and RR<NN> reports for Fable escalation (+ `archive/` for resolved pairs) | Anything else |
 | `cairn/references/` | Source notes (`<citekey>.md`), synthesis notes (cross-source analyses — fit assessments, surveys, pilot ledgers), `INDEX.md` (one line per committed page), the gitignored source shelf `sources/` (renamed from `pdf/` at M79 — the shelf holds any source, not only PDFs) | Anything else |
 | `cairn/legacy/` | Entombed pre-migration tracking files, verbatim | Anything live |
@@ -167,6 +167,19 @@ takes a D-entry, and its number stays retired.
   user decision recorded as a D-entry (see the IP/GP paragraph above).
   Ruled out: appending a correction while leaving the wrong text readable —
   a false lesson is harvested into every later plan (D-045).
+- **Retiring a lesson that no longer earns its line.** `LESSONS.md` is capped, so
+  it needs an outflow and not only a ceiling. Two criteria retire a lesson (D-051):
+  **enforcement — a test fails on the mistake the lesson warns about**, where the
+  discriminating word is *fails* and never *exists*, since a guard in the same area
+  is not enforcement when the lesson teaches the judgment that guard does not make;
+  and **ownership — another tracking file's slot owns the content**, which the
+  retiring milestone may *move* there rather than only find already duplicated.
+  **A lesson covered only in part is trimmed to its uncovered remainder**, never kept whole.
+  **A retired lesson leaves no line behind — the retiring milestone's archive summary names what it graduated**, and git holds the original.
+  **Retirement is not correction: a retired lesson is redundant, a corrected one was false** — conflating the two would license deleting a lesson merely disputed.
+  The check runs at `/milestone-review` post-merge hygiene beside capture,
+  **scoped to what the milestone shipped**, never as a full re-sweep; D-015's
+  prune-the-stalest stays the last resort when retirement cannot free the budget.
 - **Stop points are commit points.** Never end a session or turn with
   uncommitted work — checkpoint-commit code and tracking together (even
   half-done, marked as such) so any future session resumes statelessly.

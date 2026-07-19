@@ -84,7 +84,7 @@ alone do not reach the bar.
       divergence vector M56 rejected; mechanized age-pruning). Annotate D-015
       (its prune-the-stalest survives as last resort) and cross-reference D-045
       (retirement ≠ correction).
-- [ ] T2: Write the rule into `skills/shared/tracking-rules.md`, at the
+- [x] T2: Write the rule into `skills/shared/tracking-rules.md`, at the
       weight-caps remedies and the `cairn/LESSONS.md` file-map row. Author each
       anchor on its own physical line with its label and members together
       (M74/M90); do not reflow neighbouring registered blocks (M78/M82).
@@ -117,6 +117,7 @@ alone do not reach the bar.
 - 2026-07-19: created by /milestone-plan.
 - 2026-07-19: in-progress on `m92-lesson-retirement`, cut from main at 16289bf.
 - 2026-07-19: step-3 gate amended Scope + AC1 + T7 — ownership permits MOVING content to its owner (not duplication-only), a partly-covered lesson is trimmed to its uncovered remainder, and consolidation (not D-015 prune) is AC5's headroom fallback. Preliminary sweep showed strict enforcement alone retires ~0 lessons, putting AC5 at risk; user chose all three recommendations.
+- 2026-07-19: T2 — rule written into tracking-rules beside "Correcting a record proven false" (the contrast D-051 turns on) + the LESSONS file-map row; 7 anchors verified unique and unwrapped; `archive summary`/`post-merge hygiene` each gained an occurrence, checked against every guard anchor (M85) — both existing guards use longer phrases, no degradation.
 - 2026-07-19: T1 — D-051 appended: enforcement + ownership criteria, trim-to-remainder for partial coverage, archive-summary tombstone; four alternatives rejected with rationale.
 
 ## Decisions
