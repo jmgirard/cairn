@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP3, GP4   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** `m86-copy-run-command-wiring`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m86-copy-run-command-wiring` · https://github.com/jmgirard/cairn/pull/85   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -129,3 +129,41 @@ those are not handoffs and stay inline.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as is the work log (D-046). -->
+
+**PR:** https://github.com/jmgirard/cairn/pull/85 · reviewed 2026-07-18 ·
+no CI on this repo (`gh pr checks`: "no checks reported" — M16 lesson).
+
+### Acceptance-criteria evidence (fresh, by command)
+
+- **AC1** — all three labelled cases present in `tracking-rules.md`, each
+  label on one physical line with its treatment: `:498` handoff → own fenced
+  code block; `:499` naming → inline backticks; `:500` routing-chip option →
+  neither fence nor handoff (cites D-022).
+- **AC2** — `:496` names slash commands (`/clear`, `/milestone-plan`) as
+  covered alongside shell commands.
+- **AC3** — `grep -c "naming the obvious next action inline"` on
+  `milestone-review/SKILL.md` returns **0** (the superseded instruction is
+  gone); `:206` carries the replacement directive citing the copy-run rule.
+- **AC4** — `milestone-brief/SKILL.md:43` and `cairn-release/SKILL.md:73`
+  each name the fenced form at the point of handoff.
+- **AC5** — `test_copy_run_handoffs.py` holds 7 tests across the three skills
+  plus the implement mention-stays-inline pair; 3 entries registered in
+  `test_mutation_harness.py`, and `TestRegisteredGuardsFailWhenBlanked`
+  passing is live proof each directive's guard fails when its block is
+  blanked. All four registered blocks verified to occur exactly once in
+  their target files.
+- **AC6** — verify slot clean, each exit code checked separately, no pipes
+  (M56/M65): skills 383 (0), scripts 174 (0), hooks 72 (0),
+  `cairn_validate` 21/21 (0).
+
+### Consistency gate
+
+`cairn_validate` all checks passed (15 PASS, 6 advisory OK). Toolchain half
+is a clean no-op: the `generic` profile's `consistency-gate` slot names no
+checks beyond the verify suites already re-run above. `cairn_impact` skipped
+per its condition — `DESIGN.md` is untouched by the diff (GP3/GP4 are worked
+*under*, not changed).
+
+Additional author-side check: no new prose duplicates a phrase an existing
+guard anchors on (M60/M80/M85) — `fenced` occurs 2× and `copy button` 1× in
+`tracking-rules.md`, and no guard uses a bare substring anchor on either.
