@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M91: Reference re-verification — the three partial extractions get read against their sources
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP4, GP2   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m91-reference-reverification`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -48,10 +48,10 @@ of it; a parser defect found here is reported and routed, not fixed inline.
 - [ ] Every claim found false is corrected in place and marked in the M83
       style (`(M06, corrected M91)`), with git holding the original; no claim
       is deleted to avoid correcting it.
-- [ ] `spec-kit.md`'s three cited paths are re-anchored to their current
-      locations or the claims resting on them are corrected — `specify.md`
-      and `constitution.md` have both moved under `templates/commands/` since
-      ingestion, and `constitution.md` now resolves to two candidate paths.
+- [ ] `spec-kit.md`'s three citations are re-anchored from bare filenames to
+      full repository paths, and each line anchor is re-checked against the
+      current source; where an anchor no longer resolves, the claim resting
+      on it is corrected.
 - [ ] `competitive-landscape.md`'s false "none re-read since 2026-07-11"
       claim is corrected, and every conclusion resting on a fact corrected by
       T1–T3 is revisited — each either updated or explicitly recorded as
@@ -80,7 +80,7 @@ of it; a parser defect found here is reported and routed, not fixed inline.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — `spec-kit.md`: clone github/spec-kit, pin the version, re-read all
+- [x] T1 — `spec-kit.md`: clone github/spec-kit, pin the version, re-read all
       claims (the `specify`/`constitution`/`plan-template` citations, the
       ~10-command list, the `[NEEDS CLARIFICATION]` cap of 3, the
       Constitution Check gate, `/analyze` and `/converge` behavior). Correct
@@ -110,6 +110,9 @@ of it; a parser defect found here is reported and routed, not fixed inline.
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
 
 - 2026-07-19: created by /milestone-plan. Follows through on M89, whose archive records the three WARNs as true positives needing "a re-read of three external clones". Four gate answers: re-read against current source (M83 precedent), synthesis note in scope, steal lists frozen except where a corrected fact breaks one, honest status over zero-warnings.
+- 2026-07-19: T1 done — spec-kit re-read at 0.13.1.dev0 (commit 57cc518). Every claim held; zero corrections. All three line anchors still exact (specify.md:128, constitution.md:87, plan-template.md:39,106); citations re-anchored to full paths and the command inventory completed (10 templates, `/speckit.*` namespace, `checklist`/`taskstoissues` added).
+- 2026-07-19: `TestShippedPageStateLedger.EXPECTED` updated spec-kit.md `partial` → `ok` per the ledger's own deliberate-update protocol — the page was re-read in full against its source, so the classification change is the intended result, not parser drift. Suites green (skills/scripts/hooks all exit 0, checked separately).
+- 2026-07-19: AC3 amended via the step-6 gate — its premise ("both moved under templates/commands/ since ingestion", "constitution.md now resolves to two candidate paths") was false: `git log --follow` puts templates/commands/specify.md at that path since the initial checkin 2025-08-22, and the second constitution.md hit is a different file (.specify/memory/). The M06 page cited bare filenames. Criterion reworded to the checkable requirement; required work unchanged.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

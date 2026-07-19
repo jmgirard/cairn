@@ -1343,6 +1343,10 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # M89 moved three pages `ok` → `partial`: each says in its own words that
     # part of it was checked and the rest was not, and each was reading as a
     # completed verification dated at ingestion.
+    # M91 moves those same three back `partial` → `ok`, one per task, by doing
+    # the work the partial status described: each page was re-read in full
+    # against a fresh clone of its source at a pinned version, so the status
+    # now records a completed verification rather than a partial one.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "backlog-meridian.md": "partial",
@@ -1358,7 +1362,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "migration-pilot-notes.md": "exempt",
         "oracle-discipline-notes.md": "ok",
         "oracle-doctrine-intraclass-notes.md": "ok",
-        "spec-kit.md": "partial",
+        "spec-kit.md": "ok",
         "task-master.md": "ok",
     }
 

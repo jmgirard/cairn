@@ -17,7 +17,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | M88 | Release timing is user-declared — a release milestone stops nominating itself | done | — | high | milestones/archive/M88-release-timing-user-declared.md |
 | M89 | Partial verification is a state — the staleness advisory stops failing toward green | done | — | high | milestones/archive/M89-partial-verification-false-green.md |
 | M90 | README currency — the front door catches up with what shipped | done | — | normal | milestones/archive/M90-readme-currency.md |
-| M91 | Reference re-verification — the three partial extractions get read against their sources | planned | — | normal | milestones/M91-reference-reverification.md |
+| M91 | Reference re-verification — the three partial extractions get read against their sources | in-progress | — | normal | milestones/M91-reference-reverification.md |
 
 ## Candidates
 
