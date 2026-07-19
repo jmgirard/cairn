@@ -8,7 +8,7 @@ not an R package, so R-specific gates don't apply.
 
 ## Milestones
 
-_Released 1.0.0 2026-07-16 (tag v1.0.0)._
+_Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0)._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
