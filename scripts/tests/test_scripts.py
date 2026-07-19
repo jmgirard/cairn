@@ -1392,6 +1392,137 @@ class TestSizingAdvisory(ScriptCase):
         self.assertEqual(cv.check_sizing_advisory(str(root)), [])
 
 
+def pad_to(path, total):
+    """Grow `path` to EXACTLY `total` chars by appending a single long bullet.
+
+    One line, not many: the density advisory's whole premise is mass the item
+    cap cannot see, so a fixture that pads with line COUNT would trip the line
+    cap instead and prove nothing. Every case below therefore stays far under
+    its item cap while going over its char threshold — the M78–M83 LESSONS
+    shape (49 lines, +13% mass) reproduced deterministically."""
+    base = path.read_text()
+    pad = total - len(base)
+    if pad < 3:
+        raise AssertionError(f"{path} is already {len(base)} chars, over {total}")
+    path.write_text(base + "- " + "x" * (pad - 3) + "\n")
+    assert len(path.read_text()) == total, len(path.read_text())
+
+
+class TestRecordDensityAdvisory(ScriptCase):
+    """M84: the item caps gain a weight axis. `cairn/ROADMAP.md` and
+    `cairn/LESSONS.md` are parsed one item per line, so line count is the
+    item measure and cannot see prose accumulating INSIDE lines — cairn's
+    LESSONS sat at 49 lines (item cap <50) across M78–M83 while its mass grew
+    16,567 → 18,729 chars and nothing reported it.
+
+    WARN tier throughout (M84 Scope): density is a judgment about prose
+    quality, not a structural fact, so every case asserts exit 0 alongside its
+    finding. Thresholds and their derivation: M84-D1."""
+
+    ADVISORY = "record density"
+
+    def roadmap(self, total):
+        root = self.tree.build()
+        pad_to(root / "cairn" / "ROADMAP.md", total)
+        return run("cairn_validate.py", root)
+
+    def lessons(self, total):
+        root = self.tree.build()
+        pad_to(root / "cairn" / "LESSONS.md", total)
+        return run("cairn_validate.py", root)
+
+    def assertFlagged(self, proc, fragment):
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn(f"WARN  {self.ADVISORY}", proc.stdout)
+        self.assertIn(fragment, proc.stdout)
+
+    def assertClean(self, proc):
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn(f"OK    {self.ADVISORY}", proc.stdout)
+
+    # --- the two thresholds ------------------------------------------------
+
+    def test_over_threshold_roadmap_warns(self):
+        proc = self.roadmap(9500)
+        self.assertFlagged(proc, "cairn/ROADMAP.md: 9,500 chars")
+        self.assertIn("threshold 9,000", proc.stdout)
+
+    def test_over_threshold_lessons_warns(self):
+        proc = self.lessons(17500)
+        self.assertFlagged(proc, "cairn/LESSONS.md: 17,500 chars")
+        self.assertIn("threshold 17,000", proc.stdout)
+
+    def test_under_threshold_is_quiet(self):
+        self.assertClean(self.roadmap(8000))
+
+    def test_each_file_has_its_own_threshold(self):
+        # 9,500 is over ROADMAP's 9,000 but well under LESSONS' 17,000 — the
+        # thresholds are per-file (M84-D1: a lesson is a paragraph of detail,
+        # a ROADMAP row is a table row), not one shared number.
+        self.assertClean(self.lessons(9500))
+
+    # --- boundary, matching the LINE_CAPS `>=` convention ------------------
+
+    def test_at_threshold_warns(self):
+        self.assertFlagged(self.roadmap(9000), "cairn/ROADMAP.md: 9,000 chars")
+
+    def test_one_char_under_threshold_is_quiet(self):
+        self.assertClean(self.roadmap(8999))
+
+    # --- the regression anchor (AC2) ---------------------------------------
+
+    def test_anchored_on_the_real_prune(self):
+        # cairn's own ROADMAP measured 9,807 chars before the M83 breadcrumb
+        # prune (`git show dbf1068^:cairn/ROADMAP.md`) and 8,106 after
+        # (`dbf1068`). The threshold is calibrated so the state a human judged
+        # bloated enough to prune WARNs, and the pruned state does not —
+        # asserted on the byte sizes, so it survives any later rebase of those
+        # hashes.
+        self.assertFlagged(self.roadmap(9807), "cairn/ROADMAP.md: 9,807 chars")
+        self.assertClean(self.roadmap(8106))
+
+    # --- exit-code neutrality (AC4) ----------------------------------------
+
+    def test_advisory_never_moves_the_exit_code(self):
+        # A tree tripping ONLY this advisory: the gate still reports success
+        # and exits 0, so a dense file can never block a milestone.
+        proc = self.roadmap(9500)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("all checks passed", proc.stdout)
+        self.assertIn("advisory warning(s) — not gate failures", proc.stdout)
+        self.assertNotIn("FAIL", proc.stdout)
+
+    def test_shed_names_the_chars_to_drop(self):
+        # The remedy is compression, so the finding says how much mass to
+        # shed — the `shed ≥N` idiom check_caps already uses for lines (M69).
+        proc = self.lessons(17500)
+        self.assertIn("shed ≥501", proc.stdout)
+
+    def test_finding_shows_the_line_count_too(self):
+        # Both axes in one finding: the point is that the item count looks
+        # fine. The fixture's LESSONS is 4 lines, nowhere near the <50 cap.
+        proc = self.lessons(17500)
+        self.assertIn("PASS  weight caps", proc.stdout)
+        self.assertIn("4 lines", proc.stdout)
+
+    # --- files it must not measure ----------------------------------------
+
+    def test_missing_file_is_not_a_finding(self):
+        # line_count/char_count return None for an absent path; a missing
+        # LESSONS.md is check_scaffold's finding, not this advisory's.
+        root = self.tree.build()
+        (root / "cairn" / "LESSONS.md").unlink()
+        proc = run("cairn_validate.py", root)
+        self.assertNotIn(f"WARN  {self.ADVISORY}", proc.stdout)
+
+    def test_profile_is_not_measured(self):
+        # M84 Scope: PROFILE.md was surveyed and has no density problem (max
+        # line 80 chars here, 116 in intraclass) — it stays on the item cap
+        # alone, so no char threshold exists for it to trip.
+        cs = _load_scripts()
+        self.assertNotIn("cairn/PROFILE.md", cs.CHAR_CAPS)
+
+
 class TestWorkLogFormatAdvisory(ScriptCase):
     """M77/D-046: the work log is exempt from the milestone cap, so nothing
     budgetary polices it any more — this advisory is what keeps the rulebook's

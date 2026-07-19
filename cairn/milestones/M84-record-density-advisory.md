@@ -57,8 +57,8 @@ cairn's own ROADMAP and LESSONS under the resulting thresholds.
       (M78).
 - [ ] AC2: The thresholds are derived from a recorded survey of both repos,
       and regression-anchored: the ROADMAP threshold WARNs on the pre-prune
-      state (`git show dbf1068^:cairn/ROADMAP.md`, 9,807 chars) and passes on
-      the post-prune state (`dbf1068`, 8,106 chars).
+      state (`git show dbf1068^:cairn/ROADMAP.md`, 9,807 bytes / 9,691 chars)
+      and passes on the post-prune state (`dbf1068`, 8,106 / 8,001).
 - [ ] AC3: cairn's `ROADMAP.md` and `LESSONS.md` both pass the new advisory
       after an in-milestone prune, evidenced by a before/after mass table.
 - [ ] AC4: The advisory is exit-code neutral — `cairn_validate` exits 0 on a
@@ -85,9 +85,9 @@ cairn's own ROADMAP and LESSONS under the resulting thresholds.
 - [x] T1: Survey character mass across both repos and the pre-prune ROADMAP
       state; record the table in this file and derive the two thresholds from
       it, stating the headroom rationale.
-- [ ] T2: Tests first — fixtures in `scripts/tests/` for over-threshold,
+- [x] T2: Tests first — fixtures in `scripts/tests/` for over-threshold,
       under-threshold, and exit-code neutrality of the new advisory.
-- [ ] T3: Implement the measure — char thresholds in `scripts/cairn_scripts.py`
+- [x] T3: Implement the measure — char thresholds in `scripts/cairn_scripts.py`
       alongside `LINE_CAPS` (`scripts/cairn_scripts.py:44`), and the advisory
       in `scripts/cairn_validate.py` near `check_caps`
       (`scripts/cairn_validate.py:67`), emitting WARN not FAIL.
@@ -109,6 +109,8 @@ cairn's own ROADMAP and LESSONS under the resulting thresholds.
 - 2026-07-18: created by /milestone-plan.
 - 2026-07-18: T1 survey done; thresholds 9,000 / 17,000 and the label `record density` settled at the implement question gate (M84-D1).
 - 2026-07-18: AC2 amended (gated) — the cited hash `5d0d5b6` does not exist in this repo; the real pre-prune ref is `dbf1068^` at 9,807 chars (plan estimated ~9,600), post-prune `dbf1068` at 8,106.
+- 2026-07-18: T2/T3 — `record density` advisory shipped: `CHAR_CAPS` in cairn_scripts, `check_record_density` first in ADVISORIES, 11 fixture tests; fires on cairn's own LESSONS.md (18,607 chars, shed ≥1,608).
+- 2026-07-18: AC2 amended again (unit precision) — the survey figures were `wc -c` bytes but the advisory measures characters (~1% apart); both units now stated, no threshold call changes (M84-D1 **Unit.**).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -132,5 +134,12 @@ so 150 does not transfer and the mean comes from the corpus instead:
 50 × 340 = **17,000**, above intraclass's 324 and below cairn's 382. cairn
 sheds ~1,750 chars (9%) at T7; intraclass keeps ~1,100 (about three lessons)
 of headroom. Both settled at the implement question gate, 2026-07-18.
+
+**Unit.** The survey above is `wc -c` bytes; the advisory measures CHARACTERS
+(`cs.char_count`), so a page of em-dashes is not penalised over one of
+hyphens. They differ ~1% here and no threshold call changes: cairn 8,386 /
+18,607 chars (LESSONS mean 380), intraclass 7,219 / 15,699 (mean 320), anchor
+9,691 pre-prune and 8,001 post-prune — still astride 9,000. Corrected
+2026-07-18, before the thresholds shipped.
 
 ## Review

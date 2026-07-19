@@ -107,6 +107,44 @@ def check_caps(root, rows):
     return bad
 
 
+def check_record_density(root):
+    """Advisory: an item-list file whose character mass exceeds its threshold
+    (M84). The weight axis, orthogonal to check_caps' item axis over the same
+    whole file — `cairn/ROADMAP.md` and `cairn/LESSONS.md` are parsed one item
+    per line, so their line count measures ITEMS and is structurally blind to
+    prose accumulating inside a line. cairn's LESSONS.md sat at 49 lines (item
+    cap <50) across M78-M83 while its mass grew 16,567 -> 18,729 bytes and the
+    audit reported nothing.
+
+    Not a per-line warn (M84 Scope): pressure on individual line length would
+    reward splitting an item across lines and corrode the one-item-per-line
+    format both parsers depend on. And WARN, never FAIL — D-018 wanted a hard
+    signal for the CLAUDE.md section cap, where cairn owns the whole content,
+    but density is a judgment about prose quality, the same call the
+    references-staleness advisory already makes.
+
+    The finding names both axes, because the item count looking fine is the
+    whole point, and prescribes the weight remedy (compress) rather than the
+    item remedy (evict/graduate)."""
+    out = []
+    for rel, cap in cs.CHAR_CAPS.items():
+        path = os.path.join(root, rel)
+        n = cs.char_count(path)
+        if n is None or n < cap:
+            continue
+        lines = cs.line_count(path)
+        item_cap = cs.LINE_CAPS.get(rel)
+        axis = f"{lines} lines" if lines is not None else "line count unknown"
+        if lines is not None and item_cap is not None:
+            axis += f", item cap <{item_cap}"
+        out.append(
+            f"{rel}: {n:,} chars over {axis} "
+            f"(threshold {cap:,}; shed ≥{n - cap + 1:,}) — compress entries, "
+            f"don't evict them"
+        )
+    return out
+
+
 def check_terminal_retention(rows):
     terminal = [r["id"] for r in rows if r["status"] in ("done", "dropped")]
     if len(terminal) > cs.TERMINAL_ROW_RETENTION:
@@ -1123,6 +1161,10 @@ CHECKS = [
 # never fail the gate (exit code neutral), so they render WARN/OK, separate
 # from the PASS/FAIL CHECKS above.
 ADVISORIES = [
+    # First among the advisories, directly under the `weight caps` CHECK it is
+    # the second axis of (M84): the two measures read as siblings over the same
+    # files, one structural and failing, one a judgment call and not.
+    ("record density", lambda root, rows: check_record_density(root)),
     ("sizing (split tripwires)", lambda root, rows: check_sizing_advisory(root)),
     (
         "scaffold deprecations",
