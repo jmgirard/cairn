@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP4, GP2   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** `m91-reference-reverification`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m91-reference-reverification` · https://github.com/jmgirard/cairn/pull/90   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -42,26 +42,26 @@ of it; a parser defect found here is reported and routed, not fixed inline.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] Every factual claim in each of the three pages has been read against a
+- [x] Every factual claim in each of the three pages has been read against a
       fresh clone of its source; each page's extraction status names the
       pinned version (tag, release, or commit SHA) and the date checked.
-- [ ] Every claim found false is corrected in place and marked in the M83
+- [x] Every claim found false is corrected in place and marked in the M83
       style (`(M06, corrected M91)`), with git holding the original; no claim
       is deleted to avoid correcting it.
-- [ ] `spec-kit.md`'s three citations are re-anchored from bare filenames to
+- [x] `spec-kit.md`'s three citations are re-anchored from bare filenames to
       full repository paths, and each line anchor is re-checked against the
       current source; where an anchor no longer resolves, the claim resting
       on it is corrected.
-- [ ] `competitive-landscape.md`'s false "none re-read since 2026-07-11"
+- [x] `competitive-landscape.md`'s false "none re-read since 2026-07-11"
       claim is corrected, and every conclusion resting on a fact corrected by
       T1–T3 is revisited — each either updated or explicitly recorded as
       unaffected.
-- [ ] `cairn_validate` is run and its `references staleness` output recorded
+- [x] `cairn_validate` is run and its `references staleness` output recorded
       before and after; each rewritten status classifies as authored, proven
       by that command output naming the per-page state rather than by reading
       the status wording. Honest status is the bar: a page still WARNing
       ships with a stated reason its true status warrants the warning.
-- [ ] The `verify` slot is clean — all three suites green
+- [x] The `verify` slot is clean — all three suites green
       (`skills/tests`, `scripts/tests`, `hooks/tests`), each exit code
       checked separately.
 
@@ -126,3 +126,43 @@ of it; a parser defect found here is reported and routed, not fixed inline.
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. -->
+
+**Consistency gate (2026-07-19).** `cairn_validate` exit 0 — every CHECK PASS,
+every advisory OK, including `coverage complete` and `references staleness`.
+Profile is `generic`, whose `consistency-gate` slot names no toolchain checks:
+clean no-op. No `DESIGN.md` principle changed, so `cairn_impact` was skipped.
+
+**AC1 — every claim re-read; status names pinned version + date.** Each status
+line carries `verified 2026-07-19` plus a pinned source: spec-kit 0.13.1.dev0
+commit `57cc518`; bmad-method v6.10.0 commit `c23f234`; backlog-meridian
+Backlog.md v1.48.0 commit `babd1d2` and Meridian commit `d9b8775`. Extracted by
+command from line 5 of each page.
+
+**AC2 — false claims corrected in place and marked.** `corrected M91` marks:
+bmad-method 3, backlog-meridian 2, competitive-landscape 4, spec-kit 0. The
+spec-kit zero is the honest result, not a gap — no claim on that page was found
+false, and the criterion requires marks only for claims found false. Spot-checked
+that no claim was deleted rather than corrected: each mark quotes the superseded
+wording inline, so the original stays legible per D-045.
+
+**AC3 — citations re-anchored, anchors re-checked.** All four anchors resolve
+exactly against the pinned clone: `templates/commands/specify.md:128` (the
+`LIMIT: Maximum 3` line), `templates/commands/constitution.md:87` (Sync Impact
+Report), `templates/plan-template.md:39` (Constitution Check) and `:106`
+(Complexity Tracking). None had moved, so no dependent claim needed correcting.
+
+**AC4 — synthesis note reconciled.** The false "none re-read since 2026-07-11"
+no longer appears as a live claim; it survives only quoted inside the correction
+note, which is the D-045 convention. All five differentiators carry a recorded
+disposition: 1 unaffected, 2 corrected in wording, 3 corrected and strengthened,
+4 unaffected, 5 unaffected and re-confirmed.
+
+**AC5 — classification proven by command.** Ran the real `_last_verified`
+classifier over every committed page. The four M91 pages return `ok` dated
+2026-07-19; the advisory reports `OK references staleness`, from WARN (3) at the
+branch point. No page still warns, so the honest-status escape clause was not
+needed. Evidence is the classifier's own output, not a reading of the wording.
+
+**AC6 — verify slot clean.** Three suites run from the repo root with exit codes
+checked separately, never piped: skills 420 tests exit 0, scripts 196 exit 0,
+hooks 72 exit 0.
