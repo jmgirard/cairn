@@ -7,7 +7,7 @@
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP2, GP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** `m88-release-timing-user-declared`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m88-release-timing-user-declared` / [PR #87](https://github.com/jmgirard/cairn/pull/87)   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -42,17 +42,17 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1 — `tracking-rules.md` states that a maintainer who has not opened the
+- [x] AC1 — `tracking-rules.md` states that a maintainer who has not opened the
       release window is a legitimate `blocked` blocker, and the transition line
       admits `planned → blocked` and `review → blocked`. Verified by inversion
       (LESSONS M74): relabel or negate the rule in place, run the skills suite,
       require red, restore and diff.
-- [ ] AC2 — `/milestone-plan` carries a release-shaped tripwire at its question
+- [x] AC2 — `/milestone-plan` carries a release-shaped tripwire at its question
       gate: a release-framed request must ask the user to declare the window,
       and absent a declaration lands as a `candidate` row, never a `planned`
       milestone. Guard-locked with the label pinned to its rule on one physical
       line (LESSONS M74).
-- [ ] AC3 — `cairn_validate` emits a `release window` advisory that WARNs on a
+- [x] AC3 — `cairn_validate` emits a `release window` advisory that WARNs on a
       release-shaped milestone being nominated, and is exit-code neutral in
       every case. The trigger is status-dependent, because idleness means
       different things at different statuses: a `planned` release whose
@@ -62,17 +62,17 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
       14+ days idle (work started, then stalled). It prints a positive
       `OK release window` signal on the clean path, so an absence-assert cannot
       pass over a crash (LESSONS M84).
-- [ ] AC4 — Detection requires **both** a word-bounded release token and a
+- [x] AC4 — Detection requires **both** a word-bounded release token and a
       version pattern, so a milestone about release *tooling* raises nothing:
       fixtures in a routable status titled like this repo's own M47
       ("Release-walk slot"), M54 ("Release positioning"), and M62 ("Release
       docs") each produce zero findings, while fixtures titled like intraclass
       M48 ("v0.1.0 release consolidation") and circumplex M7 ("v2.0.0 CRAN
       release preparation") each produce one.
-- [ ] AC5 — `/milestone` reports the advisory in its §2 audit and offers a
+- [x] AC5 — `/milestone` reports the advisory in its §2 audit and offers a
       park-as-`blocked` disposition in its §3 route; the disposition names the
       work-log line the parked milestone gets. Guard-locked.
-- [ ] AC6 — The `generic` profile's `verify` slot is clean: all three suites
+- [x] AC6 — The `generic` profile's `verify` slot is clean: all three suites
       green from the repo root with exit codes checked individually, never
       piped (LESSONS M56+M65).
 
@@ -165,3 +165,57 @@ construction.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as is the work log (D-046); evidence never scrambles plan-owned content. -->
+
+**PR:** [#87](https://github.com/jmgirard/cairn/pull/87) · reviewed 2026-07-19 · branch current with `origin/main` (0 behind, 0 unpushed).
+
+### Acceptance-criteria evidence (fresh, by command)
+
+- **AC1 — rulebook widening + transitions.** `test_release_timing.py` classes
+  `TestReleaseTimingRule` (4 tests) and `TestBlockedCoversTheReleaseWindow`
+  (2 tests) pass. Verified by INVERSION as the criterion demands, not by
+  blanking: flipping the rule to "agent-proposed, never user-declared" and the
+  `blocked` row to "does not count" turned the suite red — 2 direct guard
+  failures plus 2 mutation-harness errors — then restored with an empty diff
+  against HEAD.
+- **AC2 — plan tripwire.** `TestPlanReleaseTripwire` (3 tests) pass, pinning
+  the authority sentence, the default-is-no clause with both consequences, and
+  the release-tooling carve-out. Two anchors were reflowed onto single physical
+  lines during T6 precisely so the label stays pinned to its rule (LESSONS M74).
+- **AC3 — advisory behaviour.** `TestReleaseWindowAdvisory` (10 tests) pass.
+  Exit code 0 asserted on every case including both WARN paths. Positive
+  `OK    release window` signal asserted on the clean tree and paired with the
+  absence-assert (LESSONS M84). Status-dependent trigger per M88-D1 covered by
+  the planned/deps-satisfied, planned/deps-unmet, blocked, review-recent,
+  review-idle, and no-dated-worklog cases.
+- **AC4 — token+version discrimination.** Live over the real titles: the three
+  release-TOOLING titles ("Release-walk slot", "Release positioning", "Release
+  docs") are silent; the two downstream release titles ("v0.1.0 release
+  consolidation — CRAN submission-ready", "v2.0.0 CRAN release preparation")
+  are shaped; M88's own title is silent. Fixture tests assert zero findings for
+  each tooling title and `WARN  release window (1)` for each release title. The
+  version requirement was inversion-verified at T5: dropping it turned all
+  three tooling cases red.
+- **AC5 — `/milestone` wiring.** `TestMilestoneAuditWiring` (4 tests) pass,
+  covering the §2 report-never-argue rule, the refusal to read the WARN as a
+  prompt to ship, the §3 park option, and the lead-with-parking rule.
+- **AC6 — verify slot clean.** Three suites run from the repo root with exit
+  codes checked individually, never piped (LESSONS M56+M65): skills 399 OK
+  (exit 0), scripts 184 OK (exit 0), hooks OK (exit 0).
+
+### Live-fire evidence (the defect this milestone exists to fix)
+
+Run against the two repos that motivated M88:
+- **intraclass** — `WARN  release window (1)`: M48 planned with every
+  dependency satisfied, nominated as the next action.
+- **circumplex** — `OK    release window`: M7 is being actively shipped
+  (work-logged same day), so the advisory correctly stays silent.
+- **cairn itself** — `OK    release window`.
+
+### Consistency gate
+
+- `cairn_validate` exit 0 — 15 PASS, 7 advisories OK, none firing.
+- Profile `generic`; its `consistency-gate` slot names no toolchain checks, so
+  that half is a clean no-op.
+- `cairn_impact` skipped: `DESIGN.md` is untouched by the diff (no principle
+  changed; GP2/GP3 are worked *under*, not modified).
+
