@@ -84,6 +84,24 @@ takes a D-entry, and its number stays retired.
   own dev doctrine outside that section is not cairn's to cap — D-018) ·
   `ROADMAP.md` < 60 lines · `LESSONS.md` < 50 lines · `PROFILE.md` < 120 lines ·
   archived summary ≤ 25 lines.
+- **Two axes, one file.** Those caps count **items**: `ROADMAP.md` and
+  `LESSONS.md` are parsed one item per line (rows read positionally; D-015
+  makes a lesson one line), so a line count measures rows and lessons and is
+  structurally blind to prose accumulating *inside* a line — cairn's own
+  `LESSONS.md` sat at 49 lines, one under its cap, across six milestones while
+  its character mass grew 13% and nothing reported it. The second axis is
+  **weight** — total character mass over the same whole file, reported by
+  `cairn_validate`'s `record density` advisory against
+  per-file character thresholds — `ROADMAP.md` < 9,000 · `LESSONS.md` < 17,000
+  — each its item cap × a target mean line length (the means differ: a lesson
+  is a paragraph of hard-won detail where a ROADMAP row is a table row).
+  The two axes take opposite remedies: an over-count file graduates or prunes items, an over-weight file compresses them in place.
+  The two also differ in severity, and the labels say which is which: the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the weight axis is the `record density` advisory and only ever WARNs.
+  Density warns rather than fails because an item count is a structural fact but
+  "too dense" is a judgment about prose quality — the same call the
+  `references staleness` advisory makes. It is deliberately not a per-line
+  warn: pressure on individual line length would reward splitting an item
+  across lines and corrode the one-item-per-line format both parsers depend on.
 - a live milestone file's **plan-owned body < 150 lines** — everything before
   the review-exclusive `## Review` section, less the `## Work log`.
   The cap-exempt sections are exactly `## Review` (review-owned, M55) and `## Work log` (history under D-045, D-046); every other plan-owned section counts.
@@ -99,7 +117,7 @@ takes a D-entry, and its number stays retired.
   warns and never fails: the cap no longer counts the section, so a wrap is
   untidiness, not damage (D-046). Never paste command output or subagent
   transcripts into tracking files — summarize.
-- Remedies when a cap is hit (never "let it grow"): over-cap ROADMAP →
+- Remedies when a cap is hit (never "let it grow"): over-count ROADMAP →
   graduate or prune candidates and enforce terminal-row retention — and when
   a large legacy or parking-lot backlog blows the cap one-row-per-item,
   cluster related items into grouped candidate rows that point at the

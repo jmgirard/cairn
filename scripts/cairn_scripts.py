@@ -44,6 +44,20 @@ PRIORITY_ORDER = {"high": 0, "normal": 1, "low": 2}
 LINE_CAPS = {"cairn/ROADMAP.md": 60, "cairn/LESSONS.md": 50, "cairn/PROFILE.md": 120}
 MILESTONE_CAP = 150
 ARCHIVE_CAP = 25
+
+# The second weight axis (M84): file -> max character mass. LINE_CAPS counts
+# ITEMS, because both files below are parsed one item per line (ROADMAP rows
+# read positionally; D-015 defines LESSONS as one lesson per line) — so a line
+# count cannot see prose accumulating INSIDE a line. cairn's LESSONS.md held 49
+# lines, one under its <50 cap, across M78-M83 while its mass grew 16,567 ->
+# 18,729 chars: the item cap was saturated and reported nothing. Each threshold
+# is its item cap x a per-file target mean line length (M84-D1) — ROADMAP
+# 60 x 150, LESSONS 50 x 340, the higher mean because a lesson is a paragraph
+# of hard-won detail where a ROADMAP row is a table row. PROFILE.md is
+# deliberately absent: surveyed at M84, no density problem, item cap alone.
+# Advisory only (check_record_density WARNs, never FAILs): unlike an item
+# count, "too dense" is a judgment about prose quality, not a structural fact.
+CHAR_CAPS = {"cairn/ROADMAP.md": 9000, "cairn/LESSONS.md": 17000}
 TERMINAL_ROW_RETENTION = 5  # done + dropped rows share one ROADMAP cap
 
 # Cap on the cairn-owned `## Project tracking (cairn)` block appended to a
@@ -215,6 +229,17 @@ def line_count(path):
     try:
         with open(path, encoding="utf-8") as f:
             return sum(1 for _ in f)
+    except Exception:
+        return None
+
+
+def char_count(path):
+    """Character mass of a file, or None if unreadable — the weight axis's
+    measure, paired with line_count's item axis (M84). Counts characters, not
+    bytes, so a page of em-dashes is not penalised over a page of hyphens."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            return len(f.read())
     except Exception:
         return None
 
