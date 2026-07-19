@@ -100,7 +100,7 @@ alone do not reach the bar.
 - [ ] T6: Register the new blocks in `skills/tests/test_mutation_harness.py` —
       one entry per new positive assertion, not one per file (M53) — and run the
       driver to confirm each blanked block reddens.
-- [ ] T7: First application pass: evaluate all 49 lessons against both criteria,
+- [x] T7: First application pass: evaluate all 49 lessons against both criteria,
       retire or trim what qualifies, relocating owned content into the matching
       `cairn/PROFILE.md` slot as part of the move, and collect the graduation
       list for the archive summary. Where the criteria do not reach AC5's
@@ -117,6 +117,7 @@ alone do not reach the bar.
 - 2026-07-19: created by /milestone-plan.
 - 2026-07-19: in-progress on `m92-lesson-retirement`, cut from main at 16289bf.
 - 2026-07-19: step-3 gate amended Scope + AC1 + T7 — ownership permits MOVING content to its owner (not duplication-only), a partly-covered lesson is trimmed to its uncovered remainder, and consolidation (not D-015 prune) is AC5's headroom fallback. Preliminary sweep showed strict enforcement alone retires ~0 lessons, putting AC5 at risk; user chose all three recommendations.
+- 2026-07-19: T7 — application pass over 35 lessons: 2 retired by ownership (M16 no-CI → PROFILE consistency-gate; M32 pytest/unittest → PROFILE verify + test-doctrine), 2 trimmed to uncovered remainder by enforcement (M53, M58+M59+M64+M65), 3 pairs consolidated as the AC5 fallback (M72, M87, M71). Strict enforcement retired nothing outright, confirming the step-3 gate's premise. LESSONS 52→47 lines (headroom 2) and 20,637→19,640 chars (headroom 860); AC5 met, all three suites + validate green.
 - 2026-07-19: T3+T4 — retirement wired into review hygiene beside capture (scoped to what shipped, prune demoted to last resort); LESSONS header corrected. First header draft restated the whole rule and cost 6 of a zero-headroom budget — compressed to a 3-line pointer (171 chars), since tracking-rules owns the substance. LESSONS is intentionally over both caps (52 lines / 20,637 chars) until T7's pass frees budget. Task order: T7 moved ahead of T5/T6 to close that window in one commit.
 - 2026-07-19: T2 — rule written into tracking-rules beside "Correcting a record proven false" (the contrast D-051 turns on) + the LESSONS file-map row; 7 anchors verified unique and unwrapped; `archive summary`/`post-merge hygiene` each gained an occurrence, checked against every guard anchor (M85) — both existing guards use longer phrases, no degradation.
 - 2026-07-19: T1 — D-051 appended: enforcement + ownership criteria, trim-to-remainder for partial coverage, archive-summary tombstone; four alternatives rejected with rationale.

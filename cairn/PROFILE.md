@@ -25,6 +25,12 @@ python3 -m unittest discover -s scripts/tests
 python3 -m unittest discover -s hooks/tests
 ```
 
+Run them from the repo root by `discover`, never a dotted module name: the
+mutation harness does a bare `import mutation_engine`, so a
+`python3 -m unittest skills.tests.<name>` run dies `ModuleNotFoundError`. To
+narrow to a single test, add `-k <substring>` rather than switching to a
+dotted path.
+
 ## consistency-gate
 Toolchain checks `/milestone-review` runs *in addition to* the universal
 cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`).
@@ -32,12 +38,18 @@ Generic default: **none** — the universal cairn-file checks are the whole
 consistency gate. (The `verify` suites are re-run at review via the
 acceptance-criteria evidence step, so no separate toolchain check is needed.)
 
+This repo has **no CI**: `gh pr checks --watch` returns "no checks reported"
+and exits 0. Treat a PR as mergeable on local green; never wait for a check
+run that will not arrive.
+
 ## test-doctrine
 Toolchain-specific test expectations layered on the universal "What gets a
 test" rules in tracking-rules. This repo: guard tests are Python stdlib
 `unittest` over the skills/rulebook prose (single-line asserted phrases; steer
 clear of `**bold**` splits) and the scripts/hooks behavior. No numeric/oracle
-doctrine applies here. Nothing beyond the universal rules otherwise.
+doctrine applies here. There is no `pytest` in this repo — never write
+`pytest …` into an acceptance criterion; it fails "No module named pytest".
+Nothing beyond the universal rules otherwise.
 
 ## release-walk
 The release procedure `/cairn-release` follows. Generic default: a minimal
