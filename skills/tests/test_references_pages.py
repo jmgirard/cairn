@@ -251,6 +251,67 @@ class TestTemplateProducesAValidPage(unittest.TestCase):
                 self.assertNotRegex(line, DATED_EXTRACTION)
 
 
+class TestTemplatesTeachTheShapeRule(unittest.TestCase):
+    """M85 AC1 — both templates state the SHAPE, not a list of phrases.
+
+    The candidate row this milestone came from proposed listing the forms the
+    repo writes. M83's classifier reads a shape, so a list would be wrong the
+    moment someone writes a sixth phrasing; what an author needs is the rule
+    the classifier actually applies. These are prose-guards over shipped
+    templates, so each asserted phrase sits on one physical line (M23), and
+    the verb set is pinned together with its label on that line (M74/M76: a
+    label→SET guard that pins only the label leaves the members swappable).
+    """
+
+    TEMPLATES = (
+        ("source", SKILLS / "shared" / "templates" / "source-note.md"),
+        ("synthesis", SKILLS / "shared" / "templates" / "synthesis-note.md"),
+    )
+
+    def text(self, template):
+        """Read per-test, never cached on the class — a setUpClass cache reads
+        the unmutated file under the mutation harness (M61)."""
+        return template.read_text()
+
+    def test_each_template_states_the_three_way_shape(self):
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertIn(
+                    "claim a verification, or carry a date, or say there is "
+                    "nothing to re-verify.",
+                    self.text(template),
+                )
+
+    def test_each_template_names_the_verb_set_with_its_label(self):
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertIn(
+                    "A verification claim is one of these verbs — `verified`, "
+                    "`checked against`, `read against`, `read directly`, "
+                    "`unverified`.",
+                    self.text(template),
+                )
+
+    def test_each_template_says_the_alternatives_are_not_the_accepted_list(self):
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertIn(
+                    "The alternatives below are examples of that shape, not "
+                    "the accepted list.",
+                    self.text(template),
+                )
+
+    def test_each_template_says_an_unreadable_status_is_reported(self):
+        """The consequence half of the rule. Without it the shape reads as
+        advice; with it the author knows the advisory will say so."""
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertIn(
+                    "it is reported rather than assumed verified.",
+                    self.text(template),
+                )
+
+
 class StatusClassificationMixin:
     """Shared machinery for the two classes below, so the template's own
     alternatives and the unlisted shipped forms are judged by exactly the same

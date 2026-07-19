@@ -87,10 +87,11 @@ row.
 - [x] T4. Add the shipped-form classification test covering the four forms in
       AC4, so the vocabulary the repo actually writes is pinned against a
       future parser or template change.
-- [ ] T5. Register the new prose-guard blocks in
-      `skills/tests/test_mutation_harness.py` (registration is per file and a
-      new `assertIn` in an already-registered file still needs its own entry —
-      LESSONS M53/M54), then run the three suites and `cairn_validate`.
+- [x] T5. Author the shape-rule prose-guard (`TestTemplatesTeachTheShapeRule`)
+      and register its blocks in `skills/tests/test_mutation_harness.py`
+      (registration is per file and a new `assertIn` in an already-registered
+      file still needs its own entry — LESSONS M53/M54), then run the three
+      suites and `cairn_validate`.
 
 ## Work log
 
@@ -99,6 +100,7 @@ row.
 - 2026-07-18: T2 wrote the shape rule into both templates' comment headers (not body prose — M80 F2: a page authored from the template must not commit a sentence about a test guard). Both templates now state the three-way shape, name the verb set and clause-scoped negation, and say the alternatives are examples rather than the accepted list. Three suites + validate exit 0.
 - 2026-07-18: T3 added `TestEachSanctionedStatusClassifies` (3 tests) — it selects each alternative the `<a | b | c>` field offers, builds a page from it, and asserts the real `_last_verified` state against an INTENT table, so a new alternative matching no entry fails rather than passing unexamined. Landed in a new class rather than extending `TestTemplateProducesAValidPage`, whose subject is the existence checkers; falsified by mutation (swapping one alternative for unreadable wording failed all 3, restored green).
 - 2026-07-18: T4 added `TestUnlistedShippedFormsSatisfyTheShapeRule` (3 tests) — the four unlisted forms each classify `ok`, each is still written by a committed page (so the list cannot go fictional), and none is offered by a template (the class premise). Refactored the shared helpers into `StatusClassificationMixin` first: the class had inherited the T3 TestCase, which re-ran its 3 tests under the child's name. Falsified by mutating a shipped page's status prefix. Skills 369 (was 363), scripts 174, hooks 72, validate all exit 0.
+- 2026-07-18: T5 minor amendment — the task presupposed the prose-guards existed, but T2 had written the shape rule with nothing asserting it, so AC1 had no evidence and the rule was silently deletable; T5 now authors the guard as well as registering it. Added `TestTemplatesTeachTheShapeRule` (4 tests) and 8 harness entries, one per (test, template) pair so blanking either template's copy fails. Reflowed the verb set onto one physical line first (M74/M76: a label→SET guard pins label and members together). Skills 373, scripts 174, hooks 72, validate all exit 0.
 
 ## Decisions
 
