@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.1.1 (2026-07-19)
+
+A documentation release. The README now describes what 1.1.0 actually
+shipped, and a new test keeps one part of it from drifting again.
+
+- **The README caught up.** A new section explains how a cairn repo records
+  the sources its claims rest on. The list of what cairn deliberately does
+  *not* do now says plainly that it never proposes a release or nominates one
+  as your next action. Each non-failing nudge is named by what triggers it,
+  and the release command is described without assuming an R package.
+- **The list of shipped toolchain profiles is now guarded.** It is derived
+  from the profiles themselves and checked against the README and both plugin
+  manifests, so adding a profile without advertising it fails the tests. The
+  fourth profile had shipped in 1.1.0 with three surfaces still claiming three.
+
 ## 1.1.0 (2026-07-19)
 
 Twenty-one milestones of hardening on top of the first stable release. The
