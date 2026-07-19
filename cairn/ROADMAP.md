@@ -17,6 +17,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | M89 | Partial verification is a state — the staleness advisory stops failing toward green | done | — | high | milestones/archive/M89-partial-verification-false-green.md |
 | M90 | README currency — the front door catches up with what shipped | done | — | normal | milestones/archive/M90-readme-currency.md |
 | M91 | Reference re-verification — the three partial extractions get read against their sources | done | — | normal | milestones/archive/M91-reference-reverification.md |
+| M92 | Lesson retirement — a lesson leaves LESSONS.md when a guard enforces it or another file owns it | planned | — | high | milestones/M92-lesson-retirement.md |
 
 ## Candidates
 
