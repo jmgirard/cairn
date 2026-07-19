@@ -8,11 +8,10 @@ governed LLM Wiki for project state — the agent maintains it, you gate it.
 One canonical workflow — planning, implementation, review, hotfixes,
 releases, and expert escalation — with all project state in plain markdown
 under `cairn/`, kept honest by weight caps and a self-auditing health
-check. The core is
-language-agnostic; each repo declares a toolchain profile (R, Python, or
-generic) that supplies its language-specific commands. Work lands as small
-stacked milestones, and any session — today's or next month's — can find
-the path from the files alone.
+check. The core is language-agnostic; each repo declares a toolchain profile
+(R, Python, Docker image, or generic) that supplies its language-specific
+commands. Work lands as small stacked milestones, and any session — today's
+or next month's — can find the path from the files alone.
 
 Born from maintaining many R packages with Claude Code and rebuilding
 similar-but-diverging tracking systems in each. This plugin centralizes the

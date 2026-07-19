@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M90: README currency — the front door catches up with what shipped
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP2, GP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m90-readme-currency`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -85,12 +85,12 @@ README ¶1 and both `.claude-plugin` manifests.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1 — Write the derived profile guard in
+- [x] T1 — Write the derived profile guard in
       `skills/tests/test_positioning_guard.py`: read the `*.md` basenames of
       `skills/shared/profiles/`, map each to its human label, assert every one
       appears in README ¶1 and both manifests. Run it before touching README
       and record the red output as AC4's differential evidence.
-- [ ] T2 — Fix README.md:12's enumeration to name all four profiles; T1 goes
+- [x] T2 — Fix README.md:12's enumeration to name all four profiles; T1 goes
       green. Keep ¶1's existing anchors (`language-agnostic`,
       `toolchain profile`) intact and singular.
 - [ ] T3 — Author the reference-pages section. Plain words; no page may reuse
@@ -114,6 +114,9 @@ README ¶1 and both `.claude-plugin` manifests.
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
 
 - 2026-07-19: created by /milestone-plan. Scope drawn from a README audit run during the 1.1.0 release walk; extends M62 (README authoring) and M54 (outward positioning as a guarded surface). Targets the user-declared 1.1.1 release window.
+- 2026-07-19: T1+T2 landed in one commit — T1's deliverable is a RED run and committing it alone would leave the branch failing at checkoff, which the verify rule forbids. AC4 differential evidence captured before the fix: `AssertionError: 'Docker image' not found in ...` on README ¶1, both manifests already passing.
+- 2026-07-19: T1 hit LESSONS.md:23's wrap trap in the milestone whose own AC7 is anchor hygiene — "Docker image" straddled a line break. Resolved by normalizing whitespace within the read paragraph (label still matched exactly), NOT by loosening the assertion; M64's one-physical-line rule binds mutation blocks and M74's binds label→rule pairings, neither of which this presence check is. README reflowed too.
+- 2026-07-19: verified the guard is fail-closed by adding an unmapped profile file — one clean failure (`Lists differ: ['zz-fake-profile'] != []`); tightened the two surface tests to skip unmapped profiles so the dedicated label test owns that signal alone.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
