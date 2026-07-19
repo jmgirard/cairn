@@ -310,6 +310,61 @@ class TestTemplatesTeachTheShapeRule(unittest.TestCase):
                     self.text(template),
                 )
 
+    def test_each_template_names_the_partiality_set_with_its_label(self):
+        """M89. Pinned label→SET, exactly like the verb-set guard above: a
+        guard that pinned only "a partiality qualifier" would leave the four
+        members swappable, which is the M74/M76 trap."""
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertIn(
+                    "A partiality qualifier before the verb in that same "
+                    "clause — `partly`, `partially`, `in part`, "
+                    "`spot-checked` — makes the claim a PARTIAL verification.",
+                    self.text(template),
+                )
+
+    def test_each_template_says_a_partial_claim_is_never_cleared(self):
+        """The consequence half. Naming the state without saying it cannot be
+        aged out leaves an author expecting a fresh date to close it — which
+        is precisely what the defect did on their behalf."""
+        for kind, template in self.TEMPLATES:
+            with self.subTest(template=kind):
+                self.assertIn(
+                    "A partial claim is reported, never cleared: no date "
+                    "closes it, because what is missing is coverage rather "
+                    "than freshness.",
+                    self.text(template),
+                )
+
+    def test_each_taught_partiality_qualifier_classifies_as_partial(self):
+        """The taught set run through the REAL classifier, one member at a
+        time (M75/M85): a set tested as a whole passes on its first member and
+        says nothing about the rest, so a qualifier the templates teach but
+        the implementation cannot read would ship unnoticed.
+
+        The members are lifted OUT of the template line, not restated, so a
+        template that renamed one is tested on the new name — a hardcoded copy
+        here would keep testing the old one and pass.
+        """
+        validate = _load_validate()
+        template = SKILLS / "shared" / "templates" / "source-note.md"
+        line = next(
+            ln for ln in self.text(template).splitlines()
+            if "makes the claim a PARTIAL verification" in ln
+        )
+        taught = re.findall(r"`([^`]+)`", line)
+        self.assertEqual(len(taught), 4, f"expected four qualifiers in {line!r}")
+        for qualifier in taught:
+            with self.subTest(qualifier=qualifier):
+                self.assertEqual(
+                    validate._resolve_claims(
+                        validate._clause_claims(
+                            f"{qualifier} verified against the source"
+                        )
+                    ),
+                    "partial",
+                )
+
     def test_each_template_says_the_alternatives_are_not_the_accepted_list(self):
         for kind, template in self.TEMPLATES:
             with self.subTest(template=kind):

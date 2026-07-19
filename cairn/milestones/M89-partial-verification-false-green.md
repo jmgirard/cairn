@@ -90,10 +90,10 @@ neither defect here touches it. Citekey resolution → stays a candidate row.
       `_last_verified:971-975` so one definition serves both, then re-derive
       whether the `undated` skip's stated justification now holds and rewrite
       the comment to match what the code does.
-- [ ] T6 — Update both note templates' verb-set comments to teach the partial
+- [x] T6 — Update both note templates' verb-set comments to teach the partial
       form; run each member of the taught set through the implementation
       individually, never the set as a whole (M75/M85).
-- [ ] T7 — Mutation-register each new prose guard; author every anchor on its own
+- [x] T7 — Mutation-register each new prose guard; author every anchor on its own
       physical line, unwrapped, with trailing punctuation (M78/M82), and verify
       by inversion — relabel the rule in place, require red, restore and diff (M74).
 - [ ] T8 — Re-run the advisory over this repo, report the count delta, and
@@ -105,6 +105,8 @@ neither defect here touches it. Citekey resolution → stays a candidate row.
 - 2026-07-19: implement gate settled three open choices — the never > partial > verified lattice ({never, verified} stays ambiguous), a tight qualifier set (partly | partially | in part | spot-check(ed)), and defect B fixed by tightening the CHECK behind a shared `_ingested_date` predicate.
 - 2026-07-19: T2–T5 — `_PARTIAL` qualifier + `_resolve_claims` lattice + a `partial` advisory branch + one shared `_ingested_date` predicate behind both readers; all three verify suites green, validate exit 0.
 - 2026-07-19: T1 — 10 regression fixtures red across both defects; the four intraclass note statuses (donner2002, konishi1989, naik2007, young1998, commit dea301f) and this repo's three `partly` pages quoted as shipped.
+
+- 2026-07-19: T6–T7 — both templates teach the partiality set and its no-date-clears-it consequence; three new guards, five mutation entries (per template, per test), and an inversion check (`partly` → `mostly` in place) turned 4 guards red before restore.
 
 ## Decisions
 

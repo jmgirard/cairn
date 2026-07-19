@@ -1411,6 +1411,37 @@ REGISTRY = [
         target=SYNTHESIS_NOTE,
         block="`unverified` is the exception — it carries its own negation and always reads as never-verified, with or without a negator.",
     ),
+    # M89: the partial state, same per-(test, template) pairing as above.
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_names_the_partiality_set_with_its_label",
+        target=SOURCE_NOTE,
+        block="A partiality qualifier before the verb in that same clause — `partly`, `partially`, `in part`, `spot-checked` — makes the claim a PARTIAL verification.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_names_the_partiality_set_with_its_label",
+        target=SYNTHESIS_NOTE,
+        block="A partiality qualifier before the verb in that same clause — `partly`, `partially`, `in part`, `spot-checked` — makes the claim a PARTIAL verification.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_says_a_partial_claim_is_never_cleared",
+        target=SOURCE_NOTE,
+        block="A partial claim is reported, never cleared: no date closes it, because what is missing is coverage rather than freshness.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_template_says_a_partial_claim_is_never_cleared",
+        target=SYNTHESIS_NOTE,
+        block="A partial claim is reported, never cleared: no date closes it, because what is missing is coverage rather than freshness.",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestTemplatesTeachTheShapeRule.test_each_taught_partiality_qualifier_classifies_as_partial",
+        target=SOURCE_NOTE,
+        block="A partiality qualifier before the verb in that same clause — `partly`, `partially`, `in part`, `spot-checked` — makes the claim a PARTIAL verification.",
+    ),
     Mutation(
         guard="test_references_pages",
         test="TestTemplatesTeachTheShapeRule.test_each_template_says_the_alternatives_are_not_the_accepted_list",

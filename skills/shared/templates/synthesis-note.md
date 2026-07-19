@@ -19,6 +19,9 @@
      It counts as negated when a negator precedes it in that same clause, so
      `none re-read since` in a LATER clause qualifies a claim without undoing it.
      `unverified` is the exception — it carries its own negation and always reads as never-verified, with or without a negator.
+     A partiality qualifier before the verb in that same clause — `partly`, `partially`, `in part`, `spot-checked` — makes the claim a PARTIAL verification.
+     A partial claim is reported, never cleared: no date closes it, because what is missing is coverage rather than freshness.
+     Say what was checked and what was not, and rewrite the status once the rest is read.
      A status doing none of the three says nothing the advisory can read, and
      it is reported rather than assumed verified.
      The alternatives below are examples of that shape, not the accepted list.
