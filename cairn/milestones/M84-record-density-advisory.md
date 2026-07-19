@@ -91,12 +91,12 @@ cairn's own ROADMAP and LESSONS under the resulting thresholds.
       alongside `LINE_CAPS` (`scripts/cairn_scripts.py:44`), and the advisory
       in `scripts/cairn_validate.py` near `check_caps`
       (`scripts/cairn_validate.py:67`), emitting WARN not FAIL.
-- [ ] T4: Wire the advisory into the validate output ordering and label; confirm
+- [x] T4: Wire the advisory into the validate output ordering and label; confirm
       `/milestone`'s audit surfaces it as a judgment call, not a mechanical fix.
-- [ ] T5: Rewrite the `tracking-rules` weight-caps section for two axes.
+- [x] T5: Rewrite the `tracking-rules` weight-caps section for two axes.
       Author the guarded phrase on one physical line and expect the reflow to
       split already-registered neighbouring phrases (M23/M82).
-- [ ] T6: Register the new prose-guard in `skills/tests/test_mutation_harness.py`;
+- [x] T6: Register the new prose-guard in `skills/tests/test_mutation_harness.py`;
       pin the label together with its members on one physical line (M74/M76).
 - [ ] T7: Prune cairn's `ROADMAP.md` and `LESSONS.md` under threshold —
       compress lessons rather than evict them where possible, since eviction is
@@ -111,6 +111,9 @@ cairn's own ROADMAP and LESSONS under the resulting thresholds.
 - 2026-07-18: AC2 amended (gated) — the cited hash `5d0d5b6` does not exist in this repo; the real pre-prune ref is `dbf1068^` at 9,807 chars (plan estimated ~9,600), post-prune `dbf1068` at 8,106.
 - 2026-07-18: T2/T3 — `record density` advisory shipped: `CHAR_CAPS` in cairn_scripts, `check_record_density` first in ADVISORIES, 11 fixture tests; fires on cairn's own LESSONS.md (18,607 chars, shed ≥1,608).
 - 2026-07-18: AC2 amended again (unit precision) — the survey figures were `wc -c` bytes but the advisory measures characters (~1% apart); both units now stated, no threshold call changes (M84-D1 **Unit.**).
+
+- 2026-07-18: T4 — no `/milestone` edit needed: its audit already treats every `WARN` generically as "a judgment call surfaced for the user, not a mechanical problem to auto-fix", and enumerating advisories there is the M28 stale-count trap the skill explicitly forbids ("never restate or recall its internals"). DESIGN.md's script inventory is likewise generic.
+- 2026-07-18: T5/T6 — tracking-rules weight-caps documents both axes and their opposite remedies; new guard `skills/tests/test_record_density.py` (6 asserts) with 5 mutation registrations; the remedies bullet's "over-cap ROADMAP" is now "over-count ROADMAP" since the phrase became ambiguous. 362 skills tests green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

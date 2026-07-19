@@ -289,6 +289,44 @@ REGISTRY = [
         target=RULES,
         block="`work-log format`",
     ),
+    # M84: the second weight axis. One entry per positive assert on a prose
+    # block (M53). The axis->remedy entry is deliberately pair-INCLUSIVE per
+    # M74/M76 — both mappings on one physical line, since registration is per
+    # file and the sound entries above would mask a mechanism-only pin. The
+    # stated<->enforced THRESHOLD assert carries no entry, following its
+    # `test_stated_cap_matches_enforced_cap` sibling: both of its halves are
+    # computed numbers, not prose a blanking could remove. The LABEL assert
+    # does register — its rulebook half is a prose block.
+    Mutation(
+        guard="test_record_density",
+        test="TestRecordDensityRule.test_rule_names_both_axes_with_their_opposite_remedies",
+        target=RULES,
+        block="The two axes take opposite remedies: an over-count file graduates or prunes items, an over-weight file compresses them in place.",
+    ),
+    Mutation(
+        guard="test_record_density",
+        test="TestRecordDensityRule.test_rule_states_why_the_item_axis_cannot_see_weight",
+        target=RULES,
+        block="structurally blind to prose accumulating",
+    ),
+    Mutation(
+        guard="test_record_density",
+        test="TestRecordDensityRule.test_rule_states_that_weight_warns_and_never_fails",
+        target=RULES,
+        block="Weight WARNs and never fails",
+    ),
+    Mutation(
+        guard="test_record_density",
+        test="TestRecordDensityRule.test_rule_records_why_a_per_line_warn_was_rejected",
+        target=RULES,
+        block="pressure on individual line length would reward splitting an item",
+    ),
+    Mutation(
+        guard="test_record_density",
+        test="TestRecordDensityRule.test_stated_advisory_label_matches_the_emitted_label",
+        target=RULES,
+        block="`record density`",
+    ),
     # M59 (RR01 rec 7): run-and-read — skills never enumerate validate's
     # internals; one entry per positive assert, negatives ride along (M54).
     Mutation(
