@@ -1256,3 +1256,49 @@ neither backstops the other's saturation (F3). Locked by the re-based
 fixtures in `scripts/tests/test_scripts.py` and the stated↔enforced coupling in
 `skills/tests/test_record_density.py`. If measured means ever drift far enough
 that the prose mandate proves too weak, the drift test is the entry to supersede.
+
+### D-050 (2026-07-19): Release timing is user-declared — a release milestone parks as `blocked`, not as a routable next action
+
+**Context:** cairn repeatedly nominated a CRAN release as the next action in
+two downstream repos long before the maintainer wanted to ship, then kept
+nominating it. `/cairn-release` is careful never to self-submit, but nothing
+protects the release *milestone*: it is modelled as an ordinary milestone
+carrying `Priority: high` and a dependency fan, while every routing surface
+(`cairn_next.py`, `/milestone` §3, the routing chips) reads only
+`(status, priority, deps)`. A release's readiness condition is not a
+dependency graph — it is a maintainer judgment about when to ship — so once
+such a milestone exists it is recommended forever. Reproduced live:
+circumplex M7 (`review`, high) is the top recommendation, `review` being the
+highest-precedence branch (`cairn_next.py:31`); intraclass M48 (`planned`,
+high, all 8 deps satisfied) is the only workable planned row. The maintainer
+had already recorded the no-pressure intent twice — M21 (2026-07-12) parked
+circumplex release-prep as a `blocked` milestone at a user gate, and
+circumplex D-008 plus M7's own Goal both state there is no release-time
+pressure — and ordinary status progression erased the parking while the prose
+stayed invisible to routing.
+**Decision:** Release timing is declared by the user, never proposed by cairn.
+Mechanically: reuse the existing `blocked` status, widening it so "the
+maintainer has not opened the release window" is a legitimate blocker, and
+legalize `planned → blocked` and `review → blocked` so parking is reachable
+from the states a release milestone actually sits in. `blocked` already earns
+this for free — `cairn_next` excludes it from `_workable` and from the
+recommendation ladder, printing it under "Externally blocked"
+(`cairn_next.py:61-64`) — so no script, parser, or vocabulary change is
+needed. `/milestone-plan` gains a release-shaped tripwire: release framing
+must ask the user to declare the window, and absent a declaration lands as a
+`candidate` row. `cairn_validate` gains a `release window` advisory catching
+the drift back. Rejected: (1) a new status word (`held`/`deferred`) — the
+vocabulary is "exactly these seven" and is threaded through validate, next,
+every skill, and the guard tests, a large change for identical routing
+behaviour; (2) a `Release-window:` header slot — adds a field to parse,
+validate, and guard, and creates a second place where release intent is
+encoded, the two-places-encode-one-fact drift surface D-035 rejected.
+**Consequences:** A release milestone is silent until its window opens; the
+maintainer's "not yet" survives as status rather than as prose no surface
+reads. Distinguished from D-035, which rejected "blocked" as a *candidate
+section grouping label* partly because it "would overload an existing
+status-vocabulary word that means something else (in-flight, external
+blocker, work-log line)" — that reasoning is about candidate rows and affirms
+what `blocked` means on a real milestone; this decision widens the "external"
+gloss, which had been read as CI/upstream only. If an expiry model is ever
+needed — a declared window going stale — this is the entry to supersede.

@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-19 (M87 done + archived; its density-calibration candidate graduated; M82 row pruned under terminal-row retention). Density thresholds are now derived, not assumed — D-049._
+_Last hygiene check: 2026-07-19 (M88 planned). Release timing is user-declared, never agent-proposed — D-050._
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -17,6 +17,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 | M85 | Extraction-status shape — the templates teach what the classifier reads | done | — | normal | milestones/archive/M85-extraction-status-shape.md |
 | M86 | Copy-run command wiring — the handoff rule reaches the steps that hand over | done | — | normal | milestones/archive/M86-copy-run-command-wiring.md |
 | M87 | Density-threshold recalibration — the weight axis is derived from what records actually cost | done | — | normal | milestones/archive/M87-density-threshold-recalibration.md |
+| M88 | Release timing is user-declared — a release milestone stops nominating itself | planned | — | high | milestones/M88-release-timing-user-declared.md |
 
 ## Candidates
 
