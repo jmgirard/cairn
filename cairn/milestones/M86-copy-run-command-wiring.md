@@ -49,9 +49,12 @@ those are not handoffs and stay inline.
 - [ ] AC2 — that rule names slash commands (`/clear`, `/milestone-plan`) as
       covered, not only shell commands.
 - [ ] AC3 — `skills/milestone-review/SKILL.md` step 10 no longer instructs the
-      inline form: `grep -n "inline" skills/milestone-review/SKILL.md` returns
-      no hit within step 10, and the step directs the `/clear` + next-skill
-      handoff into a fenced block.
+      inline form: the instruction "naming the obvious next action inline" is
+      gone from the file, and step 10 directs the `/clear` + next-skill handoff
+      into a fenced block, citing the tracking-rules copy-run rule.
+      <!-- amended 2026-07-18 via the implement step-6 gate: the original
+           grep-for-"inline" evidence self-hit the fix, which must state the
+           prohibition (M58/M59/M62 lesson). Intent unchanged. -->
 - [ ] AC4 — `skills/milestone-brief/SKILL.md` step 3's manual-run option and
       `skills/cairn-release/SKILL.md` step 4's terminal-actions checklist each
       name the fenced-block form at the point of handoff.
@@ -93,14 +96,14 @@ those are not handoffs and stay inline.
       three labels together with its members on one physical line, and refresh
       its `Mutation(...)` entry at `test_mutation_harness.py:545` (the current
       `block="own fenced code block"` moves if the line is reflowed).
-- [ ] T3 — Rewrite `skills/milestone-review/SKILL.md:203-206`: drop "naming the
+- [x] T3 — Rewrite `skills/milestone-review/SKILL.md:203-206`: drop "naming the
       obvious next action inline" and direct the close to emit `/clear` and the
       next skill as a fenced block. The step-10 prose stays chip-less (D-019).
-- [ ] T4 — Wire `skills/milestone-brief/SKILL.md:42-44` (the manual-run
+- [x] T4 — Wire `skills/milestone-brief/SKILL.md:42-44` (the manual-run
       blockquote renders no copy button — move the prompt to a fenced block)
       and `skills/cairn-release/SKILL.md:68-71` (the terminal-actions
       checklist names the fenced form).
-- [ ] T5 — Add the per-skill guard covering T3/T4's three directives plus the
+- [x] T5 — Add the per-skill guard covering T3/T4's three directives plus the
       `/milestone-implement:108` mention-stays-inline assert; pair the negative
       assert with a positive framing assert so it can carry a mutation entry
       (M53), and register the file in `test_mutation_harness.py`.
@@ -113,6 +116,9 @@ those are not handoffs and stay inline.
 
 - 2026-07-18: created by /milestone-plan.
 - 2026-07-18: T1+T2 — rule rewritten as three labelled cases + slash commands + the handoff/mention test; guard pins each label with its treatment on one line, mutation block sharpened to the full label phrase. Committed together since the rule and its guard cannot land apart. skills 376/376.
+- 2026-07-18: T3 — AC3 amended via the step-6 gate (its grep-for-"inline" evidence self-hit the fix, M58/M59/M62); review step 10 rewritten to emit the handoff fenced.
+- 2026-07-18: T4 — brief's manual-run prompt moved from a blockquote to a fenced block; release step 4's checklist names the fenced form.
+- 2026-07-18: T5 — new `test_copy_run_handoffs.py` (7 tests) locks all three directives plus implement's mention-stays-inline; three mutation entries registered, all blank-and-fail verified. skills 383/383.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

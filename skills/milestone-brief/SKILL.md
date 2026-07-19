@@ -39,9 +39,14 @@ makes the review reproducible and its findings ingestible.
      `cairn/reviews/RB<NN>-<slug>.md` and follow its instructions exactly,
      writing findings to the RR path it specifies. When it returns, run
      ingestion (below) immediately in this session.
-   - **I'll run it manually** — tell the user verbatim:
-     > Open a fresh Fable session in the repo root and prompt:
-     > `Read cairn/reviews/RB<NN>-<slug>.md and follow its instructions exactly.`
+   - **I'll run it manually** — this is a **handoff**, so the prompt goes in a
+     fenced block, never a blockquote or inline backticks (tracking-rules
+     "Copy-run commands"): a blockquote renders no copy button and the user
+     has to retype the path. Tell them to open a fresh Fable session in the
+     repo root, and emit the prompt as its own copyable block:
+     ```
+     Read cairn/reviews/RB<NN>-<slug>.md and follow its instructions exactly.
+     ```
      Then stop the turn; ingestion happens at the next session start.
    - **Cancel** — unblock the milestone; note the question as unresolved in
      the work-log.
