@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M86: Copy-run command wiring — the handoff rule reaches the steps that hand over
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP3, GP4   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m86-copy-run-command-wiring`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -81,14 +81,14 @@ those are not handoffs and stay inline.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1 — Rewrite the copy-run rule at `skills/shared/tracking-rules.md:495`
+- [x] T1 — Rewrite the copy-run rule at `skills/shared/tracking-rules.md:495`
       to state the three cases and to name slash commands. Author each
       guard anchor on its own physical line, unwrapped (M78/M82), and before
       committing grep every word an existing guard anchors on — `fenced`
       already occurs in `skills/design-interview/SKILL.md:105` and in
       `cairn_validate`'s fence-aware counter, so new prose can degrade a bare
       `assertIn` elsewhere (M60/M80/M85).
-- [ ] T2 — Update `test_rulebook_polish.py:43`
+- [x] T2 — Update `test_rulebook_polish.py:43`
       (`test_copy_run_commands_get_their_own_fenced_block`) to pin each of the
       three labels together with its members on one physical line, and refresh
       its `Mutation(...)` entry at `test_mutation_harness.py:545` (the current
@@ -112,6 +112,7 @@ those are not handoffs and stay inline.
      EXEMPT from the 150-line cap (D-046). -->
 
 - 2026-07-18: created by /milestone-plan.
+- 2026-07-18: T1+T2 — rule rewritten as three labelled cases + slash commands + the handoff/mention test; guard pins each label with its treatment on one line, mutation block sharpened to the full label phrase. Committed together since the rule and its guard cannot land apart. skills 376/376.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -17,7 +17,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 | M83 | Staleness-parser hardening — the extraction status stops being guessed at | done | — | normal | milestones/archive/M83-staleness-parser-hardening.md |
 | M84 | Record-density advisory — the item caps gain a weight axis | done | — | normal | milestones/archive/M84-record-density-advisory.md |
 | M85 | Extraction-status shape — the templates teach what the classifier reads | done | — | normal | milestones/archive/M85-extraction-status-shape.md |
-| M86 | Copy-run command wiring — the handoff rule reaches the steps that hand over | planned | — | normal | milestones/M86-copy-run-command-wiring.md |
+| M86 | Copy-run command wiring — the handoff rule reaches the steps that hand over | in-progress | — | normal | milestones/M86-copy-run-command-wiring.md |
 
 ## Candidates
 

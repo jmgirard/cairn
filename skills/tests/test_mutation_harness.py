@@ -544,7 +544,7 @@ REGISTRY = [
         guard="test_rulebook_polish",
         test="TestRulebookPolish.test_copy_run_commands_get_their_own_fenced_block",
         target=RULES,
-        block="own fenced code block",
+        block="Handing the user a command to run → its own fenced code block",
     ),
     Mutation(
         guard="test_section_allow_lists",
