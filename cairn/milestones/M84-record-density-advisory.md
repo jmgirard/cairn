@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M84: Record-density advisory — the item caps gain a weight axis
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, GP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m84-record-density-advisory   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 
@@ -57,8 +57,8 @@ cairn's own ROADMAP and LESSONS under the resulting thresholds.
       (M78).
 - [ ] AC2: The thresholds are derived from a recorded survey of both repos,
       and regression-anchored: the ROADMAP threshold WARNs on the pre-prune
-      state (`git show 5d0d5b6^:cairn/ROADMAP.md`, ~9,600 chars) and passes on
-      the post-prune state.
+      state (`git show dbf1068^:cairn/ROADMAP.md`, 9,807 chars) and passes on
+      the post-prune state (`dbf1068`, 8,106 chars).
 - [ ] AC3: cairn's `ROADMAP.md` and `LESSONS.md` both pass the new advisory
       after an in-milestone prune, evidenced by a before/after mass table.
 - [ ] AC4: The advisory is exit-code neutral — `cairn_validate` exits 0 on a
@@ -82,7 +82,7 @@ cairn's own ROADMAP and LESSONS under the resulting thresholds.
 
 ## Tasks
 
-- [ ] T1: Survey character mass across both repos and the pre-prune ROADMAP
+- [x] T1: Survey character mass across both repos and the pre-prune ROADMAP
       state; record the table in this file and derive the two thresholds from
       it, stating the headroom rationale.
 - [ ] T2: Tests first — fixtures in `scripts/tests/` for over-threshold,
@@ -107,9 +107,30 @@ cairn's own ROADMAP and LESSONS under the resulting thresholds.
 ## Work log
 
 - 2026-07-18: created by /milestone-plan.
+- 2026-07-18: T1 survey done; thresholds 9,000 / 17,000 and the label `record density` settled at the implement question gate (M84-D1).
+- 2026-07-18: AC2 amended (gated) — the cited hash `5d0d5b6` does not exist in this repo; the real pre-prune ref is `dbf1068^` at 9,807 chars (plan estimated ~9,600), post-prune `dbf1068` at 8,106.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
      cross-cutting ones to cairn/DECISIONS.md -->
+
+### M84-D1 (2026-07-18): Thresholds 9,000 (ROADMAP) / 17,000 (LESSONS), derived from a two-repo survey
+
+**Survey** (`wc -c`, 2026-07-18): cairn `ROADMAP.md` 8,491 c / 35 L (243 c/L),
+`LESSONS.md` 18,729 / 49 (382), `PROFILE.md` 3,094 / 63 (49); intraclass
+7,322 / 37 (198), 15,861 / 49 (324), 6,188 / 101 (61). cairn's `LESSONS.md`
+held 49 lines — one under the `<50` item cap — across M78–M83 while its mass
+grew 16,567 → 18,729 (+13%): the item cap sat saturated and reported nothing,
+which is the incident this advisory answers. ROADMAP peaked at 9,807
+(`dbf1068^`) and was pruned to 8,106 (`dbf1068`).
+
+**Derivation.** Each threshold is its item cap × a per-file target mean line
+length. ROADMAP: 60 × 150 = **9,000**, independently confirmed by the
+incident — it sits between post-prune 8,106 (10% headroom) and pre-prune
+9,807. LESSONS: a lesson is a paragraph of hard-won detail, not a table row,
+so 150 does not transfer and the mean comes from the corpus instead:
+50 × 340 = **17,000**, above intraclass's 324 and below cairn's 382. cairn
+sheds ~1,750 chars (9%) at T7; intraclass keeps ~1,100 (about three lessons)
+of headroom. Both settled at the implement question gate, 2026-07-18.
 
 ## Review
