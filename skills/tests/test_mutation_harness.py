@@ -32,6 +32,9 @@ Mutation = collections.namedtuple("Mutation", "guard test target block")
 RULES = "skills/shared/tracking-rules.md"
 HOTFIX = "skills/hotfix/SKILL.md"
 MILESTONE = "skills/milestone/SKILL.md"
+REVIEW = "skills/milestone-review/SKILL.md"
+BRIEF = "skills/milestone-brief/SKILL.md"
+RELEASE = "skills/cairn-release/SKILL.md"
 TEMPLATE = "skills/shared/templates/milestone.md"
 DOCTRINE = "skills/shared/validation-doctrine.md"
 SOURCE_NOTE = "skills/shared/templates/source-note.md"
@@ -544,7 +547,27 @@ REGISTRY = [
         guard="test_rulebook_polish",
         test="TestRulebookPolish.test_copy_run_commands_get_their_own_fenced_block",
         target=RULES,
-        block="own fenced code block",
+        block="Handing the user a command to run → its own fenced code block",
+    ),
+    # M86 (D-048): the three handoff steps each carry the directive
+    # independently — one skill losing it must not be masked by the other two.
+    Mutation(
+        guard="test_copy_run_handoffs",
+        test="TestReviewCloseIsAHandoff.test_close_directs_the_commands_into_a_fenced_block",
+        target=REVIEW,
+        block="emit the commands in a fenced block, never inline backticks",
+    ),
+    Mutation(
+        guard="test_copy_run_handoffs",
+        test="TestBriefManualRunIsAHandoff.test_manual_run_prompt_goes_in_a_fenced_block",
+        target=BRIEF,
+        block="fenced block, never a blockquote or inline backticks",
+    ),
+    Mutation(
+        guard="test_copy_run_handoffs",
+        test="TestReleaseChecklistIsAHandoff.test_terminal_actions_checklist_names_the_fenced_form",
+        target=RELEASE,
+        block="so each goes in a fenced block, never inline backticks",
     ),
     Mutation(
         guard="test_section_allow_lists",

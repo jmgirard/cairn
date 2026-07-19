@@ -201,8 +201,12 @@ overrides — log the override).
     and routing chips"): M<NN> is archived and all state is on disk, so the
     natural next step is a fresh context, not another in-session route.
     Close in plain prose — tell the user this is a clean `/clear` point and
-    recommend starting the next milestone in a fresh session, naming the
-    obvious next action inline (`/milestone-plan` when planned or candidate
-    work exists, else `/milestone` for a health audit). Do **not** end review
+    recommend starting the next milestone in a fresh session. This close is a
+    handoff, so
+    emit the commands in a fenced block, never inline backticks
+    (tracking-rules "Copy-run commands") — the user is being asked to go run
+    them. Emit `/clear` and the obvious next action (`/milestone-plan` when
+    planned or candidate work exists, else `/milestone` for a health audit)
+    as copyable lines. Do **not** end review
     with an AskUserQuestion — the step-7 merge-approval gate was the last
     chip this phase emits.

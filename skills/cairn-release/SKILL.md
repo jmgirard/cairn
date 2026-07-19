@@ -68,7 +68,10 @@ toolchain-specific work at step 3.
    present the slot's terminal actions as a checklist for the user to run
    (r-package: the CRAN submission checklist — submit, confirm the email, then
    tag the GitHub release and bump to the next dev version; generic: the
-   tag/push commands), never performed on their behalf. Offer to prepare the
+   tag/push commands), never performed on their behalf. Every command in that
+   checklist is a **handoff** — the whole step exists to hand the user work to
+   run — so each goes in a fenced block, never inline backticks
+   (tracking-rules "Copy-run commands"). Offer to prepare the
    post-acceptance steps as a follow-up when the user returns.
 
 5. Work-log/ROADMAP note: one line in ROADMAP ("Released <version>
