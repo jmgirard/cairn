@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M87: Density-threshold recalibration — the weight axis is derived from what records actually cost
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m87-density-threshold-recalibration`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -96,7 +96,7 @@ small-keeper; the advisory returns to flagging genuine intra-line bloat.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1 Measure both files and record the derivation in this file: item count,
+- [x] T1 Measure both files and record the derivation in this file: item count,
       fixed non-item lines, measured mean, capacity at the line cap, derived
       threshold, rounded value. Expect ≈ LESSONS 20,881 → **21,000** and ROADMAP
       21,368 → **21,500**; re-measure at implement rather than trusting these —
@@ -127,10 +127,26 @@ small-keeper; the advisory returns to flagging genuine intra-line bloat.
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
 
 - 2026-07-18: created by /milestone-plan; thresholds derived from measured practice, prose-only safeguard, both files in scope (gate answers).
+- 2026-07-18: T1 measured both files; derivations 20,881 / 21,122 → set 21,000 / 21,500 (M87-D1). Rejected shipping a re-runnable measurement script — the gate chose prose-only, and a new shipped script is machinery.
 - 2026-07-18: registering this milestone tripped the advisory live — ROADMAP 9,187 chars at 36 lines against a 60-line item cap (60% of the item budget), remedy "compress entries". Left uncompressed: it is evidence for AC1/AC5, not a defect to absorb.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
+
+- M87-D1 (2026-07-18): thresholds derived as `non-item mass + (line cap − fixed
+  non-item lines) × measured mean item length`, rounded **up to the next 500** so
+  the value is never below the mass its line cap permits (rounding down is how
+  M84-D1's number silently became the binding cap). Measured 2026-07-18; items
+  are lines matching `- 20` (LESSONS) / `| M` or `- ` (ROADMAP), capacity is the
+  line cap less the file's fixed non-item lines:
+
+  | file | chars | lines | items | hdr lines | line cap | capacity | mean | derived | set |
+  |---|---|---|---|---|---|---|---|---|---|
+  | LESSONS.md | 16,998 | 43 | 29 | 14 | 50 | 36 | 561 | 20,881 | **21,000** |
+  | ROADMAP.md | 9,191 | 36 | 17 | 19 | 60 | 41 | 498 | 21,122 | **21,500** |
+
+  Mean, not median (458 for both): the mean is what total mass is built from, and
+  a median would under-count the long-tail items that drive the overrun.
 
 ## Review
 <!-- owner: review · exclusive -->
