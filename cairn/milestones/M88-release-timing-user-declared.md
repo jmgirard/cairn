@@ -93,7 +93,7 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
       amend the transition line (`:225`) to admit `planned → blocked` and
       `review → blocked`. Author each guarded anchor on its own physical line,
       unwrapped and unique (LESSONS M78/M82).
-- [ ] T2 — `/milestone-plan` SKILL.md: add the release-shaped tripwire to the
+- [x] T2 — `/milestone-plan` SKILL.md: add the release-shaped tripwire to the
       question-gate step, stating the default (candidate row) and what a
       declared window must say.
 - [ ] T3 — `scripts/cairn_validate.py`: add `check_release_window` and register
@@ -122,6 +122,7 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
 - 2026-07-19: created by /milestone-plan.
 - 2026-07-19: status planned->in-progress; branch cut; no open implementation choices, question gate skipped.
 - 2026-07-19: T1 — rulebook widens `blocked` to the unopened release window, legalizes planned/review -> blocked, and adds the release-timing governance rule; skills suite 386 green.
+- 2026-07-19: T2 — /milestone-plan gains the release-shaped tripwire: window declared explicitly or the work lands as a candidate row, never planned/high.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
