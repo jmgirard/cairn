@@ -53,11 +53,15 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
       milestone. Guard-locked with the label pinned to its rule on one physical
       line (LESSONS M74).
 - [ ] AC3 — `cairn_validate` emits a `release window` advisory that WARNs on a
-      release-shaped milestone in a routable status (`planned`/`in-progress`/
-      `review`) whose work log has no entry in 14+ days, and is exit-code
-      neutral in every case. It prints a positive `OK release window` signal on
-      the clean path, so an absence-assert cannot pass over a crash (LESSONS
-      M84).
+      release-shaped milestone being nominated, and is exit-code neutral in
+      every case. The trigger is status-dependent, because idleness means
+      different things at different statuses: a `planned` release whose
+      dependencies are all satisfied WARNs immediately (a routing surface is
+      nominating it *now*, and its work log records only queueing, never work),
+      while an `in-progress` or `review` release WARNs once its work log goes
+      14+ days idle (work started, then stalled). It prints a positive
+      `OK release window` signal on the clean path, so an absence-assert cannot
+      pass over a crash (LESSONS M84).
 - [ ] AC4 — Detection requires **both** a word-bounded release token and a
       version pattern, so a milestone about release *tooling* raises nothing:
       fixtures in a routable status titled like this repo's own M47
@@ -96,7 +100,7 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
 - [x] T2 — `/milestone-plan` SKILL.md: add the release-shaped tripwire to the
       question-gate step, stating the default (candidate row) and what a
       declared window must say.
-- [ ] T3 — `scripts/cairn_validate.py`: add `check_release_window` and register
+- [x] T3 — `scripts/cairn_validate.py`: add `check_release_window` and register
       it in `ADVISORIES`. Word-bounded token match (`\bCRAN\b`, `\brelease\b`,
       `\bsubmission\b`) **and** a version pattern, over title and goal; routable
       status; 14-day work-log recency reusing the existing date parsing.
@@ -123,10 +127,34 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
 - 2026-07-19: status planned->in-progress; branch cut; no open implementation choices, question gate skipped.
 - 2026-07-19: T1 — rulebook widens `blocked` to the unopened release window, legalizes planned/review -> blocked, and adds the release-timing governance rule; skills suite 386 green.
 - 2026-07-19: T2 — /milestone-plan gains the release-shaped tripwire: window declared explicitly or the work lands as a candidate row, never planned/high.
+- 2026-07-19: T3 — `release window` advisory added to cairn_validate; AC3 amended at the implement gate (M88-D1) after the planned idle-only rule proved silent on intraclass M48; live-fire: M48 WARNs, circumplex M7 silent (actively shipped), cairn silent; three suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
      cross-cutting ones to cairn/DECISIONS.md -->
+
+### M88-D1 (2026-07-19): The release advisory's trigger is status-dependent, not idle-only
+
+**Context:** T3's planned rule — WARN on a routable release-shaped milestone
+idle 14+ days — was implemented and then run against the two repos that
+motivated M88. It stayed silent on both. circumplex M7 was correct (worked
+that day), but intraclass M48 was the exact nag case and went undetected: it
+had sat `planned` for a week with all eight dependencies satisfied while every
+work-log entry it carried was a `Depends-on` amendment recording that another
+milestone had been slotted ahead of it. Each of those refreshed the idle
+clock, so "no work log in N days" measured when the *file* was last touched,
+never when the *release* was last worked.
+**Decision:** Split the trigger by status. A `planned` release WARNs the moment
+its dependencies are all satisfied — the moment `cairn_next` begins naming it —
+because a planned milestone's log records queueing, never work, so idleness
+cannot speak there. `in-progress`/`review` keep the 14-day idle rule, since
+work that genuinely started can genuinely stall. Rejected warning on every
+routable release regardless of state: it would fire at a maintainer
+mid-release, which is the nag fatigue D-017 rejected.
+**Consequences:** AC3 amended at the implement gate. Dependency satisfaction is
+computed exactly as `cairn_next` computes it (done rows ∪ archive files), so
+the advisory and the router agree on what "being nominated" means by
+construction.
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate

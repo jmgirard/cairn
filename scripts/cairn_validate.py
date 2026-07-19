@@ -1083,6 +1083,122 @@ def check_worklog_format(root):
     return out
 
 
+# --- release window (M88) ---------------------------------------------------
+# A release milestone's readiness is a maintainer judgment about when to ship,
+# never a dependency graph going green — so once one exists in a routable
+# status every routing surface nominates it forever off (status, priority,
+# deps) alone. D-050 parks it as `blocked` instead; this advisory catches the
+# drift back, which is what erased circumplex's M21 parking unnoticed.
+#
+# Detection needs BOTH signals. A release token alone matches milestones about
+# release *tooling* (this repo's own "Release-walk slot", "Release positioning",
+# "Release docs") — work that is ordinary milestone work and must stay silent.
+# Pairing the token with a version pattern discriminates: shipping a version
+# names the version.
+_RELEASE_TOKEN = re.compile(r"\b(?:CRAN|releases?|submissions?|submit)\b", re.I)
+_RELEASE_VERSION = re.compile(r"\bv?\d+\.\d+(?:\.\d+)?\b")
+# The statuses a routing surface will nominate. `blocked` is deliberately
+# absent — it is the parked state this advisory exists to recommend, so a
+# parked release is silent, which is the whole point.
+_ROUTABLE = ("planned", "in-progress", "review")
+_RELEASE_IDLE_DAYS = 14
+
+
+def _release_shaped(title, goal):
+    """True when the text names both a release act and a version. Both are
+    required: the token alone over-matches release tooling."""
+    text = f"{title}\n{goal}"
+    return bool(_RELEASE_TOKEN.search(text) and _RELEASE_VERSION.search(text))
+
+
+def _last_worklog_date(path):
+    """The newest ISO date appearing on a `- ` work-log entry, or None when the
+    log carries no dated entry. Entry lines only — a wrapped continuation is
+    the `work-log format` advisory's business, not this one."""
+    lines = cs.milestone_worklog_lines(path)
+    if not lines:
+        return None
+    seen = []
+    for _lineno, text in lines:
+        if not _LOG_ENTRY.match(text):
+            continue
+        for y, m, d in _ISO_DATE.findall(text):
+            try:
+                seen.append(datetime.date(int(y), int(m), int(d)))
+            except ValueError:
+                continue
+    return max(seen) if seen else None
+
+
+def check_release_window(root, rows, today=None):
+    """Advisory: a release-shaped milestone that a routing surface is
+    nominating — the nag D-050 exists to stop.
+
+    The trigger is status-dependent because idleness means different things at
+    different statuses, and the naive "no work log in N days" rule gets the
+    worst case exactly backwards. A `planned` release has never been worked, so
+    its work log records only *queueing* — intraclass M48 sat planned for a
+    week with all eight dependencies satisfied while every one of its entries
+    was a Depends-on amendment saying another milestone had been slotted ahead
+    of it, and each one refreshed the idle clock. So a `planned` release warns
+    the moment its dependencies are satisfied, which is the moment
+    `cairn_next` starts naming it. Work that has genuinely started is judged on
+    idleness instead: `in-progress`/`review` warn only after
+    `_RELEASE_IDLE_DAYS`, so a maintainer actively shipping a release is never
+    warned at. A standing WARN on every routable release would itself be the
+    nag fatigue D-017 rejected.
+
+    WARN, never a CHECK: whether a window is open is the maintainer's call, and
+    D-029 keeps judgment out of the validate gate."""
+    out = []
+    today = today or datetime.date.today()
+    live = cs.live_files(root)
+    # Dependency satisfaction mirrors cairn_next: a done row, or a done
+    # milestone whose row was pruned under terminal-row retention but whose
+    # archive file remains.
+    done = {r["id"] for r in rows if r["status"] == "done"} | set(cs.archive_files(root))
+    for row in sorted(rows, key=lambda r: cs.id_num(r["id"])):
+        if row["status"] not in _ROUTABLE:
+            continue
+        path = live.get(row["id"])
+        if path is None:
+            continue  # roadmap<->disk orphans are a CHECK's business
+        try:
+            with open(path, encoding="utf-8") as f:
+                text = f.read()
+        except Exception:
+            continue
+        goal = "\n".join(_section_body(text, "Goal"))
+        if not _release_shaped(row["title"], goal):
+            continue
+        tail = (
+            "park it as `blocked` (D-050) or declare the release window"
+        )
+        if row["status"] == "planned":
+            if all(dep in done for dep in row["depends"]):
+                out.append(
+                    f"{row['id']}: release milestone is planned with every "
+                    f"dependency satisfied, so it is being nominated as the "
+                    f"next action — {tail}"
+                )
+            continue
+        when = _last_worklog_date(path)
+        if when is None:
+            out.append(
+                f"{row['id']}: release milestone in status '{row['status']}' "
+                f"with no dated work-log entry — {tail}"
+            )
+            continue
+        idle = (today - when).days
+        if idle > _RELEASE_IDLE_DAYS:
+            out.append(
+                f"{row['id']}: release milestone in status '{row['status']}' "
+                f"idle {idle} days since {when.isoformat()} (threshold "
+                f"{_RELEASE_IDLE_DAYS}) — {tail}"
+            )
+    return out
+
+
 # ID-token shapes (M57): zero-padded milestone/decision IDs as written in
 # tracking prose. Unpadded forms (M7) don't occur in cairn's ID format.
 _M_TOKEN = re.compile(r"\bM(\d{2,})\b")
@@ -1197,6 +1313,7 @@ ADVISORIES = [
         "references staleness",
         lambda root, rows: check_references_staleness(root),
     ),
+    ("release window", lambda root, rows: check_release_window(root, rows)),
 ]
 
 
