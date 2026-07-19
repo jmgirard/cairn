@@ -56,17 +56,37 @@ class TestRulebookPolish(unittest.TestCase):
         self.assertIn(
             "naming a command, path, or symbol in prose → inline backticks", t
         )
-        self.assertIn("option → neither fence nor handoff", t)
+        self.assertIn(
+            "a routing chip's `→ /skill` option → neither fence nor handoff", t
+        )
 
     def test_copy_run_rule_covers_slash_commands(self):
+        """Pins the predicate too — a truncated anchor survives inversion."""
         self.assertIn(
-            "slash commands (`/clear`, `/milestone-plan`) count as", rules().lower()
+            "slash commands (`/clear`, `/milestone-plan`) count as commands here "
+            "exactly as shell commands do",
+            rules().lower(),
         )
 
     def test_copy_run_rule_separates_a_handoff_from_a_mention(self):
+        """Each subject rides with its verdict, so transposing them goes red."""
         t = rules().lower()
-        self.assertIn("is a handoff and gets the fence", t)
-        self.assertIn("is a mention and stays inline", t)
+        self.assertIn(
+            "a step that ends the turn expecting the user to go run something → "
+            "a handoff, and it gets the fence",
+            t,
+        )
+        self.assertIn(
+            "a line noting that a moment is a safe `/clear` point, beside a chip "
+            "already offering the route → a mention, and it stays inline",
+            t,
+        )
+
+    def test_copy_run_rule_scopes_the_fence_to_the_runnable_lines(self):
+        self.assertIn(
+            "the prose framing a handoff stays prose; only the runnable lines get fenced",
+            rules().lower(),
+        )
 
 
 if __name__ == "__main__":

@@ -493,15 +493,18 @@ cairn skill is active.
   Fallback: where the runtime provides no chapter mechanism, no marker is emitted
   and the H1/H2 phase headers are the visual fallback — nothing breaks.
 - **Copy-run commands get their own fenced block.** Three adjacent cases, three
-  different treatments. Slash commands (`/clear`, `/milestone-plan`) count as
-  commands here exactly as shell commands do — most handoffs are one.
+  different treatments:
   - **Handing the user a command to run → its own fenced code block**, never inline backticks (a fenced block renders a copy button; inline backticks do not).
   - **Naming a command, path, or symbol in prose → inline backticks** — naming a thing is not handing it over.
   - **A routing chip's `→ /skill` option → neither fence nor handoff** — that arrow is not the user's to type; selecting the option is what acts on it (D-022).
 
-  Handoff or mention: a step that ends the turn expecting the user to go run
-  something is a handoff and gets the fence; a line observing that a moment is
-  a safe `/clear` point is a mention and stays inline.
+  Slash commands (`/clear`, `/milestone-plan`) count as commands here exactly as shell commands do — most handoffs are one, not a shell line.
+
+  Handoff or mention, when the same step does both:
+  - **A step that ends the turn expecting the user to go run something → a handoff, and it gets the fence** — nothing else will run it.
+  - **A line noting that a moment is a safe `/clear` point, beside a chip already offering the route → a mention, and it stays inline** — the chip, not the user's typing, is what acts.
+
+  The prose framing a handoff stays prose; only the runnable lines get fenced.
 - **Subagent titles carry the model tier.** Prefix every Agent
   description with `[S]`/`[O]`/`[F]` for Sonnet/Opus/Fable — task panes
   show only the title, not the model.

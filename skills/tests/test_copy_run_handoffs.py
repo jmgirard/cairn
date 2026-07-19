@@ -25,6 +25,21 @@ def skill(name):
     return SKILLS.joinpath(name, "SKILL.md").read_text().lower()
 
 
+def fenced_regions(text):
+    """Yield the body of each ``` / ~~~ fenced block, ignoring indentation."""
+    body, fence = [], None
+    for line in text.splitlines():
+        marker = line.strip()[:3]
+        if fence is None:
+            if marker in ("```", "~~~"):
+                fence, body = marker, []
+        elif marker == fence:
+            yield "\n".join(body)
+            fence = None
+        else:
+            body.append(line)
+
+
 class TestReviewCloseIsAHandoff(unittest.TestCase):
     def test_close_directs_the_commands_into_a_fenced_block(self):
         self.assertIn(
@@ -72,9 +87,29 @@ class TestImplementClearLineStaysAMention(unittest.TestCase):
         self.assertIn("a safe `/clear` point", text)
 
     def test_implement_does_not_fence_the_clear_mention(self):
+        """Structural, not phrase-based: no fenced region may carry `/clear`.
+
+        An earlier form banned the literal words "fenced block" anywhere in the
+        file. That was wrong in both directions — an edit that actually fenced
+        the recap need not use those words, and a legitimate fourth handoff
+        site elsewhere in this skill (D-048 anticipates one) would have turned
+        it red for an unrelated reason, inviting deletion of the guard.
+        """
         text = skill("milestone-implement")
         self.assertIn("a safe `/clear` point", text)  # positive anchor
-        self.assertNotIn("fenced block", text)
+        for region in fenced_regions(text):
+            self.assertNotIn("/clear", region)
+
+    def test_the_fence_detector_would_catch_an_over_fire(self):
+        """Proves the check above is not vacuous (M84).
+
+        `milestone-implement` has no fenced regions today, so the loop body
+        never executes — an absence-assert that never runs proves nothing.
+        This pins that the detector fires on the shape it is watching for.
+        """
+        over_fired = "note this is a safe `/clear` point:\n```\n/clear\n```\n"
+        self.assertEqual(list(fenced_regions(over_fired)), ["/clear"])
+        self.assertEqual(list(fenced_regions("no fences here")), [])
 
 
 if __name__ == "__main__":
