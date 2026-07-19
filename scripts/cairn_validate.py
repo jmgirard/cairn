@@ -351,6 +351,25 @@ def _provenance_block(path, for_extraction=False):
     return "\n".join(blocks) if blocks else None
 
 
+def _ingested_date(block):
+    """The provenance block's `Ingested:` date, or None when it names none or
+    names something that is not a date.
+
+    The single definition of "this block has an ingested date", shared by the
+    hard `references index<->disk` CHECK and the staleness advisory (M89
+    defect B). They disagreed before: `_PROV_INGESTED` tests only the SHAPE
+    `\\d{4}-\\d{2}-\\d{2}`, so `2026-13-45` matched and satisfied the CHECK,
+    while `_iso` refused to build a date from it and left the advisory with
+    nothing — which it then skipped, on the stated ground that the CHECK had
+    already failed the block. Neither reported the page. One predicate, so a
+    block is either dated for both readers or dated for neither."""
+    m = _PROV_INGESTED.search(block)
+    if not m:
+        return None
+    found = _iso(m.group(1))
+    return found[0] if found else None
+
+
 def _has_source_pointer(block):
     """A provenance block names a source when it carries an attribution verb
     with something after it, or a bare URL/path locator (review F4)."""
@@ -404,8 +423,16 @@ def check_references(root):
         if block is None:
             bad.append(f"cairn/references/{rel} has no provenance block")
             continue
-        if not _PROV_INGESTED.search(block):
+        if _ingested_date(block) is None:
+            # Named-but-unparseable is reported as its own thing (M89): a
+            # block reading `Ingested 2026-13-45` does name a date field, and
+            # telling its author it "names no ingested date" sends them
+            # looking for a line that is right there.
+            shaped = _PROV_INGESTED.search(block)
             bad.append(
+                f"cairn/references/{rel} provenance ingested date "
+                f"{shaped.group(1)} is not a real date"
+                if shaped else
                 f"cairn/references/{rel} provenance names no ingested date"
             )
         if not _has_source_pointer(block):
@@ -791,6 +818,22 @@ _UNVERIFIED = re.compile(r"(?<![A-Za-z0-9])unverified(?![A-Za-z0-9])", re.I)
 _NEGATOR = re.compile(
     r"(?<![A-Za-z0-9])(?:never|not|nothing|none|no)(?![A-Za-z0-9])", re.I
 )
+# Partiality qualifiers, placed exactly like `_NEGATOR` — within the clause
+# holding the verb and only BEFORE it. `partly verified at ingestion` parsed as
+# a plain affirmative verification and then aged from the block's ingested
+# date, so a page whose own words say most of it was never checked returned
+# `ok` (M89 defect A; live on three pages here and four intraclass notes).
+#
+# The set is deliberately literal. Scope-limiting hedges — `some`, `key
+# claims`, `a few` — read as partiality to a human but each one widens the
+# capture class, and the M79-F5 lesson is that widening admits non-targets.
+# These four cover every partial form the shipped corpus actually writes; a
+# fifth is added when a page needing it appears, not in anticipation.
+_PARTIAL = re.compile(
+    r"(?<![A-Za-z0-9])(?:partly|partially|in\s+part|spot-check(?:ed)?)"
+    r"(?![A-Za-z0-9])",
+    re.I,
+)
 # A first-hand record has no external source to re-read, so asking it to
 # re-verify asks the impossible. The exemption is earned by the status SAYING
 # so (the synthesis template's sanctioned phrase), never by page type — a
@@ -875,13 +918,23 @@ def _clauses(status):
 
 
 def _clause_claims(clause):
-    """Every claim one clause makes, as a set of "never" / "verified".
+    """Every claim one clause makes, as a set of "never" / "partial" /
+    "verified".
 
-    A claim is a verification verb plus whether it is negated, and the negator
-    must sit in this clause BEFORE the verb. Reading a fixed list of negative
-    PHRASES instead is what the M83 review broke twice (F1/92, F2/92): the list
-    covered only the word `verified`, so `no claim checked against the source`
-    parsed as an affirmative verification.
+    A claim is a verification verb plus how it is qualified, and the qualifier
+    — a negator or a partiality marker — must sit in this clause BEFORE the
+    verb. Reading a fixed list of negative PHRASES instead is what the M83
+    review broke twice (F1/92, F2/92): the list covered only the word
+    `verified`, so `no claim checked against the source` parsed as an
+    affirmative verification.
+
+    Clause scope is what lets partiality be read at all (M89). All three of
+    this repo's `partly verified at ingestion` pages carry `not re-read since`
+    in a LATER clause; searching the whole status for either qualifier
+    collapses the distinction the state exists to draw.
+
+    Negation outranks partiality within one clause: `not partly verified`
+    claims no verification, not a qualified one.
 
     EVERY occurrence is read, not the first: a status hard-wrapped at its
     em-dash is rejoined by `_extraction_status` with the separator gone, so a
@@ -893,9 +946,13 @@ def _clause_claims(clause):
     if _UNVERIFIED.search(clause):
         out.add("never")  # carries its own negator
     for verb in _VERIFY_VERB.finditer(clause):
-        out.add(
-            "never" if _NEGATOR.search(clause[: verb.start()]) else "verified"
-        )
+        before = clause[: verb.start()]
+        if _NEGATOR.search(before):
+            out.add("never")
+        elif _PARTIAL.search(before):
+            out.add("partial")
+        else:
+            out.add("verified")
     return out
 
 
@@ -907,20 +964,51 @@ def _status_claims(status):
     return out
 
 
+def _resolve_claims(claims):
+    """The one state a status's claims collapse to, or None when it makes no
+    claim at all.
+
+    The lattice runs never > partial > verified — most conservative wins, so
+    no qualification anywhere in a status can be cleared by an unqualified
+    clause elsewhere. Two rungs, two reasons:
+
+    - `never` beside `partial` is `never`: the four intraclass notes that
+      motivated this say both, leading `unverified` and then recording a
+      spot-check. Letting partiality win there would UPGRADE a page that
+      states plainly it was never checked — the same false-green direction
+      one rung down.
+    - `partial` beside `verified` is `partial`, not `ambiguous`. "The appendix
+      was only partly checked" alongside "verified against the source" is a
+      page qualifying itself, not contradicting itself.
+
+    `never` beside `verified` stays `ambiguous` (M83, F3) — that pair IS a
+    contradiction, and whichever one is tested first is the bug. Partiality
+    does not dissolve it: a status claiming all three is still ambiguous."""
+    if "never" in claims and "verified" in claims:
+        return "ambiguous"
+    for state in ("never", "partial", "verified"):
+        if state in claims:
+            return state
+    return None
+
+
 def _last_verified(block, today=None):
     """When this page's extraction was last checked against its source, as
-    ("ok", date) / ("never", None) / ("exempt", None) / ("missing", None) /
-    ("undated", None) / ("ambiguous", None) / ("unrecognized", None) /
-    ("future", date).
+    ("ok", date) / ("never", None) / ("partial", None) / ("exempt", None) /
+    ("missing", None) / ("undated", None) / ("ambiguous", None) /
+    ("unrecognized", None) / ("future", date).
 
-    Precedence (M81 implement gate; restructured at M83):
+    Precedence (M81 implement gate; restructured at M83; partial added M89):
       1. an explicit "nothing to re-verify" → exempt. Searched over the WHOLE
          status: two shipped pages put the phrase in a trailing clause;
       2. the claims its clauses make, each read as a verification verb plus
-         whether that verb is negated in its own clause. Both a `never` and a
-         `verified` claim → ambiguous, never a silent pick (M83, F3): whichever
-         one is tested first, testing one first is the bug;
-      3. `never` → never; `verified` → the freshest non-future date in the
+         how that verb is qualified in its own clause, collapsed by
+         `_resolve_claims` — never > partial > verified, with a `never`/
+         `verified` pair still ambiguous rather than a silent pick (M83, F3):
+         whichever one is tested first, testing one first is the bug;
+      3. `never` → never; `partial` → partial, before any date is read (M89:
+         a partial pass is missing coverage, which no date repairs);
+         `verified` → the freshest non-future date in the
          status, or the block's ingested date ("verified at ingestion", the
          commonest shipped form, literally names it, and demanding an explicit
          date there would falsely flag five template-sanctioned pages);
@@ -952,12 +1040,19 @@ def _last_verified(block, today=None):
     # bug in wrapped form. Caught by the boundary-wrap fixture, which is the M81
     # lesson paying off: the midpoint-wrap axis could not reach it.
     claims = _status_claims(status)
-    if len(claims) > 1:
+    state = _resolve_claims(claims)
+    if state == "ambiguous":
         return "ambiguous", None
-    state = next(iter(claims), None)
 
     if state == "never":
         return "never", None
+    if state == "partial":
+        # Returned before any date is looked at, because what a partial status
+        # is missing is COVERAGE, not freshness: part of the page has never
+        # been checked, and no date — not even today's — makes that true. A
+        # partial claim must therefore never reach the `ok` return below, which
+        # is the only exit that can be cleared by a threshold.
+        return "partial", None
 
     dates = _iso(status)
     past = [d for d in dates if d <= today]
@@ -968,20 +1063,20 @@ def _last_verified(block, today=None):
     else:
         when = None
     if when is None and state == "verified":
-        ingested = _PROV_INGESTED.search(block)
-        if ingested:
-            found = _iso(ingested.group(1))
-            if found:
-                when = found[0]
+        when = _ingested_date(block)
     if when is not None:
         # `when` is already known to be <= today: a future-only status returned
         # above, and the ingested date is historical by construction.
         return "ok", when
     if state is None:
         return "unrecognized", None
-    # A status naming no date over a block naming no ingested date: the
-    # references CHECK already FAILs that block, so the advisory stays quiet
-    # rather than pile a second finding on one cause.
+    # A status naming no date over a block naming no usable ingested date: the
+    # references CHECK FAILs that block, so the advisory stays quiet rather
+    # than pile a second finding on one cause. That deference is only honest
+    # because both readers now ask `_ingested_date` — before M89 the CHECK
+    # tested the regex match alone while this function additionally required
+    # the captured text to PARSE, so a block dated `2026-13-45` satisfied the
+    # CHECK and arrived here `undated`, and was reported by neither.
     return "undated", None
 
 
@@ -1011,6 +1106,17 @@ def check_references_staleness(root, today=None):
             out.append(
                 f"cairn/references/{rel}: extraction records no verified "
                 f"re-check against the source"
+            )
+        elif state == "partial":
+            # Distinct from the `never` message on purpose (M89): the page is
+            # not unchecked, and telling its author it is invites a re-read
+            # they already did. What it needs is the remainder checked, or the
+            # status rewritten to say the partial pass is all this page will
+            # ever claim.
+            out.append(
+                f"cairn/references/{rel}: extraction records only a partial "
+                f"verification — the rest of the page has never been checked "
+                f"against the source"
             )
         elif state == "missing":
             out.append(

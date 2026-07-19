@@ -344,7 +344,7 @@ class StatusClassificationMixin:
     # Every state the classifier can return, so a typo'd expectation cannot
     # quietly pass by naming a state that does not exist.
     STATES = {
-        "ok", "never", "exempt", "missing", "undated",
+        "ok", "never", "partial", "exempt", "missing", "undated",
         "ambiguous", "unrecognized", "future",
     }
 
@@ -482,30 +482,39 @@ class TestUnlistedShippedFormsSatisfyTheShapeRule(
     """
 
     # Each form as a shipped page writes it, paired with a pattern that finds
-    # it among this repo's real statuses. The pattern is what keeps the list
-    # from going fictional: a form no page writes any more fails, rather than
-    # sitting here as a phrase the templates are being measured against.
+    # it among this repo's real statuses and the state it must classify as.
+    # The pattern is what keeps the list from going fictional: a form no page
+    # writes any more fails, rather than sitting here as a phrase the
+    # templates are being measured against.
+    #
+    # "Readable" is the shape rule, not "clean" (M89): the `partly` form was
+    # pinned at `ok` here while it meant the opposite, which is how it went on
+    # reading as a completed verification. Each form now names its own state.
     FORMS = (
         (
             "verified at ingestion — full source read; not re-read since",
             r"^verified at ingestion",
+            "ok",
         ),
         (
             "partly verified at ingestion — the sprint-status claim was "
             "checked against `bmad-sprint-planning/SKILL.md:8`; the rest is "
             "an [S] subagent study, not re-read since",
             r"^partly verified at ingestion",
+            "partial",
         ),
         (
             "read against the ackwards artifacts at assessment time; the "
             "assessed repo has moved on independently since, so the "
             "catalogue is a 2026-07-12 snapshot",
             r"^read against .* at assessment time",
+            "ok",
         ),
         (
             "verified by live probe 2026-07-12; a re-probe would be needed "
             "to confirm the mechanism still holds in the current client",
             r"^verified by live probe",
+            "ok",
         ),
     )
     SOURCE_TEMPLATE = SKILLS / "shared" / "templates" / "source-note.md"
@@ -525,13 +534,15 @@ class TestUnlistedShippedFormsSatisfyTheShapeRule(
 
     def test_each_unlisted_form_is_readable(self):
         base = self.instantiate(self.SOURCE_TEMPLATE)
-        for status, _ in self.FORMS:
+        for status, _, state in self.FORMS:
             with self.subTest(form=status[:40]):
-                self.assertEqual(self.classify(self.choose(base, status)), "ok")
+                self.assertEqual(
+                    self.classify(self.choose(base, status)), state
+                )
 
     def test_each_unlisted_form_is_still_written_by_a_page(self):
         statuses = self.shipped_statuses()
-        for status, pattern in self.FORMS:
+        for status, pattern, _ in self.FORMS:
             with self.subTest(form=status[:40]):
                 self.assertTrue(
                     any(re.match(pattern, s, re.I) for s in statuses),
@@ -554,7 +565,7 @@ class TestUnlistedShippedFormsSatisfyTheShapeRule(
         offered = []
         for _, template in self.TEMPLATES:
             offered.extend(self.alternatives(self.instantiate(template)))
-        for status, pattern in self.FORMS:
+        for status, pattern, _ in self.FORMS:
             with self.subTest(form=status[:40]):
                 self.assertFalse(
                     [a for a in offered if re.match(pattern, a, re.I)],

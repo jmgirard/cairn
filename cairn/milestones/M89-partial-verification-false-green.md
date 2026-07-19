@@ -78,15 +78,15 @@ neither defect here touches it. Citekey resolution → stays a candidate row.
       Give every false-positive fixture a realistic value on the axis it defends
       (M88) and check the test helper for defaulted parameters before believing
       any discrimination claim.
-- [ ] T2 — Add a `_PARTIAL` qualifier regex searched in `clause[:verb.start()]`,
+- [x] T2 — Add a `_PARTIAL` qualifier regex searched in `clause[:verb.start()]`,
       mirroring `_NEGATOR`'s clause-scoped placement (`_clause_claims:893-899`);
       emit a `partial` claim for an affirmative verb so qualified.
-- [ ] T3 — Thread `partial` through `_last_verified`'s precedence (`:910-985`),
+- [x] T3 — Thread `partial` through `_last_verified`'s precedence (`:910-985`),
       deciding and documenting how `{partial, verified}` and `{partial, never}`
       collapse; a partial claim must never reach the `ok` return.
-- [ ] T4 — Give `check_references_staleness` a `partial` branch with its own
+- [x] T4 — Give `check_references_staleness` a `partial` branch with its own
       message; remove `partial` from any skip list.
-- [ ] T5 — Align the ingested-date predicate across `check_references:407` and
+- [x] T5 — Align the ingested-date predicate across `check_references:407` and
       `_last_verified:971-975` so one definition serves both, then re-derive
       whether the `undated` skip's stated justification now holds and rewrite
       the comment to match what the code does.
@@ -103,6 +103,7 @@ neither defect here touches it. Citekey resolution → stays a candidate row.
 
 - 2026-07-19: created by /milestone-plan; both defects found live in the intraclass session, with partial-state semantics, defect-B inclusion, and the evidence bar set at the question gate.
 - 2026-07-19: implement gate settled three open choices — the never > partial > verified lattice ({never, verified} stays ambiguous), a tight qualifier set (partly | partially | in part | spot-check(ed)), and defect B fixed by tightening the CHECK behind a shared `_ingested_date` predicate.
+- 2026-07-19: T2–T5 — `_PARTIAL` qualifier + `_resolve_claims` lattice + a `partial` advisory branch + one shared `_ingested_date` predicate behind both readers; all three verify suites green, validate exit 0.
 - 2026-07-19: T1 — 10 regression fixtures red across both defects; the four intraclass note statuses (donner2002, konishi1989, naik2007, young1998, commit dea301f) and this repo's three `partly` pages quoted as shipped.
 
 ## Decisions
