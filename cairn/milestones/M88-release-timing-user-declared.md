@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M88: Release timing is user-declared — a release milestone stops nominating itself
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP2, GP3   <!-- owner: plan · create/amend-via-gate -->
@@ -132,6 +132,7 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
 - 2026-07-19: T5 — 10 advisory tests added (scripts suite 174->184, all green); verified by inversion — dropping the version requirement turned all three release-tooling-title cases red, then restored.
 - 2026-07-19: T6 — test_release_timing.py adds 13 prose guards over the three surfaces; all 13 blocks registered in the mutation harness and proven load-bearing; reflowed two wrapped anchors onto single lines first (LESSONS M74/M78); M60 duplicate-anchor scan clean.
 - 2026-07-19: T7 — D-050 confirmed landed (authored at the plan gate, commit 8be8005); ROADMAP hygiene; banked the work-log-staleness-signal candidate surfaced by T3 (search-first sweep clean).
+- 2026-07-19: all tasks done; verify slot clean (skills 399, scripts 184, hooks all green, validate 0, exit codes checked individually); status in-progress->review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -17,7 +17,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0)._
 | M85 | Extraction-status shape — the templates teach what the classifier reads | done | — | normal | milestones/archive/M85-extraction-status-shape.md |
 | M86 | Copy-run command wiring — the handoff rule reaches the steps that hand over | done | — | normal | milestones/archive/M86-copy-run-command-wiring.md |
 | M87 | Density-threshold recalibration — the weight axis is derived from what records actually cost | done | — | normal | milestones/archive/M87-density-threshold-recalibration.md |
-| M88 | Release timing is user-declared — a release milestone stops nominating itself | in-progress | — | high | milestones/M88-release-timing-user-declared.md |
+| M88 | Release timing is user-declared — a release milestone stops nominating itself | review | — | high | milestones/M88-release-timing-user-declared.md |
 
 ## Candidates
 
