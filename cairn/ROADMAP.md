@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-19 (M89 done + archived; M84 row pruned under terminal-row retention). Release timing is user-declared, never agent-proposed — D-050._
+_Last hygiene check: 2026-07-19 (M90 done + archived; M85 row pruned under terminal-row retention). Release timing is user-declared, never agent-proposed — D-050._
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0)._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M85 | Extraction-status shape — the templates teach what the classifier reads | done | — | normal | milestones/archive/M85-extraction-status-shape.md |
 | M86 | Copy-run command wiring — the handoff rule reaches the steps that hand over | done | — | normal | milestones/archive/M86-copy-run-command-wiring.md |
 | M87 | Density-threshold recalibration — the weight axis is derived from what records actually cost | done | — | normal | milestones/archive/M87-density-threshold-recalibration.md |
 | M88 | Release timing is user-declared — a release milestone stops nominating itself | done | — | high | milestones/archive/M88-release-timing-user-declared.md |
 | M89 | Partial verification is a state — the staleness advisory stops failing toward green | done | — | high | milestones/archive/M89-partial-verification-false-green.md |
-| M90 | README currency — the front door catches up with what shipped | review | — | normal | milestones/M90-readme-currency.md |
+| M90 | README currency — the front door catches up with what shipped | done | — | normal | milestones/archive/M90-readme-currency.md |
 
 ## Candidates
 
