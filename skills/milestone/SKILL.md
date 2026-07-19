@@ -67,6 +67,10 @@ The script deliberately does not judge these — do them yourself and report:
   with no RR after 7+ days (remind the user to run it); `candidate` rows
   untouched ~6 months → offer a triage chip (promote / keep / drop — never
   auto-delete).
+- **A `release window` WARN is reported, never argued with.** The advisory
+  fires when a release-shaped milestone is being nominated as the next action;
+  release timing is the user's to declare (D-050), so report it and carry a
+  park disposition to §3. Never treat it as a prompt to get the release moving.
 - **Semantic orphans:** `done` milestones not archived; RRs not ingested;
   uncommitted changes under `cairn/`.
 - **Reconciliation with git:** commits since the last work-log entry that
@@ -115,7 +119,17 @@ examples — only the applicable subset (≤4) is offered:
   candidate items exist)
 - Triage the flagged items (audit found problems needing user decisions,
   including any untriaged inbox item §2 surfaced)
+- Park M<NN> as `blocked` → the release window is not open (a `release window` WARN fired in §2)
 - Stop here
+
+Parking sets the milestone to `blocked` and writes a work-log line naming the
+maintainer's unopened release window as the blocker. It is reachable from
+`planned` and from `review` (tracking-rules transitions), it closes no PR, and
+it is reversed by the user declaring the window — never by cairn deciding the
+release looks ready. Offer it whenever the advisory fired, and in that case lead the chip with parking rather than with the release milestone `cairn_next` names.
+`cairn_next` reads status and priority alone, so on a fired advisory its
+recommendation *is* the nag D-050 exists to stop; when the advisory is silent
+the release is being actively shipped and the script's recommendation stands.
 
 The §2 inbox sweep resolves here, and nowhere else.
 Each item takes exactly one disposition — you propose, the user chooses:

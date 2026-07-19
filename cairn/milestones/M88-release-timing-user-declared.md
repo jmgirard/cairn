@@ -104,7 +104,7 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
       it in `ADVISORIES`. Word-bounded token match (`\bCRAN\b`, `\brelease\b`,
       `\bsubmission\b`) **and** a version pattern, over title and goal; routable
       status; 14-day work-log recency reusing the existing date parsing.
-- [ ] T4 — `/milestone` SKILL.md: report the advisory in §2 and add the
+- [x] T4 — `/milestone` SKILL.md: report the advisory in §2 and add the
       park-as-`blocked` disposition to §3's list, pinned label-with-rule on one
       line.
 - [ ] T5 — `scripts/tests/test_scripts.py`: advisory unit tests — parked
@@ -128,6 +128,7 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
 - 2026-07-19: T1 — rulebook widens `blocked` to the unopened release window, legalizes planned/review -> blocked, and adds the release-timing governance rule; skills suite 386 green.
 - 2026-07-19: T2 — /milestone-plan gains the release-shaped tripwire: window declared explicitly or the work lands as a candidate row, never planned/high.
 - 2026-07-19: T3 — `release window` advisory added to cairn_validate; AC3 amended at the implement gate (M88-D1) after the planned idle-only rule proved silent on intraclass M48; live-fire: M48 WARNs, circumplex M7 silent (actively shipped), cairn silent; three suites green.
+- 2026-07-19: T4 — /milestone §2 reports the `release window` WARN without arguing with it; §3 gains the park-as-`blocked` chip option, which leads the chip when the advisory fired (cairn_next's own recommendation is the nag in that case).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
