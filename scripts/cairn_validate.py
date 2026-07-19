@@ -266,7 +266,22 @@ _D = r"[\s*_`]*"  # inline decoration between a keyword and its value
 # hard-wrapped pointer must still read. The cost is a miss — an Extraction
 # line that happens to name a source satisfies the pointer test — which is the
 # right side of D-023's "a missed weird format beats a false positive".
-_PROV_HEAD = re.compile(r"^[\s>*_`#]*provenance(?![A-Za-z0-9])", re.I)
+# The heading token must read as a *label*, not merely as a line that starts
+# with the word. `(?![A-Za-z0-9])` was too weak: hard-wrapped prose puts
+# "provenance" at the start of a line by accident, and every such line opened a
+# phantom block. That is not a cosmetic misread — prose discussing ingestion
+# satisfies both field tests, so a page with NO provenance block passed the
+# hard CHECK outright (reported from intraclass against its ORACLES.md). The
+# label test: after the token, the line closes the token in strong emphasis
+# (`**Provenance**`, `__Provenance__` — the M79 form whose body runs on with no
+# punctuation), or continues past a `.`/`:`/dash terminator, or ends (a bare
+# `## Provenance` section heading). Two deliberate exclusions: a bare `-` is
+# not a terminator (`` `provenance`-attr `` is prose), and a lone backtick is
+# not strong emphasis (`` `provenance` attr `` is a code-span mention, not a
+# label) — both are live prose lines in cairn's own references/.
+_PROV_HEAD = re.compile(
+    r"^[\s>*_`#]*provenance(?:[*_]{2}|[*_`]*\s*[.:—–]|[*_`]*\s*$)", re.I
+)
 _PROV_INGESTED = re.compile(
     rf"(?<![A-Za-z0-9])ingested(?![A-Za-z0-9]){_D}(\d{{4}}-\d{{2}}-\d{{2}})",
     re.I,
