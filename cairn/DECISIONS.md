@@ -1207,3 +1207,45 @@ one. Delivered by M86. If a fourth handoff site appears in a still-unwired
 skill, extend the wiring by superseding this entry; if the three-way
 distinction proves too fine to apply, the two-case form is the entry to
 supersede.
+
+### D-049 (2026-07-18): Density thresholds are the mass each line cap permits at MEASURED item length — supersedes M84-D1's assumed means
+
+**Context:** M84-D1 derived both `record density` thresholds as
+`item_cap × target_mean` — ROADMAP `60 × 150`, LESSONS `50 × 340`. Neither mean
+was measured. At the moment M84 set it LESSONS' real mean was **581** (41% above
+the assumed 340), and ROADMAP's 150 described only its table rows (154) while
+candidate rows ran **679**, 4.4× that. Both thresholds therefore bound before the
+line caps they exist to backstop: LESSONS' 17,000 admitted 29 lessons against an
+item capacity of 36 (81%), ROADMAP's 9,000 admitted 16 against 41 (39%). The
+advisory fired at ordinary density, and for three consecutive hygiene passes
+(M84/M85/M86) its only available remedy was compressing unrelated lessons — a
+per-milestone tax on records the milestone never touched, against a file M61
+records has already been damaged once by bulk edits. The item axis meanwhile went
+inert: LESSONS held 36 lessons from M41 through M83 and 29 since, never
+approaching 50, because lessons are consolidated rather than appended.
+
+**Decision:** A threshold is **the mass its own line cap permits at measured item
+length** — non-item mass + (line cap − the file's fixed non-item lines) × the
+measured mean item length, rounded up to the next 500 so it can never sit below
+what the line cap allows. Measured 2026-07-18 (M87-D1): ROADMAP **< 21,500**,
+LESSONS **< 21,000**. The mean is *measured*, never assumed or carried over:
+compression is the prescribed weight remedy and consolidating items raises the
+mean, so the derivation's own input moves every time the remedy is applied.
+Rejected a mechanical mean-drift test (D-034's coupling move), chosen at the M87
+plan gate in favour of stating the basis in prose — a drift tolerance loose
+enough not to cry wolf is not obviously stronger than the rulebook sentence;
+re-openable by superseding this entry. Also retired M84's prune regression
+anchor: `dbf1068`, the state it calibrated on, was a boundary-rule cleanup
+(graduation breadcrumbs restating archive-owned history), not a density
+judgment — its own commit message says the density defect stayed unfixed there.
+
+**Consequences:** Supersedes M84-D1's derivation; M84's two-axis design, its
+opposite remedies, and its WARN-not-FAIL severity stand untouched. The advisory
+returns to its stated job — flagging prose bloating *inside* lines — instead of
+firing at ordinary density. Trades against GP1 ("caps keep always-read files
+small"): the item cap remains the hard small-keeper, and a threshold binding
+before it was not keeping files small but taxing unrelated records. Both files
+now carry real headroom (16,998/21,000 and 9,191/21,500). Locked by the re-based
+fixtures in `scripts/tests/test_scripts.py` and the stated↔enforced coupling in
+`skills/tests/test_record_density.py`. If measured means ever drift far enough
+that the prose mandate proves too weak, the drift test is the entry to supersede.

@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M87: Density-threshold recalibration — the weight axis is derived from what records actually cost
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate -->
@@ -120,13 +120,14 @@ small-keeper; the advisory returns to flagging genuine intra-line bloat.
       values-only match, which would drop the membership check.
 - [x] T6 Run the three suites from the repo root with explicit exit codes, plus
       `cairn_validate`, and record the `record density` line for both files.
-- [ ] T7 Author the D-entry: supersedes M84-D1's basis, records both files'
+- [x] T7 Author the D-entry: supersedes M84-D1's basis, records both files'
       falsified numbers and the rejected drift test.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
 
 - 2026-07-18: created by /milestone-plan; thresholds derived from measured practice, prose-only safeguard, both files in scope (gate answers).
+- 2026-07-18: T7 recorded D-049 (supersedes M84-D1's derivation; records the rejected drift test and the retired prune anchor); all tasks done, status → review.
 - 2026-07-18: T2-T6 landed the new thresholds (CHAR_CAPS + rulebook basis + fixtures); all three suites green (174/385/72, exit 0 each) and `cairn_validate` now reports `OK record density`.
 - 2026-07-18: T4 retired M84's prune regression anchor at a mini-gate — dbf1068 was a boundary-rule cleanup (graduation breadcrumbs restating archive-owned history), not a density judgment, so M84 calibrated on a misread signal; re-based on the M87-D1 derivation.
 - 2026-07-18: T1 measured both files; derivations 20,881 / 21,122 → set 21,000 / 21,500 (M87-D1). Rejected shipping a re-runnable measurement script — the gate chose prose-only, and a new shipped script is machinery.
