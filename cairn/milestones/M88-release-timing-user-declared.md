@@ -115,7 +115,7 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
       guard *file* in `test_mutation_harness.py` with at least one exemplar
       block, and pair any `assertNotIn` with a positive framing assert
       (LESSONS M53).
-- [ ] T7 — Append D-050 recording the mechanism choice and the two declined
+- [x] T7 — Append D-050 recording the mechanism choice and the two declined
       alternatives; ROADMAP hygiene.
 
 ## Work log
@@ -131,6 +131,7 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
 - 2026-07-19: T4 — /milestone §2 reports the `release window` WARN without arguing with it; §3 gains the park-as-`blocked` chip option, which leads the chip when the advisory fired (cairn_next's own recommendation is the nag in that case).
 - 2026-07-19: T5 — 10 advisory tests added (scripts suite 174->184, all green); verified by inversion — dropping the version requirement turned all three release-tooling-title cases red, then restored.
 - 2026-07-19: T6 — test_release_timing.py adds 13 prose guards over the three surfaces; all 13 blocks registered in the mutation harness and proven load-bearing; reflowed two wrapped anchors onto single lines first (LESSONS M74/M78); M60 duplicate-anchor scan clean.
+- 2026-07-19: T7 — D-050 confirmed landed (authored at the plan gate, commit 8be8005); ROADMAP hygiene; banked the work-log-staleness-signal candidate surfaced by T3 (search-first sweep clean).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
