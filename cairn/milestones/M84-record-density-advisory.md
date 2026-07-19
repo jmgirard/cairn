@@ -98,10 +98,10 @@ cairn's own ROADMAP and LESSONS under the resulting thresholds.
       split already-registered neighbouring phrases (M23/M82).
 - [x] T6: Register the new prose-guard in `skills/tests/test_mutation_harness.py`;
       pin the label together with its members on one physical line (M74/M76).
-- [ ] T7: Prune cairn's `ROADMAP.md` and `LESSONS.md` under threshold —
+- [x] T7: Prune cairn's `ROADMAP.md` and `LESSONS.md` under threshold —
       compress lessons rather than evict them where possible, since eviction is
       the item-cap remedy, not the weight remedy.
-- [ ] T8: Full verify — three suites plus `cairn_validate` green; record the
+- [x] T8: Full verify — three suites plus `cairn_validate` green; record the
       before/after mass table as AC3 evidence.
 
 ## Work log
@@ -114,6 +114,9 @@ cairn's own ROADMAP and LESSONS under the resulting thresholds.
 
 - 2026-07-18: T4 — no `/milestone` edit needed: its audit already treats every `WARN` generically as "a judgment call surfaced for the user, not a mechanical problem to auto-fix", and enumerating advisories there is the M28 stale-count trap the skill explicitly forbids ("never restate or recall its internals"). DESIGN.md's script inventory is likewise generic.
 - 2026-07-18: T5/T6 — tracking-rules weight-caps documents both axes and their opposite remedies; new guard `skills/tests/test_record_density.py` (6 asserts) with 5 mutation registrations; the remedies bullet's "over-cap ROADMAP" is now "over-count ROADMAP" since the phrase became ambiguous. 362 skills tests green.
+
+- 2026-07-18: T7 prune — LESSONS.md 18,607 → 16,272 chars (-2,335, 13%) and 49 → 42 lines; compressed, not evicted: 36 lessons folded into 28 by consolidating five explicit continuation pairs (M53+M54, M57+M79+M81, M60+M80, M74+M76, M81+M82) and two topic pairs, with every milestone tag still present (46 → 47). ROADMAP.md needed no prune: 8,386 chars, 614 under threshold. Header now states both caps and both remedies.
+- 2026-07-18: T8 verify — three suites green from the repo root, exit codes checked individually (scripts 171, skills 362, hooks 72); `cairn_validate` all checks passed, `OK record density`, exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
