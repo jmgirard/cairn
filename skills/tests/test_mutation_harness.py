@@ -137,13 +137,25 @@ REGISTRY = [
         guard="test_release_timing",
         test="TestMilestoneAuditWiring.test_audit_reports_the_warn_without_arguing",
         target=MILESTONE,
-        block="A `release window` WARN is reported, never argued with.",
+        block="A `release window` WARN is reported, never argued with — release timing is the user's to declare (D-050)",
     ),
     Mutation(
         guard="test_release_timing",
         test="TestMilestoneAuditWiring.test_audit_refuses_to_treat_the_warn_as_a_prompt_to_ship",
         target=MILESTONE,
-        block="Never treat it as a prompt to get the release moving.",
+        block="never treat the WARN as a prompt to get the release moving",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestMilestoneAuditWiring.test_advisory_owns_idleness_against_the_staleness_bullet",
+        target=MILESTONE,
+        block="is not re-reported under the Staleness bullet",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestMilestoneAuditWiring.test_a_recommendation_naming_something_else_keeps_the_lead",
+        target=MILESTONE,
+        block="that recommendation is legitimate and keeps the lead",
     ),
     Mutation(
         guard="test_release_timing",
@@ -153,9 +165,9 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_release_timing",
-        test="TestMilestoneAuditWiring.test_park_leads_the_chip_when_the_advisory_fired",
+        test="TestMilestoneAuditWiring.test_park_leads_the_chip_only_when_cairn_next_names_that_release",
         target=MILESTONE,
-        block="in that case lead the chip with parking rather than with the release milestone `cairn_next` names",
+        block="lead the chip with it only when `cairn_next`'s own recommendation names that same release milestone",
     ),
     Mutation(
         guard="test_chapter_marker_mandate",

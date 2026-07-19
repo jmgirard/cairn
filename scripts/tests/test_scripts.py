@@ -2358,16 +2358,49 @@ class TestReleaseWindowAdvisory(ScriptCase):
         self.assertIn("no dated work-log entry", proc.stdout)
 
     def test_release_tooling_titles_never_fire(self):
-        """A release token WITHOUT a version names work about release tooling,
-        which is ordinary milestone work. Each title is checked in the state
-        that would warn if only the token were required."""
-        for title in TOOLING_TITLES:
+        """A release token WITHOUT a shipping version names work about release
+        tooling, which is ordinary milestone work. Each title is checked in the
+        state that would warn if only the token were required.
+
+        Each goal carries an ordinary prose decimal — a supported-R version, a
+        section reference, a threshold. The permissive `v?\\d+\\.\\d+` this
+        started with matched all three, so the fixtures passed only because the
+        helper handed them a stub goal and the version axis was never actually
+        exercised where the detector reads it (M88 review F6; the vacuous-axis
+        trap of LESSONS M57)."""
+        goals = [
+            "Generalize cairn-release. See D-050 and section 2.1 of the spec.",
+            "Reposition the README. Coverage threshold 0.8 vs 0.5.",
+            "Document the walk; the profile targets R 4.3 and drops 3.6.",
+        ]
+        for title, goal in zip(TOOLING_TITLES, goals):
             with self.subTest(title=title):
                 self.tree = Tree(self._tmp.name)
-                root = self._tree(title, "planned", depends="M01")
+                root = self._tree(title, "planned", depends="M01", goal=goal)
                 proc = run("cairn_validate.py", root)
                 self.assertEqual(proc.returncode, 0, proc.stderr)
                 self.assertIn("OK    release window", proc.stdout)
+
+    def test_resubmission_is_a_release_token(self):
+        """`\\bsubmissions?\\b` has no boundary inside "Resubmission", so a
+        resubmission milestone naming no other release token slipped through
+        entirely (M88 review F5)."""
+        root = self._tree(
+            "Resubmit v1.2.3 after reviewer feedback", "planned", depends="M01"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("WARN  release window", proc.stdout)
+
+    def test_ordinary_decimals_are_not_shipping_versions(self):
+        """The version half must discriminate, not wave everything through."""
+        mod = _load_validate()
+        for prose in ("targets R 4.3", "section 2.1", "threshold 0.8"):
+            with self.subTest(prose=prose):
+                self.assertFalse(mod._release_shaped("Release docs", prose))
+        for prose in ("ships v0.1.0", "ships v2.0.0", "the 1.2.3 package"):
+            with self.subTest(prose=prose):
+                self.assertTrue(mod._release_shaped("Release docs", prose))
 
     def test_real_release_titles_each_fire_once(self):
         for title in RELEASE_TITLES:

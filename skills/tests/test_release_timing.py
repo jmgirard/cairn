@@ -125,13 +125,27 @@ class TestMilestoneAuditWiring(unittest.TestCase):
     """/milestone reports the advisory and offers the park disposition."""
 
     def test_audit_reports_the_warn_without_arguing(self):
+        # Label pinned to BOTH halves of its rule on one line: report-not-argue
+        # and the refusal to read the WARN as a prompt to ship (M88 review F2
+        # moved this out of the "script does not judge these" list, where it
+        # contradicted its own heading).
         self.assertIn(
-            "a `release window` warn is reported, never argued with", milestone()
+            "a `release window` warn is reported, never argued with — release "
+            "timing is the user's to declare (d-050)",
+            milestone(),
         )
 
     def test_audit_refuses_to_treat_the_warn_as_a_prompt_to_ship(self):
         self.assertIn(
-            "never treat it as a prompt to get the release moving", milestone()
+            "never treat the warn as a prompt to get the release moving",
+            milestone(),
+        )
+
+    def test_advisory_owns_idleness_against_the_staleness_bullet(self):
+        # Without an owner the same stalled release arrives twice — once as a
+        # script WARN, once as a manual staleness item (M88 review F2).
+        self.assertIn(
+            "is not re-reported under the staleness bullet", milestone()
         )
 
     def test_route_offers_the_park_option(self):
@@ -140,13 +154,20 @@ class TestMilestoneAuditWiring(unittest.TestCase):
             milestone(),
         )
 
-    def test_park_leads_the_chip_when_the_advisory_fired(self):
-        # Without this the chip would still lead with cairn_next's
-        # recommendation, which on a fired advisory IS the nag.
+    def test_park_leads_the_chip_only_when_cairn_next_names_that_release(self):
+        # The override is scoped to the case its justification covers: leading
+        # with parking whenever the advisory fired would demote a legitimate
+        # "resume M<other>" recommendation, since an unrelated in-progress
+        # milestone outranks a workable planned one (M88 review F1).
         self.assertIn(
-            "in that case lead the chip with parking rather than with the "
-            "release milestone `cairn_next` names",
+            "lead the chip with it only when `cairn_next`'s own recommendation "
+            "names that same release milestone",
             milestone(),
+        )
+
+    def test_a_recommendation_naming_something_else_keeps_the_lead(self):
+        self.assertIn(
+            "that recommendation is legitimate and keeps the lead", milestone()
         )
 
 

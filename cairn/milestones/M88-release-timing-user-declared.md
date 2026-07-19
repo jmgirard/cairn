@@ -133,6 +133,7 @@ advisory to `cairn_validate` that catches the drift back. Wire both into
 - 2026-07-19: T6 — test_release_timing.py adds 13 prose guards over the three surfaces; all 13 blocks registered in the mutation harness and proven load-bearing; reflowed two wrapped anchors onto single lines first (LESSONS M74/M78); M60 duplicate-anchor scan clean.
 - 2026-07-19: T7 — D-050 confirmed landed (authored at the plan gate, commit 8be8005); ROADMAP hygiene; banked the work-log-staleness-signal candidate surfaced by T3 (search-first sweep clean).
 - 2026-07-19: all tasks done; verify slot clean (skills 399, scripts 184, hooks all green, validate 0, exit codes checked individually); status in-progress->review.
+- 2026-07-19: review — three lenses + scorer; 6 findings, 5 fixed on-branch (F6/91 version-pattern too permissive vs AC4, F4/85 duplicated date parsing, F1/72 over-broad chip rule, F2/66 misfiled bullet + double-report, F5/28 resubmission token gap), F3/28 rejected with reason; re-verified skills 401 / scripts 186 / hooks / validate 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -219,3 +220,58 @@ Run against the two repos that motivated M88:
 - `cairn_impact` skipped: `DESIGN.md` is untouched by the diff (no principle
   changed; GP2/GP3 are worked *under*, not modified).
 
+### Independent review — three lenses + scorer
+
+- **[O] diff-bug (Opus):** 6 findings. **[S] blame-history (Sonnet):** zero
+  findings — cleared the D-035 relationship (a distinction, not a
+  contradiction: D-035 rejected `blocked` as a candidate-list grouping label,
+  M88 widens the gloss on the real status field), the M21 precedent, and the
+  ADVISORIES append pattern. **[S] prior-PR-comments (Sonnet):** no-op —
+  enumerated all 90 merged PRs and confirmed zero inline review comments and
+  zero non-empty review bodies exist in this repo, so there is no prior-PR
+  evidence to regress against (the documented M40 no-op path).
+
+**Actioned (scored ≥80, or sub-80 overridden by operator judgment per LESSONS M73):**
+
+- **F6 (91) — fixed.** The version half of the "both signals" pair was
+  `\bv?\d+\.\d+(?:\.\d+)?\b`, which matches ANY decimal in free prose, so all
+  three release-TOOLING fixtures flip to release-shaped given an ordinary goal
+  ("targets R 4.3", "section 2.1", "threshold 0.8") — contradicting AC4's
+  stated guarantee. The fixtures passed only because the helper handed them the
+  stub goal "Ship it.", so the axis they exist to defend was exercised on the
+  title alone (the vacuous-axis trap, LESSONS M57). Tightened to a shipping
+  version (`v`-prefixed, or a full three-part), and the three tooling fixtures
+  now carry realistic goals containing prose decimals. Accepted miss recorded
+  in-code: a bare two-part "2.0" with no `v`.
+- **F4 (85) — fixed.** `_last_worklog_date` reimplemented `_iso()`
+  character-for-character; now calls it, so the date-tolerance rule has one
+  owner. T3 had promised "reusing the existing date parsing" and reused only
+  the regex constant.
+- **F1 (72, overridden) — fixed.** "Lead the chip with parking whenever the
+  advisory fired" was broader than its own justification: `cairn_next`
+  recommends in strict precedence, so an unrelated `in-progress` milestone
+  outranks a workable planned release, and the rule would have demoted that
+  legitimate recommendation. Scoped to the case where `cairn_next` names the
+  flagged release; parking is offered alongside otherwise.
+- **F2 (66, overridden) — fixed.** The `release window` bullet sat under the
+  heading "The script deliberately does not judge these", which the advisory
+  contradicts by construction. Moved into the advisories paragraph, and given
+  explicit ownership of the idleness question so a stalled release is not
+  double-reported by the Staleness bullet.
+- **F5 (28, overridden) — fixed opportunistically.** `\bsubmissions?\b` has no
+  boundary inside "Resubmission", so a resubmission milestone naming no other
+  release token was missed entirely. The scorer's refutation was itself wrong
+  (it credited "CRAN" for a case that actually failed on the absence of a
+  version). Added `(?:re)?` while the regex was already open.
+
+**Logged, not actioned:**
+
+- **F3 (28) — rejected with reason.** The transitions line legalizes parking
+  one-way, but the return path exists and is documented: `in-progress ⇄
+  blocked` is bidirectional, `/milestone-implement` accepts `blocked` with a
+  resolved blocker as a resume entry, and a milestone whose tasks are all
+  checked returns to `review`. The asymmetry is cosmetic, not a dead end.
+
+**Re-verification after fixes:** skills 401 OK, scripts 186 OK, hooks OK,
+`cairn_validate` exit 0 — all exit codes checked individually. Live fire
+unchanged: intraclass `WARN release window (1)`, circumplex `OK`, cairn `OK`.

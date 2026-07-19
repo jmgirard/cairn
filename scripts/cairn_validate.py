@@ -1095,8 +1095,17 @@ def check_worklog_format(root):
 # "Release docs") — work that is ordinary milestone work and must stay silent.
 # Pairing the token with a version pattern discriminates: shipping a version
 # names the version.
-_RELEASE_TOKEN = re.compile(r"\b(?:CRAN|releases?|submissions?|submit)\b", re.I)
-_RELEASE_VERSION = re.compile(r"\bv?\d+\.\d+(?:\.\d+)?\b")
+_RELEASE_TOKEN = re.compile(
+    r"\b(?:CRAN|releases?d?|(?:re)?submissions?|(?:re)?submit)\b", re.I
+)
+# A SHIPPING version, not any decimal. The goal is free prose, so a permissive
+# `v?\d+\.\d+` matches "targets R 4.3", "section 2.1", "threshold 0.8" — which
+# turns the version half of the pair into no discriminator at all and flips
+# release-TOOLING milestones to release-shaped the moment their goal contains an
+# ordinary number (M88 review F6). Either a `v` prefix or a full three-part
+# version is required. Known and accepted miss: a bare two-part "2.0" with no
+# `v`, which is indistinguishable from ordinary prose decimals.
+_RELEASE_VERSION = re.compile(r"\bv\d+\.\d+(?:\.\d+)?\b|\b\d+\.\d+\.\d+\b")
 # The statuses a routing surface will nominate. `blocked` is deliberately
 # absent — it is the parked state this advisory exists to recommend, so a
 # parked release is silent, which is the whole point.
@@ -1122,11 +1131,7 @@ def _last_worklog_date(path):
     for _lineno, text in lines:
         if not _LOG_ENTRY.match(text):
             continue
-        for y, m, d in _ISO_DATE.findall(text):
-            try:
-                seen.append(datetime.date(int(y), int(m), int(d)))
-            except ValueError:
-                continue
+        seen.extend(_iso(text))  # one owner for the date-tolerance rule (F4)
     return max(seen) if seen else None
 
 
