@@ -1787,6 +1787,180 @@ class TestRecordDensityAdvisory(ScriptCase):
         self.assertNotIn("cairn/PROFILE.md", cs.CHAR_CAPS)
 
 
+class TestNonItemLineAxis(ScriptCase):
+    """M93/D-052: the per-line axis, covering NON-item lines only.
+
+    The gap it closes: cairn's `Last hygiene check` stamp reached 3,152 chars
+    on ONE line in an adopting repo while both existing axes read green — the
+    item cap counts lines (35 of 60) and CHAR_CAPS counts whole-file mass
+    (11,410 of 21,000). Neither can see a single line growing without bound.
+
+    M84's rejection of a per-line warn is NARROWED, not overturned, and the
+    narrowing is structural: an item line is excluded by SHAPE, so no length
+    can make one warn and splitting a row buys nothing. The two
+    `..._is_never_measured` tests below are what prove that, and they are the
+    reason this class is not simply "a line cap".
+
+    WARN tier throughout, like the mass axis it joins."""
+
+    ADVISORY = "record density"
+
+    def stamped(self, length):
+        """A ROADMAP whose hygiene stamp is EXACTLY `length` chars.
+
+        The stamp is line 3 and is written through the fixture's own
+        `roadmap_text()`, so the line under test is the real artifact shape —
+        `_Last hygiene check: …_` — not a synthetic long line that happens to
+        be non-item."""
+        # The rendered line is `_Last hygiene check: {hygiene}_`, and the
+        # separating space below is part of `hygiene`, so it costs one char
+        # beyond the bare stamp. The length assertion at the end of this
+        # helper is what caught that off-by-one.
+        base = "_Last hygiene check: 2026-07-11_"
+        pad = length - len(base) - 1
+        self.assertGreaterEqual(pad, 0, "requested length is under the bare stamp")
+        self.tree.hygiene = "2026-07-11 " + "x" * pad
+        root = self.tree.build()
+        stamp = (root / "cairn" / "ROADMAP.md").read_text().split("\n")[2]
+        self.assertEqual(len(stamp), length, stamp[:80])
+        return run("cairn_validate.py", root)
+
+    def assertFlagged(self, proc, fragment):
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn(f"WARN  {self.ADVISORY}", proc.stdout)
+        self.assertIn(fragment, proc.stdout)
+
+    def assertClean(self, proc):
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn(f"OK    {self.ADVISORY}", proc.stdout)
+
+    # --- the boundary, both directions (AC4) -------------------------------
+
+    def test_at_cap_warns(self):
+        # `>=`, matching every neighbouring cap: <400 permits 399, so 400 is
+        # the first flagged length. Derived through the operator, never
+        # assumed from the constant (M87).
+        self.assertFlagged(self.stamped(400), "cairn/ROADMAP.md:3:")
+
+    def test_one_char_under_cap_is_quiet(self):
+        self.assertClean(self.stamped(399))
+
+    def test_well_over_cap_warns(self):
+        # The live intraclass length, 2026-07-19.
+        self.assertFlagged(self.stamped(1870), "non-item line is 1,870 chars")
+
+    # --- what keeps M84's rejection intact ---------------------------------
+
+    def test_candidate_bullet_is_never_measured(self):
+        # THE load-bearing test. D-052 keeps M84's reason binding on item
+        # lines: pressure on a row or candidate would reward splitting one
+        # across lines and corrode the one-item-per-line format both parsers
+        # depend on. Exclusion is by SHAPE, so a candidate five times over the
+        # cap still cannot warn — there is no length at which splitting pays.
+        self.tree.candidates = ["x" * 2000]
+        self.assertClean(run("cairn_validate.py", self.tree.build()))
+
+    def test_table_row_is_never_measured(self):
+        # The other item shape. A row is read positionally by every parser
+        # here, so it is excluded on the same grounds as a candidate.
+        self.tree.rows.append(
+            ("M09", "T" * 2000, "planned", "—", "normal", "milestones/M09-t.md")
+        )
+        self.tree.files["milestones/M09-t.md"] = (
+            "# M09: " + "T" * 2000 + "\n\n- **Status:** planned   <!-- mirror -->\n"
+        )
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertIn(f"OK    {self.ADVISORY}", proc.stdout)
+
+    def test_a_long_item_and_a_long_non_item_are_judged_differently(self):
+        # One length, opposite verdicts — the discrimination stated as a
+        # single claim. Without this pair, a guard that measured EVERY line
+        # would pass every other test in this class.
+        self.tree.candidates = ["x" * 900]
+        self.assertClean(run("cairn_validate.py", self.tree.build()))
+        self.assertFlagged(self.stamped(900), "non-item line is 900 chars")
+
+    # --- the finding itself ------------------------------------------------
+
+    def test_finding_names_the_line_and_the_replace_remedy(self):
+        # A file-level number cannot point at the line responsible, so this
+        # axis names it. The remedy differs from the mass axis's "compress":
+        # the stamp is REPLACED, and saying so is the whole rule (D-052).
+        proc = self.stamped(500)
+        self.assertIn("cairn/ROADMAP.md:3:", proc.stdout)
+        self.assertIn("cap <400", proc.stdout)
+        self.assertIn("replace it, don't append to it", proc.stdout)
+
+    def test_shed_names_the_chars_to_drop(self):
+        # Derived through the `>=` comparison: at 500 against <400 the line
+        # must lose 101 to reach the permitted 399, not 100.
+        self.assertIn("shed ≥101", self.stamped(500).stdout)
+
+    def test_advisory_never_moves_the_exit_code(self):
+        proc = self.stamped(1870)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("all checks passed", proc.stdout)
+        self.assertIn("advisory warning(s) — not gate failures", proc.stdout)
+        self.assertNotIn("FAIL", proc.stdout)
+
+    # --- non-vacuous on the crash path (AC5, the M84 F2/90 shape) ----------
+
+    def test_missing_file_is_not_a_finding(self):
+        # Asserted POSITIVELY first. An empty stdout satisfies every
+        # absence-assert, so a traceback inside the new loop would leave a
+        # bare `assertNotIn` green — exactly M84's own F2/90 defect, which
+        # kept 12 tests passing while validate exited 1 on every run.
+        # `OK record density` is the signal that the path ran to completion;
+        # the exit code is 1 here for the unrelated `scaffold present` FAIL.
+        root = self.tree.build()
+        (root / "cairn" / "LESSONS.md").unlink()
+        proc = run("cairn_validate.py", root)
+        self.assertIn(f"OK    {self.ADVISORY}", proc.stdout)
+        self.assertNotIn(f"WARN  {self.ADVISORY}", proc.stdout)
+        self.assertIn("FAIL  scaffold present", proc.stdout)
+
+    def test_blank_lines_are_not_findings(self):
+        # Length 0 can never reach the cap, but the classifier drops them
+        # explicitly; this pins that they never reach the output as noise.
+        proc = self.stamped(399)
+        self.assertNotIn("non-item line is 0 chars", proc.stdout)
+        self.assertIn(f"OK    {self.ADVISORY}", proc.stdout)
+
+    # --- the shipped scaffold, instantiated (AC5, M77/M80) -----------------
+
+    def test_cairn_init_skeleton_passes_its_own_advisory(self):
+        # M77/M80: a template is an artifact its checker must be RUN against,
+        # and it must be INSTANTIATED, since placeholders satisfy no guard.
+        # The skeleton at skills/cairn-init/SKILL.md is what every adopting
+        # repo starts from — if it shipped a stamp line over the cap, every
+        # new cairn repo would WARN on day one. The fixture copy is not the
+        # artifact, so this reads the real SKILL.md.
+        cs = _load_scripts()
+        skill = (
+            SCRIPTS_DIR.parent / "skills" / "cairn-init" / "SKILL.md"
+        ).read_text()
+        block = re.search(r"```markdown\n(# Roadmap\n.*?)```", skill, re.S)
+        self.assertIsNotNone(block, "cairn-init ships no ROADMAP skeleton block")
+        instantiated = block.group(1).replace("YYYY-MM-DD", "2026-07-19")
+        self.assertNotIn("YYYY-MM-DD", instantiated)
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "ROADMAP.md"
+            path.write_text(instantiated)
+            over = [
+                (n, ln) for n, ln in cs.non_item_lines(path)
+                if ln >= cs.NON_ITEM_LINE_CAP
+            ]
+        self.assertEqual(over, [], f"the shipped skeleton is over cap: {over}")
+
+    # --- the constant ------------------------------------------------------
+
+    def test_cap_is_the_surveyed_value(self):
+        # Pinned so a silent retune is visible in a diff. The derivation is
+        # in the cairn_scripts comment; 400 is what the 2026-07-19 seven-repo
+        # survey supports (healthy max 245).
+        self.assertEqual(_load_scripts().NON_ITEM_LINE_CAP, 400)
+
+
 class TestWorkLogFormatAdvisory(ScriptCase):
     """M77/D-046: the work log is exempt from the milestone cap, so nothing
     budgetary polices it any more — this advisory is what keeps the rulebook's

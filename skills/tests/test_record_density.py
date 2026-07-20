@@ -6,7 +6,10 @@ The tracking-rules weight-caps text must state that `ROADMAP.md` and
 mass, the `record density` advisory) — that the item axis is structurally blind
 to prose growing inside a line, and that the two axes take OPPOSITE remedies:
 graduate/prune for count, compress in place for weight. It must also record
-why weight only WARNs, and why a per-line warn was rejected.
+why weight only WARNs, and why a per-line warn was rejected FOR ITEM LINES —
+D-052 (M93) narrowed that rejection rather than overturning it, so non-item
+lines now do carry a per-line cap and M84's reason still binds everywhere else.
+The narrowing itself is guarded in `test_hygiene_stamp.py`.
 
 Two stated<->enforced agreements ride along: the stated thresholds must equal
 `CHAR_CAPS` in `cairn_scripts.py`, and the stated label must equal the one
