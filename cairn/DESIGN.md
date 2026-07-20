@@ -91,8 +91,10 @@ within each type and are never reused.
 - IP4: History is never fabricated, rewritten, or renumbered — append-only
   work-logs and DECISIONS (supersede, never edit), no-invention migration,
   entomb-verbatim, IDs never reused (D-032).
-- GP1: Efficient — store decisions and outcomes, not minutiae; caps +
-  archiving keep always-read files small.
+- GP1: Efficient — store decisions and outcomes, not minutiae; every
+  always-read surface keeps a bounded read cost: caps with outflows bound the
+  item-listed files, recorded editorial passes bound the rulebook, and history
+  is bounded by reading less of it, never by shrinking it (D-053).
 - GP2: Reliable — one status authority; tracking travels with code;
   self-auditing; stateless resume.
 - GP3: Portable — identical across repos; one-command adoption; repo

@@ -1423,3 +1423,41 @@ only. intraclass and circumplex are not edited here — their own next
 `/milestone` audit will flag them, which is the advisory proving itself in the
 field. If a non-item line ever legitimately needs to exceed 400 characters, this
 is the entry to supersede.
+
+### D-053 (2026-07-19): GP1 names a bounded read cost, with the mechanism stated per file-class — supersedes its "caps + archiving" clause
+
+**Context:** GP1 read "Efficient — store decisions and outcomes, not minutiae;
+caps + archiving keep always-read files small." RR02 found the second clause
+false of the two largest always-read files. RR03 (Q6) established that it
+cannot be repaired by practice: no cap or archive is legal for `DECISIONS.md`
+under IP4, and `skills/shared/tracking-rules.md` was never capped on either
+axis. D-049 had already recorded a formal trade against GP1 in its
+Consequences. Nine weight-management milestones (M84-M94) chased a quantity the
+principle named but could not deliver, and RR02's own "Beyond the brief" found
+weight governance to be the largest single contributor to the growth it exists
+to govern.
+
+**Decision:** Amend GP1, keeping the number (never renumbered, never reused):
+
+> GP1: Efficient — store decisions and outcomes, not minutiae; every
+> always-read surface keeps a bounded read cost: caps with outflows bound the
+> item-listed files, recorded editorial passes bound the rulebook, and history
+> is bounded by reading less of it, never by shrinking it.
+
+Wording is RR03 §6's proposal verbatim, approved by the user at the RR03 ingest
+gate on 2026-07-19. Rejected **retiring** GP1: the item caps and archive
+discipline it licenses are the parts of weight governance that settled on first
+shipping (RR02 Q2), and retiring the principle would discard them along with the
+false clause. Rejected **keeping the wording and correcting the practice**: that
+is impossible for `DECISIONS.md`, where IP4 makes both named mechanisms illegal.
+
+**Consequences:** The principle names the goal (bounded read cost) rather than a
+single mechanism, and states a distinct mechanism per file class — RR03 Q5's
+"three fitted mechanisms, one shared frame", where the frame is D-045's
+history/current-knowledge split. IP4 is untouched and explicitly confirmed as
+the right constraint (RR03 Q4, which looked for the case against it and found
+none). D-049's recorded trade against GP1 is retrospectively coherent: it traded
+against a clause this entry removes. M95 (re-cut) and M96 inherit the amended
+wording as their editorial criterion; M97 is the "reading less of it" mechanism
+for history. If a future always-read surface fits none of the three named
+mechanisms, this is the entry to supersede.
