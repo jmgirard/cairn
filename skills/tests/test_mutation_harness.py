@@ -269,6 +269,93 @@ REGISTRY = [
         target=RULES,
         block="Correcting a record proven false",
     ),
+    # M92 (D-051): the retirement rule. One entry per positive assert, since
+    # registration is per FILE and the sound entries above would otherwise mask
+    # a missing pin (M53). Each criterion block is label-INCLUSIVE for the same
+    # reason M76's are: blanking is not swapping, so the label and its
+    # discriminating test share one physical line and were additionally
+    # verified by INVERSION (M74) — transposing the rule reddens each guard.
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestLessonRetirement.test_rule_is_named",
+        target=RULES,
+        block="Retiring a lesson that no longer earns its line",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestLessonRetirement.test_enforcement_criterion_pins_its_discriminating_test",
+        target=RULES,
+        block="**enforcement — a test fails on the mistake the lesson warns about**",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestLessonRetirement.test_enforcement_rules_out_a_guard_merely_existing",
+        target=RULES,
+        block="discriminating word is *fails* and never *exists*",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestLessonRetirement.test_ownership_criterion_pins_its_discriminating_test",
+        target=RULES,
+        block="**ownership — another tracking file's slot owns the content**",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestLessonRetirement.test_ownership_permits_moving_content_to_its_owner",
+        target=RULES,
+        block=(
+            "**the retiring milestone may *move* the content there rather "
+            "than only find it already duplicated**"
+        ),
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestLessonRetirement.test_partial_coverage_trims_rather_than_keeping_whole",
+        target=RULES,
+        block="**A lesson covered only in part is trimmed to its uncovered remainder**",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestLessonRetirement.test_tombstone_is_the_archive_summary_and_nothing_else",
+        target=RULES,
+        block=(
+            "**A retired lesson leaves no line behind — the retiring "
+            "milestone's archive summary names what it graduated**"
+        ),
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestLessonRetirement.test_retirement_is_distinguished_from_correction",
+        target=RULES,
+        block=(
+            "**Retirement is not correction: a retired lesson is redundant, "
+            "a corrected one was false**"
+        ),
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestLessonRetirement.test_check_is_scoped_to_what_shipped",
+        target=RULES,
+        block="**scoped to what the milestone shipped, never as a full re-sweep**",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestLessonRetirement.test_retirement_wired_into_review_hygiene",
+        target=REVIEW,
+        block="Retire what this milestone covered",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestLessonRetirement.test_review_hygiene_forbids_a_full_resweep",
+        target=REVIEW,
+        block="**Scope this to what the milestone shipped — never re-sweep every lesson.**",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestLessonRetirement.test_file_map_row_names_retirement",
+        target=RULES,
+        block="retired once a test enforces it or another file owns it",
+    ),
     Mutation(
         guard="test_lessons_loop",
         test="TestRecordCorrectionRule.test_current_knowledge_is_corrected_in_place",

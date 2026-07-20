@@ -187,8 +187,18 @@ overrides — log the override).
    milestone taught — build quirks, testing tricks, gotchas worth
    remembering — to `cairn/LESSONS.md`, one per line
    (`- YYYY-MM-DD (M<NN>): <lesson>`, one line each); lessons, not status or a
-   *choice* (a choice is a D-entry). None learned → skip; if the 50-line cap
-   is hit, prune the stalest lines in this same commit.
+   *choice* (a choice is a D-entry). None learned → skip.
+   **Retire what this milestone covered:** if the milestone shipped a guard, or
+   moved content into another file's slot, check whether that retires an
+   existing lesson (tracking-rules "Retiring a lesson that no longer earns its
+   line"): a test that now **fails on the mistake a lesson warns about** retires
+   it, as does content another file's slot now owns; a partly-covered lesson is
+   trimmed to its uncovered remainder.
+   **Scope this to what the milestone shipped — never re-sweep every lesson.**
+   Delete the retired line and name what was graduated in the archive summary;
+   nothing else records it.
+   Retirement runs before the cap bites, and only if it cannot free the budget
+   is the 50-line cap met by pruning the stalest lines in this same commit.
    Durable-record preview (tracking-rules): show the archive summary,
    each LESSONS line, any D-entry, and any candidate graduation verbatim
    in chat before the commit. Docs-only commit:

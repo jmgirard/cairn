@@ -132,5 +132,117 @@ class TestRecordCorrectionRule(unittest.TestCase):
         self.assertIn("a lesson proven false is corrected in place", self.rules)
 
 
+class TestLessonRetirement(unittest.TestCase):
+    """M92 (D-051): `LESSONS.md` has an outflow, not only a ceiling.
+
+    Every assert here is LABEL-INCLUSIVE (M74/F3): each criterion's name and the
+    test that discriminates it sit on one physical line, so relabelling
+    enforcement as ownership — or softening "fails" to "exists" — breaks the
+    anchor. Pinning the mechanism sentence alone would survive both swaps, which
+    is the false coverage M74/M76/M86 proved live three times.
+
+    Targets are read per-test, never cached in `setUpClass`: the mutation
+    harness runs a guard as a single method and skips `setUpClass`, so a
+    class-level cache reads the unmutated file and reports false coverage on
+    itself (M61).
+    """
+
+    @property
+    def rules(self):
+        return read(SKILLS / "shared" / "tracking-rules.md")
+
+    @property
+    def review(self):
+        return read(SKILLS / "milestone-review" / "SKILL.md")
+
+    def test_rule_is_named(self):
+        self.assertIn("Retiring a lesson that no longer earns its line", self.rules)
+
+    def test_enforcement_criterion_pins_its_discriminating_test(self):
+        self.assertIn(
+            "**enforcement — a test fails on the mistake the lesson warns about**",
+            self.rules,
+        )
+
+    def test_enforcement_rules_out_a_guard_merely_existing(self):
+        # The entire weight of the criterion is on *fails* rather than *exists*:
+        # most guard-naming lessons here teach the judgment the guard does not
+        # make, so "a guard covers this area" would retire them wrongly.
+        self.assertIn(
+            "discriminating word is *fails* and never *exists*", self.rules
+        )
+
+    def test_ownership_criterion_pins_its_discriminating_test(self):
+        self.assertIn(
+            "**ownership — another tracking file's slot owns the content**",
+            self.rules,
+        )
+
+    def test_ownership_permits_moving_content_to_its_owner(self):
+        # M92 review F1/92: the label assert above stops at the label, so
+        # rewording this clause to "must already be duplicated in its owner"
+        # left every other assert green and silently reverted ownership to the
+        # duplication-only reading the plan gate rejected — a reading that
+        # would have blocked both of this milestone's own retirements.
+        self.assertIn(
+            "**the retiring milestone may *move* the content there rather "
+            "than only find it already duplicated**",
+            self.rules,
+        )
+
+    def test_partial_coverage_trims_rather_than_keeping_whole(self):
+        self.assertIn(
+            "**A lesson covered only in part is trimmed to its uncovered remainder**",
+            self.rules,
+        )
+
+    def test_tombstone_is_the_archive_summary_and_nothing_else(self):
+        self.assertIn(
+            "**A retired lesson leaves no line behind — the retiring milestone's "
+            "archive summary names what it graduated**",
+            self.rules,
+        )
+
+    def test_retirement_is_distinguished_from_correction(self):
+        # D-045 correction vs D-051 retirement. Both halves share one physical
+        # line, so transposing "redundant" and "was false" — which would license
+        # deleting a lesson merely disputed — fails this guard.
+        self.assertIn(
+            "**Retirement is not correction: a retired lesson is redundant, "
+            "a corrected one was false**",
+            self.rules,
+        )
+
+    def test_check_is_scoped_to_what_shipped(self):
+        # Label-inclusive: the scope and its prohibition share one physical
+        # line, so dropping "never as a full re-sweep" — the half that costs
+        # every milestone a judgment pass over records it never touched —
+        # breaks this anchor (M92 review F1, lower-priority relative).
+        self.assertIn(
+            "**scoped to what the milestone shipped, never as a full re-sweep**",
+            self.rules,
+        )
+
+    def test_retirement_wired_into_review_hygiene(self):
+        self.assertIn("Retire what this milestone covered", self.review)
+
+    def test_review_hygiene_forbids_a_full_resweep(self):
+        self.assertIn(
+            "**Scope this to what the milestone shipped — never re-sweep "
+            "every lesson.**",
+            self.review,
+        )
+
+    def test_file_map_row_names_retirement(self):
+        row = next(
+            line
+            for line in self.rules.splitlines()
+            if line.startswith("| `cairn/LESSONS.md`")
+        )
+        self.assertIn(
+            "retired once a test enforces it or another file owns it", row
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
