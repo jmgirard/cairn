@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M97: Bounded DECISIONS read — the sweep scans headings and reads what it hits
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP2, IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
@@ -116,6 +116,7 @@ read reduction recorded.
 - 2026-07-19: T5 done — `skills/tests/test_bounded_decisions_read.py` added (13 tests) and FIVE blocks registered in the mutation harness, one per clause rather than one exemplar per file: dropping the back-reference alone leaves a rule that reads correctly and recalls wrongly, so a single exemplar would let three clauses be deleted green (M53's per-file registration is the floor, not the target).
 - 2026-07-19: T5 — two anchors were wrapped when first authored and the fix was the WRAP, never the assert (M74/M78): the collision-quoting sentence in `tracking-rules.md` and again in `milestone-plan/SKILL.md` both broke mid-phrase. Caught by the guard failing, which is the mechanics self-reporting as intended.
 - 2026-07-19: verify slot clean — skills 460, scripts, hooks all exit 0, run from the repo root with exit codes checked individually and never behind a pipe (M56); `cairn_validate` 15 PASS / 8 OK, exit 0.
+- 2026-07-19: all tasks complete, verify clean; status `review`. The candidate row "Bounded DECISIONS collision sweep" graduates at post-merge hygiene, not here (M35).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
