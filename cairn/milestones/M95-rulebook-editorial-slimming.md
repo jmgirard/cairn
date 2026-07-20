@@ -7,7 +7,7 @@
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** `m95-rulebook-editorial-slimming`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m95-rulebook-editorial-slimming` · https://github.com/jmgirard/cairn/pull/97   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -215,3 +215,51 @@ touches and recording what that cost.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as is the work log (D-046); evidence never scrambles plan-owned content. -->
+
+**Reviewed 2026-07-20 · PR #97 · branch `m95-rulebook-editorial-slimming`.**
+Branch in sync with `origin/main` (0 ahead / 0 behind at review start), so no
+merge-and-retest was needed. No CI is configured on this repo — `gh pr checks`
+reports none — so the locally-run `verify` slot is the gate, not a green badge.
+
+### Evidence per criterion
+
+- **AC1** — 13 dated `LEDGER B<n> … REMOVE` work-log entries plus T6's
+  default-branch trim = 14 removals, each naming exactly one ground:
+  6 × (a) restates a decision record, 6 × (b) fails inversion and records no
+  decision, 2 × (c) redundant with the skills' own directives. No removal
+  names two grounds and none names none. Ground (c)'s evidence is a run over
+  all nine `skills/*/SKILL.md` confirming each states its own `Phase header:`
+  directive matching the deleted enumeration.
+- **AC2** — inversion re-run fresh at review, mechanically: each surviving
+  rule blanked in place, full skills suite run, RED required, file restored
+  and byte-compared. **13 of 13 RED (guarded), 0 unpinned**, file verified
+  byte-identical to its pre-sweep state. Includes the two rules M95 newly
+  pinned and the two statements M95 added. No rule left unpinned, so AC2's
+  restore-to-full-statement fallback was never triggered.
+- **AC3** — `### D-056` present once, heading naming D-045 as annotated;
+  `cairn_validate`'s `decision heading quality` OK on it. Both statements
+  confirmed present *inside* the `## What gets a test` section by parsing the
+  section rather than the whole file. IP4 untouched: `git diff main..HEAD --
+  cairn/DESIGN.md` is 0 lines, so `cairn_impact` is correctly skipped.
+- **AC4** — mutation harness green (9 tests). 5 blocks registered for
+  `test_rule_placement` plus 2 gap-fill registrations. Re-anchoring cost
+  across 12 removals: **1 guard assert + 1 harness entry**, both from B3's
+  compression — recorded so the RR03 rec 8 candidate row can be judged.
+- **AC5** — enumeration absent (`# Hotfix: <slug>`, `# Design interview` both
+  gone), replacement pointer present, and the default-branch recipe occurs
+  exactly once in the rulebook (`git symbolic-ref --short
+  refs/remotes/origin/HEAD` count = 1). All three detection rungs intact.
+- **AC6** — 788 → 779 lines, 54,584 → 53,751 chars in `cs.char_count`
+  characters (not `wc -c` bytes), with the per-section breakdown recorded in
+  the work log for M96's first stamp. Recorded as evidence; no line target
+  gated anything.
+- **AC7** — three suites run from the repo root, exit codes checked
+  individually and never behind a pipe: `skills/tests` 0, `hooks/tests` 0,
+  `scripts/tests` 0.
+
+### Consistency gate
+
+`cairn_validate` exit 0 — 15 PASS, 8 advisory OK, zero WARN. Profile is
+`generic`, whose `consistency-gate` slot names no toolchain checks, so that
+half is a clean no-op. `coverage complete` PASS fences the plan; no principle
+changed, so the `cairn_impact` step is skipped by its own condition.
