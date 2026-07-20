@@ -1,73 +1,64 @@
 <!-- Section ownership + write-modes: see tracking-rules.md "Milestone-file
      section ownership". A phase skill never rewrites another phase's section.
      Per-section owners are tagged below. -->
-# M94: Always-read weight — the two files cairn re-reads most gain a signal
+# M94: Cost instrumentation — measure what a milestone spends before governing it
 
 - **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
-- **Principles touched:** GP1, IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
+- **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
 
-Give `tracking-rules.md` and `DECISIONS.md` — the two heaviest files cairn
-re-reads every phase, both currently ungoverned — a measured weight signal, so
-GP1's "caps keep always-read files small" stops being false of the largest
-always-read files in the system.
+Measure what a milestone actually costs — cache-read tokens, fresh input, and
+turn counts by phase — so the next weight mechanism is aimed at a term that was
+measured rather than assumed.
 
 ## Scope
 <!-- owner: plan · create/amend-via-gate -->
 
-**In:** A dated baseline survey of always-read mass; a measured char threshold
-for `skills/shared/tracking-rules.md` enforced by a guard in `skills/tests`
-(plugin self-discipline — `cairn_validate` is `cairn/`-only and cannot see
-plugin files); a `cairn_validate` advisory for `cairn/DECISIONS.md` whose
-prescribed remedy respects IP4.
+**In:** A mechanical extractor over the Claude Code session JSONL store
+(`~/.claude/projects/<slug>/*.jsonl`; 114 files present 2026-07-19) reporting
+per-phase cache-read / cache-creation / fresh-input / output tokens and
+assistant-turn counts, attributed to milestone IDs; a dated synthesis note
+recording method and baseline; an always-read cost line in the `/milestone`
+audit.
 
 **Out:**
-- Actually slimming `tracking-rules.md` (extracting modules per D-031) →
-  candidate row, promotes on this milestone's signal.
-- Bounding the plan-time `DECISIONS.md` collision sweep → candidate row.
-- Test-suite subprocess cost (`hooks/tests` 16.5s / 72 tests) → candidate row;
-  independent of this signal and promotable immediately.
-- Restructuring the ROADMAP candidates block → left to D-035, unsuperseded
-  (user call at the M94 plan gate); row count is not what grew.
-- Any cap on `DECISIONS.md`. IP4 makes an append-only file's only compression
-  remedy illegal; this milestone measures it and names a legal remedy.
+- Any threshold, cap, or gate on the numbers produced → M96 (the ratchet)
+  consumes this milestone's output; this one reports and never judges.
+- Rulebook slimming → M95. Bounded `DECISIONS.md` read → M97.
+- Per-file attribution of context growth. A shared prompt cache cannot
+  cleanly apportion cache reads between files; attempting it would produce a
+  number with no oracle, the failure this re-cut exists to avoid. Revisit only
+  if the phase-level split proves too coarse to act on.
+- Verify-suite subprocess cost → candidate row, unchanged.
 
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: A dated page under `cairn/references/` records always-read mass by
-      the method it states: `tracking-rules.md` sampled across this repo's
-      history, and `DECISIONS.md` across all 9 cairn-tracked repos under
-      `~/GitHub` (measured 2026-07-19: 854 → 95,976 chars). Figures carry an
-      extraction status per the M85 template shape.
-- [ ] AC2: `tracking-rules.md`'s threshold is **derived from AC1's measured
-      population through the guard's own comparison operator** — the derivation
-      is shown in the source comment, naming what the operator permits (`>=`
-      permits threshold−1), never a round number assumed ahead of the
-      measurement (M87).
-- [ ] AC3: A guard in `skills/tests` reddens when `tracking-rules.md` meets its
-      threshold and passes below it — proven by inversion (edit the threshold,
-      run the suite, require red, restore and diff), not by the success case
-      alone (M74) — and the threshold's stated↔enforced coupling is pinned at
-      **every** site the number appears, the site count established by grepping
-      the repo for the value and recorded (M87: the number lived in three
-      places while the guard paired two).
-- [ ] AC4: `cairn_validate` emits a WARN naming `cairn/DECISIONS.md`'s
-      always-read mass, prescribing a bounded read or archival and explicitly
-      **not** compression (IP4), and prints a positive `OK` signal proving the
-      path ran when under threshold — an absence-assert alone is vacuous
-      against a crash (M84). Validated by running it against all 9 surveyed
-      repos: every repo it fires on is named with its measured value and the
-      fire/quiet split recorded, a threshold firing on all 9 or none of them
-      being a failed derivation that returns to AC2.
-- [ ] AC5: The new guard file carries a mutation-harness `Mutation(...)`
-      registration whose `block` is a positive assertion's phrase; the harness
-      cannot see an unregistered guard file (M53).
+- [ ] AC1: A script reports, per session and per phase (`plan` / `implement` /
+      `review`), the four token classes and the assistant-turn count, keyed to
+      milestone IDs where the transcript names one. Correctness is evidenced
+      against one session hand-checked line-by-line, not against its own output.
+- [ ] AC2: The report **separates `cache_read_input_tokens` from
+      `input_tokens`** and never sums them into one "input" figure. Measured
+      2026-07-19 over the last 12 sessions: 501,114,833 cache-read vs 32,576
+      fresh (98.70% vs 0.01%) — a collapsed figure would misattribute the cost
+      by four orders of magnitude. A guard asserts the two stay distinct.
+- [ ] AC3: A dated synthesis note under `cairn/references/` records the
+      extraction method, the store's schema, the known limits of phase
+      attribution, and a baseline table over the most recent milestones, with
+      an extraction status per the M85 template shape and its `INDEX.md` line.
+- [ ] AC4: `/milestone`'s audit output gains one always-read cost line
+      (mass + turns/tokens for the most recent milestone). No threshold, no
+      verdict, no new tracking file — a reporting surface only.
+- [ ] AC5: Guards cover the phase attributor and the cache/fresh split,
+      asserting against the classifier rather than the rendered report (M93),
+      each paired with a positive signal that the path ran (M84), and the guard
+      file carries its mutation registration (M53).
 - [ ] AC6: The active profile's `verify` slot is clean — all three suites
       green, run from the repo root with exit codes checked individually and
       never behind a pipe (M56).
@@ -77,34 +68,28 @@ prescribed remedy respects IP4.
      task(s) satisfying it, by positional number (AC/Task counted
      top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
 
-- AC1 → T1
+- AC1 → T1, T2
 - AC2 → T2
-- AC3 → T3, T4
-- AC4 → T5, T6
-- AC5 → T3
-- AC6 → T6
+- AC3 → T4
+- AC4 → T3
+- AC5 → T5
+- AC6 → T5
 
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Measure. Sample `tracking-rules.md` mass across this repo's history
-      and `DECISIONS.md` across the 9 cairn repos; write the dated survey page
-      under `cairn/references/` with method, figures, and extraction status.
-      Add its INDEX entry (`check_references_index` pairs them).
-- [ ] T2: Derive `tracking-rules.md`'s threshold from T1's population, in a
-      source comment stating the operator and what it permits. No number is
-      chosen before T1 lands.
-- [ ] T3: Write the guard in `skills/tests` (word-bounded `assertRegex`, target
-      read per-test not cached in `setUpClass` — M61), pin the stated↔enforced
-      coupling, and add the `Mutation(...)` registration.
-- [ ] T4: Grep for every site of the derived number; pair each. Record the site
-      count in the work log.
-- [ ] T5: Add the `DECISIONS.md` advisory to `cairn_validate` — WARN + positive
-      `OK` line, IP4-respecting remedy text; assert against the classifier, not
-      the report (M93).
-- [ ] T6: Run the advisory across all 9 repos, record the fire/quiet split, and
-      run the three suites from the repo root with exit codes checked.
+- [ ] T1: Map the JSONL schema and write the phase attributor — how a record
+      is assigned to `plan`/`implement`/`review` and to a milestone ID, and
+      what is unattributable. Record the unattributable share; a method that
+      hides it is not acceptable.
+- [ ] T2: Write the token/turn extractor over the four classes. Hand-check one
+      session line-by-line as AC1's evidence.
+- [ ] T3: Add the `/milestone` audit line.
+- [ ] T4: Write the dated synthesis note (method, schema, limits, baseline) and
+      its INDEX entry.
+- [ ] T5: Write the guards (attributor + cache/fresh split), register in the
+      mutation harness, run all three suites from the repo root.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
