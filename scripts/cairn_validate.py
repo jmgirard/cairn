@@ -1385,6 +1385,68 @@ def _known_ids(root, rows):
     return m_ids, d_ids
 
 
+# The bounded DECISIONS read (D-054) picks what to open from headings alone,
+# so a heading hiding a supersession costs recall. Scoped from D-054 because
+# D-012/D-014/D-019 hide one and IP4 forbids repairing them — an advisory that
+# can never reach OK is one people learn to ignore.
+HEADING_QUALITY_FROM = 54
+
+_DQ_HEADING = re.compile(r"^### D-0*(\d+)\b.*$", re.M)
+# A relationship CLAIM: the verb stem, then a D-id inside the same sentence.
+# Excludes the shapes that produced false positives on the real file — a bare
+# citation ("(D-005)"), "a symmetric move to D-028", "leaves D-049 untouched"
+# (no verb), and the forward-looking "the entry to supersede" / "requires a
+# superseding D-entry" (verb, but no D-id follows it in that sentence).
+_DQ_CLAIM = re.compile(r"\b(supersed|annotat|narrow|refin)\w*\b([^.\n]*)", re.I)
+_DQ_ID = re.compile(r"\bD-0*(\d+)\b")
+
+
+def check_decision_heading_quality(root):
+    """Advisory: a `### D-` heading that does not name an entry its own body
+    claims to supersede, annotate, narrow, or refine (M97, D-054).
+
+    The bounded read decides what to open from the headings, so the heading is
+    the index and a hidden supersession is a recall hole. Scoped to entries
+    from `HEADING_QUALITY_FROM` on: three legacy headings hide one and IP4
+    forbids editing them, so the read protocol back-references by id to cover
+    those instead (D-054 mitigation 2).
+
+    WARN, never a CHECK: whether a heading "names its subject" is a judgment
+    about prose, the same call `record density` and `references staleness`
+    make (D-049/D-052). Findings name the offending entry and the omitted id,
+    since a count cannot be acted on."""
+    out = []
+    path = os.path.join(root, "cairn", "DECISIONS.md")
+    if not os.path.isfile(path):
+        return out
+    try:
+        with open(path, encoding="utf-8") as f:
+            text = f.read()
+    except Exception:
+        return out
+    heads = list(_DQ_HEADING.finditer(text))
+    for i, m in enumerate(heads):
+        num = int(m.group(1))
+        if num < HEADING_QUALITY_FROM:
+            continue
+        heading = m.group(0)
+        end = heads[i + 1].start() if i + 1 < len(heads) else len(text)
+        body = text[m.end():end]
+        named = {int(n) for n in _DQ_ID.findall(heading)}
+        claimed = set()
+        for c in _DQ_CLAIM.finditer(body):
+            claimed |= {int(n) for n in _DQ_ID.findall(c.group(2))}
+        missing = sorted(claimed - named - {num})
+        if missing:
+            ids = ", ".join("D-%03d" % n for n in missing)
+            out.append(
+                "D-%03d: body claims a relationship to %s but the heading "
+                "does not name it — the bounded read (D-054) opens entries "
+                "by heading, so this is invisible to the scan" % (num, ids)
+            )
+    return out
+
+
 def check_dangling_ids(root, rows):
     """Advisory: M<NN>/D-<NNN> tokens in committed cairn/ markdown that
     resolve to no ROADMAP row, milestone file, or D-entry (M57 — the link
@@ -1468,6 +1530,10 @@ ADVISORIES = [
     ),
     ("work-log format", lambda root, rows: check_worklog_format(root)),
     ("dangling id tokens", lambda root, rows: check_dangling_ids(root, rows)),
+    (
+        "decision heading quality",
+        lambda root, rows: check_decision_heading_quality(root),
+    ),
     (
         "references staleness",
         lambda root, rows: check_references_staleness(root),

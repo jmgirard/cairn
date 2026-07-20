@@ -94,7 +94,7 @@ read reduction recorded.
 - [x] T2: Update the sweeping skills to the bounded protocol, keeping the
       read-matched-entries-whole and quote-from-the-full-entry requirements
       explicit. Pin each label→rule pairing on one physical line (M74/M92).
-- [ ] T3: State the heading-quality rule and guard it against the real file;
+- [x] T3: State the heading-quality rule and guard it against the real file;
       report failing headings by ID.
 - [ ] T4: Measure and record the read reduction from command output.
 - [ ] T5: Register guards in the mutation harness; run all three suites from
@@ -110,6 +110,7 @@ read reduction recorded.
 - 2026-07-19: AC2 AMENDED at the implement gate (user-selected): a matched entry is also back-referenced by its own id, so a superseding entry surfaces even when its heading omits the relationship. This closes the recall gap the three legacy headings create without touching history — RR03 recommended it as an AC2 refinement (its "supersession-aware read"). Verified false positives, not amended for: D-029, D-032, D-052 already name their relationships in the heading.
 - 2026-07-19: T1 done — D-054 authored, annotating IP2. States the recall trade openly (recall shifts from full-text to heading-plus-targeted-read; a collision whose heading fails to name its subject can be missed) and bounds it with three mitigations: prospective heading-quality advisory, back-reference by id, and the fact that the scan is a model read rather than a literal grep. IP2's quote-verbatim-from-the-full-entry requirement is explicitly unchanged; IP4 untouched.
 - 2026-07-19: T2 done — the bounded read is stated ONCE in `tracking-rules.md` beside the search-first rule it modifies, and wired at both `/milestone-plan` sweep sites (session start, collision check). Label→rule pairings pinned on one physical line each (M74/M92): read-whole-before-surfacing, back-reference-by-id, quote-from-the-full-entry, and the heading-quality rule. Written per D-053/M95 discipline — state the rule, cite D-054, no restated defense.
+- 2026-07-19: T3 done — `decision heading quality` advisory added to `cairn_validate` (WARN tier, scoped from D-054), tests first (10 tests, red before implementation). It runs over the REAL DECISIONS.md (M77/M80) and names both the offending entry and the omitted id rather than a count. Classifier validated by dropping the scope: it finds exactly D-012/D-014/D-019 and none of the three incidental-mention shapes (D-029, D-032, D-052) — that probe is itself a committed test, so the advisory can never go vacuously silent.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
