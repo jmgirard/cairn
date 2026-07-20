@@ -1354,3 +1354,62 @@ giving the cap an outflow rather than only a ceiling, and GP4 by making the
 guard the lesson's endpoint instead of a parallel record of the same rule.
 Delivered by M92. If retirement is ever observed removing a lesson whose trap
 then recurs, this is the entry to supersede.
+
+### D-052 (2026-07-19): The per-line axis covers non-item lines; `ROADMAP.md` joins current knowledge — narrows M84, annotates D-045
+
+**Context:** cairn's `Last hygiene check` stamp had no stated shape. All three
+write sites said only "update" it (`skills/milestone/SKILL.md:104`,
+`skills/milestone-review/SKILL.md:185`, `skills/cairn-init/SKILL.md:109`), which
+reads as "add to", so each pass prepended a parenthetical and demoted the last
+to `Prior:`/`Earlier:`. In two adopting repos the stamp reached 1,870 chars
+(intraclass) and 3,152 chars (circumplex) — the latter 28% of its whole
+ROADMAP, on one line. Both weight axes were structurally blind: the item cap
+counts lines (35 of 60) and D-049's `record density` counts whole-file mass
+(11,410 of 21,000), so `cairn_validate` printed `OK record density` over the
+defect, verified live in intraclass. cairn's own instance was pruned by hand on
+2026-07-18 (`dbf1068`) touching one file and no skill, scaffold, or guard —
+which is why it neither propagated nor prevented regrowth, and why the same
+complaint returned a day later. That commit's own message said the defect
+"wants its own milestone".
+
+**Decision:** Two narrowings, one milestone (M93).
+
+**(1) The per-line axis covers non-item lines only.** M84 rejected a per-line
+warn outright, and `tracking-rules.md` recorded the rationale verbatim:
+"pressure on individual line length would reward splitting an item across lines
+and corrode the one-item-per-line format both parsers depend on." That reasoning
+is sound and is **kept, not overturned** — it is a statement about *item* lines,
+where a parser reads one record per line and splitting corrupts it. It has no
+purchase on a heading, preamble, stamp, or HTML comment, which no parser reads
+positionally and which can therefore be capped without any incentive to split.
+Item lines (table rows, candidate bullets, lessons) remain exempt by
+construction, not by threshold. `NON_ITEM_LINE_CAP = 400`, WARNing at `>=` per
+the severity split that keeps the weight axis advisory and the item axis a hard
+CHECK. The number is derived from a six-repo survey of real non-item lines
+(healthy max 245, then 230/194/141/105/101/100), leaving 154 characters — 63% —
+of headroom over the worst healthy line while sitting 4.7× and 7.9× below the
+two live defects. Measured, never assumed (M87).
+
+**(2) `ROADMAP.md` is current knowledge.** D-045 split the tracking files into
+history and current knowledge but enumerated neither list to include
+`ROADMAP.md`, leaving the most-corrected file in the system unclassified. It
+meets every term of the current-knowledge definition: it is the sole authority
+on *current* status, every transition rewrites a row in place, and terminal-row
+retention already deletes rows outright on the grounds that archive and git stay
+authoritative. So replacing the stamp is not an IP4 history edit — `git log`
+holds every earlier stamp verbatim and `milestones/archive/` holds the detail
+behind it. Rejected: classifying the stamp line alone, which would leave the
+next ROADMAP-correction question hitting the same void.
+
+Also rejected: exempting the `_Released …_` line from the cap. It grows ~33
+chars per release and crosses 400 in roughly nine, but the remedy there is this
+entry's own thesis — keep the current version, let git hold the rest — and an
+exemption would carve out precisely the growth pattern being fixed.
+
+**Consequences:** Narrows M84's rejection; annotates D-045 by naming the file it
+omitted; leaves D-049's whole-file thresholds untouched (this is an axis beside
+them, not a retune). The stamp becomes a one-line record of the current check
+only. intraclass and circumplex are not edited here — their own next
+`/milestone` audit will flag them, which is the advisory proving itself in the
+field. If a non-item line ever legitimately needs to exceed 400 characters, this
+is the entry to supersede.
