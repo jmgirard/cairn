@@ -112,7 +112,7 @@ touches and recording what that cost.
       each block under AC1's three grounds. Its line numbers are stale (765 →
       788 lines) and cairn wraps at ~66 chars, so plain `grep` misses a wrapped
       phrase — B10 and B12 return zero hits while present. No edits here.
-- [ ] T4: Edit section by section, heaviest first (Weight caps → References
+- [x] T4: Edit section by section, heaviest first (Weight caps → References
       pages → Output discipline → Universal rules → Git model). **Targeted
       `Edit` calls only — never an ad-hoc string script over a tracking file
       (M61), never `replace_all` where indentation or context differs between
@@ -184,6 +184,8 @@ touches and recording what that cost.
 - 2026-07-20: LEDGER B20 (:468) REMOVE (partial), ground (a) — the chip-less-exception narrative restates D-019. The one pinned sentence stays (`test_gate_wording.py:99`).
 - 2026-07-20: LEDGER B11 (:347) — not a removal. RR01 rec 7's prune: the recipe is stated once WITHIN the rulebook; `cairn-init`'s copy is deliberate and guard-locked. T6.
 - 2026-07-20: LEDGER B21 (:598) KEEP — reconsidered under the new doctrine, where guard-pinning is no longer a keep reason. "An author shares their own diff-blindness" passes the behavioral test on its own: it forecloses the judgment "I wrote it, I can review it", which is exactly the call an agent would otherwise make. Class 2, not class 4.
+- 2026-07-20: T4 done — twelve removals landed across Weight caps, Universal rules, Question gates, Output discipline and References. 804 → 784 lines (−20), 55,940 → 54,096 chars. Suite run after each section, never only at the end; all 528 skills tests green throughout.
+- 2026-07-20: T4 correction — B3's removal reddened `test_record_density.py:63`, which the first run's ledger recorded as NO-HOME without noticing it was also pinned. The severity rule itself survived (the both-axes line pins it), but the anchor phrase went with the justification. Applied D-056 step 3's "compress to a clause" rather than delete whole: the reason is behavioral — it governs whether an advisory may be escalated to a gate, and two other advisories make the same call — so it stays as one sentence, re-anchored in both the guard and its harness entry.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

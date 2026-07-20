@@ -545,7 +545,7 @@ REGISTRY = [
         guard="test_record_density",
         test="TestRecordDensityRule.test_rule_states_that_density_warns_rather_than_fails",
         target=RULES,
-        block="Density warns rather than fails",
+        block="Density warns because",
     ),
     Mutation(
         guard="test_record_density",

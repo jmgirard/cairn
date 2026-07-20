@@ -87,34 +87,26 @@ takes a D-entry, and its number stays retired.
 - **Two axes, one file.** Those caps count **items**: `ROADMAP.md` and
   `LESSONS.md` are parsed one item per line (rows read positionally; D-015
   makes a lesson one line), so a line count measures rows and lessons and is
-  structurally blind to prose accumulating *inside* a line — cairn's own
-  `LESSONS.md` sat at 49 lines, one under its cap, across six milestones while
-  its character mass grew 13% and nothing reported it. The second axis is
+  structurally blind to prose accumulating *inside* a line. The second axis is
   **weight** — total character mass over the same whole file, reported by
   `cairn_validate`'s `record density` advisory against
   per-file character thresholds — `ROADMAP.md` < 21,000 · `LESSONS.md` < 20,500
-  — each the mass its own line cap permits at measured item length: non-item
-  mass plus capacity × the measured mean item length, rounded up, where capacity
-  is (line cap − 1, since the cap fails at `>=`) less the file's fixed non-item
-  lines. Measure that mean, never assume one: compression is
+  — each the mass its own line cap permits at measured item length (D-049).
+  Measure that mean, never assume one: compression is
   the weight remedy and consolidating items raises the mean, so a mean carried
-  over from last time is stale by construction — and a threshold set below what
-  the line cap permits stops backstopping that cap and silently becomes the real
-  one, firing at ordinary density (M87, superseding M84-D1's assumed means,
-  which did exactly that on both files).
+  over from last time is stale by construction, and a threshold set below what
+  the line cap permits silently becomes the real cap, firing at ordinary density.
   The two axes take opposite remedies: an over-count file graduates or prunes items, an over-weight file compresses them in place.
   The two also differ in severity, and the labels say which is which: the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the weight axis is the `record density` advisory and only ever WARNs.
-  Density warns rather than fails because an item count is a structural fact but
-  "too dense" is a judgment about prose quality — the same call the
-  `references staleness` advisory makes.
+  Density warns because "too dense" is a judgment and an item count is not — the
+  same call the `references staleness` advisory makes.
   **The per-line axis covers non-item lines only, and deliberately never item lines** (D-052, narrowing M84's blanket rejection).
   Item lines stay exempt for M84's original reason, which survives the narrowing: pressure on individual line length would reward splitting an item across lines and corrode the one-item-per-line format both parsers depend on.
   A non-item line — heading, preamble, stamp, HTML comment — carries no such
   format to corrode, and prose accretes there unseen by *both* whole-file axes:
   the item cap counts lines and the density threshold counts whole-file mass, so
-  one line reached 3,152 characters in an adopting repo with every gate green,
-  and a review hygiene pass then rewrote that stamp and still left it at 2,568
-  (2026-07-19; M93). Non-item lines are capped at `NON_ITEM_LINE_CAP` (< 400 characters),
+  a stamp line ran to thousands of characters with every gate green (D-052).
+  Non-item lines are capped at `NON_ITEM_LINE_CAP` (< 400 characters),
   reported under the same `record density` advisory at the same WARN severity.
 - a live milestone file's **plan-owned body < 150 lines** — everything before
   the review-exclusive `## Review` section, less the `## Work log`.
@@ -128,8 +120,7 @@ takes a D-entry, and its number stays retired.
 - Work-log entries are one line each — a hard-wrapped entry costs several lines
   of a budget it no longer pays into, so `cairn_validate`'s `work-log format`
   advisory WARNs on any work-log line that is not a one-line `- ` entry. It
-  warns and never fails: the cap no longer counts the section, so a wrap is
-  untidiness, not damage (D-046). Never paste command output or subagent
+  warns and never fails (D-046). Never paste command output or subagent
   transcripts into tracking files — summarize.
 - Remedies when a cap is hit (never "let it grow"): over-count ROADMAP →
   graduate or prune candidates and enforce terminal-row retention — and when
@@ -154,8 +145,7 @@ takes a D-entry, and its number stays retired.
 - **The `Last hygiene check` stamp is replaced each pass, never appended to** — it records the CURRENT check only, and no `Prior:` or `Earlier:` chain accumulates behind it.
   The stamp is current knowledge (D-045), not history, so overwriting it is not
   an IP4 edit: `git log` holds every earlier stamp verbatim and
-  `milestones/archive/` holds the detail behind it, which is the same boundary
-  terminal-row retention already runs on. Keep it to one short line naming what
+  `milestones/archive/` holds the detail behind it. Keep it to one short line naming what
   changed since the last check; the `NON_ITEM_LINE_CAP` axis of the
   `record density` advisory backstops it at 400 characters (D-052, M93).
 
@@ -176,10 +166,7 @@ takes a D-entry, and its number stays retired.
   Current knowledge — `LESSONS.md`, `references/` pages, `DESIGN.md`, `ROADMAP.md` — records what is true *now* and is read to act on,
   so a line later proven
   false is fixed where it sits, the correction marked (`(M71, corrected M75)`)
-  and git holding the original. `ROADMAP.md` is the clearest case and was the
-  one D-045 left unenumerated (D-052): it is the sole authority on *current*
-  status, every transition rewrites a row in place, and terminal-row retention
-  prunes rows outright on the grounds that archive and git stay authoritative. **Exception — `DESIGN.md`'s IP/GP block:** a
+  and git holding the original (`ROADMAP.md` joined that list at D-052). **Exception — `DESIGN.md`'s IP/GP block:** a
   wrong *principle* is not a wrong fact, and still changes only by explicit
   user decision recorded as a D-entry (see the IP/GP paragraph above).
   Ruled out: appending a correction while leaving the wrong text readable —
@@ -219,8 +206,7 @@ takes a D-entry, and its number stays retired.
   A release's readiness condition is a maintainer judgment about when to ship, never a dependency graph going green — deps going green says only that the *bundle* is complete.
   So a release milestone whose window the maintainer has not opened is parked as `blocked`, where no routing surface nominates it.
   It stays parked until the maintainer opens the window. The release *act* is already
-  user-triggered — `/cairn-release` never self-submits — and this rule extends
-  the same authority upstream, to whether the release is even queued.
+  user-triggered — `/cairn-release` never self-submits.
 - **Tracking files outrank memory.** Claude's persistent memory never holds
   project state (status, milestones, decisions, architecture). Memory is for
   meta-context only; `cairn/` files win any conflict.
@@ -445,10 +431,8 @@ defer the rest to a later gate — never more than three at once.
 
 The **final merge-approval gate is itself an AskUserQuestion chip** — a
 single approve/decline question (recommended option merges; a decline option
-is always present), never a prose "do you authorize?" yes/no. A merge is
-outward-facing and irreversible; the chip makes consent explicit and
-auditable (a bare prose "yes" is weaker consent and can be read as answering
-something else).
+is always present), never a prose "do you authorize?" yes/no — the chip makes
+consent explicit and auditable.
 
 Every phase ends with a **routing chip**: an AskUserQuestion offering the
 single most sensible next action first, composed per the chip rules in
@@ -464,9 +448,8 @@ A routing chip is always an AskUserQuestion call:
 a prose list of options is not a routing chip, and emitting a prose list
 where a chip is required is a drift bug (locked by `test_gate_wording.py`).
 
-`/milestone-review`'s end is the **sole exception**. After a successful
-merge the natural next step is a fresh context, not an in-session route, so
-review closes with a plain-prose `/clear` nudge instead of a routing chip —
+`/milestone-review`'s end is the **sole exception** (D-019): after a successful
+merge it closes with a plain-prose `/clear` nudge instead of a routing chip —
 it is the sole phase whose end is deliberately chip-less; every other phase
 skill ends with an AskUserQuestion routing chip. (This does not touch
 review's merge-approval gate, which stays an AskUserQuestion chip.)
@@ -478,10 +461,9 @@ cairn skill is active.
 
 - **Phase header.** Orient the user with Markdown headings, not an inline
   banner. A `#` names the unit of work and its title; a `##` beneath it
-  names the phase. (These headers give in-transcript visual hierarchy; in
-  Claude Code — cairn's runtime — the navigable table of contents is built
-  from chapter markers, not markdown headers, so phases become navigable via
-  the "Chapter markers" rule below, not these headings — M27/D-020.)
+  names the phase. (These headers give in-transcript visual hierarchy only; the
+  navigable table of contents is built from chapter markers, not markdown
+  headers — D-020, and the "Chapter markers" rule below.)
   Milestone skills: `# Milestone <NN>: <title>` →
   `## Plan` / `## Implement` / `## Review`. Other skills map onto the same
   two levels: `# Hotfix: <slug>` → `## <step>`; `# cairn-init` →
@@ -721,9 +703,7 @@ have been re-read against the source, or are an unverified first pass. The
 page's citekey and full citation are carried by the page itself (its heading
 and citation), not restated inside the block.
 The block is prose in the page's own idiom, not frontmatter.
-Provenance is what lets a reader judge a page's age without opening the
-source; the verified status is what keeps an unchecked subagent extraction
-from reading like a confirmed one. Because "when this was last checked" is
+Because "when this was last checked" is
 itself a claim about the repo's state, an extraction status carries its own
 `— observed YYYY-MM-DD`.
 

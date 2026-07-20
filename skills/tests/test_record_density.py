@@ -60,7 +60,7 @@ class TestRecordDensityRule(unittest.TestCase):
     def test_rule_states_that_density_warns_rather_than_fails(self):
         # The severity IS the decision (M84 Scope, distinguishing D-018): an
         # item count is a structural fact, density is a judgment about prose.
-        self.assertIn("Density warns rather than fails", self.rules)
+        self.assertIn("Density warns because", self.rules)
 
     def test_rule_maps_each_axis_to_its_label_and_severity(self):
         # M84 review F4: "weight" names the section, the hard CHECK, AND the
