@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-19 (M92 done + archived; M87 row pruned under terminal-row retention; "Lesson graduation by mechanization" candidate graduated into M92). Release timing is user-declared, never agent-proposed — D-050._
+_Last hygiene check: 2026-07-19 (M93 done + archived; M88 row pruned under terminal-row retention; two LESSONS lines extended and three compressed to hold the 20,500-char threshold — 6 chars of headroom left). Release timing is user-declared — D-050._
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,8 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M93 | Hygiene-line accretion — the ROADMAP stamp is replaced, not appended | review | — | high | milestones/M93-hygiene-line-replace-not-append.md |
-| M88 | Release timing is user-declared — a release milestone stops nominating itself | done | — | high | milestones/archive/M88-release-timing-user-declared.md |
+| M93 | Hygiene-line accretion — the ROADMAP stamp is replaced, not appended | done | — | high | milestones/archive/M93-hygiene-line-replace-not-append.md |
 | M89 | Partial verification is a state — the staleness advisory stops failing toward green | done | — | high | milestones/archive/M89-partial-verification-false-green.md |
 | M90 | README currency — the front door catches up with what shipped | done | — | normal | milestones/archive/M90-readme-currency.md |
 | M91 | Reference re-verification — the three partial extractions get read against their sources | done | — | normal | milestones/archive/M91-reference-reverification.md |
