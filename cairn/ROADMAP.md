@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M94 | Cost instrumentation — measure what a milestone spends before governing it | planned | — | high | milestones/M94-cost-instrumentation.md |
+| M94 | Cost instrumentation — measure what a milestone spends before governing it | review | — | high | milestones/M94-cost-instrumentation.md |
 | M95 | Rulebook editorial slimming — the rulebook states rules, not their legislative history | planned | — | high | milestones/M95-rulebook-editorial-slimming.md |
 | M96 | Growth ratchet — the rulebook is governed by attention, not by a permitted size | planned | M94, M95 | normal | milestones/M96-rulebook-growth-ratchet.md |
 | M97 | Bounded DECISIONS read — the sweep scans headings and reads what it hits | planned | — | high | milestones/M97-bounded-decisions-read.md |

@@ -1362,6 +1362,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "migration-pilot-notes.md": "exempt",
         "oracle-discipline-notes.md": "ok",
         "oracle-doctrine-intraclass-notes.md": "ok",
+        "session-cost-notes.md": "ok",
         "spec-kit.md": "ok",
         "task-master.md": "ok",
     }

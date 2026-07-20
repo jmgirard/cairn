@@ -23,6 +23,8 @@ token-free, drift-proof):
   consistency checks (exit 1 on any failure).
 - `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_next.py"` — the mechanical
   next-action recommendation.
+- `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_cost.py" --audit-line` — the
+  most recent milestone's measured cost.
 
 They report; they never fix or decide. The semantic checks and every
 user-facing judgment below stay yours.
@@ -65,6 +67,15 @@ A `release window` WARN is reported, never argued with — release timing is the
 It also **owns** the idleness question for the milestone it names: a release
 the advisory has already flagged is not re-reported under the Staleness bullet
 below, or one stalled release arrives as two separate items.
+
+Run `cairn_cost.py --audit-line` and report its one line verbatim. It measures
+what the most recent milestone spent — turns, cache-read, fresh input, output,
+and how many subagents it spawned (whose own tokens the store does not record,
+so the figure is partial by that much). It is **a reporting surface only**:
+there is no threshold, no verdict, and no pass/fail attached to any number —
+never treat a large figure as a finding to act on, and never propose a cap from
+it. A governing mechanism over these numbers is M96's to define, not this
+line's.
 
 The script deliberately does not judge these — do them yourself and report:
 
