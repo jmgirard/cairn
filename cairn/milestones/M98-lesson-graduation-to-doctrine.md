@@ -7,7 +7,7 @@
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, GP4   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** `m98-lesson-graduation`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m98-lesson-graduation` · https://github.com/jmgirard/cairn/pull/95   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -167,4 +167,67 @@ chars — 19 lines and 12,749 of headroom, so deferring the second costs
 nothing.
 
 ## Review
+
+**PR:** https://github.com/jmgirard/cairn/pull/95 · reviewed 2026-07-20 ·
+branch contained `origin/main` tip at review time (no sync needed). This repo
+has no `.github/workflows`, so there is no CI to gate on; the three suites are
+the whole verification surface.
+
+### Acceptance-criteria evidence (fresh, by command)
+
+- **AC1** — `M98-D1` records all 32 pre-change items in three disjoint sets
+  (graduate 18 / quirk 6 / hygiene 8), summing to 32 with an assertion in the
+  classification script that the partition is total. `LESSONS.md:19` (M51) and
+  `:44` (M87) are both classified explicitly, into the deferred
+  records-hygiene family. The entry states its own bar and records the six
+  membership differences from RR03, so the derivation is demonstrably
+  independent rather than inherited.
+- **AC2** — `skills/shared/guard-doctrine.md` exists: **212 lines / 11,815
+  chars, 7 `##` sections**. Content is distilled doctrine organised by
+  failure mode, not dated lesson lines (zero `- 20YY-MM-DD (M` items in the
+  file). Reachable from the rulebook at `tracking-rules.md:768`, in the "What
+  gets a test" section, by a pointer naming both its coverage and when to read
+  it.
+- **AC3** — inversion ledger recorded across five work-log entries covering
+  all 18 graduated items, each naming its module destination and the failure
+  restored by deletion. Four are additionally proven mechanically (three
+  module blocks are mutation-registered and redden when blanked; the rulebook
+  maturation line was hand-transposed to a wrong rule and went red, then
+  restored).
+- **AC4** — `cairn/LESSONS.md` 49 → 34 lines and 21,085 → 8,284 chars, 32 →
+  16 items. No `guard-doctrine` breadcrumb anywhere in the file (checked by
+  string search). Archive summary naming the graduated family is authored in
+  the post-merge hygiene pass, per D-051's tombstone form.
+- **AC5** — `D-055` at `DECISIONS.md:1509`, heading annotates D-051. Carries a
+  dedicated paragraph distinguishing maturation from D-051's rejected
+  "separate graduated-lessons file" on the ground that the source line is
+  deleted in the same pass, so the record count never rises.
+- **AC6** — `test_lesson_graduation.py`: 26 tests, all pass. 7 entries
+  registered in `test_mutation_harness.py`; the registry-wide
+  `test_each_registered_guard_fails_when_its_block_is_blanked` and the
+  `test_every_prose_guard_is_registered_or_exempt` completeness meta-test both
+  pass (9/9 in the harness suite).
+- **AC7** — `cairn_validate` exit 0, every check PASS, **`record density` OK**
+  (it WARNed `shed ≥586` before this milestone). Suites run separately from
+  the repo root with exit codes read individually: skills 487 exit 0, scripts
+  246 exit 0, hooks 72 exit 0 — 805 tests.
+
+### Consistency gate
+
+`cairn_validate` exit 0, all checks PASS including `coverage complete` and
+`weight caps`. `cairn_impact --changed` reports no changed principles — M98
+works under GP1/GP4 but alters neither, so the header slot is accurate and no
+reconciliation is owed. Profile is `generic`, whose `consistency-gate` slot
+names no toolchain checks, so that half is a clean no-op.
+
+### Self-caught record defect
+
+The T2 work-log line states the module is "191 lines / 9,972 chars"; it is
+**212 lines / 11,815 chars**. The figure was measured mid-task and not
+re-derived after later edits — a stale restatement, and precisely the defect
+§6 of the module this milestone ships warns about ("an amendment fixing a
+stale number is itself a restatement; re-derive from a fresh measurement").
+The work log is append-only history (D-045/IP4), so the wrong figure stays
+where it sits and this line is the correction of record.
+
 <!-- owner: review · exclusive -->
