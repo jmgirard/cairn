@@ -102,7 +102,7 @@ touches and recording what that cost.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Author the D-entry annotating D-045 and citing D-052: the rulebook is
+- [x] T1: Author the D-entry annotating D-045 and citing D-052: the rulebook is
       current knowledge; the three-step placement procedure; the behavioral
       inversion doctrine. Lands **before** any rulebook edit — it is the pass's
       license, not its write-up.
@@ -165,6 +165,7 @@ touches and recording what that cost.
 - 2026-07-20: measured drift since the ledger was written — `tracking-rules.md` is now 788 lines / 54,584 chars, up from T1's 765 / 52,316 across M97–M99 (+23 lines, +2,268 chars in three milestones). Every ledger line number is stale, and re-location must be wrap-aware: cairn hard-wraps at ~66 chars, so B10 ("extends the same authority upstream") and B12 ("ahead N, behind 1") both return zero `grep` hits while sitting in the file. Recorded as T3's premise.
 - 2026-07-20: plan-gate collision sweep — D-053 already amended GP1 at the RR03 ingest gate, so rec 6 is discharged and M95 inherits "recorded editorial passes bound the rulebook" as its criterion; M97 and M98 are `done`, so RR03's order has reached M95. RR03 rec 9's rejection of "author the missing D-entries, then slim" is carried into Scope Out so the pass cannot re-propose it. Plan-owned body 142/149 after compressing AC/Scope/Tasks (M87: compress what your phase owns) — headroom left deliberately for implement's `## Decisions` appends, which the cap counts.
 - 2026-07-20: in-progress; branch `m95-rulebook-editorial-slimming` cut from a synced main. No implement question gate: the plan gate settled scope, the DECISIONS reversal, and the inversion-test placement in the same session, and nothing else is open that the ACs do not already arbitrate.
+- 2026-07-20: T1 done — D-056 authored, the pass's license. Three parts: the rulebook is current knowledge under D-045 (plugin logic, a class both of D-045's lists omitted, fixed the way D-052(2) fixed ROADMAP.md); the three-step placement test (inversion → decision → default delete); guard-pinning as a deletion screen only, with the reddening asymmetry stated. IP4 untouched and explicitly confirmed. Both rejections carried in: "author the D-entries then slim" (RR03 rec 9) and any IP4 change. `decision heading quality` OK on the new heading.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

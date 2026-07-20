@@ -1570,3 +1570,80 @@ inherits it. Locked by `skills/tests/test_lesson_graduation.py`
 (mutation-registered). If a graduated family is ever found to need surfacing
 at plan time after all — the moment a module's conditional read does not
 reach — this is the entry to supersede.
+
+### D-056 (2026-07-20): `tracking-rules.md` is current knowledge; rationale is placed by a three-step test — annotates D-045, extends D-052's precedent
+
+**Context:** RR02 diagnosed the rulebook's growth as restated rationale and
+prescribed "state the rule, cite the D-entry, delete the defense". M95's first
+implement run built a 21-block ledger (B1–B21) to execute exactly that, and
+stopped: **9 of 21 blocks had no D-entry home at all** and 14 were guard-pinned,
+so for much of the targeted text the rulebook is the sole home and there was
+nothing to delete back to. The binding constraint was M95's own AC1 — "every
+block removed is evidenced as **already recorded** in a named D-entry" — and the
+ledger recorded its cost in entry B15: AC1 "forbids the milestone's cleanest
+win". RB03 escalated the impasse to a Fable audit. RR03 found AC1 had conflated
+*preserved somewhere* with *recorded as a decision*, and that what was missing
+underneath was a file classification nobody had ever made.
+
+**Decision:** Three parts, one boundary.
+
+**(1) `skills/shared/tracking-rules.md` is current knowledge under D-045.**
+D-045 enumerated history (`DECISIONS.md`, work-logs, milestone IDs, entombed
+`legacy/`) and current knowledge (`LESSONS.md`, `references/`, `DESIGN.md`, and
+per D-052 `ROADMAP.md`) — but both lists cover *tracking files*, and the rulebook
+is plugin logic. It meets every term of the current-knowledge definition and none
+of history's: edited in place at every milestone that touches it, read to act on,
+guarded by tests rather than by IP4, with git holding every prior state. So
+deleting justification from it is **not an IP4 history edit**, by exactly
+D-052(2)'s reasoning for the hygiene stamp — "`git log` holds every earlier stamp
+verbatim". A defense that recorded no choice was never history. D-052 classified
+a file governed by the rules; this classifies the file that states them.
+
+**(2) Rationale is four classes, placed by a three-step test** — applied at
+authoring time and editing time alike:
+
+1. **Inversion test.** If this text were deleted or inverted, would a compliant
+   agent's behavior change — misapply a rule, miss a failure mode, make a
+   judgment the text forecloses? **Yes → the rulebook owns it** (class 1 *rules*
+   and class 2 *application doctrine*, text that changes how a compliant agent
+   *applies* a rule). A D-entry may also exist; the rulebook text is not a
+   restatement of it and is never "slimmed back" to it.
+2. **Decision test.** Does it record a choice among alternatives made at a point
+   in time — rejected options, decision-time measurements, the forcing incident?
+   **Yes → the D-entry or milestone-local decision owns it** (class 3); the
+   rulebook keeps the rule plus a cite. If no record exists and the choice is
+   cross-cutting, *that* is the defect — author the entry when the choice is next
+   touched, never as a backfill sweep.
+3. **Neither → free-floating justification** (class 4). **Default delete**, or
+   compress to a clause. Justification serving a future *editor* belongs in the
+   D-entry where one exists; justification serving the acting *agent* is class 2
+   by definition and stays.
+
+**(3) Guard-pinning is a deletion screen, never keep-verbatim.** The behavioral
+inversion test is the doctrine; guard-reddening is its mechanical proof procedure
+where a guard exists (M74's relabel/negate/transpose), and a recorded by-hand
+inversion where none does. The asymmetry: reddening is **sufficient** to block a
+careless deletion, **never necessary** to justify one, and **never sufficient**
+to keep prose that fails the behavioral test. The text owns the guard, not the
+reverse — harness anchors are chosen as exemplar blocks per file, partly for
+matchability rather than because each anchored sentence is doctrine, so a guard
+can pin scaffolding. Reading pinned as frozen is how a rulebook's editability
+dies one guard at a time.
+
+Rejected: **"author the missing D-entries, then slim"**, the remedy M95's own
+work log proposed — it converts editable mass into permanent history at ~1,900
+chars per entry to license ~3-line deletions, and misclassifies operative
+application doctrine (the ledger's B17) as displaced rationale (RR03 rec 9).
+Rejected: **any change to IP4** — RR03 looked for the case against it and found
+none; the supersession chains are what made RR01, RR02, M95's ledger, and RR03
+itself possible. IP4's wording is untouched, and the clarification runs the other
+way: the rulebook is not in IP4's set.
+
+**Consequences:** Annotates D-045 by naming a class its two lists omitted —
+plugin logic — the same omission D-052(2) fixed for `ROADMAP.md`. M95's AC1 is
+replaced by this test, and the ~35-40 lines its ledger proved removable under the
+old bar become a floor rather than the yield. GP1 as amended by D-053 names
+"recorded editorial passes" as the rulebook's bounding mechanism; this entry is
+the criterion such a pass applies, and M96 stamps them. Delivered by M95, which
+needs it as its license. If an editorial pass ever finds this test admitting a
+deletion that loses a rule, this is the entry to supersede.
