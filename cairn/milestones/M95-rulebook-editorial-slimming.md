@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M95: Rulebook editorial slimming — the rulebook states rules, not their legislative history
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
@@ -121,7 +121,7 @@ touches and recording what that cost.
 - [x] T5: Re-anchor and re-register guards; run the mutation harness; prove
       AC2's inversion for each shortened rule; record the re-anchoring cost.
 - [x] T6: Complete RR01 rec 7's prune.
-- [ ] T7: Record before/after counts and the section breakdown; run all three
+- [x] T7: Record before/after counts and the section breakdown; run all three
       suites from the repo root with exit codes checked.
 
 ## Work log
@@ -191,6 +191,9 @@ touches and recording what that cost.
 - 2026-07-20: T5 process note — my first inversion probe reported B8 and B20 unpinned on locator phrases that were never the guarded ones (the elaboration, not the rule). Both are in fact pinned. A locator that misses reads exactly like a rule that is unguarded, so an inversion sweep needs its probes drawn from the guard files, not from the prose being cut.
 - 2026-07-20: T6 done — RR01 rec 7 complete. B15's per-skill phase-header enumeration is replaced by the two-level convention plus a pointer to each skill's own `Phase header:` directive; ground (c)'s evidence is a run over all nine `SKILL.md` files confirming each states its own pair, every one matching the deleted enumeration exactly. The milestone mapping stays inline, since the rulebook guard pins that one.
 - 2026-07-20: T6 finding — AC5's other half was already true. The default-branch recipe is stated exactly ONCE in the rulebook (grep for `symbolic-ref`/`ls-remote` returns one block); RR02's complaint was its 14-line length, not duplication, and the second copy lives in `cairn-init` where Scope Out keeps it. Trimmed the skill enumeration (ground c — each skill states it) and the "stores no branch name" clause into the opening rule; all three detection rungs and the no-guessing rule are untouched and still pinned.
+- 2026-07-20: T7 done — `tracking-rules.md` 788 → 779 lines, 54,584 → 53,751 chars (`cs.char_count` characters, not `wc -c` bytes). Section breakdown for M96's first stamp: Weight caps 80→70, Universal 73→69, Question gates 38→35, Output discipline 97→93, References 66→64, Git model 76→74, What gets a test 47→63; all other sections unchanged. Verify slot clean — three suites run from the repo root with exit codes checked individually, never behind a pipe (M56); `cairn_validate` all checks passed.
+- 2026-07-20: T7 honest accounting — net −9 lines is 25 removed by the pass against 16 ADDED by AC3's inversion-test paragraphs, and it undershoots RR03's ~60-100 expectation badly. Two reasons, neither of which the ACs treat as a failure (AC6: the count is evidence, never a gate). First, the 21-block ledger was the input and it is what the FIRST run built against RR02's framing; sections it never sampled were never re-swept, so M95 measured RR02's hypothesis rather than the file. Second, of the 14 removals most were a clause or a sentence, not a paragraph — RR03's estimate assumed more class-4 mass than the ledger actually contains, and its own floor for the old bar was ~35-40 gross.
+- 2026-07-20: T7 open concern for review — the honest reading is that the rulebook's mass is mostly class 1/2 (rules and application doctrine), which is what D-056 predicts and what the 7 keeps and 3 unpinned-but-operative finds both point at. If that is right, the remaining lever is M96's ratchet governing INFLOW, not a second slimming pass; a re-cut aiming at 60+ lines would have to delete operative doctrine to get there. Flagged rather than resolved — this is a judgment for the review gate, not an implement-side call.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
