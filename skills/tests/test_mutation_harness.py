@@ -37,6 +37,7 @@ BRIEF = "skills/milestone-brief/SKILL.md"
 RELEASE = "skills/cairn-release/SKILL.md"
 TEMPLATE = "skills/shared/templates/milestone.md"
 DOCTRINE = "skills/shared/validation-doctrine.md"
+GUARD_DOCTRINE = "skills/shared/guard-doctrine.md"
 SOURCE_NOTE = "skills/shared/templates/source-note.md"
 SYNTHESIS_NOTE = "skills/shared/templates/synthesis-note.md"
 
@@ -398,7 +399,7 @@ REGISTRY = [
         guard="test_lessons_loop",
         test="TestLessonRetirement.test_file_map_row_names_retirement",
         target=RULES,
-        block="retired once a test enforces it or another file owns it",
+        block="retired once a test enforces it, another file owns it, or a matured family graduates whole into a doctrine module",
     ),
     Mutation(
         guard="test_lessons_loop",
@@ -1727,6 +1728,64 @@ REGISTRY = [
         test="TestStampWriteSites.test_shipped_skeleton_teaches_the_shape",
         target="skills/cairn-init/SKILL.md",
         block="(one short line, replaced each pass — never appended to; D-052)",
+    ),
+    # M98 (D-055): maturation is the third outflow, and the graduated family
+    # moved to a new module. Entries span all three surfaces the guard pins —
+    # the module itself, the rulebook pointer, and the retirement rule — one
+    # per positive assert (M53 discipline).
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_anchor_section_states_the_one_physical_line_rule",
+        target=GUARD_DOCTRINE,
+        block="pin the label\ntogether with its members on one physical line",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_harness_section_states_registration_is_per_file",
+        target=GUARD_DOCTRINE,
+        block="**Registration is per file (≥1 exemplar block), never per assertion.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_absence_section_states_the_vacuous_crash_rule",
+        target=GUARD_DOCTRINE,
+        block="A guard whose only assertion is an `assertNotIn` is vacuous against a\ncrash.",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_fixture_section_states_the_vary_every_axis_rule",
+        target=GUARD_DOCTRINE,
+        block="**Vary every axis the prose is free in, and vary it where the value under\ntest lives.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_sweep_section_states_the_exclusion_list_rule",
+        target=GUARD_DOCTRINE,
+        block="An exclusion list may name only history files",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestRulebookPointer.test_rulebook_points_at_the_module",
+        target=RULES,
+        block="The craft of making a guard falsifiable lives in a module of this rulebook",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestThirdOutflow.test_rulebook_counts_three_retirement_criteria",
+        target=RULES,
+        block="Three criteria retire a lesson (D-051, D-055)",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestThirdOutflow.test_rulebook_names_maturation_with_its_mechanism_on_one_line",
+        target=RULES,
+        block="**maturation — a stabilized family graduates whole into a doctrine module**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestThirdOutflow.test_rulebook_distinguishes_maturation_from_the_rejected_second_record",
+        target=RULES,
+        block="the source line is deleted in the same pass, so exactly one record exists at every moment",
     ),
 ]
 

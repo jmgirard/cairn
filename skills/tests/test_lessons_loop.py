@@ -244,7 +244,11 @@ class TestLessonRetirement(unittest.TestCase):
             if line.startswith("| `cairn/LESSONS.md`")
         )
         self.assertIn(
-            "retired once a test enforces it or another file owns it", row
+            # M98/D-055 added maturation as a third criterion; the row names
+            # all three, so this anchor tracks the rule rather than a stale
+            # two-criterion form.
+            "retired once a test enforces it, another file owns it, or a matured family graduates whole into a doctrine module",
+            row,
         )
 
 

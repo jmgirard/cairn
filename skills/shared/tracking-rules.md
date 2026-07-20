@@ -20,7 +20,7 @@ owner; any other file gets at most a one-line cross-reference.
 | `cairn/milestones/M<NN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately, before other work) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
 | `cairn/DECISIONS.md` | Append-only cross-cutting decisions (D-001, …), never renumbered — superseded by new entries | Milestone-local decisions (those live in the milestone file); deferrals ("not now" is a ROADMAP fact, not a decision) |
-| `cairn/LESSONS.md` | Durable, capped repo lessons (build quirks, testing tricks) — captured at milestone end, surfaced at plan time; current knowledge, so a lesson proven false is corrected in place and marked (D-045), and retired once a test enforces it or another file owns it (D-051) | Status, decisions (a *choice* is a D-entry), per-milestone task notes |
+| `cairn/LESSONS.md` | Durable, capped repo lessons (build quirks, testing tricks) — captured at milestone end, surfaced at plan time; current knowledge, so a lesson proven false is corrected in place and marked (D-045), and retired once a test enforces it, another file owns it, or a matured family graduates whole into a doctrine module (D-051, D-055) | Status, decisions (a *choice* is a D-entry), per-milestone task notes |
 | `cairn/reviews/` | RB<NN> briefs and RR<NN> reports for Fable escalation (+ `archive/` for resolved pairs) | Anything else |
 | `cairn/references/` | Source notes (`<citekey>.md`), synthesis notes (cross-source analyses — fit assessments, surveys, pilot ledgers), `INDEX.md` (one line per committed page), the gitignored source shelf `sources/` (renamed from `pdf/` at M79 — the shelf holds any source, not only PDFs) | Anything else |
 | `cairn/legacy/` | Entombed pre-migration tracking files, verbatim | Anything live |
@@ -185,12 +185,14 @@ takes a D-entry, and its number stays retired.
   Ruled out: appending a correction while leaving the wrong text readable —
   a false lesson is harvested into every later plan (D-045).
 - **Retiring a lesson that no longer earns its line.** `LESSONS.md` is capped, so
-  it needs an outflow and not only a ceiling. Two criteria retire a lesson (D-051):
+  it needs an outflow and not only a ceiling. Three criteria retire a lesson (D-051, D-055):
   **enforcement — a test fails on the mistake the lesson warns about**, where the
   discriminating word is *fails* and never *exists*, since a guard in the same area
   is not enforcement when the lesson teaches the judgment that guard does not make;
   and **ownership — another tracking file's slot owns the content**, where
-  **the retiring milestone may *move* the content there rather than only find it already duplicated**.
+  **the retiring milestone may *move* the content there rather than only find it already duplicated**;
+  and **maturation — a stabilized family graduates whole into a doctrine module** (D-055), where the bar is conjunctive: it teaches transferable authoring or verifying craft rather than a fact about this repo's tools, it has been extended or consolidated at least twice, and neither enforcement nor ownership offers it an exit today.
+  Maturation moves content rather than removing it, which is why it is not the second record D-051 rejected: the source line is deleted in the same pass, so exactly one record exists at every moment.
   **A lesson covered only in part is trimmed to its uncovered remainder**, never kept whole.
   **A retired lesson leaves no line behind — the retiring milestone's archive summary names what it graduated**, and git holds the original.
   **Retirement is not correction: a retired lesson is redundant, a corrected one was false** — conflating the two would license deleting a lesson merely disputed.
@@ -761,6 +763,13 @@ fails CI on any unregistered prose-guard *file*. Registration is per file
 (one or more exemplar blocks), **not** per assertion — a new `assertIn`
 added to an already-registered file still needs its own entry or the by-hand
 check ("would this pass against the pre-milestone content?").
+
+**The craft of making a guard falsifiable lives in a module of this rulebook**, on its own line so the mapping stays pinnable:
+`skills/shared/guard-doctrine.md` covers anchors and what an assert must pin, the mutation harness's own blind spots, absence assertions, fixture design, matchers over authored markdown, restatement and numbers, and sweep scoping.
+Read it when authoring or editing a prose-guard, a fixture, a matcher, or a
+`cairn_validate` check. The rule above states the obligation; the module is
+how to meet it, and like the Validation doctrine it is read conditionally, so
+sessions that write no guard never pay for it.
 
 The language-mechanical specifics — which edge cases, which error mechanism,
 coverage-tool status, plot/snapshot conventions — live in the active profile's

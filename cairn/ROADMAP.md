@@ -16,7 +16,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | M95 | Rulebook editorial slimming — the rulebook states rules, not their legislative history | planned | — | high | milestones/M95-rulebook-editorial-slimming.md |
 | M96 | Growth ratchet — the rulebook is governed by attention, not by a permitted size | planned | M94, M95 | normal | milestones/M96-rulebook-growth-ratchet.md |
 | M97 | Bounded DECISIONS read — the sweep scans headings and reads what it hits | done | — | high | milestones/archive/M97-bounded-decisions-read.md |
-| M98 | Lesson graduation to doctrine — a matured lesson family leaves LESSONS.md whole | planned | — | high | milestones/M98-lesson-graduation-to-doctrine.md |
+| M98 | Lesson graduation to doctrine — a matured lesson family leaves LESSONS.md whole | review | — | high | milestones/M98-lesson-graduation-to-doctrine.md |
 | M93 | Hygiene-line accretion — the ROADMAP stamp is replaced, not appended | done | — | high | milestones/archive/M93-hygiene-line-replace-not-append.md |
 | M91 | Reference re-verification — the three partial extractions get read against their sources | done | — | normal | milestones/archive/M91-reference-reverification.md |
 | M92 | Lesson retirement — a lesson leaves LESSONS.md when a guard enforces it or another file owns it | done | — | high | milestones/archive/M92-lesson-retirement.md |
