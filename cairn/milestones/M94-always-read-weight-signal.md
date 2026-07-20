@@ -112,10 +112,47 @@ prescribed remedy respects IP4.
      so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
 - 2026-07-19: created by /milestone-plan. Scope from a measured slowdown investigation — plan→review wall clock rose from a ~23 min median (M63–M68) to ~39 min (M88–M93); the three verify suites contribute ~10% (37s × ~6 runs) while `tracking-rules.md` grew +56% and `DECISIONS.md` +103% over the same 30 milestones, both ungoverned by any cap.
+- 2026-07-19: start — branch cut (`m94-always-read-weight`), status in-progress.
+- 2026-07-19: implement gate — user rejected the ratchet basis as incoherent with the milestone's own premise (a threshold above current size blesses the state the investigation flagged). Hard-fail at a firing threshold deadlocks verify (AC6 unreachable until the deferred slimming lands), so an AC3 amendment to advisory-at-the-M63-baseline was drafted and is HELD, not applied.
+- 2026-07-19: escalating to /milestone-brief on a no-oracle tripwire at user request. Evidence: 9 weight-management milestones (M32, M55, M69, M77, M84, M87, M92, M93, M94), 5 of them 2026-07-18/19, with M87 existing only to re-derive M84's thresholds — wrong on both files 3 days after shipping. Two gate rounds here produced no defensible threshold basis. Question is architectural, not the number.
+- 2026-07-19: blocked on RB02. Collision found while drafting: RR01 §5 already ruled on rulebook size at 545 lines — rejected per-skill splitting (rec 15), prescribed ONE extraction (rec 9, executed by M58/D-031) plus a norm. Net effect 545→532 lines, erased within 3 days; today 765 (+44% over the state that triggered RR01, vs its projected ~460 core). RB02 therefore asks why the prescription failed to govern, not whether to split.
+- 2026-07-19: deviation logged — RB02 and this status change committed on the milestone branch, not main as /milestone-brief step 2 prescribes. Reason: M94's ROADMAP row and header mirror live on the branch at in-progress, so a docs-only main commit would diverge the mirror it is meant to sync. Tracking-travels-with-code kept them in one commit.
+- 2026-07-19: RR02 ingested. Load-bearing claims re-verified against the implementation before ingestion (M75): Weight-caps section 21→80 lines (+59, vs the rec 9 extraction's −53); LESSONS.md 20,494 chars vs the 20,500 threshold; 52 `### D-` headings totalling 5,378 chars (5.6% of the file); D-049 present as cited. RR02's section table counts one line higher per section (heading-boundary convention); every delta matches.
+- 2026-07-19: CORRECTION to this log's 2026-07-19 creation entry — that entry books the ~23→~39 min slowdown against re-read growth. RR02 Q6 finds the causal claim unsupported: the slow window is dominated by weight-management meta-milestones carrying extra gate rounds (M94 itself burned two), and the only causally isolated figure is the suites' ~10%, which exonerates them. The growth is a real GP1 defect on its own merits; the latency attribution is withdrawn pending token instrumentation.
+- 2026-07-19: returned to planned for a re-cut (user gate). Branch `m94-always-read-weight` carried docs only and landed on main under the docs-only carve-out; branch deleted. Criteria below are superseded per the Decisions section and are the re-cut's input, not a live plan.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
      cross-cutting ones to cairn/DECISIONS.md -->
+
+
+Full reasoning and evidence: `cairn/reviews/archive/RR02-weight-management-architecture.md`
+(answers by question number). Recorded here as findings, not restatements.
+
+- 2026-07-19 (Q1/Q5): RR01 rec 9 failed **structurally** — a one-time extraction
+  is a stock remedy for a flow problem (+7.6 lines/milestone, no outflow), and
+  D-031's norm governs the wrong margin. Dominant inflow is **rationale, not
+  rules**, against the rulebook's own `tracking-rules.md:11-13` boundary.
+- 2026-07-19 (Q2): the family splits — outflow (M32, M92) and cap-boundary
+  (M55, M69, M77) work is settled and right; the character-mass family
+  (M84→M87→M93→M94) is the wrong mechanism class for prose files, because
+  D-049's doctrine makes its thresholds nonstationary by design.
+- 2026-07-19 (Q3): "threshold" is the wrong instrument at n=1. Replacement is a
+  growth-since-last-editorial-pass ratchet. Supersedes AC2/AC3 and the held
+  AC3 amendment.
+- 2026-07-19 (Q4): `DECISIONS.md` mass is legitimate; the read is the defect.
+  The 52 `### D-` headings are already a zero-divergence index. Carries an IP2
+  recall trade requiring a user gate. Supersedes AC4.
+- 2026-07-19 (Q5): RR01 rec 15 **upheld**; the size fix is evicting
+  non-contract content, never reading the contract partially.
+- 2026-07-19 (Q6): this milestone's own latency premise is **unsupported**
+  (composition + sample confounds). Growth stays a GP1 defect on
+  context-pressure and instruction-dilution grounds. Instrument before
+  shipping further weight machinery.
+- 2026-07-19 (triage): apply rec 1 (slimming), rec 2 (ratchet, replaces
+  AC2/AC3), rec 3 (bounded read — user gate, annotates IP2), rec 4
+  (instrument, sequenced FIRST); consider recs 5-6; recs 7-9 rejected by RR02
+  with reasons.
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
