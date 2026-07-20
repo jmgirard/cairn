@@ -39,8 +39,8 @@ Read, in order: `cairn/ROADMAP.md`, any active milestone file,
    Sweep DECISIONS.md per the tracking-rules **bounded `DECISIONS.md` read**:
    scan the `### D-` headings, **read every matched entry whole before
    surfacing it**, and **back-reference each match by its own `D-0NN` id** so a
-   later entry superseding it surfaces too. Quote a collision verbatim from the
-   full entry, never from the heading.
+   later entry superseding it surfaces too.
+   Quote a collision verbatim from the full entry, never from the heading.
    Prior state is *surfaced at the question gate*, never silently obeyed or
    silently overridden:
    - `candidate` row → the normal promotion path: absorb the row, note the

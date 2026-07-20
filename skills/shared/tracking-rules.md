@@ -316,16 +316,17 @@ adds alike). Its `DECISIONS.md` sweep follows the bounded read below.
 
 **Bounded `DECISIONS.md` read.** `DECISIONS.md` is append-only and can never
 shrink, so it is read by scanning its `### D-` headings — never whole (D-054).
-A matched heading's entry is **read whole before anything is surfaced**, and is
-**back-referenced**: its own `D-0NN` id is searched across the file, so an entry
-superseding or annotating it surfaces even when that entry's heading omits the
-relationship (D-012, D-014, and D-019 each omit one). **A collision is quoted
-verbatim from the full entry, never from the heading** — IP2's requirement that
-prior state is surfaced, never silently obeyed or overridden, is unchanged; what
-narrows is recall, not the obligation. The bound rests on heading quality: **a
-`### D-` heading names its subject and any entry it supersedes, annotates, or
-narrows**, and `cairn_validate`'s `decision heading quality` advisory WARNs on
-entries from D-054 onward that do not.
+**A matched heading's entry is read whole before anything is surfaced.**
+**A match is back-referenced — its own `D-0NN` id searched across the file** — so
+an entry superseding or annotating it surfaces even when that entry's heading
+omits the relationship (D-012, D-014, and D-019 each omit one).
+**A collision is quoted verbatim from the full entry, never from the heading.**
+IP2 is unchanged — prior state is surfaced, never silently obeyed or silently
+overridden; what narrows is recall, not the obligation.
+**A `### D-` heading names its subject and any entry it supersedes, annotates, or narrows.**
+`cairn_validate`'s `decision heading quality` advisory WARNs on entries from
+D-054 onward that do not; the three that predate it are covered by the
+back-reference instead, since IP4 forbids repairing them.
 
 ## Git and approval model
 

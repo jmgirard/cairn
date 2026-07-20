@@ -97,7 +97,7 @@ read reduction recorded.
 - [x] T3: State the heading-quality rule and guard it against the real file;
       report failing headings by ID.
 - [x] T4: Measure and record the read reduction from command output.
-- [ ] T5: Register guards in the mutation harness; run all three suites from
+- [x] T5: Register guards in the mutation harness; run all three suites from
       the repo root with exit codes checked.
 
 ## Work log
@@ -113,6 +113,9 @@ read reduction recorded.
 - 2026-07-19: T3 done — `decision heading quality` advisory added to `cairn_validate` (WARN tier, scoped from D-054), tests first (10 tests, red before implementation). It runs over the REAL DECISIONS.md (M77/M80) and names both the offending entry and the omitted id rather than a count. Classifier validated by dropping the scope: it finds exactly D-012/D-014/D-019 and none of the three incidental-mention shapes (D-029, D-032, D-052) — that probe is itself a committed test, so the advisory can never go vacuously silent.
 - 2026-07-19: T4 done — read reduction measured from command output. Heading scan 5,681 chars (with newlines) of a 100,678-char file = 5.6%; a typical sweep of scan + 2-3 matched entries reads 9,141-10,898 chars, a 89.2-90.9% reduction, confirming RR02's ~90% projection. 54 entries, mean 1,757 chars, median 1,745, max 4,621. Back-referencing adds one id search per match, negligible against an entry read.
 - 2026-07-19: AC4's stated baseline was 95,374 chars; the file measured 100,678 at T4 because THIS milestone's D-053 and D-054 grew it (+5,304). Recorded rather than restated to the old figure — the reduction ratio is unchanged (heading mass grows proportionally: 5.6% at both), so the criterion is met on either baseline. Numbers are the measurement, never the plan's estimate (M87/M93).
+- 2026-07-19: T5 done — `skills/tests/test_bounded_decisions_read.py` added (13 tests) and FIVE blocks registered in the mutation harness, one per clause rather than one exemplar per file: dropping the back-reference alone leaves a rule that reads correctly and recalls wrongly, so a single exemplar would let three clauses be deleted green (M53's per-file registration is the floor, not the target).
+- 2026-07-19: T5 — two anchors were wrapped when first authored and the fix was the WRAP, never the assert (M74/M78): the collision-quoting sentence in `tracking-rules.md` and again in `milestone-plan/SKILL.md` both broke mid-phrase. Caught by the guard failing, which is the mechanics self-reporting as intended.
+- 2026-07-19: verify slot clean — skills 460, scripts, hooks all exit 0, run from the repo root with exit codes checked individually and never behind a pipe (M56); `cairn_validate` 15 PASS / 8 OK, exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
