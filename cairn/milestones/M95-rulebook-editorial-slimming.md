@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M95: Rulebook editorial slimming — the rulebook states rules, not their legislative history
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** `m95-rulebook-editorial-slimming`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -28,13 +28,15 @@ unfinished prune (the default-branch recipe, `tracking-rules.md:322-337`, and
 the phase-header per-skill enumeration); re-anchoring every guard the rewording
 touches.
 
-Amended 2026-07-19 (implement gate): the prune also trims
-`skills/cairn-init/SKILL.md`'s full restatement of the default-branch recipe to
-a pointer. The rulebook calls its recipe "canonical" and cairn-init restates it
-whole, so "stated once" is false until the second copy goes — the rulebook keeps
-the canonical statement, cairn-init cites it as `/milestone-implement` and
-`/milestone-review` already do. This is the only file outside
-`tracking-rules.md` this milestone edits, guard re-anchoring aside.
+Amended 2026-07-19 (implement gate), then WITHDRAWN the same day, unacted:
+the amendment extended the prune to `skills/cairn-init/SKILL.md`'s restatement
+of the default-branch recipe. It rested on a misreading. The duplication is
+deliberate and guard-locked — `test_default_branch_parameterized.py:68` requires
+cairn-init to carry `git ls-remote --symref origin HEAD` and "never guess the
+local current branch" verbatim, its comment naming M59 as RR01 rec 7's own
+implementation. RR02's complaint is that the rulebook's block runs 14 lines,
+not that cairn-init duplicates it. No file outside `tracking-rules.md` is in
+scope. Left here, not deleted, so the re-cut does not re-propose it.
 
 **Out:**
 - **Writing anything into `cairn/DECISIONS.md`.** The rationale is *already*
@@ -142,6 +144,9 @@ the canonical statement, cairn-init cites it as `/milestone-implement` and
 - 2026-07-19: LEDGER B19 :430-435 merge-chip rationale — NO-HOME for the rationale (D-003/D-019 do not carry "outward-facing and irreversible" or "weaker consent"); the opening label IS pinned `test_gate_wording.py:46`. NOT REMOVED.
 - 2026-07-19: LEDGER B20 :451-456 review chip-less exception — CONFIRMED D-019 verbatim; one sentence pinned `test_gate_wording.py:99`. Narrative partially removable.
 - 2026-07-19: LEDGER B21 :583-586 fan-out diff-blindness — NO-HOME ("M17" is not a D-entry; D-016 references M17 for an unrelated cost decision). GUARD-PINNED `test_review_fanout.py:88`. NOT REMOVED.
+- 2026-07-19: STOPPED at the implement gate, status back to `planned` for a re-cut (user decision, /milestone-implement step 6 "the goal itself is wrong"). The Goal's premise — "the always-read core carries history `DECISIONS.md` already owns", and Scope Out's "the rationale is *already* there — RR02 Q1(c) verified it block by block" — is refuted by T2: 9 of 21 blocks have NO D-entry home and 14 are guard-pinned. For much of the targeted text the rulebook is the SOLE home, so "delete the restatement" has nothing to delete back to. Measured removable yield ~35-40 lines (~5%) vs RR02's projected 22-28%.
+- 2026-07-19: the real remedy the ledger points at is the one this milestone's Scope Out forbids — author the missing D-entries, THEN slim. That is the re-cut's problem to shape, not an amendment to this one. Zero edits were made to `skills/shared/tracking-rules.md`; the branch carried tracking files only and was landed docs-only, then deleted.
+- 2026-07-19: T1/T2 boxes are left ticked though status is `planned` — the work was genuinely done and the ledger is its committed output. The re-cut should treat the ledger as input and re-number tasks from scratch.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
