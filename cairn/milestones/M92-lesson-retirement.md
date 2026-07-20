@@ -7,7 +7,7 @@
 - **Priority:** high
 - **Depends on:** —
 - **Principles touched:** GP1, GP4
-- **Branch/PR:** `m92-lesson-retirement`
+- **Branch/PR:** `m92-lesson-retirement` · https://github.com/jmgirard/cairn/pull/91
 
 ## Goal
 
@@ -117,6 +117,7 @@ alone do not reach the bar.
 - 2026-07-19: created by /milestone-plan.
 - 2026-07-19: in-progress on `m92-lesson-retirement`, cut from main at 16289bf.
 - 2026-07-19: step-3 gate amended Scope + AC1 + T7 — ownership permits MOVING content to its owner (not duplication-only), a partly-covered lesson is trimmed to its uncovered remainder, and consolidation (not D-015 prune) is AC5's headroom fallback. Preliminary sweep showed strict enforcement alone retires ~0 lessons, putting AC5 at risk; user chose all three recommendations.
+- 2026-07-19: review checkpoint (mid-review) — draft PR #91 opened; `main` unmoved since branch cut; AC1–AC6 evidence gathered by command and recorded in the Review section; consistency gate clean (validate exit 0, `cairn_impact` skipped — no principle change, `generic` toolchain half a no-op). No AC checkbox ticked yet: the three review lenses are still running and fencing holds ticks until triage completes.
 - 2026-07-19: T5+T6+T8 — `TestLessonRetirement` added (11 asserts, label-inclusive, targets read per-test); 11 mutation entries registered, driver blanks all 20 `test_lessons_loop` blocks green. Verified by INVERSION beyond blanking (M74): transposing retirement/correction, softening `fails`→`exists`, relabelling ownership→enforcement, and inverting the re-sweep rule each redden. One anchor was authored wrapped and the WRAP was fixed, not the assert. Suites 431/196/72, validate exit 0 no FAIL/WARN; no existing guard anchors bare on the new vocabulary (M85).
 - 2026-07-19: T7 — application pass over 35 lessons: 2 retired by ownership (M16 no-CI → PROFILE consistency-gate; M32 pytest/unittest → PROFILE verify + test-doctrine), 2 trimmed to uncovered remainder by enforcement (M53, M58+M59+M64+M65), 3 pairs consolidated as the AC5 fallback (M72, M87, M71). Strict enforcement retired nothing outright, confirming the step-3 gate's premise. LESSONS 52→47 lines (headroom 2) and 20,637→19,640 chars (headroom 860); AC5 met, all three suites + validate green.
 - 2026-07-19: T3+T4 — retirement wired into review hygiene beside capture (scoped to what shipped, prune demoted to last resort); LESSONS header corrected. First header draft restated the whole rule and cost 6 of a zero-headroom budget — compressed to a 3-line pointer (171 chars), since tracking-rules owns the substance. LESSONS is intentionally over both caps (52 lines / 20,637 chars) until T7's pass frees budget. Task order: T7 moved ahead of T5/T6 to close that window in one commit.
@@ -126,3 +127,40 @@ alone do not reach the bar.
 ## Decisions
 
 ## Review
+
+**Reviewed 2026-07-19 · PR #91 · `main` had not moved since the branch was cut
+(`git rev-list --count HEAD..origin/main` = 0), so evidence is from a current branch.**
+
+### Acceptance-criterion evidence (fresh, by command)
+
+- **AC1** — `tracking-rules.md:170-183` states the rule under its own name,
+  "Retiring a lesson that no longer earns its line". Read literally against the
+  criterion: enforcement is stated as "a test fails on the mistake the lesson
+  warns about" with the discriminator spelled out ("the discriminating word is
+  *fails* and never *exists*"); ownership is stated as content "the retiring
+  milestone may *move* there rather than only find already duplicated"; the
+  partial disposition and the D-045 distinction each appear as their own bolded
+  clause. Locked by `TestLessonRetirement` (11 asserts).
+- **AC2** — `milestone-review/SKILL.md:191-201` performs the check under
+  "Retire what this milestone covered", beside the existing capture step, and
+  states "Scope this to what the milestone shipped — never re-sweep every lesson."
+- **AC3** — tombstone stated in both places: `tracking-rules.md:178` and
+  `DECISIONS.md:1331` (D-051). Both name the archive summary as the record.
+- **AC4** — 11 `TestLessonRetirement` entries registered in
+  `test_mutation_harness.py`; `TestRegisteredGuardsFailWhenBlanked` green,
+  blanking all 20 `test_lessons_loop` blocks and requiring each guard to fail.
+  Additionally verified by INVERSION (blanking is not swapping, M74):
+  transposing retirement/correction, softening `fails`→`exists`, relabelling
+  ownership→enforcement, and inverting the re-sweep rule each turn the suite red.
+- **AC5** — measured via `cairn_scripts`: 47 lines against `LINE_CAPS` 50 (fails
+  at `>=`, so item headroom = 2, bar ≥2) and 19,640 chars against `CHAR_CAPS`
+  20,500 (weight headroom = 860, bar ≥500). Both met.
+- **AC6** — `verify` slot green: skills 431, scripts 196, hooks 72, each exit 0.
+  `cairn_validate` exit 0 — 15 PASS, 7 advisories all OK, no FAIL and no WARN.
+
+### Consistency gate
+
+Universal cairn-file checks: `cairn_validate` exit 0 (includes `coverage complete`
+and `weight caps` PASS). `cairn_impact` correctly skipped — `DESIGN.md` is not in
+the diff, so no principle changed. Toolchain half: the `generic` profile's
+`consistency-gate` slot names no toolchain checks — a clean no-op.
