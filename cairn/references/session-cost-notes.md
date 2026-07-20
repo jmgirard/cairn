@@ -121,8 +121,12 @@ carries. Stated as a measurement, not a conclusion: M94 does not judge whether
 - The reporting-only boundary on the `/milestone` cost line → prose-guarded by
   `skills/tests/test_cost_audit_line.py`, whose three protected blocks are
   registered in the mutation harness and mutation-verified.
-- A3, A4, A6 → stated as limits here and in the script docstring, and surfaced
-  in the report output itself. A6 was scoped Out at plan time for exactly the
+- A3 and A4 → stated as limits here and in the script docstring, and surfaced
+  in the report output itself (the unattributable share on the attribution
+  line; the `agents` column and its "unrecorded" note).
+- A6 → stated as a limit here and in the milestone's Scope, and **not**
+  surfaced in the report output: there is no figure to caveat, because the
+  per-file share is never computed. It was scoped Out at plan time for the
   reason restated above; nothing in this milestone revisits it.
 - The baseline table → M96's input. M96 owns any ratchet, threshold, or
   verdict over these numbers; M94 deliberately ships none.

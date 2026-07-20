@@ -23,6 +23,7 @@ Run from the repo root:
 """
 
 import pathlib
+import re
 import sys
 import unittest
 
@@ -152,12 +153,17 @@ class TestSessionAttribution(unittest.TestCase):
         a["_session"] = "deadbeef-1111"
         text = cost.report(str(SCRIPTS_DIR.parent), [a])
         self.assertIn("BY SESSION", text)
-        self.assertIn("deadbeef", text)
-        # The row names what the session actually carried, so a reader can
-        # tell a plan session from an implement one without opening it.
-        self.assertIn("M94", text)
-        self.assertIn("implement", text)
-        self.assertIn("12,345", text)
+        # Assert against the SESSION ROW ITSELF, not the whole report: "M94",
+        # "implement" and "12,345" all also render in the BY MILESTONE and
+        # BY PHASE sections, so asserting them against `text` would pass with
+        # the session row's labels stripped entirely — false coverage
+        # (mutation-proven at review, M94 F5).
+        row = next(
+            ln for ln in text.splitlines() if ln.startswith("deadbeef")
+        )
+        self.assertIn("M94", row)
+        self.assertIn("implement", row)
+        self.assertIn("12,345", row)
 
     def test_a_session_spanning_phases_names_every_phase_it_carried(self):
         # The real case: one session runs implement then review. Labelling it
@@ -285,6 +291,36 @@ class TestUnattributableShareIsReported(unittest.TestCase):
         # the record count would understate the cost that went unkeyed.
         self.assertEqual(stats["no_milestone_cache_read"], 900)
         self.assertEqual(stats["no_phase_cache_read"], 600)
+
+    def test_filtering_to_one_milestone_does_not_zero_the_share(self):
+        # Regression (M94 review F3): running attribution over the FILTERED
+        # set makes the share 0.0% by construction — the method reporting its
+        # own blind spot as zero, which T1 forbids outright.
+        records = [
+            rec(skill="cairn:milestone-implement", branch="m94-x",
+                usage={"cache_read_input_tokens": 100}),
+            rec(skill="cairn:milestone-plan", branch="main",
+                usage={"cache_read_input_tokens": 300}),
+        ]
+        text = cost.report(str(SCRIPTS_DIR.parent), records, milestone="M94")
+        self.assertIn("filtered to M94", text)
+        self.assertIn("50.0% not keyed to a milestone", text)
+        self.assertIn("whole store", text)
+        # Digit-anchored: a bare "0.0%" substring also matches the "50.0%"
+        # this test wants to see, which would make the negative vacuous.
+        self.assertNotRegex(text, r"(?<!\d)0\.0% not keyed to a milestone")
+
+    def test_the_session_count_describes_the_rows_actually_rendered(self):
+        # Regression (M94 review F2): counting *.jsonl on disk while the
+        # tables are filtered describes a different population than the one
+        # printed underneath it.
+        a = rec(skill="cairn:milestone-implement", branch="m94-x",
+                usage={"output_tokens": 1})
+        b = rec(skill="cairn:milestone-implement", branch="m95-y",
+                usage={"output_tokens": 1})
+        a["_session"], b["_session"] = "s-a", "s-b"
+        self.assertIn("1 sessions", cost.report(str(SCRIPTS_DIR.parent), [a, b], milestone="M94"))
+        self.assertIn("2 sessions", cost.report(str(SCRIPTS_DIR.parent), [a, b]))
 
     def test_the_report_states_the_unattributable_share(self):
         records = [

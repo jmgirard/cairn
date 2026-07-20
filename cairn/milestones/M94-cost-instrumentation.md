@@ -39,27 +39,27 @@ audit.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: A script reports, per session and per phase (`plan` / `implement` /
+- [x] AC1: A script reports, per session and per phase (`plan` / `implement` /
       `review`), the four token classes and the assistant-turn count, keyed to
       milestone IDs where the transcript names one. Correctness is evidenced
       against one session hand-checked line-by-line, not against its own output.
-- [ ] AC2: The report **separates `cache_read_input_tokens` from
+- [x] AC2: The report **separates `cache_read_input_tokens` from
       `input_tokens`** and never sums them into one "input" figure. Measured
       2026-07-19 over the last 12 sessions: 501,114,833 cache-read vs 32,576
       fresh (98.70% vs 0.01%) — a collapsed figure would misattribute the cost
       by four orders of magnitude. A guard asserts the two stay distinct.
-- [ ] AC3: A dated synthesis note under `cairn/references/` records the
+- [x] AC3: A dated synthesis note under `cairn/references/` records the
       extraction method, the store's schema, the known limits of phase
       attribution, and a baseline table over the most recent milestones, with
       an extraction status per the M85 template shape and its `INDEX.md` line.
-- [ ] AC4: `/milestone`'s audit output gains one always-read cost line
+- [x] AC4: `/milestone`'s audit output gains one always-read cost line
       (mass + turns/tokens for the most recent milestone). No threshold, no
       verdict, no new tracking file — a reporting surface only.
-- [ ] AC5: Guards cover the phase attributor and the cache/fresh split,
+- [x] AC5: Guards cover the phase attributor and the cache/fresh split,
       asserting against the classifier rather than the rendered report (M93),
       each paired with a positive signal that the path ran (M84), and the guard
       file carries its mutation registration (M53).
-- [ ] AC6: The active profile's `verify` slot is clean — all three suites
+- [x] AC6: The active profile's `verify` slot is clean — all three suites
       green, run from the repo root with exit codes checked individually and
       never behind a pipe (M56).
 
@@ -113,6 +113,7 @@ audit.
 - 2026-07-19: T5 — `scripts/tests/test_cairn_cost.py` (18 behavioural guards on the classifier functions, not the rendered report) + `skills/tests/test_cost_audit_line.py` (6 prose guards, 3 blocks registered in the mutation harness and mutation-verified). The phase-map coverage guard caught a real gap on first run: `design-interview` was a shipped skill missing from `PHASES`, so its turns would have landed in `unattributed`. Verify clean: 447 / 227 / 72, `cairn_validate` exit 0.
 - 2026-07-19: all tasks complete, status review. Branch diff: 10 files, +913/-8. Suites 447/227/72 green, `cairn_validate` exit 0.
 - 2026-07-19: review FAILED AC1, returned to in-progress. AC1 requires the report be keyed "per session and per phase"; the shipped report emits BY PHASE and BY MILESTONE only — no per-session breakdown exists, though `read_records` already stamps `_session` on every record. Nothing else failed: AC2-AC6 evidence gathered clean, `cairn_validate` exit 0, suites 447/227/72. Not amended — the criterion is right and the work was short of it.
+- 2026-07-19: review — five findings scored >=80 fixed on the branch (F5 false-coverage guard, F8 unregistered mutation blocks, F3 filtered-attribution false zero, F6 note overclaim, F2 session count); three below threshold logged. All six criteria verified with fresh evidence. Verify 447/233/72, cairn_validate exit 0.
 - 2026-07-19: AC1 gap closed — `session_of` + a `BY SESSION` report section keyed by session, milestone(s), and phase(s), so a session spanning implement and review names both rather than being labelled by its first. Four guards added (22 in the cost suite). Back to review. Verify clean: 449/231/72, `cairn_validate` exit 0.
 
 ## Decisions
@@ -152,3 +153,102 @@ Full reasoning and evidence: `cairn/reviews/archive/RR02-weight-management-archi
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as is the work log (D-046); evidence never scrambles plan-owned content. -->
+
+Reviewed 2026-07-19 · PR #93 · branch `m94-cost-instrumentation`.
+
+### Evidence per criterion
+
+- **AC1 — PASS (after a send-back).** First pass FAILED: the report emitted
+  `BY PHASE` and `BY MILESTONE` only, with no per-session breakdown, though
+  `read_records` already stamped `_session`. Returned to `in-progress`; the
+  criterion was not reinterpreted. Fixed by `session_of` + a `BY SESSION`
+  section keyed by session, milestone(s) and phase(s). Fresh evidence: session
+  `1601be2a` rendered as `1601be2a  M93,—  implement,plan,review  368
+  60,038,238  599,146  685  303,094  4`, matching an independent `jq -s`
+  aggregate over the raw file digit-for-digit on all six figures; the
+  implement-phase slice (162 / 24,213,467) additionally agrees with a
+  per-record `jq`→`awk` sum and a raw Python line loop. Three methods, none
+  the script's own output.
+- **AC2 — PASS.** `TOKEN_CLASSES` is a 4-tuple of distinct keys; `tokens_of`,
+  `aggregate`, `_row` and `audit_line` keep them apart on every path. Guarded
+  by `TestCacheFreshSplit` (4 tests), including a bucket-level assertion that
+  no accumulator carries a collapsed sum, and a report-level assertion that
+  the two render as separate columns. Store-wide ratio 719:1.
+- **AC3 — PASS.** `cairn/references/session-cost-notes.md` records the schema,
+  the A1–A6 attribution ledger, the phase-attribution limits, and a
+  ten-milestone baseline; `Extraction:` is one physical line carrying
+  `— observed 2026-07-19`; `INDEX.md` line present. `cairn_validate`:
+  `references index<->disk` PASS, `references staleness` OK.
+- **AC4 — PASS.** `skills/milestone/SKILL.md` §2 runs
+  `cairn_cost.py --audit-line` and reports it verbatim, with the
+  no-threshold/no-verdict boundary stated and the governing mechanism deferred
+  to M96. Live output: `cost: M94 — … turns · … cache-read · … fresh-in · …
+  output · N subagents spawned (their tokens unrecorded)`. No new tracking file.
+- **AC5 — PASS.** `scripts/tests/test_cairn_cost.py` — 26 guards asserting
+  against the classifier functions (`phase_of`, `milestone_of`, `session_of`,
+  `agents_spawned`, `tokens_of`, `aggregate`, `attribution`), each negative
+  paired with a positive proving the path ran.
+  `skills/tests/test_cost_audit_line.py` — 6 prose guards, **all 6** blocks
+  registered in the mutation harness (3 at implement, 3 more at review per F8)
+  and mutation-verified by `TestRegisteredGuardsFailWhenBlanked`.
+- **AC6 — PASS.** Run from the repo root, exit codes checked individually, no
+  pipe: `skills` 447 exit 0 · `scripts` 233 exit 0 · `hooks` 72 exit 0.
+
+### Consistency gate
+
+`cairn_validate.py` exit 0 — 22 checks PASS/OK, zero FAIL, zero WARN. Profile
+is `generic`, whose `consistency-gate` slot names no toolchain checks, so that
+half is a clean no-op. No `DESIGN.md` principle changed, so `cairn_impact` was
+not run. This repo has no CI (PROFILE.md): `gh pr checks` reports none.
+
+### Independent review — three lenses + scorer
+
+[O] diff-bug: 7 findings. [S] blame-history: 0 findings (verified RR02
+conformance — M94 implements rec 4 and defers recs 1/2/3 to M95/M96/M97).
+[S] prior-PR-comments: 1 finding; no GitHub PR-thread evidence exists
+(threads empty), so the archived `## Review` sections were the surface.
+
+**Actioned (score ≥ 80), all fixed on the branch:**
+
+- **F5 (91) — false coverage in the new per-session guard.** `assertIn("M94")`
+  / `("implement")` / `("12,345")` ran against the whole report, where those
+  strings also render in `BY MILESTONE` and `BY PHASE`; stripping the session
+  row's labels entirely left the test green. Fixed by asserting against the
+  session row itself. Re-verified by mutation: with labels stripped the guard
+  now FAILS.
+- **F8 (90) — the prose-guard docstring overclaimed its own coverage**,
+  claiming every assertion was mutation-registered when 3 of 6 were. The
+  identical overclaim was caught by M53's own review. Fixed by registering the
+  three missing blocks rather than weakening the claim, so all 6 are now real.
+- **F3 (88) — `--milestone` reported the unattributable share as 0.0%.**
+  `attribution()` ran over the already-filtered list, making the share zero by
+  construction — the method reporting its own blind spot as absent, which T1
+  forbids outright. Fixed: the share is always computed store-wide and the
+  line now says so. Regression test added.
+- **F6 (85) — the note's Disposition overclaimed A6** as "surfaced in the
+  report output"; A3 and A4 are, A6 is not. Split into two entries stating
+  that A6 has no figure to caveat because the per-file share is never computed.
+- **F2 (82) — `report()` counted sessions from the real store** while
+  rendering a filtered table, so `--milestone M85` announced "115 sessions".
+  Fixed to count the sessions actually rendered. Regression test added.
+
+**Logged below threshold (surfaced, not actioned — IP3):**
+
+- **F4 (78)** — `--milestone` is accepted but silently ignored in
+  `--audit-line` and `--attribution` modes, so `--audit-line --milestone M85`
+  reports a different milestone. Real but a CLI edge; either honour it or
+  raise `Usage`. Not fixed at review.
+- **F7 (60)** — `report()`'s docstring omitted the `BY SESSION` section.
+  Corrected in passing while rewriting that docstring for F3.
+- **F1 (55)** — the module docstring advertised a `--store` option that does
+  not exist. Corrected in passing while editing that comment block.
+
+Two of the three sub-threshold findings were stale-text lines inside comment
+blocks being rewritten for actioned findings; leaving them knowingly wrong
+while editing the lines around them was the worse option. F4 is a behaviour
+change and was left alone.
+
+One defect was caught by the review's own new regression test rather than by a
+reviewer: the first form of F3's guard asserted `"0.0% not keyed to a
+milestone"`, which is a suffix of `"50.0% not keyed to a milestone"` and so was
+vacuous. Re-anchored with a digit-boundary regex.

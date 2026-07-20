@@ -42,7 +42,8 @@ import sys
 
 import cairn_scripts as cs
 
-# The store root. Overridable for tests; a caller may also pass --store.
+# The store root. `store_dir(root, home=...)` overrides it for tests; there is
+# deliberately no CLI flag — the store location is not a user-facing choice.
 STORE_HOME = os.path.expanduser("~/.claude/projects")
 
 # The four billed token classes, in report order. Deliberately a tuple of
@@ -261,22 +262,35 @@ def _row(name, bucket):
 
 
 def report(root, records, milestone=None):
-    """The full cost report: attribution, by-phase, by-milestone."""
-    records = list(records)
-    if milestone:
-        records = [r for r in records if milestone_of(r) == milestone]
-    out = [f"cairn cost — {root}"]
-    store = store_dir(root)
-    sessions = len(glob.glob(os.path.join(store, "*.jsonl")))
-    scope = f" (filtered to {milestone})" if milestone else ""
-    out.append(f"store: {store} — {sessions} sessions{scope}")
+    """The full cost report: attribution, by-phase, by-session, by-milestone.
 
-    stats = attribution(records)
+    `--milestone` filters the *tables*, never the attribution line. Running
+    the share over the filtered set would make it 0.0% by construction — a
+    method that reported its own blind spot as zero would be exactly the
+    hiding T1 forbids, so the share is always the store-wide truth and says
+    so when the tables below it are narrower.
+    """
+    all_records = list(records)
+    records = (
+        [r for r in all_records if milestone_of(r) == milestone]
+        if milestone
+        else all_records
+    )
+    out = [f"cairn cost — {root}"]
+    # Count the sessions actually rendered, not whatever is on disk — a
+    # header derived from the store while the tables are filtered describes
+    # a different population than the one below it.
+    sessions = len({session_of(r) for r in records} - {None})
+    scope = f" (filtered to {milestone})" if milestone else ""
+    out.append(f"store: {store_dir(root)} — {sessions} sessions{scope}")
+
+    stats = attribution(all_records)
     if not stats["records"]:
         out.append("\nno billable records found")
         return "\n".join(out) + "\n"
     out.append(
-        "\nattribution: {r:,} assistant turns · "
+        "\nattribution (whole store, never the filtered subset): "
+        "{r:,} assistant turns · "
         "{nm:.1f}% not keyed to a milestone ({nmc:.1f}% of cache-read) · "
         "{np:.1f}% not keyed to a phase".format(
             r=stats["records"],

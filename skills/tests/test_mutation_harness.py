@@ -96,6 +96,28 @@ REGISTRY = [
         target=MILESTONE,
         block="never treat a large figure as a finding to act on",
     ),
+    # M94 review F8: the remaining three assertions were unregistered while
+    # the file's docstring claimed every one was covered — M53's own review
+    # caught the identical overclaim. Registered rather than de-claimed: each
+    # phrase carries a rule that can otherwise be deleted with the suite green.
+    Mutation(
+        guard="test_cost_audit_line",
+        test="TestCostAuditLine.test_the_audit_reports_the_line_verbatim",
+        target=MILESTONE,
+        block="report its one line verbatim",
+    ),
+    Mutation(
+        guard="test_cost_audit_line",
+        test="TestCostAuditLine.test_the_governing_mechanism_is_deferred_to_its_owner",
+        target=MILESTONE,
+        block="M96's to define",
+    ),
+    Mutation(
+        guard="test_cost_audit_line",
+        test="TestCostAuditLine.test_the_subagent_gap_is_stated_where_the_number_is_read",
+        target=MILESTONE,
+        block="the store does not record",
+    ),
     # M88 (D-050): release timing is the maintainer's to declare. Three
     # surfaces carry the rule independently — the governance rule, the
     # `blocked` widening plus its transitions, and the two skills that would
