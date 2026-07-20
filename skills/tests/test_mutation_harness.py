@@ -1862,6 +1862,22 @@ REGISTRY += [
         target="cairn/DECISIONS.md",
         block="author the entry when the choice is next\n   touched, never as a backfill sweep",
     ),
+    # Two operative clauses M95's inversion sweep found unpinned while the
+    # rules around them were guarded. Registered rather than left to the
+    # by-hand record, because each is a one-clause rule that a later editorial
+    # pass would read as trimmable prose.
+    Mutation(
+        guard="test_record_density",
+        test="TestRecordDensityRule.test_rule_requires_the_mean_to_be_measured_never_assumed",
+        target=RULES,
+        block="Measure that mean, never assume one",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestRecordCorrectionRule.test_the_correction_must_be_marked",
+        target=RULES,
+        block="the correction marked",
+    ),
 ]
 
 # M97 (D-054). One entry per clause the bounded read rests on, not one for the

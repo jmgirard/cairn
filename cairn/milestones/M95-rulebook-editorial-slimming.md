@@ -118,7 +118,7 @@ touches and recording what that cost.
       (M61), never `replace_all` where indentation or context differs between
       occurrences (M90).** Cut content, don't rephrase: only removing a whole
       *wrapped* line lowers the count (M51/M87). Run the skills suite per section.
-- [ ] T5: Re-anchor and re-register guards; run the mutation harness; prove
+- [x] T5: Re-anchor and re-register guards; run the mutation harness; prove
       AC2's inversion for each shortened rule; record the re-anchoring cost.
 - [ ] T6: Complete RR01 rec 7's prune.
 - [ ] T7: Record before/after counts and the section breakdown; run all three
@@ -186,6 +186,9 @@ touches and recording what that cost.
 - 2026-07-20: LEDGER B21 (:598) KEEP — reconsidered under the new doctrine, where guard-pinning is no longer a keep reason. "An author shares their own diff-blindness" passes the behavioral test on its own: it forecloses the judgment "I wrote it, I can review it", which is exactly the call an agent would otherwise make. Class 2, not class 4.
 - 2026-07-20: T4 done — twelve removals landed across Weight caps, Universal rules, Question gates, Output discipline and References. 804 → 784 lines (−20), 55,940 → 54,096 chars. Suite run after each section, never only at the end; all 528 skills tests green throughout.
 - 2026-07-20: T4 correction — B3's removal reddened `test_record_density.py:63`, which the first run's ledger recorded as NO-HOME without noticing it was also pinned. The severity rule itself survived (the both-axes line pins it), but the anchor phrase went with the justification. Applied D-056 step 3's "compress to a clause" rather than delete whole: the reason is behavioral — it governs whether an advisory may be escalated to a gate, and two other advisories make the same call — so it stays as one sentence, re-anchored in both the guard and its harness entry.
+- 2026-07-20: T5 done — AC2's inversion proof run mechanically, not by eye: each surviving shortened rule was blanked in place, the full skills suite run, RED required, then the file restored and byte-compared to its pre-run state. 8 of 11 came back RED first pass. Re-anchoring cost: **1 guard assert + 1 harness entry** (`test_record_density`, from B3's compression) — RR03 rec 8's candidate row is gated on this cost proving material, and at one re-anchor across twelve removals it is not; recorded so the row can be judged rather than left open.
+- 2026-07-20: T5 found three surviving rules unpinned, and the suite being green proves they were unpinned BEFORE M95 — a guard whose span crossed deleted text would already be red. Two were real gaps in operative rules and are now pinned and mutation-registered: "Measure that mean, never assume one" (D-049's application rule, the one M84-D1 actually broke) and "the correction marked" (D-045 rejected the unmarked variant by name). The third, B14's TOC sentence, is justification pointing at a mandate `test_chapter_marker_mandate.py:61-62` already pins, so it stays compressed and unpinned rather than guarded twice.
+- 2026-07-20: T5 process note — my first inversion probe reported B8 and B20 unpinned on locator phrases that were never the guarded ones (the elaboration, not the rule). Both are in fact pinned. A locator that misses reads exactly like a rule that is unguarded, so an inversion sweep needs its probes drawn from the guard files, not from the prose being cut.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

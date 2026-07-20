@@ -85,6 +85,13 @@ class TestRecordCorrectionRule(unittest.TestCase):
     def test_current_knowledge_is_corrected_in_place(self):
         self.assertIn("current knowledge is corrected in place", self.rules)
 
+    def test_the_correction_must_be_marked(self):
+        # "Corrected in place" without the marking requirement is the option
+        # D-045 explicitly rejected — same end state, loses the visible link
+        # between the wrong text and its fix. M95's inversion sweep found the
+        # mechanism pinned and the marking clause unpinned.
+        self.assertIn("the correction marked", self.rules)
+
     def test_history_is_superseded_never_edited(self):
         self.assertIn("history is superseded and never edited", self.rules)
 
