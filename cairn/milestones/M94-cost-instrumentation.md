@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M94: Cost instrumentation — measure what a milestone spends before governing it
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m94-cost-instrumentation`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -105,6 +105,7 @@ audit.
 - 2026-07-19: RR02 ingested. Load-bearing claims re-verified against the implementation before ingestion (M75): Weight-caps section 21→80 lines (+59, vs the rec 9 extraction's −53); LESSONS.md 20,494 chars vs the 20,500 threshold; 52 `### D-` headings totalling 5,378 chars (5.6% of the file); D-049 present as cited. RR02's section table counts one line higher per section (heading-boundary convention); every delta matches.
 - 2026-07-19: CORRECTION to this log's 2026-07-19 creation entry — that entry books the ~23→~39 min slowdown against re-read growth. RR02 Q6 finds the causal claim unsupported: the slow window is dominated by weight-management meta-milestones carrying extra gate rounds (M94 itself burned two), and the only causally isolated figure is the suites' ~10%, which exonerates them. The growth is a real GP1 defect on its own merits; the latency attribution is withdrawn pending token instrumentation.
 - 2026-07-19: returned to planned for a re-cut (user gate). Branch `m94-always-read-weight` carried docs only and landed on main under the docs-only carve-out; branch deleted. Criteria below are superseded per the Decisions section and are the re-cut's input, not a live plan.
+- 2026-07-19: re-cut start — branch `m94-cost-instrumentation`, status in-progress. Implement gate: milestone-ID attribution is branch-derived only (main-side plan work reported at phase level with its unattributable share stated); subagent turns leave no store record at all, so each phase reports its spawn count beside the token figures to label the gap. Both user-accepted.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
