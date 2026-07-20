@@ -191,6 +191,10 @@ re-verify each member *after* the move, not before.
   from a fresh measurement rather than editing each site from the old value,
   or an "all four sites corrected" claim misses the fifth.
 
+During a review pass that fixes several findings, a number you corrected
+early can be re-staled by a later fix in the same pass — settle numeric
+records last, after the content has stopped moving.
+
 Name a validate finding by its emitted label in backticks (`coverage
 complete`), and write evidence counts from command output, never memory.
 
