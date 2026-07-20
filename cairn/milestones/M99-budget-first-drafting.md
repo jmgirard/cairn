@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M99: Budget-first drafting — a capped artifact's size is visible while it is written
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m99-budget-first-drafting`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -87,7 +87,7 @@ produced that thrash — `/milestone-plan` step 4 and `/milestone-review` step 9
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Measure, and record the distributions in the work log: plan-owned
+- [x] T1: Measure, and record the distributions in the work log: plan-owned
       section sizes across `cairn/milestones/*.md` + `archive/*.md`, and
       section sizes across the archive summaries. Derive both budget sets from
       what is measured; state the headroom each set leaves.
@@ -116,6 +116,9 @@ produced that thrash — `/milestone-plan` step 4 and `/milestone-review` step 9
      EXEMPT from the 150-line cap (D-046): history under D-045, never edited,
      so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
+- 2026-07-20: T1 archive summaries measured, n=96: mean 23.3, median 25, p90 25, max 25 — 55 of 96 sit at EXACTLY 25, so the distribution is CENSORED at the cap and its percentiles measure the ceiling rather than demand. Unlike the body figures it is not a budget basis; the allocation is set deliberately below the median, targeting 22 (title+status+blanks 5, Goal 3, Outcome 8, Decisions 3, Review 3), leaving 3 lines headroom.
+- 2026-07-20: T1 measured, n=99 full milestone files recovered from git history at their pre-archive state: plan-owned body mean 98.7, median 96, p90 130, max 149 (uncensored — bodies spread 97–149). Per-section p75: Goal 7, Scope 26, AC 28, Coverage 11, Tasks 25; preamble ~11. `## Decisions` is implement/review-owned and still counted (D-030/D-046) — mean 7.1 but p90 21, max 35 — so it grows after plan time and a plan-time budget must reserve for it, not spend it.
+- 2026-07-20: implement gate — archive template is a comment-free skeleton with budgets stated in the review skill (a house-style comment block would spend a fifth of a 25-line budget); `cairn_budget.py` requires a path and prints usage bare, deliberately breaking the sibling reporters' optional-ROOT argv shape.
 - 2026-07-20: created by /milestone-plan. Graduates the budget-first-drafting candidate (lineage: M69 Out, "prevention (budget-first drafting) → candidate"); gate took all four recommendations — cover every capped artifact, templates-only budget home plus a new archive template, advisory per-section budgets, no M95 dependency.
 
 ## Decisions
