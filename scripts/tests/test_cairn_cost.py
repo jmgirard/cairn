@@ -119,6 +119,58 @@ class TestMilestoneAttribution(unittest.TestCase):
         self.assertEqual(cost.phase_of(record), "plan")
 
 
+class TestSessionAttribution(unittest.TestCase):
+    """Per-session is the finest grain the store supports, and AC1 requires
+    the report carry it alongside the per-phase view."""
+
+    def test_session_id_comes_from_the_transcript_filename(self):
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            (pathlib.Path(tmp) / "aaaa1111.jsonl").write_text(
+                '{"type":"assistant","message":{"usage":{"output_tokens":3}}}\n',
+                encoding="utf-8",
+            )
+            records = list(cost.read_records(tmp))
+        self.assertTrue(records, "fixture store produced no records — vacuous")
+        self.assertEqual({cost.session_of(r) for r in records}, {"aaaa1111"})
+
+    def test_aggregating_by_session_keeps_sessions_apart(self):
+        a = rec(skill="cairn:milestone-implement", branch="m94-x",
+                usage={"cache_read_input_tokens": 10})
+        b = rec(skill="cairn:milestone-review", branch="m94-x",
+                usage={"cache_read_input_tokens": 400})
+        a["_session"], b["_session"] = "sess-a", "sess-b"
+        buckets = cost.aggregate([a, b], cost.session_of)
+        self.assertEqual(set(buckets), {"sess-a", "sess-b"})
+        self.assertEqual(buckets["sess-a"]["cache_read_input_tokens"], 10)
+        self.assertEqual(buckets["sess-b"]["cache_read_input_tokens"], 400)
+
+    def test_the_report_renders_a_per_session_section(self):
+        a = rec(skill="cairn:milestone-implement", branch="m94-x",
+                usage={"cache_read_input_tokens": 12345})
+        a["_session"] = "deadbeef-1111"
+        text = cost.report(str(SCRIPTS_DIR.parent), [a])
+        self.assertIn("BY SESSION", text)
+        self.assertIn("deadbeef", text)
+        # The row names what the session actually carried, so a reader can
+        # tell a plan session from an implement one without opening it.
+        self.assertIn("M94", text)
+        self.assertIn("implement", text)
+        self.assertIn("12,345", text)
+
+    def test_a_session_spanning_phases_names_every_phase_it_carried(self):
+        # The real case: one session runs implement then review. Labelling it
+        # with only the first would misattribute the review fan-out's cost.
+        recs = []
+        for skill in ("cairn:milestone-implement", "cairn:milestone-review"):
+            r = rec(skill=skill, branch="m94-x", usage={"output_tokens": 1})
+            r["_session"] = "spanning"
+            recs.append(r)
+        text = cost.report(str(SCRIPTS_DIR.parent), recs)
+        self.assertIn("implement,review", text)
+
+
 class TestCacheFreshSplit(unittest.TestCase):
     """The four billed classes stay four. Never summed, never collapsed."""
 

@@ -121,6 +121,13 @@ def milestone_of(record):
     return "M" + m.group(1)
 
 
+def session_of(record):
+    """The session a record belongs to — its JSONL filename stem, stamped by
+    `read_records`. One session is one transcript, so this is the finest
+    grain the store supports."""
+    return record.get("_session")
+
+
 def agents_spawned(record):
     """How many subagents this record launched — the labelled blind spot.
 
@@ -289,6 +296,31 @@ def report(root, records, milestone=None):
         for name in sorted(by_phase, key=lambda n: -by_phase[n]["turns"])
     ]
     out.append("\nBY PHASE\n" + _table(_HEADER, rows))
+
+    by_session = aggregate(records, session_of)
+    if by_session:
+        # A session can span phases and (rarely) branches, so each row names
+        # what it actually carried rather than assuming one of each.
+        labels = {}
+        for record in records:
+            sid = session_of(record)
+            if sid is None:
+                continue
+            seen = labels.setdefault(sid, {"phases": set(), "milestones": set()})
+            seen["phases"].add(phase_of(record))
+            seen["milestones"].add(milestone_of(record) or "—")
+        rows = []
+        for sid in sorted(by_session, key=lambda s: -by_session[s]["turns"]):
+            seen = labels.get(sid, {"phases": set(), "milestones": set()})
+            rows.append(
+                (f"{sid[:8]}  {','.join(sorted(seen['milestones']))}"
+                 f"  {','.join(sorted(seen['phases']))}",)
+                + _row("", by_session[sid])[1:]
+            )
+        out.append(
+            "\nBY SESSION (session · milestone(s) · phase(s))\n"
+            + _table(("session  milestone  phase",) + _HEADER[1:], rows)
+        )
 
     by_ms = aggregate(records, milestone_of)
     if by_ms:
