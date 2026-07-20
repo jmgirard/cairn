@@ -193,3 +193,194 @@ def attribution(records):
 def pct(part, whole):
     """A percentage, or 0.0 when there is nothing to divide."""
     return (100.0 * part / whole) if whole else 0.0
+
+
+def _empty():
+    bucket = {k: 0 for k in TOKEN_CLASSES}
+    bucket["turns"] = 0
+    bucket["agents"] = 0
+    return bucket
+
+
+def aggregate(records, key):
+    """Sum the four classes, turns, and spawned agents into buckets.
+
+    `key` maps a record to its bucket name (or None to drop it), so the same
+    accumulator serves the by-phase and by-milestone views.
+    """
+    out = {}
+    for record in records:
+        name = key(record)
+        if name is None:
+            continue
+        bucket = out.setdefault(name, _empty())
+        for cls, value in tokens_of(record).items():
+            bucket[cls] += value
+        bucket["turns"] += 1
+        bucket["agents"] += agents_spawned(record)
+    return out
+
+
+def _table(header, rows):
+    """A fixed-width table. Column 0 is left-aligned, the rest right."""
+    widths = [
+        max(len(str(r[i])) for r in [header] + rows) for i in range(len(header))
+    ]
+    lines = []
+    for row in [header] + rows:
+        cells = [
+            str(c).ljust(widths[i]) if i == 0 else str(c).rjust(widths[i])
+            for i, c in enumerate(row)
+        ]
+        lines.append("  ".join(cells).rstrip())
+    lines.insert(1, "  ".join("-" * w for w in widths))
+    return "\n".join(lines)
+
+
+_HEADER = ("", "turns", "cache-read", "cache-create", "fresh-in", "output", "agents")
+
+
+def _row(name, bucket):
+    return (
+        name,
+        f"{bucket['turns']:,}",
+        f"{bucket['cache_read_input_tokens']:,}",
+        f"{bucket['cache_creation_input_tokens']:,}",
+        f"{bucket['input_tokens']:,}",
+        f"{bucket['output_tokens']:,}",
+        f"{bucket['agents']:,}",
+    )
+
+
+def report(root, records, milestone=None):
+    """The full cost report: attribution, by-phase, by-milestone."""
+    records = list(records)
+    if milestone:
+        records = [r for r in records if milestone_of(r) == milestone]
+    out = [f"cairn cost — {root}"]
+    store = store_dir(root)
+    sessions = len(glob.glob(os.path.join(store, "*.jsonl")))
+    scope = f" (filtered to {milestone})" if milestone else ""
+    out.append(f"store: {store} — {sessions} sessions{scope}")
+
+    stats = attribution(records)
+    if not stats["records"]:
+        out.append("\nno billable records found")
+        return "\n".join(out) + "\n"
+    out.append(
+        "\nattribution: {r:,} assistant turns · "
+        "{nm:.1f}% not keyed to a milestone ({nmc:.1f}% of cache-read) · "
+        "{np:.1f}% not keyed to a phase".format(
+            r=stats["records"],
+            nm=pct(stats["no_milestone"], stats["records"]),
+            nmc=pct(stats["no_milestone_cache_read"], stats["cache_read_input_tokens"]),
+            np=pct(stats["no_phase"], stats["records"]),
+        )
+    )
+    out.append(
+        "  cache-read and fresh-in are never summed; `agents` counts spawned "
+        "subagents, whose own tokens the store does not record."
+    )
+
+    by_phase = aggregate(records, phase_of)
+    rows = [
+        _row(name, by_phase[name])
+        for name in sorted(by_phase, key=lambda n: -by_phase[n]["turns"])
+    ]
+    out.append("\nBY PHASE\n" + _table(_HEADER, rows))
+
+    by_ms = aggregate(records, milestone_of)
+    if by_ms:
+        rows = [
+            _row(name, by_ms[name])
+            for name in sorted(by_ms, key=cs.id_num, reverse=True)
+        ]
+        out.append(
+            "\nBY MILESTONE (branch-derived; plan-phase work runs on the "
+            "default branch and is not keyed to a milestone)\n"
+            + _table(_HEADER, rows)
+        )
+    return "\n".join(out) + "\n"
+
+
+def latest_milestone(records):
+    """The highest-numbered milestone any record names, or None."""
+    ids = {milestone_of(r) for r in records} - {None}
+    return max(ids, key=cs.id_num) if ids else None
+
+
+def audit_line(root, records):
+    """One always-read cost line for `/milestone`'s audit — the most recent
+    milestone's mass. A reporting surface only: no threshold, no verdict."""
+    records = list(records)
+    mid = latest_milestone(records)
+    if mid is None:
+        return "cost: no milestone-keyed sessions in the store"
+    bucket = aggregate([r for r in records if milestone_of(r) == mid], lambda r: mid)
+    return (
+        "cost: {mid} — {t:,} turns · {cr:,} cache-read · {fi:,} fresh-in · "
+        "{o:,} output · {a} subagents spawned (their tokens unrecorded)".format(
+            mid=mid,
+            t=bucket[mid]["turns"],
+            cr=bucket[mid]["cache_read_input_tokens"],
+            fi=bucket[mid]["input_tokens"],
+            o=bucket[mid]["output_tokens"],
+            a=bucket[mid]["agents"],
+        )
+    )
+
+
+def parse_args(argv):
+    mode, milestone, root_arg = "report", None, None
+    rest = list(argv[1:])
+    while rest:
+        arg = rest.pop(0)
+        if arg == "--attribution":
+            mode = "attribution"
+        elif arg == "--audit-line":
+            mode = "audit-line"
+        elif arg == "--milestone":
+            if not rest:
+                raise Usage("--milestone needs a milestone id")
+            milestone = rest.pop(0)
+        elif arg.startswith("-"):
+            raise Usage(f"unknown option {arg}")
+        elif root_arg is None:
+            root_arg = arg
+        else:
+            raise Usage("at most one ROOT")
+    return mode, milestone, root_arg
+
+
+def main(argv):
+    try:
+        mode, milestone, root_arg = parse_args(argv)
+    except Usage as e:
+        sys.stderr.write(
+            "usage: cairn_cost.py [--attribution|--audit-line] "
+            f"[--milestone M<NN>] [ROOT]\n{e}\n"
+        )
+        return 2
+    try:
+        root = cs.resolve_root(["cairn_cost"] + ([root_arg] if root_arg else []))
+    except cs.NotCairn as e:
+        cs.die_not_cairn(str(e))
+        return 2
+    store = store_dir(root)
+    if not os.path.isdir(store):
+        print(f"cairn cost — {root}\n\nno session store at {store}")
+        return 0
+    records = list(read_records(store))
+    if mode == "audit-line":
+        print(audit_line(root, records))
+    elif mode == "attribution":
+        stats = attribution(records)
+        for key in sorted(stats):
+            print(f"{key}: {stats[key]:,}")
+    else:
+        print(report(root, records, milestone), end="")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

@@ -83,7 +83,7 @@ audit.
       is assigned to `plan`/`implement`/`review` and to a milestone ID, and
       what is unattributable. Record the unattributable share; a method that
       hides it is not acceptable.
-- [ ] T2: Write the token/turn extractor over the four classes. Hand-check one
+- [x] T2: Write the token/turn extractor over the four classes. Hand-check one
       session line-by-line as AC1's evidence.
 - [ ] T3: Add the `/milestone` audit line.
 - [ ] T4: Write the dated synthesis note (method, schema, limits, baseline) and
@@ -107,6 +107,7 @@ audit.
 - 2026-07-19: returned to planned for a re-cut (user gate). Branch `m94-always-read-weight` carried docs only and landed on main under the docs-only carve-out; branch deleted. Criteria below are superseded per the Decisions section and are the re-cut's input, not a live plan.
 - 2026-07-19: re-cut start — branch `m94-cost-instrumentation`, status in-progress. Implement gate: milestone-ID attribution is branch-derived only (main-side plan work reported at phase level with its unattributable share stated); subagent turns leave no store record at all, so each phase reports its spawn count beside the token figures to label the gap. Both user-accepted.
 - 2026-07-19: T1 — `scripts/cairn_cost.py` maps the store schema and attributes by `attributionSkill` (phase) and `gitBranch` (milestone), both runtime-written, so neither is a heuristic. Measured unattributable share over 22,771 assistant records: 40.7% no milestone (33.9% of cache-read), 15.6% no phase.
+- 2026-07-19: T2 — extractor + by-phase/by-milestone report. AC1 hand-check on session `1601be2a` (M93 implement): three independent methods (jq aggregate, per-record jq→awk sum, raw Python line loop) all return 162 turns / 24,213,467 cache-read / 185,894 cache-create / 301 fresh / 119,840 output / 0 agents, matching the module exactly. Corroboration: the `agents` column reads exactly 4 for every reviewed milestone — the M17 fan-out. Verify clean (441/209/72).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
