@@ -190,8 +190,8 @@ takes a D-entry, and its number stays retired.
   discriminating word is *fails* and never *exists*, since a guard in the same area
   is not enforcement when the lesson teaches the judgment that guard does not make;
   and **ownership — another tracking file's slot owns the content**, where
-  **the retiring milestone may *move* the content there rather than only find it already duplicated**.
-  and **maturation — a stabilized family graduates whole into a doctrine module** (D-055), where the bar is conjunctive: it teaches transferable authoring or verifying craft rather than a fact about this repo's tools, it has been extended or consolidated at least twice, and neither enforcement nor ownership can ever retire it.
+  **the retiring milestone may *move* the content there rather than only find it already duplicated**;
+  and **maturation — a stabilized family graduates whole into a doctrine module** (D-055), where the bar is conjunctive: it teaches transferable authoring or verifying craft rather than a fact about this repo's tools, it has been extended or consolidated at least twice, and neither enforcement nor ownership offers it an exit today.
   Maturation moves content rather than removing it, which is why it is not the second record D-051 rejected: the source line is deleted in the same pass, so exactly one record exists at every moment.
   **A lesson covered only in part is trimmed to its uncovered remainder**, never kept whole.
   **A retired lesson leaves no line behind — the retiring milestone's archive summary names what it graduated**, and git holds the original.

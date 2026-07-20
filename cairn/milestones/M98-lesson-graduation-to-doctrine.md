@@ -47,31 +47,31 @@ mutation registration.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: The milestone file records a classification of **every** current
+- [x] AC1: The milestone file records a classification of **every** current
       `LESSONS.md` item as graduating or staying, each with its reason, derived
       in this milestone and not carried over from RR03. Items RR03 flagged as a
       possible second tier (`LESSONS.md:19` M51, `:44` M87) are classified
       explicitly either way.
-- [ ] AC2: `skills/shared/guard-doctrine.md` exists, stating the graduated
+- [x] AC2: `skills/shared/guard-doctrine.md` exists, stating the graduated
       craft as doctrine rather than a paste of dated lesson lines, and is
       reachable from `skills/shared/tracking-rules.md` "What gets a test" by a
       pointer naming what it covers and when to read it.
-- [ ] AC3: Every graduated lesson has a recorded inversion result — where its
+- [x] AC3: Every graduated lesson has a recorded inversion result — where its
       behavioral content landed in the module, and confirmation that deleting
       or inverting that text would change what a compliant agent does. A lesson
       whose content survives only in part is trimmed to its uncovered
       remainder, per D-051.
-- [ ] AC4: Each graduated lesson is gone from `cairn/LESSONS.md` — no line, no
+- [x] AC4: Each graduated lesson is gone from `cairn/LESSONS.md` — no line, no
       breadcrumb — and the archive summary names what was graduated (D-051's
       tombstone form).
-- [ ] AC5: A D-entry annotates D-051 naming maturation as a third outflow, and
+- [x] AC5: A D-entry annotates D-051 naming maturation as a third outflow, and
       states why graduation is not the "separate graduated-lessons file"
       D-051 rejected as a divergence vector.
-- [ ] AC6: New prose-guards pin the module's pointer and the maturation
+- [x] AC6: New prose-guards pin the module's pointer and the maturation
       criterion, each on one physical line per the label→rule rule, registered
       in `skills/tests/test_mutation_harness.py`; the harness completeness
       meta-test is green.
-- [ ] AC7: `cairn_validate` reports `record density` clean for
+- [x] AC7: `cairn_validate` reports `record density` clean for
       `cairn/LESSONS.md` on both axes, and the `verify` slot (all three
       `python3 -m unittest` suites, run from the repo root with exit codes
       checked individually) is clean.
@@ -132,6 +132,8 @@ mutation registration.
 - 2026-07-20: T5 done — D-055 appended; also updated the LESSONS.md header, the rulebook file-map row, and the retirement rule to name three criteria.
 - 2026-07-20: T6 done — `test_lesson_graduation.py` (26 tests), 7 mutation entries registered. Two corrections en route: my own `assertRegex(..., re.M)` passed the flag as `msg` and was silently discarded; and the file-map edit broke M92's existing anchor plus its harness entry, both updated to the three-criterion wording (the rule changed, so this is re-anchoring, not loosening). Maturation line spot-checked by hand transposition → red, restored.
 - 2026-07-20: T7 done — skills 487 / scripts 246 / hooks 72, exit 0 each, run separately from the repo root; `cairn_validate` exit 0, all checks passed, no advisories. Status → review.
+
+- 2026-07-20: review — 3 lenses + scorer; 7 findings, F1/92 F4/82 F3/80 actioned, F2/65 F6/72 F7/68 F5/55 read for substance and actioned too (F6 bore on AC3; F7 had a guard pinning a bar stronger than D-055). All fixed on branch, none deferred. F1 re-derived twice: the F6 fix moved the file again.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -194,10 +196,13 @@ the whole verification surface.
   module blocks are mutation-registered and redden when blanked; the rulebook
   maturation line was hand-transposed to a wrong rule and went red, then
   restored).
-- **AC4** — `cairn/LESSONS.md` 49 → 34 lines and 21,085 → 8,284 chars, 32 →
-  16 items. No `guard-doctrine` breadcrumb anywhere in the file (checked by
-  string search). Archive summary naming the graduated family is authored in
-  the post-merge hygiene pass, per D-051's tombstone form.
+- **AC4** — `cairn/LESSONS.md` 49 → 35 lines and 21,085 → 8,605 chars, 32 →
+  17 items: 15 lessons deleted whole and 3 trimmed to uncovered remainders.
+  (Measured after the F6 fix below restored L26's registrability clause as a
+  third trim; the earlier 34/8,284 reading predates it.) No `guard-doctrine`
+  breadcrumb anywhere in the file (checked by string search). Archive summary
+  naming the graduated family is authored in the post-merge hygiene pass, per
+  D-051's tombstone form.
 - **AC5** — `D-055` at `DECISIONS.md:1509`, heading annotates D-051. Carries a
   dedicated paragraph distinguishing maturation from D-051's rejected
   "separate graduated-lessons file" on the ground that the source line is
@@ -229,5 +234,78 @@ re-derived after later edits — a stale restatement, and precisely the defect
 stale number is itself a restatement; re-derive from a fresh measurement").
 The work log is append-only history (D-045/IP4), so the wrong figure stays
 where it sits and this line is the correction of record.
+
+### Independent review — three lenses + scorer
+
+**[O] diff-bug (Opus):** verified the distillation clause by clause across all
+18 graduated items and found it faithful — every operative imperative in the
+deleted lines has a home in the module, no rule inverted or weakened. Raised
+7 findings on numbers, missed encoding sites, and guard coverage.
+**[S] blame-history (Sonnet):** no findings. Traced the deletions to their
+authoring milestones, confirmed via `git blame` that the M92 anchor change is
+a re-anchor rather than a loosening, and read D-051 whole to confirm D-055
+distinguishes rather than contradicts its rejection (2).
+**[S] prior-PR (Sonnet):** no GitHub evidence — all 23 merged PRs touching
+these files have empty `comments` and `reviews`, the standing no-op this repo
+already has a candidate row for. On the secondary surface (archived `## Review`
+sections) it independently found F1.
+
+**Actioned (scored ≥80):**
+
+- **F1 (92) — D-055 and the T4 work-log line stated `LESSONS.md` at "49 → 33
+  lines, 21,085 → 8,219 chars"; the true value was 34 / 8,284.** T4 measured,
+  T5 then edited the file's header (+1 line, +65 chars), and the stale figure
+  was restated into an append-only record without re-deriving — the exact
+  defect §6 of the module this milestone ships describes. Found independently
+  by two lenses. **Fixed**, and re-derived a second time after F6 changed the
+  file again: D-055 now states the graduation's own effect (15 deleted, 3
+  trimmed, 49 → 35 lines / 21,085 → 8,605 chars as merged) rather than a
+  figure a later edit can falsify.
+- **F4 (82) — the behavioral-inversion doctrine and the guard-reddening
+  asymmetry were new content, traceable to no graduated lesson.** RR03 assigns
+  both to rec 1, delivered by M95 into the *always-read* rulebook; M98's Scope
+  lists the sibling anchor-choice discipline as Out. Placing them in a module
+  read only at guard-authoring time hides them from the editorial-slimming
+  sessions that are their consumer — `LESSONS.md`'s own M78 lesson. **Fixed:**
+  removed both passages, keeping L33's genuinely-graduated inversion protocol.
+  Banked for M95 below.
+- **F3 (80) — `cairn/DESIGN.md` still said "Two conditional modules".**
+  M98 ships a third. **Fixed:** inventory now names three.
+
+**Logged, scored below 80 — read for substance per M73, and actioned anyway
+where the substance warranted it:**
+
+- **F2 (65) — `/milestone-review`'s own hygiene step restated retirement as
+  two criteria.** The scorer discounted it because the step cites the rulebook
+  section by name. But this is the only surface that *fires* retirement, and a
+  third encoding site of a rule whose guards pair two — M87's "count every
+  site", which this milestone moved into the module. **Actioned: fixed.**
+- **F6 (72) — L26 was deleted whole though only partly covered:** its
+  "template classes CAN be registered" permission survives nowhere in the
+  module. This bears directly on AC3, which requires partial coverage be
+  trimmed to its remainder. **Actioned: fixed** — restored as a third trimmed
+  remainder, the treatment L31 and L40 received.
+- **F7 (68) — two defects on one pair of lines.** The maturation criterion
+  opened with a lowercase "and" after a full stop, and its clause (c) claimed
+  enforcement and ownership "can ever" retire the family — a
+  permanent-impossibility claim stronger than D-055's "no existing exit", and
+  pinned by a guard, so the two records would be read together and disagree.
+  **Actioned: fixed both**, rulebook and guard now match D-055's bar.
+- **F5 (55) — module §4 and §7 had zero assertions** while the guarded pointer
+  advertised "fixture design" and "sweep scoping"; both sections were
+  deletable with the suite green. Not an AC6 violation (AC6 scopes guards to
+  the pointer and the maturation criterion), but it inverts the module's own
+  standard. **Actioned: fixed** — 4 assertions added, 2 mutation-registered.
+
+Nothing was rejected or deferred to a follow-up; all seven were fixed on the
+branch. Post-fix: skills 491 / scripts 246 / hooks 72, exit 0 each;
+`cairn_validate` exit 0, all checks PASS, `record density` OK.
+
+**Banked for M95 (RR03 rec 1):** the behavioral-inversion test — "a rule is
+what changes compliant behavior when deleted or inverted" — and the
+reddening asymmetry ("sufficient to block a careless deletion, never
+necessary to justify one, never sufficient to keep prose that fails the
+behavioral test") belong in the always-read rulebook as M95's license, per
+RR03 rec 1. M98 removed them rather than shipping them from the wrong home.
 
 <!-- owner: review · exclusive -->

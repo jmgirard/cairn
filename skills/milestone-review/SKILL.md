@@ -192,8 +192,9 @@ overrides — log the override).
    moved content into another file's slot, check whether that retires an
    existing lesson (tracking-rules "Retiring a lesson that no longer earns its
    line"): a test that now **fails on the mistake a lesson warns about** retires
-   it, as does content another file's slot now owns; a partly-covered lesson is
-   trimmed to its uncovered remainder.
+   it, as does content another file's slot now owns, as does **maturation — a
+   stabilized family graduating whole into a doctrine module** (D-055); a
+   partly-covered lesson is trimmed to its uncovered remainder.
    **Scope this to what the milestone shipped — never re-sweep every lesson.**
    Delete the retired line and name what was graduated in the archive summary;
    nothing else records it.

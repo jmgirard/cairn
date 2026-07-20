@@ -30,11 +30,12 @@ transitions, human-gated merges, and a domain verification doctrine.
   standalone two-phase (facts → principles) DESIGN.md elicitation interview
   (D-013), offered from `/cairn-init`'s routing chip; it recommends running
   the session on Fable (D-014).
-- `skills/shared/tracking-rules.md` — the single rulebook. Two conditional
+- `skills/shared/tracking-rules.md` — the single rulebook. Three conditional
   modules beside it: `validation-doctrine.md` (domain doctrine for
-  numeric/scoring work, referenced from the rulebook — M58) and
+  numeric/scoring work, referenced from the rulebook — M58),
   `migration-protocol.md` (cairn-init §2's body, read only on precursor
-  footprint detection — M59).
+  footprint detection — M59), and `guard-doctrine.md` (guard/fixture/matcher
+  authoring craft, referenced from "What gets a test" — M98).
 - `skills/shared/templates/` — milestone, brief, decision, CLAUDE.md section,
   source note, synthesis note.
 - `skills/shared/profiles/` — the shipped reference toolchain profiles

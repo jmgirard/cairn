@@ -37,9 +37,8 @@ amendment added, because every anchor was authored before it existed — re-read
 the guard against the acceptance criteria after any amendment.
 
 **Verify by inversion.** Relabel, negate, or transpose the rule in place, run
-the suite, require red, restore, and diff. This is the behavioral test —
-a rule is what changes compliant behavior when deleted or inverted — and
-guard-reddening is its mechanical proof procedure, never a substitute for it.
+the suite, require red, restore, and diff. Blanking proves only that the text
+is present; inversion is what proves the guard pins the *rule*.
 
 **Fix the wrap, never the assert.** When an anchor breaks because prose
 reflowed, re-wrap the prose. Loosening the assert is how a label→rule guard
@@ -71,10 +70,8 @@ What it cannot see:
 - **Blanking is not swapping.** Deletion-resistance says nothing about
   transposition; see the inversion protocol above.
 
-Anchors are chosen partly for matchability, so a pinned block is not thereby
-doctrine: reddening is *sufficient* to block a careless deletion, never
-*necessary* to justify one, and never *sufficient* to keep prose that fails
-the behavioral test.
+The harness proves a guard reacts to its block; it never judges whether that
+block was worth pinning. That judgment is yours before you register it.
 
 ## 3. Absence assertions
 

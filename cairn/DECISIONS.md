@@ -1559,8 +1559,11 @@ so it needs its own read-trigger; banked as a candidate row.
 **Consequences:** Annotates D-051 — its two criteria, its trim rule, its
 no-breadcrumb rule, and its review-time scoping all stand; maturation is a
 third and rarer outflow that moves content rather than removing it. Restores
-D-015's charter: `LESSONS.md` returns to build quirks and gotchas, 49 → 33
-lines and 21,085 → 8,219 chars, with headroom on both axes. Serves GP1 by
+D-015's charter: `LESSONS.md` returns to build quirks and gotchas. The
+graduation removed 15 lessons whole and trimmed 3 to uncovered remainders,
+taking the file from 49 lines / 21,085 chars to 35 / 8,605 as merged, before
+this milestone's own hygiene capture appends to it. Headroom on both axes.
+Serves GP1 by
 bounding an always-read surface with an outflow rather than a ceiling, and
 GP4 by putting craft in the shared artifact where every adopting repo
 inherits it. Locked by `skills/tests/test_lesson_graduation.py`

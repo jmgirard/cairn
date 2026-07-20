@@ -85,6 +85,33 @@ class TestModuleExists(unittest.TestCase):
             self.module,
         )
 
+    def test_fixture_section_states_the_vary_every_axis_rule(self):
+        # §4 is the sole home of graduated L22(part), L36, L45, L47; the
+        # rulebook pointer advertises "fixture design", so the section must
+        # not be deletable with the suite green (M98 review F5).
+        self.assertIn(
+            "**Vary every axis the prose is free in, and vary it where the value under\ntest lives.**",
+            self.module,
+        )
+
+    def test_fixture_section_states_the_real_checker_rule(self):
+        self.assertIn(
+            "**When one task authors content and another authors its checker, add a test\nrunning the real checker over the real artifact.**",
+            self.module,
+        )
+
+    def test_sweep_section_states_the_exclusion_list_rule(self):
+        # §7 is the sole home of graduated L23; same reasoning as §4.
+        self.assertIn(
+            "An exclusion list may name only history files", self.module
+        )
+
+    def test_sweep_section_states_the_own_artifacts_rule(self):
+        self.assertIn(
+            "**A criterion whose evidence is a grep will hit the milestone's own\nartifacts**",
+            self.module,
+        )
+
     def test_restatement_section_states_the_read_it_out_rule(self):
         self.assertIn(
             "**Run each member of a documented set through the\nimplementation, never the set as a whole.**",
@@ -160,7 +187,9 @@ class TestThirdOutflow(unittest.TestCase):
         for clause in (
             "teaches transferable authoring or verifying craft",
             "extended or consolidated at least twice",
-            "neither enforcement nor ownership can ever retire it",
+            # Matches D-055's clause (c) — "no existing exit" — not a stronger
+            # permanent-impossibility claim the decision record never made.
+            "neither enforcement nor ownership offers it an exit today",
         ):
             self.assertIn(clause, line, f"{clause!r} left the bar's own line")
 

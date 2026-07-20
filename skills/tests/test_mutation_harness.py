@@ -1753,6 +1753,18 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_lesson_graduation",
+        test="TestModuleExists.test_fixture_section_states_the_vary_every_axis_rule",
+        target=GUARD_DOCTRINE,
+        block="**Vary every axis the prose is free in, and vary it where the value under\ntest lives.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_sweep_section_states_the_exclusion_list_rule",
+        target=GUARD_DOCTRINE,
+        block="An exclusion list may name only history files",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
         test="TestRulebookPointer.test_rulebook_points_at_the_module",
         target=RULES,
         block="The craft of making a guard falsifiable lives in a module of this rulebook",
