@@ -1650,3 +1650,47 @@ not as a quota a later pass owes. GP1 as amended by D-053 names
 the criterion such a pass applies, and M96 stamps them. Delivered by M95, which
 needs it as its license. If an editorial pass ever finds this test admitting a
 deletion that loses a rule, this is the entry to supersede.
+
+### D-057 (2026-07-20): The stock-side weight-governance program is closed; rulebook growth is governed at the door and triggered by measured cost — annotates D-053, retires the felt-slowness trigger
+
+**Context:** Ten milestones and four Fable reviews have targeted the size of
+`skills/shared/tracking-rules.md`. The program did not work and was
+self-defeating: the four *anti-growth* milestones (M92, M93, M97, M98) added
++53 lines between them, and M95 — the editorial pass itself — removed 25 while
+adding 16, net −9 against RR03's projected 60-100. RR04 Q9 rated the null
+option ("stop governing size entirely") **~80% right**, and `cairn_cost`, the
+instrument M94 built precisely to settle this, confirms it: across 117 sessions
+and 24,322 turns, **the two most expensive sessions in the repo's history are
+the M95 governance sessions**. Implement/review/plan turns average ~139k
+cache-read; the rulebook is ~13k tokens of that, but the *recoverable* mass —
+the 65 line-equivalents in `cairn/references/rulebook-classification-ledger.md`
+— is ~1.1k tokens, **under 1% of context**. The dominant cost variable is
+session length and turn count, which governance milestones maximize.
+
+**Decision:** The stock-side program is **closed**. No milestone targets the
+rulebook's size absent a **measured `cairn_cost` regression** as its trigger;
+felt slowness is retired as a trigger in favour of the instrument built to
+replace it (RR04 rec 11, RR02 rec 4). **M96 folds to a reporting line** in
+`/milestone`'s audit — mass plus growth since stamp — with no pass machinery
+built. Governance moves to the flow: growth is made visible at the door and
+cheap to control there, not harvested periodically.
+
+Rejected: **re-cutting M96 as a delta-scoped audit** (RR04's own preferred Q7
+outcome, a ratchet on unreviewed delta whose remedy never exhausts) — sound in
+design, but it costs another milestone for a mechanism the cost data does not
+justify. Rejected: **capturing the one-time ~50-60 line yield first** — bounded
+and specified, but it buys under 1% of context at the price of another long
+session, which is the exact trade this entry exists to stop. Rejected:
+**keeping the program open**.
+
+**Consequences:** `cairn/references/rulebook-classification-ledger.md` becomes
+a record of what *could* be cut, not a work order; a future pass triggered by
+measured regression may use it, re-locating by content since its line numbers
+are stale. D-053's GP1 ("every always-read surface keeps a bounded read cost")
+is annotated, not contradicted — this entry names the mechanism as flow-side
+and data-triggered rather than periodic and felt. D-056's yield clause remains
+false on the record; superseding it is no longer urgent because no pass depends
+on it, and it is parked as a candidate rather than silently dropped. The
+anti-softening mechanisms of RR04 Q8 are unaffected and proceed independently —
+they govern review enforcement, not size. If `cairn_cost` ever shows a
+regression attributable to read volume, this is the entry to supersede.
