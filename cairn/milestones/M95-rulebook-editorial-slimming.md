@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M95: Rulebook editorial slimming — the rulebook states rules, not their legislative history
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m95-rulebook-editorial-slimming`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -27,6 +27,14 @@ leaving the rule plus a parenthetical citation; completing RR01 rec 7's
 unfinished prune (the default-branch recipe, `tracking-rules.md:322-337`, and
 the phase-header per-skill enumeration); re-anchoring every guard the rewording
 touches.
+
+Amended 2026-07-19 (implement gate): the prune also trims
+`skills/cairn-init/SKILL.md`'s full restatement of the default-branch recipe to
+a pointer. The rulebook calls its recipe "canonical" and cairn-init restates it
+whole, so "stated once" is false until the second copy goes — the rulebook keeps
+the canonical statement, cairn-init cites it as `/milestone-implement` and
+`/milestone-review` already do. This is the only file outside
+`tracking-rules.md` this milestone edits, guard re-anchoring aside.
 
 **Out:**
 - **Writing anything into `cairn/DECISIONS.md`.** The rationale is *already*
@@ -108,6 +116,9 @@ touches.
      so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
 - 2026-07-19: created by /milestone-plan, re-cutting M94 per RR02 rec 1. Absorbs the "Rulebook read-cost reduction" candidate row (graduates at completion, M35). RR02 Q1 verified the growth mode: no new domain doctrine entered after M58, yet the file grew 44% — the inflow is rationale, not rules.
+- 2026-07-19: in-progress; branch `m95-rulebook-editorial-slimming`. Implement gate: residue form is a BARE parenthetical D-cite, not cite-plus-clause — settled by RR02 rec 1 ("the rule plus a parenthetical D-cite") and §5's "state the rule; cite the D-entry; delete the defense"; the Goal already said so, so the question was not open and should not have been asked.
+- 2026-07-19: implement gate: how-to-apply clauses are arbitrated by AC2's guard-inversion test, not by judgment. Three of RR02 §1(c)'s five named cut targets at `:187-199` are guard-pinned and mutation-registered (test_lessons_loop.py:165-218; mutation entries :338/:359/:375), so cutting them would lose rules against Scope Out. RR02's "13 lines where the rule is ~5" counted guard-pinned rule text as defense; its own "estimates, not commitments" and AC5 (counts are evidence, not a gate) govern. ~550-600 lines is expected to be missed and is not a failure condition.
+- 2026-07-19: SCOPE AMENDED at the implement gate (user-selected): the RR01 rec 7 prune extends to `skills/cairn-init/SKILL.md:35-44`, whose full restatement of the default-branch recipe is what makes "stated once" false. Rulebook keeps the canonical recipe; cairn-init becomes a pointer. Only file outside tracking-rules.md this milestone edits.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
