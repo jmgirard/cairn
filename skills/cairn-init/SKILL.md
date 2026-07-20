@@ -106,7 +106,7 @@ ROADMAP.md skeleton (keep under 60 lines forever):
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: YYYY-MM-DD_
+_Last hygiene check: YYYY-MM-DD (one short line, replaced each pass — never appended to; D-052)_
 
 ## Milestones
 

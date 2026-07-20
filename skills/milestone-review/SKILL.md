@@ -182,7 +182,7 @@ overrides — log the override).
    milestone file to a
    ≤25-line summary (goal, outcome, key decisions, PR link) and move it to
    `cairn/milestones/archive/`; ROADMAP row → `done` + archive path;
-   archive any resolved RB/RR pairs; update "Last hygiene check"; verify
+   archive any resolved RB/RR pairs; **replace** "Last hygiene check" — overwrite the previous text, never append to it and never demote it to a `Prior:` clause (D-052); verify
    weight caps. **Capture durable lessons:** append any repo lessons this
    milestone taught — build quirks, testing tricks, gotchas worth
    remembering — to `cairn/LESSONS.md`, one per line

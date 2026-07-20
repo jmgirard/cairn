@@ -101,7 +101,9 @@ The script deliberately does not judge these — do them yourself and report:
   name which of the three it was, skip the sweep, and finish the audit.
   An unreachable inbox is a reported gap, never an audit `FAIL`.
 
-Update "Last hygiene check: YYYY-MM-DD" in ROADMAP.md.
+**Replace** "Last hygiene check: YYYY-MM-DD" in ROADMAP.md — overwrite the previous text, never append to it and never demote it to a `Prior:` or `Earlier:` clause.
+Keep it to one short line naming what changed since the last check; git and
+`milestones/archive/` hold the older stamps and their detail (D-052).
 
 ## 3. Route
 

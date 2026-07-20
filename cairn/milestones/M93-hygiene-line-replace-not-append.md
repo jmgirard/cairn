@@ -100,7 +100,7 @@ repo's own stamp.
       rejection verbatim, narrow it to item lines, and classify the stamp as
       D-045 current knowledge (which is what makes replacement lawful under
       IP4). Append-only; never edit a prior entry.
-- [ ] T3 Wire the three write sites + the `/cairn-init` skeleton
+- [x] T3 Wire the three write sites + the `/cairn-init` skeleton
       (`skills/milestone/SKILL.md:104`,
       `skills/milestone-review/SKILL.md:185`,
       `skills/cairn-init/SKILL.md:109`). Each currently says only "update",
@@ -125,6 +125,7 @@ repo's own stamp.
 
 - 2026-07-19: created by /milestone-plan. Cap 400 derived from a six-repo non-item-line survey — healthy max 245, then 230/194/141/105/101/100, against defects at 1,870 and 3,152; warns at `>=` so it permits 399, leaving 154 chars (63%) of headroom over the observed healthy max and sitting 4.7×/7.9× under both live defects.
 - 2026-07-19: implement gate — two open choices settled by the user. (1) `ROADMAP.md` was in NEITHER the history nor the current-knowledge list at `tracking-rules.md:159-162`, so AC1's D-045 grounding did not yet reach it; D-052 adds it to current knowledge rather than classifying the stamp alone. Found by reading the rule out of its source (M75/M85/M91), not assumed from the plan. (2) The `_Released …_` line (105 chars, +~33/release) gets NO exemption from the new cap — it crosses 400 in ~9 releases and the remedy is the milestone's own thesis.
+- 2026-07-19: T3 — all four surfaces now say REPLACE, not "update": `skills/milestone/SKILL.md:104`, `skills/milestone-review/SKILL.md:185`, `skills/cairn-init/SKILL.md:109` (skeleton), `skills/shared/tracking-rules.md:153`. AC3 evidence is `grep -rn "Last hygiene check" skills/ | grep -v "/tests/"` — four hits, all prose surfaces, no milestone tracking lines in the result. 432/196/72 green, validate 0.
 - 2026-07-19: T2 — `D-052` appended (`cairn/DECISIONS.md:1358`), previewed verbatim before commit. It narrows M84 rather than overturning it (the original rationale is quoted and kept, scoped to item lines), annotates D-045 by naming the file it omitted, and records the rejected `_Released …_` exemption. validate 0, 432/196/72 green.
 - 2026-07-19: T1 — tracking-rules gained the replace rule, the current-knowledge enumeration gained `ROADMAP.md`, and M84's blanket per-line rejection is narrowed to item lines in place. The mutation harness reddened two registered anchors I had disturbed (`test_current_knowledge_set_is_enumerated_under_its_own_label`, `test_rule_records_why_a_per_line_warn_was_rejected`); M84's original rationale was restored VERBATIM on one physical line so its assert passes unchanged, while the enumeration assert + its `Mutation(...)` block were re-authored deliberately because that rule genuinely changed. 432/196/72 green, exit codes checked unpiped (M56).
 
