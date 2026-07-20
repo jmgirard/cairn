@@ -751,6 +751,22 @@ snapshots, trivial pass-throughs, dependency behavior. Test the contract, not
 the implementation — a test that breaks under a behavior-preserving refactor
 is a defect in the test.
 
+**A rule is what changes compliant behavior when deleted or inverted.** That
+test decides whether prose in this rulebook is operative — a rule, or the
+doctrine for applying one — or is justification the file does not owe and git
+already holds (D-056, which classifies the rulebook as current knowledge and
+states the three-step placement test). Prove it by inversion: relabel, negate,
+or transpose the rule in place, run the suite, require red, restore and diff;
+where no guard exists, record a by-hand inversion.
+
+**Guard-reddening is a deletion screen, never a licence to keep** — sufficient
+to block a careless deletion, never necessary to justify one, and never
+sufficient to keep prose that fails the behavioral test above. The text owns
+the guard, not the reverse: anchors are exemplar blocks chosen partly for
+matchability, so a guard can pin scaffolding, and reading pinned as frozen is
+how a rulebook's editability dies one guard at a time. A pinned block that
+fails the test is shortened *with* re-anchoring, never skipped.
+
 **A guard must fail when the rule it locks is deleted.** A prose-guard — a
 test that locks wording by asserting substrings of a doc (skill, rulebook,
 template) — gives *false coverage* when a phrase it asserts also occurs

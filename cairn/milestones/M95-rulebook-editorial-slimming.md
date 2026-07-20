@@ -106,7 +106,7 @@ touches and recording what that cost.
       current knowledge; the three-step placement procedure; the behavioral
       inversion doctrine. Lands **before** any rulebook edit — it is the pass's
       license, not its write-up.
-- [ ] T2: State the inversion test and the reddening asymmetry in "What gets a
+- [x] T2: State the inversion test and the reddening asymmetry in "What gets a
       test"; guard both; register in the mutation harness.
 - [ ] T3: Re-locate the B1–B21 ledger against the current file and re-classify
       each block under AC1's three grounds. Its line numbers are stale (765 →
@@ -166,6 +166,8 @@ touches and recording what that cost.
 - 2026-07-20: plan-gate collision sweep — D-053 already amended GP1 at the RR03 ingest gate, so rec 6 is discharged and M95 inherits "recorded editorial passes bound the rulebook" as its criterion; M97 and M98 are `done`, so RR03's order has reached M95. RR03 rec 9's rejection of "author the missing D-entries, then slim" is carried into Scope Out so the pass cannot re-propose it. Plan-owned body 142/149 after compressing AC/Scope/Tasks (M87: compress what your phase owns) — headroom left deliberately for implement's `## Decisions` appends, which the cap counts.
 - 2026-07-20: in-progress; branch `m95-rulebook-editorial-slimming` cut from a synced main. No implement question gate: the plan gate settled scope, the DECISIONS reversal, and the inversion-test placement in the same session, and nothing else is open that the ACs do not already arbitrate.
 - 2026-07-20: T1 done — D-056 authored, the pass's license. Three parts: the rulebook is current knowledge under D-045 (plugin logic, a class both of D-045's lists omitted, fixed the way D-052(2) fixed ROADMAP.md); the three-step placement test (inversion → decision → default delete); guard-pinning as a deletion screen only, with the reddening asymmetry stated. IP4 untouched and explicitly confirmed. Both rejections carried in: "author the D-entries then slim" (RR03 rec 9) and any IP4 change. `decision heading quality` OK on the new heading.
+- 2026-07-20: T2 done — both statements placed in "What gets a test", immediately before the guard obligation they qualify (order pinned positionally, since it carries the argument). New guard `skills/tests/test_rule_placement.py`, 20 tests, 4 classes; 5 blocks registered in the mutation harness, which is the inversion proof for each. Net +16 rulebook lines before the pass subtracts — recorded so AC6's before/after is honest about what M95 added as well as removed.
+- 2026-07-20: T2 note — my first draft of the guard asserted three spans at guessed wrap points and failed on all three; the file's actual wrapping is authoritative and the asserts were rewritten against it. Also dropped a `[:34]` slice hack that would have pinned a truncated clause. This is M65/M78 from the other side: the harness catches a reflowed anchor, but nothing catches an anchor authored against text that was never read out.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

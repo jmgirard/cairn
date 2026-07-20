@@ -1824,6 +1824,46 @@ EXEMPT = {
     "test_mutation_harness": "the harness's own tests, not a prose-guard",
 }
 
+# M95 (D-056). Five entries, because the placement doctrine fails in five
+# independent ways and any one of them silently restores the pre-M95 reading:
+# lose the rule definition and "operative" has no test; lose either half of the
+# asymmetry and guard-pinning flips back to keep-verbatim (the failure RR03
+# names); lose the unguarded case and every unpinned rule becomes unprovable;
+# lose D-056's no-backfill clause and the rejected "author the D-entries, then
+# slim" remedy becomes licensed by the placement test itself.
+REGISTRY += [
+    Mutation(
+        guard="test_rule_placement",
+        test="TestBehavioralInversionTest.test_rulebook_states_the_behavioral_inversion_test",
+        target=RULES,
+        block="**A rule is what changes compliant behavior when deleted or inverted.**",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestBehavioralInversionTest.test_rulebook_covers_the_unguarded_case",
+        target=RULES,
+        block="where no guard exists, record a by-hand inversion",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestReddeningAsymmetry.test_rulebook_states_the_screen_not_licence_rule",
+        target=RULES,
+        block="**Guard-reddening is a deletion screen, never a licence to keep**",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestReddeningAsymmetry.test_rulebook_states_the_ownership_direction",
+        target=RULES,
+        block="The text owns\nthe guard, not the reverse",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestDecisionRecord.test_entry_forbids_the_backfill_sweep",
+        target="cairn/DECISIONS.md",
+        block="author the entry when the choice is next\n   touched, never as a backfill sweep",
+    ),
+]
+
 # M97 (D-054). One entry per clause the bounded read rests on, not one for the
 # block: the four clauses fail independently — dropping the back-reference
 # leaves a rule that still reads correctly and recalls wrongly on D-012/D-014/
