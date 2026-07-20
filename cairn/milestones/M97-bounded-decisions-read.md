@@ -91,7 +91,7 @@ read reduction recorded.
 - [x] T1: Author the D-entry annotating IP2 — the trade, its bound, and the two
       mitigations (heading-quality rule; the sweep is model-read, not a literal
       grep). Durable-record preview before commit.
-- [ ] T2: Update the sweeping skills to the bounded protocol, keeping the
+- [x] T2: Update the sweeping skills to the bounded protocol, keeping the
       read-matched-entries-whole and quote-from-the-full-entry requirements
       explicit. Pin each label→rule pairing on one physical line (M74/M92).
 - [ ] T3: State the heading-quality rule and guard it against the real file;
@@ -109,6 +109,7 @@ read reduction recorded.
 - 2026-07-19: in-progress; branch `m97-bounded-decisions-read`. Implement gate settled two open choices. (1) The heading-quality check is an ADVISORY (WARN, never FAIL) scoped prospectively from D-054, because exactly three legacy headings hide a supersession — D-012 omits D-010, D-014 omits D-013, D-019 omits D-003 — and IP4 forbids repairing them; an advisory that can never go green trains people to ignore it. Severity follows the D-049/D-052 split: judgments WARN, structural facts FAIL.
 - 2026-07-19: AC2 AMENDED at the implement gate (user-selected): a matched entry is also back-referenced by its own id, so a superseding entry surfaces even when its heading omits the relationship. This closes the recall gap the three legacy headings create without touching history — RR03 recommended it as an AC2 refinement (its "supersession-aware read"). Verified false positives, not amended for: D-029, D-032, D-052 already name their relationships in the heading.
 - 2026-07-19: T1 done — D-054 authored, annotating IP2. States the recall trade openly (recall shifts from full-text to heading-plus-targeted-read; a collision whose heading fails to name its subject can be missed) and bounds it with three mitigations: prospective heading-quality advisory, back-reference by id, and the fact that the scan is a model read rather than a literal grep. IP2's quote-verbatim-from-the-full-entry requirement is explicitly unchanged; IP4 untouched.
+- 2026-07-19: T2 done — the bounded read is stated ONCE in `tracking-rules.md` beside the search-first rule it modifies, and wired at both `/milestone-plan` sweep sites (session start, collision check). Label→rule pairings pinned on one physical line each (M74/M92): read-whole-before-surfacing, back-reference-by-id, quote-from-the-full-entry, and the heading-quality rule. Written per D-053/M95 discipline — state the rule, cite D-054, no restated defense.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
