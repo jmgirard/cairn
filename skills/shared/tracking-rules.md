@@ -106,9 +106,16 @@ takes a D-entry, and its number stays retired.
   The two also differ in severity, and the labels say which is which: the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the weight axis is the `record density` advisory and only ever WARNs.
   Density warns rather than fails because an item count is a structural fact but
   "too dense" is a judgment about prose quality — the same call the
-  `references staleness` advisory makes. It is deliberately not a per-line
-  warn: pressure on individual line length would reward splitting an item
-  across lines and corrode the one-item-per-line format both parsers depend on.
+  `references staleness` advisory makes.
+  **The per-line axis covers non-item lines only, and deliberately never item lines** (D-052, narrowing M84's blanket rejection).
+  Item lines stay exempt for M84's original reason, which survives the narrowing: pressure on individual line length would reward splitting an item across lines and corrode the one-item-per-line format both parsers depend on.
+  A non-item line — heading, preamble, stamp, HTML comment — carries no such
+  format to corrode, and prose accretes there unseen by *both* whole-file axes:
+  the item cap counts lines and the density threshold counts whole-file mass, so
+  one line reached 3,152 characters in an adopting repo with every gate green,
+  and a review hygiene pass then rewrote that stamp and still left it at 2,568
+  (2026-07-19; M93). Non-item lines are capped at `NON_ITEM_LINE_CAP` (< 400 characters),
+  reported under the same `record density` advisory at the same WARN severity.
 - a live milestone file's **plan-owned body < 150 lines** — everything before
   the review-exclusive `## Review` section, less the `## Work log`.
   The cap-exempt sections are exactly `## Review` (review-owned, M55) and `## Work log` (history under D-045, D-046); every other plan-owned section counts.
@@ -144,6 +151,13 @@ takes a D-entry, and its number stays retired.
   terminal (`done` or `dropped`) rows combined; prune older ones as they
   accumulate — archive files and git history stay authoritative. Standing
   hygiene, not just a cap remedy.
+- **The `Last hygiene check` stamp is replaced each pass, never appended to** — it records the CURRENT check only, and no `Prior:` or `Earlier:` chain accumulates behind it.
+  The stamp is current knowledge (D-045), not history, so overwriting it is not
+  an IP4 edit: `git log` holds every earlier stamp verbatim and
+  `milestones/archive/` holds the detail behind it, which is the same boundary
+  terminal-row retention already runs on. Keep it to one short line naming what
+  changed since the last check; the `NON_ITEM_LINE_CAP` axis of the
+  `record density` advisory backstops it at 400 characters (D-052, M93).
 
 ## Universal tracking rules
 
@@ -159,10 +173,13 @@ takes a D-entry, and its number stays retired.
   History — `DECISIONS.md`, work-logs, milestone IDs, `milestones/archive/`,
   `reviews/archive/`, entombed `legacy/` files — records what was decided or
   done at a time, and is never edited (IP4).
-  Current knowledge — `LESSONS.md`, `references/` pages, `DESIGN.md` —
-  records what is true *now* and is read to act on, so a line later proven
+  Current knowledge — `LESSONS.md`, `references/` pages, `DESIGN.md`, `ROADMAP.md` — records what is true *now* and is read to act on,
+  so a line later proven
   false is fixed where it sits, the correction marked (`(M71, corrected M75)`)
-  and git holding the original. **Exception — `DESIGN.md`'s IP/GP block:** a
+  and git holding the original. `ROADMAP.md` is the clearest case and was the
+  one D-045 left unenumerated (D-052): it is the sole authority on *current*
+  status, every transition rewrites a row in place, and terminal-row retention
+  prunes rows outright on the grounds that archive and git stay authoritative. **Exception — `DESIGN.md`'s IP/GP block:** a
   wrong *principle* is not a wrong fact, and still changes only by explicit
   user decision recorded as a D-entry (see the IP/GP paragraph above).
   Ruled out: appending a correction while leaving the wrong text readable —

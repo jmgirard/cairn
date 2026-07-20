@@ -100,9 +100,13 @@ class TestRecordCorrectionRule(unittest.TestCase):
         )
 
     def test_current_knowledge_set_is_enumerated_under_its_own_label(self):
+        # M93/D-052 added `ROADMAP.md` to the set. Label and every member stay
+        # pinned on ONE physical line: pinning the label alone would survive a
+        # member being dropped, which is the M74 failure this shape defends.
         self.assertIn(
             "Current knowledge — `LESSONS.md`, `references/` pages, "
-            "`DESIGN.md` —",
+            "`DESIGN.md`, `ROADMAP.md` — records what is true *now* "
+            "and is read to act on,",
             self.rules,
         )
 

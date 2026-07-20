@@ -116,16 +116,26 @@ def check_record_density(root):
     cap <50) across M78-M83 while its mass grew 16,567 -> 18,729 bytes and the
     audit reported nothing.
 
-    Not a per-line warn (M84 Scope): pressure on individual line length would
-    reward splitting an item across lines and corrode the one-item-per-line
-    format both parsers depend on. And WARN, never FAIL — D-018 wanted a hard
-    signal for the CLAUDE.md section cap, where cairn owns the whole content,
-    but density is a judgment about prose quality, the same call the
-    references-staleness advisory already makes.
+    Two reports, one advisory. The second is a per-line ceiling on NON-item
+    lines (D-052, narrowing M84's original blanket rejection of any per-line
+    warn). That rejection is kept for ITEM lines and still holds there:
+    pressure on individual line length would reward splitting an item across
+    lines and corrode the one-item-per-line format both parsers depend on. A
+    heading, preamble, stamp, or comment has no such format to corrode, and it
+    is exactly where prose hides from both whole-file axes at once — cairn's
+    hygiene stamp reached 3,152 chars in an adopting repo while the item cap
+    (35 of 60 lines) and the mass threshold (11,410 of 21,000) both read green
+    (2026-07-19; a review pass later rewrote that stamp to 2,568, still over).
 
-    The finding names both axes, because the item count looking fine is the
-    whole point, and prescribes the weight remedy (compress) rather than the
-    item remedy (evict/graduate)."""
+    WARN, never FAIL, on both axes — D-018 wanted a hard signal for the
+    CLAUDE.md section cap, where cairn owns the whole content, but density is a
+    judgment about prose quality, the same call the references-staleness
+    advisory already makes.
+
+    The whole-file finding names both axes, because the item count looking fine
+    is the whole point, and prescribes the weight remedy (compress) rather than
+    the item remedy (evict/graduate). The per-line finding names the line, since
+    a file-level number cannot point at the one line responsible."""
     out = []
     for rel, cap in cs.CHAR_CAPS.items():
         path = os.path.join(root, rel)
@@ -146,6 +156,20 @@ def check_record_density(root):
             f"(threshold <{cap:,}; shed ≥{n - cap + 1:,}) — compress entries, "
             f"don't evict them"
         )
+    # The per-line axis. Same files, same WARN severity, same `>=` comparison
+    # as every neighbouring cap — so `<400` permits 399 and the shed figure is
+    # derived through the operator rather than assumed from the cap (M87).
+    line_cap = cs.NON_ITEM_LINE_CAP
+    for rel in cs.CHAR_CAPS:
+        path = os.path.join(root, rel)
+        for lineno, length in cs.non_item_lines(path):
+            if length < line_cap:
+                continue
+            out.append(
+                f"{rel}:{lineno}: non-item line is {length:,} chars "
+                f"(cap <{line_cap:,}; shed ≥{length - line_cap + 1:,}) — "
+                f"replace it, don't append to it; git holds the older text"
+            )
     return out
 
 

@@ -387,7 +387,7 @@ REGISTRY = [
         guard="test_lessons_loop",
         test="TestRecordCorrectionRule.test_current_knowledge_set_is_enumerated_under_its_own_label",
         target=RULES,
-        block="Current knowledge — `LESSONS.md`, `references/` pages, `DESIGN.md` —",
+        block="Current knowledge — `LESSONS.md`, `references/` pages, `DESIGN.md`, `ROADMAP.md` — records what is true *now* and is read to act on,",
     ),
     Mutation(
         guard="test_lessons_loop",
@@ -1650,6 +1650,39 @@ REGISTRY = [
         test="TestAdvisoryNudges.test_readme_names_each_nudge_trigger",
         target="README.md",
         block="when a commit on your default branch reaches outside",
+    ),
+    # M93/D-052 — the hygiene stamp. One exemplar per target file: the rule
+    # in the rulebook, and the two SKILL.md steps that actually write the
+    # stamp (a rule stated only in the rulebook is what let the chain regrow).
+    Mutation(
+        guard="test_hygiene_stamp",
+        test="TestHygieneStampRule.test_rule_pairs_the_stamp_with_the_replace_operation",
+        target=RULES,
+        block="**The `Last hygiene check` stamp is replaced each pass, never appended to** — it records the CURRENT check only, and no `Prior:` or `Earlier:` chain accumulates behind it.",
+    ),
+    Mutation(
+        guard="test_hygiene_stamp",
+        test="TestHygieneStampRule.test_narrowing_is_stated_as_non_item_only",
+        target=RULES,
+        block="**The per-line axis covers non-item lines only, and deliberately never item lines** (D-052, narrowing M84's blanket rejection).",
+    ),
+    Mutation(
+        guard="test_hygiene_stamp",
+        test="TestStampWriteSites.test_milestone_audit_says_replace",
+        target="skills/milestone/SKILL.md",
+        block="overwrite the previous text, never append to it and never demote it to a `Prior:` or `Earlier:` clause.",
+    ),
+    Mutation(
+        guard="test_hygiene_stamp",
+        test="TestStampWriteSites.test_post_merge_hygiene_says_replace",
+        target="skills/milestone-review/SKILL.md",
+        block="overwrite the previous text, never append to it and never demote it to a `Prior:` clause (D-052)",
+    ),
+    Mutation(
+        guard="test_hygiene_stamp",
+        test="TestStampWriteSites.test_shipped_skeleton_teaches_the_shape",
+        target="skills/cairn-init/SKILL.md",
+        block="(one short line, replaced each pass — never appended to; D-052)",
     ),
 ]
 
