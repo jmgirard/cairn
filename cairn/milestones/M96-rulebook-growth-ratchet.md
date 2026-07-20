@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M96: Growth ratchet — the rulebook is governed by attention, not by a permitted size
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** blocked   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M94, M95   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
@@ -110,6 +110,7 @@ one-sentence inflow test, the ratchet's editorial criterion stated at the door.
      so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
 - 2026-07-19: created by /milestone-plan, re-cutting M94 per RR02 rec 2. Depends on M95 (its pass is the first stamp) and M94 (RR02 rec 4: instrument before further weight machinery ships, since this is an M84-class mechanism).
+- 2026-07-20: blocked on RB04 — a redteam of the tiering + mechanization + inviolable-budget proposal, which would displace or reshape this milestone. Trigger: an independent full-file sweep found 65 line-equivalents (8.4%) of removable mass where M95 delivered −9 net, so the ratchet's escape ("perform a pass") has a remedy today but a one-time one; RB04 Q7 asks whether any stock-side mechanism is worth building. Tripwire: ip-touching (the proposal makes the always-read budget an IP and supersedes RR01 rec 15).
 - 2026-07-20: amended at M95's re-cut gate (user-selected) to carry RR03 rec 5's two items, which the 2026-07-19 plan named nowhere and would have silently dropped (IP3): the editorial-pass rule states that a pass applies M95's placement procedure rather than RR02 rec 1's falsified "delete the defense back to its D-entry", and the rulebook preamble gains the one-sentence inflow test. New AC6 + T5; the verify criterion/task shift to AC7/T6 and Coverage follows.
 
 ## Decisions
