@@ -102,6 +102,21 @@ class TestPlanSkillWiresTheProtocol(unittest.TestCase):
     def test_session_start_reads_headings_not_the_whole_file(self):
         self.assertIn("scan the `### D-` headings, never the whole file", self.plan)
 
+    def test_session_start_also_states_read_whole_and_back_reference(self):
+        # M97 review F7: session start stated only the headings clause, which
+        # read alone is exactly "headings are enough" — the failure mode the
+        # protocol exists to prevent. AC2 requires BOTH sweep sites to state
+        # read-whole-before-surfacing, and the original guard checked only the
+        # first half, so the gap was invisible.
+        self.assertIn(
+            "Read every matched entry whole before surfacing it, and "
+            "back-reference it by",
+            self.plan,
+        )
+        self.assertIn(
+            "the headings decide what to open, never what to report", self.plan
+        )
+
     def test_collision_check_cites_the_bounded_read(self):
         self.assertIn("bounded `DECISIONS.md` read", self.plan)
 

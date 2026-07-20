@@ -167,13 +167,27 @@ class TestWiring(unittest.TestCase):
     def test_advisory_never_changes_the_exit_code(self):
         # WARN tier: findings must not fail the gate (D-049/D-052 severity
         # split). Asserted through run(), which is where the exit code is set.
+        #
+        # M97 review F5: the first version of this test bound `failures` and
+        # then asserted only on the report text, so it passed on a run where
+        # this advisory found NOTHING and an unrelated check FAILed — a test
+        # that could not falsify its own title. Assert the advisory's own
+        # WARN line, and assert the count it contributes to `failures`.
         with tempfile.TemporaryDirectory() as tmp:
             write(tmp, BAD)
             for name in ("ROADMAP.md",):
                 open(os.path.join(tmp, "cairn", name), "w").close()
             report, failures = cv.run(tmp)
-        self.assertIn("decision heading quality", report)
-        self.assertIn("WARN", report)
+        # Positive signal that this advisory actually fired, not merely that
+        # the word WARN appears somewhere from another advisory's line.
+        self.assertIn("WARN  decision heading quality (1)", report)
+        # The contract under test: a finding here contributes zero failures.
+        baseline = cv.run(write(tempfile.mkdtemp(), GOOD))[1]
+        self.assertEqual(
+            failures,
+            baseline,
+            "a heading-quality finding changed the failure count",
+        )
 
 
 if __name__ == "__main__":

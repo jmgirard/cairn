@@ -19,6 +19,8 @@ Read, in order: `cairn/ROADMAP.md`, any active milestone file,
 `cairn/reviews/`, handle ingestion first (see `/milestone-brief`).
 `cairn/DECISIONS.md` is read per the tracking-rules **bounded
 `DECISIONS.md` read** — scan the `### D-` headings, never the whole file.
+Read every matched entry whole before surfacing it, and back-reference it by
+its own `D-0NN` id; the headings decide what to open, never what to report.
 
 ## Workflow
 

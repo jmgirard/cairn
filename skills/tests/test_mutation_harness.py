@@ -1780,6 +1780,18 @@ REGISTRY += [
         target="skills/milestone-plan/SKILL.md",
         block="back-reference each match by its own `D-0NN` id",
     ),
+    # M97 review F7. The session-start site had only the headings clause,
+    # which alone reads as "headings are enough" — the failure mode the
+    # protocol prevents. Its own entry because the collision-check block
+    # above can carry its guard while this one is deleted green.
+    Mutation(
+        guard="test_bounded_decisions_read",
+        test="TestPlanSkillWiresTheProtocol."
+             "test_session_start_also_states_read_whole_and_back_reference",
+        target="skills/milestone-plan/SKILL.md",
+        block="Read every matched entry whole before surfacing it, and "
+              "back-reference it by",
+    ),
 ]
 
 

@@ -1414,7 +1414,22 @@ def check_decision_heading_quality(root):
     WARN, never a CHECK: whether a heading "names its subject" is a judgment
     about prose, the same call `record density` and `references staleness`
     make (D-049/D-052). Findings name the offending entry and the omitted id,
-    since a count cannot be acted on."""
+    since a count cannot be acted on.
+
+    KNOWN RECALL LIMITS (M97 review F1-F4, F6 — do not read a clean result as
+    "every in-scope heading is complete"). The claim matcher is deliberately
+    narrow, per D-023's "a missed weird format beats a false positive": it
+    misses the noun form ("this supersession of D-031"), claims split across a
+    line wrap (the window stops at the newline and this repo hard-wraps),
+    reversed order ("D-031 is superseded here"), synonyms outside the rule's
+    stated vocabulary ("replaces", "overrides", "retires"), and it does not
+    exclude fenced or quoted content in either direction. These interact — the
+    noun-form miss is safe to close ONLY while the wrap limit suppresses the
+    false positive it would otherwise raise on D-054's own descriptive
+    "headings hide a supersession" line — so they want a classifier redesign,
+    not independent patches (ROADMAP candidate). Recall for the legacy and
+    missed cases rests on the back-reference step of the read protocol, which
+    does not depend on this matcher at all."""
     out = []
     path = os.path.join(root, "cairn", "DECISIONS.md")
     if not os.path.isfile(path):
