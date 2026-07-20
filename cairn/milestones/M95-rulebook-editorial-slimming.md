@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M95: Rulebook editorial slimming — the rulebook states rules, not their legislative history
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** blocked   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
@@ -147,6 +147,7 @@ scope. Left here, not deleted, so the re-cut does not re-propose it.
 - 2026-07-19: STOPPED at the implement gate, status back to `planned` for a re-cut (user decision, /milestone-implement step 6 "the goal itself is wrong"). The Goal's premise — "the always-read core carries history `DECISIONS.md` already owns", and Scope Out's "the rationale is *already* there — RR02 Q1(c) verified it block by block" — is refuted by T2: 9 of 21 blocks have NO D-entry home and 14 are guard-pinned. For much of the targeted text the rulebook is the SOLE home, so "delete the restatement" has nothing to delete back to. Measured removable yield ~35-40 lines (~5%) vs RR02's projected 22-28%.
 - 2026-07-19: the real remedy the ledger points at is the one this milestone's Scope Out forbids — author the missing D-entries, THEN slim. That is the re-cut's problem to shape, not an amendment to this one. Zero edits were made to `skills/shared/tracking-rules.md`; the branch carried tracking files only and was landed docs-only, then deleted.
 - 2026-07-19: T1/T2 boxes are left ticked though status is `planned` — the work was genuinely done and the ledger is its committed output. The re-cut should treat the ledger as input and re-number tasks from scratch.
+- 2026-07-19: blocked on RB03 — escalated to a Fable architectural audit of rationale accumulation across `tracking-rules.md`, `DECISIONS.md`, and `LESSONS.md` (tripwire: ip-touching — IP4, GP1). The re-cut waits on RR03 rather than proceeding on RR02's framing, which M95's own ledger falsified. New evidence carried into the brief: LESSONS.md sits at 20,484/20,500 chars with 31 items averaging 630 chars, having grown NET since M92 gave it a retirement outflow — the weight axis's prescribed remedy (consolidate in place) is the mechanism that drives the weight axis, which D-049 states outright without following through.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
