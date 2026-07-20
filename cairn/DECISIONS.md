@@ -1641,8 +1641,11 @@ way: the rulebook is not in IP4's set.
 
 **Consequences:** Annotates D-045 by naming a class its two lists omitted —
 plugin logic — the same omission D-052(2) fixed for `ROADMAP.md`. M95's AC1 is
-replaced by this test, and the ~35-40 lines its ledger proved removable under the
-old bar become a floor rather than the yield. GP1 as amended by D-053 names
+replaced by this test. The test predicts no yield, and the one pass run under it
+undershot its own projection: M95 removed 25 lines gross — net −9 against the 16
+this entry's doctrine obliged it to add — where its ledger had projected ~35-40
+under the old bar. Read that as evidence the rulebook's mass is mostly class 1/2,
+not as a quota a later pass owes. GP1 as amended by D-053 names
 "recorded editorial passes" as the rulebook's bounding mechanism; this entry is
 the criterion such a pass applies, and M96 stamps them. Delivered by M95, which
 needs it as its license. If an editorial pass ever finds this test admitting a

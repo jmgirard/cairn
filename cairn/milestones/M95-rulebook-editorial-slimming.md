@@ -49,12 +49,12 @@ touches and recording what that cost.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: Every removal names **exactly one** of three grounds, per block in
+- [x] AC1: Every removal names **exactly one** of three grounds, per block in
       the work log: **(a)** it restates an existing decision record, quoted from
       that record before removal; **(b)** it fails the behavioral inversion test
       and records no decision — deleted against git, no backfill; **(c)** it is
       redundant with directives the skills carry, named. A block matching none stays.
-- [ ] AC2: **No rule is lost.** Every rule surviving as a shortened statement
+- [x] AC2: **No rule is lost.** Every rule surviving as a shortened statement
       keeps a guard that reddens when the rule is deleted or inverted, proven
       by inversion — relabel, negate, or transpose the rule in place, run the
       suite, require red, restore and diff (M74). A rule whose guard cannot be
@@ -62,26 +62,26 @@ touches and recording what that cost.
       Guard-pinning is a **deletion screen only, never keep-verbatim** (RR03
       §2): a pinned block failing the behavioral test is shortened *with*
       re-anchoring, not skipped.
-- [ ] AC3: The license is recorded and stated where its consumers read it — one
+- [x] AC3: The license is recorded and stated where its consumers read it — one
       D-entry annotating D-045 and citing D-052, carrying the three-step
       placement procedure and the behavioral-inversion doctrine; and both the
       inversion test and the reddening asymmetry stated in "What gets a test"
       and guard-pinned. IP4's wording is untouched.
-- [ ] AC4: The mutation harness is green with every reworded anchor
+- [x] AC4: The mutation harness is green with every reworded anchor
       re-registered: a `block` that reflowed, duplicated, or lost trailing
       punctuation self-reports as "found 0" — the fix is the WRAP, never the
       assert (M65/M78). Registration is per file, so a guard file whose anchors
       all changed still needs its entries checked, not assumed (M53). The
       re-anchoring cost is recorded, making the RR03 rec 8 row judgeable.
-- [ ] AC5: RR01 rec 7's prune is completed: the per-skill phase-header
+- [x] AC5: RR01 rec 7's prune is completed: the per-skill phase-header
       enumeration is replaced by the two-level convention plus the skills' own
       directives, and the default-branch recipe is stated once *within the
       rulebook*.
-- [ ] AC6: The resulting line and character count is **recorded as evidence,
+- [x] AC6: The resulting line and character count is **recorded as evidence,
       never as a gate** — no line target is a pass condition (RR03's ~60–100
       lines is an expectation, not a bar). The before/after section breakdown is
       recorded for M96's first stamp, in `cs.char_count` characters, not bytes.
-- [ ] AC7: The active profile's `verify` slot is clean — all three suites
+- [x] AC7: The active profile's `verify` slot is clean — all three suites
       green, run from the repo root with exit codes checked individually and
       never behind a pipe (M56).
 
@@ -263,3 +263,42 @@ reports none — so the locally-run `verify` slot is the gate, not a green badge
 `generic`, whose `consistency-gate` slot names no toolchain checks, so that
 half is a clean no-op. `coverage complete` PASS fences the plan; no principle
 changed, so the `cairn_impact` step is skipped by its own condition.
+
+### Independent review — three lenses + scorer
+
+**[O] diff-bug (Opus):** 1 finding. **[S] blame-history (Sonnet):** 0 — traced
+every removed hunk to its introducing commit and confirmed the operative
+content survives in the cited entry (D-049 carries M84/M87's material in more
+detail than the deleted prose did; D-052 carries M93's incident verbatim).
+**[S] prior-PR (Sonnet):** 0, no-op — `gh api …/pulls/comments --paginate`
+returns 0 inline comments repo-wide. It ran the archive `## Review` secondary
+pass and checked three findings this diff could regress (M53 per-file
+registration, M84 F2 vacuous test, M92 F1 unpinned rule): none regressed.
+
+**F1 (scored 78 — sub-threshold, ACTIONED anyway) — D-056's Consequences
+asserted a yield floor the delivering pass missed.** The entry read "the ~35-40
+lines its ledger proved removable under the old bar become a floor rather than
+the yield", while M95 removed 25 gross / −9 net. `DECISIONS.md` is the durable
+record M96 and every later pass read as their criterion.
+*Scorer's discount rejected on M73's rule (sub-80 gates the actioned list, not
+the operator's judgment) and M88's (verify a refutation before accepting it).*
+It scored 78 partly because the milestone's work log "already surfaced it" —
+but that mitigation fails on inspection: the work log compresses into a
+≤25-line archive summary, so the one honest record is the one discarded, while
+the unqualified claim persists in the file that is actually read.
+*Fixed on the branch* — pre-merge correction of a draft entry, the move D-052
+records at `M93 review F3/88`, so IP4 is untouched (the entry has not reached
+the default branch). Replacement text states that the test predicts no yield,
+records 25 gross / −9 net against the ~35-40 projection, and directs the
+reader to treat it as evidence the rulebook's mass is mostly class 1/2 rather
+than as a quota a later pass owes.
+
+**Dismissed by the [O] lens itself, recorded:** dropping D-020's "in Claude
+Code — cairn's runtime —" scoping, since the retained pointer to the "Chapter
+markers" rule restates the claim with its scoping and fallback intact.
+
+**Reviewer error worth recording:** the blame lens's closing summary described
+D-056 as requiring text be "evidenced as already recorded in a named D-entry"
+— that is the OLD AC1, the bar D-056 replaced. Its per-hunk verdicts are
+unaffected (each checked a real textual match), but the characterization
+restates a superseded rule.
