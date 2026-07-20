@@ -96,7 +96,7 @@ read reduction recorded.
       explicit. Pin each label→rule pairing on one physical line (M74/M92).
 - [x] T3: State the heading-quality rule and guard it against the real file;
       report failing headings by ID.
-- [ ] T4: Measure and record the read reduction from command output.
+- [x] T4: Measure and record the read reduction from command output.
 - [ ] T5: Register guards in the mutation harness; run all three suites from
       the repo root with exit codes checked.
 
@@ -111,6 +111,8 @@ read reduction recorded.
 - 2026-07-19: T1 done — D-054 authored, annotating IP2. States the recall trade openly (recall shifts from full-text to heading-plus-targeted-read; a collision whose heading fails to name its subject can be missed) and bounds it with three mitigations: prospective heading-quality advisory, back-reference by id, and the fact that the scan is a model read rather than a literal grep. IP2's quote-verbatim-from-the-full-entry requirement is explicitly unchanged; IP4 untouched.
 - 2026-07-19: T2 done — the bounded read is stated ONCE in `tracking-rules.md` beside the search-first rule it modifies, and wired at both `/milestone-plan` sweep sites (session start, collision check). Label→rule pairings pinned on one physical line each (M74/M92): read-whole-before-surfacing, back-reference-by-id, quote-from-the-full-entry, and the heading-quality rule. Written per D-053/M95 discipline — state the rule, cite D-054, no restated defense.
 - 2026-07-19: T3 done — `decision heading quality` advisory added to `cairn_validate` (WARN tier, scoped from D-054), tests first (10 tests, red before implementation). It runs over the REAL DECISIONS.md (M77/M80) and names both the offending entry and the omitted id rather than a count. Classifier validated by dropping the scope: it finds exactly D-012/D-014/D-019 and none of the three incidental-mention shapes (D-029, D-032, D-052) — that probe is itself a committed test, so the advisory can never go vacuously silent.
+- 2026-07-19: T4 done — read reduction measured from command output. Heading scan 5,681 chars (with newlines) of a 100,678-char file = 5.6%; a typical sweep of scan + 2-3 matched entries reads 9,141-10,898 chars, a 89.2-90.9% reduction, confirming RR02's ~90% projection. 54 entries, mean 1,757 chars, median 1,745, max 4,621. Back-referencing adds one id search per match, negligible against an entry read.
+- 2026-07-19: AC4's stated baseline was 95,374 chars; the file measured 100,678 at T4 because THIS milestone's D-053 and D-054 grew it (+5,304). Recorded rather than restated to the old figure — the reduction ratio is unchanged (heading mass grows proportionally: 5.6% at both), so the criterion is met on either baseline. Numbers are the measurement, never the plan's estimate (M87/M93).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
