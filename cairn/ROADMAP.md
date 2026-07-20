@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-19 (M94 re-cut per RR02 into M94 instrumentation + M95 slimming + M96 ratchet + M97 bounded read; soft-offset-norm candidate banked). Release timing is user-declared — D-050._
+_Last hygiene check: 2026-07-19 (M94 done — cost instrumentation shipped; M89 row pruned under terminal-row retention; LESSONS 48/50). Release timing is user-declared — D-050._
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M94 | Cost instrumentation — measure what a milestone spends before governing it | review | — | high | milestones/M94-cost-instrumentation.md |
+| M94 | Cost instrumentation — measure what a milestone spends before governing it | done | — | high | milestones/archive/M94-cost-instrumentation.md |
 | M95 | Rulebook editorial slimming — the rulebook states rules, not their legislative history | planned | — | high | milestones/M95-rulebook-editorial-slimming.md |
 | M96 | Growth ratchet — the rulebook is governed by attention, not by a permitted size | planned | M94, M95 | normal | milestones/M96-rulebook-growth-ratchet.md |
 | M97 | Bounded DECISIONS read — the sweep scans headings and reads what it hits | planned | — | high | milestones/M97-bounded-decisions-read.md |
 | M93 | Hygiene-line accretion — the ROADMAP stamp is replaced, not appended | done | — | high | milestones/archive/M93-hygiene-line-replace-not-append.md |
-| M89 | Partial verification is a state — the staleness advisory stops failing toward green | done | — | high | milestones/archive/M89-partial-verification-false-green.md |
 | M90 | README currency — the front door catches up with what shipped | done | — | normal | milestones/archive/M90-readme-currency.md |
 | M91 | Reference re-verification — the three partial extractions get read against their sources | done | — | normal | milestones/archive/M91-reference-reverification.md |
 | M92 | Lesson retirement — a lesson leaves LESSONS.md when a guard enforces it or another file owns it | done | — | high | milestones/archive/M92-lesson-retirement.md |
