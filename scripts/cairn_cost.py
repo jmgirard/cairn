@@ -316,16 +316,18 @@ def audit_line(root, records):
     mid = latest_milestone(records)
     if mid is None:
         return "cost: no milestone-keyed sessions in the store"
-    bucket = aggregate([r for r in records if milestone_of(r) == mid], lambda r: mid)
+    bucket = aggregate([r for r in records if milestone_of(r) == mid], lambda r: mid)[mid]
+    agents = bucket["agents"]
     return (
         "cost: {mid} — {t:,} turns · {cr:,} cache-read · {fi:,} fresh-in · "
-        "{o:,} output · {a} subagents spawned (their tokens unrecorded)".format(
+        "{o:,} output · {a} subagent{s} spawned (their tokens unrecorded)".format(
             mid=mid,
-            t=bucket[mid]["turns"],
-            cr=bucket[mid]["cache_read_input_tokens"],
-            fi=bucket[mid]["input_tokens"],
-            o=bucket[mid]["output_tokens"],
-            a=bucket[mid]["agents"],
+            t=bucket["turns"],
+            cr=bucket["cache_read_input_tokens"],
+            fi=bucket["input_tokens"],
+            o=bucket["output_tokens"],
+            a=agents,
+            s="" if agents == 1 else "s",
         )
     )
 
