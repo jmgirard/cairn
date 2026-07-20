@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M95: Rulebook editorial slimming — the rulebook states rules, not their legislative history
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m95-rulebook-editorial-slimming`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -164,6 +164,7 @@ touches and recording what that cost.
 - 2026-07-20: RE-CUT by /milestone-plan per RR03 rec 3. Goal, Scope, AC and Tasks authored fresh; the B1–B21 ledger stays as input and tasks re-number from scratch (the old T1/T2 ticks go with them). AC1's single D-entry-home bar is replaced by RR03 §1's three removal grounds. Scope reversal at the plan gate (user-selected): writing to `DECISIONS.md` moves from Out to In — one entry annotating D-045, authored FIRST as the pass's license (rec 1). Inversion test + reddening asymmetry placed in "What gets a test" (user-selected; RR03 §2's first-named home, M98 F4 the owing finding).
 - 2026-07-20: measured drift since the ledger was written — `tracking-rules.md` is now 788 lines / 54,584 chars, up from T1's 765 / 52,316 across M97–M99 (+23 lines, +2,268 chars in three milestones). Every ledger line number is stale, and re-location must be wrap-aware: cairn hard-wraps at ~66 chars, so B10 ("extends the same authority upstream") and B12 ("ahead N, behind 1") both return zero `grep` hits while sitting in the file. Recorded as T3's premise.
 - 2026-07-20: plan-gate collision sweep — D-053 already amended GP1 at the RR03 ingest gate, so rec 6 is discharged and M95 inherits "recorded editorial passes bound the rulebook" as its criterion; M97 and M98 are `done`, so RR03's order has reached M95. RR03 rec 9's rejection of "author the missing D-entries, then slim" is carried into Scope Out so the pass cannot re-propose it. Plan-owned body 142/149 after compressing AC/Scope/Tasks (M87: compress what your phase owns) — headroom left deliberately for implement's `## Decisions` appends, which the cap counts.
+- 2026-07-20: in-progress; branch `m95-rulebook-editorial-slimming` cut from a synced main. No implement question gate: the plan gate settled scope, the DECISIONS reversal, and the inversion-test placement in the same session, and nothing else is open that the ACs do not already arbitrate.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
