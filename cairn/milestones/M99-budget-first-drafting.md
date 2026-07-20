@@ -105,7 +105,7 @@ produced that thrash — `/milestone-plan` step 4 and `/milestone-review` step 9
       allocation, in the idiom of the shipped templates.
 - [x] T6: Wire `/milestone-plan` step 4 and `/milestone-review` step 9 — the
       fenced counter command, and for review a pointer to author from T5.
-- [ ] T7: Guards in `skills/tests/` for T4–T6 wording, registered in
+- [x] T7: Guards in `skills/tests/` for T4–T6 wording, registered in
       `test_mutation_harness.py`; update `cairn/DESIGN.md:58`'s `scripts/`
       inventory to name `cairn_budget` — and `cairn_cost`, absent from that
       bullet since M94; run the counter over this milestone's own file and
@@ -116,6 +116,8 @@ produced that thrash — `/milestone-plan` step 4 and `/milestone-review` step 9
      EXEMPT from the 150-line cap (D-046): history under D-045, never edited,
      so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
+- 2026-07-20: T7 landed 16 guards (`skills/tests/test_budget_first_drafting.py`), 4 mutation-registry entries across 3 targets, and the `DESIGN.md` scripts inventory now naming `cairn_budget` — and `cairn_cost`, absent from that bullet since M94. The template-arithmetic guards RE-DERIVE every figure from the template on disk rather than pinning digits, so the self-referential block cannot drift green. Verified by inversion as well as blanking: rewording the budgets as "an enforced per-section cap" reddens, restoring greens.
+- 2026-07-20: AC6 self-check — M99's own body is 117/149 (headroom 32) on first draft, so the milestone clears the rule it ships. It does exceed three SECTION budgets (AC 30 vs 28, Coverage 13 vs 11, Tasks 28 vs 25) while far under the cap: the budgets are p75 guidance, a quarter of drafts legitimately exceed a given section, and whole-file headroom absorbs it. That is the intended behaviour, not a miss — a section budget that could fail would be the second cap D-030 declined.
 - 2026-07-20: T4–T6 wired the budgets. Milestone template carries one budget block (Goal 7 · Scope 26 · AC 28 · Coverage 11 · Tasks 25 over a 21-line preamble, ≥21 reserved for `## Decisions`, 139 of 149 permitted); the block is SELF-REFERENTIAL — stating the preamble size changes it — so it was measured, corrected, and re-measured to a fixed point rather than stated once. New comment-free `archive-summary.md` (15-line skeleton, 22-line budget). Also fixes label drift the T1 survey exposed: across the 96 summaries `Goal` ran 37 vs `Goal.` 16, and decisions split four ways (`Key decisions` 14, `Decisions` 7, `Decisions.` 7, `Key decisions.` 4).
 - 2026-07-20: T2+T3 landed `scripts/cairn_budget.py` (six artifact classes, caps read from `cairn_scripts`, exit 0/1/2) and 20 guards: both directions per class, the `>=` vs `>` operator split (`<150` permits 149, `≤25` permits 25), body-count agreement with `milestone_body_line_count`, and a no-cap-literal assertion over the source. Suites green — skills 491, scripts 229, hooks 72, each exit code checked separately.
 - 2026-07-20: T1 archive summaries measured, n=96: mean 23.3, median 25, p90 25, max 25 — 55 of 96 sit at EXACTLY 25, so the distribution is CENSORED at the cap and its percentiles measure the ceiling rather than demand. Unlike the body figures it is not a budget basis; the allocation is set deliberately below the median, targeting 22 (title+status+blanks 5, Goal 3, Outcome 8, Decisions 3, Review 3), leaving 3 lines headroom.
