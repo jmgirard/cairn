@@ -108,7 +108,7 @@ touches and recording what that cost.
       license, not its write-up.
 - [x] T2: State the inversion test and the reddening asymmetry in "What gets a
       test"; guard both; register in the mutation harness.
-- [ ] T3: Re-locate the B1–B21 ledger against the current file and re-classify
+- [x] T3: Re-locate the B1–B21 ledger against the current file and re-classify
       each block under AC1's three grounds. Its line numbers are stale (765 →
       788 lines) and cairn wraps at ~66 chars, so plain `grep` misses a wrapped
       phrase — B10 and B12 return zero hits while present. No edits here.
@@ -168,6 +168,22 @@ touches and recording what that cost.
 - 2026-07-20: T1 done — D-056 authored, the pass's license. Three parts: the rulebook is current knowledge under D-045 (plugin logic, a class both of D-045's lists omitted, fixed the way D-052(2) fixed ROADMAP.md); the three-step placement test (inversion → decision → default delete); guard-pinning as a deletion screen only, with the reddening asymmetry stated. IP4 untouched and explicitly confirmed. Both rejections carried in: "author the D-entries then slim" (RR03 rec 9) and any IP4 change. `decision heading quality` OK on the new heading.
 - 2026-07-20: T2 done — both statements placed in "What gets a test", immediately before the guard obligation they qualify (order pinned positionally, since it carries the argument). New guard `skills/tests/test_rule_placement.py`, 20 tests, 4 classes; 5 blocks registered in the mutation harness, which is the inversion proof for each. Net +16 rulebook lines before the pass subtracts — recorded so AC6's before/after is honest about what M95 added as well as removed.
 - 2026-07-20: T2 note — my first draft of the guard asserted three spans at guessed wrap points and failed on all three; the file's actual wrapping is authoritative and the asserts were rewritten against it. Also dropped a `[:34]` slice hack that would have pinned a truncated clause. This is M65/M78 from the other side: the harness catches a reflowed anchor, but nothing catches an anchor authored against text that was never read out.
+- 2026-07-20: T3 done — 20 of 21 ledger blocks re-located wrap-aware against the current 804-line file (B17's probe missed only on bold markers; it stays regardless). Verdict: 14 removals, 7 keeps. The keeps are B5, B9, B12, B13, B16, B17, B21 — every one passes the behavioral inversion test as a rule or as application doctrine, which is why guard-pinning is no longer the reason given for any of them.
+- 2026-07-20: LEDGER B1 (:91) REMOVE, ground (b) — the "49 lines / 13% mass / nothing reported it" measurement. Fails inversion (a fact about LESSONS' past state; deleting it changes no agent behavior) and records no decision — the first run verified NO-HOME by hand, D-049 stating the contrary fact and D-051's "49 lines" being a different measurand. RR02's flagship example, deleted against git.
+- 2026-07-20: LEDGER B2 (:96) REMOVE, ground (a) — the threshold-derivation narrative and its M87 parenthetical restate D-049 ("non-item mass plus capacity × the measured mean item length"). KEEP "measure that mean, never assume one": it governs application, so it is class 2 and survives its own restatement.
+- 2026-07-20: LEDGER B3 (:107) REMOVE (partial), ground (b) — the "because an item count is a structural fact but 'too dense' is a judgment" justification. The operative half, WARN-vs-FAIL severity, stays.
+- 2026-07-20: LEDGER B4 (:115) REMOVE (partial), ground (a) — the 3,152/2,568 incident restates D-052's Context. The exemption reason stays: guard-pinned at `test_hygiene_stamp.py:69` AND passing the behavioral test, and D-052 itself says that rationale is "kept, not overturned".
+- 2026-07-20: LEDGER B6 (:131) REMOVE, ground (a) — restates D-046 almost verbatim ("once the section costs no budget a wrap is untidiness, not damage"). Unpinned.
+- 2026-07-20: LEDGER B7 (:157) REMOVE (partial), ground (b) — the trailing "same boundary terminal-row retention already runs on". No home and no behavioral effect; the label and the current-knowledge sentence stay, pinned at `test_hygiene_stamp.py:42,53`.
+- 2026-07-20: LEDGER B8 (:179) REMOVE (partial), ground (a) — the ROADMAP re-derivation restates D-052(2). The IP/GP-exception and "Ruled out" sentences stay, pinned at `test_lessons_loop.py:116,121`.
+- 2026-07-20: LEDGER B10 (:222) REMOVE, ground (b) — "extends the same authority upstream, to whether the release is even queued". Argumentation; the rule and the `blocked` parking stay, pinned at `test_release_timing.py:47-72`.
+- 2026-07-20: LEDGER B14 (:482) REMOVE, ground (a) — the D-020 phase-header narrative parenthetical. Confirmed in D-020, unpinned.
+- 2026-07-20: LEDGER B15 (:486) REMOVE, ground (c) — the per-skill phase-header enumeration. All nine skills carry their own `Phase header:` directive and the rulebook guard pins only the milestone mapping. This is the removal AC1's old wording forbade and the ledger flagged as "the milestone's cleanest win"; T6 executes it.
+- 2026-07-20: LEDGER B18 (:724) REMOVE, ground (b) — the provenance-block justification. No home, unpinned, and RR03 §1 names it a class-4 orphan. AC1's old wording forbade this despite it reading as pure justification.
+- 2026-07-20: LEDGER B19 (:449) REMOVE (partial), ground (b) — the "outward-facing and irreversible" / "weaker consent" argumentation. No home in D-003 or D-019; the opening label stays, pinned at `test_gate_wording.py:46`.
+- 2026-07-20: LEDGER B20 (:468) REMOVE (partial), ground (a) — the chip-less-exception narrative restates D-019. The one pinned sentence stays (`test_gate_wording.py:99`).
+- 2026-07-20: LEDGER B11 (:347) — not a removal. RR01 rec 7's prune: the recipe is stated once WITHIN the rulebook; `cairn-init`'s copy is deliberate and guard-locked. T6.
+- 2026-07-20: LEDGER B21 (:598) KEEP — reconsidered under the new doctrine, where guard-pinning is no longer a keep reason. "An author shares their own diff-blindness" passes the behavioral test on its own: it forecloses the judgment "I wrote it, I can review it", which is exactly the call an agent would otherwise make. Class 2, not class 4.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
