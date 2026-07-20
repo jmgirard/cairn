@@ -90,7 +90,7 @@ mutation registration.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Classify every item in `cairn/LESSONS.md` (32 items, 49 lines,
+- [x] T1: Classify every item in `cairn/LESSONS.md` (32 items, 49 lines,
       21,085 chars as of 2026-07-19) against the maturation bar — consolidated
       repeatedly, teaching a principle rather than an incident, failing both
       D-051 criteria by construction. Record the table in this file. Decide
@@ -126,9 +126,49 @@ mutation registration.
 
 - 2026-07-19: created by /milestone-plan. Gate: module home over synthesis note; T1 re-derives the family boundary rather than inheriting RR03's 63%; fidelity proven by recorded inversion per lesson; the D-entry distinguishes rather than supersedes D-051's rejected graduated-lessons file.
 - 2026-07-19: in-progress, branch `m98-lesson-graduation` cut from main at e684c39.
+- 2026-07-20: T1 done — boundary re-derived independently (M98-D1); guard family is 18 items / 13,316 chars / 66% of item mass, differing from RR03 on six members. Records-hygiene items are a real second family, deferred to a candidate row rather than folded in: the guard family alone leaves 19 lines and 12,749 chars of headroom.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
+
+### M98-D1 (2026-07-20): the maturation bar, and the family boundary re-derived
+
+**Bar** (conjunctive; an item graduates only on all three): (a) **principle,
+not incident** — it teaches transferable craft about authoring or verifying,
+not a fact about this repo's tools or runtime; (b) **stabilized** — extended
+or consolidated ≥2×, later milestones adding instances rather than changing
+the principle; (c) **no existing exit** — fails D-051 enforcement (no test
+fails on the mistake; it teaches the judgment a guard cannot make) and fails
+D-051 ownership (no tracking-file slot holds it).
+
+**GRADUATE — guard-authoring craft (18 items, 13,316 chars, 66% of item
+mass):** `LESSONS.md` lines 20, 22, 23, 24, 26, 27, 31, 33, 35, 36, 40, 41,
+42, 43, 45, 47, 48, 49.
+
+**STAY — tool/runtime quirk, D-015's charter, fails (a) (6 items, 3,351
+chars):** 21, 25, 28, 30, 34, 46 — Bash cwd persistence and exit-blind pipes,
+hook registration snapshotting, `Edit --replace_all` indentation, the `gh`
+GraphQL quota, the four places a new hook ships to. These are facts about
+this environment, not craft.
+
+**STAY — records/process-hygiene craft, a genuine second family, deferred
+(8 items, 3,493 chars):** 18, 19, 29, 32, 37, 38, 39, 44. They pass (a) and
+mostly (b), but their trigger is a hygiene or plan-gate pass, not
+guard-authoring, so they need their own home and their own read-trigger
+rather than a seat in this module. Two (29, 37) may instead be D-051
+*ownership* retirements against `/milestone-implement` step 6 and
+`/milestone-plan`'s collision sweep — a check that runs scoped to the
+milestone that ships those surfaces, not here. Banked as a candidate.
+
+**Not inherited:** RR03's classification named 20, 22, 24, 26, 27, 28, 33, 35,
+36, 38, 40, 41, 42, 43, 45, 46, 47, 48. This derivation differs on six —
+it admits 23, 31, 49 (49 postdates RR03) and excludes 28, 38, 46 — so the
+63% figure is coincidentally close and independently arrived at.
+
+**Sufficiency:** graduating the guard family alone leaves `LESSONS.md` at
+31/50 lines and 7,751/20,500 chars — 19 lines and 12,749 chars of headroom.
+The second family is not needed to discharge the blocker, which is why
+deferring it costs nothing.
 
 ## Review
 <!-- owner: review · exclusive -->
