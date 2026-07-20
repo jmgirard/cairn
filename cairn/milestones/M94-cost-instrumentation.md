@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M94: Cost instrumentation — measure what a milestone spends before governing it
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
@@ -111,6 +111,7 @@ audit.
 - 2026-07-19: T3 — `/milestone` §2 gains `cairn_cost.py --audit-line`, reported verbatim, with the no-threshold/no-verdict boundary stated in the skill prose and the governing mechanism deferred to M96. Verify clean.
 - 2026-07-19: T4 — `cairn/references/session-cost-notes.md` + INDEX line: schema, attribution ledger A1–A6 (A3 plan-phase `refused`, A4 subagent tokens `absent`, A6 per-file share `refused`), ten-milestone baseline, and the cache-read-per-turn trend (166,451 → 184,351, +10.8% M63–M68 → M88–M93) against +56%/+103% file growth. Two existing guards caught real defects on first run — a wrapped `Extraction:` line and the pinned page-state ledger — both fixed, not worked around. Verify clean.
 - 2026-07-19: T5 — `scripts/tests/test_cairn_cost.py` (18 behavioural guards on the classifier functions, not the rendered report) + `skills/tests/test_cost_audit_line.py` (6 prose guards, 3 blocks registered in the mutation harness and mutation-verified). The phase-map coverage guard caught a real gap on first run: `design-interview` was a shipped skill missing from `PHASES`, so its turns would have landed in `unattributed`. Verify clean: 447 / 227 / 72, `cairn_validate` exit 0.
+- 2026-07-19: all tasks complete, status review. Branch diff: 10 files, +913/-8. Suites 447/227/72 green, `cairn_validate` exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
