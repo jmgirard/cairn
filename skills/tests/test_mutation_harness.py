@@ -387,7 +387,7 @@ REGISTRY = [
         guard="test_lessons_loop",
         test="TestRecordCorrectionRule.test_current_knowledge_set_is_enumerated_under_its_own_label",
         target=RULES,
-        block="Current knowledge — `LESSONS.md`, `references/` pages, `DESIGN.md` —",
+        block="Current knowledge — `LESSONS.md`, `references/` pages, `DESIGN.md`, `ROADMAP.md` — records what is true *now* and is read to act on,",
     ),
     Mutation(
         guard="test_lessons_loop",

@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M93: Hygiene-line accretion — the ROADMAP stamp is replaced, not appended
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP4, GP1, GP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m93-hygiene-line-replace   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -92,7 +92,7 @@ repo's own stamp.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1 In `skills/shared/tracking-rules.md`: add the replace rule to the
+- [x] T1 In `skills/shared/tracking-rules.md`: add the replace rule to the
       hygiene-stamp doctrine and narrow the per-line rejection at lines
       109-111 to item lines. Author the label→rule clause on ONE physical
       line — a wrapped sentence is how these anchors go unpinned (M74).
@@ -124,6 +124,8 @@ repo's own stamp.
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
 
 - 2026-07-19: created by /milestone-plan. Cap 400 derived from a six-repo non-item-line survey — healthy max 245, then 230/194/141/105/101/100, against defects at 1,870 and 3,152; warns at `>=` so it permits 399, leaving 154 chars (63%) of headroom over the observed healthy max and sitting 4.7×/7.9× under both live defects.
+- 2026-07-19: implement gate — two open choices settled by the user. (1) `ROADMAP.md` was in NEITHER the history nor the current-knowledge list at `tracking-rules.md:159-162`, so AC1's D-045 grounding did not yet reach it; D-052 adds it to current knowledge rather than classifying the stamp alone. Found by reading the rule out of its source (M75/M85/M91), not assumed from the plan. (2) The `_Released …_` line (105 chars, +~33/release) gets NO exemption from the new cap — it crosses 400 in ~9 releases and the remedy is the milestone's own thesis.
+- 2026-07-19: T1 — tracking-rules gained the replace rule, the current-knowledge enumeration gained `ROADMAP.md`, and M84's blanket per-line rejection is narrowed to item lines in place. The mutation harness reddened two registered anchors I had disturbed (`test_current_knowledge_set_is_enumerated_under_its_own_label`, `test_rule_records_why_a_per_line_warn_was_rejected`); M84's original rationale was restored VERBATIM on one physical line so its assert passes unchanged, while the enumeration assert + its `Mutation(...)` block were re-authored deliberately because that rule genuinely changed. 432/196/72 green, exit codes checked unpiped (M56).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
