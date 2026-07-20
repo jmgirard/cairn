@@ -17,6 +17,10 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
 Read, in order: `cairn/ROADMAP.md`, any active milestone file,
 `cairn/DECISIONS.md`, `cairn/LESSONS.md`. If an un-ingested RR exists in
 `cairn/reviews/`, handle ingestion first (see `/milestone-brief`).
+`cairn/DECISIONS.md` is read per the tracking-rules **bounded
+`DECISIONS.md` read** — scan the `### D-` headings, never the whole file.
+Read every matched entry whole before surfacing it, and back-reference it by
+its own `D-0NN` id; the headings decide what to open, never what to report.
 
 ## Workflow
 
@@ -34,6 +38,11 @@ Read, in order: `cairn/ROADMAP.md`, any active milestone file,
 
    **Collision check (mandatory).** Sweep the ROADMAP (all statuses), the
    archive, and DECISIONS.md for overlap with what the user described.
+   Sweep DECISIONS.md per the tracking-rules **bounded `DECISIONS.md` read**:
+   scan the `### D-` headings, **read every matched entry whole before
+   surfacing it**, and **back-reference each match by its own `D-0NN` id** so a
+   later entry superseding it surfaces too.
+   Quote a collision verbatim from the full entry, never from the heading.
    Prior state is *surfaced at the question gate*, never silently obeyed or
    silently overridden:
    - `candidate` row → the normal promotion path: absorb the row, note the

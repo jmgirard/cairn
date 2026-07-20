@@ -1461,3 +1461,47 @@ against a clause this entry removes. M95 (re-cut) and M96 inherit the amended
 wording as their editorial criterion; M97 is the "reading less of it" mechanism
 for history. If a future always-read surface fits none of the three named
 mechanisms, this is the entry to supersede.
+
+### D-054 (2026-07-19): The DECISIONS sweep is bounded — headings scanned, matched entries read whole and back-referenced — annotates IP2's collision-check reading
+
+**Context:** `/milestone-plan`'s session start and its collision / search-first
+sweeps read all of `cairn/DECISIONS.md` — 95,374 chars across 53 entries, over
+half of a ~183,000-char plan-time read. Under IP4 the file is append-only and
+can never shrink, so the only available remedy is reading less of it (RR02 Q4,
+RR03 Q4). A *generated* index was rejected as the divergence vector M56 and
+D-051 already refused: the `### D-` headings are themselves a zero-divergence
+index at 5,326 chars flat (5,378 newline-inclusive), 5.6% of the file, measured
+2026-07-19.
+
+**Decision:** The sweep scans the `### D-` headings, reads every matched entry
+**whole** before surfacing anything, and **back-references** each match by
+searching its own `D-0NN` id across the file. Three mitigations bound the
+recall cost, and the trade is stated rather than slipped in as an
+optimization:
+
+1. **Heading quality (prospective).** A heading names its subject and any entry
+   it supersedes, annotates, or narrows. A `cairn_validate` advisory reports
+   failing headings by id. It **WARNs and never FAILs**, per the severity split
+   D-049/D-052 settled — heading quality is a judgment about prose, not a
+   structural fact — and it is scoped to entries from **D-054 onward**.
+2. **Back-reference.** Three legacy headings hide a supersession in their body:
+   D-012 omits D-010, D-014 omits D-013, D-019 omits D-003. IP4 forbids
+   repairing them, so the read protocol closes the gap instead — matching
+   D-013 and searching `D-013` surfaces D-014. Grandfathering without this step
+   would have left the recall hole those three entries create.
+3. **The scan is a model read, not a literal grep.** A heading is matched
+   semantically, so a subject named in different words than the query still
+   matches; the bound is heading *quality*, not keyword identity.
+
+**Consequences:** Annotates IP2 — prior state is still surfaced, never silently
+obeyed or overridden, and a collision is still **quoted verbatim from the full
+entry, never from the heading**. What changes is recall, not the obligation:
+recall shifts from full-text to heading-plus-targeted-read, so a collision whose
+heading fails to name its subject *can* be missed where a whole-file read would
+have caught it. The user was shown this cost and accepted it at the RR02 ingest
+gate on 2026-07-19. IP4 is untouched — nothing is edited, moved, deleted, or
+renumbered; this entry changes how the file is read, never what it holds.
+Archival-with-tombstone stays parked (RR02 rec 6): once the read is bounded it
+buys almost nothing, the heading scan growing ~100 chars per decision. If the
+heading scan itself ever becomes the cost, that candidate is the entry to
+supersede.

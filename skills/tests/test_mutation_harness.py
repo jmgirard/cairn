@@ -1736,6 +1736,64 @@ EXEMPT = {
     "test_mutation_harness": "the harness's own tests, not a prose-guard",
 }
 
+# M97 (D-054). One entry per clause the bounded read rests on, not one for the
+# block: the four clauses fail independently — dropping the back-reference
+# leaves a rule that still reads correctly and recalls wrongly on D-012/D-014/
+# D-019 — so a single exemplar would let three of them be deleted green.
+REGISTRY += [
+    Mutation(
+        guard="test_bounded_decisions_read",
+        test="TestRulebookStatesTheBoundedRead."
+             "test_matched_entry_is_read_whole_before_surfacing",
+        target=RULES,
+        block="**A matched heading's entry is read whole before anything is "
+              "surfaced.**",
+    ),
+    Mutation(
+        guard="test_bounded_decisions_read",
+        test="TestRulebookStatesTheBoundedRead."
+             "test_match_is_back_referenced_by_its_own_id",
+        target=RULES,
+        block="**A match is back-referenced — its own `D-0NN` id searched "
+              "across the file**",
+    ),
+    Mutation(
+        guard="test_bounded_decisions_read",
+        test="TestRulebookStatesTheBoundedRead."
+             "test_collision_is_quoted_from_the_full_entry_not_the_heading",
+        target=RULES,
+        block="**A collision is quoted verbatim from the full entry, never "
+              "from the heading.**",
+    ),
+    Mutation(
+        guard="test_bounded_decisions_read",
+        test="TestRulebookStatesTheBoundedRead."
+             "test_heading_quality_rule_pins_subject_and_relationships",
+        target=RULES,
+        block="**A `### D-` heading names its subject and any entry it "
+              "supersedes, annotates, or narrows.**",
+    ),
+    Mutation(
+        guard="test_bounded_decisions_read",
+        test="TestPlanSkillWiresTheProtocol."
+             "test_collision_check_states_read_whole_and_back_reference",
+        target="skills/milestone-plan/SKILL.md",
+        block="back-reference each match by its own `D-0NN` id",
+    ),
+    # M97 review F7. The session-start site had only the headings clause,
+    # which alone reads as "headings are enough" — the failure mode the
+    # protocol prevents. Its own entry because the collision-check block
+    # above can carry its guard while this one is deleted green.
+    Mutation(
+        guard="test_bounded_decisions_read",
+        test="TestPlanSkillWiresTheProtocol."
+             "test_session_start_also_states_read_whole_and_back_reference",
+        target="skills/milestone-plan/SKILL.md",
+        block="Read every matched entry whole before surfacing it, and "
+              "back-reference it by",
+    ),
+]
+
 
 # --------------------------------------------------------------------------
 # Engine mechanics
