@@ -1787,7 +1787,7 @@ REGISTRY = [
         target=RULES,
         block="the source line is deleted in the same pass, so exactly one record exists at every moment",
     ),
-    # M99. Four blocks across three targets, because the budget wiring fails in
+    # M99. Four blocks across four targets, because the budget wiring fails in
     # four independent ways: the budgets could stop reading as guidance and
     # become a second cap (the shape D-030 declined); the archive template could
     # stop being named as the summary's source; and either drafting step could

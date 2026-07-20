@@ -167,6 +167,22 @@ class TestBothDirectionsPerClass(unittest.TestCase):
         self.r.write("cairn/milestones/archive/M02-x.md", "x\n" * (cap + 1))
         self.assertOver("cairn/milestones/archive/M02-x.md")
 
+    def test_a_claude_md_with_no_cairn_section_is_clean_not_unreadable(self):
+        """M99 review F2: it exited 2 — this repo's not-a-cairn-repo signal —
+        over a readable file. check_caps passes a missing section silently
+        (claude_section_line_count's own docstring says so), so this must too."""
+        self.r.write("CLAUDE.md", "# My project\n\nSome docs.\n")
+        text, over = self.r.report("CLAUDE.md")
+        self.assertFalse(over, "a missing cairn section is not a cap failure")
+        self.assertIn("no cairn section", text)
+        self.assertNotIn("unreadable", text)
+
+    def test_a_genuinely_absent_claude_md_is_still_reported_unreadable(self):
+        """The paired direction: F2's fix must not swallow a real absence."""
+        text, over = self.r.report("CLAUDE.md")
+        self.assertIsNone(over)
+        self.assertIn("unreadable", text)
+
     def test_claude_section_both_ways(self):
         cap = cs.CLAUDE_SECTION_CAP
         self.r.write("CLAUDE.md", "## Project tracking\n" + "x\n" * (cap - 2))
@@ -180,6 +196,20 @@ class TestBothDirectionsPerClass(unittest.TestCase):
         self.assertIn("headroom 0", self.r.report("cairn/ROADMAP.md")[0])
         self.r.write("cairn/ROADMAP.md", "x" * cap + "\n")
         self.assertIn("OVER by 1", self.r.report("cairn/ROADMAP.md")[0])
+
+    def test_an_over_length_non_item_line_reaches_the_exit_code(self):
+        """M99 review F1: the per-line axis printed OVER and returned clean, so
+        a wrapper checking $? read green on a file the tool had just called
+        over. Asserted on the VERDICT, not the rendered text — the text was
+        already right when the bug was live."""
+        self.r.write("cairn/ROADMAP.md", "_" + "x" * (cs.NON_ITEM_LINE_CAP + 100) + "\n")
+        text, over = self.r.report("cairn/ROADMAP.md")
+        self.assertIn("OVER by", text)
+        self.assertTrue(over, "an over-length non-item line must set the verdict")
+        # Paired direction: a short line leaves the verdict clean, proving the
+        # assertion above is not passing because some other axis is over.
+        self.r.write("cairn/ROADMAP.md", "_short_\n")
+        self.assertFalse(self.r.report("cairn/ROADMAP.md")[1])
 
 
 class TestOperatorNotCapNumber(unittest.TestCase):

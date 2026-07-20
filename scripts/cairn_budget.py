@@ -112,7 +112,32 @@ def axes(root, kind, rel):
             out.append(
                 Axis("mass", cs.char_count(path), cs.CHAR_CAPS[rel], unit="chars")
             )
+            # The per-line axis, as a real Axis rather than trailing text, so it
+            # reaches the exit code like every other (M99 review F1: it printed
+            # OVER and exited 0, contradicting this module's stated contract).
+            # Reported even when clean, because the stamp it exists for is
+            # rewritten by hand and the author needs the number before the
+            # rewrite, not after (M93). Only the longest line: a file-level
+            # number cannot point at the line responsible, and the longest one
+            # is the only one whose fix is load-bearing.
+            longest = sorted(cs.non_item_lines(path), key=lambda p: -p[1])[:1]
+            for lineno, length in longest:
+                out.append(
+                    Axis(
+                        "longest non-item",
+                        length,
+                        cs.NON_ITEM_LINE_CAP,
+                        unit="chars",
+                        note=f"line :{lineno} — replace it, don't append to it",
+                    )
+                )
     elif kind == "CLAUDE.md cairn section":
+        # A None here means the file carries no `## Project tracking` section —
+        # a repo mid-adoption, or one that never adopted cairn. `check_caps`
+        # passes that silently and so must this: the Axis is simply absent, and
+        # `report` says so rather than calling a readable file unreadable
+        # (M99 review F2, which had it exit 2 — this repo's not-a-cairn-repo
+        # signal — over a file that is fine).
         out.append(
             Axis("section", cs.claude_section_line_count(path), cs.CLAUDE_SECTION_CAP)
         )
@@ -139,6 +164,12 @@ def report(root, path):
     lines = [f"{rel} — {kind}"]
     found = axes(root, kind, rel)
     if not found:
+        if kind == "CLAUDE.md cairn section" and os.path.exists(
+            os.path.join(root, rel)
+        ):
+            # Readable, just not carrying a cairn section. Not a cap failure
+            # (check_caps agrees), so this reports and exits clean.
+            return f"{rel}: no cairn section — nothing capped here\n", False
         return f"{rel}: unreadable\n", None
     for a in found:
         lines.append(a.render())
@@ -152,22 +183,6 @@ def report(root, path):
             lines.append(
                 "  sections, heaviest first: "
                 + " · ".join(f"{h} {n}" for h, n in ranked)
-            )
-    if kind == "tracking file" and rel in cs.CHAR_CAPS:
-        # The per-line axis the density advisory polices. Reported here even
-        # when clean, because the stamp it exists for is rewritten by hand and
-        # the author needs the number before the rewrite, not after (M93).
-        longest = sorted(cs.non_item_lines(full), key=lambda p: -p[1])[:1]
-        for lineno, length in longest:
-            over = length >= cs.NON_ITEM_LINE_CAP
-            state = (
-                f"OVER by {length - cs.NON_ITEM_LINE_CAP + 1:,}"
-                if over
-                else f"headroom {cs.NON_ITEM_LINE_CAP - 1 - length:,}"
-            )
-            lines.append(
-                f"  longest non-item line: :{lineno} at {length:,} chars "
-                f"(cap <{cs.NON_ITEM_LINE_CAP:,})  {state}"
             )
     return "\n".join(lines) + "\n", any(a.over for a in found)
 

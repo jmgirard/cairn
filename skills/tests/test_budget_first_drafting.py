@@ -178,6 +178,46 @@ class TestDraftingStepsHandOverTheCounter(unittest.TestCase):
         self.assertIn("templates/archive-summary.md", text)
         self.assertIn("comment-free skeleton", flat(text))
 
+    def test_review_step_9_still_disposes_of_the_live_milestone_file(self):
+        """M99 review F4. Authoring the summary from a template made this an
+        explicit step: when the summary was produced by compressing the file in
+        place, the move removed the live copy implicitly. The rewrite dropped
+        it, so following step 9 literally orphaned the milestone file."""
+        text = flat(read(REVIEW))
+        self.assertIn(
+            "**deleting the live `cairn/milestones/M<NN>-<slug>.md`**", text
+        )
+        self.assertIn("summary REPLACES the milestone file", text)
+
+    def test_the_archive_allocation_matches_the_templates_actual_fixed_lines(self):
+        """M99 review F3. The stated allocation and the skeleton it budgets are
+        two records of one number, so they are compared rather than both
+        trusted — the work log's first pass said 5 fixed lines when the skeleton
+        has 7, and nothing caught it. Derived from the template on disk."""
+        skeleton = read(ARCHIVE_TEMPLATE).splitlines()
+        blanks = sum(1 for line in skeleton if not line.strip())
+        labelled = len(re.findall(r"^\*\*[A-Za-z ]+:\*\*", read(ARCHIVE_TEMPLATE), re.M))
+        title = 1
+        fixed = title + blanks + 1  # +1 for the Status line, itself a fixed line
+        stated = int(re.search(r"over the (\d+) fixed lines", read(REVIEW)).group(1))
+        self.assertEqual(
+            stated,
+            fixed,
+            "the stated fixed-line count disagrees with the archive template",
+        )
+        parts = [
+            int(n)
+            for n in re.findall(
+                r"(?:Goal|Outcome|Decisions|Review) (\d+)",
+                re.search(r"Goal \d+ · .*?Review \d+", read(REVIEW)).group(0),
+            )
+        ]
+        self.assertEqual(len(parts), labelled - 1, "one budget per non-Status label")
+        self.assertEqual(
+            sum(parts) + fixed, 22, "the allocation must sum to the stated 22"
+        )
+        self.assertLess(sum(parts) + fixed, cs.ARCHIVE_CAP)
+
     def test_review_states_the_archive_allocation_and_its_censoring_evidence(self):
         """The allocation is set BELOW the measured median on purpose: the
         distribution is censored at the cap, so its percentiles measure the
