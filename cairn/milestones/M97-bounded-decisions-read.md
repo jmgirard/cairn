@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M97: Bounded DECISIONS read — the sweep scans headings and reads what it hits
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP2, IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m97-bounded-decisions-read`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -52,6 +52,12 @@ read reduction recorded.
       protocol, and state that a **matched entry is read whole** before being
       surfaced. A collision is still quoted verbatim from the full entry,
       never from the heading (IP2's quoting requirement is unchanged).
+      **Amended 2026-07-19 (implement gate): a matched entry is also
+      back-referenced — its own `D-0NN` id searched across the file — so an
+      entry superseding or annotating it surfaces even when that entry's
+      heading omits the relationship.** D-012, D-014, and D-019 each hide a
+      supersession in their body, and IP4 forbids repairing them, so the read
+      protocol closes the gap rather than the headings.
 - [ ] AC3: The heading-quality rule is stated and guarded: a `### D-` heading
       names its subject, and names any entry it supersedes, annotates, or
       narrows. The guard runs over the **real `DECISIONS.md`**, not a fixture
@@ -100,6 +106,8 @@ read reduction recorded.
      so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
 - 2026-07-19: created by /milestone-plan, re-cutting M94 per RR02 rec 3. Absorbs the "Bounded DECISIONS collision sweep" candidate row (graduates at completion, M35). The IP2 trade was put to the user at the RR02 ingest gate and accepted; AC1 records it as a D-entry rather than leaving it implicit.
+- 2026-07-19: in-progress; branch `m97-bounded-decisions-read`. Implement gate settled two open choices. (1) The heading-quality check is an ADVISORY (WARN, never FAIL) scoped prospectively from D-054, because exactly three legacy headings hide a supersession — D-012 omits D-010, D-014 omits D-013, D-019 omits D-003 — and IP4 forbids repairing them; an advisory that can never go green trains people to ignore it. Severity follows the D-049/D-052 split: judgments WARN, structural facts FAIL.
+- 2026-07-19: AC2 AMENDED at the implement gate (user-selected): a matched entry is also back-referenced by its own id, so a superseding entry surfaces even when its heading omits the relationship. This closes the recall gap the three legacy headings create without touching history — RR03 recommended it as an AC2 refinement (its "supersession-aware read"). Verified false positives, not amended for: D-029, D-032, D-052 already name their relationships in the heading.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

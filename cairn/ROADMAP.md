@@ -15,7 +15,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | M94 | Cost instrumentation — measure what a milestone spends before governing it | done | — | high | milestones/archive/M94-cost-instrumentation.md |
 | M95 | Rulebook editorial slimming — the rulebook states rules, not their legislative history | planned | — | high | milestones/M95-rulebook-editorial-slimming.md |
 | M96 | Growth ratchet — the rulebook is governed by attention, not by a permitted size | planned | M94, M95 | normal | milestones/M96-rulebook-growth-ratchet.md |
-| M97 | Bounded DECISIONS read — the sweep scans headings and reads what it hits | planned | — | high | milestones/M97-bounded-decisions-read.md |
+| M97 | Bounded DECISIONS read — the sweep scans headings and reads what it hits | in-progress | — | high | milestones/M97-bounded-decisions-read.md |
 | M93 | Hygiene-line accretion — the ROADMAP stamp is replaced, not appended | done | — | high | milestones/archive/M93-hygiene-line-replace-not-append.md |
 | M90 | README currency — the front door catches up with what shipped | done | — | normal | milestones/archive/M90-readme-currency.md |
 | M91 | Reference re-verification — the three partial extractions get read against their sources | done | — | normal | milestones/archive/M91-reference-reverification.md |
