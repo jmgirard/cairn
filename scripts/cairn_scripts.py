@@ -93,13 +93,15 @@ TERMINAL_ROW_RETENTION = 5  # done + dropped rows share one ROADMAP cap
 # so cairn's `Last hygiene check` stamp reached 3,152 chars in one adopting repo
 # (28% of that ROADMAP) with every gate green.
 #
-# 400 is measured, not assumed (M87). Survey of real non-item lines across seven
-# cairn repos, 2026-07-19: healthy max 245 (a terminal-row-retention comment),
-# then 230, 194, 141, 105, 101, 100, 66, 48 — against two live defects at 1,870
-# (intraclass) and 2,568 (circumplex, down from 3,152 after a same-day review
-# pass rewrote it and still left it over). The comparison is `>=`, so 400 permits
-# 399: 154 chars (63%) of headroom over the worst healthy line, and 4.7x/6.4x
-# below both defects. Figures are dated because circumplex's moved mid-milestone.
+# 400 is measured, not assumed (M87). Survey of every non-item line in both
+# capped files across all six cairn repos, 2026-07-19: healthy max 245 (a
+# terminal-row-retention comment), then 230, 194, 141, 119, 105, 102, 101 —
+# against two live defects at 1,870 (intraclass) and 2,568 (circumplex, down
+# from a 3,152 peak after a same-day review pass rewrote it and still left it
+# over). The comparison is `>=`, so 400 permits 399: 154 chars (63%) of headroom
+# over the worst healthy line, and 4.7x/6.4x below both defects. Figures are
+# dated because circumplex's moved mid-milestone, and every ratio here is
+# against the CURRENT measurement, never the peak.
 NON_ITEM_LINE_CAP = 400
 
 # Cap on the cairn-owned `## Project tracking (cairn)` block appended to a

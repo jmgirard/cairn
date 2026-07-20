@@ -1919,12 +1919,21 @@ class TestNonItemLineAxis(ScriptCase):
         self.assertNotIn(f"WARN  {self.ADVISORY}", proc.stdout)
         self.assertIn("FAIL  scaffold present", proc.stdout)
 
-    def test_blank_lines_are_not_findings(self):
-        # Length 0 can never reach the cap, but the classifier drops them
-        # explicitly; this pins that they never reach the output as noise.
-        proc = self.stamped(399)
-        self.assertNotIn("non-item line is 0 chars", proc.stdout)
-        self.assertIn(f"OK    {self.ADVISORY}", proc.stdout)
+    def test_blank_lines_are_dropped_by_the_classifier(self):
+        # Asserted against `non_item_lines` DIRECTLY, not through validate
+        # output. Through the output this is unfalsifiable: a blank line is 0
+        # chars, always under the cap, so `check_record_density` filters it
+        # before printing whether or not the classifier drops it — the
+        # original form of this test passed with the `if not stripped` skip
+        # deleted (M93 review F1/85). The classifier's contract is that blank
+        # lines never enter the list at all, so that is what is asserted.
+        cs = _load_scripts()
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "ROADMAP.md"
+            path.write_text("# Roadmap\n\n\n_stamp_\n\n| a |\n\n")
+            got = cs.non_item_lines(path)
+        self.assertEqual(got, [(1, 9), (4, 7)], got)
+        self.assertNotIn(0, [length for _, length in got])
 
     # --- the shipped scaffold, instantiated (AC5, M77/M80) -----------------
 
@@ -1946,10 +1955,24 @@ class TestNonItemLineAxis(ScriptCase):
         with tempfile.TemporaryDirectory() as tmp:
             path = pathlib.Path(tmp) / "ROADMAP.md"
             path.write_text(instantiated)
+            measured = cs.non_item_lines(path)
             over = [
-                (n, ln) for n, ln in cs.non_item_lines(path)
-                if ln >= cs.NON_ITEM_LINE_CAP
+                (n, ln) for n, ln in measured if ln >= cs.NON_ITEM_LINE_CAP
             ]
+        # POSITIVE signal first. `non_item_lines` swallows every exception and
+        # returns [], so the absence-assert below is satisfied by a crash, an
+        # unreadable path, or any regression in the reader — green would mean
+        # "nothing was measured", not "the skeleton is clean". That is M84's
+        # own F2/90 defect, and this test reproduced it: forcing the `except`
+        # path failed 6 of 13 tests in this class and left this one passing,
+        # the only test here reading the real shipped artifact (M93 review
+        # F2/92).
+        self.assertTrue(measured, "non_item_lines measured nothing")
+        self.assertIn(
+            "_Last hygiene check:",
+            "\n".join(instantiated.split("\n")[n - 1] for n, _ in measured),
+            "the stamp line was not among the measured lines",
+        )
         self.assertEqual(over, [], f"the shipped skeleton is over cap: {over}")
 
     # --- the constant ------------------------------------------------------

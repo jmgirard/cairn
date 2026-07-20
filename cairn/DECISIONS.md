@@ -1389,10 +1389,16 @@ positionally and which can therefore be capped without any incentive to split.
 Item lines (table rows, candidate bullets, lessons) remain exempt by
 construction, not by threshold. `NON_ITEM_LINE_CAP = 400`, WARNing at `>=` per
 the severity split that keeps the weight axis advisory and the item axis a hard
-CHECK. The number is derived from a six-repo survey of real non-item lines
-(healthy max 245, then 230/194/141/105/101/100), leaving 154 characters — 63% —
-of headroom over the worst healthy line while sitting 4.7× and 7.9× below the
-two live defects. Measured, never assumed (M87).
+CHECK. The number is derived from a survey of real non-item lines across all
+six cairn repos on 2026-07-19, both capped files each (healthy max 245 —
+intraclass's terminal-row-retention comment — then 230/194/141/119/105/102/101),
+leaving 154 characters — 63% — of headroom over the worst healthy line while
+sitting 4.7× below intraclass's 1,870 and 6.4× below circumplex's post-rewrite
+2,568. Measured, never assumed (M87). The peak circumplex figure quoted in the
+Context above (3,152, i.e. 7.9×) is the pre-rewrite value and is kept there as
+history; every ratio stated here is against the current measurement, since one
+entry stating a defect at two different multiples is the drift this very
+milestone exists to stop (M93 review F3/88 — the first draft did exactly that).
 
 **(2) `ROADMAP.md` is current knowledge.** D-045 split the tracking files into
 history and current knowledge but enumerated neither list to include
