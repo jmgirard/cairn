@@ -1,0 +1,278 @@
+"""Guards for cairn_cost.py — the M94 cost instrumentation.
+
+Two properties are load-bearing and everything the script reports rests on
+them, so both are asserted against the **classifier functions** rather than
+the rendered report (M93: a guard that reads the rendered string passes over a
+classifier that has silently changed behind an unchanged format).
+
+1. ATTRIBUTION. `phase_of` and `milestone_of` read runtime-written fields.
+   A regression here would silently re-key every figure.
+2. THE CACHE/FRESH SPLIT. `cache_read_input_tokens` and `input_tokens` differ
+   by ~three orders of magnitude in the real store, so a change that summed
+   them into one "input" figure would not look wrong — it would look
+   plausible and be off by ~99.9%. The guards below fail if any accumulator
+   ever carries their sum.
+
+Every negative assertion is paired with a positive one proving the path
+actually ran (M84): a test that only checks "X is absent" passes just as
+happily when nothing executed at all.
+
+Run from the repo root:
+
+    python3 -m unittest discover -s scripts/tests -k cost
+"""
+
+import pathlib
+import sys
+import unittest
+
+SCRIPTS_DIR = pathlib.Path(__file__).resolve().parent.parent
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+
+import cairn_cost as cost  # noqa: E402  (after sys.path shim)
+
+
+def rec(skill=None, branch=None, usage=None, content=None):
+    """A minimal `assistant` record in the store's real shape."""
+    return {
+        "type": "assistant",
+        "attributionSkill": skill,
+        "gitBranch": branch,
+        "message": {"usage": usage or {}, "content": content or []},
+    }
+
+
+def agent_block(name="Agent"):
+    return {"type": "tool_use", "name": name, "input": {}}
+
+
+class TestPhaseAttribution(unittest.TestCase):
+    """`attributionSkill` -> phase. A lookup over a runtime-written field."""
+
+    def test_the_three_milestone_phases_map_to_their_canonical_names(self):
+        self.assertEqual(cost.phase_of(rec(skill="cairn:milestone-plan")), "plan")
+        self.assertEqual(
+            cost.phase_of(rec(skill="cairn:milestone-implement")), "implement"
+        )
+        self.assertEqual(cost.phase_of(rec(skill="cairn:milestone-review")), "review")
+
+    def test_the_other_cairn_skills_keep_their_own_phase_names(self):
+        # Real work with a real cost, just not a milestone phase — folding
+        # them into `unattributed` would hide it.
+        self.assertEqual(cost.phase_of(rec(skill="cairn:hotfix")), "hotfix")
+        self.assertEqual(cost.phase_of(rec(skill="cairn:milestone")), "milestone")
+        self.assertEqual(
+            cost.phase_of(rec(skill="cairn:cairn-release")), "cairn-release"
+        )
+
+    def test_a_record_outside_any_cairn_skill_is_unattributed(self):
+        # Paired positive: the same classifier does attribute a known skill,
+        # so this is a real negative and not a dead code path.
+        self.assertEqual(cost.phase_of(rec(skill=None)), cost.UNATTRIBUTED)
+        self.assertEqual(cost.phase_of(rec(skill="some-other-plugin:thing")), cost.UNATTRIBUTED)
+        self.assertEqual(cost.phase_of(rec(skill="cairn:milestone-plan")), "plan")
+
+    def test_the_phase_map_covers_every_shipped_cairn_skill(self):
+        # A new operational skill whose turns land in `unattributed` would
+        # quietly shrink every phase figure.
+        shipped = {
+            p.parent.name
+            for p in (SCRIPTS_DIR.parent / "skills").glob("*/SKILL.md")
+            if p.parent.name != "shared"
+        }
+        mapped = {k.split(":", 1)[1] for k in cost.PHASES}
+        self.assertTrue(shipped, "no shipped skills discovered — vacuous")
+        self.assertEqual(
+            shipped - mapped,
+            set(),
+            "shipped cairn skills missing from cairn_cost.PHASES",
+        )
+
+
+class TestMilestoneAttribution(unittest.TestCase):
+    """`gitBranch` -> milestone id. The branch name is the only authoritative
+    key; everything else is refused rather than guessed (M94 ledger A3)."""
+
+    def test_a_milestone_branch_yields_its_id(self):
+        self.assertEqual(cost.milestone_of(rec(branch="m94-cost-instrumentation")), "M94")
+        self.assertEqual(cost.milestone_of(rec(branch="m07-guardrail-hooks")), "M07")
+        self.assertEqual(cost.milestone_of(rec(branch="m100-past-ninety-nine")), "M100")
+
+    def test_default_branch_and_hotfix_work_is_not_keyed_to_a_milestone(self):
+        # None is a real answer, never a failure: plan-phase work runs here.
+        # Paired positive so the None is not just an unreached branch.
+        self.assertIsNone(cost.milestone_of(rec(branch="main")))
+        self.assertIsNone(cost.milestone_of(rec(branch="master")))
+        self.assertIsNone(cost.milestone_of(rec(branch="hotfix-bad-parse")))
+        self.assertIsNone(cost.milestone_of(rec(branch=None)))
+        self.assertEqual(cost.milestone_of(rec(branch="m94-x")), "M94")
+
+    def test_a_milestone_id_is_never_imputed_from_prose(self):
+        # A plan session legitimately names four milestones; keying off text
+        # would credit the cost to all four. The branch is the only input.
+        record = rec(branch="main", skill="cairn:milestone-plan")
+        record["message"]["content"] = [
+            {"type": "text", "text": "planning M94, M95, M96 and M97 together"}
+        ]
+        self.assertIsNone(cost.milestone_of(record))
+        self.assertEqual(cost.phase_of(record), "plan")
+
+
+class TestCacheFreshSplit(unittest.TestCase):
+    """The four billed classes stay four. Never summed, never collapsed."""
+
+    def test_the_two_input_classes_are_distinct_named_columns(self):
+        self.assertIn("cache_read_input_tokens", cost.TOKEN_CLASSES)
+        self.assertIn("input_tokens", cost.TOKEN_CLASSES)
+        self.assertEqual(len(cost.TOKEN_CLASSES), len(set(cost.TOKEN_CLASSES)))
+        self.assertEqual(len(cost.TOKEN_CLASSES), 4)
+
+    def test_tokens_of_keeps_cache_read_and_fresh_input_apart(self):
+        got = cost.tokens_of(
+            rec(usage={"cache_read_input_tokens": 500_000, "input_tokens": 7})
+        )
+        self.assertEqual(got["cache_read_input_tokens"], 500_000)
+        self.assertEqual(got["input_tokens"], 7)
+        self.assertNotIn(500_007, got.values(), "the two input classes were summed")
+
+    def test_aggregate_never_produces_a_bucket_holding_their_sum(self):
+        records = [
+            rec(
+                skill="cairn:milestone-implement",
+                branch="m94-x",
+                usage={
+                    "cache_read_input_tokens": 1_000_000,
+                    "cache_creation_input_tokens": 20,
+                    "input_tokens": 3,
+                    "output_tokens": 400,
+                },
+            )
+        ] * 2
+        bucket = cost.aggregate(records, cost.phase_of)["implement"]
+        # Positive: the path ran and each class accumulated on its own.
+        self.assertEqual(bucket["cache_read_input_tokens"], 2_000_000)
+        self.assertEqual(bucket["input_tokens"], 6)
+        self.assertEqual(bucket["turns"], 2)
+        # Negative: no accumulator carries any collapsed input figure.
+        self.assertNotIn(2_000_006, bucket.values())
+        self.assertNotIn(2_000_046, bucket.values())
+
+    def test_the_report_renders_the_two_as_separate_columns(self):
+        records = [
+            rec(
+                skill="cairn:milestone-review",
+                branch="m94-x",
+                usage={"cache_read_input_tokens": 900_001, "input_tokens": 11},
+            )
+        ]
+        text = cost.report(str(SCRIPTS_DIR.parent), records)
+        self.assertIn("cache-read", text)
+        self.assertIn("fresh-in", text)
+        self.assertIn("900,001", text)
+        self.assertIn("11", text)
+        self.assertNotIn("900,012", text, "the report printed a collapsed input figure")
+
+
+class TestSubagentBlindSpot(unittest.TestCase):
+    """Subagent tokens are absent from the store, so the spawn count is what
+    labels a partial figure (M94 ledger A4/A5)."""
+
+    def test_spawned_agents_are_counted_under_every_known_tool_name(self):
+        self.assertEqual(cost.agents_spawned(rec(content=[agent_block("Agent")])), 1)
+        self.assertEqual(cost.agents_spawned(rec(content=[agent_block("Task")])), 1)
+        self.assertEqual(
+            cost.agents_spawned(
+                rec(content=[agent_block("Agent"), agent_block("Agent")])
+            ),
+            2,
+        )
+
+    def test_non_spawning_tools_and_plain_text_count_zero(self):
+        self.assertEqual(cost.agents_spawned(rec(content=[agent_block("Bash")])), 0)
+        self.assertEqual(cost.agents_spawned(rec(content=[{"type": "text", "text": "Agent"}])), 0)
+        self.assertEqual(cost.agents_spawned(rec(content=None)), 0)
+        # Paired positive: the counter does fire on a real spawn.
+        self.assertEqual(cost.agents_spawned(rec(content=[agent_block()])), 1)
+
+    def test_every_report_surface_carries_the_spawn_count(self):
+        records = [
+            rec(
+                skill="cairn:milestone-review",
+                branch="m94-x",
+                usage={"cache_read_input_tokens": 5},
+                content=[agent_block()],
+            )
+        ]
+        root = str(SCRIPTS_DIR.parent)
+        self.assertIn("agents", cost.report(root, records))
+        line = cost.audit_line(root, records)
+        self.assertIn("M94", line)
+        self.assertIn("1 subagent spawned", line)
+        self.assertIn("unrecorded", line)
+
+
+class TestUnattributableShareIsReported(unittest.TestCase):
+    """A method that hid its unattributable share would not be acceptable
+    evidence (M94 T1)."""
+
+    def test_attribution_counts_both_unkeyed_dimensions_and_their_token_mass(self):
+        records = [
+            rec(skill="cairn:milestone-implement", branch="m94-x",
+                usage={"cache_read_input_tokens": 100}),
+            rec(skill="cairn:milestone-plan", branch="main",
+                usage={"cache_read_input_tokens": 300}),
+            rec(skill=None, branch="main", usage={"cache_read_input_tokens": 600}),
+        ]
+        stats = cost.attribution(records)
+        self.assertEqual(stats["records"], 3)
+        self.assertEqual(stats["no_milestone"], 2)
+        self.assertEqual(stats["no_phase"], 1)
+        self.assertEqual(stats["cache_read_input_tokens"], 1000)
+        # The token-mass share differs from the record share — reporting only
+        # the record count would understate the cost that went unkeyed.
+        self.assertEqual(stats["no_milestone_cache_read"], 900)
+        self.assertEqual(stats["no_phase_cache_read"], 600)
+
+    def test_the_report_states_the_unattributable_share(self):
+        records = [
+            rec(skill="cairn:milestone-plan", branch="main",
+                usage={"cache_read_input_tokens": 300}),
+            rec(skill="cairn:milestone-implement", branch="m94-x",
+                usage={"cache_read_input_tokens": 100}),
+        ]
+        text = cost.report(str(SCRIPTS_DIR.parent), records)
+        self.assertIn("not keyed to a milestone", text)
+        self.assertIn("50.0%", text)
+        self.assertIn("75.0% of cache-read", text)
+
+
+class TestStoreLocation(unittest.TestCase):
+    def test_the_slug_is_the_absolute_path_with_separators_replaced(self):
+        self.assertEqual(
+            cost.store_slug("/Users/x/GitHub/cairn"), "-Users-x-GitHub-cairn"
+        )
+        self.assertEqual(cost.store_slug("/a/b_c.d"), "-a-b-c-d")
+
+    def test_read_records_skips_malformed_lines_without_dying(self):
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "s.jsonl"
+            path.write_text(
+                '{"type":"assistant","message":{"usage":{"output_tokens":5}}}\n'
+                "not json at all\n"
+                '{"type":"user"}\n'
+                '{"type":"assistant","message":{"usage":{"output_tokens":7}}}\n',
+                encoding="utf-8",
+            )
+            got = list(cost.read_records(tmp))
+        # Positive: both good assistant records survived, in order.
+        self.assertEqual(len(got), 2)
+        self.assertEqual(
+            [cost.tokens_of(r)["output_tokens"] for r in got], [5, 7]
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()

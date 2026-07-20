@@ -43,7 +43,7 @@ the runtime, so neither can drift from what actually happened.
 exceeds fresh input **719:1** (3,174,644,247 vs 4,413,685 — observed
 2026-07-19). A collapsed "input" figure would misattribute the cost by roughly
 three orders of magnitude, which is why `cairn_cost.py` keeps four columns and
-`skills/tests/test_cairn_cost.py` guards the separation.
+`scripts/tests/test_cairn_cost.py` guards the separation.
 
 ## Attribution ledger — how a record is keyed
 
@@ -113,11 +113,14 @@ carries. Stated as a measurement, not a conclusion: M94 does not judge whether
 
 ## Disposition
 
-- A1, A2, A5 → implemented in `scripts/cairn_cost.py`; guarded by
-  `skills/tests/test_cairn_cost.py`, which is registered in the mutation
-  harness.
+- A1, A2, A5 → implemented in `scripts/cairn_cost.py`, guarded behaviourally
+  by `scripts/tests/test_cairn_cost.py` (assertions against the classifier
+  functions, never the rendered report).
 - The four-class separation → guarded in the same file; it is the one property
   whose violation would silently invalidate every figure on this page.
+- The reporting-only boundary on the `/milestone` cost line → prose-guarded by
+  `skills/tests/test_cost_audit_line.py`, whose three protected blocks are
+  registered in the mutation harness and mutation-verified.
 - A3, A4, A6 → stated as limits here and in the script docstring, and surfaced
   in the report output itself. A6 was scoped Out at plan time for exactly the
   reason restated above; nothing in this milestone revisits it.

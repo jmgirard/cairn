@@ -74,6 +74,28 @@ REGISTRY = [
         target="skills/shared/templates/milestone.md",
         block="## Coverage",
     ),
+    # M94: the cost line reports and never judges. Three blocks carry the
+    # rule independently — the invocation, the reporting-only boundary, and
+    # the two prohibitions that give the boundary teeth — so each gets its
+    # own mutation proof (M53 per-block discipline).
+    Mutation(
+        guard="test_cost_audit_line",
+        test="TestCostAuditLine.test_the_audit_runs_the_cost_script",
+        target=MILESTONE,
+        block="cairn_cost.py --audit-line",
+    ),
+    Mutation(
+        guard="test_cost_audit_line",
+        test="TestCostAuditLine.test_the_cost_line_is_boundaried_as_reporting_only",
+        target=MILESTONE,
+        block="a reporting surface only",
+    ),
+    Mutation(
+        guard="test_cost_audit_line",
+        test="TestCostAuditLine.test_the_boundary_names_what_it_forbids",
+        target=MILESTONE,
+        block="never treat a large figure as a finding to act on",
+    ),
     # M88 (D-050): release timing is the maintainer's to declare. Three
     # surfaces carry the rule independently — the governance rule, the
     # `blocked` widening plus its transitions, and the two skills that would

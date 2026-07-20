@@ -88,7 +88,7 @@ audit.
 - [x] T3: Add the `/milestone` audit line.
 - [x] T4: Write the dated synthesis note (method, schema, limits, baseline) and
       its INDEX entry.
-- [ ] T5: Write the guards (attributor + cache/fresh split), register in the
+- [x] T5: Write the guards (attributor + cache/fresh split), register in the
       mutation harness, run all three suites from the repo root.
 
 ## Work log
@@ -110,6 +110,7 @@ audit.
 - 2026-07-19: T2 — extractor + by-phase/by-milestone report. AC1 hand-check on session `1601be2a` (M93 implement): three independent methods (jq aggregate, per-record jq→awk sum, raw Python line loop) all return 162 turns / 24,213,467 cache-read / 185,894 cache-create / 301 fresh / 119,840 output / 0 agents, matching the module exactly. Corroboration: the `agents` column reads exactly 4 for every reviewed milestone — the M17 fan-out. Verify clean (441/209/72).
 - 2026-07-19: T3 — `/milestone` §2 gains `cairn_cost.py --audit-line`, reported verbatim, with the no-threshold/no-verdict boundary stated in the skill prose and the governing mechanism deferred to M96. Verify clean.
 - 2026-07-19: T4 — `cairn/references/session-cost-notes.md` + INDEX line: schema, attribution ledger A1–A6 (A3 plan-phase `refused`, A4 subagent tokens `absent`, A6 per-file share `refused`), ten-milestone baseline, and the cache-read-per-turn trend (166,451 → 184,351, +10.8% M63–M68 → M88–M93) against +56%/+103% file growth. Two existing guards caught real defects on first run — a wrapped `Extraction:` line and the pinned page-state ledger — both fixed, not worked around. Verify clean.
+- 2026-07-19: T5 — `scripts/tests/test_cairn_cost.py` (18 behavioural guards on the classifier functions, not the rendered report) + `skills/tests/test_cost_audit_line.py` (6 prose guards, 3 blocks registered in the mutation harness and mutation-verified). The phase-map coverage guard caught a real gap on first run: `design-interview` was a shipped skill missing from `PHASES`, so its turns would have landed in `unattributed`. Verify clean: 447 / 227 / 72, `cairn_validate` exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

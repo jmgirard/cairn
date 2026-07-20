@@ -66,6 +66,7 @@ PHASES = {
     "cairn:hotfix": "hotfix",
     "cairn:cairn-init": "cairn-init",
     "cairn:cairn-release": "cairn-release",
+    "cairn:design-interview": "design-interview",
 }
 UNATTRIBUTED = "unattributed"
 
