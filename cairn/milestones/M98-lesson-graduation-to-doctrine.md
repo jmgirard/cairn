@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M98: Lesson graduation to doctrine — a matured lesson family leaves LESSONS.md whole
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, GP4   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m98-lesson-graduation`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -125,6 +125,7 @@ mutation registration.
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
 
 - 2026-07-19: created by /milestone-plan. Gate: module home over synthesis note; T1 re-derives the family boundary rather than inheriting RR03's 63%; fidelity proven by recorded inversion per lesson; the D-entry distinguishes rather than supersedes D-051's rejected graduated-lessons file.
+- 2026-07-19: in-progress, branch `m98-lesson-graduation` cut from main at e684c39.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
