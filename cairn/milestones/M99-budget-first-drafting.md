@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** `m99-budget-first-drafting`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m99-budget-first-drafting` · https://github.com/jmgirard/cairn/pull/96   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -116,6 +116,7 @@ produced that thrash — `/milestone-plan` step 4 and `/milestone-review` step 9
      EXEMPT from the 150-line cap (D-046): history under D-045, never edited,
      so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
+- 2026-07-20: review opened — draft PR #96. Gate evidence gathered: suites green at three separate exit codes (skills 507, scripts 266, hooks 72), `cairn_validate` exit 0 with 15 PASS and no FAIL/WARN. AC1-AC5 and AC7 verified; AC6 is verified only on its milestone-file half (117/149) — its archive-summary half is not verifiable until the step-9 hygiene pass authors that artifact, so the tick waits rather than resting on a charitable reading. Three review lenses spawned.
 - 2026-07-20: T7 landed 16 guards (`skills/tests/test_budget_first_drafting.py`), 4 mutation-registry entries across 3 targets, and the `DESIGN.md` scripts inventory now naming `cairn_budget` — and `cairn_cost`, absent from that bullet since M94. The template-arithmetic guards RE-DERIVE every figure from the template on disk rather than pinning digits, so the self-referential block cannot drift green. Verified by inversion as well as blanking: rewording the budgets as "an enforced per-section cap" reddens, restoring greens.
 - 2026-07-20: AC6 self-check — M99's own body is 117/149 (headroom 32) on first draft, so the milestone clears the rule it ships. It does exceed three SECTION budgets (AC 30 vs 28, Coverage 13 vs 11, Tasks 28 vs 25) while far under the cap: the budgets are p75 guidance, a quarter of drafts legitimately exceed a given section, and whole-file headroom absorbs it. That is the intended behaviour, not a miss — a section budget that could fail would be the second cap D-030 declined.
 - 2026-07-20: T4–T6 wired the budgets. Milestone template carries one budget block (Goal 7 · Scope 26 · AC 28 · Coverage 11 · Tasks 25 over a 21-line preamble, ≥21 reserved for `## Decisions`, 139 of 149 permitted); the block is SELF-REFERENTIAL — stating the preamble size changes it — so it was measured, corrected, and re-measured to a fixed point rather than stated once. New comment-free `archive-summary.md` (15-line skeleton, 22-line budget). Also fixes label drift the T1 survey exposed: across the 96 summaries `Goal` ran 37 vs `Goal.` 16, and decisions split four ways (`Key decisions` 14, `Decisions` 7, `Decisions.` 7, `Key decisions.` 4).
