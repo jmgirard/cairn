@@ -116,6 +116,7 @@ produced that thrash — `/milestone-plan` step 4 and `/milestone-review` step 9
      EXEMPT from the 150-line cap (D-046): history under D-045, never edited,
      so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
+- 2026-07-20: merge-gate finding (user, F6) — the template's budget block was SELF-REFERENTIAL: it stated the preamble length of the file it sits in, so editing the block changed the number the block asserted, and it drifted twice while being authored. Bounded (the guard re-derived from disk, and adopting repos read the template without editing it) but an avoidable standing maintenance cost. Fixed by removing the self-computed figures entirely: the block now states only the actionable per-section budgets and the reserve, `cairn_budget` prints the running total, and the guard asserts the PROPERTY (budgets + measured preamble + reserve fit under the cap) plus an absence check, paired with positives, so the fixed point cannot return. Verified by inversion: reintroducing a stated preamble length reddens.
 - 2026-07-20: CORRECTION to the T1 archive-summary entry below (IP4: superseded, not edited). That entry recorded the allocation as "title+status+blanks 5, Goal 3, Outcome 8, Decisions 3, Review 3". The allocation that SHIPPED, and that is correct, is `Goal 2 · Outcome 7 · Decisions 3 · Review 3` over 7 fixed lines — counting the skeleton gives title 1 + status 1 + five blank separators 5 = 7, not 5. Both sum to 22; no component agreed. Caught by two independent review lenses (F3); `test_the_archive_allocation_matches_the_templates_actual_fixed_lines` now derives the fixed-line count from the template on disk so the two records cannot re-diverge.
 - 2026-07-20: review fan-out — 3 lenses + scorer. Actioned F1 (92), F2 (88), F4 (85); F3 (72) and F5 (35) scored sub-80 and were logged, then fixed anyway on operator judgment per M73. F1: the per-line axis printed OVER but was excluded from the exit verdict, so a wrapper checking `$?` read green on an over file — it is now a real `Axis`. F2: a readable `CLAUDE.md` with no cairn section exited 2 (this repo's not-a-cairn-repo signal) — `check_caps` passes that silently and now so does this. F4: the step-9 rewrite dropped the live milestone file's disposition, so following it literally orphaned the file until `roadmap<->disk orphans` caught it. Suites green after fixes: skills 509, scripts 269, hooks 72.
 - 2026-07-20: review opened — draft PR #96. Gate evidence gathered: suites green at three separate exit codes (skills 507, scripts 266, hooks 72), `cairn_validate` exit 0 with 15 PASS and no FAIL/WARN. AC1-AC5 and AC7 verified; AC6 is verified only on its milestone-file half (117/149) — its archive-summary half is not verifiable until the step-9 hygiene pass authors that artifact, so the tick waits rather than resting on a charitable reading. Three review lenses spawned.
@@ -231,6 +232,20 @@ operator's judgment:
   from the template on disk so the two records cannot re-diverge.
 - **F5 (35)** — a mutation-registry comment said "three targets" where the four
   entries name four distinct target files. Pure prose accuracy; fixed in passing.
+
+Raised by the user at the merge gate, after the fan-out:
+
+- **F6 (merge gate)** — the milestone template's budget block computed a fact
+  about itself (its own preamble length, and a total derived from it), making it
+  a fixed point: every edit to the block invalidated the figure it stated. Not a
+  correctness risk — the guard re-derived from disk, and adopting repos consume
+  the template without editing it — but it had already drifted twice in a single
+  authoring session, and the guard only converted that cost into a red test
+  rather than removing it. **Fixed:** the self-computed figures are gone; the
+  block states the actionable budgets and the reserve, and `cairn_budget` prints
+  the running total. The guard now asserts the property rather than comparing two
+  stated numbers, and `test_the_block_describes_no_length_of_its_own` (paired
+  with positives) stops the fixed point returning. Verified by inversion.
 
 No finding was rejected. No criterion was reinterpreted; no plan-owned text was
 edited review-side.

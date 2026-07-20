@@ -71,40 +71,56 @@ class TestMilestoneTemplateBudgets(unittest.TestCase):
                 f"no drafting budget stated for {section}",
             )
 
-    def test_the_stated_preamble_matches_the_templates_actual_preamble(self):
-        """The self-referential figure. Re-derived, never pinned."""
+    def preamble(self):
+        """The template's actual preamble, measured — never read from prose."""
         body = cs.milestone_body_line_count(str(TEMPLATE))
         sections = cs.milestone_section_line_counts(str(TEMPLATE))
-        actual = body - sum(n for _, n in sections)
-        stated = int(re.search(r"this (\d+)-line preamble", self.text).group(1))
-        self.assertEqual(
-            stated,
-            actual,
-            "the budget block states a preamble length the template no longer "
-            "has; re-measure and restate (it describes the file it sits in)",
-        )
+        return body - sum(n for _, n in sections)
 
-    def test_the_stated_total_is_the_sum_of_the_stated_parts(self):
+    def test_the_budgets_plus_the_real_preamble_and_reserve_fit_under_the_cap(self):
+        """The property the block claims, asserted directly.
+
+        An earlier version had the block STATE its own preamble length, which
+        made it a fixed point: editing the block changed the number the block
+        asserted, and it drifted twice while being authored. The claim worth
+        guarding was never the digits — it was that the budgets fit. So the
+        preamble is measured here and the template no longer describes itself.
+        """
         parts = [
             int(re.search(rf"{s} (\d+)", self.text).group(1))
             for s in ("Goal", "Scope", "AC", "Coverage", "Tasks")
         ]
-        preamble = int(re.search(r"this (\d+)-line preamble", self.text).group(1))
         reserve = int(re.search(r"≥(\d+) RESERVED", self.text).group(1))
-        total, permitted = map(
-            int, re.search(r"(\d+) of (\d+) permitted", self.text).groups()
+        total = sum(parts) + self.preamble() + reserve
+        self.assertLess(
+            total,
+            cs.MILESTONE_CAP,
+            f"the stated budgets ({sum(parts)}) plus the measured preamble "
+            f"({self.preamble()}) plus the reserve ({reserve}) = {total}, which "
+            f"does not fit the <{cs.MILESTONE_CAP} cap",
         )
-        self.assertEqual(sum(parts), 97, "section budgets no longer sum to 97")
-        self.assertEqual(total, sum(parts) + preamble + reserve)
-        self.assertEqual(permitted, cs.MILESTONE_CAP - 1, "permitted must track the cap")
+        self.assertGreater(
+            cs.MILESTONE_CAP - 1 - total, 0, "the budget must leave the cap room"
+        )
 
-    def test_the_stated_spare_is_the_gap_to_the_cap(self):
-        total, permitted = map(
-            int, re.search(r"(\d+) of (\d+) permitted", self.text).groups()
+    def test_the_block_describes_no_length_of_its_own(self):
+        """The fixed point must not come back. Any figure in this block that
+        describes the template's own preamble reintroduces the maintenance
+        trap the guard above exists to have removed."""
+        self.assertNotRegex(
+            self.text,
+            r"this \d+-line preamble",
+            "the budget block again states its own preamble length",
         )
-        spare = int(re.search(r"(\d+) spare", self.text).group(1))
-        self.assertEqual(spare, permitted - total)
-        self.assertGreater(spare, 0, "the budget must leave the cap some room")
+        self.assertNotRegex(
+            self.text,
+            r"\d+ of \d+ permitted",
+            "the budget block again restates a total the counter prints",
+        )
+        # Paired positive: the block is still present and still budgeting, so
+        # these absence assertions cannot pass by the block having vanished.
+        self.assertIn("DRAFTING BUDGETS", self.text)
+        self.assertRegex(self.text, r"Goal \d+ · Scope \d+")
 
     def test_the_decisions_reserve_is_named_as_a_reserve_not_a_budget(self):
         """`## Decisions` is implement/review-owned and grows after plan time,
