@@ -545,7 +545,7 @@ REGISTRY = [
         guard="test_record_density",
         test="TestRecordDensityRule.test_rule_states_that_density_warns_rather_than_fails",
         target=RULES,
-        block="Density warns rather than fails",
+        block="Density warns because",
     ),
     Mutation(
         guard="test_record_density",
@@ -1823,6 +1823,62 @@ REGISTRY = [
 EXEMPT = {
     "test_mutation_harness": "the harness's own tests, not a prose-guard",
 }
+
+# M95 (D-056). Five entries, because the placement doctrine fails in five
+# independent ways and any one of them silently restores the pre-M95 reading:
+# lose the rule definition and "operative" has no test; lose either half of the
+# asymmetry and guard-pinning flips back to keep-verbatim (the failure RR03
+# names); lose the unguarded case and every unpinned rule becomes unprovable;
+# lose D-056's no-backfill clause and the rejected "author the D-entries, then
+# slim" remedy becomes licensed by the placement test itself.
+REGISTRY += [
+    Mutation(
+        guard="test_rule_placement",
+        test="TestBehavioralInversionTest.test_rulebook_states_the_behavioral_inversion_test",
+        target=RULES,
+        block="**A rule is what changes compliant behavior when deleted or inverted.**",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestBehavioralInversionTest.test_rulebook_covers_the_unguarded_case",
+        target=RULES,
+        block="where no guard exists, record a by-hand inversion",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestReddeningAsymmetry.test_rulebook_states_the_screen_not_licence_rule",
+        target=RULES,
+        block="**Guard-reddening is a deletion screen, never a licence to keep**",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestReddeningAsymmetry.test_rulebook_states_the_ownership_direction",
+        target=RULES,
+        block="The text owns\nthe guard, not the reverse",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestDecisionRecord.test_entry_forbids_the_backfill_sweep",
+        target="cairn/DECISIONS.md",
+        block="author the entry when the choice is next\n   touched, never as a backfill sweep",
+    ),
+    # Two operative clauses M95's inversion sweep found unpinned while the
+    # rules around them were guarded. Registered rather than left to the
+    # by-hand record, because each is a one-clause rule that a later editorial
+    # pass would read as trimmable prose.
+    Mutation(
+        guard="test_record_density",
+        test="TestRecordDensityRule.test_rule_requires_the_mean_to_be_measured_never_assumed",
+        target=RULES,
+        block="Measure that mean, never assume one",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestRecordCorrectionRule.test_the_correction_must_be_marked",
+        target=RULES,
+        block="the correction marked",
+    ),
+]
 
 # M97 (D-054). One entry per clause the bounded read rests on, not one for the
 # block: the four clauses fail independently — dropping the back-reference

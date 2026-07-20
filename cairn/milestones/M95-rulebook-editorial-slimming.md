@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M95: Rulebook editorial slimming — the rulebook states rules, not their legislative history
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m95-rulebook-editorial-slimming` · https://github.com/jmgirard/cairn/pull/97   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -49,12 +49,12 @@ touches and recording what that cost.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: Every removal names **exactly one** of three grounds, per block in
+- [x] AC1: Every removal names **exactly one** of three grounds, per block in
       the work log: **(a)** it restates an existing decision record, quoted from
       that record before removal; **(b)** it fails the behavioral inversion test
       and records no decision — deleted against git, no backfill; **(c)** it is
       redundant with directives the skills carry, named. A block matching none stays.
-- [ ] AC2: **No rule is lost.** Every rule surviving as a shortened statement
+- [x] AC2: **No rule is lost.** Every rule surviving as a shortened statement
       keeps a guard that reddens when the rule is deleted or inverted, proven
       by inversion — relabel, negate, or transpose the rule in place, run the
       suite, require red, restore and diff (M74). A rule whose guard cannot be
@@ -62,26 +62,26 @@ touches and recording what that cost.
       Guard-pinning is a **deletion screen only, never keep-verbatim** (RR03
       §2): a pinned block failing the behavioral test is shortened *with*
       re-anchoring, not skipped.
-- [ ] AC3: The license is recorded and stated where its consumers read it — one
+- [x] AC3: The license is recorded and stated where its consumers read it — one
       D-entry annotating D-045 and citing D-052, carrying the three-step
       placement procedure and the behavioral-inversion doctrine; and both the
       inversion test and the reddening asymmetry stated in "What gets a test"
       and guard-pinned. IP4's wording is untouched.
-- [ ] AC4: The mutation harness is green with every reworded anchor
+- [x] AC4: The mutation harness is green with every reworded anchor
       re-registered: a `block` that reflowed, duplicated, or lost trailing
       punctuation self-reports as "found 0" — the fix is the WRAP, never the
       assert (M65/M78). Registration is per file, so a guard file whose anchors
       all changed still needs its entries checked, not assumed (M53). The
       re-anchoring cost is recorded, making the RR03 rec 8 row judgeable.
-- [ ] AC5: RR01 rec 7's prune is completed: the per-skill phase-header
+- [x] AC5: RR01 rec 7's prune is completed: the per-skill phase-header
       enumeration is replaced by the two-level convention plus the skills' own
       directives, and the default-branch recipe is stated once *within the
       rulebook*.
-- [ ] AC6: The resulting line and character count is **recorded as evidence,
+- [x] AC6: The resulting line and character count is **recorded as evidence,
       never as a gate** — no line target is a pass condition (RR03's ~60–100
       lines is an expectation, not a bar). The before/after section breakdown is
       recorded for M96's first stamp, in `cs.char_count` characters, not bytes.
-- [ ] AC7: The active profile's `verify` slot is clean — all three suites
+- [x] AC7: The active profile's `verify` slot is clean — all three suites
       green, run from the repo root with exit codes checked individually and
       never behind a pipe (M56).
 
@@ -102,26 +102,26 @@ touches and recording what that cost.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Author the D-entry annotating D-045 and citing D-052: the rulebook is
+- [x] T1: Author the D-entry annotating D-045 and citing D-052: the rulebook is
       current knowledge; the three-step placement procedure; the behavioral
       inversion doctrine. Lands **before** any rulebook edit — it is the pass's
       license, not its write-up.
-- [ ] T2: State the inversion test and the reddening asymmetry in "What gets a
+- [x] T2: State the inversion test and the reddening asymmetry in "What gets a
       test"; guard both; register in the mutation harness.
-- [ ] T3: Re-locate the B1–B21 ledger against the current file and re-classify
+- [x] T3: Re-locate the B1–B21 ledger against the current file and re-classify
       each block under AC1's three grounds. Its line numbers are stale (765 →
       788 lines) and cairn wraps at ~66 chars, so plain `grep` misses a wrapped
       phrase — B10 and B12 return zero hits while present. No edits here.
-- [ ] T4: Edit section by section, heaviest first (Weight caps → References
+- [x] T4: Edit section by section, heaviest first (Weight caps → References
       pages → Output discipline → Universal rules → Git model). **Targeted
       `Edit` calls only — never an ad-hoc string script over a tracking file
       (M61), never `replace_all` where indentation or context differs between
       occurrences (M90).** Cut content, don't rephrase: only removing a whole
       *wrapped* line lowers the count (M51/M87). Run the skills suite per section.
-- [ ] T5: Re-anchor and re-register guards; run the mutation harness; prove
+- [x] T5: Re-anchor and re-register guards; run the mutation harness; prove
       AC2's inversion for each shortened rule; record the re-anchoring cost.
-- [ ] T6: Complete RR01 rec 7's prune.
-- [ ] T7: Record before/after counts and the section breakdown; run all three
+- [x] T6: Complete RR01 rec 7's prune.
+- [x] T7: Record before/after counts and the section breakdown; run all three
       suites from the repo root with exit codes checked.
 
 ## Work log
@@ -164,6 +164,36 @@ touches and recording what that cost.
 - 2026-07-20: RE-CUT by /milestone-plan per RR03 rec 3. Goal, Scope, AC and Tasks authored fresh; the B1–B21 ledger stays as input and tasks re-number from scratch (the old T1/T2 ticks go with them). AC1's single D-entry-home bar is replaced by RR03 §1's three removal grounds. Scope reversal at the plan gate (user-selected): writing to `DECISIONS.md` moves from Out to In — one entry annotating D-045, authored FIRST as the pass's license (rec 1). Inversion test + reddening asymmetry placed in "What gets a test" (user-selected; RR03 §2's first-named home, M98 F4 the owing finding).
 - 2026-07-20: measured drift since the ledger was written — `tracking-rules.md` is now 788 lines / 54,584 chars, up from T1's 765 / 52,316 across M97–M99 (+23 lines, +2,268 chars in three milestones). Every ledger line number is stale, and re-location must be wrap-aware: cairn hard-wraps at ~66 chars, so B10 ("extends the same authority upstream") and B12 ("ahead N, behind 1") both return zero `grep` hits while sitting in the file. Recorded as T3's premise.
 - 2026-07-20: plan-gate collision sweep — D-053 already amended GP1 at the RR03 ingest gate, so rec 6 is discharged and M95 inherits "recorded editorial passes bound the rulebook" as its criterion; M97 and M98 are `done`, so RR03's order has reached M95. RR03 rec 9's rejection of "author the missing D-entries, then slim" is carried into Scope Out so the pass cannot re-propose it. Plan-owned body 142/149 after compressing AC/Scope/Tasks (M87: compress what your phase owns) — headroom left deliberately for implement's `## Decisions` appends, which the cap counts.
+- 2026-07-20: in-progress; branch `m95-rulebook-editorial-slimming` cut from a synced main. No implement question gate: the plan gate settled scope, the DECISIONS reversal, and the inversion-test placement in the same session, and nothing else is open that the ACs do not already arbitrate.
+- 2026-07-20: T1 done — D-056 authored, the pass's license. Three parts: the rulebook is current knowledge under D-045 (plugin logic, a class both of D-045's lists omitted, fixed the way D-052(2) fixed ROADMAP.md); the three-step placement test (inversion → decision → default delete); guard-pinning as a deletion screen only, with the reddening asymmetry stated. IP4 untouched and explicitly confirmed. Both rejections carried in: "author the D-entries then slim" (RR03 rec 9) and any IP4 change. `decision heading quality` OK on the new heading.
+- 2026-07-20: T2 done — both statements placed in "What gets a test", immediately before the guard obligation they qualify (order pinned positionally, since it carries the argument). New guard `skills/tests/test_rule_placement.py`, 20 tests, 4 classes; 5 blocks registered in the mutation harness, which is the inversion proof for each. Net +16 rulebook lines before the pass subtracts — recorded so AC6's before/after is honest about what M95 added as well as removed.
+- 2026-07-20: T2 note — my first draft of the guard asserted three spans at guessed wrap points and failed on all three; the file's actual wrapping is authoritative and the asserts were rewritten against it. Also dropped a `[:34]` slice hack that would have pinned a truncated clause. This is M65/M78 from the other side: the harness catches a reflowed anchor, but nothing catches an anchor authored against text that was never read out.
+- 2026-07-20: T3 done — 20 of 21 ledger blocks re-located wrap-aware against the current 804-line file (B17's probe missed only on bold markers; it stays regardless). Verdict: 14 removals, 7 keeps. The keeps are B5, B9, B12, B13, B16, B17, B21 — every one passes the behavioral inversion test as a rule or as application doctrine, which is why guard-pinning is no longer the reason given for any of them.
+- 2026-07-20: LEDGER B1 (:91) REMOVE, ground (b) — the "49 lines / 13% mass / nothing reported it" measurement. Fails inversion (a fact about LESSONS' past state; deleting it changes no agent behavior) and records no decision — the first run verified NO-HOME by hand, D-049 stating the contrary fact and D-051's "49 lines" being a different measurand. RR02's flagship example, deleted against git.
+- 2026-07-20: LEDGER B2 (:96) REMOVE, ground (a) — the threshold-derivation narrative and its M87 parenthetical restate D-049 ("non-item mass plus capacity × the measured mean item length"). KEEP "measure that mean, never assume one": it governs application, so it is class 2 and survives its own restatement.
+- 2026-07-20: LEDGER B3 (:107) REMOVE (partial), ground (b) — the "because an item count is a structural fact but 'too dense' is a judgment" justification. The operative half, WARN-vs-FAIL severity, stays.
+- 2026-07-20: LEDGER B4 (:115) REMOVE (partial), ground (a) — the 3,152/2,568 incident restates D-052's Context. The exemption reason stays: guard-pinned at `test_hygiene_stamp.py:69` AND passing the behavioral test, and D-052 itself says that rationale is "kept, not overturned".
+- 2026-07-20: LEDGER B6 (:131) REMOVE, ground (a) — restates D-046 almost verbatim ("once the section costs no budget a wrap is untidiness, not damage"). Unpinned.
+- 2026-07-20: LEDGER B7 (:157) REMOVE (partial), ground (b) — the trailing "same boundary terminal-row retention already runs on". No home and no behavioral effect; the label and the current-knowledge sentence stay, pinned at `test_hygiene_stamp.py:42,53`.
+- 2026-07-20: LEDGER B8 (:179) REMOVE (partial), ground (a) — the ROADMAP re-derivation restates D-052(2). The IP/GP-exception and "Ruled out" sentences stay, pinned at `test_lessons_loop.py:116,121`.
+- 2026-07-20: LEDGER B10 (:222) REMOVE, ground (b) — "extends the same authority upstream, to whether the release is even queued". Argumentation; the rule and the `blocked` parking stay, pinned at `test_release_timing.py:47-72`.
+- 2026-07-20: LEDGER B14 (:482) REMOVE, ground (a) — the D-020 phase-header narrative parenthetical. Confirmed in D-020, unpinned.
+- 2026-07-20: LEDGER B15 (:486) REMOVE, ground (c) — the per-skill phase-header enumeration. All nine skills carry their own `Phase header:` directive and the rulebook guard pins only the milestone mapping. This is the removal AC1's old wording forbade and the ledger flagged as "the milestone's cleanest win"; T6 executes it.
+- 2026-07-20: LEDGER B18 (:724) REMOVE, ground (b) — the provenance-block justification. No home, unpinned, and RR03 §1 names it a class-4 orphan. AC1's old wording forbade this despite it reading as pure justification.
+- 2026-07-20: LEDGER B19 (:449) REMOVE (partial), ground (b) — the "outward-facing and irreversible" / "weaker consent" argumentation. No home in D-003 or D-019; the opening label stays, pinned at `test_gate_wording.py:46`.
+- 2026-07-20: LEDGER B20 (:468) REMOVE (partial), ground (a) — the chip-less-exception narrative restates D-019. The one pinned sentence stays (`test_gate_wording.py:99`).
+- 2026-07-20: LEDGER B11 (:347) — not a removal. RR01 rec 7's prune: the recipe is stated once WITHIN the rulebook; `cairn-init`'s copy is deliberate and guard-locked. T6.
+- 2026-07-20: LEDGER B21 (:598) KEEP — reconsidered under the new doctrine, where guard-pinning is no longer a keep reason. "An author shares their own diff-blindness" passes the behavioral test on its own: it forecloses the judgment "I wrote it, I can review it", which is exactly the call an agent would otherwise make. Class 2, not class 4.
+- 2026-07-20: T4 done — twelve removals landed across Weight caps, Universal rules, Question gates, Output discipline and References. 804 → 784 lines (−20), 55,940 → 54,096 chars. Suite run after each section, never only at the end; all 528 skills tests green throughout.
+- 2026-07-20: T4 correction — B3's removal reddened `test_record_density.py:63`, which the first run's ledger recorded as NO-HOME without noticing it was also pinned. The severity rule itself survived (the both-axes line pins it), but the anchor phrase went with the justification. Applied D-056 step 3's "compress to a clause" rather than delete whole: the reason is behavioral — it governs whether an advisory may be escalated to a gate, and two other advisories make the same call — so it stays as one sentence, re-anchored in both the guard and its harness entry.
+- 2026-07-20: T5 done — AC2's inversion proof run mechanically, not by eye: each surviving shortened rule was blanked in place, the full skills suite run, RED required, then the file restored and byte-compared to its pre-run state. 8 of 11 came back RED first pass. Re-anchoring cost: **1 guard assert + 1 harness entry** (`test_record_density`, from B3's compression) — RR03 rec 8's candidate row is gated on this cost proving material, and at one re-anchor across twelve removals it is not; recorded so the row can be judged rather than left open.
+- 2026-07-20: T5 found three surviving rules unpinned, and the suite being green proves they were unpinned BEFORE M95 — a guard whose span crossed deleted text would already be red. Two were real gaps in operative rules and are now pinned and mutation-registered: "Measure that mean, never assume one" (D-049's application rule, the one M84-D1 actually broke) and "the correction marked" (D-045 rejected the unmarked variant by name). The third, B14's TOC sentence, is justification pointing at a mandate `test_chapter_marker_mandate.py:61-62` already pins, so it stays compressed and unpinned rather than guarded twice.
+- 2026-07-20: T5 process note — my first inversion probe reported B8 and B20 unpinned on locator phrases that were never the guarded ones (the elaboration, not the rule). Both are in fact pinned. A locator that misses reads exactly like a rule that is unguarded, so an inversion sweep needs its probes drawn from the guard files, not from the prose being cut.
+- 2026-07-20: T6 done — RR01 rec 7 complete. B15's per-skill phase-header enumeration is replaced by the two-level convention plus a pointer to each skill's own `Phase header:` directive; ground (c)'s evidence is a run over all nine `SKILL.md` files confirming each states its own pair, every one matching the deleted enumeration exactly. The milestone mapping stays inline, since the rulebook guard pins that one.
+- 2026-07-20: T6 finding — AC5's other half was already true. The default-branch recipe is stated exactly ONCE in the rulebook (grep for `symbolic-ref`/`ls-remote` returns one block); RR02's complaint was its 14-line length, not duplication, and the second copy lives in `cairn-init` where Scope Out keeps it. Trimmed the skill enumeration (ground c — each skill states it) and the "stores no branch name" clause into the opening rule; all three detection rungs and the no-guessing rule are untouched and still pinned.
+- 2026-07-20: T7 done — `tracking-rules.md` 788 → 779 lines, 54,584 → 53,751 chars (`cs.char_count` characters, not `wc -c` bytes). Section breakdown for M96's first stamp: Weight caps 80→70, Universal 73→69, Question gates 38→35, Output discipline 97→93, References 66→64, Git model 76→74, What gets a test 47→63; all other sections unchanged. Verify slot clean — three suites run from the repo root with exit codes checked individually, never behind a pipe (M56); `cairn_validate` all checks passed.
+- 2026-07-20: T7 honest accounting — net −9 lines is 25 removed by the pass against 16 ADDED by AC3's inversion-test paragraphs, and it undershoots RR03's ~60-100 expectation badly. Two reasons, neither of which the ACs treat as a failure (AC6: the count is evidence, never a gate). First, the 21-block ledger was the input and it is what the FIRST run built against RR02's framing; sections it never sampled were never re-swept, so M95 measured RR02's hypothesis rather than the file. Second, of the 14 removals most were a clause or a sentence, not a paragraph — RR03's estimate assumed more class-4 mass than the ledger actually contains, and its own floor for the old bar was ~35-40 gross.
+- 2026-07-20: T7 open concern for review — the honest reading is that the rulebook's mass is mostly class 1/2 (rules and application doctrine), which is what D-056 predicts and what the 7 keeps and 3 unpinned-but-operative finds both point at. If that is right, the remaining lever is M96's ratchet governing INFLOW, not a second slimming pass; a re-cut aiming at 60+ lines would have to delete operative doctrine to get there. Flagged rather than resolved — this is a judgment for the review gate, not an implement-side call.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -185,3 +215,90 @@ touches and recording what that cost.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as is the work log (D-046); evidence never scrambles plan-owned content. -->
+
+**Reviewed 2026-07-20 · PR #97 · branch `m95-rulebook-editorial-slimming`.**
+Branch in sync with `origin/main` (0 ahead / 0 behind at review start), so no
+merge-and-retest was needed. No CI is configured on this repo — `gh pr checks`
+reports none — so the locally-run `verify` slot is the gate, not a green badge.
+
+### Evidence per criterion
+
+- **AC1** — 13 dated `LEDGER B<n> … REMOVE` work-log entries plus T6's
+  default-branch trim = 14 removals, each naming exactly one ground:
+  6 × (a) restates a decision record, 6 × (b) fails inversion and records no
+  decision, 2 × (c) redundant with the skills' own directives. No removal
+  names two grounds and none names none. Ground (c)'s evidence is a run over
+  all nine `skills/*/SKILL.md` confirming each states its own `Phase header:`
+  directive matching the deleted enumeration.
+- **AC2** — inversion re-run fresh at review, mechanically: each surviving
+  rule blanked in place, full skills suite run, RED required, file restored
+  and byte-compared. **13 of 13 RED (guarded), 0 unpinned**, file verified
+  byte-identical to its pre-sweep state. Includes the two rules M95 newly
+  pinned and the two statements M95 added. No rule left unpinned, so AC2's
+  restore-to-full-statement fallback was never triggered.
+- **AC3** — `### D-056` present once, heading naming D-045 as annotated;
+  `cairn_validate`'s `decision heading quality` OK on it. Both statements
+  confirmed present *inside* the `## What gets a test` section by parsing the
+  section rather than the whole file. IP4 untouched: `git diff main..HEAD --
+  cairn/DESIGN.md` is 0 lines, so `cairn_impact` is correctly skipped.
+- **AC4** — mutation harness green (9 tests). 5 blocks registered for
+  `test_rule_placement` plus 2 gap-fill registrations. Re-anchoring cost
+  across 12 removals: **1 guard assert + 1 harness entry**, both from B3's
+  compression — recorded so the RR03 rec 8 candidate row can be judged.
+- **AC5** — enumeration absent (`# Hotfix: <slug>`, `# Design interview` both
+  gone), replacement pointer present, and the default-branch recipe occurs
+  exactly once in the rulebook (`git symbolic-ref --short
+  refs/remotes/origin/HEAD` count = 1). All three detection rungs intact.
+- **AC6** — 788 → 779 lines, 54,584 → 53,751 chars in `cs.char_count`
+  characters (not `wc -c` bytes), with the per-section breakdown recorded in
+  the work log for M96's first stamp. Recorded as evidence; no line target
+  gated anything.
+- **AC7** — three suites run from the repo root, exit codes checked
+  individually and never behind a pipe: `skills/tests` 0, `hooks/tests` 0,
+  `scripts/tests` 0.
+
+### Consistency gate
+
+`cairn_validate` exit 0 — 15 PASS, 8 advisory OK, zero WARN. Profile is
+`generic`, whose `consistency-gate` slot names no toolchain checks, so that
+half is a clean no-op. `coverage complete` PASS fences the plan; no principle
+changed, so the `cairn_impact` step is skipped by its own condition.
+
+### Independent review — three lenses + scorer
+
+**[O] diff-bug (Opus):** 1 finding. **[S] blame-history (Sonnet):** 0 — traced
+every removed hunk to its introducing commit and confirmed the operative
+content survives in the cited entry (D-049 carries M84/M87's material in more
+detail than the deleted prose did; D-052 carries M93's incident verbatim).
+**[S] prior-PR (Sonnet):** 0, no-op — `gh api …/pulls/comments --paginate`
+returns 0 inline comments repo-wide. It ran the archive `## Review` secondary
+pass and checked three findings this diff could regress (M53 per-file
+registration, M84 F2 vacuous test, M92 F1 unpinned rule): none regressed.
+
+**F1 (scored 78 — sub-threshold, ACTIONED anyway) — D-056's Consequences
+asserted a yield floor the delivering pass missed.** The entry read "the ~35-40
+lines its ledger proved removable under the old bar become a floor rather than
+the yield", while M95 removed 25 gross / −9 net. `DECISIONS.md` is the durable
+record M96 and every later pass read as their criterion.
+*Scorer's discount rejected on M73's rule (sub-80 gates the actioned list, not
+the operator's judgment) and M88's (verify a refutation before accepting it).*
+It scored 78 partly because the milestone's work log "already surfaced it" —
+but that mitigation fails on inspection: the work log compresses into a
+≤25-line archive summary, so the one honest record is the one discarded, while
+the unqualified claim persists in the file that is actually read.
+*Fixed on the branch* — pre-merge correction of a draft entry, the move D-052
+records at `M93 review F3/88`, so IP4 is untouched (the entry has not reached
+the default branch). Replacement text states that the test predicts no yield,
+records 25 gross / −9 net against the ~35-40 projection, and directs the
+reader to treat it as evidence the rulebook's mass is mostly class 1/2 rather
+than as a quota a later pass owes.
+
+**Dismissed by the [O] lens itself, recorded:** dropping D-020's "in Claude
+Code — cairn's runtime —" scoping, since the retained pointer to the "Chapter
+markers" rule restates the claim with its scoping and fallback intact.
+
+**Reviewer error worth recording:** the blame lens's closing summary described
+D-056 as requiring text be "evidenced as already recorded in a named D-entry"
+— that is the OLD AC1, the bar D-056 replaced. Its per-hunk verdicts are
+unaffected (each checked a real textual match), but the characterization
+restates a superseded rule.
