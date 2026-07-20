@@ -323,11 +323,9 @@ back-reference instead, since IP4 forbids repairing them.
   at all times. cairn does not assume the name is `main`; everywhere below,
   "the default branch" means the repo's actual default branch.
 - **Detecting the default branch (canonical recipe).** cairn never hardcodes
-  `main` in a git command. `/cairn-init` detects the name at adoption; every
-  operational skill (`/milestone-implement`, `/milestone-review`, `/hotfix`,
-  `/cairn-release`) re-detects it at runtime whenever it issues a
-  default-branch git command — cairn stores no branch name, so detection is
-  the single source of truth. Detect with
+  `main` in a git command and stores no branch name. `/cairn-init` detects it
+  at adoption; every operational skill re-detects it at runtime whenever it
+  issues a default-branch git command. Detect with
   `git symbolic-ref --short refs/remotes/origin/HEAD` (strip the leading
   `origin/`); if that fails because `origin/HEAD` is unset locally (a shallow
   clone, a `git remote add` without `set-head`) but a remote exists, query the
@@ -465,12 +463,9 @@ cairn skill is active.
   navigable table of contents is built from chapter markers, not markdown
   headers — D-020, and the "Chapter markers" rule below.)
   Milestone skills: `# Milestone <NN>: <title>` →
-  `## Plan` / `## Implement` / `## Review`. Other skills map onto the same
-  two levels: `# Hotfix: <slug>` → `## <step>`; `# cairn-init` →
-  `## Scaffold` / `## Repair` / `## Migration §n`; `# Release <version>`
-  → `## <step>`; `# Status` → `## Snapshot` / `## Audit` / `## Route`;
-  `# Review brief RB<NN>` → `## Draft` / `## Gate` / `## Ingest`;
-  `# Design interview` → `## Facts` / `## Principles`. Emit the
+  `## Plan` / `## Implement` / `## Review`. Every other skill maps onto the
+  same two levels and states its own pair in its `Phase header:` directive,
+  which is authoritative for that skill. Emit the
   `#` once per unit of work — at that unit's first phase — re-emitting when
   the unit changes: a routing chip into the next skill, or a fresh
   post-`/clear` session, both start a new `#` so the reply stands alone (a

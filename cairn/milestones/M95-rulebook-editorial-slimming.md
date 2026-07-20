@@ -120,7 +120,7 @@ touches and recording what that cost.
       *wrapped* line lowers the count (M51/M87). Run the skills suite per section.
 - [x] T5: Re-anchor and re-register guards; run the mutation harness; prove
       AC2's inversion for each shortened rule; record the re-anchoring cost.
-- [ ] T6: Complete RR01 rec 7's prune.
+- [x] T6: Complete RR01 rec 7's prune.
 - [ ] T7: Record before/after counts and the section breakdown; run all three
       suites from the repo root with exit codes checked.
 
@@ -189,6 +189,8 @@ touches and recording what that cost.
 - 2026-07-20: T5 done — AC2's inversion proof run mechanically, not by eye: each surviving shortened rule was blanked in place, the full skills suite run, RED required, then the file restored and byte-compared to its pre-run state. 8 of 11 came back RED first pass. Re-anchoring cost: **1 guard assert + 1 harness entry** (`test_record_density`, from B3's compression) — RR03 rec 8's candidate row is gated on this cost proving material, and at one re-anchor across twelve removals it is not; recorded so the row can be judged rather than left open.
 - 2026-07-20: T5 found three surviving rules unpinned, and the suite being green proves they were unpinned BEFORE M95 — a guard whose span crossed deleted text would already be red. Two were real gaps in operative rules and are now pinned and mutation-registered: "Measure that mean, never assume one" (D-049's application rule, the one M84-D1 actually broke) and "the correction marked" (D-045 rejected the unmarked variant by name). The third, B14's TOC sentence, is justification pointing at a mandate `test_chapter_marker_mandate.py:61-62` already pins, so it stays compressed and unpinned rather than guarded twice.
 - 2026-07-20: T5 process note — my first inversion probe reported B8 and B20 unpinned on locator phrases that were never the guarded ones (the elaboration, not the rule). Both are in fact pinned. A locator that misses reads exactly like a rule that is unguarded, so an inversion sweep needs its probes drawn from the guard files, not from the prose being cut.
+- 2026-07-20: T6 done — RR01 rec 7 complete. B15's per-skill phase-header enumeration is replaced by the two-level convention plus a pointer to each skill's own `Phase header:` directive; ground (c)'s evidence is a run over all nine `SKILL.md` files confirming each states its own pair, every one matching the deleted enumeration exactly. The milestone mapping stays inline, since the rulebook guard pins that one.
+- 2026-07-20: T6 finding — AC5's other half was already true. The default-branch recipe is stated exactly ONCE in the rulebook (grep for `symbolic-ref`/`ls-remote` returns one block); RR02's complaint was its 14-line length, not duplication, and the second copy lives in `cairn-init` where Scope Out keeps it. Trimmed the skill enumeration (ground c — each skill states it) and the "stores no branch name" clause into the opening rule; all three detection rungs and the no-guessing rule are untouched and still pinned.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
