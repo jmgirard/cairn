@@ -301,6 +301,15 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_lessons_loop",
+        test="TestLessonRetirement.test_ownership_permits_moving_content_to_its_owner",
+        target=RULES,
+        block=(
+            "**the retiring milestone may *move* the content there rather "
+            "than only find it already duplicated**"
+        ),
+    ),
+    Mutation(
+        guard="test_lessons_loop",
         test="TestLessonRetirement.test_partial_coverage_trims_rather_than_keeping_whole",
         target=RULES,
         block="**A lesson covered only in part is trimmed to its uncovered remainder**",
@@ -327,7 +336,7 @@ REGISTRY = [
         guard="test_lessons_loop",
         test="TestLessonRetirement.test_check_is_scoped_to_what_shipped",
         target=RULES,
-        block="**scoped to what the milestone shipped**",
+        block="**scoped to what the milestone shipped, never as a full re-sweep**",
     ),
     Mutation(
         guard="test_lessons_loop",

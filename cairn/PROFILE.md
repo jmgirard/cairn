@@ -25,11 +25,12 @@ python3 -m unittest discover -s scripts/tests
 python3 -m unittest discover -s hooks/tests
 ```
 
-Run them from the repo root by `discover`, never a dotted module name: the
-mutation harness does a bare `import mutation_engine`, so a
-`python3 -m unittest skills.tests.<name>` run dies `ModuleNotFoundError`. To
-narrow to a single test, add `-k <substring>` rather than switching to a
-dotted path.
+Run them from the repo root. `skills/tests` must go through `discover`, never a
+dotted module name: the mutation harness does a bare `import mutation_engine`,
+so `python3 -m unittest skills.tests.test_mutation_harness` dies
+`ModuleNotFoundError`. The `scripts` and `hooks` suites take a dotted path
+fine (`python3 -m unittest scripts.tests.test_scripts -k <sub>`). To narrow a
+`discover` run, add `-k <substring>`.
 
 ## consistency-gate
 Toolchain checks `/milestone-review` runs *in addition to* the universal

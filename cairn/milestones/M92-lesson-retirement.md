@@ -41,7 +41,7 @@ alone do not reach the bar.
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/shared/tracking-rules.md` states the retirement rule under its
+- [x] AC1: `skills/shared/tracking-rules.md` states the retirement rule under its
       own name, giving both criteria with their *discriminating* tests —
       enforcement is "a test fails on the mistake the lesson warns about", never
       "a guard exists in this area"; ownership covers content this milestone
@@ -49,21 +49,21 @@ alone do not reach the bar.
       partial disposition (a partly-covered lesson is trimmed to its uncovered
       remainder), and stating that retirement is distinct from D-045's in-place
       correction, since a retired lesson is not a false one.
-- [ ] AC2: `skills/milestone-review/SKILL.md`'s post-merge hygiene performs the
+- [x] AC2: `skills/milestone-review/SKILL.md`'s post-merge hygiene performs the
       retirement check beside the existing capture step, scoped to what the
       milestone shipped rather than sweeping all lessons.
-- [ ] AC3: The rule and the D-entry both state that a retired lesson leaves no
+- [x] AC3: The rule and the D-entry both state that a retired lesson leaves no
       line in `LESSONS.md` and that the retiring milestone's archive summary is
       the record (the form `archive/M53-prose-guard-mutation-harness.md:17`
       already uses).
-- [ ] AC4: A guard test locks the rule with label-inclusive asserts, is
+- [x] AC4: A guard test locks the rule with label-inclusive asserts, is
       registered in `skills/tests/test_mutation_harness.py`, and each registered
       block fails its guard when blanked by the mutation driver.
-- [ ] AC5: The first application pass leaves `cairn/LESSONS.md` with ≥2 lines of
+- [x] AC5: The first application pass leaves `cairn/LESSONS.md` with ≥2 lines of
       item headroom and ≥500 chars of weight headroom, measured by
       `cairn_scripts.line_count`/`char_count` against `LINE_CAPS`/`CHAR_CAPS`,
       with the measurement recorded as evidence.
-- [ ] AC6: All three `verify` suites green (`cairn/PROFILE.md`) and
+- [x] AC6: All three `verify` suites green (`cairn/PROFILE.md`) and
       `cairn_validate` PASS on every check with no new advisory raised.
 
 ## Coverage
@@ -117,6 +117,7 @@ alone do not reach the bar.
 - 2026-07-19: created by /milestone-plan.
 - 2026-07-19: in-progress on `m92-lesson-retirement`, cut from main at 16289bf.
 - 2026-07-19: step-3 gate amended Scope + AC1 + T7 — ownership permits MOVING content to its owner (not duplication-only), a partly-covered lesson is trimmed to its uncovered remainder, and consolidation (not D-015 prune) is AC5's headroom fallback. Preliminary sweep showed strict enforcement alone retires ~0 lessons, putting AC5 at risk; user chose all three recommendations.
+- 2026-07-19: review fan-out complete — diff-bug 3 findings, blame-history 0, prior-PR 0 (clean no-op, 29 PRs all `comments=0`). Scored 92/78/68. F1 (92) fixed: the ownership move-clause was pinned by nothing, so the rejected duplication-only reading could be restored with every test green; rewrapped, bolded, guarded, and verified by inversion. F3 (78) and F2 (68) both below threshold, logged, and fixed anyway under the M73 rule — F3 because PROFILE.md is now sole owner of a fact D-045 requires to be true and the relocation had made it less accurate, F2 per M78. Suites 432/196/72 + validate exit 0; AC1–AC6 ticked against recorded evidence.
 - 2026-07-19: review checkpoint (mid-review) — draft PR #91 opened; `main` unmoved since branch cut; AC1–AC6 evidence gathered by command and recorded in the Review section; consistency gate clean (validate exit 0, `cairn_impact` skipped — no principle change, `generic` toolchain half a no-op). No AC checkbox ticked yet: the three review lenses are still running and fencing holds ticks until triage completes.
 - 2026-07-19: T5+T6+T8 — `TestLessonRetirement` added (11 asserts, label-inclusive, targets read per-test); 11 mutation entries registered, driver blanks all 20 `test_lessons_loop` blocks green. Verified by INVERSION beyond blanking (M74): transposing retirement/correction, softening `fails`→`exists`, relabelling ownership→enforcement, and inverting the re-sweep rule each redden. One anchor was authored wrapped and the WRAP was fixed, not the assert. Suites 431/196/72, validate exit 0 no FAIL/WARN; no existing guard anchors bare on the new vocabulary (M85).
 - 2026-07-19: T7 — application pass over 35 lessons: 2 retired by ownership (M16 no-CI → PROFILE consistency-gate; M32 pytest/unittest → PROFILE verify + test-doctrine), 2 trimmed to uncovered remainder by enforcement (M53, M58+M59+M64+M65), 3 pairs consolidated as the AC5 fallback (M72, M87, M71). Strict enforcement retired nothing outright, confirming the step-3 gate's premise. LESSONS 52→47 lines (headroom 2) and 20,637→19,640 chars (headroom 860); AC5 met, all three suites + validate green.
@@ -164,3 +165,49 @@ Universal cairn-file checks: `cairn_validate` exit 0 (includes `coverage complet
 and `weight caps` PASS). `cairn_impact` correctly skipped — `DESIGN.md` is not in
 the diff, so no principle changed. Toolchain half: the `generic` profile's
 `consistency-gate` slot names no toolchain checks — a clean no-op.
+
+### Independent fresh-context review — 3 lenses + scorer
+
+- **[O] diff-bug (Opus):** 3 findings. Re-ran the suites and re-measured both
+  axes independently; content-preservation audit paired every retired, trimmed,
+  and consolidated line against `git show main:cairn/LESSONS.md` — no rule lost.
+- **[S] blame-history (Sonnet):** 0 findings. Traced each deletion to the commit
+  that wrote it (`6ec1182`, `70368b1`); confirmed M87's header coupling guard
+  (`test_record_density.py:103`) still binds after the T4 rewrite.
+- **[S] prior-PR (Sonnet):** 0 findings, clean no-op. All 29 merged PRs touching
+  these files show `comments=0 review_comments=0`, extending M91's measurement
+  from `references/` to the rulebook/guard-test surface. Secondary sweep of
+  archived `## Review` sections found no regression.
+
+**Actioned (≥80):**
+- **F1 (92) — AC1's ownership "move" clause was locked by nothing.** The clause
+  wrapped across two physical lines and the registered anchor stopped at the
+  label, so rewording it to "must already be duplicated in its owner" left all
+  431 tests green and silently reverted ownership to the duplication-only
+  reading the plan gate rejected — which would have blocked both of this
+  milestone's own retirements. Fixed: clause rewrapped onto one physical line,
+  bolded, with `test_ownership_permits_moving_content_to_its_owner` and its
+  `Mutation(...)` entry. Its lower-priority relative (tracking-rules' own
+  "never as a full re-sweep" unasserted) folded into the same fix by making
+  `test_check_is_scoped_to_what_shipped` label-inclusive. Both verified by
+  inversion: the exact reword now reddens.
+
+**Below threshold (<80) — logged, and both overridden and fixed anyway per the
+M73 rule that the score gates the actioned list, not the operator's judgment:**
+- **F3 (78) — relocated `verify` prose generalized a skills-only fact into a
+  blanket rule.** `PROFILE.md` is now sole owner of the fact, and D-045 requires
+  current knowledge to be true; M92's own ownership criterion had moved content
+  and made it less accurate en route. Scorer confirmed empirically that
+  `scripts.tests.test_scripts -k cap` and `hooks.tests.test_hooks` both run
+  dotted-module fine. Fixed: scoped to `skills/tests`, with the working dotted
+  form the retired M32 lesson taught restored. Each of the three cases re-run
+  individually (M75): exit 1, 0, 0 as now stated.
+- **F2 (68) — LESSONS header claimed "two remedies" and enumerated one.** The T4
+  rewrite dropped the line-cap remedy but kept the count, so "not evicting" read
+  as governing the line cap. Scorer noted the paragraph self-corrects two
+  sentences later, hence the sub-threshold score. Fixed anyway (M78: a milestone
+  shipping a records-hygiene rule runs it over its own artifacts): now "two caps,
+  one remedy each", each cap naming its own.
+
+Post-fix: suites 432/196/72 exit 0, `cairn_validate` exit 0, LESSONS 47 lines
+(headroom 2) / 19,677 chars (headroom 823) — AC5 still met.

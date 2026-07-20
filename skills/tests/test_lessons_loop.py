@@ -178,6 +178,18 @@ class TestLessonRetirement(unittest.TestCase):
             self.rules,
         )
 
+    def test_ownership_permits_moving_content_to_its_owner(self):
+        # M92 review F1/92: the label assert above stops at the label, so
+        # rewording this clause to "must already be duplicated in its owner"
+        # left every other assert green and silently reverted ownership to the
+        # duplication-only reading the plan gate rejected — a reading that
+        # would have blocked both of this milestone's own retirements.
+        self.assertIn(
+            "**the retiring milestone may *move* the content there rather "
+            "than only find it already duplicated**",
+            self.rules,
+        )
+
     def test_partial_coverage_trims_rather_than_keeping_whole(self):
         self.assertIn(
             "**A lesson covered only in part is trimmed to its uncovered remainder**",
@@ -202,7 +214,14 @@ class TestLessonRetirement(unittest.TestCase):
         )
 
     def test_check_is_scoped_to_what_shipped(self):
-        self.assertIn("**scoped to what the milestone shipped**", self.rules)
+        # Label-inclusive: the scope and its prohibition share one physical
+        # line, so dropping "never as a full re-sweep" — the half that costs
+        # every milestone a judgment pass over records it never touched —
+        # breaks this anchor (M92 review F1, lower-priority relative).
+        self.assertIn(
+            "**scoped to what the milestone shipped, never as a full re-sweep**",
+            self.rules,
+        )
 
     def test_retirement_wired_into_review_hygiene(self):
         self.assertIn("Retire what this milestone covered", self.review)

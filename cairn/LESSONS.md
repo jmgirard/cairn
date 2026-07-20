@@ -5,13 +5,13 @@ remembering next time — captured at milestone end and surfaced at plan time.
 Not status, not decisions: a lesson is a reusable "how this repo actually
 behaves" note. Cross-cutting *choices* still go to `DECISIONS.md`.
 
-One line per lesson: `- YYYY-MM-DD (M<NN>): <lesson>`. Two caps, two remedies
-(tracking-rules weight-caps): 50 lines and 20,500 characters, where the fix is
-compressing or consolidating in place, not evicting. Current knowledge: a lesson
-proven false is corrected in place (D-045). Lessons also *leave*: one retires
-when a test fails on the mistake it warns about, or when another file's slot owns
-its content, and pruning the stalest is the last resort rather than the first
-(D-051).
+One line per lesson: `- YYYY-MM-DD (M<NN>): <lesson>`. Two caps, one remedy each
+(tracking-rules weight-caps): 50 lines, met by retiring or pruning entries, and
+20,500 characters, met by compressing or consolidating in place rather than
+evicting. Current knowledge: a lesson proven false is corrected in place (D-045).
+Lessons also *leave*: one retires when a test fails on the mistake it warns
+about, or when another file's slot owns its content, and pruning the stalest is
+the last resort rather than the first (D-051).
 
 <!-- lessons appended below by /milestone-review post-merge hygiene -->
 

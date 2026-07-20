@@ -172,13 +172,13 @@ takes a D-entry, and its number stays retired.
   **enforcement — a test fails on the mistake the lesson warns about**, where the
   discriminating word is *fails* and never *exists*, since a guard in the same area
   is not enforcement when the lesson teaches the judgment that guard does not make;
-  and **ownership — another tracking file's slot owns the content**, which the
-  retiring milestone may *move* there rather than only find already duplicated.
+  and **ownership — another tracking file's slot owns the content**, where
+  **the retiring milestone may *move* the content there rather than only find it already duplicated**.
   **A lesson covered only in part is trimmed to its uncovered remainder**, never kept whole.
   **A retired lesson leaves no line behind — the retiring milestone's archive summary names what it graduated**, and git holds the original.
   **Retirement is not correction: a retired lesson is redundant, a corrected one was false** — conflating the two would license deleting a lesson merely disputed.
   The check runs at `/milestone-review` post-merge hygiene beside capture,
-  **scoped to what the milestone shipped**, never as a full re-sweep; D-015's
+  **scoped to what the milestone shipped, never as a full re-sweep**; D-015's
   prune-the-stalest stays the last resort when retirement cannot free the budget.
 - **Stop points are commit points.** Never end a session or turn with
   uncommitted work — checkpoint-commit code and tracking together (even
