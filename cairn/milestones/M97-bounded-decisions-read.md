@@ -40,14 +40,14 @@ read reduction recorded.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: A D-entry records the change and its cost — that recall shifts from
+- [x] AC1: A D-entry records the change and its cost — that recall shifts from
       full-text to heading-plus-targeted-read, and a collision whose heading
       fails to name its subject can be missed. It annotates IP2's
       collision-check reading; it does not weaken IP2's rule that prior state
       is surfaced, never silently obeyed or overridden. Shown verbatim in chat
       before its commit (D-036). The trade was gated and accepted by the user
       at the RR02 ingest, 2026-07-19.
-- [ ] AC2: The skills that sweep — `/milestone-plan` session start and
+- [x] AC2: The skills that sweep — `/milestone-plan` session start and
       collision check, and the search-first candidate rule — state the bounded
       protocol, and state that a **matched entry is read whole** before being
       surfaced. A collision is still quoted verbatim from the full entry,
@@ -58,17 +58,17 @@ read reduction recorded.
       heading omits the relationship.** D-012, D-014, and D-019 each hide a
       supersession in their body, and IP4 forbids repairing them, so the read
       protocol closes the gap rather than the headings.
-- [ ] AC3: The heading-quality rule is stated and guarded: a `### D-` heading
+- [x] AC3: The heading-quality rule is stated and guarded: a `### D-` heading
       names its subject, and names any entry it supersedes, annotates, or
       narrows. The guard runs over the **real `DECISIONS.md`**, not a fixture
       copy (M77/M80), and reports which headings fail rather than only a count.
-- [ ] AC4: The read reduction is measured and recorded — chars scanned under
+- [x] AC4: The read reduction is measured and recorded — chars scanned under
       the bounded protocol versus the 95,374-char whole-file sweep — from
       command output, never from memory (M28).
-- [ ] AC5: Guards assert against the classifier rather than a filtered report
+- [x] AC5: Guards assert against the classifier rather than a filtered report
       (M93), pair every absence-assert with a positive signal that the path ran
       (M84), and the guard file carries its mutation registration (M53).
-- [ ] AC6: The active profile's `verify` slot is clean — all three suites
+- [x] AC6: The active profile's `verify` slot is clean — all three suites
       green, run from the repo root with exit codes checked individually and
       never behind a pipe (M56).
 
@@ -126,3 +126,18 @@ read reduction recorded.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as is the work log (D-046); evidence never scrambles plan-owned content. -->
+
+**PR:** https://github.com/jmgirard/cairn/pull/94 · reviewed 2026-07-19 · branch level with `main` at review time (7 ahead, 0 behind; no merge-forward needed).
+
+### Evidence per criterion
+
+- **AC1 — met.** D-054 exists; its heading reads "…— annotates IP2's collision-check reading". Its Consequences state the cost in the criterion's own terms: "recall shifts from full-text to heading-plus-targeted-read, so a collision whose heading fails to name its subject *can* be missed where a whole-file read would have caught it." IP2 is preserved, not weakened — "prior state is still surfaced, never silently obeyed or overridden" and "quoted verbatim from the full entry, never from the heading". Shown verbatim in chat before commit `32135a5` (D-036). IP4 verified mechanically: `git diff main..HEAD -- cairn/DECISIONS.md` is +44/−0, zero deletions.
+- **AC2 — met.** The rule is stated once in `tracking-rules.md` ("Bounded `DECISIONS.md` read") and wired at both sweep sites in `milestone-plan/SKILL.md` (session start; collision check). `test_bounded_decisions_read.py` — 13 tests, all green — pins read-whole-before-surfacing, back-reference-by-id, quote-from-the-full-entry, heading quality, and the IP2-unchanged clause, each on its own physical line. The back-reference clause is present per the gated AC2 amendment (2026-07-19).
+- **AC3 — met.** `decision heading quality` is registered in `cairn_validate.ADVISORIES` (not `CHECKS`). It runs over the real `cairn/DECISIONS.md` (`TestRealFile`), never a fixture copy (M77/M80). Findings name the offending entry AND the omitted id, not a count. Live output: `OK    decision heading quality`. Non-vacuity proven by command — with `HEADING_QUALITY_FROM` dropped to 1 the classifier returns exactly `['D-012', 'D-014', 'D-019']` and none of the three incidental-mention shapes; that probe is a committed test.
+- **AC4 — met.** Measured from command output, not memory (M28): heading scan 5,681 chars (with newlines) of a 100,678-char file = 5.6%; scan + 2 matched entries = 9,141 chars (**90.9% reduction**); scan + 3 = 10,898 (89.2%). 54 entries, mean 1,757, median 1,745, max 4,621. Baseline drift from AC4's stated 95,374 is recorded and explained in the work log — this milestone's own D-053/D-054 added 5,304 chars; the ratio is 5.6% on either baseline.
+- **AC5 — met.** Tests assert the classifier directly (`TestClassifier` calls `check_decision_heading_quality`), never only the rendered report (M93). Absence-asserts are paired with positive signals (M84): `test_real_decisions_file_is_clean` is paired with `test_real_file_actually_has_in_scope_entries`, which fails if the advisory has nothing in scope to judge; `test_legacy_entries_are_out_of_scope` is paired with `test_heading_omitting_its_supersession_is_reported`. Five mutation registrations (four in `tracking-rules.md`, one in `milestone-plan/SKILL.md`), one per clause rather than one exemplar per file; `TestRegisteredGuardsFailWhenBlanked` green.
+- **AC6 — met.** Run from the repo root, exit codes checked individually, never behind a pipe (M56): `skills/tests` Ran 460 exit=0 · `scripts/tests` Ran 246 exit=0 · `hooks/tests` Ran 72 exit=0.
+
+### Consistency gate
+
+`cairn_validate` exit 0 — 15 PASS / 8 OK, including `coverage complete` and `weight caps`. `cairn_impact --changed`: "no changed principles in cairn/DESIGN.md" (GP1's D-053 amendment landed on `main` before this branch was cut, so it is not in this diff). Profile `generic`, `consistency-gate` slot names no toolchain checks — clean no-op. Repo has no CI by declared profile; PR mergeable on local green.
