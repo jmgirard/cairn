@@ -79,7 +79,7 @@ audit.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Map the JSONL schema and write the phase attributor — how a record
+- [x] T1: Map the JSONL schema and write the phase attributor — how a record
       is assigned to `plan`/`implement`/`review` and to a milestone ID, and
       what is unattributable. Record the unattributable share; a method that
       hides it is not acceptable.
@@ -106,6 +106,7 @@ audit.
 - 2026-07-19: CORRECTION to this log's 2026-07-19 creation entry — that entry books the ~23→~39 min slowdown against re-read growth. RR02 Q6 finds the causal claim unsupported: the slow window is dominated by weight-management meta-milestones carrying extra gate rounds (M94 itself burned two), and the only causally isolated figure is the suites' ~10%, which exonerates them. The growth is a real GP1 defect on its own merits; the latency attribution is withdrawn pending token instrumentation.
 - 2026-07-19: returned to planned for a re-cut (user gate). Branch `m94-always-read-weight` carried docs only and landed on main under the docs-only carve-out; branch deleted. Criteria below are superseded per the Decisions section and are the re-cut's input, not a live plan.
 - 2026-07-19: re-cut start — branch `m94-cost-instrumentation`, status in-progress. Implement gate: milestone-ID attribution is branch-derived only (main-side plan work reported at phase level with its unattributable share stated); subagent turns leave no store record at all, so each phase reports its spawn count beside the token figures to label the gap. Both user-accepted.
+- 2026-07-19: T1 — `scripts/cairn_cost.py` maps the store schema and attributes by `attributionSkill` (phase) and `gitBranch` (milestone), both runtime-written, so neither is a heuristic. Measured unattributable share over 22,771 assistant records: 40.7% no milestone (33.9% of cache-read), 15.6% no phase.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
