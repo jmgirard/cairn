@@ -17,7 +17,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | M96 | Growth ratchet — the rulebook is governed by attention, not by a permitted size | planned | M94, M95 | normal | milestones/M96-rulebook-growth-ratchet.md |
 | M97 | Bounded DECISIONS read — the sweep scans headings and reads what it hits | done | — | high | milestones/archive/M97-bounded-decisions-read.md |
 | M98 | Lesson graduation to doctrine — a matured lesson family leaves LESSONS.md whole | done | — | high | milestones/archive/M98-lesson-graduation-to-doctrine.md |
-| M99 | Budget-first drafting — a capped artifact's size is visible while it is written | planned | — | normal | milestones/M99-budget-first-drafting.md |
+| M99 | Budget-first drafting — a capped artifact's size is visible while it is written | review | — | normal | milestones/M99-budget-first-drafting.md |
 | M93 | Hygiene-line accretion — the ROADMAP stamp is replaced, not appended | done | — | high | milestones/archive/M93-hygiene-line-replace-not-append.md |
 | M92 | Lesson retirement — a lesson leaves LESSONS.md when a guard enforces it or another file owns it | done | — | high | milestones/archive/M92-lesson-retirement.md |
 

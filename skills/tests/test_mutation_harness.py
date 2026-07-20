@@ -1787,6 +1787,35 @@ REGISTRY = [
         target=RULES,
         block="the source line is deleted in the same pass, so exactly one record exists at every moment",
     ),
+    # M99. Four blocks across four targets, because the budget wiring fails in
+    # four independent ways: the budgets could stop reading as guidance and
+    # become a second cap (the shape D-030 declined); the archive template could
+    # stop being named as the summary's source; and either drafting step could
+    # lose its handed-over command while the other kept one.
+    Mutation(
+        guard="test_budget_first_drafting",
+        test="TestMilestoneTemplateBudgets.test_the_budgets_are_marked_guidance_rather_than_a_gate",
+        target=TEMPLATE,
+        block="DRAFTING BUDGETS (M99) — guidance, not a gate; the only size check that",
+    ),
+    Mutation(
+        guard="test_budget_first_drafting",
+        test="TestArchiveSummaryTemplate.test_it_exists_and_carries_the_canonical_section_set_in_order",
+        target="skills/shared/templates/archive-summary.md",
+        block="**Decisions:**",
+    ),
+    Mutation(
+        guard="test_budget_first_drafting",
+        test="TestDraftingStepsHandOverTheCounter.test_review_names_the_archive_template_as_the_source",
+        target=REVIEW,
+        block="skills/shared/templates/archive-summary.md",
+    ),
+    Mutation(
+        guard="test_budget_first_drafting",
+        test="TestDraftingStepsHandOverTheCounter.test_plan_step_4_fences_the_counter_command",
+        target="skills/milestone-plan/SKILL.md",
+        block='python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_budget.py"',
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

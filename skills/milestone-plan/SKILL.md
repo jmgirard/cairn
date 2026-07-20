@@ -120,6 +120,18 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      so implement inherits them.
    - Write only the plan-owned sections per the tracking-rules
      section-ownership table; leave the others to their owners.
+   - **Draft against the budget, not against the gate.** The template's
+     per-section budgets are the drafting target; count while writing rather
+     than discovering the overrun at `cairn_validate` time, when the only
+     remedy left is compression:
+
+     ```
+     python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_budget.py" cairn/milestones/M<NN>-<slug>.md
+     ```
+
+     It prints the plan-owned body against the cap plus the section
+     breakdown, and exits 1 if any axis is over. The budgets are guidance —
+     what fails a gate is still only the cap.
    Deferred chunks not yet plannable get `candidate` ROADMAP rows, not files.
 
 5. **Remainder ledger (conservation check).** Before committing, enumerate

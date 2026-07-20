@@ -178,10 +178,29 @@ overrides — log the override).
 9. **Post-merge hygiene pass on the default branch:** check it out and pull
    first — after a squash-merge, the local default branch is behind origin and
    any leftover local
-   commits mean divergence to resolve before committing. Then compress the
-   milestone file to a
-   ≤25-line summary (goal, outcome, key decisions, PR link) and move it to
-   `cairn/milestones/archive/`; ROADMAP row → `done` + archive path;
+   commits mean divergence to resolve before committing. Then write the
+   milestone's archive summary **from**
+   `${CLAUDE_PLUGIN_ROOT}/skills/shared/templates/archive-summary.md` — a
+   comment-free skeleton, so nothing scaffolding-shaped can leak into a
+   25-line artifact — writing it to
+   `cairn/milestones/archive/M<NN>-<slug>.md` and **deleting the live
+   `cairn/milestones/M<NN>-<slug>.md`**: the summary REPLACES the milestone
+   file rather than joining it, and git holds the full text. (Authoring from a
+   template makes this an explicit step; when the summary was made by
+   compressing the file in place, the move did it implicitly. Skip it and
+   `cairn_validate`'s `roadmap<->disk orphans` fires later in this same step.)
+   **Budget it to 22 of the 25 permitted:**
+   Goal 2 · Outcome 7 · Decisions 3 · Review 3, over the 7 fixed lines
+   (title, status, blanks). Measured across 96 summaries, 55 sit at *exactly*
+   25 — a distribution censored at the cap, which is what compress-until-it-
+   fits looks like from outside — so draft to the allocation and count as you
+   go, never trim afterward:
+
+   ```
+   python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_budget.py" cairn/milestones/archive/M<NN>-<slug>.md
+   ```
+
+   Then: ROADMAP row → `done` + archive path;
    archive any resolved RB/RR pairs; **replace** "Last hygiene check" — overwrite the previous text, never append to it and never demote it to a `Prior:` clause (D-052); verify
    weight caps. **Capture durable lessons:** append any repo lessons this
    milestone taught — build quirks, testing tricks, gotchas worth
