@@ -83,6 +83,25 @@ ARCHIVE_CAP = 25
 CHAR_CAPS = {"cairn/ROADMAP.md": 21000, "cairn/LESSONS.md": 20500}
 TERMINAL_ROW_RETENTION = 5  # done + dropped rows share one ROADMAP cap
 
+# Per-line ceiling for NON-item lines only — headings, preamble, stamps, HTML
+# comments (D-052, narrowing M84's blanket rejection of any per-line warn).
+# M84's reason for that rejection is kept and still binds ITEM lines: pressure
+# on a row, candidate, or lesson would reward splitting one across lines and
+# corrode the one-item-per-line format both parsers depend on. A non-item line
+# has no such format to corrode, and it is where prose hides from BOTH existing
+# axes at once — the item cap counts lines and CHAR_CAPS counts whole-file mass,
+# so cairn's `Last hygiene check` stamp reached 3,152 chars in one adopting repo
+# (28% of that ROADMAP) with every gate green.
+#
+# 400 is measured, not assumed (M87). Survey of real non-item lines across seven
+# cairn repos, 2026-07-19: healthy max 245 (a terminal-row-retention comment),
+# then 230, 194, 141, 105, 101, 100, 66, 48 — against two live defects at 1,870
+# (intraclass) and 2,568 (circumplex, down from 3,152 after a same-day review
+# pass rewrote it and still left it over). The comparison is `>=`, so 400 permits
+# 399: 154 chars (63%) of headroom over the worst healthy line, and 4.7x/6.4x
+# below both defects. Figures are dated because circumplex's moved mid-milestone.
+NON_ITEM_LINE_CAP = 400
+
 # Cap on the cairn-owned `## Project tracking (cairn)` block appended to a
 # repo's CLAUDE.md (D-018). Template target is ~25 lines; 30 gives headroom.
 CLAUDE_SECTION_CAP = 30
@@ -254,6 +273,38 @@ def line_count(path):
             return sum(1 for _ in f)
     except Exception:
         return None
+
+
+def non_item_lines(path):
+    """Every NON-item line of a tracking file, as (lineno, length) pairs.
+
+    An item line is one a parser reads positionally as a single record: a
+    table row (`|…`) or a bullet (`- …`). Everything else — headings, italic
+    preamble, the hygiene stamp, HTML comments — is prose, and is what
+    NON_ITEM_LINE_CAP measures (D-052).
+
+    Classification is by line SHAPE, not by threshold, so an item line is
+    never merely under-measured: it is not measured at all, and no length
+    can ever make it warn. That is what keeps M84's rejection intact —
+    there is no incentive to split a row, because splitting a row buys
+    nothing here.
+
+    Blank lines are dropped; they carry no prose and would only pad output.
+    Returns [] if the file is unreadable, matching the other measures."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            lines = f.read().split("\n")
+    except Exception:
+        return []
+    out = []
+    for i, line in enumerate(lines, 1):
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if stripped.startswith("|") or stripped.startswith("- "):
+            continue
+        out.append((i, len(line)))
+    return out
 
 
 def char_count(path):

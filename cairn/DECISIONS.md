@@ -1363,7 +1363,11 @@ write sites said only "update" it (`skills/milestone/SKILL.md:104`,
 reads as "add to", so each pass prepended a parenthetical and demoted the last
 to `Prior:`/`Earlier:`. In two adopting repos the stamp reached 1,870 chars
 (intraclass) and 3,152 chars (circumplex) — the latter 28% of its whole
-ROADMAP, on one line. Both weight axes were structurally blind: the item cap
+ROADMAP, on one line. Both measured 2026-07-19; circumplex's changed again the
+same day, and the way it changed is the sharpest evidence for this entry. Its
+`review M42: done` hygiene pass (19:27) rewrote the stamp and left it at 2,568
+chars — still 6.4x over the cap set below — because the instruction it followed
+said "update", so it compressed the chain instead of replacing it. Both weight axes were structurally blind: the item cap
 counts lines (35 of 60) and D-049's `record density` counts whole-file mass
 (11,410 of 21,000), so `cairn_validate` printed `OK record density` over the
 defect, verified live in intraclass. cairn's own instance was pruned by hand on

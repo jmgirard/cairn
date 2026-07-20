@@ -112,8 +112,9 @@ takes a D-entry, and its number stays retired.
   A non-item line — heading, preamble, stamp, HTML comment — carries no such
   format to corrode, and prose accretes there unseen by *both* whole-file axes:
   the item cap counts lines and the density threshold counts whole-file mass, so
-  one line reached 3,152 characters in an adopting repo with every gate green
-  (M93). Non-item lines are capped at `NON_ITEM_LINE_CAP` (< 400 characters),
+  one line reached 3,152 characters in an adopting repo with every gate green,
+  and a review hygiene pass then rewrote that stamp and still left it at 2,568
+  (2026-07-19; M93). Non-item lines are capped at `NON_ITEM_LINE_CAP` (< 400 characters),
   reported under the same `record density` advisory at the same WARN severity.
 - a live milestone file's **plan-owned body < 150 lines** — everything before
   the review-exclusive `## Review` section, less the `## Work log`.

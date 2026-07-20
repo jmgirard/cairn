@@ -69,12 +69,14 @@ repo's own stamp.
       `skills/cairn-init/SKILL.md:109`, not a fixture copy, which the
       skeleton passes (M77/M80). Registered in the mutation harness per
       file (M53).
-- [ ] AC6 Live-fire, read-only: the new axis WARNs on circumplex's 3,152-char
-      and intraclass's 1,870-char stamps and stays silent on ackwards' and
-      openac's, and this repo's own stamp is under the threshold after its
-      hygiene pass — the rule run over the artifact the milestone itself
-      authors (M78). Evidence is command output with the counts written from
-      it, never from memory (M28).
+- [ ] AC6 Live-fire, read-only, every figure dated (amended 2026-07-19 — see
+      the work log; circumplex's stamp changed mid-milestone, so an undated
+      number is stale by construction — M91/M78). The new axis WARNs on the
+      two over-cap stamps — circumplex 2,568 chars and intraclass 1,870, both
+      measured 2026-07-19 — and stays silent on ackwards (101), openac (66),
+      hitop (48), and this repo (230) after its own hygiene pass, the rule run
+      over the artifact the milestone itself authors (M78). Evidence is
+      command output with the counts written from it, never from memory (M28).
 - [ ] AC7 `verify` clean: all three suites green, each exit code checked
       explicitly from the repo root, no piping (M56/M65).
 
@@ -105,7 +107,7 @@ repo's own stamp.
       `skills/milestone-review/SKILL.md:185`,
       `skills/cairn-init/SKILL.md:109`). Each currently says only "update",
       which is what reads as "append".
-- [ ] T4 `scripts/cairn_scripts.py`: add `NON_ITEM_LINE_CAP = 400` beside
+- [x] T4 `scripts/cairn_scripts.py`: add `NON_ITEM_LINE_CAP = 400` beside
       `CHAR_CAPS` with the derivation in a comment. `scripts/cairn_validate.py`:
       extend `check_record_density` with the non-item-line axis. Item lines
       (table rows `|…`, bullets `- `) are exempt by construction, not by
@@ -125,6 +127,8 @@ repo's own stamp.
 
 - 2026-07-19: created by /milestone-plan. Cap 400 derived from a six-repo non-item-line survey — healthy max 245, then 230/194/141/105/101/100, against defects at 1,870 and 3,152; warns at `>=` so it permits 399, leaving 154 chars (63%) of headroom over the observed healthy max and sitting 4.7×/7.9× under both live defects.
 - 2026-07-19: implement gate — two open choices settled by the user. (1) `ROADMAP.md` was in NEITHER the history nor the current-knowledge list at `tracking-rules.md:159-162`, so AC1's D-045 grounding did not yet reach it; D-052 adds it to current knowledge rather than classifying the stamp alone. Found by reading the rule out of its source (M75/M85/M91), not assumed from the plan. (2) The `_Released …_` line (105 chars, +~33/release) gets NO exemption from the new cap — it crosses 400 in ~9 releases and the remedy is the milestone's own thesis.
+- 2026-07-19: T4 — `NON_ITEM_LINE_CAP = 400` (`cairn_scripts.py:88`) + `non_item_lines()` classifying by line SHAPE (`|…`, `- …` are items and are never measured, so no length can make a row warn — M84's rejection holds by construction, not by threshold); `check_record_density` gained the second report. `cairn_validate.py`'s docstring still taught M84's blanket rejection — a THIRD encoding of the rule D-052 just narrowed — and was corrected with it (M87 F1/90: count every site).
+- 2026-07-19: AMENDMENT (substantive, gated) — AC6's `circumplex 3,152 chars` went stale MID-MILESTONE. circumplex's `review M42: done` pass (`d396e94a`, 2026-07-19 19:27) rewrote that stamp to 2,568 chars — still 6.4× over cap — because the instruction it followed said "update", so it compressed the chain rather than replacing it. The defect demonstrated itself in the field, unprompted, while this milestone was being built. AC6 now cites dated figures and the four clean repos; the stale 3,152 was corrected at all four restatement sites (`DECISIONS.md:1365`, `cairn_validate.py:126`, `cairn_scripts.py:93,98`, `tracking-rules.md:115`), each keeping the peak AND the post-pass value since both are load-bearing. D-052 was dated in place rather than superseded: it is committed on this branch but unmerged, so it is a draft under review, not published history — flagged here for review to overrule if it disagrees.
 - 2026-07-19: T3 — all four surfaces now say REPLACE, not "update": `skills/milestone/SKILL.md:104`, `skills/milestone-review/SKILL.md:185`, `skills/cairn-init/SKILL.md:109` (skeleton), `skills/shared/tracking-rules.md:153`. AC3 evidence is `grep -rn "Last hygiene check" skills/ | grep -v "/tests/"` — four hits, all prose surfaces, no milestone tracking lines in the result. 432/196/72 green, validate 0.
 - 2026-07-19: T2 — `D-052` appended (`cairn/DECISIONS.md:1358`), previewed verbatim before commit. It narrows M84 rather than overturning it (the original rationale is quoted and kept, scoped to item lines), annotates D-045 by naming the file it omitted, and records the rejected `_Released …_` exemption. validate 0, 432/196/72 green.
 - 2026-07-19: T1 — tracking-rules gained the replace rule, the current-knowledge enumeration gained `ROADMAP.md`, and M84's blanket per-line rejection is narrowed to item lines in place. The mutation harness reddened two registered anchors I had disturbed (`test_current_knowledge_set_is_enumerated_under_its_own_label`, `test_rule_records_why_a_per_line_warn_was_rejected`); M84's original rationale was restored VERBATIM on one physical line so its assert passes unchanged, while the enumeration assert + its `Mutation(...)` block were re-authored deliberately because that rule genuinely changed. 432/196/72 green, exit codes checked unpiped (M56).
