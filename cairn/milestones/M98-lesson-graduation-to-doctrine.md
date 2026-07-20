@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M98: Lesson graduation to doctrine — a matured lesson family leaves LESSONS.md whole
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review        <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, GP4   <!-- owner: plan · create/amend-via-gate -->
@@ -94,24 +94,24 @@ mutation registration.
       21,085 chars at 2026-07-19) against the maturation bar; record the
       result here, deciding whether the records-hygiene items form a second
       family or join the guard-craft module.
-- [ ] T2: Author `skills/shared/guard-doctrine.md` from the classified family
+- [x] T2: Author `skills/shared/guard-doctrine.md` from the classified family
       — distilled principles with their failure modes, never concatenated
       lesson lines. Shape precedent: `validation-doctrine.md`, 93 lines /
       6,036 chars. Record each lesson's inversion result as it is folded in.
-- [ ] T3: Wire the pointer into `tracking-rules.md` "What gets a test" beside
+- [x] T3: Wire the pointer into `tracking-rules.md` "What gets a test" beside
       the validation-doctrine reference (`:664-670` is the shape).
       Rulebook-reference only — no per-skill read directives (D-031).
-- [ ] T4: Retire the graduated lessons from `cairn/LESSONS.md` — delete
+- [x] T4: Retire the graduated lessons from `cairn/LESSONS.md` — delete
       whole, trim partial coverage to its remainder, no breadcrumb. Targeted
       Edit replacements, never an ad-hoc string script (M61). Re-measure both
       axes from command output.
-- [ ] T5: Author the D-entry annotating D-051 (maturation as the third
+- [x] T5: Author the D-entry annotating D-051 (maturation as the third
       outflow; the divergence-vector distinction; D-031 as module precedent).
-- [ ] T6: Author the guards and register them in the mutation harness —
+- [x] T6: Author the guards and register them in the mutation harness —
       registration is per file, and a new `assertIn` in an already-registered
       file still needs its own entry (M53). After adding module prose, grep
       every word an existing guard anchors on (M85).
-- [ ] T7: Run `cairn_validate` and all three suites from the repo root,
+- [x] T7: Run `cairn_validate` and all three suites from the repo root,
       checking each exit code separately — never piped (M56/M65).
 
 ## Work log
@@ -121,6 +121,17 @@ mutation registration.
 - 2026-07-19: in-progress, branch `m98-lesson-graduation` cut from main at e684c39.
 - 2026-07-20: T1's record blew the 150-line body cap (165, shed ≥16) and T1 was checked off against a red gate — corrected here. Two single-pass compressions: Decisions 42→33, Tasks 34→26. The Tasks pass also removed `LESSONS.md:NN` citations that T4 is about to invalidate by deleting those very lines. Further live evidence for the budget-first-drafting candidate row.
 - 2026-07-20: T1 done — boundary re-derived independently (M98-D1); guard family is 18 items / 13,316 chars / 66% of item mass, differing from RR03 on six members. Records-hygiene items are a real second family, deferred to a candidate row rather than folded in: the guard family alone leaves 19 lines and 12,749 chars of headroom.
+- 2026-07-20: T2 done — `skills/shared/guard-doctrine.md` authored, 7 sections, 191 lines / 9,972 chars against validation-doctrine's 93 / 6,036.
+- 2026-07-20: T3 done — rulebook pointer wired in "What gets a test"; re-wrapped after drafting so the module→coverage mapping sits on one physical line, the defect §1 of the new module warns about.
+- 2026-07-20: AC3 inversion ledger (source line → module home → inversion result; "restores the named failure" means deleting the module text puts a compliant agent back to committing the specific defect the lesson records).
+- 2026-07-20: AC3 — L20 registration-per-file → §2; mutation-registered, blanking reddens (verified). L22 decoration + vary-every-axis → §5, §4; restores vacuous single-axis fixtures. L23 sweep/grep-AC scoping → §7; restores sweeps hitting the milestone's own artifacts. L24 fix-the-wrap → §1, §2, §6; restores loosening an assert to chase a reflow.
+- 2026-07-20: AC3 — L26 substring anchor → §1; restores unfalsifiable bare `assertIn`. L27 setUpClass cache → §2; restores a guard reporting false coverage on itself. L31 containment guard both directions → §5; PARTIAL, the `git rebase main` sync remedy is uncovered and stays trimmed in LESSONS. L33 label→rule one line + inversion protocol → §1; mutation-registered, blanking reddens (verified).
+- 2026-07-20: AC3 — L35 restatement-unverified → §6; restores shipping a restated rule unread. L36 real-checker-over-real-artifact → §4; restores template/checker pairs that never meet. L40 shared-parser safety claim → §5; PARTIAL, the synthesis-note aging rule is uncovered and stays trimmed. L41 negation-is-a-clause → §5; restores both-direction matcher breakage.
+- 2026-07-20: AC3 — L42 vacuous absence-assert → §3; mutation-registered, blanking reddens (verified). L43 numbers derived-wrong/restated-stale → §6; restores inclusive derivation and uncounted encoding sites. L45 two-signal detector + helper defaults → §4; restores undiscriminating fixtures. L47 author-shaped fixture → §4; restores the overlap-collision pass. L48 whole-population under filter → §5; restores a report announcing its blind spot as absent. L49 interacting defects → §5; restores patching one finding in a shared matcher.
+- 2026-07-20: T4 done — 16 lessons deleted, 2 trimmed to uncovered remainders (D-051). LESSONS.md 49→33 lines, 21,085→8,219 chars; `record density` WARN→OK. Script-driven deletion verified by `wc -l`, `git diff --stat`, and a full read-back (M61's escape clause).
+- 2026-07-20: T5 done — D-055 appended; also updated the LESSONS.md header, the rulebook file-map row, and the retirement rule to name three criteria.
+- 2026-07-20: T6 done — `test_lesson_graduation.py` (26 tests), 7 mutation entries registered. Two corrections en route: my own `assertRegex(..., re.M)` passed the flag as `msg` and was silently discarded; and the file-map edit broke M92's existing anchor plus its harness entry, both updated to the three-criterion wording (the rule changed, so this is re-anchoring, not loosening). Maturation line spot-checked by hand transposition → red, restored.
+- 2026-07-20: T7 done — skills 487 / scripts 246 / hooks 72, exit 0 each, run separately from the repo root; `cairn_validate` exit 0, all checks passed, no advisories. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

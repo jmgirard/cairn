@@ -1505,3 +1505,65 @@ Archival-with-tombstone stays parked (RR02 rec 6): once the read is bounded it
 buys almost nothing, the heading scan growing ~100 chars per decision. If the
 heading scan itself ever becomes the cost, that candidate is the entry to
 supersede.
+
+### D-055 (2026-07-20): Lessons also leave by maturation — a stabilized family graduates whole into a doctrine module — annotates D-051
+
+**Context:** D-051 gave `LESSONS.md` an outflow, and the file grew anyway:
+20,466 chars at M92 to 21,085 at M98, reaching 49/50 lines and 585 chars over
+its 20,500 threshold — one line of headroom, so the next milestone's hygiene
+pass could not capture a lesson at all. RR03 diagnosed why. Consolidation, the
+prescribed weight remedy, conserves content while relaxing the item axis: the
+mean item length rises, and D-049 derives the threshold *from* that mean, so
+re-measuring after a compression pass ratifies the accretion it was meant to
+check. The weight axis can tax each hygiene pass but can never bind. Meanwhile
+D-051's two criteria had no exit for the file's largest holding. M98's
+re-derived classification found 18 of 32 items — 13,316 chars, 66% of item
+mass — to be one subject: how to author a prose-guard, fixture, matcher, or
+validator that actually falsifies what it claims. They fail **both** D-051
+criteria forever by construction. Not enforcement: they teach the judgment a
+guard does not make. Not ownership: no tracking-file slot holds
+guard-authoring craft, because none existed.
+
+**Decision:** A lesson family also leaves by **maturation**. The bar is
+conjunctive: (a) it teaches transferable craft about authoring or verifying,
+not a fact about this repo's tools or runtime; (b) it has stabilized —
+extended or consolidated at least twice, later milestones adding instances
+rather than changing the principle; (c) it has no existing exit under D-051.
+The retiring milestone distils the family into a doctrine **module** under
+`skills/shared/` — D-031's shape, conditionally read at the moment the craft
+applies rather than surfaced at plan time — and the covered lessons leave
+whole. D-051's existing discipline carries over unchanged: a lesson covered
+only in part is trimmed to its uncovered remainder, and a graduated lesson
+leaves no line behind, the retiring milestone's archive summary naming what
+it graduated. Delivered by M98 as `skills/shared/guard-doctrine.md`.
+
+**Why this is not the graduated-lessons file D-051 rejected.** That rejection
+named "a second record of what LESSONS holds, the divergence vector M56
+rejected" — two live records of the same lessons, drifting apart. Graduation
+is the opposite operation: the content moves and the source line is deleted,
+so exactly one record exists at every moment, and the count of records never
+rises. The rejection stands as written; it simply does not reach this case. A
+module is also not a new tracking file — it is plugin logic wired once by a
+rulebook pointer (D-031), never the four-wiring-points-plus-cap path D-015 and
+D-029 price when refusing one.
+
+**Rejected:** (1) a repo-local synthesis note under `cairn/references/` —
+nothing triggers its read, and the craft binds every adopting repo, not this
+one; (2) re-deriving D-049's threshold from the post-consolidation mean — it
+would ratify the treadmill (RR03 rec 12); a fresh measurement becomes
+legitimate only once a graduation has made the mean *fall*; (3) graduating the
+records-hygiene family in the same move — M98 found it a real second family of
+8 items, but it fires at a hygiene or plan gate rather than at guard-authoring,
+so it needs its own read-trigger; banked as a candidate row.
+
+**Consequences:** Annotates D-051 — its two criteria, its trim rule, its
+no-breadcrumb rule, and its review-time scoping all stand; maturation is a
+third and rarer outflow that moves content rather than removing it. Restores
+D-015's charter: `LESSONS.md` returns to build quirks and gotchas, 49 → 33
+lines and 21,085 → 8,219 chars, with headroom on both axes. Serves GP1 by
+bounding an always-read surface with an outflow rather than a ceiling, and
+GP4 by putting craft in the shared artifact where every adopting repo
+inherits it. Locked by `skills/tests/test_lesson_graduation.py`
+(mutation-registered). If a graduated family is ever found to need surfacing
+at plan time after all — the moment a module's conditional read does not
+reach — this is the entry to supersede.
