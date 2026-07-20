@@ -270,6 +270,41 @@ class TestSubagentBlindSpot(unittest.TestCase):
         self.assertIn("unrecorded", line)
 
 
+class TestMilestoneFlagIsHonouredOrRefused(unittest.TestCase):
+    """M94 review F4: a flag that is accepted and then silently ignored
+    answers a different question than the one asked."""
+
+    def test_audit_line_honours_an_explicit_milestone(self):
+        records = [
+            rec(skill="cairn:milestone-review", branch="m94-x",
+                usage={"output_tokens": 9}),
+            rec(skill="cairn:milestone-implement", branch="m85-y",
+                usage={"output_tokens": 4}),
+        ]
+        root = str(SCRIPTS_DIR.parent)
+        # Default: the most recent milestone.
+        self.assertIn("cost: M94", cost.audit_line(root, records))
+        # Explicit: the one asked for, not the most recent.
+        line = cost.audit_line(root, records, milestone="M85")
+        self.assertIn("cost: M85", line)
+        self.assertNotIn("M94", line)
+
+    def test_audit_line_says_so_when_the_named_milestone_has_no_records(self):
+        records = [rec(skill="cairn:milestone-review", branch="m94-x",
+                       usage={"output_tokens": 1})]
+        line = cost.audit_line(str(SCRIPTS_DIR.parent), records, milestone="M42")
+        self.assertIn("M42", line)
+        self.assertIn("no milestone-keyed sessions", line)
+
+    def test_attribution_mode_refuses_the_milestone_filter(self):
+        # Honouring it would reintroduce F3: the share is a whole-store
+        # property and filtering makes it 0.0% by construction.
+        code = cost.main(["cairn_cost.py", "--attribution", "--milestone", "M94"])
+        self.assertEqual(code, 2)
+        # Paired positive: the same mode succeeds unfiltered.
+        self.assertEqual(cost.main(["cairn_cost.py", "--attribution"]), 0)
+
+
 class TestUnattributableShareIsReported(unittest.TestCase):
     """A method that hid its unattributable share would not be acceptable
     evidence (M94 T1)."""

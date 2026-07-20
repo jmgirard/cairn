@@ -356,13 +356,16 @@ def latest_milestone(records):
     return max(ids, key=cs.id_num) if ids else None
 
 
-def audit_line(root, records):
+def audit_line(root, records, milestone=None):
     """One always-read cost line for `/milestone`'s audit — the most recent
-    milestone's mass. A reporting surface only: no threshold, no verdict."""
+    milestone's mass, or a named one. A reporting surface only: no threshold,
+    no verdict."""
     records = list(records)
-    mid = latest_milestone(records)
+    mid = milestone or latest_milestone(records)
     if mid is None:
         return "cost: no milestone-keyed sessions in the store"
+    if not any(milestone_of(r) == mid for r in records):
+        return f"cost: {mid} — no milestone-keyed sessions in the store"
     bucket = aggregate([r for r in records if milestone_of(r) == mid], lambda r: mid)[mid]
     agents = bucket["agents"]
     return (
@@ -421,8 +424,18 @@ def main(argv):
         return 0
     records = list(read_records(store))
     if mode == "audit-line":
-        print(audit_line(root, records))
+        print(audit_line(root, records, milestone))
     elif mode == "attribution":
+        # Deliberately refused rather than honoured: the unattributable share
+        # is a property of the whole store, and computing it over one
+        # milestone's records makes it 0.0% by construction (the F3 defect).
+        if milestone:
+            sys.stderr.write(
+                "usage: --attribution reports the whole store; it cannot be "
+                "filtered with --milestone (the share would be 0.0% by "
+                "construction)\n"
+            )
+            return 2
         stats = attribution(records)
         for key in sorted(stats):
             print(f"{key}: {stats[key]:,}")

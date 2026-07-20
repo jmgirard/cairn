@@ -113,6 +113,7 @@ audit.
 - 2026-07-19: T5 — `scripts/tests/test_cairn_cost.py` (18 behavioural guards on the classifier functions, not the rendered report) + `skills/tests/test_cost_audit_line.py` (6 prose guards, 3 blocks registered in the mutation harness and mutation-verified). The phase-map coverage guard caught a real gap on first run: `design-interview` was a shipped skill missing from `PHASES`, so its turns would have landed in `unattributed`. Verify clean: 447 / 227 / 72, `cairn_validate` exit 0.
 - 2026-07-19: all tasks complete, status review. Branch diff: 10 files, +913/-8. Suites 447/227/72 green, `cairn_validate` exit 0.
 - 2026-07-19: review FAILED AC1, returned to in-progress. AC1 requires the report be keyed "per session and per phase"; the shipped report emits BY PHASE and BY MILESTONE only — no per-session breakdown exists, though `read_records` already stamps `_session` on every record. Nothing else failed: AC2-AC6 evidence gathered clean, `cairn_validate` exit 0, suites 447/227/72. Not amended — the criterion is right and the work was short of it.
+- 2026-07-19: merge gate — user directed F4 (78, sub-threshold) be fixed before merge. `--audit-line` honours `--milestone`; `--attribution` refuses it with exit 2 rather than reporting a share that filtering makes 0.0% by construction. Verify 447/236/72, cairn_validate exit 0.
 - 2026-07-19: review — five findings scored >=80 fixed on the branch (F5 false-coverage guard, F8 unregistered mutation blocks, F3 filtered-attribution false zero, F6 note overclaim, F2 session count); three below threshold logged. All six criteria verified with fresh evidence. Verify 447/233/72, cairn_validate exit 0.
 - 2026-07-19: AC1 gap closed — `session_of` + a `BY SESSION` report section keyed by session, milestone(s), and phase(s), so a session spanning implement and review names both rather than being labelled by its first. Four guards added (22 in the cost suite). Back to review. Verify clean: 449/231/72, `cairn_validate` exit 0.
 
@@ -234,19 +235,22 @@ conformance — M94 implements rec 4 and defers recs 1/2/3 to M95/M96/M97).
 
 **Logged below threshold (surfaced, not actioned — IP3):**
 
-- **F4 (78)** — `--milestone` is accepted but silently ignored in
-  `--audit-line` and `--attribution` modes, so `--audit-line --milestone M85`
-  reports a different milestone. Real but a CLI edge; either honour it or
-  raise `Usage`. Not fixed at review.
+- **F4 (78) — FIXED at user instruction at the merge gate** (2026-07-19),
+  overriding the sub-threshold default. `--milestone` was accepted and then
+  silently ignored in `--audit-line` and `--attribution`. The two modes needed
+  opposite answers: `--audit-line` now honours it (and says so when the named
+  milestone has no records), while `--attribution` **refuses** it with exit 2,
+  because filtering a whole-store share is precisely the F3 category error.
+  Three guards added.
 - **F7 (60)** — `report()`'s docstring omitted the `BY SESSION` section.
   Corrected in passing while rewriting that docstring for F3.
 - **F1 (55)** — the module docstring advertised a `--store` option that does
   not exist. Corrected in passing while editing that comment block.
 
-Two of the three sub-threshold findings were stale-text lines inside comment
-blocks being rewritten for actioned findings; leaving them knowingly wrong
-while editing the lines around them was the worse option. F4 is a behaviour
-change and was left alone.
+F7 and F1 were stale-text lines inside comment blocks being rewritten for
+actioned findings; leaving them knowingly wrong while editing the lines around
+them was the worse option. F4 was left alone at first as a behaviour change,
+then fixed on the user's instruction at the merge gate.
 
 One defect was caught by the review's own new regression test rather than by a
 reviewer: the first form of F3's guard asserted `"0.0% not keyed to a
