@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M102 | Verify-suite speedup — the dogfood suite runs on its tests, not on process spawns, and greens in any repo state | planned | — | normal | milestones/M102-verify-suite-speedup.md |
+| M102 | Verify-suite speedup — the dogfood suite runs on its tests, not on process spawns, and greens in any repo state | in-progress | — | normal | milestones/M102-verify-suite-speedup.md |
 | M95 | Rulebook editorial slimming — the rulebook states rules, not their legislative history | done | — | high | milestones/archive/M95-rulebook-editorial-slimming.md |
 | M96 | Growth ratchet — the rulebook is governed by attention, not by a permitted size | dropped | — | normal | milestones/archive/M96-rulebook-growth-ratchet.md |
 | M100 | Review-finding enforcement — findings travel verbatim, outcomes meet projections | done | — | high | milestones/archive/M100-review-finding-enforcement.md |

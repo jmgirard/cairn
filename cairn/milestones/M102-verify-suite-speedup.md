@@ -1,6 +1,6 @@
 # M102: Verify-suite speedup — the dogfood suite runs on its tests, not on process spawns, and greens in any repo state
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
