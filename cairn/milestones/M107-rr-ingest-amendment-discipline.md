@@ -1,0 +1,92 @@
+# M107: RR-ingest / amendment discipline — the ingest surface carries the plan path's form, budget, and file hygiene
+
+- **Status:** planned
+- **Priority:** normal
+- **Depends on:** —
+- **Driving RR:** —
+- **Principles touched:** IP3, IP4
+- **Branch/PR:** —
+
+## Goal
+
+The brief-ingest and implement-amendment paths carry the form, budget, and
+file-hygiene discipline the plan path already has, so folding review findings
+into a live milestone no longer walks a compliant agent into a red gate or a
+failed move.
+
+## Scope
+
+**In:**
+- Prescribe the binding-criterion ingest form in milestone-brief step 3 and the
+  milestone template AC comment: each BC lands as a numbered acceptance
+  criterion carrying its trace tag — `- [ ] AC-N (BCn): <verbatim>` — so it is
+  coverage-mappable and the verbatim body still satisfies the `binding
+  criteria` check (`cairn_validate.py:651`).
+- Wire the existing `cairn_budget` check + the tracking-rules one-pass-trim
+  rule (`tracking-rules.md:128`) into the implement step-6 amendment gate and
+  the brief ingest step — pointing at the tool and rule, not restating them.
+- Make brief step 4's RB/RR archive move succeed whether or not the files are
+  git-tracked (an in-session-generated or hand-dropped RR is untracked, so
+  `git mv` fails today).
+- Mutation-registered prose-guards for each new/changed skill + template block.
+
+**Out:**
+- No logic change to `check_coverage_complete` / `check_binding_criteria` — a
+  BC-aware coverage message is a candidate row, not this milestone (Q1: guides
+  + test only; the coverage check already enforces the mapping once BCs are
+  numbered).
+- Committing the RR at generation time → not taken; robust move covers every
+  arrival path including a hand-dropped RR (Q2).
+- Fresh budgeting prose on the amendment paths → not taken; extend the existing
+  discipline (Q3).
+
+## Acceptance criteria
+
+- [ ] AC1: milestone-brief step 3 prescribes the `- [ ] AC-N (BCn): <verbatim>`
+      ingest form, and the milestone template's `## Acceptance criteria` comment
+      states the same form.
+- [ ] AC2: a regression test builds a milestone with `Driving RR: RR<NN>` + a
+      fixture RR whose binding criteria are ingested in the prescribed form and
+      asserts both `binding criteria` and `coverage-complete` pass; the same
+      milestone with the BCs as bare unnumbered `- [ ]` checkboxes fails
+      `coverage-complete` (the intraclass failure, pinned).
+- [ ] AC3: milestone-implement step 6 (substantive amendment) and
+      milestone-brief step 3 (BC ingest) each direct the agent to re-check the
+      plan-owned body with `cairn_budget` after the amendment and, if over,
+      compress the single heaviest plan-owned section in one pass per
+      tracking-rules — by reference, not restated.
+- [ ] AC4: milestone-brief step 4's archive move succeeds whether or not the
+      RB/RR files are git-tracked, and the step's prose names the robust
+      mechanism.
+- [ ] AC5: every new/changed guarded block in milestone-brief,
+      milestone-implement, and the template is registered in the mutation
+      harness; the completeness meta-test passes.
+- [ ] AC6: `verify` clean — `python3 -m unittest` over scripts/tests,
+      skills/tests, hooks/tests.
+
+## Coverage
+
+- AC1 → T2 · AC2 → T1 · AC3 → T3 · AC4 → T4 · AC5 → T2, T3, T4, T5 · AC6 → T5
+
+## Tasks
+
+- [ ] T1: write the AC2 regression test first — reuse the temp-milestone +
+      fixture pattern (`scripts/tests`, M102) to stand up a milestone + fixture
+      RR, assert the prescribed form passes both checks and the bare-checkbox
+      form fails `coverage-complete`.
+- [ ] T2: prescribe the ingest form in milestone-brief step 3 + template AC
+      comment; register the changed blocks in the mutation harness.
+- [ ] T3: wire `cairn_budget` + the one-pass-trim rule into implement step 6 and
+      brief ingest step 3 (by reference); register the changed blocks.
+- [ ] T4: make brief step 4's archive move robust to an untracked RB/RR (plain
+      `mv` + `git add`, or a tracked-check); guard the step wording.
+- [ ] T5: run full `verify`; confirm the completeness meta-test and all three
+      suites are green.
+
+## Work log
+
+- 2026-07-21: created by /milestone-plan.
+
+## Decisions
+
+## Review
