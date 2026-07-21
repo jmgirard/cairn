@@ -2123,6 +2123,12 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_finding_enforcement",
+        test="TestIngestRule.test_ingest_rule_prescribes_the_numbered_form",
+        target=BRIEF,
+        block="counts every AC checkbox positionally",
+    ),
+    Mutation(
+        guard="test_finding_enforcement",
         test="TestBriefTemplate."
              "test_brief_requests_binding_criteria_as_measurable_assertions",
         target="skills/shared/templates/brief.md",
@@ -2133,6 +2139,12 @@ REGISTRY += [
         test="TestMilestoneTemplate.test_template_carries_the_driving_rr_slot",
         target=TEMPLATE,
         block="- **Driving RR:** —",
+    ),
+    Mutation(
+        guard="test_finding_enforcement",
+        test="TestMilestoneTemplate.test_template_prescribes_the_ingest_form",
+        target=TEMPLATE,
+        block="coverage-complete counts AC checkboxes positionally",
     ),
     Mutation(
         guard="test_finding_enforcement",

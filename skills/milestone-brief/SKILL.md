@@ -70,9 +70,12 @@ start (any skill) when a manual RR appears:
    (logged). **Binding criteria travel verbatim:** when the RR carries a
    `## Binding criteria` section, the milestone it constrains sets its
    header's `Driving RR:` slot to `RR<NN>` and ingests each criterion
-   verbatim into its `## Acceptance criteria` (through the
-   `/milestone-implement` step-6 amendment gate when the AC block already
-   exists). Any departure is a row in the "Deviations from RR<NN>" table at
+   verbatim into its `## Acceptance criteria` as a numbered acceptance
+   criterion carrying its trace tag — `- [ ] AC-N (BCn): <verbatim>` — and
+   gives that criterion its own `## Coverage` line: `coverage-complete`
+   counts every AC checkbox positionally, so a bare, unnumbered BC checkbox
+   reds that check (M107). This runs through the `/milestone-implement`
+   step-6 amendment gate when the AC block already exists. Any departure is a row in the "Deviations from RR<NN>" table at
    the end of that AC section, shown verbatim at this ingestion's preview,
    never slipped — IP3 applied to review findings. `cairn_validate`'s
    `binding criteria` check string-compares the AC block against the RR

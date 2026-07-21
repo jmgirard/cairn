@@ -86,7 +86,11 @@ def template_section_owners():
             owners[_norm(m.group(1))] = _owner_tokens(m.group(2))
     for i, l in enumerate(lines):
         if l.startswith("## "):
-            comment = "\n".join(lines[i + 1:i + 4])
+            # Scan to the comment's actual close, not a fixed window: an
+            # owner comment may run several lines (the AC section's does).
+            end = next((j for j in range(i + 1, len(lines))
+                        if "-->" in lines[j]), i + 3)
+            comment = "\n".join(lines[i + 1:end + 1])
             m = re.search(r"owner:\s*(.+?)\s*-->", comment, re.S)
             assert m, "H2 %r has no owner tag" % l
             owners[_norm(l[3:])] = _owner_tokens(m.group(1))

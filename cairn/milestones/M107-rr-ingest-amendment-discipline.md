@@ -74,7 +74,7 @@ failed move.
       fixture pattern (`scripts/tests`, M102) to stand up a milestone + fixture
       RR, assert the prescribed form passes both checks and the bare-checkbox
       form fails `coverage-complete`.
-- [ ] T2: prescribe the ingest form in milestone-brief step 3 + template AC
+- [x] T2: prescribe the ingest form in milestone-brief step 3 + template AC
       comment; register the changed blocks in the mutation harness.
 - [ ] T3: wire `cairn_budget` + the one-pass-trim rule into implement step 6 and
       brief ingest step 3 (by reference); register the changed blocks.
@@ -87,6 +87,7 @@ failed move.
 
 - 2026-07-21: created by /milestone-plan.
 - 2026-07-21: T1 — added scripts/tests/test_bc_ac_ingest_form.py pinning the ingest-form interaction (prescribed form quiet on both checks; bare ingest reds coverage-complete only, binding quiet). All three suites green.
+- 2026-07-21: T2 — prescribed the `- [ ] AC-N (BCn): <verbatim>` ingest form in milestone-brief step 3 + template AC comment; two new mutation-registered guards; widened the section-owner parser to multi-line comments. skills 564 / scripts 274 green.
 
 ## Decisions
 
