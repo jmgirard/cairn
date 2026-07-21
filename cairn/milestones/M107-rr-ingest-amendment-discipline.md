@@ -70,7 +70,7 @@ failed move.
 
 ## Tasks
 
-- [ ] T1: write the AC2 regression test first — reuse the temp-milestone +
+- [x] T1: write the AC2 regression test first — reuse the temp-milestone +
       fixture pattern (`scripts/tests`, M102) to stand up a milestone + fixture
       RR, assert the prescribed form passes both checks and the bare-checkbox
       form fails `coverage-complete`.
@@ -86,6 +86,7 @@ failed move.
 ## Work log
 
 - 2026-07-21: created by /milestone-plan.
+- 2026-07-21: T1 — added scripts/tests/test_bc_ac_ingest_form.py pinning the ingest-form interaction (prescribed form quiet on both checks; bare ingest reds coverage-complete only, binding quiet). All three suites green.
 
 ## Decisions
 
