@@ -54,6 +54,14 @@ overrides — log the override).
    fences the milestone's own acceptance boxes against optimistic
    check-off; the Coverage completeness check in step 4 fences the plan.
 
+   **Projection-vs-outcome (Driving RR).** When the milestone's header names
+   a `Driving RR:`, record in the Review section each numeric projection
+   carried from that RR beside its measured outcome — side by side, both
+   numbers verbatim ("measured X against projected Y"), never one without
+   the other (M95's −9 against a projected 60–100 passed review because no
+   surface ever juxtaposed the two numbers). No driving RR, or none of its
+   criteria numeric → this no-ops cleanly.
+
 4. **Consistency gate** — mechanical checks, by command, never recall. Two
    halves: the **universal cairn-file checks** below run unconditionally in
    every repo; the **toolchain checks** come from the active profile's
@@ -149,7 +157,13 @@ overrides — log the override).
    found and how each was handled, diffstat, anything the user should eyeball
    directly.
    Acceptance chips (tracking-rules): each actioned finding's text appears
-   verbatim in this presentation, never only a summary. Ask any remaining clarifying questions first (batched, with
+   verbatim in this presentation, never only a summary. With a Driving RR:
+   repeat the measured-vs-projected pairs verbatim in chat above the merge
+   chip, and a shortfall past the milestone's stated tolerance (an unstated
+   tolerance is strict — any shortfall counts) adds an explicit chip option
+   **"accept shortfall, recorded as such"** — the maintainer decides seeing
+   the gap, and selecting it logs the accepted shortfall in the Review
+   section. Ask any remaining clarifying questions first (batched, with
    recommendations). Then put the merge authorization **itself** to the user
    as an `AskUserQuestion` chip — this is the third gate (per tracking-rules),
    never a prose yes/no: the recommended option merges (e.g. `Merge PR #N to

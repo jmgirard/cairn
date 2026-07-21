@@ -114,6 +114,13 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      if none. It is the authoritative source `cairn_impact` and
      `cairn_validate` read for principle impact; an accurate slot beats an
      incidental `(IPn)` in prose (M17).
+   - **Driving RR** (header slot): a milestone planned from an RR that
+     carries Binding criteria sets the slot to `RR<NN>`, ingests each
+     criterion verbatim into the AC block (the `binding criteria` check
+     string-compares them; departures go in the shown "Deviations from
+     RR<NN>" table), and copies the RR's numeric projections beside the
+     criteria with their stated tolerances — an unstated tolerance is
+     strict, so review's shortfall chip fires on any gap. Otherwise `—`.
    - Open questions that hit an RB tripwire (see tracking-rules) are
      tagged inline on the affected task or criterion with the canonical
      token — `(RB tripwire: no-oracle | irreversible-api | ip-touching)` —
