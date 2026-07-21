@@ -15,7 +15,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | M95 | Rulebook editorial slimming — the rulebook states rules, not their legislative history | done | — | high | milestones/archive/M95-rulebook-editorial-slimming.md |
 | M96 | Growth ratchet — the rulebook is governed by attention, not by a permitted size | dropped | — | normal | milestones/archive/M96-rulebook-growth-ratchet.md |
 | M100 | Review-finding enforcement — findings travel verbatim, outcomes meet projections | done | — | high | milestones/archive/M100-review-finding-enforcement.md |
-| M101 | Decommissioning — machinery measured not to work is removed or repointed | in-progress | — | high | milestones/M101-decommission-measured-noops.md |
+| M101 | Decommissioning — machinery measured not to work is removed or repointed | review | — | high | milestones/M101-decommission-measured-noops.md |
 | M98 | Lesson graduation to doctrine — a matured lesson family leaves LESSONS.md whole | done | — | high | milestones/archive/M98-lesson-graduation-to-doctrine.md |
 | M99 | Budget-first drafting — a capped artifact's size is visible while it is written | done | — | normal | milestones/archive/M99-budget-first-drafting.md |
 

@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M101: Decommissioning — machinery measured not to work is removed or repointed
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, GP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
@@ -115,7 +115,7 @@ M100.
       figures.
 - [x] T6: Author both D-entries (supersede D-049 in part; annotate D-054);
       preview per D-036.
-- [ ] T7: Count the always-read delta by diff; run the three suites from
+- [x] T7: Count the always-read delta by diff; run the three suites from
       the repo root, exit codes individually; record both in the work log.
 
 ## Work log
@@ -127,6 +127,8 @@ M100.
 - 2026-07-20: T1 done — lens repointed to archived `## Review` sections as primary evidence, PR-thread walk gated behind a `pulls/comments?per_page=1` existence probe, no-op contract restated ("no prior-review evidence"); tracking-rules lens line matched; test_review_fanout pins the new recipe (3 new asserts + 3 harness entries) and fails on the old text.
 - 2026-07-20: discovered sub-task — pinned rulebook-classification-ledger.md as `partial` in test_scripts.py's shipped-page state ledger; the page was committed at RR04 ingest (526aba6) without its pin, failing the suite on main before this branch.
 - 2026-07-20: AC2 amended at a mini gate (user approved): the grep exemption now names the milestone's own artifacts — its tracking lines and the guard's absence-asserts (guard-doctrine §7's known hits) — beside history; substance of the criterion unchanged.
+- 2026-07-20: all tasks complete; status → review; branch checkpointed as a safe /clear point.
+- 2026-07-20: T7 done — always-read delta by wc diff main→branch: tracking-rules.md 783→782 lines, 54,537→54,373 chars (net −1 / −164, negative as expected; /milestone SKILL.md, conditionally read, +9 lines for the reporting line); three suites from repo root, unpiped, exit codes individually: skills 548 OK exit 0, scripts 266 OK exit 0, hooks 72 OK exit 0.
 - 2026-07-20: T6 done — D-058 (supersedes D-049's threshold clause + measure-the-mean rule; records the NEXT UP-row counter-evidence and why removal won) and D-059 (annotates D-054, mitigation 1 withdrawn; retire-over-repair with the interaction argument and re-open trigger) appended, both preview-shown per D-036; validate + suites green.
 - 2026-07-20: T5 done — /milestone §2 gains the rulebook-mass reporting line beside the cost line (wc -l -m, baseline seeded 779 lines / 53,751 chars from the M95 archive; no threshold, no verdict, no pass machinery); the cost paragraph's stale "M96's to define" deferral rewritten to D-057's closure; 3 new guard tests + 3 harness entries, 1 test and its entry rewritten.
 - 2026-07-20: T4 done — check_decision_heading_quality, its regexes/constant, ADVISORIES entry, and test_decision_heading_quality.py removed; the heading-authoring rule survives with its enforcement sentence rewritten to conduct + back-reference; test_bounded_decisions_read's advisory test replaced with a retirement guard (+ its harness entry — the plan expected one to re-anchor, but the old sentence had never been registered); suites green, advisory absent from validate output.
