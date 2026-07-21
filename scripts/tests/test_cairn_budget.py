@@ -319,17 +319,51 @@ class TestCommandLineContract(unittest.TestCase):
         p = self.run_cli(stray, cwd=d)
         self.assertEqual(p.returncode, 2)
 
-    def test_it_runs_against_this_repos_own_live_milestone_files(self):
-        """The fixtures above are synthetic; this proves the real shape parses."""
+    TEMPLATE = REPO / "skills" / "shared" / "templates" / "milestone.md"
+
+    def _check_real_milestone_shape(self, milestones_dir):
+        """Run the counter against every live milestone file in `milestones_dir`,
+        plus the canonical template. The synthetic fixtures above could drift
+        from the real shape; this parses the shipped shape for real. Returns the
+        count checked (always ≥1 — the template is always present)."""
         import glob
 
-        seen = 0
-        for path in glob.glob(str(REPO / "cairn" / "milestones" / "M*.md")):
+        paths = sorted(glob.glob(os.path.join(str(milestones_dir), "M*.md")))
+        for path in paths:
             text, over = budget.report(str(REPO), path)
             self.assertIn("plan-owned body", text)
             self.assertIsNotNone(over)
-            seen += 1
-        self.assertGreater(seen, 0, "no live milestone files found to check")
+        # Always also check the template. The counter only applies a cap to a
+        # path under cairn/milestones/, so copy the template there first. This
+        # is what keeps the guarantee alive between milestones, when the live
+        # dir is empty (M102 — the check used to red whenever no milestone was
+        # in flight).
+        r = Repo()
+        self.addCleanup(r.close)
+        p = r.write("cairn/milestones/M00-template.md", self.TEMPLATE.read_text())
+        text, over = budget.report(r.root, p)
+        self.assertIn("plan-owned body", text)
+        self.assertIsNotNone(over)
+        return len(paths) + 1
+
+    def test_it_runs_against_this_repos_own_live_milestone_files(self):
+        """The fixtures above are synthetic; this proves the real shape parses,
+        whether or not a milestone is currently in flight."""
+        self.assertGreater(
+            self._check_real_milestone_shape(REPO / "cairn" / "milestones"), 0
+        )
+
+    def test_real_shape_check_survives_an_empty_milestones_dir(self):
+        """The M102 regression: with no live milestone files (every milestone
+        archived), the real-shape check must still parse a real shape and pass,
+        not red on an empty glob."""
+        d = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, d, ignore_errors=True)
+        empty = pathlib.Path(d) / "cairn" / "milestones"
+        empty.mkdir(parents=True)
+        # No M*.md written — the live dir is empty, exactly the between-
+        # milestones state. The template branch still gives a real shape.
+        self.assertEqual(self._check_real_milestone_shape(empty), 1)
 
 
 if __name__ == "__main__":

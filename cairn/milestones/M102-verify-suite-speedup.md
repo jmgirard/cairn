@@ -45,7 +45,7 @@ The verify suite spends its wall time on the tests, not on subprocess spawns, an
 - [x] T1: In `scripts/tests`, replace the per-`install()` `run("cairn_validate.py", root)` spawns with `validate.run(root)`; extract a named subprocess set (argv, non-cairn exit, `die_not_cairn`) as the retained CLI-contract tests.
 - [x] T2: Collapse the two M81 combinatorial fixtures (`test_scripts.py:1117`, `:1213`) to in-process covering sets, preserving the asserted contradiction and three-axes-independent behaviors.
 - [x] T3: In `hooks/tests`, build a committed template repo once at module/class scope and `shutil.copytree` it per test in `setUp`; drop the 5 git spawns; keep the hook subprocess call and the envelope assertions.
-- [ ] T4: Fix `test_it_runs_against_this_repos_own_live_milestone_files` to green with no live milestone files while still parsing a real milestone shape (e.g. include `milestones/archive/M*.md`, or write a fixture from the template); add the empty-milestones regression.
+- [x] T4: Fix `test_it_runs_against_this_repos_own_live_milestone_files` to green with no live milestone files while still parsing a real milestone shape (e.g. include `milestones/archive/M*.md`, or write a fixture from the template); add the empty-milestones regression.
 - [ ] T5: Run all three suites green; capture before/after wall time as review evidence.
 
 ## Work log
@@ -54,6 +54,7 @@ The verify suite spends its wall time on the tests, not on subprocess spawns, an
 - 2026-07-20: T1 — `run()` in `scripts/tests/test_scripts.py` dispatches `cairn_validate.py` in-process (`_run_validate_inproc` capturing report + exit code); `_spawn` retained for the process boundary. `TestOutsideCairn` repointed to `_spawn`; added `TestValidateCliContract` (real-process exit-0 and exit-1). Scripts suite ~20s→6.7s, all green (268 tests).
 - 2026-07-20: T2 — subsumed by T1's seam: both M81 fixtures funnel through `install`→`run`, so their full cross-products now run in-process (4.86s→0.80s combined) with no subprocess spawns. This meets AC2's "via in-process calls" disjunct as written; the cross-products are kept intact (M79 "crossed, not walked") and now documented as cheap, not thinned to a covering set.
 - 2026-07-20: T3 — `RepoFixture.setUp` now `shutil.copytree`s a once-built committed template repo (`_build_template`/`_template`, cairn and non-cairn variants, atexit-cleaned) instead of running git init/config/add/commit per test; setUp spawns zero git subprocesses. Hook invocation stays a real subprocess; envelope assertions unchanged. Hooks suite ~15s→9.1s, 72 green.
+- 2026-07-20: T4 — the archive shape lacks a plan-owned body and the counter only caps a path under `cairn/milestones/`, so neither globbing archive/ nor pointing at the template in place worked; instead the real-shape check now copies the canonical template into a temp cairn milestone path and parses that, plus any live files. Added `test_real_shape_check_survives_an_empty_milestones_dir`. State-independent now (was red whenever no milestone was in flight).
 
 ## Decisions
 
