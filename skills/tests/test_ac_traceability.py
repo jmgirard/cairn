@@ -93,7 +93,9 @@ class TestReviewFences(unittest.TestCase):
         # one batch pass at phase end (mirrors implement's tick-at-checkpoint).
         r = review()
         self.assertIn("Tick each box as its evidence line is recorded", r)
-        self.assertRegex(r, r"never one batch pass at phase end")
+        # \s+ spans the line-wrap: "phase" and "end" can fall on different
+        # physical lines in the wrapped skill prose (M95/M104).
+        self.assertRegex(r, r"never one batch pass at phase\s+end")
 
 
 class TestRulesDiscipline(unittest.TestCase):
@@ -110,7 +112,8 @@ class TestRulesDiscipline(unittest.TestCase):
         # M105: the rulebook AC-fencing block states the incremental tick.
         r = rules()
         self.assertIn("The tick is incremental", r)
-        self.assertRegex(r, r"never batched into one pass at phase end")
+        # \s+ spans the line-wrap (M95/M104), as in the review-skill anchor.
+        self.assertRegex(r, r"never batched into one pass at phase\s+end")
 
 
 if __name__ == "__main__":

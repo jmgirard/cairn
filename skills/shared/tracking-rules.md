@@ -63,7 +63,10 @@ whichever skill makes the transition; ROADMAP wins any conflict),
 acceptance-criterion checkbox is ticked only against fresh evidence recorded
 in the Review section — no evidence line, no tick (review ticks the box as a
 verification mark; the criterion wording stays plan-owned, amended only via
-gate) — and every criterion must
+gate). The tick is incremental: each box is ticked as its own evidence line is
+recorded, criterion by criterion — mirroring `/milestone-implement`'s per-task
+tick at each checkpoint — never batched into one pass at phase end. Every
+criterion must
 map to ≥1 existing task via the Coverage section. An unmapped criterion (or
 one mapped to a task that isn't there) is a gate failure, returned to
 `/milestone-implement` for a gated Coverage amendment, never patched
