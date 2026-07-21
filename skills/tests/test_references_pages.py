@@ -175,6 +175,17 @@ class TestExploratorySources(unittest.TestCase):
             rulebook(),
         )
 
+    def test_plan_skill_recognizes_exploratory_ingestion(self):
+        # AC4: /milestone-plan step 2 recognizes a source corpus as a
+        # supply-push case, so an agent triages it rather than dismissing
+        # uncited sources (the circumplex failure the milestone answers).
+        plan = (SKILLS / "milestone-plan" / "SKILL.md").read_text().lower()
+        self.assertIn(
+            "triage them for prospective oracles or methods rather than "
+            "dismissing them as uncited",
+            plan,
+        )
+
     def test_each_anchor_sits_on_one_physical_line(self):
         # The mutation harness blanks by physical line; an anchor spanning two
         # would "found 0"-error rather than redden (LESSONS :37).

@@ -80,7 +80,7 @@ Bidirectional citekey parsing → the existing "Citekey resolution" candidate.
       bytes, never on text just drafted); one `Mutation` per positive
       `assertIn` in `test_mutation_harness.py`. Confirm each anchor sits on one
       line and reddens under the harness (guards use `Path.read_text`, M100).
-- [ ] T3 — Add the exploratory-ingestion recognition to `/milestone-plan`
+- [x] T3 — Add the exploratory-ingestion recognition to `/milestone-plan`
       `SKILL.md` step 2; guard it (copy committed bytes) + `Mutation` entry;
       confirm it reddens.
 - [ ] T4 — Run all three `unittest` suites, `cairn_validate`, and the mutation
@@ -92,6 +92,7 @@ Bidirectional citekey parsing → the existing "Citekey resolution" candidate.
 - 2026-07-20: created by /milestone-plan.
 - 2026-07-20: T1 — exploration doctrine added to tracking-rules "References pages" (5 single-line anchors); three suites green.
 - 2026-07-20: T2 — TestExploratorySources (5 doctrine asserts + one-line check) + 5 Mutation registrations; skills suite 554 green, harness reddens each anchor.
+- 2026-07-20: T3 — /milestone-plan step 2 recognizes a source corpus (supply-push) + guard + Mutation (target SKILL.md); skills suite 555 green.
 
 ## Decisions
 

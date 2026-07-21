@@ -772,6 +772,12 @@ REGISTRY = [
         target=RULES,
         block="no committed raw sources, no references log, no query op or graph tooling",
     ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestExploratorySources.test_plan_skill_recognizes_exploratory_ingestion",
+        target="skills/milestone-plan/SKILL.md",
+        block="triage them for prospective oracles or methods rather than dismissing them as uncited",
+    ),
     # M78: the standing-fact / dated-observation split + page provenance.
     # Each definition is registered separately and each block is the label
     # WITH its enumeration, so blanking one cannot leave the other's assert
