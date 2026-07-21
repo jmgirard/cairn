@@ -7,7 +7,7 @@
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP1, IP3, GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** m100-review-finding-enforcement   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m100-review-finding-enforcement · https://github.com/jmgirard/cairn/pull/98   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -47,30 +47,30 @@ from the first RR that carries the section.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: `/milestone-brief` states the ingest rule — an RR "Binding
+- [x] AC1: `/milestone-brief` states the ingest rule — an RR "Binding
       criteria" section is ingested verbatim into the AC block, deviations
       legal only through a "Deviations from RR<NN>" table shown verbatim at
       the ingest gate — and `templates/brief.md` requests the section as
       measurable assertions. Both guard-pinned.
-- [ ] AC2: A `cairn_validate` CHECK fails a milestone whose named driving RR
+- [x] AC2: A `cairn_validate` CHECK fails a milestone whose named driving RR
       carries Binding criteria that its AC block does not contain verbatim
       and no Deviations table names; quiet on verbatim ingestion, on tabled
       deviations, and on RRs or milestones without the section. Proven in
       each direction by fixtures (M90: reddens for EACH input it covers).
-- [ ] AC3: `/milestone-review` mandates measured-vs-projected side by side in
+- [x] AC3: `/milestone-review` mandates measured-vs-projected side by side in
       the Review section and in chat above the merge chip; a shortfall past
       the stated tolerance forces an explicit "accept shortfall, recorded as
       such" chip option. Guard-pinned; no-driving-RR case no-ops cleanly.
-- [ ] AC4: The rulebook carries the adjudication-asymmetry sentence (the
+- [x] AC4: The rulebook carries the adjudication-asymmetry sentence (the
       implementing session never authors the durable verdict on the review
       constraining it; such claims route to a new RB or the maintainer's own
       words at the gate) and the script-measurable-AC/committed-ledger
       preference; both guard-pinned and harness-registered; ≤4 rulebook
       lines added by this milestone, counted by diff.
-- [ ] AC5: The milestone's always-read delta (rulebook + CLAUDE.md cairn
+- [x] AC5: The milestone's always-read delta (rulebook + CLAUDE.md cairn
       section) is recorded in the work log, counted by diff (RR02's
       presumed-guilty standard).
-- [ ] AC6: The active profile's `verify` slot is clean — all three suites
+- [x] AC6: The active profile's `verify` slot is clean — all three suites
       green from the repo root, exit codes checked individually, never
       behind a pipe (M56).
 
@@ -128,3 +128,13 @@ from the first RR that carries the section.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as is the work log (D-046); evidence never scrambles plan-owned content. -->
+
+- 2026-07-20 evidence (all fresh, PR #98):
+- AC1: PASS — test_finding_enforcement TestIngestRule (4 asserts) + TestBriefTemplate green; ingest rule at milestone-brief SKILL.md:70-82, template request at brief.md:38-44.
+- AC2: PASS — scripts/tests/test_binding_criteria.py 13/13: softened fires (bare and archived-RR), verbatim/tabled/no-slot/dash-slot/sectionless quiet each beside a positive twin, missing RR file fires, pre-marker BC token doesn't excuse; check registered in CHECKS and PASS on the real tree.
+- AC3: PASS — TestReviewSurfaces green (Review-section block SKILL.md:57-63; merge-chip block with "accept shortfall, recorded as such"); no-op clause guard-pinned; real tree quiet (TestWiring.test_current_tree_is_quiet).
+- AC4: PASS, borderline shown — sentences at tracking-rules.md:210-211 and :597-598; guards green; harness pairs redden (TestRegisteredGuardsFailWhenBlanked 9/9 under discover). Measured +5 insertions/−1 deletion against projected ≤4 added: the two T4 sentences cost 4 new lines; the fifth insertion is T1's ownership-row modification paired with its own deletion (net +4). Pair presented verbatim at the merge gate for the maintainer's call — not adjudicated here, per the adjudication-asymmetry rule this milestone ships.
+- AC5: PASS — T6 work-log line records the delta; fresh `git diff main..HEAD --numstat` matches (+5/−1 tracking-rules.md; CLAUDE.md untouched).
+- AC6: PASS — three suites green from repo root, exit codes individually (skills 542 OK/0 · scripts 222 OK/0 · hooks 72 OK/0); cairn_validate exit 0.
+- Consistency gate: cairn_validate all green incl. `binding criteria` PASS; no DESIGN.md principle changed → cairn_impact skipped; generic profile → toolchain half a clean no-op. CI: repo has no configured checks ("no checks reported").
+- Projection-vs-outcome: M100 predates its own Driving RR slot and RR04 carries no Binding criteria section, so the mechanical surface no-ops; the one numeric projection in scope (RR04 Q8's ~4 rulebook lines) is juxtaposed under AC4: measured net +4 (gross +5/−1) against projected ≤4.
