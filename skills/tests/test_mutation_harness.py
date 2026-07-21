@@ -33,6 +33,7 @@ RULES = "skills/shared/tracking-rules.md"
 HOTFIX = "skills/hotfix/SKILL.md"
 MILESTONE = "skills/milestone/SKILL.md"
 REVIEW = "skills/milestone-review/SKILL.md"
+IMPLEMENT = "skills/milestone-implement/SKILL.md"
 BRIEF = "skills/milestone-brief/SKILL.md"
 RELEASE = "skills/cairn-release/SKILL.md"
 TEMPLATE = "skills/shared/templates/milestone.md"
@@ -2178,6 +2179,24 @@ REGISTRY += [
         test="TestRulebookSentences.test_adjudication_asymmetry",
         target=RULES,
         block="The implementing session never authors the durable verdict",
+    ),
+]
+
+# M107: the amendment paths carry the budget re-check + one-pass-trim rule.
+REGISTRY += [
+    Mutation(
+        guard="test_amendment_budget",
+        test="TestBriefIngestRechecksBudget."
+             "test_brief_step3_points_at_cairn_budget_and_one_pass_trim",
+        target=BRIEF,
+        block="re-check the plan-owned body with `cairn_budget`",
+    ),
+    Mutation(
+        guard="test_amendment_budget",
+        test="TestImplementAmendmentRechecksBudget."
+             "test_step6_points_at_cairn_budget_and_one_pass_trim",
+        target=IMPLEMENT,
+        block="re-checks the body with `cairn_budget`",
     ),
 ]
 

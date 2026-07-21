@@ -76,7 +76,7 @@ failed move.
       form fails `coverage-complete`.
 - [x] T2: prescribe the ingest form in milestone-brief step 3 + template AC
       comment; register the changed blocks in the mutation harness.
-- [ ] T3: wire `cairn_budget` + the one-pass-trim rule into implement step 6 and
+- [x] T3: wire `cairn_budget` + the one-pass-trim rule into implement step 6 and
       brief ingest step 3 (by reference); register the changed blocks.
 - [ ] T4: make brief step 4's archive move robust to an untracked RB/RR (plain
       `mv` + `git add`, or a tracked-check); guard the step wording.
@@ -88,6 +88,7 @@ failed move.
 - 2026-07-21: created by /milestone-plan.
 - 2026-07-21: T1 — added scripts/tests/test_bc_ac_ingest_form.py pinning the ingest-form interaction (prescribed form quiet on both checks; bare ingest reds coverage-complete only, binding quiet). All three suites green.
 - 2026-07-21: T2 — prescribed the `- [ ] AC-N (BCn): <verbatim>` ingest form in milestone-brief step 3 + template AC comment; two new mutation-registered guards; widened the section-owner parser to multi-line comments. skills 564 / scripts 274 green.
+- 2026-07-21: T3 — wired the `cairn_budget` re-check + one-pass-trim rule into implement step-6 amendment gate and brief ingest step (by reference); new test_amendment_budget.py guard file + IMPLEMENT target, two mutation registrations. skills 566 green.
 
 ## Decisions
 
