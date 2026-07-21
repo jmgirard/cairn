@@ -135,5 +135,42 @@ class TestMigrationGateDirectives(unittest.TestCase):
         )
 
 
+class TestAccessibleLanguageRule(unittest.TestCase):
+    """M106: the decision surface leads in plain words, glossing jargon
+    rather than assuming it — extends "Chips carry choices, not evidence"
+    without displacing its above-the-chip justification clause."""
+
+    def test_rule_present_and_scopes_the_decision_surface(self):
+        t = rules()
+        self.assertIn("accessible language on the decision surface.", t)
+        self.assertIn(
+            "an askuserquestion question's text, the prose framing a",
+            t,
+        )
+
+    def test_rule_glosses_jargon_and_names_the_failure(self):
+        t = rules()
+        self.assertIn(
+            "a technical term is glossed at first use, never assumed",
+            t,
+        )
+        self.assertIn(
+            "jargon-led framing, where the user must already know the",
+            t,
+        )
+
+    def test_rule_reconciles_with_chips_carry_choices(self):
+        self.assertIn(
+            "leads with its plain-language meaning rather than standing in for it.",
+            rules(),
+        )
+
+    def test_cross_reference_from_chips_carry_choices(self):
+        self.assertIn(
+            "the accessible language rule below carries that plain-language",
+            rules(),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

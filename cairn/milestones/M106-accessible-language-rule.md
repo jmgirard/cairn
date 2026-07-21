@@ -1,11 +1,11 @@
 # M106: Accessible-language rule — the decision surface leads in plain words, glossing jargon rather than assuming it
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m106-accessible-language-rule
 
 ## Goal
 
@@ -46,14 +46,15 @@ A new central Output & interaction discipline rule requires the user-facing deci
 
 ## Tasks
 
-- [ ] T1 — Draft the "Accessible language" rule block in `tracking-rules.md` adjacent to "Chips carry choices, not evidence" (`tracking-rules.md:507`): decision-surface scope, the lead-in-plain-language + gloss-jargon-at-first-use bar, the named failure (jargon-led framing), and the reconciliation clause that keeps technical justification above the chip but plain-led.
-- [ ] T2 — Add a cross-reference from "Chips carry choices, not evidence" to the new rule; leave that rule's existing wording otherwise intact.
-- [ ] T3 — Author a mutation-registered prose-guard on the new rule's load-bearing wording (extend `test_gate_conclusion_preview.py` or a sibling): copy anchors byte-exact from the committed rule, use `\s+` matchers to span line-wraps (M105 lesson), and register the block in `test_mutation_harness.py`.
-- [ ] T4 — Run all three suites + `cairn_validate` from the repo root, checking each exit code; confirm green, that the new guard reddens under mutation, and that the diff touched only `tracking-rules.md` + test files.
+- [x] T1 — Draft the "Accessible language" rule block in `tracking-rules.md` adjacent to "Chips carry choices, not evidence" (`tracking-rules.md:507`): decision-surface scope, the lead-in-plain-language + gloss-jargon-at-first-use bar, the named failure (jargon-led framing), and the reconciliation clause that keeps technical justification above the chip but plain-led.
+- [x] T2 — Add a cross-reference from "Chips carry choices, not evidence" to the new rule; leave that rule's existing wording otherwise intact.
+- [x] T3 — Author a mutation-registered prose-guard on the new rule's load-bearing wording (extend `test_gate_conclusion_preview.py` or a sibling): copy anchors byte-exact from the committed rule, use `\s+` matchers to span line-wraps (M105 lesson), and register the block in `test_mutation_harness.py`.
+- [x] T4 — Run all three suites + `cairn_validate` from the repo root, checking each exit code; confirm green, that the new guard reddens under mutation, and that the diff touched only `tracking-rules.md` + test files.
 
 ## Work log
 
 - 2026-07-20: created by /milestone-plan.
+- 2026-07-20: T1–T4 done — new "Accessible language on the decision surface" rule added to tracking-rules.md after "Chips carry choices"; cross-ref added into that rule; TestAccessibleLanguageRule (4 tests) + 6 mutation registrations; all three suites green, cairn_validate exit 0, no SKILL.md touched. Status → review.
 
 ## Decisions
 

@@ -507,9 +507,22 @@ cairn skill is active.
 - **Chips carry choices, not evidence.** Supporting detail and technical
   justification live in chat *above* the chip. Option labels are short;
   each description says in plain language what is being chosen and why
-  it matters. At most 4 options per question. When a chip asks acceptance
+  it matters — the Accessible language rule below carries that plain-language
+  bar to the question text and the framing prose. At most 4 options per
+  question. When a chip asks acceptance
   of a produced conclusion, the Acceptance chips rule below sets the bar —
   a summary never substitutes for the accepted text.
+- **Accessible language on the decision surface.** The surface a user reads
+  to make a choice — an AskUserQuestion question's text, the prose framing a
+  chip, and every option label and description — leads in plain words: it says
+  what is being decided and what each option means before any term of art.
+  A technical term is glossed at first use, never assumed; the failure this
+  prevents is jargon-led framing, where the user must already know the
+  vocabulary to tell the options apart. This does not banish the technical
+  justification the rule above keeps *above* the chip — that detail stays, but
+  leads with its plain-language meaning rather than standing in for it. Like
+  record density and reference staleness, "too technical" is a judgment the
+  author makes, never a gate.
 - **Acceptance chips show what's accepted.** A chip option that accepts or
   approves a produced conclusion — review findings, a subagent's verdict,
   an audit result, amended text, or
