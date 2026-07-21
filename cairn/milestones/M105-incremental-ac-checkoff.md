@@ -72,6 +72,7 @@ the Coverage-completeness gate — untouched.
 ## Work log
 
 - 2026-07-20: created by /milestone-plan (promoted from the review-AC-checkoff-timing candidate; disposition "mandate incremental, hard rule" chosen at the plan gate).
+- 2026-07-20: T1 — added incremental-check-off guards (TestReviewFences + TestRulesDiscipline in test_ac_traceability.py) + two mutation-harness registrations; both red against current batch wording (tests-first), box unticked until T2/T3 land the prose.
 
 ## Decisions
 
