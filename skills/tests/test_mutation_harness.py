@@ -1944,6 +1944,16 @@ REGISTRY += [
         block="**A `### D-` heading names its subject and any entry it "
               "supersedes, annotates, or narrows.**",
     ),
+    # M101 (D-059): the advisory is retired; the rule's enforcement sentence
+    # now states conduct + back-reference. The retirement statement is the
+    # positive framing its assertNotIn pairs with (guard-doctrine §3).
+    Mutation(
+        guard="test_bounded_decisions_read",
+        test="TestRulebookStatesTheBoundedRead."
+             "test_heading_rule_is_conduct_with_no_machine_check",
+        target=RULES,
+        block="retired as measured not to work",
+    ),
     Mutation(
         guard="test_bounded_decisions_read",
         test="TestPlanSkillWiresTheProtocol."

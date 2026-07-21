@@ -107,7 +107,7 @@ M100.
 - [x] T3: Rewrite the rulebook two-axes block (tracking-rules.md:87-110)
       and the LESSONS.md header line; re-anchor the affected mutation-
       harness entries (anchors from the target files' actual bytes — M95).
-- [ ] T4: Retire the heading-quality advisory — code, ADVISORIES entry,
+- [x] T4: Retire the heading-quality advisory — code, ADVISORIES entry,
       test file; rewrite the rulebook enforcement sentence and
       `test_bounded_decisions_read.py:82-85`; re-anchor its harness entry.
 - [ ] T5: Add the `/milestone` §2 reporting line + guard beside
@@ -127,6 +127,7 @@ M100.
 - 2026-07-20: T1 done — lens repointed to archived `## Review` sections as primary evidence, PR-thread walk gated behind a `pulls/comments?per_page=1` existence probe, no-op contract restated ("no prior-review evidence"); tracking-rules lens line matched; test_review_fanout pins the new recipe (3 new asserts + 3 harness entries) and fails on the old text.
 - 2026-07-20: discovered sub-task — pinned rulebook-classification-ledger.md as `partial` in test_scripts.py's shipped-page state ledger; the page was committed at RR04 ingest (526aba6) without its pin, failing the suite on main before this branch.
 - 2026-07-20: AC2 amended at a mini gate (user approved): the grep exemption now names the milestone's own artifacts — its tracking lines and the guard's absence-asserts (guard-doctrine §7's known hits) — beside history; substance of the criterion unchanged.
+- 2026-07-20: T4 done — check_decision_heading_quality, its regexes/constant, ADVISORIES entry, and test_decision_heading_quality.py removed; the heading-authoring rule survives with its enforcement sentence rewritten to conduct + back-reference; test_bounded_decisions_read's advisory test replaced with a retirement guard (+ its harness entry — the plan expected one to re-anchor, but the old sentence had never been registered); suites green, advisory absent from validate output.
 - 2026-07-20: T2+T3 done in one checkpoint (coupled by the stated↔enforced guards) — CHAR_CAPS dict, whole-file loop, and char_count removed; DENSITY_FILES is the per-line roster; budget prints item + per-line only; TestRecordDensityAdvisory + pad_to deleted, TestNonItemLineAxis re-based; rulebook two-axes block rewritten (per-line is the second axis, retirement sentence added), LESSONS.md header now teaches the item cap only; test_record_density rewritten (thresholds coupling → per-line cap + roster couplings + no-threshold negative), 2 harness entries re-anchored, 1 deleted with its test, 1 added; all three suites green.
 
 ## Decisions

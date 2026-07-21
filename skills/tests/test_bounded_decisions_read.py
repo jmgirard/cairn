@@ -86,9 +86,15 @@ class TestRulebookStatesTheBoundedRead(unittest.TestCase):
             self.rules,
         )
 
-    def test_heading_advisory_is_prospective_and_warns(self):
-        self.assertIn("`decision heading quality` advisory WARNs", self.rules)
-        self.assertIn("D-054 onward that do not", self.rules)
+    def test_heading_rule_is_conduct_with_no_machine_check(self):
+        # M101 (D-059) retired the `decision heading quality` advisory as
+        # measured not to work (M97 F1-F4/F6); the authoring rule survives,
+        # and the rulebook must say enforcement is conduct + back-reference,
+        # not a retired matcher. Negative paired with the positive framing
+        # (guard-doctrine §3).
+        self.assertIn("retired as measured not to work", self.rules)
+        self.assertIn("the back-reference step covers a heading that", self.rules)
+        self.assertNotIn("`decision heading quality` advisory WARNs", self.rules)
 
 
 class TestPlanSkillWiresTheProtocol(unittest.TestCase):

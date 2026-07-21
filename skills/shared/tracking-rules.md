@@ -309,9 +309,11 @@ omits the relationship (D-012, D-014, and D-019 each omit one).
 IP2 is unchanged — prior state is surfaced, never silently obeyed or silently
 overridden; what narrows is recall, not the obligation.
 **A `### D-` heading names its subject and any entry it supersedes, annotates, or narrows.**
-`cairn_validate`'s `decision heading quality` advisory WARNs on entries from
-D-054 onward that do not; the three that predate it are covered by the
-back-reference instead, since IP4 forbids repairing them.
+This is authoring conduct with no machine check behind it: the advisory that
+policed it was retired as measured not to work (M97's findings; D-059), and
+recall never rested on it — the back-reference step covers a heading that
+omits a relationship, the three legacy entries included, since IP4 forbids
+repairing them.
 
 ## Git and approval model
 
