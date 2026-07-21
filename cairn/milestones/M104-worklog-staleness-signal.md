@@ -1,11 +1,11 @@
 # M104: Work-log staleness signal — bookkeeping entries no longer reset the idle clock
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m104-worklog-staleness-signal   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 
@@ -71,6 +71,7 @@ the new clause.
 ## Work log
 
 - 2026-07-20: created by /milestone-plan.
+- 2026-07-20: start — in-progress; branch m104-worklog-staleness-signal.
 
 ## Decisions
 
