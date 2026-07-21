@@ -61,7 +61,8 @@ M100.
       roster no longer depends on `CHAR_CAPS`; item caps unchanged;
       `cairn_budget` prints item + per-line axes only; a repo-wide grep
       finds 21,000/20,500 stated nowhere outside history (DECISIONS.md,
-      archives, git).
+      archives, git) and the milestone's own artifacts (this file's
+      tracking lines and the guard's absence-asserts — guard-doctrine §7).
 - [ ] AC3: The `decision heading quality` advisory is retired — check,
       registration, and test file gone; the heading-authoring rule survives
       with its enforcement sentence rewritten; affected guards and harness
@@ -125,6 +126,7 @@ M100.
 - 2026-07-20: created by /milestone-plan from the NEXT UP candidate row (part b) + the two absorbed IN SCOPE rows; gate chose: remove the CHAR_CAPS axis, retire (not repair) the heading-quality advisory, drop M96 and fold its reporting line here, keep the PR-thread read as a conditional surface.
 - 2026-07-20: T1 done — lens repointed to archived `## Review` sections as primary evidence, PR-thread walk gated behind a `pulls/comments?per_page=1` existence probe, no-op contract restated ("no prior-review evidence"); tracking-rules lens line matched; test_review_fanout pins the new recipe (3 new asserts + 3 harness entries) and fails on the old text.
 - 2026-07-20: discovered sub-task — pinned rulebook-classification-ledger.md as `partial` in test_scripts.py's shipped-page state ledger; the page was committed at RR04 ingest (526aba6) without its pin, failing the suite on main before this branch.
+- 2026-07-20: AC2 amended at a mini gate (user approved): the grep exemption now names the milestone's own artifacts — its tracking lines and the guard's absence-asserts (guard-doctrine §7's known hits) — beside history; substance of the criterion unchanged.
 - 2026-07-20: T2+T3 done in one checkpoint (coupled by the stated↔enforced guards) — CHAR_CAPS dict, whole-file loop, and char_count removed; DENSITY_FILES is the per-line roster; budget prints item + per-line only; TestRecordDensityAdvisory + pad_to deleted, TestNonItemLineAxis re-based; rulebook two-axes block rewritten (per-line is the second axis, retirement sentence added), LESSONS.md header now teaches the item cap only; test_record_density rewritten (thresholds coupling → per-line cap + roster couplings + no-threshold negative), 2 harness entries re-anchored, 1 deleted with its test, 1 added; all three suites green.
 
 ## Decisions
