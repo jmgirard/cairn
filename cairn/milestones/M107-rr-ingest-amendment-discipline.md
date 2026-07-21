@@ -1,11 +1,11 @@
 # M107: RR-ingest / amendment discipline — the ingest surface carries the plan path's form, budget, and file hygiene
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3, IP4
-- **Branch/PR:** —
+- **Branch/PR:** m107-rr-ingest-amendment-discipline
 
 ## Goal
 
