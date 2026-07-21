@@ -18,6 +18,7 @@
 - **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
+- **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
 
@@ -36,7 +37,9 @@ One sentence.
 never "never".
 
 ## Acceptance criteria
-<!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
+<!-- owner: plan · create/amend-via-gate; review reads, never reinterprets.
+     Driving RR set → its Binding criteria appear VERBATIM here (binding-
+     criteria check); departures: a "Deviations from RR<NN>" table ends this section. -->
 
 - [ ] Each objectively checkable with evidence — a test that passes, a file
       that exists, the active profile's verify/check output. Never vibes.

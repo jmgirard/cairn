@@ -67,7 +67,19 @@ start (any skill) when a manual RR appears:
    never silently discard Fable's advice.
 3. Apply or schedule recommendations as tasks (or candidate rows for
    out-of-scope ones), each triaged: apply / consider / reject-with-reason
-   (logged).
+   (logged). **Binding criteria travel verbatim:** when the RR carries a
+   `## Binding criteria` section, the milestone it constrains sets its
+   header's `Driving RR:` slot to `RR<NN>` and ingests each criterion
+   verbatim into its `## Acceptance criteria` (through the
+   `/milestone-implement` step-6 amendment gate when the AC block already
+   exists). Any departure is a row in the "Deviations from RR<NN>" table at
+   the end of that AC section, shown verbatim at this ingestion's preview,
+   never slipped — IP3 applied to review findings. `cairn_validate`'s
+   `binding criteria` check string-compares the AC block against the RR
+   (whitespace-normalized): a softened criterion is a red check, not a
+   reading. Copy the RR's numeric projections beside the criteria with
+   their stated tolerances; an unstated tolerance is strict — any shortfall
+   forces the accept-shortfall option at the merge gate.
 4. Move the RB/RR pair to `cairn/reviews/archive/`; milestone status back
    to `in-progress`; durable-record preview (tracking-rules): show the
    Decisions entries, D-entries, and candidate rows the ingestion wrote

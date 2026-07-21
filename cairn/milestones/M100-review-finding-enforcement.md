@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M100: Review-finding enforcement — findings travel verbatim, outcomes meet projections
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP1, IP3, GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m100-review-finding-enforcement   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -90,7 +90,7 @@ from the first RR that carries the section.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Author the ingest rule in `/milestone-brief` (SKILL.md:68-70 area)
+- [x] T1: Author the ingest rule in `/milestone-brief` (SKILL.md:68-70 area)
       and add "Binding criteria" to `templates/brief.md`; place the
       Deviations table within the milestone file against the
       section-ownership table and `test_section_allow_lists.py`.
@@ -113,6 +113,7 @@ from the first RR that carries the section.
      so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
 - 2026-07-20: created by /milestone-plan from the NEXT UP candidate row (RR04 rec 8, mechanisms 1-4); split from the decommissioning half (M101) at the sizing tripwires, per the row's own instruction.
+- 2026-07-20: implement gate chose: Driving RR header slot, deviations table inside the AC section, whitespace-normalized matching, strict default tolerance. T1 done — ingest rule in /milestone-brief step 3, Binding criteria in brief.md, Driving RR slot + AC comment in milestone.md, ownership-table row updated; skills suite green (530 OK). Pre-existing red found on main (undated ledger extraction status) fixed there as a trivial commit and the branch rebased.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
