@@ -1,6 +1,6 @@
 # M104: Work-log staleness signal — bookkeeping entries no longer reset the idle clock
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -57,21 +57,24 @@ the new clause.
 
 ## Tasks
 
-- [ ] T1 — Reword the Staleness bullet at `skills/milestone/SKILL.md:91`:
+- [x] T1 — Reword the Staleness bullet at `skills/milestone/SKILL.md:91`:
       bookkeeping (a Depends-on amendment, a status/mirror catch-up, a
       git-reconciliation line) is clock-neutral; the signal is measured from the
       last entry recording actual work; cite the M88 T3 lineage inline.
-- [ ] T2 — Add prose-guard `test_staleness_signal_discounts_bookkeeping_entries`
+- [x] T2 — Add prose-guard `test_staleness_signal_discounts_bookkeeping_entries`
       to `TestMilestoneAuditWiring` asserting the clause's bytes; register the
       anchor in `skills/tests/test_mutation_harness.py`; run the mutation harness
       and confirm it reddens on blanking.
-- [ ] T3 — Run the three suites; confirm the existing idleness-ownership guard
+- [x] T3 — Run the three suites; confirm the existing idleness-ownership guard
       and the completeness meta-test stay green.
 
 ## Work log
 
 - 2026-07-20: created by /milestone-plan.
 - 2026-07-20: start — in-progress; branch m104-worklog-staleness-signal.
+- 2026-07-20: T1 — reworded SKILL §2 Staleness bullet; bookkeeping entries clock-neutral, signal from last work entry (M88 T3, generalizes M88-D1).
+- 2026-07-20: T2 — added guard test_staleness_signal_discounts_bookkeeping_entries + 2 mutation registrations; both anchors redden on blank.
+- 2026-07-20: T3 — suites green (skills 556, scripts 269, hooks 72); idleness-ownership guard and completeness meta-test green; validate green. Status → review.
 
 ## Decisions
 

@@ -88,9 +88,15 @@ governed at the door (D-057), and this line keeps it visible.
 
 The script deliberately does not judge these — do them yourself and report:
 
-- **Staleness:** `in-progress` with no work-log entry in 14+ days; open RB
-  with no RR after 7+ days (remind the user to run it); `candidate` rows
-  untouched ~6 months → offer a triage chip (promote / keep / drop — never
+- **Staleness:** `in-progress` with no *work* entry in 14+ days — measured
+  from the last work-log line that records actual progress, never the last
+  line of any kind. Bookkeeping entries are clock-neutral: a `Depends-on`
+  amendment, a status-transition or mirror catch-up, and a git-reconciliation
+  catch-up line each refresh the clock while no work happened, so a milestone
+  can sit unworked while every recent entry is one (M88 T3, generalizing
+  M88-D1's release-case rule to every `in-progress` milestone). Open RB with
+  no RR after 7+ days (remind the user to run it); `candidate` rows untouched
+  ~6 months → offer a triage chip (promote / keep / drop — never
   auto-delete).
 - **Semantic orphans:** `done` milestones not archived; RRs not ingested;
   uncommitted changes under `cairn/`.

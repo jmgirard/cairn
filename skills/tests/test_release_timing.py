@@ -148,6 +148,19 @@ class TestMilestoneAuditWiring(unittest.TestCase):
             "is not re-reported under the staleness bullet", milestone()
         )
 
+    def test_staleness_signal_discounts_bookkeeping_entries(self):
+        # M104: the in-progress staleness clock runs from the last entry that
+        # records WORK, never the last entry of any kind — bookkeeping lines
+        # (Depends-on amendments, status/mirror catch-ups, git-reconciliation
+        # catch-ups) are clock-neutral, or a stalled milestone reads as active
+        # (M88 T3, generalizing M88-D1's release-case rule). Two anchors bind
+        # the measurement basis and the noun→disposition pair (LESSONS M74).
+        text = milestone()
+        self.assertIn(
+            "the last work-log line that records actual progress", text
+        )
+        self.assertIn("bookkeeping entries are clock-neutral", text)
+
     def test_route_offers_the_park_option(self):
         self.assertIn(
             "park m<nn> as `blocked` → the release window is not open",

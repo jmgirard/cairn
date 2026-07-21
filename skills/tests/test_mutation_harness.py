@@ -219,6 +219,18 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_release_timing",
+        test="TestMilestoneAuditWiring.test_staleness_signal_discounts_bookkeeping_entries",
+        target=MILESTONE,
+        block="the last work-log line that records actual progress",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestMilestoneAuditWiring.test_staleness_signal_discounts_bookkeeping_entries",
+        target=MILESTONE,
+        block="Bookkeeping entries are clock-neutral",
+    ),
+    Mutation(
+        guard="test_release_timing",
         test="TestMilestoneAuditWiring.test_a_recommendation_naming_something_else_keeps_the_lead",
         target=MILESTONE,
         block="that recommendation is legitimate and keeps the lead",

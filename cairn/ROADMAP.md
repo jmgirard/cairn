@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M104 | Work-log staleness signal — bookkeeping entries no longer reset the idle clock | in-progress | — | normal | milestones/M104-worklog-staleness-signal.md |
+| M104 | Work-log staleness signal — bookkeeping entries no longer reset the idle clock | review | — | normal | milestones/M104-worklog-staleness-signal.md |
 | M103 | Exploratory sources — supply-push ingestion: a corpus of uncited sources is triaged into candidates, not dismissed as irrelevant | done | — | normal | milestones/archive/M103-exploratory-sources.md |
 | M102 | Verify-suite speedup — the dogfood suite runs on its tests, not on process spawns, and greens in any repo state | done | — | normal | milestones/archive/M102-verify-suite-speedup.md |
 | M100 | Review-finding enforcement — findings travel verbatim, outcomes meet projections | done | — | high | milestones/archive/M100-review-finding-enforcement.md |
