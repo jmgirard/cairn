@@ -71,3 +71,10 @@ _Reviewed 2026-07-20 · PR #100 · branch cut from and current with `main` (no m
 - AC5 ✓ — all three suites green (skills/scripts/hooks); warm total ~15.6–19.6s across runs vs ~37–40s baseline (machine-noisy but well under baseline).
 
 **Consistency gate:** `cairn_validate` exit 0 — all checks PASS incl. `coverage complete`; lone WARN is the pre-existing references-staleness advisory (`rulebook-classification-ledger.md`), not introduced here. No `DESIGN.md` principle changed (M102 works under GP2, does not modify it) → `cairn_impact --changed` correctly skipped. `generic` profile names no toolchain consistency checks → that half no-ops.
+
+**Independent review — three fresh-context lenses, zero findings (scorer no-op):**
+- [O] diff-bug (Opus): no findings. Verified in-process `_run_validate_inproc` faithfully duck-types stdout/stderr/returncode (incl. the `NotCairn`→2 path, no `sys.exit`); `_VALIDATE_MOD` cache safe (every `cairn_validate` module-level name is immutable, `main()` re-reads files per call); template copy is committed-clean (`git status --porcelain` empty post-`copytree`, each `setUp` mutates its own temp copy); M07 preserved (`run_hook` unchanged, envelope assertions intact); budget fix non-vacuous (the real template parser runs; empty-dir regression returns 1).
+- [S] blame-history (Sonnet): no findings. M07 methodology note untouched and `run_hook` byte-for-byte unchanged; original `run()` (M10) carried no "must be a real subprocess" rationale, so converting it undoes no deliberate decision; M56/M65 suite-invocation lesson not regressed (all three suites re-run green from root).
+- [S] prior-review (Sonnet): no prior-review evidence / zero findings. Read the archived `## Review` lineage (M79/M81/M94/M99 for the scripts tests; M07/M60/M72 for the hooks tests); none raised subprocess-vs-in-process dispatch, copied-template, or state-coupled-live-file findings. GitHub PR-comment probe returned empty (not walked). M07 and M79 lessons explicitly respected by the diff.
+
+No findings scored; none actioned; none deferred. Nothing sent back for amendment.
