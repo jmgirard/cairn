@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3, IP4
-- **Branch/PR:** m107-rr-ingest-amendment-discipline
+- **Branch/PR:** m107-rr-ingest-amendment-discipline · https://github.com/jmgirard/cairn/pull/105
 
 ## Goal
 
@@ -42,26 +42,26 @@ failed move.
 
 ## Acceptance criteria
 
-- [ ] AC1: milestone-brief step 3 prescribes the `- [ ] AC-N (BCn): <verbatim>`
+- [x] AC1: milestone-brief step 3 prescribes the `- [ ] AC-N (BCn): <verbatim>`
       ingest form, and the milestone template's `## Acceptance criteria` comment
       states the same form.
-- [ ] AC2: a regression test builds a milestone with `Driving RR: RR<NN>` + a
+- [x] AC2: a regression test builds a milestone with `Driving RR: RR<NN>` + a
       fixture RR whose binding criteria are ingested in the prescribed form and
       asserts both `binding criteria` and `coverage-complete` pass; the same
       milestone with the BCs as bare unnumbered `- [ ]` checkboxes fails
       `coverage-complete` (the intraclass failure, pinned).
-- [ ] AC3: milestone-implement step 6 (substantive amendment) and
+- [x] AC3: milestone-implement step 6 (substantive amendment) and
       milestone-brief step 3 (BC ingest) each direct the agent to re-check the
       plan-owned body with `cairn_budget` after the amendment and, if over,
       compress the single heaviest plan-owned section in one pass per
       tracking-rules — by reference, not restated.
-- [ ] AC4: milestone-brief step 4's archive move succeeds whether or not the
+- [x] AC4: milestone-brief step 4's archive move succeeds whether or not the
       RB/RR files are git-tracked, and the step's prose names the robust
       mechanism.
-- [ ] AC5: every new/changed guarded block in milestone-brief,
+- [x] AC5: every new/changed guarded block in milestone-brief,
       milestone-implement, and the template is registered in the mutation
       harness; the completeness meta-test passes.
-- [ ] AC6: `verify` clean — `python3 -m unittest` over scripts/tests,
+- [x] AC6: `verify` clean — `python3 -m unittest` over scripts/tests,
       skills/tests, hooks/tests.
 
 ## Coverage
@@ -95,3 +95,24 @@ failed move.
 ## Decisions
 
 ## Review
+
+**Acceptance-criteria evidence (2026-07-21, branch @ e18dd45):**
+- AC1 — `- [ ] AC-N (BCn): <verbatim>` present in milestone-brief step 3 and
+  the template AC comment (1 match each); TestIngestRule + TestMilestoneTemplate
+  form guards pass.
+- AC2 — scripts/tests/test_bc_ac_ingest_form.py (5 tests) green: prescribed
+  form quiet on both `binding criteria` and `coverage-complete`; bare unnumbered
+  ingest reds `coverage-complete` only, binding stays quiet.
+- AC3 — `cairn_budget` re-check + one-pass-trim referenced in implement step 6
+  and brief ingest step (1 each, by reference); test_amendment_budget.py
+  (2 tests) green.
+- AC4 — brief step 4 relocates with plain `mv` + `git add`, never `git mv`
+  ("`git mv` fails on an untracked file" present); robust-move guard passes.
+- AC5 — mutation harness green via discover (9 tests): completeness meta-test +
+  per-block reddening of the four new guards.
+- AC6 — verify clean: scripts 274, skills 567, hooks 72; `cairn_validate` exit 0.
+
+**Consistency gate:** `cairn_validate` exit 0 (universal checks). Profile
+`generic` → toolchain consistency-gate is a clean no-op. No DESIGN.md principle
+changed (M107 works under IP3/IP4, does not alter them) → `cairn_impact`
+skipped. Driving RR none → projection-vs-outcome no-ops.
