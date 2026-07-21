@@ -521,7 +521,7 @@ cairn skill is active.
   vocabulary to tell the options apart. This does not banish the technical
   justification the rule above keeps *above* the chip — that detail stays, but
   leads with its plain-language meaning rather than standing in for it. Like
-  record density and reference staleness, "too technical" is a judgment the
+  record density and references staleness, "too technical" is a judgment the
   author makes, never a gate.
 - **Acceptance chips show what's accepted.** A chip option that accepts or
   approves a produced conclusion — review findings, a subagent's verdict,
