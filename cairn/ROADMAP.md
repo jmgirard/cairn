@@ -12,6 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M105 | Incremental AC check-off — review ticks each criterion box as its evidence lands, not in a batch at phase end | planned | — | normal | milestones/M105-incremental-ac-checkoff.md |
 | M104 | Work-log staleness signal — bookkeeping entries no longer reset the idle clock | done | — | normal | milestones/archive/M104-worklog-staleness-signal.md |
 | M103 | Exploratory sources — supply-push ingestion: a corpus of uncited sources is triaged into candidates, not dismissed as irrelevant | done | — | normal | milestones/archive/M103-exploratory-sources.md |
 | M102 | Verify-suite speedup — the dogfood suite runs on its tests, not on process spawns, and greens in any repo state | done | — | normal | milestones/archive/M102-verify-suite-speedup.md |
