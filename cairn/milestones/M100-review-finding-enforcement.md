@@ -94,7 +94,7 @@ from the first RR that carries the section.
       and add "Binding criteria" to `templates/brief.md`; place the
       Deviations table within the milestone file against the
       section-ownership table and `test_section_allow_lists.py`.
-- [ ] T2: Implement the CHECK (CHECKS list, cairn_validate.py:1513-1529;
+- [x] T2: Implement the CHECK (CHECKS list, cairn_validate.py:1513-1529;
       `_section_body` pattern) with both-direction fixtures.
 - [ ] T3: Amend `/milestone-review` step 7 (SKILL.md:146-158) and the Review
       section instructions: projection-vs-outcome juxtaposition + the
@@ -114,6 +114,7 @@ from the first RR that carries the section.
 
 - 2026-07-20: created by /milestone-plan from the NEXT UP candidate row (RR04 rec 8, mechanisms 1-4); split from the decommissioning half (M101) at the sizing tripwires, per the row's own instruction.
 - 2026-07-20: implement gate chose: Driving RR header slot, deviations table inside the AC section, whitespace-normalized matching, strict default tolerance. T1 done — ingest rule in /milestone-brief step 3, Binding criteria in brief.md, Driving RR slot + AC comment in milestone.md, ownership-table row updated; skills suite green (530 OK). Pre-existing red found on main (undated ledger extraction status) fixed there as a trivial commit and the branch rebased.
+- 2026-07-20: T2 done — `binding criteria` CHECK (`check_binding_criteria` + `_binding_criteria`/`_rr_file`/`_norm_ws`) registered in CHECKS; 13 fixture tests in scripts/tests/test_binding_criteria.py cover both directions per input (verbatim-rewrapped quiet; softened fires; tabled quiet; no/dash slot quiet with positive twin; sectionless RR quiet; missing RR file fires; archived RR binds; pre-marker BC token doesn't excuse). Both suites green; validate PASS on tree.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
