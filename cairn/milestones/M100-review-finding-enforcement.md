@@ -100,7 +100,7 @@ from the first RR that carries the section.
       section instructions: projection-vs-outcome juxtaposition + the
       accept-shortfall chip option; add the plan-time projection copy to
       `/milestone-plan` where ACs are authored.
-- [ ] T4: Add the two rulebook sentences (adjudication asymmetry;
+- [x] T4: Add the two rulebook sentences (adjudication asymmetry;
       script-measurable preference), drafted against the ≤4-line budget.
 - [ ] T5: Guards for T1/T3/T4 prose + mutation-harness registrations;
       anchors copied from the target files' actual bytes (M95).
@@ -116,6 +116,7 @@ from the first RR that carries the section.
 - 2026-07-20: implement gate chose: Driving RR header slot, deviations table inside the AC section, whitespace-normalized matching, strict default tolerance. T1 done — ingest rule in /milestone-brief step 3, Binding criteria in brief.md, Driving RR slot + AC comment in milestone.md, ownership-table row updated; skills suite green (530 OK). Pre-existing red found on main (undated ledger extraction status) fixed there as a trivial commit and the branch rebased.
 - 2026-07-20: T2 done — `binding criteria` CHECK (`check_binding_criteria` + `_binding_criteria`/`_rr_file`/`_norm_ws`) registered in CHECKS; 13 fixture tests in scripts/tests/test_binding_criteria.py cover both directions per input (verbatim-rewrapped quiet; softened fires; tabled quiet; no/dash slot quiet with positive twin; sectionless RR quiet; missing RR file fires; archived RR binds; pre-marker BC token doesn't excuse). Both suites green; validate PASS on tree.
 - 2026-07-20: T3 done — projection-vs-outcome block in review step 3 (Review-section side) and step 7 (chip side, with the accept-shortfall option); Driving RR bullet added to plan step 4 (slot + verbatim ingest + projection copy). Both suites green.
+- 2026-07-20: T4 done — script-measurable-AC bullet in Universal tracking rules; adjudication-asymmetry sentence appended to the Fable/RB-RR bullet. Rulebook diff vs main now +5/−1 (4 new lines + the T1 ownership-row modification), net +4 — both numbers to be shown at review against AC4's ≤4 budget.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
