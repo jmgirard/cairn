@@ -116,3 +116,16 @@ failed move.
 `generic` → toolchain consistency-gate is a clean no-op. No DESIGN.md principle
 changed (M107 works under IP3/IP4, does not alter them) → `cairn_impact`
 skipped. Driving RR none → projection-vs-outcome no-ops.
+
+**Independent fresh-context review (three lenses + scorer):**
+- Diff-bug [O]: 1 finding (reproduced). Blame-history [S]: none. Prior-review
+  [S]: no regression (GitHub probe empty; judged against archived Review
+  sections), independently raised the same parser concern as sub-threshold.
+- **F1 (scored 92, fixed)** — `test_section_allow_lists.py` `template_section_owners`:
+  the widened owner-comment scan ran to the first `-->` anywhere below an H2
+  with no section boundary, so a section missing its owner comment would borrow
+  the next section's tag and skip the `assert m` (only the final H2 stayed
+  protected). Fix: bound the scan to the section (up to the next `## ` or EOF);
+  extracted `_owners_from_lines` + two regression tests (missing-owner middle
+  section now asserts; multi-line comment still parses). skills 569, scripts 274.
+- No sub-80 findings. Post-fix verify clean.

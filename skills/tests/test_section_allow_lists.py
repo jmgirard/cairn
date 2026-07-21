@@ -74,10 +74,14 @@ def table_section_owners():
     return owners
 
 
-def template_section_owners():
-    """{section-name: owner tokens} from the template — header `- **Field:**`
-    bullets (before the first H2) plus each H2 and its following comment."""
-    lines = read("shared", "templates", "milestone.md").splitlines()
+def _owners_from_lines(lines):
+    """{section-name: owner tokens} from template lines — header `- **Field:**`
+    bullets (before the first H2) plus each H2 and its following comment. The
+    per-H2 comment is read only within that section (up to the next H2 or EOF),
+    never past it: an owner comment may run several lines (the AC section's
+    does), but a section that LACKS one must not borrow a later section's tag —
+    the scan stays bounded so the missing-owner assert still fires (M107 review
+    F1)."""
     first_h2 = next(i for i, l in enumerate(lines) if l.startswith("## "))
     owners = {}
     for l in lines[:first_h2]:
@@ -86,15 +90,18 @@ def template_section_owners():
             owners[_norm(m.group(1))] = _owner_tokens(m.group(2))
     for i, l in enumerate(lines):
         if l.startswith("## "):
-            # Scan to the comment's actual close, not a fixed window: an
-            # owner comment may run several lines (the AC section's does).
-            end = next((j for j in range(i + 1, len(lines))
-                        if "-->" in lines[j]), i + 3)
-            comment = "\n".join(lines[i + 1:end + 1])
+            nxt = next((j for j in range(i + 1, len(lines))
+                        if lines[j].startswith("## ")), len(lines))
+            comment = "\n".join(lines[i + 1:nxt])
             m = re.search(r"owner:\s*(.+?)\s*-->", comment, re.S)
             assert m, "H2 %r has no owner tag" % l
             owners[_norm(l[3:])] = _owner_tokens(m.group(1))
     return owners
+
+
+def template_section_owners():
+    return _owners_from_lines(
+        read("shared", "templates", "milestone.md").splitlines())
 
 
 class TestSectionAllowLists(unittest.TestCase):
@@ -118,6 +125,26 @@ class TestSectionAllowLists(unittest.TestCase):
         for skill in ("milestone-plan", "milestone-implement",
                       "milestone-review"):
             self.assertIn("section-ownership table", read(skill, "SKILL.md"))
+
+    # M107 review F1: the multi-line comment scan must stay bounded to its own
+    # section, so a section missing its owner comment still trips the assert
+    # instead of silently borrowing the next section's tag.
+    ALPHA = ["## Alpha", "<!-- owner: plan · x -->", "body", ""]
+    BETA = ["## Beta", "<!-- owner: review · y -->", "body", ""]
+    GAMMA = ["## Gamma", "<!-- owner: review · z -->", "body", ""]
+
+    def test_multiline_owner_comment_parses(self):
+        lines = (["## Alpha",
+                  "<!-- owner: plan · x;", "   more prose;", "   end -->", ""]
+                 + self.BETA)
+        owners = _owners_from_lines(lines)
+        self.assertEqual(set(owners), {"alpha", "beta"})
+
+    def test_missing_owner_comment_on_middle_section_still_asserts(self):
+        lines = self.ALPHA + ["## Beta", "body with no owner comment", ""] \
+            + self.GAMMA
+        with self.assertRaises(AssertionError):
+            _owners_from_lines(lines)
 
 
 if __name__ == "__main__":
