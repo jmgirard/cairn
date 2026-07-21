@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-20 (M103 done — exploratory sources; 1 lesson captured (mutation-reddening does not defend a SET swap), none retired; the `/explore-sources` candidate added at M103 plan stands; M96 row pruned to retention). Release timing is user-declared — D-050._
+_Last hygiene check: 2026-07-20 (candidate/audit pass — all validate CHECKs green; 1 references-staleness WARN on rulebook-classification-ledger; 17 candidates, all parked with live triggers, none stale or promotion-due; inboxes empty, tree clean). Release timing is user-declared — D-050._
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
