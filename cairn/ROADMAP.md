@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M106 | Accessible-language rule — the decision surface (question text + chip framing) leads in plain words, glossing jargon rather than assuming it | planned | — | normal | milestones/M106-accessible-language-rule.md |
+| M106 | Accessible-language rule — the decision surface (question text + chip framing) leads in plain words, glossing jargon rather than assuming it | review | — | normal | milestones/M106-accessible-language-rule.md |
 | M105 | Incremental AC check-off — review ticks each criterion box as its evidence lands, not in a batch at phase end | done | — | normal | milestones/archive/M105-incremental-ac-checkoff.md |
 | M104 | Work-log staleness signal — bookkeeping entries no longer reset the idle clock | done | — | normal | milestones/archive/M104-worklog-staleness-signal.md |
 | M103 | Exploratory sources — supply-push ingestion: a corpus of uncited sources is triaged into candidates, not dismissed as irrelevant | done | — | normal | milestones/archive/M103-exploratory-sources.md |

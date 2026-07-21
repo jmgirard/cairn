@@ -1318,6 +1318,42 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
+        test="TestAccessibleLanguageRule.test_rule_present_and_scopes_the_decision_surface",
+        target=RULES,
+        block="Accessible language on the decision surface.",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAccessibleLanguageRule.test_rule_present_and_scopes_the_decision_surface",
+        target=RULES,
+        block="an AskUserQuestion question's text, the prose framing a",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAccessibleLanguageRule.test_rule_glosses_jargon_and_names_the_failure",
+        target=RULES,
+        block="A technical term is glossed at first use, never assumed",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAccessibleLanguageRule.test_rule_glosses_jargon_and_names_the_failure",
+        target=RULES,
+        block="jargon-led framing, where the user must already know the",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAccessibleLanguageRule.test_rule_reconciles_with_chips_carry_choices",
+        target=RULES,
+        block="leads with its plain-language meaning rather than standing in for it.",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAccessibleLanguageRule.test_cross_reference_from_chips_carry_choices",
+        target=RULES,
+        block="the Accessible language rule below carries that plain-language",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
         test="TestPerSkillDirectives.test_plan_question_gate",
         target="skills/milestone-plan/SKILL.md",
         block="Acceptance chips (tracking-rules): a question resting on a produced",
