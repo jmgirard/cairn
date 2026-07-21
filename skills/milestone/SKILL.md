@@ -64,9 +64,13 @@ milestone may legitimately exceed a tripwire with justification, or it may
 want splitting via `/milestone-plan`). A `WARN` never blocks the gate.
 
 A `release window` WARN is reported, never argued with — release timing is the user's to declare (D-050), so carry a park disposition to §3 and never treat the WARN as a prompt to get the release moving.
-It also **owns** the idleness question for the milestone it names: a release
-the advisory has already flagged is not re-reported under the Staleness bullet
-below, or one stalled release arrives as two separate items.
+It also **owns** the idleness question for every release-shaped milestone,
+whether or not it fired. A release the advisory has already flagged
+is not re-reported under the Staleness bullet below; a release-shaped milestone
+the advisory stays silent on is still the advisory's to judge, never the
+bullet's — otherwise one stalled release arrives as two separate items, or the
+stricter Staleness bullet nags a release the advisory's lenient any-entry rule
+deliberately spared (D-017).
 
 Run `cairn_cost.py --audit-line` and report its one line verbatim. It measures
 what the most recent milestone spent — turns, cache-read, fresh input, output,
@@ -90,14 +94,15 @@ The script deliberately does not judge these — do them yourself and report:
 
 - **Staleness:** `in-progress` with no *work* entry in 14+ days — measured
   from the last work-log line that records actual progress, never the last
-  line of any kind. Bookkeeping entries are clock-neutral: a `Depends-on`
-  amendment, a status-transition or mirror catch-up, and a git-reconciliation
-  catch-up line each refresh the clock while no work happened, so a milestone
-  can sit unworked while every recent entry is one (M88 T3, generalizing
-  M88-D1's release-case rule to every `in-progress` milestone). Open RB with
-  no RR after 7+ days (remind the user to run it); `candidate` rows untouched
-  ~6 months → offer a triage chip (promote / keep / drop — never
-  auto-delete).
+  line of any kind, because bookkeeping refreshes a naive clock though no work
+  happened and a milestone can sit unworked while every recent entry is one
+  (M88 T3, generalizing M88-D1's release-case insight).
+  Clock-neutral bookkeeping — a `Depends-on` amendment, a status/mirror catch-up, and a git-reconciliation catch-up line — never resets the 14-day clock.
+  Release-shaped milestones are exempt: their idleness is owned by the
+  `release window` advisory above whether or not it fired, so the bullet never
+  judges one. Open RB with no RR after 7+ days (remind the user to run it);
+  `candidate` rows untouched ~6 months → offer a triage chip (promote / keep /
+  drop — never auto-delete).
 - **Semantic orphans:** `done` milestones not archived; RRs not ingested;
   uncommitted changes under `cairn/`.
 - **Reconciliation with git:** commits since the last work-log entry that

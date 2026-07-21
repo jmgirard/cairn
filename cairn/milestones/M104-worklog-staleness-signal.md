@@ -75,6 +75,8 @@ the new clause.
 - 2026-07-20: T1 — reworded SKILL §2 Staleness bullet; bookkeeping entries clock-neutral, signal from last work entry (M88 T3, generalizes M88-D1).
 - 2026-07-20: T2 — added guard test_staleness_signal_discounts_bookkeeping_entries + 2 mutation registrations; both anchors redden on blank.
 - 2026-07-20: T3 — suites green (skills 556, scripts 269, hooks 72); idleness-ownership guard and completeness meta-test green; validate green. Status → review.
+- 2026-07-20: review — PR #102; 4/4 ACs fresh evidence, all PASS; consistency gate green.
+- 2026-07-20: review fan-out — F-A (92) guard missed enumerated set, F-C (80) release-shaped double-judging; both FIXED on branch. F-B (70) sub-threshold, resolved incidentally. Suites + guards + validate re-green.
 
 ## Decisions
 
@@ -105,3 +107,36 @@ Consistency gate: `cairn_validate` exit 0 (only the pre-existing
 `references staleness` advisory on rulebook-classification-ledger, unrelated).
 Profile `generic` → no toolchain consistency checks. No principle change →
 `cairn_impact` skipped.
+
+**Independent fan-out — three lenses + scorer.** Diff-bug [O], blame-history
+[S], prior-review [S], scorer [S]. Three distinct findings; all verified
+against the code before triage.
+
+- **F-A (score 92, FIXED)** — raised by both the diff-bug and prior-review
+  lenses. The guard anchored only the label→disposition and measurement-basis
+  phrases, never the three enumerated bookkeeping members, so a member swap
+  stayed green (regresses M74/M103, guard-doctrine §1). Fix: the bullet now
+  states the members and disposition on one physical line
+  (`skills/milestone/SKILL.md:100`), and anchor 2 of
+  `test_staleness_signal_discounts_bookkeeping_entries` pins the whole line;
+  a swap of `git-reconciliation catch-up line → code commit` now reddens
+  (proven).
+- **F-C (score 80, FIXED)** — blame-history lens. The bullet applied the
+  stricter work-only clock to "every `in-progress` milestone", but
+  `check_release_window` (`scripts/cairn_validate.py:1401`) deliberately
+  judges release-shaped `in-progress`/`review` milestones by the last entry of
+  ANY kind (D-017, so an actively-shipping release isn't nagged); the
+  ownership carve-out only suppressed the bullet for a release the advisory
+  HAD flagged. Fix: broadened ownership to every release-shaped milestone
+  whether or not it fired (`SKILL.md:67`), and added a release-shaped
+  exemption to the bullet (`SKILL.md:101`) — both guarded (idleness test 2nd
+  anchor; bookkeeping guard anchor 3). Aligns the code with the milestone's
+  own Scope-Out ("the release case … unchanged").
+- **F-B (score 70, sub-threshold — logged, not separately actioned; IP3).**
+  The bullet's "each refresh the clock" verb read as contradicting
+  "clock-neutral" in LLM-executed prose. Below the 80 action bar, but its
+  substance was resolved incidentally by the F-A/F-C rewrite: the naive-clock
+  behavior is now stated as rationale with the correct work-only rule leading.
+
+Post-fix: all suites green (skills 556, scripts 269, hooks 72); both guards
+present and reddening on each anchor blank; `cairn_validate` exit 0.
