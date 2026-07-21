@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-20 (M102 done — verify-suite speedup; "Verify-suite subprocess cost" candidate graduated, 1 candidate added (cost-store test I/O, M102 Out), 1 lesson captured, none retired, M95 row pruned to retention). Release timing is user-declared — D-050._
+_Last hygiene check: 2026-07-20 (M103 done — exploratory sources; 1 lesson captured (mutation-reddening does not defend a SET swap), none retired; the `/explore-sources` candidate added at M103 plan stands; M96 row pruned to retention). Release timing is user-declared — D-050._
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,9 +12,8 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M103 | Exploratory sources — supply-push ingestion: a corpus of uncited sources is triaged into candidates, not dismissed as irrelevant | review | — | normal | milestones/M103-exploratory-sources.md |
+| M103 | Exploratory sources — supply-push ingestion: a corpus of uncited sources is triaged into candidates, not dismissed as irrelevant | done | — | normal | milestones/archive/M103-exploratory-sources.md |
 | M102 | Verify-suite speedup — the dogfood suite runs on its tests, not on process spawns, and greens in any repo state | done | — | normal | milestones/archive/M102-verify-suite-speedup.md |
-| M96 | Growth ratchet — the rulebook is governed by attention, not by a permitted size | dropped | — | normal | milestones/archive/M96-rulebook-growth-ratchet.md |
 | M100 | Review-finding enforcement — findings travel verbatim, outcomes meet projections | done | — | high | milestones/archive/M100-review-finding-enforcement.md |
 | M101 | Decommissioning — machinery measured not to work is removed or repointed | done | — | high | milestones/archive/M101-decommission-measured-noops.md |
 | M99 | Budget-first drafting — a capped artifact's size is visible while it is written | done | — | normal | milestones/archive/M99-budget-first-drafting.md |
