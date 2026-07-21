@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-20 (M95 done — rulebook editorial slimming; read-cost candidate graduated, RR03 rec 8's trigger evaluated negative and its row annotated, 2 guard-craft lessons captured, none retired, M93 row pruned to retention). LESSONS 40/50 lines, 10,726 chars — both axes clear. Release timing is user-declared — D-050._
+_Last hygiene check: 2026-07-20 (M100 done — review-finding enforcement; 4 fail-open review findings fixed on the branch, 2 lessons captured, none retired, M97 row pruned to retention; NEXT UP row stays until M101 completes, M35). Release timing is user-declared — D-050._
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -14,9 +14,8 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 |---|---|---|---|---|---|
 | M95 | Rulebook editorial slimming — the rulebook states rules, not their legislative history | done | — | high | milestones/archive/M95-rulebook-editorial-slimming.md |
 | M96 | Growth ratchet — the rulebook is governed by attention, not by a permitted size | dropped | — | normal | milestones/archive/M96-rulebook-growth-ratchet.md |
-| M100 | Review-finding enforcement — findings travel verbatim, outcomes meet projections | review | — | high | milestones/M100-review-finding-enforcement.md |
+| M100 | Review-finding enforcement — findings travel verbatim, outcomes meet projections | done | — | high | milestones/archive/M100-review-finding-enforcement.md |
 | M101 | Decommissioning — machinery measured not to work is removed or repointed | planned | — | high | milestones/M101-decommission-measured-noops.md |
-| M97 | Bounded DECISIONS read — the sweep scans headings and reads what it hits | done | — | high | milestones/archive/M97-bounded-decisions-read.md |
 | M98 | Lesson graduation to doctrine — a matured lesson family leaves LESSONS.md whole | done | — | high | milestones/archive/M98-lesson-graduation-to-doctrine.md |
 | M99 | Budget-first drafting — a capped artifact's size is visible while it is written | done | — | normal | milestones/archive/M99-budget-first-drafting.md |
 
