@@ -35,4 +35,10 @@ around it.
 In `RR<NN>-<slug>.md`: answer each question by number with your reasoning
 and evidence; list any additional findings separately under "Beyond the
 brief"; end with concrete recommendations, each marked apply / consider /
-reject-with-reason.
+reject-with-reason. Where findings bind implementation, also emit a
+`## Binding criteria` section: numbered `BC1…`, each a measurable assertion
+checkable against evidence, with any numeric projection stating its
+tolerance. These are ingested VERBATIM into the constrained milestone's
+acceptance criteria and mechanically diffed against this file; departures
+are legal only through that milestone's shown "Deviations from RR<NN>"
+table.

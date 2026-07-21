@@ -48,7 +48,7 @@ whichever skill makes the transition; ROADMAP wins any conflict),
 | Section | Writing skill | Write-mode |
 |---|---|---|
 | Status (header) | the transitioning skill (plan → implement → review) | mirror-update |
-| Priority, Depends on, Principles touched (header) | plan | create; amend-via-gate |
+| Priority, Depends on, Driving RR, Principles touched (header) | plan | create; amend-via-gate |
 | Branch/PR (header) | implement (branch), review (PR URL) | create |
 | Goal | plan | create; a wrong goal returns to plan, never edited in place |
 | Scope (In/Out) | plan | create; amend-via-gate |
@@ -207,6 +207,8 @@ takes a D-entry, and its number stays retired.
   So a release milestone whose window the maintainer has not opened is parked as `blocked`, where no routing surface nominates it.
   It stays parked until the maintainer opens the window. The release *act* is already
   user-triggered — `/cairn-release` never self-submits.
+- **Prefer script-measurable acceptance criteria**; where judgment is
+  unavoidable, commit the classification ledger as evidence (RR04 rec 8).
 - **Tracking files outrank memory.** Claude's persistent memory never holds
   project state (status, milestones, decisions, architecture). Memory is for
   meta-context only; `cairn/` files win any conflict.
@@ -592,6 +594,8 @@ cairn skill is active.
   is prohibited: the brief artifact is what makes escalation reproducible,
   auditable, and ingestible. RR ingestion follows the protocol in
   `/milestone-brief` ("Ingesting an RR").
+  The implementing session never authors the durable verdict on the review
+  constraining it — that routes to a new RB or the maintainer at the gate (RR04).
 - **RB tripwires** — the three question categories that warrant offering
   Fable escalation, with their canonical tag tokens: statistical/scoring
   correctness with no available oracle (`no-oracle`); irreversible

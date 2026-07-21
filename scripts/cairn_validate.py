@@ -616,6 +616,139 @@ def check_coverage_complete(root):
     return bad
 
 
+_RR_SLOT = re.compile(r"^\s*-\s*\*\*Driving RR:\*\*\s*(\S+)", re.MULTILINE)
+_RR_TOKEN = re.compile(r"RR\d+\Z")
+_BC_HEAD = re.compile(r"^\s*-\s*BC(\d+)\s*[:.]\s*(.*)$")
+_BC_REF = re.compile(r"\bBC(\d+)\b")
+# DOTALL twin of _HTML_COMMENT: strips multi-line comments too, so a
+# deviation "declared" inside <!-- --> — which the ingest gate never shows —
+# cannot excuse a softened criterion (M100 review F1).
+_HTML_COMMENT_ML = re.compile(r"<!--.*?-->", re.S)
+
+
+def _norm_ws(s):
+    """Whitespace-normalized text: the verbatim bar tolerates re-wrapping
+    (cairn hard-wraps prose) and nothing else — any rewording breaks the
+    substring match (M100)."""
+    return " ".join(s.split())
+
+
+def _rr_file(root, token):
+    """Path of the RR<NN> file in cairn/reviews/ or its archive, else None."""
+    for sub in ("reviews", os.path.join("reviews", "archive")):
+        d = os.path.join(root, "cairn", sub)
+        if not os.path.isdir(d):
+            continue
+        for name in sorted(os.listdir(d)):
+            if name.startswith(token + "-") and name.endswith(".md"):
+                return os.path.join(d, name)
+    return None
+
+
+def _binding_criteria(rr_text):
+    """{n: normalized assertion} from an RR's `## Binding criteria` section.
+    Items are `- BC<n>: ...` bullets; continuation lines belong to the open
+    item; prose before BC1 is preamble, not a criterion."""
+    items, cur_n, cur = {}, None, []
+    for line in _section_body(rr_text, "Binding criteria"):
+        m = _BC_HEAD.match(line)
+        if m:
+            if cur_n is not None:
+                items[cur_n] = _norm_ws(" ".join(cur))
+            cur_n, cur = int(m.group(1)), [m.group(2)]
+        elif cur_n is not None and line.strip():
+            cur.append(line.strip())
+    if cur_n is not None:
+        items[cur_n] = _norm_ws(" ".join(cur))
+    return items
+
+
+def _has_section(text, heading):
+    """True iff a `## <heading>` H2 exists, whatever its body holds."""
+    return any(
+        line.startswith("## ")
+        and line[3:].strip().lower().startswith(heading.lower())
+        for line in text.splitlines()
+    )
+
+
+def check_binding_criteria(root):
+    """Review findings travel verbatim (RR04 rec 8, M100). A live milestone
+    whose `Driving RR:` header slot names an RR must carry each of that RR's
+    Binding criteria (`- BC<n>:` items) verbatim — whitespace-normalized —
+    somewhere in its `## Acceptance criteria` section, or name the departed
+    BC<n> in the "Deviations from RR<NN>" table that ends the section. A
+    softened criterion is a red check, not a reading: reword only through
+    the deviations table, which the ingest gate shows verbatim (IP3 applied
+    to review findings). No slot, `—`, or an RR without a Binding criteria
+    section binds nothing; the RR file itself is history and never edited.
+    An enforcement check fails LOUD, never open (M100 review F2/F4): a
+    malformed slot and a present-but-unparseable Binding criteria section
+    are findings, not skips — silence must always mean "nothing binds",
+    never "binding content the parser missed"."""
+    bad = []
+    for mid, path in sorted(
+        cs.live_files(root).items(), key=lambda kv: cs.id_num(kv[0])
+    ):
+        try:
+            with open(path, encoding="utf-8") as f:
+                text = f.read()
+        except Exception:
+            continue
+        m = _RR_SLOT.search(text)
+        if not m:
+            continue
+        slot = m.group(1)
+        if slot == "—":
+            continue
+        if not _RR_TOKEN.match(slot):
+            bad.append(
+                f"{mid}: Driving RR slot {slot!r} is neither RR<NN> nor — "
+                f"(the check cannot bind what it cannot parse)"
+            )
+            continue
+        token = slot
+        rr_path = _rr_file(root, token)
+        if rr_path is None:
+            bad.append(
+                f"{mid}: Driving RR {token} has no file under cairn/reviews/"
+            )
+            continue
+        with open(rr_path, encoding="utf-8") as f:
+            rr_text = f.read()
+        crits = _binding_criteria(rr_text)
+        if not crits and _has_section(rr_text, "Binding criteria"):
+            bad.append(
+                f"{mid}: {token} has a Binding criteria section but no "
+                f"parseable '- BC<n>:' item — enforcement would silently "
+                f"bind nothing"
+            )
+            continue
+        # Comments never render at the ingest gate, so they can neither
+        # satisfy the verbatim bar nor declare a deviation (review F1).
+        ac_text = _HTML_COMMENT_ML.sub(
+            "", "\n".join(_section_body(text, "Acceptance criteria"))
+        )
+        ac_norm = _norm_ws(ac_text)
+        dev_marker = re.compile(r"Deviations from %s\b" % re.escape(token))
+        deviated, marker_seen = set(), False
+        for line in ac_text.splitlines():
+            if dev_marker.search(line):
+                marker_seen = True
+            elif marker_seen:
+                deviated.update(int(n) for n in _BC_REF.findall(line))
+        for n, assertion in sorted(crits.items()):
+            if assertion and assertion in ac_norm:
+                continue
+            if n in deviated:
+                continue
+            bad.append(
+                f"{mid}: {token} BC{n} appears neither verbatim in the AC "
+                f"section nor in its 'Deviations from {token}' table"
+            )
+    return bad
+
+
 _PRINCIPLE_ID = re.compile(r"\b[IG]P\d+\b")
 _SLOT_LINE = re.compile(r"^\s*-\s*\*\*Principles touched:\*\*\s*(.*)$", re.IGNORECASE)
 _PRINCIPLE_DEF = re.compile(r"^\s*-\s*([IG]P\d+):")
@@ -1524,6 +1657,7 @@ CHECKS = [
     ("iso date format", lambda root, rows: check_dates(root)),
     ("scaffold present", lambda root, rows: check_scaffold(root)),
     ("coverage complete", lambda root, rows: check_coverage_complete(root)),
+    ("binding criteria", lambda root, rows: check_binding_criteria(root)),
     ("principles slot valid", lambda root, rows: check_principles_slot(root)),
     ("profile valid", lambda root, rows: check_profile(root)),
 ]

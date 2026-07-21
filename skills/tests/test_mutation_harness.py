@@ -1938,6 +1938,65 @@ REGISTRY += [
     ),
 ]
 
+# M100 (RR04 rec 8): finding-enforcement prose. One entry per target file the
+# guard reads, plus separate entries where blocks fail independently (the
+# review-section juxtaposition and the merge-chip shortfall option each carry
+# a distinct mechanism).
+REGISTRY += [
+    Mutation(
+        guard="test_finding_enforcement",
+        test="TestIngestRule.test_ingest_rule_requires_verbatim_travel",
+        target=BRIEF,
+        block="**Binding criteria travel verbatim:**",
+    ),
+    Mutation(
+        guard="test_finding_enforcement",
+        test="TestBriefTemplate."
+             "test_brief_requests_binding_criteria_as_measurable_assertions",
+        target="skills/shared/templates/brief.md",
+        block="These are ingested VERBATIM",
+    ),
+    Mutation(
+        guard="test_finding_enforcement",
+        test="TestMilestoneTemplate.test_template_carries_the_driving_rr_slot",
+        target=TEMPLATE,
+        block="- **Driving RR:** —",
+    ),
+    Mutation(
+        guard="test_finding_enforcement",
+        test="TestReviewSurfaces."
+             "test_review_section_juxtaposes_projection_and_outcome",
+        target=REVIEW,
+        block="**Projection-vs-outcome (Driving RR).**",
+    ),
+    Mutation(
+        guard="test_finding_enforcement",
+        test="TestReviewSurfaces."
+             "test_merge_chip_repeats_the_pairs_and_offers_accept_shortfall",
+        target=REVIEW,
+        block='**"accept shortfall, recorded as such"**',
+    ),
+    Mutation(
+        guard="test_finding_enforcement",
+        test="TestPlanBullet."
+             "test_plan_sets_slot_ingests_verbatim_and_copies_projections",
+        target="skills/milestone-plan/SKILL.md",
+        block="- **Driving RR** (header slot):",
+    ),
+    Mutation(
+        guard="test_finding_enforcement",
+        test="TestRulebookSentences.test_script_measurable_preference",
+        target=RULES,
+        block="**Prefer script-measurable acceptance criteria**",
+    ),
+    Mutation(
+        guard="test_finding_enforcement",
+        test="TestRulebookSentences.test_adjudication_asymmetry",
+        target=RULES,
+        block="The implementing session never authors the durable verdict",
+    ),
+]
+
 
 # --------------------------------------------------------------------------
 # Engine mechanics
