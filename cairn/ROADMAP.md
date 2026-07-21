@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M107 | RR-ingest / amendment discipline — the ingest surface carries the plan path's form, budget, and file hygiene | planned | — | normal | milestones/M107-rr-ingest-amendment-discipline.md |
+| M107 | RR-ingest / amendment discipline — the ingest surface carries the plan path's form, budget, and file hygiene | review | — | normal | milestones/M107-rr-ingest-amendment-discipline.md |
 | M106 | Accessible-language rule — the decision surface (question text + chip framing) leads in plain words, glossing jargon rather than assuming it | done | — | normal | milestones/archive/M106-accessible-language-rule.md |
 | M105 | Incremental AC check-off — review ticks each criterion box as its evidence lands, not in a batch at phase end | done | — | normal | milestones/archive/M105-incremental-ac-checkoff.md |
 | M104 | Work-log staleness signal — bookkeeping entries no longer reset the idle clock | done | — | normal | milestones/archive/M104-worklog-staleness-signal.md |

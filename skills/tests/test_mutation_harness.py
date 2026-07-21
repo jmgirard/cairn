@@ -33,6 +33,7 @@ RULES = "skills/shared/tracking-rules.md"
 HOTFIX = "skills/hotfix/SKILL.md"
 MILESTONE = "skills/milestone/SKILL.md"
 REVIEW = "skills/milestone-review/SKILL.md"
+IMPLEMENT = "skills/milestone-implement/SKILL.md"
 BRIEF = "skills/milestone-brief/SKILL.md"
 RELEASE = "skills/cairn-release/SKILL.md"
 TEMPLATE = "skills/shared/templates/milestone.md"
@@ -2123,6 +2124,18 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_finding_enforcement",
+        test="TestIngestRule.test_ingest_rule_prescribes_the_numbered_form",
+        target=BRIEF,
+        block="counts every AC checkbox positionally",
+    ),
+    Mutation(
+        guard="test_finding_enforcement",
+        test="TestIngestRule.test_archive_move_is_robust_to_untracked",
+        target=BRIEF,
+        block="`git mv` fails on an untracked file",
+    ),
+    Mutation(
+        guard="test_finding_enforcement",
         test="TestBriefTemplate."
              "test_brief_requests_binding_criteria_as_measurable_assertions",
         target="skills/shared/templates/brief.md",
@@ -2133,6 +2146,12 @@ REGISTRY += [
         test="TestMilestoneTemplate.test_template_carries_the_driving_rr_slot",
         target=TEMPLATE,
         block="- **Driving RR:** —",
+    ),
+    Mutation(
+        guard="test_finding_enforcement",
+        test="TestMilestoneTemplate.test_template_prescribes_the_ingest_form",
+        target=TEMPLATE,
+        block="coverage-complete counts AC checkboxes positionally",
     ),
     Mutation(
         guard="test_finding_enforcement",
@@ -2166,6 +2185,24 @@ REGISTRY += [
         test="TestRulebookSentences.test_adjudication_asymmetry",
         target=RULES,
         block="The implementing session never authors the durable verdict",
+    ),
+]
+
+# M107: the amendment paths carry the budget re-check + one-pass-trim rule.
+REGISTRY += [
+    Mutation(
+        guard="test_amendment_budget",
+        test="TestBriefIngestRechecksBudget."
+             "test_brief_step3_points_at_cairn_budget_and_one_pass_trim",
+        target=BRIEF,
+        block="re-check the plan-owned body with `cairn_budget`",
+    ),
+    Mutation(
+        guard="test_amendment_budget",
+        test="TestImplementAmendmentRechecksBudget."
+             "test_step6_points_at_cairn_budget_and_one_pass_trim",
+        target=IMPLEMENT,
+        block="re-checks the body with `cairn_budget`",
     ),
 ]
 

@@ -39,7 +39,10 @@ never "never".
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets.
      Driving RR set → its Binding criteria appear VERBATIM here (binding-
-     criteria check); departures: a "Deviations from RR<NN>" table ends this section. -->
+     criteria check), each ingested as a numbered criterion carrying its tag
+     — `- [ ] AC-N (BCn): <verbatim>` — with its own Coverage line, since
+     coverage-complete counts AC checkboxes positionally (M107); departures:
+     a "Deviations from RR<NN>" table ends this section. -->
 
 - [ ] Each objectively checkable with evidence — a test that passes, a file
       that exists, the active profile's verify/check output. Never vibes.

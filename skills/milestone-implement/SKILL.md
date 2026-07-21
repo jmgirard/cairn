@@ -80,7 +80,10 @@ run ingestion first (see `/milestone-brief`).
      mini gate's chip (acceptance chips, tracking-rules); record the
      amendment as a dated work-log line
      (+ D-entry if cross-cutting); show the amended criterion/scope text
-     verbatim in chat before its commit (durable-record preview).
+     verbatim in chat before its commit (durable-record preview). An amendment
+     that grows a plan-owned section re-checks the body with `cairn_budget`;
+     if it now exceeds the cap, compress the single heaviest plan-owned
+     section in one pass (tracking-rules), never a nibble-and-recount loop.
    - *The goal itself is wrong*: stop; status back to `planned`; routing
      chip to `/milestone-plan` for a proper re-cut.
    Never silently deliver something other than what the plan promised —

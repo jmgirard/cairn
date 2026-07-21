@@ -70,9 +70,16 @@ start (any skill) when a manual RR appears:
    (logged). **Binding criteria travel verbatim:** when the RR carries a
    `## Binding criteria` section, the milestone it constrains sets its
    header's `Driving RR:` slot to `RR<NN>` and ingests each criterion
-   verbatim into its `## Acceptance criteria` (through the
-   `/milestone-implement` step-6 amendment gate when the AC block already
-   exists). Any departure is a row in the "Deviations from RR<NN>" table at
+   verbatim into its `## Acceptance criteria` as a numbered acceptance
+   criterion carrying its trace tag — `- [ ] AC-N (BCn): <verbatim>` — and
+   gives that criterion its own `## Coverage` line: `coverage-complete`
+   counts every AC checkbox positionally, so a bare, unnumbered BC checkbox
+   reds that check (M107). This runs through the `/milestone-implement`
+   step-6 amendment gate when the AC block already exists. After ingesting,
+   re-check the plan-owned body with `cairn_budget`; if the added criteria
+   push it over, compress the single heaviest plan-owned section in one pass
+   (tracking-rules), never a nibble-and-recount loop.
+   Any departure is a row in the "Deviations from RR<NN>" table at
    the end of that AC section, shown verbatim at this ingestion's preview,
    never slipped — IP3 applied to review findings. `cairn_validate`'s
    `binding criteria` check string-compares the AC block against the RR
@@ -80,7 +87,9 @@ start (any skill) when a manual RR appears:
    reading. Copy the RR's numeric projections beside the criteria with
    their stated tolerances; an unstated tolerance is strict — any shortfall
    forces the accept-shortfall option at the merge gate.
-4. Move the RB/RR pair to `cairn/reviews/archive/`; milestone status back
+4. Relocate the RB/RR pair to `cairn/reviews/archive/` with plain `mv` then
+   `git add`, never `git mv` — an in-session-generated or hand-dropped RR is
+   untracked, and `git mv` fails on an untracked file; milestone status back
    to `in-progress`; durable-record preview (tracking-rules): show the
    Decisions entries, D-entries, and candidate rows the ingestion wrote
    verbatim in chat before the commit; commit (docs-only): `ingest RR<NN>`.
