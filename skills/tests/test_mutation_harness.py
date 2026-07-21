@@ -2130,6 +2130,12 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_finding_enforcement",
+        test="TestIngestRule.test_archive_move_is_robust_to_untracked",
+        target=BRIEF,
+        block="`git mv` fails on an untracked file",
+    ),
+    Mutation(
+        guard="test_finding_enforcement",
         test="TestBriefTemplate."
              "test_brief_requests_binding_criteria_as_measurable_assertions",
         target="skills/shared/templates/brief.md",

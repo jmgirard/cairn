@@ -41,6 +41,13 @@ class TestIngestRule(unittest.TestCase):
         self.assertIn("`- [ ] AC-N (BCn): <verbatim>`", self.text)
         self.assertIn("counts every AC checkbox positionally", self.text)
 
+    def test_archive_move_is_robust_to_untracked(self):
+        # M107: an in-session-generated or hand-dropped RR is untracked, so the
+        # archive move uses plain mv + git add, never git mv.
+        self.assertIn("an in-session-generated or hand-dropped RR is",
+                      self.text)
+        self.assertIn("`git mv` fails on an untracked file", self.text)
+
     def test_departures_go_through_the_shown_table(self):
         self.assertIn('Any departure is a row in the "Deviations from '
                       'RR<NN>" table', self.text)

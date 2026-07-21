@@ -87,7 +87,9 @@ start (any skill) when a manual RR appears:
    reading. Copy the RR's numeric projections beside the criteria with
    their stated tolerances; an unstated tolerance is strict — any shortfall
    forces the accept-shortfall option at the merge gate.
-4. Move the RB/RR pair to `cairn/reviews/archive/`; milestone status back
+4. Relocate the RB/RR pair to `cairn/reviews/archive/` with plain `mv` then
+   `git add`, never `git mv` — an in-session-generated or hand-dropped RR is
+   untracked, and `git mv` fails on an untracked file; milestone status back
    to `in-progress`; durable-record preview (tracking-rules): show the
    Decisions entries, D-entries, and candidate rows the ingestion wrote
    verbatim in chat before the commit; commit (docs-only): `ingest RR<NN>`.
