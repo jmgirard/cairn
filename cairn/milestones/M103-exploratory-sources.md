@@ -70,7 +70,7 @@ Bidirectional citekey parsing → the existing "Citekey resolution" candidate.
 
 ## Tasks
 
-- [ ] T1 — Author the exploration doctrine paragraph in `tracking-rules.md`
+- [x] T1 — Author the exploration doctrine paragraph in `tracking-rules.md`
       after "When a page is owed" (~:669): the reconciling clause (triaged
       corpus vs. consulted-in-passing), the three outputs, and the M56
       guardrail. Load-bearing clauses each on one physical line (M23).
@@ -90,6 +90,7 @@ Bidirectional citekey parsing → the existing "Citekey resolution" candidate.
 ## Work log
 
 - 2026-07-20: created by /milestone-plan.
+- 2026-07-20: T1 — exploration doctrine added to tracking-rules "References pages" (5 single-line anchors); three suites green.
 
 ## Decisions
 
