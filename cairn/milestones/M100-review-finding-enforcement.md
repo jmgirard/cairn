@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M100: Review-finding enforcement — findings travel verbatim, outcomes meet projections
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** IP1, IP3, GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
@@ -104,7 +104,7 @@ from the first RR that carries the section.
       script-measurable preference), drafted against the ≤4-line budget.
 - [x] T5: Guards for T1/T3/T4 prose + mutation-harness registrations;
       anchors copied from the target files' actual bytes (M95).
-- [ ] T6: Count the always-read delta by diff; run the three suites from the
+- [x] T6: Count the always-read delta by diff; run the three suites from the
       repo root, exit codes individually; record both in the work log.
 
 ## Work log
@@ -118,6 +118,7 @@ from the first RR that carries the section.
 - 2026-07-20: T3 done — projection-vs-outcome block in review step 3 (Review-section side) and step 7 (chip side, with the accept-shortfall option); Driving RR bullet added to plan step 4 (slot + verbatim ingest + projection copy). Both suites green.
 - 2026-07-20: T4 done — script-measurable-AC bullet in Universal tracking rules; adjudication-asymmetry sentence appended to the Fable/RB-RR bullet. Rulebook diff vs main now +5/−1 (4 new lines + the T1 ownership-row modification), net +4 — both numbers to be shown at review against AC4's ≤4 budget.
 - 2026-07-20: T5 done — skills/tests/test_finding_enforcement.py (12 asserts over 6 files) + 8 mutation-harness entries, all proven to redden (first run failed all 8: the guard used open() and the engine patches Path.read_text — switched to pathlib; the failure was the harness doing its job on an invisible guard). 542 skills tests green.
+- 2026-07-20: T6 done — always-read delta measured by `git diff main..HEAD --numstat`: tracking-rules.md +5/−1 (net +4, AC4/AC5 evidence), CLAUDE.md cairn section untouched. Three suites green from repo root, exit codes individually (skills 542 / scripts 222 / hooks 72), cairn_validate exit 0. All tasks done → status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
