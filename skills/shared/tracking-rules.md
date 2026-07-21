@@ -581,8 +581,10 @@ cairn skill is active.
   an **[O]** diff-bug reviewer (Opus, correctness/contract/convention),
   an **[S]** blame-history reviewer (Sonnet, does the change undo deliberate
   prior work), and an **[S]** prior-PR-comments reviewer (Sonnet, does the diff
-  regress a point a prior PR review raised on these files; always spawned,
-  no-ops when a repo has no prior-PR evidence — M40)
+  regress a point a prior review raised on these files — primary evidence the
+  archived `## Review` sections, GitHub PR threads read only when a cheap
+  probe finds real ones; always spawned, no-ops when a repo has no
+  prior-review evidence — M40, repointed M101)
   — then an **[S]** confidence scorer (Sonnet) that scores each finding
   0–100 and drops sub-threshold ones from the actioned list (logged, not
   discarded). The scorer gates what the user sees, so it stays on Sonnet, never

@@ -1347,6 +1347,9 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # the work the partial status described: each page was re-read in full
     # against a fresh clone of its source at a pinned version, so the status
     # now records a completed verification rather than a partial one.
+    # M101 adds the rulebook classification ledger, committed at the RR04
+    # ingest (526aba6) without this pin: its status says two spot-checks
+    # passed and the rest is an unverified first pass, hence `partial`.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "backlog-meridian.md": "ok",
@@ -1362,6 +1365,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "migration-pilot-notes.md": "exempt",
         "oracle-discipline-notes.md": "ok",
         "oracle-doctrine-intraclass-notes.md": "ok",
+        "rulebook-classification-ledger.md": "partial",
         "session-cost-notes.md": "ok",
         "spec-kit.md": "ok",
         "task-master.md": "ok",

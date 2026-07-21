@@ -770,6 +770,28 @@ REGISTRY = [
         target=RULES,
         block="fresh-context subagents",
     ),
+    # M101: the prior-PR lens repoint — primary evidence is the archived
+    # `## Review` sections, the PR-thread walk is probe-gated, and the no-op
+    # contract is restated for the new surfaces. One entry per positive
+    # assert's block (M53 discipline).
+    Mutation(
+        guard="test_review_fanout",
+        test="TestPriorPRLens.test_primary_evidence_is_archived_review_sections",
+        target=REVIEW,
+        block="Primary evidence: archived",
+    ),
+    Mutation(
+        guard="test_review_fanout",
+        test="TestPriorPRLens.test_pr_thread_read_is_probe_gated",
+        target=REVIEW,
+        block="Secondary surface, probe-gated",
+    ),
+    Mutation(
+        guard="test_review_fanout",
+        test="TestPriorPRLens.test_always_spawns_and_noops_when_empty",
+        target=REVIEW,
+        block='reports "no prior-review evidence"',
+    ),
     Mutation(
         guard="test_rulebook_polish",
         test="TestRulebookPolish.test_copy_run_commands_get_their_own_fenced_block",

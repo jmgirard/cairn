@@ -97,7 +97,7 @@ M100.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Repoint the lens — SKILL.md:109-121 rewrite, tracking-rules.md:
+- [x] T1: Repoint the lens — SKILL.md:109-121 rewrite, tracking-rules.md:
       581-583, `test_review_fanout.py` (keep the lens title string: the
       block-isolation split anchors on it).
 - [ ] T2: Remove the `CHAR_CAPS` loop and dict; give the per-line axis its
@@ -123,6 +123,8 @@ M100.
      so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
 - 2026-07-20: created by /milestone-plan from the NEXT UP candidate row (part b) + the two absorbed IN SCOPE rows; gate chose: remove the CHAR_CAPS axis, retire (not repair) the heading-quality advisory, drop M96 and fold its reporting line here, keep the PR-thread read as a conditional surface.
+- 2026-07-20: T1 done — lens repointed to archived `## Review` sections as primary evidence, PR-thread walk gated behind a `pulls/comments?per_page=1` existence probe, no-op contract restated ("no prior-review evidence"); tracking-rules lens line matched; test_review_fanout pins the new recipe (3 new asserts + 3 harness entries) and fails on the old text.
+- 2026-07-20: discovered sub-task — pinned rulebook-classification-ledger.md as `partial` in test_scripts.py's shipped-page state ledger; the page was committed at RR04 ingest (526aba6) without its pin, failing the suite on main before this branch.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
