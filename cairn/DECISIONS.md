@@ -1694,3 +1694,86 @@ on it, and it is parked as a candidate rather than silently dropped. The
 anti-softening mechanisms of RR04 Q8 are unaffected and proceed independently —
 they govern review enforcement, not size. If `cairn_cost` ever shows a
 regression attributable to read volume, this is the entry to supersede.
+
+### D-058 (2026-07-20): The whole-file density thresholds are removed — supersedes D-049's threshold clause; the item caps and D-052's per-line axis stand
+
+**Context:** M101's decommissioning brief: remove machinery measured not to
+work, on those grounds and never on "the file is too big" (D-057). The
+whole-file character axis had two lives. Under M84-D1's assumed means it
+fired at ordinary density for three consecutive hygiene passes (M84–M86),
+taxing records the milestone never touched — D-049's own charge sheet. Under
+D-049's re-derivation a threshold is the mass its own line cap permits at
+measured item length, which by construction leaves it slack proportional to
+the file's unused item slots: D-049 itself records that the two axes divide
+labour and "neither backstops the other's saturation". An axis that fires
+wrongly when set low and sits behind the item cap when set right taxes
+hygiene passes (each one re-measures a mean the previous remedy moved) and
+never catches what its sibling axes cannot: prose in *non-item* lines is
+D-052's per-line cap's job, and item-count growth is the item caps' job.
+
+**Counter-evidence weighed:** the axis fired correctly once — on the M100/
+M101 NEXT UP candidate row, an item line grown to ~2,900 chars, where it
+forced the compression that shipped the row. That fire is real and is the
+one case the surviving axes structurally cannot flag (the per-line axis
+never measures item lines, deliberately — D-052). It was judged not worth
+the axis: one useful fire across the 17 milestones since M84, against a
+standing per-pass measurement tax and two derivation rewrites, and the
+monster-row case has a human at exactly the right surface — candidate rows
+are read at every plan-time harvest and hygiene pass, which is where that
+row's compression was actually decided.
+
+**Decision:** `CHAR_CAPS`, the whole-file loop in `check_record_density`,
+and `char_count` are removed; the per-line axis iterates its own
+`DENSITY_FILES` roster; `cairn_budget` prints item + per-line axes only;
+the rulebook's two-axes block and LESSONS.md's header teach the surviving
+axes. Superseded in D-049: the threshold-derivation clause, its two
+constants, and the measure-the-mean application rule, which retires with
+the thresholds it governed. Standing from D-049: the WARN-not-FAIL
+severity split, the measure-don't-assume diagnosis as method, and its
+retirement of M84's prune anchor. D-052 (per-line axis, item-line
+exemption) and the item caps are untouched.
+
+**Consequences:** `record density` now reports exactly one thing — an
+over-cap non-item line — and its remedy line ("replace it, don't append to
+it") is the whole advisory. A file's whole-body prose bloat inside item
+lines is governed by judgment at the surfaces that read those items, not by
+a gate. If a real defect ever slips through that the removed axis would
+have caught — an item file bloating at stable line count with no human
+catching it at harvest — this is the entry to supersede, and D-049's
+derivation is the recipe to rebuild from.
+
+### D-059 (2026-07-20): The `decision heading quality` advisory is retired — annotates D-054 (mitigation 1 withdrawn); the back-reference step carries recall
+
+**Context:** D-054 bounded the DECISIONS read and named three mitigations;
+mitigation 1 was a prospective heading-quality advisory, built at M97. Its
+own review measured the claim matcher defective (M97 F1–F4/F6, all scored
+sub-80 and logged): a four-stem regex with a single-line window that misses
+the noun form ("this supersession of D-031" — the file's own idiom, used in
+D-054's body), claims split across a wrap (this repo hard-wraps), reversed
+order, and synonyms ("replaces", "overrides", "retires"); it excludes
+neither fences nor quotes, so an example can read as a claim — the false-
+positive direction D-023 calls worse. The findings interact: the noun-form
+miss was safe to close only while the wrap limit suppressed the false
+positive it would otherwise raise, so independent patches leave the
+advisory's green contingent on where a paragraph wraps.
+
+**Decision:** Retire rather than repair, chosen at the M101 plan gate (the
+classifier-redesign candidate row graduates with this entry). The check,
+its ADVISORIES registration, and `test_decision_heading_quality.py` are
+removed; git holds them. The heading-authoring rule stands as conduct, its
+enforcement sentence rewritten to say so. Recall never rested on the
+matcher: D-054's mitigation 2 — every match back-referenced by its own id —
+covers a heading that omits a relationship, legacy and prospective alike,
+and mitigation 3 (the scan is a model read) is untouched.
+
+**Consequences:** Annotates D-054 — its recall trade now leans on
+mitigations 2 and 3 alone, which is where D-054 already placed the load for
+the three legacy headings. A heading that hides a relationship costs one
+extra targeted read, never a silent miss, provided the back-reference step
+is actually run — that step is rulebook conduct pinned by
+`test_bounded_decisions_read.py`. Re-open trigger unchanged from the
+graduated candidate row: a real supersession missed in practice, or another
+repo relying on heading-scan recall — a repaired classifier must be
+sentence-scoped, fence/quote-aware, claim-vs-description discriminating,
+and verified against a fixture set varying phrasing, wrap, and voice
+independently (M57/M81).

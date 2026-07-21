@@ -98,28 +98,49 @@ class TestReviewFanout(unittest.TestCase):
 
 class TestPriorPRLens(unittest.TestCase):
     """M40: the third distinct-evidence lens — a prior-PR-comments reviewer.
-    Plan gate settled three properties this locks: a recipe-in-prose discovery
-    path (not a helper script), a *narrow* regression-of-prior-review judgment
-    scope, and always-spawn/no-op-when-empty behavior. Each asserted phrase is
-    anchored on the lens's own contiguous line (M23/M26/M39 single-line rule).
+    M101 repointed its input surfaces: primary evidence is the archived
+    `## Review` sections (M91 measured the PR threads empty), and the GitHub
+    PR-thread read survives only behind a cheap existence probe. This locks
+    the new recipe and fails on the old always-read-the-threads one; the
+    narrow judgment scope and always-spawn/no-op contract carry over from
+    M40. Each asserted phrase is anchored on the lens's own contiguous line
+    (M23/M26/M39 single-line rule).
     """
 
+    def test_primary_evidence_is_archived_review_sections(self):
+        # M101: the substantive review record lives in milestones/archive/
+        # `## Review` sections, and the lens must say so as its primary base
+        t = review()
+        self.assertIn("Primary evidence: archived", t)
+        self.assertIn("`cairn/milestones/archive/`, not in", t)
+
+    def test_pr_thread_read_is_probe_gated(self):
+        # M101: the thread walk runs only when a cheap existence probe finds
+        # real review threads — never unconditionally (the measured no-op)
+        t = review()
+        self.assertIn("probe-gated", t)
+        self.assertRegex(t, r"pulls/comments\?per_page=1")
+        self.assertIn("only when the probe finds", t)
+
     def test_discovery_is_a_prose_gh_recipe(self):
-        # recipe-in-prose, not a cairn_* helper script (plan gate)
+        # recipe-in-prose, not a cairn_* helper script (plan gate); the
+        # per-PR walk endpoint survives inside the probe-gated branch
         t = review()
         self.assertIn("gh api", t)
         self.assertRegex(t, r"pulls/\{n\}/comments")
 
     def test_judgment_scope_is_narrow_regression(self):
-        # flags only where the diff regresses a prior review comment — not
-        # every prior comment surfaced as context (plan gate: narrow)
+        # flags only where the diff regresses a prior review finding — not
+        # every prior finding surfaced as context (plan gate: narrow)
         self.assertIn("reintroduces or contradicts", review())
 
     def test_always_spawns_and_noops_when_empty(self):
-        # always spawn; no prior-PR evidence → zero findings, never blocks
+        # always spawn; no prior-review evidence on either surface → zero
+        # findings, never blocks (M101 restates the M40 contract)
         t = review()
         self.assertRegex(t, r"[Aa]lways spawn")
-        self.assertIn("no prior-PR evidence", t)
+        self.assertIn('"no prior-review evidence"', t)
+        self.assertIn("either surface", t)
 
     def test_new_lens_defers_scoring_to_shared_scorer(self):
         # AC4: the prior-PR lens funnels into the single shared [S] scorer and

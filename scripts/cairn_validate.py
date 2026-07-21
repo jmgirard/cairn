@@ -108,59 +108,35 @@ def check_caps(root, rows):
 
 
 def check_record_density(root):
-    """Advisory: an item-list file whose character mass exceeds its threshold
-    (M84). The weight axis, orthogonal to check_caps' item axis over the same
-    whole file — `cairn/ROADMAP.md` and `cairn/LESSONS.md` are parsed one item
-    per line, so their line count measures ITEMS and is structurally blind to
-    prose accumulating inside a line. cairn's LESSONS.md sat at 49 lines (item
-    cap <50) across M78-M83 while its mass grew 16,567 -> 18,729 bytes and the
-    audit reported nothing.
+    """Advisory: a per-line ceiling on the NON-item lines of the item-parsed
+    tracking files (D-052). `cairn/ROADMAP.md` and `cairn/LESSONS.md` are
+    parsed one item per line, so their line count measures ITEMS and is
+    structurally blind to prose accumulating on a heading, preamble, stamp, or
+    comment line — cairn's hygiene stamp reached 3,152 chars in an adopting
+    repo while every gate read green (2026-07-19; a review pass later rewrote
+    that stamp to 2,568, still over).
 
-    Two reports, one advisory. The second is a per-line ceiling on NON-item
-    lines (D-052, narrowing M84's original blanket rejection of any per-line
-    warn). That rejection is kept for ITEM lines and still holds there:
-    pressure on individual line length would reward splitting an item across
-    lines and corrode the one-item-per-line format both parsers depend on. A
-    heading, preamble, stamp, or comment has no such format to corrode, and it
-    is exactly where prose hides from both whole-file axes at once — cairn's
-    hygiene stamp reached 3,152 chars in an adopting repo while the item cap
-    (35 of 60 lines) and the mass threshold (11,410 of 21,000) both read green
-    (2026-07-19; a review pass later rewrote that stamp to 2,568, still over).
+    ITEM lines are excluded by SHAPE, never by threshold (D-052 narrowed
+    M84's blanket rejection of any per-line warn, keeping its reason for item
+    lines): pressure on individual line length would reward splitting an item
+    across lines and corrode the one-item-per-line format both parsers depend
+    on.
 
-    WARN, never FAIL, on both axes — D-018 wanted a hard signal for the
-    CLAUDE.md section cap, where cairn owns the whole content, but density is a
-    judgment about prose quality, the same call the references-staleness
-    advisory already makes.
+    A whole-file character axis ran here from M84 to M101; D-058 removed it —
+    measured to tax at ordinary density (D-049) or sit where the item cap
+    already binds, never to catch a live defect this per-line axis missed.
 
-    The whole-file finding names both axes, because the item count looking fine
-    is the whole point, and prescribes the weight remedy (compress) rather than
-    the item remedy (evict/graduate). The per-line finding names the line, since
-    a file-level number cannot point at the one line responsible."""
+    WARN, never FAIL — D-018 wanted a hard signal for the CLAUDE.md section
+    cap, where cairn owns the whole content, but density is a judgment about
+    prose quality, the same call the references-staleness advisory already
+    makes. The finding names the line, since a file-level number cannot point
+    at the one line responsible."""
     out = []
-    for rel, cap in cs.CHAR_CAPS.items():
-        path = os.path.join(root, rel)
-        n = cs.char_count(path)
-        if n is None or n < cap:
-            continue
-        lines = cs.line_count(path)
-        item_cap = cs.LINE_CAPS.get(rel)
-        axis = f"{lines} lines" if lines is not None else "line count unknown"
-        if lines is not None and item_cap is not None:
-            axis += f", item cap <{item_cap}"
-        # `threshold <N`, not a bare N: every neighbouring cap prints its
-        # strictness marker (`cap <60`), and the comparison here is `>=`, so a
-        # bare number would tell an author 9,000 was the permitted ceiling
-        # while a 9,000-char file WARNs with `shed ≥1` (M84 review F5).
-        out.append(
-            f"{rel}: {n:,} chars over {axis} "
-            f"(threshold <{cap:,}; shed ≥{n - cap + 1:,}) — compress entries, "
-            f"don't evict them"
-        )
-    # The per-line axis. Same files, same WARN severity, same `>=` comparison
-    # as every neighbouring cap — so `<400` permits 399 and the shed figure is
-    # derived through the operator rather than assumed from the cap (M87).
+    # Same `>=` comparison as every neighbouring cap — so `<400` permits 399
+    # and the shed figure is derived through the operator rather than assumed
+    # from the cap (M87).
     line_cap = cs.NON_ITEM_LINE_CAP
-    for rel in cs.CHAR_CAPS:
+    for rel in cs.DENSITY_FILES:
         path = os.path.join(root, rel)
         for lineno, length in cs.non_item_lines(path):
             if length < line_cap:
@@ -1518,83 +1494,6 @@ def _known_ids(root, rows):
     return m_ids, d_ids
 
 
-# The bounded DECISIONS read (D-054) picks what to open from headings alone,
-# so a heading hiding a supersession costs recall. Scoped from D-054 because
-# D-012/D-014/D-019 hide one and IP4 forbids repairing them — an advisory that
-# can never reach OK is one people learn to ignore.
-HEADING_QUALITY_FROM = 54
-
-_DQ_HEADING = re.compile(r"^### D-0*(\d+)\b.*$", re.M)
-# A relationship CLAIM: the verb stem, then a D-id inside the same sentence.
-# Excludes the shapes that produced false positives on the real file — a bare
-# citation ("(D-005)"), "a symmetric move to D-028", "leaves D-049 untouched"
-# (no verb), and the forward-looking "the entry to supersede" / "requires a
-# superseding D-entry" (verb, but no D-id follows it in that sentence).
-_DQ_CLAIM = re.compile(r"\b(supersed|annotat|narrow|refin)\w*\b([^.\n]*)", re.I)
-_DQ_ID = re.compile(r"\bD-0*(\d+)\b")
-
-
-def check_decision_heading_quality(root):
-    """Advisory: a `### D-` heading that does not name an entry its own body
-    claims to supersede, annotate, narrow, or refine (M97, D-054).
-
-    The bounded read decides what to open from the headings, so the heading is
-    the index and a hidden supersession is a recall hole. Scoped to entries
-    from `HEADING_QUALITY_FROM` on: three legacy headings hide one and IP4
-    forbids editing them, so the read protocol back-references by id to cover
-    those instead (D-054 mitigation 2).
-
-    WARN, never a CHECK: whether a heading "names its subject" is a judgment
-    about prose, the same call `record density` and `references staleness`
-    make (D-049/D-052). Findings name the offending entry and the omitted id,
-    since a count cannot be acted on.
-
-    KNOWN RECALL LIMITS (M97 review F1-F4, F6 — do not read a clean result as
-    "every in-scope heading is complete"). The claim matcher is deliberately
-    narrow, per D-023's "a missed weird format beats a false positive": it
-    misses the noun form ("this supersession of D-031"), claims split across a
-    line wrap (the window stops at the newline and this repo hard-wraps),
-    reversed order ("D-031 is superseded here"), synonyms outside the rule's
-    stated vocabulary ("replaces", "overrides", "retires"), and it does not
-    exclude fenced or quoted content in either direction. These interact — the
-    noun-form miss is safe to close ONLY while the wrap limit suppresses the
-    false positive it would otherwise raise on D-054's own descriptive
-    "headings hide a supersession" line — so they want a classifier redesign,
-    not independent patches (ROADMAP candidate). Recall for the legacy and
-    missed cases rests on the back-reference step of the read protocol, which
-    does not depend on this matcher at all."""
-    out = []
-    path = os.path.join(root, "cairn", "DECISIONS.md")
-    if not os.path.isfile(path):
-        return out
-    try:
-        with open(path, encoding="utf-8") as f:
-            text = f.read()
-    except Exception:
-        return out
-    heads = list(_DQ_HEADING.finditer(text))
-    for i, m in enumerate(heads):
-        num = int(m.group(1))
-        if num < HEADING_QUALITY_FROM:
-            continue
-        heading = m.group(0)
-        end = heads[i + 1].start() if i + 1 < len(heads) else len(text)
-        body = text[m.end():end]
-        named = {int(n) for n in _DQ_ID.findall(heading)}
-        claimed = set()
-        for c in _DQ_CLAIM.finditer(body):
-            claimed |= {int(n) for n in _DQ_ID.findall(c.group(2))}
-        missing = sorted(claimed - named - {num})
-        if missing:
-            ids = ", ".join("D-%03d" % n for n in missing)
-            out.append(
-                "D-%03d: body claims a relationship to %s but the heading "
-                "does not name it — the bounded read (D-054) opens entries "
-                "by heading, so this is invisible to the scan" % (num, ids)
-            )
-    return out
-
-
 def check_dangling_ids(root, rows):
     """Advisory: M<NN>/D-<NNN> tokens in committed cairn/ markdown that
     resolve to no ROADMAP row, milestone file, or D-entry (M57 — the link
@@ -1679,10 +1578,6 @@ ADVISORIES = [
     ),
     ("work-log format", lambda root, rows: check_worklog_format(root)),
     ("dangling id tokens", lambda root, rows: check_dangling_ids(root, rows)),
-    (
-        "decision heading quality",
-        lambda root, rows: check_decision_heading_quality(root),
-    ),
     (
         "references staleness",
         lambda root, rows: check_references_staleness(root),

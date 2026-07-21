@@ -74,8 +74,17 @@ and how many subagents it spawned (whose own tokens the store does not record,
 so the figure is partial by that much). It is **a reporting surface only**:
 there is no threshold, no verdict, and no pass/fail attached to any number —
 never treat a large figure as a finding to act on, and never propose a cap from
-it. A governing mechanism over these numbers is M96's to define, not this
-line's.
+it. No governing mechanism over these numbers exists or is owed: D-057 closed
+the stock-side size-governance program, and only a measured `cairn_cost`
+regression reopens that work.
+
+Beside it, report the rulebook's mass the same way: measure
+`skills/shared/tracking-rules.md` with `wc -l -m` and report current
+lines/chars and the growth since the recorded baseline —
+779 lines / 53,751 chars (M95, 2026-07-20; re-seed these figures only when
+a later pass changes the file deliberately). Reporting only, same boundary
+as the cost line: no threshold, no verdict, no pass machinery — growth is
+governed at the door (D-057), and this line keeps it visible.
 
 The script deliberately does not judge these — do them yourself and report:
 

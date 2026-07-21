@@ -109,9 +109,30 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_cost_audit_line",
-        test="TestCostAuditLine.test_the_governing_mechanism_is_deferred_to_its_owner",
+        test="TestCostAuditLine.test_no_governing_mechanism_is_owed",
         target=MILESTONE,
-        block="M96's to define",
+        block="D-057 closed",
+    ),
+    # M101: the rulebook-mass reporting line (D-057's M96 fold) — the
+    # measurement instruction, its seeded baseline, and the no-machinery
+    # boundary each carry the rule independently (M53 per-block discipline).
+    Mutation(
+        guard="test_cost_audit_line",
+        test="TestCostAuditLine.test_the_audit_reports_rulebook_mass_beside_the_cost_line",
+        target=MILESTONE,
+        block="report the rulebook's mass the same way",
+    ),
+    Mutation(
+        guard="test_cost_audit_line",
+        test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
+        target=MILESTONE,
+        block="779 lines / 53,751 chars",
+    ),
+    Mutation(
+        guard="test_cost_audit_line",
+        test="TestCostAuditLine.test_the_rulebook_line_is_reporting_only_with_no_machinery",
+        target=MILESTONE,
+        block="no threshold, no verdict, no pass machinery",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -533,7 +554,7 @@ REGISTRY = [
         guard="test_record_density",
         test="TestRecordDensityRule.test_rule_names_both_axes_with_their_opposite_remedies",
         target=RULES,
-        block="The two axes take opposite remedies: an over-count file graduates or prunes items, an over-weight file compresses them in place.",
+        block="The two axes take opposite remedies: an over-count file graduates or prunes items, an over-cap non-item line is replaced by a shorter rewrite, never appended to.",
     ),
     Mutation(
         guard="test_record_density",
@@ -551,7 +572,7 @@ REGISTRY = [
         guard="test_record_density",
         test="TestRecordDensityRule.test_rule_maps_each_axis_to_its_label_and_severity",
         target=RULES,
-        block="the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the weight axis is the `record density` advisory and only ever WARNs",
+        block="the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the per-line axis is the `record density` advisory and only ever WARNs",
     ),
     Mutation(
         guard="test_record_density",
@@ -564,6 +585,15 @@ REGISTRY = [
         test="TestRecordDensityRule.test_stated_advisory_label_matches_the_emitted_label",
         target=RULES,
         block="`cairn_validate`'s `record density` advisory",
+    ),
+    # M101 (D-058): the whole-file axis's decommissioning is itself a rule —
+    # stated as the retirement sentence, which is the positive framing the
+    # no-threshold negative asserts pair with (guard-doctrine §3).
+    Mutation(
+        guard="test_record_density",
+        test="TestRecordDensityRule.test_rule_states_no_whole_file_threshold",
+        target=RULES,
+        block="D-058 retired it",
     ),
     # M59 (RR01 rec 7): run-and-read — skills never enumerate validate's
     # internals; one entry per positive assert, negatives ride along (M54).
@@ -769,6 +799,28 @@ REGISTRY = [
         test="TestReviewFanout.test_fanout_states_why_a_fresh_model_reviews",
         target=RULES,
         block="fresh-context subagents",
+    ),
+    # M101: the prior-PR lens repoint — primary evidence is the archived
+    # `## Review` sections, the PR-thread walk is probe-gated, and the no-op
+    # contract is restated for the new surfaces. One entry per positive
+    # assert's block (M53 discipline).
+    Mutation(
+        guard="test_review_fanout",
+        test="TestPriorPRLens.test_primary_evidence_is_archived_review_sections",
+        target=REVIEW,
+        block="Primary evidence: archived",
+    ),
+    Mutation(
+        guard="test_review_fanout",
+        test="TestPriorPRLens.test_pr_thread_read_is_probe_gated",
+        target=REVIEW,
+        block="Secondary surface, probe-gated",
+    ),
+    Mutation(
+        guard="test_review_fanout",
+        test="TestPriorPRLens.test_always_spawns_and_noops_when_empty",
+        target=REVIEW,
+        block='reports "no prior-review evidence"',
     ),
     Mutation(
         guard="test_rulebook_polish",
@@ -1862,16 +1914,12 @@ REGISTRY += [
         target="cairn/DECISIONS.md",
         block="author the entry when the choice is next\n   touched, never as a backfill sweep",
     ),
-    # Two operative clauses M95's inversion sweep found unpinned while the
-    # rules around them were guarded. Registered rather than left to the
-    # by-hand record, because each is a one-clause rule that a later editorial
-    # pass would read as trimmable prose.
-    Mutation(
-        guard="test_record_density",
-        test="TestRecordDensityRule.test_rule_requires_the_mean_to_be_measured_never_assumed",
-        target=RULES,
-        block="Measure that mean, never assume one",
-    ),
+    # An operative clause M95's inversion sweep found unpinned while the
+    # rules around it were guarded. Registered rather than left to the
+    # by-hand record, because it is a one-clause rule that a later editorial
+    # pass would read as trimmable prose. (Its sibling — D-049's
+    # measure-the-mean clause — retired with the whole-file axis at
+    # M101/D-058.)
     Mutation(
         guard="test_lessons_loop",
         test="TestRecordCorrectionRule.test_the_correction_must_be_marked",
@@ -1916,6 +1964,16 @@ REGISTRY += [
         target=RULES,
         block="**A `### D-` heading names its subject and any entry it "
               "supersedes, annotates, or narrows.**",
+    ),
+    # M101 (D-059): the advisory is retired; the rule's enforcement sentence
+    # now states conduct + back-reference. The retirement statement is the
+    # positive framing its assertNotIn pairs with (guard-doctrine §3).
+    Mutation(
+        guard="test_bounded_decisions_read",
+        test="TestRulebookStatesTheBoundedRead."
+             "test_heading_rule_is_conduct_with_no_machine_check",
+        target=RULES,
+        block="retired as measured not to work",
     ),
     Mutation(
         guard="test_bounded_decisions_read",

@@ -1,18 +1,23 @@
-"""Lock: M84 — the item caps gain a second, orthogonal axis.
+"""Lock: M84/M93/M101 — the tracking-file caps and their per-line density axis.
 
 The tracking-rules weight-caps text must state that `ROADMAP.md` and
-`LESSONS.md` are measured on two axes over the same whole file — item count
-(lines, because both files are parsed one item per line) and weight (character
-mass, the `record density` advisory) — that the item axis is structurally blind
-to prose growing inside a line, and that the two axes take OPPOSITE remedies:
-graduate/prune for count, compress in place for weight. It must also record
-why weight only WARNs, and why a per-line warn was rejected FOR ITEM LINES —
-D-052 (M93) narrowed that rejection rather than overturning it, so non-item
-lines now do carry a per-line cap and M84's reason still binds everywhere else.
-The narrowing itself is guarded in `test_hygiene_stamp.py`.
+`LESSONS.md` are measured on two axes — item count (lines, because both files
+are parsed one item per line; the hard CHECK) and a per-line cap on non-item
+lines (the `record density` advisory) — that the item axis is structurally
+blind to prose growing inside a line, that the two axes take OPPOSITE
+remedies (graduate/prune items vs. replace an over-cap non-item line), and
+why the advisory only WARNs. It must also record why a per-line warn was
+rejected FOR ITEM LINES — D-052 (M93) narrowed that rejection rather than
+overturning it, and M84's reason still binds item lines. The narrowing
+itself is guarded in `test_hygiene_stamp.py`.
 
-Two stated<->enforced agreements ride along: the stated thresholds must equal
-`CHAR_CAPS` in `cairn_scripts.py`, and the stated label must equal the one
+M101 (D-058) removed the whole-file character axis on measured grounds, so
+the text must state NO per-file character threshold — the negative is paired
+with positive framing asserts on the surviving axes (guard-doctrine §3).
+
+Two stated<->enforced agreements ride along: the stated per-line cap must
+equal `NON_ITEM_LINE_CAP` in `cairn_scripts.py` and the files the rulebook
+names must equal `DENSITY_FILES`; and the stated label must equal the one
 `cairn_validate` emits for `check_record_density` (M59/M78 — prose naming a
 finding uses the emitted label verbatim). The measurement itself is enforced
 by the fixtures in `scripts/tests`; this guard locks the stated rules.
@@ -43,12 +48,12 @@ class TestRecordDensityRule(unittest.TestCase):
     def test_rule_names_both_axes_with_their_opposite_remedies(self):
         # M74/M76: an axis->remedy mapping is pinned with BOTH pairs on one
         # physical line. Pinning the mechanism sentence alone ("the two axes
-        # take opposite remedies") leaves the pairing swappable — compress a
-        # bloated candidate list, graduate half a lesson — with every other
-        # assert here still green, and the mutation harness cannot catch a
-        # swap because blanking is not swapping.
+        # take opposite remedies") leaves the pairing swappable — prune a
+        # bloated stamp, rewrite a candidate row — with every other assert
+        # here still green, and the mutation harness cannot catch a swap
+        # because blanking is not swapping.
         self.assertIn(
-            "The two axes take opposite remedies: an over-count file graduates or prunes items, an over-weight file compresses them in place.",
+            "The two axes take opposite remedies: an over-count file graduates or prunes items, an over-cap non-item line is replaced by a shorter rewrite, never appended to.",
             self.rules,
         )
 
@@ -57,75 +62,90 @@ class TestRecordDensityRule(unittest.TestCase):
         # belt-and-braces on the first, and the next cap squeeze drops it.
         self.assertIn("structurally blind to prose accumulating", self.rules)
 
-    def test_rule_requires_the_mean_to_be_measured_never_assumed(self):
-        # D-049's application rule, and the one M84-D1 actually broke: a
-        # threshold derived from an ASSUMED mean sits below what the line cap
-        # permits and silently becomes the real cap, firing at ordinary
-        # density. M95's inversion sweep found this operative clause unpinned
-        # while every threshold around it was guarded.
-        self.assertIn("Measure that mean, never assume one", self.rules)
-
     def test_rule_states_that_density_warns_rather_than_fails(self):
         # The severity IS the decision (M84 Scope, distinguishing D-018): an
         # item count is a structural fact, density is a judgment about prose.
         self.assertIn("Density warns because", self.rules)
 
     def test_rule_maps_each_axis_to_its_label_and_severity(self):
-        # M84 review F4: "weight" names the section, the hard CHECK, AND the
-        # new axis, so a reader hitting `FAIL weight caps` could read the
-        # advisory's severity as covering it. Pinned label-WITH-severity for
-        # BOTH axes on one physical line (M74/M76): pinning one pair alone
-        # leaves the other swappable, which is the inversion that misleads.
+        # M84 review F4: "weight" names the section AND the hard CHECK, so a
+        # reader hitting `FAIL weight caps` could read the advisory's severity
+        # as covering it. Pinned label-WITH-severity for BOTH axes on one
+        # physical line (M74/M76): pinning one pair alone leaves the other
+        # swappable, which is the inversion that misleads.
         self.assertIn(
-            "the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the weight axis is the `record density` advisory and only ever WARNs",
+            "the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the per-line axis is the `record density` advisory and only ever WARNs",
             self.rules,
         )
 
     def test_rule_records_why_a_per_line_warn_was_rejected(self):
         # A rejected alternative recorded once, so it is not re-litigated: a
         # per-line warn would pay authors to split an item across lines, which
-        # is the one thing that breaks both parsers.
+        # is the one thing that breaks both parsers. D-052 narrowed this to
+        # item lines; the reason must survive the M101 removal of the
+        # whole-file axis untouched.
         self.assertIn(
             "pressure on individual line length would reward splitting an item",
             self.rules,
         )
 
-    def test_stated_thresholds_match_enforced_thresholds(self):
-        # Two encodings of one set of numbers; drift is the defect. Membership
-        # is checked too, not just the values — a third file added to
-        # CHAR_CAPS without a rulebook line would otherwise pass silently.
-        stated = re.search(
-            r"per-file character thresholds — `(\w+\.md)` < ([\d,]+) · `(\w+\.md)` < ([\d,]+)",
-            self.rules,
-        )
-        self.assertIsNotNone(stated, "the weight-caps text states no thresholds")
-        rulebook = {
-            f"cairn/{stated.group(1)}": int(stated.group(2).replace(",", "")),
-            f"cairn/{stated.group(3)}": int(stated.group(4).replace(",", "")),
-        }
-        scripts = read(ROOT / "scripts" / "cairn_scripts.py")
-        body = re.search(r"CHAR_CAPS = \{(.*?)\}", scripts, re.S)
-        self.assertIsNotNone(body, "CHAR_CAPS is not defined in cairn_scripts.py")
-        enforced = {
-            k: int(v) for k, v in re.findall(r'"([^"]+)": (\d+)', body.group(1))
-        }
-        self.assertEqual(rulebook, enforced)
+    def test_rule_states_no_whole_file_threshold(self):
+        # M101/D-058: the whole-file character axis is decommissioned, so the
+        # rulebook must state no per-file character threshold. Negative
+        # asserts are paired with a positive framing assert (guard-doctrine
+        # §3) — the retirement sentence itself — so a crash or an empty read
+        # cannot satisfy this test.
+        self.assertIn("whole-file mass axis ran", self.rules)
+        self.assertIn("D-058 retired it", self.rules)
+        self.assertNotIn("per-file character thresholds", self.rules)
+        self.assertNotIn("21,000", self.rules)
+        self.assertNotIn("20,500", self.rules)
 
-    def test_lessons_header_states_its_own_enforced_threshold(self):
-        # The THIRD encoding of the number (M87 review F1/90). LESSONS.md's own
-        # header teaches its two caps, and it is what a maintainer reads at
-        # post-merge hygiene while deciding whether to compress — so a stale
-        # figure there sends them on the exact compression run the threshold
-        # was raised to remove, with `cairn_validate` reporting OK throughout.
-        # The coupling above pairs only the rulebook and CHAR_CAPS, which is
-        # why this drifted through M87's own first pass.
+    def test_stated_per_line_cap_matches_enforced_cap(self):
+        # Two encodings of one number; drift is the defect (M59/M78). The
+        # rulebook states the cap beside the constant's own name, so parse it
+        # from that pairing and compare against cairn_scripts.
+        stated = re.search(
+            r"`NON_ITEM_LINE_CAP` \(< (\d+) characters\)", self.rules
+        )
+        self.assertIsNotNone(stated, "the weight-caps text states no per-line cap")
         scripts = read(ROOT / "scripts" / "cairn_scripts.py")
-        body = re.search(r"CHAR_CAPS = \{(.*?)\}", scripts, re.S)
-        enforced = {
-            k: int(v) for k, v in re.findall(r'"([^"]+)": (\d+)', body.group(1))
-        }["cairn/LESSONS.md"]
+        enforced = re.search(r"^NON_ITEM_LINE_CAP = (\d+)$", scripts, re.M)
+        self.assertIsNotNone(enforced, "NON_ITEM_LINE_CAP is not defined")
+        self.assertEqual(int(stated.group(1)), int(enforced.group(1)))
+
+    def test_measured_file_roster_matches_enforced_roster(self):
+        # Membership, not just the cap value: a third file added to
+        # DENSITY_FILES without a rulebook mention (or dropped from it with
+        # the rulebook still naming it) would otherwise pass silently. The
+        # two-axes bullet names the measured files; DENSITY_FILES is the
+        # roster the advisory iterates.
+        scripts = read(ROOT / "scripts" / "cairn_scripts.py")
+        body = re.search(r"DENSITY_FILES = \((.*?)\)", scripts, re.S)
+        self.assertIsNotNone(body, "DENSITY_FILES is not defined in cairn_scripts.py")
+        enforced = set(re.findall(r'"cairn/([^"]+)"', body.group(1)))
+        block = re.search(
+            r"\*\*Two axes, one file\.\*\*(.*?)\n- ", self.rules, re.S
+        )
+        self.assertIsNotNone(block, "the two-axes bullet is missing")
+        stated = {
+            name for name in ("ROADMAP.md", "LESSONS.md", "PROFILE.md")
+            if f"`{name}`" in block.group(1)
+        }
+        self.assertEqual(stated, enforced)
+
+    def test_lessons_header_states_its_own_enforced_cap(self):
+        # The header is what a maintainer reads at post-merge hygiene while
+        # deciding whether to prune (M87 review F1's lesson: a stale figure
+        # there sends them on the wrong remedy with validate reporting OK
+        # throughout). Since M101 the item cap is the only whole-file cap, so
+        # the header must teach it — and must state no character threshold.
+        scripts = read(ROOT / "scripts" / "cairn_scripts.py")
+        line_caps = re.search(r"LINE_CAPS\s*=\s*\{(.*?)\}", scripts, re.S).group(1)
+        enforced = int(re.search(r'"cairn/LESSONS\.md":\s*(\d+)', line_caps).group(1))
         header = read(ROOT / "cairn" / "LESSONS.md")[:1200]
-        self.assertIn(f"{enforced:,} characters", header)
+        self.assertIn(f"{enforced} lines", header)
+        self.assertNotIn("characters, met by", header)
 
     def test_stated_advisory_label_matches_the_emitted_label(self):
         # M59/M78: prose naming a validate finding must use the label the

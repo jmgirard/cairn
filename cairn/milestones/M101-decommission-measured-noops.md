@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M101: Decommissioning — machinery measured not to work is removed or repointed
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, GP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m101-decommission-measured-noops · https://github.com/jmgirard/cairn/pull/99   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -50,33 +50,34 @@ M100.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: The prior-PR lens names archived `## Review` sections as its
+- [x] AC1: The prior-PR lens names archived `## Review` sections as its
       primary evidence and runs the PR-thread read only when a cheap
       existence probe finds real review threads; the always-spawned / no-op
       contract is restated for the new surfaces; tracking-rules' lens line
       matches; `test_review_fanout.py` pins the new recipe and fails on the
       old one.
-- [ ] AC2: The whole-file character axis is gone from code, tests, and
+- [x] AC2: The whole-file character axis is gone from code, tests, and
       prose — `record density` reports only the per-line axis, whose file
       roster no longer depends on `CHAR_CAPS`; item caps unchanged;
       `cairn_budget` prints item + per-line axes only; a repo-wide grep
       finds 21,000/20,500 stated nowhere outside history (DECISIONS.md,
-      archives, git).
-- [ ] AC3: The `decision heading quality` advisory is retired — check,
+      archives, git) and the milestone's own artifacts (this file's
+      tracking lines and the guard's absence-asserts — guard-doctrine §7).
+- [x] AC3: The `decision heading quality` advisory is retired — check,
       registration, and test file gone; the heading-authoring rule survives
       with its enforcement sentence rewritten; affected guards and harness
       entries re-anchored; no orphaned references remain.
-- [ ] AC4: `/milestone` §2 prints the rulebook reporting line — current
+- [x] AC4: `/milestone` §2 prints the rulebook reporting line — current
       mass and growth since the recorded M95 stamp — reporting only (no
       threshold, no verdict), guard-pinned in the same genre as the
       cost-audit line (`test_cost_audit_line.py`).
-- [ ] AC5: Two D-entries land, preview-shown (D-036): one superseding
+- [x] AC5: Two D-entries land, preview-shown (D-036): one superseding
       D-049's whole-file-threshold clause, recording the measured grounds
       and the weighed counter-evidence (the axis fired correctly on the
       NEXT UP row); one annotating D-054's mitigation 1.
-- [ ] AC6: The milestone's always-read delta is recorded in the work log,
+- [x] AC6: The milestone's always-read delta is recorded in the work log,
       counted by diff (expected net negative).
-- [ ] AC7: The active profile's `verify` slot is clean — all three suites
+- [x] AC7: The active profile's `verify` slot is clean — all three suites
       green from the repo root, exit codes checked individually, never
       behind a pipe (M56).
 
@@ -97,24 +98,24 @@ M100.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Repoint the lens — SKILL.md:109-121 rewrite, tracking-rules.md:
+- [x] T1: Repoint the lens — SKILL.md:109-121 rewrite, tracking-rules.md:
       581-583, `test_review_fanout.py` (keep the lens title string: the
       block-isolation split anchors on it).
-- [ ] T2: Remove the `CHAR_CAPS` loop and dict; give the per-line axis its
+- [x] T2: Remove the `CHAR_CAPS` loop and dict; give the per-line axis its
       own roster; update `cairn_budget.py`; re-base `test_scripts.py`,
       `test_cairn_budget.py`, `test_record_density.py`.
-- [ ] T3: Rewrite the rulebook two-axes block (tracking-rules.md:87-110)
+- [x] T3: Rewrite the rulebook two-axes block (tracking-rules.md:87-110)
       and the LESSONS.md header line; re-anchor the affected mutation-
       harness entries (anchors from the target files' actual bytes — M95).
-- [ ] T4: Retire the heading-quality advisory — code, ADVISORIES entry,
+- [x] T4: Retire the heading-quality advisory — code, ADVISORIES entry,
       test file; rewrite the rulebook enforcement sentence and
       `test_bounded_decisions_read.py:82-85`; re-anchor its harness entry.
-- [ ] T5: Add the `/milestone` §2 reporting line + guard beside
+- [x] T5: Add the `/milestone` §2 reporting line + guard beside
       `test_cost_audit_line.py`'s pins; seed the stamp from the M95 archive
       figures.
-- [ ] T6: Author both D-entries (supersede D-049 in part; annotate D-054);
+- [x] T6: Author both D-entries (supersede D-049 in part; annotate D-054);
       preview per D-036.
-- [ ] T7: Count the always-read delta by diff; run the three suites from
+- [x] T7: Count the always-read delta by diff; run the three suites from
       the repo root, exit codes individually; record both in the work log.
 
 ## Work log
@@ -123,6 +124,15 @@ M100.
      so the cap must never demand a trim here. Wrapped entries get a WARN. -->
 
 - 2026-07-20: created by /milestone-plan from the NEXT UP candidate row (part b) + the two absorbed IN SCOPE rows; gate chose: remove the CHAR_CAPS axis, retire (not repair) the heading-quality advisory, drop M96 and fold its reporting line here, keep the PR-thread read as a conditional surface.
+- 2026-07-20: T1 done — lens repointed to archived `## Review` sections as primary evidence, PR-thread walk gated behind a `pulls/comments?per_page=1` existence probe, no-op contract restated ("no prior-review evidence"); tracking-rules lens line matched; test_review_fanout pins the new recipe (3 new asserts + 3 harness entries) and fails on the old text.
+- 2026-07-20: discovered sub-task — pinned rulebook-classification-ledger.md as `partial` in test_scripts.py's shipped-page state ledger; the page was committed at RR04 ingest (526aba6) without its pin, failing the suite on main before this branch.
+- 2026-07-20: AC2 amended at a mini gate (user approved): the grep exemption now names the milestone's own artifacts — its tracking lines and the guard's absence-asserts (guard-doctrine §7's known hits) — beside history; substance of the criterion unchanged.
+- 2026-07-20: all tasks complete; status → review; branch checkpointed as a safe /clear point.
+- 2026-07-20: T7 done — always-read delta by wc diff main→branch: tracking-rules.md 783→782 lines, 54,537→54,373 chars (net −1 / −164, negative as expected; /milestone SKILL.md, conditionally read, +9 lines for the reporting line); three suites from repo root, unpiped, exit codes individually: skills 548 OK exit 0, scripts 266 OK exit 0, hooks 72 OK exit 0.
+- 2026-07-20: T6 done — D-058 (supersedes D-049's threshold clause + measure-the-mean rule; records the NEXT UP-row counter-evidence and why removal won) and D-059 (annotates D-054, mitigation 1 withdrawn; retire-over-repair with the interaction argument and re-open trigger) appended, both preview-shown per D-036; validate + suites green.
+- 2026-07-20: T5 done — /milestone §2 gains the rulebook-mass reporting line beside the cost line (wc -l -m, baseline seeded 779 lines / 53,751 chars from the M95 archive; no threshold, no verdict, no pass machinery); the cost paragraph's stale "M96's to define" deferral rewritten to D-057's closure; 3 new guard tests + 3 harness entries, 1 test and its entry rewritten.
+- 2026-07-20: T4 done — check_decision_heading_quality, its regexes/constant, ADVISORIES entry, and test_decision_heading_quality.py removed; the heading-authoring rule survives with its enforcement sentence rewritten to conduct + back-reference; test_bounded_decisions_read's advisory test replaced with a retirement guard (+ its harness entry — the plan expected one to re-anchor, but the old sentence had never been registered); suites green, advisory absent from validate output.
+- 2026-07-20: T2+T3 done in one checkpoint (coupled by the stated↔enforced guards) — CHAR_CAPS dict, whole-file loop, and char_count removed; DENSITY_FILES is the per-line roster; budget prints item + per-line only; TestRecordDensityAdvisory + pad_to deleted, TestNonItemLineAxis re-based; rulebook two-axes block rewritten (per-line is the second axis, retirement sentence added), LESSONS.md header now teaches the item cap only; test_record_density rewritten (thresholds coupling → per-line cap + roster couplings + no-threshold negative), 2 harness entries re-anchored, 1 deleted with its test, 1 added; all three suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -132,3 +142,17 @@ M100.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as is the work log (D-046); evidence never scrambles plan-owned content. -->
+
+Evidence gathered 2026-07-20 on branch m101-decommission-measured-noops (PR #99), all by command, same session as implement (fresh subagent review below).
+
+- AC1: SKILL.md carries "Primary evidence: archived" (1 hit), the `pulls/comments?per_page=1` probe (1), and the restated no-op contract; tracking-rules lens line matches ("primary evidence the archived `## Review` sections… probe finds real ones"); test_review_fanout 18 tests OK; fails-on-old verified — main's SKILL.md contains none of "Primary evidence: archived" / "probe-gated" / '"no prior-review evidence"' (all False), so the three new asserts red on the old text; 3 mutation-harness entries prove blanking reddens the guard.
+- AC2: live-code grep for CHAR_CAPS/char_count finds only two tombstone comments (cairn_scripts.py:57, test_lessons_loop.py:40 — the name in a historical aside, not the axis); repo-wide grep for 21,000/20,500/21000/20500 → ZERO hits outside the exempted surfaces (DECISIONS.md, milestones/archive/, reviews/, legacy/, this file, the guard's absence-asserts); cairn_budget on LESSONS.md prints exactly two axes (items 41/49, longest non-item 78/399); `OK record density` from validate; DENSITY_FILES roster test asserts PROFILE.md absent and membership exact.
+- AC3: test_decision_heading_quality.py absent (No such file); grep for check_decision_heading_quality/HEADING_QUALITY/_DQ_ across scripts+skills+hooks → no orphaned refs; validate output contains 0 "decision heading quality" lines; rulebook enforcement sentence rewritten ("retired as measured not to work", tracking-rules.md:313); test_bounded_decisions_read OK; new harness entry registered.
+- AC4: SKILL.md:81/84/86 carry the measurement instruction, the seeded M95 baseline (779 lines / 53,751 chars), and the no-machinery boundary; test_cost_audit_line 9 tests OK; 4 harness entries (3 new + rewritten D-057-closure pin) in the same genre as the cost-line pins.
+- AC5: D-058 (DECISIONS.md:1698) supersedes D-049's threshold clause and records the weighed counter-evidence ("fired correctly once" — the NEXT UP row); D-059 (DECISIONS.md:1745) annotates D-054 mitigation 1; both shown verbatim in chat before their commit (work log 2026-07-20, T6).
+- AC6: work-log line records the diff-counted delta: tracking-rules.md 783→782 lines, 54,537→54,373 chars (net −1/−164, negative as expected).
+- AC7: three suites from repo root, unpiped, exit codes individually: skills 548 exit 0 OK, scripts 266 exit 0 OK, hooks 72 exit 0 OK.
+
+Consistency gate: cairn_validate exit 0, no FAIL lines (`coverage complete` included); 1 advisory WARN (references staleness on the classification ledger — pre-existing, accurate, not this milestone's). Toolchain half: generic profile names no checks — clean no-op. DESIGN.md principles unchanged → cairn_impact skipped. Projection-vs-outcome: no Driving RR header → no-op.
+
+Independent review (2026-07-20, fresh-context fan-out, PR #99): [O] diff-bug — no findings (verified Python removals complete with no orphaned refs, harness completeness green after entry deletion/retarget, AC greps and delta re-derived independently, D-058/D-059 consistent with D-049/D-054). [S] blame-history — no findings (git -S traces show CHAR_CAPS/char_count touched only by M84/M87/M101; no unrelated protection swept; seeded baseline matches M95 archive verbatim). [S] prior-PR — no findings; primary surface read 10 archived ## Review sections, confirmed the M84 F2/90, M93 F2/92, M87 F1/90, and M97 F5/42 defect shapes not reintroduced; probe returned zero PR comments so the thread walk was skipped (the repointed lens's own recipe, exercised live). Zero findings → confidence scorer not spawned (nothing to score); no sub-threshold log entries exist.

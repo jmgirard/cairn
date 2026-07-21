@@ -45,42 +45,22 @@ LINE_CAPS = {"cairn/ROADMAP.md": 60, "cairn/LESSONS.md": 50, "cairn/PROFILE.md":
 MILESTONE_CAP = 150
 ARCHIVE_CAP = 25
 
-# The second weight axis (M84): file -> max character mass. LINE_CAPS counts
-# ITEMS, because both files below are parsed one item per line (ROADMAP rows
-# read positionally; D-015 defines LESSONS as one lesson per line) — so a line
-# count cannot see prose accumulating INSIDE a line. cairn's LESSONS.md held 49
-# lines, one under its <50 cap, across M78-M83 while its mass grew 16,567 ->
-# 18,729 chars: the item cap was saturated and reported nothing. (That state is
-# the ITEM axis's blind spot, and it is caught by the item cap it was one line
-# from tripping — not by this advisory, which stays quiet there. The two axes
-# divide labour; neither backstops the other's saturation — M87 review F3.)
+# Files whose NON-item lines the `record density` advisory measures (the
+# per-line axis, NON_ITEM_LINE_CAP below). Both are parsed one item per line
+# (ROADMAP rows read positionally; D-015 defines LESSONS as one lesson per
+# line), so their line count measures ITEMS and cannot see prose accumulating
+# on a non-item line. PROFILE.md is deliberately absent: surveyed at M84, no
+# density problem, item cap alone. Advisory only (check_record_density WARNs,
+# never FAILs): unlike an item count, "too dense" is a judgment about prose
+# quality, not a structural fact.
 #
-# Each threshold is the mass its OWN line cap permits at MEASURED item length
-# (M87, superseding M84-D1's item_cap x target_mean): non-item mass + capacity x
-# measured mean item length, rounded up to the next 500, where capacity is
-# (line cap - 1) - the file's fixed non-item lines. The -1 is because check_caps
-# FAILs on `n >= cap`, so the permitted line counts are 49 and 59, not 50 and 60
-# (M87 review F5). M84-D1 assumed target means instead of measuring — LESSONS
-# 50 x 340 against a real mean of 581, ROADMAP 60 x 150 against a real blended
-# mean of 497 (its 150 described the table rows; candidate rows run 4.3x that)
-# — so both thresholds bound BEFORE their line caps (LESSONS at 83% of item
-# capacity, ROADMAP at 40%) and the advisory fired at ordinary density.
-# Re-derive by MEASURING, never by assuming a mean: the prescribed weight
-# remedy is compression, and consolidating items RAISES the mean, so a mean
-# copied from a previous milestone is stale by construction.
-#
-# ROADMAP's mean is blended over a BIMODAL population — table rows ~158,
-# candidate rows ~683 — so it tracks composition as well as prose length, and a
-# re-measurement checks the mix, not just the mean (M87 review F2; this is the
-# mirror of the error M84-D1 made by describing only the rows). And because a
-# threshold is capacity at FULL item count, a file below its item cap carries
-# slack proportional to its unused slots.
-#
-# PROFILE.md is deliberately absent: surveyed at M84, no density problem, item
-# cap alone. Advisory only (check_record_density WARNs, never FAILs): unlike an
-# item count, "too dense" is a judgment about prose quality, not a structural
-# fact.
-CHAR_CAPS = {"cairn/ROADMAP.md": 21000, "cairn/LESSONS.md": 20500}
+# A whole-file character axis (CHAR_CAPS) sat here from M84 to M101; D-058
+# removed it on measured grounds: with thresholds derived from assumed means
+# it fired at ordinary density for three consecutive passes (D-049), and with
+# thresholds re-derived as what each line cap already permits it could tax a
+# hygiene pass but never bind before the item cap it backstopped. Git holds
+# the axis; the item caps and this per-line axis are what remain.
+DENSITY_FILES = ("cairn/ROADMAP.md", "cairn/LESSONS.md")
 TERMINAL_ROW_RETENTION = 5  # done + dropped rows share one ROADMAP cap
 
 # Per-line ceiling for NON-item lines only — headings, preamble, stamps, HTML
@@ -88,9 +68,9 @@ TERMINAL_ROW_RETENTION = 5  # done + dropped rows share one ROADMAP cap
 # M84's reason for that rejection is kept and still binds ITEM lines: pressure
 # on a row, candidate, or lesson would reward splitting one across lines and
 # corrode the one-item-per-line format both parsers depend on. A non-item line
-# has no such format to corrode, and it is where prose hides from BOTH existing
-# axes at once — the item cap counts lines and CHAR_CAPS counts whole-file mass,
-# so cairn's `Last hygiene check` stamp reached 3,152 chars in one adopting repo
+# has no such format to corrode, and it is where prose hides from the item
+# axis — a line count charges a 3,000-char stamp exactly one line — so cairn's
+# `Last hygiene check` stamp reached 3,152 chars in one adopting repo
 # (28% of that ROADMAP) with every gate green.
 #
 # 400 is measured, not assumed (M87). Survey of every non-item line in both
@@ -307,17 +287,6 @@ def non_item_lines(path):
             continue
         out.append((i, len(line)))
     return out
-
-
-def char_count(path):
-    """Character mass of a file, or None if unreadable — the weight axis's
-    measure, paired with line_count's item axis (M84). Counts characters, not
-    bytes, so a page of em-dashes is not penalised over a page of hyphens."""
-    try:
-        with open(path, encoding="utf-8") as f:
-            return len(f.read())
-    except Exception:
-        return None
 
 
 def claude_section_line_count(path):

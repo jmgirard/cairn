@@ -1347,6 +1347,9 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # the work the partial status described: each page was re-read in full
     # against a fresh clone of its source at a pinned version, so the status
     # now records a completed verification rather than a partial one.
+    # M101 adds the rulebook classification ledger, committed at the RR04
+    # ingest (526aba6) without this pin: its status says two spot-checks
+    # passed and the rest is an unverified first pass, hence `partial`.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "backlog-meridian.md": "ok",
@@ -1362,6 +1365,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "migration-pilot-notes.md": "exempt",
         "oracle-discipline-notes.md": "ok",
         "oracle-doctrine-intraclass-notes.md": "ok",
+        "rulebook-classification-ledger.md": "partial",
         "session-cost-notes.md": "ok",
         "spec-kit.md": "ok",
         "task-master.md": "ok",
@@ -1630,171 +1634,15 @@ class TestSizingAdvisory(ScriptCase):
         self.assertEqual(cv.check_sizing_advisory(str(root)), [])
 
 
-def pad_to(path, total):
-    """Grow `path` to EXACTLY `total` chars by appending a single long bullet.
-
-    One line, not many: the density advisory's whole premise is mass the item
-    cap cannot see, so a fixture that pads with line COUNT would trip the line
-    cap instead and prove nothing. Every case below therefore stays far under
-    its item cap while going over its char threshold — the M78–M83 LESSONS
-    shape (49 lines, +13% mass) reproduced deterministically."""
-    base = path.read_text()
-    pad = total - len(base)
-    if pad < 3:
-        raise AssertionError(f"{path} is already {len(base)} chars, over {total}")
-    path.write_text(base + "- " + "x" * (pad - 3) + "\n")
-    assert len(path.read_text()) == total, len(path.read_text())
-
-
-class TestRecordDensityAdvisory(ScriptCase):
-    """M84: the item caps gain a weight axis. `cairn/ROADMAP.md` and
-    `cairn/LESSONS.md` are parsed one item per line, so line count is the
-    item measure and cannot see prose accumulating INSIDE lines — cairn's
-    LESSONS sat at 49 lines (item cap <50) across M78–M83 while its mass grew
-    16,567 → 18,729 chars and nothing reported it.
-
-    WARN tier throughout (M84 Scope): density is a judgment about prose
-    quality, not a structural fact, so every case asserts exit 0 alongside its
-    finding. Thresholds and their derivation: M87-D1 (superseding M84-D1)."""
-
-    ADVISORY = "record density"
-
-    def roadmap(self, total):
-        root = self.tree.build()
-        pad_to(root / "cairn" / "ROADMAP.md", total)
-        return run("cairn_validate.py", root)
-
-    def lessons(self, total):
-        root = self.tree.build()
-        pad_to(root / "cairn" / "LESSONS.md", total)
-        return run("cairn_validate.py", root)
-
-    def assertFlagged(self, proc, fragment):
-        self.assertEqual(proc.returncode, 0, proc.stdout)
-        self.assertIn(f"WARN  {self.ADVISORY}", proc.stdout)
-        self.assertIn(fragment, proc.stdout)
-
-    def assertClean(self, proc):
-        self.assertEqual(proc.returncode, 0, proc.stdout)
-        self.assertIn(f"OK    {self.ADVISORY}", proc.stdout)
-
-    # --- the two thresholds ------------------------------------------------
-
-    def test_over_threshold_roadmap_warns(self):
-        proc = self.roadmap(21500)
-        self.assertFlagged(proc, "cairn/ROADMAP.md: 21,500 chars")
-        self.assertIn("threshold <21,000", proc.stdout)
-
-    def test_over_threshold_lessons_warns(self):
-        proc = self.lessons(21000)
-        self.assertFlagged(proc, "cairn/LESSONS.md: 21,000 chars")
-        self.assertIn("threshold <20,500", proc.stdout)
-
-    def test_under_threshold_is_quiet(self):
-        self.assertClean(self.roadmap(19000))
-
-    def test_each_file_has_its_own_threshold(self):
-        # One mass, opposite verdicts: 20,700 is over LESSONS' 20,500 and under
-        # ROADMAP's 21,000, so the same number must WARN on one file and stay
-        # quiet on the other. The thresholds are per-file because each is its
-        # OWN line cap's capacity at its OWN measured item length (M87-D1) —
-        # ROADMAP carries more items (40 vs 35) of shorter mean length.
-        self.assertFlagged(self.lessons(20700), "cairn/LESSONS.md: 20,700 chars")
-        self.assertClean(self.roadmap(20700))
-
-    # --- boundary, matching the LINE_CAPS `>=` convention ------------------
-
-    def test_at_threshold_warns(self):
-        self.assertFlagged(self.roadmap(21000), "cairn/ROADMAP.md: 21,000 chars")
-
-    def test_one_char_under_threshold_is_quiet(self):
-        self.assertClean(self.roadmap(20999))
-
-    # --- the regression anchor (AC2) ---------------------------------------
-
-    def test_anchored_on_the_measured_derivation(self):
-        # M87 retires M84's prune anchor. M84 calibrated so cairn's ROADMAP
-        # before the M83 prune (9,691 chars) WARNed, reading that prune as a
-        # maintainer judging the file too dense. It was not: dbf1068 dropped
-        # four graduation breadcrumbs (1,306 chars) and a 544-char hygiene
-        # parenthetical because they restated history the archive owns — a
-        # BOUNDARY-rule fix, not a density one, and its own message says "the
-        # density defect stays unfixed here". That file held 15 items against
-        # a line cap permitting 36 (42%), so flagging it was the advisory
-        # firing at ordinary density — the defect M87 fixes. It is clean now.
-        self.assertClean(self.roadmap(9691))
-        # What this brackets, precisely (M87 review F4): the two assertClean
-        # lines are REAL repo states the threshold must not flag — 9,691 the
-        # pre-prune ROADMAP, 16,998 cairn's LESSONS at 29 lessons (83% of the
-        # 35 its line cap permits, and the state the OLD threshold squeezed).
-        # The WARN side restates the constant and so only pins the boundary;
-        # it does NOT validate the derivation, and no assertion here can — a
-        # test recomputing capacity x measured mean would fire whenever the
-        # mean drifts, which is the mean-drift test rejected at the M87 plan
-        # gate. Anchored on sizes, not hashes, so a rebase cannot break it.
-        self.assertClean(self.lessons(16998))
-        self.assertFlagged(self.lessons(20500), "cairn/LESSONS.md: 20,500 chars")
-
-    # --- exit-code neutrality (AC4) ----------------------------------------
-
-    def test_advisory_never_moves_the_exit_code(self):
-        # A tree tripping ONLY this advisory: the gate still reports success
-        # and exits 0, so a dense file can never block a milestone.
-        proc = self.roadmap(21500)
-        self.assertEqual(proc.returncode, 0, proc.stdout)
-        self.assertIn("all checks passed", proc.stdout)
-        self.assertIn("advisory warning(s) — not gate failures", proc.stdout)
-        self.assertNotIn("FAIL", proc.stdout)
-
-    def test_shed_names_the_chars_to_drop(self):
-        # The remedy is compression, so the finding says how much mass to
-        # shed — the `shed ≥N` idiom check_caps already uses for lines (M69).
-        proc = self.lessons(21000)
-        self.assertIn("shed ≥501", proc.stdout)
-
-    def test_finding_shows_the_line_count_too(self):
-        # Both axes in one finding: the point is that the item count looks
-        # fine. The fixture's LESSONS is 4 lines, nowhere near the <50 cap.
-        proc = self.lessons(21000)
-        self.assertIn("PASS  weight caps", proc.stdout)
-        self.assertIn("4 lines", proc.stdout)
-
-    # --- files it must not measure ----------------------------------------
-
-    def test_missing_file_is_not_a_finding(self):
-        # line_count/char_count return None for an absent path; a missing
-        # LESSONS.md is check_scaffold's finding, not this advisory's.
-        # Asserted POSITIVELY (`OK` + exit 0), never as a bare assertNotIn: an
-        # empty stdout satisfies an absence-assert, so a crash in the advisory
-        # would leave this test — the one whose whole job is the absent-file
-        # path — green while every validate run in such a repo tracebacks.
-        # Proven live at M84 review (F2/90): raising inside the `n is None`
-        # branch kept all 12 tests in this class passing.
-        # The exit code is 1 here for an UNRELATED reason — a missing
-        # LESSONS.md is a `scaffold present` FAIL — so `OK record density`
-        # is the positive signal that the advisory ran to completion.
-        root = self.tree.build()
-        (root / "cairn" / "LESSONS.md").unlink()
-        proc = run("cairn_validate.py", root)
-        self.assertIn(f"OK    {self.ADVISORY}", proc.stdout)
-        self.assertNotIn(f"WARN  {self.ADVISORY}", proc.stdout)
-        self.assertIn("FAIL  scaffold present", proc.stdout)
-
-    def test_profile_is_not_measured(self):
-        # M84 Scope: PROFILE.md was surveyed and has no density problem (max
-        # line 80 chars here, 116 in intraclass) — it stays on the item cap
-        # alone, so no char threshold exists for it to trip.
-        cs = _load_scripts()
-        self.assertNotIn("cairn/PROFILE.md", cs.CHAR_CAPS)
-
-
 class TestNonItemLineAxis(ScriptCase):
-    """M93/D-052: the per-line axis, covering NON-item lines only.
+    """M93/D-052: the per-line axis, covering NON-item lines only — since
+    M101/D-058 removed the whole-file character axis, the `record density`
+    advisory's sole measure.
 
     The gap it closes: cairn's `Last hygiene check` stamp reached 3,152 chars
-    on ONE line in an adopting repo while both existing axes read green — the
-    item cap counts lines (35 of 60) and CHAR_CAPS counts whole-file mass
-    (11,410 of 21,000). Neither can see a single line growing without bound.
+    on ONE line in an adopting repo while every gate read green — an item cap
+    counts lines (35 of 60 there), so it charges a stamp of any length
+    exactly one line and cannot see it growing without bound.
 
     M84's rejection of a per-line warn is NARROWED, not overturned, and the
     narrowing is structural: an item line is excluded by SHAPE, so no length
@@ -1802,7 +1650,8 @@ class TestNonItemLineAxis(ScriptCase):
     `..._is_never_measured` tests below are what prove that, and they are the
     reason this class is not simply "a line cap".
 
-    WARN tier throughout, like the mass axis it joins."""
+    WARN tier throughout: density is a judgment about prose quality, not a
+    structural fact, so every case asserts exit 0 alongside its finding."""
 
     ADVISORY = "record density"
 
@@ -1880,6 +1729,16 @@ class TestNonItemLineAxis(ScriptCase):
         self.tree.candidates = ["x" * 900]
         self.assertClean(run("cairn_validate.py", self.tree.build()))
         self.assertFlagged(self.stamped(900), "non-item line is 900 chars")
+
+    def test_profile_is_not_measured(self):
+        # M84 Scope, carried into the roster: PROFILE.md was surveyed and has
+        # no density problem — it stays on the item cap alone, so the per-line
+        # axis never reads it.
+        cs = _load_scripts()
+        self.assertNotIn("cairn/PROFILE.md", cs.DENSITY_FILES)
+        self.assertEqual(
+            set(cs.DENSITY_FILES), {"cairn/ROADMAP.md", "cairn/LESSONS.md"}
+        )
 
     # --- the finding itself ------------------------------------------------
 
