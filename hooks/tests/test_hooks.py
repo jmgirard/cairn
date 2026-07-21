@@ -19,9 +19,11 @@ and a live-fire, not just making the test green.
 """
 
 import ast
+import atexit
 import json
 import os
 import pathlib
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -61,6 +63,47 @@ def hook_toplevel(proc):
     return json.loads(proc.stdout)
 
 
+# Each committed-clean repo shape is built ONCE (git init/config/add/commit =
+# 5 spawns) and copytree'd per test, instead of re-running those 5 spawns in
+# every setUp across 72 tests (M102). In-test git calls (branch, remote, push)
+# still run live on the copy — only the identical baseline is shared.
+_TEMPLATE_TMP = None
+_TEMPLATES = {}
+
+
+def _build_template(cairn):
+    global _TEMPLATE_TMP
+    if _TEMPLATE_TMP is None:
+        _TEMPLATE_TMP = tempfile.TemporaryDirectory()
+        atexit.register(_TEMPLATE_TMP.cleanup)
+    root = pathlib.Path(_TEMPLATE_TMP.name) / ("cairn" if cairn else "plain")
+    root.mkdir()
+
+    def git(*args):
+        subprocess.run(["git", *args], cwd=root, check=True, capture_output=True)
+
+    git("init", "-q", "-b", "main")
+    git("config", "user.email", "hooks@test.invalid")
+    git("config", "user.name", "Hook Tests")
+    if cairn:
+        (root / "cairn" / "milestones").mkdir(parents=True)
+        (root / "cairn" / "ROADMAP.md").write_text(ROADMAP)
+        (root / "cairn" / "milestones" / "M07-test.md").write_text(
+            f"# M07: Test milestone\n\n{MILESTONE_SENTINEL}\n"
+        )
+    (root / "code.txt").write_text("hello\n")
+    git("add", "-A")
+    git("commit", "-q", "-m", "init")
+    return root
+
+
+def _template(cairn):
+    key = bool(cairn)
+    if key not in _TEMPLATES:
+        _TEMPLATES[key] = _build_template(key)
+    return _TEMPLATES[key]
+
+
 class RepoFixture(unittest.TestCase):
     """A temp git repo, cairn-tracked or not, committed clean."""
 
@@ -70,18 +113,10 @@ class RepoFixture(unittest.TestCase):
         self._tmp = tempfile.TemporaryDirectory()
         self.root = pathlib.Path(self._tmp.name)
         self.addCleanup(self._tmp.cleanup)
-        self.git("init", "-q", "-b", "main")
-        self.git("config", "user.email", "hooks@test.invalid")
-        self.git("config", "user.name", "Hook Tests")
-        if self.cairn:
-            (self.root / "cairn" / "milestones").mkdir(parents=True)
-            (self.root / "cairn" / "ROADMAP.md").write_text(ROADMAP)
-            (self.root / "cairn" / "milestones" / "M07-test.md").write_text(
-                f"# M07: Test milestone\n\n{MILESTONE_SENTINEL}\n"
-            )
-        (self.root / "code.txt").write_text("hello\n")
-        self.git("add", "-A")
-        self.git("commit", "-q", "-m", "init")
+        # Copy the once-built committed-clean template (incl. its .git) rather
+        # than re-running git init/config/add/commit here (M102). The hook is
+        # still invoked as a real subprocess below — only setUp's git spawns go.
+        shutil.copytree(_template(self.cairn), self.root, dirs_exist_ok=True)
 
     def git(self, *args):
         subprocess.run(
