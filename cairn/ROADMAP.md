@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-20 (M105 done — /milestone-review now ticks each AC box as its evidence lands, not a batch at phase end; review-AC-checkoff-timing candidate graduated; M100 pruned to terminal retention; 2 lessons captured, none retired). Release timing is user-declared — D-050._
+_Last hygiene check: 2026-07-20 (M106 done — new "Accessible language on the decision surface" rule; user-facing question/chip text leads in plain words, glossing jargon; central-only wiring, guard + 6 mutation registrations; M101 pruned to terminal retention; no lessons captured or retired). Release timing is user-declared — D-050._
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M106 | Accessible-language rule — the decision surface (question text + chip framing) leads in plain words, glossing jargon rather than assuming it | review | — | normal | milestones/M106-accessible-language-rule.md |
+| M106 | Accessible-language rule — the decision surface (question text + chip framing) leads in plain words, glossing jargon rather than assuming it | done | — | normal | milestones/archive/M106-accessible-language-rule.md |
 | M105 | Incremental AC check-off — review ticks each criterion box as its evidence lands, not in a batch at phase end | done | — | normal | milestones/archive/M105-incremental-ac-checkoff.md |
 | M104 | Work-log staleness signal — bookkeeping entries no longer reset the idle clock | done | — | normal | milestones/archive/M104-worklog-staleness-signal.md |
 | M103 | Exploratory sources — supply-push ingestion: a corpus of uncited sources is triaged into candidates, not dismissed as irrelevant | done | — | normal | milestones/archive/M103-exploratory-sources.md |
 | M102 | Verify-suite speedup — the dogfood suite runs on its tests, not on process spawns, and greens in any repo state | done | — | normal | milestones/archive/M102-verify-suite-speedup.md |
-| M101 | Decommissioning — machinery measured not to work is removed or repointed | done | — | high | milestones/archive/M101-decommission-measured-noops.md |
 
 ## Candidates
 
