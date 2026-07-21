@@ -1,6 +1,6 @@
 # M107: RR-ingest / amendment discipline — the ingest surface carries the plan path's form, budget, and file hygiene
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -80,7 +80,7 @@ failed move.
       brief ingest step 3 (by reference); register the changed blocks.
 - [x] T4: make brief step 4's archive move robust to an untracked RB/RR (plain
       `mv` + `git add`, or a tracked-check); guard the step wording.
-- [ ] T5: run full `verify`; confirm the completeness meta-test and all three
+- [x] T5: run full `verify`; confirm the completeness meta-test and all three
       suites are green.
 
 ## Work log
@@ -90,6 +90,7 @@ failed move.
 - 2026-07-21: T2 — prescribed the `- [ ] AC-N (BCn): <verbatim>` ingest form in milestone-brief step 3 + template AC comment; two new mutation-registered guards; widened the section-owner parser to multi-line comments. skills 564 / scripts 274 green.
 - 2026-07-21: T3 — wired the `cairn_budget` re-check + one-pass-trim rule into implement step-6 amendment gate and brief ingest step (by reference); new test_amendment_budget.py guard file + IMPLEMENT target, two mutation registrations. skills 566 green.
 - 2026-07-21: T4 — brief step 4 archive move now uses plain `mv` + `git add`, never `git mv` (untracked RR fails it); guarded + mutation-registered. skills 567 green.
+- 2026-07-21: T5 — full verify green (scripts 274, skills 567, hooks 72), cairn_validate exit 0; status → review.
 
 ## Decisions
 
