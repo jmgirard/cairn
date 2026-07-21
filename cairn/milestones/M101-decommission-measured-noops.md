@@ -7,7 +7,7 @@
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP1, GP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** m101-decommission-measured-noops   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m101-decommission-measured-noops · https://github.com/jmgirard/cairn/pull/99   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -50,34 +50,34 @@ M100.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: The prior-PR lens names archived `## Review` sections as its
+- [x] AC1: The prior-PR lens names archived `## Review` sections as its
       primary evidence and runs the PR-thread read only when a cheap
       existence probe finds real review threads; the always-spawned / no-op
       contract is restated for the new surfaces; tracking-rules' lens line
       matches; `test_review_fanout.py` pins the new recipe and fails on the
       old one.
-- [ ] AC2: The whole-file character axis is gone from code, tests, and
+- [x] AC2: The whole-file character axis is gone from code, tests, and
       prose — `record density` reports only the per-line axis, whose file
       roster no longer depends on `CHAR_CAPS`; item caps unchanged;
       `cairn_budget` prints item + per-line axes only; a repo-wide grep
       finds 21,000/20,500 stated nowhere outside history (DECISIONS.md,
       archives, git) and the milestone's own artifacts (this file's
       tracking lines and the guard's absence-asserts — guard-doctrine §7).
-- [ ] AC3: The `decision heading quality` advisory is retired — check,
+- [x] AC3: The `decision heading quality` advisory is retired — check,
       registration, and test file gone; the heading-authoring rule survives
       with its enforcement sentence rewritten; affected guards and harness
       entries re-anchored; no orphaned references remain.
-- [ ] AC4: `/milestone` §2 prints the rulebook reporting line — current
+- [x] AC4: `/milestone` §2 prints the rulebook reporting line — current
       mass and growth since the recorded M95 stamp — reporting only (no
       threshold, no verdict), guard-pinned in the same genre as the
       cost-audit line (`test_cost_audit_line.py`).
-- [ ] AC5: Two D-entries land, preview-shown (D-036): one superseding
+- [x] AC5: Two D-entries land, preview-shown (D-036): one superseding
       D-049's whole-file-threshold clause, recording the measured grounds
       and the weighed counter-evidence (the axis fired correctly on the
       NEXT UP row); one annotating D-054's mitigation 1.
-- [ ] AC6: The milestone's always-read delta is recorded in the work log,
+- [x] AC6: The milestone's always-read delta is recorded in the work log,
       counted by diff (expected net negative).
-- [ ] AC7: The active profile's `verify` slot is clean — all three suites
+- [x] AC7: The active profile's `verify` slot is clean — all three suites
       green from the repo root, exit codes checked individually, never
       behind a pipe (M56).
 
@@ -142,3 +142,15 @@ M100.
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as is the work log (D-046); evidence never scrambles plan-owned content. -->
+
+Evidence gathered 2026-07-20 on branch m101-decommission-measured-noops (PR #99), all by command, same session as implement (fresh subagent review below).
+
+- AC1: SKILL.md carries "Primary evidence: archived" (1 hit), the `pulls/comments?per_page=1` probe (1), and the restated no-op contract; tracking-rules lens line matches ("primary evidence the archived `## Review` sections… probe finds real ones"); test_review_fanout 18 tests OK; fails-on-old verified — main's SKILL.md contains none of "Primary evidence: archived" / "probe-gated" / '"no prior-review evidence"' (all False), so the three new asserts red on the old text; 3 mutation-harness entries prove blanking reddens the guard.
+- AC2: live-code grep for CHAR_CAPS/char_count finds only two tombstone comments (cairn_scripts.py:57, test_lessons_loop.py:40 — the name in a historical aside, not the axis); repo-wide grep for 21,000/20,500/21000/20500 → ZERO hits outside the exempted surfaces (DECISIONS.md, milestones/archive/, reviews/, legacy/, this file, the guard's absence-asserts); cairn_budget on LESSONS.md prints exactly two axes (items 41/49, longest non-item 78/399); `OK record density` from validate; DENSITY_FILES roster test asserts PROFILE.md absent and membership exact.
+- AC3: test_decision_heading_quality.py absent (No such file); grep for check_decision_heading_quality/HEADING_QUALITY/_DQ_ across scripts+skills+hooks → no orphaned refs; validate output contains 0 "decision heading quality" lines; rulebook enforcement sentence rewritten ("retired as measured not to work", tracking-rules.md:313); test_bounded_decisions_read OK; new harness entry registered.
+- AC4: SKILL.md:81/84/86 carry the measurement instruction, the seeded M95 baseline (779 lines / 53,751 chars), and the no-machinery boundary; test_cost_audit_line 9 tests OK; 4 harness entries (3 new + rewritten D-057-closure pin) in the same genre as the cost-line pins.
+- AC5: D-058 (DECISIONS.md:1698) supersedes D-049's threshold clause and records the weighed counter-evidence ("fired correctly once" — the NEXT UP row); D-059 (DECISIONS.md:1745) annotates D-054 mitigation 1; both shown verbatim in chat before their commit (work log 2026-07-20, T6).
+- AC6: work-log line records the diff-counted delta: tracking-rules.md 783→782 lines, 54,537→54,373 chars (net −1/−164, negative as expected).
+- AC7: three suites from repo root, unpiped, exit codes individually: skills 548 exit 0 OK, scripts 266 exit 0 OK, hooks 72 exit 0 OK.
+
+Consistency gate: cairn_validate exit 0, no FAIL lines (`coverage complete` included); 1 advisory WARN (references staleness on the classification ledger — pre-existing, accurate, not this milestone's). Toolchain half: generic profile names no checks — clean no-op. DESIGN.md principles unchanged → cairn_impact skipped. Projection-vs-outcome: no Driving RR header → no-op.
