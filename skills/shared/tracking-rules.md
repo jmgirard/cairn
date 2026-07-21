@@ -683,7 +683,7 @@ that is a glance, not the deliberate triage of a corpus.
 Reading a corpus of maybe-relevant sources to *discover* what the repo does not yet know it wants — a new oracle, a new method — is supply-push exploration, a legitimate activity: a source on the `sources/` shelf for that purpose is triaged, never dismissed for want of a citation.
 Exploration produces two records and withholds a third.
 It always produces ROADMAP candidate rows for the promising oracles or methods it finds, search-first, as any surfaced idea is paired with a row (D-042).
-It produces a committed survey synthesis note — a comparative survey authored from `templates/synthesis-note.md` — only when the triage will outlive its exploration, by the same owed-applied-to-time test above; a one-shot triage stays in the milestone file.
+It produces a committed survey synthesis note only when the triage will outlive its exploration — a comparative survey authored from `templates/synthesis-note.md`, by the same owed-applied-to-time test above; a one-shot triage stays in the milestone file.
 It withholds a per-source `<citekey>.md` page: those stay demand-pull, earned only once a candidate graduates and something traces back to the source.
 Exploration reuses these existing records and adds no machinery — no committed raw sources, no references log, no query op or graph tooling (all rejected at M56); it is a way of reading the shelf, not a new place to write.
 

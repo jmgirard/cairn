@@ -758,13 +758,13 @@ REGISTRY = [
         guard="test_references_pages",
         test="TestExploratorySources.test_survey_note_only_when_it_outlives_the_exploration",
         target=RULES,
-        block="only when the triage will outlive its exploration",
+        block="committed survey synthesis note only when the triage will outlive its exploration",
     ),
     Mutation(
         guard="test_references_pages",
         test="TestExploratorySources.test_per_source_pages_stay_demand_pull",
         target=RULES,
-        block="those stay demand-pull, earned only once a candidate graduates",
+        block="withholds a per-source `<citekey>.md` page: those stay demand-pull, earned only once a candidate graduates",
     ),
     Mutation(
         guard="test_references_pages",

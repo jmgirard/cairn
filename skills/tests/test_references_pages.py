@@ -153,16 +153,24 @@ class TestExploratorySources(unittest.TestCase):
     def test_survey_note_only_when_it_outlives_the_exploration(self):
         # AC2 output 2: the committed survey synthesis note is conditional on
         # the existing "owed applied to time" test — a one-shot triage stays
-        # in the milestone file and earns no page.
+        # in the milestone file and earns no page. The anchor binds the RECORD
+        # ("survey synthesis note") to its condition, not the bare clause: a
+        # bare-clause assert survives a swap of the conditional-vs-withheld
+        # language between this output and the per-source one (M74/M76).
         self.assertIn(
-            "only when the triage will outlive its exploration", rulebook()
+            "committed survey synthesis note only when the triage will "
+            "outlive its exploration",
+            rulebook(),
         )
 
     def test_per_source_pages_stay_demand_pull(self):
         # AC2 output 3: exploration withholds the per-citekey page; those are
-        # still earned only on graduation plus a trace back to the source.
+        # still earned only on graduation plus a trace back to the source. The
+        # anchor binds the RECORD ("per-source `<citekey>.md` page") to its
+        # "stays demand-pull" disposition, for the same M74/M76 reason.
         self.assertIn(
-            "those stay demand-pull, earned only once a candidate graduates",
+            "withholds a per-source `<citekey>.md` page: those stay "
+            "demand-pull, earned only once a candidate graduates",
             rulebook(),
         )
 
@@ -195,8 +203,10 @@ class TestExploratorySources(unittest.TestCase):
             "is supply-push exploration, a legitimate activity",
             "it always produces roadmap candidate rows for the promising "
             "oracles or methods it finds",
-            "only when the triage will outlive its exploration",
-            "those stay demand-pull, earned only once a candidate graduates",
+            "committed survey synthesis note only when the triage will "
+            "outlive its exploration",
+            "withholds a per-source `<citekey>.md` page: those stay "
+            "demand-pull, earned only once a candidate graduates",
             "no committed raw sources, no references log, no query op or "
             "graph tooling",
         ):

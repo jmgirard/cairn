@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3
-- **Branch/PR:** —
+- **Branch/PR:** m103-exploratory-sources / https://github.com/jmgirard/cairn/pull/101
 
 ## Goal
 
@@ -38,25 +38,25 @@ Bidirectional citekey parsing → the existing "Citekey resolution" candidate.
 
 ## Acceptance criteria
 
-- [ ] `tracking-rules.md`'s "References pages" section states supply-push
+- [x] `tracking-rules.md`'s "References pages" section states supply-push
       exploration is legitimate and distinct from the demand-pull "owed"
       trigger — an uncited corpus source is triaged to discover, not dismissed
       as irrelevant, while consulted-in-passing still owes nothing. Evidence: a
       prose guard asserts the load-bearing clause and passes.
-- [ ] The doctrine states exploration's three outputs: candidate rows always
+- [x] The doctrine states exploration's three outputs: candidate rows always
       (search-first), a committed survey synthesis note only when the triage
       outlives its exploration, and per-source pages staying demand-pull.
       Evidence: a prose guard per clause passes.
-- [ ] The doctrine restates the M56 guardrail — reuse candidate rows + the
+- [x] The doctrine restates the M56 guardrail — reuse candidate rows + the
       synthesis-note survey type; no query op, graph tooling, references log,
       or committed raw sources. Evidence: a prose guard passes.
-- [ ] `/milestone-plan` step 2 recognizes exploratory source ingestion as an
+- [x] `/milestone-plan` step 2 recognizes exploratory source ingestion as an
       investigation activity yielding candidates + a conditional survey note.
       Evidence: a prose guard over the skill's `SKILL.md` passes.
-- [ ] Each new prose guard is mutation-registered (one `Mutation` per positive
+- [x] Each new prose guard is mutation-registered (one `Mutation` per positive
       `assertIn`) and the mutation harness reports each new anchor reddens.
       Evidence: `test_mutation_harness` green with the new entries.
-- [ ] The generic profile's `verify` slot is clean: the three `unittest`
+- [x] The generic profile's `verify` slot is clean: the three `unittest`
       suites and `cairn_validate` all pass.
 
 ## Coverage
@@ -94,7 +94,41 @@ Bidirectional citekey parsing → the existing "Citekey resolution" candidate.
 - 2026-07-20: T2 — TestExploratorySources (5 doctrine asserts + one-line check) + 5 Mutation registrations; skills suite 554 green, harness reddens each anchor.
 - 2026-07-20: T3 — /milestone-plan step 2 recognizes a source corpus (supply-push) + guard + Mutation (target SKILL.md); skills suite 555 green.
 - 2026-07-20: T4 — full verify green (skills 555 / scripts 269 / hooks 72 / validate 0, each exit checked); budget 91/149. Status → review.
+- 2026-07-20: review — 3 lenses + scorer; F1 (92) fixed (guards re-anchored to bind record→disposition, M74/M76); F2 (30) logged; all 6 ACs evidenced, suites re-run green. PR #101.
 
 ## Decisions
 
 ## Review
+
+**Acceptance evidence (fresh, branch @ ff8f0bd + review fix).**
+- AC1–AC4: `TestExploratorySources` — 7/7 green via `discover` (legitimacy,
+  candidates-always, survey-note-conditional, per-source-demand-pull, M56
+  guardrail, plan-skill recognition, one-physical-line).
+- AC5: all 6 M103 `Mutation` registrations verified to redden on deletion (5
+  vs. tracking-rules.md, 1 vs. milestone-plan SKILL.md), driven by the harness.
+- AC6: skills 555 / scripts 269 / hooks 72 / `cairn_validate` exit 0 (each exit
+  checked). Lone advisory = pre-existing rulebook-classification-ledger partial.
+
+**Consistency gate.** `cairn_validate` exit 0 (coverage-completeness inside it).
+DESIGN.md unchanged → `cairn_impact` no-ops (IP3 worked-under, not redefined).
+Generic profile names no toolchain checks; repo has no CI (mergeable on local
+green — PROFILE.md consistency-gate).
+
+**Independent review — three lenses + scorer.**
+- Blame-history (Sonnet): no findings — demand-pull rule byte-for-byte intact,
+  M56 rejections restated not re-opened, core placement matches D-031, 6:6
+  Mutation mapping follows M53/M95/M100.
+- Diff-bug (Opus): all ACs verified clean empirically; one minor observation
+  (F2 below).
+- Prior-review (Sonnet): one finding (F1 below); PR-comment probe empty.
+- F1 (score 92, **fixed**): the survey-note and per-source guards anchored on
+  bare clauses not naming their record — the M74/M76 label→SET false-coverage
+  pattern; a swap of the conditional-vs-withheld language would leave both
+  green. Re-anchored to bind each record noun to its disposition (doctrine line
+  reordered so the survey-note record and condition are contiguous); both still
+  redden; suites re-run green.
+- F2 (score 30, **logged, not actioned**): the topic line "Exploration
+  produces two records and withholds a third" reads the conditional survey note
+  as unconditional; the next sentence qualifies it, and the scorer judged the
+  established topic-then-elaborate style unlikely to mislead. No guard anchors
+  it; left as written.
