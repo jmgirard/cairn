@@ -5,7 +5,7 @@
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** m104-worklog-staleness-signal   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m104-worklog-staleness-signal · https://github.com/jmgirard/cairn/pull/102   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 
@@ -31,21 +31,21 @@ the new clause.
 
 ## Acceptance criteria
 
-- [ ] AC1 — The SKILL §2 Staleness bullet states the `in-progress` 14-day signal
+- [x] AC1 — The SKILL §2 Staleness bullet states the `in-progress` 14-day signal
       is measured from the last work-log line recording actual work, and names
       Depends-on amendments, status/mirror catch-ups, and git-reconciliation
       catch-up lines as clock-neutral bookkeeping. (tested: wording present in
       `milestone()`)
-- [ ] AC2 — A new prose-guard in `TestMilestoneAuditWiring`
+- [x] AC2 — A new prose-guard in `TestMilestoneAuditWiring`
       (`skills/tests/test_release_timing.py`) asserts the classification clause's
       load-bearing bytes and is registered in the mutation harness; blanking the
       clause reddens the guard, and the completeness meta-test stays green.
       (tested: mutation harness over the new registration)
-- [ ] AC3 — The existing `test_advisory_owns_idleness_against_the_staleness_bullet`
+- [x] AC3 — The existing `test_advisory_owns_idleness_against_the_staleness_bullet`
       guard stays green: the release advisory still solely owns the release-case
       idleness question, with no double-counting introduced between it and the
       reworded bullet. (tested: that guard)
-- [ ] AC4 — `skills/tests`, `scripts/tests`, and `hooks/tests` all green
+- [x] AC4 — `skills/tests`, `scripts/tests`, and `hooks/tests` all green
       (profile `verify` slot).
 
 ## Coverage
@@ -82,4 +82,26 @@ the new clause.
 
 ## Review
 
-<!-- owner: review · exclusive -->
+**Reviewed 2026-07-20 · PR #102 · branch m104-worklog-staleness-signal.**
+
+Fresh evidence per criterion:
+
+- **AC1 — PASS.** `skills/milestone/SKILL.md` §2 Staleness bullet reworded:
+  clock runs from "the last work-log line that records actual progress"; a
+  `Depends-on` amendment, a status-transition or mirror catch-up, and a
+  git-reconciliation catch-up line are named clock-neutral. Both anchor
+  phrases present (grep = 2).
+- **AC2 — PASS.** Guard `test_staleness_signal_discounts_bookkeeping_entries`
+  added to `TestMilestoneAuditWiring`; two mutation registrations. Manual
+  mutation: clean tree passes; blanking either anchor reddens the guard.
+  Completeness meta-test green within the skills suite.
+- **AC3 — PASS.** `test_advisory_owns_idleness_against_the_staleness_bullet`
+  green (test_release_timing 16/16 OK). The reworded general-case bullet and
+  the release-advisory ownership clause (SKILL §2 lines 66–69, untouched)
+  do not double-count.
+- **AC4 — PASS.** Suites all green: skills 556, scripts 269, hooks 72.
+
+Consistency gate: `cairn_validate` exit 0 (only the pre-existing
+`references staleness` advisory on rulebook-classification-ledger, unrelated).
+Profile `generic` → no toolchain consistency checks. No principle change →
+`cairn_impact` skipped.
