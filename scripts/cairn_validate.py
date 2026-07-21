@@ -620,6 +620,10 @@ _RR_SLOT = re.compile(r"^\s*-\s*\*\*Driving RR:\*\*\s*(\S+)", re.MULTILINE)
 _RR_TOKEN = re.compile(r"RR\d+\Z")
 _BC_HEAD = re.compile(r"^\s*-\s*BC(\d+)\s*[:.]\s*(.*)$")
 _BC_REF = re.compile(r"\bBC(\d+)\b")
+# DOTALL twin of _HTML_COMMENT: strips multi-line comments too, so a
+# deviation "declared" inside <!-- --> — which the ingest gate never shows —
+# cannot excuse a softened criterion (M100 review F1).
+_HTML_COMMENT_ML = re.compile(r"<!--.*?-->", re.S)
 
 
 def _norm_ws(s):
@@ -659,6 +663,15 @@ def _binding_criteria(rr_text):
     return items
 
 
+def _has_section(text, heading):
+    """True iff a `## <heading>` H2 exists, whatever its body holds."""
+    return any(
+        line.startswith("## ")
+        and line[3:].strip().lower().startswith(heading.lower())
+        for line in text.splitlines()
+    )
+
+
 def check_binding_criteria(root):
     """Review findings travel verbatim (RR04 rec 8, M100). A live milestone
     whose `Driving RR:` header slot names an RR must carry each of that RR's
@@ -668,7 +681,11 @@ def check_binding_criteria(root):
     softened criterion is a red check, not a reading: reword only through
     the deviations table, which the ingest gate shows verbatim (IP3 applied
     to review findings). No slot, `—`, or an RR without a Binding criteria
-    section binds nothing; the RR file itself is history and never edited."""
+    section binds nothing; the RR file itself is history and never edited.
+    An enforcement check fails LOUD, never open (M100 review F2/F4): a
+    malformed slot and a present-but-unparseable Binding criteria section
+    are findings, not skips — silence must always mean "nothing binds",
+    never "binding content the parser missed"."""
     bad = []
     for mid, path in sorted(
         cs.live_files(root).items(), key=lambda kv: cs.id_num(kv[0])
@@ -679,9 +696,18 @@ def check_binding_criteria(root):
         except Exception:
             continue
         m = _RR_SLOT.search(text)
-        if not m or not _RR_TOKEN.match(m.group(1)):
+        if not m:
             continue
-        token = m.group(1)
+        slot = m.group(1)
+        if slot == "—":
+            continue
+        if not _RR_TOKEN.match(slot):
+            bad.append(
+                f"{mid}: Driving RR slot {slot!r} is neither RR<NN> nor — "
+                f"(the check cannot bind what it cannot parse)"
+            )
+            continue
+        token = slot
         rr_path = _rr_file(root, token)
         if rr_path is None:
             bad.append(
@@ -691,11 +717,23 @@ def check_binding_criteria(root):
         with open(rr_path, encoding="utf-8") as f:
             rr_text = f.read()
         crits = _binding_criteria(rr_text)
-        ac_lines = _section_body(text, "Acceptance criteria")
-        ac_norm = _norm_ws(" ".join(ac_lines))
+        if not crits and _has_section(rr_text, "Binding criteria"):
+            bad.append(
+                f"{mid}: {token} has a Binding criteria section but no "
+                f"parseable '- BC<n>:' item — enforcement would silently "
+                f"bind nothing"
+            )
+            continue
+        # Comments never render at the ingest gate, so they can neither
+        # satisfy the verbatim bar nor declare a deviation (review F1).
+        ac_text = _HTML_COMMENT_ML.sub(
+            "", "\n".join(_section_body(text, "Acceptance criteria"))
+        )
+        ac_norm = _norm_ws(ac_text)
+        dev_marker = re.compile(r"Deviations from %s\b" % re.escape(token))
         deviated, marker_seen = set(), False
-        for line in ac_lines:
-            if f"Deviations from {token}" in line:
+        for line in ac_text.splitlines():
+            if dev_marker.search(line):
                 marker_seen = True
             elif marker_seen:
                 deviated.update(int(n) for n in _BC_REF.findall(line))

@@ -165,6 +165,81 @@ class TestBindingCriteria(unittest.TestCase):
         self.assertTrue(all("BC3" not in line for line in out))
 
 
+AC_SOFTENED_COMMENT_TABLED = AC_SOFTENED + (
+    "\n<!--\nDeviations from RR05:\n| BC1 | dropped in a comment |\n-->\n"
+)
+
+AC_SOFTENED_COMMENT_VERBATIM = AC_SOFTENED + (
+    "\n<!-- The frobnicator rejects negative input with a typed error and a "
+    "message naming the offending argument. -->\n"
+)
+
+RR_BOLD_HEADS = RR_BODY.replace("- BC1:", "- **BC1**:").replace(
+    "- BC2:", "- **BC2**:"
+)
+
+RR5_BODY = RR_BODY.replace("# RR05", "# RR5")
+
+AC_SOFTENED_RR50_TABLE = AC_SOFTENED + (
+    "\nDeviations from RR50:\n\n| BC | departure |\n|---|---|\n"
+    "| BC1 | a different review's table |\n"
+)
+
+
+class TestFailLoudAndUnslippable(unittest.TestCase):
+    """M100 review F1-F4: the check fails loud, never open, and a departure
+    the ingest gate never shows (an HTML comment) can neither excuse nor
+    satisfy. Each fixture was confirmed to pass [] against the pre-fix
+    check — these are regression tests."""
+
+    def check(self, **kw):
+        with tempfile.TemporaryDirectory() as tmp:
+            return cv.check_binding_criteria(build(tmp, **kw))
+
+    def test_deviation_hidden_in_comment_does_not_excuse(self):
+        out = self.check(ac_body=AC_SOFTENED_COMMENT_TABLED)
+        self.assertEqual(len(out), 1)
+        self.assertIn("BC1", out[0])
+
+    def test_verbatim_only_inside_comment_does_not_satisfy(self):
+        out = self.check(ac_body=AC_SOFTENED_COMMENT_VERBATIM)
+        self.assertEqual(len(out), 1)
+        self.assertIn("BC1", out[0])
+
+    def test_unparseable_binding_section_fails_loud(self):
+        out = self.check(ac_body=AC_VERBATIM, rr_body=RR_BOLD_HEADS)
+        self.assertEqual(len(out), 1)
+        self.assertIn("no parseable", out[0])
+
+    def test_prefix_rr_table_does_not_excuse(self):
+        out = self.check(
+            ac_body=AC_SOFTENED_RR50_TABLE,
+            slot="- **Driving RR:** RR5\n",
+            rr_body=RR5_BODY,
+            rr_name="RR5-fixture.md",
+        )
+        self.assertEqual(len(out), 1)
+        self.assertIn("BC1", out[0])
+
+    def test_own_rr_table_still_excuses(self):
+        # Positive twin of the prefix case: the same table naming RR5 itself.
+        out = self.check(
+            ac_body=AC_SOFTENED_RR50_TABLE.replace(
+                "Deviations from RR50:", "Deviations from RR5:"
+            ),
+            slot="- **Driving RR:** RR5\n",
+            rr_body=RR5_BODY,
+            rr_name="RR5-fixture.md",
+        )
+        self.assertEqual(out, [])
+
+    def test_malformed_slot_fires(self):
+        out = self.check(ac_body=AC_VERBATIM,
+                         slot="- **Driving RR:** RR05,\n")
+        self.assertEqual(len(out), 1)
+        self.assertIn("neither RR<NN> nor —", out[0])
+
+
 class TestWiring(unittest.TestCase):
     def test_registered_as_a_failing_check_not_an_advisory(self):
         self.assertIn("binding criteria", [label for label, _ in cv.CHECKS])
