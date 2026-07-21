@@ -1,6 +1,6 @@
 # M103: Exploratory sources — supply-push ingestion
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -83,7 +83,7 @@ Bidirectional citekey parsing → the existing "Citekey resolution" candidate.
 - [x] T3 — Add the exploratory-ingestion recognition to `/milestone-plan`
       `SKILL.md` step 2; guard it (copy committed bytes) + `Mutation` entry;
       confirm it reddens.
-- [ ] T4 — Run all three `unittest` suites, `cairn_validate`, and the mutation
+- [x] T4 — Run all three `unittest` suites, `cairn_validate`, and the mutation
       harness from the repo root, checking each exit code (M56/M65); run
       `cairn_budget` on this file. Confirm green.
 
@@ -93,6 +93,7 @@ Bidirectional citekey parsing → the existing "Citekey resolution" candidate.
 - 2026-07-20: T1 — exploration doctrine added to tracking-rules "References pages" (5 single-line anchors); three suites green.
 - 2026-07-20: T2 — TestExploratorySources (5 doctrine asserts + one-line check) + 5 Mutation registrations; skills suite 554 green, harness reddens each anchor.
 - 2026-07-20: T3 — /milestone-plan step 2 recognizes a source corpus (supply-push) + guard + Mutation (target SKILL.md); skills suite 555 green.
+- 2026-07-20: T4 — full verify green (skills 555 / scripts 269 / hooks 72 / validate 0, each exit checked); budget 91/149. Status → review.
 
 ## Decisions
 
