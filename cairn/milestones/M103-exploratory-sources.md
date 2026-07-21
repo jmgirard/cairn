@@ -74,7 +74,7 @@ Bidirectional citekey parsing → the existing "Citekey resolution" candidate.
       after "When a page is owed" (~:669): the reconciling clause (triaged
       corpus vs. consulted-in-passing), the three outputs, and the M56
       guardrail. Load-bearing clauses each on one physical line (M23).
-- [ ] T2 — Author prose guards for T1's clauses in a new
+- [x] T2 — Author prose guards for T1's clauses in a new
       `TestExploratorySources` class in `skills/tests/test_references_pages.py`,
       copying the committed bytes of each clause (M95/M100 — anchor on real
       bytes, never on text just drafted); one `Mutation` per positive
@@ -91,6 +91,7 @@ Bidirectional citekey parsing → the existing "Citekey resolution" candidate.
 
 - 2026-07-20: created by /milestone-plan.
 - 2026-07-20: T1 — exploration doctrine added to tracking-rules "References pages" (5 single-line anchors); three suites green.
+- 2026-07-20: T2 — TestExploratorySources (5 doctrine asserts + one-line check) + 5 Mutation registrations; skills suite 554 green, harness reddens each anchor.
 
 ## Decisions
 
