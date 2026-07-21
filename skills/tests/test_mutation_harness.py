@@ -75,6 +75,21 @@ REGISTRY = [
         target="skills/shared/templates/milestone.md",
         block="## Coverage",
     ),
+    # M105: the incremental check-off rule carries independently on two
+    # surfaces — the review skill and the rulebook AC-fencing block — so each
+    # anchor gets its own mutation proof (M53 per-block discipline).
+    Mutation(
+        guard="test_ac_traceability",
+        test="TestReviewFences.test_checkoff_is_incremental",
+        target=REVIEW,
+        block="Tick each box as its evidence line is recorded",
+    ),
+    Mutation(
+        guard="test_ac_traceability",
+        test="TestRulesDiscipline.test_review_discipline_states_incremental_checkoff",
+        target=RULES,
+        block="The tick is incremental",
+    ),
     # M94: the cost line reports and never judges. Three blocks carry the
     # rule independently — the invocation, the reporting-only boundary, and
     # the two prohibitions that give the boundary teeth — so each gets its

@@ -6,8 +6,9 @@ them — so this test locks the load-bearing pieces against silent regression:
     criterion to the task(s) that satisfy it, positionally numbered;
   * /milestone-plan authors that map, and treats an unmapped criterion as a
     planning gap;
-  * /milestone-review fences a criterion checkbox on recorded evidence and
-    fails a criterion mapped to no existing task (AC fencing);
+  * /milestone-review fences a criterion checkbox on recorded evidence, ticks
+    it incrementally as that evidence lands (never a batch pass at phase end),
+    and fails a criterion mapped to no existing task (AC fencing);
   * tracking-rules lists the Coverage section in the ownership table (owner:
     plan) and states the fencing rule in its review discipline.
 
@@ -87,6 +88,15 @@ class TestReviewFences(unittest.TestCase):
         self.assertRegex(r, r"≥1 task")
         self.assertIn("gate failure", r)
 
+    def test_checkoff_is_incremental(self):
+        # M105: each box is ticked as its evidence line is recorded, never in
+        # one batch pass at phase end (mirrors implement's tick-at-checkpoint).
+        r = review()
+        self.assertIn("Tick each box as its evidence line is recorded", r)
+        # \s+ spans the line-wrap: "phase" and "end" can fall on different
+        # physical lines in the wrapped skill prose (M95/M104).
+        self.assertRegex(r, r"never one batch pass at phase\s+end")
+
 
 class TestRulesDiscipline(unittest.TestCase):
     def test_ownership_table_lists_coverage(self):
@@ -97,6 +107,13 @@ class TestRulesDiscipline(unittest.TestCase):
         r = rules()
         self.assertIn("AC fencing", r)
         self.assertRegex(r, r"no evidence.*no tick|evidence.*gates the")
+
+    def test_review_discipline_states_incremental_checkoff(self):
+        # M105: the rulebook AC-fencing block states the incremental tick.
+        r = rules()
+        self.assertIn("The tick is incremental", r)
+        # \s+ spans the line-wrap (M95/M104), as in the review-skill anchor.
+        self.assertRegex(r, r"never batched into one pass at phase\s+end")
 
 
 if __name__ == "__main__":

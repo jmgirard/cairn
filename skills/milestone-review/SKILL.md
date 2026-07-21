@@ -36,8 +36,9 @@ overrides — log the override).
    in the milestone's Review section (summaries, never pasted output). Write
    the Review section — review-exclusive per the tracking-rules
    section-ownership table — and, under AC fencing, tick each verified
-   acceptance-criterion checkbox (a verification mark against recorded
-   evidence, never a change to the criterion text); never edit the plan-owned
+   acceptance-criterion checkbox as its evidence line is recorded (a
+   verification mark against recorded evidence, never a change to the
+   criterion text); never edit the plan-owned
    Goal/Scope or the wording of any criterion (see the never-reinterpret rule
    next).
 
@@ -49,7 +50,11 @@ overrides — log the override).
 
    **AC fencing — evidence before the checkbox.** A criterion checkbox is
    ticked only once its fresh evidence is recorded in the Review section:
-   no evidence line, no tick. An already-ticked criterion with no recorded
+   no evidence line, no tick. Tick each box as its evidence line is recorded
+   — criterion by criterion, in the same step, never one batch pass at phase
+   end; this mirrors how `/milestone-implement` ticks each task box at its
+   checkpoint commit, and a batch tick at the end is the optimistic check-off
+   fencing exists to prevent. An already-ticked criterion with no recorded
    evidence is a gate failure, not a pass — treat it as unverified. This
    fences the milestone's own acceptance boxes against optimistic
    check-off; the Coverage completeness check in step 4 fences the plan.

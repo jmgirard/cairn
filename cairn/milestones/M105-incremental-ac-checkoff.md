@@ -1,11 +1,11 @@
 # M105: Incremental AC check-off — review ticks each criterion box as its evidence lands, not in a batch at phase end
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m105-incremental-ac-checkoff
 
 ## Goal
 
@@ -53,18 +53,18 @@ the Coverage-completeness gate — untouched.
 
 ## Tasks
 
-- [ ] T1 (test-first): Add to `TestReviewFences` in
+- [x] T1 (test-first): Add to `TestReviewFences` in
       `skills/tests/test_ac_traceability.py` an assertion pinning the
       incremental-check-off requirement in `review()`, and to
       `TestRulesDiscipline` one pinning it in `rules()`; register the new
       anchor(s) in `skills/tests/test_mutation_harness.py` (per-file, one
       exemplar block each — M60/M85). Both assertions fail against the current
       batch wording.
-- [ ] T2: Amend `milestone-review/SKILL.md` step 3 and its AC-fencing sub-block
+- [x] T2: Amend `milestone-review/SKILL.md` step 3 and its AC-fencing sub-block
       (lines ~40-55) to mandate ticking each AC box as its evidence line is
       recorded; keep "no evidence line, no tick" intact. Re-anchor any adjacent
       guard whose asserted phrase reflows (M104 lesson).
-- [ ] T3: Amend the `tracking-rules.md` AC-fencing block (lines ~62-71) to state
+- [x] T3: Amend the `tracking-rules.md` AC-fencing block (lines ~62-71) to state
       the incremental discipline, cross-referencing implement's tick-at-checkpoint.
       Run the full skills + scripts suites from repo root, check each exit code
       (M56 lesson), confirm green.
@@ -72,6 +72,9 @@ the Coverage-completeness gate — untouched.
 ## Work log
 
 - 2026-07-20: created by /milestone-plan (promoted from the review-AC-checkoff-timing candidate; disposition "mandate incremental, hard rule" chosen at the plan gate).
+- 2026-07-20: T1 — added incremental-check-off guards (TestReviewFences + TestRulesDiscipline in test_ac_traceability.py) + two mutation-harness registrations; both red against current batch wording (tests-first), box unticked until T2/T3 land the prose.
+- 2026-07-20: T2 — amended `milestone-review/SKILL.md` step 3 + AC-fencing sub-block to mandate incremental per-criterion check-off (tick as each evidence line lands), preserving "no evidence line, no tick"; T1's review anchor caught a line-wrap on the "phase end" regex (M95/M104 class) — fixed with a `\s+` matcher rather than reworking wrap-fragile prose.
+- 2026-07-20: T3 — amended the `tracking-rules.md` AC-fencing block to state the incremental discipline (mirrors implement's tick-at-checkpoint). Full skills + scripts suites green (exit 0 each); mutation harness confirms both new anchors redden when blanked. All three task boxes ticked.
 
 ## Decisions
 
