@@ -20,7 +20,7 @@ session, with a prompt that supplied D-056's test, forbade treating
 guard-pinning as a keep reason, and asked it to contradict the recorded claim
 in either direction. Ingested 2026-07-20; ingesting milestone: none (drafted
 during RB04's authoring, committed at RR04 ingest). Pagination basis: —.
-Extraction: partly verified — two checkable citation claims (lines 648, 114)
+Extraction: partly verified — two checkable citation claims (lines 648, 114) — observed 2026-07-20.
 were re-read against the file by hand and both held; the per-block
 classifications themselves have not been independently re-rated, and the
 sweep's author also authored the proposal RB04 was written to test — observed
