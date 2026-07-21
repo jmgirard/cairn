@@ -104,13 +104,60 @@ def _load_scripts():
     return cairn_scripts
 
 
-def run(script, root):
+def _spawn(script, *args):
+    """A real subprocess — retained for the CLI-contract tests that must prove
+    the `sys.exit(main(sys.argv))` wiring (argv parsing, exit-code propagation,
+    die_not_cairn's stderr). The BULK of validate cases run in-process via
+    `run` below; only the process boundary itself needs a spawn (M102)."""
     return subprocess.run(
-        [sys.executable, str(SCRIPTS_DIR / script), str(root)],
+        [sys.executable, str(SCRIPTS_DIR / script), *map(str, args)],
         capture_output=True,
         text=True,
         timeout=30,
     )
+
+
+class _Result:
+    """Duck-types the subset of subprocess.CompletedProcess the tests read."""
+
+    def __init__(self, returncode, stdout, stderr=""):
+        self.returncode = returncode
+        self.stdout = stdout
+        self.stderr = stderr
+
+
+_VALIDATE_MOD = None
+
+
+def _validate_module():
+    global _VALIDATE_MOD
+    if _VALIDATE_MOD is None:
+        _VALIDATE_MOD = _load_validate()
+    return _VALIDATE_MOD
+
+
+def _run_validate_inproc(root):
+    """Call cairn_validate.main() in-process, capturing its printed report and
+    exit code — no interpreter spawn. main() re-reads every file each call, so
+    reuse across cases is safe. NotCairn is handled by main (stderr + code 2),
+    captured here too, so a mis-pointed root still duck-types a real run."""
+    import contextlib
+    import io
+
+    out, err = io.StringIO(), io.StringIO()
+    argv = [str(SCRIPTS_DIR / "cairn_validate.py"), str(root)]
+    with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+        code = _validate_module().main(argv)
+    return _Result(code, out.getvalue(), err.getvalue())
+
+
+def run(script, root):
+    """cairn_validate runs in-process (the bulk of the suite); the other
+    scripts keep their light subprocess path. The CLI-contract tests reach for
+    `_spawn` directly when they need the real process boundary."""
+    if script == "cairn_validate.py":
+        return _run_validate_inproc(root)
+    return _spawn(script, root)
 
 
 def run_impact(args, cwd=None):
@@ -1120,6 +1167,10 @@ class TestReferencesStaleness(ScriptCase):
         # forced onto the boundary itself — a wrap elsewhere (the M81 fixture's
         # midpoint split) cannot exercise it. Decoration and the contradicting
         # token's distance from the lead vary alongside.
+        # M102: this full cross-product now runs in-process via `install` →
+        # `run` (no interpreter spawn per case), so keep every axis crossed —
+        # M79's "crossed, not walked" coverage is what earns its keep, and it
+        # is cheap now. Do not thin it to "save" spawn cost; there is none.
         tails = (
             "the appendix remains unverified",
             "one section was never verified against the source",
@@ -1213,6 +1264,8 @@ class TestReferencesStaleness(ScriptCase):
     def test_decoration_layout_and_phrasing_vary_independently(self):
         # Crossed, not walked: M79's lesson is that holding two axes at their
         # default while moving the third passes vacuously on the pair.
+        # M102: runs in-process (via `install` → `run`), so the cross-product
+        # costs no spawns — keep it crossed rather than reducing to a walk.
         old = days_ago(400)
         phrasings = {
             f"verified {old} against the source": f"last verified {old}",
@@ -2468,12 +2521,36 @@ class TestImpact(ScriptCase):
 
 class TestOutsideCairn(unittest.TestCase):
     def test_all_scripts_exit_2(self):
+        # A CLI-contract test: it must prove the real PROCESS exits 2 and writes
+        # to stderr, so it spawns rather than using the in-process `run`.
         with tempfile.TemporaryDirectory() as tmp:
             for script in ("cairn_status.py", "cairn_next.py", "cairn_validate.py"):
                 with self.subTest(script=script):
-                    proc = run(script, tmp)
+                    proc = _spawn(script, tmp)
                     self.assertEqual(proc.returncode, 2)
                     self.assertIn("not a cairn repo", proc.stderr)
+
+
+class TestValidateCliContract(ScriptCase):
+    """The bulk of validate cases run in-process (M102); these few spawn the
+    real process to pin the `sys.exit(main(sys.argv))` wiring end-to-end — argv
+    plumbing and exit-code propagation the in-process path cannot witness."""
+
+    def test_clean_tree_exits_0_via_the_real_process(self):
+        proc = _spawn("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn("all checks passed", proc.stdout)
+
+    def test_defective_tree_exits_1_via_the_real_process(self):
+        # Orphan a milestone file from the ROADMAP — a hard FAIL — and prove the
+        # real process propagates the non-zero code, not just the in-process int.
+        root = self.tree.build()
+        (pathlib.Path(root) / "cairn" / "milestones" / "M99-orphan.md").write_text(
+            live("planned")
+        )
+        proc = _spawn("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("FAIL", proc.stdout)
 
     def test_impact_exits_2_outside_cairn(self):
         with tempfile.TemporaryDirectory() as tmp:
