@@ -108,59 +108,35 @@ def check_caps(root, rows):
 
 
 def check_record_density(root):
-    """Advisory: an item-list file whose character mass exceeds its threshold
-    (M84). The weight axis, orthogonal to check_caps' item axis over the same
-    whole file — `cairn/ROADMAP.md` and `cairn/LESSONS.md` are parsed one item
-    per line, so their line count measures ITEMS and is structurally blind to
-    prose accumulating inside a line. cairn's LESSONS.md sat at 49 lines (item
-    cap <50) across M78-M83 while its mass grew 16,567 -> 18,729 bytes and the
-    audit reported nothing.
+    """Advisory: a per-line ceiling on the NON-item lines of the item-parsed
+    tracking files (D-052). `cairn/ROADMAP.md` and `cairn/LESSONS.md` are
+    parsed one item per line, so their line count measures ITEMS and is
+    structurally blind to prose accumulating on a heading, preamble, stamp, or
+    comment line — cairn's hygiene stamp reached 3,152 chars in an adopting
+    repo while every gate read green (2026-07-19; a review pass later rewrote
+    that stamp to 2,568, still over).
 
-    Two reports, one advisory. The second is a per-line ceiling on NON-item
-    lines (D-052, narrowing M84's original blanket rejection of any per-line
-    warn). That rejection is kept for ITEM lines and still holds there:
-    pressure on individual line length would reward splitting an item across
-    lines and corrode the one-item-per-line format both parsers depend on. A
-    heading, preamble, stamp, or comment has no such format to corrode, and it
-    is exactly where prose hides from both whole-file axes at once — cairn's
-    hygiene stamp reached 3,152 chars in an adopting repo while the item cap
-    (35 of 60 lines) and the mass threshold (11,410 of 21,000) both read green
-    (2026-07-19; a review pass later rewrote that stamp to 2,568, still over).
+    ITEM lines are excluded by SHAPE, never by threshold (D-052 narrowed
+    M84's blanket rejection of any per-line warn, keeping its reason for item
+    lines): pressure on individual line length would reward splitting an item
+    across lines and corrode the one-item-per-line format both parsers depend
+    on.
 
-    WARN, never FAIL, on both axes — D-018 wanted a hard signal for the
-    CLAUDE.md section cap, where cairn owns the whole content, but density is a
-    judgment about prose quality, the same call the references-staleness
-    advisory already makes.
+    A whole-file character axis ran here from M84 to M101; D-058 removed it —
+    measured to tax at ordinary density (D-049) or sit where the item cap
+    already binds, never to catch a live defect this per-line axis missed.
 
-    The whole-file finding names both axes, because the item count looking fine
-    is the whole point, and prescribes the weight remedy (compress) rather than
-    the item remedy (evict/graduate). The per-line finding names the line, since
-    a file-level number cannot point at the one line responsible."""
+    WARN, never FAIL — D-018 wanted a hard signal for the CLAUDE.md section
+    cap, where cairn owns the whole content, but density is a judgment about
+    prose quality, the same call the references-staleness advisory already
+    makes. The finding names the line, since a file-level number cannot point
+    at the one line responsible."""
     out = []
-    for rel, cap in cs.CHAR_CAPS.items():
-        path = os.path.join(root, rel)
-        n = cs.char_count(path)
-        if n is None or n < cap:
-            continue
-        lines = cs.line_count(path)
-        item_cap = cs.LINE_CAPS.get(rel)
-        axis = f"{lines} lines" if lines is not None else "line count unknown"
-        if lines is not None and item_cap is not None:
-            axis += f", item cap <{item_cap}"
-        # `threshold <N`, not a bare N: every neighbouring cap prints its
-        # strictness marker (`cap <60`), and the comparison here is `>=`, so a
-        # bare number would tell an author 9,000 was the permitted ceiling
-        # while a 9,000-char file WARNs with `shed ≥1` (M84 review F5).
-        out.append(
-            f"{rel}: {n:,} chars over {axis} "
-            f"(threshold <{cap:,}; shed ≥{n - cap + 1:,}) — compress entries, "
-            f"don't evict them"
-        )
-    # The per-line axis. Same files, same WARN severity, same `>=` comparison
-    # as every neighbouring cap — so `<400` permits 399 and the shed figure is
-    # derived through the operator rather than assumed from the cap (M87).
+    # Same `>=` comparison as every neighbouring cap — so `<400` permits 399
+    # and the shed figure is derived through the operator rather than assumed
+    # from the cap (M87).
     line_cap = cs.NON_ITEM_LINE_CAP
-    for rel in cs.CHAR_CAPS:
+    for rel in cs.DENSITY_FILES:
         path = os.path.join(root, rel)
         for lineno, length in cs.non_item_lines(path):
             if length < line_cap:

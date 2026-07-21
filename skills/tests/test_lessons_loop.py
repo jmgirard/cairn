@@ -35,10 +35,11 @@ class TestLessonsLoop(unittest.TestCase):
     def test_stated_cap_matches_enforced_cap(self):
         # The rulebook's human-readable cap and the scripts' machine-enforced
         # cap are two encodings of one number; drift between them is the defect.
-        # Anchored to the LINE_CAPS block, not to the bare key: since M84 the
-        # key `"cairn/LESSONS.md"` also appears in CHAR_CAPS, so an unanchored
-        # search reads whichever dict is declared first and would compare this
-        # LINE cap against the CHARACTER threshold if the two were ever
+        # Anchored to the LINE_CAPS block, not to the bare key: the key
+        # `"cairn/LESSONS.md"` also appears elsewhere in cairn_scripts (the
+        # DENSITY_FILES roster; CHAR_CAPS before M101), so an unanchored
+        # search reads whichever declaration comes first and would compare
+        # this LINE cap against an unrelated number if the blocks were ever
         # reordered (M84 review F3).
         stated = int(re.search(r"`LESSONS\.md`\s*<\s*(\d+)\s*lines", self.rules).group(1))
         scripts = read(ROOT / "scripts" / "cairn_scripts.py")

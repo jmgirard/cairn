@@ -533,7 +533,7 @@ REGISTRY = [
         guard="test_record_density",
         test="TestRecordDensityRule.test_rule_names_both_axes_with_their_opposite_remedies",
         target=RULES,
-        block="The two axes take opposite remedies: an over-count file graduates or prunes items, an over-weight file compresses them in place.",
+        block="The two axes take opposite remedies: an over-count file graduates or prunes items, an over-cap non-item line is replaced by a shorter rewrite, never appended to.",
     ),
     Mutation(
         guard="test_record_density",
@@ -551,7 +551,7 @@ REGISTRY = [
         guard="test_record_density",
         test="TestRecordDensityRule.test_rule_maps_each_axis_to_its_label_and_severity",
         target=RULES,
-        block="the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the weight axis is the `record density` advisory and only ever WARNs",
+        block="the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the per-line axis is the `record density` advisory and only ever WARNs",
     ),
     Mutation(
         guard="test_record_density",
@@ -564,6 +564,15 @@ REGISTRY = [
         test="TestRecordDensityRule.test_stated_advisory_label_matches_the_emitted_label",
         target=RULES,
         block="`cairn_validate`'s `record density` advisory",
+    ),
+    # M101 (D-058): the whole-file axis's decommissioning is itself a rule —
+    # stated as the retirement sentence, which is the positive framing the
+    # no-threshold negative asserts pair with (guard-doctrine §3).
+    Mutation(
+        guard="test_record_density",
+        test="TestRecordDensityRule.test_rule_states_no_whole_file_threshold",
+        target=RULES,
+        block="D-058 retired it",
     ),
     # M59 (RR01 rec 7): run-and-read — skills never enumerate validate's
     # internals; one entry per positive assert, negatives ride along (M54).
@@ -1884,16 +1893,12 @@ REGISTRY += [
         target="cairn/DECISIONS.md",
         block="author the entry when the choice is next\n   touched, never as a backfill sweep",
     ),
-    # Two operative clauses M95's inversion sweep found unpinned while the
-    # rules around them were guarded. Registered rather than left to the
-    # by-hand record, because each is a one-clause rule that a later editorial
-    # pass would read as trimmable prose.
-    Mutation(
-        guard="test_record_density",
-        test="TestRecordDensityRule.test_rule_requires_the_mean_to_be_measured_never_assumed",
-        target=RULES,
-        block="Measure that mean, never assume one",
-    ),
+    # An operative clause M95's inversion sweep found unpinned while the
+    # rules around it were guarded. Registered rather than left to the
+    # by-hand record, because it is a one-clause rule that a later editorial
+    # pass would read as trimmable prose. (Its sibling — D-049's
+    # measure-the-mean clause — retired with the whole-file axis at
+    # M101/D-058.)
     Mutation(
         guard="test_lessons_loop",
         test="TestRecordCorrectionRule.test_the_correction_must_be_marked",

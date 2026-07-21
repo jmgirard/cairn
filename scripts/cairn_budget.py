@@ -101,17 +101,14 @@ def axes(root, kind, rel):
     """The axes that apply to one artifact, in reporting order.
 
     Each file class carries exactly the axes the gate applies to it — a
-    ``PROFILE.md`` has an item cap and no mass threshold, and inventing one
+    ``PROFILE.md`` has an item cap and no per-line axis, and inventing one
     here would report a budget nothing enforces.
     """
     path = os.path.join(root, rel)
     out = []
     if kind == "tracking file":
         out.append(Axis("items", cs.line_count(path), cs.LINE_CAPS[rel]))
-        if rel in cs.CHAR_CAPS:
-            out.append(
-                Axis("mass", cs.char_count(path), cs.CHAR_CAPS[rel], unit="chars")
-            )
+        if rel in cs.DENSITY_FILES:
             # The per-line axis, as a real Axis rather than trailing text, so it
             # reaches the exit code like every other (M99 review F1: it printed
             # OVER and exited 0, contradicting this module's stated contract).

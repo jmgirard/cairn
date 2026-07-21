@@ -88,26 +88,21 @@ takes a D-entry, and its number stays retired.
   `LESSONS.md` are parsed one item per line (rows read positionally; D-015
   makes a lesson one line), so a line count measures rows and lessons and is
   structurally blind to prose accumulating *inside* a line. The second axis is
-  **weight** — total character mass over the same whole file, reported by
-  `cairn_validate`'s `record density` advisory against
-  per-file character thresholds — `ROADMAP.md` < 21,000 · `LESSONS.md` < 20,500
-  — each the mass its own line cap permits at measured item length (D-049).
-  Measure that mean, never assume one: compression is
-  the weight remedy and consolidating items raises the mean, so a mean carried
-  over from last time is stale by construction, and a threshold set below what
-  the line cap permits silently becomes the real cap, firing at ordinary density.
-  The two axes take opposite remedies: an over-count file graduates or prunes items, an over-weight file compresses them in place.
-  The two also differ in severity, and the labels say which is which: the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the weight axis is the `record density` advisory and only ever WARNs.
+  **per-line**: over the same two files, non-item lines are
+  capped at `NON_ITEM_LINE_CAP` (< 400 characters), reported by
+  `cairn_validate`'s `record density` advisory.
+  The two axes take opposite remedies: an over-count file graduates or prunes items, an over-cap non-item line is replaced by a shorter rewrite, never appended to.
+  The two also differ in severity, and the labels say which is which: the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the per-line axis is the `record density` advisory and only ever WARNs.
   Density warns because "too dense" is a judgment and an item count is not — the
   same call the `references staleness` advisory makes.
   **The per-line axis covers non-item lines only, and deliberately never item lines** (D-052, narrowing M84's blanket rejection).
   Item lines stay exempt for M84's original reason, which survives the narrowing: pressure on individual line length would reward splitting an item across lines and corrode the one-item-per-line format both parsers depend on.
   A non-item line — heading, preamble, stamp, HTML comment — carries no such
-  format to corrode, and prose accretes there unseen by *both* whole-file axes:
-  the item cap counts lines and the density threshold counts whole-file mass, so
-  a stamp line ran to thousands of characters with every gate green (D-052).
-  Non-item lines are capped at `NON_ITEM_LINE_CAP` (< 400 characters),
-  reported under the same `record density` advisory at the same WARN severity.
+  format to corrode, and prose accretes there unseen by the item axis, which
+  charges a stamp of any length exactly one line: a stamp ran to thousands of
+  characters with every gate green (D-052). A third, whole-file mass axis ran
+  from M84 to M101; D-058 retired it as measured to tax at ordinary density
+  but never bind ahead of the item cap.
 - a live milestone file's **plan-owned body < 150 lines** — everything before
   the review-exclusive `## Review` section, less the `## Work log`.
   The cap-exempt sections are exactly `## Review` (review-owned, M55) and `## Work log` (history under D-045, D-046); every other plan-owned section counts.

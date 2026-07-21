@@ -100,10 +100,10 @@ M100.
 - [x] T1: Repoint the lens — SKILL.md:109-121 rewrite, tracking-rules.md:
       581-583, `test_review_fanout.py` (keep the lens title string: the
       block-isolation split anchors on it).
-- [ ] T2: Remove the `CHAR_CAPS` loop and dict; give the per-line axis its
+- [x] T2: Remove the `CHAR_CAPS` loop and dict; give the per-line axis its
       own roster; update `cairn_budget.py`; re-base `test_scripts.py`,
       `test_cairn_budget.py`, `test_record_density.py`.
-- [ ] T3: Rewrite the rulebook two-axes block (tracking-rules.md:87-110)
+- [x] T3: Rewrite the rulebook two-axes block (tracking-rules.md:87-110)
       and the LESSONS.md header line; re-anchor the affected mutation-
       harness entries (anchors from the target files' actual bytes — M95).
 - [ ] T4: Retire the heading-quality advisory — code, ADVISORIES entry,
@@ -125,6 +125,7 @@ M100.
 - 2026-07-20: created by /milestone-plan from the NEXT UP candidate row (part b) + the two absorbed IN SCOPE rows; gate chose: remove the CHAR_CAPS axis, retire (not repair) the heading-quality advisory, drop M96 and fold its reporting line here, keep the PR-thread read as a conditional surface.
 - 2026-07-20: T1 done — lens repointed to archived `## Review` sections as primary evidence, PR-thread walk gated behind a `pulls/comments?per_page=1` existence probe, no-op contract restated ("no prior-review evidence"); tracking-rules lens line matched; test_review_fanout pins the new recipe (3 new asserts + 3 harness entries) and fails on the old text.
 - 2026-07-20: discovered sub-task — pinned rulebook-classification-ledger.md as `partial` in test_scripts.py's shipped-page state ledger; the page was committed at RR04 ingest (526aba6) without its pin, failing the suite on main before this branch.
+- 2026-07-20: T2+T3 done in one checkpoint (coupled by the stated↔enforced guards) — CHAR_CAPS dict, whole-file loop, and char_count removed; DENSITY_FILES is the per-line roster; budget prints item + per-line only; TestRecordDensityAdvisory + pad_to deleted, TestNonItemLineAxis re-based; rulebook two-axes block rewritten (per-line is the second axis, retirement sentence added), LESSONS.md header now teaches the item cap only; test_record_density rewritten (thresholds coupling → per-line cap + roster couplings + no-threshold negative), 2 harness entries re-anchored, 1 deleted with its test, 1 added; all three suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -144,15 +144,6 @@ class TestBothDirectionsPerClass(unittest.TestCase):
         self.r.write("cairn/ROADMAP.md", "x\n" * cap)
         self.assertOver("cairn/ROADMAP.md")
 
-    def test_tracking_file_mass_axis_both_ways(self):
-        cap = cs.CHAR_CAPS["cairn/LESSONS.md"]
-        # One long item line: mass without item count, the blind spot M84 named.
-        self.r.write("cairn/LESSONS.md", "- " + "x" * (cap - 4) + "\n")
-        self.assertUnder("cairn/LESSONS.md")
-        self.r.write("cairn/LESSONS.md", "- " + "x" * cap + "\n")
-        text = self.assertOver("cairn/LESSONS.md")
-        self.assertIn("chars", text)
-
     def test_live_milestone_body_both_ways(self):
         cap = cs.MILESTONE_CAP
         self.r.write("cairn/milestones/M01-x.md", milestone(cap - 1))
@@ -276,7 +267,7 @@ class TestAgreementWithTheGate(unittest.TestCase):
             line for line in src.splitlines() if not line.strip().startswith("#")
         )
         code = re.sub(r'""".*?"""', "", code, flags=re.DOTALL)
-        caps = set(cs.LINE_CAPS.values()) | set(cs.CHAR_CAPS.values()) | {
+        caps = set(cs.LINE_CAPS.values()) | {
             cs.MILESTONE_CAP,
             cs.ARCHIVE_CAP,
             cs.NON_ITEM_LINE_CAP,
