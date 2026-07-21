@@ -1167,6 +1167,10 @@ class TestReferencesStaleness(ScriptCase):
         # forced onto the boundary itself — a wrap elsewhere (the M81 fixture's
         # midpoint split) cannot exercise it. Decoration and the contradicting
         # token's distance from the lead vary alongside.
+        # M102: this full cross-product now runs in-process via `install` →
+        # `run` (no interpreter spawn per case), so keep every axis crossed —
+        # M79's "crossed, not walked" coverage is what earns its keep, and it
+        # is cheap now. Do not thin it to "save" spawn cost; there is none.
         tails = (
             "the appendix remains unverified",
             "one section was never verified against the source",
@@ -1260,6 +1264,8 @@ class TestReferencesStaleness(ScriptCase):
     def test_decoration_layout_and_phrasing_vary_independently(self):
         # Crossed, not walked: M79's lesson is that holding two axes at their
         # default while moving the third passes vacuously on the pair.
+        # M102: runs in-process (via `install` → `run`), so the cross-product
+        # costs no spawns — keep it crossed rather than reducing to a walk.
         old = days_ago(400)
         phrasings = {
             f"verified {old} against the source": f"last verified {old}",
