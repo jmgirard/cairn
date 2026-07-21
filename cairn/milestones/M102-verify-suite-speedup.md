@@ -1,6 +1,6 @@
 # M102: Verify-suite speedup — the dogfood suite runs on its tests, not on process spawns, and greens in any repo state
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -46,7 +46,7 @@ The verify suite spends its wall time on the tests, not on subprocess spawns, an
 - [x] T2: Collapse the two M81 combinatorial fixtures (`test_scripts.py:1117`, `:1213`) to in-process covering sets, preserving the asserted contradiction and three-axes-independent behaviors.
 - [x] T3: In `hooks/tests`, build a committed template repo once at module/class scope and `shutil.copytree` it per test in `setUp`; drop the 5 git spawns; keep the hook subprocess call and the envelope assertions.
 - [x] T4: Fix `test_it_runs_against_this_repos_own_live_milestone_files` to green with no live milestone files while still parsing a real milestone shape (e.g. include `milestones/archive/M*.md`, or write a fixture from the template); add the empty-milestones regression.
-- [ ] T5: Run all three suites green; capture before/after wall time as review evidence.
+- [x] T5: Run all three suites green; capture before/after wall time as review evidence.
 
 ## Work log
 
@@ -55,6 +55,7 @@ The verify suite spends its wall time on the tests, not on subprocess spawns, an
 - 2026-07-20: T2 — subsumed by T1's seam: both M81 fixtures funnel through `install`→`run`, so their full cross-products now run in-process (4.86s→0.80s combined) with no subprocess spawns. This meets AC2's "via in-process calls" disjunct as written; the cross-products are kept intact (M79 "crossed, not walked") and now documented as cheap, not thinned to a covering set.
 - 2026-07-20: T3 — `RepoFixture.setUp` now `shutil.copytree`s a once-built committed template repo (`_build_template`/`_template`, cairn and non-cairn variants, atexit-cleaned) instead of running git init/config/add/commit per test; setUp spawns zero git subprocesses. Hook invocation stays a real subprocess; envelope assertions unchanged. Hooks suite ~15s→9.1s, 72 green.
 - 2026-07-20: T4 — the archive shape lacks a plan-owned body and the counter only caps a path under `cairn/milestones/`, so neither globbing archive/ nor pointing at the template in place worked; instead the real-shape check now copies the canonical template into a temp cairn milestone path and parses that, plus any live files. Added `test_real_shape_check_survives_an_empty_milestones_dir`. State-independent now (was red whenever no milestone was in flight).
+- 2026-07-20: T5 — full verify green; warm wall time, before→after: skills ~0.4s→0.4s (untouched), scripts ~20s→6.2s (~3.2×), hooks ~15s→9.0s, total ~37–40s→~15.6s (~60% off). Test counts +4 (2 CLI-contract, 1 empty-milestones regression, and a net from the seam). `cairn_validate` green (lone WARN is the pre-existing references-staleness advisory).
 
 ## Decisions
 
