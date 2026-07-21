@@ -1,6 +1,6 @@
 # M103: Exploratory sources — supply-push ingestion
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
