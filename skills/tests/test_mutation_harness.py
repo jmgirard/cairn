@@ -109,9 +109,30 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_cost_audit_line",
-        test="TestCostAuditLine.test_the_governing_mechanism_is_deferred_to_its_owner",
+        test="TestCostAuditLine.test_no_governing_mechanism_is_owed",
         target=MILESTONE,
-        block="M96's to define",
+        block="D-057 closed",
+    ),
+    # M101: the rulebook-mass reporting line (D-057's M96 fold) — the
+    # measurement instruction, its seeded baseline, and the no-machinery
+    # boundary each carry the rule independently (M53 per-block discipline).
+    Mutation(
+        guard="test_cost_audit_line",
+        test="TestCostAuditLine.test_the_audit_reports_rulebook_mass_beside_the_cost_line",
+        target=MILESTONE,
+        block="report the rulebook's mass the same way",
+    ),
+    Mutation(
+        guard="test_cost_audit_line",
+        test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
+        target=MILESTONE,
+        block="779 lines / 53,751 chars",
+    ),
+    Mutation(
+        guard="test_cost_audit_line",
+        test="TestCostAuditLine.test_the_rulebook_line_is_reporting_only_with_no_machinery",
+        target=MILESTONE,
+        block="no threshold, no verdict, no pass machinery",
     ),
     Mutation(
         guard="test_cost_audit_line",
