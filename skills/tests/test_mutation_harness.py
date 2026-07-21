@@ -219,6 +219,30 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_release_timing",
+        test="TestMilestoneAuditWiring.test_advisory_owns_idleness_against_the_staleness_bullet",
+        target=MILESTONE,
+        block="idleness question for every release-shaped milestone",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestMilestoneAuditWiring.test_staleness_signal_discounts_bookkeeping_entries",
+        target=MILESTONE,
+        block="the last work-log line that records actual progress",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestMilestoneAuditWiring.test_staleness_signal_discounts_bookkeeping_entries",
+        target=MILESTONE,
+        block="Clock-neutral bookkeeping — a `Depends-on` amendment, a status/mirror catch-up, and a git-reconciliation catch-up line",
+    ),
+    Mutation(
+        guard="test_release_timing",
+        test="TestMilestoneAuditWiring.test_staleness_signal_discounts_bookkeeping_entries",
+        target=MILESTONE,
+        block="Release-shaped milestones are exempt",
+    ),
+    Mutation(
+        guard="test_release_timing",
         test="TestMilestoneAuditWiring.test_a_recommendation_naming_something_else_keeps_the_lead",
         target=MILESTONE,
         block="that recommendation is legitimate and keeps the lead",

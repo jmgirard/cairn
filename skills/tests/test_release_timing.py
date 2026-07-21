@@ -143,10 +143,36 @@ class TestMilestoneAuditWiring(unittest.TestCase):
 
     def test_advisory_owns_idleness_against_the_staleness_bullet(self):
         # Without an owner the same stalled release arrives twice — once as a
-        # script WARN, once as a manual staleness item (M88 review F2).
+        # script WARN, once as a manual staleness item (M88 review F2). M104
+        # broadened ownership to EVERY release-shaped milestone, whether or not
+        # the advisory fired: else the stricter work-only bullet nags a release
+        # the advisory's lenient any-entry rule deliberately spared (M104 F-C).
+        text = milestone()
         self.assertIn(
-            "is not re-reported under the staleness bullet", milestone()
+            "is not re-reported under the staleness bullet", text
         )
+        self.assertIn(
+            "idleness question for every release-shaped milestone", text
+        )
+
+    def test_staleness_signal_discounts_bookkeeping_entries(self):
+        # M104: the in-progress staleness clock runs from the last entry that
+        # records WORK, never the last entry of any kind, or a stalled
+        # milestone reads active (M88 T3). Anchor 1 pins the measurement basis.
+        # Anchor 2 binds the clock-neutral disposition to its three enumerated
+        # members ON ONE LINE — a label-only anchor is false-coverage for the
+        # SET, since a member swap stays green (M74/M103, guard-doctrine §1;
+        # M104 F-A). Anchor 3 pins the release-shaped exemption (M104 F-C).
+        text = milestone()
+        self.assertIn(
+            "the last work-log line that records actual progress", text
+        )
+        self.assertIn(
+            "clock-neutral bookkeeping — a `depends-on` amendment, a "
+            "status/mirror catch-up, and a git-reconciliation catch-up line",
+            text,
+        )
+        self.assertIn("release-shaped milestones are exempt", text)
 
     def test_route_offers_the_park_option(self):
         self.assertIn(
