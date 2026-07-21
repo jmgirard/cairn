@@ -1,6 +1,6 @@
 # M105: Incremental AC check-off — review ticks each criterion box as its evidence lands, not in a batch at phase end
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
