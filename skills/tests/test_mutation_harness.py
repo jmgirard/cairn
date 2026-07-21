@@ -739,6 +739,45 @@ REGISTRY = [
         target=DOCTRINE,
         block="Do not restate the trigger here",
     ),
+    # M103: supply-push exploration doctrine — one entry per positive assertIn
+    # in TestExploratorySources. Blocks are the real file bytes (the guard's
+    # asserts lowercase; these match the case as written in tracking-rules).
+    Mutation(
+        guard="test_references_pages",
+        test="TestExploratorySources.test_exploration_is_named_a_legitimate_activity",
+        target=RULES,
+        block="is supply-push exploration, a legitimate activity",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestExploratorySources.test_exploration_always_produces_candidate_rows",
+        target=RULES,
+        block="It always produces ROADMAP candidate rows for the promising oracles or methods it finds",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestExploratorySources.test_survey_note_only_when_it_outlives_the_exploration",
+        target=RULES,
+        block="committed survey synthesis note only when the triage will outlive its exploration",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestExploratorySources.test_per_source_pages_stay_demand_pull",
+        target=RULES,
+        block="withholds a per-source `<citekey>.md` page: those stay demand-pull, earned only once a candidate graduates",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestExploratorySources.test_exploration_restates_the_m56_guardrail",
+        target=RULES,
+        block="no committed raw sources, no references log, no query op or graph tooling",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestExploratorySources.test_plan_skill_recognizes_exploratory_ingestion",
+        target="skills/milestone-plan/SKILL.md",
+        block="triage them for prospective oracles or methods rather than dismissing them as uncited",
+    ),
     # M78: the standing-fact / dated-observation split + page provenance.
     # Each definition is registered separately and each block is the label
     # WITH its enumeration, so blanking one cannot leave the other's assert

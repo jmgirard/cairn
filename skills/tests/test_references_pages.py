@@ -122,6 +122,99 @@ class TestAuthoringTrigger(unittest.TestCase):
         )
 
 
+class TestExploratorySources(unittest.TestCase):
+    """M103: supply-push exploration — reading a corpus of uncited sources to
+    DISCOVER new oracles or methods — is a legitimate activity, distinct from
+    the demand-pull "owed" trigger above. The circumplex incident: an agent
+    handed uncited PDFs dismissed them all because nothing cited them. The
+    doctrine lives in core "References pages" (universal — a repo with no
+    numeric work still explores), reusing candidate rows + the synthesis-note
+    survey type and adding no machinery (the M56 rejection).
+
+    rulebook() lowercases, so each anchor here is lowercased; each is one
+    physical line (the mutation harness blanks by line — LESSONS :37).
+    """
+
+    def test_exploration_is_named_a_legitimate_activity(self):
+        # AC1: distinct from the demand-pull "owed" trigger — triaged, not
+        # dismissed for want of a citation.
+        self.assertIn(
+            "is supply-push exploration, a legitimate activity", rulebook()
+        )
+
+    def test_exploration_always_produces_candidate_rows(self):
+        # AC2 output 1: candidate rows always, search-first (the D-042 pattern).
+        self.assertIn(
+            "it always produces roadmap candidate rows for the promising "
+            "oracles or methods it finds",
+            rulebook(),
+        )
+
+    def test_survey_note_only_when_it_outlives_the_exploration(self):
+        # AC2 output 2: the committed survey synthesis note is conditional on
+        # the existing "owed applied to time" test — a one-shot triage stays
+        # in the milestone file and earns no page. The anchor binds the RECORD
+        # ("survey synthesis note") to its condition, not the bare clause: a
+        # bare-clause assert survives a swap of the conditional-vs-withheld
+        # language between this output and the per-source one (M74/M76).
+        self.assertIn(
+            "committed survey synthesis note only when the triage will "
+            "outlive its exploration",
+            rulebook(),
+        )
+
+    def test_per_source_pages_stay_demand_pull(self):
+        # AC2 output 3: exploration withholds the per-citekey page; those are
+        # still earned only on graduation plus a trace back to the source. The
+        # anchor binds the RECORD ("per-source `<citekey>.md` page") to its
+        # "stays demand-pull" disposition, for the same M74/M76 reason.
+        self.assertIn(
+            "withholds a per-source `<citekey>.md` page: those stay "
+            "demand-pull, earned only once a candidate graduates",
+            rulebook(),
+        )
+
+    def test_exploration_restates_the_m56_guardrail(self):
+        # AC3: reuse existing records, add no machinery — the shapes M56
+        # rejected, named so a later milestone cannot quietly rebuild one.
+        self.assertIn(
+            "no committed raw sources, no references log, no query op or "
+            "graph tooling",
+            rulebook(),
+        )
+
+    def test_plan_skill_recognizes_exploratory_ingestion(self):
+        # AC4: /milestone-plan step 2 recognizes a source corpus as a
+        # supply-push case, so an agent triages it rather than dismissing
+        # uncited sources (the circumplex failure the milestone answers).
+        plan = (SKILLS / "milestone-plan" / "SKILL.md").read_text().lower()
+        self.assertIn(
+            "triage them for prospective oracles or methods rather than "
+            "dismissing them as uncited",
+            plan,
+        )
+
+    def test_each_anchor_sits_on_one_physical_line(self):
+        # The mutation harness blanks by physical line; an anchor spanning two
+        # would "found 0"-error rather than redden (LESSONS :37).
+        lines = [ln.lower() for ln in
+                 (SKILLS / "shared" / "tracking-rules.md").read_text().splitlines()]
+        for anchor in (
+            "is supply-push exploration, a legitimate activity",
+            "it always produces roadmap candidate rows for the promising "
+            "oracles or methods it finds",
+            "committed survey synthesis note only when the triage will "
+            "outlive its exploration",
+            "withholds a per-source `<citekey>.md` page: those stay "
+            "demand-pull, earned only once a candidate graduates",
+            "no committed raw sources, no references log, no query op or "
+            "graph tooling",
+        ):
+            hits = [ln for ln in lines if anchor in ln]
+            with self.subTest(anchor=anchor[:40]):
+                self.assertEqual(len(hits), 1, f"{anchor!r} must sit on one line")
+
+
 class TestShippedSynthesisTemplate(unittest.TestCase):
     """Reads the SHIPPED template, not a fixture — M77's pairing rule."""
 

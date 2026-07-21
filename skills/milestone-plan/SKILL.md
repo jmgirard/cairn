@@ -36,6 +36,11 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    citations. Draft scope, tasks,
    and the list of genuinely open decisions internally.
 
+   **Exploring a source corpus.** A scope that points at a corpus of
+   maybe-relevant sources on the `references/sources/` shelf is a supply-push
+   case (tracking-rules "Exploring prospective sources"):
+   investigation may triage them for prospective oracles or methods rather than dismissing them as uncited, emitting ROADMAP candidate rows for what it finds and a survey synthesis note only when the triage outlives this planning, never a per-source page.
+
    **Collision check (mandatory).** Sweep the ROADMAP (all statuses), the
    archive, and DECISIONS.md for overlap with what the user described.
    Sweep DECISIONS.md per the tracking-rules **bounded `DECISIONS.md` read**:
