@@ -74,3 +74,10 @@ The `cairn_cost` attribution tests run against a small fixture store instead of 
 - AC4: three suites from repo root, each exit 0 — scripts 277, skills 576, hooks 72.
 
 **Consistency gate:** `cairn_validate` exit 0, all checks passed (1 advisory: pre-existing `rulebook-classification-ledger.md` references-staleness, not a file this milestone touched). No `IPn/GPn` changed → `cairn_impact` skipped. Generic profile → no toolchain checks.
+
+**Independent review — three fresh-context lenses, zero actioned findings.**
+- [O] diff-bug (Opus): no surviving findings — refusal reordering preserves every honoured path (same predicate, stderr, exit 2); no `home=` leak into `parse_args`/CLI; fixture slug provably matches `main()`'s resolved root; spy and skip-proof assertions non-vacuous.
+- [S] blame-history (Sonnet): no findings — the moved block guarded only the refusal; `home=` threads the M94-era `store_dir(root, home=…)` seam without contradicting the "no CLI flag" note; F2/F3/F4/F5 regression tests untouched; cost suite 30/30.
+- [S] prior-review (Sonnet): no prior-review finding/lesson regressed; F3/F4 preserved and strengthened; PR-comment probe empty.
+- Scorer: no findings reached it (no-op).
+- Sub-threshold observations logged, not actioned (surfaced per IP3): (1) AC1's success assertion checks exit 0 + spy-fired, not the fixture's attribution output — mild test-strength only; (2) `import os` inside `_live_records_or_skip` — style nit; (3) `report()` builds its header via `store_dir(root)` without `home` — cosmetic, unreachable in production (`home` is always `None` there, so it equals `main`'s store) and untriggered by any test; no candidate (YAGNI).
