@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M110 | Records-hygiene doctrine module — graduate the gate-time lesson family (M35/M51/M69/M73/M77/M78×2/M87) into skills/shared/records-hygiene.md, the second maturation application (D-055) | planned | — | normal | milestones/M110-records-hygiene-module.md |
+| M110 | Records-hygiene doctrine module — graduate the gate-time lesson family (M35/M51/M69/M73/M77/M78×2/M87) into skills/shared/records-hygiene.md, the second maturation application (D-055) | review | — | normal | milestones/M110-records-hygiene-module.md |
 | M109 | Cost-test fixture store — attribution tests run against a small fixture store; one skip-if-absent test retains the real-store live-shape guarantee | done | — | normal | milestones/archive/M109-cost-test-fixture-store.md |
 | M108 | Always-read audit frame — every always-read file names its three governance elements (inflow test, outflow/read-bound, attention signal), checked at the /milestone audit | done | — | normal | milestones/archive/M108-always-read-audit-frame.md |
 | M107 | RR-ingest / amendment discipline — the ingest surface carries the plan path's form, budget, and file hygiene | done | — | normal | milestones/archive/M107-rr-ingest-amendment-discipline.md |

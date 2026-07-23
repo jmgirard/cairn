@@ -39,6 +39,7 @@ RELEASE = "skills/cairn-release/SKILL.md"
 TEMPLATE = "skills/shared/templates/milestone.md"
 DOCTRINE = "skills/shared/validation-doctrine.md"
 GUARD_DOCTRINE = "skills/shared/guard-doctrine.md"
+RECORDS_HYGIENE = "skills/shared/records-hygiene.md"
 SOURCE_NOTE = "skills/shared/templates/source-note.md"
 SYNTHESIS_NOTE = "skills/shared/templates/synthesis-note.md"
 
@@ -2267,6 +2268,117 @@ REGISTRY += [
              "test_step6_points_at_cairn_budget_and_one_pass_trim",
         target=IMPLEMENT,
         block="re-checks the body with `cairn_budget`",
+    ),
+]
+
+# M110 (D-061): maturation's second application — the records-hygiene family
+# graduated into a second module. Entries span the three registered surfaces —
+# the module, the rulebook pointer beside the retirement rule, and D-061 —
+# one per positive assert (M53). The fourth surface the guard pins, LESSONS.md,
+# carries no entry: its absence asserts can't be mutation-proven, since
+# blanking cannot restore a line that left (M54/M84).
+REGISTRY += [
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestModuleExists.test_module_declares_when_it_is_read",
+        target=RECORDS_HYGIENE,
+        block="Read this whenever you are at a milestone hygiene or plan gate",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestModuleExists.test_module_declares_itself_a_rulebook_module",
+        target=RECORDS_HYGIENE,
+        block="a module of `tracking-rules.md`",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestModuleExists.test_module_declares_it_is_read_conditionally",
+        target=RECORDS_HYGIENE,
+        block="it costs nothing to a session not at such a gate",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestModuleExists.test_section1_candidate_rows_graduate_at_completion",
+        target=RECORDS_HYGIENE,
+        block="Candidates graduate at *completion*",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestModuleExists.test_section2_collision_sweep_greps_the_archive",
+        target=RECORDS_HYGIENE,
+        block="collision sweep greps `milestones/archive/` for *decisions*",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestModuleExists.test_section3_rule_home_test",
+        target=RECORDS_HYGIENE,
+        block="would a repo with NO numeric work need",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestModuleExists.test_section3_run_the_rule_over_your_own_artifacts",
+        target=RECORDS_HYGIENE,
+        block="runs that rule over the artifacts",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestModuleExists.test_section4_amend_the_ac_without_drift",
+        target=RECORDS_HYGIENE,
+        block="improves on a planned output token or format, amend the",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestModuleExists.test_section5_scorer_gates_the_actioned_list",
+        target=RECORDS_HYGIENE,
+        block="sub-threshold confidence score gates the ACTIONED list",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestModuleExists.test_section6_only_a_wrapped_line_lowers_the_count",
+        target=RECORDS_HYGIENE,
+        block="Only removing a whole *wrapped* physical line lowers a line count.",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestModuleExists.test_section6_compress_what_your_phase_owns",
+        target=RECORDS_HYGIENE,
+        block="Compress what your phase OWNS, and cross-reference a durable record",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestRulebookPointer.test_rulebook_points_at_the_module",
+        target=RULES,
+        block="The records-hygiene family graduated by this rule lives in a module of this rulebook",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestRulebookPointer.test_pointer_maps_the_module_to_its_coverage_on_one_physical_line",
+        target=RULES,
+        block="candidate-row lifecycle, superseding a decision and sweeping the archive",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestRulebookPointer.test_pointer_states_when_to_read_the_module",
+        target=RULES,
+        block="Read it at a milestone hygiene or plan gate",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestRulebookPointer.test_pointer_states_the_module_is_read_conditionally",
+        target=RULES,
+        block="a session not at such a gate never pays for it",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestDecisionEntry.test_decision_entry_exists_and_annotates_d055",
+        target="cairn/DECISIONS.md",
+        block="### D-061 (2026-07-23): The records-hygiene lesson family graduates",
+    ),
+    Mutation(
+        guard="test_records_hygiene_graduation",
+        test="TestDecisionEntry.test_decision_entry_states_graduate_not_ownership",
+        target="cairn/DECISIONS.md",
+        block="graduate into the module rather than",
     ),
 ]
 

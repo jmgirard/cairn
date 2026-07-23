@@ -216,6 +216,9 @@ covered — a judgment, reported and never auto-fixed.
   The check runs at `/milestone-review` post-merge hygiene beside capture,
   **scoped to what the milestone shipped, never as a full re-sweep**; D-015's
   prune-the-stalest stays the last resort when retirement cannot free the budget.
+  **The records-hygiene family graduated by this rule lives in a module of this rulebook**, on its own line so the mapping stays pinnable:
+  `skills/shared/records-hygiene.md` covers candidate-row lifecycle, superseding a decision and sweeping the archive, placing a new rule and running it over your own output, amending a plan without drift, reading a review scorer, and compressing a capped file.
+  Read it at a milestone hygiene or plan gate; the retirement rule above is how such a family leaves `LESSONS.md`, and the module is where it lands, read conditionally like `guard-doctrine.md` so a session not at such a gate never pays for it.
 - **Stop points are commit points.** Never end a session or turn with
   uncommitted work — checkpoint-commit code and tracking together (even
   half-done, marked as such) so any future session resumes statelessly.
