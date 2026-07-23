@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** m109-cost-test-fixture-store
+- **Branch/PR:** m109-cost-test-fixture-store · https://github.com/jmgirard/cairn/pull/107
 
 ## Goal
 
@@ -26,10 +26,10 @@ The `cairn_cost` attribution tests run against a small fixture store instead of 
 
 ## Acceptance criteria
 
-- [ ] AC1: `test_attribution_mode_refuses_the_milestone_filter` drives `cairn_cost.main()` through the `home=` seam against a fixture store (a slugged `*.jsonl` under a temp home) and never opens the real `STORE_HOME` path — both the refusal (`--attribution --milestone` → exit 2) and the unfiltered success (`--attribution` → exit 0) are asserted against the fixture, exit 0 running the real attribution branch over the fixture's records.
-- [ ] AC2: `main()` refuses `--attribution --milestone` before any store read — with `home` pointed at an empty temp home (no store dir) the refusal still returns exit 2, proving the refusal precedes both the `isdir` check and `read_records` (today it wrongly returns 0 there).
-- [ ] AC3: Exactly one retained test reads the real store as a live-shape guarantee and `skip`s (never fails) when the store dir is absent or empty; when present it asserts records carry `message.usage` and the attribution fields in their real shape.
-- [ ] AC4: The generic profile's `verify` is clean — `python3 -m unittest` over all three suites, each exit code checked from the repo root.
+- [x] AC1: `test_attribution_mode_refuses_the_milestone_filter` drives `cairn_cost.main()` through the `home=` seam against a fixture store (a slugged `*.jsonl` under a temp home) and never opens the real `STORE_HOME` path — both the refusal (`--attribution --milestone` → exit 2) and the unfiltered success (`--attribution` → exit 0) are asserted against the fixture, exit 0 running the real attribution branch over the fixture's records.
+- [x] AC2: `main()` refuses `--attribution --milestone` before any store read — with `home` pointed at an empty temp home (no store dir) the refusal still returns exit 2, proving the refusal precedes both the `isdir` check and `read_records` (today it wrongly returns 0 there).
+- [x] AC3: Exactly one retained test reads the real store as a live-shape guarantee and `skip`s (never fails) when the store dir is absent or empty; when present it asserts records carry `message.usage` and the attribution fields in their real shape.
+- [x] AC4: The generic profile's `verify` is clean — `python3 -m unittest` over all three suites, each exit code checked from the repo root.
 
 ## Coverage
 
@@ -66,3 +66,11 @@ The `cairn_cost` attribution tests run against a small fixture store instead of 
   cross-cutting, so no D-entry.
 
 ## Review
+
+**Evidence (fresh, on branch @ 6 commits ahead of main):**
+- AC1: `test_attribution_mode_refuses_the_milestone_filter` passes on a fixture store; a `read_records` spy records only the fixture path (`home`-rooted), never `real_store`; refusal→2, unfiltered→0. Suite-wide instrumented count: **1** real-store `read_records` call total (was 2), and it is not this test's.
+- AC2: `test_attribution_refusal_reads_no_store_even_with_none_present` — empty temp `home` (no store dir) → `--attribution --milestone M94` returns **2**, proving the refusal precedes the `isdir`/`read_records` path.
+- AC3: `TestLiveStoreShape` — `test_the_real_store_still_carries_the_fields_cost_reads` runs (store present, 26,805 records; asserts `message.usage`, a known `cairn:*` skill, and a milestone branch); `test_the_live_shape_check_skips_rather_than_fails_when_the_store_is_empty` proves an empty dir raises `SkipTest` not a failure. Exactly one retained real read.
+- AC4: three suites from repo root, each exit 0 — scripts 277, skills 576, hooks 72.
+
+**Consistency gate:** `cairn_validate` exit 0, all checks passed (1 advisory: pre-existing `rulebook-classification-ledger.md` references-staleness, not a file this milestone touched). No `IPn/GPn` changed → `cairn_impact` skipped. Generic profile → no toolchain checks.
