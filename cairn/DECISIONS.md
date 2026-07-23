@@ -1777,3 +1777,45 @@ repo relying on heading-scan recall — a repaired classifier must be
 sentence-scoped, fence/quote-aware, claim-vs-description discriminating,
 and verified against a fixture set varying phrasing, wrap, and voice
 independently (M57/M81).
+
+### D-060 (2026-07-23): The always-read audit frame — every always-read file names its three governance elements, checked at the /milestone audit — annotates D-045, cites D-053/D-056/D-057
+
+**Context:** RR03 (Q5/rec 7) derived a shared frame across cairn's always-read
+files: each names an **inflow test** (what belongs here), an **outflow or
+read-bound** (how content leaves, or how the read stays bounded), and an
+**attention signal** (what reports growth), with D-045's history/
+current-knowledge split deciding which outflows are legal. RR03 §5 showed the
+rulebook's own ~30-milestone weight saga (M84–M98) was the cost of having none
+of the three — invisible because nothing checked completeness. Rec 7
+("consider") banked the frame as a candidate, promotable once the rulebook had
+all three elements so the frame is derived from a worked case, not projected.
+That condition is now met: M95 gave the rulebook an editorial outflow, D-057 its
+attention-signal reporting line plus door-side inflow governance, M97 bounded the
+DECISIONS read, M98 gave LESSONS a maturation outflow.
+
+**Decision:** Add the frame as one doctrine paragraph in
+`skills/shared/tracking-rules.md` — universal cross-cutting conduct, not a
+conditionally-read module, since every repo has always-read files (M78's home
+test) — enumerating GP1's four always-read files (ROADMAP.md, LESSONS.md,
+tracking-rules.md, DECISIONS.md) with their three elements as the worked case,
+and stating that a file missing an element is the gap the frame surfaces.
+`/milestone`'s §2 audit gets one judgment bullet applying it, in the form of the
+existing staleness / references-staleness advisories: it flags any always-read
+file missing an element, or any newly-added always-read surface not covered, and
+never `FAIL`s or auto-fixes. Prose-only, prose-guarded, mutation-registered
+(RR03 rec 7 "no new mechanism"; rec 10 rejects a shared machine). The frame is
+**completeness-only** — it reports whether each file *has* the three elements,
+never measures or gates mass — so D-057's closed stock-side size program stays
+closed. User-approved at the M108 plan gate (2026-07-23): rulebook + audit-bullet
+home, prose-only, GP1's four files, completeness-only.
+
+**Consequences:** Annotates D-045 — its two file-classes now carry a
+completeness demand (three elements per always-read file), not only a
+correction rule. Cites D-053 (the frame is where GP1's per-file-class mechanisms
+sit), D-056 (the rulebook's inflow test is its three-step placement), and D-057
+(the rulebook's attention signal is the audit's mass+growth line, and the size
+boundary this entry stays inside). No IP touched; GP1/GP2 worked under, wording
+unchanged. Graduates the "Always-read audit frame" candidate row (executed at
+M108 review post-merge hygiene — M35). If a future always-read surface ever needs
+the frame enforced mechanically rather than by audit judgment, that is a new
+candidate superseding rec 7's "no mechanism", and this is the entry to supersede.
