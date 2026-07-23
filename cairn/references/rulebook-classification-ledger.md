@@ -20,20 +20,7 @@ session, with a prompt that supplied D-056's test, forbade treating
 guard-pinning as a keep reason, and asked it to contradict the recorded claim
 in either direction. Ingested 2026-07-20; ingesting milestone: none (drafted
 during RB04's authoring, committed at RR04 ingest). Pagination basis: —.
-Extraction: re-verified against the source 2026-07-23. The ledger's
-checkable factual layer — the class-4 anchor openings, the class-3
-D-entry owners, the two M55/M58 citation defects (old lines 114, 648),
-and a spot-checked restatement row (528–529 ↔ 462–464) — was re-read
-against `tracking-rules.md` at `94038ea` and every anchor resolved to the
-claimed content (allowing for cairn's ~66-char wrap, which shifts a clause
-a line or two below its bullet). Because that source is a frozen commit,
-the factual layer cannot age. The per-block class-2/3/4 classifications are
-no-oracle judgments — this file's documented inter-rater history is the
-point — so there is nothing to re-verify them against, and the sweep's
-author also authored the RB04 proposal the ledger was written to test;
-those are recorded, not re-rated. (First pass 2026-07-20 checked two of
-these citation claims; this pass extended it to the full anchor set.) —
-observed 2026-07-23.
+Extraction: re-verified against the source 2026-07-23. The ledger's checkable factual layer — the class-4 anchor openings, the class-3 D-entry owners, the two M55/M58 citation defects (old lines 114, 648), and a spot-checked restatement row (528–529 ↔ 462–464) — was re-read against `tracking-rules.md` at `94038ea` and every anchor resolved to the claimed content (allowing for cairn's ~66-char wrap, which shifts a clause a line or two below its bullet). Because that source is a frozen commit, the factual layer cannot age. The per-block class-2/3/4 classifications are no-oracle judgments — this file's documented inter-rater history is the point — so there is nothing to re-verify them against, and the sweep's author also authored the RB04 proposal the ledger was written to test; those are recorded, not re-rated. (First pass 2026-07-20 checked two of these citation claims; this pass extended it to the full anchor set.) — observed 2026-07-23.
 
 **Line numbers are already stale.** They describe `94038ea`; any edit
 invalidates every row below it. Re-locate by content, and note that cairn
