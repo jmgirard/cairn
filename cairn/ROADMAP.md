@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-23 (M109 shipped — cost-test fixture store; its "Cost-store test I/O" candidate graduated → M109, candidates 14→13; M104 pruned for terminal-row retention. All checks PASS, git clean. Release timing is user-declared — D-050)._
+_Last hygiene check: 2026-07-23 (M110 planned — records-hygiene doctrine module, the second maturation application (D-055); candidate M98-D1 stays until M110 ships, per M35. All checks PASS, git clean. Release timing is user-declared — D-050)._
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,6 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M110 | Records-hygiene doctrine module — graduate the gate-time lesson family (M35/M51/M69/M73/M77/M78×2/M87) into skills/shared/records-hygiene.md, the second maturation application (D-055) | planned | — | normal | milestones/M110-records-hygiene-module.md |
 | M109 | Cost-test fixture store — attribution tests run against a small fixture store; one skip-if-absent test retains the real-store live-shape guarantee | done | — | normal | milestones/archive/M109-cost-test-fixture-store.md |
 | M108 | Always-read audit frame — every always-read file names its three governance elements (inflow test, outflow/read-bound, attention signal), checked at the /milestone audit | done | — | normal | milestones/archive/M108-always-read-audit-frame.md |
 | M107 | RR-ingest / amendment discipline — the ingest surface carries the plan path's form, budget, and file hygiene | done | — | normal | milestones/archive/M107-rr-ingest-amendment-discipline.md |
