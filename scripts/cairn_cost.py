@@ -404,7 +404,11 @@ def parse_args(argv):
     return mode, milestone, root_arg
 
 
-def main(argv):
+def main(argv, home=None):
+    # `home` overrides the store root, honouring the documented
+    # `store_dir(root, home=...)` test seam. It is deliberately not a CLI flag
+    # (the store location is not a user-facing choice); tests point it at a
+    # fixture store so the suite need not scan the real store.
     try:
         mode, milestone, root_arg = parse_args(argv)
     except Usage as e:
@@ -418,7 +422,7 @@ def main(argv):
     except cs.NotCairn as e:
         cs.die_not_cairn(str(e))
         return 2
-    store = store_dir(root)
+    store = store_dir(root, home)
     if not os.path.isdir(store):
         print(f"cairn cost — {root}\n\nno session store at {store}")
         return 0
