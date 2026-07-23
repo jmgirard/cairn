@@ -594,7 +594,17 @@ def check_coverage_complete(root):
 
 _RR_SLOT = re.compile(r"^\s*-\s*\*\*Driving RR:\*\*\s*(\S+)", re.MULTILINE)
 _RR_TOKEN = re.compile(r"RR\d+\Z")
-_BC_HEAD = re.compile(r"^\s*-\s*BC(\d+)\s*[:.]\s*(.*)$")
+# A binding-criterion head. Two authored forms parse to the same (n, assertion):
+# the plain `- BCn: text` / `- BCn. text`, and the labeled-bold
+# `- **BCn (label).** text` a real RR (circumplex RR09) used for all 13 of its
+# criteria — the delimiter is the period *inside* the bold and the assertion is
+# the text after the closing `.**`, the parenthetical label excluded. The
+# optional `\*{0,2}` and paren-label are what admit the bold form; the delimiter
+# ([:.]) stays mandatory, so `- **BCn**:` (bold closing before any delimiter)
+# still matches nothing and fails loud (M100: silence must mean "nothing binds").
+_BC_HEAD = re.compile(
+    r"^\s*-\s*\*{0,2}\s*BC(\d+)(?:\s+\([^)]*\))?\s*[:.]\s*\*{0,2}\s*(.*)$"
+)
 _BC_REF = re.compile(r"\bBC(\d+)\b")
 # DOTALL twin of _HTML_COMMENT: strips multi-line comments too, so a
 # deviation "declared" inside <!-- --> — which the ingest gate never shows —
@@ -623,8 +633,9 @@ def _rr_file(root, token):
 
 def _binding_criteria(rr_text):
     """{n: normalized assertion} from an RR's `## Binding criteria` section.
-    Items are `- BC<n>: ...` bullets; continuation lines belong to the open
-    item; prose before BC1 is preamble, not a criterion."""
+    Items are `- BC<n>: ...` bullets, or the labeled-bold `- **BC<n> (label).**
+    ...` variant (see `_BC_HEAD`); continuation lines belong to the open item;
+    prose before BC1 is preamble, not a criterion."""
     items, cur_n, cur = {}, None, []
     for line in _section_body(rr_text, "Binding criteria"):
         m = _BC_HEAD.match(line)

@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- Binding criteria written in prose — `- **BC1 (Layer A).** …`, with the
+  label bolded and the delimiter inside the bold — are now recognized by the
+  validator. Previously only the plain `- BC1:` form parsed, so a review whose
+  criteria used the bolded style validated as if it bound nothing and failed
+  the check. A criterion whose bold closes before any delimiter (`- **BC1**:`)
+  still parses as nothing and fails loud, unchanged.
+
 ## 1.1.1 (2026-07-19)
 
 A documentation release. The README now describes what 1.1.0 actually

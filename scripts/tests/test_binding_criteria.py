@@ -240,6 +240,87 @@ class TestFailLoudAndUnslippable(unittest.TestCase):
         self.assertIn("neither RR<NN> nor —", out[0])
 
 
+# --- Labeled-bold BC heads: a real RR (circumplex RR09) authored all its
+# binding criteria as `- **BC1 (Layer A, reliability).** assertion.` The
+# delimiter is the period *inside* the bold; the parseable assertion is the
+# text after the closing `.**`, and the parenthetical label is not part of it.
+# RR09 is IP4 history in its own repo and cannot be reformatted, so the parser
+# reconciles. The twin proves both directions on this newly-accepted form:
+# verbatim ACs stay quiet, a softened criterion still fires naming the BC —
+# never a silent accept. The M100 fail-loud case (`- **BC1**:`, bold closing
+# before any delimiter) stays unparseable; TestFailLoudAndUnslippable owns it.
+RR_LABELED_BOLD = """# RR09: Axes reliability review
+
+## Answers
+
+Prose the check must ignore.
+
+## Binding criteria
+
+- **BC1 (Layer A, reliability).** The axes achieve Spearman-Brown
+  reliability at or above 0.80 in every octant.
+- **BC2 (Layer B, validity).** The projection preserves the rank order of
+  the circumplex angles.
+"""
+
+RR09_SLOT = "- **Driving RR:** RR09\n"
+
+# Both assertions carried verbatim (checkbox- and BC-labelled, re-wrapped):
+# quiet under whitespace normalization. The `(BCn)` AC label and the RR head's
+# `(Layer …)` label are both outside the asserted text.
+AC_LABELED_VERBATIM = (
+    "- [ ] AC1 (BC1): The axes achieve Spearman-Brown reliability at or\n"
+    "      above 0.80 in every octant.\n"
+    "- [ ] AC2 (BC2): The projection preserves the rank order of the\n"
+    "      circumplex angles.\n"
+)
+
+# BC1 softened (the 0.80 floor dropped), BC2 verbatim.
+AC_LABELED_SOFTENED = (
+    "- [ ] AC1 (BC1): The axes achieve decent reliability.\n"
+    "- [ ] AC2 (BC2): The projection preserves the rank order of the\n"
+    "      circumplex angles.\n"
+)
+
+
+class TestLabeledBoldBindingCriteria(unittest.TestCase):
+    """The labeled-bold head `- **BCn (label).** assertion` parses, and the
+    check still enforces it verbatim. Positive/negative twin: verbatim ACs
+    stay quiet; a softened criterion fires naming its BC and no other. Both
+    fixtures were confirmed to MISfire against the pre-fix parser (which read
+    the section as unparseable and emitted the 'no parseable' finding for
+    every case), so this is a genuine regression pair, not a silent accept."""
+
+    def check(self, ac_body):
+        with tempfile.TemporaryDirectory() as tmp:
+            return cv.check_binding_criteria(
+                build(tmp, ac_body=ac_body, slot=RR09_SLOT,
+                      rr_body=RR_LABELED_BOLD, rr_name="RR09-axes.md")
+            )
+
+    def test_labeled_bold_parses_into_clean_assertions(self):
+        # Proves the parse: the assertion is the text after `.**`, label
+        # excluded — so a milestone can carry it verbatim in an AC.
+        crits = cv._binding_criteria(RR_LABELED_BOLD)
+        self.assertEqual(set(crits), {1, 2})
+        self.assertEqual(
+            crits[1],
+            "The axes achieve Spearman-Brown reliability at or above 0.80 "
+            "in every octant.",
+        )
+        self.assertNotIn("Layer A", crits[1])
+
+    def test_labeled_bold_verbatim_is_quiet(self):
+        self.assertEqual(self.check(AC_LABELED_VERBATIM), [])
+
+    def test_labeled_bold_softened_fires_naming_the_bc(self):
+        out = self.check(AC_LABELED_SOFTENED)
+        self.assertEqual(len(out), 1)
+        self.assertIn("BC1", out[0])
+        self.assertIn("RR09", out[0])
+        self.assertNotIn("BC2", out[0])
+
+
 class TestWiring(unittest.TestCase):
     def test_registered_as_a_failing_check_not_an_advisory(self):
         self.assertIn("binding criteria", [label for label, _ in cv.CHECKS])
