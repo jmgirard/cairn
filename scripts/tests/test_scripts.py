@@ -1403,6 +1403,12 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # M101 adds the rulebook classification ledger, committed at the RR04
     # ingest (526aba6) without this pin: its status says two spot-checks
     # passed and the rest is an unverified first pass, hence `partial`.
+    # 2026-07-23 (c3b30df) re-verified that ledger's factual layer against the
+    # frozen source and rewrote its extraction status: the factual layer is now
+    # re-read in full and the per-block class-2/3/4 rows are declared no-oracle
+    # judgments with "nothing to re-verify" against — which classifies `exempt`,
+    # the state that hygiene pass intended (its ROADMAP stamp: "the references-
+    # staleness advisory now clears"). Pin moved `partial` → `exempt` to match.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "backlog-meridian.md": "ok",
@@ -1418,7 +1424,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "migration-pilot-notes.md": "exempt",
         "oracle-discipline-notes.md": "ok",
         "oracle-doctrine-intraclass-notes.md": "ok",
-        "rulebook-classification-ledger.md": "partial",
+        "rulebook-classification-ledger.md": "exempt",
         "session-cost-notes.md": "ok",
         "spec-kit.md": "ok",
         "task-master.md": "ok",
