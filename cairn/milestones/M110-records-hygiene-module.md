@@ -73,7 +73,7 @@ these eight (the guard-doctrine family and unrelated lessons stay).
 - [x] T2 Author `skills/shared/records-hygiene.md`: header stating the
       read-trigger + "a module of `tracking-rules.md`", then thematic sections
       per T1's map (mirror `guard-doctrine.md`). Draft against `cairn_budget`.
-- [ ] T3 Graduate the family from `LESSONS.md` per T1: delete whole / trim
+- [x] T3 Graduate the family from `LESSONS.md` per T1: delete whole / trim
       partials, leave no breadcrumb; `wc -l` confirms back under `<50` with
       headroom.
 - [ ] T4 Add the rulebook pointer beside the retirement rule — one pinnable
@@ -94,6 +94,7 @@ these eight (the guard-doctrine family and unrelated lessons stay).
 - 2026-07-23: created by /milestone-plan.
 - 2026-07-23: T1 disposition map — all 8 family lines graduate whole, 0 trims (each single-subject; M78-own-artifacts is the general rule, guard-doctrine §7 the grep instance, no LESSONS dup); M69/M77 graduate confirmed.
 - 2026-07-23: T2 authored skills/shared/records-hygiene.md (97 lines, 6 sections); prose-guard order — module before its byte-anchored guard (M95), as M98 did.
+- 2026-07-23: T3 graduated 8 lessons whole from LESSONS.md via targeted Edits (M61); 49→41 lines, headroom 9; no breadcrumb, all distinctive phrases absent.
 
 ## Decisions
 
