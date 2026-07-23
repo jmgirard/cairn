@@ -299,10 +299,68 @@ class TestMilestoneFlagIsHonouredOrRefused(unittest.TestCase):
     def test_attribution_mode_refuses_the_milestone_filter(self):
         # Honouring it would reintroduce F3: the share is a whole-store
         # property and filtering makes it 0.0% by construction.
-        code = cost.main(["cairn_cost.py", "--attribution", "--milestone", "M94"])
-        self.assertEqual(code, 2)
-        # Paired positive: the same mode succeeds unfiltered.
-        self.assertEqual(cost.main(["cairn_cost.py", "--attribution"]), 0)
+        #
+        # Driven against a FIXTURE store through the `home=` seam (M109), so
+        # neither the refusal nor the success path scans the real ~26k-record
+        # store. A spy over `read_records` proves the real store was never
+        # touched — the fixture under `home` is the only store read.
+        import tempfile
+        from unittest import mock
+
+        import cairn_scripts as cs  # same-dir import; resolves the store root
+
+        root = cs.resolve_root(["cairn_cost"])
+        real_store = cost.store_dir(root)
+        with tempfile.TemporaryDirectory() as home:
+            store = cost.store_dir(root, home)
+            pathlib.Path(store).mkdir(parents=True)
+            (pathlib.Path(store) / "sess.jsonl").write_text(
+                '{"type":"assistant","attributionSkill":"cairn:milestone-implement",'
+                '"gitBranch":"m94-x","message":{"usage":'
+                '{"cache_read_input_tokens":5}}}\n',
+                encoding="utf-8",
+            )
+            seen = []
+            orig = cost.read_records
+
+            def spy(s):
+                seen.append(s)
+                return orig(s)
+
+            with mock.patch.object(cost, "read_records", spy):
+                # Refused: exit 2, and (AC2) the refusal precedes read_records.
+                self.assertEqual(
+                    cost.main(
+                        ["cairn_cost.py", "--attribution", "--milestone", "M94"],
+                        home=home,
+                    ),
+                    2,
+                )
+                # Paired positive: the same mode succeeds unfiltered, running
+                # real attribution over the fixture's records.
+                self.assertEqual(
+                    cost.main(["cairn_cost.py", "--attribution"], home=home), 0
+                )
+            # The success path ran (spy fired) and read only the fixture — the
+            # real store path was never opened.
+            self.assertTrue(seen, "read_records never ran — success path skipped")
+            self.assertNotIn(real_store, seen)
+            self.assertTrue(all(s.startswith(home) for s in seen), seen)
+
+    def test_attribution_refusal_reads_no_store_even_with_none_present(self):
+        # AC2: the --attribution --milestone refusal precedes both the isdir
+        # check and read_records — with `home` pointed at an empty dir (no
+        # store at all) it still returns 2, not the no-store branch's 0.
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as home:
+            self.assertEqual(
+                cost.main(
+                    ["cairn_cost.py", "--attribution", "--milestone", "M94"],
+                    home=home,
+                ),
+                2,
+            )
 
 
 class TestUnattributableShareIsReported(unittest.TestCase):

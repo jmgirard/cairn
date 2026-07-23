@@ -42,7 +42,7 @@ The `cairn_cost` attribution tests run against a small fixture store instead of 
 
 - [x] T1: Add `home=None` to `main(argv, home=None)` and pass it to `store_dir(root, home)` (`scripts/cairn_cost.py:407-425`); note in the docstring/comment that `main` now honors the documented `home` test override.
 - [x] T2: Move the `--attribution --milestone` refusal to the top of `main()`'s post-parse body, before `store_dir`/`isdir`/`read_records` (`:421-438`); keep the stderr usage text and exit 2. Record the no-store 0→2 correction as a milestone-local decision.
-- [ ] T3: Rewrite `test_attribution_mode_refuses_the_milestone_filter` (`scripts/tests/test_cairn_cost.py:299`): build `<tmp_home>/<store_slug(root)>/s.jsonl` with a couple of assistant records, drive `main([...], home=tmp)` for exit 2 (filtered) and exit 0 (unfiltered), and assert the real `STORE_HOME` path is not read during the test.
+- [x] T3: Rewrite `test_attribution_mode_refuses_the_milestone_filter` (`scripts/tests/test_cairn_cost.py:299`): build `<tmp_home>/<store_slug(root)>/s.jsonl` with a couple of assistant records, drive `main([...], home=tmp)` for exit 2 (filtered) and exit 0 (unfiltered), and assert the real `STORE_HOME` path is not read during the test. (AC2's no-store refusal split into its own `test_attribution_refusal_reads_no_store_even_with_none_present`.)
 - [ ] T4: Add `test_live_store_shape_if_present`: `skipUnless` the real store dir exists and is non-empty; read it once via `read_records(store_dir(root))` and assert record shape (usage present; `attributionSkill`/`gitBranch` in their real forms). Prove the skip path with `home` redirected at an empty dir.
 - [ ] T5: Run the three suites from the repo root, checking each exit code (M56); confirm the cost suite no longer scans the real store twice and full `verify` is clean.
 
@@ -52,6 +52,7 @@ The `cairn_cost` attribution tests run against a small fixture store instead of 
 - 2026-07-23: set in-progress; branch m109-cost-test-fixture-store cut from main.
 - 2026-07-23: T1 — threaded `home=None` through `main()` into `store_dir(root, home)`.
 - 2026-07-23: T2 — moved the `--attribution --milestone` refusal ahead of the store read; no-store case corrected 0→2.
+- 2026-07-23: T3 — dispatch test now runs on a fixture store via `home=` with a `read_records` spy proving the real store is untouched; cost suite wall 3.5s→0.03s. Added `test_attribution_refusal_reads_no_store_even_with_none_present` for AC2.
 
 ## Decisions
 
