@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-23 (`/milestone` audit after hotfixes #109/#110: `cairn_validate` now parses labeled-bold `- **BCn (label).**` binding criteria (unblocks circumplex M54's RR09); the two ledger guards are green (pin partial→exempt). Full verify suite green; this rewrite clears the last density advisory. Release timing user-declared — D-050)._
+_Last hygiene check: 2026-07-23 (M111 merged, PR #111: `/cairn-release` step 4 now provides a conditional `gh release create` handoff command — provided, never run — covering every profile; released 1.2.0 (tag v1.2.0 + GitHub release) earlier this session. Suites green, `cairn_validate` clean)._
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M111 | GitHub-release handoff command — /cairn-release provides a conditional `gh release create` | review | — | normal | milestones/M111-github-release-handoff.md |
+| M111 | GitHub-release handoff command — /cairn-release provides a conditional `gh release create` | done | — | normal | milestones/archive/M111-github-release-handoff.md |
 | M110 | Records-hygiene doctrine module — graduate the gate-time lesson family (M35/M51/M69/M73/M77/M78×2/M87) into skills/shared/records-hygiene.md, the second maturation application (D-055) | done | — | normal | milestones/archive/M110-records-hygiene-module.md |
 | M109 | Cost-test fixture store — attribution tests run against a small fixture store; one skip-if-absent test retains the real-store live-shape guarantee | done | — | normal | milestones/archive/M109-cost-test-fixture-store.md |
 | M108 | Always-read audit frame — every always-read file names its three governance elements (inflow test, outflow/read-bound, attention signal), checked at the /milestone audit | done | — | normal | milestones/archive/M108-always-read-audit-frame.md |
