@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1, GP4
-- **Branch/PR:** m110-records-hygiene-module
+- **Branch/PR:** m110-records-hygiene-module · https://github.com/jmgirard/cairn/pull/108
 
 ## Goal
 
@@ -37,20 +37,20 @@ these eight (the guard-doctrine family and unrelated lessons stay).
 
 ## Acceptance criteria
 
-- [ ] `skills/shared/records-hygiene.md` exists, declares its read-trigger (a
+- [x] `skills/shared/records-hygiene.md` exists, declares its read-trigger (a
       milestone hygiene or plan gate) and "a module of `tracking-rules.md`"
       (D-031), and covers the graduated family in anchored sections.
-- [ ] `tracking-rules.md` points at the module on one pinnable physical line
+- [x] `tracking-rules.md` points at the module on one pinnable physical line
       beside the LESSONS retirement rule, stating when to read it and that it
       is read conditionally (a session not at such a gate never pays for it).
-- [ ] Every graduated lesson is absent from `LESSONS.md` — no line, no
+- [x] Every graduated lesson is absent from `LESSONS.md` — no line, no
       breadcrumb (`records-hygiene.md` unmentioned there); each partial is
       trimmed to its uncovered remainder and marked trimmed (D-051).
-- [ ] `LESSONS.md` is back under the `<50` item cap with headroom, the count
+- [x] `LESSONS.md` is back under the `<50` item cap with headroom, the count
       stated; a kept lesson remains (positive control).
-- [ ] D-061 exists, annotates D-055, and records the module identity plus the
+- [x] D-061 exists, annotates D-055, and records the module identity plus the
       M69/M77 graduate-not-ownership disposition.
-- [ ] A mutation-registered guard (`test_records_hygiene_graduation.py`) locks
+- [x] A mutation-registered guard (`test_records_hygiene_graduation.py`) locks
       the AC1–AC5 surfaces; every asserted block is in the harness registry,
       the completeness meta-test passes, and `verify` (all three suites) is
       clean.
@@ -102,3 +102,29 @@ these eight (the guard-doctrine family and unrelated lessons stay).
 ## Decisions
 
 ## Review
+
+**Evidence (fresh, by command; 2026-07-23):**
+- AC1 — `records-hygiene.md` present (97 lines); read-trigger line and "a
+  module of `tracking-rules.md`" each grep=1; six anchored sections asserted
+  green by `test_records_hygiene_graduation.TestModuleExists` (22 tests OK).
+- AC2 — pointer + when-to-read each grep=1 in `tracking-rules.md`;
+  coverage mapping pinned to one physical line by `TestRulebookPointer`.
+- AC3 — no breadcrumb (`records-hygiene` grep=0 in LESSONS.md); all six
+  distinctive graduated phrases grep=0; positive control present.
+  Note: T1 found all 8 graduate **whole** — 0 partials — so the "each partial
+  trimmed" clause is vacuously satisfied (no partial existed to trim).
+- AC4 — `LESSONS.md` 41 lines (<50, headroom 9); `weight caps` PASS.
+- AC5 — D-061 heading grep=1; annotates-D-055 and graduate-not-ownership
+  asserted green by `TestDecisionEntry`.
+- AC6 — guard 22 tests OK; mutation harness 9 tests OK (canonical `discover`);
+  `verify` all three suites green (skills 598 / scripts exit 0 / hooks 72);
+  17 blocks registered, `TestRegistryCompleteness` passes. (A direct
+  `-m unittest skills.tests.test_mutation_harness` errors on
+  `import mutation_engine` — an invocation-path artifact, green under
+  `discover`, the canonical runner.)
+
+**Consistency gate:** `cairn_validate` exit 0 — 16 checks PASS, 1 pre-existing
+advisory (`references staleness` on the rulebook-classification ledger,
+untouched here). `coverage complete` PASS. Generic profile `consistency-gate`
+names no toolchain checks (no-op). No principle changed (GP1/GP4 worked under,
+not modified) → `cairn_impact` skipped.
