@@ -1,6 +1,6 @@
 # M108: Always-read audit frame
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
