@@ -422,6 +422,19 @@ def main(argv, home=None):
     except cs.NotCairn as e:
         cs.die_not_cairn(str(e))
         return 2
+    # Refused before any store read. --attribution reports a whole-store
+    # property, so filtering it to one milestone makes the share 0.0% by
+    # construction (the F3 defect). Checking it here — ahead of store
+    # resolution and read_records — keeps the refusal path from scanning the
+    # store at all, and makes a machine with no store still refuse (2) rather
+    # than escape through the no-store branch below (0).
+    if mode == "attribution" and milestone:
+        sys.stderr.write(
+            "usage: --attribution reports the whole store; it cannot be "
+            "filtered with --milestone (the share would be 0.0% by "
+            "construction)\n"
+        )
+        return 2
     store = store_dir(root, home)
     if not os.path.isdir(store):
         print(f"cairn cost — {root}\n\nno session store at {store}")
@@ -430,16 +443,6 @@ def main(argv, home=None):
     if mode == "audit-line":
         print(audit_line(root, records, milestone))
     elif mode == "attribution":
-        # Deliberately refused rather than honoured: the unattributable share
-        # is a property of the whole store, and computing it over one
-        # milestone's records makes it 0.0% by construction (the F3 defect).
-        if milestone:
-            sys.stderr.write(
-                "usage: --attribution reports the whole store; it cannot be "
-                "filtered with --milestone (the share would be 0.0% by "
-                "construction)\n"
-            )
-            return 2
         stats = attribution(records)
         for key in sorted(stats):
             print(f"{key}: {stats[key]:,}")

@@ -41,7 +41,7 @@ The `cairn_cost` attribution tests run against a small fixture store instead of 
 ## Tasks
 
 - [x] T1: Add `home=None` to `main(argv, home=None)` and pass it to `store_dir(root, home)` (`scripts/cairn_cost.py:407-425`); note in the docstring/comment that `main` now honors the documented `home` test override.
-- [ ] T2: Move the `--attribution --milestone` refusal to the top of `main()`'s post-parse body, before `store_dir`/`isdir`/`read_records` (`:421-438`); keep the stderr usage text and exit 2. Record the no-store 0→2 correction as a milestone-local decision.
+- [x] T2: Move the `--attribution --milestone` refusal to the top of `main()`'s post-parse body, before `store_dir`/`isdir`/`read_records` (`:421-438`); keep the stderr usage text and exit 2. Record the no-store 0→2 correction as a milestone-local decision.
 - [ ] T3: Rewrite `test_attribution_mode_refuses_the_milestone_filter` (`scripts/tests/test_cairn_cost.py:299`): build `<tmp_home>/<store_slug(root)>/s.jsonl` with a couple of assistant records, drive `main([...], home=tmp)` for exit 2 (filtered) and exit 0 (unfiltered), and assert the real `STORE_HOME` path is not read during the test.
 - [ ] T4: Add `test_live_store_shape_if_present`: `skipUnless` the real store dir exists and is non-empty; read it once via `read_records(store_dir(root))` and assert record shape (usage present; `attributionSkill`/`gitBranch` in their real forms). Prove the skip path with `home` redirected at an empty dir.
 - [ ] T5: Run the three suites from the repo root, checking each exit code (M56); confirm the cost suite no longer scans the real store twice and full `verify` is clean.
@@ -51,7 +51,15 @@ The `cairn_cost` attribution tests run against a small fixture store instead of 
 - 2026-07-23: created by /milestone-plan.
 - 2026-07-23: set in-progress; branch m109-cost-test-fixture-store cut from main.
 - 2026-07-23: T1 — threaded `home=None` through `main()` into `store_dir(root, home)`.
+- 2026-07-23: T2 — moved the `--attribution --milestone` refusal ahead of the store read; no-store case corrected 0→2.
 
 ## Decisions
+
+- M109 (T2): `--attribution --milestone` is now refused ahead of store
+  resolution in `main()`, not after `read_records`. Besides removing the
+  real-store scan from the refusal path, this corrects a latent escape — on a
+  machine with no store the old post-read placement hit the no-store branch
+  and returned `0` instead of the intended `2`. Local to `cairn_cost.py`; not
+  cross-cutting, so no D-entry.
 
 ## Review
