@@ -66,11 +66,11 @@ these eight (the guard-doctrine family and unrelated lessons stay).
 
 ## Tasks
 
-- [ ] T1 Map each of the eight family lines to a disposition — graduate whole,
+- [x] T1 Map each of the eight family lines to a disposition — graduate whole,
       or trim to the remainder `guard-doctrine.md` already covers (M78's
       own-artifacts overlaps its §7; M87 cites M51's wrapped-line rule) —
       against the D-055 bar; confirm M69/M77 graduate.
-- [ ] T2 Author `skills/shared/records-hygiene.md`: header stating the
+- [x] T2 Author `skills/shared/records-hygiene.md`: header stating the
       read-trigger + "a module of `tracking-rules.md`", then thematic sections
       per T1's map (mirror `guard-doctrine.md`). Draft against `cairn_budget`.
 - [ ] T3 Graduate the family from `LESSONS.md` per T1: delete whole / trim
@@ -92,6 +92,8 @@ these eight (the guard-doctrine family and unrelated lessons stay).
 ## Work log
 
 - 2026-07-23: created by /milestone-plan.
+- 2026-07-23: T1 disposition map — all 8 family lines graduate whole, 0 trims (each single-subject; M78-own-artifacts is the general rule, guard-doctrine §7 the grep instance, no LESSONS dup); M69/M77 graduate confirmed.
+- 2026-07-23: T2 authored skills/shared/records-hygiene.md (97 lines, 6 sections); prose-guard order — module before its byte-anchored guard (M95), as M98 did.
 
 ## Decisions
 
