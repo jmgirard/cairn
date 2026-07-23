@@ -1819,3 +1819,39 @@ unchanged. Graduates the "Always-read audit frame" candidate row (executed at
 M108 review post-merge hygiene — M35). If a future always-read surface ever needs
 the frame enforced mechanically rather than by audit judgment, that is a new
 candidate superseding rec 7's "no mechanism", and this is the entry to supersede.
+
+### D-061 (2026-07-23): The records-hygiene lesson family graduates into a second module; M69/M77 graduate rather than ownership-retire — annotates D-055
+
+**Context:** D-055 established maturation as a third LESSONS.md outflow and
+delivered `skills/shared/guard-doctrine.md` as the first module, banking
+(its Rejected §3) the records-hygiene family — 8 items that fire at a hygiene
+or plan gate rather than at guard-authoring — as a candidate needing its own
+read-trigger (ROADMAP M98-D1). LESSONS.md reached 49/50 lines again at the
+M110 plan, the trigger the candidate named. This is maturation's second
+application, exercising D-055's mechanism rather than changing it.
+
+**Decision:** Distil the family (M35, M51, M69, M73, M77, M78×2, M87) into
+`skills/shared/records-hygiene.md`, a conditionally-read module (D-031 shape)
+pointed at from the LESSONS retirement rule, read-trigger "a milestone hygiene
+or plan gate." All eight graduate **whole** — zero trims: each line is
+single-subject, and the nearest overlap (M78's own-artifacts rule vs
+`guard-doctrine.md` §7's grep-criterion instance) is general-rule vs
+specific-instance across two different read-triggers, so both coexist with no
+LESSONS.md duplication. **M69 and M77 graduate into the module rather than
+retire by D-051 ownership:** D-051's ownership criterion is defined against a
+*tracking-file* slot, and `/milestone-implement` step 6 and `/milestone-plan`'s
+collision sweep are skill prose, not tracking files; ownership-retiring would
+require writing the lesson content into guarded skill prose (M104 reddening
+risk) for no gain over graduation. Rejected: ownership-retiring M69/M77
+(above); a lighter, non-mutation-registered guard (this repo's guard doctrine
+wants mutation coverage).
+
+**Consequences:** Annotates D-055 — its maturation mechanism, conjunctive bar,
+trim rule, and no-breadcrumb rule all stand; this is the second family to use
+it, confirming the mechanism generalizes past guard-authoring craft. LESSONS.md
+falls 49→41 lines. Serves GP1 (bounding an always-read surface by outflow) and
+GP4 (craft in the shared artifact every adopting repo inherits). Graduates the
+M98-D1 candidate at M110 completion (M35). Locked by
+`test_records_hygiene_graduation.py` (mutation-registered). If the module's
+conditional read is ever found not to reach a session needing the craft at a
+gate, this is the entry to supersede.

@@ -1,6 +1,6 @@
 # M110: Records-hygiene doctrine module
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -76,17 +76,17 @@ these eight (the guard-doctrine family and unrelated lessons stay).
 - [x] T3 Graduate the family from `LESSONS.md` per T1: delete whole / trim
       partials, leave no breadcrumb; `wc -l` confirms back under `<50` with
       headroom.
-- [ ] T4 Add the rulebook pointer beside the retirement rule — one pinnable
+- [x] T4 Add the rulebook pointer beside the retirement rule — one pinnable
       physical line mapping the module to its coverage, plus when-to-read and
       the conditional-read note; grep every adjacent guard's anchor is still
       contiguous on one line (M104).
-- [ ] T5 Write `test_records_hygiene_graduation.py` from the module's actual
+- [x] T5 Write `test_records_hygiene_graduation.py` from the module's actual
       bytes (M95): assert AC1–AC5 surfaces (module + read-trigger + section
       anchors, pinnable pointer, family-left with positive control + trimmed
       remainders, D-061 annotates-D-055); register each block in
       `test_mutation_harness.py`; run the harness + completeness meta-test;
       all three suites green.
-- [ ] T6 Author D-061 (annotate D-055): second maturation, module identity,
+- [x] T6 Author D-061 (annotate D-055): second maturation, module identity,
       M69/M77 graduate-not-ownership.
 
 ## Work log
@@ -95,6 +95,9 @@ these eight (the guard-doctrine family and unrelated lessons stay).
 - 2026-07-23: T1 disposition map — all 8 family lines graduate whole, 0 trims (each single-subject; M78-own-artifacts is the general rule, guard-doctrine §7 the grep instance, no LESSONS dup); M69/M77 graduate confirmed.
 - 2026-07-23: T2 authored skills/shared/records-hygiene.md (97 lines, 6 sections); prose-guard order — module before its byte-anchored guard (M95), as M98 did.
 - 2026-07-23: T3 graduated 8 lessons whole from LESSONS.md via targeted Edits (M61); 49→41 lines, headroom 9; no breadcrumb, all distinctive phrases absent.
+- 2026-07-23: T4 added rulebook pointer beside the retirement rule (tracking-rules.md); coverage mapping on one pinnable line; adjacent guard anchor still contiguous (M104 check clean).
+- 2026-07-23: T6 before T5 (minor reorder — the guard asserts D-061, so D-061 authored first); D-061 appended, shown verbatim before commit.
+- 2026-07-23: T5 wrote test_records_hygiene_graduation.py (byte-anchored, M95; \s+ for wrapped anchors, M105); 17 blocks registered in the mutation harness. All three suites green (skills 598, scripts, hooks 72); cairn_validate exit 0.
 
 ## Decisions
 
