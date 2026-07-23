@@ -147,6 +147,38 @@ takes a D-entry, and its number stays retired.
   changed since the last check; the `NON_ITEM_LINE_CAP` axis of the
   `record density` advisory backstops it at 400 characters (D-052, M93).
 
+## Always-read governance
+
+An **always-read file** is one this repo re-reads at the start of most
+sessions. Every always-read file names three governance elements, and a file
+missing one is the gap this frame exists to surface *before* it accretes
+unchecked — the rulebook's own ~30-milestone weight saga (M84–M98) was the cost
+of having none of the three:
+
+- **Inflow test** — what content belongs in the file.
+- **Outflow or read-bound** — how content leaves, or, where it may not leave,
+  how the read stays bounded as the file grows.
+- **Attention signal** — what reports growth so a human notices.
+
+D-045's split decides which outflows are legal: a **history** file
+(append-only, never edited) is bounded by reading less of it, never by shrinking
+it; a **current-knowledge** file may shed content in place. The frame is
+**completeness-only** — it asks whether each file *has* the three elements, and
+never measures or gates a file's mass (size governance is closed — D-057).
+
+The four accumulating always-read files, as the worked case:
+
+| File | Inflow test | Outflow / read-bound | Attention signal |
+|---|---|---|---|
+| `ROADMAP.md` | a milestone or candidate | terminal-row retention + candidate triage/graduation | 60-line item cap |
+| `LESSONS.md` | a durable "how this repo behaves" note | retire by enforcement / ownership / maturation (D-051, D-055) | 50-line item cap + `record density` |
+| `tracking-rules.md` | the three-step placement test (D-056) | editorial pass; growth governed at the door (D-057) | `/milestone` audit mass+growth line |
+| `DECISIONS.md` | a cross-cutting choice among alternatives | bounded heading read — history read less, never shrunk (D-054) | none needed once read-bounded |
+
+The `/milestone` audit applies this frame: its §2 checks each always-read file
+still names all three elements, and that any newly-added always-read surface is
+covered — a judgment, reported and never auto-fixed.
+
 ## Universal tracking rules
 
 - **Tracking travels with code.** Every commit that changes code also updates

@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1, GP2
-- **Branch/PR:** —
+- **Branch/PR:** m108-always-read-audit-frame
 
 ## Goal
 
@@ -84,7 +84,7 @@ is visible before it accretes unchecked (RR03 rec 7).
 
 ## Tasks
 
-- [ ] T1: Author the doctrine paragraph + the four-file worked enumeration in
+- [x] T1: Author the doctrine paragraph + the four-file worked enumeration in
       `skills/shared/tracking-rules.md` (near the Weight caps / GP1-governance
       material). Completeness-only wording; no mass/growth clause.
 - [ ] T2: Add the judgment bullet to `/milestone` SKILL.md §2 audit applying the
@@ -102,6 +102,8 @@ is visible before it accretes unchecked (RR03 rec 7).
 ## Work log
 
 - 2026-07-23: created by /milestone-plan.
+- 2026-07-23: branched m108-always-read-audit-frame.
+- 2026-07-23: T1 — added `## Always-read governance` frame + four-file worked table to tracking-rules.md; density/validate green.
 
 ## Decisions
 
