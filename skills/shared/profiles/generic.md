@@ -43,6 +43,9 @@ language-agnostic walk — no package-registry submission; the tag is the releas
 - Bump the repo's version marker and commit the release prep to the default
   branch (docs/metadata only).
 - Tag `v<version>` and push the tag at the user's approval — no registry step.
+- Where the `origin` remote is GitHub and `gh` is available, the handoff also
+  provides a `gh release create` command whose body is the new changelog
+  section (provided, never run — the universal step 4).
 
 ## init-detection
 How `cairn-init` recognizes this toolchain. Generic is the **fallback**: no

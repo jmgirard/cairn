@@ -74,6 +74,22 @@ toolchain-specific work at step 3.
    (tracking-rules "Copy-run commands"). Offer to prepare the
    post-acceptance steps as a follow-up when the user returns.
 
+   **GitHub release (conditional).** When the `origin` remote is a GitHub
+   remote (`git remote get-url origin` names `github.com`) and `gh` is
+   available, add one more command to the handoff checklist: a `gh release
+   create` for the new tag whose body is the changelog section you just
+   consolidated for this version. Extract that section to a notes file and pass
+   it with `--notes-file`, so the published release reads identically to the
+   changelog. cairn **provides this command; it never runs it** — publishing
+   the release is the user's action at the approval gate, exactly like pushing
+   the tag (never-self-submits). Where the remote is not GitHub or `gh` is
+   absent, omit this command with no failure — the tag alone is the release.
+   The command, in its own fenced block:
+
+   ```
+   gh release create v<version> --title "v<version>" --notes-file <notes-file> --verify-tag
+   ```
+
 5. Work-log/ROADMAP note: one line in ROADMAP ("Released <version>
    YYYY-MM-DD") is permitted as a Done-section annotation; nothing else in
    tracking changes.
