@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-23 (`/milestone` audit — all 16 checks PASS, git clean, both GitHub inboxes empty; one standing advisory: rulebook-classification-ledger.md partial verification (RR04 rec 9, parked). M110 records-hygiene module shipped earlier today. Release timing is user-declared — D-050)._
+_Last hygiene check: 2026-07-23 (`/milestone` audit — all 16 checks PASS, zero advisories, git clean, both GitHub inboxes empty. Re-verified rulebook-classification-ledger.md's factual anchors against tracking-rules.md at 94038ea (all held); classifications are no-oracle, so the references-staleness advisory now clears. M110 records-hygiene module shipped earlier today. Release timing is user-declared — D-050)._
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
