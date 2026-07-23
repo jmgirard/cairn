@@ -1,11 +1,11 @@
 # M111: GitHub-release handoff command — /cairn-release provides a conditional `gh release create`
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m111-github-release-handoff
 
 ## Goal
 
@@ -64,23 +64,24 @@ candidate row if ever wanted; this milestone's condition simply skips them.
 
 ## Tasks
 
-- [ ] T1: Edit `skills/cairn-release/SKILL.md` step 4 — add the conditional
+- [x] T1: Edit `skills/cairn-release/SKILL.md` step 4 — add the conditional
       GitHub-release handoff: a fenced `gh release create v<version> --title
       "<name> <version>" --notes-file <notes> --verify-tag` block, gated on a
       GitHub `origin` + `gh`, body = extracted changelog section, framed as
       provided-not-run.
-- [ ] T2: Add a one-line GitHub-release mention to
+- [x] T2: Add a one-line GitHub-release mention to
       `skills/shared/profiles/generic.md`'s `release-walk` slot.
-- [ ] T3: Add guard asserts over the step-4 prose (extend
-      `skills/tests/test_release_timing.py` or a sibling), mutation-registered,
-      `Path.read_text`; after the edit, grep that every adjacent guard's asserted
-      substring stays contiguous on one physical line (M104).
-- [ ] T4: Run all three verify suites from the repo root + `cairn_validate`;
+- [x] T3: Add guard asserts over the step-4 prose (new
+      `skills/tests/test_github_release_handoff.py` — a distinct concern from
+      D-050 timing), mutation-registered (6 anchors), `Path.read_text`; adjacent
+      guards' asserted substrings unaffected (append-only, no reflow) (M104).
+- [x] T4: Run all three verify suites from the repo root + `cairn_validate`;
       confirm green (generic `verify` slot).
 
 ## Work log
 
 - 2026-07-23: created by /milestone-plan.
+- 2026-07-23: implemented T1–T4 on branch m111-github-release-handoff — step-4 conditional gh-release handoff (provided-not-run), generic-profile mention, new mutation-registered guard (6 anchors); suites green (skills 604, scripts 280, hooks), cairn_validate clean; tasks landed as one checkpoint (skill+test+registry interdependent). Status → review.
 
 ## Decisions
 

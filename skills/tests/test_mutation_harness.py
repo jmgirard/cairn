@@ -36,6 +36,7 @@ REVIEW = "skills/milestone-review/SKILL.md"
 IMPLEMENT = "skills/milestone-implement/SKILL.md"
 BRIEF = "skills/milestone-brief/SKILL.md"
 RELEASE = "skills/cairn-release/SKILL.md"
+GENERIC_PROFILE = "skills/shared/profiles/generic.md"
 TEMPLATE = "skills/shared/templates/milestone.md"
 DOCTRINE = "skills/shared/validation-doctrine.md"
 GUARD_DOCTRINE = "skills/shared/guard-doctrine.md"
@@ -275,6 +276,48 @@ REGISTRY = [
         test="TestMilestoneAuditWiring.test_park_leads_the_chip_only_when_cairn_next_names_that_release",
         target=MILESTONE,
         block="lead the chip with it only when `cairn_next`'s own recommendation names that same release milestone",
+    ),
+    # M111: the GitHub-release handoff — /cairn-release step 4 provides a
+    # conditional `gh release create`, never runs it. Each protected block
+    # carries one facet of the rule independently (M53 per-block discipline):
+    # the GitHub+gh condition, the clean off-GitHub skip, provided-not-run,
+    # the changelog-section body, the --notes-file mechanism, and the generic
+    # profile's parity mention.
+    Mutation(
+        guard="test_github_release_handoff",
+        test="TestGithubReleaseHandoff.test_command_is_gated_on_github_origin_and_gh",
+        target=RELEASE,
+        block="remote (`git remote get-url origin` names `github.com`) and `gh` is",
+    ),
+    Mutation(
+        guard="test_github_release_handoff",
+        test="TestGithubReleaseHandoff.test_command_is_skipped_cleanly_off_github",
+        target=RELEASE,
+        block="absent, omit this command with no failure — the tag alone is the release.",
+    ),
+    Mutation(
+        guard="test_github_release_handoff",
+        test="TestGithubReleaseHandoff.test_cairn_provides_but_never_runs_the_command",
+        target=RELEASE,
+        block="provides this command; it never runs it",
+    ),
+    Mutation(
+        guard="test_github_release_handoff",
+        test="TestGithubReleaseHandoff.test_release_body_is_the_consolidated_changelog_section",
+        target=RELEASE,
+        block="whose body is the changelog section you just",
+    ),
+    Mutation(
+        guard="test_github_release_handoff",
+        test="TestGithubReleaseHandoff.test_notes_are_passed_by_notes_file_matching_the_changelog",
+        target=RELEASE,
+        block="`--notes-file`, so the published release reads identically to the",
+    ),
+    Mutation(
+        guard="test_github_release_handoff",
+        test="TestGithubReleaseHandoff.test_generic_profile_slot_names_the_handoff",
+        target=GENERIC_PROFILE,
+        block="provides a `gh release create` command whose body is the new changelog",
     ),
     Mutation(
         guard="test_chapter_marker_mandate",
