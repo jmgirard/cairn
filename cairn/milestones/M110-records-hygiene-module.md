@@ -1,11 +1,11 @@
 # M110: Records-hygiene doctrine module
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1, GP4
-- **Branch/PR:** —
+- **Branch/PR:** m110-records-hygiene-module
 
 ## Goal
 
