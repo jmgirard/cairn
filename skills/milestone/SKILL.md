@@ -131,6 +131,14 @@ The script deliberately does not judge these — do them yourself and report:
   **When `gh` is missing, unauthenticated, or the repo has no remote:**
   name which of the three it was, skip the sweep, and finish the audit.
   An unreachable inbox is a reported gap, never an audit `FAIL`.
+- **Always-read governance (frame completeness):** apply the rulebook's
+  Always-read governance frame — check that each always-read file still names
+  all three governance elements (inflow test, outflow/read-bound, attention
+  signal), and that any newly-added always-read surface is covered by the
+  frame's worked table. A file or surface missing an element is a reported gap,
+  a judgment for the user — never auto-fixed, never a `FAIL`, the form of the
+  Staleness and references-staleness advisories. Completeness only: it never
+  measures or gates a file's mass (size governance is closed — D-057).
 
 **Replace** "Last hygiene check: YYYY-MM-DD" in ROADMAP.md — overwrite the previous text, never append to it and never demote it to a `Prior:` or `Earlier:` clause.
 Keep it to one short line naming what changed since the last check; git and

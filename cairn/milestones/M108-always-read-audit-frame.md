@@ -87,7 +87,7 @@ is visible before it accretes unchecked (RR03 rec 7).
 - [x] T1: Author the doctrine paragraph + the four-file worked enumeration in
       `skills/shared/tracking-rules.md` (near the Weight caps / GP1-governance
       material). Completeness-only wording; no mass/growth clause.
-- [ ] T2: Add the judgment bullet to `/milestone` SKILL.md §2 audit applying the
+- [x] T2: Add the judgment bullet to `/milestone` SKILL.md §2 audit applying the
       frame (element-completeness per always-read file + new-surface coverage;
       report-not-fix, never `FAIL`).
 - [ ] T3: Author prose-guards over the frame wording (T1) and the audit bullet
@@ -104,6 +104,7 @@ is visible before it accretes unchecked (RR03 rec 7).
 - 2026-07-23: created by /milestone-plan.
 - 2026-07-23: branched m108-always-read-audit-frame.
 - 2026-07-23: T1 — added `## Always-read governance` frame + four-file worked table to tracking-rules.md; density/validate green.
+- 2026-07-23: T2 — added the frame-completeness judgment bullet to /milestone §2 audit; skills/tests 569 green.
 
 ## Decisions
 
