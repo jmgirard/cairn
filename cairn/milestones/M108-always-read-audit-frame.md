@@ -137,3 +137,16 @@ Consistency gate: `cairn_validate` exit 0 (one pre-existing, unrelated
 `references staleness` advisory on the rulebook-classification-ledger — not
 introduced here). No principle wording changed (`cairn_impact --changed`: none)
 → impact reconciliation skipped. Profile `generic` → no toolchain checks.
+
+Fan-out (three fresh-context lenses, ref-based git): **zero actionable
+findings.** [O] diff-bug (Opus) — worked-table claims, guard anchors, and 10
+mutation registrations all check out; completeness-only consistent with D-057.
+[S] blame-history (Sonnet) — the new rulebook section and audit bullet disturb
+no adjacent guard anchor (M104); no D-045/D-053/D-056 contradiction; D-057 not
+reopened. [S] prior-review (Sonnet) — GitHub inline-comment probe empty; no
+archived `## Review` finding (M74/M76/M95/M100/M103/M104) regressed. Scorer
+no-ops (no surviving finding to score). One observation dropped pre-report
+(diff-bug, taxonomy): frame prose "~30-milestone weight saga (M84–M98)" pairs
+RR03 rec 7's "30 milestones" framing with a 15-ID span — loose but verbatim
+from the plan-approved D-060 (already on main, IP4-frozen); left as-is for
+record consistency, not diff-introduced.
