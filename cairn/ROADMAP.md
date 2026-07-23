@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-23 (`/milestone` audit — all 16 checks PASS, zero advisories, git clean, both GitHub inboxes empty. Re-verified rulebook-classification-ledger.md's factual anchors against tracking-rules.md at 94038ea (all held); classifications are no-oracle, so the references-staleness advisory now clears. M110 records-hygiene module shipped earlier today. Release timing is user-declared — D-050)._
+_Last hygiene check: 2026-07-23 (`/milestone` audit after hotfixes #109/#110: `cairn_validate` now parses labeled-bold `- **BCn (label).**` binding criteria (unblocks circumplex M54's RR09); the two ledger guards are green (pin partial→exempt). Full verify suite green; this rewrite clears the last density advisory. Release timing user-declared — D-050)._
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
