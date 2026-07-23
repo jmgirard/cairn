@@ -1,11 +1,11 @@
 # M109: Cost-test fixture store
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m109-cost-test-fixture-store
 
 ## Goal
 
@@ -49,6 +49,7 @@ The `cairn_cost` attribution tests run against a small fixture store instead of 
 ## Work log
 
 - 2026-07-23: created by /milestone-plan.
+- 2026-07-23: set in-progress; branch m109-cost-test-fixture-store cut from main.
 
 ## Decisions
 
