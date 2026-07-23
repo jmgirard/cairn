@@ -48,6 +48,22 @@ def agent_block(name="Agent"):
     return {"type": "tool_use", "name": name, "input": {}}
 
 
+def _live_records_or_skip(store):
+    """The billable records in the real store, or a SkipTest when the store is
+    absent or empty (M109). Factored out so the live-shape guarantee reads the
+    real store at most once, and its skip path can be proven deterministically
+    on a machine that has no store — the guarantee must SKIP off this machine,
+    never fail."""
+    import os
+
+    if not os.path.isdir(store):
+        raise unittest.SkipTest(f"no session store at {store}")
+    records = list(cost.read_records(store))
+    if not records:
+        raise unittest.SkipTest("session store present but holds no records")
+    return records
+
+
 class TestPhaseAttribution(unittest.TestCase):
     """`attributionSkill` -> phase. A lookup over a runtime-written field."""
 
@@ -299,10 +315,68 @@ class TestMilestoneFlagIsHonouredOrRefused(unittest.TestCase):
     def test_attribution_mode_refuses_the_milestone_filter(self):
         # Honouring it would reintroduce F3: the share is a whole-store
         # property and filtering makes it 0.0% by construction.
-        code = cost.main(["cairn_cost.py", "--attribution", "--milestone", "M94"])
-        self.assertEqual(code, 2)
-        # Paired positive: the same mode succeeds unfiltered.
-        self.assertEqual(cost.main(["cairn_cost.py", "--attribution"]), 0)
+        #
+        # Driven against a FIXTURE store through the `home=` seam (M109), so
+        # neither the refusal nor the success path scans the real ~26k-record
+        # store. A spy over `read_records` proves the real store was never
+        # touched — the fixture under `home` is the only store read.
+        import tempfile
+        from unittest import mock
+
+        import cairn_scripts as cs  # same-dir import; resolves the store root
+
+        root = cs.resolve_root(["cairn_cost"])
+        real_store = cost.store_dir(root)
+        with tempfile.TemporaryDirectory() as home:
+            store = cost.store_dir(root, home)
+            pathlib.Path(store).mkdir(parents=True)
+            (pathlib.Path(store) / "sess.jsonl").write_text(
+                '{"type":"assistant","attributionSkill":"cairn:milestone-implement",'
+                '"gitBranch":"m94-x","message":{"usage":'
+                '{"cache_read_input_tokens":5}}}\n',
+                encoding="utf-8",
+            )
+            seen = []
+            orig = cost.read_records
+
+            def spy(s):
+                seen.append(s)
+                return orig(s)
+
+            with mock.patch.object(cost, "read_records", spy):
+                # Refused: exit 2, and (AC2) the refusal precedes read_records.
+                self.assertEqual(
+                    cost.main(
+                        ["cairn_cost.py", "--attribution", "--milestone", "M94"],
+                        home=home,
+                    ),
+                    2,
+                )
+                # Paired positive: the same mode succeeds unfiltered, running
+                # real attribution over the fixture's records.
+                self.assertEqual(
+                    cost.main(["cairn_cost.py", "--attribution"], home=home), 0
+                )
+            # The success path ran (spy fired) and read only the fixture — the
+            # real store path was never opened.
+            self.assertTrue(seen, "read_records never ran — success path skipped")
+            self.assertNotIn(real_store, seen)
+            self.assertTrue(all(s.startswith(home) for s in seen), seen)
+
+    def test_attribution_refusal_reads_no_store_even_with_none_present(self):
+        # AC2: the --attribution --milestone refusal precedes both the isdir
+        # check and read_records — with `home` pointed at an empty dir (no
+        # store at all) it still returns 2, not the no-store branch's 0.
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as home:
+            self.assertEqual(
+                cost.main(
+                    ["cairn_cost.py", "--attribution", "--milestone", "M94"],
+                    home=home,
+                ),
+                2,
+            )
 
 
 class TestUnattributableShareIsReported(unittest.TestCase):
@@ -395,6 +469,49 @@ class TestStoreLocation(unittest.TestCase):
         self.assertEqual(
             [cost.tokens_of(r)["output_tokens"] for r in got], [5, 7]
         )
+
+
+class TestLiveStoreShape(unittest.TestCase):
+    """The one retained real-store read (M109). Every other test runs on a
+    synthetic fixture; this one guards against Claude Code changing the
+    transcript shape `cairn_cost` reads. It reads the real store at most once
+    and SKIPS — never fails — when the store is absent or empty, so CI and
+    other checkouts do not depend on this machine's session history."""
+
+    def test_the_real_store_still_carries_the_fields_cost_reads(self):
+        import cairn_scripts as cs
+
+        store = cost.store_dir(cs.resolve_root(["cairn_cost"]))
+        records = _live_records_or_skip(store)
+        # message.usage is where the four token classes live; a record without
+        # it would silently read as all-zero tokens.
+        self.assertTrue(
+            all("usage" in (r.get("message") or {}) for r in records),
+            "a billable record lacks message.usage",
+        )
+        # At least some records carry the two attribution fields in their real
+        # shape — a known cairn:* skill and a milestone branch — or every
+        # keyed figure would collapse to unattributed / no-milestone.
+        skills = {r.get("attributionSkill") for r in records}
+        self.assertTrue(
+            any(s in cost.PHASES for s in skills),
+            "no record carries a known cairn:* attributionSkill",
+        )
+        branches = {r.get("gitBranch") for r in records}
+        self.assertTrue(
+            any(cost.milestone_of({"gitBranch": b}) for b in branches),
+            "no record carries a milestone branch (m<nn>-...)",
+        )
+
+    def test_the_live_shape_check_skips_rather_than_fails_when_the_store_is_empty(self):
+        # Deterministic on every machine: an empty store dir yields a SkipTest,
+        # not an AssertionError — proving the guarantee never reddens off this
+        # machine. Uses a temp dir, so it performs no real-store read.
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as empty:
+            with self.assertRaises(unittest.SkipTest):
+                _live_records_or_skip(empty)
 
 
 if __name__ == "__main__":

@@ -404,7 +404,11 @@ def parse_args(argv):
     return mode, milestone, root_arg
 
 
-def main(argv):
+def main(argv, home=None):
+    # `home` overrides the store root, honouring the documented
+    # `store_dir(root, home=...)` test seam. It is deliberately not a CLI flag
+    # (the store location is not a user-facing choice); tests point it at a
+    # fixture store so the suite need not scan the real store.
     try:
         mode, milestone, root_arg = parse_args(argv)
     except Usage as e:
@@ -418,7 +422,20 @@ def main(argv):
     except cs.NotCairn as e:
         cs.die_not_cairn(str(e))
         return 2
-    store = store_dir(root)
+    # Refused before any store read. --attribution reports a whole-store
+    # property, so filtering it to one milestone makes the share 0.0% by
+    # construction (the F3 defect). Checking it here — ahead of store
+    # resolution and read_records — keeps the refusal path from scanning the
+    # store at all, and makes a machine with no store still refuse (2) rather
+    # than escape through the no-store branch below (0).
+    if mode == "attribution" and milestone:
+        sys.stderr.write(
+            "usage: --attribution reports the whole store; it cannot be "
+            "filtered with --milestone (the share would be 0.0% by "
+            "construction)\n"
+        )
+        return 2
+    store = store_dir(root, home)
     if not os.path.isdir(store):
         print(f"cairn cost — {root}\n\nno session store at {store}")
         return 0
@@ -426,16 +443,6 @@ def main(argv):
     if mode == "audit-line":
         print(audit_line(root, records, milestone))
     elif mode == "attribution":
-        # Deliberately refused rather than honoured: the unattributable share
-        # is a property of the whole store, and computing it over one
-        # milestone's records makes it 0.0% by construction (the F3 defect).
-        if milestone:
-            sys.stderr.write(
-                "usage: --attribution reports the whole store; it cannot be "
-                "filtered with --milestone (the share would be 0.0% by "
-                "construction)\n"
-            )
-            return 2
         stats = attribution(records)
         for key in sorted(stats):
             print(f"{key}: {stats[key]:,}")
