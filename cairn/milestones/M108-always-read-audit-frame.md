@@ -1,6 +1,6 @@
 # M108: Always-read audit frame
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -95,7 +95,7 @@ is visible before it accretes unchecked (RR03 rec 7).
       blanking each block reddens its guard. After the skill-prose edit, grep
       that every nearby guard's asserted substring is still contiguous on one
       physical line (M104).
-- [ ] T4: Author D-060; record the candidate-row graduation lineage; run the
+- [x] T4: Author D-060; record the candidate-row graduation lineage; run the
       three unittest suites from the repo root (each exit code checked, M56) and
       `cairn_validate` — both green.
 
@@ -106,6 +106,7 @@ is visible before it accretes unchecked (RR03 rec 7).
 - 2026-07-23: T1 — added `## Always-read governance` frame + four-file worked table to tracking-rules.md; density/validate green.
 - 2026-07-23: T2 — added the frame-completeness judgment bullet to /milestone §2 audit; skills/tests 569 green.
 - 2026-07-23: T3 — added test_always_read_frame.py (7 asserts) + 10 mutation-harness registrations; harness + all three suites + validate green.
+- 2026-07-23: T4 — verified D-060 present (authored at plan), cairn_impact reports no changed principles, no stale DESIGN inventory; all three suites + validate green. Status → review. Candidate-row graduation deferred to review post-merge hygiene (M35).
 
 ## Decisions
 
