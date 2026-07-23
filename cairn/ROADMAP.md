@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-23 (M110 shipped — records-hygiene doctrine module; graduated 8 lessons into skills/shared/records-hygiene.md (LESSONS 49→41), candidate M98-D1 graduated → M110, candidates 13→12; M105 pruned for terminal-row retention. All checks PASS, git clean. Release timing is user-declared — D-050)._
+_Last hygiene check: 2026-07-23 (`/milestone` audit — all 16 checks PASS, git clean, both GitHub inboxes empty; one standing advisory: rulebook-classification-ledger.md partial verification (RR04 rec 9, parked). M110 records-hygiene module shipped earlier today. Release timing is user-declared — D-050)._
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
