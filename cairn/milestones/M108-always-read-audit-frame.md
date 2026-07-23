@@ -90,7 +90,7 @@ is visible before it accretes unchecked (RR03 rec 7).
 - [x] T2: Add the judgment bullet to `/milestone` SKILL.md §2 audit applying the
       frame (element-completeness per always-read file + new-surface coverage;
       report-not-fix, never `FAIL`).
-- [ ] T3: Author prose-guards over the frame wording (T1) and the audit bullet
+- [x] T3: Author prose-guards over the frame wording (T1) and the audit bullet
       (T2); register each in `test_mutation_harness.py`; verify by mutation that
       blanking each block reddens its guard. After the skill-prose edit, grep
       that every nearby guard's asserted substring is still contiguous on one
@@ -105,6 +105,7 @@ is visible before it accretes unchecked (RR03 rec 7).
 - 2026-07-23: branched m108-always-read-audit-frame.
 - 2026-07-23: T1 — added `## Always-read governance` frame + four-file worked table to tracking-rules.md; density/validate green.
 - 2026-07-23: T2 — added the frame-completeness judgment bullet to /milestone §2 audit; skills/tests 569 green.
+- 2026-07-23: T3 — added test_always_read_frame.py (7 asserts) + 10 mutation-harness registrations; harness + all three suites + validate green.
 
 ## Decisions
 

@@ -1983,6 +1983,70 @@ REGISTRY = [
         target="skills/milestone-plan/SKILL.md",
         block='python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_budget.py"',
     ),
+    # M108 (D-060): the always-read governance frame. Each of the three
+    # element labels, the completeness-only boundary, each of the four worked
+    # table rows, and the two audit-bullet asserts carries the frame
+    # independently, so each gets its own mutation proof.
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_names_inflow_test_element",
+        target=RULES,
+        block="- **Inflow test** — what content belongs in the file.",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_names_outflow_or_read_bound_element",
+        target=RULES,
+        block="- **Outflow or read-bound** — how content leaves, or, where it may not leave,",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_names_attention_signal_element",
+        target=RULES,
+        block="- **Attention signal** — what reports growth so a human notices.",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_frame_is_completeness_only",
+        target=RULES,
+        block="never measures or gates a file's mass (size governance is closed — D-057).",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_enumerates_the_four_files_with_their_elements",
+        target=RULES,
+        block="| `ROADMAP.md` | a milestone or candidate | terminal-row retention + candidate triage/graduation | 60-line item cap |",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_enumerates_the_four_files_with_their_elements",
+        target=RULES,
+        block="| `LESSONS.md` | a durable \"how this repo behaves\" note | retire by enforcement / ownership / maturation (D-051, D-055) | 50-line item cap + `record density` |",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_enumerates_the_four_files_with_their_elements",
+        target=RULES,
+        block="| `tracking-rules.md` | the three-step placement test (D-056) | editorial pass; growth governed at the door (D-057) | `/milestone` audit mass+growth line |",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_enumerates_the_four_files_with_their_elements",
+        target=RULES,
+        block="| `DECISIONS.md` | a cross-cutting choice among alternatives | bounded heading read — history read less, never shrunk (D-054) | none needed once read-bounded |",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameAudit.test_audit_applies_the_frame",
+        target=MILESTONE,
+        block="- **Always-read governance (frame completeness):** apply the rulebook's",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameAudit.test_audit_reports_never_fixes",
+        target=MILESTONE,
+        block="a judgment for the user — never auto-fixed, never a `FAIL`, the form of the",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
