@@ -128,3 +128,20 @@ advisory (`references staleness` on the rulebook-classification ledger,
 untouched here). `coverage complete` PASS. Generic profile `consistency-gate`
 names no toolchain checks (no-op). No principle changed (GP1/GP4 worked under,
 not modified) → `cairn_impact` skipped.
+
+**Independent fan-out (three fresh-context lenses, 2026-07-23):**
+- [O] diff-bug (Opus): no functional findings — fidelity (exactly the 8 lines
+  left, faithfully distilled), guard soundness (17 registrations redden on
+  blank, completeness passes, anchors pin rules not scaffolding), pointer on
+  one physical line, D-061 accurate, AC-vs-delivery matches.
+- [S] blame-history (Sonnet): no findings — all 8 lessons carried forward, no
+  load-bearing content dropped, D-061 faithfully applies D-051 (skill prose ≠
+  tracking-file slot, consistent with M92's PROFILE.md precedent), no prior
+  work undone.
+- [S] prior-review (Sonnet): no regressions — cleared against M98/M92/M74/M76/
+  M105/M104/M54/M60/M35 findings; GitHub PR-thread probe empty (archive-only).
+- **Findings:** 1 surfaced (diff-bug) — a registry comment read "all four
+  surfaces" while enumerating three (LESSONS.md, the fourth, correctly carries
+  no entry). Scored ~70 inline (real, cosmetic, zero behavioral impact);
+  actioned by fixing the comment directly (this milestone's own comment). No
+  finding scored ≥80; none excluded-and-logged.

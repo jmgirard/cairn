@@ -2272,10 +2272,11 @@ REGISTRY += [
 ]
 
 # M110 (D-061): maturation's second application — the records-hygiene family
-# graduated into a second module. Entries span all four surfaces the guard
-# pins — the module, the rulebook pointer beside the retirement rule, and
-# D-061 — one per positive assert (M53). The absence asserts over LESSONS.md
-# carry no entry: blanking cannot restore a line that left (M54/M84).
+# graduated into a second module. Entries span the three registered surfaces —
+# the module, the rulebook pointer beside the retirement rule, and D-061 —
+# one per positive assert (M53). The fourth surface the guard pins, LESSONS.md,
+# carries no entry: its absence asserts can't be mutation-proven, since
+# blanking cannot restore a line that left (M54/M84).
 REGISTRY += [
     Mutation(
         guard="test_records_hygiene_graduation",
