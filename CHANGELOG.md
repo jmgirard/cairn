@@ -1,6 +1,62 @@
 # Changelog
 
-## Unreleased
+## 1.2.0 (2026-07-23)
+
+Nineteen milestones since the last feature release, aimed mostly inward — at
+what cairn's own records cost to carry, how its rulebook is kept from bloating,
+and how sharply its gates and audits read. Backward-compatible: existing repos
+keep working unchanged; everything here adds a tool, a rule, or a check rather
+than altering the tracking file format.
+
+- **Two measurement tools.** `cairn_cost` reports what a milestone actually
+  spent — turns, cache reads, fresh input, output — read from the session
+  store, so a weight decision aims at a measured number instead of a guess.
+  `cairn_budget` shows an artifact's size against whichever cap applies *while
+  it is being written*, so a first draft lands under cap by construction
+  instead of by trimming afterward. The `/milestone` audit now also reports the
+  rulebook's line and character mass and its growth since the last editorial
+  pass. All three are reporting surfaces only — no threshold, no pass/fail
+  attached to any number.
+- **Specialist doctrine now loads only when it applies.** Two bodies of
+  guidance — the craft of writing guard tests, and the discipline of keeping
+  records clean at each gate — moved out of the always-read files into their
+  own modules, read only when that work is actually happening. A session that
+  never writes a guard or touches a record stops paying to carry the guidance
+  for it.
+- **Lessons now leave, not just accumulate.** The lessons file gained two
+  exits: a lesson retires once a guard test actually fails on the mistake it
+  warns about (the warning is enforced in code, not just written down), and a
+  matured family of related lessons graduates whole into a doctrine module.
+  Previously the only way out was pruning by age.
+- **Escalated-review findings are binding through to the merge gate.** When a
+  hard question is sent for outside review, the returning report's findings now
+  travel verbatim into the milestone as numbered criteria, and a new hard check
+  refuses to pass a milestone that dropped or softened one. What the review
+  concluded is what the merge gate sees.
+- **Sharper audits.** The staleness clock that flags a stalled milestone now
+  measures genuine work, so a milestone kept alive only by bookkeeping entries
+  is correctly read as stale rather than active. A new check confirms every
+  always-read file still names how content enters it, how it leaves, and what
+  keeps it honest.
+- **Review ticks each criterion as its evidence lands** — not in one batch pass
+  at the end — mirroring how implementation checks off tasks at each checkpoint.
+  The "no evidence, no tick" rule is unchanged.
+- **The decision surface leads in plain words.** A question and its options
+  gloss a technical term at first use rather than assuming it, and the
+  plain-language meaning comes before any technical justification.
+- **Exploring sources you haven't cited yet is legitimate.** Reading a corpus
+  of prospective sources to discover a method or oracle — before any claim
+  depends on them — is now a recognized activity that gets triaged into roadmap
+  candidates, rather than dismissed for lack of a citation.
+- **Ingesting an outside review carries the planning path's discipline.** The
+  brief-ingest and mid-milestone amendment paths now follow the same form, size
+  budget, and file-hygiene rules the planning path already had.
+- **Faster planning reads.** The step that consults past decisions now scans
+  their headings and reads only what it needs — about 90% less text on what had
+  been over half the planning-time read.
+- **Smaller housekeeping fixes.** The hygiene stamp is replaced rather than
+  appended, so it stays one line instead of growing into a chain; the
+  record-density advisory was reworked to watch per-line mass.
 
 ### Fixed
 
