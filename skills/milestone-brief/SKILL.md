@@ -10,10 +10,12 @@ Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it.
 Phase header: `# Review brief RB<NN>` → `## Draft` / `## Gate` / `## Ingest`.
 Chapter markers: mark a chapter at each phase transition (session start implicit).
-Fable is token-billed pay-per-use: spawning it requires **explicit user
-approval, every time, with no standing authorization** — and only ever
-through this protocol. The brief artifact comes first either way; it is what
-makes the review reproducible and its findings ingestible.
+Fable is no longer pay-on-demand, but it typically uses more tokens than Opus:
+spawning it requires **explicit user approval, every time** — a deliberate
+per-instance choice, never a standing default — and only ever through this
+protocol. The brief artifact comes first either way; it is what makes the
+review reproducible and its findings ingestible. (D-062 updated this framing,
+retaining D-004's per-instance gate on token-cost grounds.)
 
 ## Creating a brief
 
@@ -29,8 +31,8 @@ makes the review reproducible and its findings ingestible.
    Commit (docs-only, main): `brief RB<NN>: <topic>`.
 
 3. **Approval gate** (AskUserQuestion): present the brief's scope, a rough
-   size estimate (files/lines Fable must read), and a reminder that Fable is
-   token-billed. Acceptance chips (tracking-rules): show the drafted RB's
+   size estimate (files/lines Fable must read), and a reminder that Fable
+   typically uses more tokens than Opus. Acceptance chips (tracking-rules): show the drafted RB's
    question and scope text verbatim above the gate, never only a
    description. Options:
    - **Spawn Fable subagent** (recommended) — on approval, launch an Agent

@@ -31,7 +31,7 @@ untouched); editing D-004 itself (IP4 — superseded, never edited).
 
 ## Acceptance criteria
 
-- [ ] AC1: Across the three skill files, the billing-hazard phrases — "token-billed
+- [x] AC1: Across the three skill files, the billing-hazard phrases — "token-billed
       pay-per-use", "no standing authorization exists", "never a silent cost" —
       are gone, replaced by neutral framing (Fable uses more tokens than Opus;
       no longer pay-on-demand), while each file's per-instance
@@ -62,7 +62,7 @@ untouched); editing D-004 itself (IP4 — superseded, never edited).
 
 ## Tasks
 
-- [ ] T1: Neutralize the cost-hazard framing in `tracking-rules.md:641-646`,
+- [x] T1: Neutralize the cost-hazard framing in `tracking-rules.md:641-646`,
       `milestone-brief/SKILL.md:13-16,32`, and any incidental spot; preserve
       each file's per-instance approval wording verbatim in intent.
 - [ ] T2: Relax the recommend bar — `tracking-rules.md:657-658` (tripwire-hit
@@ -81,6 +81,7 @@ untouched); editing D-004 itself (IP4 — superseded, never edited).
 ## Work log
 
 - 2026-07-24: created by /milestone-plan.
+- 2026-07-24: T1 — neutralized cost-hazard framing in tracking-rules, milestone-brief (framing + gate reminder); hazard phrases gone, per-instance approval wording retained; suite green (604).
 
 ## Decisions
 
