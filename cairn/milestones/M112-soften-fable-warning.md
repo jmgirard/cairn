@@ -1,11 +1,11 @@
 # M112: Soften the Fable warning — neutral token-cost framing, lower recommend bar, gate retained
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, IP4
-- **Branch/PR:** —
+- **Branch/PR:** m112-soften-fable-warning
 
 ## Goal
 
