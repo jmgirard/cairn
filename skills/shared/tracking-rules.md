@@ -639,23 +639,29 @@ cairn skill is active.
   Haiku.
 - **Never Haiku.** For anything.
 - **Fable subagents**: only through the RB/RR brief protocol
-  (`/milestone-brief`) and only after a per-instance approval gate — Fable
-  is token-billed; no standing authorization exists. Ad-hoc Fable spawning
-  is prohibited: the brief artifact is what makes escalation reproducible,
-  auditable, and ingestible. RR ingestion follows the protocol in
-  `/milestone-brief` ("Ingesting an RR").
+  (`/milestone-brief`) and only after a per-instance approval gate — Fable is
+  no longer pay-on-demand, but it typically uses more tokens than Opus, so
+  reaching for it stays a deliberate per-instance choice, never a standing
+  default. Ad-hoc Fable spawning is still prohibited: the brief artifact is
+  what makes escalation reproducible, auditable, and ingestible. RR ingestion
+  follows the protocol in `/milestone-brief` ("Ingesting an RR").
+  (D-062 updated this cost framing, superseding D-004's per-call billing
+  premise; the per-instance gate and the RB/RR-only path are retained.)
   The implementing session never authors the durable verdict on the review
   constraining it — that routes to a new RB or the maintainer at the gate (RR04).
-- **RB tripwires** — the three question categories that warrant offering
-  Fable escalation, with their canonical tag tokens: statistical/scoring
-  correctness with no available oracle (`no-oracle`); irreversible
-  exported-API decisions (`irreversible-api`); anything touching an IP
-  (`ip-touching`). `/milestone-plan` tags tripwire-hitting open questions
+- **RB tripwires** — the three question categories that are the canonical
+  must-offer cases for Fable escalation, with their canonical tag tokens:
+  statistical/scoring correctness with no available oracle (`no-oracle`);
+  irreversible exported-API decisions (`irreversible-api`); anything touching
+  an IP (`ip-touching`). `/milestone-plan` tags tripwire-hitting open questions
   inline on the affected task or criterion — `(RB tripwire: <token>)` —
   and `/milestone-implement` inherits the tags; a tripwire can also fire
-  mid-implementation (same categories, no tag required). An escalation
-  chip option is offered only on a tripwire hit, never as a standing menu
-  item (D-004: Fable is gated per instance).
+  mid-implementation (same categories, no tag required). An escalation chip
+  option may be offered on a tripwire hit OR for a genuinely hard question the
+  session cannot confidently settle (D-062 lowered this bar); the three
+  tripwires remain the cases where it must be offered. It stays a gated,
+  per-instance choice through `/milestone-brief`, never a standing menu item
+  (D-004: Fable is gated per instance).
 
 ## Toolchain profiles
 

@@ -2091,6 +2091,45 @@ REGISTRY = [
         target=MILESTONE,
         block="a judgment for the user — never auto-fixed, never a `FAIL`, the form of the",
     ),
+    # M112 (D-062): softening the Fable warning retains two invariants — the
+    # per-instance approval gate and the RB/RR-only path — one Mutation entry
+    # per block each assert depends on (M53 per-block discipline).
+    Mutation(
+        guard="test_fable_gate_retained",
+        test="TestPerInstanceApprovalGate.test_brief_requires_explicit_per_instance_approval",
+        target=BRIEF,
+        block="explicit user approval, every time",
+    ),
+    Mutation(
+        guard="test_fable_gate_retained",
+        test="TestPerInstanceApprovalGate.test_brief_requires_explicit_per_instance_approval",
+        target=BRIEF,
+        block="only ever through this",
+    ),
+    Mutation(
+        guard="test_fable_gate_retained",
+        test="TestPerInstanceApprovalGate.test_rulebook_gates_fable_per_instance",
+        target=RULES,
+        block="only after a per-instance approval gate",
+    ),
+    Mutation(
+        guard="test_fable_gate_retained",
+        test="TestRbRrOnlyPath.test_rulebook_keeps_rbrr_only_path",
+        target=RULES,
+        block="only through the RB/RR brief protocol",
+    ),
+    Mutation(
+        guard="test_fable_gate_retained",
+        test="TestRbRrOnlyPath.test_rulebook_keeps_rbrr_only_path",
+        target=RULES,
+        block="Ad-hoc Fable spawning is still prohibited",
+    ),
+    Mutation(
+        guard="test_fable_gate_retained",
+        test="TestRbRrOnlyPath.test_lowered_bar_stays_gated_not_a_standing_menu",
+        target=RULES,
+        block="never a standing menu item",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
