@@ -41,11 +41,11 @@ untouched); editing D-004 itself (IP4 — superseded, never edited).
       cannot confidently settle, naming the three tripwires as the canonical
       must-offer cases; `milestone-implement/SKILL.md` no longer forbids
       offering escalation absent a tripwire hit.
-- [ ] AC3: `cairn/DECISIONS.md` gains D-062 recording the policy change,
+- [x] AC3: `cairn/DECISIONS.md` gains D-062 recording the policy change,
       retaining D-004's per-instance RB/RR gate on token-cost grounds and the
       lowered recommend bar; its heading back-references D-004; `git diff`
       shows D-004's own text unedited.
-- [ ] AC4: A prose-guard asserts milestone-brief's per-instance explicit-approval
+- [x] AC4: A prose-guard asserts milestone-brief's per-instance explicit-approval
       gate and the RB/RR-only escalation path survive, registered in the
       mutation harness (`test_mutation_harness.py`); it reds when either
       invariant is blanked.
@@ -69,10 +69,10 @@ untouched); editing D-004 itself (IP4 — superseded, never edited).
       OR genuinely-hard-question) and `milestone-implement/SKILL.md:47-51`
       (drop the "never offer without a tripwire hit" prohibition, keep the
       three tripwires canonical).
-- [ ] T3: Append D-062 to `cairn/DECISIONS.md` (heading back-references D-004);
+- [x] T3: Append D-062 to `cairn/DECISIONS.md` (heading back-references D-004);
       repoint skill citations to cite D-062 alongside D-004 where the premise
       is stated. Leave D-004 unedited.
-- [ ] T4: Add/extend a prose-guard for the retained approval gate + RB/RR-only
+- [x] T4: Add/extend a prose-guard for the retained approval gate + RB/RR-only
       path; register its exemplar block in `test_mutation_harness.py` and
       confirm the completeness meta-test passes.
 - [ ] T5: Run `python3 -m unittest` (skills suites) and `cairn_validate`; fix
@@ -81,6 +81,8 @@ untouched); editing D-004 itself (IP4 — superseded, never edited).
 ## Work log
 
 - 2026-07-24: created by /milestone-plan.
+- 2026-07-24: T4 — added test_fable_gate_retained.py (per-instance gate + RB/RR-only path invariants) and registered its 6 blocks in the mutation harness; suite green (608), harness confirms each block reds its guard.
+- 2026-07-24: T3 — verified D-062 present (heading back-references D-004), D-004 unedited, D-062 cited in all three skills; no new file change beyond milestone (D-062 landed in the plan commit, citations in T1/T2).
 - 2026-07-24: T2 — lowered the recommend bar in tracking-rules RB-tripwire block + milestone-implement step 3 (tripwire-hit OR genuinely-hard-question; three tripwires stay must-offer); gate retained; suite green (604).
 - 2026-07-24: T1 — neutralized cost-hazard framing in tracking-rules, milestone-brief (framing + gate reminder); hazard phrases gone, per-instance approval wording retained; suite green (604).
 
