@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-24 (M112 planned: soften the Fable warning to neutral token-cost framing + lower the recommend bar, per-instance RB/RR gate retained; D-062 supersedes D-004's pay-per-use premise)._
+_Last hygiene check: 2026-07-24 (M112 merged, PR #112: Fable framing softened to neutral token-cost, recommend bar lowered, per-instance RB/RR gate retained + guarded; D-062 supersedes D-004's premise; README folded in at review. Suites green (608), `cairn_validate` clean. Pruned M107 terminal row (retention))._
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M112 | Soften the Fable warning — neutral token-cost framing, lower the recommend bar, per-instance RB/RR gate retained | review | — | normal | milestones/M112-soften-fable-warning.md |
+| M112 | Soften the Fable warning — neutral token-cost framing, lower the recommend bar, per-instance RB/RR gate retained | done | — | normal | milestones/archive/M112-soften-fable-warning.md |
 | M111 | GitHub-release handoff command — /cairn-release provides a conditional `gh release create` | done | — | normal | milestones/archive/M111-github-release-handoff.md |
 | M110 | Records-hygiene doctrine module — graduate the gate-time lesson family (M35/M51/M69/M73/M77/M78×2/M87) into skills/shared/records-hygiene.md, the second maturation application (D-055) | done | — | normal | milestones/archive/M110-records-hygiene-module.md |
 | M109 | Cost-test fixture store — attribution tests run against a small fixture store; one skip-if-absent test retains the real-store live-shape guarantee | done | — | normal | milestones/archive/M109-cost-test-fixture-store.md |
 | M108 | Always-read audit frame — every always-read file names its three governance elements (inflow test, outflow/read-bound, attention signal), checked at the /milestone audit | done | — | normal | milestones/archive/M108-always-read-audit-frame.md |
-| M107 | RR-ingest / amendment discipline — the ingest surface carries the plan path's form, budget, and file hygiene | done | — | normal | milestones/archive/M107-rr-ingest-amendment-discipline.md |
 
 ## Candidates
 
