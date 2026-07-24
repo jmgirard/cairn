@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M112 | Soften the Fable warning — neutral token-cost framing, lower the recommend bar, per-instance RB/RR gate retained | in-progress | — | normal | milestones/M112-soften-fable-warning.md |
+| M112 | Soften the Fable warning — neutral token-cost framing, lower the recommend bar, per-instance RB/RR gate retained | review | — | normal | milestones/M112-soften-fable-warning.md |
 | M111 | GitHub-release handoff command — /cairn-release provides a conditional `gh release create` | done | — | normal | milestones/archive/M111-github-release-handoff.md |
 | M110 | Records-hygiene doctrine module — graduate the gate-time lesson family (M35/M51/M69/M73/M77/M78×2/M87) into skills/shared/records-hygiene.md, the second maturation application (D-055) | done | — | normal | milestones/archive/M110-records-hygiene-module.md |
 | M109 | Cost-test fixture store — attribution tests run against a small fixture store; one skip-if-absent test retains the real-store live-shape guarantee | done | — | normal | milestones/archive/M109-cost-test-fixture-store.md |

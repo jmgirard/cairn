@@ -1,6 +1,6 @@
 # M112: Soften the Fable warning — neutral token-cost framing, lower recommend bar, gate retained
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -49,7 +49,7 @@ untouched); editing D-004 itself (IP4 — superseded, never edited).
       gate and the RB/RR-only escalation path survive, registered in the
       mutation harness (`test_mutation_harness.py`); it reds when either
       invariant is blanked.
-- [ ] AC5: `python3 -m unittest` over the skills suites passes clean and
+- [x] AC5: `python3 -m unittest` over the skills suites passes clean and
       `cairn_validate` reports no failures.
 
 ## Coverage
@@ -75,12 +75,13 @@ untouched); editing D-004 itself (IP4 — superseded, never edited).
 - [x] T4: Add/extend a prose-guard for the retained approval gate + RB/RR-only
       path; register its exemplar block in `test_mutation_harness.py` and
       confirm the completeness meta-test passes.
-- [ ] T5: Run `python3 -m unittest` (skills suites) and `cairn_validate`; fix
+- [x] T5: Run `python3 -m unittest` (skills suites) and `cairn_validate`; fix
       to green.
 
 ## Work log
 
 - 2026-07-24: created by /milestone-plan.
+- 2026-07-24: T5 — verify slot clean: python3 -m unittest 608 OK; cairn_validate all checks pass; budget 82/149. Status → review.
 - 2026-07-24: T4 — added test_fable_gate_retained.py (per-instance gate + RB/RR-only path invariants) and registered its 6 blocks in the mutation harness; suite green (608), harness confirms each block reds its guard.
 - 2026-07-24: T3 — verified D-062 present (heading back-references D-004), D-004 unedited, D-062 cited in all three skills; no new file change beyond milestone (D-062 landed in the plan commit, citations in T1/T2).
 - 2026-07-24: T2 — lowered the recommend bar in tracking-rules RB-tripwire block + milestone-implement step 3 (tripwire-hit OR genuinely-hard-question; three tripwires stay must-offer); gate retained; suite green (604).
