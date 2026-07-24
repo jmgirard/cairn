@@ -36,7 +36,7 @@ untouched); editing D-004 itself (IP4 — superseded, never edited).
       are gone, replaced by neutral framing (Fable uses more tokens than Opus;
       no longer pay-on-demand), while each file's per-instance
       explicit-approval requirement remains present in text.
-- [ ] AC2: `tracking-rules.md`'s RB-tripwire rule states escalation may be
+- [x] AC2: `tracking-rules.md`'s RB-tripwire rule states escalation may be
       offered on a tripwire hit OR for a genuinely hard question the session
       cannot confidently settle, naming the three tripwires as the canonical
       must-offer cases; `milestone-implement/SKILL.md` no longer forbids
@@ -65,7 +65,7 @@ untouched); editing D-004 itself (IP4 — superseded, never edited).
 - [x] T1: Neutralize the cost-hazard framing in `tracking-rules.md:641-646`,
       `milestone-brief/SKILL.md:13-16,32`, and any incidental spot; preserve
       each file's per-instance approval wording verbatim in intent.
-- [ ] T2: Relax the recommend bar — `tracking-rules.md:657-658` (tripwire-hit
+- [x] T2: Relax the recommend bar — `tracking-rules.md:657-658` (tripwire-hit
       OR genuinely-hard-question) and `milestone-implement/SKILL.md:47-51`
       (drop the "never offer without a tripwire hit" prohibition, keep the
       three tripwires canonical).
@@ -81,6 +81,7 @@ untouched); editing D-004 itself (IP4 — superseded, never edited).
 ## Work log
 
 - 2026-07-24: created by /milestone-plan.
+- 2026-07-24: T2 — lowered the recommend bar in tracking-rules RB-tripwire block + milestone-implement step 3 (tripwire-hit OR genuinely-hard-question; three tripwires stay must-offer); gate retained; suite green (604).
 - 2026-07-24: T1 — neutralized cost-hazard framing in tracking-rules, milestone-brief (framing + gate reminder); hazard phrases gone, per-instance approval wording retained; suite green (604).
 
 ## Decisions

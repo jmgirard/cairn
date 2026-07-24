@@ -46,9 +46,11 @@ run ingestion first (see `/milestone-brief`).
    Acceptance chips (tracking-rules): a question resting on a produced
    conclusion shows its substance verbatim above the chip. If the plan tags an item `(RB tripwire: <token>)` — or a new
    tripwire emerges mid-work (same three categories; see tracking-rules) —
-   include an **Escalate via `/milestone-brief`** option on that question;
-   never offer escalation without a tripwire hit (Fable is gated per
-   instance — D-004).
+   include an **Escalate via `/milestone-brief`** option on that question; the
+   three tripwires are the must-offer cases, but escalation may also be offered
+   for a genuinely hard question the session cannot confidently settle (D-062
+   lowered this bar). Either way it stays gated per instance through
+   `/milestone-brief` — D-004.
 
 4. **Work tasks in order, autonomously.** For each task:
    - Tests first where feasible; numeric results per the oracle doctrine;
