@@ -1855,3 +1855,21 @@ M98-D1 candidate at M110 completion (M35). Locked by
 `test_records_hygiene_graduation.py` (mutation-registered). If the module's
 conditional read is ever found not to reach a session needing the craft at a
 gate, this is the entry to supersede.
+
+### D-062 (2026-07-24): Fable no longer pay-on-demand — gate retained on token-cost grounds (supersedes D-004's premise)
+
+**Context:** A policy change removed Fable's pay-per-use billing, so D-004's
+Context ("token-billed pay-per-use") and Consequences ("never a silent cost")
+no longer hold. Fable still typically uses more tokens than Opus, so it is not
+free to reach for, but it is no longer a per-call charge.
+**Decision:** Keep D-004's core — Fable is reached only through the RB/RR brief
+protocol behind an explicit per-instance approval gate. Drop the billing-hazard
+framing (no "token-billed", "no standing authorization", "silent cost") in
+favour of neutral token-cost wording. Lower the bar for *recommending*
+escalation: it may be offered on an RB-tripwire hit OR for a genuinely hard
+question the session cannot confidently settle, with the three tripwire
+categories remaining the canonical must-offer cases.
+**Consequences:** Escalations stay reproducible, auditable, and ingestible via
+the gate; the gate now guards token cost, not billing. D-004 stands as history
+(unedited, IP4); this entry supersedes only its cost premise and the
+recommend-bar strictness.
