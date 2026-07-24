@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-24 (M112 merged, PR #112: Fable framing softened to neutral token-cost, recommend bar lowered, per-instance RB/RR gate retained + guarded; D-062 supersedes D-004's premise; README folded in at review. Suites green (608), `cairn_validate` clean. Pruned M107 terminal row (retention))._
+_Last hygiene check: 2026-07-24 (candidate-triage audit: 12 candidates, none promotable or prunable — every trigger unfired but live, oldest row 13 days; evidence collected where collectable (cost line, no regression) or arrives as lived friction (D-027/D-033 model). Inbox clean (0 issues / 0 PRs), reviews clear, `cairn_validate` green. Earlier today: M112 merged, PR #112.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
