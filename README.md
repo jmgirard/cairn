@@ -198,9 +198,10 @@ the directory in place and the shelf of original files stays out of git.
 - **Supply primary sources.** If a formula, cutoff, or scoring key needs a
   paper the model can't access, it will stop and ask you for the PDF rather
   than work from memory. That stop is a feature; feed it the PDF.
-- **Fable costs real money.** Fable reviews are token-billed, so each one
-  asks your approval with a scope estimate first. Say no freely — the brief
-  file remains and can be run any time.
+- **Fable uses more tokens.** Fable is no longer pay-on-demand, but a Fable
+  review typically uses more tokens than Opus, so each one asks your approval
+  with a scope estimate first. Say no freely — the brief file remains and can
+  be run any time.
 - **Run `/milestone` when returning after time away.** It reconciles
   tracking against git, flags stale work, and hands you a resume chip.
 
@@ -256,7 +257,7 @@ the guardrails actually reach.
   and cairn stays quiet about it until you do.
 - Track status in CLAUDE.md, chat memory, or GitHub issues — `cairn/`
   files are the single source of truth; issues are an inbox.
-- Run Fable, or any paid escalation, without a per-instance yes.
+- Run Fable, or any escalation, without a per-instance yes.
 - Lock you in. Pausing costs nothing (stop any time; checkpoint commits
   keep the branch resumable), dropping a milestone is one sentence —
   "drop M07" — with the reason archived, and uninstalling is removing the
