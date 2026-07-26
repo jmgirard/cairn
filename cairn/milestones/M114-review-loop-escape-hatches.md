@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -45,14 +45,16 @@ which is that repo's file to change, not cairn's → nothing here.
       (one criterion, twice, new mechanism, same shape); and the no-recorded-alternative
       fallback offering `/milestone-brief`. Read out of the shipped file, not the draft.
 - [ ] AC2: a new prose-guard file under `skills/tests/` fails when the rule block is
-      blanked, carries one `Mutation(...)` entry per positive assert, and asserts the
-      rule's phrases occur on exactly ONE surface across the plugin's live doctrine
-      prose — `skills/**/*.md`, `README.md` and `CLAUDE.md` — matched
-      whitespace-tolerantly, so a restatement reds even when it re-wraps (M105).
-      `cairn/` is out of scope and the guard says so: `DECISIONS.md` legitimately
-      quotes the rule it records and IP4 makes that permanent, so a literally
-      repo-wide assertion is unsatisfiable and grows less satisfiable over time
-      (M112, M113).
+      blanked, carries one `Mutation(...)` entry per positive assert that pins doctrine
+      prose (an assert over the test's own synthetic renderings has no doctrine block
+      to blank, and is answered by the negative controls beside it instead), and asserts
+      the rule's phrases occur on exactly ONE surface across the plugin's live doctrine
+      prose — `skills/**/*.md`, `README.md` and `CLAUDE.md` — with the matcher exercised
+      in-test against every rendering the phrase can take (guard-doctrine §3), so a
+      restatement reds whether it re-wraps, sits in a blockquote, or carries emphasis.
+      `cairn/` is out of scope and the guard says so: `DECISIONS.md` legitimately quotes
+      the rule it records and IP4 makes that permanent, so a literally repo-wide
+      assertion is unsatisfiable and grows less satisfiable over time (M112, M113).
 - [x] AC3: `tracking-rules.md` states the promotion-condition rule beside search-first
       candidate creation, guarded by an assert in `test_search_first_candidates.py`
       with its own `Mutation(...)` entry.
@@ -111,6 +113,11 @@ which is that repo's file to change, not cairn's → nothing here.
 - 2026-07-26: F1/F2 fixed — the one-surface pin is now a `re.compile(r"per\s+milestone,\s+never\s+per\s+cut")` search instead of a literal `in`, and `surfaces()` yields `CLAUDE.md` beside `README.md`. Positive-controlled at every surface rather than argued: a fork appended in BOTH wrapped and one-line form reds `skills/milestone/SKILL.md`, `README.md` and `CLAUDE.md` (6/6) and correctly leaves `CHANGELOG.md`, `cairn/DESIGN.md` and `cairn/LESSONS.md` green (6/6) — 12/12, 0 mismatches, baseline green, every probe file byte-restored.
 - 2026-07-26: F5 fixed — the two unregistered asserts now carry `Mutation(...)` entries; 9 positive asserts against 9 registered entries, and both new blocks proved to red on deletion. Gate on the final tree: three suites exit 0 separately (skills 620 / scripts 280 / hooks 91), `cairn_validate` exit 0, plan-owned body 98/149. Status -> review.
 - 2026-07-26: review pass 2 FAILED the gate — AC2 again, and THRASH TRIGGER (b) FIRES on this milestone by its own rule. AC2 has failed twice, each by a new mechanism of one shape (the one-surface detector cannot see a rendering its target can take): pass 1 a line wrap (F1), pass 2 a blockquote continuation marker (G2, 83) and mid-phrase emphasis (G3, 80). Five findings scored >=80: G4 (90) the Review section cited a commit hash that does not exist — written from memory, corrected in place and marked; G7 (87) the registry comment says 'Six entries' against 9, wrong on arrival at 7; G1 (85) the matcher carries zero in-test positive controls, which is exactly what this milestone's own guard-doctrine §3 forbids; plus G2 and G3. G6 (68) and G5 (40) logged. AC1, AC3-AC6 re-verified this pass and stand; shipped doctrine untouched. Remedy per trigger (b): adopt the recorded alternative — §3's in-test positive controls — rather than widen the regex a third time. No brief escalation owed, since an alternative is on record. Status -> in-progress.
+- 2026-07-26: gated amendment (pass 2) — AC2's mutation-entry clause is scoped to asserts that PIN DOCTRINE, because the §3 controls assert over the test's own synthetic strings and a mutation entry blanks a block in a target doctrine file, which is meaningless for a literal defined in the test; and "matched whitespace-tolerantly" becomes the §3 requirement that the matcher be exercised in-test against every rendering — pass 2 showed the whitespace framing was the too-narrow axis. AC1, AC3-AC6 untouched.
+- 2026-07-26: G1/G2/G3 fixed STRUCTURALLY, per trigger (b)'s remedy — not a third regex guess. `normalize()` flattens the three axes a doctrine phrase renders along (wrap, blockquote continuation marker, emphasis) and `states_the_rule()` matches over it; the durable part is the in-test corpus, 11 RENDERINGS the detector must see and 8 NON_FORKS it must not, both routed through the same predicate the pin uses so a control cannot check something the pin does not.
+- 2026-07-26: the negative controls immediately earned their keep by finding a defect the positives structurally could not — `states_the_rule` was a bare substring test, so `per milestone, never per cutover` read as a copy of the rule. Fixed with word boundaries. First mutation run had proved the NEGATIVES inert (normalization only deletes characters, so it can only turn a match into a non-match); re-run after the boundary fix, each control set now reds on a distinct defect class: dropping `\b` reds the negatives, dropping any normalization axis reds the positives.
+- 2026-07-26: G4 fixed — the Review section's `4f7e0dc` corrected in place to `4c260fc` and marked (D-045: current knowledge corrected where it sits). G7 fixed — the registry comment no longer states an entry count at all, per §6's own remedy of letting the list be the count; it said "six" at seven entries and was staler at nine. G6 (logged) rode along: the docstring no longer claims a single `\s+` exception.
+- 2026-07-26: gate on the final tree — three suites exit 0 separately (skills 622 / scripts 280 / hooks 91), all 9 registered blocks red on deletion, 9 doctrine-pinning asserts against 9 entries, `cairn_validate` exit 0, body 100/149. End-to-end in a scratch copy: the pass-1 wrap and both pass-2 renderings now red on every in-scope surface and stay green on every out-of-scope one, 30/30. Status -> review.
 
 ## Decisions
 

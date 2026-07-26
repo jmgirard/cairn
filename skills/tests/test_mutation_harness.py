@@ -2277,9 +2277,12 @@ REGISTRY += [
     ),
 ]
 
-# M114: the thrash rule, unguarded prose until now. Six entries because the
-# rule fails in six independent ways, and the intraclass M93 post-mortem shows
-# four of them actually happening: lose "per milestone, never per cut" or the
+# M114: the thrash rule, unguarded prose until now. One entry per independent
+# failure of the rule — the count is deliberately not stated here, because the
+# first version of this comment said "six" against seven entries and was
+# staler still at nine (§6: a number fails derived-wrong and restated-stale
+# alike; let the list below be the count). The intraclass M93 post-mortem
+# shows four of these failing for real: lose "per milestone, never per cut" or the
 # increments-never-resets clause and the counter reads per-cut again (M93's
 # pass 4 logged as the re-cut's first, and the rule went silent for four more
 # returns); lose either half of the second trigger and a wrong design reads as
