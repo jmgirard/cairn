@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M113 | Bounded session-start injection — cap-exempt sections read-bounded newest-first, and the active milestone file joins the always-read frame (D-063) | review | — | normal | milestones/M113-bounded-session-injection.md |
+| M113 | Bounded session-start injection — cap-exempt sections read-bounded newest-first, and the active milestone file joins the always-read frame (D-063) | in-progress | — | normal | milestones/M113-bounded-session-injection.md |
 | M112 | Soften the Fable warning — neutral token-cost framing, lower the recommend bar, per-instance RB/RR gate retained | done | — | normal | milestones/archive/M112-soften-fable-warning.md |
 | M111 | GitHub-release handoff command — /cairn-release provides a conditional `gh release create` | done | — | normal | milestones/archive/M111-github-release-handoff.md |
 | M110 | Records-hygiene doctrine module — graduate the gate-time lesson family (M35/M51/M69/M73/M77/M78×2/M87) into skills/shared/records-hygiene.md, the second maturation application (D-055) | done | — | normal | milestones/archive/M110-records-hygiene-module.md |

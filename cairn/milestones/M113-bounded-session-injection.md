@@ -1,6 +1,6 @@
 # M113: Bounded session-start injection — cap-exempt sections read-bounded newest-first, and the active milestone file joins the always-read frame
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -34,7 +34,7 @@ allocation below makes the cap degrade gracefully instead.
 
 ## Acceptance criteria
 
-- [x] AC1: A cap-exempt section longer than the per-section budget is injected
+- [ ] AC1: A cap-exempt section longer than the per-section budget is injected
       as its newest content only, preceded by a marker naming how much was
       elided and the file path to read for the rest. A section under budget is
       injected whole with no marker.
@@ -46,7 +46,7 @@ allocation below makes the cap degrade gracefully instead.
       section types (work log 3,740 chars, review 5,866 chars, over the 111
       milestone files this repo has had live), so ≥90% of each type injects
       whole; the measurement and its date are recorded in this file.
-- [x] AC4: With more active milestones than the total budget holds, every one
+- [ ] AC4: With more active milestones than the total budget holds, every one
       still appears with its `## cairn/milestones/…` header and path, and any
       truncation carries an explicit marker. No milestone and no content is
       dropped silently.
@@ -100,6 +100,7 @@ allocation below makes the cap degrade gracefully instead.
 - 2026-07-25: the new row's `work-log format` mention created false coverage in test_milestone_cap_exemption (bare-label anchor would survive deleting the advisory rule); mutation harness caught it — re-anchored that assert in the rule's own sentence. M104's pattern, second occurrence.
 - 2026-07-25: live before/after on the real M95 file (65 entries): old hook 30,000 chars, newest entry ABSENT, oldest present, no marker, cut mid-sentence; new hook 24,118 chars, newest present, oldest absent, marker 'newest 11 of 65 entries shown'.
 - 2026-07-25: T7 — hooks 80 / skills 613 / scripts suites all green (exit codes checked separately), cairn_validate green; DESIGN.md hook-inventory clause updated. Status → review.
+- 2026-07-25: review round 1 — 4 findings from the [O] diff-bug lens (other two lenses clean); scored 92/85/80/75. AC1 and AC4 fail as written (F1 unbounded+unmarked prose head; F2 milestone headers lost when the ROADMAP alone overflows). Un-ticked both, status -> in-progress. Correction to the 2026-07-25 T7 line above: the skills suite is 610 tests, not 613.
 - 2026-07-25: minor amendment — T5's hook tests are written before T2/T3 (tests-first), not after; task order in the file unchanged, execution order noted here.
 
 ## Decisions
@@ -156,6 +157,47 @@ PR #113. Each criterion's box ticked as its line below was recorded._
 - **AC6** — three suites from the repo root, exit codes checked separately
   (never piped): hooks 80 ok exit 0 · skills 610 ok exit 0 · scripts 280 ok
   exit 0.
+
+**Review round 1 — returned to `in-progress` 2026-07-25.** The three-lens
+fan-out (an [O] diff-bug lens, an [S] blame-history lens, an [S]
+prior-PR-comments lens) plus an [S] scorer produced four findings; the
+blame-history and prior-review lenses each returned zero. Three scored ≥80
+and are actioned; one scored below and is logged. AC1 and AC4 do NOT hold as
+written on the inputs F1 and F2 name, so their boxes were un-ticked and the
+milestone went back rather than to a merge gate. Evidence for AC2, AC3, AC5
+and AC6 above is unaffected and stands.
+
+- **F1 (85) — a cap-exempt section whose prose precedes its first `- ` entry
+  is neither bounded nor marked.** Every line before the first entry became an
+  exempt `head`, uncharged against the budget and uncounted in the total, so
+  `kept == total` and the marker never fired. Reproduced: a `## Review` of 40
+  prose paragraphs closed by one bullet injected ~17,200 chars against a 6,000
+  budget with no marker. Both halves of AC1 fail. Perversely, one bullet made
+  it worse than none — a prose-only section falls to line-blocking and bounds
+  correctly.
+- **F2 (92) — AC4 held only while the ROADMAP itself fit.** The shed loop
+  shrank milestone parts only; the ROADMAP was never bounded and the final
+  hard truncation cut from the end of the joined context, which is exactly
+  where the milestone parts live. Reproduced: a ~28k ROADMAP with four active
+  milestones produced an injection with all four milestone headers absent and
+  only a generic notice naming no milestone and no path. The ROADMAP's 60-line
+  cap counts lines and D-052 deliberately leaves item-line length uncapped, so
+  this is reachable without any gate reddening.
+- **F3 (80) — the hook's heading match diverged from the cap's own.**
+  `scripts/cairn_scripts.py` matches a cap-exempt heading case-insensitively
+  (`line[3:].strip().lower()`) and fence-aware for both ``` and ~~~, and says
+  it shares those rules with the advisory *on purpose* "or the exemption would
+  open a hole the advisory never looks at". The hook compared raw strings and
+  ignored fences, so `## Work Log` was cap-exempt to the scripts but injected
+  WHOLE by the hook — the exact gap D-063 exists to close — and a `## Work log`
+  quoted inside a fence counted as a real section, diluting the real one's
+  budget. The code comment claiming "Exactly the sections the 150-line cap
+  exempts" was false.
+- **F4 (75, below threshold — logged, not actioned as a finding).** The
+  equality-match invariant the code names by reference to M55 (`## Reviewers`
+  must not match `## Review`) had no test: swapping equality for a prefix
+  match left all eight new tests green. Fixed incidentally alongside F3, since
+  that fix rewrites the same matcher.
 
 **Consistency gate.** `cairn_validate` exit 0, all checks passed (16 CHECK,
 7 advisory OK). Coverage completeness green — every criterion maps to an
