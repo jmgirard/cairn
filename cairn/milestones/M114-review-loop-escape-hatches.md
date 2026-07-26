@@ -44,7 +44,7 @@ which is that repo's file to change, not cairn's → nothing here.
       milestone with a re-cut incrementing and never resetting; the second trigger
       (one criterion, twice, new mechanism, same shape); and the no-recorded-alternative
       fallback offering `/milestone-brief`. Read out of the shipped file, not the draft.
-- [ ] AC2: a new prose-guard file under `skills/tests/` fails when the rule block is
+- [x] AC2: a new prose-guard file under `skills/tests/` fails when the rule block is
       blanked, carries one `Mutation(...)` entry per positive assert, and asserts the
       rule's phrases occur on exactly ONE surface across the plugin's live doctrine
       prose — `skills/**/*.md`, `README.md` and `CLAUDE.md` — matched
@@ -219,3 +219,42 @@ a defect in the doctrine text.
 **Thrash rule, applied to itself.** First return for M114. Trigger (a) needs a third;
 trigger (b) needs one criterion failing twice by a new mechanism of the same shape. Neither
 fires — an ordinary send-back, not a re-plan signal.
+
+## Review pass 2 (2026-07-26)
+
+**Scope of this pass.** `git diff 9f9f876..HEAD` on the shipped doctrine
+(`milestone-review/SKILL.md`, `tracking-rules.md`, `guard-doctrine.md`,
+`DECISIONS.md`) is EMPTY — byte-identical to what pass 1's three lenses cleared. The
+delta is the two test files, the milestone file, and the `CLAUDE.md` revert. All six
+criteria were still re-run from scratch rather than inherited, because the ticks on
+AC1/AC3-AC6 were earned against the pre-fix tree.
+
+**Fresh per-criterion evidence.** All commands run this phase.
+
+- AC1 — re-verified. Per-milestone counting at `SKILL.md:104` (exactly 1 occurrence),
+  re-cut clause `:105`, second trigger `:110-111`, recorded-alternative remedy `:113`,
+  brief fallback `:114`.
+- AC2 — **verified against the amended wording**, all four clauses.
+  (a) All 9 registered blocks red on deletion — 9 redded, 0 survived.
+  (b) 9 positive asserts : 9 `Mutation(...)` entries, pass-1 F5's shortfall closed.
+  (c) Whitespace tolerance positive-controlled in a scratch copy of the repo, never by
+  mutating it: 6 wrap positions (one-line, after `per`, after the comma, after `never`,
+  before `cut`, indented continuation) x 8 files = **48 cases, 0 mismatches**. Every
+  in-scope surface (`skills/**/*.md`, `README.md`, `CLAUDE.md`) reds at every wrap
+  position; every out-of-scope file (`CHANGELOG.md`, `cairn/DESIGN.md`,
+  `cairn/LESSONS.md`, `cairn/DECISIONS.md`) stays green. The pass-1 defect was exactly
+  the wrapped case, so the controls are aimed where the guard was blind.
+  (d) The guard states the `cairn/` exclusion and its IP4 reason in `surfaces()`.
+- AC3 — re-verified. Rule at `tracking-rules.md:352-358`, prohibition clause at `:354`.
+- AC4 — re-verified. §3 matcher-rendering rule at `guard-doctrine.md:96`; §7 silent-cell
+  rule at `:221`.
+- AC5 — re-verified. D-064 present, single heading.
+- AC6 — re-verified. Three suites from the repo root, exit codes captured separately,
+  never piped: skills 620 / scripts 280 / hooks 91, exit 0 each. Sweeps as a diff against
+  `origin/main`: M104 **0 newly wrap-broken**; M113 **12 counts rose, 11 mine**, the
+  12th (`universal`) again belonging to `test_toolchain_profiles`, which reads
+  `cairn-init/SKILL.md` — same non-finding as pass 1, re-derived not recalled.
+
+**Consistency gate.** `cairn_validate` exit 0, 16 PASS, advisories only. `cairn_impact`
+N/A — `git diff --name-only origin/main..HEAD -- cairn/DESIGN.md` is empty, so no
+principle changed. Profile `consistency-gate` is `generic` — none.
