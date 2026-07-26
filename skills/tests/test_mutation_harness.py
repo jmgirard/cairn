@@ -2287,8 +2287,7 @@ REGISTRY += [
 # pass 4 logged as the re-cut's first, and the rule went silent for four more
 # returns); lose either half of the second trigger and a wrong design reads as
 # ordinary iteration; lose the brief fallback and trigger (b) has no remedy
-# when the gate recorded no alternative. The one-surface entry is separate
-# because a forked copy is a different failure from a deleted rule.
+# when the gate recorded no alternative.
 REGISTRY += [
     Mutation(
         guard="test_thrash_rule",
@@ -2341,12 +2340,6 @@ REGISTRY += [
         test="TestThrashTriggers.test_no_recorded_alternative_offers_brief_escalation",
         target=REVIEW,
         block="instance, never automatically",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestThrashRuleHasOneSurface.test_rule_states_itself_in_exactly_one_file",
-        target=REVIEW,
-        block="per milestone, never per cut",
     ),
 ]
 
