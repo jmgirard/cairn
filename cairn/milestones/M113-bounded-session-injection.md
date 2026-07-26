@@ -1,6 +1,6 @@
 # M113: Bounded session-start injection — cap-exempt sections read-bounded newest-first, and the active milestone file joins the always-read frame
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -34,7 +34,7 @@ allocation below makes the cap degrade gracefully instead.
 
 ## Acceptance criteria
 
-- [ ] AC1: A cap-exempt section longer than the per-section budget is injected
+- [x] AC1: A cap-exempt section longer than the per-section budget is injected
       as its newest content only, preceded by a marker naming how much was
       elided and the file path to read for the rest. A section under budget is
       injected whole with no marker.
@@ -46,7 +46,7 @@ allocation below makes the cap degrade gracefully instead.
       section types (work log 3,740 chars, review 5,866 chars, over the 111
       milestone files this repo has had live), so ≥90% of each type injects
       whole; the measurement and its date are recorded in this file.
-- [ ] AC4: With more active milestones than the total budget holds, every one
+- [x] AC4: With more active milestones than the total budget holds, every one
       still appears with its `## cairn/milestones/…` header and path, and any
       truncation carries an explicit marker. No milestone and no content is
       dropped silently.
@@ -102,6 +102,7 @@ allocation below makes the cap degrade gracefully instead.
 - 2026-07-25: T7 — hooks 80 / skills 613 / scripts suites all green (exit codes checked separately), cairn_validate green; DESIGN.md hook-inventory clause updated. Status → review.
 - 2026-07-25: review round 1 — 4 findings from the [O] diff-bug lens (other two lenses clean); scored 92/85/80/75. AC1 and AC4 fail as written (F1 unbounded+unmarked prose head; F2 milestone headers lost when the ROADMAP alone overflows). Un-ticked both, status -> in-progress. Correction to the 2026-07-25 T7 line above: the skills suite is 610 tests, not 613.
 - 2026-07-25: review round 1 fixes — F1 prose rides with the oldest entry plus a line-level second pass; F2 the ROADMAP is truncated (announced) instead of tail-slicing the milestone parts away; F3 heading match now normalizes as scripts/cairn_scripts.py does (lowercased, fence-aware for ``` and ~~~). Six new hook tests, five red first. All three suites green.
+- 2026-07-25: review round 2 — 4 findings on the round-1 fixes (incl. R2-F1, a regression I introduced); 3 fixed, 1 rejected with reason. AC1 and AC4 now hold; re-ticked, status -> review. 91 hook tests.
 - 2026-07-25: minor amendment — T5's hook tests are written before T2/T3 (tests-first), not after; task order in the file unchanged, execution order noted here.
 
 ## Decisions
@@ -199,6 +200,44 @@ and AC6 above is unaffected and stands.
   must not match `## Review`) had no test: swapping equality for a prefix
   match left all eight new tests green. Fixed incidentally alongside F3, since
   that fix rewrites the same matcher.
+
+**Review round 2 — the fixes re-reviewed by a fresh [O] diff-bug lens.** Four
+more findings, each supplied with an executable reproduction, all verified
+here by re-running them against the module rather than by a separate scorer.
+Three actioned, one rejected with reason.
+
+- **R2-F1 — a regression the round-1 fix introduced.** The line-level second
+  pass had a floor of one line where the block pass has a floor of three
+  entries, so a *tighter* budget could yield *less* than a zero budget:
+  measured at budget 100-304 the work log showed ZERO entries and reported
+  "newest 1 of 42 lines shown", the shown line being blank. Fixed by dropping
+  the second pass entirely: the prose head is now charged against the budget
+  and elided on its own when it does not fit, so entries are never traded away
+  for a preamble. Re-measured across budgets 0/100/304/610/1000/6000: entry
+  counts 3/3/3/3/3/19, monotonic, never below the floor.
+- **R2-F2 — the ROADMAP truncation reserved its own marker at zero width.**
+  `notice.format(0, 0)` reserved two characters for numbers that are three
+  digits wide, so the rewritten part could overshoot by the digits it forgot
+  and re-fire the whole-context slice that R1-F2 exists to prevent — measured
+  at exactly 1 char over, cutting a milestone's path mid-marker. Fixed by
+  reserving at full width; a sweep of filler widths 40-339 now overflows at
+  none (previously 4).
+- **R2-F3 — a negative `room` dropped the `## cairn/ROADMAP.md` heading.**
+  The truncation could leave a marker naming no file. Fixed by always keeping
+  the heading line.
+- **R2-F4 — rejected with reason.** An unclosed fence swallows every following
+  heading, silently disabling the read-bound for the rest of the file. That is
+  exactly what `_plan_owned_scan` does with the same input, and matching it is
+  the whole point of R1-F3; diverging here would reintroduce that finding. The
+  same input also fails loud at `cairn_validate` (an over-cap milestone report)
+  before the silent path matters, and no file in `cairn/` trips it today.
+
+**AC4's honest bound.** Every active milestone keeps its header and path up to
+roughly 50 of them; past ~240 the pointers alone exceed the 30,000-character
+budget and headers are lost. That range is unreachable — `ROADMAP.md`'s 60-line
+item cap is a `cairn_validate` CHECK, so a repo cannot hold 240 active rows
+without failing the gate first. Measured clean at 10, 30, and 50 actives
+(0 missing headers).
 
 **Consistency gate.** `cairn_validate` exit 0, all checks passed (16 CHECK,
 7 advisory OK). Coverage completeness green — every criterion maps to an

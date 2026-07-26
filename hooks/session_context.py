@@ -120,15 +120,13 @@ def split_sections(body):
 
 
 def _blocks(lines):
-    """(blocks, unit) — the elidable units of a section body.
+    """(head, blocks, unit) — the elidable units of a section body.
 
     A section holding `- ` entries blocks by entry, so a hard-wrapped entry
     keeps its continuation lines with it (the one-line-per-entry mandate is
     an advisory, not a guarantee — D-046). Anything else blocks by line.
-    Lines above the first entry ride with the OLDEST entry rather than
-    forming an exempt preamble: an exempt preamble is uncharged and
-    uncounted, so a section whose prose precedes one closing bullet escaped
-    the budget entirely and reported nothing elided (review round 1, F1).
+    `head` is whatever sits above the first entry — an ownership comment, a
+    stamp, or a whole section of prose in a free-form `## Review`.
     """
     if any(line.startswith("- ") for line in lines):
         head, blocks = [], []
@@ -139,57 +137,39 @@ def _blocks(lines):
                 blocks[-1].append(line)
             else:
                 head.append(line)
-        if blocks:
-            blocks[0] = head + blocks[0]
-        elif head:
-            blocks = [head]
-        return blocks, "entries"
-    return [[line] for line in lines], "lines"
-
-
-def _tail_within(units, budget, floor):
-    """(kept, size) — the newest `units` fitting `budget`, never fewer than
-    `floor` of them."""
-    kept, size = [], 0
-    for unit in reversed(units):
-        cost = sum(len(line) + 1 for line in unit)
-        if size + cost > budget and len(kept) >= floor:
-            break
-        kept.append(unit)
-        size += cost
-    kept.reverse()
-    return kept, size
+        return head, blocks, "entries"
+    return [], [[line] for line in lines], "lines"
 
 
 def bounded_tail(lines, budget):
-    """(kept_lines, kept, total, unit) — the section's NEWEST content within
-    `budget`.
+    """(kept_lines, kept, total, unit, dropped_head) — the section's NEWEST
+    content within `budget`.
 
-    Two passes. Blocks first, because an entry is the unit of meaning and
-    half an entry is noise. Then, if what survives is STILL over budget,
-    lines — because the block floor guarantees the newest few blocks
-    whatever their size, so blocks alone cannot bound anything: one enormous
-    entry, or prose riding with the oldest one, sailed past the budget
-    unmarked (review round 1, F1). The second pass reports in lines, which is
-    what it actually elided.
+    Entries are taken newest-first, never fewer than MIN_TAIL_BLOCKS of them
+    whatever the budget. The head is then kept only if it still fits, and
+    `dropped_head` says whether it didn't: an unconditionally-kept head is
+    charged to nothing and reported as nothing, so a `## Review` of prose
+    closed by one bullet used to inject whole and claim nothing was elided
+    (review round 1, F1). Trimming the head rather than the entries keeps the
+    newest-wins guarantee intact — a budget tight enough to bite must never
+    leave a section showing its preamble and none of its entries.
     """
-    blocks, unit = _blocks(lines)
-    kept, size = _tail_within(blocks, budget, MIN_TAIL_BLOCKS)
-    if size <= budget or budget <= 0:
-        return (
-            [line for block in kept for line in block],
-            len(kept),
-            len(blocks),
-            unit,
-        )
-    flat = [[line] for block in kept for line in block]
-    kept_lines, _ = _tail_within(flat, budget, 1)
-    total_lines = sum(len(block) for block in blocks)
+    head, blocks, unit = _blocks(lines)
+    kept, size = [], 0
+    for block in reversed(blocks):
+        cost = sum(len(line) + 1 for line in block)
+        if size + cost > budget and len(kept) >= MIN_TAIL_BLOCKS:
+            break
+        kept.append(block)
+        size += cost
+    kept.reverse()
+    head_fits = size + sum(len(line) + 1 for line in head) <= budget
     return (
-        [line for one in kept_lines for line in one],
-        len(kept_lines),
-        total_lines,
-        "lines",
+        (head if head_fits else []) + [ln for block in kept for ln in block],
+        len(kept),
+        len(blocks),
+        unit,
+        any(line.strip() for line in head) and not head_fits,
     )
 
 
@@ -203,12 +183,18 @@ def milestone_part(mid, status, relpath, body, budget):
             continue
         lines.append(heading)
         if heading_name(heading) in CAP_EXEMPT_SECTIONS:
-            kept_lines, kept, total, unit = bounded_tail(section, budget)
-            if kept < total:
+            kept_lines, kept, total, unit, cut_head = bounded_tail(
+                section, budget
+            )
+            if kept < total or cut_head:
+                what = (
+                    f"newest {kept} of {total} {unit} shown"
+                    if kept < total
+                    else "prose above the first entry elided"
+                )
                 lines.append("")
                 lines.append(
-                    f"_cairn: newest {kept} of {total} {unit} shown — read "
-                    f"cairn/{relpath} for the rest._"
+                    f"_cairn: {what} — read cairn/{relpath} for the rest._"
                 )
             lines.extend(kept_lines)
         else:
@@ -303,19 +289,26 @@ def build_context(root):
     over = len("\n\n".join(parts)) - MAX_CHARS
     if over > 0:
         lines = parts[roadmap_at].splitlines()
+        total = len(roadmap.splitlines())
         notice = (
             "_cairn: ROADMAP truncated at {} of {} lines — read "
             "cairn/ROADMAP.md for the rest._"
         )
-        room = len(parts[roadmap_at]) - over - len(notice.format(0, 0)) - 2
+        # Reserve the notice at its WIDEST — formatted with the real numbers,
+        # not with zero-width placeholders, or the rewritten part overshoots
+        # its allowance by the digits it forgot to reserve and re-triggers the
+        # whole-context slice this exists to avoid (review round 2).
+        room = len(parts[roadmap_at]) - over - len(notice.format(total, total)) - 2
         kept, size = [], 0
         for line in lines:
             size += len(line) + 1
             if size > room:
                 break
             kept.append(line)
+        # `lines[0]` is `## cairn/ROADMAP.md` itself: a negative `room` would
+        # otherwise drop the heading naming the file being truncated.
         parts[roadmap_at] = "\n".join(
-            kept + ["", notice.format(len(kept), len(lines))]
+            (kept or lines[:1]) + ["", notice.format(max(0, len(kept) - 2), total)]
         )
 
     context = "\n\n".join(parts)

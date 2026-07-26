@@ -334,6 +334,35 @@ class TestSessionContextReadBound(RepoFixture):
         self.assertIn("## cairn/milestones/M07-test.md", ctx)
         self.assertIn("## cairn/milestones/M08-b.md", ctx)
         self.assertIn("ROADMAP truncated", ctx)
+        # The truncated ROADMAP part keeps the heading naming the file it
+        # replaced, and the rewrite stays inside its own allowance — reserving
+        # the notice at zero-width let it overshoot and re-fire the whole-
+        # context chop, cutting a milestone's path mid-marker (round 2).
+        self.assertIn("## cairn/ROADMAP.md", ctx)
+        self.assertNotIn("injection truncated", ctx)
+        self.assertLessEqual(len(ctx), 30000)
+
+    def test_roadmap_truncation_reserves_its_notice_at_full_width(self):
+        # Round 2 reproduced this at exactly 1 char over: the reserve used
+        # `format(0, 0)` while the real line carried three-digit numbers.
+        rows = [
+            "| M07 | A | in-progress | — | high | milestones/M07-test.md |",
+            "| M08 | B | review | — | high | milestones/M08-b.md |",
+        ]
+        fat = "\n".join(
+            f"| M{i:03d} | {'t' * 59} | done | — | high | milestones/archive/x.md |"
+            for i in range(400)
+        )
+        (self.root / "cairn" / "ROADMAP.md").write_text(
+            "# Roadmap\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n"
+            "|---|---|---|---|---|---|\n" + "\n".join(rows) + "\n" + fat + "\n"
+        )
+        for rel in ("milestones/M07-test.md", "milestones/M08-b.md"):
+            self.milestone(relpath=rel, work_log=["- 2026-07-01: one"])
+        ctx = self.inject()
+        self.assertLessEqual(len(ctx), 30000)
+        self.assertNotIn("injection truncated", ctx)
+        self.assertIn("read cairn/milestones/M08-b.md.", ctx)
 
     def test_a_cap_exempt_heading_is_matched_as_the_cap_matches_it(self):
         # F3/F4 (review round 1): `scripts/cairn_scripts.py` matches these
@@ -396,6 +425,58 @@ class TestSessionContextReadBound(RepoFixture):
         self.assertIn("ROADMAP truncated", ctx)
         self.assertIn("read cairn/ROADMAP.md for the rest", ctx)
         self.assertLessEqual(len(ctx), 30000)
+
+
+class TestBoundedTail(unittest.TestCase):
+    """Direct-import tests for the read-bound's pure helpers.
+
+    The subprocess rule above exists for the hook CONTRACT — the shape of the
+    JSON it prints. These are pure functions with no contract to get wrong,
+    and driving `budget` to a specific value through a whole repo fixture
+    would test the allocator instead of the bound.
+    """
+
+    def setUp(self):
+        sys.path.insert(0, str(HOOKS_DIR))
+        import session_context
+
+        self.sc = session_context
+        self.addCleanup(sys.path.remove, str(HOOKS_DIR))
+
+    def section(self, n=40, width=280):
+        return [""] + [
+            f"- 2026-07-01: entry-{i:03d} " + "e" * width for i in range(n)
+        ]
+
+    def test_the_newest_entries_survive_however_tight_the_budget(self):
+        # Review round 2: a line-level second pass undid the entry floor, so
+        # at budget 100-304 the section showed ZERO entries and reported
+        # "newest 1 of 42 lines shown" — the shown line being blank. Entry
+        # count must never fall as the budget rises, and never below the floor.
+        seen = []
+        for budget in (0, 100, 304, 610, 1000, 6000):
+            kept, _, _, _, _ = self.sc.bounded_tail(self.section(), budget)
+            seen.append(sum(1 for line in kept if line.startswith("- ")))
+        self.assertEqual(seen, sorted(seen), f"entry count fell: {seen}")
+        self.assertGreaterEqual(min(seen), self.sc.MIN_TAIL_BLOCKS)
+
+    def test_prose_above_the_first_entry_is_charged_and_reported(self):
+        lines = [f"paragraph-{i}" + "p" * 400 for i in range(40)] + ["- newest"]
+        kept, _, _, _, cut_head = self.sc.bounded_tail(lines, 6000)
+        self.assertTrue(cut_head)
+        self.assertNotIn("paragraph-0" + "p" * 400, kept)
+        self.assertIn("- newest", kept)
+
+    def test_a_blank_only_head_is_not_reported_as_elided_prose(self):
+        _, _, _, _, cut_head = self.sc.bounded_tail(self.section(n=2), 10)
+        self.assertFalse(cut_head)
+
+    def test_degenerate_sections_round_trip(self):
+        for lines in ([], [""], ["   "], ["- only"]):
+            with self.subTest(lines=lines):
+                kept, k, t, _, _ = self.sc.bounded_tail(lines, 6000)
+                self.assertLessEqual(k, t)
+                self.assertEqual(kept, lines)
 
 
 class TestStopGuard(RepoFixture):
