@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-25 (M113 merged, PR #113 — the SessionStart injection is now read-bounded and the always-read frame table has its fifth row (D-063); M108 row pruned to hold the 5-row terminal cap. Candidates unchanged at 12; `cairn_validate` green.)_validate` green. Earlier today: M112 merged, PR #112.)_
+_Last hygiene check: 2026-07-26 (audit pass driven by the intraclass M93 review-loop question. Repaired this stamp: the 2026-07-25 replace left a tail of the M112 stamp behind, so it read as two. Nothing in flight — 0 in-progress, 0 planned; candidates 12; `cairn_validate` green; both GitHub inboxes empty.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
