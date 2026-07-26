@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -44,7 +44,7 @@ which is that repo's file to change, not cairn's → nothing here.
       milestone with a re-cut incrementing and never resetting; the second trigger
       (one criterion, twice, new mechanism, same shape); and the no-recorded-alternative
       fallback offering `/milestone-brief`. Read out of the shipped file, not the draft.
-- [x] AC2: a new prose-guard file under `skills/tests/` fails when the rule block is
+- [ ] AC2: a new prose-guard file under `skills/tests/` fails when the rule block is
       blanked, carries one `Mutation(...)` entry per positive assert, and asserts the
       rule's phrases occur on exactly ONE surface across the plugin's live doctrine
       prose — `skills/**/*.md`, `README.md` and `CLAUDE.md` — matched
@@ -110,6 +110,7 @@ which is that repo's file to change, not cairn's → nothing here.
 - 2026-07-26: gated amendment — AC2's `repo-wide` clause is replaced by the three live-prose surfaces it can actually bound (`skills/**/*.md`, `README.md`, `CLAUDE.md`), plus an explicit whitespace-tolerance requirement and the stated reason `cairn/` is out (D-064 quotes the rule it records; IP4 makes that permanent). `CHANGELOG.md` stays out as a history file, the one thing guard-doctrine §7 lets an exclusion list name. AC1, AC3-AC6 wording untouched.
 - 2026-07-26: F1/F2 fixed — the one-surface pin is now a `re.compile(r"per\s+milestone,\s+never\s+per\s+cut")` search instead of a literal `in`, and `surfaces()` yields `CLAUDE.md` beside `README.md`. Positive-controlled at every surface rather than argued: a fork appended in BOTH wrapped and one-line form reds `skills/milestone/SKILL.md`, `README.md` and `CLAUDE.md` (6/6) and correctly leaves `CHANGELOG.md`, `cairn/DESIGN.md` and `cairn/LESSONS.md` green (6/6) — 12/12, 0 mismatches, baseline green, every probe file byte-restored.
 - 2026-07-26: F5 fixed — the two unregistered asserts now carry `Mutation(...)` entries; 9 positive asserts against 9 registered entries, and both new blocks proved to red on deletion. Gate on the final tree: three suites exit 0 separately (skills 620 / scripts 280 / hooks 91), `cairn_validate` exit 0, plan-owned body 98/149. Status -> review.
+- 2026-07-26: review pass 2 FAILED the gate — AC2 again, and THRASH TRIGGER (b) FIRES on this milestone by its own rule. AC2 has failed twice, each by a new mechanism of one shape (the one-surface detector cannot see a rendering its target can take): pass 1 a line wrap (F1), pass 2 a blockquote continuation marker (G2, 83) and mid-phrase emphasis (G3, 80). Five findings scored >=80: G4 (90) the Review section cited a commit hash that does not exist — written from memory, corrected in place and marked; G7 (87) the registry comment says 'Six entries' against 9, wrong on arrival at 7; G1 (85) the matcher carries zero in-test positive controls, which is exactly what this milestone's own guard-doctrine §3 forbids; plus G2 and G3. G6 (68) and G5 (40) logged. AC1, AC3-AC6 re-verified this pass and stand; shipped doctrine untouched. Remedy per trigger (b): adopt the recorded alternative — §3's in-test positive controls — rather than widen the regex a third time. No brief escalation owed, since an alternative is on record. Status -> in-progress.
 
 ## Decisions
 
@@ -203,7 +204,7 @@ sufficient.
 
 **Review incident, recorded.** The [O] lens appended a scratch copy of the thrash rule to
 `CLAUDE.md` to test the sweep's scope, and my `git add -A` swept it into the pushed commit
-`9f9f876`. The lens self-reported it. Fixed forward in `4f7e0dc` (no history rewrite on a
+`9f9f876`. The lens self-reported it. Fixed forward in `4c260fc` (hash corrected pass 2 — `4f7e0dc` never existed, G4) (no history rewrite on a
 pushed branch); `CLAUDE.md` is now identical to `origin/main` and absent from the branch
 diff. The rule I broke is tracking-rules' own: never sweep strangers into a checkpoint
 commit. `git add -A` is unsafe while subagents are live in a shared checkout.
@@ -258,3 +259,56 @@ AC1/AC3-AC6 were earned against the pre-fix tree.
 **Consistency gate.** `cairn_validate` exit 0, 16 PASS, advisories only. `cairn_impact`
 N/A — `git diff --name-only origin/main..HEAD -- cairn/DESIGN.md` is empty, so no
 principle changed. Profile `consistency-gate` is `generic` — none.
+
+**Independent review — three lenses, then a scorer.** Prior-review: zero findings; it
+verified each pass-1 fix discharged its finding and that F3/F4/F6/F7 are still recorded
+(IP3). Blame-history: no regression; it confirmed the M103 identity property survives the
+matcher swap, and raised the stale entry-count comment below. Diff-bug: six findings. All
+three lenses left the tree clean this pass — the pass-1 contamination did not recur.
+
+- **G4 (90) — actioned, fixed this pass.** The Review section cited commit `4f7e0dc` for
+  the contamination revert; no such object exists (`git cat-file -t` fails). The real
+  commit is `4c260fc`. I wrote the hash from memory instead of from command output —
+  the exact failure guard-doctrine §6 names ("write evidence counts from command output,
+  never memory"). Corrected in place and marked, per D-045.
+- **G7 (87) — actioned.** `test_mutation_harness.py:2280` introduces the thrash block as
+  "Six entries because the rule fails in six independent ways"; there are 9. It said
+  "Six" when written against 7, so it was wrong on arrival and is wronger now — §6's
+  "derived wrong, and restated stale", both halves, in this milestone's own comment.
+- **G1 (85) — actioned.** `test_thrash_rule.py:97`. The matcher carries ZERO in-test
+  positive controls. §3, added by THIS milestone, says to carry the renderings into the
+  test because "the author of a detector is exactly who cannot enumerate the renderings
+  it misses". The rendering coverage was done externally in a scratch copy and discarded,
+  so nothing committed exercises `PATTERN` against any rendering; the registered mutation
+  proves only that the guard reds on DELETION, never that it sees a copy APPEARING.
+- **G2 (83) — actioned.** `\s+` does not cross a blockquote continuation marker: a fork
+  rendered `> count returns per milestone,\n> never per cut` does not match, because the
+  inter-token text is `,\n> ` and `>` is not whitespace. Blockquotes are how
+  `milestone-review/SKILL.md` already hands doctrine to subagents (7 such lines there,
+  1 in `tracking-rules.md`).
+- **G3 (80) — actioned.** The matcher widened along the whitespace axis only, against §5's
+  standing requirement to accept emphasis around a token it reads. A fork writing
+  `**per milestone**, never **per cut**` passes green; the surface being swept carries 39
+  bold runs and the shipped rule bolds this very phrase.
+
+**Logged, below the 80 threshold (2).** G6 (68) the module docstring still says one assert
+is `\s+`-tolerant "except the second trigger" when there are now two. G5 (40) the
+`surfaces()` comment presents excluding `cairn/` as §7-sanctioned when §7 says an exclusion
+list may name only history files and never a live directory — the scorer judged the
+exclusion itself plan-approved by the AC2 amendment and already scrutinized at pass 1.
+
+**GATE FAILURE — returned to `in-progress` (review pass 2).** AC2 again. AC1, AC3, AC4,
+AC5 and AC6 were re-verified from scratch this pass and stand; the shipped doctrine prose
+is untouched and unimplicated.
+
+**THRASH TRIGGER (b) FIRES — on this milestone, by its own rule.** AC2 has now failed
+twice, each time by a new mechanism of one shape: *the one-surface detector cannot see a
+rendering its target can legitimately take* — pass 1 a line wrap (F1), pass 2 a blockquote
+marker (G2) and mid-phrase emphasis (G3). The rule's own words apply verbatim: "Re-cutting
+around the same predicate buys the next mechanism, not a fix." Widening the regex a third
+time would buy the third. The remedy trigger (b) prescribes is to reconsider the
+alternative recorded against the chosen approach — and G1 names it, in this milestone's
+own shipped §3: carry the renderings INTO the test as positive controls, which is
+"strictly stronger than external mutation-verification". No `/milestone-brief` escalation
+is owed, because an alternative IS on record; the fallback exists only for when none is.
+Second return, so trigger (a) has not fired.
