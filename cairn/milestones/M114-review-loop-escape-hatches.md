@@ -1,11 +1,11 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP4, IP2
-- **Branch/PR:** —
+- **Branch/PR:** `m114-review-loop-escape-hatches`
 
 ## Goal
 
@@ -94,6 +94,7 @@ which is that repo's file to change, not cairn's → nothing here.
 - 2026-07-26: created by /milestone-plan from the /milestone audit's intraclass M93 post-mortem — 8 review passes and 3 plan re-cuts, of which passes 6-8 found no behaviour defect at all; M92 had 7 passes with the same signature ("1-6 each failed AC5 on prose authored about the work, never on the code").
 - 2026-07-26: plan gate — three decisions. The thrash rule stays in `/milestone-review` (it has exactly one surface, and the rulebook is +83 lines / +7,401 chars over its M95 baseline with D-057 governing growth at the door). The promotion-condition rule goes in tracking-rules rather than the records-hygiene module, because candidate rows are created conversationally and a conditionally-read module would never fire on that path. The no-recorded-alternative case offers an RB escalation rather than collapsing into trigger (a); closing it upstream is a candidate row.
 - 2026-07-26: verified at plan time rather than assumed — the thrash rule's phrases (`third trip`, `queue another retry`, `mis-planned`, `re-plan or split`) occur at exactly two lines repo-wide, both in `skills/milestone-review/SKILL.md`, and no file under `skills/tests/` asserts any of them, so the rule is unguarded prose today (M95: confirm an unpinned verdict against the guards, never against the prose).
+- 2026-07-26: branch `m114-review-loop-escape-hatches` cut from main (0/0 with origin); status -> in-progress.
 
 ## Decisions
 
