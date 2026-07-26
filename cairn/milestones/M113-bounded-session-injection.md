@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1, IP4
-- **Branch/PR:** m113-bounded-session-injection
+- **Branch/PR:** m113-bounded-session-injection · https://github.com/jmgirard/cairn/pull/113
 
 ## Goal
 
@@ -34,27 +34,27 @@ allocation below makes the cap degrade gracefully instead.
 
 ## Acceptance criteria
 
-- [ ] AC1: A cap-exempt section longer than the per-section budget is injected
+- [x] AC1: A cap-exempt section longer than the per-section budget is injected
       as its newest content only, preceded by a marker naming how much was
       elided and the file path to read for the rest. A section under budget is
       injected whole with no marker.
-- [ ] AC2: Against this repo's own worst historical case — M95's 23,147-char /
+- [x] AC2: Against this repo's own worst historical case — M95's 23,147-char /
       65-entry work log — the injection contains M95's newest work-log entry
       and not its oldest, inverting today's behaviour. A fixture test pins both
       directions.
-- [ ] AC3: The per-section budget is ≥ the measured p90 of both cap-exempt
+- [x] AC3: The per-section budget is ≥ the measured p90 of both cap-exempt
       section types (work log 3,740 chars, review 5,866 chars, over the 111
       milestone files this repo has had live), so ≥90% of each type injects
       whole; the measurement and its date are recorded in this file.
-- [ ] AC4: With more active milestones than the total budget holds, every one
+- [x] AC4: With more active milestones than the total budget holds, every one
       still appears with its `## cairn/milestones/…` header and path, and any
       truncation carries an explicit marker. No milestone and no content is
       dropped silently.
-- [ ] AC5: `tracking-rules.md`'s always-read table carries a fifth row for the
+- [x] AC5: `tracking-rules.md`'s always-read table carries a fifth row for the
       active milestone file naming all three elements, and the surrounding
       prose states that this is the one always-read surface that leaves the set
       (archived at `done`) and the one split across two of GP1's mechanisms.
-- [ ] AC6: `verify` slot clean — `python3 -m unittest discover` over all three
+- [x] AC6: `verify` slot clean — `python3 -m unittest discover` over all three
       suites, each exit code checked separately (M56/M111).
 
 ## Coverage
@@ -124,3 +124,43 @@ allocation below makes the cap degrade gracefully instead.
   degradation and this is what it degrades by.
 
 ## Review
+
+_Evidence gathered 2026-07-25 on branch `m113-bounded-session-injection`,
+PR #113. Each criterion's box ticked as its line below was recorded._
+
+- **AC1** — `TestSessionContextReadBound` (hooks suite): a 65-entry work log
+  yields the marker `newest 11 of 65 entries shown — read cairn/… for the
+  rest`; a 6-entry log injects all six with no marker
+  (`test_bounded_section_names_what_it_elided_and_where_to_read_it`,
+  `test_section_under_budget_is_injected_whole_with_no_marker`, both ok).
+- **AC2** — run live against the real M95 file (23,147-char / 65-entry work
+  log) in a scratch cairn repo: OLD hook 30,000 chars, newest entry ABSENT,
+  oldest present, no marker, cut mid-sentence; NEW hook 24,118 chars, newest
+  present, oldest absent, marker as above. Both directions also pinned by
+  fixture (`test_long_work_log_keeps_the_newest_entries_and_drops_the_oldest`,
+  ok).
+- **AC3** — `SECTION_MAX_CHARS = 6000` (`hooks/session_context.py:41`) against
+  the measured p90s: 6000 ≥ 3,740 (work log) and ≥ 5,866 (review). Method and
+  full percentiles recorded in this file's Decisions section.
+- **AC4** — four active milestones over budget: all four keep their
+  `## cairn/milestones/…` header and path, the shed ones carrying
+  `body elided for the injection budget`; an over-budget ROADMAP alone yields
+  `injection truncated`
+  (`test_no_active_milestone_vanishes_when_the_total_budget_binds`,
+  `test_hard_truncation_is_marked_never_silent`, both ok). Confirmed the old
+  behaviour was the defect: those same tests failed against `main`, with M09
+  and M10 absent from the injection entirely.
+- **AC5** — `skills/tests/test_always_read_frame.py` 9/9 ok, including the
+  fifth row pinned whole and the two distinguishing claims each pinned
+  separately; all three registered in the mutation harness.
+- **AC6** — three suites from the repo root, exit codes checked separately
+  (never piped): hooks 80 ok exit 0 · skills 610 ok exit 0 · scripts 280 ok
+  exit 0.
+
+**Consistency gate.** `cairn_validate` exit 0, all checks passed (16 CHECK,
+7 advisory OK). Coverage completeness green — every criterion maps to an
+existing task. `cairn_impact --changed` skipped: no `DESIGN.md` principle
+changed (the only DESIGN.md edit is the hooks-inventory clause). Toolchain
+half of the gate is a clean no-op — the `generic` profile's
+`consistency-gate` slot names no toolchain checks.
+
