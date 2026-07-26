@@ -1,9 +1,9 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
-- **Driving RR:** —
+- **Driving RR:** RR05
 - **Principles touched:** GP4, IP2
 - **Branch/PR:** `m114-review-loop-escape-hatches` · https://github.com/jmgirard/cairn/pull/114
 
@@ -42,64 +42,82 @@ rejected alternative → candidate row.
 
 ## Acceptance criteria
 
-<!-- Re-cut 2026-07-26 at the third return. AC2's one-surface clause is deleted with the
-     pin; AC1 gains the precedence and work-log-pointer elements (review F4, F3). Every
-     box unticked — the tree changes, so each criterion re-verifies from scratch. -->
+<!-- Driving RR05, ingested 2026-07-26. AC1-AC8 are the RR's Binding criteria,
+     carried VERBATIM and mechanically diffed by cairn_validate's `binding
+     criteria` check. AC9-AC11 are M114's own, retained from the re-cut. -->
 
-- [ ] AC1: the thrash rule states all five of — returns counted per milestone with a
-      re-cut incrementing and never resetting; the work log named as the record that
-      survives a re-cut; the second trigger (one criterion, twice, new mechanism, same
-      shape); the no-recorded-alternative fallback offering `/milestone-brief`; and that
-      trigger (a) takes precedence where both fire. Read out of the shipped file.
-- [ ] AC2: a prose-guard file under `skills/tests/` fails when the rule block is blanked,
-      and carries one `Mutation(...)` entry per positive assert that pins doctrine prose.
-      No claim about how many files state the rule — that is the pin, now Out.
-- [x] AC3: `tracking-rules.md` states the promotion-condition rule beside search-first
+- [ ] AC1 (BC1): The thrash rule states trigger (a)'s condition as an explicit threshold — it fires
+      on the third return and on every return after it — and retains verbatim that
+      returns are counted per milestone, never per cut, with a re-cut incrementing and
+      never resetting the count. No wording introduces a per-cut window for either the
+      count or the trigger.
+- [ ] AC2 (BC2): The clause "Where both fire, trigger (a) wins" and its "do not queue the retry (b)
+      alone would allow" sentence are removed from `skills/milestone-review/SKILL.md`,
+      and their two asserts and two `Mutation(...)` registry entries are removed with
+      them.
+- [ ] AC3 (BC3): In their place the rule states that where both triggers fire, trigger (a) governs
+      the disposition — no further retry under the current plan; the milestone routes
+      through `/milestone-plan` — and trigger (b)'s diagnosis and its `/milestone-brief`
+      escalation offer carry into that routing rather than being discarded.
+- [ ] AC4 (BC4): The rule defines the post-re-cut case: when trigger (a) fires and the work log
+      already records a re-plan or split spent on this milestone, the prescribed remedy
+      is no longer re-plan-or-split, and the routing chip is composed from — an offered
+      `/milestone-brief` escalation, parking as `blocked` with the blocker named in a
+      work-log line, or dropping at the user's explicit decision — with no bare-retry
+      option as the recommended chip option.
+- [ ] AC5 (BC5): No wording added by this change makes `/milestone-brief` automatic or a standing
+      menu item; every escalation surface remains an offer gated per instance (D-004,
+      D-062).
+- [ ] AC6 (BC6): `skills/tests/test_thrash_rule.py` pins each clause BC1, BC3, and BC4 add, with
+      the exhaustion branch's diagnosis and remedy pinned by separate asserts; every
+      multi-word anchor that can cross a line wrap is matched with `\s+` across the
+      break; each doctrine-pinning assert carries its own `Mutation(...)` entry; the
+      doctrine-pinning assert count equals the registered entry count, both read out of
+      the files (tolerance: exact), and blanking every registered block reds its named
+      test (tolerance: 0 survivors).
+- [ ] AC7 (BC7): The guard's module docstring states no numeric count of pinned properties and no
+      numeric count of `\s+` exceptions.
+- [ ] AC8 (BC8): On the final tree, the three suites pass from the repo root with exit codes
+      checked separately (tolerance: exit 0 each, never piped) and `python3
+      scripts/cairn_validate.py` exits 0.
+- [ ] AC9: `tracking-rules.md` states the promotion-condition rule beside search-first
       candidate creation, guarded by an assert in `test_search_first_candidates.py`
       with its own `Mutation(...)` entry.
-- [x] AC4: `guard-doctrine.md` §3 states the matcher-rendering rule and §7 the sweep
-      non-vacuity rule, each guarded in `test_lesson_graduation.py` with its own
-      `Mutation(...)` entry — registration is per block, and the completeness meta-test
-      catches only an unregistered FILE (M60/M85).
-- [ ] AC5: a `DECISIONS.md` entry records the supersession, naming the per-cut reading
-      it replaces and the M93/M92 evidence, and back-references the rule's prior form.
-- [x] AC6: all three `unittest` suites green from the repo root with exit codes checked
-      individually, never through a pipe (M56/M65, M111); an adjacency sweep shows every
-      guard asserting a phrase near an edited block still matches on one physical line
-      (M104); and no phrase this milestone adds gives an existing guard false coverage
-      by occurring twice (M113).
-
+- [ ] AC10: `guard-doctrine.md` §3 states the matcher-rendering rule and §7 the sweep
+      non-vacuity rule, each guarded in `test_lesson_graduation.py` with its own entry.
+- [ ] AC11: D-064 records the supersession AND no longer claims a guard pins the rule to
+      one surface — deleted at the re-cut, so the claim is false and is corrected before
+      merge rather than superseded after it (review pass 4, K1).
 ## Coverage
 
-- AC1 → T7
-- AC2 → T6
-- AC3 → T3
-- AC4 → T4
-- AC5 → T5
-- AC6 → T8
+- AC1 → T9
+- AC2 → T9
+- AC3 → T9
+- AC4 → T9
+- AC5 → T9
+- AC6 → T10
+- AC7 → T10
+- AC8 → T11
+- AC9 → T1-T8
+- AC10 → T1-T8
+- AC11 → T11
 
 ## Tasks
 
-<!-- T1-T5 shipped before the re-cut and stay on the branch; T6 reverts the part of T2
-     that built the one-surface pin. T6-T8 are the re-cut's work. -->
-
-- [x] T1: rewrite the thrash rule to the two-trigger, per-milestone-count form.
-- [x] T2: author `skills/tests/test_thrash_rule.py` and register each doctrine-pinning
-      assert in `test_mutation_harness.py`.
-- [x] T3: add the promotion-condition rule to `tracking-rules.md`; extend
-      `test_search_first_candidates.py`; register and prove it reds.
-- [x] T4: add the §3 and §7 rules to `guard-doctrine.md`; extend
-      `test_lesson_graduation.py`; register both and prove each reds.
-- [x] T5: write D-064.
-- [x] T6: delete the one-surface pin — `TestThrashRuleHasOneSurface`,
-      `TestDetectorSeesEveryRendering`, `normalize()`, `states_the_rule()`, `RENDERINGS`,
-      `NON_FORKS`, `PHRASE`, `surfaces()` — and its registry entry; verify the count goes
-      9 → 8 rather than assuming it.
-- [x] T7: add the precedence clause and the work-log pointer to the thrash rule; extend
-      the guard to pin both; register each and prove it reds.
-- [x] T8: candidate row for the pin, promotion condition naming a class of evidence and
-      never a count (the rule this milestone ships); adjacency + false-coverage sweeps;
-      three suites from the repo root, exit codes checked separately.
+- [x] T1-T8: the doctrine, its guards and D-064, then the re-cut that deleted the
+      one-surface pin and added the two review-found fixes. Shipped; per-task detail is
+      in the work log below, which is where it stays (over-cap remedy).
+- [ ] T9: rewrite the rule per RR05 — explicit threshold form (AC1); delete the
+      unconditional precedence clause with its two asserts and entries (AC2); state
+      scoped composition (AC3); add the exhaustion branch (AC4); every escalation stays
+      an offer (AC5).
+- [ ] T10: guard it (AC6) — exhaustion diagnosis and remedy pinned by separate asserts,
+      `\s+` across every wrappable anchor, one entry per doctrine-pinning assert, asserts
+      == entries measured from the files, 0 survivors on blanking; strip both counts from
+      the module docstring (AC7, closing J3/J4).
+- [ ] T11: correct D-064's false one-surface claim before merge (AC11/K1); fix the
+      `SyntaxWarning: "\s" is an invalid escape sequence`; adjacency + false-coverage
+      sweeps; three suites, exit codes separately (AC8).
 
 ## Work log
 
@@ -131,8 +149,30 @@ rejected alternative → candidate row.
 - 2026-07-26: SUPERSEDES the 2026-07-26 T-fix entry above that reads "normalization only deletes characters, so it can only turn a match into a non-match" and "dropping any normalization axis reds the positives". Both are FALSE and review pass 3 proved it: H4 (82) — normalization's whole purpose is turning a non-match into a match, and `states_the_rule` was False on a raw wrapped string and True after it; H2 (85) — the `.lower()` axis had no control, and dropping it left the suite green at 622. The entry is append-only history under IP4/D-045 and is not edited; this line is the correction, and the code both claims described was deleted at the re-cut. Recorded here because a reader of the work log alone would otherwise meet two false claims presented as measurement.
 - 2026-07-26: review pass 4 FAILED the gate — FOURTH return, and on a NEW shape. K1 (blame-history, verified verbatim, unscored): D-064 claims the shipped guard pins the rule to one surface, which T6 deleted — a false statement in an append-only decision record about the very system it justifies. J3 (85) and J4 (85): the guard's docstring is stale against its own file on two axes, both introduced by T7 after T6 had just corrected it — pass-2 G6 and G7 recurring. J2 (82): the precedence clause T7 added to fix F4 forecloses trigger (b)'s escalation permanently from return 3 onward while (a)'s remedy is already spent — a design defect in my own fix. J1 (50) and J5 (35) logged. AC1/AC2/AC5 ticks withdrawn; AC3/AC4/AC6 stand. Passes 1-3 all failed on the deleted pin; pass 4 fails on records drifting from the artifacts they describe, so trigger (b) does NOT fire — new shape, not a new mechanism. Status -> in-progress.
 - 2026-07-26: blocked on RB05 — J2 (the trigger-precedence trap) escalated to a Fable review brief at the user's call rather than settled in-session. The reason is the escalation bar D-062 lowered: I designed the clause, the clause was itself the fix for pass-1 F4, and this milestone has now failed twice on doctrine edits I authored, so my judgment on the next doctrine edit is what is in question. RB05 asks four things — whether (a)'s condition should stay a threshold, whether precedence should exist at all or the triggers compose, what governs a milestone returning after a re-cut (undefined anywhere in cairn today), and whether reverting to a documented ambiguity beats shipping a documented trap. K1, J3, J4 and the escape-sequence warning are queued implement work and do not depend on the answer.
+- 2026-07-26: RR05 ingested. Eight binding criteria carried VERBATIM into the AC block as AC1-AC8 (`Driving RR: RR05`); `cairn_validate`'s `binding criteria` check confirms the string match. AC9-AC11 are M114's own, AC11 newly covering K1's false D-064 claim. Six recommendations apply, one considered, two rejected with reason — all recorded in Decisions. No supersession owed: RR05 explicitly declined to argue against D-064, D-004/D-062 or D-059. Plan-owned body 139/149; `sizing` now WARNs at 11 criteria and 11 tasks, a judgment surfaced rather than auto-fixed. Status -> in-progress.
 
 ## Decisions
+
+<!-- RR05's reasoning lives in `cairn/reviews/archive/RR05-thrash-trigger-precedence.md`,
+     which is authoritative; these are pointers, not a restatement (over-cap remedy,
+     tracking-rules). Its Binding criteria are AC1-AC8 above, verbatim. -->
+
+- 2026-07-26 (RR05 Q1): trigger (a) stays a THRESHOLD, stated explicitly. Both
+  alternatives rejected — "exactly the third" recreates the fire-once-go-silent
+  signature; "since the last re-cut" is per-cut resetting, which D-064 exists to stop.
+  The defect was the static remedy, never the predicate.
+- 2026-07-26 (RR05 Q2): composition, not precedence — (a) wins the retry question only;
+  (b)'s diagnosis and escalation offer carry into the routing.
+- 2026-07-26 (RR05 Q3): the post-re-cut gap is real; remedy is an exhaustion branch
+  (offer escalation / park `blocked` / drop), never a bare retry. Terminal dispositions
+  rejected against IP3 and D-004/D-062.
+- 2026-07-26 (RR05 Q4): reverting REJECTED — F4's ambiguity demonstrably fires, and the
+  D-059 retire-don't-repair precedent does not transfer.
+- 2026-07-26 (RR05 Q5): guard changes are AC6/AC7 above.
+- 2026-07-26 (RR05 rec 7, CONSIDER, not applied): reword (b) to "twice or more" and label
+  the bullets — task-time judgment; the labelling half is pass-4 J1 (50, logged).
+- 2026-07-26 (RR05 rec 8, REJECTED with reason): no `tracking-rules` or `cairn_validate`
+  home — D-064 choices 4 and 6 settled both on grounds these changes do not disturb.
 
 ## Review
 
