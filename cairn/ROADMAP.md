@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-24 (candidate-triage audit: 12 candidates, none promotable or prunable — every trigger unfired but live, oldest row 13 days; evidence collected where collectable (cost line, no regression) or arrives as lived friction (D-027/D-033 model). Inbox clean (0 issues / 0 PRs), reviews clear, `cairn_validate` green. Earlier today: M112 merged, PR #112.)_
+_Last hygiene check: 2026-07-25 (M113 merged, PR #113 — the SessionStart injection is now read-bounded and the always-read frame table has its fifth row (D-063); M108 row pruned to hold the 5-row terminal cap. Candidates unchanged at 12; `cairn_validate` green.)_validate` green. Earlier today: M112 merged, PR #112.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M113 | Bounded session-start injection — cap-exempt sections read-bounded newest-first, and the active milestone file joins the always-read frame (D-063) | review | — | normal | milestones/M113-bounded-session-injection.md |
+| M113 | Bounded session-start injection — cap-exempt sections read-bounded newest-first, and the active milestone file joins the always-read frame (D-063) | done | — | normal | milestones/archive/M113-bounded-session-injection.md |
 | M112 | Soften the Fable warning — neutral token-cost framing, lower the recommend bar, per-instance RB/RR gate retained | done | — | normal | milestones/archive/M112-soften-fable-warning.md |
 | M111 | GitHub-release handoff command — /cairn-release provides a conditional `gh release create` | done | — | normal | milestones/archive/M111-github-release-handoff.md |
 | M110 | Records-hygiene doctrine module — graduate the gate-time lesson family (M35/M51/M69/M73/M77/M78×2/M87) into skills/shared/records-hygiene.md, the second maturation application (D-055) | done | — | normal | milestones/archive/M110-records-hygiene-module.md |
 | M109 | Cost-test fixture store — attribution tests run against a small fixture store; one skip-if-absent test retains the real-store live-shape guarantee | done | — | normal | milestones/archive/M109-cost-test-fixture-store.md |
-| M108 | Always-read audit frame — every always-read file names its three governance elements (inflow test, outflow/read-bound, attention signal), checked at the /milestone audit | done | — | normal | milestones/archive/M108-always-read-audit-frame.md |
 
 ## Candidates
 
