@@ -76,7 +76,7 @@ which is that repo's file to change, not cairn's → nothing here.
 
 - [x] T1: rewrite the thrash rule at `skills/milestone-review/SKILL.md:101-105` to the
       two-trigger, per-milestone-count form with the `/milestone-brief` fallback.
-- [ ] T2: author `skills/tests/test_thrash_rule.py` — anchors copied from the shipped
+- [x] T2: author `skills/tests/test_thrash_rule.py` — anchors copied from the shipped
       file's actual bytes, never the draft (M95); `\s+` matchers where a phrase wraps
       (M105); read the target via `Path.read_text` or the engine cannot see it (M100).
       Register each positive assert in `test_mutation_harness.py` and prove each reds.
@@ -96,6 +96,7 @@ which is that repo's file to change, not cairn's → nothing here.
 - 2026-07-26: verified at plan time rather than assumed — the thrash rule's phrases (`third trip`, `queue another retry`, `mis-planned`, `re-plan or split`) occur at exactly two lines repo-wide, both in `skills/milestone-review/SKILL.md`, and no file under `skills/tests/` asserts any of them, so the rule is unguarded prose today (M95: confirm an unpinned verdict against the guards, never against the prose).
 - 2026-07-26: branch `m114-review-loop-escape-hatches` cut from main (0/0 with origin); status -> in-progress.
 - 2026-07-26: T1 — the thrash rule is rewritten to count returns per milestone with a re-cut incrementing and never resetting, and split into two triggers: a third return (mis-planned, re-plan or split) and the same criterion failing twice by a new mechanism of the same shape (wrong approach — reconsider the alternative the plan gate recorded against, or offer `/milestone-brief` where none was recorded). All three suites exit 0 after the edit, which is also the M104 adjacency evidence: no neighbouring guard's anchor reflowed.
+- 2026-07-26: T2 — `skills/tests/test_thrash_rule.py` adds 7 asserts over the rule's four properties plus a one-surface pin, each with its own `Mutation(...)` entry (7 registered; every block resolves 1x in the shipped file, including the one spanning the line break, matched with `\s+` per M105). Confirmed the mechanism first: the completeness meta-test redded on the unregistered file before I registered it. The one-surface pin sweeps `skills/**/*.md` plus `README.md` — the README is in scope because M112 found doctrine going stale exactly there — and was inversion-proved by hand: a forked copy appended to README reds it, restoring goes green, README byte-identical after.
 
 ## Decisions
 

@@ -2277,6 +2277,63 @@ REGISTRY += [
     ),
 ]
 
+# M114: the thrash rule, unguarded prose until now. Six entries because the
+# rule fails in six independent ways, and the intraclass M93 post-mortem shows
+# four of them actually happening: lose "per milestone, never per cut" or the
+# increments-never-resets clause and the counter reads per-cut again (M93's
+# pass 4 logged as the re-cut's first, and the rule went silent for four more
+# returns); lose either half of the second trigger and a wrong design reads as
+# ordinary iteration; lose the brief fallback and trigger (b) has no remedy
+# when the gate recorded no alternative. The one-surface entry is separate
+# because a forked copy is a different failure from a deleted rule.
+REGISTRY += [
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashCounting.test_returns_are_counted_per_milestone_not_per_cut",
+        target=REVIEW,
+        block="Count returns **per milestone, never per cut**",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashCounting.test_a_recut_increments_the_count_and_never_resets_it",
+        target=REVIEW,
+        block="increments the count and never resets it",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers."
+             "test_third_return_is_a_trigger_and_recommends_replan_or_split",
+        target=REVIEW,
+        block="**A third return** — a mis-planned milestone",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers."
+             "test_second_trigger_is_same_criterion_new_mechanism_same_shape",
+        target=REVIEW,
+        block="The same acceptance criterion failing twice, each by a new mechanism of\n"
+              "     the same shape",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers.test_second_trigger_remedy_is_the_recorded_alternative",
+        target=REVIEW,
+        block="reconsider the alternative the plan gate recorded against",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers.test_no_recorded_alternative_offers_brief_escalation",
+        target=REVIEW,
+        block="Where it recorded none, offer escalation via `/milestone-brief`",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashRuleHasOneSurface.test_rule_states_itself_in_exactly_one_file",
+        target=REVIEW,
+        block="per milestone, never per cut",
+    ),
+]
+
 # M100 (RR04 rec 8): finding-enforcement prose. One entry per target file the
 # guard reads, plus separate entries where blocks fail independently (the
 # review-section juxtaposition and the merge-chip shortfall option each carry
