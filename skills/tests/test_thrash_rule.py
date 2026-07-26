@@ -52,6 +52,15 @@ class TestThrashCounting(unittest.TestCase):
     def test_returns_are_counted_per_milestone_not_per_cut(self):
         self.assertIn("count returns **per milestone, never per cut**", review())
 
+    def test_the_rule_names_the_work_log_as_the_counting_source(self):
+        # Without a named source, a reviewer arriving after a re-cut reads
+        # current file state — unticked criteria, superseded tasks — and sees a
+        # first pass. That is the per-cut reading the rule exists to stop, so
+        # naming the surviving record is part of the rule, not commentary.
+        t = review()
+        self.assertIn("**count them in the work log**", t)
+        self.assertRegex(t, r"supersedes the tasks and unticks every\s+criterion")
+
     def test_a_recut_increments_the_count_and_never_resets_it(self):
         # The load-bearing half. Without it "per milestone" is still readable
         # as "per milestone, restarting at each re-cut", which is exactly how
@@ -90,6 +99,14 @@ class TestThrashTriggers(unittest.TestCase):
         )
         # Gated per instance, never automatic — D-004 survives this new door.
         self.assertIn("instance, never automatically", t)
+
+    def test_trigger_a_takes_precedence_where_both_fire(self):
+        # Both triggers fired together on M114 itself at its third return, with
+        # contradictory remedies and nothing saying which wins. Review finding
+        # F4 predicted it, scored 60, and was not actioned until it happened.
+        t = review()
+        self.assertIn("**where both fire, trigger (a) wins**", t)
+        self.assertRegex(t, r"do not queue the retry \(b\) alone would\s+allow")
 
 
 if __name__ == "__main__":

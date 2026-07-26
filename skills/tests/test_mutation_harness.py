@@ -2303,6 +2303,30 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_thrash_rule",
+        test="TestThrashCounting.test_the_rule_names_the_work_log_as_the_counting_source",
+        target=REVIEW,
+        block="**Count them in the work log**",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashCounting.test_the_rule_names_the_work_log_as_the_counting_source",
+        target=REVIEW,
+        block="supersedes the tasks and unticks every\n   criterion",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers.test_trigger_a_takes_precedence_where_both_fire",
+        target=REVIEW,
+        block="**Where both fire, trigger (a) wins**",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers.test_trigger_a_takes_precedence_where_both_fire",
+        target=REVIEW,
+        block="do not queue the retry (b) alone would\n   allow.",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
         test="TestThrashTriggers."
              "test_third_return_is_a_trigger_and_recommends_replan_or_split",
         target=REVIEW,

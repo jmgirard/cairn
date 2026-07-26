@@ -103,7 +103,10 @@ overrides — log the override).
 
    **Thrash rule.** Count returns **per milestone, never per cut** — a
    `/milestone-plan` re-cut increments the count and never resets it, since a
-   re-cut is itself evidence of thrash. Two triggers, with different remedies:
+   re-cut is itself evidence of thrash. **Count them in the work log**, the one
+   record a re-cut leaves standing: it supersedes the tasks and unticks every
+   criterion, so current file state reads as a first pass however many returns
+   preceded it. Two triggers, with different remedies:
 
    - **A third return** — a mis-planned milestone. Do not queue another retry;
      recommend re-plan or split via `/milestone-plan`.
@@ -113,6 +116,11 @@ overrides — log the override).
      remedy is to reconsider the alternative the plan gate recorded against.
      Where it recorded none, offer escalation via `/milestone-brief` — per
      instance, never automatically (D-004).
+
+   **Where both fire, trigger (a) wins** — it is the stricter, and a milestone
+   that has come back three times is mis-planned whether or not its failures
+   share a shape. Re-plan or split; do not queue the retry (b) alone would
+   allow.
 
 5. **Independent fresh-context review — three lenses, then a scorer.** Spawn
    three reviewers that have not seen the implementation, in parallel, each with
