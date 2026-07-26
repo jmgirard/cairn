@@ -2334,6 +2334,34 @@ REGISTRY += [
     ),
 ]
 
+# M114: falsifying promotion conditions. Three entries because the heading,
+# the positive form, and the prohibition fail independently — drop only the
+# prohibition and the rule still reads as a preference that a count satisfies,
+# which is the wording that cost intraclass M93 four review returns.
+REGISTRY += [
+    Mutation(
+        guard="test_search_first_candidates",
+        test="TestFalsifyingPromotionConditions."
+             "test_rule_requires_a_falsifying_class_not_a_count",
+        target=RULES,
+        block="**Falsifying promotion conditions.**",
+    ),
+    Mutation(
+        guard="test_search_first_candidates",
+        test="TestFalsifyingPromotionConditions."
+             "test_rule_requires_a_falsifying_class_not_a_count",
+        target=RULES,
+        block="the class of evidence that\nwould falsify the chosen approach",
+    ),
+    Mutation(
+        guard="test_search_first_candidates",
+        test="TestFalsifyingPromotionConditions."
+             "test_rule_requires_a_falsifying_class_not_a_count",
+        target=RULES,
+        block="never as a count of failures",
+    ),
+]
+
 # M100 (RR04 rec 8): finding-enforcement prose. One entry per target file the
 # guard reads, plus separate entries where blocks fail independently (the
 # review-section juxtaposition and the merge-chip shortfall option each carry

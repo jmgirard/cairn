@@ -80,7 +80,7 @@ which is that repo's file to change, not cairn's → nothing here.
       file's actual bytes, never the draft (M95); `\s+` matchers where a phrase wraps
       (M105); read the target via `Path.read_text` or the engine cannot see it (M100).
       Register each positive assert in `test_mutation_harness.py` and prove each reds.
-- [ ] T3: add the promotion-condition rule to `tracking-rules.md` beside search-first;
+- [x] T3: add the promotion-condition rule to `tracking-rules.md` beside search-first;
       extend `test_search_first_candidates.py`; register and prove it reds.
 - [ ] T4: add the §3 matcher-rendering rule and the §7 sweep non-vacuity rule to
       `guard-doctrine.md`; extend `test_lesson_graduation.py`'s `TestModuleExists`;
@@ -97,6 +97,7 @@ which is that repo's file to change, not cairn's → nothing here.
 - 2026-07-26: branch `m114-review-loop-escape-hatches` cut from main (0/0 with origin); status -> in-progress.
 - 2026-07-26: T1 — the thrash rule is rewritten to count returns per milestone with a re-cut incrementing and never resetting, and split into two triggers: a third return (mis-planned, re-plan or split) and the same criterion failing twice by a new mechanism of the same shape (wrong approach — reconsider the alternative the plan gate recorded against, or offer `/milestone-brief` where none was recorded). All three suites exit 0 after the edit, which is also the M104 adjacency evidence: no neighbouring guard's anchor reflowed.
 - 2026-07-26: T2 — `skills/tests/test_thrash_rule.py` adds 7 asserts over the rule's four properties plus a one-surface pin, each with its own `Mutation(...)` entry (7 registered; every block resolves 1x in the shipped file, including the one spanning the line break, matched with `\s+` per M105). Confirmed the mechanism first: the completeness meta-test redded on the unregistered file before I registered it. The one-surface pin sweeps `skills/**/*.md` plus `README.md` — the README is in scope because M112 found doctrine going stale exactly there — and was inversion-proved by hand: a forked copy appended to README reds it, restoring goes green, README byte-identical after.
+- 2026-07-26: T3 — `tracking-rules.md` gains **Falsifying promotion conditions** directly after search-first candidate creation: a promotion condition names the class of evidence that would falsify the chosen approach, never a count of failures. Guarded in `test_search_first_candidates.py` with three registered entries, because the heading, the positive form and the prohibition fail independently — dropping only the prohibition leaves a rule a count still satisfies. The wrap is matched with `\s+`, not a literal newline. M113 sweep clean: every repeated phrase sits inside the new paragraph and no existing guard asserts one. Rulebook 862 -> 870 lines, 61,152 -> 61,631 chars (+8 / +479).
 
 ## Decisions
 
