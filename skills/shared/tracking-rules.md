@@ -166,7 +166,7 @@ it; a **current-knowledge** file may shed content in place. The frame is
 **completeness-only** — it asks whether each file *has* the three elements, and
 never measures or gates a file's mass (size governance is closed — D-057).
 
-The four accumulating always-read files, as the worked case:
+The always-read surfaces, as the worked case:
 
 | File | Inflow test | Outflow / read-bound | Attention signal |
 |---|---|---|---|
@@ -174,6 +174,18 @@ The four accumulating always-read files, as the worked case:
 | `LESSONS.md` | a durable "how this repo behaves" note | retire by enforcement / ownership / maturation (D-051, D-055) | 50-line item cap + `record density` |
 | `tracking-rules.md` | the three-step placement test (D-056) | editorial pass; growth governed at the door (D-057) | `/milestone` audit mass+growth line |
 | `DECISIONS.md` | a cross-cutting choice among alternatives | bounded heading read — history read less, never shrunk (D-054) | none needed once read-bounded |
+| the active `milestones/M<NN>-<slug>.md` | the milestone-file section ownership table | capped sections: the 150-line plan-owned cap; cap-exempt sections: newest-content injection — history read less, never shrunk (D-063); the file leaves the set at `done` | `weight caps` CHECK + `work-log format`; none needed for the cap-exempt sections once read-bounded |
+
+The fifth surface differs from the four above it in two ways worth naming.
+It is **the only always-read surface that leaves the set**: a milestone stops
+being read at `done`, compressed into a ≤25-line archive summary, so a
+lifecycle bounds it that the other four have no equivalent of. And it is **the
+only one split across two of GP1's mechanisms within one file** — its
+plan-owned sections bounded by a cap with an outflow, its cap-exempt sections
+(`## Work log`, `## Review`) by reading less of them, because the 150-line cap
+deliberately exempts those two and IP4 forbids trimming either on disk. The
+read-bound is applied by the `session_context` SessionStart hook, which injects
+each cap-exempt section's newest content and states what it left out (D-063).
 
 The `/milestone` audit applies this frame: its §2 checks each always-read file
 still names all three elements, and that any newly-added always-read surface is

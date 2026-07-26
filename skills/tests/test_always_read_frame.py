@@ -4,15 +4,18 @@ Two surfaces carry the frame and this file pins both:
 
   1. The rulebook (`tracking-rules.md` "Always-read governance") states the
      frame — every always-read file names three governance elements (inflow
-     test, outflow-or-read-bound, attention signal) — enumerates the four
-     accumulating files with those elements filled (the worked case), and
+     test, outflow-or-read-bound, attention signal) — enumerates the
+     always-read surfaces with those elements filled (the worked case), and
      bounds itself to completeness, never mass (D-057's closed size program).
   2. The `/milestone` §2 audit applies it as a judgment that reports a gap and
      never auto-fixes, never `FAIL`s.
 
+M113/D-063 added the fifth row (the active milestone file) plus the two claims
+that make it unlike the four above it, each pinned on its own.
+
 Anchors are copied from the target files' actual bytes (M95/M100), each a
 single physical line so a reflow cannot silently unpin it (M74/M92/M104). The
-four-file table rows bind each file NOUN to its elements, so swapping a file's
+table rows bind each file NOUN to its elements, so swapping a file's
 disposition reddens (M103).
 
     python3 -m unittest discover -s skills/tests
@@ -63,7 +66,7 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
             self.rules,
         )
 
-    def test_enumerates_the_four_files_with_their_elements(self):
+    def test_enumerates_the_always_read_files_with_their_elements(self):
         # AC2: each row binds a file to its three elements; a swapped
         # disposition reddens because the whole row is pinned (M103).
         for row in (
@@ -78,9 +81,39 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
             "| `DECISIONS.md` | a cross-cutting choice among alternatives | "
             "bounded heading read — history read less, never shrunk (D-054) | "
             "none needed once read-bounded |",
+            # M113/D-063 — the fifth surface. Its read-bound cell names BOTH
+            # halves of the split: the cap for what the cap governs, the
+            # newest-content injection for what it exempts. Dropping either
+            # half leaves the row saying something the hook does not do.
+            "| the active `milestones/M<NN>-<slug>.md` | the milestone-file "
+            "section ownership table | capped sections: the 150-line "
+            "plan-owned cap; cap-exempt sections: newest-content injection — "
+            "history read less, never shrunk (D-063); the file leaves the set "
+            "at `done` | `weight caps` CHECK + `work-log format`; none needed "
+            "for the cap-exempt sections once read-bounded |",
         ):
             with self.subTest(row=row[:20]):
                 self.assertIn(row, self.rules)
+
+    def test_names_the_surface_that_leaves_the_always_read_set(self):
+        # M113 AC5: the milestone file is the one surface with a lifecycle —
+        # it stops being read at `done`. Pinned separately from the row
+        # because the row states the mechanism and this states why it is
+        # unlike the four above it.
+        self.assertIn(
+            "It is **the only always-read surface that leaves the set**: a "
+            "milestone stops",
+            self.rules,
+        )
+
+    def test_names_the_split_across_two_gp1_mechanisms(self):
+        # M113 AC5: one file, two of GP1's three mechanisms — a cap for the
+        # capped sections, reading less for the cap-exempt ones. This is what
+        # keeps D-053's "fits none of the three" supersession trigger unmet.
+        self.assertIn(
+            "only one split across two of GP1's mechanisms within one file**",
+            self.rules,
+        )
 
 
 class TestAlwaysReadFrameAudit(unittest.TestCase):

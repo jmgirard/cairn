@@ -80,12 +80,12 @@ allocation below makes the cap degrade gracefully instead.
       floor entries first, distribute the remainder across cap-exempt sections,
       and replace the silent `[:MAX_CHARS]` tail chop (`hooks/session_context.py:80`)
       with a marked truncation.
-- [ ] T4: Add the fifth row and its framing sentence to `tracking-rules.md`'s
+- [x] T4: Add the fifth row and its framing sentence to `tracking-rules.md`'s
       "Always-read governance" (D-063, landed with this plan, is the record).
 - [x] T5: Extend `TestSessionContext` in `hooks/tests/test_hooks.py` — the M95
       fixture (newest present, oldest absent, marker text), an under-budget
       section injected whole, and the multi-active-milestone case.
-- [ ] T6: Extend `test_always_read_frame.py` with the fifth row, rename
+- [x] T6: Extend `test_always_read_frame.py` with the fifth row, rename
       `test_enumerates_the_four_files_with_their_elements`, and update its
       mutation registration (`skills/tests/test_mutation_harness.py:2059`).
 - [ ] T7: Run the three suites from the repo root, checking each exit code
@@ -96,6 +96,8 @@ allocation below makes the cap degrade gracefully instead.
 - 2026-07-25: created by /milestone-plan.
 - 2026-07-25: T1 — budget set at 6,000 chars from the measured p90 of both cap-exempt section types (111 files); recorded in Decisions with the method.
 - 2026-07-25: T5 then T2+T3 — 8 hook tests written first (7 red, incl. M09/M10 vanishing from the injection under the old chop), then bounded_tail + the reallocated build_context turned them green; all three suites clean.
+- 2026-07-25: T4/T6 — fifth frame row + its two distinguishing claims in tracking-rules.md; guard extended (row, both claims, renamed four-files test) and re-registered.
+- 2026-07-25: the new row's `work-log format` mention created false coverage in test_milestone_cap_exemption (bare-label anchor would survive deleting the advisory rule); mutation harness caught it — re-anchored that assert in the rule's own sentence. M104's pattern, second occurrence.
 - 2026-07-25: minor amendment — T5's hook tests are written before T2/T3 (tests-first), not after; task order in the file unchanged, execution order noted here.
 
 ## Decisions
