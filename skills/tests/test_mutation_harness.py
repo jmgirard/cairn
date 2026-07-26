@@ -2362,6 +2362,38 @@ REGISTRY += [
     ),
 ]
 
+# M114: two guard-doctrine additions. Four entries — each rule's diagnosis and
+# its remedy fail independently, and a diagnosis with no remedy is the shape
+# that let intraclass M93 rediscover the same sweep defect on three separate
+# review passes. Registration is per block, so these are needed even though
+# `test_lesson_graduation` is already a registered FILE (M60/M85).
+REGISTRY += [
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_absence_section_states_the_matcher_rendering_rule",
+        target=GUARD_DOCTRINE,
+        block="**A detector's matcher must be exercised at every rendering its target can\ntake.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_absence_section_states_the_matcher_rendering_rule",
+        target=GUARD_DOCTRINE,
+        block="Carry the renderings INTO the test as positive",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_sweep_section_states_the_silent_cell_rule",
+        target=GUARD_DOCTRINE,
+        block="**A sweep whose cells may legitimately be silent passes for free on silence.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_sweep_section_states_the_silent_cell_rule",
+        target=GUARD_DOCTRINE,
+        block="assert the CONVERSE beside the claim",
+    ),
+]
+
 # M100 (RR04 rec 8): finding-enforcement prose. One entry per target file the
 # guard reads, plus separate entries where blocks fail independently (the
 # review-section juxtaposition and the merge-chip shortfall option each carry

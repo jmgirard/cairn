@@ -79,6 +79,18 @@ class TestModuleExists(unittest.TestCase):
             self.module,
         )
 
+    def test_absence_section_states_the_matcher_rendering_rule(self):
+        # M114. Distinct from the vacuous-crash rule above: there the detector
+        # never ran, here it ran and could not see its target. `\s+` spans the
+        # shipped wrap rather than embedding today's break point (M105).
+        self.assertRegex(
+            self.module,
+            r"\*\*A detector's matcher must be exercised at every rendering its target can\s+take\.\*\*",
+        )
+        # The remedy is the operative half — without it the rule diagnoses a
+        # failure and prescribes nothing.
+        self.assertIn("Carry the renderings INTO the test as positive", self.module)
+
     def test_matcher_section_states_the_authorization_switch(self):
         self.assertIn(
             'When a detection regex graduates from "is this\nguarded?" to "is this authorized?", switch to `finditer` and require every\noccurrence to clear.',
@@ -105,6 +117,16 @@ class TestModuleExists(unittest.TestCase):
         self.assertIn(
             "An exclusion list may name only history files", self.module
         )
+
+    def test_sweep_section_states_the_silent_cell_rule(self):
+        # M114: a sweep that permits silent cells passes for free on silence.
+        self.assertRegex(
+            self.module,
+            r"\*\*A sweep whose cells may legitimately be silent passes for free on silence\.\*\*",
+        )
+        # The converse is what makes a silent cell assert something, so it is
+        # pinned separately from the diagnosis.
+        self.assertIn("assert the CONVERSE beside the claim", self.module)
 
     def test_sweep_section_states_the_own_artifacts_rule(self):
         self.assertIn(
