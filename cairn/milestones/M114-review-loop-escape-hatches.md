@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -97,7 +97,7 @@ rejected alternative → candidate row.
       9 → 8 rather than assuming it.
 - [x] T7: add the precedence clause and the work-log pointer to the thrash rule; extend
       the guard to pin both; register each and prove it reds.
-- [ ] T8: candidate row for the pin, promotion condition naming a class of evidence and
+- [x] T8: candidate row for the pin, promotion condition naming a class of evidence and
       never a count (the rule this milestone ships); adjacency + false-coverage sweeps;
       three suites from the repo root, exit codes checked separately.
 
@@ -127,6 +127,7 @@ rejected alternative → candidate row.
 - 2026-07-26: RE-CUT by /milestone-plan after the third return, following thrash trigger (a). Split at the line the evidence drew: the doctrine (thrash rule, promotion conditions, guard-doctrine §3/§7, D-064) has been byte-identical and unimplicated since pass 1 and stays; the ONE-SURFACE PIN goes Out to a candidate row, having consumed all three returns across six findings of one shape. Gate decision: fix F4 and F3 now rather than ship a rule whose own review documented a contradiction in it — trigger (a) takes precedence where both fire, and the rule names the work log as the record surviving a re-cut. That edits the one file three reviews cleared unchanged, so AC1 re-verifies from scratch; every AC box is unticked for the same reason. Candidate row records the renderings already known (wrap, blockquote, `>>` vs `> >`, partial emphasis, case, word boundaries, corpus vacuity) so a later attempt does not restart, and its promotion condition names a class of evidence rather than a count — the falsifying-promotion-condition rule this milestone ships, applied to its own leftovers.
 - 2026-07-26: T6 — the one-surface pin and all its machinery are gone: `TestThrashRuleHasOneSurface`, `TestDetectorSeesEveryRendering`, `normalize()`, `states_the_rule()`, `RENDERINGS`, `NON_FORKS`, `PHRASE`, `surfaces()`, the now-dead `import re`, and the registry entry that pinned the assert. The docstring records what was removed and why, so the file does not read as though the pin was never considered. Count MEASURED rather than assumed, as the task required: 8 asserts against 8 registered entries. Suites 619/280/91, exit 0 each — skills is down 3 tests, exactly the three deleted.
 - 2026-07-26: T7 — the thrash rule gains the two things its own review found missing. It now names the WORK LOG as the counting source, with the reason inline (a re-cut supersedes the tasks and unticks every criterion, so current file state reads as a first pass however many returns preceded it — F3, scored 30 and right). And it states that where both triggers fire, trigger (a) wins, being the stricter — F4, scored 60, which then happened for real on this milestone at pass 3. Anchors copied from the shipped bytes; both wrapping clauses matched with `\s+` (M105). Four entries registered, one per new assert: 12 asserts against 12 entries, all 12 red on deletion. Suites 621/280/91 exit 0; M104 0 newly wrap-broken; M113 14 risen, 13 mine and the 14th the known `universal` in a guard reading `cairn-init/SKILL.md`.
+- 2026-07-26: T8 — the pin's candidate row is verified against the rule this milestone ships rather than assumed correct because I wrote it: its promotion condition names a class of evidence ('when a rendering-independent approach is identified — a markdown/AST parse, or a content hash over normalized doctrine blocks'), explicitly refuses a count ('never after N further attempts'), and a regex for count-shaped wording finds none. The row also carries the six renderings already known, so a later attempt starts from the evidence rather than from zero. Final gate: suites 621/280/91 exit 0 separately, `cairn_validate` exit 0 with 16 PASS, plan-owned body within cap. Status -> review.
 
 ## Decisions
 
