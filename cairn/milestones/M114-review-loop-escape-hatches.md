@@ -44,7 +44,7 @@ which is that repo's file to change, not cairn's → nothing here.
       milestone with a re-cut incrementing and never resetting; the second trigger
       (one criterion, twice, new mechanism, same shape); and the no-recorded-alternative
       fallback offering `/milestone-brief`. Read out of the shipped file, not the draft.
-- [ ] AC2: a new prose-guard file under `skills/tests/` fails when the rule block is
+- [x] AC2: a new prose-guard file under `skills/tests/` fails when the rule block is
       blanked, carries one `Mutation(...)` entry per positive assert that pins doctrine
       prose (an assert over the test's own synthetic renderings has no doctrine block
       to blank, and is answered by the negative controls beside it instead), and asserts
@@ -319,3 +319,38 @@ own shipped §3: carry the renderings INTO the test as positive controls, which 
 "strictly stronger than external mutation-verification". No `/milestone-brief` escalation
 is owed, because an alternative IS on record; the fallback exists only for when none is.
 Second return, so trigger (a) has not fired.
+
+## Review pass 3 (2026-07-26)
+
+**Scope.** Shipped doctrine still byte-identical to pass 1 (`git diff 9f9f876..HEAD` on
+the four doctrine files is empty). Delta since pass 2 is the reworked guard, its harness
+comment, and tracking. All six criteria re-run from scratch again.
+
+**Fresh per-criterion evidence.** All commands run this phase.
+
+- AC1 — re-verified, all three elements present once each in the shipped file. (First
+  evidence command returned 0 on element 1 because it was case-sensitive against a
+  capitalised "Count"; re-run case-insensitively, as the guard itself matches, it is 1.
+  Recorded because a miscounted evidence command is how a false negative enters a record.)
+- AC2 — **verified against the twice-amended wording**, all three clauses.
+  (1) All 9 registered blocks red on deletion — 9 redded, 0 survived.
+  (2) 11 asserts, of which 2 assert over the test's own synthetic renderings and have no
+  doctrine block to blank; 9 doctrine-pinning asserts against 9 entries.
+  (3) The matcher is exercised in-test: 11 RENDERINGS it must see, 8 NON_FORKS it must
+  not, both routed through `states_the_rule()` — the same predicate the pin uses, so a
+  control cannot check something the pin does not. The three renderings review actually
+  found (pass-1 wrap, pass-2 blockquote, pass-2 partial emphasis) are all seen; the
+  boundary false positive the negative controls found (`per milestone, never per cutover`)
+  is correctly not seen.
+- AC3, AC4, AC5 — re-verified, each rule present once in its shipped file; D-064 single
+  heading.
+- AC6 — re-verified. Three suites from the repo root, exit codes separately: skills 622 /
+  scripts 280 / hooks 91, exit 0 each. Sweeps against `origin/main`: M104 0 newly
+  wrap-broken; M113 12 counts risen, 11 mine, the 12th `universal` again belonging to
+  `test_toolchain_profiles`, which reads `cairn-init/SKILL.md`.
+
+**Consistency gate.** `cairn_validate` exit 0, 16 PASS, advisories only. `cairn_impact`
+N/A — no `DESIGN.md` principle changed. Profile `consistency-gate` `generic` — none.
+
+**Thrash count.** Two returns so far. A failure this pass would be the third and would
+fire trigger (a).
