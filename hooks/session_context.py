@@ -44,10 +44,16 @@ SECTION_MAX_CHARS = 6000
 # shows nothing of its recent state is worse than one that shows a little.
 MIN_TAIL_BLOCKS = 3
 
-# Exactly the sections the 150-line cap exempts (tracking-rules "Weight
-# caps"). Matched by equality, never prefix: `## Reviewers` must not read as
-# `## Review` (the boundary bug M55 hit).
-CAP_EXEMPT_SECTIONS = ("## Work log", "## Review")
+# The sections the 150-line cap exempts (tracking-rules "Weight caps"),
+# normalized the way the cap's own counters normalize them
+# (`scripts/cairn_scripts.py`: `line[3:].strip().lower()`, fence-aware).
+# That file shares its heading rules with the wrapped-entry advisory ON
+# PURPOSE — "or the exemption would open a hole the advisory never looks at"
+# — and the same reasoning binds here: a heading the cap exempts but this
+# hook does not recognize is injected whole, which is the gap the read-bound
+# exists to close. Matched by equality, never prefix: `## Reviewers` must not
+# read as `## Review` (the boundary bug M55 hit).
+CAP_EXEMPT_SECTIONS = ("work log", "review")
 
 # Injection order, so that shedding from the end sheds the least-current
 # milestone first when the total budget binds.
@@ -80,12 +86,31 @@ def profile_name(root):
     return None
 
 
+def heading_name(line):
+    """A `## ` heading's normalized name, or None. Same normalization the cap
+    counters use, so the two agree on what a cap-exempt section is."""
+    return line[3:].strip().lower() if line.startswith("## ") else None
+
+
 def split_sections(body):
     """[(heading, lines)] in file order; the first pair's heading is None
-    (everything above the first `## `)."""
-    out, heading, buf = [], None, []
+    (everything above the first `## `). Fenced ``` / ~~~ blocks are tracked,
+    so a `## ` quoted inside one is content and not a section boundary
+    (M45) — otherwise a milestone quoting the template would gain a phantom
+    cap-exempt section and get a marker injected into its code fence."""
+    out, heading, buf, fence = [], None, [], None
     for line in body.splitlines():
-        if line.startswith("## "):
+        stripped = line.lstrip()
+        if fence is not None:
+            buf.append(line)
+            if stripped.startswith(fence):
+                fence = None
+            continue
+        if stripped.startswith("```") or stripped.startswith("~~~"):
+            fence = stripped[:3]
+            buf.append(line)
+            continue
+        if heading_name(line) is not None:
             out.append((heading, buf))
             heading, buf = line, []
         else:
@@ -95,13 +120,15 @@ def split_sections(body):
 
 
 def _blocks(lines):
-    """(preamble, blocks, unit) — the elidable units of a section body.
+    """(blocks, unit) — the elidable units of a section body.
 
     A section holding `- ` entries blocks by entry, so a hard-wrapped entry
     keeps its continuation lines with it (the one-line-per-entry mandate is
     an advisory, not a guarantee — D-046). Anything else blocks by line.
-    Lines above the first entry are the section's own preamble (an HTML
-    ownership comment, a blank) and never elide.
+    Lines above the first entry ride with the OLDEST entry rather than
+    forming an exempt preamble: an exempt preamble is uncharged and
+    uncounted, so a section whose prose precedes one closing bullet escaped
+    the budget entirely and reported nothing elided (review round 1, F1).
     """
     if any(line.startswith("- ") for line in lines):
         head, blocks = [], []
@@ -112,27 +139,57 @@ def _blocks(lines):
                 blocks[-1].append(line)
             else:
                 head.append(line)
-        return head, blocks, "entries"
-    return [], [[line] for line in lines], "lines"
+        if blocks:
+            blocks[0] = head + blocks[0]
+        elif head:
+            blocks = [head]
+        return blocks, "entries"
+    return [[line] for line in lines], "lines"
+
+
+def _tail_within(units, budget, floor):
+    """(kept, size) — the newest `units` fitting `budget`, never fewer than
+    `floor` of them."""
+    kept, size = [], 0
+    for unit in reversed(units):
+        cost = sum(len(line) + 1 for line in unit)
+        if size + cost > budget and len(kept) >= floor:
+            break
+        kept.append(unit)
+        size += cost
+    kept.reverse()
+    return kept, size
 
 
 def bounded_tail(lines, budget):
-    """(kept_lines, kept, total, unit) — the section's NEWEST blocks that fit
-    in `budget`, never fewer than MIN_TAIL_BLOCKS."""
-    head, blocks, unit = _blocks(lines)
-    kept, size = [], 0
-    for block in reversed(blocks):
-        cost = sum(len(line) + 1 for line in block)
-        if size + cost > budget and len(kept) >= MIN_TAIL_BLOCKS:
-            break
-        kept.append(block)
-        size += cost
-    kept.reverse()
+    """(kept_lines, kept, total, unit) — the section's NEWEST content within
+    `budget`.
+
+    Two passes. Blocks first, because an entry is the unit of meaning and
+    half an entry is noise. Then, if what survives is STILL over budget,
+    lines — because the block floor guarantees the newest few blocks
+    whatever their size, so blocks alone cannot bound anything: one enormous
+    entry, or prose riding with the oldest one, sailed past the budget
+    unmarked (review round 1, F1). The second pass reports in lines, which is
+    what it actually elided.
+    """
+    blocks, unit = _blocks(lines)
+    kept, size = _tail_within(blocks, budget, MIN_TAIL_BLOCKS)
+    if size <= budget or budget <= 0:
+        return (
+            [line for block in kept for line in block],
+            len(kept),
+            len(blocks),
+            unit,
+        )
+    flat = [[line] for block in kept for line in block]
+    kept_lines, _ = _tail_within(flat, budget, 1)
+    total_lines = sum(len(block) for block in blocks)
     return (
-        head + [line for block in kept for line in block],
-        len(kept),
-        len(blocks),
-        unit,
+        [line for one in kept_lines for line in one],
+        len(kept_lines),
+        total_lines,
+        "lines",
     )
 
 
@@ -145,7 +202,7 @@ def milestone_part(mid, status, relpath, body, budget):
             lines.extend(section)
             continue
         lines.append(heading)
-        if heading.strip() in CAP_EXEMPT_SECTIONS:
+        if heading_name(heading) in CAP_EXEMPT_SECTIONS:
             kept_lines, kept, total, unit = bounded_tail(section, budget)
             if kept < total:
                 lines.append("")
@@ -188,6 +245,7 @@ def build_context(root):
             roadmap = f.read()
     except Exception:
         return None
+    roadmap_at = len(parts)
     parts.append("## cairn/ROADMAP.md\n\n" + roadmap)
 
     actives = [
@@ -209,7 +267,8 @@ def build_context(root):
         exempt_sections += sum(
             1
             for heading, _ in split_sections(body)
-            if heading is not None and heading.strip() in CAP_EXEMPT_SECTIONS
+            if heading is not None
+            and heading_name(heading) in CAP_EXEMPT_SECTIONS
         )
 
     # What the injection costs with every cap-exempt section at its floor;
@@ -235,13 +294,37 @@ def build_context(root):
             break
         parts[first + i] = elided_part(*actives[i])
 
+    # Still over with every milestone already shed to a pointer: the ROADMAP
+    # is what is left to cut, so cut IT rather than tail-slicing the joined
+    # context — the milestone parts sit at the end, so a tail slice took every
+    # header and path with it and left a resuming session unable to name what
+    # is in flight (review round 1, F2). The ROADMAP's own cap counts lines
+    # and leaves line LENGTH uncapped (D-052), so it can reach this alone.
+    over = len("\n\n".join(parts)) - MAX_CHARS
+    if over > 0:
+        lines = parts[roadmap_at].splitlines()
+        notice = (
+            "_cairn: ROADMAP truncated at {} of {} lines — read "
+            "cairn/ROADMAP.md for the rest._"
+        )
+        room = len(parts[roadmap_at]) - over - len(notice.format(0, 0)) - 2
+        kept, size = [], 0
+        for line in lines:
+            size += len(line) + 1
+            if size > room:
+                break
+            kept.append(line)
+        parts[roadmap_at] = "\n".join(
+            kept + ["", notice.format(len(kept), len(lines))]
+        )
+
     context = "\n\n".join(parts)
     if len(context) > MAX_CHARS:
         notice = (
             f"\n\n_cairn: injection truncated at the {MAX_CHARS}-character "
             "budget._"
         )
-        context = context[: MAX_CHARS - len(notice)] + notice
+        context = context[: max(0, MAX_CHARS - len(notice))] + notice
     return context
 
 

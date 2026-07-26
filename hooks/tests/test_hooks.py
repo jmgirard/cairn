@@ -285,6 +285,102 @@ class TestSessionContextReadBound(RepoFixture):
             ctx.index("## cairn/milestones/M09-c.md"),
         )
 
+    def test_prose_above_a_sections_first_entry_is_bounded_and_marked(self):
+        # F1 (review round 1): everything above the first `- ` used to be an
+        # exempt preamble — uncharged against the budget and uncounted — so a
+        # section whose prose precedes one closing bullet injected whole with
+        # no marker. One bullet was worse than none: a prose-only section fell
+        # to line-blocking and bounded correctly.
+        prose = [f"paragraph-{i:03d} " + "p" * 400 for i in range(40)]
+        self.milestone(review=prose + ["- **Verdict** — ship it."],
+                       work_log=["- 2026-07-01: one"])
+        ctx = self.inject()
+        self.assertNotIn("paragraph-000", ctx)
+        self.assertIn("**Verdict** — ship it.", ctx)
+        self.assertIn("read cairn/milestones/M07-test.md for the rest", ctx)
+
+    def test_one_enormous_entry_still_leaves_the_injection_bounded(self):
+        # The floors mean neither pass can bound a section made of ONE huge
+        # unit — an entry, or a line. That is deliberate (half an entry is
+        # noise), so the guarantee has to hold at the layer above: the
+        # injection stays under budget and still points at the file.
+        self.milestone(work_log=["- 2026-07-01: " + "w" * 40000])
+        ctx = self.inject()
+        self.assertLessEqual(len(ctx), 30000)
+        self.assertIn("read cairn/milestones/M07-test.md", ctx)
+
+    def test_milestone_headers_survive_an_oversized_roadmap(self):
+        # F2 (review round 1): the shed loop only shrank milestone parts, and
+        # the final chop cut from the end of the joined context — which is
+        # where those parts live. A ROADMAP big enough on its own took every
+        # milestone header with it, telling a resuming session nothing about
+        # what is in flight. The ROADMAP's 60-line cap counts LINES and D-052
+        # leaves item-line length uncapped, so this needs no gate to redden.
+        rows = [
+            "| M07 | A | in-progress | — | high | milestones/M07-test.md |",
+            "| M08 | B | review | — | high | milestones/M08-b.md |",
+        ]
+        fat = "\n".join(
+            f"| M{i:03d} | {'t' * 500} | done | — | high | milestones/archive/x.md |"
+            for i in range(56)
+        )
+        (self.root / "cairn" / "ROADMAP.md").write_text(
+            "# Roadmap\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n"
+            "|---|---|---|---|---|---|\n" + "\n".join(rows) + "\n" + fat + "\n"
+        )
+        for rel in ("milestones/M07-test.md", "milestones/M08-b.md"):
+            self.milestone(relpath=rel, work_log=["- 2026-07-01: one"])
+        ctx = self.inject()
+        self.assertIn("## cairn/milestones/M07-test.md", ctx)
+        self.assertIn("## cairn/milestones/M08-b.md", ctx)
+        self.assertIn("ROADMAP truncated", ctx)
+
+    def test_a_cap_exempt_heading_is_matched_as_the_cap_matches_it(self):
+        # F3/F4 (review round 1): `scripts/cairn_scripts.py` matches these
+        # headings case-insensitively and fence-aware, and says it shares
+        # those rules with the wrapped-entry advisory on purpose. A hook that
+        # matched raw strings left `## Work Log` cap-exempt to the scripts but
+        # injected WHOLE — the exact gap the read-bound exists to close.
+        entries = [f"- 2026-07-01: entry-{i:03d} " + "x" * 300 for i in range(65)]
+        path = self.root / "cairn" / "milestones" / "M07-test.md"
+        path.write_text(
+            "# M07\n\n## Work Log\n\n" + "\n".join(entries) + "\n"
+        )
+        ctx = self.inject()
+        self.assertNotIn("entry-000", ctx)
+        self.assertIn("entry-064", ctx)
+
+    def test_reviewers_is_not_review(self):
+        # M55's boundary bug, the invariant the matcher is written for: a
+        # prefix match would bound `## Reviewers` as though it were `## Review`.
+        prose = [f"- reviewer-{i:03d} " + "r" * 300 for i in range(40)]
+        path = self.root / "cairn" / "milestones" / "M07-test.md"
+        path.write_text(
+            "# M07\n\n## Reviewers\n\n" + "\n".join(prose)
+            + "\n\n## Work log\n\n- 2026-07-01: one\n"
+        )
+        ctx = self.inject()
+        self.assertIn("reviewer-000", ctx)
+        self.assertIn("reviewer-039", ctx)
+
+    def test_a_fenced_heading_is_content_not_a_section(self):
+        # M45's rule: a `## Work log` quoted inside a fence is content. Left
+        # unhandled it counted as a real section, diluting the real one's share
+        # of the budget and letting a marker land inside the code fence.
+        example = [f"- YYYY-MM-{i:02d}: example-{i:03d} " + "e" * 300
+                   for i in range(40)]
+        path = self.root / "cairn" / "milestones" / "M07-test.md"
+        path.write_text(
+            "# M07\n\n## Scope\n\n```markdown\n## Work log\n\n"
+            + "\n".join(example) + "\n```\n\n"
+            "## Work log\n\n- 2026-07-01: real-entry\n"
+        )
+        ctx = self.inject()
+        fenced = ctx.split("```markdown\n")[1].split("\n```")[0]
+        self.assertIn("example-000", fenced)
+        self.assertNotIn("_cairn:", fenced)
+        self.assertIn("real-entry", ctx)
+
     def test_hard_truncation_is_marked_never_silent(self):
         # ROADMAP alone over budget: nothing else can be shed, so the cut
         # must announce itself (M100 — an enforcement path fails loud).
@@ -297,7 +393,9 @@ class TestSessionContextReadBound(RepoFixture):
             "|---|---|---|---|---|---|\n" + rows + "\n"
         )
         ctx = self.inject()
-        self.assertIn("injection truncated", ctx)
+        self.assertIn("ROADMAP truncated", ctx)
+        self.assertIn("read cairn/ROADMAP.md for the rest", ctx)
+        self.assertLessEqual(len(ctx), 30000)
 
 
 class TestStopGuard(RepoFixture):

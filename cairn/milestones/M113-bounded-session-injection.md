@@ -101,6 +101,7 @@ allocation below makes the cap degrade gracefully instead.
 - 2026-07-25: live before/after on the real M95 file (65 entries): old hook 30,000 chars, newest entry ABSENT, oldest present, no marker, cut mid-sentence; new hook 24,118 chars, newest present, oldest absent, marker 'newest 11 of 65 entries shown'.
 - 2026-07-25: T7 — hooks 80 / skills 613 / scripts suites all green (exit codes checked separately), cairn_validate green; DESIGN.md hook-inventory clause updated. Status → review.
 - 2026-07-25: review round 1 — 4 findings from the [O] diff-bug lens (other two lenses clean); scored 92/85/80/75. AC1 and AC4 fail as written (F1 unbounded+unmarked prose head; F2 milestone headers lost when the ROADMAP alone overflows). Un-ticked both, status -> in-progress. Correction to the 2026-07-25 T7 line above: the skills suite is 610 tests, not 613.
+- 2026-07-25: review round 1 fixes — F1 prose rides with the oldest entry plus a line-level second pass; F2 the ROADMAP is truncated (announced) instead of tail-slicing the milestone parts away; F3 heading match now normalizes as scripts/cairn_scripts.py does (lowercased, fence-aware for ``` and ~~~). Six new hook tests, five red first. All three suites green.
 - 2026-07-25: minor amendment — T5's hook tests are written before T2/T3 (tests-first), not after; task order in the file unchanged, execution order noted here.
 
 ## Decisions
