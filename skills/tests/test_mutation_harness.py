@@ -2315,43 +2315,67 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestThrashTriggers.test_trigger_a_takes_precedence_where_both_fire",
+        test="TestThrashTriggers."
+             "test_third_return_is_a_trigger_and_recommends_replan_or_split",
         target=REVIEW,
-        block="**Where both fire, trigger (a) wins**",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestThrashTriggers.test_trigger_a_takes_precedence_where_both_fire",
-        target=REVIEW,
-        block="do not queue the retry (b) alone would\n   allow.",
+        block="**(a) The third return, and every return after it**",
     ),
     Mutation(
         guard="test_thrash_rule",
         test="TestThrashTriggers."
              "test_third_return_is_a_trigger_and_recommends_replan_or_split",
         target=REVIEW,
-        block="**A third return** — a mis-planned milestone",
+        block="Do not queue another retry; recommend re-plan or split via",
     ),
     Mutation(
         guard="test_thrash_rule",
         test="TestThrashTriggers."
              "test_third_return_is_a_trigger_and_recommends_replan_or_split",
         target=REVIEW,
-        block="recommend re-plan or split via `/milestone-plan`",
+        block="It is a threshold, not a single moment",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_both_firing_composes_rather_than_one_winning",
+        target=REVIEW,
+        block="**Where both fire they compose.**",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_composition_gives_a_the_disposition",
+        target=REVIEW,
+        block="(a) governs the disposition — no further\n   retry",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_composition_carries_b_into_the_routing",
+        target=REVIEW,
+        block="escalation offer carry INTO that routing rather than being discarded",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_exhaustion_branch_states_its_diagnosis",
+        target=REVIEW,
+        block="the work log already records a re-plan or split spent\n   on this milestone",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_exhaustion_branch_states_its_remedy",
+        target=REVIEW,
+        block="the remedy is no longer re-plan-or-split",
     ),
     Mutation(
         guard="test_thrash_rule",
         test="TestThrashTriggers."
              "test_second_trigger_is_same_criterion_new_mechanism_same_shape",
         target=REVIEW,
-        block="The same acceptance criterion failing twice, each by a new mechanism of\n"
-              "     the same shape",
+        block="The same acceptance criterion failing twice, each by a new mechanism\n     of the same shape",
     ),
     Mutation(
         guard="test_thrash_rule",
         test="TestThrashTriggers.test_second_trigger_remedy_is_the_recorded_alternative",
         target=REVIEW,
-        block="reconsider the alternative the plan gate recorded against",
+        block="reconsider the alternative the plan gate recorded\n     against",
     ),
     Mutation(
         guard="test_thrash_rule",
@@ -2364,6 +2388,12 @@ REGISTRY += [
         test="TestThrashTriggers.test_no_recorded_alternative_offers_brief_escalation",
         target=REVIEW,
         block="instance, never automatically",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_exhaustion_branch_states_its_remedy",
+        target=REVIEW,
+        block="never a\n   bare retry as the recommended option",
     ),
 ]
 

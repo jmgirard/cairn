@@ -108,19 +108,30 @@ overrides — log the override).
    criterion, so current file state reads as a first pass however many returns
    preceded it. Two triggers, with different remedies:
 
-   - **A third return** — a mis-planned milestone. Do not queue another retry;
-     recommend re-plan or split via `/milestone-plan`.
-   - **The same acceptance criterion failing twice, each by a new mechanism of
-     the same shape** — a wrong approach rather than a mis-sized one. Re-cutting
-     around the same predicate buys the next mechanism, not a fix, so the
-     remedy is to reconsider the alternative the plan gate recorded against.
-     Where it recorded none, offer escalation via `/milestone-brief` — per
-     instance, never automatically (D-004).
+   - **(a) The third return, and every return after it** — a mis-planned
+     milestone. It is a threshold, not a single moment: once reached it holds.
+     Do not queue another retry; recommend re-plan or split via
+     `/milestone-plan`.
+   - **(b) The same acceptance criterion failing twice, each by a new mechanism
+     of the same shape** — a wrong approach rather than a mis-sized one.
+     Re-cutting around the same predicate buys the next mechanism, not a fix,
+     so the remedy is to reconsider the alternative the plan gate recorded
+     against. Where it recorded none, offer escalation via `/milestone-brief` —
+     per instance, never automatically (D-004).
 
-   **Where both fire, trigger (a) wins** — it is the stricter, and a milestone
-   that has come back three times is mis-planned whether or not its failures
-   share a shape. Re-plan or split; do not queue the retry (b) alone would
-   allow.
+   **Where both fire they compose.** (a) governs the disposition — no further
+   retry under the current plan, and the milestone routes through
+   `/milestone-plan` — while (b)'s diagnosis and its `/milestone-brief`
+   escalation offer carry INTO that routing rather than being discarded. They
+   answer different questions, and only the retry question is a conflict.
+
+   **When (a) fires and the work log already records a re-plan or split spent
+   on this milestone**, the remedy is no longer re-plan-or-split: that is the
+   move which just failed. Compose the routing chip from an offered
+   `/milestone-brief` escalation, parking as `blocked` with the blocker named
+   in a work-log line, or dropping at the user's explicit decision — never a
+   bare retry as the recommended option. Every escalation here stays an offer,
+   gated per instance, never automatic and never a standing menu item.
 
 5. **Independent fresh-context review — three lenses, then a scorer.** Spawn
    three reviewers that have not seen the implementation, in parallel, each with

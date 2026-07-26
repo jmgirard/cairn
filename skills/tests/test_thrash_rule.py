@@ -1,33 +1,42 @@
-"""Regression guard: the M114 thrash rule in `/milestone-review` step 4.
+r"""Regression guard: the M114 thrash rule in `/milestone-review` step 4.
 
 The rule was unguarded prose until M114 — every phrase of it (`third trip`,
 `queue another retry`, `mis-planned`, `re-plan or split`) occurred in the skill
 and in no test, so deleting it outright kept the suite green. That is the gap
 this file closes.
 
-Four properties, each separately deletable and so separately asserted:
+The properties asserted here, each separately deletable and so separately
+pinned — the list IS the count, which is stated nowhere, because a stated
+count goes stale against the file it describes and did so twice in this very
+file (guard-doctrine §6):
 
-  1. returns are counted PER MILESTONE, not per cut;
-  2. a `/milestone-plan` re-cut increments that count and never resets it —
-     the reading that cost intraclass M93 four of its seven returns;
-  3. the second trigger is one criterion failing twice by a NEW MECHANISM OF
-     THE SAME SHAPE, remedied by reconsidering the recorded alternative;
-  4. where no alternative was recorded, escalation via `/milestone-brief` is
-     offered instead.
+  - returns are counted PER MILESTONE, not per cut, and the work log is named
+    as the record a re-cut leaves standing;
+  - a `/milestone-plan` re-cut increments that count and never resets it —
+    the reading that cost intraclass M93 four of its seven returns;
+  - trigger (a) is a THRESHOLD, holding on the third return and every one
+    after, not a single moment;
+  - trigger (b) is one criterion failing twice by a NEW MECHANISM OF THE SAME
+    SHAPE, remedied by reconsidering the recorded alternative, or by an
+    offered `/milestone-brief` escalation where none was recorded;
+  - where both fire they COMPOSE — (a) takes the disposition, (b)'s diagnosis
+    and escalation offer carry into the routing;
+  - once a re-plan or split is spent, the exhaustion branch replaces the
+    remedy, with its diagnosis and its remedy pinned separately.
 
 This file once also carried a one-surface pin — an assert that the rule's
 phrase occurs in exactly one file, so a restatement would red rather than
 silently fork it. It was re-cut out at M114's third return: detecting a fork
 by searching for its phrase needs the searcher to enumerate every rendering
-the phrase can take, and three cuts each missed one the next review found
-(a wrap, a blockquote marker, partial emphasis, case, word boundaries, and
-finally corpora that passed while empty). It is a ROADMAP candidate, to be
-promoted on a rendering-independent approach rather than a wider matcher.
+the phrase can take, and each cut missed one the next review found. It is a
+ROADMAP candidate, to be promoted on a rendering-independent approach rather
+than a wider matcher.
 
-Skill-prose guards read the file as one string and match case-insensitively,
-so an asserted phrase sits on a single source line (M23) — except the second
-trigger, which wraps in the shipped file and is matched with `\s+` across the
-break rather than truncated to the pre-wrap half (M105).
+Skill-prose guards read the file as one string and match case-insensitively.
+An asserted phrase that can cross a line wrap is matched with `\s+` over the
+break rather than truncated to its pre-wrap half (M105); adding a label to a
+bullet reflowed two such anchors while this file was being written, and the
+guards caught it (M104).
 
     python3 -m unittest discover -s skills/tests -v
 """
@@ -71,8 +80,14 @@ class TestThrashCounting(unittest.TestCase):
 class TestThrashTriggers(unittest.TestCase):
     def test_third_return_is_a_trigger_and_recommends_replan_or_split(self):
         t = review()
-        self.assertIn("**a third return** — a mis-planned milestone", t)
-        self.assertIn("recommend re-plan or split via `/milestone-plan`", t)
+        self.assertRegex(
+            t, r"\*\*\(a\) the third return, and every return after it\*\*"
+        )
+        # A threshold, not a moment. Without this the predicate reads as
+        # "exactly the third", which reinstates the fire-once-then-go-silent
+        # signature the rule exists to stop (RR05 Q1).
+        self.assertIn("it is a threshold, not a single moment", t)
+        self.assertIn("recommend re-plan or split via", t)
 
     def test_second_trigger_is_same_criterion_new_mechanism_same_shape(self):
         # Anchored across the shipped line break: truncating this to the
@@ -81,14 +96,13 @@ class TestThrashTriggers(unittest.TestCase):
         # unrelated defects.
         self.assertRegex(
             review(),
-            r"the same acceptance criterion failing twice, each by a new mechanism of\s+"
-            r"the same shape",
+            r"the same acceptance criterion failing twice, each by a new mechanism\s+"
+            r"of the same shape",
         )
 
     def test_second_trigger_remedy_is_the_recorded_alternative(self):
-        self.assertIn(
-            "reconsider the alternative the plan gate recorded against",
-            review(),
+        self.assertRegex(
+            review(), r"reconsider the alternative the plan gate recorded\s+against"
         )
 
     def test_no_recorded_alternative_offers_brief_escalation(self):
@@ -100,13 +114,44 @@ class TestThrashTriggers(unittest.TestCase):
         # Gated per instance, never automatic — D-004 survives this new door.
         self.assertIn("instance, never automatically", t)
 
-    def test_trigger_a_takes_precedence_where_both_fire(self):
-        # Both triggers fired together on M114 itself at its third return, with
-        # contradictory remedies and nothing saying which wins. Review finding
-        # F4 predicted it, scored 60, and was not actioned until it happened.
+
+class TestTriggersCompose(unittest.TestCase):
+    """RR05 Q2/Q3: the two triggers compose; the remedy branches on exhaustion.
+
+    The clause this replaced said trigger (a) won unconditionally. Because (a)
+    is a threshold that never stops holding, that made (b)'s escalation offer
+    unreachable from the third return onward while (a)'s only remedy was
+    already spent — the trap review pass 4 found (J2).
+    """
+
+    def test_both_firing_composes_rather_than_one_winning(self):
+        self.assertIn("**where both fire they compose.**", review())
+
+    def test_composition_gives_a_the_disposition(self):
+        self.assertRegex(
+            review(), r"\(a\) governs the disposition — no further\s+retry"
+        )
+
+    def test_composition_carries_b_into_the_routing(self):
+        # The half that was lost: (b)'s diagnosis and escalation offer must
+        # survive the routing, not be discarded by (a) winning.
+        self.assertRegex(
+            review(),
+            r"escalation offer carry into that routing rather than being\s+discarded",
+        )
+
+    def test_exhaustion_branch_states_its_diagnosis(self):
+        # Diagnosis pinned separately from remedy (BC6): a rule that names the
+        # exhausted case but prescribes nothing is the shape that trapped M114.
+        self.assertRegex(
+            review(),
+            r"the work log already records a re-plan or split spent\s+on this milestone",
+        )
+
+    def test_exhaustion_branch_states_its_remedy(self):
         t = review()
-        self.assertIn("**where both fire, trigger (a) wins**", t)
-        self.assertRegex(t, r"do not queue the retry \(b\) alone would\s+allow")
+        self.assertIn("the remedy is no longer re-plan-or-split", t)
+        self.assertRegex(t, r"never a\s+bare retry as the recommended option")
 
 
 if __name__ == "__main__":
