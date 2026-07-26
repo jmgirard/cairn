@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -44,7 +44,7 @@ which is that repo's file to change, not cairn's → nothing here.
       milestone with a re-cut incrementing and never resetting; the second trigger
       (one criterion, twice, new mechanism, same shape); and the no-recorded-alternative
       fallback offering `/milestone-brief`. Read out of the shipped file, not the draft.
-- [x] AC2: a new prose-guard file under `skills/tests/` fails when the rule block is
+- [ ] AC2: a new prose-guard file under `skills/tests/` fails when the rule block is
       blanked, carries one `Mutation(...)` entry per positive assert that pins doctrine
       prose (an assert over the test's own synthetic renderings has no doctrine block
       to blank, and is answered by the negative controls beside it instead), and asserts
@@ -118,6 +118,7 @@ which is that repo's file to change, not cairn's → nothing here.
 - 2026-07-26: the negative controls immediately earned their keep by finding a defect the positives structurally could not — `states_the_rule` was a bare substring test, so `per milestone, never per cutover` read as a copy of the rule. Fixed with word boundaries. First mutation run had proved the NEGATIVES inert (normalization only deletes characters, so it can only turn a match into a non-match); re-run after the boundary fix, each control set now reds on a distinct defect class: dropping `\b` reds the negatives, dropping any normalization axis reds the positives.
 - 2026-07-26: G4 fixed — the Review section's `4f7e0dc` corrected in place to `4c260fc` and marked (D-045: current knowledge corrected where it sits). G7 fixed — the registry comment no longer states an entry count at all, per §6's own remedy of letting the list be the count; it said "six" at seven entries and was staler at nine. G6 (logged) rode along: the docstring no longer claims a single `\s+` exception.
 - 2026-07-26: gate on the final tree — three suites exit 0 separately (skills 622 / scripts 280 / hooks 91), all 9 registered blocks red on deletion, 9 doctrine-pinning asserts against 9 entries, `cairn_validate` exit 0, body 100/149. End-to-end in a scratch copy: the pass-1 wrap and both pass-2 renderings now red on every in-scope surface and stay green on every out-of-scope one, 30/30. Status -> review.
+- 2026-07-26: review pass 3 FAILED the gate — AC2 a third time. H1 (95): the §3 controls have no non-vacuity assert, so emptying either corpus, or both plus gutting `normalize()`, leaves the suite green at 622 — the fix deletes silently. That is guard-doctrine §7, shipped by THIS milestone, unapplied to the §3 controls shipped beside it. H2 (85): the `.lower()` axis has no control and the pass-2 work-log claim that every axis reds the positives is false for it. H4 (82): the comment's 'normalization only deletes characters' invariant is contradicted by normalize()'s own purpose. H3 (75) and H5 (62) logged. AC1, AC3-AC6 re-verified and stand; doctrine untouched and unimplicated across all three passes. BOTH triggers now fire — (a) third return, (b) same shape a third time — the precedence collision pass-1 F4 predicted at 60 and nobody actioned. Following (a): re-plan or split, not another implement pass. Status -> in-progress.
 
 ## Decisions
 
@@ -354,3 +355,49 @@ N/A — no `DESIGN.md` principle changed. Profile `consistency-gate` `generic` �
 
 **Thrash count.** Two returns so far. A failure this pass would be the third and would
 fire trigger (a).
+
+**Independent review — three lenses, then a scorer.** Prior-review and blame-history:
+zero findings each; both independently confirmed the pass-2 rework did not regress the
+pass-1 fix, and blame-history spot-checked this file's own historical claims against git.
+Diff-bug: five findings, three scored >=80. All three lenses left the tree clean.
+
+- **H1 (95) — the fix can be deleted with nothing redding.** `test_thrash_rule.py:184-200`.
+  Both control tests are bare `for ... in DICT.items()` loops with no non-vacuity assert,
+  so an empty corpus passes. Verified here against a `git archive` baseline (a partial
+  scratch copy gives a RED baseline and makes every mutation look caught — my first
+  attempt did exactly that and had to be redone): emptying `RENDERINGS` leaves the suite
+  green at 622; emptying `NON_FORKS` leaves it green; emptying BOTH and gutting
+  `normalize()` to `return text.lower()` still leaves it green. `subTest` does not change
+  the test count, so a reviewer watching counts sees nothing either. This is precisely
+  the shape **guard-doctrine §7, added by this milestone**, exists to prevent — the §3
+  controls were written without applying the §7 rule shipped beside them, and the house
+  pattern already exists in `test_mutation_harness.py` and `test_source_note_template.py`.
+- **H2 (85) — a false claim in a durable record.** The `.lower()` axis of `normalize()`
+  has no positive control: all 11 renderings spell the phrase lowercase, so dropping
+  `.lower()` leaves the suite green. The pass-2 work-log line claiming "dropping any
+  normalization axis reds the positives" is therefore false for that axis. A fork opening
+  a sentence or heading with the phrase is caught today only by `.lower()`.
+- **H4 (82) — a false invariant stated as evidence.** The comment at `:61-64`, repeated in
+  the work log, claims normalization "only deletes characters and so can only ever turn a
+  match INTO a non-match". Turning a non-match into a match is `normalize()`'s entire
+  purpose: `states_the_rule` is False on a raw wrapped string and True after
+  normalization. The real reason the positives could not find the boundary defect is that
+  they only ever `assertTrue`.
+
+**Logged, below threshold (2).** H3 (75) the nested-blockquote control covers `>>` but not
+`> >`, the CommonMark spelling most editors emit — narrowed because no repo file uses
+either form today. H5 (62) `PHRASE` is dead code introduced by this diff, an
+un-synchronised fourth copy of the literal inside the guard whose thesis is one surface.
+
+**GATE FAILURE — third return.** AC2 again; AC1, AC3, AC4, AC5, AC6 re-verified this pass
+and stand, and the shipped doctrine prose remains byte-identical to what pass 1 cleared
+and unimplicated in all three passes.
+
+**BOTH THRASH TRIGGERS NOW FIRE, WITH DIFFERENT REMEDIES.** Trigger (a): third return, so
+"do not queue another retry — recommend re-plan or split via `/milestone-plan`". Trigger
+(b): AC2 has failed three times, each by a new mechanism of one shape (the detector or its
+controls do not cover a case the target can take) — pass 1 a wrap, pass 2 a blockquote and
+emphasis, pass 3 vacuity and case-folding. **This is exactly the collision pass-1 finding
+F4 (60, logged, not actioned) predicted**, and the rule states no precedence between the
+two. F4 was right and was under-scored. Following trigger (a), which is the stricter of
+the two, this does NOT go back to `/milestone-implement`.
