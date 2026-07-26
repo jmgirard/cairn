@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP4, IP2
-- **Branch/PR:** `m114-review-loop-escape-hatches`
+- **Branch/PR:** `m114-review-loop-escape-hatches` · https://github.com/jmgirard/cairn/pull/114
 
 ## Goal
 
@@ -40,7 +40,7 @@ which is that repo's file to change, not cairn's → nothing here.
 
 ## Acceptance criteria
 
-- [ ] AC1: the rewritten thrash rule states all three of — returns counted per
+- [x] AC1: the rewritten thrash rule states all three of — returns counted per
       milestone with a re-cut incrementing and never resetting; the second trigger
       (one criterion, twice, new mechanism, same shape); and the no-recorded-alternative
       fallback offering `/milestone-brief`. Read out of the shipped file, not the draft.
@@ -48,16 +48,16 @@ which is that repo's file to change, not cairn's → nothing here.
       blanked, carries one `Mutation(...)` entry per positive assert, and asserts the
       rule's phrases occur on exactly ONE surface repo-wide — so a later restatement
       reds rather than silently forking the rule (M112, M113).
-- [ ] AC3: `tracking-rules.md` states the promotion-condition rule beside search-first
+- [x] AC3: `tracking-rules.md` states the promotion-condition rule beside search-first
       candidate creation, guarded by an assert in `test_search_first_candidates.py`
       with its own `Mutation(...)` entry.
-- [ ] AC4: `guard-doctrine.md` §3 states the matcher-rendering rule and §7 the sweep
+- [x] AC4: `guard-doctrine.md` §3 states the matcher-rendering rule and §7 the sweep
       non-vacuity rule, each guarded in `test_lesson_graduation.py` with its own
       `Mutation(...)` entry — registration is per block, and the completeness meta-test
       catches only an unregistered FILE (M60/M85).
-- [ ] AC5: a `DECISIONS.md` entry records the supersession, naming the per-cut reading
+- [x] AC5: a `DECISIONS.md` entry records the supersession, naming the per-cut reading
       it replaces and the M93/M92 evidence, and back-references the rule's prior form.
-- [ ] AC6: all three `unittest` suites green from the repo root with exit codes checked
+- [x] AC6: all three `unittest` suites green from the repo root with exit codes checked
       individually, never through a pipe (M56/M65, M111); and an adjacency sweep shows
       every guard asserting a phrase near an edited block still matches on one physical
       line (M104), and no phrase this milestone adds gives an existing guard false
@@ -100,7 +100,60 @@ which is that repo's file to change, not cairn's → nothing here.
 - 2026-07-26: T3 — `tracking-rules.md` gains **Falsifying promotion conditions** directly after search-first candidate creation: a promotion condition names the class of evidence that would falsify the chosen approach, never a count of failures. Guarded in `test_search_first_candidates.py` with three registered entries, because the heading, the positive form and the prohibition fail independently — dropping only the prohibition leaves a rule a count still satisfies. The wrap is matched with `\s+`, not a literal newline. M113 sweep clean: every repeated phrase sits inside the new paragraph and no existing guard asserts one. Rulebook 862 -> 870 lines, 61,152 -> 61,631 chars (+8 / +479).
 - 2026-07-26: T4 — `guard-doctrine.md` §3 gains the matcher-rendering rule (the positive signal proves the detector RAN, never that it would SEE its target; carry the renderings in as positive controls, which beats external mutation-verification because a detector's author is exactly who cannot enumerate what it misses) and §7 the silent-cell rule (assert a positive check count per cell, assert the positive case fired somewhere, and prefer the converse `named == usable`; a bare `assertGreaterEqual(checked, 0)` is named as the tautology). Four registered entries — diagnosis and remedy pinned separately, since a diagnosis with no remedy is what let the same sweep defect recur across three intraclass M93 passes. M113 sweep clean: `positive signal` now occurs 3x in the module but no guard asserts it.
 - 2026-07-26: T5 — D-064 appended, recording all six plan-gate choices and naming the per-cut reading it supersedes; every intraclass ID qualified by repo, since a bare M<NN> in cairn's records is repo-local. AC6's two sweeps run as a baseline DIFF rather than an absolute count, which is what made them readable: M104 — 11 guard literals were already wrap-broken at main, 10 at HEAD, so 0 newly broken and the delta is my own new anchor matching for the first time; M113 — 12 guard-literal counts rose, 11 of them my own new asserts going 0->1, and the 12th (`universal`, 1->2, from the §7 rule's "universal silence") belongs to a guard reading cairn-init's SKILL.md, not guard-doctrine, which no guard-doctrine reader asserts. My first cut of the M104 sweep was itself mis-scoped — it swept README and LESSONS literals it never meant to — which is the §7 rule this milestone just wrote, hit while writing it.
+- 2026-07-26: review pass 1 (in progress) — PR #114 opened as a draft; per-criterion evidence gathered and AC1, AC3, AC4, AC5, AC6 verified and ticked. AC2's tick withheld: the guard is sound (14/14 new blocks red on deletion, 0 survived) but the criterion's word `repo-wide` is unsatisfiable — the pinned phrase occurs in the skill AND in `cairn/DECISIONS.md`, because D-064 legitimately quotes the rule it records, and IP4 makes that history permanent. Consistency gate clean. Three review lenses still running; their findings join this pass before the verdict.
 
 ## Decisions
 
 ## Review
+
+**Branch state.** `main` 0/0 with `origin/main`; branch 6 ahead / 0 behind. Draft PR
+#114, head `6546db0`. This repo has no CI (PROFILE.md `consistency-gate`), so local
+green is the gate.
+
+**Fresh per-criterion evidence.** All commands run this phase.
+
+- AC1 — **verified.** Read out of the shipped file, not the draft: per-milestone
+  counting at `skills/milestone-review/SKILL.md:104`, the re-cut clause at `:105`,
+  the second trigger at `:110-111`, its recorded-alternative remedy at `:113`, and the
+  `/milestone-brief` fallback at `:114`. All three elements the criterion names are
+  present.
+- AC2 — **GATE FAILURE, and the criterion is what fails.** The guard is sound: the file
+  exists with 7 asserts, carries 7 `Mutation(...)` entries, and I blanked each of the 14
+  new blocks independently this phase and confirmed the named test reds — 14/14 red,
+  0 survived. What fails is the criterion's word **repo-wide**. A literally repo-wide
+  "exactly one surface" assertion FAILS right now: the phrase occurs in
+  `skills/milestone-review/SKILL.md` and in `cairn/DECISIONS.md`, because D-064
+  legitimately quotes the rule it records. `DECISIONS.md` is append-only history (IP4),
+  so it will keep accumulating quotations of rules it decides on and the criterion can
+  never be satisfied. The implementation (sweep `skills/**/*.md` + `README.md`, exclude
+  `cairn/`) is the right behaviour; AC2 as written is unsatisfiable. Not reinterpreted
+  charitably — returned for a gated amendment.
+- AC3 — **verified.** Rule at `skills/shared/tracking-rules.md:352-358`, immediately
+  after search-first candidate creation at `:343`. Guarded in
+  `test_search_first_candidates.py`; 3 registered entries (heading, positive form,
+  prohibition), each redding on deletion.
+- AC4 — **verified.** §3 matcher-rendering rule at `skills/shared/guard-doctrine.md:96`
+  (§3 opens `:76`); §7 silent-cell rule at `:221` (§7 opens `:214`). 4 registered
+  entries, diagnosis and remedy pinned separately, each redding on deletion.
+- AC5 — **verified.** D-064 present, 59 lines. Six content checks pass: names the
+  per-cut reading it supersedes, cites intraclass M93 and intraclass M92, back-references
+  the prior form's own phrases (`third trip`, `queue another retry`), names the
+  supersession, and qualifies every cross-repo milestone id by repo.
+- AC6 — **verified.** Three suites run from the repo root with exit codes captured
+  separately, never piped: skills 620 / scripts 280 / hooks 91, exit 0 each. Both sweeps
+  re-run this phase as a diff against `origin/main`, which is what makes them readable:
+  M104 **0 newly wrap-broken**; M113 **12 guard-literal counts rose, 11 my own new
+  asserts (0->1)**, and the 12th (`universal`, 1->2) belongs to
+  `test_toolchain_profiles.TestGreenfieldInitFlow`, whose `setUp` reads
+  `cairn-init/SKILL.md` — resolved by reading the class this phase, not from recall — so
+  guard-doctrine's new "universal silence" cannot give it coverage.
+
+**Consistency gate.** `cairn_validate` exit 0 — 16 PASS including `coverage complete`,
+`weight caps`, `mirror agreement` and `binding criteria`; advisories only. `cairn_impact`
+does not apply: no `DESIGN.md` principle changed (`git diff --name-only` on it is empty),
+and the header's GP4/IP2 are principles the milestone works under, not ones it edits.
+Profile `consistency-gate` slot is `generic` — none — a clean no-op.
+
+**Thrash rule, applied to this milestone.** First return. Trigger (a) needs a third;
+trigger (b) needs one criterion failing twice by a new mechanism of the same shape.
+Neither fires, so this is an ordinary send-back and not a re-plan signal.
