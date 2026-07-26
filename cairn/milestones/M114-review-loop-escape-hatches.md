@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -85,7 +85,7 @@ which is that repo's file to change, not cairn's → nothing here.
 - [x] T4: add the §3 matcher-rendering rule and the §7 sweep non-vacuity rule to
       `guard-doctrine.md`; extend `test_lesson_graduation.py`'s `TestModuleExists`;
       register both and prove each reds.
-- [ ] T5: write the D-entry; run the adjacency and double-occurrence sweeps over every
+- [x] T5: write the D-entry; run the adjacency and double-occurrence sweeps over every
       edited file; run all three suites from the repo root, exit codes checked
       separately.
 
@@ -99,6 +99,7 @@ which is that repo's file to change, not cairn's → nothing here.
 - 2026-07-26: T2 — `skills/tests/test_thrash_rule.py` adds 7 asserts over the rule's four properties plus a one-surface pin, each with its own `Mutation(...)` entry (7 registered; every block resolves 1x in the shipped file, including the one spanning the line break, matched with `\s+` per M105). Confirmed the mechanism first: the completeness meta-test redded on the unregistered file before I registered it. The one-surface pin sweeps `skills/**/*.md` plus `README.md` — the README is in scope because M112 found doctrine going stale exactly there — and was inversion-proved by hand: a forked copy appended to README reds it, restoring goes green, README byte-identical after.
 - 2026-07-26: T3 — `tracking-rules.md` gains **Falsifying promotion conditions** directly after search-first candidate creation: a promotion condition names the class of evidence that would falsify the chosen approach, never a count of failures. Guarded in `test_search_first_candidates.py` with three registered entries, because the heading, the positive form and the prohibition fail independently — dropping only the prohibition leaves a rule a count still satisfies. The wrap is matched with `\s+`, not a literal newline. M113 sweep clean: every repeated phrase sits inside the new paragraph and no existing guard asserts one. Rulebook 862 -> 870 lines, 61,152 -> 61,631 chars (+8 / +479).
 - 2026-07-26: T4 — `guard-doctrine.md` §3 gains the matcher-rendering rule (the positive signal proves the detector RAN, never that it would SEE its target; carry the renderings in as positive controls, which beats external mutation-verification because a detector's author is exactly who cannot enumerate what it misses) and §7 the silent-cell rule (assert a positive check count per cell, assert the positive case fired somewhere, and prefer the converse `named == usable`; a bare `assertGreaterEqual(checked, 0)` is named as the tautology). Four registered entries — diagnosis and remedy pinned separately, since a diagnosis with no remedy is what let the same sweep defect recur across three intraclass M93 passes. M113 sweep clean: `positive signal` now occurs 3x in the module but no guard asserts it.
+- 2026-07-26: T5 — D-064 appended, recording all six plan-gate choices and naming the per-cut reading it supersedes; every intraclass ID qualified by repo, since a bare M<NN> in cairn's records is repo-local. AC6's two sweeps run as a baseline DIFF rather than an absolute count, which is what made them readable: M104 — 11 guard literals were already wrap-broken at main, 10 at HEAD, so 0 newly broken and the delta is my own new anchor matching for the first time; M113 — 12 guard-literal counts rose, 11 of them my own new asserts going 0->1, and the 12th (`universal`, 1->2, from the §7 rule's "universal silence") belongs to a guard reading cairn-init's SKILL.md, not guard-doctrine, which no guard-doctrine reader asserts. My first cut of the M104 sweep was itself mis-scoped — it swept README and LESSONS literals it never meant to — which is the §7 rule this milestone just wrote, hit while writing it.
 
 ## Decisions
 

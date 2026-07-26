@@ -1929,3 +1929,63 @@ flow-side, the direction that entry endorsed ("growth is made visible at the
 door"). Delivered by M113. If a bounded injection is ever observed leaving a
 resuming session less oriented than the whole file did, this is the entry to
 supersede.
+
+### D-064 (2026-07-26): Thrash is counted per milestone and fires on a repeated failure SHAPE — supersedes the third-trip rule's per-cut reading; adds falsifying promotion conditions and detector-rendering guard doctrine
+
+**Context:** A `/milestone` audit (2026-07-26) post-mortemed intraclass M93 —
+eight review passes and three plan re-cuts on one milestone — and found the same
+signature one milestone earlier, in intraclass M92 (seven passes, "1-6 each
+failed AC5 on prose authored about the work, never on the code"). Three
+mechanisms, each cairn's. First, the thrash rule fired once, at the third
+return, and then went silent for four more: a `/milestone-plan` re-cut unticks
+every criterion and supersedes the tasks, so the next pass reads as the re-cut's
+first, and intraclass M93's own work log records the disposition drifting to
+"thrash-rule disposition left to the maintainer". Second, counting trips is the
+wrong measure — intraclass M93's passes 2-5 failed the SAME criterion four
+times, each by a new mechanism of one shape ("the hint names a method that then
+fails"), which is a wrong-design signature a trip count cannot distinguish from
+three unrelated defects. Third, the approach that finally worked was recorded as
+a candidate whose promotion condition read "Promote if a fifth mechanism
+appears"; it was met exactly as written, at pass 5, after the same approach had
+been measured feasible and prototyped correct at the pass-4 gate and declined
+for a smaller diff. Passes 6-8 then failed on evidence quality with shipped code
+byte-identical and clean across ~33,000 adversarial cells — including a leak
+detector that matched about four significant figures and passed a real violation
+rendered `round(v, 3)`.
+
+**Decision:** Six choices at the M114 plan gate (2026-07-26). (1) **Count
+returns per milestone, never per cut** — a re-cut increments and never resets,
+stated in so many words because the per-cut reading is what the old wording
+permitted and what actually happened. (2) **A second trigger on the same
+criterion failing twice by a new mechanism of the same shape**, remedied by
+reconsidering the alternative the plan gate recorded against rather than
+re-cutting around the same predicate, which buys the next mechanism and not a
+fix. (3) **Where the gate recorded no alternative, offer escalation via
+`/milestone-brief`** — an approach wrong this often is the hard question the
+brief protocol exists for; gated per instance, never automatic (D-004). (4)
+**The rule stays in `/milestone-review`**, its single surface, rather than being
+lifted into the always-read rulebook, which is +83 lines over its M95 baseline
+with D-057 governing growth at the door. (5) **A promotion condition names the
+class of evidence that would falsify the chosen approach, never a count of
+failures** — placed in `tracking-rules.md` beside search-first rather than in
+the records-hygiene module, because candidate rows are created conversationally
+and a conditionally-read module would never fire on that path. (6) **No
+`cairn_validate` check for any of the three.** Rejected: the counting half is
+mechanical but inert, and the shape-recurrence half is a judgment — the same
+call D-059 made when it retired an advisory measured not to work.
+
+**Consequences:** The thrash rule gains its first guard; it was unguarded prose
+until now, with every phrase of it (`third trip`, `queue another retry`,
+`mis-planned`, `re-plan or split`) occurring in the skill and in no test, so
+deleting it outright kept the suite green. That guard also pins the rule to one
+surface, so a later restatement in another skill or the README reds rather than
+silently forking it. `guard-doctrine.md` gains two rules from the same
+post-mortem: §3 that a detector's matcher must be exercised at every rendering
+its target can take, carrying the renderings in as positive controls, since
+external mutation-verification proves only that a guard catches the mutation its
+author thought of; and §7 that a sweep permitting silent cells passes for free
+on silence unless each cell asserts a positive check count and the converse is
+asserted beside the claim. Delivered by M114. No prior D-entry is superseded —
+the thrash rule never had one, which is part of what this entry fixes. If a
+milestone is ever sent back by trigger (b) where the recorded alternative was
+the wrong call, this is the entry to supersede.
