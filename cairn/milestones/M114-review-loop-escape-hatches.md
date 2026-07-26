@@ -46,24 +46,24 @@ rejected alternative → candidate row.
      pin; AC1 gains the precedence and work-log-pointer elements (review F4, F3). Every
      box unticked — the tree changes, so each criterion re-verifies from scratch. -->
 
-- [ ] AC1: the thrash rule states all five of — returns counted per milestone with a
+- [x] AC1: the thrash rule states all five of — returns counted per milestone with a
       re-cut incrementing and never resetting; the work log named as the record that
       survives a re-cut; the second trigger (one criterion, twice, new mechanism, same
       shape); the no-recorded-alternative fallback offering `/milestone-brief`; and that
       trigger (a) takes precedence where both fire. Read out of the shipped file.
-- [ ] AC2: a prose-guard file under `skills/tests/` fails when the rule block is blanked,
+- [x] AC2: a prose-guard file under `skills/tests/` fails when the rule block is blanked,
       and carries one `Mutation(...)` entry per positive assert that pins doctrine prose.
       No claim about how many files state the rule — that is the pin, now Out.
-- [ ] AC3: `tracking-rules.md` states the promotion-condition rule beside search-first
+- [x] AC3: `tracking-rules.md` states the promotion-condition rule beside search-first
       candidate creation, guarded by an assert in `test_search_first_candidates.py`
       with its own `Mutation(...)` entry.
-- [ ] AC4: `guard-doctrine.md` §3 states the matcher-rendering rule and §7 the sweep
+- [x] AC4: `guard-doctrine.md` §3 states the matcher-rendering rule and §7 the sweep
       non-vacuity rule, each guarded in `test_lesson_graduation.py` with its own
       `Mutation(...)` entry — registration is per block, and the completeness meta-test
       catches only an unregistered FILE (M60/M85).
-- [ ] AC5: a `DECISIONS.md` entry records the supersession, naming the per-cut reading
+- [x] AC5: a `DECISIONS.md` entry records the supersession, naming the per-cut reading
       it replaces and the M93/M92 evidence, and back-references the rule's prior form.
-- [ ] AC6: all three `unittest` suites green from the repo root with exit codes checked
+- [x] AC6: all three `unittest` suites green from the repo root with exit codes checked
       individually, never through a pipe (M56/M65, M111); an adjacency sweep shows every
       guard asserting a phrase near an edited block still matches on one physical line
       (M104); and no phrase this milestone adds gives an existing guard false coverage
@@ -128,6 +128,7 @@ rejected alternative → candidate row.
 - 2026-07-26: T6 — the one-surface pin and all its machinery are gone: `TestThrashRuleHasOneSurface`, `TestDetectorSeesEveryRendering`, `normalize()`, `states_the_rule()`, `RENDERINGS`, `NON_FORKS`, `PHRASE`, `surfaces()`, the now-dead `import re`, and the registry entry that pinned the assert. The docstring records what was removed and why, so the file does not read as though the pin was never considered. Count MEASURED rather than assumed, as the task required: 8 asserts against 8 registered entries. Suites 619/280/91, exit 0 each — skills is down 3 tests, exactly the three deleted.
 - 2026-07-26: T7 — the thrash rule gains the two things its own review found missing. It now names the WORK LOG as the counting source, with the reason inline (a re-cut supersedes the tasks and unticks every criterion, so current file state reads as a first pass however many returns preceded it — F3, scored 30 and right). And it states that where both triggers fire, trigger (a) wins, being the stricter — F4, scored 60, which then happened for real on this milestone at pass 3. Anchors copied from the shipped bytes; both wrapping clauses matched with `\s+` (M105). Four entries registered, one per new assert: 12 asserts against 12 entries, all 12 red on deletion. Suites 621/280/91 exit 0; M104 0 newly wrap-broken; M113 14 risen, 13 mine and the 14th the known `universal` in a guard reading `cairn-init/SKILL.md`.
 - 2026-07-26: T8 — the pin's candidate row is verified against the rule this milestone ships rather than assumed correct because I wrote it: its promotion condition names a class of evidence ('when a rendering-independent approach is identified — a markdown/AST parse, or a content hash over normalized doctrine blocks'), explicitly refuses a count ('never after N further attempts'), and a regex for count-shaped wording finds none. The row also carries the six renderings already known, so a later attempt starts from the evidence rather than from zero. Final gate: suites 621/280/91 exit 0 separately, `cairn_validate` exit 0 with 16 PASS, plan-owned body within cap. Status -> review.
+- 2026-07-26: SUPERSEDES the 2026-07-26 T-fix entry above that reads "normalization only deletes characters, so it can only turn a match into a non-match" and "dropping any normalization axis reds the positives". Both are FALSE and review pass 3 proved it: H4 (82) — normalization's whole purpose is turning a non-match into a match, and `states_the_rule` was False on a raw wrapped string and True after it; H2 (85) — the `.lower()` axis had no control, and dropping it left the suite green at 622. The entry is append-only history under IP4/D-045 and is not edited; this line is the correction, and the code both claims described was deleted at the re-cut. Recorded here because a reader of the work log alone would otherwise meet two false claims presented as measurement.
 
 ## Decisions
 
@@ -410,3 +411,41 @@ emphasis, pass 3 vacuity and case-folding. **This is exactly the collision pass-
 F4 (60, logged, not actioned) predicted**, and the rule states no precedence between the
 two. F4 was right and was under-scored. Following trigger (a), which is the stricter of
 the two, this does NOT go back to `/milestone-implement`.
+
+## Review pass 4 (2026-07-26)
+
+**Scope.** First pass since the re-cut. `git diff 838a15d..HEAD` deletes the one-surface
+pin and its machinery, edits the thrash rule (work-log counting source, trigger-(a)
+precedence), adds four registry entries and rewrites the plan-owned sections. The
+doctrine text is NO LONGER inherited-clean — it was byte-identical through three passes
+and is now edited, so AC1 is fresh ground rather than a re-run.
+
+**Return count, per the rule's own instruction.** Counted in the work log, not from file
+state: **three returns**, with one re-cut already spent on trigger (a). Current file
+state would read as a first pass, which is exactly why the rule now names the work log.
+
+**Fresh per-criterion evidence.** All commands run this phase.
+
+- AC1 — **verified**, all five elements plus the precedence clause read out of the
+  shipped file: per-milestone counting, the re-cut increments/never-resets clause, the
+  work log named as the surviving record, the second trigger (matched across its wrap),
+  the `/milestone-brief` fallback, and trigger (a) winning where both fire.
+- AC2 — **verified.** 12 asserts against 12 registered entries; all 12 red on deletion,
+  0 survived. The pin is gone without remnant: no `surfaces`, `normalize`,
+  `states_the_rule`, `RENDERINGS`, `NON_FORKS`, `PHRASE`, `OneSurface` or dead `import
+  re` survives in the file, and no registry entry names a deleted test.
+- AC3, AC4, AC5 — verified, each rule present once in its shipped file; D-064 one heading.
+- AC6 — verified. Suites from the repo root, exit codes separately: skills 621 / scripts
+  280 / hooks 91, exit 0 each. Sweeps against `origin/main`: M104 0 newly wrap-broken;
+  M113 14 risen, 13 mine, the 14th the known `universal` belonging to a guard that reads
+  `cairn-init/SKILL.md`.
+
+**A false record corrected this phase.** The pass-2 work-log entry still asserted both
+claims pass 3 disproved — "normalization only deletes characters, so it can only turn a
+match into a non-match" (H4, 82) and "dropping any normalization axis reds the positives"
+(H2, 85). The work log is append-only history under IP4/D-045, so it is not edited; a
+superseding entry now carries the correction. Left alone, a reader of the work log alone
+would meet two false claims presented as measurement.
+
+**Consistency gate.** `cairn_validate` exit 0, 16 PASS, advisories only. `cairn_impact`
+N/A — no `DESIGN.md` principle changed. Profile `consistency-gate` `generic` — none.
