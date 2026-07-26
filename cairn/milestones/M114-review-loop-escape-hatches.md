@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -46,8 +46,13 @@ which is that repo's file to change, not cairn's → nothing here.
       fallback offering `/milestone-brief`. Read out of the shipped file, not the draft.
 - [ ] AC2: a new prose-guard file under `skills/tests/` fails when the rule block is
       blanked, carries one `Mutation(...)` entry per positive assert, and asserts the
-      rule's phrases occur on exactly ONE surface repo-wide — so a later restatement
-      reds rather than silently forking the rule (M112, M113).
+      rule's phrases occur on exactly ONE surface across the plugin's live doctrine
+      prose — `skills/**/*.md`, `README.md` and `CLAUDE.md` — matched
+      whitespace-tolerantly, so a restatement reds even when it re-wraps (M105).
+      `cairn/` is out of scope and the guard says so: `DECISIONS.md` legitimately
+      quotes the rule it records and IP4 makes that permanent, so a literally
+      repo-wide assertion is unsatisfiable and grows less satisfiable over time
+      (M112, M113).
 - [x] AC3: `tracking-rules.md` states the promotion-condition rule beside search-first
       candidate creation, guarded by an assert in `test_search_first_candidates.py`
       with its own `Mutation(...)` entry.
@@ -102,6 +107,9 @@ which is that repo's file to change, not cairn's → nothing here.
 - 2026-07-26: T5 — D-064 appended, recording all six plan-gate choices and naming the per-cut reading it supersedes; every intraclass ID qualified by repo, since a bare M<NN> in cairn's records is repo-local. AC6's two sweeps run as a baseline DIFF rather than an absolute count, which is what made them readable: M104 — 11 guard literals were already wrap-broken at main, 10 at HEAD, so 0 newly broken and the delta is my own new anchor matching for the first time; M113 — 12 guard-literal counts rose, 11 of them my own new asserts going 0->1, and the 12th (`universal`, 1->2, from the §7 rule's "universal silence") belongs to a guard reading cairn-init's SKILL.md, not guard-doctrine, which no guard-doctrine reader asserts. My first cut of the M104 sweep was itself mis-scoped — it swept README and LESSONS literals it never meant to — which is the §7 rule this milestone just wrote, hit while writing it.
 - 2026-07-26: review pass 1 (in progress) — PR #114 opened as a draft; per-criterion evidence gathered and AC1, AC3, AC4, AC5, AC6 verified and ticked. AC2's tick withheld: the guard is sound (14/14 new blocks red on deletion, 0 survived) but the criterion's word `repo-wide` is unsatisfiable — the pinned phrase occurs in the skill AND in `cairn/DECISIONS.md`, because D-064 legitimately quotes the rule it records, and IP4 makes that history permanent. Consistency gate clean. Three review lenses still running; their findings join this pass before the verdict.
 - 2026-07-26: review pass 1 FAILED the gate — AC2 alone, three ways: `repo-wide` is unsatisfiable as written (D-064 legitimately quotes the rule and IP4 makes that permanent), F1 (85) the one-surface pin is a rigid literal so a re-wrapped fork passes green, and F5 (85) the registry holds 7 entries against 9 positive asserts. AC2's tick withdrawn; AC1, AC3, AC4, AC5, AC6 verified this phase and stand. Two lenses clean; the shipped doctrine text is unimplicated and all 14 registered blocks red on deletion. First return — neither thrash trigger fires. Status -> in-progress.
+- 2026-07-26: gated amendment — AC2's `repo-wide` clause is replaced by the three live-prose surfaces it can actually bound (`skills/**/*.md`, `README.md`, `CLAUDE.md`), plus an explicit whitespace-tolerance requirement and the stated reason `cairn/` is out (D-064 quotes the rule it records; IP4 makes that permanent). `CHANGELOG.md` stays out as a history file, the one thing guard-doctrine §7 lets an exclusion list name. AC1, AC3-AC6 wording untouched.
+- 2026-07-26: F1/F2 fixed — the one-surface pin is now a `re.compile(r"per\s+milestone,\s+never\s+per\s+cut")` search instead of a literal `in`, and `surfaces()` yields `CLAUDE.md` beside `README.md`. Positive-controlled at every surface rather than argued: a fork appended in BOTH wrapped and one-line form reds `skills/milestone/SKILL.md`, `README.md` and `CLAUDE.md` (6/6) and correctly leaves `CHANGELOG.md`, `cairn/DESIGN.md` and `cairn/LESSONS.md` green (6/6) — 12/12, 0 mismatches, baseline green, every probe file byte-restored.
+- 2026-07-26: F5 fixed — the two unregistered asserts now carry `Mutation(...)` entries; 9 positive asserts against 9 registered entries, and both new blocks proved to red on deletion. Gate on the final tree: three suites exit 0 separately (skills 620 / scripts 280 / hooks 91), `cairn_validate` exit 0, plan-owned body 98/149. Status -> review.
 
 ## Decisions
 

@@ -2309,6 +2309,13 @@ REGISTRY += [
     Mutation(
         guard="test_thrash_rule",
         test="TestThrashTriggers."
+             "test_third_return_is_a_trigger_and_recommends_replan_or_split",
+        target=REVIEW,
+        block="recommend re-plan or split via `/milestone-plan`",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers."
              "test_second_trigger_is_same_criterion_new_mechanism_same_shape",
         target=REVIEW,
         block="The same acceptance criterion failing twice, each by a new mechanism of\n"
@@ -2325,6 +2332,12 @@ REGISTRY += [
         test="TestThrashTriggers.test_no_recorded_alternative_offers_brief_escalation",
         target=REVIEW,
         block="Where it recorded none, offer escalation via `/milestone-brief`",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers.test_no_recorded_alternative_offers_brief_escalation",
+        target=REVIEW,
+        block="instance, never automatically",
     ),
     Mutation(
         guard="test_thrash_rule",

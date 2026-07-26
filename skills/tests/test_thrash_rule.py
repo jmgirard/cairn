@@ -89,25 +89,34 @@ class TestThrashTriggers(unittest.TestCase):
 
 
 class TestThrashRuleHasOneSurface(unittest.TestCase):
-    PHRASE = "per milestone, never per cut"
+    # Whitespace-tolerant, NOT a literal: these files hard-wrap around 75 cols
+    # and the phrase is 28 chars, so a genuine fork has a real chance of
+    # landing on the break. A literal `in` check missed exactly that and let a
+    # fork wrapped as "never per\ncut" pass green — the M105 lesson recurring
+    # inside the guard written to apply it (review pass 1, F1).
+    PATTERN = re.compile(r"per\s+milestone,\s+never\s+per\s+cut")
 
     def surfaces(self):
-        # Positively scoped to the plugin's own doctrine prose — every skill
-        # and shared module, plus the README. The README is in scope because
-        # that is exactly where M112 found doctrine going stale silently: a
-        # milestone edited the skills and shipped a README saying the old
-        # thing. `cairn/` is not swept — a tracking record quoting doctrine is
-        # a legitimate record, not a second copy of the rule.
+        # Positively scoped to the plugin's LIVE doctrine prose: every skill and
+        # shared module, plus the two always-read root files. README is in scope
+        # because M112 found doctrine going stale exactly there; CLAUDE.md
+        # because it is the router every session reads (added review pass 1, F2).
+        # Two deliberate omissions. `CHANGELOG.md` is a history file, the one
+        # thing guard-doctrine §7 says an exclusion list may name. `cairn/` is
+        # out because `DECISIONS.md` legitimately quotes the rule it records and
+        # IP4 makes that permanent — a literally repo-wide assertion is
+        # unsatisfiable today and gets less satisfiable with every D-entry.
         repo = SKILLS.parent
         yield from sorted(SKILLS.rglob("*.md"))
         yield repo / "README.md"
+        yield repo / "CLAUDE.md"
 
     def test_rule_states_itself_in_exactly_one_file(self):
         repo = SKILLS.parent
         hits = sorted(
             p.relative_to(repo).as_posix()
             for p in self.surfaces()
-            if self.PHRASE in p.read_text().lower()
+            if self.PATTERN.search(p.read_text().lower())
         )
         # Bound the identity, not only the tally: a phrase that vanished from
         # review and reappeared elsewhere would still count one (M103 — bind
