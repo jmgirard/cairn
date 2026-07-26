@@ -167,6 +167,139 @@ class TestSessionContext(RepoFixture):
         self.assertIn("## cairn/ROADMAP.md", out["additionalContext"])
 
 
+class TestSessionContextReadBound(RepoFixture):
+    """M113/D-063 — cap-exempt sections are read-bounded newest-first.
+
+    The bound exists because the old `[:MAX_CHARS]` tail chop discarded the
+    NEWEST work-log entries, which are the ones carrying current state: a
+    resuming session was told what a milestone finished days ago and never
+    what it is blocked on. Sections the 150-line cap governs are injected
+    whole; sections it exempts (`## Work log`, `## Review`) are bounded.
+    """
+
+    def milestone(self, work_log=(), review=(), tasks=(), relpath=None):
+        """Write cairn/<relpath> with the given section bodies."""
+        relpath = relpath or "milestones/M07-test.md"
+        body = ["# M07: Test milestone", "", MILESTONE_SENTINEL, ""]
+        if tasks:
+            body += ["## Tasks", ""] + list(tasks) + [""]
+        body += ["## Work log", ""] + list(work_log) + [""]
+        if review:
+            body += ["## Review", ""] + list(review) + [""]
+        path = self.root / "cairn" / relpath
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("\n".join(body))
+        return path
+
+    def inject(self):
+        proc = run_hook(
+            "session_context.py",
+            self.payload(hook_event_name="SessionStart", source="startup"),
+        )
+        self.assertEqual(proc.returncode, 0)
+        return hook_json(proc)["additionalContext"]
+
+    def test_long_work_log_keeps_the_newest_entries_and_drops_the_oldest(self):
+        # Shaped on this repo's own worst case: M95's work log ran 23,147
+        # chars across 65 entries. Both directions are pinned — asserting
+        # only that the newest survives would pass against no bound at all.
+        entries = [f"- 2026-07-{i % 28 + 1:02d}: entry-{i:03d} " + "x" * 300
+                   for i in range(65)]
+        self.milestone(work_log=entries)
+        ctx = self.inject()
+        self.assertIn("entry-064", ctx)
+        self.assertNotIn("entry-000", ctx)
+
+    def test_bounded_section_names_what_it_elided_and_where_to_read_it(self):
+        entries = [f"- 2026-07-01: entry-{i:03d} " + "x" * 300 for i in range(65)]
+        self.milestone(work_log=entries)
+        ctx = self.inject()
+        self.assertIn("of 65 entries shown", ctx)
+        self.assertIn("read cairn/milestones/M07-test.md for the rest", ctx)
+
+    def test_section_under_budget_is_injected_whole_with_no_marker(self):
+        entries = [f"- 2026-07-01: entry-{i:03d}" for i in range(6)]
+        self.milestone(work_log=entries)
+        ctx = self.inject()
+        for i in range(6):
+            self.assertIn(f"entry-{i:03d}", ctx)
+        self.assertNotIn("entries shown", ctx)
+
+    def test_the_review_section_is_bounded_by_the_same_rule(self):
+        # The generalization: the bound is derived from the cap, so EVERY
+        # cap-exempt section gets it — not the work log alone.
+        review = [f"- AC{i}: evidence-{i:03d} " + "y" * 300 for i in range(40)]
+        self.milestone(work_log=["- 2026-07-01: one"], review=review)
+        ctx = self.inject()
+        self.assertIn("evidence-039", ctx)
+        self.assertNotIn("evidence-000", ctx)
+
+    def test_capped_sections_are_injected_whole(self):
+        # ## Tasks is plan-owned and counts against the 150-line cap, so the
+        # cap is already its bound; the injection must not bound it again.
+        tasks = [f"- [ ] T{i}: task-{i:03d} " + "z" * 300 for i in range(30)]
+        self.milestone(tasks=tasks, work_log=["- 2026-07-01: one"])
+        ctx = self.inject()
+        self.assertIn("task-000", ctx)
+        self.assertIn("task-029", ctx)
+
+    def test_no_active_milestone_vanishes_when_the_total_budget_binds(self):
+        # The old chop concatenated then sliced, so a later milestone could
+        # disappear entirely — no header, no path, no trace.
+        rows = [
+            "| M07 | A | in-progress | — | high | milestones/M07-test.md |",
+            "| M08 | B | review | — | high | milestones/M08-b.md |",
+            "| M09 | C | blocked | — | high | milestones/M09-c.md |",
+            "| M10 | D | blocked | — | high | milestones/M10-d.md |",
+        ]
+        (self.root / "cairn" / "ROADMAP.md").write_text(
+            "# Roadmap\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n"
+            "|---|---|---|---|---|---|\n" + "\n".join(rows) + "\n"
+        )
+        for rel in ("milestones/M07-test.md", "milestones/M08-b.md",
+                    "milestones/M09-c.md", "milestones/M10-d.md"):
+            self.milestone(
+                relpath=rel,
+                tasks=[f"- [ ] T{i}: " + "z" * 300 for i in range(40)],
+                work_log=[f"- 2026-07-01: e{i} " + "x" * 300 for i in range(40)],
+            )
+        ctx = self.inject()
+        for rel in ("M07-test.md", "M08-b.md", "M09-c.md", "M10-d.md"):
+            with self.subTest(rel=rel):
+                self.assertIn(f"## cairn/milestones/{rel}", ctx)
+
+    def test_active_milestones_are_injected_in_progress_first(self):
+        rows = [
+            "| M09 | C | blocked | — | high | milestones/M09-c.md |",
+            "| M07 | A | in-progress | — | high | milestones/M07-test.md |",
+        ]
+        (self.root / "cairn" / "ROADMAP.md").write_text(
+            "# Roadmap\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n"
+            "|---|---|---|---|---|---|\n" + "\n".join(rows) + "\n"
+        )
+        self.milestone(relpath="milestones/M09-c.md", work_log=["- 2026-07-01: c"])
+        self.milestone(work_log=["- 2026-07-01: a"])
+        ctx = self.inject()
+        self.assertLess(
+            ctx.index("## cairn/milestones/M07-test.md"),
+            ctx.index("## cairn/milestones/M09-c.md"),
+        )
+
+    def test_hard_truncation_is_marked_never_silent(self):
+        # ROADMAP alone over budget: nothing else can be shed, so the cut
+        # must announce itself (M100 — an enforcement path fails loud).
+        rows = "\n".join(
+            f"| M{i:03d} | {'t' * 400} | done | — | high | milestones/archive/x.md |"
+            for i in range(120)
+        )
+        (self.root / "cairn" / "ROADMAP.md").write_text(
+            "# Roadmap\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n"
+            "|---|---|---|---|---|---|\n" + rows + "\n"
+        )
+        ctx = self.inject()
+        self.assertIn("injection truncated", ctx)
+
+
 class TestStopGuard(RepoFixture):
     def test_blocks_on_dirty_tracking(self):
         (self.root / "cairn" / "ROADMAP.md").write_text(ROADMAP + "edited\n")
