@@ -99,10 +99,20 @@ overrides — log the override).
    `generic`) makes this half a clean no-op.
 
    Any criterion or gate failure → status back to `in-progress`, work-log
-   line naming exactly what failed, stop. **Thrash rule:** if this is the
-   milestone's third trip back from review (count the work-log), do not
-   queue another retry — that's a mis-planned milestone; recommend re-plan
-   or split via `/milestone-plan`.
+   line naming exactly what failed, stop.
+
+   **Thrash rule.** Count returns **per milestone, never per cut** — a
+   `/milestone-plan` re-cut increments the count and never resets it, since a
+   re-cut is itself evidence of thrash. Two triggers, with different remedies:
+
+   - **A third return** — a mis-planned milestone. Do not queue another retry;
+     recommend re-plan or split via `/milestone-plan`.
+   - **The same acceptance criterion failing twice, each by a new mechanism of
+     the same shape** — a wrong approach rather than a mis-sized one. Re-cutting
+     around the same predicate buys the next mechanism, not a fix, so the
+     remedy is to reconsider the alternative the plan gate recorded against.
+     Where it recorded none, offer escalation via `/milestone-brief` — per
+     instance, never automatically (D-004).
 
 5. **Independent fresh-context review — three lenses, then a scorer.** Spawn
    three reviewers that have not seen the implementation, in parallel, each with

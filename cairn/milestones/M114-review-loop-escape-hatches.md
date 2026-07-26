@@ -74,7 +74,7 @@ which is that repo's file to change, not cairn's → nothing here.
 
 ## Tasks
 
-- [ ] T1: rewrite the thrash rule at `skills/milestone-review/SKILL.md:101-105` to the
+- [x] T1: rewrite the thrash rule at `skills/milestone-review/SKILL.md:101-105` to the
       two-trigger, per-milestone-count form with the `/milestone-brief` fallback.
 - [ ] T2: author `skills/tests/test_thrash_rule.py` — anchors copied from the shipped
       file's actual bytes, never the draft (M95); `\s+` matchers where a phrase wraps
@@ -95,6 +95,7 @@ which is that repo's file to change, not cairn's → nothing here.
 - 2026-07-26: plan gate — three decisions. The thrash rule stays in `/milestone-review` (it has exactly one surface, and the rulebook is +83 lines / +7,401 chars over its M95 baseline with D-057 governing growth at the door). The promotion-condition rule goes in tracking-rules rather than the records-hygiene module, because candidate rows are created conversationally and a conditionally-read module would never fire on that path. The no-recorded-alternative case offers an RB escalation rather than collapsing into trigger (a); closing it upstream is a candidate row.
 - 2026-07-26: verified at plan time rather than assumed — the thrash rule's phrases (`third trip`, `queue another retry`, `mis-planned`, `re-plan or split`) occur at exactly two lines repo-wide, both in `skills/milestone-review/SKILL.md`, and no file under `skills/tests/` asserts any of them, so the rule is unguarded prose today (M95: confirm an unpinned verdict against the guards, never against the prose).
 - 2026-07-26: branch `m114-review-loop-escape-hatches` cut from main (0/0 with origin); status -> in-progress.
+- 2026-07-26: T1 — the thrash rule is rewritten to count returns per milestone with a re-cut incrementing and never resetting, and split into two triggers: a third return (mis-planned, re-plan or split) and the same criterion failing twice by a new mechanism of the same shape (wrong approach — reconsider the alternative the plan gate recorded against, or offer `/milestone-brief` where none was recorded). All three suites exit 0 after the edit, which is also the M104 adjacency evidence: no neighbouring guard's anchor reflowed.
 
 ## Decisions
 
