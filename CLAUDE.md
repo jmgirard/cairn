@@ -27,6 +27,3 @@ reconstruct the rules from memory. State lives under `cairn/`: **Architecture �
 Status → ROADMAP · Tasks → milestone files · Decisions → DECISIONS · Lessons
 → LESSONS · History → archive + git**. Never record status or TODOs here; memory never holds
 project state — `cairn/` files win any conflict.
-
-
-**Thrash rule.** Count returns **per milestone, never per cut** — a re-cut increments the count and never resets it.
