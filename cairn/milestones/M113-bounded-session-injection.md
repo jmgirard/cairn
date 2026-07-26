@@ -1,11 +1,11 @@
 # M113: Bounded session-start injection — cap-exempt sections read-bounded newest-first, and the active milestone file joins the always-read frame
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1, IP4
-- **Branch/PR:** —
+- **Branch/PR:** m113-bounded-session-injection
 
 ## Goal
 
@@ -68,7 +68,7 @@ allocation below makes the cap degrade gracefully instead.
 
 ## Tasks
 
-- [ ] T1: Record the measured percentiles and the chosen per-section budget in
+- [x] T1: Record the measured percentiles and the chosen per-section budget in
       this file's Decisions section, with the method (final live revision of
       every `cairn/milestones/M*.md` in git history) and the date.
 - [ ] T2: In `hooks/session_context.py`, add a `bounded_tail` helper: split a
@@ -94,7 +94,28 @@ allocation below makes the cap degrade gracefully instead.
 ## Work log
 
 - 2026-07-25: created by /milestone-plan.
+- 2026-07-25: T1 — budget set at 6,000 chars from the measured p90 of both cap-exempt section types (111 files); recorded in Decisions with the method.
+- 2026-07-25: minor amendment — T5's hook tests are written before T2/T3 (tests-first), not after; task order in the file unchanged, execution order noted here.
 
 ## Decisions
+
+- 2026-07-25 — **Per-section budget: 6,000 characters, shared by both
+  cap-exempt section types.** Measured over the final live revision of every
+  `cairn/milestones/M*.md` in git history (111 files, measured 2026-07-25):
+  `## Work log` p50 1,211 · p75 2,476 · p90 3,740 · max 23,147 chars (M95,
+  65 entries); `## Review` p50 2,283 · p75 3,611 · p90 5,866 · max 8,560
+  chars. 6,000 clears both p90s, so ≥90% of each section type injects whole
+  and only genuine outliers meet the bound. Neither distribution is censored
+  — both sections are cap-exempt, so nothing jams against a limit and the
+  percentiles are a legitimate budget basis (M99). A single shared figure
+  rather than one per section type: the rule is derived from the cap
+  ("cap-exempt sections are read-bounded"), and two numbers would invite the
+  reader to look for a distinction the doctrine does not make.
+- 2026-07-25 — **Degradation order: `in-progress`, then `review`, then
+  `blocked`.** AC4 requires that no active milestone disappear when the total
+  budget binds, which means something must give first. Injecting in that
+  status order and shrinking from the end drops the least-current milestone's
+  detail first. Discovered at T3; not a plan change — AC4 demands graceful
+  degradation and this is what it degrades by.
 
 ## Review
