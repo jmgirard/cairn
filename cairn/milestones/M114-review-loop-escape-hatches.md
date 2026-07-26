@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -46,12 +46,12 @@ rejected alternative → candidate row.
      pin; AC1 gains the precedence and work-log-pointer elements (review F4, F3). Every
      box unticked — the tree changes, so each criterion re-verifies from scratch. -->
 
-- [x] AC1: the thrash rule states all five of — returns counted per milestone with a
+- [ ] AC1: the thrash rule states all five of — returns counted per milestone with a
       re-cut incrementing and never resetting; the work log named as the record that
       survives a re-cut; the second trigger (one criterion, twice, new mechanism, same
       shape); the no-recorded-alternative fallback offering `/milestone-brief`; and that
       trigger (a) takes precedence where both fire. Read out of the shipped file.
-- [x] AC2: a prose-guard file under `skills/tests/` fails when the rule block is blanked,
+- [ ] AC2: a prose-guard file under `skills/tests/` fails when the rule block is blanked,
       and carries one `Mutation(...)` entry per positive assert that pins doctrine prose.
       No claim about how many files state the rule — that is the pin, now Out.
 - [x] AC3: `tracking-rules.md` states the promotion-condition rule beside search-first
@@ -61,7 +61,7 @@ rejected alternative → candidate row.
       non-vacuity rule, each guarded in `test_lesson_graduation.py` with its own
       `Mutation(...)` entry — registration is per block, and the completeness meta-test
       catches only an unregistered FILE (M60/M85).
-- [x] AC5: a `DECISIONS.md` entry records the supersession, naming the per-cut reading
+- [ ] AC5: a `DECISIONS.md` entry records the supersession, naming the per-cut reading
       it replaces and the M93/M92 evidence, and back-references the rule's prior form.
 - [x] AC6: all three `unittest` suites green from the repo root with exit codes checked
       individually, never through a pipe (M56/M65, M111); an adjacency sweep shows every
@@ -129,6 +129,7 @@ rejected alternative → candidate row.
 - 2026-07-26: T7 — the thrash rule gains the two things its own review found missing. It now names the WORK LOG as the counting source, with the reason inline (a re-cut supersedes the tasks and unticks every criterion, so current file state reads as a first pass however many returns preceded it — F3, scored 30 and right). And it states that where both triggers fire, trigger (a) wins, being the stricter — F4, scored 60, which then happened for real on this milestone at pass 3. Anchors copied from the shipped bytes; both wrapping clauses matched with `\s+` (M105). Four entries registered, one per new assert: 12 asserts against 12 entries, all 12 red on deletion. Suites 621/280/91 exit 0; M104 0 newly wrap-broken; M113 14 risen, 13 mine and the 14th the known `universal` in a guard reading `cairn-init/SKILL.md`.
 - 2026-07-26: T8 — the pin's candidate row is verified against the rule this milestone ships rather than assumed correct because I wrote it: its promotion condition names a class of evidence ('when a rendering-independent approach is identified — a markdown/AST parse, or a content hash over normalized doctrine blocks'), explicitly refuses a count ('never after N further attempts'), and a regex for count-shaped wording finds none. The row also carries the six renderings already known, so a later attempt starts from the evidence rather than from zero. Final gate: suites 621/280/91 exit 0 separately, `cairn_validate` exit 0 with 16 PASS, plan-owned body within cap. Status -> review.
 - 2026-07-26: SUPERSEDES the 2026-07-26 T-fix entry above that reads "normalization only deletes characters, so it can only turn a match into a non-match" and "dropping any normalization axis reds the positives". Both are FALSE and review pass 3 proved it: H4 (82) — normalization's whole purpose is turning a non-match into a match, and `states_the_rule` was False on a raw wrapped string and True after it; H2 (85) — the `.lower()` axis had no control, and dropping it left the suite green at 622. The entry is append-only history under IP4/D-045 and is not edited; this line is the correction, and the code both claims described was deleted at the re-cut. Recorded here because a reader of the work log alone would otherwise meet two false claims presented as measurement.
+- 2026-07-26: review pass 4 FAILED the gate — FOURTH return, and on a NEW shape. K1 (blame-history, verified verbatim, unscored): D-064 claims the shipped guard pins the rule to one surface, which T6 deleted — a false statement in an append-only decision record about the very system it justifies. J3 (85) and J4 (85): the guard's docstring is stale against its own file on two axes, both introduced by T7 after T6 had just corrected it — pass-2 G6 and G7 recurring. J2 (82): the precedence clause T7 added to fix F4 forecloses trigger (b)'s escalation permanently from return 3 onward while (a)'s remedy is already spent — a design defect in my own fix. J1 (50) and J5 (35) logged. AC1/AC2/AC5 ticks withdrawn; AC3/AC4/AC6 stand. Passes 1-3 all failed on the deleted pin; pass 4 fails on records drifting from the artifacts they describe, so trigger (b) does NOT fire — new shape, not a new mechanism. Status -> in-progress.
 
 ## Decisions
 
@@ -449,3 +450,58 @@ would meet two false claims presented as measurement.
 
 **Consistency gate.** `cairn_validate` exit 0, 16 PASS, advisories only. `cairn_impact`
 N/A — no `DESIGN.md` principle changed. Profile `consistency-gate` `generic` — none.
+
+**Independent review — three lenses, then a scorer.** Prior-review: zero findings; it
+confirmed every pass-3 finding was discharged by deletion without remnant, that the three
+prior Review sections are byte-for-byte intact (IP3), and that the work-log supersession
+matches D-045's actual text. Diff-bug: five findings. Blame-history: one, which the
+scorer never saw because it arrived after the scoring run — recorded as such below rather
+than presented as scored.
+
+- **K1 (blame-history; verified here verbatim, NOT scored) — D-064 now misdescribes what
+  ships.** Its Consequences state: "That guard also pins the rule to one surface, so a
+  later restatement in another skill or the README reds rather than silently forking it."
+  The re-cut deleted that guard at T6. As of HEAD nothing pins the rule to one surface, so
+  a restatement would not red. `cairn/DECISIONS.md` is untouched by the re-cut
+  (`git diff 838a15d..HEAD` on it is empty), so nothing supersedes or annotates the claim.
+  Same shape as pass-2 G4 (90) — a false statement in a durable record — but in a more
+  permanent file. The re-cut's own work-log line calls D-064 "byte-identical and
+  unimplicated": true of the bytes, false of the claim.
+- **J3 (85) — actioned.** The guard's docstring says asserted phrases sit on one source
+  line "except the second trigger", i.e. ONE `\s+` exception. There are now three. T6
+  correctly reduced the sentence to one exception; T7 added two more `\s+` asserts without
+  touching it. This is pass-2 finding G6 (68) recurring in the same file.
+- **J4 (85) — actioned.** The same docstring says "Four properties, each separately
+  deletable and so separately asserted" against 8 test methods covering six properties.
+  The two it omits are exactly the elements the re-cut was for — the work-log counting
+  source and the trigger precedence — so a maintainer reading it to learn what is guarded
+  concludes those two clauses are unpinned prose. Same class as pass-2 G7 (87).
+- **J2 (82) — actioned, and a design defect in the clause T7 added.** The precedence clause
+  makes trigger (a) win unconditionally. Returns are counted per milestone and a re-cut
+  increments, so (a) fires on the third return and every one after it — meaning from
+  return 3 onward trigger (b)'s remedy, INCLUDING the `/milestone-brief` escalation
+  offered where the plan gate recorded no alternative, is unreachable by rule. Trigger
+  (a)'s only remedy is re-plan-or-split, already spent once here. The scorer confirmed no
+  rule anywhere (`milestone-plan`, `milestone-brief`, `tracking-rules`) covers a milestone
+  returning after a re-cut. M114 is the concrete case.
+
+**Logged, below threshold (2).** J1 (50) the precedence clause uses `(a)`/`(b)` labels the
+trigger bullets do not carry; the scorer judged the remedy wording disambiguates it. J5
+(35) "count them in the work log" names no countable token — `review pass` matches 8 lines
+for 3 returns — but `FAILED the gate` tracks them reliably in practice.
+
+**Also found, excluded from findings by the taxonomy but real:** the docstring T6 rewrote
+raises `SyntaxWarning: "\s" is an invalid escape sequence` — a linter catch, and mine.
+
+**GATE FAILURE — FOURTH return.** AC1, AC2 and AC5 ticks withdrawn (the doctrine text,
+the guard's self-description, and D-064 are each implicated); AC3, AC4 and AC6 were
+verified this phase and stand.
+
+**The failure shape has CHANGED, and that matters more than the count.** Passes 1-3 all
+failed on one thing: the one-surface pin's coverage of renderings. That is deleted. Pass 4
+fails on something new — every defect is a record that no longer matches the artifact it
+describes: a docstring stale against its own file (twice), a D-entry stale against the
+system it justifies, a work-log claim disproved. Each was introduced by the fix for the
+previous pass. Trigger (b) does not fire: this is a new shape, not a new mechanism of the
+old one. Trigger (a) fires on the count alone — and J2 is the finding that this is now a
+trap rather than a remedy.
