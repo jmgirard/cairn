@@ -96,7 +96,11 @@ class TestMilestoneCapExemption(unittest.TestCase):
         validate = read(ROOT / "scripts" / "cairn_validate.py")
         emitted = re.search(r'\(\s*"([\w -]+)",\s*lambda root, rows: check_worklog_format', validate)
         self.assertIsNotNone(emitted, "check_worklog_format is not registered in ADVISORIES")
-        self.assertIn(f"`{emitted.group(1)}`", self.rules)
+        # Anchored in the sentence that STATES the advisory, not on the bare
+        # label: M113's always-read row names the same label, so a bare match
+        # would survive deleting the rule outright — false coverage, and the
+        # mutation harness reddened on exactly that (M104's pattern).
+        self.assertIn(f"so `cairn_validate`'s `{emitted.group(1)}`", self.rules)
 
     def test_stated_cap_matches_enforced_cap(self):
         # The rulebook's human-readable cap and the scripts' machine-enforced cap

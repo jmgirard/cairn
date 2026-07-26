@@ -624,7 +624,7 @@ REGISTRY = [
         guard="test_milestone_cap_exemption",
         test="TestMilestoneCapExemption.test_stated_advisory_label_matches_the_emitted_label",
         target=RULES,
-        block="`work-log format`",
+        block="of a budget it no longer pays into, so `cairn_validate`'s `work-log format`",
     ),
     # M84: the second weight axis. One entry per positive assert on a prose
     # block (M53). The axis->remedy entry is deliberately pair-INCLUSIVE per
@@ -2028,9 +2028,10 @@ REGISTRY = [
         block='python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_budget.py"',
     ),
     # M108 (D-060): the always-read governance frame. Each of the three
-    # element labels, the completeness-only boundary, each of the four worked
-    # table rows, and the two audit-bullet asserts carries the frame
-    # independently, so each gets its own mutation proof.
+    # element labels, the completeness-only boundary, each worked table row,
+    # and the two audit-bullet asserts carries the frame independently, so
+    # each gets its own mutation proof. M113 (D-063) adds the fifth row and
+    # the two claims that distinguish it.
     Mutation(
         guard="test_always_read_frame",
         test="TestAlwaysReadFrameRulebook.test_names_inflow_test_element",
@@ -2057,27 +2058,45 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_enumerates_the_four_files_with_their_elements",
+        test="TestAlwaysReadFrameRulebook.test_enumerates_the_always_read_files_with_their_elements",
         target=RULES,
         block="| `ROADMAP.md` | a milestone or candidate | terminal-row retention + candidate triage/graduation | 60-line item cap |",
     ),
     Mutation(
         guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_enumerates_the_four_files_with_their_elements",
+        test="TestAlwaysReadFrameRulebook.test_enumerates_the_always_read_files_with_their_elements",
         target=RULES,
         block="| `LESSONS.md` | a durable \"how this repo behaves\" note | retire by enforcement / ownership / maturation (D-051, D-055) | 50-line item cap + `record density` |",
     ),
     Mutation(
         guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_enumerates_the_four_files_with_their_elements",
+        test="TestAlwaysReadFrameRulebook.test_enumerates_the_always_read_files_with_their_elements",
         target=RULES,
         block="| `tracking-rules.md` | the three-step placement test (D-056) | editorial pass; growth governed at the door (D-057) | `/milestone` audit mass+growth line |",
     ),
     Mutation(
         guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_enumerates_the_four_files_with_their_elements",
+        test="TestAlwaysReadFrameRulebook.test_enumerates_the_always_read_files_with_their_elements",
         target=RULES,
         block="| `DECISIONS.md` | a cross-cutting choice among alternatives | bounded heading read — history read less, never shrunk (D-054) | none needed once read-bounded |",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_enumerates_the_always_read_files_with_their_elements",
+        target=RULES,
+        block="| the active `milestones/M<NN>-<slug>.md` | the milestone-file section ownership table | capped sections: the 150-line plan-owned cap; cap-exempt sections: newest-content injection — history read less, never shrunk (D-063); the file leaves the set at `done` | `weight caps` CHECK + `work-log format`; none needed for the cap-exempt sections once read-bounded |",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_names_the_surface_that_leaves_the_always_read_set",
+        target=RULES,
+        block="It is **the only always-read surface that leaves the set**: a milestone stops",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_names_the_split_across_two_gp1_mechanisms",
+        target=RULES,
+        block="only one split across two of GP1's mechanisms within one file** — its",
     ),
     Mutation(
         guard="test_always_read_frame",
