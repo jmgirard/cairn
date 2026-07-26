@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -101,6 +101,7 @@ which is that repo's file to change, not cairn's → nothing here.
 - 2026-07-26: T4 — `guard-doctrine.md` §3 gains the matcher-rendering rule (the positive signal proves the detector RAN, never that it would SEE its target; carry the renderings in as positive controls, which beats external mutation-verification because a detector's author is exactly who cannot enumerate what it misses) and §7 the silent-cell rule (assert a positive check count per cell, assert the positive case fired somewhere, and prefer the converse `named == usable`; a bare `assertGreaterEqual(checked, 0)` is named as the tautology). Four registered entries — diagnosis and remedy pinned separately, since a diagnosis with no remedy is what let the same sweep defect recur across three intraclass M93 passes. M113 sweep clean: `positive signal` now occurs 3x in the module but no guard asserts it.
 - 2026-07-26: T5 — D-064 appended, recording all six plan-gate choices and naming the per-cut reading it supersedes; every intraclass ID qualified by repo, since a bare M<NN> in cairn's records is repo-local. AC6's two sweeps run as a baseline DIFF rather than an absolute count, which is what made them readable: M104 — 11 guard literals were already wrap-broken at main, 10 at HEAD, so 0 newly broken and the delta is my own new anchor matching for the first time; M113 — 12 guard-literal counts rose, 11 of them my own new asserts going 0->1, and the 12th (`universal`, 1->2, from the §7 rule's "universal silence") belongs to a guard reading cairn-init's SKILL.md, not guard-doctrine, which no guard-doctrine reader asserts. My first cut of the M104 sweep was itself mis-scoped — it swept README and LESSONS literals it never meant to — which is the §7 rule this milestone just wrote, hit while writing it.
 - 2026-07-26: review pass 1 (in progress) — PR #114 opened as a draft; per-criterion evidence gathered and AC1, AC3, AC4, AC5, AC6 verified and ticked. AC2's tick withheld: the guard is sound (14/14 new blocks red on deletion, 0 survived) but the criterion's word `repo-wide` is unsatisfiable — the pinned phrase occurs in the skill AND in `cairn/DECISIONS.md`, because D-064 legitimately quotes the rule it records, and IP4 makes that history permanent. Consistency gate clean. Three review lenses still running; their findings join this pass before the verdict.
+- 2026-07-26: review pass 1 FAILED the gate — AC2 alone, three ways: `repo-wide` is unsatisfiable as written (D-064 legitimately quotes the rule and IP4 makes that permanent), F1 (85) the one-surface pin is a rigid literal so a re-wrapped fork passes green, and F5 (85) the registry holds 7 entries against 9 positive asserts. AC2's tick withdrawn; AC1, AC3, AC4, AC5, AC6 verified this phase and stand. Two lenses clean; the shipped doctrine text is unimplicated and all 14 registered blocks red on deletion. First return — neither thrash trigger fires. Status -> in-progress.
 
 ## Decisions
 
@@ -157,3 +158,56 @@ Profile `consistency-gate` slot is `generic` — none — a clean no-op.
 **Thrash rule, applied to this milestone.** First return. Trigger (a) needs a third;
 trigger (b) needs one criterion failing twice by a new mechanism of the same shape.
 Neither fires, so this is an ordinary send-back and not a re-plan signal.
+
+**Independent review — three lenses, then a scorer.** [O] diff-bug, [S] blame-history,
+[S] prior-review, each with a distinct evidence base; findings scored by a fresh [S] that
+did not generate them. Prior-review: zero findings (archive sweep found no regression;
+the PR-comments probe returned empty, so no thread walk). Blame-history: no regression —
+it re-derived the rulebook arithmetic (862 = 779 + 83 against M95's archive), confirmed no
+prior D-entry mentions thrash, and confirmed `guard-doctrine.md` was untouched between its
+M98 creation and this diff. Diff-bug: five findings.
+
+- **F1 (85) — actioned.** `skills/tests/test_thrash_rule.py:92,101`. The one-surface pin
+  matches `PHRASE` as a rigid literal substring, while every other assert in the file uses
+  `\s+` across the shipped wrap and the docstring cites M105 for exactly that. A fork
+  re-wrapped as `per milestone, never per\ncut` passes green; the same text on one line
+  reds. These files wrap at ~75 cols and the phrase is 28 chars, so a genuine copy has a
+  real chance of landing on the break — the guard misses the fork it exists to catch. This
+  is the M105 lesson recurring inside the guard written to apply it.
+- **F5 (85) — actioned.** `skills/tests/test_mutation_harness.py`. AC2 requires one
+  `Mutation(...)` entry per positive assert; verified this phase — 9 positive asserts, 7
+  entries. Unregistered: `recommend re-plan or split via ` + "`/milestone-plan`" + ` and
+  `instance, never automatically`. Each occurs once in the target today so there is no
+  false coverage yet, but neither is proven by the harness, so either gaining a second
+  occurrence later turns its assert into false coverage with the suite silent. The T2
+  work-log line ("7 asserts ... each with its own entry") miscounted asserts as methods.
+
+**Logged, below the 80 threshold (5).** F2 (68) the sweep also omits `CLAUDE.md` and
+`CHANGELOG.md`, not just `cairn/` as the docstring claims — the scorer judged `CHANGELOG`
+defensible as history but `CLAUDE.md` a real live-file gap; carried into the AC2 amendment
+below rather than dropped. F4 (60) the two triggers can co-fire on the motivating case
+with no stated precedence, and "the same acceptance criterion" is undefined across a
+re-cut that may renumber criteria. F7 (50) D-064's D-059 precedent is arguable — D-059
+retired a built-and-measured mechanism, D-064 declines to build one. F6 (45) two comments
+use a bare `M93` where the antecedent is `intraclass M93` lines above. F3 (30) the rewrite
+drops the old `(count the work-log)` pointer; the scorer judged the surviving context
+sufficient.
+
+**Review incident, recorded.** The [O] lens appended a scratch copy of the thrash rule to
+`CLAUDE.md` to test the sweep's scope, and my `git add -A` swept it into the pushed commit
+`9f9f876`. The lens self-reported it. Fixed forward in `4f7e0dc` (no history rewrite on a
+pushed branch); `CLAUDE.md` is now identical to `origin/main` and absent from the branch
+diff. The rule I broke is tracking-rules' own: never sweep strangers into a checkpoint
+commit. `git add -A` is unsafe while subagents are live in a shared checkout.
+
+**GATE FAILURE — returned to `in-progress` (review pass 1).** AC2 alone, failing three
+ways: its `repo-wide` wording is unsatisfiable (D-064 legitimately quotes the rule, and
+IP4 makes that permanent), F1's rigid literal misses a re-wrapped fork, and F5's registry
+is two entries short of what the criterion requires. **AC2's tick withheld**; AC1, AC3,
+AC4, AC5 and AC6 were verified this phase with fresh evidence and stand. The shipped rules
+themselves are unimplicated — all 14 registered blocks red on deletion, and no lens found
+a defect in the doctrine text.
+
+**Thrash rule, applied to itself.** First return for M114. Trigger (a) needs a third;
+trigger (b) needs one criterion failing twice by a new mechanism of the same shape. Neither
+fires — an ordinary send-back, not a re-plan signal.
