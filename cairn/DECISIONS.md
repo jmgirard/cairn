@@ -1873,3 +1873,59 @@ categories remaining the canonical must-offer cases.
 the gate; the gate now guards token cost, not billing. D-004 stands as history
 (unedited, IP4); this entry supersedes only its cost premise and the
 recommend-bar strictness.
+
+### D-063 (2026-07-25): The active milestone file is a fifth always-read surface; its cap-exempt sections are read-bounded newest-first at injection — annotates D-060, applies D-054's shape
+
+**Context:** A `/milestone` audit in the circumplex repo (2026-07-25) applied
+D-060's §2 check and found the gap the frame exists to surface. The
+`session_context` SessionStart hook injects a fifth always-read surface — every
+active milestone file, whole — that the frame's worked table does not cover.
+Measured there: a 30,256-byte injection, 65% of it one milestone's work log,
+silently chopped by `MAX_CHARS` at the *old* end, so the entries recording what
+that milestone was blocked on were exactly what got dropped. Against the frame
+the surface has an inflow test (the milestone-file section ownership table) and
+neither of the other two: the 150-line cap explicitly exempts `## Work log`
+(D-046) and `## Review` (M55), and nothing reads less of either — the hook
+reads all of both. The failure is latent in this repo too: M95's own work log
+measured 23,147 chars / 65 entries, within a few KB of the cap once the ROADMAP
+is added. IP4/D-045/D-046 forbid the storage-side remedy, so the only legal
+direction is read-bounding.
+
+**Decision:** Four choices at the M113 plan gate (2026-07-25). (1) **Both
+surfaces, one milestone** — the hook gains the read-bound, then the frame's
+table gains the row that names it; a row naming a bound nothing applies would
+be false on the record. (2) **Newest-first, by measured size budget.** The
+injection takes a cap-exempt section's newest content up to a per-section
+character budget set above the measured p90 of both types (work log 3,740,
+review 5,866, over 111 milestone files), with a floor of the newest 3 entries;
+a size budget rather than a fixed entry count because entry length varies by an
+order of magnitude, and newest-first because a resume needs current state, which
+is what today's tail chop discards first. Every elision carries a marker naming
+what was cut and the path to read for the rest — the M100 "fail loud, never
+open" rule applied to injection. (3) **Every cap-exempt section, not the work
+log alone.** The rule is derived from the cap rather than enumerated: sections
+the 150-line cap exempts are read-bounded, sections it governs are injected
+whole. Rejected bounding the work log alone (leaves the identical gap on
+`## Review` for a milestone at `review` status) and bounding capped sections too
+(already governed; the cap is their bound). (4) **No separate size signal.**
+The elision markers are the read-bound's own honesty requirement; no measurement
+of injection mass is added. Rejected a `cairn_validate` injection-size advisory:
+it measures mass, which D-057 closed and D-060 put outside the frame
+("completeness-only"), and D-054's row already sets the precedent that a
+read-bounded history surface needs no attention signal.
+
+**Consequences:** Annotates D-060 — the frame's worked table goes from four
+rows to five, which is D-060's own audit bullet ("any newly-added always-read
+surface not covered") executing as designed, not a supersession; the frame stays
+completeness-only. Applies D-054's shape (history bounded by reading less, never
+shrunk) to a second surface. IP4, D-045, and D-046 are untouched in wording and
+in reading: nothing a milestone file *stores* changes, and the cap-exempt
+sections stay exempt for their original reasons. Serves GP1, and the surface is
+the first to split across two of GP1's three mechanisms within one file — its
+capped sections bounded by a cap with an outflow, its cap-exempt sections by
+reading less — so D-053's "fits none of the three named mechanisms" supersession
+trigger is not reached. D-057's closed stock-side program stays closed: this is
+flow-side, the direction that entry endorsed ("growth is made visible at the
+door"). Delivered by M113. If a bounded injection is ever observed leaving a
+resuming session less oriented than the whole file did, this is the entry to
+supersede.
