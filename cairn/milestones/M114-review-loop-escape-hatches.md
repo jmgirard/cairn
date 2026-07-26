@@ -16,85 +16,90 @@ about whether a detector can see its target.
 
 ## Scope
 
-**In:** the thrash rule at `skills/milestone-review/SKILL.md:101-105` rewritten to
-count returns per milestone (a `/milestone-plan` re-cut increments, never resets) with
-two triggers — a third return, and the same acceptance criterion failing twice by a new
-mechanism of the same shape — the second remedied by reconsidering the alternative the
-plan gate recorded, or, where none was recorded, by an offered `/milestone-brief`
-escalation · a new prose-guard over that rule, registered in the mutation harness,
-pinning also that the rule has exactly one surface · one rule in
+**In:** the thrash rule at `skills/milestone-review/SKILL.md` — returns counted per
+milestone (a `/milestone-plan` re-cut increments, never resets, and the rule names the
+work log as the record that survives a re-cut), two triggers, the second remedied by
+reconsidering the plan gate's recorded alternative or an offered `/milestone-brief`
+escalation, and **trigger (a) taking precedence when both fire** · one rule in
 `skills/shared/tracking-rules.md` beside search-first candidate creation: a promotion
 condition names the class of evidence that would falsify the chosen approach, never a
-count of failures · two additions to `skills/shared/guard-doctrine.md` — §3 on
-exercising a detector's matcher at every rendering its target can take, §7 on sweep
-non-vacuity — each guarded and registered · a D-entry superseding the counting rule.
+count of failures · two additions to `skills/shared/guard-doctrine.md` — §3 on exercising
+a detector's matcher at every rendering its target can take, §7 on sweep non-vacuity ·
+a prose-guard over the thrash rule, one `Mutation(...)` entry per doctrine-pinning
+assert · D-064.
 
-**Out:** any `cairn_validate` check or advisory for the three rules — the counting half
-is mechanical but inert and the shape-recurrence half is a judgment; precedent is D-059
-retiring an advisory measured not to work → stays prose doctrine, revisited only on
-evidence the prose fails · changes to the `/milestone-review` fan-out, which caught
-every M93 failure before merge → no milestone; it is working · size or cost governance,
-closed by D-057 · an obligation on `/milestone-plan` to always record the rejected
-alternative → ROADMAP candidate row · editing intraclass's own candidate rows to comply,
-which is that repo's file to change, not cairn's → nothing here.
+**Out:** **the one-surface pin** — asserting the rule's phrase occurs on exactly one file.
+Re-cut out at the third return (2026-07-26): it consumed all three returns across six
+findings of one shape, while the five other criteria never failed. Detecting a forked
+rule by searching for its phrase requires enumerating every rendering the phrase can take,
+and three attempts each missed one the next review found → ROADMAP candidate row, which
+records the renderings already known so a later attempt does not restart · any
+`cairn_validate` check for the three rules — the counting half is inert and the
+shape-recurrence half is a judgment (D-059 precedent) · changes to the
+`/milestone-review` fan-out, which caught every failure here → it is working · size or
+cost governance, closed by D-057 · an obligation on `/milestone-plan` to record the
+rejected alternative → candidate row.
 
 ## Acceptance criteria
 
-- [x] AC1: the rewritten thrash rule states all three of — returns counted per
-      milestone with a re-cut incrementing and never resetting; the second trigger
-      (one criterion, twice, new mechanism, same shape); and the no-recorded-alternative
-      fallback offering `/milestone-brief`. Read out of the shipped file, not the draft.
-- [ ] AC2: a new prose-guard file under `skills/tests/` fails when the rule block is
-      blanked, carries one `Mutation(...)` entry per positive assert that pins doctrine
-      prose (an assert over the test's own synthetic renderings has no doctrine block
-      to blank, and is answered by the negative controls beside it instead), and asserts
-      the rule's phrases occur on exactly ONE surface across the plugin's live doctrine
-      prose — `skills/**/*.md`, `README.md` and `CLAUDE.md` — with the matcher exercised
-      in-test against every rendering the phrase can take (guard-doctrine §3), so a
-      restatement reds whether it re-wraps, sits in a blockquote, or carries emphasis.
-      `cairn/` is out of scope and the guard says so: `DECISIONS.md` legitimately quotes
-      the rule it records and IP4 makes that permanent, so a literally repo-wide
-      assertion is unsatisfiable and grows less satisfiable over time (M112, M113).
-- [x] AC3: `tracking-rules.md` states the promotion-condition rule beside search-first
+<!-- Re-cut 2026-07-26 at the third return. AC2's one-surface clause is deleted with the
+     pin; AC1 gains the precedence and work-log-pointer elements (review F4, F3). Every
+     box unticked — the tree changes, so each criterion re-verifies from scratch. -->
+
+- [ ] AC1: the thrash rule states all five of — returns counted per milestone with a
+      re-cut incrementing and never resetting; the work log named as the record that
+      survives a re-cut; the second trigger (one criterion, twice, new mechanism, same
+      shape); the no-recorded-alternative fallback offering `/milestone-brief`; and that
+      trigger (a) takes precedence where both fire. Read out of the shipped file.
+- [ ] AC2: a prose-guard file under `skills/tests/` fails when the rule block is blanked,
+      and carries one `Mutation(...)` entry per positive assert that pins doctrine prose.
+      No claim about how many files state the rule — that is the pin, now Out.
+- [ ] AC3: `tracking-rules.md` states the promotion-condition rule beside search-first
       candidate creation, guarded by an assert in `test_search_first_candidates.py`
       with its own `Mutation(...)` entry.
-- [x] AC4: `guard-doctrine.md` §3 states the matcher-rendering rule and §7 the sweep
+- [ ] AC4: `guard-doctrine.md` §3 states the matcher-rendering rule and §7 the sweep
       non-vacuity rule, each guarded in `test_lesson_graduation.py` with its own
       `Mutation(...)` entry — registration is per block, and the completeness meta-test
       catches only an unregistered FILE (M60/M85).
-- [x] AC5: a `DECISIONS.md` entry records the supersession, naming the per-cut reading
+- [ ] AC5: a `DECISIONS.md` entry records the supersession, naming the per-cut reading
       it replaces and the M93/M92 evidence, and back-references the rule's prior form.
-- [x] AC6: all three `unittest` suites green from the repo root with exit codes checked
-      individually, never through a pipe (M56/M65, M111); and an adjacency sweep shows
-      every guard asserting a phrase near an edited block still matches on one physical
-      line (M104), and no phrase this milestone adds gives an existing guard false
-      coverage by occurring twice (M113).
+- [ ] AC6: all three `unittest` suites green from the repo root with exit codes checked
+      individually, never through a pipe (M56/M65, M111); an adjacency sweep shows every
+      guard asserting a phrase near an edited block still matches on one physical line
+      (M104); and no phrase this milestone adds gives an existing guard false coverage
+      by occurring twice (M113).
 
 ## Coverage
 
-- AC1 → T1
-- AC2 → T2
+- AC1 → T7
+- AC2 → T6
 - AC3 → T3
 - AC4 → T4
 - AC5 → T5
-- AC6 → T5
+- AC6 → T8
 
 ## Tasks
 
-- [x] T1: rewrite the thrash rule at `skills/milestone-review/SKILL.md:101-105` to the
-      two-trigger, per-milestone-count form with the `/milestone-brief` fallback.
-- [x] T2: author `skills/tests/test_thrash_rule.py` — anchors copied from the shipped
-      file's actual bytes, never the draft (M95); `\s+` matchers where a phrase wraps
-      (M105); read the target via `Path.read_text` or the engine cannot see it (M100).
-      Register each positive assert in `test_mutation_harness.py` and prove each reds.
-- [x] T3: add the promotion-condition rule to `tracking-rules.md` beside search-first;
-      extend `test_search_first_candidates.py`; register and prove it reds.
-- [x] T4: add the §3 matcher-rendering rule and the §7 sweep non-vacuity rule to
-      `guard-doctrine.md`; extend `test_lesson_graduation.py`'s `TestModuleExists`;
-      register both and prove each reds.
-- [x] T5: write the D-entry; run the adjacency and double-occurrence sweeps over every
-      edited file; run all three suites from the repo root, exit codes checked
-      separately.
+<!-- T1-T5 shipped before the re-cut and stay on the branch; T6 reverts the part of T2
+     that built the one-surface pin. T6-T8 are the re-cut's work. -->
+
+- [x] T1: rewrite the thrash rule to the two-trigger, per-milestone-count form.
+- [x] T2: author `skills/tests/test_thrash_rule.py` and register each doctrine-pinning
+      assert in `test_mutation_harness.py`.
+- [x] T3: add the promotion-condition rule to `tracking-rules.md`; extend
+      `test_search_first_candidates.py`; register and prove it reds.
+- [x] T4: add the §3 and §7 rules to `guard-doctrine.md`; extend
+      `test_lesson_graduation.py`; register both and prove each reds.
+- [x] T5: write D-064.
+- [ ] T6: delete the one-surface pin — `TestThrashRuleHasOneSurface`,
+      `TestDetectorSeesEveryRendering`, `normalize()`, `states_the_rule()`, `RENDERINGS`,
+      `NON_FORKS`, `PHRASE`, `surfaces()` — and its registry entry; verify the count goes
+      9 → 8 rather than assuming it.
+- [ ] T7: add the precedence clause and the work-log pointer to the thrash rule; extend
+      the guard to pin both; register each and prove it reds.
+- [ ] T8: candidate row for the pin, promotion condition naming a class of evidence and
+      never a count (the rule this milestone ships); adjacency + false-coverage sweeps;
+      three suites from the repo root, exit codes checked separately.
 
 ## Work log
 
@@ -119,6 +124,7 @@ which is that repo's file to change, not cairn's → nothing here.
 - 2026-07-26: G4 fixed — the Review section's `4f7e0dc` corrected in place to `4c260fc` and marked (D-045: current knowledge corrected where it sits). G7 fixed — the registry comment no longer states an entry count at all, per §6's own remedy of letting the list be the count; it said "six" at seven entries and was staler at nine. G6 (logged) rode along: the docstring no longer claims a single `\s+` exception.
 - 2026-07-26: gate on the final tree — three suites exit 0 separately (skills 622 / scripts 280 / hooks 91), all 9 registered blocks red on deletion, 9 doctrine-pinning asserts against 9 entries, `cairn_validate` exit 0, body 100/149. End-to-end in a scratch copy: the pass-1 wrap and both pass-2 renderings now red on every in-scope surface and stay green on every out-of-scope one, 30/30. Status -> review.
 - 2026-07-26: review pass 3 FAILED the gate — AC2 a third time. H1 (95): the §3 controls have no non-vacuity assert, so emptying either corpus, or both plus gutting `normalize()`, leaves the suite green at 622 — the fix deletes silently. That is guard-doctrine §7, shipped by THIS milestone, unapplied to the §3 controls shipped beside it. H2 (85): the `.lower()` axis has no control and the pass-2 work-log claim that every axis reds the positives is false for it. H4 (82): the comment's 'normalization only deletes characters' invariant is contradicted by normalize()'s own purpose. H3 (75) and H5 (62) logged. AC1, AC3-AC6 re-verified and stand; doctrine untouched and unimplicated across all three passes. BOTH triggers now fire — (a) third return, (b) same shape a third time — the precedence collision pass-1 F4 predicted at 60 and nobody actioned. Following (a): re-plan or split, not another implement pass. Status -> in-progress.
+- 2026-07-26: RE-CUT by /milestone-plan after the third return, following thrash trigger (a). Split at the line the evidence drew: the doctrine (thrash rule, promotion conditions, guard-doctrine §3/§7, D-064) has been byte-identical and unimplicated since pass 1 and stays; the ONE-SURFACE PIN goes Out to a candidate row, having consumed all three returns across six findings of one shape. Gate decision: fix F4 and F3 now rather than ship a rule whose own review documented a contradiction in it — trigger (a) takes precedence where both fire, and the rule names the work log as the record surviving a re-cut. That edits the one file three reviews cleared unchanged, so AC1 re-verifies from scratch; every AC box is unticked for the same reason. Candidate row records the renderings already known (wrap, blockquote, `>>` vs `> >`, partial emphasis, case, word boundaries, corpus vacuity) so a later attempt does not restart, and its promotion condition names a class of evidence rather than a count — the falsifying-promotion-condition rule this milestone ships, applied to its own leftovers.
 
 ## Decisions
 
