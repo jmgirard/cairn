@@ -1,6 +1,6 @@
 # M113: Bounded session-start injection — cap-exempt sections read-bounded newest-first, and the active milestone file joins the always-read frame
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -88,7 +88,7 @@ allocation below makes the cap degrade gracefully instead.
 - [x] T6: Extend `test_always_read_frame.py` with the fifth row, rename
       `test_enumerates_the_four_files_with_their_elements`, and update its
       mutation registration (`skills/tests/test_mutation_harness.py:2059`).
-- [ ] T7: Run the three suites from the repo root, checking each exit code
+- [x] T7: Run the three suites from the repo root, checking each exit code
       separately; `cairn_validate` as its own `&&`-gated step (M111).
 
 ## Work log
@@ -98,6 +98,8 @@ allocation below makes the cap degrade gracefully instead.
 - 2026-07-25: T5 then T2+T3 — 8 hook tests written first (7 red, incl. M09/M10 vanishing from the injection under the old chop), then bounded_tail + the reallocated build_context turned them green; all three suites clean.
 - 2026-07-25: T4/T6 — fifth frame row + its two distinguishing claims in tracking-rules.md; guard extended (row, both claims, renamed four-files test) and re-registered.
 - 2026-07-25: the new row's `work-log format` mention created false coverage in test_milestone_cap_exemption (bare-label anchor would survive deleting the advisory rule); mutation harness caught it — re-anchored that assert in the rule's own sentence. M104's pattern, second occurrence.
+- 2026-07-25: live before/after on the real M95 file (65 entries): old hook 30,000 chars, newest entry ABSENT, oldest present, no marker, cut mid-sentence; new hook 24,118 chars, newest present, oldest absent, marker 'newest 11 of 65 entries shown'.
+- 2026-07-25: T7 — hooks 80 / skills 613 / scripts suites all green (exit codes checked separately), cairn_validate green; DESIGN.md hook-inventory clause updated. Status → review.
 - 2026-07-25: minor amendment — T5's hook tests are written before T2/T3 (tests-first), not after; task order in the file unchanged, execution order noted here.
 
 ## Decisions

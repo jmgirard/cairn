@@ -43,7 +43,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   `cairn/PROFILE.md`, and the operational skills read its slots.
 - `hooks/hooks.json` + python3 (stdlib) scripts (M07) — the enforcement
   layer, all no-op outside cairn repos. Eight hooks: `session_context`
-  (SessionStart context injection); `stop_guard` (Stop-guard on uncommitted
+  (SessionStart context injection; an active milestone's cap-exempt sections
+  are read-bounded to their newest content, D-063); `stop_guard` (Stop-guard on uncommitted
   `cairn/` tracking); five PreToolUse guards — `merge_guard` (single-use
   `cairn/.merge-approved` marker, bound to the PR it approves since M72,
   technically backing IP1),
