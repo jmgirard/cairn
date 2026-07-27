@@ -40,10 +40,12 @@ rec 4/5/6 rows at rebase → M114.
 - [ ] AC2: The description-layer certification is a new section of `guard-doctrine.md`
       naming its three checks (AC-clause→assert coverage, claim-vs-file accuracy,
       anchor-vs-shipped-bytes fidelity), the prohibition *the author never certifies its
-      own guard's coverage*, and RR06's falsifier verbatim: "if guard-authoring
-      milestones still average multiple description-layer returns after adoption, the
-      step didn't work — retire it (D-059), don't tune it." `/milestone-implement`
-      step 8 carries one routing line firing before `status -> review`.
+      own guard's coverage*, and RR06's falsifier — carried inline here because RR06
+      itself is unmerged on M114's branch, so this criterion is the referent an
+      implementer transcribes from: "if guard-authoring milestones still average
+      multiple description-layer returns after adoption, the step didn't work — retire
+      it (D-059), don't tune it." `/milestone-implement` step 8 carries one routing
+      line firing before `status -> review`.
 - [ ] AC3: Every new doctrine clause across AC1 and AC2 carries a doctrine-pinning
       assert in `skills/tests/test_fresh_context_readers.py`, each with its own
       `Mutation(...)` entry whose block is copied from the shipped bytes and resolves
@@ -62,8 +64,10 @@ rec 4/5/6 rows at rebase → M114.
 - [ ] AC6: D-067 is appended to `cairn/DECISIONS.md` recording both adoptions, the
       retirement of author self-certification of guard coverage, and the reservation of
       D-064–D-066 for M114's unmerged branch, back-referencing D-059, D-057, D-031 and
-      RR06 (tolerance: `git diff main..HEAD -- cairn/DECISIONS.md` contains zero
-      deletion lines, and `grep -c '^### D-064' cairn/DECISIONS.md` returns 0).
+      RR06 — naming RR06 as unmerged, since it resolves only when M114 lands
+      (tolerance: `git diff main..HEAD -- cairn/DECISIONS.md` contains zero deletion
+      lines, and the count of `^### D-064` headings in `cairn/DECISIONS.md` is 0 — read
+      the printed count, never `grep`'s exit code, which is 1 on no match).
 - [ ] AC7: On the final tree the `verify` slot is clean — three suites from the repo
       root with exit codes captured separately, never piped (tolerance: exit 0 each) —
       `python3 scripts/cairn_validate.py` exits 0; `git diff --name-only main..HEAD`
@@ -114,6 +118,8 @@ rec 4/5/6 rows at rebase → M114.
 - 2026-07-26: `Driving RR` is deliberately `—`, not `RR06`. RR06's binding criteria bound M114; its BC8 banks recs 4-6 *outside* M114, so RR06 carries no criteria for this milestone and setting the slot would red `cairn_validate`'s `binding criteria` string-compare against a BC set that was never about this work.
 - 2026-07-26: plan gate — four decisions. Scope is recs 4 and 5 only, the two the unblock condition names; rec 6 stays a candidate, its promotion condition unfired. The criteria audit covers RR ingestion as well as the plan gate, because RB07's own trigger was two RR06 binding criteria that turned out jointly unsatisfiable and surfaced only at the review gate. M114 resumes after this merges rather than folding its leftovers in here. M114's park is mirrored onto `main`'s ROADMAP by this commit.
 - 2026-07-26: verified at plan time rather than assumed — everything M114 produced is branch-only. `main`'s `DECISIONS.md` ends at D-063, `main`'s ROADMAP still shows M114 `planned`, and `guard-doctrine.md` §3/§7, the thrash rule, the falsifying-promotion-condition rule and RB05-07/RR05-07 are all absent from `main`. So this milestone may cite none of them as existing doctrine, and its new guard-doctrine section is appended after `main`'s current last section rather than beside M114's edits.
+- 2026-07-26: criteria re-read against the artifacts at the user's call, standing in for the plan-gate audit M115 itself builds. Four checks clean and MEASURED, not assumed: all three cited line anchors are exact on `main`; `main`'s `guard-doctrine.md` ends at §7, so T3's new section is §8 and misses M114's in-section edits; `cairn_validate` has no D-id contiguity check, so the D-064→D-067 gap is legal and IP4 forbids reuse, not gaps. Two defects found and amended before implement: AC2 and AC6 cited RR06, which does not exist on `main` (only RB01-04/RR01-04 do), and AC6's tolerance rested on `grep -c`, which prints 0 but EXITS 1 — the M111 `;`-chain lesson in a different costume. AC2 now states it carries the falsifier inline as the implementer's referent; AC6 reads the printed count and names RR06 as unmerged. Caveat recorded honestly: I authored these criteria, so this is the weaker self-check rec 4 exists to replace.
+- 2026-07-26: AC3's "every new doctrine clause" is knowingly the softest criterion — `clause` is undefined and the coverage call is judgment. Kept rather than tightened: it is bounded to prose this milestone authors (unlike M114's AC2 `repo-wide`, which was unsatisfiable), its tolerance is the measurable assert-count == entry-count, and the judgment residue is exactly what AC5's certifier is there to check. The interlock is deliberate, not an oversight.
 - 2026-07-26: file placement chosen to minimize M114's rebase conflict — a new guard file rather than `skills/tests/test_lesson_graduation.py` (M114 edits it heavily), and an appended guard-doctrine section rather than edits inside §3/§7. `test_mutation_harness.py` is unavoidable; registration is mandatory and the conflict there is additive.
 
 ## Decisions
