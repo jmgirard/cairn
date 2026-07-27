@@ -97,12 +97,12 @@ waits for M119 to merge rather than being transcribed onto a row main lacks.
 
 ## Tasks
 
-- [ ] T1 — Author `cairn/references/prompting-opus-5.md` from the source-note
+- [x] T1 — Author `cairn/references/prompting-opus-5.md` from the source-note
       template: provenance (URL, retrieval, ingested date, `—` pagination,
       dated extraction status), citation, role, the guide's recommendations as
       extracted values with their section anchors, and a `## Traces to` stub.
       Add its `INDEX.md` line.
-- [ ] T2 — Pin the page in `scripts/tests/test_scripts.py`'s
+- [x] T2 — Pin the page in `scripts/tests/test_scripts.py`'s
       `TestShippedPageStateLedger.EXPECTED`; add the work-log justification
       line the ledger contract requires. `python3 -m unittest` over
       `scripts/tests` green from the repo root, exit code checked.
@@ -139,6 +139,11 @@ waits for M119 to merge rather than being transcribed onto a row main lacks.
 - 2026-07-27: plan gate chose relocating the review taxonomy into the scorer rubric over leaving both filters in place because a pre-report drop reaches neither the scorer nor the Review section, which IP3's sub-80 logging line already refuses downstream; falsified by a review pass whose scored-and-logged findings are dominated by taxonomy matches the reviewers used to absorb.
 - 2026-07-27: plan gate chose the rulebook over a doctrine module for both new rules because both are continuous, universally-read conduct with no conditional trigger, which is D-039's precedent and fails D-031's module test; falsified by either rule proving to be read only at a specific gate.
 - 2026-07-27: plan chose a source note over treating the guide as consulted-in-passing because three shipped rules will trace to it, which is the "When a page is owed" reliance test; falsified by all three rules being cut before merge.
+- 2026-07-27: T1 — the guide was retrieved as raw Markdown (`curl` of the page's `.md` sibling at `platform.claude.com`, HTTP 200, 11,225 bytes) rather than through a summarizing fetch, so the extraction status claims a first-hand verification honestly; the `docs.claude.com` slug 302-redirects to that host.
+- 2026-07-27: T2 — `TestShippedPageStateLedger.EXPECTED` gains `prompting-opus-5.md: "ok"` (the ledger contract's required justification): the page's extraction status claims a verification and carries the date `2026-07-27`, so `_last_verified` resolves `verified` → freshest non-future date → `ok`; no partial or negated clause appears in the status.
+- 2026-07-27: minor amendment — T2 landed in T1's checkpoint commit rather than its own, because adding the page without its ledger pin leaves `scripts/tests` red and T1 could not be checked off against a clean verify slot. Task text unchanged.
+- 2026-07-27: implement gate chose wording the new delegation rule to say why the review fan-out's several agents are not the case it forbids (they carry distinct evidence, not one task done three times) over stating the two clauses bare, at the user's direction, because both rules land in the same rulebook section; falsified by a reader still reading the two as contradictory.
+- 2026-07-27: implement gate chose placing each new guard with the file that owns its topic — correction narration into `test_narration_discipline.py`, delegation into a new file — over one milestone-named file, at the user's direction; falsified by the narration file growing beyond one subject.
 
 ## Decisions
 

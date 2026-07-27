@@ -1428,6 +1428,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "migration-pilot-notes.md": "exempt",
         "oracle-discipline-notes.md": "ok",
         "oracle-doctrine-intraclass-notes.md": "ok",
+        "prompting-opus-5.md": "ok",
         "rulebook-classification-ledger.md": "exempt",
         "session-cost-notes.md": "ok",
         "spec-kit.md": "ok",
