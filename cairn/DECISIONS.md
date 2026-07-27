@@ -1929,3 +1929,61 @@ flow-side, the direction that entry endorsed ("growth is made visible at the
 door"). Delivered by M113. If a bounded injection is ever observed leaving a
 resuming session less oriented than the whole file did, this is the entry to
 supersede.
+
+### D-067 (2026-07-26): Two fresh-context reader instruments adopted — the criteria audit at plan/ingest gates and description-layer certification before review; author self-certification of guard coverage is retired (D-059's shape) — annotates D-031, stays clear of D-057's door
+
+**Context:** M114 returned from review seven times. Its seventh return came
+with every suite green, every numeric projection met exactly and the validator
+clean, and was still two records describing that milestone's own artifact
+wrongly; earlier returns had cost it criteria that were unsatisfiable as
+written or that mandated an IP4 violation, and coverage claimed but not
+pinned. The single diagnosed root cause is that an author
+verifies a description against its generative model of the artifact rather
+than against the artifact, which is why running the suites, the harness, and
+the sweeps self-corrects while certifying coverage does not. Two instruments
+were prescribed and deliberately banked outside M114 as their own milestone;
+that milestone is M115, and adopting them is M114's recorded unblock
+condition.
+
+**Decision:** Adopt both, as readers and never as checks. (1) A
+**criteria audit** at `/milestone-plan`'s step-3 gate and at
+`/milestone-brief`'s RR ingestion: a fresh-context `[O]` reader that authored
+none of the criteria asks two mechanical questions of each — what state of the
+world satisfies this exactly as written, and does any IP or D-entry make that
+state unreachable — asked of a binding-criteria *set* as well as of each
+member, since criteria individually satisfiable can be jointly unsatisfiable.
+Findings with one clear answer are fixed and reported; judgment calls become
+gate questions under the three-marker cap. Because the audit must read the
+bytes that ship, criteria authoring moves from step 4 up into step 2 and step
+4 writes the audited wording. (2) **Description-layer certification** as
+`guard-doctrine.md` §8, fired by `/milestone-implement` step 8 before
+`status -> review` when a milestone authored or edited a prose-guard: a
+fresh-context `[O]` reader checks AC-clause-to-assert coverage, claim-vs-file
+accuracy, and anchor-vs-shipped-bytes fidelity, and the gate is entered only
+at zero unresolved. **Author self-certification of guard coverage is thereby
+retired, not repaired** — D-059's move, applied to a mechanism measured across
+seven consecutive passes. Operation stays with the author; only certification
+moves. Rejected: a mandatory re-derivation step (it instructs the same
+judgment that failed while citing the same instructions); any rubric or
+threshold change; and any `cairn_validate` mechanization of either instrument
+— satisfiability and claim accuracy are judgments about prose meaning, the
+shape D-059 retired rather than rebuilt.
+
+**Consequences:** Annotates D-031 — §8 is new doctrine landing in a module
+rather than in the rulebook, and `tracking-rules.md` is untouched, so D-057's
+door stays shut and the three question gates are unchanged in number. §8 is
+conditionally read at guard-authoring time, so a milestone writing no guard
+pays nothing; the criteria audit costs one reader per plan. §8 carries its own
+stated falsifier — if guard-authoring milestones still average multiple
+description-layer returns after adoption, retire the step rather than tune it
+— which is this entry's own exit condition too. **D-064 through D-066 are
+reserved, not skipped:** they are appended on M114's unmerged branch and
+nothing checks D-id uniqueness, so taking D-064 here would produce a duplicate
+that `cairn_validate` passes green on merge. IP4 forbids reuse, not gaps, and
+`cairn_validate` has no contiguity check. The review report prescribing both
+instruments — **RR06**, likewise unmerged on M114's branch and resolvable only
+once M114 lands — is for that reason named here and nowhere in the shipped
+prose: its rules travel verbatim instead, rather than behind a citation that
+resolves to nothing.
+Delivered by M115. If either reader proves to cost more than the returns it
+prevents, this is the entry to supersede.

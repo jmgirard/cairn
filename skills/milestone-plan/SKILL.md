@@ -35,6 +35,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    ([S]-tagged descriptions) with specific focuses; require file:line
    citations. Draft scope, tasks,
    and the list of genuinely open decisions internally.
+   **The acceptance criteria are drafted here to their final wording, not at
+   step 4** — step 3's criteria audit reads the bytes step 4 will write, and an
+   audit over a rougher draft certifies text that never ships.
 
    **Exploring a source corpus.** A scope that points at a corpus of
    maybe-relevant sources on the `references/sources/` shelf is a supply-push
@@ -80,6 +83,22 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    A and B; C becomes M13 (planned now, depends on M12); D becomes a
    candidate row; E sounds unwanted — drop entirely?".
 
+   **Criteria audit (runs before the questions are composed).** A plan
+   author's own read of its own criteria is the check measured to fail — M114
+   authored criteria that were unsatisfiable as written and one that mandated
+   an IP4 violation, costing gated amendments and review returns, and each was
+   discoverable here. So the step-2 criteria go to a fresh-context **[O]**
+   reader that authored none of them, which asks two mechanical questions of
+   each: *what state of the world satisfies this exactly as written*, and
+   *does any IP or D-entry make that state unreachable*. It reads the wording
+   step 4 will write, never a paraphrase of it. Dispose of what it returns at
+   this gate, never silently: a finding with one clear right answer is fixed
+   and the fix reported in chat, and a finding you could reasonably decide
+   either way becomes one of this round's questions, within the three-marker
+   cap. The instrument is a reader and never a check — satisfiability and
+   IP-conflict are judgments about prose meaning, which D-059's retirement
+   precedent says to route to the mechanism that works rather than mechanize.
+
    **Release-shaped tripwire.** Release timing is user-declared, never agent-proposed (tracking-rules; D-050) — so a release-framed scope stops here for an explicit window declaration.
    It fires when the scope in hand would ship a version: a release, a CRAN or
    registry submission, a "prepare/consolidate for vX.Y.Z". On a hit, the gate
@@ -101,7 +120,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    shrink-to-fit and discard. For each file:
    - Acceptance criteria verifiable with evidence; never vibes. Criteria
      that cite a formula or reference value must name their source
-     (`citekey (p. N)` — see the primary-sources rule).
+     (`citekey (p. N)` — see the primary-sources rule). **Write the wording
+     step 3's audit read**; a criterion the gate changed goes back through the
+     audit's two questions before it is written, and the change is reported.
    - Acceptance criteria set the test scope for the milestone (see "What
      gets a test" in tracking-rules): name the behavior that must be tested.
    - `Out:` items name where the excluded work lives instead.

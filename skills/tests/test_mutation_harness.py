@@ -2149,6 +2149,176 @@ REGISTRY = [
         target=RULES,
         block="never a standing menu item",
     ),
+    # M115: the criteria audit. One entry per clause that carries the rule
+    # independently — the audit's placement, its reader, each of its two
+    # questions, each disposition arm, and the anti-mechanization line all
+    # fail on their own, and a set-level entry cannot prove a per-clause one.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_step_2_drafts_criteria_to_final_wording",
+        target="skills/milestone-plan/SKILL.md",
+        block="acceptance criteria are drafted here to their final wording, not at\n   step 4",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_block_is_present_and_precedes_the_questions",
+        target="skills/milestone-plan/SKILL.md",
+        block="**Criteria audit (runs before the questions are composed).**",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_names_a_fresh_context_reader_that_authored_none_of_them",
+        target="skills/milestone-plan/SKILL.md",
+        block="fresh-context **[O]**\n   reader that authored none of them",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_states_the_satisfiability_question",
+        target="skills/milestone-plan/SKILL.md",
+        block="*what state of the world satisfies this exactly as written*",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_states_the_ip_and_decision_conflict_question",
+        target="skills/milestone-plan/SKILL.md",
+        block="*does any IP or D-entry make that state unreachable*",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_reads_the_shipped_wording_never_a_paraphrase",
+        target="skills/milestone-plan/SKILL.md",
+        block="It reads the wording\n   step 4 will write, never a paraphrase of it",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_clear_findings_are_fixed_and_the_fix_reported",
+        target="skills/milestone-plan/SKILL.md",
+        block="a finding with one clear right answer is fixed\n   and the fix reported in chat",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_judgment_findings_become_gate_questions_under_the_cap",
+        target="skills/milestone-plan/SKILL.md",
+        block="becomes one of this round's questions, within the three-marker\n   cap",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_is_a_reader_and_never_a_check",
+        target="skills/milestone-plan/SKILL.md",
+        block="The instrument is a reader and never a check",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_step_4_writes_the_audited_wording_and_reaudits_a_change",
+        target="skills/milestone-plan/SKILL.md",
+        block="**Write the wording\n     step 3's audit read**; a criterion the gate changed goes back through the\n     audit's two questions",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_binding_criteria_are_audited_before_ingestion",
+        target="skills/milestone-brief/SKILL.md",
+        block="**A binding-criteria set is audited before it is ingested**",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_ingest_audit_reuses_the_plan_gate_reader",
+        target="skills/milestone-brief/SKILL.md",
+        block="by the same\n   fresh-context **[O]** reader `/milestone-plan` step 3 spawns",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_ingest_audit_asks_the_questions_of_the_set_not_only_each",
+        target="skills/milestone-brief/SKILL.md",
+        block="asked\n   of the set as well as of each criterion",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_ingest_findings_are_raised_never_softened_away",
+        target="skills/milestone-brief/SKILL.md",
+        block="What the audit returns is raised with the\n   user, never softened away",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_ingest_audit_states_both_questions_at_this_surface",
+        target=BRIEF,
+        block="and the same\n   two questions — *what state of the world satisfies this exactly as\n   written*, and *does any IP or D-entry make that state unreachable*",
+    ),
+    # M115: description-layer certification. §8's diagnosis and its remedy
+    # are pinned separately, and each of the three checks separately again —
+    # a reader told to certify with one check missing certifies less, and a
+    # diagnosis with no remedy is what let one defect class recur for passes.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_exists_under_its_own_heading",
+        target=GUARD_DOCTRINE,
+        block="## 8. The author never certifies its own guard's coverage",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_separates_operation_from_certification",
+        target=GUARD_DOCTRINE,
+        block="**Running a guard and certifying that it covers what you claim are different\njobs, and only the first one survives being done by its author.**",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_states_the_diagnosis",
+        target=GUARD_DOCTRINE,
+        block="the author checks the description against its generative\nmodel of the artifact rather than against the artifact",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_places_the_step_before_review_with_a_fresh_reader",
+        target=GUARD_DOCTRINE,
+        block="**So before `status -> review`, a guard-authoring milestone hands the\ndescription layer to a fresh-context [O] reader that authored no part of it.**",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_names_the_coverage_check",
+        target=GUARD_DOCTRINE,
+        block="**AC-clause-to-assert coverage** — every clause of every acceptance\n  criterion maps to an assert that actually pins it",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_names_the_claim_accuracy_check",
+        target=GUARD_DOCTRINE,
+        block="**Claim-vs-file accuracy** — every docstring, comment, work-log line, and\n  record claim about the guard is true of the file it describes",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_names_the_anchor_fidelity_check",
+        target=GUARD_DOCTRINE,
+        block="**Anchor-vs-shipped-bytes fidelity** — every multi-word anchor matches the\n  bytes actually shipped",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_requires_zero_unresolved_and_forbids_arguing_down",
+        target=GUARD_DOCTRINE,
+        block="The gate is entered at zero unresolved: a discrepancy is fixed and\nre-certified, never argued down as imprecision",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_moves_certification_not_operation",
+        target=GUARD_DOCTRINE,
+        block="this moves certification, not operation",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_carries_its_own_falsifier",
+        target=GUARD_DOCTRINE,
+        block="if guard-authoring\nmilestones still average multiple description-layer returns after adoption,\nthe step didn't work — retire it (D-059), don't tune it",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestImplementRoutesToCertification.test_completion_step_routes_to_the_certifier_at_zero_unresolved",
+        target=IMPLEMENT,
+        block="if this milestone authored or edited a\n   prose-guard, hand its description layer to a fresh-context [O] reader first",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestImplementRoutesToCertification.test_completion_step_cites_the_doctrine_section_and_the_bar",
+        target=IMPLEMENT,
+        block="`skills/shared/guard-doctrine.md` §8, the author never certifies its own\n   guard's coverage — and enter the gate only at zero unresolved",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
