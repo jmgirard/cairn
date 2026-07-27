@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M117 | Detector coverage on the site axis, and a plan gate that records the alternative it rejected (intraclass M93 passes 6–9) | in-progress | — | normal | milestones/M117-detector-site-axis-and-recorded-alternative.md |
+| M117 | Detector coverage on the site axis, and a plan gate that records the alternative it rejected (intraclass M93 passes 6–9) | review | — | normal | milestones/M117-detector-site-axis-and-recorded-alternative.md |
 | M116 | Repair the three-step placement test — retention takes the deletion arm, inversion moves to guard verification, and a step-0 single-home check (RR04 rec 9) | done | — | normal | milestones/archive/M116-placement-test-repair.md |
 | M115 | Fresh-context reader instruments — plan-gate criteria audit and independent description-layer certification (RR06 recs 4–5) | done | — | normal | milestones/archive/M115-fresh-context-reader-instruments.md |
 | M114 | Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine | done | — | normal | milestones/archive/M114-review-loop-escape-hatches.md |

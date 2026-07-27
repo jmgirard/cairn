@@ -1,6 +1,6 @@
 # M117: Detector coverage on the site axis, and a plan gate that records the alternative it rejected
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -136,6 +136,8 @@ real aborts.
 - 2026-07-27: re-certification round 2 returned 6 discrepancies, all fixed: the template example moved INTO the work-log comment (as a body line it shipped a placeholder into every instantiated milestone, and made AC4's wording false), a new assert pins the obligation inside step 4 by its surrounding numbered steps (review's pointer names step 4 and was pinned; the bullet it points at was not), a registry comment re-pointed off an enumeration, T1's §7 claim disambiguated, and Scope's locator count dropped by gated amendment (user approved).
 - 2026-07-27: re-certification round 3 returned 6, all fixed. Three were one class — the ACs name a LOCATION (§3, trigger (b), the template's work-log comment) and every assert matched the whole file, so each paragraph could move with the suite green; closed with containment asserts bounded by surrounding headings, the shape round 2 added on the plan side. Also: this file's module docstring and the gap-B class docstring both enumerated properties and had gone stale against their own additions (re-pointed at the methods, no list), and T5's "two asserts / both blocks" corrected.
 - 2026-07-27: the three containment asserts take guard-doctrine §2's by-hand check rather than a registry entry — each fails against pre-milestone content (§3 lacks both paragraphs, trigger (b) lacks the pointer, the template lacks the form) — and their section markers are scaffolding, which the rulebook warns against pinning. Registry stays 433.
+- 2026-07-27: superseding the 671 above — final measured state, taken after the last code edit so nothing re-stales it: skills/tests 672 OK, scripts/tests 280 OK, hooks/tests 91 OK; cairn_validate 16 PASS, exit 0, `all checks passed`; registry 433 blocks.
+- 2026-07-27: round 4 returned 2, both record-accuracy, both fixed: the count above, and this guard's module docstring partitioning M117's additions as plan-side when one of them (trigger (b)'s work-log pointer) is review-side — the missing bullet added. Rounds ran 8 -> 6 -> 6 -> 2 with the last two rounds finding no artifact defect.
 
 ## Decisions
 

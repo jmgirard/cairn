@@ -13,8 +13,8 @@ The properties asserted here are each separately deletable and so separately
 pinned. No count of them is stated, here or anywhere: a stated count goes
 stale against the file it describes and did so twice in this very file
 (guard-doctrine §6). The test methods are the enumeration — this list names
-the review-side properties only, and M117's plan-side ones are enumerated
-nowhere for the same reason:
+the review-side properties only, and M117's plan-side and template-side ones
+are enumerated nowhere for the same reason:
 
   - returns are counted PER MILESTONE, not per cut, and the work log is named
     as the record a re-cut leaves standing;
@@ -25,6 +25,9 @@ nowhere for the same reason:
   - trigger (b) is one criterion failing twice by a NEW MECHANISM OF THE SAME
     SHAPE, remedied by reconsidering the recorded alternative, or by an
     offered `/milestone-brief` escalation where none was recorded;
+  - trigger (b) names WHERE that alternative is read from — the work log, at
+    step 4 of `/milestone-plan` — since a remedy naming a record with no home
+    is how the escalation fallback fired instead of the remedy (M117);
   - where both fire they COMPOSE — (a) takes the disposition, (b)'s diagnosis
     and escalation offer carry into the routing;
   - once a re-plan or split is spent, the exhaustion branch replaces the
