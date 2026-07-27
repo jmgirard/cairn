@@ -2502,7 +2502,8 @@ class TestMilestoneDecisionsLines(unittest.TestCase):
     joins the cap-exempt set — and, exactly as D-046/M77 did for the work log,
     the section the cap stops measuring must be the one an advisory can still
     read. Both are extracted by one shared scan, so the exemption cannot drift
-    away from what M119's `decisions format` advisory polices."""
+    away from what the `decisions format` advisory will police once M119 adds
+    it — until then the section is exempt with nothing watching it."""
 
     def setUp(self):
         self.cs = _load_scripts()

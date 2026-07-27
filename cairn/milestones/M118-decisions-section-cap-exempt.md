@@ -127,6 +127,11 @@ declares the same Driving RR and carries them under its own table.
 - 2026-07-27: ledger reconciliation — the work-log p90 recorded at the implement gate (4107, measured at `35b14ed`) is superseded by the ledger's 4228, and the work-log over-6000 count moved 5 -> 6, both because M118's own file grew inside the corpus it measures. The counts now ship as dated observations naming their measurement commit.
 - 2026-07-27: the ledger's Extraction status claimed re-running the derivation at a named commit reproduces its row; true only of the pre-M118 column, since the two peaks are independent maxima. M55 is the counter-example (row 92/88, `96b1897` scores 92/86) and is now the worked case in the page.
 - 2026-07-27: three guard gaps the §8 reader found and this pass closed — the template's `## Review` comment could revert to two members with the suite green, the template's `## Decisions` reason clause deleted green, and the emitted over-cap diagnostic had no assert for the new member (its fixture also lacked the section, so the assert would have been vacuous — M79).
+- 2026-07-27: §8 certification round 2 (fresh reader, not round 1's) confirmed 15 of 16 round-1 items closed and independently reproduced all 119 ledger rows plus a 7,002-case differential check that the work-log extractor refactor is behaviour-preserving; it returned 4 blocking and 6 cosmetic items, all resolved this pass.
+- 2026-07-27: the rulebook's own definitional line for the cap still read "less the `## Work log`" — the one two-member statement the T5 sweep missed, and the line the stated-vs-enforced cap regex reads. Widened.
+- 2026-07-27: the ledger and the hook comment both claimed one milestone "has never had a `## Review`". False: M105 carries the heading in 6 of its 7 revisions with an empty body, so n=118 counts milestones with CONTENT in that section. Corrected at both sites; a by-hand check of my own contradicted the reader first and was wrong (a zsh quoting bug swallowed the path), which is the case for the fresh reader in one line.
+- 2026-07-27: the ledger declared a lower-rank percentile convention but computed its medians by averaging, which showed up only in the one even-n row (`## Review` 2,346 vs 2,340). Convention extended to medians and the cell corrected.
+- 2026-07-27: the `INDEX.md` line still carried the pre-correction corpus (119 paths / 3 paths) after the ledger itself was fixed to 119 milestones over 122 paths; corrected. Also fixed: the ledger's surplus attribution (M02/M03/M94 hold two paths each, not M01-M03), two `_plan_owned_scan`/breakdown docstrings under-describing the widened exempt set, and a fourth present-tense `decisions format` claim in a test docstring.
 - 2026-07-27: T5 minor amendment (discovered sub-task) — M99's two `## Decisions` reserve guards in `test_budget_first_drafting.py` rest on the ground D-074 removes, so the cap-fit sum drops the phantom 21-line reserve term and the reserve-wording assert is re-anchored on the exemption while keeping the spend-none instruction; the new anchor is registered. AC5 did not enumerate these because they are budget guards, not exempt-set enumerations.
 
 ## Decisions
@@ -171,6 +176,12 @@ declares the same Driving RR and carries them under its own table.
   classifications, and writing three would invent a distinction the entry's own reasoning
   does not carry ("for D-046's reason and not D-030's"). Each member still states its own
   reason, which is what AC5 requires. Recorded as a departure rather than silently taken.
+- 2026-07-27 (AC6 clause 1, raised by the §8 certification): "this file's own `## Decisions`
+  holds only dated decision entries" has no assert and no task of its own, because RR08's
+  intended checker for it was BC3's advisory, which departed to M119. It is therefore
+  inspection-only at this gate, and the inspection passes: every entry in this section
+  opens `- 2026-07-27 (…)`, and the only non-entry line is the template's own
+  `<!-- owner: … -->` comment, which RR08 §BC3 names as a standard corpus form.
 - 2026-07-27 (RR08 ingest gate): BC1-BC4 carried BY REFERENCE under the Deviations
   table — verbatim measured ~150 plan-owned lines and would red `weight caps` at this
   gate, the D-066 choice-4 case. Four ambiguities the criteria-audit surfaced were bound

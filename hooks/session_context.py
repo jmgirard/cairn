@@ -41,8 +41,10 @@ MAX_CHARS = 30000
 # decisions 1,305, review 6,718. So 6,000 no longer clears every type's p90:
 # it clears the work log's and the decisions section's with room, and sits
 # below the review section's, which is the bound doing its job on the type
-# that grew — 14 of 118 review sections exceed it (one milestone has never had
-# a `## Review`), 6 of 119 work logs, and 0 of 119 decisions sections. Those
+# that grew — 14 of 118 review sections exceed it (n is 118 because one
+# milestone's `## Review` has never carried content, so the derivation, which
+# measures section bodies, has no size for it — the heading is there),
+# 6 of 119 work logs, and 0 of 119 decisions sections. Those
 # three counts are a dated observation, not a standing fact: the corpus
 # includes M118 itself, whose own work log crossed 6,000 mid-milestone and
 # moved that count from 5 to 6. The value is held at 6,000 rather than raised to chase review's

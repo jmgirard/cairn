@@ -107,7 +107,7 @@ takes a D-entry, and its number stays retired.
   from M84 to M101; D-058 retired it as measured to tax at ordinary density
   but never bind ahead of the item cap.
 - a live milestone file's **plan-owned body < 150 lines** — everything before
-  the review-exclusive `## Review` section, less the `## Work log`.
+  the review-exclusive `## Review` section, less the `## Work log` and `## Decisions` sections.
   The cap-exempt sections are exactly `## Review` (review-owned, M55), `## Work log` (history under D-045, D-046) and `## Decisions` (history under D-074); every other plan-owned section counts.
   They are exempt on two grounds. `## Review` is exempt so that
   review evidence never scrambles plan-owned content (M55): it accumulates at

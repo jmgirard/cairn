@@ -328,7 +328,8 @@ def _plan_owned_scan(path):
     `(boundary, sections)` where `boundary` is the end of the plan-owned region
     (the index of the first real `## Review` heading, else the file length) and
     `sections` is `[(heading, line_count)]` for every `## ` section before it,
-    **work log included** — the callers decide what to exempt. Fenced ``` / ~~~
+    **both cap-exempt history sections included** (`## Work log`,
+    `## Decisions`) — the callers decide what to exempt. Fenced ``` / ~~~
     blocks are tracked so a `## ` inside one is content, and a fenced
     `## Review` is not the boundary (M45). Only an exact `## Review` heading
     ends the region, so `## Reviewers` cannot truncate it (M55 review).
@@ -467,11 +468,12 @@ def milestone_section_line_counts(path):
     through the line before the next `## ` heading (or the plan-owned/`## Review`
     boundary, or EOF). Lines before the first `## ` heading (title + status
     block) are preamble, attributed to no section, so preamble + the section
-    counts sum to `milestone_body_line_count`. All three cap-exempt sections are
-    excluded, so the breakdown only ever names sections the operator may
-    actually trim: the review-exclusive `## Review` (M55), and the `## Work log`
-    (D-046/M77) and `## Decisions` (D-074/M118) sections, which D-045 makes
-    history — naming either would aim the cap remedy at an edit IP4 forbids.
+    counts sum to `milestone_body_line_count`. The breakdown only ever names
+    sections the operator may actually trim, because all three cap-exempt
+    sections are excluded from it: the review-exclusive `## Review` (M55), and
+    the `## Work log` (D-046/M77) and `## Decisions` (D-074/M118) sections,
+    which D-045 makes history — naming either of those would aim the cap remedy
+    at an edit IP4 forbids.
     Dropping them here and from the body count together is what preserves the
     preamble+sections==body invariant. Fence-aware like that function: a `## `
     inside a ``` or ~~~ block is content, and a fenced `## Review` is not the

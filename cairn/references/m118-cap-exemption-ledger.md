@@ -20,9 +20,11 @@ scored by the **shipped** counter internals (`scripts/cairn_scripts.py`:
 the `## Review` boundary and the fence rules measured here are the ones the gate
 enforces rather than a reimplementation of them. The pre-M118 column subtracts
 `WORKLOG_HEADING` only; the post-M118 column subtracts `EXEMPT_HEADINGS`.
-Percentiles are the lower-rank convention, `sorted[int(0.9 * (n - 1))]`, which
-is the more conservative of the two common definitions; a re-derivation using
-nearest-rank will read a little higher. Pagination: —.
+Percentiles and medians alike use the lower-rank convention —
+`sorted[int(0.9 * (n - 1))]` and `sorted[(n - 1) // 2]` — which is the more
+conservative of the two common definitions and never invents a value the corpus
+does not contain; a re-derivation taking nearest-rank, or averaging the two
+middle values at even n, will read a little higher. Pagination: —.
 Extraction: first-hand record of this repo's own frozen history, nothing to re-verify against — re-running the derivation above reproduces the table, though a single commit named in a row reproduces only that row's pre-M118 figure, for the reason the next section gives — observed 2026-07-27.
 
 **Scope.** This is a measurement, not an authority: it does not decide the
@@ -34,7 +36,7 @@ in `DECISIONS.md`, architecture in `DESIGN.md`.
 
 **Evidence snapshot.**
 
-- Every non-archive milestone-file path reachable from `git log --all` under either milestones root — 122 paths over 119 milestone IDs; M01–M03 are the paths that lived under `project/milestones/` before the rename, and M94 is the one ID re-cut under a second slug — observed 2026-07-27.
+- Every non-archive milestone-file path reachable from `git log --all` under either milestones root — 122 paths over 119 milestone IDs. Three IDs hold two paths each and account for the whole surplus: M02 and M03 migrated from `project/milestones/` to `cairn/milestones/`, and M94 was re-cut under a second slug. M01 also predates the rename but never migrated, so it contributes one path, under the old root only — observed 2026-07-27.
 - `scripts/cairn_scripts.py` at `6733b8e` (`MILESTONE_CAP = 150`, `>=` fails, so 149 is the largest passing body) — observed 2026-07-27.
 - **This corpus contains the milestone that produced it.** M118's own file was still being written while these figures were taken, so its rows and any count it falls inside are a snapshot, not a settled fact — see the note under the section-size table — observed 2026-07-27.
 
@@ -197,13 +199,17 @@ Input to `hooks/session_context.py`'s `SECTION_MAX_CHARS`, which bounds how much
 of each cap-exempt section a session start injects (D-063). Measured over the
 same corpus by the same derivation, each milestone scored at its own peak per
 section, via `_section_body_lines`; character counts include one newline per
-line. `## Review` is absent from exactly one milestone, hence n=118.
+line. `## Review` is n=118 because the derivation measures section *bodies*:
+one milestone (M105) carries the heading in every revision but never a line
+under it, so there is no size to record. The heading is present; the section is
+empty. Read n as "milestones with content in that section", never as "milestones
+having that section".
 
 | Section | n | median | p90 | max | over 6,000 |
 |---|---|---|---|---|---|
 | `## Work log` | 119 | 1,285 | 4,228 | 55,150 | 6 |
 | `## Decisions` | 119 | 122 | 1,305 | 4,647 | 0 |
-| `## Review` | 118 | 2,346 | 6,718 | 8,477 | 14 |
+| `## Review` | 118 | 2,340 | 6,718 | 8,477 | 14 |
 
 **The over-6,000 counts are dated observations, not standing facts** — the
 corpus includes M118, whose own work log crossed 6,000 during this milestone and
