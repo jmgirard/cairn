@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR07
@@ -102,7 +102,7 @@ which is where its binding text permanently lives.
 - [x] T1-T15: doctrine, guards, D-064/D-065, the re-cut, RR05's design, RR06's sixth pass — detail in the work log and six Review sections.
 - [x] T16-T19: pass 7's closed-form work — F1/F2 per §BC2/§BC3, the rec 4/5 rows, the description-layer certification, the derived scope, the replayed probes and the terminus (AC1-AC7); detail in the work log and Review pass 7.
 - [x] T20: close F1 and F5 and file the two owed records — the superseding work-log line, the superseding D-entry, the widened converse assert and its registered block, the ROADMAP row for the three inherited partial pins, and the rec 5 correction (AC8).
-- [ ] T21: gate — three suites and `cairn_validate` with exit codes checked separately, blanking survivors measured, and the §8 description-layer certification at zero unresolved (AC9).
+- [x] T21: gate — three suites and `cairn_validate` with exit codes checked separately, blanking survivors measured, and the §8 description-layer certification at zero unresolved (AC9).
 
 ## Work log
 
@@ -192,6 +192,7 @@ which is where its binding text permanently lives.
 - 2026-07-27: UNBLOCKED at the maintainer's call — route (c) of the three recorded at the park, chosen over (a) a narrowed fifth round and (b) entering review with AC9 unticked. Status -> in-progress.
 - 2026-07-27: GATED AMENDMENT — AC9 gains its certified-scope sentence (route c): the certified scope is the work and the records describing the work, and a work-log entry whose subject is a certification round — the final round's own report included — is outside it. Shown verbatim and accepted at the gate; D-069 filed; the §8 scope clause banked as a ROADMAP candidate row rather than edited into doctrine this pass; the work-log style lesson recorded in D-069 as owed at review's post-merge hygiene capture.
 - 2026-07-27: final §8 round's three discrepancies closed — D-070 supersedes D-069's premise sentence (round 3's findings were in work records; round 4's alone were certification narrative) and withdraws its heading's unbacked "cites D-068"; the Deviations row's funding figures are anchored to commits (`19 at 712c63e; 23 at 669257b`) so the measure-once defect cannot recur; Scope In gains the route-(c) deliverables the certifier flagged as unnamed. Fixes re-derived from the files, sent back to the same certifier for confirmation.
+- 2026-07-27: T21 — §8 certification under amended AC9, final round. First verdict verbatim: "NOT CLEAN — 3 unresolved discrepancies" (the three closed in the entry above); the same certifier re-derived each fix from the files and returned, verbatim: "CLEAN — 0 unresolved discrepancies" at `eb81d46`. Gate numbers at `eb81d46`, run separately and never piped: suites 654/280/91 exit 0 each, `cairn_validate` exit 0 with 16 PASS and 1 `sizing` advisory, 0 blanking survivors, and no file outside `cairn/` changed since `669257b`, so the prior round's independent probe reproduction stands. Certifier's non-counted observations: D-070's "records" is loose for round 1's test-comment case; D-069/D-070 omit the "Delivered by"/"entry to supersede" closings (convention-only, no rule); plan-owned body 149/149 — zero headroom. Status -> review.
 
 ## Decisions
 
