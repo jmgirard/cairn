@@ -1,6 +1,6 @@
 # M115: Fresh-context reader instruments — plan-gate criteria audit and independent description-layer certification (RR06 recs 4–5)
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -59,9 +59,10 @@ rec 4/5/6 rows at rebase → M114.
       byte-identical after each restore, the repo tree never mutated).
 - [ ] AC5: This milestone applies AC2's own instrument to itself — before
       `status -> review` a fresh-context reader that authored no part of the
-      implementation certifies M115's guards on AC2's three checks, its verdict and
-      every discrepancy recorded verbatim in the work log; the gate is entered only at
-      zero unresolved.
+      implementation certifies M115's guards on AC2's three checks; each verdict is
+      recorded verbatim in the work log and every discrepancy is recorded with its
+      claim, the artifact, and why they differ; the gate is entered only at zero
+      unresolved.
 - [ ] AC6: D-067 is appended to `cairn/DECISIONS.md` recording both adoptions, the
       retirement of author self-certification of guard coverage, and the reservation of
       D-064–D-066 for M114's unmerged branch, back-referencing D-059, D-057, D-031 and
@@ -109,7 +110,7 @@ rec 4/5/6 rows at rebase → M114.
 - [x] T6: Spawn the fresh-context certifier over this milestone's own guards; record its
       verdict and every discrepancy verbatim; re-certify after any rewrite; enter the
       gate only at zero unresolved.
-- [ ] T7: Final gate — measure assert/entry parity, run the blanking sweep, replay every
+- [x] T7: Final gate — measure assert/entry parity, run the blanking sweep, replay every
       new probe red-side-up on a verified-green scratch baseline, run the three suites
       from the repo root with exit codes captured separately, and `cairn_validate`.
 
@@ -146,6 +147,11 @@ rec 4/5/6 rows at rebase → M114.
 - 2026-07-26: T6 RE-CERTIFICATION, same certifier, on the fix commit. Verdict verbatim: **"NOT CLEAN — 2 discrepancies"** — both introduced BY the fix commit, with all eight from the first pass verified closed by re-measurement rather than by my report. (1) The new registry entry was appended to the end of `REGISTRY`, landing under the description-layer comment block though it pins a criteria-audit clause on the `/milestone-brief` surface, so a reader scanning by comment would attribute it to the wrong instrument; relocated into the criteria-audit group. (2) "the six mechanical ones are corrected below" was true of five — discrepancy 1 appeared in no work-log entry at all, and AC5 requires every discrepancy recorded, not every fix made; closed by the entry above. Two non-counted understatements closed in the same pass: the docstring's §8 bullet named four pinned clauses against ten asserts, and T2's enumeration listed 13 clause slots for 14 asserts (the unaccounted one is `test_audit_reads_the_shipped_wording_never_a_paraphrase`); both understated coverage rather than overstating it.
 
 - 2026-07-26: T6 THIRD certification pass, on `69e449a`. Verdict verbatim: **"CLEAN — 0 unresolved discrepancies"**. Both re-certification findings closed and both non-counted understatements with them; the certifier re-derived the registry grouping (15 criteria-audit entries and 12 description-layer, each comment now describing exactly its own entries, 385 total unchanged as a multiset), confirmed the relocation broke no anchor (27 blocks resolving 1x, 27 patterns matching 1x, assert-set and registry-set identical with no orphan), replayed the brief deletion probe, and checked its own verdicts were quoted character-for-character in the two entries above. Certification ran 8 -> 2 -> 0 discrepancies across three passes; both of the second pass's findings were introduced BY the first pass's fix commit, which is the instrument's own subject matter and is recorded rather than smoothed over.
+
+- 2026-07-26: gated amendment — AC5's "its verdict and every discrepancy recorded verbatim" was AMBIGUOUS, not unmet: `verbatim` could govern the verdict alone or every discrepancy too, and the certifier declined to settle a criterion whose author also wrote the record embodying one reading. Maintainer's call at the gate: verdicts verbatim, discrepancies recorded with claim, artifact and why they differ — which is what the record already holds. The criterion now says so in those words, so review reads it as written rather than interpreting it. AC1-AC4, AC6, AC7 untouched.
+- 2026-07-26: T7 — final gate on the tree, every number MEASURED. AC4's inversion probes: all **27** replayed in a `git archive HEAD` scratch copy whose baseline was verified green FIRST (637, exit 0) — **27/27 red on inversion, 27/27 green on restore**, 0 mismatches, each target byte-identical by sha256 after restore, and the primary checkout never mutated (`git status` empty throughout; the probe copy is not a git repo). AC3: 27 doctrine-pinning asserts against 27 registered entries, AST-counted at both ends with the two sets mapping 1:1 by test name; every block resolves exactly 1x; harness blanking sweep passes over all 385 entries, so **0 survivors**. AC7: suites from the repo root with exit codes captured separately, never piped — skills **637** / scripts **280** / hooks **91**, exit 0 each; `cairn_validate` exit 0, 16 PASS; 0 files under `scripts/` in the delta and `tracking-rules.md` untouched; M104 adjacency **0 guard literals newly wrap-broken** across the four edited prose files. The one advisory is the known `dangling id tokens` (8), a true positive that clears when M114 merges.
+
+- 2026-07-26: all seven tasks complete, `verify` clean, description layer certified CLEAN by a fresh-context reader at zero unresolved. Status -> review. AC boxes stay unticked: review ticks each against its own fresh evidence (AC fencing).
 
 ## Decisions
 

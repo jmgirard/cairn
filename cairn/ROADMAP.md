@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M115 | Fresh-context reader instruments — plan-gate criteria audit and independent description-layer certification (RR06 recs 4–5) | in-progress | — | normal | milestones/M115-fresh-context-reader-instruments.md |
+| M115 | Fresh-context reader instruments — plan-gate criteria audit and independent description-layer certification (RR06 recs 4–5) | review | — | normal | milestones/M115-fresh-context-reader-instruments.md |
 | M114 | Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine | blocked | — | normal | milestones/M114-review-loop-escape-hatches.md |
 | M113 | Bounded session-start injection — cap-exempt sections read-bounded newest-first, and the active milestone file joins the always-read frame (D-063) | done | — | normal | milestones/archive/M113-bounded-session-injection.md |
 | M112 | Soften the Fable warning — neutral token-cost framing, lower the recommend bar, per-instance RB/RR gate retained | done | — | normal | milestones/archive/M112-soften-fable-warning.md |
