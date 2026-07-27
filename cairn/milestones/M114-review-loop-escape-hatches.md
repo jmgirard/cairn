@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR07
@@ -75,7 +75,11 @@ which is where its binding text permanently lives.
       certification by a fresh-context [O] reader that authored no part of M114, its
       verdict and every discrepancy recorded verbatim in the work log, the gate entered
       only at zero unresolved (tolerance: the work-log entry exists and names zero
-      unresolved).
+      unresolved). AMENDED 2026-07-27, route (c) at the park (D-069): the certified scope
+      is the work and the records describing the work; a work-log entry whose subject is
+      a certification round — the final round's own report included — is outside it,
+      because a certification's report cannot sit inside its own certified scope without
+      regress.
 
 **Deviations from RR07** — shown at ingest, never slipped (IP3).
 
@@ -183,6 +187,9 @@ which is where its binding text permanently lives.
 - 2026-07-27: SURFACED for the maintainer at the gate, not resolved here. `guard-doctrine.md` §8 carries its own falsifier: "if guard-authoring milestones still average multiple description-layer returns after adoption, the step didn't work — retire it (D-059), don't tune it." M114 is the first and only milestone to run the step and is at four rounds, with round 4 returning more discrepancies than round 3. The falsifier is stated as an average across milestones, so one milestone does not meet it, and every round has been clean on the code, the doctrine, the suites and the probes. What the four rounds do show is a cost curve: 15, 14, 17 and 38 minutes, growing because each round certifies the entries the last one produced. Recorded because §8's own terms say this fact pattern goes to a decision, and because the author of the entries under certification is the wrong party to decide it.
 
 - 2026-07-27: PARKED at the maintainer's call, over a narrowly-scoped fifth certification round, going to review with AC9 unticked, and a gated AC9 amendment. Status -> blocked. BLOCKER: a maintainer decision on how AC9's zero-unresolved gate is to be met. AC9 is not satisfied and pass 8 does not enter the review gate. The three routes were put and are recorded so no later session re-derives them: (a) re-certify with the scope narrowed to the two newest work-log entries, everything else having been certified repeatedly; (b) enter review with AC9 unticked and the four rounds' record in plain view, accepting a known criterion failure at the gate; (c) amend AC9 so its scope covers the work and the records about the work but not records about the certification itself, which is where rounds 3 and 4 found theirs. STATE AT THE PARK: AC8 is delivered in full and AC9's operational clauses all pass — suites 654 / 280 / 91 exit 0 each from the repo root with exit codes captured separately, `cairn_validate` exit 0, 0 blanking survivors, `Mutation(...)` entries naming `guard="test_lesson_graduation"` at 14, `guard-doctrine.md` byte-identical across the pass, the widened `assertRegex` and its registered block each resolving 1x, and the red-side probe reproduced independently by the certifier. Plan-owned body 144/149. Nothing is pushed and PR #114 stays a draft.
+
+- 2026-07-27: UNBLOCKED at the maintainer's call — route (c) of the three recorded at the park, chosen over (a) a narrowed fifth round and (b) entering review with AC9 unticked. Status -> in-progress.
+- 2026-07-27: GATED AMENDMENT — AC9 gains its certified-scope sentence (route c): the certified scope is the work and the records describing the work, and a work-log entry whose subject is a certification round — the final round's own report included — is outside it. Shown verbatim and accepted at the gate; D-069 filed; the §8 scope clause banked as a ROADMAP candidate row rather than edited into doctrine this pass; the work-log style lesson recorded in D-069 as owed at review's post-merge hygiene capture.
 
 ## Decisions
 

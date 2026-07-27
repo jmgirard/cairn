@@ -2177,3 +2177,35 @@ evidence for RR06's diagnosis that an author verifies a description against its
 model of the artifact rather than against the artifact. Delivered by M114. If
 §7 is ever restated so the converse becomes mandatory, this is the entry to
 supersede.
+
+### D-069 (2026-07-27): A certification's report is outside its own certified scope — AC9 amended at the gate (route c); annotates D-067, cites D-068
+
+**Context.** M114 pass 8's §8 description-layer certification ran four rounds
+without reaching AC9's zero-unresolved gate. Rounds 1–2 found real defects in
+records about the work; all were fixed and confirmed landed. Rounds 3–4 found
+defects only in newly-authored work-log narrative about the certification
+rounds themselves. The work log is append-only (IP4) and §8 obliges each round
+to record its verdict, so every round manufactures uncertified surface for the
+next round to audit: with the report inside the certified scope, zero
+unresolved is reachable by luck, never by convergence. Measured cost curve:
+15, 14, 17, 38 minutes. Parked 2026-07-27 for a maintainer decision among
+(a) a narrowed fifth round, (b) review with AC9 unticked, (c) a scope
+amendment.
+
+**Decision.** Route (c), maintainer's call 2026-07-27. AC9 is amended via the
+gate: the certified scope is the work and the records describing the work; a
+record whose subject is a certification round itself — the final round's own
+report included — is outside it. Rationale: the instrument (RR06 rec 5,
+adopted by D-067) targets the author's description of the artifact, never
+meta-narrative about the certifying step; a report cannot sit inside its own
+scope without regress.
+
+**Consequences.** The scope rule belongs in guard-doctrine §8 for every future
+guard-authoring milestone, but §8 is doctrine M114 ships and pass 8 holds
+`guard-doctrine.md` byte-identical, so the §8 edit is banked as a ROADMAP
+candidate row this entry backs rather than made here. §8's own falsifier
+(retire, don't tune — D-059's shape) is not met: it reads on an average across
+milestones at n=1, and every discrepancy all four rounds found was real — the
+instrument stands; only its scope was wrong. A work-log style lesson
+(decision-relevant facts only; characterizations are falsifiable surface) is
+owed at review's post-merge hygiene capture.
