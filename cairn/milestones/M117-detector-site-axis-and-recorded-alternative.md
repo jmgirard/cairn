@@ -110,9 +110,9 @@ real aborts.
       edited lines for contiguity on one physical line (M104), and grep the
       guards for any short phrase the new prose repeats, which can hand an
       existing bare `assertIn` false coverage (M113).
-- [x] T5: Add a plan-skill reader and the two gap-B asserts to
-      `skills/tests/test_thrash_rule.py`; register both blocks in the mutation
-      harness.
+- [x] T5: Add a plan-skill reader and the gap-B asserts to
+      `skills/tests/test_thrash_rule.py`; register every added block in the
+      mutation harness.
 - [x] T6: Add the work-log example line to
       `skills/shared/templates/milestone.md`'s work-log comment.
 - [x] T7: Run the three `verify` suites and `cairn_validate`; record every
@@ -134,6 +134,8 @@ real aborts.
 - 2026-07-27: superseding the T7 line's counts — after the certification rounds added asserts, verify is skills/tests 671 OK, scripts/tests 280 OK, hooks/tests 91 OK; cairn_validate 16 PASS exit 0, `all checks passed`; registry 433 blocks (421 at M116 + 12).
 - 2026-07-27: superseding the T3+T5 line's "both trigger-(b) locators" — trigger (b)'s bullet carries four registry locators, not two; all four resolve unchanged, as does every other block in the registry.
 - 2026-07-27: re-certification round 2 returned 6 discrepancies, all fixed: the template example moved INTO the work-log comment (as a body line it shipped a placeholder into every instantiated milestone, and made AC4's wording false), a new assert pins the obligation inside step 4 by its surrounding numbered steps (review's pointer names step 4 and was pinned; the bullet it points at was not), a registry comment re-pointed off an enumeration, T1's §7 claim disambiguated, and Scope's locator count dropped by gated amendment (user approved).
+- 2026-07-27: re-certification round 3 returned 6, all fixed. Three were one class — the ACs name a LOCATION (§3, trigger (b), the template's work-log comment) and every assert matched the whole file, so each paragraph could move with the suite green; closed with containment asserts bounded by surrounding headings, the shape round 2 added on the plan side. Also: this file's module docstring and the gap-B class docstring both enumerated properties and had gone stale against their own additions (re-pointed at the methods, no list), and T5's "two asserts / both blocks" corrected.
+- 2026-07-27: the three containment asserts take guard-doctrine §2's by-hand check rather than a registry entry — each fails against pre-milestone content (§3 lacks both paragraphs, trigger (b) lacks the pointer, the template lacks the form) — and their section markers are scaffolding, which the rulebook warns against pinning. Registry stays 433.
 
 ## Decisions
 

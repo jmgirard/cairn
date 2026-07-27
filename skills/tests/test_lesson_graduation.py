@@ -136,6 +136,20 @@ class TestModuleExists(unittest.TestCase):
             r"assert the invariant over what comes back",
         )
 
+    def test_the_site_and_count_rules_live_in_section_3(self):
+        # M117. Both paragraphs above are matched against the whole module, so
+        # relocating them to §5 or §7 keeps every assert green while the
+        # criteria naming §3 go false — and §3-over-§7 was the choice M117's
+        # plan gate deliberated and recorded. Bound by the section headings
+        # rather than by line numbers, which drift on any edit above.
+        m = self.module
+        section_3 = m[m.index("## 3. Absence assertions"):m.index("## 4. Fixtures")]
+        self.assertIn("**The renderings vary by site as well as by format.**", section_3)
+        self.assertIn(
+            "**A count of enumerated entries is not coverage of renderings.**",
+            section_3,
+        )
+
     def test_matcher_section_states_the_authorization_switch(self):
         self.assertIn(
             'When a detection regex graduates from "is this\nguarded?" to "is this authorized?", switch to `finditer` and require every\noccurrence to clear.',

@@ -1,14 +1,20 @@
-r"""Regression guard: the M114 thrash rule in `/milestone-review` step 4.
+r"""Regression guard: the M114 thrash rule, and the plan-time record it reads.
+
+Three targets: `/milestone-review`'s step-4 thrash rule, `/milestone-plan`'s
+step-4 obligation to record the alternative the gate rejected (M117), and the
+milestone template that shows that record's form.
 
 The rule was unguarded prose until M114 — every phrase of it (`third trip`,
 `queue another retry`, `mis-planned`, `re-plan or split`) occurred in the skill
 and in no test, so deleting it outright kept the suite green. That is the gap
 this file closes.
 
-The properties asserted here, each separately deletable and so separately
-pinned — the list IS the count, which is stated nowhere, because a stated
-count goes stale against the file it describes and did so twice in this very
-file (guard-doctrine §6):
+The properties asserted here are each separately deletable and so separately
+pinned. No count of them is stated, here or anywhere: a stated count goes
+stale against the file it describes and did so twice in this very file
+(guard-doctrine §6). The test methods are the enumeration — this list names
+the review-side properties only, and M117's plan-side ones are enumerated
+nowhere for the same reason:
 
   - returns are counted PER MILESTONE, not per cut, and the work log is named
     as the record a re-cut leaves standing;
@@ -128,7 +134,14 @@ class TestThrashTriggers(unittest.TestCase):
         # M117. Trigger (b)'s remedy needs a referent, and a referent needs a
         # place. Without the pointer the remedy names a record with no home,
         # which is how the fallback fired rather than the remedy downstream.
-        self.assertIn("step 4 of `/milestone-plan` records it in the work log", review())
+        t = review()
+        self.assertIn("step 4 of `/milestone-plan` records it in the work log", t)
+        # ...and it sits in trigger (b), not merely somewhere in the skill:
+        # moved to (a) or to the composition paragraph, the whole-file assert
+        # above stays green while the criterion naming trigger (b) goes false.
+        trigger_b = t[t.index("- **(b) the same acceptance criterion"):
+                      t.index("**where both fire they compose.**")]
+        self.assertIn("records it in the work log", trigger_b)
 
 
 
@@ -137,13 +150,13 @@ class TestPlanRecordsTheRejectedAlternative(unittest.TestCase):
 
     Nothing obliged `/milestone-plan` to record the loser when it chose
     between approaches, so trigger (b) degraded to its escalation fallback on
-    every milestone that had never recorded one. The obligation, its
-    cardinality, its absence case and the template showing the form are pinned
-    separately — described by a pointer rather than a count, since a stated
-    count drifts against the class it describes (M116). The absence case
-    carries the most: without it "no line" is ambiguous between "none was
-    weighed" and "the plan forgot", and only the first is a correct read for
-    trigger (b)'s fallback.
+    every milestone that had never recorded one. Each span of the obligation
+    is pinned by its own method — the methods below are the enumeration, and
+    no sentence here restates them, since such a restatement drifts against
+    the class the moment a span is added (M116; it drifted here once already).
+    The absence case carries the most: without it "no line" is ambiguous
+    between "none was weighed" and "the plan forgot", and only the first is a
+    correct read for trigger (b)'s fallback.
     """
 
     def test_plan_obliges_recording_the_rejected_alternative(self):
@@ -193,16 +206,22 @@ class TestPlanRecordsTheRejectedAlternative(unittest.TestCase):
         # so an obligation stated only in the skill is one the author never
         # meets at the moment of writing the work log.
         t = read("shared", "templates", "milestone.md")
+        # Scoped to the work-log section's HTML comment, not the whole file:
+        # as a template BODY line the form ships a placeholder into every
+        # instantiated milestone, which is the state this assert exists to
+        # keep out — and a whole-file match cannot tell the two apart.
+        comment = t[t.index("## work log"):t.index("- yyyy-mm-dd: created by")]
         self.assertRegex(
-            t,
+            comment,
             r"one per approach choice the\s+gate actually weighed, none where "
             r"it weighed none",
         )
         self.assertRegex(
-            t,
+            comment,
             r"plan gate chose <approach> over <alternative> because\s+<reason>; "
             r"falsified by <evidence class>",
         )
+        self.assertTrue(comment.rstrip().endswith("-->"), "form escaped the comment")
 
 
 class TestTriggersCompose(unittest.TestCase):
