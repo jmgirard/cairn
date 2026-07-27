@@ -2230,3 +2230,135 @@ structural — §8 obliges each round to record a report that is uncertified
 surface for the next round, so zero-unresolved cannot converge while the
 report sits inside the certified scope — and round 4 is what instantiates
 that mechanism. Nothing else in D-069 is touched.
+
+### D-071 (2026-07-27): The placement test takes the deletion arm for retention and moves inversion to guard verification, gaining a step-0 single-home check — narrowly supersedes D-056's part 2 and its yield clause; parts 1 and 3 stand (RR04 rec 9)
+
+**Context:** D-056 stated the placement test's first step as "deleted **or**
+inverted", and RR04 §6 found the disjunction defective: "Deleting a duplicate
+changes nothing (the other copy still governs → route to delete), but
+*inverting* a duplicate creates a contradiction, which does change behavior →
+'yes → the rulebook owns it.' Any rule-shaped text passes the inversion arm,
+copies included." The two probes answer different questions — inversion detects
+*rules*, deletion detects *necessary* text — so a retention test for an
+always-read file needs the deletion arm, and restatement is a relation between
+blocks that no per-block test can see. Separately, D-056's Consequences claimed
+"The test predicts no yield"; the committed ledger measured otherwise, and
+D-057 recorded the claim as remaining "false on the record" while parking the
+supersession as no longer urgent. This entry is that supersession, taken now
+because a milestone touching the placement test is the promotion condition the
+parked row named.
+
+**Decision:** Three edits, narrow.
+
+**(1) Step 0 — single home.** Before the retention test: is this stated
+elsewhere in `tracking-rules.md`? One home keeps the statement; every other site
+carries at most a cross-reference. This is not new doctrine — it is
+`DESIGN.md`'s "nothing is said twice" and the file map's "substance lives in the
+owner", applied intra-file and finally made a test step. It governs text
+authored or edited from here on; **no retroactive compliance sweep is owed or
+implied**, and reading it as one would reopen the stock-side work D-057 closed.
+
+**(2) The probes split.** Retention in the rulebook requires
+**deletion-changes-behavior**. The inversion procedure — relabel, negate, or
+transpose the rule in place, run the suite, require red — is the
+**guard-verification** protocol (its M74 role), and is not the placement test.
+
+**(3) The yield clause is replaced by the measurement.** D-056 told a reader to
+treat M95's net −9 as evidence about the file's composition and to expect no
+yield. `cairn/references/rulebook-classification-ledger.md` measures ~65 line-
+equivalents of class 3+4 — 8.4% of 779 — and states that it "confirms D-056's
+headline claim" that the mass is mostly class 1/2 (90.6% of content lines) "and
+contradicts only its yield clause … by ~56 lines net". The measurement replaces
+the prediction. It is not a quota: D-057 still governs whether any pass is run.
+
+**D-056's parts 1 and 3 stand unchanged** — `tracking-rules.md` is current
+knowledge, and guard-pinning is a deletion screen rather than a licence to keep.
+Only part 2's test and the yield clause are superseded. D-056's own bytes are
+untouched under IP4, and `skills/tests/test_rule_placement.py` reds on any edit
+to them.
+
+**Consequences:** The rulebook's "What gets a test" section states the repaired
+test, and the always-read governance table's inflow cell points at it instead of
+restating it — step 0's first application, and one the mutation harness enforces
+mechanically, since `blank_block` errors on a registered locator occurring twice
+as loudly as on zero. D-057 is untouched: the stock-side program stays closed,
+this repairs a test rather than harvesting the file, and the ledger remains a
+record of what *could* be cut rather than a work order. D-056's supersession
+trigger was directional — "if this test [admits] a deletion that loses a rule" —
+anticipating over-deletion only, which RR04 read as a signature of defensive
+drafting; this entry's runs both ways. If the deletion arm is found retaining
+text no reader needs, **or** step 0 found suppressing a statement whose second
+site was load-bearing, this is the entry to supersede. Delivered by M116.
+
+### D-072 (2026-07-27): D-071's "reds on any edit" claim is narrowed to the five spans the guard actually pins — supersedes that clause; D-071's three edits stand
+
+**Context.** M116's §8 description-layer certification found D-071's closing
+sentence overclaims its mechanical backing. D-071 states that D-056's bytes are
+untouched under IP4 "and `skills/tests/test_rule_placement.py` reds on any edit
+to them". `TestDecisionRecord` pins five spans of D-056 — the heading regex, the
+part-1 classification sentence, the three step labels, the no-backfill clause,
+and the IP4 clause. The certifier verified by mutation that rewriting D-056's
+yield clause ("The test predicts no yield" → "XXXX predicts no yield") leaves
+`test_rule_placement` fully green, so "any edit" is false as written.
+
+**Decision.** The clause is narrowed: the guard reds on an edit to D-056's
+classification sentence, its three step labels, its no-backfill clause or its
+IP4 clause, and not on an edit elsewhere in the entry. Everything else in D-071
+stands — the step-0 check, the probe split, and the yield-clause replacement are
+unaffected. So is the underlying fact: D-056's bytes **are** untouched, which
+M116's AC1 verifies by `git diff` against `main`, never by the guard.
+
+**Consequences.** Appended rather than edited: IP4 attaches at append time
+(D-070, D-065's route), and D-071 was already appended when the certification
+ran. What narrows is a claim about what a guard proves, never a claim about what
+was done. Note the shape: this is the second consecutive milestone whose
+certification round caught an overclaimed guard-coverage sentence inside its own
+D-entry — D-070 was the first — which is evidence for the instrument D-067
+adopted rather than against it. If a later pass widens `TestDecisionRecord` to
+pin D-056 whole, this is the entry to supersede.
+
+### D-073 (2026-07-27): D-071's "parts 1 and 3 stand unchanged" is narrowed to part 3's asymmetry, and D-072's Decision clause is corrected to the five spans its own heading names — supersedes those two claims; both entries' substance stands
+
+**Context.** M116's fresh-context diff review found two records of this
+milestone describing their own subject wrongly, one in each of the entries
+M116 had already appended.
+
+(1) D-071 states that D-056's "parts 1 and 3 stand unchanged". D-056's part 3
+opens "The behavioral inversion test is the doctrine; guard-reddening is its
+mechanical proof procedure where a guard exists (M74's relabel/negate/transpose),
+and a recorded by-hand inversion where none does." D-071's own edit (2)
+reassigns exactly that procedure to guard verification, so part 3 does **not**
+stand unchanged — its framing sentence is precisely what D-071 supersedes.
+D-056 is still cited from the repaired rulebook paragraph, so a reader
+following the cite and told part 3 stands would read the superseded doctrine
+as live.
+
+(2) D-072's heading claims a narrowing "to the **five** spans the guard
+actually pins" and its Context lists five, but its Decision enumerates four —
+dropping the heading regex — while asserting the guard reds "not on an edit
+elsewhere in the entry". `test_entry_exists_and_annotates_d045` pins D-056's
+heading, so that clause is false as written.
+
+**Decision.** (1) D-071's scope claim is narrowed: **D-056's part 1 and part
+3's asymmetry stand** — the rulebook is current knowledge; guard-reddening is a
+deletion screen, never a licence to keep; the text owns the guard. **Part 3's
+first sentence, naming the behavioral inversion test as the doctrine and
+guard-reddening as its proof procedure, is superseded by D-071(2).**
+(2) D-072's narrowed clause is restated whole: the guard reds on an edit to
+D-056's **heading, its part-1 classification sentence, its three step labels,
+its no-backfill clause, or its IP4 clause** — the five spans its Context and
+heading both name — and not elsewhere in the entry.
+
+Nothing else in either entry changes. D-071's three edits and D-072's
+correction of the "reds on any edit" overclaim both stand.
+
+**Consequences.** Appended, never edited: IP4 attaches at append time (D-070,
+D-065's route). This is the third appended correction in one milestone —
+D-071 overclaimed, D-072 miscounted while fixing it, D-073 fixes both — and
+the pattern is the finding, not the individual slips: each entry made a precise
+claim about a mechanism it had not re-read at the moment of writing. The
+instrument that caught all three was a fresh-context reader (D-067's §8
+certification for the first, the review fan-out for these two), never a test;
+`cairn_validate` and all three suites were green at every step. If a later
+milestone finds this correction chain repeating, the entry to write is one
+governing how D-entries make mechanical claims, not a fourth correction.

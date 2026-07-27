@@ -75,9 +75,9 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
             "| `LESSONS.md` | a durable \"how this repo behaves\" note | retire "
             "by enforcement / ownership / maturation (D-051, D-055) | 50-line "
             "item cap + `record density` |",
-            "| `tracking-rules.md` | the three-step placement test (D-056) | "
-            "editorial pass; growth governed at the door (D-057) | `/milestone` "
-            "audit mass+growth line |",
+            "| `tracking-rules.md` | the placement steps under \"What gets a "
+            "test\" (D-071) | editorial pass; growth governed at the door "
+            "(D-057) | `/milestone` audit mass+growth line |",
             "| `DECISIONS.md` | a cross-cutting choice among alternatives | "
             "bounded heading read — history read less, never shrunk (D-054) | "
             "none needed once read-bounded |",

@@ -172,7 +172,7 @@ The always-read surfaces, as the worked case:
 |---|---|---|---|
 | `ROADMAP.md` | a milestone or candidate | terminal-row retention + candidate triage/graduation | 60-line item cap |
 | `LESSONS.md` | a durable "how this repo behaves" note | retire by enforcement / ownership / maturation (D-051, D-055) | 50-line item cap + `record density` |
-| `tracking-rules.md` | the three-step placement test (D-056) | editorial pass; growth governed at the door (D-057) | `/milestone` audit mass+growth line |
+| `tracking-rules.md` | the placement steps under "What gets a test" (D-071) | editorial pass; growth governed at the door (D-057) | `/milestone` audit mass+growth line |
 | `DECISIONS.md` | a cross-cutting choice among alternatives | bounded heading read — history read less, never shrunk (D-054) | none needed once read-bounded |
 | the active `milestones/M<NN>-<slug>.md` | the milestone-file section ownership table | capped sections: the 150-line plan-owned cap; cap-exempt sections: newest-content injection — history read less, never shrunk (D-063); the file leaves the set at `done` | `weight caps` CHECK + `work-log format`; none needed for the cap-exempt sections once read-bounded |
 
@@ -817,13 +817,24 @@ snapshots, trivial pass-throughs, dependency behavior. Test the contract, not
 the implementation — a test that breaks under a behavior-preserving refactor
 is a defect in the test.
 
-**A rule is what changes compliant behavior when deleted or inverted.** That
-test decides whether prose in this rulebook is operative — a rule, or the
+**Step 0 — one home.** Before asking whether a piece of prose belongs in this
+rulebook, ask whether the rulebook already says it somewhere else. One site
+keeps the statement; every other site carries at most a cross-reference. This
+is a drafting step, binding on text authored or edited from here on, and never
+a mandate to sweep the file for repeats it already contains.
+
+**A rule is what changes compliant behavior when it is deleted.** That test
+decides whether prose in this rulebook is operative — a rule, or the
 doctrine for applying one — or is justification the file does not owe and git
-already holds (D-056, which classifies the rulebook as current knowledge and
-states the three-step placement test). Prove it by inversion: relabel, negate,
-or transpose the rule in place, run the suite, require red, restore and diff;
-where no guard exists, record a by-hand inversion.
+already holds (D-071 repairs the test; D-056's classification of the rulebook
+as current knowledge stands). Deletion is the retention probe and the only
+one: inversion detects rule-shaped text, which a duplicate equally is, so it
+cannot decide what belongs here.
+
+Inversion keeps a job of its own. **Relabel, negate, or transpose the rule in
+place, run the suite, require red, restore and diff** — that is the
+guard-verification protocol, whose obligation and unguarded-case fallback the
+guard-must-fail rule below states in full. It never decides what belongs here.
 
 **Guard-reddening is a deletion screen, never a licence to keep** — sufficient
 to block a careless deletion, never necessary to justify one, and never

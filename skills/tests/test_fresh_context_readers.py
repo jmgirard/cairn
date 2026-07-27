@@ -245,6 +245,26 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             r"this moves certification, not operation",
         )
 
+    def test_section_bounds_the_certified_scope_against_regress(self):
+        # M116/D-069: without the exclusion the gate cannot converge — each
+        # round must record a verdict, that record is append-only under IP4,
+        # so every round manufactures uncertified surface for the next.
+        self.assertRegex(
+            self.doctrine,
+            r"\*\*The certified scope is the work and the records describing "
+            r"the work; a record\s+whose subject is a certification round "
+            r"itself — the final round's own report\s+included — sits outside "
+            r"it\*\* \(D-069\)",
+        )
+
+    def test_scope_bound_states_why_it_is_convergence_not_convenience(self):
+        # Stated as "hard to reach" the clause reads as a comfort measure and
+        # invites tuning the round count instead; the defect is structural.
+        self.assertRegex(
+            self.doctrine,
+            r"the gate cannot converge\s+rather than merely being hard to reach",
+        )
+
     def test_section_carries_its_own_falsifier(self):
         # An adopted step with no stated exit is how a mechanism measured not
         # to work gets tuned instead of retired (D-059).
