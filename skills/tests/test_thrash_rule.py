@@ -1,14 +1,20 @@
-r"""Regression guard: the M114 thrash rule in `/milestone-review` step 4.
+r"""Regression guard: the M114 thrash rule, and the plan-time record it reads.
+
+Three targets: `/milestone-review`'s step-4 thrash rule, `/milestone-plan`'s
+step-4 obligation to record the alternative the gate rejected (M117), and the
+milestone template that shows that record's form.
 
 The rule was unguarded prose until M114 — every phrase of it (`third trip`,
 `queue another retry`, `mis-planned`, `re-plan or split`) occurred in the skill
 and in no test, so deleting it outright kept the suite green. That is the gap
 this file closes.
 
-The properties asserted here, each separately deletable and so separately
-pinned — the list IS the count, which is stated nowhere, because a stated
-count goes stale against the file it describes and did so twice in this very
-file (guard-doctrine §6):
+The properties asserted here are each separately deletable and so separately
+pinned. No count of them is stated, here or anywhere: a stated count goes
+stale against the file it describes and did so twice in this very file
+(guard-doctrine §6). The test methods are the enumeration — this list names
+the review-side properties only, and M117's plan-side and template-side ones
+are enumerated nowhere for the same reason:
 
   - returns are counted PER MILESTONE, not per cut, and the work log is named
     as the record a re-cut leaves standing;
@@ -19,6 +25,9 @@ file (guard-doctrine §6):
   - trigger (b) is one criterion failing twice by a NEW MECHANISM OF THE SAME
     SHAPE, remedied by reconsidering the recorded alternative, or by an
     offered `/milestone-brief` escalation where none was recorded;
+  - trigger (b) names WHERE that alternative is read from — the work log, at
+    step 4 of `/milestone-plan` — since a remedy naming a record with no home
+    is how the escalation fallback fired instead of the remedy (M117);
   - where both fire they COMPOSE — (a) takes the disposition, (b)'s diagnosis
     and escalation offer carry into the routing;
   - once a re-plan or split is spent, the exhaustion branch replaces the
@@ -55,6 +64,10 @@ def read(*parts):
 
 def review():
     return read("milestone-review", "SKILL.md")
+
+
+def plan():
+    return read("milestone-plan", "SKILL.md")
 
 
 class TestThrashCounting(unittest.TestCase):
@@ -119,6 +132,107 @@ class TestThrashTriggers(unittest.TestCase):
         )
         # Gated per instance, never automatic — D-004 survives this new door.
         self.assertIn("instance, never automatically", t)
+
+    def test_review_names_the_work_log_as_where_the_record_is_read(self):
+        # M117. Trigger (b)'s remedy needs a referent, and a referent needs a
+        # place. Without the pointer the remedy names a record with no home,
+        # which is how the fallback fired rather than the remedy downstream.
+        t = review()
+        self.assertIn("step 4 of `/milestone-plan` records it in the work log", t)
+        # ...and it sits in trigger (b), not merely somewhere in the skill:
+        # moved to (a) or to the composition paragraph, the whole-file assert
+        # above stays green while the criterion naming trigger (b) goes false.
+        trigger_b = t[t.index("- **(b) the same acceptance criterion"):
+                      t.index("**where both fire they compose.**")]
+        self.assertIn("records it in the work log", trigger_b)
+
+
+
+class TestPlanRecordsTheRejectedAlternative(unittest.TestCase):
+    """M117: the upstream half — trigger (b)'s referent is created at plan time.
+
+    Nothing obliged `/milestone-plan` to record the loser when it chose
+    between approaches, so trigger (b) degraded to its escalation fallback on
+    every milestone that had never recorded one. Each span of the obligation
+    is pinned by its own method — the methods below are the enumeration, and
+    no sentence here restates them, since such a restatement drifts against
+    the class the moment a span is added (M116; it drifted here once already).
+    The absence case carries the most: without it "no line" is ambiguous
+    between "none was weighed" and "the plan forgot", and only the first is a
+    correct read for trigger (b)'s fallback.
+    """
+
+    def test_plan_obliges_recording_the_rejected_alternative(self):
+        # `read()` lowercases, so anchors here are lowercase; the mutation
+        # registry blanks the real file and keeps the shipped case.
+        t = plan()
+        self.assertIn("**record the alternative the gate rejected.**", t)
+        self.assertRegex(
+            t,
+            r"append a work-log line naming the alternative rejected, why\s+it "
+            r"lost, and the class of evidence that would falsify the choice",
+        )
+
+    def test_the_obligation_states_its_cardinality(self):
+        # Without this the trailing clause deletes green and the obligation
+        # reads as unbounded — "record the alternative" with no count is
+        # satisfiable by one line per milestone, which is the granularity that
+        # loses the second approach choice when a plan makes two.
+        self.assertRegex(
+            plan(),
+            r"one\s+line per approach choice the gate actually weighed",
+        )
+
+    def test_the_obligation_sits_in_step_4(self):
+        # The cross-file coupling breaks in exactly one direction: review's
+        # pointer says "step 4 of `/milestone-plan`" and IS pinned, while the
+        # bullet it points at was pinned only as free-floating text — movable
+        # to any step, or out of the workflow entirely, with every other
+        # assert green. Bound by the surrounding numbered steps rather than by
+        # a line number, which drifts on any edit above.
+        t = plan()
+        start = t.index("4. **solidify autonomously**")
+        end = t.index("5. **remainder ledger")
+        self.assertIn(
+            "**record the alternative the gate rejected.**", t[start:end]
+        )
+
+    def test_a_plan_weighing_no_alternative_writes_no_line(self):
+        self.assertRegex(
+            plan(),
+            r"a plan that weighed\s+no alternative writes no line: absence means "
+            r"none was weighed",
+        )
+
+    def test_the_template_shows_the_record_and_its_cardinality(self):
+        # AC4's template half. The template is what a plan author instantiates,
+        # so an obligation stated only in the skill is one the author never
+        # meets at the moment of writing the work log.
+        t = read("shared", "templates", "milestone.md")
+        # Scoped to the work-log section's HTML comment, not the whole file:
+        # as a template BODY line the form ships a placeholder into every
+        # instantiated milestone, which is the state this assert exists to
+        # keep out — and a whole-file match cannot tell the two apart.
+        comment = t[t.index("## work log"):t.index("- yyyy-mm-dd: created by")]
+        self.assertRegex(
+            comment,
+            r"one per approach choice the\s+gate actually weighed, none where "
+            r"it weighed none",
+        )
+        self.assertRegex(
+            comment,
+            r"plan gate chose <approach> over <alternative> because\s+<reason>; "
+            r"falsified by <evidence class>",
+        )
+        self.assertTrue(comment.rstrip().endswith("-->"), "form escaped the comment")
+        # ...and appears ONLY there. Bounding the slice catches the form moving
+        # up out of the body, but not a COPY left in the body below the
+        # created-by line — which ships the placeholder just as surely, with
+        # the slice asserts still green.
+        self.assertEqual(
+            1, t.count("plan gate chose <approach>"),
+            "the example form must appear once, inside the work-log comment",
+        )
 
 
 class TestTriggersCompose(unittest.TestCase):

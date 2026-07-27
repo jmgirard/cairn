@@ -2648,6 +2648,78 @@ REGISTRY += [
         target=REVIEW,
         block="never a\n   bare retry as the recommended option",
     ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers.test_review_names_the_work_log_as_where_the_record_is_read",
+        target=REVIEW,
+        block="step 4 of `/milestone-plan` records it in the work log",
+    ),
+]
+
+# M117: the upstream half of trigger (b) — /milestone-plan creates the record
+# (b) reads. One entry per independently-deletable span across the obligation,
+# its placement, its cardinality, its absence case, and the template surface;
+# the entries below are the enumeration, and this comment deliberately is not
+# one — a list here goes stale on the next append, and a count of it goes
+# stale faster (§6). The absence case is the subtle span: without it "no line"
+# is ambiguous between "none was weighed" and "the plan forgot", and only the
+# first makes (b)'s escalation fallback the correct read.
+REGISTRY += [
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestPlanRecordsTheRejectedAlternative."
+             "test_plan_obliges_recording_the_rejected_alternative",
+        target="skills/milestone-plan/SKILL.md",
+        block="**Record the alternative the gate rejected.**",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestPlanRecordsTheRejectedAlternative."
+             "test_plan_obliges_recording_the_rejected_alternative",
+        target="skills/milestone-plan/SKILL.md",
+        block=(
+            "append a work-log line naming the alternative rejected, why\n"
+            "     it lost, and the class of evidence that would falsify the "
+            "choice"
+        ),
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestPlanRecordsTheRejectedAlternative."
+             "test_a_plan_weighing_no_alternative_writes_no_line",
+        target="skills/milestone-plan/SKILL.md",
+        block=(
+            "A plan that weighed\n     no alternative writes no line: absence "
+            "means none was weighed"
+        ),
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestPlanRecordsTheRejectedAlternative."
+             "test_the_obligation_states_its_cardinality",
+        target="skills/milestone-plan/SKILL.md",
+        block="one\n     line per approach choice the gate actually weighed",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestPlanRecordsTheRejectedAlternative."
+             "test_the_template_shows_the_record_and_its_cardinality",
+        target=TEMPLATE,
+        block=(
+            "one per approach choice the\n     gate actually weighed, none "
+            "where it weighed none"
+        ),
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestPlanRecordsTheRejectedAlternative."
+             "test_the_template_shows_the_record_and_its_cardinality",
+        target=TEMPLATE,
+        block=(
+            "plan gate chose <approach> over <alternative> because\n     "
+            "<reason>; falsified by <evidence class>."
+        ),
+    ),
 ]
 
 # M114: falsifying promotion conditions. Three entries because the heading,
@@ -2720,6 +2792,49 @@ REGISTRY += [
             "usable` rather than `named ⇒ usable` — which turns a silent cell "
             "into an\nassertion that nothing admissible would have worked, "
             "rather than an assertion\nabout nothing."
+        ),
+    ),
+]
+
+# M117: the site axis and the enumeration-count rule, added to the same §3.
+# Each paragraph's heading and its operative half fail independently (the site
+# paragraph's operative half is a consequence, the count paragraph's is a
+# remedy), and both fail independently of the M114 rendering rule above them —
+# without that, deleting either one would leave the other satisfying a guard
+# that claims to cover both axes.
+REGISTRY += [
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_absence_section_states_the_site_axis",
+        target=GUARD_DOCTRINE,
+        block="**The renderings vary by site as well as by format.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_absence_section_states_the_site_axis",
+        target=GUARD_DOCTRINE,
+        block=(
+            "Exercising every number format of\none literal is not coverage "
+            "of a surface that has several"
+        ),
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_absence_section_states_that_a_count_is_not_coverage",
+        target=GUARD_DOCTRINE,
+        block="**A count of enumerated entries is not coverage of renderings.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_absence_section_states_that_a_count_is_not_coverage",
+        target=GUARD_DOCTRINE,
+        block=(
+            "**derive the\nrenderings from the producer rather than listing "
+            "them** — sweep the producer's\nown outputs over a grid of inputs "
+            "and assert the invariant over what comes back\n(a rendered bullet "
+            "contains no number), which covers renderings not yet\nwritten, "
+            "with one end-to-end case retained to prove those outputs reach "
+            "the\nreal surface unchanged."
         ),
     ),
 ]

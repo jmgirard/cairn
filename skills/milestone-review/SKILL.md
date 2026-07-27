@@ -116,7 +116,8 @@ overrides — log the override).
      of the same shape** — a wrong approach rather than a mis-sized one.
      Re-cutting around the same predicate buys the next mechanism, not a fix,
      so the remedy is to reconsider the alternative the plan gate recorded
-     against. Where it recorded none, offer escalation via `/milestone-brief` —
+     against — step 4 of `/milestone-plan` records it in the work log.
+     Where it recorded none, offer escalation via `/milestone-brief` —
      per instance, never automatically (D-004).
 
    **Where both fire they compose.** (a) governs the disposition — no further
