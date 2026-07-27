@@ -58,7 +58,7 @@ which is where its binding text permanently lives.
       count, blanking survivors, both probes — per RR07 §BC6. VERIFIED at pass 7.
 - [x] AC7 (BC7): pass 7's terminus, per RR07 §BC7. FIRED at pass 7 on clause (ii), and
       SPENT: M115 met the unblock condition it names, which is what authorizes pass 8.
-- [ ] AC8: Pass 8 closes pass 7's two gate failures and files the two records the park
+- [x] AC8: Pass 8 closes pass 7's two gate failures and files the two records the park
       owed. Records are superseded by append and never edited (IP4): the work log gains a
       line superseding T18/T19's "PRE-EXISTING" claim, naming the converse assert as
       M114's own on cited provenance evidence, and a new D-entry supersedes D-064's §7
@@ -70,7 +70,7 @@ which is where its binding text permanently lives.
       `eight coverage findings` tally, which reads as RR06's and is locatable nowhere in
       it, is re-attributed in place to M114's own review record and marked (D-045), each
       of the eight listed findings located in the Review section that raised it.
-- [ ] AC9: Gate. Three suites green from the repo root with exit codes checked separately,
+- [x] AC9: Gate. Three suites green from the repo root with exit codes checked separately,
       never piped; `cairn_validate` exit 0; blanking every registered block reds its named
       test (tolerance: 0 survivors); and a guard-doctrine §8 description-layer
       certification by a fresh-context [O] reader that authored no part of M114, its
@@ -1087,3 +1087,32 @@ records drifting from the artifacts they describe, or criteria authored wrong. P
 the last two coverage holes in closed form and met every projection, and still returned on
 two records describing the work. That is the finding, and RR06 recs 4-5 are the instruments
 for it; another pass of this milestone is not.
+
+## Review pass 8 (2026-07-27)
+
+Pass 8's delta is `1a15915..90ef274` (the M115 merge to this gate). AC1-AC7 are
+discharged at pass 7 — each names pass 7's commits — and are not re-measured here.
+
+**AC8 — verified, fresh by command at `90ef274`.** The superseding work-log entry is
+present (the T18/T19 "PRE-EXISTING" correction, provenance measured on both sides);
+D-068 supersedes D-064's §7 description on both errors; the converse assert is widened
+to §7's full shipped sentence with its registered block replaced by the same bytes —
+probe reproduced red-side-up by the fresh-context certifier in a `git archive` scratch
+copy with the old anchor deliberately left intact as its control; the partial-pin
+candidate row is present and its promotion condition names an evidence class
+("a systematic remedy is identified"), explicitly refusing a count; rec 5's tally is
+re-attributed in place to M114's own review record and marked. AC8 ticked.
+
+**AC9 — verified, fresh at `90ef274`.** Suites 654/280/91, exit 0 each, run separately
+and never piped; `cairn_validate` exit 0, 16 PASS, 1 advisory (`sizing`: 9 acceptance
+criteria — advisory, never a gate failure); blanking survivors 0; the §8 description-layer
+certification ran under AC9 as amended (route c, D-069/D-070): first round verbatim
+"NOT CLEAN — 3 unresolved discrepancies", all three closed and re-derived, confirmation
+verbatim "CLEAN — 0 unresolved discrepancies" at `eb81d46`; the work-log entry exists and
+names zero unresolved; `eb81d46..90ef274` touches no file outside `cairn/`, so the
+certified tree stands at HEAD. AC9 ticked.
+
+**Projection-vs-outcome (Driving RR: RR07, pass-8 rendering).** Suites measured 654/280/91
+against projected 654/280/91 (the post-M115-merge expectation the UNBLOCKED entry
+recorded); `Mutation(...)` entries naming `guard="test_lesson_graduation"` measured 14
+against projected 14; blanking survivors measured 0 against tolerance 0. No shortfall.
