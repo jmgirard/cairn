@@ -106,6 +106,25 @@ external mutation-verification, which proves only that the guard catches the
 mutation its author thought of — and the author of a detector is exactly who
 cannot enumerate the renderings it misses.
 
+**The renderings vary by site as well as by format.** A number has several
+spellings; a message has several *sites* — the branches, message literals, and
+code paths at which one target can appear. Exercising every number format of
+one literal is not coverage of a surface that has several, and a detector that
+survives the format axis fails the site axis next: a leak placed in a one-way
+singular lead no control had exercised passed at zero failures over 720 cells,
+while that lead shipped in about 4% of real cases.
+
+**A count of enumerated entries is not coverage of renderings.** A detector
+asserting `checked == N` over a hand-listed set measures the list, not the
+surface, and it passes at exactly the moment a site is missing from the list.
+§7's positive-count rule does not reach this: the guard that failed here
+counted two, and two was a complete count of the author's list. So **derive the
+renderings from the producer rather than listing them** — sweep the producer's
+own outputs over a grid of inputs and assert the invariant over what comes back
+(a rendered bullet contains no number), which covers renderings not yet
+written, with one end-to-end case retained to prove those outputs reach the
+real surface unchanged.
+
 ## 4. Fixtures
 
 **Vary every axis the prose is free in, and vary it where the value under

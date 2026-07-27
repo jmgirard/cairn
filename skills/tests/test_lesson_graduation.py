@@ -98,6 +98,44 @@ class TestModuleExists(unittest.TestCase):
             r"`signif`-ed,\s+and require the detector to see each one\.",
         )
 
+    def test_absence_section_states_the_site_axis(self):
+        # M117. The rendering rule above is general, but everything it
+        # PRESCRIBES is the numeric-format axis, and a detector that met that
+        # prescription exactly then failed twice more on the site axis. Pinned
+        # apart from the rule above: deleting this paragraph must not leave
+        # that one satisfying the guard.
+        self.assertRegex(
+            self.module,
+            r"\*\*The renderings vary by site as well as by format\.\*\* A number has "
+            r"several\s+spellings; a message has several \*sites\* — the branches, "
+            r"message literals, and\s+code paths at which one target can appear\.",
+        )
+        # The operative consequence, separately deletable from the axis name.
+        self.assertRegex(
+            self.module,
+            r"Exercising every number format of\s+one literal is not coverage of a "
+            r"surface that has several",
+        )
+
+    def test_absence_section_states_that_a_count_is_not_coverage(self):
+        # M117. Distinct from §7's positive-count rule, which this paragraph
+        # names as NOT reaching the defect: the failing guard's count was
+        # positive and complete against the author's list.
+        self.assertRegex(
+            self.module,
+            r"\*\*A count of enumerated entries is not coverage of renderings\.\*\* A "
+            r"detector\s+asserting `checked == N` over a hand-listed set measures the "
+            r"list, not the\s+surface",
+        )
+        # The remedy is the operative half — without it the rule diagnoses and
+        # prescribes nothing (the shape M114 pass-6 F2 left deletable here).
+        self.assertRegex(
+            self.module,
+            r"\*\*derive the\s+renderings from the producer rather than listing "
+            r"them\*\* — sweep the producer's\s+own outputs over a grid of inputs and "
+            r"assert the invariant over what comes back",
+        )
+
     def test_matcher_section_states_the_authorization_switch(self):
         self.assertIn(
             'When a detection regex graduates from "is this\nguarded?" to "is this authorized?", switch to `finditer` and require every\noccurrence to clear.',

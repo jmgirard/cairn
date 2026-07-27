@@ -1,11 +1,11 @@
 # M117: Detector coverage on the site axis, and a plan gate that records the alternative it rejected
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1, GP4
-- **Branch/PR:** —
+- **Branch/PR:** m117-detector-site-axis-and-recorded-alternative
 
 ## Goal
 
@@ -91,12 +91,12 @@ real aborts.
 
 ## Tasks
 
-- [ ] T1: Re-read `guard-doctrine.md` §7 and §8 for the single-home check, then
+- [x] T1: Re-read `guard-doctrine.md` §7 and §8 for the single-home check, then
       author §3's new text: the site-axis claim, the not-coverage claim, the
       enumeration-count claim, and the producer-sweep remedy, building on
       §3's existing author-cannot-enumerate sentence and leaving §7 a
       one-line pointer.
-- [ ] T2: Add one assert per claim to `skills/tests/test_lesson_graduation.py`
+- [x] T2: Add one assert per claim to `skills/tests/test_lesson_graduation.py`
       — anchors copied from the target's actual bytes (M95), read via
       `Path.read_text` (M100), `\s+` over shipped wraps (M105) — and register
       each new block in `skills/tests/test_mutation_harness.py`.
@@ -122,6 +122,8 @@ real aborts.
 - 2026-07-27: created by /milestone-plan.
 - 2026-07-27: plan gate weighed the record's home — work log over the Scope section, because a re-cut supersedes Scope and unticks criteria while the work log stands (D-064's own argument for the thrash count); falsified by a review pass that cannot find the record where trigger (b) looks.
 - 2026-07-27: plan gate weighed §3 over §7 as the home for the enumeration-count rule — §7's remedy is a positive count, which the failing guard already passed at `checked == 2L`; falsified by a later count defect whose fix belongs to §7's sweep machinery rather than to detector visibility.
+
+- 2026-07-27: T1+T2 — guard-doctrine §3 gains the site-axis and enumeration-count paragraphs (`guard-doctrine.md:109-126`), four asserts in `test_lesson_graduation.py`, four registry entries; suites 665/280/91 OK.
 
 ## Decisions
 

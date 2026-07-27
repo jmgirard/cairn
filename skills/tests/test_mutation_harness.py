@@ -2724,6 +2724,45 @@ REGISTRY += [
     ),
 ]
 
+# M117: the site axis and the enumeration-count rule, added to the same §3.
+# Each paragraph's diagnosis and its remedy fail independently, and the two
+# paragraphs fail independently of the M114 rendering rule they sit under —
+# without that, deleting either one would leave the other satisfying a guard
+# that claims to cover both axes.
+REGISTRY += [
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_absence_section_states_the_site_axis",
+        target=GUARD_DOCTRINE,
+        block="**The renderings vary by site as well as by format.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_absence_section_states_the_site_axis",
+        target=GUARD_DOCTRINE,
+        block=(
+            "Exercising every number format of\none literal is not coverage "
+            "of a surface that has several"
+        ),
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_absence_section_states_that_a_count_is_not_coverage",
+        target=GUARD_DOCTRINE,
+        block="**A count of enumerated entries is not coverage of renderings.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_absence_section_states_that_a_count_is_not_coverage",
+        target=GUARD_DOCTRINE,
+        block=(
+            "**derive the\nrenderings from the producer rather than listing "
+            "them** — sweep the producer's\nown outputs over a grid of inputs "
+            "and assert the invariant over what comes back"
+        ),
+    ),
+]
+
 # M100 (RR04 rec 8): finding-enforcement prose. One entry per target file the
 # guard reads, plus separate entries where blocks fail independently (the
 # review-section juxtaposition and the merge-chip shortfall option each carry
