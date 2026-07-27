@@ -2149,6 +2149,94 @@ REGISTRY = [
         target=RULES,
         block="never a standing menu item",
     ),
+    # M115: the criteria audit. One entry per clause that carries the rule
+    # independently — the audit's placement, its reader, each of its two
+    # questions, each disposition arm, and the anti-mechanization line all
+    # fail on their own, and a set-level entry cannot prove a per-clause one.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_step_2_drafts_criteria_to_final_wording",
+        target="skills/milestone-plan/SKILL.md",
+        block="acceptance criteria are drafted here to their final wording, not at\n   step 4",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_block_is_present_and_precedes_the_questions",
+        target="skills/milestone-plan/SKILL.md",
+        block="**Criteria audit (runs before the questions are composed).**",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_names_a_fresh_context_reader_that_authored_none_of_them",
+        target="skills/milestone-plan/SKILL.md",
+        block="fresh-context **[O]**\n   reader that authored none of them",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_states_the_satisfiability_question",
+        target="skills/milestone-plan/SKILL.md",
+        block="*what state of the world satisfies this exactly as written*",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_states_the_ip_and_decision_conflict_question",
+        target="skills/milestone-plan/SKILL.md",
+        block="*does any IP or D-entry make that state unreachable*",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_reads_the_shipped_wording_never_a_paraphrase",
+        target="skills/milestone-plan/SKILL.md",
+        block="It reads the wording\n   step 4 will write, never a paraphrase of it",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_clear_findings_are_fixed_and_the_fix_reported",
+        target="skills/milestone-plan/SKILL.md",
+        block="a finding with one clear right answer is fixed\n   and the fix reported in chat",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_judgment_findings_become_gate_questions_under_the_cap",
+        target="skills/milestone-plan/SKILL.md",
+        block="becomes one of this round's questions, within the three-marker\n   cap",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_is_a_reader_and_never_a_check",
+        target="skills/milestone-plan/SKILL.md",
+        block="The instrument is a reader and never a check",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_step_4_writes_the_audited_wording_and_reaudits_a_change",
+        target="skills/milestone-plan/SKILL.md",
+        block="**Write the wording\n     step 3's audit read**; a criterion the gate changed goes back through the\n     audit's two questions",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_binding_criteria_are_audited_before_ingestion",
+        target="skills/milestone-brief/SKILL.md",
+        block="**A binding-criteria set is audited before it is ingested**",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_ingest_audit_reuses_the_plan_gate_reader",
+        target="skills/milestone-brief/SKILL.md",
+        block="by the same\n   fresh-context **[O]** reader `/milestone-plan` step 3 spawns",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_ingest_audit_asks_the_questions_of_the_set_not_only_each",
+        target="skills/milestone-brief/SKILL.md",
+        block="asked\n   of the set as well as of each criterion",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_ingest_findings_are_raised_never_softened_away",
+        target="skills/milestone-brief/SKILL.md",
+        block="What the audit returns is raised with the\n   user, never softened away",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

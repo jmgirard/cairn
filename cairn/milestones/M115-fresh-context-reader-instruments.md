@@ -92,7 +92,7 @@ rec 4/5/6 rows at rebase → M114.
       and `skills/milestone-brief/SKILL.md:59` ("Ingesting an RR"). Grep the repo for
       restatements of the plan-gate wording first — README and templates go stale
       silently (M112).
-- [ ] T2: Guard T1 in a new `skills/tests/test_fresh_context_readers.py` — anchors
+- [x] T2: Guard T1 in a new `skills/tests/test_fresh_context_readers.py` — anchors
       copied from the shipped bytes, `\s+` across every wrap (M95/M105), target read via
       `Path.read_text` or the mutation engine cannot see it (M100); one `Mutation(...)`
       entry per doctrine-pinning assert, each block resolving exactly 1x.
@@ -127,6 +127,8 @@ rec 4/5/6 rows at rebase → M114.
 
 - 2026-07-26: T1 — the criteria audit lands at both surfaces. `/milestone-plan` step 3 gains a `Criteria audit` block running BEFORE the questions are composed, and step 2 now requires the criteria be drafted to final wording, with step 4 writing the audited bytes and re-auditing anything the gate changed — three edits, because placing the audit without moving criteria authoring would have audited a draft that step 4 rewrites. `/milestone-brief`'s RR ingestion gains the same reader and the same two questions, asked of the SET as well as each criterion, since jointly-unsatisfiable criteria are what the ingest audit exists to catch. RR06 is deliberately not cited in the shipped prose: only RR01 and RR04 are cited anywhere under `skills/`, and both are archived on `main` while RR06 is not, so its rule travels in full instead of behind a pointer that resolves to nothing.
 - 2026-07-26: T1 sweeps, MEASURED against the asserts and not by eye. M112 surface sweep: `README.md`'s plan row and `DESIGN.md:127` are category summaries that this does not falsify, and no template restates the plan gate — nothing outside the two skill files to update. M113 false-coverage sweep: two guards do read the edited files (`test_bounded_decisions_read.py:106` and `test_gate_conclusion_preview.py:72,93`), so I read their asserted strings rather than grepping the file — none of the five phrases they pin occurs in the new prose. M104 adjacency: all three suites green after the edit, which is the check (a reflowed anchor reds its own guard).
+
+- 2026-07-26: T2 — `skills/tests/test_fresh_context_readers.py` pins T1's doctrine with 14 asserts, one per clause that carries the rule independently: the audit's placement at step 2/3/4, its fresh-context reader, each of its two questions, each disposition arm, the anti-mechanization line, and the four ingest-side clauses. Mechanism confirmed FIRST, not assumed — the completeness meta-test redded on the unregistered file before I registered anything. Every block was copied from the shipped bytes and machine-checked to resolve exactly 1x in its target before insertion (14/14); every wrapped phrase is matched with `\s+` rather than a literal newline (M105), and the file reads targets with `Path.read_text` so the mutation engine can see it (M100). Parity MEASURED by AST, not counted by eye: 14 doctrine-pinning asserts against 14 registered entries. The harness's blanking sweep passes, so all 14 red on deletion. Suites 624/280/91 exit 0 each, skills up exactly the 14 new methods; `cairn_validate` exit 0.
 
 ## Decisions
 
