@@ -107,14 +107,15 @@ takes a D-entry, and its number stays retired.
   from M84 to M101; D-058 retired it as measured to tax at ordinary density
   but never bind ahead of the item cap.
 - a live milestone file's **plan-owned body < 150 lines** — everything before
-  the review-exclusive `## Review` section, less the `## Work log`.
-  The cap-exempt sections are exactly `## Review` (review-owned, M55) and `## Work log` (history under D-045, D-046); every other plan-owned section counts.
-  They are exempt for two different reasons. `## Review` is exempt so that
+  the review-exclusive `## Review` section, less the `## Work log` and `## Decisions` sections.
+  The cap-exempt sections are exactly `## Review` (review-owned, M55), `## Work log` (history under D-045, D-046) and `## Decisions` (history under D-074); every other plan-owned section counts.
+  They are exempt on two grounds. `## Review` is exempt so that
   review evidence never scrambles plan-owned content (M55): it accumulates at
   review time and no longer competes with Scope, AC, or Coverage for the budget.
   The `## Work log` is exempt because D-045 makes it history — never edited — so counting it could leave an over-cap file fixable only by an edit IP4 forbids (D-046).
-  A file with no `## Review` section counts up to EOF — still less its work log,
-  which is exempt wherever it sits.
+  The milestone-local `## Decisions` section is exempt on that same un-editability ground under its own classification: D-074 makes its dated dispositions history, superseding D-046's choice (3), so the cap may not aim there either.
+  A file with no `## Review` section counts up to EOF — still less its work log
+  and its decisions section, which are exempt wherever they sit.
 - Work-log entries are one line each — a hard-wrapped entry costs several lines
   of a budget it no longer pays into, so `cairn_validate`'s `work-log format`
   advisory WARNs on any work-log line that is not a one-line `- ` entry. It
@@ -128,8 +129,8 @@ takes a D-entry, and its number stays retired.
   milestone → the `cairn_validate` breakdown names the heaviest plan-owned
   section and the lines to shed, so compress that one section in a single
   rewrite, never a nibble-and-recount loop; the breakdown lists only trimmable
-  sections — both cap-exempt sections are omitted, so the remedy can never aim
-  at history (D-046); cross-reference a durable record
+  sections — all three cap-exempt sections are omitted, so the remedy can never aim
+  at history (D-046, D-074); cross-reference a durable record
   rather than restate its substance in the milestone (a milestone restating a
   DECISIONS entry is the classic overrun); split it or move reference material
   to `references/` only when no single section can carry the cut; over-cap
@@ -182,8 +183,8 @@ being read at `done`, compressed into a ≤25-line archive summary, so a
 lifecycle bounds it that the other four have no equivalent of. And it is **the
 only one split across two of GP1's mechanisms within one file** — its
 plan-owned sections bounded by a cap with an outflow, its cap-exempt sections
-(`## Work log`, `## Review`) by reading less of them, because the 150-line cap
-deliberately exempts those two and IP4 forbids trimming either on disk. The
+(`## Work log`, `## Decisions`, `## Review`) by reading less of them, because the
+150-line cap deliberately exempts those three and IP4 forbids trimming them on disk. The
 read-bound is applied by the `session_context` SessionStart hook, which injects
 each cap-exempt section's newest content and states what it left out (D-063).
 

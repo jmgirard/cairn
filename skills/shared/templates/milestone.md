@@ -6,9 +6,11 @@
      can fail is cairn_validate's <150 over the plan-owned body.
      Goal 7 · Scope 26 · AC 28 · Coverage 11 · Tasks 25 — each the measured p75
      over 99 milestone files, so three drafts in four already fit, and the
-     fourth is the one that thrashed. Plus ≥21 RESERVED for ## Decisions:
-     implement/review-owned, still counted (D-030/D-046), measured to p90 21 /
-     max 35, so plan spends none of it. Together with this preamble they fit
+     fourth is the one that thrashed.
+     ## Decisions reserves nothing: D-074 made it cap-exempt, so it costs the
+     budget nothing and plan still spends none of it.
+     (Redistributing the ≥21 lines it used to reserve is a ROADMAP candidate,
+     deliberately not done at M118.) Together with this preamble they fit
      under the cap with room to spare — the counter prints the running total,
      so no figure here describes this block's own length (it would change each
      time the block was edited, and drifted twice when it did). Every figure is
@@ -80,9 +82,13 @@ never "never".
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
-     cross-cutting ones to cairn/DECISIONS.md -->
+     cross-cutting ones to cairn/DECISIONS.md.
+     EXEMPT from the 150-line cap (D-074) because D-045 makes it history like the work log — dated dispositions, never edited — so the cap must never demand a trim here either.
+     Entries carry their rationale; the counterweight advisory M119 adds will
+     watch for pasted output, not for entry length (D-075). -->
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
-     as is the work log (D-046); evidence never scrambles plan-owned content. -->
+     as are the work log (D-046) and the decisions section (D-074); evidence
+     never scrambles plan-owned content. -->

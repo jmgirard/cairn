@@ -174,15 +174,19 @@ class TestSessionContextReadBound(RepoFixture):
     NEWEST work-log entries, which are the ones carrying current state: a
     resuming session was told what a milestone finished days ago and never
     what it is blocked on. Sections the 150-line cap governs are injected
-    whole; sections it exempts (`## Work log`, `## Review`) are bounded.
+    whole; sections it exempts (`## Work log`, `## Decisions`, `## Review`)
+    are bounded — the third member joined the set at M118/D-074.
     """
 
-    def milestone(self, work_log=(), review=(), tasks=(), relpath=None):
+    def milestone(self, work_log=(), review=(), tasks=(), relpath=None,
+                  decisions=(), decisions_heading="## Decisions"):
         """Write cairn/<relpath> with the given section bodies."""
         relpath = relpath or "milestones/M07-test.md"
         body = ["# M07: Test milestone", "", MILESTONE_SENTINEL, ""]
         if tasks:
             body += ["## Tasks", ""] + list(tasks) + [""]
+        if decisions:
+            body += [decisions_heading, ""] + list(decisions) + [""]
         body += ["## Work log", ""] + list(work_log) + [""]
         if review:
             body += ["## Review", ""] + list(review) + [""]
@@ -233,6 +237,38 @@ class TestSessionContextReadBound(RepoFixture):
         ctx = self.inject()
         self.assertIn("evidence-039", ctx)
         self.assertNotIn("evidence-000", ctx)
+
+    def test_the_decisions_section_is_bounded_by_the_same_rule(self):
+        # M118/D-074: the milestone-local `## Decisions` section joins the
+        # cap-exempt set, and D-063 scopes the read-bound to that set — so it
+        # follows automatically. Both directions pinned: asserting only that
+        # the newest survives would pass against no bound at all.
+        decisions = [f"- 2026-07-27: choice-{i:03d} " + "z" * 300
+                     for i in range(40)]
+        self.milestone(work_log=["- 2026-07-01: one"], decisions=decisions)
+        ctx = self.inject()
+        self.assertIn("choice-039", ctx)
+        self.assertNotIn("choice-000", ctx)
+
+    def test_bounded_decisions_section_names_what_it_elided(self):
+        decisions = [f"- 2026-07-27: choice-{i:03d} " + "z" * 300
+                     for i in range(40)]
+        self.milestone(work_log=["- 2026-07-01: one"], decisions=decisions)
+        ctx = self.inject()
+        self.assertIn("of 40 entries shown", ctx)
+        self.assertIn("read cairn/milestones/M07-test.md for the rest", ctx)
+
+    def test_a_decisions_prefixed_heading_is_not_bounded(self):
+        # The hook matches the exempt headings by equality, never prefix, by
+        # the same rule the cap counters use — `## Decisions notes` is capped
+        # plan-owned content, so the cap is already its bound and the
+        # injection must not bound it a second time.
+        notes = [f"- note-{i:03d} " + "z" * 300 for i in range(40)]
+        self.milestone(work_log=["- 2026-07-01: one"], decisions=notes,
+                       decisions_heading="## Decisions notes")
+        ctx = self.inject()
+        self.assertIn("note-000", ctx)
+        self.assertIn("note-039", ctx)
 
     def test_capped_sections_are_injected_whole(self):
         # ## Tasks is plan-owned and counts against the 150-line cap, so the

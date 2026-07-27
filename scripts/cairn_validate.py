@@ -83,11 +83,12 @@ def check_caps(root, rows):
             if n is not None and n > cs.ARCHIVE_CAP:
                 bad.append(f"cairn/{r['relpath']}: {n} lines (archive cap {cs.ARCHIVE_CAP})")
         else:
-            # Live milestone: cap the plan-owned body only. Two sections are
+            # Live milestone: cap the plan-owned body only. Three sections are
             # exempt — the review-exclusive `## Review`, so review evidence never
-            # scrambles plan-owned content (M55), and the `## Work log`, which
-            # D-045 makes history so the cap must never demand an edit IP4
-            # forbids (D-046). Both are absent from the breakdown below.
+            # scrambles plan-owned content (M55), and the `## Work log` (D-046)
+            # and milestone-local `## Decisions` (D-074), which D-045 makes
+            # history so the cap must never demand an edit IP4 forbids. All
+            # three are absent from the breakdown below.
             n = cs.milestone_body_line_count(path)
             if n is not None and n >= cs.MILESTONE_CAP:
                 # Report which plan-owned section carries the weight, heaviest

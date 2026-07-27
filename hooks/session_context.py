@@ -13,9 +13,9 @@ so we don't pretend to. Emitting on an ignored source is harmless.
 The event field is read generically so the script stays event-agnostic.
 
 The read-bound (M113 / D-063). A milestone file is an always-read surface,
-and two of its sections — `## Work log` and `## Review` — are exempt from
-the 150-line cap (D-046, M55), so nothing bounds their growth. IP4/D-045
-forbid trimming them on disk: they are history. The injection therefore
+and three of its sections — `## Work log`, `## Decisions` and `## Review` —
+are exempt from the 150-line cap (D-046, D-074, M55), so nothing bounds their
+growth. IP4/D-045 forbid trimming them on disk: they are history. The injection therefore
 reads less of them instead, taking each cap-exempt section's NEWEST content
 within a budget and saying what it left out. Newest matters: this replaces
 a flat `[:MAX_CHARS]` tail chop that cut the newest work-log entries first,
@@ -34,10 +34,24 @@ _PROFILE_HEADER = re.compile(r"#\s*Toolchain profile:\s*(\S+)")
 
 MAX_CHARS = 30000
 
-# Per cap-exempt section, per milestone. 6,000 clears the measured p90 of
-# both section types (work log 3,740, review 5,866, over the 111 milestone
-# files this repo has had live, measured 2026-07-25), so ≥90% of each type
-# injects whole and only outliers meet the bound.
+# Per cap-exempt section, per milestone. Re-derived at M118 over all THREE
+# exempt section types, at each milestone's own peak revision across
+# `git log --all` — 119 milestones, measured 2026-07-27, numbers and derivation
+# in `cairn/references/m118-cap-exemption-ledger.md`. p90s: work log 4,228,
+# decisions 1,305, review 6,718. So 6,000 no longer clears every type's p90:
+# it clears the work log's and the decisions section's with room, and sits
+# below the review section's, which is the bound doing its job on the type
+# that grew — 14 of 118 review sections exceed it (n is 118 because one
+# milestone's `## Review` has never carried content, so the derivation, which
+# measures section bodies, has no size for it — the heading is there),
+# 6 of 119 work logs, and 0 of 119 decisions sections. Those
+# three counts are a dated observation, not a standing fact: the corpus
+# includes M118 itself, whose own work log crossed 6,000 mid-milestone and
+# moved that count from 5 to 6. The value is held at 6,000 rather than raised to chase review's
+# p90 (M118 gate): admitting a third exempt section already raises the
+# worst-case per milestone from two sections to three, and this constant
+# bounds a READ against `MAX_CHARS`, so buying whole-section injection for
+# review outliers would be paid for by shedding whole milestones.
 SECTION_MAX_CHARS = 6000
 
 # The newest N entries survive however tight the budget: a milestone that
@@ -52,8 +66,12 @@ MIN_TAIL_BLOCKS = 3
 # — and the same reasoning binds here: a heading the cap exempts but this
 # hook does not recognize is injected whole, which is the gap the read-bound
 # exists to close. Matched by equality, never prefix: `## Reviewers` must not
-# read as `## Review` (the boundary bug M55 hit).
-CAP_EXEMPT_SECTIONS = ("work log", "review")
+# read as `## Review` (the boundary bug M55 hit), and `## Decisions notes` must
+# not read as `## Decisions`.
+# Three members since M118 (D-074 admitted the milestone-local `## Decisions`
+# section); the counters' own two-member `EXEMPT_HEADINGS` plus the `## Review`
+# body boundary are the other encoding of the same set.
+CAP_EXEMPT_SECTIONS = ("work log", "decisions", "review")
 
 # Injection order, so that shedding from the end sheds the least-current
 # milestone first when the total budget binds.

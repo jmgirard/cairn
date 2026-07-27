@@ -77,7 +77,7 @@ class TestMilestoneTemplateBudgets(unittest.TestCase):
         sections = cs.milestone_section_line_counts(str(TEMPLATE))
         return body - sum(n for _, n in sections)
 
-    def test_the_budgets_plus_the_real_preamble_and_reserve_fit_under_the_cap(self):
+    def test_the_budgets_plus_the_real_preamble_fit_under_the_cap(self):
         """The property the block claims, asserted directly.
 
         An earlier version had the block STATE its own preamble length, which
@@ -85,18 +85,23 @@ class TestMilestoneTemplateBudgets(unittest.TestCase):
         asserted, and it drifted twice while being authored. The claim worth
         guarding was never the digits — it was that the budgets fit. So the
         preamble is measured here and the template no longer describes itself.
+
+        M118/D-074 drops the `## Decisions` reserve from the sum rather than
+        keeping it as a phantom term: the section is cap-exempt, so it costs
+        the budget nothing and a total charging it 21 lines would assert a
+        cost that no longer exists. `preamble()` measures through the shipped
+        counters, which exempt the section too, so both halves moved together.
         """
         parts = [
             int(re.search(rf"{s} (\d+)", self.text).group(1))
             for s in ("Goal", "Scope", "AC", "Coverage", "Tasks")
         ]
-        reserve = int(re.search(r"≥(\d+) RESERVED", self.text).group(1))
-        total = sum(parts) + self.preamble() + reserve
+        total = sum(parts) + self.preamble()
         self.assertLess(
             total,
             cs.MILESTONE_CAP,
             f"the stated budgets ({sum(parts)}) plus the measured preamble "
-            f"({self.preamble()}) plus the reserve ({reserve}) = {total}, which "
+            f"({self.preamble()}) = {total}, which "
             f"does not fit the <{cs.MILESTONE_CAP} cap",
         )
         self.assertGreater(
@@ -122,12 +127,17 @@ class TestMilestoneTemplateBudgets(unittest.TestCase):
         self.assertIn("DRAFTING BUDGETS", self.text)
         self.assertRegex(self.text, r"Goal \d+ · Scope \d+")
 
-    def test_the_decisions_reserve_is_named_as_a_reserve_not_a_budget(self):
+    def test_the_decisions_section_is_named_cap_exempt_and_not_plan_s_to_spend(self):
         """`## Decisions` is implement/review-owned and grows after plan time,
-        so plan must be told to spend none of it. A guard on the word alone
-        would pass if the block said 'Decisions 21' — a budget, not a reserve."""
-        self.assertIn("RESERVED for ## Decisions", flat(self.text))
-        self.assertIn("so plan spends none of it", flat(self.text))
+        so plan must be told to spend none of it. M99 carried that as a ≥21-line
+        RESERVE; D-074 made the section cap-exempt, so the reserve's ground is
+        gone while the spend-none instruction is not. Re-anchored on the new
+        sentence rather than appended to, or the superseded 'RESERVED' framing
+        would still satisfy the assert. A guard on the exemption alone would
+        pass if the block dropped the instruction and left plan free to draft
+        into a section it does not own."""
+        self.assertIn("## Decisions reserves nothing", flat(self.text))
+        self.assertIn("plan still spends none of it", flat(self.text))
 
     def test_the_budgets_are_marked_guidance_rather_than_a_gate(self):
         """M99 Scope forbids a second cap. If this block ever reads as
