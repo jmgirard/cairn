@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR06
@@ -113,7 +113,7 @@ milestone per BC8, never folded in.
 - [x] T14: hold the frozen scope (AC6) — only the two test files change under `skills/`,
       the docstring is not edited; replay the three red-side probes in a scratch copy
       with a verified-green baseline (AC7).
-- [ ] T15: bank RR06 recommendations 4, 5 and 6 outside M114 as candidate rows, each
+- [x] T15: bank RR06 recommendations 4, 5 and 6 outside M114 as candidate rows, each
       with a promotion condition naming a class of evidence and never a count (AC8);
       final gate.
 
@@ -601,6 +601,7 @@ the registered entry count (tolerance: exact)" — measured 17 against 17 — an
 - 2026-07-26: T12 — D-064 restored to its appended bytes (verified byte-identical to 6546db0) and superseded by D-065 rather than edited. The AC11 amendment half was already discharged at ingestion: the AC block was replaced wholesale by RR06's BCs, so AC1/BC1 now mandates the supersession route and AC11 no longer exists. D-065 settles two things beyond the correction — IP4 attaches at APPEND time not merge time (an unmerged entry is no carve-out, since the rule is about the record's form, not its distribution), and the pin is not abandoned but candidate-tracked, promotable only on a rendering-independent approach.
 - 2026-07-26: T13 — the three clauses are pinned. Every anchor was DERIVED from the shipped bytes by slicing the rule block, never authored: trigger (a)'s remedy now carries its `/milestone-plan` target across the wrap (L1), the composition clause's routing half has its own assert (L3), and the exhaustion branch's positive remedy — the escalation/park/drop enumeration — has its own (L2). BC5 measured: 19 asserts against 19 entries, exactly RR06's projection, every block resolving once, 19/19 red.
 - 2026-07-26: T14 — frozen scope held (BC6): `git diff --name-only` over `skills/` names exactly the two test files, `milestone-review/SKILL.md` is byte-identical across the pass, and the guard's docstring is byte-identical to the ingest commit. BC7 probes replayed in a `git archive` scratch copy with a verified-green baseline (exit 0, 627): 3/3 red on mutation, 3/3 green on restore, repo untouched. Suites 627/280/91 exit 0 separately.
+- 2026-07-26: T15 — RR06 recommendations 4, 5 and 6 banked as three ROADMAP candidate rows outside M114 (BC8), search-first swept (nothing covers any of them). Each promotion condition names a class of evidence and never a count, and two carry RR06's own stated falsifiers — the certification row drops if two guard-authoring milestones pass review with zero coverage findings. BC8's tolerance verified: the pass-6 diff under `skills/` touches only the two test files, so no line of it implements any of the three. Final gate: suites 627/280/91 exit 0 separately, `cairn_validate` exit 0. Status -> review.
 
 **Independent review — three lenses, then a scorer.** Prior-review: zero findings; it
 walked the rule at return 3 and return 4+ and confirmed the exhaustion branch reaches a
