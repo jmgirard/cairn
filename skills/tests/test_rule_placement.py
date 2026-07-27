@@ -1,12 +1,17 @@
 """Lock: what counts as a rule, and what guard-reddening does and does not buy
-(M95, D-056).
+(M95, D-056; the placement test repaired by D-071 at M116).
 
 RR02 prescribed "state the rule, cite the D-entry, delete the defense". M95's
 first implement run stopped when its ledger found 9 of 21 targeted blocks had
 no D-entry home at all — the rulebook is their sole home — and 14 were
-guard-pinned. D-056 replaces that bar: the rulebook is current knowledge, so
-the test is behavioral (does deleting this change what a compliant agent
-does?), and guard-pinning screens deletions without licensing keeps.
+guard-pinned. D-056 replaced that bar: the rulebook is current knowledge, so
+the test is behavioral, and guard-pinning screens deletions without licensing
+keeps. D-071 then narrowed the test itself — RR04 §6 found "deleted **or**
+inverted" defective, since inverting a duplicate creates a contradiction and so
+any rule-shaped text, copies included, passes the inversion arm. Retention now
+takes the deletion arm alone; inversion is the guard-verification protocol; and
+a step-0 single-home check runs ahead of both. D-056's parts 1 and 3 stand, so
+the classification and asymmetry assertions below are unchanged.
 
 Both statements live in the ALWAYS-READ rulebook rather than in the
 conditionally-read `guard-doctrine.md`, because their consumer is an editorial
@@ -34,17 +39,34 @@ def read(path):
     return path.read_text()
 
 
-class TestBehavioralInversionTest(unittest.TestCase):
+class TestPlacementTest(unittest.TestCase):
     """The definition of a rule is stated, with its proof procedure."""
 
     def setUp(self):
         self.rules = read(RULES)
 
-    def test_rulebook_states_the_behavioral_inversion_test(self):
+    def test_rulebook_states_the_deletion_retention_test(self):
+        # D-071/AC2: the retention arm is deletion ALONE. The old disjunction
+        # routed every duplicate to "keep", since inverting a copy contradicts
+        # the original and so changes behavior (RR04 section 6).
         self.assertIn(
-            "**A rule is what changes compliant behavior when deleted or inverted.**",
+            "**A rule is what changes compliant behavior when it is deleted.**",
             self.rules,
         )
+
+    def test_rulebook_names_deletion_as_the_only_retention_probe(self):
+        # Without this the repaired sentence still reads as compatible with an
+        # inversion arm applied to placement — the exact defect D-071 closes.
+        self.assertIn(
+            "Deletion is the retention probe and the only\none: inversion detects rule-shaped text, which a duplicate equally is",
+            self.rules,
+        )
+
+    def test_rulebook_does_not_restate_the_superseded_disjunction(self):
+        # D-071/AC2 absence clause. Paired with a positive control so it cannot
+        # pass on an empty or misdirected read (M84 vacuity trap).
+        self.assertIn("**A rule is what changes compliant behavior", self.rules)
+        self.assertNotIn("deleted or inverted", self.rules)
 
     def test_test_names_both_operative_classes_with_the_label(self):
         # Label -> members (M74/M86): "operative" must travel with what it
@@ -65,14 +87,41 @@ class TestBehavioralInversionTest(unittest.TestCase):
         )
 
     def test_rulebook_cites_the_decision_that_licenses_deletion(self):
+        # D-071 repairs the test; D-056's part 1 (current knowledge) is what
+        # licenses deletion at all, so BOTH ids must survive here.
         self.assertIn(
-            "(D-056, which classifies the rulebook as current knowledge and\nstates the three-step placement test)",
+            "(D-071 repairs the test; D-056's classification of the rulebook\nas current knowledge stands)",
             self.rules,
         )
 
-    def test_rulebook_states_the_inversion_proof_procedure(self):
+    def test_step_zero_requires_a_single_home(self):
+        # D-071/AC3. `\s+` spans the hard wrap so a reflow does not red this
+        # (M105); the assertIn anchors below sit on one physical line each.
+        self.assertRegex(
+            self.rules,
+            r"\*\*Step 0 — one home\.\*\* Before asking whether a piece of prose\s+belongs in this\s+rulebook",
+        )
         self.assertIn(
-            "relabel, negate,\nor transpose the rule in place, run the suite, require red, restore and diff",
+            "One site\nkeeps the statement; every other site carries at most a cross-reference.",
+            self.rules,
+        )
+
+    def test_step_zero_binds_forward_only(self):
+        # Without this the check reads as a mandate to sweep the file, which is
+        # the stock-side work D-057 closed and D-071's Scope explicitly refuses.
+        self.assertIn(
+            "binding on text authored or edited from here on, and never\na mandate to sweep the file",
+            self.rules,
+        )
+
+    def test_inversion_is_assigned_to_guard_verification(self):
+        # D-071/AC4: the procedure survives verbatim, its OWNER changes.
+        self.assertIn(
+            "Relabel, negate, or transpose the rule in\nplace, run the suite, require red, restore and diff",
+            self.rules,
+        )
+        self.assertIn(
+            "that is the\nguard-verification protocol",
             self.rules,
         )
 
@@ -159,8 +208,20 @@ class TestPlacedWhereItsConsumersRead(unittest.TestCase):
         module = read(MODULE)
         self.assertIn("a module of `tracking-rules.md`", module)
         self.assertNotIn(
-            "A rule is what changes compliant behavior when deleted or inverted", module
+            "A rule is what changes compliant behavior when it is deleted", module
         )
+
+    def test_inflow_cell_points_at_the_test_without_restating_it(self):
+        # D-071/AC5: one home (the paragraph), one pointer (the table cell).
+        # `blank_block` errors on a locator occurring twice as loudly as on
+        # zero (mutation_engine.py:41-49), so a literal shared between the two
+        # sites breaks the harness — step 0's own rule, mechanically enforced.
+        self.assertIn(
+            '| `tracking-rules.md` | the placement steps under "What gets a '
+            'test" (D-071) |',
+            self.rules,
+        )
+        self.assertNotIn("three-step placement test", self.rules)
 
 
 class TestDecisionRecord(unittest.TestCase):

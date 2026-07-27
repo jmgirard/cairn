@@ -2072,7 +2072,7 @@ REGISTRY = [
         guard="test_always_read_frame",
         test="TestAlwaysReadFrameRulebook.test_enumerates_the_always_read_files_with_their_elements",
         target=RULES,
-        block="| `tracking-rules.md` | the three-step placement test (D-056) | editorial pass; growth governed at the door (D-057) | `/milestone` audit mass+growth line |",
+        block="| `tracking-rules.md` | the placement steps under \"What gets a test\" (D-071) | editorial pass; growth governed at the door (D-057) | `/milestone` audit mass+growth line |",
     ),
     Mutation(
         guard="test_always_read_frame",
@@ -2334,16 +2334,53 @@ EXEMPT = {
 # names); lose the unguarded case and every unpinned rule becomes unprovable;
 # lose D-056's no-backfill clause and the rejected "author the D-entries, then
 # slim" remedy becomes licensed by the placement test itself.
+#
+# M116 (D-071) adds four, because the repair fails in four further ways that
+# each restore the superseded reading: lose the deletion-only clause and the
+# inversion arm silently returns, routing every duplicate to "keep"; lose step 0
+# and restatement has no test at all; lose its forward-binding clause and the
+# check reads as the file-wide sweep D-057 closed; lose the guard-verification
+# assignment and the inversion procedure floats back to placement.
 REGISTRY += [
     Mutation(
         guard="test_rule_placement",
-        test="TestBehavioralInversionTest.test_rulebook_states_the_behavioral_inversion_test",
+        test="TestPlacementTest.test_rulebook_states_the_deletion_retention_test",
         target=RULES,
-        block="**A rule is what changes compliant behavior when deleted or inverted.**",
+        block="**A rule is what changes compliant behavior when it is deleted.**",
     ),
     Mutation(
         guard="test_rule_placement",
-        test="TestBehavioralInversionTest.test_rulebook_covers_the_unguarded_case",
+        test="TestPlacementTest.test_rulebook_names_deletion_as_the_only_retention_probe",
+        target=RULES,
+        block="Deletion is the retention probe and the only\none: inversion detects rule-shaped text, which a duplicate equally is",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestPlacementTest.test_step_zero_requires_a_single_home",
+        target=RULES,
+        block="One site\nkeeps the statement; every other site carries at most a cross-reference.",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestPlacementTest.test_step_zero_binds_forward_only",
+        target=RULES,
+        block="binding on text authored or edited from here on, and never\na mandate to sweep the file",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestPlacementTest.test_inversion_is_assigned_to_guard_verification",
+        target=RULES,
+        block="that is the\nguard-verification protocol",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestPlacedWhereItsConsumersRead.test_inflow_cell_points_at_the_test_without_restating_it",
+        target=RULES,
+        block="| `tracking-rules.md` | the placement steps under \"What gets a test\" (D-071) |",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestPlacementTest.test_rulebook_covers_the_unguarded_case",
         target=RULES,
         block="where no guard exists, record a by-hand inversion",
     ),

@@ -41,9 +41,9 @@ Repair the placement test the rulebook states at `tracking-rules.md:820`, supers
 
 - [x] T1: Confirm `D-071` is unclaimed across all branches before authoring (verified free at plan time 2026-07-27; nothing checks D-id uniqueness, and re-checking costs one command).
 - [x] T2: Author the superseding D-entry, quoting the ledger's figures (`cairn/references/rulebook-classification-ledger.md:36-42`) rather than restating them from memory.
-- [ ] T3: Rewrite the placement-test paragraph at `skills/shared/tracking-rules.md:820-826` — deletion arm for retention, step 0 above it, inversion reassigned to guard verification.
-- [ ] T4: Re-anchor every guard the rewrite invalidates, working from the shipped bytes and never from the draft (M95); the paragraph is hard-wrapped, so use `\s+` matchers across wrap points (M105).
-- [ ] T5: Repoint the always-read table's inflow cell at `:175` as a pointer whose literal is lexically distinct from the test paragraph's — `blank_block` errors on a locator occurring twice as loudly as on zero (`mutation_engine.py:41-49`).
+- [x] T3: Rewrite the placement-test paragraph at `skills/shared/tracking-rules.md:820-826` — deletion arm for retention, step 0 above it, inversion reassigned to guard verification.
+- [x] T4: Re-anchor every guard the rewrite invalidates, working from the shipped bytes and never from the draft (M95); the paragraph is hard-wrapped, so use `\s+` matchers across wrap points (M105).
+- [x] T5: Repoint the always-read table's inflow cell at `:175` as a pointer whose literal is lexically distinct from the test paragraph's — `blank_block` errors on a locator occurring twice as loudly as on zero (`mutation_engine.py:41-49`).
 - [ ] T6: Add §8's scope clause and its assert in `test_fresh_context_readers.py`.
 - [ ] T7: Run all three suites plus the harness sweep; run `guard-doctrine.md` §8 certification before `status -> review`, with the new scope clause in place first.
 
@@ -54,6 +54,8 @@ Repair the placement test the rulebook states at `tracking-rules.md:820`, supers
 - 2026-07-27: absorbs two candidate rows — RR04 rec 9 (the D-056 supersession, parked by D-057) and D-069's §8 scope clause; both removed from ROADMAP Candidates in the same commit.
 
 - 2026-07-27: T1 D-071 verified unclaimed across all 82 branches; T2 D-071 appended, D-056 bytes unchanged (pure append verified by git diff), skills suite 654 green.
+
+- 2026-07-27: T3-T5 placement test repaired at `tracking-rules.md:820-837` (step 0, deletion-only retention, inversion reassigned); inflow cell at `:175` repointed as a pointer naming D-071; six guards re-anchored across `test_rule_placement.py`, `test_always_read_frame.py` and the registry, +6 REGISTRY entries. Two anchor bugs caught by the suite and fixed against shipped bytes: a lowercase `relabel` where the file ships `Relabel` (M95), and a registry entry naming the wrong class. All three suites green (659/280/hooks).
 
 ## Decisions
 
