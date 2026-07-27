@@ -2325,7 +2325,7 @@ REGISTRY += [
         test="TestThrashTriggers."
              "test_third_return_is_a_trigger_and_recommends_replan_or_split",
         target=REVIEW,
-        block="Do not queue another retry; recommend re-plan or split via",
+        block="Do not queue another retry; recommend re-plan or split via\n     `/milestone-plan`.",
     ),
     Mutation(
         guard="test_thrash_rule",
@@ -2351,6 +2351,20 @@ REGISTRY += [
         test="TestTriggersCompose.test_composition_carries_b_into_the_routing",
         target=REVIEW,
         block="escalation offer carry INTO that routing rather than being discarded",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_composition_names_the_routing_target",
+        target=REVIEW,
+        block="and the milestone routes through\n   `/milestone-plan` —",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_exhaustion_branch_states_its_composed_remedy",
+        target=REVIEW,
+        block="Compose the routing chip from an offered\n   `/milestone-brief` escalation, "
+              "parking as `blocked` with the blocker named\n   in a work-log line, or "
+              "dropping at the user's explicit decision —",
     ),
     Mutation(
         guard="test_thrash_rule",

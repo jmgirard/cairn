@@ -107,10 +107,10 @@ milestone per BC8, never folded in.
 - [x] T12: amend AC11's route by gated amendment, then restore D-064's appended bytes and
       append a superseding entry carrying the correction (AC1/BC1). Never edit an
       appended entry again, merged or not.
-- [ ] T13: close L1, L2 and L3 — pin trigger (a)'s remedy WITH its routing target, the
+- [x] T13: close L1, L2 and L3 — pin trigger (a)'s remedy WITH its routing target, the
       composition clause's routing half, and the exhaustion branch's positive remedy
       (AC2-AC4); register each, blocks copied from the shipped bytes (AC5/BC5).
-- [ ] T14: hold the frozen scope (AC6) — only the two test files change under `skills/`,
+- [x] T14: hold the frozen scope (AC6) — only the two test files change under `skills/`,
       the docstring is not edited; replay the three red-side probes in a scratch copy
       with a verified-green baseline (AC7).
 - [ ] T15: bank RR06 recommendations 4, 5 and 6 outside M114 as candidate rows, each
@@ -599,6 +599,8 @@ the registered entry count (tolerance: exact)" — measured 17 against 17 — an
 - 2026-07-26: blocked on RB06 — the exhaustion branch's escalation option taken at the maintainer's call. The question is NOT the doctrine, which RR05 settled and three lenses cleared: it is why five consecutive passes each found scored->=80 defects in my own verification and record-keeping around it. RB06 puts the three defect classes to an independent review with their full evidence, and asks five things — whether there is one root cause, whether the review machinery is working or compensating for something upstream, whether cairn should gain a rule and which, whether M114 should finish or park or drop, and whether the scoring rubric is biased against the findings that later matter (F4 at 60 fired at pass 3; J5 at 35 fired at pass 5).
 - 2026-07-26: RR06 ingested. Its eight binding criteria are AC1-AC8 verbatim (`Driving RR: RR06`); RR05's eight, verified at pass 5, leave the live AC block and stay in the Review record. Six recommendations apply, one considered, four rejected with reasons. Its diagnosis is sharper than mine and I record it as the milestone's finding about itself: I verify descriptions against my generative model of an artifact rather than against the artifact — which covers both the staleness half (J3/J4, K1, L1) and the wrong-at-birth half (G7, G4, AC2, F1, G1, H1, L2, L3) that my own hypothesis missed. RR06 rejected park and drop, and constrains pass 6 to transcription with a frozen scope. Body 142/149. Status -> in-progress.
 - 2026-07-26: T12 — D-064 restored to its appended bytes (verified byte-identical to 6546db0) and superseded by D-065 rather than edited. The AC11 amendment half was already discharged at ingestion: the AC block was replaced wholesale by RR06's BCs, so AC1/BC1 now mandates the supersession route and AC11 no longer exists. D-065 settles two things beyond the correction — IP4 attaches at APPEND time not merge time (an unmerged entry is no carve-out, since the rule is about the record's form, not its distribution), and the pin is not abandoned but candidate-tracked, promotable only on a rendering-independent approach.
+- 2026-07-26: T13 — the three clauses are pinned. Every anchor was DERIVED from the shipped bytes by slicing the rule block, never authored: trigger (a)'s remedy now carries its `/milestone-plan` target across the wrap (L1), the composition clause's routing half has its own assert (L3), and the exhaustion branch's positive remedy — the escalation/park/drop enumeration — has its own (L2). BC5 measured: 19 asserts against 19 entries, exactly RR06's projection, every block resolving once, 19/19 red.
+- 2026-07-26: T14 — frozen scope held (BC6): `git diff --name-only` over `skills/` names exactly the two test files, `milestone-review/SKILL.md` is byte-identical across the pass, and the guard's docstring is byte-identical to the ingest commit. BC7 probes replayed in a `git archive` scratch copy with a verified-green baseline (exit 0, 627): 3/3 red on mutation, 3/3 green on restore, repo untouched. Suites 627/280/91 exit 0 separately.
 
 **Independent review — three lenses, then a scorer.** Prior-review: zero findings; it
 walked the rule at return 3 and return 4+ and confirmed the exhaustion branch reaches a

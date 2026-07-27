@@ -87,7 +87,13 @@ class TestThrashTriggers(unittest.TestCase):
         # "exactly the third", which reinstates the fire-once-then-go-silent
         # signature the rule exists to stop (RR05 Q1).
         self.assertIn("it is a threshold, not a single moment", t)
-        self.assertIn("recommend re-plan or split via", t)
+        # Pins the remedy WITH its routing target. Narrowed to the pre-wrap
+        # half at pass 5, which let the target be changed to `/hotfix` green
+        # (L1) — the M105 rule this file states, broken in this file.
+        self.assertRegex(
+            t,
+            r"do not queue another retry; recommend re-plan or split via\s+`/milestone-plan`\.",
+        )
 
     def test_second_trigger_is_same_criterion_new_mechanism_same_shape(self):
         # Anchored across the shipped line break: truncating this to the
@@ -132,6 +138,13 @@ class TestTriggersCompose(unittest.TestCase):
             review(), r"\(a\) governs the disposition — no further\s+retry"
         )
 
+    def test_composition_names_the_routing_target(self):
+        # The other half of the disposition sentence: without it the clause
+        # prohibits a retry and names no destination (L3).
+        self.assertRegex(
+            review(), r"and the milestone routes through\s+`/milestone-plan` —"
+        )
+
     def test_composition_carries_b_into_the_routing(self):
         # The half that was lost: (b)'s diagnosis and escalation offer must
         # survive the routing, not be discarded by (a) winning.
@@ -146,6 +159,18 @@ class TestTriggersCompose(unittest.TestCase):
         self.assertRegex(
             review(),
             r"the work log already records a re-plan or split spent\s+on this milestone",
+        )
+
+    def test_exhaustion_branch_states_its_composed_remedy(self):
+        # The positive half. Pass 5 pinned only the negation and the
+        # prohibition, so the enumeration of what to actually DO could be
+        # replaced by vague prose green (L2) — diagnosis with no remedy, the
+        # shape this branch exists to forbid.
+        self.assertRegex(
+            review(),
+            r"compose the routing chip from an offered\s+`/milestone-brief` escalation, "
+            r"parking as `blocked` with the blocker named\s+in a work-log line, or "
+            r"dropping at the user's explicit decision —",
         )
 
     def test_exhaustion_branch_states_its_remedy(self):
