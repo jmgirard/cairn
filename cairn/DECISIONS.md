@@ -1977,9 +1977,11 @@ call D-059 made when it retired an advisory measured not to work.
 **Consequences:** The thrash rule gains its first guard; it was unguarded prose
 until now, with every phrase of it (`third trip`, `queue another retry`,
 `mis-planned`, `re-plan or split`) occurring in the skill and in no test, so
-deleting it outright kept the suite green. That guard also pins the rule to one
-surface, so a later restatement in another skill or the README reds rather than
-silently forking it. `guard-doctrine.md` gains two rules from the same
+deleting it outright kept the suite green. A one-surface pin — an assert that a
+restatement of the rule in another skill or the README would red rather than
+silently fork it — was attempted and re-cut out at M114's third return: three
+cuts each missed a rendering the next review found, and it is now a ROADMAP
+candidate awaiting a rendering-independent approach. `guard-doctrine.md` gains two rules from the same
 post-mortem: §3 that a detector's matcher must be exercised at every rendering
 its target can take, carrying the renderings in as positive controls, since
 external mutation-verification proves only that a guard catches the mutation its

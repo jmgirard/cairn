@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR05
@@ -115,7 +115,7 @@ rejected alternative → candidate row.
       `\s+` across every wrappable anchor, one entry per doctrine-pinning assert, asserts
       == entries measured from the files, 0 survivors on blanking; strip both counts from
       the module docstring (AC7, closing J3/J4).
-- [ ] T11: correct D-064's false one-surface claim before merge (AC11/K1); fix the
+- [x] T11: correct D-064's false one-surface claim before merge (AC11/K1); fix the
       `SyntaxWarning: "\s" is an invalid escape sequence`; adjacency + false-coverage
       sweeps; three suites, exit codes separately (AC8).
 
@@ -152,6 +152,7 @@ rejected alternative → candidate row.
 - 2026-07-26: RR05 ingested. Eight binding criteria carried VERBATIM into the AC block as AC1-AC8 (`Driving RR: RR05`); `cairn_validate`'s `binding criteria` check confirms the string match. AC9-AC11 are M114's own, AC11 newly covering K1's false D-064 claim. Six recommendations apply, one considered, two rejected with reason — all recorded in Decisions. No supersession owed: RR05 explicitly declined to argue against D-064, D-004/D-062 or D-059. Plan-owned body 139/149; `sizing` now WARNs at 11 criteria and 11 tasks, a judgment surfaced rather than auto-fixed. Status -> in-progress.
 - 2026-07-26: T9+T10 (one commit — the rule and its guard leave the suite red if split). The rule is RR05's design: (a) is an explicit THRESHOLD holding on the third return and every one after; the unconditional precedence clause and its two asserts and entries are gone; where both fire they COMPOSE, (a) taking the disposition while (b)'s diagnosis and escalation offer carry into the routing; and an exhaustion branch fires once a re-plan or split is recorded spent, composing the chip from offered escalation / park `blocked` / drop, never a bare retry. Bullets now carry (a)/(b) labels — the labelling half of RR05 rec 7 (a CONSIDER), which also closes pass-4 J1; I did not apply its other half (rewording (b) to "twice or more"). Docstring states no count of properties and no count of `\s+` exceptions (AC7), and is now a raw string, which fixes the `SyntaxWarning` too.
 - 2026-07-26: T10 evidence — MEASURED, not assumed: 17 asserts against 17 registered entries, every block resolving exactly once in the shipped file, 17/17 red on deletion, 0 survivors. Getting there cost four wrap-anchor repairs: adding the (a)/(b) labels reflowed two ADJACENT guarded anchors and the guards caught it (M104 firing as designed), and my own hand-written blocks guessed wrap points twice more — fixed by deriving the block from the shipped bytes rather than writing it (M95, re-learned). Suites 625/280/91 exit 0; M104 0 newly wrap-broken; M113 15 risen, 13 mine, and both others are my sweep's own imprecision — it tests every guard literal against all three edited files regardless of which file the guard actually reads.
+- 2026-07-26: T11 — D-064's false one-surface claim is corrected BEFORE merge rather than superseded after it: the entry has not reached main, so no history is rewritten, and main never sees the false statement. It now records that the pin was attempted and re-cut out, with the ROADMAP candidate named. D-064's six recorded choices are unchanged and remain accurate — none of them was the precedence clause, which was added later without a D-entry — so no further edit was made there. The `SyntaxWarning` is gone (the docstring is a raw string). Final gate: suites 625/280/91 exit 0 separately, `cairn_validate` exit 0 with 16 PASS, body 144/149. Status -> review.
 
 ## Decisions
 
