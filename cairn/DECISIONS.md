@@ -2135,3 +2135,45 @@ prose: its rules travel verbatim instead, rather than behind a citation that
 resolves to nothing.
 Delivered by M115. If either reader proves to cost more than the returns it
 prevents, this is the entry to supersede.
+
+### D-068 (2026-07-26): D-064's description of guard-doctrine §7 is wrong twice over — supersedes that sentence; shipped §7 requires the across-sweep positive and leaves the converse optional
+
+**Context:** D-064's Consequences describe the §7 rule M114 ships as firing
+"unless each cell asserts a positive check count and the converse is asserted
+beside the claim". Shipped §7 says something different in two places. It
+requires two things where D-064 records one and a half — "Assert per cell that
+it checked a positive number of things, and assert across the sweep that the
+positive case fired somewhere, so universal silence cannot satisfy it" — and it
+frames the converse as an optional strengthening, "Stronger still, assert the
+CONVERSE beside the claim", never as a requirement. So the entry drops the
+across-sweep half and promotes an optional clause to a mandatory one. Found by
+M114's own review pass 7 (F5, 85), after pass 4's K1 (verified verbatim) had
+found the same class of error in the same entry on a different sentence. D-064
+had not reached the default branch, so without this the false description would
+have landed in append-only history at merge.
+
+**Decision:** Supersede, never edit. D-064's appended bytes stand and this entry
+carries the correction, on exactly the route D-065 settled for the one-surface
+sentence: IP4 attaches at append time, not at merge time, so an entry's
+not-yet-merged status is no carve-out. The correct reading of shipped §7 is that
+a sweep whose cells may legitimately be silent passes for free on silence, so
+**assert per cell that it checked a positive number of things AND assert across
+the sweep that the positive case fired somewhere**; asserting the converse
+beside the claim (`named == usable` rather than `named ⇒ usable`) is a stronger
+option, not a requirement. The shipped prose is unchanged and stays
+authoritative — this entry corrects the record about the rule, never the rule.
+
+**Consequences:** D-064's other content is untouched and still governs — its six
+plan-gate choices, the per-milestone counting rule, and the promotion-condition
+and matcher-rendering additions; D-065 continues to carry the one-surface
+correction. The half D-064 dropped is the operative one: M114's pass 6 found
+exactly the across-sweep clause unpinned and deleting green (F1, 92), so a
+reader taking D-064's description for the rule would have missed the very clause
+this milestone had already returned on. That clause and the converse are both
+pinned whole now, so a future edit to either reds rather than drifting. Readers
+reach this entry from D-064 by the back-reference discipline (D-054) — this
+heading names it, and D-064 now carries two corrections, which is itself the
+evidence for RR06's diagnosis that an author verifies a description against its
+model of the artifact rather than against the artifact. Delivered by M114. If
+§7 is ever restated so the converse becomes mandatory, this is the entry to
+supersede.

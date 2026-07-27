@@ -2646,7 +2646,12 @@ REGISTRY += [
         guard="test_lesson_graduation",
         test="TestModuleExists.test_sweep_section_states_the_silent_cell_rule",
         target=GUARD_DOCTRINE,
-        block="assert the CONVERSE beside the claim",
+        block=(
+            "Stronger still, assert the CONVERSE beside the claim — `named ==\n"
+            "usable` rather than `named ⇒ usable` — which turns a silent cell "
+            "into an\nassertion that nothing admissible would have worked, "
+            "rather than an assertion\nabout nothing."
+        ),
     ),
 ]
 

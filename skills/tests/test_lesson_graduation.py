@@ -142,8 +142,18 @@ class TestModuleExists(unittest.TestCase):
             r"somewhere, so universal silence cannot\s+satisfy it\.",
         )
         # The converse is what makes a silent cell assert something, so it is
-        # pinned separately from the diagnosis.
-        self.assertIn("assert the CONVERSE beside the claim", self.module)
+        # pinned separately from the diagnosis. Pinned WHOLE, not by its
+        # lead-in: a bare `assertIn` on "assert the CONVERSE beside the claim"
+        # left everything after the clause deleting green — the same truncated
+        # lead-in defect RR07 §BC3 closed for §3, in an assert M114 added
+        # itself at T4 and then misrecorded as inherited (pass-7 F1).
+        self.assertRegex(
+            self.module,
+            r"Stronger still, assert the CONVERSE beside the claim — `named ==\s+"
+            r"usable` rather than `named ⇒ usable` — which turns a silent cell "
+            r"into an\s+assertion that nothing admissible would have worked, "
+            r"rather than an assertion\s+about nothing\.",
+        )
 
     def test_sweep_section_states_the_own_artifacts_rule(self):
         self.assertIn(
