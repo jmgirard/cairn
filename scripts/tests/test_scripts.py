@@ -2409,6 +2409,82 @@ class TestMilestoneSectionLineCounts(unittest.TestCase):
         self.assertEqual(preamble + sum(n for _, n in sections), self.body(text))
 
 
+class TestMilestoneDecisionsLines(unittest.TestCase):
+    """M118/D-074: the milestone-local `## Decisions` section is history, so it
+    joins the cap-exempt set — and, exactly as D-046/M77 did for the work log,
+    the section the cap stops measuring must be the one an advisory can still
+    read. Both are extracted by one shared scan, so the exemption cannot drift
+    away from what M119's `decisions format` advisory polices."""
+
+    def setUp(self):
+        self.cs = _load_scripts()
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        self.path = pathlib.Path(self._tmp.name) / "M.md"
+
+    def lines(self, text):
+        self.path.write_text(text)
+        return self.cs.milestone_decisions_lines(str(self.path))
+
+    def test_returns_the_section_body_with_line_numbers(self):
+        text = ("# M\n\n## Goal\nx\n\n## Decisions\n"
+                "- 2026-07-27: chose a over b, because c.\n"
+                "  Second physical line of the same entry.\n"
+                "\n## Review\ne\n")
+        self.assertEqual(
+            self.lines(text),
+            [(7, "- 2026-07-27: chose a over b, because c."),
+             (8, "  Second physical line of the same entry."),
+             (9, "")],
+        )
+
+    def test_heading_itself_is_excluded(self):
+        text = "# M\n\n## Decisions\n- a\n"
+        self.assertNotIn("## Decisions", [t for _, t in self.lines(text)])
+
+    def test_absent_section_returns_empty(self):
+        self.assertEqual(self.lines("# M\n\n## Goal\nx\n"), [])
+
+    def test_prefixed_heading_is_not_the_section(self):
+        # Exactly `## Decisions`, by the same rule the cap counters use — a
+        # `## Decisions notes` H2 is ordinary plan-owned content.
+        self.assertEqual(self.lines("# M\n\n## Decisions notes\n- a\n"), [])
+
+    def test_fenced_heading_is_not_the_section(self):
+        # A `## Decisions` quoted inside a fence is content (M45).
+        text = "# M\n\n## Goal\n```\n## Decisions\n- a\n```\n"
+        self.assertEqual(self.lines(text), [])
+
+    def test_fence_delimiters_inside_the_section_are_returned(self):
+        # Both delimiters belong to the section, exactly as the cap counters
+        # count them (M77 review F2) — otherwise an advisory reading this
+        # extractor could never see a pasted transcript's own fence.
+        text = "# M\n\n## Decisions\n- a\n```\npasted\n```\n- b\n"
+        self.assertEqual(
+            [t for _, t in self.lines(text)],
+            ["- a", "```", "pasted", "```", "- b"],
+        )
+
+    def test_next_heading_closes_the_section(self):
+        text = "# M\n\n## Decisions\n- a\n\n## Review\ne\n"
+        self.assertEqual([t for _, t in self.lines(text)], ["- a", ""])
+
+    def test_unreadable_returns_none(self):
+        missing = pathlib.Path(self._tmp.name) / "nope.md"
+        self.assertIsNone(self.cs.milestone_decisions_lines(str(missing)))
+
+    def test_work_log_extractor_reads_the_same_shared_scan(self):
+        # One rule, two sections: the shared scan is what keeps the exemption
+        # and the advisories from drifting apart. Same file, same shape, each
+        # extractor sees only its own section.
+        text = ("# M\n\n## Decisions\n- d1\n\n## Work log\n- 2026-07-27: w1\n")
+        self.assertEqual([t for _, t in self.lines(text)], ["- d1", ""])
+        self.assertEqual(
+            [t for _, t in self.cs.milestone_worklog_lines(str(self.path))],
+            ["- 2026-07-27: w1"],
+        )
+
+
 class TestImpact(ScriptCase):
     """cairn_impact: principle → citing cairn/ file:line."""
 

@@ -80,7 +80,7 @@ declares the same Driving RR and carries them under its own table.
 
 ## Tasks
 
-- [ ] T1: Add `DECISIONS_HEADING` beside `WORKLOG_HEADING` (`cairn_scripts.py:97`)
+- [x] T1: Add `DECISIONS_HEADING` beside `WORKLOG_HEADING` (`cairn_scripts.py:97`)
       and a `milestone_decisions_lines` extractor mirroring the work log's, so
       the exemption and M119's advisory read one section by one rule.
 - [ ] T2: Exempt the section in `milestone_body_line_count`, drop it from
@@ -113,6 +113,7 @@ declares the same Driving RR and carries them under its own table.
 - 2026-07-27: implement gate re-measured the three cap-exempt section types over every live revision of all 119 milestone files (peak per file per section, chars): work log p90 4107, review p90 6718, decisions p90 1372 / max 4647. `## Review` already exceeds `SECTION_MAX_CHARS` before M118 adds anything.
 - 2026-07-27: gate kept `SECTION_MAX_CHARS` at 6000 and re-derived its comment honestly over all three types, rather than raising it to clear review's p90, because the constant bounds a read and M118 raises the per-milestone worst case from two sections to three (18k -> 21k of a 30k budget if raised); falsified by an injection whose review trim loses state a resuming session needed.
 - 2026-07-27: gate placed the AC3 ledger at `cairn/references/` as a synthesis note, following `rulebook-classification-ledger.md` (M116), over a file beside the milestone.
+- 2026-07-27: T1 — `DECISIONS_HEADING` + `milestone_decisions_lines`; the work-log extractor's body factored into a shared `_section_body_lines(path, heading)` so both exempt sections are read by one rule. 9 tests red first, all three suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -89,12 +89,16 @@ NON_ITEM_LINE_CAP = 400
 CLAUDE_SECTION_CAP = 30
 CLAUDE_SECTION_HEADING = "## Project tracking"
 
-# The plan-owned milestone section the weight cap does not measure (D-046/M77).
-# `## Review` is already outside the cap by the body boundary itself (M55, a
-# different reason: it is review-owned). The work log is exempt because D-045
-# classifies it as history — never edited — so counting it could leave an
-# over-cap file fixable only by an edit IP4 forbids. Matched exactly, lowercased.
+# The two plan-owned milestone sections the weight cap does not measure. Both
+# are exempt for one reason — D-045 classifies them as history, never edited, so
+# counting them could leave an over-cap file fixable only by an edit IP4 forbids
+# (the work log at D-046/M77, the milestone-local decisions at D-074/M118, which
+# supersedes D-046's choice (3)). `## Review` is the third member of the
+# cap-exempt set and needs no constant here: it is already outside the cap by the
+# body boundary itself, and for a different reason (M55 — it is review-owned).
+# Both matched exactly, lowercased.
 WORKLOG_HEADING = "work log"
+DECISIONS_HEADING = "decisions"
 
 # §1 scaffold pieces that must exist once a repo is on cairn (cairn-init §1).
 # Single source of truth for the machine-side drift check
@@ -388,13 +392,16 @@ def milestone_body_line_count(path):
     return boundary - exempt
 
 
-def milestone_worklog_lines(path):
-    """`[(lineno, text)]` for the body of a milestone file's `## Work log`
-    section, 1-indexed, heading excluded. Shares `WORKLOG_HEADING` and the
-    fence rules with the cap counters **on purpose**: the section the cap stops
-    measuring and the section the wrapped-entry advisory polices must be the
-    same one, or the exemption would open a hole the advisory never looks at
-    (D-046/M77). Returns [] when the file has no work log, None if unreadable."""
+def _section_body_lines(path, heading):
+    """`[(lineno, text)]` for the body of a milestone file's `## <heading>`
+    section, 1-indexed, heading excluded. The shared scan behind both cap-exempt
+    extractors: each exempt section is read by ONE rule, the same rule the cap
+    counters exempt it by, so an exemption can never drift away from the
+    advisory watching it (D-046/M77 for the work log, D-074/M118 for the
+    decisions). Matches the heading exactly and lowercased; a fenced heading is
+    content, not the section (M45); both fence delimiters inside the section
+    belong to it, as the cap counters count them (M77 review F2). Returns [] when
+    the section is absent, None if the file is unreadable."""
     try:
         with open(path, encoding="utf-8") as f:
             lines = f.read().splitlines()
@@ -402,26 +409,45 @@ def milestone_worklog_lines(path):
         return None
     out = []
     fence = None
-    in_log = False
+    inside = False
     for i, line in enumerate(lines, start=1):
         stripped = line.lstrip()
         if fence is not None:
             if stripped.startswith(fence):
                 fence = None
-            if in_log:  # both delimiters belong to the section, like the
+            if inside:  # both delimiters belong to the section, like the
                 out.append((i, line))  # cap counters count them (M77 review F2)
             continue
         if stripped.startswith("```") or stripped.startswith("~~~"):
             fence = "```" if stripped.startswith("```") else "~~~"
-            if in_log:
+            if inside:
                 out.append((i, line))
             continue
         if line.startswith("## "):
-            in_log = line[3:].strip().lower() == WORKLOG_HEADING
+            inside = line[3:].strip().lower() == heading
             continue
-        if in_log:
+        if inside:
             out.append((i, line))
     return out
+
+
+def milestone_worklog_lines(path):
+    """`[(lineno, text)]` for the body of a milestone file's `## Work log`
+    section. Shares `_section_body_lines` and `WORKLOG_HEADING` with the cap
+    counters **on purpose**: the section the cap stops measuring and the section
+    the wrapped-entry advisory polices must be the same one, or the exemption
+    would open a hole the advisory never looks at (D-046/M77)."""
+    return _section_body_lines(path, WORKLOG_HEADING)
+
+
+def milestone_decisions_lines(path):
+    """`[(lineno, text)]` for the body of a milestone file's milestone-local
+    `## Decisions` section — the third member of the cap-exempt set (D-074/M118,
+    superseding D-046's choice (3)). Same shared scan and same
+    `DECISIONS_HEADING` the cap counters exempt it by, for the work log's reason:
+    a section that stops costing budget still needs something watching it, and
+    that watch must read exactly the section the cap released."""
+    return _section_body_lines(path, DECISIONS_HEADING)
 
 
 def milestone_section_line_counts(path):
