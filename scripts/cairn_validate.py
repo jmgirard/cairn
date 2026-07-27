@@ -939,20 +939,39 @@ _DECISIONS_PASTED = (
     re.compile(r"^(?:--- a/|\+\+\+ b/)"),       # unified-diff file headers
 )
 # Blockquote markers are stripped before matching so quoting a transcript does
-# not hide it. The pattern takes any depth and any spacing — `>`, `> `, `>>`,
-# `> > `, `  > `, `>>> ` — rather than an enumerated set, which is guard-doctrine
-# §3's point: a detector whose author must list every rendering is a detector
-# that misses the rendering the author did not think of. The tests carry three
-# of those renderings in as positive controls.
+# not hide it. The pattern takes any depth and any spacing rather than an
+# enumerated set, which is guard-doctrine §3's point: a detector whose author
+# must list every rendering is a detector that misses the rendering the author
+# did not think of. The tests carry a spread of renderings in as positive
+# controls, and are the record of which — a count restated here would drift.
 _DECISIONS_QUOTE = re.compile(r"^(?:\s*>)+\s?")
-# A line that opens a markdown entry or heading is prose, and closes an open
-# run. Everything else non-matching only widens a gap: one pasted transcript
-# routinely carries lines no signature matches (unittest's progress dots, a
-# `-----` rule, a blank), and closing on the first of them would report ONE
-# paste as three findings — the per-line noise the chunking exists to avoid.
-# The gap is small on purpose: two pastes separated by a real entry are two
-# findings because the entry closes the first, not because the gap ran out.
+
+# Closing an open run. A transcript is mostly lines no signature matches, so
+# closing at the first of them reports ONE paste as several findings — the
+# per-line noise the chunking exists to avoid. Three line classes, three
+# treatments:
+#
+#  - **prose** — a line opening a markdown entry or heading CLOSES the run. Two
+#    pastes separated by a real entry are two findings because the entry closes
+#    the first, not because a counter ran out. Known limit: an entry opening
+#    with neither a bullet nor a heading (M94's bare pointer prose) is not a
+#    closer, so two pastes astride one merge into a single finding — an
+#    under-report on an advisory, never a false WARN.
+#  - **filler** — a rule of `=`/`-`, a progress-dot line, an indented
+#    continuation, a blank. These are transcript furniture, not prose, and they
+#    neither close a run nor advance the gap. Without this class the canonical
+#    unittest FAILURE paste — the shape actually pasted as evidence — split into
+#    three findings on its `======` / `FAIL:` / `-----` banner.
+#  - anything else advances the gap, and `_DECISIONS_GAP` consecutive such lines
+#    close the run. A paragraph of ordinary prose between two pastes is what
+#    this bounds; without it a run could span a whole section.
+#
+# Prose and filler are judged on the line WITH its indentation, after quote
+# markers come off: a leading space means continuation, which is why a unified
+# diff's ` - context` line reads as filler rather than as a bullet closing the
+# diff it sits inside.
 _DECISIONS_PROSE = re.compile(r"^(?:[-*+] |#{1,6} |\d+\. )")
+_DECISIONS_FILLER = re.compile(r"^(?:[=\-_~*]{4,}|[.sSFExX]{3,})$")
 _DECISIONS_GAP = 3
 _DECISIONS_PREVIEW = 60
 
@@ -1414,9 +1433,10 @@ def _pasted_runs(lines):
     opening delimiter through its closing one, both included, matching what the
     cap counters count (M77 review F2). An unfenced run opens at a
     `_DECISIONS_PASTED` signature and closes at a markdown entry or heading, or
-    after `_DECISIONS_GAP` consecutive lines that are neither — so a transcript's
-    own progress dots and separator rules stay inside the run they belong to.
-    It ends at its last signature line, never in its trailing gap.
+    after `_DECISIONS_GAP` lines that are neither signature nor transcript
+    filler — so a transcript's own banners, progress dots, separator rules and
+    indented traceback frames stay inside the run they belong to. A run ends at
+    its last signature line, never in its trailing gap.
 
     One run is one finding: a pasted 40-line transcript is one mistake, and an
     advisory that reports it forty times is one the operator learns to scroll
@@ -1448,16 +1468,24 @@ def _pasted_runs(lines):
             fence = "```" if stripped.startswith("```") else "~~~"
             start, last, preview, pending = lineno, lineno, stripped, True
             continue
-        body = _DECISIONS_QUOTE.sub("", text).strip()
+        raw = _DECISIONS_QUOTE.sub("", text)
+        body = raw.strip()
         if body and any(p.match(body) for p in _DECISIONS_PASTED):
             if start is None:
                 start, preview = lineno, body
             last, gap = lineno, 0
         elif start is not None:
-            gap += 1
-            if _DECISIONS_PROSE.match(body) or gap > _DECISIONS_GAP:
+            filler = (
+                not body or raw[:1].isspace() or _DECISIONS_FILLER.match(body)
+            )
+            if not filler and _DECISIONS_PROSE.match(raw):
                 close()
                 start, gap = None, 0
+            elif not filler:
+                gap += 1
+                if gap > _DECISIONS_GAP:
+                    close()
+                    start, gap = None, 0
     if start is not None:  # an unterminated fence, or a run ending the section
         runs.append((start, last, "fenced block" if fence else "pasted output", preview))
     return runs

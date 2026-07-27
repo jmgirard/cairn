@@ -2190,6 +2190,72 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         findings = cv.check_decisions_format(str(root))
         self.assertEqual(len(findings), 1, findings)
 
+    def test_a_unittest_failure_transcript_is_one_finding(self):
+        # The passing run is the EASY shape, and pinning only it is the same
+        # convenient-fixture mistake one level up (found at §8 round 2). A
+        # failure is the transcript actually pasted as evidence for a decision,
+        # and its banner — `======`, a `FAIL:` header, `-----` — is four
+        # consecutive lines no signature matches, which split one paste into
+        # three findings until filler stopped advancing the gap.
+        root = self._with_decisions(
+            "- 2026-07-27: the run that settled it.\n"
+            "$ python3 -m unittest discover -s scripts/tests\n"
+            ".........F...\n"
+            "======================================================================\n"
+            "FAIL: test_x (test_scripts.TestY.test_x)\n"
+            "----------------------------------------------------------------------\n"
+            "Traceback (most recent call last):\n"
+            '  File "/repo/scripts/tests/test_scripts.py", line 42, in test_x\n'
+            "    self.assertEqual(1, 2)\n"
+            "AssertionError: 1 != 2\n"
+            "\n"
+            "----------------------------------------------------------------------\n"
+            "Ran 313 tests in 19.511s\n"
+            "\n"
+            "FAILED (failures=1)\n"
+        )
+        cv = _load_validate()
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+
+    def test_a_pasted_diff_is_one_finding(self):
+        # Four of the ten signatures are diff shapes, so a pasted diff is a
+        # first-class input. Its context lines carry a leading space, and a
+        # markdown file's diff routinely has one that reads as a bullet — which
+        # closed the run mid-diff until prose was judged with its indentation.
+        root = self._with_decisions(
+            "- 2026-07-27: the change that settled it.\n"
+            "diff --git a/cairn/DECISIONS.md b/cairn/DECISIONS.md\n"
+            "--- a/cairn/DECISIONS.md\n"
+            "+++ b/cairn/DECISIONS.md\n"
+            "@@ -1,3 +1,3 @@\n"
+            " - D-070: unchanged context line\n"
+            "-old text\n"
+            "+new text\n"
+            "@@ -40,2 +40,2 @@\n"
+            " - D-071: another context line\n"
+            "+second hunk\n"
+        )
+        cv = _load_validate()
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+
+    def test_a_paragraph_of_prose_still_closes_a_run(self):
+        # The gap's own job. Filler never advances it, so without a bound a
+        # single run could span a whole section and the reported range would be
+        # useless. Ordinary prose is not filler and closes the run at four.
+        root = self._with_decisions(
+            "$ ls\n"
+            "The decision rested on a longer argument than one line holds,\n"
+            "set out here across several sentences so the reader meets the\n"
+            "reasoning where the disposition is recorded rather than having\n"
+            "to reconstruct it from the branch history afterwards.\n"
+            "and one more line past the gap.\n"
+            "$ ls\n"
+        )
+        cv = _load_validate()
+        self.assertEqual(len(cv.check_decisions_format(str(root))), 2)
+
     def test_a_run_ends_at_its_last_match_not_in_its_trailing_gap(self):
         # The reported range is evidence the operator navigates by, so it must
         # not swallow the prose that follows a paste.
@@ -2296,7 +2362,7 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         # is content, not a section (M45), and a `## ` INSIDE the section's own
         # fence does not end it. A naive re-implementation gets both wrong.
         cv = _load_validate()
-        root = self._with_decisions("- 2026-07-27: entry.\n")
+        self._with_decisions("- 2026-07-27: entry.\n")  # registers the M04 row
         self.tree.files["milestones/M04-decided.md"] = (
             "# M04: Decided\n\n- **Status:** planned   <!-- mirror -->\n\n"
             "## Goal\n```\n## Decisions\n$ ls\n```\n"      # fenced: content, not a section

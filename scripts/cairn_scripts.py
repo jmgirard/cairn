@@ -416,11 +416,13 @@ def milestone_body_line_count(path):
 def _section_body_lines(path, heading):
     """`[(lineno, text)]` for the body of a milestone file's `## <heading>`
     section, 1-indexed, heading excluded. The shared scan behind both cap-exempt
-    extractors: each exempt section is read by ONE rule, the same rule the cap
-    counters exempt it by, so an exemption can never drift away from the
-    advisory that watches it (D-046/M77 for the work log; for the decisions
-    section the exemption lands at D-074/M118 and the advisory reading this
-    extractor at M119). Matches the heading exactly and lowercased; a fenced heading is
+    extractors: each exempt section is read by ONE rule, keyed on the same
+    heading constant the cap counters exempt it by, so an exemption can never
+    drift away from the advisory that watches it (D-046/M77 for the work log;
+    for the decisions section the exemption lands at D-074/M118 and the advisory
+    reading this extractor at M119). The heading is what is shared with the
+    counters — they scan by `_plan_owned_scan` and never call this (corrected
+    M119, with the same error in both extractors' docstrings). Matches the heading exactly and lowercased; a fenced heading is
     content, not the section (M45); both fence delimiters inside the section
     belong to it, as the cap counters count them (M77 review F2). Returns [] when
     the section is absent, None if the file is unreadable."""
