@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR05
@@ -68,7 +68,7 @@ rejected alternative → candidate row.
 - [x] AC5 (BC5): No wording added by this change makes `/milestone-brief` automatic or a standing
       menu item; every escalation surface remains an offer gated per instance (D-004,
       D-062).
-- [x] AC6 (BC6): `skills/tests/test_thrash_rule.py` pins each clause BC1, BC3, and BC4 add, with
+- [ ] AC6 (BC6): `skills/tests/test_thrash_rule.py` pins each clause BC1, BC3, and BC4 add, with
       the exhaustion branch's diagnosis and remedy pinned by separate asserts; every
       multi-word anchor that can cross a line wrap is matched with `\s+` across the
       break; each doctrine-pinning assert carries its own `Mutation(...)` entry; the
@@ -85,7 +85,7 @@ rejected alternative → candidate row.
       with its own `Mutation(...)` entry.
 - [x] AC10: `guard-doctrine.md` §3 states the matcher-rendering rule and §7 the sweep
       non-vacuity rule, each guarded in `test_lesson_graduation.py` with its own entry.
-- [x] AC11: D-064 records the supersession AND no longer claims a guard pins the rule to
+- [ ] AC11: D-064 records the supersession AND no longer claims a guard pins the rule to
       one surface — deleted at the re-cut, so the claim is false and is corrected before
       merge rather than superseded after it (review pass 4, K1).
 ## Coverage
@@ -595,3 +595,55 @@ tolerances, both exact rather than ranged: BC6's "the doctrine-pinning assert co
 the registered entry count (tolerance: exact)" — measured 17 against 17 — and its
 "blanking every registered block reds its named test (tolerance: 0 survivors)" — measured
 0 survivors. No shortfall on either.
+- 2026-07-26: review pass 5 FAILED the gate — FIFTH return. K1 (92): D-064 was corrected by EDITING an append-only decision record; IP4/D-045 allow no unmerged carve-out, this milestone's own pass 4 refused the identical edit on work-log claims, and RR05 B4 names supersession verbatim — AC11 as authored mandates the violation, so the CRITERION is the defect. L2 (92) and L3 (88): AC6 violations, BC4's positive remedy and BC3's routing half both unpinned and deletable green. L1 (90): I narrowed trigger (a)'s remedy anchor to its pre-wrap half this delta, a coverage regression against my own docstring's M105 rule. L4/L6/L7 logged. AC6 and AC11 withdrawn; AC1-AC5, AC7-AC10 stand; RR05's design unimplicated. THE EXHAUSTION BRANCH FIRES: (a) holds and a re-cut is recorded spent, so no bare retry is recommended. Status -> in-progress.
+
+**Independent review — three lenses, then a scorer.** Prior-review: zero findings; it
+walked the rule at return 3 and return 4+ and confirmed the exhaustion branch reaches a
+real escalation offer, and that H1's vacuity shape has not reappeared. Blame-history: one
+finding, K1. Diff-bug: five plus two observations. Four scored >=80.
+
+- **K1 (92) — actioned. The criterion itself is the defect.** D-064's false claim was
+  corrected by EDITING the entry rather than appending a superseding one. Three
+  independent grounds: IP4 and D-045 make `DECISIONS.md` append-only with no carve-out for
+  unmerged content; this milestone's OWN pass-4 commit found two false work-log claims,
+  also unmerged on this branch, and explicitly refused to edit them, superseding instead
+  and citing IP4/D-045; and RR05 B4 names the mechanism verbatim — "the superseding-entry
+  correction it needs (IP4: append, never edit)". AC11 as I authored it mandates the edit,
+  so the criterion encodes an IP4 violation and must be amended, not merely re-verified.
+- **L2 (92) — actioned. AC6 violation.** BC4's POSITIVE remedy — "Compose the routing chip
+  from an offered `/milestone-brief` escalation, parking as `blocked` ... or dropping at
+  the user's explicit decision" — is pinned by nothing. Only the negation and the
+  prohibition are asserted. Verified by mutation: replacing that sentence with vague prose
+  leaves the suite green at 625. That is the diagnosis-with-no-remedy shape this very
+  branch exists to forbid.
+- **L1 (90) — actioned. A coverage regression I introduced this delta.** The assert for
+  trigger (a)'s remedy was narrowed from the full phrase to its pre-wrap half, rather than
+  matched with `\s+` — the move this file's own docstring forbids, citing M105. Verified:
+  editing the rule to route a mis-planned milestone into `/hotfix` leaves the suite green,
+  where the pre-delta tree would have redded.
+- **L3 (88) — actioned. AC6 violation.** BC3's routing half, "and the milestone routes
+  through `/milestone-plan`", is unguarded and deletes green.
+
+**Logged, below threshold (3).** L4 (58) the composition clause hard-codes routing through
+`/milestone-plan` while the exhaustion branch declares that remedy spent, with nothing
+ordering them — the scorer judged the branch's wording emphatic enough to resolve. L6 (35)
+the exhaustion branch's D-004 gating sentence is invertible green, outside AC6's literal
+scope. L7 (40) the docstring's property list omits two pinned properties.
+
+**GATE FAILURE — FIFTH return.** AC6 and AC11 ticks withdrawn; AC1-AC5, AC7-AC10 were
+verified this phase and stand. RR05's design itself is unimplicated: all three lenses
+cleared the rule's substance, and the two numeric tolerances were met exactly.
+
+**THE EXHAUSTION BRANCH FIRES — the rule applying to itself.** Trigger (a) holds
+(threshold, fifth return) and the work log records a re-cut spent at pass 3, so the remedy
+is no longer re-plan-or-split. Per the branch, the routing chip is composed from an offered
+escalation, parking as `blocked`, or dropping — never a bare retry as the recommended
+option. This is the first time the clause has governed a real disposition, and it governs
+its own milestone.
+
+**The five-pass pattern, stated plainly.** The doctrine has been sound since pass 1 and is
+now externally vetted. Every one of the five returns was a failure of my verification or
+record-keeping around it — coverage I under-pinned (F1, G1-G3, H1, L1-L3), records that
+drifted from artifacts (G6, G7, J3, J4, K1), and criteria I authored that encoded the
+wrong thing (AC2 twice, AC11). That is the finding this milestone has produced about
+itself, and it is not something another implement pass fixes.
