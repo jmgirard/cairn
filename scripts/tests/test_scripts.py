@@ -2056,6 +2056,15 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         )
         return self.tree.build()
 
+    def _lineno(self, root, text):
+        """The 1-indexed line of `text` in the built fixture — so a test can
+        pin the number a finding REPORTS against the number the file actually
+        has. Without this the reported location is unpinned: mutating the
+        anchor to the last signature line, or to `first + 7`, left the whole
+        class green (§8 round 4)."""
+        lines = (root / "cairn" / "milestones" / "M04-decided.md").read_text().splitlines()
+        return next(i for i, ln in enumerate(lines, start=1) if ln == text)
+
     # --- the 0-WARN arm: the real corpus -----------------------------------
 
     def test_shipped_advisory_is_silent_over_the_whole_corpus(self):
@@ -2165,20 +2174,28 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         self.assertEqual(len(findings), 1, findings)
         self.assertIn("fenced block", findings[0])
 
-    def test_finding_reports_the_line_range(self):
+    def test_finding_reports_the_fences_own_line_range(self):
+        # The endpoints, not merely the SHAPE of a range: asserting `\d+-\d+`
+        # left the range free to be wrong, and dropping the closing delimiter —
+        # which the docstring says is included, per M77 review F2 — kept the
+        # whole class green (§8 round 4).
         root = self._with_decisions("- 2026-07-27: entry.\n```\nout\n```\n")
         cv = _load_validate()
-        findings = cv.check_decisions_format(str(root))
-        self.assertRegex(findings[0], r":\d+-\d+:")
+        opener, closer = self._lineno(root, "```"), self._lineno(root, "```") + 2
+        self.assertIn(f"M04:{opener}-{closer}:", cv.check_decisions_format(str(root))[0])
 
     # Every realistic paste shape lands as ONE finding, whatever its internal
-    # raggedness. Three §8 certification rounds each found the previous,
-    # adjacency-based chunker mis-splitting one of these — a passing run on its
-    # dots, an `assertEqual` failure on its banner, a two-hunk diff on its
-    # changed lines — so the shapes stay here as the record of what the removal
-    # of that logic bought (M119 §8 round 3). Each is quoted at the raggedness
-    # an author actually pastes, never trimmed to what a rule could handle
-    # (guard-doctrine §4).
+    # raggedness. Three of the four are shapes the §8 rounds caught the previous,
+    # adjacency-based chunker mis-splitting — a passing run on its dots (round
+    # 1), an `assertEqual` failure on its banner (round 2), a two-hunk diff on
+    # its changed lines (round 3) — so they stay here as the record of what
+    # removing that logic bought. The fourth was that chunker's own gap fixture
+    # and is kept for a different reason: under the shipped contract it is an
+    # instance of the disclosed two-loose-pastes collapse, so it pins the
+    # departure from the other side. Each is quoted at the raggedness an author
+    # actually pastes, never trimmed to what a rule could handle
+    # (guard-doctrine §4). The `>`-quoted shape round 3 also surfaced is pinned
+    # separately, by `test_quoted_transcripts_are_still_pasted_output`.
     PASTE_SHAPES = {
         "passing unittest run": (
             "$ python3 -m unittest discover -s scripts/tests\n"
@@ -2240,6 +2257,19 @@ class TestDecisionsFormatAdvisory(ScriptCase):
 
     def test_every_realistic_paste_shape_is_one_finding(self):
         cv = _load_validate()
+        # NON-VACUITY. A subTest loop over an empty table passes in 8ms, and
+        # the record calls this table the removal's payoff — so the table's own
+        # membership is asserted before anything is measured through it (§8
+        # round 4; the same M93 review F2 defect the corpus test guards against).
+        self.assertEqual(
+            sorted(self.PASTE_SHAPES),
+            [
+                "assertEqual failure",
+                "passing unittest run",
+                "transcript astride a paragraph of prose",
+                "two-hunk diff of a markdown file",
+            ],
+        )
         for name, shape in self.PASTE_SHAPES.items():
             with self.subTest(shape=name):
                 self.tree = Tree(self._tmp.name)  # a fresh tree per shape
@@ -2253,15 +2283,54 @@ class TestDecisionsFormatAdvisory(ScriptCase):
     def test_loose_output_is_anchored_and_counted(self):
         # Nothing computes where a paste without delimiters ends, so the finding
         # says where it STARTS and how much of it there is. Without the count a
-        # one-line stray and a 30-line transcript read identically.
+        # one-line stray and a 30-line transcript read identically — and without
+        # the anchor pinned to the file's own numbering, "where it starts" is
+        # free to be any number at all (§8 round 4).
         cv = _load_validate()
         self.tree = Tree(self._tmp.name)
         root = self._with_decisions(
             "- 2026-07-27: entry.\n$ ls\nRan 3 tests in 0.1s\nOK\n"
         )
         finding = cv.check_decisions_format(str(root))[0]
-        self.assertIn("(+2 more lines)", finding)
+        self.assertIn(f"M04:{self._lineno(root, '$ ls')} (+2 more lines):", finding)
         self.assertIn('"$ ls"', finding)
+
+    def test_findings_come_back_in_line_order(self):
+        # The loose finding is collected after the loop, so it arrived last
+        # however early in the section it began (§8 round 4). Line numbers the
+        # operator navigates by are useless out of sequence.
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions(
+            "$ ls\n- 2026-07-27: entry.\n```\nfenced\n```\n"
+        )
+        reported = [
+            int(re.search(r"M04:(\d+)", f).group(1))
+            for f in cv.check_decisions_format(str(root))
+        ]
+        self.assertEqual(reported, sorted(reported), reported)
+
+    def test_an_unterminated_fence_runs_to_the_end_of_the_section(self):
+        # The one extent still inferred, because there is no closing delimiter
+        # to read. Covered by nothing before §8 round 4, while three records
+        # claimed no extent is ever inferred. The end is derived from the
+        # extractor rather than counted by hand, because "the end of the
+        # section" is further than it looks: an unterminated fence hides the
+        # `## Review` heading from the scan, so the section swallows the rest of
+        # the file — the same way the cap counters lose their boundary to a
+        # fenced `## Review` (M45).
+        cv = _load_validate()
+        cs = _load_scripts()
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions("- 2026-07-27: entry.\n```\nnever closed\n")
+        path = str(root / "cairn" / "milestones" / "M04-decided.md")
+        section = cs.milestone_decisions_lines(path)
+        finding = cv.check_decisions_format(str(root))[0]
+        self.assertIn(
+            f"M04:{self._lineno(root, '```')}-{section[-1][0]}:", finding
+        )
+        self.assertIn("fenced block", finding)
+        self.assertIn("evidence", [t.strip() for _, t in section])
 
     def test_a_single_loose_line_is_reported_without_a_count(self):
         cv = _load_validate()

@@ -947,23 +947,26 @@ _DECISIONS_PASTED = (
 _DECISIONS_QUOTE = re.compile(r"^(?:\s*>)+\s?")
 
 # Where an unfenced paste STOPS is deliberately not computed. A fence carries
-# its own delimiters, so a fenced block's extent is read, never inferred; loose
-# output has no delimiter, and every rule for inferring one — adjacency, a gap
-# tolerance, a filler class, a prose closer — requires its author to enumerate
-# what transcript lines look like. That is guard-doctrine §3's trap, and this
-# detector walked into it three times: three certification rounds each found a
-# realistic paste the then-current rule mis-split (an `assertEqual` failure on
-# its banner, a two-hunk diff on its changed lines, a `>`-quoted transcript on
-# the space the quote marker eats), and each fix was fitted to the shape in
-# hand. So the rules were removed rather than tuned (M119 §8 round 3, at the
-# maintainer's call).
+# its own delimiters, so a closed fenced block's extent is read rather than
+# inferred; loose output has no delimiter, and every rule for inferring one —
+# adjacency, a gap tolerance, a filler class, a prose closer — requires its
+# author to enumerate what transcript lines look like. That is guard-doctrine
+# §3's trap, and this detector walked into it three times, each fix fitted to
+# the shape in hand: round 1 mis-split a PASSING unittest run on its progress
+# dots, round 2 an `assertEqual` failure on its banner, and round 3 both a
+# two-hunk diff on its changed lines and a `>`-quoted transcript on the space
+# the quote marker eats. So the rules were removed rather than tuned (M119 §8
+# round 3, at the maintainer's call).
 #
 # What ships instead: **one finding per fenced block, and one finding per
 # section for all loose output in it**, naming where it starts and how many
-# lines look like output. Nothing infers an extent, so no shape can be
-# mis-split. The cost is stated rather than hidden: two loose pastes in one
-# section report once, an under-report on an advisory whose job is to say the
-# section has output in it at all.
+# lines look like output. No shape can be mis-split, because no rule reads a
+# transcript's insides at all. The one place an extent is still inferred is an
+# UNTERMINATED fence, which has no closing delimiter to read and so runs to the
+# end of the section. Two costs, both stated rather than hidden: two loose
+# pastes in one section report once, and a loose paste with a fenced block
+# between its halves reports once — under-reports on an advisory whose job is to
+# say the section has output in it at all.
 _DECISIONS_PREVIEW = 60
 
 
@@ -1424,12 +1427,18 @@ def _pasted_findings(lines):
 
     A **fenced block** is one finding spanning its opening delimiter through its
     closing one, both included, matching what the cap counters count (M77 review
-    F2) — its extent is read off the delimiters, never inferred. Loose output
-    OUTSIDE any fence is **one finding for the whole section**, anchored at its
-    first signature line and counting the rest, because nothing here computes
-    where a paste without delimiters ends (see the note above the signature
-    table). Loose lines inside a fence belong to the fence, and are not counted
-    twice.
+    F2) — a closed fence's extent is read off its delimiters. An UNTERMINATED
+    fence has no closing delimiter to read and runs to the end of the section:
+    the one extent here that is inferred, and the reason the note above the
+    signature table says "no rule reads a transcript's insides" rather than
+    "nothing is inferred". Loose output OUTSIDE any fence is **one finding for
+    the whole section**, anchored at its first signature line and counting the
+    rest, because nothing here computes where a paste without delimiters ends.
+    Loose lines inside a fence belong to the fence, and are not counted twice.
+
+    Findings come back in line order — the loose one is collected last but
+    sorted back into place, because a line number the operator navigates by is
+    useless out of sequence.
 
     One finding per paste, not per line: a pasted 40-line transcript is one
     mistake, and an advisory that reports it forty times is one the operator
@@ -1446,7 +1455,7 @@ def _pasted_findings(lines):
         stripped = text.lstrip()
         if fence is not None:
             if stripped.startswith(fence):
-                out.append((_span(start, lineno), "fenced block", preview))
+                out.append((start, _span(start, lineno), "fenced block", preview))
                 fence, start, pending = None, None, False
             elif pending and stripped:
                 preview, pending = stripped, False  # first line of the block
@@ -1459,13 +1468,13 @@ def _pasted_findings(lines):
         if body and any(p.match(body) for p in _DECISIONS_PASTED):
             loose.append((lineno, body))
     if start is not None:  # an unterminated fence runs to the end of the section
-        out.append((_span(start, lines[-1][0]), "fenced block", preview))
+        out.append((start, _span(start, lines[-1][0]), "fenced block", preview))
     if loose:
         first, body = loose[0]
         rest = len(loose) - 1
         where = f"{first}" if not rest else f"{first} (+{rest} more line{'s' * (rest > 1)})"
-        out.append((where, "pasted output", body))
-    return out
+        out.append((first, where, "pasted output", body))
+    return [(where, kind, preview) for _, where, kind, preview in sorted(out)]
 
 
 def _span(start, end):
