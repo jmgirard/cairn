@@ -3,7 +3,7 @@
      Per-section owners are tagged below. Drafting budgets: see the template. -->
 # M118: The milestone-local `## Decisions` section joins the cap-exempt set
 
-- **Status:** planned
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -115,6 +115,7 @@ governs carry-by-reference as a tabled deviation.
 - 2026-07-27: plan gate chose exempting `## Decisions` over exempting an RR-bound AC block, and over standardizing carry-by-reference, because the squeeze is not RR-specific — of the 7 files ever at ≥145 plan-owned lines only M114 was RR-driven, and all 7 carry a Decisions section of 24–43 lines against a median of 4 over 116 files; falsified by a future squeeze whose Decisions section is at or below the median, which would locate the cost elsewhere.
 - 2026-07-27: plan gate classified the section as history (D-045) over current knowledge, because the ownership table already makes it append-only and the alternative is self-defeating — a correctable section is trimmable, and a trimmable section has no claim to the un-editability exemption; falsified by a milestone-local decision that must be corrected in place rather than superseded by a later entry in the same section.
 - 2026-07-27: escalation offered at the gate on the `ip-touching` tripwire (the classification extends IP4's reach to a new section) and declined by the maintainer, who returned the call to the session.
+- 2026-07-27: blocked on RB08 — the maintainer reversed the gate's escalation decline and sent the history-vs-current-knowledge classification (D-074 part 1) to independent review before any code is written.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
