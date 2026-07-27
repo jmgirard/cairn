@@ -167,6 +167,20 @@ class TestPlanRecordsTheRejectedAlternative(unittest.TestCase):
             r"one line per approach choice the gate actually\s+weighed",
         )
 
+    def test_the_obligation_sits_in_step_4(self):
+        # The cross-file coupling breaks in exactly one direction: review's
+        # pointer says "step 4 of `/milestone-plan`" and IS pinned, while the
+        # bullet it points at was pinned only as free-floating text — movable
+        # to any step, or out of the workflow entirely, with every other
+        # assert green. Bound by the surrounding numbered steps rather than by
+        # a line number, which drifts on any edit above.
+        t = plan()
+        start = t.index("4. **solidify autonomously**")
+        end = t.index("5. **remainder ledger")
+        self.assertIn(
+            "**record the alternative the gate rejected.**", t[start:end]
+        )
+
     def test_a_plan_weighing_no_alternative_writes_no_line(self):
         self.assertRegex(
             plan(),
@@ -181,11 +195,13 @@ class TestPlanRecordsTheRejectedAlternative(unittest.TestCase):
         t = read("shared", "templates", "milestone.md")
         self.assertRegex(
             t,
-            r"the rejected-alternative record \(/milestone-plan\s+step 4\): one "
-            r"per approach choice the gate actually weighed",
+            r"one per approach choice the\s+gate actually weighed, none where "
+            r"it weighed none",
         )
-        self.assertIn(
-            "plan gate chose <approach> over <alternative> because <reason>", t
+        self.assertRegex(
+            t,
+            r"plan gate chose <approach> over <alternative> because\s+<reason>; "
+            r"falsified by <evidence class>",
         )
 
 

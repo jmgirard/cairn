@@ -69,12 +69,14 @@ never "never".
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
      EXEMPT from the 150-line cap (D-046): history under D-045, never edited,
      so the cap must never demand a trim here. Wrapped entries get a WARN.
-     The second line below is the rejected-alternative record (/milestone-plan
-     step 4): one per approach choice the gate actually weighed, none where it
-     weighed none — the record `/milestone-review`'s thrash trigger (b) reads. -->
+     The rejected-alternative record (/milestone-plan step 4) takes this form:
+     `- YYYY-MM-DD: plan gate chose <approach> over <alternative> because
+     <reason>; falsified by <evidence class>.` — one per approach choice the
+     gate actually weighed, none where it weighed none, and it is the record
+     `/milestone-review`'s thrash trigger (b) reads. It lives here rather than
+     below so an instantiated file inherits no placeholder to delete. -->
 
 - YYYY-MM-DD: created by /milestone-plan.
-- YYYY-MM-DD: plan gate chose <approach> over <alternative> because <reason>; falsified by <evidence class>.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

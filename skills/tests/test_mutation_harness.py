@@ -2657,13 +2657,13 @@ REGISTRY += [
 ]
 
 # M117: the upstream half of trigger (b) — /milestone-plan creates the record
-# (b) reads. One entry per independently-deletable span: the heading, the
-# obligation's content, its cardinality, the absence case, and the template
-# that shows the form. The absence case is the subtle one — without it "no
-# line" is ambiguous between "none was weighed" and "the plan forgot", and
-# only the first makes (b)'s escalation fallback the correct read. The list is
-# the count (§6): no figure is stated here, because the count of entries in
-# this block is exactly the sort of number that goes stale on the next append.
+# (b) reads. One entry per independently-deletable span across the obligation,
+# its placement, its cardinality, its absence case, and the template surface;
+# the entries below are the enumeration, and this comment deliberately is not
+# one — a list here goes stale on the next append, and a count of it goes
+# stale faster (§6). The absence case is the subtle span: without it "no line"
+# is ambiguous between "none was weighed" and "the plan forgot", and only the
+# first makes (b)'s escalation fallback the correct read.
 REGISTRY += [
     Mutation(
         guard="test_thrash_rule",
@@ -2706,8 +2706,8 @@ REGISTRY += [
              "test_the_template_shows_the_record_and_its_cardinality",
         target=TEMPLATE,
         block=(
-            "the rejected-alternative record (/milestone-plan\n     step 4): "
-            "one per approach choice the gate actually weighed"
+            "one per approach choice the\n     gate actually weighed, none "
+            "where it weighed none"
         ),
     ),
     Mutation(
@@ -2715,7 +2715,17 @@ REGISTRY += [
         test="TestPlanRecordsTheRejectedAlternative."
              "test_the_template_shows_the_record_and_its_cardinality",
         target=TEMPLATE,
-        block="plan gate chose <approach> over <alternative> because <reason>",
+        block=(
+            "plan gate chose <approach> over <alternative> because\n     "
+            "<reason>; falsified by <evidence class>."
+        ),
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestPlanRecordsTheRejectedAlternative."
+             "test_the_obligation_sits_in_step_4",
+        target="skills/milestone-plan/SKILL.md",
+        block="4. **Solidify autonomously**",
     ),
 ]
 

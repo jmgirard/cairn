@@ -21,7 +21,7 @@ entries measures the enumeration and not the surface, and the producer-derived
 remedy that enumerates nothing. `/milestone-plan` gains an obligation to record
 the alternative the gate rejected as a work-log line; `/milestone-review`'s
 thrash trigger (b) names the work log as where it reads that record. Guards and
-mutation registrations for every block added, with the two existing trigger-(b)
+mutation registrations for every block added, with the existing trigger-(b)
 locators verified to still resolve against the edited bytes.
 
 Evidence base: the intraclass M93 post-mortem brief (2026-07-27) — four
@@ -94,8 +94,8 @@ real aborts.
 - [x] T1: Re-read `guard-doctrine.md` §7 and §8 for the single-home check, then
       author §3's new text: the site-axis claim, the not-coverage claim, the
       enumeration-count claim, and the producer-sweep remedy, building on
-      §3's existing author-cannot-enumerate sentence and leaving §7 a
-      one-line pointer.
+      §3's existing author-cannot-enumerate sentence and leaving §7 itself
+      untouched — the one-line pointer runs from §3 to §7, not the reverse.
 - [x] T2: Add one assert per claim to `skills/tests/test_lesson_graduation.py`
       — anchors copied from the target's actual bytes (M95), read via
       `Path.read_text` (M100), `\s+` over shipped wraps (M105) — and register
@@ -103,9 +103,9 @@ real aborts.
 - [x] T3: Add the recorded-alternative obligation to
       `skills/milestone-plan/SKILL.md` step 4 and the work-log pointer to
       `skills/milestone-review/SKILL.md` trigger (b); then re-resolve
-      `test_mutation_harness.py`'s two trigger-(b) locators against the edited
-      bytes, updating them if the wrap moved (it did not — the edit was
-      authored to leave both spans intact).
+      `test_mutation_harness.py`'s existing trigger-(b) locators against the
+      edited bytes, updating them if the wrap moved (it did not — the edit was
+      authored to leave every span in that bullet intact).
 - [x] T4: After both prose edits, grep every guard assertion anchored near the
       edited lines for contiguity on one physical line (M104), and grep the
       guards for any short phrase the new prose repeats, which can hand an
@@ -131,6 +131,9 @@ real aborts.
 - 2026-07-27: correcting the T4 line above — the sweep extracted string literals appearing inside assertion CALLS (path arguments included), not assertion literals only, and the 8 were flagged rows over 2 guard files, not 8 call sites; the finding it reports is unchanged, no literal went from unique to ambiguous.
 - 2026-07-27: §8 description-layer certification (fresh-context [O]) returned 8 discrepancies, all fixed: AC4's template clause and the cardinality clause were unasserted (2 asserts + 3 registry entries added), shipped prose said "per approach" where the AC says per approach CHOICE (corrected in skill + template), a class docstring counted asserts and a registry comment claimed a remedy the site paragraph does not have (both rewritten as pointers, M116), a comment stated a firing count the shipped predicate does not yield, and one comment cited a downstream count not checkable in this repo.
 - 2026-07-27: gated amendment (user approved) — Scope's "whose bytes the edit re-wraps" replaced with the two locators "verified to still resolve against the edited bytes"; the predicted re-wrap did not occur, T3's text corrected with it. No scope change.
+- 2026-07-27: superseding the T7 line's counts — after the certification rounds added asserts, verify is skills/tests 671 OK, scripts/tests 280 OK, hooks/tests 91 OK; cairn_validate 16 PASS exit 0, `all checks passed`; registry 433 blocks (421 at M116 + 12).
+- 2026-07-27: superseding the T3+T5 line's "both trigger-(b) locators" — trigger (b)'s bullet carries four registry locators, not two; all four resolve unchanged, as does every other block in the registry.
+- 2026-07-27: re-certification round 2 returned 6 discrepancies, all fixed: the template example moved INTO the work-log comment (as a body line it shipped a placeholder into every instantiated milestone, and made AC4's wording false), a new assert pins the obligation inside step 4 by its surrounding numbered steps (review's pointer names step 4 and was pinned; the bullet it points at was not), a registry comment re-pointed off an enumeration, T1's §7 claim disambiguated, and Scope's locator count dropped by gated amendment (user approved).
 
 ## Decisions
 
