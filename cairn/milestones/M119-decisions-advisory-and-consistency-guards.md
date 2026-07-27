@@ -3,7 +3,7 @@
      Per-section owners are tagged below. Drafting budgets: see the template. -->
 # M119: RR08's follow-ons — the decisions-format advisory, the history enumeration, and a two-sided exempt-set guard
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M118
 - **Driving RR:** RR08
@@ -119,6 +119,8 @@ file and its ledger, and is delivered there.
 - 2026-07-27: the near-miss control found a live false positive in the shipped detector — `^diff --git ` matched prose opening with those words. Tightened to `^diff --git a/`, git's actual path prefix. Every AC5 suite re-run green after the change.
 - 2026-07-27: §8 round 8 — **0 shipped-behaviour defects, 0 regressions**; 3 record errors + 2 coverage gaps, all closed. The records: the near-miss control's own comment named a widening (`Traceback`'s `$`) that no entry could reach; "one character away" measured true of 1 of 5 entries; and "git's actual path prefix" overstated `a/`, which `--no-prefix`, `--src-prefix`, `diff.mnemonicPrefix` and C-quoted paths all miss. Each entry now names the widening it holds against, a sixth reaches the `$`, and the signature comment states the trade — a header-only paste in those forms is lost, any diff with a hunk header still fires on `^@@ .* @@`.
 - 2026-07-27: round 8's two gaps were both boundary arms an over-limit fixture leaves free — the preview comparison (`>` → `>=` survived, since a 61-char truncated preview satisfies "ends in … and is ≤ 61") and the fence preview's `and stripped` clause (no fixture opened a fence on a blank line). One fixture at exactly the limit and one blank-opened fence red both.
+- 2026-07-27: §8 round 9 — 0 shipped-behaviour defects, 0 regressions, 74 mutations run. Two record errors (a "note below this table" that is above it — the same inversion round 5 fixed, re-introduced; and the near-miss control's stated function overclaiming for signatures it did not cover) and one real gap: `NEAR_MISS_LINES` covered 5 of the 10 signatures, and five widenings survived, the sharpest being `--- a/|+++ b/` → `---|+++`, which claims an ordinary markdown thematic break and so WARNs forever. The set now covers all ten; each widening reds under by-hand mutation.
+- 2026-07-27: **§8 loop stopped at round 9, not converged.** Rounds 5-9 found zero shipped-behaviour defects apart from round 7's live `^diff --git ` false positive; what repeated was a false claim in the previous round's own fix comment — round 9's two findings sit in round 8's text. The thrash rule could not fire: it counts review returns (`/milestone-review`, D-064) and this milestone has had none, so nine implement-phase rounds ran with the counter at zero. Recorded as a candidate row; the disposition (retire §8 per its own falsifier, or extend the counter to implement-phase loops) is the maintainer's and needs a D-entry either way.
 - 2026-07-27: measured at the gate that density is not a usable signal — M84's section is a character survey and M98's a line-number inventory, so a numeric heuristic fires hardest on the files the exemption exists to serve; detector keys on shape only.
 
 ## Decisions

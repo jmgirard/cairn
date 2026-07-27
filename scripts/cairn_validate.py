@@ -939,7 +939,7 @@ _DECISIONS_PASTED = (
     # header this misses. Accepted — the bare `diff --git ` matched ordinary
     # prose opening with those words (§8 round 7), and a diff carrying any hunk
     # header still fires on `^@@ .* @@`, so only a header-only paste is lost.
-    # That is the trade the note below this table names: a false negative is
+    # That is the trade the note above this table names: a false negative is
     # cheap here, a false positive kills the advisory.
     re.compile(r"^diff --git a/"),
     re.compile(r"^@@ .* @@"),

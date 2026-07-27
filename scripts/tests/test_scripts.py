@@ -2473,23 +2473,40 @@ class TestDecisionsFormatAdvisory(ScriptCase):
     # Lines a signature must NOT claim. Each is prose a decision entry could
     # plausibly contain, and each is ONE WIDENING from a live signature — not
     # one character, which §8 round 8 measured as true of only one of them.
-    # Widening a pattern reds here rather than shipping a permanently warning
-    # advisory, the failure D-075 exists to prevent. Each entry names the
-    # widening it holds against, because a control whose target is implicit is
-    # a control nobody can tell has stopped working.
+    # Widening any of the ten reds here rather than shipping a permanently
+    # warning advisory, the failure D-075 exists to prevent. Each entry names
+    # the widening it holds against, because a control whose target is implicit
+    # is a control nobody can tell has stopped working — and the set covers
+    # every signature, because a control that covers half the table reads as
+    # complete while the other half widens green (§8 round 9). This is the
+    # instrument that caught the one live false positive the late rounds found.
+    # One entry per signature, no gaps: round 9 measured the set at 5 of 10 and
+    # five widenings surviving, the sharpest being `--- a/|+++ b/` → `---|+++`,
+    # which claims an ordinary markdown thematic break and so WARNs forever.
     NEAR_MISS_LINES = (
+        # `^\$ \S` — the space after the prompt
+        "$9,000 is the derived threshold, and 17,000 the upper one.",
+        # `^Ran \d+ tests? in ` — the count, and the `in` before the duration
+        "Ran the numbers again and the threshold held.",
+        "Ran 3 tests to confirm the fix, all of them green.",
+        # `^OK$`, and the table row's `\s{2,}`
+        "OK so the rejection stands, and PASS rates are unchanged.",
+        # `^(?:FAILED|ERROR) \(` — the opening paren of the count
+        "FAILED to reproduce it on the second attempt, so the claim stands.",
         # `^Traceback \(most recent call last\):$` — the whole phrase
         "Traceback shows the call order, which is what settled it.",
         # the same signature's trailing `$`, which the line above cannot reach
         "Traceback (most recent call last): the frame we cared about was tenth.",
-        # `^Ran \d+ tests? in ` — the count and the unit
-        "Ran the numbers again and the threshold held.",
-        # `^OK$`, and the table row's `\s{2,}`
-        "OK so the rejection stands, and PASS rates are unchanged.",
-        # `^diff --git a/` — the path prefix
-        "diff --git is the header the detector keys on.",
         # `^File "[^"]+", line \d+` — the line number
         "File \"names\" are quoted here without a line number.",
+        # `^diff --git a/` — the path prefix
+        "diff --git is the header the detector keys on.",
+        # `^@@ .* @@` — the closing `@@`
+        "@@ markers are what the detector keys the hunk header on.",
+        # `^(?:--- a/|\+\+\+ b/)` — the path halves. A bare `---` is a markdown
+        # thematic break, so this widening is the permanent WARN in miniature.
+        "---",
+        "+++ was never a marker anyone writes by hand.",
     )
 
     def test_each_signature_fires_on_its_own(self):
