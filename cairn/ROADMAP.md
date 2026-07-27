@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-27 (M114 merged after eight passes and archived; pruned M110 under terminal-row retention. The `dangling id tokens` advisory cleared — D-064–D-070 are on main. The live milestone set is empty; the `sizing` advisory retired with the live file.)_
+_Last hygiene check: 2026-07-27 (re-audit: 16 checks and 7 advisories all green, both GitHub inboxes empty, live milestone set still empty. Only change since the prior pass was M114's post-merge LESSONS cap fix, 6dd347a.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
