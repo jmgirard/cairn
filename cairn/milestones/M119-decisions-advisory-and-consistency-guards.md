@@ -8,7 +8,7 @@
 - **Depends on:** M118
 - **Driving RR:** RR08
 - **Principles touched:** IP4
-- **Branch/PR:** `m119-decisions-advisory-and-consistency-guards`
+- **Branch/PR:** `m119-decisions-advisory-and-consistency-guards` · https://github.com/jmgirard/cairn/pull/119
 
 ## Goal
 
@@ -31,21 +31,21 @@ WARN → not proposed (D-046's severity reasoning stands, D-075).
 
 ## Acceptance criteria
 
-- [ ] AC1: A `decisions format` advisory WARNs, exit-code neutral, on pasted
+- [x] AC1: A `decisions format` advisory WARNs, exit-code neutral, on pasted
       output or a fenced transcript block in a milestone-local `## Decisions`
       section — the section's own genre, never the work log's one-line grammar
       (D-075) — reading the section through the shared extractor M118 adds, so
       the section the cap stops measuring is the section the advisory polices.
-- [ ] AC2 (BC3): RR08 §BC3 — the shipped advisory emits exactly 0 WARNs over
+- [x] AC2 (BC3): RR08 §BC3 — the shipped advisory emits exactly 0 WARNs over
       the whole `## Decisions` sections of M83, M84, M94, M98 and M114 as
       fixtures, and >=1 on a constructed pasted-output fixture.
-- [ ] AC3 (BC1): RR08 §BC1 — the rulebook's history-member enumeration names
+- [x] AC3 (BC1): RR08 §BC1 — the rulebook's history-member enumeration names
       this section, pinned per the file's mutation rules.
-- [ ] AC4 (BC2): RR08 §BC2 — a test reds whenever the hook's
+- [x] AC4 (BC2): RR08 §BC2 — a test reds whenever the hook's
       `CAP_EXEMPT_SECTIONS` and the counters' effective exempt set disagree
       either way, via mirrored constants read from each side (the hook imports
       only `cairn_common`, so no shared constant is reachable).
-- [ ] AC5: All three suites clean (the profile's `verify` slot), `cairn_validate` green.
+- [x] AC5: All three suites clean (the profile's `verify` slot), `cairn_validate` green.
 
 **Deviations from RR08.** BC1-BC3 are carried **by reference** to the archived
 RR rather than verbatim, per the D-066 choice-4 decision taken at the RR08
@@ -130,3 +130,46 @@ file and its ledger, and is delivered there.
 
 ## Review
 <!-- owner: review · exclusive -->
+
+**Fresh evidence, 2026-07-27** (branch rebased onto `main` at the plan commit
+before any evidence was gathered; PR #119).
+
+- **AC1** — `decisions format` is registered in `ADVISORIES` and absent from
+  `CHECKS` (asserted live via `cairn_validate.ADVISORIES`/`CHECKS`), so it is
+  structurally exit-neutral. `cv.run('.')` emits `OK    decisions format` with
+  overall exit 0. `check_decisions_format` (`cairn_validate.py:1505`) reads the
+  section through the heading constant the cap counters exempt by, so the
+  section the cap stopped measuring is the section the advisory polices.
+- **AC2 (BC3)** — both arms measured directly, not inferred from a green test.
+  Arm 1, shipped advisory over the five corpus sections read by ref-based
+  `git show` at their archiving commits: M83 34 lines → 0, M84 31 → 0, M94 32 →
+  0, M98 32 → 0, M114 42 → 0. **Measured 0 WARNs against projected exactly 0.**
+  Arm 2, constructed fixtures: unfenced pasted output → 1 WARN
+  (`M01:9 (+1 more line): pasted output …`), fenced transcript → 1 WARN
+  (`M01:9-13: fenced block …`). **Measured 1 and 1 against projected ≥1.**
+  `TestDecisionsFormatAdvisory` runs 32 tests green, including per-file
+  non-vacuity asserts (each section proved present and ≥20 lines before any
+  silence is claimed).
+- **AC3 (BC1)** — the enumeration at `tracking-rules.md:210` names the
+  milestone-local `## Decisions` section alongside the other history members.
+  Pinned by `test_lessons_loop.py:105` and registered in the mutation harness
+  (`test_mutation_harness.py:552`). Inversion run at review: removing the
+  member from the shipped sentence reds `test_lessons_loop` (1 failure);
+  restored byte-identical to HEAD and re-confirmed green.
+- **AC4 (BC2)** — `CAP_EXEMPT_SECTIONS` mirrored at `cairn_scripts.py:119` and
+  `session_context.py:79`; `TestExemptSetMirror` (`test_hooks.py:466`) compares
+  the two as sets, with a non-vacuity pin on the count and a positive control
+  driving the real scan. Two-sided inversion run at review: dropping
+  `decisions` from the hook side alone → 4 failures; dropping the heading from
+  the counter side alone → 2 failures; both restores clean with no diff.
+- **AC5** — profile `verify` slot, from the repo root with each exit code
+  checked separately: `skills/tests` 680 tests exit 0, `scripts/tests` 330
+  exit 0, `hooks/tests` 98 exit 0 (1108 total). `cairn_validate` exit 0 — 16
+  PASS, 8 advisories OK, none WARN.
+
+**Projection vs outcome (Driving RR: RR08).** BC3 is the only binding
+criterion carrying numbers. Projected **0 WARNs (tolerance: exactly 0)** over
+the corpus — measured **0**. Projected **≥1 WARN** on a constructed
+pasted-output or fenced-transcript fixture — measured **1** on each of the two
+shapes. No shortfall. BC1 and BC2 carry no numeric projection; BC4 is M118's
+and is out of scope here per the recorded deviation.
