@@ -586,9 +586,9 @@ REGISTRY = [
     # that half is proven by the by-hand swap recorded in the work log.
     Mutation(
         guard="test_milestone_cap_exemption",
-        test="TestMilestoneCapExemption.test_weight_caps_names_the_exempt_set_with_both_members",
+        test="TestMilestoneCapExemption.test_weight_caps_names_the_exempt_set_with_all_three_members",
         target=RULES,
-        block="The cap-exempt sections are exactly `## Review` (review-owned, M55) and `## Work log` (history under D-045, D-046)",
+        block="The cap-exempt sections are exactly `## Review` (review-owned, M55), `## Work log` (history under D-045, D-046) and `## Decisions` (history under D-074)",
     ),
     Mutation(
         guard="test_milestone_cap_exemption",
@@ -606,13 +606,33 @@ REGISTRY = [
         guard="test_milestone_cap_exemption",
         test="TestMilestoneCapExemption.test_remedy_never_aims_at_an_exempt_section",
         target=RULES,
-        block="both cap-exempt sections are omitted, so the remedy can never aim",
+        block="all three cap-exempt sections are omitted, so the remedy can never aim",
     ),
     Mutation(
         guard="test_milestone_cap_exemption",
         test="TestMilestoneCapExemption.test_template_work_log_comment_states_the_exemption",
         target=TEMPLATE,
         block="EXEMPT from the 150-line cap (D-046)",
+    ),
+    # M118/D-074: the third exempt member. One entry per new positive assert
+    # (M53), same as M77 got for the second.
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_weight_caps_states_the_decisions_exemption_reason",
+        target=RULES,
+        block="D-074 makes its dated dispositions history, superseding D-046's choice (3), so the cap may not aim there either.",
+    ),
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_always_read_frame_names_all_three_exempt_sections",
+        target=RULES,
+        block="(`## Work log`, `## Decisions`, `## Review`) by reading less of them",
+    ),
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_template_decisions_comment_states_the_exemption",
+        target=TEMPLATE,
+        block="EXEMPT from the 150-line cap (D-074)",
     ),
     # The stated↔enforced label coupling registers too, unlike its cap-number
     # sibling: that one compares two computed numbers, but this one's rulebook
@@ -2008,6 +2028,14 @@ REGISTRY = [
         test="TestMilestoneTemplateBudgets.test_the_budgets_are_marked_guidance_rather_than_a_gate",
         target=TEMPLATE,
         block="DRAFTING BUDGETS (M99) — guidance, not a gate; the only size check that",
+    ),
+    # M118/D-074: the reserve became an exemption; the spend-none instruction
+    # survived it. Registered now that the assert has been re-anchored.
+    Mutation(
+        guard="test_budget_first_drafting",
+        test="TestMilestoneTemplateBudgets.test_the_decisions_section_is_named_cap_exempt_and_not_plan_s_to_spend",
+        target=TEMPLATE,
+        block="## Decisions reserves nothing",
     ),
     Mutation(
         guard="test_budget_first_drafting",

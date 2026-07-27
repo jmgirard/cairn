@@ -91,7 +91,7 @@ declares the same Driving RR and carries them under its own table.
 - [x] T4: Add `"decisions"` to `CAP_EXEMPT_SECTIONS` (`session_context.py:56`);
       re-measure p90 over all three section types and re-derive
       `SECTION_MAX_CHARS`'s comment. Hook test per AC4.
-- [ ] T5: Re-anchor the set-membership guard and update AC5's prose sites;
+- [x] T5: Re-anchor the set-membership guard and update AC5's prose sites;
       re-register the anchor and verify by mutation that deleting the
       three-member sentence reds it.
 - [ ] T6: Full `verify` + `cairn_validate`; post-merge hygiene.
@@ -118,6 +118,8 @@ declares the same Driving RR and carries them under its own table.
 - 2026-07-27: T3 — peak-revision ledger committed as `references/m118-cap-exemption-ledger.md` (+ INDEX line), scored by the shipped `_plan_owned_scan` rather than a reimplementation; every path that ever reached the cap falls below it and none lands near it. The ledger carries the numbers; the AC4 section sizes ride the same derivation.
 - 2026-07-27: T3 checked off on `cairn_validate` alone without the full `verify` slot — the omission surfaced at T4 as a red `TestShippedPageStateLedger` (the new page was missing from the pinned state ledger) and was fixed there; no other task skipped the slot.
 - 2026-07-27: T4 — `CAP_EXEMPT_SECTIONS` is three members; `SECTION_MAX_CHARS` held at 6000 with its comment re-derived over all three types and citing the ledger instead of carrying a second copy. 3 hook tests, 2 red first (the prefixed-heading control green as designed).
+- 2026-07-27: T5 — all five AC5 sites widened to three members; set-membership and cap-remedy asserts re-anchored whole, three new asserts added (decisions reason, always-read enumeration, template comment), each registered in the mutation harness. Verified both ways: blanking reds each new block, and a by-hand SWAP back to the two-member sentence reds the membership guard (M76 — blanking is not swapping).
+- 2026-07-27: T5 minor amendment (discovered sub-task) — M99's two `## Decisions` reserve guards in `test_budget_first_drafting.py` rest on the ground D-074 removes, so the cap-fit sum drops the phantom 21-line reserve term and the reserve-wording assert is re-anchored on the exemption while keeping the spend-none instruction; the new anchor is registered. AC5 did not enumerate these because they are budget guards, not exempt-set enumerations.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
