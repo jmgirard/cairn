@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3, IP4
-- **Branch/PR:** `m115-fresh-context-reader-instruments`
+- **Branch/PR:** `m115-fresh-context-reader-instruments` · https://github.com/jmgirard/cairn/pull/115
 
 ## Goal
 
@@ -33,12 +33,12 @@ rec 4/5/6 rows at rebase → M114.
 
 ## Acceptance criteria
 
-- [ ] AC1: The criteria audit is stated at both surfaces — `/milestone-plan` step 3 and
+- [x] AC1: The criteria audit is stated at both surfaces — `/milestone-plan` step 3 and
       `/milestone-brief`'s "Ingesting an RR" — each naming a fresh-context reader, the
       two mechanical questions per criterion (*what state of the world satisfies this
       exactly as written*; *does any IP or D-entry make that state unreachable*), and
       that its findings reach the user at the gate rather than being resolved silently.
-- [ ] AC2: The description-layer certification is a new section of `guard-doctrine.md`
+- [x] AC2: The description-layer certification is a new section of `guard-doctrine.md`
       naming its three checks (AC-clause→assert coverage, claim-vs-file accuracy,
       anchor-vs-shipped-bytes fidelity), the prohibition *the author never certifies its
       own guard's coverage*, and RR06's falsifier — carried inline here because RR06
@@ -47,30 +47,30 @@ rec 4/5/6 rows at rebase → M114.
       multiple description-layer returns after adoption, the step didn't work — retire
       it (D-059), don't tune it." `/milestone-implement` step 8 carries one routing
       line firing before `status -> review`.
-- [ ] AC3: Every new doctrine clause across AC1 and AC2 carries a doctrine-pinning
+- [x] AC3: Every new doctrine clause across AC1 and AC2 carries a doctrine-pinning
       assert in `skills/tests/test_fresh_context_readers.py`, each with its own
       `Mutation(...)` entry whose block is copied from the shipped bytes and resolves
       exactly once in its target; doctrine-pinning assert count equals registered entry
       count, both **measured** out of the files, never projected (tolerance: exact);
       blanking every registered block reds its named test (tolerance: 0 survivors).
-- [ ] AC4: Each new assert is inversion-proved in a `git archive` scratch copy whose
+- [x] AC4: Each new assert is inversion-proved in a `git archive` scratch copy whose
       baseline was verified green **first**: deleting or negating its pinned clause reds
       the named test, restoring returns green (tolerance: N/N red, N/N green, target
       byte-identical after each restore, the repo tree never mutated).
-- [ ] AC5: This milestone applies AC2's own instrument to itself — before
+- [x] AC5: This milestone applies AC2's own instrument to itself — before
       `status -> review` a fresh-context reader that authored no part of the
       implementation certifies M115's guards on AC2's three checks; each verdict is
       recorded verbatim in the work log and every discrepancy is recorded with its
       claim, the artifact, and why they differ; the gate is entered only at zero
       unresolved.
-- [ ] AC6: D-067 is appended to `cairn/DECISIONS.md` recording both adoptions, the
+- [x] AC6: D-067 is appended to `cairn/DECISIONS.md` recording both adoptions, the
       retirement of author self-certification of guard coverage, and the reservation of
       D-064–D-066 for M114's unmerged branch, back-referencing D-059, D-057, D-031 and
       RR06 — naming RR06 as unmerged, since it resolves only when M114 lands
       (tolerance: `git diff main..HEAD -- cairn/DECISIONS.md` contains zero deletion
       lines, and the count of `^### D-064` headings in `cairn/DECISIONS.md` is 0 — read
       the printed count, never `grep`'s exit code, which is 1 on no match).
-- [ ] AC7: On the final tree the `verify` slot is clean — three suites from the repo
+- [x] AC7: On the final tree the `verify` slot is clean — three suites from the repo
       root with exit codes captured separately, never piped (tolerance: exit 0 each) —
       `python3 scripts/cairn_validate.py` exits 0; `git diff --name-only main..HEAD`
       names no file under `scripts/` and not `skills/shared/tracking-rules.md`; and the
@@ -156,3 +156,57 @@ rec 4/5/6 rows at rebase → M114.
 ## Decisions
 
 ## Review
+
+**Branch state.** `main` 0/0 with `origin/main`; branch 9 ahead / 0 behind and level
+with its own remote. Draft PR #115. This repo has no CI (PROFILE.md
+`consistency-gate` is `generic`), so local green is the gate. No `Driving RR`, so the
+projection-vs-outcome step no-ops.
+
+**Fresh per-criterion evidence.** All commands run this phase.
+
+- AC1 — **verified.** Both surfaces read out of the shipped files, not the draft: the
+  audit block at `skills/milestone-plan/SKILL.md:86`, its fresh-context reader at `:91`,
+  and the ingest-side rule at `skills/milestone-brief/SKILL.md:92` with its reader at
+  `:93`. Both mechanical questions occur exactly 1x in each file (2x2, counted, not
+  eyeballed). The disposition clauses are present at each surface — the plan's
+  fix-and-report at 1x, the brief's raised-never-softened at 1x.
+- AC2 — **verified.** §8 opens at `skills/shared/guard-doctrine.md:215`. Its three
+  checks each occur exactly 1x, and the prohibition carries the section heading. The
+  falsifier was compared against AC2's quoted text by whitespace-normalized match rather
+  than by eye: **MATCH**. `skills/milestone-implement/SKILL.md:98-103` routes to §8
+  before `status -> review`, read out this phase.
+- AC3 — **verified, measured at both ends.** 27 doctrine-pinning asserts against 27
+  registered entries, AST-counted; the assert-method set and the registry test-name set
+  are **identical with zero orphans either way**, which is the check that catches an
+  entry pointing at a test that no longer exists. All 27 blocks resolve **exactly 1x** in
+  their targets. The harness blanking sweep over all 385 registered entries passes —
+  **0 survivors**.
+- AC4 — **verified.** All 27 probes replayed in a fresh `git archive HEAD` scratch copy
+  whose baseline was verified green FIRST (637, exit 0) — the partial-copy red-baseline
+  trap. **27/27 red on inversion, 27/27 green on restore**, 0 mismatches, each target
+  sha256-identical after restore. The primary checkout was never mutated.
+- AC5 — **verified.** Three certification passes by a fresh-context [O] reader that
+  authored no part of the implementation, its verdicts quoted character-for-character in
+  the work log: **"NOT CLEAN — 8 discrepancies"**, **"NOT CLEAN — 2 discrepancies"**,
+  **"CLEAN — 0 unresolved discrepancies"**. All ten discrepancies are recorded with
+  claim, artifact and why they differ, per the gated amendment that settled the
+  criterion's ambiguous `verbatim`. The gate is entered at zero unresolved.
+- AC6 — **verified.** D-067 present, single heading; `^### D-064` headings **0**;
+  deletion lines in `git diff main..HEAD -- cairn/DECISIONS.md` **0**, so the entry is
+  purely additive. Back-references located inside the entry itself, not the file: D-059
+  3x, D-057 2x, D-031 2x, RR06 1x with its unmerged status stated.
+- AC7 — **verified.** Three suites from the repo root, exit codes captured separately
+  and never piped: skills **637** / scripts **280** / hooks **91**, exit 0 each.
+  `cairn_validate` exit 0, 16 PASS. `git diff --name-only main..HEAD` names **0** files
+  under `scripts/` and does not name `skills/shared/tracking-rules.md`. M104 adjacency
+  over the four edited prose files: **0 guard literals newly wrap-broken**.
+
+**Consistency gate.** `cairn_validate` exit 0 — 16 PASS including `coverage complete`,
+`weight caps`, `mirror agreement` and `binding criteria`. One advisory: `dangling id
+tokens` (8), every hit a true positive pointing at M114's unmerged D-064/D-066 and
+clearing when M114 merges; diagnosed and left visible rather than reworded around.
+`cairn_impact` N/A — `git diff --name-only main..HEAD -- cairn/DESIGN.md` is empty, so no
+principle changed; the header's GP2/GP3/IP4 are principles this milestone works under.
+Profile `consistency-gate` is `generic` — none, a clean no-op.
+
+**Thrash rule, applied to this milestone.** First trip to review. Neither trigger fires.
