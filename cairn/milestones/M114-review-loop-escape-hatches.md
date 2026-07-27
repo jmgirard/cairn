@@ -46,46 +46,46 @@ rejected alternative → candidate row.
      carried VERBATIM and mechanically diffed by cairn_validate's `binding
      criteria` check. AC9-AC11 are M114's own, retained from the re-cut. -->
 
-- [ ] AC1 (BC1): The thrash rule states trigger (a)'s condition as an explicit threshold — it fires
+- [x] AC1 (BC1): The thrash rule states trigger (a)'s condition as an explicit threshold — it fires
       on the third return and on every return after it — and retains verbatim that
       returns are counted per milestone, never per cut, with a re-cut incrementing and
       never resetting the count. No wording introduces a per-cut window for either the
       count or the trigger.
-- [ ] AC2 (BC2): The clause "Where both fire, trigger (a) wins" and its "do not queue the retry (b)
+- [x] AC2 (BC2): The clause "Where both fire, trigger (a) wins" and its "do not queue the retry (b)
       alone would allow" sentence are removed from `skills/milestone-review/SKILL.md`,
       and their two asserts and two `Mutation(...)` registry entries are removed with
       them.
-- [ ] AC3 (BC3): In their place the rule states that where both triggers fire, trigger (a) governs
+- [x] AC3 (BC3): In their place the rule states that where both triggers fire, trigger (a) governs
       the disposition — no further retry under the current plan; the milestone routes
       through `/milestone-plan` — and trigger (b)'s diagnosis and its `/milestone-brief`
       escalation offer carry into that routing rather than being discarded.
-- [ ] AC4 (BC4): The rule defines the post-re-cut case: when trigger (a) fires and the work log
+- [x] AC4 (BC4): The rule defines the post-re-cut case: when trigger (a) fires and the work log
       already records a re-plan or split spent on this milestone, the prescribed remedy
       is no longer re-plan-or-split, and the routing chip is composed from — an offered
       `/milestone-brief` escalation, parking as `blocked` with the blocker named in a
       work-log line, or dropping at the user's explicit decision — with no bare-retry
       option as the recommended chip option.
-- [ ] AC5 (BC5): No wording added by this change makes `/milestone-brief` automatic or a standing
+- [x] AC5 (BC5): No wording added by this change makes `/milestone-brief` automatic or a standing
       menu item; every escalation surface remains an offer gated per instance (D-004,
       D-062).
-- [ ] AC6 (BC6): `skills/tests/test_thrash_rule.py` pins each clause BC1, BC3, and BC4 add, with
+- [x] AC6 (BC6): `skills/tests/test_thrash_rule.py` pins each clause BC1, BC3, and BC4 add, with
       the exhaustion branch's diagnosis and remedy pinned by separate asserts; every
       multi-word anchor that can cross a line wrap is matched with `\s+` across the
       break; each doctrine-pinning assert carries its own `Mutation(...)` entry; the
       doctrine-pinning assert count equals the registered entry count, both read out of
       the files (tolerance: exact), and blanking every registered block reds its named
       test (tolerance: 0 survivors).
-- [ ] AC7 (BC7): The guard's module docstring states no numeric count of pinned properties and no
+- [x] AC7 (BC7): The guard's module docstring states no numeric count of pinned properties and no
       numeric count of `\s+` exceptions.
-- [ ] AC8 (BC8): On the final tree, the three suites pass from the repo root with exit codes
+- [x] AC8 (BC8): On the final tree, the three suites pass from the repo root with exit codes
       checked separately (tolerance: exit 0 each, never piped) and `python3
       scripts/cairn_validate.py` exits 0.
-- [ ] AC9: `tracking-rules.md` states the promotion-condition rule beside search-first
+- [x] AC9: `tracking-rules.md` states the promotion-condition rule beside search-first
       candidate creation, guarded by an assert in `test_search_first_candidates.py`
       with its own `Mutation(...)` entry.
-- [ ] AC10: `guard-doctrine.md` §3 states the matcher-rendering rule and §7 the sweep
+- [x] AC10: `guard-doctrine.md` §3 states the matcher-rendering rule and §7 the sweep
       non-vacuity rule, each guarded in `test_lesson_graduation.py` with its own entry.
-- [ ] AC11: D-064 records the supersession AND no longer claims a guard pins the rule to
+- [x] AC11: D-064 records the supersession AND no longer claims a guard pins the rule to
       one surface — deleted at the re-cut, so the claim is false and is corrected before
       merge rather than superseded after it (review pass 4, K1).
 ## Coverage
@@ -549,3 +549,49 @@ system it justifies, a work-log claim disproved. Each was introduced by the fix 
 previous pass. Trigger (b) does not fire: this is a new shape, not a new mechanism of the
 old one. Trigger (a) fires on the count alone — and J2 is the finding that this is now a
 trap rather than a remedy.
+
+## Review pass 5 (2026-07-26)
+
+**Return count, scoped as the rule instructs.** Four returns, recorded as four work-log
+entries. A naive `grep -c "FAILED the gate"` returns five — the fifth is prose inside pass
+4's own Review section, the sentence recording J5's claim that the token "tracks them
+reliably in practice". That sentence is what makes the count wrong, which falsifies the
+justification for scoring J5 at 35. Recorded, not actioned: a counter scoped to work-log
+entries gets four, which is what I did.
+
+**Fresh per-criterion evidence.** All commands run this phase; AC1-AC8 are RR05's Binding
+criteria, so this is verification against externally authored text.
+
+- AC1 (BC1) — verified: threshold form, the "not a single moment" clause, and both
+  counting clauses verbatim.
+- AC2 (BC2) — verified: neither the precedence clause nor its "retry (b) alone" sentence
+  survives, and their two asserts and two registry entries are gone.
+- AC3 (BC3) — verified: the compose clause, (a) taking the disposition, and (b)'s
+  diagnosis and escalation carrying into the routing, each matched across its wrap.
+- AC4 (BC4) — verified: the exhaustion diagnosis, the replaced remedy, all three chip
+  options, and the no-bare-retry clause.
+- AC5 (BC5) — verified: escalation stays an offer, gated per instance, never a standing
+  menu item.
+- AC6 (BC6) — verified: 17 asserts against 17 entries measured from the files, every
+  block resolving exactly once, 17/17 red on deletion, 0 survivors; the exhaustion
+  diagnosis and remedy pinned by separate asserts as the criterion requires.
+- AC7 (BC7) — verified. My first evidence command flagged FAIL on any digit, which is not
+  what the criterion says; re-checked against its actual wording, the docstring states no
+  count of pinned properties and no count of `\s+` exceptions. The remaining digits are
+  milestone ids, a `§6` reference and a historical fact. Recorded because a crude evidence
+  command nearly produced a false negative — the second time this session.
+- AC8 (BC8) — verified: suites 625 / 280 / 91, exit 0 each, run separately, never piped;
+  `cairn_validate` exit 0.
+- AC9, AC10 — verified, each rule present once in its shipped file.
+- AC11 — verified: D-064 no longer claims a guard pins the rule to one surface, and still
+  records the supersession.
+
+**Consistency gate.** `cairn_validate` exit 0, 16 PASS including `binding criteria`, which
+string-diffs AC1-AC8 against the archived RR05. `cairn_impact` N/A — no `DESIGN.md`
+principle changed. Profile `consistency-gate` `generic` — none.
+
+**Projection-vs-outcome (Driving RR05).** RR05's binding criteria carry two numeric
+tolerances, both exact rather than ranged: BC6's "the doctrine-pinning assert count equals
+the registered entry count (tolerance: exact)" — measured 17 against 17 — and its
+"blanking every registered block reds its named test (tolerance: 0 survivors)" — measured
+0 survivors. No shortfall on either.
