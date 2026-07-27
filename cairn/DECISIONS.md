@@ -2519,3 +2519,42 @@ and 2 all stand. Recorded here rather than only in M119's own `## Decisions`
 section for D-076's reason: a milestone-local record compresses into an archive
 summary at `done`, and the bounded `DECISIONS.md` read (D-054) never scans
 archives, so a later reader would meet the withdrawn measurement as live.
+
+### D-078 (2026-07-27): The review fan-out's false-positive taxonomy moves from the reviewers' instruction into the scorer's rubric — annotates D-016 (the scorer gates what reaches the user), closes an IP3 gap
+
+**Context:** `/milestone-review` step 5 gave all three reviewers the
+false-positive taxonomy and told them to "drop anything matching it before
+reporting". Anthropic's Opus 5 prompting guide
+(`references/prompting-opus-5.md`, § Capability improvements) reports the
+failure mode directly: "If your review prompt says 'only report high-severity
+issues' or 'be conservative,' the model may follow that instruction literally
+and report less; ask it to report everything and filter in a separate pass
+instead." cairn's instruction is that shape. The gap it opens is IP3's, not
+merely a quality one: a finding dropped at the reviewer reaches neither the
+scorer nor the `## Review` section, so it is dropped *silently*, while the very
+next paragraph refuses exactly that downstream — sub-80 findings are "excluded
+from the actioned list but logged … surfaced, never silently dropped (IP3)".
+Two filters ran, and only the second one kept a record.
+
+**Decision:** The reviewers are told to report every candidate finding and
+filter nothing. The taxonomy is carried verbatim inside the `[S]` scorer's
+rubric instead, framed as an out-of-scope-for-this-diff judgment that scores
+below 60 — the rubric's existing band for "speculative or out of scope" — so a
+taxonomy match lands in the logged sub-80 list rather than vanishing. Rejected:
+leaving the taxonomy with the reviewers and adding a "log what you dropped"
+instruction, which asks a filtered channel to report on its own filtering, the
+unfalsifiable arrangement guard-doctrine §3 names. Also rejected: deleting the
+taxonomy outright — it encodes real triage judgment and the guide's own remedy
+is to move the filter downstream, not to remove it.
+
+**Consequences:** One filter now runs, once, at a station that already keeps a
+record. D-016 needs no supersession and is annotated instead: its stated
+rationale — the scorer "gates which findings reach the user", which is why the
+step stays on Sonnet and never Haiku — now covers strictly more surface, since
+the taxonomy judgment moved onto that same station. The scorer's load grows by
+whatever the reviewers used to absorb, which is the falsifier to watch: a review
+pass whose logged sub-80 findings are dominated by taxonomy matches would mean
+the volume was worth the reviewer-side filter after all. `test_review_fanout.py`
+locates the rubric by its own first line and walks the contiguous blockquote, so
+the taxonomy drifting back upstream reds; the paired absence-assert on the old
+instruction registers the report-everything phrase as its positive framing.
