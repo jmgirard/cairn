@@ -70,8 +70,8 @@ never "never".
      EXEMPT from the 150-line cap (D-046): history under D-045, never edited,
      so the cap must never demand a trim here. Wrapped entries get a WARN.
      The second line below is the rejected-alternative record (/milestone-plan
-     step 4): one per approach the gate actually weighed, none where it weighed
-     none — the record `/milestone-review`'s thrash trigger (b) reads. -->
+     step 4): one per approach choice the gate actually weighed, none where it
+     weighed none — the record `/milestone-review`'s thrash trigger (b) reads. -->
 
 - YYYY-MM-DD: created by /milestone-plan.
 - YYYY-MM-DD: plan gate chose <approach> over <alternative> because <reason>; falsified by <evidence class>.

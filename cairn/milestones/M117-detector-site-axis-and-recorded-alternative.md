@@ -21,8 +21,8 @@ entries measures the enumeration and not the surface, and the producer-derived
 remedy that enumerates nothing. `/milestone-plan` gains an obligation to record
 the alternative the gate rejected as a work-log line; `/milestone-review`'s
 thrash trigger (b) names the work log as where it reads that record. Guards and
-mutation registrations for every block added, and re-resolution of the two
-existing trigger-(b) locators whose bytes the edit re-wraps.
+mutation registrations for every block added, with the two existing trigger-(b)
+locators verified to still resolve against the edited bytes.
 
 Evidence base: the intraclass M93 post-mortem brief (2026-07-27) — four
 consecutive AC5 failures, passes 6–9, no `R/` file changed after pass 6. Pass 9:
@@ -103,8 +103,9 @@ real aborts.
 - [x] T3: Add the recorded-alternative obligation to
       `skills/milestone-plan/SKILL.md` step 4 and the work-log pointer to
       `skills/milestone-review/SKILL.md` trigger (b); then re-resolve
-      `test_mutation_harness.py`'s two trigger-(b) locators against the
-      reflowed bytes and update them where the wrap moved.
+      `test_mutation_harness.py`'s two trigger-(b) locators against the edited
+      bytes, updating them if the wrap moved (it did not — the edit was
+      authored to leave both spans intact).
 - [x] T4: After both prose edits, grep every guard assertion anchored near the
       edited lines for contiguity on one physical line (M104), and grep the
       guards for any short phrase the new prose repeats, which can hand an
@@ -127,6 +128,9 @@ real aborts.
 - 2026-07-27: T4 — diff-based sweep of every assertion literal in `skills/tests` against the four edited files: zero literals went from unique to ambiguous; the 8 flagged were `read("milestone-plan", ...)` path arguments, already multi-occurrence.
 - 2026-07-27: T6 — template work-log comment names the record and shows a one-line example.
 - 2026-07-27: T7 — verify clean: skills/tests 668 OK, scripts/tests 280 OK, hooks/tests 91 OK; cairn_validate 16 PASS, exit 0, `all checks passed`.
+- 2026-07-27: correcting the T4 line above — the sweep extracted string literals appearing inside assertion CALLS (path arguments included), not assertion literals only, and the 8 were flagged rows over 2 guard files, not 8 call sites; the finding it reports is unchanged, no literal went from unique to ambiguous.
+- 2026-07-27: §8 description-layer certification (fresh-context [O]) returned 8 discrepancies, all fixed: AC4's template clause and the cardinality clause were unasserted (2 asserts + 3 registry entries added), shipped prose said "per approach" where the AC says per approach CHOICE (corrected in skill + template), a class docstring counted asserts and a registry comment claimed a remedy the site paragraph does not have (both rewritten as pointers, M116), a comment stated a firing count the shipped predicate does not yield, and one comment cited a downstream count not checkable in this repo.
+- 2026-07-27: gated amendment (user approved) — Scope's "whose bytes the edit re-wraps" replaced with the two locators "verified to still resolve against the edited bytes"; the predicted re-wrap did not occur, T3's text corrected with it. No scope change.
 
 ## Decisions
 

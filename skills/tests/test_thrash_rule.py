@@ -127,7 +127,7 @@ class TestThrashTriggers(unittest.TestCase):
     def test_review_names_the_work_log_as_where_the_record_is_read(self):
         # M117. Trigger (b)'s remedy needs a referent, and a referent needs a
         # place. Without the pointer the remedy names a record with no home,
-        # which is how the fallback fired four times downstream.
+        # which is how the fallback fired rather than the remedy downstream.
         self.assertIn("step 4 of `/milestone-plan` records it in the work log", review())
 
 
@@ -137,10 +137,13 @@ class TestPlanRecordsTheRejectedAlternative(unittest.TestCase):
 
     Nothing obliged `/milestone-plan` to record the loser when it chose
     between approaches, so trigger (b) degraded to its escalation fallback on
-    every milestone that had never recorded one. These two asserts pin the
-    obligation and its absence case separately: an obligation with no absence
-    case leaves "no line" ambiguous between "none was weighed" and "the plan
-    forgot", and only the first is a correct read for the fallback.
+    every milestone that had never recorded one. The obligation, its
+    cardinality, its absence case and the template showing the form are pinned
+    separately — described by a pointer rather than a count, since a stated
+    count drifts against the class it describes (M116). The absence case
+    carries the most: without it "no line" is ambiguous between "none was
+    weighed" and "the plan forgot", and only the first is a correct read for
+    trigger (b)'s fallback.
     """
 
     def test_plan_obliges_recording_the_rejected_alternative(self):
@@ -154,11 +157,35 @@ class TestPlanRecordsTheRejectedAlternative(unittest.TestCase):
             r"lost, and the class of evidence that would\s+falsify the choice",
         )
 
+    def test_the_obligation_states_its_cardinality(self):
+        # Without this the trailing clause deletes green and the obligation
+        # reads as unbounded — "record the alternative" with no count is
+        # satisfiable by one line per milestone, which is the granularity that
+        # loses the second approach choice when a plan makes two.
+        self.assertRegex(
+            plan(),
+            r"one line per approach choice the gate actually\s+weighed",
+        )
+
     def test_a_plan_weighing_no_alternative_writes_no_line(self):
         self.assertRegex(
             plan(),
-            r"a plan that weighed no alternative writes\s+no line: absence means "
+            r"a plan that weighed\s+no alternative writes no line: absence means "
             r"none was weighed",
+        )
+
+    def test_the_template_shows_the_record_and_its_cardinality(self):
+        # AC4's template half. The template is what a plan author instantiates,
+        # so an obligation stated only in the skill is one the author never
+        # meets at the moment of writing the work log.
+        t = read("shared", "templates", "milestone.md")
+        self.assertRegex(
+            t,
+            r"the rejected-alternative record \(/milestone-plan\s+step 4\): one "
+            r"per approach choice the gate actually weighed",
+        )
+        self.assertIn(
+            "plan gate chose <approach> over <alternative> because <reason>", t
         )
 
 

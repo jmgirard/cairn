@@ -101,9 +101,9 @@ class TestModuleExists(unittest.TestCase):
     def test_absence_section_states_the_site_axis(self):
         # M117. The rendering rule above is general, but everything it
         # PRESCRIBES is the numeric-format axis, and a detector that met that
-        # prescription exactly then failed twice more on the site axis. Pinned
-        # apart from the rule above: deleting this paragraph must not leave
-        # that one satisfying the guard.
+        # prescription exactly then failed again on the site axis (the case
+        # M117's Scope records). Pinned apart from the rule above: deleting
+        # this paragraph must not leave that one satisfying the guard.
         self.assertRegex(
             self.module,
             r"\*\*The renderings vary by site as well as by format\.\*\* A number has "

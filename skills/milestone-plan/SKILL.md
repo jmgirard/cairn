@@ -150,12 +150,12 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    - **Record the alternative the gate rejected.** Where step 3 settled which
      approach a criterion will be met by, append a work-log line naming the
      alternative rejected, why it lost, and the class of evidence that would
-     falsify the choice — one line per approach actually weighed. The work log
-     is the home for the reason `/milestone-review`'s thrash rule already
-     counts returns there — it is what a re-cut leaves standing — and trigger
-     (b) reads the record from it. A plan that weighed no alternative writes
-     no line: absence means none was weighed, and trigger (b)'s escalation
-     offer is the correct reading of it.
+     falsify the choice — one line per approach choice the gate actually
+     weighed. The work log is the home for the reason `/milestone-review`'s
+     thrash rule already counts returns there — it is what a re-cut leaves
+     standing — and trigger (b) reads the record from it. A plan that weighed
+     no alternative writes no line: absence means none was weighed, and
+     trigger (b)'s escalation offer is the correct reading of it.
    - Open questions that hit an RB tripwire (see tracking-rules) are
      tagged inline on the affected task or criterion with the canonical
      token — `(RB tripwire: no-oracle | irreversible-api | ip-touching)` —

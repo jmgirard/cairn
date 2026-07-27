@@ -2657,10 +2657,13 @@ REGISTRY += [
 ]
 
 # M117: the upstream half of trigger (b) — /milestone-plan creates the record
-# (b) reads. Three entries: the heading, the obligation's content, and the
-# absence case. The absence case fails independently because without it "no
+# (b) reads. One entry per independently-deletable span: the heading, the
+# obligation's content, its cardinality, the absence case, and the template
+# that shows the form. The absence case is the subtle one — without it "no
 # line" is ambiguous between "none was weighed" and "the plan forgot", and
-# only the first makes (b)'s escalation fallback the correct read.
+# only the first makes (b)'s escalation fallback the correct read. The list is
+# the count (§6): no figure is stated here, because the count of entries in
+# this block is exactly the sort of number that goes stale on the next append.
 REGISTRY += [
     Mutation(
         guard="test_thrash_rule",
@@ -2686,9 +2689,33 @@ REGISTRY += [
              "test_a_plan_weighing_no_alternative_writes_no_line",
         target="skills/milestone-plan/SKILL.md",
         block=(
-            "A plan that weighed no alternative writes\n     no line: absence "
+            "A plan that weighed\n     no alternative writes no line: absence "
             "means none was weighed"
         ),
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestPlanRecordsTheRejectedAlternative."
+             "test_the_obligation_states_its_cardinality",
+        target="skills/milestone-plan/SKILL.md",
+        block="one line per approach choice the gate actually\n     weighed",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestPlanRecordsTheRejectedAlternative."
+             "test_the_template_shows_the_record_and_its_cardinality",
+        target=TEMPLATE,
+        block=(
+            "the rejected-alternative record (/milestone-plan\n     step 4): "
+            "one per approach choice the gate actually weighed"
+        ),
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestPlanRecordsTheRejectedAlternative."
+             "test_the_template_shows_the_record_and_its_cardinality",
+        target=TEMPLATE,
+        block="plan gate chose <approach> over <alternative> because <reason>",
     ),
 ]
 
@@ -2767,8 +2794,9 @@ REGISTRY += [
 ]
 
 # M117: the site axis and the enumeration-count rule, added to the same §3.
-# Each paragraph's diagnosis and its remedy fail independently, and the two
-# paragraphs fail independently of the M114 rendering rule they sit under —
+# Each paragraph's heading and its operative half fail independently (the site
+# paragraph's operative half is a consequence, the count paragraph's is a
+# remedy), and both fail independently of the M114 rendering rule above them —
 # without that, deleting either one would leave the other satisfying a guard
 # that claims to cover both axes.
 REGISTRY += [
