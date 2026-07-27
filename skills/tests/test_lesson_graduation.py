@@ -142,11 +142,14 @@ class TestModuleExists(unittest.TestCase):
             r"somewhere, so universal silence cannot\s+satisfy it\.",
         )
         # The converse is what makes a silent cell assert something, so it is
-        # pinned separately from the diagnosis. Pinned WHOLE, not by its
-        # lead-in: a bare `assertIn` on "assert the CONVERSE beside the claim"
-        # left everything after the clause deleting green — the same truncated
-        # lead-in defect RR07 §BC3 closed for §3, in an assert M114 added
-        # itself at T4 and then misrecorded as inherited (pass-7 F1).
+        # pinned separately from the diagnosis. Pinned WHOLE: the bare
+        # `assertIn` this replaces matched "assert the CONVERSE beside the
+        # claim", a fragment starting 16 characters into the sentence, so both
+        # the "Stronger still," opener and everything after the clause deleted
+        # green. Same class as the truncated lead-in RR07 §BC3 closed for §3 —
+        # a partial pin — though that one was a true sentence-opening prefix
+        # and this one is mid-sentence. M114 added this assert itself at T4
+        # and then misrecorded it as inherited (pass-7 F1).
         self.assertRegex(
             self.module,
             r"Stronger still, assert the CONVERSE beside the claim — `named ==\s+"
