@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR06
@@ -154,6 +154,7 @@ milestone per BC8, never folded in.
 
 - 2026-07-26: review pass 6 (in progress) — all eight of RR06's binding criteria verified with fresh evidence and ticked; consistency gate clean (`cairn_validate` exit 0, 16 PASS, `sizing` advisory only). Every numeric projection met exactly: 19 doctrine-pinning asserts against a projected 19, 0 survivors against 0, 3/3 red and 3/3 green on the BC7 probes replayed in a `git archive` scratch copy with a verified-green baseline, exactly 2 files under `skills/` in the pass. Prior-review and blame-history lenses: zero findings each. Diff-bug lens still running; its findings join this pass before the verdict.
 - 2026-07-26: review pass 6 FAILED the gate — SIXTH return, and AC8's tick is withdrawn on evidence I recorded wrong earlier in this same pass. F3 (90): the rec 5 candidate row states its falsifier as "drop if TWO such milestones pass review with zero coverage findings, RR06's own stated falsifier" — a count, in the milestone shipping the never-a-count rule, and RR06 states no such thing (its falsifier is post-adoption and opposite in polarity; `grep` over RB06/RR06 finds the wording nowhere). I had verified that row against my reading of it rather than against RR06 — RR06's own diagnosed root cause, recurring inside the pass RR06 constrained to prevent it. AC6 also fails, but as a CRITERION defect: its tracking-side clause confines ROADMAP changes to "status mirroring" while AC8 mandates three candidate rows there, so the two are jointly unsatisfiable as written and AC6 needs a gated amendment. F1 (92) and F2 (90): `guard-doctrine.md` §7's primary remedy and §3's remedy continuation are each unpinned and delete green (both confirmed by mutation here) — real branch defects that CANNOT be fixed on this branch, since `test_lesson_graduation.py` is a third file under `skills/` and AC6's tolerance names exactly two. F6/F4/F5 logged. AC1-AC5 and AC7 verified this phase and stand; RR05's and RR06's design unimplicated, every numeric projection met exactly. THE EXHAUSTION BRANCH FIRES AGAIN: (a) holds as a threshold and a re-cut is recorded spent, so no bare retry. Status -> in-progress.
+- 2026-07-26: blocked on RB07 — the exhaustion branch's escalation option taken at the maintainer's call, over parking, amending-and-retrying, or dropping. Blocker: two of RR06's own binding criteria (BC6's tracking-side clause and BC8) are jointly unsatisfiable as written, and two confirmed >=90 defects (F1, F2) lie in a file BC6's frozen scope forbids touching, so M114 cannot finish under RR06's constraints and the constraints are not mine to relax. Status -> blocked pending RB07.
 
 ## Decisions
 
