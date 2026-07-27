@@ -2444,8 +2444,9 @@ REGISTRY += [
 # intraclass M93 rediscover the same sweep defect on three separate review
 # passes. Registration is per block, so these are needed even though
 # `test_lesson_graduation` is already a registered FILE (M60/M85). The list is
-# the count (§6) — an entry count stated here went stale twice in this
-# milestone alone.
+# the count (§6): the count this comment used to state was correct at four and
+# would have been stale at five — the same trap the thrash block earlier in
+# this file records falling into at seven entries and again at nine.
 REGISTRY += [
     Mutation(
         guard="test_lesson_graduation",

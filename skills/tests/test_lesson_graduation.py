@@ -133,7 +133,8 @@ class TestModuleExists(unittest.TestCase):
         )
         # The operative remedy — the per-cell count and the across-sweep
         # positive — is what a reader acts on; it was unpinned and deleted
-        # green until M114 pass 6 (F1) found it.
+        # green from its own arrival at M114 T4 until this assert closed it;
+        # M114 pass 6 (F1) is where it was found.
         self.assertRegex(
             self.module,
             r"Assert per cell that it checked a positive number of things, "
