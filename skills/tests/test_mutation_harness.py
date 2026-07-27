@@ -3270,6 +3270,32 @@ REGISTRY += [
 ]
 
 
+# M120: the delegation-warrant test. One entry per assert — the inline floor,
+# the one-not-several bar, and the fan-out reconciliation each carry the rule
+# independently, and the third is not commentary: without it the rule and the
+# three-reviewer fan-out sit in one section unreconciled.
+REGISTRY += [
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestDelegationWarrantRule.test_rule_keeps_small_work_inline",
+        target=RULES,
+        block="in a handful of tool calls is done inline, never delegated",
+    ),
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestDelegationWarrantRule.test_rule_prefers_one_subagent_over_several",
+        target=RULES,
+        block="Where one subagent can do the task, spawn one",
+    ),
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestDelegationWarrantRule.test_rule_reconciles_the_review_fanout",
+        target=RULES,
+        block="its three reviewers carry distinct evidence bases",
+    ),
+]
+
+
 class TestRegisteredGuardsFailWhenBlanked(unittest.TestCase):
     def test_each_registered_guard_fails_when_its_block_is_blanked(self):
         self.assertTrue(REGISTRY, "registry is empty")
