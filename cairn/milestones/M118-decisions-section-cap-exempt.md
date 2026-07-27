@@ -31,30 +31,30 @@ gate on measured evidence (D-066 choice 4 already governs the latter).
 
 ## Acceptance criteria
 
-- [ ] AC1: `milestone_body_line_count` excludes an exact `## Decisions` section,
+- [x] AC1: `milestone_body_line_count` excludes an exact `## Decisions` section,
       matched by the same shared constant and fence rules the work-log exemption
       uses; a fenced `## Decisions` and `## Decisions notes` both stay counted.
       Fixtures: exact, fenced, prefixed, absent.
-- [ ] AC2: `milestone_section_line_counts` omits it from the heaviest-first
+- [x] AC2: `milestone_section_line_counts` omits it from the heaviest-first
       breakdown, so no over-cap diagnostic names a section IP4 forbids editing,
       and `preamble + sections == body` (`cairn_scripts.py:436-441`) still holds.
-- [ ] AC3: A committed ledger re-measures every milestone file's **peak
+- [x] AC3: A committed ledger re-measures every milestone file's **peak
       plan-owned revision** under both counters; every file whose peak exceeded
       the cap falls below it. It carries the numbers; no prose here does (M99).
-- [ ] AC4: `hooks/session_context.py` read-bounds `## Decisions` per D-063, and
+- [x] AC4: `hooks/session_context.py` read-bounds `## Decisions` per D-063, and
       `SECTION_MAX_CHARS`'s justifying comment is re-derived over all three
       section types from fresh measurement, not left asserting a p90 over two.
       Test: newest-first injection plus the omission notice.
-- [ ] AC5: Every site enumerating the cap-exempt set names all three members and
+- [x] AC5: Every site enumerating the cap-exempt set names all three members and
       each member's stated reason: the rulebook's weight-caps and cap-remedies
       bullets and its always-read frame row and prose (`:184-186`); the
       template's budget preamble and its `## Decisions` / `## Review` comments;
       and `test_milestone_cap_exemption.py:62`, whose set-membership assert is
       anchored on the whole set and is re-anchored, never appended to. No
       two-member set survives.
-- [ ] AC6 (BC4): RR08 §BC4 — this file's own `## Decisions` holds only dated
+- [x] AC6 (BC4): RR08 §BC4 — this file's own `## Decisions` holds only dated
       decision entries; the AC3 ledger lands as a committed file.
-- [ ] AC7: All three suites clean (the profile's `verify` slot), `cairn_validate` green.
+- [x] AC7: All three suites clean (the profile's `verify` slot), `cairn_validate` green.
 
 **Deviations from RR08.** BC4 is carried **by reference** to the archived RR
 (cap; verbatim measured ~150 plan-owned lines at ingestion — the D-066 choice-4
@@ -194,3 +194,92 @@ declares the same Driving RR and carries them under its own table.
 
 ## Review
 <!-- owner: review · exclusive -->
+
+Verified 2026-07-27 at `198e325` on `m118-decisions-cap-exempt`, PR #118.
+`origin/main` had not moved since the branch was cut, so no merge was needed and
+all evidence below is current.
+
+### Acceptance-criteria evidence
+
+- **AC1 — PASS.** `milestone_body_line_count` exempts an exact `## Decisions`
+  section. Shared constant confirmed by reading: `EXEMPT_HEADINGS =
+  (WORKLOG_HEADING, DECISIONS_HEADING)` (`cairn_scripts.py:105`), consumed at
+  `:399`, and both counters run through the one `_plan_owned_scan`, so the fence
+  rules are literally the work log's. All four required fixture shapes present
+  and green in `TestMilestoneBodyLineCount` (16 tests): exact
+  (`test_decisions_section_is_exempt`), fenced
+  (`test_fenced_decisions_heading_is_not_the_section`), prefixed
+  (`test_decisions_prefixed_heading_is_still_counted`), absent
+  (`test_absent_decisions_section_counts_as_before`), plus
+  `test_both_history_sections_are_exempt_together` pinning that the third member
+  did not cost the work log its exemption.
+- **AC2 — PASS.** `TestMilestoneSectionLineCounts` green (12 tests):
+  `test_decisions_excluded_from_the_breakdown` omits it,
+  `test_decisions_prefixed_heading_stays_in_the_breakdown` keeps trimmable
+  content nameable, and `test_preamble_plus_sections_still_sum_to_body_with_both_exemptions`
+  holds the invariant across all three exempt members. The "no over-cap
+  diagnostic names a section IP4 forbids editing" clause is verified against the
+  *emitted* diagnostic, not only the function:
+  `test_over_cap_shows_heaviest_first_breakdown` asserts `Decisions` is absent
+  from `cairn_validate`'s printed breakdown, and its fixture carries a
+  `## Decisions` section so the assertion is not vacuous. Noted, not counted
+  against the criterion: AC2's parenthetical locator `cairn_scripts.py:436-441`
+  is a plan-time line number that has since moved (the invariant's docstring is
+  now at `:469-475`); the substance it points at is what was verified.
+- **AC3 — PASS.** `cairn/references/m118-cap-exemption-ledger.md` is committed
+  (257 lines, 119 milestone rows) with its `INDEX.md` line. Re-derived
+  independently at review time rather than read from the page: 119 milestones
+  over 122 paths; milestones whose pre-M118 peak reached the 150 cap and their
+  post-M118 peaks — M114 166→123, M98 165→123, M79 154→125, M118 151→125; none
+  remains at or over the cap; largest post-M118 peak anywhere 129 (M43). The
+  ledger's own summary states three rather than four because it is pinned to
+  `6733b8e`; M118 crossed the cap later on its own branch, which the page
+  discloses in its Summary prose and its third evidence-snapshot bullet. Both
+  readings are true of their stated commits and the criterion's substance —
+  every over-cap milestone falls below — holds at each.
+- **AC4 — PASS.** `CAP_EXEMPT_SECTIONS = ("work log", "decisions", "review")`
+  (`session_context.py:74`). `TestSessionContextReadBound` green (18 tests):
+  `test_the_decisions_section_is_bounded_by_the_same_rule` pins newest-first in
+  both directions (newest entry present, oldest absent),
+  `test_bounded_decisions_section_names_what_it_elided` pins the omission notice
+  and the read-the-file pointer, and `test_a_decisions_prefixed_heading_is_not_bounded`
+  is the non-vacuous control. `SECTION_MAX_CHARS`'s comment is re-derived over
+  all three section types from the fresh 119-milestone measurement and cites the
+  ledger rather than carrying a second copy of the numbers.
+- **AC5 — PASS.** Swept `skills/`, `scripts/`, `hooks/` at review time for
+  surviving two-member enumerations; every candidate the sweep surfaced was
+  inspected and is either a three-member statement its window had cut short
+  (`cairn_scripts.py:92-98`, `:330-332`) or prose deliberately scoped to one
+  section (`test_hooks.py:403`). No two-member set survives. The three-member
+  statements as shipped: `tracking-rules.md:110` (the cap's definitional line),
+  `:111` (the set with each member's reason), `:132` (the remedy), `:186` (the
+  always-read frame); `templates/milestone.md:86` and `:92-93`. Each is pinned
+  by an assert registered in the mutation harness.
+- **AC6 (BC4) — PASS.** Parsed this file's own `## Decisions` through the
+  milestone's own `milestone_decisions_lines` extractor: 10 dated entries, 38
+  wrapped continuations of those entries, 2 template ownership-comment lines, 0
+  other content. The AC3 ledger landed as a committed file, never in this
+  section. BC4's second evidence half — "the advisory of BC3 reporting no WARN
+  on M118 itself" — is unavailable at this gate by design: BC3 departs to M119
+  under the Deviations table, so it is M119's to satisfy against this file.
+- **AC7 — PASS.** Profile `verify` slot, run fresh: `skills/tests` 677 OK ·
+  `scripts/tests` 298 OK · `hooks/tests` 94 OK. `cairn_validate` exit 0 — 16
+  checks PASS, 7 advisories OK.
+
+### Consistency gate
+
+- `cairn_validate.py` exit 0; 16 checks PASS, 7 advisories OK. No `scaffold
+  present` or `coverage complete` failure.
+- No `DESIGN.md` principle (IPn/GPn) changed, so `cairn_impact --changed` is
+  not applicable. IP4 is *touched* in reach but unchanged in wording, per D-074.
+- Toolchain checks: the `generic` profile's `consistency-gate` slot names none,
+  so this half is a clean no-op. This repo has no CI — `gh pr checks` reports
+  none, and the profile says to treat a PR as mergeable on local green.
+- Projection-vs-outcome (Driving RR: RR08): no numeric projection from RR08
+  binds this milestone. BC3 is the only criterion carrying numeric tolerances
+  (0 WARNs / ≥1 WARN) and it departs to M119; BC4, the one criterion bound
+  here, is non-numeric. The step no-ops cleanly.
+- Thrash count: one prior return on this milestone (the M118/M119 split at the
+  maintainer's call after the sizing advisory reported 11 criteria). Below
+  trigger (a)'s threshold of three, and no criterion has failed twice, so
+  trigger (b) is unmet.
