@@ -2648,6 +2648,48 @@ REGISTRY += [
         target=REVIEW,
         block="never a\n   bare retry as the recommended option",
     ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers.test_review_names_the_work_log_as_where_the_record_is_read",
+        target=REVIEW,
+        block="step 4 of `/milestone-plan` records it in the work log",
+    ),
+]
+
+# M117: the upstream half of trigger (b) — /milestone-plan creates the record
+# (b) reads. Three entries: the heading, the obligation's content, and the
+# absence case. The absence case fails independently because without it "no
+# line" is ambiguous between "none was weighed" and "the plan forgot", and
+# only the first makes (b)'s escalation fallback the correct read.
+REGISTRY += [
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestPlanRecordsTheRejectedAlternative."
+             "test_plan_obliges_recording_the_rejected_alternative",
+        target="skills/milestone-plan/SKILL.md",
+        block="**Record the alternative the gate rejected.**",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestPlanRecordsTheRejectedAlternative."
+             "test_plan_obliges_recording_the_rejected_alternative",
+        target="skills/milestone-plan/SKILL.md",
+        block=(
+            "append a work-log line naming the\n     alternative rejected, "
+            "why it lost, and the class of evidence that would\n     falsify "
+            "the choice"
+        ),
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestPlanRecordsTheRejectedAlternative."
+             "test_a_plan_weighing_no_alternative_writes_no_line",
+        target="skills/milestone-plan/SKILL.md",
+        block=(
+            "A plan that weighed no alternative writes\n     no line: absence "
+            "means none was weighed"
+        ),
+    ),
 ]
 
 # M114: falsifying promotion conditions. Three entries because the heading,

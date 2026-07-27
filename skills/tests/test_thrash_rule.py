@@ -57,6 +57,10 @@ def review():
     return read("milestone-review", "SKILL.md")
 
 
+def plan():
+    return read("milestone-plan", "SKILL.md")
+
+
 class TestThrashCounting(unittest.TestCase):
     def test_returns_are_counted_per_milestone_not_per_cut(self):
         self.assertIn("count returns **per milestone, never per cut**", review())
@@ -119,6 +123,43 @@ class TestThrashTriggers(unittest.TestCase):
         )
         # Gated per instance, never automatic — D-004 survives this new door.
         self.assertIn("instance, never automatically", t)
+
+    def test_review_names_the_work_log_as_where_the_record_is_read(self):
+        # M117. Trigger (b)'s remedy needs a referent, and a referent needs a
+        # place. Without the pointer the remedy names a record with no home,
+        # which is how the fallback fired four times downstream.
+        self.assertIn("step 4 of `/milestone-plan` records it in the work log", review())
+
+
+
+class TestPlanRecordsTheRejectedAlternative(unittest.TestCase):
+    """M117: the upstream half — trigger (b)'s referent is created at plan time.
+
+    Nothing obliged `/milestone-plan` to record the loser when it chose
+    between approaches, so trigger (b) degraded to its escalation fallback on
+    every milestone that had never recorded one. These two asserts pin the
+    obligation and its absence case separately: an obligation with no absence
+    case leaves "no line" ambiguous between "none was weighed" and "the plan
+    forgot", and only the first is a correct read for the fallback.
+    """
+
+    def test_plan_obliges_recording_the_rejected_alternative(self):
+        # `read()` lowercases, so anchors here are lowercase; the mutation
+        # registry blanks the real file and keeps the shipped case.
+        t = plan()
+        self.assertIn("**record the alternative the gate rejected.**", t)
+        self.assertRegex(
+            t,
+            r"append a work-log line naming the\s+alternative rejected, why it "
+            r"lost, and the class of evidence that would\s+falsify the choice",
+        )
+
+    def test_a_plan_weighing_no_alternative_writes_no_line(self):
+        self.assertRegex(
+            plan(),
+            r"a plan that weighed no alternative writes\s+no line: absence means "
+            r"none was weighed",
+        )
 
 
 class TestTriggersCompose(unittest.TestCase):

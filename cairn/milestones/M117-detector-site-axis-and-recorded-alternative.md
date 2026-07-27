@@ -100,21 +100,21 @@ real aborts.
       — anchors copied from the target's actual bytes (M95), read via
       `Path.read_text` (M100), `\s+` over shipped wraps (M105) — and register
       each new block in `skills/tests/test_mutation_harness.py`.
-- [ ] T3: Add the recorded-alternative obligation to
+- [x] T3: Add the recorded-alternative obligation to
       `skills/milestone-plan/SKILL.md` step 4 and the work-log pointer to
       `skills/milestone-review/SKILL.md` trigger (b); then re-resolve
       `test_mutation_harness.py`'s two trigger-(b) locators against the
       reflowed bytes and update them where the wrap moved.
-- [ ] T4: After both prose edits, grep every guard assertion anchored near the
+- [x] T4: After both prose edits, grep every guard assertion anchored near the
       edited lines for contiguity on one physical line (M104), and grep the
       guards for any short phrase the new prose repeats, which can hand an
       existing bare `assertIn` false coverage (M113).
-- [ ] T5: Add a plan-skill reader and the two gap-B asserts to
+- [x] T5: Add a plan-skill reader and the two gap-B asserts to
       `skills/tests/test_thrash_rule.py`; register both blocks in the mutation
       harness.
-- [ ] T6: Add the work-log example line to
+- [x] T6: Add the work-log example line to
       `skills/shared/templates/milestone.md`'s work-log comment.
-- [ ] T7: Run the three `verify` suites and `cairn_validate`; record every
+- [x] T7: Run the three `verify` suites and `cairn_validate`; record every
       count from the command's own output.
 
 ## Work log
@@ -122,8 +122,11 @@ real aborts.
 - 2026-07-27: created by /milestone-plan.
 - 2026-07-27: plan gate weighed the record's home — work log over the Scope section, because a re-cut supersedes Scope and unticks criteria while the work log stands (D-064's own argument for the thrash count); falsified by a review pass that cannot find the record where trigger (b) looks.
 - 2026-07-27: plan gate weighed §3 over §7 as the home for the enumeration-count rule — §7's remedy is a positive count, which the failing guard already passed at `checked == 2L`; falsified by a later count defect whose fix belongs to §7's sweep machinery rather than to detector visibility.
-
 - 2026-07-27: T1+T2 — guard-doctrine §3 gains the site-axis and enumeration-count paragraphs (`guard-doctrine.md:109-126`), four asserts in `test_lesson_graduation.py`, four registry entries; suites 665/280/91 OK.
+- 2026-07-27: T3+T5 — plan step 4 gains the rejected-alternative obligation, review trigger (b) points at the work log; both trigger-(b) registry locators re-resolved unchanged (deliberate re-wrap kept them contiguous); 4 asserts, 4 registry entries.
+- 2026-07-27: T4 — diff-based sweep of every assertion literal in `skills/tests` against the four edited files: zero literals went from unique to ambiguous; the 8 flagged were `read("milestone-plan", ...)` path arguments, already multi-occurrence.
+- 2026-07-27: T6 — template work-log comment names the record and shows a one-line example.
+- 2026-07-27: T7 — verify clean: skills/tests 668 OK, scripts/tests 280 OK, hooks/tests 91 OK; cairn_validate 16 PASS, exit 0, `all checks passed`.
 
 ## Decisions
 
