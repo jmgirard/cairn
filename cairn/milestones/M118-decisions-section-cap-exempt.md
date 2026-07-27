@@ -19,18 +19,15 @@ third exempt member through every surface that enumerates the set.
 ## Scope
 
 **In:** the cap counter and its heaviest-first breakdown; the session-start
-read-bound for cap-exempt sections; a genre-appropriate format advisory for the
-newly-unbudgeted section; every rulebook, template, and guard site that names
-the exempt set; the rulebook's history-class member enumeration
-(`tracking-rules.md:205-207`, admitted at RR08 ingestion — without it the
-rulebook contradicts D-074); a D-entry superseding D-046's choice (3).
+read-bound for cap-exempt sections; every rulebook, template and guard site that
+enumerates the exempt set; the peak-revision ledger; D-074.
 
-**Out:** redistributing the ≥21 template lines the exemption frees into the
-per-section drafting budgets → candidate row (maintainer's call at this gate,
-2026-07-27); any change to the 150 cap itself → not proposed; exempting an
-RR-bound AC block, and making carry-by-reference the standard ingestion form →
-both declined at this gate on the measured evidence, and D-066 choice 4 already
-governs carry-by-reference as a tabled deviation.
+**Out:** the `decisions format` advisory, the rulebook's history-class member
+enumeration, and the hook/counter consistency test → **M119** (planned now,
+depends on this); redistributing the >=21 template lines the exemption frees →
+candidate row; any change to the 150 cap itself → not proposed; exempting an
+RR-bound AC block and standardising carry-by-reference → declined at the plan
+gate on measured evidence (D-066 choice 4 already governs the latter).
 
 ## Acceptance criteria
 
@@ -48,80 +45,56 @@ governs carry-by-reference as a tabled deviation.
       `SECTION_MAX_CHARS`'s justifying comment is re-derived over all three
       section types from fresh measurement, not left asserting a p90 over two.
       Test: newest-first injection plus the omission notice.
-- [ ] AC5: A `decisions format` advisory WARNs, exit-code neutral, on pasted
-      output or a fenced transcript block in the section — its own genre, never
-      the work log's one-line grammar (D-075) — read through AC1's shared
-      extractor, closing the hole `milestone_worklog_lines` names.
-- [ ] AC6: Every site enumerating the cap-exempt set names all three members and
+- [ ] AC5: Every site enumerating the cap-exempt set names all three members and
       each member's stated reason: the rulebook's weight-caps and cap-remedies
       bullets and its always-read frame row and prose (`:184-186`); the
       template's budget preamble and its `## Decisions` / `## Review` comments;
       and `test_milestone_cap_exemption.py:62`, whose set-membership assert is
       anchored on the whole set and is re-anchored, never appended to. No
       two-member set survives.
-- [ ] AC7: All three suites clean (the profile's `verify` slot), `cairn_validate` green.
-- [ ] AC8 (BC1): RR08 §BC1 — the rulebook's history-member enumeration names
-      this section, pinned per the file's mutation rules.
-- [ ] AC9 (BC2): RR08 §BC2 — a test reds whenever the hook's
-      `CAP_EXEMPT_SECTIONS` and the counters' effective exempt set disagree
-      either way, via mirrored constants read from each side (the hook imports
-      only `cairn_common`, so no shared constant is reachable).
-- [ ] AC10 (BC3): RR08 §BC3 — the shipped advisory emits exactly 0 WARNs over
-      the whole `## Decisions` sections of M83, M84, M94, M98 and M114 as
-      fixtures, and >=1 on a constructed pasted-output fixture.
-- [ ] AC11 (BC4): RR08 §BC4 — M118's own `## Decisions` holds only dated
+- [ ] AC6 (BC4): RR08 §BC4 — this file's own `## Decisions` holds only dated
       decision entries; the AC3 ledger lands as a committed file.
+- [ ] AC7: All three suites clean (the profile's `verify` slot), `cairn_validate` green.
 
-**Deviations from RR08.** AC8-AC11 carry RR08's binding criteria **by reference**
-to the archived RR, never softened: verbatim measured ~150 plan-owned lines and
-reds `weight caps` at the ingest gate — the D-066 choice-4 case, 2026-07-27.
+**Deviations from RR08.** BC4 is carried **by reference** to the archived RR
+(cap; verbatim measured ~150 plan-owned lines at ingestion — the D-066 choice-4
+case). BC1-BC3 depart this milestone entirely: they are delivered by M119, which
+declares the same Driving RR and carries them under its own table.
 
 | BC | Departure | Reason |
 |---|---|---|
-| BC1 | by reference | cap; text lives in archived RR08 §BC1 |
-| BC2 | by reference; "shared constant" resolved to *mirrored* | cap; hooks import only `cairn_common` |
-| BC3 | by reference; 0-WARN arm bound to whole sections, detector scoped to pasted output / fenced blocks | cap; BC3 left both open |
+| BC1 | not in this milestone | rulebook history enumeration → M119 |
+| BC2 | not in this milestone | hook/counter consistency test → M119 |
+| BC3 | not in this milestone | `decisions format` advisory → M119 |
 | BC4 | by reference; committed-file horn taken | cap; `## Review` is review-exclusive, T3 is an implement task |
-
 
 ## Coverage
 
-- AC1 → T2
-- AC2 → T2
-- AC3 → T3
-- AC4 → T4
-- AC5 → T5
-- AC6 → T6
-- AC7 → T8
-- AC8 → T6
-- AC9 → T7
-- AC10 → T5
-- AC11 → T3
+- AC1 -> T2
+- AC2 -> T2
+- AC3 -> T3
+- AC4 -> T4
+- AC5 -> T5
+- AC6 -> T3
+- AC7 -> T6
 
 ## Tasks
 
 - [ ] T1: Add `DECISIONS_HEADING` beside `WORKLOG_HEADING` (`cairn_scripts.py:97`)
       and a `milestone_decisions_lines` extractor mirroring the work log's, so
-      exemption and advisory read one section by one rule.
+      the exemption and M119's advisory read one section by one rule.
 - [ ] T2: Exempt the section in `milestone_body_line_count`, drop it from
       `milestone_section_line_counts`, update both docstrings. Fixtures first
       (exact/fenced/prefixed/absent + the sum invariant), red before the change.
 - [ ] T3: Peak-revision ledger over `git log --all`, run under both counters,
-      committed as its own file (amended at RR08 ingestion: it is AC3 evidence,
-      not a decision).
+      committed as its own file (never into `## Decisions` — BC4).
 - [ ] T4: Add `"decisions"` to `CAP_EXEMPT_SECTIONS` (`session_context.py:56`);
       re-measure p90 over all three section types and re-derive
       `SECTION_MAX_CHARS`'s comment. Hook test per AC4.
-- [ ] T5: `check_decisions_format` beside `check_worklog_format`
-      (`cairn_validate.py:1321`), registered in `ADVISORIES` (`:1590`);
-      pasted-output/fenced detector. Fixtures per AC10.
-- [ ] T6: Re-anchor the set-membership guard and update AC6's and AC8's prose
-      sites; re-register the anchor and verify by mutation that deleting the
+- [ ] T5: Re-anchor the set-membership guard and update AC5's prose sites;
+      re-register the anchor and verify by mutation that deleting the
       three-member sentence reds it.
-- [ ] T7: Mirror the exempt-set constant across both modules; two-sided
-      consistency test with a by-hand one-sided-removal red check.
-- [ ] T8: Full `verify` + `cairn_validate`; post-merge hygiene.
-
+- [ ] T6: Full `verify` + `cairn_validate`; post-merge hygiene.
 
 ## Work log
 
@@ -134,6 +107,8 @@ reds `weight caps` at the ingest gate — the D-066 choice-4 case, 2026-07-27.
 - 2026-07-27: ingest gate chose carry-by-reference over compressing the heaviest plan-owned section, because verbatim measured ~150 lines against a 149 ceiling and compression would repeat M114's zero-headroom end state; falsified by a plan-owned section whose compression frees the criteria set without touching content the AC or Coverage maps depend on.
 - 2026-07-27: RR08 rec 6 applied as supporting context, not a second ground — the section was never plan-owned (the template's own budget preamble says plan spends none of it), which independently explains why a plan-discipline budget never should have charged it.
 - 2026-07-27: ingestion put the file at 172/149 and the AC and Tasks sections were compressed in one pass each to reach 149/149 — zero headroom, M114's end state exactly. The 24 lines that broke it are this milestone's own `## Decisions` section, which stops counting at T2: M118 is over cap for the reason M118 exists.
+- 2026-07-27: split at the maintainer's call after the sizing advisory reported 11 criteria against the >7 tripwire — the advisory, the rulebook history enumeration and the consistency test (BC1-BC3) become M119, which depends on this milestone; nothing was discarded. Plan-owned body 149 -> 122.
+- 2026-07-27: split kept BC4 here because it constrains this file's own `## Decisions` section and the AC3 ledger; D-075's "Delivered by M118" now reads as the M118+M119 pair, and being history it is recorded rather than edited.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
