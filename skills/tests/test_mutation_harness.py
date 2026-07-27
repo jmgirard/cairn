@@ -2678,9 +2678,9 @@ REGISTRY += [
              "test_plan_obliges_recording_the_rejected_alternative",
         target="skills/milestone-plan/SKILL.md",
         block=(
-            "append a work-log line naming the\n     alternative rejected, "
-            "why it lost, and the class of evidence that would\n     falsify "
-            "the choice"
+            "append a work-log line naming the alternative rejected, why\n"
+            "     it lost, and the class of evidence that would falsify the "
+            "choice"
         ),
     ),
     Mutation(
@@ -2698,7 +2698,7 @@ REGISTRY += [
         test="TestPlanRecordsTheRejectedAlternative."
              "test_the_obligation_states_its_cardinality",
         target="skills/milestone-plan/SKILL.md",
-        block="one line per approach choice the gate actually\n     weighed",
+        block="one\n     line per approach choice the gate actually weighed",
     ),
     Mutation(
         guard="test_thrash_rule",
@@ -2719,13 +2719,6 @@ REGISTRY += [
             "plan gate chose <approach> over <alternative> because\n     "
             "<reason>; falsified by <evidence class>."
         ),
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestPlanRecordsTheRejectedAlternative."
-             "test_the_obligation_sits_in_step_4",
-        target="skills/milestone-plan/SKILL.md",
-        block="4. **Solidify autonomously**",
     ),
 ]
 
@@ -2838,7 +2831,10 @@ REGISTRY += [
         block=(
             "**derive the\nrenderings from the producer rather than listing "
             "them** — sweep the producer's\nown outputs over a grid of inputs "
-            "and assert the invariant over what comes back"
+            "and assert the invariant over what comes back\n(a rendered bullet "
+            "contains no number), which covers renderings not yet\nwritten, "
+            "with one end-to-end case retained to prove those outputs reach "
+            "the\nreal surface unchanged."
         ),
     ),
 ]

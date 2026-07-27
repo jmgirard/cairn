@@ -169,8 +169,8 @@ class TestPlanRecordsTheRejectedAlternative(unittest.TestCase):
         self.assertIn("**record the alternative the gate rejected.**", t)
         self.assertRegex(
             t,
-            r"append a work-log line naming the\s+alternative rejected, why it "
-            r"lost, and the class of evidence that would\s+falsify the choice",
+            r"append a work-log line naming the alternative rejected, why\s+it "
+            r"lost, and the class of evidence that would falsify the choice",
         )
 
     def test_the_obligation_states_its_cardinality(self):
@@ -180,7 +180,7 @@ class TestPlanRecordsTheRejectedAlternative(unittest.TestCase):
         # loses the second approach choice when a plan makes two.
         self.assertRegex(
             plan(),
-            r"one line per approach choice the gate actually\s+weighed",
+            r"one\s+line per approach choice the gate actually weighed",
         )
 
     def test_the_obligation_sits_in_step_4(self):
@@ -225,6 +225,14 @@ class TestPlanRecordsTheRejectedAlternative(unittest.TestCase):
             r"falsified by <evidence class>",
         )
         self.assertTrue(comment.rstrip().endswith("-->"), "form escaped the comment")
+        # ...and appears ONLY there. Bounding the slice catches the form moving
+        # up out of the body, but not a COPY left in the body below the
+        # created-by line — which ships the placeholder just as surely, with
+        # the slice asserts still green.
+        self.assertEqual(
+            1, t.count("plan gate chose <approach>"),
+            "the example form must appear once, inside the work-log comment",
+        )
 
 
 class TestTriggersCompose(unittest.TestCase):

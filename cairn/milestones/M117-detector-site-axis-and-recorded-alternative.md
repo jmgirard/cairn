@@ -196,3 +196,59 @@ gate was entered after round 4's two record-accuracy items were fixed, without
 a fifth round auditing only those fixes — a judgment call recorded here rather
 than presented as a clean round.
 
+**Independent fresh-context review (three lenses + scorer), 2026-07-27.**
+Blame-history [S]: zero findings — the diff is additive, §7 byte-identical,
+D-004's gating clause and the (a)/(b) structure untouched. Prior-PR-comments
+[S]: probe `gh api .../pulls/comments?per_page=1` returned `[]`, so the GitHub
+walk was skipped per the probe gate; primary evidence was the archived
+`## Review` sections, which yielded one finding. Diff-bug [O]: three findings
+plus two minor. Scorer [S] (did not generate them): F6 92, F4 90, F1 70,
+F2 60, F5 32, F3 22.
+
+Actioned — fixed on the branch, each re-verified by inversion:
+
+- **F6 (92)** — §3's remedy sentence ended "…with one end-to-end case retained
+  to prove those outputs reach the real surface unchanged", but the assert and
+  its registry block both stopped at "assert the invariant over what comes
+  back": deleting that trailing prescription left the suite green, and no test
+  mentioned "end-to-end". This is the shape RR07 F2 fixed one paragraph above
+  in this same file. Both anchors extended to the full sentence; deletion now
+  reds.
+- **F4 (90)** — `test_the_template_shows_the_record_and_its_cardinality`
+  bounded its slice at the created-by line, so a DUPLICATE of the example form
+  pasted into the template body kept every assert green while shipping the
+  `<approach>` placeholder the assert exists to keep out. Added an occurrence
+  count; the duplicate now reds.
+- **F1 (70, threshold overridden)** — the obligation read "Where **step 3**
+  settled which approach a criterion will be met by", but step 3 is the
+  question gate and most approach choices are settled autonomously at step 2,
+  so the rule under-fired and review's trigger (b) would read the absent
+  record as "none was weighed" — the degraded path M117 exists to close,
+  reachable in full compliance. Overridden above the 80 line on evidence the
+  scorer lacked: **this milestone's own work log demonstrates it** — the
+  record-home line documents a choice settled during investigation and never
+  posed at step 3, so by the letter of the shipped rule that line was not
+  owed. Reworded to cover both routes explicitly.
+- **F2 (60, threshold overridden)** — the registry entry for
+  `test_the_obligation_sits_in_step_4` blanked the step-4 HEADING, which the
+  test uses as a slice bound, so blanking raised `ValueError` (errors=1,
+  failures=0, reproduced) and `guard_fails_when_blanked` counted the crash as
+  a pass: green while proving nothing. It also pinned scaffolding, which this
+  milestone's own work log gives as the reason the other three containment
+  asserts took the by-hand check. Entry removed; registry 433 → 432, and the
+  containment property keeps its by-hand check like its three siblings.
+
+Logged, below threshold, not actioned:
+
+- **F3 (22)** — the plan-side registry comment names five spans over seven
+  entries. Declined: the five are categories, not a promised entry count, and
+  all seven map onto them.
+- **F5 (32)** — the template's example form wraps across two lines inside the
+  comment, near "Wrapped entries get a WARN.". Declined: it is comment prose,
+  not a line an author copies verbatim, and the worst case is a WARN by design.
+
+Post-fix verify: `skills/tests` Ran 672 OK · `scripts/tests` Ran 280 OK ·
+`hooks/tests` Ran 91 OK · `cairn_validate` exit 0, 16 PASS, `all checks
+passed`. No criterion's evidence was invalidated by the fixes — AC1–AC5 were
+re-inverted after them.
+

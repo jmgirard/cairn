@@ -133,7 +133,10 @@ class TestModuleExists(unittest.TestCase):
             self.module,
             r"\*\*derive the\s+renderings from the producer rather than listing "
             r"them\*\* — sweep the producer's\s+own outputs over a grid of inputs and "
-            r"assert the invariant over what comes back",
+            r"assert the invariant over what comes back\s+\(a rendered bullet contains "
+            r"no number\), which covers renderings not yet\s+written, with one "
+            r"end-to-end case retained to prove those outputs reach the\s+real surface "
+            r"unchanged\.",
         )
 
     def test_the_site_and_count_rules_live_in_section_3(self):
