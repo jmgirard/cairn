@@ -2439,11 +2439,13 @@ REGISTRY += [
     ),
 ]
 
-# M114: two guard-doctrine additions. Four entries — each rule's diagnosis and
-# its remedy fail independently, and a diagnosis with no remedy is the shape
-# that let intraclass M93 rediscover the same sweep defect on three separate
-# review passes. Registration is per block, so these are needed even though
-# `test_lesson_graduation` is already a registered FILE (M60/M85).
+# M114: two guard-doctrine additions. Each rule's diagnosis and its remedy fail
+# independently, and a diagnosis with no remedy is the shape that let
+# intraclass M93 rediscover the same sweep defect on three separate review
+# passes. Registration is per block, so these are needed even though
+# `test_lesson_graduation` is already a registered FILE (M60/M85). The list is
+# the count (§6) — an entry count stated here went stale twice in this
+# milestone alone.
 REGISTRY += [
     Mutation(
         guard="test_lesson_graduation",
@@ -2455,13 +2457,19 @@ REGISTRY += [
         guard="test_lesson_graduation",
         test="TestModuleExists.test_absence_section_states_the_matcher_rendering_rule",
         target=GUARD_DOCTRINE,
-        block="Carry the renderings INTO the test as positive",
+        block="Carry the renderings INTO the test as positive\ncontrols: append the real value at full precision, rounded, and `signif`-ed,\nand require the detector to see each one.",
     ),
     Mutation(
         guard="test_lesson_graduation",
         test="TestModuleExists.test_sweep_section_states_the_silent_cell_rule",
         target=GUARD_DOCTRINE,
         block="**A sweep whose cells may legitimately be silent passes for free on silence.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_sweep_section_states_the_silent_cell_rule",
+        target=GUARD_DOCTRINE,
+        block="Assert per cell that it checked a positive number of things, and assert across\nthe sweep that the positive case fired somewhere, so universal silence cannot\nsatisfy it.",
     ),
     Mutation(
         guard="test_lesson_graduation",

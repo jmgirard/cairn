@@ -88,8 +88,15 @@ class TestModuleExists(unittest.TestCase):
             r"\*\*A detector's matcher must be exercised at every rendering its target can\s+take\.\*\*",
         )
         # The remedy is the operative half — without it the rule diagnoses a
-        # failure and prescribes nothing.
-        self.assertIn("Carry the renderings INTO the test as positive", self.module)
+        # failure and prescribes nothing. Pinned whole: the earlier form
+        # asserted only the lead-in, so the continuation carrying the three
+        # renderings deleted green (M114 pass-6 F2).
+        self.assertRegex(
+            self.module,
+            r"Carry the renderings INTO the test as positive\s+"
+            r"controls: append the real value at full precision, rounded, and "
+            r"`signif`-ed,\s+and require the detector to see each one\.",
+        )
 
     def test_matcher_section_states_the_authorization_switch(self):
         self.assertIn(
@@ -123,6 +130,15 @@ class TestModuleExists(unittest.TestCase):
         self.assertRegex(
             self.module,
             r"\*\*A sweep whose cells may legitimately be silent passes for free on silence\.\*\*",
+        )
+        # The operative remedy — the per-cell count and the across-sweep
+        # positive — is what a reader acts on; it was unpinned and deleted
+        # green until M114 pass 6 (F1) found it.
+        self.assertRegex(
+            self.module,
+            r"Assert per cell that it checked a positive number of things, "
+            r"and assert across\s+the sweep that the positive case fired "
+            r"somewhere, so universal silence cannot\s+satisfy it\.",
         )
         # The converse is what makes a silent cell assert something, so it is
         # pinned separately from the diagnosis.
