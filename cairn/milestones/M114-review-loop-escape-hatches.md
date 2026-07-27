@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** review
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR07
@@ -72,7 +72,7 @@ RR06 recs 4-6 and RR07 rec 6 as standing rules → banked · F5 → trivial-tier
       survivors); and the BC2 and BC3 probes have been replayed red-side-up in a `git
       archive` scratch copy whose baseline was verified green before probing (tolerance:
       2/2 red on mutation, 2/2 green on restore, target byte-identical after).
-- [ ] AC7 (BC7): Terminus. If pass 7 fails the gate on (i) any finding whose subject is
+- [x] AC7 (BC7): Terminus. If pass 7 fails the gate on (i) any finding whose subject is
       work BC2–BC4 specify in closed form, or (ii) any discrepancy in material BC5's
       certifier recorded as clean, then M114 is parked as `blocked` by that fact: the
       work-log line names this criterion, no eighth implement pass is queued, and no
@@ -158,6 +158,8 @@ BC6 and BC7 stay verbatim deliberately — the review gate reads BC6's numeric p
 - 2026-07-26: AC7's terminus is ARMED, not spent — pass 7 has not failed a gate. Recorded so the review gate does not have to re-derive it: if this pass fails on (i) a finding whose subject is work BC2-BC4 specify in closed form, or (ii) a discrepancy in material the T18 certifier recorded clean, M114 is parked `blocked`, no eighth implement pass is queued and no eighth brief is opened, unblocking only on adoption of RR06 recs 4-5 through their own milestone. A failure outside (i) and (ii) is a new fact on its merits. Two items are OWED but BC1's frozen scope forbids them here: a candidate row for the four pre-existing truncated lead-in asserts the certifier found at `test_lesson_graduation.py:44, :51, :124, :145` (the F2 class, unfixed), and rec 5's unchanged "eight coverage findings" attribution, unlocatable in RR06. Both route post-merge, as RR07 rec 7 routed F5. Status -> review.
 
 - 2026-07-26: review pass 7 (in progress) — AC1-AC6 verified with fresh evidence and ticked; every numeric projection met exactly and `cairn_validate` is clean with ZERO advisories for the first time in seven passes. Prior-review and blame-history lenses: **zero findings each** — blame-history independently re-derived the M98-vs-M114 attribution of guard-doctrine §3/§7, the one-surface pin's add-then-delete, and that no file outside M114's own records restates the old per-cut thrash rule; prior-review walked all six prior passes' findings for recurrence and found none, and its GitHub inline-comment probe returned empty so no thread walk. Diff-bug lens still running; its findings join this pass before the verdict. AC7's terminus is held open until then.
+
+- 2026-07-26: review pass 7 FAILED the gate — SEVENTH return, and **AC7's TERMINUS FIRES**. AC1-AC6 verified this phase with fresh evidence and stand; every numeric projection met exactly (627/280/91, 14 entries against projected 14, 0 survivors, 2/2 red and 2/2 green on the probes, 2 files under `skills/`, 0 forbidden-phrase hits); `cairn_validate` exit 0, 16 PASS, ZERO advisories for the first time in seven passes. Prior-review and blame-history lenses: zero findings each. Two diff-bug findings >=80, both description-layer and neither in the code: F1 (82) the T18/T19 entries call four truncated asserts "PRE-EXISTING" when one is M114's own T4 addition (0 occurrences on `main`, `git log -S` returns `20c7b4a` alone) — a discrepancy in material the BC5 certifier recorded clean, **terminus clause (ii)**; F5 (85) D-064's Consequences misdescribe shipped §7, dropping the across-sweep half and promoting the optional converse to a requirement, in an append-only entry that has not reached `main` and that BC1's frozen scope forbids touching. Per AC7: parked as `blocked`, **no eighth implement pass, no eighth review brief**; unblock condition is adoption of RR06 recs 4-5 through their own milestone, both already banked as candidate rows. F2 (62), F4 (72), F6 (55) and F3 (45) logged. Status -> blocked.
 
 ## Decisions
 
@@ -969,3 +971,86 @@ carry, beside its measured outcome:
 
 No shortfall on any projection, and no departure, so the Deviations table is not entered
 for this pass.
+
+**Independent review — three lenses, then a scorer.** Prior-review: **zero findings** — it
+walked every labelled finding from all six prior passes (F/G/H/J/K/L series plus the
+sub-threshold ones) for recurrence and found none, confirmed the pass-1-to-3 findings all
+concerned machinery deleted at the re-cut, and its GitHub inline-comment probe returned
+`[]`, so no thread walk. Blame-history: **zero findings** — it independently re-derived
+that `guard-doctrine.md` was created at M98 and that §3/§7 are M114's own pure additions,
+that the one-surface pin was added and deleted within the milestone with no dangling
+reference surviving, that D-064's in-place edit was reverted byte-for-byte and re-delivered
+as D-065, that `git diff main..HEAD -- cairn/DECISIONS.md` has 0 deletions, and that no
+file outside M114's own records restates the old per-cut thrash rule. Diff-bug: six
+findings. A fresh [S] scorer that did not generate them scored two at or above 80.
+
+- **F1 (82) — GATE FAILURE, terminus clause (ii).** `cairn/milestones/M114-review-loop-escape-hatches.md`,
+  the T18 and T19 work-log entries. Both call the certifier's four truncated lead-in
+  asserts "PRE-EXISTING", and route a post-merge candidate row for them on that basis. One
+  of the four is not: the `assertIn("assert the CONVERSE beside the claim", …)` and the §7
+  doctrine sentence it pins were BOTH introduced by M114's own T4 commit `20c7b4a`.
+  Verified here independently, not taken from the finding: the phrase has **0 occurrences**
+  in `git show main:skills/tests/test_lesson_graduation.py`, and `git log -S` returns
+  `20c7b4a` alone. So a defect this branch created is recorded as inherited from `main`,
+  in the entry whose whole purpose is certifying that records match artifacts. The scorer
+  tempered the finding's secondary claim — one cited line number went stale, not two — and
+  classified the subject under **terminus clause (ii)**: the certifier recorded this set as
+  "none a mismatch with an artifact", and one of them is.
+- **F5 (85) — actioned as a second, independent gate failure; NOT fixable on this branch.**
+  `cairn/DECISIONS.md`, inside D-064. Its Consequences describe §7 as requiring "each cell
+  asserts a positive check count and the converse is asserted beside the claim". Shipped §7
+  requires the per-cell count **and** the across-sweep positive, and frames the converse as
+  "Stronger still" — explicitly optional. Read out of both files this phase: D-064 drops
+  the across-sweep half (the exact half pass-6 F1 was about) and promotes an optional
+  strengthening to a requirement. D-065 supersedes only D-064's one-surface sentence.
+  Same class as pass-4 K1, in the same entry, on a different sentence — and D-064 has not
+  reached `main`, so this false description would land in append-only history at merge.
+  It cannot be fixed here: `cairn/DECISIONS.md` is outside BC1's writable tracking set,
+  which names only this file and `cairn/ROADMAP.md`. The scorer classified it under
+  **neither** terminus clause, so it is a new fact on its merits.
+
+**Logged, below the 80 threshold (4).** F2 (62) the harness comment says the M93
+post-mortem shows "four of these failing for real" and enumerates five losses, and its
+brief-fallback instance is contradicted by D-064's own Context, which records that in M93
+the alternative WAS on record; the scorer judged the four-vs-five count genuinely ambiguous
+in clause-splitting. F4 (72) the composition clause carries trigger (b)'s
+`/milestone-brief` fallback into the (a)-routing but never its PRIMARY remedy, so in the
+branch where an alternative was recorded — M114's own pass-2 case — it points at an offer
+that does not exist; RR05's body states both halves and its BC3 compressed it to the offer,
+which the shipped text follows verbatim, so the gap is inherited from the criterion.
+F6 (55) the rec-4 row says "three criteria M114 itself authored wrong" and names two;
+authored at T15, untouched by BC4. F3 (45) §3's remedy prescribes `signif`, an R function,
+inside the language-agnostic core that GP3 says repo specifics layer onto without forking;
+the scorer judged it a narrative illustration rather than a universal prescription, and
+noted RR07 quoted the sentence verbatim as BC3's required text without flagging it.
+
+**GATE FAILURE — SEVENTH return.** AC1-AC6 were verified this phase with fresh evidence
+and stand, every numeric projection was met exactly, and `cairn_validate` is clean with
+zero advisories. RR05's, RR06's and RR07's design remains unimplicated: all three lenses
+cleared the doctrine text, two returned nothing at all, and the thrash rule survived a
+clause-level deletion sweep with zero survivors. The two failures are both description
+layer, and neither is in the code:
+
+- F1 is a false claim in this milestone's own work log about its own artifact, in material
+  the BC5 certifier recorded as clean — **terminus clause (ii)**.
+- F5 is a false claim in an append-only D-entry that would reach `main` at merge, and
+  BC1's frozen scope forbids the file it lives in — the same structural collision RB07 was
+  convened over, on a different pair of constraints.
+
+**AC7'S TERMINUS FIRES.** Pass 7 fails the gate on a discrepancy in material BC5's
+certifier recorded as clean, which is clause (ii) exactly. Per the criterion: M114 is
+parked as `blocked` by that fact, **no eighth implement pass is queued, and no further
+review brief is opened for M114**. The recorded unblock condition is adoption of RR06
+recs 4-5 through their own milestone — the plan-gate criteria audit and the independent
+description-layer certification, both already banked as ROADMAP candidate rows with
+falsifying promotion conditions. The exhaustion branch would have offered escalation,
+parking or dropping; AC7 narrows that to parking, and it is the criterion the maintainer
+accepted at the RR07 ingest gate.
+
+**What the seven passes establish.** The doctrine this milestone ships has been byte-stable
+and unimplicated since pass 1 and is now externally vetted three times over. Every one of
+the seven returns was a failure of the description layer around it — coverage under-pinned,
+records drifting from the artifacts they describe, or criteria authored wrong. Pass 7 closed
+the last two coverage holes in closed form and met every projection, and still returned on
+two records describing the work. That is the finding, and RR06 recs 4-5 are the instruments
+for it; another pass of this milestone is not.
