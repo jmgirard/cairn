@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR07
@@ -16,16 +16,14 @@ about whether a detector can see its target.
 
 ## Scope
 
-**In:** the thrash rule in `skills/milestone-review/SKILL.md` (RR05's design) · the
-falsifying-promotion-condition rule in `skills/shared/tracking-rules.md` ·
-`guard-doctrine.md` §3 and §7 · the guards over all three, including the two coverage
-gaps RR07 §BC2/§BC3 close · D-064, D-065, D-066 · the rec 4 and rec 5 candidate rows.
+**In:** the thrash rule (`milestone-review/SKILL.md`, RR05's design) · the
+falsifying-promotion-condition rule (`tracking-rules.md`) · `guard-doctrine.md` §3/§7 ·
+the guards over all three, including the two gaps RR07 §BC2/§BC3 close · D-064/D-065/D-066
+· the rec 4 and rec 5 rows.
 
-**Out:** the one-surface pin → ROADMAP candidate · any `cairn_validate` mechanization of
-these rules (D-064 choice 6; D-059) · changes to the `/milestone-review` fan-out ·
-rulebook growth beyond the one rule above (D-057) · RR06 recs 4-6 as standing rules and
-RR07 rec 6's satisfiability-read sentence → banked, never folded in · F5's docstring
-correction → a trivial-tier commit after merge (RR07 B4).
+**Out:** the one-surface pin → candidate · `cairn_validate` mechanization of these rules
+(D-064 choice 6; D-059) · the `/milestone-review` fan-out · rulebook growth (D-057) ·
+RR06 recs 4-6 and RR07 rec 6 as standing rules → banked · F5 → trivial-tier after merge.
 
 ## Acceptance criteria
 
@@ -34,22 +32,13 @@ correction → a trivial-tier commit after merge (RR07 B4).
      table. RR06's eight leave the live block and stay in the Review record —
      AC6 (BC6) as amended by RR07 Q1 was VERIFIED on pass-6 evidence. -->
 
-- [ ] AC1 (BC1): The pass-7 delta, measured from the RR07 ingest commit to the gate:
-      `git diff --name-only <ingest>..HEAD -- skills/` names exactly
-      `skills/tests/test_lesson_graduation.py` and
-      `skills/tests/test_mutation_harness.py`, and every other file under `skills/` —
-      explicitly including `skills/shared/guard-doctrine.md`,
-      `skills/milestone-review/SKILL.md` and `skills/tests/test_thrash_rule.py` — is
-      byte-identical across the pass. Tracking-side changes are confined to
-      `cairn/milestones/M114-review-loop-escape-hatches.md` and `cairn/ROADMAP.md`,
-      whose delta touches only M114's status cell and the rec 4 and rec 5 candidate rows
-      per BC4 (tolerance: no other ROADMAP line changes). Derivation, shown: this list
-      is the union of BC2–BC6's write obligations — BC2/BC3 write the two test files,
-      BC4 writes the two ROADMAP rows, BC5 and the pass write the milestone file's work
-      log, status mirroring writes the ROADMAP cell; the RR07 ingestion's own writes
-      (the AC block, Decisions pointers, `cairn/reviews/` archival of RB07/RR07, any
-      appended DECISIONS entry) land at the ingest commit and are outside the measured
-      delta.
+- [ ] AC1 (BC1): The pass-7 delta, measured from the RR07 ingest commit to the gate, is
+      confined under `skills/` to `skills/tests/test_lesson_graduation.py` and
+      `skills/tests/test_mutation_harness.py`, with tracking-side changes confined to
+      this file and `cairn/ROADMAP.md` (tolerance: no other ROADMAP line changes). The
+      full file list, its shown derivation from BC2-BC6's write obligations, and the
+      ingest-commit carve-out are RR07 §BC1 verbatim — carried by reference, see the
+      Deviations table.
 - [ ] AC2 (BC2): §7's operative remedy gains a pinning `assertRegex` in
       `test_sweep_section_states_the_silent_cell_rule` plus its own `Mutation(...)`
       entry, closing F1; the pass-7 work log supersedes T4's "pinned separately" claim
@@ -68,16 +57,10 @@ correction → a trivial-tier commit after merge (RR07 B4).
       is locatable verbatim in its named source, and the rec 6 row is byte-identical
       across the pass).
 - [ ] AC5 (BC5): Before `status -> review`, a fresh-context reader that authored no part
-      of pass 7 certifies the description layer of the pass-7 delta against the
-      artifacts: (i) each acceptance criterion maps to its pinning assert or evidence
-      command; (ii) every claim in a changed record, docstring, or comment matches the
-      file it describes; (iii) every anchor and every `Mutation(...)` block matches the
-      shipped bytes under re-wrap; (iv) every quotation or attribution in changed
-      content is located verbatim in its named source, or struck. The certifier's
-      verdict and every discrepancy are recorded verbatim in the work log, and the gate
-      is entered only at zero unresolved discrepancies (tolerance: the work-log entry
-      exists and names zero unresolved; zero lines of the pass-7 diff implement the
-      standing rules of RR06 recs 4, 5 or 6 — their banking stands).
+      of pass 7 certifies the description layer against the artifacts on four clauses,
+      recording its verdict and every discrepancy verbatim in the work log; the gate is
+      entered only at zero unresolved. The four clauses and the tolerance are RR07 §BC5
+      verbatim — carried by reference, see the Deviations table.
 - [ ] AC6 (BC6): On the final tree, the three suites pass from the repo root with exit
       codes checked separately (tolerance: exit 0 each, never piped; projected skills
       627 / scripts 280 / hooks 91 — BC2/BC3 add asserts to existing test methods, no
@@ -101,9 +84,13 @@ correction → a trivial-tier commit after merge (RR07 B4).
 
 | BC | Departure | Why |
 |---|---|---|
-| BC2 | Pattern, `Mutation(...)` block and probe carried by reference to RR07 §BC2 instead of restated | Restating BC2–BC4's literal regexes and replacement prose costs ~55 plan-owned lines and puts the file past the 150-line cap, which `weight caps` FAILs. RR07 is archived and never edited (IP4), so the exact text stays permanent and single-sourced — and a second copy is itself a divergence vector. No wording is softened; the implementer transcribes from RR07. |
+| BC2 | Pattern, `Mutation(...)` block and probe carried by reference to RR07 §BC2 instead of restated | Restating RR07's binding criteria in full costs ~99 plan-owned lines; with an append-only Decisions section at 43 and a Goal never edited in place, the verbatim bar and the 150-line cap are jointly unsatisfiable for a BC set this size, and `weight caps` FAILs. RR07 is archived and never edited (IP4), so the exact text stays permanent and single-sourced — a second copy is itself a divergence vector. No wording is softened; the implementer transcribes from RR07. Maintainer's call at the ingest gate, 2026-07-26. |
 | BC3 | Pattern, registered block and probe carried by reference to RR07 §BC3 | as BC2 |
 | BC4 | The two exact ROADMAP replacement clauses carried by reference to RR07 §BC4; its tolerance is restated verbatim above | as BC2 |
+| BC1 | The full `skills/` file list, its shown derivation, and the ingest-commit carve-out carried by reference to RR07 §BC1; the scope and its tolerance are stated above | as BC2 |
+| BC5 | The certifier's four clauses and the tolerance carried by reference to RR07 §BC5; the obligation, the record and the zero-unresolved gate are stated above | as BC2 |
+
+BC6 and BC7 stay verbatim deliberately — the review gate reads BC6's numeric projections and BC7's terminus directly, so those two are never indirected.
 ## Coverage
 
 - AC1 → T19 · AC2 → T16 · AC3 → T16 · AC4 → T17
@@ -111,15 +98,11 @@ correction → a trivial-tier commit after merge (RR07 B4).
 
 ## Tasks
 
-- [x] T1-T15: the doctrine, its guards, D-064/D-065, the re-cut, RR05's design, and
-      RR06's constrained sixth pass. Detail is in the work log and six Review sections.
-- [ ] T16: close F1 and F2 per RR07 §BC2/§BC3, blocks transcribed from the shipped
-      bytes; supersede T4's "pinned separately" claim by appended line (AC2, AC3).
+- [x] T1-T15: doctrine, guards, D-064/D-065, the re-cut, RR05's design, RR06's sixth pass — detail in the work log and six Review sections.
+- [ ] T16: close F1 and F2 per RR07 §BC2/§BC3, blocks transcribed from the shipped bytes; supersede T4's "pinned separately" claim by appended line (AC2, AC3).
 - [ ] T17: correct the rec 5 and rec 4 ROADMAP rows to RR07 §BC4's exact clauses (AC4).
-- [ ] T18: spawn the independent description-layer certifier before `status -> review`;
-      record its verdict and every discrepancy verbatim in the work log (AC5).
-- [ ] T19: hold and show the derived scope, replay the two probes red-side-up against a
-      verified-green baseline, measure 14 entries, apply the terminus (AC1, AC6, AC7).
+- [ ] T18: spawn the description-layer certifier before `status -> review`; record its verdict and every discrepancy verbatim in the work log (AC5).
+- [ ] T19: hold and show the derived scope, replay both probes red-side-up on a verified-green baseline, measure 14 entries, apply the terminus (AC1, AC6, AC7).
 
 ## Work log
 
@@ -161,6 +144,7 @@ correction → a trivial-tier commit after merge (RR07 B4).
 - 2026-07-26: blocked on RB07 — the exhaustion branch's escalation option taken at the maintainer's call, over parking, amending-and-retrying, or dropping. Blocker: two of RR06's own binding criteria (BC6's tracking-side clause and BC8) are jointly unsatisfiable as written, and two confirmed >=90 defects (F1, F2) lie in a file BC6's frozen scope forbids touching, so M114 cannot finish under RR06's constraints and the constraints are not mine to relax. Status -> blocked pending RB07.
 - 2026-07-26: RR07 ingested. AC6 (RR06's BC6) amended per RR07 Q1 to admit the three rows BC8 mandates, and recorded VERIFIED on the pass-6 evidence already in the Review record — the conflict was in the criterion's text, not the work. RR07's seven binding criteria then replace the AC block as AC1-AC7 (`Driving RR: RR07`); RR06's eight leave it and stay in the Review record, as RR05's did. Six recommendations apply, one considered, three rejected with reasons. DEVIATION, shown and tabled: BC2, BC3 and BC4 are carried by reference to the archived RR07 rather than restated — their literal regexes, `Mutation(...)` blocks and ROADMAP replacement clauses run ~55 plan-owned lines and would put the file past the 150-line cap that `weight caps` FAILs, so the verbatim bar and the cap are jointly unsatisfiable for a BC set this size. Nothing is softened; RR07 is append-only history, so one permanent copy exists and the implementer transcribes from it. That collision is itself the third instance of RR07's own diagnosis and is banked as a candidate row.
 - 2026-07-26: CHECKPOINT, gate not clean — after ingestion `binding criteria` and `coverage complete` PASS but `weight caps` FAILs at 166/149. Sections: Acceptance criteria 77 (verbatim-bound by `binding criteria`, already 3 of 7 deviated), Decisions 43 (append-only), Scope 13, Tasks 12, Goal 7 (never edited in place), Coverage 5. Scope and Tasks are already compressed once; the only two sections big enough to close a 17-line gap are both frozen, one by a check and one by the append-only rule. So the verbatim bar and the 150-line cap are jointly unsatisfiable for an RR binding-criteria set this size — the same defect class RR07 was convened over, now between two mechanized checks. Surfaced at the ingest gate rather than at a review gate, which is exactly where RR07 rec 6's satisfiability read says to catch it. Routed to the maintainer rather than resolved by shaving further.
+- 2026-07-26: cap collision RESOLVED at the maintainer's call — carry more of RR07 by reference rather than copy it. BC1 and BC5 join BC2-BC4 in the Deviations table, so 5 of 7 criteria point at the archived RR07; BC6 and BC7 stay verbatim deliberately, because the review gate reads BC6's numeric projections and BC7's terminus directly. With Scope and Tasks compressed a second time the plan-owned body is 149/149 and `cairn_validate` exits 0 — **zero headroom**, and `## Decisions` is append-only and grows at every future pass, so this recurs. Recorded as D-066 choice 4 and banked as a ROADMAP candidate naming D-030/D-046 as the entries a fix must supersede. RB07/RR07 archived; status -> in-progress with T16-T19 open.
 
 ## Decisions
 

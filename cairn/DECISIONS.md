@@ -2024,3 +2024,56 @@ back-reference discipline (D-054) — its heading names D-064 as superseded.
 Delivered by M114. If a rendering-independent fork detector is ever built, the
 candidate row is where it starts, and this entry is the record of why the first
 three attempts were abandoned rather than iterated.
+
+### D-066 (2026-07-26): A frozen scope is derived, an out-of-scope defect is admitted on three legs, and an oversized RR criteria set is carried by reference — annotates D-030/D-046 (the milestone cap) and D-004/D-062 (escalation gating)
+
+**Context:** RR06 froze M114's sixth review pass by enumerating the files it
+could touch, and authored that enumeration as free prose. It confined
+`cairn/ROADMAP.md` changes to "status mirroring" while its own BC8 mandated
+three candidate rows in that same file — jointly unsatisfiable, discovered at
+the review gate rather than at ingest. The same set left two confirmed 90+
+defects outside the scope with no rule saying whether to fix or bank them.
+RR07 answered all three, and its own criteria set then hit a fourth collision
+at ingestion: at ~99 lines it does not fit the 150-line plan-owned cap beside
+an append-only `## Decisions` section that three RR ingestions had grown to 43
+lines. D-030 and D-046 both declined to exempt that section, on the stated
+premise that it "is meant to stay brief, with cross-cutting entries promoted
+here" — a premise a three-RR milestone falsifies.
+
+**Decision:** Four choices, the first three RR07's and the fourth this gate's.
+(1) **A frozen scope's file list is derived, never authored** — it is the union
+of the write obligations of the other criteria in the same set, plus explicitly
+named mirroring, and it is re-derived whenever the set changes. RR07's own BC1
+shows its derivation inline so the ingesting session can check it rather than
+trust it. (2) **A defect outside a frozen scope is fixed inside the pass
+exactly when three legs hold**: its subject is the milestone's own deliverable
+and it is at or above the confidence threshold; the gate that owns the scope
+can specify the fix in closed form, so admitting it adds no authorship; and the
+fix is verifiable by replayed probes and measured counts. Fail any leg and it
+is banked with an IP3 disposition. The scope's enumeration is an instrument
+derived from the fix set; the fix set is never trimmed to preserve the
+enumeration. (3) **No numeric cap on escalations per milestone** — a count
+pre-commits to paying for every escalation below it and then fires exactly at
+the cap, the shape the falsifying-promotion-condition rule forbids; the
+per-instance human gate (D-004, D-062) is the working bound, and a
+disposition-shaped terminus is how a bound is written here. (4) **Where an RR's
+binding-criteria set cannot fit the milestone cap, criteria are carried by
+reference to the archived RR through the shown Deviations table** — never
+softened, never silently trimmed. The RR is append-only history, so exactly one
+permanent copy of the text exists and the implementer transcribes from it; the
+departure is tabled and shown at the ingest gate (IP3). Criteria the review
+gate reads directly — numeric projections, a terminus — stay verbatim.
+Rejected: exempting the milestone-local `## Decisions` section from the cap
+(D-030 and D-046 both declined it, and this entry does not reopen that);
+splitting M114 (RR07 Q4); and letting `weight caps` FAIL as an accepted
+divergence, which would block every later review of the file.
+
+**Consequences:** Annotates D-030 and D-046 — the cap's scoping is unchanged
+and no new exemption is created; what changes is what may be *restated* inside
+the budget. Annotates D-004/D-062 — escalation stays gated per instance with no
+count added. The derived-scope rule and the three-leg test bind any future RR
+that freezes a scope, and RR07 is the worked example of both. Delivered by
+M114. The residual is real and recorded as a ROADMAP candidate: at 149/149 the
+file has zero headroom, and the `## Decisions` section is append-only and grows
+once per RR ingestion, so a milestone driven by several RRs will hit this again
+— the entry to supersede is whichever of D-030/D-046 the fix lands against.
