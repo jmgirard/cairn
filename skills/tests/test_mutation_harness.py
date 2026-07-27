@@ -3296,6 +3296,36 @@ REGISTRY += [
 ]
 
 
+# M120: the false-positive taxonomy moves out of the reviewers' instruction and
+# into the scorer's rubric (D-078). Three entries, because the guard makes three
+# separable claims: that the taxonomy is present, that it is present INSIDE the
+# rubric (blanking the rubric's own anchor line must red the test — otherwise
+# the location claim is unproven and the taxonomy could drift back upstream),
+# and that the reviewers are told to report everything. The third is the
+# positive framing registered on behalf of the paired `assertNotIn`, which is
+# satisfied by blanking and cannot be mutation-proven itself (guard-doctrine §3).
+REGISTRY += [
+    Mutation(
+        guard="test_review_fanout",
+        test="TestReviewFanout.test_false_positive_taxonomy_lives_in_the_scorer_rubric",
+        target=REVIEW,
+        block="Not a finding, and out of scope for this diff",
+    ),
+    Mutation(
+        guard="test_review_fanout",
+        test="TestReviewFanout.test_false_positive_taxonomy_lives_in_the_scorer_rubric",
+        target=REVIEW,
+        block="Score 0–100 your confidence",
+    ),
+    Mutation(
+        guard="test_review_fanout",
+        test="TestReviewFanout.test_reviewers_report_everything_and_filter_nothing",
+        target=REVIEW,
+        block="report every candidate finding",
+    ),
+]
+
+
 class TestRegisteredGuardsFailWhenBlanked(unittest.TestCase):
     def test_each_registered_guard_fails_when_its_block_is_blanked(self):
         self.assertTrue(REGISTRY, "registry is empty")

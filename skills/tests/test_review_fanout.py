@@ -10,7 +10,9 @@ the load-bearing pieces against silent regression:
     numeric threshold;
   * sub-threshold findings excluded from the actioned list but *logged*, never
     silently dropped (IP3);
-  * the false-positive taxonomy handed to the reviewers;
+  * the reviewers told to report everything and filter nothing, with the
+    false-positive taxonomy carried in the scorer's rubric instead (M120,
+    D-078);
   * the model-strategy section describing the fan-out while keeping the blanket
     "Never Haiku" rule (D-016).
 
@@ -67,13 +69,47 @@ class TestReviewFanout(unittest.TestCase):
         self.assertIn("logged", t)
         self.assertRegex(t, r"never\s+silently\s+dropped")
 
-    def test_false_positive_taxonomy_handed_to_reviewers(self):
-        t = review()
-        self.assertIn("Not a finding", t)
+    def _scorer_rubric(self):
+        """The scorer's rubric blockquote, located by its OWN first line.
+
+        M120: asserting the taxonomy merely occurs in `SKILL.md` would pass
+        with it still sitting in the reviewers' instruction — the arrangement
+        this milestone exists to end. So the rubric is found by the text only
+        it carries, and read as the contiguous blockquote run from there;
+        slicing between two unrelated marker blocks would make the guard
+        report on whatever happened to fall between them.
+        """
+        lines = review().splitlines()
+        start = next(
+            i for i, ln in enumerate(lines)
+            if "Score 0–100 your confidence" in ln
+        )
+        run = []
+        for ln in lines[start:]:
+            if not ln.lstrip().startswith(">"):
+                break
+            run.append(ln)
+        # A one-line run would make every membership assert below trivially
+        # scoped to the rubric's own first sentence.
+        self.assertGreater(len(run), 1, "scorer rubric blockquote not parsed")
+        return "\n".join(run)
+
+    def test_false_positive_taxonomy_lives_in_the_scorer_rubric(self):
+        rubric = self._scorer_rubric()
+        self.assertIn("Not a finding", rubric)
         for token in ("pre-existing", "linter", "nitpick",
                       "unmodified line", "intentional change"):
             with self.subTest(token=token):
-                self.assertIn(token, t)
+                self.assertIn(token, rubric)
+
+    def test_reviewers_report_everything_and_filter_nothing(self):
+        # Absence-assert paired with its positive framing (guard-doctrine §3):
+        # `assertNotIn` alone is satisfied by an empty read, so the instruction
+        # that REPLACED the pre-filter is asserted first, and it is that phrase
+        # the mutation harness registers.
+        t = review()
+        self.assertIn("report every candidate finding", t)
+        self.assertNotIn("drop anything matching it before reporting", t)
 
     def test_model_strategy_describes_fanout_and_keeps_never_haiku(self):
         r = rules()
