@@ -1,6 +1,6 @@
 # M116: Repair the three-step placement test — retention takes the deletion arm, inversion moves to guard verification, and a step-0 single-home check (RR04 rec 9)
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
