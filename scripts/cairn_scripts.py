@@ -94,15 +94,29 @@ CLAUDE_SECTION_HEADING = "## Project tracking"
 # counting them could leave an over-cap file fixable only by an edit IP4 forbids
 # (the work log at D-046/M77, the milestone-local decisions at D-074/M118, which
 # supersedes D-046's choice (3)). `## Review` is the third member of the
-# cap-exempt set and needs no constant here: it is already outside the cap by the
-# body boundary itself, and for a different reason (M55 — it is review-owned).
-# Both matched exactly, lowercased.
+# cap-exempt set and is exempt by a different route and for a different reason
+# (M55 — it is review-owned): the body boundary itself ends the counted region
+# there, so it is never subtracted. All matched exactly, lowercased.
 WORKLOG_HEADING = "work log"
 DECISIONS_HEADING = "decisions"
-# What both cap counters exempt, so the count and its heaviest-first breakdown
+REVIEW_HEADING = "review"
+# What both cap counters SUBTRACT, so the count and its heaviest-first breakdown
 # can never disagree about the set — the invariant preamble+sections==body
 # depends on them dropping exactly the same sections.
 EXEMPT_HEADINGS = (WORKLOG_HEADING, DECISIONS_HEADING)
+# The counters' EFFECTIVE exempt set: the two subtracted above plus the one the
+# body boundary excludes. Two routes, one set — which is why this is derived
+# here rather than retyped, and why the `## Review` member is not in
+# `EXEMPT_HEADINGS` (subtracting a section already outside the boundary would
+# double-count it).
+#
+# `hooks/session_context.py` carries a MIRROR of this tuple: the hook imports
+# only `cairn_common`, so no shared constant is reachable across the two
+# packages, and a heading the cap exempts but the hook does not recognize is
+# injected whole — the gap the read-bound exists to close (D-063). The mirror is
+# held to this original by a two-sided test (RR08 §BC2), which reds whichever
+# side drifts.
+CAP_EXEMPT_SECTIONS = EXEMPT_HEADINGS + (REVIEW_HEADING,)
 
 # §1 scaffold pieces that must exist once a repo is on cairn (cairn-init §1).
 # Single source of truth for the machine-side drift check
@@ -359,7 +373,7 @@ def _plan_owned_scan(path):
         if not line.startswith("## "):
             continue
         title = line[3:].strip()
-        if title.lower() == "review":
+        if title.lower() == REVIEW_HEADING:
             boundary = i
             if start is not None:
                 sections.append((heading, i - start))
@@ -385,9 +399,8 @@ def milestone_body_line_count(path):
     history — append-only, never edited — so counting them could leave an
     over-cap file fixable only by an edit IP4 forbids; an advisory in
     `cairn_validate`, not the cap, is what keeps a now-unbudgeted section
-    honest — `work-log format` ships for the work log, and M119 ships
-    `decisions format` for the decisions section, which until then is exempt
-    with nothing watching it.
+    honest — `work-log format` for the work log (D-046/M77) and
+    `decisions format` for the decisions section (D-075/M119).
     A file with no `## Review` section counts to EOF — still less those
     two, which are exempt wherever they sit. A fenced heading is content, not a
     boundary (M45), and only exact headings match — `## Work log notes` and
@@ -403,14 +416,17 @@ def milestone_body_line_count(path):
 def _section_body_lines(path, heading):
     """`[(lineno, text)]` for the body of a milestone file's `## <heading>`
     section, 1-indexed, heading excluded. The shared scan behind both cap-exempt
-    extractors: each exempt section is read by ONE rule, the same rule the cap
-    counters exempt it by, so an exemption can never drift away from the
-    advisory that watches it (D-046/M77 for the work log; for the decisions
-    section the exemption lands at D-074/M118 and the advisory reading this
-    extractor at M119). Matches the heading exactly and lowercased; a fenced heading is
-    content, not the section (M45); both fence delimiters inside the section
-    belong to it, as the cap counters count them (M77 review F2). Returns [] when
-    the section is absent, None if the file is unreadable."""
+    extractors: each exempt section is read by ONE rule, keyed on the same
+    heading constant the cap counters exempt it by, so an exemption can never
+    drift away from the advisory that watches it (D-046/M77 for the work log;
+    for the decisions section the exemption lands at D-074/M118 and the advisory
+    reading this extractor at M119). The heading is what is shared with the
+    counters — they scan by `_plan_owned_scan` and never call this (corrected
+    M119, with the same error in both extractors' docstrings).
+    Matches the heading exactly and lowercased; a fenced heading is content, not
+    the section (M45); both fence delimiters inside the section belong to it, as
+    the cap counters count them (M77 review F2). Returns [] when the section is
+    absent, None if the file is unreadable."""
     try:
         with open(path, encoding="utf-8") as f:
             lines = f.read().splitlines()
@@ -442,18 +458,24 @@ def _section_body_lines(path, heading):
 
 def milestone_worklog_lines(path):
     """`[(lineno, text)]` for the body of a milestone file's `## Work log`
-    section. Shares `_section_body_lines` and `WORKLOG_HEADING` with the cap
-    counters **on purpose**: the section the cap stops measuring and the section
-    the wrapped-entry advisory polices must be the same one, or the exemption
-    would open a hole the advisory never looks at (D-046/M77)."""
+    section. Shares `WORKLOG_HEADING` with the cap counters **on purpose**: the
+    section the cap stops measuring and the section the wrapped-entry advisory
+    polices must be the same one, or the exemption would open a hole the
+    advisory never looks at (D-046/M77). (Corrected M119: this said it shared
+    `_section_body_lines` with the counters too, which it never did — that scan
+    is shared with `milestone_decisions_lines`; the counters run
+    `_plan_owned_scan`.)"""
     return _section_body_lines(path, WORKLOG_HEADING)
 
 
 def milestone_decisions_lines(path):
     """`[(lineno, text)]` for the body of a milestone file's milestone-local
     `## Decisions` section — the third member of the cap-exempt set (D-074/M118,
-    superseding D-046's choice (3)). Same shared scan and same
-    `DECISIONS_HEADING` the cap counters exempt it by, for the work log's reason:
+    superseding D-046's choice (3)). Same extractor scan as the work log's, and
+    keyed on the same `DECISIONS_HEADING` the cap counters exempt it by (the
+    counters run their own `_plan_owned_scan`; the heading is the shared part —
+    corrected M119, which found this docstring and its work-log twin claiming
+    the scan itself was shared with them), for the work log's reason:
     a section that stops costing budget still needs something watching it, and
     that watch must read exactly the section the cap released."""
     return _section_body_lines(path, DECISIONS_HEADING)

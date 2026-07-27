@@ -101,9 +101,26 @@ class TestRecordCorrectionRule(unittest.TestCase):
         # Label and members share one physical line, so swapping the two
         # enumerations breaks this anchor — the M76/F1 gap, which the
         # mechanism asserts alone did not cover.
+        #
+        # M119/RR08 BC1 added the milestone-local `## Decisions` section, and
+        # the line is RE-ANCHORED whole rather than gaining a second assert:
+        # the pre-M119 wording is a substring of nothing here, so a revert to
+        # the six-member list reds. Appending an assert would have left the old
+        # enumeration satisfying this one — the false coverage M118 AC5 hit.
         self.assertIn(
-            "History — `DECISIONS.md`, work-logs, milestone IDs, "
-            "`milestones/archive/`,",
+            "History — `DECISIONS.md`, work-logs, the milestone-local "
+            "`## Decisions` section,",
+            self.rules,
+        )
+
+    def test_history_set_names_its_remaining_members(self):
+        # The enumeration wraps across two physical lines, and the assert above
+        # can only pin the first. Without this the four members below the wrap
+        # delete green — `milestones/archive/` moved off line 1 at M119, so the
+        # pre-M119 anchor's incidental cover of it went with it.
+        self.assertIn(
+            "milestone IDs, `milestones/archive/`, `reviews/archive/`, "
+            "entombed `legacy/`",
             self.rules,
         )
 

@@ -2492,3 +2492,30 @@ entry records which of two live wordings governs, and the wording it endorses
 is the one M118 shipped. If a fourth section is ever admitted on a ground that
 is neither review-ownership nor un-editability, the count in this entry is what
 gets superseded, not the no-pair rule.
+
+### D-077 (2026-07-27): D-075's "WARN on every entry" is narrowed to 23 of 24 — supersedes that measurement clause; the rejection it supports stands (M119)
+
+**Context:** D-075 rejected the transplanted one-line grammar for the
+`## Decisions` section on the ground that it was "measured to WARN on every
+entry in the corpus". M119 re-measured that grammar over the same five sections
+read at their archiving commits, because the claim is restated in shipped code
+comments and guard docstrings and guard-doctrine §6 makes an inherited finding
+unverified until read out of the implementation. The corpus carries **24** `- `
+entries; **23** wrap and would WARN, and one does not — M84's single-line review
+entry, `- 2026-07-18: review — 3 lenses (7 findings, ...)`. The grammar's total
+over the five sections is 117 WARNs.
+
+**Decision:** The measurement is **117 WARNs, with 23 of the corpus's 24 `- `
+entries wrapping**, and the shipped restatements say so. "Every entry" is
+withdrawn as a measurement; nothing else in D-075 moves.
+
+**Consequences:** Supersedes D-075's "measured to WARN on every entry in the
+corpus" clause and nothing else. The rejection that clause supports is unchanged
+and does not depend on the exception: 23 of 24 entries WARNing is a permanently
+warning advisory on the same reasoning, and the lone exception is an entry of
+the work log's own genre sitting in a decisions section. D-075's subject
+(pasted output and fenced transcript blocks), its BC3 arms, and D-074 parts 1
+and 2 all stand. Recorded here rather than only in M119's own `## Decisions`
+section for D-076's reason: a milestone-local record compresses into an archive
+summary at `done`, and the bounded `DECISIONS.md` read (D-054) never scans
+archives, so a later reader would meet the withdrawn measurement as live.

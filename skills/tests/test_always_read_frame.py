@@ -89,7 +89,8 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
             "section ownership table | capped sections: the 150-line "
             "plan-owned cap; cap-exempt sections: newest-content injection — "
             "history read less, never shrunk (D-063); the file leaves the set "
-            "at `done` | `weight caps` CHECK + `work-log format`; none needed "
+            "at `done` | `weight caps` CHECK + `work-log format` + "
+            "`decisions format`; none needed "
             "for the cap-exempt sections once read-bounded |",
         ):
             with self.subTest(row=row[:20]):

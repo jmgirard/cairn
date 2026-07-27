@@ -419,6 +419,24 @@ REGISTRY = [
         target=RULES,
         block="Correcting a record proven false",
     ),
+    # M119 (D-075): the decisions advisory's subject, and its stated↔emitted
+    # label coupling — two distinct physical spans of one sentence, so two
+    # entries. The label entry follows the precedent set by the work-log
+    # `test_stated_advisory_label_matches_the_emitted_label` registration: its
+    # rulebook half IS a prose block, so blanking it proves the guard catches
+    # the deletion rather than only the registration going missing.
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_the_decisions_advisory_is_stated_with_its_subject",
+        target=RULES,
+        block="advisory WARNs on — pasted output or a fenced transcript block, never entry",
+    ),
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_stated_decisions_advisory_label_matches_the_emitted_label",
+        target=RULES,
+        block="that paste rule is what `cairn_validate`'s `decisions format`",
+    ),
     # M92 (D-051): the retirement rule. One entry per positive assert, since
     # registration is per FILE and the sound entries above would otherwise mask
     # a missing pin (M53). Each criterion block is label-INCLUSIVE for the same
@@ -531,7 +549,16 @@ REGISTRY = [
         guard="test_lessons_loop",
         test="TestRecordCorrectionRule.test_history_set_is_enumerated_under_its_own_label",
         target=RULES,
-        block="History — `DECISIONS.md`, work-logs, milestone IDs, `milestones/archive/`,",
+        block="History — `DECISIONS.md`, work-logs, the milestone-local `## Decisions` section,",
+    ),
+    # M119/RR08 BC1: the enumeration's second physical line. Registration is
+    # per FILE, so the sound entry above would otherwise mask a wrap-line pin
+    # that never existed (M53's reason for one entry per assert).
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestRecordCorrectionRule.test_history_set_names_its_remaining_members",
+        target=RULES,
+        block="milestone IDs, `milestones/archive/`, `reviews/archive/`, entombed `legacy/`",
     ),
     Mutation(
         guard="test_lessons_loop",
@@ -2130,7 +2157,7 @@ REGISTRY = [
         guard="test_always_read_frame",
         test="TestAlwaysReadFrameRulebook.test_enumerates_the_always_read_files_with_their_elements",
         target=RULES,
-        block="| the active `milestones/M<NN>-<slug>.md` | the milestone-file section ownership table | capped sections: the 150-line plan-owned cap; cap-exempt sections: newest-content injection — history read less, never shrunk (D-063); the file leaves the set at `done` | `weight caps` CHECK + `work-log format`; none needed for the cap-exempt sections once read-bounded |",
+        block="| the active `milestones/M<NN>-<slug>.md` | the milestone-file section ownership table | capped sections: the 150-line plan-owned cap; cap-exempt sections: newest-content injection — history read less, never shrunk (D-063); the file leaves the set at `done` | `weight caps` CHECK + `work-log format` + `decisions format`; none needed for the cap-exempt sections once read-bounded |",
     ),
     Mutation(
         guard="test_always_read_frame",

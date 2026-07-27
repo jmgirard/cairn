@@ -463,6 +463,79 @@ class TestSessionContextReadBound(RepoFixture):
         self.assertLessEqual(len(ctx), 30000)
 
 
+class TestExemptSetMirror(unittest.TestCase):
+    """RR08 §BC2 / M119: the hook's `CAP_EXEMPT_SECTIONS` and the cap counters'
+    effective exempt set are two encodings of one fact, and nothing but this
+    test holds them together — a hook may import only `cairn_common`, so no
+    shared constant is reachable across the two packages.
+
+    The failure it exists to catch is silent and one-directional in effect: a
+    heading the cap exempts but the hook does not recognize is injected WHOLE,
+    which is exactly the unbounded read D-063 added the bound to close. So the
+    assert is equality, never containment — it must red whichever side drifts.
+    """
+
+    def setUp(self):
+        scripts = HOOKS_DIR.parent / "scripts"
+        for d in (HOOKS_DIR, scripts):
+            sys.path.insert(0, str(d))
+            self.addCleanup(sys.path.remove, str(d))
+        import cairn_scripts
+        import session_context
+
+        self.cs = cairn_scripts
+        self.sc = session_context
+
+    def test_the_two_encodings_name_the_same_set(self):
+        self.assertEqual(
+            set(self.sc.CAP_EXEMPT_SECTIONS),
+            set(self.cs.CAP_EXEMPT_SECTIONS),
+            "the hook's cap-exempt set and the counters' have drifted apart",
+        )
+
+    def test_neither_side_is_empty(self):
+        # Non-vacuity: two empty tuples are equal, so the assert above would be
+        # satisfied by an import that silently produced nothing. Three members
+        # since M118; the count is pinned so a member vanishing from BOTH sides
+        # at once — the one drift equality cannot see — still reds.
+        self.assertEqual(len(set(self.sc.CAP_EXEMPT_SECTIONS)), 3)
+        self.assertEqual(len(set(self.cs.CAP_EXEMPT_SECTIONS)), 3)
+
+    def test_the_counters_effective_set_is_what_the_constant_claims(self):
+        # The constant is only worth comparing if it describes what the scan
+        # actually does. `## Review` leaves by the body boundary and the other
+        # two by subtraction, so a constant-only test would pass over a counter
+        # that had stopped exempting one of them. This drives the real scan: a
+        # file whose every section is exempt must count only its preamble, and
+        # the trimmable breakdown must name nothing.
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "M01-all-exempt.md"
+            preamble = "# M01: Title\n\n- **Status:** planned\n"
+            body = "".join(
+                f"## {h.title()}\nline\nline\n" for h in self.cs.CAP_EXEMPT_SECTIONS
+            )
+            path.write_text(preamble + body)
+            self.assertEqual(
+                self.cs.milestone_body_line_count(str(path)),
+                len(preamble.splitlines()),
+                "a section the constant calls exempt is still being counted",
+            )
+            self.assertEqual(self.cs.milestone_section_line_counts(str(path)), [])
+
+    def test_a_section_outside_the_set_is_still_counted(self):
+        # The positive control. Without it the test above is satisfied by a
+        # counter that exempts everything, which would report every milestone
+        # as three lines long and never fail the cap.
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "M01-scoped.md"
+            path.write_text("# M01: Title\n\n## Scope\nline\nline\n## Work Log\nline\n")
+            self.assertEqual(self.cs.milestone_body_line_count(str(path)), 5)
+            self.assertEqual(
+                [h for h, _ in self.cs.milestone_section_line_counts(str(path))],
+                ["Scope"],
+            )
+
+
 class TestBoundedTail(unittest.TestCase):
     """Direct-import tests for the read-bound's pure helpers.
 

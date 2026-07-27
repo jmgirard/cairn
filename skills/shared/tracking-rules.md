@@ -120,7 +120,11 @@ takes a D-entry, and its number stays retired.
   of a budget it no longer pays into, so `cairn_validate`'s `work-log format`
   advisory WARNs on any work-log line that is not a one-line `- ` entry. It
   warns and never fails (D-046). Never paste command output or subagent
-  transcripts into tracking files — summarize.
+  transcripts into tracking files — summarize. In the milestone-local
+  `## Decisions` section that paste rule is what `cairn_validate`'s `decisions format`
+  advisory WARNs on — pasted output or a fenced transcript block, never entry
+  length, because a decision entry carries its rationale and is never one line
+  (D-075). It too warns and never fails.
 - Remedies when a cap is hit (never "let it grow"): over-count ROADMAP →
   graduate or prune candidates and enforce terminal-row retention — and when
   a large legacy or parking-lot backlog blows the cap one-row-per-item,
@@ -175,7 +179,7 @@ The always-read surfaces, as the worked case:
 | `LESSONS.md` | a durable "how this repo behaves" note | retire by enforcement / ownership / maturation (D-051, D-055) | 50-line item cap + `record density` |
 | `tracking-rules.md` | the placement steps under "What gets a test" (D-071) | editorial pass; growth governed at the door (D-057) | `/milestone` audit mass+growth line |
 | `DECISIONS.md` | a cross-cutting choice among alternatives | bounded heading read — history read less, never shrunk (D-054) | none needed once read-bounded |
-| the active `milestones/M<NN>-<slug>.md` | the milestone-file section ownership table | capped sections: the 150-line plan-owned cap; cap-exempt sections: newest-content injection — history read less, never shrunk (D-063); the file leaves the set at `done` | `weight caps` CHECK + `work-log format`; none needed for the cap-exempt sections once read-bounded |
+| the active `milestones/M<NN>-<slug>.md` | the milestone-file section ownership table | capped sections: the 150-line plan-owned cap; cap-exempt sections: newest-content injection — history read less, never shrunk (D-063); the file leaves the set at `done` | `weight caps` CHECK + `work-log format` + `decisions format`; none needed for the cap-exempt sections once read-bounded |
 
 The fifth surface differs from the four above it in two ways worth naming.
 It is **the only always-read surface that leaves the set**: a milestone stops
@@ -203,9 +207,9 @@ covered — a judgment, reported and never auto-fixed.
 - **Correcting a record proven false.** The tracking files split by purpose,
   and the split sets the remedy: current knowledge is corrected in place,
   history is superseded and never edited.
-  History — `DECISIONS.md`, work-logs, milestone IDs, `milestones/archive/`,
-  `reviews/archive/`, entombed `legacy/` files — records what was decided or
-  done at a time, and is never edited (IP4).
+  History — `DECISIONS.md`, work-logs, the milestone-local `## Decisions` section,
+  milestone IDs, `milestones/archive/`, `reviews/archive/`, entombed `legacy/`
+  files — records what was decided or done at a time, and is never edited (IP4).
   Current knowledge — `LESSONS.md`, `references/` pages, `DESIGN.md`, `ROADMAP.md` — records what is true *now* and is read to act on,
   so a line later proven
   false is fixed where it sits, the correction marked (`(M71, corrected M75)`)

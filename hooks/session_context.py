@@ -69,8 +69,13 @@ MIN_TAIL_BLOCKS = 3
 # read as `## Review` (the boundary bug M55 hit), and `## Decisions notes` must
 # not read as `## Decisions`.
 # Three members since M118 (D-074 admitted the milestone-local `## Decisions`
-# section); the counters' own two-member `EXEMPT_HEADINGS` plus the `## Review`
-# body boundary are the other encoding of the same set.
+# section). This is a MIRROR of `cairn_scripts.CAP_EXEMPT_SECTIONS`, not an
+# independent list: the counters reach the same three by two routes — two
+# subtracted via `EXEMPT_HEADINGS`, `## Review` excluded by the body boundary —
+# and a shared import is unavailable because a hook may import only
+# `cairn_common`. Mirrored constants drift silently, so the two are held equal
+# by a two-sided test (`hooks/tests/test_hooks.py`, RR08 §BC2/M119): adding or
+# dropping a member on EITHER side reds it.
 CAP_EXEMPT_SECTIONS = ("work log", "decisions", "review")
 
 # Injection order, so that shedding from the end sheds the least-current

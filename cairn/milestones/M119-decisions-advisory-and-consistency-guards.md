@@ -3,12 +3,12 @@
      Per-section owners are tagged below. Drafting budgets: see the template. -->
 # M119: RR08's follow-ons — the decisions-format advisory, the history enumeration, and a two-sided exempt-set guard
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M118
 - **Driving RR:** RR08
 - **Principles touched:** IP4
-- **Branch/PR:** —
+- **Branch/PR:** `m119-decisions-advisory-and-consistency-guards` · https://github.com/jmgirard/cairn/pull/119
 
 ## Goal
 
@@ -31,21 +31,21 @@ WARN → not proposed (D-046's severity reasoning stands, D-075).
 
 ## Acceptance criteria
 
-- [ ] AC1: A `decisions format` advisory WARNs, exit-code neutral, on pasted
+- [x] AC1: A `decisions format` advisory WARNs, exit-code neutral, on pasted
       output or a fenced transcript block in a milestone-local `## Decisions`
       section — the section's own genre, never the work log's one-line grammar
       (D-075) — reading the section through the shared extractor M118 adds, so
       the section the cap stops measuring is the section the advisory polices.
-- [ ] AC2 (BC3): RR08 §BC3 — the shipped advisory emits exactly 0 WARNs over
+- [x] AC2 (BC3): RR08 §BC3 — the shipped advisory emits exactly 0 WARNs over
       the whole `## Decisions` sections of M83, M84, M94, M98 and M114 as
       fixtures, and >=1 on a constructed pasted-output fixture.
-- [ ] AC3 (BC1): RR08 §BC1 — the rulebook's history-member enumeration names
+- [x] AC3 (BC1): RR08 §BC1 — the rulebook's history-member enumeration names
       this section, pinned per the file's mutation rules.
-- [ ] AC4 (BC2): RR08 §BC2 — a test reds whenever the hook's
+- [x] AC4 (BC2): RR08 §BC2 — a test reds whenever the hook's
       `CAP_EXEMPT_SECTIONS` and the counters' effective exempt set disagree
       either way, via mirrored constants read from each side (the hook imports
       only `cairn_common`, so no shared constant is reachable).
-- [ ] AC5: All three suites clean (the profile's `verify` slot), `cairn_validate` green.
+- [x] AC5: All three suites clean (the profile's `verify` slot), `cairn_validate` green.
 
 **Deviations from RR08.** BC1-BC3 are carried **by reference** to the archived
 RR rather than verbatim, per the D-066 choice-4 decision taken at the RR08
@@ -69,20 +69,21 @@ file and its ledger, and is delivered there.
 
 ## Tasks
 
-- [ ] T1: Add `check_decisions_format` beside `check_worklog_format`
+- [x] T1: Add `check_decisions_format` beside `check_worklog_format`
       (`cairn_validate.py:1321`) and register it in `ADVISORIES` (`:1590`);
       detector is pasted-output/fenced-block shaped. Fixtures: the five corpus
       sections via ref-based `git show` at 0 WARNs, a pasted-output fixture at
       >=1, exit 0 throughout.
-- [ ] T2: Add the section to the rulebook's history-member enumeration
+- [x] T2: Add the section to the rulebook's history-member enumeration
       (`tracking-rules.md:205-207`) and pin the amended sentence under the
       file's existing mutation-registration rules; verify the pin reds when the
       member is removed.
-- [ ] T3: Mirror the exempt-set constant across `cairn_scripts` and
+- [x] T3: Mirror the exempt-set constant across `cairn_scripts` and
       `hooks/session_context.py`; two-sided consistency test with a by-hand
       one-sided-removal red check. Note `## Review` is excluded by the body
       boundary, not by set membership — the test compares effective sets.
-- [ ] T4: Full `verify` + `cairn_validate`; post-merge hygiene.
+- [x] T4: Full `verify` + `cairn_validate` (post-merge hygiene is review-phase
+      by construction — minor amendment, M119 §8 round 6).
 
 ## Work log
 
@@ -90,6 +91,38 @@ file and its ledger, and is delivered there.
 - 2026-07-27: split boundary chose core-vs-followons over splitting by surface (scripts / hooks / rulebook), because the follow-ons all depend on the shared extractor and exempt set M118 introduces while the core does not depend on any of them, so this cut is the only one that leaves the first milestone shippable alone; falsified by a follow-on turning out to need no M118 artifact, which would mean the two could have run in parallel.
 - 2026-07-27: both files declare `Driving RR: RR08` and enumerate all four binding criteria, because `check_binding_criteria` holds every milestone naming an RR to that RR's whole criteria set — a split that let each file list only its own share would red the check on the absent ones.
 - 2026-07-27: D-075's "Delivered by M118" now reads as this pair; the entry is history (IP4) and is not edited — the split is recorded here and in M118's work log instead.
+- 2026-07-27: implement question gate — detector covers fenced blocks AND unfenced machine-output signatures (AC1's two arms, not D-075's narrower fenced-only fallback); corpus read from git history at the five archiving commits rather than copied into fixtures; one WARN per pasted chunk, not per line.
+- 2026-07-27: T1 — `check_decisions_format` + `_pasted_runs` shipped and registered as `decisions format`, adjacent to `work-log format`; 12 tests including the five-section corpus at 0 WARNs with per-file non-vacuity asserts and a same-path positive control. Three by-hand mutations (signatures off, fences off, quote-normalization off) each redden the right tests.
+- 2026-07-27: T2 — the history enumeration names the milestone-local `## Decisions` section; the pin is RE-ANCHORED whole (the pre-M119 six-member line satisfies nothing), and a second assert pins the wrap line, whose four members lost their incidental cover when `milestones/archive/` moved off line 1. Both registered in the mutation harness; a by-hand revert to the six-member list reds both.
+- 2026-07-27: T2 minor amendment (discovered sub-task) — the rulebook also names the shipped advisory and its subject beside `work-log format`, and the always-read frame's attention-signal cell gains it; `cairn_scripts.py`'s forward reference to "M119 ships `decisions format`" is retired. Not enumerated in Scope, taken as part of "and its registration": an advisory the rulebook does not name leaves the repo contradicting itself, M118 F1's shape. Two new guards (subject, stated↔emitted label), both registered; three by-hand mutations red.
+- 2026-07-27: T3 — `cairn_scripts.CAP_EXEMPT_SECTIONS` derives the counters' effective set from `EXEMPT_HEADINGS + (REVIEW_HEADING,)`, and `_plan_owned_scan`'s boundary now reads that constant instead of a literal; `hooks/session_context.py` declares itself the mirror. `TestExemptSetMirror` (4 tests) asserts set EQUALITY, non-vacuity, and — the arm a constant-only comparison misses — that the real scan exempts what the constant claims. Four by-hand mutations red: a member dropped from either side, a member added, and the counters silently abandoning the `## Review` boundary with both constants untouched.
+- 2026-07-27: §8 certification (fresh-context [O], authored no part of this): 8 discrepancies, all fixed, zero unresolved. Two were defects, not wording — AC1's "reads through the shared extractor" clause was pinned by nothing, and `_pasted_runs` closed an unfenced run at the first non-signature line, so a realistic unittest paste (progress dots, `-----` rule, blank) reported as 3 findings against the one-per-chunk decision. Fixed by gap-tolerant runs closing on markdown prose, plus a fixture in the shape an author actually pastes.
+- 2026-07-27: correction (supersedes this session's T2 line, IP4 — appended, not edited): the wrap line's members that lost incidental cover are TWO (`milestone IDs`, `milestones/archive/`), not four; `reviews/archive/` and entombed `legacy/` were already below the wrap pre-M119 and were never covered by any assert.
+- 2026-07-27: six certification findings were record accuracy — "WARNs on every entry in the corpus" is false at three sites (measured: 117 WARNs, 23 of 24 entries wrap, one M84 review line does not); "the shared scan the cap counters exempt it by" conflated the extractor scan with `_plan_owned_scan` (only the heading constant is shared — M118's work-log twin carried the same error and is corrected in place); a registry comment said "above" of a precedent that is below; the blockquote comment enumerated four renderings for a regex that takes any; and two forward references still called the advisory unshipped, one of them in the template the new guard reads.
+- 2026-07-27: §8 round 2 (second fresh-context [O], did not do round 1): 3 discrepancies + 3 minor, all fixed. The defect was round 1's own fix being fitted to the EASY shape — the passing unittest run — while the failure transcript actually pasted as evidence still split into three findings on its `======`/`FAIL:`/`-----` banner. `_pasted_runs` gained a filler class (rules, progress dots, indented frames, blanks) that neither closes a run nor advances the gap, and prose is now judged with its indentation so a diff's ` - context` line stops closing the diff it sits in. Four shapes now pinned: passing run, failure transcript, two-hunk diff, and prose closing a run at the gap.
+- 2026-07-27: round 2's other fixes — the shared-scan claim corrected at its definition site (`_section_body_lines`), not just at the two extractors; the blockquote comment's rendering count removed rather than re-counted (the test is the record); D-077 written because D-075's "every entry" measurement is live in `DECISIONS.md` and the shipped code now contradicts it — D-076's shape exactly, and a milestone-local record would not reach a later reader.
+- 2026-07-27: §8 round 3 (third fresh-context [O]): 3 defects + 5 record errors, and rounds 2 and 3 were the same class — every fixture written for the adjacency chunker was the convenient shape. Round 3 broke round 2's own fixtures: the common `assertEqual` failure splits on its banner, a two-hunk diff splits on its changed lines, this commit's own diff gives 3 findings, and the `>` rendering splits because the quote pattern eats the diff context line's indentation.
+- 2026-07-27: mini gate (amendment) — the maintainer chose to REMOVE the run-boundary logic rather than tune it. Shipped: a fenced block keeps its own finding and its own range (delimiters are read, never inferred); all loose output in a section collapses to one finding anchored at its first signature line with the rest counted. `_DECISIONS_PROSE`, `_DECISIONS_FILLER` and `_DECISIONS_GAP` are gone, and with them six of round 3's eight findings. Departure from the implement gate's "one per chunk": two loose pastes in one section now report once — disclosed in the code, and pinned by a test rather than left implicit. No acceptance criterion moves; AC1 and AC2 are satisfied either way.
+- 2026-07-27: the four paste shapes three rounds surfaced are kept as a fixture table (`PASTE_SHAPES`) at the raggedness an author actually pastes — passing run, `assertEqual` failure, two-hunk markdown diff, transcript astride a paragraph — so the removal's payoff is what reds if boundary inference ever returns.
+- 2026-07-27: §8 round 4 (fourth fresh-context [O]): 3 defects + 4 record errors, all fixed. The defects were coverage the round-3 removal dropped or never had — the loose finding's anchor line survived being moved to the last signature line and to `first + 7` with the class green, the fenced range survived losing its closing delimiter, `PASTE_SHAPES` passed in 8ms when emptied, and the loose finding was emitted after every fenced one regardless of line order. All five now red under by-hand mutation.
+- 2026-07-27: correction (supersedes this session's T1 line, IP4 — appended, not edited): `_pasted_runs` no longer exists. The shipped functions are `_pasted_findings` and `_span`; the round-3 removal named what it deleted but not what replaced it.
+- 2026-07-27: correction (supersedes this session's round-3 table line, IP4): three of `PASTE_SHAPES`' four shapes came from rounds 1-3, not all four — the fourth ("transcript astride a paragraph of prose") was the removed chunker's own gap fixture and is kept because it pins the disclosed two-loose-pastes collapse. The `>`-quoted shape round 3 surfaced is pinned by its own test, not by the table. Also corrected in this round: the removal note's three examples were {round 2, round 3, round 3} with round 1's shape missing, and "nothing infers an extent" is false of an unterminated fence — the one place an extent still is inferred, now stated and covered by a test.
+- 2026-07-27: §8 round 5 — **no code defects and no regressions**, 2 record errors ("the note above the signature table" is below it; the `>`-quoted shape round 3 surfaced was a quoted DIFF, which the marker sweep never reached). Both fixed, the second by adding the quoted-diff case rather than narrowing the wording.
+- 2026-07-27: round 5's three out-of-scope observations were taken rather than banked — they were coverage gaps in this milestone's own deliverable. Six of the ten signatures deleted green because the shape tests assert `len == 1`, which any one matching line satisfies; `~~~` support, column-0 fences and prefix-closing all deleted green too. Now: every signature fires on its own with a prose negative control, both delimiters and an indented opener covered, and fence closing pinned on its ENDPOINT — `len == 1` plus a `\d+-\d+` range left equality-closing green, because an unclosed fence also reports one ranged finding.
+- 2026-07-27: the quoted-fence miss is documented rather than fixed: fence detection reads the raw line, so a quoted ``` is not a delimiter and the block reports as loose output — a change of kind, never silence. Widening it would make a fence's extent depend on quoting depth, which is more inference than the round-3 removal left standing. Pinned by a test so the comment cannot drift from what ships.
+- 2026-07-27: T4 / AC5 evidence — `python3 -m unittest discover` green on all three suites (skills 680, scripts 328, hooks 98) and `python3 scripts/cairn_validate.py .` reports all checks passed with `OK    decisions format`, run at 2026-07-27 on `a288d8f` + round-6 fixes.
+- 2026-07-27: T4 minor amendment — its second clause named post-merge hygiene, which cannot run before review by construction, so five §8 rounds passed an unticked task. Task text narrowed to the pre-review half; hygiene stays review's.
+- 2026-07-27: §8 round 6 — **no code defects and no regressions**, 4 record errors + 4 pre-existing coverage gaps, all closed. The records: "a change of kind, never silence" was false for a quoted fence whose body carries no signature (measured: unquoted reports, quoted reports nothing) and the shipped test used the one fixture that made the claim look true; "six of the ten signatures" is seven; "two cases equality gets wrong" was one, the info-string case pinning a different rule; "one line per signature" over twelve lines for ten.
+- 2026-07-27: round 6's four gaps closed — `_span`'s single-line arm (reachable via a fence opening on the section's last line), the 60-char preview truncation, the message's section name, and both `kind` labels, all of which deleted or mutated green. The preview assert takes a FIXED bound with the constant pinned separately, because deriving it from the constant under test let raising the constant pass (guard-doctrine §6).
+- 2026-07-27: §8 round 7 — **no record errors**, 2 coverage gaps. Both were one-directional pins: the line-order test's fixture had the loose line first, so a sort key hard-coded to 0 sorted correctly and survived; and the unterminated fence is a third emission site round 6's whole-message test never reached, so `"fenced blockk"` survived there. Fixed with a both-orders fixture and a whole-message assert.
+- 2026-07-27: round 7's alternation survivors closed too — narrowing `PASS|FAIL|WARN|OK` to `PASS`, dropping the singular from `Ran N test(s)`, and widening `Traceback` past its anchor all survived. `SIGNATURE_LINES` gained the branches, and a `NEAR_MISS_LINES` control now holds the patterns from being widened into the permanent WARN D-075 exists to prevent.
+- 2026-07-27: the near-miss control found a live false positive in the shipped detector — `^diff --git ` matched prose opening with those words. Tightened to `^diff --git a/`, git's actual path prefix. Every AC5 suite re-run green after the change.
+- 2026-07-27: §8 round 8 — **0 shipped-behaviour defects, 0 regressions**; 3 record errors + 2 coverage gaps, all closed. The records: the near-miss control's own comment named a widening (`Traceback`'s `$`) that no entry could reach; "one character away" measured true of 1 of 5 entries; and "git's actual path prefix" overstated `a/`, which `--no-prefix`, `--src-prefix`, `diff.mnemonicPrefix` and C-quoted paths all miss. Each entry now names the widening it holds against, a sixth reaches the `$`, and the signature comment states the trade — a header-only paste in those forms is lost, any diff with a hunk header still fires on `^@@ .* @@`.
+- 2026-07-27: round 8's two gaps were both boundary arms an over-limit fixture leaves free — the preview comparison (`>` → `>=` survived, since a 61-char truncated preview satisfies "ends in … and is ≤ 61") and the fence preview's `and stripped` clause (no fixture opened a fence on a blank line). One fixture at exactly the limit and one blank-opened fence red both.
+- 2026-07-27: §8 round 9 — 0 shipped-behaviour defects, 0 regressions, 74 mutations run. Two record errors (a "note below this table" that is above it — the same inversion round 5 fixed, re-introduced; and the near-miss control's stated function overclaiming for signatures it did not cover) and one real gap: `NEAR_MISS_LINES` covered 5 of the 10 signatures, and five widenings survived, the sharpest being `--- a/|+++ b/` → `---|+++`, which claims an ordinary markdown thematic break and so WARNs forever. The set now covers all ten; each widening reds under by-hand mutation.
+- 2026-07-27: **§8 loop stopped at round 9, not converged.** Rounds 5-9 found zero shipped-behaviour defects apart from round 7's live `^diff --git ` false positive; what repeated was a false claim in the previous round's own fix comment — round 9's two findings sit in round 8's text. The thrash rule could not fire: it counts review returns (`/milestone-review`, D-064) and this milestone has had none, so nine implement-phase rounds ran with the counter at zero. Recorded as a candidate row; the disposition (retire §8 per its own falsifier, or extend the counter to implement-phase loops) is the maintainer's and needs a D-entry either way.
+- 2026-07-27: measured at the gate that density is not a usable signal — M84's section is a character survey and M98's a line-number inventory, so a numeric heuristic fires hardest on the files the exemption exists to serve; detector keys on shape only.
+- 2026-07-27: user override at the review-entry gate — review findings whose subject is the description layer (comment/record accuracy) rather than shipped behaviour are LOGGED in the Review section and do not return the milestone to in-progress; grounds stated by the user and accepted: §8 rounds 5-9 produced zero shipped-behaviour defects and zero regressions across five rounds, so a return on that class would restart the loop §8 stopped at round 9 without evidence it protects code. Behaviour findings return the milestone normally. Not a precedent: M121 owns the durable disposition.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -97,3 +130,90 @@ file and its ledger, and is delivered there.
 
 ## Review
 <!-- owner: review · exclusive -->
+
+**Fresh evidence, 2026-07-27** (branch rebased onto `main` at the plan commit
+before any evidence was gathered; PR #119).
+
+- **AC1** — `decisions format` is registered in `ADVISORIES` and absent from
+  `CHECKS` (asserted live via `cairn_validate.ADVISORIES`/`CHECKS`), so it is
+  structurally exit-neutral. `cv.run('.')` emits `OK    decisions format` with
+  overall exit 0. `check_decisions_format` (`cairn_validate.py:1505`) reads the
+  section through the heading constant the cap counters exempt by, so the
+  section the cap stopped measuring is the section the advisory polices.
+- **AC2 (BC3)** — both arms measured directly, not inferred from a green test.
+  Arm 1, shipped advisory over the five corpus sections read by ref-based
+  `git show` at their archiving commits: M83 34 lines → 0, M84 31 → 0, M94 32 →
+  0, M98 32 → 0, M114 42 → 0. **Measured 0 WARNs against projected exactly 0.**
+  Arm 2, constructed fixtures: unfenced pasted output → 1 WARN
+  (`M01:9 (+1 more line): pasted output …`), fenced transcript → 1 WARN
+  (`M01:9-13: fenced block …`). **Measured 1 and 1 against projected ≥1.**
+  `TestDecisionsFormatAdvisory` runs 32 tests green, including per-file
+  non-vacuity asserts (each section proved present and ≥20 lines before any
+  silence is claimed).
+- **AC3 (BC1)** — the enumeration at `tracking-rules.md:210` names the
+  milestone-local `## Decisions` section alongside the other history members.
+  Pinned by `test_lessons_loop.py:105` and registered in the mutation harness
+  (`test_mutation_harness.py:552`). Inversion run at review: removing the
+  member from the shipped sentence reds `test_lessons_loop` (1 failure);
+  restored byte-identical to HEAD and re-confirmed green.
+- **AC4 (BC2)** — `CAP_EXEMPT_SECTIONS` mirrored at `cairn_scripts.py:119` and
+  `session_context.py:79`; `TestExemptSetMirror` (`test_hooks.py:466`) compares
+  the two as sets, with a non-vacuity pin on the count and a positive control
+  driving the real scan. Two-sided inversion run at review: dropping
+  `decisions` from the hook side alone → 4 failures; dropping the heading from
+  the counter side alone → 2 failures; both restores clean with no diff.
+- **AC5** — profile `verify` slot, from the repo root with each exit code
+  checked separately: `skills/tests` 680 tests exit 0, `scripts/tests` 330
+  exit 0, `hooks/tests` 98 exit 0 (1108 total). `cairn_validate` exit 0 — 16
+  PASS, 8 advisories OK, none WARN.
+
+**Fan-out (3 lenses + scorer).** [O] diff-bug: 4 findings. [S] blame-history:
+**0** — the diff undoes nothing deliberate (checked `_plan_owned_scan`'s
+boundary refactor against M113's normalization lesson, the hook's D-063
+injection, the M118 template strike, and every changed mutation registration).
+[S] prior-review: **0** — `gh api pulls/comments?per_page=1` returned empty, so
+the archive and LESSONS were the evidence base; the diff implements M113/M117's
+lessons rather than regressing them. Scores: F1 85, F4 80 (actioned); F2 74,
+F3 55 (logged, sub-threshold — read for substance per records-hygiene §5, not
+trusted to the cut).
+
+- **F1 (85, shipped behaviour) — FIXED.** `^Ran \d+ tests? in ` and
+  `^File "[^"]+", line \d+` claimed ordinary prose: `Ran 3 tests in isolation
+  before the change, and all held.` and `File "cairn_validate.py", line 42 is
+  where the boundary sits.` both fired. Reproduced independently against
+  `_pasted_findings` before accepting the finding. The near-miss control tested
+  `to confirm` and dodged `in`, the preposition prose takes first. Bound to
+  unittest's duration (`\d+(?:\.\d+)?s$`) and to a frame's `,`-or-EOL; the real
+  machine forms still fire, and three near-miss controls now cover the gap.
+- **F2 (74, shipped behaviour) — FIXED.** `check_worklog_format` skips HTML
+  comments; this advisory did not, though the rulebook presents them as
+  counterweights — and `## Decisions` is the one section the template ships a
+  comment into, so a fenced example there would WARN on every milestone born
+  from it (M77 review F1's shape). Reproduced, then fixed with the sibling's
+  treatment plus a positive control proving a fence outside a comment still
+  fires. Actioned below threshold deliberately: same function, same defect
+  class, and a second pass would have been a second edit to the same lines.
+- **F4 (80, description layer) — LOGGED, not fixed.** `tracking-rules.md:126`
+  says a decision entry "is never one line", while D-077 — appended on this
+  same branch — records M84's `- 2026-07-18: review — 3 lenses (…)` as the
+  counterexample. Verified both sides directly. Declined under the review-entry
+  override: it is a description-layer overclaim, the sentence is mutation-pinned,
+  and re-anchoring a reflowed rulebook line is the M104 trap that fed the §8
+  loop. Banked as a candidate row so it is not lost.
+- **F3 (55, description layer) — LOGGED.** "fenced transcript block" names a
+  detector that fires on any fence, by deliberate design ("no rule reads a
+  transcript's insides"). Operator-facing wording under-describes shipped
+  behaviour; the behaviour is the gate's intended choice.
+
+Post-fix re-verification (the evidence above was gathered before F1/F2 landed,
+so it was re-run): suites 680 / **332** / 98, all exit 0 checked separately;
+`cairn_validate` exit 0, no FAIL, no WARN.
+
+**Projection vs outcome (Driving RR: RR08).** BC3 is the only binding
+criterion carrying numbers. Projected **0 WARNs (tolerance: exactly 0)** over
+the corpus — **re-measured after the F1/F2 fixes: 0** (M83 34 lines, M84 31,
+M94 32, M98 32, M114 42, each read at its archiving commit and proved
+non-vacuous before any silence was claimed). Projected **≥1 WARN** on a
+constructed pasted-output or fenced-transcript fixture — **re-measured: 1 and
+1**. No shortfall. BC1 and BC2 carry no numeric projection; BC4 is M118's
+and is out of scope here per the recorded deviation.

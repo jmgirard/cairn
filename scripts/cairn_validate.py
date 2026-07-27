@@ -907,6 +907,99 @@ _LOG_ENTRY = re.compile(r"^\s*-\s")
 _LOG_PREVIEW = 60
 
 
+# The milestone-local `## Decisions` section's counterweight advisory (M119),
+# subject set by D-075: **pasted output and fenced transcript blocks**, never
+# entry length. D-074 part 3 first specified the work log's one-line grammar
+# here; RR08 measured that grammar against the corpus and found it defective —
+# a decision entry structurally carries its rationale the way a `DECISIONS.md`
+# entry does, so the transplanted rule would either strip the rationale out or
+# WARN permanently on the normal entry, and a permanently-warning advisory
+# trains the operator to ignore advisories. Measured over the five corpus
+# sections: 117 WARNs, and 23 of the 24 `- ` entries wrap (the exception is one
+# M84 review line).
+#
+# The same measurement rules out density as a signal, which is why these
+# signatures are SHAPES and never counts: M84's section is a character survey
+# (`8,491 c / 35 L (243 c/L)`) and M98's a line-number inventory, so any
+# "looks like output because it is full of numbers" heuristic fires hardest on
+# exactly the M114-shaped files the exemption exists to serve. False negatives
+# here are cheap — this is a WARN over a section that costs no budget — and a
+# false positive is the failure mode that kills the advisory, so the list stays
+# narrow and each entry is a form no prose sentence takes.
+_DECISIONS_PASTED = (
+    re.compile(r"^\$ \S"),                      # shell prompt
+    # unittest's summary line, bound to its DURATION and end-of-line. The
+    # looser `^Ran \d+ tests? in ` claimed ordinary prose — "Ran 3 tests in
+    # isolation before the change, and all held." — because `in` is the
+    # preposition prose reaches for first (M119 review F1/85). The near-miss
+    # control tested `to confirm` and dodged it. unittest always prints a
+    # duration and nothing after it, so anchoring there costs no real paste.
+    re.compile(r"^Ran \d+ tests? in \d+(?:\.\d+)?s$"),
+    re.compile(r"^OK$"),
+    re.compile(r"^(?:FAILED|ERROR) \("),
+    re.compile(r"^Traceback \(most recent call last\):$"),
+    # traceback frame, bound to what FOLLOWS the line number: a real frame
+    # ends there or continues `, in <name>`, while prose runs on with a verb
+    # — 'File "x.py", line 42 is where the boundary sits.' (M119 review F1/85).
+    re.compile(r'^File "[^"]+", line \d+(?:,|$)'),
+    re.compile(r"^(?:PASS|FAIL|WARN|OK)\s{2,}\S"),  # cairn_validate's own table
+    # git's DEFAULT source prefix, not its only one: `--no-prefix`,
+    # `--src-prefix`, `diff.mnemonicPrefix` and a C-quoted path all render a
+    # header this misses. Accepted — the bare `diff --git ` matched ordinary
+    # prose opening with those words (§8 round 7), and a diff carrying any hunk
+    # header still fires on `^@@ .* @@`, so only a header-only paste is lost.
+    # That is the trade the note above this table names: a false negative is
+    # cheap here, a false positive kills the advisory.
+    re.compile(r"^diff --git a/"),
+    re.compile(r"^@@ .* @@"),
+    re.compile(r"^(?:--- a/|\+\+\+ b/)"),       # unified-diff file headers
+)
+# Blockquote markers are stripped before a LINE is matched, so quoting a
+# transcript does not hide its lines. The pattern takes any depth and any
+# spacing rather than an enumerated set, which is guard-doctrine §3's point: a
+# detector whose author must list every rendering is a detector that misses the
+# rendering the author did not think of. The tests carry a spread of renderings
+# in as positive controls, and are the record of which — a count restated here
+# would drift.
+#
+# Scope, stated because the sentence above invites the wider reading: this
+# strips markers for the SIGNATURE test only. Fence detection sees the line
+# with its indentation removed but its quote markers intact, and `>` is not
+# whitespace — so a quoted ``` is not a fence delimiter, and a quoted fenced
+# block is read as loose output. Two consequences, and the second is a real
+# miss: a quoted block whose body carries signatures still reports, as `pasted
+# output` rather than `fenced block`; a quoted block whose body carries none is
+# not reported at all, where an unquoted one would be. Accepted rather than
+# fixed — widening fence detection to quoted delimiters would make a fence's
+# extent depend on quoting depth, which is more inference than the round-3
+# removal left standing, and the missed case is a fenced block with nothing in
+# it that looks like output.
+_DECISIONS_QUOTE = re.compile(r"^(?:\s*>)+\s?")
+
+# Where an unfenced paste STOPS is deliberately not computed. A fence carries
+# its own delimiters, so a closed fenced block's extent is read rather than
+# inferred; loose output has no delimiter, and every rule for inferring one —
+# adjacency, a gap tolerance, a filler class, a prose closer — requires its
+# author to enumerate what transcript lines look like. That is guard-doctrine
+# §3's trap, and this detector walked into it three times, each fix fitted to
+# the shape in hand: round 1 mis-split a PASSING unittest run on its progress
+# dots, round 2 an `assertEqual` failure on its banner, and round 3 both a
+# two-hunk diff on its changed lines and a `>`-quoted transcript on the space
+# the quote marker eats. So the rules were removed rather than tuned (M119 §8
+# round 3, at the maintainer's call).
+#
+# What ships instead: **one finding per fenced block, and one finding per
+# section for all loose output in it**, naming where it starts and how many
+# lines look like output. No shape can be mis-split, because no rule reads a
+# transcript's insides at all. The one place an extent is still inferred is an
+# UNTERMINATED fence, which has no closing delimiter to read and so runs to the
+# end of the section. Two costs, both stated rather than hidden: two loose
+# pastes in one section report once, and a loose paste with a fenced block
+# between its halves reports once — under-reports on an advisory whose job is to
+# say the section has output in it at all.
+_DECISIONS_PREVIEW = 60
+
+
 # --- references staleness (M81) ---------------------------------------------
 # M78 gave every committed references page an `Extraction:` status; until now
 # nothing read it, so a page recording an unchecked subagent pass rendered
@@ -1358,6 +1451,118 @@ def check_worklog_format(root):
     return out
 
 
+def _pasted_findings(lines):
+    """`[(where, kind, preview)]` for the pasted output in `lines` (an
+    extractor's `[(lineno, text)]`).
+
+    A **fenced block** is one finding spanning its opening delimiter through its
+    closing one, both included, matching what the cap counters count (M77 review
+    F2) — a closed fence's extent is read off its delimiters. An UNTERMINATED
+    fence has no closing delimiter to read and runs to the end of the section:
+    the one extent here that is inferred, and the reason the note below the
+    signature table says "no rule reads a transcript's insides" rather than
+    "nothing is inferred". Loose output OUTSIDE any fence is **one finding for
+    the whole section**, anchored at its first signature line and counting the
+    rest, because nothing here computes where a paste without delimiters ends.
+    Loose lines inside a fence belong to the fence, and are not counted twice.
+
+    Findings come back in line order — the loose one is collected last but
+    sorted back into place, because a line number the operator navigates by is
+    useless out of sequence.
+
+    One finding per paste, not per line: a pasted 40-line transcript is one
+    mistake, and an advisory that reports it forty times is one the operator
+    learns to scroll past — the same reasoning D-075 applies to a
+    permanently-warning advisory."""
+    out = []
+    fence = None
+    start = None
+    preview = ""
+    pending = False  # the fence's preview is still its bare delimiter
+    loose = []  # (lineno, body) for every signature line outside a fence
+
+    in_comment = False
+
+    for lineno, text in lines:
+        stripped = text.lstrip()
+        # An HTML comment's body is not the author's record — it is scaffolding,
+        # and the `## Decisions` section is the one section the TEMPLATE ships a
+        # comment into, so a fenced example inside one would WARN on every
+        # milestone instantiated from it. `check_worklog_format` has skipped
+        # comments since it shipped; this advisory is presented as its
+        # counterweight and inherits the same treatment (M119 review F2/74).
+        # Tracked before the fence branch so a comment can never open a fence.
+        if in_comment:
+            if "-->" in stripped:
+                in_comment = False
+            continue
+        if stripped.startswith("<!--"):
+            if "-->" not in stripped:
+                in_comment = True
+            continue
+        if fence is not None:
+            if stripped.startswith(fence):
+                out.append((start, _span(start, lineno), "fenced block", preview))
+                fence, start, pending = None, None, False
+            elif pending and stripped:
+                preview, pending = stripped, False  # first line of the block
+            continue
+        if stripped.startswith("```") or stripped.startswith("~~~"):
+            fence = "```" if stripped.startswith("```") else "~~~"
+            start, preview, pending = lineno, stripped, True
+            continue
+        body = _DECISIONS_QUOTE.sub("", text).strip()
+        if body and any(p.match(body) for p in _DECISIONS_PASTED):
+            loose.append((lineno, body))
+    if start is not None:  # an unterminated fence runs to the end of the section
+        out.append((start, _span(start, lines[-1][0]), "fenced block", preview))
+    if loose:
+        first, body = loose[0]
+        rest = len(loose) - 1
+        where = f"{first}" if not rest else f"{first} (+{rest} more line{'s' * (rest > 1)})"
+        out.append((first, where, "pasted output", body))
+    return [(where, kind, preview) for _, where, kind, preview in sorted(out)]
+
+
+def _span(start, end):
+    return f"{start}" if start == end else f"{start}-{end}"
+
+
+def check_decisions_format(root):
+    """Advisory: pasted output or a fenced transcript block in a milestone-local
+    `## Decisions` section. D-074 released that section from the 150-line cap on
+    the ground that D-045 makes it history, and D-046's reasoning binds here
+    unchanged — nothing may notice bloat in a section that has stopped costing
+    budget, so something other than the cap has to watch it. D-075 sets what the
+    watch looks for: the section's own genre is prose rationale, so the subject
+    is pasted output, never entry length (the work log's grammar, measured at
+    117 WARNs over the corpus RR08 read, where 23 of 24 entries wrap).
+
+    WARNs and never FAILs, for `work-log format`'s reason: over an unbudgeted
+    section this is untidiness, and a gate failure over formatting would block a
+    milestone for no correctness reason (D-046's severity, retained by D-075).
+    Reads the section through `cs.milestone_decisions_lines` — the extractor
+    scan shared with `milestone_worklog_lines`, keyed on `DECISIONS_HEADING`,
+    which is the constant the cap counters exempt the section by. The heading is
+    the shared part (the counters run their own `_plan_owned_scan`), and sharing
+    it is what makes the section the cap stopped measuring the same section this
+    polices.
+    Live files only; archived summaries are compressed narratives."""
+    out = []
+    for mid, path in sorted(cs.live_files(root).items(), key=lambda kv: cs.id_num(kv[0])):
+        lines = cs.milestone_decisions_lines(path)
+        if not lines:
+            continue
+        for where, kind, preview in _pasted_findings(lines):
+            if len(preview) > _DECISIONS_PREVIEW:
+                preview = preview[:_DECISIONS_PREVIEW].rstrip() + "…"
+            out.append(
+                f"{mid}:{where}: {kind} in the `## Decisions` section "
+                f'— "{preview}"'
+            )
+    return out
+
+
 # --- release window (M88) ---------------------------------------------------
 # A release milestone's readiness is a maintainer judgment about when to ship,
 # never a dependency graph going green — so once one exists in a routable
@@ -1589,6 +1794,10 @@ ADVISORIES = [
         lambda root, rows: check_gitignore_deprecations(root),
     ),
     ("work-log format", lambda root, rows: check_worklog_format(root)),
+    # Adjacent to `work-log format` on purpose: the two are the counterweights
+    # for the two cap-exempt history sections, and a reader meeting one should
+    # meet the other (D-046 for the work log, D-074/D-075 for decisions).
+    ("decisions format", lambda root, rows: check_decisions_format(root)),
     ("dangling id tokens", lambda root, rows: check_dangling_ids(root, rows)),
     (
         "references staleness",

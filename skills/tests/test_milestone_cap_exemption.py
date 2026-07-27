@@ -162,6 +162,33 @@ class TestMilestoneCapExemption(unittest.TestCase):
         # mutation harness reddened on exactly that (M104's pattern).
         self.assertIn(f"so `cairn_validate`'s `{emitted.group(1)}`", self.rules)
 
+    def test_the_decisions_advisory_is_stated_with_its_subject(self):
+        # M119/D-075. The severity and the SUBJECT are both decisions, and the
+        # subject is the one D-074 part 3 got wrong: a rulebook naming the
+        # advisory without saying it watches pasted output rather than entry
+        # length teaches the superseded grammar, which measured at 117 WARNs
+        # over the corpus RR08 read. Pinned on one physical line so
+        # a revert to entry length cannot leave the sentence green.
+        self.assertIn(
+            "advisory WARNs on — pasted output or a fenced transcript block, never entry",
+            self.rules,
+        )
+
+    def test_stated_decisions_advisory_label_matches_the_emitted_label(self):
+        # M59's rule, applied to the second counterweight: prose naming a
+        # validate finding must use the label the script emits, or run-and-read
+        # sends the reader hunting a string that never appears. Anchored in the
+        # sentence that STATES the advisory — the always-read frame's row names
+        # the same label, so a bare match would survive deleting the rule.
+        validate = read(ROOT / "scripts" / "cairn_validate.py")
+        emitted = re.search(
+            r'\(\s*"([\w -]+)",\s*lambda root, rows: check_decisions_format', validate
+        )
+        self.assertIsNotNone(
+            emitted, "check_decisions_format is not registered in ADVISORIES"
+        )
+        self.assertIn(f"what `cairn_validate`'s `{emitted.group(1)}`", self.rules)
+
     def test_stated_cap_matches_enforced_cap(self):
         # The rulebook's human-readable cap and the scripts' machine-enforced cap
         # are two encodings of one number; drift between them is the defect.

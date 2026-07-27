@@ -2010,6 +2010,828 @@ class TestWorkLogFormatAdvisory(ScriptCase):
         self.assertEqual(len(cv.check_worklog_format(str(root))), 3)
 
 
+# The corpus RR08 measured D-074 part 3's transplanted grammar against, and the
+# corpus D-075 binds the shipped advisory's 0-WARN arm to. Each entry is the
+# `review M<NN>: done` commit that archived the file, so the live file — and the
+# whole `## Decisions` section it carried at `done` — is at `<sha>^:<path>`.
+# History is never edited (IP4), so these blobs are frozen; git is read here
+# rather than copied into a fixture so the test measures what actually shipped
+# and no second copy of history lives in the test tree.
+DECISIONS_CORPUS = (
+    ("M83", "f929acc0f5268ff964c94c4b0f9532cb6d050d2a",
+     "cairn/milestones/M83-staleness-parser-hardening.md",
+     "M83-D3 (supersedes M83-D1 and M83-D2"),
+    ("M84", "a41123443df67c7d132a0a3f43988273f3597b0e",
+     "cairn/milestones/M84-record-density-advisory.md",
+     "### M84-D1 (2026-07-18)"),
+    ("M94", "38234a2563e6b47e37d3c8ff87d21473b4dc49d6",
+     "cairn/milestones/M94-cost-instrumentation.md",
+     "RR01 rec 9 failed"),
+    ("M98", "ef2e1813aa83548b6a1265aa490f931cbc8d6197",
+     "cairn/milestones/M98-lesson-graduation-to-doctrine.md",
+     "### M98-D1 (2026-07-20)"),
+    ("M114", "a25e6dd147d4945c3d227bcb5ae2fa9dbfbe9040",
+     "cairn/milestones/M114-review-loop-escape-hatches.md",
+     "RR06 Q1"),
+)
+
+
+class TestDecisionsFormatAdvisory(ScriptCase):
+    """M119/D-074/D-075: the milestone-local `## Decisions` section is exempt
+    from the 150-line cap, so — exactly as for the work log — nothing budgetary
+    polices it and this advisory is the counterweight. Its subject is pasted
+    output and fenced transcript blocks, NEVER entry length: D-074 part 3 first
+    transplanted the work log's one-line grammar, and RR08 measured that against
+    the corpus below: 117 WARNs, with 23 of the corpus's 24 `- ` entries
+    wrapping. WARN, never a gate failure (D-046's severity, retained by
+    D-075)."""
+
+    def _with_decisions(self, body):
+        self.tree.rows.append(("M04", "Decided", "planned", "—", "normal", "milestones/M04-decided.md"))
+        self.tree.files["milestones/M04-decided.md"] = (
+            "# M04: Decided\n\n- **Status:** planned   <!-- mirror -->\n\n"
+            "## Decisions\n<!-- owner: implement / review · append-only -->\n\n"
+            + body
+            + "\n## Review\nevidence\n"
+        )
+        return self.tree.build()
+
+    def _lineno(self, root, text):
+        """The 1-indexed line of `text` in the built fixture — so a test can
+        pin the number a finding REPORTS against the number the file actually
+        has. Without this the reported location is unpinned: mutating the
+        anchor to the last signature line, or to `first + 7`, left the whole
+        class green (§8 round 4)."""
+        lines = (root / "cairn" / "milestones" / "M04-decided.md").read_text().splitlines()
+        return next(i for i, ln in enumerate(lines, start=1) if ln == text)
+
+    # --- the 0-WARN arm: the real corpus -----------------------------------
+
+    def test_shipped_advisory_is_silent_over_the_whole_corpus(self):
+        # D-075/RR08 §BC3, 0-WARN arm, bound at the ingest gate to the WHOLE
+        # sections rather than to an enumerated list of their forms: the
+        # enumeration omits forms the corpus actually contains (M83's undated
+        # `- **M83-D1:` bullets, M94's bare pointer prose), so the weaker
+        # reading would let a detector pass by dodging them.
+        #
+        # NON-VACUITY FIRST. A `git show` that returns nothing, a moved path or
+        # a heading rename all make this assert green by measuring an empty
+        # section — "0 WARNs" would then mean "nothing was read", which is the
+        # M93 review F2 defect. So each section is proved present, substantial
+        # and the RIGHT one before any silence is claimed.
+        repo = pathlib.Path(__file__).resolve().parent.parent.parent
+        cv = _load_validate()
+        cs = _load_scripts()
+        measured = {}
+        for mid, sha, path, marker in DECISIONS_CORPUS:
+            blob = subprocess.run(
+                ["git", "show", f"{sha}^:{path}"],
+                capture_output=True, text=True, cwd=repo, timeout=30,
+            )
+            self.assertEqual(
+                blob.returncode, 0,
+                f"{mid}: cannot read {path} at {sha}^ — {blob.stderr.strip()}",
+            )
+            rel = f"milestones/M{cs.id_num(mid):02d}-corpus.md"
+            self.tree.rows.append((mid, "Corpus", "planned", "—", "normal", rel))
+            self.tree.files[rel] = blob.stdout
+            measured[mid] = (blob.stdout, marker)
+        root = self.tree.build()
+
+        for mid, (text, marker) in measured.items():
+            path = str(root / "cairn" / f"milestones/M{cs.id_num(mid):02d}-corpus.md")
+            section = cs.milestone_decisions_lines(path)
+            self.assertTrue(section, f"{mid}: no `## Decisions` section was read")
+            self.assertGreaterEqual(
+                len(section), 20,
+                f"{mid}: only {len(section)} lines read — the corpus sections "
+                f"run 31-42 lines, so this is a truncated read",
+            )
+            self.assertIn(
+                marker, "\n".join(t for _, t in section),
+                f"{mid}: the section read is not the one the corpus names",
+            )
+
+        corpus_ids = {mid for mid, _, _, _ in DECISIONS_CORPUS}
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(
+            [f for f in findings if f.split(":")[0] in corpus_ids], [],
+            "the advisory is not silent over the corpus D-075 binds it to",
+        )
+
+        # Positive control on the SAME path. Silence over real files proves
+        # nothing on its own — a `check_decisions_format` that returned [] for
+        # any input would satisfy the assert above with every corpus read
+        # intact. So one corpus section is given a paste and must report.
+        rel = f"milestones/M{cs.id_num('M114'):02d}-corpus.md"
+        self.tree.files[rel] = measured["M114"][0].replace(
+            "\n## Review", "\n```\n$ python3 -m unittest\nOK\n```\n\n## Review", 1
+        )
+        root = self.tree.build()
+        self.assertTrue(
+            [f for f in cv.check_decisions_format(str(root)) if f.startswith("M114:")],
+            "the advisory reports nothing even on a corpus section given a paste",
+        )
+
+    # --- the >=1 arm: constructed pasted output ----------------------------
+
+    def test_fenced_transcript_warns_but_passes(self):
+        root = self._with_decisions(
+            "- 2026-07-27: the run that settled it.\n"
+            "```\n$ python3 -m unittest discover -s scripts/tests\n"
+            "Ran 412 tests in 3.204s\n\nOK\n```\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  decisions format", proc.stdout)
+        self.assertIn("M04", proc.stdout)
+        self.assertIn("all checks passed", proc.stdout)
+        self.assertIn("advisory warning(s) — not gate failures", proc.stdout)
+
+    def test_unfenced_pasted_output_warns(self):
+        # The arm a fenced-block-only detector would miss, and the reason AC1
+        # names pasted output as well as fenced blocks.
+        root = self._with_decisions(
+            "- 2026-07-27: the run that settled it.\n"
+            "$ python3 -m unittest discover -s scripts/tests\n"
+            "Ran 412 tests in 3.204s\n"
+            "OK\n"
+        )
+        cv = _load_validate()
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+        self.assertIn("pasted output", findings[0])
+
+    def test_a_pasted_block_is_one_finding_not_one_per_line(self):
+        # A 40-line transcript reported 40 times is an advisory the operator
+        # learns to scroll past — the failure mode D-075 names for a
+        # permanently-warning advisory, reached here by volume instead.
+        root = self._with_decisions(
+            "- 2026-07-27: entry.\n```\n" + "output line\n" * 40 + "```\n"
+        )
+        cv = _load_validate()
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+        self.assertIn("fenced block", findings[0])
+
+    def test_finding_reports_the_fences_own_line_range(self):
+        # The endpoints, not merely the SHAPE of a range: asserting `\d+-\d+`
+        # left the range free to be wrong, and dropping the closing delimiter —
+        # which the docstring says is included, per M77 review F2 — kept the
+        # whole class green (§8 round 4).
+        root = self._with_decisions("- 2026-07-27: entry.\n```\nout\n```\n")
+        cv = _load_validate()
+        opener, closer = self._lineno(root, "```"), self._lineno(root, "```") + 2
+        self.assertIn(f"M04:{opener}-{closer}:", cv.check_decisions_format(str(root))[0])
+
+    # Every realistic paste shape lands as ONE finding, whatever its internal
+    # raggedness. Three of the four are shapes the §8 rounds caught the previous,
+    # adjacency-based chunker mis-splitting — a passing run on its dots (round
+    # 1), an `assertEqual` failure on its banner (round 2), a two-hunk diff on
+    # its changed lines (round 3) — so they stay here as the record of what
+    # removing that logic bought. The fourth was that chunker's own gap fixture
+    # and is kept for a different reason: under the shipped contract it is an
+    # instance of the disclosed two-loose-pastes collapse, so it pins the
+    # departure from the other side. Each is quoted at the raggedness an author
+    # actually pastes, never trimmed to what a rule could handle
+    # (guard-doctrine §4). The `>`-quoted shape round 3 also surfaced is pinned
+    # separately, by `test_quoted_transcripts_are_still_pasted_output`.
+    PASTE_SHAPES = {
+        "passing unittest run": (
+            "$ python3 -m unittest discover -s scripts/tests\n"
+            "............................................\n"
+            "----------------------------------------------------------------\n"
+            "Ran 412 tests in 3.204s\n"
+            "\n"
+            "OK\n"
+        ),
+        "assertEqual failure": (
+            "$ python3 -m unittest discover -s scripts/tests\n"
+            ".........F...\n"
+            "======================================================================\n"
+            "FAIL: test_x (test_scripts.TestY.test_x)\n"
+            "----------------------------------------------------------------------\n"
+            "Traceback (most recent call last):\n"
+            '  File "/repo/scripts/tests/test_scripts.py", line 42, in test_x\n'
+            "    self.assertEqual([1, 2], [1, 3])\n"
+            "AssertionError: Lists differ: [1, 2] != [1, 3]\n"
+            "\n"
+            "First differing element 1:\n"
+            "2\n"
+            "3\n"
+            "\n"
+            "- [1, 2]\n"
+            "?     ^\n"
+            "+ [1, 3]\n"
+            "?     ^\n"
+            "\n"
+            "----------------------------------------------------------------------\n"
+            "Ran 313 tests in 19.511s\n"
+            "\n"
+            "FAILED (failures=1)\n"
+        ),
+        "two-hunk diff of a markdown file": (
+            "diff --git a/cairn/DECISIONS.md b/cairn/DECISIONS.md\n"
+            "--- a/cairn/DECISIONS.md\n"
+            "+++ b/cairn/DECISIONS.md\n"
+            "@@ -1,4 +1,4 @@\n"
+            " - D-070: unchanged context line\n"
+            "-old first line\n"
+            "-old second line\n"
+            "+new first line\n"
+            "+new second line\n"
+            "@@ -40,3 +40,3 @@\n"
+            " - D-071: another context line\n"
+            "-dropped\n"
+            "+second hunk\n"
+        ),
+        "transcript astride a paragraph of prose": (
+            "$ ls\n"
+            "The decision rested on a longer argument than one line holds,\n"
+            "set out here across several sentences so the reader meets the\n"
+            "reasoning where the disposition is recorded rather than having\n"
+            "to reconstruct it from the branch history afterwards.\n"
+            "$ ls\n"
+        ),
+    }
+
+    def test_every_realistic_paste_shape_is_one_finding(self):
+        cv = _load_validate()
+        # NON-VACUITY. A subTest loop over an empty table passes in 8ms, and
+        # the record calls this table the removal's payoff — so the table's own
+        # membership is asserted before anything is measured through it (§8
+        # round 4; the same M93 review F2 defect the corpus test guards against).
+        self.assertEqual(
+            sorted(self.PASTE_SHAPES),
+            [
+                "assertEqual failure",
+                "passing unittest run",
+                "transcript astride a paragraph of prose",
+                "two-hunk diff of a markdown file",
+            ],
+        )
+        for name, shape in self.PASTE_SHAPES.items():
+            with self.subTest(shape=name):
+                self.tree = Tree(self._tmp.name)  # a fresh tree per shape
+                root = self._with_decisions(
+                    "- 2026-07-27: the run that settled it.\n" + shape
+                )
+                findings = cv.check_decisions_format(str(root))
+                self.assertEqual(len(findings), 1, findings)
+                self.assertIn("pasted output", findings[0])
+
+    def test_loose_output_is_anchored_and_counted(self):
+        # Nothing computes where a paste without delimiters ends, so the finding
+        # says where it STARTS and how much of it there is. Without the count a
+        # one-line stray and a 30-line transcript read identically — and without
+        # the anchor pinned to the file's own numbering, "where it starts" is
+        # free to be any number at all (§8 round 4).
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions(
+            "- 2026-07-27: entry.\n$ ls\nRan 3 tests in 0.1s\nOK\n"
+        )
+        finding = cv.check_decisions_format(str(root))[0]
+        self.assertIn(f"M04:{self._lineno(root, '$ ls')} (+2 more lines):", finding)
+        self.assertIn('"$ ls"', finding)
+
+    def test_a_one_line_finding_reports_a_bare_number_not_a_range(self):
+        # `_span`'s `start == end` arm, reachable and unpinned before §8 round
+        # 6: an unterminated fence opening on the section's LAST line spans one
+        # line, and `f"{start}-{end}"` unconditionally left the class green.
+        # Built without a `## Review` section: an unterminated fence hides that
+        # heading from the extractor, so a fence "last" in the body would still
+        # swallow two more lines and report a range.
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        self.tree.rows.append(("M04", "Decided", "planned", "—", "normal", "milestones/M04-decided.md"))
+        self.tree.files["milestones/M04-decided.md"] = (
+            "# M04: Decided\n\n- **Status:** planned   <!-- mirror -->\n\n"
+            "## Decisions\n- 2026-07-27: entry.\n```"
+        )
+        root = self.tree.build()
+        path = str(root / "cairn" / "milestones" / "M04-decided.md")
+        section = _load_scripts().milestone_decisions_lines(path)
+        opener = self._lineno(root, "```")
+        self.assertEqual(section[-1][0], opener, "the fence is not the last line")
+        self.assertIn(f"M04:{opener}:", cv.check_decisions_format(str(root))[0])
+
+    def test_the_message_names_its_kind_and_its_section(self):
+        # The message IS the advisory's output, and every part of it was pinned
+        # only by substring before §8 round 6 — `"fenced blockk"` and a dropped
+        # `` `## Decisions` `` both survived. Matched whole, so a label typo or
+        # a lost section name reds.
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions("- 2026-07-27: entry.\n```\nout\n```\n")
+        opener = self._lineno(root, "```")
+        self.assertEqual(
+            cv.check_decisions_format(str(root)),
+            [
+                f"M04:{opener}-{opener + 2}: fenced block in the "
+                '`## Decisions` section — "out"'
+            ],
+        )
+        # Both kinds, or a typo in the one this fixture does not produce
+        # survives (§8 round 6 found exactly that for `pasted output`).
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions("- 2026-07-27: entry.\n$ ls\n")
+        self.assertEqual(
+            cv.check_decisions_format(str(root)),
+            [
+                f"M04:{self._lineno(root, '$ ls')}: pasted output in the "
+                '`## Decisions` section — "$ ls"'
+            ],
+        )
+
+    def test_a_long_preview_is_truncated(self):
+        # `_DECISIONS_PREVIEW` bounded nothing a test could see: deleting the
+        # truncation and raising the constant both left the class green (§8
+        # round 6). A finding is a report line, so an untruncated 400-character
+        # paste would wrap the operator's terminal per finding.
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions("- 2026-07-27: entry.\n$ ls " + "x" * 300 + "\n")
+        finding = cv.check_decisions_format(str(root))[0]
+        preview = finding.split(' — "')[1].rstrip('"')
+        self.assertTrue(preview.endswith("…"), preview)
+        # A FIXED bound, not `<= cv._DECISIONS_PREVIEW`: deriving the expected
+        # length from the constant under test makes raising the constant pass
+        # (guard-doctrine §6 — derive it through the gate's own comparison).
+        # The constant is pinned separately, so a retune is visible in a diff.
+        self.assertLessEqual(len(preview), 61, preview)
+        self.assertEqual(cv._DECISIONS_PREVIEW, 60)
+
+    def test_a_preview_at_exactly_the_limit_is_not_truncated(self):
+        # The comparison's BOUNDARY, which the over-limit fixture leaves free:
+        # `>` → `>=` survived all three suites (§8 round 8), because a
+        # 61-character truncated preview satisfies both asserts above. A line
+        # exactly at the limit is the only input that tells the two apart.
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        line = "$ ls " + "x" * (cv._DECISIONS_PREVIEW - 5)
+        self.assertEqual(len(line), cv._DECISIONS_PREVIEW)
+        root = self._with_decisions(f"- 2026-07-27: entry.\n{line}\n")
+        preview = cv.check_decisions_format(str(root))[0].split(' — "')[1].rstrip('"')
+        self.assertEqual(preview, line)
+
+    def test_a_fence_opening_on_a_blank_line_previews_its_first_real_line(self):
+        # `pending and stripped`'s second clause: without it the preview is the
+        # blank, and a finding whose preview is empty says nothing about what
+        # was pasted. `elif pending:` survived all three suites, because no
+        # fixture opened a fence with a blank body line (§8 round 8).
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions("- 2026-07-27: entry.\n```\n\n$ ls\n```\n")
+        self.assertIn('— "$ ls"', cv.check_decisions_format(str(root))[0])
+
+    def test_findings_come_back_in_line_order(self):
+        # The loose finding is collected after the loop, so it arrived last
+        # however early in the section it began (§8 round 4). Line numbers the
+        # operator navigates by are useless out of sequence.
+        #
+        # BOTH orders, because one fixture pins only one direction: with the
+        # loose line first, a sort key hard-coded to 0 still sorts correctly and
+        # survives (§8 round 7). The second fixture is the one that catches it.
+        cv = _load_validate()
+        for name, body in (
+            ("loose first", "$ ls\n- 2026-07-27: entry.\n```\nfenced\n```\n"),
+            ("fence first", "```\nfenced\n```\n- 2026-07-27: entry.\n$ ls\n"),
+        ):
+            with self.subTest(order=name):
+                self.tree = Tree(self._tmp.name)
+                root = self._with_decisions(body)
+                findings = cv.check_decisions_format(str(root))
+                self.assertEqual(len(findings), 2, findings)
+                reported = [
+                    int(re.search(r"M04:(\d+)", f).group(1)) for f in findings
+                ]
+                self.assertEqual(reported, sorted(reported), findings)
+
+    def test_an_unterminated_fence_runs_to_the_end_of_the_section(self):
+        # The one extent still inferred, because there is no closing delimiter
+        # to read. Covered by nothing before §8 round 4, while three records
+        # claimed no extent is ever inferred. The end is derived from the
+        # extractor rather than counted by hand, because "the end of the
+        # section" is further than it looks: an unterminated fence hides the
+        # `## Review` heading from the scan, so the section swallows the rest of
+        # the file — the same way the cap counters lose their boundary to a
+        # fenced `## Review` (M45).
+        cv = _load_validate()
+        cs = _load_scripts()
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions("- 2026-07-27: entry.\n```\nnever closed\n")
+        path = str(root / "cairn" / "milestones" / "M04-decided.md")
+        section = cs.milestone_decisions_lines(path)
+        # The WHOLE message: this is the third emission site, and its `kind`
+        # label was the one substring-anchored site round 6's message test did
+        # not reach — `"fenced blockk"` survived all three suites (§8 round 7).
+        self.assertEqual(
+            cv.check_decisions_format(str(root)),
+            [
+                f"M04:{self._lineno(root, '```')}-{section[-1][0]}: fenced block "
+                'in the `## Decisions` section — "never closed"'
+            ],
+        )
+        self.assertIn("evidence", [t.strip() for _, t in section])
+
+    def test_a_single_loose_line_is_reported_without_a_count(self):
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions("- 2026-07-27: entry.\n$ ls\n")
+        finding = cv.check_decisions_format(str(root))[0]
+        self.assertNotIn("more line", finding)
+
+    # At least one line per signature in `_DECISIONS_PASTED`, keyed by the shape
+    # it is meant to catch, and more lines than signatures because several are
+    # alternations whose branches each deserve their own — narrowing an
+    # alternation is a deletion the table would otherwise miss (§8 round 7).
+    # The shape tests above assert `len(findings) == 1`, which any ONE matching
+    # line in a multi-line paste satisfies, so seven of the ten signatures could
+    # be deleted with the whole class green (§8 round 5 found six, round 6
+    # measured seven). A signature that never has to fire on its own is not
+    # covered by a test that merely happens to contain it.
+    SIGNATURE_LINES = (
+        "$ python3 -m unittest discover -s scripts/tests",
+        "Ran 412 tests in 3.204s",
+        "Ran 1 test in 0.001s",           # the singular branch
+        "OK",
+        "FAILED (failures=1)",
+        "ERROR (errors=2)",
+        "Traceback (most recent call last):",
+        'File "/repo/scripts/tests/test_scripts.py", line 42, in test_x',
+        "PASS  weight caps",
+        "FAIL  coverage complete (2)",
+        "WARN  record density (1)",
+        "OK    work-log format",
+        "diff --git a/cairn/DECISIONS.md b/cairn/DECISIONS.md",
+        "@@ -1,3 +1,3 @@",
+        "--- a/cairn/DECISIONS.md",
+        "+++ b/cairn/DECISIONS.md",
+    )
+
+    # Lines a signature must NOT claim. Each is prose a decision entry could
+    # plausibly contain, and each is ONE WIDENING from a live signature — not
+    # one character, which §8 round 8 measured as true of only one of them.
+    # Widening any of the ten reds here rather than shipping a permanently
+    # warning advisory, the failure D-075 exists to prevent. Each entry names
+    # the widening it holds against, because a control whose target is implicit
+    # is a control nobody can tell has stopped working — and the set covers
+    # every signature, because a control that covers half the table reads as
+    # complete while the other half widens green (§8 round 9). This is the
+    # instrument that caught the one live false positive the late rounds found.
+    # One entry per signature, no gaps: round 9 measured the set at 5 of 10 and
+    # five widenings surviving, the sharpest being `--- a/|+++ b/` → `---|+++`,
+    # which claims an ordinary markdown thematic break and so WARNs forever.
+    NEAR_MISS_LINES = (
+        # `^\$ \S` — the space after the prompt
+        "$9,000 is the derived threshold, and 17,000 the upper one.",
+        # `^Ran \d+ tests? in ` — the count, and the `in` before the duration
+        "Ran the numbers again and the threshold held.",
+        "Ran 3 tests to confirm the fix, all of them green.",
+        # `in` is the preposition prose reaches for first, and the control
+        # above tested only `to confirm` — so the signature claimed both of
+        # these until M119 review F1/85 bound it to unittest's duration.
+        "Ran 3 tests in isolation before the change, and all held.",
+        "Ran 12 tests in the new harness and the timing held.",
+        # `^OK$`, and the table row's `\s{2,}`
+        "OK so the rejection stands, and PASS rates are unchanged.",
+        # `^(?:FAILED|ERROR) \(` — the opening paren of the count
+        "FAILED to reproduce it on the second attempt, so the claim stands.",
+        # `^Traceback \(most recent call last\):$` — the whole phrase
+        "Traceback shows the call order, which is what settled it.",
+        # the same signature's trailing `$`, which the line above cannot reach
+        "Traceback (most recent call last): the frame we cared about was tenth.",
+        # `^File "[^"]+", line \d+` — the line number
+        "File \"names\" are quoted here without a line number.",
+        # a frame ends at the number or continues `, in <name>`; prose runs on
+        # with a verb, which the signature claimed until M119 review F1/85.
+        "File \"cairn_validate.py\", line 42 is where the boundary sits.",
+        # `^diff --git a/` — the path prefix
+        "diff --git is the header the detector keys on.",
+        # `^@@ .* @@` — the closing `@@`
+        "@@ markers are what the detector keys the hunk header on.",
+        # `^(?:--- a/|\+\+\+ b/)` — the path halves. A bare `---` is a markdown
+        # thematic break, so this widening is the permanent WARN in miniature.
+        "---",
+        "+++ was never a marker anyone writes by hand.",
+    )
+
+    def test_each_signature_fires_on_its_own(self):
+        cv = _load_validate()
+        module = cv.__dict__
+        self.assertEqual(
+            len(module["_DECISIONS_PASTED"]), 10, "the signature table changed size"
+        )
+        for line in self.SIGNATURE_LINES:
+            with self.subTest(line=line):
+                self.tree = Tree(self._tmp.name)
+                root = self._with_decisions(f"- 2026-07-27: entry.\n{line}\n")
+                self.assertEqual(
+                    len(cv.check_decisions_format(str(root))), 1,
+                    f"no signature matched {line!r}",
+                )
+
+    def test_near_miss_prose_matches_no_signature(self):
+        # The negative control for the table above: a per-signature sweep that
+        # passed because SOMETHING always matches would be worse than no sweep.
+        # Each line is one widening from a signature, so this is also what
+        # keeps the patterns from being widened into a permanent WARN.
+        cv = _load_validate()
+        for line in self.NEAR_MISS_LINES:
+            with self.subTest(line=line):
+                self.tree = Tree(self._tmp.name)
+                root = self._with_decisions(f"- 2026-07-27: entry.\n{line}\n")
+                self.assertEqual(cv.check_decisions_format(str(root)), [])
+
+    def test_both_fence_delimiters_are_recognized(self):
+        # `~~~` support deletes green against a ``` -only fixture, and so does
+        # requiring column 0 (§8 round 5). Both spellings, and an indented
+        # opener, are what markdown actually admits.
+        cv = _load_validate()
+        for opener, closer in (("```", "```"), ("~~~", "~~~"), ("  ```", "  ```")):
+            with self.subTest(fence=opener):
+                self.tree = Tree(self._tmp.name)
+                root = self._with_decisions(
+                    f"- 2026-07-27: entry.\n{opener}\nno signature here\n{closer}\n"
+                )
+                findings = cv.check_decisions_format(str(root))
+                self.assertEqual(len(findings), 1, findings)
+                self.assertIn("fenced block", findings[0])
+
+    def test_a_fence_closes_by_prefix_not_equality(self):
+        # Two subcases pinning two different rules, both of which markdown
+        # admits. The LONGER closer is what equality gets wrong: `==` closes
+        # nothing and the block runs to the section end. The info-string opener
+        # pins something else — that `fence` is set to the bare delimiter and
+        # not to the whole opener line, which `fence = stripped` gets wrong.
+        # Prefix-closing is also what the shared extractor uses, so the advisory
+        # and the section it reads agree on where a fence ends.
+        cv = _load_validate()
+        for opener, closer in (("```text", "```"), ("```", "````")):
+            with self.subTest(fence=f"{opener}/{closer}"):
+                self.tree = Tree(self._tmp.name)
+                root = self._with_decisions(
+                    f"- 2026-07-27: entry.\n{opener}\nno signature here\n{closer}\n"
+                )
+                findings = cv.check_decisions_format(str(root))
+                self.assertEqual(len(findings), 1, findings)
+                self.assertIn("fenced block", findings[0])
+                # The ENDPOINT, not the shape of a range: an unclosed fence
+                # also reports one finding with a range, so `len == 1` plus
+                # `\d+-\d+` left equality-closing green.
+                self.assertIn(
+                    f"M04:{self._lineno(root, opener)}-{self._lineno(root, closer)}:",
+                    findings[0],
+                )
+
+    def test_a_quoted_fence_reports_as_loose_output(self):
+        # Quote markers survive the lstrip fence detection does, and `>` is not
+        # whitespace, so a quoted ``` is not a delimiter. When the block's body
+        # carries signatures the effect is a change of KIND, not a miss.
+        cv = _load_validate()
+        root = self._with_decisions(
+            "- 2026-07-27: entry.\n> ```\n> $ ls\n> Ran 3 tests in 0.1s\n> ```\n"
+        )
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+        self.assertIn("pasted output", findings[0])
+
+    def test_a_quoted_fence_with_no_signatures_inside_is_missed(self):
+        # The accepted cost of the rule above, pinned so the code comment's
+        # stated scope cannot drift from what ships. An UNQUOTED fence reports
+        # whatever its contents, so quoting one whose body looks like nothing in
+        # particular is silence, not a change of kind — §8 round 6 caught three
+        # records claiming otherwise, and the shipped test above happened to use
+        # the one fixture that made the claim look true. The paired positive
+        # control is what makes this an accepted limit rather than a dead
+        # assert: it proves the detector fires on the unquoted twin.
+        cv = _load_validate()
+        block = "```\njust some prose in a block\n```\n"
+        self.tree = Tree(self._tmp.name)
+        unquoted = self._with_decisions("- 2026-07-27: entry.\n" + block)
+        self.assertEqual(len(cv.check_decisions_format(str(unquoted))), 1)
+        self.tree = Tree(self._tmp.name)
+        quoted = self._with_decisions(
+            "- 2026-07-27: entry.\n"
+            + "".join(f"> {ln}\n" for ln in block.splitlines())
+        )
+        self.assertEqual(cv.check_decisions_format(str(quoted)), [])
+
+    def test_quoted_transcripts_are_still_pasted_output(self):
+        # Blockquoting is a rendering, not a defence: the detector normalizes
+        # `>` markers to any depth and spacing, so the renderings come INTO the
+        # test as positive controls rather than being enumerated in a comment
+        # the code does not read (guard-doctrine §3).
+        cv = _load_validate()
+        for marker in ("> ", ">", ">> ", "  > ", "> > "):
+            with self.subTest(marker=marker):
+                self.tree = Tree(self._tmp.name)  # a fresh tree per rendering
+                root = self._with_decisions(
+                    "- 2026-07-27: what the run said.\n"
+                    f"{marker}$ python3 -m unittest discover -s scripts/tests\n"
+                    f"{marker}Ran 412 tests in 3.204s\n"
+                )
+                self.assertEqual(len(cv.check_decisions_format(str(root))), 1)
+
+    def test_a_quoted_diff_is_still_pasted_output(self):
+        # The shape §8 round 3 actually surfaced, which the marker sweep above
+        # does not reach: a quoted DIFF, whose context line's content starts
+        # with a space that `_DECISIONS_QUOTE`'s trailing `\s?` eats. Pinned on
+        # the preview, so the finding must come from the quoted diff header
+        # rather than from some other line happening to match.
+        cv = _load_validate()
+        root = self._with_decisions(
+            "- 2026-07-27: the change that settled it.\n"
+            "> diff --git a/cairn/DECISIONS.md b/cairn/DECISIONS.md\n"
+            "> @@ -1,3 +1,3 @@\n"
+            ">  - D-070: unchanged context line\n"
+            "> -old text\n"
+            "> +new text\n"
+        )
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+        self.assertIn('"diff --git a/cairn/DECISIONS.md', findings[0])
+
+    def test_two_loose_pastes_report_once_with_both_counted(self):
+        # The disclosed cost of not inferring where a delimiter-less paste ends
+        # (§8 round 3). Pinned rather than left implicit: this is the shipped
+        # contract, not a bug, and the count is what keeps the report honest
+        # about how much output is down there.
+        root = self._with_decisions(
+            "- 2026-07-27: first.\n$ ls\n\n- 2026-07-27: second.\n$ ls\n"
+        )
+        cv = _load_validate()
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+        self.assertIn("(+1 more line)", findings[0])
+
+    def test_a_fence_and_loose_output_are_separate_findings(self):
+        # A fence's extent IS read off its delimiters, so it keeps its own
+        # finding and its own range; only delimiter-less output collapses.
+        # Without this, the collapse could quietly swallow the fenced arm.
+        root = self._with_decisions(
+            "- 2026-07-27: entry.\n```\npasted\n```\n$ ls\n"
+        )
+        cv = _load_validate()
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 2, findings)
+        self.assertEqual(
+            sorted("fenced block" in f for f in findings), [False, True]
+        )
+
+    def test_output_inside_a_fence_is_not_counted_twice(self):
+        # The loose sweep must skip fenced lines, or a fenced transcript full of
+        # signatures reports as a fenced block AND as loose output.
+        root = self._with_decisions(
+            "- 2026-07-27: entry.\n```\n$ ls\nRan 3 tests in 0.1s\nOK\n```\n"
+        )
+        cv = _load_validate()
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+        self.assertIn("fenced block", findings[0])
+
+    # --- silence where silence is right ------------------------------------
+
+    def test_prose_entries_with_numbers_are_ok(self):
+        # M84's section is a character survey and M98's a line-number
+        # inventory, so any density or numeric heuristic fires hardest on the
+        # files the exemption exists to serve. This pins the shape-not-count
+        # decision at fixture scale.
+        root = self._with_decisions(
+            "### M04-D1 (2026-07-27): thresholds 9,000 / 17,000\n\n"
+            "**Derivation.** 60 × 150 = **9,000**; 50 × 340 = **17,000**,\n"
+            "above 324 and below 382. Lines 20, 22, 23, 24, 26, 27, 31.\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    decisions format", proc.stdout)
+
+    def test_no_decisions_section_is_ok(self):
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    decisions format", proc.stdout)
+
+    def test_advisory_skips_archived(self):
+        # Archived summaries are compressed narratives, not decisions sections.
+        self.tree.files["milestones/archive/M01-old.md"] = (
+            "# M01\n\n## Decisions\n```\npasted\n```\n"
+        )
+        root = self.tree.build()
+        cv = _load_validate()
+        self.assertEqual(cv.check_decisions_format(str(root)), [])
+
+    def test_the_shipped_template_does_not_trip_the_advisory(self):
+        # M77 review F1's shape: the template is what every milestone is born
+        # from, so a template that trips its own advisory warns on every new
+        # milestone before a single entry is written. Reads the REAL template,
+        # never a fixture copy, so the two cannot drift apart.
+        repo = pathlib.Path(__file__).resolve().parent.parent.parent
+        template = (repo / "skills" / "shared" / "templates" / "milestone.md").read_text()
+        self.tree.rows.append(("M04", "From template", "planned", "—", "normal", "milestones/M04-tmpl.md"))
+        self.tree.files["milestones/M04-tmpl.md"] = template
+        root = self.tree.build()
+        cv = _load_validate()
+        self.assertEqual(cv.check_decisions_format(str(root)), [])
+
+    def test_an_html_comment_is_scaffolding_not_a_record(self):
+        # M119 review F2/74: `check_worklog_format` has skipped HTML comments
+        # since it shipped; this advisory is presented as its counterweight and
+        # had no equivalent, so a fenced EXAMPLE inside the template's own
+        # `## Decisions` comment would warn on every milestone born from it —
+        # M77 review F1's shape, one section over. The template that ships
+        # today has no fence in its comment, so the test above stays green
+        # either way; this one drives the case that made it latent.
+        section = (
+            "## Decisions\n"
+            "<!-- owner: implement / review\n"
+            "     an example of what NOT to paste:\n"
+            "```\n"
+            "$ python3 -m unittest\n"
+            "```\n"
+            "-->\n"
+            "\n"
+            "- 2026-07-27: chose X over Y because Z.\n"
+        )
+        self.tree.rows.append(("M05", "Comment", "planned", "—", "normal", "milestones/M05-c.md"))
+        self.tree.files["milestones/M05-c.md"] = "# M05: C\n\n- **Status:** planned\n\n" + section
+        root = self.tree.build()
+        cv = _load_validate()
+        self.assertEqual(cv.check_decisions_format(str(root)), [])
+
+    def test_a_fence_outside_a_comment_still_fires(self):
+        # The positive control for the skip above. Without it, the comment
+        # handling is satisfied by an advisory that stopped seeing fences at
+        # all — and every fenced-block test in this class would still pass on
+        # its own fixtures while the section-level check reported nothing.
+        section = (
+            "## Decisions\n"
+            "<!-- owner: implement / review -->\n"
+            "\n"
+            "- 2026-07-27: chose X over Y because Z.\n"
+            "\n"
+            "```\n"
+            "$ python3 -m unittest\n"
+            "```\n"
+        )
+        self.tree.rows.append(("M06", "Fence", "planned", "—", "normal", "milestones/M06-f.md"))
+        self.tree.files["milestones/M06-f.md"] = "# M06: F\n\n- **Status:** planned\n\n" + section
+        root = self.tree.build()
+        cv = _load_validate()
+        found = cv.check_decisions_format(str(root))
+        self.assertEqual(len(found), 1, found)
+        self.assertIn("fenced block", found[0])
+
+    def test_the_advisory_reads_the_section_the_cap_exempts(self):
+        # The exemption and the watch must name one section, or the exemption
+        # opens a hole the advisory never looks at (D-046/M77's reason, which
+        # D-074 inherits). `## Decisions notes` is a different heading: BOTH
+        # halves are asserted, because the claim is that the two agree — an
+        # advisory that skips it while the cap also skipped it would be a
+        # matched pair of bugs, not the agreement this pins.
+        cv = _load_validate()
+        cs = _load_scripts()
+        self.tree.rows.append(("M04", "Nearly", "planned", "—", "normal", "milestones/M04-near.md"))
+        self.tree.files["milestones/M04-near.md"] = (
+            "# M04: Nearly\n\n- **Status:** planned   <!-- mirror -->\n\n"
+            "## Decisions notes\n```\npasted\n```\n"
+        )
+        root = self.tree.build()
+        path = str(root / "cairn" / "milestones" / "M04-near.md")
+        self.assertEqual(cv.check_decisions_format(str(root)), [])
+        self.assertEqual(
+            [h for h, _ in cs.milestone_section_line_counts(path)],
+            ["Decisions notes"],
+            "the cap counts the near-miss heading; the advisory must skip it",
+        )
+
+    def test_the_advisory_inherits_the_shared_extractor_scan(self):
+        # AC1's last clause: the advisory reads the section THROUGH the shared
+        # extractor M118 added, not through a scan of its own. A private scan
+        # is the drift this forbids, and it is invisible to every other test
+        # here — so the pin is a rule that lives in `_section_body_lines` and
+        # nowhere in `check_decisions_format`: a fenced `## Decisions` heading
+        # is content, not a section (M45), and a `## ` INSIDE the section's own
+        # fence does not end it. A naive re-implementation gets both wrong.
+        cv = _load_validate()
+        self._with_decisions("- 2026-07-27: entry.\n")  # registers the M04 row
+        self.tree.files["milestones/M04-decided.md"] = (
+            "# M04: Decided\n\n- **Status:** planned   <!-- mirror -->\n\n"
+            "## Goal\n```\n## Decisions\n$ ls\n```\n"      # fenced: content, not a section
+            "\n## Decisions\n<!-- owner -->\n\n"
+            "- 2026-07-27: a decision quoting a heading.\n"
+            "```\n## Review\npasted\n```\n"                 # fenced `## `: not a boundary
+            "\n## Review\nevidence\n"
+        )
+        root = self.tree.build()
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+        # The one finding is the REAL section's fenced block, not the decoy in
+        # `## Goal` — so the advisory found the section the extractor defines.
+        self.assertIn("fenced block", findings[0])
+        self.assertIn("## Review", findings[0])
+
+
 class TestPrinciplesSlot(ScriptCase):
     DESIGN = "# Design\n\n## Design Principles\n\n- IP1: first\n- GP1: second\n"
 
@@ -2502,8 +3324,8 @@ class TestMilestoneDecisionsLines(unittest.TestCase):
     joins the cap-exempt set — and, exactly as D-046/M77 did for the work log,
     the section the cap stops measuring must be the one an advisory can still
     read. Both are extracted by one shared scan, so the exemption cannot drift
-    away from what the `decisions format` advisory will police once M119 adds
-    it — until then the section is exempt with nothing watching it."""
+    away from what the `decisions format` advisory polices — that advisory
+    ships at M119 and reads the section through this extractor."""
 
     def setUp(self):
         self.cs = _load_scripts()
