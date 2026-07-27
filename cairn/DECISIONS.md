@@ -2289,3 +2289,30 @@ anticipating over-deletion only, which RR04 read as a signature of defensive
 drafting; this entry's runs both ways. If the deletion arm is found retaining
 text no reader needs, **or** step 0 found suppressing a statement whose second
 site was load-bearing, this is the entry to supersede. Delivered by M116.
+
+### D-072 (2026-07-27): D-071's "reds on any edit" claim is narrowed to the five spans the guard actually pins — supersedes that clause; D-071's three edits stand
+
+**Context.** M116's §8 description-layer certification found D-071's closing
+sentence overclaims its mechanical backing. D-071 states that D-056's bytes are
+untouched under IP4 "and `skills/tests/test_rule_placement.py` reds on any edit
+to them". `TestDecisionRecord` pins five spans of D-056 — the heading regex, the
+part-1 classification sentence, the three step labels, the no-backfill clause,
+and the IP4 clause. The certifier verified by mutation that rewriting D-056's
+yield clause ("The test predicts no yield" → "XXXX predicts no yield") leaves
+`test_rule_placement` fully green, so "any edit" is false as written.
+
+**Decision.** The clause is narrowed: the guard reds on an edit to D-056's
+classification sentence, its three step labels, its no-backfill clause or its
+IP4 clause, and not on an edit elsewhere in the entry. Everything else in D-071
+stands — the step-0 check, the probe split, and the yield-clause replacement are
+unaffected. So is the underlying fact: D-056's bytes **are** untouched, which
+M116's AC1 verifies by `git diff` against `main`, never by the guard.
+
+**Consequences.** Appended rather than edited: IP4 attaches at append time
+(D-070, D-065's route), and D-071 was already appended when the certification
+ran. What narrows is a claim about what a guard proves, never a claim about what
+was done. Note the shape: this is the second consecutive milestone whose
+certification round caught an overclaimed guard-coverage sentence inside its own
+D-entry — D-070 was the first — which is evidence for the instrument D-067
+adopted rather than against it. If a later pass widens `TestDecisionRecord` to
+pin D-056 whole, this is the entry to supersede.

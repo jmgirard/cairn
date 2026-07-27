@@ -272,9 +272,9 @@ included — sits outside it** (D-069). Without this the gate cannot converge
 rather than merely being hard to reach: §8 obliges every round to record a
 verdict, that record is append-only under IP4, and so each round manufactures
 uncertified surface for the next one to audit. M114 pass 8 ran four rounds on
-that treadmill — rounds 3 and 4 finding defects only in narrative about rounds
-1 and 2 — at 15, 14, 17 and 38 minutes. Zero unresolved stays the bar; what
-this excludes is a scope that regresses.
+that treadmill — round 4 finding defects only in certification narrative — at
+15, 14, 17 and 38 minutes. Zero unresolved stays the bar; what this excludes is
+a scope that regresses.
 
 **This step carries its own falsifier**, stated up front rather than left for
 a later argument about whether it is pulling its weight: if guard-authoring

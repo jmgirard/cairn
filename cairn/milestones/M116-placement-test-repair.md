@@ -23,7 +23,7 @@ Repair the placement test the rulebook states at `tracking-rules.md:820`, supers
 - [ ] AC2: In `skills/shared/tracking-rules.md`, the retention test for rulebook text is stated as deletion changing a compliant agent's behavior, and the string `deleted or inverted` does not occur in that file.
 - [ ] AC3: `skills/shared/tracking-rules.md` states a single-home check running before the retention test, scoped intra-file and governing text authored or edited from that point on: text already stated elsewhere in `tracking-rules.md` keeps one home, every other site carrying at most a cross-reference.
 - [ ] AC4: `skills/shared/tracking-rules.md` states that the inversion procedure (relabel, negate, transpose, require red) is the guard-verification protocol and not the placement test.
-- [ ] AC5: The only sites in `skills/shared/tracking-rules.md` naming the placement test are the test paragraph and the always-read governance table's inflow cell; both name the repaired test and the new D-id, and they share no registered literal — the inflow cell carries a pointer, not a restatement. Verified by `grep -n 'D-056\|three-step\|placement test' skills/shared/tracking-rules.md` returning only those sites.
+- [ ] AC5: Exactly two sites in `skills/shared/tracking-rules.md` refer to the placement steps — the test paragraph under "What gets a test" and the always-read governance table's inflow cell — and they share no registered literal, the inflow cell carrying a pointer rather than a restatement. Verified by `grep -n 'D-056\|D-071\|three-step\|placement step' skills/shared/tracking-rules.md` returning exactly those two lines, and by `test_only_two_sites_name_the_placement_steps` pinning the count.
 - [ ] AC6: `skills/shared/guard-doctrine.md` §8 states that a certification's own report lies outside the scope that certification covers (D-069).
 - [ ] AC7: `skills/tests/test_rule_placement.py` carries a positive assert for each of AC2–AC5 and `skills/tests/test_fresh_context_readers.py` one for AC6; every assert, `REGISTRY` block and module-docstring claim the rewrite invalidates is re-anchored or corrected — at minimum `test_rule_placement.py:44-47`, its `test_module_does_not_become_the_sole_home` absence-assert, its module docstring, `test_always_read_frame.py:76-80`, and `test_mutation_harness.py:2075` and `:2342`; every newly pinned block has its own `REGISTRY` entry; and `python3 -m unittest discover` over `skills/tests`, `scripts/tests` and `hooks/tests` each exits 0 with `TestRegisteredGuardsFailWhenBlanked` reporting no non-reddening or erroring entry.
 
@@ -45,7 +45,7 @@ Repair the placement test the rulebook states at `tracking-rules.md:820`, supers
 - [x] T4: Re-anchor every guard the rewrite invalidates, working from the shipped bytes and never from the draft (M95); the paragraph is hard-wrapped, so use `\s+` matchers across wrap points (M105).
 - [x] T5: Repoint the always-read table's inflow cell at `:175` as a pointer whose literal is lexically distinct from the test paragraph's — `blank_block` errors on a locator occurring twice as loudly as on zero (`mutation_engine.py:41-49`).
 - [x] T6: Add §8's scope clause and its assert in `test_fresh_context_readers.py`.
-- [ ] T7: Run all three suites plus the harness sweep; run `guard-doctrine.md` §8 certification before `status -> review`, with the new scope clause in place first.
+- [x] T7: Run all three suites plus the harness sweep; run `guard-doctrine.md` §8 certification before `status -> review`, with the new scope clause in place first.
 
 ## Work log
 
@@ -58,6 +58,10 @@ Repair the placement test the rulebook states at `tracking-rules.md:820`, supers
 - 2026-07-27: T3-T5 placement test repaired at `tracking-rules.md:820-837` (step 0, deletion-only retention, inversion reassigned); inflow cell at `:175` repointed as a pointer naming D-071; six guards re-anchored across `test_rule_placement.py`, `test_always_read_frame.py` and the registry, +6 REGISTRY entries. Two anchor bugs caught by the suite and fixed against shipped bytes: a lowercase `relabel` where the file ships `Relabel` (M95), and a registry entry naming the wrong class. All three suites green (659/280/hooks).
 
 - 2026-07-27: T6 guard-doctrine §8 gains D-069's scope clause plus its convergence rationale; two asserts in `test_fresh_context_readers.py`, two REGISTRY entries. Registry 412 -> 419; all three suites green and the harness sweep clean.
+
+- 2026-07-27: §8 certification round 1 returned 9 discrepancies, all fixed. #1 shipped D-069's premise that D-070 had already superseded (rounds 3-4 -> round 4 alone); #2 D-071 overclaims the guard's coverage of D-056 -> D-072 appended (IP4 attaches at append time, D-070's route); #3/#4 AC3's intra-file scoping and its before-the-retention-test ordering were unpinned; #5 a registry comment miscounted its own block; #7 two anchors had no REGISTRY entry; #8 the module docstring claimed all asserts are positive with three assertNotIn present; #9a AC5's site count was unpinned.
+- 2026-07-27: correcting the T3-T5 entry above (certification #6): the net REGISTRY delta there was +5, not +6 — of seven entries in the M116 block two were repointed pre-existing entries and five were new. Registry now 421 (main 412).
+- 2026-07-27: AC5 amended at the mini gate (certification #9b) — the repair removed the literal `placement test` from the file, so the criterion's own grep recipe returned one line instead of the two it describes; recipe and count assert corrected, requirement unchanged.
 
 ## Decisions
 

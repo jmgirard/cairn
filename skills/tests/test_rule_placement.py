@@ -18,7 +18,8 @@ conditionally-read `guard-doctrine.md`, because their consumer is an editorial
 session that may write no guard at all — M98 drafted them into the module and
 removed them at review for exactly that reason (M98 review F4/82).
 
-Assertions are positive so they can be mutation-proven, and each target is read
+Assertions are positive so they can be mutation-proven; the three absence-asserts
+here each pair with a positive control (guard-doctrine §3). Each target is read
 per test rather than cached at class level, since the harness runs a guard as a
 single method and skips `setUpClass` (M53/M61 discipline).
 
@@ -97,9 +98,14 @@ class TestPlacementTest(unittest.TestCase):
     def test_step_zero_requires_a_single_home(self):
         # D-071/AC3. `\s+` spans the hard wrap so a reflow does not red this
         # (M105); the assertIn anchors below sit on one physical line each.
+        # The intra-file scoping clause is the operative half: without "already
+        # says it somewhere else" the step reads as a general single-home norm
+        # over every cairn file, which is a far larger rule than D-071 adopts.
         self.assertRegex(
             self.rules,
-            r"\*\*Step 0 — one home\.\*\* Before asking whether a piece of prose\s+belongs in this\s+rulebook",
+            r"\*\*Step 0 — one home\.\*\* Before asking whether a piece of prose\s+"
+            r"belongs in this\s+rulebook, ask whether the rulebook already says it\s+"
+            r"somewhere else",
         )
         self.assertIn(
             "One site\nkeeps the statement; every other site carries at most a cross-reference.",
@@ -209,6 +215,24 @@ class TestPlacedWhereItsConsumersRead(unittest.TestCase):
         self.assertIn("a module of `tracking-rules.md`", module)
         self.assertNotIn(
             "A rule is what changes compliant behavior when it is deleted", module
+        )
+
+    def test_step_zero_precedes_the_retention_test(self):
+        # D-071/AC3 states step 0 runs BEFORE the retention test. Order is the
+        # whole content of "step 0"; pinning both texts without their sequence
+        # leaves a file that states them backwards fully green.
+        self.assertLess(
+            self.rules.index("**Step 0 — one home.**"),
+            self.rules.index("**A rule is what changes compliant behavior"),
+        )
+
+    def test_only_two_sites_name_the_placement_steps(self):
+        # D-071/AC5: one home (the paragraph), one pointer (the inflow cell).
+        # assertNotIn forbids the old phrasing but cannot bound the NUMBER of
+        # sites, so a third restating site would ship green without this.
+        self.assertEqual(self.rules.count("placement steps"), 1)
+        self.assertEqual(
+            self.rules.count("**A rule is what changes compliant behavior"), 1
         )
 
     def test_inflow_cell_points_at_the_test_without_restating_it(self):

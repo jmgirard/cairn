@@ -2351,12 +2351,16 @@ EXEMPT = {
 # lose D-056's no-backfill clause and the rejected "author the D-entries, then
 # slim" remedy becomes licensed by the placement test itself.
 #
-# M116 (D-071) adds four, because the repair fails in four further ways that
-# each restore the superseded reading: lose the deletion-only clause and the
+# M116 (D-071) adds seven. Four are the ways the repair itself fails, each
+# restoring the superseded reading: lose the deletion-only clause and the
 # inversion arm silently returns, routing every duplicate to "keep"; lose step 0
 # and restatement has no test at all; lose its forward-binding clause and the
 # check reads as the file-wide sweep D-057 closed; lose the guard-verification
-# assignment and the inversion procedure floats back to placement.
+# assignment and the inversion procedure floats back to placement. The other
+# three pin what step 0 costs to hold: the inflow cell, whose literal must stay
+# lexically disjoint from the paragraph's or `blank_block` errors on a
+# twice-occurring locator, and the two anchors whose own tests register only
+# their second assert.
 REGISTRY += [
     Mutation(
         guard="test_rule_placement",
@@ -2381,6 +2385,18 @@ REGISTRY += [
         test="TestPlacementTest.test_step_zero_binds_forward_only",
         target=RULES,
         block="binding on text authored or edited from here on, and never\na mandate to sweep the file",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestPlacementTest.test_step_zero_requires_a_single_home",
+        target=RULES,
+        block="**Step 0 — one home.** Before asking whether a piece of prose belongs in this\nrulebook, ask whether the rulebook already says it somewhere else.",
+    ),
+    Mutation(
+        guard="test_rule_placement",
+        test="TestPlacementTest.test_inversion_is_assigned_to_guard_verification",
+        target=RULES,
+        block="Relabel, negate, or transpose the rule in\nplace, run the suite, require red, restore and diff",
     ),
     Mutation(
         guard="test_rule_placement",
