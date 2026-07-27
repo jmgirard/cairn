@@ -21,7 +21,8 @@ falsifying-promotion-condition rule (`tracking-rules.md`) · `guard-doctrine.md`
 the guards over all three, including the two gaps RR07 §BC2/§BC3 close · D-064/D-065/D-066
 · the rec 4 and rec 5 rows · pass 8: the two record supersessions closing pass-7 F1 and
 F5, the widened converse assert, a candidate row for the three inherited partial pins, and the
-rec 5 tally's re-attribution.
+rec 5 tally's re-attribution · route (c): AC9's certified-scope sentence, D-069/D-070, and
+the §8-clause candidate row.
 
 **Out:** the one-surface pin → candidate · `cairn_validate` mechanization of these rules
 (D-064 choice 6; D-059) · the `/milestone-review` fan-out · rulebook growth (D-057) ·
@@ -90,7 +91,7 @@ which is where its binding text permanently lives.
 | BC4 | The two exact ROADMAP replacement clauses AND the tolerance carried by reference to RR07 §BC4 | as BC2; the tolerance was restated above through pass 7 and joined the reference at pass 8's compression |
 | BC1 | File list, shown derivation, ingest-commit carve-out, confinement and tolerance carried by reference to RR07 §BC1; only the measurement range survives above | as BC2; the scope and tolerance were stated above through pass 7 and joined the reference at pass 8's compression |
 | BC5 | The four clauses and the tolerance carried by reference to RR07 §BC5; the obligation, the record and the zero-unresolved gate survive above in summary | as BC2; the obligation and gate were stated above through pass 7 and joined the reference at pass 8's compression |
-| BC6, BC7 | BC6's projections and tolerances and BC7's full conditions carried by reference to RR07 §BC6/§BC7; BC6's five check subjects, BC7's fired outcome and the discharge survive above | Both stayed verbatim through pass 7 for the stated reason that the review gate reads them directly. Pass 7's gate has read both — BC6's projections were met exactly and BC7's terminus fired and is spent — so that reason is discharged. Measured against the pre-amendment commit rather than estimated: AC6 and AC7 held 18 lines and now hold 4, and AC1-AC5 held 29 and now hold 10 — those 33 lines are what AC8-AC9 (19) and the discharge preamble (8) are funded from under a cap the file sat exactly on, and BC6/BC7's 14 alone would not have covered them. Re-measured on the shipped text at the certification, because the first figures (17 and 7) were counted before the re-audit's fixes widened AC8 and were never re-counted after — the same measure-once defect in the row rewritten to remove one. Same route as BC1-BC5, same permanence: RR07 is archived and never edited. Maintainer's call at the pass-8 gate, 2026-07-26. |
+| BC6, BC7 | BC6's projections and tolerances and BC7's full conditions carried by reference to RR07 §BC6/§BC7; BC6's five check subjects, BC7's fired outcome and the discharge survive above | Both stayed verbatim through pass 7 for the stated reason that the review gate reads them directly. Pass 7's gate has read both — BC6's projections were met exactly and BC7's terminus fired and is spent — so that reason is discharged. Measured against the pre-amendment commit rather than estimated: AC6 and AC7 held 18 lines and now hold 4, and AC1-AC5 held 29 and now hold 10 — those 33 lines are what AC8-AC9 (19 at `712c63e`; 23 at `669257b`, AC9 widened by the route-(c) amendment) and the discharge preamble (8) are funded from under a cap the file sat exactly on, and BC6/BC7's 14 alone would not have covered them. Re-measured on the shipped text at the certification, because the first figures (17 and 7) were counted before the re-audit's fixes widened AC8 and were never re-counted after — the same measure-once defect in the row rewritten to remove one. Same route as BC1-BC5, same permanence: RR07 is archived and never edited. Maintainer's call at the pass-8 gate, 2026-07-26. |
 
 ## Coverage
 
@@ -190,6 +191,7 @@ which is where its binding text permanently lives.
 
 - 2026-07-27: UNBLOCKED at the maintainer's call — route (c) of the three recorded at the park, chosen over (a) a narrowed fifth round and (b) entering review with AC9 unticked. Status -> in-progress.
 - 2026-07-27: GATED AMENDMENT — AC9 gains its certified-scope sentence (route c): the certified scope is the work and the records describing the work, and a work-log entry whose subject is a certification round — the final round's own report included — is outside it. Shown verbatim and accepted at the gate; D-069 filed; the §8 scope clause banked as a ROADMAP candidate row rather than edited into doctrine this pass; the work-log style lesson recorded in D-069 as owed at review's post-merge hygiene capture.
+- 2026-07-27: final §8 round's three discrepancies closed — D-070 supersedes D-069's premise sentence (round 3's findings were in work records; round 4's alone were certification narrative) and withdraws its heading's unbacked "cites D-068"; the Deviations row's funding figures are anchored to commits (`19 at 712c63e; 23 at 669257b`) so the measure-once defect cannot recur; Scope In gains the route-(c) deliverables the certifier flagged as unnamed. Fixes re-derived from the files, sent back to the same certifier for confirmation.
 
 ## Decisions
 

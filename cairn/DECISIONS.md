@@ -2209,3 +2209,24 @@ milestones at n=1, and every discrepancy all four rounds found was real — the
 instrument stands; only its scope was wrong. A work-log style lesson
 (decision-relevant facts only; characterizations are falsifiable surface) is
 owed at review's post-merge hygiene capture.
+
+### D-070 (2026-07-27): D-069's premise sentence narrowed and its heading's cites clause withdrawn — supersedes those two claims; the route-(c) amendment stands
+
+**Context.** The final §8 certification round, run under AC9 as amended, found
+two discrepancies in D-069 itself. Its Context states "Rounds 3–4 found
+defects only in newly-authored work-log narrative about the certification
+rounds themselves"; round 3's two counted discrepancies were in the T20 entry
+and in a CLARIFIES entry about the gated amendment — both records describing
+the work, inside the amended scope. The claim holds of round 4 alone. And its
+heading says "cites D-068" where the body engages nothing from D-068.
+
+**Decision.** Both claims are superseded — appended, never edited (IP4
+attaches at append time, D-065's route). The corrected premise: rounds 1–3
+found real defects in records about the work, each fixed and confirmed;
+round 4's discrepancies were in certification narrative alone.
+
+**Consequences.** The route-(c) amendment is unaffected: its ground is
+structural — §8 obliges each round to record a report that is uncertified
+surface for the next round, so zero-unresolved cannot converge while the
+report sits inside the certified scope — and round 4 is what instantiates
+that mechanism. Nothing else in D-069 is touched.
