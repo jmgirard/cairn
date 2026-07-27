@@ -3,12 +3,12 @@
      Per-section owners are tagged below. Drafting budgets: see the template. -->
 # M118: The milestone-local `## Decisions` section joins the cap-exempt set
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR08
 - **Principles touched:** IP4
-- **Branch/PR:** —
+- **Branch/PR:** `m118-decisions-cap-exempt`
 
 ## Goal
 
@@ -109,6 +109,10 @@ declares the same Driving RR and carries them under its own table.
 - 2026-07-27: ingestion put the file at 172/149 and the AC and Tasks sections were compressed in one pass each to reach 149/149 — zero headroom, M114's end state exactly. The 24 lines that broke it are this milestone's own `## Decisions` section, which stops counting at T2: M118 is over cap for the reason M118 exists.
 - 2026-07-27: split at the maintainer's call after the sizing advisory reported 11 criteria against the >7 tripwire — the advisory, the rulebook history enumeration and the consistency test (BC1-BC3) become M119, which depends on this milestone; nothing was discarded. Plan-owned body 149 -> 122.
 - 2026-07-27: split kept BC4 here because it constrains this file's own `## Decisions` section and the AC3 ledger; D-075's "Delivered by M118" now reads as the M118+M119 pair, and being history it is recorded rather than edited.
+- 2026-07-27: status -> in-progress on branch `m118-decisions-cap-exempt`.
+- 2026-07-27: implement gate re-measured the three cap-exempt section types over every live revision of all 119 milestone files (peak per file per section, chars): work log p90 4107, review p90 6718, decisions p90 1372 / max 4647. `## Review` already exceeds `SECTION_MAX_CHARS` before M118 adds anything.
+- 2026-07-27: gate kept `SECTION_MAX_CHARS` at 6000 and re-derived its comment honestly over all three types, rather than raising it to clear review's p90, because the constant bounds a read and M118 raises the per-milestone worst case from two sections to three (18k -> 21k of a 30k budget if raised); falsified by an injection whose review trim loses state a resuming session needed.
+- 2026-07-27: gate placed the AC3 ledger at `cairn/references/` as a synthesis note, following `rulebook-classification-ledger.md` (M116), over a file beside the milestone.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
