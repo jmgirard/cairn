@@ -382,9 +382,12 @@ def milestone_body_line_count(path):
     (D-046/M77) and the milestone-local **decisions** section (D-074/M118,
     superseding D-046's choice (3)) are exempt because D-045 classifies both as
     history — append-only, never edited — so counting them could leave an
-    over-cap file fixable only by an edit IP4 forbids; the advisories in
-    `cairn_validate`, not the cap, are what keep the now-unbudgeted sections
-    honest. A file with no `## Review` section counts to EOF — still less those
+    over-cap file fixable only by an edit IP4 forbids; an advisory in
+    `cairn_validate`, not the cap, is what keeps a now-unbudgeted section
+    honest — `work-log format` ships for the work log, and M119 ships
+    `decisions format` for the decisions section, which until then is exempt
+    with nothing watching it.
+    A file with no `## Review` section counts to EOF — still less those
     two, which are exempt wherever they sit. A fenced heading is content, not a
     boundary (M45), and only exact headings match — `## Work log notes` and
     `## Decisions notes` stay counted. Returns None if the file is unreadable."""
@@ -401,8 +404,9 @@ def _section_body_lines(path, heading):
     section, 1-indexed, heading excluded. The shared scan behind both cap-exempt
     extractors: each exempt section is read by ONE rule, the same rule the cap
     counters exempt it by, so an exemption can never drift away from the
-    advisory watching it (D-046/M77 for the work log, D-074/M118 for the
-    decisions). Matches the heading exactly and lowercased; a fenced heading is
+    advisory that watches it (D-046/M77 for the work log; for the decisions
+    section the exemption lands at D-074/M118 and the advisory reading this
+    extractor at M119). Matches the heading exactly and lowercased; a fenced heading is
     content, not the section (M45); both fence delimiters inside the section
     belong to it, as the cap counters count them (M77 review F2). Returns [] when
     the section is absent, None if the file is unreadable."""

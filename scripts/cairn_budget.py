@@ -147,7 +147,7 @@ def axes(root, kind, rel):
                 "plan-owned body",
                 cs.milestone_body_line_count(path),
                 cs.MILESTONE_CAP,
-                note="less ## Review and ## Work log (M55, D-046)",
+                note="less ## Review, ## Work log and ## Decisions (M55, D-046, D-074)",
             )
         )
     return [a for a in out if a.value is not None]

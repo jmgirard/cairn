@@ -630,9 +630,15 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_milestone_cap_exemption",
-        test="TestMilestoneCapExemption.test_template_decisions_comment_states_the_exemption",
+        test="TestMilestoneCapExemption.test_template_decisions_comment_states_the_exemption_and_its_reason",
         target=TEMPLATE,
-        block="EXEMPT from the 150-line cap (D-074)",
+        block="EXEMPT from the 150-line cap (D-074) because D-045 makes it history like the work log",
+    ),
+    Mutation(
+        guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_template_review_comment_names_all_three_exempt_sections",
+        target=TEMPLATE,
+        block="as are the work log (D-046) and the decisions section (D-074)",
     ),
     # The stated↔enforced label coupling registers too, unlike its cap-number
     # sibling: that one compares two computed numbers, but this one's rulebook
@@ -2035,7 +2041,13 @@ REGISTRY = [
         guard="test_budget_first_drafting",
         test="TestMilestoneTemplateBudgets.test_the_decisions_section_is_named_cap_exempt_and_not_plan_s_to_spend",
         target=TEMPLATE,
-        block="## Decisions reserves nothing",
+        block="## Decisions reserves nothing: D-074 made it cap-exempt, so it costs the",
+    ),
+    Mutation(
+        guard="test_budget_first_drafting",
+        test="TestMilestoneTemplateBudgets.test_the_decisions_section_is_named_cap_exempt_and_not_plan_s_to_spend",
+        target=TEMPLATE,
+        block="budget nothing and plan still spends none of it.",
     ),
     Mutation(
         guard="test_budget_first_drafting",

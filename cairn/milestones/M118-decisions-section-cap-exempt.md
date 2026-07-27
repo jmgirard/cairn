@@ -119,6 +119,14 @@ declares the same Driving RR and carries them under its own table.
 - 2026-07-27: T3 checked off on `cairn_validate` alone without the full `verify` slot — the omission surfaced at T4 as a red `TestShippedPageStateLedger` (the new page was missing from the pinned state ledger) and was fixed there; no other task skipped the slot.
 - 2026-07-27: T4 — `CAP_EXEMPT_SECTIONS` is three members; `SECTION_MAX_CHARS` held at 6000 with its comment re-derived over all three types and citing the ledger instead of carrying a second copy. 3 hook tests, 2 red first (the prefixed-heading control green as designed).
 - 2026-07-27: T5 — all five AC5 sites widened to three members; set-membership and cap-remedy asserts re-anchored whole, three new asserts added (decisions reason, always-read enumeration, template comment), each registered in the mutation harness. Verified both ways: blanking reds each new block, and a by-hand SWAP back to the two-member sentence reds the membership guard (M76 — blanking is not swapping).
+- 2026-07-27: T6 — full `verify` slot clean (676 + 298 + 94) and `cairn_validate` green before the guard-doctrine §8 gate.
+- 2026-07-27: §8 certification round 1 — a fresh-context [O] reader that authored none of the work returned 16 discrepancies, 11 blocking, in all three categories. All resolved this pass; nothing argued down.
+- 2026-07-27: the §8 reader's largest class was five two-member enumerations of the exempt set in files AC5 did not list — `cairn_budget.py`'s operator-facing note (which captioned a number that already subtracted the third section), `cairn_validate`'s breakdown comment, and three docstrings. AC5 widened the sites it named and stopped there.
+- 2026-07-27: three shipped records claimed the `decisions format` advisory watches the section in the present tense; M118's own Scope sends that advisory to M119, so the claims were false at HEAD. Corrected in `cairn_scripts.py` (x2) and the template comment.
+- 2026-07-27: the ledger's corpus was scoped by path prefix and so dropped M01 entirely plus three pre-rename `project/milestones/` paths; re-derived over both roots and grouped by milestone ID — 119 milestones over 122 paths. No conclusion moved: still 3 over cap before, 0 after, max 129 (M43).
+- 2026-07-27: ledger reconciliation — the work-log p90 recorded at the implement gate (4107, measured at `35b14ed`) is superseded by the ledger's 4228, and the work-log over-6000 count moved 5 -> 6, both because M118's own file grew inside the corpus it measures. The counts now ship as dated observations naming their measurement commit.
+- 2026-07-27: the ledger's Extraction status claimed re-running the derivation at a named commit reproduces its row; true only of the pre-M118 column, since the two peaks are independent maxima. M55 is the counter-example (row 92/88, `96b1897` scores 92/86) and is now the worked case in the page.
+- 2026-07-27: three guard gaps the §8 reader found and this pass closed — the template's `## Review` comment could revert to two members with the suite green, the template's `## Decisions` reason clause deleted green, and the emitted over-cap diagnostic had no assert for the new member (its fixture also lacked the section, so the assert would have been vacuous — M79).
 - 2026-07-27: T5 minor amendment (discovered sub-task) — M99's two `## Decisions` reserve guards in `test_budget_first_drafting.py` rest on the ground D-074 removes, so the cap-fit sum drops the phantom 21-line reserve term and the reserve-wording assert is re-anchored on the exemption while keeping the spend-none instruction; the new anchor is registered. AC5 did not enumerate these because they are budget guards, not exempt-set enumerations.
 
 ## Decisions
@@ -140,6 +148,29 @@ declares the same Driving RR and carries them under its own table.
   serves. Redefined against the section's own genre; D-075 narrows D-074 part 3.
 - 2026-07-27 (RR08 recs 7-8, REJECTED with reasons in the RR): the third-option route,
   and any "current knowledge with restrictions" hedge, which D-045's taxonomy lacks.
+- 2026-07-27 (AC5 reading, raised by the §8 certification): AC5's operative clause is
+  "every site *enumerating* the cap-exempt set names all three members ... No two-member
+  set survives"; the colon-list that follows names the sites to touch, not sites that must
+  each carry the full set. Three of the six enumerate nothing on their own (the
+  cap-remedies bullet names a count, the always-read table row names none, the template
+  preamble names one member), so under the alternative reading AC5 could not be satisfied
+  by any edit short of restating the whole set six times. The full three-members-with-
+  reasons statement lives once, in the weight-caps bullet, per the rulebook's own step-0
+  single-home rule; every other site is consistent with it and none names a pair. Review
+  may reject this reading — the criterion is plan-owned and unamended.
+- 2026-07-27 (AC3 reading, raised by the §8 certification): "no prose here does" scopes
+  plan-owned prose, not the append-only work log. The gate line at 2026-07-27 records the
+  measurement that justified a gate choice, which is what the falsifying-ground discipline
+  requires of it; its work-log p90 of 4107 is superseded by the ledger's 4228, the drift
+  caused by this milestone's own work log growing inside the corpus it measures. History
+  is not edited (IP4), so the reconciliation is an appended work-log line.
+- 2026-07-27 (departure from D-074, raised by the §8 certification): D-074 part 2 says the
+  set "becomes three members carrying three distinct reasons". The shipped prose says TWO
+  grounds — review-ownership, and the un-editability that the work log and the decisions
+  section share — because the two history members reach the same IP4 ground by their own
+  classifications, and writing three would invent a distinction the entry's own reasoning
+  does not carry ("for D-046's reason and not D-030's"). Each member still states its own
+  reason, which is what AC5 requires. Recorded as a departure rather than silently taken.
 - 2026-07-27 (RR08 ingest gate): BC1-BC4 carried BY REFERENCE under the Deviations
   table — verbatim measured ~150 plan-owned lines and would red `weight caps` at this
   gate, the D-066 choice-4 case. Four ambiguities the criteria-audit surfaced were bound

@@ -96,12 +96,29 @@ class TestMilestoneCapExemption(unittest.TestCase):
             self.rules,
         )
 
-    def test_template_decisions_comment_states_the_exemption(self):
+    def test_template_decisions_comment_states_the_exemption_and_its_reason(self):
         # The template is where an author actually meets the rule, and the
         # decisions section is the member whose exemption is newest — a
-        # template still calling it counted teaches the superseded rule.
+        # template still calling it counted teaches the superseded rule. Pinned
+        # label-WITH-reason on one physical line: a bare `(D-074)` assert would
+        # let the un-editability ground delete green, and without the ground
+        # the exemption reads as a convenience the next squeeze may revoke.
         template = read(SKILLS / "shared" / "templates" / "milestone.md")
-        self.assertIn("EXEMPT from the 150-line cap (D-074)", template)
+        self.assertIn(
+            "EXEMPT from the 150-line cap (D-074) because D-045 makes it history like the work log",
+            template,
+        )
+
+    def test_template_review_comment_names_all_three_exempt_sections(self):
+        # The `## Review` comment is the template's other enumeration site, and
+        # it was the one M118 could revert to a pair with the whole suite green
+        # — the work-log comment's own `(D-046)` assert covers a different
+        # physical line, so nothing pinned this one.
+        template = read(SKILLS / "shared" / "templates" / "milestone.md")
+        self.assertIn(
+            "as are the work log (D-046) and the decisions section (D-074)",
+            template,
+        )
 
     def test_weight_caps_states_the_wrapped_entry_advisory_warns(self):
         # The severity is the decision (D-046): WARN, never a gate failure.

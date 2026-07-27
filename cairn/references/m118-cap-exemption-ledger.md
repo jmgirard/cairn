@@ -1,23 +1,29 @@
 # Milestone cap peak-revision ledger (M118)
 
-Every milestone file this repo has ever had live, re-measured at its **peak
+Every milestone this repo has ever had live, re-measured at its **peak
 plan-owned revision** under both weight-cap counters: the pre-M118 counter,
 which exempts only `## Work log`, and the post-M118 counter, which also exempts
 the milestone-local `## Decisions` section (D-074). The question it answers is
-narrow and checkable: does the exemption actually relieve the files that hit the
-cap, and does it leave any file near it?
+narrow and checkable: does the exemption actually relieve the milestones that
+hit the cap, and does it leave any of them near it?
 
 **Provenance.** Ingested 2026-07-27 by M118 from this repo's own git history —
-no shelf item backs it. Derivation: the file set is every path ever touched
-under `cairn/milestones/` excluding `archive/`, taken from
-`git log --all --name-only`; for each path, every revision's blob is read with
-`git show <rev>:<path>` and scored by the **shipped** counter internals
-(`scripts/cairn_scripts.py`: `_plan_owned_scan`, then `boundary` less the
-exempted sections' line counts), so the `## Review` boundary and the fence rules
-measured here are the ones the gate enforces rather than a reimplementation of
-them. The pre-M118 column subtracts `WORKLOG_HEADING` only; the post-M118 column
-subtracts `EXEMPT_HEADINGS`. Pagination: —.
-Extraction: first-hand record of this repo's own frozen history, nothing to re-verify against — every row names the commit it was read at, and re-running the derivation above at those commits reproduces it — observed 2026-07-27.
+no shelf item backs it. Derivation: the corpus is every `.md` path ever touched
+under `cairn/milestones/` **or** the pre-rename `project/milestones/` whose
+basename matches `M<digits>-`, excluding `archive/` (archive summaries answer to
+the 25-line archive cap, not this one), taken from
+`git log --all --name-only`. Paths are grouped by milestone ID, so one row is
+one milestone even where its file moved root or was re-cut under a second slug.
+For each path, every revision's blob is read with `git show <rev>:<path>` and
+scored by the **shipped** counter internals (`scripts/cairn_scripts.py`:
+`_plan_owned_scan`, then `boundary` less the exempted sections' line counts), so
+the `## Review` boundary and the fence rules measured here are the ones the gate
+enforces rather than a reimplementation of them. The pre-M118 column subtracts
+`WORKLOG_HEADING` only; the post-M118 column subtracts `EXEMPT_HEADINGS`.
+Percentiles are the lower-rank convention, `sorted[int(0.9 * (n - 1))]`, which
+is the more conservative of the two common definitions; a re-derivation using
+nearest-rank will read a little higher. Pagination: —.
+Extraction: first-hand record of this repo's own frozen history, nothing to re-verify against — re-running the derivation above reproduces the table, though a single commit named in a row reproduces only that row's pre-M118 figure, for the reason the next section gives — observed 2026-07-27.
 
 **Scope.** This is a measurement, not an authority: it does not decide the
 exemption (D-074 does), does not set the cap, and holds no status. It is not a
@@ -28,62 +34,65 @@ in `DECISIONS.md`, architecture in `DESIGN.md`.
 
 **Evidence snapshot.**
 
-- `cairn/milestones/*.md`, all non-archive paths, every revision reachable from `git log --all` — 119 paths over 118 milestone IDs (M94 was re-cut under a second slug, so it holds two paths and appears as two rows) — observed 2026-07-27.
-- `scripts/cairn_scripts.py` at `b8ef6e5` (`MILESTONE_CAP = 150`, `>=` fails, so 149 is the largest passing body) — observed 2026-07-27.
+- Every non-archive milestone-file path reachable from `git log --all` under either milestones root — 122 paths over 119 milestone IDs; M01–M03 are the paths that lived under `project/milestones/` before the rename, and M94 is the one ID re-cut under a second slug — observed 2026-07-27.
+- `scripts/cairn_scripts.py` at `6733b8e` (`MILESTONE_CAP = 150`, `>=` fails, so 149 is the largest passing body) — observed 2026-07-27.
+- **This corpus contains the milestone that produced it.** M118's own file was still being written while these figures were taken, so its rows and any count it falls inside are a snapshot, not a settled fact — see the note under the section-size table — observed 2026-07-27.
 
 ## What each column means
 
-Both peaks are **independent maxima over a path's revisions**: the pre-M118
+Both peaks are **independent maxima over a milestone's revisions**: the pre-M118
 column is the largest body that counter ever saw, the post-M118 column the
 largest the new counter ever saw, and they need not fall on the same revision.
 So the gap between the two columns is a difference of maxima, not the size of
-any single revision's `## Decisions` section. The commit named is where the
-pre-M118 peak occurred.
+any single revision's `## Decisions` section, and the commit named in a row
+locates the **pre-M118 peak only** — scoring that one blob reproduces the
+pre-M118 figure and will sometimes read lower than the post-M118 figure beside
+it. M55 is the worked case: its row is 92 / 88, and `96b1897` scores 92 / 86,
+because M55's post-M118 peak falls on a different revision.
 
 Every row's milestone ID is its stable ID; rows are added, never reflowed.
 
-## Ledger — peak plan-owned body per milestone file, both counters
+## Ledger — peak plan-owned body per milestone, both counters
 
-| Milestone | peak, pre-M118 counter | peak, post-M118 counter | at commit |
+| Milestone | peak, pre-M118 counter | peak, post-M118 counter | pre-M118 peak at |
 |---|---|---|---|
 | M114 | 166 | 123 | `e3abccf` |
 | M98 | 165 | 123 | `c48db58` |
 | M79 | 154 | 125 | `ddbc6e7` |
-| M118 | 149 | 125 | `d1b1144` |
 | M87 | 149 | 125 | `8a1c13d` |
+| M118 | 149 | 125 | `d1b1144` |
 | M81 | 148 | 124 | `4c10a91` |
 | M83 | 147 | 112 | `3dafae8` |
 | M88 | 147 | 120 | `957b69a` |
 | M78 | 143 | 127 | `0b4e2ce` |
 | M95 | 142 | 126 | `2ac59b4` |
-| M94 (always-read-weight-signal) | 141 | 108 | `5b4889f` |
+| M94 | 141 | 108 | `5b4889f` |
 | M84 | 138 | 106 | `d8ab7b6` |
 | M43 | 133 | 129 | `26c0b0f` |
 | M80 | 130 | 127 | `4815763` |
 | M82 | 130 | 121 | `c038d56` |
 | M93 | 127 | 124 | `7213769` |
-| M94 (cost-instrumentation) | 126 | 93 | `b2ee126` |
-| M101 | 124 | 120 | `9f3586a` |
 | M75 | 124 | 120 | `62d03e3` |
-| M117 | 122 | 120 | `7d29ce8` |
+| M101 | 124 | 120 | `9f3586a` |
 | M89 | 122 | 101 | `f637fd1` |
+| M117 | 122 | 120 | `7d29ce8` |
 | M41 | 121 | 117 | `44630d4` |
 | M53 | 121 | 109 | `09f29e1` |
 | M58 | 120 | 118 | `8d0f373` |
 | M70 | 119 | 115 | `1942284` |
-| M115 | 118 | 116 | `94b7237` |
 | M20 | 118 | 103 | `627b926` |
 | M96 | 118 | 106 | `1525aa1` |
+| M115 | 118 | 116 | `94b7237` |
 | M90 | 117 | 112 | `dabf7cc` |
 | M99 | 117 | 113 | `4699c5b` |
 | M72 | 116 | 105 | `b660b42` |
 | M86 | 116 | 112 | `d3fb535` |
 | M92 | 116 | 114 | `e048746` |
 | M45 | 115 | 103 | `c49fda2` |
-| M113 | 114 | 93 | `3f26036` |
 | M40 | 114 | 110 | `82ca240` |
 | M44 | 114 | 111 | `9f00f6c` |
 | M50 | 114 | 112 | `b9a443a` |
+| M113 | 114 | 93 | `3f26036` |
 | M100 | 113 | 109 | `2db1295` |
 | M25 | 112 | 108 | `3e0c60d` |
 | M33 | 112 | 108 | `86e8fd6` |
@@ -97,8 +106,8 @@ Every row's milestone ID is its stable ID; rows are added, never reflowed.
 | M71 | 105 | 101 | `625a80f` |
 | M61 | 104 | 95 | `070f619` |
 | M77 | 104 | 98 | `daf9862` |
-| M108 | 103 | 101 | `fc2517a` |
 | M12 | 103 | 93 | `f707488` |
+| M108 | 103 | 101 | `fc2517a` |
 | M74 | 102 | 99 | `40009d0` |
 | M32 | 100 | 98 | `70e48bf` |
 | M63 | 100 | 96 | `08b7ee6` |
@@ -113,35 +122,35 @@ Every row's milestone ID is its stable ID; rows are added, never reflowed.
 | M51 | 95 | 91 | `7bc040f` |
 | M57 | 95 | 91 | `78a0eeb` |
 | M46 | 94 | 92 | `ffe07db` |
-| M110 | 93 | 91 | `b16260c` |
 | M42 | 93 | 89 | `31266ec` |
 | M60 | 93 | 82 | `76cfb36` |
+| M110 | 93 | 91 | `b16260c` |
 | M24 | 92 | 90 | `707c684` |
 | M55 | 92 | 88 | `96b1897` |
 | M59 | 92 | 90 | `39a605d` |
 | M66 | 92 | 88 | `eb56020` |
-| M103 | 91 | 89 | `116d27d` |
 | M31 | 91 | 87 | `98e7366` |
 | M62 | 91 | 88 | `9a110ec` |
-| M119 | 90 | 86 | `704a595` |
+| M103 | 91 | 89 | `116d27d` |
 | M26 | 90 | 88 | `0b5709e` |
 | M36 | 90 | 87 | `e50c5bd` |
 | M48 | 90 | 88 | `b2068d9` |
+| M119 | 90 | 86 | `704a595` |
 | M29 | 89 | 87 | `a52a4b4` |
 | M23 | 88 | 86 | `9a798bc` |
 | M09 | 87 | 79 | `6d9d7ee` |
 | M107 | 87 | 85 | `946238c` |
 | M10 | 86 | 78 | `01df055` |
-| M112 | 86 | 84 | `e7ec1b4` |
 | M65 | 86 | 84 | `75adf55` |
+| M112 | 86 | 84 | `e7ec1b4` |
 | M52 | 85 | 83 | `4a1528f` |
 | M17 | 84 | 80 | `0eedbae` |
 | M35 | 83 | 80 | `b00937c` |
 | M37 | 83 | 79 | `4484673` |
 | M56 | 83 | 81 | `7d8ba52` |
 | M64 | 83 | 81 | `24c8d54` |
-| M111 | 82 | 80 | `5fbef9c` |
 | M67 | 82 | 78 | `7a70e57` |
+| M111 | 82 | 80 | `5fbef9c` |
 | M13 | 81 | 71 | `2b6a42e` |
 | M18 | 78 | 74 | `6de2080` |
 | M06 | 75 | 67 | `6da6972` |
@@ -158,9 +167,10 @@ Every row's milestone ID is its stable ID; rows are added, never reflowed.
 | M16 | 62 | 56 | `6596653` |
 | M14 | 58 | 55 | `80825f4` |
 | M15 | 58 | 55 | `5293667` |
-| M109 | 57 | 48 | `fc6ef79` |
 | M39 | 57 | 55 | `3ef9ba6` |
+| M109 | 57 | 48 | `fc6ef79` |
 | M106 | 55 | 53 | `e57d78d` |
+| M01 | 54 | 49 | `a2c0f41` |
 | M102 | 52 | 50 | `94473c7` |
 | M116 | 51 | 49 | `5b6f883` |
 | M03 | 45 | 43 | `ba40a77` |
@@ -170,10 +180,10 @@ Every row's milestone ID is its stable ID; rows are added, never reflowed.
 
 | Reading | Value |
 |---|---|
-| Milestone file paths measured | 119 |
-| Paths whose pre-M118 peak reached the cap (>= 150) | 3 — M114 (166), M98 (165), M79 (154) |
+| Milestones measured | 119 (over 122 file paths) |
+| Milestones whose pre-M118 peak reached the cap (>= 150) | 3 — M114 (166), M98 (165), M79 (154) |
 | Of those, still at or over the cap under the post-M118 counter | 0 — they land at 123, 123, 125 |
-| Largest post-M118 peak across all 119 paths | 129 (M43) |
+| Largest post-M118 peak across all 119 | 129 (M43) |
 | Headroom at that maximum | 20 lines below the 149 ceiling |
 
 The three over-cap peaks are real committed states, not hypotheticals: each file
@@ -185,15 +195,20 @@ afterwards. M118's own file is the fourth-largest pre-M118 peak (149 at
 
 Input to `hooks/session_context.py`'s `SECTION_MAX_CHARS`, which bounds how much
 of each cap-exempt section a session start injects (D-063). Measured over the
-same corpus by the same derivation, each path scored at its own peak per
+same corpus by the same derivation, each milestone scored at its own peak per
 section, via `_section_body_lines`; character counts include one newline per
-line. `## Review` is absent from exactly one path, hence n=118.
+line. `## Review` is absent from exactly one milestone, hence n=118.
 
-| Section | n | median | p90 | max | paths over 6,000 |
+| Section | n | median | p90 | max | over 6,000 |
 |---|---|---|---|---|---|
-| `## Work log` | 119 | 1,292 | 4,228 | 55,150 | 5 |
-| `## Decisions` | 119 | 122 | 1,372 | 4,647 | 0 |
+| `## Work log` | 119 | 1,285 | 4,228 | 55,150 | 6 |
+| `## Decisions` | 119 | 122 | 1,305 | 4,647 | 0 |
 | `## Review` | 118 | 2,346 | 6,718 | 8,477 | 14 |
+
+**The over-6,000 counts are dated observations, not standing facts** — the
+corpus includes M118, whose own work log crossed 6,000 during this milestone and
+moved that count from 5 to 6 between the first derivation and this one. Read the
+whole row as measured at `6733b8e` — observed 2026-07-27.
 
 Three readings the constant's justifying comment now rests on. `## Decisions` is
 the smallest of the three types by an order of magnitude at the median and never
@@ -203,12 +218,12 @@ the constant (which recorded work log 3,740 and review 5,866 over 111 files), so
 6,000 no longer clears the p90 of every type — the outliers it trims are review
 sections, and that is the bound working, not failing. The work log's 55,150
 maximum is M114, whose nine review passes make it the corpus outlier by a factor
-of 2.4 over the next path (M95, 22,932).
+of 2.4 over the next milestone (M95, 22,932).
 
 ## Disposition
 
-- The three over-cap rows and the 129 maximum are AC3's evidence; nothing here
-  is restated into `M118`'s milestone file (M99).
+- The three over-cap rows and the 129 maximum are AC3's evidence; the ledger
+  carries them so the milestone file's plan-owned prose does not (M99).
 - The section-size table is AC4's fresh measurement; the re-derived
   `SECTION_MAX_CHARS` comment cites this page rather than carrying a second copy
   of the numbers.

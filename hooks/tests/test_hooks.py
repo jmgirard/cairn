@@ -174,7 +174,8 @@ class TestSessionContextReadBound(RepoFixture):
     NEWEST work-log entries, which are the ones carrying current state: a
     resuming session was told what a milestone finished days ago and never
     what it is blocked on. Sections the 150-line cap governs are injected
-    whole; sections it exempts (`## Work log`, `## Review`) are bounded.
+    whole; sections it exempts (`## Work log`, `## Decisions`, `## Review`)
+    are bounded — the third member joined the set at M118/D-074.
     """
 
     def milestone(self, work_log=(), review=(), tasks=(), relpath=None,

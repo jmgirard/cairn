@@ -2075,6 +2075,9 @@ class TestValidateFailures(ScriptCase):
             "## Tasks\n" + "t\n" * 120 + "\n"
             "## Goal\n" + "g\n" * 5 + "\n"
             "## Work log\n" + "- 2026-07-18: w\n" * 10 + "\n"
+            # Present so the exempt-section assertions below are not vacuous —
+            # an absent section is excluded from the breakdown for free (M79).
+            "## Decisions\n" + "- 2026-07-27: d\n" * 10 + "\n"
         )
         self.tree.files["milestones/M03-live.md"] = body + "## Review\n" + "e\n" * 5
         out = self.assert_fails("weight caps", self.tree.build())
@@ -2084,11 +2087,17 @@ class TestValidateFailures(ScriptCase):
         bd = out[out.index("heaviest first:"):]
         self.assertLess(bd.index("Tasks"), bd.index("Scope"))
         self.assertLess(bd.index("Scope"), bd.index("Goal"))
-        # Both exempt sections stay out of the breakdown: `## Review` because it
-        # is review-owned (M55), the work log because D-045 makes it history and
-        # the remedy must never aim at an edit IP4 forbids (D-046/M77).
+        # All three exempt sections stay out of the breakdown: `## Review`
+        # because it is review-owned (M55), the work log (D-046/M77) and the
+        # milestone-local decisions section (D-074/M118) because D-045 makes
+        # them history and the remedy must never aim at an edit IP4 forbids.
+        # Asserted against the EMITTED diagnostic, not the function: the
+        # function-level exclusion is covered in TestMilestoneSectionLineCounts,
+        # and it is the operator-facing text that must not name a section they
+        # may not trim.
         self.assertNotIn("Review", bd)
         self.assertNotIn("Work log", bd)
+        self.assertNotIn("Decisions", bd)
 
     def test_under_cap_shows_no_breakdown(self):
         # The breakdown appears only for over-cap milestones; a passing repo
