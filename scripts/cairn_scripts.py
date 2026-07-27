@@ -385,9 +385,8 @@ def milestone_body_line_count(path):
     history — append-only, never edited — so counting them could leave an
     over-cap file fixable only by an edit IP4 forbids; an advisory in
     `cairn_validate`, not the cap, is what keeps a now-unbudgeted section
-    honest — `work-log format` ships for the work log, and M119 ships
-    `decisions format` for the decisions section, which until then is exempt
-    with nothing watching it.
+    honest — `work-log format` for the work log (D-046/M77) and
+    `decisions format` for the decisions section (D-075/M119).
     A file with no `## Review` section counts to EOF — still less those
     two, which are exempt wherever they sit. A fenced heading is content, not a
     boundary (M45), and only exact headings match — `## Work log notes` and

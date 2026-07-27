@@ -2010,6 +2010,242 @@ class TestWorkLogFormatAdvisory(ScriptCase):
         self.assertEqual(len(cv.check_worklog_format(str(root))), 3)
 
 
+# The corpus RR08 measured D-074 part 3's transplanted grammar against, and the
+# corpus D-075 binds the shipped advisory's 0-WARN arm to. Each entry is the
+# `review M<NN>: done` commit that archived the file, so the live file — and the
+# whole `## Decisions` section it carried at `done` — is at `<sha>^:<path>`.
+# History is never edited (IP4), so these blobs are frozen; git is read here
+# rather than copied into a fixture so the test measures what actually shipped
+# and no second copy of history lives in the test tree.
+DECISIONS_CORPUS = (
+    ("M83", "f929acc0f5268ff964c94c4b0f9532cb6d050d2a",
+     "cairn/milestones/M83-staleness-parser-hardening.md",
+     "M83-D3 (supersedes M83-D1 and M83-D2"),
+    ("M84", "a41123443df67c7d132a0a3f43988273f3597b0e",
+     "cairn/milestones/M84-record-density-advisory.md",
+     "### M84-D1 (2026-07-18)"),
+    ("M94", "38234a2563e6b47e37d3c8ff87d21473b4dc49d6",
+     "cairn/milestones/M94-cost-instrumentation.md",
+     "RR01 rec 9 failed"),
+    ("M98", "ef2e1813aa83548b6a1265aa490f931cbc8d6197",
+     "cairn/milestones/M98-lesson-graduation-to-doctrine.md",
+     "### M98-D1 (2026-07-20)"),
+    ("M114", "a25e6dd147d4945c3d227bcb5ae2fa9dbfbe9040",
+     "cairn/milestones/M114-review-loop-escape-hatches.md",
+     "RR06 Q1"),
+)
+
+
+class TestDecisionsFormatAdvisory(ScriptCase):
+    """M119/D-074/D-075: the milestone-local `## Decisions` section is exempt
+    from the 150-line cap, so — exactly as for the work log — nothing budgetary
+    polices it and this advisory is the counterweight. Its subject is pasted
+    output and fenced transcript blocks, NEVER entry length: D-074 part 3 first
+    transplanted the work log's one-line grammar, and RR08 measured that against
+    the corpus below, where every normal entry wraps. WARN, never a gate
+    failure (D-046's severity, retained by D-075)."""
+
+    def _with_decisions(self, body):
+        self.tree.rows.append(("M04", "Decided", "planned", "—", "normal", "milestones/M04-decided.md"))
+        self.tree.files["milestones/M04-decided.md"] = (
+            "# M04: Decided\n\n- **Status:** planned   <!-- mirror -->\n\n"
+            "## Decisions\n<!-- owner: implement / review · append-only -->\n\n"
+            + body
+            + "\n## Review\nevidence\n"
+        )
+        return self.tree.build()
+
+    # --- the 0-WARN arm: the real corpus -----------------------------------
+
+    def test_shipped_advisory_is_silent_over_the_whole_corpus(self):
+        # D-075/RR08 §BC3, 0-WARN arm, bound at the ingest gate to the WHOLE
+        # sections rather than to an enumerated list of their forms: the
+        # enumeration omits forms the corpus actually contains (M83's undated
+        # `- **M83-D1:` bullets, M94's bare pointer prose), so the weaker
+        # reading would let a detector pass by dodging them.
+        #
+        # NON-VACUITY FIRST. A `git show` that returns nothing, a moved path or
+        # a heading rename all make this assert green by measuring an empty
+        # section — "0 WARNs" would then mean "nothing was read", which is the
+        # M93 review F2 defect. So each section is proved present, substantial
+        # and the RIGHT one before any silence is claimed.
+        repo = pathlib.Path(__file__).resolve().parent.parent.parent
+        cv = _load_validate()
+        cs = _load_scripts()
+        measured = {}
+        for mid, sha, path, marker in DECISIONS_CORPUS:
+            blob = subprocess.run(
+                ["git", "show", f"{sha}^:{path}"],
+                capture_output=True, text=True, cwd=repo, timeout=30,
+            )
+            self.assertEqual(
+                blob.returncode, 0,
+                f"{mid}: cannot read {path} at {sha}^ — {blob.stderr.strip()}",
+            )
+            rel = f"milestones/M{cs.id_num(mid):02d}-corpus.md"
+            self.tree.rows.append((mid, "Corpus", "planned", "—", "normal", rel))
+            self.tree.files[rel] = blob.stdout
+            measured[mid] = (blob.stdout, marker)
+        root = self.tree.build()
+
+        for mid, (text, marker) in measured.items():
+            path = str(root / "cairn" / f"milestones/M{cs.id_num(mid):02d}-corpus.md")
+            section = cs.milestone_decisions_lines(path)
+            self.assertTrue(section, f"{mid}: no `## Decisions` section was read")
+            self.assertGreaterEqual(
+                len(section), 20,
+                f"{mid}: only {len(section)} lines read — the corpus sections "
+                f"run 31-42 lines, so this is a truncated read",
+            )
+            self.assertIn(
+                marker, "\n".join(t for _, t in section),
+                f"{mid}: the section read is not the one the corpus names",
+            )
+
+        corpus_ids = {mid for mid, _, _, _ in DECISIONS_CORPUS}
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(
+            [f for f in findings if f.split(":")[0] in corpus_ids], [],
+            "the advisory is not silent over the corpus D-075 binds it to",
+        )
+
+        # Positive control on the SAME path. Silence over real files proves
+        # nothing on its own — a `check_decisions_format` that returned [] for
+        # any input would satisfy the assert above with every corpus read
+        # intact. So one corpus section is given a paste and must report.
+        rel = f"milestones/M{cs.id_num('M114'):02d}-corpus.md"
+        self.tree.files[rel] = measured["M114"][0].replace(
+            "\n## Review", "\n```\n$ python3 -m unittest\nOK\n```\n\n## Review", 1
+        )
+        root = self.tree.build()
+        self.assertTrue(
+            [f for f in cv.check_decisions_format(str(root)) if f.startswith("M114:")],
+            "the advisory reports nothing even on a corpus section given a paste",
+        )
+
+    # --- the >=1 arm: constructed pasted output ----------------------------
+
+    def test_fenced_transcript_warns_but_passes(self):
+        root = self._with_decisions(
+            "- 2026-07-27: the run that settled it.\n"
+            "```\n$ python3 -m unittest discover -s scripts/tests\n"
+            "Ran 412 tests in 3.204s\n\nOK\n```\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  decisions format", proc.stdout)
+        self.assertIn("M04", proc.stdout)
+        self.assertIn("all checks passed", proc.stdout)
+        self.assertIn("advisory warning(s) — not gate failures", proc.stdout)
+
+    def test_unfenced_pasted_output_warns(self):
+        # The arm a fenced-block-only detector would miss, and the reason AC1
+        # names pasted output as well as fenced blocks.
+        root = self._with_decisions(
+            "- 2026-07-27: the run that settled it.\n"
+            "$ python3 -m unittest discover -s scripts/tests\n"
+            "Ran 412 tests in 3.204s\n"
+            "OK\n"
+        )
+        cv = _load_validate()
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+        self.assertIn("pasted output", findings[0])
+
+    def test_a_pasted_block_is_one_finding_not_one_per_line(self):
+        # A 40-line transcript reported 40 times is an advisory the operator
+        # learns to scroll past — the failure mode D-075 names for a
+        # permanently-warning advisory, reached here by volume instead.
+        root = self._with_decisions(
+            "- 2026-07-27: entry.\n```\n" + "output line\n" * 40 + "```\n"
+        )
+        cv = _load_validate()
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+        self.assertIn("fenced block", findings[0])
+
+    def test_finding_reports_the_line_range(self):
+        root = self._with_decisions("- 2026-07-27: entry.\n```\nout\n```\n")
+        cv = _load_validate()
+        findings = cv.check_decisions_format(str(root))
+        self.assertRegex(findings[0], r":\d+-\d+:")
+
+    def test_a_quoted_transcript_is_still_pasted_output(self):
+        # Blockquoting is a rendering, not a defence: the detector normalizes
+        # `>` markers so quoting cannot hide the paste (guard-doctrine §3).
+        root = self._with_decisions(
+            "- 2026-07-27: what the run said.\n"
+            "> $ python3 -m unittest discover -s scripts/tests\n"
+            "> Ran 412 tests in 3.204s\n"
+        )
+        cv = _load_validate()
+        self.assertEqual(len(cv.check_decisions_format(str(root))), 1)
+
+    def test_two_separate_pastes_are_two_findings(self):
+        root = self._with_decisions(
+            "- 2026-07-27: first.\n$ ls\n\n- 2026-07-27: second.\n$ ls\n"
+        )
+        cv = _load_validate()
+        self.assertEqual(len(cv.check_decisions_format(str(root))), 2)
+
+    # --- silence where silence is right ------------------------------------
+
+    def test_prose_entries_with_numbers_are_ok(self):
+        # M84's section is a character survey and M98's a line-number
+        # inventory, so any density or numeric heuristic fires hardest on the
+        # files the exemption exists to serve. This pins the shape-not-count
+        # decision at fixture scale.
+        root = self._with_decisions(
+            "### M04-D1 (2026-07-27): thresholds 9,000 / 17,000\n\n"
+            "**Derivation.** 60 × 150 = **9,000**; 50 × 340 = **17,000**,\n"
+            "above 324 and below 382. Lines 20, 22, 23, 24, 26, 27, 31.\n"
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    decisions format", proc.stdout)
+
+    def test_no_decisions_section_is_ok(self):
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    decisions format", proc.stdout)
+
+    def test_advisory_skips_archived(self):
+        # Archived summaries are compressed narratives, not decisions sections.
+        self.tree.files["milestones/archive/M01-old.md"] = (
+            "# M01\n\n## Decisions\n```\npasted\n```\n"
+        )
+        root = self.tree.build()
+        cv = _load_validate()
+        self.assertEqual(cv.check_decisions_format(str(root)), [])
+
+    def test_the_shipped_template_does_not_trip_the_advisory(self):
+        # M77 review F1's shape: the template is what every milestone is born
+        # from, so a template that trips its own advisory warns on every new
+        # milestone before a single entry is written. Reads the REAL template,
+        # never a fixture copy, so the two cannot drift apart.
+        repo = pathlib.Path(__file__).resolve().parent.parent.parent
+        template = (repo / "skills" / "shared" / "templates" / "milestone.md").read_text()
+        self.tree.rows.append(("M04", "From template", "planned", "—", "normal", "milestones/M04-tmpl.md"))
+        self.tree.files["milestones/M04-tmpl.md"] = template
+        root = self.tree.build()
+        cv = _load_validate()
+        self.assertEqual(cv.check_decisions_format(str(root)), [])
+
+    def test_the_advisory_reads_the_section_the_cap_exempts(self):
+        # The exemption and the watch must name one section, or the exemption
+        # opens a hole the advisory never looks at (D-046/M77's reason, which
+        # D-074 inherits). `## Decisions notes` is a different heading and is
+        # still counted by the cap, so the advisory must not read it either.
+        cv = _load_validate()
+        self.tree.rows.append(("M04", "Nearly", "planned", "—", "normal", "milestones/M04-near.md"))
+        self.tree.files["milestones/M04-near.md"] = (
+            "# M04: Nearly\n\n- **Status:** planned   <!-- mirror -->\n\n"
+            "## Decisions notes\n```\npasted\n```\n"
+        )
+        root = self.tree.build()
+        self.assertEqual(cv.check_decisions_format(str(root)), [])
+
+
 class TestPrinciplesSlot(ScriptCase):
     DESIGN = "# Design\n\n## Design Principles\n\n- IP1: first\n- GP1: second\n"
 

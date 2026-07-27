@@ -69,7 +69,7 @@ file and its ledger, and is delivered there.
 
 ## Tasks
 
-- [ ] T1: Add `check_decisions_format` beside `check_worklog_format`
+- [x] T1: Add `check_decisions_format` beside `check_worklog_format`
       (`cairn_validate.py:1321`) and register it in `ADVISORIES` (`:1590`);
       detector is pasted-output/fenced-block shaped. Fixtures: the five corpus
       sections via ref-based `git show` at 0 WARNs, a pasted-output fixture at
@@ -90,6 +90,9 @@ file and its ledger, and is delivered there.
 - 2026-07-27: split boundary chose core-vs-followons over splitting by surface (scripts / hooks / rulebook), because the follow-ons all depend on the shared extractor and exempt set M118 introduces while the core does not depend on any of them, so this cut is the only one that leaves the first milestone shippable alone; falsified by a follow-on turning out to need no M118 artifact, which would mean the two could have run in parallel.
 - 2026-07-27: both files declare `Driving RR: RR08` and enumerate all four binding criteria, because `check_binding_criteria` holds every milestone naming an RR to that RR's whole criteria set — a split that let each file list only its own share would red the check on the absent ones.
 - 2026-07-27: D-075's "Delivered by M118" now reads as this pair; the entry is history (IP4) and is not edited — the split is recorded here and in M118's work log instead.
+- 2026-07-27: implement question gate — detector covers fenced blocks AND unfenced machine-output signatures (AC1's two arms, not D-075's narrower fenced-only fallback); corpus read from git history at the five archiving commits rather than copied into fixtures; one WARN per pasted chunk, not per line.
+- 2026-07-27: T1 — `check_decisions_format` + `_pasted_runs` shipped and registered as `decisions format`, adjacent to `work-log format`; 12 tests including the five-section corpus at 0 WARNs with per-file non-vacuity asserts and a same-path positive control. Three by-hand mutations (signatures off, fences off, quote-normalization off) each redden the right tests.
+- 2026-07-27: measured at the gate that density is not a usable signal — M84's section is a character survey and M98's a line-number inventory, so a numeric heuristic fires hardest on the files the exemption exists to serve; detector keys on shape only.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
