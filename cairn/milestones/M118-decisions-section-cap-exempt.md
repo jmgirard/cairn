@@ -8,7 +8,7 @@
 - **Depends on:** —
 - **Driving RR:** RR08
 - **Principles touched:** IP4
-- **Branch/PR:** `m118-decisions-cap-exempt`
+- **Branch/PR:** `m118-decisions-cap-exempt` · https://github.com/jmgirard/cairn/pull/118
 
 ## Goal
 
