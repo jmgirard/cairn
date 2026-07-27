@@ -74,7 +74,7 @@ file and its ledger, and is delivered there.
       detector is pasted-output/fenced-block shaped. Fixtures: the five corpus
       sections via ref-based `git show` at 0 WARNs, a pasted-output fixture at
       >=1, exit 0 throughout.
-- [ ] T2: Add the section to the rulebook's history-member enumeration
+- [x] T2: Add the section to the rulebook's history-member enumeration
       (`tracking-rules.md:205-207`) and pin the amended sentence under the
       file's existing mutation-registration rules; verify the pin reds when the
       member is removed.
@@ -92,6 +92,8 @@ file and its ledger, and is delivered there.
 - 2026-07-27: D-075's "Delivered by M118" now reads as this pair; the entry is history (IP4) and is not edited — the split is recorded here and in M118's work log instead.
 - 2026-07-27: implement question gate — detector covers fenced blocks AND unfenced machine-output signatures (AC1's two arms, not D-075's narrower fenced-only fallback); corpus read from git history at the five archiving commits rather than copied into fixtures; one WARN per pasted chunk, not per line.
 - 2026-07-27: T1 — `check_decisions_format` + `_pasted_runs` shipped and registered as `decisions format`, adjacent to `work-log format`; 12 tests including the five-section corpus at 0 WARNs with per-file non-vacuity asserts and a same-path positive control. Three by-hand mutations (signatures off, fences off, quote-normalization off) each redden the right tests.
+- 2026-07-27: T2 — the history enumeration names the milestone-local `## Decisions` section; the pin is RE-ANCHORED whole (the pre-M119 six-member line satisfies nothing), and a second assert pins the wrap line, whose four members lost their incidental cover when `milestones/archive/` moved off line 1. Both registered in the mutation harness; a by-hand revert to the six-member list reds both.
+- 2026-07-27: T2 minor amendment (discovered sub-task) — the rulebook also names the shipped advisory and its subject beside `work-log format`, and the always-read frame's attention-signal cell gains it; `cairn_scripts.py`'s forward reference to "M119 ships `decisions format`" is retired. Not enumerated in Scope, taken as part of "and its registration": an advisory the rulebook does not name leaves the repo contradicting itself, M118 F1's shape. Two new guards (subject, stated↔emitted label), both registered; three by-hand mutations red.
 - 2026-07-27: measured at the gate that density is not a usable signal — M84's section is a character survey and M98's a line-number inventory, so a numeric heuristic fires hardest on the files the exemption exists to serve; detector keys on shape only.
 
 ## Decisions
