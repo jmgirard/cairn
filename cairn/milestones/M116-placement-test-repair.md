@@ -1,6 +1,6 @@
 # M116: Repair the three-step placement test — retention takes the deletion arm, inversion moves to guard verification, and a step-0 single-home check (RR04 rec 9)
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -62,6 +62,9 @@ Repair the placement test the rulebook states at `tracking-rules.md:820`, supers
 - 2026-07-27: §8 certification round 1 returned 9 discrepancies, all fixed. #1 shipped D-069's premise that D-070 had already superseded (rounds 3-4 -> round 4 alone); #2 D-071 overclaims the guard's coverage of D-056 -> D-072 appended (IP4 attaches at append time, D-070's route); #3/#4 AC3's intra-file scoping and its before-the-retention-test ordering were unpinned; #5 a registry comment miscounted its own block; #7 two anchors had no REGISTRY entry; #8 the module docstring claimed all asserts are positive with three assertNotIn present; #9a AC5's site count was unpinned.
 - 2026-07-27: correcting the T3-T5 entry above (certification #6): the net REGISTRY delta there was +5, not +6 — of seven entries in the M116 block two were repointed pre-existing entries and five were new. Registry now 421 (main 412).
 - 2026-07-27: AC5 amended at the mini gate (certification #9b) — the repair removed the literal `placement test` from the file, so the criterion's own grep recipe returned one line instead of the two it describes; recipe and count assert corrected, requirement unchanged.
+
+- 2026-07-27: §8 certification round 2 verified all nine round-1 fixes real in the shipped bytes, re-probing #3 and #4 by mutation (both were green before the fix, red after) and re-checking all 421 REGISTRY blocks. Two new discrepancies were introduced by the fixes; #1 (a registry comment made stale by its own fix) is fixed.
+- 2026-07-27: certification round 2 #2 DECLINED on scope, not softened: D-072's Consequences calls what D-070 caught an "overclaimed guard-coverage sentence" where D-070 caught a false premise sentence plus an unengaged heading cite. The clause is wrong. It is declined because its subject is a certification round, which §8's new bound puts outside the certified scope, and because D-072 is append-only under IP4 — so correcting it means D-073 correcting D-072 correcting D-071, the regress that bound exists to stop. Carried to the review gate as an open item for the maintainer, never closed by me.
 
 ## Decisions
 

@@ -2357,10 +2357,10 @@ EXEMPT = {
 # and restatement has no test at all; lose its forward-binding clause and the
 # check reads as the file-wide sweep D-057 closed; lose the guard-verification
 # assignment and the inversion procedure floats back to placement. The other
-# three pin what step 0 costs to hold: the inflow cell, whose literal must stay
+# three close gaps the repair leaves: the inflow cell, whose literal must stay
 # lexically disjoint from the paragraph's or `blank_block` errors on a
-# twice-occurring locator, and the two anchors whose own tests register only
-# their second assert.
+# twice-occurring locator, and the Step-0 and Relabel anchors, whose tests would
+# otherwise register only their second assert.
 REGISTRY += [
     Mutation(
         guard="test_rule_placement",
