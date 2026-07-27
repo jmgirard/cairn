@@ -2366,16 +2366,24 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         # The loose finding is collected after the loop, so it arrived last
         # however early in the section it began (§8 round 4). Line numbers the
         # operator navigates by are useless out of sequence.
+        #
+        # BOTH orders, because one fixture pins only one direction: with the
+        # loose line first, a sort key hard-coded to 0 still sorts correctly and
+        # survives (§8 round 7). The second fixture is the one that catches it.
         cv = _load_validate()
-        self.tree = Tree(self._tmp.name)
-        root = self._with_decisions(
-            "$ ls\n- 2026-07-27: entry.\n```\nfenced\n```\n"
-        )
-        reported = [
-            int(re.search(r"M04:(\d+)", f).group(1))
-            for f in cv.check_decisions_format(str(root))
-        ]
-        self.assertEqual(reported, sorted(reported), reported)
+        for name, body in (
+            ("loose first", "$ ls\n- 2026-07-27: entry.\n```\nfenced\n```\n"),
+            ("fence first", "```\nfenced\n```\n- 2026-07-27: entry.\n$ ls\n"),
+        ):
+            with self.subTest(order=name):
+                self.tree = Tree(self._tmp.name)
+                root = self._with_decisions(body)
+                findings = cv.check_decisions_format(str(root))
+                self.assertEqual(len(findings), 2, findings)
+                reported = [
+                    int(re.search(r"M04:(\d+)", f).group(1)) for f in findings
+                ]
+                self.assertEqual(reported, sorted(reported), findings)
 
     def test_an_unterminated_fence_runs_to_the_end_of_the_section(self):
         # The one extent still inferred, because there is no closing delimiter
@@ -2392,11 +2400,16 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         root = self._with_decisions("- 2026-07-27: entry.\n```\nnever closed\n")
         path = str(root / "cairn" / "milestones" / "M04-decided.md")
         section = cs.milestone_decisions_lines(path)
-        finding = cv.check_decisions_format(str(root))[0]
-        self.assertIn(
-            f"M04:{self._lineno(root, '```')}-{section[-1][0]}:", finding
+        # The WHOLE message: this is the third emission site, and its `kind`
+        # label was the one substring-anchored site round 6's message test did
+        # not reach — `"fenced blockk"` survived all three suites (§8 round 7).
+        self.assertEqual(
+            cv.check_decisions_format(str(root)),
+            [
+                f"M04:{self._lineno(root, '```')}-{section[-1][0]}: fenced block "
+                'in the `## Decisions` section — "never closed"'
+            ],
         )
-        self.assertIn("fenced block", finding)
         self.assertIn("evidence", [t.strip() for _, t in section])
 
     def test_a_single_loose_line_is_reported_without_a_count(self):
@@ -2407,26 +2420,44 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         self.assertNotIn("more line", finding)
 
     # At least one line per signature in `_DECISIONS_PASTED`, keyed by the shape
-    # it is meant to catch — twelve lines for ten signatures, because two
-    # signatures are alternations whose branches deserve their own line. The
-    # shape tests above assert `len(findings) == 1`, which any ONE matching line
-    # in a multi-line paste satisfies — so seven of the ten signatures could be
-    # deleted with the whole class green (§8 round 5 found six, round 6
+    # it is meant to catch, and more lines than signatures because several are
+    # alternations whose branches each deserve their own — narrowing an
+    # alternation is a deletion the table would otherwise miss (§8 round 7).
+    # The shape tests above assert `len(findings) == 1`, which any ONE matching
+    # line in a multi-line paste satisfies, so seven of the ten signatures could
+    # be deleted with the whole class green (§8 round 5 found six, round 6
     # measured seven). A signature that never has to fire on its own is not
     # covered by a test that merely happens to contain it.
     SIGNATURE_LINES = (
         "$ python3 -m unittest discover -s scripts/tests",
         "Ran 412 tests in 3.204s",
+        "Ran 1 test in 0.001s",           # the singular branch
         "OK",
         "FAILED (failures=1)",
         "ERROR (errors=2)",
         "Traceback (most recent call last):",
         'File "/repo/scripts/tests/test_scripts.py", line 42, in test_x',
         "PASS  weight caps",
+        "FAIL  coverage complete (2)",
+        "WARN  record density (1)",
+        "OK    work-log format",
         "diff --git a/cairn/DECISIONS.md b/cairn/DECISIONS.md",
         "@@ -1,3 +1,3 @@",
         "--- a/cairn/DECISIONS.md",
         "+++ b/cairn/DECISIONS.md",
+    )
+
+    # Lines a signature must NOT claim. Each is prose a decision entry could
+    # plausibly contain, and each sits one character away from a signature —
+    # so widening a pattern (dropping `Traceback`'s `$`, loosening the table
+    # row's two-space run) reds here rather than shipping a permanently
+    # warning advisory, which is the failure D-075 exists to prevent.
+    NEAR_MISS_LINES = (
+        "Traceback shows the call order, which is what settled it.",
+        "Ran the numbers again and the threshold held.",
+        "OK so the rejection stands, and PASS rates are unchanged.",
+        "diff --git is the header the detector keys on.",
+        "File \"names\" are quoted here without a line number.",
     )
 
     def test_each_signature_fires_on_its_own(self):
@@ -2444,15 +2475,17 @@ class TestDecisionsFormatAdvisory(ScriptCase):
                     f"no signature matched {line!r}",
                 )
 
-    def test_a_line_of_ordinary_prose_matches_no_signature(self):
+    def test_near_miss_prose_matches_no_signature(self):
         # The negative control for the table above: a per-signature sweep that
         # passed because SOMETHING always matches would be worse than no sweep.
+        # Each line is one character from a signature, so this is also what
+        # keeps the patterns from being widened into a permanent WARN.
         cv = _load_validate()
-        root = self._with_decisions(
-            "- 2026-07-27: the run was fine and the numbers held up.\n"
-            "OK so the threshold moves, and PASS rates are unchanged.\n"
-        )
-        self.assertEqual(cv.check_decisions_format(str(root)), [])
+        for line in self.NEAR_MISS_LINES:
+            with self.subTest(line=line):
+                self.tree = Tree(self._tmp.name)
+                root = self._with_decisions(f"- 2026-07-27: entry.\n{line}\n")
+                self.assertEqual(cv.check_decisions_format(str(root)), [])
 
     def test_both_fence_delimiters_are_recognized(self):
         # `~~~` support deletes green against a ``` -only fixture, and so does

@@ -934,7 +934,7 @@ _DECISIONS_PASTED = (
     re.compile(r"^Traceback \(most recent call last\):$"),
     re.compile(r'^File "[^"]+", line \d+'),     # traceback frame
     re.compile(r"^(?:PASS|FAIL|WARN|OK)\s{2,}\S"),  # cairn_validate's own table
-    re.compile(r"^diff --git "),
+    re.compile(r"^diff --git a/"),  # the `a/` path, not the bare words
     re.compile(r"^@@ .* @@"),
     re.compile(r"^(?:--- a/|\+\+\+ b/)"),       # unified-diff file headers
 )
