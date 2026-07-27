@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-27 (M117 merged and archived; pruned M112 under terminal-row retention. LESSONS captured M117's harness blind spot and retired M103's under ownership — `guard-doctrine.md` §1 owns it. 15 candidates.)_
+_Last hygiene check: 2026-07-27 (re-audit after M117 — 16 checks and 7 advisories green, nothing changed on disk; both GitHub inboxes empty. 15 candidates.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
