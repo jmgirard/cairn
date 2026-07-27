@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR06
@@ -70,7 +70,7 @@ milestone per BC8, never folded in.
       assert and its registered block in place — any departure in the projected number
       routes through the Deviations table); blanking every registered block reds its
       named test (tolerance: 0 survivors).
-- [x] AC6 (BC6): The pass-6 delta's runtime surface is confined to
+- [ ] AC6 (BC6): The pass-6 delta's runtime surface is confined to
       `skills/tests/test_thrash_rule.py` and `skills/tests/test_mutation_harness.py`:
       every other file under `skills/` — explicitly including
       `skills/milestone-review/SKILL.md` — is byte-identical across the pass (tolerance:
@@ -84,7 +84,7 @@ milestone per BC8, never folded in.
       scripts/cairn_validate.py` exits 0, and the three probes of BC2–BC4 have been
       replayed red-side-up in a scratch copy whose baseline was verified green before
       probing (tolerance: 3/3 red on mutation, 3/3 green on restore).
-- [x] AC8 (BC8): Recommendations 4, 5 and 6 are banked outside M114 — as ROADMAP candidate rows or
+- [ ] AC8 (BC8): Recommendations 4, 5 and 6 are banked outside M114 — as ROADMAP candidate rows or
       a `/milestone-plan`-cut milestone — each with a promotion condition naming the
       class of evidence that would falsify it, never a count (tolerance: zero lines of
       M114's pass-6 diff implement any of the three; their disposition appears in the
@@ -153,6 +153,7 @@ milestone per BC8, never folded in.
 - 2026-07-26: T11 — D-064's false one-surface claim is corrected BEFORE merge rather than superseded after it: the entry has not reached main, so no history is rewritten, and main never sees the false statement. It now records that the pin was attempted and re-cut out, with the ROADMAP candidate named. D-064's six recorded choices are unchanged and remain accurate — none of them was the precedence clause, which was added later without a D-entry — so no further edit was made there. The `SyntaxWarning` is gone (the docstring is a raw string). Final gate: suites 625/280/91 exit 0 separately, `cairn_validate` exit 0 with 16 PASS, body 144/149. Status -> review.
 
 - 2026-07-26: review pass 6 (in progress) — all eight of RR06's binding criteria verified with fresh evidence and ticked; consistency gate clean (`cairn_validate` exit 0, 16 PASS, `sizing` advisory only). Every numeric projection met exactly: 19 doctrine-pinning asserts against a projected 19, 0 survivors against 0, 3/3 red and 3/3 green on the BC7 probes replayed in a `git archive` scratch copy with a verified-green baseline, exactly 2 files under `skills/` in the pass. Prior-review and blame-history lenses: zero findings each. Diff-bug lens still running; its findings join this pass before the verdict.
+- 2026-07-26: review pass 6 FAILED the gate — SIXTH return, and AC8's tick is withdrawn on evidence I recorded wrong earlier in this same pass. F3 (90): the rec 5 candidate row states its falsifier as "drop if TWO such milestones pass review with zero coverage findings, RR06's own stated falsifier" — a count, in the milestone shipping the never-a-count rule, and RR06 states no such thing (its falsifier is post-adoption and opposite in polarity; `grep` over RB06/RR06 finds the wording nowhere). I had verified that row against my reading of it rather than against RR06 — RR06's own diagnosed root cause, recurring inside the pass RR06 constrained to prevent it. AC6 also fails, but as a CRITERION defect: its tracking-side clause confines ROADMAP changes to "status mirroring" while AC8 mandates three candidate rows there, so the two are jointly unsatisfiable as written and AC6 needs a gated amendment. F1 (92) and F2 (90): `guard-doctrine.md` §7's primary remedy and §3's remedy continuation are each unpinned and delete green (both confirmed by mutation here) — real branch defects that CANNOT be fixed on this branch, since `test_lesson_graduation.py` is a third file under `skills/` and AC6's tolerance names exactly two. F6/F4/F5 logged. AC1-AC5 and AC7 verified this phase and stand; RR05's and RR06's design unimplicated, every numeric projection met exactly. THE EXHAUSTION BRANCH FIRES AGAIN: (a) holds as a threshold and a re-cut is recorded spent, so no bare retry. Status -> in-progress.
 
 ## Decisions
 
@@ -711,14 +712,20 @@ and level with its own remote. Draft PR #114, head `d8049c4`. This repo has no C
   `TestRegisteredGuardsFailWhenBlanked` first asserts the registry non-empty, then blanks
   each entry's block and requires its named test to fail; the suite is green, so
   **0 survivors**.
-- AC6 (BC6) — **verified.** `git diff --name-only 295f7d3..HEAD -- skills/` names exactly
+- AC6 (BC6) — **GATE FAILURE on its tracking-side clause; the criterion is what fails.**
+  The `skills/` half passes: `git diff --name-only 295f7d3..HEAD -- skills/` names exactly
   `skills/tests/test_thrash_rule.py` and `skills/tests/test_mutation_harness.py`;
   `skills/milestone-review/SKILL.md` and every other file under `skills/` is byte-identical
   across the pass. The guard's module docstring (lines 1-42) is byte-identical to its form
   at the ingest commit. The whole pass touches five files — those two plus the milestone
-  file, `cairn/DECISIONS.md` (additions only, per BC1) and `cairn/ROADMAP.md` (status
-  mirror plus the BC8 rows). RB06/RR06 were ingested and archived at the ingest commit
-  itself, so `cairn/reviews/` is unchanged within the delta.
+  file, `cairn/DECISIONS.md` (additions only, per BC1) and `cairn/ROADMAP.md`. RB06/RR06
+  were ingested and archived at the ingest commit itself, so `cairn/reviews/` is unchanged
+  within the delta. What fails is the tracking-side sentence: it confines ROADMAP changes
+  to "status mirroring", and the ROADMAP delta is 4 insertions / 1 deletion — the deletion
+  is the status mirror, the three insertions are the candidate rows **AC8 mandates**. Both
+  sentences are RR06's own binding text, so the two criteria are jointly unsatisfiable as
+  written and AC6 is the one that is wrong. Not reinterpreted as an implicit carve-out —
+  returned for a gated amendment naming the BC8 rows.
 - AC7 (BC7) — **verified.** Three suites run from the repo root, each redirected to a file
   with `$?` captured before any pipe: skills **627** / scripts **280** / hooks **91**,
   exit 0 each. `python3 scripts/cairn_validate.py` exit 0. The three BC2-BC4 probes were
@@ -726,17 +733,21 @@ and level with its own remote. Draft PR #114, head `d8049c4`. This repo has no C
   (627 tests, exit 0) — the partial-copy red-baseline trap pass 3 hit: **3/3 red on
   mutation, 3/3 green on restore**, with the probe script asserting the target file
   byte-identical to its original at the end. The repo tree was never mutated.
-- AC8 (BC8) — **verified.** RR06 recs 4, 5 and 6 are three new `cairn/ROADMAP.md`
-  candidate rows added this pass, each search-first swept ("no row, archive entry or
-  D-entry covers …") and each carrying a promotion condition naming a class of evidence
-  rather than a count: rec 5 promotes "when a milestone whose deliverable is a guard next
-  reaches implement", drops on RR06's own stated falsifier, and adds "Never on a count of
-  further defects"; rec 4 promotes on a milestone carrying more criteria or folds into any
-  milestone touching the plan gate; rec 6 promotes "if a further under-scored finding about
-  self-shipped doctrine fires after being logged — never on a count of passes". Tolerance:
-  the pass-6 diff touches no doctrine file at all — its `skills/` delta is the two test
-  files — so zero of its lines implement any of the three; the disposition is recorded in
-  both the work log and the ROADMAP (IP3).
+- AC8 (BC8) — **GATE FAILURE.** The banking half passes: recs 4, 5 and 6 are three new
+  `cairn/ROADMAP.md` candidate rows added this pass, each search-first swept, and the
+  tolerance holds — the pass-6 diff touches no doctrine file at all, so zero of its lines
+  implement any of the three, and the disposition is in both the work log and the ROADMAP
+  (IP3). What fails is "each with a promotion condition naming the class of evidence that
+  would falsify it, never a count", on the rec 5 row (F3, 90). Its falsifier reads "drop if
+  **two** such milestones pass review with zero coverage findings, RR06's own stated
+  falsifier" — a count of two, the shape the rule this milestone ships forbids, in the row
+  that ships it. And RR06 states no such falsifier: its actual one, at
+  `RR06:173-176`, is post-adoption and has the opposite polarity — "if guard-authoring
+  milestones still average multiple description-layer returns after adoption, the step
+  didn't work — retire it (D-059), don't tune it". `grep -rn "zero coverage\|two such"`
+  over RB06 and RR06 returns nothing. My own earlier evidence line for this criterion read
+  the row and called it clean, without checking it against RR06 — the root cause RR06
+  named, recurring in the pass RR06 constrained to prevent it. Tick withdrawn.
 
 **Consistency gate.** `cairn_validate` exit 0 — 16 PASS including `coverage complete`,
 `weight caps`, `mirror agreement` and `binding criteria` (which string-diffs AC1-AC8
@@ -757,3 +768,59 @@ carry, beside its measured outcome:
 - BC8 pass-6 diff lines implementing recs 4-6: **measured 0 against projected 0**.
 
 No shortfall on any projection.
+
+**Independent review — three lenses, then a scorer.** Prior-review: zero findings — it
+walked each pass 1-5 finding for recurrence (L1, L2/L3, G6/J3/J4, G7/F5/H1, K1, G4) and
+found none, and the GitHub inline-comment probe returned empty, so no thread walk.
+Blame-history: zero findings — it independently re-derived D-064's byte-integrity, the
+D-064→D-065 supersession scope, BC6's `skills/` freeze and BC8's banking. Diff-bug: six
+findings. A fresh [S] scorer that did not generate them scored three at or above 80.
+
+- **F1 (92) — actioned; deferred to a follow-up, because fixing it here fails AC6.**
+  `skills/tests/test_lesson_graduation.py:118-127` over `guard-doctrine.md:221-223`. §7's
+  OPERATIVE remedy — "Assert per cell that it checked a positive number of things, and
+  assert across the sweep that the positive case fired somewhere, so universal silence
+  cannot satisfy it." — is pinned by nothing; the only remedy assert is the trailing
+  "Stronger still" converse clause. Confirmed here by mutation in a scratch copy with a
+  verified-green baseline: deleting that sentence leaves the suite green at 627. It
+  falsifies T4's work-log claim that diagnosis and remedy were "pinned separately", and
+  D-064's Consequences, which describe the per-cell count half as the guarded part. Same
+  shape as pass-5 L2 (92), in a file BC2-BC4 do not reach.
+- **F2 (90) — actioned; deferred to a follow-up, same reason.** Same file, `:92`. The §3
+  remedy assert is `assertIn("Carry the renderings INTO the test as positive", …)`,
+  truncated at the shipped wrap, so the continuation — "controls: append the real value at
+  full precision, rounded, and `signif`-ed, and require the detector to see each one." —
+  deletes green. Confirmed by mutation: suite green at 627 with the remedy gutted and the
+  asserted lead-in kept. This is the exact narrowing pass 5 scored L1 at 90 and BC2 was
+  written to close; the assert's own comment calls the deleted half "the operative half".
+- **F3 (90) — actioned; it is AC8's failure.** Recorded in full in the AC8 evidence line
+  above.
+
+**Logged, below the 80 threshold (3).** F6 (76) BC6 and BC8 conflict over the ROADMAP —
+raised as a finding, but criterion verification is the gate's own step, and AC6 fails on
+it above regardless of the score. F4 (78) the rec 4 row's "more than a handful of criteria"
+is a quantity threshold against BC8's "never a count"; the scorer judged it arguable
+because the row carries a second, class-based promote branch — it rides along with F3's
+fix rather than being dropped. F5 (66) `test_search_first_candidates.py`'s module docstring
+still says "every asserted phrase lives on a single source line (M23)" while line 61, added
+by this diff, is an `\s+` regex spanning the wrap; a stale doc claim with no test-coverage
+impact, and outside the frozen scope.
+
+**GATE FAILURE — SIXTH return.** AC6 and AC8 fail; AC1-AC5 and AC7 were verified this
+phase with fresh evidence and stand. RR05's and RR06's design remains unimplicated: all
+three lenses cleared the doctrine text, and every numeric projection was met exactly.
+
+**The two failures are different kinds, and the difference sets the remedy.** AC8 is a
+defect in the artifact — a candidate row that misquotes RR06 and states a count, in the
+milestone that ships the never-a-count rule. AC6 is a defect in the criterion — it and
+AC8 are jointly unsatisfiable as written, both being RR06's verbatim binding text, so it
+needs a gated amendment rather than a fix. F1 and F2 are real branch defects that CANNOT
+be fixed on this branch at all: `skills/tests/test_lesson_graduation.py` is a third file
+under `skills/`, and AC6's tolerance names exactly two.
+
+**THE EXHAUSTION BRANCH FIRES AGAIN.** Trigger (a) holds as a threshold (sixth return) and
+the work log records a re-cut spent at pass 3, so the remedy is not re-plan-or-split. Per
+the branch, the routing chip is composed from an offered `/milestone-brief` escalation,
+parking as `blocked`, or dropping at the user's explicit decision — never a bare retry as
+the recommended option. Trigger (b) does not fire: AC8 and AC6 each fail for the first
+time, so there is no criterion failing twice by a new mechanism of one shape.
