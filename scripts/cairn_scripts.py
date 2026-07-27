@@ -99,6 +99,10 @@ CLAUDE_SECTION_HEADING = "## Project tracking"
 # Both matched exactly, lowercased.
 WORKLOG_HEADING = "work log"
 DECISIONS_HEADING = "decisions"
+# What both cap counters exempt, so the count and its heaviest-first breakdown
+# can never disagree about the set — the invariant preamble+sections==body
+# depends on them dropping exactly the same sections.
+EXEMPT_HEADINGS = (WORKLOG_HEADING, DECISIONS_HEADING)
 
 # §1 scaffold pieces that must exist once a repo is on cairn (cairn-init §1).
 # Single source of truth for the machine-side drift check
@@ -370,25 +374,25 @@ def _plan_owned_scan(path):
 
 def milestone_body_line_count(path):
     """Line count of a live milestone file's **capped** plan-owned body: every
-    line before the first `## Review` heading, less the `## Work log` section.
-    Two sections sit outside the milestone weight cap, for two different
-    reasons. `## Review` is review-owned and accumulates evidence at review
-    time, which must never scramble plan-owned content (M55, the recurring
-    M19/M22/M33/M50 scramble). The **work log** is exempt because D-045
-    classifies it as history — never edited — so counting it could leave an
-    over-cap file fixable only by an edit IP4 forbids (D-046/M77); the
-    wrapped-entry advisory in `cairn_validate`, not the cap, is what keeps the
-    now-unbudgeted section honest. A file with no `## Review` section counts to
-    EOF — still less its work log, which is exempt wherever it sits, so this is
-    back-compatible only for the pre-M77 case of a file with no work log. A
-    fenced `## Review` or `## Work log` is content, not a boundary (M45), and
-    only exact headings match — `## Work log notes` stays counted. Returns None
-    if the file is unreadable."""
+    line before the first `## Review` heading, less the `## Work log` and
+    `## Decisions` sections. Three sections sit outside the milestone weight
+    cap, carrying two distinct reasons. `## Review` is review-owned and
+    accumulates evidence at review time, which must never scramble plan-owned
+    content (M55, the recurring M19/M22/M33/M50 scramble). The **work log**
+    (D-046/M77) and the milestone-local **decisions** section (D-074/M118,
+    superseding D-046's choice (3)) are exempt because D-045 classifies both as
+    history — append-only, never edited — so counting them could leave an
+    over-cap file fixable only by an edit IP4 forbids; the advisories in
+    `cairn_validate`, not the cap, are what keep the now-unbudgeted sections
+    honest. A file with no `## Review` section counts to EOF — still less those
+    two, which are exempt wherever they sit. A fenced heading is content, not a
+    boundary (M45), and only exact headings match — `## Work log notes` and
+    `## Decisions notes` stay counted. Returns None if the file is unreadable."""
     scan = _plan_owned_scan(path)
     if scan is None:
         return None
     boundary, sections = scan
-    exempt = sum(n for h, n in sections if h.strip().lower() == WORKLOG_HEADING)
+    exempt = sum(n for h, n in sections if h.strip().lower() in EXEMPT_HEADINGS)
     return boundary - exempt
 
 
@@ -459,20 +463,21 @@ def milestone_section_line_counts(path):
     through the line before the next `## ` heading (or the plan-owned/`## Review`
     boundary, or EOF). Lines before the first `## ` heading (title + status
     block) are preamble, attributed to no section, so preamble + the section
-    counts sum to `milestone_body_line_count`. Both cap-exempt sections are
+    counts sum to `milestone_body_line_count`. All three cap-exempt sections are
     excluded, so the breakdown only ever names sections the operator may
-    actually trim: the review-exclusive `## Review` (M55) and the `## Work log`,
-    which D-045 makes history — naming it would aim the cap remedy at an edit
-    IP4 forbids (D-046/M77). Dropping it here and from the body count together
-    is what preserves the preamble+sections==body invariant. Fence-aware like
-    that function: a `## ` inside a ``` or ~~~ block is content, and a fenced
-    `## Review` is not the boundary (M45). Returns None if the file is
-    unreadable, [] if it has no trimmable `## ` section."""
+    actually trim: the review-exclusive `## Review` (M55), and the `## Work log`
+    (D-046/M77) and `## Decisions` (D-074/M118) sections, which D-045 makes
+    history — naming either would aim the cap remedy at an edit IP4 forbids.
+    Dropping them here and from the body count together is what preserves the
+    preamble+sections==body invariant. Fence-aware like that function: a `## `
+    inside a ``` or ~~~ block is content, and a fenced `## Review` is not the
+    boundary (M45). Returns None if the file is unreadable, [] if it has no
+    trimmable `## ` section."""
     scan = _plan_owned_scan(path)
     if scan is None:
         return None
     _, sections = scan
-    return [(h, n) for h, n in sections if h.strip().lower() != WORKLOG_HEADING]
+    return [(h, n) for h, n in sections if h.strip().lower() not in EXEMPT_HEADINGS]
 
 
 def sort_by_priority(row_list):
