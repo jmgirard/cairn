@@ -89,6 +89,18 @@ start (any skill) when a manual RR appears:
    reading. Copy the RR's numeric projections beside the criteria with
    their stated tolerances; an unstated tolerance is strict — any shortfall
    forces the accept-shortfall option at the merge gate.
+   **A binding-criteria set is audited before it is ingested**, by the same
+   fresh-context **[O]** reader `/milestone-plan` step 3 spawns and the same
+   two questions — *what state of the world satisfies this exactly as
+   written*, and *does any IP or D-entry make that state unreachable* — asked
+   of the set as well as of each criterion, because criteria that are
+   individually satisfiable can still be **jointly** unsatisfiable, and a
+   frozen scope in one can forbid the work another mandates. A brief has
+   already been convened over exactly that, with the collision surfacing at a
+   review gate instead of here. What the audit returns is raised with the
+   user, never softened away: `binding criteria` string-compares the AC block,
+   so a quietly reworded criterion reds the check, and any departure agreed
+   at the gate becomes a row in the Deviations table below.
 4. Relocate the RB/RR pair to `cairn/reviews/archive/` with plain `mv` then
    `git add`, never `git mv` — an in-session-generated or hand-dropped RR is
    untracked, and `git mv` fails on an untracked file; milestone status back

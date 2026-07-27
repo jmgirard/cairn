@@ -88,7 +88,7 @@ rec 4/5/6 rows at rebase → M114.
 
 ## Tasks
 
-- [ ] T1: Author the criteria audit into `skills/milestone-plan/SKILL.md:73` (step 3)
+- [x] T1: Author the criteria audit into `skills/milestone-plan/SKILL.md:73` (step 3)
       and `skills/milestone-brief/SKILL.md:59` ("Ingesting an RR"). Grep the repo for
       restatements of the plan-gate wording first — README and templates go stale
       silently (M112).
@@ -124,6 +124,9 @@ rec 4/5/6 rows at rebase → M114.
 - 2026-07-26: branch `m115-fresh-context-reader-instruments` cut from main (0/0 with origin, clean tree); status -> in-progress.
 - 2026-07-26: implement gate — three choices. The criteria audit runs at step 3 over the FINAL acceptance-criteria wording, which moves criteria authoring from step 4 up into step 2: auditing a draft that step 4 then rewrites is the certify-your-model-of-the-artifact failure RR06 diagnosed, reproduced inside the fix for it. Both readers are [O] — RR06 rec 9 rules out mechanizing a judgment about prose meaning, so a weaker reader is the same bet at a discount. Audit findings with one clear answer are fixed and reported; judgment calls become gate questions within the three-marker cap.
 - 2026-07-26: file placement chosen to minimize M114's rebase conflict — a new guard file rather than `skills/tests/test_lesson_graduation.py` (M114 edits it heavily), and an appended guard-doctrine section rather than edits inside §3/§7. `test_mutation_harness.py` is unavoidable; registration is mandatory and the conflict there is additive.
+
+- 2026-07-26: T1 — the criteria audit lands at both surfaces. `/milestone-plan` step 3 gains a `Criteria audit` block running BEFORE the questions are composed, and step 2 now requires the criteria be drafted to final wording, with step 4 writing the audited bytes and re-auditing anything the gate changed — three edits, because placing the audit without moving criteria authoring would have audited a draft that step 4 rewrites. `/milestone-brief`'s RR ingestion gains the same reader and the same two questions, asked of the SET as well as each criterion, since jointly-unsatisfiable criteria are what the ingest audit exists to catch. RR06 is deliberately not cited in the shipped prose: only RR01 and RR04 are cited anywhere under `skills/`, and both are archived on `main` while RR06 is not, so its rule travels in full instead of behind a pointer that resolves to nothing.
+- 2026-07-26: T1 sweeps, MEASURED against the asserts and not by eye. M112 surface sweep: `README.md`'s plan row and `DESIGN.md:127` are category summaries that this does not falsify, and no template restates the plan gate — nothing outside the two skill files to update. M113 false-coverage sweep: two guards do read the edited files (`test_bounded_decisions_read.py:106` and `test_gate_conclusion_preview.py:72,93`), so I read their asserted strings rather than grepping the file — none of the five phrases they pin occurs in the new prose. M104 adjacency: all three suites green after the edit, which is the check (a reflowed anchor reds its own guard).
 
 ## Decisions
 
