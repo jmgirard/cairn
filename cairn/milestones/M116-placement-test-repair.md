@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP4
-- **Branch/PR:** —
+- **Branch/PR:** `m116-placement-test-repair`
 
 ## Goal
 
@@ -39,8 +39,8 @@ Repair the placement test the rulebook states at `tracking-rules.md:820`, supers
 
 ## Tasks
 
-- [ ] T1: Confirm `D-071` is unclaimed across all branches before authoring (verified free at plan time 2026-07-27; nothing checks D-id uniqueness, and re-checking costs one command).
-- [ ] T2: Author the superseding D-entry, quoting the ledger's figures (`cairn/references/rulebook-classification-ledger.md:36-42`) rather than restating them from memory.
+- [x] T1: Confirm `D-071` is unclaimed across all branches before authoring (verified free at plan time 2026-07-27; nothing checks D-id uniqueness, and re-checking costs one command).
+- [x] T2: Author the superseding D-entry, quoting the ledger's figures (`cairn/references/rulebook-classification-ledger.md:36-42`) rather than restating them from memory.
 - [ ] T3: Rewrite the placement-test paragraph at `skills/shared/tracking-rules.md:820-826` — deletion arm for retention, step 0 above it, inversion reassigned to guard verification.
 - [ ] T4: Re-anchor every guard the rewrite invalidates, working from the shipped bytes and never from the draft (M95); the paragraph is hard-wrapped, so use `\s+` matchers across wrap points (M105).
 - [ ] T5: Repoint the always-read table's inflow cell at `:175` as a pointer whose literal is lexically distinct from the test paragraph's — `blank_block` errors on a locator occurring twice as loudly as on zero (`mutation_engine.py:41-49`).
@@ -52,6 +52,8 @@ Repair the placement test the rulebook states at `tracking-rules.md:820`, supers
 - 2026-07-27: created by /milestone-plan. Criteria audited twice by a fresh-context [O] reader (D-067); round 1 found {AC2, AC5, AC6} jointly unsatisfiable, round 2 found four drafting defects and the exactly-once locator constraint now carried by AC5 and T5. Stopped at two rounds: re-certifying the auditor's own report is the regress D-069 names, which AC6 fixes.
 
 - 2026-07-27: absorbs two candidate rows — RR04 rec 9 (the D-056 supersession, parked by D-057) and D-069's §8 scope clause; both removed from ROADMAP Candidates in the same commit.
+
+- 2026-07-27: T1 D-071 verified unclaimed across all 82 branches; T2 D-071 appended, D-056 bytes unchanged (pure append verified by git diff), skills suite 654 green.
 
 ## Decisions
 
