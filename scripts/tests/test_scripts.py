@@ -2489,6 +2489,11 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         # `^Ran \d+ tests? in ` — the count, and the `in` before the duration
         "Ran the numbers again and the threshold held.",
         "Ran 3 tests to confirm the fix, all of them green.",
+        # `in` is the preposition prose reaches for first, and the control
+        # above tested only `to confirm` — so the signature claimed both of
+        # these until M119 review F1/85 bound it to unittest's duration.
+        "Ran 3 tests in isolation before the change, and all held.",
+        "Ran 12 tests in the new harness and the timing held.",
         # `^OK$`, and the table row's `\s{2,}`
         "OK so the rejection stands, and PASS rates are unchanged.",
         # `^(?:FAILED|ERROR) \(` — the opening paren of the count
@@ -2499,6 +2504,9 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         "Traceback (most recent call last): the frame we cared about was tenth.",
         # `^File "[^"]+", line \d+` — the line number
         "File \"names\" are quoted here without a line number.",
+        # a frame ends at the number or continues `, in <name>`; prose runs on
+        # with a verb, which the signature claimed until M119 review F1/85.
+        "File \"cairn_validate.py\", line 42 is where the boundary sits.",
         # `^diff --git a/` — the path prefix
         "diff --git is the header the detector keys on.",
         # `^@@ .* @@` — the closing `@@`
@@ -2725,6 +2733,54 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         root = self.tree.build()
         cv = _load_validate()
         self.assertEqual(cv.check_decisions_format(str(root)), [])
+
+    def test_an_html_comment_is_scaffolding_not_a_record(self):
+        # M119 review F2/74: `check_worklog_format` has skipped HTML comments
+        # since it shipped; this advisory is presented as its counterweight and
+        # had no equivalent, so a fenced EXAMPLE inside the template's own
+        # `## Decisions` comment would warn on every milestone born from it —
+        # M77 review F1's shape, one section over. The template that ships
+        # today has no fence in its comment, so the test above stays green
+        # either way; this one drives the case that made it latent.
+        section = (
+            "## Decisions\n"
+            "<!-- owner: implement / review\n"
+            "     an example of what NOT to paste:\n"
+            "```\n"
+            "$ python3 -m unittest\n"
+            "```\n"
+            "-->\n"
+            "\n"
+            "- 2026-07-27: chose X over Y because Z.\n"
+        )
+        self.tree.rows.append(("M05", "Comment", "planned", "—", "normal", "milestones/M05-c.md"))
+        self.tree.files["milestones/M05-c.md"] = "# M05: C\n\n- **Status:** planned\n\n" + section
+        root = self.tree.build()
+        cv = _load_validate()
+        self.assertEqual(cv.check_decisions_format(str(root)), [])
+
+    def test_a_fence_outside_a_comment_still_fires(self):
+        # The positive control for the skip above. Without it, the comment
+        # handling is satisfied by an advisory that stopped seeing fences at
+        # all — and every fenced-block test in this class would still pass on
+        # its own fixtures while the section-level check reported nothing.
+        section = (
+            "## Decisions\n"
+            "<!-- owner: implement / review -->\n"
+            "\n"
+            "- 2026-07-27: chose X over Y because Z.\n"
+            "\n"
+            "```\n"
+            "$ python3 -m unittest\n"
+            "```\n"
+        )
+        self.tree.rows.append(("M06", "Fence", "planned", "—", "normal", "milestones/M06-f.md"))
+        self.tree.files["milestones/M06-f.md"] = "# M06: F\n\n- **Status:** planned\n\n" + section
+        root = self.tree.build()
+        cv = _load_validate()
+        found = cv.check_decisions_format(str(root))
+        self.assertEqual(len(found), 1, found)
+        self.assertIn("fenced block", found[0])
 
     def test_the_advisory_reads_the_section_the_cap_exempts(self):
         # The exemption and the watch must name one section, or the exemption

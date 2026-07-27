@@ -167,9 +167,53 @@ before any evidence was gathered; PR #119).
   exit 0, `hooks/tests` 98 exit 0 (1108 total). `cairn_validate` exit 0 — 16
   PASS, 8 advisories OK, none WARN.
 
+**Fan-out (3 lenses + scorer).** [O] diff-bug: 4 findings. [S] blame-history:
+**0** — the diff undoes nothing deliberate (checked `_plan_owned_scan`'s
+boundary refactor against M113's normalization lesson, the hook's D-063
+injection, the M118 template strike, and every changed mutation registration).
+[S] prior-review: **0** — `gh api pulls/comments?per_page=1` returned empty, so
+the archive and LESSONS were the evidence base; the diff implements M113/M117's
+lessons rather than regressing them. Scores: F1 85, F4 80 (actioned); F2 74,
+F3 55 (logged, sub-threshold — read for substance per records-hygiene §5, not
+trusted to the cut).
+
+- **F1 (85, shipped behaviour) — FIXED.** `^Ran \d+ tests? in ` and
+  `^File "[^"]+", line \d+` claimed ordinary prose: `Ran 3 tests in isolation
+  before the change, and all held.` and `File "cairn_validate.py", line 42 is
+  where the boundary sits.` both fired. Reproduced independently against
+  `_pasted_findings` before accepting the finding. The near-miss control tested
+  `to confirm` and dodged `in`, the preposition prose takes first. Bound to
+  unittest's duration (`\d+(?:\.\d+)?s$`) and to a frame's `,`-or-EOL; the real
+  machine forms still fire, and three near-miss controls now cover the gap.
+- **F2 (74, shipped behaviour) — FIXED.** `check_worklog_format` skips HTML
+  comments; this advisory did not, though the rulebook presents them as
+  counterweights — and `## Decisions` is the one section the template ships a
+  comment into, so a fenced example there would WARN on every milestone born
+  from it (M77 review F1's shape). Reproduced, then fixed with the sibling's
+  treatment plus a positive control proving a fence outside a comment still
+  fires. Actioned below threshold deliberately: same function, same defect
+  class, and a second pass would have been a second edit to the same lines.
+- **F4 (80, description layer) — LOGGED, not fixed.** `tracking-rules.md:126`
+  says a decision entry "is never one line", while D-077 — appended on this
+  same branch — records M84's `- 2026-07-18: review — 3 lenses (…)` as the
+  counterexample. Verified both sides directly. Declined under the review-entry
+  override: it is a description-layer overclaim, the sentence is mutation-pinned,
+  and re-anchoring a reflowed rulebook line is the M104 trap that fed the §8
+  loop. Banked as a candidate row so it is not lost.
+- **F3 (55, description layer) — LOGGED.** "fenced transcript block" names a
+  detector that fires on any fence, by deliberate design ("no rule reads a
+  transcript's insides"). Operator-facing wording under-describes shipped
+  behaviour; the behaviour is the gate's intended choice.
+
+Post-fix re-verification (the evidence above was gathered before F1/F2 landed,
+so it was re-run): suites 680 / **332** / 98, all exit 0 checked separately;
+`cairn_validate` exit 0, no FAIL, no WARN.
+
 **Projection vs outcome (Driving RR: RR08).** BC3 is the only binding
 criterion carrying numbers. Projected **0 WARNs (tolerance: exactly 0)** over
-the corpus — measured **0**. Projected **≥1 WARN** on a constructed
-pasted-output or fenced-transcript fixture — measured **1** on each of the two
-shapes. No shortfall. BC1 and BC2 carry no numeric projection; BC4 is M118's
+the corpus — **re-measured after the F1/F2 fixes: 0** (M83 34 lines, M84 31,
+M94 32, M98 32, M114 42, each read at its archiving commit and proved
+non-vacuous before any silence was claimed). Projected **≥1 WARN** on a
+constructed pasted-output or fenced-transcript fixture — **re-measured: 1 and
+1**. No shortfall. BC1 and BC2 carry no numeric projection; BC4 is M118's
 and is out of scope here per the recorded deviation.

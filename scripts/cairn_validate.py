@@ -928,11 +928,20 @@ _LOG_PREVIEW = 60
 # narrow and each entry is a form no prose sentence takes.
 _DECISIONS_PASTED = (
     re.compile(r"^\$ \S"),                      # shell prompt
-    re.compile(r"^Ran \d+ tests? in "),         # unittest summary
+    # unittest's summary line, bound to its DURATION and end-of-line. The
+    # looser `^Ran \d+ tests? in ` claimed ordinary prose — "Ran 3 tests in
+    # isolation before the change, and all held." — because `in` is the
+    # preposition prose reaches for first (M119 review F1/85). The near-miss
+    # control tested `to confirm` and dodged it. unittest always prints a
+    # duration and nothing after it, so anchoring there costs no real paste.
+    re.compile(r"^Ran \d+ tests? in \d+(?:\.\d+)?s$"),
     re.compile(r"^OK$"),
     re.compile(r"^(?:FAILED|ERROR) \("),
     re.compile(r"^Traceback \(most recent call last\):$"),
-    re.compile(r'^File "[^"]+", line \d+'),     # traceback frame
+    # traceback frame, bound to what FOLLOWS the line number: a real frame
+    # ends there or continues `, in <name>`, while prose runs on with a verb
+    # — 'File "x.py", line 42 is where the boundary sits.' (M119 review F1/85).
+    re.compile(r'^File "[^"]+", line \d+(?:,|$)'),
     re.compile(r"^(?:PASS|FAIL|WARN|OK)\s{2,}\S"),  # cairn_validate's own table
     # git's DEFAULT source prefix, not its only one: `--no-prefix`,
     # `--src-prefix`, `diff.mnemonicPrefix` and a C-quoted path all render a
@@ -1472,8 +1481,25 @@ def _pasted_findings(lines):
     pending = False  # the fence's preview is still its bare delimiter
     loose = []  # (lineno, body) for every signature line outside a fence
 
+    in_comment = False
+
     for lineno, text in lines:
         stripped = text.lstrip()
+        # An HTML comment's body is not the author's record — it is scaffolding,
+        # and the `## Decisions` section is the one section the TEMPLATE ships a
+        # comment into, so a fenced example inside one would WARN on every
+        # milestone instantiated from it. `check_worklog_format` has skipped
+        # comments since it shipped; this advisory is presented as its
+        # counterweight and inherits the same treatment (M119 review F2/74).
+        # Tracked before the fence branch so a comment can never open a fence.
+        if in_comment:
+            if "-->" in stripped:
+                in_comment = False
+            continue
+        if stripped.startswith("<!--"):
+            if "-->" not in stripped:
+                in_comment = True
+            continue
         if fence is not None:
             if stripped.startswith(fence):
                 out.append((start, _span(start, lineno), "fenced block", preview))
