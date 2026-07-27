@@ -2362,3 +2362,52 @@ certification for the first, the review fan-out for these two), never a test;
 `cairn_validate` and all three suites were green at every step. If a later
 milestone finds this correction chain repeating, the entry to write is one
 governing how D-entries make mechanical claims, not a fourth correction.
+
+### D-074 (2026-07-27): The milestone-local `## Decisions` section is history and joins the cap-exempt set — supersedes D-046's choice (3) and the D-030 rejection clause it rests on; annotates D-045 (the classification) and D-063 (the read-bound)
+
+**Context:** D-030 declined to exempt the milestone-local `## Decisions`
+section from the 150-line plan-owned cap, on the stated premise that it "is
+meant to stay brief, with cross-cutting entries promoted here". D-046
+reaffirmed that as its choice (3), distinguishing the work log on the ground
+that the promotion valve "is real and absent from the work log". D-066 hit the
+collision at RR07's ingestion — M114 at 149/149 with a 43-line Decisions
+section — deliberately did not reopen it, and recorded the residual as a
+candidate naming D-030/D-046 as the entry to supersede. Measured at the M118
+plan gate over all 116 milestone files this repo has had: the section runs a
+median of 4 lines and the brevity premise holds for 79 of them — but every one
+of the 7 files that ever reached ≥145 plan-owned lines carries 24–43, and only
+M114 of those 7 was RR-driven. So the phenomenon is not RR ingestion, and the
+valve does not reach the content that grows: M114's 13 entries are dated
+dispositions of its own review rounds, milestone-local by construction, with
+nothing cross-cutting to promote.
+
+**Decision:** Three parts. (1) **The section is history under D-045** — the
+ownership table already makes it append-only, and its entries record what was
+decided at a time. The alternative classification is self-defeating: current
+knowledge is corrected in place, hence trimmable, and a trimmable section has
+no claim to an exemption grounded in un-editability. (2) **It joins the
+cap-exempt set**, for D-046's reason and not D-030's — the cap must never leave
+a file fixable only by an edit IP4 forbids. The set becomes three members
+carrying three distinct reasons, and every site that enumerates it says so
+rather than naming a pair. (3) **A `decisions format` advisory** WARNs,
+exit-code neutral, on an entry that is not one line: D-046 rejected shipping
+its exemption bare because nothing would then notice bloat in a section that
+had stopped costing budget, and that reasoning binds here unchanged. Rejected:
+raising the 150 cap (it governs plan discipline, which is not what overran);
+exempting an RR-bound AC block (would have relieved 1 of the 7 measured files);
+and a separate Decisions sub-cap, which reprises the second-number complexity
+D-030 and D-046 each declined.
+
+**Consequences:** Supersedes D-046's choice (3) and the D-030 rejection clause
+it rests on; every other part of both entries stands — D-030's plan-owned-body
+scoping and `## Review` exemption, D-046's work-log exemption and its advisory
+severity. Annotates D-045 by classifying one further section, and D-063, whose
+newest-first read-bound is scoped to cap-exempt sections and therefore now
+reaches a third. IP4 is untouched in wording and in reading; what changes is
+the set of sections the cap may aim at. Frees the ≥21 lines the milestone
+template reserved for the section — redistributing them into the per-section
+drafting budgets is deliberately out of scope here and recorded as a candidate,
+because that block has drifted twice before and is a measurement pass of its
+own. Delivered by M118. If an unbudgeted Decisions section is ever observed
+absorbing pasted output despite the advisory, the advisory's severity is the
+entry to supersede.
