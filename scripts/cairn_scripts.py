@@ -94,15 +94,29 @@ CLAUDE_SECTION_HEADING = "## Project tracking"
 # counting them could leave an over-cap file fixable only by an edit IP4 forbids
 # (the work log at D-046/M77, the milestone-local decisions at D-074/M118, which
 # supersedes D-046's choice (3)). `## Review` is the third member of the
-# cap-exempt set and needs no constant here: it is already outside the cap by the
-# body boundary itself, and for a different reason (M55 — it is review-owned).
-# Both matched exactly, lowercased.
+# cap-exempt set and is exempt by a different route and for a different reason
+# (M55 — it is review-owned): the body boundary itself ends the counted region
+# there, so it is never subtracted. All matched exactly, lowercased.
 WORKLOG_HEADING = "work log"
 DECISIONS_HEADING = "decisions"
-# What both cap counters exempt, so the count and its heaviest-first breakdown
+REVIEW_HEADING = "review"
+# What both cap counters SUBTRACT, so the count and its heaviest-first breakdown
 # can never disagree about the set — the invariant preamble+sections==body
 # depends on them dropping exactly the same sections.
 EXEMPT_HEADINGS = (WORKLOG_HEADING, DECISIONS_HEADING)
+# The counters' EFFECTIVE exempt set: the two subtracted above plus the one the
+# body boundary excludes. Two routes, one set — which is why this is derived
+# here rather than retyped, and why the `## Review` member is not in
+# `EXEMPT_HEADINGS` (subtracting a section already outside the boundary would
+# double-count it).
+#
+# `hooks/session_context.py` carries a MIRROR of this tuple: the hook imports
+# only `cairn_common`, so no shared constant is reachable across the two
+# packages, and a heading the cap exempts but the hook does not recognize is
+# injected whole — the gap the read-bound exists to close (D-063). The mirror is
+# held to this original by a two-sided test (RR08 §BC2), which reds whichever
+# side drifts.
+CAP_EXEMPT_SECTIONS = EXEMPT_HEADINGS + (REVIEW_HEADING,)
 
 # §1 scaffold pieces that must exist once a repo is on cairn (cairn-init §1).
 # Single source of truth for the machine-side drift check
@@ -359,7 +373,7 @@ def _plan_owned_scan(path):
         if not line.startswith("## "):
             continue
         title = line[3:].strip()
-        if title.lower() == "review":
+        if title.lower() == REVIEW_HEADING:
             boundary = i
             if start is not None:
                 sections.append((heading, i - start))

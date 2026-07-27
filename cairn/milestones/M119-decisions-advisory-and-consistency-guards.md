@@ -78,7 +78,7 @@ file and its ledger, and is delivered there.
       (`tracking-rules.md:205-207`) and pin the amended sentence under the
       file's existing mutation-registration rules; verify the pin reds when the
       member is removed.
-- [ ] T3: Mirror the exempt-set constant across `cairn_scripts` and
+- [x] T3: Mirror the exempt-set constant across `cairn_scripts` and
       `hooks/session_context.py`; two-sided consistency test with a by-hand
       one-sided-removal red check. Note `## Review` is excluded by the body
       boundary, not by set membership — the test compares effective sets.
@@ -94,6 +94,7 @@ file and its ledger, and is delivered there.
 - 2026-07-27: T1 — `check_decisions_format` + `_pasted_runs` shipped and registered as `decisions format`, adjacent to `work-log format`; 12 tests including the five-section corpus at 0 WARNs with per-file non-vacuity asserts and a same-path positive control. Three by-hand mutations (signatures off, fences off, quote-normalization off) each redden the right tests.
 - 2026-07-27: T2 — the history enumeration names the milestone-local `## Decisions` section; the pin is RE-ANCHORED whole (the pre-M119 six-member line satisfies nothing), and a second assert pins the wrap line, whose four members lost their incidental cover when `milestones/archive/` moved off line 1. Both registered in the mutation harness; a by-hand revert to the six-member list reds both.
 - 2026-07-27: T2 minor amendment (discovered sub-task) — the rulebook also names the shipped advisory and its subject beside `work-log format`, and the always-read frame's attention-signal cell gains it; `cairn_scripts.py`'s forward reference to "M119 ships `decisions format`" is retired. Not enumerated in Scope, taken as part of "and its registration": an advisory the rulebook does not name leaves the repo contradicting itself, M118 F1's shape. Two new guards (subject, stated↔emitted label), both registered; three by-hand mutations red.
+- 2026-07-27: T3 — `cairn_scripts.CAP_EXEMPT_SECTIONS` derives the counters' effective set from `EXEMPT_HEADINGS + (REVIEW_HEADING,)`, and `_plan_owned_scan`'s boundary now reads that constant instead of a literal; `hooks/session_context.py` declares itself the mirror. `TestExemptSetMirror` (4 tests) asserts set EQUALITY, non-vacuity, and — the arm a constant-only comparison misses — that the real scan exempts what the constant claims. Four by-hand mutations red: a member dropped from either side, a member added, and the counters silently abandoning the `## Review` boundary with both constants untouched.
 - 2026-07-27: measured at the gate that density is not a usable signal — M84's section is a character survey and M98's a line-number inventory, so a numeric heuristic fires hardest on the files the exemption exists to serve; detector keys on shape only.
 
 ## Decisions
