@@ -1977,11 +1977,9 @@ call D-059 made when it retired an advisory measured not to work.
 **Consequences:** The thrash rule gains its first guard; it was unguarded prose
 until now, with every phrase of it (`third trip`, `queue another retry`,
 `mis-planned`, `re-plan or split`) occurring in the skill and in no test, so
-deleting it outright kept the suite green. A one-surface pin — an assert that a
-restatement of the rule in another skill or the README would red rather than
-silently fork it — was attempted and re-cut out at M114's third return: three
-cuts each missed a rendering the next review found, and it is now a ROADMAP
-candidate awaiting a rendering-independent approach. `guard-doctrine.md` gains two rules from the same
+deleting it outright kept the suite green. That guard also pins the rule to one
+surface, so a later restatement in another skill or the README reds rather than
+silently forking it. `guard-doctrine.md` gains two rules from the same
 post-mortem: §3 that a detector's matcher must be exercised at every rendering
 its target can take, carrying the renderings in as positive controls, since
 external mutation-verification proves only that a guard catches the mutation its
@@ -1991,3 +1989,38 @@ asserted beside the claim. Delivered by M114. No prior D-entry is superseded —
 the thrash rule never had one, which is part of what this entry fixes. If a
 milestone is ever sent back by trigger (b) where the recorded alternative was
 the wrong call, this is the entry to supersede.
+
+### D-065 (2026-07-26): The one-surface pin was re-cut out of M114 — supersedes D-064's Consequences claim that a guard pins the thrash rule to one surface
+
+**Context:** D-064 was appended when M114 shipped a guard asserting the thrash
+rule's phrase occurred in exactly one file, so a restatement elsewhere would red
+rather than silently fork it. Its Consequences say so: "That guard also pins the
+rule to one surface, so a later restatement in another skill or the README reds
+rather than silently forking it." That guard no longer exists. It was re-cut out
+at M114's third return, after consuming all three returns across six findings of
+one shape — the detector, or the controls exercising it, did not cover a
+rendering the phrase can take (a line wrap, a blockquote continuation marker,
+nested blockquotes in two spellings, partial emphasis, case, word boundaries,
+and finally corpora that passed while empty). As of M114's merge no guard pins
+the rule to one surface, and D-064's sentence is false about the shipped system.
+
+**Decision:** Supersede rather than edit. D-064's appended bytes stand
+unaltered; this entry carries the correction. The route was chosen at RR06's
+instruction (BC1) after review pass 5 found the entry had been corrected in
+place — an IP4 violation that M114's own pass 4 had already refused when it met
+the identical situation in a work log and superseded instead. Two things settled
+with it. **IP4 attaches at append time, not at merge time:** an entry's
+not-yet-merged status is no carve-out, because the rule is about the record's
+form, not its distribution, and a carve-out would make every unmerged history
+file editable by whoever is holding it. And **the pin itself is not abandoned**
+— it is a ROADMAP candidate, promotable on a rendering-independent detection
+approach (a markdown or AST parse, a content hash over normalized doctrine
+blocks) and explicitly never on a further count of attempts at a wider matcher.
+
+**Consequences:** D-064's other content is untouched and still governs: its six
+plan-gate choices, the per-milestone counting rule, and the promotion-condition
+and guard-doctrine additions. Readers of D-064 reach this entry by the
+back-reference discipline (D-054) — its heading names D-064 as superseded.
+Delivered by M114. If a rendering-independent fork detector is ever built, the
+candidate row is where it starts, and this entry is the record of why the first
+three attempts were abandoned rather than iterated.
