@@ -145,5 +145,109 @@ class TestRRIngestionCriteriaAudit(unittest.TestCase):
         )
 
 
+class TestDescriptionLayerCertification(unittest.TestCase):
+    """`guard-doctrine.md` §8 — the author never certifies its own coverage."""
+
+    @property
+    def doctrine(self):
+        return read("shared", "guard-doctrine.md")
+
+    def test_section_exists_under_its_own_heading(self):
+        self.assertIn(
+            "## 8. The author never certifies its own guard's coverage",
+            self.doctrine,
+        )
+
+    def test_section_separates_operation_from_certification(self):
+        # The distinction is the whole cut: banning the author from running
+        # its own guard would be the wrong rule, and this sentence is what
+        # keeps the retirement scoped to certification.
+        self.assertRegex(
+            self.doctrine,
+            r"Running a guard and certifying that it covers what you claim are "
+            r"different\s+jobs, and only the first one survives being done by "
+            r"its author",
+        )
+
+    def test_section_states_the_diagnosis(self):
+        self.assertRegex(
+            self.doctrine,
+            r"the author checks the description against its generative\s+"
+            r"model of the artifact rather than against the artifact",
+        )
+
+    def test_section_places_the_step_before_review_with_a_fresh_reader(self):
+        self.assertRegex(
+            self.doctrine,
+            r"So before `status -> review`, a guard-authoring milestone hands "
+            r"the\s+description layer to a fresh-context reader that authored "
+            r"no part of it",
+        )
+
+    def test_section_names_the_coverage_check(self):
+        self.assertRegex(
+            self.doctrine,
+            r"\*\*AC-clause-to-assert coverage\*\* — every clause of every "
+            r"acceptance\s+criterion maps to an assert that actually pins it",
+        )
+
+    def test_section_names_the_claim_accuracy_check(self):
+        self.assertRegex(
+            self.doctrine,
+            r"\*\*Claim-vs-file accuracy\*\* — every docstring, comment, "
+            r"work-log line, and\s+record claim about the guard is true of the "
+            r"file it describes",
+        )
+
+    def test_section_names_the_anchor_fidelity_check(self):
+        self.assertRegex(
+            self.doctrine,
+            r"\*\*Anchor-vs-shipped-bytes fidelity\*\* — every multi-word anchor "
+            r"matches the\s+bytes actually shipped",
+        )
+
+    def test_section_requires_zero_unresolved_and_forbids_arguing_down(self):
+        self.assertRegex(
+            self.doctrine,
+            r"The gate is entered at zero unresolved: a discrepancy is fixed and\s+"
+            r"re-certified, never argued down as imprecision",
+        )
+
+    def test_section_moves_certification_not_operation(self):
+        self.assertRegex(
+            self.doctrine,
+            r"this moves certification, not operation",
+        )
+
+    def test_section_carries_its_own_falsifier(self):
+        # An adopted step with no stated exit is how a mechanism measured not
+        # to work gets tuned instead of retired (D-059).
+        self.assertRegex(
+            self.doctrine,
+            r"if guard-authoring\s+milestones still average multiple "
+            r"description-layer returns after adoption,\s+the step didn't work "
+            r"— retire it \(D-059\), don't tune it",
+        )
+
+
+class TestImplementRoutesToCertification(unittest.TestCase):
+    """`/milestone-implement` step 8 fires the step §8 defines."""
+
+    def test_completion_step_routes_to_the_certifier_at_zero_unresolved(self):
+        self.assertRegex(
+            read("milestone-implement", "SKILL.md"),
+            r"if this milestone authored or edited a\s+prose-guard, hand its "
+            r"description layer to a fresh-context reader first",
+        )
+
+    def test_completion_step_cites_the_doctrine_section_and_the_bar(self):
+        self.assertRegex(
+            read("milestone-implement", "SKILL.md"),
+            r"`skills/shared/guard-doctrine\.md` §8, the author never certifies "
+            r"its own\s+guard's coverage — and enter the gate only at zero "
+            r"unresolved",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

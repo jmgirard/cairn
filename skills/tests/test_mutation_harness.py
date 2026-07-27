@@ -2237,6 +2237,82 @@ REGISTRY = [
         target="skills/milestone-brief/SKILL.md",
         block="What the audit returns is raised with the\n   user, never softened away",
     ),
+    # M115: description-layer certification. §8's diagnosis and its remedy
+    # are pinned separately, and each of the three checks separately again —
+    # a reader told to certify with one check missing certifies less, and a
+    # diagnosis with no remedy is what let one defect class recur for passes.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_exists_under_its_own_heading",
+        target=GUARD_DOCTRINE,
+        block="## 8. The author never certifies its own guard's coverage",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_separates_operation_from_certification",
+        target=GUARD_DOCTRINE,
+        block="**Running a guard and certifying that it covers what you claim are different\njobs, and only the first one survives being done by its author.**",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_states_the_diagnosis",
+        target=GUARD_DOCTRINE,
+        block="the author checks the description against its generative\nmodel of the artifact rather than against the artifact",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_places_the_step_before_review_with_a_fresh_reader",
+        target=GUARD_DOCTRINE,
+        block="**So before `status -> review`, a guard-authoring milestone hands the\ndescription layer to a fresh-context reader that authored no part of it.**",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_names_the_coverage_check",
+        target=GUARD_DOCTRINE,
+        block="**AC-clause-to-assert coverage** — every clause of every acceptance\n  criterion maps to an assert that actually pins it",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_names_the_claim_accuracy_check",
+        target=GUARD_DOCTRINE,
+        block="**Claim-vs-file accuracy** — every docstring, comment, work-log line, and\n  record claim about the guard is true of the file it describes",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_names_the_anchor_fidelity_check",
+        target=GUARD_DOCTRINE,
+        block="**Anchor-vs-shipped-bytes fidelity** — every multi-word anchor matches the\n  bytes actually shipped",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_requires_zero_unresolved_and_forbids_arguing_down",
+        target=GUARD_DOCTRINE,
+        block="The gate is entered at zero unresolved: a discrepancy is fixed and\nre-certified, never argued down as imprecision",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_moves_certification_not_operation",
+        target=GUARD_DOCTRINE,
+        block="this moves certification, not operation",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_carries_its_own_falsifier",
+        target=GUARD_DOCTRINE,
+        block="if guard-authoring\nmilestones still average multiple description-layer returns after adoption,\nthe step didn't work — retire it (D-059), don't tune it",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestImplementRoutesToCertification.test_completion_step_routes_to_the_certifier_at_zero_unresolved",
+        target=IMPLEMENT,
+        block="if this milestone authored or edited a\n   prose-guard, hand its description layer to a fresh-context reader first",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestImplementRoutesToCertification.test_completion_step_cites_the_doctrine_section_and_the_bar",
+        target=IMPLEMENT,
+        block="`skills/shared/guard-doctrine.md` §8, the author never certifies its own\n   guard's coverage — and enter the gate only at zero unresolved",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

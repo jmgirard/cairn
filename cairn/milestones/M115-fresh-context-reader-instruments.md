@@ -96,10 +96,10 @@ rec 4/5/6 rows at rebase → M114.
       copied from the shipped bytes, `\s+` across every wrap (M95/M105), target read via
       `Path.read_text` or the mutation engine cannot see it (M100); one `Mutation(...)`
       entry per doctrine-pinning assert, each block resolving exactly 1x.
-- [ ] T3: Author the certification section at the end of `skills/shared/guard-doctrine.md`
+- [x] T3: Author the certification section at the end of `skills/shared/guard-doctrine.md`
       (after its current last section) and the one routing line in
       `skills/milestone-implement/SKILL.md:98` (step 8), before `status -> review`.
-- [ ] T4: Guard T3 in the same file, same discipline as T2. Then run both sweeps: grep
+- [x] T4: Guard T3 in the same file, same discipline as T2. Then run both sweeps: grep
       the guards for any short phrase the new prose repeats (M113 — added prose can give
       an existing assert false coverage) and the M104 adjacency check over every guard
       literal near the edited prose.
@@ -129,6 +129,10 @@ rec 4/5/6 rows at rebase → M114.
 - 2026-07-26: T1 sweeps, MEASURED against the asserts and not by eye. M112 surface sweep: `README.md`'s plan row and `DESIGN.md:127` are category summaries that this does not falsify, and no template restates the plan gate — nothing outside the two skill files to update. M113 false-coverage sweep: two guards do read the edited files (`test_bounded_decisions_read.py:106` and `test_gate_conclusion_preview.py:72,93`), so I read their asserted strings rather than grepping the file — none of the five phrases they pin occurs in the new prose. M104 adjacency: all three suites green after the edit, which is the check (a reflowed anchor reds its own guard).
 
 - 2026-07-26: T2 — `skills/tests/test_fresh_context_readers.py` pins T1's doctrine with 14 asserts, one per clause that carries the rule independently: the audit's placement at step 2/3/4, its fresh-context reader, each of its two questions, each disposition arm, the anti-mechanization line, and the four ingest-side clauses. Mechanism confirmed FIRST, not assumed — the completeness meta-test redded on the unregistered file before I registered anything. Every block was copied from the shipped bytes and machine-checked to resolve exactly 1x in its target before insertion (14/14); every wrapped phrase is matched with `\s+` rather than a literal newline (M105), and the file reads targets with `Path.read_text` so the mutation engine can see it (M100). Parity MEASURED by AST, not counted by eye: 14 doctrine-pinning asserts against 14 registered entries. The harness's blanking sweep passes, so all 14 red on deletion. Suites 624/280/91 exit 0 each, skills up exactly the 14 new methods; `cairn_validate` exit 0.
+
+- 2026-07-26: T3 — `guard-doctrine.md` gains §8, the author never certifies its own guard's coverage. It separates OPERATION (suites, harness, sweeps — self-correcting, stays with the author) from CERTIFICATION (the description layer — moves to a fresh-context reader), names the diagnosis, the three checks, the zero-unresolved bar, and its own falsifier. `/milestone-implement` step 8 fires it before `status -> review`, conditional on the milestone having authored or edited a prose-guard so a milestone writing no guard pays nothing. The falsifier travels verbatim but its source is not cited: only RR01 and RR04 are cited anywhere under `skills/`, both archived on `main`, and RR06 is not.
+- 2026-07-26: T4 — 12 more asserts, one per §8 clause plus the two implement-side ones, diagnosis and remedy pinned separately and each of the three checks separately again. Blocks machine-checked 12/12 at exactly 1x before insertion; parity re-MEASURED by AST at 26 asserts against 26 entries; suites 636/280/91 exit 0. One assert was tightened before registering: it used a `.*?` wildcard to bridge two clauses, which pins less than it appears to, and now carries the literal text between them.
+- 2026-07-26: T4's M113 sweep was WRONG on its first cut and is recorded as such — it tested every guard's asserted literals against every edited file regardless of which file that guard reads, and reported nine hits that were all pre-existing and none mine (`verify`, `commit`, `default branch`). That is M104's imprecision lesson recurring in the sweep written to apply it, hit while writing it. Re-cut as a DELTA against `main`: for every `assertIn` literal in every guard, compare its count in each edited file at `main` and at HEAD, and flag only a rise to more than one. Result: **0 risen**. M104 adjacency: all three suites green after each prose edit, which is the check.
 
 ## Decisions
 
