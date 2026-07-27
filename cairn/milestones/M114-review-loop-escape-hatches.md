@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR07
@@ -164,6 +164,8 @@ BC6 and BC7 stay verbatim deliberately — the review gate reads BC6's numeric p
 - 2026-07-26: PARK ACCEPTED at the maintainer's call, over overriding AC7 to fix F1/F5 on the branch, overriding to merge and supersede F5 after, or dropping. M114 stays `blocked`; nothing merged and PR #114 stays a draft. The recorded unblock condition is unchanged — adoption of RR06 recs 4-5 through their own milestone (the plan-gate criteria audit and the independent description-layer certification, both already ROADMAP candidate rows with falsifying promotion conditions). F1 and F5 stay open and recorded in Review pass 7; F5 in particular must be corrected before D-064 reaches `main`, and the unblocking milestone is where both land, since BC1's frozen scope is what forbade them here.
 
 - 2026-07-26: STATUS MIRROR, written on `main` at M115's plan gate. M114 ran seven review passes on branch `m114-review-loop-escape-hatches` (draft PR #114) and was parked `blocked` at the maintainer's call when its own AC7 terminus fired; the full record lives on that branch. Blocker: the recorded unblock condition is adoption of RR06 recs 4-5, which is M115. Written here because `main` carried `planned` for a milestone nobody could work on. The branch's work log is authoritative and supersedes this line at rebase.
+
+- 2026-07-26: UNBLOCKED and resumed. M115 merged its two fresh-context reader instruments (RR06 recs 4-5) to `main`, which is M114's recorded unblock condition verbatim, and `main` is merged into this branch. Three conflicts, all resolved by keeping both sides rather than choosing: D-064/D-065/D-066 then D-067 in `DECISIONS.md`; M115's done row plus this branch's five candidate rows in the ROADMAP, with the rec-6 row de-duplicated to `main`'s live text since that copy carries the transcription lineage; and `main`'s STATUS MIRROR line KEPT in this work log rather than dropped as it invited, appended after the park line in chronological order, because IP4 does not distinguish a line written on one branch from a line written on another. Merged tree green: skills 654 / scripts 280 / hooks 91 exit 0 each, `cairn_validate` exit 0 with 16 PASS and zero advisories. Status -> in-progress.
 
 ## Decisions
 
