@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-27 (M116 merged and archived; pruned M111 under terminal-row retention; LESSONS met the cap by trimming M110's lesson and pruning M60/M85's under D-015. At M117's plan gate one candidate graduated and the one-surface-pin row took a NEGATIVE evaluation; 15 remain.)_
+_Last hygiene check: 2026-07-27 (M117 merged and archived; pruned M112 under terminal-row retention. LESSONS captured M117's harness blind spot and retired M103's under ownership — `guard-doctrine.md` §1 owns it. 15 candidates.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M117 | Detector coverage on the site axis, and a plan gate that records the alternative it rejected (intraclass M93 passes 6–9) | review | — | normal | milestones/M117-detector-site-axis-and-recorded-alternative.md |
+| M117 | Detector coverage on the site axis, and a plan gate that records the alternative it rejected (intraclass M93 passes 6–9) | done | — | normal | milestones/archive/M117-detector-site-axis-and-recorded-alternative.md |
 | M116 | Repair the three-step placement test — retention takes the deletion arm, inversion moves to guard verification, and a step-0 single-home check (RR04 rec 9) | done | — | normal | milestones/archive/M116-placement-test-repair.md |
 | M115 | Fresh-context reader instruments — plan-gate criteria audit and independent description-layer certification (RR06 recs 4–5) | done | — | normal | milestones/archive/M115-fresh-context-reader-instruments.md |
 | M114 | Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine | done | — | normal | milestones/archive/M114-review-loop-escape-hatches.md |
 | M113 | Bounded session-start injection — cap-exempt sections read-bounded newest-first, and the active milestone file joins the always-read frame (D-063) | done | — | normal | milestones/archive/M113-bounded-session-injection.md |
-| M112 | Soften the Fable warning — neutral token-cost framing, lower the recommend bar, per-instance RB/RR gate retained | done | — | normal | milestones/archive/M112-soften-fable-warning.md |
 
 ## Candidates
 
