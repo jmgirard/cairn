@@ -193,6 +193,7 @@ which is where its binding text permanently lives.
 - 2026-07-27: GATED AMENDMENT — AC9 gains its certified-scope sentence (route c): the certified scope is the work and the records describing the work, and a work-log entry whose subject is a certification round — the final round's own report included — is outside it. Shown verbatim and accepted at the gate; D-069 filed; the §8 scope clause banked as a ROADMAP candidate row rather than edited into doctrine this pass; the work-log style lesson recorded in D-069 as owed at review's post-merge hygiene capture.
 - 2026-07-27: final §8 round's three discrepancies closed — D-070 supersedes D-069's premise sentence (round 3's findings were in work records; round 4's alone were certification narrative) and withdraws its heading's unbacked "cites D-068"; the Deviations row's funding figures are anchored to commits (`19 at 712c63e; 23 at 669257b`) so the measure-once defect cannot recur; Scope In gains the route-(c) deliverables the certifier flagged as unnamed. Fixes re-derived from the files, sent back to the same certifier for confirmation.
 - 2026-07-27: T21 — §8 certification under amended AC9, final round. First verdict verbatim: "NOT CLEAN — 3 unresolved discrepancies" (the three closed in the entry above); the same certifier re-derived each fix from the files and returned, verbatim: "CLEAN — 0 unresolved discrepancies" at `eb81d46`. Gate numbers at `eb81d46`, run separately and never piped: suites 654/280/91 exit 0 each, `cairn_validate` exit 0 with 16 PASS and 1 `sizing` advisory, 0 blanking survivors, and no file outside `cairn/` changed since `669257b`, so the prior round's independent probe reproduction stands. Certifier's non-counted observations: D-070's "records" is loose for round 1's test-comment case; D-069/D-070 omit the "Delivered by"/"entry to supersede" closings (convention-only, no rule); plan-owned body 149/149 — zero headroom. Status -> review.
+- 2026-07-27: SUPERSEDES one conclusion in the round-4 entry above, found by pass-8 review F1 (84): "the superseded entry is itself the longest" is false against the entry's own printed list — the superseded NOTED entry is 796 characters, 4th shortest of the 13; the longest is 1939 (the round-3 T21 entry). The claim's second half stands: `d919bc0` added more work-log text than any other commit in the pass. The entry's subject is a certification round, outside AC9's amended scope — the amendment's disclosed blind spot, first instance, carried by the §8-clause candidate row.
 
 ## Decisions
 
@@ -1116,3 +1117,34 @@ certified tree stands at HEAD. AC9 ticked.
 against projected 654/280/91 (the post-M115-merge expectation the UNBLOCKED entry
 recorded); `Mutation(...)` entries naming `guard="test_lesson_graduation"` measured 14
 against projected 14; blanking survivors measured 0 against tolerance 0. No shortfall.
+
+**Independent review — three lenses, then the scorer.** Blame-history [S]: zero findings —
+walked the widened assert's full provenance (`20c7b4a` → `dc01885` → `471d698`), judged the
+AC9 amendment against D-067 and RR07 §BC5 (fills a gap those texts are silent on,
+contradicts nothing), verified the ROADMAP row edits against the Review sections they cite.
+Prior-review [S]: zero findings — walked all 45 labelled findings across passes 1-7 plus
+M98's and M115's archive entries; the GitHub inline-comment probe returned empty, no
+thread walk. Diff-bug [O]: one finding actioned, two logged; independently reproduced the
+control probe in a scratch copy (mutant keeping the old fragment reds the widened assert),
+re-derived the Deviations figures at all three named refs, and measured
+`cairn/DECISIONS.md` at 243 insertions, 0 deletions across the branch — IP4 pure append.
+
+**Actioned (1).** F1 (84) — the round-4 SUPERSEDES entry's claim (3) concludes "the
+superseded entry is itself the longest" against its own printed list: the NOTED entry is
+796 characters, 4th shortest of 13; the longest is 1939. The measurement was real; the
+conclusion drawn from it is false. Its subject is a certification round, so it sits
+outside AC9's amended scope and no criterion fails — but it is false history at merge.
+FIXED by appended supersession in the work log; recorded as the first concrete instance
+of the amendment's disclosed blind spot, which the §8-clause candidate row carries.
+
+**Logged, below the 80 threshold (2).** F2 (35): round 4's verdict is paraphrased in the
+work log, never quoted verbatim as rounds 1-3 and the final round are; AC9's stated
+tolerance is met by the final round's entry, so this is a body-vs-tolerance gap only.
+F3 (25): the round-4 entry's "The four §8 checks'" reads in context as the four rounds;
+shipped §8 states three checks — an ambiguous phrase, not a factual defect.
+
+**GATE PASSES — eighth pass, first clean gate.** AC8 and AC9 verified with fresh evidence
+and ticked; every projection met exactly; `cairn_validate` exit 0 with the `sizing`
+advisory only; three lenses returned one actioned finding, fixed on the branch by
+supersession before the merge gate. No return is counted — the thrash record stands at
+seven and AC7's spent terminus stays spent.
