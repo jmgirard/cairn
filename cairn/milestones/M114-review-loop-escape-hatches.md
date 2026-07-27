@@ -1,6 +1,6 @@
 # M114: Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR05
@@ -596,6 +596,7 @@ the registered entry count (tolerance: exact)" — measured 17 against 17 — an
 "blanking every registered block reds its named test (tolerance: 0 survivors)" — measured
 0 survivors. No shortfall on either.
 - 2026-07-26: review pass 5 FAILED the gate — FIFTH return. K1 (92): D-064 was corrected by EDITING an append-only decision record; IP4/D-045 allow no unmerged carve-out, this milestone's own pass 4 refused the identical edit on work-log claims, and RR05 B4 names supersession verbatim — AC11 as authored mandates the violation, so the CRITERION is the defect. L2 (92) and L3 (88): AC6 violations, BC4's positive remedy and BC3's routing half both unpinned and deletable green. L1 (90): I narrowed trigger (a)'s remedy anchor to its pre-wrap half this delta, a coverage regression against my own docstring's M105 rule. L4/L6/L7 logged. AC6 and AC11 withdrawn; AC1-AC5, AC7-AC10 stand; RR05's design unimplicated. THE EXHAUSTION BRANCH FIRES: (a) holds and a re-cut is recorded spent, so no bare retry is recommended. Status -> in-progress.
+- 2026-07-26: blocked on RB06 — the exhaustion branch's escalation option taken at the maintainer's call. The question is NOT the doctrine, which RR05 settled and three lenses cleared: it is why five consecutive passes each found scored->=80 defects in my own verification and record-keeping around it. RB06 puts the three defect classes to an independent review with their full evidence, and asks five things — whether there is one root cause, whether the review machinery is working or compensating for something upstream, whether cairn should gain a rule and which, whether M114 should finish or park or drop, and whether the scoring rubric is biased against the findings that later matter (F4 at 60 fired at pass 3; J5 at 35 fired at pass 5).
 
 **Independent review — three lenses, then a scorer.** Prior-review: zero findings; it
 walked the rule at return 3 and return 4+ and confirmed the exhaustion branch reaches a
