@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1, GP4
-- **Branch/PR:** m117-detector-site-axis-and-recorded-alternative
+- **Branch/PR:** m117-detector-site-axis-and-recorded-alternative · https://github.com/jmgirard/cairn/pull/117
 
 ## Goal
 
@@ -41,7 +41,7 @@ real aborts.
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/shared/guard-doctrine.md` §3 names the site axis of a
+- [x] AC1: `skills/shared/guard-doctrine.md` §3 names the site axis of a
       detector's renderings — the branches, message literals, or code paths at
       which the target can appear — beside the numeric-format axis its existing
       prescription covers, and states separately that exercising every number
@@ -49,20 +49,20 @@ real aborts.
       of those two claims is pinned by its own assert in
       `skills/tests/test_lesson_graduation.py`, matched with `\s+` wherever the
       shipped text wraps.
-- [ ] AC2: The same section states that a count of hand-enumerated entries
+- [x] AC2: The same section states that a count of hand-enumerated entries
       measures the enumeration and not the surface — the `checked == N` shape
       over a hand-listed set — and prescribes the producer-derived remedy:
       sweep the producer's own outputs and assert the invariant over them
       rather than enumerating renderings. The text builds on §3's shipped
       author-cannot-enumerate sentence rather than restating it, and §7 gains
       at most a one-line pointer. Negative claim and remedy pinned separately.
-- [ ] AC3: Every prose block this milestone adds to an already-registered guard
+- [x] AC3: Every prose block this milestone adds to an already-registered guard
       file carries its own entry in `skills/tests/test_mutation_harness.py`
       (registration is per file, so a sibling entry does not cover a new
       assert), every existing registry locator whose bytes this milestone
       re-wraps resolves against the shipped bytes, and
       `TestRegisteredGuardsFailWhenBlanked` passes.
-- [ ] AC4: `skills/milestone-plan/SKILL.md` obliges the plan author, at step 4
+- [x] AC4: `skills/milestone-plan/SKILL.md` obliges the plan author, at step 4
       where the milestone file is created, to append one work-log line per
       choice between approaches the gate actually weighed — the alternative
       rejected, why it lost, and the class of evidence that would falsify the
@@ -71,11 +71,11 @@ real aborts.
       form in its work-log comment. Evidence: asserts in
       `skills/tests/test_thrash_rule.py` pinning the obligation and the
       no-line-when-none-weighed clause separately.
-- [ ] AC5: `skills/milestone-review/SKILL.md`'s trigger (b) names the work log
+- [x] AC5: `skills/milestone-review/SKILL.md`'s trigger (b) names the work log
       as where that record is read from, and `test_thrash_rule.py`'s existing
       anchor `reconsider the alternative the plan gate recorded\s+against`
       still matches the shipped bytes.
-- [ ] AC6: The `verify` slot's three suites are green (`Ran N tests … OK` for
+- [x] AC6: The `verify` slot's three suites are green (`Ran N tests … OK` for
       `skills/tests`, `scripts/tests`, `hooks/tests`) and
       `python3 scripts/cairn_validate.py` exits 0 printing `all checks passed`
       — every count written from command output, never memory.
@@ -142,3 +142,57 @@ real aborts.
 ## Decisions
 
 ## Review
+
+**Evidence gathered 2026-07-27 by command, on branch HEAD; every inversion
+restored the file byte-identical (verified in the same run).**
+
+- **AC1** — both claims present in the `## 3. Absence assertions` slice.
+  Inversion: deleting the site-axis naming sentence RED; deleting the
+  "Exercising every number format of one literal is not coverage" consequence
+  RED — separately, so neither is masked by the other. Relocating both new
+  paragraphs from §3 into §7 RED, so the criterion's `§3` home is pinned and
+  not merely its text.
+- **AC2** — negative claim and remedy both present in the same slice.
+  Inversion: deleting the `**A count of enumerated entries…**` heading RED;
+  deleting the producer-sweep remedy RED, separately. §7 byte-identical to
+  `main` (`git diff --stat main..HEAD -- skills/shared/guard-doctrine.md`
+  shows the §3 insertion only), so "§7 gains at most a one-line pointer"
+  holds; the pointer runs §3→§7.
+- **AC3** — `TestRegisteredGuardsFailWhenBlanked` OK (1 test). Registry 433
+  blocks against 421 on `main`; all 12 M117 entries enumerated by target and
+  block, all resolving (a non-resolving locator raises, so green is proof).
+  The three containment asserts take guard-doctrine §2's by-hand check
+  instead: each fails against pre-milestone content, shown by the relocation
+  inversions under AC1/AC4/AC5 rather than asserted.
+- **AC4** — inversion, each separately RED: whole obligation bullet deleted;
+  cardinality clause deleted; absence case deleted; bullet MOVED out of step 4
+  into step 5; the template form deleted from the work-log comment; and the
+  template form MOVED from the comment into the body — the regression that
+  would ship a `<approach>` placeholder into every instantiated milestone.
+- **AC5** — inversion: deleting trigger (b)'s work-log pointer RED, and MOVING
+  it out of trigger (b) into the composition paragraph RED. The pre-existing
+  anchor `reconsider the alternative the plan gate recorded\s+against` still
+  matches (suite green, and its registry locator resolves).
+- **AC6** — `skills/tests` Ran 672 OK · `scripts/tests` Ran 280 OK ·
+  `hooks/tests` Ran 91 OK · `cairn_validate` exit 0, 16 PASS, `all checks
+  passed`. Counts read from command output.
+
+**Consistency gate.** `cairn_validate` exit 0, 16 PASS / 7 advisory OK, no
+FAIL. `cairn_impact` skipped — `DESIGN.md` is untouched by the diff, so no
+principle changed (the `Principles touched: GP1, GP4` slot records the
+principles worked under, not changed). Profile `generic`: the
+`consistency-gate` slot names no toolchain checks, so that half is a clean
+no-op. No CI in this repo.
+
+**Thrash rule.** Zero returns — first review pass, no re-cut. Neither trigger
+fires.
+
+**Description-layer certification (guard-doctrine §8).** Four fresh-context
+[O] rounds before the gate: 8 → 6 → 6 → 2 discrepancies, all closed. Rounds 1
+and 2 found defects in the work (two unsatisfiable criteria; a template
+placeholder that would ship into every milestone; four AC clauses naming a
+location no assert pinned); rounds 3 and 4 found none in the artifact. The
+gate was entered after round 4's two record-accuracy items were fixed, without
+a fifth round auditing only those fixes — a judgment call recorded here rather
+than presented as a clean round.
+
