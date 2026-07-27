@@ -2414,7 +2414,7 @@ REGISTRY += [
         guard="test_rule_placement",
         test="TestPlacementTest.test_rulebook_covers_the_unguarded_case",
         target=RULES,
-        block="where no guard exists, record a by-hand inversion",
+        block="still needs its own entry or the by-hand\ncheck",
     ),
     Mutation(
         guard="test_rule_placement",

@@ -833,8 +833,8 @@ cannot decide what belongs here.
 
 Inversion keeps a job of its own. **Relabel, negate, or transpose the rule in
 place, run the suite, require red, restore and diff** — that is the
-guard-verification protocol, which proves a guard notices when its rule goes
-missing; where no guard exists, record a by-hand inversion.
+guard-verification protocol, whose obligation and unguarded-case fallback the
+guard-must-fail rule below states in full. It never decides what belongs here.
 
 **Guard-reddening is a deletion screen, never a licence to keep** — sufficient
 to block a careless deletion, never necessary to justify one, and never

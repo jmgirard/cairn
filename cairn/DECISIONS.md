@@ -2316,3 +2316,49 @@ certification round caught an overclaimed guard-coverage sentence inside its own
 D-entry — D-070 was the first — which is evidence for the instrument D-067
 adopted rather than against it. If a later pass widens `TestDecisionRecord` to
 pin D-056 whole, this is the entry to supersede.
+
+### D-073 (2026-07-27): D-071's "parts 1 and 3 stand unchanged" is narrowed to part 3's asymmetry, and D-072's Decision clause is corrected to the five spans its own heading names — supersedes those two claims; both entries' substance stands
+
+**Context.** M116's fresh-context diff review found two records of this
+milestone describing their own subject wrongly, one in each of the entries
+M116 had already appended.
+
+(1) D-071 states that D-056's "parts 1 and 3 stand unchanged". D-056's part 3
+opens "The behavioral inversion test is the doctrine; guard-reddening is its
+mechanical proof procedure where a guard exists (M74's relabel/negate/transpose),
+and a recorded by-hand inversion where none does." D-071's own edit (2)
+reassigns exactly that procedure to guard verification, so part 3 does **not**
+stand unchanged — its framing sentence is precisely what D-071 supersedes.
+D-056 is still cited from the repaired rulebook paragraph, so a reader
+following the cite and told part 3 stands would read the superseded doctrine
+as live.
+
+(2) D-072's heading claims a narrowing "to the **five** spans the guard
+actually pins" and its Context lists five, but its Decision enumerates four —
+dropping the heading regex — while asserting the guard reds "not on an edit
+elsewhere in the entry". `test_entry_exists_and_annotates_d045` pins D-056's
+heading, so that clause is false as written.
+
+**Decision.** (1) D-071's scope claim is narrowed: **D-056's part 1 and part
+3's asymmetry stand** — the rulebook is current knowledge; guard-reddening is a
+deletion screen, never a licence to keep; the text owns the guard. **Part 3's
+first sentence, naming the behavioral inversion test as the doctrine and
+guard-reddening as its proof procedure, is superseded by D-071(2).**
+(2) D-072's narrowed clause is restated whole: the guard reds on an edit to
+D-056's **heading, its part-1 classification sentence, its three step labels,
+its no-backfill clause, or its IP4 clause** — the five spans its Context and
+heading both name — and not elsewhere in the entry.
+
+Nothing else in either entry changes. D-071's three edits and D-072's
+correction of the "reds on any edit" overclaim both stand.
+
+**Consequences.** Appended, never edited: IP4 attaches at append time (D-070,
+D-065's route). This is the third appended correction in one milestone —
+D-071 overclaimed, D-072 miscounted while fixing it, D-073 fixes both — and
+the pattern is the finding, not the individual slips: each entry made a precise
+claim about a mechanism it had not re-read at the moment of writing. The
+instrument that caught all three was a fresh-context reader (D-067's §8
+certification for the first, the review fan-out for these two), never a test;
+`cairn_validate` and all three suites were green at every step. If a later
+milestone finds this correction chain repeating, the entry to write is one
+governing how D-entries make mechanical claims, not a fourth correction.

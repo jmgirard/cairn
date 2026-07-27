@@ -86,3 +86,20 @@ Repair the placement test the rulebook states at `tracking-rules.md:820`, supers
 
 **§8 description-layer certification** (D-067; the milestone authored/edited prose-guards): round 1 returned 9 discrepancies, all fixed; round 2 verified all nine in the shipped bytes and re-probed two by mutation, and found 2 new discrepancies introduced by the fixes — 1 fixed, 1 declined on scope (recorded in the work log, carried to this gate).
 
+**Fresh-context review fan-out** (three distinct evidence bases, then an independent scorer):
+
+- **[O] diff-bug** — 7 findings.
+- **[S] blame-history** — 0 findings. Verified D-056 parts 1/3 survive in prose and mechanically; the always-read cell change is what D-071 prescribes; §8's addition transcribes D-069's own Decision; M98 F4/82's docstring rationale preserved.
+- **[S] prior-review** — 0 findings. Walked 13 archived `## Review` sections; cleared all seven recurring finding classes. GitHub comment probe returned empty, so the thread walk was correctly skipped.
+
+**Scored and triaged** (scorer did not generate the findings):
+
+- **F4 (87) — actioned.** D-072's heading/Context name five pinned spans; its Decision enumerated four, dropping the heading regex, while claiming the guard reds "not on an edit elsewhere in the entry" — false, `test_entry_exists_and_annotates_d045` pins the heading. Fixed by appended **D-073**.
+- **F5 (85) — actioned.** `test_rule_placement.py:99-100` claimed "the assertIn anchors below sit on one physical line each"; every new assertIn spans two. Comment rewritten to the true reason (regex tolerates reflow because AC3 pins by meaning; assertIns carry their wrap so a reflow *should* red).
+- **F1 (68) — logged, then fixed at the maintainer's direction.** D-071's "parts 1 and 3 stand unchanged" is false of part 3's framing sentence, which D-071(2) reverses. Fixed by **D-073**.
+- **F3 (78) — logged, then fixed at the maintainer's direction.** The "where no guard exists" tail was stranded by the reassignment and its guard comment argued from the retired rationale. The paragraph now cross-references the guard-must-fail rule; `test_rulebook_covers_the_unguarded_case` repointed onto `still needs its own entry or the by-hand check` with its REGISTRY block updated.
+- **F2 (58) — logged, then fixed at the maintainer's direction.** The new paragraph restated the guard-verification proposition already owned two paragraphs below, violating the step 0 this milestone introduces. Now a pointer. (Scorer partially refuted the finding: the two by-hand fallbacks are different checks, so only the proposition was a true duplicate.)
+- **F6 (60) — logged, not actioned.** Two order/count asserts carry no REGISTRY entry. The repo's existing convention leaves pure order/count assertions unregistered (`test_both_statements_precede_the_guard_obligation`), and registering the order assert would be a false green: blanking makes `str.index` raise, which `guard_fails_when_blanked` scores as reddening for the wrong reason.
+- **F7 (30) — logged, declination upheld.** D-072's "second consecutive milestone … overclaimed guard-coverage sentence" is inaccurate about what D-070 caught. Declined on scope — its subject is a certification round, which §8's new bound excludes; the scorer independently judged the scope reading better supported than the finding's rebuttal.
+
+**Re-verification after all fixes:** suites 663 / 280 / 91 OK; `cairn_validate` exit 0; AC2 forbidden-string count 0; AC4 and AC5 recipes unchanged; registry 421.

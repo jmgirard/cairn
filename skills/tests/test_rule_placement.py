@@ -96,11 +96,13 @@ class TestPlacementTest(unittest.TestCase):
         )
 
     def test_step_zero_requires_a_single_home(self):
-        # D-071/AC3. `\s+` spans the hard wrap so a reflow does not red this
-        # (M105); the assertIn anchors below sit on one physical line each.
-        # The intra-file scoping clause is the operative half: without "already
-        # says it somewhere else" the step reads as a general single-home norm
-        # over every cairn file, which is a far larger rule than D-071 adopts.
+        # D-071/AC3. The two asserts pin deliberately differently: the regex
+        # uses `\s+` because AC3 pins this clause by MEANING, so a reflow must
+        # not red it (M105); the assertIn below carries its wrap verbatim
+        # because a reflow there SHOULD red, the M74 discipline also used at
+        # :75-76. The intra-file scoping clause is the operative half: without
+        # "already says it somewhere else" the step reads as a general
+        # single-home norm over every cairn file, far larger than D-071 adopts.
         self.assertRegex(
             self.rules,
             r"\*\*Step 0 — one home\.\*\* Before asking whether a piece of prose\s+"
@@ -132,10 +134,14 @@ class TestPlacementTest(unittest.TestCase):
         )
 
     def test_rulebook_covers_the_unguarded_case(self):
-        # A procedure that only works where a guard exists would leave every
-        # unpinned rule unprovable — the gap that made B18 undecidable.
+        # M116 repointed this. Under D-056 the unguarded case mattered because
+        # inversion decided rule-ness, so unpinned text was unprovable (B18).
+        # D-071 moved that decision to the deletion probe, so what the fallback
+        # now covers is guard VERIFICATION: an assert with no registered block
+        # still owes a recorded by-hand check, stated with the guard-must-fail
+        # rule that owns it rather than restated beside the placement steps.
         self.assertIn(
-            "where no guard exists, record a by-hand inversion", self.rules
+            "still needs its own entry or the by-hand\ncheck", self.rules
         )
 
 
