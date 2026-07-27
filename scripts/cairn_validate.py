@@ -946,33 +946,24 @@ _DECISIONS_PASTED = (
 # controls, and are the record of which — a count restated here would drift.
 _DECISIONS_QUOTE = re.compile(r"^(?:\s*>)+\s?")
 
-# Closing an open run. A transcript is mostly lines no signature matches, so
-# closing at the first of them reports ONE paste as several findings — the
-# per-line noise the chunking exists to avoid. Three line classes, three
-# treatments:
+# Where an unfenced paste STOPS is deliberately not computed. A fence carries
+# its own delimiters, so a fenced block's extent is read, never inferred; loose
+# output has no delimiter, and every rule for inferring one — adjacency, a gap
+# tolerance, a filler class, a prose closer — requires its author to enumerate
+# what transcript lines look like. That is guard-doctrine §3's trap, and this
+# detector walked into it three times: three certification rounds each found a
+# realistic paste the then-current rule mis-split (an `assertEqual` failure on
+# its banner, a two-hunk diff on its changed lines, a `>`-quoted transcript on
+# the space the quote marker eats), and each fix was fitted to the shape in
+# hand. So the rules were removed rather than tuned (M119 §8 round 3, at the
+# maintainer's call).
 #
-#  - **prose** — a line opening a markdown entry or heading CLOSES the run. Two
-#    pastes separated by a real entry are two findings because the entry closes
-#    the first, not because a counter ran out. Known limit: an entry opening
-#    with neither a bullet nor a heading (M94's bare pointer prose) is not a
-#    closer, so two pastes astride one merge into a single finding — an
-#    under-report on an advisory, never a false WARN.
-#  - **filler** — a rule of `=`/`-`, a progress-dot line, an indented
-#    continuation, a blank. These are transcript furniture, not prose, and they
-#    neither close a run nor advance the gap. Without this class the canonical
-#    unittest FAILURE paste — the shape actually pasted as evidence — split into
-#    three findings on its `======` / `FAIL:` / `-----` banner.
-#  - anything else advances the gap, and `_DECISIONS_GAP` consecutive such lines
-#    close the run. A paragraph of ordinary prose between two pastes is what
-#    this bounds; without it a run could span a whole section.
-#
-# Prose and filler are judged on the line WITH its indentation, after quote
-# markers come off: a leading space means continuation, which is why a unified
-# diff's ` - context` line reads as filler rather than as a bullet closing the
-# diff it sits inside.
-_DECISIONS_PROSE = re.compile(r"^(?:[-*+] |#{1,6} |\d+\. )")
-_DECISIONS_FILLER = re.compile(r"^(?:[=\-_~*]{4,}|[.sSFExX]{3,})$")
-_DECISIONS_GAP = 3
+# What ships instead: **one finding per fenced block, and one finding per
+# section for all loose output in it**, naming where it starts and how many
+# lines look like output. Nothing infers an extent, so no shape can be
+# mis-split. The cost is stated rather than hidden: two loose pastes in one
+# section report once, an under-report on an advisory whose job is to say the
+# section has output in it at all.
 _DECISIONS_PREVIEW = 60
 
 
@@ -1427,68 +1418,58 @@ def check_worklog_format(root):
     return out
 
 
-def _pasted_runs(lines):
-    """`[(start, end, kind, preview)]` for each run of pasted output in `lines`
-    (an extractor's `[(lineno, text)]`). A fenced block is one run from its
-    opening delimiter through its closing one, both included, matching what the
-    cap counters count (M77 review F2). An unfenced run opens at a
-    `_DECISIONS_PASTED` signature and closes at a markdown entry or heading, or
-    after `_DECISIONS_GAP` lines that are neither signature nor transcript
-    filler — so a transcript's own banners, progress dots, separator rules and
-    indented traceback frames stay inside the run they belong to. A run ends at
-    its last signature line, never in its trailing gap.
+def _pasted_findings(lines):
+    """`[(where, kind, preview)]` for the pasted output in `lines` (an
+    extractor's `[(lineno, text)]`).
 
-    One run is one finding: a pasted 40-line transcript is one mistake, and an
-    advisory that reports it forty times is one the operator learns to scroll
-    past — the same reasoning D-075 applies to a permanently-warning advisory."""
-    runs = []
+    A **fenced block** is one finding spanning its opening delimiter through its
+    closing one, both included, matching what the cap counters count (M77 review
+    F2) — its extent is read off the delimiters, never inferred. Loose output
+    OUTSIDE any fence is **one finding for the whole section**, anchored at its
+    first signature line and counting the rest, because nothing here computes
+    where a paste without delimiters ends (see the note above the signature
+    table). Loose lines inside a fence belong to the fence, and are not counted
+    twice.
+
+    One finding per paste, not per line: a pasted 40-line transcript is one
+    mistake, and an advisory that reports it forty times is one the operator
+    learns to scroll past — the same reasoning D-075 applies to a
+    permanently-warning advisory."""
+    out = []
     fence = None
     start = None
-    last = None  # the run's last line that actually matched
     preview = ""
-    gap = 0
     pending = False  # the fence's preview is still its bare delimiter
-
-    def close():
-        runs.append((start, last, "pasted output", preview))
+    loose = []  # (lineno, body) for every signature line outside a fence
 
     for lineno, text in lines:
         stripped = text.lstrip()
         if fence is not None:
-            last = lineno
             if stripped.startswith(fence):
-                runs.append((start, lineno, "fenced block", preview))
+                out.append((_span(start, lineno), "fenced block", preview))
                 fence, start, pending = None, None, False
             elif pending and stripped:
                 preview, pending = stripped, False  # first line of the block
             continue
         if stripped.startswith("```") or stripped.startswith("~~~"):
-            if start is not None:  # an unfenced run ends where the fence opens
-                close()
             fence = "```" if stripped.startswith("```") else "~~~"
-            start, last, preview, pending = lineno, lineno, stripped, True
+            start, preview, pending = lineno, stripped, True
             continue
-        raw = _DECISIONS_QUOTE.sub("", text)
-        body = raw.strip()
+        body = _DECISIONS_QUOTE.sub("", text).strip()
         if body and any(p.match(body) for p in _DECISIONS_PASTED):
-            if start is None:
-                start, preview = lineno, body
-            last, gap = lineno, 0
-        elif start is not None:
-            filler = (
-                not body or raw[:1].isspace() or _DECISIONS_FILLER.match(body)
-            )
-            if not filler and _DECISIONS_PROSE.match(raw):
-                close()
-                start, gap = None, 0
-            elif not filler:
-                gap += 1
-                if gap > _DECISIONS_GAP:
-                    close()
-                    start, gap = None, 0
-    if start is not None:  # an unterminated fence, or a run ending the section
-        runs.append((start, last, "fenced block" if fence else "pasted output", preview))
-    return runs
+            loose.append((lineno, body))
+    if start is not None:  # an unterminated fence runs to the end of the section
+        out.append((_span(start, lines[-1][0]), "fenced block", preview))
+    if loose:
+        first, body = loose[0]
+        rest = len(loose) - 1
+        where = f"{first}" if not rest else f"{first} (+{rest} more line{'s' * (rest > 1)})"
+        out.append((where, "pasted output", body))
+    return out
+
+
+def _span(start, end):
+    return f"{start}" if start == end else f"{start}-{end}"
 
 
 def check_decisions_format(root):
@@ -1516,10 +1497,9 @@ def check_decisions_format(root):
         lines = cs.milestone_decisions_lines(path)
         if not lines:
             continue
-        for start, end, kind, preview in _pasted_runs(lines):
+        for where, kind, preview in _pasted_findings(lines):
             if len(preview) > _DECISIONS_PREVIEW:
                 preview = preview[:_DECISIONS_PREVIEW].rstrip() + "…"
-            where = f"{start}" if start == end else f"{start}-{end}"
             out.append(
                 f"{mid}:{where}: {kind} in the `## Decisions` section "
                 f'— "{preview}"'

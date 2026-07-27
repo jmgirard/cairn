@@ -2171,34 +2171,24 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         findings = cv.check_decisions_format(str(root))
         self.assertRegex(findings[0], r":\d+-\d+:")
 
-    def test_a_realistic_unfenced_transcript_is_one_finding(self):
-        # The fixture in the shape an author actually pastes, not the shape
-        # that makes the assertion convenient (guard-doctrine §4). A real
-        # unittest paste carries lines no signature matches — the progress
-        # dots, the separator rule, a blank — and closing the run on the first
-        # of them reported ONE paste as three findings.
-        root = self._with_decisions(
-            "- 2026-07-27: the run that settled it.\n"
+    # Every realistic paste shape lands as ONE finding, whatever its internal
+    # raggedness. Three §8 certification rounds each found the previous,
+    # adjacency-based chunker mis-splitting one of these — a passing run on its
+    # dots, an `assertEqual` failure on its banner, a two-hunk diff on its
+    # changed lines — so the shapes stay here as the record of what the removal
+    # of that logic bought (M119 §8 round 3). Each is quoted at the raggedness
+    # an author actually pastes, never trimmed to what a rule could handle
+    # (guard-doctrine §4).
+    PASTE_SHAPES = {
+        "passing unittest run": (
             "$ python3 -m unittest discover -s scripts/tests\n"
             "............................................\n"
             "----------------------------------------------------------------\n"
             "Ran 412 tests in 3.204s\n"
             "\n"
             "OK\n"
-        )
-        cv = _load_validate()
-        findings = cv.check_decisions_format(str(root))
-        self.assertEqual(len(findings), 1, findings)
-
-    def test_a_unittest_failure_transcript_is_one_finding(self):
-        # The passing run is the EASY shape, and pinning only it is the same
-        # convenient-fixture mistake one level up (found at §8 round 2). A
-        # failure is the transcript actually pasted as evidence for a decision,
-        # and its banner — `======`, a `FAIL:` header, `-----` — is four
-        # consecutive lines no signature matches, which split one paste into
-        # three findings until filler stopped advancing the gap.
-        root = self._with_decisions(
-            "- 2026-07-27: the run that settled it.\n"
+        ),
+        "assertEqual failure": (
             "$ python3 -m unittest discover -s scripts/tests\n"
             ".........F...\n"
             "======================================================================\n"
@@ -2206,63 +2196,79 @@ class TestDecisionsFormatAdvisory(ScriptCase):
             "----------------------------------------------------------------------\n"
             "Traceback (most recent call last):\n"
             '  File "/repo/scripts/tests/test_scripts.py", line 42, in test_x\n'
-            "    self.assertEqual(1, 2)\n"
-            "AssertionError: 1 != 2\n"
+            "    self.assertEqual([1, 2], [1, 3])\n"
+            "AssertionError: Lists differ: [1, 2] != [1, 3]\n"
+            "\n"
+            "First differing element 1:\n"
+            "2\n"
+            "3\n"
+            "\n"
+            "- [1, 2]\n"
+            "?     ^\n"
+            "+ [1, 3]\n"
+            "?     ^\n"
             "\n"
             "----------------------------------------------------------------------\n"
             "Ran 313 tests in 19.511s\n"
             "\n"
             "FAILED (failures=1)\n"
-        )
-        cv = _load_validate()
-        findings = cv.check_decisions_format(str(root))
-        self.assertEqual(len(findings), 1, findings)
-
-    def test_a_pasted_diff_is_one_finding(self):
-        # Four of the ten signatures are diff shapes, so a pasted diff is a
-        # first-class input. Its context lines carry a leading space, and a
-        # markdown file's diff routinely has one that reads as a bullet — which
-        # closed the run mid-diff until prose was judged with its indentation.
-        root = self._with_decisions(
-            "- 2026-07-27: the change that settled it.\n"
+        ),
+        "two-hunk diff of a markdown file": (
             "diff --git a/cairn/DECISIONS.md b/cairn/DECISIONS.md\n"
             "--- a/cairn/DECISIONS.md\n"
             "+++ b/cairn/DECISIONS.md\n"
-            "@@ -1,3 +1,3 @@\n"
+            "@@ -1,4 +1,4 @@\n"
             " - D-070: unchanged context line\n"
-            "-old text\n"
-            "+new text\n"
-            "@@ -40,2 +40,2 @@\n"
+            "-old first line\n"
+            "-old second line\n"
+            "+new first line\n"
+            "+new second line\n"
+            "@@ -40,3 +40,3 @@\n"
             " - D-071: another context line\n"
+            "-dropped\n"
             "+second hunk\n"
-        )
-        cv = _load_validate()
-        findings = cv.check_decisions_format(str(root))
-        self.assertEqual(len(findings), 1, findings)
-
-    def test_a_paragraph_of_prose_still_closes_a_run(self):
-        # The gap's own job. Filler never advances it, so without a bound a
-        # single run could span a whole section and the reported range would be
-        # useless. Ordinary prose is not filler and closes the run at four.
-        root = self._with_decisions(
+        ),
+        "transcript astride a paragraph of prose": (
             "$ ls\n"
             "The decision rested on a longer argument than one line holds,\n"
             "set out here across several sentences so the reader meets the\n"
             "reasoning where the disposition is recorded rather than having\n"
             "to reconstruct it from the branch history afterwards.\n"
-            "and one more line past the gap.\n"
             "$ ls\n"
-        )
-        cv = _load_validate()
-        self.assertEqual(len(cv.check_decisions_format(str(root))), 2)
+        ),
+    }
 
-    def test_a_run_ends_at_its_last_match_not_in_its_trailing_gap(self):
-        # The reported range is evidence the operator navigates by, so it must
-        # not swallow the prose that follows a paste.
-        root = self._with_decisions("- 2026-07-27: entry.\n$ ls\nprose after.\n")
+    def test_every_realistic_paste_shape_is_one_finding(self):
         cv = _load_validate()
-        start, end = re.search(r":(\d+)-?(\d+)?:", cv.check_decisions_format(str(root))[0]).groups()
-        self.assertIsNone(end, "the run ran on past its last matching line")
+        for name, shape in self.PASTE_SHAPES.items():
+            with self.subTest(shape=name):
+                self.tree = Tree(self._tmp.name)  # a fresh tree per shape
+                root = self._with_decisions(
+                    "- 2026-07-27: the run that settled it.\n" + shape
+                )
+                findings = cv.check_decisions_format(str(root))
+                self.assertEqual(len(findings), 1, findings)
+                self.assertIn("pasted output", findings[0])
+
+    def test_loose_output_is_anchored_and_counted(self):
+        # Nothing computes where a paste without delimiters ends, so the finding
+        # says where it STARTS and how much of it there is. Without the count a
+        # one-line stray and a 30-line transcript read identically.
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions(
+            "- 2026-07-27: entry.\n$ ls\nRan 3 tests in 0.1s\nOK\n"
+        )
+        finding = cv.check_decisions_format(str(root))[0]
+        self.assertIn("(+2 more lines)", finding)
+        self.assertIn('"$ ls"', finding)
+
+    def test_a_single_loose_line_is_reported_without_a_count(self):
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions("- 2026-07-27: entry.\n$ ls\n")
+        finding = cv.check_decisions_format(str(root))[0]
+        self.assertNotIn("more line", finding)
 
     def test_quoted_transcripts_are_still_pasted_output(self):
         # Blockquoting is a rendering, not a defence: the detector normalizes
@@ -2280,12 +2286,43 @@ class TestDecisionsFormatAdvisory(ScriptCase):
                 )
                 self.assertEqual(len(cv.check_decisions_format(str(root))), 1)
 
-    def test_two_separate_pastes_are_two_findings(self):
+    def test_two_loose_pastes_report_once_with_both_counted(self):
+        # The disclosed cost of not inferring where a delimiter-less paste ends
+        # (§8 round 3). Pinned rather than left implicit: this is the shipped
+        # contract, not a bug, and the count is what keeps the report honest
+        # about how much output is down there.
         root = self._with_decisions(
             "- 2026-07-27: first.\n$ ls\n\n- 2026-07-27: second.\n$ ls\n"
         )
         cv = _load_validate()
-        self.assertEqual(len(cv.check_decisions_format(str(root))), 2)
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+        self.assertIn("(+1 more line)", findings[0])
+
+    def test_a_fence_and_loose_output_are_separate_findings(self):
+        # A fence's extent IS read off its delimiters, so it keeps its own
+        # finding and its own range; only delimiter-less output collapses.
+        # Without this, the collapse could quietly swallow the fenced arm.
+        root = self._with_decisions(
+            "- 2026-07-27: entry.\n```\npasted\n```\n$ ls\n"
+        )
+        cv = _load_validate()
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 2, findings)
+        self.assertEqual(
+            sorted("fenced block" in f for f in findings), [False, True]
+        )
+
+    def test_output_inside_a_fence_is_not_counted_twice(self):
+        # The loose sweep must skip fenced lines, or a fenced transcript full of
+        # signatures reports as a fenced block AND as loose output.
+        root = self._with_decisions(
+            "- 2026-07-27: entry.\n```\n$ ls\nRan 3 tests in 0.1s\nOK\n```\n"
+        )
+        cv = _load_validate()
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+        self.assertIn("fenced block", findings[0])
 
     # --- silence where silence is right ------------------------------------
 

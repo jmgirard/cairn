@@ -422,10 +422,11 @@ def _section_body_lines(path, heading):
     for the decisions section the exemption lands at D-074/M118 and the advisory
     reading this extractor at M119). The heading is what is shared with the
     counters — they scan by `_plan_owned_scan` and never call this (corrected
-    M119, with the same error in both extractors' docstrings). Matches the heading exactly and lowercased; a fenced heading is
-    content, not the section (M45); both fence delimiters inside the section
-    belong to it, as the cap counters count them (M77 review F2). Returns [] when
-    the section is absent, None if the file is unreadable."""
+    M119, with the same error in both extractors' docstrings).
+    Matches the heading exactly and lowercased; a fenced heading is content, not
+    the section (M45); both fence delimiters inside the section belong to it, as
+    the cap counters count them (M77 review F2). Returns [] when the section is
+    absent, None if the file is unreadable."""
     try:
         with open(path, encoding="utf-8") as f:
             lines = f.read().splitlines()
