@@ -2447,6 +2447,214 @@ REGISTRY += [
     ),
 ]
 
+# M114: the thrash rule, unguarded prose until now. One entry per independent
+# failure of the rule — the count is deliberately not stated here, because the
+# first version of this comment said "six" against seven entries and was
+# staler still at nine (§6: a number fails derived-wrong and restated-stale
+# alike; let the list below be the count). The intraclass M93 post-mortem
+# shows four of these failing for real: lose "per milestone, never per cut" or the
+# increments-never-resets clause and the counter reads per-cut again (M93's
+# pass 4 logged as the re-cut's first, and the rule went silent for four more
+# returns); lose either half of the second trigger and a wrong design reads as
+# ordinary iteration; lose the brief fallback and trigger (b) has no remedy
+# when the gate recorded no alternative.
+REGISTRY += [
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashCounting.test_returns_are_counted_per_milestone_not_per_cut",
+        target=REVIEW,
+        block="Count returns **per milestone, never per cut**",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashCounting.test_a_recut_increments_the_count_and_never_resets_it",
+        target=REVIEW,
+        block="increments the count and never resets it",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashCounting.test_the_rule_names_the_work_log_as_the_counting_source",
+        target=REVIEW,
+        block="**Count them in the work log**",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashCounting.test_the_rule_names_the_work_log_as_the_counting_source",
+        target=REVIEW,
+        block="supersedes the tasks and unticks every\n   criterion",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers."
+             "test_third_return_is_a_trigger_and_recommends_replan_or_split",
+        target=REVIEW,
+        block="**(a) The third return, and every return after it**",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers."
+             "test_third_return_is_a_trigger_and_recommends_replan_or_split",
+        target=REVIEW,
+        block="Do not queue another retry; recommend re-plan or split via\n     `/milestone-plan`.",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers."
+             "test_third_return_is_a_trigger_and_recommends_replan_or_split",
+        target=REVIEW,
+        block="It is a threshold, not a single moment",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_both_firing_composes_rather_than_one_winning",
+        target=REVIEW,
+        block="**Where both fire they compose.**",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_composition_gives_a_the_disposition",
+        target=REVIEW,
+        block="(a) governs the disposition — no further\n   retry",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_composition_carries_b_into_the_routing",
+        target=REVIEW,
+        block="escalation offer carry INTO that routing rather than being discarded",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_composition_names_the_routing_target",
+        target=REVIEW,
+        block="and the milestone routes through\n   `/milestone-plan` —",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_exhaustion_branch_states_its_composed_remedy",
+        target=REVIEW,
+        block="Compose the routing chip from an offered\n   `/milestone-brief` escalation, "
+              "parking as `blocked` with the blocker named\n   in a work-log line, or "
+              "dropping at the user's explicit decision —",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_exhaustion_branch_states_its_diagnosis",
+        target=REVIEW,
+        block="the work log already records a re-plan or split spent\n   on this milestone",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_exhaustion_branch_states_its_remedy",
+        target=REVIEW,
+        block="the remedy is no longer re-plan-or-split",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers."
+             "test_second_trigger_is_same_criterion_new_mechanism_same_shape",
+        target=REVIEW,
+        block="The same acceptance criterion failing twice, each by a new mechanism\n     of the same shape",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers.test_second_trigger_remedy_is_the_recorded_alternative",
+        target=REVIEW,
+        block="reconsider the alternative the plan gate recorded\n     against",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers.test_no_recorded_alternative_offers_brief_escalation",
+        target=REVIEW,
+        block="Where it recorded none, offer escalation via `/milestone-brief`",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers.test_no_recorded_alternative_offers_brief_escalation",
+        target=REVIEW,
+        block="instance, never automatically",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestTriggersCompose.test_exhaustion_branch_states_its_remedy",
+        target=REVIEW,
+        block="never a\n   bare retry as the recommended option",
+    ),
+]
+
+# M114: falsifying promotion conditions. Three entries because the heading,
+# the positive form, and the prohibition fail independently — drop only the
+# prohibition and the rule still reads as a preference that a count satisfies,
+# which is the wording that cost intraclass M93 four review returns.
+REGISTRY += [
+    Mutation(
+        guard="test_search_first_candidates",
+        test="TestFalsifyingPromotionConditions."
+             "test_rule_requires_a_falsifying_class_not_a_count",
+        target=RULES,
+        block="**Falsifying promotion conditions.**",
+    ),
+    Mutation(
+        guard="test_search_first_candidates",
+        test="TestFalsifyingPromotionConditions."
+             "test_rule_requires_a_falsifying_class_not_a_count",
+        target=RULES,
+        block="the class of evidence that\nwould falsify the chosen approach",
+    ),
+    Mutation(
+        guard="test_search_first_candidates",
+        test="TestFalsifyingPromotionConditions."
+             "test_rule_requires_a_falsifying_class_not_a_count",
+        target=RULES,
+        block="never as a count of failures",
+    ),
+]
+
+# M114: two guard-doctrine additions. Each rule's diagnosis and its remedy fail
+# independently, and a diagnosis with no remedy is the shape that let
+# intraclass M93 rediscover the same sweep defect on three separate review
+# passes. Registration is per block, so these are needed even though
+# `test_lesson_graduation` is already a registered FILE (M60/M85). The list is
+# the count (§6): the count this comment used to state was correct at four and
+# would have been stale at five — the same trap the thrash block earlier in
+# this file records falling into at seven entries and again at nine.
+REGISTRY += [
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_absence_section_states_the_matcher_rendering_rule",
+        target=GUARD_DOCTRINE,
+        block="**A detector's matcher must be exercised at every rendering its target can\ntake.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_absence_section_states_the_matcher_rendering_rule",
+        target=GUARD_DOCTRINE,
+        block="Carry the renderings INTO the test as positive\ncontrols: append the real value at full precision, rounded, and `signif`-ed,\nand require the detector to see each one.",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_sweep_section_states_the_silent_cell_rule",
+        target=GUARD_DOCTRINE,
+        block="**A sweep whose cells may legitimately be silent passes for free on silence.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_sweep_section_states_the_silent_cell_rule",
+        target=GUARD_DOCTRINE,
+        block="Assert per cell that it checked a positive number of things, and assert across\nthe sweep that the positive case fired somewhere, so universal silence cannot\nsatisfy it.",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_sweep_section_states_the_silent_cell_rule",
+        target=GUARD_DOCTRINE,
+        block=(
+            "Stronger still, assert the CONVERSE beside the claim — `named ==\n"
+            "usable` rather than `named ⇒ usable` — which turns a silent cell "
+            "into an\nassertion that nothing admissible would have worked, "
+            "rather than an assertion\nabout nothing."
+        ),
+    ),
+]
+
 # M100 (RR04 rec 8): finding-enforcement prose. One entry per target file the
 # guard reads, plus separate entries where blocks fail independently (the
 # review-section juxtaposition and the merge-chip shortfall option each carry

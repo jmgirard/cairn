@@ -1930,6 +1930,154 @@ door"). Delivered by M113. If a bounded injection is ever observed leaving a
 resuming session less oriented than the whole file did, this is the entry to
 supersede.
 
+### D-064 (2026-07-26): Thrash is counted per milestone and fires on a repeated failure SHAPE — supersedes the third-trip rule's per-cut reading; adds falsifying promotion conditions and detector-rendering guard doctrine
+
+**Context:** A `/milestone` audit (2026-07-26) post-mortemed intraclass M93 —
+eight review passes and three plan re-cuts on one milestone — and found the same
+signature one milestone earlier, in intraclass M92 (seven passes, "1-6 each
+failed AC5 on prose authored about the work, never on the code"). Three
+mechanisms, each cairn's. First, the thrash rule fired once, at the third
+return, and then went silent for four more: a `/milestone-plan` re-cut unticks
+every criterion and supersedes the tasks, so the next pass reads as the re-cut's
+first, and intraclass M93's own work log records the disposition drifting to
+"thrash-rule disposition left to the maintainer". Second, counting trips is the
+wrong measure — intraclass M93's passes 2-5 failed the SAME criterion four
+times, each by a new mechanism of one shape ("the hint names a method that then
+fails"), which is a wrong-design signature a trip count cannot distinguish from
+three unrelated defects. Third, the approach that finally worked was recorded as
+a candidate whose promotion condition read "Promote if a fifth mechanism
+appears"; it was met exactly as written, at pass 5, after the same approach had
+been measured feasible and prototyped correct at the pass-4 gate and declined
+for a smaller diff. Passes 6-8 then failed on evidence quality with shipped code
+byte-identical and clean across ~33,000 adversarial cells — including a leak
+detector that matched about four significant figures and passed a real violation
+rendered `round(v, 3)`.
+
+**Decision:** Six choices at the M114 plan gate (2026-07-26). (1) **Count
+returns per milestone, never per cut** — a re-cut increments and never resets,
+stated in so many words because the per-cut reading is what the old wording
+permitted and what actually happened. (2) **A second trigger on the same
+criterion failing twice by a new mechanism of the same shape**, remedied by
+reconsidering the alternative the plan gate recorded against rather than
+re-cutting around the same predicate, which buys the next mechanism and not a
+fix. (3) **Where the gate recorded no alternative, offer escalation via
+`/milestone-brief`** — an approach wrong this often is the hard question the
+brief protocol exists for; gated per instance, never automatic (D-004). (4)
+**The rule stays in `/milestone-review`**, its single surface, rather than being
+lifted into the always-read rulebook, which is +83 lines over its M95 baseline
+with D-057 governing growth at the door. (5) **A promotion condition names the
+class of evidence that would falsify the chosen approach, never a count of
+failures** — placed in `tracking-rules.md` beside search-first rather than in
+the records-hygiene module, because candidate rows are created conversationally
+and a conditionally-read module would never fire on that path. (6) **No
+`cairn_validate` check for any of the three.** Rejected: the counting half is
+mechanical but inert, and the shape-recurrence half is a judgment — the same
+call D-059 made when it retired an advisory measured not to work.
+
+**Consequences:** The thrash rule gains its first guard; it was unguarded prose
+until now, with every phrase of it (`third trip`, `queue another retry`,
+`mis-planned`, `re-plan or split`) occurring in the skill and in no test, so
+deleting it outright kept the suite green. That guard also pins the rule to one
+surface, so a later restatement in another skill or the README reds rather than
+silently forking it. `guard-doctrine.md` gains two rules from the same
+post-mortem: §3 that a detector's matcher must be exercised at every rendering
+its target can take, carrying the renderings in as positive controls, since
+external mutation-verification proves only that a guard catches the mutation its
+author thought of; and §7 that a sweep permitting silent cells passes for free
+on silence unless each cell asserts a positive check count and the converse is
+asserted beside the claim. Delivered by M114. No prior D-entry is superseded —
+the thrash rule never had one, which is part of what this entry fixes. If a
+milestone is ever sent back by trigger (b) where the recorded alternative was
+the wrong call, this is the entry to supersede.
+
+### D-065 (2026-07-26): The one-surface pin was re-cut out of M114 — supersedes D-064's Consequences claim that a guard pins the thrash rule to one surface
+
+**Context:** D-064 was appended when M114 shipped a guard asserting the thrash
+rule's phrase occurred in exactly one file, so a restatement elsewhere would red
+rather than silently fork it. Its Consequences say so: "That guard also pins the
+rule to one surface, so a later restatement in another skill or the README reds
+rather than silently forking it." That guard no longer exists. It was re-cut out
+at M114's third return, after consuming all three returns across six findings of
+one shape — the detector, or the controls exercising it, did not cover a
+rendering the phrase can take (a line wrap, a blockquote continuation marker,
+nested blockquotes in two spellings, partial emphasis, case, word boundaries,
+and finally corpora that passed while empty). As of M114's merge no guard pins
+the rule to one surface, and D-064's sentence is false about the shipped system.
+
+**Decision:** Supersede rather than edit. D-064's appended bytes stand
+unaltered; this entry carries the correction. The route was chosen at RR06's
+instruction (BC1) after review pass 5 found the entry had been corrected in
+place — an IP4 violation that M114's own pass 4 had already refused when it met
+the identical situation in a work log and superseded instead. Two things settled
+with it. **IP4 attaches at append time, not at merge time:** an entry's
+not-yet-merged status is no carve-out, because the rule is about the record's
+form, not its distribution, and a carve-out would make every unmerged history
+file editable by whoever is holding it. And **the pin itself is not abandoned**
+— it is a ROADMAP candidate, promotable on a rendering-independent detection
+approach (a markdown or AST parse, a content hash over normalized doctrine
+blocks) and explicitly never on a further count of attempts at a wider matcher.
+
+**Consequences:** D-064's other content is untouched and still governs: its six
+plan-gate choices, the per-milestone counting rule, and the promotion-condition
+and guard-doctrine additions. Readers of D-064 reach this entry by the
+back-reference discipline (D-054) — its heading names D-064 as superseded.
+Delivered by M114. If a rendering-independent fork detector is ever built, the
+candidate row is where it starts, and this entry is the record of why the first
+three attempts were abandoned rather than iterated.
+
+### D-066 (2026-07-26): A frozen scope is derived, an out-of-scope defect is admitted on three legs, and an oversized RR criteria set is carried by reference — annotates D-030/D-046 (the milestone cap) and D-004/D-062 (escalation gating)
+
+**Context:** RR06 froze M114's sixth review pass by enumerating the files it
+could touch, and authored that enumeration as free prose. It confined
+`cairn/ROADMAP.md` changes to "status mirroring" while its own BC8 mandated
+three candidate rows in that same file — jointly unsatisfiable, discovered at
+the review gate rather than at ingest. The same set left two confirmed 90+
+defects outside the scope with no rule saying whether to fix or bank them.
+RR07 answered all three, and its own criteria set then hit a fourth collision
+at ingestion: at ~99 lines it does not fit the 150-line plan-owned cap beside
+an append-only `## Decisions` section that three RR ingestions had grown to 43
+lines. D-030 and D-046 both declined to exempt that section, on the stated
+premise that it "is meant to stay brief, with cross-cutting entries promoted
+here" — a premise a three-RR milestone falsifies.
+
+**Decision:** Four choices, the first three RR07's and the fourth this gate's.
+(1) **A frozen scope's file list is derived, never authored** — it is the union
+of the write obligations of the other criteria in the same set, plus explicitly
+named mirroring, and it is re-derived whenever the set changes. RR07's own BC1
+shows its derivation inline so the ingesting session can check it rather than
+trust it. (2) **A defect outside a frozen scope is fixed inside the pass
+exactly when three legs hold**: its subject is the milestone's own deliverable
+and it is at or above the confidence threshold; the gate that owns the scope
+can specify the fix in closed form, so admitting it adds no authorship; and the
+fix is verifiable by replayed probes and measured counts. Fail any leg and it
+is banked with an IP3 disposition. The scope's enumeration is an instrument
+derived from the fix set; the fix set is never trimmed to preserve the
+enumeration. (3) **No numeric cap on escalations per milestone** — a count
+pre-commits to paying for every escalation below it and then fires exactly at
+the cap, the shape the falsifying-promotion-condition rule forbids; the
+per-instance human gate (D-004, D-062) is the working bound, and a
+disposition-shaped terminus is how a bound is written here. (4) **Where an RR's
+binding-criteria set cannot fit the milestone cap, criteria are carried by
+reference to the archived RR through the shown Deviations table** — never
+softened, never silently trimmed. The RR is append-only history, so exactly one
+permanent copy of the text exists and the implementer transcribes from it; the
+departure is tabled and shown at the ingest gate (IP3). Criteria the review
+gate reads directly — numeric projections, a terminus — stay verbatim.
+Rejected: exempting the milestone-local `## Decisions` section from the cap
+(D-030 and D-046 both declined it, and this entry does not reopen that);
+splitting M114 (RR07 Q4); and letting `weight caps` FAIL as an accepted
+divergence, which would block every later review of the file.
+
+**Consequences:** Annotates D-030 and D-046 — the cap's scoping is unchanged
+and no new exemption is created; what changes is what may be *restated* inside
+the budget. Annotates D-004/D-062 — escalation stays gated per instance with no
+count added. The derived-scope rule and the three-leg test bind any future RR
+that freezes a scope, and RR07 is the worked example of both. Delivered by
+M114. The residual is real and recorded as a ROADMAP candidate: at 149/149 the
+file has zero headroom, and the `## Decisions` section is append-only and grows
+once per RR ingestion, so a milestone driven by several RRs will hit this again
+— the entry to supersede is whichever of D-030/D-046 the fix lands against.
+
 ### D-067 (2026-07-26): Two fresh-context reader instruments adopted — the criteria audit at plan/ingest gates and description-layer certification before review; author self-certification of guard coverage is retired (D-059's shape) — annotates D-031, stays clear of D-057's door
 
 **Context:** M114 returned from review seven times. Its seventh return came
@@ -1987,3 +2135,98 @@ prose: its rules travel verbatim instead, rather than behind a citation that
 resolves to nothing.
 Delivered by M115. If either reader proves to cost more than the returns it
 prevents, this is the entry to supersede.
+
+### D-068 (2026-07-26): D-064's description of guard-doctrine §7 is wrong twice over — supersedes that sentence; shipped §7 requires the across-sweep positive and leaves the converse optional
+
+**Context:** D-064's Consequences describe the §7 rule M114 ships as firing
+"unless each cell asserts a positive check count and the converse is asserted
+beside the claim". Shipped §7 says something different in two places. It
+requires two things where D-064 records one and a half — "Assert per cell that
+it checked a positive number of things, and assert across the sweep that the
+positive case fired somewhere, so universal silence cannot satisfy it" — and it
+frames the converse as an optional strengthening, "Stronger still, assert the
+CONVERSE beside the claim", never as a requirement. So the entry drops the
+across-sweep half and promotes an optional clause to a mandatory one. Found by
+M114's own review pass 7 (F5, 85), after pass 4's K1 (verified verbatim) had
+found the same class of error in the same entry on a different sentence. D-064
+had not reached the default branch, so without this the false description would
+have landed in append-only history at merge.
+
+**Decision:** Supersede, never edit. D-064's appended bytes stand and this entry
+carries the correction, on exactly the route D-065 settled for the one-surface
+sentence: IP4 attaches at append time, not at merge time, so an entry's
+not-yet-merged status is no carve-out. The correct reading of shipped §7 is that
+a sweep whose cells may legitimately be silent passes for free on silence, so
+**assert per cell that it checked a positive number of things AND assert across
+the sweep that the positive case fired somewhere**; asserting the converse
+beside the claim (`named == usable` rather than `named ⇒ usable`) is a stronger
+option, not a requirement. The shipped prose is unchanged and stays
+authoritative — this entry corrects the record about the rule, never the rule.
+
+**Consequences:** D-064's other content is untouched and still governs — its six
+plan-gate choices, the per-milestone counting rule, and the promotion-condition
+and matcher-rendering additions; D-065 continues to carry the one-surface
+correction. The half D-064 dropped is the operative one: M114's pass 6 found
+exactly the across-sweep clause unpinned and deleting green (F1, 92), so a
+reader taking D-064's description for the rule would have missed the very clause
+this milestone had already returned on. That clause and the converse are both
+pinned whole now, so a future edit to either reds rather than drifting. Readers
+reach this entry from D-064 by the back-reference discipline (D-054) — this
+heading names it, and D-064 now carries two corrections, which is itself the
+evidence for RR06's diagnosis that an author verifies a description against its
+model of the artifact rather than against the artifact. Delivered by M114. If
+§7 is ever restated so the converse becomes mandatory, this is the entry to
+supersede.
+
+### D-069 (2026-07-27): A certification's report is outside its own certified scope — AC9 amended at the gate (route c); annotates D-067, cites D-068
+
+**Context.** M114 pass 8's §8 description-layer certification ran four rounds
+without reaching AC9's zero-unresolved gate. Rounds 1–2 found real defects in
+records about the work; all were fixed and confirmed landed. Rounds 3–4 found
+defects only in newly-authored work-log narrative about the certification
+rounds themselves. The work log is append-only (IP4) and §8 obliges each round
+to record its verdict, so every round manufactures uncertified surface for the
+next round to audit: with the report inside the certified scope, zero
+unresolved is reachable by luck, never by convergence. Measured cost curve:
+15, 14, 17, 38 minutes. Parked 2026-07-27 for a maintainer decision among
+(a) a narrowed fifth round, (b) review with AC9 unticked, (c) a scope
+amendment.
+
+**Decision.** Route (c), maintainer's call 2026-07-27. AC9 is amended via the
+gate: the certified scope is the work and the records describing the work; a
+record whose subject is a certification round itself — the final round's own
+report included — is outside it. Rationale: the instrument (RR06 rec 5,
+adopted by D-067) targets the author's description of the artifact, never
+meta-narrative about the certifying step; a report cannot sit inside its own
+scope without regress.
+
+**Consequences.** The scope rule belongs in guard-doctrine §8 for every future
+guard-authoring milestone, but §8 is doctrine M114 ships and pass 8 holds
+`guard-doctrine.md` byte-identical, so the §8 edit is banked as a ROADMAP
+candidate row this entry backs rather than made here. §8's own falsifier
+(retire, don't tune — D-059's shape) is not met: it reads on an average across
+milestones at n=1, and every discrepancy all four rounds found was real — the
+instrument stands; only its scope was wrong. A work-log style lesson
+(decision-relevant facts only; characterizations are falsifiable surface) is
+owed at review's post-merge hygiene capture.
+
+### D-070 (2026-07-27): D-069's premise sentence narrowed and its heading's cites clause withdrawn — supersedes those two claims; the route-(c) amendment stands
+
+**Context.** The final §8 certification round, run under AC9 as amended, found
+two discrepancies in D-069 itself. Its Context states "Rounds 3–4 found
+defects only in newly-authored work-log narrative about the certification
+rounds themselves"; round 3's two counted discrepancies were in the T20 entry
+and in a CLARIFIES entry about the gated amendment — both records describing
+the work, inside the amended scope. The claim holds of round 4 alone. And its
+heading says "cites D-068" where the body engages nothing from D-068.
+
+**Decision.** Both claims are superseded — appended, never edited (IP4
+attaches at append time, D-065's route). The corrected premise: rounds 1–3
+found real defects in records about the work, each fixed and confirmed;
+round 4's discrepancies were in certification narrative alone.
+
+**Consequences.** The route-(c) amendment is unaffected: its ground is
+structural — §8 obliges each round to record a report that is uncertified
+surface for the next round, so zero-unresolved cannot converge while the
+report sits inside the certified scope — and round 4 is what instantiates
+that mechanism. Nothing else in D-069 is touched.

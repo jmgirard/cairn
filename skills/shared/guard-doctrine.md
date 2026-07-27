@@ -93,6 +93,19 @@ learned separately:
 green. Anchor on the row, then re-verify by stripping exactly what the test
 claims to check.
 
+**A detector's matcher must be exercised at every rendering its target can
+take.** The positive signal above proves the detector RAN; it never proves the
+detector would SEE the thing. A leak detector comparing six characters of
+`format(abs(v), digits = 6)` matched about four significant figures, so a real
+violation rendered `round(v, 3)` — the codebase's own house style for a number
+in a message — passed at zero failures, while the full-precision mutation its
+author reached for reddened it. Carry the renderings INTO the test as positive
+controls: append the real value at full precision, rounded, and `signif`-ed,
+and require the detector to see each one. That is strictly stronger than
+external mutation-verification, which proves only that the guard catches the
+mutation its author thought of — and the author of a detector is exactly who
+cannot enumerate the renderings it misses.
+
 ## 4. Fixtures
 
 **Vary every axis the prose is free in, and vary it where the value under
@@ -204,6 +217,15 @@ complete`), and write evidence counts from command output, never memory.
 you did not mean.** An exclusion list may name only history files
 (`DECISIONS.md`, changelogs, `legacy/`, `reviews/archive/`) — never a live
 directory, or the sweep silently skips records that are still read to act on.
+
+**A sweep whose cells may legitimately be silent passes for free on silence.**
+Assert per cell that it checked a positive number of things, and assert across
+the sweep that the positive case fired somewhere, so universal silence cannot
+satisfy it. Stronger still, assert the CONVERSE beside the claim — `named ==
+usable` rather than `named ⇒ usable` — which turns a silent cell into an
+assertion that nothing admissible would have worked, rather than an assertion
+about nothing. A bare `assertGreaterEqual(checked, 0)` is the tautology this
+rule exists to name.
 
 **A criterion whose evidence is a grep will hit the milestone's own
 artifacts**: the guard's `assertNotIn` (an absence-assert is a hit for the

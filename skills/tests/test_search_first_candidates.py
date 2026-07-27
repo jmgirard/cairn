@@ -43,6 +43,28 @@ class TestSearchFirstCandidateRule(unittest.TestCase):
         self.assertIn("`decisions.md` for overlap", t)
 
 
+class TestFalsifyingPromotionConditions(unittest.TestCase):
+    """M114: how a candidate's promotion condition is WORDED.
+
+    Search-first governs whether a row exists; this governs whether the row,
+    once read years later, fires at the right moment. A count-shaped condition
+    ("promote if a fifth mechanism appears") is met exactly as written, so it
+    pre-commits to paying for the four failures below it.
+    """
+
+    def test_rule_requires_a_falsifying_class_not_a_count(self):
+        t = rules()
+        self.assertIn("falsifying promotion conditions", t)
+        # Spans the shipped line break, so `\s+` rather than a literal newline:
+        # a byte-exact copy embeds today's wrap point and breaks on reflow.
+        self.assertRegex(
+            t, r"the class of evidence that\s+would falsify the chosen approach"
+        )
+        # The prohibition is the operative half — without it the rule reads as
+        # a preference and a count still satisfies it.
+        self.assertIn("never as a count of failures", t)
+
+
 class TestSearchFirstPointers(unittest.TestCase):
     def test_hotfix_points_to_the_rule(self):
         self.assertIn(

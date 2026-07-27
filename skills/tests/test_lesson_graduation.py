@@ -79,6 +79,25 @@ class TestModuleExists(unittest.TestCase):
             self.module,
         )
 
+    def test_absence_section_states_the_matcher_rendering_rule(self):
+        # M114. Distinct from the vacuous-crash rule above: there the detector
+        # never ran, here it ran and could not see its target. `\s+` spans the
+        # shipped wrap rather than embedding today's break point (M105).
+        self.assertRegex(
+            self.module,
+            r"\*\*A detector's matcher must be exercised at every rendering its target can\s+take\.\*\*",
+        )
+        # The remedy is the operative half — without it the rule diagnoses a
+        # failure and prescribes nothing. Pinned whole: the earlier form
+        # asserted only the lead-in, so the continuation carrying the three
+        # renderings deleted green (M114 pass-6 F2).
+        self.assertRegex(
+            self.module,
+            r"Carry the renderings INTO the test as positive\s+"
+            r"controls: append the real value at full precision, rounded, and "
+            r"`signif`-ed,\s+and require the detector to see each one\.",
+        )
+
     def test_matcher_section_states_the_authorization_switch(self):
         self.assertIn(
             'When a detection regex graduates from "is this\nguarded?" to "is this authorized?", switch to `finditer` and require every\noccurrence to clear.',
@@ -104,6 +123,39 @@ class TestModuleExists(unittest.TestCase):
         # §7 is the sole home of graduated L23; same reasoning as §4.
         self.assertIn(
             "An exclusion list may name only history files", self.module
+        )
+
+    def test_sweep_section_states_the_silent_cell_rule(self):
+        # M114: a sweep that permits silent cells passes for free on silence.
+        self.assertRegex(
+            self.module,
+            r"\*\*A sweep whose cells may legitimately be silent passes for free on silence\.\*\*",
+        )
+        # The operative remedy — the per-cell count and the across-sweep
+        # positive — is what a reader acts on; it was unpinned and deleted
+        # green from its own arrival at M114 T4 until this assert closed it;
+        # M114 pass 6 (F1) is where it was found.
+        self.assertRegex(
+            self.module,
+            r"Assert per cell that it checked a positive number of things, "
+            r"and assert across\s+the sweep that the positive case fired "
+            r"somewhere, so universal silence cannot\s+satisfy it\.",
+        )
+        # The converse is what makes a silent cell assert something, so it is
+        # pinned separately from the diagnosis. Pinned WHOLE: the bare
+        # `assertIn` this replaces matched "assert the CONVERSE beside the
+        # claim", a fragment starting 16 characters into the sentence, so both
+        # the "Stronger still," opener and everything after the clause deleted
+        # green. Same class as the truncated lead-in RR07 §BC3 closed for §3 —
+        # a partial pin — though that one was a true sentence-opening prefix
+        # and this one is mid-sentence. M114 added this assert itself at T4
+        # and then misrecorded it as inherited (pass-7 F1).
+        self.assertRegex(
+            self.module,
+            r"Stronger still, assert the CONVERSE beside the claim — `named ==\s+"
+            r"usable` rather than `named ⇒ usable` — which turns a silent cell "
+            r"into an\s+assertion that nothing admissible would have worked, "
+            r"rather than an assertion\s+about nothing\.",
         )
 
     def test_sweep_section_states_the_own_artifacts_rule(self):

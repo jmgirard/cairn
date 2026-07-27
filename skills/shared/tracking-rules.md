@@ -349,6 +349,14 @@ not re-litigated each time the idea recurs. This generalizes the plan-time
 collision check to every candidate-creation point (any skill, conversational
 adds alike). Its `DECISIONS.md` sweep follows the bounded read below.
 
+**Falsifying promotion conditions.** A candidate recording an alternative to a
+chosen approach states its promotion condition as **the class of evidence that
+would falsify the chosen approach**, never as a count of failures — a count
+pre-commits to paying for every failure below it, and is then met exactly as
+written rather than early. "Promote on any failure of the predicate itself"
+fires at the first instance; "promote if a fifth mechanism appears" waits for
+four more.
+
 **Bounded `DECISIONS.md` read.** `DECISIONS.md` is append-only and can never
 shrink, so it is read by scanning its `### D-` headings — never whole (D-054).
 **A matched heading's entry is read whole before anything is surfaced.**
