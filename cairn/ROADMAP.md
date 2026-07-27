@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-26 (M115 merged — cairn's two fresh-context readers are live, which satisfies M114's recorded unblock condition. Archived M115, pruned M109 under terminal-row retention. The `dangling id tokens` advisory stands until M114 merges: every hit points at D-064-D-066 on its branch.)_
+_Last hygiene check: 2026-07-27 (M114 merged after eight passes and archived; pruned M110 under terminal-row retention. The `dangling id tokens` advisory cleared — D-064–D-070 are on main. The live milestone set is empty; the `sizing` advisory retired with the live file.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -13,11 +13,10 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M115 | Fresh-context reader instruments — plan-gate criteria audit and independent description-layer certification (RR06 recs 4–5) | done | — | normal | milestones/archive/M115-fresh-context-reader-instruments.md |
-| M114 | Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine | review | — | normal | milestones/M114-review-loop-escape-hatches.md |
+| M114 | Review-loop escape hatches — thrash counted per milestone, falsifying promotion conditions, detector-precision guard doctrine | done | — | normal | milestones/archive/M114-review-loop-escape-hatches.md |
 | M113 | Bounded session-start injection — cap-exempt sections read-bounded newest-first, and the active milestone file joins the always-read frame (D-063) | done | — | normal | milestones/archive/M113-bounded-session-injection.md |
 | M112 | Soften the Fable warning — neutral token-cost framing, lower the recommend bar, per-instance RB/RR gate retained | done | — | normal | milestones/archive/M112-soften-fable-warning.md |
 | M111 | GitHub-release handoff command — /cairn-release provides a conditional `gh release create` | done | — | normal | milestones/archive/M111-github-release-handoff.md |
-| M110 | Records-hygiene doctrine module — graduate the gate-time lesson family (M35/M51/M69/M73/M77/M78×2/M87) into skills/shared/records-hygiene.md, the second maturation application (D-055) | done | — | normal | milestones/archive/M110-records-hygiene-module.md |
 
 ## Candidates
 
