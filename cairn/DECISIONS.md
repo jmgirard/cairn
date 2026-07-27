@@ -1932,11 +1932,12 @@ supersede.
 
 ### D-067 (2026-07-26): Two fresh-context reader instruments adopted — the criteria audit at plan/ingest gates and description-layer certification before review; author self-certification of guard coverage is retired (D-059's shape) — annotates D-031, stays clear of D-057's door
 
-**Context:** M114 returned from review seven times. Its code was unimplicated
-at every pass; every return was a failure of the *description layer* around it
-— criteria that were unsatisfiable as written or that mandated an IP4
-violation, coverage claimed but not pinned, and records describing artifacts
-they no longer matched. The single diagnosed root cause is that an author
+**Context:** M114 returned from review seven times. Its seventh return came
+with every suite green, every numeric projection met exactly and the validator
+clean, and was still two records describing that milestone's own artifact
+wrongly; earlier returns had cost it criteria that were unsatisfiable as
+written or that mandated an IP4 violation, and coverage claimed but not
+pinned. The single diagnosed root cause is that an author
 verifies a description against its generative model of the artifact rather
 than against the artifact, which is why running the suites, the harness, and
 the sweeps self-corrects while certifying coverage does not. Two instruments
@@ -1980,7 +1981,9 @@ reserved, not skipped:** they are appended on M114's unmerged branch and
 nothing checks D-id uniqueness, so taking D-064 here would produce a duplicate
 that `cairn_validate` passes green on merge. IP4 forbids reuse, not gaps, and
 `cairn_validate` has no contiguity check. The review report prescribing both
-instruments is likewise unmerged, so its rules travel verbatim in the shipped
-prose rather than behind a citation that resolves to nothing until M114 lands.
+instruments — **RR06**, likewise unmerged on M114's branch and resolvable only
+once M114 lands — is for that reason named here and nowhere in the shipped
+prose: its rules travel verbatim instead, rather than behind a citation that
+resolves to nothing.
 Delivered by M115. If either reader proves to cost more than the returns it
 prevents, this is the entry to supersede.

@@ -2313,6 +2313,12 @@ REGISTRY = [
         target=IMPLEMENT,
         block="`skills/shared/guard-doctrine.md` §8, the author never certifies its own\n   guard's coverage — and enter the gate only at zero unresolved",
     ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_ingest_audit_states_both_questions_at_this_surface",
+        target=BRIEF,
+        block="and the same\n   two questions — *what state of the world satisfies this exactly as\n   written*, and *does any IP or D-entry make that state unreachable*",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

@@ -222,8 +222,10 @@ does not, because the author checks the description against its generative
 model of the artifact rather than against the artifact — the docstring says
 what the file was meant to do, the work-log line says what the fix was meant
 to close, and both read as true to the person who formed the intent. A
-milestone whose deliverable was a guard once returned from review seven times
-on this alone, its code unimplicated at every pass.
+milestone whose deliverable was a guard once returned from review seven times,
+and its seventh return — every suite green, every numeric projection met
+exactly, the validator clean — was still two records describing that
+milestone's own artifact wrongly.
 
 **So before `status -> review`, a guard-authoring milestone hands the
 description layer to a fresh-context reader that authored no part of it.**

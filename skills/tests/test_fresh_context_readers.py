@@ -1,8 +1,11 @@
 """Regression guard: M115's two fresh-context reader instruments.
 
 Both instruments replace an author checking its own work with a reader that
-did not write it. This file locks the doctrine text for the first of them —
-the acceptance-criteria audit — at its two surfaces:
+did not write it. This file locks the doctrine text for both, at four
+surfaces.
+
+The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
+`TestRRIngestionCriteriaAudit`):
 
   * `/milestone-plan`, where the audit runs at the step-3 gate. Three edits
     carry it, because placing the audit alone would have audited a draft:
@@ -10,6 +13,14 @@ the acceptance-criteria audit — at its two surfaces:
     step 4 writes the audited bytes.
   * `/milestone-brief`'s "Ingesting an RR", where the same reader asks the
     same two questions of a binding-criteria set before it is ingested.
+
+**Description-layer certification** (`TestDescriptionLayerCertification`,
+`TestImplementRoutesToCertification`):
+
+  * `skills/shared/guard-doctrine.md` §8 — the diagnosis, the three checks,
+    the zero-unresolved bar, and the section's own stated falsifier.
+  * `/milestone-implement` step 8, which fires §8 before `status -> review`
+    when the milestone authored or edited a prose-guard.
 
 Anchors are copied from the shipped bytes, never from the draft that
 produced them (M95), and every phrase that crosses the files' hard wrap is
@@ -127,6 +138,19 @@ class TestRRIngestionCriteriaAudit(unittest.TestCase):
             brief(),
             r"by the same\s+fresh-context \*\*\[O\]\*\* reader "
             r"`/milestone-plan` step 3 spawns",
+        )
+
+    def test_ingest_audit_states_both_questions_at_this_surface(self):
+        # AC1 requires BOTH surfaces to state the two questions, and the two
+        # asserts either side of this clause anchor past it: deleting the
+        # questions from the brief left every other assert here green, so
+        # `..._asks_the_questions_of_the_set...` reads as covering them and
+        # does not. Found by M115's own certifier against its own guard.
+        self.assertRegex(
+            brief(),
+            r"and the same\s+two questions — \*what state of the world "
+            r"satisfies this exactly as\s+written\*, and \*does any IP or "
+            r"D-entry make that state unreachable\*",
         )
 
     def test_ingest_audit_asks_the_questions_of_the_set_not_only_each(self):
