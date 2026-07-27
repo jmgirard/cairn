@@ -137,6 +137,7 @@ declares the same Driving RR and carries them under its own table.
 - 2026-07-27: M118's own file crossed the cap under the PRE-M118 counter at `68434d7` — 151 plan-owned lines against 98 under the shipped counter — making it the fourth milestone ever to do so, on `## Decisions` and `## Work log` lines alone. That is the milestone's own thesis demonstrated on itself; the ledger and the `INDEX.md` line now pin their counts to `6733b8e` rather than reading as standing facts.
 - 2026-07-27: correction to two round-2 log lines above (their subject is a certification round, so D-069 puts them outside the certified scope; corrected by appending, never edited): M105 carries `## Review` in all SIX of its content revisions, the seventh commit being the archival deletion; and the stated-vs-enforced cap regex reads the bullet's line 109, not the line 110 that was widened.
 - 2026-07-27: three §8 rounds for this milestone, findings 16 -> 10 -> 2 — recorded as data for §8's own falsifier, which retires the step if guard-authoring milestones keep averaging multiple returns.
+- 2026-07-27: review — all 7 criteria verified with fresh evidence; consistency gate clean; three review lenses returned 1 finding between them, scored 82 and fixed now as D-076 (the rulebook's "two grounds" vs D-074 part 2's "three distinct reasons"), 1 sub-threshold finding logged.
 - 2026-07-27: T5 minor amendment (discovered sub-task) — M99's two `## Decisions` reserve guards in `test_budget_first_drafting.py` rest on the ground D-074 removes, so the cap-fit sum drops the phantom 21-line reserve term and the reserve-wording assert is re-anchored on the exemption while keeping the spend-none instruction; the new anchor is registered. AC5 did not enumerate these because they are budget guards, not exempt-set enumerations.
 
 ## Decisions
@@ -283,3 +284,54 @@ all evidence below is current.
   maintainer's call after the sizing advisory reported 11 criteria). Below
   trigger (a)'s threshold of three, and no criterion has failed twice, so
   trigger (b) is unmet.
+
+### Independent fresh-context review
+
+Three lenses, each on a distinct evidence base, then a scorer that generated
+none of the findings.
+
+- **[O] diff-bug (Opus)** — no correctness bugs in `_section_body_lines`,
+  `EXEMPT_HEADINGS`, either cap counter, `session_context.py`,
+  `cairn_validate.py` or `cairn_budget.py`. It re-derived the ledger
+  independently (all 119 rows and all six section statistics reproduce), showed
+  the extraction refactor byte-equivalent over 126 real files, verified the
+  `preamble + sections == body` invariant across seven constructed edge shapes
+  (trailing-whitespace heading, CRLF, duplicate `## Decisions`, `## Decisions`
+  after `## Review`, empty section, no trailing newline), and confirmed the new
+  guards are not false coverage by reverting each changed file and observing 14
+  script + 2 hook tests and 8 prose guards + 9 harness entries go red. One
+  finding.
+- **[S] blame-history (Sonnet)** — no findings. Traced every modified line to
+  its origin milestone and read M55, M77, M99 and M113's archive summaries plus
+  D-030/045/046/052/063/074/075 whole. Confirms the `≥21 RESERVED` removal is
+  what D-074's own consequences paragraph authorizes and that M99's actual
+  guarded property (plan spends none of the section) is preserved.
+- **[S] prior-PR-comments (Sonnet)** — no regressions. The GitHub inline-comment
+  probe returned empty, so archived `## Review` sections were the whole surface.
+  Four prior findings located on the touched files — M55's exact-match boundary
+  fix, M77 F2's fence-inclusion rule, M69 F1's diagnostic wording, M113 F3's
+  hook/counter heading lockstep — each preserved, three now guarded by a test
+  named for that concern.
+
+**Actioned (scored >= 80):**
+
+- **F1 (82) — FIXED NOW.** The shipped rulebook says "They are exempt on two
+  grounds" (`tracking-rules.md:112`) where live, unsuperseded D-074 part 2
+  requires "three members carrying three distinct reasons, and every site that
+  enumerates it says so rather than naming a pair". M118 recorded the departure
+  only in its own `## Decisions`, which compresses into a <=25-line archive
+  summary at `done`, while the bounded `DECISIONS.md` read (D-054) never reads
+  milestone archives — so the reconciliation would not survive where a later
+  reader looks. Fixed by the repo's own pattern: **D-076** narrows D-074 part
+  2's count clause to the two grounds actually shipped, leaving its no-pair
+  requirement and D-074 parts 1 and 3 intact. No file on disk changes; the entry
+  records which of two live wordings governs.
+
+**Logged below threshold (excluded from the actioned list, not discarded — 1):**
+
+- **F2 (25)** — `TestShippedPageStateLedger.EXPECTED`
+  (`scripts/tests/test_scripts.py`) gained its new entry at position 2 of an
+  otherwise alphabetical hand-maintained dict. Scored 25: the test compares keys
+  as a set and does per-key lookups, so insertion order has no functional
+  effect, and no rule mandates the ordering — an observed habit, not a
+  convention.

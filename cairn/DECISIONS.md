@@ -2453,3 +2453,42 @@ implementer's choice, bounded by AC10's two arms. Delivered by M118. If the
 pasted-output detector proves unable to hit both arms over the named corpus,
 the entry to supersede is this one, and the alternative on the table is a
 narrower fenced-block-only subject.
+
+### D-076 (2026-07-27): The cap-exempt set carries two grounds, not three reasons — narrows D-074 part 2's "three distinct reasons" clause; D-074 parts 1 and 2's exemption stand (M118 review)
+
+**Context:** D-074 part 2 admitted the milestone-local `## Decisions` section to
+the cap-exempt set and instructed that "the set becomes three members carrying
+three distinct reasons, and every site that enumerates it says so rather than
+naming a pair." M118 shipped every enumeration site naming all three members,
+but stated **two** grounds rather than three, and recorded the departure only in
+its own `## Decisions` section. The M118 review's diff-bug lens scored the
+divergence 82: a milestone-local record compresses into a ≤25-line archive
+summary at `done`, while the bounded `DECISIONS.md` read (D-054) scans `### D-`
+headings and never milestone archives — so a later reader meeting cap pressure
+on a fourth section would find a live instruction the shipped rulebook does not
+satisfy, with nothing saying which won.
+
+The clause was also internally inconsistent as written: the same part 2 admits
+the section "for D-046's reason and not D-030's", which is the work log's
+reason, so part 2 simultaneously required a distinct third reason and named a
+shared second one.
+
+**Decision:** The cap-exempt set carries **two grounds across three members**.
+(1) `## Review` is exempt because it is review-owned and accumulates evidence at
+review time, which must never scramble plan-owned content (M55). (2) `## Work
+log` and `## Decisions` are exempt because D-045 makes each of them history —
+never edited — so counting either could leave an over-cap file fixable only by
+an edit IP4 forbids; they reach that one ground by two independent
+classifications, D-046 for the work log and D-074 part 1 for the decisions
+section. What every enumerating site must still do is name **all three members
+and each member's own stated reason**, never a pair — that requirement of part 2
+is unchanged and is what M118 delivered.
+
+**Consequences:** Narrows D-074 part 2's "three distinct reasons" clause only.
+D-074 part 1 (the history classification, independently upheld by RR08 on
+forward-direction grounds) stands; part 2's exemption and its no-pair rule
+stand; part 3 is already narrowed by D-075. Nothing on disk changes — this
+entry records which of two live wordings governs, and the wording it endorses
+is the one M118 shipped. If a fourth section is ever admitted on a ground that
+is neither review-ownership nor un-editability, the count in this entry is what
+gets superseded, not the no-pair rule.
