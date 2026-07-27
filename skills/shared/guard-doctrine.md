@@ -228,7 +228,7 @@ exactly, the validator clean — was still two records describing that
 milestone's own artifact wrongly.
 
 **So before `status -> review`, a guard-authoring milestone hands the
-description layer to a fresh-context reader that authored no part of it.**
+description layer to a fresh-context [O] reader that authored no part of it.**
 The reader checks three things and reports discrepancies verbatim:
 
 - **AC-clause-to-assert coverage** — every clause of every acceptance

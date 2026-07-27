@@ -1958,7 +1958,7 @@ bytes that ship, criteria authoring moves from step 4 up into step 2 and step
 4 writes the audited wording. (2) **Description-layer certification** as
 `guard-doctrine.md` §8, fired by `/milestone-implement` step 8 before
 `status -> review` when a milestone authored or edited a prose-guard: a
-fresh-context reader checks AC-clause-to-assert coverage, claim-vs-file
+fresh-context `[O]` reader checks AC-clause-to-assert coverage, claim-vs-file
 accuracy, and anchor-vs-shipped-bytes fidelity, and the gate is entered only
 at zero unresolved. **Author self-certification of guard coverage is thereby
 retired, not repaired** — D-059's move, applied to a mechanism measured across

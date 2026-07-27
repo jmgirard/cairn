@@ -202,11 +202,67 @@ projection-vs-outcome step no-ops.
   over the four edited prose files: **0 guard literals newly wrap-broken**.
 
 **Consistency gate.** `cairn_validate` exit 0 — 16 PASS including `coverage complete`,
-`weight caps`, `mirror agreement` and `binding criteria`. One advisory: `dangling id
-tokens` (8), every hit a true positive pointing at M114's unmerged D-064/D-066 and
-clearing when M114 merges; diagnosed and left visible rather than reworded around.
+`weight caps`, `mirror agreement` and `binding criteria`. One advisory fires:
+`dangling id tokens`, every hit pointing at M114's unmerged D-064/D-066 and clearing
+when M114 merges; diagnosed and left visible rather than reworded around. **Its count
+is deliberately not stated here** — this file is inside the corpus the advisory scans,
+so writing the number changes it. Review pass evidence: the first draft of this
+paragraph said 8, and the very commit that wrote it made the answer 9 by quoting a
+`D-064` regex in the AC6 evidence line above (F1, 92). M99's lesson, hit while
+recording a gate: prefer the tool that prints the number over prose that states it.
 `cairn_impact` N/A — `git diff --name-only main..HEAD -- cairn/DESIGN.md` is empty, so no
 principle changed; the header's GP2/GP3/IP4 are principles this milestone works under.
 Profile `consistency-gate` is `generic` — none, a clean no-op.
 
 **Thrash rule, applied to this milestone.** First trip to review. Neither trigger fires.
+
+**Independent review — three lenses, then a scorer.** [O] diff-bug, [S] blame-history,
+[S] prior-review, each with a distinct evidence base; findings scored by a fresh [S]
+that did not generate them. **Blame-history: zero findings** — it established that no
+milestone ever pinned criteria-authoring to step 4 (that bullet traces to the plugin's
+first commit and was never re-litigated), that §8 is scoped to certification where
+§1-§7 are scoped to operation so it re-litigates nothing, that the harness diff is 27
+additions and 0 deletions with nothing reordered, and that IP4 forbids renumbering and
+reuse but not gaps. **Prior-review: zero findings** — its inline-comment probe returned
+`[]` so no thread walk; it read M114's seven passes in full off that branch and checked
+this diff against each of the seven defect classes they produced on the two shared
+files. **Diff-bug: seven findings**, two scored at or above 80.
+
+- **F1 (92) — actioned, fixed this phase.** The Consistency-gate paragraph stated the
+  advisory count as a number, and the commit that wrote it made that number wrong: the
+  AC6 evidence line quotes a `D-064` regex, which the advisory counts. This is M99's
+  fixed point — a figure stated inside the artifact it measures changes when written —
+  and M99's own remedy is deleting the figure, not restating it. The paragraph now
+  names the advisory and its cause and deliberately states no count. Demonstrated
+  rather than argued: the count went 8 at the pre-review commit, 9 when the review
+  paragraph was written, and 10 when the correction naming the cause was written.
+- **F7 (80) — actioned, fixed this phase.** The certifier's model tier was named at the
+  two criteria-audit surfaces and in D-067's first instrument, but not at the two
+  surfaces that actually fire §8, so a later implementer could satisfy it with a weaker
+  model against a rulebook requiring every spawned agent to carry a tier tag. `[O]` now
+  appears in §8's placement sentence, in `/milestone-implement` step 8, and in D-067's
+  certification clause. Both pinning asserts and both registered blocks were
+  re-anchored to the new shipped bytes; a first attempt nested `**[O]**` inside an
+  already-bold sentence and was corrected to plain `[O]` before committing.
+
+**Logged, below the 80 threshold (5).** F2 (65) "three-marker cap" conflates the
+rulebook's 2-5-question round with its 3-marker deferral mechanism; real conflation but
+a deliberate stricter sub-cap is a defensible authorial reading, and the fix would
+reword shipped doctrine plus three dependent records. F6 (58) §2's by-hand coverage
+check is author self-certification, which §8 forbids, and neither section points at the
+other; the operation-vs-certification cut reconciles them but the shipped text does not
+draw it. F4 (55) a judgment finding surfacing at step 4's re-audit has no stated
+disposition, since the round is closed there. F3 (42) the final-wording instruction sits
+above step 2's collision-check and lessons blocks, which can themselves change the
+acceptance bar. F5 (25) `tracking-rules.md`'s guard-doctrine coverage enumeration lists
+§1-§7 and is now stale against §8 — real, but AC7 and Scope forbid touching that file,
+so it is out of scope here and routes post-merge.
+
+**Re-verified after the F1/F7 fixes, on the final tree.** 27 asserts against 27
+entries, sets identical, all blocks 1x; suites **637 / 280 / 91** exit 0 each;
+`cairn_validate` exit 0, 16 PASS; inversion probes replayed in a fresh scratch copy
+carrying the working-tree fixes, baseline verified green first — **27/27 red, 27/27
+green on restore**, 0 mismatches.
+
+**GATE: PASS.** AC1-AC7 verified with fresh evidence; two actioned findings fixed and
+re-verified; three lenses clear on the doctrine itself.

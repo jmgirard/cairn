@@ -2269,7 +2269,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_section_places_the_step_before_review_with_a_fresh_reader",
         target=GUARD_DOCTRINE,
-        block="**So before `status -> review`, a guard-authoring milestone hands the\ndescription layer to a fresh-context reader that authored no part of it.**",
+        block="**So before `status -> review`, a guard-authoring milestone hands the\ndescription layer to a fresh-context [O] reader that authored no part of it.**",
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2311,7 +2311,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestImplementRoutesToCertification.test_completion_step_routes_to_the_certifier_at_zero_unresolved",
         target=IMPLEMENT,
-        block="if this milestone authored or edited a\n   prose-guard, hand its description layer to a fresh-context reader first",
+        block="if this milestone authored or edited a\n   prose-guard, hand its description layer to a fresh-context [O] reader first",
     ),
     Mutation(
         guard="test_fresh_context_readers",

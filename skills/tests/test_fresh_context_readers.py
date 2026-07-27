@@ -206,8 +206,8 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         self.assertRegex(
             self.doctrine,
             r"So before `status -> review`, a guard-authoring milestone hands "
-            r"the\s+description layer to a fresh-context reader that authored "
-            r"no part of it",
+            r"the\s+description layer to a fresh-context \[O\] reader that "
+            r"authored no part of it",
         )
 
     def test_section_names_the_coverage_check(self):
@@ -263,7 +263,7 @@ class TestImplementRoutesToCertification(unittest.TestCase):
         self.assertRegex(
             read("milestone-implement", "SKILL.md"),
             r"if this milestone authored or edited a\s+prose-guard, hand its "
-            r"description layer to a fresh-context reader first",
+            r"description layer to a fresh-context \[O\] reader first",
         )
 
     def test_completion_step_cites_the_doctrine_section_and_the_bar(self):
