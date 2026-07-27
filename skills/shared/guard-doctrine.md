@@ -233,3 +233,40 @@ token it locks), the milestone file's Scope and Tasks, and the ROADMAP
 lineage row. Scope the evidence command to the prose surface being fixed, and
 exempt the tracking lines in the criterion at plan time — otherwise it needs
 a gated amendment at implement.
+
+## 8. The author never certifies its own guard's coverage
+
+**Running a guard and certifying that it covers what you claim are different
+jobs, and only the first one survives being done by its author.** Operation
+self-corrects: suites, the mutation harness, and the sweeps all report against
+the artifact, so an author who runs them finds its own mistakes. Certification
+does not, because the author checks the description against its generative
+model of the artifact rather than against the artifact — the docstring says
+what the file was meant to do, the work-log line says what the fix was meant
+to close, and both read as true to the person who formed the intent. A
+milestone whose deliverable was a guard once returned from review seven times,
+and its seventh return — every suite green, every numeric projection met
+exactly, the validator clean — was still two records describing that
+milestone's own artifact wrongly.
+
+**So before `status -> review`, a guard-authoring milestone hands the
+description layer to a fresh-context [O] reader that authored no part of it.**
+The reader checks three things and reports discrepancies verbatim:
+
+- **AC-clause-to-assert coverage** — every clause of every acceptance
+  criterion maps to an assert that actually pins it, and no criterion is
+  covered only by an assert the author believes covers it.
+- **Claim-vs-file accuracy** — every docstring, comment, work-log line, and
+  record claim about the guard is true of the file it describes, read out of
+  that file rather than out of the milestone's narrative.
+- **Anchor-vs-shipped-bytes fidelity** — every multi-word anchor matches the
+  bytes actually shipped, including under the target's hard wrap.
+
+The gate is entered at zero unresolved: a discrepancy is fixed and
+re-certified, never argued down as imprecision. The author still runs
+everything — this moves certification, not operation.
+
+**This step carries its own falsifier**, stated up front rather than left for
+a later argument about whether it is pulling its weight: if guard-authoring
+milestones still average multiple description-layer returns after adoption,
+the step didn't work — retire it (D-059), don't tune it.

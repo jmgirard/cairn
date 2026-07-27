@@ -163,6 +163,8 @@ BC6 and BC7 stay verbatim deliberately — the review gate reads BC6's numeric p
 
 - 2026-07-26: PARK ACCEPTED at the maintainer's call, over overriding AC7 to fix F1/F5 on the branch, overriding to merge and supersede F5 after, or dropping. M114 stays `blocked`; nothing merged and PR #114 stays a draft. The recorded unblock condition is unchanged — adoption of RR06 recs 4-5 through their own milestone (the plan-gate criteria audit and the independent description-layer certification, both already ROADMAP candidate rows with falsifying promotion conditions). F1 and F5 stay open and recorded in Review pass 7; F5 in particular must be corrected before D-064 reaches `main`, and the unblocking milestone is where both land, since BC1's frozen scope is what forbade them here.
 
+- 2026-07-26: STATUS MIRROR, written on `main` at M115's plan gate. M114 ran seven review passes on branch `m114-review-loop-escape-hatches` (draft PR #114) and was parked `blocked` at the maintainer's call when its own AC7 terminus fired; the full record lives on that branch. Blocker: the recorded unblock condition is adoption of RR06 recs 4-5, which is M115. Written here because `main` carried `planned` for a milestone nobody could work on. The branch's work log is authoritative and supersedes this line at rebase.
+
 ## Decisions
 
 <!-- RR05 and RR06 are authoritative in `cairn/reviews/archive/`; pointers only. -->
