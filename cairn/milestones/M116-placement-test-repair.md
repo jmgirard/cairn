@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP4
-- **Branch/PR:** `m116-placement-test-repair`
+- **Branch/PR:** `m116-placement-test-repair` / https://github.com/jmgirard/cairn/pull/116
 
 ## Goal
 
@@ -19,13 +19,13 @@ Repair the placement test the rulebook states at `tracking-rules.md:820`, supers
 
 ## Acceptance criteria
 
-- [ ] AC1: `cairn/DECISIONS.md` gains one appended entry whose heading names D-056 as **narrowly** superseded. Its body states that D-056's parts 1 and 3 stand; states two of RR04 §6's three prescribed edits — the step-0 single-home check, and the assignment of the deletion probe to retention with the inversion probe to guard verification — and, as the third, replaces D-056's yield clause with the measured figures from `cairn/references/rulebook-classification-ledger.md`. `git diff` shows zero changed bytes inside D-056's own entry.
-- [ ] AC2: In `skills/shared/tracking-rules.md`, the retention test for rulebook text is stated as deletion changing a compliant agent's behavior, and the string `deleted or inverted` does not occur in that file.
-- [ ] AC3: `skills/shared/tracking-rules.md` states a single-home check running before the retention test, scoped intra-file and governing text authored or edited from that point on: text already stated elsewhere in `tracking-rules.md` keeps one home, every other site carrying at most a cross-reference.
-- [ ] AC4: `skills/shared/tracking-rules.md` states that the inversion procedure (relabel, negate, transpose, require red) is the guard-verification protocol and not the placement test.
-- [ ] AC5: Exactly two sites in `skills/shared/tracking-rules.md` refer to the placement steps — the test paragraph under "What gets a test" and the always-read governance table's inflow cell — and they share no registered literal, the inflow cell carrying a pointer rather than a restatement. Verified by `grep -n 'D-056\|D-071\|three-step\|placement step' skills/shared/tracking-rules.md` returning exactly those two lines, and by `test_only_two_sites_name_the_placement_steps` pinning the count.
-- [ ] AC6: `skills/shared/guard-doctrine.md` §8 states that a certification's own report lies outside the scope that certification covers (D-069).
-- [ ] AC7: `skills/tests/test_rule_placement.py` carries a positive assert for each of AC2–AC5 and `skills/tests/test_fresh_context_readers.py` one for AC6; every assert, `REGISTRY` block and module-docstring claim the rewrite invalidates is re-anchored or corrected — at minimum `test_rule_placement.py:44-47`, its `test_module_does_not_become_the_sole_home` absence-assert, its module docstring, `test_always_read_frame.py:76-80`, and `test_mutation_harness.py:2075` and `:2342`; every newly pinned block has its own `REGISTRY` entry; and `python3 -m unittest discover` over `skills/tests`, `scripts/tests` and `hooks/tests` each exits 0 with `TestRegisteredGuardsFailWhenBlanked` reporting no non-reddening or erroring entry.
+- [x] AC1: `cairn/DECISIONS.md` gains one appended entry whose heading names D-056 as **narrowly** superseded. Its body states that D-056's parts 1 and 3 stand; states two of RR04 §6's three prescribed edits — the step-0 single-home check, and the assignment of the deletion probe to retention with the inversion probe to guard verification — and, as the third, replaces D-056's yield clause with the measured figures from `cairn/references/rulebook-classification-ledger.md`. `git diff` shows zero changed bytes inside D-056's own entry.
+- [x] AC2: In `skills/shared/tracking-rules.md`, the retention test for rulebook text is stated as deletion changing a compliant agent's behavior, and the string `deleted or inverted` does not occur in that file.
+- [x] AC3: `skills/shared/tracking-rules.md` states a single-home check running before the retention test, scoped intra-file and governing text authored or edited from that point on: text already stated elsewhere in `tracking-rules.md` keeps one home, every other site carrying at most a cross-reference.
+- [x] AC4: `skills/shared/tracking-rules.md` states that the inversion procedure (relabel, negate, transpose, require red) is the guard-verification protocol and not the placement test.
+- [x] AC5: Exactly two sites in `skills/shared/tracking-rules.md` refer to the placement steps — the test paragraph under "What gets a test" and the always-read governance table's inflow cell — and they share no registered literal, the inflow cell carrying a pointer rather than a restatement. Verified by `grep -n 'D-056\|D-071\|three-step\|placement step' skills/shared/tracking-rules.md` returning exactly those two lines, and by `test_only_two_sites_name_the_placement_steps` pinning the count.
+- [x] AC6: `skills/shared/guard-doctrine.md` §8 states that a certification's own report lies outside the scope that certification covers (D-069).
+- [x] AC7: `skills/tests/test_rule_placement.py` carries a positive assert for each of AC2–AC5 and `skills/tests/test_fresh_context_readers.py` one for AC6; every assert, `REGISTRY` block and module-docstring claim the rewrite invalidates is re-anchored or corrected — at minimum `test_rule_placement.py:44-47`, its `test_module_does_not_become_the_sole_home` absence-assert, its module docstring, `test_always_read_frame.py:76-80`, and `test_mutation_harness.py:2075` and `:2342`; every newly pinned block has its own `REGISTRY` entry; and `python3 -m unittest discover` over `skills/tests`, `scripts/tests` and `hooks/tests` each exits 0 with `TestRegisteredGuardsFailWhenBlanked` reporting no non-reddening or erroring entry.
 
 ## Coverage
 
@@ -69,3 +69,20 @@ Repair the placement test the rulebook states at `tracking-rules.md:820`, supers
 ## Decisions
 
 ## Review
+
+**PR:** https://github.com/jmgirard/cairn/pull/116 · reviewed 2026-07-27 · first review pass, 0 prior returns.
+
+**Acceptance-criteria evidence** (fresh, by command):
+
+- AC1 — `grep -c "^### D-071"` = 1; heading carries "**narrowly** superseded". `git diff main...HEAD -- cairn/DECISIONS.md` shows 0 deletion lines, so the file is a pure append and D-056's bytes are unchanged. D-071's body carries parts-1-and-3-stand, both probe edits, and the ledger figures.
+- AC2 — the repaired sentence occurs once; `grep -c "deleted or inverted"` = 0 in `tracking-rules.md`.
+- AC3 — "Step 0 — one home", the intra-file clause "ask whether the rulebook already says it", and the forward-binding clause each occur once.
+- AC4 — "guard-verification protocol" occurs once, carrying the relabel/negate/transpose procedure.
+- AC5 — the amended recipe `grep -n 'D-056\|D-071\|three-step\|placement step'` returns exactly 2 lines (`:175`, `:829`); `test_only_two_sites_name_the_placement_steps` pins the count.
+- AC6 — `guard-doctrine.md` §8 carries the scope bound and its convergence rationale.
+- AC7 — suites `skills` 663 / `scripts` 280 / `hooks` 91, all OK; `TestRegisteredGuardsFailWhenBlanked` passes over 421 REGISTRY entries with no non-reddening or erroring entry.
+
+**Consistency gate:** `cairn_validate` exit 0, 16 checks PASS and 7 advisories OK. `generic` profile's `consistency-gate` slot names no toolchain checks. No `DESIGN.md` principle changed, so `cairn_impact` is not run — IP4 is worked under, not modified.
+
+**§8 description-layer certification** (D-067; the milestone authored/edited prose-guards): round 1 returned 9 discrepancies, all fixed; round 2 verified all nine in the shipped bytes and re-probed two by mutation, and found 2 new discrepancies introduced by the fixes — 1 fixed, 1 declined on scope (recorded in the work log, carried to this gate).
+
