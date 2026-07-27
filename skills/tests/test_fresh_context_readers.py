@@ -17,8 +17,10 @@ The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
 **Description-layer certification** (`TestDescriptionLayerCertification`,
 `TestImplementRoutesToCertification`):
 
-  * `skills/shared/guard-doctrine.md` §8 — the diagnosis, the three checks,
-    the zero-unresolved bar, and the section's own stated falsifier.
+  * `skills/shared/guard-doctrine.md` §8 — its heading, the
+    operation-vs-certification cut, the diagnosis, the before-review
+    placement, each of the three checks, the zero-unresolved bar, the
+    certification-not-operation clause, and the section's own falsifier.
   * `/milestone-implement` step 8, which fires §8 before `status -> review`
     when the milestone authored or edited a prose-guard.
 

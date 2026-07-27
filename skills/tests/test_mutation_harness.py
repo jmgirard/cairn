@@ -2237,6 +2237,12 @@ REGISTRY = [
         target="skills/milestone-brief/SKILL.md",
         block="What the audit returns is raised with the\n   user, never softened away",
     ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_ingest_audit_states_both_questions_at_this_surface",
+        target=BRIEF,
+        block="and the same\n   two questions — *what state of the world satisfies this exactly as\n   written*, and *does any IP or D-entry make that state unreachable*",
+    ),
     # M115: description-layer certification. §8's diagnosis and its remedy
     # are pinned separately, and each of the three checks separately again —
     # a reader told to certify with one check missing certifies less, and a
@@ -2312,12 +2318,6 @@ REGISTRY = [
         test="TestImplementRoutesToCertification.test_completion_step_cites_the_doctrine_section_and_the_bar",
         target=IMPLEMENT,
         block="`skills/shared/guard-doctrine.md` §8, the author never certifies its own\n   guard's coverage — and enter the gate only at zero unresolved",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestRRIngestionCriteriaAudit.test_ingest_audit_states_both_questions_at_this_surface",
-        target=BRIEF,
-        block="and the same\n   two questions — *what state of the world satisfies this exactly as\n   written*, and *does any IP or D-entry make that state unreachable*",
     ),
 ]
 
