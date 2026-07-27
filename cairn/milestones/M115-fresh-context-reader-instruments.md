@@ -1,10 +1,11 @@
 # M115: Fresh-context reader instruments — plan-gate criteria audit and independent description-layer certification (RR06 recs 4–5)
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3, IP4
+- **Branch/PR:** `m115-fresh-context-reader-instruments`
 
 ## Goal
 
@@ -120,6 +121,8 @@ rec 4/5/6 rows at rebase → M114.
 - 2026-07-26: verified at plan time rather than assumed — everything M114 produced is branch-only. `main`'s `DECISIONS.md` ends at D-063, `main`'s ROADMAP still shows M114 `planned`, and `guard-doctrine.md` §3/§7, the thrash rule, the falsifying-promotion-condition rule and RB05-07/RR05-07 are all absent from `main`. So this milestone may cite none of them as existing doctrine, and its new guard-doctrine section is appended after `main`'s current last section rather than beside M114's edits.
 - 2026-07-26: criteria re-read against the artifacts at the user's call, standing in for the plan-gate audit M115 itself builds. Four checks clean and MEASURED, not assumed: all three cited line anchors are exact on `main`; `main`'s `guard-doctrine.md` ends at §7, so T3's new section is §8 and misses M114's in-section edits; `cairn_validate` has no D-id contiguity check, so the D-064→D-067 gap is legal and IP4 forbids reuse, not gaps. Two defects found and amended before implement: AC2 and AC6 cited RR06, which does not exist on `main` (only RB01-04/RR01-04 do), and AC6's tolerance rested on `grep -c`, which prints 0 but EXITS 1 — the M111 `;`-chain lesson in a different costume. AC2 now states it carries the falsifier inline as the implementer's referent; AC6 reads the printed count and names RR06 as unmerged. Caveat recorded honestly: I authored these criteria, so this is the weaker self-check rec 4 exists to replace.
 - 2026-07-26: AC3's "every new doctrine clause" is knowingly the softest criterion — `clause` is undefined and the coverage call is judgment. Kept rather than tightened: it is bounded to prose this milestone authors (unlike M114's AC2 `repo-wide`, which was unsatisfiable), its tolerance is the measurable assert-count == entry-count, and the judgment residue is exactly what AC5's certifier is there to check. The interlock is deliberate, not an oversight.
+- 2026-07-26: branch `m115-fresh-context-reader-instruments` cut from main (0/0 with origin, clean tree); status -> in-progress.
+- 2026-07-26: implement gate — three choices. The criteria audit runs at step 3 over the FINAL acceptance-criteria wording, which moves criteria authoring from step 4 up into step 2: auditing a draft that step 4 then rewrites is the certify-your-model-of-the-artifact failure RR06 diagnosed, reproduced inside the fix for it. Both readers are [O] — RR06 rec 9 rules out mechanizing a judgment about prose meaning, so a weaker reader is the same bet at a discount. Audit findings with one clear answer are fixed and reported; judgment calls become gate questions within the three-marker cap.
 - 2026-07-26: file placement chosen to minimize M114's rebase conflict — a new guard file rather than `skills/tests/test_lesson_graduation.py` (M114 edits it heavily), and an appended guard-doctrine section rather than edits inside §3/§7. `test_mutation_harness.py` is unavoidable; registration is mandatory and the conflict there is additive.
 
 ## Decisions
