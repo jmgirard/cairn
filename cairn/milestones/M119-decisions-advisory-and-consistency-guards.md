@@ -3,12 +3,12 @@
      Per-section owners are tagged below. Drafting budgets: see the template. -->
 # M119: RR08's follow-ons — the decisions-format advisory, the history enumeration, and a two-sided exempt-set guard
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M118
 - **Driving RR:** RR08
 - **Principles touched:** IP4
-- **Branch/PR:** —
+- **Branch/PR:** `m119-decisions-advisory-and-consistency-guards`
 
 ## Goal
 

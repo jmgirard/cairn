@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M119 | RR08's follow-ons — the decisions-format advisory (D-075), the rulebook history enumeration, and a two-sided exempt-set guard | planned | M118 | normal | milestones/M119-decisions-advisory-and-consistency-guards.md |
+| M119 | RR08's follow-ons — the decisions-format advisory (D-075), the rulebook history enumeration, and a two-sided exempt-set guard | in-progress | M118 | normal | milestones/M119-decisions-advisory-and-consistency-guards.md |
 | M120 | Ingest the Opus 5 prompting guide, and adopt the three conduct rules cairn has no home for | planned | — | normal | milestones/M120-opus5-guide-adoptions.md |
 | M121 | Verification triage — classify every self-verification instruction, and re-decide D-067's two fresh-context readers | planned | M120 | normal | milestones/M121-verification-triage.md |
 | M118 | The milestone-local `## Decisions` section is history and joins the cap-exempt set (D-074, supersedes D-046's choice 3) | done | — | normal | milestones/archive/M118-decisions-section-cap-exempt.md |
