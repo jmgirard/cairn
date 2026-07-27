@@ -1,11 +1,11 @@
 # M120: Ingest the Opus 5 prompting guide, and adopt the three conduct rules cairn has no home for
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3
-- **Branch/PR:** —
+- **Branch/PR:** `m120-opus5-guide-adoptions`
 
 ## Goal
 
