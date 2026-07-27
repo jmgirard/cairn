@@ -39,7 +39,7 @@ milestone per BC8, never folded in.
      failure RR06's BC2-BC5 close; they are satisfied criteria, and the Review
      sections hold their evidence permanently. -->
 
-- [ ] AC1 (BC1): AC11 is amended through a shown gated amendment to require the supersession route,
+- [x] AC1 (BC1): AC11 is amended through a shown gated amendment to require the supersession route,
       and the end state on the branch is: D-064's entry in `cairn/DECISIONS.md` is
       byte-identical to its originally appended form (commit `6546db0`), and a new
       appended DECISIONS entry records that D-064's one-surface Consequences claim is
@@ -47,30 +47,30 @@ milestone per BC8, never folded in.
       ROADMAP candidate. Tolerance: `git diff 6546db0..HEAD -- cairn/DECISIONS.md`
       contains additions only — zero deletion or modification lines inside the D-064
       entry.
-- [ ] AC2 (BC2): In `skills/tests/test_thrash_rule.py`, the assert on trigger (a)'s remedy pins the
+- [x] AC2 (BC2): In `skills/tests/test_thrash_rule.py`, the assert on trigger (a)'s remedy pins the
       full remedy including its routing target — the anchor spans the phrase "recommend
       re-plan or split via" together with its backtick-quoted `/milestone-plan` target,
       matched with `\s+` across the shipped wrap — closing L1. Probe: in a scratch copy,
       editing the shipped rule's routing target to `/hotfix` reds the skills suite;
       restoring returns it green (tolerance: red then green, 0 mismatches).
-- [ ] AC3 (BC3): The composition clause's routing half — the phrase "and the milestone routes
+- [x] AC3 (BC3): The composition clause's routing half — the phrase "and the milestone routes
       through" together with its backtick-quoted `/milestone-plan` target, matched with
       `\s+` across the shipped wrap — is pinned by its own doctrine-pinning assert,
       closing L3. Probe: deleting that clause in a scratch copy reds the skills suite
       (tolerance: red, then green on restore).
-- [ ] AC4 (BC4): The exhaustion branch's positive remedy composition — the routing chip composed
+- [x] AC4 (BC4): The exhaustion branch's positive remedy composition — the routing chip composed
       from an offered `/milestone-brief` escalation, parking as `blocked`, or dropping
       at the user's explicit decision — is pinned by its own doctrine-pinning assert,
       closing L2. Probe: replacing that sentence with prose naming no options in a
       scratch copy reds the skills suite (tolerance: red, then green on restore).
-- [ ] AC5 (BC5): Each added doctrine-pinning assert carries its own `Mutation(...)` entry with its
+- [x] AC5 (BC5): Each added doctrine-pinning assert carries its own `Mutation(...)` entry with its
       block copied from the shipped bytes; the doctrine-pinning assert count equals the
       registered entry count, both read out of the files (tolerance: exact; projected 19
       against 19 — two asserts added to the measured 17, with BC2 amending an existing
       assert and its registered block in place — any departure in the projected number
       routes through the Deviations table); blanking every registered block reds its
       named test (tolerance: 0 survivors).
-- [ ] AC6 (BC6): The pass-6 delta's runtime surface is confined to
+- [x] AC6 (BC6): The pass-6 delta's runtime surface is confined to
       `skills/tests/test_thrash_rule.py` and `skills/tests/test_mutation_harness.py`:
       every other file under `skills/` — explicitly including
       `skills/milestone-review/SKILL.md` — is byte-identical across the pass (tolerance:
@@ -79,12 +79,12 @@ milestone per BC8, never folded in.
       `cairn/milestones/M114-review-loop-escape-hatches.md`, `cairn/DECISIONS.md` per
       BC1, `cairn/ROADMAP.md` status mirroring, and `cairn/reviews/` ingestion and
       archival of RB06/RR06.
-- [ ] AC7 (BC7): On the final tree, the three suites pass from the repo root with exit codes
+- [x] AC7 (BC7): On the final tree, the three suites pass from the repo root with exit codes
       checked separately (tolerance: exit 0 each, never piped), `python3
       scripts/cairn_validate.py` exits 0, and the three probes of BC2–BC4 have been
       replayed red-side-up in a scratch copy whose baseline was verified green before
       probing (tolerance: 3/3 red on mutation, 3/3 green on restore).
-- [ ] AC8 (BC8): Recommendations 4, 5 and 6 are banked outside M114 — as ROADMAP candidate rows or
+- [x] AC8 (BC8): Recommendations 4, 5 and 6 are banked outside M114 — as ROADMAP candidate rows or
       a `/milestone-plan`-cut milestone — each with a promotion condition naming the
       class of evidence that would falsify it, never a count (tolerance: zero lines of
       M114's pass-6 diff implement any of the three; their disposition appears in the
@@ -151,6 +151,8 @@ milestone per BC8, never folded in.
 - 2026-07-26: T9+T10 (one commit — the rule and its guard leave the suite red if split). The rule is RR05's design: (a) is an explicit THRESHOLD holding on the third return and every one after; the unconditional precedence clause and its two asserts and entries are gone; where both fire they COMPOSE, (a) taking the disposition while (b)'s diagnosis and escalation offer carry into the routing; and an exhaustion branch fires once a re-plan or split is recorded spent, composing the chip from offered escalation / park `blocked` / drop, never a bare retry. Bullets now carry (a)/(b) labels — the labelling half of RR05 rec 7 (a CONSIDER), which also closes pass-4 J1; I did not apply its other half (rewording (b) to "twice or more"). Docstring states no count of properties and no count of `\s+` exceptions (AC7), and is now a raw string, which fixes the `SyntaxWarning` too.
 - 2026-07-26: T10 evidence — MEASURED, not assumed: 17 asserts against 17 registered entries, every block resolving exactly once in the shipped file, 17/17 red on deletion, 0 survivors. Getting there cost four wrap-anchor repairs: adding the (a)/(b) labels reflowed two ADJACENT guarded anchors and the guards caught it (M104 firing as designed), and my own hand-written blocks guessed wrap points twice more — fixed by deriving the block from the shipped bytes rather than writing it (M95, re-learned). Suites 625/280/91 exit 0; M104 0 newly wrap-broken; M113 15 risen, 13 mine, and both others are my sweep's own imprecision — it tests every guard literal against all three edited files regardless of which file the guard actually reads.
 - 2026-07-26: T11 — D-064's false one-surface claim is corrected BEFORE merge rather than superseded after it: the entry has not reached main, so no history is rewritten, and main never sees the false statement. It now records that the pin was attempted and re-cut out, with the ROADMAP candidate named. D-064's six recorded choices are unchanged and remain accurate — none of them was the precedence clause, which was added later without a D-entry — so no further edit was made there. The `SyntaxWarning` is gone (the docstring is a raw string). Final gate: suites 625/280/91 exit 0 separately, `cairn_validate` exit 0 with 16 PASS, body 144/149. Status -> review.
+
+- 2026-07-26: review pass 6 (in progress) — all eight of RR06's binding criteria verified with fresh evidence and ticked; consistency gate clean (`cairn_validate` exit 0, 16 PASS, `sizing` advisory only). Every numeric projection met exactly: 19 doctrine-pinning asserts against a projected 19, 0 survivors against 0, 3/3 red and 3/3 green on the BC7 probes replayed in a `git archive` scratch copy with a verified-green baseline, exactly 2 files under `skills/` in the pass. Prior-review and blame-history lenses: zero findings each. Diff-bug lens still running; its findings join this pass before the verdict.
 
 ## Decisions
 
@@ -653,3 +655,105 @@ record-keeping around it — coverage I under-pinned (F1, G1-G3, H1, L1-L3), rec
 drifted from artifacts (G6, G7, J3, J4, K1), and criteria I authored that encoded the
 wrong thing (AC2 twice, AC11). That is the finding this milestone has produced about
 itself, and it is not something another implement pass fixes.
+
+## Review pass 6 (2026-07-26)
+
+**Scope.** The constrained sixth pass RR06 prescribed — transcription against externally
+authored criteria, not authorship. `git diff --name-only 295f7d3..HEAD` (from the RR06
+ingest commit) names five files: the two guard-side test files, the milestone file,
+`cairn/DECISIONS.md` and `cairn/ROADMAP.md`. AC1-AC8 are RR06's binding criteria verbatim.
+
+**Return count, counted in the work log as the rule instructs.** Five returns, five
+work-log entries. Trigger (a) holds as a threshold and a re-cut is recorded spent at
+pass 3, so the exhaustion branch governs any further failure.
+
+**Branch state.** `main` 0/0 with `origin/main`; branch 32 ahead / 0 behind `origin/main`
+and level with its own remote. Draft PR #114, head `d8049c4`. This repo has no CI
+(PROFILE.md `consistency-gate`), so local green is the gate.
+
+**Fresh per-criterion evidence.** All commands run this phase.
+
+- AC1 (BC1) — **verified.** `git diff 6546db0..HEAD -- cairn/DECISIONS.md` is
+  additions-only: 31 added lines, **0 deletion lines**, so nothing inside the D-064 entry
+  was deleted or modified. Extracting the entry from both revisions and diffing confirms
+  its 59 lines byte-identical, the only delta being D-065's heading beyond it. D-065 is
+  appended and carries the supersession — its heading names D-064, its Context quotes the
+  superseded Consequences sentence verbatim, and it records the re-cut at M114's third
+  return with the pin now a ROADMAP candidate. The AC11 amendment was discharged at the
+  ingest commit `295f7d3`, which replaced the AC block wholesale with RR06's BCs: AC11 no
+  longer exists and AC1/BC1 itself mandates the supersession route. What the branch cannot
+  evidence is whether that amendment was *shown* in chat before its commit — that happened
+  in a prior session and only the work-log entry records it.
+- AC2 (BC2) — **verified.** `skills/tests/test_thrash_rule.py:93-96` asserts
+  `do not queue another retry; recommend re-plan or split via\s+` + the backtick-quoted
+  `/milestone-plan` target — the full remedy including its routing target, joined across
+  the shipped wrap by `\s+`. Probe replayed this phase in a `git archive` scratch copy
+  whose baseline was verified green first (627, exit 0): editing the shipped rule's target
+  to `/hotfix` reds the skills suite, restoring returns it green. Red then green,
+  0 mismatches.
+- AC3 (BC3) — **verified.** `test_thrash_rule.py:141-146`
+  (`test_composition_names_the_routing_target`) asserts
+  `and the milestone routes through\s+` + the backtick-quoted `/milestone-plan` target as
+  its OWN doctrine-pinning assert, not a clause inside another. Probe: deleting that
+  phrase from the shipped rule in the scratch copy reds the skills suite; restore green.
+- AC4 (BC4) — **verified.** `test_thrash_rule.py:164-174`
+  (`test_exhaustion_branch_states_its_composed_remedy`) asserts the full positive
+  enumeration — offered `/milestone-brief` escalation, parking as `blocked` with the
+  blocker named in a work-log line, dropping at the user's explicit decision — matched
+  across its three shipped wraps, as its own assert. Probe: replacing that sentence with
+  option-free prose ("Decide what to do next.") reds the skills suite; restore green.
+- AC5 (BC5) — **verified, projection met exactly.** Counts read out of the files, never
+  recalled: **19** asserts in `test_thrash_rule.py`, **19** `Mutation(...)` entries naming
+  `guard="test_thrash_rule"`, 19 distinct blocks, each resolving **exactly once** in the
+  shipped `milestone-review/SKILL.md` (0 blocks resolving zero or twice). Every assert
+  reads `review()` — the shipped skill — so all 19 are doctrine-pinning, and the
+  doctrine-pinning assert count equals the registered entry count. Blanking: the harness's
+  `TestRegisteredGuardsFailWhenBlanked` first asserts the registry non-empty, then blanks
+  each entry's block and requires its named test to fail; the suite is green, so
+  **0 survivors**.
+- AC6 (BC6) — **verified.** `git diff --name-only 295f7d3..HEAD -- skills/` names exactly
+  `skills/tests/test_thrash_rule.py` and `skills/tests/test_mutation_harness.py`;
+  `skills/milestone-review/SKILL.md` and every other file under `skills/` is byte-identical
+  across the pass. The guard's module docstring (lines 1-42) is byte-identical to its form
+  at the ingest commit. The whole pass touches five files — those two plus the milestone
+  file, `cairn/DECISIONS.md` (additions only, per BC1) and `cairn/ROADMAP.md` (status
+  mirror plus the BC8 rows). RB06/RR06 were ingested and archived at the ingest commit
+  itself, so `cairn/reviews/` is unchanged within the delta.
+- AC7 (BC7) — **verified.** Three suites run from the repo root, each redirected to a file
+  with `$?` captured before any pipe: skills **627** / scripts **280** / hooks **91**,
+  exit 0 each. `python3 scripts/cairn_validate.py` exit 0. The three BC2-BC4 probes were
+  replayed in a `git archive HEAD` scratch copy whose baseline was verified green FIRST
+  (627 tests, exit 0) — the partial-copy red-baseline trap pass 3 hit: **3/3 red on
+  mutation, 3/3 green on restore**, with the probe script asserting the target file
+  byte-identical to its original at the end. The repo tree was never mutated.
+- AC8 (BC8) — **verified.** RR06 recs 4, 5 and 6 are three new `cairn/ROADMAP.md`
+  candidate rows added this pass, each search-first swept ("no row, archive entry or
+  D-entry covers …") and each carrying a promotion condition naming a class of evidence
+  rather than a count: rec 5 promotes "when a milestone whose deliverable is a guard next
+  reaches implement", drops on RR06's own stated falsifier, and adds "Never on a count of
+  further defects"; rec 4 promotes on a milestone carrying more criteria or folds into any
+  milestone touching the plan gate; rec 6 promotes "if a further under-scored finding about
+  self-shipped doctrine fires after being logged — never on a count of passes". Tolerance:
+  the pass-6 diff touches no doctrine file at all — its `skills/` delta is the two test
+  files — so zero of its lines implement any of the three; the disposition is recorded in
+  both the work log and the ROADMAP (IP3).
+
+**Consistency gate.** `cairn_validate` exit 0 — 16 PASS including `coverage complete`,
+`weight caps`, `mirror agreement` and `binding criteria` (which string-diffs AC1-AC8
+against the archived RR06). One advisory: `sizing` WARNs at 8 acceptance criteria, a
+judgment surfaced rather than auto-fixed, and the criteria are RR06's, not re-cuttable
+here. `cairn_impact` N/A — `git diff --name-only origin/main..HEAD -- cairn/DESIGN.md` is
+empty, so no principle changed. Profile `consistency-gate` is `generic` — none, a clean
+no-op.
+
+**Projection-vs-outcome (Driving RR06).** Every numeric projection RR06's binding criteria
+carry, beside its measured outcome:
+- BC5 doctrine-pinning asserts vs registered entries: **measured 19 against projected 19**
+  (tolerance exact) — no departure, so the Deviations table is not entered.
+- BC5 blanking survivors: **measured 0 against projected 0 survivors**.
+- BC7 probe mutations: **measured 3/3 red against projected 3/3 red**.
+- BC7 probe restores: **measured 3/3 green against projected 3/3 green**.
+- BC6 files under `skills/` in the pass: **measured exactly 2 against projected exactly 2**.
+- BC8 pass-6 diff lines implementing recs 4-6: **measured 0 against projected 0**.
+
+No shortfall on any projection.
