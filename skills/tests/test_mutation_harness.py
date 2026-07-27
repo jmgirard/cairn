@@ -618,6 +618,12 @@ REGISTRY = [
     # (M53), same as M77 got for the second.
     Mutation(
         guard="test_milestone_cap_exemption",
+        test="TestMilestoneCapExemption.test_the_cap_definition_itself_names_both_subtracted_sections",
+        target=RULES,
+        block="the review-exclusive `## Review` section, less the `## Work log` and `## Decisions` sections.",
+    ),
+    Mutation(
+        guard="test_milestone_cap_exemption",
         test="TestMilestoneCapExemption.test_weight_caps_states_the_decisions_exemption_reason",
         target=RULES,
         block="D-074 makes its dated dispositions history, superseding D-046's choice (3), so the cap may not aim there either.",

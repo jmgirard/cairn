@@ -42,6 +42,17 @@ class TestMilestoneCapExemption(unittest.TestCase):
     def test_weight_caps_states_the_plan_owned_body_cap(self):
         self.assertIn("plan-owned body < 150 lines", self.rules)
 
+    def test_the_cap_definition_itself_names_both_subtracted_sections(self):
+        # The bullet's DEFINITIONAL line — what the cap actually measures — is
+        # a separate physical line from the set-membership sentence below it,
+        # so pinning the set left this one free to say "less the `## Work log`"
+        # alone with every gate green, contradicting the sentence one line
+        # down. Two encodings of one subtraction; this pins the first.
+        self.assertIn(
+            "the review-exclusive `## Review` section, less the `## Work log` and `## Decisions` sections.",
+            self.rules,
+        )
+
     def test_weight_caps_states_single_pass_compression(self):
         # M69: over-cap trimming is one targeted pass driven by the breakdown,
         # never a nibble-and-recount loop — the discipline that keeps a session

@@ -3,7 +3,7 @@
      Per-section owners are tagged below. Drafting budgets: see the template. -->
 # M118: The milestone-local `## Decisions` section joins the cap-exempt set
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR08
@@ -94,7 +94,7 @@ declares the same Driving RR and carries them under its own table.
 - [x] T5: Re-anchor the set-membership guard and update AC5's prose sites;
       re-register the anchor and verify by mutation that deleting the
       three-member sentence reds it.
-- [ ] T6: Full `verify` + `cairn_validate`; post-merge hygiene.
+- [x] T6: Full `verify` + `cairn_validate`; post-merge hygiene.
 
 ## Work log
 
@@ -132,6 +132,11 @@ declares the same Driving RR and carries them under its own table.
 - 2026-07-27: the ledger and the hook comment both claimed one milestone "has never had a `## Review`". False: M105 carries the heading in 6 of its 7 revisions with an empty body, so n=118 counts milestones with CONTENT in that section. Corrected at both sites; a by-hand check of my own contradicted the reader first and was wrong (a zsh quoting bug swallowed the path), which is the case for the fresh reader in one line.
 - 2026-07-27: the ledger declared a lower-rank percentile convention but computed its medians by averaging, which showed up only in the one even-n row (`## Review` 2,346 vs 2,340). Convention extended to medians and the cell corrected.
 - 2026-07-27: the `INDEX.md` line still carried the pre-correction corpus (119 paths / 3 paths) after the ledger itself was fixed to 119 milestones over 122 paths; corrected. Also fixed: the ledger's surplus attribution (M02/M03/M94 hold two paths each, not M01-M03), two `_plan_owned_scan`/breakdown docstrings under-describing the widened exempt set, and a fourth present-tense `decisions format` claim in a test docstring.
+- 2026-07-27: §8 certification round 3, scoped to round 2's remediation commit only so the gate converges rather than treadmilling (M114 ran four rounds; D-069 puts each round's own report outside scope). It reproduced all six section statistics under the newly stated lower-rank convention and all 438 registry anchors, and returned 1 blocking + 1 cosmetic.
+- 2026-07-27: the blocking one — the cap bullet's DEFINITIONAL line, widened in round 2, was pinned by nothing: reverting it to "less the `## Work log`" left all 677 skills tests green while the guarded sentence one line below said three. Now pinned and registered; verified by inversion that the two-member form reds it, and the anchor occurs exactly once.
+- 2026-07-27: M118's own file crossed the cap under the PRE-M118 counter at `68434d7` — 151 plan-owned lines against 98 under the shipped counter — making it the fourth milestone ever to do so, on `## Decisions` and `## Work log` lines alone. That is the milestone's own thesis demonstrated on itself; the ledger and the `INDEX.md` line now pin their counts to `6733b8e` rather than reading as standing facts.
+- 2026-07-27: correction to two round-2 log lines above (their subject is a certification round, so D-069 puts them outside the certified scope; corrected by appending, never edited): M105 carries `## Review` in all SIX of its content revisions, the seventh commit being the archival deletion; and the stated-vs-enforced cap regex reads the bullet's line 109, not the line 110 that was widened.
+- 2026-07-27: three §8 rounds for this milestone, findings 16 -> 10 -> 2 — recorded as data for §8's own falsifier, which retires the step if guard-authoring milestones keep averaging multiple returns.
 - 2026-07-27: T5 minor amendment (discovered sub-task) — M99's two `## Decisions` reserve guards in `test_budget_first_drafting.py` rest on the ground D-074 removes, so the cap-fit sum drops the phantom 21-line reserve term and the reserve-wording assert is re-anchored on the exemption while keeping the spend-none instruction; the new anchor is registered. AC5 did not enumerate these because they are budget guards, not exempt-set enumerations.
 
 ## Decisions

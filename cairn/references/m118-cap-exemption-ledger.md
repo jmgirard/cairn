@@ -180,6 +180,9 @@ Every row's milestone ID is its stable ID; rows are added, never reflowed.
 
 ## Summary
 
+Every row below is measured at `6733b8e` — see the third evidence-snapshot
+bullet for why this table needs a commit pin and the ledger table above does not.
+
 | Reading | Value |
 |---|---|
 | Milestones measured | 119 (over 122 file paths) |
@@ -190,8 +193,16 @@ Every row's milestone ID is its stable ID; rows are added, never reflowed.
 
 The three over-cap peaks are real committed states, not hypotheticals: each file
 sat over the gate's own threshold at that commit and was compressed back down
-afterwards. M118's own file is the fourth-largest pre-M118 peak (149 at
-`d1b1144`, the RR08 ingest) — the zero-headroom state its work log records.
+afterwards.
+
+M118's own file is the demonstration in miniature, and it moved while this page
+was being written. At `6733b8e` it was the fourth-largest pre-M118 peak (149 at
+`d1b1144`, the RR08 ingest) — the zero-headroom state its work log records. By
+`68434d7` its pre-M118 peak had reached **151**, making it the fourth milestone
+ever to cross the cap under the old counter, while its post-M118 body sat at
+**98**. Nothing was trimmed to achieve that: the lines that took it over are its
+own `## Decisions` and `## Work log` entries, which is exactly the squeeze D-074
+removes — observed 2026-07-27.
 
 ## Cap-exempt section sizes, in characters
 
