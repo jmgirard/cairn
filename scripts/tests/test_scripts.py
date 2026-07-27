@@ -2362,6 +2362,29 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         self.assertLessEqual(len(preview), 61, preview)
         self.assertEqual(cv._DECISIONS_PREVIEW, 60)
 
+    def test_a_preview_at_exactly_the_limit_is_not_truncated(self):
+        # The comparison's BOUNDARY, which the over-limit fixture leaves free:
+        # `>` → `>=` survived all three suites (§8 round 8), because a
+        # 61-character truncated preview satisfies both asserts above. A line
+        # exactly at the limit is the only input that tells the two apart.
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        line = "$ ls " + "x" * (cv._DECISIONS_PREVIEW - 5)
+        self.assertEqual(len(line), cv._DECISIONS_PREVIEW)
+        root = self._with_decisions(f"- 2026-07-27: entry.\n{line}\n")
+        preview = cv.check_decisions_format(str(root))[0].split(' — "')[1].rstrip('"')
+        self.assertEqual(preview, line)
+
+    def test_a_fence_opening_on_a_blank_line_previews_its_first_real_line(self):
+        # `pending and stripped`'s second clause: without it the preview is the
+        # blank, and a finding whose preview is empty says nothing about what
+        # was pasted. `elif pending:` survived all three suites, because no
+        # fixture opened a fence with a blank body line (§8 round 8).
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions("- 2026-07-27: entry.\n```\n\n$ ls\n```\n")
+        self.assertIn('— "$ ls"', cv.check_decisions_format(str(root))[0])
+
     def test_findings_come_back_in_line_order(self):
         # The loose finding is collected after the loop, so it arrived last
         # however early in the section it began (§8 round 4). Line numbers the
@@ -2448,15 +2471,24 @@ class TestDecisionsFormatAdvisory(ScriptCase):
     )
 
     # Lines a signature must NOT claim. Each is prose a decision entry could
-    # plausibly contain, and each sits one character away from a signature —
-    # so widening a pattern (dropping `Traceback`'s `$`, loosening the table
-    # row's two-space run) reds here rather than shipping a permanently
-    # warning advisory, which is the failure D-075 exists to prevent.
+    # plausibly contain, and each is ONE WIDENING from a live signature — not
+    # one character, which §8 round 8 measured as true of only one of them.
+    # Widening a pattern reds here rather than shipping a permanently warning
+    # advisory, the failure D-075 exists to prevent. Each entry names the
+    # widening it holds against, because a control whose target is implicit is
+    # a control nobody can tell has stopped working.
     NEAR_MISS_LINES = (
+        # `^Traceback \(most recent call last\):$` — the whole phrase
         "Traceback shows the call order, which is what settled it.",
+        # the same signature's trailing `$`, which the line above cannot reach
+        "Traceback (most recent call last): the frame we cared about was tenth.",
+        # `^Ran \d+ tests? in ` — the count and the unit
         "Ran the numbers again and the threshold held.",
+        # `^OK$`, and the table row's `\s{2,}`
         "OK so the rejection stands, and PASS rates are unchanged.",
+        # `^diff --git a/` — the path prefix
         "diff --git is the header the detector keys on.",
+        # `^File "[^"]+", line \d+` — the line number
         "File \"names\" are quoted here without a line number.",
     )
 
@@ -2478,7 +2510,7 @@ class TestDecisionsFormatAdvisory(ScriptCase):
     def test_near_miss_prose_matches_no_signature(self):
         # The negative control for the table above: a per-signature sweep that
         # passed because SOMETHING always matches would be worse than no sweep.
-        # Each line is one character from a signature, so this is also what
+        # Each line is one widening from a signature, so this is also what
         # keeps the patterns from being widened into a permanent WARN.
         cv = _load_validate()
         for line in self.NEAR_MISS_LINES:

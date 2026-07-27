@@ -934,7 +934,14 @@ _DECISIONS_PASTED = (
     re.compile(r"^Traceback \(most recent call last\):$"),
     re.compile(r'^File "[^"]+", line \d+'),     # traceback frame
     re.compile(r"^(?:PASS|FAIL|WARN|OK)\s{2,}\S"),  # cairn_validate's own table
-    re.compile(r"^diff --git a/"),  # the `a/` path, not the bare words
+    # git's DEFAULT source prefix, not its only one: `--no-prefix`,
+    # `--src-prefix`, `diff.mnemonicPrefix` and a C-quoted path all render a
+    # header this misses. Accepted — the bare `diff --git ` matched ordinary
+    # prose opening with those words (§8 round 7), and a diff carrying any hunk
+    # header still fires on `^@@ .* @@`, so only a header-only paste is lost.
+    # That is the trade the note below this table names: a false negative is
+    # cheap here, a false positive kills the advisory.
+    re.compile(r"^diff --git a/"),
     re.compile(r"^@@ .* @@"),
     re.compile(r"^(?:--- a/|\+\+\+ b/)"),       # unified-diff file headers
 )
