@@ -32,36 +32,36 @@ RR06 recs 4-6 and RR07 rec 6 as standing rules → banked · F5 → trivial-tier
      table. RR06's eight leave the live block and stay in the Review record —
      AC6 (BC6) as amended by RR07 Q1 was VERIFIED on pass-6 evidence. -->
 
-- [ ] AC1 (BC1): The pass-7 delta, measured from the RR07 ingest commit to the gate, is
+- [x] AC1 (BC1): The pass-7 delta, measured from the RR07 ingest commit to the gate, is
       confined under `skills/` to `skills/tests/test_lesson_graduation.py` and
       `skills/tests/test_mutation_harness.py`, with tracking-side changes confined to
       this file and `cairn/ROADMAP.md` (tolerance: no other ROADMAP line changes). The
       full file list, its shown derivation from BC2-BC6's write obligations, and the
       ingest-commit carve-out are RR07 §BC1 verbatim — carried by reference, see the
       Deviations table.
-- [ ] AC2 (BC2): §7's operative remedy gains a pinning `assertRegex` in
+- [x] AC2 (BC2): §7's operative remedy gains a pinning `assertRegex` in
       `test_sweep_section_states_the_silent_cell_rule` plus its own `Mutation(...)`
       entry, closing F1; the pass-7 work log supersedes T4's "pinned separately" claim
       by appended line, never edit (IP4). Pattern, registered block and probe are RR07
       §BC2 verbatim — carried by reference, see the Deviations table.
-- [ ] AC3 (BC3): The §3 remedy assert in
+- [x] AC3 (BC3): The §3 remedy assert in
       `test_absence_section_states_the_matcher_rendering_rule` widens from its truncated
       lead-in to the full remedy, and its registered block in `test_mutation_harness.py`
       is replaced by the full sentence copied from the shipped bytes — closing F2 in
       guard and harness alike. Pattern, block and probe are RR07 §BC3 verbatim —
       carried by reference, see the Deviations table.
-- [ ] AC4 (BC4): The rec 5 and rec 4 ROADMAP rows are corrected to RR07 §BC4's exact
+- [x] AC4 (BC4): The rec 5 and rec 4 ROADMAP rows are corrected to RR07 §BC4's exact
       replacement clauses — carried by reference, see the Deviations table (tolerance:
       after the pass, `grep -n "zero coverage\|two such\|more than a handful"` over
       `cairn/ROADMAP.md` returns 0 hits, every quoted attribution in the three rec rows
       is locatable verbatim in its named source, and the rec 6 row is byte-identical
       across the pass).
-- [ ] AC5 (BC5): Before `status -> review`, a fresh-context reader that authored no part
+- [x] AC5 (BC5): Before `status -> review`, a fresh-context reader that authored no part
       of pass 7 certifies the description layer against the artifacts on four clauses,
       recording its verdict and every discrepancy verbatim in the work log; the gate is
       entered only at zero unresolved. The four clauses and the tolerance are RR07 §BC5
       verbatim — carried by reference, see the Deviations table.
-- [ ] AC6 (BC6): On the final tree, the three suites pass from the repo root with exit
+- [x] AC6 (BC6): On the final tree, the three suites pass from the repo root with exit
       codes checked separately (tolerance: exit 0 each, never piped; projected skills
       627 / scripts 280 / hooks 91 — BC2/BC3 add asserts to existing test methods, no
       new test method — any departure routes through the Deviations table); `python3
@@ -156,6 +156,8 @@ BC6 and BC7 stay verbatim deliberately — the review gate reads BC6's numeric p
 
 - 2026-07-26: T19 — gate on the final tree, every number MEASURED and every projection met with no departure, so the Deviations table is not entered for BC6. BC1's derived scope HELD: the delta from the ingest commit `886917d` is 4 files, exactly 2 under `skills/` (`test_lesson_graduation.py`, `test_mutation_harness.py`), and the three files BC1 names explicitly — `guard-doctrine.md`, `milestone-review/SKILL.md`, `test_thrash_rule.py` — are byte-identical across the pass; the ROADMAP delta is 2 changed lines (the rec 4/5 rows) plus the status cell. Suites from the repo root with exit codes captured separately, never piped: skills **627** / scripts **280** / hooks **91** against projected 627/280/91, exit 0 each, no new test method. `cairn_validate` exit 0, 16 PASS, zero advisories. `Mutation(...)` entries naming `guard="test_lesson_graduation"`: **14** against projected exactly 14 (13 at ingest, +1 from BC2, BC3 amending in place). Blanking survivors: **0**. Both probes replayed red-side-up in a `git archive HEAD` scratch copy whose baseline was verified green FIRST (627, exit 0): **2/2 red on mutation, 2/2 green on restore**, target byte-identical after, and the repo tree never mutated (`git status` empty). The BC3 probe carries its own control — the mutant KEEPS the truncated lead-in the pre-fix `assertIn` asserted, so it proves the widened assert catches exactly what the old one missed.
 - 2026-07-26: AC7's terminus is ARMED, not spent — pass 7 has not failed a gate. Recorded so the review gate does not have to re-derive it: if this pass fails on (i) a finding whose subject is work BC2-BC4 specify in closed form, or (ii) a discrepancy in material the T18 certifier recorded clean, M114 is parked `blocked`, no eighth implement pass is queued and no eighth brief is opened, unblocking only on adoption of RR06 recs 4-5 through their own milestone. A failure outside (i) and (ii) is a new fact on its merits. Two items are OWED but BC1's frozen scope forbids them here: a candidate row for the four pre-existing truncated lead-in asserts the certifier found at `test_lesson_graduation.py:44, :51, :124, :145` (the F2 class, unfixed), and rec 5's unchanged "eight coverage findings" attribution, unlocatable in RR06. Both route post-merge, as RR07 rec 7 routed F5. Status -> review.
+
+- 2026-07-26: review pass 7 (in progress) — AC1-AC6 verified with fresh evidence and ticked; every numeric projection met exactly and `cairn_validate` is clean with ZERO advisories for the first time in seven passes. Prior-review and blame-history lenses: **zero findings each** — blame-history independently re-derived the M98-vs-M114 attribution of guard-doctrine §3/§7, the one-surface pin's add-then-delete, and that no file outside M114's own records restates the old per-cut thrash rule; prior-review walked all six prior passes' findings for recurrence and found none, and its GitHub inline-comment probe returned empty so no thread walk. Diff-bug lens still running; its findings join this pass before the verdict. AC7's terminus is held open until then.
 
 ## Decisions
 
@@ -849,3 +851,121 @@ the branch, the routing chip is composed from an offered `/milestone-brief` esca
 parking as `blocked`, or dropping at the user's explicit decision — never a bare retry as
 the recommended option. Trigger (b) does not fire: AC8 and AC6 each fail for the first
 time, so there is no criterion failing twice by a new mechanism of one shape.
+
+## Review pass 7 (2026-07-26)
+
+**Scope.** The pass RR07 prescribed: fully closed-form work under a derived scope, plus an
+independent certification of the description layer. `Driving RR: RR07`; AC1-AC7 are its
+seven binding criteria, five carried by reference to the archived RR07 per the Deviations
+table. Four commits from the RR07 ingest commit `886917d`.
+
+**Return count, counted in the work log as the rule instructs.** Six returns, six work-log
+entries. Trigger (a) holds as a threshold and a re-cut is recorded spent at pass 3, so the
+exhaustion branch governs any further failure — and AC7's terminus narrows it further.
+
+**Branch state.** `main` 0/0 with `origin/main`; branch 42 ahead / 0 behind `origin/main`
+and level with its own remote. Draft PR #114, head `b304cbf`. This repo has no CI
+(PROFILE.md `consistency-gate`), so local green is the gate.
+
+**Fresh per-criterion evidence.** All commands run this phase.
+
+- AC1 (BC1) — **verified.** `git diff --name-only 886917d..HEAD -- skills/` names exactly
+  `skills/tests/test_lesson_graduation.py` and `skills/tests/test_mutation_harness.py`,
+  and nothing else under `skills/` — checked by subtracting those two from the list, which
+  returns empty rather than by reading the list. The three files BC1 names explicitly are
+  byte-identical across the pass (`git diff --quiet` per file): `guard-doctrine.md`,
+  `milestone-review/SKILL.md`, `test_thrash_rule.py`. The whole delta is 4 files, so
+  tracking-side changes are confined to this file and `cairn/ROADMAP.md`. The ROADMAP
+  delta is 3 changed lines, classified by matching each `-` line rather than eyeballed:
+  M114's status row, the rec 5 row and the rec 4 row — 0 lines classified OTHER, so the
+  "no other ROADMAP line changes" tolerance holds.
+- AC2 (BC2) — **verified.** `test_lesson_graduation.py:138`
+  (`test_sweep_section_states_the_silent_cell_rule`) carries an `assertRegex` whose pattern
+  is RR07 §BC2's **character for character** — compared by `ast.literal_eval` against the
+  archived RR07's own bytes, never against my transcription of it — and it matches the
+  shipped `guard-doctrine.md` exactly once. Its `Mutation(...)` entry exists, names
+  `guard="test_lesson_graduation"` and that same test, and its block is RR07's block
+  verbatim, resolving 1x in the target. Probe replayed this phase in a `git archive HEAD`
+  scratch copy whose baseline was verified green FIRST (627, exit 0): deleting §7's
+  operative remedy sentence reds the skills suite, and the failures name exactly
+  `test_sweep_section_states_the_silent_cell_rule` plus its harness entry; restoring
+  returns green, target byte-identical after. The work log supersedes T4's "pinned
+  separately" claim by an appended line (`:150`), and the T4 entry itself is unedited —
+  the only in-place edits to this file across the pass are the status mirror and four task
+  checkboxes, both permitted write-modes.
+- AC3 (BC3) — **verified.** `test_lesson_graduation.py:94`
+  (`test_absence_section_states_the_matcher_rendering_rule`) carries an `assertRegex` whose
+  pattern is RR07 §BC3's character for character, by the same `ast` comparison, matching
+  the shipped module exactly once; the truncated bare `assertIn` lead-in is gone
+  (searched, 0 hits). Its registered block in `test_mutation_harness.py` is the full
+  sentence, resolving 1x. Probe, same verified-green scratch copy: deleting the
+  continuation **while keeping the lead-in intact** reds the suite, naming
+  `test_absence_section_states_the_matcher_rendering_rule` and its harness entry; restore
+  green, byte-identical after. The mutant demonstrably still contains the lead-in the
+  pre-fix `assertIn` pinned, so the probe proves the widened assert catches precisely what
+  the old one let through — pass-6 F2's defect class, closed rather than argued.
+- AC4 (BC4) — **verified**, and verified against RR07 rather than against my reading of
+  the rows: both replacement clauses were normalized out of the archived RR07's own bytes
+  and then found in `cairn/ROADMAP.md` verbatim and unwrapped. This is the check pass 6
+  found missing — F3 (90) was a row verified against its author's reading of it. All three
+  tolerances hold. (1) `grep -n "zero coverage\|two such\|more than a handful"` over the
+  ROADMAP: **0 hits**. (2) Quoted attributions: rec 5's transcribed RR06 falsifier is
+  located in RR06 (whitespace-normalized, since RR06 wraps mid-phrase and a plain `grep`
+  misses it); the only other double-quoted span across all three rec rows is rec 4's
+  `"repo-wide"`, located in this milestone file, its named source. Rec 5 and rec 6 carry
+  no other quoted material. (3) The rec 6 row is byte-identical across the pass — a first
+  `grep -c` reported 1 hit in the diff, which was diff CONTEXT, not a change: the line
+  prefix is a space, `-U0` gives 0 changed lines touching it, and extracting the row from
+  `886917d` and from `HEAD` and comparing gives identical. Recorded because a miscounted
+  evidence command is how a false negative enters a record (pass 3).
+- AC5 (BC5) — **verified.** The certifier was a fresh-context [O] agent spawned for this
+  purpose alone; it authored no part of pass 7 and was given the four clauses as RR07
+  states them. Its verdict is recorded verbatim in the work log at `:154` —
+  **"CLEAN — 0 unresolved discrepancies"** — and, because zero discrepancies is the whole
+  point of the clause, the entry also records the four NON-counted observations it
+  returned rather than letting a clean verdict hide them. Two of those were mine and were
+  rewritten rather than accepted as imprecision, and the rewrite was re-certified, again
+  **"CLEAN — 0 unresolved discrepancies"**, on files AST-identical to the pre-rewrite
+  commit. So the gate is entered at zero unresolved. Tolerance 2 holds and is measured,
+  not asserted: no skill or doctrine file changed in the pass-7 delta at all
+  (`git diff --name-only 886917d..HEAD` matches no `SKILL.md` and no `shared/*.md`), the
+  three rec rows are still ROADMAP candidate rows marked "banked outside M114 per its
+  BC8" (3 of 3), and searching `skills/` for the distinctive wording of recs 4, 5 and 6
+  returns 0 files each — their banking stands, and the certification ran as a one-off
+  process step per RR07 Q3, adding zero diff lines.
+- AC6 (BC6) — **verified, every projection met exactly.** Three suites from the repo
+  root, each redirected to a file with the exit code captured before any pipe: skills
+  **627** / scripts **280** / hooks **91**, exit 0 each. `python3
+  scripts/cairn_validate.py` exit 0, 16 PASS and **zero** advisories. `Mutation(...)`
+  entries naming `guard="test_lesson_graduation"`, AST-counted at both refs rather than
+  grepped: **13 at the ingest commit, 14 at HEAD** — exactly the projected 14, one added
+  by BC2 with BC3 amending its block in place. Blanking: the harness's
+  `TestRegisteredGuardsFailWhenBlanked` walks all 385 registered entries, blanking each
+  and requiring its named test to fail; it passes, so **0 survivors**. Both probes were
+  replayed this phase in a `git archive HEAD` scratch copy whose baseline was verified
+  green FIRST (627, exit 0) — the partial-copy red-baseline trap pass 3 hit —
+  **2/2 red on mutation, 2/2 green on restore**, target byte-identical after each restore,
+  and the repo tree never mutated.
+
+**Consistency gate.** `cairn_validate` exit 0 — 16 PASS including `coverage complete`,
+`weight caps`, `mirror agreement` and `binding criteria` (which string-diffs the AC block
+against the archived RR07), and for the first time across all seven passes **zero
+advisories**: the `sizing` WARN that stood at 11 and then 8 criteria is gone at 7.
+`cairn_impact` N/A — `git diff --name-only origin/main..HEAD -- cairn/DESIGN.md` is empty,
+so no principle changed; the header's GP4/IP2 are principles the milestone works under,
+not ones it edits. Profile `consistency-gate` is `generic` — none, a clean no-op.
+
+**Projection-vs-outcome (Driving RR07).** Every numeric projection RR07's binding criteria
+carry, beside its measured outcome:
+- BC6 skills suite: **measured 627 against projected 627**; scripts **280 against 280**;
+  hooks **91 against 91** (tolerance: exit 0 each, never piped — held).
+- BC6 `Mutation(...)` entries naming `guard="test_lesson_graduation"`: **measured 14
+  against projected exactly 14**, from the measured 13 at the ingest commit.
+- BC6 blanking survivors: **measured 0 against projected 0**.
+- BC6 probe mutations: **measured 2/2 red against projected 2/2 red**.
+- BC6 probe restores: **measured 2/2 green against projected 2/2 green**.
+- BC1 files under `skills/` in the pass: **measured exactly 2 against projected exactly 2**.
+- BC4 forbidden-phrase hits in the ROADMAP: **measured 0 against projected 0**.
+
+No shortfall on any projection, and no departure, so the Deviations table is not entered
+for this pass.
