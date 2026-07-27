@@ -20,7 +20,7 @@ about whether a detector can see its target.
 falsifying-promotion-condition rule (`tracking-rules.md`) · `guard-doctrine.md` §3/§7 ·
 the guards over all three, including the two gaps RR07 §BC2/§BC3 close · D-064/D-065/D-066
 · the rec 4 and rec 5 rows · pass 8: the two record supersessions closing pass-7 F1 and
-F5, the widened converse assert, a candidate row for the three inherited lead-ins, and the
+F5, the widened converse assert, a candidate row for the three inherited partial pins, and the
 rec 5 tally's re-attribution.
 
 **Out:** the one-surface pin → candidate · `cairn_validate` mechanization of these rules
@@ -64,7 +64,7 @@ which is where its binding text permanently lives.
       description on both its errors — the dropped across-sweep half, and the converse
       promoted from optional to required. Artifacts change in place: the converse assert
       widens to §7's full shipped sentence and its registered block is replaced by the
-      same bytes, each proven to red; the three inherited lead-ins get a ROADMAP candidate
+      same bytes, each proven to red; the three inherited partial pins get a ROADMAP candidate
       row whose promotion condition names an evidence class, not a count; and rec 5's
       `eight coverage findings` tally, which reads as RR06's and is locatable nowhere in
       it, is re-attributed in place to M114's own review record and marked (D-045), each
@@ -96,7 +96,7 @@ which is where its binding text permanently lives.
 
 - [x] T1-T15: doctrine, guards, D-064/D-065, the re-cut, RR05's design, RR06's sixth pass — detail in the work log and six Review sections.
 - [x] T16-T19: pass 7's closed-form work — F1/F2 per §BC2/§BC3, the rec 4/5 rows, the description-layer certification, the derived scope, the replayed probes and the terminus (AC1-AC7); detail in the work log and Review pass 7.
-- [x] T20: close F1 and F5 and file the two owed records — the superseding work-log line, the superseding D-entry, the widened converse assert and its registered block, the ROADMAP row for the three inherited lead-ins, and the rec 5 correction (AC8).
+- [x] T20: close F1 and F5 and file the two owed records — the superseding work-log line, the superseding D-entry, the widened converse assert and its registered block, the ROADMAP row for the three inherited partial pins, and the rec 5 correction (AC8).
 - [ ] T21: gate — three suites and `cairn_validate` with exit codes checked separately, blanking survivors measured, and the §8 description-layer certification at zero unresolved (AC9).
 
 ## Work log
@@ -172,6 +172,9 @@ which is where its binding text permanently lives.
 - 2026-07-26: CLARIFIES the supersession line above, which quotes T18 and T19 as calling the four asserts `"PRE-EXISTING"`. The T18 entry uses the capitalized form quoted; the T19 entry uses lowercase `pre-existing`. The claim about what both entries assert is unchanged and correct; only the quotation is exact for one of the two. Cited by entry rather than by line, because a work log grows and my first draft of this line had already cited T19 at a line number four entries stale. Appended, never edited (IP4).
 - 2026-07-26: CLARIFIES the GATED AMENDMENT entry above, which itemizes the AC block and Scope. The same amendment also rewrote two other plan-owned sections in place: `## Tasks` collapsed T16-T19 into one done line, and `## Coverage` collapsed its two lines into one carrying all nine mappings. Both are within implement's check-off and minor-edit mode and both were part of the text shown at the gate; the entry simply did not name them.
 - 2026-07-27: T21 — §8 DESCRIPTION-LAYER CERTIFICATION, first round. A fresh-context [O] reader that authored no part of M114 ran §8's three checks over the pass-8 delta `1a15915..HEAD` and returned **"NOT CLEAN — 4 unresolved discrepancies"**, every one in my own records and none in the code. (1) The candidate row's "each literal is a strict prefix of its sentence" is false for `:51`, whose literal starts six characters in — and it is the clause claiming to have been verified against bytes. (2) The Deviations row's re-measured funding figures are wrong again: AC8-AC9 are 19 lines not 17 and the preamble 8 not 7, because I counted them before the re-audit's fixes widened AC8 and never re-counted — a measure-once defect inside the row rewritten to remove one. (3) The row credits RR07 §BC2 with closing an instance of this class; §BC2 made a test gain a FIRST assert over prose pinned by nothing, which is a different defect, so one instance was hand-closed, not two. (4) The new test comment calls the replaced anchor a "lead-in"; it started mid-sentence, so `Stronger still,` deleted green too. All four fixed rather than argued down, and each fix re-derived from the file rather than from the finding. Four non-counted observations recorded, none a mismatch with an artifact: D-068's "exactly the across-sweep clause" is thin under a strict reading of pass-6 F1's subject; the amendment entry did not itemize the Tasks/Coverage rewrite (clarified above); the `"PRE-EXISTING"` quotation is exact for T18 only (clarified above); and the row cites the string-literal lines `:45`/`:125` where the `assertIn` calls open at `:44`/`:124`.
+
+- 2026-07-27: T21 — §8 certification, ROUND 2. The certifier confirmed all four round-1 fixes land, re-deriving each from the files rather than from my description of the fix, and returned **"NOT CLEAN — 2 unresolved discrepancies"** on material round 1 had not seen. (1) SUPERSEDES the GATED AMENDMENT entry above, which says AC1-AC7 are "each naming pass 7's commits (`886917d..b304cbf`)": only TWO do — AC1 names the range and AC6 names `b304cbf`; AC2-AC5 and AC7 name no commit. The narrower claim in the entry below it ("neither AC1 nor AC6 named pass 7's gate commit", of the pre-fix text) is correct and unaffected. The false "each" is the same universal-quantifier shape as round 1's discrepancy (1), one round later, which is worth recording as the shape rather than the instance. (2) The candidate row was titled "Truncated lead-in asserts" while its own body establishes the class is a partial pin and not specifically a lead-in — the round-1 correction applied to the sentence it was found in and left standing in the label, and in AC8, Scope In and T20 with it. Renamed in all four; a wording refinement with no change to the deliverable, so minor per the amendment protocol.
+- 2026-07-27: CLARIFIES my own round-1 T21 entry above on two counts the certifier raised as non-counted observations. Its "every one in my own records and none in the code" is loose: round-1 discrepancy (4) was a comment inside `skills/tests/test_lesson_graduation.py`, so it is description-layer but lives in a source file, not in a tracking record. And the supersession entry's "`git log -S` returns `20c7b4a` alone" was true when measured and is now stale by construction — this pass's own commits touch those lines, so the same command today returns `20c7b4a` plus them. The provenance claim it supports is unaffected: `20c7b4a` remains the commit that introduced the phrase, and `main` still has 0 occurrences. Appended, never edited (IP4).
 
 ## Decisions
 
