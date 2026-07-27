@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M118 | The milestone-local `## Decisions` section is history and joins the cap-exempt set (D-074, supersedes D-046's choice 3) | blocked | — | normal | milestones/M118-decisions-section-cap-exempt.md |
+| M118 | The milestone-local `## Decisions` section is history and joins the cap-exempt set (D-074, supersedes D-046's choice 3) | planned | — | normal | milestones/M118-decisions-section-cap-exempt.md |
 | M117 | Detector coverage on the site axis, and a plan gate that records the alternative it rejected (intraclass M93 passes 6–9) | done | — | normal | milestones/archive/M117-detector-site-axis-and-recorded-alternative.md |
 | M116 | Repair the three-step placement test — retention takes the deletion arm, inversion moves to guard verification, and a step-0 single-home check (RR04 rec 9) | done | — | normal | milestones/archive/M116-placement-test-repair.md |
 | M115 | Fresh-context reader instruments — plan-gate criteria audit and independent description-layer certification (RR06 recs 4–5) | done | — | normal | milestones/archive/M115-fresh-context-reader-instruments.md |

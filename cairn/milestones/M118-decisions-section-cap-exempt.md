@@ -3,10 +3,10 @@
      Per-section owners are tagged below. Drafting budgets: see the template. -->
 # M118: The milestone-local `## Decisions` section joins the cap-exempt set
 
-- **Status:** blocked
+- **Status:** planned
 - **Priority:** normal
 - **Depends on:** —
-- **Driving RR:** —
+- **Driving RR:** RR08
 - **Principles touched:** IP4
 - **Branch/PR:** —
 
@@ -19,9 +19,11 @@ third exempt member through every surface that enumerates the set.
 ## Scope
 
 **In:** the cap counter and its heaviest-first breakdown; the session-start
-read-bound for cap-exempt sections; a wrapped-entry advisory for the
+read-bound for cap-exempt sections; a genre-appropriate format advisory for the
 newly-unbudgeted section; every rulebook, template, and guard site that names
-the exempt set; a D-entry superseding D-046's choice (3).
+the exempt set; the rulebook's history-class member enumeration
+(`tracking-rules.md:205-207`, admitted at RR08 ingestion — without it the
+rulebook contradicts D-074); a D-entry superseding D-046's choice (3).
 
 **Out:** redistributing the ≥21 template lines the exemption frees into the
 per-section drafting budgets → candidate row (maintainer's call at this gate,
@@ -32,43 +34,55 @@ governs carry-by-reference as a tabled deviation.
 
 ## Acceptance criteria
 
-- [ ] AC1: `milestone_body_line_count` excludes an exact `## Decisions`
-      heading's section from the plan-owned body, matching the section by the
-      same shared heading constant and fence rules the work-log exemption uses;
-      a fenced `## Decisions` and a `## Decisions notes` heading both stay
-      counted. Evidence: fixtures in `scripts/tests` for the exact, fenced,
-      prefixed, and absent cases.
-- [ ] AC2: `milestone_section_line_counts` omits `## Decisions` from the
-      heaviest-first breakdown, so an over-cap diagnostic never names a section
-      IP4 forbids editing, and the documented `preamble + sections == body`
-      invariant (`cairn_scripts.py:436-441`) still holds. Evidence: a fixture
-      whose Decisions section is the largest section reports a breakdown that
-      does not name it, plus an invariant assertion.
-- [ ] AC3: A committed ledger re-measures every milestone file in this repo's
-      git history at its **peak plan-owned revision**, under both the old and
-      new counters, and reports per file. Every file whose peak exceeded the cap
-      falls below it under the new counter. The ledger carries the numbers; no
-      criterion or prose here restates them (M99).
-- [ ] AC4: `hooks/session_context.py` read-bounds `## Decisions` as a third
-      cap-exempt section per D-063, and `SECTION_MAX_CHARS`'s justifying comment
-      is re-derived over all three section types from a fresh measurement rather
-      than left asserting a p90 over two. Evidence: a hook test that a long
-      Decisions section injects newest-first and states what it omitted.
-- [ ] AC5: A `decisions format` advisory WARNs, exit-code neutral, on a
-      milestone-local `## Decisions` entry that is not a one-line `- ` entry,
-      reading the section through a shared extractor that takes its heading and
-      fence rules from the same constant AC1 exempts — the hole
-      `milestone_worklog_lines` (`cairn_scripts.py:394-397`) names.
-- [ ] AC6: Every site that enumerates the cap-exempt set names all three
-      members and each member's own reason: the rulebook's weight-caps bullet,
-      its cap-remedies bullet, and its always-read frame row and frame prose
-      (`tracking-rules.md:184-186`); the milestone template's budget preamble
-      and its `## Decisions` and `## Review` comments; and
-      `test_milestone_cap_exemption.py`, whose set-membership assert
-      (`:62`) is deliberately anchored on the whole set and must be re-anchored,
-      not merely appended to. No site is left naming a two-member set.
-- [ ] AC7: `python3 -m unittest` clean over all three suites (the `generic`
-      profile's `verify` slot), and `cairn_validate` green.
+- [ ] AC1: `milestone_body_line_count` excludes an exact `## Decisions` section,
+      matched by the same shared constant and fence rules the work-log exemption
+      uses; a fenced `## Decisions` and `## Decisions notes` both stay counted.
+      Fixtures: exact, fenced, prefixed, absent.
+- [ ] AC2: `milestone_section_line_counts` omits it from the heaviest-first
+      breakdown, so no over-cap diagnostic names a section IP4 forbids editing,
+      and `preamble + sections == body` (`cairn_scripts.py:436-441`) still holds.
+- [ ] AC3: A committed ledger re-measures every milestone file's **peak
+      plan-owned revision** under both counters; every file whose peak exceeded
+      the cap falls below it. It carries the numbers; no prose here does (M99).
+- [ ] AC4: `hooks/session_context.py` read-bounds `## Decisions` per D-063, and
+      `SECTION_MAX_CHARS`'s justifying comment is re-derived over all three
+      section types from fresh measurement, not left asserting a p90 over two.
+      Test: newest-first injection plus the omission notice.
+- [ ] AC5: A `decisions format` advisory WARNs, exit-code neutral, on pasted
+      output or a fenced transcript block in the section — its own genre, never
+      the work log's one-line grammar (D-075) — read through AC1's shared
+      extractor, closing the hole `milestone_worklog_lines` names.
+- [ ] AC6: Every site enumerating the cap-exempt set names all three members and
+      each member's stated reason: the rulebook's weight-caps and cap-remedies
+      bullets and its always-read frame row and prose (`:184-186`); the
+      template's budget preamble and its `## Decisions` / `## Review` comments;
+      and `test_milestone_cap_exemption.py:62`, whose set-membership assert is
+      anchored on the whole set and is re-anchored, never appended to. No
+      two-member set survives.
+- [ ] AC7: All three suites clean (the profile's `verify` slot), `cairn_validate` green.
+- [ ] AC8 (BC1): RR08 §BC1 — the rulebook's history-member enumeration names
+      this section, pinned per the file's mutation rules.
+- [ ] AC9 (BC2): RR08 §BC2 — a test reds whenever the hook's
+      `CAP_EXEMPT_SECTIONS` and the counters' effective exempt set disagree
+      either way, via mirrored constants read from each side (the hook imports
+      only `cairn_common`, so no shared constant is reachable).
+- [ ] AC10 (BC3): RR08 §BC3 — the shipped advisory emits exactly 0 WARNs over
+      the whole `## Decisions` sections of M83, M84, M94, M98 and M114 as
+      fixtures, and >=1 on a constructed pasted-output fixture.
+- [ ] AC11 (BC4): RR08 §BC4 — M118's own `## Decisions` holds only dated
+      decision entries; the AC3 ledger lands as a committed file.
+
+**Deviations from RR08.** AC8-AC11 carry RR08's binding criteria **by reference**
+to the archived RR, never softened: verbatim measured ~150 plan-owned lines and
+reds `weight caps` at the ingest gate — the D-066 choice-4 case, 2026-07-27.
+
+| BC | Departure | Reason |
+|---|---|---|
+| BC1 | by reference | cap; text lives in archived RR08 §BC1 |
+| BC2 | by reference; "shared constant" resolved to *mirrored* | cap; hooks import only `cairn_common` |
+| BC3 | by reference; 0-WARN arm bound to whole sections, detector scoped to pasted output / fenced blocks | cap; BC3 left both open |
+| BC4 | by reference; committed-file horn taken | cap; `## Review` is review-exclusive, T3 is an implement task |
+
 
 ## Coverage
 
@@ -78,36 +92,36 @@ governs carry-by-reference as a tabled deviation.
 - AC4 → T4
 - AC5 → T5
 - AC6 → T6
-- AC7 → T7
+- AC7 → T8
+- AC8 → T6
+- AC9 → T7
+- AC10 → T5
+- AC11 → T3
 
 ## Tasks
 
-- [ ] T1: Add the shared `DECISIONS_HEADING` constant beside `WORKLOG_HEADING`
-      (`cairn_scripts.py:97`) and a `milestone_decisions_lines` extractor
-      mirroring `milestone_worklog_lines`, so the exemption and the advisory
-      read one section by one rule.
-- [ ] T2: Exempt the section in `milestone_body_line_count` and drop it from
-      `milestone_section_line_counts`; update both docstrings, which state the
-      exempt set and its reasons. Fixtures first (exact/fenced/prefixed/absent
-      plus the sum invariant), red before the change.
-- [ ] T3: Write the peak-revision ledger script over `git log --all` for
-      `cairn/milestones/M*.md`, run it under both counters, and commit the
-      per-file table into this file's `## Decisions`— which by then costs no
-      budget, the exemption's first use.
-- [ ] T4: Add `"decisions"` to `CAP_EXEMPT_SECTIONS`
-      (`hooks/session_context.py:56`); re-measure p90 across all three section
-      types over the live-milestone corpus and re-derive `SECTION_MAX_CHARS`'s
-      comment from that measurement. Hook test for the newest-first bound and
-      the omission notice.
-- [ ] T5: Add `check_decisions_format` beside `check_worklog_format`
-      (`cairn_validate.py:1321`), register it in `ADVISORIES` (`:1590`), and
-      fixture both arms (wrapped → WARN + exit 0; clean → OK).
-- [ ] T6: Re-anchor the guard and update the prose sites in AC6. The
-      set-membership assert is registered in the mutation harness — re-register
-      the new anchor and verify by mutation that deleting the three-member
-      sentence reds it (guard-doctrine; the harness cannot catch a swap, which
-      is why the whole set is the anchor).
-- [ ] T7: Full `verify` + `cairn_validate`; post-merge hygiene.
+- [ ] T1: Add `DECISIONS_HEADING` beside `WORKLOG_HEADING` (`cairn_scripts.py:97`)
+      and a `milestone_decisions_lines` extractor mirroring the work log's, so
+      exemption and advisory read one section by one rule.
+- [ ] T2: Exempt the section in `milestone_body_line_count`, drop it from
+      `milestone_section_line_counts`, update both docstrings. Fixtures first
+      (exact/fenced/prefixed/absent + the sum invariant), red before the change.
+- [ ] T3: Peak-revision ledger over `git log --all`, run under both counters,
+      committed as its own file (amended at RR08 ingestion: it is AC3 evidence,
+      not a decision).
+- [ ] T4: Add `"decisions"` to `CAP_EXEMPT_SECTIONS` (`session_context.py:56`);
+      re-measure p90 over all three section types and re-derive
+      `SECTION_MAX_CHARS`'s comment. Hook test per AC4.
+- [ ] T5: `check_decisions_format` beside `check_worklog_format`
+      (`cairn_validate.py:1321`), registered in `ADVISORIES` (`:1590`);
+      pasted-output/fenced detector. Fixtures per AC10.
+- [ ] T6: Re-anchor the set-membership guard and update AC6's and AC8's prose
+      sites; re-register the anchor and verify by mutation that deleting the
+      three-member sentence reds it.
+- [ ] T7: Mirror the exempt-set constant across both modules; two-sided
+      consistency test with a by-hand one-sided-removal red check.
+- [ ] T8: Full `verify` + `cairn_validate`; post-merge hygiene.
+
 
 ## Work log
 
@@ -116,10 +130,34 @@ governs carry-by-reference as a tabled deviation.
 - 2026-07-27: plan gate classified the section as history (D-045) over current knowledge, because the ownership table already makes it append-only and the alternative is self-defeating — a correctable section is trimmable, and a trimmable section has no claim to the un-editability exemption; falsified by a milestone-local decision that must be corrected in place rather than superseded by a later entry in the same section.
 - 2026-07-27: escalation offered at the gate on the `ip-touching` tripwire (the classification extends IP4's reach to a new section) and declined by the maintainer, who returned the call to the session.
 - 2026-07-27: blocked on RB08 — the maintainer reversed the gate's escalation decline and sent the history-vs-current-knowledge classification (D-074 part 1) to independent review before any code is written.
+- 2026-07-27: RR08 ingested; classification upheld, four binding criteria carried by reference, AC5/T3/T5 amended and T7 added at the gate; status back to `planned`.
+- 2026-07-27: ingest gate chose carry-by-reference over compressing the heaviest plan-owned section, because verbatim measured ~150 lines against a 149 ceiling and compression would repeat M114's zero-headroom end state; falsified by a plan-owned section whose compression frees the criteria set without touching content the AC or Coverage maps depend on.
+- 2026-07-27: RR08 rec 6 applied as supporting context, not a second ground — the section was never plan-owned (the template's own budget preamble says plan spends none of it), which independently explains why a plan-discipline budget never should have charged it.
+- 2026-07-27: ingestion put the file at 172/149 and the AC and Tasks sections were compressed in one pass each to reach 149/149 — zero headroom, M114's end state exactly. The 24 lines that broke it are this milestone's own `## Decisions` section, which stops counting at T2: M118 is over cap for the reason M118 exists.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
      cross-cutting ones to cairn/DECISIONS.md -->
+
+- 2026-07-27 (RR08 Q1/Q2): classification UPHELD — the section is history. Forward
+  grounds: entries are dated dispositions, the section is DECISIONS.md's declared local
+  shard, and M83-D3 is the corpus's one live correction, handled by supersession. D-074's
+  "self-defeating" clause is a coherence check that cannot pick the horn — not load-bearing.
+- 2026-07-27 (RR08 Q3): the ownership route (exempt as differently-owned, no IP4
+  extension) is real but REJECTED as the route — it leaves the record class undecided,
+  re-creating the gap D-045 exists to close. Kept as supporting context only (rec 6).
+- 2026-07-27 (RR08 Q4): cost-if-wrong is an acceptable OUTCOME, not a tolerated tax —
+  the plan-time harvest surface does not reach a live milestone's section, and the
+  D-066/D-067 post-mortems depended on exactly the unedited trail.
+- 2026-07-27 (RR08 Q5): AC5's transplanted one-line grammar was a real plan defect —
+  all 13 M114 entries wrap, so it would WARN permanently on the files the exemption
+  serves. Redefined against the section's own genre; D-075 narrows D-074 part 3.
+- 2026-07-27 (RR08 recs 7-8, REJECTED with reasons in the RR): the third-option route,
+  and any "current knowledge with restrictions" hedge, which D-045's taxonomy lacks.
+- 2026-07-27 (RR08 ingest gate): BC1-BC4 carried BY REFERENCE under the Deviations
+  table — verbatim measured ~150 plan-owned lines and would red `weight caps` at this
+  gate, the D-066 choice-4 case. Four ambiguities the criteria-audit surfaced were bound
+  at the gate, each recorded as a Deviations row.
 
 ## Review
 <!-- owner: review · exclusive -->

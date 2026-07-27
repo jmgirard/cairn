@@ -2411,3 +2411,45 @@ because that block has drifted twice before and is a measurement pass of its
 own. Delivered by M118. If an unbudgeted Decisions section is ever observed
 absorbing pasted output despite the advisory, the advisory's severity is the
 entry to supersede.
+
+### D-075 (2026-07-27): The `decisions format` advisory takes the section's own genre, not the work log's one-line grammar — narrows D-074 part 3's grammar clause; D-074 parts 1 and 2 stand (RR08 Q5)
+
+**Context:** D-074 part 3 specified the counterweight advisory for the
+newly-unbudgeted `## Decisions` section as WARNing on "an entry that is not one
+line", transplanting the `work-log format` advisory's grammar. RB08 escalated
+the record-class question that D-074 part 1 settles; RR08 upheld that
+classification and, beyond the brief, found the grammar clause defective. The
+work log had a pre-existing one-line mandate its advisory merely enforces; the
+`## Decisions` section has never had one, and its observed genre at size is the
+opposite. Measured over the corpus RR08 read: all 13 of M114's entries wrap to
+2–3 physical lines, M83's are paragraphs, M84 and M98 use `### M<NN>-D<n>`
+sub-headings with paragraph bodies, M94's run 2–5 lines each. A decision entry
+structurally carries its rationale the way a `DECISIONS.md` entry does. So the
+grammar as written would either strip rationale out of the record — destroying
+the value that makes the section history at all — or WARN permanently on every
+normal entry in exactly the M114-shaped files the exemption exists to serve.
+A permanently-warning advisory trains the operator to ignore advisories.
+
+**Decision:** The advisory's subject is **pasted output and fenced transcript
+blocks inside the section**, not entry length. Its measurable form is RR08's
+BC3, ingested into M118 as AC10: exactly 0 WARNs over the whole `## Decisions`
+sections of M83, M84, M94, M98 and M114 as fixtures, and ≥1 on a constructed
+pasted-output fixture. Where BC3 left the 0-WARN arm open between "the whole
+sections" and "the enumerated forms only", the ingest gate bound it to the
+whole sections: the enumeration omits forms the corpus actually contains
+(M83's undated `- **M83-D1:` bullets, M94's bare pointer prose), and the weaker
+reading would let a detector pass by dodging them. Rejected: keeping the
+one-line grammar (measured to WARN on every entry in the corpus); dropping the
+advisory entirely (D-046 rejected shipping an exemption bare, and that
+reasoning is unchanged — something must watch a section that has stopped
+costing budget).
+
+**Consequences:** Narrows D-074 part 3's grammar clause only. D-074 parts 1
+(the history classification) and 2 (the cap exemption and its reason) stand
+unchanged, and RR08 independently upheld part 1 on forward-direction grounds.
+D-046's underlying concern is preserved, not weakened — what changes is what
+the watch is looking for. The concrete detection mechanism stays the
+implementer's choice, bounded by AC10's two arms. Delivered by M118. If the
+pasted-output detector proves unable to hit both arms over the named corpus,
+the entry to supersede is this one, and the alternative on the table is a
+narrower fenced-block-only subject.
