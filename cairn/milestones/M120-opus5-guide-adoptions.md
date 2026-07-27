@@ -106,7 +106,7 @@ waits for M119 to merge rather than being transcribed onto a row main lacks.
       `TestShippedPageStateLedger.EXPECTED`; add the work-log justification
       line the ledger contract requires. `python3 -m unittest` over
       `scripts/tests` green from the repo root, exit code checked.
-- [ ] T3 — Write the correction-narration rule into `tracking-rules.md`'s
+- [x] T3 — Write the correction-narration rule into `tracking-rules.md`'s
       Output & interaction discipline, adjacent to "Narrate outcomes, not
       deliberation" (D-039's central-rule-only wiring). Author the guard by
       copying the shipped bytes (LESSONS 2026-07-20/M95); add one mutation
@@ -143,6 +143,7 @@ waits for M119 to merge rather than being transcribed onto a row main lacks.
 - 2026-07-27: T2 — `TestShippedPageStateLedger.EXPECTED` gains `prompting-opus-5.md: "ok"` (the ledger contract's required justification): the page's extraction status claims a verification and carries the date `2026-07-27`, so `_last_verified` resolves `verified` → freshest non-future date → `ok`; no partial or negated clause appears in the status.
 - 2026-07-27: minor amendment — T2 landed in T1's checkpoint commit rather than its own, because adding the page without its ledger pin leaves `scripts/tests` red and T1 could not be checked off against a clean verify slot. Task text unchanged.
 - 2026-07-27: implement gate chose wording the new delegation rule to say why the review fan-out's several agents are not the case it forbids (they carry distinct evidence, not one task done three times) over stating the two clauses bare, at the user's direction, because both rules land in the same rulebook section; falsified by a reader still reading the two as contradictory.
+- 2026-07-27: T3 — correction-narration rule added to Output & interaction discipline after "Narrate outcomes, not deliberation"; step-0 one-home checked, the corpus states nothing about narrating a chat correction and the nearest rule ("Correcting a record proven false") governs tracking records, so the new rule cross-references it rather than restating it. Guard is four asserts in `test_narration_discipline.py`, each phrase copied from the shipped bytes and each carrying its own mutation entry; all four verified to redden when blanked.
 - 2026-07-27: implement gate chose placing each new guard with the file that owns its topic — correction narration into `test_narration_discipline.py`, delegation into a new file — over one milestone-named file, at the user's direction; falsified by the narration file growing beyond one subject.
 
 ## Decisions

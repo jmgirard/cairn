@@ -3237,6 +3237,39 @@ class TestRegistryCompleteness(unittest.TestCase):
         )
 
 
+# M120: the correction-narration rule adopted from the Opus 5 prompting guide.
+# One entry per assert, not per guard file: the rule's four claims — the
+# materiality bar, the plain-and-continue form, the unremarked slip, and the
+# boundary against D-045's record repair — each carry it independently, so a
+# single entry would leave three asserts unproven (M53 per-block discipline).
+REGISTRY += [
+    Mutation(
+        guard="test_narration_discipline",
+        test="TestCorrectionNarrationRule.test_rule_states_the_materiality_bar",
+        target=RULES,
+        block="only when the error would change the user's code, conclusions,",
+    ),
+    Mutation(
+        guard="test_narration_discipline",
+        test="TestCorrectionNarrationRule.test_rule_requires_plain_correction_then_continue",
+        target=RULES,
+        block="State the correction plainly and briefly, then continue the",
+    ),
+    Mutation(
+        guard="test_narration_discipline",
+        test="TestCorrectionNarrationRule.test_rule_leaves_an_immaterial_slip_unnarrated",
+        target=RULES,
+        block="A slip that changes nothing for the user is fixed without narrating it,",
+    ),
+    Mutation(
+        guard="test_narration_discipline",
+        test="TestCorrectionNarrationRule.test_rule_separates_chat_slips_from_durable_records",
+        target=RULES,
+        block="A chat slip never reaches a durable record",
+    ),
+]
+
+
 class TestRegisteredGuardsFailWhenBlanked(unittest.TestCase):
     def test_each_registered_guard_fails_when_its_block_is_blanked(self):
         self.assertTrue(REGISTRY, "registry is empty")

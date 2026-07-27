@@ -550,6 +550,17 @@ cairn skill is active.
   a compact summary where a question needs context is fine (D-039).
   This never licenses compressing mandated substance: the Durable-record
   preview and Acceptance chips rules still show their text verbatim.
+- **Correct what matters, and only narrate that.** Correct an earlier chat
+  statement only when the error would change the user's code, conclusions,
+  or decisions. State the correction plainly and briefly, then continue the
+  task — no preamble, no apology, no tally of what went wrong.
+  A slip that changes nothing for the user is fixed without narrating it,
+  because narrating it spends the user's attention on the author's process
+  rather than on the work. A chat slip never reaches a durable record: a
+  tracking file proven false is repaired under "Correcting a record proven
+  false" above — current knowledge corrected in place and marked, history
+  superseded and never edited (D-045). The two are different acts, and
+  conflating them turns every noticed typo into a record.
 - **Durable-record preview.** Newly authored durable-record text — a
   D-entry, a milestone file's plan-owned sections (new or via a gated
   amendment), a LESSONS line, an archive summary, a ROADMAP
