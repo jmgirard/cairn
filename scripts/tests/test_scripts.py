@@ -1409,8 +1409,12 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # judgments with "nothing to re-verify" against — which classifies `exempt`,
     # the state that hygiene pass intended (its ROADMAP stamp: "the references-
     # staleness advisory now clears"). Pin moved `partial` → `exempt` to match.
+    # M118 adds the cap-exemption peak-revision ledger: a first-hand
+    # measurement of this repo's own frozen git history, whose extraction
+    # status says there is nothing to re-verify against, hence `exempt`.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
+        "m118-cap-exemption-ledger.md": "exempt",
         "backlog-meridian.md": "ok",
         "bmad-method.md": "ok",
         "ccpm.md": "ok",

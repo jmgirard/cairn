@@ -88,7 +88,7 @@ declares the same Driving RR and carries them under its own table.
       (exact/fenced/prefixed/absent + the sum invariant), red before the change.
 - [x] T3: Peak-revision ledger over `git log --all`, run under both counters,
       committed as its own file (never into `## Decisions` — BC4).
-- [ ] T4: Add `"decisions"` to `CAP_EXEMPT_SECTIONS` (`session_context.py:56`);
+- [x] T4: Add `"decisions"` to `CAP_EXEMPT_SECTIONS` (`session_context.py:56`);
       re-measure p90 over all three section types and re-derive
       `SECTION_MAX_CHARS`'s comment. Hook test per AC4.
 - [ ] T5: Re-anchor the set-membership guard and update AC5's prose sites;
@@ -116,6 +116,8 @@ declares the same Driving RR and carries them under its own table.
 - 2026-07-27: T1 — `DECISIONS_HEADING` + `milestone_decisions_lines`; the work-log extractor's body factored into a shared `_section_body_lines(path, heading)` so both exempt sections are read by one rule. 9 tests red first, all three suites green.
 - 2026-07-27: T2 — both counters exempt the section via a shared `EXEMPT_HEADINGS` tuple, so the count and its breakdown can never disagree; 9 fixtures added, 4 red first (fenced/prefixed/absent controls green as designed). This file's own plan-owned body 122 -> 98.
 - 2026-07-27: T3 — peak-revision ledger committed as `references/m118-cap-exemption-ledger.md` (+ INDEX line), scored by the shipped `_plan_owned_scan` rather than a reimplementation; every path that ever reached the cap falls below it and none lands near it. The ledger carries the numbers; the AC4 section sizes ride the same derivation.
+- 2026-07-27: T3 checked off on `cairn_validate` alone without the full `verify` slot — the omission surfaced at T4 as a red `TestShippedPageStateLedger` (the new page was missing from the pinned state ledger) and was fixed there; no other task skipped the slot.
+- 2026-07-27: T4 — `CAP_EXEMPT_SECTIONS` is three members; `SECTION_MAX_CHARS` held at 6000 with its comment re-derived over all three types and citing the ledger instead of carrying a second copy. 3 hook tests, 2 red first (the prefixed-heading control green as designed).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
