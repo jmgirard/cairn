@@ -947,12 +947,17 @@ _DECISIONS_PASTED = (
 # would drift.
 #
 # Scope, stated because the sentence above invites the wider reading: this
-# strips markers for the SIGNATURE test only. Fence detection runs on the raw
-# line, so a quoted ``` is not a fence delimiter and a quoted fenced block is
-# read as loose output — its body lines still report, which is why the miss is
-# a change of `kind`, not silence. Widening fence detection to quoted
-# delimiters would make a fence's extent depend on quoting depth, which is more
-# inference than the round-3 removal left in place.
+# strips markers for the SIGNATURE test only. Fence detection sees the line
+# with its indentation removed but its quote markers intact, and `>` is not
+# whitespace — so a quoted ``` is not a fence delimiter, and a quoted fenced
+# block is read as loose output. Two consequences, and the second is a real
+# miss: a quoted block whose body carries signatures still reports, as `pasted
+# output` rather than `fenced block`; a quoted block whose body carries none is
+# not reported at all, where an unquoted one would be. Accepted rather than
+# fixed — widening fence detection to quoted delimiters would make a fence's
+# extent depend on quoting depth, which is more inference than the round-3
+# removal left standing, and the missed case is a fenced block with nothing in
+# it that looks like output.
 _DECISIONS_QUOTE = re.compile(r"^(?:\s*>)+\s?")
 
 # Where an unfenced paste STOPS is deliberately not computed. A fence carries

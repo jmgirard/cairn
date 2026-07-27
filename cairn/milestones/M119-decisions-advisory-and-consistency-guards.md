@@ -82,7 +82,8 @@ file and its ledger, and is delivered there.
       `hooks/session_context.py`; two-sided consistency test with a by-hand
       one-sided-removal red check. Note `## Review` is excluded by the body
       boundary, not by set membership — the test compares effective sets.
-- [ ] T4: Full `verify` + `cairn_validate`; post-merge hygiene.
+- [x] T4: Full `verify` + `cairn_validate` (post-merge hygiene is review-phase
+      by construction — minor amendment, M119 §8 round 6).
 
 ## Work log
 
@@ -109,6 +110,10 @@ file and its ledger, and is delivered there.
 - 2026-07-27: §8 round 5 — **no code defects and no regressions**, 2 record errors ("the note above the signature table" is below it; the `>`-quoted shape round 3 surfaced was a quoted DIFF, which the marker sweep never reached). Both fixed, the second by adding the quoted-diff case rather than narrowing the wording.
 - 2026-07-27: round 5's three out-of-scope observations were taken rather than banked — they were coverage gaps in this milestone's own deliverable. Six of the ten signatures deleted green because the shape tests assert `len == 1`, which any one matching line satisfies; `~~~` support, column-0 fences and prefix-closing all deleted green too. Now: every signature fires on its own with a prose negative control, both delimiters and an indented opener covered, and fence closing pinned on its ENDPOINT — `len == 1` plus a `\d+-\d+` range left equality-closing green, because an unclosed fence also reports one ranged finding.
 - 2026-07-27: the quoted-fence miss is documented rather than fixed: fence detection reads the raw line, so a quoted ``` is not a delimiter and the block reports as loose output — a change of kind, never silence. Widening it would make a fence's extent depend on quoting depth, which is more inference than the round-3 removal left standing. Pinned by a test so the comment cannot drift from what ships.
+- 2026-07-27: T4 / AC5 evidence — `python3 -m unittest discover` green on all three suites (skills 680, scripts 328, hooks 98) and `python3 scripts/cairn_validate.py .` reports all checks passed with `OK    decisions format`, run at 2026-07-27 on `a288d8f` + round-6 fixes.
+- 2026-07-27: T4 minor amendment — its second clause named post-merge hygiene, which cannot run before review by construction, so five §8 rounds passed an unticked task. Task text narrowed to the pre-review half; hygiene stays review's.
+- 2026-07-27: §8 round 6 — **no code defects and no regressions**, 4 record errors + 4 pre-existing coverage gaps, all closed. The records: "a change of kind, never silence" was false for a quoted fence whose body carries no signature (measured: unquoted reports, quoted reports nothing) and the shipped test used the one fixture that made the claim look true; "six of the ten signatures" is seven; "two cases equality gets wrong" was one, the info-string case pinning a different rule; "one line per signature" over twelve lines for ten.
+- 2026-07-27: round 6's four gaps closed — `_span`'s single-line arm (reachable via a fence opening on the section's last line), the 60-char preview truncation, the message's section name, and both `kind` labels, all of which deleted or mutated green. The preview assert takes a FIXED bound with the constant pinned separately, because deriving it from the constant under test let raising the constant pass (guard-doctrine §6).
 - 2026-07-27: measured at the gate that density is not a usable signal — M84's section is a character survey and M98's a line-number inventory, so a numeric heuristic fires hardest on the files the exemption exists to serve; detector keys on shape only.
 
 ## Decisions

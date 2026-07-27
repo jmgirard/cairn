@@ -2295,6 +2295,73 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         self.assertIn(f"M04:{self._lineno(root, '$ ls')} (+2 more lines):", finding)
         self.assertIn('"$ ls"', finding)
 
+    def test_a_one_line_finding_reports_a_bare_number_not_a_range(self):
+        # `_span`'s `start == end` arm, reachable and unpinned before §8 round
+        # 6: an unterminated fence opening on the section's LAST line spans one
+        # line, and `f"{start}-{end}"` unconditionally left the class green.
+        # Built without a `## Review` section: an unterminated fence hides that
+        # heading from the extractor, so a fence "last" in the body would still
+        # swallow two more lines and report a range.
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        self.tree.rows.append(("M04", "Decided", "planned", "—", "normal", "milestones/M04-decided.md"))
+        self.tree.files["milestones/M04-decided.md"] = (
+            "# M04: Decided\n\n- **Status:** planned   <!-- mirror -->\n\n"
+            "## Decisions\n- 2026-07-27: entry.\n```"
+        )
+        root = self.tree.build()
+        path = str(root / "cairn" / "milestones" / "M04-decided.md")
+        section = _load_scripts().milestone_decisions_lines(path)
+        opener = self._lineno(root, "```")
+        self.assertEqual(section[-1][0], opener, "the fence is not the last line")
+        self.assertIn(f"M04:{opener}:", cv.check_decisions_format(str(root))[0])
+
+    def test_the_message_names_its_kind_and_its_section(self):
+        # The message IS the advisory's output, and every part of it was pinned
+        # only by substring before §8 round 6 — `"fenced blockk"` and a dropped
+        # `` `## Decisions` `` both survived. Matched whole, so a label typo or
+        # a lost section name reds.
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions("- 2026-07-27: entry.\n```\nout\n```\n")
+        opener = self._lineno(root, "```")
+        self.assertEqual(
+            cv.check_decisions_format(str(root)),
+            [
+                f"M04:{opener}-{opener + 2}: fenced block in the "
+                '`## Decisions` section — "out"'
+            ],
+        )
+        # Both kinds, or a typo in the one this fixture does not produce
+        # survives (§8 round 6 found exactly that for `pasted output`).
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions("- 2026-07-27: entry.\n$ ls\n")
+        self.assertEqual(
+            cv.check_decisions_format(str(root)),
+            [
+                f"M04:{self._lineno(root, '$ ls')}: pasted output in the "
+                '`## Decisions` section — "$ ls"'
+            ],
+        )
+
+    def test_a_long_preview_is_truncated(self):
+        # `_DECISIONS_PREVIEW` bounded nothing a test could see: deleting the
+        # truncation and raising the constant both left the class green (§8
+        # round 6). A finding is a report line, so an untruncated 400-character
+        # paste would wrap the operator's terminal per finding.
+        cv = _load_validate()
+        self.tree = Tree(self._tmp.name)
+        root = self._with_decisions("- 2026-07-27: entry.\n$ ls " + "x" * 300 + "\n")
+        finding = cv.check_decisions_format(str(root))[0]
+        preview = finding.split(' — "')[1].rstrip('"')
+        self.assertTrue(preview.endswith("…"), preview)
+        # A FIXED bound, not `<= cv._DECISIONS_PREVIEW`: deriving the expected
+        # length from the constant under test makes raising the constant pass
+        # (guard-doctrine §6 — derive it through the gate's own comparison).
+        # The constant is pinned separately, so a retune is visible in a diff.
+        self.assertLessEqual(len(preview), 61, preview)
+        self.assertEqual(cv._DECISIONS_PREVIEW, 60)
+
     def test_findings_come_back_in_line_order(self):
         # The loose finding is collected after the loop, so it arrived last
         # however early in the section it began (§8 round 4). Line numbers the
@@ -2339,12 +2406,14 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         finding = cv.check_decisions_format(str(root))[0]
         self.assertNotIn("more line", finding)
 
-    # One line per signature in `_DECISIONS_PASTED`, keyed by the shape it is
-    # meant to catch. The shape tests above assert `len(findings) == 1`, which
-    # any ONE matching line in a multi-line paste satisfies — so six of the ten
-    # signatures could be deleted with the whole class green (§8 round 5). A
-    # signature that never has to fire on its own is not covered by a test that
-    # merely happens to contain it.
+    # At least one line per signature in `_DECISIONS_PASTED`, keyed by the shape
+    # it is meant to catch — twelve lines for ten signatures, because two
+    # signatures are alternations whose branches deserve their own line. The
+    # shape tests above assert `len(findings) == 1`, which any ONE matching line
+    # in a multi-line paste satisfies — so seven of the ten signatures could be
+    # deleted with the whole class green (§8 round 5 found six, round 6
+    # measured seven). A signature that never has to fire on its own is not
+    # covered by a test that merely happens to contain it.
     SIGNATURE_LINES = (
         "$ python3 -m unittest discover -s scripts/tests",
         "Ran 412 tests in 3.204s",
@@ -2401,11 +2470,13 @@ class TestDecisionsFormatAdvisory(ScriptCase):
                 self.assertIn("fenced block", findings[0])
 
     def test_a_fence_closes_by_prefix_not_equality(self):
-        # Two cases that equality gets wrong, and the reason closing is by
-        # prefix: an opener carrying a language tag, and a closer LONGER than
-        # its opener (which CommonMark allows). Prefix is also what the shared
-        # extractor uses, so the advisory and the section it reads agree on
-        # where a fence ends. The info-string case alone left `==` green.
+        # Two subcases pinning two different rules, both of which markdown
+        # admits. The LONGER closer is what equality gets wrong: `==` closes
+        # nothing and the block runs to the section end. The info-string opener
+        # pins something else — that `fence` is set to the bare delimiter and
+        # not to the whole opener line, which `fence = stripped` gets wrong.
+        # Prefix-closing is also what the shared extractor uses, so the advisory
+        # and the section it reads agree on where a fence ends.
         cv = _load_validate()
         for opener, closer in (("```text", "```"), ("```", "````")):
             with self.subTest(fence=f"{opener}/{closer}"):
@@ -2424,10 +2495,10 @@ class TestDecisionsFormatAdvisory(ScriptCase):
                     findings[0],
                 )
 
-    def test_a_quoted_fence_reports_as_loose_output_not_silence(self):
-        # Fence detection runs on the raw line, so a quoted ``` is not a
-        # delimiter. The behaviour is a change of KIND, never a miss — pinned
-        # so the code comment's stated scope cannot drift from what ships.
+    def test_a_quoted_fence_reports_as_loose_output(self):
+        # Quote markers survive the lstrip fence detection does, and `>` is not
+        # whitespace, so a quoted ``` is not a delimiter. When the block's body
+        # carries signatures the effect is a change of KIND, not a miss.
         cv = _load_validate()
         root = self._with_decisions(
             "- 2026-07-27: entry.\n> ```\n> $ ls\n> Ran 3 tests in 0.1s\n> ```\n"
@@ -2435,6 +2506,27 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         findings = cv.check_decisions_format(str(root))
         self.assertEqual(len(findings), 1, findings)
         self.assertIn("pasted output", findings[0])
+
+    def test_a_quoted_fence_with_no_signatures_inside_is_missed(self):
+        # The accepted cost of the rule above, pinned so the code comment's
+        # stated scope cannot drift from what ships. An UNQUOTED fence reports
+        # whatever its contents, so quoting one whose body looks like nothing in
+        # particular is silence, not a change of kind — §8 round 6 caught three
+        # records claiming otherwise, and the shipped test above happened to use
+        # the one fixture that made the claim look true. The paired positive
+        # control is what makes this an accepted limit rather than a dead
+        # assert: it proves the detector fires on the unquoted twin.
+        cv = _load_validate()
+        block = "```\njust some prose in a block\n```\n"
+        self.tree = Tree(self._tmp.name)
+        unquoted = self._with_decisions("- 2026-07-27: entry.\n" + block)
+        self.assertEqual(len(cv.check_decisions_format(str(unquoted))), 1)
+        self.tree = Tree(self._tmp.name)
+        quoted = self._with_decisions(
+            "- 2026-07-27: entry.\n"
+            + "".join(f"> {ln}\n" for ln in block.splitlines())
+        )
+        self.assertEqual(cv.check_decisions_format(str(quoted)), [])
 
     def test_quoted_transcripts_are_still_pasted_output(self):
         # Blockquoting is a rendering, not a defence: the detector normalizes
