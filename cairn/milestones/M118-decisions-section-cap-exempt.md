@@ -86,7 +86,7 @@ declares the same Driving RR and carries them under its own table.
 - [x] T2: Exempt the section in `milestone_body_line_count`, drop it from
       `milestone_section_line_counts`, update both docstrings. Fixtures first
       (exact/fenced/prefixed/absent + the sum invariant), red before the change.
-- [ ] T3: Peak-revision ledger over `git log --all`, run under both counters,
+- [x] T3: Peak-revision ledger over `git log --all`, run under both counters,
       committed as its own file (never into `## Decisions` — BC4).
 - [ ] T4: Add `"decisions"` to `CAP_EXEMPT_SECTIONS` (`session_context.py:56`);
       re-measure p90 over all three section types and re-derive
@@ -115,6 +115,7 @@ declares the same Driving RR and carries them under its own table.
 - 2026-07-27: gate placed the AC3 ledger at `cairn/references/` as a synthesis note, following `rulebook-classification-ledger.md` (M116), over a file beside the milestone.
 - 2026-07-27: T1 — `DECISIONS_HEADING` + `milestone_decisions_lines`; the work-log extractor's body factored into a shared `_section_body_lines(path, heading)` so both exempt sections are read by one rule. 9 tests red first, all three suites green.
 - 2026-07-27: T2 — both counters exempt the section via a shared `EXEMPT_HEADINGS` tuple, so the count and its breakdown can never disagree; 9 fixtures added, 4 red first (fenced/prefixed/absent controls green as designed). This file's own plan-owned body 122 -> 98.
+- 2026-07-27: T3 — peak-revision ledger committed as `references/m118-cap-exemption-ledger.md` (+ INDEX line), scored by the shipped `_plan_owned_scan` rather than a reimplementation; every path that ever reached the cap falls below it and none lands near it. The ledger carries the numbers; the AC4 section sizes ride the same derivation.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
