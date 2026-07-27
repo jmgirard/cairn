@@ -84,8 +84,8 @@ never "never".
 <!-- owner: implement / review · append-only; milestone-local; promote
      cross-cutting ones to cairn/DECISIONS.md.
      EXEMPT from the 150-line cap (D-074) because D-045 makes it history like the work log — dated dispositions, never edited — so the cap must never demand a trim here either.
-     Entries carry their rationale; the counterweight advisory M119 adds will
-     watch for pasted output, not for entry length (D-075). -->
+     Entries carry their rationale; the counterweight `decisions format`
+     advisory watches for pasted output, not for entry length (D-075). -->
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate

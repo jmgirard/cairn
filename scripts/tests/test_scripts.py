@@ -2042,8 +2042,9 @@ class TestDecisionsFormatAdvisory(ScriptCase):
     polices it and this advisory is the counterweight. Its subject is pasted
     output and fenced transcript blocks, NEVER entry length: D-074 part 3 first
     transplanted the work log's one-line grammar, and RR08 measured that against
-    the corpus below, where every normal entry wraps. WARN, never a gate
-    failure (D-046's severity, retained by D-075)."""
+    the corpus below: 117 WARNs, with 23 of the corpus's 24 `- ` entries
+    wrapping. WARN, never a gate failure (D-046's severity, retained by
+    D-075)."""
 
     def _with_decisions(self, body):
         self.tree.rows.append(("M04", "Decided", "planned", "—", "normal", "milestones/M04-decided.md"))
@@ -2170,16 +2171,48 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         findings = cv.check_decisions_format(str(root))
         self.assertRegex(findings[0], r":\d+-\d+:")
 
-    def test_a_quoted_transcript_is_still_pasted_output(self):
-        # Blockquoting is a rendering, not a defence: the detector normalizes
-        # `>` markers so quoting cannot hide the paste (guard-doctrine §3).
+    def test_a_realistic_unfenced_transcript_is_one_finding(self):
+        # The fixture in the shape an author actually pastes, not the shape
+        # that makes the assertion convenient (guard-doctrine §4). A real
+        # unittest paste carries lines no signature matches — the progress
+        # dots, the separator rule, a blank — and closing the run on the first
+        # of them reported ONE paste as three findings.
         root = self._with_decisions(
-            "- 2026-07-27: what the run said.\n"
-            "> $ python3 -m unittest discover -s scripts/tests\n"
-            "> Ran 412 tests in 3.204s\n"
+            "- 2026-07-27: the run that settled it.\n"
+            "$ python3 -m unittest discover -s scripts/tests\n"
+            "............................................\n"
+            "----------------------------------------------------------------\n"
+            "Ran 412 tests in 3.204s\n"
+            "\n"
+            "OK\n"
         )
         cv = _load_validate()
-        self.assertEqual(len(cv.check_decisions_format(str(root))), 1)
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+
+    def test_a_run_ends_at_its_last_match_not_in_its_trailing_gap(self):
+        # The reported range is evidence the operator navigates by, so it must
+        # not swallow the prose that follows a paste.
+        root = self._with_decisions("- 2026-07-27: entry.\n$ ls\nprose after.\n")
+        cv = _load_validate()
+        start, end = re.search(r":(\d+)-?(\d+)?:", cv.check_decisions_format(str(root))[0]).groups()
+        self.assertIsNone(end, "the run ran on past its last matching line")
+
+    def test_quoted_transcripts_are_still_pasted_output(self):
+        # Blockquoting is a rendering, not a defence: the detector normalizes
+        # `>` markers to any depth and spacing, so the renderings come INTO the
+        # test as positive controls rather than being enumerated in a comment
+        # the code does not read (guard-doctrine §3).
+        cv = _load_validate()
+        for marker in ("> ", ">", ">> ", "  > ", "> > "):
+            with self.subTest(marker=marker):
+                self.tree = Tree(self._tmp.name)  # a fresh tree per rendering
+                root = self._with_decisions(
+                    "- 2026-07-27: what the run said.\n"
+                    f"{marker}$ python3 -m unittest discover -s scripts/tests\n"
+                    f"{marker}Ran 412 tests in 3.204s\n"
+                )
+                self.assertEqual(len(cv.check_decisions_format(str(root))), 1)
 
     def test_two_separate_pastes_are_two_findings(self):
         root = self._with_decisions(
@@ -2234,16 +2267,51 @@ class TestDecisionsFormatAdvisory(ScriptCase):
     def test_the_advisory_reads_the_section_the_cap_exempts(self):
         # The exemption and the watch must name one section, or the exemption
         # opens a hole the advisory never looks at (D-046/M77's reason, which
-        # D-074 inherits). `## Decisions notes` is a different heading and is
-        # still counted by the cap, so the advisory must not read it either.
+        # D-074 inherits). `## Decisions notes` is a different heading: BOTH
+        # halves are asserted, because the claim is that the two agree — an
+        # advisory that skips it while the cap also skipped it would be a
+        # matched pair of bugs, not the agreement this pins.
         cv = _load_validate()
+        cs = _load_scripts()
         self.tree.rows.append(("M04", "Nearly", "planned", "—", "normal", "milestones/M04-near.md"))
         self.tree.files["milestones/M04-near.md"] = (
             "# M04: Nearly\n\n- **Status:** planned   <!-- mirror -->\n\n"
             "## Decisions notes\n```\npasted\n```\n"
         )
         root = self.tree.build()
+        path = str(root / "cairn" / "milestones" / "M04-near.md")
         self.assertEqual(cv.check_decisions_format(str(root)), [])
+        self.assertEqual(
+            [h for h, _ in cs.milestone_section_line_counts(path)],
+            ["Decisions notes"],
+            "the cap counts the near-miss heading; the advisory must skip it",
+        )
+
+    def test_the_advisory_inherits_the_shared_extractor_scan(self):
+        # AC1's last clause: the advisory reads the section THROUGH the shared
+        # extractor M118 added, not through a scan of its own. A private scan
+        # is the drift this forbids, and it is invisible to every other test
+        # here — so the pin is a rule that lives in `_section_body_lines` and
+        # nowhere in `check_decisions_format`: a fenced `## Decisions` heading
+        # is content, not a section (M45), and a `## ` INSIDE the section's own
+        # fence does not end it. A naive re-implementation gets both wrong.
+        cv = _load_validate()
+        root = self._with_decisions("- 2026-07-27: entry.\n")
+        self.tree.files["milestones/M04-decided.md"] = (
+            "# M04: Decided\n\n- **Status:** planned   <!-- mirror -->\n\n"
+            "## Goal\n```\n## Decisions\n$ ls\n```\n"      # fenced: content, not a section
+            "\n## Decisions\n<!-- owner -->\n\n"
+            "- 2026-07-27: a decision quoting a heading.\n"
+            "```\n## Review\npasted\n```\n"                 # fenced `## `: not a boundary
+            "\n## Review\nevidence\n"
+        )
+        root = self.tree.build()
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+        # The one finding is the REAL section's fenced block, not the decoy in
+        # `## Goal` — so the advisory found the section the extractor defines.
+        self.assertIn("fenced block", findings[0])
+        self.assertIn("## Review", findings[0])
 
 
 class TestPrinciplesSlot(ScriptCase):
@@ -2738,8 +2806,8 @@ class TestMilestoneDecisionsLines(unittest.TestCase):
     joins the cap-exempt set — and, exactly as D-046/M77 did for the work log,
     the section the cap stops measuring must be the one an advisory can still
     read. Both are extracted by one shared scan, so the exemption cannot drift
-    away from what the `decisions format` advisory will police once M119 adds
-    it — until then the section is exempt with nothing watching it."""
+    away from what the `decisions format` advisory polices — that advisory
+    ships at M119 and reads the section through this extractor."""
 
     def setUp(self):
         self.cs = _load_scripts()

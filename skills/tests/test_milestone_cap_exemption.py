@@ -166,8 +166,8 @@ class TestMilestoneCapExemption(unittest.TestCase):
         # M119/D-075. The severity and the SUBJECT are both decisions, and the
         # subject is the one D-074 part 3 got wrong: a rulebook naming the
         # advisory without saying it watches pasted output rather than entry
-        # length teaches the superseded grammar, which measured as WARNing on
-        # every entry in the corpus RR08 read. Pinned on one physical line so
+        # length teaches the superseded grammar, which measured at 117 WARNs
+        # over the corpus RR08 read. Pinned on one physical line so
         # a revert to entry length cannot leave the sentence green.
         self.assertIn(
             "advisory WARNs on — pasted output or a fenced transcript block, never entry",

@@ -913,8 +913,10 @@ _LOG_PREVIEW = 60
 # here; RR08 measured that grammar against the corpus and found it defective —
 # a decision entry structurally carries its rationale the way a `DECISIONS.md`
 # entry does, so the transplanted rule would either strip the rationale out or
-# WARN permanently on every normal entry, and a permanently-warning advisory
-# trains the operator to ignore advisories.
+# WARN permanently on the normal entry, and a permanently-warning advisory
+# trains the operator to ignore advisories. Measured over the five corpus
+# sections: 117 WARNs, and 23 of the 24 `- ` entries wrap (the exception is one
+# M84 review line).
 #
 # The same measurement rules out density as a signal, which is why these
 # signatures are SHAPES and never counts: M84's section is a character survey
@@ -937,10 +939,21 @@ _DECISIONS_PASTED = (
     re.compile(r"^(?:--- a/|\+\+\+ b/)"),       # unified-diff file headers
 )
 # Blockquote markers are stripped before matching so quoting a transcript does
-# not hide it — `>`, `> `, `>>` and `> > ` are the renderings one line can take
-# (guard-doctrine §3: the searcher must not have to enumerate renderings, and
-# normalizing is how this detector avoids having to).
+# not hide it. The pattern takes any depth and any spacing — `>`, `> `, `>>`,
+# `> > `, `  > `, `>>> ` — rather than an enumerated set, which is guard-doctrine
+# §3's point: a detector whose author must list every rendering is a detector
+# that misses the rendering the author did not think of. The tests carry three
+# of those renderings in as positive controls.
 _DECISIONS_QUOTE = re.compile(r"^(?:\s*>)+\s?")
+# A line that opens a markdown entry or heading is prose, and closes an open
+# run. Everything else non-matching only widens a gap: one pasted transcript
+# routinely carries lines no signature matches (unittest's progress dots, a
+# `-----` rule, a blank), and closing on the first of them would report ONE
+# paste as three findings — the per-line noise the chunking exists to avoid.
+# The gap is small on purpose: two pastes separated by a real entry are two
+# findings because the entry closes the first, not because the gap ran out.
+_DECISIONS_PROSE = re.compile(r"^(?:[-*+] |#{1,6} |\d+\. )")
+_DECISIONS_GAP = 3
 _DECISIONS_PREVIEW = 60
 
 
@@ -1396,24 +1409,33 @@ def check_worklog_format(root):
 
 
 def _pasted_runs(lines):
-    """`[(start, end, kind, preview)]` for each contiguous run of pasted output
-    in `lines` (an extractor's `[(lineno, text)]`). A fenced block is one run
-    from its opening delimiter through its closing one, both included, matching
-    what the cap counters count (M77 review F2); an unfenced run is a maximal
-    stretch of consecutive lines carrying a `_DECISIONS_PASTED` signature. One
-    run is one finding: a pasted 40-line transcript is one mistake, and an
+    """`[(start, end, kind, preview)]` for each run of pasted output in `lines`
+    (an extractor's `[(lineno, text)]`). A fenced block is one run from its
+    opening delimiter through its closing one, both included, matching what the
+    cap counters count (M77 review F2). An unfenced run opens at a
+    `_DECISIONS_PASTED` signature and closes at a markdown entry or heading, or
+    after `_DECISIONS_GAP` consecutive lines that are neither — so a transcript's
+    own progress dots and separator rules stay inside the run they belong to.
+    It ends at its last signature line, never in its trailing gap.
+
+    One run is one finding: a pasted 40-line transcript is one mistake, and an
     advisory that reports it forty times is one the operator learns to scroll
     past — the same reasoning D-075 applies to a permanently-warning advisory."""
     runs = []
     fence = None
     start = None
-    prev = None
+    last = None  # the run's last line that actually matched
     preview = ""
+    gap = 0
     pending = False  # the fence's preview is still its bare delimiter
+
+    def close():
+        runs.append((start, last, "pasted output", preview))
+
     for lineno, text in lines:
         stripped = text.lstrip()
         if fence is not None:
-            prev = lineno
+            last = lineno
             if stripped.startswith(fence):
                 runs.append((start, lineno, "fenced block", preview))
                 fence, start, pending = None, None, False
@@ -1422,20 +1444,22 @@ def _pasted_runs(lines):
             continue
         if stripped.startswith("```") or stripped.startswith("~~~"):
             if start is not None:  # an unfenced run ends where the fence opens
-                runs.append((start, prev, "pasted output", preview))
+                close()
             fence = "```" if stripped.startswith("```") else "~~~"
-            start, prev, preview, pending = lineno, lineno, stripped, True
+            start, last, preview, pending = lineno, lineno, stripped, True
             continue
         body = _DECISIONS_QUOTE.sub("", text).strip()
         if body and any(p.match(body) for p in _DECISIONS_PASTED):
             if start is None:
                 start, preview = lineno, body
+            last, gap = lineno, 0
         elif start is not None:
-            runs.append((start, prev, "pasted output", preview))
-            start = None
-        prev = lineno
+            gap += 1
+            if _DECISIONS_PROSE.match(body) or gap > _DECISIONS_GAP:
+                close()
+                start, gap = None, 0
     if start is not None:  # an unterminated fence, or a run ending the section
-        runs.append((start, prev, "fenced block" if fence else "pasted output", preview))
+        runs.append((start, last, "fenced block" if fence else "pasted output", preview))
     return runs
 
 
@@ -1446,15 +1470,18 @@ def check_decisions_format(root):
     unchanged — nothing may notice bloat in a section that has stopped costing
     budget, so something other than the cap has to watch it. D-075 sets what the
     watch looks for: the section's own genre is prose rationale, so the subject
-    is pasted output, never entry length (the work log's grammar, measured to
-    WARN on every entry in the corpus RR08 read).
+    is pasted output, never entry length (the work log's grammar, measured at
+    117 WARNs over the corpus RR08 read, where 23 of 24 entries wrap).
 
     WARNs and never FAILs, for `work-log format`'s reason: over an unbudgeted
     section this is untidiness, and a gate failure over formatting would block a
     milestone for no correctness reason (D-046's severity, retained by D-075).
-    Reads the section through `cs.milestone_decisions_lines`, the same shared
-    scan and the same heading constant the cap counters exempt it by, so the
-    section the cap stopped measuring is exactly the section this polices.
+    Reads the section through `cs.milestone_decisions_lines` — the extractor
+    scan shared with `milestone_worklog_lines`, keyed on `DECISIONS_HEADING`,
+    which is the constant the cap counters exempt the section by. The heading is
+    the shared part (the counters run their own `_plan_owned_scan`), and sharing
+    it is what makes the section the cap stopped measuring the same section this
+    polices.
     Live files only; archived summaries are compressed narratives."""
     out = []
     for mid, path in sorted(cs.live_files(root).items(), key=lambda kv: cs.id_num(kv[0])):

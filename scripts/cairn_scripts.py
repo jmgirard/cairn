@@ -455,18 +455,24 @@ def _section_body_lines(path, heading):
 
 def milestone_worklog_lines(path):
     """`[(lineno, text)]` for the body of a milestone file's `## Work log`
-    section. Shares `_section_body_lines` and `WORKLOG_HEADING` with the cap
-    counters **on purpose**: the section the cap stops measuring and the section
-    the wrapped-entry advisory polices must be the same one, or the exemption
-    would open a hole the advisory never looks at (D-046/M77)."""
+    section. Shares `WORKLOG_HEADING` with the cap counters **on purpose**: the
+    section the cap stops measuring and the section the wrapped-entry advisory
+    polices must be the same one, or the exemption would open a hole the
+    advisory never looks at (D-046/M77). (Corrected M119: this said it shared
+    `_section_body_lines` with the counters too, which it never did — that scan
+    is shared with `milestone_decisions_lines`; the counters run
+    `_plan_owned_scan`.)"""
     return _section_body_lines(path, WORKLOG_HEADING)
 
 
 def milestone_decisions_lines(path):
     """`[(lineno, text)]` for the body of a milestone file's milestone-local
     `## Decisions` section — the third member of the cap-exempt set (D-074/M118,
-    superseding D-046's choice (3)). Same shared scan and same
-    `DECISIONS_HEADING` the cap counters exempt it by, for the work log's reason:
+    superseding D-046's choice (3)). Same extractor scan as the work log's, and
+    keyed on the same `DECISIONS_HEADING` the cap counters exempt it by (the
+    counters run their own `_plan_owned_scan`; the heading is the shared part —
+    corrected M119, which found this docstring and its work-log twin claiming
+    the scan itself was shared with them), for the work log's reason:
     a section that stops costing budget still needs something watching it, and
     that watch must read exactly the section the cap released."""
     return _section_body_lines(path, DECISIONS_HEADING)

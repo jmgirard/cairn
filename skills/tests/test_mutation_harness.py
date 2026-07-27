@@ -421,7 +421,8 @@ REGISTRY = [
     ),
     # M119 (D-075): the decisions advisory's subject, and its stated↔emitted
     # label coupling — two distinct physical spans of one sentence, so two
-    # entries. The label entry follows the work-log precedent above: its
+    # entries. The label entry follows the precedent set by the work-log
+    # `test_stated_advisory_label_matches_the_emitted_label` registration: its
     # rulebook half IS a prose block, so blanking it proves the guard catches
     # the deletion rather than only the registration going missing.
     Mutation(
