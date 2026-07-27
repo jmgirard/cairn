@@ -100,7 +100,7 @@ BC6 and BC7 stay verbatim deliberately — the review gate reads BC6's numeric p
 
 - [x] T1-T15: doctrine, guards, D-064/D-065, the re-cut, RR05's design, RR06's sixth pass — detail in the work log and six Review sections.
 - [x] T16: close F1 and F2 per RR07 §BC2/§BC3, blocks transcribed from the shipped bytes; supersede T4's "pinned separately" claim by appended line (AC2, AC3).
-- [ ] T17: correct the rec 5 and rec 4 ROADMAP rows to RR07 §BC4's exact clauses (AC4).
+- [x] T17: correct the rec 5 and rec 4 ROADMAP rows to RR07 §BC4's exact clauses (AC4).
 - [ ] T18: spawn the description-layer certifier before `status -> review`; record its verdict and every discrepancy verbatim in the work log (AC5).
 - [ ] T19: hold and show the derived scope, replay both probes red-side-up on a verified-green baseline, measure 14 entries, apply the terminus (AC1, AC6, AC7).
 
@@ -148,6 +148,8 @@ BC6 and BC7 stay verbatim deliberately — the review gate reads BC6's numeric p
 
 - 2026-07-26: T16 — F1 and F2 closed exactly as RR07 §BC2/§BC3 specify. §7's operative remedy (the per-cell count and the across-sweep positive) gains an `assertRegex` in `test_sweep_section_states_the_silent_cell_rule` plus a 14th `Mutation(...)` entry; §3's remedy assert widens from its truncated lead-in to the full sentence and its registered block is replaced by the same. Both patterns are RR07's verbatim (verified by `ast.literal_eval` against the RR text, not by eye) and both blocks were copied from the shipped bytes, each resolving exactly 1x in `guard-doctrine.md`. The harness comment above the block no longer states an entry count — it said "Four" at four and would have said it at five, the G7/§6 shape twice over in this milestone. Suites 627/280/91 exit 0 separately, matching BC6's projection exactly; no new test method.
 - 2026-07-26: SUPERSEDES the T4 entry above, which reads "Four registered entries — diagnosis and remedy pinned separately". That was true of §3's diagnosis and of §7's converse clause, and FALSE of the two halves pass 6 found unpinned: §7's operative remedy (F1, 92) and §3's remedy continuation (F2, 90) both deleted green until T16. The claim holds for those two only from this fix. Appended, never edited (IP4/D-045).
+
+- 2026-07-26: T17 — the rec 5 and rec 4 ROADMAP rows carry RR07 §BC4's exact replacement clauses, transcribed not paraphrased. Rec 5 loses "drop if two such milestones ... zero coverage findings" (a count, and a falsifier RR06 never stated) for a defect-class drop condition plus RR06's real post-adoption falsifier, transcribed; rec 4 loses "more than a handful of criteria" (a quantity threshold) for an authored-vs-ingested trigger that also extends the audit to RR binding-criteria sets at ingestion, where RB07's own trigger arose. BC4's tolerance MEASURED, not asserted: `grep -n "zero coverage\|two such\|more than a handful"` over the ROADMAP returns 0 hits; the transcribed RR06 falsifier is located verbatim in RR06 (whitespace-normalized, since the source wraps) and the one other quotation in the three rows (`"repo-wide"`) in the milestone file; the rec 6 row is byte-identical across the pass and the whole ROADMAP delta from the ingest commit is 2 lines changed, both of them these.
 
 ## Decisions
 
