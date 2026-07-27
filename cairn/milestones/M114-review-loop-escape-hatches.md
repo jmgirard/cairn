@@ -3,7 +3,7 @@
 - **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
-- **Driving RR:** RR06
+- **Driving RR:** RR07
 - **Principles touched:** GP4, IP2
 - **Branch/PR:** `m114-review-loop-escape-hatches` · https://github.com/jmgirard/cairn/pull/114
 
@@ -16,106 +16,110 @@ about whether a detector can see its target.
 
 ## Scope
 
-**In:** the thrash rule in `skills/milestone-review/SKILL.md` — per-milestone
-counting with the work log named as the surviving record, trigger (a) as an explicit
-threshold, trigger (b), their composition, and the exhaustion branch (RR05's design) ·
-the falsifying-promotion-condition rule in `skills/shared/tracking-rules.md` ·
-`guard-doctrine.md` §3 and §7 · a prose-guard over the thrash rule, one `Mutation(...)`
-entry per doctrine-pinning assert · D-064 and its superseding correction.
+**In:** the thrash rule in `skills/milestone-review/SKILL.md` (RR05's design) · the
+falsifying-promotion-condition rule in `skills/shared/tracking-rules.md` ·
+`guard-doctrine.md` §3 and §7 · the guards over all three, including the two coverage
+gaps RR07 §BC2/§BC3 close · D-064, D-065, D-066 · the rec 4 and rec 5 candidate rows.
 
-**Out:** the one-surface pin, re-cut out at the third return after six findings of one
-shape → ROADMAP candidate · any `cairn_validate` mechanization of these rules (D-064
-choice 6; D-059 precedent) · changes to the `/milestone-review` fan-out, which caught
-every defect here · rulebook growth beyond the one rule above (D-057) · RR06
-recommendations 4, 5 and 6 — the plan-gate criteria audit, independent certification of
-the description layer, and the sub-threshold disposition rule → banked outside this
-milestone per BC8, never folded in.
+**Out:** the one-surface pin → ROADMAP candidate · any `cairn_validate` mechanization of
+these rules (D-064 choice 6; D-059) · changes to the `/milestone-review` fan-out ·
+rulebook growth beyond the one rule above (D-057) · RR06 recs 4-6 as standing rules and
+RR07 rec 6's satisfiability-read sentence → banked, never folded in · F5's docstring
+correction → a trivial-tier commit after merge (RR07 B4).
 
 ## Acceptance criteria
 
-<!-- Driving RR06, ingested 2026-07-26. AC1-AC8 are RR06's Binding criteria,
-     verbatim and mechanically diffed. RR05's eight, which were AC1-AC8 until
-     now, were VERIFIED at review pass 5 (see that section) except AC6, whose
-     failure RR06's BC2-BC5 close; they are satisfied criteria, and the Review
-     sections hold their evidence permanently. -->
+<!-- Driving RR07, ingested 2026-07-26. AC1-AC7 are RR07's Binding criteria,
+     mechanically diffed; BC2-BC4 are carried by reference under the Deviations
+     table. RR06's eight leave the live block and stay in the Review record —
+     AC6 (BC6) as amended by RR07 Q1 was VERIFIED on pass-6 evidence. -->
 
-- [x] AC1 (BC1): AC11 is amended through a shown gated amendment to require the supersession route,
-      and the end state on the branch is: D-064's entry in `cairn/DECISIONS.md` is
-      byte-identical to its originally appended form (commit `6546db0`), and a new
-      appended DECISIONS entry records that D-064's one-surface Consequences claim is
-      superseded — the guard was re-cut out at M114's third return and the pin is a
-      ROADMAP candidate. Tolerance: `git diff 6546db0..HEAD -- cairn/DECISIONS.md`
-      contains additions only — zero deletion or modification lines inside the D-064
-      entry.
-- [x] AC2 (BC2): In `skills/tests/test_thrash_rule.py`, the assert on trigger (a)'s remedy pins the
-      full remedy including its routing target — the anchor spans the phrase "recommend
-      re-plan or split via" together with its backtick-quoted `/milestone-plan` target,
-      matched with `\s+` across the shipped wrap — closing L1. Probe: in a scratch copy,
-      editing the shipped rule's routing target to `/hotfix` reds the skills suite;
-      restoring returns it green (tolerance: red then green, 0 mismatches).
-- [x] AC3 (BC3): The composition clause's routing half — the phrase "and the milestone routes
-      through" together with its backtick-quoted `/milestone-plan` target, matched with
-      `\s+` across the shipped wrap — is pinned by its own doctrine-pinning assert,
-      closing L3. Probe: deleting that clause in a scratch copy reds the skills suite
-      (tolerance: red, then green on restore).
-- [x] AC4 (BC4): The exhaustion branch's positive remedy composition — the routing chip composed
-      from an offered `/milestone-brief` escalation, parking as `blocked`, or dropping
-      at the user's explicit decision — is pinned by its own doctrine-pinning assert,
-      closing L2. Probe: replacing that sentence with prose naming no options in a
-      scratch copy reds the skills suite (tolerance: red, then green on restore).
-- [x] AC5 (BC5): Each added doctrine-pinning assert carries its own `Mutation(...)` entry with its
-      block copied from the shipped bytes; the doctrine-pinning assert count equals the
-      registered entry count, both read out of the files (tolerance: exact; projected 19
-      against 19 — two asserts added to the measured 17, with BC2 amending an existing
-      assert and its registered block in place — any departure in the projected number
-      routes through the Deviations table); blanking every registered block reds its
-      named test (tolerance: 0 survivors).
-- [ ] AC6 (BC6): The pass-6 delta's runtime surface is confined to
-      `skills/tests/test_thrash_rule.py` and `skills/tests/test_mutation_harness.py`:
-      every other file under `skills/` — explicitly including
-      `skills/milestone-review/SKILL.md` — is byte-identical across the pass (tolerance:
-      `git diff --name-only` over `skills/` names exactly those two files), and the
-      guard's module docstring is not edited. Tracking-side changes are confined to
-      `cairn/milestones/M114-review-loop-escape-hatches.md`, `cairn/DECISIONS.md` per
-      BC1, `cairn/ROADMAP.md` status mirroring, and `cairn/reviews/` ingestion and
-      archival of RB06/RR06.
-- [x] AC7 (BC7): On the final tree, the three suites pass from the repo root with exit codes
-      checked separately (tolerance: exit 0 each, never piped), `python3
-      scripts/cairn_validate.py` exits 0, and the three probes of BC2–BC4 have been
-      replayed red-side-up in a scratch copy whose baseline was verified green before
-      probing (tolerance: 3/3 red on mutation, 3/3 green on restore).
-- [ ] AC8 (BC8): Recommendations 4, 5 and 6 are banked outside M114 — as ROADMAP candidate rows or
-      a `/milestone-plan`-cut milestone — each with a promotion condition naming the
-      class of evidence that would falsify it, never a count (tolerance: zero lines of
-      M114's pass-6 diff implement any of the three; their disposition appears in the
-      work log or ROADMAP, per IP3).
+- [ ] AC1 (BC1): The pass-7 delta, measured from the RR07 ingest commit to the gate:
+      `git diff --name-only <ingest>..HEAD -- skills/` names exactly
+      `skills/tests/test_lesson_graduation.py` and
+      `skills/tests/test_mutation_harness.py`, and every other file under `skills/` —
+      explicitly including `skills/shared/guard-doctrine.md`,
+      `skills/milestone-review/SKILL.md` and `skills/tests/test_thrash_rule.py` — is
+      byte-identical across the pass. Tracking-side changes are confined to
+      `cairn/milestones/M114-review-loop-escape-hatches.md` and `cairn/ROADMAP.md`,
+      whose delta touches only M114's status cell and the rec 4 and rec 5 candidate rows
+      per BC4 (tolerance: no other ROADMAP line changes). Derivation, shown: this list
+      is the union of BC2–BC6's write obligations — BC2/BC3 write the two test files,
+      BC4 writes the two ROADMAP rows, BC5 and the pass write the milestone file's work
+      log, status mirroring writes the ROADMAP cell; the RR07 ingestion's own writes
+      (the AC block, Decisions pointers, `cairn/reviews/` archival of RB07/RR07, any
+      appended DECISIONS entry) land at the ingest commit and are outside the measured
+      delta.
+- [ ] AC2 (BC2): §7's operative remedy gains a pinning `assertRegex` in
+      `test_sweep_section_states_the_silent_cell_rule` plus its own `Mutation(...)`
+      entry, closing F1; the pass-7 work log supersedes T4's "pinned separately" claim
+      by appended line, never edit (IP4). Pattern, registered block and probe are RR07
+      §BC2 verbatim — carried by reference, see the Deviations table.
+- [ ] AC3 (BC3): The §3 remedy assert in
+      `test_absence_section_states_the_matcher_rendering_rule` widens from its truncated
+      lead-in to the full remedy, and its registered block in `test_mutation_harness.py`
+      is replaced by the full sentence copied from the shipped bytes — closing F2 in
+      guard and harness alike. Pattern, block and probe are RR07 §BC3 verbatim —
+      carried by reference, see the Deviations table.
+- [ ] AC4 (BC4): The rec 5 and rec 4 ROADMAP rows are corrected to RR07 §BC4's exact
+      replacement clauses — carried by reference, see the Deviations table (tolerance:
+      after the pass, `grep -n "zero coverage\|two such\|more than a handful"` over
+      `cairn/ROADMAP.md` returns 0 hits, every quoted attribution in the three rec rows
+      is locatable verbatim in its named source, and the rec 6 row is byte-identical
+      across the pass).
+- [ ] AC5 (BC5): Before `status -> review`, a fresh-context reader that authored no part
+      of pass 7 certifies the description layer of the pass-7 delta against the
+      artifacts: (i) each acceptance criterion maps to its pinning assert or evidence
+      command; (ii) every claim in a changed record, docstring, or comment matches the
+      file it describes; (iii) every anchor and every `Mutation(...)` block matches the
+      shipped bytes under re-wrap; (iv) every quotation or attribution in changed
+      content is located verbatim in its named source, or struck. The certifier's
+      verdict and every discrepancy are recorded verbatim in the work log, and the gate
+      is entered only at zero unresolved discrepancies (tolerance: the work-log entry
+      exists and names zero unresolved; zero lines of the pass-7 diff implement the
+      standing rules of RR06 recs 4, 5 or 6 — their banking stands).
+- [ ] AC6 (BC6): On the final tree, the three suites pass from the repo root with exit
+      codes checked separately (tolerance: exit 0 each, never piped; projected skills
+      627 / scripts 280 / hooks 91 — BC2/BC3 add asserts to existing test methods, no
+      new test method — any departure routes through the Deviations table); `python3
+      scripts/cairn_validate.py` exits 0; `Mutation(...)` entries naming
+      `guard="test_lesson_graduation"` number exactly **14** against the measured 13
+      (tolerance: exact; one entry added by BC2, BC3 amending an existing block in
+      place); blanking every registered block reds its named test (tolerance: 0
+      survivors); and the BC2 and BC3 probes have been replayed red-side-up in a `git
+      archive` scratch copy whose baseline was verified green before probing (tolerance:
+      2/2 red on mutation, 2/2 green on restore, target byte-identical after).
+- [ ] AC7 (BC7): Terminus. If pass 7 fails the gate on (i) any finding whose subject is
+      work BC2–BC4 specify in closed form, or (ii) any discrepancy in material BC5's
+      certifier recorded as clean, then M114 is parked as `blocked` by that fact: the
+      work-log line names this criterion, no eighth implement pass is queued, and no
+      further review brief is opened for M114 — the recorded unblock condition is
+      adoption of RR06 recs 4–5 through their own milestone. A gate failure outside (i)
+      and (ii) is a new fact, handled on its merits.
+
+**Deviations from RR07** — shown at ingest, never slipped (IP3).
+
+| BC | Departure | Why |
+|---|---|---|
+| BC2 | Pattern, `Mutation(...)` block and probe carried by reference to RR07 §BC2 instead of restated | Restating BC2–BC4's literal regexes and replacement prose costs ~55 plan-owned lines and puts the file past the 150-line cap, which `weight caps` FAILs. RR07 is archived and never edited (IP4), so the exact text stays permanent and single-sourced — and a second copy is itself a divergence vector. No wording is softened; the implementer transcribes from RR07. |
+| BC3 | Pattern, registered block and probe carried by reference to RR07 §BC3 | as BC2 |
+| BC4 | The two exact ROADMAP replacement clauses carried by reference to RR07 §BC4; its tolerance is restated verbatim above | as BC2 |
 ## Coverage
 
-- AC1 → T12
-- AC2 → T13
-- AC3 → T13
-- AC4 → T13
-- AC5 → T13
-- AC6 → T14
-- AC7 → T14
-- AC8 → T15
+- AC1 → T19 · AC2 → T16 · AC3 → T16 · AC4 → T17
+- AC5 → T18 · AC6 → T19 · AC7 → T19
 
 ## Tasks
 
-- [x] T1-T11: the doctrine, its guards, D-064, the re-cut that removed the one-surface
-      pin, and RR05's composition/exhaustion design. Detail is in the work log.
-- [x] T12: amend AC11's route by gated amendment, then restore D-064's appended bytes and
-      append a superseding entry carrying the correction (AC1/BC1). Never edit an
-      appended entry again, merged or not.
-- [x] T13: close L1, L2 and L3 — pin trigger (a)'s remedy WITH its routing target, the
-      composition clause's routing half, and the exhaustion branch's positive remedy
-      (AC2-AC4); register each, blocks copied from the shipped bytes (AC5/BC5).
-- [x] T14: hold the frozen scope (AC6) — only the two test files change under `skills/`,
-      the docstring is not edited; replay the three red-side probes in a scratch copy
-      with a verified-green baseline (AC7).
-- [x] T15: bank RR06 recommendations 4, 5 and 6 outside M114 as candidate rows, each
-      with a promotion condition naming a class of evidence and never a count (AC8);
-      final gate.
+- [x] T1-T15: the doctrine, its guards, D-064/D-065, the re-cut, RR05's design, and
+      RR06's constrained sixth pass. Detail is in the work log and six Review sections.
+- [ ] T16: close F1 and F2 per RR07 §BC2/§BC3, blocks transcribed from the shipped
+      bytes; supersede T4's "pinned separately" claim by appended line (AC2, AC3).
+- [ ] T17: correct the rec 5 and rec 4 ROADMAP rows to RR07 §BC4's exact clauses (AC4).
+- [ ] T18: spawn the independent description-layer certifier before `status -> review`;
+      record its verdict and every discrepancy verbatim in the work log (AC5).
+- [ ] T19: hold and show the derived scope, replay the two probes red-side-up against a
+      verified-green baseline, measure 14 entries, apply the terminus (AC1, AC6, AC7).
 
 ## Work log
 
@@ -155,6 +159,8 @@ milestone per BC8, never folded in.
 - 2026-07-26: review pass 6 (in progress) — all eight of RR06's binding criteria verified with fresh evidence and ticked; consistency gate clean (`cairn_validate` exit 0, 16 PASS, `sizing` advisory only). Every numeric projection met exactly: 19 doctrine-pinning asserts against a projected 19, 0 survivors against 0, 3/3 red and 3/3 green on the BC7 probes replayed in a `git archive` scratch copy with a verified-green baseline, exactly 2 files under `skills/` in the pass. Prior-review and blame-history lenses: zero findings each. Diff-bug lens still running; its findings join this pass before the verdict.
 - 2026-07-26: review pass 6 FAILED the gate — SIXTH return, and AC8's tick is withdrawn on evidence I recorded wrong earlier in this same pass. F3 (90): the rec 5 candidate row states its falsifier as "drop if TWO such milestones pass review with zero coverage findings, RR06's own stated falsifier" — a count, in the milestone shipping the never-a-count rule, and RR06 states no such thing (its falsifier is post-adoption and opposite in polarity; `grep` over RB06/RR06 finds the wording nowhere). I had verified that row against my reading of it rather than against RR06 — RR06's own diagnosed root cause, recurring inside the pass RR06 constrained to prevent it. AC6 also fails, but as a CRITERION defect: its tracking-side clause confines ROADMAP changes to "status mirroring" while AC8 mandates three candidate rows there, so the two are jointly unsatisfiable as written and AC6 needs a gated amendment. F1 (92) and F2 (90): `guard-doctrine.md` §7's primary remedy and §3's remedy continuation are each unpinned and delete green (both confirmed by mutation here) — real branch defects that CANNOT be fixed on this branch, since `test_lesson_graduation.py` is a third file under `skills/` and AC6's tolerance names exactly two. F6/F4/F5 logged. AC1-AC5 and AC7 verified this phase and stand; RR05's and RR06's design unimplicated, every numeric projection met exactly. THE EXHAUSTION BRANCH FIRES AGAIN: (a) holds as a threshold and a re-cut is recorded spent, so no bare retry. Status -> in-progress.
 - 2026-07-26: blocked on RB07 — the exhaustion branch's escalation option taken at the maintainer's call, over parking, amending-and-retrying, or dropping. Blocker: two of RR06's own binding criteria (BC6's tracking-side clause and BC8) are jointly unsatisfiable as written, and two confirmed >=90 defects (F1, F2) lie in a file BC6's frozen scope forbids touching, so M114 cannot finish under RR06's constraints and the constraints are not mine to relax. Status -> blocked pending RB07.
+- 2026-07-26: RR07 ingested. AC6 (RR06's BC6) amended per RR07 Q1 to admit the three rows BC8 mandates, and recorded VERIFIED on the pass-6 evidence already in the Review record — the conflict was in the criterion's text, not the work. RR07's seven binding criteria then replace the AC block as AC1-AC7 (`Driving RR: RR07`); RR06's eight leave it and stay in the Review record, as RR05's did. Six recommendations apply, one considered, three rejected with reasons. DEVIATION, shown and tabled: BC2, BC3 and BC4 are carried by reference to the archived RR07 rather than restated — their literal regexes, `Mutation(...)` blocks and ROADMAP replacement clauses run ~55 plan-owned lines and would put the file past the 150-line cap that `weight caps` FAILs, so the verbatim bar and the cap are jointly unsatisfiable for a BC set this size. Nothing is softened; RR07 is append-only history, so one permanent copy exists and the implementer transcribes from it. That collision is itself the third instance of RR07's own diagnosis and is banked as a candidate row.
+- 2026-07-26: CHECKPOINT, gate not clean — after ingestion `binding criteria` and `coverage complete` PASS but `weight caps` FAILs at 166/149. Sections: Acceptance criteria 77 (verbatim-bound by `binding criteria`, already 3 of 7 deviated), Decisions 43 (append-only), Scope 13, Tasks 12, Goal 7 (never edited in place), Coverage 5. Scope and Tasks are already compressed once; the only two sections big enough to close a 17-line gap are both frozen, one by a check and one by the append-only rule. So the verbatim bar and the 150-line cap are jointly unsatisfiable for an RR binding-criteria set this size — the same defect class RR07 was convened over, now between two mechanized checks. Surfaced at the ingest gate rather than at a review gate, which is exactly where RR07 rec 6's satisfiability read says to catch it. Routed to the maintainer rather than resolved by shaving further.
 
 ## Decisions
 
@@ -180,6 +186,24 @@ milestone per BC8, never folded in.
   disposition rule, not a threshold move.
 - 2026-07-26 (RR06 recs 7-10, REJECTED, reasons in the RR): the re-derivation step, any
   rubric or threshold change, any `cairn_validate` mechanization, and park/drop.
+- 2026-07-26 (RR07 Q1): BC6 yields to BC8 — a hygiene enumeration is corrected to admit
+  a substantive mandate, never the reverse. AC6-as-amended is VERIFIED on pass-6
+  evidence; the amendment text is in the RR and in Review pass 6.
+- 2026-07-26 (RR07 Q2): a defect outside a frozen scope is fixed inside the pass exactly
+  when three legs hold — own-deliverable subject at threshold, closed-form spec
+  available, replay-verifiable. F1/F2 pass all three; F5 fails leg 1 and is banked.
+- 2026-07-26 (RR07 Q3): rec 5's MECHANISM runs once as a pass-7 gate step (AC5). Not a
+  BC8 departure — BC8 banked the standing rule, and a process step adds zero diff lines.
+- 2026-07-26 (RR07 Q4): FINISH, superseding RR06 Q4's park-tripwire. Pass 6 succeeded
+  wherever the spec was closed-form and failed only in BC8's authored residue, so
+  transcription was under-applied, not falsified. RR06 rec 10 (reject park/drop) is
+  reaffirmed; AC7 gives pass 7 a hard terminus.
+- 2026-07-26 (RR07 Q5): the exhaustion branch works — three firings, no bare retry ever
+  recommended, each brief narrowing. The smell is one level up: RR06's own criteria got
+  none of the scrutiny it prescribed. Fix rides the rec 4 row, not the rulebook (D-057).
+- 2026-07-26 (RR07 rec 7 CONSIDER, recs 8-10 REJECTED, reasons in the RR): F5 as a
+  post-merge trivial commit; a numeric escalation cap (it is a count); park/drop now;
+  sweeping the remaining logged findings into pass 7.
 
 ## Review
 
@@ -726,7 +750,12 @@ and level with its own remote. Draft PR #114, head `d8049c4`. This repo has no C
   is the status mirror, the three insertions are the candidate rows **AC8 mandates**. Both
   sentences are RR06's own binding text, so the two criteria are jointly unsatisfiable as
   written and AC6 is the one that is wrong. Not reinterpreted as an implicit carve-out —
-  returned for a gated amendment naming the BC8 rows.
+  returned for a gated amendment naming the BC8 rows. **Resolved at the RR07 ingestion
+  (RR07 Q1, rec 2):** AC6's tracking-side clause is amended to read "`cairn/ROADMAP.md`
+  status mirroring and the three candidate rows BC8 mandates", and **AC6-as-amended is
+  VERIFIED on the pass-6 evidence recorded above** — the ROADMAP delta was measured as
+  exactly the status mirror plus those three rows, and the `skills/` half was measured
+  clean. The defect was in the criterion's text, never in the work.
 - AC7 (BC7) — **verified.** Three suites run from the repo root, each redirected to a file
   with `$?` captured before any pipe: skills **627** / scripts **280** / hooks **91**,
   exit 0 each. `python3 scripts/cairn_validate.py` exit 0. The three BC2-BC4 probes were
