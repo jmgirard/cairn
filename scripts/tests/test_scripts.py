@@ -2339,6 +2339,103 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         finding = cv.check_decisions_format(str(root))[0]
         self.assertNotIn("more line", finding)
 
+    # One line per signature in `_DECISIONS_PASTED`, keyed by the shape it is
+    # meant to catch. The shape tests above assert `len(findings) == 1`, which
+    # any ONE matching line in a multi-line paste satisfies — so six of the ten
+    # signatures could be deleted with the whole class green (§8 round 5). A
+    # signature that never has to fire on its own is not covered by a test that
+    # merely happens to contain it.
+    SIGNATURE_LINES = (
+        "$ python3 -m unittest discover -s scripts/tests",
+        "Ran 412 tests in 3.204s",
+        "OK",
+        "FAILED (failures=1)",
+        "ERROR (errors=2)",
+        "Traceback (most recent call last):",
+        'File "/repo/scripts/tests/test_scripts.py", line 42, in test_x',
+        "PASS  weight caps",
+        "diff --git a/cairn/DECISIONS.md b/cairn/DECISIONS.md",
+        "@@ -1,3 +1,3 @@",
+        "--- a/cairn/DECISIONS.md",
+        "+++ b/cairn/DECISIONS.md",
+    )
+
+    def test_each_signature_fires_on_its_own(self):
+        cv = _load_validate()
+        module = cv.__dict__
+        self.assertEqual(
+            len(module["_DECISIONS_PASTED"]), 10, "the signature table changed size"
+        )
+        for line in self.SIGNATURE_LINES:
+            with self.subTest(line=line):
+                self.tree = Tree(self._tmp.name)
+                root = self._with_decisions(f"- 2026-07-27: entry.\n{line}\n")
+                self.assertEqual(
+                    len(cv.check_decisions_format(str(root))), 1,
+                    f"no signature matched {line!r}",
+                )
+
+    def test_a_line_of_ordinary_prose_matches_no_signature(self):
+        # The negative control for the table above: a per-signature sweep that
+        # passed because SOMETHING always matches would be worse than no sweep.
+        cv = _load_validate()
+        root = self._with_decisions(
+            "- 2026-07-27: the run was fine and the numbers held up.\n"
+            "OK so the threshold moves, and PASS rates are unchanged.\n"
+        )
+        self.assertEqual(cv.check_decisions_format(str(root)), [])
+
+    def test_both_fence_delimiters_are_recognized(self):
+        # `~~~` support deletes green against a ``` -only fixture, and so does
+        # requiring column 0 (§8 round 5). Both spellings, and an indented
+        # opener, are what markdown actually admits.
+        cv = _load_validate()
+        for opener, closer in (("```", "```"), ("~~~", "~~~"), ("  ```", "  ```")):
+            with self.subTest(fence=opener):
+                self.tree = Tree(self._tmp.name)
+                root = self._with_decisions(
+                    f"- 2026-07-27: entry.\n{opener}\nno signature here\n{closer}\n"
+                )
+                findings = cv.check_decisions_format(str(root))
+                self.assertEqual(len(findings), 1, findings)
+                self.assertIn("fenced block", findings[0])
+
+    def test_a_fence_closes_by_prefix_not_equality(self):
+        # Two cases that equality gets wrong, and the reason closing is by
+        # prefix: an opener carrying a language tag, and a closer LONGER than
+        # its opener (which CommonMark allows). Prefix is also what the shared
+        # extractor uses, so the advisory and the section it reads agree on
+        # where a fence ends. The info-string case alone left `==` green.
+        cv = _load_validate()
+        for opener, closer in (("```text", "```"), ("```", "````")):
+            with self.subTest(fence=f"{opener}/{closer}"):
+                self.tree = Tree(self._tmp.name)
+                root = self._with_decisions(
+                    f"- 2026-07-27: entry.\n{opener}\nno signature here\n{closer}\n"
+                )
+                findings = cv.check_decisions_format(str(root))
+                self.assertEqual(len(findings), 1, findings)
+                self.assertIn("fenced block", findings[0])
+                # The ENDPOINT, not the shape of a range: an unclosed fence
+                # also reports one finding with a range, so `len == 1` plus
+                # `\d+-\d+` left equality-closing green.
+                self.assertIn(
+                    f"M04:{self._lineno(root, opener)}-{self._lineno(root, closer)}:",
+                    findings[0],
+                )
+
+    def test_a_quoted_fence_reports_as_loose_output_not_silence(self):
+        # Fence detection runs on the raw line, so a quoted ``` is not a
+        # delimiter. The behaviour is a change of KIND, never a miss — pinned
+        # so the code comment's stated scope cannot drift from what ships.
+        cv = _load_validate()
+        root = self._with_decisions(
+            "- 2026-07-27: entry.\n> ```\n> $ ls\n> Ran 3 tests in 0.1s\n> ```\n"
+        )
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+        self.assertIn("pasted output", findings[0])
+
     def test_quoted_transcripts_are_still_pasted_output(self):
         # Blockquoting is a rendering, not a defence: the detector normalizes
         # `>` markers to any depth and spacing, so the renderings come INTO the
@@ -2354,6 +2451,25 @@ class TestDecisionsFormatAdvisory(ScriptCase):
                     f"{marker}Ran 412 tests in 3.204s\n"
                 )
                 self.assertEqual(len(cv.check_decisions_format(str(root))), 1)
+
+    def test_a_quoted_diff_is_still_pasted_output(self):
+        # The shape §8 round 3 actually surfaced, which the marker sweep above
+        # does not reach: a quoted DIFF, whose context line's content starts
+        # with a space that `_DECISIONS_QUOTE`'s trailing `\s?` eats. Pinned on
+        # the preview, so the finding must come from the quoted diff header
+        # rather than from some other line happening to match.
+        cv = _load_validate()
+        root = self._with_decisions(
+            "- 2026-07-27: the change that settled it.\n"
+            "> diff --git a/cairn/DECISIONS.md b/cairn/DECISIONS.md\n"
+            "> @@ -1,3 +1,3 @@\n"
+            ">  - D-070: unchanged context line\n"
+            "> -old text\n"
+            "> +new text\n"
+        )
+        findings = cv.check_decisions_format(str(root))
+        self.assertEqual(len(findings), 1, findings)
+        self.assertIn('"diff --git a/cairn/DECISIONS.md', findings[0])
 
     def test_two_loose_pastes_report_once_with_both_counted(self):
         # The disclosed cost of not inferring where a delimiter-less paste ends

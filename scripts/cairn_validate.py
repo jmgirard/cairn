@@ -938,12 +938,21 @@ _DECISIONS_PASTED = (
     re.compile(r"^@@ .* @@"),
     re.compile(r"^(?:--- a/|\+\+\+ b/)"),       # unified-diff file headers
 )
-# Blockquote markers are stripped before matching so quoting a transcript does
-# not hide it. The pattern takes any depth and any spacing rather than an
-# enumerated set, which is guard-doctrine §3's point: a detector whose author
-# must list every rendering is a detector that misses the rendering the author
-# did not think of. The tests carry a spread of renderings in as positive
-# controls, and are the record of which — a count restated here would drift.
+# Blockquote markers are stripped before a LINE is matched, so quoting a
+# transcript does not hide its lines. The pattern takes any depth and any
+# spacing rather than an enumerated set, which is guard-doctrine §3's point: a
+# detector whose author must list every rendering is a detector that misses the
+# rendering the author did not think of. The tests carry a spread of renderings
+# in as positive controls, and are the record of which — a count restated here
+# would drift.
+#
+# Scope, stated because the sentence above invites the wider reading: this
+# strips markers for the SIGNATURE test only. Fence detection runs on the raw
+# line, so a quoted ``` is not a fence delimiter and a quoted fenced block is
+# read as loose output — its body lines still report, which is why the miss is
+# a change of `kind`, not silence. Widening fence detection to quoted
+# delimiters would make a fence's extent depend on quoting depth, which is more
+# inference than the round-3 removal left in place.
 _DECISIONS_QUOTE = re.compile(r"^(?:\s*>)+\s?")
 
 # Where an unfenced paste STOPS is deliberately not computed. A fence carries
@@ -1429,7 +1438,7 @@ def _pasted_findings(lines):
     closing one, both included, matching what the cap counters count (M77 review
     F2) — a closed fence's extent is read off its delimiters. An UNTERMINATED
     fence has no closing delimiter to read and runs to the end of the section:
-    the one extent here that is inferred, and the reason the note above the
+    the one extent here that is inferred, and the reason the note below the
     signature table says "no rule reads a transcript's insides" rather than
     "nothing is inferred". Loose output OUTSIDE any fence is **one finding for
     the whole section**, anchored at its first signature line and counting the
