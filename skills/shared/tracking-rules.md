@@ -551,9 +551,9 @@ cairn skill is active.
   This never licenses compressing mandated substance: the Durable-record
   preview and Acceptance chips rules still show their text verbatim.
 - **Correct what matters, and only narrate that.** Correct an earlier chat
-  statement only when the error would change the user's code, conclusions,
-  or decisions. State the correction plainly and briefly, then continue the
-  task — no preamble, no apology, no tally of what went wrong.
+  statement only when the error would change the user's code, conclusions, or decisions.
+  State the correction plainly and briefly, then continue the task — no
+  preamble, no apology, no tally of what went wrong.
   A slip that changes nothing for the user is fixed without narrating it,
   because narrating it spends the user's attention on the author's process
   rather than on the work. A chat slip never reaches a durable record: a
@@ -651,14 +651,18 @@ cairn skill is active.
   genuinely independent track of work — a wide multi-file investigation, a
   mechanical migration across many sites. Work the session can finish itself
   in a handful of tool calls is done inline, never delegated: the spawn costs
-  more than the work it saves. Where one subagent can do the task, spawn one
-  rather than several — a second copy of the same job buys a second context
-  and returns the first one's answer.
+  more than the work it saves. Where one subagent can do the task,
+  spawn one rather than several — a second copy of the same job buys a
+  second context and returns the first one's answer.
   The `/milestone-review` fan-out below is not that case and is no exception
   to this rule: its three reviewers carry distinct evidence bases — the diff,
   git blame, prior review threads — so no one of them can do another's task,
-  which is the independence this rule asks for. The bullets below decide
-  *which* tier a warranted spawn gets; this one decides whether it happens.
+  which is the independence this rule asks for. Nor is a spawn made for
+  *freshness* — a reader that must not have authored what it reads — a volume
+  judgment this rule reaches; it is warranted by who the reader is, not by how
+  much work there is. The tier bullets below decide *which* tier a warranted
+  spawn gets, with one exception: the Fable bullet gates *whether* a Fable
+  spawn happens at all.
 - **Sonnet subagents**: well-specified self-contained work — fan-out
   searches (Explore), mechanical migrations, test writing against a spec,
   boilerplate. Give complete specs — for an Explore fan-out that means a

@@ -3247,13 +3247,13 @@ REGISTRY += [
         guard="test_narration_discipline",
         test="TestCorrectionNarrationRule.test_rule_states_the_materiality_bar",
         target=RULES,
-        block="only when the error would change the user's code, conclusions,",
+        block="only when the error would change the user's code, conclusions, or decisions.",
     ),
     Mutation(
         guard="test_narration_discipline",
         test="TestCorrectionNarrationRule.test_rule_requires_plain_correction_then_continue",
         target=RULES,
-        block="State the correction plainly and briefly, then continue the",
+        block="State the correction plainly and briefly, then continue the task",
     ),
     Mutation(
         guard="test_narration_discipline",
@@ -3285,7 +3285,7 @@ REGISTRY += [
         guard="test_delegation_warrant",
         test="TestDelegationWarrantRule.test_rule_prefers_one_subagent_over_several",
         target=RULES,
-        block="Where one subagent can do the task, spawn one",
+        block="spawn one rather than several",
     ),
     Mutation(
         guard="test_delegation_warrant",
@@ -3297,26 +3297,34 @@ REGISTRY += [
 
 
 # M120: the false-positive taxonomy moves out of the reviewers' instruction and
-# into the scorer's rubric (D-078). Three entries, because the guard makes three
-# separable claims: that the taxonomy is present, that it is present INSIDE the
-# rubric (blanking the phrase the guard anchors its slice on must red the test —
-# otherwise the location claim is unproven and the taxonomy could be moved back
-# upstream unnoticed),
-# and that the reviewers are told to report everything. The third is the
-# positive framing registered on behalf of the paired `assertNotIn`, which is
-# satisfied by blanking and cannot be mutation-proven itself (guard-doctrine §3).
+# into the scorer's rubric (D-078). One entry per CONTAINED phrase — a taxonomy
+# member, the disposition sentence, and the report-everything instruction.
+#
+# Deliberately NOT registered: `Score 0-100 your confidence`, the string
+# `_scorer_rubric()` uses to locate its slice. Blanking a locator reds the test
+# by StopIteration whether or not the taxonomy sits inside the rubric, so it
+# would pass identically with the taxonomy moved back upstream — a tautology,
+# not coverage. That is LESSONS 2026-07-27 (M117): register the CONTAINED
+# phrase, never the bound. The location claim is not mutation-provable at all,
+# because the harness blanks and never MOVES (guard-doctrine §2, "Blanking is
+# not swapping"); it rests on the slice construction, and inversion — not
+# blanking — is what verifies it.
+#
+# The report-everything entry is the positive framing registered on behalf of
+# the paired `assertNotIn`, which is satisfied by blanking and cannot be
+# mutation-proven itself (guard-doctrine §3).
 REGISTRY += [
     Mutation(
         guard="test_review_fanout",
         test="TestReviewFanout.test_false_positive_taxonomy_lives_in_the_scorer_rubric",
         target=REVIEW,
-        block="Not a finding, and out of scope for this diff",
+        block="a pre-existing issue the diff did not introduce",
     ),
     Mutation(
         guard="test_review_fanout",
-        test="TestReviewFanout.test_false_positive_taxonomy_lives_in_the_scorer_rubric",
+        test="TestReviewFanout.test_taxonomy_carries_its_scoring_disposition",
         target=REVIEW,
-        block="Score 0–100 your confidence",
+        block="Score anything matching this list below 60",
     ),
     Mutation(
         guard="test_review_fanout",

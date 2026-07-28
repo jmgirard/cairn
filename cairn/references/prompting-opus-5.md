@@ -84,13 +84,13 @@ walks when a value here changes, so name specific files and lines, not areas.
 - `skills/shared/tracking-rules.md:553` — "Correct what matters, and only
   narrate that", in Output & interaction discipline. Takes the § Self-correction
   instruction: correct only what would change the user's code, conclusions, or
-  decisions. Guarded by `skills/tests/test_narration_discipline.py:55`
+  decisions. Guarded by `skills/tests/test_narration_discipline.py:58`
   (`TestCorrectionNarrationRule`), four asserts, four mutation entries.
 - `skills/shared/tracking-rules.md:650` — "Delegate only what warrants it", in
   Model and agent strategy. Takes the § Controlling subagent spawning
   instruction: nothing finishable in a handful of tool calls is delegated, and
   one subagent rather than several. Guarded by
-  `skills/tests/test_delegation_warrant.py:41` (`TestDelegationWarrantRule`),
+  `skills/tests/test_delegation_warrant.py:44` (`TestDelegationWarrantRule`),
   three asserts, three mutation entries. cairn does **not** take that
   instruction's third clause ("do not use subagents to verify or double-check
   your own work") — M121 owns it.
@@ -98,8 +98,8 @@ walks when a value here changes, so name specific files and lines, not areas.
   report-everything-filter-nothing. Takes the § Capability improvements finding
   that a reviewer told to be conservative reports less. Recorded as
   `cairn/DECISIONS.md` D-078; guarded by
-  `skills/tests/test_review_fanout.py:105`.
-- `skills/milestone-review/SKILL.md:191` — the false-positive taxonomy, now
+  `skills/tests/test_review_fanout.py:123`.
+- `skills/milestone-review/SKILL.md:198` — the false-positive taxonomy, now
   inside the `[S]` scorer's rubric blockquote rather than the reviewers'
   instruction; the downstream half of the same finding. Guarded by
   `skills/tests/test_review_fanout.py:97`.

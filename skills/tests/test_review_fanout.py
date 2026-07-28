@@ -95,12 +95,30 @@ class TestReviewFanout(unittest.TestCase):
         return "\n".join(run)
 
     def test_false_positive_taxonomy_lives_in_the_scorer_rubric(self):
+        # Each member is pinned WITH its predicate, never as a bare token:
+        # guard-doctrine §1's label->SET trap is that pinning `nitpick` alone
+        # leaves the set swappable — "a pre-existing issue the diff DID
+        # introduce" keeps every bare token and inverts the taxonomy.
         rubric = self._scorer_rubric()
-        self.assertIn("Not a finding", rubric)
-        for token in ("pre-existing", "linter", "nitpick",
-                      "unmodified line", "intentional change"):
-            with self.subTest(token=token):
-                self.assertIn(token, rubric)
+        self.assertIn("Not a finding, and out of scope for this diff", rubric)
+        for member in (
+            "a pre-existing issue the diff did not introduce",
+            "anything a linter or formatter would catch",
+            "a pure style nitpick",
+            "a complaint about an unmodified line",
+            "an intentional change the milestone's plan called for",
+        ):
+            with self.subTest(member=member):
+                self.assertIn(member, rubric)
+
+    def test_taxonomy_carries_its_scoring_disposition(self):
+        # The members are inert without this sentence: it is what makes a
+        # taxonomy match score sub-60 and so land in the logged-but-not-
+        # actioned list rather than being dropped. Deleting it left every
+        # other assert in this file green (M120 review, P2).
+        self.assertIn(
+            "Score anything matching this list below 60", self._scorer_rubric()
+        )
 
     def test_reviewers_report_everything_and_filter_nothing(self):
         # Absence-assert paired with its positive framing (guard-doctrine §3):

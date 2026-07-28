@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3
-- **Branch/PR:** `m120-opus5-guide-adoptions`
+- **Branch/PR:** `m120-opus5-guide-adoptions` · https://github.com/jmgirard/cairn/pull/120
 
 ## Goal
 
@@ -35,7 +35,7 @@ waits for M119 to merge rather than being transcribed onto a row main lacks.
 
 ## Acceptance criteria
 
-- [ ] AC1 — `cairn/references/prompting-opus-5.md` exists, authored from
+- [x] AC1 — `cairn/references/prompting-opus-5.md` exists, authored from
       `skills/shared/templates/source-note.md`, carrying a `**Provenance.**`
       block that names the ingested date and ingesting milestone in the form
       `_PROV_INGESTED` parses (`scripts/cairn_validate.py:286-289`), the
@@ -45,11 +45,11 @@ waits for M119 to merge rather than being transcribed onto a row main lacks.
       it, and `python3 scripts/cairn_validate.py` exits 0 with
       `references index<->disk` passing and no `references staleness` WARN
       naming this page.
-- [ ] AC2 — Under the page's `## Traces to` heading, one line per rule this
+- [x] AC2 — Under the page's `## Traces to` heading, one line per rule this
       milestone ships that rests on the guide, each naming the file and the
       heading or step the rule landed in. The rules AC3–AC5 ship each appear
       there, and no line names a rule absent from `git diff <default>..HEAD`.
-- [ ] AC3 — `tracking-rules.md`'s "Output & interaction discipline" section
+- [x] AC3 — `tracking-rules.md`'s "Output & interaction discipline" section
       carries a correction-narration rule stating all three of: an earlier
       chat statement is corrected only when the error would change the user's
       code, conclusions, or decisions; a correction is stated plainly and
@@ -59,14 +59,14 @@ waits for M119 to merge rather than being transcribed onto a row main lacks.
       `skills/tests/` asserts a phrase from each of the three clauses, each
       phrase occurring within a single physical line of the shipped file, and
       each phrase carries its own entry in `skills/tests/test_mutation_harness.py`.
-- [ ] AC4 — `tracking-rules.md`'s "Model and agent strategy" section carries a
+- [x] AC4 — `tracking-rules.md`'s "Model and agent strategy" section carries a
       delegation-warrant test stating both: work the session can finish itself
       in a handful of tool calls is done inline rather than delegated; and
       where one subagent can do the task, one is spawned rather than several.
       A prose-guard in `skills/tests/` asserts a phrase from each clause, each
       occurring within a single physical line of the shipped file, and each
       phrase carries its own mutation entry.
-- [ ] AC5 — `skills/milestone-review/SKILL.md` step 5 instructs all three
+- [x] AC5 — `skills/milestone-review/SKILL.md` step 5 instructs all three
       reviewers to report every candidate finding rather than to drop any
       before reporting, and carries the false-positive taxonomy verbatim inside
       the `[S]` scorer's rubric instead, framed so the scorer treats a taxonomy
@@ -80,7 +80,7 @@ waits for M119 to merge rather than being transcribed onto a row main lacks.
       name and docstring no longer claim the taxonomy is handed to the
       reviewers. A `cairn/DECISIONS.md` entry records the relocation, the
       alternative rejected, and the IP3 gap it closes.
-- [ ] AC6 — `scripts/tests/test_scripts.py`'s `TestShippedPageStateLedger.EXPECTED`
+- [x] AC6 — `scripts/tests/test_scripts.py`'s `TestShippedPageStateLedger.EXPECTED`
       gains `prompting-opus-5.md` with the staleness state `_last_verified`
       computes for the shipped page, and the milestone's work log carries the
       one-line justification the ledger's contract requires
@@ -156,5 +156,71 @@ waits for M119 to merge rather than being transcribed onto a row main lacks.
 - 2026-07-27: implement gate chose placing each new guard with the file that owns its topic — correction narration into `test_narration_discipline.py`, delegation into a new file — over one milestone-named file, at the user's direction; falsified by the narration file growing beyond one subject.
 
 ## Decisions
+- 2026-07-27: review fan-out found 3 asserts surviving inversion (F1, F4, F16) because guard-doctrine §1's inversion protocol had not been run — only blanking was. All 10 asserts now verified by inversion, 0 survive. Fixed 7 distinct findings scored 80+; 20 sub-80 findings logged in the Review section.
 
 ## Review
+
+_Evidence gathered by command 2026-07-27; each criterion ticked as its own line landed._
+- **AC1 verified** 2026-07-27. `cairn/references/prompting-opus-5.md` exists, authored from `templates/source-note.md`. `_provenance_block` parses it; `_PROV_INGESTED` yields `2026-07-27`, `_PROV_SOURCE` and `_PROV_LOCATOR` both match, and the block names `by M120`. `Pagination: —` at `:8`. `Extraction:` is one physical line (`:10`) carrying its own `— observed 2026-07-27`; `_last_verified` returns `('ok', 2026-07-27)`. `INDEX.md` carries exactly one line for the page. `python3 scripts/cairn_validate.py` exits 0 with `references index<->disk` PASS and `references staleness` OK — the page is named in zero WARNs.
+- **AC2 verified** 2026-07-27. `## Traces to` carries five bullets and eight `file:line` anchors. Each anchor was resolved by reading line N out of the named file: all eight point at what they claim (`tracking-rules.md:553`/`:650`, `SKILL.md:178`/`:191`, `test_narration_discipline.py:55`, `test_delegation_warrant.py:41`, `test_review_fanout.py:97`/`:105`). Every anchored file appears in `git diff --name-only main..HEAD`, so no line names a rule absent from the diff; the rules AC3, AC4 and AC5 ship each have their own bullet.
+- **AC3 verified** 2026-07-27. The rule sits at `tracking-rules.md:553` in Output & interaction discipline and states all three clauses. `TestCorrectionNarrationRule` asserts four phrases; each occurs exactly once in the shipped file and each lies within a single physical line (per-line scan, not whole-file). Each of the four carries its own `test_mutation_harness.py` entry, and `guard_fails_when_blanked` returns True for all four — no false coverage.
+- **AC4 verified** 2026-07-27. The rule sits at `tracking-rules.md:650` in Model and agent strategy and states both clauses. `TestDelegationWarrantRule` asserts three phrases (the two required plus the fan-out reconciliation added at the implement gate); each occurs exactly once and within a single physical line, and each carries its own mutation entry, all three verified to redden when blanked.
+- **AC5 verified** 2026-07-27. `SKILL.md:178` tells all three reviewers to report every candidate finding, filtering nothing. The scorer's rubric blockquote — located by its own first line and walked as a contiguous `>` run, `SKILL.md:186-195`, 10 lines — carries `Not a finding` and all five members, framed `out of scope for this diff` and scored `below 60`. The literal `drop anything matching it before reporting` occurs zero times; its absence-assert is paired with `report every candidate finding`, and that positive phrase is what the harness registers (REDDENS). Repo-wide grep for `handed to the reviewers` and `taxonomy_handed` returns nothing. D-078 (`DECISIONS.md:2523`) records the relocation, two rejected alternatives, and the IP3 gap.
+- **AC6 verified** 2026-07-27. `scripts/tests/test_scripts.py:1431` pins `"prompting-opus-5.md": "ok"`; `TestShippedPageStateLedger` passes, and `_last_verified` independently computes `ok` for the shipped page. The work log carries the one-line justification the ledger contract requires.
+- **Verify slot** 2026-07-27: `python3 -m unittest discover` over `skills/tests` (688), `scripts/tests` (332) and `hooks/tests` (98) — all OK, each exit code checked separately, all 0. `cairn_validate` exits 0 across 16 PASS checks and 8 advisories, none naming this milestone's files.
+
+### Independent review (three lenses + scorer)
+
+- **Fan-out** 2026-07-27: [O] diff-bug (20 findings), [S] blame-history (6, its
+  verdict "nothing in M120 silently undoes prior work"), [S] prior-PR-comments
+  (2; the `gh api .../pulls/comments` probe returned `[]`, so no PR-thread walk
+  was warranted — primary evidence was `milestones/archive/` `## Review`
+  sections and `LESSONS.md`). 28 findings scored by a fresh [S] scorer given the
+  rubric verbatim plus the diff and this file.
+- **Scorer's meta-finding, actioned above all others:** `guard-doctrine.md` §1
+  mandates verification by **inversion** ("Blanking proves only that the text is
+  present; inversion is what proves the guard pins the rule"), and this
+  milestone's work log recorded only blanking for all seven new asserts. The
+  mandated step had not been run. Running it found three asserts that survive
+  inverting the rule they claim to pin.
+
+**Actioned — scored 80 or above (8 findings, 7 distinct defects; all fixed):**
+
+- **F1 (92)** — the delegation assert pinned `where one subagent can do the task, spawn one`, leaving the operative predicate `rather than several` on the next physical line: the rule inverted to "spawn several rather than one" with the guard green. Rule rewrapped; assert re-anchored on `spawn one rather than several`.
+- **F4 (88)** — the five taxonomy members were pinned as bare tokens (`nitpick`, `linter`, …), so negating every predicate ("a pre-existing issue the diff DID introduce") left the guard green — guard-doctrine §1's label→SET trap. Rubric rewrapped one member per line; each member now pinned whole.
+- **F6 (87) / P1 (87)** — the `Score 0–100 your confidence` mutation entry registered the guard's own slice *locator*: blanking it reds by `StopIteration` whether or not the taxonomy is in the rubric, so it proved nothing. That is LESSONS 2026-07-27 (M117), "register the CONTAINED phrase, never the bound". Entry replaced with the disposition sentence; the comment now states that the location claim is not mutation-provable at all, because the harness blanks and never moves.
+- **F16 (87)** — two correction-narration anchors stopped mid-clause (`conclusions,` without `or decisions`; `continue the` without `task`); the materiality bar inverted green. Rule rewrapped; both asserts re-anchored on the full clause.
+- **P2 (86)** — `Score anything matching this list below 60`, the sentence that gives the taxonomy any effect in its new home, was asserted nowhere; deleting it left all 11 `TestReviewFanout` tests green. New `test_taxonomy_carries_its_scoring_disposition`, with its own mutation entry.
+- **F7 (83)** — the relocation moved three diff-relative judgments (pre-existing, unmodified line, plan-called-for) to a scorer whose evidence base step 5 never specified. Step 5 now gives the scorer the diff and the milestone file, and says its independence is from *generating* findings, not from the diff. D-078's Consequences records it.
+- **F3 (80)** — "The bullets below decide *which* tier a warranted spawn gets" is false of the Fable bullet, which gates *whether* a Fable spawn happens. Sentence corrected in the rule and in the guard docstring.
+
+**Post-fix re-verification** 2026-07-27: all ten asserted phrases re-checked for
+single-physical-line contiguity and uniqueness; every one reddens under
+**inversion** (negating the rule in place, running the guard, requiring red) —
+0 of 10 survive, against 3 before the fixes. All eight `## Traces to` anchors
+recomputed and corrected, the rewraps having shifted four of them. Three suites
+green (689 / 332 / 98, exit 0 each); `cairn_validate` exit 0, 24 checks, no FAIL
+or WARN.
+
+**Logged, not actioned — 20 findings below 80** (IP3: surfaced, never silently
+dropped). F20 (78) Scope "Out" text about M119 being unmerged is stale in the
+merged artifact — true at plan time, plan-owned, amendable only by gate. F17
+(76) the generic `assertIn` suffix-append weakness, not specific to this diff.
+F9 (68) narration guard's module docstring named only the M67 rule — **fixed
+anyway**, it was one line. F10 (68) `references/anthropic-code-review.md`'s
+taxonomy bullet lacks a `*(Shipped: …)*` disposition annotation. F2 (62) the
+inline-floor rule's reach over mandated fresh-context spawns — **partly
+addressed**: the rule now says a spawn made for freshness is not a volume
+judgment it reaches. F14 (62) "executed by Claude Opus 5" cited to a rulebook
+line saying only "Opus". F15 (60) the ROADMAP corroboration crosses from
+written-deliverable length to code comments. F18 (60) possible IP2 tension in
+the unremarked-slip clause. F5 (48) `_scorer_rubric()`'s bare `StopIteration`
+diagnostic and blockquote-walk brittleness. F13 (45) "third clause" mislabels
+the guide's sample prompt (scorer judged clause-counting genuinely ambiguous).
+F19 (45) D-078's heading says "closes an IP3 gap" where its Consequences says
+"the bound, not a closure" — different referents. F11 (35) / H5 (35) the
+`EXPECTED` map's comment-per-entry precedent not followed (the literal contract,
+a work-log justification, is met). F8 (30) the self-reference that this review
+is the new arrangement's own first run. F12 (20) `REGISTRY +=` block placement.
+H1–H4, H6 (8 each) history-lens findings reporting no defect.
+

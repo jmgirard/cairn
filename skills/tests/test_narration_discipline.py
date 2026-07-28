@@ -1,4 +1,7 @@
-"""Regression guard: the M67 narration-discipline rule (D-039).
+"""Regression guards for the two chat-output rules in `tracking-rules.md`'s
+Output & interaction discipline: the M67 narration-discipline rule (D-039) and
+the M120 correction-narration rule. Both govern what the session says in chat
+rather than what it writes to a record, which is why they share a file.
 
 Locks the "Narrate outcomes, not deliberation" rule in
 `tracking-rules.md`: the no-deliberation-readout bar, the signpost and
@@ -69,13 +72,14 @@ class TestCorrectionNarrationRule(unittest.TestCase):
 
     def test_rule_states_the_materiality_bar(self):
         self.assertIn(
-            "only when the error would change the user's code, conclusions,",
+            "only when the error would change the user's code, conclusions, "
+            "or decisions.",
             rules(),
         )
 
     def test_rule_requires_plain_correction_then_continue(self):
         self.assertIn(
-            "state the correction plainly and briefly, then continue the",
+            "state the correction plainly and briefly, then continue the task",
             rules(),
         )
 

@@ -2548,7 +2548,11 @@ taxonomy outright — it encodes real triage judgment and the guide's own remedy
 is to move the filter downstream, not to remove it.
 
 **Consequences:** One filter now runs, once, at a station that already keeps a
-record. D-016 needs no supersession and is annotated instead: its stated
+record. The relocation moves three diff-relative judgments — pre-existing,
+unmodified line, plan-called-for — to a station that previously held no diff, so
+step 5 now states the scorer's evidence base explicitly: it is given the diff and
+the milestone file, and its independence means it did not *generate* the
+findings, never that it is blind to what they are about (M120 review, F7). D-016 needs no supersession and is annotated instead: its stated
 rationale — the scorer "gates which findings reach the user", which is why the
 step stays on Sonnet and never Haiku — now covers strictly more surface, since
 the taxonomy judgment moved onto that same station. The scorer's load grows by
