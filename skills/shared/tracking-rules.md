@@ -663,6 +663,20 @@ cairn skill is active.
   much work there is. The tier bullets below decide *which* tier a warranted
   spawn gets, with one exception: the Fable bullet gates *whether* a Fable
   spawn happens at all.
+- **Which self-checking that rule governs.** The delegation warrant above
+  reaches one class of checking and not the other, and the two are easy to
+  conflate because both end in something being read twice. It governs
+  **an author re-checking work it just produced, in the context that produced it** —
+  spawned or inline, a check already happening unprompted, so instructing it
+  again buys tokens rather than quality (`references/prompting-opus-5.md`,
+  § Task scope and over-verification). It does not govern
+  **an independent fresh-context reading of that work by a reader that authored none of it** —
+  a different instrument against a different failure: an author checks a
+  description against its generative model of the artifact rather than against
+  the artifact (D-067). The discriminator is *who reads*, never *how often the
+  work is read* — which is the same cut the freshness sentence above makes
+  against the volume test. A fresh reader's own loop is bounded by its
+  instrument (`guard-doctrine.md` §8), never by this rule.
 - **Sonnet subagents**: well-specified self-contained work — fan-out
   searches (Explore), mechanical migrations, test writing against a spec,
   boilerplate. Give complete specs — for an Explore fan-out that means a

@@ -98,6 +98,11 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    cap. The instrument is a reader and never a check — satisfiability and
    IP-conflict are judgments about prose meaning, which D-059's retirement
    precedent says to route to the mechanism that works rather than mechanize.
+   **The audit records one work-log line either way** — what it returned, or
+   that it returned nothing — so an absent line means the reader did not run,
+   never that it ran and was silent (M121). Two of the five milestones after
+   adoption carry no such line, and which of the two happened is no longer
+   recoverable from the record.
 
    **Release-shaped tripwire.** Release timing is user-declared, never agent-proposed (tracking-rules; D-050) — so a release-framed scope stops here for an explicit window declaration.
    It fires when the scope in hand would ship a version: a release, a CRAN or

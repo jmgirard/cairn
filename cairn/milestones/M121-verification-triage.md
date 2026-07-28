@@ -90,14 +90,14 @@ which no finding here disturbs.
       synthesis-note template, with a disposition and ground per row. A row is
       `same-context-recheck` only where the instruction has the agent re-read
       work it just produced, with the context that produced it.
-- [ ] T3 — Apply every `narrow` and `remove` disposition to the shipped prose.
+- [x] T3 — Apply every `narrow` and `remove` disposition to the shipped prose.
       After each edit, grep every nearby guard's asserted substring for
       contiguity on one physical line (LESSONS 2026-07-20/M104), and re-run the
       three suites with exit codes checked.
 - [ ] T4 — Read M115–M119's Review sections and work logs for what each of
       D-067's instruments caught and what it cost; author the DECISIONS entry
       per AC3. Show it verbatim in chat before its commit.
-- [ ] T5 — Write the self-checking-class rule into "Model and agent strategy";
+- [x] T5 — Write the self-checking-class rule into "Model and agent strategy";
       guard + per-phrase mutation entries; verify each reddens when blanked.
 - [ ] T6 — `INDEX.md` line and `TestShippedPageStateLedger` pin for the ledger
       page, with the work-log justification line.
@@ -111,6 +111,11 @@ which no finding here disturbs.
 - 2026-07-27: implement started on branch `m121-verification-triage`; status → in-progress.
 - 2026-07-27: implement question gate chose the 79-hit term set (verify family + `re-read`/`confirm`/`self-check`, excluding `audit`) over 65 (verify family only) and 114 (+`audit`); measured at 684e53a, `audit` adds 35 lines of which all but `/milestone-plan:86`'s criteria audit name the health-audit feature rather than instruct a check, and AC3 reaches that instrument by name regardless.
 - 2026-07-27: AC1 amended at the gate — mechanism vocabulary gains a fourth value `not-an-instruction`, because AC2 pins rows to hits and the three original values all presuppose the line is an instruction, leaving a hit like `tracking-rules.md:195` with no legal classification and dropping it silently against IP3.
+- 2026-07-27: task order — T4's evidence read ran before T2's ledger authoring (minor amendment), because the ledger's eleven `fresh-context-reader` rows inherit whatever disposition AC3 reaches, and authoring them twice would have been the restatement guard-doctrine §6 warns about.
+- 2026-07-27: D-067 disposition gate — the criteria audit takes `narrow` (kept, plus a mandatory work-log line either way) over `keep unchanged` and `retire`, because M117 and M119 carry no audit record at all, so "did not run" and "ran and found nothing" are indistinguishable and the instrument's yield is unmeasurable; falsified by a milestone recording the line and the line proving to carry no information a reader uses.
+- 2026-07-27: D-067 disposition gate — §8 takes `narrow` (a stopping bound on what a round returns) over `retire` and `keep unchanged`, because round 1 returned real defects in every milestone that ran it (M116 9, M117 8, M118 16, M119 2 code defects) while rounds 5-9 of M119 returned zero shipped-behaviour defects and re-certified the previous round's own fix comments; falsified by a bounded round 1 still averaging multiple returns.
+- 2026-07-27: T3 — §8's unbounded loop narrowed at `guard-doctrine.md:284,297` and the routing bar at `milestone-implement/SKILL.md:102`; the criteria audit gains a record requirement at `milestone-plan/SKILL.md` step 3, cross-referenced from `milestone-brief/SKILL.md` (step 0, one home). Two guard asserts re-anchored, five added, five mutation entries added; three suites green, exit 0 each.
+- 2026-07-27: T5 — the self-checking-class rule lands in "Model and agent strategy" naming both classes; two asserts (one per class, each a single physical line) with their own mutation entries. The guide's third delegation clause ("do not use subagents to verify or double-check your own work") reads onto D-067's readers only if the classes are unnamed, which is the misreading this rule blocks.
 
 ## Decisions
 

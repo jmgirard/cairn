@@ -118,6 +118,26 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
             "The instrument is a reader and never a check", plan()
         )
 
+    def test_audit_records_a_work_log_line_even_when_it_finds_nothing(self):
+        # M121 narrows D-067's first instrument. Two of the five milestones
+        # after adoption (M117, M119) carry no audit line at all, so "did not
+        # run" and "ran and found nothing" are indistinguishable in the record
+        # — which is what makes the instrument's yield unmeasurable.
+        self.assertRegex(
+            plan(),
+            r"\*\*The audit records one work-log line either way\*\* — what it "
+            r"returned, or\s+that it returned nothing",
+        )
+
+    def test_absent_audit_line_means_it_did_not_run(self):
+        # The operative half: without it the requirement reads as bookkeeping
+        # rather than as what makes a missing line evidence.
+        self.assertRegex(
+            plan(),
+            r"an absent line means the reader did not run,\s+never that it ran "
+            r"and was silent",
+        )
+
     def test_step_4_writes_the_audited_wording_and_reaudits_a_change(self):
         self.assertRegex(
             plan(),
@@ -162,6 +182,15 @@ class TestRRIngestionCriteriaAudit(unittest.TestCase):
         self.assertRegex(
             brief(),
             r"asked\s+of the set as well as of each criterion",
+        )
+
+    def test_ingest_audit_records_its_own_line_on_the_plan_gate_terms(self):
+        # M121: the record requirement is stated once at `/milestone-plan`
+        # step 3 and cross-referenced here (step 0, one home).
+        self.assertRegex(
+            brief(),
+            r"The ingest audit\s+records one work-log line either way, on "
+            r"`/milestone-plan` step 3's terms",
         )
 
     def test_ingest_findings_are_raised_never_softened_away(self):
@@ -235,8 +264,27 @@ class TestDescriptionLayerCertification(unittest.TestCase):
     def test_section_requires_zero_unresolved_and_forbids_arguing_down(self):
         self.assertRegex(
             self.doctrine,
-            r"The gate is entered at zero unresolved: a discrepancy is fixed and\s+"
+            r"Round 1 is answered at zero unresolved: a discrepancy is fixed and\s+"
             r"re-certified, never argued down as imprecision",
+        )
+
+    def test_section_bounds_the_loop_on_what_a_round_returns(self):
+        # M121 narrows D-067: round 1's yield was real in every milestone that
+        # ran it, and the cost sat entirely in rounds >=2 re-certifying the
+        # previous round's own fix comment (M119 ran nine).
+        self.assertRegex(
+            self.doctrine,
+            r"\*\*The loop stops at the first round returning no "
+            r"shipped-behaviour defect and\s+no regression\*\* \(M121\)",
+        )
+
+    def test_bound_distinguishes_itself_from_the_tuning_the_falsifier_forbids(self):
+        # Without this the bound reads as the round-count tuning the falsifier
+        # below rules out, which is the D-059 move it must not be mistaken for.
+        self.assertRegex(
+            self.doctrine,
+            r"A round \*count\* is what may not\s+be tuned; a predicate on "
+            r"what a round returns is the bound that replaces it",
         )
 
     def test_section_moves_certification_not_operation(self):
@@ -290,8 +338,9 @@ class TestImplementRoutesToCertification(unittest.TestCase):
         self.assertRegex(
             read("milestone-implement", "SKILL.md"),
             r"`skills/shared/guard-doctrine\.md` §8, the author never certifies "
-            r"its own\s+guard's coverage — and enter the gate only at zero "
-            r"unresolved",
+            r"its own\s+guard's coverage — and enter the gate at §8's stopping "
+            r"bound: round 1 at\s+zero unresolved, then the first round "
+            r"returning no shipped-behaviour\s+defect and no regression",
         )
 
 

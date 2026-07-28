@@ -281,7 +281,7 @@ The reader checks three things and reports discrepancies verbatim:
 - **Anchor-vs-shipped-bytes fidelity** — every multi-word anchor matches the
   bytes actually shipped, including under the target's hard wrap.
 
-The gate is entered at zero unresolved: a discrepancy is fixed and
+Round 1 is answered at zero unresolved: a discrepancy is fixed and
 re-certified, never argued down as imprecision. The author still runs
 everything — this moves certification, not operation.
 
@@ -294,6 +294,18 @@ uncertified surface for the next one to audit. M114 pass 8 ran four rounds on
 that treadmill — round 4 finding defects only in certification narrative — at
 15, 14, 17 and 38 minutes. Zero unresolved stays the bar; what this excludes is
 a scope that regresses.
+
+**The loop stops at the first round returning no shipped-behaviour defect and
+no regression** (M121). That round's remaining description-layer discrepancies
+are fixed and recorded, never re-certified: a round certifying the previous
+round's own fix comment is the treadmill above one step removed, and the thrash
+rule cannot catch it, because that rule counts review returns while this loop
+runs before review. M119 ran nine rounds unbounded — rounds 5-9 returned zero
+shipped-behaviour defects, and round 9's two findings sat in round 8's text.
+This is not the tuning the falsifier below forbids: what the measurement
+retires is the unbounded loop, while round 1 — which returned real defects in
+every milestone that ran it — is what it keeps. A round *count* is what may not
+be tuned; a predicate on what a round returns is the bound that replaces it.
 
 **This step carries its own falsifier**, stated up front rather than left for
 a later argument about whether it is pulling its weight: if guard-authoring

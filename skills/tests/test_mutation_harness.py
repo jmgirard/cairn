@@ -2366,7 +2366,43 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_section_requires_zero_unresolved_and_forbids_arguing_down",
         target=GUARD_DOCTRINE,
-        block="The gate is entered at zero unresolved: a discrepancy is fixed and\nre-certified, never argued down as imprecision",
+        block="Round 1 is answered at zero unresolved: a discrepancy is fixed and\nre-certified, never argued down as imprecision",
+    ),
+    # M121 (narrows D-067, first instrument). Three entries across two files:
+    # the record requirement, the sentence making a missing line evidence, and
+    # the ingest surface's cross-reference to the one home that states it.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_records_a_work_log_line_even_when_it_finds_nothing",
+        target="skills/milestone-plan/SKILL.md",
+        block="**The audit records one work-log line either way** — what it returned, or\n   that it returned nothing",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_absent_audit_line_means_it_did_not_run",
+        target="skills/milestone-plan/SKILL.md",
+        block="an absent line means the reader did not run,\n   never that it ran and was silent",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_ingest_audit_records_its_own_line_on_the_plan_gate_terms",
+        target=BRIEF,
+        block="The ingest audit\n   records one work-log line either way, on `/milestone-plan` step 3's terms",
+    ),
+    # M121 (narrows D-067). Two entries: the stopping bound itself, and the
+    # sentence separating it from the round-count tuning the falsifier below
+    # forbids. Losing the second leaves the bound readable as that tuning.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_bounds_the_loop_on_what_a_round_returns",
+        target=GUARD_DOCTRINE,
+        block="**The loop stops at the first round returning no shipped-behaviour defect and\nno regression** (M121)",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_bound_distinguishes_itself_from_the_tuning_the_falsifier_forbids",
+        target=GUARD_DOCTRINE,
+        block="A round *count* is what may not\nbe tuned; a predicate on what a round returns is the bound that replaces it",
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2406,7 +2442,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestImplementRoutesToCertification.test_completion_step_cites_the_doctrine_section_and_the_bar",
         target=IMPLEMENT,
-        block="`skills/shared/guard-doctrine.md` §8, the author never certifies its own\n   guard's coverage — and enter the gate only at zero unresolved",
+        block="`skills/shared/guard-doctrine.md` §8, the author never certifies its own\n   guard's coverage — and enter the gate at §8's stopping bound: round 1 at\n   zero unresolved, then the first round returning no shipped-behaviour\n   defect and no regression",
     ),
 ]
 
@@ -3292,6 +3328,22 @@ REGISTRY += [
         test="TestDelegationWarrantRule.test_rule_reconciles_the_review_fanout",
         target=RULES,
         block="its three reviewers carry distinct evidence bases",
+    ),
+    # M121. One entry per named class, per AC4. The excluded class is the
+    # load-bearing half: the governed class restates the warrant above it,
+    # while the exclusion is what stops the guide's third clause from being
+    # read onto D-067's fresh-context readers.
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestSelfCheckingClassRule.test_rule_names_the_governed_class",
+        target=RULES,
+        block="an author re-checking work it just produced, in the context that produced it",
+    ),
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestSelfCheckingClassRule.test_rule_names_the_excluded_class",
+        target=RULES,
+        block="an independent fresh-context reading of that work by a reader that authored none of it",
     ),
 ]
 

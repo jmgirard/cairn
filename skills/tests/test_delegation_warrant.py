@@ -57,5 +57,39 @@ class TestDelegationWarrantRule(unittest.TestCase):
         )
 
 
+class TestSelfCheckingClassRule(unittest.TestCase):
+    """M121: which class of self-checking the warrant above governs.
+
+    The guide's delegation instruction carries a third clause M120 did not
+    take — "do not use subagents to verify or double-check your own work" —
+    which reads, unqualified, as a standing rejection of D-067's two
+    fresh-context readers. It is not: the guide's own stated mechanism is that
+    the model "verifies its own work without being told to", which is a claim
+    about the AUTHOR re-reading, and says nothing about a reader that authored
+    none of what it reads. The rule names both classes so the clause cannot be
+    applied to the wrong one.
+
+    Two asserts, one per named class, each a phrase on a single physical line
+    of the shipped file — the AC4 shape. A single assert covering only the
+    governed class would leave the exclusion deletable with the guard green,
+    which is the false coverage the guard-must-fail rule exists to stop: the
+    exclusion is the half that does work here, since the governed class alone
+    is already implied by the warrant above it."""
+
+    def test_rule_names_the_governed_class(self):
+        self.assertIn(
+            "an author re-checking work it just produced, in the context "
+            "that produced it",
+            rules(),
+        )
+
+    def test_rule_names_the_excluded_class(self):
+        self.assertIn(
+            "an independent fresh-context reading of that work by a reader "
+            "that authored none of it",
+            rules(),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
