@@ -100,9 +100,7 @@ run ingestion first (see `/milestone-brief`).
    pre-review check, that check): **if this milestone authored or edited a
    prose-guard, hand its description layer to a fresh-context [O] reader first**
    — `skills/shared/guard-doctrine.md` §8, the author never certifies its own
-   guard's coverage — and enter the gate at §8's stopping bound: round 1 at
-   zero unresolved, then the first round returning no shipped-behaviour
-   defect and no regression. Then
+   guard's coverage — and enter the gate only at zero unresolved. Then
    set status `review`, checkpoint-commit, then
    stop with a recap —
    outcome-first (per tracking-rules): what the milestone now does or

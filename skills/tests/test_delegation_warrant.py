@@ -1,4 +1,7 @@
-"""Regression guard: the M120 delegation-warrant test (Model and agent strategy).
+"""Regression guards for two rules in "Model and agent strategy".
+
+M120's delegation warrant (`TestDelegationWarrantRule`, three asserts) and
+M121's self-checking-class rule (`TestSelfCheckingClassRule`, two).
 
 Adopted from `cairn/references/prompting-opus-5.md` (§ Controlling subagent
 spawning), which reports that Claude Opus 5 — the tier cairn runs its
@@ -9,7 +12,8 @@ and its per-instance gate). Nothing stated when work should stay inline, so the
 cheapest wrong answer — spawn an Opus subagent for a two-grep question — was
 tier-correct and violated no rule.
 
-Three asserts, because the rule carries three claims independently:
+The warrant takes three asserts, because it carries three claims
+independently:
 
 - the inline floor — work finishable in a handful of tool calls is not
   delegated;
@@ -74,19 +78,27 @@ class TestSelfCheckingClassRule(unittest.TestCase):
     governed class would leave the exclusion deletable with the guard green,
     which is the false coverage the guard-must-fail rule exists to stop: the
     exclusion is the half that does work here, since the governed class alone
-    is already implied by the warrant above it."""
+    is already implied by the warrant above it.
+
+    Each assert pins its class phrase TOGETHER WITH the verb that assigns it —
+    `it governs` / `it does not govern` — on one physical line. Pinning the
+    two phrases alone left the rule invertible with both asserts green: swap
+    the two lines and the guide's third delegation clause reaches D-067's
+    fresh-context readers, which is exactly what this rule blocks. That is
+    guard-doctrine §1's label-to-set trap, and the harness does not catch it
+    because blanking is not swapping (§2)."""
 
     def test_rule_names_the_governed_class(self):
         self.assertIn(
-            "an author re-checking work it just produced, in the context "
-            "that produced it",
+            "it governs **an author re-checking work it just produced, in "
+            "the context that produced it**",
             rules(),
         )
 
     def test_rule_names_the_excluded_class(self):
         self.assertIn(
-            "an independent fresh-context reading of that work by a reader "
-            "that authored none of it",
+            "it does not govern **an independent fresh-context reading of "
+            "that work by a reader that authored none of it**",
             rules(),
         )
 

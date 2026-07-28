@@ -2366,7 +2366,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_section_requires_zero_unresolved_and_forbids_arguing_down",
         target=GUARD_DOCTRINE,
-        block="Round 1 is answered at zero unresolved: a discrepancy is fixed and\nre-certified, never argued down as imprecision",
+        block="The gate is entered at zero unresolved: a discrepancy is fixed and\nre-certified, never argued down as imprecision",
     ),
     # M121 (narrows D-067, first instrument). Three entries across two files:
     # the record requirement, the sentence making a missing line evidence, and
@@ -2389,20 +2389,28 @@ REGISTRY = [
         target=BRIEF,
         block="The ingest audit\n   records one work-log line either way, on `/milestone-plan` step 3's terms",
     ),
-    # M121 (narrows D-067). Two entries: the stopping bound itself, and the
-    # sentence separating it from the round-count tuning the falsifier below
-    # forbids. Losing the second leaves the bound readable as that tuning.
+    # M121 (narrows D-067). Three entries: the scope exclusion itself, the
+    # sentence keeping an excluded finding fixed rather than unexamined, and
+    # the sentence separating a scope narrowing from the round-count tuning
+    # the falsifier below forbids. Losing the second ships false records under
+    # the exclusion; losing the third leaves it readable as that tuning.
     Mutation(
         guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_section_bounds_the_loop_on_what_a_round_returns",
+        test="TestDescriptionLayerCertification.test_scope_excludes_text_a_previous_rounds_fix_authored",
         target=GUARD_DOCTRINE,
-        block="**The loop stops at the first round returning no shipped-behaviour defect and\nno regression** (M121)",
+        block="**The exclusion extends to text a previous round's own fix authored: a finding\nwhose only subject is such a record is fixed in place and opens no further\nround** (M121)",
     ),
     Mutation(
         guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_bound_distinguishes_itself_from_the_tuning_the_falsifier_forbids",
+        test="TestDescriptionLayerCertification.test_excluded_finding_is_still_fixed_never_left_unexamined",
         target=GUARD_DOCTRINE,
-        block="A round *count* is what may not\nbe tuned; a predicate on what a round returns is the bound that replaces it",
+        block="It is still fixed — an inaccurate record is what this step\nexists to catch, and leaving one unexamined would ship it",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_scope_narrowing_is_distinguished_from_tuning_a_round_count",
+        target=GUARD_DOCTRINE,
+        block="A round count is what D-059's precedent forbids\ntuning; the scope of what reopens a round is a different object",
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2442,7 +2450,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestImplementRoutesToCertification.test_completion_step_cites_the_doctrine_section_and_the_bar",
         target=IMPLEMENT,
-        block="`skills/shared/guard-doctrine.md` §8, the author never certifies its own\n   guard's coverage — and enter the gate at §8's stopping bound: round 1 at\n   zero unresolved, then the first round returning no shipped-behaviour\n   defect and no regression",
+        block="`skills/shared/guard-doctrine.md` §8, the author never certifies its own\n   guard's coverage — and enter the gate only at zero unresolved",
     ),
 ]
 
@@ -3337,13 +3345,13 @@ REGISTRY += [
         guard="test_delegation_warrant",
         test="TestSelfCheckingClassRule.test_rule_names_the_governed_class",
         target=RULES,
-        block="an author re-checking work it just produced, in the context that produced it",
+        block="It governs **an author re-checking work it just produced, in the context that produced it**",
     ),
     Mutation(
         guard="test_delegation_warrant",
         test="TestSelfCheckingClassRule.test_rule_names_the_excluded_class",
         target=RULES,
-        block="an independent fresh-context reading of that work by a reader that authored none of it",
+        block="It does not govern **an independent fresh-context reading of that work by a reader that authored none of it**",
     ),
 ]
 

@@ -2566,7 +2566,7 @@ instruction, in wording the absence-assert does not name, leaves both tests
 green. The paired absence-assert on the old instruction registers the
 report-everything phrase as its positive framing.
 
-### D-079 (2026-07-27): D-067's two fresh-context readers are both narrowed, not retired — §8's loop gains a stopping bound and the criteria audit gains a mandatory record — supersedes D-067's unbounded loop and the "don't tune it" half of its falsifier; annotates D-069, cites `prompting-opus-5`
+### D-079 (2026-07-27): D-067's two fresh-context readers are both narrowed, not retired — §8's certified scope excludes text a previous round's own fix authored, and the criteria audit gains a mandatory record — supersedes the "don't tune it" half of §8's falsifier; extends D-069's scope bound, cites `prompting-opus-5`
 
 **Context:** Anthropic's Opus 5 prompting guide reports that explicit
 self-verification instructions "cause over-verification on Claude Opus 5, and
@@ -2592,9 +2592,11 @@ settled at the gate (`milestones/archive/M115-fresh-context-reader-instruments.m
 Decisions). M116 audited twice: round 1 found {AC2, AC5, AC6} jointly
 unsatisfiable — the class no per-criterion read reaches — and round 2 four
 drafting defects plus the exactly-once locator constraint
-(`milestones/M116-placement-test-repair.md:52`, work log, pre-archive). M118
-bound four criteria-audit ambiguities at its gate, each as a Deviations row
-(`milestones/M118-decisions-section-cap-exempt.md:193`). **M117 and M119 carry
+(`milestones/M116-placement-test-repair.md:52`, work log, pre-archive; live in
+git only, at `32122ab^`). M118 bound four criteria-audit ambiguities at its
+gate, each as a Deviations row
+(`milestones/M118-decisions-section-cap-exempt.md:193`, pre-archive at
+`c76fa65^`). **M117 and M119 carry
 no audit record anywhere in their files.** Cost is one reader per plan, two
 where a round found something; M116 stopped at two on D-069's regress ground.
 So: three of five firings, every firing productive, and two milestones where
@@ -2605,8 +2607,12 @@ counts and findings: M116 two rounds, 9 + 2 (`milestones/archive/M116-placement-
 Review); M117 four, 8 → 6 → 6 → 2, round 1's first two being genuinely unasserted
 AC clauses (`milestones/archive/M117-detector-site-axis-and-recorded-alternative.md`,
 Review); M118 three, 16 → 10 → 2, round 1's sixteen including eleven blocking
-(`milestones/M118-decisions-section-cap-exempt.md:123,139`); M119 **nine**
-(`milestones/M119-decisions-advisory-and-consistency-guards.md:99-124`). The
+(`milestones/M118-decisions-section-cap-exempt.md:123,139`, pre-archive at
+`c76fa65^`); M119 **nine**
+(`milestones/M119-decisions-advisory-and-consistency-guards.md:99-124`,
+pre-archive at `8dace78^`). Every one of those four files is archived now, so
+those line numbers resolve in the named pre-archive revisions and nowhere in
+the working tree. The
 shape is not a flat cost. Round 1 returned real defects in every milestone that
 ran it. M119's own summary states what rounds 5–9 returned: "zero
 shipped-behaviour defects apart from round 7's live `^diff --git ` false
@@ -2619,11 +2625,12 @@ durable call here: "Not a precedent: M121 owns the durable disposition."
 **Decision:** Both instruments are **narrowed**; neither is retired and neither
 is kept unchanged.
 
-1. **§8's loop stops at the first round returning no shipped-behaviour defect
-   and no regression.** That round's remaining description-layer discrepancies
-   are fixed and recorded rather than re-certified. Round 1 keeps the
-   zero-unresolved bar unchanged. Wired at `guard-doctrine.md` §8 and at
-   `/milestone-implement` step 8's routing line.
+1. **§8's certified scope excludes text a previous round's own fix authored:
+   a finding whose only subject is such a record is fixed in place and opens
+   no further round.** It is still fixed — leaving an inaccurate record
+   unexamined ships the defect §8 exists to catch — but it no longer drives a
+   further round. The zero-unresolved bar and the round count are untouched.
+   Wired at `guard-doctrine.md` §8; `/milestone-implement` step 8 is unchanged.
 2. **The criteria audit records one work-log line either way** — what it
    returned, or that it returned nothing — so an absent line means the reader
    did not run, never that it ran and was silent. Stated once at
@@ -2635,30 +2642,38 @@ is kept unchanged.
    reader that authored none of it, which it does not. Without this the guide's
    third clause reads onto both instruments.
 
-**Consequences:** This supersedes two things in D-067 and nothing else. The
-first is its unbounded reading of the §8 gate, which M119 ran to nine rounds.
-The second is the "don't tune it" half of §8's own falsifier — "if
-guard-authoring milestones still average multiple description-layer returns
-after adoption, the step didn't work — retire it (D-059), don't tune it". That
-falsifier **fired**: the average over M116–M119 is 4.5 rounds. What the
-measurement does not support is its prescribed remedy, because the returns are
-not distributed evenly over the rounds — round 1's yield was real in all four
-milestones, and the waste is confined to rounds re-certifying the previous
-round's own fix comment, which is D-069's treadmill one step removed. So the
-unbounded loop is retired and round 1 is kept. The clause D-059's precedent
-forbids tuning is a round *count*; a predicate on what a round returns is a
-different object, and the shipped prose says so at the site rather than leaving
-the distinction to this entry. D-067's own exit line — "If either reader proves
-to cost more than the returns it prevents, this is the entry to supersede" —
-is what is being executed here.
+**Consequences:** What this supersedes is the "don't tune it" half of §8's own
+falsifier — "if guard-authoring milestones still average multiple
+description-layer returns after adoption, the step didn't work — retire it
+(D-059), don't tune it". That falsifier **fired**: the average over M116–M119
+is 4.5 rounds. What the measurement does not support is its prescribed remedy.
+Round 1's yield was real in all four milestones, and **every one of M119's
+rounds 5–9 also returned a real guard-coverage gap** — round 9's was a
+`--- a/|+++ b/` widening that would have WARNed forever. What repeated was
+narrower than "another round": eleven of those rounds' findings were record
+errors in an earlier round's own fix text, round 9's two sitting in round 8's.
+So the object narrowed here is the certified scope, which D-069 already
+narrows, and not the round count, which D-059's precedent forbids tuning.
+D-067's own exit line — "If either reader proves to cost more than the returns
+it prevents, this is the entry to supersede" — is what is being executed here.
 
-Annotates D-069: that entry bounded the certified *scope* against regress and
-still left the round count open, which is how nine rounds were reachable with
-its exclusion in force. Rejected: retiring §8 outright (it would discard round
-1's measured yield); extending the thrash counter to implement-phase loops (a
-counter re-introduces the round-count tuning the falsifier forbids, and the
-ROADMAP row proposing it stays open for the reverse case); budgeting the
-description layer by length (M120's third candidate disposition — it addresses
-prose volume, not the re-certification regress that actually repeated). The
-falsifier's exit condition is re-armed against the narrowed form: if a bounded
-round 1 still averages multiple returns, retire the step.
+**A round-bounding rule was drafted first and withdrawn**, recorded because the
+reasoning is the finding: "the loop stops at the first round returning no
+shipped-behaviour defect and no regression" reads two ways and fails both. If
+guard-coverage gaps are not shipped-behaviour defects it fires at M119's round
+5, discarding nine later gaps; if they are, it never fires. M121's own §8
+certification returned that as round 1's finding against the milestone that
+wrote it, which is the instrument working on its author.
+
+Extends D-069: that entry put a certification round's own report outside the
+certified scope; this puts the *fixes* those rounds write outside it too, on
+the same convergence ground, since round N's fix is round N+1's uncertified
+surface. Rejected: retiring §8 outright (it would discard round 1's measured
+yield and rounds 5–9's coverage gaps alike); bounding the round count (above);
+extending the thrash counter to implement-phase loops (a counter is the
+round-count tuning the falsifier forbids; the ROADMAP row proposing it stays
+open for the reverse case); budgeting the description layer by length (M120's
+third candidate disposition — it addresses prose volume, not the
+re-certification regress that actually repeated). The falsifier's exit
+condition is re-armed against the narrowed form: if guard-authoring milestones
+still average multiple returns with this scope in force, retire the step.

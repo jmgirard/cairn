@@ -25,10 +25,14 @@ diffs the hit list against the table below.
 
 - The term set was chosen at M121's implement gate over a narrower one (65
   hits: the verify family alone) and a wider one (114 hits: `audit` added).
-  `audit` was excluded because 34 of its 35 extra lines name `/milestone`'s
-  health-audit feature rather than instruct a check; the one real instruction
-  it would have added, `/milestone-plan`'s criteria audit, is reached by name
-  through D-079 — observed 2026-07-27.
+  Of `audit`'s 35 extra lines, measured at `684e53a`: 22 name `/milestone`'s
+  health-audit feature, 7 use `audit`/`auditability` in unrelated senses
+  (`tracking-rules.md:495`, `:698`; `validation-doctrine.md:47, 53, 55, 59,
+  60`), and 6 are the criteria-audit instruction, across two surfaces —
+  `milestone-plan/SKILL.md:39, 86, 124, 125` and
+  `milestone-brief/SKILL.md:92, 100`. Those 6 are the real cost of the
+  exclusion, and it is paid because D-079 reaches that instrument by name
+  rather than through a row here — observed 2026-07-27.
 - `skills/design-interview/SKILL.md` is in the corpus and returns zero hits —
   observed 2026-07-27.
 
@@ -61,20 +65,26 @@ Dispositions are `keep`, `narrow`, `remove`, and they are **per instruction, not
 per instrument**: an instrument narrowed at one of its lines leaves its other
 lines `keep`, and D-079 is where the instrument-level disposition lives.
 
-An instruction can span more than one physical line while the sweep hits only
-one of them, and for both `narrow` rows below the hit landed on the line that
-did **not** change. So a `narrow` row is not checked by the words leaving the
-tree — that is a `remove`'s check — but by quoting, in its ground, what its
-operative clause read at `684e53a` and what it reads now. M121's AC2 was
-amended at a mini gate to say so, having been written assuming every applied
-disposition would be a deletion.
+**No row below takes `narrow` or `remove`, and that is the result rather than
+an omission.** D-079 narrows §8 by adding a scope exclusion beside the
+instrument's existing rules and narrows the criteria audit by adding a record
+requirement; neither rewrites an instruction already in this corpus. A first
+pass did reword two hit lines' neighbours and marked those rows `narrow`, and
+the §8 certification found the reasoning behind it wrong — the round-bounding
+rule it implemented would have stopped M119's loop two rounds before a live
+false positive was found. Both rows are `keep`: their own words stand.
+M121's AC2 still carries the amended `narrow` check, which now fires on
+nothing — observed 2026-07-27.
 
 Quotes are the hit line verbatim, so each is directly greppable. Where a line
 contains a table pipe, the longest pipe-free run carrying the instruction is
-quoted instead. `file:line` is at `684e53a`; the shipped line numbers have moved
-since, because M121 edited two of these files.
+quoted instead. `file:line` is at `684e53a`. M121 edits four of the fourteen
+corpus files — `milestone-brief`, `milestone-plan`, `guard-doctrine.md`,
+`tracking-rules.md` — and hit line numbers move in two of them,
+`guard-doctrine.md` and `tracking-rules.md`; in the other two the edits land
+after every hit — observed 2026-07-27.
 
-## The ledger — 79 rows, one per hit
+## The ledger — 79 rows, one per hit at `684e53a` — observed 2026-07-27
 
 | # | file:line | The instruction's own words | Mechanism | Disposition | Ground |
 |---|---|---|---|---|---|
@@ -101,7 +111,7 @@ since, because M121 edited two of these files.
 | V21 | `milestone-implement/SKILL.md:73` | `` `/milestone-brief`); tier-tag the Agent description ([S]/[O]). Verify `` | `command-evidence` | `keep` | reads a subagent's diff; the work checked is the subagent's, not the session's |
 | V22 | `milestone-implement/SKILL.md:86` | ``that grows a plan-owned section re-checks the body with `cairn_budget`;`` | `command-evidence` | `keep` | runs `cairn_budget` after an amendment |
 | V23 | `milestone-implement/SKILL.md:99` | `` `verify` slot passes clean (for a toolchain whose profile names a fuller `` | `command-evidence` | `keep` | runs the `verify` slot at completion |
-| V24 | `milestone-implement/SKILL.md:102` | ``— `skills/shared/guard-doctrine.md` §8, the author never certifies its own`` | `fresh-context-reader` | `narrow` | the §8 routing bar. Its operative clause, on the next physical line at `684e53a`, read `and enter the gate only at zero unresolved`; it now reads `and enter the gate at §8's stopping bound: round 1 at zero unresolved, then the first round returning no shipped-behaviour defect and no regression` (D-079 (1)) |
+| V24 | `milestone-implement/SKILL.md:102` | ``— `skills/shared/guard-doctrine.md` §8, the author never certifies its own`` | `fresh-context-reader` | `keep` | the §8 routing bar; D-079 narrows §8's certified scope, not this line, which ships unchanged |
 | V25 | `milestone-plan/SKILL.md:27` | ``1. Confirm nothing else is `in-progress` — run`` | `command-evidence` | `keep` | runs `cairn_next.py` rather than eyeballing the ROADMAP |
 | V26 | `milestone-plan/SKILL.md:40` | `audit over a rougher draft certifies text that never ships.` | `fresh-context-reader` | `keep` | the ground for the criteria audit's ordering; D-079 narrows the instrument elsewhere, not this line |
 | V27 | `milestone-plan/SKILL.md:59` | `confirm the scopes are distinct and cross-reference.` | `command-evidence` | `keep` | reads the colliding milestone's scope off its file |
@@ -125,7 +135,7 @@ since, because M121 edited two of these files.
 | V45 | `shared/guard-doctrine.md:256` | `## 8. The author never certifies its own guard's coverage` | `fresh-context-reader` | `keep` | §8's heading; the instrument is narrowed at its loop, not retired (D-079 (1)) |
 | V46 | `shared/guard-doctrine.md:258` | `**Running a guard and certifying that it covers what you claim are different` | `fresh-context-reader` | `keep` | §8's operation/certification split, which D-079 keeps |
 | V47 | `shared/guard-doctrine.md:261` | `the artifact, so an author who runs them finds its own mistakes. Certification` | `fresh-context-reader` | `keep` | §8's diagnosis, which the M116-M119 round-1 yield confirms |
-| V48 | `shared/guard-doctrine.md:285` | `re-certified, never argued down as imprecision. The author still runs` | `fresh-context-reader` | `narrow` | the gate bar. Its operative clause, on the preceding physical line at `684e53a`, read `The gate is entered at zero unresolved:`; it now reads `Round 1 is answered at zero unresolved:`, followed by the stopping bound `The loop stops at the first round returning no shipped-behaviour defect and no regression` (D-079 (1)) |
+| V48 | `shared/guard-doctrine.md:285` | `re-certified, never argued down as imprecision. The author still runs` | `fresh-context-reader` | `keep` | §8's zero-unresolved bar, unchanged by D-079, whose narrowing is a scope exclusion added below it |
 | V49 | `shared/guard-doctrine.md:286` | `everything — this moves certification, not operation.` | `fresh-context-reader` | `keep` | operation stays with the author — unchanged by D-079 |
 | V50 | `shared/guard-doctrine.md:288` | `**The certified scope is the work and the records describing the work; a record` | `fresh-context-reader` | `keep` | D-069's certified-scope bound; D-079 annotates it rather than replacing it |
 | V51 | `shared/guard-doctrine.md:289` | `whose subject is a certification round itself — the final round's own report` | `fresh-context-reader` | `keep` | the same D-069 clause, continued |
@@ -164,7 +174,7 @@ since, because M121 edited two of these files.
 |---|---|---|
 | `command-evidence` | 31 | all `keep` |
 | `not-an-instruction` | 36 | all `keep` |
-| `fresh-context-reader` | 11 | 2 `narrow`, 9 `keep` |
+| `fresh-context-reader` | 11 | all `keep` |
 | `same-context-recheck` | **1** | `keep` |
 | total | **79** | — |
 
@@ -175,7 +185,7 @@ search above and re-reading this table's Mechanism column.
 
 The single finding this ledger produces is the shape of the corpus, not any one
 row: **cairn does not have the over-verification the guide describes.** Of 79
-hits, exactly one — V37, `guard-doctrine.md:36` — is an author re-reading work
+hits at `684e53a`, exactly one — V37, `guard-doctrine.md:36` — is an author re-reading work
 it just produced, and it survives because it fires only after a
 mid-implementation amendment and reads the guard against the acceptance
 criteria, two artifacts, rather than standing as a blanket final-verification
@@ -185,14 +195,12 @@ read unqualified, does.
 
 Where every row lands:
 
-- The 67 `command-evidence` and `not-an-instruction` rows → folded into this
-  milestone as `keep`, no edit.
+- The 67 `command-evidence` and `not-an-instruction` rows at `684e53a` →
+  folded into this milestone as `keep`, no edit — observed 2026-07-27.
 - V37 (`same-context-recheck`) → `keep`, ground stated in its row.
-- V24 (`milestone-implement/SKILL.md:102`) and V48
-  (`guard-doctrine.md:285`) → `narrow`, applied on M121's branch; the
-  instrument-level decision is `D-079` (1).
-- The other nine `fresh-context-reader` rows → `keep`; D-079 narrows the loop
-  and the record requirement, not these lines.
+- All eleven `fresh-context-reader` rows at `684e53a` → `keep`; D-079 narrows
+  §8's certified scope and adds the criteria audit's record requirement,
+  neither of which rewrites a line in this corpus — observed 2026-07-27.
 - The criteria audit's own instruction block is **not in this corpus** — its
   wording carries no term in the search — so D-079 reaches it by name rather
   than through a row here. Stated so a later pass does not read the ledger as
@@ -209,6 +217,9 @@ registered in `skills/tests/test_mutation_harness.py`.
 - The corpus is the shipped skill and module prose only. Templates, hooks,
   scripts, and `cairn/` tracking files were not swept, so an instruction living
   there is unclassified — observed 2026-07-27.
-- Whether M117 and M119 ran the criteria audit and left no line, or never ran
-  it, is not recoverable from their records; D-079's record requirement fixes
-  the ambiguity forward and not backward — observed 2026-07-27.
+- Three of the five milestones after D-067's adoption by M115 — M117, M119 and
+  M120 — carry no criteria-audit record, and whether each ran the audit
+  silently or never ran it is not recoverable; D-079's record requirement fixes
+  the ambiguity forward and not backward. D-079's own evidence covers the
+  M115-M119 window AC3 names, which is why it reports two rather than three —
+  observed 2026-07-27.

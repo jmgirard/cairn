@@ -36,7 +36,7 @@ which no finding here disturbs.
 - [ ] AC1 — `cairn/references/self-verification-ledger.md` exists, authored
       from `skills/shared/templates/synthesis-note.md`, and records: the search
       that produced the corpus, stated so a later pass can re-run it; one ID'd
-      row per instruction found, carrying `file:line`, the instruction's own
+      row per search hit, carrying `file:line`, the hit line's own
       words, its mechanism classified as one of `command-evidence`,
       `fresh-context-reader`, `same-context-recheck`, or `not-an-instruction`
       (a line that names or discusses verification without instructing any),
@@ -71,7 +71,7 @@ which no finding here disturbs.
       from each of the two named classes, each phrase occurring within a single
       physical line of the shipped file, and each carries its own entry in
       `skills/tests/test_mutation_harness.py`.
-- [ ] AC5 — Any instruction the ledger removes from a file carrying a
+- [ ] AC5 — Any instruction the ledger removes or narrows in a file carrying a
       prose-guard has that guard's asserted phrases re-checked against the
       shipped bytes, and `python3 -m unittest` over `skills/tests`,
       `scripts/tests` and `hooks/tests` is green from the repo root with each
@@ -124,6 +124,15 @@ which no finding here disturbs.
 - 2026-07-27: T1/T2/T6 — `references/self-verification-ledger.md` authored from the synthesis-note template: 79 rows at 684e53a, one per hit, with mechanism and disposition each. The measurement: 31 `command-evidence`, 36 `not-an-instruction`, 11 `fresh-context-reader` (D-067's two instruments), and exactly ONE `same-context-recheck` (`guard-doctrine.md:36`) — so the guide's over-verification finding lands almost entirely on D-067 and nearly nowhere else in cairn's prose. INDEX line + `TestShippedPageStateLedger` pinned `exempt`, on M118's ledger footing: the corpus is this repo at a named commit, re-derived by the page's own search rather than re-read against an external source.
 - 2026-07-27: AC2 amended at a mini gate — its grep clause assumed every applied disposition would be a deletion, but both `narrow` instructions span two physical lines and in each case the sweep hit the line that did not change (V24 at `:102` while `:103` changed; V48 at `:285` while `:284` changed), so the clause was unsatisfiable by construction for a `narrow`. Now: `remove` keeps the disappearance grep, `narrow` quotes its operative clause before and after in the row's ground. Rejected at the gate: reflowing the paragraphs so the quoted lines change, which fits the work to the test.
 - 2026-07-27: three cited row IDs in the ledger's Disposition section were wrong on first draft (V45/V27/V51 for V37/V24/V48) — caught by reading them out of the shipped table rather than out of the draft, which is guard-doctrine §6's restatement rule applied to this milestone's own artifact.
+
+- 2026-07-27: §8 description-layer certification, round 1 (fresh-context [O], authored none of this): 1 shipped-behaviour defect + 10 description-layer defects, all resolved.
+- 2026-07-27: round 1's shipped-behaviour defect — AC4's rule was invertible with both guards green. Each assert pinned its class phrase but not the verb assigning it, and the two verbs sat on different physical lines because the phrases had been put on their own lines to satisfy AC4's single-line clause; swapping the phrases made the delegation warrant govern the fresh-context reader and exempt the author's own re-read, with the suite green. Fixed by pinning `it governs` / `it does not govern` WITH their phrases on one line; the phrase-swap now reds both asserts (verified by hand, restored, diffed).
+- 2026-07-27: round 1 also refuted the §8 disposition itself, and the maintainer re-decided it at a gate. The shipped bound ("stops at the first round returning no shipped-behaviour defect and no regression") reads two ways and fails both: M119's rounds 5-9 EACH returned a real guard-coverage gap, so if gaps are not shipped-behaviour defects the bound fires at round 5 and discards nine later gaps including round 9's forever-WARNing `--- a/|+++ b/` widening, and if gaps count it never fires. Replaced by a scope exclusion on D-069's own object — text a previous round's fix authored opens no further round, while still being fixed, since leaving it unexamined ships the false records §8 exists to catch. `guard-doctrine.md` and D-079 clause (1) rewritten; `milestone-implement/SKILL.md` reverted to unchanged.
+- 2026-07-27: correction (supersedes this session's implement-gate line, IP4 — appended, not edited): the `audit` term set's 35 extra lines are 22 health-audit-feature lines, 7 unrelated senses of `audit`/`auditability`, and 6 criteria-audit instruction lines across TWO surfaces (`milestone-plan:39,86,124,125` and `milestone-brief:92,100`) — not "all but `/milestone-plan:86`". The exclusion stands; its stated ground was wrong.
+- 2026-07-27: correction (supersedes this session's AC1-amendment line, IP4): `tracking-rules.md:195` is not a hit in the chosen 79-hit set — it appears only under the rejected `+audit` set. The amendment's ground is unaffected and its correct exemplars are `tracking-rules.md:157` and `:297`, both genuine hits with no legal classification under the original three values.
+- 2026-07-27: correction (supersedes this session's T3 line, IP4): the second §8 site is `guard-doctrine.md:298`, not `:297`, which is blank; and `milestone-implement/SKILL.md:102` is no longer edited at all after the re-decision above.
+- 2026-07-27: AC1 and AC5 amended at the same gate — AC1 said "one row per instruction found" while the ledger ships one row per search HIT (36 rows are `not-an-instruction`, which AC2's row-count clause requires), and AC5 covered only what the ledger `removes` while nothing was removed and two guards were re-anchored for narrowings. Now "per search hit" / "the hit line's own words", and "removes or narrows in".
+- 2026-07-27: round 1's remaining description-layer defects, all fixed: four unstamped counts in the ledger; the ledger's "M121 edited two of these files" (four edited, hit lines moved in two); "two of the five milestones after adoption" shipped in `/milestone-plan` (D-067 was adopted BY M115, so the five after are M116-M120 and three carry no record — M117, M119, M120); three D-079 citations reading as live paths when the files are archived; two stale test docstrings; and a "(step 0, one home)" reference sitting where it read as a `/milestone-brief` step number.
 
 ## Decisions
 

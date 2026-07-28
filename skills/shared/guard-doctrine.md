@@ -281,7 +281,7 @@ The reader checks three things and reports discrepancies verbatim:
 - **Anchor-vs-shipped-bytes fidelity** — every multi-word anchor matches the
   bytes actually shipped, including under the target's hard wrap.
 
-Round 1 is answered at zero unresolved: a discrepancy is fixed and
+The gate is entered at zero unresolved: a discrepancy is fixed and
 re-certified, never argued down as imprecision. The author still runs
 everything — this moves certification, not operation.
 
@@ -295,17 +295,20 @@ that treadmill — round 4 finding defects only in certification narrative — a
 15, 14, 17 and 38 minutes. Zero unresolved stays the bar; what this excludes is
 a scope that regresses.
 
-**The loop stops at the first round returning no shipped-behaviour defect and
-no regression** (M121). That round's remaining description-layer discrepancies
-are fixed and recorded, never re-certified: a round certifying the previous
-round's own fix comment is the treadmill above one step removed, and the thrash
-rule cannot catch it, because that rule counts review returns while this loop
-runs before review. M119 ran nine rounds unbounded — rounds 5-9 returned zero
-shipped-behaviour defects, and round 9's two findings sat in round 8's text.
-This is not the tuning the falsifier below forbids: what the measurement
-retires is the unbounded loop, while round 1 — which returned real defects in
-every milestone that ran it — is what it keeps. A round *count* is what may not
-be tuned; a predicate on what a round returns is the bound that replaces it.
+**The exclusion extends to text a previous round's own fix authored: a finding
+whose only subject is such a record is fixed in place and opens no further
+round** (M121). It is still fixed — an inaccurate record is what this step
+exists to catch, and leaving one unexamined would ship it — but it is not
+itself grounds for another round, because each round's fix writes prose that
+the next round then finds fault with, and that is the regress above wearing the
+deliverable's clothes. The measurement is M119's nine rounds: rounds 5-9
+returned zero code defects, and of their findings eleven were record errors in
+an earlier round's own fix text, round 9's two sitting in round 8's. Every
+round in that stretch also returned a real guard-coverage gap, so a bound on
+*rounds* would have discarded work that was still finding defects — which is
+why this narrows the certified scope, the object D-069 already narrows, and
+leaves the round count alone. A round count is what D-059's precedent forbids
+tuning; the scope of what reopens a round is a different object.
 
 **This step carries its own falsifier**, stated up front rather than left for
 a later argument about whether it is pulling its weight: if guard-authoring

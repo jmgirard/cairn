@@ -2,7 +2,9 @@
 
 Both instruments replace an author checking its own work with a reader that
 did not write it. This file locks the doctrine text for both, at four
-surfaces.
+surfaces, including the two narrowings M121 added (D-079): the criteria
+audit's record requirement at the plan and ingest surfaces, and §8's scope
+exclusion.
 
 The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
 `TestRRIngestionCriteriaAudit`):
@@ -20,7 +22,9 @@ The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
   * `skills/shared/guard-doctrine.md` §8 — its heading, the
     operation-vs-certification cut, the diagnosis, the before-review
     placement, each of the three checks, the zero-unresolved bar, the
-    certification-not-operation clause, and the section's own falsifier.
+    certification-not-operation clause, the section's own falsifier, D-069's
+    certified-scope bound, and M121's extension of that scope to text a
+    previous round's own fix authored.
   * `/milestone-implement` step 8, which fires §8 before `status -> review`
     when the milestone authored or edited a prose-guard.
 
@@ -119,10 +123,12 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
         )
 
     def test_audit_records_a_work_log_line_even_when_it_finds_nothing(self):
-        # M121 narrows D-067's first instrument. Two of the five milestones
-        # after adoption (M117, M119) carry no audit line at all, so "did not
-        # run" and "ran and found nothing" are indistinguishable in the record
-        # — which is what makes the instrument's yield unmeasurable.
+        # M121 narrows D-067's first instrument. D-067 was adopted BY M115, so
+        # the five milestones after it are M116-M120, and three of those —
+        # M117, M119, M120 — carry no audit line at all, so "did not run" and
+        # "ran and found nothing" are indistinguishable in the record, which is
+        # what makes the instrument's yield unmeasurable. (D-079's evidence
+        # reports two, over the narrower M115-M119 window AC3 names.)
         self.assertRegex(
             plan(),
             r"\*\*The audit records one work-log line either way\*\* — what it "
@@ -186,7 +192,9 @@ class TestRRIngestionCriteriaAudit(unittest.TestCase):
 
     def test_ingest_audit_records_its_own_line_on_the_plan_gate_terms(self):
         # M121: the record requirement is stated once at `/milestone-plan`
-        # step 3 and cross-referenced here (step 0, one home).
+        # step 3, and this surface carries only a cross-reference to it —
+        # the rulebook's step-0 single-home check (D-071), not a step of
+        # `/milestone-brief`, whose ingest audit is its own step 3.
         self.assertRegex(
             brief(),
             r"The ingest audit\s+records one work-log line either way, on "
@@ -264,27 +272,42 @@ class TestDescriptionLayerCertification(unittest.TestCase):
     def test_section_requires_zero_unresolved_and_forbids_arguing_down(self):
         self.assertRegex(
             self.doctrine,
-            r"Round 1 is answered at zero unresolved: a discrepancy is fixed and\s+"
+            r"The gate is entered at zero unresolved: a discrepancy is fixed and\s+"
             r"re-certified, never argued down as imprecision",
         )
 
-    def test_section_bounds_the_loop_on_what_a_round_returns(self):
-        # M121 narrows D-067: round 1's yield was real in every milestone that
-        # ran it, and the cost sat entirely in rounds >=2 re-certifying the
-        # previous round's own fix comment (M119 ran nine).
+    def test_scope_excludes_text_a_previous_rounds_fix_authored(self):
+        # M121 narrows D-067 on D-069's own object, the certified SCOPE. Of
+        # M119's rounds 5-9, eleven findings were record errors in an earlier
+        # round's fix text (round 9's two sat in round 8's), while every one of
+        # those rounds also returned a real guard-coverage gap — so a bound on
+        # ROUNDS would have discarded work that was still finding defects.
         self.assertRegex(
             self.doctrine,
-            r"\*\*The loop stops at the first round returning no "
-            r"shipped-behaviour defect and\s+no regression\*\* \(M121\)",
+            r"\*\*The exclusion extends to text a previous round's own fix "
+            r"authored: a finding\s+whose only subject is such a record is "
+            r"fixed in place and opens no further\s+round\*\* \(M121\)",
         )
 
-    def test_bound_distinguishes_itself_from_the_tuning_the_falsifier_forbids(self):
-        # Without this the bound reads as the round-count tuning the falsifier
-        # below rules out, which is the D-059 move it must not be mistaken for.
+    def test_excluded_finding_is_still_fixed_never_left_unexamined(self):
+        # The half that keeps the exclusion from shipping false records: it
+        # removes the finding's power to REOPEN a round, never the obligation
+        # to correct it. Losing this sentence turns a scope bound into a
+        # licence for the inaccurate records §8 exists to catch.
         self.assertRegex(
             self.doctrine,
-            r"A round \*count\* is what may not\s+be tuned; a predicate on "
-            r"what a round returns is the bound that replaces it",
+            r"It is still fixed — an inaccurate record is what this step\s+"
+            r"exists to catch, and leaving one unexamined would ship it",
+        )
+
+    def test_scope_narrowing_is_distinguished_from_tuning_a_round_count(self):
+        # Without this the narrowing reads as the round-count tuning the
+        # falsifier below rules out — the D-059 move it must not be mistaken
+        # for.
+        self.assertRegex(
+            self.doctrine,
+            r"A round count is what D-059's precedent forbids\s+tuning; the "
+            r"scope of what reopens a round is a different object",
         )
 
     def test_section_moves_certification_not_operation(self):
@@ -338,9 +361,8 @@ class TestImplementRoutesToCertification(unittest.TestCase):
         self.assertRegex(
             read("milestone-implement", "SKILL.md"),
             r"`skills/shared/guard-doctrine\.md` §8, the author never certifies "
-            r"its own\s+guard's coverage — and enter the gate at §8's stopping "
-            r"bound: round 1 at\s+zero unresolved, then the first round "
-            r"returning no shipped-behaviour\s+defect and no regression",
+            r"its own\s+guard's coverage — and enter the gate only at zero "
+            r"unresolved",
         )
 
 
