@@ -1,6 +1,6 @@
 # M121: Verification triage — classify every self-verification instruction, and re-decide D-067's two fresh-context readers
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M120
 - **Driving RR:** —
@@ -141,6 +141,9 @@ which no finding here disturbs.
 - 2026-07-27: correction (supersedes this session's T4 line, IP4): D-079 no longer supersedes "D-067's unbounded loop" — that clause was withdrawn when the round bound was, and the shipped heading narrowly supersedes D-067 at the falsifier's "don't tune it" half while EXTENDING D-069's scope bound rather than annotating it.
 - 2026-07-27: correction (supersedes this session's round-1 line, IP4): hit line numbers move in ONE corpus file, `tracking-rules.md` (+14 from `:670`), not two — `guard-doctrine.md`'s inserted paragraph sits below its last hit at `:294`. Four corpus files are edited, as stated.
 - 2026-07-27: round 2's remaining fixes, all description-layer: the ledger still called §8's narrowing a "stopping bound" in three places (the locked-rules pointer and two row grounds); one count carried its measurement commit without its `— observed` stamp; `guard-doctrine.md` stated "rounds 5-9 returned zero code defects" without M119's own "apart from round 7's live false positive" carve-out, and its "eleven record errors in an earlier round's fix text" is now "eleven record errors, ten of them in an earlier round's own fix text", which is what the record supports; D-079's M119 citation `:99-124` narrowed to `:99-123` with the override at `:125`.
+
+- 2026-07-27: §8 gate entered at zero unresolved after round 2, and the judgment is recorded because the author is applying its own new rule for the first time. Round 2 returned 0 shipped-behaviour defects and 0 regressions, and independently inverted every rule this milestone ships. Of its 12 findings, 5 had round 1's fix text as their only subject — the class D-079 (1) fixes without reopening — and the 7 in-scope ones were count and citation precision in original text, all fixed. A round 3's only new surface would be round 2's own fixes, which is exactly what the shipped exclusion covers, so it is not required; a reviewer who reads that as self-serving should say so at the gate.
+- 2026-07-27: status → review. Three suites green from the repo root with exit codes checked separately (skills 697, scripts 332, hooks 98); `cairn_validate` all checks passed; plan-owned body 108/149.
 
 ## Decisions
 
