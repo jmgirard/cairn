@@ -1,11 +1,11 @@
 # M121: Verification triage — classify every self-verification instruction, and re-decide D-067's two fresh-context readers
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M120
 - **Driving RR:** —
 - **Principles touched:** IP3
-- **Branch/PR:** —
+- **Branch/PR:** `m121-verification-triage`
 
 ## Goal
 
@@ -38,8 +38,9 @@ which no finding here disturbs.
       that produced the corpus, stated so a later pass can re-run it; one ID'd
       row per instruction found, carrying `file:line`, the instruction's own
       words, its mechanism classified as one of `command-evidence`,
-      `fresh-context-reader`, or `same-context-recheck`, and a disposition of
-      `keep`, `narrow`, or `remove` with a stated ground. Every count in the
+      `fresh-context-reader`, `same-context-recheck`, or `not-an-instruction`
+      (a line that names or discusses verification without instructing any),
+      and a disposition of `keep`, `narrow`, or `remove` with a stated ground. Every count in the
       note is pinned to a named measurement commit and marked
       `— observed YYYY-MM-DD`. Its `INDEX.md` line, its provenance block, and
       its `TestShippedPageStateLedger` pin all land in the same milestone, with
@@ -107,6 +108,9 @@ which no finding here disturbs.
 - 2026-07-27: plan gate chose reopening D-067's two readers over triaging only the same-context rechecks, at the user's direction, because the guide's advice against subagent self-verification reaches them even though its stated mechanism (an author's own re-read) does not; falsified by the M115–M119 evidence showing either reader caught a defect no later gate would have.
 - 2026-07-27: plan chose a committed synthesis note over an in-milestone ledger because the classification is the artifact a later re-decision re-reads, which is the owed-applied-to-time test; falsified by nothing outside this milestone citing the ledger.
 - 2026-07-27: plan chose a search-scoped criterion over a list of the 19 instructions a plan-time subagent found because a criterion that lists its sites becomes the sweep and omits what it never named (LESSONS 2026-07-27/M118); falsified by the search returning a corpus a reader judges materially incomplete.
+- 2026-07-27: implement started on branch `m121-verification-triage`; status → in-progress.
+- 2026-07-27: implement question gate chose the 79-hit term set (verify family + `re-read`/`confirm`/`self-check`, excluding `audit`) over 65 (verify family only) and 114 (+`audit`); measured at 684e53a, `audit` adds 35 lines of which all but `/milestone-plan:86`'s criteria audit name the health-audit feature rather than instruct a check, and AC3 reaches that instrument by name regardless.
+- 2026-07-27: AC1 amended at the gate — mechanism vocabulary gains a fourth value `not-an-instruction`, because AC2 pins rows to hits and the three original values all presuppose the line is an instruction, leaving a hit like `tracking-rules.md:195` with no legal classification and dropping it silently against IP3.
 
 ## Decisions
 
