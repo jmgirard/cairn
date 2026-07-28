@@ -94,7 +94,7 @@ which no finding here disturbs.
       After each edit, grep every nearby guard's asserted substring for
       contiguity on one physical line (LESSONS 2026-07-20/M104), and re-run the
       three suites with exit codes checked.
-- [ ] T4 — Read M115–M119's Review sections and work logs for what each of
+- [x] T4 — Read M115–M119's Review sections and work logs for what each of
       D-067's instruments caught and what it cost; author the DECISIONS entry
       per AC3. Show it verbatim in chat before its commit.
 - [x] T5 — Write the self-checking-class rule into "Model and agent strategy";
@@ -116,6 +116,7 @@ which no finding here disturbs.
 - 2026-07-27: D-067 disposition gate — §8 takes `narrow` (a stopping bound on what a round returns) over `retire` and `keep unchanged`, because round 1 returned real defects in every milestone that ran it (M116 9, M117 8, M118 16, M119 2 code defects) while rounds 5-9 of M119 returned zero shipped-behaviour defects and re-certified the previous round's own fix comments; falsified by a bounded round 1 still averaging multiple returns.
 - 2026-07-27: T3 — §8's unbounded loop narrowed at `guard-doctrine.md:284,297` and the routing bar at `milestone-implement/SKILL.md:102`; the criteria audit gains a record requirement at `milestone-plan/SKILL.md` step 3, cross-referenced from `milestone-brief/SKILL.md` (step 0, one home). Two guard asserts re-anchored, five added, five mutation entries added; three suites green, exit 0 each.
 - 2026-07-27: T5 — the self-checking-class rule lands in "Model and agent strategy" naming both classes; two asserts (one per class, each a single physical line) with their own mutation entries. The guide's third delegation clause ("do not use subagents to verify or double-check your own work") reads onto D-067's readers only if the classes are unnamed, which is the misreading this rule blocks.
+- 2026-07-27: T4 — D-079 appended: both D-067 instruments narrowed, not retired. §8's falsifier is recorded as FIRED (4.5-round average over M116-M119) with its prescribed remedy declined on the evidence — round 1 returned real defects in all four milestones and the waste sits in rounds re-certifying the previous round's own fix comment. Supersedes D-067's unbounded loop and the "don't tune it" half of the falsifier; annotates D-069.
 
 ## Decisions
 
