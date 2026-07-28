@@ -3237,6 +3237,104 @@ class TestRegistryCompleteness(unittest.TestCase):
         )
 
 
+# M120: the correction-narration rule adopted from the Opus 5 prompting guide.
+# One entry per assert, not per guard file: the rule's four claims — the
+# materiality bar, the plain-and-continue form, the unremarked slip, and the
+# boundary against D-045's record repair — each carry it independently, so a
+# single entry would leave three asserts unproven (M53 per-block discipline).
+REGISTRY += [
+    Mutation(
+        guard="test_narration_discipline",
+        test="TestCorrectionNarrationRule.test_rule_states_the_materiality_bar",
+        target=RULES,
+        block="only when the error would change the user's code, conclusions, or decisions.",
+    ),
+    Mutation(
+        guard="test_narration_discipline",
+        test="TestCorrectionNarrationRule.test_rule_requires_plain_correction_then_continue",
+        target=RULES,
+        block="State the correction plainly and briefly, then continue the task",
+    ),
+    Mutation(
+        guard="test_narration_discipline",
+        test="TestCorrectionNarrationRule.test_rule_leaves_an_immaterial_slip_unnarrated",
+        target=RULES,
+        block="A slip that changes nothing for the user is fixed without narrating it,",
+    ),
+    Mutation(
+        guard="test_narration_discipline",
+        test="TestCorrectionNarrationRule.test_rule_separates_chat_slips_from_durable_records",
+        target=RULES,
+        block="A chat slip never reaches a durable record",
+    ),
+]
+
+
+# M120: the delegation-warrant test. One entry per assert — the inline floor,
+# the one-not-several bar, and the fan-out reconciliation each carry the rule
+# independently, and the third is not commentary: without it the rule and the
+# three-reviewer fan-out sit in one section unreconciled.
+REGISTRY += [
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestDelegationWarrantRule.test_rule_keeps_small_work_inline",
+        target=RULES,
+        block="in a handful of tool calls is done inline, never delegated",
+    ),
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestDelegationWarrantRule.test_rule_prefers_one_subagent_over_several",
+        target=RULES,
+        block="spawn one rather than several",
+    ),
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestDelegationWarrantRule.test_rule_reconciles_the_review_fanout",
+        target=RULES,
+        block="its three reviewers carry distinct evidence bases",
+    ),
+]
+
+
+# M120: the false-positive taxonomy moves out of the reviewers' instruction and
+# into the scorer's rubric (D-078). One entry per CONTAINED phrase — a taxonomy
+# member, the disposition sentence, and the report-everything instruction.
+#
+# Deliberately NOT registered: `Score 0-100 your confidence`, the string
+# `_scorer_rubric()` uses to locate its slice. Blanking a locator reds the test
+# by StopIteration whether or not the taxonomy sits inside the rubric, so it
+# would pass identically with the taxonomy moved back upstream — a tautology,
+# not coverage. That is LESSONS 2026-07-27 (M117): register the CONTAINED
+# phrase, never the bound. The location claim is not mutation-provable at all,
+# because the harness blanks and never MOVES (guard-doctrine §2, "Blanking is
+# not swapping"); it rests on the slice construction, and inversion — not
+# blanking — is what verifies it.
+#
+# The report-everything entry is the positive framing registered on behalf of
+# the paired `assertNotIn`, which is satisfied by blanking and cannot be
+# mutation-proven itself (guard-doctrine §3).
+REGISTRY += [
+    Mutation(
+        guard="test_review_fanout",
+        test="TestReviewFanout.test_false_positive_taxonomy_lives_in_the_scorer_rubric",
+        target=REVIEW,
+        block="a pre-existing issue the diff did not introduce",
+    ),
+    Mutation(
+        guard="test_review_fanout",
+        test="TestReviewFanout.test_taxonomy_carries_its_scoring_disposition",
+        target=REVIEW,
+        block="Score anything matching this list below 60",
+    ),
+    Mutation(
+        guard="test_review_fanout",
+        test="TestReviewFanout.test_reviewers_report_everything_and_filter_nothing",
+        target=REVIEW,
+        block="report every candidate finding",
+    ),
+]
+
+
 class TestRegisteredGuardsFailWhenBlanked(unittest.TestCase):
     def test_each_registered_guard_fails_when_its_block_is_blanked(self):
         self.assertTrue(REGISTRY, "registry is empty")

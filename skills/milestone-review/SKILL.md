@@ -175,19 +175,35 @@ overrides — log the override).
      reports "no prior-review evidence", contributes zero findings, and
      never errors or blocks the gate.
 
-   Give **all three** reviewers this false-positive taxonomy verbatim and tell
-   them to drop anything matching it before reporting:
-   > Not a finding: a pre-existing issue the diff did not introduce; anything a
-   > linter or formatter would catch; a pure style nitpick; a complaint about
-   > an unmodified line; an intentional change the milestone's plan called for.
+   Tell **all three** reviewers to report every candidate finding, filtering
+   nothing before reporting. A reviewer told to be conservative reports less
+   and never says what it withheld, so the false-positive filter runs once,
+   downstream, inside the scorer's rubric below (D-078).
 
-   **Score before triage.** Pass every surviving finding to a **[S] scorer
+   **Score before triage.** Pass every reported finding to a **[S] scorer
    (Sonnet)** — a fresh agent that did *not* generate the findings — with this
-   rubric verbatim:
+   rubric verbatim. **Give the scorer the diff and the milestone file too**
+   (`git diff <default-branch>..HEAD`, and the milestone's Goal, Scope and
+   acceptance criteria): three of the taxonomy's five members below are
+   judgments about *this diff and this plan* — whether an issue pre-exists it,
+   whether a line is unmodified, whether a change is one the plan called for —
+   and a scorer holding only finding text cannot decide them. It is fresh with
+   respect to *generating* the findings, which is what its independence
+   requires; it is not meant to be blind to the diff.
    > Score 0–100 your confidence that this is a real, in-scope defect the
    > author would want to fix: 90–100 certain and load-bearing; 80–89 likely;
    > 60–79 plausible but arguable; below 60 speculative or out of scope. Give
    > the integer score and one sentence of justification per finding.
+   >
+   > Not a finding, and out of scope for this diff:
+   > a pre-existing issue the diff did not introduce;
+   > anything a linter or formatter would catch;
+   > a pure style nitpick;
+   > a complaint about an unmodified line;
+   > an intentional change the milestone's plan called for.
+   > Score anything matching this list below 60. A real defect *inside* an
+   > intentional change is still a defect — the member covers the change being
+   > planned, never a flaw in how it was carried out.
 
    Findings scoring **below 80 are excluded from the actioned list but logged**
    in the Review section (the count, plus one line each) — surfaced, never

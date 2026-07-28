@@ -550,6 +550,17 @@ cairn skill is active.
   a compact summary where a question needs context is fine (D-039).
   This never licenses compressing mandated substance: the Durable-record
   preview and Acceptance chips rules still show their text verbatim.
+- **Correct what matters, and only narrate that.** Correct an earlier chat
+  statement only when the error would change the user's code, conclusions, or decisions.
+  State the correction plainly and briefly, then continue the task — no
+  preamble, no apology, no tally of what went wrong.
+  A slip that changes nothing for the user is fixed without narrating it,
+  because narrating it spends the user's attention on the author's process
+  rather than on the work. A chat slip never reaches a durable record: a
+  tracking file proven false is repaired under "Correcting a record proven
+  false" above — current knowledge corrected in place and marked, history
+  superseded and never edited (D-045). The two are different acts, and
+  conflating them turns every noticed typo into a record.
 - **Durable-record preview.** Newly authored durable-record text — a
   D-entry, a milestone file's plan-owned sections (new or via a gated
   amendment), a LESSONS line, an archive summary, a ROADMAP
@@ -636,6 +647,22 @@ cairn skill is active.
   `git reset` — in that shared tree, which would park the primary checkout on
   another branch mid-task (hit in the M36 review). Binds every spawned agent:
   Explore/Sonnet/Opus workers and the `/milestone-review` reviewers alike.
+- **Delegate only what warrants it.** A subagent is warranted by a large,
+  genuinely independent track of work — a wide multi-file investigation, a
+  mechanical migration across many sites. Work the session can finish itself
+  in a handful of tool calls is done inline, never delegated: the spawn costs
+  more than the work it saves. Where one subagent can do the task,
+  spawn one rather than several — a second copy of the same job buys a
+  second context and returns the first one's answer.
+  The `/milestone-review` fan-out below is not that case and is no exception
+  to this rule: its three reviewers carry distinct evidence bases — the diff,
+  git blame, prior review threads — so no one of them can do another's task,
+  which is the independence this rule asks for. Nor is a spawn made for
+  *freshness* — a reader that must not have authored what it reads — a volume
+  judgment this rule reaches; it is warranted by who the reader is, not by how
+  much work there is. The tier bullets below decide *which* tier a warranted
+  spawn gets, with one exception: the Fable bullet gates *whether* a Fable
+  spawn happens at all.
 - **Sonnet subagents**: well-specified self-contained work — fan-out
   searches (Explore), mechanical migrations, test writing against a spec,
   boilerplate. Give complete specs — for an Explore fan-out that means a
