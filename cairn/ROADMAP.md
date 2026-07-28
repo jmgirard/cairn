@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-27 (post-merge after M119 — M119 archived, M114's row pruned to hold terminal-row retention at 5. LESSONS 49 of 50: M119's lesson added, no retirement available (M113's normalization lesson checked and kept), M99's censored-distribution line pruned as stalest (D-015). 20 candidates.)_
+_Last hygiene check: 2026-07-27 (post-merge after M120 — M120 archived, M115's row pruned to hold terminal-row retention at 5. LESSONS 49 of 50: no lesson added and none retired; M117's harness-blind-spot line was EXTENDED in place with M120's finding that a green §8 certification does not prove inversion, which keeps the count flat. 20 candidates.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -13,12 +13,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M119 | RR08's follow-ons — the decisions-format advisory (D-075), the rulebook history enumeration, and a two-sided exempt-set guard | done | M118 | normal | milestones/archive/M119-decisions-advisory-and-consistency-guards.md |
-| M120 | Ingest the Opus 5 prompting guide, and adopt the three conduct rules cairn has no home for | review | — | normal | milestones/M120-opus5-guide-adoptions.md |
+| M120 | Ingest the Opus 5 prompting guide, and adopt the three conduct rules cairn has no home for | done | — | normal | milestones/archive/M120-opus5-guide-adoptions.md |
 | M121 | Verification triage — classify every self-verification instruction, and re-decide D-067's two fresh-context readers | planned | M120 | normal | milestones/M121-verification-triage.md |
 | M118 | The milestone-local `## Decisions` section is history and joins the cap-exempt set (D-074, supersedes D-046's choice 3) | done | — | normal | milestones/archive/M118-decisions-section-cap-exempt.md |
 | M117 | Detector coverage on the site axis, and a plan gate that records the alternative it rejected (intraclass M93 passes 6–9) | done | — | normal | milestones/archive/M117-detector-site-axis-and-recorded-alternative.md |
 | M116 | Repair the three-step placement test — retention takes the deletion arm, inversion moves to guard verification, and a step-0 single-home check (RR04 rec 9) | done | — | normal | milestones/archive/M116-placement-test-repair.md |
-| M115 | Fresh-context reader instruments — plan-gate criteria audit and independent description-layer certification (RR06 recs 4–5) | done | — | normal | milestones/archive/M115-fresh-context-reader-instruments.md |
 
 ## Candidates
 
