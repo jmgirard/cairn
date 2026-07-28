@@ -1,6 +1,6 @@
 # M120: Ingest the Opus 5 prompting guide, and adopt the three conduct rules cairn has no home for
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -123,7 +123,7 @@ waits for M119 to merge rather than being transcribed onto a row main lacks.
 - [x] T6 — Append the `cairn/DECISIONS.md` entry for the relocation; note that
       D-016's rationale (the scorer gates what reaches the user) now covers
       more surface without needing supersession.
-- [ ] T7 — Complete `## Traces to` against the actual diff; run the §8
+- [x] T7 — Complete `## Traces to` against the actual diff; run the §8
       description-layer certification (this milestone authors prose-guards) and
       enter the gate at zero unresolved.
 - [x] T8 — Once M119 has merged and its §8 round-count candidate row is on the
@@ -144,6 +144,7 @@ waits for M119 to merge rather than being transcribed onto a row main lacks.
 - 2026-07-27: minor amendment — T2 landed in T1's checkpoint commit rather than its own, because adding the page without its ledger pin leaves `scripts/tests` red and T1 could not be checked off against a clean verify slot. Task text unchanged.
 - 2026-07-27: T7 — §8 description-layer certification round 1, fresh-context [O] reader, 4 discrepancies, all fixed: (1)+(2) two docstring quotes were verbatim in the guide but absent from the ingested page's Extracted values, so the page gained both — a corrector walking `## Traces to` could not have checked them; (2) also mis-attributed a claim about Claude Opus 5 to "the orchestrator tier"; (3) D-078 said the sub-80 logging paragraph was "the very next paragraph" when the rubric sits between them — it is two below; (4) a registry comment said a block blanks a line when it blanks a four-word phrase of one. Anchor-vs-shipped-bytes and AC-clause-to-assert coverage both passed with no discrepancy.
 - 2026-07-27: T7 — D-078's Context and Consequences were corrected in place rather than superseded, and the entry has never been on the default branch: the branch squash-merges, so D-078 enters history once, in the corrected form, and there is no published version to supersede. Recorded here because the correction is invisible in the merged diff.
+- 2026-07-27: T7 — §8 round 3 scoped to the one fix and a re-resolution of all 8 `## Traces to` anchors: UNRESOLVED 0, gate entered at zero. Three rounds total (4 discrepancies, then 1, then 0) — recorded for the standing §8 round-count candidate row, whose promotion condition is exactly this figure from the next guard-authoring milestone.
 - 2026-07-27: T7 — §8 round 2: all four round-1 fixes verified real, 1 new discrepancy, self-inflicted — the round-1 docstring rewrite grew `test_delegation_warrant.py` by one line, so the `## Traces to` anchor written in round 1 pointed at a blank line and the class had moved to :41. Fixed, and every other anchor re-verified rather than assumed. Round 2 also flagged, without counting it, that the extraction status cannot be checked from the artifact because the source is a URL and the shelf is gitignored — inherent to a non-PDF source and sanctioned by the template, so no change.
 - 2026-07-27: T7 — certification also noted a coverage limit that is not an AC5 gap: the guard reds when the taxonomy is MOVED out of the scorer's rubric, but a fresh restatement of it ADDED to the reviewers' instruction, in wording the literal absence-assert does not name, leaves both tests green. AC5 asks only for the literal-string absence, which is asserted; D-078's Consequences now states the bound instead of claiming closure.
 - 2026-07-27: T8 — M119 merged before this milestone started (archived at `8dace78`), so its §8 round-count row was on the default branch and the corroboration was appended in place rather than deferred. Row edited as current knowledge (D-052); the promotion condition is untouched, and the append names a third disposition only.
