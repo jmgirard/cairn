@@ -1,6 +1,6 @@
 # M121: Verification triage — classify every self-verification instruction, and re-decide D-067's two fresh-context readers
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** M120
 - **Driving RR:** —
@@ -146,6 +146,8 @@ which no finding here disturbs.
 - 2026-07-27: status → review. Three suites green from the repo root with exit codes checked separately (skills 697, scripts 332, hooks 98); `cairn_validate` all checks passed; plan-owned body 108/149.
 
 - 2026-07-27: REVIEW GATE FAILURE, return 1. AC1 fails: the ledger's printed corpus search is not re-runnable as written — run literally as `git grep <rev> -- <pathspec>`, git's wildmatch lets `*` cross `/`, so `skills/shared/*.md` also matches `profiles/` and `templates/` and the command returns 119 hits, not 79; the 79 came from unquoted shell-glob expansion against the working tree, which no later pass can reproduce from the page. AC2's row-count clause fails with it (79 != 119). Also blocking: the same search returns 83 hits at HEAD with four of M121's own lines unclassified; three sentences invert with the suite green (`tracking-rules.md:676-677`, `:678-679`, `guard-doctrine.md:307-310`); the eleven-vs-ten measurement contradicts across three files; two partial-pin asserts; and D-079's exclusion does not engage D-070's work-vs-process carve-back. Status → in-progress.
+
+- 2026-07-27: blocked on RB09 — the §8 scope exclusion's soundness escalated at the user's gate, per the rule that the implementing session never authors the durable verdict on the review constraining it. Three grounds carried: F-BH2 (80, contradicts D-070's work-vs-process carve-back), F-A2 (74, inert on its own motivating case or else it discards round 9's forever-WARN finding), F-A5 (62, composed with D-069 it is a round bound by another route and suppresses its own falsifier). The eight mechanical review findings are independent of the outcome and are fixed on the branch meanwhile.
 
 ## Decisions
 
