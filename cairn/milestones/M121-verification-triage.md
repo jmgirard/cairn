@@ -149,6 +149,9 @@ which no finding here disturbs.
 
 - 2026-07-27: blocked on RB09 — the §8 scope exclusion's soundness escalated at the user's gate, per the rule that the implementing session never authors the durable verdict on the review constraining it. Three grounds carried: F-BH2 (80, contradicts D-070's work-vs-process carve-back), F-A2 (74, inert on its own motivating case or else it discards round 9's forever-WARN finding), F-A5 (62, composed with D-069 it is a round bound by another route and suppresses its own falsifier). The eight mechanical review findings are independent of the outcome and are fixed on the branch meanwhile.
 
+- 2026-07-27: review fixes, the four independent of RB09's outcome. F-C1 (87) — the ledger's corpus search now writes its fourteen paths out instead of globbing: a pathspec is not a shell glob, git's wildmatch lets `*` cross `/`, and the printed command returned 119 hits when run literally while the 79 came from the shell expanding globs against the working tree. Re-verified: the page's own command now returns 79, equal to its row count. F-B1 (88) and F-B2 (86) — the discriminator sentence and the loop-bound sentence were rewrapped onto single physical lines and each gained an assert; both inversions now red. F-PR1 (80) — the two class asserts stopped at the em-dash, so each rationale clause deleted green; both clauses gained an `assertRegex` spanning the wrap. Five asserts and four mutation entries added; all four inversions verified by hand, restored, diffed. Three suites green, exit 0 each.
+- 2026-07-27: four findings deliberately NOT fixed while RB09 is open, because all four sit in text the review may rewrite — F-B3 (90, §8's evidence sentence), F-A1 (88, the eleven-vs-ten measurement spanning D-079 and §8), F-PR2 (85, the assert on §8's exclusion sentence), F-C3 (85, four unclassified hits, one of them inside the §8 paragraph). Fixing them now would guarantee rework.
+
 ## Decisions
 
 ## Review

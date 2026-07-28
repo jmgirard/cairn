@@ -3353,6 +3353,34 @@ REGISTRY += [
         target=RULES,
         block="It does not govern **an independent fresh-context reading of that work by a reader that authored none of it**",
     ),
+    # M121 review. Four more entries, from findings the fan-out scored 80+:
+    # F-PR1 (the two class asserts stopped at the em-dash, leaving each
+    # rationale clause deletable green) and F-B1/F-B2 (the discriminator and
+    # the loop-bound sentences inverted with the suite green).
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestSelfCheckingClassRule.test_governed_class_carries_its_reason",
+        target=RULES,
+        block="a check already happening unprompted, so instructing it\n  again buys tokens rather than quality",
+    ),
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestSelfCheckingClassRule.test_excluded_class_carries_its_reason",
+        target=RULES,
+        block="a different instrument against a different failure: an author checks a\n  description against its generative model of the artifact rather than against\n  the artifact",
+    ),
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestSelfCheckingClassRule.test_rule_states_the_discriminator_that_applies_it",
+        target=RULES,
+        block="The discriminator is *who reads*, never *how often the work is read*",
+    ),
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestSelfCheckingClassRule.test_rule_leaves_a_fresh_readers_loop_to_its_own_instrument",
+        target=RULES,
+        block="A fresh reader's own loop is bounded by its instrument, never by this rule",
+    ),
 ]
 
 

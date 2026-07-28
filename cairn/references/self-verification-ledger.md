@@ -17,10 +17,18 @@ values M121's AC1 fixes. It is a reference, not an authority: status lives in
 **Evidence snapshot.** One command over one commit. A later pass re-runs it and
 diffs the hit list against the table below.
 
-- The corpus search, run from the repo root — 79 hits — observed 2026-07-27:
+- The corpus search, run from the repo root — 79 hits — observed 2026-07-27.
+  **The fourteen paths are written out rather than globbed**, because a
+  pathspec is not a shell glob: git's wildmatch lets `*` cross `/`, so
+  `skills/shared/*.md` as a pathspec also matches `skills/shared/profiles/*.md`
+  and `skills/shared/templates/*.md` and returns 119. The 79 arose from the
+  shell expanding those globs against the working tree, which makes the corpus
+  depend on the tree a later pass happens to have rather than on the revision
+  named in the command. Written out, the command reproduces under any shell
+  and any quoting (M121 review F-C1):
 
   ```
-  git grep -nEi 'verify|verifies|verified|verification|re-?check|double-?check|certif|sanity|re-?read|confirm|self-check' 684e53a -- skills/*/SKILL.md skills/shared/*.md
+  git grep -nEi 'verify|verifies|verified|verification|re-?check|double-?check|certif|sanity|re-?read|confirm|self-check' 684e53a -- skills/cairn-init/SKILL.md skills/cairn-release/SKILL.md skills/design-interview/SKILL.md skills/hotfix/SKILL.md skills/milestone-brief/SKILL.md skills/milestone-implement/SKILL.md skills/milestone-plan/SKILL.md skills/milestone-review/SKILL.md skills/milestone/SKILL.md skills/shared/guard-doctrine.md skills/shared/migration-protocol.md skills/shared/records-hygiene.md skills/shared/tracking-rules.md skills/shared/validation-doctrine.md
   ```
 
 - The term set was chosen at M121's implement gate over a narrower one (65

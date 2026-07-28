@@ -102,6 +102,52 @@ class TestSelfCheckingClassRule(unittest.TestCase):
             rules(),
         )
 
+    def test_governed_class_carries_its_reason(self):
+        # M121 review F-PR1: the two asserts above stop at the em-dash, so the
+        # rationale clause after it deleted green — the partial-pin class an
+        # open ROADMAP row has tracked since M114 pass 8. The reason is what
+        # makes the class recognisable to a reader who meets a new case, so it
+        # is pinned rather than left as decoration.
+        self.assertRegex(
+            rules(),
+            r"a check already happening unprompted, so instructing it\s+"
+            r"again buys tokens rather than quality",
+        )
+
+    def test_excluded_class_carries_its_reason(self):
+        # Same, for the half that does the work: without the "different
+        # failure" reason the exclusion reads as an exemption granted rather
+        # than as a different instrument answering a different defect.
+        self.assertRegex(
+            rules(),
+            r"a different instrument against a different failure: an author "
+            r"checks a\s+description against its generative model of the "
+            r"artifact rather than against\s+the artifact",
+        )
+
+    def test_rule_states_the_discriminator_that_applies_it(self):
+        # M121 review F-B1 (90-class): the two class asserts pin the labels;
+        # nothing pinned the sentence telling a reader HOW to sort a new case.
+        # Inverted to "how often the work is read, never who reads", §8's
+        # multi-round loop sorts into the governed class and the guide's third
+        # delegation clause reaches it — the misreading this rule exists to
+        # block — with the whole suite green.
+        self.assertIn(
+            "the discriminator is *who reads*, never *how often the work is "
+            "read*",
+            rules(),
+        )
+
+    def test_rule_leaves_a_fresh_readers_loop_to_its_own_instrument(self):
+        # M121 review F-B2: inverted to "bounded by this rule, never by its
+        # instrument", the delegation warrant's one-not-several bar governs
+        # §8's rounds and forbids the multi-round loop §8 mandates.
+        self.assertIn(
+            "a fresh reader's own loop is bounded by its instrument, never "
+            "by this rule",
+            rules(),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

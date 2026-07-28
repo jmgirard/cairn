@@ -673,10 +673,11 @@ cairn skill is active.
   It does not govern **an independent fresh-context reading of that work by a reader that authored none of it** —
   a different instrument against a different failure: an author checks a
   description against its generative model of the artifact rather than against
-  the artifact (D-067). The discriminator is *who reads*, never *how often the
-  work is read* — which is the same cut the freshness sentence above makes
-  against the volume test. A fresh reader's own loop is bounded by its
-  instrument (`guard-doctrine.md` §8), never by this rule.
+  the artifact (D-067).
+  The discriminator is *who reads*, never *how often the work is read* — which
+  is the same cut the freshness sentence above makes against the volume test.
+  A fresh reader's own loop is bounded by its instrument, never by this rule
+  (`guard-doctrine.md` §8).
 - **Sonnet subagents**: well-specified self-contained work — fan-out
   searches (Explore), mechanical migrations, test writing against a spec,
   boilerplate. Give complete specs — for an Explore fan-out that means a
