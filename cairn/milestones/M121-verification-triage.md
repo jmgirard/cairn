@@ -46,11 +46,15 @@ which no finding here disturbs.
       its `TestShippedPageStateLedger` pin all land in the same milestone, with
       the work-log justification the ledger contract requires.
 - [ ] AC2 — Every row dispositioned `narrow` or `remove` is applied in the
-      shipped prose, and for each, a grep over the working tree for that row's
-      quoted instruction returns hits only in the ledger, `cairn/DECISIONS.md`,
-      milestone files, and `milestones/archive/`. No row lacks a disposition,
-      and the count of rows in the ledger equals the count of hits the AC1
-      search returns at the measurement commit.
+      shipped prose. For a `remove` row, a grep over the working tree for that
+      row's quoted instruction returns hits only in the ledger,
+      `cairn/DECISIONS.md`, milestone files, and `milestones/archive/`. For a
+      `narrow` row, whose hit line may be one physical line of a multi-line
+      instruction, the check is that the instruction's operative clause no
+      longer reads as it did at the measurement commit, with the shipped
+      replacement quoted in that row's ground. No row lacks a disposition, and
+      the count of rows in the ledger equals the count of hits the AC1 search
+      returns at the measurement commit.
 - [ ] AC3 — A `cairn/DECISIONS.md` entry disposes of D-067's two instruments
       separately — the plan-gate criteria audit and the `guard-doctrine.md` §8
       description-layer certification — each as `keep unchanged`, `narrow`, or
@@ -83,10 +87,10 @@ which no finding here disturbs.
 
 ## Tasks
 
-- [ ] T1 — Run the corpus search over the nine `skills/*/SKILL.md` files and
+- [x] T1 — Run the corpus search over the nine `skills/*/SKILL.md` files and
       the five `skills/shared/*.md` modules; record the exact command and its
       raw hit list. Pin the measurement commit.
-- [ ] T2 — Classify each hit by mechanism and author the ledger from the
+- [x] T2 — Classify each hit by mechanism and author the ledger from the
       synthesis-note template, with a disposition and ground per row. A row is
       `same-context-recheck` only where the instruction has the agent re-read
       work it just produced, with the context that produced it.
@@ -99,7 +103,7 @@ which no finding here disturbs.
       per AC3. Show it verbatim in chat before its commit.
 - [x] T5 — Write the self-checking-class rule into "Model and agent strategy";
       guard + per-phrase mutation entries; verify each reddens when blanked.
-- [ ] T6 — `INDEX.md` line and `TestShippedPageStateLedger` pin for the ledger
+- [x] T6 — `INDEX.md` line and `TestShippedPageStateLedger` pin for the ledger
       page, with the work-log justification line.
 
 ## Work log
@@ -117,6 +121,9 @@ which no finding here disturbs.
 - 2026-07-27: T3 — §8's unbounded loop narrowed at `guard-doctrine.md:284,297` and the routing bar at `milestone-implement/SKILL.md:102`; the criteria audit gains a record requirement at `milestone-plan/SKILL.md` step 3, cross-referenced from `milestone-brief/SKILL.md` (step 0, one home). Two guard asserts re-anchored, five added, five mutation entries added; three suites green, exit 0 each.
 - 2026-07-27: T5 — the self-checking-class rule lands in "Model and agent strategy" naming both classes; two asserts (one per class, each a single physical line) with their own mutation entries. The guide's third delegation clause ("do not use subagents to verify or double-check your own work") reads onto D-067's readers only if the classes are unnamed, which is the misreading this rule blocks.
 - 2026-07-27: T4 — D-079 appended: both D-067 instruments narrowed, not retired. §8's falsifier is recorded as FIRED (4.5-round average over M116-M119) with its prescribed remedy declined on the evidence — round 1 returned real defects in all four milestones and the waste sits in rounds re-certifying the previous round's own fix comment. Supersedes D-067's unbounded loop and the "don't tune it" half of the falsifier; annotates D-069.
+- 2026-07-27: T1/T2/T6 — `references/self-verification-ledger.md` authored from the synthesis-note template: 79 rows at 684e53a, one per hit, with mechanism and disposition each. The measurement: 31 `command-evidence`, 36 `not-an-instruction`, 11 `fresh-context-reader` (D-067's two instruments), and exactly ONE `same-context-recheck` (`guard-doctrine.md:36`) — so the guide's over-verification finding lands almost entirely on D-067 and nearly nowhere else in cairn's prose. INDEX line + `TestShippedPageStateLedger` pinned `exempt`, on M118's ledger footing: the corpus is this repo at a named commit, re-derived by the page's own search rather than re-read against an external source.
+- 2026-07-27: AC2 amended at a mini gate — its grep clause assumed every applied disposition would be a deletion, but both `narrow` instructions span two physical lines and in each case the sweep hit the line that did not change (V24 at `:102` while `:103` changed; V48 at `:285` while `:284` changed), so the clause was unsatisfiable by construction for a `narrow`. Now: `remove` keeps the disappearance grep, `narrow` quotes its operative clause before and after in the row's ground. Rejected at the gate: reflowing the paragraphs so the quoted lines change, which fits the work to the test.
+- 2026-07-27: three cited row IDs in the ledger's Disposition section were wrong on first draft (V45/V27/V51 for V37/V24/V48) — caught by reading them out of the shipped table rather than out of the draft, which is guard-doctrine §6's restatement rule applied to this milestone's own artifact.
 
 ## Decisions
 
