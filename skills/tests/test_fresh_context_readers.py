@@ -2,9 +2,8 @@
 
 Both instruments replace an author checking its own work with a reader that
 did not write it. This file locks the doctrine text for both, at four
-surfaces, including the two narrowings M121 added (D-079): the criteria
-audit's record requirement at the plan and ingest surfaces, and §8's scope
-exclusion.
+surfaces, including the criteria audit's record requirement at the plan
+and ingest surfaces, which M121 added (D-079 clause 2).
 
 The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
 `TestRRIngestionCriteriaAudit`):
@@ -22,9 +21,8 @@ The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
   * `skills/shared/guard-doctrine.md` §8 — its heading, the
     operation-vs-certification cut, the diagnosis, the before-review
     placement, each of the three checks, the zero-unresolved bar, the
-    certification-not-operation clause, the section's own falsifier, D-069's
-    certified-scope bound, and M121's extension of that scope to text a
-    previous round's own fix authored.
+    certification-not-operation clause, the section's own falsifier, and D-069's
+    certified-scope bound.
   * `/milestone-implement` step 8, which fires §8 before `status -> review`
     when the milestone authored or edited a prose-guard.
 
@@ -274,40 +272,6 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             self.doctrine,
             r"The gate is entered at zero unresolved: a discrepancy is fixed and\s+"
             r"re-certified, never argued down as imprecision",
-        )
-
-    def test_scope_excludes_text_a_previous_rounds_fix_authored(self):
-        # M121 narrows D-067 on D-069's own object, the certified SCOPE. Of
-        # M119's rounds 5-9, eleven findings were record errors in an earlier
-        # round's fix text (round 9's two sat in round 8's), while every one of
-        # those rounds also returned a real guard-coverage gap — so a bound on
-        # ROUNDS would have discarded work that was still finding defects.
-        self.assertRegex(
-            self.doctrine,
-            r"\*\*The exclusion extends to text a previous round's own fix "
-            r"authored: a finding\s+whose only subject is such a record is "
-            r"fixed in place and opens no further\s+round\*\* \(M121\)",
-        )
-
-    def test_excluded_finding_is_still_fixed_never_left_unexamined(self):
-        # The half that keeps the exclusion from shipping false records: it
-        # removes the finding's power to REOPEN a round, never the obligation
-        # to correct it. Losing this sentence turns a scope bound into a
-        # licence for the inaccurate records §8 exists to catch.
-        self.assertRegex(
-            self.doctrine,
-            r"It is still fixed — an inaccurate record is what this step\s+"
-            r"exists to catch, and leaving one unexamined would ship it",
-        )
-
-    def test_scope_narrowing_is_distinguished_from_tuning_a_round_count(self):
-        # Without this the narrowing reads as the round-count tuning the
-        # falsifier below rules out — the D-059 move it must not be mistaken
-        # for.
-        self.assertRegex(
-            self.doctrine,
-            r"A round count is what D-059's precedent forbids\s+tuning; the "
-            r"scope of what reopens a round is a different object",
         )
 
     def test_section_moves_certification_not_operation(self):

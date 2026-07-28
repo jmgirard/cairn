@@ -2686,3 +2686,69 @@ third candidate disposition — it addresses prose volume, not the
 re-certification regress that actually repeated). The falsifier's exit
 condition is re-armed against the narrowed form: if guard-authoring milestones
 still average multiple returns with this scope in force, retire the step.
+
+### D-080 (2026-07-27): D-079's §8 scope exclusion is withdrawn on RR09's evidence — it is inert on its own motivating case under one reading and discards real findings under the other — supersedes D-079's clause 1 and the exclusion claim in D-079's heading; D-079's clauses 2 and 3 stand
+
+**Context:** M121 shipped a scope exclusion in `guard-doctrine.md` §8: a finding
+whose only subject is text a previous round's own fix authored is fixed in place
+but opens no further round. Its own §8 certification challenged it at round 1
+(after an earlier round-bounding rule had already been drafted and withdrawn),
+and `/milestone-review`'s three-lens fan-out challenged it again on three
+grounds scoring 80, 74 and 62. It was escalated as RB09.
+
+RR09 confirmed all three objections in refined form and returned verdict (d) —
+rebuild the exclusion rather than keep or retire it — with nine recommendations
+and eight binding criteria. Its decisive measurement is a round-by-round
+classification of M119's rounds 5–9 (RR09 §2, from `8dace78^`): **the shipped
+rule has two readings, selected by an operative noun the paragraph never
+defines.** Under the *record* reading the exclusion reaches the description
+layer only, every one of rounds 5–9 returned at least one non-excluded finding
+(counts 3, 4, 2, 2, 1), the round count is unchanged and the loop still ends by
+override — inert on the very case that produced it. Under the *text* reading it
+reaches anything a fix wrote, and the loop stops at round 5 — the exact stopping
+point of the withdrawn round bound, which D-079 itself records as unacceptable,
+losing round 9's forever-WARN widening set among others.
+
+The mandatory pre-ingest criteria audit (D-067's first instrument, run on the
+binding-criteria set) then found ten blocking defects in RR09's own BC1–BC8,
+including two the set cannot resolve internally: BC1 and BC7 assign opposite
+reopening status to the same objects, and BC6 replaces D-067's falsifier with no
+criterion requiring a superseding entry — the supersede-don't-ignore violation
+RR09 charges against the shipped exclusion, reproduced in its remedy.
+
+**Correction owed to the record:** RB09 supplied as a fixed constraint that
+"D-079 has not merged, so the authoring milestone may still amend it in place
+(M115's precedent)". That is false. **D-065** settles it — "IP4 attaches at
+append time, not at merge time: an entry's not-yet-merged status is no
+carve-out" — and D-065 was written to close the M115 precedent the brief cited.
+The reviewer took the constraint at face value, as a brief instructs, so **BC3
+mandates an IP4 violation and its check is unsatisfiable by the legal route.**
+Recorded here so a later reader does not treat BC3 as usable.
+
+**Decision:** Withdraw the exclusion. `guard-doctrine.md` §8 returns to its
+pre-M121 bytes, and the three asserts and three mutation entries that pinned the
+exclusion go with it. D-079's clause 2 (the criteria audit records one work-log
+line either way) and clause 3 (the rulebook names both classes of self-checking)
+are untouched and ship — neither was challenged at any gate. §8's rebuild is
+banked on the existing ROADMAP row, with RB09/RR09 archived as its evidence and
+this entry as its lineage.
+
+**Consequences:** This is a **departure from RR09's verdict**, which rejected
+option (b), reverting to §8 unchanged, on the ground that it "leaves a fired
+falsifier with its remedy owed, and discards a real convergence guarantee".
+Both halves of that objection are accepted and neither is answered here: the
+falsifier stayed fired, its remedy stays owed, and the convergence guarantee
+D-069 gives is unchanged while the one M121 attempted is gone. The ground for
+departing is narrower than disagreement — the rebuild RR09 prescribes is
+carried by a criteria set with ten blocking defects, so shipping it inside M121
+would ship the defects; and `guard-doctrine.md` is not in M121's Scope, which
+would need a gated amendment to reach a rewrite this size. D-067's falsifier
+therefore stands exactly as D-079 re-armed it, and the round-count problem it
+names is open, not solved.
+
+RR09's recommendations 1–6 travel to the banked rebuild rather than being
+applied here; recommendation 7 (a one-shot robustness read beside round 1) is
+noted on the same row and RR09 itself says not to adopt it inside M121;
+recommendations 8 and 9 — rejecting revert-unchanged and rejecting outright
+retirement — are recorded, and the first is the one this entry departs from,
+stated above rather than worked around.

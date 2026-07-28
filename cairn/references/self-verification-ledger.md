@@ -43,6 +43,15 @@ diffs the hit list against the table below.
   rather than through a row here — observed 2026-07-27.
 - `skills/design-interview/SKILL.md` is in the corpus and returns zero hits —
   observed 2026-07-27.
+- **The same search returns 82 hits at M121's own HEAD, not 79.** Three are
+  M121's own prose — `tracking-rules.md:666`, `:669` and `:672`, the
+  self-checking-class rule (D-079 clause 3), which names and discusses
+  verification without instructing any and so classifies `not-an-instruction`
+  on this page's own vocabulary. The other three-line difference is
+  line-number shift, not new hits. A later pass re-running the command at
+  `684e53a` gets the 79 this table holds; re-running it at a later commit
+  should expect its own additions and diff them, not against this table
+  (M121 review F-C3) — observed 2026-07-27.
 
 ## What the guide's finding says, and what it therefore reaches
 

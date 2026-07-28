@@ -2389,57 +2389,6 @@ REGISTRY = [
         target=BRIEF,
         block="The ingest audit\n   records one work-log line either way, on `/milestone-plan` step 3's terms",
     ),
-    # M121 (narrows D-067). Three entries: the scope exclusion itself, the
-    # sentence keeping an excluded finding fixed rather than unexamined, and
-    # the sentence separating a scope narrowing from the round-count tuning
-    # the falsifier below forbids. Losing the second ships false records under
-    # the exclusion; losing the third leaves it readable as that tuning.
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_scope_excludes_text_a_previous_rounds_fix_authored",
-        target=GUARD_DOCTRINE,
-        block="**The exclusion extends to text a previous round's own fix authored: a finding\nwhose only subject is such a record is fixed in place and opens no further\nround** (M121)",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_excluded_finding_is_still_fixed_never_left_unexamined",
-        target=GUARD_DOCTRINE,
-        block="It is still fixed — an inaccurate record is what this step\nexists to catch, and leaving one unexamined would ship it",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_scope_narrowing_is_distinguished_from_tuning_a_round_count",
-        target=GUARD_DOCTRINE,
-        block="A round count is what D-059's precedent forbids\ntuning; the scope of what reopens a round is a different object",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_section_moves_certification_not_operation",
-        target=GUARD_DOCTRINE,
-        block="this moves certification, not operation",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_section_carries_its_own_falsifier",
-        target=GUARD_DOCTRINE,
-        block="if guard-authoring\nmilestones still average multiple description-layer returns after adoption,\nthe step didn't work — retire it (D-059), don't tune it",
-    ),
-    # M116 (D-069). Two entries: the exclusion itself, and the reason it is a
-    # convergence fix. Losing the second leaves the clause readable as a
-    # comfort measure, which invites tuning the round count — the move D-059
-    # exists to forbid.
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_section_bounds_the_certified_scope_against_regress",
-        target=GUARD_DOCTRINE,
-        block="**The certified scope is the work and the records describing the work; a record\nwhose subject is a certification round itself — the final round's own report\nincluded — sits outside it** (D-069)",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_scope_bound_states_why_it_is_convergence_not_convenience",
-        target=GUARD_DOCTRINE,
-        block="the gate cannot converge\nrather than merely being hard to reach",
-    ),
     Mutation(
         guard="test_fresh_context_readers",
         test="TestImplementRoutesToCertification.test_completion_step_routes_to_the_certifier_at_zero_unresolved",

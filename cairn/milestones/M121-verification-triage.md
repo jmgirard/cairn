@@ -1,6 +1,6 @@
 # M121: Verification triage — classify every self-verification instruction, and re-decide D-067's two fresh-context readers
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M120
 - **Driving RR:** —
@@ -153,6 +153,20 @@ which no finding here disturbs.
 - 2026-07-27: four findings deliberately NOT fixed while RB09 is open, because all four sit in text the review may rewrite — F-B3 (90, §8's evidence sentence), F-A1 (88, the eleven-vs-ten measurement spanning D-079 and §8), F-PR2 (85, the assert on §8's exclusion sentence), F-C3 (85, four unclassified hits, one of them inside the §8 paragraph). Fixing them now would guarantee rework.
 
 ## Decisions
+
+- 2026-07-27 (RR09 ingest): **Q1 — the exclusion's framing contradicts D-070, its substance is reconcilable.** RR09 finds D-079 and §8 placed the exclusion on the "certified scope", the object D-070 ruled on by subject matter, without naming D-070; but excluded findings are still checked and fixed, so they never leave D-070's scope — they lose only the power to reopen a round. The fix is a two-axis discriminator: subject matter draws what is checked and fixed, provenance draws what reopens. Travels to the banked rebuild.
+- 2026-07-27 (RR09 ingest): **Q2 — objection B confirmed and sharpened; this is the finding that decided the disposition.** Every one of M119's rounds 5-9 coverage-gap findings sat in fix-authored surface. Under the description-layer reading the exclusion is exactly inert on M119 — zero rounds saved, zero findings lost, the loop still ends by override. Under the broad reading it stops at round 5, the withdrawn round bound's own stopping point, losing round 9's forever-WARN widening set. The two readings are objection B's two horns, selected by an undefined noun.
+- 2026-07-27 (RR09 ingest): **Q3 — objection C is real only under the broad reading**, where it is worse than stated; under the description-layer reading rounds >=2 keep the substantive class M119 actually exercised.
+- 2026-07-27 (RR09 ingest): **Q4 — the re-armed falsifier is wrong either way**, honest-but-already-failed under one reading and unfireable under the other. RR09 proposes a yield-based replacement; it travels to the rebuild, and D-067's falsifier stands unchanged meanwhile.
+- 2026-07-27 (RR09 ingest): **Q5 — verdict (d), rebuild.** Revert-unchanged (b) and outright retirement (c) both rejected with reasons. M121 departs from (b)'s rejection and says so in D-080: the ground is that the rebuild's own criteria set carries ten blocking defects, not that RR09 is wrong.
+- 2026-07-27 (RR09 ingest): **Q6 — the text/record switch judged real and blocking**, plus four further prose defects and a live contradiction with §8's unamended "fixed and re-certified" clause. All moot for now: the paragraph is withdrawn.
+- 2026-07-27 (RR09 ingest): **Beyond the brief, B2 — M121's own §8 gate entry was not licensed by the rule it applied.** Round 2 returned seven in-scope findings in original text, which the unamended re-certification clause obliges a further round to confirm; the gate entry's ground was prospective and the shipped rule nowhere provided it. Now moot in the same way — the exclusion is withdrawn and §8 is back to its pre-M121 bytes, under which round 2's fixes were confirmed by operation (three suites, `cairn_validate`) and no round 3 was owed on the exclusion's account. Recorded rather than dropped, because the gate entry's stated ground was wrong when made.
+
+- 2026-07-27: RR09 ingested. Criteria audit of its binding-criteria set (D-067 instrument 1, fresh-context [O] that authored none of them) returned TEN BLOCKING findings and nine judgment calls — recorded per D-079 clause 2's requirement that the audit record one work-log line either way. Verified first-hand: RR09's `- **BCn** —` bullets parse to `{}` under the shipped `_BC_HEAD`, so setting `Driving RR: RR09` would FAIL the gate; the BC section is 59 lines against 41 of headroom (D-066(4) territory); and D-065 forbids the in-place D-079 amendment BC3 mandates.
+- 2026-07-27: correction owed to the record — RB09 supplied a FALSE CONSTRAINT. It told the reviewer that "D-079 has not merged, so the authoring milestone may still amend it in place (M115's precedent)". D-065 says IP4 attaches at append time, not merge time, and was written to close exactly that M115 precedent. The reviewer took the constraint as instructed, so BC3 mandates an IP4 violation. The error is the brief's, not the review's; recorded in D-080 so a later reader does not treat BC3 as usable.
+- 2026-07-27: at the ingest gate the maintainer chose to drop §8 from M121 rather than rebuild it here or re-brief. `guard-doctrine.md` is byte-identical to `main` again; the three exclusion asserts and three mutation entries went with it. D-080 supersedes D-079's clause 1 and its heading's exclusion claim; clauses 2 and 3 stand. The rebuild is banked on the ROADMAP's existing §8 row, rewritten in place (ROADMAP is current knowledge, D-045/D-052) with RR09 as its evidence — which also closes review finding F-D5 (78).
+- 2026-07-27: the revert closes three deferred review findings outright — F-B3 (90), F-PR2 (85) and F-A1 (88) all sat in the withdrawn paragraph or the D-entry D-080 now supersedes; `grep eleven skills/` returns nothing. F-C3 (85) is closed by disclosing in the ledger that the search returns 82 at HEAD, three of them M121's own self-checking rule, classified `not-an-instruction` on the page's own vocabulary.
+- 2026-07-27: RB09/RR09 relocated to `cairn/reviews/archive/`; status → in-progress.
 
 ## Review
 
