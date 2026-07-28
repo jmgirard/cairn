@@ -90,7 +90,7 @@ walks when a value here changes, so name specific files and lines, not areas.
   Model and agent strategy. Takes the § Controlling subagent spawning
   instruction: nothing finishable in a handful of tool calls is delegated, and
   one subagent rather than several. Guarded by
-  `skills/tests/test_delegation_warrant.py:40` (`TestDelegationWarrantRule`),
+  `skills/tests/test_delegation_warrant.py:41` (`TestDelegationWarrantRule`),
   three asserts, three mutation entries. cairn does **not** take that
   instruction's third clause ("do not use subagents to verify or double-check
   your own work") — M121 owns it.
