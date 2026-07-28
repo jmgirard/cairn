@@ -1,6 +1,6 @@
 # M121: Verification triage — classify every self-verification instruction, and re-decide D-067's two fresh-context readers
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M120
 - **Driving RR:** —
@@ -145,6 +145,8 @@ which no finding here disturbs.
 - 2026-07-27: §8 gate entered at zero unresolved after round 2, and the judgment is recorded because the author is applying its own new rule for the first time. Round 2 returned 0 shipped-behaviour defects and 0 regressions, and independently inverted every rule this milestone ships. Of its 12 findings, 5 had round 1's fix text as their only subject — the class D-079 (1) fixes without reopening — and the 7 in-scope ones were count and citation precision in original text, all fixed. A round 3's only new surface would be round 2's own fixes, which is exactly what the shipped exclusion covers, so it is not required; a reviewer who reads that as self-serving should say so at the gate.
 - 2026-07-27: status → review. Three suites green from the repo root with exit codes checked separately (skills 697, scripts 332, hooks 98); `cairn_validate` all checks passed; plan-owned body 108/149.
 
+- 2026-07-27: REVIEW GATE FAILURE, return 1. AC1 fails: the ledger's printed corpus search is not re-runnable as written — run literally as `git grep <rev> -- <pathspec>`, git's wildmatch lets `*` cross `/`, so `skills/shared/*.md` also matches `profiles/` and `templates/` and the command returns 119 hits, not 79; the 79 came from unquoted shell-glob expansion against the working tree, which no later pass can reproduce from the page. AC2's row-count clause fails with it (79 != 119). Also blocking: the same search returns 83 hits at HEAD with four of M121's own lines unclassified; three sentences invert with the suite green (`tracking-rules.md:676-677`, `:678-679`, `guard-doctrine.md:307-310`); the eleven-vs-ten measurement contradicts across three files; two partial-pin asserts; and D-079's exclusion does not engage D-070's work-vs-process carve-back. Status → in-progress.
+
 ## Decisions
 
 ## Review
@@ -219,3 +221,87 @@ advisory OK, no WARN. No `DESIGN.md` principle changed in the diff, so
 `consistency-gate` slot names **none**, so the toolchain half is a clean no-op.
 Returns to `in-progress` this milestone: **zero** — the thrash rule does not
 fire.
+
+### Independent fresh-context review (three lenses + scorer), 2026-07-27
+
+Three reviewers with distinct evidence bases, all instructed to report every
+candidate finding and filter nothing; a separate `[S]` scorer that generated
+none of them scored each 0-100 against the rubric. Diff-bug `[O]` 30 findings,
+blame-history `[S]` 5, prior-review `[S]` 2 (its `gh api` probe found zero
+inline PR comments repo-wide, so archived `## Review` sections and the open
+ROADMAP candidate rows were its whole evidence base). Four claims were
+re-measured first-hand before scoring; two of those refuted a reviewer.
+
+**GATE FAILURE — the milestone returns to `in-progress`.** Two of the nine
+80+ findings are acceptance-criterion failures, both verified by command rather
+than accepted on report.
+
+**Actioned (scored 80+), all returned to `/milestone-implement`:**
+
+- **F-B3 (90)** `guard-doctrine.md:307-310` — "Every round in that stretch also
+  returned a real guard-coverage gap, so a bound on *rounds* would have
+  discarded work that was still finding defects" inverts to "No round..." with
+  the suite green. This is the one sentence carrying D-079's scope-vs-rounds
+  argument. Verified: inversion run, suite green, restored.
+- **F-A1 (88)** `DECISIONS.md:2662` / `guard-doctrine.md:306` /
+  `test_fresh_context_readers.py:281` — the same measurement reads "eleven ...
+  in an earlier round's own fix text" in two places and "eleven ... ten of them
+  in an earlier round's own fix text" in the third. The round-2 fix corrected
+  one site of three; the D-entry is history under IP4 and needs a superseding
+  correction rather than an edit.
+- **F-B1 (88)** `tracking-rules.md:676-677` — "The discriminator is *who
+  reads*, never *how often the work is read*" inverts with the suite green.
+  This is the sentence telling a reader how to apply AC4's two classes;
+  inverted, §8's loop sorts into the governed class. Verified.
+- **F-C1 (87)** `references/self-verification-ledger.md:22-24` — **AC1
+  failure.** The printed search is not re-runnable as written: run literally as
+  a `git grep <rev> -- <pathspec>`, git's wildmatch lets `*` cross `/`, so
+  `skills/shared/*.md` also matches `profiles/` and `templates/` and the command
+  returns **119** hits. The 79 arises only from unquoted shell-glob expansion
+  against the working tree. Verified first-hand; AC2's row-count clause fails
+  under the literal reading (79 != 119).
+- **F-B2 (86)** `tracking-rules.md:678-679` — "A fresh reader's own loop is
+  bounded by its instrument, never by this rule" inverts with the suite green.
+  Verified.
+- **F-PR2 (85)** `test_fresh_context_readers.py:292-300` — the assert stops at
+  "ship it", leaving the clause stating WHY an excluded finding does not reopen
+  a round pinned by nothing.
+- **F-C3 (85)** `references/self-verification-ledger.md:79-86` — the same
+  search returns **83** hits at HEAD, four of them M121's own prose
+  (`guard-doctrine.md:310`; `tracking-rules.md:666`, `:669`, `:672`),
+  unclassified. The page's own re-run protocol yields four unexplained hits on
+  the next pass. Verified first-hand.
+- **F-PR1 (80)** `test_delegation_warrant.py:91-103` — both new asserts pin only
+  the bolded lead clause to the em-dash, leaving each rationale clause unpinned.
+  The partial-pin class an open ROADMAP candidate row (M114 pass 8, re-evaluated
+  at M116's plan gate, never dropped) already tracks.
+- **F-BH2 (80)** `DECISIONS.md` D-069/D-070 vs D-079 — D-070 carved D-069 back
+  so that defects in *records about the work* stay inside the certified scope,
+  leaving only certification narrative outside it. D-079's exclusion reclassifies
+  that same category out by a different axis (who authored the text, not what it
+  is about) and frames itself as extending D-069 without engaging D-070.
+
+**Logged below threshold (24 findings, surfaced not dropped — IP3):**
+F-D5 78 stale ROADMAP candidate row whose promotion condition M121 just met ·
+F-C13 75 ledger says it "produced rules" when it produced none · F-A2 74 the
+exclusion may be inert on its own motivating case · F-A3 74 "text" vs "record"
+switch mid-sentence, undefined · F-D4 74 step-0 one-home tension with M120's
+freshness sentence · F-C8 74 no stated precedence between two mechanism values ·
+F-C10 72 `exempt` pin rests on a frozen-corpus precedent while this corpus is
+live · F-C5 70 V30/V32 arguably misclassified `command-evidence` · F-D2 68 Scope
+In-list omits three of four edited surfaces · F-D3 65 docstring gets which half
+is novel backwards · F-C4 65 `profiles/` not named in Open questions · F-D1 62
+no criterion binds the §8 prose change directly · F-A5 62 exclusion composes
+with D-069 into a de facto round bound · F-C7 55 `fresh-context-reader` defined
+by its own extension · F-A4 50 the author decides which findings are excluded
+(self-disclosed) · F-C11 45 some counts unpinned to a commit · F-C6 42 seven
+`fresh-context-reader` rows are arguably descriptive prose · F-C14 35 "no
+vocabulary beyond four values" vs a second interpretive rule · F-C12 35 two
+`— observed` stamps wrap · F-C9 30 six quotes "padded" (refuted on inspection:
+CommonMark double-backtick delimiters) · F-BH5 30 AC2's check fires on nothing
+(self-disclosed) · **F-A6 25 REFUTED** — "code defects" matches M119's own
+vocabulary · F-A7 25 ambiguous antecedent, all citations resolve · **F-C2 15
+REFUTED** — the 65/79/114 figures reproduce exactly at `684e53a`.
+
+**Thrash count: return 1 of this milestone.** Neither trigger fires — (a) needs
+a third return, and (b) needs one criterion failing twice by the same shape.
