@@ -80,9 +80,10 @@ Quotes are the hit line verbatim, so each is directly greppable. Where a line
 contains a table pipe, the longest pipe-free run carrying the instruction is
 quoted instead. `file:line` is at `684e53a`. M121 edits four of the fourteen
 corpus files — `milestone-brief`, `milestone-plan`, `guard-doctrine.md`,
-`tracking-rules.md` — and hit line numbers move in two of them,
-`guard-doctrine.md` and `tracking-rules.md`; in the other two the edits land
-after every hit — observed 2026-07-27.
+`tracking-rules.md` — and hit line numbers move in one of them,
+`tracking-rules.md`, whose edit at `:666` shifts every hit from `:670` onward
+by +14. In the other three the edit lands after the file's last hit — observed
+2026-07-27.
 
 ## The ledger — 79 rows, one per hit at `684e53a` — observed 2026-07-27
 
@@ -132,14 +133,14 @@ after every hit — observed 2026-07-27.
 | V42 | `shared/guard-doctrine.md:169` | `that it was never verified. When a matcher gains verbs, its negation handling` | `not-an-instruction` | `keep` | describes a matcher failure mode |
 | V43 | `shared/guard-doctrine.md:204` | `**A rule inherited from a prior finding is unverified until read out of the` | `command-evidence` | `keep` | reads the rule out of the implementation |
 | V44 | `shared/guard-doctrine.md:211` | `re-verify each member *after* the move, not before.` | `command-evidence` | `keep` | runs each moved member through the implementation |
-| V45 | `shared/guard-doctrine.md:256` | `## 8. The author never certifies its own guard's coverage` | `fresh-context-reader` | `keep` | §8's heading; the instrument is narrowed at its loop, not retired (D-079 (1)) |
+| V45 | `shared/guard-doctrine.md:256` | `## 8. The author never certifies its own guard's coverage` | `fresh-context-reader` | `keep` | §8's heading; D-079 (1) narrows the instrument's certified scope, and retires nothing |
 | V46 | `shared/guard-doctrine.md:258` | `**Running a guard and certifying that it covers what you claim are different` | `fresh-context-reader` | `keep` | §8's operation/certification split, which D-079 keeps |
 | V47 | `shared/guard-doctrine.md:261` | `the artifact, so an author who runs them finds its own mistakes. Certification` | `fresh-context-reader` | `keep` | §8's diagnosis, which the M116-M119 round-1 yield confirms |
 | V48 | `shared/guard-doctrine.md:285` | `re-certified, never argued down as imprecision. The author still runs` | `fresh-context-reader` | `keep` | §8's zero-unresolved bar, unchanged by D-079, whose narrowing is a scope exclusion added below it |
 | V49 | `shared/guard-doctrine.md:286` | `everything — this moves certification, not operation.` | `fresh-context-reader` | `keep` | operation stays with the author — unchanged by D-079 |
 | V50 | `shared/guard-doctrine.md:288` | `**The certified scope is the work and the records describing the work; a record` | `fresh-context-reader` | `keep` | D-069's certified-scope bound; D-079 annotates it rather than replacing it |
 | V51 | `shared/guard-doctrine.md:289` | `whose subject is a certification round itself — the final round's own report` | `fresh-context-reader` | `keep` | the same D-069 clause, continued |
-| V52 | `shared/guard-doctrine.md:293` | `uncertified surface for the next one to audit. M114 pass 8 ran four rounds on` | `fresh-context-reader` | `keep` | D-069's convergence argument, which D-079's bound completes |
+| V52 | `shared/guard-doctrine.md:293` | `uncertified surface for the next one to audit. M114 pass 8 ran four rounds on` | `fresh-context-reader` | `keep` | D-069's convergence argument, which D-079 (1) extends to a round's own fix text |
 | V53 | `shared/guard-doctrine.md:294` | `that treadmill — round 4 finding defects only in certification narrative — at` | `fresh-context-reader` | `keep` | the M114 treadmill measurement D-079 cites as one step below its own |
 | V54 | `shared/migration-protocol.md:36` | ``as the sole `in-progress` milestone, explicitly confirmed.`` | `not-an-instruction` | `keep` | a user confirmation on carrying work over |
 | V55 | `shared/migration-protocol.md:124` | `an estimator scaffold, an oracle-verification runner) carry value this` | `not-an-instruction` | `keep` | an example of a clean domain skill |
@@ -185,7 +186,7 @@ search above and re-reading this table's Mechanism column.
 
 The single finding this ledger produces is the shape of the corpus, not any one
 row: **cairn does not have the over-verification the guide describes.** Of 79
-hits at `684e53a`, exactly one — V37, `guard-doctrine.md:36` — is an author re-reading work
+hits at `684e53a` — observed 2026-07-27 — exactly one, V37 at `guard-doctrine.md:36`, is an author re-reading work
 it just produced, and it survives because it fires only after a
 mid-implementation amendment and reads the guard against the acceptance
 criteria, two artifacts, rather than standing as a blanket final-verification
@@ -207,7 +208,7 @@ Where every row lands:
   the complete instrument inventory.
 
 Rules this page produced are locked by
-`skills/tests/test_fresh_context_readers.py` (the §8 stopping bound and the
+`skills/tests/test_fresh_context_readers.py` (§8's scope exclusion and the
 criteria-audit record requirement) and
 `skills/tests/test_delegation_warrant.py` (`TestSelfCheckingClassRule`), each
 registered in `skills/tests/test_mutation_harness.py`.

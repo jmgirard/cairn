@@ -2566,7 +2566,7 @@ instruction, in wording the absence-assert does not name, leaves both tests
 green. The paired absence-assert on the old instruction registers the
 report-everything phrase as its positive framing.
 
-### D-079 (2026-07-27): D-067's two fresh-context readers are both narrowed, not retired — §8's certified scope excludes text a previous round's own fix authored, and the criteria audit gains a mandatory record — supersedes the "don't tune it" half of §8's falsifier; extends D-069's scope bound, cites `prompting-opus-5`
+### D-079 (2026-07-27): D-067's two fresh-context readers are both narrowed, not retired — §8's certified scope excludes text a previous round's own fix authored, and the criteria audit gains a mandatory record — narrowly supersedes D-067, at the "don't tune it" half of §8's falsifier; extends D-069's scope bound, cites `prompting-opus-5`
 
 **Context:** Anthropic's Opus 5 prompting guide reports that explicit
 self-verification instructions "cause over-verification on Claude Opus 5, and
@@ -2589,7 +2589,12 @@ records:
 **Instrument 1 — the plan-gate criteria audit.** M115 recorded gated amendments
 to AC2/AC6 after a plan-time criteria re-read, with AC5's ambiguous `verbatim`
 settled at the gate (`milestones/archive/M115-fresh-context-reader-instruments.md`,
-Decisions). M116 audited twice: round 1 found {AC2, AC5, AC6} jointly
+Decisions) — but that re-read was the plan author's own, standing in for the
+instrument M115 was building, and M115's work log says so
+(`milestones/M115-fresh-context-reader-instruments.md:123`, pre-archive at
+`67a6e96^`): "I authored these criteria, so this is the weaker self-check rec 4
+exists to replace." It is evidence the questions find things, not evidence
+about the fresh-context reader, which did not exist yet. M116 audited twice: round 1 found {AC2, AC5, AC6} jointly
 unsatisfiable — the class no per-criterion read reaches — and round 2 four
 drafting defects plus the exactly-once locator constraint
 (`milestones/M116-placement-test-repair.md:52`, work log, pre-archive; live in
@@ -2599,8 +2604,12 @@ gate, each as a Deviations row
 `c76fa65^`). **M117 and M119 carry
 no audit record anywhere in their files.** Cost is one reader per plan, two
 where a round found something; M116 stopped at two on D-069's regress ground.
-So: three of five firings, every firing productive, and two milestones where
-"did not run" and "ran and found nothing" cannot be told apart.
+So: two measured firings of the instrument itself (M116, M118), both
+productive, one earlier self-check that found the same class of defect, and two
+milestones where "did not run" and "ran and found nothing" cannot be told
+apart. Counted over the five milestones that followed M115's adoption — M116
+through M120 — three carry no record at all; this entry's window is the
+M115-M119 one its evidence is drawn from.
 
 **Instrument 2 — `guard-doctrine.md` §8 description-layer certification.** Round
 counts and findings: M116 two rounds, 9 + 2 (`milestones/archive/M116-placement-test-repair.md`,
@@ -2609,8 +2618,8 @@ AC clauses (`milestones/archive/M117-detector-site-axis-and-recorded-alternative
 Review); M118 three, 16 → 10 → 2, round 1's sixteen including eleven blocking
 (`milestones/M118-decisions-section-cap-exempt.md:123,139`, pre-archive at
 `c76fa65^`); M119 **nine**
-(`milestones/M119-decisions-advisory-and-consistency-guards.md:99-124`,
-pre-archive at `8dace78^`). Every one of those four files is archived now, so
+(`milestones/M119-decisions-advisory-and-consistency-guards.md:99-123`, with
+the review-entry override at `:125`, pre-archive at `8dace78^`). Every one of those four files is archived now, so
 those line numbers resolve in the named pre-archive revisions and nowhere in
 the working tree. The
 shape is not a flat cost. Round 1 returned real defects in every milestone that

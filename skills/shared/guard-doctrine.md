@@ -302,8 +302,9 @@ exists to catch, and leaving one unexamined would ship it — but it is not
 itself grounds for another round, because each round's fix writes prose that
 the next round then finds fault with, and that is the regress above wearing the
 deliverable's clothes. The measurement is M119's nine rounds: rounds 5-9
-returned zero code defects, and of their findings eleven were record errors in
-an earlier round's own fix text, round 9's two sitting in round 8's. Every
+returned zero code defects apart from round 7's live false positive in the
+shipped detector, and of their findings eleven were record errors, ten of them
+in an earlier round's own fix text and round 9's two in round 8's. Every
 round in that stretch also returned a real guard-coverage gap, so a bound on
 *rounds* would have discarded work that was still finding defects — which is
 why this narrows the certified scope, the object D-069 already narrows, and
