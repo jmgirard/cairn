@@ -51,6 +51,11 @@ quoted verbatim, in quotation marks, rather than paraphrased:
   not use subagents to verify or double-check your own work. If one subagent
   can complete the task, use one rather than several, and keep spawn counts
   low." — § Controlling subagent spawning.
+- The behavior the correction-narration instruction answers — "The model also
+  narrates corrections to its earlier statements more than prior models do,
+  which can be undesirable in user-facing products." — § Self-correction.
+- The behavior the delegation instruction answers — "Claude Opus 5 delegates to
+  subagents more readily than prior models." — § Controlling subagent spawning.
 - The correction-narration instruction, quoted whole as the guide's own sample
   prompt — "Only correct an earlier statement when the error would change the
   user's code, conclusions, or decisions. State corrections plainly and
@@ -76,7 +81,31 @@ What in the repo reads this page: tests, oracle-registry entries, vignette or
 documentation claims, other `references/` pages. This is the list a corrector
 walks when a value here changes, so name specific files and lines, not areas.
 
-- (completed at M120 T7 against the shipped diff)
+- `skills/shared/tracking-rules.md:553` — "Correct what matters, and only
+  narrate that", in Output & interaction discipline. Takes the § Self-correction
+  instruction: correct only what would change the user's code, conclusions, or
+  decisions. Guarded by `skills/tests/test_narration_discipline.py:55`
+  (`TestCorrectionNarrationRule`), four asserts, four mutation entries.
+- `skills/shared/tracking-rules.md:650` — "Delegate only what warrants it", in
+  Model and agent strategy. Takes the § Controlling subagent spawning
+  instruction: nothing finishable in a handful of tool calls is delegated, and
+  one subagent rather than several. Guarded by
+  `skills/tests/test_delegation_warrant.py:40` (`TestDelegationWarrantRule`),
+  three asserts, three mutation entries. cairn does **not** take that
+  instruction's third clause ("do not use subagents to verify or double-check
+  your own work") — M121 owns it.
+- `skills/milestone-review/SKILL.md:178` — step 5's reviewer instruction, now
+  report-everything-filter-nothing. Takes the § Capability improvements finding
+  that a reviewer told to be conservative reports less. Recorded as
+  `cairn/DECISIONS.md` D-078; guarded by
+  `skills/tests/test_review_fanout.py:105`.
+- `skills/milestone-review/SKILL.md:191` — the false-positive taxonomy, now
+  inside the `[S]` scorer's rubric blockquote rather than the reviewers'
+  instruction; the downstream half of the same finding. Guarded by
+  `skills/tests/test_review_fanout.py:97`.
+- `cairn/ROADMAP.md` — the §8 description-layer candidate row cites this page's
+  § Written deliverable length finding as third-party corroboration and as a
+  third disposition; it changes no promotion condition.
 
 ## Open questions
 

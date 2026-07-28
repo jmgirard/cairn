@@ -3299,8 +3299,9 @@ REGISTRY += [
 # M120: the false-positive taxonomy moves out of the reviewers' instruction and
 # into the scorer's rubric (D-078). Three entries, because the guard makes three
 # separable claims: that the taxonomy is present, that it is present INSIDE the
-# rubric (blanking the rubric's own anchor line must red the test — otherwise
-# the location claim is unproven and the taxonomy could drift back upstream),
+# rubric (blanking the phrase the guard anchors its slice on must red the test —
+# otherwise the location claim is unproven and the taxonomy could be moved back
+# upstream unnoticed),
 # and that the reviewers are told to report everything. The third is the
 # positive framing registered on behalf of the paired `assertNotIn`, which is
 # satisfied by blanking and cannot be mutation-proven itself (guard-doctrine §3).

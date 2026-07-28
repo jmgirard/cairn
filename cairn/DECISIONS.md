@@ -2531,8 +2531,8 @@ issues' or 'be conservative,' the model may follow that instruction literally
 and report less; ask it to report everything and filter in a separate pass
 instead." cairn's instruction is that shape. The gap it opens is IP3's, not
 merely a quality one: a finding dropped at the reviewer reaches neither the
-scorer nor the `## Review` section, so it is dropped *silently*, while the very
-next paragraph refuses exactly that downstream — sub-80 findings are "excluded
+scorer nor the `## Review` section, so it is dropped *silently*, while the same
+step refuses exactly that two paragraphs below — sub-80 findings are "excluded
 from the actioned list but logged … surfaced, never silently dropped (IP3)".
 Two filters ran, and only the second one kept a record.
 
@@ -2556,5 +2556,8 @@ whatever the reviewers used to absorb, which is the falsifier to watch: a review
 pass whose logged sub-80 findings are dominated by taxonomy matches would mean
 the volume was worth the reviewer-side filter after all. `test_review_fanout.py`
 locates the rubric by its own first line and walks the contiguous blockquote, so
-the taxonomy drifting back upstream reds; the paired absence-assert on the old
-instruction registers the report-everything phrase as its positive framing.
+moving the taxonomy back out of the rubric reds. That is the bound, not a
+closure: a fresh restatement of the taxonomy *added* to the reviewers'
+instruction, in wording the absence-assert does not name, leaves both tests
+green. The paired absence-assert on the old instruction registers the
+report-everything phrase as its positive framing.

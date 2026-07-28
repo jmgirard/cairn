@@ -1,8 +1,9 @@
 """Regression guard: the M120 delegation-warrant test (Model and agent strategy).
 
 Adopted from `cairn/references/prompting-opus-5.md` (§ Controlling subagent
-spawning), which reports that the orchestrator tier "delegates to subagents
-more readily than prior models". Before M120 the rulebook decided only *which*
+spawning), which reports that Claude Opus 5 — the tier cairn runs its
+orchestrator on — "delegates to subagents more readily than prior models".
+Before M120 the rulebook decided only *which*
 tier a spawn got — the Sonnet/Opus/Fable bullets — and never whether the spawn
 was warranted at all, so the cheapest wrong answer (spawn something for a
 two-grep question) violated no rule.
