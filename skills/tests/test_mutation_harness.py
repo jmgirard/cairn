@@ -2665,6 +2665,36 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_clearing_both_lines_is_sufficient_to_reopen",
+        target=GUARD_DOCTRINE,
+        block="**And a finding that clears both lines is a reopening finding**, carrying that\nclass's obligation: a further fresh-context round.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_reopening_rule_runs_in_both_directions",
+        target=GUARD_DOCTRINE,
+        block='Stated as a bound alone it says only which findings\ncannot reopen a round and never that any must',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_falsifier_carries_a_whole_step_retirement_clause",
+        target=GUARD_DOCTRINE,
+        block='then round 1 has stopped earning its reader and\n  **the step retires whole**',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_clause_three_counts_anchor_fidelity_findings",
+        target=GUARD_DOCTRINE,
+        block='and\n  zero anchor-fidelity findings',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_clauses_one_and_three_cannot_both_fire",
+        target=GUARD_DOCTRINE,
+        block='Clauses (i) and (iii) cannot both fire: (i)\n  requires some milestone to have convened a later round',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
         test="TestImplementRoutesToCertification.test_completion_step_routes_to_the_certifier_at_zero_unresolved",
         target=IMPLEMENT,
         block="if this milestone authored or edited a\n   prose-guard, hand its description layer to a fresh-context [O] reader first",

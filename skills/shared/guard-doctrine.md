@@ -350,6 +350,13 @@ unpinned is a check-1 finding and reopens, while one that merely hardens an
 assert no criterion names is out of mandate. What decides is whether a criterion
 clause is at stake, never how the finding is phrased.
 
+**And a finding that clears both lines is a reopening finding**, carrying that
+class's obligation: a further fresh-context round. The rule runs in both
+directions on purpose. Stated as a bound alone it says only which findings
+cannot reopen a round and never that any must, and a reader deep in a long loop
+can take that silence as licence to close — which is the two-readings failure
+this section has already shipped once, in another place.
+
 **Each class carries exactly one confirmation obligation, and no class carries
 two.** A **reopening finding** obliges a further fresh-context round, and that
 round is what confirms its fix. A **fix-authored record** is fixed in place and
@@ -408,6 +415,18 @@ closing when the third completes:
   by the three-lens review, or by a subsequent milestone — then the in-place
   route has failed, and that class returns to round-opening. Tolerance: one
   occurrence.
+- **(iii)** If, totalled across the same window, **round 1 itself** returns zero
+  shipped-behaviour defects, zero false claims in records predating that
+  milestone's round 1, zero acceptance-criterion clauses found unpinned, and
+  zero anchor-fidelity findings, then round 1 has stopped earning its reader and
+  **the step retires whole**. Tolerance: exact zero on all four counts, totalled
+  across the window. The fourth count is what keeps this clause calibrated:
+  anchor-vs-shipped-bytes fidelity is one of the three checks, so a window
+  returning only those findings would read zero on the other three and retire an
+  instrument that was demonstrably working — the same fault this falsifier
+  replaced the round count for. Clauses (i) and (iii) cannot both fire: (i)
+  requires some milestone to have convened a later round, which under the
+  reopening rule means its round 1 found something, which (iii)'s zeroes forbid.
 
 Clause (i) counts whether the later rounds still find anything the two rules
 above have not already disposed of. Clause (ii) counts the cost those rules

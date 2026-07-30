@@ -133,7 +133,7 @@ not reopened here.
 - [x] T6 — Append the superseding D-entry (AC6).
 - [x] T7 — Author and register the asserts; re-anchor the rewritten two (AC8).
 - [x] T8 — Section-wide inversion sweep; suites and `cairn_validate` (AC8, AC9).
-- [ ] T9 — Ship RR10's sufficiency arm and falsifier clause (iii), the latter
+- [x] T9 — Ship RR10's sufficiency arm and falsifier clause (iii), the latter
       counting anchor-fidelity findings per the Deviations table (AC10, AC11).
 - [ ] T10 — Relocate §8's evidence derivations into an appended D-entry, leave
       one-sentence pointers, bring §8 to ≤150 lines (AC12, AC14).
@@ -236,6 +236,10 @@ not reopened here.
 
 - 2026-07-30 (RR10 ingest): `binding criteria` FAILed on ingestion — "RR10 has a Binding criteria section but no parseable '- BC<n>:' item — enforcement would silently bind nothing", which is M100's fail-loud rule working. RR10 wrote its items as `- **BC1** — ` and the parser requires a `:` or `.` delimiter. Normalized the five headers to `- **BC1:** `, delimiter only, no content changed, before the artifact settled as history — the skill's own robustness rule says never to reject usable review output on formal grounds. Check now PASSes and each BC resolves through the Deviations table.
 - 2026-07-30 (RR10 ingest): `sizing` advisory now WARNs at 14 acceptance criteria, up from 9. Both figures stand unactioned by the same maintainer decision recorded at planning — one milestone over a split — and the five new criteria are by-reference one-liners rather than new scope.
+
+- 2026-07-30: T9 — the sufficiency arm ships in the clears-both-lines paragraph (AC10/BC1): a finding clearing both lines IS a reopening finding and carries that class's obligation, with the sentence saying why the rule runs both ways. RR10's residue was that reopening carried only necessary conditions, so a reader deep in a loop could derive "nothing must reopen" with every rule intact.
+- 2026-07-30: T9 — falsifier clause (iii) ships (AC11/BC2): round 1 itself retires the whole step on zero yield across the window. Two deviations from RR10 applied as the Deviations table records — it counts FOUR quantities, the fourth being anchor-fidelity findings (§8's third check, which RR10's version omitted, so a window of only those findings would read zero and retire a working instrument); and §8 states that clauses (i) and (iii) cannot both fire, since (i)'s non-vacuity floor requires a round 1 that found something and (iii)'s zeroes forbid one.
+- 2026-07-30: T9 — 5 asserts + 5 registry entries; all 5 redden their own test under in-place inversion, restored byte-identical after each. 749 tests.
 
 ## Decisions
 

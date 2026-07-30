@@ -665,6 +665,49 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             r"Tolerance:\s+±1\s+round,\s+on\s+that\s+gap\.",
         )
 
+    def test_clearing_both_lines_is_sufficient_to_reopen(self):
+        # RR10 BC1. Reopening carried only NECESSARY conditions, so a reader deep
+        # in a loop could derive 'nothing must reopen' with every rule intact.
+        self.assertRegex(
+            self.doctrine,
+            r"\*\*And\s+a\s+finding\s+that\s+clears\s+both\s+lines\s+is\s+a\s+reopening\s+finding\*\*,\s+carrying\s+that\s+class's\s+obligation:\s+a\s+further\s+fresh\-context\s+round\.",
+        )
+
+    def test_the_reopening_rule_runs_in_both_directions(self):
+        # RR10 q6's live two-readings residue. This sentence is the reason the
+        # only-if is stated as an iff rather than left implied.
+        self.assertRegex(
+            self.doctrine,
+            r"Stated\s+as\s+a\s+bound\s+alone\s+it\s+says\s+only\s+which\s+findings\s+cannot\s+reopen\s+a\s+round\s+and\s+never\s+that\s+any\s+must",
+        )
+
+    def test_the_falsifier_carries_a_whole_step_retirement_clause(self):
+        # RR10 BC2. After D-083 no condition anywhere retired the whole step —
+        # round 1 had become unfalsifiable, which is the deficiency RR10 found
+        # in what M123 shipped.
+        self.assertRegex(
+            self.doctrine,
+            r"then\s+round\s+1\s+has\s+stopped\s+earning\s+its\s+reader\s+and\s+\*\*the\s+step\s+retires\s+whole\*\*",
+        )
+
+    def test_clause_three_counts_anchor_fidelity_findings(self):
+        # Deviation from RR10 BC2 (audit F9): as RR10 wrote it, clause (iii)
+        # omitted §8's third check, so a window of only anchor-fidelity findings
+        # read zero and retired a working instrument.
+        self.assertRegex(
+            self.doctrine,
+            r"and\s+zero\s+anchor\-fidelity\s+findings",
+        )
+
+    def test_clauses_one_and_three_cannot_both_fire(self):
+        # Deviation from RR10 BC2 (audit F10): with the sufficiency arm in place,
+        # (i) and (iii) had a route to firing on one window with opposite
+        # consequences and no stated precedence.
+        self.assertRegex(
+            self.doctrine,
+            r"Clauses\s+\(i\)\s+and\s+\(iii\)\s+cannot\s+both\s+fire:\s+\(i\)\s+requires\s+some\s+milestone\s+to\s+have\s+convened\s+a\s+later\s+round",
+        )
+
     # --- structural properties, which no single-phrase anchor can carry ---
     # These are the "bounded property" cases guard-doctrine §2 sends to a
     # by-hand check. They are automated here instead, because each is a
