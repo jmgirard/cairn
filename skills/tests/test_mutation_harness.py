@@ -2875,6 +2875,22 @@ EXEMPT = {
     "test_mutation_harness": "the harness's own tests, not a prose-guard",
 }
 
+# M124: the section-consistency ledger. One entry, because the guard has one
+# claim — §8 still says what the ledger records — and every §8 sentence carries
+# it equally. The block below is pinned by another assert too, which is not a
+# defect here: the harness runs the NAMED test alone, so this proves the ledger
+# guard itself reds. What the ledger catches that no anchor does is proved
+# instead by T5's replay, where two recorded mutations leave all 777
+# pre-existing tests green and red this guard alone.
+REGISTRY += [
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionEightLedger.test_section_matches_its_ledger",
+        target=GUARD_DOCTRINE,
+        block="Zero unresolved stays the bar;",
+    ),
+]
+
 # M95 (D-056). Five entries, because the placement doctrine fails in five
 # independent ways and any one of them silently restores the pre-M95 reading:
 # lose the rule definition and "operative" has no test; lose either half of the

@@ -118,10 +118,10 @@ recorded verbatim → unrecoverable, not replayed.
       copy anchors from the shipped bytes (M95). Append the D-entry
       superseding D-083 part 3(a)'s now-incomplete routing description
       (`cairn/DECISIONS.md:2913`) — never edit it (IP4) (AC5).
-- [ ] T3 — Generate the §8 ledger fixture from the helper **after T2's §8 edit**
+- [x] T3 — Generate the §8 ledger fixture from the helper **after T2's §8 edit**
       and commit it; author the guard test comparing section to ledger, with an
       alignment-based added/removed/moved failure message (AC2).
-- [ ] T4 — Register the ledger guard in `test_mutation_harness.py`; confirm it
+- [x] T4 — Register the ledger guard in `test_mutation_harness.py`; confirm it
       fails when blanked, and that `TestRegistryCompleteness` stays green
       (AC2, AC6).
 - [ ] T5 — Replay the four recorded mutations against the AC2 guard, restoring
@@ -163,6 +163,11 @@ recorded verbatim → unrecoverable, not replayed.
 - 2026-07-30: T2 — all six re-anchored on the shipped bytes: asserts `test_out_of_mandate_observations_route_to_sections_one_to_seven_and_nine` (renamed, since the old name asserted a routing set the section no longer has) and `test_the_falsifier_counts_where_a_finding_was_found`; registry blocks for those two plus `test_the_falsifier_window_carries_a_non_vacuity_floor` and `test_the_falsifier_carries_both_tolerances`, whose ASSERTS survived on `\s+` while their byte-anchored blocks did not — the re-anchoring tax, not a false-red.
 - 2026-07-30: T2 — verified by inversion, not by blanking: reverting `§§1–7, §9 and the mutation harness` to its old form reds its own test, and so does reverting `§§1–7 or §9 does not remove`; §8 restored byte-identical after each. D-088 appended (`git diff` +30/−0, no entry edited) superseding D-083 part 3(a)'s now-incomplete enumeration; `dangling id tokens` OK after the append, so M115's unmasking batch did not appear.
 - 2026-07-30: T2 verify — skills 777 / scripts / hooks each exit 0; `cairn_validate` exit 0.
+- 2026-07-30: T3+T4 done together, and they could not be split: `skills/tests/` treats every `test_*.py` as a prose-guard `TestRegistryCompleteness` requires be registered, so a test file landing one checkpoint before its registration reds the suite. Ledger at `skills/tests/ledgers/guard-doctrine-8.txt`, 50 sentences, one per line — a line-oriented file because the diff IS the mechanism and `git diff` renders it legibly. Generated AFTER T2's §8 edit, as the plan required; both §9 references are in it.
+- 2026-07-30: T3 — `section_ledger.py` gained a `render` + `__main__` CLI, unplanned but owed: §9 assigns "regenerate the ledger" as the remedy, and a remedy with no way to perform it is a claim the section cannot support.
+- 2026-07-30: T3 — two bugs found by the new tests against their own author. `test_extraction_carries_no_word_constant` first captured the raw-string `r` prefix and red on its own syntax; then, fixed, it red on `\s+` — a regex escape is letters to a naive search. Now strips escapes before checking. Both are the M114 shape: the claim was right, the instrument measuring it was not.
+- 2026-07-30: T4 — one registry entry, `TestSectionEightLedger.test_section_matches_its_ledger` on block `Zero unresolved stays the bar;`. That block is pinned by another assert too, which is not a defect: the harness runs the NAMED test alone, so the entry proves this guard reds. What the ledger catches that no anchor does is proved at T5 instead, not by this entry — recorded so the registration is not read as evidence it is not.
+- 2026-07-30: T3+T4 verify — skills 790 (up 13) / scripts / hooks each exit 0; `cairn_validate` exit 0.
 - 2026-07-30: criteria audit closed. Four passes, 13 findings total: 9 clear (all fixed), 3 judgment (all taken to the gate and decided), 1 uncounted observation (actioned above). Passes 2-4 each independently re-measured rather than reusing an earlier count, and pass 3 corrected pass 2's own pin count from 4 to 6-9.
 
 ## Decisions

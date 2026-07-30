@@ -113,3 +113,22 @@ def describe(ledger, current):
         f"regenerate the ledger and read this diff before accepting it:\n"
         + "\n".join(lines)
     )
+
+
+def render(path, heading):
+    """Render a ledger file's contents: one sentence per line.
+
+    One sentence per line is the format because the diff is the mechanism —
+    §9's remedy is that the author reads what changed, and a line-oriented file
+    is what `git diff` renders legibly. Sentences are whitespace-normalized, so
+    none contains a newline and the format is unambiguous.
+    """
+    return "".join(s + "\n" for s in sentences(path, heading))
+
+
+if __name__ == "__main__":
+    # Regeneration, which is the first step of the remedy `guard-doctrine.md`
+    # §9 assigns: `python3 skills/tests/section_ledger.py <file> <heading>`.
+    import sys
+
+    sys.stdout.write(render(sys.argv[1], sys.argv[2]))
