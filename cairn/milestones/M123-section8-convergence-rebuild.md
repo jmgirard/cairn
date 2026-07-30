@@ -213,6 +213,9 @@ not reopened here.
 - 2026-07-30: CORRECTION, appended not edited (IP4) — round 1's line "15 new asserts + 16 registry entries close them" attributes all of them to the three shipped-rule defects; 9 of the 15 close those, the other 6 close the evidence counts, the revisions, the gate clause and the re-anchor. And the D6 record cites `:319` for a phrase on `:320` at the revision it describes. Both found by round 2 (D7, D13).
 - 2026-07-30: round 2 verify — skills 744 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0.
 
+- 2026-07-30: FIRST MEASUREMENT of the rules M123 ships, taken by classifying round 2's own 13 findings under them. Shielded as fix-authored records: 4 (D1, D7, D8, D13 — all false claims in round 1's fix prose). Out of mandate, routed to §§1-7: 4 (D10, D11, D12 and D5's unpinned counts — §8 rules that no acceptance-criterion clause pins). Still reopening: 5 (D2, D4, D6 are AC1/AC4 clauses left unpinned, which is check 1; D9 is a contradiction in shipped doctrine; D3 is a false docstring claim about original text). So the rebuilt rules would have cut round 2's reopening set from 13 to 5 — a real reduction, and NOT a stop: a round 3 is convened either way. Recorded because it is the honest first data point for the falsifier's clause (i), and because it shows the rules do less than a reader might assume from RR09's projection.
+- 2026-07-30: round 2's fixes are themselves uncertified under the pre-rebuild rules ("fixed and re-certified"), so a round 3 is owed. Surfaced to the maintainer rather than decided here: RR09 faults D-079 as "authored by the session whose loop it excuses", and the same objection reaches a session deciding its own loop is finished. Round counts so far: 16, 13.
+
 ## Decisions
 
 ## Review
