@@ -592,6 +592,15 @@ class TestHeadingNormalizationContract(unittest.TestCase):
         ("## Reviewers", False),
         ("## Decisions notes", False),
         ("## Scope", False),
+        # Prefix and leading-whitespace renderings: `## ` is a normalization
+        # step like `.strip()` and `.lower()`, and it was unpinned on BOTH
+        # layers until these two rows (review F1/F2). Neither is a heading to
+        # either layer today; each diverges the moment one layer's prefix
+        # handling moves — loosening `startswith("## ")` to `startswith("##")`
+        # makes `### Work log` exempt to that layer alone, and an `lstrip()`
+        # added ahead of the check does the same for `  ## Work log`.
+        ("### Work log", False),
+        ("  ## Work log", False),
     )
 
     def setUp(self):
@@ -671,25 +680,32 @@ class TestHeadingNormalizationContract(unittest.TestCase):
 
     def test_the_table_still_carries_every_rendering_the_contract_needs(self):
         # Coverage of the table itself, kept apart from the non-vacuity assert
-        # above on purpose, and pinned rendering by rendering: a set of
-        # NORMALIZED names would collapse `##  Work log` and `## Work log ` into
-        # one satisfiable clause, so dropping either row would stay green.
-        # Raw strings on purpose — normalizing here would route the table's own
+        # above on purpose, and pinned as ONE equality rather than a membership
+        # loop: a loop over a hand-written copy of `TABLE` is synced by hand, so
+        # deleting a rendering from both places reds nothing and adding one to
+        # `TABLE` alone leaves it unpinned (review F3). Order and length ride
+        # along, which is what makes an addition red until it is declared here.
+        # Raw strings on purpose — normalizing would route the table's own
         # coverage through `heading_name`, the function under test, and a hook
         # mutation would then report as a table defect.
-        headings = [h for h, _ in self.TABLE]
-        for required in (
-            # format axis
-            "## Work log", "## Work Log", "## WORK LOG",
-            "##  Work log", "## Work log ",
-            # site axis: `review` leaves by the body boundary, the other two by
-            # subtraction, so a work-log-only table exercises one site and reads
-            # as full coverage
-            "## Review", "## REVIEW", "## Review ", "## Decisions", "##  Decisions",
-            # controls
-            "## Reviewers", "## Decisions notes", "## Scope",
-        ):
-            self.assertIn(required, headings)
+        self.assertEqual(
+            [h for h, _ in self.TABLE],
+            [
+                # format axis
+                "## Work log", "## Work Log", "## WORK LOG",
+                "##  Work log", "## Work log ",
+                # site axis: `review` leaves by the body boundary, `work log`
+                # and `decisions` by subtraction, so a work-log-only table
+                # exercises one site and reads as full coverage. `## Review `
+                # carries whitespace to the boundary site.
+                "## Review", "## REVIEW", "## Review ",
+                "## Decisions", "##  Decisions",
+                # controls
+                "## Reviewers", "## Decisions notes", "## Scope",
+                # prefix / leading whitespace
+                "### Work log", "  ## Work log",
+            ],
+        )
 
     def fenced_body(self, opener):
         """A milestone quoting a cap-exempt heading inside a fence, above its
