@@ -1,6 +1,6 @@
 # M122: A differential guard holding the hook and the cap counters to one heading contract
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -130,6 +130,11 @@ post-merge hygiene pass, decided at the plan gate 2026-07-30.
 - 2026-07-30: amendment gate — AC2 (line reference + the fence axis), AC6 (the "one uncovered axis" claim narrowed to what was measured) and AC7 (the skip parenthetical, which did not reproduce) amended at the user's approval; Scope In widened to the fence axis, T5 added. The earlier "left as written" disposition of AC7 is superseded: §8's bar is that a discrepancy is fixed, not explained.
 - 2026-07-30: T5 — fence axis closed on both layers. Mutation evidence: hook `~~~` support dropped RED, hook ``` support dropped RED, counters `~~~` support dropped RED (this last one needed the count assert; the counters SUBTRACT a mis-split cap-exempt heading, so the section list alone stayed green).
 - 2026-07-30: final mutation set against the new class (5 tests): `.lower()` dropped 12 failures, `.strip()` dropped 3, `~~~` dropped 1, table exempt-only 1, controls-only 2, any single table row dropped RED.
+- 2026-07-30: round-2 certification found a SURVIVING mutation, and it was the milestone's own failure mode: `cairn_scripts.py:375`'s `.strip()` dropped left the class green while `## Review `, `##  Review` and `## REVIEW ` were capped to the counters and exempt to the hook. Every whitespace rendering in the table landed at the subtraction site (`:412`), which re-strips independently, so the boundary site's own `.strip()` was unreachable. Closed by one row, `("## Review ", True)`; that mutation now reds.
+- 2026-07-30: claim repairs from round 2 — the `## Decisions notes` control is attributed to M55's boundary bug alone (M118 designed exactness in from the start and hit no near miss); the class docstring no longer says the counters' verdict "became" anything under the `.strip()` mutation (only the hook's half moves, and the divergence is what reds); the fence comment's "101 tests" is marked as the then-current file's count.
+- 2026-07-30: numbers settled on THIS commit's tree, superseding every earlier count in this log — the earlier figures were measured on intermediate trees, and one pair was distorted by a stale `__pycache__` (the `.strip()`- and `.lower()`-dropped files are byte-identical in length, so back-to-back runs reused bytecode; re-run under `-B`). Against `TestHeadingNormalizationContract` (5 tests): hook `.lower()` 13 · hook `.strip()` 4 · hook `~~~` 1 · hook ``` 1 · counters `:375` `.strip()` 1 · counters `:376` `.lower()` 3 · counters `:412` `.lower()` 9 · counters `~~~` 1 · table exempt-only 2 · table controls-only 2 · each of the 13 rows dropped in turn RED, none unnoticed.
+- 2026-07-30: no round-3 certification. Round 2's five remaining findings were stale counts in this log, whose subject is the certification rounds themselves — outside §8's certified scope (D-069), and auditing them manufactures exactly the surface a next round would audit, the round-generating pathology RR09 banked for rebuild. Deliberate deviation from §8's zero-unresolved bar, logged not resisted: the numbers are settled in one line above and the milestone goes to the review fan-out, a different instrument carrying different evidence.
+- 2026-07-30: all tasks complete, three suites green on this tree (skills 700, scripts 332, hooks 103); status -> review.
 
 ## Decisions
 

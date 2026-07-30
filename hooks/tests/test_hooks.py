@@ -544,8 +544,10 @@ class TestHeadingNormalizationContract(unittest.TestCase):
     *before* it is looked up in them diverges, and that gap was live: measured
     2026-07-30, dropping `.strip()` from `session_context.heading_name` left all
     98 hooks tests green while `##  Work log` (two spaces) and `## Work log `
-    (trailing space) became cap-exempt to the counters and injected WHOLE by the
-    hook — M113's original bug on a second axis.
+    (trailing space) went on being cap-exempt to the counters and started being
+    injected WHOLE by the hook — M113's original bug on a second axis. Only the
+    hook's half of the verdict moves under that mutation; the divergence is what
+    the guard catches.
 
     Three verdicts per row, never two: the counters' (a real file through
     `cairn_scripts.milestone_body_line_count`), the hook's (a real injection
@@ -567,9 +569,13 @@ class TestHeadingNormalizationContract(unittest.TestCase):
     # Site: the counters normalize at TWO sites — `cairn_scripts.py:375-376`,
     # the `## Review` body boundary, and `:412`, the `EXEMPT_HEADINGS`
     # subtraction — and a work-log-only table never reaches the first
-    # (guard-doctrine §3's site axis, the shape M117 recorded).
-    # Controls: `## Reviewers` and `## Decisions notes` are the prefix near
-    # misses M55 and M118 hit — a prefix must not read as its exempt namesake —
+    # (guard-doctrine §3's site axis, the shape M117 recorded). `## Review `
+    # carries the whitespace axis TO the boundary site: every other whitespace
+    # rendering lands at the subtraction site, which re-strips independently, so
+    # without this row `cairn_scripts.py:375`'s own `.strip()` is unreachable
+    # and drops green while the two layers disagree.
+    # Controls: `## Reviewers` and `## Decisions notes` are prefix near misses —
+    # a prefix must not read as its exempt namesake, the boundary bug M55 hit —
     # and `## Scope` is a plain plan-owned section, the case neither near miss
     # covers.
     TABLE = (
@@ -580,6 +586,7 @@ class TestHeadingNormalizationContract(unittest.TestCase):
         ("## Work log ", True),
         ("## Review", True),
         ("## REVIEW", True),
+        ("## Review ", True),
         ("## Decisions", True),
         ("##  Decisions", True),
         ("## Reviewers", False),
@@ -678,7 +685,7 @@ class TestHeadingNormalizationContract(unittest.TestCase):
             # site axis: `review` leaves by the body boundary, the other two by
             # subtraction, so a work-log-only table exercises one site and reads
             # as full coverage
-            "## Review", "## REVIEW", "## Decisions", "##  Decisions",
+            "## Review", "## REVIEW", "## Review ", "## Decisions", "##  Decisions",
             # controls
             "## Reviewers", "## Decisions notes", "## Scope",
         ):
@@ -708,8 +715,9 @@ class TestHeadingNormalizationContract(unittest.TestCase):
         # The fence axis of the same contract (M45): both layers track ``` and
         # ~~~, and a heading quoted inside either is content, never a section
         # boundary. Measured 2026-07-30: dropping the hook's `~~~` support left
-        # all 101 tests green, because every fence fixture in this file used
-        # backticks — the same one-rendering blindness the format axis had.
+        # all 101 tests of the then-current file green, because every fence
+        # fixture in it used backticks — the same one-rendering blindness the
+        # format axis had.
         for opener in ("```", "~~~"):
             with self.subTest(fence=opener):
                 body = self.fenced_body(opener)
