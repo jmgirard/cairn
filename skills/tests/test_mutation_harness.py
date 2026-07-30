@@ -2469,7 +2469,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_out_of_mandate_observations_route_to_sections_one_to_seven",
         target=GUARD_DOCTRINE,
-        block='is real work, and it is recorded and fixed as ordinary\nmilestone work under §§1–7 and the mutation harness. It does not reopen\ncertification',
+        block='A robustness observation that\nno acceptance-criterion clause pins — a surviving mutation, a one-directional\npin, a near-miss control\'s uncovered signature, a fixture weak on an axis no\ncriterion names — is real work, and it is recorded and fixed as ordinary\nmilestone work under §§1–7 and the mutation harness. It does not reopen\ncertification',
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2539,6 +2539,54 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_boundary_assigns_the_out_of_mandate_class_its_obligation",
+        target=GUARD_DOCTRINE,
+        block="and this class's obligation is discharged by operation rather than by a\nfurther round.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_two_axes_compose_rather_than_compete",
+        target=GUARD_DOCTRINE,
+        block='The two axes compose rather than compete.',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_two_lines_are_drawn_on_different_axes",
+        target=GUARD_DOCTRINE,
+        block='**Two lines govern a round, and they are drawn on different axes**',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_failing_either_line_still_closes_the_round",
+        target=GUARD_DOCTRINE,
+        block='Failing\neither, it is fixed under the obligation named below and the round still closes.',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_which_confirmation_applies_depends_on_the_class",
+        target=GUARD_DOCTRINE,
+        block="Which confirmation that fix then takes depends on\nthe finding's class,",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_mandate_boundary_is_what_reaches_the_round_count",
+        target=GUARD_DOCTRINE,
+        block='The mandate boundary is the\nrule that reaches that count',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_provenance_rule_never_shields_a_coverage_gap",
+        target=GUARD_DOCTRINE,
+        block='a coverage gap is a finding about\nexecutable surface, which the rule never shields.',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_evidence_pointers_name_the_entry_that_holds_them",
+        target=GUARD_DOCTRINE,
+        block='The three measured cases and the revisions they are read from are recorded at\nD-085.',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_the_out_of_mandate_class_is_enumerated",
         target=GUARD_DOCTRINE,
         block="a surviving mutation, a one-directional\npin, a near-miss control's uncovered signature, a fixture weak on an axis no\ncriterion names",
@@ -2577,7 +2625,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_the_falsifier_names_both_counted_quantities_and_clause_i_consequence",
         target=GUARD_DOCTRINE,
-        block='zero shipped-behaviour defects and zero findings whose subject is\n  pre-round-1 surface, then the rounds after the first have stopped earning\n  their cost — retire them and run §8 as a single certification pass',
+        block='If the rounds after each milestone\'s first return, totalled across the\n  window, zero shipped-behaviour defects and zero findings whose subject is\n  pre-round-1 surface, then the rounds after the first have stopped earning\n  their cost — retire them and run §8 as a single certification pass',
     ),
     Mutation(
         guard="test_fresh_context_readers",

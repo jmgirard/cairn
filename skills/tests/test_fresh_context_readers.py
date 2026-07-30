@@ -28,9 +28,13 @@ The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
     predating round 1), the compatibility clause that keeps D-070 untouched,
     the mandate boundary with its clears-both composition, its enumerated
     out-of-mandate class and its does-not-hold-the-gate clause, each of the
-    three per-class confirmation obligations, every count and revision the
-    record-churn evidence cites, and the yield-based falsifier's window, both
-    counted quantities, both consequences and both tolerances.
+    three per-class confirmation obligations, the record-churn grounding and
+    the pointers standing where its derivations used to (§8 cites no revision
+    of its own — they moved to D-085 at T10), and the yield-based falsifier's
+    window and all three clauses: six counted quantities, three consequences
+    and three tolerances. RR10's two amendments are here too — the sufficiency
+    arm that makes reopening an iff, and clause (iii), which retires the whole
+    step on round-1 yield decay.
   * `/milestone-implement` step 8, which fires §8 before `status -> review`
     when the milestone authored or edited a prose-guard.
 
@@ -435,9 +439,17 @@ class TestDescriptionLayerCertification(unittest.TestCase):
 
     def test_out_of_mandate_observations_route_to_sections_one_to_seven(self):
         # Routed, never dropped. Without the routing clause the boundary reads
-        # as licence to ignore a real finding.
+        # as licence to ignore a real finding. F1 (round 4): the anchor opened
+        # at the PREDICATE, leaving AC3's discriminator — WHICH observations
+        # are out of mandate — on no assert, so "an acceptance-criterion clause
+        # pins" routed pinned findings out of certification, suite green.
         self.assertRegex(
             self.doctrine,
+            r"A\s+robustness\s+observation\s+that\s+no\s+acceptance\-criterion"
+            r"\s+clause\s+pins\s+—\s+a\s+surviving\s+mutation,\s+a\s+"
+            r"one\-directional\s+pin,\s+a\s+near\-miss\s+control's\s+uncovered"
+            r"\s+signature,\s+a\s+fixture\s+weak\s+on\s+an\s+axis\s+no\s+"
+            r"criterion\s+names\s+—\s+"
             r"is\s+real\s+work,\s+and\s+it\s+is\s+recorded\s+and\s+fixed\s+as\s+ordinary\s+milestone\s+work\s+under\s+§§1–7\s+and\s+the\s+mutation\s+harness\.\s+It\s+does\s+not\s+reopen\s+certification",
         )
 
@@ -526,6 +538,20 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             r"\*\*and\s+it\s+does\s+not\s+hold\s+the\s+gate\*\*:\s+the\s+zero\-unresolved\s+bar\s+is\s+met\s+when\s+every\s+discrepancy\s+has\s+been\s+fixed\s+under\s+the\s+obligation\s+its\s+own\s+class\s+carries",
         )
 
+    def test_the_boundary_assigns_the_out_of_mandate_class_its_obligation(self):
+        # F4 (round 4): the does-not-hold-the-gate anchor stopped at "under the
+        # obligation its own class carries", leaving §8's FOURTH
+        # obligation-stating sentence unpinned. Transposed to "discharged by a
+        # further round rather than by operation", §8 carried two obligations
+        # for one class — AC4's "no class carries two" defeated with the suite
+        # green, and outside T14's disclosed residue, which is scoped to
+        # clauses added inside the three obligation sentences.
+        self.assertRegex(
+            self.doctrine,
+            r"and\s+this\s+class's\s+obligation\s+is\s+discharged\s+by\s+"
+            r"operation\s+rather\s+than\s+by\s+a\s+further\s+round\.",
+        )
+
     def test_the_out_of_mandate_class_is_enumerated(self):
         # D10 (round 1): AC3 names four class members; deleting the whole list left
         # the suite green, so the boundary shipped with no stated extension.
@@ -578,8 +604,14 @@ class TestDescriptionLayerCertification(unittest.TestCase):
     def test_the_falsifier_names_both_counted_quantities_and_clause_i_consequence(self):
         # D3 (round 1): both quantities and clause (i)'s consequence inverted green
         # — 'any ... or any ...' and 'keep them and run §8 with unbounded rounds'.
+        # F2 (round 4): return 1's A3 fix went to the COPY. Clause (iii) gained
+        # its round and window scopes at T13; clause (i) — the clause the defect
+        # was FOUND in — kept an anchor opening after both, so "in any single
+        # milestone" and "including each milestone's first" both stayed green.
         self.assertRegex(
             self.doctrine,
+            r"If\s+the\s+rounds\s+after\s+each\s+milestone's\s+first\s+return,"
+            r"\s+totalled\s+across\s+the\s+window,\s+"
             r"zero\s+shipped\-behaviour\s+defects\s+and\s+zero\s+findings\s+whose\s+subject\s+is\s+pre\-round\-1\s+surface,\s+then\s+the\s+rounds\s+after\s+the\s+first\s+have\s+stopped\s+earning\s+their\s+cost\s+—\s+retire\s+them\s+and\s+run\s+§8\s+as\s+a\s+single\s+certification\s+pass",
         )
 
@@ -729,6 +761,70 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         self.assertRegex(
             self.doctrine,
             r"Clauses\s+\(i\)\s+and\s+\(iii\)\s+cannot\s+both\s+fire:\s+\(i\)\s+requires\s+some\s+milestone\s+to\s+have\s+convened\s+a\s+later\s+round",
+        )
+
+    # --- F7 (round 4): the out-of-mandate survivors, FIXED and not merely
+    # recorded. §8's own boundary says such a finding "is recorded and fixed as
+    # ordinary milestone work under §§1–7", and return 1's A9 established that
+    # the round-3 record calling recorded-and-not-fixed what the boundary
+    # prescribes was the half that was wrong.
+
+    def test_the_two_axes_compose_rather_than_compete(self):
+        self.assertRegex(
+            self.doctrine,
+            r"The\s+two\s+axes\s+compose\s+rather\s+than\s+compete\.",
+        )
+
+    def test_the_two_lines_are_drawn_on_different_axes(self):
+        self.assertRegex(
+            self.doctrine,
+            r"\*\*Two\s+lines\s+govern\s+a\s+round,\s+and\s+they\s+are\s+"
+            r"drawn\s+on\s+different\s+axes\*\*",
+        )
+
+    def test_failing_either_line_still_closes_the_round(self):
+        self.assertRegex(
+            self.doctrine,
+            r"Failing\s+either,\s+it\s+is\s+fixed\s+under\s+the\s+obligation"
+            r"\s+named\s+below\s+and\s+the\s+round\s+still\s+closes\.",
+        )
+
+    def test_which_confirmation_applies_depends_on_the_class(self):
+        self.assertRegex(
+            self.doctrine,
+            r"Which\s+confirmation\s+that\s+fix\s+then\s+takes\s+depends\s+on"
+            r"\s+the\s+finding's\s+class,",
+        )
+
+    def test_the_mandate_boundary_is_what_reaches_the_round_count(self):
+        self.assertRegex(
+            self.doctrine,
+            r"The\s+mandate\s+boundary\s+is\s+the\s+rule\s+that\s+reaches"
+            r"\s+that\s+count",
+        )
+
+    def test_the_provenance_rule_never_shields_a_coverage_gap(self):
+        self.assertRegex(
+            self.doctrine,
+            r"a\s+coverage\s+gap\s+is\s+a\s+finding\s+about\s+executable"
+            r"\s+surface,\s+which\s+the\s+rule\s+never\s+shields\.",
+        )
+
+    def test_the_evidence_pointers_name_the_entry_that_holds_them(self):
+        # F7 (round 4): AC12 relocated §8's derivations behind pointers, and
+        # every pointer's TARGET was unpinned — retargeting D-085 to D-084 left
+        # the suite green and `dangling id tokens` clean, because D-084 exists.
+        # A pointer to the wrong entry is worse than no pointer: it reads as a
+        # citation and resolves.
+        self.assertRegex(
+            self.doctrine,
+            r"The\s+three\s+measured\s+cases\s+and\s+the\s+revisions\s+they"
+            r"\s+are\s+read\s+from\s+are\s+recorded\s+at\s+D-085\.",
+        )
+        self.assertRegex(
+            self.doctrine,
+            r"What\s+each\s+clause\s+counts\s+is\s+recorded\s+at\s+D-085,"
+            r"\s+with\s+the\s+argument\s+that\s+replacing",
         )
 
     # --- structural properties, which no single-phrase anchor can carry ---
