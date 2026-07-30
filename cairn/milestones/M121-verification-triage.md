@@ -33,7 +33,7 @@ which no finding here disturbs.
 
 ## Acceptance criteria
 
-- [ ] AC1 — `cairn/references/self-verification-ledger.md` exists, authored
+- [x] AC1 — `cairn/references/self-verification-ledger.md` exists, authored
       from `skills/shared/templates/synthesis-note.md`, and records: the search
       that produced the corpus, stated so a later pass can re-run it; one ID'd
       row per search hit, carrying `file:line`, the hit line's own
@@ -45,7 +45,7 @@ which no finding here disturbs.
       `— observed YYYY-MM-DD`. Its `INDEX.md` line, its provenance block, and
       its `TestShippedPageStateLedger` pin all land in the same milestone, with
       the work-log justification the ledger contract requires.
-- [ ] AC2 — Every row dispositioned `narrow` or `remove` is applied in the
+- [x] AC2 — Every row dispositioned `narrow` or `remove` is applied in the
       shipped prose. For a `remove` row, a grep over the working tree for that
       row's quoted instruction returns hits only in the ledger,
       `cairn/DECISIONS.md`, milestone files, and `milestones/archive/`. For a
@@ -55,7 +55,7 @@ which no finding here disturbs.
       replacement quoted in that row's ground. No row lacks a disposition, and
       the count of rows in the ledger equals the count of hits the AC1 search
       returns at the measurement commit.
-- [ ] AC3 — A `cairn/DECISIONS.md` entry disposes of D-067's two instruments
+- [x] AC3 — A `cairn/DECISIONS.md` entry disposes of D-067's two instruments
       separately — the plan-gate criteria audit and the `guard-doctrine.md` §8
       description-layer certification — each as `keep unchanged`, `narrow`, or
       `retire`. The entry states, per instrument, what it caught across M115
@@ -64,14 +64,14 @@ which no finding here disturbs.
       `prompting-opus-5` for the guide's finding. Any disposition other than
       `keep unchanged` names D-067 as superseded in the entry's heading; a
       `keep unchanged` restates D-067's own falsifier as still standing.
-- [ ] AC4 — `tracking-rules.md`'s "Model and agent strategy" section states
+- [x] AC4 — `tracking-rules.md`'s "Model and agent strategy" section states
       which class of self-checking the delegation guidance governs and which it
       does not, naming both an author re-checking its own output and an
       independent fresh-context reading of it. A prose-guard asserts a phrase
       from each of the two named classes, each phrase occurring within a single
       physical line of the shipped file, and each carries its own entry in
       `skills/tests/test_mutation_harness.py`.
-- [ ] AC5 — Any instruction the ledger removes or narrows in a file carrying a
+- [x] AC5 — Any instruction the ledger removes or narrows in a file carrying a
       prose-guard has that guard's asserted phrases re-checked against the
       shipped bytes, and `python3 -m unittest` over `skills/tests`,
       `scripts/tests` and `hooks/tests` is green from the repo root with each
@@ -242,6 +242,71 @@ advisory OK, no WARN. No `DESIGN.md` principle changed in the diff, so
 `consistency-gate` slot names **none**, so the toolchain half is a clean no-op.
 Returns to `in-progress` this milestone: **zero** — the thrash rule does not
 fire.
+
+### Fresh evidence, pass 2 — 2026-07-28
+
+Re-gathered from scratch at `f08e36d` after the RR09 revert; pass 1's evidence
+(above) described a branch state that no longer exists, so all five boxes were
+unticked before any of this was run. `guard-doctrine.md` is byte-identical to
+`main` at HEAD and is absent from the diff.
+
+**AC1 — the ledger page.** Present, in `templates/synthesis-note.md` shape:
+`**Provenance.**` with `Ingested`/`Pagination:`/`Extraction:` (one physical
+line, one alternative, `— observed 2026-07-27`), `**Scope.**`,
+`**Evidence snapshot.**`, six `##` sections closing on `## Open questions`.
+The printed corpus search re-runs **verbatim as written** — the pathspec-glob
+defect pass 1 found (F-C1) is fixed by writing the fourteen paths out — and
+returns **79 hits**, whose `file:line` list matches the table's 79 rows exactly
+and in order. Every row carries `file:line`, the hit line's own words, a
+mechanism from the four-value vocabulary, a disposition and a ground: 0 rows
+missing any. Mechanism counts read off the shipped table: 31
+`command-evidence`, 36 `not-an-instruction`, 11 `fresh-context-reader`, 1
+`same-context-recheck` = 79. Measurement commit `684e53a` named; ten
+`— observed 2026-07-27` stamps. `INDEX.md` line present;
+`TestShippedPageStateLedger` pins the page `exempt` at
+`scripts/tests/test_scripts.py:1436`.
+
+**AC2 — dispositions and counts.** 0 rows take `remove`, 0 take `narrow`, so
+both applied-disposition arms are **vacuously satisfied** — recorded as such,
+not as a pass. What binds is met: 0 rows lack a disposition, and 79 rows equal
+the 79 hits the AC1 search returns at `684e53a`, re-measured by running the
+command the page prints.
+
+**AC3 — the D-067 dispositions.** D-079 disposes of both instruments
+separately, each `narrow`, names them in AC3's own words, states per-instrument
+what each caught against what it cost with citations by file and pre-archive
+commit, cites `prompting-opus-5`, and names D-067 as superseded in its heading
+as AC3 requires for a non-`keep unchanged` disposition. **Divergence recorded,
+not smoothed:** D-080 has since superseded D-079's clause 1, so §8's *effective*
+disposition is now `keep unchanged` while the entry AC3 points at says
+`narrow`. AC3 as written asks that an entry dispose of each instrument and does
+not require the disposition to be the last word, so it is met by D-079; D-080
+completes the record and carries AC3's `keep unchanged` obligation too —
+"D-067's falsifier therefore stands exactly as D-079 re-armed it, and the
+round-count problem it names is open, not solved." Flagged here so the gate
+sees the split rather than a clean tick.
+
+**AC4 — the self-checking-class rule.** Both class phrases present, each
+exactly once and each on a single physical line of `tracking-rules.md`
+(`:669`, `:673`), pinned together with the verb that assigns them.
+`TestSelfCheckingClassRule` asserts both, and both carry their own
+`test_mutation_harness.py` entries. Pass 1's F-B1/F-B2/F-PR1 fixes add five
+further asserts and four registry entries covering the discriminator, the
+loop-bound sentence and both rationale clauses; each was verified red by hand
+under inversion and restored.
+
+**AC5 — suites green, exit codes separate.** From the repo root, each captured
+on its own: `skills/tests` 698 OK exit 0; `scripts/tests` 332 OK exit 0;
+`hooks/tests` 98 OK exit 0. The re-check clause is **vacuous** — no ledger row
+removes or narrows an instruction.
+
+**Consistency gate, pass 2.** `cairn_validate` exit 0, all checks passed. No
+`DESIGN.md` principle changed, so `cairn_impact --changed` does not apply. The
+`generic` profile's `consistency-gate` slot names none — clean no-op.
+
+**Thrash count: 1 return.** Neither trigger fires: (a) needs a third return,
+(b) needs one criterion failing twice by the same shape — AC1 failed once, at
+pass 1, on F-C1.
 
 ### Independent fresh-context review (three lenses + scorer), 2026-07-27
 
