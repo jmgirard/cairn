@@ -1201,17 +1201,16 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # unbolded sentence adding an obligation to an existing class, and
         # naming no author, is not reachable by it. AC4's clause is
         # section-wide; what is enforced here is paragraph-scoped.
+        # A5 (review return 2): the first two checks here were COUNTS over the
+        # whole paragraph — bold pairs, and mentions of "author" — so three
+        # edits touching no anchored byte false-red a rule still present:
+        # bolding a term in unpinned prose, rewording prose so it says
+        # "author" once more, and adding a parenthetical with "i.e." in it.
+        # That is the M105 false-red this module's docstring warns about,
+        # inside a guard. Both counts are replaced by scoped properties, which
+        # is what the test was actually trying to express.
         para = self._paragraph_containing("Each class carries exactly one")
-        self.assertEqual(
-            para.count("**") // 2, 4,
-            "§8's obligations paragraph should carry the header plus exactly "
-            "three bold class labels",
-        )
-        self.assertEqual(
-            len(re.findall(r"\bauthors?\b", para)), 3,
-            "a fourth obligation placed on the author would add a mention; "
-            "the three here are the exclusion clause and its two grounds",
-        )
+        flat = " ".join(para.split())
         # A17 (return 1): the two counts above did not cover the proxy's OWN
         # paragraph — appending an unbolded sentence that names no author
         # ("A reopening finding is in addition confirmed by a re-read at the
@@ -1219,17 +1218,44 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # paragraph's structure is one sentence per class after the header, so
         # count the sentences and require each to open on its class label.
         flat = " ".join(para.split())
-        sentences = re.split(r"(?<=\.)\s+|(?<=\.\*\*)\s+", flat)
+        # The lookahead is what makes "i.e." and "e.g." safe: an abbreviation
+        # is followed by a lower-case word, a sentence by a capital or a bold
+        # marker.
+        sentences = re.split(r"(?<=\.)\s+(?=[A-Z*])|(?<=\.\*\*)\s+(?=[A-Z*])",
+                             flat)
         self.assertEqual(
             len(sentences), 4,
             "§8's obligations paragraph should be the header plus exactly one "
             f"sentence per class; found {len(sentences)}: {sentences}",
         )
+        labels = []
         for sentence in sentences[1:]:
-            self.assertRegex(
-                sentence, r"^An?\s+\*\*",
-                "every sentence after the header states one class's "
-                "obligation and opens on that class's bold label",
+            m = re.match(r"^An?\s+\*\*([^*]+)\*\*", sentence)
+            self.assertIsNotNone(
+                m, "every sentence after the header states one class's "
+                   f"obligation and opens on that class's bold label: "
+                   f"{sentence[:60]!r}",
+            )
+            labels.append(m.group(1))
+        self.assertEqual(
+            len(set(labels)), 3,
+            f"the three obligation sentences should name three distinct "
+            f"classes; found {labels}",
+        )
+        # Scoped, not counted: the author may be named only inside the
+        # fix-authored-record sentence, which is where the exclusion clause
+        # lives. A mention added anywhere else is a candidate obligation; a
+        # rewording INSIDE that sentence is not, and no longer reds.
+        author_sentence = next(
+            s for s in sentences if "fix-authored record**" in s
+        )
+        for sentence in sentences:
+            if sentence is author_sentence:
+                continue
+            self.assertNotRegex(
+                sentence, r"\bauthors?\b",
+                "an obligation naming the author outside the exclusion "
+                f"clause: {sentence[:60]!r}",
             )
         # DISCLOSED RESIDUE, narrower than before but not closed: a clause
         # added INSIDE one of the three sentences, naming no author and using
