@@ -219,6 +219,9 @@ not reopened here.
 - 2026-07-30: STATUS -> blocked at the maintainer's call. BLOCKER: an escalated review on whether §8 should survive at all, given that its own rebuild took two certification rounds and thirteen unpinned rules to stabilise. The maintainer chose escalation over running a round 3, over entering review with the deviation recorded, and over switching this milestone to the rules it ships. Routed to `/milestone-brief`; the milestone resumes on RR ingestion.
 - 2026-07-30: STATE AT THE BLOCK — all 8 tasks checked; skills 744 / scripts 332 / hooks 103 each exit 0, `cairn_validate` exit 0; §8 rebuilt at 162 lines from 46; D-083 and D-084 appended; two §8 rounds run and both closed at zero unresolved (16 findings, then 13). No acceptance criterion is ticked — AC ticks are review's under AC fencing. Nothing is pushed and no PR exists.
 
+- 2026-07-30: blocked on RB10 — `cairn/reviews/RB10-section8-survival.md`, seven questions on whether §8 should survive, whether D-083's replacement falsifier is legitimate or is the tuning D-059 forbids, and whether the rebuilt rule is free of the two-readings defect RR09 found in M121's version.
+- 2026-07-30: DEVIATION from `/milestone-brief` step 2, logged not silent — the brief is committed on the milestone BRANCH rather than on main. Every artifact it cites (the rebuilt §8, D-083, D-084, the milestone file's work log) exists only on `m123-section8-convergence-rebuild`; a brief on main would point at files main does not have, which is M115's lesson exactly. The brief pins `cafbbc1` and instructs the reviewer to read at that ref.
+
 ## Decisions
 
 ## Review
