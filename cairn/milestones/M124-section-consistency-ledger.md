@@ -72,11 +72,16 @@ recorded verbatim → unrecoverable, not replayed.
       contradicting-sentence and the reusing-no-word rename as the two shapes
       that defeat presence pins, and stating that the instrument detects a
       change and never judges it. §9 states the remedy an out-of-mandate
-      consistency finding is fixed under, so that naming it in §8's routing
-      enumerations is true of the shipped section. §8's two enumerations of `§§1–7` are
-      updated to name §9 as well, and every pre-existing assert and registry
-      block that the enumeration edit or its re-wrap breaks is re-anchored on
-      the shipped bytes, so the suite is green at HEAD.
+      consistency finding is fixed under as operation the author runs —
+      regenerate the ledger, read the reported diff, repair or accept — never
+      as adjudication the guard performs, so that naming §9 in §8's routing
+      enumerations is true of the shipped section. §8's two enumerations of
+      `§§1–7` are updated to name §9 as well; every pre-existing assert and
+      registry block that the enumeration edit or its re-wrap breaks is
+      re-anchored on the shipped bytes, so the suite is green at HEAD; and
+      D-083 part 3(a)'s description of §8's routing, which the edit makes
+      incomplete and IP4 forbids editing, is superseded by an appended
+      D-entry.
 - [ ] AC6 — Every rule AC5 adds is pinned by an assert that fails when that rule
       is inverted in place; each such assert and the AC2 ledger guard are
       registered in `skills/tests/test_mutation_harness.py`, and every block
@@ -110,7 +115,9 @@ recorded verbatim → unrecoverable, not replayed.
       it breaks only its own 2 pins; line 384 is 80 chars and forces bullet
       (i)'s re-wrap, taking 4 more. Re-anchor every pin the edit or its
       re-wrap breaks — 6 on a minimal edit, up to 9 on a full re-fill — and
-      copy anchors from the shipped bytes (M95) (AC5).
+      copy anchors from the shipped bytes (M95). Append the D-entry
+      superseding D-083 part 3(a)'s now-incomplete routing description
+      (`cairn/DECISIONS.md:2913`) — never edit it (IP4) (AC5).
 - [ ] T3 — Generate the §8 ledger fixture from the helper **after T2's §8 edit**
       and commit it; author the guard test comparing section to ledger, with an
       alignment-based added/removed/moved failure message (AC2).
@@ -145,7 +152,9 @@ recorded verbatim → unrecoverable, not replayed.
 - 2026-07-30: CHECKPOINT — AC5's enumeration clause and the T2-before-T3 reordering it forces are out for criteria-audit pass 3, which had not returned when this commit was made. AC1, AC3, AC6 and AC7 passed pass 2 unchanged and are deliberately not re-read.
 - 2026-07-30: criteria audit pass 3 returned 2 findings. One clear, fixed: AC5's repair obligation was scoped to pins on the enumerations (4) while its stated purpose was a green suite, and the two do not coincide — the measured breakage is 2 failures + 4 errors on a minimal edit and 2 failures + 7 errors on a full re-fill, because `guard-doctrine.md:328` is 71 chars and needs no re-wrap while `:384` is 80 and forces bullet (i)'s. Rescoped to every pin the edit or its re-wrap breaks, 6 to 9; T2 carries the line lengths and the en-dash U+2013 warning. Pass 3 also confirmed T2-before-T3 resolves the ledger-ordering hazard and that no §8 anchor becomes unpinnable.
 - 2026-07-30: plan gate chose making §9 a fix destination named in §8's routing enumerations over referencing it descriptively beside them, because §9 carries the ledger instrument and a consistency gap found as out-of-mandate work is fixed by applying it; the rider is that §9 must state a remedy and not only a caution, which AC5 now requires. Falsified by §9 shipping with no remedy a finding could be routed to, which would make its presence in the enumerations a false claim of the kind §8's own claim-vs-file check exists to catch.
-- 2026-07-30: CHECKPOINT — AC5's remedy clause is out for a final, narrow criteria-audit pass which had not returned when this commit was made. No other criterion changed.
+- 2026-07-30: criteria audit pass 4 returned 1 finding, clear and fixed: AC5's remedy clause admitted a §9 attributing the remedy to the instrument, which would falsify the same criterion's "detects a change and never judges it" while still satisfying the clause. Restated as operation the author runs — regenerate, read the diff, repair or accept — never adjudication the guard performs, which is also the only family outside D-067's rejection of a mandatory re-derivation step and consistent with §8 discharging this class "by operation" (`guard-doctrine.md:331-332`). Pass 4 also confirmed D-067's `cairn_validate` rejection is scoped to the two readers and does not reach a doctrine section.
+- 2026-07-30: pass 4 flagged, outside its own count, that D-083 part 3(a) (`cairn/DECISIONS.md:2913`) describes §8 as routing out-of-mandate work "as ordinary §§1-7 work" — incomplete after T2, and unfixable in place under IP4. Added to AC5 and T2 as a superseding append. This clause was authored AFTER pass 4 and was not read by it; it is mechanically satisfiable and IP4-mandated rather than IP4-blocked, so the audit loop is closed here at 4 passes rather than re-opened for it.
+- 2026-07-30: criteria audit closed. Four passes, 13 findings total: 9 clear (all fixed), 3 judgment (all taken to the gate and decided), 1 uncounted observation (actioned above). Passes 2-4 each independently re-measured rather than reusing an earlier count, and pass 3 corrected pass 2's own pin count from 4 to 6-9.
 
 ## Decisions
 
