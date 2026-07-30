@@ -1,6 +1,6 @@
 # M123: Rebuild guard-doctrine §8 so its certification loop converges
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR10
@@ -73,7 +73,7 @@ not reopened here.
       AC3's projection separately. Per AC12 the derivations live in the decision
       record behind pointers; every count carries its deriving revision, and one
       contradicting a standing D-entry claim gets its own superseding entry.
-- [x] AC8 — Every rule AC1–AC5 and AC10–AC11 add to §8 is pinned by an assert
+- [ ] AC8 — Every rule AC1–AC5 and AC10–AC11 add to §8 is pinned by an assert
       failing when the rule is inverted in place; a positive block also fails
       when blanked and carries its own `test_mutation_harness.py` entry, while a
       negative or heading-bounded assert registers its positive framing and
@@ -84,9 +84,9 @@ not reopened here.
 - [x] AC9 — The profile's `verify` slot passes clean and `cairn_validate`
       reports no new FAIL.
 - [x] AC10 (BC1) — by reference to `reviews/archive/RR10-section8-survival.md` §BC1 (D-066 choice 4): §8's sufficiency arm, pinned and registered.
-- [x] AC11 (BC2) — by reference to RR10 §BC2, amended below: falsifier clause (iii), retiring the whole step on round-1 yield decay.
+- [ ] AC11 (BC2) — by reference to RR10 §BC2, amended below: falsifier clause (iii), retiring the whole step on round-1 yield decay.
 - [x] AC12 (BC3) — by reference to RR10 §BC3, amended below: §8's evidence derivations relocate to the decision record behind pointers; §8 ends at ≤150 lines.
-- [x] AC13 (BC4) — by reference to RR10 §BC4, amended below: remaining rounds run under the rebuilt rules, authorized at a maintainer gate.
+- [ ] AC13 (BC4) — by reference to RR10 §BC4, amended below: remaining rounds run under the rebuilt rules, authorized at a maintainer gate.
 - [x] AC14 (BC5) — by reference to RR10 §BC5, amended below: one appended D-entry carrying the iff demonstration, clause (iii), the relocated derivations and the RR09 re-visit.
 
 **Deviations from RR10.** All found by the mandatory pre-ingest criteria audit
@@ -265,6 +265,11 @@ not reopened here.
 - 2026-07-30: STATUS -> review with a stated deviation: round 3's gate verdict is REOPENING and a round 4 is owed under §8's own rules. The maintainer chose to bank F2 and enter review instead. Logged as an override, not as convergence — the three-lens fan-out still reads the diff independently before anything merges.
 - 2026-07-30: round 3 close verify — skills 741 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0; §8 at 149; plan-owned body under cap.
 
+- 2026-07-30: REVIEW RETURN 1 — status back to `in-progress`. **Exactly what failed:** AC8 (every rule AC1-AC5 and AC10-AC11 add is pinned by an assert failing when the rule is inverted in place) — falsifier clause (iii) has three of four counted quantities, its tolerance and its window scope unpinned; AC3's composition sentence and tie-break decider unpinned; AC1's no-synonym and defined-at-first-use rules both defeatable; the falsifier's declarative sentence unpinned. AC11 (BC2 requires clause (iii) "pinned and registered like the others") fails on the same evidence. AC13 (BC4 requires "the gate is entered only per the amended rules") fails because round 3 returned a reopening verdict and the gate was entered anyway.
+- 2026-07-30: the criteria are NOT reinterpreted to fit what shipped. AC8 is right and the work fails it; that is a return, not an amendment. The three unticked boxes go back through implement, and the 12 actioned findings are the work.
+- 2026-07-30: the return is the milestone's own instrument working. Every ≥80 finding is in §8's own three checks, and five were confirmed by mutating the suite rather than argued — including one that reproduces, in clause (iii), the exact defect round 1 found in clause (i). The section certifies its author no better than it certified M121's.
+- 2026-07-30: thrash rule — this is return 1 of this milestone; neither trigger (a) nor (b) fires. Work-log return count: 1.
+
 ## Decisions
 
 ## Review
@@ -319,6 +324,53 @@ Fan-out and merge gate below.
   the rebuilt rules and carries the three-way classification.
 - **AC14 (BC5)** — D-085 appended carrying all four required contents;
   D-086 corrects four of its claims by appending, not editing.
+
+### Fan-out — three lenses, then a scorer
+
+Three fresh-context reviewers with distinct evidence bases, then an [S] scorer
+that generated none of the findings and was given the diff and the plan. 37
+findings reported unfiltered; **12 scored ≥80**. The scorer independently
+reproduced every MEASURED finding by mutating a scratch copy and running the
+real suite.
+
+**Actioned (≥80) — 12:**
+- **A1 (93) / B1 (88) / A15 (91)** — §8 as shipped obliges a further round on a
+  reopening finding; round 3 returned 7 and no round 4 ran. Disclosed in the
+  work log as a maintainer override, but the Review section presented AC9/AC13
+  as met with no live caveat, and RR10's BC4 requires "the gate is entered only
+  per the amended rules". **AC13 unticked.**
+- **A3 (92)** — MEASURED, reproduced: three of falsifier clause (iii)'s four
+  counted quantities, its tolerance and its window scope all invert green. The
+  identical defect round 1's D3 found in clause (i), reproduced in the clause
+  added after it. **AC8 and AC11 unticked.**
+- **A17 (88), A4 (85), A5 (85), A7 (84), A19 (83)** — MEASURED, all reproduced:
+  the AC4 proxy does not cover its own paragraph; AC1's no-synonym rule is
+  defeated by the exact mutation its own comment names as fixed; "defined at
+  first use" is defeated by an unbolded earlier use; AC3's composition sentence
+  and tie-break decider are unpinned; and deleting "This step carries its own
+  falsifier." is green despite a test of that name.
+- **A9 (82)** — §8 says out-of-mandate findings are "recorded and fixed", but
+  round 3's F10 was recorded and not fixed and called exactly what the boundary
+  prescribes. One of the two is wrong.
+- **A2 (80)** — D-083 part 4 still carries "a fix-authored record never leaves
+  the certified scope", the formulation round 1's D6 convicted, inside the
+  paragraph asserting nothing in D-069/D-070 is superseded. IP4 means this is
+  corrected by appending, not editing.
+- **A22 (80)** — MEASURED: `test_the_class_is_defined_and_bounded_in_one_paragraph`
+  matches a literal hard space, so a content-preserving reflow false-reds a rule
+  still present — the M105 convention this file's own docstring states.
+
+**Logged, below threshold — 25** (surfaced, never silently dropped, IP3):
+A16 (79) AC4's "re-verified at round 3" is unsupported · A28 (74) RR10 recs 7/9
+have no ROADMAP row · A26 (74) the Review section's D-069/D-070 counts mix two
+counting conventions · A13 (72) D-086's over-reach disclosure omits two
+removals · A25 (68) the falsifier counts a quantity the reader is never tasked
+to find · A11 (68) the (i)/(iii) non-conflict proof assumes rounds are convened
+only by the rule · A20 (65) · A24 (62) · A18 (62) · C1 (60) the BC3 ceiling
+override, routed through a maintainer gate · A6 (58) · A21 (58) · A23 (58) ·
+B2 (58) · A8 (55) · A12 (55) · B4 (50) · A10 (48) · C2 (45) · B3 (40) · A27
+(35, premise false — main did have an over-80 line) · B5 (35) · A29 (30) · B6
+(30) · C3/C4 (20, notes not findings).
 
 ### Consistency gate
 

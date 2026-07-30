@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M123 | Rebuild guard-doctrine §8 so its certification loop converges | review | — | normal | milestones/M123-section8-convergence-rebuild.md |
+| M123 | Rebuild guard-doctrine §8 so its certification loop converges | in-progress | — | normal | milestones/M123-section8-convergence-rebuild.md |
 | M122 | A differential guard holding the hook and the cap counters to one heading contract | done | — | normal | milestones/archive/M122-heading-normalization-differential-guard.md |
 | M119 | RR08's follow-ons — the decisions-format advisory (D-075), the rulebook history enumeration, and a two-sided exempt-set guard | done | M118 | normal | milestones/archive/M119-decisions-advisory-and-consistency-guards.md |
 | M120 | Ingest the Opus 5 prompting guide, and adopt the three conduct rules cairn has no home for | done | — | normal | milestones/archive/M120-opus5-guide-adoptions.md |
