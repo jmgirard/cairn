@@ -564,12 +564,14 @@ class TestHeadingNormalizationContract(unittest.TestCase):
 
     # (heading, expected_exempt), covering two axes.
     # Format: case, a second space after the hashes, a trailing space.
-    # Site: the counters normalize at TWO sites — `cairn_scripts.py:376`, the
-    # `## Review` body boundary, and `:412`, the `EXEMPT_HEADINGS` subtraction —
-    # and a work-log-only table never reaches the first (guard-doctrine §3's
-    # site axis, the shape M117 recorded).
-    # Controls are the near misses M55 and M118 hit: a prefix must not read as
-    # its exempt namesake.
+    # Site: the counters normalize at TWO sites — `cairn_scripts.py:375-376`,
+    # the `## Review` body boundary, and `:412`, the `EXEMPT_HEADINGS`
+    # subtraction — and a work-log-only table never reaches the first
+    # (guard-doctrine §3's site axis, the shape M117 recorded).
+    # Controls: `## Reviewers` and `## Decisions notes` are the prefix near
+    # misses M55 and M118 hit — a prefix must not read as its exempt namesake —
+    # and `## Scope` is a plain plan-owned section, the case neither near miss
+    # covers.
     TABLE = (
         ("## Work log", True),
         ("## Work Log", True),
@@ -660,23 +662,93 @@ class TestHeadingNormalizationContract(unittest.TestCase):
             self.assertIn(True, observed, f"{label}: no exempt verdict observed")
             self.assertIn(False, observed, f"{label}: no capped verdict observed")
 
-    def test_the_table_reaches_both_normalization_sites(self):
+    def test_the_table_still_carries_every_rendering_the_contract_needs(self):
         # Coverage of the table itself, kept apart from the non-vacuity assert
-        # above on purpose. The counters reach `review` by the body boundary and
-        # the other two by subtraction, so a table of work-log renderings alone
-        # would exercise one site and read as full coverage.
-        names = {self.sc.heading_name(h) for h, _ in self.TABLE}
-        self.assertIn("review", names)
-        self.assertIn("work log", names)
-        self.assertIn("decisions", names)
-        self.assertTrue(
-            any(h != h.strip() or "  " in h for h, _ in self.TABLE),
-            "no rendering exercises whitespace normalization",
+        # above on purpose, and pinned rendering by rendering: a set of
+        # NORMALIZED names would collapse `##  Work log` and `## Work log ` into
+        # one satisfiable clause, so dropping either row would stay green.
+        # Raw strings on purpose — normalizing here would route the table's own
+        # coverage through `heading_name`, the function under test, and a hook
+        # mutation would then report as a table defect.
+        headings = [h for h, _ in self.TABLE]
+        for required in (
+            # format axis
+            "## Work log", "## Work Log", "## WORK LOG",
+            "##  Work log", "## Work log ",
+            # site axis: `review` leaves by the body boundary, the other two by
+            # subtraction, so a work-log-only table exercises one site and reads
+            # as full coverage
+            "## Review", "## REVIEW", "## Decisions", "##  Decisions",
+            # controls
+            "## Reviewers", "## Decisions notes", "## Scope",
+        ):
+            self.assertIn(required, headings)
+
+    def fenced_body(self, opener):
+        """A milestone quoting a cap-exempt heading inside a fence, above its
+        own real one. Both blocks are long, so a layer that mistakes the quoted
+        heading for a section bounds it and gives itself away."""
+        quoted = "".join(
+            f"- 2026-07-01: quoted-{i:03d} " + "q" * 200 + "\n"
+            for i in range(self.ENTRIES)
         )
-        self.assertTrue(
-            any(h != h.lower() for h, _ in self.TABLE),
-            "no rendering exercises case normalization",
+        real = "".join(
+            f"- 2026-07-30: entry-{i:03d} " + "x" * 200 + "\n"
+            for i in range(self.ENTRIES)
         )
+        return (
+            self.PREAMBLE
+            + "## Scope\n"
+            + f"{opener}markdown\n## Work log\n{quoted}{opener}\n"
+            + "## Work log\n"
+            + real
+        )
+
+    def test_a_heading_quoted_inside_a_fence_is_content_on_both_layers(self):
+        # The fence axis of the same contract (M45): both layers track ``` and
+        # ~~~, and a heading quoted inside either is content, never a section
+        # boundary. Measured 2026-07-30: dropping the hook's `~~~` support left
+        # all 101 tests green, because every fence fixture in this file used
+        # backticks — the same one-rendering blindness the format axis had.
+        for opener in ("```", "~~~"):
+            with self.subTest(fence=opener):
+                body = self.fenced_body(opener)
+                with tempfile.TemporaryDirectory() as tmp:
+                    path = pathlib.Path(tmp) / "M07-test.md"
+                    path.write_text(body)
+                    named = [
+                        h for h, _ in self.cs.milestone_section_line_counts(str(path))
+                    ]
+                    counted = self.cs.milestone_body_line_count(str(path))
+                self.assertEqual(
+                    named, ["Scope"],
+                    "the counters split on a heading quoted inside a fence",
+                )
+                # The count, not just the section list: a quoted heading the
+                # counters mistake for a section is SUBTRACTED as cap-exempt, so
+                # it never shows up in `named` — only the arithmetic gives it
+                # away. Everything but the real work log (its heading + entries)
+                # is plan-owned.
+                self.assertEqual(
+                    counted, len(body.splitlines()) - (1 + self.ENTRIES),
+                    "the counters subtracted a work log quoted inside a fence",
+                )
+                part = self.sc.milestone_part(
+                    "M07", "in-progress", self.RELPATH, body, 0
+                )
+                self.assertEqual(
+                    part.count("_cairn:"), 1,
+                    "the hook bounded a heading quoted inside a fence",
+                )
+                self.assertIn("quoted-000", part)
+                self.assertIn("entry-007", part)
+                self.assertNotIn("entry-000", part)
+
+    def test_the_fixture_is_large_enough_for_a_bound_to_show(self):
+        # AC1's fixture clause, pinned rather than asserted in prose: at or below
+        # MIN_TAIL_BLOCKS, `bounded_tail` never breaks, so no budget elides and
+        # every exempt row would report as non-exempt against correct code.
+        self.assertGreater(self.ENTRIES, self.sc.MIN_TAIL_BLOCKS)
 
 
 class TestBoundedTail(unittest.TestCase):
