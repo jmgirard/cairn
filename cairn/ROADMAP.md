@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-28 (post-merge after M121 — M121 archived, M116's row pruned to hold terminal-row retention at 5. LESSONS 49 of 50: none added, none retired; two lines EXTENDED in place (M56+M65 gains the search form of exit-blindness, M117/M120 gains M121's three-inverted-green finding). 20 candidates; the §8 row rewritten in place to bank the rebuild on RR09.)_
+_Last hygiene check: 2026-07-30 (audit only, no work since M121's post-merge pass — cairn_validate all-green, no advisory fired, tree clean, both GitHub inboxes empty. Prior stamp read 2026-07-28; that pass actually landed 2026-07-30 (commit 8763368) and the date is corrected here. LESSONS 49 of 50; 20 candidates; nothing in flight.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
