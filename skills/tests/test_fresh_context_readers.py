@@ -38,12 +38,13 @@ The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
   * `/milestone-implement` step 8, which fires §8 before `status -> review`
     when the milestone authored or edited a prose-guard.
 
-Four properties OF §8 are checked structurally rather than by anchor, because
+Five properties OF §8 are checked structurally rather than by anchor, because
 no single phrase can carry them: the class is defined and bounded in one
 paragraph, it is defined in the paragraph immediately after its first use, it
-is never named by a synonym in either direction, and its obligations paragraph
+is never named by a synonym in either direction, its obligations paragraph
 carries one bold label per class with the author named only in the exclusion
-clause. Each first shipped in a form that survived its own inversion, and each
+clause, and the sufficiency arm sits in the clears-both-lines paragraph and
+not in the shield paragraph (BC1's placement clause, added at round 5). Each first shipped in a form that survived its own inversion, and each
 comment records how. The last is a disclosed PROXY: AC4's no-second-obligation
 clause is section-wide, and what the test enforces is paragraph-scoped.
 
@@ -247,6 +248,25 @@ class TestDescriptionLayerCertification(unittest.TestCase):
     def doctrine(self):
         return read("shared", "guard-doctrine.md")
 
+    @property
+    def section8(self):
+        # C1 (round 6): every anchor below used to read `self.doctrine`, the
+        # WHOLE FILE, while every criterion it serves is scoped to §8 ("§8
+        # states a mandate boundary", "§8's falsifier carries a third
+        # clause"). So a rule could be moved verbatim out of §8 and into §7
+        # with the suite green — AC2, AC3, AC5 and AC11 clauses all defeated
+        # by pure relocation, no anchor text touched. Round 5's F2 fixed that
+        # for one sentence; this fixes it for the ~75 anchors that share the
+        # defect. The slice is bounded at the next section so it stays §8's
+        # scope if a §9 is ever added.
+        d = self.doctrine
+        head = "## 8. The author never certifies"
+        if head not in d:
+            self.fail(f"guard-doctrine.md has no {head!r} section")
+        rest = d[d.index(head) + len(head):]
+        end = re.search(r"\n## ", rest)
+        return head + (rest[:end.start()] if end else rest)
+
     def test_section_exists_under_its_own_heading(self):
         self.assertIn(
             "## 8. The author never certifies its own guard's coverage",
@@ -258,7 +278,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # its own guard would be the wrong rule, and this sentence is what
         # keeps the retirement scoped to certification.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"Running a guard and certifying that it covers what you claim are "
             r"different\s+jobs, and only the first one survives being done by "
             r"its author",
@@ -266,14 +286,14 @@ class TestDescriptionLayerCertification(unittest.TestCase):
 
     def test_section_states_the_diagnosis(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"the author checks the description against its generative\s+"
             r"model of the artifact rather than against the artifact",
         )
 
     def test_section_places_the_step_before_review_with_a_fresh_reader(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"So before `status -> review`, a guard-authoring milestone hands "
             r"the\s+description layer to a fresh-context \[O\] reader that "
             r"authored no part of it",
@@ -281,14 +301,14 @@ class TestDescriptionLayerCertification(unittest.TestCase):
 
     def test_section_names_the_coverage_check(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*AC-clause-to-assert coverage\*\* — every clause of every "
             r"acceptance\s+criterion maps to an assert that actually pins it",
         )
 
     def test_section_names_the_claim_accuracy_check(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*Claim-vs-file accuracy\*\* — every docstring, comment, "
             r"work-log line, and\s+record claim about the guard is true of the "
             r"file it describes",
@@ -296,14 +316,14 @@ class TestDescriptionLayerCertification(unittest.TestCase):
 
     def test_section_names_the_anchor_fidelity_check(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*Anchor-vs-shipped-bytes fidelity\*\* — every multi-word anchor "
             r"matches the\s+bytes actually shipped",
         )
 
     def test_section_requires_zero_unresolved_and_forbids_arguing_down(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"The gate is entered at zero unresolved: every discrepancy is "
             r"fixed, never\s+argued down as imprecision",
         )
@@ -315,7 +335,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # from RUNNING its own guard is the wrong rule this clause exists to
         # rule out. The anchor now opens on the premise.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"The\s+author\s+still\s+runs\s+everything\s+—\s+"
             r"this moves certification, not operation",
         )
@@ -329,7 +349,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # three named checks above" and the verbatim-reporting rule that stops
         # a certifier's report becoming the author's paraphrase of it.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"The\s+reader\s+checks\s+three\s+things\s+and\s+reports\s+"
             r"discrepancies\s+verbatim:",
         )
@@ -339,7 +359,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # round must record a verdict, that record is append-only under IP4,
         # so every round manufactures uncertified surface for the next.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*The certified scope is the work and the records describing "
             r"the work; a record\s+whose subject is a certification round "
             r"itself — the final round's own report\s+included — sits outside "
@@ -350,7 +370,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # Stated as "hard to reach" the clause reads as a comfort measure and
         # invites tuning the round count instead; the defect is structural.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"the gate cannot converge\s+rather than merely being hard to reach",
         )
 
@@ -365,7 +385,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # shipped a falsifier nothing said it carried. The anchor now opens on
         # that sentence.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*This\s+step\s+carries\s+its\s+own\s+falsifier\.\*\*\s+"
             r"It counts yield and not\s+rounds, because the round count is "
             r"precisely what the two rules above change,\s+and a measure its "
@@ -377,7 +397,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # ...', provenance read as SUFFICIENT for reopening, contradicting the
         # mandate boundary for an out-of-mandate finding on original text.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*What\s+a\s+finding\s+reopens\*\*\s+is\s+drawn\s+by\s+\*provenance\*:\s+a\s+finding\s+whose\s+only\s+subject\s+is\s+a\s+\*\*fix\-authored\s+record\*\*\s+is\s+not\s+grounds\s+for\s+a\s+further\s+round\.",
         )
 
@@ -385,7 +405,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # The first axis, cited to the entries that drew it. Without both axes
         # named apart, one rule reads as narrowing the other's object.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*What\s+the\s+reader\s+checks\s+and\s+the\s+author\s+fixes\*\*\s+is\s+drawn\s+by\s+\*subject\s+matter\*:\s+the\s+work\s+and\s+every\s+record\s+about\s+the\s+work\s+are\s+inside,\s+narrative\s+about\s+the\s+certifying\s+process\s+is\s+outside\s+\(D\-069,\s+as\s+narrowed\s+by\s+D\-070\)\.",
         )
 
@@ -393,7 +413,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # The excluded class is description-layer records only. Enumerating the
         # kinds is what stops 'text' being read back into it.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"A\s+fix\-authored\s+record\s+is\s+a\s+docstring,\s+a\s+comment,\s+a\s+work\-log\s+line,\s+or\s+a\s+record\s+claim\s+that\s+a\s+previous\s+round's\s+own\s+fix\s+wrote\s+in\s+this\s+same\s+certification\.",
         )
 
@@ -401,7 +421,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # Positive framing of the no-unmarked-synonym rule (guard-doctrine section 2:
         # a negative assert is satisfied by blanking, so pin the positive).
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"That\s+name\s+is\s+the\s+only\s+one\s+this\s+section\s+gives\s+the\s+class,\s+and\s+where\s+it\s+means\s+anything\s+wider\s+it\s+says\s+so",
         )
 
@@ -409,7 +429,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # The shield reaches records only. Losing this makes a fix-introduced
         # code regression unable to reopen a round - RR09 q3's broken instrument.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"A\s+fix's\s+code,\s+its\s+asserts\s+and\s+its\s+fixtures\s+are\s+not\s+records\s+and\s+stay\s+ordinary\s+round\-opening\s+surface;\s+so\s+does\s+every\s+record\s+that\s+existed\s+before\s+round\s+1",
         )
 
@@ -417,7 +437,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # M114's seventh-return defect. A draft of this rule deleted it by
         # drawing the class on layer alone rather than on provenance.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"a\s+false\s+claim\s+in\s+an\s+original\s+docstring\s+is\s+the\s+defect\s+this\s+section\s+was\s+built\s+on\s+and\s+it\s+reopens\s+a\s+round\s+no\s+matter\s+who\s+wrote\s+it",
         )
 
@@ -426,14 +446,14 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # the certified scope', which contradicts D-069 for a record whose subject
         # IS a certification round. Stated as a non-removal rule, both hold.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*being\s+a\s+fix\-authored\s+record\s+never\s+removes\s+it\s+from\s+the\s+certified\s+scope\*\*,\s+which\s+D\-069\s+draws\s+on\s+subject\s+matter\s+alone",
         )
 
     def test_mandate_boundary_limits_reopening_to_the_three_checks(self):
         # The rule that actually reaches M119's round count (RR09 rec 5).
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*A\s+round\s+reopens\s+only\s+on\s+a\s+finding\s+within\s+the\s+three\s+named\s+checks\s+above\.\*\*",
         )
 
@@ -444,7 +464,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # are out of mandate — on no assert, so "an acceptance-criterion clause
         # pins" routed pinned findings out of certification, suite green.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"A\s+robustness\s+observation\s+that\s+no\s+acceptance\-criterion"
             r"\s+clause\s+pins\s+—\s+a\s+surviving\s+mutation,\s+a\s+"
             r"one\-directional\s+pin,\s+a\s+near\-miss\s+control's\s+uncovered"
@@ -457,7 +477,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # The composition. Two independent shields conjoin; either one failing
         # closes the round.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*A\s+finding\s+reopens\s+a\s+round\s+only\s+if\s+it\s+clears\s+both\s+lines\*\*\s+—\s+it\s+falls\s+within\s+the\s+three\s+checks,\s+and\s+its\s+only\s+subject\s+is\s+not\s+a\s+fix\-authored\s+record",
         )
 
@@ -465,7 +485,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # The reconciliation RR09 q6 defect 1 names: the section used to carry
         # 'fixed and re-certified' and 'fixed in place' with no rule for which governs.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*Each\s+class\s+carries\s+exactly\s+one\s+confirmation\s+obligation,\s+and\s+no\s+class\s+carries\s+two\.\*\*",
         )
 
@@ -473,7 +493,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # D-067 rejected instructing an author's own re-check; an author
         # re-reading its own corrected record is that move under another name.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"no\s+confirmation\s+obligation\s+falls\s+on\s+the\s+author,\s+because\s+D\-067\s+rejected\s+instructing\s+an\s+author's\s+own\s+re\-check",
         )
 
@@ -481,7 +501,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # Without this the mandate boundary satisfies the falsifier by
         # construction - it routes the very findings the falsifier counts.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"A\s+finding\s+counts\s+where\s+it\s+was\s+\*\*found\*\*,\s+never\s+where\s+it\s+was\s+fixed,\s+so\s+routing\s+one\s+to\s+§§1–7\s+does\s+not\s+remove\s+it\s+from\s+the\s+count",
         )
 
@@ -489,7 +509,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # A window that convened no later round would otherwise retire the
         # later rounds having measured none of them.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"the\s+window\s+counts\s+only\s+if\s+at\s+least\s+one\s+of\s+its\s+three\s+milestones\s+convened\s+a\s+round\s+after\s+its\s+first\s+—\s+a\s+window\s+that\s+never\s+ran\s+a\s+later\s+round\s+has\s+not\s+measured\s+one",
         )
 
@@ -497,7 +517,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # Clause (ii) counts the cost the in-place route creates, which the
         # round-count falsifier could not see.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"If\s+any\s+fix\-authored\s+record\s+corrected\s+in\s+place\s+is\s+later\s+found\s+false\s+—\s+by\s+the\s+three\-lens\s+review,\s+or\s+by\s+a\s+subsequent\s+milestone\s+—\s+then\s+the\s+in\-place\s+route\s+has\s+failed,\s+and\s+that\s+class\s+returns\s+to\s+round\-opening",
         )
 
@@ -505,7 +525,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # RR09 q6 defect 2: the withdrawn paragraph offered M119's nine rounds
         # as its supporting measurement for a rule that changes that count by zero.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"On\s+M119's\s+record\s+the\s+provenance\s+rule\s+alone\s+changes\s+the\s+round\s+count\s+by\s+\*\*zero\*\*",
         )
 
@@ -515,7 +535,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # the confirmation split. Re-anchored at T10 when the sentence was
         # compressed and its justification moved to D-085.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"The gate is therefore reachable with fix-authored records "
             r"corrected but not yet\s+independently confirmed",
         )
@@ -525,7 +545,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # as the measurement for a rule that changes that count by zero; the
         # honest evidence base is the record-churn class.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*What\s+grounds\s+the\s+provenance\s+rule\s+is\s+record\s+churn,\s+not\s+M119's\s+round\s+count\.\*\*",
         )
 
@@ -534,7 +554,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # does not hold the gate; the shipped text said only that it does not
         # REOPEN. Not-reopening and not-holding-the-gate are different claims.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*and\s+it\s+does\s+not\s+hold\s+the\s+gate\*\*:\s+the\s+zero\-unresolved\s+bar\s+is\s+met\s+when\s+every\s+discrepancy\s+has\s+been\s+fixed\s+under\s+the\s+obligation\s+its\s+own\s+class\s+carries",
         )
 
@@ -547,7 +567,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # green, and outside T14's disclosed residue, which is scoped to
         # clauses added inside the three obligation sentences.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"and\s+this\s+class's\s+obligation\s+is\s+discharged\s+by\s+"
             r"operation\s+rather\s+than\s+by\s+a\s+further\s+round\.",
         )
@@ -556,7 +576,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # D10 (round 1): AC3 names four class members; deleting the whole list left
         # the suite green, so the boundary shipped with no stated extension.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"a\s+surviving\s+mutation,\s+a\s+one\-directional\s+pin,\s+a\s+near\-miss\s+control's\s+uncovered\s+signature,\s+a\s+fixture\s+weak\s+on\s+an\s+axis\s+no\s+criterion\s+names",
         )
 
@@ -564,7 +584,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # D10 (round 1): without this the boundary reads as one limit among
         # several rather than as the exhaustive statement of what reopens.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"Those\s+three\s+are\s+the\s+whole\s+of\s+this\s+step's\s+mandate\.",
         )
 
@@ -572,7 +592,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # D1 (round 1): invertible to 'obliges nothing further, and the author
         # confirms its own fix' with the whole suite green.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"A\s+\*\*reopening\s+finding\*\*\s+obliges\s+a\s+further\s+fresh\-context\s+round,\s+and\s+that\s+round\s+is\s+what\s+confirms\s+its\s+fix\.",
         )
 
@@ -581,7 +601,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # author's own re-read ... and otherwise by nobody at all' with the suite
         # green — the criterion the implement gate had just changed.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"A\s+\*\*fix\-authored\s+record\*\*\s+is\s+fixed\s+in\s+place\s+and\s+confirmed\s+by\s+the\s+next\s+round's\s+reader\s+where\s+a\s+further\s+round\s+occurs,\s+and\s+otherwise\s+by\s+`/milestone\-review`'s\s+three\-lens\s+fan\-out\s+at\s+the\s+merge\s+gate",
         )
 
@@ -589,7 +609,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # D1 (round 1): invertible to 'confirmed by the author's assertion alone'
         # with the suite green.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"An\s+\*\*out\-of\-mandate\s+robustness\s+observation\*\*\s+is\s+confirmed\s+by\s+operation:\s+the\s+harness,\s+the\s+sweeps\s+and\s+the\s+suite",
         )
 
@@ -597,7 +617,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # D3 (round 1): AC5 requires the window be named; it was changeable to a
         # single milestone with the suite green.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"Measured\s+over\s+the\s+next\s+three\s+guard\-authoring\s+milestones\s+that\s+run\s+§8,\s+the\s+window\s+closing\s+when\s+the\s+third\s+completes",
         )
 
@@ -609,7 +629,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # was FOUND in — kept an anchor opening after both, so "in any single
         # milestone" and "including each milestone's first" both stayed green.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"If\s+the\s+rounds\s+after\s+each\s+milestone's\s+first\s+return,"
             r"\s+totalled\s+across\s+the\s+window,\s+"
             r"zero\s+shipped\-behaviour\s+defects\s+and\s+zero\s+findings\s+whose\s+subject\s+is\s+pre\-round\-1\s+surface,\s+then\s+the\s+rounds\s+after\s+the\s+first\s+have\s+stopped\s+earning\s+their\s+cost\s+—\s+retire\s+them\s+and\s+run\s+§8\s+as\s+a\s+single\s+certification\s+pass",
@@ -619,14 +639,14 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # D3 (round 1): the tolerance was changeable to 'at most three on either
         # count' with the suite green. Clause (ii)'s is pinned separately below.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"Tolerance:\s+exact\s+zero\s+on\s+both\s+counts,",
         )
 
     def test_clause_two_carries_its_tolerance(self):
         # D3 (round 1): changeable to 'five occurrences' with the suite green.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"Tolerance:\s+one\s+occurrence\.",
         )
 
@@ -634,7 +654,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # D9 (round 2): the sentence that stops the shield being read as a second,
         # competing test for what DOES reopen.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"That\s+is\s+a\s+shield\s+and\s+never\s+a\s+licence\s+—\s+it\s+says\s+which\s+findings\s+cannot\s+reopen\s+a\s+round,\s+and\s+never\s+that\s+anything\s+else\s+must\.",
         )
 
@@ -642,7 +662,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # D11 (round 2): invertible to 'the power to be read and corrected at all',
         # which contradicts the bolded non-removal clause one sentence earlier.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"What\s+it\s+loses\s+is\s+only\s+the\s+power\s+to\s+force\s+another\s+round,\s+and\s+never\s+the\s+reading\s+and\s+correcting\s+itself\.",
         )
 
@@ -650,7 +670,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # D12 (round 2): §8 states the exactly-one rule twice; only the second was
         # pinned, so the first inverted to 'at least one' with the suite green.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"the\s+classes\s+are\s+set\s+out\s+below\s+—\s+each\s+carries\s+exactly\s+one,\s+and\s+none\s+carries\s+two\.",
         )
 
@@ -665,7 +685,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # by-hand check, and this is an ordinary positive rule sentence,
         # anchorable exactly like its pinned neighbour.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"A\s+record\s+can\s+of\s+course\s+be\s+outside\s+the\s+"
             r"certified\s+scope\s+for\s+D-069's\s+own\s+reason,\s+and\s+"
             r"that\s+is\s+D-069\s+operating,\s+never\s+this\s+rule\.",
@@ -675,7 +695,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # D10 (round 2): rewritable to 'D-070 rules on both axes ... a partial
         # supersession' with the suite green — the exact claim D-083 part 4 rests on.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"D\-070\s+rules\s+on\s+the\s+first\s+axis\s+and\s+says\s+nothing\s+about\s+the\s+second,\s+which\s+is\s+why\s+this\s+is\s+compatible\s+with\s+it\s+rather\s+than\s+a\s+partial\s+supersession\s+of\s+it\.",
         )
 
@@ -683,7 +703,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # RR10 BC1. Reopening carried only NECESSARY conditions, so a reader deep
         # in a loop could derive 'nothing must reopen' with every rule intact.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*And\s+a\s+finding\s+that\s+clears\s+both\s+lines\s+is\s+a\s+reopening\s+finding\*\*,\s+carrying\s+that\s+class's\s+obligation:\s+a\s+further\s+fresh\-context\s+round\.",
         )
 
@@ -691,7 +711,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # RR10 q6's live two-readings residue. This sentence is the reason the
         # only-if is stated as an iff rather than left implied.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"Stated\s+as\s+a\s+bound\s+alone\s+it\s+says\s+only\s+which\s+findings\s+cannot\s+reopen\s+a\s+round\s+and\s+never\s+that\s+any\s+must",
         )
 
@@ -700,7 +720,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # round 1 had become unfalsifiable, which is the deficiency RR10 found
         # in what M123 shipped.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"then\s+round\s+1\s+has\s+stopped\s+earning\s+its\s+reader\s+and\s+\*\*the\s+step\s+retires\s+whole\*\*",
         )
 
@@ -709,7 +729,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # omitted §8's third check, so a window of only anchor-fidelity findings
         # read zero and retired a working instrument.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"and\s+zero\s+anchor\-fidelity\s+findings",
         )
 
@@ -719,7 +739,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # the suite passing. This is round 1's D3 defect, found in clause (i)
         # and reproduced in the clause added after it.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"returns\s+zero\s+shipped-behaviour\s+defects,\s+zero\s+false\s+"
             r"claims\s+in\s+records\s+predating\s+that\s+milestone's\s+round\s+"
             r"1,\s+zero\s+acceptance-criterion\s+clauses\s+found\s+unpinned,"
@@ -731,7 +751,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # milestone", which retires the whole step on one quiet milestone
         # rather than on three.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"If,\s+totalled\s+across\s+the\s+same\s+window,\s+\*\*round\s+1"
             r"\s+itself\*\*",
         )
@@ -741,7 +761,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # suite green. Clause (i)'s and (ii)'s tolerances are pinned above;
         # this was the third, and it was the unpinned one.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"Tolerance:\s+exact\s+zero\s+on\s+all\s+four\s+counts,\s+totalled"
             r"\s+across\s+the\s+window",
         )
@@ -752,7 +772,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # rewritable to "A separate tie-break rule settles the apparent
         # overlap" — the option the plan gate explicitly declined — green.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"The\s+definition\s+settles\s+the\s+apparent\s+overlap\s+without"
             r"\s+a\s+tie-break:\s+a\s+one-directional\s+pin\s+that\s+leaves\s+"
             r"an\s+acceptance-criterion\s+clause\s+unpinned\s+is\s+a\s+check-1"
@@ -766,7 +786,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # the finding is phrased" — which is precisely the reading the
         # subject-matter/provenance split exists to forbid.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"What\s+decides\s+is\s+whether\s+a\s+criterion\s+clause\s+is\s+at"
             r"\s+stake,\s+never\s+how\s+the\s+finding\s+is\s+phrased\.",
         )
@@ -776,7 +796,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # (i) and (iii) had a route to firing on one window with opposite
         # consequences and no stated precedence.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"Clauses\s+\(i\)\s+and\s+\(iii\)\s+cannot\s+both\s+fire:\s+\(i\)\s+requires\s+some\s+milestone\s+to\s+have\s+convened\s+a\s+later\s+round",
         )
 
@@ -788,41 +808,41 @@ class TestDescriptionLayerCertification(unittest.TestCase):
 
     def test_the_two_axes_compose_rather_than_compete(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"The\s+two\s+axes\s+compose\s+rather\s+than\s+compete\.",
         )
 
     def test_the_two_lines_are_drawn_on_different_axes(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"\*\*Two\s+lines\s+govern\s+a\s+round,\s+and\s+they\s+are\s+"
             r"drawn\s+on\s+different\s+axes\*\*",
         )
 
     def test_failing_either_line_still_closes_the_round(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"Failing\s+either,\s+it\s+is\s+fixed\s+under\s+the\s+obligation"
             r"\s+named\s+below\s+and\s+the\s+round\s+still\s+closes\.",
         )
 
     def test_which_confirmation_applies_depends_on_the_class(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"Which\s+confirmation\s+that\s+fix\s+then\s+takes\s+depends\s+on"
             r"\s+the\s+finding's\s+class,",
         )
 
     def test_the_mandate_boundary_is_what_reaches_the_round_count(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"The\s+mandate\s+boundary\s+is\s+the\s+rule\s+that\s+reaches"
             r"\s+that\s+count",
         )
 
     def test_the_provenance_rule_never_shields_a_coverage_gap(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"a\s+coverage\s+gap\s+is\s+a\s+finding\s+about\s+executable"
             r"\s+surface,\s+which\s+the\s+rule\s+never\s+shields\.",
         )
@@ -834,14 +854,14 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # A pointer to the wrong entry is worse than no pointer: it reads as a
         # citation and resolves.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"The\s+three\s+measured\s+cases\s+and\s+the\s+revisions\s+they"
             r"\s+are\s+read\s+from\s+are\s+recorded\s+at\s+D-085\.",
         )
 
     def test_the_clause_counting_pointer_names_its_entry(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"What\s+each\s+clause\s+counts\s+is\s+recorded\s+at\s+D-085,"
             r"\s+with\s+the\s+argument\s+that\s+replacing",
         )
@@ -853,19 +873,19 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # clean, because D-084 exists. A pointer to the wrong entry is worse
         # than none: it reads as a citation and it resolves.
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"its\s+replay\s+projection\s+and\s+tolerance\s+are\s+at\s+D-085\.",
         )
 
     def test_the_fourth_quantity_pointer_names_its_entry(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"why\s+the\s+fourth\s+is\s+counted\s+is\s+at\s+D-085\.",
         )
 
     def test_the_supersession_argument_pointer_names_both_entries(self):
         self.assertRegex(
-            self.doctrine, r"loosening\s+\(D-083,\s+D-085\)\.",
+            self.section8, r"loosening\s+\(D-083,\s+D-085\)\.",
         )
 
     # --- F7 (round 5): seven more pre-M123 §8 rules that inverted green. No
@@ -874,7 +894,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
 
     def test_operation_self_corrects_and_certification_does_not(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"Operation\s+self-corrects:\s+suites,\s+the\s+mutation\s+"
             r"harness,\s+and\s+the\s+sweeps\s+all\s+report\s+against\s+the"
             r"\s+artifact,\s+so\s+an\s+author\s+who\s+runs\s+them\s+finds"
@@ -883,54 +903,123 @@ class TestDescriptionLayerCertification(unittest.TestCase):
 
     def test_the_coverage_check_forbids_a_believed_cover(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"and\s+no\s+criterion\s+is\s+covered\s+only\s+by\s+an\s+"
             r"assert\s+the\s+author\s+believes\s+covers\s+it\.",
         )
 
     def test_the_accuracy_check_reads_out_of_the_file_not_the_narrative(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"read\s+out\s+of\s+that\s+file\s+rather\s+than\s+out\s+of"
             r"\s+the\s+milestone's\s+narrative\.",
         )
 
     def test_the_anchor_check_includes_the_targets_hard_wrap(self):
         self.assertRegex(
-            self.doctrine, r"including\s+under\s+the\s+target's\s+hard\s+wrap\.",
+            self.section8, r"including\s+under\s+the\s+target's\s+hard\s+wrap\.",
         )
 
     def test_the_scope_bound_leaves_the_zero_unresolved_bar_intact(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"Zero\s+unresolved\s+stays\s+the\s+bar;\s+what\s+this\s+"
             r"excludes\s+is\s+a\s+scope\s+that\s+regresses\.",
         )
 
     def test_a_fix_authored_record_is_still_read_and_still_corrected(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"A\s+fix-authored\s+record\s+is\s+still\s+read\s+and\s+still"
             r"\s+corrected:",
         )
 
     def test_the_narrowing_of_the_bar_is_named_as_deliberate(self):
         self.assertRegex(
-            self.doctrine,
+            self.section8,
             r"—\s+a\s+deliberate\s+narrowing\s+of\s+the\s+zero-unresolved"
             r"\s+bar,\s+whose\s+cost\s+the\s+falsifier's\s+clause\s+"
             r"\(ii\)\s+counts\.",
+        )
+
+    # --- C3/C4/C5 (round 6): ten more §8 rules that inverted green. No M123
+    # criterion names them, so they are out-of-mandate — recorded AND fixed,
+    # which is what §8's boundary prescribes.
+
+    def test_certification_does_not_self_correct(self):
+        # The other half of the sentence round 5's F7 pinned: that anchor
+        # stopped at "finds its own mistakes", so "Certification does so too"
+        # collapsed the whole cut with the suite green.
+        self.assertRegex(
+            self.section8,
+            r"Certification\s+does\s+not,\s+because\s+the\s+author\s+checks"
+            r"\s+the\s+description\s+against\s+its\s+generative",
+        )
+
+    def test_the_diagnosis_names_why_the_author_cannot_see_it(self):
+        self.assertRegex(
+            self.section8,
+            r"and\s+both\s+read\s+as\s+true\s+to\s+the\s+person\s+who\s+"
+            r"formed\s+the\s+intent",
+        )
+
+    def test_the_regress_argument_names_ip4_as_its_mechanism(self):
+        self.assertRegex(
+            self.section8,
+            r"that\s+record\s+is\s+append-only\s+under\s+IP4,\s+and\s+so\s+"
+            r"each\s+round\s+manufactures\s+uncertified\s+surface\s+for\s+"
+            r"the\s+next\s+one\s+to\s+audit",
+        )
+
+    def test_the_scope_bound_is_stated_as_a_necessary_condition(self):
+        self.assertRegex(
+            self.section8, r"Without\s+this\s+the\s+gate\s+cannot\s+converge",
+        )
+
+    def test_the_sufficiency_arm_names_the_reader_it_protects(self):
+        self.assertRegex(
+            self.section8,
+            r"and\s+a\s+reader\s+deep\s+in\s+a\s+long\s+loop\s+can\s+take"
+            r"\s+that\s+silence\s+as\s+licence\s+to\s+close\.",
+        )
+
+    def test_the_author_exclusion_names_the_judgment_authors_fail_at(self):
+        self.assertRegex(
+            self.section8,
+            r"it\s+asks\s+for\s+the\s+judgment\s+this\s+section\s+exists\s+"
+            r"because\s+authors\s+fail\s+at",
+        )
+
+    def test_the_evidence_claims_no_saving_it_does_not_produce(self):
+        self.assertRegex(
+            self.section8,
+            r"and\s+the\s+section\s+says\s+so\s+rather\s+than\s+claiming\s+"
+            r"a\s+saving\s+it\s+does\s+not\s+produce",
+        )
+
+    def test_the_non_conflict_proof_states_its_own_step(self):
+        self.assertRegex(
+            self.section8,
+            r"which\s+under\s+the\s+reopening\s+rule\s+means\s+its\s+round"
+            r"\s+1\s+found\s+something,\s+which\s+\(iii\)'s\s+zeroes\s+"
+            r"forbid\.",
+        )
+
+    def test_the_motivating_milestone_pointer_names_its_entry(self):
+        # C5 (round 6): §8's last unpinned pointer. Retargeted to D-066 the
+        # suite is green and `dangling id tokens` stays OK, because D-066
+        # exists — the class rounds 4 and 5 closed for all five D-085
+        # pointers, with this one missed.
+        self.assertRegex(
+            self.section8,
+            r"The\s+milestone\s+that\s+motivated\s+this\s+step\s+is\s+at"
+            r"\s+D-067\.",
         )
 
     # --- structural properties, which no single-phrase anchor can carry ---
     # These are the "bounded property" cases guard-doctrine §2 sends to a
     # by-hand check. They are automated here instead, because each is a
     # property OF §8 that can be derived from §8 rather than enumerated.
-
-    @property
-    def section8(self):
-        d = self.doctrine
-        return d[d.index("## 8. The author never certifies"):]
 
     def _paragraph_containing(self, needle):
         # Matched against the whitespace-normalized paragraph and returned
