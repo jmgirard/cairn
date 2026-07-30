@@ -303,6 +303,9 @@ not reopened here.
 - 2026-07-30: T16 SWEEP RE-RUN after round 4's fixes — 63/63 registered §8 rules redden their own test under in-place polarity substitution, restored byte-identical after each, tree clean. Seven newly added blocks again had no applicable substitution on the first pass and were reported as untested rather than counted, then given one.
 - 2026-07-30: T16 verify — skills 755 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0; §8 at 149; plan-owned body 146/149.
 
+- 2026-07-30: MAINTAINER GATE on round 4's F3 — two questions, two answered. (1) Fold F3 into the banked presence-not-consistency class rather than extend the enumeration a fourth time; AC1's clause ships pinned against every renaming that reuses part of the term, with the reuses-nothing case disclosed in the test's own comment and carried by the ROADMAP row. (2) Run round 5 and honour its verdict — fix and keep going if it reopens — rather than capping the loop or re-entering review on a reopening verdict, which is what return 1 rejected.
+- 2026-07-30: F3 banked, not fixed. The candidate row from round 3's F2 gains it as a second instance from the other side (F2 was a contradicting sentence added elsewhere; F3 is a renaming that reuses no word of the term) and its promotion condition is SHARPENED rather than widened: any candidate section-consistency check must pass the noun-substitution rename. M123 therefore ships a §8 whose class-naming rule is pinned against partial renamings and is NOT protected against a total one, and the record says so.
+
 ## Decisions
 
 ## Review

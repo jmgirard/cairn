@@ -919,6 +919,16 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             coined, set(),
             f"§8 gives the class a second name: {sorted(coined)}",
         )
+        # DISCLOSED BOUND, decided at the maintainer gate after round 4's F3.
+        # Both directions above are keyed on a WORD of the class name — the
+        # prefix or the noun — so a coinage sharing neither escapes both:
+        # "A shielded entry is still read" ships green. That is the fourth
+        # distinct defeat of this test in one certification, and the three
+        # prior fixes were each an enumeration extension that the next round
+        # beat. It is not closed by a fifth: a rename that reuses nothing is
+        # the presence-not-consistency class banked on the ROADMAP at round
+        # 3's F2, and phrase search cannot reach it. What this test pins is
+        # every renaming that reuses part of the name; the rest is that row's.
 
     def test_the_class_is_defined_where_it_is_first_used(self):
         # D6 (round 2): AC1 requires the term be "defined at first use". The
