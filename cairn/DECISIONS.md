@@ -3134,3 +3134,46 @@ this milestone's own artifact, every one of them found by the instrument this
 milestone exists to rebuild, and three of them written by an earlier round's own
 fix. That distribution is itself the evidence D-085 part 1 grounds the
 provenance rule on, produced once more by the milestone that ships it.
+
+### D-087 (2026-07-30): D-083 part 4's "a fix-authored record never leaves the certified scope" is the absolute round 1 convicted in §8 and is narrowed to the non-removal rule §8 ships — supersedes that clause; part 4's annotation of D-069/D-070 stands (M123 review return 1)
+
+**Context:** M123's `/milestone-review` fan-out returned finding A2 (scored 80).
+D-083 part 4 argues that D-069 and D-070 are annotated rather than superseded,
+and rests that argument on the sentence "the provenance rule draws a *different*
+line, on what a finding reopens, and a fix-authored record never leaves the
+certified scope — it is still read and still corrected". That is the formulation
+§8's own certification round 1 convicted at D6, three commits after D-083 was
+appended: a record whose subject IS a certification round sits outside the
+certified scope for D-069's reason, so "never leaves" is false for exactly the
+case D-069 exists to cover. §8 was restated then to a non-removal rule and
+D-083 was not, because IP4 attaches at append time (D-065). The entry has
+carried the convicted absolute ever since, inside the paragraph whose job is to
+prove no collision with D-070.
+
+**Decision, part 1 — the clause is narrowed, not withdrawn.** What D-083 part 4
+should have said, and what §8 ships, is that *being* a fix-authored record never
+**removes** a record from the certified scope. The provenance rule takes nothing
+out of scope; it removes only the power to force another round. A record can
+still be outside that scope for D-069's own reason — its subject being a
+certification round — and that is D-069 operating, never the provenance rule.
+The difference is between an absolute about the record ("never leaves") and a
+rule about what this classification does ("never removes"), and only the second
+is true.
+
+**Decision, part 2 — part 4's conclusion stands on the narrowed clause.** The
+argument D-083 part 4 makes does not need the absolute. D-070 rules on the
+subject-matter axis; the provenance rule rules on what reopens; a rule that
+takes nothing out of the certified scope cannot narrow a line drawn on what is
+in it. So "Nothing in D-069 or D-070 is superseded here" survives, and D-083
+part 4 is corrected in its premise rather than in its conclusion. D-069 and
+D-070 remain annotated, not superseded.
+
+**Consequences.** D-083 parts 1, 2, 3 and 5 are untouched, as are D-084, D-085
+and D-086. §8 needs no edit: it already carries the narrowed form, pinned by
+`test_the_provenance_rule_does_not_narrow_the_certified_scope`. What this entry
+buys is that the decision record and the doctrine now say the same thing — the
+gap A2 found was between them, not inside either. This is the fifth entry in
+M123's chain (D-083 → D-084 → D-085 → D-086 → D-087) and the second whose
+subject is a claim D-083 made before the artifact stopped moving; the general
+cause is the one guard-doctrine §6 already states, settle numeric and
+quotable records last.

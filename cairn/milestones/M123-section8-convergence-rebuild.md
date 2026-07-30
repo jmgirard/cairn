@@ -139,7 +139,7 @@ not reopened here.
 - [x] T14 — Rebuild the three defeated structural tests — the obligations proxy,
       the no-synonym check's prefix-dropping direction, defined-at-first-use —
       and fix the reflow false-red (AC8).
-- [ ] T15 — Fix round 3's F10 as §8's boundary prescribes: pin the pre-M123 rules
+- [x] T15 — Fix round 3's F10 as §8's boundary prescribes: pin the pre-M123 rules
       that invert green; append the D-entry correcting D-083 part 4 (AC8).
 - [ ] T16 — Section-wide inversion sweep, then certification round 4 under the
       rebuilt rules; suites and `cairn_validate` (AC8, AC9, AC13).
@@ -284,6 +284,11 @@ not reopened here.
 - 2026-07-30: T14 — A22 fixed at the HELPER, not only at the site the review named: `_paragraph_containing` matched raw text, so every caller's needle was a literal-hard-space match and a reflow located no paragraph at all. Matching is normalized, the raw paragraph still returned. By-hand check (these four are the bounded-property carve-out AC8 names, and none is registered): the reflow that previously red the rule now leaves every rule test green; the one remaining signal is the mutation harness reporting its byte-anchored registry block no longer resolves, which is the re-anchoring tax and not a false-red.
 - 2026-07-30: T14 — verified by inversion: "A shielded record can of course be outside the certified scope" reds the synonym test; an earlier unbolded "not even for a fix-authored record" reds the first-use test; an unbolded fourth obligation sentence naming no author reds the obligations test. Each restored byte-identical. RESIDUE DISCLOSED in the test comment rather than papered over — a clause added INSIDE one of the three obligation sentences, naming no author and using no bold, still escapes; AC4's clause is section-wide and the check is paragraph-scoped.
 - 2026-07-30: T14 verify — skills 746 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0.
+
+- 2026-07-30: CORRECTION, appended not edited (IP4) — the round-3 line "round 3 F10 is OUT-OF-MANDATE and is left as §§1-7 work ... Recorded, not fixed, which is exactly what the mandate boundary prescribes" is wrong in its last clause. The boundary says such a finding "is recorded and fixed as ordinary milestone work under §§1–7", and AC3 says the same; recorded-and-not-fixed is what it does NOT prescribe. Found by the review fan-out (A9, 80), which named the contradiction without picking a side; the record is the side that was wrong.
+- 2026-07-30: T15 — F10 fixed as the boundary prescribes, and its two named instances corrected on re-derivation. Negating the zero-unresolved bar in place and negating the fresh-reader placement in place BOTH red the suite, so neither is the green rule F10 reported. The two pre-M123 §8 rules that do invert green are the reader's own mandate ("checks any two of three things and reports discrepancies in summary" — the count the boundary later calls "the three named checks above", and the verbatim-reporting rule) and the operation half of the cut ("The author runs none of it" — the wrong rule the clause exists to rule out). Both now pinned: 1 new assert + 1 registry entry, 1 anchor extended from the consequence to its premise + its registry block updated. Each reds its own test under in-place inversion, restored byte-identical.
+- 2026-07-30: T15 — D-087 appended (`git diff` on `cairn/DECISIONS.md` is +43/−0, so append-only, no entry edited). It narrows D-083 part 4's "a fix-authored record never leaves the certified scope" — the absolute round 1's D6 convicted in §8 and left standing in the entry, because IP4 attaches at append time — to the non-removal rule §8 ships, and shows part 4's conclusion survives on the narrowed premise. `dangling id tokens` OK after the append.
+- 2026-07-30: T15 verify — skills 747 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0.
 
 ## Decisions
 

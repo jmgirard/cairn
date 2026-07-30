@@ -2399,7 +2399,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_section_moves_certification_not_operation",
         target=GUARD_DOCTRINE,
-        block="this moves certification, not operation",
+        block="The author still runs everything —\nthis moves certification, not operation",
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2411,6 +2411,12 @@ REGISTRY = [
     # convergence fix. Losing the second leaves the clause readable as a
     # comfort measure, which invites tuning the round count — the move D-059
     # exists to forbid.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_reader_checks_three_things_and_reports_verbatim",
+        target=GUARD_DOCTRINE,
+        block="The reader checks three things and reports discrepancies verbatim:",
+    ),
     Mutation(
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_section_bounds_the_certified_scope_against_regress",

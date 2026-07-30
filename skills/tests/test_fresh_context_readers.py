@@ -305,9 +305,29 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         )
 
     def test_section_moves_certification_not_operation(self):
+        # Round 3's F10, re-derived at return 1: the anchor pinned only the
+        # consequence, so "The author runs none of it" inverted green — which
+        # is the rule the whole section is scoped by, since banning the author
+        # from RUNNING its own guard is the wrong rule this clause exists to
+        # rule out. The anchor now opens on the premise.
         self.assertRegex(
             self.doctrine,
+            r"The\s+author\s+still\s+runs\s+everything\s+—\s+"
             r"this moves certification, not operation",
+        )
+
+    def test_the_reader_checks_three_things_and_reports_verbatim(self):
+        # Round 3's F10, re-derived at return 1. F10 named this the
+        # "fresh-reader placement"; the placement sentence is pinned above and
+        # reds. What actually inverted green was the reader's own mandate —
+        # "checks any two of three things and reports discrepancies in
+        # summary" — which is both the count the mandate boundary calls "the
+        # three named checks above" and the verbatim-reporting rule that stops
+        # a certifier's report becoming the author's paraphrase of it.
+        self.assertRegex(
+            self.doctrine,
+            r"The\s+reader\s+checks\s+three\s+things\s+and\s+reports\s+"
+            r"discrepancies\s+verbatim:",
         )
 
     def test_section_bounds_the_certified_scope_against_regress(self):
