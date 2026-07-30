@@ -314,12 +314,15 @@ class TestDescriptionLayerCertification(unittest.TestCase):
 
     def test_section_carries_its_own_falsifier(self):
         # An adopted step with no stated exit is how a mechanism measured not
-        # to work gets tuned instead of retired (D-059).
+        # to work gets tuned instead of retired (D-059). D-083 replaced the
+        # round-count falsifier with a yield-based pair; the quantity it counts
+        # is the rule, because a round count is what this section's own rules
+        # change and so is satisfiable by construction (RR09 q4).
         self.assertRegex(
             self.doctrine,
-            r"if guard-authoring\s+milestones still average multiple "
-            r"description-layer returns after adoption,\s+the step didn't work "
-            r"— retire it \(D-059\), don't tune it",
+            r"It counts yield and not\s+rounds, because the round count is "
+            r"precisely what the two rules above change,\s+and a measure its "
+            r"own subject can satisfy by construction measures nothing",
         )
 
 

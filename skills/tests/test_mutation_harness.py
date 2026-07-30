@@ -2405,7 +2405,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_section_carries_its_own_falsifier",
         target=GUARD_DOCTRINE,
-        block="if guard-authoring\nmilestones still average multiple description-layer returns after adoption,\nthe step didn't work — retire it (D-059), don't tune it",
+        block="It counts yield and not\nrounds, because the round count is precisely what the two rules above change,\nand a measure its own subject can satisfy by construction measures nothing.",
     ),
     # M116 (D-069). Two entries: the exclusion itself, and the reason it is a
     # convergence fix. Losing the second leaves the clause readable as a

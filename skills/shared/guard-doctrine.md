@@ -359,7 +359,52 @@ independently confirmed. That is a deliberate narrowing of the zero-unresolved
 bar rather than an oversight, and the cost it creates is exactly what the
 falsifier's second clause below counts.
 
-**This step carries its own falsifier**, stated up front rather than left for
-a later argument about whether it is pulling its weight: if guard-authoring
-milestones still average multiple description-layer returns after adoption,
-the step didn't work — retire it (D-059), don't tune it.
+**What grounds the provenance rule is record churn, not M119's round count.**
+Three measured cases, each read out of the revision named beside it. M114 pass
+8's round 4 found discrepancies only in the narrative its own earlier rounds had
+written — four false claims in a round-3 entry, plus a neighbour re-recording
+two observations logged three entries earlier (`a25e6dd^`). M119's rounds 5–9
+returned eleven record errors, none of them sitting in text that existed before
+round 1 (`016a210`). M121's round 2 returned twelve findings, five of which had
+round 1's own fix prose as their only subject (`8763368^`).
+
+On M119's record the provenance rule alone changes the round count by **zero**,
+and the paragraph says so rather than claiming a saving it does not produce:
+each of rounds 5–9 also returned coverage gaps — three, four, two, two and one
+(`016a210`) — and a coverage gap is a finding about executable surface, which
+the rule never shields. The mandate boundary is the rule that reaches that
+count. Replayed under it, M119 stops after round 6, saving three rounds;
+round 6's `kind`-label gap is the one classification that could go either way,
+since those two labels are AC1's own pasted-output-or-fenced-block distinction,
+and reading it as in-mandate stops the replay after round 7 instead. Tolerance:
+±1 round, on that gap.
+
+**This step carries its own falsifier**, stated up front rather than left for a
+later argument about whether it is pulling its weight. It counts yield and not
+rounds, because the round count is precisely what the two rules above change,
+and a measure its own subject can satisfy by construction measures nothing.
+Measured over the next three guard-authoring milestones that run §8, the window
+closing when the third completes:
+
+- **(i)** If the rounds after each milestone's first return, totalled across the
+  window, zero shipped-behaviour defects and zero findings whose subject is
+  pre-round-1 surface, then the rounds after the first have stopped earning
+  their cost — retire them and run §8 as a single certification pass. A finding
+  counts where it was **found**, never where it was fixed, so routing one to
+  §§1–7 does not remove it from the count. Tolerance: exact zero on both counts,
+  and the window counts only if at least one of its three milestones convened a
+  round after its first — a window that never ran a later round has not measured
+  one.
+- **(ii)** If any fix-authored record corrected in place is later found false —
+  by the three-lens review, or by a subsequent milestone — then the in-place
+  route has failed, and that class returns to round-opening. Tolerance: one
+  occurrence.
+
+Clause (i) counts whether the later rounds still find anything the two rules
+above have not already disposed of. Clause (ii) counts the cost those rules
+create, which is records corrected without an independent read — a cost the
+round-count falsifier this replaces could not see. Both are countable from work
+logs as milestones already write them. Replacing that falsifier rather than
+retiring the step is a supersession argued in D-083, not a quiet loosening:
+D-059's retire-don't-tune rule bites on tuning a measure that works, and the
+claim there is that a measure of the wrong quantity is replaced instead.

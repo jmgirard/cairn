@@ -129,9 +129,9 @@ not reopened here.
 - [x] T3 — Write the mandate boundary and its "clears both" composition (AC3).
 - [x] T4 — Restate §8's confirmation-obligation sentences so each class carries
       exactly one, and enumerate them as evidence (AC4).
-- [ ] T5 — Write the yield-based falsifier and the evidence paragraph from T1's
+- [x] T5 — Write the yield-based falsifier and the evidence paragraph from T1's
       figures (AC5, AC7).
-- [ ] T6 — Append the superseding `cairn/DECISIONS.md` entry covering every
+- [x] T6 — Append the superseding `cairn/DECISIONS.md` entry covering every
       D-067/D-069/D-070/D-082 claim T2–T5 changed, plus any standing D-entry
       figure T1's re-derivation contradicts (AC6, AC7).
 - [ ] T7 — Author the asserts for AC1–AC5's rules, register positive blocks in
@@ -174,6 +174,13 @@ not reopened here.
 - 2026-07-30: T4 — M104's trap hit and fixed as guard-doctrine §1 prescribes: the edit reflowed `this moves certification, not operation` across a line break, reddening a guard on a rule this milestone never touched. Fixed by re-wrapping the TARGET, never the assert.
 - 2026-07-30: T4 — `test_section_requires_zero_unresolved_and_forbids_arguing_down` re-anchored to the shipped bytes and its mutation-registry block updated (AC8, brought forward from T7 because T4 is what invalidated it). Verified by inversion, not only by blanking: negating the rule to "or argued down as imprecision where the author judges it immaterial" reds the suite (failures=1, errors=1); restored and diffed byte-identical.
 - 2026-07-30: T2-T4 verify — three suites exit 0 each (skills 700), `cairn_validate` exit 0, run from the repo root with exit codes captured per suite.
+
+- 2026-07-30: T5 — the evidence paragraph ships the record-churn ground with each count carrying its revision (`a25e6dd^`, `016a210`, `8763368^`), states the provenance rule changes M119's round count by ZERO with the gap sequence 3,4,2,2,1 as the reason, and states the mandate boundary's projection separately.
+- 2026-07-30: T5 — AC7(b) derived rather than restated: M119's rounds 5-9 gaps classified against M119's OWN AC1 clauses (`016a210`) puts round 5 in-mandate (the signature set and fence handling ARE AC1's two clauses, under-pinned) and rounds 7-9 out. Replay stops after round 6, saving three. DISAGREEMENT with RR09 recorded: RR09 places its ±1 tolerance on round 5's classification; the derivation puts round 5 beyond doubt and the genuine coin-flip on round 6's `kind`-label gap, since those two labels are AC1's pasted-output-or-fenced-block distinction. Shipped prose carries the tolerance on round 6.
+- 2026-07-30: T5 — `test_section_carries_its_own_falsifier` re-anchored from the retired round-count falsifier to the replacement's operative rule (the quantity it counts), registry block updated (AC8, brought forward for the same reason as T4's).
+- 2026-07-30: T6 — D-083 appended (append-only; no existing entry edited). Supersedes D-082 part 2's restoration of the round-count falsifier, narrows D-067's zero-unresolved bar twice with both narrowings named, annotates D-069/D-070 as compatible rather than superseded, and corrects D-081's ten-of-eleven measurement per T1's derivation. `dangling id tokens` stayed OK after the append — M115's lesson predicts a possible batch of newly-unmasked references and none appeared.
+- 2026-07-30: T6 — durable-record preview for D-083 was its verbatim rendering in the authoring command immediately before the commit, not a second re-print of the same 70 lines. Recorded as a disclosed reading of D-036 rather than left implicit.
+- 2026-07-30: T5-T6 verify — three suites exit 0 each, `cairn_validate` exit 0.
 
 ## Decisions
 
