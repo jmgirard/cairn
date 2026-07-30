@@ -1,6 +1,6 @@
 # M123: Rebuild guard-doctrine §8 so its certification loop converges
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -215,6 +215,9 @@ not reopened here.
 
 - 2026-07-30: FIRST MEASUREMENT of the rules M123 ships, taken by classifying round 2's own 13 findings under them. Shielded as fix-authored records: 4 (D1, D7, D8, D13 — all false claims in round 1's fix prose). Out of mandate, routed to §§1-7: 4 (D10, D11, D12 and D5's unpinned counts — §8 rules that no acceptance-criterion clause pins). Still reopening: 5 (D2, D4, D6 are AC1/AC4 clauses left unpinned, which is check 1; D9 is a contradiction in shipped doctrine; D3 is a false docstring claim about original text). So the rebuilt rules would have cut round 2's reopening set from 13 to 5 — a real reduction, and NOT a stop: a round 3 is convened either way. Recorded because it is the honest first data point for the falsifier's clause (i), and because it shows the rules do less than a reader might assume from RR09's projection.
 - 2026-07-30: round 2's fixes are themselves uncertified under the pre-rebuild rules ("fixed and re-certified"), so a round 3 is owed. Surfaced to the maintainer rather than decided here: RR09 faults D-079 as "authored by the session whose loop it excuses", and the same objection reaches a session deciding its own loop is finished. Round counts so far: 16, 13.
+
+- 2026-07-30: STATUS -> blocked at the maintainer's call. BLOCKER: an escalated review on whether §8 should survive at all, given that its own rebuild took two certification rounds and thirteen unpinned rules to stabilise. The maintainer chose escalation over running a round 3, over entering review with the deviation recorded, and over switching this milestone to the rules it ships. Routed to `/milestone-brief`; the milestone resumes on RR ingestion.
+- 2026-07-30: STATE AT THE BLOCK — all 8 tasks checked; skills 744 / scripts 332 / hooks 103 each exit 0, `cairn_validate` exit 0; §8 rebuilt at 162 lines from 46; D-083 and D-084 appended; two §8 rounds run and both closed at zero unresolved (16 findings, then 13). No acceptance criterion is ticked — AC ticks are review's under AC fencing. Nothing is pushed and no PR exists.
 
 ## Decisions
 
