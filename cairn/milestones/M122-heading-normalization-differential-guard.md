@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** `m122-heading-normalization-differential-guard`
+- **Branch/PR:** `m122-heading-normalization-differential-guard` · https://github.com/jmgirard/cairn/pull/122
 
 ## Goal
 
@@ -37,7 +37,7 @@ post-merge hygiene pass, decided at the plan gate 2026-07-30.
 
 ## Acceptance criteria
 
-- [ ] AC1: A guard in `hooks/tests/test_hooks.py` asserts, for every row of one
+- [x] AC1: A guard in `hooks/tests/test_hooks.py` asserts, for every row of one
       shared table, that three verdicts agree: the counters' (from writing a real
       milestone file and calling `cairn_scripts.milestone_body_line_count`), the
       hook's (from `session_context.milestone_part`, reading whether an elision
@@ -46,7 +46,7 @@ post-merge hygiene pass, decided at the plan gate 2026-07-30.
       measured verdict restates the other's expression, and every fixture section
       carries more than `MIN_TAIL_BLOCKS` entries (`session_context.py:59`, = 3),
       below which no budget elides and the guard would red on correct code.
-- [ ] AC2: The table covers both axes. Format: `## Work log`, `## Work Log`,
+- [x] AC2: The table covers both axes. Format: `## Work log`, `## Work Log`,
       `## WORK LOG`, `##  Work log` (two spaces), `## Work log ` (trailing space).
       Site: at least one `## Review` and one `## Decisions` rendering, because the
       counters normalize at two sites — `cairn_scripts.py:375-376` (boundary) and
@@ -56,26 +56,26 @@ post-merge hygiene pass, decided at the plan gate 2026-07-30.
       layer's support for either fence reds.
       Controls: `## Reviewers`, `## Decisions notes`, `## Scope`. Every rendering
       is pinned individually — dropping any single row reds.
-- [ ] AC3: Each control pairs its no-marker assert with a positive signal that the
+- [x] AC3: Each control pairs its no-marker assert with a positive signal that the
       section was injected whole (its own content present in the returned text),
       so a `milestone_part` returning nothing cannot satisfy it.
-- [ ] AC4: A non-vacuity assert over the OBSERVED verdicts fails when the table
+- [x] AC4: A non-vacuity assert over the OBSERVED verdicts fails when the table
       stops exercising both outcomes, proven both ways: reduced to exempt-only
       rows the hooks suite reds, reduced to controls-only it reds.
-- [ ] AC5: Guard-must-fail evidence in the Review section, scoped to the new test
+- [x] AC5: Guard-must-fail evidence in the Review section, scoped to the new test
       class — 7 of 98 hooks tests already red on the `.lower()` mutation
       pre-milestone (baseline measured 2026-07-30), so a whole-suite verdict
       proves nothing about this guard: `.strip()` removed from
       `session_context.heading_name` reds the new class; `.lower()` removed reds
       it; both restored, it passes.
-- [ ] AC6: The candidate row "The hook's heading normalization is unguarded
+- [x] AC6: The candidate row "The hook's heading normalization is unguarded
       against case drift" is gone from `cairn/ROADMAP.md`, and this file records
       what it got wrong: `.lower()` removal reds 7 of 98 hooks tests (the row
       claimed all 98 green), `hooks/` byte-identical to `016a210` so the tree had
       not moved, and `.strip()` the axis this milestone closes — with the hook's
       `~~~` fence support a second uncovered axis the sweep misread as red (that
       mutation errored, it did not catch).
-- [ ] AC7: The `verify` slot is clean — `skills/tests`, `scripts/tests` and
+- [x] AC7: The `verify` slot is clean — `skills/tests`, `scripts/tests` and
       `hooks/tests` all green, run from the repo root.
 
 ## Coverage
@@ -139,3 +139,46 @@ post-merge hygiene pass, decided at the plan gate 2026-07-30.
 ## Decisions
 
 ## Review
+
+_Evidence gathered 2026-07-30 by command on the branch tree at `9100a4d`; every
+figure below was re-run fresh at review, not carried from implement._
+
+- **AC1** — met. The three verdicts come from independent expressions: counters
+  `count == len(PREAMBLE.splitlines())` over a file written to a temp dir, hook
+  `"_cairn:" in part` over a real `milestone_part` call, expected from the table
+  literal. Both measured arms are proven load-bearing by mutation — dropping the
+  hook's normalization reds (13 and 4 failures), dropping either counters site
+  reds (1, 3 and 9). The `MIN_TAIL_BLOCKS` clause has its own assert
+  (`assertGreater(self.ENTRIES, self.sc.MIN_TAIL_BLOCKS)`).
+- **AC2** — met on all three axes. Format: the five renderings are present and
+  each is pinned individually. Site: `## Review `carries whitespace to the
+  boundary site, without which `cairn_scripts.py:375` drops green (this was the
+  round-2 certification finding). Fence: all four layer×fence mutations red —
+  hook ``` 1, hook `~~~` 1, counters `~~~` 1, and the counters' `~~~` case needs
+  the count assert because the exempt subtraction hides a mis-split from the
+  section list. Individual pinning measured by deleting each of the 13 rows in
+  turn: 13 red, none unnoticed.
+- **AC3** — met. Each control asserts the whole-section line count and both the
+  oldest and newest entry present alongside `marked is False`, so a
+  `milestone_part` returning nothing fails rather than passes.
+- **AC4** — met, both directions: table reduced to exempt-only rows reds (2
+  failures), reduced to controls-only reds (2). `test_the_table_exercises_both_verdicts_on_both_layers`
+  is among the failures in both.
+- **AC5** — met, scoped to the class as the criterion requires. `.strip()`
+  removed from `heading_name`: 4 failures in the class. `.lower()` removed: 13.
+  Both restored: the class passes. The scoping matters — 7 of the 98 pre-milestone
+  hooks tests already red on `.lower()`, so a whole-suite verdict would prove
+  nothing about this guard.
+- **AC6** — met. The candidate row is absent from `cairn/ROADMAP.md`, and the
+  three facts it got wrong are recorded in this file's work log and in AC6
+  itself: `.lower()` reds 7 of 98, `hooks/` byte-identical to `016a210`, and
+  `.strip()` the axis this milestone closes.
+- **AC7** — met. `skills/tests` 700 OK · `scripts/tests` 332 OK · `hooks/tests`
+  103 OK, all run from the repo root.
+
+**Consistency gate.** `cairn_validate` exit 0, all checks passed. The `generic`
+profile's `consistency-gate` slot names no toolchain checks, so that half is a
+clean no-op. No `DESIGN.md` principle changed (the header's `GP1` is a principle
+this milestone works under, not one it alters), so `cairn_impact --changed` does
+not apply. No returns: this is the milestone's first review pass, so neither
+thrash trigger is reached.
