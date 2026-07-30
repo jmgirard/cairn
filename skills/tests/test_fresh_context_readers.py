@@ -654,6 +654,23 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             r"the\s+classes\s+are\s+set\s+out\s+below\s+—\s+each\s+carries\s+exactly\s+one,\s+and\s+none\s+carries\s+two\.",
         )
 
+    def test_an_out_of_scope_record_is_d069_operating_not_this_rule(self):
+        # F3 (round 5): AC2 requires that §8 nowhere calls the provenance rule
+        # a certified-scope exclusion. This is the sentence that makes the
+        # attribution, and D-087 part 1 rests its whole narrowing of D-083
+        # part 4 on it. Unpinned, it swapped to "outside the certified scope
+        # for this rule's own reason" — §8 calling the provenance rule exactly
+        # what AC2 forbids — with the suite green. AC8's carve-out does not
+        # reach it: that routes a NEGATIVE or heading-bounded assert to a
+        # by-hand check, and this is an ordinary positive rule sentence,
+        # anchorable exactly like its pinned neighbour.
+        self.assertRegex(
+            self.doctrine,
+            r"A\s+record\s+can\s+of\s+course\s+be\s+outside\s+the\s+"
+            r"certified\s+scope\s+for\s+D-069's\s+own\s+reason,\s+and\s+"
+            r"that\s+is\s+D-069\s+operating,\s+never\s+this\s+rule\.",
+        )
+
     def test_the_compatibility_with_d070_is_stated(self):
         # D10 (round 2): rewritable to 'D-070 rules on both axes ... a partial
         # supersession' with the suite green — the exact claim D-083 part 4 rests on.
@@ -821,10 +838,88 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             r"The\s+three\s+measured\s+cases\s+and\s+the\s+revisions\s+they"
             r"\s+are\s+read\s+from\s+are\s+recorded\s+at\s+D-085\.",
         )
+
+    def test_the_clause_counting_pointer_names_its_entry(self):
         self.assertRegex(
             self.doctrine,
             r"What\s+each\s+clause\s+counts\s+is\s+recorded\s+at\s+D-085,"
             r"\s+with\s+the\s+argument\s+that\s+replacing",
+        )
+
+    def test_the_replay_projection_pointer_names_its_entry(self):
+        # F6 (round 5): round 4's fix pinned two of §8's five D-085 pointers
+        # and its record claimed all of them. These are the other three; each
+        # retargeted to D-084 with the suite green and `dangling id tokens`
+        # clean, because D-084 exists. A pointer to the wrong entry is worse
+        # than none: it reads as a citation and it resolves.
+        self.assertRegex(
+            self.doctrine,
+            r"its\s+replay\s+projection\s+and\s+tolerance\s+are\s+at\s+D-085\.",
+        )
+
+    def test_the_fourth_quantity_pointer_names_its_entry(self):
+        self.assertRegex(
+            self.doctrine,
+            r"why\s+the\s+fourth\s+is\s+counted\s+is\s+at\s+D-085\.",
+        )
+
+    def test_the_supersession_argument_pointer_names_both_entries(self):
+        self.assertRegex(
+            self.doctrine, r"loosening\s+\(D-083,\s+D-085\)\.",
+        )
+
+    # --- F7 (round 5): seven more pre-M123 §8 rules that inverted green. No
+    # M123 criterion names them, so they are out-of-mandate — and §8's own
+    # boundary says such a finding is recorded AND fixed as §§1–7 work.
+
+    def test_operation_self_corrects_and_certification_does_not(self):
+        self.assertRegex(
+            self.doctrine,
+            r"Operation\s+self-corrects:\s+suites,\s+the\s+mutation\s+"
+            r"harness,\s+and\s+the\s+sweeps\s+all\s+report\s+against\s+the"
+            r"\s+artifact,\s+so\s+an\s+author\s+who\s+runs\s+them\s+finds"
+            r"\s+its\s+own\s+mistakes\.",
+        )
+
+    def test_the_coverage_check_forbids_a_believed_cover(self):
+        self.assertRegex(
+            self.doctrine,
+            r"and\s+no\s+criterion\s+is\s+covered\s+only\s+by\s+an\s+"
+            r"assert\s+the\s+author\s+believes\s+covers\s+it\.",
+        )
+
+    def test_the_accuracy_check_reads_out_of_the_file_not_the_narrative(self):
+        self.assertRegex(
+            self.doctrine,
+            r"read\s+out\s+of\s+that\s+file\s+rather\s+than\s+out\s+of"
+            r"\s+the\s+milestone's\s+narrative\.",
+        )
+
+    def test_the_anchor_check_includes_the_targets_hard_wrap(self):
+        self.assertRegex(
+            self.doctrine, r"including\s+under\s+the\s+target's\s+hard\s+wrap\.",
+        )
+
+    def test_the_scope_bound_leaves_the_zero_unresolved_bar_intact(self):
+        self.assertRegex(
+            self.doctrine,
+            r"Zero\s+unresolved\s+stays\s+the\s+bar;\s+what\s+this\s+"
+            r"excludes\s+is\s+a\s+scope\s+that\s+regresses\.",
+        )
+
+    def test_a_fix_authored_record_is_still_read_and_still_corrected(self):
+        self.assertRegex(
+            self.doctrine,
+            r"A\s+fix-authored\s+record\s+is\s+still\s+read\s+and\s+still"
+            r"\s+corrected:",
+        )
+
+    def test_the_narrowing_of_the_bar_is_named_as_deliberate(self):
+        self.assertRegex(
+            self.doctrine,
+            r"—\s+a\s+deliberate\s+narrowing\s+of\s+the\s+zero-unresolved"
+            r"\s+bar,\s+whose\s+cost\s+the\s+falsifier's\s+clause\s+"
+            r"\(ii\)\s+counts\.",
         )
 
     # --- structural properties, which no single-phrase anchor can carry ---
@@ -879,6 +974,31 @@ class TestDescriptionLayerCertification(unittest.TestCase):
                 f"without naming it",
             )
 
+    def test_the_sufficiency_arm_sits_in_the_clears_both_lines_paragraph(self):
+        # F2 (round 5): AC10 carries BC1 by reference, and BC1 requires the
+        # sufficiency arm be stated "in the clears-both-lines paragraph and not
+        # in the shield paragraph". Round 3's F6 was closed by SATISFYING that
+        # placement — the sentence was merged into that paragraph — and nothing
+        # pinned it. Every anchor is a whole-file regex whose `\s+` spans a
+        # paragraph break, so the sentence moved into the shield paragraph, and
+        # out of §8 entirely, with the suite green both times. Placement is a
+        # property of the section, so it is derived from the section.
+        para = self._paragraph_containing(
+            "A finding reopens a round only if it clears both lines"
+        )
+        self.assertIn(
+            "clears both lines is a reopening finding",
+            " ".join(para.split()),
+            "BC1 places the sufficiency arm in the clears-both-lines "
+            "paragraph; it is not there",
+        )
+        shield = " ".join(self._paragraph_containing(
+            "That is a shield and never a licence").split())
+        self.assertNotIn(
+            "clears both lines is a reopening finding", shield,
+            "BC1 forbids the sufficiency arm in the shield paragraph",
+        )
+
     def test_the_class_is_never_called_by_a_synonym(self):
         # D5 (round 1), D4 (round 2), and DELETED IN ERROR at T10/T11 —
         # restored at round 3's F1, which is the finding that caught it. AC1
@@ -911,10 +1031,20 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             m.group(1).lower()
             for m in re.finditer(r"(\w[\w-]*)\s+records?\b", flat, re.I)
         }
-        coined = {
-            h for h in heads
-            if h != "fix-authored" and ("-" in h or h.endswith(("ed", "ing")))
+        # F1 (round 5): restricting the flag to hyphenated-or-participial
+        # modifiers left "A neutral record" green — a renaming that REUSES the
+        # noun, which is the side of the round-4 gate's line that ships pinned.
+        # So the licensed set is a closed grammatical class (determiners,
+        # conjunctions, prepositions, copula, the possessive fragment) read off
+        # §8's own text, and any content word modifying "record" is a coinage.
+        FUNCTION_WORDS = {
+            "a", "an", "the", "this", "that", "these", "those", "every",
+            "each", "any", "no", "some", "one", "and", "or", "but", "not",
+            "is", "are", "was", "were", "be", "in", "on", "of", "to", "for",
+            "from", "by", "with", "its", "their", "own", "s",
         }
+        coined = {h for h in heads if h != "fix-authored"
+                  and h not in FUNCTION_WORDS}
         self.assertEqual(
             coined, set(),
             f"§8 gives the class a second name: {sorted(coined)}",
