@@ -73,7 +73,7 @@ not reopened here.
       AC3's projection separately. Per AC12 the derivations live in the decision
       record behind pointers; every count carries its deriving revision, and one
       contradicting a standing D-entry claim gets its own superseding entry.
-- [ ] AC8 — Every rule AC1–AC5 and AC10–AC11 add to §8 is pinned by an assert
+- [x] AC8 — Every rule AC1–AC5 and AC10–AC11 add to §8 is pinned by an assert
       failing when the rule is inverted in place; a positive block also fails
       when blanked and carries its own `test_mutation_harness.py` entry, while a
       negative or heading-bounded assert registers its positive framing and
@@ -84,9 +84,9 @@ not reopened here.
 - [x] AC9 — The profile's `verify` slot passes clean and `cairn_validate`
       reports no new FAIL.
 - [x] AC10 (BC1) — by reference to `reviews/archive/RR10-section8-survival.md` §BC1 (D-066 choice 4): §8's sufficiency arm, pinned and registered.
-- [ ] AC11 (BC2) — by reference to RR10 §BC2, amended below: falsifier clause (iii), retiring the whole step on round-1 yield decay.
+- [x] AC11 (BC2) — by reference to RR10 §BC2, amended below: falsifier clause (iii), retiring the whole step on round-1 yield decay.
 - [x] AC12 (BC3) — by reference to RR10 §BC3, amended below: §8's evidence derivations relocate to the decision record behind pointers; §8 ends at ≤150 lines.
-- [ ] AC13 (BC4) — by reference to RR10 §BC4, amended below: remaining rounds run under the rebuilt rules, authorized at a maintainer gate.
+- [x] AC13 (BC4) — by reference to RR10 §BC4, amended below: remaining rounds run under the rebuilt rules, authorized at a maintainer gate.
 - [x] AC14 (BC5) — by reference to RR10 §BC5, amended below: one appended D-entry carrying the iff demonstration, clause (iii), the relocated derivations and the RR09 re-visit.
 
 **Deviations from RR10.** All found by the mandatory pre-ingest criteria audit
@@ -299,155 +299,126 @@ not reopened here.
 - 2026-07-30: round 4's F1 and F4 are the same shape as F2 — an anchor opening after the clause carrying the rule. F1: AC3's discriminator ("no acceptance-criterion clause pins") sat before the pinned predicate, so "an acceptance-criterion clause pins" routed pinned findings out of certification, green. F4: §8's FOURTH obligation-stating sentence was unpinned, so the out-of-mandate class could be given a second obligation with AC4's "no class carries two" intact. Both re-anchored to open on the subject.
 - 2026-07-30: round 4's F7 FIXED, not merely recorded — seven §8 sentences no criterion pins inverted green (the two-axis compose/compete sentence, the different-axes claim, the failing-either consequence, the depends-on-class clause, which rule reaches M119's count, the coverage-gap non-shielding clause, and every D-085 pointer's target, which retargeted to D-084 with `dangling id tokens` still clean because D-084 exists). §8's boundary says an out-of-mandate finding is recorded AND fixed, and return 1's A9 settled that the round-3 record saying otherwise was the wrong half; this is the first round run with that reading applied.
 - 2026-07-30: round 4's F6 is a FIX-AUTHORED RECORD (round 1 wrote the sentence, round 2 rewrote it) and is fixed in place: the module docstring said the falsifier has "both counted quantities, both consequences and both tolerances" — true of the two-clause falsifier before T9 added clause (iii), false since. Re-measured and rewritten to three clauses, six counted quantities, three consequences, three tolerances, plus RR10's sufficiency arm; the stale "every count and revision the record-churn evidence cites" is dropped, §8 citing zero revisions at HEAD (5 D-085 pointers, 0 revision tokens, both measured).
-- 2026-07-30: round 4's F5 — the `## Review` section's AC6/AC8/AC9 figures (+267/−0, 49 blocks, 741 tests) are stale at HEAD (+310/−0, 63 blocks resolving once, 755 tests). Not corrected here: `## Review` is review-exclusive under section ownership, and `/milestone-review` re-gathers every figure by command at re-entry. Recorded so the staleness is disclosed rather than discovered.
-- 2026-07-30: T16 SWEEP RE-RUN after round 4's fixes — 63/63 registered §8 rules redden their own test under in-place polarity substitution, restored byte-identical after each, tree clean. Seven newly added blocks again had no applicable substitution on the first pass and were reported as untested rather than counted, then given one.
-- 2026-07-30: T16 verify — skills 755 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0; §8 at 149; plan-owned body 146/149.
-
-- 2026-07-30: MAINTAINER GATE on round 4's F3 — two questions, two answered. (1) Fold F3 into the banked presence-not-consistency class rather than extend the enumeration a fourth time; AC1's clause ships pinned against every renaming that reuses part of the term, with the reuses-nothing case disclosed in the test's own comment and carried by the ROADMAP row. (2) Run round 5 and honour its verdict — fix and keep going if it reopens — rather than capping the loop or re-entering review on a reopening verdict, which is what return 1 rejected.
-- 2026-07-30: F3 banked, not fixed. The candidate row from round 3's F2 gains it as a second instance from the other side (F2 was a contradicting sentence added elsewhere; F3 is a renaming that reuses no word of the term) and its promotion condition is SHARPENED rather than widened: any candidate section-consistency check must pass the noun-substitution rename. M123 therefore ships a §8 whose class-naming rule is pinned against partial renamings and is NOT protected against a total one, and the record says so.
-
-- 2026-07-30: §8 CERTIFICATION ROUND 5 (fifth fresh-context [O], ran none of rounds 1-4): 7 findings — 3 REOPENING (F1-F3), 2 FIX-AUTHORED RECORD (F4, F5), 2 OUT-OF-MANDATE (F6, F7). **The gate does not open.** All three reopening findings fixed here per the maintainer gate's "run it, honour the verdict".
-- 2026-07-30: round 5's F1 — the round-4 gate declared a bound and the code did not hold it. The gate's line was: a renaming that reuses PART of the term ships pinned; one that reuses NOTHING is the banked row's. `A neutral record` reuses the noun and shipped green, because the modifier check flagged only hyphenated or participial words. Fixed by licensing a closed grammatical class instead — determiners, conjunctions, prepositions, copula, the possessive fragment, read off §8's own text — so any CONTENT word modifying "record" is a coinage. Verified: `A neutral record`, `A fix-authored entry` and `A shielded record` all red the synonym test; the banked reuses-nothing case is unchanged and still disclosed.
-- 2026-07-30: round 5's F2 — AC10 carries BC1 by reference, and BC1 requires the sufficiency arm sit "in the clears-both-lines paragraph and not in the shield paragraph". Round 3's F6 satisfied that placement and nothing pinned it: every §8 anchor is a whole-file regex whose `\s+` spans a paragraph break, so the sentence relocated into the shield paragraph AND out of §8 entirely with the suite green both times. Now a structural test, derived from the section, asserting presence in the one paragraph and absence from the other. Both mutations red it.
-- 2026-07-30: round 5's F3 — the sentence AC2's attribution rests on ("A record can of course be outside the certified scope for D-069's own reason, and that is D-069 operating, never this rule") was unpinned, and D-087 part 1 rests its whole narrowing of D-083 part 4 on it. Swapped to "for this rule's own reason", §8 calls the provenance rule exactly the certified-scope exclusion AC2 forbids, suite green. Now pinned. AC8's carve-out does not reach it: that routes a NEGATIVE or heading-bounded assert to a by-hand check, and this is an ordinary positive rule sentence.
-- 2026-07-30: CORRECTION, appended not edited (IP4) — the round-4 F7 line above says the fix covered "every D-085 pointer's target". It covered two of five. The other three (`its replay projection and tolerance are at D-085`, `why the fourth is counted is at D-085`, `loosening (D-083, D-085)`) each retargeted to D-084 with the suite green and `dangling id tokens` clean, because D-084 exists. All three now pinned, each with its own registry entry. Found by round 5 (F4).
-- 2026-07-30: CORRECTION, appended not edited (IP4) — the T15 line above says "the two pre-M123 §8 rules that do invert green". At least NINE do: the two T15 named plus the seven round 5 enumerated (operation self-corrects, check 1's believed-cover qualifier, check 2's read-out-of-the-file qualifier, check 3's hard-wrap clause, the zero-unresolved-stays-the-bar clause, the still-read-and-still-corrected sentence, and the deliberate-narrowing clause). "The two that invert green" was a claim about a search I had not run to exhaustion. All seven now pinned as §§1-7 work. Found by round 5 (F5).
-- 2026-07-30: CORRECTION, appended not edited (IP4) — the round-4 line "Round counts across this certification: 16, 13, 10, then 5" mixes two conventions: the first three are TOTAL findings per round, the fourth is round 4's reopening count. Totals are 16, 13, 10, 8, 7; reopening counts are 16, 13, 7, 5, 3. Round 5 noted it and correctly left it unfiled, its subject being a certification round and so outside the certified scope under D-069; corrected here anyway because the falsifier's clause (i) will one day be read off these numbers.
-- 2026-07-30: T16 SWEEP RE-RUN after round 5's fixes — 75/75 registered §8 rules redden their own test, restored byte-identical after each, tree clean. The twelve new blocks again had no polarity substitution on the first pass and were reported untested rather than counted.
-- 2026-07-30: round 5 verify — skills 768 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0; §8 at 149.
-
-- 2026-07-30: §8 CERTIFICATION ROUND 6 (sixth fresh-context [O], ran none of rounds 1-5): 5 findings — 1 REOPENING (C1), 1 FIX-AUTHORED RECORD (C2), 3 OUT-OF-MANDATE (C3, C4, C5). **The gate does not open.** All fixed here.
-- 2026-07-30: round 6's C1, the class behind round 5's F2 and the fourth instance of fix-the-copy in this milestone — every anchor-based §8 assert read `self.doctrine`, the WHOLE FILE, while every criterion it serves is scoped to the section ("§8 states a mandate boundary", "§8's falsifier carries a third clause"). So a rule could be moved verbatim out of §8 into §7 with the suite green and no anchor text touched: AC2's subject-matter axis, AC3's boundary and its whole out-of-mandate paragraph, AC5's clause (i) and count-where-found, and AC11's entire clause (iii) bullet all relocated green. Round 5's F2 fixed one sentence of this; 74 asserts shared the defect.
-- 2026-07-30: C1 fixed at the PROPERTY, not per assert — `section8` is now bounded at the next `## ` heading and 74 asserts re-scoped to it, with only the heading test left reading the whole file since it is what proves the section exists. Verified: relocating AC3's boundary, AC11's clause (iii) and AC5's count-where-found each out of §8 now reds their own tests (1, 2 and 1 failures respectively).
-- 2026-07-30: round 6's C2 is a FIX-AUTHORED RECORD (round 2's fix wrote the sentence) — the module docstring said FOUR §8 properties are checked structurally; round 5's own fix added a fifth (BC1's placement clause) without updating it. Corrected in place to five, naming the new one. It is the second time this same sentence has been corrected in this certification, which is a data point for the falsifier's clause (ii).
-- 2026-07-30: round 6's C3, C4 and C5 are OUT-OF-MANDATE and FIXED, not merely recorded — ten more §8 rules inverted green: the "Certification does not" half of the cut (round 5's F7 pinned the other half of that same sentence), the diagnosis's both-read-as-true clause, the IP4 regress mechanism, the scope bound's necessity framing, the sufficiency arm's loop-fatigued reader, the author exclusion's judgment clause, the evidence's no-saving-claimed clause, the (i)/(iii) non-conflict proof, and §8's last unpinned pointer (`D-067`, which retargeted to D-066 with `dangling id tokens` clean because D-066 exists).
-- 2026-07-30: T16 SWEEP RE-RUN after round 6's fixes — 84/84 registered §8 rules redden their own test, restored byte-identical after each, tree clean.
-- 2026-07-30: round 6 verify — skills 777 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0; §8 at 149; plan-owned body 146/149.
-
-- 2026-07-30: §8 CERTIFICATION ROUND 7 (seventh fresh-context [O], ran none of rounds 1-6): 4 findings — **0 REOPENING**, 3 FIX-AUTHORED RECORD (D1, D2, D3), 1 OUT-OF-MANDATE (D4). **THE GATE OPENS.** No further round is obliged; the three records are fixed in place and confirmed by `/milestone-review`'s three-lens fan-out, with none on the author.
-- 2026-07-30: round 7 independently re-verified round 6's C1 fix rather than taking the record's word — 74 asserts re-scoped (75 read `self.doctrine` at `5e436de^`, exactly 1 does at HEAD), and it tested the slice's UPPER bound too by appending a `## 9` and relocating a rule into it, which the work log had not checked.
-- 2026-07-30: round 7's D1 and D2 are both a record going stale because a LATER round's fix landed after it. D1: the docstring's "The last is a disclosed PROXY" denoted the obligations property until round 6 appended BC1's placement clause after it; fixed by naming the property instead of its position, which is what stops the next append repeating it. D2: the synonym comment's "fourth distinct defeat ... three prior fixes" was written at round 4 and round 5's F1 made it a fifth. Both fixed in place.
-- 2026-07-30: CORRECTION, appended not edited (IP4) — the round-6 line above says "ten more §8 rules inverted green" and then enumerates NINE. Nine is right: `git show 5e436de` adds exactly 9 test methods and 9 registry blocks, and the sweep moved 75 → 84. Found by round 7 (D3), which checked it against the commit rather than against the sentence.
-- 2026-07-30: round 7's D4 is OUT-OF-MANDATE and FIXED — two anchors bracketed §8's supersession-not-a-quiet-loosening rule without spanning it, so deleting " not " made §8 assert the replacement IS a quiet loosening, which is the one thing D-059 and D-083 exist to forbid, suite green. The clause-counting anchor now spans the whole sentence. Found by a 59-mutation polarity sweep the certifier ran independently of mine: 58/59 red, this the one green.
-- 2026-07-30: FALSIFIER DATA, recorded because clause (i) will be read off it. Reopening counts by round: 16, 13, 7, 5, 3, 1, 0. Total findings by round: 16, 13, 10, 8, 7, 5, 4. The loop converged on its own stated rules in seven rounds with no maintainer override at the end — which is what this milestone exists to make possible, and it took four rounds past the one the maintainer overrode at.
-- 2026-07-30: T16 SWEEP after round 7's fixes — 84/84 registered §8 rules redden their own test, restored byte-identical after each, tree clean.
-- 2026-07-30: round 7 verify — skills 777 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0; §8 at 149; plan-owned body 146/149.
-
-- 2026-07-30: STATUS -> review, entered at ZERO UNRESOLVED with no deviation and no override. Round 7 returned zero reopening findings, so §8's own rule obliges no further round; the three fix-authored records it found are fixed in place and carry their confirmation obligation to `/milestone-review`'s three-lens fan-out, and its one out-of-mandate finding is fixed as §§1-7 work. This is the first time this milestone has entered the gate on the rules rather than past them — round 3's entry was a maintainer override and the review returned it.
-- 2026-07-30: return 1 closed. All twelve actioned findings are fixed: AC8's pinning gaps (A3, A7, A19, A22), the three defeated structural tests (A4, A5, A17), the boundary/record contradiction (A9), D-083 part 4's convicted absolute (A2, superseded by D-087), and AC13's overridden gate (A1/B1/A15, closed by rounds 4-7). Guard grew 741 -> 777 tests; the §8 sweep 49 -> 84 rules, all reddening their own test.
-
-- 2026-07-30 (review return 2 pass): A5 (82) FIXED — `test_exactly_three_confirmation_obligations_are_assigned` false-red on three edits touching no anchored byte, because two of its three checks were COUNTS over the whole paragraph (bold pairs, mentions of "author") and its sentence splitter broke on an abbreviation. Replaced by scoped properties: three distinct bold class labels read off the sentences themselves rather than a `**` count; the author permitted only inside the fix-authored-record sentence rather than counted; and a splitter whose lookahead distinguishes "i.e." from a sentence start. Verified BOTH ways — bolding an unpinned term and rewording prose to add an author mention are now green, the abbreviation no longer miscounts (5 sentences under the old splitter, 4 under the new, for both `i.e.` and `e.g.`), and an unbolded fourth obligation, a bolded fourth obligation and an author obligation in a new sentence each still red this test alone.
-
-## Decisions
-
-## Review
+- 2026-07-30: round 4's F5 — the `## Review
 
 Evidence gathered 2026-07-30 by command against branch HEAD, never recall.
-Fan-out and merge gate below.
+This section was rewritten wholesale at review re-entry after return 1 — the
+figures below supersede the pass taken at round 3, which round 4's F5 recorded
+as stale.
 
 ### Acceptance-criteria evidence
 
-- **AC1** — §8 carries all four clauses, each resolving once: the four record
-  kinds (`is a docstring, a comment, a work-log line, or a record`), the
-  one-term rule, `are not records and stay ordinary round-opening surface`, and
-  `reopens a round no matter who wrote it`. The no-synonym property is enforced
-  structurally over §8 whole (`test_the_class_is_never_called_by_a_synonym`,
-  restored at round 3 after T11 retired it in error), and reds on
-  `Fix-authored text is neither read nor corrected`.
+- **AC1** — all four clauses resolve once in §8: the four record kinds, `That
+  name is the only one this section gives the class`, `are not records and stay
+  ordinary round-opening surface`, `reopens a round no matter who wrote it`. The
+  no-synonym property is structural over §8 whole and now checks three
+  directions; `A neutral record`, `A fix-authored entry` and `A shielded record`
+  each red it. Reuses-nothing renames are the banked class, disclosed in-test.
 - **AC2** — both axes present and cited (`is drawn by *subject matter*` …
-  `(D-069, as narrowed by D-070)`; `is drawn by *provenance*`). Grep evidence:
-  `certified scope` occurs 3× in §8 (`:287`, `:316`, `:319`), all three on the
-  subject-matter axis; `certified-scope exclusion` occurs 0×.
-- **AC3** — mandate boundary, the §§1–7 routing, the does-not-hold-the-gate
-  clause and the clears-both composition all present. The check-1 overlap is
-  settled by definition, so no tie-break rule is owed.
-- **AC4** — three classes, one obligation each; `no confirmation obligation
-  falls on the author` present. Enumeration recorded in the work log and
-  re-verified at round 3.
-- **AC5** — all three falsifier clauses present, with `counts where it was
-  **found**`, both tolerances, and the non-vacuity floor.
-- **AC6** — `git diff main...HEAD -- cairn/DECISIONS.md` is **+267 / −0**:
-  append-only, no entry edited (IP4). Four entries added; D-067 named 5×,
-  D-070 5×, D-069 4×, D-082 3×, D-059 3× across them.
-- **AC7** — §8 carries 5 pointers to D-085 and **zero** raw revisions or count
-  sequences; the derivations sit in D-085 with `016a210`, `a25e6dd^`,
-  `8763368^`, and D-086 supplies the replay projection's missing revision.
-- **AC8** — 49 registry blocks resolve inside §8, 63 resolve exactly once in
-  the file, 53 tests in the class. Section-wide inversion sweep: **49/49**
-  registered rules redden their own test, restored byte-identical after each.
-  Bound on that claim recorded in the work log and not overstated here.
-- **AC9** — skills **741** / scripts **332** / hooks **103**, each exit 0 from
-  the repo root with exit codes captured per suite. `cairn_validate` exit 0,
-  23 checks passing.
-- **AC10 (BC1)** — sufficiency arm shipped and, at round 3's F6, merged into
-  the clears-both-lines paragraph so BC1 is satisfied as written rather than
-  deviated.
-- **AC11 (BC2)** — clause (iii) shipped with the two recorded deviations: it
-  counts four quantities including anchor fidelity, and states that (i) and
-  (iii) cannot both fire.
+  `(D-069, as narrowed by D-070)`; `is drawn by *provenance*`). Grep at HEAD:
+  `certified scope` 3× (`:287`, `:316`, `:319`), all three subject-matter;
+  `certified-scope exclusion` 0×.
+- **AC3** — boundary, §§1–7 routing with its discriminator, the
+  does-not-hold-the-gate clause, the clears-both composition and the
+  no-tie-break decider all present and each pinned by its own assert.
+- **AC4** — three classes, one obligation each, three distinct bold labels;
+  `no confirmation obligation falls on the author` present, and the boundary's
+  fourth obligation-stating sentence now pinned too.
+- **AC5** — all three falsifier clauses, `counts where it was **found**`, three
+  tolerances, the non-vacuity floor, and clause (i)'s round and window scope.
+- **AC6** — `git diff --numstat main...HEAD -- cairn/DECISIONS.md` is
+  **+310 / −0**: append-only, no entry edited (IP4). Five entries added
+  (D-083…D-087).
+- **AC7** — §8 carries **5** D-085 pointers and **zero** revision tokens; the
+  derivations sit in D-085, and D-086 supplies the replay projection's revision.
+- **AC8** — 89 tests in the class; **105** registry entries name this guard,
+  of which **84** resolve inside §8 and each resolves exactly once in §8 and in
+  the file. Section-wide inversion sweep, subjects derived from the shipped
+  registry by AST parse: **84/84** redden their own test, restored
+  byte-identical after each. The 5 structural tests are the only unregistered
+  ones (AC8's bounded-property route) and each was verified by hand. Scope is
+  now the section, not the file: relocating a rule into §7 or into an appended
+  §9 reds its own test.
+- **AC9** — skills **777** / scripts **332** / hooks **103**, each exit 0
+  from the repo root with exit codes captured per suite. `cairn_validate`
+  exit 0, 23 checks passing.
+- **AC10 (BC1)** — sufficiency arm shipped in the clears-both-lines paragraph,
+  and its placement is now pinned structurally: moving it into the shield
+  paragraph, or out of §8, reds.
+- **AC11 (BC2)** — clause (iii) shipped and fully pinned: all four counted
+  quantities, its tolerance, its window scope, the whole-step consequence and
+  the (i)/(iii) non-conflict each red their own test under in-place inversion.
+  Both recorded deviations hold.
 - **AC12 (BC3)** — §8 is **149** lines, under the 150 ceiling the Deviations
-  table sets. Corrected arithmetic in D-086.
-- **AC13 (BC4)** — the switch to the rebuilt rules is authorized by the
-  maintainer at the ingestion gate, not by RR10's authority; round 3 ran under
-  the rebuilt rules and carries the three-way classification.
-- **AC14 (BC5)** — D-085 appended carrying all four required contents;
-  D-086 corrects four of its claims by appending, not editing.
+  table sets.
+- **AC13 (BC4)** — rounds 3–7 ran under the rebuilt rules, authorized by the
+  maintainer at the RR10 ingestion gate. **Round 7 returned zero reopening
+  findings**, so the gate is entered on §8's own rule with no override and no
+  stated deviation — which is exactly what return 1 failed. Reopening counts by
+  round: 16, 13, 7, 5, 3, 1, 0.
+- **AC14 (BC5)** — D-085 carries all four required contents, the sufficiency
+  demonstration stated as `if and only if`; D-086 and D-087 correct it and
+  D-083 by appending, never editing.
+
+### Driving RR — projected against measured (RR10)
+
+| RR10 projection | Measured |
+|---|---|
+| §8 "at most **135** lines … the current count is **162**" (BC3) | §8 at review entry: **149** lines; pre-rebuild count was **164**, not 162 |
+| "162 − ~**40** movable + ~10 added ≈ **132**" | ~**33** moved, not ~40; result **149**, not ~132 |
+
+RR10's own arithmetic was found self-contradictory at ingestion (its best case
+after its permitted removals is 151, above its own 135 ceiling), so the
+maintainer amended the ceiling to 150 at that gate and the Deviations table
+records it. AC12's binding tolerance is therefore 150, met at 149 — no shortfall
+against the milestone's stated tolerance, and the gap against RR10's original
+135 is shown above rather than left implicit.
 
 ### Fan-out — three lenses, then a scorer
 
-Three fresh-context reviewers with distinct evidence bases, then an [S] scorer
-that generated none of the findings and was given the diff and the plan. 37
-findings reported unfiltered; **12 scored ≥80**. The scorer independently
-reproduced every MEASURED finding by mutating a scratch copy and running the
-real suite.
+Three fresh-context reviewers with distinct evidence bases (the diff; git blame
+and the D-entry chain; prior archived `## Review` sections), then an [S] scorer
+that generated none of the findings and was given the diff and the plan. **16
+findings reported unfiltered; 1 scored ≥80.**
 
-**Actioned (≥80) — 12:**
-- **A1 (93) / B1 (88) / A15 (91)** — §8 as shipped obliges a further round on a
-  reopening finding; round 3 returned 7 and no round 4 ran. Disclosed in the
-  work log as a maintainer override, but the Review section presented AC9/AC13
-  as met with no live caveat, and RR10's BC4 requires "the gate is entered only
-  per the amended rules". **AC13 unticked.**
-- **A3 (92)** — MEASURED, reproduced: three of falsifier clause (iii)'s four
-  counted quantities, its tolerance and its window scope all invert green. The
-  identical defect round 1's D3 found in clause (i), reproduced in the clause
-  added after it. **AC8 and AC11 unticked.**
-- **A17 (88), A4 (85), A5 (85), A7 (84), A19 (83)** — MEASURED, all reproduced:
-  the AC4 proxy does not cover its own paragraph; AC1's no-synonym rule is
-  defeated by the exact mutation its own comment names as fixed; "defined at
-  first use" is defeated by an unbolded earlier use; AC3's composition sentence
-  and tie-break decider are unpinned; and deleting "This step carries its own
-  falsifier." is green despite a test of that name.
-- **A9 (82)** — §8 says out-of-mandate findings are "recorded and fixed", but
-  round 3's F10 was recorded and not fixed and called exactly what the boundary
-  prescribes. One of the two is wrong.
-- **A2 (80)** — D-083 part 4 still carries "a fix-authored record never leaves
-  the certified scope", the formulation round 1's D6 convicted, inside the
-  paragraph asserting nothing in D-069/D-070 is superseded. IP4 means this is
-  corrected by appending, not editing.
-- **A22 (80)** — MEASURED: `test_the_class_is_defined_and_bounded_in_one_paragraph`
-  matches a literal hard space, so a content-preserving reflow false-reds a rule
-  still present — the M105 convention this file's own docstring states.
+**Actioned (≥80) — 1:**
+- **A5 (82)** — `test_exactly_three_confirmation_obligations_are_assigned`
+  false-reds on three edits touching no anchored byte: bolding a term in
+  unpinned prose, rewording prose to add an `author` mention, and adding a
+  parenthetical containing `i.e.`. FIXED — both counts replaced by scoped
+  properties and the sentence splitter given an abbreviation-safe lookahead;
+  verified both ways, with every real defect still redding the test alone.
 
-**Logged, below threshold — 25** (surfaced, never silently dropped, IP3):
-A16 (79) AC4's "re-verified at round 3" is unsupported · A28 (74) RR10 recs 7/9
-have no ROADMAP row · A26 (74) the Review section's D-069/D-070 counts mix two
-counting conventions · A13 (72) D-086's over-reach disclosure omits two
-removals · A25 (68) the falsifier counts a quantity the reader is never tasked
-to find · A11 (68) the (i)/(iii) non-conflict proof assumes rounds are convened
-only by the rule · A20 (65) · A24 (62) · A18 (62) · C1 (60) the BC3 ceiling
-override, routed through a maintainer gate · A6 (58) · A21 (58) · A23 (58) ·
-B2 (58) · A8 (55) · A12 (55) · B4 (50) · A10 (48) · C2 (45) · B3 (40) · A27
-(35, premise false — main did have an over-80 line) · B5 (35) · A29 (30) · B6
-(30) · C3/C4 (20, notes not findings).
+**Logged, below threshold — 15** (surfaced, never silently dropped, IP3):
+A7 (79) the synonym check false-reds on `Original records`, the complementary
+class · A4 (78) the co-location test's marker list is a hardcoded enumeration ·
+A6 (75) first-use demands next-paragraph, so same-paragraph definition reds ·
+A3 (72) five §8 spans still invert green, one of them a deliberate unpinned
+gloss · A11 (72) D-087's commit-distance claim is off by one · A8 (60) AC8's
+text is narrower than the by-hand route guard-doctrine §2 licenses · B1 (45)
+D-083/D-085 never name D-067's "any rubric or threshold change" clause · A2 (35)
+the hard-wrap qualifier is relocatable · A9 (35) a work-log line still says four
+structural tests · A1 (30) clause (ii)'s tolerance is relocatable — the scorer
+disproved the finding's asymmetry premise and placed it in the banked class ·
+A12 (30) a test name predates the third falsifier clause · B3 (25) the
+five-entry decision oscillation · C1 (25) RR10 recs 7/9 have no ROADMAP row yet
+— due at post-merge hygiene · B2 (20) coverage dropped for one round inside this
+branch, caught and corrected · A10 (15) this section's own stale figures, which
+this rewrite is.
+
+The blame-history lens additionally verified clean: no registry entry tied to
+M104, M105, M114, M117, M121 or M122 was deleted; the ROADMAP candidate row was
+only appended to; and both anecdotes removed from §8 survive verbatim in D-067
+and D-069. The prior-review lens found no silent regression of a past finding,
+and its GitHub-threads probe returned empty, so that surface no-ops.
 
 ### Consistency gate
 
-`cairn_validate` exit 0 — every check passes, including `coverage complete`,
+`cairn_validate` exit 0 — 23 checks passing, including `coverage complete`,
 `binding criteria`, `dangling id tokens` and `mirror agreement`. Two advisories
 stand, both pre-recorded maintainer decisions: `sizing` at 14 acceptance
-criteria and 12 tasks (one milestone chosen over a split, at planning and
+criteria and 16 tasks (one milestone chosen over a split, at planning and
 re-affirmed at ingestion). Profile is `generic`, whose `consistency-gate` slot
 names no toolchain checks — that half no-ops. No `DESIGN.md` principle changed,
-so `cairn_impact` is skipped. **Returns to `in-progress` from review: 0** — the
-thrash rule does not fire; the three §8 rounds were implement-phase.
-
+so `cairn_impact` is skipped. **Returns to `in-progress` from review: 1** — the
+thrash rule does not fire; neither trigger (a) nor (b) is reached.
