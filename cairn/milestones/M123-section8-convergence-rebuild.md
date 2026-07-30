@@ -1,6 +1,6 @@
 # M123: Rebuild guard-doctrine §8 so its certification loop converges
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR10
@@ -139,7 +139,7 @@ not reopened here.
       one-sentence pointers, bring §8 to ≤150 lines (AC12, AC14).
 - [x] T11 — Re-anchor or retire every assert whose target T9/T10 moved; re-run
       the section-wide inversion sweep (AC8).
-- [ ] T12 — Run the next round under the rebuilt rules with the three-way
+- [x] T12 — Run the next round under the rebuilt rules with the three-way
       classification recorded; suites and `cairn_validate` (AC13, AC9).
 
 ## Work log
@@ -256,6 +256,14 @@ not reopened here.
 - 2026-07-30: CORRECTION, appended not edited (IP4) — D-085 says §8 "falls from 183 lines to under 150"; it is exactly 150 (round 3 F4). The Deviations row claiming movable evidence was "~23 not ~40" is also wrong against the shipped result: 164 + 19 added − 33 removed = 150, so ~33 moved, and 150 beat the row's stated best case of 151 (round 3 F5). The extra ten came from justification passages BC3 does not name, which the row should have said.
 - 2026-07-30: AC2 evidence RE-MEASURED at HEAD after the compression, which round 3 F9 found had no post-compression record: `certified scope` occurs three times in §8, at `guard-doctrine.md:287`, `:316` and `:319`, all three on the subject-matter axis; `certified-scope exclusion` occurs zero times. This supersedes all three earlier measurements in this log, each of which is now stale by relocation rather than wrong when written.
 - 2026-07-30: round 3 verify — skills 741 (the restored assert) / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0; §8 at 150.
+
+- 2026-07-30: round 3 F6 closed by SATISFYING BC1 rather than deviating from it — the sufficiency sentence was its own paragraph where BC1 says "in the clears-both-lines paragraph", so the two are merged. §8 is now 149 lines. No Deviations row is owed.
+- 2026-07-30: round 3 F1, F4, F5 and F7 closed by appending D-086 (no entry edited): the "no rule removed" claim, the "under 150" figure, the movable-evidence arithmetic in the Deviations table, and the replay projection's missing revision (`016a210`). Three of the four were written by an earlier round's own fix — the churn distribution D-085 grounds the provenance rule on, produced once more by the milestone that ships it.
+- 2026-07-30: round 3 F3 and F8 are FIX-AUTHORED RECORDS under the shipped rules — fixed in place, not reopening. F3: the module docstring said four structural properties were checked when the deletion left three; the restored ninth assert makes it true again. F8: round 2's grep line is stale by relocation, superseded by the re-measurement above rather than edited.
+- 2026-07-30: round 3 F10 is OUT-OF-MANDATE and is left as §§1-7 work: two pre-M123 §8 rules (the zero-unresolved bar, the fresh-reader placement) invert green, but no M123 acceptance-criterion clause names them. Recorded, not fixed, which is exactly what the mandate boundary prescribes.
+- 2026-07-30: round 3 F2 BANKED at the maintainer's call rather than fixed here — a new ROADMAP candidate row carrying the ten-mutation evidence, cross-referenced to the parked one-surface-pin row as a distinct class (that one is a rule forking across files; this is contradiction within one). M123 therefore ships a §8 that is correct and pinned against DELETION and is NOT protected against CONTRADICTION, and the record says so rather than implying otherwise.
+- 2026-07-30: STATUS -> review with a stated deviation: round 3's gate verdict is REOPENING and a round 4 is owed under §8's own rules. The maintainer chose to bank F2 and enter review instead. Logged as an override, not as convergence — the three-lens fan-out still reads the diff independently before anything merges.
+- 2026-07-30: round 3 close verify — skills 741 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0; §8 at 149; plan-owned body under cap.
 
 ## Decisions
 

@@ -3079,3 +3079,58 @@ falsifier clause (i) or (iii) fires, the retirement edit should prune the
 convergence apparatus — the two axes, the shield, the per-class obligations —
 along with the rounds it governs, rather than leaving doctrine about rounds that
 no longer run; that is RR10 recommendation 8, banked here rather than acted on.
+
+### D-086 (2026-07-30): Three measurement claims in D-085 are corrected and its replay projection gains the revision AC7 requires — supersedes those clauses; D-085's decision and its other content stand (M123 §8 round 3)
+
+**Context:** M123's §8 certification round 3 — the first run under the rebuilt
+rules — returned ten findings. Four bear on D-085, which was appended earlier in
+the same milestone. IP4 attaches at append time (D-065), so they are superseded
+here rather than edited. This is the fourth entry in M123's own chain
+(D-083 → D-084 → D-085 → D-086), and the cause is the one D-081 already named
+and D-085 restated: a numeric record written before the artifact stopped moving.
+
+**Decision, part 1 — "with no rule removed" is false as written.** D-085's
+Consequences states that §8 "falls from 183 lines to under 150 with no rule
+removed — every sentence an assert pins survives or is re-anchored, and the
+asserts whose only anchor was relocated evidence retire with their registry
+entries." The compression retired **nine** test methods, not eight. The ninth,
+`test_the_class_is_never_called_by_a_synonym`, was a structural test over §8
+whole; its anchor was not relocated evidence and it had no registry entry to
+retire with, and it was the only pin on AC1's no-unmarked-synonym clause. With
+it gone, `Fix-authored text is neither read nor corrected` shipped green over
+the whole suite. It is restored at round 3, and its comment now records the
+deletion. Nothing else in the compression removed a rule.
+
+**Decision, part 2 — the line figure is exact, not approximate.** "Falls from
+183 lines to under 150" is superseded: §8 is **exactly 150 lines** at the
+compression commit and 149 after round 3's paragraph merge. AC12's ceiling is
+`≤150`, so "under 150" understates the margin and misdescribes the result.
+
+**Decision, part 3 — the movable-evidence figure.** M123's "Deviations from
+RR10" table records "movable evidence ~23 not ~40" as the ground for raising
+RR10's ceiling from 135 to 150. Against the shipped result that is wrong: 164
+lines at ingestion, +19 added by the sufficiency arm and clause (iii), −33
+removed by the compression = 150. So ~33 lines moved, not ~23, and the shipped
+result beat the row's own stated best case of 151. The extra ten came from four
+justification passages that RR10's BC3 does not name among its permitted
+removals — a real over-reach against BC3's letter, disclosed here rather than
+left in the arithmetic. The maintainer's ceiling decision is unaffected: 150 was
+reachable, and the row's error was pessimism about how much was movable.
+
+**Decision, part 4 — the replay projection gains its revision.** D-085 part 3's
+third bullet states that M119 replayed under the mandate boundary stops after
+round 6, saving three rounds, ±1 on round 6's `kind`-label classification, and
+attributes it to "M123's derivation from M119's own acceptance criteria" without
+naming a revision. AC7 requires every count to carry the revision it was derived
+from. The revision is **`016a210`** — M119's pre-archive milestone file, whose
+`## Acceptance criteria` section supplies the AC1 clauses the classification is
+made against and whose work log supplies the per-round gap counts. The figure is
+unchanged; only its citation was missing.
+
+**Consequences:** D-085's decision stands in full — the relocation, the
+independent wrong-quantity ground, clause (iii)'s extension of D-083's trigger,
+and the RR09 re-visit are all untouched. What is corrected is four claims about
+this milestone's own artifact, every one of them found by the instrument this
+milestone exists to rebuild, and three of them written by an earlier round's own
+fix. That distribution is itself the evidence D-085 part 1 grounds the
+provenance rule on, produced once more by the milestone that ships it.

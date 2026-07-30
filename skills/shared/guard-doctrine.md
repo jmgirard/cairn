@@ -339,7 +339,6 @@ tie-break: a one-directional pin that leaves an acceptance-criterion clause
 unpinned is a check-1 finding and reopens, while one that merely hardens an
 assert no criterion names is out of mandate. What decides is whether a criterion
 clause is at stake, never how the finding is phrased.
-
 **And a finding that clears both lines is a reopening finding**, carrying that
 class's obligation: a further fresh-context round. Stated as a bound alone it
 says only which findings cannot reopen a round and never that any must, and a
