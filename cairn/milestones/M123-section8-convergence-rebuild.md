@@ -111,36 +111,38 @@ not reopened here.
 - AC5 → T5, T7
 - AC6 → T6
 - AC7 → T1, T5, T6
-- AC8 → T7, T8, T11
-- AC9 → T8, T12
+- AC8 → T7, T8, T11, T13, T14, T15, T16
+- AC9 → T8, T12, T16
 - AC10 → T9
-- AC11 → T9
+- AC11 → T9, T13
 - AC12 → T10
-- AC13 → T12
+- AC13 → T12, T16
 - AC14 → T10
 
 ## Tasks
 
-- [x] T1 — Re-derive AC7's counts from a revision named per source (`016a210`,
-      `a25e6dd^`, `8763368^`); record each derivation and any disagreement with
-      RR09 §2 or D-081 in the work log.
-- [x] T2 — Write the two-axis discriminator and the provenance-qualified class
-      (AC1, AC2), engaging D-069/D-070, and produce AC2's grep evidence.
-- [x] T3 — Write the mandate boundary and its "clears both" composition (AC3).
-- [x] T4 — Restate §8's confirmation-obligation sentences, one per class, and
-      enumerate them as evidence (AC4).
-- [x] T5 — Write the yield falsifier and the evidence paragraph (AC5, AC7).
+- [x] T1 — Re-derive AC7's counts per named revision; log each and any RR09/D-081 disagreement.
+- [x] T2 — Two-axis discriminator and the provenance-qualified class, with AC2's grep evidence (AC1, AC2).
+- [x] T3 — Mandate boundary and its "clears both" composition (AC3).
+- [x] T4 — Restate the confirmation-obligation sentences, one per class, and enumerate them (AC4).
+- [x] T5 — Yield falsifier and evidence paragraph (AC5, AC7).
 - [x] T6 — Append the superseding D-entry (AC6).
 - [x] T7 — Author and register the asserts; re-anchor the rewritten two (AC8).
 - [x] T8 — Section-wide inversion sweep; suites and `cairn_validate` (AC8, AC9).
-- [x] T9 — Ship RR10's sufficiency arm and falsifier clause (iii), the latter
-      counting anchor-fidelity findings per the Deviations table (AC10, AC11).
-- [x] T10 — Relocate §8's evidence derivations into an appended D-entry, leave
-      one-sentence pointers, bring §8 to ≤150 lines (AC12, AC14).
-- [x] T11 — Re-anchor or retire every assert whose target T9/T10 moved; re-run
-      the section-wide inversion sweep (AC8).
-- [x] T12 — Run the next round under the rebuilt rules with the three-way
-      classification recorded; suites and `cairn_validate` (AC13, AC9).
+- [x] T9 — RR10's sufficiency arm and falsifier clause (iii), per the Deviations table (AC10, AC11).
+- [x] T10 — Relocate the evidence derivations to a D-entry; §8 to ≤150 lines (AC12, AC14).
+- [x] T11 — Re-anchor or retire every assert T9/T10 moved; re-run the sweep (AC8).
+- [x] T12 — Run the next round under the rebuilt rules, classification recorded (AC13, AC9).
+- [ ] T13 — Pin clause (iii)'s three unpinned quantities, its tolerance and window
+      scope, AC3's composition and tie-break decider, and the declarative
+      falsifier sentence; register each (AC8, AC11).
+- [ ] T14 — Rebuild the three defeated structural tests — the obligations proxy,
+      the no-synonym check's prefix-dropping direction, defined-at-first-use —
+      and fix the reflow false-red (AC8).
+- [ ] T15 — Fix round 3's F10 as §8's boundary prescribes: pin the pre-M123 rules
+      that invert green; append the D-entry correcting D-083 part 4 (AC8).
+- [ ] T16 — Section-wide inversion sweep, then certification round 4 under the
+      rebuilt rules; suites and `cairn_validate` (AC8, AC9, AC13).
 
 ## Work log
 
@@ -269,6 +271,11 @@ not reopened here.
 - 2026-07-30: the criteria are NOT reinterpreted to fit what shipped. AC8 is right and the work fails it; that is a return, not an amendment. The three unticked boxes go back through implement, and the 12 actioned findings are the work.
 - 2026-07-30: the return is the milestone's own instrument working. Every ≥80 finding is in §8's own three checks, and five were confirmed by mutating the suite rather than argued — including one that reproduces, in clause (iii), the exact defect round 1 found in clause (i). The section certifies its author no better than it certified M121's.
 - 2026-07-30: thrash rule — this is return 1 of this milestone; neither trigger (a) nor (b) fires. Work-log return count: 1.
+
+- 2026-07-30: AMENDMENT (minor) — four tasks added for the return's work (T13 pinning gaps, T14 structural tests, T15 F10 + the D-083 correction, T16 sweep + round 4), Coverage extended to map AC8/AC9/AC11/AC13 onto them. Paid for by compressing the twelve completed task lines in one pass (25 lines for 16 tasks); plan-owned body 146/149. No criterion or scope text changed, so no gate is owed.
+- 2026-07-30: return-1 findings REPRODUCED before fixing, not taken on the review's word — A3 (clause (iii)'s first quantity, its tolerance, its window scope), A7 (AC3's composition sentence and its tie-break decider), A19 (the declarative falsifier sentence), A4 (a prefix-dropping synonym), A5 (an unbolded earlier use) all invert or delete with the suite green; A22 reproduces the other way, a content-preserving reflow of the definition RED-ing a rule still present.
+- 2026-07-30: round 3's F10 RE-DERIVED and its two named instances do NOT reproduce — negating the zero-unresolved bar in place and negating the fresh-reader placement in place each red the suite. Two other pre-M123 §8 rules do invert green: "The reader checks three things and reports discrepancies verbatim:" and "The author still runs everything". F10's substance stands, its labels were wrong, and T15 fixes what is actually green.
+- 2026-07-30: A9 resolved AGAINST the record, not against the doctrine — §8 says an out-of-mandate observation "is recorded and fixed", AC3 says the same ("are fixed as ordinary §§1–7 and harness work"), so round 3's recorded-not-fixed disposition of F10 is the half that was wrong. Fixing it at T15 needs no criterion amendment; changing §8 to "recorded and routed" would have needed one.
 
 ## Decisions
 
