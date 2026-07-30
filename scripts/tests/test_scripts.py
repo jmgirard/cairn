@@ -1412,6 +1412,9 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # M118 adds the cap-exemption peak-revision ledger: a first-hand
     # measurement of this repo's own frozen git history, whose extraction
     # status says there is nothing to re-verify against, hence `exempt`.
+    # M121 adds the self-verification ledger on the same footing: its corpus is
+    # this repo's own prose at a named commit, re-derived by the search the page
+    # carries rather than re-read against an external source, hence `exempt`.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "m118-cap-exemption-ledger.md": "exempt",
@@ -1430,6 +1433,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "oracle-doctrine-intraclass-notes.md": "ok",
         "prompting-opus-5.md": "ok",
         "rulebook-classification-ledger.md": "exempt",
+        "self-verification-ledger.md": "exempt",
         "session-cost-notes.md": "ok",
         "spec-kit.md": "ok",
         "task-master.md": "ok",

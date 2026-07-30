@@ -2565,3 +2565,305 @@ closure: a fresh restatement of the taxonomy *added* to the reviewers'
 instruction, in wording the absence-assert does not name, leaves both tests
 green. The paired absence-assert on the old instruction registers the
 report-everything phrase as its positive framing.
+
+### D-079 (2026-07-27): D-067's two fresh-context readers are both narrowed, not retired — §8's certified scope excludes text a previous round's own fix authored, and the criteria audit gains a mandatory record — narrowly supersedes D-067, at the "don't tune it" half of §8's falsifier; extends D-069's scope bound, cites `prompting-opus-5`
+
+**Context:** Anthropic's Opus 5 prompting guide reports that explicit
+self-verification instructions "cause over-verification on Claude Opus 5, and
+removing them reduces wasted tokens with no loss in quality", on the stated
+mechanism that "Claude Opus 5 verifies its own work without being told to"
+(`references/prompting-opus-5.md`, § Task scope and over-verification). Its
+delegation instruction carries a third clause M120 deliberately did not take —
+"do not use subagents to verify or double-check your own work" — which reads,
+unqualified, straight onto D-067's two readers. M121 swept the nine
+`skills/*/SKILL.md` files and five `skills/shared/*.md` modules and classified
+all 79 hits (`references/self-verification-ledger.md`): 31 gather evidence by
+command, 36 are not instructions at all, exactly **one** is an author re-reading
+work it just produced, and the remaining 11 are these two instruments. The
+guide's finding therefore lands almost entirely on D-067 and nearly nowhere
+else, so D-067 is where it had to be answered.
+
+The measured yield and cost, per instrument, read from the milestones' own
+records:
+
+**Instrument 1 — the plan-gate criteria audit.** M115 recorded gated amendments
+to AC2/AC6 after a plan-time criteria re-read, with AC5's ambiguous `verbatim`
+settled at the gate (`milestones/archive/M115-fresh-context-reader-instruments.md`,
+Decisions) — but that re-read was the plan author's own, standing in for the
+instrument M115 was building, and M115's work log says so
+(`milestones/M115-fresh-context-reader-instruments.md:123`, pre-archive at
+`67a6e96^`): "I authored these criteria, so this is the weaker self-check rec 4
+exists to replace." It is evidence the questions find things, not evidence
+about the fresh-context reader, which did not exist yet. M116 audited twice: round 1 found {AC2, AC5, AC6} jointly
+unsatisfiable — the class no per-criterion read reaches — and round 2 four
+drafting defects plus the exactly-once locator constraint
+(`milestones/M116-placement-test-repair.md:52`, work log, pre-archive; live in
+git only, at `32122ab^`). M118 bound four criteria-audit ambiguities at its
+gate, each as a Deviations row
+(`milestones/M118-decisions-section-cap-exempt.md:193`, pre-archive at
+`c76fa65^`). **M117 and M119 carry
+no audit record anywhere in their files.** Cost is one reader per plan, two
+where a round found something; M116 stopped at two on D-069's regress ground.
+So: two measured firings of the instrument itself (M116, M118), both
+productive, one earlier self-check that found the same class of defect, and two
+milestones where "did not run" and "ran and found nothing" cannot be told
+apart. Counted over the five milestones that followed M115's adoption — M116
+through M120 — three carry no record at all; this entry's window is the
+M115-M119 one its evidence is drawn from.
+
+**Instrument 2 — `guard-doctrine.md` §8 description-layer certification.** Round
+counts and findings: M116 two rounds, 9 + 2 (`milestones/archive/M116-placement-test-repair.md`,
+Review); M117 four, 8 → 6 → 6 → 2, round 1's first two being genuinely unasserted
+AC clauses (`milestones/archive/M117-detector-site-axis-and-recorded-alternative.md`,
+Review); M118 three, 16 → 10 → 2, round 1's sixteen including eleven blocking
+(`milestones/M118-decisions-section-cap-exempt.md:123,139`, pre-archive at
+`c76fa65^`); M119 **nine**
+(`milestones/M119-decisions-advisory-and-consistency-guards.md:99-123`, with
+the review-entry override at `:125`, pre-archive at `8dace78^`). Every one of those four files is archived now, so
+those line numbers resolve in the named pre-archive revisions and nowhere in
+the working tree. The
+shape is not a flat cost. Round 1 returned real defects in every milestone that
+ran it. M119's own summary states what rounds 5–9 returned: "zero
+shipped-behaviour defects apart from round 7's live `^diff --git ` false
+positive; what repeated was a false claim in the previous round's own fix
+comment — round 9's two findings sit in round 8's text", with the thrash rule
+unable to fire because it counts review returns and this loop runs before
+review. M119's review-entry override logged the same finding and deferred the
+durable call here: "Not a precedent: M121 owns the durable disposition."
+
+**Decision:** Both instruments are **narrowed**; neither is retired and neither
+is kept unchanged.
+
+1. **§8's certified scope excludes text a previous round's own fix authored:
+   a finding whose only subject is such a record is fixed in place and opens
+   no further round.** It is still fixed — leaving an inaccurate record
+   unexamined ships the defect §8 exists to catch — but it no longer drives a
+   further round. The zero-unresolved bar and the round count are untouched.
+   Wired at `guard-doctrine.md` §8; `/milestone-implement` step 8 is unchanged.
+2. **The criteria audit records one work-log line either way** — what it
+   returned, or that it returned nothing — so an absent line means the reader
+   did not run, never that it ran and was silent. Stated once at
+   `/milestone-plan` step 3 and cross-referenced from `/milestone-brief`'s RR
+   ingestion.
+3. **`tracking-rules.md` "Model and agent strategy" names both classes of
+   self-checking** — an author re-checking work it just produced, which the
+   delegation warrant governs, and an independent fresh-context reading by a
+   reader that authored none of it, which it does not. Without this the guide's
+   third clause reads onto both instruments.
+
+**Consequences:** What this supersedes is the "don't tune it" half of §8's own
+falsifier — "if guard-authoring milestones still average multiple
+description-layer returns after adoption, the step didn't work — retire it
+(D-059), don't tune it". That falsifier **fired**: the average over M116–M119
+is 4.5 rounds. What the measurement does not support is its prescribed remedy.
+Round 1's yield was real in all four milestones, and **every one of M119's
+rounds 5–9 also returned a real guard-coverage gap** — round 9's was a
+`--- a/|+++ b/` widening that would have WARNed forever. What repeated was
+narrower than "another round": eleven of those rounds' findings were record
+errors in an earlier round's own fix text, round 9's two sitting in round 8's.
+So the object narrowed here is the certified scope, which D-069 already
+narrows, and not the round count, which D-059's precedent forbids tuning.
+D-067's own exit line — "If either reader proves to cost more than the returns
+it prevents, this is the entry to supersede" — is what is being executed here.
+
+**A round-bounding rule was drafted first and withdrawn**, recorded because the
+reasoning is the finding: "the loop stops at the first round returning no
+shipped-behaviour defect and no regression" reads two ways and fails both. If
+guard-coverage gaps are not shipped-behaviour defects it fires at M119's round
+5, discarding nine later gaps; if they are, it never fires. M121's own §8
+certification returned that as round 1's finding against the milestone that
+wrote it, which is the instrument working on its author.
+
+Extends D-069: that entry put a certification round's own report outside the
+certified scope; this puts the *fixes* those rounds write outside it too, on
+the same convergence ground, since round N's fix is round N+1's uncertified
+surface. Rejected: retiring §8 outright (it would discard round 1's measured
+yield and rounds 5–9's coverage gaps alike); bounding the round count (above);
+extending the thrash counter to implement-phase loops (a counter is the
+round-count tuning the falsifier forbids; the ROADMAP row proposing it stays
+open for the reverse case); budgeting the description layer by length (M120's
+third candidate disposition — it addresses prose volume, not the
+re-certification regress that actually repeated). The falsifier's exit
+condition is re-armed against the narrowed form: if guard-authoring milestones
+still average multiple returns with this scope in force, retire the step.
+
+### D-080 (2026-07-27): D-079's §8 scope exclusion is withdrawn on RR09's evidence — it is inert on its own motivating case under one reading and discards real findings under the other — supersedes D-079's clause 1 and the exclusion claim in D-079's heading; D-079's clauses 2 and 3 stand
+
+**Context:** M121 shipped a scope exclusion in `guard-doctrine.md` §8: a finding
+whose only subject is text a previous round's own fix authored is fixed in place
+but opens no further round. Its own §8 certification challenged it at round 1
+(after an earlier round-bounding rule had already been drafted and withdrawn),
+and `/milestone-review`'s three-lens fan-out challenged it again on three
+grounds scoring 80, 74 and 62. It was escalated as RB09.
+
+RR09 confirmed all three objections in refined form and returned verdict (d) —
+rebuild the exclusion rather than keep or retire it — with nine recommendations
+and eight binding criteria. Its decisive measurement is a round-by-round
+classification of M119's rounds 5–9 (RR09 §2, from `8dace78^`): **the shipped
+rule has two readings, selected by an operative noun the paragraph never
+defines.** Under the *record* reading the exclusion reaches the description
+layer only, every one of rounds 5–9 returned at least one non-excluded finding
+(counts 3, 4, 2, 2, 1), the round count is unchanged and the loop still ends by
+override — inert on the very case that produced it. Under the *text* reading it
+reaches anything a fix wrote, and the loop stops at round 5 — the exact stopping
+point of the withdrawn round bound, which D-079 itself records as unacceptable,
+losing round 9's forever-WARN widening set among others.
+
+The mandatory pre-ingest criteria audit (D-067's first instrument, run on the
+binding-criteria set) then found ten blocking defects in RR09's own BC1–BC8,
+including two the set cannot resolve internally: BC1 and BC7 assign opposite
+reopening status to the same objects, and BC6 replaces D-067's falsifier with no
+criterion requiring a superseding entry — the supersede-don't-ignore violation
+RR09 charges against the shipped exclusion, reproduced in its remedy.
+
+**Correction owed to the record:** RB09 supplied as a fixed constraint that
+"D-079 has not merged, so the authoring milestone may still amend it in place
+(M115's precedent)". That is false. **D-065** settles it — "IP4 attaches at
+append time, not at merge time: an entry's not-yet-merged status is no
+carve-out" — and D-065 was written to close the M115 precedent the brief cited.
+The reviewer took the constraint at face value, as a brief instructs, so **BC3
+mandates an IP4 violation and its check is unsatisfiable by the legal route.**
+Recorded here so a later reader does not treat BC3 as usable.
+
+**Decision:** Withdraw the exclusion. `guard-doctrine.md` §8 returns to its
+pre-M121 bytes, and the three asserts and three mutation entries that pinned the
+exclusion go with it. D-079's clause 2 (the criteria audit records one work-log
+line either way) and clause 3 (the rulebook names both classes of self-checking)
+are untouched and ship — neither was challenged at any gate. §8's rebuild is
+banked on the existing ROADMAP row, with RB09/RR09 archived as its evidence and
+this entry as its lineage.
+
+**Consequences:** This is a **departure from RR09's verdict**, which rejected
+option (b), reverting to §8 unchanged, on the ground that it "leaves a fired
+falsifier with its remedy owed, and discards a real convergence guarantee".
+Both halves of that objection are accepted and neither is answered here: the
+falsifier stayed fired, its remedy stays owed, and the convergence guarantee
+D-069 gives is unchanged while the one M121 attempted is gone. The ground for
+departing is narrower than disagreement — the rebuild RR09 prescribes is
+carried by a criteria set with ten blocking defects, so shipping it inside M121
+would ship the defects; and `guard-doctrine.md` is not in M121's Scope, which
+would need a gated amendment to reach a rewrite this size. D-067's falsifier
+therefore stands exactly as D-079 re-armed it, and the round-count problem it
+names is open, not solved.
+
+RR09's recommendations 1–6 travel to the banked rebuild rather than being
+applied here; recommendation 7 (a one-shot robustness read beside round 1) is
+noted on the same row and RR09 itself says not to adopt it inside M121;
+recommendations 8 and 9 — rejecting revert-unchanged and rejecting outright
+retirement — are recorded, and the first is the one this entry departs from,
+stated above rather than worked around.
+
+### D-081 (2026-07-28): M121 edited D-079 in place twice after appending it — an IP4 violation recorded, not repaired; and D-079's "eleven … in an earlier round's own fix text" is corrected to ten of eleven — supersedes that measurement clause; cites D-065
+
+**Context:** M121's second review pass found two defects in this milestone's own
+handling of `DECISIONS.md`, both raised independently by the blame-history and
+diff-bug lenses and scored 85.
+
+**The violation.** D-079 was appended at `abe04f2`. It was then edited **in
+place** at `fb663cb` — heading rewritten, Decision clause 1 rewritten wholesale,
+Consequences substantially rewritten — and again at `124da58`, heading rewritten
+a second time. D-065 forbids exactly this: "IP4 attaches at append time, not at
+merge time: an entry's not-yet-merged status is no carve-out, because the rule
+is about the record's form, not its distribution, and a carve-out would make
+every unmerged history file editable by whoever is holding it." D-065 exists
+because M114's review pass 5 caught D-064 corrected in place and ruled it a
+violation. The compounding fact is that **D-080 condemns RB09 for proposing the
+same move**, citing D-065 — while M121's own commits had already made it twice,
+and no record acknowledged it until now.
+
+**Decision:** Record, do not repair. Rewriting the branch to un-edit D-079 would
+be a second and larger history rewrite, and IP4's remedy for a record proven
+wrong is a superseding entry, never an edit — the rule cannot be honoured by
+breaking it again. So: `git log -p cairn/DECISIONS.md` is authoritative for what
+D-079 said when appended; `abe04f2` is the append, `fb663cb` and `124da58` are
+the two edits. This entry is the pointer a later reader needs, and it is the
+correction D-065's own route prescribes.
+
+**Second, the measurement.** D-079's Consequences reads "eleven of those rounds'
+findings were record errors in an earlier round's own fix text, round 9's two
+sitting in round 8's." That clause is superseded: the supported figure is
+**eleven record errors, ten of them in an earlier round's own fix text**. M121's
+own §8 round 2 corrected this in `guard-doctrine.md`, but not here, and the
+paragraph carrying the corrected copy was later withdrawn with the exclusion —
+leaving the imprecise figure as the only surviving instance in an append-only
+file. The work log recorded the finding as closed on the strength of `grep
+eleven skills/`, a command that structurally cannot reach `cairn/DECISIONS.md`;
+that verification claim is withdrawn here. (RR09 §2's own table sums the per-
+round record errors to eleven and describes each as fix-authored, so the
+ten-of-eleven split is itself contested — RR09 BC4/BC8 assert ten. What is
+recorded here is that the unqualified "eleven … in fix text" overstates what
+either source establishes.)
+
+**Consequences:** Two lessons are owed at post-merge hygiene, both about this
+milestone rather than about §8. First, a durable record edited on a branch is
+still edited — the append-only rule has no unmerged grace period, and a session
+that appends an entry early in a milestone must supersede rather than revise it
+when the milestone's thinking moves. Second, a verification command must be
+scoped to the tree that holds the claim: `grep … skills/` cannot close a finding
+about `cairn/DECISIONS.md`, and a green result from the wrong scope reads
+identically to a green result from the right one.
+
+D-079's other now-false sentences are left standing and are **not** superseded
+here — D-080 scoped itself to clause 1 and the heading's exclusion claim, and
+its Consequences section still argues from the withdrawn narrowing. That gap is
+recorded as a review finding scoring 78, below the action threshold, and logged
+in M121's Review section rather than fixed, because superseding a Consequences
+section wholesale is a larger act than this milestone's remaining scope.
+
+### D-082 (2026-07-28): D-080's supersession is widened to reach every claim the withdrawn narrowing supports — D-079's heading pair and its whole Consequences section — and D-080's own three misstatements are corrected; D-067's falsifier is restored in full, "don't tune it" included
+
+**Context:** M121's second review pass found D-080 under-scoped. D-080 named
+"D-079's clause 1 and the exclusion claim in D-079's heading" as superseded, but
+D-079 argues from the withdrawn narrowing in three further places, and D-080
+itself misstates RR09 three times. Four findings scored 78, 78, 68 and 60, below
+the action threshold, and were logged rather than fixed; the maintainer held the
+merge at the approval gate to close them. Each claim below was re-read out of
+the shipped bytes before this entry was written.
+
+**Decision, part 1 — D-079's surviving false claims are superseded.** Its
+heading still reads "D-067's two fresh-context readers are **both narrowed**"
+and "**extends D-069's scope bound**". One instrument is narrowed at HEAD (the
+criteria audit); nothing extends D-069. Under D-054 the heading is the surface a
+later sweep reads first, so both clauses are superseded here. Its
+**Consequences** section is superseded whole, on the ground that every
+load-bearing sentence in it presupposes the narrowing: "So the object narrowed
+here is the certified scope, which D-069 already narrows, and not the round
+count"; "Extends D-069: that entry put a certification round's own report
+outside the certified scope; this puts the *fixes* those rounds write outside it
+too"; and "The falsifier's exit condition is re-armed against the narrowed form:
+if guard-authoring milestones still average multiple returns with this scope in
+force, retire the step". The last has no referent at all once clause 1 is gone.
+What survives from D-079 is exactly clause 2, clause 3, and its Context's
+measurement of what each instrument caught.
+
+**Decision, part 2 — §8's falsifier stands in its original D-067 form.** D-079
+narrowly superseded the "don't tune it" half on the strength of a narrowing it
+was shipping. That narrowing was withdrawn, so the ground is gone and the half
+is **restored**: §8's falsifier reads as D-067 wrote it — "if guard-authoring
+milestones still average multiple description-layer returns after adoption, the
+step didn't work — retire it (D-059), don't tune it". It has fired: the average
+over M116–M119 is 4.5 rounds, and M121 added two more. Its remedy is owed and
+unpaid, and the ROADMAP's §8 row is where that debt is recorded. This replaces
+D-080's "D-067's falsifier therefore stands exactly as D-079 re-armed it", which
+named a condition that could not fire.
+
+**Decision, part 3 — D-080's two misreadings of RR09 are corrected.** D-080
+says "RR09 confirmed all three objections in refined form"; RR09 §3 answers
+objection C "**Only under reading 2** — where it is worse than the objection
+states. **Under reading 1 it fails.**" Objections A and B were confirmed; C was
+confirmed conditionally, on the reading M121 did not take. And D-080 renders the
+verdict as "(d) — rebuild the exclusion **rather than keep** or retire it";
+RR09 §5 reads "**(d): keep the exclusion, rebuilt**". The distinction is not
+cosmetic — RR09 rejected retirement *and* rejected reverting, and its (d) is a
+repair of the exclusion, not a replacement of it. D-080's disposition is
+unaffected: it departs from RR09's rejection of option (b) and says so.
+
+**Consequences:** Nothing in the shipped prose changes — `guard-doctrine.md`
+remains byte-identical to its pre-M121 state, and no skill, guard or test is
+touched. This entry is record repair only, and it is the fourth entry in a chain
+(D-079 → D-080 → D-081 → D-082) that a later reader must follow to reconstruct
+what M121 decided about §8. That chain length is itself the cost of appending an
+entry before the milestone's thinking had settled, which is the lesson D-081
+names and which post-merge hygiene captures. A reader wanting the short answer:
+**M121 changed nothing in §8; D-067's falsifier stands, fired, with its remedy
+owed; the rebuild is banked on the ROADMAP row with RR09 as its evidence.**

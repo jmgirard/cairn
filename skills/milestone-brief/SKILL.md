@@ -100,7 +100,8 @@ start (any skill) when a manual RR appears:
    review gate instead of here. What the audit returns is raised with the
    user, never softened away: `binding criteria` string-compares the AC block,
    so a quietly reworded criterion reds the check, and any departure agreed
-   at the gate becomes a row in the Deviations table below.
+   at the gate becomes a row in the Deviations table below. The ingest audit
+   records one work-log line either way, on `/milestone-plan` step 3's terms.
 4. Relocate the RB/RR pair to `cairn/reviews/archive/` with plain `mv` then
    `git add`, never `git mv` — an in-session-generated or hand-dropped RR is
    untracked, and `git mv` fails on an untracked file; milestone status back

@@ -1,4 +1,7 @@
-"""Regression guard: the M120 delegation-warrant test (Model and agent strategy).
+"""Regression guards for two rules in "Model and agent strategy".
+
+M120's delegation warrant (`TestDelegationWarrantRule`, three asserts) and
+M121's self-checking-class rule (`TestSelfCheckingClassRule`, six).
 
 Adopted from `cairn/references/prompting-opus-5.md` (§ Controlling subagent
 spawning), which reports that Claude Opus 5 — the tier cairn runs its
@@ -9,7 +12,8 @@ and its per-instance gate). Nothing stated when work should stay inline, so the
 cheapest wrong answer — spawn an Opus subagent for a two-grep question — was
 tier-correct and violated no rule.
 
-Three asserts, because the rule carries three claims independently:
+The warrant takes three asserts, because it carries three claims
+independently:
 
 - the inline floor — work finishable in a handful of tool calls is not
   delegated;
@@ -54,6 +58,115 @@ class TestDelegationWarrantRule(unittest.TestCase):
     def test_rule_reconciles_the_review_fanout(self):
         self.assertIn(
             "its three reviewers carry distinct evidence bases", rules()
+        )
+
+
+class TestSelfCheckingClassRule(unittest.TestCase):
+    """M121: which class of self-checking the warrant above governs.
+
+    The guide's delegation instruction carries a third clause M120 did not
+    take — "do not use subagents to verify or double-check your own work" —
+    which reads, unqualified, as a standing rejection of D-067's two
+    fresh-context readers. It is not: the guide's own stated mechanism is that
+    the model "verifies its own work without being told to", which is a claim
+    about the AUTHOR re-reading, and says nothing about a reader that authored
+    none of what it reads. The rule names both classes so the clause cannot be
+    applied to the wrong one.
+
+Six asserts. Two are AC4's shape — one per named class, each a phrase on a
+    single physical line of the shipped file. A single assert covering only the
+    governed class would leave the exclusion deletable with the guard green,
+    which is the false coverage the guard-must-fail rule exists to stop: the
+    exclusion is the half that does work here, since the governed class alone
+    is already implied by the warrant above it. The other four came from the
+    review — each class's reason clause, the discriminator that applies the
+    pair, and the sentence leaving a fresh reader's loop to its own
+    instrument.
+
+    Each assert pins its class phrase TOGETHER WITH the verb that assigns it —
+    `it governs` / `it does not govern` — on one physical line. Pinning the
+    two phrases alone left the rule invertible with both asserts green: swap
+    the two lines and the guide's third delegation clause reaches D-067's
+    fresh-context readers, which is exactly what this rule blocks. That is
+    guard-doctrine §1's label-to-set trap, and the harness does not catch it
+    because blanking is not swapping (§2)."""
+
+    def test_rule_states_that_it_reaches_one_class_only(self):
+        # M121 review pass 2, F-E1 (85). The two class asserts pin WHICH class
+        # is which; nothing pinned the section's lead claim that the warrant
+        # reaches one class and not the other. Inverted to "reaches both
+        # classes of checking alike" the section contradicts its own next two
+        # lines, with the whole suite green.
+        self.assertRegex(
+            rules(),
+            r"the delegation warrant above\s+reaches one class of checking "
+            r"and not the other",
+        )
+
+    def test_rule_names_the_governed_class(self):
+        self.assertIn(
+            "it governs **an author re-checking work it just produced, in "
+            "the context that produced it**",
+            rules(),
+        )
+
+    def test_rule_names_the_excluded_class(self):
+        self.assertIn(
+            "it does not govern **an independent fresh-context reading of "
+            "that work by a reader that authored none of it**",
+            rules(),
+        )
+
+    def test_governed_class_carries_its_reason(self):
+        # M121 review F-PR1: the two asserts above stop at the em-dash, so the
+        # rationale clause after it deleted green — the partial-pin class an
+        # open ROADMAP row has tracked since M114 pass 8. The reason is what
+        # makes the class recognisable to a reader who meets a new case, so it
+        # is pinned rather than left as decoration.
+        self.assertRegex(
+            rules(),
+            r"a check already happening unprompted, so instructing it\s+"
+            r"again buys tokens rather than quality",
+        )
+
+    def test_excluded_class_carries_its_reason(self):
+        # Same, for the half that does the work: without the "different
+        # failure" reason the exclusion reads as an exemption granted rather
+        # than as a different instrument answering a different defect.
+        self.assertRegex(
+            rules(),
+            r"a different instrument against a different failure: an author "
+            r"checks a\s+description against its generative model of the "
+            r"artifact rather than against\s+the artifact",
+        )
+
+    def test_rule_states_the_discriminator_that_applies_it(self):
+        # M121 review F-B1 (90-class): the two class asserts pin the labels;
+        # nothing pinned the sentence telling a reader HOW to sort a new case.
+        # Inverted to "how often the work is read, never who reads", §8's
+        # multi-round loop sorts into the governed class and the guide's third
+        # delegation clause reaches it — the misreading this rule exists to
+        # block — with the whole suite green.
+        # Pinned WITH its trailing clause: an anchor stopping at the closing
+        # asterisk leaves "— which is the same cut the freshness sentence above
+        # makes against the volume test" deletable green, which is the open
+        # partial-pin class (ROADMAP, M114 pass 8) and the same defect F-PR1
+        # fixed on this file's two class sentences.
+        self.assertRegex(
+            rules(),
+            r"the discriminator is \*who reads\*, never \*how often the work "
+            r"is read\* — which\s+is the same cut the freshness sentence above "
+            r"makes against the volume test",
+        )
+
+    def test_rule_leaves_a_fresh_readers_loop_to_its_own_instrument(self):
+        # M121 review F-B2: inverted to "bounded by this rule, never by its
+        # instrument", the delegation warrant's one-not-several bar governs
+        # §8's rounds and forbids the multi-round loop §8 mandates.
+        self.assertIn(
+            "a fresh reader's own loop is bounded by its instrument, never "
+            "by this rule",
+            rules(),
         )
 
 

@@ -2368,6 +2368,33 @@ REGISTRY = [
         target=GUARD_DOCTRINE,
         block="The gate is entered at zero unresolved: a discrepancy is fixed and\nre-certified, never argued down as imprecision",
     ),
+    # M121 (narrows D-067, first instrument). Three entries across two files:
+    # the record requirement, the sentence making a missing line evidence, and
+    # the ingest surface's cross-reference to the one home that states it.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_records_a_work_log_line_even_when_it_finds_nothing",
+        target="skills/milestone-plan/SKILL.md",
+        block="**The audit records one work-log line either way** — what it returned, or\n   that it returned nothing",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_absent_audit_line_means_it_did_not_run",
+        target="skills/milestone-plan/SKILL.md",
+        block="an absent line means the reader did not run,\n   never that it ran and was silent",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_records_how_many_milestones_left_no_line",
+        target="skills/milestone-plan/SKILL.md",
+        block="Three of the five milestones after\n   this instrument was adopted carry no such line",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_ingest_audit_records_its_own_line_on_the_plan_gate_terms",
+        target=BRIEF,
+        block="The ingest audit\n   records one work-log line either way, on `/milestone-plan` step 3's terms",
+    ),
     Mutation(
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_section_moves_certification_not_operation",
@@ -3292,6 +3319,59 @@ REGISTRY += [
         test="TestDelegationWarrantRule.test_rule_reconciles_the_review_fanout",
         target=RULES,
         block="its three reviewers carry distinct evidence bases",
+    ),
+    # M121. One entry per named class, per AC4. The excluded class is the
+    # load-bearing half: the governed class restates the warrant above it,
+    # while the exclusion is what stops the guide's third clause from being
+    # read onto D-067's fresh-context readers.
+    # M121 review pass 2. Two entries for the two rules that inverted with the
+    # suite green: the section's lead claim that the warrant reaches one class
+    # and not the other, and the measurement motivating the record requirement.
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestSelfCheckingClassRule.test_rule_states_that_it_reaches_one_class_only",
+        target=RULES,
+        block="The delegation warrant above\n  reaches one class of checking and not the other",
+    ),
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestSelfCheckingClassRule.test_rule_names_the_governed_class",
+        target=RULES,
+        block="It governs **an author re-checking work it just produced, in the context that produced it**",
+    ),
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestSelfCheckingClassRule.test_rule_names_the_excluded_class",
+        target=RULES,
+        block="It does not govern **an independent fresh-context reading of that work by a reader that authored none of it**",
+    ),
+    # M121 review. Four more entries, from findings the fan-out scored 80+:
+    # F-PR1 (the two class asserts stopped at the em-dash, leaving each
+    # rationale clause deletable green) and F-B1/F-B2 (the discriminator and
+    # the loop-bound sentences inverted with the suite green).
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestSelfCheckingClassRule.test_governed_class_carries_its_reason",
+        target=RULES,
+        block="a check already happening unprompted, so instructing it\n  again buys tokens rather than quality",
+    ),
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestSelfCheckingClassRule.test_excluded_class_carries_its_reason",
+        target=RULES,
+        block="a different instrument against a different failure: an author checks a\n  description against its generative model of the artifact rather than against\n  the artifact",
+    ),
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestSelfCheckingClassRule.test_rule_states_the_discriminator_that_applies_it",
+        target=RULES,
+        block="The discriminator is *who reads*, never *how often the work is read* — which\n  is the same cut the freshness sentence above makes against the volume test",
+    ),
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestSelfCheckingClassRule.test_rule_leaves_a_fresh_readers_loop_to_its_own_instrument",
+        target=RULES,
+        block="A fresh reader's own loop is bounded by its instrument, never by this rule",
     ),
 ]
 

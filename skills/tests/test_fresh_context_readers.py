@@ -2,7 +2,8 @@
 
 Both instruments replace an author checking its own work with a reader that
 did not write it. This file locks the doctrine text for both, at four
-surfaces.
+surfaces, including the criteria audit's record requirement at the plan
+and ingest surfaces, which M121 added (D-079 clause 2).
 
 The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
 `TestRRIngestionCriteriaAudit`):
@@ -20,7 +21,8 @@ The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
   * `skills/shared/guard-doctrine.md` §8 — its heading, the
     operation-vs-certification cut, the diagnosis, the before-review
     placement, each of the three checks, the zero-unresolved bar, the
-    certification-not-operation clause, and the section's own falsifier.
+    certification-not-operation clause, the section's own falsifier, and D-069's
+    certified-scope bound.
   * `/milestone-implement` step 8, which fires §8 before `status -> review`
     when the milestone authored or edited a prose-guard.
 
@@ -118,6 +120,40 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
             "The instrument is a reader and never a check", plan()
         )
 
+    def test_audit_records_a_work_log_line_even_when_it_finds_nothing(self):
+        # M121 narrows D-067's first instrument. D-067 was adopted BY M115, so
+        # the five milestones after it are M116-M120, and three of those —
+        # M117, M119, M120 — carry no audit line at all, so "did not run" and
+        # "ran and found nothing" are indistinguishable in the record, which is
+        # what makes the instrument's yield unmeasurable. (D-079's evidence
+        # reports two, over the narrower M115-M119 window AC3 names.)
+        self.assertRegex(
+            plan(),
+            r"\*\*The audit records one work-log line either way\*\* — what it "
+            r"returned, or\s+that it returned nothing",
+        )
+
+    def test_absent_audit_line_means_it_did_not_run(self):
+        # The operative half: without it the requirement reads as bookkeeping
+        # rather than as what makes a missing line evidence.
+        self.assertRegex(
+            plan(),
+            r"an absent line means the reader did not run,\s+never that it ran "
+            r"and was silent",
+        )
+
+    def test_audit_records_how_many_milestones_left_no_line(self):
+        # M121 review pass 2, F-E3 (83). The record requirement's asserts pin
+        # the rule; nothing pinned the measurement that motivates it, so
+        # "Three of the five ... carry no such line" inverted to "All five ...
+        # so the record is complete" with the suite green — turning the
+        # evidence for the rule into a claim that the rule is unnecessary.
+        self.assertRegex(
+            plan(),
+            r"Three of the five milestones after\s+this instrument was "
+            r"adopted carry no such line",
+        )
+
     def test_step_4_writes_the_audited_wording_and_reaudits_a_change(self):
         self.assertRegex(
             plan(),
@@ -162,6 +198,17 @@ class TestRRIngestionCriteriaAudit(unittest.TestCase):
         self.assertRegex(
             brief(),
             r"asked\s+of the set as well as of each criterion",
+        )
+
+    def test_ingest_audit_records_its_own_line_on_the_plan_gate_terms(self):
+        # M121: the record requirement is stated once at `/milestone-plan`
+        # step 3, and this surface carries only a cross-reference to it —
+        # the rulebook's step-0 single-home check (D-071), not a step of
+        # `/milestone-brief`, whose ingest audit is its own step 3.
+        self.assertRegex(
+            brief(),
+            r"The ingest audit\s+records one work-log line either way, on "
+            r"`/milestone-plan` step 3's terms",
         )
 
     def test_ingest_findings_are_raised_never_softened_away(self):
