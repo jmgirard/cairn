@@ -1,6 +1,6 @@
 # M123: Rebuild guard-doctrine §8 so its certification loop converges
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR10
@@ -332,6 +332,9 @@ not reopened here.
 - 2026-07-30: FALSIFIER DATA, recorded because clause (i) will be read off it. Reopening counts by round: 16, 13, 7, 5, 3, 1, 0. Total findings by round: 16, 13, 10, 8, 7, 5, 4. The loop converged on its own stated rules in seven rounds with no maintainer override at the end — which is what this milestone exists to make possible, and it took four rounds past the one the maintainer overrode at.
 - 2026-07-30: T16 SWEEP after round 7's fixes — 84/84 registered §8 rules redden their own test, restored byte-identical after each, tree clean.
 - 2026-07-30: round 7 verify — skills 777 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0; §8 at 149; plan-owned body 146/149.
+
+- 2026-07-30: STATUS -> review, entered at ZERO UNRESOLVED with no deviation and no override. Round 7 returned zero reopening findings, so §8's own rule obliges no further round; the three fix-authored records it found are fixed in place and carry their confirmation obligation to `/milestone-review`'s three-lens fan-out, and its one out-of-mandate finding is fixed as §§1-7 work. This is the first time this milestone has entered the gate on the rules rather than past them — round 3's entry was a maintainer override and the review returned it.
+- 2026-07-30: return 1 closed. All twelve actioned findings are fixed: AC8's pinning gaps (A3, A7, A19, A22), the three defeated structural tests (A4, A5, A17), the boundary/record contradiction (A9), D-083 part 4's convicted absolute (A2, superseded by D-087), and AC13's overridden gate (A1/B1/A15, closed by rounds 4-7). Guard grew 741 -> 777 tests; the §8 sweep 49 -> 84 rules, all reddening their own test.
 
 ## Decisions
 
