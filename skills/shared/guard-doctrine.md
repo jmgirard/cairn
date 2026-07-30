@@ -284,7 +284,7 @@ The reader checks three things and reports discrepancies verbatim:
 The gate is entered at zero unresolved: every discrepancy is fixed, never
 argued down as imprecision. Which confirmation that fix then takes depends on
 the finding's class, and the classes are set out below — each carries exactly
-one. The author still runs everything —
+one, and none carries two. The author still runs everything —
 this moves certification, not operation.
 
 **The certified scope is the work and the records describing the work; a record
@@ -302,9 +302,10 @@ them into one is what made this section's first attempt at a bound unusable, so
 they are stated apart. **What the reader checks and the author fixes** is drawn
 by *subject matter*: the work and every record about the work are inside,
 narrative about the certifying process is outside (D-069, as narrowed by
-D-070). **What a finding reopens** is drawn by *provenance*: a finding is
-grounds for a further round unless its only subject is a **fix-authored
-record**.
+D-070). **What a finding reopens** is drawn by *provenance*: a finding whose only
+subject is a **fix-authored record** is not grounds for a further round. That is
+a shield and never a licence — it says which findings cannot reopen a round, and
+never that anything else must.
 
 A fix-authored record is a docstring, a comment, a work-log line, or a record
 claim that a previous round's own fix wrote in this same certification. That
@@ -319,7 +320,8 @@ and it reopens a round no matter who wrote it.
 The two axes compose rather than compete. A fix-authored record is still read
 and still corrected: **being a fix-authored record never removes it from the
 certified scope**, which D-069 draws on subject matter alone. What it loses is
-only the power to force another round. A record can of course be outside the
+only the power to force another round, and never the reading and correcting
+itself. A record can of course be outside the
 certified scope for D-069's own reason — its subject is a certification round —
 and that is D-069 operating, never this rule. D-070 rules on the first axis and
 says nothing about the second, which is why this is compatible with it rather

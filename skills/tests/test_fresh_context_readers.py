@@ -28,18 +28,20 @@ The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
     predating round 1), the compatibility clause that keeps D-070 untouched,
     the mandate boundary with its clears-both composition, its enumerated
     out-of-mandate class and its does-not-hold-the-gate clause, each of the
-    three per-class confirmation obligations, the record-churn evidence with
-    every count and revision it cites, and the yield-based falsifier's window,
-    both counted quantities, both consequences and both tolerances.
+    three per-class confirmation obligations, every count and revision the
+    record-churn evidence cites, and the yield-based falsifier's window, both
+    counted quantities, both consequences and both tolerances.
   * `/milestone-implement` step 8, which fires §8 before `status -> review`
     when the milestone authored or edited a prose-guard.
 
-Three properties OF §8 are checked structurally rather than by anchor, because
+Four properties OF §8 are checked structurally rather than by anchor, because
 no single phrase can carry them: the class is defined and bounded in one
-paragraph, it is never named by a synonym, and the obligations paragraph
-assigns exactly three obligations with none on the author. Each of the three
-first shipped in a form that survived its own inversion, and the comment on
-each records how.
+paragraph, it is defined in the paragraph immediately after its first use, it
+is never named by a synonym in either direction, and its obligations paragraph
+carries one bold label per class with the author named only in the exclusion
+clause. Each first shipped in a form that survived its own inversion, and each
+comment records how. The last is a disclosed PROXY: AC4's no-second-obligation
+clause is section-wide, and what the test enforces is paragraph-scoped.
 
 Anchors are copied from the shipped bytes, never from the draft that
 produced them (M95), and every phrase that crosses the files' hard wrap is
@@ -342,11 +344,12 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         )
 
     def test_reopening_is_drawn_by_provenance(self):
-        # The rule M121 shipped on the wrong object. Stated on what a finding
-        # REOPENS, it stops colliding with D-070 (RR09 q1).
+        # D9 (round 2): stated as 'a finding is grounds for a further round unless
+        # ...', provenance read as SUFFICIENT for reopening, contradicting the
+        # mandate boundary for an out-of-mandate finding on original text.
         self.assertRegex(
             self.doctrine,
-            r"\*\*What\s+a\s+finding\s+reopens\*\*\s+is\s+drawn\s+by\s+\*provenance\*:\s+a\s+finding\s+is\s+grounds\s+for\s+a\s+further\s+round\s+unless\s+its\s+only\s+subject\s+is\s+a\s+\*\*fix\-authored\s+record\*\*\.",
+            r"\*\*What\s+a\s+finding\s+reopens\*\*\s+is\s+drawn\s+by\s+\*provenance\*:\s+a\s+finding\s+whose\s+only\s+subject\s+is\s+a\s+\*\*fix\-authored\s+record\*\*\s+is\s+not\s+grounds\s+for\s+a\s+further\s+round\.",
         )
 
     def test_checked_and_fixed_is_drawn_by_subject_matter(self):
@@ -608,6 +611,60 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             r"five\s+of\s+which\s+had\s+round\s+1's\s+own\s+fix\s+prose\s+as\s+their\s+only\s+subject\s+\(`8763368\^`\)",
         )
 
+    def test_the_provenance_rule_is_a_shield_and_not_a_licence(self):
+        # D9 (round 2): the sentence that stops the shield being read as a second,
+        # competing test for what DOES reopen.
+        self.assertRegex(
+            self.doctrine,
+            r"That\s+is\s+a\s+shield\s+and\s+never\s+a\s+licence\s+—\s+it\s+says\s+which\s+findings\s+cannot\s+reopen\s+a\s+round,\s+and\s+never\s+that\s+anything\s+else\s+must\.",
+        )
+
+    def test_the_shield_costs_only_round_opening_power(self):
+        # D11 (round 2): invertible to 'the power to be read and corrected at all',
+        # which contradicts the bolded non-removal clause one sentence earlier.
+        self.assertRegex(
+            self.doctrine,
+            r"What\s+it\s+loses\s+is\s+only\s+the\s+power\s+to\s+force\s+another\s+round,\s+and\s+never\s+the\s+reading\s+and\s+correcting\s+itself\.",
+        )
+
+    def test_the_forward_reference_states_the_rule_it_points_at(self):
+        # D12 (round 2): §8 states the exactly-one rule twice; only the second was
+        # pinned, so the first inverted to 'at least one' with the suite green.
+        self.assertRegex(
+            self.doctrine,
+            r"the\s+classes\s+are\s+set\s+out\s+below\s+—\s+each\s+carries\s+exactly\s+one,\s+and\s+none\s+carries\s+two\.",
+        )
+
+    def test_the_compatibility_with_d070_is_stated(self):
+        # D10 (round 2): rewritable to 'D-070 rules on both axes ... a partial
+        # supersession' with the suite green — the exact claim D-083 part 4 rests on.
+        self.assertRegex(
+            self.doctrine,
+            r"D\-070\s+rules\s+on\s+the\s+first\s+axis\s+and\s+says\s+nothing\s+about\s+the\s+second,\s+which\s+is\s+why\s+this\s+is\s+compatible\s+with\s+it\s+rather\s+than\s+a\s+partial\s+supersession\s+of\s+it\.",
+        )
+
+    def test_the_first_case_carries_its_count(self):
+        # D5 (round 2): the docstring claimed every count was locked; this one and
+        # the two below were not.
+        self.assertRegex(
+            self.doctrine,
+            r"round\s+4\s+found\s+discrepancies\s+only\s+in\s+the\s+narrative\s+its\s+own\s+earlier\s+rounds\s+had\s+written\s+—\s+four\s+false\s+claims\s+in\s+a\s+round\-3\s+entry",
+        )
+
+    def test_the_third_case_carries_its_count(self):
+        # D5 (round 2): 'twelve' inverted to 'forty' with the suite green.
+        self.assertRegex(
+            self.doctrine,
+            r"M121's\s+round\s+2\s+returned\s+twelve\s+findings,\s+five\s+of\s+which\s+had",
+        )
+
+    def test_the_projection_carries_its_tolerance(self):
+        # D5 (round 2): AC7(b)'s tolerance inverted to '±9 rounds' green.
+        self.assertRegex(
+            self.doctrine,
+            r"Tolerance:\s+±1\s+round,\s+on\s+that\s+gap\.",
+        )
+
     # --- structural properties, which no single-phrase anchor can carry ---
     # These are the "bounded property" cases guard-doctrine §2 sends to a
     # by-hand check. They are automated here instead, because each is a
@@ -633,18 +690,51 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         self.assertIn("every record that existed before round 1", para)
 
     def test_the_class_is_never_called_by_a_synonym(self):
-        # D5 (round 1): AC1 forbids alternating the class name with an unmarked
-        # synonym. The sentence asserting that rule survives renaming the class
-        # elsewhere, so assert the property over §8 instead of the claim about
-        # it. Every "fix-authored" in §8 must be followed by "record".
-        # Case matters: a synonym introduced at the start of a sentence
-        # ("Fix-authored text is ...") escaped a case-sensitive search, which
-        # is how this test survived its own inversion on the first sweep.
+        # D5 (round 1) then D4 (round 2). AC1 forbids alternating the class
+        # name with an unmarked synonym. Two ways that was defeated: a synonym
+        # at the start of a sentence escaped a case-sensitive search, and a
+        # synonym dropping the prefix entirely ("A shielded record is still
+        # read") was not reachable by any search keyed on "fix-authored". So
+        # this checks BOTH directions — nothing follows the prefix but the
+        # class noun, and every paragraph stating a rule about the class names
+        # it in full.
         tails = re.findall(r"fix-authored\s+(\w+)", self.section8, re.I)
         self.assertTrue(tails, "no occurrences of the class name found")
         self.assertEqual(
-            sorted(set(tails)), ["record", "records"],
+            sorted({x.lower() for x in tails}), ["record", "records"],
             f"§8 names the class by a synonym: {sorted(set(tails))}",
+        )
+        for marker in (
+            "is not grounds for a further round",     # the two-axis paragraph
+            "is a docstring, a comment",              # the definition
+            "never removes it from the",              # the shield
+            "is fixed in place and",                  # the obligations
+        ):
+            para = self._paragraph_containing(marker)
+            self.assertRegex(
+                para, r"fix-authored record",
+                f"the paragraph at {marker!r} states a rule about the class "
+                f"without naming it",
+            )
+
+    def test_the_class_is_defined_where_it_is_first_used(self):
+        # D6 (round 2): AC1 requires the term be "defined at first use". The
+        # co-location test pins the definition paragraph's contents, not its
+        # position — moving that whole paragraph to the end of the file left
+        # every anchor matching and the suite green, with first use 100 lines
+        # ahead of the definition.
+        paras = self.section8.split("\n\n")
+        first_use = next(
+            i for i, para in enumerate(paras) if "**fix-authored" in para
+        )
+        defined = next(
+            i for i, para in enumerate(paras)
+            if "is a docstring, a comment" in para
+        )
+        self.assertEqual(
+            defined, first_use + 1,
+            f"the class is first used in §8 paragraph {first_use} but defined "
+            f"in paragraph {defined}; the definition must immediately follow",
         )
 
     def test_exactly_three_confirmation_obligations_are_assigned(self):
@@ -655,6 +745,10 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # enumerate-the-renderings failure guard-doctrine §3 names. So count
         # the paragraph's own structure instead: one bold label per class plus
         # the header, and the author named only inside the exclusion clause.
+        # This is a PROXY and is disclosed as one (D2/D3, round 2): an
+        # unbolded sentence adding an obligation to an existing class, and
+        # naming no author, is not reachable by it. AC4's clause is
+        # section-wide; what is enforced here is paragraph-scoped.
         para = self._paragraph_containing("Each class carries exactly one")
         self.assertEqual(
             para.count("**") // 2, 4,

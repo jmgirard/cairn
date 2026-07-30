@@ -2425,12 +2425,6 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_reopening_is_drawn_by_provenance",
-        target=GUARD_DOCTRINE,
-        block='**What a finding reopens** is drawn by *provenance*: a finding is\ngrounds for a further round unless its only subject is a **fix-authored\nrecord**.',
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_checked_and_fixed_is_drawn_by_subject_matter",
         target=GUARD_DOCTRINE,
         block='**What the reader checks and the author fixes** is drawn\nby *subject matter*: the work and every record about the work are inside,\nnarrative about the certifying process is outside (D-069, as narrowed by\nD-070).',
@@ -2620,6 +2614,54 @@ REGISTRY = [
         test="TestDescriptionLayerCertification.test_the_third_case_carries_its_revision",
         target=GUARD_DOCTRINE,
         block="five of which had\nround 1's own fix prose as their only subject (`8763368^`)",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_reopening_is_drawn_by_provenance",
+        target=GUARD_DOCTRINE,
+        block='**What a finding reopens** is drawn by *provenance*: a finding whose only\nsubject is a **fix-authored record** is not grounds for a further round.',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_provenance_rule_is_a_shield_and_not_a_licence",
+        target=GUARD_DOCTRINE,
+        block='That is\na shield and never a licence — it says which findings cannot reopen a round, and\nnever that anything else must.',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_shield_costs_only_round_opening_power",
+        target=GUARD_DOCTRINE,
+        block='What it loses is\nonly the power to force another round, and never the reading and correcting\nitself.',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_forward_reference_states_the_rule_it_points_at",
+        target=GUARD_DOCTRINE,
+        block='the classes are set out below — each carries exactly\none, and none carries two.',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_compatibility_with_d070_is_stated",
+        target=GUARD_DOCTRINE,
+        block='D-070 rules on the first axis and\nsays nothing about the second, which is why this is compatible with it rather\nthan a partial supersession of it.',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_first_case_carries_its_count",
+        target=GUARD_DOCTRINE,
+        block='round 4 found discrepancies only in the narrative its own earlier rounds had\nwritten — four false claims in a round-3 entry',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_third_case_carries_its_count",
+        target=GUARD_DOCTRINE,
+        block="M121's round 2 returned twelve findings, five of which had",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_projection_carries_its_tolerance",
+        target=GUARD_DOCTRINE,
+        block='Tolerance:\n±1 round, on that gap.',
     ),
     Mutation(
         guard="test_fresh_context_readers",
