@@ -689,6 +689,23 @@ class TestDescriptionLayerCertification(unittest.TestCase):
                 f"without naming it",
             )
 
+    def test_the_class_is_never_called_by_a_synonym(self):
+        # D5 (round 1), D4 (round 2), and DELETED IN ERROR at T10/T11 —
+        # restored at round 3's F1, which is the finding that caught it. AC1
+        # forbids alternating the class name with an unmarked synonym. Three
+        # ways that has been defeated so far: a synonym at the start of a
+        # sentence escaping a case-sensitive search; a synonym dropping the
+        # prefix entirely ("A shielded record is still read"), unreachable by
+        # any search keyed on "fix-authored"; and the compression retiring this
+        # test with the evidence asserts, after which "Fix-authored text is
+        # neither read nor corrected" shipped green.
+        tails = re.findall(r"fix-authored\s+(\w+)", self.section8, re.I)
+        self.assertTrue(tails, "no occurrences of the class name found")
+        self.assertEqual(
+            sorted({x.lower() for x in tails}), ["record", "records"],
+            f"§8 names the class by a synonym: {sorted(set(tails))}",
+        )
+
     def test_the_class_is_defined_where_it_is_first_used(self):
         # D6 (round 2): AC1 requires the term be "defined at first use". The
         # co-location test pins the definition paragraph's contents, not its
