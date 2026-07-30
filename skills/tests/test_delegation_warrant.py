@@ -91,6 +91,18 @@ Six asserts. Two are AC4's shape — one per named class, each a phrase on a
     guard-doctrine §1's label-to-set trap, and the harness does not catch it
     because blanking is not swapping (§2)."""
 
+    def test_rule_states_that_it_reaches_one_class_only(self):
+        # M121 review pass 2, F-E1 (85). The two class asserts pin WHICH class
+        # is which; nothing pinned the section's lead claim that the warrant
+        # reaches one class and not the other. Inverted to "reaches both
+        # classes of checking alike" the section contradicts its own next two
+        # lines, with the whole suite green.
+        self.assertRegex(
+            rules(),
+            r"the delegation warrant above\s+reaches one class of checking "
+            r"and not the other",
+        )
+
     def test_rule_names_the_governed_class(self):
         self.assertIn(
             "it governs **an author re-checking work it just produced, in "

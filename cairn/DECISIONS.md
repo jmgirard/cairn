@@ -2752,3 +2752,60 @@ noted on the same row and RR09 itself says not to adopt it inside M121;
 recommendations 8 and 9 — rejecting revert-unchanged and rejecting outright
 retirement — are recorded, and the first is the one this entry departs from,
 stated above rather than worked around.
+
+### D-081 (2026-07-28): M121 edited D-079 in place twice after appending it — an IP4 violation recorded, not repaired; and D-079's "eleven … in an earlier round's own fix text" is corrected to ten of eleven — supersedes that measurement clause; cites D-065
+
+**Context:** M121's second review pass found two defects in this milestone's own
+handling of `DECISIONS.md`, both raised independently by the blame-history and
+diff-bug lenses and scored 85.
+
+**The violation.** D-079 was appended at `abe04f2`. It was then edited **in
+place** at `fb663cb` — heading rewritten, Decision clause 1 rewritten wholesale,
+Consequences substantially rewritten — and again at `124da58`, heading rewritten
+a second time. D-065 forbids exactly this: "IP4 attaches at append time, not at
+merge time: an entry's not-yet-merged status is no carve-out, because the rule
+is about the record's form, not its distribution, and a carve-out would make
+every unmerged history file editable by whoever is holding it." D-065 exists
+because M114's review pass 5 caught D-064 corrected in place and ruled it a
+violation. The compounding fact is that **D-080 condemns RB09 for proposing the
+same move**, citing D-065 — while M121's own commits had already made it twice,
+and no record acknowledged it until now.
+
+**Decision:** Record, do not repair. Rewriting the branch to un-edit D-079 would
+be a second and larger history rewrite, and IP4's remedy for a record proven
+wrong is a superseding entry, never an edit — the rule cannot be honoured by
+breaking it again. So: `git log -p cairn/DECISIONS.md` is authoritative for what
+D-079 said when appended; `abe04f2` is the append, `fb663cb` and `124da58` are
+the two edits. This entry is the pointer a later reader needs, and it is the
+correction D-065's own route prescribes.
+
+**Second, the measurement.** D-079's Consequences reads "eleven of those rounds'
+findings were record errors in an earlier round's own fix text, round 9's two
+sitting in round 8's." That clause is superseded: the supported figure is
+**eleven record errors, ten of them in an earlier round's own fix text**. M121's
+own §8 round 2 corrected this in `guard-doctrine.md`, but not here, and the
+paragraph carrying the corrected copy was later withdrawn with the exclusion —
+leaving the imprecise figure as the only surviving instance in an append-only
+file. The work log recorded the finding as closed on the strength of `grep
+eleven skills/`, a command that structurally cannot reach `cairn/DECISIONS.md`;
+that verification claim is withdrawn here. (RR09 §2's own table sums the per-
+round record errors to eleven and describes each as fix-authored, so the
+ten-of-eleven split is itself contested — RR09 BC4/BC8 assert ten. What is
+recorded here is that the unqualified "eleven … in fix text" overstates what
+either source establishes.)
+
+**Consequences:** Two lessons are owed at post-merge hygiene, both about this
+milestone rather than about §8. First, a durable record edited on a branch is
+still edited — the append-only rule has no unmerged grace period, and a session
+that appends an entry early in a milestone must supersede rather than revise it
+when the milestone's thinking moves. Second, a verification command must be
+scoped to the tree that holds the claim: `grep … skills/` cannot close a finding
+about `cairn/DECISIONS.md`, and a green result from the wrong scope reads
+identically to a green result from the right one.
+
+D-079's other now-false sentences are left standing and are **not** superseded
+here — D-080 scoped itself to clause 1 and the heading's exclusion claim, and
+its Consequences section still argues from the withdrawn narrowing. That gap is
+recorded as a review finding scoring 78, below the action threshold, and logged
+in M121's Review section rather than fixed, because superseding a Consequences
+section wholesale is a larger act than this milestone's remaining scope.

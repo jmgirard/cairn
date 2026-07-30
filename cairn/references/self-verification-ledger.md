@@ -47,8 +47,9 @@ diffs the hit list against the table below.
   M121's own prose — `tracking-rules.md:666`, `:669` and `:672`, the
   self-checking-class rule (D-079 clause 3), which names and discusses
   verification without instructing any and so classifies `not-an-instruction`
-  on this page's own vocabulary. The other three-line difference is
-  line-number shift, not new hits. A later pass re-running the command at
+  on this page's own vocabulary. Those three are the whole difference: content-diffing the
+  two hit lists gives three additions and no removals, the rest being
+  line-number shift. A later pass re-running the command at
   `684e53a` gets the 79 this table holds; re-running it at a later commit
   should expect its own additions and diff them, not against this table
   (M121 review F-C3) — observed 2026-07-27.
@@ -99,10 +100,14 @@ Quotes are the hit line verbatim, so each is directly greppable. Where a line
 contains a table pipe, the longest pipe-free run carrying the instruction is
 quoted instead. `file:line` is at `684e53a`. M121 edits four of the fourteen
 corpus files — `milestone-brief`, `milestone-plan`, `guard-doctrine.md`,
-`tracking-rules.md` — and hit line numbers move in one of them,
-`tracking-rules.md`, whose edit at `:666` shifts every hit from `:670` onward
-by +14. In the other three the edit lands after the file's last hit — observed
-2026-07-27.
+`tracking-rules.md`. M121 edits **three** of the fourteen corpus files at
+HEAD — `milestone-brief`, `milestone-plan` and `tracking-rules.md`;
+`guard-doctrine.md` was edited and then restored byte-identical when D-080
+withdrew the §8 exclusion. Hit line numbers move in one file,
+`tracking-rules.md`, whose insertion at `:666` shifts every hit from `:670`
+onward by **+15** (670→685, 725→740, 733→748, 755→770, 811→826, 819→834). In
+the other two the edit lands after the file's last hit. Measured at `baf2fbb` —
+observed 2026-07-28.
 
 ## The ledger — 79 rows, one per hit at `684e53a` — observed 2026-07-27
 
@@ -131,7 +136,7 @@ by +14. In the other three the edit lands after the file's last hit — observed
 | V21 | `milestone-implement/SKILL.md:73` | `` `/milestone-brief`); tier-tag the Agent description ([S]/[O]). Verify `` | `command-evidence` | `keep` | reads a subagent's diff; the work checked is the subagent's, not the session's |
 | V22 | `milestone-implement/SKILL.md:86` | ``that grows a plan-owned section re-checks the body with `cairn_budget`;`` | `command-evidence` | `keep` | runs `cairn_budget` after an amendment |
 | V23 | `milestone-implement/SKILL.md:99` | `` `verify` slot passes clean (for a toolchain whose profile names a fuller `` | `command-evidence` | `keep` | runs the `verify` slot at completion |
-| V24 | `milestone-implement/SKILL.md:102` | ``— `skills/shared/guard-doctrine.md` §8, the author never certifies its own`` | `fresh-context-reader` | `keep` | the §8 routing bar; D-079 narrows §8's certified scope, not this line, which ships unchanged |
+| V24 | `milestone-implement/SKILL.md:102` | ``— `skills/shared/guard-doctrine.md` §8, the author never certifies its own`` | `fresh-context-reader` | `keep` | the §8 routing bar; ships unchanged — D-079 (1)'s narrowing was withdrawn at D-080 |
 | V25 | `milestone-plan/SKILL.md:27` | ``1. Confirm nothing else is `in-progress` — run`` | `command-evidence` | `keep` | runs `cairn_next.py` rather than eyeballing the ROADMAP |
 | V26 | `milestone-plan/SKILL.md:40` | `audit over a rougher draft certifies text that never ships.` | `fresh-context-reader` | `keep` | the ground for the criteria audit's ordering; D-079 narrows the instrument elsewhere, not this line |
 | V27 | `milestone-plan/SKILL.md:59` | `confirm the scopes are distinct and cross-reference.` | `command-evidence` | `keep` | reads the colliding milestone's scope off its file |
@@ -157,7 +162,7 @@ by +14. In the other three the edit lands after the file's last hit — observed
 | V47 | `shared/guard-doctrine.md:261` | `the artifact, so an author who runs them finds its own mistakes. Certification` | `fresh-context-reader` | `keep` | §8's diagnosis, which the M116-M119 round-1 yield confirms |
 | V48 | `shared/guard-doctrine.md:285` | `re-certified, never argued down as imprecision. The author still runs` | `fresh-context-reader` | `keep` | §8's zero-unresolved bar; ships unchanged, and D-079 (1)'s narrowing below it was withdrawn at D-080 |
 | V49 | `shared/guard-doctrine.md:286` | `everything — this moves certification, not operation.` | `fresh-context-reader` | `keep` | operation stays with the author — unchanged by D-079 |
-| V50 | `shared/guard-doctrine.md:288` | `**The certified scope is the work and the records describing the work; a record` | `fresh-context-reader` | `keep` | D-069's certified-scope bound; D-079 annotates it rather than replacing it |
+| V50 | `shared/guard-doctrine.md:288` | `**The certified scope is the work and the records describing the work; a record` | `fresh-context-reader` | `keep` | D-069's certified-scope bound; ships unchanged — D-079 (1) would have extended it and was withdrawn at D-080 |
 | V51 | `shared/guard-doctrine.md:289` | `whose subject is a certification round itself — the final round's own report` | `fresh-context-reader` | `keep` | the same D-069 clause, continued |
 | V52 | `shared/guard-doctrine.md:293` | `uncertified surface for the next one to audit. M114 pass 8 ran four rounds on` | `fresh-context-reader` | `keep` | D-069's convergence argument; ships unchanged — D-079 (1) would have extended it and was withdrawn at D-080 |
 | V53 | `shared/guard-doctrine.md:294` | `that treadmill — round 4 finding defects only in certification narrative — at` | `fresh-context-reader` | `keep` | the M114 treadmill measurement D-079 cites as one step below its own |
@@ -218,9 +223,12 @@ Where every row lands:
 - The 67 `command-evidence` and `not-an-instruction` rows at `684e53a` →
   folded into this milestone as `keep`, no edit — observed 2026-07-27.
 - V37 (`same-context-recheck`) → `keep`, ground stated in its row.
-- All eleven `fresh-context-reader` rows at `684e53a` → `keep`; D-079 narrows
-  §8's certified scope and adds the criteria audit's record requirement,
-  neither of which rewrites a line in this corpus — observed 2026-07-27.
+- All eleven `fresh-context-reader` rows at `684e53a` → `keep`. D-079's
+  surviving clause 2 adds the criteria audit's record requirement, which
+  rewrites no line in this corpus; its clause 1 would have narrowed §8 and was
+  withdrawn at D-080, leaving `guard-doctrine.md` byte-identical to its
+  pre-M121 state — so every §8 row here describes prose this milestone does not
+  touch — observed 2026-07-28.
 - The criteria audit's own instruction block is **not in this corpus** — its
   wording carries no term in the search — so D-079 reaches it by name rather
   than through a row here. Stated so a later pass does not read the ledger as

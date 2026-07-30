@@ -142,6 +142,18 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
             r"and was silent",
         )
 
+    def test_audit_records_how_many_milestones_left_no_line(self):
+        # M121 review pass 2, F-E3 (83). The record requirement's asserts pin
+        # the rule; nothing pinned the measurement that motivates it, so
+        # "Three of the five ... carry no such line" inverted to "All five ...
+        # so the record is complete" with the suite green — turning the
+        # evidence for the rule into a claim that the rule is unnecessary.
+        self.assertRegex(
+            plan(),
+            r"Three of the five milestones after\s+this instrument was "
+            r"adopted carry no such line",
+        )
+
     def test_step_4_writes_the_audited_wording_and_reaudits_a_change(self):
         self.assertRegex(
             plan(),

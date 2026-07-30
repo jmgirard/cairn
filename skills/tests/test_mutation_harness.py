@@ -2385,6 +2385,12 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_records_how_many_milestones_left_no_line",
+        target="skills/milestone-plan/SKILL.md",
+        block="Three of the five milestones after\n   this instrument was adopted carry no such line",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
         test="TestRRIngestionCriteriaAudit.test_ingest_audit_records_its_own_line_on_the_plan_gate_terms",
         target=BRIEF,
         block="The ingest audit\n   records one work-log line either way, on `/milestone-plan` step 3's terms",
@@ -3318,6 +3324,15 @@ REGISTRY += [
     # load-bearing half: the governed class restates the warrant above it,
     # while the exclusion is what stops the guide's third clause from being
     # read onto D-067's fresh-context readers.
+    # M121 review pass 2. Two entries for the two rules that inverted with the
+    # suite green: the section's lead claim that the warrant reaches one class
+    # and not the other, and the measurement motivating the record requirement.
+    Mutation(
+        guard="test_delegation_warrant",
+        test="TestSelfCheckingClassRule.test_rule_states_that_it_reaches_one_class_only",
+        target=RULES,
+        block="The delegation warrant above\n  reaches one class of checking and not the other",
+    ),
     Mutation(
         guard="test_delegation_warrant",
         test="TestSelfCheckingClassRule.test_rule_names_the_governed_class",

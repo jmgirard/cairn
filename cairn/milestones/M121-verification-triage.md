@@ -170,7 +170,20 @@ which no finding here disturbs.
 
 - 2026-07-28: review pass 2 opened. All five AC boxes UNTICKED first: pass 1's evidence was gathered at `b4fdfe5`, before the RR09 revert removed the §8 exclusion and its guards, so those ticks stood on evidence about a branch state that no longer exists — AC fencing treats an already-ticked criterion without fresh recorded evidence as unverified. Status in-progress → review; the transition is logged here because the routing chip sent this session straight to review rather than back through `/milestone-implement`.
 
+- 2026-07-28: review pass 2 fan-out — 3 lenses + scorer, 7 findings at 80+, all fixed within the pass. Two needed a durable record and got D-081: M121 edited D-079 IN PLACE twice after appending it (`fb663cb`, `124da58`), which D-065 forbids and which D-080 condemns RB09 for merely proposing; and pass 1's F-A1 survived at `DECISIONS.md:2662` because its closing verification, `grep eleven skills/`, cannot reach `cairn/DECISIONS.md`. Two were rules inverting with the suite green (`tracking-rules.md:667` — AC4's own claim — and `milestone-plan/SKILL.md:103`), now asserted, registered and verified red. Two were ledger measurements stale after the revert (four corpus files → three; +14 → +15). One was a Status-vs-Review contradiction, fixed by heading pass 1 SUPERSEDED.
+- 2026-07-28: correction (supersedes this session's 2026-07-27 revert line, IP4 — appended, not edited): that line claimed the revert "closes three deferred review findings outright — F-B3 (90), F-PR2 (85) and F-A1 (88)". F-A1 was NOT closed; it survived in `cairn/DECISIONS.md`, and the grep offered as evidence was scoped to `skills/`, a tree that cannot contain the file. D-081 carries the correction.
+- 2026-07-28: the RR09 revert also deleted four mutation-registry entries for guards that still ship, found by the prior-review lens. Restored from `main`; a set-comparison of every `test=` key now shows zero entries lost against `main` and nine added. The harness could not have caught it — registration is per file, and other entries for that file survived.
+
 ## Review
+
+### Pass 1 — 2026-07-27 (SUPERSEDED by pass 2 below)
+
+Kept as the record of what pass 1 found and why the milestone returned. Its
+criterion evidence describes branch state `b4fdfe5`, before the RR09 revert,
+and its closing verdict — "GATE FAILURE — the milestone returns to
+`in-progress`" — is that pass's conclusion, discharged: every finding it
+actioned is closed or superseded below, and the milestone re-entered review
+on 2026-07-28.
 
 **Fresh evidence, 2026-07-27** (branch `m121-verification-triage` at `b4fdfe5`,
 cut from `origin/main` and still containing it — no merge needed; PR #121).
@@ -243,7 +256,9 @@ advisory OK, no WARN. No `DESIGN.md` principle changed in the diff, so
 Returns to `in-progress` this milestone: **zero** — the thrash rule does not
 fire.
 
-### Fresh evidence, pass 2 — 2026-07-28
+### Pass 2 — 2026-07-28 (CURRENT)
+
+**Fresh evidence**
 
 Re-gathered from scratch at `f08e36d` after the RR09 revert; pass 1's evidence
 (above) described a branch state that no longer exists, so all five boxes were
@@ -391,3 +406,62 @@ REFUTED** — the 65/79/114 figures reproduce exactly at `684e53a`.
 
 **Thrash count: return 1 of this milestone.** Neither trigger fires — (a) needs
 a third return, and (b) needs one criterion failing twice by the same shape.
+
+### Independent fresh-context review, pass 2 — 2026-07-28
+
+Three lenses with distinct evidence bases, all told to report every candidate
+and filter nothing; a separate `[S]` scorer that generated none of them applied
+the rubric. Diff-bug `[O]` ~30 findings, blame-history `[S]` 3 + minors,
+prior-review `[S]` 3. Seven scored 80+; six of those the orchestrator
+re-measured first-hand before scoring.
+
+**Actioned (80+), all fixed in this pass:**
+
+- **G-IP4 (85)** — D-079 was appended at `abe04f2`, then **edited in place** at
+  `fb663cb` (heading, Decision clause 1, Consequences) and again at `124da58`
+  (heading). D-065 forbids exactly this: "IP4 attaches at append time, not at
+  merge time". Compounding: D-080 condemns RB09 for *proposing* the same move
+  while M121 had already made it twice. Fixed by recording, not repairing —
+  **D-081**; rewriting the branch to un-edit it would be a second, larger
+  history rewrite, and IP4's remedy is a superseding entry.
+- **F-B1 / F3 (85)** — pass 1's F-A1 was logged closed but survived at
+  `DECISIONS.md:2662`; the verification was `grep eleven skills/`, which cannot
+  reach `cairn/DECISIONS.md`. D-081 supersedes the measurement clause and
+  withdraws the false verification claim.
+- **F-E1 (85)** — `tracking-rules.md:667`, "reaches one class of checking and
+  not the other", inverted to "reaches both classes alike" with 698 tests
+  green. That sentence is AC4's own claim. Now asserted and registered;
+  inversion reds.
+- **F-C1 (85)** — the ledger said M121 edits four corpus files; at HEAD it
+  edits **three** (`guard-doctrine.md` is byte-identical to main). Corrected.
+- **F-C2 (85)** — the ledger's "+14" line shift is **+15** (670→685, 725→740,
+  733→748, 755→770, 811→826, 819→834). Corrected, with the offsets shown.
+- **F-E3 (83)** — `milestone-plan/SKILL.md:103`, "Three of the five milestones
+  … carry no such line", inverted to "All five … the record is complete" with
+  the suite green. Now asserted and registered; inversion reds.
+- **F-G5 (82)** — `Status: review` while the Review section's closing verdict
+  read "GATE FAILURE". Pass 1 is now headed SUPERSEDED and pass 2 CURRENT.
+
+**Logged below threshold (26 findings, surfaced not dropped — IP3):**
+F-A1 78 D-080's supersession leaves D-079's Consequences standing and now false ·
+F-A3 78 D-080 says the falsifier "stands exactly as D-079 re-armed it", a
+condition that cannot fire · F-F3 76 AC3's `keep unchanged` branch unmet on the
+shipped end state · F-C4 74 (partially fixed; the remaining stale grounds were
+closed this pass) · F-F1 70 Scope In does not name three shipped surfaces ·
+F-A6 68 D-080 inverts RR09's "keep the exclusion, rebuilt" framing · F-G2 66
+docstring says "each" assert pins a class phrase, true of two of six · F-A5 66
+D-080's second departure ground is untrue or self-indicting · F-C8 65 no
+precedence between `fresh-context-reader` and `not-an-instruction` · F-C7 62
+V30/V32 arguably `not-an-instruction` · F-C9 62 the `exempt` pin rests on a
+frozen-corpus precedent · F-G4 62 no "Deviations from RR09" table · F-A2 60
+D-079's heading still says "both narrowed" · F-D2 60 the ROADMAP rewrite
+deleted unfalsified measurement · F-F2 60 AC2/AC5 vacuous so D-080 is bound by
+no criterion · F-C5 58 three counts unpinned to a commit · F-C6 55 (fixed
+anyway) · F-D1 55 the row's sweep clause · F-A4 52 D-080 overstates RR09 on
+objection C · F-G3 50 one-home tension at `milestone-brief` · F-G1 30 docstring
+indentation · **F-C3 25, F-PR1 25, F-PR3 25, F-E2 25 — all ALREADY FIXED**
+earlier in this pass · F-D3 20 row length, legal by D-052.
+
+**Thrash count: 1 return.** Pass 2's findings were triaged "fix now" within the
+pass; the criteria evidence and consistency gate both passed, so no second
+return was taken.
