@@ -290,6 +290,10 @@ not reopened here.
 - 2026-07-30: T15 — D-087 appended (`git diff` on `cairn/DECISIONS.md` is +43/−0, so append-only, no entry edited). It narrows D-083 part 4's "a fix-authored record never leaves the certified scope" — the absolute round 1's D6 convicted in §8 and left standing in the entry, because IP4 attaches at append time — to the non-removal rule §8 ships, and shows part 4's conclusion survives on the narrowed premise. `dangling id tokens` OK after the append.
 - 2026-07-30: T15 verify — skills 747 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0.
 
+- 2026-07-30: T16 SWEEP — §8 whole, subjects derived from the shipped registry by AST parse (not the hand table that went stale at T11). 69 registry blocks target `guard-doctrine.md`, 55 resolve inside §8 and all 55 resolve exactly once. 55/55 reddened their OWN test under in-place polarity substitution, restored byte-identical after each, tree clean at the end. Up from 49 at T11: the six added are T13's five and T15's one.
+- 2026-07-30: T16 SWEEP — the instrument was wrong first again and is recorded as such. Its first pass reported 39/55 red and SIXTEEN blocks with no applicable polarity substitution; those were printed as "untested, not verified" rather than folded into the pass rate, and the table was extended until every block had a mutation. Had the sweep reported 39/39 it would have claimed a clean section while 16 rules went unexercised — the same shape as round 1's D4 and T11's stale table, caught this time by the script refusing to count what it did not mutate.
+- 2026-07-30: T16 — the four structural tests carry no registry entry (AC8's bounded-property carve-out) and take the by-hand check, each verified by its own inversion: splitting the definition paragraph before its round-opening half reds the co-location test; "A shielded record can of course be outside" reds the synonym test; an earlier unbolded use reds the first-use test; an unbolded fourth obligation sentence reds the obligations test. 59 §8 rules verified in total.
+
 ## Decisions
 
 ## Review
