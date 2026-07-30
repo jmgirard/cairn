@@ -722,8 +722,12 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         return d[d.index("## 8. The author never certifies"):]
 
     def _paragraph_containing(self, needle):
+        # Matched against the whitespace-normalized paragraph and returned
+        # raw. A22 (return 1): matching the raw text made every caller's
+        # needle a literal-hard-space match, so a content-preserving reflow
+        # located no paragraph at all and red a rule still present.
         for para in self.section8.split("\n\n"):
-            if needle in para:
+            if needle in " ".join(para.split()):
                 return para
         self.fail(f"no §8 paragraph contains {needle!r}")
 
@@ -745,7 +749,14 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             "never removes it from the",              # the shield
             "is fixed in place and",                  # the obligations
         ):
-            para = self._paragraph_containing(marker)
+            # A22 (return 1): this containment ran against the RAW paragraph
+            # and matched a literal hard space, so a content-preserving reflow
+            # putting "fix-authored" and "record" on either side of the wrap
+            # RED a rule still present — the M105 false-red this file's own
+            # docstring warns about, in the loop checking for it. Normalized
+            # for the same reason the co-location check above is: naming is
+            # wrap-independent.
+            para = " ".join(self._paragraph_containing(marker).split())
             self.assertRegex(
                 para, r"fix-authored record",
                 f"the paragraph at {marker!r} states a rule about the class "
@@ -762,11 +773,35 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # any search keyed on "fix-authored"; and the compression retiring this
         # test with the evidence asserts, after which "Fix-authored text is
         # neither read nor corrected" shipped green.
-        tails = re.findall(r"fix-authored\s+(\w+)", self.section8, re.I)
+        # A4 (return 1): the restored version searched only FORWARD from the
+        # prefix, so the very defeat its comment names as fixed still worked —
+        # "A shielded record loses only the power to force another round"
+        # shipped green. Both directions are checked now.
+        flat = " ".join(self.section8.split())
+        tails = re.findall(r"fix-authored\W+(\w+)", flat, re.I)
         self.assertTrue(tails, "no occurrences of the class name found")
         self.assertEqual(
             sorted({x.lower() for x in tails}), ["record", "records"],
             f"§8 names the class by a synonym: {sorted(set(tails))}",
+        )
+        # The other direction: a coined class name is a content-word modifier
+        # on "record". Function words and determiners are a closed grammatical
+        # class and pass; anything hyphenated or participial is the shape a
+        # coinage takes ("shielded", "excluded", "non-reopening"), and only
+        # "fix-authored" is licensed. Derived from §8's own modifiers, never
+        # from a list of synonyms to look for — that enumeration is the
+        # failure §3 names and round 1 already reproduced here once.
+        heads = {
+            m.group(1).lower()
+            for m in re.finditer(r"(\w[\w-]*)\s+records?\b", flat, re.I)
+        }
+        coined = {
+            h for h in heads
+            if h != "fix-authored" and ("-" in h or h.endswith(("ed", "ing")))
+        }
+        self.assertEqual(
+            coined, set(),
+            f"§8 gives the class a second name: {sorted(coined)}",
         )
 
     def test_the_class_is_defined_where_it_is_first_used(self):
@@ -775,13 +810,18 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # position — moving that whole paragraph to the end of the file left
         # every anchor matching and the suite green, with first use 100 lines
         # ahead of the definition.
+        # A5 (return 1): "first use" was located by searching for the BOLD
+        # rendering, so an earlier unbolded use — the shape a drafting edit
+        # actually produces — was invisible and the definition stayed
+        # "immediately after" a use that was no longer the first.
         paras = self.section8.split("\n\n")
         first_use = next(
-            i for i, para in enumerate(paras) if "**fix-authored" in para
+            i for i, para in enumerate(paras)
+            if re.search(r"fix-authored", para, re.I)
         )
         defined = next(
             i for i, para in enumerate(paras)
-            if "is a docstring, a comment" in para
+            if "is a docstring, a comment" in " ".join(para.split())
         )
         self.assertEqual(
             defined, first_use + 1,
@@ -812,6 +852,29 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             "a fourth obligation placed on the author would add a mention; "
             "the three here are the exclusion clause and its two grounds",
         )
+        # A17 (return 1): the two counts above did not cover the proxy's OWN
+        # paragraph — appending an unbolded sentence that names no author
+        # ("A reopening finding is in addition confirmed by a re-read at the
+        # merge gate.") left both counts unchanged and the suite green. The
+        # paragraph's structure is one sentence per class after the header, so
+        # count the sentences and require each to open on its class label.
+        flat = " ".join(para.split())
+        sentences = re.split(r"(?<=\.)\s+|(?<=\.\*\*)\s+", flat)
+        self.assertEqual(
+            len(sentences), 4,
+            "§8's obligations paragraph should be the header plus exactly one "
+            f"sentence per class; found {len(sentences)}: {sentences}",
+        )
+        for sentence in sentences[1:]:
+            self.assertRegex(
+                sentence, r"^An?\s+\*\*",
+                "every sentence after the header states one class's "
+                "obligation and opens on that class's bold label",
+            )
+        # DISCLOSED RESIDUE, narrower than before but not closed: a clause
+        # added INSIDE one of the three sentences, naming no author and using
+        # no bold, still escapes all four checks. AC4's clause is section-wide
+        # and what is enforced here is paragraph-scoped (D2/D3, round 2).
 
 
 class TestImplementRoutesToCertification(unittest.TestCase):

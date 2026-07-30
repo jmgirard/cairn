@@ -136,7 +136,7 @@ not reopened here.
 - [x] T13 — Pin clause (iii)'s three unpinned quantities, its tolerance and window
       scope, AC3's composition and tie-break decider, and the declarative
       falsifier sentence; register each (AC8, AC11).
-- [ ] T14 — Rebuild the three defeated structural tests — the obligations proxy,
+- [x] T14 — Rebuild the three defeated structural tests — the obligations proxy,
       the no-synonym check's prefix-dropping direction, defined-at-first-use —
       and fix the reflow false-red (AC8).
 - [ ] T15 — Fix round 3's F10 as §8's boundary prescribes: pin the pre-M123 rules
@@ -279,6 +279,11 @@ not reopened here.
 
 - 2026-07-30: T13 — 5 asserts added and 1 re-anchored, 5 registry entries added and 1 updated. `test_section_carries_its_own_falsifier` now opens on the sentence it is named for; A19 was that test passing while the sentence it names was deleted. Verified by inversion, not blanking: 7 mutations (negate quantity 1, negate quantity 3, transpose the window scope, relabel clause (iii)'s tolerance, negate AC3's composition into the tie-break the plan gate declined, transpose the decider, delete the declarative falsifier) each red their OWN test, restored byte-identical after each.
 - 2026-07-30: T13 verify — skills 746 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0.
+
+- 2026-07-30: T14 — the three defeated structural tests rebuilt and A22's false-red closed. No-synonym now checks BOTH directions: the forward tail check, plus a modifier check requiring every hyphenated or participial word preceding "record(s)" in §8 to be `fix-authored` — derived from §8's own modifiers, never from a list of synonyms to look for, which is the enumerate-the-renderings failure this same test already died of once. Defined-at-first-use now locates first use case-insensitively over any rendering, not the bold one. The obligations proxy now counts the paragraph's sentences (header + exactly one bold-headed sentence per class), which is what covers its own paragraph.
+- 2026-07-30: T14 — A22 fixed at the HELPER, not only at the site the review named: `_paragraph_containing` matched raw text, so every caller's needle was a literal-hard-space match and a reflow located no paragraph at all. Matching is normalized, the raw paragraph still returned. By-hand check (these four are the bounded-property carve-out AC8 names, and none is registered): the reflow that previously red the rule now leaves every rule test green; the one remaining signal is the mutation harness reporting its byte-anchored registry block no longer resolves, which is the re-anchoring tax and not a false-red.
+- 2026-07-30: T14 — verified by inversion: "A shielded record can of course be outside the certified scope" reds the synonym test; an earlier unbolded "not even for a fix-authored record" reds the first-use test; an unbolded fourth obligation sentence naming no author reds the obligations test. Each restored byte-identical. RESIDUE DISCLOSED in the test comment rather than papered over — a clause added INSIDE one of the three obligation sentences, naming no author and using no bold, still escapes; AC4's clause is section-wide and the check is paragraph-scoped.
+- 2026-07-30: T14 verify — skills 746 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0.
 
 ## Decisions
 
