@@ -22,7 +22,13 @@ The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
     operation-vs-certification cut, the diagnosis, the before-review
     placement, each of the three checks, the zero-unresolved bar, the
     certification-not-operation clause, the section's own falsifier, and D-069's
-    certified-scope bound.
+    certified-scope bound. M123 (D-083) rebuilds the section and adds the rest:
+    the two-axis discriminator, the `fix-authored record` class and the two
+    surfaces it does NOT shield (a fix's code/asserts/fixtures, and any record
+    predating round 1), the compatibility clause that keeps D-070 untouched,
+    the mandate boundary and its clears-both composition, the three
+    per-class confirmation obligations, the record-churn evidence, and the
+    yield-based falsifier that replaced the round-count one.
   * `/milestone-implement` step 8, which fires §8 before `status -> review`
     when the milestone authored or edited a prose-guard.
 
@@ -323,6 +329,151 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             r"It counts yield and not\s+rounds, because the round count is "
             r"precisely what the two rules above change,\s+and a measure its "
             r"own subject can satisfy by construction measures nothing",
+        )
+
+    def test_reopening_is_drawn_by_provenance(self):
+        # The rule M121 shipped on the wrong object. Stated on what a finding
+        # REOPENS, it stops colliding with D-070 (RR09 q1).
+        self.assertRegex(
+            self.doctrine,
+            r"\*\*What\s+a\s+finding\s+reopens\*\*\s+is\s+drawn\s+by\s+\*provenance\*:\s+a\s+finding\s+is\s+grounds\s+for\s+a\s+further\s+round\s+unless\s+its\s+only\s+subject\s+is\s+a\s+\*\*fix\-authored\s+record\*\*\.",
+        )
+
+    def test_checked_and_fixed_is_drawn_by_subject_matter(self):
+        # The first axis, cited to the entries that drew it. Without both axes
+        # named apart, one rule reads as narrowing the other's object.
+        self.assertRegex(
+            self.doctrine,
+            r"\*\*What\s+the\s+reader\s+checks\s+and\s+the\s+author\s+fixes\*\*\s+is\s+drawn\s+by\s+\*subject\s+matter\*:\s+the\s+work\s+and\s+every\s+record\s+about\s+the\s+work\s+are\s+inside,\s+narrative\s+about\s+the\s+certifying\s+process\s+is\s+outside\s+\(D\-069,\s+as\s+narrowed\s+by\s+D\-070\)\.",
+        )
+
+    def test_fix_authored_record_names_the_four_record_kinds(self):
+        # The excluded class is description-layer records only. Enumerating the
+        # kinds is what stops 'text' being read back into it.
+        self.assertRegex(
+            self.doctrine,
+            r"A\s+fix\-authored\s+record\s+is\s+a\s+docstring,\s+a\s+comment,\s+a\s+work\-log\s+line,\s+or\s+a\s+record\s+claim\s+that\s+a\s+previous\s+round's\s+own\s+fix\s+wrote\s+in\s+this\s+same\s+certification\.",
+        )
+
+    def test_the_class_has_exactly_one_name(self):
+        # Positive framing of the no-unmarked-synonym rule (guard-doctrine section 2:
+        # a negative assert is satisfied by blanking, so pin the positive).
+        self.assertRegex(
+            self.doctrine,
+            r"That\s+name\s+is\s+the\s+only\s+one\s+this\s+section\s+gives\s+the\s+class,\s+and\s+where\s+it\s+means\s+anything\s+wider\s+it\s+says\s+so",
+        )
+
+    def test_fix_code_and_original_records_stay_round_opening(self):
+        # The shield reaches records only. Losing this makes a fix-introduced
+        # code regression unable to reopen a round - RR09 q3's broken instrument.
+        self.assertRegex(
+            self.doctrine,
+            r"A\s+fix's\s+code,\s+its\s+asserts\s+and\s+its\s+fixtures\s+are\s+not\s+records\s+and\s+stay\s+ordinary\s+round\-opening\s+surface;\s+so\s+does\s+every\s+record\s+that\s+existed\s+before\s+round\s+1",
+        )
+
+    def test_an_original_false_claim_still_reopens(self):
+        # M114's seventh-return defect. A draft of this rule deleted it by
+        # drawing the class on layer alone rather than on provenance.
+        self.assertRegex(
+            self.doctrine,
+            r"a\s+false\s+claim\s+in\s+an\s+original\s+docstring\s+is\s+the\s+defect\s+this\s+section\s+was\s+built\s+on\s+and\s+it\s+reopens\s+a\s+round\s+no\s+matter\s+who\s+wrote\s+it",
+        )
+
+    def test_the_provenance_rule_does_not_narrow_the_certified_scope(self):
+        # The compatibility with D-069/D-070: what is lost is round-opening
+        # power, never certified scope.
+        self.assertRegex(
+            self.doctrine,
+            r"it\s+never\s+leaves\s+the\s+certified\s+scope,\s+and\s+nothing\s+here\s+narrows\s+that\s+scope",
+        )
+
+    def test_mandate_boundary_limits_reopening_to_the_three_checks(self):
+        # The rule that actually reaches M119's round count (RR09 rec 5).
+        self.assertRegex(
+            self.doctrine,
+            r"\*\*A\s+round\s+reopens\s+only\s+on\s+a\s+finding\s+within\s+the\s+three\s+named\s+checks\s+above\.\*\*",
+        )
+
+    def test_out_of_mandate_observations_route_to_sections_one_to_seven(self):
+        # Routed, never dropped. Without the routing clause the boundary reads
+        # as licence to ignore a real finding.
+        self.assertRegex(
+            self.doctrine,
+            r"is\s+real\s+work,\s+and\s+it\s+is\s+recorded\s+and\s+fixed\s+as\s+ordinary\s+milestone\s+work\s+under\s+§§1–7\s+and\s+the\s+mutation\s+harness\.\s+It\s+does\s+not\s+reopen\s+certification",
+        )
+
+    def test_a_finding_reopens_only_if_it_clears_both_lines(self):
+        # The composition. Two independent shields conjoin; either one failing
+        # closes the round.
+        self.assertRegex(
+            self.doctrine,
+            r"\*\*A\s+finding\s+reopens\s+a\s+round\s+only\s+if\s+it\s+clears\s+both\s+lines\*\*\s+—\s+it\s+falls\s+within\s+the\s+three\s+checks,\s+and\s+its\s+only\s+subject\s+is\s+not\s+a\s+fix\-authored\s+record",
+        )
+
+    def test_each_class_carries_exactly_one_confirmation_obligation(self):
+        # The reconciliation RR09 q6 defect 1 names: the section used to carry
+        # 'fixed and re-certified' and 'fixed in place' with no rule for which governs.
+        self.assertRegex(
+            self.doctrine,
+            r"\*\*Each\s+class\s+carries\s+exactly\s+one\s+confirmation\s+obligation,\s+and\s+no\s+class\s+carries\s+two\.\*\*",
+        )
+
+    def test_no_confirmation_obligation_falls_on_the_author(self):
+        # D-067 rejected instructing an author's own re-check; an author
+        # re-reading its own corrected record is that move under another name.
+        self.assertRegex(
+            self.doctrine,
+            r"no\s+confirmation\s+obligation\s+falls\s+on\s+the\s+author,\s+because\s+D\-067\s+rejected\s+instructing\s+an\s+author's\s+own\s+re\-check",
+        )
+
+    def test_the_falsifier_counts_where_a_finding_was_found(self):
+        # Without this the mandate boundary satisfies the falsifier by
+        # construction - it routes the very findings the falsifier counts.
+        self.assertRegex(
+            self.doctrine,
+            r"A\s+finding\s+counts\s+where\s+it\s+was\s+\*\*found\*\*,\s+never\s+where\s+it\s+was\s+fixed,\s+so\s+routing\s+one\s+to\s+§§1–7\s+does\s+not\s+remove\s+it\s+from\s+the\s+count",
+        )
+
+    def test_the_falsifier_window_carries_a_non_vacuity_floor(self):
+        # A window that convened no later round would otherwise retire the
+        # later rounds having measured none of them.
+        self.assertRegex(
+            self.doctrine,
+            r"the\s+window\s+counts\s+only\s+if\s+at\s+least\s+one\s+of\s+its\s+three\s+milestones\s+convened\s+a\s+round\s+after\s+its\s+first\s+—\s+a\s+window\s+that\s+never\s+ran\s+a\s+later\s+round\s+has\s+not\s+measured\s+one",
+        )
+
+    def test_the_falsifier_second_clause_counts_in_place_fixes_found_false(self):
+        # Clause (ii) counts the cost the in-place route creates, which the
+        # round-count falsifier could not see.
+        self.assertRegex(
+            self.doctrine,
+            r"If\s+any\s+fix\-authored\s+record\s+corrected\s+in\s+place\s+is\s+later\s+found\s+false\s+—\s+by\s+the\s+three\-lens\s+review,\s+or\s+by\s+a\s+subsequent\s+milestone\s+—\s+then\s+the\s+in\-place\s+route\s+has\s+failed,\s+and\s+that\s+class\s+returns\s+to\s+round\-opening",
+        )
+
+    def test_the_evidence_states_the_provenance_rule_saves_no_rounds(self):
+        # RR09 q6 defect 2: the withdrawn paragraph offered M119's nine rounds
+        # as its supporting measurement for a rule that changes that count by zero.
+        self.assertRegex(
+            self.doctrine,
+            r"On\s+M119's\s+record\s+the\s+provenance\s+rule\s+alone\s+changes\s+the\s+round\s+count\s+by\s+\*\*zero\*\*",
+        )
+
+    def test_the_gate_is_reachable_with_records_not_yet_confirmed(self):
+        # D-083 part 3. Stated explicitly so the narrowing of D-067's
+        # zero-unresolved bar is a disclosed consequence, not an accident of
+        # the confirmation split.
+        self.assertRegex(
+            self.doctrine,
+            r"The\s+gate\s+is\s+therefore\s+reachable\s+with\s+fix\-authored\s+records\s+corrected\s+but\s+not\s+yet\s+independently\s+confirmed\.",
+        )
+
+    def test_the_evidence_is_grounded_on_record_churn(self):
+        # RR09 q6 defect 2. The withdrawn paragraph offered M119's nine rounds
+        # as the measurement for a rule that changes that count by zero; the
+        # honest evidence base is the record-churn class.
+        self.assertRegex(
+            self.doctrine,
+            r"\*\*What\s+grounds\s+the\s+provenance\s+rule\s+is\s+record\s+churn,\s+not\s+M119's\s+round\s+count\.\*\*",
         )
 
 

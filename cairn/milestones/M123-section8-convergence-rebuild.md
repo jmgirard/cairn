@@ -134,10 +134,10 @@ not reopened here.
 - [x] T6 — Append the superseding `cairn/DECISIONS.md` entry covering every
       D-067/D-069/D-070/D-082 claim T2–T5 changed, plus any standing D-entry
       figure T1's re-derivation contradicts (AC6, AC7).
-- [ ] T7 — Author the asserts for AC1–AC5's rules, register positive blocks in
+- [x] T7 — Author the asserts for AC1–AC5's rules, register positive blocks in
       the mutation harness, record the by-hand check for negative and bounded
       ones, and re-anchor the two rewritten asserts (AC8).
-- [ ] T8 — Run the inversion sweep over §8 whole and record it; run the three
+- [x] T8 — Run the inversion sweep over §8 whole and record it; run the three
       suites and `cairn_validate` (AC8, AC9).
 
 ## Work log
@@ -181,6 +181,14 @@ not reopened here.
 - 2026-07-30: T6 — D-083 appended (append-only; no existing entry edited). Supersedes D-082 part 2's restoration of the round-count falsifier, narrows D-067's zero-unresolved bar twice with both narrowings named, annotates D-069/D-070 as compatible rather than superseded, and corrects D-081's ten-of-eleven measurement per T1's derivation. `dangling id tokens` stayed OK after the append — M115's lesson predicts a possible batch of newly-unmasked references and none appeared.
 - 2026-07-30: T6 — durable-record preview for D-083 was its verbatim rendering in the authoring command immediately before the commit, not a second re-print of the same 70 lines. Recorded as a disclosed reading of D-036 rather than left implicit.
 - 2026-07-30: T5-T6 verify — three suites exit 0 each, `cairn_validate` exit 0.
+
+- 2026-07-30: T7 — 18 asserts authored for the rules AC1-AC5 add, every one registered in the mutation harness; anchors extracted programmatically from the shipped bytes rather than transcribed (M95). The file docstring's enumeration of what it pins was stale the moment the asserts landed and is corrected — §8 check 2's own failure mode, caught here rather than at certification.
+- 2026-07-30: T7 — no rule needed the negative/bounded carve-out for its ASSERT: AC1's no-synonym rule and AC4's no-second-obligation rule each had a positive framing already in the prose ("That name is the only one this section gives the class"; "and no class carries two"), so both are registrable per guard-doctrine §2. AC2's every-occurrence property is the one bounded claim and takes the by-hand check.
+- 2026-07-30: T8 — AC2 by-hand check (the bounded property no assert can carry): `certified scope` occurs exactly twice in §8, at `guard-doctrine.md:290` (D-069's bound) and `:320` (the compatibility clause), both on the subject-matter axis; `certified-scope exclusion` occurs zero times, so the provenance rule is nowhere called one.
+- 2026-07-30: T8 — INVERSION SWEEP over §8 whole, not the diff (M117/M121). 20 rules inverted in place one at a time, suite run per mutation, restored and diffed byte-identical after each: 20/20 reddened their OWN test (failures=1 each; the accompanying errors=1 is the harness meta-test reporting the block no longer resolves, a different signal — M122). Mutations were relabel/negate/transpose, never blanking, so this proves the asserts pin the rules and not merely the text's presence.
+- 2026-07-30: T8 — coverage sweep over §8 found three paragraphs with zero asserted bytes; two stated rules and gained asserts (the disclosed narrowing of the zero-unresolved bar; the record-churn grounding sentence), the third is the clause-(i)/clause-(ii) gloss, left deliberately unpinned as rationale that fails D-071's deletion test — the clauses themselves carry the rules.
+- 2026-07-30: T8 — the sweep instrument was itself wrong first and is recorded as such (M122): a regex extraction of registry blocks matched only double-quoted literals and missed every entry generated with `repr()`, reporting 27 blocks and 8 uncovered paragraphs. Re-run as an AST parse over the real `Mutation(...)` calls: 42 blocks, 28 resolving inside §8, 3 uncovered paragraphs. The regex figure was never acted on.
+- 2026-07-30: T7-T8 verify — skills 718 / scripts 332 / hooks 103, each exit 0 from the repo root with exit codes captured per suite; `cairn_validate` exit 0.
 
 ## Decisions
 
