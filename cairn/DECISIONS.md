@@ -2951,3 +2951,43 @@ M123's derivation from M119's acceptance criteria is the basis for the move.
 If the yield falsifier's clause (i) fires, §8 runs as a single certification
 pass; if clause (ii) fires, fix-authored records return to round-opening. This
 entry is the one to supersede if either happens.
+
+### D-084 (2026-07-30): Two measurement claims in D-083 are corrected — §8's growth is +116 lines, not "roughly 60", and the M118 blocking-count figure is sourced to a revision D-083 does not name — supersedes those two clauses; D-083's decision and every other claim in it stand (M123 §8 round 1)
+
+**Context:** M123's own §8 certification round 1, run by a fresh-context [O]
+reader under the *pre-rebuild* rules this milestone certifies against, returned
+sixteen discrepancies. Two are false claims in D-083, which was appended earlier
+in the same milestone. IP4 attaches at append time (D-065, and D-081's record of
+M121 violating exactly this), so they are superseded here rather than edited.
+
+**Decision, part 1 — the growth figure.** D-083's Consequences states "§8 grows
+by roughly 60 lines". Measured at this entry's append: §8 is **46 lines on
+`main` and 162 at HEAD, a growth of +116**; the whole file goes 301 → 417. The
+figure was already wrong when written — §8 stood at 155 lines at `cde1066`, the
+commit that appended D-083 — and the round-1 fixes added the rest. The
+implement-gate work-log line projecting "~35 added lines over ~20" is likewise
+unmet and is corrected by the same measurement; the gate's *choice* (rules with
+their reasoning, over compressed rules) stands and is what produced the length.
+These counts are a dated observation of the tree at this append, not a standing
+fact: §8 is inside the corpus M123 is still editing (M99's fixed-point lesson,
+third instance), so a later measurement supersedes rather than contradicts.
+
+**Decision, part 2 — the M118 sourcing.** D-083 part 1 states "M118 16 of which
+eleven were blocking" with the parenthetical "(`8763368^`, and the archived
+Review sections for the rest)". Neither source establishes the split:
+`8763368^`'s work log gives "M118 16" with no blocking figure, and M118's
+archived Review section gives only the round sequence "16 -> 10 -> 2". The
+eleven-blocking figure lives at **`c76fa65^`**, M118's pre-archive milestone
+file, which D-083 does not name. The figure is correct; its citation was not.
+Both are now recorded here, so a later reader can reach the source.
+
+**Consequences:** Nothing in D-083's decision changes — the step is still not
+retired, the falsifier's counted quantity is still replaced on the same ground,
+the two narrowings of D-067's bar and the annotation of D-069/D-070 all stand,
+and part 5's correction of D-081 is untouched. This entry exists because a
+measurement claim about the milestone's own artifact was written before the
+artifact stopped moving, which is the failure M99's lesson names and which
+D-081's chain-length cost warns about. The general remedy is the one already in
+the rulebook: settle numeric records last, after the content has stopped moving
+(`guard-doctrine.md` §6). D-083 was appended at T6, three tasks before the
+content settled.

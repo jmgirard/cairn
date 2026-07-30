@@ -317,10 +317,13 @@ a false claim in an original docstring is the defect this section was built on
 and it reopens a round no matter who wrote it.
 
 The two axes compose rather than compete. A fix-authored record is still read
-and still corrected — it never leaves the certified scope, and nothing here
-narrows that scope. What it loses is only the power to force another round.
-D-070 rules on the first axis and says nothing about the second, which is why
-this is compatible with it rather than a partial supersession of it.
+and still corrected: **being a fix-authored record never removes it from the
+certified scope**, which D-069 draws on subject matter alone. What it loses is
+only the power to force another round. A record can of course be outside the
+certified scope for D-069's own reason — its subject is a certification round —
+and that is D-069 operating, never this rule. D-070 rules on the first axis and
+says nothing about the second, which is why this is compatible with it rather
+than a partial supersession of it.
 
 **A round reopens only on a finding within the three named checks above.**
 Those three are the whole of this step's mandate. A robustness observation that
@@ -328,7 +331,10 @@ no acceptance-criterion clause pins — a surviving mutation, a one-directional
 pin, a near-miss control's uncovered signature, a fixture weak on an axis no
 criterion names — is real work, and it is recorded and fixed as ordinary
 milestone work under §§1–7 and the mutation harness. It does not reopen
-certification. Such findings are those sections' job being done by hand at the
+certification, **and it does not hold the gate**: the zero-unresolved bar is met
+when every discrepancy has been fixed under the obligation its own class
+carries, and this class's obligation is discharged by operation rather than by a
+further round. Such findings are those sections' job being done by hand at the
 wrong gate: the reader that catches them is reading the description layer, and
 what it has actually found is a guard that needs hardening, which the harness
 and the by-hand mutation protocol already oblige.
@@ -364,8 +370,9 @@ Three measured cases, each read out of the revision named beside it. M114 pass
 8's round 4 found discrepancies only in the narrative its own earlier rounds had
 written — four false claims in a round-3 entry, plus a neighbour re-recording
 two observations logged three entries earlier (`a25e6dd^`). M119's rounds 5–9
-returned eleven record errors, none of them sitting in text that existed before
-round 1 (`016a210`). M121's round 2 returned twelve findings, five of which had
+returned eleven record errors, and `016a210` locates the authoring round for at
+least eight of them while identifying none as sitting in text that existed
+before round 1. M121's round 2 returned twelve findings, five of which had
 round 1's own fix prose as their only subject (`8763368^`).
 
 On M119's record the provenance rule alone changes the round count by **zero**,

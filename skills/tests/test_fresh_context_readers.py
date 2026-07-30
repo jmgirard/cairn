@@ -26,11 +26,20 @@ The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
     the two-axis discriminator, the `fix-authored record` class and the two
     surfaces it does NOT shield (a fix's code/asserts/fixtures, and any record
     predating round 1), the compatibility clause that keeps D-070 untouched,
-    the mandate boundary and its clears-both composition, the three
-    per-class confirmation obligations, the record-churn evidence, and the
-    yield-based falsifier that replaced the round-count one.
+    the mandate boundary with its clears-both composition, its enumerated
+    out-of-mandate class and its does-not-hold-the-gate clause, each of the
+    three per-class confirmation obligations, the record-churn evidence with
+    every count and revision it cites, and the yield-based falsifier's window,
+    both counted quantities, both consequences and both tolerances.
   * `/milestone-implement` step 8, which fires §8 before `status -> review`
     when the milestone authored or edited a prose-guard.
+
+Three properties OF §8 are checked structurally rather than by anchor, because
+no single phrase can carry them: the class is defined and bounded in one
+paragraph, it is never named by a synonym, and the obligations paragraph
+assigns exactly three obligations with none on the author. Each of the three
+first shipped in a form that survived its own inversion, and the comment on
+each records how.
 
 Anchors are copied from the shipped bytes, never from the draft that
 produced them (M95), and every phrase that crosses the files' hard wrap is
@@ -42,6 +51,7 @@ not red a rule that is still present (M105). Targets are read with
 """
 
 import pathlib
+import re
 import unittest
 
 SKILLS = pathlib.Path(__file__).resolve().parent.parent
@@ -380,11 +390,12 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         )
 
     def test_the_provenance_rule_does_not_narrow_the_certified_scope(self):
-        # The compatibility with D-069/D-070: what is lost is round-opening
-        # power, never certified scope.
+        # D6 (round 1): the old wording said a fix-authored record 'never leaves
+        # the certified scope', which contradicts D-069 for a record whose subject
+        # IS a certification round. Stated as a non-removal rule, both hold.
         self.assertRegex(
             self.doctrine,
-            r"it\s+never\s+leaves\s+the\s+certified\s+scope,\s+and\s+nothing\s+here\s+narrows\s+that\s+scope",
+            r"\*\*being\s+a\s+fix\-authored\s+record\s+never\s+removes\s+it\s+from\s+the\s+certified\s+scope\*\*,\s+which\s+D\-069\s+draws\s+on\s+subject\s+matter\s+alone",
         )
 
     def test_mandate_boundary_limits_reopening_to_the_three_checks(self):
@@ -474,6 +485,186 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         self.assertRegex(
             self.doctrine,
             r"\*\*What\s+grounds\s+the\s+provenance\s+rule\s+is\s+record\s+churn,\s+not\s+M119's\s+round\s+count\.\*\*",
+        )
+
+    def test_out_of_mandate_findings_do_not_hold_the_gate(self):
+        # D8 (round 1): D-083 part 3(a) claimed the boundary means such a finding
+        # does not hold the gate; the shipped text said only that it does not
+        # REOPEN. Not-reopening and not-holding-the-gate are different claims.
+        self.assertRegex(
+            self.doctrine,
+            r"\*\*and\s+it\s+does\s+not\s+hold\s+the\s+gate\*\*:\s+the\s+zero\-unresolved\s+bar\s+is\s+met\s+when\s+every\s+discrepancy\s+has\s+been\s+fixed\s+under\s+the\s+obligation\s+its\s+own\s+class\s+carries",
+        )
+
+    def test_the_out_of_mandate_class_is_enumerated(self):
+        # D10 (round 1): AC3 names four class members; deleting the whole list left
+        # the suite green, so the boundary shipped with no stated extension.
+        self.assertRegex(
+            self.doctrine,
+            r"a\s+surviving\s+mutation,\s+a\s+one\-directional\s+pin,\s+a\s+near\-miss\s+control's\s+uncovered\s+signature,\s+a\s+fixture\s+weak\s+on\s+an\s+axis\s+no\s+criterion\s+names",
+        )
+
+    def test_the_three_checks_are_the_whole_mandate(self):
+        # D10 (round 1): without this the boundary reads as one limit among
+        # several rather than as the exhaustive statement of what reopens.
+        self.assertRegex(
+            self.doctrine,
+            r"Those\s+three\s+are\s+the\s+whole\s+of\s+this\s+step's\s+mandate\.",
+        )
+
+    def test_a_reopening_finding_obliges_a_further_round(self):
+        # D1 (round 1): invertible to 'obliges nothing further, and the author
+        # confirms its own fix' with the whole suite green.
+        self.assertRegex(
+            self.doctrine,
+            r"A\s+\*\*reopening\s+finding\*\*\s+obliges\s+a\s+further\s+fresh\-context\s+round,\s+and\s+that\s+round\s+is\s+what\s+confirms\s+its\s+fix\.",
+        )
+
+    def test_a_fix_authored_record_is_confirmed_by_reader_or_review(self):
+        # D1 (round 1): the gate-amended route. Invertible to 'confirmed by the
+        # author's own re-read ... and otherwise by nobody at all' with the suite
+        # green — the criterion the implement gate had just changed.
+        self.assertRegex(
+            self.doctrine,
+            r"A\s+\*\*fix\-authored\s+record\*\*\s+is\s+fixed\s+in\s+place\s+and\s+confirmed\s+by\s+the\s+next\s+round's\s+reader\s+where\s+a\s+further\s+round\s+occurs,\s+and\s+otherwise\s+by\s+`/milestone\-review`'s\s+three\-lens\s+fan\-out\s+at\s+the\s+merge\s+gate",
+        )
+
+    def test_an_out_of_mandate_observation_is_confirmed_by_operation(self):
+        # D1 (round 1): invertible to 'confirmed by the author's assertion alone'
+        # with the suite green.
+        self.assertRegex(
+            self.doctrine,
+            r"An\s+\*\*out\-of\-mandate\s+robustness\s+observation\*\*\s+is\s+confirmed\s+by\s+operation:\s+the\s+harness,\s+the\s+sweeps\s+and\s+the\s+suite",
+        )
+
+    def test_the_falsifier_names_its_window(self):
+        # D3 (round 1): AC5 requires the window be named; it was changeable to a
+        # single milestone with the suite green.
+        self.assertRegex(
+            self.doctrine,
+            r"Measured\s+over\s+the\s+next\s+three\s+guard\-authoring\s+milestones\s+that\s+run\s+§8,\s+the\s+window\s+closing\s+when\s+the\s+third\s+completes",
+        )
+
+    def test_the_falsifier_names_both_counted_quantities_and_clause_i_consequence(self):
+        # D3 (round 1): both quantities and clause (i)'s consequence inverted green
+        # — 'any ... or any ...' and 'keep them and run §8 with unbounded rounds'.
+        self.assertRegex(
+            self.doctrine,
+            r"zero\s+shipped\-behaviour\s+defects\s+and\s+zero\s+findings\s+whose\s+subject\s+is\s+pre\-round\-1\s+surface,\s+then\s+the\s+rounds\s+after\s+the\s+first\s+have\s+stopped\s+earning\s+their\s+cost\s+—\s+retire\s+them\s+and\s+run\s+§8\s+as\s+a\s+single\s+certification\s+pass",
+        )
+
+    def test_the_falsifier_carries_both_tolerances(self):
+        # D3 (round 1): the tolerance was changeable to 'at most three on either
+        # count' with the suite green. Clause (ii)'s is pinned separately below.
+        self.assertRegex(
+            self.doctrine,
+            r"Tolerance:\s+exact\s+zero\s+on\s+both\s+counts,",
+        )
+
+    def test_clause_two_carries_its_tolerance(self):
+        # D3 (round 1): changeable to 'five occurrences' with the suite green.
+        self.assertRegex(
+            self.doctrine,
+            r"Tolerance:\s+one\s+occurrence\.",
+        )
+
+    def test_the_evidence_counts_carry_their_revisions(self):
+        # D9 + D15 (round 1): every revision was replaceable with '(unrecorded)'
+        # and 'eleven' with 'nine', both green. D15: the earlier wording sourced a
+        # universal ('none of them') to a revision that establishes eight of eleven.
+        self.assertRegex(
+            self.doctrine,
+            r"M119's\s+rounds\s+5–9\s+returned\s+eleven\s+record\s+errors,\s+and\s+`016a210`\s+locates\s+the\s+authoring\s+round\s+for\s+at\s+least\s+eight\s+of\s+them\s+while\s+identifying\s+none\s+as\s+sitting\s+in\s+text\s+that\s+existed\s+before\s+round\s+1\.",
+        )
+
+    def test_the_evidence_carries_the_gap_sequence(self):
+        # D9 (round 1): the sequence was changeable to '... two, two and nine'
+        # green. It is the reason AC7(a)'s zero-change claim holds.
+        self.assertRegex(
+            self.doctrine,
+            r"each\s+of\s+rounds\s+5–9\s+also\s+returned\s+coverage\s+gaps\s+—\s+three,\s+four,\s+two,\s+two\s+and\s+one\s+\(`016a210`\)",
+        )
+
+    def test_the_evidence_states_the_mandate_boundary_projection(self):
+        # D9 (round 1): changeable to 'stops after round 9, saving no rounds' with
+        # the suite green — the projection AC7(b) requires.
+        self.assertRegex(
+            self.doctrine,
+            r"Replayed\s+under\s+it,\s+M119\s+stops\s+after\s+round\s+6,\s+saving\s+three\s+rounds;",
+        )
+
+    def test_the_first_case_carries_its_revision(self):
+        # D9 (round 1): M114's revision citation was replaceable with '(unrecorded)'.
+        self.assertRegex(
+            self.doctrine,
+            r"two\s+observations\s+logged\s+three\s+entries\s+earlier\s+\(`a25e6dd\^`\)",
+        )
+
+    def test_the_third_case_carries_its_revision(self):
+        # D9 (round 1): M121's revision citation and its 'five of twelve' figure
+        # were both unpinned.
+        self.assertRegex(
+            self.doctrine,
+            r"five\s+of\s+which\s+had\s+round\s+1's\s+own\s+fix\s+prose\s+as\s+their\s+only\s+subject\s+\(`8763368\^`\)",
+        )
+
+    # --- structural properties, which no single-phrase anchor can carry ---
+    # These are the "bounded property" cases guard-doctrine §2 sends to a
+    # by-hand check. They are automated here instead, because each is a
+    # property OF §8 that can be derived from §8 rather than enumerated.
+
+    @property
+    def section8(self):
+        d = self.doctrine
+        return d[d.index("## 8. The author never certifies"):]
+
+    def _paragraph_containing(self, needle):
+        for para in self.section8.split("\n\n"):
+            if needle in para:
+                return para
+        self.fail(f"no §8 paragraph contains {needle!r}")
+
+    def test_the_class_is_defined_and_bounded_in_one_paragraph(self):
+        # D16 (round 1): every anchor uses `\s+`, which matches a blank line,
+        # so splitting the definition paragraph left AC1's two locality clauses
+        # ("defined at first use", "the same paragraph states") unpinned.
+        para = self._paragraph_containing("A fix-authored record is a docstring")
+        self.assertIn("are not records and stay ordinary", para)
+        self.assertIn("every record that existed before round 1", para)
+
+    def test_the_class_is_never_called_by_a_synonym(self):
+        # D5 (round 1): AC1 forbids alternating the class name with an unmarked
+        # synonym. The sentence asserting that rule survives renaming the class
+        # elsewhere, so assert the property over §8 instead of the claim about
+        # it. Every "fix-authored" in §8 must be followed by "record".
+        # Case matters: a synonym introduced at the start of a sentence
+        # ("Fix-authored text is ...") escaped a case-sensitive search, which
+        # is how this test survived its own inversion on the first sweep.
+        tails = re.findall(r"fix-authored\s+(\w+)", self.section8, re.I)
+        self.assertTrue(tails, "no occurrences of the class name found")
+        self.assertEqual(
+            sorted(set(tails)), ["record", "records"],
+            f"§8 names the class by a synonym: {sorted(set(tails))}",
+        )
+
+    def test_exactly_three_confirmation_obligations_are_assigned(self):
+        # D2 (round 1): AC4's "no class carries two" is a property, not a
+        # phrase. Counting known obligation PHRASINGS was the first attempt and
+        # it survived its own inversion — a fourth obligation worded any other
+        # way was simply not one of the phrasings counted, which is the
+        # enumerate-the-renderings failure guard-doctrine §3 names. So count
+        # the paragraph's own structure instead: one bold label per class plus
+        # the header, and the author named only inside the exclusion clause.
+        para = self._paragraph_containing("Each class carries exactly one")
+        self.assertEqual(
+            para.count("**") // 2, 4,
+            "§8's obligations paragraph should carry the header plus exactly "
+            "three bold class labels",
+        )
+        self.assertEqual(
+            len(re.findall(r"\bauthors?\b", para)), 3,
+            "a fourth obligation placed on the author would add a mention; "
+            "the three here are the exclusion clause and its two grounds",
         )
 
 
