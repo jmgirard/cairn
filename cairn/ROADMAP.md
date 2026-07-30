@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-30 (audit only, no work since M121's post-merge pass — cairn_validate all-green, no advisory fired, tree clean, both GitHub inboxes empty. Prior stamp read 2026-07-28; that pass actually landed 2026-07-30 (commit 8763368) and the date is corrected here. LESSONS 49 of 50; 19 candidates after M122 graduated the heading-normalization row out, same session.)_
+_Last hygiene check: 2026-07-30 (post-merge after M122 — M122 archived at 22/25, M117's row pruned to hold terminal-row retention at 5. LESSONS 49 of 50: none added; M113's line TRIMMED to its uncovered remainder now that a test fails on its mistake, and M117/M120/M121's line EXTENDED in place with M122's measuring-instrument instance. 19 candidates.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M122 | A differential guard holding the hook and the cap counters to one heading contract | review | — | normal | milestones/M122-heading-normalization-differential-guard.md |
+| M122 | A differential guard holding the hook and the cap counters to one heading contract | done | — | normal | milestones/archive/M122-heading-normalization-differential-guard.md |
 | M119 | RR08's follow-ons — the decisions-format advisory (D-075), the rulebook history enumeration, and a two-sided exempt-set guard | done | M118 | normal | milestones/archive/M119-decisions-advisory-and-consistency-guards.md |
 | M120 | Ingest the Opus 5 prompting guide, and adopt the three conduct rules cairn has no home for | done | — | normal | milestones/archive/M120-opus5-guide-adoptions.md |
 | M121 | Verification triage — classify every self-verification instruction, and re-decide D-067's two fresh-context readers | done | M120 | normal | milestones/archive/M121-verification-triage.md |
 | M118 | The milestone-local `## Decisions` section is history and joins the cap-exempt set (D-074, supersedes D-046's choice 3) | done | — | normal | milestones/archive/M118-decisions-section-cap-exempt.md |
-| M117 | Detector coverage on the site axis, and a plan gate that records the alternative it rejected (intraclass M93 passes 6–9) | done | — | normal | milestones/archive/M117-detector-site-axis-and-recorded-alternative.md |
 
 ## Candidates
 
