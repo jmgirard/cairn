@@ -124,7 +124,7 @@ recorded verbatim → unrecoverable, not replayed.
 - [x] T4 — Register the ledger guard in `test_mutation_harness.py`; confirm it
       fails when blanked, and that `TestRegistryCompleteness` stays green
       (AC2, AC6).
-- [ ] T5 — Replay the four recorded mutations against the AC2 guard, restoring
+- [x] T5 — Replay the four recorded mutations against the AC2 guard, restoring
       §8 byte-identical after each; record which two already fail the
       pre-milestone suite and which two are the load-bearing defeats (AC3).
 - [ ] T6 — Reflow §8 with hyphen-breaking off, run the AC2 guard scoped via
@@ -168,6 +168,8 @@ recorded verbatim → unrecoverable, not replayed.
 - 2026-07-30: T3 — two bugs found by the new tests against their own author. `test_extraction_carries_no_word_constant` first captured the raw-string `r` prefix and red on its own syntax; then, fixed, it red on `\s+` — a regex escape is letters to a naive search. Now strips escapes before checking. Both are the M114 shape: the claim was right, the instrument measuring it was not.
 - 2026-07-30: T4 — one registry entry, `TestSectionEightLedger.test_section_matches_its_ledger` on block `Zero unresolved stays the bar;`. That block is pinned by another assert too, which is not a defect: the harness runs the NAMED test alone, so the entry proves this guard reds. What the ledger catches that no anchor does is proved at T5 instead, not by this entry — recorded so the registration is not read as evidence it is not.
 - 2026-07-30: T3+T4 verify — skills 790 (up 13) / scripts / hooks each exit 0; `cairn_validate` exit 0.
+- 2026-07-30: T5 — all four recorded mutations replayed, §8 restored byte-identical after each (`git status` clean at the end). Every one reds the ledger guard. The split AC3 states is confirmed against the shipped suite: (a) the contradicting append and (b) the three-checks relocation red the ledger guard and NOTHING ELSE — those are the load-bearing cases, and before this milestone they shipped green. (c) also reds `test_the_class_is_never_called_by_a_synonym` and (d) also reds `test_a_fix_authored_record_is_still_read_and_still_corrected` plus the blanking harness, so both are controls, closed by M123's own rounds 4-7 rather than by this guard.
+- 2026-07-30: T5 — this is the evidence the T4 registry entry deliberately does not carry: two mutations that defeat all 777 pre-existing tests and are caught only here.
 - 2026-07-30: criteria audit closed. Four passes, 13 findings total: 9 clear (all fixed), 3 judgment (all taken to the gate and decided), 1 uncounted observation (actioned above). Passes 2-4 each independently re-measured rather than reusing an earlier count, and pass 3 corrected pass 2's own pin count from 4 to 6-9.
 
 ## Decisions
