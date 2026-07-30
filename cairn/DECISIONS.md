@@ -2867,3 +2867,313 @@ entry before the milestone's thinking had settled, which is the lesson D-081
 names and which post-merge hygiene captures. A reader wanting the short answer:
 **M121 changed nothing in §8; D-067's falsifier stands, fired, with its remedy
 owed; the rebuild is banked on the ROADMAP row with RR09 as its evidence.**
+
+### D-083 (2026-07-30): §8's rebuild — provenance draws what reopens, a mandate boundary draws what counts, and the round-count falsifier is replaced by a yield-based pair — supersedes D-082 part 2's restoration of that falsifier and narrows D-067's zero-unresolved bar twice; annotates D-069/D-070 as compatible rather than superseded; corrects D-081's ten-of-eleven measurement (RR09 verdict (d))
+
+**Context:** D-067's §8 carries a falsifier — "if guard-authoring milestones
+still average multiple description-layer returns after adoption, the step didn't
+work — retire it (D-059), don't tune it". It **fired**: the average over
+M116-M119 is 4.5 rounds and M121 added two more. M121 attempted a narrowing,
+withdrew it at D-080 on RR09's evidence, and D-082 restored the falsifier in
+full, recording that "its remedy is owed and unpaid, and the ROADMAP's §8 row is
+where that debt is recorded". This entry pays that debt, and does so by
+replacing the falsifier rather than by retiring the step — which needs an
+argument, not an assertion, because D-059's precedent says retire, don't tune.
+
+**Decision, part 1 — the step is not retired.** Round 1's yield is measured and
+real in every milestone that ran it: M116 9 findings, M117 8, M118 16 of which
+eleven were blocking, M119 2 code defects, M121 1 shipped-behaviour defect plus
+10 description-layer (`8763368^`, and the archived Review sections for the
+rest). M121's round 1 also refuted the milestone's own shipped rule — the
+instrument working on its author. `/milestone-review`'s three-lens fan-out does
+not replace it: that fan-out runs *after* `status -> review` and is
+diff-anchored, while §8 reads the whole description layer before the gate. RR09
+recommendations 8 and 9 reject both reverting unchanged and retiring outright,
+and this entry follows them.
+
+**Decision, part 2 — the falsifier's counted quantity is replaced, and this is
+why that is not tuning.** The distinction is a checkable fact about the two
+measures, not a claim about intent. The old falsifier counts **rounds**. §8's
+two new rules — the provenance shield on fix-authored records, and the mandate
+boundary — both act directly on the round count, so the measure is satisfiable
+by construction by the very rules it is supposed to police; RR09 §4 shows both
+horns, the measure firing on a rule that changed nothing and the measure made
+unfireable by a rule that changed too much. The replacement counts, instead,
+shipped-behaviour defects and findings on pre-round-1 surface returned by rounds
+after the first, and separately any in-place record correction later found
+false. Neither quantity is the round count. D-059 forbids tuning a threshold on
+a measure that works; what is done here is replacing a measure of the wrong
+quantity, and the two are told apart by reading what each counts. Shipped at
+`guard-doctrine.md` §8; the window is three guard-authoring milestones and
+counts only if at least one of them convened a round after its first.
+
+**Decision, part 3 — D-067's zero-unresolved bar is narrowed twice, and the
+narrowings are named.** (a) The mandate boundary: a round reopens only on a
+finding within §8's three named checks, so a robustness observation no
+acceptance-criterion clause pins is fixed as ordinary §§1-7 work and does not
+hold the gate. (b) The confirmation split: a fix-authored record is corrected in
+place and confirmed by the next round's reader, or by the three-lens fan-out
+where no further round occurs, so the gate is reachable with those corrections
+not yet independently confirmed. **No confirmation obligation falls on the
+author** — D-067 rejected "a mandatory re-derivation step (it instructs the same
+judgment that failed while citing the same instructions)", and an author
+re-reading its own corrected record is that rejected move under another name.
+The cost (b) creates is what the new falsifier's clause (ii) counts.
+
+**Decision, part 4 — D-069 and D-070 are annotated, not superseded.** D-070 drew
+the certified-scope line on subject matter: records about the work are inside,
+narrative about the certifying process is outside. The provenance rule draws a
+*different* line, on what a finding reopens, and a fix-authored record never
+leaves the certified scope — it is still read and still corrected. M121's
+withdrawn attempt framed the same rule as a certified-scope exclusion and so
+collided with D-070 without naming it; stating the two axes apart removes the
+collision. Nothing in D-069 or D-070 is superseded here.
+
+**Decision, part 5 — D-081's measurement is corrected.** D-081 states "the
+supported figure is eleven record errors, ten of them in an earlier round's own
+fix text". Re-derived from `016a210` (M119's pre-archive work log), the eleven
+holds — rounds 5-9 returned 2, 4, 0, 3 and 2 record errors — but the
+ten-of-eleven split does not: the log locates the authoring round for at least
+eight of them, identifies **none** as sitting in text that existed before round
+1, and RR09 §2's table classifies all eleven as fix-authored. The "ten" traces
+to `8763368^`, where M121's round 2 asserted it with no shown derivation.
+D-081's own parenthetical half-concedes the point. That clause is superseded;
+everything else in D-081, including its record of the IP4 violation, stands.
+
+**Consequences:** §8 grows by roughly 60 lines and is read at every
+guard-authoring milestone; the growth was taken deliberately at M123's implement
+gate over a compressed form, on the ground that this section's failure history
+is rules whose reasoning was left implicit being read two ways. The projection
+recorded with the mandate boundary is that M119 replayed under it stops after
+round 6, saving three rounds, ±1 on round 6's `kind`-label classification —
+which differs from RR09's own tolerance placement (RR09 put the ±1 on round 5).
+M123's derivation from M119's acceptance criteria is the basis for the move.
+If the yield falsifier's clause (i) fires, §8 runs as a single certification
+pass; if clause (ii) fires, fix-authored records return to round-opening. This
+entry is the one to supersede if either happens.
+
+### D-084 (2026-07-30): Two measurement claims in D-083 are corrected — §8's growth is +116 lines, not "roughly 60", and the M118 blocking-count figure is sourced to a revision D-083 does not name — supersedes those two clauses; D-083's decision and every other claim in it stand (M123 §8 round 1)
+
+**Context:** M123's own §8 certification round 1, run by a fresh-context [O]
+reader under the *pre-rebuild* rules this milestone certifies against, returned
+sixteen discrepancies. Two are false claims in D-083, which was appended earlier
+in the same milestone. IP4 attaches at append time (D-065, and D-081's record of
+M121 violating exactly this), so they are superseded here rather than edited.
+
+**Decision, part 1 — the growth figure.** D-083's Consequences states "§8 grows
+by roughly 60 lines". Measured at this entry's append: §8 is **46 lines on
+`main` and 162 at HEAD, a growth of +116**; the whole file goes 301 → 417. The
+figure was already wrong when written — §8 stood at 155 lines at `cde1066`, the
+commit that appended D-083 — and the round-1 fixes added the rest. The
+implement-gate work-log line projecting "~35 added lines over ~20" is likewise
+unmet and is corrected by the same measurement; the gate's *choice* (rules with
+their reasoning, over compressed rules) stands and is what produced the length.
+These counts are a dated observation of the tree at this append, not a standing
+fact: §8 is inside the corpus M123 is still editing (M99's fixed-point lesson,
+third instance), so a later measurement supersedes rather than contradicts.
+
+**Decision, part 2 — the M118 sourcing.** D-083 part 1 states "M118 16 of which
+eleven were blocking" with the parenthetical "(`8763368^`, and the archived
+Review sections for the rest)". Neither source establishes the split:
+`8763368^`'s work log gives "M118 16" with no blocking figure, and M118's
+archived Review section gives only the round sequence "16 -> 10 -> 2". The
+eleven-blocking figure lives at **`c76fa65^`**, M118's pre-archive milestone
+file, which D-083 does not name. The figure is correct; its citation was not.
+Both are now recorded here, so a later reader can reach the source.
+
+**Consequences:** Nothing in D-083's decision changes — the step is still not
+retired, the falsifier's counted quantity is still replaced on the same ground,
+the two narrowings of D-067's bar and the annotation of D-069/D-070 all stand,
+and part 5's correction of D-081 is untouched. This entry exists because a
+measurement claim about the milestone's own artifact was written before the
+artifact stopped moving, which is the failure M99's lesson names and which
+D-081's chain-length cost warns about. The general remedy is the one already in
+the rulebook: settle numeric records last, after the content has stopped moving
+(`guard-doctrine.md` §6). D-083 was appended at T6, three tasks before the
+content settled.
+
+### D-085 (2026-07-30): §8's evidence derivations move here from the doctrine, the round-count falsifier's defect is restated in its independent form, and clause (iii) extends D-083's supersede-on-firing trigger to a third clause — annotates D-083 and D-084; records RR10's verdict (e) and the re-visit of RR09 recs 8-9 (RR10, M123)
+
+**Context:** RR10 reviewed whether `guard-doctrine.md` §8 should survive at all,
+given that its own rebuild took two certification rounds returning 16 and 13
+discrepancies. Verdict **(e)**: keep §8, with four amendments. It rejected
+retiring the step, decreeing a single pass, and folding the instrument into
+`/milestone-review`'s three-lens fan-out. The fold rejection rests on a measured
+fact rather than a preference: that fan-out's scorer put M121's four
+description-layer findings at 78, 78, 68 and 60, all below the action threshold,
+and they were logged rather than fixed (D-082).
+
+**Decision, part 1 — the round-count falsifier's defect, in its independent
+form.** D-083 part 2 argued that the old falsifier counted the wrong quantity
+because §8's two new rules act directly on the round count. That argument
+presupposes the rules it defends. RR10 supplies the ground that does not:
+**under the pre-rebuild rule "a discrepancy is fixed and re-certified", a second
+round is convened if and only if round 1 returns at least one finding.** So
+"guard-authoring milestones still average multiple description-layer returns"
+fired exactly when the instrument had yield — it measured yield and reported it
+as failure, and a milestone could satisfy it only by having a round 1 that found
+nothing. This supersedes nothing in D-083; it replaces D-083's weaker leg with a
+stronger one for the same conclusion, and it is the load-bearing ground for the
+replacement.
+
+**Decision, part 2 — clause (iii), and what it extends.** RR10 found a real
+deficiency in what D-083 shipped: after the replacement, **no condition anywhere
+retired the whole step**, so round 1 itself had become unfalsifiable. §8 now
+carries a third falsifier clause under which round 1's own yield decay retires
+the step whole. It counts four quantities, not the three RR10's binding
+criterion named — the fourth is anchor-fidelity findings, §8's third check,
+whose omission would let a window returning only those findings read zero and
+retire an instrument demonstrably working, which is the same anti-calibration
+RR10 convicts the old falsifier of. §8 also states that clauses (i) and (iii)
+cannot both fire. D-083 closes "This entry is the one to supersede if either
+happens"; **this entry extends that trigger to a third clause.**
+
+**Decision, part 3 — §8's evidence derivations live here, not in the doctrine.**
+Each of the following was stated in §8 and is relocated, with §8 keeping a
+one-sentence pointer. Every figure is a dated observation of the sources named,
+read 2026-07-30, not a standing fact.
+
+- **The record-churn class, the provenance rule's ground.** M114 pass 8's round
+  4 found discrepancies only in narrative its own earlier rounds had written —
+  four false claims in a round-3 entry, plus a neighbour re-recording two
+  observations logged three entries earlier (`a25e6dd^`). M119's rounds 5-9
+  returned eleven record errors, and `016a210` locates the authoring round for
+  at least eight of them while identifying none as sitting in text that existed
+  before round 1. M121's round 2 returned twelve findings, five of which had
+  round 1's own fix prose as their only subject (`8763368^`).
+- **Why the provenance rule changes M119's round count by zero.** Each of rounds
+  5-9 also returned coverage gaps — three, four, two, two and one (`016a210`) —
+  and a coverage gap is a finding about executable surface, which the rule never
+  shields. That sentence stays in §8 because it is a rule; the sequence moves
+  here.
+- **The mandate boundary's replay projection.** Replayed under it, M119 stops
+  after round 6, saving three rounds. Round 6's `kind`-label gap is the one
+  classification that could go either way, since those two labels are M119's own
+  AC1 pasted-output-or-fenced-block distinction, and reading it as in-mandate
+  stops the replay after round 7 instead. Tolerance: ±1 round, on that gap.
+  RR09 placed the same ±1 on round 5; M123's derivation from M119's own
+  acceptance criteria puts round 5 beyond doubt and the coin-flip on round 6.
+- **What each falsifier clause counts.** Clause (i) counts whether the later
+  rounds still find anything the two reopening rules have not already disposed
+  of. Clause (ii) counts the cost those rules create — records corrected without
+  an independent read — which the round-count falsifier could not see. Clause
+  (iii) counts whether round 1 itself still earns its reader. All three are
+  countable from work logs as milestones already write them.
+
+**Decision, part 4 — RR09 recs 8 and 9, re-visited.** RR10 re-examined both
+against M123's own two-round cost, which RR09 did not have, and **re-affirmed
+them**: reverting §8 unchanged and retiring it outright both stay rejected.
+Recorded as the outcome of the re-visit rather than as a conclusion mandated in
+advance. One divergence from RR10 is noted rather than smoothed: RR09's
+falsifier clause (ii) offered "returns that class to round-opening **or** the
+step is retired", and M123 selected the first consequence and dropped the
+disjunction, because a single falsified in-place fix retiring the whole step is
+disproportionate when clause (iii) already governs whole-step retirement.
+
+**Consequences:** §8 falls from 183 lines to under 150 with no rule removed —
+every sentence an assert pins survives or is re-anchored, and the asserts whose
+only anchor was relocated evidence retire with their registry entries. The
+figures above are now the single home for these derivations; §8 points here, and
+a later reader chasing a count reads this entry rather than the doctrine. If
+falsifier clause (i) or (iii) fires, the retirement edit should prune the
+convergence apparatus — the two axes, the shield, the per-class obligations —
+along with the rounds it governs, rather than leaving doctrine about rounds that
+no longer run; that is RR10 recommendation 8, banked here rather than acted on.
+
+### D-086 (2026-07-30): Three measurement claims in D-085 are corrected and its replay projection gains the revision AC7 requires — supersedes those clauses; D-085's decision and its other content stand (M123 §8 round 3)
+
+**Context:** M123's §8 certification round 3 — the first run under the rebuilt
+rules — returned ten findings. Four bear on D-085, which was appended earlier in
+the same milestone. IP4 attaches at append time (D-065), so they are superseded
+here rather than edited. This is the fourth entry in M123's own chain
+(D-083 → D-084 → D-085 → D-086), and the cause is the one D-081 already named
+and D-085 restated: a numeric record written before the artifact stopped moving.
+
+**Decision, part 1 — "with no rule removed" is false as written.** D-085's
+Consequences states that §8 "falls from 183 lines to under 150 with no rule
+removed — every sentence an assert pins survives or is re-anchored, and the
+asserts whose only anchor was relocated evidence retire with their registry
+entries." The compression retired **nine** test methods, not eight. The ninth,
+`test_the_class_is_never_called_by_a_synonym`, was a structural test over §8
+whole; its anchor was not relocated evidence and it had no registry entry to
+retire with, and it was the only pin on AC1's no-unmarked-synonym clause. With
+it gone, `Fix-authored text is neither read nor corrected` shipped green over
+the whole suite. It is restored at round 3, and its comment now records the
+deletion. Nothing else in the compression removed a rule.
+
+**Decision, part 2 — the line figure is exact, not approximate.** "Falls from
+183 lines to under 150" is superseded: §8 is **exactly 150 lines** at the
+compression commit and 149 after round 3's paragraph merge. AC12's ceiling is
+`≤150`, so "under 150" understates the margin and misdescribes the result.
+
+**Decision, part 3 — the movable-evidence figure.** M123's "Deviations from
+RR10" table records "movable evidence ~23 not ~40" as the ground for raising
+RR10's ceiling from 135 to 150. Against the shipped result that is wrong: 164
+lines at ingestion, +19 added by the sufficiency arm and clause (iii), −33
+removed by the compression = 150. So ~33 lines moved, not ~23, and the shipped
+result beat the row's own stated best case of 151. The extra ten came from four
+justification passages that RR10's BC3 does not name among its permitted
+removals — a real over-reach against BC3's letter, disclosed here rather than
+left in the arithmetic. The maintainer's ceiling decision is unaffected: 150 was
+reachable, and the row's error was pessimism about how much was movable.
+
+**Decision, part 4 — the replay projection gains its revision.** D-085 part 3's
+third bullet states that M119 replayed under the mandate boundary stops after
+round 6, saving three rounds, ±1 on round 6's `kind`-label classification, and
+attributes it to "M123's derivation from M119's own acceptance criteria" without
+naming a revision. AC7 requires every count to carry the revision it was derived
+from. The revision is **`016a210`** — M119's pre-archive milestone file, whose
+`## Acceptance criteria` section supplies the AC1 clauses the classification is
+made against and whose work log supplies the per-round gap counts. The figure is
+unchanged; only its citation was missing.
+
+**Consequences:** D-085's decision stands in full — the relocation, the
+independent wrong-quantity ground, clause (iii)'s extension of D-083's trigger,
+and the RR09 re-visit are all untouched. What is corrected is four claims about
+this milestone's own artifact, every one of them found by the instrument this
+milestone exists to rebuild, and three of them written by an earlier round's own
+fix. That distribution is itself the evidence D-085 part 1 grounds the
+provenance rule on, produced once more by the milestone that ships it.
+
+### D-087 (2026-07-30): D-083 part 4's "a fix-authored record never leaves the certified scope" is the absolute round 1 convicted in §8 and is narrowed to the non-removal rule §8 ships — supersedes that clause; part 4's annotation of D-069/D-070 stands (M123 review return 1)
+
+**Context:** M123's `/milestone-review` fan-out returned finding A2 (scored 80).
+D-083 part 4 argues that D-069 and D-070 are annotated rather than superseded,
+and rests that argument on the sentence "the provenance rule draws a *different*
+line, on what a finding reopens, and a fix-authored record never leaves the
+certified scope — it is still read and still corrected". That is the formulation
+§8's own certification round 1 convicted at D6, three commits after D-083 was
+appended: a record whose subject IS a certification round sits outside the
+certified scope for D-069's reason, so "never leaves" is false for exactly the
+case D-069 exists to cover. §8 was restated then to a non-removal rule and
+D-083 was not, because IP4 attaches at append time (D-065). The entry has
+carried the convicted absolute ever since, inside the paragraph whose job is to
+prove no collision with D-070.
+
+**Decision, part 1 — the clause is narrowed, not withdrawn.** What D-083 part 4
+should have said, and what §8 ships, is that *being* a fix-authored record never
+**removes** a record from the certified scope. The provenance rule takes nothing
+out of scope; it removes only the power to force another round. A record can
+still be outside that scope for D-069's own reason — its subject being a
+certification round — and that is D-069 operating, never the provenance rule.
+The difference is between an absolute about the record ("never leaves") and a
+rule about what this classification does ("never removes"), and only the second
+is true.
+
+**Decision, part 2 — part 4's conclusion stands on the narrowed clause.** The
+argument D-083 part 4 makes does not need the absolute. D-070 rules on the
+subject-matter axis; the provenance rule rules on what reopens; a rule that
+takes nothing out of the certified scope cannot narrow a line drawn on what is
+in it. So "Nothing in D-069 or D-070 is superseded here" survives, and D-083
+part 4 is corrected in its premise rather than in its conclusion. D-069 and
+D-070 remain annotated, not superseded.
+
+**Consequences.** D-083 parts 1, 2, 3 and 5 are untouched, as are D-084, D-085
+and D-086. §8 needs no edit: it already carries the narrowed form, pinned by
+`test_the_provenance_rule_does_not_narrow_the_certified_scope`. What this entry
+buys is that the decision record and the doctrine now say the same thing — the
+gap A2 found was between them, not inside either. This is the fifth entry in
+M123's chain (D-083 → D-084 → D-085 → D-086 → D-087) and the second whose
+subject is a claim D-083 made before the artifact stopped moving; the general
+cause is the one guard-doctrine §6 already states, settle numeric and
+quotable records last.
