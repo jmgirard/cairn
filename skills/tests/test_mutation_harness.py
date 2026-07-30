@@ -2891,6 +2891,74 @@ REGISTRY += [
     ),
 ]
 
+# M124: §9's own rules, one entry per rule. Registration is per assert and not
+# per file (`guard-doctrine.md` §2), and each of these was ALSO verified by
+# in-place inversion — blanking proves the assert sees its block, inversion
+# proves the block carries the rule, and M120 passed three certification rounds
+# with three asserts surviving negation of the rule they pin.
+REGISTRY += [
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_section_exists_under_its_own_heading",
+        target=GUARD_DOCTRINE,
+        block="## 9. Presence is not consistency",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_presence_is_distinguished_from_consistency",
+        target=GUARD_DOCTRINE,
+        block="It does not pin that the\nsection around it still agrees with itself.**",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_contradicting_sentence_shape_is_named",
+        target=GUARD_DOCTRINE,
+        block="the section now says both",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_rename_shape_is_named",
+        target=GUARD_DOCTRINE,
+        block="is defeated by a coinage sharing neither",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_relocation_shape_is_named",
+        target=GUARD_DOCTRINE,
+        block="true of a position, not of a phrase",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_check_is_derived_never_enumerated",
+        target=GUARD_DOCTRINE,
+        block="**So derive the check from the section, never from a list of what to look\nfor.**",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_no_section_term_reaches_the_extractor",
+        target=GUARD_DOCTRINE,
+        block="No term drawn from the section is written\ninto the extractor",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_instrument_detects_and_never_judges",
+        target=GUARD_DOCTRINE,
+        block="**The instrument detects a change and never judges it.**",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_remedy_is_operation_never_adjudication",
+        target=GUARD_DOCTRINE,
+        block="**The remedy is operation the author runs, never adjudication the guard\nperforms.**",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_defeating_failure_mode_is_disclosed",
+        target=GUARD_DOCTRINE,
+        block="and no guard can detect that",
+    ),
+]
+
 # M95 (D-056). Five entries, because the placement doctrine fails in five
 # independent ways and any one of them silently restores the pre-M95 reading:
 # lose the rule definition and "operative" has no test; lose either half of the

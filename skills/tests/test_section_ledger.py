@@ -37,10 +37,23 @@ TESTS = pathlib.Path(__file__).resolve().parent
 GUARD_DOCTRINE = TESTS.parent / "shared" / "guard-doctrine.md"
 LEDGER = TESTS / "ledgers" / "guard-doctrine-8.txt"
 SECTION_8 = "## 8. The author never certifies its own guard's coverage"
+SECTION_9 = "## 9. Presence is not consistency"
 
 
 def committed_ledger():
     return LEDGER.read_text().splitlines()
+
+
+def section9():
+    """§9's own bytes, scoped to §9.
+
+    Scoped deliberately. M123's §8 asserts each read the whole FILE while every
+    criterion they served was scoped to the section, so six acceptance-criterion
+    clauses could be moved verbatim out of §8 into §7 with all 777 tests green
+    and no anchor text touched. An anchor proves a phrase exists SOMEWHERE in
+    what it was handed; these are handed §9 alone.
+    """
+    return sl.section_body(GUARD_DOCTRINE, SECTION_9)
 
 
 class TestSectionEightLedger(unittest.TestCase):
@@ -140,6 +153,85 @@ class TestExtraction(unittest.TestCase):
                 re.search(r"[A-Za-z]", literal),
                 f"a module-level pattern carries a word constant: {pattern}",
             )
+
+
+class TestSectionNineDoctrine(unittest.TestCase):
+    """Every rule §9 adds, pinned. Anchors copied from the shipped bytes (M95),
+    every cross-wrap phrase matched with `\\s+` so a reflow does not red a rule
+    still present (M105), and each opens on the SUBJECT rather than after it —
+    M123 round 4 found three anchors that opened past the clause carrying the
+    rule, leaving the rule itself invertible with the suite green."""
+
+    def test_section_exists_under_its_own_heading(self):
+        self.assertIn(SECTION_9, GUARD_DOCTRINE.read_text())
+
+    def test_presence_is_distinguished_from_consistency(self):
+        self.assertRegex(
+            section9(),
+            r"\*\*A\s+prose-guard\s+pins\s+that\s+a\s+sentence\s+is\s+present\.\s+It\s+"
+            r"does\s+not\s+pin\s+that\s+the\s+section\s+around\s+it\s+still\s+agrees\s+"
+            r"with\s+itself\.\*\*",
+        )
+
+    def test_the_contradicting_sentence_shape_is_named(self):
+        self.assertRegex(
+            section9(),
+            r"\*\*A\s+contradicting\s+sentence\s+added\s+elsewhere\s+in\s+the\s+"
+            r"section\.\*\*[\s\S]{0,200}?the\s+section\s+now\s+says\s+both",
+        )
+
+    def test_the_rename_shape_is_named(self):
+        self.assertRegex(
+            section9(),
+            r"\*\*A\s+rename\s+reusing\s+no\s+word\s+of\s+the\s+term\.\*\*[\s\S]{0,160}?"
+            r"defeated\s+by\s+a\s+coinage\s+sharing\s+neither",
+        )
+
+    def test_the_relocation_shape_is_named(self):
+        self.assertRegex(
+            section9(),
+            r"\*\*A\s+relocation\s+falsifying\s+a\s+back-reference\.\*\*[\s\S]{0,120}?"
+            r"true\s+of\s+a\s+position,\s+not\s+of\s+a\s+phrase",
+        )
+
+    def test_the_check_is_derived_never_enumerated(self):
+        self.assertRegex(
+            section9(),
+            r"\*\*So\s+derive\s+the\s+check\s+from\s+the\s+section,\s+never\s+from\s+a"
+            r"\s+list\s+of\s+what\s+to\s+look\s+for\.\*\*",
+        )
+
+    def test_no_section_term_reaches_the_extractor(self):
+        self.assertRegex(
+            section9(),
+            r"No\s+term\s+drawn\s+from\s+the\s+section\s+is\s+written\s+into\s+the\s+"
+            r"extractor,\s+so\s+a\s+coinage\s+nobody\s+anticipated\s+is\s+still\s+a\s+"
+            r"difference",
+        )
+
+    def test_the_instrument_detects_and_never_judges(self):
+        self.assertRegex(
+            section9(),
+            r"\*\*The\s+instrument\s+detects\s+a\s+change\s+and\s+never\s+judges\s+it\.\*\*",
+        )
+
+    def test_the_remedy_is_operation_never_adjudication(self):
+        # AC5's clause, and the one criteria-audit pass 4 found underdetermined:
+        # a §9 attributing the remedy to the INSTRUMENT would satisfy "states
+        # the remedy" while falsifying the detect-never-judge clause above.
+        self.assertRegex(
+            section9(),
+            r"\*\*The\s+remedy\s+is\s+operation\s+the\s+author\s+runs,\s+never\s+"
+            r"adjudication\s+the\s+guard\s+performs\.\*\*",
+        )
+
+    def test_the_defeating_failure_mode_is_disclosed(self):
+        self.assertRegex(
+            section9(),
+            r"failure\s+mode\s+that\s+defeats\s+the\s+instrument\s+is\s+a\s+ledger\s+"
+            r"updated\s+without\s+its\s+diff\s+being\s+read,\s+and\s+no\s+guard\s+can\s+"
+            r"detect\s+that",
+        )
 
 
 class TestAlignment(unittest.TestCase):
