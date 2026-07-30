@@ -50,15 +50,17 @@ not reopened here.
       milestone work under §§1–7 and the mutation harness without reopening
       certification. §8 states that a finding reopens only if it clears both
       this boundary and AC1's rule.
-- [ ] AC4 — §8 assigns each finding class exactly one confirmation obligation: a
-      reopening finding obliges a further fresh-context round; a non-reopening
-      finding is fixed in place and confirmed by the author re-reading the
-      corrected record against the file it describes, recorded in the work log,
-      never by a further round. No two sentences in §8 assign both obligations
-      to one class, and the shipped sentence "The gate is entered at zero
-      unresolved: a discrepancy is fixed and re-certified, never argued down as
-      imprecision" is restated accordingly. Evidence: every §8 sentence stating
-      a confirmation obligation enumerated with the single class it governs.
+- [ ] AC4 — §8 assigns each of its three finding classes exactly one
+      confirmation obligation: a reopening finding obliges a further
+      fresh-context round; a non-reopening **record** is fixed in place and
+      confirmed by the author re-reading the corrected record against the file
+      it describes, recorded in the work log; an out-of-mandate robustness
+      observation under AC3 is confirmed by operation — the harness, the sweeps
+      and the suite. No sentence in §8 assigns a second obligation to a class
+      already carrying one, and the shipped sentence "The gate is entered at
+      zero unresolved: a discrepancy is fixed and re-certified, never argued
+      down as imprecision" is restated accordingly. Evidence: every §8 sentence
+      stating a confirmation obligation enumerated with the class it governs.
 - [ ] AC5 — §8's falsifier is replaced by a yield-based pair naming its window,
       both counted quantities and both consequences: (i) over the next three
       guard-authoring milestones that run §8, window closing when the third
@@ -67,15 +69,20 @@ not reopened here.
       where a finding was found, never where it was fixed, so AC3's routing
       cannot zero it — retires those later rounds and runs §8 as a single
       certification pass (tolerance: exact zero on both counts, totalled across
-      the window); (ii) one record fixed in place under AC1's rule and later
-      found false by the three-lens review or a subsequent milestone returns
-      that class to round-opening (tolerance: one occurrence).
+      the window, and the window counts only if at least one of its milestones
+      convened a round after its first); (ii) one record fixed in place under
+      AC1's rule and later found false by the three-lens review or a subsequent
+      milestone returns that class to round-opening (tolerance: one occurrence).
 - [ ] AC6 — one appended `cairn/DECISIONS.md` entry supersedes every D-067,
-      D-069 or D-070 claim this rebuild changes — at minimum the falsifier as
-      D-082 restored it and D-067's zero-unresolved bar as AC3 narrows it —
-      naming each by id. Its ground against D-059 is the checkable fact that the
-      replacement's counted quantity is not the round count, never an assertion
-      that the change is principled. No existing D-entry is edited.
+      D-069, D-070 or D-082 claim this rebuild changes — at minimum the
+      falsifier as D-082 restored it, D-067's zero-unresolved bar as AC3
+      narrows it, and D-067's rejection of "a mandatory re-derivation step" as
+      AC4's author re-read engages it — naming each by id. It states why
+      retirement is not the disposition, given that D-067's falsifier has fired
+      with its remedy owed and unpaid (D-082); and its ground against D-059 is
+      the checkable fact that the replacement's counted quantity is not the
+      round count, never an assertion that the change is principled. No
+      existing D-entry is edited.
 - [ ] AC7 — §8's evidence paragraph grounds the rule on the record-churn class
       and states separately (a) that under AC1's rule alone M119's round count is
       unchanged, each of rounds 5–9 having returned at least one reopening
@@ -83,10 +90,11 @@ not reopened here.
       count carries the revision it was derived from, and a derived figure
       contradicting a standing D-entry claim gets its own superseding entry.
 - [ ] AC8 — Every rule AC1–AC5 adds to §8 is pinned by an assert that fails when
-      its block is blanked and fails when the rule is inverted in place. A
-      positive block carries its own `test_mutation_harness.py` registry entry;
-      a negative or heading-bounded assert registers its positive framing phrase
-      instead and records the by-hand check, never the bound. The inversion
+      the rule is inverted in place; where the rule is carried by a positive
+      block, that assert also fails when the block is blanked and carries its
+      own `test_mutation_harness.py` registry entry. A negative or
+      heading-bounded assert registers its positive framing phrase instead and
+      records the by-hand check, never the bound (guard-doctrine §2). The inversion
       sweep covers §8 whole rather than this milestone's diff, recorded in the
       work log naming the mutation applied and the test that reddened. The two
       asserts whose target text is rewritten —
@@ -104,7 +112,7 @@ not reopened here.
 - AC4 → T4, T7
 - AC5 → T5, T7
 - AC6 → T6
-- AC7 → T1, T5
+- AC7 → T1, T5, T6
 - AC8 → T7, T8
 - AC9 → T8
 
@@ -115,14 +123,16 @@ not reopened here.
       have no named revision yet and T1 identifies theirs). Record each
       derivation and any disagreement with RR09 §2 or D-081 in the work log.
 - [ ] T2 — Write §8's two-axis discriminator and the provenance-qualified
-      non-reopening class (AC1, AC2), engaging D-069 and D-070 by id.
+      non-reopening class (AC1, AC2), engaging D-069 and D-070 by id, and
+      produce AC2's `grep -n "certified scope"` listing with each hit's axis.
 - [ ] T3 — Write the mandate boundary and its "clears both" composition (AC3).
 - [ ] T4 — Restate §8's confirmation-obligation sentences so each class carries
       exactly one, and enumerate them as evidence (AC4).
 - [ ] T5 — Write the yield-based falsifier and the evidence paragraph from T1's
       figures (AC5, AC7).
 - [ ] T6 — Append the superseding `cairn/DECISIONS.md` entry covering every
-      D-067/D-069/D-070 claim T2–T5 changed (AC6).
+      D-067/D-069/D-070/D-082 claim T2–T5 changed, plus any standing D-entry
+      figure T1's re-derivation contradicts (AC6, AC7).
 - [ ] T7 — Author the asserts for AC1–AC5's rules, register positive blocks in
       the mutation harness, record the by-hand check for negative and bounded
       ones, and re-anchor the two rewritten asserts (AC8).
@@ -140,6 +150,9 @@ not reopened here.
 - 2026-07-30: chose subordinating AC3's out-of-mandate list to check 1 over a separate tie-break clause, the gate having declined the tie-break option; falsified by a finding that is neither pinned by an AC clause nor classifiable under §§1–7.
 - 2026-07-30: CHECKPOINT — committed with the second criteria-audit pass (over the gate-changed AC1/AC3/AC4/AC5/AC6/AC7/AC8) still running; its findings land as a plan-owned amendment before implement starts, and this line is the honest record that the audit had not reported at commit time.
 - 2026-07-30: `cairn_validate` sizing advisory WARNs at 9 acceptance criteria (>7 split tripwire); the gate chose one milestone over a split with the tripwire stated, so the advisory stands unactioned by user decision.
+- 2026-07-30: criteria audit pass 2 (same [O] reader, gate-changed criteria only) returned 6 findings + 2 coverage gaps; it confirmed AC1/AC3/AC4 now compose and that AC5(i)'s count-at-discovery defeats AC3's routing, and discharged 7 of pass 1's findings by name. 5 fixed here (AC4 gains a third obligation arm for out-of-mandate surface; AC6 widens to D-082 and to D-067's rejected re-derivation step, and must state why retirement is not the disposition; AC8's blanking obligation scopes to positive blocks; T2 gains AC2's grep evidence; T6 gains T1's contradicted-figure entry).
+- 2026-07-30: chose a non-vacuity floor on AC5(i) — the window counts only if at least one milestone convened a round after its first — over accepting a vacuous firing, because retiring a mechanism the window never exercised is the same inert-on-its-own-case defect RR09 charges against M121's withdrawn rule; falsified by three consecutive milestones converging at round 1, which would make the floor unreachable and the falsifier unfireable.
+- 2026-07-30: CORRECTION, appended not edited (IP4): the 2026-07-30 counting-decision line above states its falsifier as "a window closing at zero counts while the rounds demonstrably returned findings". That is wrong as written — AC5(i) counts only shipped-behaviour defects and pre-round-1-surface findings, so later rounds returning findings on fix-authored surface while the window totals zero is the designed behaviour, not a falsification. The correct falsifier for that choice is a window closing at zero on both counted quantities while a later round returned a shipped-behaviour defect or a pre-round-1-surface finding. Found by criteria audit pass 2.
 
 ## Decisions
 
