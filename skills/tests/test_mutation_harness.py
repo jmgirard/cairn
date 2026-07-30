@@ -2405,7 +2405,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_section_carries_its_own_falsifier",
         target=GUARD_DOCTRINE,
-        block="It counts yield and not\nrounds, because the round count is precisely what the two rules above change,\nand a measure its own subject can satisfy by construction measures nothing.",
+        block="**This step carries its own falsifier.** It counts yield and not\nrounds, because the round count is precisely what the two rules above change,\nand a measure its own subject can satisfy by construction measures nothing.",
     ),
     # M116 (D-069). Two entries: the exclusion itself, and the reason it is a
     # convergence fix. Losing the second leaves the clause readable as a
@@ -2638,6 +2638,36 @@ REGISTRY = [
         test="TestDescriptionLayerCertification.test_clause_three_counts_anchor_fidelity_findings",
         target=GUARD_DOCTRINE,
         block='and\n  zero anchor-fidelity findings',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_clause_three_names_its_first_three_counted_quantities",
+        target=GUARD_DOCTRINE,
+        block="returns zero\n  shipped-behaviour defects, zero false claims in records predating that\n  milestone's round 1, zero acceptance-criterion clauses found unpinned, and",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_clause_three_is_totalled_across_the_window",
+        target=GUARD_DOCTRINE,
+        block='If, totalled across the same window, **round 1 itself**',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_clause_three_carries_its_tolerance",
+        target=GUARD_DOCTRINE,
+        block='Tolerance: exact zero on all four counts, totalled\n  across the window',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_overlap_is_settled_by_definition_without_a_tie_break",
+        target=GUARD_DOCTRINE,
+        block='The definition settles the apparent overlap without a\ntie-break: a one-directional pin that leaves an acceptance-criterion clause\nunpinned is a check-1 finding and reopens, while one that merely hardens an\nassert no criterion names is out of mandate.',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_what_decides_the_overlap_is_the_criterion_clause_at_stake",
+        target=GUARD_DOCTRINE,
+        block='What decides is whether a criterion\nclause is at stake, never how the finding is phrased.',
     ),
     Mutation(
         guard="test_fresh_context_readers",

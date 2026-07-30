@@ -336,8 +336,13 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # round-count falsifier with a yield-based pair; the quantity it counts
         # is the rule, because a round count is what this section's own rules
         # change and so is satisfiable by construction (RR09 q4).
+        # A19 (return 1): the anchor started at "It counts yield", so deleting
+        # the declarative sentence this test is NAMED for left it green — §8
+        # shipped a falsifier nothing said it carried. The anchor now opens on
+        # that sentence.
         self.assertRegex(
             self.doctrine,
+            r"\*\*This\s+step\s+carries\s+its\s+own\s+falsifier\.\*\*\s+"
             r"It counts yield and not\s+rounds, because the round count is "
             r"precisely what the two rules above change,\s+and a measure its "
             r"own subject can satisfy by construction measures nothing",
@@ -637,6 +642,64 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         self.assertRegex(
             self.doctrine,
             r"and\s+zero\s+anchor\-fidelity\s+findings",
+        )
+
+    def test_clause_three_names_its_first_three_counted_quantities(self):
+        # A3 (return 1): only the FOURTH quantity was pinned, so the other
+        # three inverted green — "returns any shipped-behaviour defects" left
+        # the suite passing. This is round 1's D3 defect, found in clause (i)
+        # and reproduced in the clause added after it.
+        self.assertRegex(
+            self.doctrine,
+            r"returns\s+zero\s+shipped-behaviour\s+defects,\s+zero\s+false\s+"
+            r"claims\s+in\s+records\s+predating\s+that\s+milestone's\s+round\s+"
+            r"1,\s+zero\s+acceptance-criterion\s+clauses\s+found\s+unpinned,"
+            r"\s+and",
+        )
+
+    def test_clause_three_is_totalled_across_the_window(self):
+        # A3 (return 1): the window scope inverted green to "in any single
+        # milestone", which retires the whole step on one quiet milestone
+        # rather than on three.
+        self.assertRegex(
+            self.doctrine,
+            r"If,\s+totalled\s+across\s+the\s+same\s+window,\s+\*\*round\s+1"
+            r"\s+itself\*\*",
+        )
+
+    def test_clause_three_carries_its_tolerance(self):
+        # A3 (return 1): changeable to "at most three on any count" with the
+        # suite green. Clause (i)'s and (ii)'s tolerances are pinned above;
+        # this was the third, and it was the unpinned one.
+        self.assertRegex(
+            self.doctrine,
+            r"Tolerance:\s+exact\s+zero\s+on\s+all\s+four\s+counts,\s+totalled"
+            r"\s+across\s+the\s+window",
+        )
+
+    def test_the_overlap_is_settled_by_definition_without_a_tie_break(self):
+        # A7 (return 1): AC3 requires §8 state how the mandate boundary
+        # composes with the provenance rule. The composition sentence was
+        # rewritable to "A separate tie-break rule settles the apparent
+        # overlap" — the option the plan gate explicitly declined — green.
+        self.assertRegex(
+            self.doctrine,
+            r"The\s+definition\s+settles\s+the\s+apparent\s+overlap\s+without"
+            r"\s+a\s+tie-break:\s+a\s+one-directional\s+pin\s+that\s+leaves\s+"
+            r"an\s+acceptance-criterion\s+clause\s+unpinned\s+is\s+a\s+check-1"
+            r"\s+finding\s+and\s+reopens,\s+while\s+one\s+that\s+merely\s+"
+            r"hardens\s+an\s+assert\s+no\s+criterion\s+names\s+is\s+out\s+of"
+            r"\s+mandate\.",
+        )
+
+    def test_what_decides_the_overlap_is_the_criterion_clause_at_stake(self):
+        # A7 (return 1): the decider transposed green to "what decides is how
+        # the finding is phrased" — which is precisely the reading the
+        # subject-matter/provenance split exists to forbid.
+        self.assertRegex(
+            self.doctrine,
+            r"What\s+decides\s+is\s+whether\s+a\s+criterion\s+clause\s+is\s+at"
+            r"\s+stake,\s+never\s+how\s+the\s+finding\s+is\s+phrased\.",
         )
 
     def test_clauses_one_and_three_cannot_both_fire(self):

@@ -133,7 +133,7 @@ not reopened here.
 - [x] T10 — Relocate the evidence derivations to a D-entry; §8 to ≤150 lines (AC12, AC14).
 - [x] T11 — Re-anchor or retire every assert T9/T10 moved; re-run the sweep (AC8).
 - [x] T12 — Run the next round under the rebuilt rules, classification recorded (AC13, AC9).
-- [ ] T13 — Pin clause (iii)'s three unpinned quantities, its tolerance and window
+- [x] T13 — Pin clause (iii)'s three unpinned quantities, its tolerance and window
       scope, AC3's composition and tie-break decider, and the declarative
       falsifier sentence; register each (AC8, AC11).
 - [ ] T14 — Rebuild the three defeated structural tests — the obligations proxy,
@@ -276,6 +276,9 @@ not reopened here.
 - 2026-07-30: return-1 findings REPRODUCED before fixing, not taken on the review's word — A3 (clause (iii)'s first quantity, its tolerance, its window scope), A7 (AC3's composition sentence and its tie-break decider), A19 (the declarative falsifier sentence), A4 (a prefix-dropping synonym), A5 (an unbolded earlier use) all invert or delete with the suite green; A22 reproduces the other way, a content-preserving reflow of the definition RED-ing a rule still present.
 - 2026-07-30: round 3's F10 RE-DERIVED and its two named instances do NOT reproduce — negating the zero-unresolved bar in place and negating the fresh-reader placement in place each red the suite. Two other pre-M123 §8 rules do invert green: "The reader checks three things and reports discrepancies verbatim:" and "The author still runs everything". F10's substance stands, its labels were wrong, and T15 fixes what is actually green.
 - 2026-07-30: A9 resolved AGAINST the record, not against the doctrine — §8 says an out-of-mandate observation "is recorded and fixed", AC3 says the same ("are fixed as ordinary §§1–7 and harness work"), so round 3's recorded-not-fixed disposition of F10 is the half that was wrong. Fixing it at T15 needs no criterion amendment; changing §8 to "recorded and routed" would have needed one.
+
+- 2026-07-30: T13 — 5 asserts added and 1 re-anchored, 5 registry entries added and 1 updated. `test_section_carries_its_own_falsifier` now opens on the sentence it is named for; A19 was that test passing while the sentence it names was deleted. Verified by inversion, not blanking: 7 mutations (negate quantity 1, negate quantity 3, transpose the window scope, relabel clause (iii)'s tolerance, negate AC3's composition into the tie-break the plan gate declined, transpose the decider, delete the declarative falsifier) each red their OWN test, restored byte-identical after each.
+- 2026-07-30: T13 verify — skills 746 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0.
 
 ## Decisions
 
