@@ -1,11 +1,11 @@
 # M122: A differential guard holding the hook and the cap counters to one heading contract
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** —
+- **Branch/PR:** `m122-heading-normalization-differential-guard`
 
 ## Goal
 
@@ -107,6 +107,7 @@ post-merge hygiene pass, decided at the plan gate 2026-07-30.
 - 2026-07-30: plan gate chose a shared-table differential guard over pinning only the two uncovered spellings in the existing hook tests, because a spelling list re-opens the gap the moment either side gains a normalization step; falsified by a measured divergence the table's renderings cannot distinguish.
 - 2026-07-30: plan gate chose removing the candidate row over keeping a narrowed third-caller row, because this milestone closes its only live residue; falsified by a third caller appearing that needs the same normalization.
 - 2026-07-30: plan gate decided `cairn/LESSONS.md:42` is trimmed to its uncovered remainder — that matching two layers' rules by hand stays a review item — at this milestone's post-merge hygiene, the covered instance dropped.
+- 2026-07-30: implement started on `m122-heading-normalization-differential-guard`; no implementation choice was left open by the plan, so no question gate.
 
 ## Decisions
 
