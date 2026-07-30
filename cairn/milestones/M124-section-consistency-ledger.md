@@ -103,7 +103,7 @@ recorded verbatim → unrecoverable, not replayed.
 
 ## Tasks
 
-- [ ] T1 — Author the section-consistency helper: heading-delimited slice
+- [x] T1 — Author the section-consistency helper: heading-delimited slice
       (bounded at the next `## `, and at EOF where the section is last),
       whitespace normalization, sentence sequence. Read targets with
       `Path.read_text` (M100). Comment each permitted closed-class constant
@@ -155,6 +155,9 @@ recorded verbatim → unrecoverable, not replayed.
 - 2026-07-30: criteria audit pass 4 returned 1 finding, clear and fixed: AC5's remedy clause admitted a §9 attributing the remedy to the instrument, which would falsify the same criterion's "detects a change and never judges it" while still satisfying the clause. Restated as operation the author runs — regenerate, read the diff, repair or accept — never adjudication the guard performs, which is also the only family outside D-067's rejection of a mandatory re-derivation step and consistent with §8 discharging this class "by operation" (`guard-doctrine.md:331-332`). Pass 4 also confirmed D-067's `cairn_validate` rejection is scoped to the two readers and does not reach a doctrine section.
 - 2026-07-30: pass 4 flagged, outside its own count, that D-083 part 3(a) (`cairn/DECISIONS.md:2913`) describes §8 as routing out-of-mandate work "as ordinary §§1-7 work" — incomplete after T2, and unfixable in place under IP4. Added to AC5 and T2 as a superseding append. This clause was authored AFTER pass 4 and was not read by it; it is mechanically satisfiable and IP4-mandated rather than IP4-blocked, so the audit loop is closed here at 4 passes rather than re-opened for it.
 - 2026-07-30: status -> in-progress on `m124-section-consistency-ledger`, cut from `main` at 65437f5.
+- 2026-07-30: T1 — `skills/tests/section_ledger.py`: `section_body` (heading-delimited, heading EXCLUDED, bounded at the next `## ` or EOF), `sentences` (whitespace-normalized, split on terminal punctuation), `diff` and `describe` (SequenceMatcher-aligned). Measured on §8 at HEAD: 50 sentences, no suspicious units. Excluding the heading is what removes the spurious 51st unit the audit found (`## 8.` ends in a numeral-period), and with it excluded the splitter needs ZERO lexical constants — AC1's closed-class carve-out ships unused, which the module's docstring states rather than implies.
+- 2026-07-30: T1 verify — reflow at width 66 with `break_on_hyphens=False` yields a sequence IDENTICAL to HEAD (AC4's invariant holds); the same reflow with hyphen-breaking ON differs by 4 sentences, reproducing the audit's measurement and confirming AC4's exclusion is the operative one. A pure one-sentence insertion reports `added=1, removed=0, moved=0` against the set-difference alternative's `added=1, moved=35` (AC2's alignment clause). skills 777 / scripts / hooks each exit 0; `cairn_validate` exit 0.
+- 2026-07-30: AMENDMENT (minor) — T1 ships the helper module alone; its unit tests move to T3, which is where the ledger fixture makes them meaningful. Reason: `skills/tests/` treats every `test_*.py` as a prose-guard that `TestRegistryCompleteness` requires be registered or exempted, and a test file landing before the ledger guard has nothing registrable in it. No criterion or scope text changes, so no gate is owed; T1's helper is covered by the measurements recorded above until T3.
 - 2026-07-30: criteria audit closed. Four passes, 13 findings total: 9 clear (all fixed), 3 judgment (all taken to the gate and decided), 1 uncounted observation (actioned above). Passes 2-4 each independently re-measured rather than reusing an earlier count, and pass 3 corrected pass 2's own pin count from 4 to 6-9.
 
 ## Decisions
