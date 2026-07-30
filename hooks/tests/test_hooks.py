@@ -536,6 +536,149 @@ class TestExemptSetMirror(unittest.TestCase):
             )
 
 
+class TestHeadingNormalizationContract(unittest.TestCase):
+    """M122: the hook and the cap counters must classify a HEADING identically.
+
+    `TestExemptSetMirror` above holds the two `CAP_EXEMPT_SECTIONS` constants
+    equal. The constants can agree while the normalization applied to a heading
+    *before* it is looked up in them diverges, and that gap was live: measured
+    2026-07-30, dropping `.strip()` from `session_context.heading_name` left all
+    98 hooks tests green while `##  Work log` (two spaces) and `## Work log `
+    (trailing space) became cap-exempt to the counters and injected WHOLE by the
+    hook — M113's original bug on a second axis.
+
+    Three verdicts per row, never two: the counters' (a real file through
+    `cairn_scripts.milestone_body_line_count`), the hook's (a real injection
+    through `session_context.milestone_part`), and the row's own EXPECTED
+    verdict. The expected column is what makes this more than a differential —
+    a drift hitting both layers identically satisfies equality alone, the same
+    blindness `TestExemptSetMirror` pins its member count against.
+    """
+
+    # Strictly greater than session_context.MIN_TAIL_BLOCKS (= 3): at or below
+    # it, `bounded_tail` never breaks, so NO budget elides and an exempt section
+    # would report as non-exempt against perfectly correct code.
+    ENTRIES = 8
+    PREAMBLE = "# M07: Test milestone\n\n- **Status:** in-progress\n"
+    RELPATH = "milestones/M07-test.md"
+
+    # (heading, expected_exempt), covering two axes.
+    # Format: case, a second space after the hashes, a trailing space.
+    # Site: the counters normalize at TWO sites — `cairn_scripts.py:376`, the
+    # `## Review` body boundary, and `:412`, the `EXEMPT_HEADINGS` subtraction —
+    # and a work-log-only table never reaches the first (guard-doctrine §3's
+    # site axis, the shape M117 recorded).
+    # Controls are the near misses M55 and M118 hit: a prefix must not read as
+    # its exempt namesake.
+    TABLE = (
+        ("## Work log", True),
+        ("## Work Log", True),
+        ("## WORK LOG", True),
+        ("##  Work log", True),
+        ("## Work log ", True),
+        ("## Review", True),
+        ("## REVIEW", True),
+        ("## Decisions", True),
+        ("##  Decisions", True),
+        ("## Reviewers", False),
+        ("## Decisions notes", False),
+        ("## Scope", False),
+    )
+
+    def setUp(self):
+        scripts = HOOKS_DIR.parent / "scripts"
+        for d in (HOOKS_DIR, scripts):
+            sys.path.insert(0, str(d))
+            self.addCleanup(sys.path.remove, str(d))
+        import cairn_scripts
+        import session_context
+
+        self.cs = cairn_scripts
+        self.sc = session_context
+
+    def body(self, heading):
+        entries = "".join(
+            f"- 2026-07-30: entry-{i:03d} " + "x" * 200 + "\n"
+            for i in range(self.ENTRIES)
+        )
+        return self.PREAMBLE + heading + "\n" + entries
+
+    def counters_exempt(self, heading):
+        """The cap counters' verdict, driven through the real counter over a
+        real file: a section the cap exempts contributes nothing to the
+        plan-owned body, so the count falls back to the preamble alone."""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "M07-test.md"
+            path.write_text(self.body(heading))
+            count = self.cs.milestone_body_line_count(str(path))
+        return count == len(self.PREAMBLE.splitlines()), count
+
+    def hook_exempt(self, heading):
+        """The hook's verdict, driven through the real injection path: only a
+        cap-exempt section is bounded, and a bounded one says what it elided."""
+        part = self.sc.milestone_part(
+            "M07", "in-progress", self.RELPATH, self.body(heading), 0
+        )
+        return "_cairn:" in part, part
+
+    def test_the_two_layers_and_the_expected_verdict_agree_on_every_rendering(self):
+        for heading, expected in self.TABLE:
+            with self.subTest(heading=heading):
+                counted, count = self.counters_exempt(heading)
+                marked, part = self.hook_exempt(heading)
+                self.assertEqual(
+                    counted, expected,
+                    f"the cap counters classify {heading!r} wrongly (count {count})",
+                )
+                self.assertEqual(
+                    marked, expected,
+                    f"the hook classifies {heading!r} wrongly",
+                )
+                # Each verdict pairs with a positive signal that the path ran:
+                # an absence assert alone is satisfied by a helper that returned
+                # nothing at all (guard-doctrine, absence assertions).
+                if expected:
+                    self.assertIn("entry-007", part)
+                    self.assertNotIn("entry-000", part)
+                else:
+                    self.assertEqual(
+                        count,
+                        len(self.PREAMBLE.splitlines()) + 1 + self.ENTRIES,
+                    )
+                    self.assertIn("entry-000", part)
+                    self.assertIn("entry-007", part)
+
+    def test_the_table_exercises_both_verdicts_on_both_layers(self):
+        # Non-vacuity, over the OBSERVED verdicts and never the expected
+        # column: a table that drifted to one outcome would leave the agreement
+        # test above satisfied by a classifier that answers the same way to
+        # everything. Both directions, because either half alone leaves the
+        # other unproven.
+        counters = [self.counters_exempt(h)[0] for h, _ in self.TABLE]
+        hook = [self.hook_exempt(h)[0] for h, _ in self.TABLE]
+        for label, observed in (("counters", counters), ("hook", hook)):
+            self.assertIn(True, observed, f"{label}: no exempt verdict observed")
+            self.assertIn(False, observed, f"{label}: no capped verdict observed")
+
+    def test_the_table_reaches_both_normalization_sites(self):
+        # Coverage of the table itself, kept apart from the non-vacuity assert
+        # above on purpose. The counters reach `review` by the body boundary and
+        # the other two by subtraction, so a table of work-log renderings alone
+        # would exercise one site and read as full coverage.
+        names = {self.sc.heading_name(h) for h, _ in self.TABLE}
+        self.assertIn("review", names)
+        self.assertIn("work log", names)
+        self.assertIn("decisions", names)
+        self.assertTrue(
+            any(h != h.strip() or "  " in h for h, _ in self.TABLE),
+            "no rendering exercises whitespace normalization",
+        )
+        self.assertTrue(
+            any(h != h.lower() for h, _ in self.TABLE),
+            "no rendering exercises case normalization",
+        )
+
+
 class TestBoundedTail(unittest.TestCase):
     """Direct-import tests for the read-bound's pure helpers.
 

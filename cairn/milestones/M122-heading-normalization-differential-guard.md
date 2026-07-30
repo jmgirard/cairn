@@ -82,21 +82,21 @@ post-merge hygiene pass, decided at the plan gate 2026-07-30.
 
 ## Tasks
 
-- [ ] T1: Write the guard beside `TestExemptSetMirror`
+- [x] T1: Write the guard beside `TestExemptSetMirror`
       (`hooks/tests/test_hooks.py:466-540`, which already puts `scripts/` on
       `sys.path` and imports both modules): the shared table with its expected
       column, the counters driver over a temp file, the hook driver through
       `milestone_part`, controls carrying positive signals, and the
       observed-verdict non-vacuity assert.
-- [ ] T2: Run the guard-must-fail protocol — `.strip()` dropped, `.lower()`
+- [x] T2: Run the guard-must-fail protocol — `.strip()` dropped, `.lower()`
       dropped, the table reduced each way — requiring red from the new class each
       time; restore, confirm the three suites green, record each result in the
       Review section.
-- [ ] T3: Confirm the file needs no mutation-harness registration (a behavioural
+- [x] T3: Confirm the file needs no mutation-harness registration (a behavioural
       guard over code, not a prose-guard asserting doc substrings) against
       `skills/tests/test_mutation_harness.py`'s completeness meta-test; register
       it if it does.
-- [ ] T4: Remove the candidate row from `cairn/ROADMAP.md` and record the
+- [x] T4: Remove the candidate row from `cairn/ROADMAP.md` and record the
       correction here.
 
 ## Work log
@@ -108,6 +108,11 @@ post-merge hygiene pass, decided at the plan gate 2026-07-30.
 - 2026-07-30: plan gate chose removing the candidate row over keeping a narrowed third-caller row, because this milestone closes its only live residue; falsified by a third caller appearing that needs the same normalization.
 - 2026-07-30: plan gate decided `cairn/LESSONS.md:42` is trimmed to its uncovered remainder — that matching two layers' rules by hand stays a review item — at this milestone's post-merge hygiene, the covered instance dropped.
 - 2026-07-30: implement started on `m122-heading-normalization-differential-guard`; no implementation choice was left open by the plan, so no question gate.
+- 2026-07-30: T1 — `TestHeadingNormalizationContract` added to `hooks/tests/test_hooks.py` beside `TestExemptSetMirror`: a 12-row table (5 work-log renderings, 4 review/decisions renderings for the site axis, 3 controls), each row measured three ways — counters via `milestone_body_line_count` over a real file, hook via `milestone_part` at budget 0, and the row's expected verdict — with positive signals on both arms and an observed-verdict non-vacuity assert. Hooks suite 98 -> 101 tests.
+- 2026-07-30: T2 — guard-must-fail protocol run scoped to the new class, all four required reds: `.strip()` dropped from `heading_name` RED (3 failures, the axis that was green pre-milestone), `.lower()` dropped RED (3), table reduced to exempt-only rows RED (1), table reduced to controls-only RED (2). Restored and re-run: the class is green and all three suites pass (skills 700, scripts 332, hooks 101).
+- 2026-07-30: AC7's parenthetical did not reproduce — `scripts/tests` reported plain `OK` today, not `OK (skipped=1)`; the skip is machine-conditional (M109). The criterion's substance, all three suites green, holds and the AC text is left as written.
+- 2026-07-30: T3 — no mutation-harness registration owed: `prose_guard_modules` (`skills/tests/test_mutation_harness.py:3227-3230`) globs `skills/tests/test_*.py` only, so a guard in `hooks/tests/` is outside the completeness meta-test's scope, and this is a behavioural guard over code rather than a prose-guard asserting doc substrings.
+- 2026-07-30: T4 — the candidate row was already removed in the plan commit `1966e1f`, earlier than the task placed it; the correction it owed is recorded in AC6 and in this log rather than re-done here.
 
 ## Decisions
 
