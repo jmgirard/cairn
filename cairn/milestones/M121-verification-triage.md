@@ -174,6 +174,8 @@ which no finding here disturbs.
 - 2026-07-28: correction (supersedes this session's 2026-07-27 revert line, IP4 — appended, not edited): that line claimed the revert "closes three deferred review findings outright — F-B3 (90), F-PR2 (85) and F-A1 (88)". F-A1 was NOT closed; it survived in `cairn/DECISIONS.md`, and the grep offered as evidence was scoped to `skills/`, a tree that cannot contain the file. D-081 carries the correction.
 - 2026-07-28: the RR09 revert also deleted four mutation-registry entries for guards that still ship, found by the prior-review lens. Restored from `main`; a set-comparison of every `test=` key now shows zero entries lost against `main` and nine added. The harness could not have caught it — registration is per file, and other entries for that file survived.
 
+- 2026-07-28: merge held at the approval gate to widen D-080's supersession, at the maintainer's call. D-082 appended: D-079's heading still claimed "both narrowed" and "extends D-069's scope bound", and its whole Consequences section argued from the withdrawn narrowing including a re-armed falsifier whose "this scope" had no referent; D-080 itself misread RR09 twice (objection C was confirmed only under the reading M121 did not take, and RR09's verdict reads "keep the exclusion, rebuilt", not "rather than keep"). D-082 also RESTORES D-067's falsifier in full — the "don't tune it" half D-079 superseded rested on the narrowing, so with the narrowing gone the ground is gone. Five logged findings closed above their scores (78, 78, 68, 60, 52). No shipped prose touched.
+
 ## Review
 
 ### Pass 1 — 2026-07-27 (SUPERSEDED by pass 2 below)
@@ -461,6 +463,14 @@ anyway) · F-D1 55 the row's sweep clause · F-A4 52 D-080 overstates RR09 on
 objection C · F-G3 50 one-home tension at `milestone-brief` · F-G1 30 docstring
 indentation · **F-C3 25, F-PR1 25, F-PR3 25, F-E2 25 — all ALREADY FIXED**
 earlier in this pass · F-D3 20 row length, legal by D-052.
+
+**Actioned at the approval gate, above their scores.** The maintainer held the
+merge to close the D-080 scope findings — F-A1 (78), F-A3 (78), F-A6 (68) and
+F-A2 (60), plus F-A4 (52) — which the threshold had left logged. **D-082**
+supersedes D-079's heading pair and its whole Consequences section, corrects
+D-080's two misreadings of RR09, and restores D-067's falsifier in full
+including the "don't tune it" half D-079 had superseded on the strength of a
+narrowing that never shipped. No shipped prose changes; record repair only.
 
 **Thrash count: 1 return.** Pass 2's findings were triaged "fix now" within the
 pass; the criteria evidence and consistency gate both passed, so no second

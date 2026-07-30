@@ -2809,3 +2809,61 @@ its Consequences section still argues from the withdrawn narrowing. That gap is
 recorded as a review finding scoring 78, below the action threshold, and logged
 in M121's Review section rather than fixed, because superseding a Consequences
 section wholesale is a larger act than this milestone's remaining scope.
+
+### D-082 (2026-07-28): D-080's supersession is widened to reach every claim the withdrawn narrowing supports — D-079's heading pair and its whole Consequences section — and D-080's own three misstatements are corrected; D-067's falsifier is restored in full, "don't tune it" included
+
+**Context:** M121's second review pass found D-080 under-scoped. D-080 named
+"D-079's clause 1 and the exclusion claim in D-079's heading" as superseded, but
+D-079 argues from the withdrawn narrowing in three further places, and D-080
+itself misstates RR09 three times. Four findings scored 78, 78, 68 and 60, below
+the action threshold, and were logged rather than fixed; the maintainer held the
+merge at the approval gate to close them. Each claim below was re-read out of
+the shipped bytes before this entry was written.
+
+**Decision, part 1 — D-079's surviving false claims are superseded.** Its
+heading still reads "D-067's two fresh-context readers are **both narrowed**"
+and "**extends D-069's scope bound**". One instrument is narrowed at HEAD (the
+criteria audit); nothing extends D-069. Under D-054 the heading is the surface a
+later sweep reads first, so both clauses are superseded here. Its
+**Consequences** section is superseded whole, on the ground that every
+load-bearing sentence in it presupposes the narrowing: "So the object narrowed
+here is the certified scope, which D-069 already narrows, and not the round
+count"; "Extends D-069: that entry put a certification round's own report
+outside the certified scope; this puts the *fixes* those rounds write outside it
+too"; and "The falsifier's exit condition is re-armed against the narrowed form:
+if guard-authoring milestones still average multiple returns with this scope in
+force, retire the step". The last has no referent at all once clause 1 is gone.
+What survives from D-079 is exactly clause 2, clause 3, and its Context's
+measurement of what each instrument caught.
+
+**Decision, part 2 — §8's falsifier stands in its original D-067 form.** D-079
+narrowly superseded the "don't tune it" half on the strength of a narrowing it
+was shipping. That narrowing was withdrawn, so the ground is gone and the half
+is **restored**: §8's falsifier reads as D-067 wrote it — "if guard-authoring
+milestones still average multiple description-layer returns after adoption, the
+step didn't work — retire it (D-059), don't tune it". It has fired: the average
+over M116–M119 is 4.5 rounds, and M121 added two more. Its remedy is owed and
+unpaid, and the ROADMAP's §8 row is where that debt is recorded. This replaces
+D-080's "D-067's falsifier therefore stands exactly as D-079 re-armed it", which
+named a condition that could not fire.
+
+**Decision, part 3 — D-080's two misreadings of RR09 are corrected.** D-080
+says "RR09 confirmed all three objections in refined form"; RR09 §3 answers
+objection C "**Only under reading 2** — where it is worse than the objection
+states. **Under reading 1 it fails.**" Objections A and B were confirmed; C was
+confirmed conditionally, on the reading M121 did not take. And D-080 renders the
+verdict as "(d) — rebuild the exclusion **rather than keep** or retire it";
+RR09 §5 reads "**(d): keep the exclusion, rebuilt**". The distinction is not
+cosmetic — RR09 rejected retirement *and* rejected reverting, and its (d) is a
+repair of the exclusion, not a replacement of it. D-080's disposition is
+unaffected: it departs from RR09's rejection of option (b) and says so.
+
+**Consequences:** Nothing in the shipped prose changes — `guard-doctrine.md`
+remains byte-identical to its pre-M121 state, and no skill, guard or test is
+touched. This entry is record repair only, and it is the fourth entry in a chain
+(D-079 → D-080 → D-081 → D-082) that a later reader must follow to reconstruct
+what M121 decided about §8. That chain length is itself the cost of appending an
+entry before the milestone's thinking had settled, which is the lesson D-081
+names and which post-merge hygiene captures. A reader wanting the short answer:
+**M121 changed nothing in §8; D-067's falsifier stands, fired, with its remedy
+owed; the rebuild is banked on the ROADMAP row with RR09 as its evidence.**
