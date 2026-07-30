@@ -1,6 +1,6 @@
 # M121: Verification triage — classify every self-verification instruction, and re-decide D-067's two fresh-context readers
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M120
 - **Driving RR:** —
@@ -33,7 +33,7 @@ which no finding here disturbs.
 
 ## Acceptance criteria
 
-- [x] AC1 — `cairn/references/self-verification-ledger.md` exists, authored
+- [ ] AC1 — `cairn/references/self-verification-ledger.md` exists, authored
       from `skills/shared/templates/synthesis-note.md`, and records: the search
       that produced the corpus, stated so a later pass can re-run it; one ID'd
       row per search hit, carrying `file:line`, the hit line's own
@@ -45,7 +45,7 @@ which no finding here disturbs.
       `— observed YYYY-MM-DD`. Its `INDEX.md` line, its provenance block, and
       its `TestShippedPageStateLedger` pin all land in the same milestone, with
       the work-log justification the ledger contract requires.
-- [x] AC2 — Every row dispositioned `narrow` or `remove` is applied in the
+- [ ] AC2 — Every row dispositioned `narrow` or `remove` is applied in the
       shipped prose. For a `remove` row, a grep over the working tree for that
       row's quoted instruction returns hits only in the ledger,
       `cairn/DECISIONS.md`, milestone files, and `milestones/archive/`. For a
@@ -55,7 +55,7 @@ which no finding here disturbs.
       replacement quoted in that row's ground. No row lacks a disposition, and
       the count of rows in the ledger equals the count of hits the AC1 search
       returns at the measurement commit.
-- [x] AC3 — A `cairn/DECISIONS.md` entry disposes of D-067's two instruments
+- [ ] AC3 — A `cairn/DECISIONS.md` entry disposes of D-067's two instruments
       separately — the plan-gate criteria audit and the `guard-doctrine.md` §8
       description-layer certification — each as `keep unchanged`, `narrow`, or
       `retire`. The entry states, per instrument, what it caught across M115
@@ -64,14 +64,14 @@ which no finding here disturbs.
       `prompting-opus-5` for the guide's finding. Any disposition other than
       `keep unchanged` names D-067 as superseded in the entry's heading; a
       `keep unchanged` restates D-067's own falsifier as still standing.
-- [x] AC4 — `tracking-rules.md`'s "Model and agent strategy" section states
+- [ ] AC4 — `tracking-rules.md`'s "Model and agent strategy" section states
       which class of self-checking the delegation guidance governs and which it
       does not, naming both an author re-checking its own output and an
       independent fresh-context reading of it. A prose-guard asserts a phrase
       from each of the two named classes, each phrase occurring within a single
       physical line of the shipped file, and each carries its own entry in
       `skills/tests/test_mutation_harness.py`.
-- [x] AC5 — Any instruction the ledger removes or narrows in a file carrying a
+- [ ] AC5 — Any instruction the ledger removes or narrows in a file carrying a
       prose-guard has that guard's asserted phrases re-checked against the
       shipped bytes, and `python3 -m unittest` over `skills/tests`,
       `scripts/tests` and `hooks/tests` is green from the repo root with each
@@ -167,6 +167,8 @@ which no finding here disturbs.
 - 2026-07-27: at the ingest gate the maintainer chose to drop §8 from M121 rather than rebuild it here or re-brief. `guard-doctrine.md` is byte-identical to `main` again; the three exclusion asserts and three mutation entries went with it. D-080 supersedes D-079's clause 1 and its heading's exclusion claim; clauses 2 and 3 stand. The rebuild is banked on the ROADMAP's existing §8 row, rewritten in place (ROADMAP is current knowledge, D-045/D-052) with RR09 as its evidence — which also closes review finding F-D5 (78).
 - 2026-07-27: the revert closes three deferred review findings outright — F-B3 (90), F-PR2 (85) and F-A1 (88) all sat in the withdrawn paragraph or the D-entry D-080 now supersedes; `grep eleven skills/` returns nothing. F-C3 (85) is closed by disclosing in the ledger that the search returns 82 at HEAD, three of them M121's own self-checking rule, classified `not-an-instruction` on the page's own vocabulary.
 - 2026-07-27: RB09/RR09 relocated to `cairn/reviews/archive/`; status → in-progress.
+
+- 2026-07-28: review pass 2 opened. All five AC boxes UNTICKED first: pass 1's evidence was gathered at `b4fdfe5`, before the RR09 revert removed the §8 exclusion and its guards, so those ticks stood on evidence about a branch state that no longer exists — AC fencing treats an already-ticked criterion without fresh recorded evidence as unverified. Status in-progress → review; the transition is logged here because the routing chip sent this session straight to review rather than back through `/milestone-implement`.
 
 ## Review
 
