@@ -127,7 +127,7 @@ recorded verbatim → unrecoverable, not replayed.
 - [x] T5 — Replay the four recorded mutations against the AC2 guard, restoring
       §8 byte-identical after each; record which two already fail the
       pre-milestone suite and which two are the load-bearing defeats (AC3).
-- [ ] T6 — Reflow §8 with hyphen-breaking off, run the AC2 guard scoped via
+- [x] T6 — Reflow §8 with hyphen-breaking off, run the AC2 guard scoped via
       `-k`, restore byte-identical; record (AC4).
 - [ ] T7 — Author asserts pinning every rule §9 adds, anchored on the shipped
       bytes (M95); verify each by in-place inversion restored byte-identical,
@@ -170,6 +170,7 @@ recorded verbatim → unrecoverable, not replayed.
 - 2026-07-30: T3+T4 verify — skills 790 (up 13) / scripts / hooks each exit 0; `cairn_validate` exit 0.
 - 2026-07-30: T5 — all four recorded mutations replayed, §8 restored byte-identical after each (`git status` clean at the end). Every one reds the ledger guard. The split AC3 states is confirmed against the shipped suite: (a) the contradicting append and (b) the three-checks relocation red the ledger guard and NOTHING ELSE — those are the load-bearing cases, and before this milestone they shipped green. (c) also reds `test_the_class_is_never_called_by_a_synonym` and (d) also reds `test_a_fix_authored_record_is_still_read_and_still_corrected` plus the blanking harness, so both are controls, closed by M123's own rounds 4-7 rather than by this guard.
 - 2026-07-30: T5 — this is the evidence the T4 registry entry deliberately does not carry: two mutations that defeat all 777 pre-existing tests and are caught only here.
+- 2026-07-30: T6 — §8 re-wrapped paragraph by paragraph at width 68 (the file sits at ~76-80) with `break_on_hyphens=False`; the ledger guard, run scoped via `-k section_matches_its_ledger`, is OK. §8 restored byte-identical. The scoping matters and is not cosmetic: 84 registry locators inside §8 carry literal newlines, so a whole-suite run under a reflow errors on them — that is the re-anchoring tax, not the invariant AC4 measures.
 - 2026-07-30: criteria audit closed. Four passes, 13 findings total: 9 clear (all fixed), 3 judgment (all taken to the gate and decided), 1 uncounted observation (actioned above). Passes 2-4 each independently re-measured rather than reusing an earlier count, and pass 3 corrected pass 2's own pin count from 4 to 6-9.
 
 ## Decisions
