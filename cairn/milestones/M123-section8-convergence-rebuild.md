@@ -119,7 +119,7 @@ not reopened here.
 
 ## Tasks
 
-- [ ] T1 — Re-derive each count AC7 cites from a revision named per source
+- [x] T1 — Re-derive each count AC7 cites from a revision named per source
       (M119's work log at `8dace78^` = `016a210`; M114 pass 8 and M121 round 2
       have no named revision yet and T1 identifies theirs). Record each
       derivation and any disagreement with RR09 §2 or D-081 in the work log.
@@ -160,6 +160,13 @@ not reopened here.
 - 2026-07-30: implement gate chose review-side confirmation over an author re-read for non-reopening records; falsified by AC5(ii) firing — a record fixed in place and later found false — at a rate the author re-read would have caught pre-gate.
 - 2026-07-30: implement gate chose rules-with-reasoning over compressed rules for §8's new material (~35 added lines over ~20), because this section's failure history is rules whose reasoning was left implicit being read two ways; falsified by a later editorial pass finding the added rationale never load-bearing under the D-071 deletion test.
 - 2026-07-30: noted at the gate — AC4 routing confirmation to the three-lens review makes that review the source of AC5(ii)'s data, so the falsifier's second clause is now fed by the mechanism AC4 names rather than by an independent channel. Not a conflict; recorded so a later reader does not read the coupling as circular.
+
+- 2026-07-30: T1 — revisions named for all three sources: M119's work log at `8dace78^` = `016a210`; M114 pass 8 at `a25e6dd^` (a25e6dd is `review M114: done`); M121 at `8763368^` (8763368 is `review M121: done`). All three resolve; the two previously unnamed are recorded here so AC7's counts never age from an archive summary.
+- 2026-07-30: T1 — derived from `016a210`, M119 rounds 5-9 record errors / coverage gaps by round: 5 → 2/3, 6 → 4/4, 7 → 0/2, 8 → 3/2, 9 → 2/1. Totals 11 record errors, 12 coverage gaps. The gap sequence 3,4,2,2,1 reproduces RR09 §2 exactly, so AC7(a) holds on the primary source and not merely on RR09's restatement.
+- 2026-07-30: T1 — derived from `a25e6dd^`, M114 pass 8 round 4 superseded a round-3 entry on four false claims and found its neighbour re-recording two observations already recorded three entries earlier; every claim's subject was that pass's own certification narrative. This is D-069's motivating case and the record-churn class's first instance.
+- 2026-07-30: T1 — derived from `8763368^`, M121 §8 round 2 returned 12 findings of which 5 had round 1's fix text as their only subject; the other 7 were count and citation precision in original text. RR09 B1's figure reproduces exactly.
+- 2026-07-30: T1 CONTRADICTION — D-081's Decision clause states "the supported figure is **eleven** record errors, **ten of them** in an earlier round's own fix text". Re-derivation supports the eleven and not the ten-of-eleven: `016a210` locates the authoring round for at least eight of the eleven (round 5's two in rounds 3/4's fix prose, round 6's "a change of kind, never silence" and "six of the ten signatures" in round 5's, round 8's three in round 7's, round 9's in round 8's), identifies NONE as sitting in original pre-round-1 text, and RR09 §2's table classifies all eleven as fix-authored. The "ten" traces to `8763368^`:143, where M121 round 2 asserted it without a shown derivation. D-081's own parenthetical half-concedes this. Superseding entry owed at T6 per AC7.
+- 2026-07-30: T1 — AC7(b)'s projection under AC3's boundary is NOT derived here; round 6's four gaps are the ±1 classification judgment RR09 flags, and the derivation belongs beside the prose that states it (T5).
 
 ## Decisions
 
