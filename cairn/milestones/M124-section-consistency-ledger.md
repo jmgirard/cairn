@@ -71,10 +71,12 @@ recorded verbatim → unrecoverable, not replayed.
       sentence's presence and not the section's consistency, naming the
       contradicting-sentence and the reusing-no-word rename as the two shapes
       that defeat presence pins, and stating that the instrument detects a
-      change and never judges it. §8's two routing enumerations of `§§1–7` are
+      change and never judges it. §9 states the remedy an out-of-mandate
+      consistency finding is fixed under, so that naming it in §8's routing
+      enumerations is true of the shipped section. §8's two enumerations of `§§1–7` are
       updated to name §9 as well, and every pre-existing assert and registry
-      block pinning either enumeration is re-anchored, so that at HEAD the
-      enumeration names every craft section and the suite stays green.
+      block that the enumeration edit or its re-wrap breaks is re-anchored on
+      the shipped bytes, so the suite is green at HEAD.
 - [ ] AC6 — Every rule AC5 adds is pinned by an assert that fails when that rule
       is inverted in place; each such assert and the AC2 ledger guard are
       registered in `skills/tests/test_mutation_harness.py`, and every block
@@ -103,10 +105,12 @@ recorded verbatim → unrecoverable, not replayed.
       (AC1).
 - [ ] T2 — Append §9 to `guard-doctrine.md` — presence-vs-consistency, the two
       defeating shapes, the detect-never-judge boundary, no renumbering — and
-      update §8's two `§§1–7` enumerations (`guard-doctrine.md:328`, `:384`),
-      re-anchoring the four pins that move with them
-      (`test_mutation_harness.py:2472`, `:2496`;
-      `test_fresh_context_readers.py:477`, `:509`) (AC5).
+      update §8's two `§§1–7` enumerations (`guard-doctrine.md:328`, `:384`;
+      note the en dash U+2013). Line 328 is 71 chars and needs no re-wrap, so
+      it breaks only its own 2 pins; line 384 is 80 chars and forces bullet
+      (i)'s re-wrap, taking 4 more. Re-anchor every pin the edit or its
+      re-wrap breaks — 6 on a minimal edit, up to 9 on a full re-fill — and
+      copy anchors from the shipped bytes (M95) (AC5).
 - [ ] T3 — Generate the §8 ledger fixture from the helper **after T2's §8 edit**
       and commit it; author the guard test comparing section to ledger, with an
       alignment-based added/removed/moved failure message (AC2).
@@ -139,6 +143,9 @@ recorded verbatim → unrecoverable, not replayed.
 - 2026-07-30: criteria audit pass 2 returned 3 findings. Two clear, both fixed: AC4's "no word changed" admitted two states, because a `textwrap.fill` re-wrap at defaults breaks hyphenated compounds and reds the guard (4 sentences added, 4 removed, first divergence `zero-unresolved` at `guard-doctrine.md:331`) while `break_on_hyphens=False` leaves it green — restated as token-sequence-unchanged; and AC2's failure message admitted a set-difference implementation reporting mutation (a) as `added=1, moved=35` against `difflib`'s single insert opcode — restated as alignment-based. Pass 2 also confirmed AC3's factual claim independently and filled in mutation (b), which is green like (a).
 - 2026-07-30: plan gate chose updating §8's two `§§1–7` enumerations over leaving them stale or rewording them to stop enumerating, because appending §9 makes the list incomplete and shipping that defect in the milestone that names the class is the worse outcome; falsified by the re-anchoring cost exceeding the milestone's headroom, or by a later section append repeating the staleness a reword would have prevented.
 - 2026-07-30: CHECKPOINT — AC5's enumeration clause and the T2-before-T3 reordering it forces are out for criteria-audit pass 3, which had not returned when this commit was made. AC1, AC3, AC6 and AC7 passed pass 2 unchanged and are deliberately not re-read.
+- 2026-07-30: criteria audit pass 3 returned 2 findings. One clear, fixed: AC5's repair obligation was scoped to pins on the enumerations (4) while its stated purpose was a green suite, and the two do not coincide — the measured breakage is 2 failures + 4 errors on a minimal edit and 2 failures + 7 errors on a full re-fill, because `guard-doctrine.md:328` is 71 chars and needs no re-wrap while `:384` is 80 and forces bullet (i)'s. Rescoped to every pin the edit or its re-wrap breaks, 6 to 9; T2 carries the line lengths and the en-dash U+2013 warning. Pass 3 also confirmed T2-before-T3 resolves the ledger-ordering hazard and that no §8 anchor becomes unpinnable.
+- 2026-07-30: plan gate chose making §9 a fix destination named in §8's routing enumerations over referencing it descriptively beside them, because §9 carries the ledger instrument and a consistency gap found as out-of-mandate work is fixed by applying it; the rider is that §9 must state a remedy and not only a caution, which AC5 now requires. Falsified by §9 shipping with no remedy a finding could be routed to, which would make its presence in the enumerations a false claim of the kind §8's own claim-vs-file check exists to catch.
+- 2026-07-30: CHECKPOINT — AC5's remedy clause is out for a final, narrow criteria-audit pass which had not returned when this commit was made. No other criterion changed.
 
 ## Decisions
 
