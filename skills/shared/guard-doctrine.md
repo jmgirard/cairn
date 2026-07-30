@@ -281,9 +281,11 @@ The reader checks three things and reports discrepancies verbatim:
 - **Anchor-vs-shipped-bytes fidelity** — every multi-word anchor matches the
   bytes actually shipped, including under the target's hard wrap.
 
-The gate is entered at zero unresolved: a discrepancy is fixed and
-re-certified, never argued down as imprecision. The author still runs
-everything — this moves certification, not operation.
+The gate is entered at zero unresolved: every discrepancy is fixed, never
+argued down as imprecision. Which confirmation that fix then takes depends on
+the finding's class, and the classes are set out below — each carries exactly
+one. The author still runs everything —
+this moves certification, not operation.
 
 **The certified scope is the work and the records describing the work; a record
 whose subject is a certification round itself — the final round's own report
@@ -294,6 +296,68 @@ uncertified surface for the next one to audit. M114 pass 8 ran four rounds on
 that treadmill — round 4 finding defects only in certification narrative — at
 15, 14, 17 and 38 minutes. Zero unresolved stays the bar; what this excludes is
 a scope that regresses.
+
+**Two lines govern a round, and they are drawn on different axes.** Collapsing
+them into one is what made this section's first attempt at a bound unusable, so
+they are stated apart. **What the reader checks and the author fixes** is drawn
+by *subject matter*: the work and every record about the work are inside,
+narrative about the certifying process is outside (D-069, as narrowed by
+D-070). **What a finding reopens** is drawn by *provenance*: a finding is
+grounds for a further round unless its only subject is a **fix-authored
+record**.
+
+A fix-authored record is a docstring, a comment, a work-log line, or a record
+claim that a previous round's own fix wrote in this same certification. That
+name is the only one this section gives the class, and where it means anything
+wider it says so — the earlier formulation alternated "text" and "record" as if
+they were synonyms, and the two readings that licensed were opposite rules. A
+fix's code, its asserts and its fixtures are not records and stay ordinary
+round-opening surface; so does every record that existed before round 1, since
+a false claim in an original docstring is the defect this section was built on
+and it reopens a round no matter who wrote it.
+
+The two axes compose rather than compete. A fix-authored record is still read
+and still corrected — it never leaves the certified scope, and nothing here
+narrows that scope. What it loses is only the power to force another round.
+D-070 rules on the first axis and says nothing about the second, which is why
+this is compatible with it rather than a partial supersession of it.
+
+**A round reopens only on a finding within the three named checks above.**
+Those three are the whole of this step's mandate. A robustness observation that
+no acceptance-criterion clause pins — a surviving mutation, a one-directional
+pin, a near-miss control's uncovered signature, a fixture weak on an axis no
+criterion names — is real work, and it is recorded and fixed as ordinary
+milestone work under §§1–7 and the mutation harness. It does not reopen
+certification. Such findings are those sections' job being done by hand at the
+wrong gate: the reader that catches them is reading the description layer, and
+what it has actually found is a guard that needs hardening, which the harness
+and the by-hand mutation protocol already oblige.
+
+**A finding reopens a round only if it clears both lines** — it falls within
+the three checks, and its only subject is not a fix-authored record. Failing
+either, it is fixed under the obligation named below and the round still closes.
+The two lines can look like they overlap, and the definition settles it without
+a tie-break: a one-directional pin that leaves an acceptance-criterion clause
+unpinned is a check-1 finding and reopens, while one that merely hardens an
+assert no criterion names is out of mandate. What decides is whether a criterion
+clause is at stake, never how the finding is phrased.
+
+**Each class carries exactly one confirmation obligation, and no class carries
+two.** A **reopening finding** obliges a further fresh-context round, and that
+round is what confirms its fix. A **fix-authored record** is fixed in place and
+confirmed by the next round's reader where a further round occurs, and otherwise
+by `/milestone-review`'s three-lens fan-out at the merge gate; no confirmation
+obligation falls on the author, because D-067 rejected instructing an author's
+own re-check — it asks for the judgment this section exists because authors fail
+at — and `tracking-rules.md`'s delegation warrant says the same of a check
+already happening unprompted. An **out-of-mandate robustness observation** is
+confirmed by operation: the harness, the sweeps and the suite, which is what
+§§1–7 already prescribe for the work it becomes.
+
+The gate is therefore reachable with fix-authored records corrected but not yet
+independently confirmed. That is a deliberate narrowing of the zero-unresolved
+bar rather than an oversight, and the cost it creates is exactly what the
+falsifier's second clause below counts.
 
 **This step carries its own falsifier**, stated up front rather than left for
 a later argument about whether it is pulling its weight: if guard-authoring

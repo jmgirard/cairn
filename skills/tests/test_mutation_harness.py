@@ -2366,7 +2366,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_section_requires_zero_unresolved_and_forbids_arguing_down",
         target=GUARD_DOCTRINE,
-        block="The gate is entered at zero unresolved: a discrepancy is fixed and\nre-certified, never argued down as imprecision",
+        block="The gate is entered at zero unresolved: every discrepancy is fixed, never\nargued down as imprecision",
     ),
     # M121 (narrows D-067, first instrument). Three entries across two files:
     # the record requirement, the sentence making a missing line evidence, and

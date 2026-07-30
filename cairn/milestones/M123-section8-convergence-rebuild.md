@@ -123,11 +123,11 @@ not reopened here.
       (M119's work log at `8dace78^` = `016a210`; M114 pass 8 and M121 round 2
       have no named revision yet and T1 identifies theirs). Record each
       derivation and any disagreement with RR09 §2 or D-081 in the work log.
-- [ ] T2 — Write §8's two-axis discriminator and the provenance-qualified
+- [x] T2 — Write §8's two-axis discriminator and the provenance-qualified
       non-reopening class (AC1, AC2), engaging D-069 and D-070 by id, and
       produce AC2's `grep -n "certified scope"` listing with each hit's axis.
-- [ ] T3 — Write the mandate boundary and its "clears both" composition (AC3).
-- [ ] T4 — Restate §8's confirmation-obligation sentences so each class carries
+- [x] T3 — Write the mandate boundary and its "clears both" composition (AC3).
+- [x] T4 — Restate §8's confirmation-obligation sentences so each class carries
       exactly one, and enumerate them as evidence (AC4).
 - [ ] T5 — Write the yield-based falsifier and the evidence paragraph from T1's
       figures (AC5, AC7).
@@ -167,6 +167,13 @@ not reopened here.
 - 2026-07-30: T1 — derived from `8763368^`, M121 §8 round 2 returned 12 findings of which 5 had round 1's fix text as their only subject; the other 7 were count and citation precision in original text. RR09 B1's figure reproduces exactly.
 - 2026-07-30: T1 CONTRADICTION — D-081's Decision clause states "the supported figure is **eleven** record errors, **ten of them** in an earlier round's own fix text". Re-derivation supports the eleven and not the ten-of-eleven: `016a210` locates the authoring round for at least eight of the eleven (round 5's two in rounds 3/4's fix prose, round 6's "a change of kind, never silence" and "six of the ten signatures" in round 5's, round 8's three in round 7's, round 9's in round 8's), identifies NONE as sitting in original pre-round-1 text, and RR09 §2's table classifies all eleven as fix-authored. The "ten" traces to `8763368^`:143, where M121 round 2 asserted it without a shown derivation. D-081's own parenthetical half-concedes this. Superseding entry owed at T6 per AC7.
 - 2026-07-30: T1 — AC7(b)'s projection under AC3's boundary is NOT derived here; round 6's four gaps are the ±1 classification judgment RR09 flags, and the derivation belongs beside the prose that states it (T5).
+
+- 2026-07-30: T2 — §8 gains the two-axis discriminator and the defined term `fix-authored record`, placed after the D-069 paragraph so the subject-matter axis is established before the provenance one is drawn against it. D-069 and D-070 named by id; the paragraph states the compatibility rather than claiming a partial supersession. AC2 evidence: `certified scope` occurs exactly twice in §8 (`guard-doctrine.md:288`, `:318`), both on the subject-matter axis; the provenance rule is nowhere called a certified-scope exclusion.
+- 2026-07-30: T3 — mandate boundary shipped with the "clears both lines" composition. The check-1 overlap is settled by the definition rather than a tie-break, per the plan gate: a one-directional pin leaving an AC clause unpinned is check 1 and reopens; one hardening an assert no criterion names is out of mandate.
+- 2026-07-30: T4 — the universally-quantified "a discrepancy is fixed and re-certified" sentence is restated to carry only the zero-unresolved bar and the never-argued-down rule, with the three per-class obligations stated in their own paragraph. Gate-amended AC4 shipped: no obligation falls on the author, D-067's rejection cited in the prose itself.
+- 2026-07-30: T4 — M104's trap hit and fixed as guard-doctrine §1 prescribes: the edit reflowed `this moves certification, not operation` across a line break, reddening a guard on a rule this milestone never touched. Fixed by re-wrapping the TARGET, never the assert.
+- 2026-07-30: T4 — `test_section_requires_zero_unresolved_and_forbids_arguing_down` re-anchored to the shipped bytes and its mutation-registry block updated (AC8, brought forward from T7 because T4 is what invalidated it). Verified by inversion, not only by blanking: negating the rule to "or argued down as imprecision where the author judges it immaterial" reds the suite (failures=1, errors=1); restored and diffed byte-identical.
+- 2026-07-30: T2-T4 verify — three suites exit 0 each (skills 700), `cairn_validate` exit 0, run from the repo root with exit codes captured per suite.
 
 ## Decisions
 

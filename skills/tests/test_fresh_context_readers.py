@@ -282,8 +282,8 @@ class TestDescriptionLayerCertification(unittest.TestCase):
     def test_section_requires_zero_unresolved_and_forbids_arguing_down(self):
         self.assertRegex(
             self.doctrine,
-            r"The gate is entered at zero unresolved: a discrepancy is fixed and\s+"
-            r"re-certified, never argued down as imprecision",
+            r"The gate is entered at zero unresolved: every discrepancy is "
+            r"fixed, never\s+argued down as imprecision",
         )
 
     def test_section_moves_certification_not_operation(self):
