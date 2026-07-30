@@ -31,8 +31,7 @@ a shared constant or module across the two packages — a hook may import only
 `TestExemptSetMirror` the precedent; deriving the renderings from a producer
 instead of listing them (`guard-doctrine.md` §3) — milestone headings are
 hand-authored and have no producer to sweep, the negative M117 already recorded;
-prefix-matching divergences, already red under mutation and covered by the
-existing tests; trimming `cairn/LESSONS.md:42` to its uncovered remainder → this milestone's
+trimming `cairn/LESSONS.md:42` to its uncovered remainder → this milestone's
 post-merge hygiene pass, decided at the plan gate 2026-07-30.
 
 ## Acceptance criteria
@@ -142,6 +141,7 @@ post-merge hygiene pass, decided at the plan gate 2026-07-30.
 - 2026-07-30: logged below threshold, actioned by none — F4 (70) `cairn_scripts.py:412`'s `.strip()` half is dead because `:375` already strips, so AC2 credits a redundant half as a covered site; B1 (60) Scope Out credits M117 with a negative it did not record, though the underlying judgment holds; F10 (48) a comment says "two axes" where AC2 now names three; F9 (45) fixtures put a `## ` heading with no blank line above it, a layout no real milestone file uses; F8 (42) the hook verdict proxy is the literal `_cairn:`, so renaming that marker would misdiagnose as a classification failure; F6 (30) four superseded values for one count survive in this append-only log before the settling line; F7 (30) the module docstring's subprocess claim predates this milestone and is now untrue for 5 more tests.
 - 2026-07-30: the measurement INSTRUMENT was wrong before this line and is corrected here — its row pattern required `## ` right after the quote, so it silently skipped the two new rows (13 of 15 tested), and its "exempt-only" reduction removed a hardcoded control list that no longer matched the table, so that reduction was not exempt-only at all. It now parses every row and derives both reductions from the parsed verdicts. The prior numbers were measurements of something other than what they named — the same failure this milestone exists to catch, one level up.
 - 2026-07-30: numbers settled on this commit's tree, superseding every earlier count in this log. Table 15 rows (10 exempt / 5 control). Against the class (5 tests), all eleven mutations red: hook `.lower()` 13 · hook `.strip()` 4 · hook prefix `## `->`##` 1 · hook `lstrip()` added 1 · hook `~~~` 1 · hook ``` 1 · counters `:375` `.strip()` 1 · counters `:376` `.lower()` 3 · counters `:412` `.lower()` 9 · counters prefix 1 · counters `~~~` 1. Reductions: exempt-only 2, controls-only 2. Each of the 15 rows dropped in turn RED, none unnoticed. Suites: skills 700, scripts 332, hooks 103.
+- 2026-07-30: Scope amended at the merge gate — the `Out:` clause claiming prefix-matching divergences were "already red under mutation and covered by the existing tests" is DELETED. Review F1 disproved it (both layers' `## ` prefix test dropped green), and the milestone now covers that axis, so the clause was false twice over. Approved by the user 2026-07-30.
 
 ## Decisions
 
