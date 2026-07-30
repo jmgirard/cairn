@@ -2991,3 +2991,91 @@ D-081's chain-length cost warns about. The general remedy is the one already in
 the rulebook: settle numeric records last, after the content has stopped moving
 (`guard-doctrine.md` §6). D-083 was appended at T6, three tasks before the
 content settled.
+
+### D-085 (2026-07-30): §8's evidence derivations move here from the doctrine, the round-count falsifier's defect is restated in its independent form, and clause (iii) extends D-083's supersede-on-firing trigger to a third clause — annotates D-083 and D-084; records RR10's verdict (e) and the re-visit of RR09 recs 8-9 (RR10, M123)
+
+**Context:** RR10 reviewed whether `guard-doctrine.md` §8 should survive at all,
+given that its own rebuild took two certification rounds returning 16 and 13
+discrepancies. Verdict **(e)**: keep §8, with four amendments. It rejected
+retiring the step, decreeing a single pass, and folding the instrument into
+`/milestone-review`'s three-lens fan-out. The fold rejection rests on a measured
+fact rather than a preference: that fan-out's scorer put M121's four
+description-layer findings at 78, 78, 68 and 60, all below the action threshold,
+and they were logged rather than fixed (D-082).
+
+**Decision, part 1 — the round-count falsifier's defect, in its independent
+form.** D-083 part 2 argued that the old falsifier counted the wrong quantity
+because §8's two new rules act directly on the round count. That argument
+presupposes the rules it defends. RR10 supplies the ground that does not:
+**under the pre-rebuild rule "a discrepancy is fixed and re-certified", a second
+round is convened if and only if round 1 returns at least one finding.** So
+"guard-authoring milestones still average multiple description-layer returns"
+fired exactly when the instrument had yield — it measured yield and reported it
+as failure, and a milestone could satisfy it only by having a round 1 that found
+nothing. This supersedes nothing in D-083; it replaces D-083's weaker leg with a
+stronger one for the same conclusion, and it is the load-bearing ground for the
+replacement.
+
+**Decision, part 2 — clause (iii), and what it extends.** RR10 found a real
+deficiency in what D-083 shipped: after the replacement, **no condition anywhere
+retired the whole step**, so round 1 itself had become unfalsifiable. §8 now
+carries a third falsifier clause under which round 1's own yield decay retires
+the step whole. It counts four quantities, not the three RR10's binding
+criterion named — the fourth is anchor-fidelity findings, §8's third check,
+whose omission would let a window returning only those findings read zero and
+retire an instrument demonstrably working, which is the same anti-calibration
+RR10 convicts the old falsifier of. §8 also states that clauses (i) and (iii)
+cannot both fire. D-083 closes "This entry is the one to supersede if either
+happens"; **this entry extends that trigger to a third clause.**
+
+**Decision, part 3 — §8's evidence derivations live here, not in the doctrine.**
+Each of the following was stated in §8 and is relocated, with §8 keeping a
+one-sentence pointer. Every figure is a dated observation of the sources named,
+read 2026-07-30, not a standing fact.
+
+- **The record-churn class, the provenance rule's ground.** M114 pass 8's round
+  4 found discrepancies only in narrative its own earlier rounds had written —
+  four false claims in a round-3 entry, plus a neighbour re-recording two
+  observations logged three entries earlier (`a25e6dd^`). M119's rounds 5-9
+  returned eleven record errors, and `016a210` locates the authoring round for
+  at least eight of them while identifying none as sitting in text that existed
+  before round 1. M121's round 2 returned twelve findings, five of which had
+  round 1's own fix prose as their only subject (`8763368^`).
+- **Why the provenance rule changes M119's round count by zero.** Each of rounds
+  5-9 also returned coverage gaps — three, four, two, two and one (`016a210`) —
+  and a coverage gap is a finding about executable surface, which the rule never
+  shields. That sentence stays in §8 because it is a rule; the sequence moves
+  here.
+- **The mandate boundary's replay projection.** Replayed under it, M119 stops
+  after round 6, saving three rounds. Round 6's `kind`-label gap is the one
+  classification that could go either way, since those two labels are M119's own
+  AC1 pasted-output-or-fenced-block distinction, and reading it as in-mandate
+  stops the replay after round 7 instead. Tolerance: ±1 round, on that gap.
+  RR09 placed the same ±1 on round 5; M123's derivation from M119's own
+  acceptance criteria puts round 5 beyond doubt and the coin-flip on round 6.
+- **What each falsifier clause counts.** Clause (i) counts whether the later
+  rounds still find anything the two reopening rules have not already disposed
+  of. Clause (ii) counts the cost those rules create — records corrected without
+  an independent read — which the round-count falsifier could not see. Clause
+  (iii) counts whether round 1 itself still earns its reader. All three are
+  countable from work logs as milestones already write them.
+
+**Decision, part 4 — RR09 recs 8 and 9, re-visited.** RR10 re-examined both
+against M123's own two-round cost, which RR09 did not have, and **re-affirmed
+them**: reverting §8 unchanged and retiring it outright both stay rejected.
+Recorded as the outcome of the re-visit rather than as a conclusion mandated in
+advance. One divergence from RR10 is noted rather than smoothed: RR09's
+falsifier clause (ii) offered "returns that class to round-opening **or** the
+step is retired", and M123 selected the first consequence and dropped the
+disjunction, because a single falsified in-place fix retiring the whole step is
+disproportionate when clause (iii) already governs whole-step retirement.
+
+**Consequences:** §8 falls from 183 lines to under 150 with no rule removed —
+every sentence an assert pins survives or is re-anchored, and the asserts whose
+only anchor was relocated evidence retire with their registry entries. The
+figures above are now the single home for these derivations; §8 points here, and
+a later reader chasing a count reads this entry rather than the doctrine. If
+falsifier clause (i) or (iii) fires, the retirement edit should prune the
+convergence apparatus — the two axes, the shield, the per-class obligations —
+along with the rounds it governs, rather than leaving doctrine about rounds that
+no longer run; that is RR10 recommendation 8, banked here rather than acted on.

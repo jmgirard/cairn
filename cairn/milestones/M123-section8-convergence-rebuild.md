@@ -135,9 +135,9 @@ not reopened here.
 - [x] T8 — Section-wide inversion sweep; suites and `cairn_validate` (AC8, AC9).
 - [x] T9 — Ship RR10's sufficiency arm and falsifier clause (iii), the latter
       counting anchor-fidelity findings per the Deviations table (AC10, AC11).
-- [ ] T10 — Relocate §8's evidence derivations into an appended D-entry, leave
+- [x] T10 — Relocate §8's evidence derivations into an appended D-entry, leave
       one-sentence pointers, bring §8 to ≤150 lines (AC12, AC14).
-- [ ] T11 — Re-anchor or retire every assert whose target T9/T10 moved; re-run
+- [x] T11 — Re-anchor or retire every assert whose target T9/T10 moved; re-run
       the section-wide inversion sweep (AC8).
 - [ ] T12 — Run the next round under the rebuilt rules with the three-way
       classification recorded; suites and `cairn_validate` (AC13, AC9).
@@ -240,6 +240,13 @@ not reopened here.
 - 2026-07-30: T9 — the sufficiency arm ships in the clears-both-lines paragraph (AC10/BC1): a finding clearing both lines IS a reopening finding and carries that class's obligation, with the sentence saying why the rule runs both ways. RR10's residue was that reopening carried only necessary conditions, so a reader deep in a loop could derive "nothing must reopen" with every rule intact.
 - 2026-07-30: T9 — falsifier clause (iii) ships (AC11/BC2): round 1 itself retires the whole step on zero yield across the window. Two deviations from RR10 applied as the Deviations table records — it counts FOUR quantities, the fourth being anchor-fidelity findings (§8's third check, which RR10's version omitted, so a window of only those findings would read zero and retire a working instrument); and §8 states that clauses (i) and (iii) cannot both fire, since (i)'s non-vacuity floor requires a round 1 that found something and (iii)'s zeroes forbid one.
 - 2026-07-30: T9 — 5 asserts + 5 registry entries; all 5 redden their own test under in-place inversion, restored byte-identical after each. 749 tests.
+
+- 2026-07-30: T10 — D-085 appended first, per the pre-ingest audit's S5 ordering (the pointers cannot point at an entry that does not exist). It carries RR10's independent wrong-quantity ground, clause (iii) as extending D-083's supersede-on-firing trigger to a third clause, the four relocated derivations, and the RR09 recs 8-9 re-visit recorded as an outcome rather than as the conclusion RR10's BC5 mandated.
+- 2026-07-30: T10 — §8 compressed 183 → 150 lines, meeting AC12's ceiling exactly. Relocated: the three measured record-churn cases, the M119 gap sequence, the mandate-boundary replay projection and its tolerance, the clause gloss, M114's four-round minute costs, the seven-returns case detail, and four justification passages. Kept: every sentence an assert pins, plus the two grounding sentences the audit's F5 flagged as rules rather than evidence (the record-churn claim and the zero-round-change claim), which now stand as pointers that still state their claim.
+- 2026-07-30: T11 — 8 asserts retired with their registry entries (their only anchor was relocated evidence, which BC3 licenses); 1 re-anchored; 7 registry blocks re-synced after the compression reflowed them. `test_the_class_is_defined_and_bounded_in_one_paragraph` was reddening on a reflow of prose it is not about, and is fixed by normalizing the paragraph's whitespace before the containment check — the property it tests is co-location, which is wrap-independent, so pinning the wrap there was the defect.
+- 2026-07-30: T11 — SWEEP REBUILT rather than patched. The hand-authored table from round 1 had gone stale against the compressed text and reported 10 survivors, 5 of them asserts that no longer exist; patching its anchors would have left the same drift. The replacement derives its subjects from the shipped mutation registry by AST parse and mutates each by polarity substitution: 49/49 registered §8 rules redden their own test, restored byte-identical after each.
+- 2026-07-30: T11 — HONEST BOUND on what that sweep proves. For a regex-anchored prose assert, editing the pinned sentence reds it whether the edit inverts the rule or merely garbles it, so this run proves each assert reacts to its own block and no more. The stronger question — can §8 be made to say the opposite WITHOUT touching any pinned block, by adding a contradicting sentence or renaming a term elsewhere — is not mechanizable, and is exactly what rounds 1 and 2 found (D2, D4, D6, D9-D12). It is left to T12's round rather than claimed here.
+- 2026-07-30: T10-T11 verify — skills 740 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0; §8 at 150/150; plan-owned body 144/149.
 
 ## Decisions
 

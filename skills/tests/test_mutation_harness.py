@@ -2445,13 +2445,13 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_fix_code_and_original_records_stay_round_opening",
         target=GUARD_DOCTRINE,
-        block="A\nfix's code, its asserts and its fixtures are not records and stay ordinary\nround-opening surface; so does every record that existed before round 1",
+        block="A fix's code, its asserts and its fixtures\nare not records and stay ordinary round-opening surface; so does every record\nthat existed before round 1",
     ),
     Mutation(
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_an_original_false_claim_still_reopens",
         target=GUARD_DOCTRINE,
-        block='a false claim in an original docstring is the defect this section was built on\nand it reopens a round no matter who wrote it',
+        block='a false claim in an original docstring is\nthe defect this section was built on and it reopens a round no matter who\nwrote it',
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2511,7 +2511,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_the_gate_is_reachable_with_records_not_yet_confirmed",
         target=GUARD_DOCTRINE,
-        block='The gate is therefore reachable with fix-authored records corrected but not yet\nindependently confirmed.',
+        block='The gate is therefore reachable with fix-authored records corrected but not yet\nindependently confirmed',
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2587,39 +2587,9 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_the_evidence_counts_carry_their_revisions",
-        target=GUARD_DOCTRINE,
-        block="M119's rounds 5–9\nreturned eleven record errors, and `016a210` locates the authoring round for at\nleast eight of them while identifying none as sitting in text that existed\nbefore round 1.",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_the_evidence_carries_the_gap_sequence",
-        target=GUARD_DOCTRINE,
-        block='each of rounds 5–9 also returned coverage gaps — three, four, two, two and one\n(`016a210`)',
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_the_evidence_states_the_mandate_boundary_projection",
-        target=GUARD_DOCTRINE,
-        block='Replayed under it, M119 stops after round 6, saving three rounds;',
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_the_first_case_carries_its_revision",
-        target=GUARD_DOCTRINE,
-        block='two observations logged three entries earlier (`a25e6dd^`)',
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_the_third_case_carries_its_revision",
-        target=GUARD_DOCTRINE,
-        block="five of which had\nround 1's own fix prose as their only subject (`8763368^`)",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_reopening_is_drawn_by_provenance",
         target=GUARD_DOCTRINE,
-        block='**What a finding reopens** is drawn by *provenance*: a finding whose only\nsubject is a **fix-authored record** is not grounds for a further round.',
+        block='**What a finding reopens** is drawn by *provenance*: a finding whose\nonly subject is a **fix-authored record** is not grounds for a further round.',
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2643,25 +2613,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_the_compatibility_with_d070_is_stated",
         target=GUARD_DOCTRINE,
-        block='D-070 rules on the first axis and\nsays nothing about the second, which is why this is compatible with it rather\nthan a partial supersession of it.',
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_the_first_case_carries_its_count",
-        target=GUARD_DOCTRINE,
-        block='round 4 found discrepancies only in the narrative its own earlier rounds had\nwritten — four false claims in a round-3 entry',
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_the_third_case_carries_its_count",
-        target=GUARD_DOCTRINE,
-        block="M121's round 2 returned twelve findings, five of which had",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_the_projection_carries_its_tolerance",
-        target=GUARD_DOCTRINE,
-        block='Tolerance:\n±1 round, on that gap.',
+        block='D-070 rules on the first axis and says nothing about the second, which is\nwhy this is compatible with it rather than a partial supersession of it.',
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2673,7 +2625,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_the_reopening_rule_runs_in_both_directions",
         target=GUARD_DOCTRINE,
-        block='Stated as a bound alone it says only which findings\ncannot reopen a round and never that any must',
+        block='Stated as a bound alone it\nsays only which findings cannot reopen a round and never that any must',
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2691,7 +2643,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_clauses_one_and_three_cannot_both_fire",
         target=GUARD_DOCTRINE,
-        block='Clauses (i) and (iii) cannot both fire: (i)\n  requires some milestone to have convened a later round',
+        block='Clauses (i) and\n  (iii) cannot both fire: (i)\n  requires some milestone to have convened a later round',
     ),
     Mutation(
         guard="test_fresh_context_readers",

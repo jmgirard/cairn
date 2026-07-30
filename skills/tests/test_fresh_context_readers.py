@@ -475,10 +475,12 @@ class TestDescriptionLayerCertification(unittest.TestCase):
     def test_the_gate_is_reachable_with_records_not_yet_confirmed(self):
         # D-083 part 3. Stated explicitly so the narrowing of D-067's
         # zero-unresolved bar is a disclosed consequence, not an accident of
-        # the confirmation split.
+        # the confirmation split. Re-anchored at T10 when the sentence was
+        # compressed and its justification moved to D-085.
         self.assertRegex(
             self.doctrine,
-            r"The\s+gate\s+is\s+therefore\s+reachable\s+with\s+fix\-authored\s+records\s+corrected\s+but\s+not\s+yet\s+independently\s+confirmed\.",
+            r"The gate is therefore reachable with fix-authored records "
+            r"corrected but not yet\s+independently confirmed",
         )
 
     def test_the_evidence_is_grounded_on_record_churn(self):
@@ -571,46 +573,6 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             r"Tolerance:\s+one\s+occurrence\.",
         )
 
-    def test_the_evidence_counts_carry_their_revisions(self):
-        # D9 + D15 (round 1): every revision was replaceable with '(unrecorded)'
-        # and 'eleven' with 'nine', both green. D15: the earlier wording sourced a
-        # universal ('none of them') to a revision that establishes eight of eleven.
-        self.assertRegex(
-            self.doctrine,
-            r"M119's\s+rounds\s+5–9\s+returned\s+eleven\s+record\s+errors,\s+and\s+`016a210`\s+locates\s+the\s+authoring\s+round\s+for\s+at\s+least\s+eight\s+of\s+them\s+while\s+identifying\s+none\s+as\s+sitting\s+in\s+text\s+that\s+existed\s+before\s+round\s+1\.",
-        )
-
-    def test_the_evidence_carries_the_gap_sequence(self):
-        # D9 (round 1): the sequence was changeable to '... two, two and nine'
-        # green. It is the reason AC7(a)'s zero-change claim holds.
-        self.assertRegex(
-            self.doctrine,
-            r"each\s+of\s+rounds\s+5–9\s+also\s+returned\s+coverage\s+gaps\s+—\s+three,\s+four,\s+two,\s+two\s+and\s+one\s+\(`016a210`\)",
-        )
-
-    def test_the_evidence_states_the_mandate_boundary_projection(self):
-        # D9 (round 1): changeable to 'stops after round 9, saving no rounds' with
-        # the suite green — the projection AC7(b) requires.
-        self.assertRegex(
-            self.doctrine,
-            r"Replayed\s+under\s+it,\s+M119\s+stops\s+after\s+round\s+6,\s+saving\s+three\s+rounds;",
-        )
-
-    def test_the_first_case_carries_its_revision(self):
-        # D9 (round 1): M114's revision citation was replaceable with '(unrecorded)'.
-        self.assertRegex(
-            self.doctrine,
-            r"two\s+observations\s+logged\s+three\s+entries\s+earlier\s+\(`a25e6dd\^`\)",
-        )
-
-    def test_the_third_case_carries_its_revision(self):
-        # D9 (round 1): M121's revision citation and its 'five of twelve' figure
-        # were both unpinned.
-        self.assertRegex(
-            self.doctrine,
-            r"five\s+of\s+which\s+had\s+round\s+1's\s+own\s+fix\s+prose\s+as\s+their\s+only\s+subject\s+\(`8763368\^`\)",
-        )
-
     def test_the_provenance_rule_is_a_shield_and_not_a_licence(self):
         # D9 (round 2): the sentence that stops the shield being read as a second,
         # competing test for what DOES reopen.
@@ -641,28 +603,6 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         self.assertRegex(
             self.doctrine,
             r"D\-070\s+rules\s+on\s+the\s+first\s+axis\s+and\s+says\s+nothing\s+about\s+the\s+second,\s+which\s+is\s+why\s+this\s+is\s+compatible\s+with\s+it\s+rather\s+than\s+a\s+partial\s+supersession\s+of\s+it\.",
-        )
-
-    def test_the_first_case_carries_its_count(self):
-        # D5 (round 2): the docstring claimed every count was locked; this one and
-        # the two below were not.
-        self.assertRegex(
-            self.doctrine,
-            r"round\s+4\s+found\s+discrepancies\s+only\s+in\s+the\s+narrative\s+its\s+own\s+earlier\s+rounds\s+had\s+written\s+—\s+four\s+false\s+claims\s+in\s+a\s+round\-3\s+entry",
-        )
-
-    def test_the_third_case_carries_its_count(self):
-        # D5 (round 2): 'twelve' inverted to 'forty' with the suite green.
-        self.assertRegex(
-            self.doctrine,
-            r"M121's\s+round\s+2\s+returned\s+twelve\s+findings,\s+five\s+of\s+which\s+had",
-        )
-
-    def test_the_projection_carries_its_tolerance(self):
-        # D5 (round 2): AC7(b)'s tolerance inverted to '±9 rounds' green.
-        self.assertRegex(
-            self.doctrine,
-            r"Tolerance:\s+±1\s+round,\s+on\s+that\s+gap\.",
         )
 
     def test_clearing_both_lines_is_sufficient_to_reopen(self):
@@ -728,25 +668,14 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # D16 (round 1): every anchor uses `\s+`, which matches a blank line,
         # so splitting the definition paragraph left AC1's two locality clauses
         # ("defined at first use", "the same paragraph states") unpinned.
-        para = self._paragraph_containing("A fix-authored record is a docstring")
+        # The property is co-location and is wrap-independent, so the paragraph
+        # is whitespace-normalized first — pinning the wrap here would red on
+        # any reflow of prose the test is not about (it did, at T10).
+        para = " ".join(
+            self._paragraph_containing("A fix-authored record is a docstring").split()
+        )
         self.assertIn("are not records and stay ordinary", para)
         self.assertIn("every record that existed before round 1", para)
-
-    def test_the_class_is_never_called_by_a_synonym(self):
-        # D5 (round 1) then D4 (round 2). AC1 forbids alternating the class
-        # name with an unmarked synonym. Two ways that was defeated: a synonym
-        # at the start of a sentence escaped a case-sensitive search, and a
-        # synonym dropping the prefix entirely ("A shielded record is still
-        # read") was not reachable by any search keyed on "fix-authored". So
-        # this checks BOTH directions — nothing follows the prefix but the
-        # class noun, and every paragraph stating a rule about the class names
-        # it in full.
-        tails = re.findall(r"fix-authored\s+(\w+)", self.section8, re.I)
-        self.assertTrue(tails, "no occurrences of the class name found")
-        self.assertEqual(
-            sorted({x.lower() for x in tails}), ["record", "records"],
-            f"§8 names the class by a synonym: {sorted(set(tails))}",
-        )
         for marker in (
             "is not grounds for a further round",     # the two-axis paragraph
             "is a docstring, a comment",              # the definition

@@ -262,11 +262,8 @@ the artifact, so an author who runs them finds its own mistakes. Certification
 does not, because the author checks the description against its generative
 model of the artifact rather than against the artifact — the docstring says
 what the file was meant to do, the work-log line says what the fix was meant
-to close, and both read as true to the person who formed the intent. A
-milestone whose deliverable was a guard once returned from review seven times,
-and its seventh return — every suite green, every numeric projection met
-exactly, the validator clean — was still two records describing that
-milestone's own artifact wrongly.
+to close, and both read as true to the person who formed the intent. The
+milestone that motivated this step is at D-067.
 
 **So before `status -> review`, a guard-authoring milestone hands the
 description layer to a fresh-context [O] reader that authored no part of it.**
@@ -292,40 +289,36 @@ whose subject is a certification round itself — the final round's own report
 included — sits outside it** (D-069). Without this the gate cannot converge
 rather than merely being hard to reach: §8 obliges every round to record a
 verdict, that record is append-only under IP4, and so each round manufactures
-uncertified surface for the next one to audit. M114 pass 8 ran four rounds on
-that treadmill — round 4 finding defects only in certification narrative — at
-15, 14, 17 and 38 minutes. Zero unresolved stays the bar; what this excludes is
-a scope that regresses.
+uncertified surface for the next one to audit. Zero unresolved stays the bar;
+what this excludes is a scope that regresses.
 
-**Two lines govern a round, and they are drawn on different axes.** Collapsing
-them into one is what made this section's first attempt at a bound unusable, so
-they are stated apart. **What the reader checks and the author fixes** is drawn
+**Two lines govern a round, and they are drawn on different axes**, stated
+apart because collapsing them is what made the first attempt unusable.
+**What the reader checks and the author fixes** is drawn
 by *subject matter*: the work and every record about the work are inside,
 narrative about the certifying process is outside (D-069, as narrowed by
-D-070). **What a finding reopens** is drawn by *provenance*: a finding whose only
-subject is a **fix-authored record** is not grounds for a further round. That is
+D-070). **What a finding reopens** is drawn by *provenance*: a finding whose
+only subject is a **fix-authored record** is not grounds for a further round. That is
 a shield and never a licence — it says which findings cannot reopen a round, and
 never that anything else must.
 
 A fix-authored record is a docstring, a comment, a work-log line, or a record
 claim that a previous round's own fix wrote in this same certification. That
 name is the only one this section gives the class, and where it means anything
-wider it says so — the earlier formulation alternated "text" and "record" as if
-they were synonyms, and the two readings that licensed were opposite rules. A
-fix's code, its asserts and its fixtures are not records and stay ordinary
-round-opening surface; so does every record that existed before round 1, since
-a false claim in an original docstring is the defect this section was built on
-and it reopens a round no matter who wrote it.
+wider it says so. A fix's code, its asserts and its fixtures
+are not records and stay ordinary round-opening surface; so does every record
+that existed before round 1, since a false claim in an original docstring is
+the defect this section was built on and it reopens a round no matter who
+wrote it.
 
 The two axes compose rather than compete. A fix-authored record is still read
 and still corrected: **being a fix-authored record never removes it from the
 certified scope**, which D-069 draws on subject matter alone. What it loses is
 only the power to force another round, and never the reading and correcting
 itself. A record can of course be outside the
-certified scope for D-069's own reason — its subject is a certification round —
-and that is D-069 operating, never this rule. D-070 rules on the first axis and
-says nothing about the second, which is why this is compatible with it rather
-than a partial supersession of it.
+certified scope for D-069's own reason, and that is D-069 operating, never this
+rule. D-070 rules on the first axis and says nothing about the second, which is
+why this is compatible with it rather than a partial supersession of it.
 
 **A round reopens only on a finding within the three named checks above.**
 Those three are the whole of this step's mandate. A robustness observation that
@@ -336,26 +329,21 @@ milestone work under §§1–7 and the mutation harness. It does not reopen
 certification, **and it does not hold the gate**: the zero-unresolved bar is met
 when every discrepancy has been fixed under the obligation its own class
 carries, and this class's obligation is discharged by operation rather than by a
-further round. Such findings are those sections' job being done by hand at the
-wrong gate: the reader that catches them is reading the description layer, and
-what it has actually found is a guard that needs hardening, which the harness
-and the by-hand mutation protocol already oblige.
+further round.
 
 **A finding reopens a round only if it clears both lines** — it falls within
 the three checks, and its only subject is not a fix-authored record. Failing
 either, it is fixed under the obligation named below and the round still closes.
-The two lines can look like they overlap, and the definition settles it without
-a tie-break: a one-directional pin that leaves an acceptance-criterion clause
+The definition settles the apparent overlap without a
+tie-break: a one-directional pin that leaves an acceptance-criterion clause
 unpinned is a check-1 finding and reopens, while one that merely hardens an
 assert no criterion names is out of mandate. What decides is whether a criterion
 clause is at stake, never how the finding is phrased.
 
 **And a finding that clears both lines is a reopening finding**, carrying that
-class's obligation: a further fresh-context round. The rule runs in both
-directions on purpose. Stated as a bound alone it says only which findings
-cannot reopen a round and never that any must, and a reader deep in a long loop
-can take that silence as licence to close — which is the two-readings failure
-this section has already shipped once, in another place.
+class's obligation: a further fresh-context round. Stated as a bound alone it
+says only which findings cannot reopen a round and never that any must, and a
+reader deep in a long loop can take that silence as licence to close.
 
 **Each class carries exactly one confirmation obligation, and no class carries
 two.** A **reopening finding** obliges a further fresh-context round, and that
@@ -366,37 +354,24 @@ obligation falls on the author, because D-067 rejected instructing an author's
 own re-check — it asks for the judgment this section exists because authors fail
 at — and `tracking-rules.md`'s delegation warrant says the same of a check
 already happening unprompted. An **out-of-mandate robustness observation** is
-confirmed by operation: the harness, the sweeps and the suite, which is what
-§§1–7 already prescribe for the work it becomes.
+confirmed by operation: the harness, the sweeps and the suite.
 
 The gate is therefore reachable with fix-authored records corrected but not yet
-independently confirmed. That is a deliberate narrowing of the zero-unresolved
-bar rather than an oversight, and the cost it creates is exactly what the
-falsifier's second clause below counts.
+independently confirmed — a deliberate narrowing of the zero-unresolved bar,
+whose cost the falsifier's clause (ii) counts.
 
 **What grounds the provenance rule is record churn, not M119's round count.**
-Three measured cases, each read out of the revision named beside it. M114 pass
-8's round 4 found discrepancies only in the narrative its own earlier rounds had
-written — four false claims in a round-3 entry, plus a neighbour re-recording
-two observations logged three entries earlier (`a25e6dd^`). M119's rounds 5–9
-returned eleven record errors, and `016a210` locates the authoring round for at
-least eight of them while identifying none as sitting in text that existed
-before round 1. M121's round 2 returned twelve findings, five of which had
-round 1's own fix prose as their only subject (`8763368^`).
+The three measured cases and the revisions they are read from are recorded at
+D-085.
 
 On M119's record the provenance rule alone changes the round count by **zero**,
-and the paragraph says so rather than claiming a saving it does not produce:
-each of rounds 5–9 also returned coverage gaps — three, four, two, two and one
-(`016a210`) — and a coverage gap is a finding about executable surface, which
-the rule never shields. The mandate boundary is the rule that reaches that
-count. Replayed under it, M119 stops after round 6, saving three rounds;
-round 6's `kind`-label gap is the one classification that could go either way,
-since those two labels are AC1's own pasted-output-or-fenced-block distinction,
-and reading it as in-mandate stops the replay after round 7 instead. Tolerance:
-±1 round, on that gap.
+and the section says so rather than claiming a saving it does not produce: those
+rounds also returned coverage gaps, and a coverage gap is a finding about
+executable surface, which the rule never shields. The mandate boundary is the
+rule that reaches that count; its replay projection and tolerance are at
+D-085.
 
-**This step carries its own falsifier**, stated up front rather than left for a
-later argument about whether it is pulling its weight. It counts yield and not
+**This step carries its own falsifier.** It counts yield and not
 rounds, because the round count is precisely what the two rules above change,
 and a measure its own subject can satisfy by construction measures nothing.
 Measured over the next three guard-authoring milestones that run §8, the window
@@ -420,19 +395,11 @@ closing when the third completes:
   milestone's round 1, zero acceptance-criterion clauses found unpinned, and
   zero anchor-fidelity findings, then round 1 has stopped earning its reader and
   **the step retires whole**. Tolerance: exact zero on all four counts, totalled
-  across the window. The fourth count is what keeps this clause calibrated:
-  anchor-vs-shipped-bytes fidelity is one of the three checks, so a window
-  returning only those findings would read zero on the other three and retire an
-  instrument that was demonstrably working — the same fault this falsifier
-  replaced the round count for. Clauses (i) and (iii) cannot both fire: (i)
+  across the window; why the fourth is counted is at D-085. Clauses (i) and
+  (iii) cannot both fire: (i)
   requires some milestone to have convened a later round, which under the
   reopening rule means its round 1 found something, which (iii)'s zeroes forbid.
 
-Clause (i) counts whether the later rounds still find anything the two rules
-above have not already disposed of. Clause (ii) counts the cost those rules
-create, which is records corrected without an independent read — a cost the
-round-count falsifier this replaces could not see. Both are countable from work
-logs as milestones already write them. Replacing that falsifier rather than
-retiring the step is a supersession argued in D-083, not a quiet loosening:
-D-059's retire-don't-tune rule bites on tuning a measure that works, and the
-claim there is that a measure of the wrong quantity is replaced instead.
+What each clause counts is recorded at D-085, with the argument that replacing
+this falsifier rather than retiring the step is a supersession and not a quiet
+loosening (D-083, D-085).
