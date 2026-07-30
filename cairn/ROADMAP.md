@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M122 | A differential guard holding the hook and the cap counters to one heading contract | planned | — | normal | milestones/M122-heading-normalization-differential-guard.md |
+| M122 | A differential guard holding the hook and the cap counters to one heading contract | review | — | normal | milestones/M122-heading-normalization-differential-guard.md |
 | M119 | RR08's follow-ons — the decisions-format advisory (D-075), the rulebook history enumeration, and a two-sided exempt-set guard | done | M118 | normal | milestones/archive/M119-decisions-advisory-and-consistency-guards.md |
 | M120 | Ingest the Opus 5 prompting guide, and adopt the three conduct rules cairn has no home for | done | — | normal | milestones/archive/M120-opus5-guide-adoptions.md |
 | M121 | Verification triage — classify every self-verification instruction, and re-decide D-067's two fresh-context readers | done | M120 | normal | milestones/archive/M121-verification-triage.md |

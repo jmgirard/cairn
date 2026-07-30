@@ -536,6 +536,245 @@ class TestExemptSetMirror(unittest.TestCase):
             )
 
 
+class TestHeadingNormalizationContract(unittest.TestCase):
+    """M122: the hook and the cap counters must classify a HEADING identically.
+
+    `TestExemptSetMirror` above holds the two `CAP_EXEMPT_SECTIONS` constants
+    equal. The constants can agree while the normalization applied to a heading
+    *before* it is looked up in them diverges, and that gap was live: measured
+    2026-07-30, dropping `.strip()` from `session_context.heading_name` left all
+    98 hooks tests green while `##  Work log` (two spaces) and `## Work log `
+    (trailing space) went on being cap-exempt to the counters and started being
+    injected WHOLE by the hook — M113's original bug on a second axis. Only the
+    hook's half of the verdict moves under that mutation; the divergence is what
+    the guard catches.
+
+    Three verdicts per row, never two: the counters' (a real file through
+    `cairn_scripts.milestone_body_line_count`), the hook's (a real injection
+    through `session_context.milestone_part`), and the row's own EXPECTED
+    verdict. The expected column is what makes this more than a differential —
+    a drift hitting both layers identically satisfies equality alone, the same
+    blindness `TestExemptSetMirror` pins its member count against.
+    """
+
+    # Strictly greater than session_context.MIN_TAIL_BLOCKS (= 3): at or below
+    # it, `bounded_tail` never breaks, so NO budget elides and an exempt section
+    # would report as non-exempt against perfectly correct code.
+    ENTRIES = 8
+    PREAMBLE = "# M07: Test milestone\n\n- **Status:** in-progress\n"
+    RELPATH = "milestones/M07-test.md"
+
+    # (heading, expected_exempt), covering two axes.
+    # Format: case, a second space after the hashes, a trailing space.
+    # Site: the counters normalize at TWO sites — `cairn_scripts.py:375-376`,
+    # the `## Review` body boundary, and `:412`, the `EXEMPT_HEADINGS`
+    # subtraction — and a work-log-only table never reaches the first
+    # (guard-doctrine §3's site axis, the shape M117 recorded). `## Review `
+    # carries the whitespace axis TO the boundary site: every other whitespace
+    # rendering lands at the subtraction site, which re-strips independently, so
+    # without this row `cairn_scripts.py:375`'s own `.strip()` is unreachable
+    # and drops green while the two layers disagree.
+    # Controls: `## Reviewers` and `## Decisions notes` are prefix near misses —
+    # a prefix must not read as its exempt namesake, the boundary bug M55 hit —
+    # and `## Scope` is a plain plan-owned section, the case neither near miss
+    # covers.
+    TABLE = (
+        ("## Work log", True),
+        ("## Work Log", True),
+        ("## WORK LOG", True),
+        ("##  Work log", True),
+        ("## Work log ", True),
+        ("## Review", True),
+        ("## REVIEW", True),
+        ("## Review ", True),
+        ("## Decisions", True),
+        ("##  Decisions", True),
+        ("## Reviewers", False),
+        ("## Decisions notes", False),
+        ("## Scope", False),
+        # Prefix and leading-whitespace renderings: `## ` is a normalization
+        # step like `.strip()` and `.lower()`, and it was unpinned on BOTH
+        # layers until these two rows (review F1/F2). Neither is a heading to
+        # either layer today; each diverges the moment one layer's prefix
+        # handling moves — loosening `startswith("## ")` to `startswith("##")`
+        # makes `### Work log` exempt to that layer alone, and an `lstrip()`
+        # added ahead of the check does the same for `  ## Work log`.
+        ("### Work log", False),
+        ("  ## Work log", False),
+    )
+
+    def setUp(self):
+        scripts = HOOKS_DIR.parent / "scripts"
+        for d in (HOOKS_DIR, scripts):
+            sys.path.insert(0, str(d))
+            self.addCleanup(sys.path.remove, str(d))
+        import cairn_scripts
+        import session_context
+
+        self.cs = cairn_scripts
+        self.sc = session_context
+
+    def body(self, heading):
+        entries = "".join(
+            f"- 2026-07-30: entry-{i:03d} " + "x" * 200 + "\n"
+            for i in range(self.ENTRIES)
+        )
+        return self.PREAMBLE + heading + "\n" + entries
+
+    def counters_exempt(self, heading):
+        """The cap counters' verdict, driven through the real counter over a
+        real file: a section the cap exempts contributes nothing to the
+        plan-owned body, so the count falls back to the preamble alone."""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "M07-test.md"
+            path.write_text(self.body(heading))
+            count = self.cs.milestone_body_line_count(str(path))
+        return count == len(self.PREAMBLE.splitlines()), count
+
+    def hook_exempt(self, heading):
+        """The hook's verdict, driven through the real injection path: only a
+        cap-exempt section is bounded, and a bounded one says what it elided."""
+        part = self.sc.milestone_part(
+            "M07", "in-progress", self.RELPATH, self.body(heading), 0
+        )
+        return "_cairn:" in part, part
+
+    def test_the_two_layers_and_the_expected_verdict_agree_on_every_rendering(self):
+        for heading, expected in self.TABLE:
+            with self.subTest(heading=heading):
+                counted, count = self.counters_exempt(heading)
+                marked, part = self.hook_exempt(heading)
+                self.assertEqual(
+                    counted, expected,
+                    f"the cap counters classify {heading!r} wrongly (count {count})",
+                )
+                self.assertEqual(
+                    marked, expected,
+                    f"the hook classifies {heading!r} wrongly",
+                )
+                # Each verdict pairs with a positive signal that the path ran:
+                # an absence assert alone is satisfied by a helper that returned
+                # nothing at all (guard-doctrine, absence assertions).
+                if expected:
+                    self.assertIn("entry-007", part)
+                    self.assertNotIn("entry-000", part)
+                else:
+                    self.assertEqual(
+                        count,
+                        len(self.PREAMBLE.splitlines()) + 1 + self.ENTRIES,
+                    )
+                    self.assertIn("entry-000", part)
+                    self.assertIn("entry-007", part)
+
+    def test_the_table_exercises_both_verdicts_on_both_layers(self):
+        # Non-vacuity, over the OBSERVED verdicts and never the expected
+        # column: a table that drifted to one outcome would leave the agreement
+        # test above satisfied by a classifier that answers the same way to
+        # everything. Both directions, because either half alone leaves the
+        # other unproven.
+        counters = [self.counters_exempt(h)[0] for h, _ in self.TABLE]
+        hook = [self.hook_exempt(h)[0] for h, _ in self.TABLE]
+        for label, observed in (("counters", counters), ("hook", hook)):
+            self.assertIn(True, observed, f"{label}: no exempt verdict observed")
+            self.assertIn(False, observed, f"{label}: no capped verdict observed")
+
+    def test_the_table_still_carries_every_rendering_the_contract_needs(self):
+        # Coverage of the table itself, kept apart from the non-vacuity assert
+        # above on purpose, and pinned as ONE equality rather than a membership
+        # loop: a loop over a hand-written copy of `TABLE` is synced by hand, so
+        # deleting a rendering from both places reds nothing and adding one to
+        # `TABLE` alone leaves it unpinned (review F3). Order and length ride
+        # along, which is what makes an addition red until it is declared here.
+        # Raw strings on purpose — normalizing would route the table's own
+        # coverage through `heading_name`, the function under test, and a hook
+        # mutation would then report as a table defect.
+        self.assertEqual(
+            [h for h, _ in self.TABLE],
+            [
+                # format axis
+                "## Work log", "## Work Log", "## WORK LOG",
+                "##  Work log", "## Work log ",
+                # site axis: `review` leaves by the body boundary, `work log`
+                # and `decisions` by subtraction, so a work-log-only table
+                # exercises one site and reads as full coverage. `## Review `
+                # carries whitespace to the boundary site.
+                "## Review", "## REVIEW", "## Review ",
+                "## Decisions", "##  Decisions",
+                # controls
+                "## Reviewers", "## Decisions notes", "## Scope",
+                # prefix / leading whitespace
+                "### Work log", "  ## Work log",
+            ],
+        )
+
+    def fenced_body(self, opener):
+        """A milestone quoting a cap-exempt heading inside a fence, above its
+        own real one. Both blocks are long, so a layer that mistakes the quoted
+        heading for a section bounds it and gives itself away."""
+        quoted = "".join(
+            f"- 2026-07-01: quoted-{i:03d} " + "q" * 200 + "\n"
+            for i in range(self.ENTRIES)
+        )
+        real = "".join(
+            f"- 2026-07-30: entry-{i:03d} " + "x" * 200 + "\n"
+            for i in range(self.ENTRIES)
+        )
+        return (
+            self.PREAMBLE
+            + "## Scope\n"
+            + f"{opener}markdown\n## Work log\n{quoted}{opener}\n"
+            + "## Work log\n"
+            + real
+        )
+
+    def test_a_heading_quoted_inside_a_fence_is_content_on_both_layers(self):
+        # The fence axis of the same contract (M45): both layers track ``` and
+        # ~~~, and a heading quoted inside either is content, never a section
+        # boundary. Measured 2026-07-30: dropping the hook's `~~~` support left
+        # all 101 tests of the then-current file green, because every fence
+        # fixture in it used backticks — the same one-rendering blindness the
+        # format axis had.
+        for opener in ("```", "~~~"):
+            with self.subTest(fence=opener):
+                body = self.fenced_body(opener)
+                with tempfile.TemporaryDirectory() as tmp:
+                    path = pathlib.Path(tmp) / "M07-test.md"
+                    path.write_text(body)
+                    named = [
+                        h for h, _ in self.cs.milestone_section_line_counts(str(path))
+                    ]
+                    counted = self.cs.milestone_body_line_count(str(path))
+                self.assertEqual(
+                    named, ["Scope"],
+                    "the counters split on a heading quoted inside a fence",
+                )
+                # The count, not just the section list: a quoted heading the
+                # counters mistake for a section is SUBTRACTED as cap-exempt, so
+                # it never shows up in `named` — only the arithmetic gives it
+                # away. Everything but the real work log (its heading + entries)
+                # is plan-owned.
+                self.assertEqual(
+                    counted, len(body.splitlines()) - (1 + self.ENTRIES),
+                    "the counters subtracted a work log quoted inside a fence",
+                )
+                part = self.sc.milestone_part(
+                    "M07", "in-progress", self.RELPATH, body, 0
+                )
+                self.assertEqual(
+                    part.count("_cairn:"), 1,
+                    "the hook bounded a heading quoted inside a fence",
+                )
+                self.assertIn("quoted-000", part)
+                self.assertIn("entry-007", part)
+                self.assertNotIn("entry-000", part)
+
+    def test_the_fixture_is_large_enough_for_a_bound_to_show(self):
+        # AC1's fixture clause, pinned rather than asserted in prose: at or below
+        # MIN_TAIL_BLOCKS, `bounded_tail` never breaks, so no budget elides and
+        # every exempt row would report as non-exempt against correct code.
+        self.assertGreater(self.ENTRIES, self.sc.MIN_TAIL_BLOCKS)
+
+
 class TestBoundedTail(unittest.TestCase):
     """Direct-import tests for the read-bound's pure helpers.
 
