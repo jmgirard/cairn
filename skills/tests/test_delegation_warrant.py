@@ -1,7 +1,7 @@
 """Regression guards for two rules in "Model and agent strategy".
 
 M120's delegation warrant (`TestDelegationWarrantRule`, three asserts) and
-M121's self-checking-class rule (`TestSelfCheckingClassRule`, two).
+M121's self-checking-class rule (`TestSelfCheckingClassRule`, six).
 
 Adopted from `cairn/references/prompting-opus-5.md` (§ Controlling subagent
 spawning), which reports that Claude Opus 5 — the tier cairn runs its
@@ -73,12 +73,15 @@ class TestSelfCheckingClassRule(unittest.TestCase):
     none of what it reads. The rule names both classes so the clause cannot be
     applied to the wrong one.
 
-    Two asserts, one per named class, each a phrase on a single physical line
-    of the shipped file — the AC4 shape. A single assert covering only the
+Six asserts. Two are AC4's shape — one per named class, each a phrase on a
+    single physical line of the shipped file. A single assert covering only the
     governed class would leave the exclusion deletable with the guard green,
     which is the false coverage the guard-must-fail rule exists to stop: the
     exclusion is the half that does work here, since the governed class alone
-    is already implied by the warrant above it.
+    is already implied by the warrant above it. The other four came from the
+    review — each class's reason clause, the discriminator that applies the
+    pair, and the sentence leaving a fresh reader's loop to its own
+    instrument.
 
     Each assert pins its class phrase TOGETHER WITH the verb that assigns it —
     `it governs` / `it does not govern` — on one physical line. Pinning the
@@ -132,10 +135,16 @@ class TestSelfCheckingClassRule(unittest.TestCase):
         # multi-round loop sorts into the governed class and the guide's third
         # delegation clause reaches it — the misreading this rule exists to
         # block — with the whole suite green.
-        self.assertIn(
-            "the discriminator is *who reads*, never *how often the work is "
-            "read*",
+        # Pinned WITH its trailing clause: an anchor stopping at the closing
+        # asterisk leaves "— which is the same cut the freshness sentence above
+        # makes against the volume test" deletable green, which is the open
+        # partial-pin class (ROADMAP, M114 pass 8) and the same defect F-PR1
+        # fixed on this file's two class sentences.
+        self.assertRegex(
             rules(),
+            r"the discriminator is \*who reads\*, never \*how often the work "
+            r"is read\* — which\s+is the same cut the freshness sentence above "
+            r"makes against the volume test",
         )
 
     def test_rule_leaves_a_fresh_readers_loop_to_its_own_instrument(self):

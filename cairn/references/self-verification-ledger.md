@@ -83,9 +83,11 @@ per instrument**: an instrument narrowed at one of its lines leaves its other
 lines `keep`, and D-079 is where the instrument-level disposition lives.
 
 **No row below takes `narrow` or `remove`, and that is the result rather than
-an omission.** D-079 narrows §8 by adding a scope exclusion beside the
-instrument's existing rules and narrows the criteria audit by adding a record
-requirement; neither rewrites an instruction already in this corpus. A first
+an omission.** D-079 narrows the criteria audit by adding a record
+requirement, which rewrites no instruction already in this corpus. It also
+narrowed §8, and **that half was withdrawn at D-080** on RR09's evidence, so
+`guard-doctrine.md` ships byte-identical to its pre-M121 state and every §8 row
+below describes prose this milestone leaves untouched. A first
 pass did reword two hit lines' neighbours and marked those rows `narrow`, and
 the §8 certification found the reasoning behind it wrong — the round-bounding
 rule it implemented would have stopped M119's loop two rounds before a live
@@ -150,14 +152,14 @@ by +14. In the other three the edit lands after the file's last hit — observed
 | V42 | `shared/guard-doctrine.md:169` | `that it was never verified. When a matcher gains verbs, its negation handling` | `not-an-instruction` | `keep` | describes a matcher failure mode |
 | V43 | `shared/guard-doctrine.md:204` | `**A rule inherited from a prior finding is unverified until read out of the` | `command-evidence` | `keep` | reads the rule out of the implementation |
 | V44 | `shared/guard-doctrine.md:211` | `re-verify each member *after* the move, not before.` | `command-evidence` | `keep` | runs each moved member through the implementation |
-| V45 | `shared/guard-doctrine.md:256` | `## 8. The author never certifies its own guard's coverage` | `fresh-context-reader` | `keep` | §8's heading; D-079 (1) narrows the instrument's certified scope, and retires nothing |
+| V45 | `shared/guard-doctrine.md:256` | `## 8. The author never certifies its own guard's coverage` | `fresh-context-reader` | `keep` | §8's heading; ships unchanged — D-079 (1)'s narrowing was withdrawn at D-080 |
 | V46 | `shared/guard-doctrine.md:258` | `**Running a guard and certifying that it covers what you claim are different` | `fresh-context-reader` | `keep` | §8's operation/certification split, which D-079 keeps |
 | V47 | `shared/guard-doctrine.md:261` | `the artifact, so an author who runs them finds its own mistakes. Certification` | `fresh-context-reader` | `keep` | §8's diagnosis, which the M116-M119 round-1 yield confirms |
-| V48 | `shared/guard-doctrine.md:285` | `re-certified, never argued down as imprecision. The author still runs` | `fresh-context-reader` | `keep` | §8's zero-unresolved bar, unchanged by D-079, whose narrowing is a scope exclusion added below it |
+| V48 | `shared/guard-doctrine.md:285` | `re-certified, never argued down as imprecision. The author still runs` | `fresh-context-reader` | `keep` | §8's zero-unresolved bar; ships unchanged, and D-079 (1)'s narrowing below it was withdrawn at D-080 |
 | V49 | `shared/guard-doctrine.md:286` | `everything — this moves certification, not operation.` | `fresh-context-reader` | `keep` | operation stays with the author — unchanged by D-079 |
 | V50 | `shared/guard-doctrine.md:288` | `**The certified scope is the work and the records describing the work; a record` | `fresh-context-reader` | `keep` | D-069's certified-scope bound; D-079 annotates it rather than replacing it |
 | V51 | `shared/guard-doctrine.md:289` | `whose subject is a certification round itself — the final round's own report` | `fresh-context-reader` | `keep` | the same D-069 clause, continued |
-| V52 | `shared/guard-doctrine.md:293` | `uncertified surface for the next one to audit. M114 pass 8 ran four rounds on` | `fresh-context-reader` | `keep` | D-069's convergence argument, which D-079 (1) extends to a round's own fix text |
+| V52 | `shared/guard-doctrine.md:293` | `uncertified surface for the next one to audit. M114 pass 8 ran four rounds on` | `fresh-context-reader` | `keep` | D-069's convergence argument; ships unchanged — D-079 (1) would have extended it and was withdrawn at D-080 |
 | V53 | `shared/guard-doctrine.md:294` | `that treadmill — round 4 finding defects only in certification narrative — at` | `fresh-context-reader` | `keep` | the M114 treadmill measurement D-079 cites as one step below its own |
 | V54 | `shared/migration-protocol.md:36` | ``as the sole `in-progress` milestone, explicitly confirmed.`` | `not-an-instruction` | `keep` | a user confirmation on carrying work over |
 | V55 | `shared/migration-protocol.md:124` | `an estimator scaffold, an oracle-verification runner) carry value this` | `not-an-instruction` | `keep` | an example of a clean domain skill |
@@ -224,11 +226,12 @@ Where every row lands:
   than through a row here. Stated so a later pass does not read the ledger as
   the complete instrument inventory.
 
-Rules this page produced are locked by
-`skills/tests/test_fresh_context_readers.py` (§8's scope exclusion and the
-criteria-audit record requirement) and
-`skills/tests/test_delegation_warrant.py` (`TestSelfCheckingClassRule`), each
-registered in `skills/tests/test_mutation_harness.py`.
+This page produced no rule of its own; the rules its measurement fed are
+D-079's, and they are locked by `skills/tests/test_fresh_context_readers.py`
+(the criteria-audit record requirement, clause 2) and
+`skills/tests/test_delegation_warrant.py` (`TestSelfCheckingClassRule`, clause
+3), each registered in `skills/tests/test_mutation_harness.py`. D-079's clause 1
+shipped no guard: it was withdrawn at D-080 before merge (M121 review F-C13).
 
 ## Open questions
 

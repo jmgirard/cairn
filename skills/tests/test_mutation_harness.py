@@ -2391,6 +2391,34 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_moves_certification_not_operation",
+        target=GUARD_DOCTRINE,
+        block="this moves certification, not operation",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_carries_its_own_falsifier",
+        target=GUARD_DOCTRINE,
+        block="if guard-authoring\nmilestones still average multiple description-layer returns after adoption,\nthe step didn't work — retire it (D-059), don't tune it",
+    ),
+    # M116 (D-069). Two entries: the exclusion itself, and the reason it is a
+    # convergence fix. Losing the second leaves the clause readable as a
+    # comfort measure, which invites tuning the round count — the move D-059
+    # exists to forbid.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_section_bounds_the_certified_scope_against_regress",
+        target=GUARD_DOCTRINE,
+        block="**The certified scope is the work and the records describing the work; a record\nwhose subject is a certification round itself — the final round's own report\nincluded — sits outside it** (D-069)",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_scope_bound_states_why_it_is_convergence_not_convenience",
+        target=GUARD_DOCTRINE,
+        block="the gate cannot converge\nrather than merely being hard to reach",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
         test="TestImplementRoutesToCertification.test_completion_step_routes_to_the_certifier_at_zero_unresolved",
         target=IMPLEMENT,
         block="if this milestone authored or edited a\n   prose-guard, hand its description layer to a fresh-context [O] reader first",
@@ -3322,7 +3350,7 @@ REGISTRY += [
         guard="test_delegation_warrant",
         test="TestSelfCheckingClassRule.test_rule_states_the_discriminator_that_applies_it",
         target=RULES,
-        block="The discriminator is *who reads*, never *how often the work is read*",
+        block="The discriminator is *who reads*, never *how often the work is read* — which\n  is the same cut the freshness sentence above makes against the volume test",
     ),
     Mutation(
         guard="test_delegation_warrant",
