@@ -3178,6 +3178,36 @@ subject is a claim D-083 made before the artifact stopped moving; the general
 cause is the one guard-doctrine §6 already states, settle numeric and
 quotable records last.
 
+### D-088 (2026-07-30): D-083 part 3(a)'s "ordinary §§1-7 work" no longer describes shipped §8, which routes to §9 as well — supersedes that enumeration; part 3(a)'s narrowing and every other claim in D-083 stand (M124)
+
+**Context:** M124 appends `guard-doctrine.md` §9, "Presence is not
+consistency", and updates §8's two routing enumerations to name it — the plan
+gate's call, on the ground that §9 carries the section-consistency ledger and
+an out-of-mandate consistency finding is fixed by applying it. §8 now reads
+"recorded and fixed as ordinary milestone work under §§1–7, §9 and the
+mutation harness", and "routing one to §§1–7 or §9 does not remove it from the
+count". D-083 part 3(a) describes the first of those as "fixed as ordinary
+§§1-7 work". That was true when appended and is incomplete against the shipped
+section from this milestone forward. IP4 forbids repairing it in place, and
+D-083's own family is the precedent: D-084, D-086 and D-087 each corrected a
+D-083 claim by appending rather than editing.
+
+**Decision:** Supersede the enumeration in part 3(a)'s sentence, and only
+that. Shipped §8 routes an out-of-mandate robustness observation to §§1–7, to
+§9, and to the mutation harness. Part 3(a)'s substance — that a finding no
+acceptance-criterion clause pins does not hold the gate — is untouched and
+still governs; what changes is the list of sections the fix happens under.
+Nothing in part 3(b), part 4, or any other part of D-083 is reached.
+
+**Consequences:** A reader of D-083 reaches this entry by the back-reference
+discipline (D-054); its heading names D-083 as superseded. The enumeration is
+a surface that now goes stale on every section append — the same defect class
+§9 itself names — so the durable statement lives in §8, where a guard pins it,
+and D-083's copy is a dated description rather than a second authority. The
+plan gate considered rewording §8 to stop enumerating and declined, preferring
+an accurate list to an unfalsifiable phrase; that trade is what this entry
+pays for. If §9 is renumbered or retired, this is the entry to supersede.
+
 ### D-090 (2026-07-30): The verification-apparatus program is closed at the door — a new apparatus milestone needs a shipped-behavior defect as its trigger — D-057's move applied to the flow side; annotates D-067
 
 **Context:** Four consecutive milestones were verification apparatus — M119,

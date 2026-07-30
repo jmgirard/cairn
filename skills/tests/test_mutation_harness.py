@@ -2467,9 +2467,9 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_out_of_mandate_observations_route_to_sections_one_to_seven",
+        test="TestDescriptionLayerCertification.test_out_of_mandate_observations_route_to_sections_one_to_seven_and_nine",
         target=GUARD_DOCTRINE,
-        block='A robustness observation that\nno acceptance-criterion clause pins — a surviving mutation, a one-directional\npin, a near-miss control\'s uncovered signature, a fixture weak on an axis no\ncriterion names — is real work, and it is recorded and fixed as ordinary\nmilestone work under §§1–7 and the mutation harness. It does not reopen\ncertification',
+        block='A robustness observation that\nno acceptance-criterion clause pins — a surviving mutation, a one-directional\npin, a near-miss control\'s uncovered signature, a fixture weak on an axis no\ncriterion names — is real work, and it is recorded and fixed as ordinary\nmilestone work under §§1–7, §9 and the mutation harness. It does not reopen\ncertification',
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2493,13 +2493,13 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_the_falsifier_counts_where_a_finding_was_found",
         target=GUARD_DOCTRINE,
-        block='A finding\n  counts where it was **found**, never where it was fixed, so routing one to\n  §§1–7 does not remove it from the count',
+        block='A finding\n  counts where it was **found**, never where it was fixed, so routing one to\n  §§1–7 or §9 does not remove it from the count',
     ),
     Mutation(
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_the_falsifier_window_carries_a_non_vacuity_floor",
         target=GUARD_DOCTRINE,
-        block='the window counts only if at least one of its three milestones convened a\n  round after its first — a window that never ran a later round has not measured\n  one',
+        block='the window counts only if at least one of its three milestones\n  convened a round after its first — a window that never ran a later round has\n  not measured one',
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2757,7 +2757,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_the_falsifier_carries_both_tolerances",
         target=GUARD_DOCTRINE,
-        block='Tolerance: exact zero on both counts,',
+        block='Tolerance: exact zero on both\n  counts,',
     ),
     Mutation(
         guard="test_fresh_context_readers",
