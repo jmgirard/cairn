@@ -1,11 +1,11 @@
 # M123: Rebuild guard-doctrine §8 so its certification loop converges
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, IP4
-- **Branch/PR:** —
+- **Branch/PR:** `m123-section8-convergence-rebuild`
 
 ## Goal
 
@@ -53,8 +53,10 @@ not reopened here.
 - [ ] AC4 — §8 assigns each of its three finding classes exactly one
       confirmation obligation: a reopening finding obliges a further
       fresh-context round; a non-reopening **record** is fixed in place and
-      confirmed by the author re-reading the corrected record against the file
-      it describes, recorded in the work log; an out-of-mandate robustness
+      confirmed by the next round's reader where a further round occurs and
+      otherwise by `/milestone-review`'s three-lens fan-out at the merge gate,
+      with no confirmation obligation falling on the author (D-067 rejects
+      instructing the author's own re-check); an out-of-mandate robustness
       observation under AC3 is confirmed by operation — the harness, the sweeps
       and the suite. No sentence in §8 assigns a second obligation to a class
       already carrying one, and the shipped sentence "The gate is entered at
@@ -75,9 +77,8 @@ not reopened here.
       milestone returns that class to round-opening (tolerance: one occurrence).
 - [ ] AC6 — one appended `cairn/DECISIONS.md` entry supersedes every D-067,
       D-069, D-070 or D-082 claim this rebuild changes — at minimum the
-      falsifier as D-082 restored it, D-067's zero-unresolved bar as AC3
-      narrows it, and D-067's rejection of "a mandatory re-derivation step" as
-      AC4's author re-read engages it — naming each by id. It states why
+      falsifier as D-082 restored it, and D-067's zero-unresolved bar as AC3
+      and AC4 each narrow it — naming each by id. It states why
       retirement is not the disposition, given that D-067's falsifier has fired
       with its remedy owed and unpaid (D-082); and its ground against D-059 is
       the checkable fact that the replacement's counted quantity is not the
@@ -153,6 +154,12 @@ not reopened here.
 - 2026-07-30: criteria audit pass 2 (same [O] reader, gate-changed criteria only) returned 6 findings + 2 coverage gaps; it confirmed AC1/AC3/AC4 now compose and that AC5(i)'s count-at-discovery defeats AC3's routing, and discharged 7 of pass 1's findings by name. 5 fixed here (AC4 gains a third obligation arm for out-of-mandate surface; AC6 widens to D-082 and to D-067's rejected re-derivation step, and must state why retirement is not the disposition; AC8's blanking obligation scopes to positive blocks; T2 gains AC2's grep evidence; T6 gains T1's contradicted-figure entry).
 - 2026-07-30: chose a non-vacuity floor on AC5(i) — the window counts only if at least one milestone convened a round after its first — over accepting a vacuous firing, because retiring a mechanism the window never exercised is the same inert-on-its-own-case defect RR09 charges against M121's withdrawn rule; falsified by three consecutive milestones converging at round 1, which would make the floor unreachable and the falsifier unfireable.
 - 2026-07-30: CORRECTION, appended not edited (IP4): the 2026-07-30 counting-decision line above states its falsifier as "a window closing at zero counts while the rounds demonstrably returned findings". That is wrong as written — AC5(i) counts only shipped-behaviour defects and pre-round-1-surface findings, so later rounds returning findings on fix-authored surface while the window totals zero is the designed behaviour, not a falsification. The correct falsifier for that choice is a window closing at zero on both counted quantities while a later round returned a shipped-behaviour defect or a pre-round-1-surface finding. Found by criteria audit pass 2.
+
+- 2026-07-30: implement gate — status `in-progress`, branch `m123-section8-convergence-rebuild` cut from pushed `main` at `e80c46c`; baseline suites green (skills 700, scripts 332, hooks 103). No RB tripwire fires: the milestone works UNDER IP2/IP4 and changes neither, and the one hard normative question (retire §8 vs rebuild) was settled at the plan gate on RR09's verdict (d).
+- 2026-07-30: AMENDMENT (substantive, gated) — AC4's confirmation mechanism for a non-reopening record moves off the author and onto the next round's reader, or `/milestone-review`'s three-lens fan-out where no further round occurs. Ground: the criteria audit found the author re-read collides with D-067's rejection of "a mandatory re-derivation step" and with the delegation warrant's over-verification clause. The gate chose handing it to review over arguing the two cases differ. Consequence: AC6's minimum supersession list drops the re-derivation clause and gains AC4 as a second narrowing of D-067's zero-unresolved bar, since the gate is now entered with those fixes unconfirmed.
+- 2026-07-30: implement gate chose review-side confirmation over an author re-read for non-reopening records; falsified by AC5(ii) firing — a record fixed in place and later found false — at a rate the author re-read would have caught pre-gate.
+- 2026-07-30: implement gate chose rules-with-reasoning over compressed rules for §8's new material (~35 added lines over ~20), because this section's failure history is rules whose reasoning was left implicit being read two ways; falsified by a later editorial pass finding the added rationale never load-bearing under the D-071 deletion test.
+- 2026-07-30: noted at the gate — AC4 routing confirmation to the three-lens review makes that review the source of AC5(ii)'s data, so the falsifier's second clause is now fed by the mechanism AC4 names rather than by an independent channel. Not a conflict; recorded so a later reader does not read the coupling as circular.
 
 ## Decisions
 
