@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** RR10
 - **Principles touched:** IP2, IP4
-- **Branch/PR:** `m123-section8-convergence-rebuild`
+- **Branch/PR:** `m123-section8-convergence-rebuild` / https://github.com/jmgirard/cairn/pull/123
 
 ## Goal
 
@@ -30,22 +30,22 @@ not reopened here.
 
 ## Acceptance criteria
 
-- [ ] AC1 — §8 defines the non-reopening class as description-layer records a
+- [x] AC1 — §8 defines the non-reopening class as description-layer records a
       previous round's fix authored (docstrings, comments, work-log lines,
       record claims); one term, defined at first use, never alternated with an
       unmarked synonym; the same paragraph states that a fix's code, asserts and
       fixtures remain round-opening. A false claim in an original record reopens.
-- [ ] AC2 — §8 states the two-axis discriminator: subject matter draws what is
+- [x] AC2 — §8 states the two-axis discriminator: subject matter draws what is
       checked and fixed (citing D-069, D-070), provenance draws what reopens.
       Every "certified scope" occurrence in §8 is on the subject-matter axis;
       the provenance rule is nowhere called a certified-scope exclusion.
       Evidence: `grep -n "certified scope"` over §8, each hit's axis named.
-- [ ] AC3 — §8 states a mandate boundary: a round reopens only on a finding
+- [x] AC3 — §8 states a mandate boundary: a round reopens only on a finding
       within its three named checks, and robustness observations no
       acceptance-criterion clause pins are fixed as ordinary §§1–7 and
       harness work without reopening. It states how this composes with AC1's
       rule — both lines cleared — and, per AC10, that clearing both suffices.
-- [ ] AC4 — §8 gives each of its three finding classes exactly one confirmation
+- [x] AC4 — §8 gives each of its three finding classes exactly one confirmation
       obligation: a reopening finding obliges a further fresh-context round; a
       fix-authored record is fixed in place and confirmed by the next round's
       reader, else by `/milestone-review`'s fan-out, with none on the author
@@ -53,7 +53,7 @@ not reopened here.
       sentence gives a class a second, and the shipped "fixed and re-certified"
       sentence is restated. Evidence: every obligation-stating §8 sentence
       enumerated with its class.
-- [ ] AC5 — §8's falsifier is yield-based, naming window, counted quantities and
+- [x] AC5 — §8's falsifier is yield-based, naming window, counted quantities and
       consequences: (i) over the next three guard-authoring milestones running
       §8, zero shipped-behaviour defects and zero pre-round-1-surface findings
       from rounds after each milestone's first retires those later rounds (exact
@@ -61,19 +61,19 @@ not reopened here.
       later round); (ii) one in-place record fix later found false returns that
       class to round-opening (one occurrence); (iii) per AC11, a whole-step
       clause. A finding counts where it was found, never where it was fixed.
-- [ ] AC6 — one appended `cairn/DECISIONS.md` entry supersedes every D-067,
+- [x] AC6 — one appended `cairn/DECISIONS.md` entry supersedes every D-067,
       D-069, D-070 or D-082 claim this rebuild changes — at minimum the
       falsifier as D-082 restored it, and D-067's zero-unresolved bar as AC3 and
       AC4 each narrow it — naming each by id, stating why retirement is not the
       disposition given the fired falsifier's unpaid remedy, and grounding
       itself against D-059 on the checkable fact that the replacement's counted
       quantity is not the round count. No existing D-entry is edited.
-- [ ] AC7 — §8's evidence paragraph grounds the rule on record churn, states
+- [x] AC7 — §8's evidence paragraph grounds the rule on record churn, states
       that under AC1's rule alone M119's round count is unchanged, and states
       AC3's projection separately. Per AC12 the derivations live in the decision
       record behind pointers; every count carries its deriving revision, and one
       contradicting a standing D-entry claim gets its own superseding entry.
-- [ ] AC8 — Every rule AC1–AC5 and AC10–AC11 add to §8 is pinned by an assert
+- [x] AC8 — Every rule AC1–AC5 and AC10–AC11 add to §8 is pinned by an assert
       failing when the rule is inverted in place; a positive block also fails
       when blanked and carries its own `test_mutation_harness.py` entry, while a
       negative or heading-bounded assert registers its positive framing and
@@ -81,13 +81,13 @@ not reopened here.
       §8 whole, recorded in the work log naming the mutation and the test that
       reddened. Asserts whose target text is rewritten or relocated are
       re-anchored or retired with their registry entries.
-- [ ] AC9 — The profile's `verify` slot passes clean and `cairn_validate`
+- [x] AC9 — The profile's `verify` slot passes clean and `cairn_validate`
       reports no new FAIL.
-- [ ] AC10 (BC1) — by reference to `reviews/archive/RR10-section8-survival.md` §BC1 (D-066 choice 4): §8's sufficiency arm, pinned and registered.
-- [ ] AC11 (BC2) — by reference to RR10 §BC2, amended below: falsifier clause (iii), retiring the whole step on round-1 yield decay.
-- [ ] AC12 (BC3) — by reference to RR10 §BC3, amended below: §8's evidence derivations relocate to the decision record behind pointers; §8 ends at ≤150 lines.
-- [ ] AC13 (BC4) — by reference to RR10 §BC4, amended below: remaining rounds run under the rebuilt rules, authorized at a maintainer gate.
-- [ ] AC14 (BC5) — by reference to RR10 §BC5, amended below: one appended D-entry carrying the iff demonstration, clause (iii), the relocated derivations and the RR09 re-visit.
+- [x] AC10 (BC1) — by reference to `reviews/archive/RR10-section8-survival.md` §BC1 (D-066 choice 4): §8's sufficiency arm, pinned and registered.
+- [x] AC11 (BC2) — by reference to RR10 §BC2, amended below: falsifier clause (iii), retiring the whole step on round-1 yield decay.
+- [x] AC12 (BC3) — by reference to RR10 §BC3, amended below: §8's evidence derivations relocate to the decision record behind pointers; §8 ends at ≤150 lines.
+- [x] AC13 (BC4) — by reference to RR10 §BC4, amended below: remaining rounds run under the rebuilt rules, authorized at a maintainer gate.
+- [x] AC14 (BC5) — by reference to RR10 §BC5, amended below: one appended D-entry carrying the iff demonstration, clause (iii), the relocated derivations and the RR09 re-visit.
 
 **Deviations from RR10.** All found by the mandatory pre-ingest criteria audit
 (13 findings, 5 set-level) and disposed of at the 2026-07-30 ingestion gate.
@@ -268,3 +268,66 @@ not reopened here.
 ## Decisions
 
 ## Review
+
+Evidence gathered 2026-07-30 by command against branch HEAD, never recall.
+Fan-out and merge gate below.
+
+### Acceptance-criteria evidence
+
+- **AC1** — §8 carries all four clauses, each resolving once: the four record
+  kinds (`is a docstring, a comment, a work-log line, or a record`), the
+  one-term rule, `are not records and stay ordinary round-opening surface`, and
+  `reopens a round no matter who wrote it`. The no-synonym property is enforced
+  structurally over §8 whole (`test_the_class_is_never_called_by_a_synonym`,
+  restored at round 3 after T11 retired it in error), and reds on
+  `Fix-authored text is neither read nor corrected`.
+- **AC2** — both axes present and cited (`is drawn by *subject matter*` …
+  `(D-069, as narrowed by D-070)`; `is drawn by *provenance*`). Grep evidence:
+  `certified scope` occurs 3× in §8 (`:287`, `:316`, `:319`), all three on the
+  subject-matter axis; `certified-scope exclusion` occurs 0×.
+- **AC3** — mandate boundary, the §§1–7 routing, the does-not-hold-the-gate
+  clause and the clears-both composition all present. The check-1 overlap is
+  settled by definition, so no tie-break rule is owed.
+- **AC4** — three classes, one obligation each; `no confirmation obligation
+  falls on the author` present. Enumeration recorded in the work log and
+  re-verified at round 3.
+- **AC5** — all three falsifier clauses present, with `counts where it was
+  **found**`, both tolerances, and the non-vacuity floor.
+- **AC6** — `git diff main...HEAD -- cairn/DECISIONS.md` is **+267 / −0**:
+  append-only, no entry edited (IP4). Four entries added; D-067 named 5×,
+  D-070 5×, D-069 4×, D-082 3×, D-059 3× across them.
+- **AC7** — §8 carries 5 pointers to D-085 and **zero** raw revisions or count
+  sequences; the derivations sit in D-085 with `016a210`, `a25e6dd^`,
+  `8763368^`, and D-086 supplies the replay projection's missing revision.
+- **AC8** — 49 registry blocks resolve inside §8, 63 resolve exactly once in
+  the file, 53 tests in the class. Section-wide inversion sweep: **49/49**
+  registered rules redden their own test, restored byte-identical after each.
+  Bound on that claim recorded in the work log and not overstated here.
+- **AC9** — skills **741** / scripts **332** / hooks **103**, each exit 0 from
+  the repo root with exit codes captured per suite. `cairn_validate` exit 0,
+  23 checks passing.
+- **AC10 (BC1)** — sufficiency arm shipped and, at round 3's F6, merged into
+  the clears-both-lines paragraph so BC1 is satisfied as written rather than
+  deviated.
+- **AC11 (BC2)** — clause (iii) shipped with the two recorded deviations: it
+  counts four quantities including anchor fidelity, and states that (i) and
+  (iii) cannot both fire.
+- **AC12 (BC3)** — §8 is **149** lines, under the 150 ceiling the Deviations
+  table sets. Corrected arithmetic in D-086.
+- **AC13 (BC4)** — the switch to the rebuilt rules is authorized by the
+  maintainer at the ingestion gate, not by RR10's authority; round 3 ran under
+  the rebuilt rules and carries the three-way classification.
+- **AC14 (BC5)** — D-085 appended carrying all four required contents;
+  D-086 corrects four of its claims by appending, not editing.
+
+### Consistency gate
+
+`cairn_validate` exit 0 — every check passes, including `coverage complete`,
+`binding criteria`, `dangling id tokens` and `mirror agreement`. Two advisories
+stand, both pre-recorded maintainer decisions: `sizing` at 14 acceptance
+criteria and 12 tasks (one milestone chosen over a split, at planning and
+re-affirmed at ingestion). Profile is `generic`, whose `consistency-gate` slot
+names no toolchain checks — that half no-ops. No `DESIGN.md` principle changed,
+so `cairn_impact` is skipped. **Returns to `in-progress` from review: 0** — the
+thrash rule does not fire; the three §8 rounds were implement-phase.
+
