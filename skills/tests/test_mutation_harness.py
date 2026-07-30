@@ -2595,7 +2595,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_the_clause_counting_pointer_names_its_entry",
         target=GUARD_DOCTRINE,
-        block='What each clause counts is recorded at D-085, with the argument that replacing',
+        block='What each clause counts is recorded at D-085, with the argument that replacing\nthis falsifier rather than retiring the step is a supersession and not a quiet\nloosening',
     ),
     Mutation(
         guard="test_fresh_context_readers",

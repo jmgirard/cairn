@@ -324,6 +324,15 @@ not reopened here.
 - 2026-07-30: T16 SWEEP RE-RUN after round 6's fixes — 84/84 registered §8 rules redden their own test, restored byte-identical after each, tree clean.
 - 2026-07-30: round 6 verify — skills 777 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0; §8 at 149; plan-owned body 146/149.
 
+- 2026-07-30: §8 CERTIFICATION ROUND 7 (seventh fresh-context [O], ran none of rounds 1-6): 4 findings — **0 REOPENING**, 3 FIX-AUTHORED RECORD (D1, D2, D3), 1 OUT-OF-MANDATE (D4). **THE GATE OPENS.** No further round is obliged; the three records are fixed in place and confirmed by `/milestone-review`'s three-lens fan-out, with none on the author.
+- 2026-07-30: round 7 independently re-verified round 6's C1 fix rather than taking the record's word — 74 asserts re-scoped (75 read `self.doctrine` at `5e436de^`, exactly 1 does at HEAD), and it tested the slice's UPPER bound too by appending a `## 9` and relocating a rule into it, which the work log had not checked.
+- 2026-07-30: round 7's D1 and D2 are both a record going stale because a LATER round's fix landed after it. D1: the docstring's "The last is a disclosed PROXY" denoted the obligations property until round 6 appended BC1's placement clause after it; fixed by naming the property instead of its position, which is what stops the next append repeating it. D2: the synonym comment's "fourth distinct defeat ... three prior fixes" was written at round 4 and round 5's F1 made it a fifth. Both fixed in place.
+- 2026-07-30: CORRECTION, appended not edited (IP4) — the round-6 line above says "ten more §8 rules inverted green" and then enumerates NINE. Nine is right: `git show 5e436de` adds exactly 9 test methods and 9 registry blocks, and the sweep moved 75 → 84. Found by round 7 (D3), which checked it against the commit rather than against the sentence.
+- 2026-07-30: round 7's D4 is OUT-OF-MANDATE and FIXED — two anchors bracketed §8's supersession-not-a-quiet-loosening rule without spanning it, so deleting " not " made §8 assert the replacement IS a quiet loosening, which is the one thing D-059 and D-083 exist to forbid, suite green. The clause-counting anchor now spans the whole sentence. Found by a 59-mutation polarity sweep the certifier ran independently of mine: 58/59 red, this the one green.
+- 2026-07-30: FALSIFIER DATA, recorded because clause (i) will be read off it. Reopening counts by round: 16, 13, 7, 5, 3, 1, 0. Total findings by round: 16, 13, 10, 8, 7, 5, 4. The loop converged on its own stated rules in seven rounds with no maintainer override at the end — which is what this milestone exists to make possible, and it took four rounds past the one the maintainer overrode at.
+- 2026-07-30: T16 SWEEP after round 7's fixes — 84/84 registered §8 rules redden their own test, restored byte-identical after each, tree clean.
+- 2026-07-30: round 7 verify — skills 777 / scripts 332 / hooks 103, each exit 0; `cairn_validate` exit 0; §8 at 149; plan-owned body 146/149.
+
 ## Decisions
 
 ## Review

@@ -44,9 +44,13 @@ paragraph, it is defined in the paragraph immediately after its first use, it
 is never named by a synonym in either direction, its obligations paragraph
 carries one bold label per class with the author named only in the exclusion
 clause, and the sufficiency arm sits in the clears-both-lines paragraph and
-not in the shield paragraph (BC1's placement clause, added at round 5). Each first shipped in a form that survived its own inversion, and each
-comment records how. The last is a disclosed PROXY: AC4's no-second-obligation
-clause is section-wide, and what the test enforces is paragraph-scoped.
+not in the shield paragraph (BC1's placement clause, added at round 5). Each
+first shipped in a form that survived its own inversion, and each comment
+records how. The FOURTH of them — the obligations one — is a disclosed PROXY:
+AC4's no-second-obligation clause is section-wide, and what the test enforces
+is paragraph-scoped. (Round 6's fix appended the fifth item after a sentence
+that still read "the last"; naming the property rather than its position is
+what stops the next append repeating that.)
 
 Anchors are copied from the shipped bytes, never from the draft that
 produced them (M95), and every phrase that crosses the files' hard wrap is
@@ -860,10 +864,17 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         )
 
     def test_the_clause_counting_pointer_names_its_entry(self):
+        # D4 (round 7): this anchor closed at "that replacing" and the
+        # supersession anchor opened at "loosening (D-083, D-085)", so the
+        # rule between them was unspanned — deleting " not " made §8 say the
+        # replacement IS a quiet loosening, the one thing D-059 and D-083
+        # exist to forbid, with the suite green.
         self.assertRegex(
             self.section8,
             r"What\s+each\s+clause\s+counts\s+is\s+recorded\s+at\s+D-085,"
-            r"\s+with\s+the\s+argument\s+that\s+replacing",
+            r"\s+with\s+the\s+argument\s+that\s+replacing\s+this\s+"
+            r"falsifier\s+rather\s+than\s+retiring\s+the\s+step\s+is\s+a"
+            r"\s+supersession\s+and\s+not\s+a\s+quiet\s+loosening",
         )
 
     def test_the_replay_projection_pointer_names_its_entry(self):
@@ -1141,10 +1152,14 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # DISCLOSED BOUND, decided at the maintainer gate after round 4's F3.
         # Both directions above are keyed on a WORD of the class name — the
         # prefix or the noun — so a coinage sharing neither escapes both:
-        # "A shielded entry is still read" ships green. That is the fourth
-        # distinct defeat of this test in one certification, and the three
-        # prior fixes were each an enumeration extension that the next round
-        # beat. It is not closed by a fifth: a rename that reuses nothing is
+        # "A shielded entry is still read" ships green. Counting the round-5
+        # F1 fix recorded above, that is the FIFTH distinct defeat of this one
+        # test in this certification — case-sensitivity, prefix-drop, deletion
+        # at T10/T11, noun-substitution, and hyphenated-only — and the four
+        # prior fixes were each an enumeration extension the next round beat.
+        # (The tally itself went stale once, when round 5's fix landed after
+        # this sentence was written; round 7 caught it.) It is not closed by a
+        # sixth: a rename that reuses nothing is
         # the presence-not-consistency class banked on the ROADMAP at round
         # 3's F2, and phrase search cannot reach it. What this test pins is
         # every renaming that reuses part of the name; the rest is that row's.
