@@ -116,7 +116,7 @@ than absorbed (gate decision 2026-07-30).
       blocks carry literal newlines, so re-anchor from shipped bytes (M95).
       Regenerate `skills/tests/ledgers/guard-doctrine-8.txt`, read the diff
       sentence by sentence, record the reading (AC1, AC2, AC5).
-- [ ] T2 — Author §6's recorded-counts rule; phrase the M124 case so the
+- [x] T2 — Author §6's recorded-counts rule; phrase the M124 case so the
       third record (which stated no procedure at all) is not claimed to have
       stated one (audit pass 2, finding 3) (AC3).
 - [ ] T3 — Append the D-entry as **D-091** — D-090 is reserved on main by the
@@ -149,6 +149,7 @@ than absorbed (gate decision 2026-07-30).
 - 2026-07-30: T1 — stop rule, window-counting and own falsifier authored as two paragraphs between the reopening rule and the obligations paragraph; both obligation sentences amended, the licence clause gains the no-such-silence sentence, the framing sentence counts the stop rule among the rules acting on the round count; suites 812/332/103 OK, cairn_validate exit 0.
 - 2026-07-30: T1 breakage differed from the plan's expectation: the three falsifier-neighborhood pins held; what broke was the framing pin, the sentence-A pin, the obligations proxy (renamed exactly-three -> exactly-four, M124's rename precedent), and clause (ii)'s bare tolerance anchor — false coverage against the stop rule's identical "Tolerance: one occurrence." phrase, so both tolerance asserts are now anchored on their own clause's words ("that class" vs "that shape").
 - 2026-07-30: T1 ledger regenerated and its diff read sentence by sentence: 12 added/amended units, every one deliberately authored; 2 removals, both the pre-amendment forms of the two amended sentences; nothing unintended.
+- 2026-07-30: T2 — §6 recorded-counts rule appended at section end; the M124 case phrased per audit pass 2 finding 3 — the two records that named a procedure omitted the discriminator, the third named no procedure at all; skills suite 812 OK.
 
 ## Decisions
 

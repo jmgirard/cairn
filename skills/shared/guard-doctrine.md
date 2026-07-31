@@ -230,6 +230,15 @@ records last, after the content has stopped moving.
 Name a validate finding by its emitted label in backticks (`coverage
 complete`), and write evidence counts from command output, never memory.
 
+**A count recorded in a milestone record carries the procedure that produced
+it, at verbatim-reproducible grade.** A work-log line, a docstring, a comment,
+or a D-entry stating a count states the command as run, or the committed
+artifact the count is read from — at the granularity that discriminates it
+from a disagreeing record. M124 measured the failure: three records disagreed
+on one suite count under a reflow, and the one discriminator — whether bullet
+paragraphs are re-wrapped — was stated in none of them; the two that named a
+procedure left it out, and the third named no procedure at all.
+
 ## 7. Scoping a sweep or a grep-shaped criterion
 
 **A repo-wide sweep and a grep-shaped acceptance criterion both hit ground
