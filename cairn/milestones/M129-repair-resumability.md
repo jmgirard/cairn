@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M129: Repair re-surfaces a declined shelf migration
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR11
@@ -111,7 +111,7 @@ Deviations from RR11:
       pin per load-bearing conjunct in
       `skills/tests/test_lesson_graduation.py` with matching REGISTRY
       entries; harness blanking-red for each.
-- [ ] T5: Run AC4's inversion probe and write its work-log line at procedure
+- [x] T5: Run AC4's inversion probe and write its work-log line at procedure
       grade; run all three suites + `cairn_validate` from the repo root with
       exit codes checked.
 
@@ -128,6 +128,7 @@ Deviations from RR11:
 - 2026-07-31: T1+T2 done — directory arm added to `check_gitignore_deprecations` (fires on a non-empty superseded shelf in all four entry states; empty/absent silent; line avoids `is superseded by`), docstring re-derived; new `TestGitignoreDeprecationDirectory` red first (2 failures/3 errors) then green; three suites green (scripts 336, skills 704, hooks 103), exits checked.
 - 2026-07-31: T3 done — SKILL.md per-line block split into entry-line/directory-line arms with a two-genre format sentence; closing clause rewritten (quiet advisory now confirms entries AND directory); guards renamed/re-anchored (`test_closing_check_covers_both_arms`, + two new tests), three REGISTRY entries re-pointed/added, ledger row V06 annotated (quote stays historical at 684e53a); skills 706 OK, scripts 336 OK, exits checked.
 - 2026-07-31: T4 done — quantified-claim paragraph added to guard-doctrine §6 (two bold conjuncts; cites RR11 BC5 + the M118 lesson); pinned per conjunct in `test_restatement_section_states_the_quantified_claim_rule` with two REGISTRY entries, anchors copied from the shipped bytes; skills suite 707 OK, exit checked.
+- 2026-07-31: T5 done — AC4 inversion probe: edit = `str.replace("the universal is not written", "the universal is written")` on `skills/shared/guard-doctrine.md` (polarity flipped inside conjunct (b), sentence shape preserved); command as run = `python3 -m unittest discover -s skills/tests` → exit 1, FAILED (failures=1, errors=1): FAIL `test_restatement_section_states_the_quantified_claim_rule`, ERROR the harness's blanking pass on the mutated locator (a different word, read separately per M122); restored via `git checkout -- skills/shared/guard-doctrine.md`, `git diff --stat` printed nothing (0 lines). Final greens: scripts 336 / skills 707 / hooks 103, validate all checks passed, every exit checked individually. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
