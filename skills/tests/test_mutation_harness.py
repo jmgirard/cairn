@@ -2215,6 +2215,12 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_the_boundary_statement_sits_beneath_the_table",
+        target=RULES,
+        block="The sixth surface differs again, in what the frame governs of it. Its three",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
         test="TestAlwaysReadFrameAudit.test_audit_applies_the_frame",
         target=MILESTONE,
         block="- **Always-read governance (frame completeness):** apply the rulebook's",

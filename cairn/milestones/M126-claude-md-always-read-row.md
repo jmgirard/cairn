@@ -1,6 +1,6 @@
 # M126: CLAUDE.md joins the always-read governance frame
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -57,12 +57,17 @@ recording the addition and its boundaries.
       governed, by read-bounding (D-063). The statement claims no uniqueness
       about differing always-read and governed units.
 - [ ] AC4: `test_always_read_frame.py` pins each new row whole and the AC3
-      statement, every anchor copied from the shipped bytes and sitting on one
-      physical line of the target. Each new pinned block gets its own
-      `test_mutation_harness.py` REGISTRY entry, and the harness runs green with
-      them present. The new prose is grepped for every phrase an existing
-      `test_always_read_frame.py` assert anchors on; any assert whose phrase the
-      new prose duplicates is re-anchored into its own sentence (M113).
+      statement, every anchor copied from the shipped bytes. A per-line anchor
+      sits on one physical line of the target. A whole-object pin — a statement
+      compared under a declared normalization, or a table parsed to its members
+      — instead applies that same normalization to both sides, so a reflow of
+      the target cannot unpin it while a reword still reds; evidence is the
+      suite green against a reflowed target and red against a reworded one.
+      Each new pinned block gets its own `test_mutation_harness.py` REGISTRY
+      entry, and the harness runs green with them present. The new prose is
+      grepped for every phrase an existing `test_always_read_frame.py` assert
+      anchors on; any assert whose phrase the new prose duplicates is
+      re-anchored into its own sentence (M113).
 - [x] AC5: Each rule this milestone ships in `tracking-rules.md` is inverted in
       place per `guard-doctrine.md` §1 — relabel, negate, or transpose **the
       rule**, never the assert; run; require red; restore and diff — with the
@@ -131,6 +136,11 @@ recording the addition and its boundaries.
 - 2026-07-31: status -> review at zero unresolved: every §8 finding from both rounds is fixed, and the shape-repeat stop's remedy is confirmed by operation rather than by a third round.
 - 2026-07-31: review opened — draft PR #126; three-lens fan-out spawned and still running; criterion evidence gathered for AC1-AC3, AC5, AC6. AC4 fails as written: its "every anchor ... sitting on one physical line of the target" is universal over anchors, and `BOUNDARY_STATEMENT` — the whole-statement pin §8's stop rule obliged as its structural remedy — spans eight physical lines by construction. Disposition pending the fan-out.
 - 2026-07-31: review round 1 returned the milestone to `in-progress`. AC4 FAILS as written — `BOUNDARY_STATEMENT` is an anchor spanning eight physical lines, and AC4 quantifies "sitting on one physical line of the target" over every anchor; the whole-statement pin is guard-doctrine §8's obliged structural remedy, so the criterion is what needs the gated amendment, never a charitable reading. Also actioned: F9 (92), two holes in the new table parser — a substring header match lets an appended column pass, and a deleted separator row passes, both against the guard's own comment. AC1-AC3, AC5, AC6 passed with fresh evidence recorded in the Review section; 18 sub-threshold findings logged there. Return 1 of this milestone.
+- 2026-07-31: AMENDMENT (substantive, gated) — AC4's "every anchor ... sitting on one physical line of the target" was universal over anchors and so unsatisfiable by the whole-statement pin §8's stop rule obliged. Amended at the implement gate to split the bar: a per-line anchor still sits on one physical line, while a whole-object pin applies its declared normalization to both sides and is evidenced by the suite green under a reflow and red under a reword. A harder criterion, not a loosened one. Plan-owned body 102 -> 107 of 149.
+- 2026-07-31: F9 (92) fixed — the table guard matched `TABLE_HEADER` as a substring and never required the separator row, so an appended `| Notes |` column and a deleted separator both passed against the guard's own comment. The header is now matched as a whole line via `splitlines().index`, and the separator is required by `assertRegex`. Both probes red.
+- 2026-07-31: F4 (75) promoted from the logged list at the user's call and fixed — nothing pinned the boundary statement's position, so moving it to EOF stayed green. `test_the_boundary_statement_sits_beneath_the_table` bounds it on BOTH sides, between the table's last row and the section-closing audit paragraph; a one-sided "after the table" first cut passed the EOF relocation and was corrected before commit. Registered in the harness.
+- 2026-07-31: amended-AC4 evidence, `python3 -m unittest discover -s skills/tests` from the repo root, mutating `skills/shared/tracking-rules.md` alone and restoring between runs. Whole-object arm measured on `test_pins_the_whole_boundary_statement` alone, since per-line anchors are meant to break on reflow: statement re-wrapped onto one line GREEN, at 55 cols GREEN, at 120 cols GREEN, reworded under a reflow RED. Whole-suite probes, all four previously green, now all RED: appended header column; deleted separator row; statement moved to EOF; statement moved above the table.
+- 2026-07-31: three suites green (103 / 332 / 831) and `cairn_validate` exit 0. Status -> review.
 
 ## Decisions
 

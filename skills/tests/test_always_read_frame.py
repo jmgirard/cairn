@@ -238,13 +238,20 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
         # still holds. So membership and order are pinned whole: no insertion
         # anywhere in the table survives, and the sentence is pinned beside
         # it. A changed header, a dropped row or a reorder all red.
-        head, table = self.rules.split(TABLE_HEADER, 1)
+        #
+        # The header is matched as a WHOLE LINE and the separator is REQUIRED,
+        # both from M126's review (F9, 92): a substring match let a `| Notes |`
+        # column be appended to the header green, and a table whose separator
+        # row was deleted — no longer a markdown table at all — passed with the
+        # guard silent. Two holes the comment above already claimed were shut.
+        lines = self.rules.splitlines()
+        self.assertIn(TABLE_HEADER, lines)
+        at = lines.index(TABLE_HEADER)
+        self.assertRegex(lines[at + 1], r"^\|(?:-+\|)+$")
         rows = []
-        for line in table.splitlines()[1:]:
+        for line in lines[at + 2:]:
             if not line.startswith("|"):
                 break
-            if set(line) <= set("|- "):  # the header separator
-                continue
             rows.append(line.split(" | ")[0] + " |")
         self.assertEqual(rows, list(FRAME_ROWS))
         self.assertIn(
@@ -252,6 +259,26 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
             "worth naming.",
             self.rules,
         )
+
+    def test_the_boundary_statement_sits_beneath_the_table(self):
+        # M126 AC3 says the rulebook states this "beneath the table", and
+        # review found nothing pinned that (F4, 75): the paragraph moved to
+        # EOF left every anchor matched and the suite green, while the prose
+        # is position-dependent throughout — "The sixth surface", "in that
+        # row", "the five above it". Promoted from the logged list at the
+        # user's call rather than left for a later milestone.
+        #
+        # Bounded on BOTH sides, because a one-sided "after the table" check
+        # is satisfied by moving the paragraph to EOF — the exact relocation
+        # the finding reported, which a first cut of this test passed green.
+        # The region is the table's last row through the audit paragraph that
+        # closes the section.
+        normalized = " ".join(self.rules.split())
+        table_at = normalized.index(" ".join(FRAME_ROWS[-1].split()))
+        audit_at = normalized.index("The `/milestone` audit applies this frame:")
+        statement_at = normalized.index(BOUNDARY_STATEMENT)
+        self.assertLess(table_at, statement_at)
+        self.assertLess(statement_at, audit_at)
 
 
 class TestAlwaysReadFrameAudit(unittest.TestCase):
