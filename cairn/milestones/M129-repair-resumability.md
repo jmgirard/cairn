@@ -107,7 +107,7 @@ Deviations from RR11:
       `skills/tests/test_scaffold_migration.py:139-143`, the
       mutation-REGISTRY block near `test_mutation_harness.py:1803`); skills
       suite + mutation harness green.
-- [ ] T4: Author the quantified-claim paragraph in `guard-doctrine.md` §6;
+- [x] T4: Author the quantified-claim paragraph in `guard-doctrine.md` §6;
       pin per load-bearing conjunct in
       `skills/tests/test_lesson_graduation.py` with matching REGISTRY
       entries; harness blanking-red for each.
@@ -127,6 +127,7 @@ Deviations from RR11:
 - 2026-07-31: plan gate dropped the robustness-read candidate row as mooted by D-095 — §8 and its rounds no longer exist, so the row's mechanism and promotion condition were both unreachable.
 - 2026-07-31: T1+T2 done — directory arm added to `check_gitignore_deprecations` (fires on a non-empty superseded shelf in all four entry states; empty/absent silent; line avoids `is superseded by`), docstring re-derived; new `TestGitignoreDeprecationDirectory` red first (2 failures/3 errors) then green; three suites green (scripts 336, skills 704, hooks 103), exits checked.
 - 2026-07-31: T3 done — SKILL.md per-line block split into entry-line/directory-line arms with a two-genre format sentence; closing clause rewritten (quiet advisory now confirms entries AND directory); guards renamed/re-anchored (`test_closing_check_covers_both_arms`, + two new tests), three REGISTRY entries re-pointed/added, ledger row V06 annotated (quote stays historical at 684e53a); skills 706 OK, scripts 336 OK, exits checked.
+- 2026-07-31: T4 done — quantified-claim paragraph added to guard-doctrine §6 (two bold conjuncts; cites RR11 BC5 + the M118 lesson); pinned per conjunct in `test_restatement_section_states_the_quantified_claim_rule` with two REGISTRY entries, anchors copied from the shipped bytes; skills suite 707 OK, exit checked.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

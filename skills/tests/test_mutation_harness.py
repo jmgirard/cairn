@@ -2472,6 +2472,20 @@ REGISTRY = [
         target=GUARD_DOCTRINE,
         block="three records disagreed\non one suite count under a reflow, and the one discriminator — whether bullet\nparagraphs are re-wrapped — was stated in none of them; the two that named a\nprocedure left it out, and the third named no procedure at all.",
     ),
+    # M129 (RR11 BC5): §6's quantified-claim rule — the two load-bearing
+    # conjuncts pinned separately.
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_quantified_claim_rule",
+        target=GUARD_DOCTRINE,
+        block="**A universal claim over a milestone's own artifacts is a count claiming zero\nexceptions, and carries the recorded-counts rule's procedure obligation.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_quantified_claim_rule",
+        target=GUARD_DOCTRINE,
+        block="**Where no stated procedure\ncan enumerate the domain, the universal is not written**",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
