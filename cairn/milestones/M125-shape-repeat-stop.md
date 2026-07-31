@@ -5,7 +5,7 @@
 - **Depends on:** M124
 - **Driving RR:** —
 - **Principles touched:** IP4
-- **Branch/PR:** m125-shape-repeat-stop
+- **Branch/PR:** m125-shape-repeat-stop · https://github.com/jmgirard/cairn/pull/125
 
 ## Goal
 
@@ -38,7 +38,7 @@ than absorbed (gate decision 2026-07-30).
 
 ## Acceptance criteria
 
-- [ ] AC1 — `guard-doctrine.md` §8 contains a stop rule: when a finding that
+- [x] AC1 — `guard-doctrine.md` §8 contains a stop rule: when a finding that
       clears both lines repeats the defect shape of the previous round's
       reopening finding — shape identity being the judgment D-064's trigger (b)
       applies to review returns, applied here to certification rounds — the
@@ -53,7 +53,7 @@ than absorbed (gate decision 2026-07-30).
       carries exactly one confirmation obligation, and no class carries two" —
       are amended to acknowledge this class, so neither ships as a contradicted
       sentence.
-- [ ] AC2 — The stop rule states its interaction with §8's falsifier: a
+- [x] AC2 — The stop rule states its interaction with §8's falsifier: a
       shape-stopped certification counts toward the falsifier window exactly
       as run — the rounds it convened and their findings count where found,
       and no round it declined to convene is imputed or estimated — and §8's
@@ -64,7 +64,7 @@ than absorbed (gate decision 2026-07-30).
       is later found — by the three-lens review or a subsequent milestone —
       not to have closed its shape's class, the stop rule returns that shape
       to round-opening. Tolerance: one occurrence.
-- [ ] AC3 — `guard-doctrine.md` §6 contains a rule that a count recorded in a
+- [x] AC3 — `guard-doctrine.md` §6 contains a rule that a count recorded in a
       milestone record — a work-log line, a docstring, a comment, or a
       D-entry — carries the procedure that produced it at verbatim-reproducible
       grade: the command as run, or the committed artifact it is read from,
@@ -72,7 +72,7 @@ than absorbed (gate decision 2026-07-30).
       record. The rule names M124's measured case: three records disagreeing
       on one count, with the one discriminator — whether bullet paragraphs are
       re-wrapped — stated in none of them.
-- [ ] AC4 — `cairn/DECISIONS.md` gains one appended entry recording the stop
+- [x] AC4 — `cairn/DECISIONS.md` gains one appended entry recording the stop
       rule and the count rule: it narrowly supersedes D-085's clause-(i) gloss
       ("anything the two reopening rules have not already disposed of"), which
       the stop rule makes incomplete, with everything else in D-085 standing;
@@ -83,7 +83,7 @@ than absorbed (gate decision 2026-07-30).
       §8-stop-condition candidate row at the user's 2026-07-30 decision as a
       logged deviation from that row's second-override promotion condition.
       No existing entry is edited (IP4).
-- [ ] AC5 — Every rule this milestone adds to or amends in `guard-doctrine.md`
+- [x] AC5 — Every rule this milestone adds to or amends in `guard-doctrine.md`
       is pinned by an assert that fails when that rule is inverted in place;
       each such assert is registered in `skills/tests/test_mutation_harness.py`,
       and every block this milestone registers fails when blanked. An assert
@@ -91,7 +91,7 @@ than absorbed (gate decision 2026-07-30).
       The §8 ledger `skills/tests/ledgers/guard-doctrine-8.txt` is regenerated
       from the edited section, its diff read sentence by sentence, and the
       reading recorded in the work log.
-- [ ] AC6 — `python3 -m unittest discover` over `skills/tests`,
+- [x] AC6 — `python3 -m unittest discover` over `skills/tests`,
       `scripts/tests`, and `hooks/tests` each exit 0, and `cairn_validate`
       exits 0.
 
@@ -174,3 +174,11 @@ than absorbed (gate decision 2026-07-30).
 ## Review
 - 2026-07-30: M124's post-merge hygiene removed the absorbed §8-stop-condition candidate row from the ROADMAP — the removal this log recorded as owed.
 - 2026-07-30: M124's review B5 measured shipped §8 at exactly 150 lines — zero headroom under the size M123 chose deliberately — so T1's additions must offset lines within §8 or record the growth as a deliberate choice the way M123's implement gate did; noted here so implement prices it, procedure: `awk` over the §8 span at M124's merge commit.
+- 2026-07-30: review opened — branch pushed, draft PR #125; main unmoved since cut (`git log HEAD..origin/main` empty), tree clean.
+- 2026-07-30: AC1 evidence — `git diff main..HEAD -- skills/shared/guard-doctrine.md` read: stop rule sits between the reopening rule and the obligations paragraph, trigger in the amended well-founded form (a finding clearing both lines repeating the previous round's reopening finding's shape), shape identity named as D-064 trigger (b)'s judgment, the shape-repeat class carries one obligation (structural remedy closing the class, confirmed by operation), disclosure-before-review stated; sentence A amended ("— unless it repeats the defect shape…"), sentence B amended ("— the shape-repeat finding included"); work log discloses STOP, the three shapes, and remedies A/B/C before the status->review line. Fresh inversions of the trigger and sentence B red, restored byte-identical (sha256).
+- 2026-07-30: AC2 evidence — same diff read: the window-counting paragraph states a shape-stopped certification counts "exactly as run … no round it declined to convene is imputed or estimated"; the framing sentence now attributes the counted quantity to "the rules above — the two lines governing a round, and the stop rule"; the stop rule's own falsifier is in clause (ii)'s form (remedy later found not to have closed its class → shape returns to round-opening) with "Tolerance: one occurrence."; the gate-reachability paragraph discloses the second narrowing. Fresh inversions of the framing sentence and the falsifier clause red, restored byte-identical.
+- 2026-07-30: AC3 evidence — §6's recorded-counts rule read in the diff: a count in a work-log line, docstring, comment, or D-entry "carries the procedure that produced it, at verbatim-reproducible grade" — the command as run or the committed artifact, at discriminating granularity; the M124 case is phrased per audit pass 2 finding 3 (three records disagreed, the bullet-re-wrap discriminator stated in none; the two that named a procedure left it out, the third named no procedure at all). Fresh inversion of the rule red (`test_restatement_section_states_the_recorded_counts_rule`), restored byte-identical.
+- 2026-07-30: AC4 evidence — D-091 read in full: part 1 the stop rule as a third certification ending reusing D-064 trigger (b); part 2 the narrow supersede of D-085's clause-(i) gloss with everything else standing; part 3 the count rule; part 4 the candidate-row promotion logged as a deviation from its second-override condition. `git diff main..HEAD -- cairn/DECISIONS.md` is append-only: 0 removed lines, 112 added (`grep -c '^-[^-]'` / `'^+[^+]'` over the diff) — no existing entry edited (IP4); D-092/D-093 corrections appended, never edits.
+- 2026-07-30: AC5 evidence — fresh 6-case inversion spot-sweep (script in review-session scratchpad): stop-rule trigger, sentence B, framing sentence, stop-rule falsifier, §6 count rule each inverted in place, and D-091's heading blanked — all six red, both files restored byte-identical (sha256 compared); mutation-harness blanking sweep 9 tests OK and section-ledger suite 34 OK (`test_section_matches_its_ledger` green — the committed ledger matches shipped §8) via `python3 -m unittest discover -s skills/tests -p <file>`; the ledger diff readings are the T1 and round-1 work-log lines; implement's 16-case and 6-case sweeps stand logged.
+- 2026-07-30: AC6 evidence — fresh this session: skills 824 OK, scripts 332 OK, hooks 103 OK (`python3 -m unittest discover` per suite), `cairn_validate` exit 0 all checks passed.
+- 2026-07-30: consistency gate — `cairn_validate` exit 0 (16 PASS, 8 advisories OK); no DESIGN.md change on the branch so `cairn_impact` skips; generic profile's consistency-gate slot names no toolchain checks (clean no-op). Driving RR "—" → projection-vs-outcome no-ops.
