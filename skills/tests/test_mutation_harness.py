@@ -2405,7 +2405,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_section_carries_its_own_falsifier",
         target=GUARD_DOCTRINE,
-        block="**This step carries its own falsifier.** It counts yield and not\nrounds, because the round count is precisely what the rules above — the two\nlines governing a round, and the shape-repeat stop — change, and a measure\nits own subject can satisfy by construction measures nothing.",
+        block="**This step carries its own falsifier.** It counts yield and not\nrounds, because the round count is precisely what the rules above — the two\nlines governing a round, and the stop rule — change, and a measure\nits own subject can satisfy by construction measures nothing.",
     ),
     # M116 (D-069). Two entries: the exclusion itself, and the reason it is a
     # convergence fix. Losing the second leaves the clause readable as a
@@ -2481,7 +2481,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_each_class_carries_exactly_one_confirmation_obligation",
         target=GUARD_DOCTRINE,
-        block='**Each class carries exactly one confirmation obligation, and no class carries\ntwo.**',
+        block='**Each class carries exactly one confirmation obligation, and no class carries\ntwo** — the shape-repeat finding included.',
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2774,7 +2774,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_two_same_shape_rounds_end_the_rounds",
         target=GUARD_DOCTRINE,
-        block="**Two consecutive rounds each returning a reopening finding of the same\ndefect shape end the rounds** — the certification convenes no further round.",
+        block="**Two consecutive rounds returning the same defect shape end the rounds** —\nwhen a finding that clears both lines repeats the defect shape of the\nprevious round's reopening finding, the certification convenes no further\nround.",
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2838,6 +2838,21 @@ REGISTRY = [
         target="cairn/DECISIONS.md",
         block="Certification gains a third ending — the shape-repeat stop — and recorded counts gain a verbatim-reproducible procedure rule",
     ),
+    # M125 round 1 (finding 2): the D-entry's two least-derivable claims,
+    # pinned beside its heading so a rewrite of the entry's substance reds,
+    # not only its deletion.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_stop_rule_decision_entry_exists",
+        target="cairn/DECISIONS.md",
+        block='The gloss is superseded to "anything the two reopening\nrules and the shape-repeat stop have not already disposed of"',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_stop_rule_decision_entry_exists",
+        target="cairn/DECISIONS.md",
+        block="recorded here as a deliberate deviation from the\nrow's own condition (IP2: surfaced, never silently overridden).",
+    ),
     # M125: §6's recorded-counts rule — headline, operative clause, and the
     # measured case it is required to name (AC3), each pinned separately.
     Mutation(
@@ -2892,7 +2907,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_clearing_both_lines_is_sufficient_to_reopen",
         target=GUARD_DOCTRINE,
-        block="**And a finding that clears both lines is a reopening finding**, carrying that\nclass's obligation: a further fresh-context round — unless it is the second\nconsecutive one of a single defect shape, which the stop rule below makes a\n**shape-repeat finding** instead.",
+        block="**And a finding that clears both lines is a reopening finding**, carrying that\nclass's obligation: a further fresh-context round — unless it repeats the\ndefect shape of the previous round's reopening finding, in which case the\nstop rule below makes it a **shape-repeat finding** instead.",
     ),
     Mutation(
         guard="test_fresh_context_readers",

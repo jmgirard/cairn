@@ -3338,3 +3338,45 @@ stop rule is later found not to have closed its shape's class, the stop
 rule's own falsifier returns that shape to round-opening; and if the stop
 rule itself proves the wrong instrument — a certification that repeats no
 shape yet fails to converge — this is the entry to supersede.
+
+### D-092 (2026-07-30): Four claims in D-091 are corrected — the rounds-5–7 citation, the D-085-Consequences clause, the candidate-row reference, and part 1's circular trigger description — supersedes those clauses; D-091's decision and its other content stand (M125 §8 round 1)
+
+**Context:** M125's §8 certification round 1 (fresh-context [O] reader)
+returned four record defects in D-091, appended hours earlier. IP4 forbids
+repairing them in place; this entry supersedes each narrowly, the
+D-084/D-086/D-089 shape.
+
+**Correction 1 — the rounds-5–7 citation.** D-091's Context attributes
+"rounds 5–7 each finding one instance of a single class with each fix one
+more enumeration" to
+`cairn/milestones/archive/M124-section-consistency-ledger.md`. That 24-line
+archive summary records only the round tally and the override; the
+rounds-5–7 enumeration detail is carried by the pre-archive file, read at
+`git show a5a7007:cairn/milestones/M124-section-consistency-ledger.md` —
+the artifact D-091 cites only for its other count. The claim was true; its
+citation did not support it, which is the defect class D-091's own part 3
+ships a rule against.
+
+**Correction 2 — "its Consequences — stands".** D-091 part 2 lists D-085's
+Consequences among what stands. Two of that section's clauses were already
+superseded by D-086 before D-091 was written. Narrowed to: D-085's
+Consequences stand as corrected by D-086.
+
+**Correction 3 — the candidate-row reference.** D-091 part 4's "The
+ROADMAP's §8-stop-condition candidate row" reads as naming a live row. The
+row lived on M124's branch and was removed by M124's post-merge hygiene
+pass before D-091 was appended; the reference is historical, to the row as
+it stood at M125's plan gate.
+
+**Correction 4 — part 1's trigger description.** D-091 part 1 describes the
+stop rule's trigger as "two consecutive rounds each return a reopening
+finding of the same defect shape". Round 1 convicted that phrasing as
+circular — the rule it describes reclassifies the second such finding out
+of the reopening class, so its own precondition could never be met — and
+the shipped rule now reads: a finding that clears both lines repeating the
+defect shape of the previous round's reopening finding ends the rounds.
+AC1 was amended to match at the same gate (user decision, 2026-07-30).
+
+**Consequences:** none of D-091's four decisions changes; the stop rule,
+the gloss supersession, the count rule, and the logged deviation all stand
+as decided. What changes is only the four claims named above.

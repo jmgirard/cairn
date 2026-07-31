@@ -3,7 +3,10 @@
 Both instruments replace an author checking its own work with a reader that
 did not write it. This file locks the doctrine text for both, at four
 surfaces, including the criteria audit's record requirement at the plan
-and ingest surfaces, which M121 added (D-079 clause 2).
+and ingest surfaces, which M121 added (D-079 clause 2). Since M125 it also
+locks a fifth file that is not doctrine text: `cairn/DECISIONS.md`, where
+the shape-repeat stop's D-entry is pinned (listed under the §8 bullet
+because that entry is §8's record).
 
 The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
 `TestRRIngestionCriteriaAudit`):
@@ -399,7 +402,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             r"\*\*This\s+step\s+carries\s+its\s+own\s+falsifier\.\*\*\s+"
             r"It counts yield and not\s+rounds, because the round count is "
             r"precisely what the rules above — the two\s+lines governing a "
-            r"round, and the shape-repeat stop — change, and a measure\s+its "
+            r"round, and the stop rule — change, and a measure\s+its "
             r"own subject can satisfy by construction measures nothing",
         )
 
@@ -495,9 +498,11 @@ class TestDescriptionLayerCertification(unittest.TestCase):
     def test_each_class_carries_exactly_one_confirmation_obligation(self):
         # The reconciliation RR09 q6 defect 1 names: the section used to carry
         # 'fixed and re-certified' and 'fixed in place' with no rule for which governs.
+        # M125 (round 1, finding 1): AC1 requires this sentence itself amended
+        # to acknowledge the fourth class, not only its paragraph extended.
         self.assertRegex(
             self.section8,
-            r"\*\*Each\s+class\s+carries\s+exactly\s+one\s+confirmation\s+obligation,\s+and\s+no\s+class\s+carries\s+two\.\*\*",
+            r"\*\*Each\s+class\s+carries\s+exactly\s+one\s+confirmation\s+obligation,\s+and\s+no\s+class\s+carries\s+two\*\*\s+—\s+the\s+shape\-repeat\s+finding\s+included\.",
         )
 
     def test_no_confirmation_obligation_falls_on_the_author(self):
@@ -576,7 +581,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # further round rather than by operation", §8 carried two obligations
         # for one class — AC4's "no class carries two" defeated with the suite
         # green, and outside T14's disclosed residue, which is scoped to
-        # clauses added inside the three obligation sentences.
+        # clauses added inside the obligation sentences (four since M125).
         self.assertRegex(
             self.section8,
             r"and\s+this\s+class's\s+obligation\s+is\s+discharged\s+by\s+"
@@ -728,7 +733,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # in a loop could derive 'nothing must reopen' with every rule intact.
         self.assertRegex(
             self.section8,
-            r"\*\*And\s+a\s+finding\s+that\s+clears\s+both\s+lines\s+is\s+a\s+reopening\s+finding\*\*,\s+carrying\s+that\s+class's\s+obligation:\s+a\s+further\s+fresh\-context\s+round\s+—\s+unless\s+it\s+is\s+the\s+second\s+consecutive\s+one\s+of\s+a\s+single\s+defect\s+shape,\s+which\s+the\s+stop\s+rule\s+below\s+makes\s+a\s+\*\*shape\-repeat\s+finding\*\*\s+instead\.",
+            r"\*\*And\s+a\s+finding\s+that\s+clears\s+both\s+lines\s+is\s+a\s+reopening\s+finding\*\*,\s+carrying\s+that\s+class's\s+obligation:\s+a\s+further\s+fresh\-context\s+round\s+—\s+unless\s+it\s+repeats\s+the\s+defect\s+shape\s+of\s+the\s+previous\s+round's\s+reopening\s+finding,\s+in\s+which\s+case\s+the\s+stop\s+rule\s+below\s+makes\s+it\s+a\s+\*\*shape\-repeat\s+finding\*\*\s+instead\.",
         )
 
     def test_the_reopening_rule_runs_in_both_directions(self):
@@ -749,9 +754,11 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # taxonomy with no rule attached.
         self.assertRegex(
             self.section8,
-            r"\*\*Two\s+consecutive\s+rounds\s+each\s+returning\s+a\s+reopening\s+"
-            r"finding\s+of\s+the\s+same\s+defect\s+shape\s+end\s+the\s+rounds\*\*"
-            r"\s+—\s+the\s+certification\s+convenes\s+no\s+further\s+round\.",
+            r"\*\*Two\s+consecutive\s+rounds\s+returning\s+the\s+same\s+defect\s+"
+            r"shape\s+end\s+the\s+rounds\*\*\s+—\s+when\s+a\s+finding\s+that\s+clears\s+"
+            r"both\s+lines\s+repeats\s+the\s+defect\s+shape\s+of\s+the\s+previous\s+"
+            r"round's\s+reopening\s+finding,\s+the\s+certification\s+convenes\s+no\s+"
+            r"further\s+round\.",
         )
 
     def test_shape_identity_is_d064_trigger_b_judgment(self):
@@ -843,16 +850,31 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         )
 
     def test_the_stop_rule_decision_entry_exists(self):
-        # M125 AC5's last clause, same shape as the D-088 pin: deleting the
+        # M125 AC5's D-entry clause, same shape as the D-088 pin: deleting the
         # D-entry outright must red the suite, because §8's third ending would
         # then contradict nothing on record. The number is not hardcoded
-        # (D-entry ids are append-time facts, not doctrine).
+        # (D-entry ids are append-time facts, not doctrine). Round 1
+        # (finding 2) extended this from the heading prefix to the whole
+        # heading plus the entry's two least-derivable claims — the
+        # superseding gloss and the promotion-deviation sentence.
         decisions = (SKILLS.parent / "cairn" / "DECISIONS.md").read_text()
         self.assertRegex(
             decisions,
             r"### D-\d+ \(\d{4}-\d\d-\d\d\): Certification gains a third "
             r"ending — the shape-repeat stop — and recorded counts gain a "
-            r"verbatim-reproducible procedure rule",
+            r"verbatim-reproducible procedure rule; narrowly supersedes "
+            r"D-085's clause-\(i\) gloss; reuses D-064's trigger \(b\) beyond "
+            r"review returns \(M125\)",
+        )
+        self.assertRegex(
+            decisions,
+            r"The gloss is superseded to \"anything the two reopening\s+"
+            r"rules and the shape-repeat stop have not already disposed of\"",
+        )
+        self.assertRegex(
+            decisions,
+            r"recorded here as a deliberate deviation from the\s+row's own "
+            r"condition \(IP2: surfaced, never silently overridden\)\.",
         )
 
     def test_the_falsifier_carries_a_whole_step_retirement_clause(self):
@@ -1397,7 +1419,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
                 f"clause: {sentence[:60]!r}",
             )
         # DISCLOSED RESIDUE, narrower than before but not closed: a clause
-        # added INSIDE one of the three sentences, naming no author and using
+        # added INSIDE one of the four sentences, naming no author and using
         # no bold, still escapes all four checks. AC4's clause is section-wide
         # and what is enforced here is paragraph-scoped (D2/D3, round 2).
 

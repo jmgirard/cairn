@@ -38,11 +38,12 @@ than absorbed (gate decision 2026-07-30).
 
 ## Acceptance criteria
 
-- [ ] AC1 — `guard-doctrine.md` §8 contains a stop rule: when two consecutive
-      rounds each return a reopening finding of the same defect shape — the
-      judgment D-064's trigger (b) applies to review returns, applied here to
-      certification rounds — the certification convenes no further round. The
-      second same-shape finding forms its own finding class, whose one
+- [ ] AC1 — `guard-doctrine.md` §8 contains a stop rule: when a finding that
+      clears both lines repeats the defect shape of the previous round's
+      reopening finding — shape identity being the judgment D-064's trigger (b)
+      applies to review returns, applied here to certification rounds — the
+      certification convenes no further round. That second same-shape finding
+      forms its own finding class, whose one
       confirmation obligation is a structural remedy closing the shape's class
       rather than its instance, confirmed by operation (the suite, the harness,
       the sweeps); the stop, the shape, and the remedy are disclosed in
@@ -152,6 +153,13 @@ than absorbed (gate decision 2026-07-30).
 - 2026-07-30: T2 — §6 recorded-counts rule appended at section end; the M124 case phrased per audit pass 2 finding 3 — the two records that named a procedure omitted the discriminator, the third named no procedure at all; skills suite 812 OK.
 - 2026-07-30: T3 — D-091 appended (previewed verbatim in chat): four parts — stop rule as a third certification ending, D-085's clause-(i) gloss narrowly superseded, the §6 count rule, the candidate-row promotion deviation; its own Context counts carry their procedures per the rule it records. `cairn_validate` all checks passed — the M115 dangling-id unmasking batch the plan expected did NOT fire (`dangling id tokens` OK); D-090 was already on main when the branch was cut, so the plan's reserved-id premise was moot and D-091 was simply the next id.
 - 2026-07-30: T4 — 11 new asserts (10 in the §8 certification class incl. the D-091 existence pin, 1 three-assert §6 test in the module class); 14 new registry entries + 3 re-anchored; 16-case in-place inversion sweep all red with guard-doctrine.md and DECISIONS.md restored byte-identical (sha256 compared, script in session scratchpad); blanking sweep (`-k mutation_harness`) green; the reader-file docstring's "three per-class confirmation obligations" corrected to four and the M125 surface added to its inventory.
+- 2026-07-30: §8 certification round 1 (fresh-context [O], authored nothing): 13 findings — 2 coverage, 9 claim-vs-file, 0 anchor-fidelity, 2 self-consistency — plus 2 out-of-mandate observations; the load-bearing one: the stop rule's trigger was CIRCULAR (required two consecutive reopening findings while reclassifying the second out of that class), in the doctrine and in AC1 itself.
+- 2026-07-30: AMENDMENT (substantive, gated, user-approved): AC1's trigger re-worded to the well-founded form — a finding that clears both lines repeating the defect shape of the previous round's reopening finding ends the rounds — shown verbatim above the gate chip; doctrine, asserts and registry re-anchored to match; §8 ledger regenerated, diff read: exactly the four amended sentences.
+- 2026-07-30: round 1 fixes — sentence B now amended in place ("— the shape-repeat finding included"); framing names "the stop rule" (unmarked second name removed); four test comments/docstrings corrected (three-vs-four counts, AC5-clause misattribution, the fifth locked surface disclosed); D-091 heading pin extended to the full heading plus two substance pins (part-2 gloss, part-4 deviation) with registry entries; D-092 appended (previewed verbatim) superseding four D-091 claims; 6-case inversion sweep red, restores byte-identical; suites 823/332/103 OK, `cairn_validate` exit 0, `cairn_budget` 135/149.
+- 2026-07-30: CORRECTION, appended not edited (IP4) — the T1 line says "both obligation sentences amended"; at T1 only sentence A was amended, sentence B was byte-identical to main until round 1's fix (round 1 finding 3).
+- 2026-07-30: CORRECTION, appended not edited (IP4) — the T1-breakage line groups clause (ii)'s tolerance anchor under "what broke"; that anchor stayed GREEN under the duplicated phrase (false coverage), which is the different fact the line's own trailing clause states (round 1 finding 10).
+- 2026-07-30: procedures for the T4 counts, owed by the §6 rule this milestone ships (round 1 observation): 11 asserts = test-name delta `633750b..b901f64` over `grep -h "def test_" skills/tests/test_fresh_context_readers.py skills/tests/test_lesson_graduation.py`; 14+3 registry entries = `git diff 633750b..b901f64 -- skills/tests/test_mutation_harness.py` Mutation-block adds/edits; suite figures from each suite's `Ran N tests` line at those commits.
+- 2026-07-30: out-of-mandate, recorded: the regenerated §8 ledger carries its first duplicate unit ("Tolerance: one occurrence." twice, `sort | uniq -d`), the multiset shape M124's review F9 named as unmanifested — inert today (`test_section_matches_its_ledger` green), left with F9's log entry as its record.
 
 ## Decisions
 
