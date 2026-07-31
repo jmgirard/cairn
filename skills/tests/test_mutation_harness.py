@@ -2429,12 +2429,76 @@ EXEMPT = {
 # M127: guard-doctrine's section numbering, gapped at the retired §8. One
 # entry: blanking a mid-list heading changes the (number, title) sequence the
 # numbering guard compares against its committed expectation.
+# M127 review F1 then re-homed §9's content pins here (deleting
+# test_section_ledger.py whole had swept them out with the ledger machinery,
+# while §9 survives as live doctrine) — one entry per assert, anchors on the
+# post-M127 bytes.
 REGISTRY += [
     Mutation(
         guard="test_guard_doctrine_sections",
         test="TestSectionNumbering.test_the_sections_are_numbered_with_eight_retired",
         target=GUARD_DOCTRINE,
         block="## 5. Matchers and parsers over human-written markdown",
+    ),
+    Mutation(
+        guard="test_guard_doctrine_sections",
+        test="TestSectionNineDoctrine.test_presence_is_distinguished_from_consistency",
+        target=GUARD_DOCTRINE,
+        block="**A prose-guard pins that a sentence is present. It does not pin that the\nsection around it still agrees with itself.**",
+    ),
+    Mutation(
+        guard="test_guard_doctrine_sections",
+        test="TestSectionNineDoctrine.test_the_three_shapes_are_declared_as_three",
+        target=GUARD_DOCTRINE,
+        block="They come apart three ways.",
+    ),
+    Mutation(
+        guard="test_guard_doctrine_sections",
+        test="TestSectionNineDoctrine.test_the_contradicting_sentence_shape_is_named",
+        target=GUARD_DOCTRINE,
+        block="the section now says both",
+    ),
+    Mutation(
+        guard="test_guard_doctrine_sections",
+        test="TestSectionNineDoctrine.test_the_rename_shape_is_named",
+        target=GUARD_DOCTRINE,
+        block="is defeated by a coinage sharing neither",
+    ),
+    Mutation(
+        guard="test_guard_doctrine_sections",
+        test="TestSectionNineDoctrine.test_the_relocation_shape_is_named",
+        target=GUARD_DOCTRINE,
+        block="true of a position, not of a phrase",
+    ),
+    Mutation(
+        guard="test_guard_doctrine_sections",
+        test="TestSectionNineDoctrine.test_the_check_is_derived_never_enumerated",
+        target=GUARD_DOCTRINE,
+        block="**So derive the check from the section, never from a list of what to look\nfor.**",
+    ),
+    Mutation(
+        guard="test_guard_doctrine_sections",
+        test="TestSectionNineDoctrine.test_no_section_term_reached_the_extractor",
+        target=GUARD_DOCTRINE,
+        block="with no term drawn from the section\nwritten into the extractor — so a coinage nobody anticipated was still a\ndifference",
+    ),
+    Mutation(
+        guard="test_guard_doctrine_sections",
+        test="TestSectionNineDoctrine.test_the_judgment_disclaimer_survives_the_rewrite",
+        target=GUARD_DOCTRINE,
+        block="a diff can answer, and building it to answer one would rebuild the judgment\nD-059 retired",
+    ),
+    Mutation(
+        guard="test_guard_doctrine_sections",
+        test="TestSectionNineDoctrine.test_the_defeating_failure_mode_is_still_disclosed",
+        target=GUARD_DOCTRINE,
+        block="The one failure mode that defeated the instrument was a\nledger updated without its diff being read, which no guard can detect",
+    ),
+    Mutation(
+        guard="test_guard_doctrine_sections",
+        test="TestSectionNineDoctrine.test_the_closing_paragraph_records_the_deletion_and_its_home",
+        target=GUARD_DOCTRINE,
+        block="restorable from git, because a consistency instrument whose only subject is\ngone tests nothing but itself",
     ),
 ]
 

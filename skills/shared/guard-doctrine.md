@@ -298,15 +298,16 @@ written into the extractor — so a coinage nobody anticipated was still a
 difference. The instrument detected a change and never judged it: whether a
 change is a contradiction, a correction or an ordinary edit is not a question
 a diff can answer, and building it to answer one would rebuild the judgment
-D-059 retired. Its remedy was operation the author runs, never adjudication
-the guard performs — a red ledger was discharged by regenerating it, reading
+D-059 retired. Its remedy was operation the author ran, never adjudication
+the guard performed — a red ledger was discharged by regenerating it, reading
 the reported diff sentence by sentence, and then repairing the section or
 accepting the change. The one failure mode that defeated the instrument was a
-ledger updated without its diff being read, which no guard can detect; the
-section stated that cost rather than hiding it.
+ledger updated without its diff being read, which no guard can detect — a
+cost stated here rather than hidden.
 
 The one ledger ever committed covered §8, the certification section M127
 retired whole (its number stays retired, as milestone IDs and principle
-numbers do). The ledger machinery — `section_ledger.py`, its guard, and both
-committed ledgers — was deleted with it, restorable from git, because a
-consistency instrument whose only subject is gone tests nothing but itself.
+numbers do). The ledger machinery — `section_ledger.py`, its guard, the
+committed ledger and the extractor's contract fixture — was deleted with it,
+restorable from git, because a consistency instrument whose only subject is
+gone tests nothing but itself.

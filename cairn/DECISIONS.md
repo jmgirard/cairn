@@ -3553,3 +3553,53 @@ suites, the harness, the sweeps and the fan-out alone. If a claim-accuracy
 defect — a false record claim about a guard — reaches main undetected by the
 review fan-out, that is this retirement's falsifier and this is the entry to
 supersede.
+
+### D-096 (2026-07-31): Five claims in D-095 are corrected in one batched entry — the correction chains, the rounds-after-first attribution, the A5 score, the instrument credit, and the absence-guard exposure — supersedes those clauses; D-095's decision and every other claim in it stand (M127 review)
+
+**Context:** M127's three-lens review fan-out reported record-accuracy
+defects in D-095, and its scorer confirmed five at 82–85 against the archives
+and the diff. IP4 forbids repairing them in place; they are corrected here in
+one batched entry rather than one entry per claim — the shape the ROADMAP's
+correction-batching candidate row records, applied at its first occasion
+(that row stays parked; one batched entry is its prescribed form, not its
+promotion trigger).
+
+**Corrections.**
+
+1. *(F3, 82; F4, 72)* "the chains D-084→D-086, D-088→D-089 and
+   D-091→D-092→D-093" — D-086 corrects D-085, not D-084 (the misattribution
+   D-089 was written to fix, reproduced here), and D-092/D-093 are parallel
+   corrections of D-091 (D-093 also correcting D-090), not a three-link
+   chain. Corrected: D-084 and D-086 correct D-083 and D-085 respectively;
+   D-089 corrects D-088; D-092 and D-093 each correct D-091, D-093 also
+   D-090. The six-of-eleven count stands.
+2. *(F5, 84)* "What the rounds after the first distinctively produced" — the
+   cited entries' own tags place D-084, D-089 and D-092 at round 1; only
+   D-086 (round 3) and D-093 (round 2) are later-round products. Corrected:
+   certification rounds at every position produced record-accuracy
+   correction as their dominant recorded output; the retirement decision is
+   unchanged by the corrected attribution.
+3. *(F15, 82)* "M123's A5 (80, …)" — the archive records "1 ≥80 (A5 …)", a
+   threshold, not a score. Corrected to: A5, M123's one finding at or above
+   80.
+4. *(F16, 83)* "found by … inversion, the mutation harness, and the
+   three-lens review fan-out" — all three cited cases are review-fan-out
+   findings (M120's are the fan-out reporting asserts that survived
+   inversion of their own rule, §1 inversion not having been run); the
+   harness found none of the cited set. Corrected credit: the three-lens
+   review fan-out, in M120's case applying §1's inversion protocol.
+5. *(F2, 85)* "re-adding a §8 would ship green" (also the milestone Scope's
+   wording) — overbroad: the kept-and-updated numbering guard asserts the
+   exact gapped heading list, so re-adding a numbered `## 8.` heading reds
+   the suite. What ships green is §8's content under any other heading — the
+   exposure stands, narrower than recorded. No *dedicated* absence guard was
+   added, which is what the Scope clause decided and D-090's door required.
+6. *(minor, F9, 63)* part 1's "both committed ledgers" — one section ledger
+   was committed (`guard-doctrine-8.txt`); the other two deleted fixture
+   files were the extractor's contract. §9's copy of the phrase is current
+   knowledge and was corrected in place; this clause corrects the record's.
+
+**Consequences:** D-095's decision and every other claim in it stand,
+including every per-entry supersession. The batched form is deliberate: the
+per-claim correction cascade was the §8-era behavior D-095 retires, and one
+entry per claim would reproduce it at the retirement's own doorstep.
