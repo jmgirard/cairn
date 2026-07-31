@@ -1,6 +1,6 @@
 # M126: CLAUDE.md joins the always-read governance frame
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -56,7 +56,7 @@ recording the addition and its boundaries.
       as against the milestone file, whose cap-exempt sections are still
       governed, by read-bounding (D-063). The statement claims no uniqueness
       about differing always-read and governed units.
-- [x] AC4: `test_always_read_frame.py` pins each new row whole — every cell, so
+- [ ] AC4: `test_always_read_frame.py` pins each new row whole — every cell, so
       an appended cell reds — and pins the AC3 statement. Every anchor is copied
       from the shipped bytes and sits on one physical line of the target, with a
       single exception: `BOUNDARY_STATEMENT`, which pins the AC3 statement
@@ -154,6 +154,7 @@ recording the addition and its boundaries.
 - 2026-07-31: ROADMAP candidate added (search-first swept, nothing covers it) — verify a scripted multi-edit landed where it was aimed before writing the record that claims it did. Raised from a hitop session and corroborated by this milestone's own stray work-log line inside `## Acceptance criteria`. Added on this branch rather than main because the branch is open; it merges with the milestone.
 - 2026-07-31: numeric records settled LAST, after every fix, because each earlier settling was re-staled by the next (guard-doctrine §6). Procedure for the anchor count: AST-parse `skills/tests/test_always_read_frame.py`; the anchor set is every module-level string constant over 25 characters plus every inline string literal over 25 characters with no newline that resolves into `skills/shared/tracking-rules.md` or `skills/milestone/SKILL.md`. 24 anchors, of which 23 sit wholly on one physical line of their target and one — `BOUNDARY_STATEMENT` — does not, by design. A blanket "every string constant" sweep instead returns 25 and two off-line, the second being an assert message rather than an anchor; that is the earlier count's defect, not a second exception.
 - 2026-07-31: correction — every count recorded earlier in this milestone is superseded by these, measured at this commit with the commands named: `python3 -m unittest discover -s hooks/tests` 103, `-s scripts/tests` 332, `-s skills/tests` 833, each exit 0; `python3 scripts/cairn_validate.py .` exit 0, all checks passed; `python3 scripts/cairn_budget.py` on this file, plan-owned body 108 of 149; 22 `guard="test_always_read_frame"` REGISTRY entries. The earlier "830" and "102 -> 107 of 149" were true when written and are not now.
+- 2026-07-31: review round 2 returned the milestone. Six findings at 80+: the STOP #2 structural remedy does not close its class (inline anchors invisible to its derivation, and its docstring check pins a token rather than agreement — both reproduced at the gate), three relocations still pass the position guard, round 2's own AC4 evidence line misattributes its figure to the guard, `BOUNDARY_STATEMENT`'s normalization is asymmetric across its two users, and the new ROADMAP candidate row ships truncated mid-sentence. guard-doctrine §8's stop-rule falsifier has FIRED on its one-occurrence tolerance: the universal-claim shape returns to round-opening. Return 2 — one more reaches the thrash rule's third-return threshold.
 
 ## Decisions
 
@@ -306,3 +307,63 @@ All six criteria re-executed by command; round 1's ticks were not carried.
 and `coverage complete` included), every advisory OK. The `generic` profile
 names no toolchain checks — a clean no-op. No `DESIGN.md` principle changed, so
 `cairn_impact` was skipped. No CI configured, so nothing to wait on at merge.
+
+**Fan-out.** Three fresh-context lenses, then a Sonnet scorer that generated
+none of the findings. The prior-review lens verified round 1's two actioned
+findings genuinely closed and found no past finding reintroduced. The
+blame-history lens found no coverage dropped across the branch's many self-
+rewrites — every guard from `main` still present, the replaced assert strictly
+stronger, the harness diff pure addition. The diff-bug lens returned 20
+candidates. The GitHub thread probe was empty, as in round 1.
+
+**Actioned (score ≥80):**
+
+- **A1 (88) — the §8 STOP #2 structural remedy does not close its class.**
+  `whole_object_pins` walks only module-level `ast.Assign` nodes, so inline
+  anchors inside `assertIn` are invisible to it. An inline anchor spanning two
+  physical lines of the target, with no docstring mention, passes GREEN — the
+  exact shape the remedy was declared to close. Reproduced independently at
+  the gate before scoring.
+- **A2 (87) — the docstring check pins a token, not agreement.**
+  `assertIn(name, doc)` requires only that the string `BOUNDARY_STATEMENT`
+  occur somewhere in the docstring. Replacing the exception clause with its
+  exact opposite passes GREEN, so the remedy's headline claim — "reds when
+  this paragraph and the file disagree" — is false as shipped. Also
+  reproduced at the gate.
+- **A5 (85) — three relocations still pass the position guard.** Statement and
+  audit paragraph moved together to EOF; statement moved above the
+  fifth-surface paragraph, making shipped prose "The sixth surface differs
+  again" precede "The fifth surface differs…"; statement spliced into the
+  middle of that paragraph. All GREEN.
+- **A3 (83) — round 2's own evidence line states something false about the
+  guard.** "the guard's own derivation returns 24 anchors, 23 on one physical
+  line": the guard's derivation returns one entry, from four module-level
+  assigns. The 24/23 figure came from an ad-hoc script, not the guard.
+- **A8 (82) — `BOUNDARY_STATEMENT`'s normalization is asymmetric across its
+  two users.** The position test compares the raw constant against a
+  normalized target, so re-wrapping the constant raises `ValueError` there —
+  the spurious red that delta round 2's fix was authored to remove.
+- **A16 (80) — the new ROADMAP candidate row ends mid-sentence**, at "…
+  corroborated by M126's own stray", with no noun. Shipped truncated tracking
+  state, inside the candidate about verifying that a scripted edit landed
+  where it was aimed.
+
+**Logged, below threshold (16):** C1 (75) the round-1 comment misattribution
+still ships; A14 (70) D-094's misquoted definition, now raised three times;
+A6 (66) a bare appended `|` still passes the row-width check; B2 (65) the
+STOP #2 disclosure narrates its shape across three sources rather than
+establishing D-091's precondition; A7 (63) the separator regex rejects legal
+GFM alignment syntax; A4 (62) thrash trigger (b)'s escalation offer was owed
+and not made; A17 (58); A12, A13, A19 (55); A11, A18 (52); A9 (45); A10 (42);
+A15 (38); A20 (35) pre-existing; B1 (25).
+
+**Disposition: returned to `in-progress`. Return 2 of this milestone.**
+AC4 is unticked — A1, A2 and A8 defeat its clauses and A3 falsifies its own
+evidence line. Every other criterion's round-2 evidence stands.
+
+**guard-doctrine §8 stop-rule falsifier: FIRED, one occurrence.** Its text —
+"if a structural remedy authored under it is later found — by the three-lens
+review, or by a subsequent milestone — not to have closed its shape's class,
+the stop rule returns that shape to round-opening. Tolerance: one occurrence."
+A1 is that finding. The hard-wrap / universal-claim shape returns to
+round-opening, and the tolerance is now spent.
