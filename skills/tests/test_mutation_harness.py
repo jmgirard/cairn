@@ -1458,6 +1458,30 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
+        test="TestAccessibleLanguageRule.test_two_sentence_test_stated",
+        target=RULES,
+        block="the question's first sentence says what is being decided in plain words,",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAccessibleLanguageRule.test_internal_ids_banned_with_milestone_exemption",
+        target=RULES,
+        block="D-/RR-/BC-ids, IP/GP numbers, and doctrine section numbers — stay out of",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAccessibleLanguageRule.test_flagged_prompt_capture_sentence",
+        target=RULES,
+        block="A gate prompt the user flags as unclear is captured verbatim in the same",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAccessibleLanguageRule.test_worked_pair_present_and_labeled_reconstruction",
+        target=RULES,
+        block="observed failure shape (M128), it is not a capture:",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
         test="TestPerSkillDirectives.test_plan_question_gate",
         target="skills/milestone-plan/SKILL.md",
         block="Acceptance chips (tracking-rules): a question resting on a produced",

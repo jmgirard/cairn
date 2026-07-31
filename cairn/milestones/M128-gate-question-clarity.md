@@ -88,7 +88,7 @@ none exist on disk; AC4's mechanism accumulates them for a future pass.
 - [x] T2: Author the worked bad/good pair beside the bullet — Candidate A
       verbatim from the M128 plan session as the bad case, plain rewrite
       as the good case, ≤4 lines each.
-- [ ] T3: Update `TestAccessibleLanguageRule` and the mutation-harness
+- [x] T3: Update `TestAccessibleLanguageRule` and the mutation-harness
       registry: re-anchor the four existing asserts, add asserts for the
       new sentences, pair any absence assert with a positive anchor, run
       the §1 inversion sweep and the second-occurrence re-grep; log both.
@@ -106,6 +106,7 @@ none exist on disk; AC4's mechanism accumulates them for a future pass.
 - 2026-07-31: plan gate chose a reconstructed bad example (Candidate A, picked by the user from three) over a verbatim capture because no flagged prompt exists on disk and the Desktop gate transcripts are not searchable; falsified/replaceable by the first AC4-captured real exemplar.
 - 2026-07-31: plan gate chose shipping the capture-on-flag sentence over shipping the rule change alone because the next fix should be evidence-based; falsified by the sentence producing no captures across milestones in which the operator reports further unclear prompts.
 - 2026-07-31: T1+T2 — bullet rewritten in place preserving all five pinned anchor lines byte-identical; worked pair authored (Candidate A as bad, labeled reconstruction).
+- 2026-07-31: T3 — four new guard tests (10 asserts, all positive presence, no absence asserts), five registry entries; §1 inversion sweep: 6/6 negations red, restore hash-verified; second-occurrence re-grep over every guard literal vs tracking-rules.md: 0 multiplicity changes.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
