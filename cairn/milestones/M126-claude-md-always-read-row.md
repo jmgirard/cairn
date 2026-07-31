@@ -437,8 +437,11 @@ All nine criteria re-executed by command; earlier rounds' ticks not carried.
   claims inversion-red.
 - **AC4 — PASS.** Rows pinned whole (a cell appended to any row reds); the
   single off-one-line anchor is `BOUNDARY_STATEMENT`; its evidence at that
-  pin's own scope — re-wrap green, reword red; 22 REGISTRY entries, harness
-  green (9 tests); every anchor occurring once in its target.
+  pin's own scope — re-wrap green, reword red; 21 REGISTRY entries
+  (`grep -c 'guard="test_always_read_frame"'`), harness green (9 tests);
+  every anchor occurring once in its target. The figure was first written
+  as 22, carried from before T7 deleted the checker's entry, and corrected
+  here when round 3's blame-history lens measured 21.
 - **AC5 — PASS.** Eleven inversions, eleven RED, `tracking-rules.md` restored
   byte-identical after each, under `python3 -m unittest discover -s
   skills/tests`. Three suites and `cairn_validate .` each exit 0 after restore.
