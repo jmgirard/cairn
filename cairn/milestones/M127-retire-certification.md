@@ -1,0 +1,136 @@
+# M127: Guard-doctrine §8 is retired whole
+
+- **Status:** planned
+- **Priority:** high
+- **Depends on:** —
+- **Driving RR:** —
+- **Principles touched:** IP2, IP4, GP1
+- **Branch/PR:** —
+
+## Goal
+
+The certification step is retired whole — no fresh-context reading of
+guard descriptions, no rounds, no §8 — ending the loop that burned the
+measured majority of this repo's session cost.
+
+## Scope
+
+**In:** Remove `guard-doctrine.md` §8 entirely (§9 keeps its number;
+retired numbers are never reused) and every operative reference to it:
+the pre-review certification step in `skills/milestone-implement/SKILL.md`
+and the routing sentence in `tracking-rules.md`'s delegation-warrant
+paragraph. Retire or update every test surface pinning the section,
+per hit. Delete the M124 §8-ledger machinery whole
+(`section_ledger.py`, `test_section_ledger.py`, both ledgers under
+`skills/tests/ledgers/`), restorable from git — with §8 gone it has no
+live subject and a guard instrument testing only itself is the shape
+D-057/D-090 close doors on. Append the superseding D-entry; dispose the
+mooted candidate rows. No replacement instrument of any kind: guard
+verification remains §1 inversion, the mutation harness, the sweeps, the
+three-lens review fan-out with scorer, and AC fencing.
+
+**Out:** the review fan-out and the plan-time criteria audit — kept, by
+explicit gate choice (2026-07-31, Q3; D-067 is narrowed to the
+criteria-audit reader, not retired). RR11 BC5 → stays a parked candidate
+row, re-cut by this milestone to BC5 only. The correction-batching
+candidate row banked at the first plan commit → stands unchanged. Any
+guard pinning §8's *absence* → deliberately nowhere: an absence guard
+would be new apparatus (D-090), so re-adding §8 would be green — a
+recorded, accepted exposure.
+
+## Acceptance criteria
+
+- [ ] AC1: `guard-doctrine.md` ships with no §8: the section is removed
+      whole and §9 keeps its number and heading. A search for "certif"
+      and "§8" under `skills/` and `README.md` is run with every hit
+      classified: zero hits of the operative class (a shipped sentence
+      that obliges, routes to, or presupposes the certification step as
+      live); surviving hits are only retrospective provenance citations
+      in comments and guards, guards quoting IP4 history verbatim, §9's
+      motivating measurement, and the criteria audit's own prose. The
+      classification ledger is committed as review evidence (RR04
+      rec 8).
+- [ ] AC2: Every test surface pinning the retired section — found by the
+      AC1 search, never by a fixed list — is updated or retired per hit:
+      the section-numbering test moves to the gapped 1–7, 9 list;
+      §8-only guards retire with their mutation-registry entries; the
+      M124 ledger machinery (`skills/tests/section_ledger.py`,
+      `skills/tests/test_section_ledger.py`,
+      `skills/tests/ledgers/guard-doctrine-8.txt`,
+      `skills/tests/ledgers/extractor-contract.md` and
+      `.expected.txt`) is deleted; and all three suites pass from the
+      repo root with each exit code checked.
+- [ ] AC3: `skills/milestone-implement/SKILL.md`'s pre-review
+      certification step is removed; in `tracking-rules.md`'s
+      delegation-warrant paragraph exactly the "A fresh reader's own
+      loop is bounded by its instrument" sentence and its
+      `(guard-doctrine.md §8)` cite are removed, while the D-067
+      carve-out protecting the criteria-audit reader survives and
+      `test_delegation_warrant.py:146`'s discriminator pin is preserved
+      through the rewrite.
+- [ ] AC4: A superseding D-entry records: the 2026-07-31 user mandate
+      and evidence summary (rounds 2+ yielded record-accuracy
+      corrections; every ≥80-scored real defect came from inversion,
+      the harness, or the review fan-out); the explicit D-090 door
+      check on its Untouched clause — this fires falsifier clause
+      (iii)'s own named remedy, "the step retires whole", ahead of its
+      measured window, a deliberate deviation under IP2 (D-091 part 4's
+      precedent); the supersession — not mere override — of RR10's
+      rejections recorded in D-085 (verdict (e) and part 4); the
+      narrowing of D-067 to the criteria-audit reader alone; the
+      superseded operative clauses of D-069, D-070, D-079 (clauses
+      2–3), D-080, D-082, D-083, D-085, D-088, and D-091; and the
+      candidate-row disposals, so D-090's by-name parking references
+      resolve. `cairn_validate` green.
+- [ ] AC5: Candidate-row dispositions recorded on the ROADMAP: the
+      mixed-round-precedence, falsifier-state-disclosure, and
+      audit-over-falsifiers rows dropped (subjects retired; rationale in
+      the D-entry); the polarity/vocabulary row dropped and the
+      ledger-rollout row re-stated to name git as the deleted
+      mechanism's home (both bound to the M124 ledger); the RR11 row
+      re-cut to BC5 only with BC6's mooting recorded.
+
+## Coverage
+
+- AC1 → T1, T2
+- AC2 → T2, T4
+- AC3 → T3
+- AC4 → T5
+- AC5 → T6
+
+## Tasks
+
+- [ ] T1: Remove §8 whole from `skills/shared/guard-doctrine.md`; §9
+      keeps its number; rewrite or remove internal cross-references per
+      AC1's classification (§9's motivating measurement survives as
+      retrospective provenance).
+- [ ] T2: Run the AC1 search; commit the classification ledger; update
+      or retire each test surface per hit (numbering test → gapped
+      list; §8-only guards + registry entries retired; M124 ledger
+      machinery deleted).
+- [ ] T3: Remove the implement-skill certification step; excise the two
+      routing clauses from `tracking-rules.md` preserving the D-067
+      carve-out and the `test_delegation_warrant.py:146` pin.
+- [ ] T4: Run all three suites from the repo root, each exit code
+      checked; record evidence.
+- [ ] T5: Author the superseding D-entry; preview verbatim in chat
+      before the commit that lands it.
+- [ ] T6: ROADMAP row disposals and re-cuts (AC5).
+
+## Work log
+
+- 2026-07-31: created by /milestone-plan.
+- 2026-07-31: plan-gate criteria audit ([O] fresh reader, fresh context) returned 13 findings; 11 fixed into the criteria wording as the audit prescribed (D-069 disposition added to AC1; clause-(iii) carry-over replaces an undefined "zero findings" in AC2; AC3 search-scoped rather than file-listed; ledger-guard exclusion added to AC4; RR10-override and D-090-Untouched grounds named in AC5; third mooted row and the §7 grep collision folded into AC6), 2 became gate questions (cut depth; correction batching).
+- 2026-07-31: plan gate chose single-pass §8 over retiring the step whole because round 1 demonstrably still yields (M126's certification found a real shipped defect; this plan's own audit found 13 findings); falsified by clause (iii)'s window returning zero findings across three §8-running milestones.
+- 2026-07-31: plan gate chose single-pass over keep-multi-round-and-wait because the post-M125 evidence (M126: 460 turns, 19 agents, multi-round certification the day after the stop rule shipped) shows the loop still burns; falsified by a shipped-behavior defect traced to a finding a reconvened round would have surfaced.
+- 2026-07-31: plan gate chose no-new-batching-rule over adding the sentence now because the rebuild removes the cascade's generator and D-090 counsels against preemptive doctrine; falsified by two or more correcting D-entries landing in a single milestone after M127 ships (the banked row's condition).
+- 2026-07-31: plan gate chose keeping the review fan-out and criteria audit over trimming them because both are single-shot instruments and the measured burn is loop turns, not spawns; falsified by cairn_cost showing a regression attributable to spawn volume (the existing spawn-cap row's trigger).
+- 2026-07-31: plan gate chose keeping RR11 BC5 parked over folding it in because a subtractive milestone should not add doctrine; falsified by a quantified-claim defect shipping in a guard-authoring milestone before BC5 lands.
+- 2026-07-31: plan gate (second round) re-cut M127 from single-pass to full retirement at explicit user decision, after an evidence review of §8's actual yield: the multi-round output was record-accuracy corrections (D-084→D-086, D-088→D-089, D-091→D-092→D-093) while every ≥80-scored real defect of the era (M120's three inverting-green asserts 92/88/87; M123 A5 80; M124 F1 92, F2 85, F12 88) was found by inversion, the mutation harness, or the review fan-out — instruments this milestone keeps.
+- 2026-07-31: re-cut criteria re-audited by the same [O] fresh reader before writing: the zero-hit search collided with six classes of legitimate survivor (fixed — operative-class scoping plus a committed classification ledger); the section-numbering test needed keep-and-update, not retirement (fixed — per-hit disposition); `section_ledger.py` would be left testing only itself (fixed — M124 machinery deleted, restorable from git); four supersessions were missing (fixed — D-079/D-080/D-082/D-088 added to AC4); two more mooted candidate rows surfaced (fixed — audit-over-falsifiers and polarity rows added to AC5).
+- 2026-07-31: plan gate chose full retirement over the committed single-pass re-cut because §8's distinctive yield was record-accuracy-class while its cost was the measured dominant burn; falsified by a claim-accuracy defect (a false record claim about a guard) reaching main undetected by the review fan-out.
+- 2026-07-31: plan gate chose deleting the M124 ledger machinery over keeping a subjectless helper because a guard instrument testing only itself is the shape D-057/D-090 close doors on; falsified by the ledger-rollout row's promotion condition firing (a consistency defeat found in another doctrine section).
+
+## Decisions
+
+## Review
