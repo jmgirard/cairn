@@ -17,10 +17,13 @@ the ledger, so it cannot be tuned to agree with it.
 **No content-drawn enumerations.** The extraction takes no list of terms,
 phrases, or subjects from any section it reads — that enumeration is the
 failure `guard-doctrine.md` §3 names, and the class this module exists for has
-already beaten five successive hand-extended matchers over §8 alone. AC1
-permits a closed grammatical or punctuation class where a splitter needs one;
-none is needed today, and `test_section_ledger_needs_no_lexical_constant`
-holds that to the measured fact rather than to intent.
+already beaten five successive hand-extended matchers over §8 alone. One
+closed punctuation class ships under AC1's carve-out, `_SENTENCE_BOUNDARY`,
+with the comment AC1 requires; no abbreviation class is needed, because §8
+carries no abbreviation-shaped mid-sentence period.
+`test_extraction_carries_no_word_constant` holds the no-content-word property
+to the shipped bytes rather than to intent, and
+`test_each_module_constant_names_the_class_it_closes_over` holds the comment.
 
 **Normalization is what makes a reflow invisible.** Whitespace is collapsed
 before splitting, so re-wrapping a paragraph yields the identical sequence and

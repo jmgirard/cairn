@@ -2957,6 +2957,15 @@ REGISTRY += [
         target=GUARD_DOCTRINE,
         block="and no guard can detect that",
     ),
+    # Certification round 1: AC5's remedy STEPS were unpinned while its
+    # headline was, so §9 could stop stating the operation with the suite
+    # green — while §8's routing enumerations point findings at it.
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_remedy_names_its_three_steps",
+        target=GUARD_DOCTRINE,
+        block="A red ledger is discharged by regenerating it, reading the reported\ndiff sentence by sentence",
+    ),
 ]
 
 # M95 (D-056). Five entries, because the placement doctrine fails in five

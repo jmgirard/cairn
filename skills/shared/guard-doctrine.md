@@ -414,8 +414,9 @@ sentence; a rule is a claim the section makes. They come apart three ways.
 **A contradicting sentence added elsewhere in the section.** The pinned
 sentence stays where it was and stays true of itself; a later sentence asserts
 the opposite, and the section now says both. Appending "A robustness
-observation outside them reopens a round on the same terms" defeated four
-acceptance-criterion clauses this way with every anchor still matching.
+observation outside them reopens a round on the same terms" was one of eight
+such mutations, which between them defeated six acceptance-criterion clauses
+with every anchor still matching.
 
 **A rename reusing no word of the term.** A guard keyed on part of a defined
 term — its prefix, or its noun — is defeated by a coinage sharing neither, and

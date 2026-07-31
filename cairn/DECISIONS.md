@@ -3208,6 +3208,33 @@ plan gate considered rewording §8 to stop enumerating and declined, preferring
 an accurate list to an unfalsifiable phrase; that trade is what this entry
 pays for. If §9 is renumbered or retired, this is the entry to supersede.
 
+### D-089 (2026-07-30): D-088's precedent list is wrong about D-086, whose subject is D-085 — supersedes that clause; D-088's decision and every other claim in it stand (M124 §8 certification round 1)
+
+**Context:** D-088, appended earlier in this milestone, says "D-083's own
+family is the precedent: D-084, D-086 and D-087 each corrected a D-083 claim by
+appending rather than editing." M124's §8 description-layer certification read
+that against the entries rather than against the narrative. D-084 and D-087 do
+correct D-083. D-086 does not: its heading reads "Three measurement claims in
+D-085 are corrected", and its body opens "Four bear on D-085, which was
+appended earlier in the same milestone." The claim is false of one of its three
+members.
+
+**Decision:** Supersede that sentence and nothing else. The precedent for
+correcting a D-083 claim by appending is D-084 and D-087; D-086 is the same
+move applied to D-085, one link along the same chain — precedent for the
+practice, not for the subject. D-088's decision, that shipped §8 routes an
+out-of-mandate observation to §§1–7, §9 and the mutation harness and that
+D-083 part 3(a)'s enumeration is superseded, is untouched and still governs.
+
+**Consequences:** Appended rather than edited, though D-088 is minutes old and
+sits unmerged on this milestone's branch: IP4 attaches at append time, not at
+merge time (D-065), and M114's pass-5 finding is the precedent for refusing to
+treat an unmerged entry as editable. This is the second entry in one milestone
+whose subject is another entry's measurement claim — the record-churn class
+D-085 grounds §8's provenance rule on, produced once more by the milestone
+shipping a guard against a neighbouring failure. A reader of D-088 reaches this
+entry by the back-reference discipline (D-054).
+
 ### D-090 (2026-07-30): The verification-apparatus program is closed at the door — a new apparatus milestone needs a shipped-behavior defect as its trigger — D-057's move applied to the flow side; annotates D-067
 
 **Context:** Four consecutive milestones were verification apparatus — M119,

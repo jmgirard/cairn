@@ -26,6 +26,8 @@ it is checked against.
     python3 -m unittest discover -s skills/tests
 """
 
+import ast
+import inspect
 import pathlib
 import re
 import tempfile
@@ -48,10 +50,11 @@ def section9():
     """§9's own bytes, scoped to §9.
 
     Scoped deliberately. M123's §8 asserts each read the whole FILE while every
-    criterion they served was scoped to the section, so six acceptance-criterion
-    clauses could be moved verbatim out of §8 into §7 with all 777 tests green
-    and no anchor text touched. An anchor proves a phrase exists SOMEWHERE in
-    what it was handed; these are handed §9 alone.
+    criterion they served was scoped to the section, so clauses of AC2, AC3,
+    AC5 and AC11 could be moved verbatim out of §8 into §7 with the suite green
+    and no anchor text touched — a defect M123 records as shared by ~75
+    anchors. An anchor proves a phrase exists SOMEWHERE in what it was handed;
+    these are handed §9 alone.
     """
     return sl.section_body(GUARD_DOCTRINE, SECTION_9)
 
@@ -127,6 +130,42 @@ class TestExtraction(unittest.TestCase):
             sl.sentences(joined, "## 3. A"), sl.sentences(broken, "## 3. A")
         )
 
+    def test_the_extraction_signature_takes_only_a_path_and_a_heading(self):
+        # AC1 bans a content-drawn enumeration "as a parameter" and AC2 requires
+        # the ledger be "never passed into the extraction". Certification round
+        # 1 measured both unpinned: adding
+        # `terms=("fix-authored record", "shielded entry")` to `sentences`, or a
+        # `ledger=None` parameter, each left the suite at 800 tests OK. The
+        # signature is the surface both clauses are about, so pin the signature.
+        for func in (sl.section_body, sl.sentences):
+            self.assertEqual(
+                tuple(inspect.signature(func).parameters), ("path", "heading"),
+                f"{func.__name__} takes something beyond a path and a heading; "
+                f"AC1 bans a content enumeration as a parameter and AC2 bans "
+                f"the ledger reaching the extraction",
+            )
+
+    def test_each_module_constant_names_the_class_it_closes_over(self):
+        # AC1's third clause. Round 1 measured it unpinned: deleting the whole
+        # comment block above `_SENTENCE_BOUNDARY` left the suite green, while
+        # the clause is live — one closed punctuation class does ship.
+        source = pathlib.Path(sl.__file__).read_text().splitlines()
+        constants = [
+            i for i, line in enumerate(source)
+            if re.match(r"^_[A-Z_]+ = ", line)
+        ]
+        self.assertTrue(constants, "no module-level constants found to check")
+        for i in constants:
+            preceding = [
+                source[j] for j in range(i - 1, -1, -1)
+                if source[j].startswith("#") or not source[j].strip()
+            ][:1]
+            self.assertTrue(
+                preceding and preceding[0].startswith("#"),
+                f"{source[i]!r} carries no comment naming the class it closes "
+                f"over, which AC1 requires of every permitted constant",
+            )
+
     def test_extraction_carries_no_word_constant(self):
         # AC1: no list of terms, phrases, or subjects drawn from any section's
         # content, as a parameter or a module constant. Checked against the
@@ -135,20 +174,26 @@ class TestExtraction(unittest.TestCase):
         # A closed grammatical class would be permitted and would need this
         # test widened with a comment naming the class; none is needed today,
         # which is the fact this pins.
-        source = pathlib.Path(sl.__file__).read_text()
-        # The `r` prefix sits OUTSIDE the capture group: a first draft included
-        # it and the test red on its own raw-string marker, reporting a word
-        # constant in `r"\n## "`. The letters checked must be the pattern's, not
-        # Python's syntax around it.
-        patterns = re.findall(r'^_[A-Z_]+ = re\.compile\(r?(".*?")\)',
-                              source, re.M)
-        self.assertTrue(patterns, "no module-level patterns found to check")
+        # Round 1: this scanned `re.compile` assignments ONLY, so inserting
+        # `_TERMS = ["fix-authored record", "shielded entry"]` at module level
+        # left the suite at 800 tests OK — the exact enumeration AC1 bans,
+        # invisible to the test meant to ban it. Parsed with `ast` now, so
+        # every module-level assignment is reached whatever shape it takes,
+        # rather than the one shape the author thought to match.
+        tree = ast.parse(pathlib.Path(sl.__file__).read_text())
+        patterns = [
+            node.value
+            for stmt in tree.body if isinstance(stmt, ast.Assign)
+            for node in ast.walk(stmt)
+            if isinstance(node, ast.Constant) and isinstance(node.value, str)
+        ]
+        self.assertTrue(patterns, "no module-level string constants to check")
         for pattern in patterns:
             # Regex escapes are letters to a naive search — `\\s`, `\\n`, `\\w` all
             # trip it, and a first draft red on `\\s+` in the sentence-boundary
             # class. Strip the escapes and check what is left: a content word
             # cannot survive as an escape sequence.
-            literal = re.sub(r"\\.", "", pattern)
+            literal = re.sub(r"\\.", "", pattern)  # noqa: escapes are not words
             self.assertFalse(
                 re.search(r"[A-Za-z]", literal),
                 f"a module-level pattern carries a word constant: {pattern}",
@@ -225,6 +270,21 @@ class TestSectionNineDoctrine(unittest.TestCase):
             r"adjudication\s+the\s+guard\s+performs\.\*\*",
         )
 
+    def test_the_remedy_names_its_three_steps(self):
+        # AC5 requires §9 state the remedy as operation the author RUNS, and
+        # criteria-audit pass 4 added that clause precisely because a §9 stating
+        # only the headline would satisfy "states the remedy" while leaving the
+        # operation unspecified. Round 1 then measured the steps unpinned:
+        # deleting the sentence carrying them left the suite at 800 tests OK,
+        # with §8's routing enumerations pointing findings at a remedy §9 had
+        # stopped stating.
+        self.assertRegex(
+            section9(),
+            r"discharged\s+by\s+regenerating\s+it,\s+reading\s+the\s+reported"
+            r"\s+diff\s+sentence\s+by\s+sentence,\s+and\s+then\s+repairing\s+"
+            r"the\s+section\s+or\s+accepting\s+the\s+change",
+        )
+
     def test_the_defeating_failure_mode_is_disclosed(self):
         self.assertRegex(
             section9(),
@@ -255,6 +315,15 @@ class TestAlignment(unittest.TestCase):
         self.assertIn("A.", delta["moved"])
         self.assertEqual(delta["added"], [])
         self.assertEqual(delta["removed"], [])
+
+    def test_the_failure_message_names_a_move(self):
+        # AC2's third reported category. Round 1 measured it unpinned: dropping
+        # "moved" from `describe`'s loop left the suite at 800 tests OK, so a
+        # relocation — the third defeat shape §9 names — would have failed the
+        # guard with an empty message body. `TestAlignment` exercised `diff`,
+        # never `describe`, which is where the message is rendered.
+        report = sl.describe(["A.", "B.", "C."], ["B.", "C.", "A."])
+        self.assertIn("MOVED   A.", report)
 
     def test_a_substitution_reports_both_sides(self):
         delta = sl.diff(["A.", "B."], ["A.", "Z."])
