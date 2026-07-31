@@ -92,6 +92,15 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
             "at `done` | `weight caps` CHECK + `work-log format` + "
             "`decisions format`; none needed "
             "for the cap-exempt sections once read-bounded |",
+            # M126 — the sixth surface. Its FIRST cell is the load-bearing
+            # one: it names the `## Project tracking` section and not the
+            # file, because all three of its dispositions are section-scoped
+            # (D-018/D-009) and a file-named cell would overclaim every one
+            # of them against a file cairn does not own.
+            "| `CLAUDE.md`'s `## Project tracking` section | routing only — "
+            "classify and invoke the skill, never conduct (D-009) | the "
+            "weight-caps remedy: trim the section back to the template | "
+            "30-line section cap, `cairn_validate`'s `weight caps` CHECK |",
         ):
             with self.subTest(row=row[:20]):
                 self.assertIn(row, self.rules)
@@ -113,6 +122,41 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
         # keeps D-053's "fits none of the three" supersession trigger unmet.
         self.assertIn(
             "only one split across two of GP1's mechanisms within one file**",
+            self.rules,
+        )
+
+    def test_names_the_section_scoped_surface(self):
+        # M126 AC3: the sixth surface's governed unit is a SECTION, and the
+        # rest of the file is governed by nothing cairn owns. Pinned apart
+        # from the row because the row states the three dispositions and this
+        # states why they stop at the section.
+        self.assertIn(
+            "cells describe cairn's `## Project tracking` section and never "
+            "the whole file:",
+            self.rules,
+        )
+
+    def test_contrasts_the_milestone_file_whose_exempt_sections_stay_governed(
+        self,
+    ):
+        # M126 AC3: the contrast that makes the section-scoping a real
+        # difference rather than a restatement of D-063 — a milestone file's
+        # cap-exempt sections are still governed, by a read-bound instead of
+        # a cap, where `CLAUDE.md`'s remainder is governed by nothing.
+        self.assertIn(
+            "The milestone file's cap-exempt sections stay governed, by a "
+            "read-bound (D-063)",
+            self.rules,
+        )
+
+    def test_claims_no_uniqueness_for_the_split_unit(self):
+        # M126 AC3: the statement is barred from claiming that differing
+        # always-read and governed units are unique to either surface — the
+        # false-uniqueness shape the plan's criteria audit caught in the
+        # step-2 draft.
+        self.assertIn(
+            "No uniqueness is claimed for either: an always-read unit and a "
+            "governed unit",
             self.rules,
         )
 

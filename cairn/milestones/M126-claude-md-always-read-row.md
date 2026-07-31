@@ -93,7 +93,7 @@ recording the addition and its boundaries.
 - [x] T3: Add the row(s) after `tracking-rules.md:182` and the boundary
       statement beneath the table, near the existing fifth-surface paragraph at
       `tracking-rules.md:184-193`.
-- [ ] T4: Add the asserts to `skills/tests/test_always_read_frame.py` (row shape
+- [x] T4: Add the asserts to `skills/tests/test_always_read_frame.py` (row shape
       at `:72-97`, standalone claims at `:99-117`) and the REGISTRY entries near
       `skills/tests/test_mutation_harness.py:2156-2173`; run the adjacent-phrase
       grep; run the harness.
@@ -111,6 +111,7 @@ recording the addition and its boundaries.
 - 2026-07-31: minor amendment — T3 worked before T2 (task reorder only; no criterion, scope or task text changed), so the D-entry records what shipped rather than what was intended.
 - 2026-07-31: T1 — AC1 sweep run against `hooks/hooks.json:3-13` and `build_context` (`hooks/session_context.py:241-344`) plus the harness-loaded project instructions; six surfaces, `CLAUDE.md` the sole uncovered one, `PROFILE.md`'s name header / the hook `PREAMBLE` / per-user memory out of scope. Classification table in `## Decisions`.
 - 2026-07-31: T3 — sixth frame row shipped at `tracking-rules.md:183`, scoped to `CLAUDE.md`'s `## Project tracking` section; the AC3 boundary statement added as its own paragraph at `:196-206`, leaving the guarded fifth-surface paragraph untouched. Cell sources: D-009 `cairn/DECISIONS.md:90`, the trim-to-template remedy `tracking-rules.md:141-143`, the 30-line cap `tracking-rules.md:86` with `scripts/cairn_scripts.py:89` and `scripts/cairn_validate.py:75-77`.
+- 2026-07-31: T4 — four asserts added to `test_always_read_frame.py` (the sixth row whole; the three AC3 claims, each anchored on one physical line of the target), four matching `test_mutation_harness.py` REGISTRY entries; harness green. Adjacent-phrase grep over all 13 existing anchors: each still occurs exactly once, so no re-anchoring is owed.
 
 ## Decisions
 
