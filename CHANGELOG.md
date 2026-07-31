@@ -1,5 +1,55 @@
 # Changelog
 
+## 1.3.0 (2026-07-31)
+
+Seventeen milestones since 1.2.0, dominated by one correction: a pre-review
+verification step adopted earlier this month grew into the repo's largest
+session cost and repeatedly failed to converge, and after a rebuild and two
+rounds of stopping rules it was retired outright. The rest of the release
+tightens how plans are audited, how gates read, and how a session resumes.
+Backward-compatible: existing tracked repos keep working unchanged.
+
+- **The pre-review certification step is gone.** Having a fresh reader
+  re-check every guard description before review was measured as the dominant
+  cost of a milestone and kept looping without converging; it was rebuilt,
+  given stopping rules, and finally removed whole. What survives is the
+  cheaper instrument that worked: a fresh-context audit of acceptance
+  criteria at planning time, which asks of each criterion what state of the
+  world satisfies it as written and whether any standing rule makes that
+  state unreachable.
+- **New verification machinery now needs a defect to point at.** Proposing a
+  new checking apparatus requires a shipped-behavior defect as its trigger —
+  closing the door the retired step originally came through.
+- **Review loops end by rule, not by override.** Repeated review returns are
+  counted per milestone and fire on a repeated failure *shape*, converting
+  the obligation into a structural remedy that closes the class rather than
+  another round of the same fix.
+- **Plans record the road not taken.** Wherever a plan settles which approach
+  a criterion will be met by, it logs the alternative that lost, why, and
+  what evidence would falsify the choice. Promotion conditions for parked
+  ideas are likewise written as falsifiers ("promote when X is observed"),
+  never as failure counts.
+- **Gate questions lead in plain words.** The first sentence of a question
+  says what is being decided, the second what happens on each choice, both
+  before any term of art; internal record identifiers stay out of question
+  text and option labels.
+- **Resuming a session starts from the truth.** Session start now injects
+  the newest content of a live milestone's unbounded history sections within
+  a stated budget — saying what it left out — and the active milestone file
+  and the repo's own instruction file joined the set of governed always-read
+  surfaces.
+- **A milestone's local decisions are history.** The milestone file's
+  decisions section is exempt from the size cap on the same never-edit
+  grounds as the work log, with a format advisory watching for pasted
+  output in place of summaries.
+- **An interrupted repair resumes.** A superseded source-shelf directory
+  left on disk after a declined migration stays visible — the validator
+  reports it, and re-running repair picks the migration back up.
+- **Sturdier guard tests.** Guard doctrine now covers *where* a detector
+  looks, not just what it matches; a differential test holds the two
+  independent implementations of heading classification to one contract; and
+  quantified claims in records must name a verbatim-reproducible procedure.
+
 ## 1.2.0 (2026-07-23)
 
 Nineteen milestones since the last feature release, aimed mostly inward — at
