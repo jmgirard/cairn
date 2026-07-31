@@ -1,11 +1,11 @@
 # M125: Certification loops stop on a repeated defect shape
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M124
 - **Driving RR:** —
 - **Principles touched:** IP4
-- **Branch/PR:** —
+- **Branch/PR:** m125-shape-repeat-stop
 
 ## Goal
 
