@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-30 (audit pass, nothing in flight — validate all green, no orphans, both inboxes empty, no tracking change made. One governance gap reported for the user: CLAUDE.md is an always-read surface the frame's worked table does not cover, though all three elements exist for it elsewhere.)_
+_Last hygiene check: 2026-07-31 (M126 merged — the always-read frame's table now covers `CLAUDE.md`'s cairn section. Terminal rows pruned to 5; two candidate rows added, one graduating RR11's deferred doctrine rules. Validate all green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M126 | CLAUDE.md joins the always-read governance frame | review | — | normal | milestones/M126-claude-md-always-read-row.md |
+| M126 | CLAUDE.md joins the always-read governance frame | done | — | normal | milestones/archive/M126-claude-md-always-read-row.md |
 | M125 | Certification loops stop on a repeated defect shape | done | M124 | normal | milestones/archive/M125-shape-repeat-stop.md |
 | M124 | A section-consistency ledger, so a contradicted or renamed rule reds | done | — | normal | milestones/archive/M124-section-consistency-ledger.md |
 | M123 | Rebuild guard-doctrine §8 so its certification loop converges | done | — | normal | milestones/archive/M123-section8-convergence-rebuild.md |
 | M122 | A differential guard holding the hook and the cap counters to one heading contract | done | — | normal | milestones/archive/M122-heading-normalization-differential-guard.md |
-| M121 | Verification triage — classify every self-verification instruction, and re-decide D-067's two fresh-context readers | done | M120 | normal | milestones/archive/M121-verification-triage.md |
 
 ## Candidates
 
