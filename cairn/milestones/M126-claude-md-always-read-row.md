@@ -1,9 +1,9 @@
 # M126: CLAUDE.md joins the always-read governance frame
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
-- **Driving RR:** —
+- **Driving RR:** RR11
 - **Principles touched:** GP1
 - **Branch/PR:** `m126-claude-md-always-read-row` · https://github.com/jmgirard/cairn/pull/126
 
@@ -81,6 +81,33 @@ recording the addition and its boundaries.
       unamended; and why `PROFILE.md` and the hook's preamble are out of scope.
       Evidence: the appended entry, `dangling id tokens` clean.
 
+- [ ] AC7 (BC1): `skills/tests/test_always_read_frame.py` contains no
+      `TestAnchorDescriptionMatchesTheAnchors` class, no test deriving an
+      anchor or pin set from the guard's own source, and a module docstring
+      with no universally quantified claim over the file's anchors and no claim
+      that any test reds on docstring–file disagreement.
+      `test_mutation_harness.py` contains no REGISTRY entry naming the deleted
+      class. All suites green.
+- [ ] AC8: The four per-line tests over the boundary paragraph named in RR11 §4
+      are deleted and their four REGISTRY blocks remain registered, re-pointed
+      to `test_pins_the_whole_boundary_statement`; the harness is green; the
+      Coverage section records AC3's four-clauses-to-one-assert mapping; and
+      one recorded probe, naming its command, shows the D-018 remainder clause
+      negated in the target reds `python3 -m unittest discover -s
+      skills/tests`.
+- [ ] AC9 (BC3): Both consumers of `BOUNDARY_STATEMENT` apply the same
+      normalize-both-sides comparison: one recorded probe re-wraps the constant
+      in the guard source and the full skills suite stays green; one recorded
+      probe rewords the target statement under a reflow and the suite reds.
+
+**Deviations from RR11.** Shown verbatim at the ingest gate (IP3).
+
+| BC | Departure | Reason |
+|---|---|---|
+| BC2 | Ingested as AC8 without its clause "is pinned by exactly two tests"; the rest travels intact, plus the Coverage mapping RR11 rec 2 requires and BC2 omits. | Audit: unsatisfiable. The only procedure enumerating "what pins this paragraph" is to mutate and count reds, which returns three or more — the whole pin, the position test, and the harness whose registered block no longer occurs. BC2's own second half mandates the registrations producing that third red, so ingesting it ships this milestone's third instance of the shape RR11 was convened over. |
+| BC4 | Not ingested. | It would have AC4 restate its inventory claim on the same derivation BC1 deletes for being unable to enumerate. The audit confirms AC4's clause stays true after AC7/AC8, so nothing is owed here; the general rule travels to the successor as BC5. |
+| BC5, BC6 | Not ingested — deferred to a successor milestone. | Sizing, not disagreement: the audit measured the full six at ~166 of a 149-line cap, forcing a compression pass onto the section the ingest freezes; all three split tripwires fire. BC6 also needs re-cutting — it adds a second confirmation obligation to a class whose single-obligation invariant §8 states in bold and two guards count, and is silent on regenerating `skills/tests/ledgers/guard-doctrine-8.txt`, which any §8 edit reds. |
+
 ## Coverage
 
 - AC1 → T1
@@ -89,6 +116,9 @@ recording the addition and its boundaries.
 - AC4 → T4
 - AC5 → T5, T6
 - AC6 → T2
+- AC7 → T7
+- AC8 → T8
+- AC9 → T8
 
 ## Tasks
 
@@ -104,6 +134,15 @@ recording the addition and its boundaries.
       `skills/tests/test_mutation_harness.py:2156-2173`; run the adjacent-phrase
       grep; run the harness.
 - [x] T5: Invert each shipped rule per guard-doctrine §1; record per-rule.
+- [ ] T7: Delete `TestAnchorDescriptionMatchesTheAnchors` (both tests and
+      `whole_object_pins`), its REGISTRY entry, and the module docstring's
+      quantified anchor claims — including "Anchors are copied from the target
+      files' actual bytes"; replace with non-quantified pointer prose.
+- [ ] T8: Collapse the boundary paragraph to one comparison rule — delete the
+      four per-line tests, re-point their REGISTRY blocks, symmetrize
+      `BOUNDARY_STATEMENT`'s normalization across both consumers (AC9), record
+      the Coverage mapping, and re-run AC5's inversions against the collapsed
+      guards.
 - [x] T6: Full verify (three suites + `cairn_validate`); ROADMAP row; hygiene.
 
 ## Work log
@@ -158,6 +197,7 @@ recording the addition and its boundaries.
 - 2026-07-31: blocked on RB11 — a guard's description of itself keeps drifting from what it checks. Three instances of one shape in this milestone, the third being the class-closing structural remedy itself, so guard-doctrine §8's stop-rule falsifier has spent its one-occurrence tolerance. Escalated rather than attempted a fourth time: the thrash rule owed this offer when trigger (b) fired and no plan-gate alternative existed, and each prior attempt was authored by a session that had just read the previous failure and checked its own work before shipping.
 - 2026-07-31: RR11 received. Verdict is subtractive — delete the self-describing checker rather than write a fourth, collapse the double-pinned paragraph to one comparison rule, add a quantified-claim rule to guard-doctrine §6, and amend §8's shape-repeat remedy clause to prefer subtraction. It found three further defeats of the shipped remedy beyond review's two, including a pin named `BOUNDARY` passing the docstring check by substring — §1's opening defect inside the fix for a guard-doctrine violation.
 - 2026-07-31: RR11 binding-criteria audit ([O], fresh context, pre-ingest) returned BC2 and BC6 UNSATISFIABLE as written, BC1 and BC4 PROBLEMATIC, three joint collisions, and a budget landing at ~166 of 149 with a forced compression pass aimed at the section the ingest would make verbatim-immutable. BC2 is this milestone's third instance of its own convicted shape: "pinned by exactly two tests" is falsified by the harness registration BC2 itself mandates, which reds third. BC6 adds a second confirmation obligation to a class whose single-obligation invariant §8 states in bold and two guards count. Not ingested verbatim; raised at the gate.
+- 2026-07-31: RR11 ingested at the gate as a SPLIT, the user's call on the audit's sizing finding. M126 takes the subtractive fixes to its own guards — BC1 and BC3 verbatim as AC7 and AC9, BC2 as AC8 minus its unsatisfiable "exactly two tests" clause and plus the Coverage mapping RR11 rec 2 requires. BC4 not ingested (AC4's clause stays true after the deletions, so no third amendment is owed). BC5 and BC6 deferred to a successor as a swept candidate row. All four departures are rows in the Deviations from RR11 table; `binding criteria` and `coverage complete` both PASS. Driving RR slot set to RR11; RB11/RR11 archived. Plan-owned body 147 of 149 after one compression pass over the deviations table, the heaviest plan-owned section's newest content. The `sizing` advisory warns at 9 criteria against a 7 tripwire — the tripwire this split answered.
 
 ## Decisions
 
