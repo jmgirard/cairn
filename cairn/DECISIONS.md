@@ -3274,3 +3274,67 @@ apparatus-shaped scope, and the standing-rejection discipline applies:
 supersede, don't ignore. If a shipped-behavior defect class appears that a
 parked apparatus candidate would have prevented, this is the entry to
 supersede.
+
+### D-091 (2026-07-30): Certification gains a third ending — the shape-repeat stop — and recorded counts gain a verbatim-reproducible procedure rule; narrowly supersedes D-085's clause-(i) gloss; reuses D-064's trigger (b) beyond review returns (M125)
+
+**Context:** M124's §8 certification ran seven rounds and terminated only by
+maintainer override, rounds 5–7 each finding one instance of a single class
+with each fix one more enumeration — the repeated-shape signature D-064's
+trigger (b) names for review returns (read from
+`cairn/milestones/archive/M124-section-consistency-ledger.md`). Separately,
+M124 spent adjudication on counts that disagreed only because no record
+stated the procedure producing its figure: the reflow suite count ran 21,
+then 75, then "75 errors and 11 failures", with the one discriminator —
+whether bullet paragraphs are re-wrapped — stated in none of the three (read
+from the round-4 O1 work-log line at
+`git show a5a7007:cairn/milestones/M124-section-consistency-ledger.md`).
+The maintainer asked on 2026-07-30 for a durable fix to the thrash; M125
+ships these two mechanical halves, and D-090, appended at the same plan
+gate, is the supply-side half.
+
+**Decision, part 1 — the stop rule.** `guard-doctrine.md` §8 now ends a
+certification by rule when two consecutive rounds each return a reopening
+finding of the same defect shape: no further round is convened, and the
+second same-shape finding forms its own class — the shape-repeat finding —
+whose one confirmation obligation is a structural remedy closing the shape's
+class rather than its instance, confirmed by operation. Whether two findings
+share a shape is the judgment D-064's trigger (b) applies to review returns,
+applied here to certification rounds. A certification therefore ends in one
+of three ways: the gate opens at zero unresolved; a falsifier clause retires
+rounds across the measured window; or the stop rule ends the rounds on a
+repeated shape. The stop rule carries its own falsifier in clause (ii)'s
+form (tolerance: one occurrence), and a shape-stopped certification counts
+toward the falsifier window exactly as run — no round it declined to convene
+is imputed.
+
+**Decision, part 2 — the clause-(i) gloss, narrowly superseded.** D-085's
+"What each falsifier clause counts" bullet glosses clause (i) as counting
+whether the later rounds still find "anything the two reopening rules have
+not already disposed of." The stop rule makes that enumeration incomplete:
+the shape-repeat stop now also disposes of later-round findings, and under
+the old gloss a shape-stopped certification's disposed findings would read
+as still countable. The gloss is superseded to "anything the two reopening
+rules and the shape-repeat stop have not already disposed of"; everything
+else in D-085 — its parts 1, 2 and 4, the other three derivation bullets,
+and its Consequences — stands.
+
+**Decision, part 3 — the recorded-counts rule.** `guard-doctrine.md` §6 now
+requires a count recorded in a milestone record — a work-log line, a
+docstring, a comment, or a D-entry — to carry the procedure that produced it
+at verbatim-reproducible grade: the command as run, or the committed
+artifact it is read from, at the granularity that discriminates it from a
+disagreeing record. The counts in this entry's Context carry theirs.
+
+**Decision, part 4 — the candidate row's promotion, a logged deviation.**
+The ROADMAP's §8-stop-condition candidate row (added 2026-07-30 from M124's
+round-7 maintainer override) stated its promotion condition as a second
+override. The user promoted it the same day, at M125's plan gate, before any
+second override occurred — recorded here as a deliberate deviation from the
+row's own condition (IP2: surfaced, never silently overridden).
+
+**Consequences:** §8's obligation sentences enumerate four classes, and the
+obligations proxy counts four. If a structural remedy authored under the
+stop rule is later found not to have closed its shape's class, the stop
+rule's own falsifier returns that shape to round-opening; and if the stop
+rule itself proves the wrong instrument — a certification that repeats no
+shape yet fails to converge — this is the entry to supersede.

@@ -119,7 +119,7 @@ than absorbed (gate decision 2026-07-30).
 - [x] T2 — Author §6's recorded-counts rule; phrase the M124 case so the
       third record (which stated no procedure at all) is not claimed to have
       stated one (audit pass 2, finding 3) (AC3).
-- [ ] T3 — Append the D-entry as **D-091** — D-090 is reserved on main by the
+- [x] T3 — Append the D-entry as **D-091** — D-090 is reserved on main by the
       door entry and invisible from this branch, so the naive next id would
       duplicate it (D-067's reserved-not-skipped precedent); supersede
       D-085's clause-(i) gloss narrowly; record the candidate-row promotion
@@ -150,6 +150,7 @@ than absorbed (gate decision 2026-07-30).
 - 2026-07-30: T1 breakage differed from the plan's expectation: the three falsifier-neighborhood pins held; what broke was the framing pin, the sentence-A pin, the obligations proxy (renamed exactly-three -> exactly-four, M124's rename precedent), and clause (ii)'s bare tolerance anchor — false coverage against the stop rule's identical "Tolerance: one occurrence." phrase, so both tolerance asserts are now anchored on their own clause's words ("that class" vs "that shape").
 - 2026-07-30: T1 ledger regenerated and its diff read sentence by sentence: 12 added/amended units, every one deliberately authored; 2 removals, both the pre-amendment forms of the two amended sentences; nothing unintended.
 - 2026-07-30: T2 — §6 recorded-counts rule appended at section end; the M124 case phrased per audit pass 2 finding 3 — the two records that named a procedure omitted the discriminator, the third named no procedure at all; skills suite 812 OK.
+- 2026-07-30: T3 — D-091 appended (previewed verbatim in chat): four parts — stop rule as a third certification ending, D-085's clause-(i) gloss narrowly superseded, the §6 count rule, the candidate-row promotion deviation; its own Context counts carry their procedures per the rule it records. `cairn_validate` all checks passed — the M115 dangling-id unmasking batch the plan expected did NOT fire (`dangling id tokens` OK); D-090 was already on main when the branch was cut, so the plan's reserved-id premise was moot and D-091 was simply the next id.
 
 ## Decisions
 
