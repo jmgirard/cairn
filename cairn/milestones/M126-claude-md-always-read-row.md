@@ -201,7 +201,7 @@ recording the addition and its boundaries.
 - 2026-07-31: RR11 ingested at the gate as a SPLIT, the user's call on the audit's sizing finding. M126 takes the subtractive fixes to its own guards — BC1 and BC3 verbatim as AC7 and AC9, BC2 as AC8 minus its unsatisfiable "exactly two tests" clause and plus the Coverage mapping RR11 rec 2 requires. BC4 not ingested (AC4's clause stays true after the deletions, so no third amendment is owed). BC5 and BC6 deferred to a successor as a swept candidate row. All four departures are rows in the Deviations from RR11 table; `binding criteria` and `coverage complete` both PASS. Driving RR slot set to RR11; RB11/RR11 archived. Plan-owned body 147 of 149 after one compression pass over the deviations table, the heaviest plan-owned section's newest content. The `sizing` advisory warns at 9 criteria against a 7 tripwire — the tripwire this split answered.
 - 2026-07-31: T7 — `TestAnchorDescriptionMatchesTheAnchors` deleted whole (both tests and `whole_object_pins`), its REGISTRY entry removed, the `ast` import dropped, and the docstring's quantified anchor claims replaced with pointer prose that states no inventory and no universal. RR11's reason is recorded in the docstring itself: such a claim is a coverage self-certification, which §8's first sentence forbids.
 - 2026-07-31: T8 — the boundary paragraph collapsed to one comparison rule. The four per-line tests over it are deleted; their four REGISTRY blocks stay registered, re-pointed to `test_pins_the_whole_boundary_statement`. `BOUNDARY_STATEMENT`'s two consumers now both normalize, so the position test compares the normalized constant against the normalized target (AC9/BC3).
-- 2026-07-31: T8 evidence, `python3 -m unittest discover -s skills/tests` from the repo root, each mutation applied to one file and restored between runs. Collapse: the D-018 remainder clause, the section-not-file clause, the D-063 contrast, the no-uniqueness predicate and the section-scoping subject each negated in the target — five of five RED on the whole pin alone. Symmetrized normalization: re-wrapping `BOUNDARY_STATEMENT` in the guard source at 60 cols leaves the suite GREEN, where before the fix it raised `ValueError` in the position test.
+- 2026-07-31: T8 evidence, `python3 -m unittest discover -s skills/tests` from the repo root, each mutation applied to one file and restored between runs. Collapse: the D-018 remainder clause, the section-not-file clause, the D-063 contrast, the no-uniqueness predicate and the section-scoping subject each negated in the target — five of five RED. Symmetrized normalization: re-wrapping `BOUNDARY_STATEMENT` in the guard source at 60 cols leaves the suite GREEN, where before the fix it raised `ValueError` in the position test.
 - 2026-07-31: AC5 re-run against the collapsed guards — eleven of eleven RED, `tracking-rules.md` restored byte-identical after each, same command as above. Suites 103 / 332 / 827 under `python3 -m unittest discover -s <dir>/tests`, and `cairn_validate .` exit 0. `skills/tests` goes 833 to 827: T7 deletes two tests and T8 four, six in all.
 - 2026-07-31: §8 read of the subtractive delta ([O], fresh context) returned three findings, two of them in the new docstring. F1: the replacement paragraph opened "Anchors are copied from the target files' actual bytes" — a bare-plural universal over the anchors — one sentence before claiming the paragraph states no universal, and T7's own text had named that exact string for deletion. Fourth instance of the convicted shape, in the prose written to avoid it. F2: it credited the deleted checker as RR11's third instance, where RR11 and this log both name the docstring itself; the checker was the remedy for that instance, not the instance. Both fixed in place: the paragraph now states nothing general, points at the tests, and names `test_enumerates_the_always_read_files_with_their_elements` instead of quantifying over rows.
 - 2026-07-31: correction — the T8 evidence line above says re-wrapping `BOUNDARY_STATEMENT` at 60 cols raised `ValueError` before the fix. It did not: implicit string concatenation preserves the value across source wrapping, so a plain re-wrap was green at 2edcb91 too. The pre-fix red needs a re-wrap that also alters internal whitespace — a doubled space at a chunk boundary, verified RED at 2edcb91 and GREEN at HEAD. The fix and the claim's direction stand; the stated condition was wrong.
@@ -463,3 +463,46 @@ All nine criteria re-executed by command; earlier rounds' ticks not carried.
 complete` and `binding criteria` all PASS, every advisory OK. The `generic`
 profile names no toolchain checks. No `DESIGN.md` principle changed, so
 `cairn_impact` was skipped. No CI configured.
+
+**Fan-out.** Three fresh-context lenses, then a Sonnet scorer that generated
+none of the findings. The prior-review lens verified every actioned finding
+from rounds 1 and 2 genuinely closed, not merely marked closed, and found no
+regression. The blame-history lens walked all 19 commits and found no dropped
+protection — it independently confirms the collapse is strictly stronger than
+the four per-line tests it replaced. The diff-bug lens returned 20 candidates.
+The GitHub thread probe was empty, as in both earlier rounds.
+
+**Actioned (score ≥80), all three fixed at this gate:**
+
+- **F2 (92) — the table guard bound to the first `TABLE_HEADER` in the file.**
+  A decoy table inserted above the real one, with an identical header and the
+  same six first cells, absorbed every check while a `| `SNEAK.md` |` row
+  appended to the REAL table passed green across all 827 tests. Fixed: the
+  header must now be unique in the file and the table is read from inside the
+  `## Always-read governance` section. The reviewer's own probe now reds, as
+  does a decoy alone and a bare appended row; the unmodified control stays
+  green.
+- **F6 (88) — AC8's mandated probe record overstated what reds.** It said
+  "five of five RED on the whole pin alone"; negating the D-018 remainder
+  clause reds three tests — the whole pin, the position test, and the mutation
+  harness whose registered block no longer occurs. AC8's requirement (the
+  clause reds the named command) was met; the "on the whole pin alone" phrase
+  was not true and is struck.
+- **F8 (85) — the deferral candidate row pointed at the wrong artifact.** It
+  said BC5/BC6 are "verbatim in that milestone's Deviations from RR11 table";
+  that table records the departure, and the verbatim text is in the archived
+  RR11. Corrected to name the archive path.
+
+**Not actioned, notably.** The diff-bug lens alleged a fifth instance of this
+milestone's convicted shape — a universal in the docstring's own
+no-universals paragraph. The scorer checked it independently and scored it 15:
+the sentence names one specific test's verified behaviour rather than
+quantifying over the anchors as a class. AC7 holds.
+
+**Logged, below threshold (17):** F12 (68) D-094's misquoted definition, raised
+in all three rounds and remediable only by a superseding entry under IP4;
+F4 (55) trailing bare pipes still pass the row-width check; F5 (55) the
+separator regex rejects legal GFM alignment syntax; F3 (50) a target reflow
+reds the suite through the harness though the pin itself tolerates it; F11 (50)
+D-094 silent on D-045 and D-053; F7, F10 (45); F15 (35); F9, F14 (30); F13,
+F16, F17, F19 (25); F18, F20 (20); F1 (15).

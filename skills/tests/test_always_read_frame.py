@@ -205,7 +205,15 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
         # appended to the sixth row green (§8's delta round, finding 3), a
         # 5-cell row under a 4-column header: F9's malformed-table class
         # surviving on the row side after the header side was closed.
-        lines = self.rules.splitlines()
+        # The header must be UNIQUE in the file and the table read from inside
+        # the frame's own section — review round 3 (F2, 92) inserted a decoy
+        # table above the real one with an identical header and the same six
+        # first cells, which absorbed every check below while a `| `SNEAK.md` |`
+        # row appended to the REAL table passed green. `lines.index` had bound
+        # to the first occurrence. F9's header class, third rendering.
+        self.assertEqual(self.rules.count(TABLE_HEADER + "\n"), 1)
+        section = self.rules.split("\n## Always-read governance\n", 1)[1]
+        lines = section.split("\n## ", 1)[0].splitlines()
         self.assertIn(TABLE_HEADER, lines)
         at = lines.index(TABLE_HEADER)
         width = len(TABLE_HEADER.strip("|").split("|"))
