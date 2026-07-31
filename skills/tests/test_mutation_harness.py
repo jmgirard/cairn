@@ -1482,6 +1482,24 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
+        test="TestAccessibleLanguageRule.test_internal_ids_banned_with_milestone_exemption",
+        target=RULES,
+        block="question text and option labels (`M<NN>` is exempt: milestone ids are the",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAccessibleLanguageRule.test_flagged_prompt_capture_sentence",
+        target=RULES,
+        block="a work-log line when a milestone is active, otherwise absorbed",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestAccessibleLanguageRule.test_worked_pair_present_and_labeled_reconstruction",
+        target=RULES,
+        block="cancel is cleaner but touches ten records; a partial keep risks leaving",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
         test="TestPerSkillDirectives.test_plan_question_gate",
         target="skills/milestone-plan/SKILL.md",
         block="Acceptance chips (tracking-rules): a question resting on a produced",

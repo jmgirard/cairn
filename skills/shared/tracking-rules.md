@@ -621,7 +621,8 @@ cairn skill is active.
   >
   > **Good:** "Should retiring the certification step also cancel every rule
   > its earlier decisions added, or only the rule that made it stop? A full
-  > cancel is cleaner but touches eight records — details above the chip."
+  > cancel is cleaner but touches ten records; a partial keep risks leaving
+  > rules whose reason is gone — details above the chip."
 - **Acceptance chips show what's accepted.** A chip option that accepts or
   approves a produced conclusion — review findings, a subagent's verdict,
   an audit result, amended text, or

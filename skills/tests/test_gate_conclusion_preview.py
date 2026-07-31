@@ -161,12 +161,19 @@ class TestAccessibleLanguageRule(unittest.TestCase):
             "d-/rr-/bc-ids, ip/gp numbers, and doctrine section numbers — stay out of",
             t,
         )
-        self.assertIn("(`m<nn>` is exempt: milestone ids are the", t)
+        self.assertIn(
+            "question text and option labels (`m<nn>` is exempt: milestone ids are the",
+            t,
+        )
 
     def test_flagged_prompt_capture_sentence(self):
         t = rules()
         self.assertIn(
             "a gate prompt the user flags as unclear is captured verbatim in the same",
+            t,
+        )
+        self.assertIn(
+            "session — a work-log line when a milestone is active, otherwise absorbed",
             t,
         )
         self.assertIn(
@@ -180,6 +187,10 @@ class TestAccessibleLanguageRule(unittest.TestCase):
         self.assertIn("> **bad:** \"§8's retirement is a logged deviation", t)
         self.assertIn(
             "> **good:** \"should retiring the certification step also cancel",
+            t,
+        )
+        self.assertIn(
+            "> cancel is cleaner but touches ten records; a partial keep risks leaving",
             t,
         )
 
