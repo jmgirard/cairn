@@ -44,14 +44,23 @@ import re
 # section appears in this module (AC1).
 _NEXT_SECTION = re.compile(r"\n## ")
 
-# A sentence boundary is terminal punctuation followed by whitespace. This is
-# the one closed punctuation class AC1's carve-out covers; `_NEXT_SECTION`
-# above is markdown structure and draws on no section's content either. §8
-# carries no abbreviation-shaped mid-sentence period (no `e.g.`, `i.e.`,
-# `etc.`, `vs.`), so no abbreviation suppression is needed; a section
-# that acquires one will need the carve-out AC1 already permits, and the
+# A sentence boundary is terminal punctuation, then any run of closing
+# markup, then whitespace. Two closed classes, both punctuation and neither
+# drawn from any section's content: terminal punctuation, and the closing
+# delimiters markdown and English put after it. `_NEXT_SECTION` above is
+# markdown structure and draws on no content either.
+#
+# The markup run is not decoration. Round 5 measured the earlier
+# `(?<=[.!?])\s+` form fusing six units, because §8's rule headlines end
+# `.**` and the whitespace does not immediately follow the terminator — so
+# "**A round reopens only on a finding within the three named checks
+# above.** Those three are the whole of this step's mandate." was ONE unit,
+# and the extraction was calling itself a sentence sequence while returning
+# fused pairs. §8 carries no abbreviation-shaped mid-sentence period (no
+# `e.g.`, `i.e.`, `etc.`, `vs.`), so no abbreviation suppression is needed;
+# a section acquiring one needs the carve-out AC1 already permits, and the
 # constant added for it carries a comment naming the class it closes over.
-_SENTENCE_BOUNDARY = re.compile(r"(?<=[.!?])\s+")
+_SENTENCE_BOUNDARY = re.compile(r"[.!?][*_`\"')\]]*(\s+)")
 
 
 def section_body(path, heading):
@@ -72,7 +81,16 @@ def section_body(path, heading):
 def sentences(path, heading):
     """Return the section's ordered, whitespace-normalized sentence sequence."""
     flat = " ".join(section_body(path, heading).split())
-    return [s for s in _SENTENCE_BOUNDARY.split(flat) if s]
+    out, start = [], 0
+    for match in _SENTENCE_BOUNDARY.finditer(flat):
+        # Split at the whitespace group, so the terminator AND its closing
+        # markup stay with the sentence they end. `re.split` would drop the
+        # markup, and a ledger that silently discards `**` cannot see a rule
+        # lose its emphasis.
+        out.append(flat[start:match.start(1)])
+        start = match.end(1)
+    out.append(flat[start:])
+    return [s for s in out if s]
 
 
 def diff(ledger, current):

@@ -43,6 +43,29 @@ SECTION_8 = "## 8. The author never certifies its own guard's coverage"
 SECTION_9 = "## 9. Presence is not consistency"
 
 
+def _module_level_assignments(source):
+    """Every assignment in module scope, however deeply nested in blocks.
+
+    Round 5: both AC1 scans iterated `tree.body` alone, so a constant one
+    block deep was invisible — `if True:\n    _TERMS = [...]` shipped with the
+    suite green, which is the exact enumeration AC1 bans. Descends into block
+    statements and stops at `FunctionDef`/`ClassDef`, which keeps a
+    function-local list correctly out of scope: AC1 names a parameter or a
+    module constant, and a local is neither.
+    """
+    found = []
+    stack = list(ast.parse(source).body)
+    while stack:
+        stmt = stack.pop()
+        if isinstance(stmt, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            continue
+        if isinstance(stmt, (ast.Assign, ast.AnnAssign, ast.AugAssign)):
+            found.append(stmt)
+        for field in ("body", "orelse", "finalbody", "handlers"):
+            stack.extend(getattr(stmt, field, []) or [])
+    return found
+
+
 def committed_ledger():
     return LEDGER.read_text().splitlines()
 
@@ -99,8 +122,8 @@ class TestExtraction(unittest.TestCase):
 
     def test_heading_is_excluded_from_the_body(self):
         # Including it splits `## 8.` off as a spurious first "sentence",
-        # because the heading ends in a numeral-period. Measured: 51 units with
-        # the heading, 50 without.
+        # because the heading ends in a numeral-period. Measured at HEAD: 57
+        # units with the heading, 56 without.
         path = self._tmp("## 3. A title\n\nOne. Two.\n")
         self.assertNotIn("## 3.", sl.section_body(path, "## 3. A title"))
         self.assertEqual(sl.sentences(path, "## 3. A title"), ["One.", "Two."])
@@ -161,11 +184,7 @@ class TestExtraction(unittest.TestCase):
         # convention the next constant need not follow.
         text = pathlib.Path(sl.__file__).read_text()
         source = text.splitlines()
-        tree = ast.parse(text)
-        constants = []
-        for stmt in tree.body:
-            if isinstance(stmt, (ast.Assign, ast.AnnAssign, ast.AugAssign)):
-                constants.append(stmt.lineno - 1)
+        constants = [s.lineno - 1 for s in _module_level_assignments(text)]
         self.assertTrue(constants, "no module-level constants found to check")
         for i in constants:
             # Round 2: requiring only that a comment EXIST let
@@ -200,11 +219,10 @@ class TestExtraction(unittest.TestCase):
         # invisible to the test meant to ban it. Parsed with `ast` now, so
         # every module-level assignment is reached whatever shape it takes,
         # rather than the one shape the author thought to match.
-        tree = ast.parse(pathlib.Path(sl.__file__).read_text())
+        text = pathlib.Path(sl.__file__).read_text()
         patterns = [
             node.value
-            for stmt in tree.body
-            if isinstance(stmt, (ast.Assign, ast.AnnAssign, ast.AugAssign))
+            for stmt in _module_level_assignments(text)
             for node in ast.walk(stmt)
             if isinstance(node, ast.Constant) and isinstance(node.value, str)
         ]
