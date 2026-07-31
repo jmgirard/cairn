@@ -89,7 +89,7 @@ recording the addition and its boundaries.
 - [x] T1: Run the AC1 sweep against `hooks/hooks.json` and
       `hooks/session_context.py:240-270` (`build_context`); classify each
       surface and record the table.
-- [ ] T2: Append the `DECISIONS.md` entry (AC6's four points).
+- [x] T2: Append the `DECISIONS.md` entry (AC6's four points).
 - [x] T3: Add the row(s) after `tracking-rules.md:182` and the boundary
       statement beneath the table, near the existing fifth-surface paragraph at
       `tracking-rules.md:184-193`.
@@ -112,6 +112,7 @@ recording the addition and its boundaries.
 - 2026-07-31: T1 — AC1 sweep run against `hooks/hooks.json:3-13` and `build_context` (`hooks/session_context.py:241-344`) plus the harness-loaded project instructions; six surfaces, `CLAUDE.md` the sole uncovered one, `PROFILE.md`'s name header / the hook `PREAMBLE` / per-user memory out of scope. Classification table in `## Decisions`.
 - 2026-07-31: T3 — sixth frame row shipped at `tracking-rules.md:183`, scoped to `CLAUDE.md`'s `## Project tracking` section; the AC3 boundary statement added as its own paragraph at `:196-206`, leaving the guarded fifth-surface paragraph untouched. Cell sources: D-009 `cairn/DECISIONS.md:90`, the trim-to-template remedy `tracking-rules.md:141-143`, the 30-line cap `tracking-rules.md:86` with `scripts/cairn_scripts.py:89` and `scripts/cairn_validate.py:75-77`.
 - 2026-07-31: T4 — four asserts added to `test_always_read_frame.py` (the sixth row whole; the three AC3 claims, each anchored on one physical line of the target), four matching `test_mutation_harness.py` REGISTRY entries; harness green. Adjacent-phrase grep over all 13 existing anchors: each still occurs exactly once, so no re-anchoring is owed.
+- 2026-07-31: T2 — D-094 appended, recording AC6's four points plus per-user memory's out-of-scope reason; `dangling id tokens` clean.
 
 ## Decisions
 
