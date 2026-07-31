@@ -2853,13 +2853,46 @@ REGISTRY = [
         target="cairn/DECISIONS.md",
         block="recorded here as a deliberate deviation from the\nrow's own condition (IP2: surfaced, never silently overridden).",
     ),
-    # M125: §6's recorded-counts rule — headline, operative clause, and the
-    # measured case it is required to name (AC3), each pinned separately.
+    # M125 §8 round 2's structural remedy (pin-gap shape): the D-entry's
+    # remaining AC4-mandated content, pinned in one pass.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_decision_entry_states_the_rule_it_records",
+        target="cairn/DECISIONS.md",
+        block="A certification therefore ends in one\nof three ways: the gate opens at zero unresolved; a falsifier clause retires\nrounds across the measured window; or the stop rule ends the rounds on a\nrepeated shape.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_decision_entry_states_the_rule_it_records",
+        target="cairn/DECISIONS.md",
+        block="Whether two findings\nshare a shape is the judgment D-064's trigger (b) applies to review returns,\napplied here to certification rounds.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_decision_entry_states_the_rule_it_records",
+        target="cairn/DECISIONS.md",
+        block="whose one confirmation obligation is a structural remedy closing the shape's\nclass rather than its instance, confirmed by operation.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_decision_entry_states_the_rule_it_records",
+        target="cairn/DECISIONS.md",
+        block="requires a count recorded in a milestone record — a work-log line, a\ndocstring, a comment, or a D-entry — to carry the procedure that produced it\nat verbatim-reproducible grade",
+    ),
+    # M125: §6's recorded-counts rule — headline, operative clause, the
+    # record-kind enumeration (§8 round 2 finding 1), and the measured case
+    # it is required to name (AC3), each pinned separately.
     Mutation(
         guard="test_lesson_graduation",
         test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
         target=GUARD_DOCTRINE,
         block="**A count recorded in a milestone record carries the procedure that produced\nit, at verbatim-reproducible grade.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
+        target=GUARD_DOCTRINE,
+        block="A work-log line, a docstring, a comment,\nor a D-entry stating a count",
     ),
     Mutation(
         guard="test_lesson_graduation",
@@ -2905,7 +2938,7 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_clearing_both_lines_is_sufficient_to_reopen",
+        test="TestDescriptionLayerCertification.test_clearing_both_lines_reopens_absent_a_shape_repeat",
         target=GUARD_DOCTRINE,
         block="**And a finding that clears both lines is a reopening finding**, carrying that\nclass's obligation: a further fresh-context round — unless it repeats the\ndefect shape of the previous round's reopening finding, in which case the\nstop rule below makes it a **shape-repeat finding** instead.",
     ),

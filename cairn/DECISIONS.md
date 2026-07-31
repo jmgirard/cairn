@@ -3380,3 +3380,27 @@ AC1 was amended to match at the same gate (user decision, 2026-07-30).
 **Consequences:** none of D-091's four decisions changes; the stop rule,
 the gloss supersession, the count rule, and the logged deviation all stand
 as decided. What changes is only the four claims named above.
+
+### D-093 (2026-07-30): D-090's and D-091's "rounds 5–7 each finding one instance of a single class" is corrected — each round returned two reopening findings, across two threads — supersedes that clause in both entries; both decisions stand (M125 §8 round 2)
+
+**Context:** M125's §8 certification round 2 (finding 5) caught the
+undercount in D-091; the same sentence appears in D-090, written at the
+same plan gate. This entry lands with the one-pass re-verification of
+D-091/D-092's factual claims that round 2's stop obliged (Remedy C).
+
+**Correction:** Read from
+`git show a5a7007:cairn/milestones/M124-section-consistency-ledger.md`
+(lines 205–219, the round-5/6/7 log lines): rounds 5, 6 and 7 each opened
+"2 reopening", and the six findings run in two threads — the
+enumeration-widening thread (round 5 F1, round 6 F2, round 7 F1) and the
+extractor-instrument thread (round 5 F2, round 6 F1, round 7 F2). "One
+instance of a single class with each fix one more enumeration" describes
+the first thread alone.
+
+**Consequences:** both entries' decisions stand — the maintainer's
+override diagnosis those entries rest on ("every round's fix had been one
+more enumeration") is quoted verbatim in the same artifact and survives:
+it convicts the thread the stop rule was built for, and the second thread
+ended the same way, closed by a structural remedy (the extractor
+contract) rather than by a further round — which is the disposition the
+stop rule now makes the rule.

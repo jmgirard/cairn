@@ -36,7 +36,8 @@ The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
     of its own — they moved to D-085 at T10), and the yield-based falsifier's
     window and all three clauses: six counted quantities, three consequences
     and three tolerances. RR10's two amendments are here too — the sufficiency
-    arm that makes reopening an iff, and clause (iii), which retires the whole
+    arm (which made reopening an iff until M125's shape-repeat exception
+    narrowed it), and clause (iii), which retires the whole
     step on round-1 yield decay. M125 (D-091) adds the shape-repeat stop:
     the two-same-shape-rounds rule, the trigger-(b) shape judgment, the
     class it coins and that class's remedy obligation, the disclosure, the
@@ -728,9 +729,13 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             r"D\-070\s+rules\s+on\s+the\s+first\s+axis\s+and\s+says\s+nothing\s+about\s+the\s+second,\s+which\s+is\s+why\s+this\s+is\s+compatible\s+with\s+it\s+rather\s+than\s+a\s+partial\s+supersession\s+of\s+it\.",
         )
 
-    def test_clearing_both_lines_is_sufficient_to_reopen(self):
+    def test_clearing_both_lines_reopens_absent_a_shape_repeat(self):
         # RR10 BC1. Reopening carried only NECESSARY conditions, so a reader deep
         # in a loop could derive 'nothing must reopen' with every rule intact.
+        # M125: renamed from ..._is_sufficient_to_reopen — the stop rule's
+        # exception means clearing both lines is sufficient only absent a
+        # shape repeat, and the old name asserted the unconditional claim
+        # (round 2 finding 4; M124's rename precedent).
         self.assertRegex(
             self.section8,
             r"\*\*And\s+a\s+finding\s+that\s+clears\s+both\s+lines\s+is\s+a\s+reopening\s+finding\*\*,\s+carrying\s+that\s+class's\s+obligation:\s+a\s+further\s+fresh\-context\s+round\s+—\s+unless\s+it\s+repeats\s+the\s+defect\s+shape\s+of\s+the\s+previous\s+round's\s+reopening\s+finding,\s+in\s+which\s+case\s+the\s+stop\s+rule\s+below\s+makes\s+it\s+a\s+\*\*shape\-repeat\s+finding\*\*\s+instead\.",
@@ -738,7 +743,8 @@ class TestDescriptionLayerCertification(unittest.TestCase):
 
     def test_the_reopening_rule_runs_in_both_directions(self):
         # RR10 q6's live two-readings residue. This sentence is the reason the
-        # only-if is stated as an iff rather than left implied.
+        # only-if is paired with a stated sufficiency arm rather than left
+        # implied (an iff until M125's shape-repeat exception).
         self.assertRegex(
             self.section8,
             r"Stated\s+as\s+a\s+bound\s+alone\s+it\s+says\s+only\s+which\s+findings\s+cannot\s+reopen\s+a\s+round\s+and\s+never\s+that\s+any\s+must",
@@ -875,6 +881,39 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             decisions,
             r"recorded here as a deliberate deviation from the\s+row's own "
             r"condition \(IP2: surfaced, never silently overridden\)\.",
+        )
+
+    def test_the_decision_entry_states_the_rule_it_records(self):
+        # §8 round 2 (findings 1-3) stopped the certification on the
+        # pin-gap shape; this test is part of the structural remedy — the
+        # entry's remaining AC4-mandated content pinned in one pass, not one
+        # clause per round: the three endings, the trigger-(b) reuse, the
+        # class's obligation, and the count rule's statement.
+        decisions = (SKILLS.parent / "cairn" / "DECISIONS.md").read_text()
+        self.assertRegex(
+            decisions,
+            r"A certification therefore ends in one\s+of three ways: the "
+            r"gate opens at zero unresolved; a falsifier clause retires\s+"
+            r"rounds across the measured window; or the stop rule ends the "
+            r"rounds on a\s+repeated shape\.",
+        )
+        self.assertRegex(
+            decisions,
+            r"Whether two findings\s+share a shape is the judgment D-064's "
+            r"trigger \(b\) applies to review returns,\s+applied here to "
+            r"certification rounds\.",
+        )
+        self.assertRegex(
+            decisions,
+            r"whose one confirmation obligation is a structural remedy "
+            r"closing the shape's\s+class rather than its instance, "
+            r"confirmed by operation\.",
+        )
+        self.assertRegex(
+            decisions,
+            r"requires a count recorded in a milestone record — a work-log "
+            r"line, a\s+docstring, a comment, or a D-entry — to carry the "
+            r"procedure that produced it\s+at verbatim-reproducible grade",
         )
 
     def test_the_falsifier_carries_a_whole_step_retirement_clause(self):

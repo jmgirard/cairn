@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M125 | Certification loops stop on a repeated defect shape | in-progress | M124 | normal | milestones/M125-shape-repeat-stop.md |
+| M125 | Certification loops stop on a repeated defect shape | review | M124 | normal | milestones/M125-shape-repeat-stop.md |
 | M124 | A section-consistency ledger, so a contradicted or renamed rule reds | done | — | normal | milestones/archive/M124-section-consistency-ledger.md |
 | M123 | Rebuild guard-doctrine §8 so its certification loop converges | done | — | normal | milestones/archive/M123-section8-convergence-rebuild.md |
 | M122 | A differential guard holding the hook and the cap counters to one heading contract | done | — | normal | milestones/archive/M122-heading-normalization-differential-guard.md |

@@ -1,6 +1,6 @@
 # M125: Certification loops stop on a repeated defect shape
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M124
 - **Driving RR:** —
@@ -129,7 +129,7 @@ than absorbed (gate decision 2026-07-30).
 - [x] T4 — Pin every added or amended rule by in-place inversion restored
       byte-identical; pin the D-entry's existence; register each block;
       blanking sweep green (AC5).
-- [ ] T5 — Full verify: three suites exit 0, `cairn_validate` exit 0;
+- [x] T5 — Full verify: three suites exit 0, `cairn_validate` exit 0;
       `/milestone-implement` step 8 fires §8 certification, which runs under
       the shipped stop rule (AC6).
 
@@ -160,6 +160,14 @@ than absorbed (gate decision 2026-07-30).
 - 2026-07-30: CORRECTION, appended not edited (IP4) — the T1-breakage line groups clause (ii)'s tolerance anchor under "what broke"; that anchor stayed GREEN under the duplicated phrase (false coverage), which is the different fact the line's own trailing clause states (round 1 finding 10).
 - 2026-07-30: procedures for the T4 counts, owed by the §6 rule this milestone ships (round 1 observation): 11 asserts = test-name delta `633750b..b901f64` over `grep -h "def test_" skills/tests/test_fresh_context_readers.py skills/tests/test_lesson_graduation.py`; 14+3 registry entries = `git diff 633750b..b901f64 -- skills/tests/test_mutation_harness.py` Mutation-block adds/edits; suite figures from each suite's `Ran N tests` line at those commits.
 - 2026-07-30: out-of-mandate, recorded: the regenerated §8 ledger carries its first duplicate unit ("Tolerance: one occurrence." twice, `sort | uniq -d`), the multiset shape M124's review F9 named as unmanifested — inert today (`test_section_matches_its_ledger` green), left with F9's log entry as its record.
+- 2026-07-30: §8 certification round 2 (fresh-context [O], authored nothing): 5 reopening-eligible findings (3 coverage, 2 claim-vs-file), 2 fix-authored records, 0 anchor-fidelity; §8's edited text certified self-consistent — no circularity, no contradicted sentence, no unmarked synonym.
+- 2026-07-30: STOP — the shipped stop rule fired on its first live run: round 2's findings repeat round 1's defect shapes (trigger (b) judgment), so no round 3 is convened. Shape 1: an AC clause shipped without a redding pin, one instance surfacing per round (r1 F2 -> r2 F1/F2/F3). Shape 2: a pre-existing description of an M125-changed rule left stale (r1 F6/F7 -> r2 F4). Shape 3: a D-091 claim contradicted by its cited artifact (r1 F4/F5/F11 -> r2 F5).
+- 2026-07-30: REMEDY A (closes shape 1's class): complete clause-by-clause AC1-AC5 -> assert map authored in one pass — AC1 7 clauses, AC2 4, AC3 4, AC4 6, AC5 5; every clause maps to a redding assert or named operation evidence; gaps closed: §6 asserts re-scoped to a `section6()` slice (relocation now reds — the LESSONS scope-the-read rule), the §6 record-kind enumeration pinned, D-091's three-endings / trigger-(b) / obligation / count-rule sentences pinned (1 new test, 6 new registry entries); relocation probe + 5 inversions red, restores byte-identical.
+- 2026-07-30: REMEDY B (closes shape 2's class): corpus sweep for descriptions of every M125-changed sentence — `grep -rn -i 'iff\b|sufficien|three per-class|three obligation|three sentences|shape-repeat|two rules above|three distinct classes' skills/ --include='*.py' --include='*.md'` excluding `__pycache__` and `ledgers/` — every hit checked against shipped doctrine; 3 stale fixed (module docstring's iff claim, the only-if comment, `test_clearing_both_lines_is_sufficient_to_reopen` renamed `..._reopens_absent_a_shape_repeat` with its registry reference), rest verified current.
+- 2026-07-30: REMEDY C (closes shape 3's class): one-pass re-verification of D-091/D-092's factual claims against their cited artifacts (round 2's verified list + the rounds-5-7 tally re-read from `git show a5a7007:cairn/milestones/M124-section-consistency-ledger.md` lines 205-219); one false claim found, in both D-090 and D-091 — corrected by D-093, appended (previewed verbatim).
+- 2026-07-30: CORRECTION, appended not edited (IP4) — the round-1-fixes line's "`cairn_budget` 135/149" omits the argument that produces it: `python3 scripts/cairn_budget.py cairn/milestones/M125-shape-repeat-stop.md` (round 2 finding 6, fix-authored class).
+- 2026-07-30: §8 growth updated after round 1's re-wording: 179 lines at HEAD by the same `awk '/^## 8\. /{f=1} /^## 9\. /{f=0} f' skills/shared/guard-doctrine.md | wc -l` (150 at main, 177 at cf095cc) — still under the implement gate's record-as-deliberate decision.
+- 2026-07-30: T5 — final verify: skills 824 / scripts 332 / hooks 103 each OK, `cairn_validate` exit 0, `cairn_budget` 135/149 on this file; certification ended by the stop rule at 2 rounds with all three remedies confirmed by operation (suite, harness blanking, inversion sweeps). Status -> review.
 
 ## Decisions
 
