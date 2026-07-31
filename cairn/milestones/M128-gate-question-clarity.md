@@ -3,12 +3,12 @@
      Per-section owners are tagged below. -->
 # M128: Gate questions lead in plain words
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m128-gate-question-clarity
 
 ## Goal
 
@@ -80,12 +80,12 @@ none exist on disk; AC4's mechanism accumulates them for a future pass.
 
 ## Tasks
 
-- [ ] T1: Rewrite the accessible-language bullet in
+- [x] T1: Rewrite the accessible-language bullet in
       `skills/shared/tracking-rules.md` (~line 596): two-sentence test,
       id ban with the `M<NN>` exemption, capture-on-flag sentence,
       never-a-gate clause reconciled. Copy anchor phrases from the shipped
       bytes, not the draft (M95 lesson).
-- [ ] T2: Author the worked bad/good pair beside the bullet — Candidate A
+- [x] T2: Author the worked bad/good pair beside the bullet — Candidate A
       verbatim from the M128 plan session as the bad case, plain rewrite
       as the good case, ≤4 lines each.
 - [ ] T3: Update `TestAccessibleLanguageRule` and the mutation-harness
@@ -105,6 +105,7 @@ none exist on disk; AC4's mechanism accumulates them for a future pass.
 - 2026-07-31: plan gate chose exempting `M<NN>` from the id ban over banning it because milestone numbers are the operator's own referent and the ban would red four shipped chip labels; falsified by the operator flagging an M-id-led prompt as unclear (via AC4's capture record).
 - 2026-07-31: plan gate chose a reconstructed bad example (Candidate A, picked by the user from three) over a verbatim capture because no flagged prompt exists on disk and the Desktop gate transcripts are not searchable; falsified/replaceable by the first AC4-captured real exemplar.
 - 2026-07-31: plan gate chose shipping the capture-on-flag sentence over shipping the rule change alone because the next fix should be evidence-based; falsified by the sentence producing no captures across milestones in which the operator reports further unclear prompts.
+- 2026-07-31: T1+T2 — bullet rewritten in place preserving all five pinned anchor lines byte-identical; worked pair authored (Candidate A as bad, labeled reconstruction).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
