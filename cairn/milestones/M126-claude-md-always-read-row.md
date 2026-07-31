@@ -493,6 +493,13 @@ The GitHub thread probe was empty, as in both earlier rounds.
   that table records the departure, and the verbatim text is in the archived
   RR11. Corrected to name the archive path.
 
+**Evidence re-confirmed after the gate fix.** The F2 fix changed guard code, so
+the evidence resting on it was re-run: twelve mutations — nine clause and
+structural inversions, the sixth row moved above the fifth, a row inserted
+above the fifth, and a cell appended to the sixth row — twelve of twelve RED,
+`tracking-rules.md` restored byte-identical after each. Suites 103 / 332 / 827
+and `cairn_validate .` exit 0.
+
 **Not actioned, notably.** The diff-bug lens alleged a fifth instance of this
 milestone's convicted shape — a universal in the docstring's own
 no-universals paragraph. The scorer checked it independently and scored it 15:
