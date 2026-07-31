@@ -56,18 +56,19 @@ recording the addition and its boundaries.
       as against the milestone file, whose cap-exempt sections are still
       governed, by read-bounding (D-063). The statement claims no uniqueness
       about differing always-read and governed units.
-- [ ] AC4: `test_always_read_frame.py` pins each new row whole and the AC3
-      statement, every anchor copied from the shipped bytes. A per-line anchor
-      sits on one physical line of the target. A whole-object pin — a statement
-      compared under a declared normalization, or a table parsed to its members
-      — instead applies that same normalization to both sides, so a reflow of
-      the target cannot unpin it while a reword still reds; evidence is the
-      suite green against a reflowed target and red against a reworded one.
-      Each new pinned block gets its own `test_mutation_harness.py` REGISTRY
-      entry, and the harness runs green with them present. The new prose is
-      grepped for every phrase an existing `test_always_read_frame.py` assert
-      anchors on; any assert whose phrase the new prose duplicates is
-      re-anchored into its own sentence (M113).
+- [ ] AC4: `test_always_read_frame.py` pins each new row whole — every cell, so
+      an appended cell reds — and pins the AC3 statement. Every anchor is copied
+      from the shipped bytes and sits on one physical line of the target, with a
+      single exception: `BOUNDARY_STATEMENT`, which pins the AC3 statement
+      entire under a whitespace normalization applied to both sides, because
+      per-line anchoring is the defect shape guard-doctrine §8's stop rule
+      convicted here. Evidence for the exception is that pin alone — green when
+      the target's statement is re-wrapped, red when it is reworded. Each new
+      pinned block gets its own `test_mutation_harness.py` REGISTRY entry, and
+      the harness runs green with them present. The new prose is grepped for
+      every phrase an existing `test_always_read_frame.py` assert anchors on;
+      any assert whose phrase the new prose duplicates is re-anchored into its
+      own sentence (M113).
 - [x] AC5: Each rule this milestone ships in `tracking-rules.md` is inverted in
       place per `guard-doctrine.md` §1 — relabel, negate, or transpose **the
       rule**, never the assert; run; require red; restore and diff — with the
@@ -141,6 +142,12 @@ recording the addition and its boundaries.
 - 2026-07-31: F4 (75) promoted from the logged list at the user's call and fixed — nothing pinned the boundary statement's position, so moving it to EOF stayed green. `test_the_boundary_statement_sits_beneath_the_table` bounds it on BOTH sides, between the table's last row and the section-closing audit paragraph; a one-sided "after the table" first cut passed the EOF relocation and was corrected before commit. Registered in the harness.
 - 2026-07-31: amended-AC4 evidence, `python3 -m unittest discover -s skills/tests` from the repo root, mutating `skills/shared/tracking-rules.md` alone and restoring between runs. Whole-object arm measured on `test_pins_the_whole_boundary_statement` alone, since per-line anchors are meant to break on reflow: statement re-wrapped onto one line GREEN, at 55 cols GREEN, at 120 cols GREEN, reworded under a reflow RED. Whole-suite probes, all four previously green, now all RED: appended header column; deleted separator row; statement moved to EOF; statement moved above the table.
 - 2026-07-31: three suites green (103 / 332 / 831) and `cairn_validate` exit 0. Status -> review.
+- 2026-07-31: §8 delta round ([O], fresh context) over the return's own guard surface — run because the return authored new guards, and the earlier stop rule bars further rounds on the hard-wrap shape it closed, not on newly written surface. Five findings. Recorded honestly: the status flip to `review` preceded this round in the return, where §8 puts the reader first.
+- 2026-07-31: AMENDMENT (substantive, gated) — the amended AC4 failed the SAME SHAPE as the original: a clause quantified over a scope the artifact cannot meet. "Evidence is the suite green against a reflowed target" is false, because per-line anchors are meant to break on reflow and a real re-wrap reds four of them; the evidence recorded under it was measured at single-test scope. Second failure of one criterion by a new mechanism of one shape, so the thrash rule's remedy applied: take the alternative the previous gate recorded against. AC4 is now the narrow form — one physical line for every anchor, `BOUNDARY_STATEMENT` named as the single exception, its evidence stated at that pin's own scope. Every clause measured against the files before the gate, not reasoned about.
+- 2026-07-31: delta-round finding 3 fixed (executable surface) — `test_the_worked_table_holds_exactly_the_six_surfaces_in_order` compared first cells only, so a fifth cell appended to a four-column row passed green: F9's malformed-table class surviving on the row side after the header side was closed. Every row's cell count is now checked against the header's, and the separator's too. Probes: a fifth cell on the sixth row RED, on the fifth row RED, a 3-column separator RED, and a legitimately respaced `| --- | --- | --- | --- |` separator GREEN.
+- 2026-07-31: delta-round finding 4 fixed in place — the new test's comment quoted "the five above it" as position-dependent prose in the statement; that phrase is in no rulebook line (the target says "the four above it", in the fifth-surface paragraph). Quote removed; the two true fragments stand.
+- 2026-07-31: correction — the T6 line's "all 23 string constants ... 22 occur exactly once and wholly on one physical line" is staled by this return, and carried no procedure. Re-measured: AST-parse `skills/tests/test_always_read_frame.py`, take every `str` Constant over 25 characters containing no newline, resolve each against `tracking-rules.md` when that file contains it and `skills/milestone/SKILL.md` otherwise. 24 constants; 23 sit wholly on one physical line of their target; the exception is `BOUNDARY_STATEMENT`, normalized by design.
+- 2026-07-31: delta-round findings 1 and 2 are the amended criterion's own wording and are closed by the amendment above rather than by a code change; finding 5 is the count corrected above. Out-of-mandate observations recorded and not chased: the position test's upper bound moves if the audit paragraph moves with the statement; the pinned region between table and audit paragraph is wide; the guard docstring's "each a single physical line" universal is the review's logged F3 (70), still open.
 
 ## Decisions
 

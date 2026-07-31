@@ -244,14 +244,23 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
         # column be appended to the header green, and a table whose separator
         # row was deleted — no longer a markdown table at all — passed with the
         # guard silent. Two holes the comment above already claimed were shut.
+        # Every row carries the header's column count too — AC4's "pins each
+        # new row whole". Comparing first cells alone let a fifth cell be
+        # appended to the sixth row green (§8's delta round, finding 3), a
+        # 5-cell row under a 4-column header: F9's malformed-table class
+        # surviving on the row side after the header side was closed.
         lines = self.rules.splitlines()
         self.assertIn(TABLE_HEADER, lines)
         at = lines.index(TABLE_HEADER)
-        self.assertRegex(lines[at + 1], r"^\|(?:-+\|)+$")
+        width = len(TABLE_HEADER.strip("|").split("|"))
+        self.assertRegex(lines[at + 1], r"^\|(?:\s*-+\s*\|)+$")
+        self.assertEqual(len(lines[at + 1].strip("|").split("|")), width)
         rows = []
         for line in lines[at + 2:]:
             if not line.startswith("|"):
                 break
+            with self.subTest(row=line[:40]):
+                self.assertEqual(len(line.strip("|").split("|")), width)
             rows.append(line.split(" | ")[0] + " |")
         self.assertEqual(rows, list(FRAME_ROWS))
         self.assertIn(
@@ -265,8 +274,8 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
         # review found nothing pinned that (F4, 75): the paragraph moved to
         # EOF left every anchor matched and the suite green, while the prose
         # is position-dependent throughout — "The sixth surface", "in that
-        # row", "the five above it". Promoted from the logged list at the
-        # user's call rather than left for a later milestone.
+        # row". Promoted from the logged list at the user's call rather than
+        # left for a later milestone.
         #
         # Bounded on BOTH sides, because a one-sided "after the table" check
         # is satisfied by moving the paragraph to EOF — the exact relocation
