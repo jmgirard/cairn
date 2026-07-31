@@ -180,6 +180,7 @@ The always-read surfaces, as the worked case:
 | `tracking-rules.md` | the placement steps under "What gets a test" (D-071) | editorial pass; growth governed at the door (D-057) | `/milestone` audit mass+growth line |
 | `DECISIONS.md` | a cross-cutting choice among alternatives | bounded heading read — history read less, never shrunk (D-054) | none needed once read-bounded |
 | the active `milestones/M<NN>-<slug>.md` | the milestone-file section ownership table | capped sections: the 150-line plan-owned cap; cap-exempt sections: newest-content injection — history read less, never shrunk (D-063); the file leaves the set at `done` | `weight caps` CHECK + `work-log format` + `decisions format`; none needed for the cap-exempt sections once read-bounded |
+| `CLAUDE.md`'s `## Project tracking` section | routing only — classify and invoke the skill, never conduct (D-009) | the weight-caps remedy: trim the section back to the template | 30-line section cap, `cairn_validate`'s `weight caps` CHECK |
 
 The fifth surface differs from the four above it in two ways worth naming.
 It is **the only always-read surface that leaves the set**: a milestone stops
@@ -191,6 +192,18 @@ plan-owned sections bounded by a cap with an outflow, its cap-exempt sections
 150-line cap deliberately exempts those three and IP4 forbids trimming them on disk. The
 read-bound is applied by the `session_context` SessionStart hook, which injects
 each cap-exempt section's newest content and states what it left out (D-063).
+
+The sixth surface differs again, in what the frame governs of it. Its three
+cells describe cairn's `## Project tracking` section and never the whole file a
+session reads, because **D-018 caps that section alone and D-009 confines it to
+routing**: the repo's own dev doctrine above and below the section is governed
+by nothing cairn owns, and no cell in that row reaches the remainder. The
+milestone file's own split is a different thing — its cap-exempt sections are
+still governed, by a read-bound where its capped sections have a cap (D-063) —
+so what separates the two is whether an ungoverned remainder exists at all,
+never how strongly one part or another is held. Neither surface is unique in
+having an always-read unit and a governed unit that are not the same unit; the
+table names the governed one, and that row says so in its first cell.
 
 The `/milestone` audit applies this frame: its §2 checks each always-read file
 still names all three elements, and that any newly-added always-read surface is

@@ -90,7 +90,7 @@ recording the addition and its boundaries.
       `hooks/session_context.py:240-270` (`build_context`); classify each
       surface and record the table.
 - [ ] T2: Append the `DECISIONS.md` entry (AC6's four points).
-- [ ] T3: Add the row(s) after `tracking-rules.md:182` and the boundary
+- [x] T3: Add the row(s) after `tracking-rules.md:182` and the boundary
       statement beneath the table, near the existing fifth-surface paragraph at
       `tracking-rules.md:184-193`.
 - [ ] T4: Add the asserts to `skills/tests/test_always_read_frame.py` (row shape
@@ -108,7 +108,9 @@ recording the addition and its boundaries.
 - 2026-07-31: plan gate chose sweeping every session-start surface over closing the named `CLAUDE.md` gap alone, because a criterion that lists its sites becomes the sweep and omits the rest (M118, M112); falsified by the sweep returning surfaces whose rows the frame cannot state.
 - 2026-07-31: plan gate chose a candidate row over settling the frame's membership rule here, because the table already holds a conditionally-read file and fixing that is doctrine revision, not a table row; falsified by the AC1 sweep being unable to classify a surface without the rule settled.
 - 2026-07-31: implement gate chose scoping the new row's first cell to `CLAUDE.md`'s `## Project tracking` section over naming the file bare, because all three of the row's cells state section-scoped governance (D-009 inflow, the trim-to-template outflow, the 30-line section cap) and a file-named cell makes all three overclaim against D-018; and chose a new paragraph for the AC3 boundary statement over reworking the guarded fifth-surface paragraph, avoiding the re-anchoring the M104 trap runs on.
+- 2026-07-31: minor amendment — T3 worked before T2 (task reorder only; no criterion, scope or task text changed), so the D-entry records what shipped rather than what was intended.
 - 2026-07-31: T1 — AC1 sweep run against `hooks/hooks.json:3-13` and `build_context` (`hooks/session_context.py:241-344`) plus the harness-loaded project instructions; six surfaces, `CLAUDE.md` the sole uncovered one, `PROFILE.md`'s name header / the hook `PREAMBLE` / per-user memory out of scope. Classification table in `## Decisions`.
+- 2026-07-31: T3 — sixth frame row shipped at `tracking-rules.md:183`, scoped to `CLAUDE.md`'s `## Project tracking` section; the AC3 boundary statement added as its own paragraph at `:196-206`, leaving the guarded fifth-surface paragraph untouched. Cell sources: D-009 `cairn/DECISIONS.md:90`, the trim-to-template remedy `tracking-rules.md:141-143`, the 30-line cap `tracking-rules.md:86` with `scripts/cairn_scripts.py:89` and `scripts/cairn_validate.py:75-77`.
 
 ## Decisions
 
