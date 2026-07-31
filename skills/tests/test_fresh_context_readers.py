@@ -461,7 +461,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             r"\*\*A\s+round\s+reopens\s+only\s+on\s+a\s+finding\s+within\s+the\s+three\s+named\s+checks\s+above\.\*\*",
         )
 
-    def test_out_of_mandate_observations_route_to_sections_one_to_seven(self):
+    def test_out_of_mandate_observations_route_to_sections_one_to_seven_and_nine(self):
         # Routed, never dropped. Without the routing clause the boundary reads
         # as licence to ignore a real finding. F1 (round 4): the anchor opened
         # at the PREDICATE, leaving AC3's discriminator — WHICH observations
@@ -474,7 +474,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             r"one\-directional\s+pin,\s+a\s+near\-miss\s+control's\s+uncovered"
             r"\s+signature,\s+a\s+fixture\s+weak\s+on\s+an\s+axis\s+no\s+"
             r"criterion\s+names\s+—\s+"
-            r"is\s+real\s+work,\s+and\s+it\s+is\s+recorded\s+and\s+fixed\s+as\s+ordinary\s+milestone\s+work\s+under\s+§§1–7\s+and\s+the\s+mutation\s+harness\.\s+It\s+does\s+not\s+reopen\s+certification",
+            r"is\s+real\s+work,\s+and\s+it\s+is\s+recorded\s+and\s+fixed\s+as\s+ordinary\s+milestone\s+work\s+under\s+§§1–7,\s+§9\s+and\s+the\s+mutation\s+harness\.\s+It\s+does\s+not\s+reopen\s+certification",
         )
 
     def test_a_finding_reopens_only_if_it_clears_both_lines(self):
@@ -506,7 +506,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # construction - it routes the very findings the falsifier counts.
         self.assertRegex(
             self.section8,
-            r"A\s+finding\s+counts\s+where\s+it\s+was\s+\*\*found\*\*,\s+never\s+where\s+it\s+was\s+fixed,\s+so\s+routing\s+one\s+to\s+§§1–7\s+does\s+not\s+remove\s+it\s+from\s+the\s+count",
+            r"A\s+finding\s+counts\s+where\s+it\s+was\s+\*\*found\*\*,\s+never\s+where\s+it\s+was\s+fixed,\s+so\s+routing\s+one\s+to\s+§§1–7\s+or\s+§9\s+does\s+not\s+remove\s+it\s+from\s+the\s+count",
         )
 
     def test_the_falsifier_window_carries_a_non_vacuity_floor(self):

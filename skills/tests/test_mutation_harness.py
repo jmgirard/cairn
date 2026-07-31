@@ -2467,9 +2467,9 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_out_of_mandate_observations_route_to_sections_one_to_seven",
+        test="TestDescriptionLayerCertification.test_out_of_mandate_observations_route_to_sections_one_to_seven_and_nine",
         target=GUARD_DOCTRINE,
-        block='A robustness observation that\nno acceptance-criterion clause pins — a surviving mutation, a one-directional\npin, a near-miss control\'s uncovered signature, a fixture weak on an axis no\ncriterion names — is real work, and it is recorded and fixed as ordinary\nmilestone work under §§1–7 and the mutation harness. It does not reopen\ncertification',
+        block='A robustness observation that\nno acceptance-criterion clause pins — a surviving mutation, a one-directional\npin, a near-miss control\'s uncovered signature, a fixture weak on an axis no\ncriterion names — is real work, and it is recorded and fixed as ordinary\nmilestone work under §§1–7, §9 and the mutation harness. It does not reopen\ncertification',
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2493,13 +2493,13 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_the_falsifier_counts_where_a_finding_was_found",
         target=GUARD_DOCTRINE,
-        block='A finding\n  counts where it was **found**, never where it was fixed, so routing one to\n  §§1–7 does not remove it from the count',
+        block='A finding\n  counts where it was **found**, never where it was fixed, so routing one to\n  §§1–7 or §9 does not remove it from the count',
     ),
     Mutation(
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_the_falsifier_window_carries_a_non_vacuity_floor",
         target=GUARD_DOCTRINE,
-        block='the window counts only if at least one of its three milestones convened a\n  round after its first — a window that never ran a later round has not measured\n  one',
+        block='the window counts only if at least one of its three milestones\n  convened a round after its first — a window that never ran a later round has\n  not measured one',
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2757,7 +2757,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_the_falsifier_carries_both_tolerances",
         target=GUARD_DOCTRINE,
-        block='Tolerance: exact zero on both counts,',
+        block='Tolerance: exact zero on both\n  counts,',
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2874,6 +2874,137 @@ REGISTRY = [
 EXEMPT = {
     "test_mutation_harness": "the harness's own tests, not a prose-guard",
 }
+
+# M124: the section-consistency ledger. One entry, because the guard has one
+# claim — §8 still says what the ledger records — and every §8 sentence carries
+# it equally. The block below is pinned by another assert too, which is not a
+# defect here: the harness runs the NAMED test alone, so this proves the ledger
+# guard itself reds. What the ledger catches that no anchor does is proved
+# instead by T5's replay, where two recorded mutations leave all 777
+# pre-existing tests green and red this guard alone.
+REGISTRY += [
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionEightLedger.test_section_matches_its_ledger",
+        target=GUARD_DOCTRINE,
+        block="Zero unresolved stays the bar;",
+    ),
+]
+
+# M124: §9's own rules, one entry per rule. §2 registers per FILE but requires
+# a new assert carry its own entry, which is why these are per assert rather
+# than one exemplar for the file; and each of these was ALSO verified by
+# in-place inversion — blanking proves the assert sees its block, inversion
+# proves the block carries the rule, and M120 passed three certification rounds
+# with three asserts surviving negation of the rule they pin.
+REGISTRY += [
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_section_exists_under_its_own_heading",
+        target=GUARD_DOCTRINE,
+        block="## 9. Presence is not consistency",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_presence_is_distinguished_from_consistency",
+        target=GUARD_DOCTRINE,
+        block="It does not pin that the\nsection around it still agrees with itself.**",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_contradicting_sentence_shape_is_named",
+        target=GUARD_DOCTRINE,
+        block="the section now says both",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_rename_shape_is_named",
+        target=GUARD_DOCTRINE,
+        block="is defeated by a coinage sharing neither",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_relocation_shape_is_named",
+        target=GUARD_DOCTRINE,
+        block="true of a position, not of a phrase",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_check_is_derived_never_enumerated",
+        target=GUARD_DOCTRINE,
+        block="**So derive the check from the section, never from a list of what to look\nfor.**",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_no_section_term_reaches_the_extractor",
+        target=GUARD_DOCTRINE,
+        block="No term drawn from the section is written\ninto the extractor",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_instrument_detects_and_never_judges",
+        target=GUARD_DOCTRINE,
+        block="**The instrument detects a change and never judges it.**",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_remedy_is_operation_never_adjudication",
+        target=GUARD_DOCTRINE,
+        block="**The remedy is operation the author runs, never adjudication the guard\nperforms.**",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_defeating_failure_mode_is_disclosed",
+        target=GUARD_DOCTRINE,
+        block="and no guard can detect that",
+    ),
+    # Certification round 1: AC5's remedy STEPS were unpinned while its
+    # headline was, so §9 could stop stating the operation with the suite
+    # green — while §8's routing enumerations point findings at it.
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_remedy_names_its_three_steps",
+        target=GUARD_DOCTRINE,
+        block="A red ledger is discharged by regenerating it, reading the reported\ndiff sentence by sentence",
+    ),
+    # Round 2: AC5's no-renumbering clause was pinned only by §9's presence
+    # anywhere in the file, and the three-shape count by nothing at all.
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_sections_are_numbered_one_to_nine_in_order",
+        target=GUARD_DOCTRINE,
+        block="## 5. Matchers and parsers over human-written markdown",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_three_shapes_are_declared_as_three",
+        target=GUARD_DOCTRINE,
+        block="They come apart three ways.",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_judgment_disclaimer_is_stated_not_only_labelled",
+        target=GUARD_DOCTRINE,
+        block="is not a question a diff can answer, and building it to answer",
+    ),
+    # Round 4: AC5's superseding-D-entry clause. Target is DECISIONS.md, whose
+    # entry heading is the shipped artifact; blanking it reds the assert.
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_d083_part_3a_is_superseded_by_an_appended_entry",
+        target="cairn/DECISIONS.md",
+        block="no longer describes shipped §8, which routes to §9 as well",
+    ),
+    # M124 round 7's structural remedy: the extractor's contract, pinned
+    # against a fixture never regenerated. Blanking a construct in the input
+    # changes the extraction and the committed expectation no longer matches.
+    Mutation(
+        guard="test_section_ledger",
+        test="TestExtractorContract.test_the_extractor_matches_its_committed_contract",
+        target="skills/tests/ledgers/extractor-contract.md",
+        block="**A bold rule ends here.** The sentence after it is its own unit.",
+    ),
+]
 
 # M95 (D-056). Five entries, because the placement doctrine fails in five
 # independent ways and any one of them silently restores the pre-M95 reading:

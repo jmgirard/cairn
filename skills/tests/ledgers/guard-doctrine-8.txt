@@ -1,0 +1,56 @@
+**Running a guard and certifying that it covers what you claim are different jobs, and only the first one survives being done by its author.**
+Operation self-corrects: suites, the mutation harness, and the sweeps all report against the artifact, so an author who runs them finds its own mistakes.
+Certification does not, because the author checks the description against its generative model of the artifact rather than against the artifact — the docstring says what the file was meant to do, the work-log line says what the fix was meant to close, and both read as true to the person who formed the intent.
+The milestone that motivated this step is at D-067.
+**So before `status -> review`, a guard-authoring milestone hands the description layer to a fresh-context [O] reader that authored no part of it.**
+The reader checks three things and reports discrepancies verbatim: - **AC-clause-to-assert coverage** — every clause of every acceptance criterion maps to an assert that actually pins it, and no criterion is covered only by an assert the author believes covers it.
+- **Claim-vs-file accuracy** — every docstring, comment, work-log line, and record claim about the guard is true of the file it describes, read out of that file rather than out of the milestone's narrative.
+- **Anchor-vs-shipped-bytes fidelity** — every multi-word anchor matches the bytes actually shipped, including under the target's hard wrap.
+The gate is entered at zero unresolved: every discrepancy is fixed, never argued down as imprecision.
+Which confirmation that fix then takes depends on the finding's class, and the classes are set out below — each carries exactly one, and none carries two.
+The author still runs everything — this moves certification, not operation.
+**The certified scope is the work and the records describing the work; a record whose subject is a certification round itself — the final round's own report included — sits outside it** (D-069).
+Without this the gate cannot converge rather than merely being hard to reach: §8 obliges every round to record a verdict, that record is append-only under IP4, and so each round manufactures uncertified surface for the next one to audit.
+Zero unresolved stays the bar; what this excludes is a scope that regresses.
+**Two lines govern a round, and they are drawn on different axes**, stated apart because collapsing them is what made the first attempt unusable.
+**What the reader checks and the author fixes** is drawn by *subject matter*: the work and every record about the work are inside, narrative about the certifying process is outside (D-069, as narrowed by D-070).
+**What a finding reopens** is drawn by *provenance*: a finding whose only subject is a **fix-authored record** is not grounds for a further round.
+That is a shield and never a licence — it says which findings cannot reopen a round, and never that anything else must.
+A fix-authored record is a docstring, a comment, a work-log line, or a record claim that a previous round's own fix wrote in this same certification.
+That name is the only one this section gives the class, and where it means anything wider it says so.
+A fix's code, its asserts and its fixtures are not records and stay ordinary round-opening surface; so does every record that existed before round 1, since a false claim in an original docstring is the defect this section was built on and it reopens a round no matter who wrote it.
+The two axes compose rather than compete.
+A fix-authored record is still read and still corrected: **being a fix-authored record never removes it from the certified scope**, which D-069 draws on subject matter alone.
+What it loses is only the power to force another round, and never the reading and correcting itself.
+A record can of course be outside the certified scope for D-069's own reason, and that is D-069 operating, never this rule.
+D-070 rules on the first axis and says nothing about the second, which is why this is compatible with it rather than a partial supersession of it.
+**A round reopens only on a finding within the three named checks above.**
+Those three are the whole of this step's mandate.
+A robustness observation that no acceptance-criterion clause pins — a surviving mutation, a one-directional pin, a near-miss control's uncovered signature, a fixture weak on an axis no criterion names — is real work, and it is recorded and fixed as ordinary milestone work under §§1–7, §9 and the mutation harness.
+It does not reopen certification, **and it does not hold the gate**: the zero-unresolved bar is met when every discrepancy has been fixed under the obligation its own class carries, and this class's obligation is discharged by operation rather than by a further round.
+**A finding reopens a round only if it clears both lines** — it falls within the three checks, and its only subject is not a fix-authored record.
+Failing either, it is fixed under the obligation named below and the round still closes.
+The definition settles the apparent overlap without a tie-break: a one-directional pin that leaves an acceptance-criterion clause unpinned is a check-1 finding and reopens, while one that merely hardens an assert no criterion names is out of mandate.
+What decides is whether a criterion clause is at stake, never how the finding is phrased.
+**And a finding that clears both lines is a reopening finding**, carrying that class's obligation: a further fresh-context round.
+Stated as a bound alone it says only which findings cannot reopen a round and never that any must, and a reader deep in a long loop can take that silence as licence to close.
+**Each class carries exactly one confirmation obligation, and no class carries two.**
+A **reopening finding** obliges a further fresh-context round, and that round is what confirms its fix.
+A **fix-authored record** is fixed in place and confirmed by the next round's reader where a further round occurs, and otherwise by `/milestone-review`'s three-lens fan-out at the merge gate; no confirmation obligation falls on the author, because D-067 rejected instructing an author's own re-check — it asks for the judgment this section exists because authors fail at — and `tracking-rules.md`'s delegation warrant says the same of a check already happening unprompted.
+An **out-of-mandate robustness observation** is confirmed by operation: the harness, the sweeps and the suite.
+The gate is therefore reachable with fix-authored records corrected but not yet independently confirmed — a deliberate narrowing of the zero-unresolved bar, whose cost the falsifier's clause (ii) counts.
+**What grounds the provenance rule is record churn, not M119's round count.**
+The three measured cases and the revisions they are read from are recorded at D-085.
+On M119's record the provenance rule alone changes the round count by **zero**, and the section says so rather than claiming a saving it does not produce: those rounds also returned coverage gaps, and a coverage gap is a finding about executable surface, which the rule never shields.
+The mandate boundary is the rule that reaches that count; its replay projection and tolerance are at D-085.
+**This step carries its own falsifier.**
+It counts yield and not rounds, because the round count is precisely what the two rules above change, and a measure its own subject can satisfy by construction measures nothing.
+Measured over the next three guard-authoring milestones that run §8, the window closing when the third completes: - **(i)** If the rounds after each milestone's first return, totalled across the window, zero shipped-behaviour defects and zero findings whose subject is pre-round-1 surface, then the rounds after the first have stopped earning their cost — retire them and run §8 as a single certification pass.
+A finding counts where it was **found**, never where it was fixed, so routing one to §§1–7 or §9 does not remove it from the count.
+Tolerance: exact zero on both counts, and the window counts only if at least one of its three milestones convened a round after its first — a window that never ran a later round has not measured one.
+- **(ii)** If any fix-authored record corrected in place is later found false — by the three-lens review, or by a subsequent milestone — then the in-place route has failed, and that class returns to round-opening.
+Tolerance: one occurrence.
+- **(iii)** If, totalled across the same window, **round 1 itself** returns zero shipped-behaviour defects, zero false claims in records predating that milestone's round 1, zero acceptance-criterion clauses found unpinned, and zero anchor-fidelity findings, then round 1 has stopped earning its reader and **the step retires whole**.
+Tolerance: exact zero on all four counts, totalled across the window; why the fourth is counted is at D-085.
+Clauses (i) and (iii) cannot both fire: (i) requires some milestone to have convened a later round, which under the reopening rule means its round 1 found something, which (iii)'s zeroes forbid.
+What each clause counts is recorded at D-085, with the argument that replacing this falsifier rather than retiring the step is a supersession and not a quiet loosening (D-083, D-085).

@@ -325,7 +325,7 @@ Those three are the whole of this step's mandate. A robustness observation that
 no acceptance-criterion clause pins — a surviving mutation, a one-directional
 pin, a near-miss control's uncovered signature, a fixture weak on an axis no
 criterion names — is real work, and it is recorded and fixed as ordinary
-milestone work under §§1–7 and the mutation harness. It does not reopen
+milestone work under §§1–7, §9 and the mutation harness. It does not reopen
 certification, **and it does not hold the gate**: the zero-unresolved bar is met
 when every discrepancy has been fixed under the obligation its own class
 carries, and this class's obligation is discharged by operation rather than by a
@@ -381,10 +381,10 @@ closing when the third completes:
   pre-round-1 surface, then the rounds after the first have stopped earning
   their cost — retire them and run §8 as a single certification pass. A finding
   counts where it was **found**, never where it was fixed, so routing one to
-  §§1–7 does not remove it from the count. Tolerance: exact zero on both counts,
-  and the window counts only if at least one of its three milestones convened a
-  round after its first — a window that never ran a later round has not measured
-  one.
+  §§1–7 or §9 does not remove it from the count. Tolerance: exact zero on both
+  counts, and the window counts only if at least one of its three milestones
+  convened a round after its first — a window that never ran a later round has
+  not measured one.
 - **(ii)** If any fix-authored record corrected in place is later found false —
   by the three-lens review, or by a subsequent milestone — then the in-place
   route has failed, and that class returns to round-opening. Tolerance: one
@@ -402,3 +402,50 @@ closing when the third completes:
 What each clause counts is recorded at D-085, with the argument that replacing
 this falsifier rather than retiring the step is a supersession and not a quiet
 loosening (D-083, D-085).
+
+## 9. Presence is not consistency
+
+**A prose-guard pins that a sentence is present. It does not pin that the
+section around it still agrees with itself.** Every assert in §8 matched and
+the whole suite was green while eight of ten mutations negated a shipped rule
+without touching one pinned block (M123 round 3). An anchor is a claim about a
+sentence; a rule is a claim the section makes. They come apart three ways.
+
+**A contradicting sentence added elsewhere in the section.** The pinned
+sentence stays where it was and stays true of itself; a later sentence asserts
+the opposite, and the section now says both. Appending "A robustness
+observation outside them reopens a round on the same terms" was one of eight
+such mutations, which between them defeated six acceptance-criterion clauses
+with every anchor still matching.
+
+**A rename reusing no word of the term.** A guard keyed on part of a defined
+term — its prefix, or its noun — is defeated by a coinage sharing neither, and
+the section is left alternating two names for one class. Substituting "A
+shielded entry is still read" for "A fix-authored record is still read" is the
+measured case, and it survived four successive extensions of the enumeration
+meant to catch it, which is why the remedy is not a fifth.
+
+**A relocation falsifying a back-reference.** "The three named checks above" is
+true of a position, not of a phrase: move the list and the sentence is
+unchanged, still matched, and false.
+
+**So derive the check from the section, never from a list of what to look
+for.** Enumerating the renderings a phrase can take is the failure §3 names,
+and against this class it has a measured record of losing.
+`skills/tests/section_ledger.py` extracts a section's ordered,
+whitespace-normalized sentence sequence, and a guard compares it against a
+committed ledger of that sequence. No term drawn from the section is written
+into the extractor, so a coinage nobody anticipated is still a difference.
+
+**The instrument detects a change and never judges it.** It reports what was
+added, removed, or moved. Whether a change is a contradiction, a correction or
+an ordinary edit is not a question a diff can answer, and building it to answer
+one would rebuild the judgment D-059 retired.
+
+**The remedy is operation the author runs, never adjudication the guard
+performs.** A red ledger is discharged by regenerating it, reading the reported
+diff sentence by sentence, and then repairing the section or accepting the
+change — the discharge-by-operation §8 already assigns this class. The one
+failure mode that defeats the instrument is a ledger updated without its diff
+being read, and no guard can detect that; this section states the cost rather
+than hiding it.
