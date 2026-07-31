@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-31 (M128 merged — accessible-language rule rebuilt: two-sentence test, id ban, capture-on-flag, worked pair. Gate-question candidate row graduated; M123 terminal row pruned. Validate all green.)_
+_Last hygiene check: 2026-07-31 (M129 merged — validate gained a filesystem arm for superseded shelf directories, repair step split into entry/directory-line arms, §6 quantified-claim rule landed (RR11 BC5). M124 terminal row pruned. Validate all green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M129 | Repair re-surfaces a declined shelf migration | review | — | normal | milestones/M129-repair-resumability.md |
+| M129 | Repair re-surfaces a declined shelf migration | done | — | normal | milestones/archive/M129-repair-resumability.md |
 | M128 | Gate questions lead in plain words | done | — | high | milestones/archive/M128-gate-question-clarity.md |
 | M127 | Guard-doctrine §8 is retired whole | done | — | high | milestones/archive/M127-retire-certification.md |
 | M126 | CLAUDE.md joins the always-read governance frame | done | — | normal | milestones/archive/M126-claude-md-always-read-row.md |
 | M125 | Certification loops stop on a repeated defect shape | done | M124 | normal | milestones/archive/M125-shape-repeat-stop.md |
-| M124 | A section-consistency ledger, so a contradicted or renamed rule reds | done | — | normal | milestones/archive/M124-section-consistency-ledger.md |
 
 ## Candidates
 
