@@ -73,15 +73,17 @@ class TestSelfCheckingClassRule(unittest.TestCase):
     none of what it reads. The rule names both classes so the clause cannot be
     applied to the wrong one.
 
-Six asserts. Two are AC4's shape — one per named class, each a phrase on a
+Six asserts. The lead one pins that the section reaches one class and not
+    the other; two are AC4's shape — one per named class, each a phrase on a
     single physical line of the shipped file. A single assert covering only the
     governed class would leave the exclusion deletable with the guard green,
     which is the false coverage the guard-must-fail rule exists to stop: the
     exclusion is the half that does work here, since the governed class alone
-    is already implied by the warrant above it. The other four came from the
-    review — each class's reason clause, the discriminator that applies the
-    pair, and the sentence leaving a fresh reader's loop to its own
-    instrument.
+    is already implied by the warrant above it. The other three came from the
+    review — each class's reason clause, and the discriminator that applies
+    the pair. (A further assert pinned the sentence leaving a fresh reader's
+    loop to its own instrument; M127 removed that sentence with the
+    certification step, and the assert retired with it.)
 
     Each assert pins its class phrase TOGETHER WITH the verb that assigns it —
     `it governs` / `it does not govern` — on one physical line. Pinning the
@@ -157,16 +159,6 @@ Six asserts. Two are AC4's shape — one per named class, each a phrase on a
             r"the discriminator is \*who reads\*, never \*how often the work "
             r"is read\* — which\s+is the same cut the freshness sentence above "
             r"makes against the volume test",
-        )
-
-    def test_rule_leaves_a_fresh_readers_loop_to_its_own_instrument(self):
-        # M121 review F-B2: inverted to "bounded by this rule, never by its
-        # instrument", the delegation warrant's one-not-several bar governs
-        # §8's rounds and forbids the multi-round loop §8 mandates.
-        self.assertIn(
-            "a fresh reader's own loop is bounded by its instrument, never "
-            "by this rule",
-            rules(),
         )
 
 

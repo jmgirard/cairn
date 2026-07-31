@@ -3462,3 +3462,144 @@ the router's content changes. Delivered by M126, guarded by
 `skills/tests/test_always_read_frame.py` and mutation-registered. If a surface
 ever arrives that the sweep cannot classify without a membership rule, that is
 the parked candidate promoting, and this is the entry it annotates.
+
+### D-095 (2026-07-31): Guard-doctrine §8 is retired whole at user mandate — no certification step, no rounds, no replacement instrument — supersedes the operative clauses of D-069, D-070, D-080, D-082, D-083, D-085, D-088 and D-091, re-scopes D-079's clauses 2–3 to the surviving reader, and narrows D-067 to the criteria audit alone; a logged deviation from D-090's Untouched clause (M127)
+
+**Context:** The user mandated retirement on 2026-07-31 after an evidence
+review of §8's measured yield. What the rounds after the first distinctively
+produced was record-accuracy correction about the certification's own records
+— the chains D-084→D-086, D-088→D-089 and D-091→D-092→D-093, six per-claim
+correction entries among the eleven D-083–D-093 headings of this file —
+while every ≥80-scored real defect of the same era was found by an instrument
+this entry keeps: M120's three asserts that survived inverting their own rule
+(§1 inversion had not been run; review scores topping at 92/88/87, archive
+`M120-opus5-guide-adoptions.md`), M123's A5 (80, archive
+`M123-section8-convergence-rebuild.md`), and M124's F1/F2/F12 (92/85/88,
+archive `M124-section-consistency-ledger.md`) — that is, inversion, the
+mutation harness, and the three-lens review fan-out. The cost side: M127's
+goal records the loop as the measured majority of this repo's session cost,
+and M126 ran a multi-round certification the day after M125's stop rule
+shipped (460 turns, 19 agents — the figures as recorded in the M127
+plan-gate work-log line of 2026-07-31). The plan first re-cut §8 to a single
+pass; a second gate round chose full retirement because §8's distinctive
+yield was record-accuracy-class while its cost was the dominant burn.
+
+**Decision, part 1 — the step retires whole, with no replacement.** §8 is
+removed from `guard-doctrine.md`; §9 keeps its number and heading (retired
+numbers are never reused). The `/milestone-implement` completion clause that
+fired it and the rulebook's fresh-reader-loop sentence are removed. Guard
+verification remains what it already was beside §8: §1 inversion, the
+mutation harness, the §7 sweeps, AC fencing, and `/milestone-review`'s
+three-lens fan-out with its scorer. No absence guard pins §8's removal — an
+absence guard would be new apparatus at D-090's door — so re-adding a §8
+would ship green: a recorded, accepted exposure. The M124 ledger machinery
+(`section_ledger.py`, its guard, both committed ledgers) is deleted whole,
+restorable from git: with §8 gone its only committed subject is gone, and a
+guard instrument testing only itself is the shape D-057/D-090 close doors
+on.
+
+**Decision, part 2 — the deviation, under IP2.** D-090's Untouched clause
+names §8's falsifier clauses as the measured retirement path. Clause (iii)'s
+own named remedy — "the step retires whole" — is executed here by user
+mandate ahead of its three-milestone window, as D-091 part 4 promoted a
+candidate row ahead of its stated condition: a deliberate deviation,
+surfaced rather than silently overridden. D-085's Consequences prescribe
+what a clause-(iii) retirement edit should do — prune the convergence
+apparatus together with the rounds it governs (RR10 rec 8) — and this
+retirement follows that prescription.
+
+**Decision, part 3 — standing rejections superseded, not ignored.** D-085
+records RR10's verdict (e) (keep §8) and its part-4 re-affirmation of RR09
+recs 8–9 (neither revert nor retire). Those rejections rested on round-1
+yield as measured in the rebuild's first days; the record above is evidence
+they did not have. Both are superseded by this entry — the standing-rejection
+discipline's supersede-don't-ignore route, taken on new evidence.
+
+**Decision, part 4 — the per-entry supersessions.** D-067 is narrowed to its
+first instrument: the criteria audit at the plan and ingest gates stands
+unchanged; everything in D-067 adopting or governing description-layer
+certification is superseded. D-069 and D-070 drew the certified scope of
+certification rounds; with no rounds convened anywhere, their operative
+clauses govern nothing and are superseded (the entries stand as history,
+IP4). D-079's surviving clauses 2–3 are re-scoped from D-067's two readers
+to the one that survives: clause 2's record rule continues unchanged for the
+criteria audit, and clause 3's both-classes rule keeps both classes in the
+rulebook but loses its fresh-reader-loop bound, whose cited instrument no
+longer exists. D-080's and D-082's operative residue — the banked §8 rebuild
+and the restored round-count falsifier — was consumed by D-083's rebuild and
+closes with it. D-083 parts 1–4 (keep-the-step, the yield falsifier, the two
+narrowings of the zero-unresolved bar, the D-069/D-070 annotation) are
+superseded whole; its part-5 correction of D-081 stands. D-085 parts 1–3
+(the round-count falsifier's independent defect, clause (iii), the relocated
+derivations) are superseded as governing text and stand as the record of
+what §8's clauses counted. D-088's routing enumeration described shipped §8
+and now describes nothing. D-091 parts 1–2 (the shape-repeat stop and the
+clause-(i) gloss) are superseded; **part 3 — guard-doctrine §6's
+recorded-counts rule — survives in full**, since it binds records rather
+than certifications; part 4 stands as history.
+
+**Decision, part 5 — the candidate rows, so D-090's parking references
+resolve.** The mixed-round-precedence, falsifier-state-disclosure and
+audit-over-falsifiers rows are dropped: each is about the conduct of rounds
+that no longer exist, and the latter two are the rows D-090 parks by name —
+their disposal is recorded here, where D-090's references now resolve. The
+polarity/vocabulary row is dropped and the ledger-rollout row is restated to
+name git as the deleted mechanism's home, both being bound to the M124
+ledger. The RR11 row is re-cut to BC5 alone, BC6's subject — §8's
+shape-repeat remedy clause — being retired.
+
+**Consequences:** A guard-authoring milestone now goes to review on the
+suites, the harness, the sweeps and the fan-out alone. If a claim-accuracy
+defect — a false record claim about a guard — reaches main undetected by the
+review fan-out, that is this retirement's falsifier and this is the entry to
+supersede.
+
+### D-096 (2026-07-31): Five claims in D-095 are corrected in one batched entry — the correction chains, the rounds-after-first attribution, the A5 score, the instrument credit, and the absence-guard exposure — supersedes those clauses; D-095's decision and every other claim in it stand (M127 review)
+
+**Context:** M127's three-lens review fan-out reported record-accuracy
+defects in D-095, and its scorer confirmed five at 82–85 against the archives
+and the diff. IP4 forbids repairing them in place; they are corrected here in
+one batched entry rather than one entry per claim — the shape the ROADMAP's
+correction-batching candidate row records, applied at its first occasion
+(that row stays parked; one batched entry is its prescribed form, not its
+promotion trigger).
+
+**Corrections.**
+
+1. *(F3, 82; F4, 72)* "the chains D-084→D-086, D-088→D-089 and
+   D-091→D-092→D-093" — D-086 corrects D-085, not D-084 (the misattribution
+   D-089 was written to fix, reproduced here), and D-092/D-093 are parallel
+   corrections of D-091 (D-093 also correcting D-090), not a three-link
+   chain. Corrected: D-084 and D-086 correct D-083 and D-085 respectively;
+   D-089 corrects D-088; D-092 and D-093 each correct D-091, D-093 also
+   D-090. The six-of-eleven count stands.
+2. *(F5, 84)* "What the rounds after the first distinctively produced" — the
+   cited entries' own tags place D-084, D-089 and D-092 at round 1; only
+   D-086 (round 3) and D-093 (round 2) are later-round products. Corrected:
+   certification rounds at every position produced record-accuracy
+   correction as their dominant recorded output; the retirement decision is
+   unchanged by the corrected attribution.
+3. *(F15, 82)* "M123's A5 (80, …)" — the archive records "1 ≥80 (A5 …)", a
+   threshold, not a score. Corrected to: A5, M123's one finding at or above
+   80.
+4. *(F16, 83)* "found by … inversion, the mutation harness, and the
+   three-lens review fan-out" — all three cited cases are review-fan-out
+   findings (M120's are the fan-out reporting asserts that survived
+   inversion of their own rule, §1 inversion not having been run); the
+   harness found none of the cited set. Corrected credit: the three-lens
+   review fan-out, in M120's case applying §1's inversion protocol.
+5. *(F2, 85)* "re-adding a §8 would ship green" (also the milestone Scope's
+   wording) — overbroad: the kept-and-updated numbering guard asserts the
+   exact gapped heading list, so re-adding a numbered `## 8.` heading reds
+   the suite. What ships green is §8's content under any other heading — the
+   exposure stands, narrower than recorded. No *dedicated* absence guard was
+   added, which is what the Scope clause decided and D-090's door required.
+6. *(minor, F9, 63)* part 1's "both committed ledgers" — one section ledger
+   was committed (`guard-doctrine-8.txt`); the other two deleted fixture
+   files were the extractor's contract. §9's copy of the phrase is current
+   knowledge and was corrected in place; this clause corrects the record's.
+
+**Consequences:** D-095's decision and every other claim in it stand,
+including every per-entry supersession. The batched form is deliberate: the
+per-claim correction cascade was the §8-era behavior D-095 retires, and one
+entry per claim would reproduce it at the retirement's own doorstep.

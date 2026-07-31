@@ -97,11 +97,7 @@ run ingestion first (see `/milestone-brief`).
 
 8. **Completion.** When all tasks are checked and the active profile's
    `verify` slot passes clean (for a toolchain whose profile names a fuller
-   pre-review check, that check): **if this milestone authored or edited a
-   prose-guard, hand its description layer to a fresh-context [O] reader first**
-   — `skills/shared/guard-doctrine.md` §8, the author never certifies its own
-   guard's coverage — and enter the gate only at zero unresolved. Then
-   set status `review`, checkpoint-commit, then
+   pre-review check, that check), set status `review`, checkpoint-commit, then
    stop with a recap —
    outcome-first (per tracking-rules): what the milestone now does or
    changes, in plain words, before the mechanics —

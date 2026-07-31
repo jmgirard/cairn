@@ -1415,9 +1415,13 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # M121 adds the self-verification ledger on the same footing: its corpus is
     # this repo's own prose at a named commit, re-derived by the search the page
     # carries rather than re-read against an external source, hence `exempt`.
+    # M127 adds the AC1 retirement-search ledger on that same footing: its
+    # corpus is this repo's own prose at the ledger's own commit, re-derived by
+    # the two grep commands the page carries, hence `exempt`.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "m118-cap-exemption-ledger.md": "exempt",
+        "m127-ac1-ledger.md": "exempt",
         "backlog-meridian.md": "ok",
         "bmad-method.md": "ok",
         "ccpm.md": "ok",
