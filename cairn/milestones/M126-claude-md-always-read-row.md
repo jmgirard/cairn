@@ -1,6 +1,6 @@
 # M126: CLAUDE.md joins the always-read governance frame
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -155,6 +155,7 @@ recording the addition and its boundaries.
 - 2026-07-31: numeric records settled LAST, after every fix, because each earlier settling was re-staled by the next (guard-doctrine §6). Procedure for the anchor count: AST-parse `skills/tests/test_always_read_frame.py`; the anchor set is every module-level string constant over 25 characters plus every inline string literal over 25 characters with no newline that resolves into `skills/shared/tracking-rules.md` or `skills/milestone/SKILL.md`. 24 anchors, of which 23 sit wholly on one physical line of their target and one — `BOUNDARY_STATEMENT` — does not, by design. A blanket "every string constant" sweep instead returns 25 and two off-line, the second being an assert message rather than an anchor; that is the earlier count's defect, not a second exception.
 - 2026-07-31: correction — every count recorded earlier in this milestone is superseded by these, measured at this commit with the commands named: `python3 -m unittest discover -s hooks/tests` 103, `-s scripts/tests` 332, `-s skills/tests` 833, each exit 0; `python3 scripts/cairn_validate.py .` exit 0, all checks passed; `python3 scripts/cairn_budget.py` on this file, plan-owned body 108 of 149; 22 `guard="test_always_read_frame"` REGISTRY entries. The earlier "830" and "102 -> 107 of 149" were true when written and are not now.
 - 2026-07-31: review round 2 returned the milestone. Six findings at 80+: the STOP #2 structural remedy does not close its class (inline anchors invisible to its derivation, and its docstring check pins a token rather than agreement — both reproduced at the gate), three relocations still pass the position guard, round 2's own AC4 evidence line misattributes its figure to the guard, `BOUNDARY_STATEMENT`'s normalization is asymmetric across its two users, and the new ROADMAP candidate row ships truncated mid-sentence. guard-doctrine §8's stop-rule falsifier has FIRED on its one-occurrence tolerance: the universal-claim shape returns to round-opening. Return 2 — one more reaches the thrash rule's third-return threshold.
+- 2026-07-31: blocked on RB11 — a guard's description of itself keeps drifting from what it checks. Three instances of one shape in this milestone, the third being the class-closing structural remedy itself, so guard-doctrine §8's stop-rule falsifier has spent its one-occurrence tolerance. Escalated rather than attempted a fourth time: the thrash rule owed this offer when trigger (b) fired and no plan-gate alternative existed, and each prior attempt was authored by a session that had just read the previous failure and checked its own work before shipping.
 
 ## Decisions
 
