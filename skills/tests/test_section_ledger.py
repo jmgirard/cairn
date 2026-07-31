@@ -51,12 +51,12 @@ def section9():
     """§9's own bytes, scoped to §9.
 
     Scoped deliberately. M123's §8 asserts each read the whole FILE while every
-    criterion they served was scoped to the section, so a rule could be moved
-    verbatim out of §8 and into §7 with the suite green and no anchor text
-    touched. M123 ships the fix — anchors scoped to the section, over the 84
-    registry blocks resolving inside §8 — and these follow it. An anchor
-    proves a phrase exists SOMEWHERE in what it was handed; these are handed
-    §9 alone.
+    criterion they served was scoped to the section, "so six acceptance-
+    criterion clauses could be moved verbatim out of §8 into §7 with all 777
+    tests green and no anchor text touched" (`cairn/LESSONS.md`, the M123
+    extension of M95's lesson). M123 ships the fix — anchors scoped to the
+    section — and these follow it. An anchor proves a phrase exists SOMEWHERE
+    in what it was handed; these are handed §9 alone.
     """
     return sl.section_body(GUARD_DOCTRINE, SECTION_9)
 
@@ -153,13 +153,19 @@ class TestExtraction(unittest.TestCase):
         # AC1's third clause. Round 1 measured it unpinned: deleting the whole
         # comment block above `_SENTENCE_BOUNDARY` left the suite green, while
         # the clause is live — one closed punctuation class does ship.
-        source = pathlib.Path(sl.__file__).read_text().splitlines()
-        constants = [
-            i for i, line in enumerate(source)
-            # Round 2: `= ` alone missed `_TERMS: List[str] = [...]`, which
-            # shipped green one annotation away from the ban.
-            if re.match(r"^_[A-Z_]+\s*(:[^=]+)?=", line)
-        ]
+        # Round 4: selecting by name regex skipped any constant without the
+        # leading underscore — `ABBREVIATIONS = re.compile(...)` with no
+        # comment at all shipped green, which is exactly the addition the
+        # module docstring anticipates. Targets come from the `ast` parse now,
+        # so the set is derived from the module rather than from a naming
+        # convention the next constant need not follow.
+        text = pathlib.Path(sl.__file__).read_text()
+        source = text.splitlines()
+        tree = ast.parse(text)
+        constants = []
+        for stmt in tree.body:
+            if isinstance(stmt, (ast.Assign, ast.AnnAssign, ast.AugAssign)):
+                constants.append(stmt.lineno - 1)
         self.assertTrue(constants, "no module-level constants found to check")
         for i in constants:
             # Round 2: requiring only that a comment EXIST let
@@ -171,6 +177,9 @@ class TestExtraction(unittest.TestCase):
                     break
                 block.append(source[j])
             self.assertTrue(block, f"{source[i]!r} carries no comment at all")
+            # Round 3's O3: a comment merely containing "class" satisfies this.
+            # Disclosed, not closed — the content of a comment is a judgment,
+            # and D-059's precedent is to route that to a reader.
             self.assertRegex(
                 " ".join(block), r"\bclass\b",
                 f"{source[i]!r} has a comment that never names the class it "
@@ -224,12 +233,26 @@ class TestSectionNineDoctrine(unittest.TestCase):
 
     def test_the_sections_are_numbered_one_to_nine_in_order(self):
         # AC5: "appended after §8 as §9, with no existing section renumbered".
-        # Round 2 measured presence-anywhere as the only pin: `## 5.` -> `## 5b.`,
-        # `## 6.` -> `## 6a.`, and relocating §9 to sit BEFORE §8 each left the
-        # suite at 804 OK. Derived from the file, not enumerated in the test:
-        # the headings themselves must read 1..9 in document order.
-        numbers = re.findall(r"^## (\d+)\. ", GUARD_DOCTRINE.read_text(), re.M)
-        self.assertEqual(numbers, [str(i) for i in range(1, 10)])
+        # Round 2 measured presence-anywhere as the only pin: `## 5.` -> `## 5b.`
+        # and relocating §9 BEFORE §8 both shipped green. Round 4 then measured
+        # the number-only fix insufficient: SWAPPING §6 and §7 — bodies moved,
+        # numbers relabelled — preserves `1..9` and left 807 OK, silently
+        # staling 12 cross-file citations of §6/§7. So the pairs are pinned,
+        # which is this milestone's own ledger instrument at section scale:
+        # committed expected output, compared against what the file says now.
+        headings = re.findall(r"^## (\d+)\. (.+)$", GUARD_DOCTRINE.read_text(),
+                              re.M)
+        self.assertEqual(headings, [
+            ("1", "What an assert must pin"),
+            ("2", "What the mutation harness does and does not catch"),
+            ("3", "Absence assertions"),
+            ("4", "Fixtures"),
+            ("5", "Matchers and parsers over human-written markdown"),
+            ("6", "Restatement, and numbers"),
+            ("7", "Scoping a sweep or a grep-shaped criterion"),
+            ("8", "The author never certifies its own guard's coverage"),
+            ("9", "Presence is not consistency"),
+        ])
 
     def test_presence_is_distinguished_from_consistency(self):
         self.assertRegex(
@@ -237,6 +260,21 @@ class TestSectionNineDoctrine(unittest.TestCase):
             r"\*\*A\s+prose-guard\s+pins\s+that\s+a\s+sentence\s+is\s+present\.\s+It\s+"
             r"does\s+not\s+pin\s+that\s+the\s+section\s+around\s+it\s+still\s+agrees\s+"
             r"with\s+itself\.\*\*",
+        )
+
+    def test_d083_part_3a_is_superseded_by_an_appended_entry(self):
+        # AC5's last clause. Round 4 measured it unpinned: truncating
+        # DECISIONS.md at `### D-088`, deleting both new entries outright, left
+        # 807 OK and `cairn_validate` exit 0 — §8's routing enumeration would
+        # then contradict a standing D-entry with nothing red. IP4 forbids
+        # repairing D-083 in place, so the supersession IS the artifact and it
+        # has to be pinned like any other shipped rule.
+        decisions = (TESTS.parent.parent / "cairn" / "DECISIONS.md").read_text()
+        self.assertRegex(
+            decisions,
+            r"### D-\d+ \(\d{4}-\d\d-\d\d\): D-083 part 3\(a\)'s \"ordinary "
+            r"§§1-7 work\" no longer describes shipped §8, which routes to §9 "
+            r"as well",
         )
 
     def test_the_three_shapes_are_declared_as_three(self):

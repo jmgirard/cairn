@@ -2987,6 +2987,14 @@ REGISTRY += [
         target=GUARD_DOCTRINE,
         block="is not a question a diff can answer, and building it to answer",
     ),
+    # Round 4: AC5's superseding-D-entry clause. Target is DECISIONS.md, whose
+    # entry heading is the shipped artifact; blanking it reds the assert.
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_d083_part_3a_is_superseded_by_an_appended_entry",
+        target="cairn/DECISIONS.md",
+        block="no longer describes shipped §8, which routes to §9 as well",
+    ),
 ]
 
 # M95 (D-056). Five entries, because the placement doctrine fails in five
