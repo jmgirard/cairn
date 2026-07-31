@@ -230,6 +230,15 @@ records last, after the content has stopped moving.
 Name a validate finding by its emitted label in backticks (`coverage
 complete`), and write evidence counts from command output, never memory.
 
+**A count recorded in a milestone record carries the procedure that produced
+it, at verbatim-reproducible grade.** A work-log line, a docstring, a comment,
+or a D-entry stating a count states the command as run, or the committed
+artifact the count is read from — at the granularity that discriminates it
+from a disagreeing record. M124 measured the failure: three records disagreed
+on one suite count under a reflow, and the one discriminator — whether bullet
+paragraphs are re-wrapped — was stated in none of them; the two that named a
+procedure left it out, and the third named no procedure at all.
+
 ## 7. Scoping a sweep or a grep-shaped criterion
 
 **A repo-wide sweep and a grep-shaped acceptance criterion both hit ground
@@ -340,13 +349,39 @@ unpinned is a check-1 finding and reopens, while one that merely hardens an
 assert no criterion names is out of mandate. What decides is whether a criterion
 clause is at stake, never how the finding is phrased.
 **And a finding that clears both lines is a reopening finding**, carrying that
-class's obligation: a further fresh-context round. Stated as a bound alone it
+class's obligation: a further fresh-context round — unless it repeats the
+defect shape of the previous round's reopening finding, in which case the
+stop rule below makes it a **shape-repeat finding** instead. Stated as a bound alone it
 says only which findings cannot reopen a round and never that any must, and a
-reader deep in a long loop can take that silence as licence to close.
+reader deep in a long loop can take that silence as licence to close. The stop
+rule is no such silence: where it ends the rounds, it does so by stated rule,
+with the stop disclosed.
+
+**Two consecutive rounds returning the same defect shape end the rounds** —
+when a finding that clears both lines repeats the defect shape of the
+previous round's reopening finding, the certification convenes no further
+round. Whether two findings share a shape is the judgment D-064's trigger (b)
+applies to review returns, applied here to certification rounds. The second
+same-shape finding is a class of its own, the **shape-repeat finding**: its
+one confirmation obligation is a structural remedy closing the shape's class
+rather than its instance, confirmed by operation — the suite, the harness,
+the sweeps. The stop, the shape, and the remedy are disclosed in work-log
+lines before `status -> review`.
+
+A shape-stopped certification counts toward the falsifier window below
+exactly as run: the rounds it convened and their findings count where found,
+and no round it declined to convene is imputed or estimated. The stop rule
+carries its own falsifier, in clause (ii)'s form: if a structural remedy
+authored under it is later found — by the three-lens review, or by a
+subsequent milestone — not to have closed its shape's class, the stop rule
+returns that shape to round-opening. Tolerance: one occurrence.
 
 **Each class carries exactly one confirmation obligation, and no class carries
-two.** A **reopening finding** obliges a further fresh-context round, and that
-round is what confirms its fix. A **fix-authored record** is fixed in place and
+two** — the shape-repeat finding included.
+A **reopening finding** obliges a further fresh-context round, and that
+round is what confirms its fix. A **shape-repeat finding** obliges the
+structural remedy the stop rule above names, and operation rather than a
+further round confirms it. A **fix-authored record** is fixed in place and
 confirmed by the next round's reader where a further round occurs, and otherwise
 by `/milestone-review`'s three-lens fan-out at the merge gate; no confirmation
 obligation falls on the author, because D-067 rejected instructing an author's
@@ -357,7 +392,9 @@ confirmed by operation: the harness, the sweeps and the suite.
 
 The gate is therefore reachable with fix-authored records corrected but not yet
 independently confirmed — a deliberate narrowing of the zero-unresolved bar,
-whose cost the falsifier's clause (ii) counts.
+whose cost the falsifier's clause (ii) counts. It is reachable, too, with a
+stopped shape's class closed by structural remedy and confirmed by operation
+alone — a second narrowing, whose cost the stop rule's own falsifier counts.
 
 **What grounds the provenance rule is record churn, not M119's round count.**
 The three measured cases and the revisions they are read from are recorded at
@@ -371,8 +408,9 @@ rule that reaches that count; its replay projection and tolerance are at
 D-085.
 
 **This step carries its own falsifier.** It counts yield and not
-rounds, because the round count is precisely what the two rules above change,
-and a measure its own subject can satisfy by construction measures nothing.
+rounds, because the round count is precisely what the rules above — the two
+lines governing a round, and the stop rule — change, and a measure
+its own subject can satisfy by construction measures nothing.
 Measured over the next three guard-authoring milestones that run §8, the window
 closing when the third completes:
 

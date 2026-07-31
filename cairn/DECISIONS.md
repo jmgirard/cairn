@@ -3274,3 +3274,133 @@ apparatus-shaped scope, and the standing-rejection discipline applies:
 supersede, don't ignore. If a shipped-behavior defect class appears that a
 parked apparatus candidate would have prevented, this is the entry to
 supersede.
+
+### D-091 (2026-07-30): Certification gains a third ending — the shape-repeat stop — and recorded counts gain a verbatim-reproducible procedure rule; narrowly supersedes D-085's clause-(i) gloss; reuses D-064's trigger (b) beyond review returns (M125)
+
+**Context:** M124's §8 certification ran seven rounds and terminated only by
+maintainer override, rounds 5–7 each finding one instance of a single class
+with each fix one more enumeration — the repeated-shape signature D-064's
+trigger (b) names for review returns (read from
+`cairn/milestones/archive/M124-section-consistency-ledger.md`). Separately,
+M124 spent adjudication on counts that disagreed only because no record
+stated the procedure producing its figure: the reflow suite count ran 21,
+then 75, then "75 errors and 11 failures", with the one discriminator —
+whether bullet paragraphs are re-wrapped — stated in none of the three (read
+from the round-4 O1 work-log line at
+`git show a5a7007:cairn/milestones/M124-section-consistency-ledger.md`).
+The maintainer asked on 2026-07-30 for a durable fix to the thrash; M125
+ships these two mechanical halves, and D-090, appended at the same plan
+gate, is the supply-side half.
+
+**Decision, part 1 — the stop rule.** `guard-doctrine.md` §8 now ends a
+certification by rule when two consecutive rounds each return a reopening
+finding of the same defect shape: no further round is convened, and the
+second same-shape finding forms its own class — the shape-repeat finding —
+whose one confirmation obligation is a structural remedy closing the shape's
+class rather than its instance, confirmed by operation. Whether two findings
+share a shape is the judgment D-064's trigger (b) applies to review returns,
+applied here to certification rounds. A certification therefore ends in one
+of three ways: the gate opens at zero unresolved; a falsifier clause retires
+rounds across the measured window; or the stop rule ends the rounds on a
+repeated shape. The stop rule carries its own falsifier in clause (ii)'s
+form (tolerance: one occurrence), and a shape-stopped certification counts
+toward the falsifier window exactly as run — no round it declined to convene
+is imputed.
+
+**Decision, part 2 — the clause-(i) gloss, narrowly superseded.** D-085's
+"What each falsifier clause counts" bullet glosses clause (i) as counting
+whether the later rounds still find "anything the two reopening rules have
+not already disposed of." The stop rule makes that enumeration incomplete:
+the shape-repeat stop now also disposes of later-round findings, and under
+the old gloss a shape-stopped certification's disposed findings would read
+as still countable. The gloss is superseded to "anything the two reopening
+rules and the shape-repeat stop have not already disposed of"; everything
+else in D-085 — its parts 1, 2 and 4, the other three derivation bullets,
+and its Consequences — stands.
+
+**Decision, part 3 — the recorded-counts rule.** `guard-doctrine.md` §6 now
+requires a count recorded in a milestone record — a work-log line, a
+docstring, a comment, or a D-entry — to carry the procedure that produced it
+at verbatim-reproducible grade: the command as run, or the committed
+artifact it is read from, at the granularity that discriminates it from a
+disagreeing record. The counts in this entry's Context carry theirs.
+
+**Decision, part 4 — the candidate row's promotion, a logged deviation.**
+The ROADMAP's §8-stop-condition candidate row (added 2026-07-30 from M124's
+round-7 maintainer override) stated its promotion condition as a second
+override. The user promoted it the same day, at M125's plan gate, before any
+second override occurred — recorded here as a deliberate deviation from the
+row's own condition (IP2: surfaced, never silently overridden).
+
+**Consequences:** §8's obligation sentences enumerate four classes, and the
+obligations proxy counts four. If a structural remedy authored under the
+stop rule is later found not to have closed its shape's class, the stop
+rule's own falsifier returns that shape to round-opening; and if the stop
+rule itself proves the wrong instrument — a certification that repeats no
+shape yet fails to converge — this is the entry to supersede.
+
+### D-092 (2026-07-30): Four claims in D-091 are corrected — the rounds-5–7 citation, the D-085-Consequences clause, the candidate-row reference, and part 1's circular trigger description — supersedes those clauses; D-091's decision and its other content stand (M125 §8 round 1)
+
+**Context:** M125's §8 certification round 1 (fresh-context [O] reader)
+returned four record defects in D-091, appended hours earlier. IP4 forbids
+repairing them in place; this entry supersedes each narrowly, the
+D-084/D-086/D-089 shape.
+
+**Correction 1 — the rounds-5–7 citation.** D-091's Context attributes
+"rounds 5–7 each finding one instance of a single class with each fix one
+more enumeration" to
+`cairn/milestones/archive/M124-section-consistency-ledger.md`. That 24-line
+archive summary records only the round tally and the override; the
+rounds-5–7 enumeration detail is carried by the pre-archive file, read at
+`git show a5a7007:cairn/milestones/M124-section-consistency-ledger.md` —
+the artifact D-091 cites only for its other count. The claim was true; its
+citation did not support it, which is the defect class D-091's own part 3
+ships a rule against.
+
+**Correction 2 — "its Consequences — stands".** D-091 part 2 lists D-085's
+Consequences among what stands. Two of that section's clauses were already
+superseded by D-086 before D-091 was written. Narrowed to: D-085's
+Consequences stand as corrected by D-086.
+
+**Correction 3 — the candidate-row reference.** D-091 part 4's "The
+ROADMAP's §8-stop-condition candidate row" reads as naming a live row. The
+row lived on M124's branch and was removed by M124's post-merge hygiene
+pass before D-091 was appended; the reference is historical, to the row as
+it stood at M125's plan gate.
+
+**Correction 4 — part 1's trigger description.** D-091 part 1 describes the
+stop rule's trigger as "two consecutive rounds each return a reopening
+finding of the same defect shape". Round 1 convicted that phrasing as
+circular — the rule it describes reclassifies the second such finding out
+of the reopening class, so its own precondition could never be met — and
+the shipped rule now reads: a finding that clears both lines repeating the
+defect shape of the previous round's reopening finding ends the rounds.
+AC1 was amended to match at the same gate (user decision, 2026-07-30).
+
+**Consequences:** none of D-091's four decisions changes; the stop rule,
+the gloss supersession, the count rule, and the logged deviation all stand
+as decided. What changes is only the four claims named above.
+
+### D-093 (2026-07-30): D-090's and D-091's "rounds 5–7 each finding one instance of a single class" is corrected — each round returned two reopening findings, across two threads — supersedes that clause in both entries; both decisions stand (M125 §8 round 2)
+
+**Context:** M125's §8 certification round 2 (finding 5) caught the
+undercount in D-091; the same sentence appears in D-090, written at the
+same plan gate. This entry lands with the one-pass re-verification of
+D-091/D-092's factual claims that round 2's stop obliged (Remedy C).
+
+**Correction:** Read from
+`git show a5a7007:cairn/milestones/M124-section-consistency-ledger.md`
+(lines 205–219, the round-5/6/7 log lines): rounds 5, 6 and 7 each opened
+"2 reopening", and the six findings run in two threads — the
+enumeration-widening thread (round 5 F1, round 6 F2, round 7 F1) and the
+extractor-instrument thread (round 5 F2, round 6 F1, round 7 F2). "One
+instance of a single class with each fix one more enumeration" describes
+the first thread alone.
+
+**Consequences:** both entries' decisions stand — the maintainer's
+override diagnosis those entries rest on ("every round's fix had been one
+more enumeration") is quoted verbatim in the same artifact and survives:
+it convicts the thread the stop rule was built for, and the second thread
+ended the same way, closed by a structural remedy (the extractor
+contract) rather than by a further round — which is the disposition the
+stop rule now makes the rule.

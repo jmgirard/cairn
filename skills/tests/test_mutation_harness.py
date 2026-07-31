@@ -2405,7 +2405,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_section_carries_its_own_falsifier",
         target=GUARD_DOCTRINE,
-        block="**This step carries its own falsifier.** It counts yield and not\nrounds, because the round count is precisely what the two rules above change,\nand a measure its own subject can satisfy by construction measures nothing.",
+        block="**This step carries its own falsifier.** It counts yield and not\nrounds, because the round count is precisely what the rules above — the two\nlines governing a round, and the stop rule — change, and a measure\nits own subject can satisfy by construction measures nothing.",
     ),
     # M116 (D-069). Two entries: the exclusion itself, and the reason it is a
     # convergence fix. Losing the second leaves the clause readable as a
@@ -2481,7 +2481,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_each_class_carries_exactly_one_confirmation_obligation",
         target=GUARD_DOCTRINE,
-        block='**Each class carries exactly one confirmation obligation, and no class carries\ntwo.**',
+        block='**Each class carries exactly one confirmation obligation, and no class carries\ntwo** — the shape-repeat finding included.',
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2763,7 +2763,148 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_clause_two_carries_its_tolerance",
         target=GUARD_DOCTRINE,
-        block='Tolerance: one\n  occurrence.',
+        block='that class returns to round-opening. Tolerance: one\n  occurrence.',
+    ),
+    # M125: the shape-repeat stop rule — one entry per pinned sentence, each
+    # carrying operative content (the rule, who judges shape identity, the
+    # class and its obligation, the disclosure, the window interaction, the
+    # rule's own falsifier and tolerance, the fourth obligation sentence, the
+    # licence-clause coherence sentence, and the second narrowing).
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_two_same_shape_rounds_end_the_rounds",
+        target=GUARD_DOCTRINE,
+        block="**Two consecutive rounds returning the same defect shape end the rounds** —\nwhen a finding that clears both lines repeats the defect shape of the\nprevious round's reopening finding, the certification convenes no further\nround.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_shape_identity_is_d064_trigger_b_judgment",
+        target=GUARD_DOCTRINE,
+        block="Whether two findings share a shape is the judgment D-064's trigger (b)\napplies to review returns, applied here to certification rounds.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_shape_repeat_class_obliges_a_class_closing_remedy",
+        target=GUARD_DOCTRINE,
+        block="The second\nsame-shape finding is a class of its own, the **shape-repeat finding**: its\none confirmation obligation is a structural remedy closing the shape's class\nrather than its instance, confirmed by operation — the suite, the harness,\nthe sweeps.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_stop_is_disclosed_before_review",
+        target=GUARD_DOCTRINE,
+        block="The stop, the shape, and the remedy are disclosed in work-log\nlines before `status -> review`.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_a_shape_stopped_certification_counts_as_run",
+        target=GUARD_DOCTRINE,
+        block="A shape-stopped certification counts toward the falsifier window below\nexactly as run: the rounds it convened and their findings count where found,\nand no round it declined to convene is imputed or estimated.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_stop_rule_carries_its_own_falsifier",
+        target=GUARD_DOCTRINE,
+        block="The stop rule\ncarries its own falsifier, in clause (ii)'s form: if a structural remedy\nauthored under it is later found — by the three-lens review, or by a\nsubsequent milestone — not to have closed its shape's class, the stop rule\nreturns that shape to round-opening.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_stop_rule_falsifier_carries_its_tolerance",
+        target=GUARD_DOCTRINE,
+        block="returns that shape to round-opening. Tolerance: one occurrence.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_a_shape_repeat_finding_is_confirmed_by_operation",
+        target=GUARD_DOCTRINE,
+        block="A **shape-repeat finding** obliges the\nstructural remedy the stop rule above names, and operation rather than a\nfurther round confirms it.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_stop_rule_closes_by_rule_not_by_silence",
+        target=GUARD_DOCTRINE,
+        block="The stop\nrule is no such silence: where it ends the rounds, it does so by stated rule,\nwith the stop disclosed.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_second_narrowing_is_disclosed",
+        target=GUARD_DOCTRINE,
+        block="It is reachable, too, with a\nstopped shape's class closed by structural remedy and confirmed by operation\nalone — a second narrowing, whose cost the stop rule's own falsifier counts.",
+    ),
+    # M125 AC5's D-entry clause, the D-088 pin's shape: the entry heading is
+    # the shipped artifact and deleting the entry must red the suite.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_stop_rule_decision_entry_exists",
+        target="cairn/DECISIONS.md",
+        block="Certification gains a third ending — the shape-repeat stop — and recorded counts gain a verbatim-reproducible procedure rule",
+    ),
+    # M125 round 1 (finding 2): the D-entry's two least-derivable claims,
+    # pinned beside its heading so a rewrite of the entry's substance reds,
+    # not only its deletion.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_stop_rule_decision_entry_exists",
+        target="cairn/DECISIONS.md",
+        block='The gloss is superseded to "anything the two reopening\nrules and the shape-repeat stop have not already disposed of"',
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_stop_rule_decision_entry_exists",
+        target="cairn/DECISIONS.md",
+        block="recorded here as a deliberate deviation from the\nrow's own condition (IP2: surfaced, never silently overridden).",
+    ),
+    # M125 §8 round 2's structural remedy (pin-gap shape): the D-entry's
+    # remaining AC4-mandated content, pinned in one pass.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_decision_entry_states_the_rule_it_records",
+        target="cairn/DECISIONS.md",
+        block="A certification therefore ends in one\nof three ways: the gate opens at zero unresolved; a falsifier clause retires\nrounds across the measured window; or the stop rule ends the rounds on a\nrepeated shape.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_decision_entry_states_the_rule_it_records",
+        target="cairn/DECISIONS.md",
+        block="Whether two findings\nshare a shape is the judgment D-064's trigger (b) applies to review returns,\napplied here to certification rounds.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_decision_entry_states_the_rule_it_records",
+        target="cairn/DECISIONS.md",
+        block="whose one confirmation obligation is a structural remedy closing the shape's\nclass rather than its instance, confirmed by operation.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_decision_entry_states_the_rule_it_records",
+        target="cairn/DECISIONS.md",
+        block="requires a count recorded in a milestone record — a work-log line, a\ndocstring, a comment, or a D-entry — to carry the procedure that produced it\nat verbatim-reproducible grade",
+    ),
+    # M125: §6's recorded-counts rule — headline, operative clause, the
+    # record-kind enumeration (§8 round 2 finding 1), and the measured case
+    # it is required to name (AC3), each pinned separately.
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
+        target=GUARD_DOCTRINE,
+        block="**A count recorded in a milestone record carries the procedure that produced\nit, at verbatim-reproducible grade.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
+        target=GUARD_DOCTRINE,
+        block="A work-log line, a docstring, a comment,\nor a D-entry stating a count",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
+        target=GUARD_DOCTRINE,
+        block="states the command as run, or the committed\nartifact the count is read from — at the granularity that discriminates it\nfrom a disagreeing record.",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
+        target=GUARD_DOCTRINE,
+        block="three records disagreed\non one suite count under a reflow, and the one discriminator — whether bullet\nparagraphs are re-wrapped — was stated in none of them; the two that named a\nprocedure left it out, and the third named no procedure at all.",
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2797,9 +2938,9 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_fresh_context_readers",
-        test="TestDescriptionLayerCertification.test_clearing_both_lines_is_sufficient_to_reopen",
+        test="TestDescriptionLayerCertification.test_clearing_both_lines_reopens_absent_a_shape_repeat",
         target=GUARD_DOCTRINE,
-        block="**And a finding that clears both lines is a reopening finding**, carrying that\nclass's obligation: a further fresh-context round.",
+        block="**And a finding that clears both lines is a reopening finding**, carrying that\nclass's obligation: a further fresh-context round — unless it repeats the\ndefect shape of the previous round's reopening finding, in which case the\nstop rule below makes it a **shape-repeat finding** instead.",
     ),
     Mutation(
         guard="test_fresh_context_readers",
