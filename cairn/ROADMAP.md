@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-30 (post-merge after M124 — archived 23/25, M119's row pruned for terminal retention. LESSONS 32 of 50: 1 added, 1 retired (M110's line — ownership, PROFILE.md verify slot), full-heading contract to section_ledger.py's docstring. Absorbed §8-stop-condition row removed, M125 owns it; 23 candidates.)_
+_Last hygiene check: 2026-07-30 (post-merge after M125 — archived 25/25, M120's row pruned for terminal retention. LESSONS unchanged at 32 of 50: the would-be lesson (run a new record rule over your own records) is owned by records-hygiene.md; nothing retired. 1 candidate added (mixed-round precedence, M125 review O1); 24 candidates.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,11 +12,10 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M125 | Certification loops stop on a repeated defect shape | review | M124 | normal | milestones/M125-shape-repeat-stop.md |
+| M125 | Certification loops stop on a repeated defect shape | done | M124 | normal | milestones/archive/M125-shape-repeat-stop.md |
 | M124 | A section-consistency ledger, so a contradicted or renamed rule reds | done | — | normal | milestones/archive/M124-section-consistency-ledger.md |
 | M123 | Rebuild guard-doctrine §8 so its certification loop converges | done | — | normal | milestones/archive/M123-section8-convergence-rebuild.md |
 | M122 | A differential guard holding the hook and the cap counters to one heading contract | done | — | normal | milestones/archive/M122-heading-normalization-differential-guard.md |
-| M120 | Ingest the Opus 5 prompting guide, and adopt the three conduct rules cairn has no home for | done | — | normal | milestones/archive/M120-opus5-guide-adoptions.md |
 | M121 | Verification triage — classify every self-verification instruction, and re-decide D-067's two fresh-context readers | done | M120 | normal | milestones/archive/M121-verification-triage.md |
 
 ## Candidates
