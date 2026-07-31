@@ -56,7 +56,7 @@ recording the addition and its boundaries.
       as against the milestone file, whose cap-exempt sections are still
       governed, by read-bounding (D-063). The statement claims no uniqueness
       about differing always-read and governed units.
-- [ ] AC4: `test_always_read_frame.py` pins each new row whole — every cell, so
+- [x] AC4: `test_always_read_frame.py` pins each new row whole — every cell, so
       an appended cell reds — and pins the AC3 statement. Every anchor is copied
       from the shipped bytes and sits on one physical line of the target, with a
       single exception: `BOUNDARY_STATEMENT`, which pins the AC3 statement
@@ -81,21 +81,21 @@ recording the addition and its boundaries.
       unamended; and why `PROFILE.md` and the hook's preamble are out of scope.
       Evidence: the appended entry, `dangling id tokens` clean.
 
-- [ ] AC7 (BC1): `skills/tests/test_always_read_frame.py` contains no
+- [x] AC7 (BC1): `skills/tests/test_always_read_frame.py` contains no
       `TestAnchorDescriptionMatchesTheAnchors` class, no test deriving an
       anchor or pin set from the guard's own source, and a module docstring
       with no universally quantified claim over the file's anchors and no claim
       that any test reds on docstring–file disagreement.
       `test_mutation_harness.py` contains no REGISTRY entry naming the deleted
       class. All suites green.
-- [ ] AC8: The four per-line tests over the boundary paragraph named in RR11 §4
+- [x] AC8: The four per-line tests over the boundary paragraph named in RR11 §4
       are deleted and their four REGISTRY blocks remain registered, re-pointed
       to `test_pins_the_whole_boundary_statement`; the harness is green; the
       Coverage section records AC3's four-clauses-to-one-assert mapping; and
       one recorded probe, naming its command, shows the D-018 remainder clause
       negated in the target reds `python3 -m unittest discover -s
       skills/tests`.
-- [ ] AC9 (BC3): Both consumers of `BOUNDARY_STATEMENT` apply the same
+- [x] AC9 (BC3): Both consumers of `BOUNDARY_STATEMENT` apply the same
       normalize-both-sides comparison: one recorded probe re-wraps the constant
       in the guard source and the full skills suite stays green; one recorded
       probe rewords the target statement under a reflow and the suite reds.
@@ -423,3 +423,40 @@ review, or by a subsequent milestone — not to have closed its shape's class,
 the stop rule returns that shape to round-opening. Tolerance: one occurrence."
 A1 is that finding. The hard-wrap / universal-claim shape returns to
 round-opening, and the tolerance is now spent.
+
+### Round 3 — 2026-07-31
+
+All nine criteria re-executed by command; earlier rounds' ticks not carried.
+
+- **AC1 — PASS.** `hooks/hooks.json` has one `SessionStart` hook entry;
+  `build_context` has four emit sites. Six surfaces with the harness-loaded
+  project instructions, classified in the `## Decisions` table.
+- **AC2 — PASS.** Row at `tracking-rules.md:183`, below the fifth at `:182`;
+  its three sources verified in place as in round 2.
+- **AC3 — PASS.** Statement present and, per AC5 below, every one of its
+  claims inversion-red.
+- **AC4 — PASS.** Rows pinned whole (a cell appended to any row reds); the
+  single off-one-line anchor is `BOUNDARY_STATEMENT`; its evidence at that
+  pin's own scope — re-wrap green, reword red; 22 REGISTRY entries, harness
+  green (9 tests); every anchor occurring once in its target.
+- **AC5 — PASS.** Eleven inversions, eleven RED, `tracking-rules.md` restored
+  byte-identical after each, under `python3 -m unittest discover -s
+  skills/tests`. Three suites and `cairn_validate .` each exit 0 after restore.
+- **AC6 — PASS.** D-094 present; `dangling id tokens` OK.
+- **AC7 (BC1) — PASS.** No `TestAnchorDescriptionMatchesTheAnchors`, no
+  `whole_object_pins`, no `ast` import, no REGISTRY entry naming the deleted
+  class. The docstring carries none of the quantified forms it used to: no
+  "Each sits", no "Anchors are copied", no "every anchor", no "reds when", no
+  "exception set". All suites green.
+- **AC8 — PASS.** The four per-line tests are gone; five REGISTRY entries now
+  name `test_pins_the_whole_boundary_statement` and the harness is green; the
+  Coverage section records the four-clauses-to-one-assert mapping. Five clause
+  negations RED on the surviving pin alone — including "what separates them",
+  which no per-clause assert ever covered, so the collapse is a net gain.
+- **AC9 (BC3) — PASS.** Re-wrapping `BOUNDARY_STATEMENT` in the guard source
+  at 50 cols leaves the suite green; rewording the target reds it.
+
+**Consistency gate.** `cairn_validate` exit 0 — `weight caps`, `coverage
+complete` and `binding criteria` all PASS, every advisory OK. The `generic`
+profile names no toolchain checks. No `DESIGN.md` principle changed, so
+`cairn_impact` was skipped. No CI configured.
