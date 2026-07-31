@@ -56,7 +56,7 @@ recording the addition and its boundaries.
       as against the milestone file, whose cap-exempt sections are still
       governed, by read-bounding (D-063). The statement claims no uniqueness
       about differing always-read and governed units.
-- [ ] AC4: `test_always_read_frame.py` pins each new row whole — every cell, so
+- [x] AC4: `test_always_read_frame.py` pins each new row whole — every cell, so
       an appended cell reds — and pins the AC3 statement. Every anchor is copied
       from the shipped bytes and sits on one physical line of the target, with a
       single exception: `BOUNDARY_STATEMENT`, which pins the AC3 statement
@@ -267,3 +267,42 @@ candidate; F1 (20) and F16 (12).
 **Disposition: returned to `in-progress`.** AC4 fails as written and F9 is a
 real hole in shipped guard surface. Return 1 of this milestone — no thrash
 trigger reached.
+
+### Round 2 — 2026-07-31
+
+All six criteria re-executed by command; round 1's ticks were not carried.
+
+- **AC1 — PASS.** Re-derived: `hooks/hooks.json` has exactly one `SessionStart`
+  entry (`session_context.py`); `build_context` has four emit sites (PREAMBLE,
+  profile name, ROADMAP, one part per active milestone). Six surfaces with the
+  harness-loaded project instructions, classified in the `## Decisions` table —
+  one uncovered, two covered, three out of scope with reasons.
+- **AC2 — PASS.** Row at `skills/shared/tracking-rules.md:183`, below the fifth
+  at `:182`. Sources re-verified: D-009 `cairn/DECISIONS.md:90`; the
+  trim-to-template remedy `tracking-rules.md:141-143`; the <30-line cap
+  `tracking-rules.md:86` with `scripts/cairn_scripts.py:89` and
+  `scripts/cairn_validate.py:75-77`.
+- **AC3 — PASS.** Statement at `tracking-rules.md:196-203`, carrying all four
+  required claims; each is inversion-red under AC5 below.
+- **AC4 — PASS**, every clause probed rather than read. *Rows whole:* a cell
+  appended to the first, fifth and sixth rows each RED. *One physical line, one
+  exception:* the guard's own derivation returns 24 anchors, 23 on one physical
+  line, the single exception `BOUNDARY_STATEMENT`. *Exception evidence at that
+  pin's own scope:* the target's statement re-wrapped at 40, 55, 72, 80 and 120
+  cols and onto one line — all six GREEN; three independent rewords under a
+  reflow — all RED. *REGISTRY:* 22 frame-guard entries, harness green (9 tests).
+  *Adjacent-phrase:* all 23 anchors resolving into a target occur exactly once.
+- **AC5 — PASS.** Eleven inversions re-run fresh over every rule the milestone
+  ships — row cells transposed, the section-not-file clause, the D-018 remainder
+  clause and its subject, the D-063 contrast, what-separates-them, the
+  no-uniqueness predicate, the section-scoping subject, the fifth-surface
+  sentence, the sixth row moved above the fifth, a row inserted above the fifth
+  — all RED, `tracking-rules.md` restored byte-identical after each. After
+  restore `hooks/tests`, `scripts/tests` and `skills/tests` each exit 0 and
+  `cairn_validate` exits 0.
+- **AC6 — PASS.** D-094 present with its four points; `dangling id tokens` OK.
+
+**Consistency gate.** `cairn_validate` exit 0, every CHECK PASS (`weight caps`
+and `coverage complete` included), every advisory OK. The `generic` profile
+names no toolchain checks — a clean no-op. No `DESIGN.md` principle changed, so
+`cairn_impact` was skipped. No CI configured, so nothing to wait on at merge.
