@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** `m126-claude-md-always-read-row`
+- **Branch/PR:** `m126-claude-md-always-read-row` · https://github.com/jmgirard/cairn/pull/126
 
 ## Goal
 
@@ -129,6 +129,7 @@ recording the addition and its boundaries.
 - 2026-07-31: correction — the round-1 fix line and a test comment both report "all 827 tests" green under an unnamed command. The figure is `python3 -m unittest discover -s skills/tests` at 667d919; the three suites AC5 names totalled 1262 there, and `skills/tests` is 830 now. The comment is corrected in place; this line supersedes the work-log figure.
 - 2026-07-31: T6 — three suites green (`hooks/tests` 103, `scripts/tests` 332, `skills/tests` 830) and `cairn_validate` all checks passed, all advisories OK. Plan-owned body 102/149 lines. Anchor sweep over all 23 string constants in `test_always_read_frame.py`: 22 occur exactly once and wholly on one physical line of their target; the 23rd is `BOUNDARY_STATEMENT`, normalized by design and asserted against the normalized file. The file docstring gained the sixth-row paragraph its own M113 precedent set.
 - 2026-07-31: status -> review at zero unresolved: every §8 finding from both rounds is fixed, and the shape-repeat stop's remedy is confirmed by operation rather than by a third round.
+- 2026-07-31: review opened — draft PR #126; three-lens fan-out spawned and still running; criterion evidence gathered for AC1-AC3, AC5, AC6. AC4 fails as written: its "every anchor ... sitting on one physical line of the target" is universal over anchors, and `BOUNDARY_STATEMENT` — the whole-statement pin §8's stop rule obliged as its structural remedy — spans eight physical lines by construction. Disposition pending the fan-out.
 
 ## Decisions
 
