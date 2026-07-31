@@ -686,8 +686,6 @@ cairn skill is active.
   the artifact (D-067).
   The discriminator is *who reads*, never *how often the work is read* — which
   is the same cut the freshness sentence above makes against the volume test.
-  A fresh reader's own loop is bounded by its instrument, never by this rule
-  (`guard-doctrine.md` §8).
 - **Sonnet subagents**: well-specified self-contained work — fan-out
   searches (Explore), mechanical migrations, test writing against a spec,
   boilerplate. Give complete specs — for an Explore fan-out that means a

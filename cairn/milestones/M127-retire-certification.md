@@ -1,11 +1,11 @@
 # M127: Guard-doctrine §8 is retired whole
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, IP4, GP1
-- **Branch/PR:** —
+- **Branch/PR:** m127-retire-certification
 
 ## Goal
 
@@ -100,18 +100,18 @@ recorded, accepted exposure.
 
 ## Tasks
 
-- [ ] T1: Remove §8 whole from `skills/shared/guard-doctrine.md`; §9
+- [x] T1: Remove §8 whole from `skills/shared/guard-doctrine.md`; §9
       keeps its number; rewrite or remove internal cross-references per
       AC1's classification (§9's motivating measurement survives as
       retrospective provenance).
-- [ ] T2: Run the AC1 search; commit the classification ledger; update
+- [x] T2: Run the AC1 search; commit the classification ledger; update
       or retire each test surface per hit (numbering test → gapped
       list; §8-only guards + registry entries retired; M124 ledger
       machinery deleted).
-- [ ] T3: Remove the implement-skill certification step; excise the two
+- [x] T3: Remove the implement-skill certification step; excise the two
       routing clauses from `tracking-rules.md` preserving the D-067
       carve-out and the `test_delegation_warrant.py:146` pin.
-- [ ] T4: Run all three suites from the repo root, each exit code
+- [x] T4: Run all three suites from the repo root, each exit code
       checked; record evidence.
 - [ ] T5: Author the superseding D-entry; preview verbatim in chat
       before the commit that lands it.
@@ -130,6 +130,10 @@ recorded, accepted exposure.
 - 2026-07-31: re-cut criteria re-audited by the same [O] fresh reader before writing: the zero-hit search collided with six classes of legitimate survivor (fixed — operative-class scoping plus a committed classification ledger); the section-numbering test needed keep-and-update, not retirement (fixed — per-hit disposition); `section_ledger.py` would be left testing only itself (fixed — M124 machinery deleted, restorable from git); four supersessions were missing (fixed — D-079/D-080/D-082/D-088 added to AC4); two more mooted candidate rows surfaced (fixed — audit-over-falsifiers and polarity rows added to AC5).
 - 2026-07-31: plan gate chose full retirement over the committed single-pass re-cut because §8's distinctive yield was record-accuracy-class while its cost was the measured dominant burn; falsified by a claim-accuracy defect (a false record claim about a guard) reaching main undetected by the review fan-out.
 - 2026-07-31: plan gate chose deleting the M124 ledger machinery over keeping a subjectless helper because a guard instrument testing only itself is the shape D-057/D-090 close doors on; falsified by the ledger-rollout row's promotion condition firing (a consistency defeat found in another doctrine section).
+- 2026-07-31: T1 done — §8 removed whole from guard-doctrine.md; §9 keeps its number and heading, its ledger-instrument paragraphs recast retrospective, and its closing paragraph records the M127 deletion with git as the machinery's home.
+- 2026-07-31: T2 done — AC1 search re-run post-edit and the per-hit ledger committed as `cairn/references/m127-ac1-ledger.md` (zero operative hits; one `test_always_read_frame.py` docstring tense-shifted during the sweep); numbering test relocated to new `skills/tests/test_guard_doctrine_sections.py` with the gapped 1–7, 9 list and its own registry entry; 104 mutation-registry entries retired, counted before deletion by `grep -c 'test="TestDescriptionLayerCertification'` (101) + same for `TestImplementRoutesToCertification` (2) + `test_rule_leaves_a_fresh_readers_loop` (1); M124 machinery deleted whole (`section_ledger.py`, `test_section_ledger.py`, `skills/tests/ledgers/`).
+- 2026-07-31: T3 done — implement-skill step 8 loses its certification clause; tracking-rules delegation paragraph loses exactly the fresh-reader-loop sentence and its `(guard-doctrine.md §8)` cite; the D-067 carve-out and the discriminator pin survive (delegation-warrant suite green).
+- 2026-07-31: T4 done — from the repo root: `python3 -m unittest discover -s skills/tests` 690 tests OK exit 0; `-s scripts/tests` 332 tests OK exit 0; `-s hooks/tests` 103 tests OK exit 0; `python3 scripts/cairn_validate.py` all checks passed, zero warnings, exit 0.
 
 ## Decisions
 

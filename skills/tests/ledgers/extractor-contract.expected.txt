@@ -1,9 +1,0 @@
-Zebra first.
-Apple second.
-Middle sentence spans a hard wrap and must normalize to one unit.
-**A bold rule ends here.**
-The sentence after it is its own unit.
-A sentence ending in a quotation mark said "like this."
-Another ending in a parenthetical (like this.)
-And one ending in a code span with a period in it, `tracking-rules.md`.
-The zero-unresolved bar keeps its hyphen.
