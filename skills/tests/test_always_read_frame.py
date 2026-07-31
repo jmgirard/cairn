@@ -13,6 +13,13 @@ Two surfaces carry the frame and this file pins both:
 M113/D-063 added the fifth row (the active milestone file) plus the two claims
 that make it unlike the four above it, each pinned on its own.
 
+M126/D-094 added the sixth row (`CLAUDE.md`'s `## Project tracking` section)
+and the boundary statement beneath the table. Two of its pins are whole-object
+rather than per-line, because §8 certification twice found a per-line anchor
+leaving its clause's other line negatable green: the boundary statement is
+pinned entire (whitespace-normalized), and the worked table is pinned by its
+full membership and order rather than by a relative row check.
+
 Anchors are copied from the target files' actual bytes (M95/M100), each a
 single physical line so a reflow cannot silently unpin it (M74/M92/M104). The
 table rows bind each file NOUN to its elements, so swapping a file's

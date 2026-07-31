@@ -1,6 +1,6 @@
 # M126: CLAUDE.md joins the always-read governance frame
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -98,7 +98,7 @@ recording the addition and its boundaries.
       `skills/tests/test_mutation_harness.py:2156-2173`; run the adjacent-phrase
       grep; run the harness.
 - [x] T5: Invert each shipped rule per guard-doctrine §1; record per-rule.
-- [ ] T6: Full verify (three suites + `cairn_validate`); ROADMAP row; hygiene.
+- [x] T6: Full verify (three suites + `cairn_validate`); ROADMAP row; hygiene.
 
 ## Work log
 
@@ -127,6 +127,8 @@ recording the addition and its boundaries.
 - 2026-07-31: correction — the round-1 fix line above says the boundary paragraph "was re-wrapped so each clause completes on one physical line". True of the D-063 contrast and the no-uniqueness claim only; the section-scoping clause spans `tracking-rules.md:196-197` and the remainder clause `:198-199`. That split is what round 2 found, and the whole-statement assert is what closes it rather than a further re-wrap.
 - 2026-07-31: correction — the T5 re-run line above attributes `FAILED (failures=1)` to the row transposition and `FAILED (failures=1, errors=1)` to the other six. Reversed for that pair: the row transposition reds the frame guard AND errors the harness (its registered block no longer occurs), while the single-failure case was the sixth row moved above the fifth, whose registered blocks both survive the move. The same line says "six shipped rules plus two probes" and then counts seven: seven ran, and the rule at `tracking-rules.md:201-202` was not among them. It is inverted in the twelve-mutation run above (R5).
 - 2026-07-31: correction — the round-1 fix line and a test comment both report "all 827 tests" green under an unnamed command. The figure is `python3 -m unittest discover -s skills/tests` at 667d919; the three suites AC5 names totalled 1262 there, and `skills/tests` is 830 now. The comment is corrected in place; this line supersedes the work-log figure.
+- 2026-07-31: T6 — three suites green (`hooks/tests` 103, `scripts/tests` 332, `skills/tests` 830) and `cairn_validate` all checks passed, all advisories OK. Plan-owned body 102/149 lines. Anchor sweep over all 23 string constants in `test_always_read_frame.py`: 22 occur exactly once and wholly on one physical line of their target; the 23rd is `BOUNDARY_STATEMENT`, normalized by design and asserted against the normalized file. The file docstring gained the sixth-row paragraph its own M113 precedent set.
+- 2026-07-31: status -> review at zero unresolved: every §8 finding from both rounds is fixed, and the shape-repeat stop's remedy is confirmed by operation rather than by a third round.
 
 ## Decisions
 
