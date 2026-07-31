@@ -135,6 +135,8 @@ Deviations from RR11:
      cross-cutting ones to cairn/DECISIONS.md.
      EXEMPT from the 150-line cap (D-074). -->
 
+- 2026-07-31 (review): F17 (62, logged) claimed D-047's Consequences clause "then the advisory goes quiet" is now false. Declined without a superseding D-entry: the clause describes a *completed* migration, and the advisory still goes quiet when the migration completes (directory moved or removed); only the declined-move case stays loud, a case D-047 never addressed. If a reader trips on the sentence, the remedy is an annotating D-entry (IP4: annotate, never edit), not a correction here.
+
 ## Review
 
 - 2026-07-31 AC1 evidence: fresh `python3 -m unittest discover -s scripts/tests -p 'test_scaffold_check.py'` → Ran 19, OK, exit 0 — directory line fires in all four entry states (subTests), empty and absent directories silent, emitted line lacks `is superseded by`; `git diff origin/main..HEAD -- scripts/tests/test_scaffold_check.py | grep -c '^-[^-]'` → 0 deleted lines, so the four pre-existing `TestGitignoreDeprecation` arms are unmodified; no suppression marker appears anywhere in the diff.
