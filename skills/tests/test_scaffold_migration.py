@@ -135,17 +135,41 @@ class TestDeprecationMigration(unittest.TestCase):
     def test_absent_old_directory_completes_without_an_ask(self):
         self.assertIn("**Old directory absent: the entry change *is* the migration.**", self.section)
 
-    def test_closing_check_does_not_claim_to_verify_the_directory(self):
-        # F2/AC5: check_gitignore_deprecations reads .gitignore alone, so a
-        # quiet advisory cannot distinguish a completed move from a declined
-        # one. The prose must say so rather than claim a verified outcome.
+    def test_closing_check_covers_both_arms(self):
+        # M129: the directory arm made the closing claim true for the
+        # filesystem too — a quiet advisory now means entries migrated AND
+        # no superseded shelf still holding files. A declined move keeps
+        # firing by design; the retired entry-only claim must not return.
         self.assertIn(
-            "**A quiet advisory confirms the entry, not the directory** — `check_gitignore_deprecations` reads `.gitignore` alone and never the filesystem,",
+            "**A quiet advisory now confirms the entries and the directory both** — the directory arm reads the filesystem, so a superseded shelf still holding files keeps its line firing whatever `.gitignore` says.",
             self.section,
         )
         self.assertIn("Report the directory outcome on its own", self.section)
+        self.assertNotIn("confirms the entry, not the directory", self.section)
         # the superseded false claim must not come back
         self.assertNotIn("a still-firing advisory means a step above", self.section)
+
+    def test_per_line_block_names_both_line_kinds(self):
+        # M129: the advisory emits two genres; the format sentence must
+        # describe both, and the directory arm's phrasing must match what
+        # the checker actually emits (M77: pair prose with the real checker).
+        self.assertIn(
+            "an entry line — `'<old>' is superseded by '<new>'`",
+            self.section,
+        )
+        self.assertIn(
+            "a directory line — `directory '<old>' still holds files`",
+            self.section,
+        )
+        self.assertIn("still holds files", VALIDATE.read_text())
+
+    def test_directory_line_is_trigger_not_choice(self):
+        # M129: one directory line cannot say which disk case applies, so
+        # the line only routes; the case stays chosen by what is on disk.
+        self.assertIn(
+            "On a directory line: it is only the trigger for the directory-state cases below — the case is still chosen by what is on disk.",
+            self.section,
+        )
 
     def test_repair_commit_cannot_sweep_an_unmigrated_shelf(self):
         self.assertIn(

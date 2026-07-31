@@ -208,16 +208,20 @@ never rewrites content the repo authored.
   so an un-migrated repo carries the WARN until repair runs.
 
   Run `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` and read its `scaffold deprecations` advisory.
-  Each line names one superseded entry and its successor
-  (`'<old>' is superseded by '<new>'`).
+  The advisory prints two kinds of line: an entry line — `'<old>' is superseded by '<new>'` — naming a superseded `.gitignore` entry, and a directory line — `directory '<old>' still holds files` — naming a superseded shelf directory still occupied on disk, whatever `.gitignore` says (M129: this arm is what lets a repair re-run resume a declined or deferred move).
   Act on every line the advisory prints, never on a pair named in this text — the advisory is generated from the plugin's own map of superseded entries, so a rename added after this was written migrates with no edit here.
-  Per line:
+  Per line, by kind:
 
-  **Add the successor entry, no ask.** `<new>` joins `.gitignore` and `<old>` stays for now.
+  On an entry line: **Add the successor entry, no ask.** `<new>` joins `.gitignore` and `<old>` stays for now.
   It is cairn's own scaffold line, not one the repo authored, and adding
   touches nothing git tracks — so it needs no gate. Both entries present is
-  silent to the advisory, so the shelf stays ignored for as long as the old
+  silent to the entry arm, so the shelf stays ignored for as long as the old
   directory still holds files.
+
+  On a directory line: it is only the trigger for the directory-state cases below — the case is still chosen by what is on disk.
+  A directory line with both `.gitignore` entries already present is exactly
+  the declined-or-deferred move this arm exists to resume; re-entering the
+  cases below is how repair resumes it.
 
   Then take **exactly one** of the cases below, chosen by what is on disk
   *before* anything moves. They are mutually exclusive states, not a sequence —
@@ -237,10 +241,12 @@ never rewrites content the repo authored.
   dropping the superseded entry while its directory still holds files would
   un-ignore untracked contents the repo may be keeping out of git deliberately.
 
-  Close by re-running `cairn_validate.py`. **A quiet advisory confirms the entry, not the directory** — `check_gitignore_deprecations` reads `.gitignore` alone and never the filesystem,
-  so it falls silent as soon as `<new>` is present, whether or not anything
-  moved. Report the directory outcome on its own: what moved, what was
-  declined, and what still awaits a choice.
+  Close by re-running `cairn_validate.py`. **A quiet advisory now confirms the entries and the directory both** — the directory arm reads the filesystem, so a superseded shelf still holding files keeps its line firing whatever `.gitignore` says.
+  A declined or deferred move therefore stays visible to the next repair run
+  by design; the line is silenced only by the directory being moved or
+  removed (an empty leftover is the one residue it stays silent on — nothing
+  is lost by that). Report the directory outcome on its own: what moved,
+  what was declined, and what still awaits a choice.
 
 - Commit (docs-only, on the default branch): **stage the files repair touched by path, never `git add -A` or `.`** — a mid-migration shelf is untracked
   by design, and a blanket stage would commit the very files the entry above

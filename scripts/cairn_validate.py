@@ -878,13 +878,20 @@ def check_sizing_advisory(root):
 
 
 def check_gitignore_deprecations(root):
-    """Advisory arm of the scaffold deprecation cycle: a repo carrying a
-    superseded .gitignore entry is told its new name without being failed.
-    Exit-code neutral by design — the rename is cairn's, not the repo's, so a
-    hard FAIL would block a milestone over a scaffold change the maintainer
-    never made (D-047; the D-040 migration-cost precedent, one severity
-    softer because a rename has a mechanical successor a slot addition
-    lacks)."""
+    """Advisory arms of the scaffold deprecation cycle, both exit-code
+    neutral by design — the rename is cairn's, not the repo's, so a hard
+    FAIL would block a milestone over a scaffold change the maintainer never
+    made (D-047; the D-040 migration-cost precedent, one severity softer
+    because a rename has a mechanical successor a slot addition lacks).
+    The entry arm reads `.gitignore`: a superseded entry is told its new
+    name. The directory arm reads the filesystem: a superseded shelf
+    directory still holding files is reported whatever `.gitignore` says,
+    because the entry arm falls silent the moment the successor entry lands
+    and a declined or deferred move used to vanish from every later run
+    (M129, from the M82 review). The WARN persisting for a declined move is
+    the accepted consequence — its only silencing states are the directory
+    moved or removed; an empty leftover stays invisible, since nothing is
+    lost by its silence."""
     bad = []
     gitignore = _ignore_entries(os.path.join(root, ".gitignore"))
     for old, new in cs.DEPRECATED_GITIGNORE.items():
@@ -892,6 +899,20 @@ def check_gitignore_deprecations(root):
             bad.append(
                 f".gitignore entry '{old}' is superseded by '{new}' — "
                 f"rename the entry and the directory"
+            )
+        old_dir = os.path.join(root, *old.strip("/").split("/"))
+        try:
+            occupied = bool(os.listdir(old_dir))
+        except OSError:
+            # absent, a non-directory at the path, or unreadable — an
+            # advisory must degrade to silence, never crash the gate (M129
+            # review F1: PermissionError took down every check)
+            occupied = False
+        if occupied:
+            bad.append(
+                f"directory '{old}' still holds files — move them to "
+                f"'{new}' and remove it; /cairn-init repair resumes a "
+                f"declined migration"
             )
     return bad
 

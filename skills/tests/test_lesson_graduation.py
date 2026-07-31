@@ -270,6 +270,26 @@ class TestModuleExists(unittest.TestCase):
             r"all\.",
         )
 
+    def test_restatement_section_states_the_quantified_claim_rule(self):
+        # M129 (RR11 BC5): a universal over the milestone's own artifacts is
+        # a zero-exception count, so it inherits the counts rule's procedure
+        # obligation; an unenumerable domain forbids writing the universal at
+        # all. Two load-bearing conjuncts, pinned separately (guard-doctrine
+        # §1: one pin on the pair would let either half delete green under
+        # the other). Reads §6's slice for the same reason the counts-rule
+        # test does.
+        self.assertIn(
+            "**A universal claim over a milestone's own artifacts is a count "
+            "claiming zero exceptions, and carries the recorded-counts "
+            "rule's procedure obligation.**",
+            section6(),
+        )
+        self.assertIn(
+            "**Where no stated procedure can enumerate the domain, the "
+            "universal is not written**",
+            section6(),
+        )
+
 
 class TestRulebookPointer(unittest.TestCase):
     """The rulebook routes to the module, on a line that stays pinnable."""
