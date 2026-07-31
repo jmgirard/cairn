@@ -2995,6 +2995,15 @@ REGISTRY += [
         target="cairn/DECISIONS.md",
         block="no longer describes shipped §8, which routes to §9 as well",
     ),
+    # M124 round 7's structural remedy: the extractor's contract, pinned
+    # against a fixture never regenerated. Blanking a construct in the input
+    # changes the extraction and the committed expectation no longer matches.
+    Mutation(
+        guard="test_section_ledger",
+        test="TestExtractorContract.test_the_extractor_matches_its_committed_contract",
+        target="skills/tests/ledgers/extractor-contract.md",
+        block="**A bold rule ends here.** The sentence after it is its own unit.",
+    ),
 ]
 
 # M95 (D-056). Five entries, because the placement doctrine fails in five
