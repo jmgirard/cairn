@@ -105,7 +105,7 @@ than absorbed (gate decision 2026-07-30).
 
 ## Tasks
 
-- [ ] T1 — Author §8's stop rule: the new finding class and its one
+- [x] T1 — Author §8's stop rule: the new finding class and its one
       obligation; amend the two obligation sentences (`guard-doctrine.md:342-345`,
       `:347-348`) and re-read the licence rationale clause (`:344-345`) for
       coherence under the exception (audit pass 2, finding 1a); update the
@@ -145,6 +145,10 @@ than absorbed (gate decision 2026-07-30).
 - 2026-07-30: plan gate chose closing the apparatus program at the door (D-090) over stop-rule-only, because the stop rule alone makes each apparatus milestone cheaper while the queue keeps growing — D-057's measured signature; falsified by a shipped-behavior defect class that a parked apparatus candidate would have prevented.
 - 2026-07-30: plan gate chose narrowly superseding D-085's clause-(i) gloss over annotating beside it, following the precedent M124's branch set when it superseded D-083 part 3(a) for the same shape — a description made incomplete by a later addition (that entry is unmerged, so it is named here by description, per the M115 lesson); falsified by the rounds-vs-findings defense proving right — a later reader showing the gloss was never incomplete because the stop rule declines rounds, not findings.
 - 2026-07-30: plan gate chose verbatim-grade count procedures over cutting the rule, because M123/M124's correction-of-correction churn fed rounds and the discriminator was procedure granularity; falsified by procedure text bloating records at a cost exceeding the adjudication rounds it prevents.
+- 2026-07-30: implement gate (1 question): §8's growth recorded as deliberate rather than offset within the section (user decision, M123's precedent); measured 150 -> 177 lines, both by `awk '/^## 8\. /{f=1} /^## 9\. /{f=0} f' skills/shared/guard-doctrine.md | wc -l` (at main and at the T1 commit; no existing paragraph re-wrapped).
+- 2026-07-30: T1 — stop rule, window-counting and own falsifier authored as two paragraphs between the reopening rule and the obligations paragraph; both obligation sentences amended, the licence clause gains the no-such-silence sentence, the framing sentence counts the stop rule among the rules acting on the round count; suites 812/332/103 OK, cairn_validate exit 0.
+- 2026-07-30: T1 breakage differed from the plan's expectation: the three falsifier-neighborhood pins held; what broke was the framing pin, the sentence-A pin, the obligations proxy (renamed exactly-three -> exactly-four, M124's rename precedent), and clause (ii)'s bare tolerance anchor — false coverage against the stop rule's identical "Tolerance: one occurrence." phrase, so both tolerance asserts are now anchored on their own clause's words ("that class" vs "that shape").
+- 2026-07-30: T1 ledger regenerated and its diff read sentence by sentence: 12 added/amended units, every one deliberately authored; 2 removals, both the pre-amendment forms of the two amended sentences; nothing unintended.
 
 ## Decisions
 

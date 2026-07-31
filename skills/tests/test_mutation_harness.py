@@ -2405,7 +2405,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_section_carries_its_own_falsifier",
         target=GUARD_DOCTRINE,
-        block="**This step carries its own falsifier.** It counts yield and not\nrounds, because the round count is precisely what the two rules above change,\nand a measure its own subject can satisfy by construction measures nothing.",
+        block="**This step carries its own falsifier.** It counts yield and not\nrounds, because the round count is precisely what the rules above — the two\nlines governing a round, and the shape-repeat stop — change, and a measure\nits own subject can satisfy by construction measures nothing.",
     ),
     # M116 (D-069). Two entries: the exclusion itself, and the reason it is a
     # convergence fix. Losing the second leaves the clause readable as a
@@ -2763,7 +2763,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_clause_two_carries_its_tolerance",
         target=GUARD_DOCTRINE,
-        block='Tolerance: one\n  occurrence.',
+        block='that class returns to round-opening. Tolerance: one\n  occurrence.',
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2799,7 +2799,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_clearing_both_lines_is_sufficient_to_reopen",
         target=GUARD_DOCTRINE,
-        block="**And a finding that clears both lines is a reopening finding**, carrying that\nclass's obligation: a further fresh-context round.",
+        block="**And a finding that clears both lines is a reopening finding**, carrying that\nclass's obligation: a further fresh-context round — unless it is the second\nconsecutive one of a single defect shape, which the stop rule below makes a\n**shape-repeat finding** instead.",
     ),
     Mutation(
         guard="test_fresh_context_readers",

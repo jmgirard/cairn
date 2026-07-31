@@ -387,12 +387,14 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # A19 (return 1): the anchor started at "It counts yield", so deleting
         # the declarative sentence this test is NAMED for left it green — §8
         # shipped a falsifier nothing said it carried. The anchor now opens on
-        # that sentence.
+        # that sentence. M125: the framing counts the shape-repeat stop among
+        # the rules acting on the round count.
         self.assertRegex(
             self.section8,
             r"\*\*This\s+step\s+carries\s+its\s+own\s+falsifier\.\*\*\s+"
             r"It counts yield and not\s+rounds, because the round count is "
-            r"precisely what the two rules above change,\s+and a measure its "
+            r"precisely what the rules above — the two\s+lines governing a "
+            r"round, and the shape-repeat stop — change, and a measure\s+its "
             r"own subject can satisfy by construction measures nothing",
         )
 
@@ -649,8 +651,21 @@ class TestDescriptionLayerCertification(unittest.TestCase):
 
     def test_clause_two_carries_its_tolerance(self):
         # D3 (round 1): changeable to 'five occurrences' with the suite green.
+        # M125: anchored on clause (ii)'s own words, because the stop rule's
+        # falsifier now carries the same tolerance phrase and a bare
+        # "Tolerance: one occurrence." would survive clause (ii)'s deletion.
         self.assertRegex(
             self.section8,
+            r"that\s+class\s+returns\s+to\s+round\-opening\.\s+"
+            r"Tolerance:\s+one\s+occurrence\.",
+        )
+
+    def test_the_stop_rule_falsifier_carries_its_tolerance(self):
+        # M125: same D3 defect on the stop rule's own falsifier — anchored on
+        # "that shape" so neither tolerance assert covers for the other.
+        self.assertRegex(
+            self.section8,
+            r"the\s+stop\s+rule\s+returns\s+that\s+shape\s+to\s+round\-opening\.\s+"
             r"Tolerance:\s+one\s+occurrence\.",
         )
 
@@ -708,7 +723,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         # in a loop could derive 'nothing must reopen' with every rule intact.
         self.assertRegex(
             self.section8,
-            r"\*\*And\s+a\s+finding\s+that\s+clears\s+both\s+lines\s+is\s+a\s+reopening\s+finding\*\*,\s+carrying\s+that\s+class's\s+obligation:\s+a\s+further\s+fresh\-context\s+round\.",
+            r"\*\*And\s+a\s+finding\s+that\s+clears\s+both\s+lines\s+is\s+a\s+reopening\s+finding\*\*,\s+carrying\s+that\s+class's\s+obligation:\s+a\s+further\s+fresh\-context\s+round\s+—\s+unless\s+it\s+is\s+the\s+second\s+consecutive\s+one\s+of\s+a\s+single\s+defect\s+shape,\s+which\s+the\s+stop\s+rule\s+below\s+makes\s+a\s+\*\*shape\-repeat\s+finding\*\*\s+instead\.",
         )
 
     def test_the_reopening_rule_runs_in_both_directions(self):
@@ -1189,7 +1204,10 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             f"in paragraph {defined}; the definition must immediately follow",
         )
 
-    def test_exactly_three_confirmation_obligations_are_assigned(self):
+    def test_exactly_four_confirmation_obligations_are_assigned(self):
+        # M125: renamed from ..._three_... when the stop rule added the
+        # shape-repeat finding as a fourth class; the old name asserted the
+        # count (M124's rename precedent).
         # D2 (round 1): AC4's "no class carries two" is a property, not a
         # phrase. Counting known obligation PHRASINGS was the first attempt and
         # it survived its own inversion — a fourth obligation worded any other
@@ -1224,7 +1242,7 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         sentences = re.split(r"(?<=\.)\s+(?=[A-Z*])|(?<=\.\*\*)\s+(?=[A-Z*])",
                              flat)
         self.assertEqual(
-            len(sentences), 4,
+            len(sentences), 5,
             "§8's obligations paragraph should be the header plus exactly one "
             f"sentence per class; found {len(sentences)}: {sentences}",
         )
@@ -1238,8 +1256,8 @@ class TestDescriptionLayerCertification(unittest.TestCase):
             )
             labels.append(m.group(1))
         self.assertEqual(
-            len(set(labels)), 3,
-            f"the three obligation sentences should name three distinct "
+            len(set(labels)), 4,
+            f"the four obligation sentences should name four distinct "
             f"classes; found {labels}",
         )
         # Scoped, not counted: the author may be named only inside the

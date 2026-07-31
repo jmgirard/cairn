@@ -32,19 +32,29 @@ It does not reopen certification, **and it does not hold the gate**: the zero-un
 Failing either, it is fixed under the obligation named below and the round still closes.
 The definition settles the apparent overlap without a tie-break: a one-directional pin that leaves an acceptance-criterion clause unpinned is a check-1 finding and reopens, while one that merely hardens an assert no criterion names is out of mandate.
 What decides is whether a criterion clause is at stake, never how the finding is phrased.
-**And a finding that clears both lines is a reopening finding**, carrying that class's obligation: a further fresh-context round.
+**And a finding that clears both lines is a reopening finding**, carrying that class's obligation: a further fresh-context round — unless it is the second consecutive one of a single defect shape, which the stop rule below makes a **shape-repeat finding** instead.
 Stated as a bound alone it says only which findings cannot reopen a round and never that any must, and a reader deep in a long loop can take that silence as licence to close.
+The stop rule is no such silence: where it ends the rounds, it does so by stated rule, with the stop disclosed.
+**Two consecutive rounds each returning a reopening finding of the same defect shape end the rounds** — the certification convenes no further round.
+Whether two findings share a shape is the judgment D-064's trigger (b) applies to review returns, applied here to certification rounds.
+The second same-shape finding is a class of its own, the **shape-repeat finding**: its one confirmation obligation is a structural remedy closing the shape's class rather than its instance, confirmed by operation — the suite, the harness, the sweeps.
+The stop, the shape, and the remedy are disclosed in work-log lines before `status -> review`.
+A shape-stopped certification counts toward the falsifier window below exactly as run: the rounds it convened and their findings count where found, and no round it declined to convene is imputed or estimated.
+The stop rule carries its own falsifier, in clause (ii)'s form: if a structural remedy authored under it is later found — by the three-lens review, or by a subsequent milestone — not to have closed its shape's class, the stop rule returns that shape to round-opening.
+Tolerance: one occurrence.
 **Each class carries exactly one confirmation obligation, and no class carries two.**
 A **reopening finding** obliges a further fresh-context round, and that round is what confirms its fix.
+A **shape-repeat finding** obliges the structural remedy the stop rule above names, and operation rather than a further round confirms it.
 A **fix-authored record** is fixed in place and confirmed by the next round's reader where a further round occurs, and otherwise by `/milestone-review`'s three-lens fan-out at the merge gate; no confirmation obligation falls on the author, because D-067 rejected instructing an author's own re-check — it asks for the judgment this section exists because authors fail at — and `tracking-rules.md`'s delegation warrant says the same of a check already happening unprompted.
 An **out-of-mandate robustness observation** is confirmed by operation: the harness, the sweeps and the suite.
 The gate is therefore reachable with fix-authored records corrected but not yet independently confirmed — a deliberate narrowing of the zero-unresolved bar, whose cost the falsifier's clause (ii) counts.
+It is reachable, too, with a stopped shape's class closed by structural remedy and confirmed by operation alone — a second narrowing, whose cost the stop rule's own falsifier counts.
 **What grounds the provenance rule is record churn, not M119's round count.**
 The three measured cases and the revisions they are read from are recorded at D-085.
 On M119's record the provenance rule alone changes the round count by **zero**, and the section says so rather than claiming a saving it does not produce: those rounds also returned coverage gaps, and a coverage gap is a finding about executable surface, which the rule never shields.
 The mandate boundary is the rule that reaches that count; its replay projection and tolerance are at D-085.
 **This step carries its own falsifier.**
-It counts yield and not rounds, because the round count is precisely what the two rules above change, and a measure its own subject can satisfy by construction measures nothing.
+It counts yield and not rounds, because the round count is precisely what the rules above — the two lines governing a round, and the shape-repeat stop — change, and a measure its own subject can satisfy by construction measures nothing.
 Measured over the next three guard-authoring milestones that run §8, the window closing when the third completes: - **(i)** If the rounds after each milestone's first return, totalled across the window, zero shipped-behaviour defects and zero findings whose subject is pre-round-1 surface, then the rounds after the first have stopped earning their cost — retire them and run §8 as a single certification pass.
 A finding counts where it was **found**, never where it was fixed, so routing one to §§1–7 or §9 does not remove it from the count.
 Tolerance: exact zero on both counts, and the window counts only if at least one of its three milestones convened a round after its first — a window that never ran a later round has not measured one.
