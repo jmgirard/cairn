@@ -74,6 +74,7 @@ recording the addition and its boundaries.
       the section the governed unit; why the frame's opening definition is left
       unamended; and why `PROFILE.md` and the hook's preamble are out of scope.
       Evidence: the appended entry, `dangling id tokens` clean.
+- 2026-07-31: T5 — four shipped rules inverted in place per guard-doctrine §1, each RED with exactly one failing test, each restored byte-identical (`git diff` empty): row cells transposed (inflow↔outflow); "never the whole file" → "the whole file too"; "stay governed, by a read-bound" → "stop being governed, with no read-bound"; "No uniqueness is claimed" → "Uniqueness is claimed".
 
 ## Coverage
 
@@ -97,7 +98,7 @@ recording the addition and its boundaries.
       at `:72-97`, standalone claims at `:99-117`) and the REGISTRY entries near
       `skills/tests/test_mutation_harness.py:2156-2173`; run the adjacent-phrase
       grep; run the harness.
-- [ ] T5: Invert each shipped rule per guard-doctrine §1; record per-rule.
+- [x] T5: Invert each shipped rule per guard-doctrine §1; record per-rule.
 - [ ] T6: Full verify (three suites + `cairn_validate`); ROADMAP row; hygiene.
 
 ## Work log
@@ -113,6 +114,7 @@ recording the addition and its boundaries.
 - 2026-07-31: T3 — sixth frame row shipped at `tracking-rules.md:183`, scoped to `CLAUDE.md`'s `## Project tracking` section; the AC3 boundary statement added as its own paragraph at `:196-206`, leaving the guarded fifth-surface paragraph untouched. Cell sources: D-009 `cairn/DECISIONS.md:90`, the trim-to-template remedy `tracking-rules.md:141-143`, the 30-line cap `tracking-rules.md:86` with `scripts/cairn_scripts.py:89` and `scripts/cairn_validate.py:75-77`.
 - 2026-07-31: T4 — four asserts added to `test_always_read_frame.py` (the sixth row whole; the three AC3 claims, each anchored on one physical line of the target), four matching `test_mutation_harness.py` REGISTRY entries; harness green. Adjacent-phrase grep over all 13 existing anchors: each still occurs exactly once, so no re-anchoring is owed.
 - 2026-07-31: T2 — D-094 appended, recording AC6's four points plus per-user memory's out-of-scope reason; `dangling id tokens` clean.
+- 2026-07-31: T5 — four shipped rules inverted in place per guard-doctrine §1, each RED with exactly one failing test, each restored byte-identical (`git diff` empty): row cells transposed (inflow↔outflow); "never the whole file" → "the whole file too"; "stay governed, by a read-bound" → "stop being governed, with no read-bound"; "No uniqueness is claimed" → "Uniqueness is claimed".
 
 ## Decisions
 
