@@ -1,6 +1,6 @@
 # M126: CLAUDE.md joins the always-read governance frame
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -36,13 +36,13 @@ recording the addition and its boundaries.
 
 ## Acceptance criteria
 
-- [ ] AC1: A sweep enumerates every surface a session loads at start, derived by
+- [x] AC1: A sweep enumerates every surface a session loads at start, derived by
       reading `hooks/hooks.json`'s SessionStart entry and `session_context.py`'s
       `build_context`, plus the harness-loaded project instructions — never a
       list carried from this plan. Each surface is classified covered by the
       frame's table, uncovered, or out of scope with its reason. Evidence: the
       classification, one row per surface, in the Review section.
-- [ ] AC2: Each surface AC1 classifies uncovered gains a row in the
+- [x] AC2: Each surface AC1 classifies uncovered gains a row in the
       "Always-read governance" worked table, appended after the existing fifth
       row so the guarded sentence "The fifth surface differs from the four above
       it" stays true. The `CLAUDE.md` row's three cells name: inflow — the
@@ -50,7 +50,7 @@ recording the addition and its boundaries.
       section back to the template; signal — the <30-line cairn-section cap
       enforced by `cairn_validate`'s `weight caps` CHECK. Evidence: the shipped
       row plus the file:line of each of the three sources.
-- [ ] AC3: The rulebook states beneath the table what makes the `CLAUDE.md` row
+- [x] AC3: The rulebook states beneath the table what makes the `CLAUDE.md` row
       unlike the five above it — cairn governs its `## Project tracking` section
       and the remainder of the file is governed by nothing cairn owns (D-018),
       as against the milestone file, whose cap-exempt sections are still
@@ -63,13 +63,13 @@ recording the addition and its boundaries.
       them present. The new prose is grepped for every phrase an existing
       `test_always_read_frame.py` assert anchors on; any assert whose phrase the
       new prose duplicates is re-anchored into its own sentence (M113).
-- [ ] AC5: Each rule this milestone ships in `tracking-rules.md` is inverted in
+- [x] AC5: Each rule this milestone ships in `tracking-rules.md` is inverted in
       place per `guard-doctrine.md` §1 — relabel, negate, or transpose **the
       rule**, never the assert; run; require red; restore and diff — with the
       per-rule result recorded. After restore, `python3 -m unittest discover`
       over `hooks/tests`, `scripts/tests` and `skills/tests` each exit 0, and
       `cairn_validate` exits 0.
-- [ ] AC6: A `DECISIONS.md` entry records: that this applies D-060's own audit
+- [x] AC6: A `DECISIONS.md` entry records: that this applies D-060's own audit
       bullet as D-063 did, superseding nothing; the D-018/D-009 boundary making
       the section the governed unit; why the frame's opening definition is left
       unamended; and why `PROFILE.md` and the hook's preamble are out of scope.
@@ -130,6 +130,7 @@ recording the addition and its boundaries.
 - 2026-07-31: T6 — three suites green (`hooks/tests` 103, `scripts/tests` 332, `skills/tests` 830) and `cairn_validate` all checks passed, all advisories OK. Plan-owned body 102/149 lines. Anchor sweep over all 23 string constants in `test_always_read_frame.py`: 22 occur exactly once and wholly on one physical line of their target; the 23rd is `BOUNDARY_STATEMENT`, normalized by design and asserted against the normalized file. The file docstring gained the sixth-row paragraph its own M113 precedent set.
 - 2026-07-31: status -> review at zero unresolved: every §8 finding from both rounds is fixed, and the shape-repeat stop's remedy is confirmed by operation rather than by a third round.
 - 2026-07-31: review opened — draft PR #126; three-lens fan-out spawned and still running; criterion evidence gathered for AC1-AC3, AC5, AC6. AC4 fails as written: its "every anchor ... sitting on one physical line of the target" is universal over anchors, and `BOUNDARY_STATEMENT` — the whole-statement pin §8's stop rule obliged as its structural remedy — spans eight physical lines by construction. Disposition pending the fan-out.
+- 2026-07-31: review round 1 returned the milestone to `in-progress`. AC4 FAILS as written — `BOUNDARY_STATEMENT` is an anchor spanning eight physical lines, and AC4 quantifies "sitting on one physical line of the target" over every anchor; the whole-statement pin is guard-doctrine §8's obliged structural remedy, so the criterion is what needs the gated amendment, never a charitable reading. Also actioned: F9 (92), two holes in the new table parser — a substring header match lets an appended column pass, and a deleted separator row passes, both against the guard's own comment. AC1-AC3, AC5, AC6 passed with fresh evidence recorded in the Review section; 18 sub-threshold findings logged there. Return 1 of this milestone.
 
 ## Decisions
 
@@ -155,3 +156,91 @@ already runs wider than its opening definition. That is the parked candidate
 row, and nothing here settles it.
 
 ## Review
+
+### Round 1 — 2026-07-31 · returned to `/milestone-implement`
+
+Every criterion was executed by command in this round. **A return re-opens all
+six: the next round re-executes them and records its own evidence.**
+
+- **AC1 — PASS.** Sweep re-derived from source, not carried: `hooks/hooks.json`
+  has exactly one `SessionStart` entry, `session_context.py`; `build_context`
+  (`hooks/session_context.py:241-344`) emits at `:243` (PREAMBLE), `:246`
+  (profile name), `:258` (ROADMAP), `:294` (one part per active milestone,
+  statuses from `hooks/cairn_common.py:16`). With the harness-loaded project
+  instructions that is six surfaces, classified in the `## Decisions` sweep
+  table above: `CLAUDE.md` uncovered; `ROADMAP.md` and the active milestone
+  files covered by rows 1 and 5; `PROFILE.md`'s name header, the hook
+  `PREAMBLE` and per-user memory out of scope, each with its reason.
+- **AC2 — PASS.** Row shipped at `skills/shared/tracking-rules.md:183`, appended
+  below the fifth. Its three sources verified in place: inflow D-009 at
+  `cairn/DECISIONS.md:90`; outflow the trim-to-template remedy at
+  `tracking-rules.md:141-143`; signal the <30-line cap at `tracking-rules.md:86`,
+  `scripts/cairn_scripts.py:89` (`CLAUDE_SECTION_CAP = 30`) and
+  `scripts/cairn_validate.py:75-77` under the `weight caps` CHECK.
+- **AC3 — PASS.** Statement shipped at `tracking-rules.md:196-203`: the section
+  is the governed unit, the dev doctrine outside it is not reached by any cell
+  (D-018), the milestone file's cap-exempt sections stay governed by a
+  read-bound rather than a cap (D-063), and no uniqueness is claimed for either.
+- **AC4 — FAIL.** Its clause "every anchor copied from the shipped bytes and
+  sitting on one physical line of the target" is universally quantified over
+  anchors. An AST sweep of `test_always_read_frame.py` finds every anchor on one
+  physical line of its target except `BOUNDARY_STATEMENT`, which spans the eight
+  lines of the boundary paragraph by construction — it is the whole-statement
+  pin guard-doctrine §8's shape-repeat stop rule obliged as the structural
+  remedy, after per-line anchoring was twice convicted as the defect shape. The
+  work is right and the criterion is wrong: reinterpreting it charitably is
+  exactly what AC fencing forbids, so the milestone returns for a gated
+  amendment (`/milestone-implement` step 6). Every other AC4 clause holds:
+  20 REGISTRY entries for the frame guard, harness green (9 tests), and the
+  adjacent-phrase grep finds all 13 pre-M126 anchors still occurring exactly once.
+- **AC5 — PASS.** Twelve inversions over every rule this milestone ships plus the
+  §8 rounds' five green probes: twelve red, file restored byte-identical after
+  each (work log, 2026-07-31). After restore `hooks/tests`, `scripts/tests` and
+  `skills/tests` each exit 0 (103 / 332 / 830) and `cairn_validate` exits 0.
+- **AC6 — PASS.** D-094 appended at `cairn/DECISIONS.md:3408`, carrying all four
+  points; `dangling id tokens` OK.
+
+**Consistency gate.** `cairn_validate` exit 0 — every CHECK PASS, every advisory
+OK. The `generic` profile's `consistency-gate` slot names no toolchain checks, a
+clean no-op. No `DESIGN.md` principle changed, so `cairn_impact` was skipped. No
+CI is configured in this repo (`.github/workflows` absent), so the green-CI
+requirement has nothing to wait on.
+
+**Fan-out.** Three fresh-context lenses, then a Sonnet scorer that generated
+none of the findings. The blame-history lens found no violation and confirmed
+independently that replacing the relative row-order assert was a strengthening.
+The prior-review lens found one: AC4 unamended, citing M113's own review as the
+precedent for returning a milestone whose criterion fails as written. Its
+GitHub-thread probe was run here instead and came back empty, so there is no
+secondary surface. The diff-bug lens returned 19 candidates.
+
+**Actioned (score ≥80), both fixed in the return:**
+
+- **F9 (92) — two holes in the new table parser, both contradicting its own
+  comment.** `self.rules.split(TABLE_HEADER, 1)` matches the header as a
+  substring, so appending a `| Notes |` column plus a widened separator stays
+  green while the comment claims a changed header reds; and deleting the
+  `|---|---|---|---|` separator stays green, so the table can stop rendering as
+  markdown with the guard silent.
+- **F2 (90) — AC4 unsatisfiable as written**, as recorded above. Reported
+  independently by the prior-review lens.
+
+**Logged, below threshold (18), surfaced not dropped:** F7 (78) the T6 anchor
+count of 23 reproduces under no stated procedure; F4 (75) the boundary paragraph
+is not pinned to its position — moved to EOF the suite stays green; F8 (75) a
+test comment attributes the above-the-fifth probe to §8 round 2, where it came
+from the author's own re-run; F18 (72) D-094 quotes the frame definition with a
+dropped leading word inside quotation marks; F3 (70) the guard docstring's
+universal "each a single physical line" is now false of `BOUNDARY_STATEMENT`;
+F11, F12, F13, F15 (55) D-094 silent on D-045's split and on D-053's
+supersession trigger, the table's column header still reads `File` over a
+section cell, and two prose lines stretched to 100 and 120 characters for
+anchors the whole-statement pin now subsumes; F6 (50) D-094's "already existed
+elsewhere in the rulebook" holds for two of the three elements; F17 (45) an
+unused local in the table guard; F10, F14, F19 (35); B1 (30); F5 (25) the
+section-consistency ledger is not rolled out to this section, already a parked
+candidate; F1 (20) and F16 (12).
+
+**Disposition: returned to `in-progress`.** AC4 fails as written and F9 is a
+real hole in shipped guard surface. Return 1 of this milestone — no thrash
+trigger reached.
