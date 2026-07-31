@@ -156,6 +156,77 @@ class TestGitignoreDeprecation(ScriptCase):
         self.assertIn(f"OK    {self.ADVISORY}", proc.stdout)
 
 
+class TestGitignoreDeprecationDirectory(ScriptCase):
+    """M129 (M82 review F1): the entry arm falls silent the moment the
+    successor `.gitignore` entry lands, so a declined or deferred directory
+    move used to vanish from every later run. The directory arm reports a
+    non-empty superseded shelf directory on disk regardless of `.gitignore`
+    state; the WARN persisting for a declined move is the accepted
+    consequence — its only silencing states are the directory moved or
+    removed. An EMPTY leftover stays invisible: nothing is lost by its
+    silence, and warning on it would offer the repair step no resolving
+    branch (the move gate has nothing to move)."""
+
+    ADVISORY = "scaffold deprecations"
+    DIR_LINE = "still holds files"
+    ENTRY_STATES = {
+        "neither": [],
+        "old only": ["cairn/references/pdf/"],
+        "new only": ["cairn/references/sources/"],
+        "both": ["cairn/references/pdf/", "cairn/references/sources/"],
+    }
+    MARKERS = ["cairn/.merge-approved", "cairn/.merge-approved.pending"]
+
+    def occupy(self, root):
+        shelf = root / "cairn" / "references" / "pdf"
+        shelf.mkdir(parents=True, exist_ok=True)
+        (shelf / "left-behind.pdf").write_text("x")
+
+    def test_leftover_directory_warns_in_all_four_entry_states(self):
+        for state, entries in self.ENTRY_STATES.items():
+            with self.subTest(state=state):
+                root = self.tree.build()
+                self.occupy(root)
+                set_gitignore(root, entries + self.MARKERS)
+                proc = run("cairn_validate.py", root)
+                self.assertIn(f"WARN  {self.ADVISORY}", proc.stdout)
+                self.assertIn(
+                    "directory 'cairn/references/pdf/' "
+                    f"{self.DIR_LINE}", proc.stdout,
+                )
+                self.assertIn("'cairn/references/sources/'", proc.stdout)
+
+    def test_declined_move_scenario_is_no_longer_silent(self):
+        # The motivating defect: both entries present (repair added the
+        # successor, the move was declined) + files still on the old shelf
+        # was silent to every check. The directory line alone must fire —
+        # and it must not take the entry line's phrasing with it.
+        root = self.tree.build()
+        self.occupy(root)
+        set_gitignore(
+            root,
+            self.ENTRY_STATES["both"] + self.MARKERS,
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertIn(f"WARN  {self.ADVISORY}", proc.stdout)
+        self.assertIn(self.DIR_LINE, proc.stdout)
+        self.assertNotIn("is superseded by", proc.stdout)
+
+    def test_empty_leftover_directory_is_silent(self):
+        root = self.tree.build()
+        (root / "cairn" / "references" / "pdf").mkdir(parents=True)
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn(f"OK    {self.ADVISORY}", proc.stdout)
+        self.assertNotIn(self.DIR_LINE, proc.stdout)
+
+    def test_absent_directory_emits_no_directory_line(self):
+        root = self.tree.build()
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertNotIn(self.DIR_LINE, proc.stdout)
+
+
 class TestScaffoldRbuildignore(ScriptCase):
     """The `^cairn$` .Rbuildignore entry is required only on package repos."""
 

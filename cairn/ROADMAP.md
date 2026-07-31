@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M129 | Repair re-surfaces a declined shelf migration | planned | — | normal | milestones/M129-repair-resumability.md |
+| M129 | Repair re-surfaces a declined shelf migration | in-progress | — | normal | milestones/M129-repair-resumability.md |
 | M128 | Gate questions lead in plain words | done | — | high | milestones/archive/M128-gate-question-clarity.md |
 | M127 | Guard-doctrine §8 is retired whole | done | — | high | milestones/archive/M127-retire-certification.md |
 | M126 | CLAUDE.md joins the always-read governance frame | done | — | normal | milestones/archive/M126-claude-md-always-read-row.md |

@@ -2,12 +2,12 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M129: Repair re-surfaces a declined shelf migration
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR11
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m129-repair-resumability
 
 ## Goal
 
@@ -92,12 +92,12 @@ Deviations from RR11:
 
 ## Tasks
 
-- [ ] T1: Tests first — add directory-arm cases to `TestGitignoreDeprecation`
+- [x] T1: Tests first — add directory-arm cases to `TestGitignoreDeprecation`
       (`scripts/tests/test_scaffold_check.py:93`): non-empty
       `cairn/references/pdf/` × four `.gitignore` entry states expect the
       directory line; empty and absent directory expect silence; assert the
       new line lacks `is superseded by`; record the red run.
-- [ ] T2: Implement the directory arm in `check_gitignore_deprecations`
+- [x] T2: Implement the directory arm in `check_gitignore_deprecations`
       (`scripts/cairn_validate.py:880`) and re-derive its docstring (the
       "reads `.gitignore` alone" premise retires); scripts suite green.
 - [ ] T3: Rewrite the scaffold-deprecations step
@@ -125,6 +125,7 @@ Deviations from RR11:
 - 2026-07-31: plan gate chose carrying BC5 as a rider over a standalone BC5 milestone because D-090's door permits doctrine work only as ordinary work inside a milestone whose deliverable is a shipped-behavior fix; falsified by a superseding D-entry reopening standalone apparatus milestones.
 - 2026-07-31: criteria audit ([O], fresh context) returned 15 findings, 5 blocking (empty-dir unsatisfiability, step entry condition misdescribed, two-genre per-line block, restatement sites outside guards, permanent-WARN consequence unstated) — all disposed by adopting the auditor's own proposed wordings into AC1/AC2/AC4 plus the BC5 strengthening row in the Deviations table; none needed a user question.
 - 2026-07-31: plan gate dropped the robustness-read candidate row as mooted by D-095 — §8 and its rounds no longer exist, so the row's mechanism and promotion condition were both unreachable.
+- 2026-07-31: T1+T2 done — directory arm added to `check_gitignore_deprecations` (fires on a non-empty superseded shelf in all four entry states; empty/absent silent; line avoids `is superseded by`), docstring re-derived; new `TestGitignoreDeprecationDirectory` red first (2 failures/3 errors) then green; three suites green (scripts 336, skills 704, hooks 103), exits checked.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
