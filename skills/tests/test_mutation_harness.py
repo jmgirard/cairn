@@ -2179,25 +2179,25 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_names_the_section_scoped_surface",
+        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
         target=RULES,
         block="cells describe cairn's `## Project tracking` section and never the whole file:",
     ),
     Mutation(
         guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_names_the_ungoverned_remainder_of_the_file",
+        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
         target=RULES,
         block="governed by nothing cairn owns (D-018), so no cell in that row reaches it.",
     ),
     Mutation(
         guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_contrasts_the_milestone_file_whose_exempt_sections_stay_governed",
+        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
         target=RULES,
         block="The milestone file's cap-exempt sections stay governed by a read-bound rather than by a cap (D-063),",
     ),
     Mutation(
         guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_claims_no_uniqueness_for_the_split_unit",
+        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
         target=RULES,
         block="No uniqueness is claimed for either: an always-read unit and a governed unit that differ is a shape both surfaces carry.",
     ),
@@ -2218,18 +2218,6 @@ REGISTRY = [
         test="TestAlwaysReadFrameRulebook.test_the_boundary_statement_sits_beneath_the_table",
         target=RULES,
         block="The sixth surface differs again, in what the frame governs of it. Its three",
-    ),
-    # M126's second §8 stop, the structural remedy. Its sibling
-    # `test_the_docstring_names_each_whole_object_pin` reads the GUARD file
-    # rather than a target, so blanking a target block cannot red it and it
-    # carries the by-hand check instead: against pre-M126 content the derived
-    # pin set is empty and its non-vacuity assert fires, so it never passes
-    # over nothing. This entry covers the arm that does read a target.
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAnchorDescriptionMatchesTheAnchors.test_each_whole_object_pin_still_matches_under_its_normalization",
-        target=RULES,
-        block="No uniqueness is claimed for either: an always-read unit and a governed unit that differ is a shape both surfaces carry.",
     ),
     Mutation(
         guard="test_always_read_frame",

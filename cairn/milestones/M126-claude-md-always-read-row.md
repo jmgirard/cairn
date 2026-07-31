@@ -119,6 +119,7 @@ recording the addition and its boundaries.
 - AC7 → T7
 - AC8 → T8
 - AC9 → T8
+- AC3's four clauses map to one assert after M126's collapse (RR11 §4): all four are pinned by `test_pins_the_whole_boundary_statement`, which compares the statement whole.
 
 ## Tasks
 
@@ -134,11 +135,11 @@ recording the addition and its boundaries.
       `skills/tests/test_mutation_harness.py:2156-2173`; run the adjacent-phrase
       grep; run the harness.
 - [x] T5: Invert each shipped rule per guard-doctrine §1; record per-rule.
-- [ ] T7: Delete `TestAnchorDescriptionMatchesTheAnchors` (both tests and
+- [x] T7: Delete `TestAnchorDescriptionMatchesTheAnchors` (both tests and
       `whole_object_pins`), its REGISTRY entry, and the module docstring's
       quantified anchor claims — including "Anchors are copied from the target
       files' actual bytes"; replace with non-quantified pointer prose.
-- [ ] T8: Collapse the boundary paragraph to one comparison rule — delete the
+- [x] T8: Collapse the boundary paragraph to one comparison rule — delete the
       four per-line tests, re-point their REGISTRY blocks, symmetrize
       `BOUNDARY_STATEMENT`'s normalization across both consumers (AC9), record
       the Coverage mapping, and re-run AC5's inversions against the collapsed
@@ -198,6 +199,10 @@ recording the addition and its boundaries.
 - 2026-07-31: RR11 received. Verdict is subtractive — delete the self-describing checker rather than write a fourth, collapse the double-pinned paragraph to one comparison rule, add a quantified-claim rule to guard-doctrine §6, and amend §8's shape-repeat remedy clause to prefer subtraction. It found three further defeats of the shipped remedy beyond review's two, including a pin named `BOUNDARY` passing the docstring check by substring — §1's opening defect inside the fix for a guard-doctrine violation.
 - 2026-07-31: RR11 binding-criteria audit ([O], fresh context, pre-ingest) returned BC2 and BC6 UNSATISFIABLE as written, BC1 and BC4 PROBLEMATIC, three joint collisions, and a budget landing at ~166 of 149 with a forced compression pass aimed at the section the ingest would make verbatim-immutable. BC2 is this milestone's third instance of its own convicted shape: "pinned by exactly two tests" is falsified by the harness registration BC2 itself mandates, which reds third. BC6 adds a second confirmation obligation to a class whose single-obligation invariant §8 states in bold and two guards count. Not ingested verbatim; raised at the gate.
 - 2026-07-31: RR11 ingested at the gate as a SPLIT, the user's call on the audit's sizing finding. M126 takes the subtractive fixes to its own guards — BC1 and BC3 verbatim as AC7 and AC9, BC2 as AC8 minus its unsatisfiable "exactly two tests" clause and plus the Coverage mapping RR11 rec 2 requires. BC4 not ingested (AC4's clause stays true after the deletions, so no third amendment is owed). BC5 and BC6 deferred to a successor as a swept candidate row. All four departures are rows in the Deviations from RR11 table; `binding criteria` and `coverage complete` both PASS. Driving RR slot set to RR11; RB11/RR11 archived. Plan-owned body 147 of 149 after one compression pass over the deviations table, the heaviest plan-owned section's newest content. The `sizing` advisory warns at 9 criteria against a 7 tripwire — the tripwire this split answered.
+- 2026-07-31: T7 — `TestAnchorDescriptionMatchesTheAnchors` deleted whole (both tests and `whole_object_pins`), its REGISTRY entry removed, the `ast` import dropped, and the docstring's quantified anchor claims replaced with pointer prose that states no inventory and no universal. RR11's reason is recorded in the docstring itself: such a claim is a coverage self-certification, which §8's first sentence forbids.
+- 2026-07-31: T8 — the boundary paragraph collapsed to one comparison rule. The four per-line tests over it are deleted; their four REGISTRY blocks stay registered, re-pointed to `test_pins_the_whole_boundary_statement`. `BOUNDARY_STATEMENT`'s two consumers now both normalize, so the position test compares the normalized constant against the normalized target (AC9/BC3).
+- 2026-07-31: T8 evidence, `python3 -m unittest discover -s skills/tests` from the repo root, each mutation applied to one file and restored between runs. Collapse: the D-018 remainder clause, the section-not-file clause, the D-063 contrast, the no-uniqueness predicate and the section-scoping subject each negated in the target — five of five RED on the whole pin alone. Symmetrized normalization: re-wrapping `BOUNDARY_STATEMENT` in the guard source at 60 cols leaves the suite GREEN, where before the fix it raised `ValueError` in the position test.
+- 2026-07-31: AC5 re-run against the collapsed guards — eleven of eleven RED, `tracking-rules.md` restored byte-identical after each, same command as above. Suites 103 / 332 / 827 under `python3 -m unittest discover -s <dir>/tests`, and `cairn_validate .` exit 0. `skills/tests` goes 833 to 827: T7 deletes two tests and T8 four, six in all.
 
 ## Decisions
 

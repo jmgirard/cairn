@@ -14,25 +14,23 @@ M113/D-063 added the fifth row (the active milestone file) plus the two claims
 that make it unlike the four above it, each pinned on its own.
 
 M126/D-094 added the sixth row (`CLAUDE.md`'s `## Project tracking` section)
-and the boundary statement beneath the table. Two of its pins are whole-object
-rather than per-line, because §8 certification twice found a per-line anchor
-leaving its clause's other line negatable green: the boundary statement is
-pinned entire (whitespace-normalized), and the worked table is pinned by its
-full membership and order rather than by a relative row check.
+and the boundary statement beneath the table. The statement is pinned entire by
+`test_pins_the_whole_boundary_statement` under a whitespace normalization
+applied to both sides; the worked table by its full membership and order in
+`test_the_worked_table_holds_exactly_the_six_surfaces_in_order`.
 
-Anchors are copied from the target files' actual bytes (M95/M100). Each sits
-on a single physical line so a reflow cannot silently unpin it (M74/M92/M104),
-with one exception, `BOUNDARY_STATEMENT`, which pins its statement entire under
-a whitespace normalization applied to both sides. That exception set is not
-prose to be trusted: `test_the_docstring_names_each_whole_object_pin` derives
-it from the anchors and reds when this paragraph and the file disagree. The
-table rows bind each file NOUN to its elements, so swapping a file's
-disposition reddens (M103).
+Anchors are copied from the target files' actual bytes (M95/M100); read the
+tests for which comparison each one makes. This paragraph deliberately states
+no inventory of them and no universal about what they satisfy: RR11 found that
+such a claim is a coverage self-certification, which §8's first sentence
+forbids, and that three successive attempts to write one — twice in an
+acceptance criterion, once as a checker deriving the set from this file — each
+shipped a claim the anchors did not meet. The table rows bind each file NOUN to
+its elements, so swapping a file's disposition reddens (M103).
 
     python3 -m unittest discover -s skills/tests
 """
 
-import ast
 import pathlib
 import unittest
 
@@ -167,59 +165,6 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
             self.rules,
         )
 
-    def test_names_the_section_scoped_surface(self):
-        # M126 AC3, first half: the sixth surface's governed unit is a
-        # SECTION. Pinned apart from the row because the row states the three
-        # dispositions and this states why they stop at the section.
-        self.assertIn(
-            "cells describe cairn's `## Project tracking` section and never "
-            "the whole file:",
-            self.rules,
-        )
-
-    def test_names_the_ungoverned_remainder_of_the_file(self):
-        # M126 AC3, second half — pinned separately because round 1 of the §8
-        # certification found the first assert stops at its colon, leaving
-        # this predicate negatable green: "governed by cairn too, and every
-        # cell in that row reaches it" passed `python3 -m unittest discover -s
-        # skills/tests` whole. The D-018 cite rides on the same physical line
-        # so the remainder claim cannot lose its authority while the assert
-        # still matches. This anchor pins the predicate only; the statement's
-        # subjects are pinned by the whole-statement assert below.
-        self.assertIn(
-            "governed by nothing cairn owns (D-018), so no cell in that row "
-            "reaches it.",
-            self.rules,
-        )
-
-    def test_contrasts_the_milestone_file_whose_exempt_sections_stay_governed(
-        self,
-    ):
-        # M126 AC3: the contrast that makes the section-scoping a real
-        # difference rather than a restatement of D-063 — a milestone file's
-        # cap-exempt sections are still governed, by a read-bound instead of
-        # a cap, where `CLAUDE.md`'s remainder is governed by nothing. The
-        # read-bound and the cap it stands against sit on one physical line,
-        # so dropping either half reddens.
-        self.assertIn(
-            "The milestone file's cap-exempt sections stay governed by a "
-            "read-bound rather than by a cap (D-063),",
-            self.rules,
-        )
-
-    def test_claims_no_uniqueness_for_the_split_unit(self):
-        # M126 AC3: the statement may not claim that differing always-read
-        # and governed units are unique to either surface — the
-        # false-uniqueness shape the plan's criteria audit caught in the
-        # step-2 draft. The whole claim is one physical line, because §8
-        # round 1 negated the predicate ("a shape only this sixth surface
-        # carries") with a head-only anchor still matching.
-        self.assertIn(
-            "No uniqueness is claimed for either: an always-read unit and a "
-            "governed unit that differ is a shape both surfaces carry.",
-            self.rules,
-        )
-
     def test_pins_the_whole_boundary_statement(self):
         # M126, §8 round 2's STRUCTURAL REMEDY. Rounds 1 and 2 each returned
         # the same defect shape: an anchor pinned one side of the target's
@@ -296,65 +241,9 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
         normalized = " ".join(self.rules.split())
         table_at = normalized.index(" ".join(FRAME_ROWS[-1].split()))
         audit_at = normalized.index("The `/milestone` audit applies this frame:")
-        statement_at = normalized.index(BOUNDARY_STATEMENT)
+        statement_at = normalized.index(" ".join(BOUNDARY_STATEMENT.split()))
         self.assertLess(table_at, statement_at)
         self.assertLess(statement_at, audit_at)
-
-
-class TestAnchorDescriptionMatchesTheAnchors(unittest.TestCase):
-    """M126's second §8 STOP, and its structural remedy.
-
-    Three times in this milestone a record stated a universal about these
-    anchors that the anchors do not satisfy — twice in an acceptance criterion
-    ("every anchor ... on one physical line"; "evidence is the suite green
-    against a reflowed target"), then once in this file's own docstring. Fixing
-    each instance in place bought the next instance, so the class is closed
-    instead: the exception set is DERIVED from the anchors, and the prose that
-    describes it is checked against what was derived. A whole-object pin added
-    later without a word of description reds here.
-    """
-
-    def whole_object_pins(self):
-        """`{name: value}` for every module-level string constant of this file
-        that is NOT wholly on one physical line of its target — the set the
-        docstring must account for."""
-        source = read(SKILLS / "tests" / "test_always_read_frame.py")
-        targets = [
-            read(SKILLS / "shared" / "tracking-rules.md").splitlines(),
-            read(SKILLS / "milestone" / "SKILL.md").splitlines(),
-        ]
-        out = {}
-        for node in ast.parse(source).body:
-            if not isinstance(node, ast.Assign):
-                continue
-            name = node.targets[0].id
-            try:
-                value = ast.literal_eval(node.value)
-            except ValueError:
-                continue
-            for text in [value] if isinstance(value, str) else list(value):
-                if len(text) > 25 and not any(
-                    text in line for t in targets for line in t
-                ):
-                    out[name] = text
-        return out
-
-    def test_the_docstring_names_each_whole_object_pin(self):
-        source = read(SKILLS / "tests" / "test_always_read_frame.py")
-        doc = ast.get_docstring(ast.parse(source)) or ""
-        pins = self.whole_object_pins()
-        # Non-vacuity: this file HAS a whole-object pin, so a version of it
-        # with none would be reporting green over nothing to check.
-        self.assertTrue(pins, "no whole-object pin found — the derivation broke")
-        for name in pins:
-            with self.subTest(pin=name):
-                self.assertIn(name, doc)
-
-    def test_each_whole_object_pin_still_matches_under_its_normalization(self):
-        rules = " ".join(read(SKILLS / "shared" / "tracking-rules.md").split())
-        for name, text in self.whole_object_pins().items():
-            with self.subTest(pin=name):
-                self.assertIn(" ".join(text.split()), rules)
 
 
 class TestAlwaysReadFrameAudit(unittest.TestCase):
