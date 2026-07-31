@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M127 | Guard-doctrine §8 is retired whole | in-progress | — | high | milestones/M127-retire-certification.md |
+| M127 | Guard-doctrine §8 is retired whole | review | — | high | milestones/M127-retire-certification.md |
 | M126 | CLAUDE.md joins the always-read governance frame | done | — | normal | milestones/archive/M126-claude-md-always-read-row.md |
 | M125 | Certification loops stop on a repeated defect shape | done | M124 | normal | milestones/archive/M125-shape-repeat-stop.md |
 | M124 | A section-consistency ledger, so a contradicted or renamed rule reds | done | — | normal | milestones/archive/M124-section-consistency-ledger.md |

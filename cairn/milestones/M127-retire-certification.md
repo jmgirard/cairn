@@ -1,6 +1,6 @@
 # M127: Guard-doctrine §8 is retired whole
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
