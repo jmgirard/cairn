@@ -3177,3 +3177,43 @@ M123's chain (D-083 → D-084 → D-085 → D-086 → D-087) and the second whos
 subject is a claim D-083 made before the artifact stopped moving; the general
 cause is the one guard-doctrine §6 already states, settle numeric and
 quotable records last.
+
+### D-090 (2026-07-30): The verification-apparatus program is closed at the door — a new apparatus milestone needs a shipped-behavior defect as its trigger — D-057's move applied to the flow side; annotates D-067
+
+**Context:** Four consecutive milestones were verification apparatus — M119,
+M121, M123, M124 — plus two Fable escalations about §8 itself (RR09, RR10) and
+a same-day run of correction entries, D-083 through D-087 on main with M124's
+unmerged branch appending two more after D-087 (those two ids are reserved,
+not skipped — the D-067 precedent — and this entry takes the next id after
+them). M123, the milestone rebuilding §8 so its certification loop converges,
+ran seven certification rounds on its own rebuild; M124 ran seven more and
+terminated only by maintainer override, rounds 5–7 each finding one instance
+of a single class with each fix one more enumeration. This is the signature
+D-057 recorded for the size-governance program: the anti-cost program
+maximizes the cost it exists to reduce, because an apparatus milestone is
+itself guard-authoring and receives maximal certification. The maintainer
+asked on 2026-07-30 for a durable fix to the thrash; the shape-repeat stop
+rule (M125, planned at this same gate) is the mechanical half, and this entry
+is the supply-side half.
+
+**Decision:** No new milestone is planned whose deliverable is verification
+apparatus — a new instrument, a new meta-guard, a new certification or audit
+step, doctrine about the verification of doctrine — unless its trigger is a
+defect in shipped behavior: what the plugin's skills, hooks, and scripts do
+for their users. A defect in doctrine prose, in records, or in the apparatus's
+own coverage is fixed as ordinary work within the milestone that surfaces it,
+never promoted into its own apparatus milestone. M125 is excepted by name as
+the program's in-flight closing act, planned beside this entry at the same
+gate; the door binds every plan gate after it. Parked behind the door: the
+ROADMAP's falsifier-state-disclosure row and its audit-over-falsifiers row
+(RR10 recs 7 and 9) — each now requires this entry's trigger in addition to
+its own stated condition. Untouched: §8's own falsifier clauses, which are the
+measured retirement path and whose firing removes apparatus rather than adds
+it; the RB/RR escalation protocol; and repairs to existing apparatus surfaced
+as ordinary work.
+
+**Consequences:** The plan-time collision check surfaces this entry on any
+apparatus-shaped scope, and the standing-rejection discipline applies:
+supersede, don't ignore. If a shipped-behavior defect class appears that a
+parked apparatus candidate would have prevented, this is the entry to
+supersede.
