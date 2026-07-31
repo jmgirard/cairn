@@ -7,7 +7,7 @@
 - **Depends on:** —
 - **Driving RR:** RR11
 - **Principles touched:** —
-- **Branch/PR:** m129-repair-resumability
+- **Branch/PR:** m129-repair-resumability · https://github.com/jmgirard/cairn/pull/129
 
 ## Goal
 
@@ -36,7 +36,7 @@ Deviations table).
 
 ## Acceptance criteria
 
-- [ ] AC1: With a fixture repo where `cairn/references/pdf/` exists as a
+- [x] AC1: With a fixture repo where `cairn/references/pdf/` exists as a
       non-empty directory on disk, `cairn_validate`'s `scaffold deprecations`
       advisory emits a line naming that directory and its successor
       `cairn/references/sources/` in all four `.gitignore` entry states
@@ -46,7 +46,7 @@ Deviations table).
       arms pass unmodified. The persistent WARN on a declined move is the
       accepted consequence — no suppression marker; the only silencing states
       are the directory moved or removed.
-- [ ] AC2: The `/cairn-init` repair step's scaffold-deprecations
+- [x] AC2: The `/cairn-init` repair step's scaffold-deprecations
       instructions are entered per advisory line of either kind, so a
       directory line alone (both `.gitignore` entries already present) still
       reaches the three directory-state cases — which continue to be chosen
@@ -62,11 +62,11 @@ Deviations table).
       `skills/tests/test_scaffold_migration.py`, and the mutation-REGISTRY
       block quoting the clause — with the mutation harness green and no
       orphaned anchors.
-- [ ] AC-3 (BC5): `guard-doctrine.md` §6 contains the quantified-claim rule
+- [x] AC-3 (BC5): `guard-doctrine.md` §6 contains the quantified-claim rule
       (universal = zero-exception count carrying the procedure obligation;
       unenumerable domain → universal not written), pinned by one new assert
       and one REGISTRY entry, mutation-red when blanked.
-- [ ] AC4: One recorded inversion probe: negating the new §6 rule's polarity
+- [x] AC4: One recorded inversion probe: negating the new §6 rule's polarity
       in place while preserving the surrounding sentence shape reds the
       skills suite; the probe's work-log line records the exact edit, the run
       command as run, and the restoring `git diff --stat` output showing
@@ -134,3 +134,16 @@ Deviations from RR11:
 <!-- owner: implement / review · append-only; milestone-local; promote
      cross-cutting ones to cairn/DECISIONS.md.
      EXEMPT from the 150-line cap (D-074). -->
+
+## Review
+
+- 2026-07-31 AC1 evidence: fresh `python3 -m unittest discover -s scripts/tests -p 'test_scaffold_check.py'` → Ran 19, OK, exit 0 — directory line fires in all four entry states (subTests), empty and absent directories silent, emitted line lacks `is superseded by`; `git diff origin/main..HEAD -- scripts/tests/test_scaffold_check.py | grep -c '^-[^-]'` → 0 deleted lines, so the four pre-existing `TestGitignoreDeprecation` arms are unmodified; no suppression marker appears anywhere in the diff.
+- 2026-07-31 AC2 evidence: fresh `python3 -m unittest discover -s skills/tests` → Ran 707, OK, exit 0, mutation harness included (its blanking pass covers the re-pointed closing-clause entry and the two new arm entries); retired-clause `grep -rn` over `skills/`, `cairn/references/`, `scripts/` → exactly two hits, both correct: the guard's own `assertNotIn` and ledger row V06's historical quote carrying the M129 annotation; the two-arm block and two-genre format sentence are pinned by `test_per_line_block_names_both_line_kinds` and `test_directory_line_is_trigger_not_choice`, the rewritten closing clause by `test_closing_check_covers_both_arms`.
+- 2026-07-31 AC3 evidence: guard-doctrine §6 carries the two-conjunct quantified-claim paragraph; fresh `cairn_validate` exit 0 with `binding criteria` PASS (BC5 verbatim in the AC block); pinned by `test_restatement_section_states_the_quantified_claim_rule` plus two REGISTRY entries, and the same 707-test run's blanking pass asserts each entry's guard fails when its block is blanked — mutation-red when blanked, per conjunct (the Deviations-table strengthening of BC5's letter).
+- 2026-07-31 AC4 evidence: the T5 work-log line records the probe at procedure grade — exact edit (`str.replace("the universal is not written", "the universal is written")`), command as run (`python3 -m unittest discover -s skills/tests` → exit 1, FAILED failures=1/errors=1, the failure being the quantified-claim guard itself), and the restore (`git checkout -- skills/shared/guard-doctrine.md`, `git diff --stat` printing nothing).
+- 2026-07-31 projection-vs-outcome: Driving RR RR11 carries no numeric projection on BC5 — clean no-op.
+- 2026-07-31 consistency gate: `cairn_validate` all checks passed, exit 0 (fresh); profile `generic`'s consistency-gate slot names no toolchain checks — that half no-ops.
+- 2026-07-31 fan-out: [O] diff-bug 21 findings; [S] blame-history 0 (change is the tracked closure of M82 review F1 — no undone intent); [S] prior-PR-comments 0 (archives checked M82/M100/M113/M117/M125-M127; PR-thread probe empty, walk skipped); [S] scorer: 2 findings ≥80 actioned, 19 below threshold logged.
+- 2026-07-31 actioned F1 (82): PermissionError from `os.listdir` on an unreadable shelf crashed the whole validate run — fixed: `except OSError` with rationale comment, plus `test_unreadable_leftover_does_not_crash_the_gate` (platform-neutral expectation); scripts suite 337 OK.
+- 2026-07-31 actioned F11 (83): the two new §6 REGISTRY anchors spanned a physical line break against §1's one-physical-line demand — fixed by the M95-ranked remedy (re-wrap the TARGET): both bold conjuncts now sit on one physical line each in guard-doctrine §6, asserts and REGISTRY blocks re-anchored to single-line spans; skills suite 707 OK, harness blanking green.
+- 2026-07-31 sub-threshold log (19, surfaced never dropped): F2 20 routing-text-in-advisory (precedented by the entry line's own imperative); F3 45 closing-claim entry-half narrowing (arguable prose); F4 55 dotfile-only shelf warns (narrow edge; declined — "non-empty" is the deliberate bar, dotfiles on a gitignored shelf are content); F5 20 fires-without-adoption-evidence (AC1's four-state design, intentional); F6 15 untracked-state dependency (docstring states the filesystem arm explicitly); F7 30 entry-arm routing sentence (the shared "Then take exactly one" step covers it); F8 30 empty-leftover no-case (explicitly Out); F9 50 docstring "only silencing states" imprecise on file-at-path/symlink; F10 52 symlink/file-at-path undecided; F12 62 entry-line half of format sentence not mutation-registered (by-hand check applied per guard-doctrine §2: the assert fails against pre-milestone content); F13 30 AC-3 "one entry" vs two shipped (disclosed in Deviations row); F14 40 V06 live line-number in a snapshot table (dated observation, marked); F15 20 bold token mid-line (no such convention found); F16 25 future map-key shapes (speculative); F17 62 D-047 "goes quiet" now stale (see Decisions disposition below); F18 45 D-090 paraphrase looser than entry text (falsifier recorded at plan gate); F19 25 two lines for one migration (two facts, two grains — intentional); F20 12 weak assert (self-refuting); F21 18 RR cite in shipped doctrine (precedented).

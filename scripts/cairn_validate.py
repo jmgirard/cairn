@@ -903,7 +903,10 @@ def check_gitignore_deprecations(root):
         old_dir = os.path.join(root, *old.strip("/").split("/"))
         try:
             occupied = bool(os.listdir(old_dir))
-        except (FileNotFoundError, NotADirectoryError):
+        except OSError:
+            # absent, a non-directory at the path, or unreadable — an
+            # advisory must degrade to silence, never crash the gate (M129
+            # review F1: PermissionError took down every check)
             occupied = False
         if occupied:
             bad.append(

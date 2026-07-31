@@ -280,12 +280,12 @@ class TestModuleExists(unittest.TestCase):
         # test does.
         self.assertIn(
             "**A universal claim over a milestone's own artifacts is a count "
-            "claiming zero\nexceptions, and carries the recorded-counts "
+            "claiming zero exceptions, and carries the recorded-counts "
             "rule's procedure obligation.**",
             section6(),
         )
         self.assertIn(
-            "**Where no stated procedure\ncan enumerate the domain, the "
+            "**Where no stated procedure can enumerate the domain, the "
             "universal is not written**",
             section6(),
         )

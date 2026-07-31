@@ -2478,13 +2478,13 @@ REGISTRY = [
         guard="test_lesson_graduation",
         test="TestModuleExists.test_restatement_section_states_the_quantified_claim_rule",
         target=GUARD_DOCTRINE,
-        block="**A universal claim over a milestone's own artifacts is a count claiming zero\nexceptions, and carries the recorded-counts rule's procedure obligation.**",
+        block="**A universal claim over a milestone's own artifacts is a count claiming zero exceptions, and carries the recorded-counts rule's procedure obligation.**",
     ),
     Mutation(
         guard="test_lesson_graduation",
         test="TestModuleExists.test_restatement_section_states_the_quantified_claim_rule",
         target=GUARD_DOCTRINE,
-        block="**Where no stated procedure\ncan enumerate the domain, the universal is not written**",
+        block="**Where no stated procedure can enumerate the domain, the universal is not written**",
     ),
 ]
 

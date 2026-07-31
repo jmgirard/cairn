@@ -226,6 +226,23 @@ class TestGitignoreDeprecationDirectory(ScriptCase):
         self.assertEqual(proc.returncode, 0, proc.stdout)
         self.assertNotIn(self.DIR_LINE, proc.stdout)
 
+    def test_unreadable_leftover_does_not_crash_the_gate(self):
+        # M129 review F1: os.listdir on an unreadable shelf raised
+        # PermissionError with no outer handler, turning every check into a
+        # traceback. An advisory degrades to silence, never crashes. On a
+        # platform where chmod 000 is ineffective (or as root) the directory
+        # reads as empty either way, so the expectation is identical.
+        root = self.tree.build()
+        shelf = root / "cairn" / "references" / "pdf"
+        shelf.mkdir(parents=True)
+        shelf.chmod(0o000)
+        try:
+            proc = run("cairn_validate.py", root)
+        finally:
+            shelf.chmod(0o755)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertNotIn("Traceback", proc.stdout)
+
 
 class TestScaffoldRbuildignore(ScriptCase):
     """The `^cairn$` .Rbuildignore entry is required only on package repos."""
