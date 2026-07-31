@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP4
-- **Branch/PR:** `m124-section-consistency-ledger`
+- **Branch/PR:** `m124-section-consistency-ledger` · PR #124 https://github.com/jmgirard/cairn/pull/124
 
 ## Goal
 
@@ -36,21 +36,21 @@ recorded verbatim → unrecoverable, not replayed.
 
 ## Acceptance criteria
 
-- [ ] AC1 — `skills/tests/` contains a section-consistency helper that, given a
+- [x] AC1 — `skills/tests/` contains a section-consistency helper that, given a
       file path and a section heading, returns that section's ordered,
       whitespace-normalized sentence sequence. Its extraction takes no list of
       terms, phrases, or subjects drawn from the section's content, as a
       parameter or as a module constant; a closed grammatical or punctuation
       class (abbreviation forms, sentence-boundary punctuation) is permitted,
       and each such constant carries a comment stating the class it closes over.
-- [ ] AC2 — A committed ledger fixture records that sequence for
+- [x] AC2 — A committed ledger fixture records that sequence for
       `guard-doctrine.md` §8. A guard test compares the section against the
       ledger — the ledger is the extraction's committed output, compared
       downstream of it and never passed into the extraction — and fails when
       they differ, naming in its failure message which sentences were added,
       removed, or moved, the comparison being alignment-based so that a pure
       insertion reports as one addition rather than as a mass relocation.
-- [ ] AC3 — Each of the four mutations recorded from M123's certification is
+- [x] AC3 — Each of the four mutations recorded from M123's certification is
       applied to §8 in turn, fails the AC2 guard, and is restored
       byte-identical, with each result recorded in the milestone's evidence:
       (a) appending "A robustness observation outside them reopens a round on
@@ -61,12 +61,12 @@ recorded verbatim → unrecoverable, not replayed.
       entry is still read". The evidence states which of the four already fail
       the pre-milestone suite — (a) and (b) do not, (c) and (d) do — so (a) and
       (b) are the load-bearing replay and (c) and (d) are controls.
-- [ ] AC4 — Re-wrapping every paragraph of §8 to a different column width with
+- [x] AC4 — Re-wrapping every paragraph of §8 to a different column width with
       the token sequence unchanged — no break introduced inside a hyphenated
       compound — leaves the AC2 guard green; the evidence command is
       scoped to the AC2 guard rather than to the whole `skills/tests` suite, and
       §8 is restored byte-identical afterwards. Recorded as evidence.
-- [ ] AC5 — `guard-doctrine.md` gains a new section appended after §8 as §9,
+- [x] AC5 — `guard-doctrine.md` gains a new section appended after §8 as §9,
       with no existing section renumbered, stating that a prose guard pins a
       sentence's presence and not the section's consistency, naming the
       contradicting-sentence and the reusing-no-word rename as the two shapes
@@ -82,11 +82,11 @@ recorded verbatim → unrecoverable, not replayed.
       D-083 part 3(a)'s description of §8's routing, which the edit makes
       incomplete and IP4 forbids editing, is superseded by an appended
       D-entry.
-- [ ] AC6 — Every rule AC5 adds is pinned by an assert that fails when that rule
+- [x] AC6 — Every rule AC5 adds is pinned by an assert that fails when that rule
       is inverted in place; each such assert and the AC2 ledger guard are
       registered in `skills/tests/test_mutation_harness.py`, and every block
       this milestone registers fails when blanked.
-- [ ] AC7 — The `verify` slot is clean and the universal cairn-file check
+- [x] AC7 — The `verify` slot is clean and the universal cairn-file check
       passes: `python3 -m unittest discover` over `skills/tests`,
       `scripts/tests`, and `hooks/tests` each exit 0, and `cairn_validate`
       exits 0.
@@ -225,3 +225,12 @@ recorded verbatim → unrecoverable, not replayed.
 ## Decisions
 
 ## Review
+
+- 2026-07-30 AC1: `discover -s skills/tests -k section_ledger -v` — 34 tests OK at post-rebase HEAD, including `test_the_extraction_signature_takes_only_a_path_and_a_heading` (path+heading only), `test_extraction_carries_no_word_constant` (AST-derived over Store-context bindings), and `test_each_module_constant_names_the_class_it_closes_over`.
+- 2026-07-30 AC2: `ledgers/guard-doctrine-8.txt` committed, 56 units; `test_section_matches_its_ledger` and `test_the_failure_message_names_what_differs` OK fresh; the signature test proves no ledger reaches the extraction.
+- 2026-07-30 AC3: all four mutations replayed fresh against the full skills suite, §8 restored byte-identical after each (sha256-verified, tree clean): (a) failures=1, ledger guard ONLY; (b) failures=1, ledger guard ONLY; (c) failures=2, + `test_the_class_is_never_called_by_a_synonym`; (d) failures=2 errors=1, + the fix-authored-record guard and the blanking harness. Matches the criterion's load-bearing/control split exactly.
+- 2026-07-30 AC4: §8 re-wrapped paragraph-wise at width 72 (a different width from T6's 68 — independent evidence), `break_on_hyphens=False`, token sequence verified unchanged; scoped `-k section_matches_its_ledger` OK; restored byte-identical.
+- 2026-07-30 AC5: §9 present after §8; `test_the_sections_are_numbered_one_to_nine_in_order` OK (headings derived from the file); the eleven `TestSectionNineDoctrine` content asserts OK; both §8 enumerations name §9 (`guard-doctrine.md:328`, `:384`); D-088 appended superseding D-083 part 3(a) (`test_d083_part_3a_is_superseded_by_an_appended_entry` OK); suite green at HEAD.
+- 2026-07-30 AC6: `-k mutation_harness` OK fresh — registry completeness green, every registered block fails when blanked; live inversion spot-check: detect-never-judge negated in place reds `TestSectionNineDoctrine` (failures=1), §8+§9 restored byte-identical; the full 13/13 polarity sweep with 0 unmutated is recorded in the work log (round 2).
+- 2026-07-30 AC7: post-rebase onto moved main (M125 plan commit; conflicts resolved in numeric/both-sides order): skills, scripts, and hooks suites each exit 0; `cairn_validate` exit 0, no advisory warnings.
+- Deviation at this gate, disclosed: §8 certification ended at round 7 by maintainer override rather than at zero unresolved (work log 2026-07-30); the residue is routed and disclosed in the work log, and M125 (planned 2026-07-30) converts that override into §8's shape-repeat stop rule.
