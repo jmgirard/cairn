@@ -15,9 +15,10 @@ list, defeat all 777 pre-existing tests and are what this guard is for.
 `TestExtraction` and `TestAlignment` cover the helper. The extractor takes no
 list of terms, phrases, or subjects from the section it reads — that
 enumeration is the failure `guard-doctrine.md` §3 names, and over §8 alone it
-has already beaten five successive hand-extended matchers. Its two module constants are a
-heading matcher and a punctuation class, and `test_extraction_carries_no_word_constant`
-holds that to the shipped bytes rather than to intent.
+has already beaten five successive hand-extended matchers. Its two module
+constants are a heading matcher and a punctuation class, and
+`test_extraction_carries_no_word_constant` holds that to the shipped bytes
+rather than to intent.
 
 The ledger is deliberately NOT passed into the extractor: the extraction is
 committed output compared downstream, so it cannot be tuned to agree with what
@@ -50,11 +51,12 @@ def section9():
     """§9's own bytes, scoped to §9.
 
     Scoped deliberately. M123's §8 asserts each read the whole FILE while every
-    criterion they served was scoped to the section, so clauses of AC2, AC3,
-    AC5 and AC11 could be moved verbatim out of §8 into §7 with the suite green
-    and no anchor text touched — a defect M123 records as shared by ~75
-    anchors. An anchor proves a phrase exists SOMEWHERE in what it was handed;
-    these are handed §9 alone.
+    criterion they served was scoped to the section, so a rule could be moved
+    verbatim out of §8 and into §7 with the suite green and no anchor text
+    touched. M123 ships the fix — anchors scoped to the section, over the 84
+    registry blocks resolving inside §8 — and these follow it. An anchor
+    proves a phrase exists SOMEWHERE in what it was handed; these are handed
+    §9 alone.
     """
     return sl.section_body(GUARD_DOCTRINE, SECTION_9)
 
@@ -160,10 +162,6 @@ class TestExtraction(unittest.TestCase):
         ]
         self.assertTrue(constants, "no module-level constants found to check")
         for i in constants:
-            preceding = [
-                source[j] for j in range(i - 1, -1, -1)
-                if source[j].startswith("#") or not source[j].strip()
-            ][:1]
             # Round 2: requiring only that a comment EXIST let
             # `# TODO: revisit.` satisfy AC1's "stating the class it closes
             # over". The comment block must name a class.
@@ -295,6 +293,19 @@ class TestSectionNineDoctrine(unittest.TestCase):
         self.assertRegex(
             section9(),
             r"\*\*The\s+instrument\s+detects\s+a\s+change\s+and\s+never\s+judges\s+it\.\*\*",
+        )
+
+    def test_the_judgment_disclaimer_is_stated_not_only_labelled(self):
+        # Round 3 (out of mandate, fixed): §9's elaboration inverted green —
+        # "an ordinary edit is exactly a question a diff can answer" negates
+        # the detect-never-judge rule three sentences after §9 states it, with
+        # all 806 tests passing. That is §9's own contradicting-sentence shape
+        # turned on §9, so the bold headline is not enough on its own.
+        self.assertRegex(
+            section9(),
+            r"is\s+not\s+a\s+question\s+a\s+diff\s+can\s+answer,\s+and\s+building"
+            r"\s+it\s+to\s+answer\s+one\s+would\s+rebuild\s+the\s+judgment\s+D-059"
+            r"\s+retired",
         )
 
     def test_the_remedy_is_operation_never_adjudication(self):

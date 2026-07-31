@@ -46,8 +46,9 @@ _NEXT_SECTION = re.compile(r"\n## ")
 
 # A sentence boundary is terminal punctuation followed by whitespace. This is
 # the one closed punctuation class AC1's carve-out covers; `_NEXT_SECTION`
-# above is markdown structure and draws on no section's content either. §8 carries no abbreviation-shaped mid-sentence period (no `e.g.`,
-# `i.e.`, `etc.`, `vs.`), so no abbreviation suppression is needed; a section
+# above is markdown structure and draws on no section's content either. §8
+# carries no abbreviation-shaped mid-sentence period (no `e.g.`, `i.e.`,
+# `etc.`, `vs.`), so no abbreviation suppression is needed; a section
 # that acquires one will need the carve-out AC1 already permits, and the
 # constant added for it carries a comment naming the class it closes over.
 _SENTENCE_BOUNDARY = re.compile(r"(?<=[.!?])\s+")
@@ -81,9 +82,10 @@ def diff(ledger, current):
     on AC3's mutation (a), comparing by index reports `added=1, moved=23`,
     which buries the one real change under every sentence that merely shifted
     position. (Round 2 re-derived this: it read 35, a figure from a plan-time
-    splitter that no longer exists.) `SequenceMatcher` reports the same insertion as a
-    single opcode. So "moved" here means a sentence that survives alignment at
-    a different position, never one displaced by an edit above it (AC2).
+    splitter that no longer exists.) `SequenceMatcher` reports the same
+    insertion as a single opcode. So "moved" here means a sentence that
+    survives alignment at a different position, never one displaced by an edit
+    above it (AC2).
     """
     added, removed = [], []
     matcher = difflib.SequenceMatcher(None, ledger, current, autojunk=False)

@@ -2891,8 +2891,9 @@ REGISTRY += [
     ),
 ]
 
-# M124: §9's own rules, one entry per rule. Registration is per assert and not
-# per file (`guard-doctrine.md` §2), and each of these was ALSO verified by
+# M124: §9's own rules, one entry per rule. §2 registers per FILE but requires
+# a new assert carry its own entry, which is why these are per assert rather
+# than one exemplar for the file; and each of these was ALSO verified by
 # in-place inversion — blanking proves the assert sees its block, inversion
 # proves the block carries the rule, and M120 passed three certification rounds
 # with three asserts surviving negation of the rule they pin.
@@ -2979,6 +2980,12 @@ REGISTRY += [
         test="TestSectionNineDoctrine.test_the_three_shapes_are_declared_as_three",
         target=GUARD_DOCTRINE,
         block="They come apart three ways.",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_judgment_disclaimer_is_stated_not_only_labelled",
+        target=GUARD_DOCTRINE,
+        block="is not a question a diff can answer, and building it to answer",
     ),
 ]
 
