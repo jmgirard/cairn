@@ -2203,9 +2203,15 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_the_sixth_row_is_appended_below_the_fifth",
+        test="TestAlwaysReadFrameRulebook.test_the_worked_table_holds_exactly_the_six_surfaces_in_order",
         target=RULES,
         block="The fifth surface differs from the four above it in two ways worth naming.",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
+        target=RULES,
+        block="so the two differ in whether an ungoverned remainder exists at all, never in",
     ),
     Mutation(
         guard="test_always_read_frame",

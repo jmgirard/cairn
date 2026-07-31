@@ -26,6 +26,36 @@ import unittest
 
 SKILLS = pathlib.Path(__file__).resolve().parent.parent
 
+TABLE_HEADER = "| File | Inflow test | Outflow / read-bound | Attention signal |"
+
+# The worked table's membership and order, first cell of each row. M126: the
+# sixth row is appended below the fifth, which is what keeps the sentence
+# beneath the table ("the four above it") true.
+FRAME_ROWS = (
+    "| `ROADMAP.md` |",
+    "| `LESSONS.md` |",
+    "| `tracking-rules.md` |",
+    "| `DECISIONS.md` |",
+    "| the active `milestones/M<NN>-<slug>.md` |",
+    "| `CLAUDE.md`'s `## Project tracking` section |",
+)
+
+# The sixth surface's boundary statement, whitespace-normalized to one line.
+# Pinned whole rather than clause by clause — see
+# `test_pins_the_whole_boundary_statement` for why.
+BOUNDARY_STATEMENT = (
+    "The sixth surface differs again, in what the frame governs of it. Its "
+    "three cells describe cairn's `## Project tracking` section and never the "
+    "whole file: D-009 confines that section to routing, while the dev "
+    "doctrine outside it is governed by nothing cairn owns (D-018), so no "
+    "cell in that row reaches it. The milestone file's cap-exempt sections "
+    "stay governed by a read-bound rather than by a cap (D-063), so the two "
+    "differ in whether an ungoverned remainder exists at all, never in how "
+    "strongly a governed part is held. No uniqueness is claimed for either: "
+    "an always-read unit and a governed unit that differ is a shape both "
+    "surfaces carry."
+)
+
 
 def read(path):
     # Per-test read, never cached in setUpClass: the mutation harness runs a
@@ -139,9 +169,11 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
         # M126 AC3, second half — pinned separately because round 1 of the §8
         # certification found the first assert stops at its colon, leaving
         # this predicate negatable green: "governed by cairn too, and every
-        # cell in that row reaches it" passed the whole suite. The D-018 cite
-        # rides on the same physical line so the remainder claim cannot lose
-        # its authority while the assert still matches.
+        # cell in that row reaches it" passed `python3 -m unittest discover -s
+        # skills/tests` whole. The D-018 cite rides on the same physical line
+        # so the remainder claim cannot lose its authority while the assert
+        # still matches. This anchor pins the predicate only; the statement's
+        # subjects are pinned by the whole-statement assert below.
         self.assertIn(
             "governed by nothing cairn owns (D-018), so no cell in that row "
             "reaches it.",
@@ -176,21 +208,43 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
             self.rules,
         )
 
-    def test_the_sixth_row_is_appended_below_the_fifth(self):
-        # M126 AC2: the row is APPENDED, never inserted — an insert above the
-        # fifth row falsifies the sentence beneath the table, which nothing
-        # pinned until §8 round 1 probed it (inserting a row above the sixth
-        # left all 827 tests green). Both halves live here: the ordering, and
-        # the sentence whose truth the ordering preserves.
-        fifth = "| the active `milestones/M<NN>-<slug>.md` |"
-        sixth = "| `CLAUDE.md`'s `## Project tracking` section |"
+    def test_pins_the_whole_boundary_statement(self):
+        # M126, §8 round 2's STRUCTURAL REMEDY. Rounds 1 and 2 each returned
+        # the same defect shape: an anchor pinned one side of the target's
+        # hard wrap while the acceptance-criterion clause completed on the
+        # other, so negating the unpinned line left the suite green — round 1
+        # on the sentence head, round 2 on the subjects at `:196` and `:198`
+        # ("and the cairn section itself is governed by nothing cairn owns"
+        # passed). Per-line anchors close instances of that shape one at a
+        # time; this closes the class for the whole statement by pinning every
+        # byte of it. Whitespace is normalized on both sides, so a legitimate
+        # re-wrap does not red while no reword can hide behind one — the
+        # licensed remedy in `guard-doctrine.md` §1 for prose that re-wraps.
+        # It also covers `:201-202`, which no per-clause assert reached.
+        self.assertIn(BOUNDARY_STATEMENT, " ".join(self.rules.split()))
+
+    def test_the_worked_table_holds_exactly_the_six_surfaces_in_order(self):
+        # M126 AC2: the row is APPENDED, never inserted. A relative
+        # fifth-before-sixth check is not enough — §8 round 2 inserted a row
+        # ABOVE the fifth and stayed green, which makes the sentence beneath
+        # the table ("the four above it") false while the ordering assert
+        # still holds. So membership and order are pinned whole: no insertion
+        # anywhere in the table survives, and the sentence is pinned beside
+        # it. A changed header, a dropped row or a reorder all red.
+        head, table = self.rules.split(TABLE_HEADER, 1)
+        rows = []
+        for line in table.splitlines()[1:]:
+            if not line.startswith("|"):
+                break
+            if set(line) <= set("|- "):  # the header separator
+                continue
+            rows.append(line.split(" | ")[0] + " |")
+        self.assertEqual(rows, list(FRAME_ROWS))
         self.assertIn(
             "The fifth surface differs from the four above it in two ways "
             "worth naming.",
             self.rules,
         )
-        # `.index` raises on an absent row, so a deleted row reddens here too.
-        self.assertLess(self.rules.index(fifth), self.rules.index(sixth))
 
 
 class TestAlwaysReadFrameAudit(unittest.TestCase):
