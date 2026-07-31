@@ -233,17 +233,45 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
         # row". Promoted from the logged list at the user's call rather than
         # left for a later milestone.
         #
-        # Bounded on BOTH sides, because a one-sided "after the table" check
-        # is satisfied by moving the paragraph to EOF — the exact relocation
-        # the finding reported, which a first cut of this test passed green.
-        # The region is the table's last row through the audit paragraph that
-        # closes the section.
-        normalized = " ".join(self.rules.split())
-        table_at = normalized.index(" ".join(FRAME_ROWS[-1].split()))
-        audit_at = normalized.index("The `/milestone` audit applies this frame:")
-        statement_at = normalized.index(" ".join(BOUNDARY_STATEMENT.split()))
-        self.assertLess(table_at, statement_at)
-        self.assertLess(statement_at, audit_at)
+        # Ordering by string index is not enough, and two cuts of this test
+        # proved it: a one-sided "after the table" check passed the EOF move,
+        # and bounding it by the audit paragraph passed three more relocations
+        # review round 2 found (A5, 85) — statement and audit paragraph moved
+        # to EOF together, since the upper bound travelled with its subject;
+        # the statement moved above the fifth-surface paragraph, making shipped
+        # prose "The sixth surface differs again" precede "The fifth surface
+        # differs…"; and the statement spliced into the middle of that
+        # paragraph.
+        #
+        # So the check is on BLOCKS within the section, not on offsets in the
+        # whole file: the statement must be its own paragraph, inside
+        # "Always-read governance", after the table and after the fifth-surface
+        # paragraph, and before the audit paragraph. Moving it out of the
+        # section reds however much moves with it; splicing it into another
+        # paragraph reds because it is then not a paragraph of its own.
+        section = self.rules.split("\n## Always-read governance\n", 1)[1]
+        section = section.split("\n## ", 1)[0]
+        blocks = [
+            " ".join(b.split()) for b in section.split("\n\n") if b.strip()
+        ]
+        statement = " ".join(BOUNDARY_STATEMENT.split())
+        self.assertIn(statement, blocks)
+        at = blocks.index(statement)
+        table = next(
+            i for i, b in enumerate(blocks)
+            if " ".join(FRAME_ROWS[-1].split()) in b
+        )
+        fifth = next(
+            i for i, b in enumerate(blocks)
+            if "The fifth surface differs from the four above it" in b
+        )
+        audit = next(
+            i for i, b in enumerate(blocks)
+            if "The `/milestone` audit applies this frame:" in b
+        )
+        self.assertLess(table, at)
+        self.assertLess(fifth, at)
+        self.assertLess(at, audit)
 
 
 class TestAlwaysReadFrameAudit(unittest.TestCase):
