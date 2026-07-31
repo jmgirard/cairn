@@ -2966,6 +2966,20 @@ REGISTRY += [
         target=GUARD_DOCTRINE,
         block="A red ledger is discharged by regenerating it, reading the reported\ndiff sentence by sentence",
     ),
+    # Round 2: AC5's no-renumbering clause was pinned only by §9's presence
+    # anywhere in the file, and the three-shape count by nothing at all.
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_sections_are_numbered_one_to_nine_in_order",
+        target=GUARD_DOCTRINE,
+        block="## 5. Matchers and parsers over human-written markdown",
+    ),
+    Mutation(
+        guard="test_section_ledger",
+        test="TestSectionNineDoctrine.test_the_three_shapes_are_declared_as_three",
+        target=GUARD_DOCTRINE,
+        block="They come apart three ways.",
+    ),
 ]
 
 # M95 (D-056). Five entries, because the placement doctrine fails in five

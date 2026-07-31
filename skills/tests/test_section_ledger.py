@@ -15,8 +15,8 @@ list, defeat all 777 pre-existing tests and are what this guard is for.
 `TestExtraction` and `TestAlignment` cover the helper. The extractor takes no
 list of terms, phrases, or subjects from the section it reads — that
 enumeration is the failure `guard-doctrine.md` §3 names, and over §8 alone it
-has already beaten five successive hand-extended matchers. Its only lexical
-constant is a punctuation class, and `test_extraction_carries_no_word_constant`
+has already beaten five successive hand-extended matchers. Its two module constants are a
+heading matcher and a punctuation class, and `test_extraction_carries_no_word_constant`
 holds that to the shipped bytes rather than to intent.
 
 The ledger is deliberately NOT passed into the extractor: the extraction is
@@ -80,7 +80,9 @@ class TestSectionEightLedger(unittest.TestCase):
         ledger = committed_ledger()
         report = sl.describe(ledger, ledger[:-1] + ["A sentence nothing pins."])
         self.assertIn("ADDED   A sentence nothing pins.", report)
-        self.assertIn("REMOVED", report)
+        # Round 2: the label alone left `describe` free to render removals
+        # without their text, with the suite green.
+        self.assertIn(f"REMOVED {ledger[-1][:40]}", report.replace("  ", " "))
         self.assertIn("regenerate the ledger and read this diff", report)
 
 
@@ -152,7 +154,9 @@ class TestExtraction(unittest.TestCase):
         source = pathlib.Path(sl.__file__).read_text().splitlines()
         constants = [
             i for i, line in enumerate(source)
-            if re.match(r"^_[A-Z_]+ = ", line)
+            # Round 2: `= ` alone missed `_TERMS: List[str] = [...]`, which
+            # shipped green one annotation away from the ban.
+            if re.match(r"^_[A-Z_]+\s*(:[^=]+)?=", line)
         ]
         self.assertTrue(constants, "no module-level constants found to check")
         for i in constants:
@@ -160,10 +164,19 @@ class TestExtraction(unittest.TestCase):
                 source[j] for j in range(i - 1, -1, -1)
                 if source[j].startswith("#") or not source[j].strip()
             ][:1]
-            self.assertTrue(
-                preceding and preceding[0].startswith("#"),
-                f"{source[i]!r} carries no comment naming the class it closes "
-                f"over, which AC1 requires of every permitted constant",
+            # Round 2: requiring only that a comment EXIST let
+            # `# TODO: revisit.` satisfy AC1's "stating the class it closes
+            # over". The comment block must name a class.
+            block = []
+            for j in range(i - 1, -1, -1):
+                if not source[j].startswith("#"):
+                    break
+                block.append(source[j])
+            self.assertTrue(block, f"{source[i]!r} carries no comment at all")
+            self.assertRegex(
+                " ".join(block), r"\bclass\b",
+                f"{source[i]!r} has a comment that never names the class it "
+                f"closes over, which is what AC1 requires",
             )
 
     def test_extraction_carries_no_word_constant(self):
@@ -183,7 +196,8 @@ class TestExtraction(unittest.TestCase):
         tree = ast.parse(pathlib.Path(sl.__file__).read_text())
         patterns = [
             node.value
-            for stmt in tree.body if isinstance(stmt, ast.Assign)
+            for stmt in tree.body
+            if isinstance(stmt, (ast.Assign, ast.AnnAssign, ast.AugAssign))
             for node in ast.walk(stmt)
             if isinstance(node, ast.Constant) and isinstance(node.value, str)
         ]
@@ -210,12 +224,32 @@ class TestSectionNineDoctrine(unittest.TestCase):
     def test_section_exists_under_its_own_heading(self):
         self.assertIn(SECTION_9, GUARD_DOCTRINE.read_text())
 
+    def test_the_sections_are_numbered_one_to_nine_in_order(self):
+        # AC5: "appended after §8 as §9, with no existing section renumbered".
+        # Round 2 measured presence-anywhere as the only pin: `## 5.` -> `## 5b.`,
+        # `## 6.` -> `## 6a.`, and relocating §9 to sit BEFORE §8 each left the
+        # suite at 804 OK. Derived from the file, not enumerated in the test:
+        # the headings themselves must read 1..9 in document order.
+        numbers = re.findall(r"^## (\d+)\. ", GUARD_DOCTRINE.read_text(), re.M)
+        self.assertEqual(numbers, [str(i) for i in range(1, 10)])
+
     def test_presence_is_distinguished_from_consistency(self):
         self.assertRegex(
             section9(),
             r"\*\*A\s+prose-guard\s+pins\s+that\s+a\s+sentence\s+is\s+present\.\s+It\s+"
             r"does\s+not\s+pin\s+that\s+the\s+section\s+around\s+it\s+still\s+agrees\s+"
             r"with\s+itself\.\*\*",
+        )
+
+    def test_the_three_shapes_are_declared_as_three(self):
+        # Round 2 (out of mandate, fixed): both sentences inverted green, and
+        # the count is what makes the three shape paragraphs an enumeration
+        # rather than three unrelated remarks.
+        self.assertRegex(
+            section9(),
+            r"An\s+anchor\s+is\s+a\s+claim\s+about\s+a\s+sentence;\s+a\s+rule\s+is"
+            r"\s+a\s+claim\s+the\s+section\s+makes\.\s+They\s+come\s+apart\s+three"
+            r"\s+ways\.",
         )
 
     def test_the_contradicting_sentence_shape_is_named(self):
@@ -229,7 +263,10 @@ class TestSectionNineDoctrine(unittest.TestCase):
         self.assertRegex(
             section9(),
             r"\*\*A\s+rename\s+reusing\s+no\s+word\s+of\s+the\s+term\.\*\*[\s\S]{0,160}?"
-            r"defeated\s+by\s+a\s+coinage\s+sharing\s+neither",
+            # Round 2: this opened at `defeated`, so `is not defeated` left it
+            # green — M123 round 4's shape, reproduced in the milestone citing
+            # it. The anchor must span the polarity carrier.
+            r"is\s+defeated\s+by\s+a\s+coinage\s+sharing\s+neither",
         )
 
     def test_the_relocation_shape_is_named(self):
@@ -280,7 +317,8 @@ class TestSectionNineDoctrine(unittest.TestCase):
         # stopped stating.
         self.assertRegex(
             section9(),
-            r"discharged\s+by\s+regenerating\s+it,\s+reading\s+the\s+reported"
+            # Round 2: opened at `discharged`; `is not discharged` was green.
+            r"A\s+red\s+ledger\s+is\s+discharged\s+by\s+regenerating\s+it,\s+reading\s+the\s+reported"
             r"\s+diff\s+sentence\s+by\s+sentence,\s+and\s+then\s+repairing\s+"
             r"the\s+section\s+or\s+accepting\s+the\s+change",
         )
@@ -288,7 +326,9 @@ class TestSectionNineDoctrine(unittest.TestCase):
     def test_the_defeating_failure_mode_is_disclosed(self):
         self.assertRegex(
             section9(),
-            r"failure\s+mode\s+that\s+defeats\s+the\s+instrument\s+is\s+a\s+ledger\s+"
+            # Round 2 (out of mandate, fixed): opened at `failure mode`, so
+            # `No failure mode that defeats...` was green.
+            r"The\s+one\s+failure\s+mode\s+that\s+defeats\s+the\s+instrument\s+is\s+a\s+ledger\s+"
             r"updated\s+without\s+its\s+diff\s+being\s+read,\s+and\s+no\s+guard\s+can\s+"
             r"detect\s+that",
         )
@@ -300,8 +340,9 @@ class TestAlignment(unittest.TestCase):
 
     def test_a_pure_insertion_reports_one_addition(self):
         # Why alignment and not index comparison: measured on §8, comparing by
-        # index reports a one-sentence insertion as `added=1, moved=35`, which
-        # buries the real change under every sentence that merely shifted.
+        # index reports AC3's mutation (a) as `added=1, moved=23`, which buries
+        # the real change under every sentence that merely shifted. (Round 2:
+        # the figure was 35, from a plan-time splitter that no longer exists.)
         delta = sl.diff(["A.", "B.", "C."], ["A.", "N.", "B.", "C."])
         self.assertEqual(delta["added"], ["N."])
         self.assertEqual(delta["removed"], [])
