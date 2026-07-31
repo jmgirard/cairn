@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-30 (post-merge after M125 — archived 25/25, M120's row pruned for terminal retention. LESSONS unchanged at 32 of 50: the would-be lesson (run a new record rule over your own records) is owned by records-hygiene.md; nothing retired. 1 candidate added (mixed-round precedence, M125 review O1); 24 candidates.)_
+_Last hygiene check: 2026-07-30 (audit pass, nothing in flight — validate all green, no orphans, both inboxes empty, no tracking change made. One governance gap reported for the user: CLAUDE.md is an always-read surface the frame's worked table does not cover, though all three elements exist for it elsewhere.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
