@@ -2765,6 +2765,99 @@ REGISTRY = [
         target=GUARD_DOCTRINE,
         block='that class returns to round-opening. Tolerance: one\n  occurrence.',
     ),
+    # M125: the shape-repeat stop rule — one entry per pinned sentence, each
+    # carrying operative content (the rule, who judges shape identity, the
+    # class and its obligation, the disclosure, the window interaction, the
+    # rule's own falsifier and tolerance, the fourth obligation sentence, the
+    # licence-clause coherence sentence, and the second narrowing).
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_two_same_shape_rounds_end_the_rounds",
+        target=GUARD_DOCTRINE,
+        block="**Two consecutive rounds each returning a reopening finding of the same\ndefect shape end the rounds** — the certification convenes no further round.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_shape_identity_is_d064_trigger_b_judgment",
+        target=GUARD_DOCTRINE,
+        block="Whether two findings share a shape is the judgment D-064's trigger (b)\napplies to review returns, applied here to certification rounds.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_shape_repeat_class_obliges_a_class_closing_remedy",
+        target=GUARD_DOCTRINE,
+        block="The second\nsame-shape finding is a class of its own, the **shape-repeat finding**: its\none confirmation obligation is a structural remedy closing the shape's class\nrather than its instance, confirmed by operation — the suite, the harness,\nthe sweeps.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_stop_is_disclosed_before_review",
+        target=GUARD_DOCTRINE,
+        block="The stop, the shape, and the remedy are disclosed in work-log\nlines before `status -> review`.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_a_shape_stopped_certification_counts_as_run",
+        target=GUARD_DOCTRINE,
+        block="A shape-stopped certification counts toward the falsifier window below\nexactly as run: the rounds it convened and their findings count where found,\nand no round it declined to convene is imputed or estimated.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_stop_rule_carries_its_own_falsifier",
+        target=GUARD_DOCTRINE,
+        block="The stop rule\ncarries its own falsifier, in clause (ii)'s form: if a structural remedy\nauthored under it is later found — by the three-lens review, or by a\nsubsequent milestone — not to have closed its shape's class, the stop rule\nreturns that shape to round-opening.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_stop_rule_falsifier_carries_its_tolerance",
+        target=GUARD_DOCTRINE,
+        block="returns that shape to round-opening. Tolerance: one occurrence.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_a_shape_repeat_finding_is_confirmed_by_operation",
+        target=GUARD_DOCTRINE,
+        block="A **shape-repeat finding** obliges the\nstructural remedy the stop rule above names, and operation rather than a\nfurther round confirms it.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_stop_rule_closes_by_rule_not_by_silence",
+        target=GUARD_DOCTRINE,
+        block="The stop\nrule is no such silence: where it ends the rounds, it does so by stated rule,\nwith the stop disclosed.",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_second_narrowing_is_disclosed",
+        target=GUARD_DOCTRINE,
+        block="It is reachable, too, with a\nstopped shape's class closed by structural remedy and confirmed by operation\nalone — a second narrowing, whose cost the stop rule's own falsifier counts.",
+    ),
+    # M125 AC5's D-entry clause, the D-088 pin's shape: the entry heading is
+    # the shipped artifact and deleting the entry must red the suite.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestDescriptionLayerCertification.test_the_stop_rule_decision_entry_exists",
+        target="cairn/DECISIONS.md",
+        block="Certification gains a third ending — the shape-repeat stop — and recorded counts gain a verbatim-reproducible procedure rule",
+    ),
+    # M125: §6's recorded-counts rule — headline, operative clause, and the
+    # measured case it is required to name (AC3), each pinned separately.
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
+        target=GUARD_DOCTRINE,
+        block="**A count recorded in a milestone record carries the procedure that produced\nit, at verbatim-reproducible grade.**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
+        target=GUARD_DOCTRINE,
+        block="states the command as run, or the committed\nartifact the count is read from — at the granularity that discriminates it\nfrom a disagreeing record.",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
+        target=GUARD_DOCTRINE,
+        block="three records disagreed\non one suite count under a reflow, and the one discriminator — whether bullet\nparagraphs are re-wrapped — was stated in none of them; the two that named a\nprocedure left it out, and the third named no procedure at all.",
+    ),
     Mutation(
         guard="test_fresh_context_readers",
         test="TestDescriptionLayerCertification.test_reopening_is_drawn_by_provenance",

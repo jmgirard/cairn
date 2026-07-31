@@ -125,7 +125,7 @@ than absorbed (gate decision 2026-07-30).
       D-085's clause-(i) gloss narrowly; record the candidate-row promotion
       deviation; run `cairn_validate` and expect the M115 dangling-id
       unmasking batch (AC4).
-- [ ] T4 — Pin every added or amended rule by in-place inversion restored
+- [x] T4 — Pin every added or amended rule by in-place inversion restored
       byte-identical; pin the D-entry's existence; register each block;
       blanking sweep green (AC5).
 - [ ] T5 — Full verify: three suites exit 0, `cairn_validate` exit 0;
@@ -151,6 +151,7 @@ than absorbed (gate decision 2026-07-30).
 - 2026-07-30: T1 ledger regenerated and its diff read sentence by sentence: 12 added/amended units, every one deliberately authored; 2 removals, both the pre-amendment forms of the two amended sentences; nothing unintended.
 - 2026-07-30: T2 — §6 recorded-counts rule appended at section end; the M124 case phrased per audit pass 2 finding 3 — the two records that named a procedure omitted the discriminator, the third named no procedure at all; skills suite 812 OK.
 - 2026-07-30: T3 — D-091 appended (previewed verbatim in chat): four parts — stop rule as a third certification ending, D-085's clause-(i) gloss narrowly superseded, the §6 count rule, the candidate-row promotion deviation; its own Context counts carry their procedures per the rule it records. `cairn_validate` all checks passed — the M115 dangling-id unmasking batch the plan expected did NOT fire (`dangling id tokens` OK); D-090 was already on main when the branch was cut, so the plan's reserved-id premise was moot and D-091 was simply the next id.
+- 2026-07-30: T4 — 11 new asserts (10 in the §8 certification class incl. the D-091 existence pin, 1 three-assert §6 test in the module class); 14 new registry entries + 3 re-anchored; 16-case in-place inversion sweep all red with guard-doctrine.md and DECISIONS.md restored byte-identical (sha256 compared, script in session scratchpad); blanking sweep (`-k mutation_harness`) green; the reader-file docstring's "three per-class confirmation obligations" corrected to four and the M125 surface added to its inventory.
 
 ## Decisions
 

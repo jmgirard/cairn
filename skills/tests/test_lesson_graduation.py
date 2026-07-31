@@ -225,6 +225,35 @@ class TestModuleExists(unittest.TestCase):
             self.module,
         )
 
+    def test_restatement_section_states_the_recorded_counts_rule(self):
+        # M125 (D-091): a bare number in a record cost M124 whole
+        # adjudication rounds — three records disagreed and none stated the
+        # procedure that discriminates them. Headline and operative clause
+        # pinned separately, so the remedy cannot delete green under an
+        # intact headline.
+        self.assertIn(
+            "**A count recorded in a milestone record carries the procedure "
+            "that produced\nit, at verbatim-reproducible grade.**",
+            self.module,
+        )
+        self.assertRegex(
+            self.module,
+            r"states the command as run, or the committed\s+artifact the "
+            r"count is read from — at the granularity that discriminates it"
+            r"\s+from a disagreeing record\.",
+        )
+        # The measured case the rule is required to name (M125 AC3), phrased
+        # so the record that stated no procedure is not claimed to have
+        # stated one.
+        self.assertRegex(
+            self.module,
+            r"three records disagreed\s+on one suite count under a reflow, "
+            r"and the one discriminator — whether bullet\s+paragraphs are "
+            r"re\-wrapped — was stated in none of them; the two that named a"
+            r"\s+procedure left it out, and the third named no procedure at "
+            r"all\.",
+        )
+
 
 class TestRulebookPointer(unittest.TestCase):
     """The rulebook routes to the module, on a line that stays pinnable."""

@@ -28,13 +28,18 @@ The **acceptance-criteria audit** (`TestPlanGateCriteriaAudit`,
     predating round 1), the compatibility clause that keeps D-070 untouched,
     the mandate boundary with its clears-both composition, its enumerated
     out-of-mandate class and its does-not-hold-the-gate clause, each of the
-    three per-class confirmation obligations, the record-churn grounding and
+    four per-class confirmation obligations, the record-churn grounding and
     the pointers standing where its derivations used to (§8 cites no revision
     of its own — they moved to D-085 at T10), and the yield-based falsifier's
     window and all three clauses: six counted quantities, three consequences
     and three tolerances. RR10's two amendments are here too — the sufficiency
     arm that makes reopening an iff, and clause (iii), which retires the whole
-    step on round-1 yield decay.
+    step on round-1 yield decay. M125 (D-091) adds the shape-repeat stop:
+    the two-same-shape-rounds rule, the trigger-(b) shape judgment, the
+    class it coins and that class's remedy obligation, the disclosure, the
+    counted-as-run window interaction, the stop rule's own falsifier and
+    tolerance, the licence-clause coherence sentence, the second narrowing,
+    and the D-entry's existence.
   * `/milestone-implement` step 8, which fires §8 before `status -> review`
     when the milestone authored or edited a prose-guard.
 
@@ -732,6 +737,122 @@ class TestDescriptionLayerCertification(unittest.TestCase):
         self.assertRegex(
             self.section8,
             r"Stated\s+as\s+a\s+bound\s+alone\s+it\s+says\s+only\s+which\s+findings\s+cannot\s+reopen\s+a\s+round\s+and\s+never\s+that\s+any\s+must",
+        )
+
+    # M125's stop rule: two consecutive same-shape rounds end the rounds and
+    # the second finding becomes a shape-repeat finding, obliging a structural
+    # remedy instead of a further round. Each sentence carries operative
+    # content, so each is pinned separately.
+
+    def test_two_same_shape_rounds_end_the_rounds(self):
+        # The headline: without it, the class definition below reads as a
+        # taxonomy with no rule attached.
+        self.assertRegex(
+            self.section8,
+            r"\*\*Two\s+consecutive\s+rounds\s+each\s+returning\s+a\s+reopening\s+"
+            r"finding\s+of\s+the\s+same\s+defect\s+shape\s+end\s+the\s+rounds\*\*"
+            r"\s+—\s+the\s+certification\s+convenes\s+no\s+further\s+round\.",
+        )
+
+    def test_shape_identity_is_d064_trigger_b_judgment(self):
+        # Who decides "same shape" — the judgment already defined for review
+        # returns, not a new detector (which would be the enumeration failure
+        # §3 names).
+        self.assertRegex(
+            self.section8,
+            r"Whether\s+two\s+findings\s+share\s+a\s+shape\s+is\s+the\s+judgment\s+"
+            r"D\-064's\s+trigger\s+\(b\)\s+applies\s+to\s+review\s+returns,\s+"
+            r"applied\s+here\s+to\s+certification\s+rounds\.",
+        )
+
+    def test_the_shape_repeat_class_obliges_a_class_closing_remedy(self):
+        # The obligation is a remedy closing the CLASS, not the instance —
+        # inverted to "its instance rather than its class" the stop rule
+        # licenses one more enumeration, which is M124 rounds 5-7 verbatim.
+        self.assertRegex(
+            self.section8,
+            r"The\s+second\s+same\-shape\s+finding\s+is\s+a\s+class\s+of\s+its\s+own,"
+            r"\s+the\s+\*\*shape\-repeat\s+finding\*\*:\s+its\s+one\s+confirmation\s+"
+            r"obligation\s+is\s+a\s+structural\s+remedy\s+closing\s+the\s+shape's\s+"
+            r"class\s+rather\s+than\s+its\s+instance,\s+confirmed\s+by\s+operation"
+            r"\s+—\s+the\s+suite,\s+the\s+harness,\s+the\s+sweeps\.",
+        )
+
+    def test_the_stop_is_disclosed_before_review(self):
+        # The disclosure is what keeps a rule-based close auditable rather
+        # than silent.
+        self.assertRegex(
+            self.section8,
+            r"The\s+stop,\s+the\s+shape,\s+and\s+the\s+remedy\s+are\s+disclosed\s+"
+            r"in\s+work\-log\s+lines\s+before\s+`status\s+\->\s+review`\.",
+        )
+
+    def test_a_shape_stopped_certification_counts_as_run(self):
+        # AC2's window interaction: counted as run, nothing imputed — the
+        # falsifier's evidence base stays measured, not estimated.
+        self.assertRegex(
+            self.section8,
+            r"A\s+shape\-stopped\s+certification\s+counts\s+toward\s+the\s+"
+            r"falsifier\s+window\s+below\s+exactly\s+as\s+run:\s+the\s+rounds\s+it\s+"
+            r"convened\s+and\s+their\s+findings\s+count\s+where\s+found,\s+and\s+no\s+"
+            r"round\s+it\s+declined\s+to\s+convene\s+is\s+imputed\s+or\s+estimated\.",
+        )
+
+    def test_the_stop_rule_carries_its_own_falsifier(self):
+        # The stop rule is itself a narrowing, so it states its own exit in
+        # clause (ii)'s form (M125 plan, audit pass 2 finding 1(b)).
+        self.assertRegex(
+            self.section8,
+            r"The\s+stop\s+rule\s+carries\s+its\s+own\s+falsifier,\s+in\s+clause\s+"
+            r"\(ii\)'s\s+form:\s+if\s+a\s+structural\s+remedy\s+authored\s+under\s+it\s+"
+            r"is\s+later\s+found\s+—\s+by\s+the\s+three\-lens\s+review,\s+or\s+by\s+a\s+"
+            r"subsequent\s+milestone\s+—\s+not\s+to\s+have\s+closed\s+its\s+shape's\s+"
+            r"class,\s+the\s+stop\s+rule\s+returns\s+that\s+shape\s+to\s+round\-opening\.",
+        )
+
+    def test_a_shape_repeat_finding_is_confirmed_by_operation(self):
+        # The fourth obligation sentence; the structural proxy counts it, this
+        # pins its content.
+        self.assertRegex(
+            self.section8,
+            r"A\s+\*\*shape\-repeat\s+finding\*\*\s+obliges\s+the\s+structural\s+"
+            r"remedy\s+the\s+stop\s+rule\s+above\s+names,\s+and\s+operation\s+rather\s+"
+            r"than\s+a\s+further\s+round\s+confirms\s+it\.",
+        )
+
+    def test_the_stop_rule_closes_by_rule_not_by_silence(self):
+        # Coherence with the licence clause (M125 audit pass 2, finding 1a):
+        # the sufficiency arm warns against closing on silence, and the stop
+        # rule must not read as that silence.
+        self.assertRegex(
+            self.section8,
+            r"The\s+stop\s+rule\s+is\s+no\s+such\s+silence:\s+where\s+it\s+ends\s+the\s+"
+            r"rounds,\s+it\s+does\s+so\s+by\s+stated\s+rule,\s+with\s+the\s+stop\s+"
+            r"disclosed\.",
+        )
+
+    def test_the_second_narrowing_is_disclosed(self):
+        # §8 states the cost of each narrowing of the zero-unresolved bar and
+        # points it at a falsifier; the stop rule's is the second.
+        self.assertRegex(
+            self.section8,
+            r"It\s+is\s+reachable,\s+too,\s+with\s+a\s+stopped\s+shape's\s+class\s+"
+            r"closed\s+by\s+structural\s+remedy\s+and\s+confirmed\s+by\s+operation\s+"
+            r"alone\s+—\s+a\s+second\s+narrowing,\s+whose\s+cost\s+the\s+stop\s+rule's\s+"
+            r"own\s+falsifier\s+counts\.",
+        )
+
+    def test_the_stop_rule_decision_entry_exists(self):
+        # M125 AC5's last clause, same shape as the D-088 pin: deleting the
+        # D-entry outright must red the suite, because §8's third ending would
+        # then contradict nothing on record. The number is not hardcoded
+        # (D-entry ids are append-time facts, not doctrine).
+        decisions = (SKILLS.parent / "cairn" / "DECISIONS.md").read_text()
+        self.assertRegex(
+            decisions,
+            r"### D-\d+ \(\d{4}-\d\d-\d\d\): Certification gains a third "
+            r"ending — the shape-repeat stop — and recorded counts gain a "
+            r"verbatim-reproducible procedure rule",
         )
 
     def test_the_falsifier_carries_a_whole_step_retirement_clause(self):
