@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, IP4, GP1
-- **Branch/PR:** m127-retire-certification
+- **Branch/PR:** m127-retire-certification · https://github.com/jmgirard/cairn/pull/127
 
 ## Goal
 
@@ -40,7 +40,7 @@ recorded, accepted exposure.
 
 ## Acceptance criteria
 
-- [ ] AC1: `guard-doctrine.md` ships with no §8: the section is removed
+- [x] AC1: `guard-doctrine.md` ships with no §8: the section is removed
       whole and §9 keeps its number and heading. A search for "certif"
       and "§8" under `skills/` and `README.md` is run with every hit
       classified: zero hits of the operative class (a shipped sentence
@@ -50,7 +50,7 @@ recorded, accepted exposure.
       motivating measurement, and the criteria audit's own prose. The
       classification ledger is committed as review evidence (RR04
       rec 8).
-- [ ] AC2: Every test surface pinning the retired section — found by the
+- [x] AC2: Every test surface pinning the retired section — found by the
       AC1 search, never by a fixed list — is updated or retired per hit:
       the section-numbering test moves to the gapped 1–7, 9 list;
       §8-only guards retire with their mutation-registry entries; the
@@ -60,7 +60,7 @@ recorded, accepted exposure.
       `skills/tests/ledgers/extractor-contract.md` and
       `.expected.txt`) is deleted; and all three suites pass from the
       repo root with each exit code checked.
-- [ ] AC3: `skills/milestone-implement/SKILL.md`'s pre-review
+- [x] AC3: `skills/milestone-implement/SKILL.md`'s pre-review
       certification step is removed; in `tracking-rules.md`'s
       delegation-warrant paragraph exactly the "A fresh reader's own
       loop is bounded by its instrument" sentence and its
@@ -68,7 +68,7 @@ recorded, accepted exposure.
       carve-out protecting the criteria-audit reader survives and
       `test_delegation_warrant.py:146`'s discriminator pin is preserved
       through the rewrite.
-- [ ] AC4: A superseding D-entry records: the 2026-07-31 user mandate
+- [x] AC4: A superseding D-entry records: the 2026-07-31 user mandate
       and evidence summary (rounds 2+ yielded record-accuracy
       corrections; every ≥80-scored real defect came from inversion,
       the harness, or the review fan-out); the explicit D-090 door
@@ -82,7 +82,7 @@ recorded, accepted exposure.
       2–3), D-080, D-082, D-083, D-085, D-088, and D-091; and the
       candidate-row disposals, so D-090's by-name parking references
       resolve. `cairn_validate` green.
-- [ ] AC5: Candidate-row dispositions recorded on the ROADMAP: the
+- [x] AC5: Candidate-row dispositions recorded on the ROADMAP: the
       mixed-round-precedence, falsifier-state-disclosure, and
       audit-over-falsifiers rows dropped (subjects retired; rationale in
       the D-entry); the polarity/vocabulary row dropped and the
@@ -140,3 +140,13 @@ recorded, accepted exposure.
 ## Decisions
 
 ## Review
+
+_Evidence gathered fresh at review, 2026-07-31, on branch `m127-retire-certification` (PR #127)._
+
+- AC1: PASS — `grep -n "^## " skills/shared/guard-doctrine.md` lists sections 1–7, 9 with no §8; §9's heading and number intact at line 265. Post-edit AC1 search returned 9 "certif" and 15 "§8" hits (overlapping files), every one classified in the committed ledger `cairn/references/m127-ac1-ledger.md` (in tree per `git ls-files`): zero operative-class; survivors are retrospective provenance, §9's motivating measurement, and criteria-audit prose only.
+- AC2: PASS — `git ls-files skills/tests/` shows zero `section_ledger`/`ledgers/` paths (machinery deleted); zero registry mentions of the retired test classes; the relocated numbering test in `test_guard_doctrine_sections.py` asserts the gapped pair list ending (7, 9) and carries its own mutation-registry entry; fresh runs from the repo root: skills 690 tests OK exit 0, scripts 332 OK exit 0, hooks 103 OK exit 0.
+- AC3: PASS — zero "certif" hits in `skills/milestone-implement/SKILL.md`; zero hits for the fresh-reader-loop sentence or its `§8` cite in `tracking-rules.md`; the D-067 carve-out sentence present, the discriminator sentence at `tracking-rules.md:687`, and `test_delegation_warrant.py:145` still defines the discriminator test — suite green.
+- AC4: PASS — D-095 appended (one heading); element greps confirm the mandate + evidence summary, the D-090 Untouched-clause deviation firing clause (iii)'s "the step retires whole" under D-091 part 4's precedent, the supersession (not override) of RR10's verdict (e) and part-4 rejections, D-067 narrowed to the criteria audit, the nine per-entry supersessions with D-091 part 3 explicitly surviving, and the candidate-row disposals resolving D-090's parking references; `cairn_validate` exit 0, all checks passed.
+- AC5: PASS — zero ROADMAP hits for the four dropped rows; the ledger-rollout row names `958c37c^` as the deleted mechanism's git home; the RR11 row carries "re-cut to BC5 by M127" and BC6's mooting clause.
+
+Projection-vs-outcome: no Driving RR — no-op.
