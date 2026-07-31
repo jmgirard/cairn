@@ -19,14 +19,14 @@ and the boundary statement beneath the table. The statement is pinned entire by
 applied to both sides; the worked table by its full membership and order in
 `test_the_worked_table_holds_exactly_the_six_surfaces_in_order`.
 
-Anchors are copied from the target files' actual bytes (M95/M100); read the
-tests for which comparison each one makes. This paragraph deliberately states
-no inventory of them and no universal about what they satisfy: RR11 found that
-such a claim is a coverage self-certification, which §8's first sentence
-forbids, and that three successive attempts to write one — twice in an
-acceptance criterion, once as a checker deriving the set from this file — each
-shipped a claim the anchors did not meet. The table rows bind each file NOUN to
-its elements, so swapping a file's disposition reddens (M103).
+Read each test for the comparison it makes. This paragraph deliberately states
+no inventory of the anchors and no universal about what they satisfy: RR11
+found such a claim to be a coverage self-certification — the job §8's first
+sentence describes an author as unable to do — and found that three successive
+attempts to write one, twice in an acceptance criterion and once in this
+docstring, each shipped a claim the anchors did not meet.
+`test_enumerates_the_always_read_files_with_their_elements` pins each table row
+whole, so swapping a file's disposition reddens (M103).
 
     python3 -m unittest discover -s skills/tests
 """

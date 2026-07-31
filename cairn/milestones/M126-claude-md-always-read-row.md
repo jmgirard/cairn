@@ -1,6 +1,6 @@
 # M126: CLAUDE.md joins the always-read governance frame
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR11
@@ -203,6 +203,10 @@ recording the addition and its boundaries.
 - 2026-07-31: T8 — the boundary paragraph collapsed to one comparison rule. The four per-line tests over it are deleted; their four REGISTRY blocks stay registered, re-pointed to `test_pins_the_whole_boundary_statement`. `BOUNDARY_STATEMENT`'s two consumers now both normalize, so the position test compares the normalized constant against the normalized target (AC9/BC3).
 - 2026-07-31: T8 evidence, `python3 -m unittest discover -s skills/tests` from the repo root, each mutation applied to one file and restored between runs. Collapse: the D-018 remainder clause, the section-not-file clause, the D-063 contrast, the no-uniqueness predicate and the section-scoping subject each negated in the target — five of five RED on the whole pin alone. Symmetrized normalization: re-wrapping `BOUNDARY_STATEMENT` in the guard source at 60 cols leaves the suite GREEN, where before the fix it raised `ValueError` in the position test.
 - 2026-07-31: AC5 re-run against the collapsed guards — eleven of eleven RED, `tracking-rules.md` restored byte-identical after each, same command as above. Suites 103 / 332 / 827 under `python3 -m unittest discover -s <dir>/tests`, and `cairn_validate .` exit 0. `skills/tests` goes 833 to 827: T7 deletes two tests and T8 four, six in all.
+- 2026-07-31: §8 read of the subtractive delta ([O], fresh context) returned three findings, two of them in the new docstring. F1: the replacement paragraph opened "Anchors are copied from the target files' actual bytes" — a bare-plural universal over the anchors — one sentence before claiming the paragraph states no universal, and T7's own text had named that exact string for deletion. Fourth instance of the convicted shape, in the prose written to avoid it. F2: it credited the deleted checker as RR11's third instance, where RR11 and this log both name the docstring itself; the checker was the remedy for that instance, not the instance. Both fixed in place: the paragraph now states nothing general, points at the tests, and names `test_enumerates_the_always_read_files_with_their_elements` instead of quantifying over rows.
+- 2026-07-31: correction — the T8 evidence line above says re-wrapping `BOUNDARY_STATEMENT` at 60 cols raised `ValueError` before the fix. It did not: implicit string concatenation preserves the value across source wrapping, so a plain re-wrap was green at 2edcb91 too. The pre-fix red needs a re-wrap that also alters internal whitespace — a doubled space at a chunk boundary, verified RED at 2edcb91 and GREEN at HEAD. The fix and the claim's direction stand; the stated condition was wrong.
+- 2026-07-31: §8 read also confirmed the collapse loses no coverage — seven clauses of the boundary paragraph negated one at a time, seven of seven RED with the whole pin red in every one — and that each of the four re-pointed REGISTRY blocks reds `test_pins_the_whole_boundary_statement` when blanked, driven through `mutation_engine.guard_fails_when_blanked` directly, 4/4.
+- 2026-07-31: status -> review. The §8 falsifier's reopened round is discharged by RB11/RR11 as the independent fresh-context reading of exactly that shape (RR11 rec 7), plus the delta read above at zero unresolved.
 
 ## Decisions
 

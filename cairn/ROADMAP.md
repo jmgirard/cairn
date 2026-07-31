@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M126 | CLAUDE.md joins the always-read governance frame | in-progress | — | normal | milestones/M126-claude-md-always-read-row.md |
+| M126 | CLAUDE.md joins the always-read governance frame | review | — | normal | milestones/M126-claude-md-always-read-row.md |
 | M125 | Certification loops stop on a repeated defect shape | done | M124 | normal | milestones/archive/M125-shape-repeat-stop.md |
 | M124 | A section-consistency ledger, so a contradicted or renamed rule reds | done | — | normal | milestones/archive/M124-section-consistency-ledger.md |
 | M123 | Rebuild guard-doctrine §8 so its certification loop converges | done | — | normal | milestones/archive/M123-section8-convergence-rebuild.md |
