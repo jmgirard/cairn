@@ -1,11 +1,11 @@
 # M126: CLAUDE.md joins the always-read governance frame
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** —
+- **Branch/PR:** `m126-claude-md-always-read-row`
 
 ## Goal
 
