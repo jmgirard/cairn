@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M128: Gate questions lead in plain words
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -92,7 +92,7 @@ none exist on disk; AC4's mechanism accumulates them for a future pass.
       registry: re-anchor the four existing asserts, add asserts for the
       new sentences, pair any absence assert with a positive anchor, run
       the §1 inversion sweep and the second-occurrence re-grep; log both.
-- [ ] T4: Run the three suites and `cairn_validate` from the repo root;
+- [x] T4: Run the three suites and `cairn_validate` from the repo root;
       fix what reds.
 
 ## Work log
@@ -107,6 +107,7 @@ none exist on disk; AC4's mechanism accumulates them for a future pass.
 - 2026-07-31: plan gate chose shipping the capture-on-flag sentence over shipping the rule change alone because the next fix should be evidence-based; falsified by the sentence producing no captures across milestones in which the operator reports further unclear prompts.
 - 2026-07-31: T1+T2 — bullet rewritten in place preserving all five pinned anchor lines byte-identical; worked pair authored (Candidate A as bad, labeled reconstruction).
 - 2026-07-31: T3 — four new guard tests (10 asserts, all positive presence, no absence asserts), five registry entries; §1 inversion sweep: 6/6 negations red, restore hash-verified; second-occurrence re-grep over every guard literal vs tracking-rules.md: 0 multiplicity changes.
+- 2026-07-31: T4 — skills 704 OK, scripts OK, hooks 103 OK (exit codes checked individually), cairn_validate all checks passed (2 standing advisories); status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
