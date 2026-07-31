@@ -86,7 +86,7 @@ recording the addition and its boundaries.
 
 ## Tasks
 
-- [ ] T1: Run the AC1 sweep against `hooks/hooks.json` and
+- [x] T1: Run the AC1 sweep against `hooks/hooks.json` and
       `hooks/session_context.py:240-270` (`build_context`); classify each
       surface and record the table.
 - [ ] T2: Append the `DECISIONS.md` entry (AC6's four points).
@@ -107,7 +107,30 @@ recording the addition and its boundaries.
 - 2026-07-31: plan gate chose leaving the frame's opening definition unamended over amending it, because the shipped sentence excludes nothing and an amendment would ship unguarded against D-060's prose-guarded mandate, its target line wrapping besides; falsified by a reader taking the definition to exclude a section-scoped surface.
 - 2026-07-31: plan gate chose sweeping every session-start surface over closing the named `CLAUDE.md` gap alone, because a criterion that lists its sites becomes the sweep and omits the rest (M118, M112); falsified by the sweep returning surfaces whose rows the frame cannot state.
 - 2026-07-31: plan gate chose a candidate row over settling the frame's membership rule here, because the table already holds a conditionally-read file and fixing that is doctrine revision, not a table row; falsified by the AC1 sweep being unable to classify a surface without the rule settled.
+- 2026-07-31: implement gate chose scoping the new row's first cell to `CLAUDE.md`'s `## Project tracking` section over naming the file bare, because all three of the row's cells state section-scoped governance (D-009 inflow, the trim-to-template outflow, the 30-line section cap) and a file-named cell makes all three overclaim against D-018; and chose a new paragraph for the AC3 boundary statement over reworking the guarded fifth-surface paragraph, avoiding the re-anchoring the M104 trap runs on.
+- 2026-07-31: T1 — AC1 sweep run against `hooks/hooks.json:3-13` and `build_context` (`hooks/session_context.py:241-344`) plus the harness-loaded project instructions; six surfaces, `CLAUDE.md` the sole uncovered one, `PROFILE.md`'s name header / the hook `PREAMBLE` / per-user memory out of scope. Classification table in `## Decisions`.
 
 ## Decisions
+
+### 2026-07-31 — AC1 sweep: what a session actually loads at start
+
+Derived by reading `hooks/hooks.json:3-13` (the sole `SessionStart` entry) and
+`hooks/session_context.py:241-344` (`build_context`), plus the project
+instructions the harness loads. Six surfaces; one uncovered.
+
+| Surface | Loaded by | Classification |
+|---|---|---|
+| `CLAUDE.md` | the harness's project-instructions injection | **uncovered** — gains a frame row (AC2) |
+| `cairn/ROADMAP.md` | `hooks/session_context.py:258` | covered — the frame's first row |
+| each active `cairn/milestones/M<NN>-<slug>.md` | `hooks/session_context.py:294-296`, active statuses from `hooks/cairn_common.py:16` | covered — the frame's fifth row |
+| `cairn/PROFILE.md`'s `# Toolchain profile:` header | `hooks/session_context.py:244-251` via `profile_name` (`:94-109`) | out of scope — only the profile NAME reaches the session; the seven slots the rulebook governs are read when a skill fires, so whether a conditionally-read file belongs in the frame is the membership question this milestone's Scope puts Out |
+| the hook's `PREAMBLE` | `hooks/session_context.py:85-91`, emitted at `:243` | out of scope — plugin source rather than a repo record: a fixed string no repo writes to, so it has no inflow to test and cannot grow with use |
+| per-user memory `MEMORY.md` | the harness's memory injection | out of scope — not a repo file, and it never holds project state ("Tracking files outrank memory", the GP4 intake gate); no repo's frame can bound a per-user surface |
+
+Recorded, not resolved: the sweep runs one direction only. Three of the frame's
+existing rows — `LESSONS.md`, `tracking-rules.md`, `DECISIONS.md` — are read
+when a skill or a gate fires and not at session start, so the table's membership
+already runs wider than its opening definition. That is the parked candidate
+row, and nothing here settles it.
 
 ## Review
