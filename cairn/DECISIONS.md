@@ -3404,3 +3404,61 @@ it convicts the thread the stop rule was built for, and the second thread
 ended the same way, closed by a structural remedy (the extractor
 contract) rather than by a further round — which is the disposition the
 stop rule now makes the rule.
+
+### D-094 (2026-07-31): `CLAUDE.md`'s cairn section is a sixth always-read surface, and the frame governs the section rather than the file — annotates D-060 and D-063, superseding nothing
+
+**Context:** The 2026-07-30 `/milestone` audit ran D-060's §2 check and reported
+the gap the frame exists to surface: the harness injects `CLAUDE.md` into every
+session, and the frame's worked table did not cover it. All three of its
+governance elements already existed elsewhere in the rulebook — D-009's
+routing-only rule, the weight-caps remedy that trims the section back to the
+template, and the <30-line section cap `cairn_validate`'s `weight caps` CHECK
+enforces (D-018) — so what was missing was coverage, never governance. M126's
+sweep, derived from `hooks/hooks.json`'s sole `SessionStart` entry and
+`session_context.build_context` plus the harness-loaded project instructions,
+found six surfaces: `ROADMAP.md` and each active milestone file already covered,
+`CLAUDE.md` uncovered, and three out of scope.
+
+**Decision:** Four parts.
+(1) **A sixth row, appended after the fifth.** This is D-060's own audit bullet
+("any newly-added always-read surface not covered") executing as designed, the
+second time after D-063 — an application of the frame, superseding nothing, and
+the frame stays completeness-only, so D-057's closed stock-side program is
+untouched. Appending rather than inserting keeps the guarded sentence "The fifth
+surface differs from the four above it" true on the record.
+(2) **The governed unit is the section, not the file.** The row's first cell
+reads "`CLAUDE.md`'s `## Project tracking` section", because all three of its
+dispositions are section-scoped: D-018 caps that section alone and D-009 confines
+it to routing. A cell naming the file would make every one of the three overclaim
+against a file cairn does not own — the file-map table's own `CLAUDE.md` row owns
+the whole file, which is why the inflow cell cites D-009 and not that row.
+Nothing about what cairn governs in `CLAUDE.md` changes here.
+(3) **The frame's opening definition stays unamended.** "One this repo re-reads
+at the start of most sessions" excludes nothing this row needs — a section-scoped
+surface is still a file the repo re-reads — so an amendment would buy no
+coverage while shipping new prose against D-060's prose-guarded mandate, on a
+line that wraps. The definition's real defect runs the other way: three rows
+already in the table are read when a skill or a gate fires and not at session
+start. That is a membership rule the frame has never had, and it is parked as a
+candidate row rather than settled here, because settling it is doctrine revision
+and not a table row.
+(4) **Three surfaces are out of scope, each for its own reason.**
+`cairn/PROFILE.md` reaches a session as its profile NAME only; the seven slots
+the rulebook governs are read when a skill fires, so a row for it would decide
+the membership question part 3 parks. The hook's `PREAMBLE` is plugin source
+rather than a repo record — a fixed string no repo writes to, so it has no
+inflow to test and cannot grow with use. Per-user memory is not a repo file and
+never holds project state ("Tracking files outrank memory", the GP4 intake
+gate), so no repo's frame can bound it.
+
+**Consequences:** Annotates D-060 (its table goes from five rows to six) and
+D-063 (whose row is the one the new boundary statement contrasts against: a
+milestone file's cap-exempt sections stay governed by a read-bound, where
+`CLAUDE.md`'s remainder is governed by nothing cairn owns). The statement claims
+no uniqueness for that split — an always-read unit and a governed unit that
+differ is a shape both surfaces carry. No IP touched; GP1 worked under, wording
+unchanged. D-018 and D-009 are cited, not narrowed: neither the cap's scope nor
+the router's content changes. Delivered by M126, guarded by
+`skills/tests/test_always_read_frame.py` and mutation-registered. If a surface
+ever arrives that the sweep cannot classify without a membership rule, that is
+the parked candidate promoting, and this is the entry it annotates.

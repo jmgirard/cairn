@@ -2161,6 +2161,12 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_enumerates_the_always_read_files_with_their_elements",
+        target=RULES,
+        block="| `CLAUDE.md`'s `## Project tracking` section | routing only — classify and invoke the skill, never conduct (D-009) | the weight-caps remedy: trim the section back to the template | 30-line section cap, `cairn_validate`'s `weight caps` CHECK |",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
         test="TestAlwaysReadFrameRulebook.test_names_the_surface_that_leaves_the_always_read_set",
         target=RULES,
         block="It is **the only always-read surface that leaves the set**: a milestone stops",
@@ -2170,6 +2176,48 @@ REGISTRY = [
         test="TestAlwaysReadFrameRulebook.test_names_the_split_across_two_gp1_mechanisms",
         target=RULES,
         block="only one split across two of GP1's mechanisms within one file** — its",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
+        target=RULES,
+        block="cells describe cairn's `## Project tracking` section and never the whole file:",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
+        target=RULES,
+        block="governed by nothing cairn owns (D-018), so no cell in that row reaches it.",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
+        target=RULES,
+        block="The milestone file's cap-exempt sections stay governed by a read-bound rather than by a cap (D-063),",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
+        target=RULES,
+        block="No uniqueness is claimed for either: an always-read unit and a governed unit that differ is a shape both surfaces carry.",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_the_worked_table_holds_exactly_the_six_surfaces_in_order",
+        target=RULES,
+        block="The fifth surface differs from the four above it in two ways worth naming.",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
+        target=RULES,
+        block="so the two differ in whether an ungoverned remainder exists at all, never in",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_the_boundary_statement_sits_beneath_the_table",
+        target=RULES,
+        block="The sixth surface differs again, in what the frame governs of it. Its three",
     ),
     Mutation(
         guard="test_always_read_frame",

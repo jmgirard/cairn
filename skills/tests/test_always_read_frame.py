@@ -13,10 +13,20 @@ Two surfaces carry the frame and this file pins both:
 M113/D-063 added the fifth row (the active milestone file) plus the two claims
 that make it unlike the four above it, each pinned on its own.
 
-Anchors are copied from the target files' actual bytes (M95/M100), each a
-single physical line so a reflow cannot silently unpin it (M74/M92/M104). The
-table rows bind each file NOUN to its elements, so swapping a file's
-disposition reddens (M103).
+M126/D-094 added the sixth row (`CLAUDE.md`'s `## Project tracking` section)
+and the boundary statement beneath the table. The statement is pinned entire by
+`test_pins_the_whole_boundary_statement` under a whitespace normalization
+applied to both sides; the worked table by its full membership and order in
+`test_the_worked_table_holds_exactly_the_six_surfaces_in_order`.
+
+Read each test for the comparison it makes. This paragraph deliberately states
+no inventory of the anchors and no universal about what they satisfy: RR11
+found such a claim to be a coverage self-certification — the job §8's first
+sentence describes an author as unable to do — and found that three successive
+attempts to write one, twice in an acceptance criterion and once in this
+docstring, each shipped a claim the anchors did not meet.
+`test_enumerates_the_always_read_files_with_their_elements` pins each table row
+whole, so swapping a file's disposition reddens (M103).
 
     python3 -m unittest discover -s skills/tests
 """
@@ -25,6 +35,36 @@ import pathlib
 import unittest
 
 SKILLS = pathlib.Path(__file__).resolve().parent.parent
+
+TABLE_HEADER = "| File | Inflow test | Outflow / read-bound | Attention signal |"
+
+# The worked table's membership and order, first cell of each row. M126: the
+# sixth row is appended below the fifth, which is what keeps the sentence
+# beneath the table ("the four above it") true.
+FRAME_ROWS = (
+    "| `ROADMAP.md` |",
+    "| `LESSONS.md` |",
+    "| `tracking-rules.md` |",
+    "| `DECISIONS.md` |",
+    "| the active `milestones/M<NN>-<slug>.md` |",
+    "| `CLAUDE.md`'s `## Project tracking` section |",
+)
+
+# The sixth surface's boundary statement, whitespace-normalized to one line.
+# Pinned whole rather than clause by clause — see
+# `test_pins_the_whole_boundary_statement` for why.
+BOUNDARY_STATEMENT = (
+    "The sixth surface differs again, in what the frame governs of it. Its "
+    "three cells describe cairn's `## Project tracking` section and never the "
+    "whole file: D-009 confines that section to routing, while the dev "
+    "doctrine outside it is governed by nothing cairn owns (D-018), so no "
+    "cell in that row reaches it. The milestone file's cap-exempt sections "
+    "stay governed by a read-bound rather than by a cap (D-063), so the two "
+    "differ in whether an ungoverned remainder exists at all, never in how "
+    "strongly a governed part is held. No uniqueness is claimed for either: "
+    "an always-read unit and a governed unit that differ is a shape both "
+    "surfaces carry."
+)
 
 
 def read(path):
@@ -92,6 +132,15 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
             "at `done` | `weight caps` CHECK + `work-log format` + "
             "`decisions format`; none needed "
             "for the cap-exempt sections once read-bounded |",
+            # M126 — the sixth surface. Its FIRST cell is the load-bearing
+            # one: it names the `## Project tracking` section and not the
+            # file, because all three of its dispositions are section-scoped
+            # (D-018/D-009) and a file-named cell would overclaim every one
+            # of them against a file cairn does not own.
+            "| `CLAUDE.md`'s `## Project tracking` section | routing only — "
+            "classify and invoke the skill, never conduct (D-009) | the "
+            "weight-caps remedy: trim the section back to the template | "
+            "30-line section cap, `cairn_validate`'s `weight caps` CHECK |",
         ):
             with self.subTest(row=row[:20]):
                 self.assertIn(row, self.rules)
@@ -115,6 +164,122 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
             "only one split across two of GP1's mechanisms within one file**",
             self.rules,
         )
+
+    def test_pins_the_whole_boundary_statement(self):
+        # M126, §8 round 2's STRUCTURAL REMEDY. Rounds 1 and 2 each returned
+        # the same defect shape: an anchor pinned one side of the target's
+        # hard wrap while the acceptance-criterion clause completed on the
+        # other, so negating the unpinned line left the suite green — round 1
+        # on the sentence head, round 2 on the subjects at `:196` and `:198`
+        # ("and the cairn section itself is governed by nothing cairn owns"
+        # passed). Per-line anchors close instances of that shape one at a
+        # time; this closes the class for the whole statement by pinning every
+        # byte of it. Whitespace is normalized on both sides — the anchor as
+        # well as the target — so a legitimate re-wrap does not red while no
+        # reword can hide behind one, the licensed remedy in
+        # `guard-doctrine.md` §1 for prose that re-wraps. Normalizing the
+        # anchor too is not redundant: it is authored pre-normalized today, so
+        # a later edit re-wrapping the CONSTANT would otherwise red the guard
+        # spuriously. It also covers `:201-202`, which no per-clause assert
+        # reached.
+        self.assertIn(
+            " ".join(BOUNDARY_STATEMENT.split()), " ".join(self.rules.split())
+        )
+
+    def test_the_worked_table_holds_exactly_the_six_surfaces_in_order(self):
+        # M126 AC2: the row is APPENDED, never inserted. A relative
+        # fifth-before-sixth check is not enough — §8 round 2 inserted a row
+        # ABOVE the fifth and stayed green, which makes the sentence beneath
+        # the table ("the four above it") false while the ordering assert
+        # still holds. So membership and order are pinned whole: no insertion
+        # anywhere in the table survives, and the sentence is pinned beside
+        # it. A changed header, a dropped row or a reorder all red.
+        #
+        # The header is matched as a WHOLE LINE and the separator is REQUIRED,
+        # both from M126's review (F9, 92): a substring match let a `| Notes |`
+        # column be appended to the header green, and a table whose separator
+        # row was deleted — no longer a markdown table at all — passed with the
+        # guard silent. Two holes the comment above already claimed were shut.
+        # Every row carries the header's column count too — AC4's "pins each
+        # new row whole". Comparing first cells alone let a fifth cell be
+        # appended to the sixth row green (§8's delta round, finding 3), a
+        # 5-cell row under a 4-column header: F9's malformed-table class
+        # surviving on the row side after the header side was closed.
+        # The header must be UNIQUE in the file and the table read from inside
+        # the frame's own section — review round 3 (F2, 92) inserted a decoy
+        # table above the real one with an identical header and the same six
+        # first cells, which absorbed every check below while a `| `SNEAK.md` |`
+        # row appended to the REAL table passed green. `lines.index` had bound
+        # to the first occurrence. F9's header class, third rendering.
+        self.assertEqual(self.rules.count(TABLE_HEADER + "\n"), 1)
+        section = self.rules.split("\n## Always-read governance\n", 1)[1]
+        lines = section.split("\n## ", 1)[0].splitlines()
+        self.assertIn(TABLE_HEADER, lines)
+        at = lines.index(TABLE_HEADER)
+        width = len(TABLE_HEADER.strip("|").split("|"))
+        self.assertRegex(lines[at + 1], r"^\|(?:\s*-+\s*\|)+$")
+        self.assertEqual(len(lines[at + 1].strip("|").split("|")), width)
+        rows = []
+        for line in lines[at + 2:]:
+            if not line.startswith("|"):
+                break
+            with self.subTest(row=line[:40]):
+                self.assertEqual(len(line.strip("|").split("|")), width)
+            rows.append(line.split(" | ")[0] + " |")
+        self.assertEqual(rows, list(FRAME_ROWS))
+        self.assertIn(
+            "The fifth surface differs from the four above it in two ways "
+            "worth naming.",
+            self.rules,
+        )
+
+    def test_the_boundary_statement_sits_beneath_the_table(self):
+        # M126 AC3 says the rulebook states this "beneath the table", and
+        # review found nothing pinned that (F4, 75): the paragraph moved to
+        # EOF left every anchor matched and the suite green, while the prose
+        # is position-dependent throughout — "The sixth surface", "in that
+        # row". Promoted from the logged list at the user's call rather than
+        # left for a later milestone.
+        #
+        # Ordering by string index is not enough, and two cuts of this test
+        # proved it: a one-sided "after the table" check passed the EOF move,
+        # and bounding it by the audit paragraph passed three more relocations
+        # review round 2 found (A5, 85) — statement and audit paragraph moved
+        # to EOF together, since the upper bound travelled with its subject;
+        # the statement moved above the fifth-surface paragraph, making shipped
+        # prose "The sixth surface differs again" precede "The fifth surface
+        # differs…"; and the statement spliced into the middle of that
+        # paragraph.
+        #
+        # So the check is on BLOCKS within the section, not on offsets in the
+        # whole file: the statement must be its own paragraph, inside
+        # "Always-read governance", after the table and after the fifth-surface
+        # paragraph, and before the audit paragraph. Moving it out of the
+        # section reds however much moves with it; splicing it into another
+        # paragraph reds because it is then not a paragraph of its own.
+        section = self.rules.split("\n## Always-read governance\n", 1)[1]
+        section = section.split("\n## ", 1)[0]
+        blocks = [
+            " ".join(b.split()) for b in section.split("\n\n") if b.strip()
+        ]
+        statement = " ".join(BOUNDARY_STATEMENT.split())
+        self.assertIn(statement, blocks)
+        at = blocks.index(statement)
+        table = next(
+            i for i, b in enumerate(blocks)
+            if " ".join(FRAME_ROWS[-1].split()) in b
+        )
+        fifth = next(
+            i for i, b in enumerate(blocks)
+            if "The fifth surface differs from the four above it" in b
+        )
+        audit = next(
+            i for i, b in enumerate(blocks)
+            if "The `/milestone` audit applies this frame:" in b
+        )
+        self.assertLess(table, at)
+        self.assertLess(fifth, at)
+        self.assertLess(at, audit)
 
 
 class TestAlwaysReadFrameAudit(unittest.TestCase):
