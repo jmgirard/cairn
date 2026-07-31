@@ -138,7 +138,61 @@ class TestMigrationGateDirectives(unittest.TestCase):
 class TestAccessibleLanguageRule(unittest.TestCase):
     """M106: the decision surface leads in plain words, glossing jargon
     rather than assuming it — extends "Chips carry choices, not evidence"
-    without displacing its above-the-chip justification clause."""
+    without displacing its above-the-chip justification clause.
+    M128: the adjective bar becomes a stated two-sentence shape with an
+    id ban (M<NN> exempt), a capture-on-flag sentence, and a worked
+    bad/good pair; "never a gate" survives, reconciled as author judgment."""
+
+    def test_two_sentence_test_stated(self):
+        t = rules()
+        self.assertIn("passes the two-sentence test:", t)
+        self.assertIn(
+            "the question's first sentence says what is being decided in plain words,",
+            t,
+        )
+        self.assertIn(
+            "its second sentence says what happens on each choice, and both come before",
+            t,
+        )
+
+    def test_internal_ids_banned_with_milestone_exemption(self):
+        t = rules()
+        self.assertIn(
+            "d-/rr-/bc-ids, ip/gp numbers, and doctrine section numbers — stay out of",
+            t,
+        )
+        self.assertIn(
+            "question text and option labels (`m<nn>` is exempt: milestone ids are the",
+            t,
+        )
+
+    def test_flagged_prompt_capture_sentence(self):
+        t = rules()
+        self.assertIn(
+            "a gate prompt the user flags as unclear is captured verbatim in the same",
+            t,
+        )
+        self.assertIn(
+            "session — a work-log line when a milestone is active, otherwise absorbed",
+            t,
+        )
+        self.assertIn(
+            "into an existing candidate roadmap row or added as one (search-first).",
+            t,
+        )
+
+    def test_worked_pair_present_and_labeled_reconstruction(self):
+        t = rules()
+        self.assertIn("observed failure shape (m128), it is not a capture:", t)
+        self.assertIn("> **bad:** \"§8's retirement is a logged deviation", t)
+        self.assertIn(
+            "> **good:** \"should retiring the certification step also cancel",
+            t,
+        )
+        self.assertIn(
+            "> cancel is cleaner but touches ten records; a partial keep risks leaving",
+            t,
+        )
 
     def test_rule_present_and_scopes_the_decision_surface(self):
         t = rules()

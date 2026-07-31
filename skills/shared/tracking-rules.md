@@ -595,15 +595,34 @@ cairn skill is active.
   a summary never substitutes for the accepted text.
 - **Accessible language on the decision surface.** The surface a user reads
   to make a choice — an AskUserQuestion question's text, the prose framing a
-  chip, and every option label and description — leads in plain words: it says
-  what is being decided and what each option means before any term of art.
-  A technical term is glossed at first use, never assumed; the failure this
-  prevents is jargon-led framing, where the user must already know the
-  vocabulary to tell the options apart. This does not banish the technical
+  chip, and every option label and description — passes the two-sentence test:
+  the question's first sentence says what is being decided in plain words,
+  its second sentence says what happens on each choice, and both come before
+  any term of art. A technical term is glossed at first use, never assumed;
+  the failure this prevents is jargon-led framing, where the user must already know the
+  vocabulary to tell the options apart. Cairn-internal record identifiers —
+  D-/RR-/BC-ids, IP/GP numbers, and doctrine section numbers — stay out of
+  question text and option labels (`M<NN>` is exempt: milestone ids are the
+  operator's own referent); the identifier and its technical justification
+  live in the chat above the chip. This does not banish the technical
   justification the rule above keeps *above* the chip — that detail stays, but
-  leads with its plain-language meaning rather than standing in for it. Like
+  leads with its plain-language meaning rather than standing in for it.
+  A gate prompt the user flags as unclear is captured verbatim in the same
+  session — a work-log line when a milestone is active, otherwise absorbed
+  into an existing candidate ROADMAP row or added as one (search-first).
+  The two-sentence test is a shape the author applies in judgment: like
   record density and references staleness, "too technical" is a judgment the
-  author makes, never a gate.
+  author makes, never a gate. A worked pair — the bad case reconstructs the
+  observed failure shape (M128), it is not a capture:
+
+  > **Bad:** "§8's retirement is a logged deviation from D-090's Untouched
+  > clause. Should D-095 supersede D-083's operative clauses whole, or
+  > narrow only the falsifier pair while D-085's evidence derivations stand?"
+  >
+  > **Good:** "Should retiring the certification step also cancel every rule
+  > its earlier decisions added, or only the rule that made it stop? A full
+  > cancel is cleaner but touches ten records; a partial keep risks leaving
+  > rules whose reason is gone — details above the chip."
 - **Acceptance chips show what's accepted.** A chip option that accepts or
   approves a produced conclusion — review findings, a subagent's verdict,
   an audit result, amended text, or

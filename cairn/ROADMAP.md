@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M128 | Gate questions lead in plain words | planned | — | high | milestones/M128-gate-question-clarity.md |
+| M128 | Gate questions lead in plain words | review | — | high | milestones/M128-gate-question-clarity.md |
 | M127 | Guard-doctrine §8 is retired whole | done | — | high | milestones/archive/M127-retire-certification.md |
 | M126 | CLAUDE.md joins the always-read governance frame | done | — | normal | milestones/archive/M126-claude-md-always-read-row.md |
 | M125 | Certification loops stop on a repeated defect shape | done | M124 | normal | milestones/archive/M125-shape-repeat-stop.md |
