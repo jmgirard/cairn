@@ -149,3 +149,5 @@ than absorbed (gate decision 2026-07-30).
 ## Decisions
 
 ## Review
+- 2026-07-30: M124's post-merge hygiene removed the absorbed §8-stop-condition candidate row from the ROADMAP — the removal this log recorded as owed.
+- 2026-07-30: M124's review B5 measured shipped §8 at exactly 150 lines — zero headroom under the size M123 chose deliberately — so T1's additions must offset lines within §8 or record the growth as a deliberate choice the way M123's implement gate did; noted here so implement prices it, procedure: `awk` over the §8 span at M124's merge commit.

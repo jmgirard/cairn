@@ -8,6 +8,12 @@ matching. Measured at M123's §8 certification, where eight of ten mutations
 touching no pinned block defeated six acceptance-criterion clauses with the
 whole suite green.
 
+Callers pass the FULL heading line (`## 8. The author never certifies its own
+guard's coverage`), never a prefix: `section_body` slices from
+`index(heading) + len(heading)`, so a prefix like `## 8. ` silently leaves the
+heading's tail inside the body as a phantom sentence unit and the extraction
+stops matching the committed ledger (M124 review, measured live).
+
 This module is the extraction half of the remedy. `sentences()` returns a
 section's ordered, whitespace-normalized sentence sequence; a guard compares
 that sequence against a committed ledger and reports what differs. The two
