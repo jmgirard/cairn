@@ -98,7 +98,7 @@ def diff(ledger, current):
     """Describe how `current` departs from `ledger`, aligned.
 
     Alignment matters, and a set difference is the wrong instrument: measured
-    on AC3's mutation (a), comparing by index reports `added=1, moved=26`,
+    on AC3's mutation (a), comparing by index reports `added=1, moved=28`,
     which buries the one real change under every sentence that merely shifted
     position. (Round 2 re-derived this: it read 35, a figure from a plan-time
     splitter that no longer exists.) `SequenceMatcher` reports the same

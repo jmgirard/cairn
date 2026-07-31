@@ -304,15 +304,40 @@ class TestExtraction(unittest.TestCase):
         # every module-level assignment is reached whatever shape it takes,
         # rather than the one shape the author thought to match.
         text = pathlib.Path(sl.__file__).read_text()
-        # Every string constant in a module-scope binding's statement. The
-        # bindings are Name nodes now, so walk up to the statement they sit in
-        # by line, which is what the ban is about: a list of section terms
-        # assigned anywhere at module scope.
-        lines = {n.lineno for n in _module_level_assignments(text)}
+        # Every string constant in a module-scope binding's STATEMENT. Review
+        # F1 (2026-07-30): a first version kept constants whose lineno matched
+        # the binding's line, so a multi-line list literal — strings on later
+        # physical lines — shipped the banned enumeration with the suite
+        # green. Line matching was one more enumeration of shapes; derived
+        # now: a parent map walks each module-scope Store name up to its
+        # enclosing statement, and every string constant in that statement's
+        # subtree is checked, however many lines the literal spans. Constants
+        # inside function bodies stay out (they are neither a parameter nor a
+        # module constant, AC1's two named surfaces).
+        tree = ast.parse(text)
+        nested = set()
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                for child in node.body:
+                    nested.update(id(n) for n in ast.walk(child))
+        parents = {}
+        for parent in ast.walk(tree):
+            for child in ast.iter_child_nodes(parent):
+                parents[id(child)] = parent
+        def enclosing_stmt(node):
+            while not isinstance(node, ast.stmt):
+                node = parents[id(node)]
+            return node
+        stmts = {}
+        for n in ast.walk(tree):
+            if (isinstance(n, ast.Name) and isinstance(n.ctx, ast.Store)
+                    and id(n) not in nested):
+                s = enclosing_stmt(n)
+                stmts[id(s)] = s
         patterns = [
-            node.value for node in ast.walk(ast.parse(text))
-            if isinstance(node, ast.Constant) and isinstance(node.value, str)
-            and node.lineno in lines
+            c.value for s in stmts.values() for c in ast.walk(s)
+            if isinstance(c, ast.Constant) and isinstance(c.value, str)
+            and id(c) not in nested
         ]
         self.assertTrue(patterns, "no module-level string constants to check")
         for pattern in patterns:
@@ -495,7 +520,7 @@ class TestAlignment(unittest.TestCase):
 
     def test_a_pure_insertion_reports_one_addition(self):
         # Why alignment and not index comparison: measured on §8, comparing by
-        # index reports AC3's mutation (a) as `added=1, moved=26`, which buries
+        # index reports AC3's mutation (a) as `added=1, moved=28`, which buries
         # the real change under every sentence that merely shifted. (Round 2:
         # the figure was 35, from a plan-time splitter that no longer exists.)
         delta = sl.diff(["A.", "B.", "C."], ["A.", "N.", "B.", "C."])
