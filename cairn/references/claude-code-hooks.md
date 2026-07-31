@@ -63,7 +63,16 @@ PostToolUse, UserPromptSubmit, ConfigChange.
   for M19 T1. Live-fire (does the running client honor an
   `additionalContext`-only PreToolUse payload) still pending — hooks snapshot
   at process start, so it needs a fresh session after the hook is registered
-  (D-017).
+  (D-017). The snapshot is of *registrations* (hooks.json) only: each script
+  BODY is re-read per invocation from the symlinked checkout, so editing an
+  already-registered hook goes live mid-session (observed at M60's own merge,
+  where the renamed merge_guard marker took effect immediately) while a
+  newly-registered hook stays dead until a fresh conversation. Consequence
+  for verification: a fixture test proves only what a hook prints, and a
+  live-fire plan must split the two cases — edited-registered (test now) vs
+  newly-registered (test in a fresh session). (Moved here from the M60
+  LESSONS line at M127's hygiene pass; this page owned the snapshot half
+  already.)
 - PreCompact: block-only (top-level `decision: "block"`). It does **NOT**
   support `additionalContext` — there is NO hook that re-injects context on
   compaction (PreCompact fires before compaction with nowhere to attach;

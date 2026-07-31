@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-31 (M126 merged — the always-read frame's table now covers `CLAUDE.md`'s cairn section. Terminal rows pruned to 5; two candidate rows added, one graduating RR11's deferred doctrine rules. Validate all green.)_
+_Last hygiene check: 2026-07-31 (M127 merged — guard-doctrine §8 retired whole, D-095/D-096. Four mooted candidate rows dropped, RR11 re-cut to BC5, ledger-rollout row restated; terminal rows pruned to 5. Validate all green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M127 | Guard-doctrine §8 is retired whole | review | — | high | milestones/M127-retire-certification.md |
+| M127 | Guard-doctrine §8 is retired whole | done | — | high | milestones/archive/M127-retire-certification.md |
 | M126 | CLAUDE.md joins the always-read governance frame | done | — | normal | milestones/archive/M126-claude-md-always-read-row.md |
 | M125 | Certification loops stop on a repeated defect shape | done | M124 | normal | milestones/archive/M125-shape-repeat-stop.md |
 | M124 | A section-consistency ledger, so a contradicted or renamed rule reds | done | — | normal | milestones/archive/M124-section-consistency-ledger.md |
 | M123 | Rebuild guard-doctrine §8 so its certification loop converges | done | — | normal | milestones/archive/M123-section8-convergence-rebuild.md |
-| M122 | A differential guard holding the hook and the cap counters to one heading contract | done | — | normal | milestones/archive/M122-heading-normalization-differential-guard.md |
 
 ## Candidates
 

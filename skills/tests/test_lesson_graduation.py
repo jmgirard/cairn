@@ -396,8 +396,11 @@ class TestFamilyActuallyLeft(unittest.TestCase):
 
     def test_positive_control_lessons_file_still_holds_its_kept_items(self):
         # Proves the read above actually saw content (pairs with the
-        # absence-assert; M84/M93).
-        self.assertIn("hook *registrations* (hooks.json) snapshot at process start", self.lessons)
+        # absence-assert; M84/M93). Re-anchored at M127's hygiene pass: the
+        # original anchor was the M60 hook-lifecycle line, retired by move
+        # into `cairn/references/claude-code-hooks.md` (ownership); the
+        # control now rides the oldest surviving lesson.
+        self.assertIn('"green" is only as wide as what you ran', self.lessons)
         # Inline the multiline flag: assertRegex's third positional arg is
         # `msg`, not `flags`, so a passed re.M is silently discarded.
         self.assertRegex(self.lessons, r"(?m)^- 20\d\d-\d\d-\d\d \(M\d+")

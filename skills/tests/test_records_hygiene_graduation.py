@@ -179,8 +179,12 @@ class TestFamilyActuallyLeft(unittest.TestCase):
 
     def test_positive_control_lessons_file_still_holds_a_kept_item(self):
         # Pairs with the absence-assert: proves the read actually saw content.
+        # Re-anchored at M127's hygiene pass: the original anchor (the M60
+        # hook-lifecycle line) retired by move into
+        # `cairn/references/claude-code-hooks.md`; the control now rides the
+        # oldest surviving lesson.
         self.assertIn(
-            "hook *registrations* (hooks.json) snapshot at process start",
+            '"green" is only as wide as what you ran',
             self.lessons,
         )
 
