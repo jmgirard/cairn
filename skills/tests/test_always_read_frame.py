@@ -126,13 +126,25 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
         )
 
     def test_names_the_section_scoped_surface(self):
-        # M126 AC3: the sixth surface's governed unit is a SECTION, and the
-        # rest of the file is governed by nothing cairn owns. Pinned apart
-        # from the row because the row states the three dispositions and this
-        # states why they stop at the section.
+        # M126 AC3, first half: the sixth surface's governed unit is a
+        # SECTION. Pinned apart from the row because the row states the three
+        # dispositions and this states why they stop at the section.
         self.assertIn(
             "cells describe cairn's `## Project tracking` section and never "
             "the whole file:",
+            self.rules,
+        )
+
+    def test_names_the_ungoverned_remainder_of_the_file(self):
+        # M126 AC3, second half — pinned separately because round 1 of the §8
+        # certification found the first assert stops at its colon, leaving
+        # this predicate negatable green: "governed by cairn too, and every
+        # cell in that row reaches it" passed the whole suite. The D-018 cite
+        # rides on the same physical line so the remainder claim cannot lose
+        # its authority while the assert still matches.
+        self.assertIn(
+            "governed by nothing cairn owns (D-018), so no cell in that row "
+            "reaches it.",
             self.rules,
         )
 
@@ -142,23 +154,43 @@ class TestAlwaysReadFrameRulebook(unittest.TestCase):
         # M126 AC3: the contrast that makes the section-scoping a real
         # difference rather than a restatement of D-063 — a milestone file's
         # cap-exempt sections are still governed, by a read-bound instead of
-        # a cap, where `CLAUDE.md`'s remainder is governed by nothing.
+        # a cap, where `CLAUDE.md`'s remainder is governed by nothing. The
+        # read-bound and the cap it stands against sit on one physical line,
+        # so dropping either half reddens.
         self.assertIn(
-            "The milestone file's cap-exempt sections stay governed, by a "
-            "read-bound (D-063)",
+            "The milestone file's cap-exempt sections stay governed by a "
+            "read-bound rather than by a cap (D-063),",
             self.rules,
         )
 
     def test_claims_no_uniqueness_for_the_split_unit(self):
-        # M126 AC3: the statement is barred from claiming that differing
-        # always-read and governed units are unique to either surface — the
+        # M126 AC3: the statement may not claim that differing always-read
+        # and governed units are unique to either surface — the
         # false-uniqueness shape the plan's criteria audit caught in the
-        # step-2 draft.
+        # step-2 draft. The whole claim is one physical line, because §8
+        # round 1 negated the predicate ("a shape only this sixth surface
+        # carries") with a head-only anchor still matching.
         self.assertIn(
             "No uniqueness is claimed for either: an always-read unit and a "
-            "governed unit",
+            "governed unit that differ is a shape both surfaces carry.",
             self.rules,
         )
+
+    def test_the_sixth_row_is_appended_below_the_fifth(self):
+        # M126 AC2: the row is APPENDED, never inserted — an insert above the
+        # fifth row falsifies the sentence beneath the table, which nothing
+        # pinned until §8 round 1 probed it (inserting a row above the sixth
+        # left all 827 tests green). Both halves live here: the ordering, and
+        # the sentence whose truth the ordering preserves.
+        fifth = "| the active `milestones/M<NN>-<slug>.md` |"
+        sixth = "| `CLAUDE.md`'s `## Project tracking` section |"
+        self.assertIn(
+            "The fifth surface differs from the four above it in two ways "
+            "worth naming.",
+            self.rules,
+        )
+        # `.index` raises on an absent row, so a deleted row reddens here too.
+        self.assertLess(self.rules.index(fifth), self.rules.index(sixth))
 
 
 class TestAlwaysReadFrameAudit(unittest.TestCase):

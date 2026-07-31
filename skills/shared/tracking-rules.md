@@ -195,14 +195,12 @@ each cap-exempt section's newest content and states what it left out (D-063).
 
 The sixth surface differs again, in what the frame governs of it. Its three
 cells describe cairn's `## Project tracking` section and never the whole file:
-D-018 caps that section alone and D-009 confines it to routing, so the repo's
-own dev doctrine above and below it is governed by nothing cairn owns, and no
-cell in that row reaches that remainder.
-The milestone file's cap-exempt sections stay governed, by a read-bound (D-063)
-rather than by a cap — so the two differ in whether an ungoverned remainder
-exists at all, never in how strongly a governed part is held.
-No uniqueness is claimed for either: an always-read unit and a governed unit
-that are not the same unit is a shape both of them carry.
+D-009 confines that section to routing, while the dev doctrine outside it is
+governed by nothing cairn owns (D-018), so no cell in that row reaches it.
+The milestone file's cap-exempt sections stay governed by a read-bound rather than by a cap (D-063),
+so the two differ in whether an ungoverned remainder exists at all, never in
+how strongly a governed part is held.
+No uniqueness is claimed for either: an always-read unit and a governed unit that differ is a shape both surfaces carry.
 
 The `/milestone` audit applies this frame: its §2 checks each always-read file
 still names all three elements, and that any newly-added always-read surface is

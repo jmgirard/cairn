@@ -2185,15 +2185,27 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_names_the_ungoverned_remainder_of_the_file",
+        target=RULES,
+        block="governed by nothing cairn owns (D-018), so no cell in that row reaches it.",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
         test="TestAlwaysReadFrameRulebook.test_contrasts_the_milestone_file_whose_exempt_sections_stay_governed",
         target=RULES,
-        block="The milestone file's cap-exempt sections stay governed, by a read-bound (D-063)",
+        block="The milestone file's cap-exempt sections stay governed by a read-bound rather than by a cap (D-063),",
     ),
     Mutation(
         guard="test_always_read_frame",
         test="TestAlwaysReadFrameRulebook.test_claims_no_uniqueness_for_the_split_unit",
         target=RULES,
-        block="No uniqueness is claimed for either: an always-read unit and a governed unit",
+        block="No uniqueness is claimed for either: an always-read unit and a governed unit that differ is a shape both surfaces carry.",
+    ),
+    Mutation(
+        guard="test_always_read_frame",
+        test="TestAlwaysReadFrameRulebook.test_the_sixth_row_is_appended_below_the_fifth",
+        target=RULES,
+        block="The fifth surface differs from the four above it in two ways worth naming.",
     ),
     Mutation(
         guard="test_always_read_frame",

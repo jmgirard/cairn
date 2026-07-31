@@ -74,7 +74,6 @@ recording the addition and its boundaries.
       the section the governed unit; why the frame's opening definition is left
       unamended; and why `PROFILE.md` and the hook's preamble are out of scope.
       Evidence: the appended entry, `dangling id tokens` clean.
-- 2026-07-31: T5 — four shipped rules inverted in place per guard-doctrine §1, each RED with exactly one failing test, each restored byte-identical (`git diff` empty): row cells transposed (inflow↔outflow); "never the whole file" → "the whole file too"; "stay governed, by a read-bound" → "stop being governed, with no read-bound"; "No uniqueness is claimed" → "Uniqueness is claimed".
 
 ## Coverage
 
@@ -115,6 +114,13 @@ recording the addition and its boundaries.
 - 2026-07-31: T4 — four asserts added to `test_always_read_frame.py` (the sixth row whole; the three AC3 claims, each anchored on one physical line of the target), four matching `test_mutation_harness.py` REGISTRY entries; harness green. Adjacent-phrase grep over all 13 existing anchors: each still occurs exactly once, so no re-anchoring is owed.
 - 2026-07-31: T2 — D-094 appended, recording AC6's four points plus per-user memory's out-of-scope reason; `dangling id tokens` clean.
 - 2026-07-31: T5 — four shipped rules inverted in place per guard-doctrine §1, each RED with exactly one failing test, each restored byte-identical (`git diff` empty): row cells transposed (inflow↔outflow); "never the whole file" → "the whole file too"; "stay governed, by a read-bound" → "stop being governed, with no read-bound"; "No uniqueness is claimed" → "Uniqueness is claimed".
+- 2026-07-31: §8 certification round 1 ([O], fresh context) returned seven findings — three AC-clause coverage gaps, four claim-vs-file. All fixed here; none is a fix-authored record (round 1 has no prior fix), so all seven cleared both lines and a round 2 follows.
+- 2026-07-31: round-1 fix — AC3's remainder clause and its no-uniqueness clause were each pinned only in a sentence head, both negatable green (the reader's probes: "governed by cairn too, and every cell in that row reaches it"; "a shape only this sixth surface carries"). The boundary paragraph was re-wrapped so each clause completes on one physical line, and two asserts added: `test_names_the_ungoverned_remainder_of_the_file`, plus the whole-claim anchor in `test_claims_no_uniqueness_for_the_split_unit`.
+- 2026-07-31: round-1 fix — AC2's and D-094's "the guarded sentence 'The fifth surface differs from the four above it'" was false: nothing pinned that sentence, and nothing pinned the row's position, so a row inserted above the sixth passed all 827 tests. `test_the_sixth_row_is_appended_below_the_fifth` now pins both the sentence and the fifth-before-sixth order, which makes the claim true rather than superseding it.
+- 2026-07-31: round-1 fix — a stray copy of the T5 work-log line had landed inside `## Acceptance criteria` (a botched string replace, not an amendment); removed, restoring the plan-owned section to what /milestone-plan authored.
+- 2026-07-31: correction — the T5 line above records "exactly one failing test" per inversion, measured under `python3 -m unittest discover -s skills/tests -p test_always_read_frame.py`, which AC5 does not name. Under AC5's own command (`python3 -m unittest discover -s skills/tests`) each inversion reds two: the frame guard and the mutation harness, whose registered block no longer occurs.
+- 2026-07-31: correction — the T3 line above puts the boundary paragraph at `tracking-rules.md:196-206`; it was `:196-205` as shipped then, and is `:196-203` after the round-1 re-wrap.
+- 2026-07-31: T5 re-run over all six shipped rules plus two probes, under `python3 -m unittest discover -s skills/tests` from the repo root, each mutation applied to `skills/shared/tracking-rules.md` alone and the file restored between runs: row cells transposed; "never the whole file" negated; the D-018 remainder clause negated; the read-bound/cap contrast negated; the no-uniqueness PREDICATE negated (round 1's green probe); the sixth row moved above the fifth; the fifth-surface sentence deleted. All seven RED — six as `FAILED (failures=1, errors=1)`, the row transposition as `FAILED (failures=1)` — and the file restored byte-identical after each.
 
 ## Decisions
 
