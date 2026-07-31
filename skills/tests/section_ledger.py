@@ -18,9 +18,10 @@ the ledger, so it cannot be tuned to agree with it.
 phrases, or subjects from any section it reads — that enumeration is the
 failure `guard-doctrine.md` §3 names, and the class this module exists for has
 already beaten five successive hand-extended matchers over §8 alone. One
-closed punctuation class ships under AC1's carve-out, `_SENTENCE_BOUNDARY`,
-with the comment AC1 requires; no abbreviation class is needed, because §8
-carries no abbreviation-shaped mid-sentence period.
+carve-out constant ships under AC1, `_SENTENCE_BOUNDARY`, closing over two
+punctuation classes — terminal punctuation and the closing delimiters that
+follow it — with the comment AC1 requires; no abbreviation class is needed,
+because §8 carries no abbreviation-shaped mid-sentence period.
 `test_extraction_carries_no_word_constant` holds the no-content-word property
 to the shipped bytes rather than to intent, and
 `test_each_module_constant_names_the_class_it_closes_over` holds the comment.
@@ -97,7 +98,7 @@ def diff(ledger, current):
     """Describe how `current` departs from `ledger`, aligned.
 
     Alignment matters, and a set difference is the wrong instrument: measured
-    on AC3's mutation (a), comparing by index reports `added=1, moved=23`,
+    on AC3's mutation (a), comparing by index reports `added=1, moved=26`,
     which buries the one real change under every sentence that merely shifted
     position. (Round 2 re-derived this: it read 35, a figure from a plan-time
     splitter that no longer exists.) `SequenceMatcher` reports the same

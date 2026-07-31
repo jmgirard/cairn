@@ -44,26 +44,33 @@ SECTION_9 = "## 9. Presence is not consistency"
 
 
 def _module_level_assignments(source):
-    """Every assignment in module scope, however deeply nested in blocks.
+    """Every binding in module scope, at any block depth.
 
-    Round 5: both AC1 scans iterated `tree.body` alone, so a constant one
-    block deep was invisible — `if True:\n    _TERMS = [...]` shipped with the
-    suite green, which is the exact enumeration AC1 bans. Descends into block
-    statements and stops at `FunctionDef`/`ClassDef`, which keeps a
-    function-local list correctly out of scope: AC1 names a parameter or a
-    module constant, and a local is neither.
+    Scope is DERIVED, not enumerated. Round 5 replaced `tree.body` with a
+    hand-picked list of four block fields, and round 6 measured two holes
+    still open — `match`/`case` bodies and a walrus at module scope each
+    carried `_TERMS = [...]` with the suite green. That is §3's
+    enumerate-the-shapes failure inside the module that exists to ban
+    enumerations, and extending the field list a third time would be the
+    fifth-extension move this milestone was planned to stop.
+
+    So: collect everything under a function or class into an exclusion set,
+    then take every binding NOT in it. Function-locals stay correctly out of
+    scope — AC1 names a parameter or a module constant, and a local is
+    neither — and no new block syntax can open a hole.
     """
-    found = []
-    stack = list(ast.parse(source).body)
-    while stack:
-        stmt = stack.pop()
-        if isinstance(stmt, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
-            continue
-        if isinstance(stmt, (ast.Assign, ast.AnnAssign, ast.AugAssign)):
-            found.append(stmt)
-        for field in ("body", "orelse", "finalbody", "handlers"):
-            stack.extend(getattr(stmt, field, []) or [])
-    return found
+    tree = ast.parse(source)
+    nested = set()
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef,
+                             ast.ClassDef)):
+            nested.update(id(child) for child in ast.walk(node))
+    return [
+        node for node in ast.walk(tree)
+        if isinstance(node, (ast.Assign, ast.AnnAssign, ast.AugAssign,
+                             ast.NamedExpr))
+        and id(node) not in nested
+    ]
 
 
 def committed_ledger():
@@ -147,6 +154,20 @@ class TestExtraction(unittest.TestCase):
             sl.sentences(wide, "## 3. A"), sl.sentences(narrow, "## 3. A")
         )
 
+    def test_a_bold_headline_is_its_own_sentence(self):
+        # Round 6: round 5 fixed the fusion but added no assert, so reverting
+        # `_SENTENCE_BOUNDARY` to `[.!?](\s+)` and regenerating the ledger
+        # shipped the defect again with 808 tests green — the ledger guard
+        # cannot catch it, because regenerating is exactly what §9 prescribes
+        # and the comparison is invariant under co-regeneration. Every other
+        # extraction fixture is markup-free, which is why four rounds passed
+        # over it. §8's rule headlines all end `.**`.
+        path = self._tmp("## 3. A\n\n**A bold rule.** The sentence after it.\n")
+        self.assertEqual(
+            sl.sentences(path, "## 3. A"),
+            ["**A bold rule.**", "The sentence after it."],
+        )
+
     def test_a_hyphen_break_is_a_real_difference(self):
         # The converse, and the reason M124's criterion says "token sequence
         # unchanged" rather than "no word changed": a wrap that breaks a
@@ -192,10 +213,14 @@ class TestExtraction(unittest.TestCase):
             # over". The comment block must name a class.
             block = []
             for j in range(i - 1, -1, -1):
-                if not source[j].startswith("#"):
+                # Round 6: an indented comment — the shape a nested
+                # constant carries — failed a bare `startswith("#")`, redding
+                # this guard on a correctly-commented constant.
+                if not source[j].lstrip().startswith("#"):
                     break
                 block.append(source[j])
-            self.assertTrue(block, f"{source[i]!r} carries no comment at all")
+            self.assertTrue(
+                block, f"{source[i].strip()!r} carries no comment at all")
             # Round 3's O3: a comment merely containing "class" satisfies this.
             # Disclosed, not closed — the content of a comment is a judgment,
             # and D-059's precedent is to route that to a reader.
@@ -407,7 +432,7 @@ class TestAlignment(unittest.TestCase):
 
     def test_a_pure_insertion_reports_one_addition(self):
         # Why alignment and not index comparison: measured on §8, comparing by
-        # index reports AC3's mutation (a) as `added=1, moved=23`, which buries
+        # index reports AC3's mutation (a) as `added=1, moved=26`, which buries
         # the real change under every sentence that merely shifted. (Round 2:
         # the figure was 35, from a plan-time splitter that no longer exists.)
         delta = sl.diff(["A.", "B.", "C."], ["A.", "N.", "B.", "C."])
