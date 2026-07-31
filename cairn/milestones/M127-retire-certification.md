@@ -113,7 +113,7 @@ recorded, accepted exposure.
       carve-out and the `test_delegation_warrant.py:146` pin.
 - [x] T4: Run all three suites from the repo root, each exit code
       checked; record evidence.
-- [ ] T5: Author the superseding D-entry; preview verbatim in chat
+- [x] T5: Author the superseding D-entry; preview verbatim in chat
       before the commit that lands it.
 - [ ] T6: ROADMAP row disposals and re-cuts (AC5).
 
@@ -134,6 +134,7 @@ recorded, accepted exposure.
 - 2026-07-31: T2 done — AC1 search re-run post-edit and the per-hit ledger committed as `cairn/references/m127-ac1-ledger.md` (zero operative hits; one `test_always_read_frame.py` docstring tense-shifted during the sweep); numbering test relocated to new `skills/tests/test_guard_doctrine_sections.py` with the gapped 1–7, 9 list and its own registry entry; 104 mutation-registry entries retired, counted before deletion by `grep -c 'test="TestDescriptionLayerCertification'` (101) + same for `TestImplementRoutesToCertification` (2) + `test_rule_leaves_a_fresh_readers_loop` (1); M124 machinery deleted whole (`section_ledger.py`, `test_section_ledger.py`, `skills/tests/ledgers/`).
 - 2026-07-31: T3 done — implement-skill step 8 loses its certification clause; tracking-rules delegation paragraph loses exactly the fresh-reader-loop sentence and its `(guard-doctrine.md §8)` cite; the D-067 carve-out and the discriminator pin survive (delegation-warrant suite green).
 - 2026-07-31: T4 done — from the repo root: `python3 -m unittest discover -s skills/tests` 690 tests OK exit 0; `-s scripts/tests` 332 tests OK exit 0; `-s hooks/tests` 103 tests OK exit 0; `python3 scripts/cairn_validate.py` all checks passed, zero warnings, exit 0.
+- 2026-07-31: T5 done — D-095 appended (previewed verbatim in chat): the mandate and evidence summary, the IP2-logged deviation from D-090's Untouched clause, the supersession of RR10's rejections in D-085, D-067 narrowed to the criteria audit, per-entry supersessions for D-069/D-070/D-079(2–3 re-scoped)/D-080/D-082/D-083/D-085/D-088/D-091 with D-091 part 3 explicitly surviving, and the candidate-row disposals; `cairn_validate` green.
 
 ## Decisions
 
