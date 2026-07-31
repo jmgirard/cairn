@@ -100,7 +100,7 @@ Deviations from RR11:
 - [x] T2: Implement the directory arm in `check_gitignore_deprecations`
       (`scripts/cairn_validate.py:880`) and re-derive its docstring (the
       "reads `.gitignore` alone" premise retires); scripts suite green.
-- [ ] T3: Rewrite the scaffold-deprecations step
+- [x] T3: Rewrite the scaffold-deprecations step
       (`skills/cairn-init/SKILL.md:202-247`): two per-line arms, line-format
       sentence covering both genres, quiet-advisory clause replaced; sweep
       and re-derive the restatement sites (ledger row V06,
@@ -126,6 +126,7 @@ Deviations from RR11:
 - 2026-07-31: criteria audit ([O], fresh context) returned 15 findings, 5 blocking (empty-dir unsatisfiability, step entry condition misdescribed, two-genre per-line block, restatement sites outside guards, permanent-WARN consequence unstated) — all disposed by adopting the auditor's own proposed wordings into AC1/AC2/AC4 plus the BC5 strengthening row in the Deviations table; none needed a user question.
 - 2026-07-31: plan gate dropped the robustness-read candidate row as mooted by D-095 — §8 and its rounds no longer exist, so the row's mechanism and promotion condition were both unreachable.
 - 2026-07-31: T1+T2 done — directory arm added to `check_gitignore_deprecations` (fires on a non-empty superseded shelf in all four entry states; empty/absent silent; line avoids `is superseded by`), docstring re-derived; new `TestGitignoreDeprecationDirectory` red first (2 failures/3 errors) then green; three suites green (scripts 336, skills 704, hooks 103), exits checked.
+- 2026-07-31: T3 done — SKILL.md per-line block split into entry-line/directory-line arms with a two-genre format sentence; closing clause rewritten (quiet advisory now confirms entries AND directory); guards renamed/re-anchored (`test_closing_check_covers_both_arms`, + two new tests), three REGISTRY entries re-pointed/added, ledger row V06 annotated (quote stays historical at 684e53a); skills 706 OK, scripts 336 OK, exits checked.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -1798,9 +1798,21 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_scaffold_migration",
-        test="TestDeprecationMigration.test_closing_check_does_not_claim_to_verify_the_directory",
+        test="TestDeprecationMigration.test_closing_check_covers_both_arms",
         target="skills/cairn-init/SKILL.md",
-        block="**A quiet advisory confirms the entry, not the directory** — `check_gitignore_deprecations` reads `.gitignore` alone and never the filesystem,",
+        block="**A quiet advisory now confirms the entries and the directory both** — the directory arm reads the filesystem, so a superseded shelf still holding files keeps its line firing whatever `.gitignore` says.",
+    ),
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestDeprecationMigration.test_per_line_block_names_both_line_kinds",
+        target="skills/cairn-init/SKILL.md",
+        block="a directory line — `directory '<old>' still holds files`",
+    ),
+    Mutation(
+        guard="test_scaffold_migration",
+        test="TestDeprecationMigration.test_directory_line_is_trigger_not_choice",
+        target="skills/cairn-init/SKILL.md",
+        block="On a directory line: it is only the trigger for the directory-state cases below — the case is still chosen by what is on disk.",
     ),
     Mutation(
         guard="test_scaffold_migration",
