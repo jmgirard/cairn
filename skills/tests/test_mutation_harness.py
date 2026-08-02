@@ -3676,6 +3676,36 @@ REGISTRY += [
     ),
 ]
 
+# M131: one entry per assert, not per clause — the three clauses and the
+# tick clause's prohibition each carry the rule independently, so blanking
+# any one of them must redden its own guard (D-042's per-clause shape).
+REGISTRY += [
+    Mutation(
+        guard="test_scripted_edit_landing",
+        test="TestScriptedEditLandingRule.test_rule_requires_verification_before_the_claiming_record",
+        target=RULES,
+        block="Verify an edit landed before writing the record that claims it did",
+    ),
+    Mutation(
+        guard="test_scripted_edit_landing",
+        test="TestScriptedEditLandingRule.test_rule_requires_a_unique_anchor_for_a_section_edit",
+        target=RULES,
+        block="anchors on text that occurs exactly once in the target file",
+    ),
+    Mutation(
+        guard="test_scripted_edit_landing",
+        test="TestScriptedEditLandingRule.test_rule_sequences_a_tick_after_its_evidence_write_succeeds",
+        target=RULES,
+        block="sequenced strictly after the write of the evidence it depends on has succeeded",
+    ),
+    Mutation(
+        guard="test_scripted_edit_landing",
+        test="TestScriptedEditLandingRule.test_rule_sequences_a_tick_after_its_evidence_write_succeeds",
+        target=RULES,
+        block="never in the same unverified batch",
+    ),
+]
+
 
 class TestRegisteredGuardsFailWhenBlanked(unittest.TestCase):
     def test_each_registered_guard_fails_when_its_block_is_blanked(self):
