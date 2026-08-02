@@ -105,11 +105,11 @@ rule stands). Any new instrument, checker, or audit step → none (D-090).
       question-count guards) and their mutation-registry blocks
       (`test_mutation_harness.py`); add one registered block per newly
       pinned AC1 sentence.
-- [ ] T3: Author the return floor, the amendment-return route, its fixed
+- [x] T3: Author the return floor, the amendment-return route, its fixed
       work-log shape, and its second-occurrence stop in
       `skills/milestone-review/SKILL.md` (steps 4–5), composing with the
       step-4 gate text and the thrash rule rather than contradicting them.
-- [ ] T4: Add registered guard blocks for each T3 rule sentence.
+- [x] T4: Add registered guard blocks for each T3 rule sentence.
 - [ ] T5: Author the §6 delete-first sentence in
       `skills/shared/guard-doctrine.md`; add its guard and registry block.
 - [ ] T6: Append the D-entry narrowing D-064's counting clause (amendment
@@ -129,6 +129,7 @@ rule stands). Any new instrument, checker, or audit step → none (D-090).
 - 2026-08-01: plan gate chose live-on-merge over a two-milestone advisory period because the floor loosens the gate and the merge-approval gate remains the safety net; falsified by the floor filtering a finding that later ships as a user-visible defect.
 - 2026-08-01: plan gate chose third-question-everywhere (brief ingestion included) over plan-only because a two-question brief reader would falsify the shipped same-reader claim; falsified by an RB binding criterion legitimately requiring an unenumerable universal.
 - 2026-08-01: T1+T2 done — bounded-promise rule + third question shipped in plan and brief skills; 4 new guards, 2 updated, 4 new registry blocks; repo-wide sweep found one stale count restatement (a test comment), reworded count-free; suites 711/337/103 green.
+- 2026-08-01: T3+T4 done — return floor + amendment return shipped in review skill step 5; TestReturnFloor (11 tests) + 12 registry blocks; skills suite green.
 
 ## Decisions
 

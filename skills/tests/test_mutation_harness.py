@@ -2909,6 +2909,81 @@ REGISTRY += [
         target=REVIEW,
         block="step 4 of `/milestone-plan` records it in the work log",
     ),
+    # M130: the return floor and the amendment return. One entry per
+    # separately deletable property, same discipline as the thrash entries
+    # above — the test list is the count.
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_floor_governs_the_actioned_list_and_names_only_when",
+        target=REVIEW,
+        block="**Return floor (M130).** Over the actioned (≥80) list, a finding moves the\n   milestone back to `in-progress` only when it demonstrates an acceptance\n   criterion failing",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_domain_limb_applies_only_where_a_procedure_is_named",
+        target=REVIEW,
+        block="inside its named procedure's domain, where the\n   criterion names one",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_shipped_defect_limb_needs_90_and_excludes_doctrine_prose",
+        target=REVIEW,
+        block="scored **≥90** on a defect in what the\n   repo's deliverables do for their users",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_shipped_defect_limb_needs_90_and_excludes_doctrine_prose",
+        target=REVIEW,
+        block="not the doctrine prose about how work is verified",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_sub_floor_findings_triage_with_no_status_change_and_are_logged",
+        target=REVIEW,
+        block="Every other actioned finding takes the triage above — fix now / follow-up\n   / reject — with no status change, and is logged",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_amendment_return_is_the_named_exception",
+        target=REVIEW,
+        block="The amendment return\n   below is the one named exception",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_only_floor_returns_join_the_defect_return_count",
+        target=REVIEW,
+        block="Only a return under\n   this floor joins the defect-return count the thrash rule reads",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_out_of_domain_falsification_reads_as_unbounded_criterion",
+        target=REVIEW,
+        block="falsifies a criterion only\n   outside the domain of the procedure it names is evidence the criterion is\n   unbounded",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_amendment_route_convenes_the_amendment_alone",
+        target=REVIEW,
+        block="routes to the gated\n   criterion-amendment protocol (`/milestone-implement` step 6) and\n   re-review, the amendment the only work convened; status is set to\n   `in-progress` for that amendment alone",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_amendment_return_work_log_line_has_a_fixed_shape",
+        target=REVIEW,
+        block='`amendment return: AC<N> — "<amended clause, verbatim>"`',
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_amendment_returns_count_on_their_own_track",
+        target=REVIEW,
+        block="counted per milestone on their own track: never reset by\n   a re-cut, and never added to the defect-return count",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_second_amendment_return_on_the_same_id_stops",
+        target=REVIEW,
+        block="A second amendment return naming the same AC<N> on one milestone\n   stops",
+    ),
 ]
 
 # M117: the upstream half of trigger (b) — /milestone-plan creates the record

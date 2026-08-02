@@ -212,6 +212,29 @@ overrides — log the override).
    logged in the Review section. Spawning a follow-up candidate sweeps first per
    the search-first candidate-creation rule (`tracking-rules.md`, Intake).
 
+   **Return floor (M130).** Over the actioned (≥80) list, a finding moves the
+   milestone back to `in-progress` only when it demonstrates an acceptance
+   criterion failing — inside its named procedure's domain, where the
+   criterion names one — or when scored **≥90** on a defect in what the
+   repo's deliverables do for their users (for this plugin: what the skills,
+   hooks, and scripts do, not the doctrine prose about how work is verified).
+   Every other actioned finding takes the triage above — fix now / follow-up
+   / reject — with no status change, and is logged. The amendment return
+   below is the one named exception to this "only when". Only a return under
+   this floor joins the defect-return count the thrash rule reads.
+
+   **Amendment return (M130).** A finding that falsifies a criterion only
+   outside the domain of the procedure it names is evidence the criterion is
+   unbounded, not that the work is wrong. It routes to the gated
+   criterion-amendment protocol (`/milestone-implement` step 6) and
+   re-review, the amendment the only work convened; status is set to
+   `in-progress` for that amendment alone. Its work-log line carries a fixed
+   shape — `amendment return: AC<N> — "<amended clause, verbatim>"` — and
+   these lines are counted per milestone on their own track: never reset by
+   a re-cut, and never added to the defect-return count (D-097 narrows
+   D-064). A second amendment return naming the same AC<N> on one milestone
+   stops — no further round is convened; the disposition goes to the user.
+
 6. Final checkpoint commit on the branch.
 
 7. **Final approval gate.** Present, outcome-first (per tracking-rules):
