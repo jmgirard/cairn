@@ -11,7 +11,7 @@ requirement, which M121 added (D-079 clause 2):
     final wording, step 3 runs the reader, and step 4 writes the audited
     bytes.
   * `/milestone-brief`'s "Ingesting an RR", where the same reader asks the
-    same two questions of a binding-criteria set before it is ingested
+    same three questions of a binding-criteria set before it is ingested
     (`TestRRIngestionCriteriaAudit`).
 
 Until M127 this file also locked D-067's other instrument — the
@@ -152,7 +152,41 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
         self.assertRegex(
             plan(),
             r"\*\*Write the wording\s+step 3's audit read\*\*; a criterion the "
-            r"gate changed goes back through the\s+audit's two questions",
+            r"gate changed goes back through the\s+audit's three questions",
+        )
+
+    def test_audit_asks_the_bounded_promise_question(self):
+        # M130: the third mechanical question — intraclass M100's three-return
+        # thrash traced to a criterion no stated procedure could check, so an
+        # unbounded promise is caught at drafting, not at pass three.
+        self.assertRegex(
+            plan(),
+            r"\*does it make a universal claim over a domain no procedure "
+            r"it names enumerates\*\s+\(the bounded-promise rule, step 4; M130\)",
+        )
+
+    def test_drafting_rule_bounds_universal_promises(self):
+        self.assertRegex(
+            plan(),
+            r"\*\*Bounded promises only \(M130\)\.\*\* An acceptance criterion "
+            r"that makes a\s+universal claim \(\"no X\", \"every Y\", "
+            r"\"nothing Z\"\) names the procedure —\s+a search, a sweep, or a "
+            r"test run — that enumerates its domain",
+        )
+
+    def test_unenumerable_universals_claim_the_swept_domain_instead(self):
+        self.assertRegex(
+            plan(),
+            r"where no\s+stated procedure can enumerate the domain, the "
+            r"criterion instead\s+claims what a procedure it names actually swept",
+        )
+
+    def test_a_hand_list_of_sites_is_not_a_procedure(self):
+        # M118's lesson carried into the rule: a criterion that lists its
+        # sites becomes the sweep, and every omitted site ships stale.
+        self.assertRegex(
+            plan(),
+            r"A hand-list of sites is\s+not a procedure",
         )
 
 
@@ -173,16 +207,17 @@ class TestRRIngestionCriteriaAudit(unittest.TestCase):
         )
 
     def test_ingest_audit_states_both_questions_at_this_surface(self):
-        # AC1 requires BOTH surfaces to state the two questions, and the two
+        # AC1 requires BOTH surfaces to state the audit's questions, and the two
         # asserts either side of this clause anchor past it: deleting the
         # questions from the brief left every other assert here green, so
         # `..._asks_the_questions_of_the_set...` reads as covering them and
         # does not. Found by M115's own certifier against its own guard.
         self.assertRegex(
             brief(),
-            r"and the same\s+two questions — \*what state of the world "
-            r"satisfies this exactly as\s+written\*, and \*does any IP or "
-            r"D-entry make that state unreachable\*",
+            r"and the same\s+three questions — \*what state of the world "
+            r"satisfies this exactly as\s+written\*, \*does any IP or "
+            r"D-entry make that state unreachable\*, and\s+\*does it make a "
+            r"universal claim over a domain no procedure it names enumerates\*",
         )
 
     def test_ingest_audit_asks_the_questions_of_the_set_not_only_each(self):

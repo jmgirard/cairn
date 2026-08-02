@@ -2386,7 +2386,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestPlanGateCriteriaAudit.test_step_4_writes_the_audited_wording_and_reaudits_a_change",
         target="skills/milestone-plan/SKILL.md",
-        block="**Write the wording\n     step 3's audit read**; a criterion the gate changed goes back through the\n     audit's two questions",
+        block="**Write the wording\n     step 3's audit read**; a criterion the gate changed goes back through the\n     audit's three questions",
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2416,7 +2416,34 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestRRIngestionCriteriaAudit.test_ingest_audit_states_both_questions_at_this_surface",
         target=BRIEF,
-        block="and the same\n   two questions — *what state of the world satisfies this exactly as\n   written*, and *does any IP or D-entry make that state unreachable*",
+        block="and the same\n   three questions — *what state of the world satisfies this exactly as\n   written*, *does any IP or D-entry make that state unreachable*, and\n   *does it make a universal claim over a domain no procedure it names enumerates*",
+    ),
+    # M130: the bounded-promise rule and its audit question. Four blocks —
+    # the third question at the plan gate, the rule sentence, its
+    # unenumerable-domain fallback, and the hand-list exclusion.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_asks_the_bounded_promise_question",
+        target="skills/milestone-plan/SKILL.md",
+        block="*does it make a universal claim over a domain no procedure it names enumerates*\n   (the bounded-promise rule, step 4; M130)",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_drafting_rule_bounds_universal_promises",
+        target="skills/milestone-plan/SKILL.md",
+        block="**Bounded promises only (M130).** An acceptance criterion that makes a\n     universal claim (\"no X\", \"every Y\", \"nothing Z\") names the procedure —\n     a search, a sweep, or a test run — that enumerates its domain",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_unenumerable_universals_claim_the_swept_domain_instead",
+        target="skills/milestone-plan/SKILL.md",
+        block="where no\n     stated procedure can enumerate the domain, the criterion instead\n     claims what a procedure it names actually swept",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_a_hand_list_of_sites_is_not_a_procedure",
+        target="skills/milestone-plan/SKILL.md",
+        block="A hand-list of sites is\n     not a procedure",
     ),
     # M121 (narrows D-067, first instrument). Three entries across two files:
     # the record requirement, the sentence making a missing line evidence, and

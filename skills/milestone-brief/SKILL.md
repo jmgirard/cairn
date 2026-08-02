@@ -91,8 +91,10 @@ start (any skill) when a manual RR appears:
    forces the accept-shortfall option at the merge gate.
    **A binding-criteria set is audited before it is ingested**, by the same
    fresh-context **[O]** reader `/milestone-plan` step 3 spawns and the same
-   two questions — *what state of the world satisfies this exactly as
-   written*, and *does any IP or D-entry make that state unreachable* — asked
+   three questions — *what state of the world satisfies this exactly as
+   written*, *does any IP or D-entry make that state unreachable*, and
+   *does it make a universal claim over a domain no procedure it names enumerates*
+   — asked
    of the set as well as of each criterion, because criteria that are
    individually satisfiable can still be **jointly** unsatisfiable, and a
    frozen scope in one can forbid the work another mandates. A brief has

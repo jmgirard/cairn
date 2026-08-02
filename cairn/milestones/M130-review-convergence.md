@@ -1,11 +1,11 @@
 # M130: Review returns are reserved for breaches of bounded promises
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3, GP1
-- **Branch/PR:** —
+- **Branch/PR:** m130-review-convergence
 
 ## Goal
 
@@ -96,12 +96,12 @@ rule stands). Any new instrument, checker, or audit step → none (D-090).
 
 ## Tasks
 
-- [ ] T1: Author the bounded-promise drafting rule and the third audit
+- [x] T1: Author the bounded-promise drafting rule and the third audit
       question in `skills/milestone-plan/SKILL.md` (steps 2–4); update
       `skills/milestone-brief/SKILL.md`'s same-reader sentence to three
       questions. Copy anchor bytes from the shipped files, never from
       drafts (M95 lesson).
-- [ ] T2: Update `skills/tests/test_fresh_context_readers.py` (the two
+- [x] T2: Update `skills/tests/test_fresh_context_readers.py` (the two
       question-count guards) and their mutation-registry blocks
       (`test_mutation_harness.py`); add one registered block per newly
       pinned AC1 sentence.
@@ -128,6 +128,7 @@ rule stands). Any new instrument, checker, or audit step → none (D-090).
 - 2026-08-01: plan gate chose delete-first scoped to branch-added prose over superseding D-045 because the intraclass loop fed on prose being authored, not on merged knowledge; falsified by fix-in-place corrections in merged current knowledge re-staling in a D-083→D-093-shaped cascade.
 - 2026-08-01: plan gate chose live-on-merge over a two-milestone advisory period because the floor loosens the gate and the merge-approval gate remains the safety net; falsified by the floor filtering a finding that later ships as a user-visible defect.
 - 2026-08-01: plan gate chose third-question-everywhere (brief ingestion included) over plan-only because a two-question brief reader would falsify the shipped same-reader claim; falsified by an RB binding criterion legitimately requiring an unenumerable universal.
+- 2026-08-01: T1+T2 done — bounded-promise rule + third question shipped in plan and brief skills; 4 new guards, 2 updated, 4 new registry blocks; repo-wide sweep found one stale count restatement (a test comment), reworded count-free; suites 711/337/103 green.
 
 ## Decisions
 
