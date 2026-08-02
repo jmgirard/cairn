@@ -70,10 +70,10 @@ only if a unique-header anchor is later found to have misfired.
 - [x] T1: author the three-clause rule in `skills/shared/tracking-rules.md`,
       one site only (step-0 one-home check run against the existing
       "Append, don't rewrite" and "Correcting a record proven false" text).
-- [ ] T2: author or extend the prose-guards under `skills/tests/` pinning each
+- [x] T2: author or extend the prose-guards under `skills/tests/` pinning each
       clause's anchored phrase; copy anchors from the shipped bytes, never from
       the draft (M95), and keep each on one physical line.
-- [ ] T3: register each anchored phrase as its own mutation-harness block; run
+- [x] T3: register each anchored phrase as its own mutation-harness block; run
       the harness; run the by-hand blanking check for any anchor it cannot see;
       sweep this branch's `skills/tests/` diff for added asserts and reconcile.
 - [ ] T4: inversion sweep — per clause, mutate in place, run the three verify
@@ -92,6 +92,8 @@ only if a unique-header anchor is later found to have misfired.
 - 2026-08-02: thrash assessment at user request — AC2/AC3 sit in the repo's thrashiest class (the guard-reddening lesson extended 5x), but the three past generators are closed: domain bounded to 3 enumerated clauses (M130's bounded-promise rule), the multi-round certification generator retired (M127), returns floored (M130/D-097); residual risk is reflow re-anchoring, a one-shot fix. No plan change; D-064 counting + D-097's second-occurrence stop are the stop condition.
 - 2026-08-02: /milestone-implement — status in-progress, branch m131-scripted-edit-landing cut from pushed main.
 - 2026-08-02: T1 — three-clause rule authored in `tracking-rules.md` "Universal tracking rules", sited after "Append, don't rewrite" and cross-referencing "Correcting a record proven false"; step-0 one-home check found no existing home. All three anchor phrases verified unique corpus-wide and each on one physical line; skills suite green (726), no neighbour reflow.
+- 2026-08-02: T2 — `skills/tests/test_scripted_edit_landing.py` authored, 3 tests / 4 asserts, anchors copied from the shipped bytes; the harness completeness meta-test fired on the unregistered file exactly as documented.
+- 2026-08-02: T3 — 4 blocks registered (one per assert). Per-entry check: all 4 red when blanked, green unblanked, errors=0, so none is a crash counted as a pass (M117/M122). AC2 sweep of this branch's `skills/tests/` diff: 4 added assert calls, 4 registered blocks, every block present in the diff — no assert pinning an AC1 clause is absent from the record.
 
 ## Decisions
 
