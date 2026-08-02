@@ -88,9 +88,11 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    authored criteria that were unsatisfiable as written and one that mandated
    an IP4 violation, costing gated amendments and review returns, and each was
    discoverable here. So the step-2 criteria go to a fresh-context **[O]**
-   reader that authored none of them, which asks two mechanical questions of
-   each: *what state of the world satisfies this exactly as written*, and
-   *does any IP or D-entry make that state unreachable*. It reads the wording
+   reader that authored none of them, which asks three mechanical questions of
+   each: *what state of the world satisfies this exactly as written*,
+   *does any IP or D-entry make that state unreachable*, and
+   *does it make a universal claim over a domain no procedure it names enumerates*
+   (the bounded-promise rule, step 4; M130). It reads the wording
    step 4 will write, never a paraphrase of it. Dispose of what it returns at
    this gate, never silently: a finding with one clear right answer is fixed
    and the fix reported in chat, and a finding you could reasonably decide
@@ -127,7 +129,15 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      that cite a formula or reference value must name their source
      (`citekey (p. N)` — see the primary-sources rule). **Write the wording
      step 3's audit read**; a criterion the gate changed goes back through the
-     audit's two questions before it is written, and the change is reported.
+     audit's three questions before it is written, and the change is reported.
+   - **Bounded promises only (M130).** An acceptance criterion that makes a
+     universal claim ("no X", "every Y", "nothing Z") names the procedure —
+     a search, a sweep, or a test run — that enumerates its domain; where no
+     stated procedure can enumerate the domain, the criterion instead
+     claims what a procedure it names actually swept (guard-doctrine §6's
+     quantified-claim rule applied to promises). A hand-list of sites is
+     not a procedure — the list becomes the sweep and every site it omits
+     ships stale (the M118 lesson).
    - Acceptance criteria set the test scope for the milestone (see "What
      gets a test" in tracking-rules): name the behavior that must be tested.
    - `Out:` items name where the excluded work lives instead.

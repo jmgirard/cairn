@@ -3603,3 +3603,34 @@ promotion trigger).
 including every per-entry supersession. The batched form is deliberate: the
 per-claim correction cascade was the §8-era behavior D-095 retires, and one
 entry per claim would reproduce it at the retirement's own doorstep.
+
+### D-097 (2026-08-01): Amendment returns are counted on their own track with a second-occurrence stop — narrows D-064's counting clause; the defect-return count and both triggers stand (M130)
+
+**Context:** intraclass M100 ran three full review returns on one milestone,
+each pass falsifying the previous pass's repair of an acceptance criterion no
+stated procedure could check ("messages assert nothing false about the user's
+data"). D-064's counting clause reads every return into one per-milestone
+count, so a return whose only fault is an unbounded promise burns the same
+strike as an implementation defect, and trigger (a) can force a re-plan of
+sound work. M130 ships the distinction: a finding that falsifies a criterion
+only outside the domain of the procedure it names is evidence about the
+criterion, not the work.
+
+**Decision:** `/milestone-review` routes that case to the gated
+criterion-amendment protocol as an "amendment return": the amendment is the
+only work convened, its work-log line carries a fixed shape (`amendment
+return: AC<N> — "<amended clause, verbatim>"`), and these lines are counted
+per milestone on their own track — never reset by a re-cut, and never added
+to the defect-return count D-064's triggers read. The track has its own stop:
+a second amendment return naming the same AC<N> on one milestone convenes no
+further round and goes to the user. Narrowed, not superseded: D-064's
+per-milestone-never-per-cut counting, both triggers, and their remedies stand
+for defect returns.
+
+**Consequences:** the thrash counter measures implementation thrash only;
+promise-wording thrash has its own, tighter stop (one repeat, not two). The
+positional id plus the verbatim clause is what makes "the same criterion"
+decidable after renumbering or a re-cut. If an amendment-return loop ever
+survives this stop — rewording churning across different AC ids on one
+milestone — this is the entry to supersede. Delivered by M130 beside the
+return floor (its ≥80/≥90 bands), which D-064 never governed.

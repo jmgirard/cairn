@@ -106,7 +106,9 @@ overrides — log the override).
    re-cut is itself evidence of thrash. **Count them in the work log**, the one
    record a re-cut leaves standing: it supersedes the tasks and unticks every
    criterion, so current file state reads as a first pass however many returns
-   preceded it. Two triggers, with different remedies:
+   preceded it. The count here is of defect returns; amendment returns run
+   on their own track (the step-5 return floor, M130). Two triggers, with
+   different remedies:
 
    - **(a) The third return, and every return after it** — a mis-planned
      milestone. It is a threshold, not a single moment: once reached it holds.
@@ -211,6 +213,34 @@ overrides — log the override).
    / spawn a follow-up (candidate row or milestone) / reject with reason — all
    logged in the Review section. Spawning a follow-up candidate sweeps first per
    the search-first candidate-creation rule (`tracking-rules.md`, Intake).
+
+   **Return floor (M130).** Over the actioned (≥80) list, a finding moves the
+   milestone back to `in-progress` only when it demonstrates an acceptance
+   criterion failing — inside its named procedure's domain, where the
+   criterion names one — or when scored **≥90** on a defect in what the
+   repo's deliverables do for their users (for this plugin: what the skills,
+   hooks, and scripts do, not the doctrine prose about how work is verified).
+   Every other actioned finding takes the triage above — fix now / follow-up
+   / reject — with no status change, and is logged. The amendment return
+   below is the one named exception to this "only when". A floor return
+   takes step 4's exit — a work-log line naming exactly what failed, stop.
+   The defect-return count the thrash rule reads is step-4 gate returns
+   plus returns under this floor; amendment returns stay off it.
+
+   **Amendment return (M130).** A finding that shows the criterion itself
+   is wrong — falsifying it only outside the domain of the procedure it
+   names, or showing a criterion that names no procedure to be unbounded
+   (the never-reinterpret rule's case, step 3) — is evidence about the
+   promise, not the work. It routes to the gated
+   criterion-amendment protocol (`/milestone-implement` step 6) and
+   re-review, the amendment the only work convened; status is set to
+   `in-progress` for that amendment alone, and review stops there. Its
+   work-log line carries a fixed
+   shape — `amendment return: AC<N> — "<amended clause, verbatim>"` — and
+   these lines are counted per milestone on their own track: never reset by
+   a re-cut, and never added to the defect-return count (D-097 narrows
+   D-064). A second amendment return naming the same AC<N> on one milestone
+   stops — no further round is convened; the disposition goes to the user.
 
 6. Final checkpoint commit on the branch.
 

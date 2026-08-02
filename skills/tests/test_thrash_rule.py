@@ -70,6 +70,10 @@ def plan():
     return read("milestone-plan", "SKILL.md")
 
 
+def implement():
+    return read("milestone-implement", "SKILL.md")
+
+
 class TestThrashCounting(unittest.TestCase):
     def test_returns_are_counted_per_milestone_not_per_cut(self):
         self.assertIn("count returns **per milestone, never per cut**", review())
@@ -291,6 +295,143 @@ class TestTriggersCompose(unittest.TestCase):
         t = review()
         self.assertIn("the remedy is no longer re-plan-or-split", t)
         self.assertRegex(t, r"never a\s+bare retry as the recommended option")
+
+
+class TestReturnFloor(unittest.TestCase):
+    """M130: review returns are reserved for breaches of bounded promises.
+
+    Trigger: intraclass M100 — three full returns on an unbounded
+    truthfulness criterion, each pass falsifying its predecessor's repair.
+    The floor scopes returns to the actioned list; the amendment return
+    routes the unbounded-criterion case without burning a defect strike.
+    """
+
+    def test_floor_governs_the_actioned_list_and_names_only_when(self):
+        self.assertRegex(
+            review(),
+            r"\*\*return floor \(m130\)\.\*\* over the actioned \(≥80\) list, "
+            r"a finding moves the\s+milestone back to `in-progress` only when "
+            r"it demonstrates an acceptance\s+criterion failing",
+        )
+
+    def test_domain_limb_applies_only_where_a_procedure_is_named(self):
+        self.assertRegex(
+            review(),
+            r"inside its named procedure's domain, where the\s+criterion names one",
+        )
+
+    def test_shipped_defect_limb_needs_90_and_excludes_doctrine_prose(self):
+        # Without the exclusion, in this repo — whose shipped artifact IS
+        # prose — limb 2 re-admits the prose-truthiness class the floor
+        # exists to filter.
+        t = review()
+        self.assertRegex(
+            t,
+            r"scored \*\*≥90\*\* on a defect in what the\s+repo's deliverables "
+            r"do for their users",
+        )
+        self.assertIn("not the doctrine prose about how work is verified", t)
+
+    def test_sub_floor_findings_triage_with_no_status_change_and_are_logged(self):
+        # IP3: filtered from the return path, never from the record.
+        self.assertRegex(
+            review(),
+            r"every other actioned finding takes the triage above — fix now / "
+            r"follow-up\s+/ reject — with no status change, and is logged",
+        )
+
+    def test_amendment_return_is_the_named_exception(self):
+        # Without the named exception, the floor's "only when" forbids the
+        # status change the amendment route requires — the unreachability the
+        # M130 plan audit caught in the draft wording.
+        self.assertRegex(
+            review(),
+            r"the amendment return\s+below is the one named exception",
+        )
+
+    def test_defect_return_count_is_step4_plus_floor_returns(self):
+        # M130 review D1/D2/D8: the first cut said "only a return under this
+        # floor joins the count", which read literally un-counted step-4 gate
+        # returns — D-064's canonical case.
+        self.assertRegex(
+            review(),
+            r"the defect-return count the thrash rule reads is step-4 gate "
+            r"returns\s+plus returns under this floor; amendment returns "
+            r"stay off it",
+        )
+
+    def test_floor_return_takes_step_4_exit(self):
+        # M130 review D4/D5: a return with no stop and no work-log line is
+        # both uncountable and followed by a merge chip.
+        self.assertRegex(
+            review(),
+            r"a floor return\s+takes step 4's exit — a work-log line naming "
+            r"exactly what failed, stop",
+        )
+
+    def test_thrash_count_is_of_defect_returns(self):
+        self.assertRegex(
+            review(),
+            r"the count here is of defect returns; amendment returns run\s+on "
+            r"their own track \(the step-5 return floor, m130\)",
+        )
+
+    def test_amendment_return_keys_on_the_criterion_being_wrong(self):
+        # M130 review D3/D7: keyed only on "outside its named procedure's
+        # domain", the route missed every criterion naming no procedure —
+        # including the intraclass M100 trigger case — and collided with the
+        # never-reinterpret rule; the keying now names both cases.
+        self.assertRegex(
+            review(),
+            r"falsifying it only outside the domain of the procedure it\s+"
+            r"names, or showing a criterion that names no procedure to be "
+            r"unbounded\s+\(the never-reinterpret rule's case, step 3\)",
+        )
+
+    def test_amendment_route_convenes_the_amendment_alone(self):
+        self.assertRegex(
+            review(),
+            r"routes to the gated\s+criterion-amendment protocol "
+            r"\(`/milestone-implement` step 6\) and\s+re-review, the amendment "
+            r"the only work convened; status is set to\s+`in-progress` for "
+            r"that amendment alone, and review stops there",
+        )
+
+    def test_implement_step_6_writes_the_amendment_return_shape(self):
+        # M130 review D6: the fixed shape was stated only in the skill that
+        # never writes it; the producing skill now names it too.
+        t = implement()
+        self.assertRegex(
+            t,
+            r"amendment executing an amendment return from `/milestone-review` "
+            r"writes\s+its work-log line in that skill's fixed shape",
+        )
+        self.assertIn(
+            '`amendment return: ac<n> — "<amended clause, verbatim>"`', t
+        )
+
+    def test_amendment_return_work_log_line_has_a_fixed_shape(self):
+        # The fixed shape is what makes the second-occurrence stop decidable
+        # from the work log: the positional id names "the same criterion" and
+        # the verbatim clause survives renumbering (M130 plan audit).
+        self.assertRegex(
+            review(),
+            r'`amendment return: ac<n> — "<amended clause, verbatim>"`',
+        )
+
+    def test_amendment_returns_count_on_their_own_track(self):
+        self.assertRegex(
+            review(),
+            r"counted per milestone on their own track: never reset by\s+a "
+            r"re-cut, and never added to the defect-return count",
+        )
+
+    def test_second_amendment_return_on_the_same_id_stops(self):
+        self.assertRegex(
+            review(),
+            r"a second amendment return naming the same ac<n> on one "
+            r"milestone\s+stops",
+        )
 
 
 if __name__ == "__main__":

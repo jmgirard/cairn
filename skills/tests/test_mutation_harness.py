@@ -2386,7 +2386,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestPlanGateCriteriaAudit.test_step_4_writes_the_audited_wording_and_reaudits_a_change",
         target="skills/milestone-plan/SKILL.md",
-        block="**Write the wording\n     step 3's audit read**; a criterion the gate changed goes back through the\n     audit's two questions",
+        block="**Write the wording\n     step 3's audit read**; a criterion the gate changed goes back through the\n     audit's three questions",
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2414,9 +2414,36 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_fresh_context_readers",
-        test="TestRRIngestionCriteriaAudit.test_ingest_audit_states_both_questions_at_this_surface",
+        test="TestRRIngestionCriteriaAudit.test_ingest_audit_states_the_questions_at_this_surface",
         target=BRIEF,
-        block="and the same\n   two questions — *what state of the world satisfies this exactly as\n   written*, and *does any IP or D-entry make that state unreachable*",
+        block="and the same\n   three questions — *what state of the world satisfies this exactly as\n   written*, *does any IP or D-entry make that state unreachable*, and\n   *does it make a universal claim over a domain no procedure it names enumerates*",
+    ),
+    # M130: the bounded-promise rule and its audit question. Four blocks —
+    # the third question at the plan gate, the rule sentence, its
+    # unenumerable-domain fallback, and the hand-list exclusion.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_asks_the_bounded_promise_question",
+        target="skills/milestone-plan/SKILL.md",
+        block="*does it make a universal claim over a domain no procedure it names enumerates*\n   (the bounded-promise rule, step 4; M130)",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_drafting_rule_bounds_universal_promises",
+        target="skills/milestone-plan/SKILL.md",
+        block="**Bounded promises only (M130).** An acceptance criterion that makes a\n     universal claim (\"no X\", \"every Y\", \"nothing Z\") names the procedure —\n     a search, a sweep, or a test run — that enumerates its domain",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_unenumerable_universals_claim_the_swept_domain_instead",
+        target="skills/milestone-plan/SKILL.md",
+        block="where no\n     stated procedure can enumerate the domain, the criterion instead\n     claims what a procedure it names actually swept",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_a_hand_list_of_sites_is_not_a_procedure",
+        target="skills/milestone-plan/SKILL.md",
+        block="A hand-list of sites is\n     not a procedure",
     ),
     # M121 (narrows D-067, first instrument). Three entries across two files:
     # the record requirement, the sentence making a missing line evidence, and
@@ -2485,6 +2512,26 @@ REGISTRY = [
         test="TestModuleExists.test_restatement_section_states_the_quantified_claim_rule",
         target=GUARD_DOCTRINE,
         block="**Where no stated procedure can enumerate the domain, the universal is not written**",
+    ),
+    # M130: §6's delete-first remedy — the ordering and the D-045 carve-out,
+    # pinned separately for the same either-half-deletes-green reason.
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_delete_first_remedy",
+        target="skills/shared/guard-doctrine.md",
+        block="**The first remedy weighed for a claim proven false in prose the branch in hand added is deleting the claim**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_delete_first_remedy",
+        target="skills/shared/guard-doctrine.md",
+        block="available where a search over the repo for the claim's subject finds no\ndependent; correction is the remedy where one exists",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_delete_first_remedy",
+        target="skills/shared/guard-doctrine.md",
+        block="Merged\ncurrent knowledge stays corrected-in-place and marked (D-045); IP4 history\nis superseded, never edited.",
     ),
 ]
 
@@ -2881,6 +2928,99 @@ REGISTRY += [
         test="TestThrashTriggers.test_review_names_the_work_log_as_where_the_record_is_read",
         target=REVIEW,
         block="step 4 of `/milestone-plan` records it in the work log",
+    ),
+    # M130: the return floor and the amendment return. One entry per
+    # separately deletable property, same discipline as the thrash entries
+    # above — the test list is the count.
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_floor_governs_the_actioned_list_and_names_only_when",
+        target=REVIEW,
+        block="**Return floor (M130).** Over the actioned (≥80) list, a finding moves the\n   milestone back to `in-progress` only when it demonstrates an acceptance\n   criterion failing",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_domain_limb_applies_only_where_a_procedure_is_named",
+        target=REVIEW,
+        block="inside its named procedure's domain, where the\n   criterion names one",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_shipped_defect_limb_needs_90_and_excludes_doctrine_prose",
+        target=REVIEW,
+        block="scored **≥90** on a defect in what the\n   repo's deliverables do for their users",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_shipped_defect_limb_needs_90_and_excludes_doctrine_prose",
+        target=REVIEW,
+        block="not the doctrine prose about how work is verified",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_sub_floor_findings_triage_with_no_status_change_and_are_logged",
+        target=REVIEW,
+        block="Every other actioned finding takes the triage above — fix now / follow-up\n   / reject — with no status change, and is logged",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_amendment_return_is_the_named_exception",
+        target=REVIEW,
+        block="The amendment return\n   below is the one named exception",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_defect_return_count_is_step4_plus_floor_returns",
+        target=REVIEW,
+        block="The defect-return count the thrash rule reads is step-4 gate returns\n   plus returns under this floor; amendment returns stay off it",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_floor_return_takes_step_4_exit",
+        target=REVIEW,
+        block="A floor return\n   takes step 4's exit — a work-log line naming exactly what failed, stop.",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_thrash_count_is_of_defect_returns",
+        target=REVIEW,
+        block="The count here is of defect returns; amendment returns run\n   on their own track (the step-5 return floor, M130).",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_amendment_return_keys_on_the_criterion_being_wrong",
+        target=REVIEW,
+        block="falsifying it only outside the domain of the procedure it\n   names, or showing a criterion that names no procedure to be unbounded\n   (the never-reinterpret rule's case, step 3)",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_amendment_route_convenes_the_amendment_alone",
+        target=REVIEW,
+        block="routes to the gated\n   criterion-amendment protocol (`/milestone-implement` step 6) and\n   re-review, the amendment the only work convened; status is set to\n   `in-progress` for that amendment alone, and review stops there",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_implement_step_6_writes_the_amendment_return_shape",
+        target="skills/milestone-implement/SKILL.md",
+        block="amendment executing an amendment return from `/milestone-review` writes\n     its work-log line in that skill's fixed shape",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_amendment_return_work_log_line_has_a_fixed_shape",
+        target=REVIEW,
+        block='`amendment return: AC<N> — "<amended clause, verbatim>"`',
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_amendment_returns_count_on_their_own_track",
+        target=REVIEW,
+        block="counted per milestone on their own track: never reset by\n   a re-cut, and never added to the defect-return count",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_second_amendment_return_on_the_same_id_stops",
+        target=REVIEW,
+        block="A second amendment return naming the same AC<N> on one milestone\n   stops",
     ),
 ]
 
