@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M131: A scripted edit is verified to have landed before the record claiming it did
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -79,7 +79,7 @@ only if a unique-header anchor is later found to have misfired.
 - [x] T4: inversion sweep — per clause, mutate in place, run the three verify
       commands, require red in at least one, restore, diff clean; record the
       three-row table.
-- [ ] T5: run the three verify commands and `cairn_validate` from the repo root
+- [x] T5: run the three verify commands and `cairn_validate` from the repo root
       with exit codes checked explicitly; resolve any cap or advisory fallout.
 
 ## Work log
@@ -95,6 +95,7 @@ only if a unique-header anchor is later found to have misfired.
 - 2026-08-02: T2 — `skills/tests/test_scripted_edit_landing.py` authored, 3 tests / 4 asserts, anchors copied from the shipped bytes; the harness completeness meta-test fired on the unregistered file exactly as documented.
 - 2026-08-02: T3 — 4 blocks registered (one per assert). Per-entry check: all 4 red when blanked, green unblanked, errors=0, so none is a crash counted as a pass (M117/M122). AC2 sweep of this branch's `skills/tests/` diff: 4 added assert calls, 4 registered blocks, every block present in the diff — no assert pinning an AC1 clause is absent from the record.
 - 2026-08-02: T4 — inversion sweep, all 4 subjects (3 clauses + the tick prohibition) negated in place: each reddened skills/tests (exit 1) with scripts/hooks green; script restored in a `finally:` (M124), sha256 matches the original and `git diff` is empty. AC3's three-row table is review-owned evidence, recorded when review re-runs the sweep.
+- 2026-08-02: T5 — from the repo root, exit codes captured separately, never piped (M56): skills/tests 729 exit 0, scripts/tests 337 exit 0, hooks/tests 103 exit 0, cairn_validate exit 0. Rulebook 955->966 lines, 68,103->68,986 chars. All tasks done; status review.
 
 ## Decisions
 
