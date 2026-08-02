@@ -2513,6 +2513,20 @@ REGISTRY = [
         target=GUARD_DOCTRINE,
         block="**Where no stated procedure can enumerate the domain, the universal is not written**",
     ),
+    # M130: §6's delete-first remedy — the ordering and the D-045 carve-out,
+    # pinned separately for the same either-half-deletes-green reason.
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_delete_first_remedy",
+        target="skills/shared/guard-doctrine.md",
+        block="**The first remedy weighed for a claim proven false in prose the branch in hand added is deleting the claim**",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_delete_first_remedy",
+        target="skills/shared/guard-doctrine.md",
+        block="Merged\ncurrent knowledge stays corrected-in-place and marked (D-045); IP4 history\nis superseded, never edited.",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

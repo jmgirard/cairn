@@ -290,6 +290,24 @@ class TestModuleExists(unittest.TestCase):
             section6(),
         )
 
+    def test_restatement_section_states_the_delete_first_remedy(self):
+        # M130: a corrected claim is a fresh claim-surface — intraclass M100's
+        # passes 2 and 3 each falsified the previous pass's repair — so for
+        # branch-added prose, deletion is weighed before correction. Two
+        # load-bearing parts pinned separately: the remedy ordering, and the
+        # D-045 carve-out that keeps merged current knowledge corrected in
+        # place (without it the rule reads as overriding a settled decision).
+        self.assertIn(
+            "**The first remedy weighed for a claim proven false in prose "
+            "the branch in hand added is deleting the claim**",
+            section6(),
+        )
+        self.assertRegex(
+            section6(),
+            r"Merged\s+current knowledge stays corrected-in-place and marked "
+            r"\(D-045\); IP4 history\s+is superseded, never edited\.",
+        )
+
 
 class TestRulebookPointer(unittest.TestCase):
     """The rulebook routes to the module, on a line that stays pinnable."""

@@ -249,6 +249,15 @@ state what was actually swept and how, and claim that instead (RR11 BC5; the
 M118 lesson is the failure mode: a criterion listing its sites becomes the
 sweep, and every site it omits ships stale).
 
+**The first remedy weighed for a claim proven false in prose the branch in hand added is deleting the claim** —
+available where a search over the repo for the claim's subject finds no
+dependent; correction is the remedy where one exists, and the measured
+failure mode is the repair that re-falsifies: intraclass M100's review
+passes 2 and 3 each found a fresh false claim inside the previous pass's
+fix, while the sentence that is not there cannot be false (M130). Merged
+current knowledge stays corrected-in-place and marked (D-045); IP4 history
+is superseded, never edited.
+
 ## 7. Scoping a sweep or a grep-shaped criterion
 
 **A repo-wide sweep and a grep-shaped acceptance criterion both hit ground
