@@ -3676,6 +3676,48 @@ REGISTRY += [
     ),
 ]
 
+# M131: one entry per assert — the title, clause (i)'s operative sentence,
+# each of clauses (ii) and (iii), and the tick prohibition carry the rule
+# independently, so blanking any one of them must redden its own guard. Same
+# per-assert shape as the M71 entries above.
+#
+# Clauses (ii) and (iii) register the SUBJECT together with the predicate:
+# both sit on one physical line, and the predicate-only anchors this
+# milestone first shipped left the subject swappable with the whole suite
+# green (review F3d/F3e — guard-doctrine §1, pin the label with its members).
+REGISTRY += [
+    Mutation(
+        guard="test_scripted_edit_landing",
+        test="TestScriptedEditLandingRule.test_rule_requires_verification_before_the_claiming_record",
+        target=RULES,
+        block="Verify a batched or scripted edit landed before writing the record that claims it did",
+    ),
+    Mutation(
+        guard="test_scripted_edit_landing",
+        test="TestScriptedEditLandingRule.test_rule_requires_verification_before_the_claiming_record",
+        target=RULES,
+        block="Re-read the aimed site and confirm the change is present before any record claiming it is written",
+    ),
+    Mutation(
+        guard="test_scripted_edit_landing",
+        test="TestScriptedEditLandingRule.test_rule_requires_a_unique_anchor_for_a_section_edit",
+        target=RULES,
+        block="An edit targeting a document section anchors on text that occurs exactly once in the target file",
+    ),
+    Mutation(
+        guard="test_scripted_edit_landing",
+        test="TestScriptedEditLandingRule.test_rule_sequences_a_tick_after_its_evidence_write_succeeds",
+        target=RULES,
+        block="A check-off or tick write is sequenced strictly after the write of the evidence it depends on has succeeded",
+    ),
+    Mutation(
+        guard="test_scripted_edit_landing",
+        test="TestScriptedEditLandingRule.test_rule_sequences_a_tick_after_its_evidence_write_succeeds",
+        target=RULES,
+        block="never in the same unverified batch",
+    ),
+]
+
 
 class TestRegisteredGuardsFailWhenBlanked(unittest.TestCase):
     def test_each_registered_guard_fails_when_its_block_is_blanked(self):
