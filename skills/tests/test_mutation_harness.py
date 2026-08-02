@@ -2525,6 +2525,12 @@ REGISTRY = [
         guard="test_lesson_graduation",
         test="TestModuleExists.test_restatement_section_states_the_delete_first_remedy",
         target="skills/shared/guard-doctrine.md",
+        block="available where a search over the repo for the claim's subject finds no\ndependent; correction is the remedy where one exists",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_delete_first_remedy",
+        target="skills/shared/guard-doctrine.md",
         block="Merged\ncurrent knowledge stays corrected-in-place and marked (D-045); IP4 history\nis superseded, never edited.",
     ),
 ]

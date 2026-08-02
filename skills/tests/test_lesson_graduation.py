@@ -304,6 +304,11 @@ class TestModuleExists(unittest.TestCase):
         )
         self.assertRegex(
             section6(),
+            r"available where a search over the repo for the claim's subject "
+            r"finds no\s+dependent; correction is the remedy where one exists",
+        )
+        self.assertRegex(
+            section6(),
             r"Merged\s+current knowledge stays corrected-in-place and marked "
             r"\(D-045\); IP4 history\s+is superseded, never edited\.",
         )

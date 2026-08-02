@@ -1,6 +1,6 @@
 # M130: Review returns are reserved for breaches of bounded promises
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -115,9 +115,9 @@ rule stands). Any new instrument, checker, or audit step → none (D-090).
 - [x] T6: Append the D-entry narrowing D-064's counting clause (amendment
       returns tracked on their own per-milestone track, never reset by a
       re-cut; second same-id occurrence stops).
-- [ ] T7: Pre-review, run the AC5 inversion sweep once and close any gaps
+- [x] T7: Pre-review, run the AC5 inversion sweep once and close any gaps
       found (review re-runs it fresh for the table).
-- [ ] T8: Run the `verify` suites and `cairn_validate`; all exit 0.
+- [x] T8: Run the `verify` suites and `cairn_validate`; all exit 0.
 
 ## Work log
 
@@ -131,6 +131,7 @@ rule stands). Any new instrument, checker, or audit step → none (D-090).
 - 2026-08-01: T1+T2 done — bounded-promise rule + third question shipped in plan and brief skills; 4 new guards, 2 updated, 4 new registry blocks; repo-wide sweep found one stale count restatement (a test comment), reworded count-free; suites 711/337/103 green.
 - 2026-08-01: T3+T4 done — return floor + amendment return shipped in review skill step 5; TestReturnFloor (11 tests) + 12 registry blocks; skills suite green.
 - 2026-08-01: T5+T6 done — §6 delete-first remedy (self-compliant wording: passes 2 and 3 named, no bare universal) + guard + 2 registry blocks; D-097 appended narrowing D-064; validate green.
+- 2026-08-02: T7+T8 done — inversion sweep 21/21 red then restored (script restores in finally, byte-verified; M124); one gap closed (the delete-first applicability clause was unpinned, now pinned + registered); suites 711+2/337/103 and validate all exit 0; status → review.
 
 ## Decisions
 
