@@ -2,12 +2,12 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M131: A scripted edit is verified to have landed before the record claiming it did
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2
-- **Branch/PR:** —
+- **Branch/PR:** m131-scripted-edit-landing
 
 ## Goal
 
@@ -90,6 +90,7 @@ only if a unique-header anchor is later found to have misfired.
 - 2026-08-02: plan gate chose uniqueness alone for clause (ii) over also banning bare-header anchors because the M130 instance was non-uniqueness and the ban forbids a unique header that would have been fine; falsified by a unique header anchor later found to have misfired.
 - 2026-08-02: plan gate chose one `cairn/LESSONS.md` line doing both jobs over retiring an older lesson because the file is at 48 of 50 and a capture line lands at 49; falsified by a second line proving necessary before review.
 - 2026-08-02: thrash assessment at user request — AC2/AC3 sit in the repo's thrashiest class (the guard-reddening lesson extended 5x), but the three past generators are closed: domain bounded to 3 enumerated clauses (M130's bounded-promise rule), the multi-round certification generator retired (M127), returns floored (M130/D-097); residual risk is reflow re-anchoring, a one-shot fix. No plan change; D-064 counting + D-097's second-occurrence stop are the stop condition.
+- 2026-08-02: /milestone-implement — status in-progress, branch m131-scripted-edit-landing cut from pushed main.
 
 ## Decisions
 

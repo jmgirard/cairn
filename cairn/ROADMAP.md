@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M131 | A scripted edit is verified to have landed before the record claiming it did | planned | — | high | milestones/M131-scripted-edit-landing.md |
+| M131 | A scripted edit is verified to have landed before the record claiming it did | in-progress | — | high | milestones/M131-scripted-edit-landing.md |
 | M130 | Review returns are reserved for breaches of bounded promises | done | — | high | milestones/archive/M130-review-convergence.md |
 | M129 | Repair re-surfaces a declined shelf migration | done | — | normal | milestones/archive/M129-repair-resumability.md |
 | M128 | Gate questions lead in plain words | done | — | high | milestones/archive/M128-gate-question-clarity.md |
