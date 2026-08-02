@@ -7,7 +7,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2
-- **Branch/PR:** m131-scripted-edit-landing
+- **Branch/PR:** m131-scripted-edit-landing / https://github.com/jmgirard/cairn/pull/131
 
 ## Goal
 
@@ -34,25 +34,25 @@ only if a unique-header anchor is later found to have misfired.
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/shared/tracking-rules.md` states the conduct rule in three
+- [x] AC1: `skills/shared/tracking-rules.md` states the conduct rule in three
       clauses: (i) a batched or scripted edit is verified to have landed at its
       aimed site before any record claiming it landed is written; (ii) an edit
       targeting a document section anchors on text that occurs exactly once in
       the target file; (iii) a check-off or tick write is sequenced strictly
       after the write of the evidence it depends on has succeeded. The rule
       occupies exactly one site in the rulebook.
-- [ ] AC2: each of AC1's three clauses has its anchored phrase registered as its
+- [x] AC2: each of AC1's three clauses has its anchored phrase registered as its
       own block in `skills/tests/test_mutation_harness.py`, and the harness run
       reports all three blocks reddening; an anchor the harness cannot see takes
       guard-doctrine §2's by-hand blanking check instead, recorded per anchor.
       Sweeping this branch's diff of `skills/tests/` for added `assertIn` and
       `assertRegex` calls returns no assertion pinning an AC1 clause that is
       absent from that record.
-- [ ] AC3: each of AC1's three clauses is inversion-proven per guard-doctrine
+- [x] AC3: each of AC1's three clauses is inversion-proven per guard-doctrine
       §1 — relabelled, negated, or transposed in place; the three verify
       commands run; at least one exits non-zero; the file restored and
       `git diff` over it empty. Recorded as a three-row table in Review.
-- [ ] AC4: run from the repo root with each exit code checked explicitly,
+- [x] AC4: run from the repo root with each exit code checked explicitly,
       `python3 -m unittest discover -s skills/tests`,
       `python3 -m unittest discover -s scripts/tests`,
       `python3 -m unittest discover -s hooks/tests` and
@@ -100,3 +100,22 @@ only if a unique-header anchor is later found to have misfired.
 ## Decisions
 
 ## Review
+
+Fresh evidence, gathered by command at review; PR #131.
+
+- AC1 — each of the three clauses plus the tick prohibition occurs in exactly ONE doctrine file, `skills/shared/tracking-rules.md` (corpus-wide grep over `skills/`, excluding the guard and the registry that legitimately quote them). Rule sited in "Universal tracking rules" between "Append, don't rewrite" and "Correcting a record proven false", cross-referencing the latter rather than restating it.
+
+- AC2 — 4 blocks registered in `test_mutation_harness.py`, one per assert. Fresh per-entry run: all 4 red when blanked, green unblanked, errors=0 (so no crash counted as a pass — M117/M122). Sweep of this branch's `skills/tests/` diff: 4 added `assertIn` calls, 4 registered blocks, zero blocks absent from the diff.
+
+- AC3 — inversion sweep re-run fresh, all 4 subjects negated in place:
+
+  | subject | skills | scripts | hooks | result |
+  |---|---|---|---|---|
+  | (i) verify-before-claim | 1 | 0 | 0 | RED |
+  | (ii) unique anchor | 1 | 0 | 0 | RED |
+  | (iii) tick sequencing | 1 | 0 | 0 | RED |
+  | (iii) prohibition | 1 | 0 | 0 | RED |
+
+  Script restored in a `finally:` (M124); sha256 matches the original and `git diff` over the file is empty.
+
+- AC4 — from the repo root, exit codes captured separately and never piped (M56): `skills/tests` 729 exit 0, `scripts/tests` 337 exit 0, `hooks/tests` 103 exit 0, `cairn_validate` exit 0 (16 PASS, 0 WARN).
