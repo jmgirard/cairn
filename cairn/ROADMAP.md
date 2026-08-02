@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-02 (M130 merged — plan gains the bounded-promise rule + third audit question, review gains the return floor + amendment return (D-097), §6 gains delete-first. M125 terminal row pruned; M118 lesson trimmed. Validate all green.)_
+_Last hygiene check: 2026-08-02 (M131 merged — the rulebook gains the verify-an-edit-landed rule, 5 anchors pinned and 13 mutations red. Review returned once under M130's floor, its first exercise. M126 terminal row pruned; one lesson captured. Validate all green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M131 | A scripted edit is verified to have landed before the record claiming it did | review | — | high | milestones/M131-scripted-edit-landing.md |
+| M131 | A scripted edit is verified to have landed before the record claiming it did | done | — | high | milestones/archive/M131-scripted-edit-landing.md |
 | M130 | Review returns are reserved for breaches of bounded promises | done | — | high | milestones/archive/M130-review-convergence.md |
 | M129 | Repair re-surfaces a declined shelf migration | done | — | normal | milestones/archive/M129-repair-resumability.md |
 | M128 | Gate questions lead in plain words | done | — | high | milestones/archive/M128-gate-question-clarity.md |
 | M127 | Guard-doctrine §8 is retired whole | done | — | high | milestones/archive/M127-retire-certification.md |
-| M126 | CLAUDE.md joins the always-read governance frame | done | — | normal | milestones/archive/M126-claude-md-always-read-row.md |
 
 ## Candidates
 
