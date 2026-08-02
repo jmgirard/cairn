@@ -82,7 +82,11 @@ run ingestion first (see `/milestone-brief`).
      mini gate's chip (acceptance chips, tracking-rules); record the
      amendment as a dated work-log line
      (+ D-entry if cross-cutting); show the amended criterion/scope text
-     verbatim in chat before its commit (durable-record preview). An amendment
+     verbatim in chat before its commit (durable-record preview). An
+     amendment executing an amendment return from `/milestone-review` writes
+     its work-log line in that skill's fixed shape —
+     `amendment return: AC<N> — "<amended clause, verbatim>"` — the line the
+     amendment-return count and its second-occurrence stop read (M130). An amendment
      that grows a plan-owned section re-checks the body with `cairn_budget`;
      if it now exceeds the cap, compress the single heaviest plan-owned
      section in one pass (tracking-rules), never a nibble-and-recount loop.

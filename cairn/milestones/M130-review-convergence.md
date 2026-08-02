@@ -4,7 +4,7 @@
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
-- **Principles touched:** IP3, GP1
+- **Principles touched:** IP3, GP1, GP3
 - **Branch/PR:** m130-review-convergence · https://github.com/jmgirard/cairn/pull/130
 
 ## Goal
@@ -132,29 +132,43 @@ rule stands). Any new instrument, checker, or audit step → none (D-090).
 - 2026-08-01: T3+T4 done — return floor + amendment return shipped in review skill step 5; TestReturnFloor (11 tests) + 12 registry blocks; skills suite green.
 - 2026-08-01: T5+T6 done — §6 delete-first remedy (self-compliant wording: passes 2 and 3 named, no bare universal) + guard + 2 registry blocks; D-097 appended narrowing D-064; validate green.
 - 2026-08-02: T7+T8 done — inversion sweep 21/21 red then restored (script restores in finally, byte-verified; M124); one gap closed (the delete-first applicability clause was unpinned, now pinned + registered); suites 711+2/337/103 and validate all exit 0; status → review.
+- 2026-08-02: correction — the line above's "711+2" and the Review section's first-recorded 713 were undercounts; measured 723 skills tests at the pre-fix review head and 726 after the fix pass (procedure: `python3 -m unittest discover -s skills/tests -q`, count from the "Ran N tests" line); Review section corrected in place (review D12, scored 92).
+- 2026-08-02: review fan-out (3 lenses, 26 scored findings) → fix-now pass: amendment-return keying widened to procedure-less criteria (D3/D7), defect-return count restated as step-4 + floor returns (D1/D2/D8), stop + work-log duty added to both return paths (D4/D5), fixed shape wired into /milestone-implement step 6 (D6), counts corrected (D12), test rename + count-free docstring (D16/D17), parenthetical dispositioned (D15), evidence header reworded (D22); guards and registry updated to the revised bytes; inversion sweep re-run 24/24 RED.
+- 2026-08-02: minor amendment — Principles touched gains GP3 (review D19: the floor's "for this plugin" gloss instantiates repo-specifics in the portable core; recorded so principle impact is readable from the header).
 
 ## Decisions
 
 ## Review
 
-Evidence gathered fresh 2026-08-02 on `m130-review-convergence` (head e22c69d + PR-URL commit), PR #130.
+Evidence current as of the post-fix review pass, 2026-08-02, branch `m130-review-convergence`, PR #130 (final head named in the work log).
 
-- AC1: bounded-promise rule + third question present once each in plan and brief skills (`grep -c` = 1 per site; "audit's three questions" = 1); `test_fresh_context_readers.py` exit 0; 4 M130 registry entries present.
-- AC2: "Return floor (M130)" + "Amendment return (M130)" present in review skill (grep = 2); `test_thrash_rule.py` exit 0; 12 TestReturnFloor registry entries.
-- AC3: same floor text (evidence above); fixed-shape line, own-track counting, and second-occurrence stop each inversion-proven (rows 16–18 below); D-097 present in DECISIONS.md, cited once in the review skill.
+- AC1: bounded-promise rule + third question present once each in plan and brief skills (`grep -c` = 1 per site; "audit's three questions" = 1); `test_fresh_context_readers.py` exit 0; 4 M130 registry entries.
+- AC2: "Return floor (M130)" + "Amendment return (M130)" present in review skill (grep = 2); `test_thrash_rule.py` exit 0; 15 TestReturnFloor registry entries after the fix pass.
+- AC3: floor text evidence above; keying, fixed shape, own-track counting, and second-occurrence stop inversion-proven (rows 13–21 below); D-097 in DECISIONS.md, cited in the review skill.
 - AC4: §6 delete-first sentence present (grep = 1); `test_lesson_graduation.py` exit 0; 3 registry blocks (ordering, applicability, carve-out).
-- AC5: inversion sweep re-run fresh at review — 21/21 pinned sentences RED under inversion, baseline GREEN after byte-verified restore. Procedure: for each (old, new) pair, replace-once in the file, run the named guard file via unittest discover, require nonzero exit, restore in `finally`, assert byte identity.
-- AC6: `python3 -m unittest discover -s {skills,scripts,hooks}/tests` = exit 0/0/0 (713/337/103 tests); `cairn_validate.py` exit 0, all checks PASS/OK.
+- AC5: inversion sweep run fresh at review and re-run after the fix pass — 24/24 pinned sentences RED under inversion, baseline GREEN after byte-verified restore. Procedure: per (old, new) pair, replace-once, run the named guard file via unittest discover, require nonzero exit, restore in `finally`, assert byte identity.
+- AC6: `python3 -m unittest discover -s {skills,scripts,hooks}/tests` exit 0/0/0 — 726/337/103 tests (main baseline 707; +7 readers net, +15 floor net... derived: final skills count measured 726 at the post-fix head; the earlier recorded 713 and the work-log "711+2" were undercounts, corrected per the work-log correction line); `cairn_validate.py` exit 0 all PASS/OK.
 
-Inversion table (pinned sentence inverted → guard file → result):
-1. plan third question negated (readers) → RED. 2. plan reaudit count reverted (readers) → RED. 3. bounded-promise rule negated (readers) → RED. 4. fallback transposed (readers) → RED. 5. hand-list clause inverted (readers) → RED. 6. brief third question dropped (readers) → RED. 7. floor only-when inverted (thrash) → RED. 8. domain limb unconditioned (thrash) → RED. 9. shipped-defect band lowered ≥90→≥60 (thrash) → RED. 10. doctrine-prose exclusion inverted (thrash) → RED. 11. no-status-change clause inverted (thrash) → RED. 12. named exception deleted (thrash) → RED. 13. count linkage widened (thrash) → RED. 14. unbounded diagnosis transposed (thrash) → RED. 15. amendment-only convening widened (thrash) → RED. 16. fixed shape unfixed (thrash) → RED. 17. own track merged (thrash) → RED. 18. second-occurrence stop removed (thrash) → RED. 19. applicability clause inverted (graduation) → RED. 20. delete-first relabeled last (graduation) → RED. 21. D-045 carve-out inverted (graduation) → RED.
+Inversion table (pinned sentence inverted → guard → result), post-fix run:
+1 plan third question negated (readers) RED · 2 plan reaudit count reverted (readers) RED · 3 bounded-promise rule negated (readers) RED · 4 fallback transposed (readers) RED · 5 hand-list clause inverted (readers) RED · 6 brief third question dropped (readers) RED · 7 floor only-when inverted (thrash) RED · 8 domain limb unconditioned (thrash) RED · 9 shipped-defect band lowered ≥90→≥60 (thrash) RED · 10 doctrine-prose exclusion inverted (thrash) RED · 11 no-status-change clause inverted (thrash) RED · 12 named exception deleted (thrash) RED · 13 defect-count members dropped (thrash) RED · 14 floor-exit stop removed (thrash) RED · 15 thrash-count cross-ref inverted (thrash) RED · 16 keying second case dropped (thrash) RED · 17 amendment-only convening widened (thrash) RED · 18 implement wiring dropped (thrash) RED · 19 fixed shape unfixed (thrash) RED · 20 own track merged (thrash) RED · 21 second-occurrence stop removed (thrash) RED · 22 applicability clause inverted (graduation) RED · 23 delete-first relabeled last (graduation) RED · 24 D-045 carve-out inverted (graduation) RED.
 
-Unguarded-by-design (added sentences no guard pins, with reasons):
-- plan: "asks three mechanical questions" numeral — the question list is the count; pinning the numeral restates a count (§6), and the third question itself is row 1.
-- plan: "the list becomes the sweep and every site it omits ships stale (the M118 lesson)" — elaboration restating the LESSONS line; the rule it elaborates is rows 3–5.
-- review: "Its work-log line carries a fixed shape —" framing — the operative shape literal is row 16.
-- review: "— no further round is convened; the disposition goes to the user" — elaboration of "stops", whose operative verb is row 18.
+Unguarded-by-design (added sentences/clauses no guard pins, with reasons):
+- plan: "asks three mechanical questions" numeral — the question list is the count; pinning the numeral restates a count (§6); the third question is row 1.
+- plan: "the list becomes the sweep and every site it omits ships stale (the M118 lesson)" — elaboration restating the LESSONS line; the rule is rows 3–5.
+- review: "(for this plugin: what the skills, hooks, and scripts do, …)" — repo-specific gloss AC2 mandated; the operative exclusion is row 10 (surfaced by review D15).
+- review: "is evidence about the promise, not the work" — elaboration; the operative keying is row 16.
+- review: "Its work-log line carries a fixed shape —" framing — the shape literal is row 19.
+- review: "— no further round is convened; the disposition goes to the user" — elaboration of "stops" (row 21).
 - review: "(D-097 narrows D-064)" — citation, not rule.
-- doctrine: "the measured failure mode is the repair that re-falsifies: intraclass M100's review passes 2 and 3 …" — evidence/motivation; the three operative clauses are rows 19–21.
+- doctrine: "the measured failure mode is the repair that re-falsifies: intraclass M100's review passes 2 and 3 …" — evidence/motivation; operative clauses are rows 22–24.
 
-Sequencing note: the AC checkboxes were ticked moments before this section's text landed (an anchor collision delayed the Edit by one tool call); the evidence itself was gathered first and both land in the same commit.
+Fan-out record: three lenses ([O] diff-bug: 22 findings; [S] blame-history: 9 items, 5 self-marked clean; [S] prior-review: 0 findings, mechanically corroborated all new registry blocks redden when blanked) → [S] scorer over 26 scored findings.
+
+Actioned (≥80), all fix-now under the return floor (none met a return: no in-domain AC breach; none ≥90 on functional shipped behavior):
+- D12 (92) — recorded suite counts wrong (713 / "711+2" vs measured). FIXED: Review corrected in place; work-log correction line appended (history supersede).
+- D6 (82) — amendment-return fixed shape unstated in the skill that writes it. FIXED: /milestone-implement step 6 names the shape; pinned + registered + inverted (row 18).
+- D3 (80) — amendment route unreachable for criteria naming no procedure (the M100 trigger class). FIXED: keying now names both cases via the never-reinterpret rule (row 16); resolves D7's double-route.
+
+Logged sub-80 (count: 23; fixed-in-passing marked):
+- D1 (62) count sentence un-counts step-4 returns — FIXED (row 13). D2 (72) thrash rule uncross-referenced — FIXED (row 15). D4 (62) no stop on return paths — FIXED (rows 14, 17). D5 (68) floor return had no work-log duty — FIXED (row 14). D7 (66) double route — FIXED with D3. D8 (60) D-097 narrower than shipped — premise dissolved by D1's fix (step-4 returns count again). D15 (78) unpinned parenthetical — FIXED (unguarded list). D16 (42) docstring numeral — FIXED count-free. D17 (68) test name said "both", asserts three — FIXED (renamed). D19 (74) GP3 touched unrecorded — FIXED (header amended, work-log line). D22 (48) evidence header named a nonexistent commit — FIXED (reworded).
+- Logged, no change: D9 (52) doctrine-prose exclusion removes D-064 trigger (b)'s exemplar class — intentional tradeoff, watched by the plan work log's falsifier line. D10 (68) / B3 (68) / B9 (66) D-090 discharge definitional tension — the discharge was made and shown at the plan gate; the merge gate below is the deciding authority; logged. D11 (46) branch/merged split additive to D-045, plan work log records the choice. D13 (55) tick-before-evidence sequencing — disclosed above, order restored this pass. D14 (45) AC5 four-file scope — D-097's prose is dispositioned by T6's durable-record preview, not the inversion table. D18 (62) three §6 properties in one test method — accepted; harness still catches each block. D20 (48) "where one exists" antecedent — contrastive reading; style tier. D21 (32) reflow cosmetics. B2 (65) shipped-vs-doctrine dichotomy strained for prose-artifact repos — same watch as D9. B4 (60) resemblance to retired §8 stop — different subject (promise wording, not certification); D-097 names its own supersede condition.

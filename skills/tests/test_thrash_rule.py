@@ -70,6 +70,10 @@ def plan():
     return read("milestone-plan", "SKILL.md")
 
 
+def implement():
+    return read("milestone-implement", "SKILL.md")
+
+
 class TestThrashCounting(unittest.TestCase):
     def test_returns_are_counted_per_milestone_not_per_cut(self):
         self.assertIn("count returns **per milestone, never per cut**", review())
@@ -345,18 +349,43 @@ class TestReturnFloor(unittest.TestCase):
             r"the amendment return\s+below is the one named exception",
         )
 
-    def test_only_floor_returns_join_the_defect_return_count(self):
+    def test_defect_return_count_is_step4_plus_floor_returns(self):
+        # M130 review D1/D2/D8: the first cut said "only a return under this
+        # floor joins the count", which read literally un-counted step-4 gate
+        # returns — D-064's canonical case.
         self.assertRegex(
             review(),
-            r"only a return under\s+this floor joins the defect-return count "
-            r"the thrash rule reads",
+            r"the defect-return count the thrash rule reads is step-4 gate "
+            r"returns\s+plus returns under this floor; amendment returns "
+            r"stay off it",
         )
 
-    def test_out_of_domain_falsification_reads_as_unbounded_criterion(self):
+    def test_floor_return_takes_step_4_exit(self):
+        # M130 review D4/D5: a return with no stop and no work-log line is
+        # both uncountable and followed by a merge chip.
         self.assertRegex(
             review(),
-            r"falsifies a criterion only\s+outside the domain of the procedure "
-            r"it names is evidence the criterion is\s+unbounded",
+            r"a floor return\s+takes step 4's exit — a work-log line naming "
+            r"exactly what failed, stop",
+        )
+
+    def test_thrash_count_is_of_defect_returns(self):
+        self.assertRegex(
+            review(),
+            r"the count here is of defect returns; amendment returns run\s+on "
+            r"their own track \(the step-5 return floor, m130\)",
+        )
+
+    def test_amendment_return_keys_on_the_criterion_being_wrong(self):
+        # M130 review D3/D7: keyed only on "outside its named procedure's
+        # domain", the route missed every criterion naming no procedure —
+        # including the intraclass M100 trigger case — and collided with the
+        # never-reinterpret rule; the keying now names both cases.
+        self.assertRegex(
+            review(),
+            r"falsifying it only outside the domain of the procedure it\s+"
+            r"names, or showing a criterion that names no procedure to be "
+            r"unbounded\s+\(the never-reinterpret rule's case, step 3\)",
         )
 
     def test_amendment_route_convenes_the_amendment_alone(self):
@@ -365,7 +394,20 @@ class TestReturnFloor(unittest.TestCase):
             r"routes to the gated\s+criterion-amendment protocol "
             r"\(`/milestone-implement` step 6\) and\s+re-review, the amendment "
             r"the only work convened; status is set to\s+`in-progress` for "
-            r"that amendment alone",
+            r"that amendment alone, and review stops there",
+        )
+
+    def test_implement_step_6_writes_the_amendment_return_shape(self):
+        # M130 review D6: the fixed shape was stated only in the skill that
+        # never writes it; the producing skill now names it too.
+        t = implement()
+        self.assertRegex(
+            t,
+            r"amendment executing an amendment return from `/milestone-review` "
+            r"writes\s+its work-log line in that skill's fixed shape",
+        )
+        self.assertIn(
+            '`amendment return: ac<n> — "<amended clause, verbatim>"`', t
         )
 
     def test_amendment_return_work_log_line_has_a_fixed_shape(self):

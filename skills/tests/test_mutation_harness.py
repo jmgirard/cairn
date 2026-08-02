@@ -2414,7 +2414,7 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_fresh_context_readers",
-        test="TestRRIngestionCriteriaAudit.test_ingest_audit_states_both_questions_at_this_surface",
+        test="TestRRIngestionCriteriaAudit.test_ingest_audit_states_the_questions_at_this_surface",
         target=BRIEF,
         block="and the same\n   three questions — *what state of the world satisfies this exactly as\n   written*, *does any IP or D-entry make that state unreachable*, and\n   *does it make a universal claim over a domain no procedure it names enumerates*",
     ),
@@ -2970,21 +2970,39 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestReturnFloor.test_only_floor_returns_join_the_defect_return_count",
+        test="TestReturnFloor.test_defect_return_count_is_step4_plus_floor_returns",
         target=REVIEW,
-        block="Only a return under\n   this floor joins the defect-return count the thrash rule reads",
+        block="The defect-return count the thrash rule reads is step-4 gate returns\n   plus returns under this floor; amendment returns stay off it",
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestReturnFloor.test_out_of_domain_falsification_reads_as_unbounded_criterion",
+        test="TestReturnFloor.test_floor_return_takes_step_4_exit",
         target=REVIEW,
-        block="falsifies a criterion only\n   outside the domain of the procedure it names is evidence the criterion is\n   unbounded",
+        block="A floor return\n   takes step 4's exit — a work-log line naming exactly what failed, stop.",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_thrash_count_is_of_defect_returns",
+        target=REVIEW,
+        block="The count here is of defect returns; amendment returns run\n   on their own track (the step-5 return floor, M130).",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_amendment_return_keys_on_the_criterion_being_wrong",
+        target=REVIEW,
+        block="falsifying it only outside the domain of the procedure it\n   names, or showing a criterion that names no procedure to be unbounded\n   (the never-reinterpret rule's case, step 3)",
     ),
     Mutation(
         guard="test_thrash_rule",
         test="TestReturnFloor.test_amendment_route_convenes_the_amendment_alone",
         target=REVIEW,
-        block="routes to the gated\n   criterion-amendment protocol (`/milestone-implement` step 6) and\n   re-review, the amendment the only work convened; status is set to\n   `in-progress` for that amendment alone",
+        block="routes to the gated\n   criterion-amendment protocol (`/milestone-implement` step 6) and\n   re-review, the amendment the only work convened; status is set to\n   `in-progress` for that amendment alone, and review stops there",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_implement_step_6_writes_the_amendment_return_shape",
+        target="skills/milestone-implement/SKILL.md",
+        block="amendment executing an amendment return from `/milestone-review` writes\n     its work-log line in that skill's fixed shape",
     ),
     Mutation(
         guard="test_thrash_rule",

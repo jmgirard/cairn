@@ -11,7 +11,7 @@ requirement, which M121 added (D-079 clause 2):
     final wording, step 3 runs the reader, and step 4 writes the audited
     bytes.
   * `/milestone-brief`'s "Ingesting an RR", where the same reader asks the
-    same three questions of a binding-criteria set before it is ingested
+    the audit's questions of a binding-criteria set before it is ingested
     (`TestRRIngestionCriteriaAudit`).
 
 Until M127 this file also locked D-067's other instrument — the
@@ -206,7 +206,7 @@ class TestRRIngestionCriteriaAudit(unittest.TestCase):
             r"`/milestone-plan` step 3 spawns",
         )
 
-    def test_ingest_audit_states_both_questions_at_this_surface(self):
+    def test_ingest_audit_states_the_questions_at_this_surface(self):
         # AC1 requires BOTH surfaces to state the audit's questions, and the two
         # asserts either side of this clause anchor past it: deleting the
         # questions from the brief left every other assert here green, so
