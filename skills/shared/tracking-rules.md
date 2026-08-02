@@ -217,14 +217,14 @@ covered — a judgment, reported and never auto-fixed.
 - **Verify an edit landed before writing the record that claims it did.** A
   batched or scripted edit can match the wrong occurrence, or fail while its
   siblings succeed, and the record written next then asserts a change that is
-  not there. Re-read the aimed site and confirm the change is present first.
+  not there. Re-read the aimed site of a batched or scripted edit and confirm the change is present before the record is written.
   An edit targeting a document section anchors on text that occurs exactly once in the target file,
   because a bare heading binds to its first occurrence and a second occurrence takes the edit silently.
   A check-off or tick write is sequenced strictly after the write of the evidence it depends on has succeeded,
   never in the same unverified batch, so a failed evidence write cannot leave a
-  tick standing alone. This is the authoring counterpart of "Correcting a record
-  proven false" below: that rule repairs a record found wrong, this one stops
-  one being written.
+  tick standing alone. This is the authoring counterpart of the "Correcting a
+  record proven false" rule: that rule repairs a record found wrong, this one
+  stops one being written.
 - **Correcting a record proven false.** The tracking files split by purpose,
   and the split sets the remedy: current knowledge is corrected in place,
   history is superseded and never edited.

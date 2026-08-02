@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M131: A scripted edit is verified to have landed before the record claiming it did
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -97,6 +97,10 @@ only if a unique-header anchor is later found to have misfired.
 - 2026-08-02: T4 — inversion sweep, all 4 subjects (3 clauses + the tick prohibition) negated in place: each reddened skills/tests (exit 1) with scripts/hooks green; script restored in a `finally:` (M124), sha256 matches the original and `git diff` is empty. AC3's three-row table is review-owned evidence, recorded when review re-runs the sweep.
 - 2026-08-02: T5 — from the repo root, exit codes captured separately, never piped (M56): skills/tests 729 exit 0, scripts/tests 337 exit 0, hooks/tests 103 exit 0, cairn_validate exit 0. Rulebook 955->966 lines, 68,103->68,986 chars. All tasks done; status review.
 - 2026-08-02: review return 1 (defect, floor) — AC3 fails in its own domain: transposing clause (ii)'s or clause (iii)'s SUBJECT, which sits on the same physical line as the registered anchor, leaves all three suites green (F3d/90, F3e/90), so the clauses are not inversion-proven against transposition. Returned with F11/90, F7/85, F8/85, F10/85, F2/82 to fix in the same pass; 13 findings logged sub-floor. Status -> in-progress.
+- 2026-08-02: return-1 fix pass — F3d/F3e closed: clauses (ii) and (iii) now register the SUBJECT with the predicate (same physical line), and F2 adds an assert on clause (i)'s operative sentence; 5 blocks registered, up from 4. Re-run of all 8 mutations incl. both subject swaps: 8/8 RED, zero survivors, no mutation residue in the file. F1 fixed in passing (the instruction sentence now says "of a batched or scripted edit", matching AC1's scope). F7 fixed: the positional "below" back-reference replaced by naming the rule. F8 fixed: registry comment no longer says "not per clause ... per-clause shape" and no longer cites D-042 for registry shape.
+- 2026-08-02: F10 acknowledged (no code fix owed) — T4 was ticked while its three-row table was deferred to review, a check-off ahead of its evidence and the shape clause (iii) legislates; the table exists as of the review commit. F11 acknowledged — commit 1a068f8 changed two test files with no milestone update, breaching "Tracking travels with code"; history is not rewritten (IP4), the breach is recorded here.
+- 2026-08-02: records-hygiene §3 self-application (F12) — the new rule run over this milestone's own diff: every edit this pass re-read at its aimed site before the record claiming it; the registry `old_string` reconstructed from memory rather than shipped bytes failed to match and was corrected by copying the real bytes, which is the rule firing on its author for the third time this milestone.
+- 2026-08-02: verify after fix pass — skills/tests 729 exit 0, scripts/tests 337 exit 0, hooks/tests 103 exit 0, cairn_validate exit 0. Status -> review.
 
 ## Decisions
 

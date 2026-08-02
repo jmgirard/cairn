@@ -30,26 +30,36 @@ def rules():
 
 class TestScriptedEditLandingRule(unittest.TestCase):
     def test_rule_requires_verification_before_the_claiming_record(self):
-        # The whole rule: a record may not assert a change until the aimed
-        # site has been re-read. Without this the other two clauses are
-        # anchor hygiene with nothing obliging anyone to look.
+        # Two asserts, because the title and the instruction fail separately:
+        # the title alone left the only operative sentence deletable green
+        # (review F2/F3a). Pin the duty, not just its heading.
+        t = rules()
         self.assertIn(
             "verify an edit landed before writing the record that claims it did",
-            rules(),
+            t,
+        )
+        self.assertIn(
+            "re-read the aimed site of a batched or scripted edit and confirm the change is present before the record is written",
+            t,
         )
 
     def test_rule_requires_a_unique_anchor_for_a_section_edit(self):
         # Uniqueness, not a ban on bare headings — the M130 instance was a
         # NON-unique `## Review`, and the plan gate declined the wider ban.
+        # The SUBJECT is inside the anchor: it sits on the same physical line,
+        # and pinning the predicate alone left "a scratch note" swappable in
+        # green (review F3d, guard-doctrine §1's label-with-its-members rule).
         self.assertIn(
-            "anchors on text that occurs exactly once in the target file",
+            "an edit targeting a document section anchors on text that occurs exactly once in the target file",
             rules(),
         )
 
     def test_rule_sequences_a_tick_after_its_evidence_write_succeeds(self):
         t = rules()
+        # Subject inside the anchor, same reason as clause (ii) — the
+        # predicate alone left "an optional courtesy tick" green (F3e).
         self.assertIn(
-            "sequenced strictly after the write of the evidence it depends on has succeeded",
+            "a check-off or tick write is sequenced strictly after the write of the evidence it depends on has succeeded",
             t,
         )
         # The prohibition is the operative half: without it "sequenced after"
