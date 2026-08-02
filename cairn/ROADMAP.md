@@ -12,6 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M130 | Review returns are reserved for breaches of bounded promises | planned | — | high | milestones/M130-review-convergence.md |
 | M129 | Repair re-surfaces a declined shelf migration | done | — | normal | milestones/archive/M129-repair-resumability.md |
 | M128 | Gate questions lead in plain words | done | — | high | milestones/archive/M128-gate-question-clarity.md |
 | M127 | Guard-doctrine §8 is retired whole | done | — | high | milestones/archive/M127-retire-certification.md |
