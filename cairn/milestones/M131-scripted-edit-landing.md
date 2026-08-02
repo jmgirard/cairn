@@ -67,7 +67,7 @@ only if a unique-header anchor is later found to have misfired.
 
 ## Tasks
 
-- [ ] T1: author the three-clause rule in `skills/shared/tracking-rules.md`,
+- [x] T1: author the three-clause rule in `skills/shared/tracking-rules.md`,
       one site only (step-0 one-home check run against the existing
       "Append, don't rewrite" and "Correcting a record proven false" text).
 - [ ] T2: author or extend the prose-guards under `skills/tests/` pinning each
@@ -91,6 +91,7 @@ only if a unique-header anchor is later found to have misfired.
 - 2026-08-02: plan gate chose one `cairn/LESSONS.md` line doing both jobs over retiring an older lesson because the file is at 48 of 50 and a capture line lands at 49; falsified by a second line proving necessary before review.
 - 2026-08-02: thrash assessment at user request — AC2/AC3 sit in the repo's thrashiest class (the guard-reddening lesson extended 5x), but the three past generators are closed: domain bounded to 3 enumerated clauses (M130's bounded-promise rule), the multi-round certification generator retired (M127), returns floored (M130/D-097); residual risk is reflow re-anchoring, a one-shot fix. No plan change; D-064 counting + D-097's second-occurrence stop are the stop condition.
 - 2026-08-02: /milestone-implement — status in-progress, branch m131-scripted-edit-landing cut from pushed main.
+- 2026-08-02: T1 — three-clause rule authored in `tracking-rules.md` "Universal tracking rules", sited after "Append, don't rewrite" and cross-referencing "Correcting a record proven false"; step-0 one-home check found no existing home. All three anchor phrases verified unique corpus-wide and each on one physical line; skills suite green (726), no neighbour reflow.
 
 ## Decisions
 
