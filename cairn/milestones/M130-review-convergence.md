@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3, GP1
-- **Branch/PR:** m130-review-convergence
+- **Branch/PR:** m130-review-convergence · https://github.com/jmgirard/cairn/pull/130
 
 ## Goal
 
@@ -38,7 +38,7 @@ rule stands). Any new instrument, checker, or audit step → none (D-090).
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/milestone-plan/SKILL.md` ships the bounded-promise rule —
+- [x] AC1: `skills/milestone-plan/SKILL.md` ships the bounded-promise rule —
       an acceptance criterion making a universal claim ("no X", "every Y")
       names the procedure (a search, sweep, or test run) that enumerates its
       domain, and where no stated procedure can enumerate the domain the
@@ -49,7 +49,7 @@ rule stands). Any new instrument, checker, or audit step → none (D-090).
       `skills/tests/test_fresh_context_readers.py` (and their
       mutation-registry blocks) are updated; each newly pinned sentence has
       its own registered block.
-- [ ] AC2: `skills/milestone-review/SKILL.md` states a return floor over the
+- [x] AC2: `skills/milestone-review/SKILL.md` states a return floor over the
       actioned (score ≥80) findings list: a finding moves the milestone back
       to `in-progress` only when it demonstrates an acceptance criterion
       failing — inside its named procedure's domain, where it names one — or
@@ -59,7 +59,7 @@ rule stands). Any new instrument, checker, or audit step → none (D-090).
       fix-now / follow-up / reject triage with no status change and is
       logged; the amendment return (AC3) is the named exception to "only
       when".
-- [ ] AC3: the same floor text routes the unbounded-criterion case: a
+- [x] AC3: the same floor text routes the unbounded-criterion case: a
       finding that falsifies a criterion only outside its named procedure's
       domain is evidence the criterion is unbounded and routes to the gated
       criterion-amendment protocol (`/milestone-implement` step 6) and
@@ -69,20 +69,20 @@ rule stands). Any new instrument, checker, or audit step → none (D-090).
       counted per milestone on its own track, never reset by a re-cut,
       outside the defect-return count; a second amendment return on the same
       positional id stops and goes to the user.
-- [ ] AC4: `skills/shared/guard-doctrine.md` §6 states the delete-first
+- [x] AC4: `skills/shared/guard-doctrine.md` §6 states the delete-first
       remedy: for a claim proven false in prose the branch in hand added,
       the first remedy weighed is deleting the claim, where a search over
       the repo for the claim's subject finds no dependent; correction is the
       remedy where one exists; merged current knowledge stays
       corrected-in-place and marked (D-045); IP4 history stays superseded,
       never edited.
-- [ ] AC5: every sentence added to the four touched prose files by
+- [x] AC5: every sentence added to the four touched prose files by
       `git diff <default-branch>..HEAD` is dispositioned in an Inversion
       table authored by review inside `## Review`: each guard-pinned
       sentence inverted in place (relabel/negate/transpose) with the suite
       required red, then restored, its result recorded; each unpinned added
       sentence listed as unguarded-by-design with its reason.
-- [ ] AC6: the active profile's `verify` slot suites, as `cairn/PROFILE.md`
+- [x] AC6: the active profile's `verify` slot suites, as `cairn/PROFILE.md`
       states them, and `python3 scripts/cairn_validate.py` all exit 0.
 
 ## Coverage
@@ -136,3 +136,25 @@ rule stands). Any new instrument, checker, or audit step → none (D-090).
 ## Decisions
 
 ## Review
+
+Evidence gathered fresh 2026-08-02 on `m130-review-convergence` (head e22c69d + PR-URL commit), PR #130.
+
+- AC1: bounded-promise rule + third question present once each in plan and brief skills (`grep -c` = 1 per site; "audit's three questions" = 1); `test_fresh_context_readers.py` exit 0; 4 M130 registry entries present.
+- AC2: "Return floor (M130)" + "Amendment return (M130)" present in review skill (grep = 2); `test_thrash_rule.py` exit 0; 12 TestReturnFloor registry entries.
+- AC3: same floor text (evidence above); fixed-shape line, own-track counting, and second-occurrence stop each inversion-proven (rows 16–18 below); D-097 present in DECISIONS.md, cited once in the review skill.
+- AC4: §6 delete-first sentence present (grep = 1); `test_lesson_graduation.py` exit 0; 3 registry blocks (ordering, applicability, carve-out).
+- AC5: inversion sweep re-run fresh at review — 21/21 pinned sentences RED under inversion, baseline GREEN after byte-verified restore. Procedure: for each (old, new) pair, replace-once in the file, run the named guard file via unittest discover, require nonzero exit, restore in `finally`, assert byte identity.
+- AC6: `python3 -m unittest discover -s {skills,scripts,hooks}/tests` = exit 0/0/0 (713/337/103 tests); `cairn_validate.py` exit 0, all checks PASS/OK.
+
+Inversion table (pinned sentence inverted → guard file → result):
+1. plan third question negated (readers) → RED. 2. plan reaudit count reverted (readers) → RED. 3. bounded-promise rule negated (readers) → RED. 4. fallback transposed (readers) → RED. 5. hand-list clause inverted (readers) → RED. 6. brief third question dropped (readers) → RED. 7. floor only-when inverted (thrash) → RED. 8. domain limb unconditioned (thrash) → RED. 9. shipped-defect band lowered ≥90→≥60 (thrash) → RED. 10. doctrine-prose exclusion inverted (thrash) → RED. 11. no-status-change clause inverted (thrash) → RED. 12. named exception deleted (thrash) → RED. 13. count linkage widened (thrash) → RED. 14. unbounded diagnosis transposed (thrash) → RED. 15. amendment-only convening widened (thrash) → RED. 16. fixed shape unfixed (thrash) → RED. 17. own track merged (thrash) → RED. 18. second-occurrence stop removed (thrash) → RED. 19. applicability clause inverted (graduation) → RED. 20. delete-first relabeled last (graduation) → RED. 21. D-045 carve-out inverted (graduation) → RED.
+
+Unguarded-by-design (added sentences no guard pins, with reasons):
+- plan: "asks three mechanical questions" numeral — the question list is the count; pinning the numeral restates a count (§6), and the third question itself is row 1.
+- plan: "the list becomes the sweep and every site it omits ships stale (the M118 lesson)" — elaboration restating the LESSONS line; the rule it elaborates is rows 3–5.
+- review: "Its work-log line carries a fixed shape —" framing — the operative shape literal is row 16.
+- review: "— no further round is convened; the disposition goes to the user" — elaboration of "stops", whose operative verb is row 18.
+- review: "(D-097 narrows D-064)" — citation, not rule.
+- doctrine: "the measured failure mode is the repair that re-falsifies: intraclass M100's review passes 2 and 3 …" — evidence/motivation; the three operative clauses are rows 19–21.
+
+Sequencing note: the AC checkboxes were ticked moments before this section's text landed (an anchor collision delayed the Edit by one tool call); the evidence itself was gathered first and both land in the same commit.
