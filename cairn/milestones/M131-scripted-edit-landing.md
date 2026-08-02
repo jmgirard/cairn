@@ -76,7 +76,7 @@ only if a unique-header anchor is later found to have misfired.
 - [x] T3: register each anchored phrase as its own mutation-harness block; run
       the harness; run the by-hand blanking check for any anchor it cannot see;
       sweep this branch's `skills/tests/` diff for added asserts and reconcile.
-- [ ] T4: inversion sweep — per clause, mutate in place, run the three verify
+- [x] T4: inversion sweep — per clause, mutate in place, run the three verify
       commands, require red in at least one, restore, diff clean; record the
       three-row table.
 - [ ] T5: run the three verify commands and `cairn_validate` from the repo root
@@ -94,6 +94,7 @@ only if a unique-header anchor is later found to have misfired.
 - 2026-08-02: T1 — three-clause rule authored in `tracking-rules.md` "Universal tracking rules", sited after "Append, don't rewrite" and cross-referencing "Correcting a record proven false"; step-0 one-home check found no existing home. All three anchor phrases verified unique corpus-wide and each on one physical line; skills suite green (726), no neighbour reflow.
 - 2026-08-02: T2 — `skills/tests/test_scripted_edit_landing.py` authored, 3 tests / 4 asserts, anchors copied from the shipped bytes; the harness completeness meta-test fired on the unregistered file exactly as documented.
 - 2026-08-02: T3 — 4 blocks registered (one per assert). Per-entry check: all 4 red when blanked, green unblanked, errors=0, so none is a crash counted as a pass (M117/M122). AC2 sweep of this branch's `skills/tests/` diff: 4 added assert calls, 4 registered blocks, every block present in the diff — no assert pinning an AC1 clause is absent from the record.
+- 2026-08-02: T4 — inversion sweep, all 4 subjects (3 clauses + the tick prohibition) negated in place: each reddened skills/tests (exit 1) with scripts/hooks green; script restored in a `finally:` (M124), sha256 matches the original and `git diff` is empty. AC3's three-row table is review-owned evidence, recorded when review re-runs the sweep.
 
 ## Decisions
 
