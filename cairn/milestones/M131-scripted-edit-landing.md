@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M131: A scripted edit is verified to have landed before the record claiming it did
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -96,6 +96,7 @@ only if a unique-header anchor is later found to have misfired.
 - 2026-08-02: T3 — 4 blocks registered (one per assert). Per-entry check: all 4 red when blanked, green unblanked, errors=0, so none is a crash counted as a pass (M117/M122). AC2 sweep of this branch's `skills/tests/` diff: 4 added assert calls, 4 registered blocks, every block present in the diff — no assert pinning an AC1 clause is absent from the record.
 - 2026-08-02: T4 — inversion sweep, all 4 subjects (3 clauses + the tick prohibition) negated in place: each reddened skills/tests (exit 1) with scripts/hooks green; script restored in a `finally:` (M124), sha256 matches the original and `git diff` is empty. AC3's three-row table is review-owned evidence, recorded when review re-runs the sweep.
 - 2026-08-02: T5 — from the repo root, exit codes captured separately, never piped (M56): skills/tests 729 exit 0, scripts/tests 337 exit 0, hooks/tests 103 exit 0, cairn_validate exit 0. Rulebook 955->966 lines, 68,103->68,986 chars. All tasks done; status review.
+- 2026-08-02: review return 1 (defect, floor) — AC3 fails in its own domain: transposing clause (ii)'s or clause (iii)'s SUBJECT, which sits on the same physical line as the registered anchor, leaves all three suites green (F3d/90, F3e/90), so the clauses are not inversion-proven against transposition. Returned with F11/90, F7/85, F8/85, F10/85, F2/82 to fix in the same pass; 13 findings logged sub-floor. Status -> in-progress.
 
 ## Decisions
 
@@ -119,3 +120,23 @@ Fresh evidence, gathered by command at review; PR #131.
   Script restored in a `finally:` (M124); sha256 matches the original and `git diff` over the file is empty.
 
 - AC4 — from the repo root, exit codes captured separately and never piped (M56): `skills/tests` 729 exit 0, `scripts/tests` 337 exit 0, `hooks/tests` 103 exit 0, `cairn_validate` exit 0 (16 PASS, 0 WARN).
+
+### Fan-out (3 lenses, 20 scored findings) — 2026-08-02
+
+[O] diff-bug, [S] blame-history, [S] prior-review (zero findings: no prior-review
+regression; the GitHub inline-comment probe returned empty, archive was the only
+surface). Scored by a fresh [S] scorer holding the diff and this milestone file.
+
+**Actioned (>=80), all returned to `/milestone-implement` in one pass:**
+
+- F3d (90) — transposing clause (ii)'s subject ("An edit targeting a document section" -> "A scratch note") leaves all 729 tests green; the subject sits on the same physical line as the anchor, so pinning it was free. **Breaches AC3** ("transposed in place ... at least one exits non-zero").
+- F3e (90) — same defect for clause (iii)'s subject ("A check-off or tick write" -> "An optional courtesy tick"). **Breaches AC3.**
+- F11 (90) — commit `1a068f8` changed two test files with no milestone-file update; the T2/T3 ticks landed in `7ffaba8`. Breaches "Tracking travels with code" (GP2), not an AC.
+- F7 (85) — positional back-reference: "'Correcting a record proven false' below" is guard-doctrine §9's third defeat mode; reorder the bullets and it is false with every guard still matching.
+- F8 (85) — the new registry comment says "one entry per assert, not per clause ... (D-042's per-clause shape)" — internally contradictory. The D-042 citation habit is pre-existing (line 54); the contradiction is new.
+- F10 (85) — T4 was ticked while its named deliverable (the three-row table) was deferred to review — a check-off ahead of its evidence, the shape clause (iii) itself legislates. The table exists as of the review commit.
+- F2 (82) — clause (i)'s operative sentence ("Re-read the aimed site and confirm the change is present first.") is asserted by nothing; only the bullet title is pinned.
+
+**Logged, no change (<80, 13 findings):** F3a (78) and F3b (75) and F3c (73) — deleting or hedging the unasserted operative sentence stays green; the same gap F2 names, restated as mutations, fixed by F2's remedy. F3f (78) guard-doctrine §9 contradicting-sentence gap, generic to any positive-assert guard. F1 (65) clause (i)'s title and instruction are unqualified while AC1 and Scope say "batched or scripted"; the rationale sentence supplies the scope in context. F12 (65) no work-log line records the records-hygiene §3 self-application. F6 (60) the step-0 one-home check as recorded did not name the rulebook's modules. B2 (58) overlap with the pre-existing AC-fencing paragraph — different failure modes (atomicity vs incremental-vs-end-of-phase), so a cross-reference is arguable. F4 (55) "occupies exactly one site" has no assert; verified by recorded corpus-wide grep instead. B3 (50) D-090 apparatus tension, called borderline by its own reviewer and routed to the merge gate as M130 did. F5 (40) thin overlap with "Append, don't rewrite". B1b (30) the citations resolve only via git history — consistent with History -> archive + git log. B1 (10) claim that the M126 and M130 D13 citations are fabricated: **refuted by command** — M130's pre-archive Review section carries "D13 (55) tick-before-evidence sequencing" verbatim and M126's work log records the stray line inside `## Acceptance criteria`; archive summaries name only actioned findings, so an archive-only search cannot see either.
+
+**Disposition: floor return (M130).** F3d and F3e demonstrate AC3 failing inside the domain of the procedure it names, which is the return floor's "only when". Status -> `in-progress`; the five other actioned findings are fixed in the same return pass. Defect returns on this milestone: 1.
