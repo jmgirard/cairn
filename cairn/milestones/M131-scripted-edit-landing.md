@@ -101,6 +101,8 @@ only if a unique-header anchor is later found to have misfired.
 - 2026-08-02: F10 acknowledged (no code fix owed) — T4 was ticked while its three-row table was deferred to review, a check-off ahead of its evidence and the shape clause (iii) legislates; the table exists as of the review commit. F11 acknowledged — commit 1a068f8 changed two test files with no milestone update, breaching "Tracking travels with code"; history is not rewritten (IP4), the breach is recorded here.
 - 2026-08-02: records-hygiene §3 self-application (F12) — the new rule run over this milestone's own diff: every edit this pass re-read at its aimed site before the record claiming it; the registry `old_string` reconstructed from memory rather than shipped bytes failed to match and was corrected by copying the real bytes, which is the rule firing on its author for the third time this milestone.
 - 2026-08-02: verify after fix pass — skills/tests 729 exit 0, scripts/tests 337 exit 0, hooks/tests 103 exit 0, cairn_validate exit 0. Status -> review.
+- 2026-08-02: correction (supersedes, never edits) — the T3 line's "4 blocks / 4 asserts" and the fix-pass line's unenumerable "8/8 RED" were true when written but were invalidated by the fix pass and by round 2; the shipped state is 5 blocks / 5 asserts and 13 enumerated mutations, all RED, recorded in full in the Review section (round-2 findings N1/90, N2/88, N9/82).
+- 2026-08-02: round 2 ([O] delta review + [S] scorer) — all six round-1 fixes confirmed CLOSED (14/14 mutations RED in the reviewer's own in-memory sweep, no reflow damage, anchors unique and contiguous). Actioned: N1/90 and N2/88 and N9/82 corrected in the review record itself (review-owned, so no return); N3/85 closed by moving clause (i)'s instruction onto its own physical line; N7/85 closed by scoping the bullet title to "a batched or scripted edit" and adopting AC1's "any record" wording. Logged sub-floor: N8/45 (F1 touched though dispositioned no-change — disclosed), N4/45 and N5/45 and N6/45 (guard-doctrine §9 generic invertible rationale/purpose clauses, same class as F3f/78 and F4/55), N10/15 style. Defect returns on this milestone: 1 (unchanged — no round-2 finding met the floor).
 
 ## Decisions
 
@@ -108,22 +110,31 @@ only if a unique-header anchor is later found to have misfired.
 
 Fresh evidence, gathered by command at review; PR #131.
 
-- AC1 — each of the three clauses plus the tick prohibition occurs in exactly ONE doctrine file, `skills/shared/tracking-rules.md` (corpus-wide grep over `skills/`, excluding the guard and the registry that legitimately quote them). Rule sited in "Universal tracking rules" between "Append, don't rewrite" and "Correcting a record proven false", cross-referencing the latter rather than restating it.
+- AC1 — re-verified in round 2 against the final bytes: all five anchored phrases (title, clause (i)'s instruction, clauses (ii) and (iii), the tick prohibition) occur in exactly one doctrine file, `skills/shared/tracking-rules.md`, once each, each wholly on one physical line (scan of all 25 markdown files under `skills/`). Clause (i) now carries AC1's own scope in the title ("a batched or scripted edit") and its "any record" wording.
 
-- AC2 — 4 blocks registered in `test_mutation_harness.py`, one per assert. Fresh per-entry run: all 4 red when blanked, green unblanked, errors=0 (so no crash counted as a pass — M117/M122). Sweep of this branch's `skills/tests/` diff: 4 added `assertIn` calls, 4 registered blocks, zero blocks absent from the diff.
+- AC2 — **corrected in round 2**; round 1 recorded 4/4, which the fix pass invalidated (finding N1/90). 5 blocks registered in `test_mutation_harness.py`, one per assert. Fresh per-entry run: all 5 red when blanked, green unblanked, errors=0 (no crash counted as a pass — M117/M122). Sweep of this branch's `skills/tests/` diff: 5 added `assertIn` calls, 5 registered blocks, zero blocks absent from the diff.
 
-- AC3 — inversion sweep re-run fresh, all 4 subjects negated in place:
+- AC3 — **re-run and re-recorded in round 2**; round 1's table showed 4 negations and no subject transposition, the very property the return was for (findings N2/88, N9/82, which also retire the work log's unenumerable "8/8" claim). 13 mutations, each relabelled, negated or transposed in place:
 
-  | subject | skills | scripts | hooks | result |
+  | mutation | skills | scripts | hooks | result |
   |---|---|---|---|---|
-  | (i) verify-before-claim | 1 | 0 | 0 | RED |
-  | (ii) unique anchor | 1 | 0 | 0 | RED |
-  | (iii) tick sequencing | 1 | 0 | 0 | RED |
-  | (iii) prohibition | 1 | 0 | 0 | RED |
+  | (i) title negated | 1 | 0 | 0 | RED |
+  | (i) title scope-widened | 1 | 0 | 0 | RED |
+  | (i) instruction deleted | 1 | 0 | 0 | RED |
+  | (i) instruction hedged | 1 | 0 | 0 | RED |
+  | (ii) SUBJECT transposed | 1 | 0 | 0 | RED |
+  | (ii) subject modifier changed | 1 | 0 | 0 | RED |
+  | (ii) predicate relabelled | 1 | 0 | 0 | RED |
+  | (ii) target relabelled | 1 | 0 | 0 | RED |
+  | (iii) SUBJECT transposed | 1 | 0 | 0 | RED |
+  | (iii) "strictly" removed | 1 | 0 | 0 | RED |
+  | (iii) order reversed | 1 | 0 | 0 | RED |
+  | (iii) prohibition negated | 1 | 0 | 0 | RED |
+  | whole bullet deleted | 1 | 0 | 0 | RED |
 
-  Script restored in a `finally:` (M124); sha256 matches the original and `git diff` over the file is empty.
+  Survivors: none. Script restored in a `finally:` (M124); sha256 matches the original and the file is clean against HEAD.
 
-- AC4 — from the repo root, exit codes captured separately and never piped (M56): `skills/tests` 729 exit 0, `scripts/tests` 337 exit 0, `hooks/tests` 103 exit 0, `cairn_validate` exit 0 (16 PASS, 0 WARN).
+- AC4 — re-run in round 2 from the repo root, exit codes captured separately and never piped (M56): `skills/tests` 729 exit 0, `scripts/tests` 337 exit 0, `hooks/tests` 103 exit 0, `cairn_validate` exit 0.
 
 ### Fan-out (3 lenses, 20 scored findings) — 2026-08-02
 

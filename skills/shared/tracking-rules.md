@@ -214,10 +214,10 @@ covered — a judgment, reported and never auto-fixed.
 - **Append, don't rewrite.** Work-logs and DECISIONS.md are append-only;
   supersede, never edit history. Never fabricate history — if there is a
   gap, add one catch-up entry summarizing `git log`.
-- **Verify an edit landed before writing the record that claims it did.** A
-  batched or scripted edit can match the wrong occurrence, or fail while its
-  siblings succeed, and the record written next then asserts a change that is
-  not there. Re-read the aimed site of a batched or scripted edit and confirm the change is present before the record is written.
+- **Verify a batched or scripted edit landed before writing the record that claims it did.**
+  Such an edit can match the wrong occurrence, or fail while its siblings
+  succeed, and the record written next then asserts a change that is not there.
+  Re-read the aimed site and confirm the change is present before any record claiming it is written.
   An edit targeting a document section anchors on text that occurs exactly once in the target file,
   because a bare heading binds to its first occurrence and a second occurrence takes the edit silently.
   A check-off or tick write is sequenced strictly after the write of the evidence it depends on has succeeded,

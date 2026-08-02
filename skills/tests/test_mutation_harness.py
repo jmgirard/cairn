@@ -3690,13 +3690,13 @@ REGISTRY += [
         guard="test_scripted_edit_landing",
         test="TestScriptedEditLandingRule.test_rule_requires_verification_before_the_claiming_record",
         target=RULES,
-        block="Verify an edit landed before writing the record that claims it did",
+        block="Verify a batched or scripted edit landed before writing the record that claims it did",
     ),
     Mutation(
         guard="test_scripted_edit_landing",
         test="TestScriptedEditLandingRule.test_rule_requires_verification_before_the_claiming_record",
         target=RULES,
-        block="Re-read the aimed site of a batched or scripted edit and confirm the change is present before the record is written",
+        block="Re-read the aimed site and confirm the change is present before any record claiming it is written",
     ),
     Mutation(
         guard="test_scripted_edit_landing",

@@ -35,11 +35,11 @@ class TestScriptedEditLandingRule(unittest.TestCase):
         # (review F2/F3a). Pin the duty, not just its heading.
         t = rules()
         self.assertIn(
-            "verify an edit landed before writing the record that claims it did",
+            "verify a batched or scripted edit landed before writing the record that claims it did",
             t,
         )
         self.assertIn(
-            "re-read the aimed site of a batched or scripted edit and confirm the change is present before the record is written",
+            "re-read the aimed site and confirm the change is present before any record claiming it is written",
             t,
         )
 
