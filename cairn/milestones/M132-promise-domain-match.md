@@ -93,7 +93,7 @@ them, AC5/AC6's domain covers those sentences by construction.
       recalled-membership property with non-exhaustive examples, and the two
       remedy halves. Draft against the existing sentence rather than appending
       a second rule beside it.
-- [ ] **T2** — Carry the domain-match test into the criteria audit's third
+- [x] **T2** — Carry the domain-match test into the criteria audit's third
       question at `skills/milestone-plan/SKILL.md:95` and
       `skills/milestone-brief/SKILL.md:96`, keeping the two surfaces' wording
       identical so the existing cross-surface guards still bind.
@@ -119,6 +119,7 @@ them, AC5/AC6's domain covers those sentences by construction.
 - 2026-08-02: plan gate chose a D-entry annotating D-090 over proceeding silently because D-090 prescribes fixing a doctrine-prose defect "within the milestone that surfaces it", and the surfacing milestone is intraclass M102, in a repo that cannot edit cairn's shipped prose — the prescribed host does not exist for a cross-repo surfacing; falsified by a cross-repo defect that the surfacing repo's own milestone can in fact fix.
 - 2026-08-02: start — branch `m132-promise-domain-match` cut from pushed main (`6397cad`), status planned->in-progress.
 - 2026-08-02: T1 — the bounded-promise rule gains the domain-match test as a paragraph extending the existing sentence, not a second rule beside it: the named procedure must enumerate the domain the criterion's own universal quantifies over, an enumeration whose membership is fixed by author recall is a proxy however long its list (examples marked non-exhaustive, `families` included so intraclass's pass-3 family-enumeration is named rather than escaping), a counterexample is not answered by a wider enumeration, and the repair is to narrow the promise until a stated procedure settles it. 11 lines added, no existing line reflowed; 729 skills tests green, so no adjacent guard's anchor was split (the M104 trap).
+- 2026-08-02: T2 — the domain-match clause lands at both audit surfaces by APPENDING to each existing question rather than rewording it, so every pinned byte sequence survives: the plan guard's `enumerates*\s+(the bounded-promise rule, step 4; M130)`, the brief guard's full three-question sequence, and both mutation-registry blocks including `It reads the wording\n   step 4 will write` (whose exact wrap the insertion preserves). The shared clause `asked of the / domain the claim quantifies over, never of a proxy the named procedure / happens to enumerate (M132)` is byte-identical at both surfaces, verified present exactly once in each file rather than assumed. 729 skills tests green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

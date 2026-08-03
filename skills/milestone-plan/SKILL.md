@@ -92,7 +92,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    each: *what state of the world satisfies this exactly as written*,
    *does any IP or D-entry make that state unreachable*, and
    *does it make a universal claim over a domain no procedure it names enumerates*
-   (the bounded-promise rule, step 4; M130). It reads the wording
+   (the bounded-promise rule, step 4; M130). The third question is asked of the
+   domain the claim quantifies over, never of a proxy the named procedure
+   happens to enumerate (M132). It reads the wording
    step 4 will write, never a paraphrase of it. Dispose of what it returns at
    this gate, never silently: a finding with one clear right answer is fixed
    and the fix reported in chat, and a finding you could reasonably decide
