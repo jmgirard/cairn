@@ -97,11 +97,12 @@ them, AC5/AC6's domain covers those sentences by construction.
       question at `skills/milestone-plan/SKILL.md:95` and
       `skills/milestone-brief/SKILL.md:96`, keeping the two surfaces' wording
       identical so the existing cross-surface guards still bind.
-- [ ] **T3** — The AC4 classification pass: spawn a fresh-context `[O]` reader
+- [x] **T3** — The AC4 classification pass: spawn a fresh-context `[O]` reader
       that has not seen the amended wording to pick the second criterion from
       an archive, then a second `[O]` reader given only the amended rule text
-      to classify both and write both rewrites. Record verbatim in the Review
-      section.
+      to classify both and write both rewrites. Record verbatim in the
+      milestone-local `## Decisions` section (the Review section is
+      review-exclusive).
 - [ ] **T4** — Enumerate the in-domain sentences by the AC5 diff command, add a
       registry entry per sentence, and run the mutation harness over exactly
       those entries; record the per-sentence mapping.
@@ -120,9 +121,57 @@ them, AC5/AC6's domain covers those sentences by construction.
 - 2026-08-02: start — branch `m132-promise-domain-match` cut from pushed main (`6397cad`), status planned->in-progress.
 - 2026-08-02: T1 — the bounded-promise rule gains the domain-match test as a paragraph extending the existing sentence, not a second rule beside it: the named procedure must enumerate the domain the criterion's own universal quantifies over, an enumeration whose membership is fixed by author recall is a proxy however long its list (examples marked non-exhaustive, `families` included so intraclass's pass-3 family-enumeration is named rather than escaping), a counterexample is not answered by a wider enumeration, and the repair is to narrow the promise until a stated procedure settles it. 11 lines added, no existing line reflowed; 729 skills tests green, so no adjacent guard's anchor was split (the M104 trap).
 - 2026-08-02: T2 — the domain-match clause lands at both audit surfaces by APPENDING to each existing question rather than rewording it, so every pinned byte sequence survives: the plan guard's `enumerates*\s+(the bounded-promise rule, step 4; M130)`, the brief guard's full three-question sequence, and both mutation-registry blocks including `It reads the wording\n   step 4 will write` (whose exact wrap the insertion preserves). The shared clause `asked of the / domain the claim quantifies over, never of a proxy the named procedure / happens to enumerate (M132)` is byte-identical at both surfaces, verified present exactly once in each file rather than assumed. 729 skills tests green.
+- 2026-08-02: T3 — two-reader AC4 pass complete; both verdicts and both rewrites recorded verbatim in this file's `## Decisions` section. Result DISCRIMINATES: intraclass M102 AC2 FAILS (its second universal names no procedure; the checker decides a proxy property), circumplex M68 AC11 PASSES. T3's wording amended (minor, task-owned): it said to record in the Review section, which the ownership table makes review-exclusive — AC4 names no location, so no criterion changed.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
+
+- 2026-08-02 (T3, AC4): the amended rule applied to two criteria by a
+  fresh-context [O] reader given only the rule text and the two criteria,
+  blind to which was the motivating case. The second criterion was picked by
+  a different [O] reader that had not seen the amended wording, from a
+  mechanical sweep of three repos' milestone files (25 universal-claim
+  criteria collected, intraclass M102 excluded, longest-by-character-count
+  taken as the tiebreak) — circumplex M68 AC11 (BC5), 1,936 characters.
+
+  **intraclass M102 AC2 — FAILS.** Deciding clause: "The procedure must
+  enumerate the domain the criterion's own universal quantifies over, not a
+  proxy for it." The reader decomposed it into two universals and found they
+  differ: "a command naming any of an enumerated set of history-dependent
+  forms ... is refused" PASSES, because the quantifier is explicitly
+  restricted to the enumerated set, so the list is the domain rather than a
+  proxy for one — this half is already the rule's prescribed repair. The
+  second, "no command in the committed ledger reads git history", names no
+  procedure at all; the checker decides a different property ("names one of
+  three enumerated forms"), a proxy whose membership is author-recalled, so
+  "any route to history outside the three forms (a hook, an alias or
+  subcommand that consults history internally, a config-supplied default, an
+  env var, a shelled-out helper) ships unrefused while the criterion reads as
+  satisfied." Rewrite: the checker refuses every command naming one of the
+  three enumerated forms, each with a sample and a test exercising it, and is
+  then run over every command in the committed ledger — that run being the
+  sweep — wired into `verify`. What it gives up, stated: "the semantic
+  guarantee ... A command that reads git history by a route outside those
+  forms now passes both the checker and the criterion, and the milestone no
+  longer claims otherwise."
+
+  **circumplex M68 AC11 — PASSES**, borderline on one clause. Every universal
+  is quantified over an artifact set the criterion names exhaustively (three
+  named surfaces, one named string constant, the diff), and each empirical
+  claim that would have quantified over an open domain is restated as what the
+  named fixture sweep measured — including the in-place retraction "(a
+  single-population sweep; not stated as a universal threshold)" and the
+  refusal to extend rejection-rate claims to the unmeasured FIML tail. The
+  borderline: "All documented rates are the committed fixture's values" reads
+  broadly as quantifying over the whole package's documentation; the reader's
+  offered tightening is "All rates stated in (i)-(iii) are the committed
+  fixture's values (rounded); BC3's regeneration check is what keeps them tied
+  to it."
+
+  **Why this is the evidence AC4 asks for:** the two verdicts differ. A rule
+  failing both would be over-broad — rejecting a sound criterion — and one
+  passing both would not fire on its own motivating case. The discriminating
+  outcome is what shows the rule is neither.
 
 ## Review
 <!-- owner: review · exclusive -->
