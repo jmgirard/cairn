@@ -103,7 +103,7 @@ them, AC5/AC6's domain covers those sentences by construction.
       to classify both and write both rewrites. Record verbatim in the
       milestone-local `## Decisions` section (the Review section is
       review-exclusive).
-- [ ] **T4** — Enumerate the in-domain sentences by the AC5 diff command, add a
+- [x] **T4** — Enumerate the in-domain sentences by the AC5 diff command, add a
       registry entry per sentence, and run the mutation harness over exactly
       those entries; record the per-sentence mapping.
 - [ ] **T5** — Section-level inversion sweep over each amended section; then the
@@ -122,9 +122,46 @@ them, AC5/AC6's domain covers those sentences by construction.
 - 2026-08-02: T1 — the bounded-promise rule gains the domain-match test as a paragraph extending the existing sentence, not a second rule beside it: the named procedure must enumerate the domain the criterion's own universal quantifies over, an enumeration whose membership is fixed by author recall is a proxy however long its list (examples marked non-exhaustive, `families` included so intraclass's pass-3 family-enumeration is named rather than escaping), a counterexample is not answered by a wider enumeration, and the repair is to narrow the promise until a stated procedure settles it. 11 lines added, no existing line reflowed; 729 skills tests green, so no adjacent guard's anchor was split (the M104 trap).
 - 2026-08-02: T2 — the domain-match clause lands at both audit surfaces by APPENDING to each existing question rather than rewording it, so every pinned byte sequence survives: the plan guard's `enumerates*\s+(the bounded-promise rule, step 4; M130)`, the brief guard's full three-question sequence, and both mutation-registry blocks including `It reads the wording\n   step 4 will write` (whose exact wrap the insertion preserves). The shared clause `asked of the / domain the claim quantifies over, never of a proxy the named procedure / happens to enumerate (M132)` is byte-identical at both surfaces, verified present exactly once in each file rather than assumed. 729 skills tests green.
 - 2026-08-02: T3 — two-reader AC4 pass complete; both verdicts and both rewrites recorded verbatim in this file's `## Decisions` section. Result DISCRIMINATES: intraclass M102 AC2 FAILS (its second universal names no procedure; the checker decides a proxy property), circumplex M68 AC11 PASSES. T3's wording amended (minor, task-owned): it said to record in the Review section, which the ownership table makes review-exclusive — AC4 names no location, so no criterion changed.
+- 2026-08-02: T4 — 7 guards + 7 mutation registrations over the 5 added rule sentences and both audit-clause surfaces; per-sentence mapping in `## Decisions`. Each registration blanked individually and confirmed RED rather than inferred from the suite being green. skills suite 729 -> 736 tests, all green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
+
+- 2026-08-02 (T4, AC5): per-sentence mapping from the AC5 domain to the
+  registry entry covering each. Domain enumerated by
+  `git diff --name-only main..HEAD` filtered to `skills/**/*.md` — two files
+  (`skills/milestone-plan/SKILL.md`, `skills/milestone-brief/SKILL.md`), 17
+  added non-blank lines, 5 added rule sentences. No exemptions taken: the
+  illustrative M102 sentence is registered like the operative ones, since
+  classifying it "gloss" would be exactly the author judgment the criteria
+  audit warned reproduces M102's own move.
+
+  | added sentence | registry block → guard |
+  |---|---|
+  | "The procedure must enumerate the domain the criterion's own universal quantifies over, not a proxy for it." | `test_the_procedure_must_cover_the_promises_own_domain` |
+  | "Naming a procedure is not passing this test: … is a proxy" | `test_naming_a_procedure_does_not_pass_the_domain_match_test` |
+  | "…however long its list — spellings, renderings, known cases and whole families among others, never only those." | `test_the_instance_enumeration_examples_are_non_exhaustive` |
+  | "A counterexample defeating such an enumeration is therefore not answered by a wider one; the repair is to narrow the promise until a stated procedure settles it." | `test_the_remedy_is_to_narrow_the_promise_not_widen_the_enumeration` |
+  | "intraclass M102's \"no command reads git history\" … then `awk`" | `test_the_rule_carries_its_measured_failure` |
+  | plan-gate audit clause "The third question is asked of the domain …" | `test_audit_question_is_asked_of_the_domain_not_a_proxy` |
+  | brief-ingest audit clause "the third question asked of the domain …" | `test_ingest_audit_carries_the_domain_match_test` |
+
+  Seven blocks over five sentences: the long property sentence is pinned
+  twice (the property clause and the non-exhaustive examples clause
+  separately), because a single assert over part of it would leave the rest
+  deletable — the M114 partial-pin class.
+
+  **Blanking result, run per entry rather than read off a green suite**
+  (the M100/M117 blind spot: an all-green harness can mean the engine cannot
+  see the entries): all 7 RED. Registry total 516.
+
+  Two fragments the sentence-splitter flagged as unpinned are pre-existing
+  text, not additions — `(the bounded-promise rule, step 4; M130)` and
+  `It reads the wording` appear in the diff only because their lines rewrapped
+  around the insertion. Both verified present in `main:skills/milestone-plan/SKILL.md`
+  and already covered, by `test_audit_asks_the_bounded_promise_question` and
+  `test_audit_reads_the_shipped_wording_never_a_paraphrase` respectively —
+  checked against the registry, not assumed.
 
 - 2026-08-02 (T3, AC4): the amended rule applied to two criteria by a
   fresh-context [O] reader given only the rule text and the two criteria,

@@ -2445,6 +2445,54 @@ REGISTRY = [
         target="skills/milestone-plan/SKILL.md",
         block="A hand-list of sites is\n     not a procedure",
     ),
+    # M132: the domain-match test. Six blocks — one per rule sentence the
+    # branch adds, enumerated by `git diff --name-only main..HEAD` filtered to
+    # skills/**/*.md rather than by recall, since a hand-listed file set is
+    # the very defect this rule closes. The example sentence is registered
+    # too: classifying it "illustrative" would be the author judgment the
+    # audit warned reproduces M102's own move.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_the_procedure_must_cover_the_promises_own_domain",
+        target="skills/milestone-plan/SKILL.md",
+        block="**The procedure must enumerate the domain the criterion's own universal\n     quantifies over, not a proxy for it.**",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_naming_a_procedure_does_not_pass_the_domain_match_test",
+        target="skills/milestone-plan/SKILL.md",
+        block="Naming a procedure is not passing\n     this test: an enumeration whose membership is fixed by what the author\n     recalled, rather than decided by a procedure over the domain, is a proxy",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_the_instance_enumeration_examples_are_non_exhaustive",
+        target="skills/milestone-plan/SKILL.md",
+        block="however long its list — spellings, renderings, known cases and whole\n     families among others, never only those",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_the_remedy_is_to_narrow_the_promise_not_widen_the_enumeration",
+        target="skills/milestone-plan/SKILL.md",
+        block="A counterexample defeating such\n     an enumeration is therefore not answered by a wider one; the repair is to\n     narrow the promise until a stated procedure settles it",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_the_rule_carries_its_measured_failure",
+        target="skills/milestone-plan/SKILL.md",
+        block="intraclass M102's\n     \"no command reads git history\", built as a set of refused command forms,\n     took three returns beaten by a ref spelling, an argument-order bug, and\n     then `awk`",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_question_is_asked_of_the_domain_not_a_proxy",
+        target="skills/milestone-plan/SKILL.md",
+        block="The third question is asked of the\n   domain the claim quantifies over, never of a proxy the named procedure\n   happens to enumerate (M132)",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_ingest_audit_carries_the_domain_match_test",
+        target=BRIEF,
+        block="the third question asked of the\n   domain the claim quantifies over, never of a proxy the named procedure\n   happens to enumerate (M132)",
+    ),
     # M121 (narrows D-067, first instrument). Three entries across two files:
     # the record requirement, the sentence making a missing line evidence, and
     # the ingest surface's cross-reference to the one home that states it.
