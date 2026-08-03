@@ -39,27 +39,27 @@ them, AC5/AC6's domain covers those sentences by construction.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] AC1: `/milestone-plan` step 4's bounded-promise rule states that the
+- [x] AC1: `/milestone-plan` step 4's bounded-promise rule states that the
       procedure a universal criterion names must enumerate the domain that
       criterion's own universal quantifies over, and identifies the failing
       form by its property — a list whose membership is fixed by what the
       author recalled rather than decided by a procedure over the domain —
       with any examples given marked non-exhaustive.
-- [ ] AC2: The same rule states both halves of the remedy: that a counterexample
+- [x] AC2: The same rule states both halves of the remedy: that a counterexample
       defeating such an enumeration is not answered by a wider enumeration, and
       that the repair is to narrow the promise until a stated procedure settles
       it.
-- [ ] AC3: The criteria audit's third question states the domain-match test at
+- [x] AC3: The criteria audit's third question states the domain-match test at
       both surfaces that carry it — `/milestone-plan` step 3 and
       `/milestone-brief`'s binding-criteria ingestion audit.
-- [ ] AC4: The amended rule is applied to two criteria and the classification
+- [x] AC4: The amended rule is applied to two criteria and the classification
       recorded for each: intraclass M102's AC2 quoted verbatim, and a second
       criterion drawn from a cairn or downstream archive by a reader who has
       not seen the amended wording. Both classifications, and a rewrite of each
       that the amended rule passes, are produced by a fresh-context reader that
       authored none of the rule text. A classification of "passes" on M102's AC2
       is a failure of this criterion.
-- [ ] AC5: Every rule sentence this branch adds or changes is pinned by a guard
+- [x] AC5: Every rule sentence this branch adds or changes is pinned by a guard
       that fails when that sentence is blanked. The domain is enumerated by
       `git diff --name-only <base>..HEAD` over the whole repo, filtered to
       `skills/**/*.md`; every added or changed non-blank line in those files is
@@ -67,11 +67,11 @@ them, AC5/AC6's domain covers those sentences by construction.
       Evidence is the per-sentence mapping from each in-domain sentence to the
       registry entry covering it, plus the mutation-harness run over those
       entries — never the harness run alone.
-- [ ] AC6: The amended sections are inversion-proven as units — each relabelled,
+- [x] AC6: The amended sections are inversion-proven as units — each relabelled,
       negated, or transposed in place, the suite run, red required, then
       restored and diffed — with one result recorded per section, not per
       sentence.
-- [ ] AC7: `python3 -m unittest` clean over the three suites (`skills/tests`,
+- [x] AC7: `python3 -m unittest` clean over the three suites (`skills/tests`,
       `scripts/tests`, `hooks/tests`), and `cairn_validate` all checks passed.
 
 ## Coverage
@@ -239,3 +239,61 @@ them, AC5/AC6's domain covers those sentences by construction.
 
 ## Review
 <!-- owner: review · exclusive -->
+
+Fresh evidence, gathered by command at review time (2026-08-02, branch tip
+`3618549`, PR #132). No `.github/workflows` exists, so the repo runs no CI and
+the three local suites are the gate — the `generic` profile names no further
+consistency-gate check.
+
+**AC1 — MET.** All three clauses present exactly once in
+`skills/milestone-plan/SKILL.md`, verified by substring count over the shipped
+bytes: the domain-match test ("The procedure must enumerate the domain the
+criterion's own universal quantifies over, not a proxy for it."), the
+recalled-membership property ("an enumeration whose membership is fixed by what
+the author recalled, rather than decided by a procedure over the domain, is a
+proxy"), and the non-exhaustive marking ("spellings, renderings, known cases and
+whole families among others, never only those").
+
+**AC2 — MET.** Both remedy halves present: "A counterexample defeating such an
+enumeration is therefore not answered by a wider one" and "the repair is to
+narrow the promise until a stated procedure settles it".
+
+**AC3 — MET.** The shared clause `asked of the / domain the claim quantifies
+over, never of a proxy the named procedure / happens to enumerate (M132)` occurs
+exactly once in each of `skills/milestone-plan/SKILL.md` (step 3) and
+`skills/milestone-brief/SKILL.md` (ingestion audit) — byte-identical, so a
+reader meeting either question meets the same test.
+
+**AC4 — MET, and it discriminates.** Two `[O]` readers, neither having authored
+the rule. Reader 1 saw no rule text at all and picked the second case
+mechanically: 25 universal-claim criteria swept from three repos' milestone
+files, intraclass M102 excluded, longest-by-character-count taken — circumplex
+M68 AC11 (BC5), 1,936 chars. Reader 2 received only the rule text and the two
+criteria, blind to which was the motivating case. Verdicts: **intraclass M102
+AC2 FAILS** (AC4's stated failure condition was a verdict of "passes"; it was
+not returned), **circumplex M68 AC11 PASSES**. Both rewrites recorded. Full
+classification verbatim in this file's `## Decisions` section. The differing
+verdicts are the load-bearing part: failing both would mean the rule rejects
+sound criteria, passing both would mean it never fires on its own motivating
+case.
+
+**AC5 — MET.** Domain enumerated by `git diff --name-only main..HEAD` filtered
+to `skills/**/*.md`, never by a hand-listed file set: two files, 17 added
+non-blank lines, 5 added rule sentences. No exemptions taken. 7 registry blocks
+cover them (the long property sentence pinned twice, so no part of it deletes
+green — the M114 partial-pin class). Each block blanked INDIVIDUALLY and
+confirmed RED, rather than inferred from a green suite (the M100/M117 blind
+spot); each block also verified to occur exactly once in its target, so no
+guard binds to a first match (the M126 class). Registry total 516.
+Two fragments a sentence-splitter flagged are pre-existing text whose lines
+merely rewrapped — both verified present in `main:skills/milestone-plan/SKILL.md`
+and already covered by M130-era blocks.
+
+**AC6 — MET.** Section-level inversion re-run fresh at review. Baseline suite
+GREEN; S1 (plan step-3 audit clause) RED, S2 (plan step-4 bounded-promise rule)
+RED, S3 (brief ingest audit clause) RED; restores SHA-256-verified byte-identical
+against pre-sweep bytes and the post-sweep suite GREEN, with `git status` clean
+over `skills/`. Anchors asserted unique before mutating.
+
+**AC7 — MET.** `skills` 736 tests OK, `scripts` 337 OK, `hooks` 103 OK;
+`cairn_validate` exit 0, all checks passed.
