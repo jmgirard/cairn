@@ -2445,8 +2445,12 @@ REGISTRY = [
         target="skills/milestone-plan/SKILL.md",
         block="A hand-list of sites is\n     not a procedure",
     ),
-    # M132: the domain-match test. Six blocks — one per rule sentence the
-    # branch adds, enumerated by `git diff --name-only main..HEAD` filtered to
+    # M132: the domain-match test. Seven blocks over the five rule sentences
+    # the branch adds to step 4 plus the audit clause at each of its two
+    # surfaces; the long property sentence takes two blocks, so no part of it
+    # deletes green (the M114 partial-pin class, which review found this
+    # comment's own first draft had committed on the example sentence).
+    # Sentences enumerated by `git diff --name-only main..HEAD` filtered to
     # skills/**/*.md rather than by recall, since a hand-listed file set is
     # the very defect this rule closes. The example sentence is registered
     # too: classifying it "illustrative" would be the author judgment the

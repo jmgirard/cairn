@@ -125,6 +125,7 @@ them, AC5/AC6's domain covers those sentences by construction.
 - 2026-08-02: T4 — 7 guards + 7 mutation registrations over the 5 added rule sentences and both audit-clause surfaces; per-sentence mapping in `## Decisions`. Each registration blanked individually and confirmed RED rather than inferred from the suite being green. skills suite 729 -> 736 tests, all green.
 - 2026-08-02: T5 — all three amended sections inverted as units and RED, restored SHA-verified; gate clean: skills 736, scripts 337, hooks 103, `cairn_validate` all checks passed. Status in-progress -> review.
 - 2026-08-02: review — prior-review lens found a partial pin on the M102 example sentence (its tail deleted green, the M114 class this milestone's own record claimed to avoid); confirmed by probe, fixed on the branch, and the whole diff swept for the class with no second instance. No status change: it demonstrates no acceptance criterion failing and is apparatus coverage rather than user-facing skill behaviour, so M130's return floor takes it as triage.
+- 2026-08-02: review — 3 lenses + scorer, 21 findings scored, 4 at >=80: F1/PR1 (95, partial pin) F8 (90, wrong count in a registry comment) F5 (82, broken pronoun antecedent) all fixed and re-verified; F2 (85, AC5's procedure enumerates lines while its promise quantifies over sentences) taken to the user at the merge gate. 17 sub-80 logged. All evidence re-gathered after the fixes.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -298,6 +299,71 @@ over `skills/`. Anchors asserted unique before mutating.
 
 **AC7 — MET.** `skills` 736 tests OK, `scripts` 337 OK, `hooks` 103 OK;
 `cairn_validate` exit 0, all checks passed.
+
+### Findings — three lenses + scorer (2026-08-02)
+
+[O] diff-bug 15 · [S] blame-history 5 · [S] prior-review 1 (+1 clean report).
+An [S] scorer that generated none of them scored all 21; four reached 80.
+Evidence re-gathered after every fix: AC5's 7 blanks and whole-diff tail sweep,
+AC6's three sections, three suites, `cairn_validate` — all re-run, all clean.
+
+**ACTIONED (>=80)**
+
+- **F1/PR1 (95) — partial pin. FIXED.** Both lenses converged. The guard and
+  registry block for the example sentence stopped at ``then `awk` ``, leaving
+  `, which is no git command at all.` pinned by nothing — confirmed by probe
+  (deletion left 736 tests green) before acting, not taken on report. Guard
+  regex and block extended through `at all.`; deletion now RED. Swept the whole
+  diff for the class afterwards rather than trusting the report was complete —
+  no second instance.
+- **F8 (90) — registry comment stated the wrong count and mapping. FIXED.**
+  It read "Six blocks — one per rule sentence the branch adds" above seven
+  entries that are not one-per-sentence. Rewritten to the measured shape:
+  seven blocks over five step-4 sentences plus the audit clause at both
+  surfaces, the long property sentence taking two.
+- **F5 (82) — the insertion broke a pronoun's antecedent, all guards green.
+  FIXED.** "It reads the wording step 4 will write" refers to the [O] reader;
+  the inserted sentence had come between them, leaving "The third question" as
+  nearest antecedent. Guard-doctrine §9's back-reference class arriving by
+  insertion. Fixed by placing the new sentence AFTER that one, which also
+  leaves its pinned block contiguous and my clause's wrap unchanged.
+- **F2 (85) — AC5's own procedure enumerates a proxy for its domain.**
+  AC5 promises over "every rule SENTENCE" while its stated procedure enumerates
+  LINES, and the record's "17 lines -> 5 sentences" step is unstated judgment —
+  the milestone's own defect one level up, and F1 fell through that gap.
+  Disposition taken to the user at the merge gate (below).
+
+**LOGGED, sub-80 (17)** — surfaced, not actioned (IP3):
+F4 (70) two shipped code comments say the clause is "byte-identical" across
+surfaces; the shared substring is, the full clauses differ in case and verb form
+(the work-log line scoped this correctly, the comments did not).
+F6 (78) the brief insertion repurposes a closing em-dash, so "asked of the set
+as well as of each criterion" now trails the third question rather than the
+three-question set; no guard can see it.
+F9 (65) / F10 (65) / BH3 (65) the added property sentence and M130's hand-list
+sentence state one proposition in two vocabularies, eight lines apart, and the
+bullet offers two remedies with no rule for choosing.
+F14 (45) AC4's "verbatim" quotes are ellipsis-elided, and the passing criterion
+got a tightening rather than a rewrite.
+F3 (45) AC5's exemption route was not used for two dismissed fragments.
+F15 (40) a Scope In-item (D-098) landed on main at plan time, so the branch
+diff shows none.
+F12 (30) presence-assertion guards do not resist an APPENDED contradicting
+sentence; AC6's sweep is a one-shot measurement, not a standing guard.
+BH1/BH2 (30) whether D-098's cross-repo carve-out is an honest hosting gap or a
+route around D-090's door — scorer ruled it re-litigates a plan-gate decision
+already on main rather than a defect in this diff; carried to the gate anyway.
+BH4 (30) duplication with guard-doctrine §6, which Scope already accepts.
+BH5 (30) T3's two readers echo D-095's retired instrument's silhouette.
+F11 (25) +7.0% on `milestone-plan/SKILL.md`, no cap governs the path.
+F13 (25) two new guards lack rationale comments — the claim that every other
+guard has one is false, several pre-existing ones do not.
+
+**No status change.** No actioned finding demonstrates an acceptance criterion
+failing inside its named procedure's domain, and all are apparatus or doctrine
+prose rather than what the skills, hooks and scripts do for users — so M130's
+own return floor takes them as triage. Without that floor this would have been
+a second and third pass.
 
 ### Findings — prior-review lens (2026-08-02)
 
