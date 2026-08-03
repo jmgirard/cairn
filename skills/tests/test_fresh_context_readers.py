@@ -156,7 +156,9 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
         )
 
     def test_audit_question_is_asked_of_the_domain_not_a_proxy(self):
-        # M132: same clause as the RR-ingestion surface, byte for byte.
+        # M132: this sentence is byte-identical to the RR-ingestion surface's
+        # copy, which `test_the_domain_match_sentence_is_identical_at_both_surfaces`
+        # is what actually enforces — this guard only pins it here.
         self.assertRegex(
             plan(),
             r"The third question is asked of the\s+domain the claim quantifies "
@@ -277,14 +279,30 @@ class TestRRIngestionCriteriaAudit(unittest.TestCase):
         )
 
     def test_ingest_audit_carries_the_domain_match_test(self):
-        # M132: the clause is byte-identical to the plan-gate surface's, so a
-        # reader meeting either question meets the same test.
+        # M132: the sentence is byte-identical to the plan-gate surface's, so a
+        # reader meeting either question meets the same test. Review found the
+        # first draft differed ("the third question asked" vs "The third
+        # question is asked") while two comments claimed identity, and that it
+        # had been interjected mid-sentence, repurposing the em-dash that closed
+        # the three-question list so "asked of the set as well as of each
+        # criterion" attached to the third question alone.
         self.assertRegex(
             brief(),
-            r"the third question asked of the\s+domain the claim quantifies "
+            r"The third question is asked of the\s+domain the claim quantifies "
             r"over, never of a proxy the named procedure\s+happens to "
-            r"enumerate \(M132\)",
+            r"enumerate \(M132\)\.",
         )
+
+    def test_the_domain_match_sentence_is_identical_at_both_surfaces(self):
+        # Nothing else enforces this: each surface's guard reads only its own
+        # file, so without this the two copies drift apart with both green.
+        sentence = (
+            "The third question is asked of the\n   domain the claim "
+            "quantifies over, never of a proxy the named procedure\n   "
+            "happens to enumerate (M132)."
+        )
+        self.assertEqual(plan().count(sentence), 1)
+        self.assertEqual(brief().count(sentence), 1)
 
     def test_ingest_audit_asks_the_questions_of_the_set_not_only_each(self):
         # The set-level read is the half RB07's trigger needed: two criteria

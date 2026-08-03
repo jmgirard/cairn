@@ -94,12 +94,13 @@ start (any skill) when a manual RR appears:
    three questions — *what state of the world satisfies this exactly as
    written*, *does any IP or D-entry make that state unreachable*, and
    *does it make a universal claim over a domain no procedure it names enumerates*
-   — the third question asked of the
-   domain the claim quantifies over, never of a proxy the named procedure
-   happens to enumerate (M132) — asked
+   — asked
    of the set as well as of each criterion, because criteria that are
    individually satisfiable can still be **jointly** unsatisfiable, and a
-   frozen scope in one can forbid the work another mandates. A brief has
+   frozen scope in one can forbid the work another mandates.
+   The third question is asked of the
+   domain the claim quantifies over, never of a proxy the named procedure
+   happens to enumerate (M132). A brief has
    already been convened over exactly that, with the collision surfacing at a
    review gate instead of here. What the audit returns is raised with the
    user, never softened away: `binding criteria` string-compares the AC block,

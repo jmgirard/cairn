@@ -2493,9 +2493,15 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_the_domain_match_sentence_is_identical_at_both_surfaces",
+        target=BRIEF,
+        block="The third question is asked of the\n   domain the claim quantifies over, never of a proxy the named procedure\n   happens to enumerate (M132).",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
         test="TestRRIngestionCriteriaAudit.test_ingest_audit_carries_the_domain_match_test",
         target=BRIEF,
-        block="the third question asked of the\n   domain the claim quantifies over, never of a proxy the named procedure\n   happens to enumerate (M132)",
+        block="The third question is asked of the\n   domain the claim quantifies over, never of a proxy the named procedure\n   happens to enumerate (M132).",
     ),
     # M121 (narrows D-067, first instrument). Three entries across two files:
     # the record requirement, the sentence making a missing line evidence, and

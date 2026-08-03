@@ -126,6 +126,7 @@ them, AC5/AC6's domain covers those sentences by construction.
 - 2026-08-02: T5 — all three amended sections inverted as units and RED, restored SHA-verified; gate clean: skills 736, scripts 337, hooks 103, `cairn_validate` all checks passed. Status in-progress -> review.
 - 2026-08-02: review — prior-review lens found a partial pin on the M102 example sentence (its tail deleted green, the M114 class this milestone's own record claimed to avoid); confirmed by probe, fixed on the branch, and the whole diff swept for the class with no second instance. No status change: it demonstrates no acceptance criterion failing and is apparatus coverage rather than user-facing skill behaviour, so M130's return floor takes it as triage.
 - 2026-08-02: review — 3 lenses + scorer, 21 findings scored, 4 at >=80: F1/PR1 (95, partial pin) F8 (90, wrong count in a registry comment) F5 (82, broken pronoun antecedent) all fixed and re-verified; F2 (85, AC5's procedure enumerates lines while its promise quantifies over sentences) taken to the user at the merge gate. 17 sub-80 logged. All evidence re-gathered after the fixes.
+- 2026-08-02: review — F4 and F6 (both sub-80) fixed at the maintainer's gate instruction; the F4 fix made the two surfaces byte-identical rather than merely correcting the comments that claimed they were, and a new cross-surface guard now enforces it (drift probe RED). All AC evidence re-gathered after: 8 registrations blank RED, whole-diff tail sweep clean, three sections invert RED, suites 737/337/103, validate all checks passed.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -364,6 +365,23 @@ failing inside its named procedure's domain, and all are apparatus or doctrine
 prose rather than what the skills, hooks and scripts do for users — so M130's
 own return floor takes them as triage. Without that floor this would have been
 a second and third pass.
+
+**Sub-80 fixed at the maintainer's instruction at the approval gate (F4, F6).**
+Both were prose-accuracy defects no test could see, and the fix for F4 turned
+out to be substantive rather than cosmetic. Rather than correct the two comments
+that over-claimed identity, the two surfaces were made to carry a genuinely
+identical sentence — the brief copy now reads "The third question is asked of
+the domain …", matching the plan copy byte for byte — which is what T2 said it
+was doing and was not. F6 fixed alongside: the clause had been interjected
+mid-sentence at the brief surface, repurposing the em-dash that closed the
+three-question list so "asked of the set as well as of each criterion" attached
+to the third question alone; it is now its own sentence after that clause, and
+the em-dash pair is restored. A new guard,
+`test_the_domain_match_sentence_is_identical_at_both_surfaces`, asserts the
+sentence occurs exactly once in each file — the cross-surface identity nothing
+enforced before, since each surface's guard reads only its own file. Verified by
+drift probe, not by eye: altering the brief copy alone reds the suite. Suite
+736 -> 737; the M132 registration count is now 8.
 
 ### Findings — prior-review lens (2026-08-02)
 
