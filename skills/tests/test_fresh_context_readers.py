@@ -155,6 +155,17 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
             r"gate changed goes back through the\s+audit's three questions",
         )
 
+    def test_audit_question_is_asked_of_the_domain_not_a_proxy(self):
+        # M132: this sentence is byte-identical to the RR-ingestion surface's
+        # copy, which `test_the_domain_match_sentence_is_identical_at_both_surfaces`
+        # is what actually enforces — this guard only pins it here.
+        self.assertRegex(
+            plan(),
+            r"The third question is asked of the\s+domain the claim quantifies "
+            r"over, never of a proxy the named procedure\s+happens to "
+            r"enumerate \(M132\)",
+        )
+
     def test_audit_asks_the_bounded_promise_question(self):
         # M130: the third mechanical question — intraclass M100's three-return
         # thrash traced to a criterion no stated procedure could check, so an
@@ -189,6 +200,53 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
             r"A hand-list of sites is\s+not a procedure",
         )
 
+    def test_the_procedure_must_cover_the_promises_own_domain(self):
+        # M132: intraclass M102's AC2 named an enumerated set and so answered
+        # "does it name a procedure?" yes, while the set enumerated command
+        # spellings rather than the domain "commands that read history".
+        self.assertRegex(
+            plan(),
+            r"\*\*The procedure must enumerate the domain the criterion's own "
+            r"universal\s+quantifies over, not a proxy for it\.\*\*",
+        )
+
+    def test_naming_a_procedure_does_not_pass_the_domain_match_test(self):
+        # The failing form is identified by its property — membership fixed by
+        # author recall — never by the examples, which are non-exhaustive so a
+        # family-enumeration (intraclass's pass-3 fix) cannot escape the list.
+        self.assertRegex(
+            plan(),
+            r"Naming a procedure is not passing\s+this test: an enumeration "
+            r"whose membership is fixed by what the author\s+recalled, rather "
+            r"than decided by a procedure over the domain, is a proxy",
+        )
+
+    def test_the_instance_enumeration_examples_are_non_exhaustive(self):
+        self.assertRegex(
+            plan(),
+            r"however long its list — spellings, renderings, known cases and "
+            r"whole\s+families among others, never only those",
+        )
+
+    def test_the_remedy_is_to_narrow_the_promise_not_widen_the_enumeration(self):
+        # Both halves: guard-doctrine §9 already holds that the remedy is not a
+        # fifth matcher; M132 adds where a rejected criterion actually goes.
+        self.assertRegex(
+            plan(),
+            r"A counterexample defeating such\s+an enumeration is therefore "
+            r"not answered by a wider one; the repair is to\s+narrow the "
+            r"promise until a stated procedure settles it",
+        )
+
+    def test_the_rule_carries_its_measured_failure(self):
+        self.assertRegex(
+            plan(),
+            r"intraclass M102's\s+\"no command reads git history\", built as a "
+            r"set of refused command forms,\s+took three returns beaten by a "
+            r"ref spelling, an argument-order bug, and\s+then `awk`, which is "
+            r"no git command at all\.",
+        )
+
 
 class TestRRIngestionCriteriaAudit(unittest.TestCase):
     """The same audit at `/milestone-brief`'s RR ingestion."""
@@ -219,6 +277,32 @@ class TestRRIngestionCriteriaAudit(unittest.TestCase):
             r"D-entry make that state unreachable\*, and\s+\*does it make a "
             r"universal claim over a domain no procedure it names enumerates\*",
         )
+
+    def test_ingest_audit_carries_the_domain_match_test(self):
+        # M132: the sentence is byte-identical to the plan-gate surface's, so a
+        # reader meeting either question meets the same test. Review found the
+        # first draft differed ("the third question asked" vs "The third
+        # question is asked") while two comments claimed identity, and that it
+        # had been interjected mid-sentence, repurposing the em-dash that closed
+        # the three-question list so "asked of the set as well as of each
+        # criterion" attached to the third question alone.
+        self.assertRegex(
+            brief(),
+            r"The third question is asked of the\s+domain the claim quantifies "
+            r"over, never of a proxy the named procedure\s+happens to "
+            r"enumerate \(M132\)\.",
+        )
+
+    def test_the_domain_match_sentence_is_identical_at_both_surfaces(self):
+        # Nothing else enforces this: each surface's guard reads only its own
+        # file, so without this the two copies drift apart with both green.
+        sentence = (
+            "The third question is asked of the\n   domain the claim "
+            "quantifies over, never of a proxy the named procedure\n   "
+            "happens to enumerate (M132)."
+        )
+        self.assertEqual(plan().count(sentence), 1)
+        self.assertEqual(brief().count(sentence), 1)
 
     def test_ingest_audit_asks_the_questions_of_the_set_not_only_each(self):
         # The set-level read is the half RB07's trigger needed: two criteria
