@@ -3634,3 +3634,43 @@ decidable after renumbering or a re-cut. If an amendment-return loop ever
 survives this stop — rewording churning across different AC ids on one
 milestone — this is the entry to supersede. Delivered by M130 beside the
 return floor (its ≥80/≥90 bands), which D-064 never governed.
+
+### D-098 (2026-08-02): A downstream repo's surfacing of a defect in cairn's shipped rules is hosted by a cairn milestone — annotates D-090's within-the-surfacing-milestone clause, whose prescribed host does not exist across repos
+
+**Context:** intraclass M102's AC2 promised that no command in a committed
+ledger reads git history, naming "an enumerated set of history-dependent
+forms". It passed cairn's plan gate on 2026-08-02 with M130's bounded-promise
+rule live, because that rule's question is whether a criterion names a
+procedure enumerating its domain and an enumerated set reads as a yes — while
+the set enumerated command spellings its author recalled, not the domain the
+promise quantifies over. Three review returns followed, each defeated by a
+genuinely new counterexample: ref spellings past a blacklist, a flag-value
+versus `--` ordering bug past a positive rule over the revision slot, and
+`awk 'BEGIN{ "git rev-list …" | getline x }'` past a rule closing the whole
+git-parsing family, awk being no git command at all. M102 is parked `blocked`.
+cairn's own M114 consumed three returns on the identical shape and banked the
+lesson in a ROADMAP candidate row; `guard-doctrine.md` §6 and §9 both state
+the stronger test, but that module is read only when authoring a guard, so a
+plan gate writing a criterion never reaches it and meets only
+`/milestone-plan`'s weaker copy.
+
+**Decision:** D-090's trigger clause is satisfied, not superseded — the defect
+is in shipped skill behavior, what `/milestone-plan` does for its user, and it
+is measured in a user repo at a cost of three returns and a parked milestone.
+What this entry annotates is D-090's remedy clause, "A defect in doctrine
+prose, in records, or in the apparatus's own coverage is fixed as ordinary work
+within the milestone that surfaces it, never promoted into its own apparatus
+milestone." Where the surfacing milestone lives in another repo, that host does
+not exist: a downstream milestone cannot edit cairn's shipped prose, and the
+plugin is the shared artifact by GP4. So a cross-repo surfacing is hosted by a
+cairn milestone of its own, and the clause binds unchanged within a repo. The
+door's own bar is unrelaxed — the trigger stays a shipped-behavior defect, and
+a defect in cairn's records or in its apparatus's own coverage still gets no
+milestone whatever repo notices it.
+
+**Consequences:** M132 is planned under this reading. A downstream repo
+carrying an unrepairable-in-place defect against the plugin now has a stated
+route rather than a choice between editing another repo's records and dropping
+the finding. If a cross-repo surfacing ever proves fixable inside the
+surfacing repo's own milestone — the falsifier — this is the entry to
+supersede.

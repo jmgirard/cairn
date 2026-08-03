@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-02 (M131 merged — the rulebook gains the verify-an-edit-landed rule, 5 anchors pinned and 13 mutations red. Review returned once under M130's floor, its first exercise. M126 terminal row pruned; one lesson captured. Validate all green.)_
+_Last hygiene check: 2026-08-02 (M132 planned — the bounded-promise rule gains a domain-match test after intraclass M102 passed the gate on an enumerated proxy domain and thrashed three returns. D-098 annotates D-090 for the cross-repo host case. Criteria audit returned ten findings, four fixed pre-gate. M131's terminal row stands.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,6 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M132 | A criterion's enumerating procedure covers the domain its promise quantifies over | planned | — | high | milestones/M132-promise-domain-match.md |
 | M131 | A scripted edit is verified to have landed before the record claiming it did | done | — | high | milestones/archive/M131-scripted-edit-landing.md |
 | M130 | Review returns are reserved for breaches of bounded promises | done | — | high | milestones/archive/M130-review-convergence.md |
 | M129 | Repair re-surfaces a declined shelf migration | done | — | normal | milestones/archive/M129-repair-resumability.md |
