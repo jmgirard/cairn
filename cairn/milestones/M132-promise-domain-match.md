@@ -124,6 +124,7 @@ them, AC5/AC6's domain covers those sentences by construction.
 - 2026-08-02: T3 — two-reader AC4 pass complete; both verdicts and both rewrites recorded verbatim in this file's `## Decisions` section. Result DISCRIMINATES: intraclass M102 AC2 FAILS (its second universal names no procedure; the checker decides a proxy property), circumplex M68 AC11 PASSES. T3's wording amended (minor, task-owned): it said to record in the Review section, which the ownership table makes review-exclusive — AC4 names no location, so no criterion changed.
 - 2026-08-02: T4 — 7 guards + 7 mutation registrations over the 5 added rule sentences and both audit-clause surfaces; per-sentence mapping in `## Decisions`. Each registration blanked individually and confirmed RED rather than inferred from the suite being green. skills suite 729 -> 736 tests, all green.
 - 2026-08-02: T5 — all three amended sections inverted as units and RED, restored SHA-verified; gate clean: skills 736, scripts 337, hooks 103, `cairn_validate` all checks passed. Status in-progress -> review.
+- 2026-08-02: review — prior-review lens found a partial pin on the M102 example sentence (its tail deleted green, the M114 class this milestone's own record claimed to avoid); confirmed by probe, fixed on the branch, and the whole diff swept for the class with no second instance. No status change: it demonstrates no acceptance criterion failing and is apparatus coverage rather than user-facing skill behaviour, so M130's return floor takes it as triage.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -297,3 +298,33 @@ over `skills/`. Anchors asserted unique before mutating.
 
 **AC7 — MET.** `skills` 736 tests OK, `scripts` 337 OK, `hooks` 103 OK;
 `cairn_validate` exit 0, all checks passed.
+
+### Findings — prior-review lens (2026-08-02)
+
+**PR1 — ACTIONED, fixed on the branch. Partial pin on the example sentence.**
+The guard `test_the_rule_carries_its_measured_failure` and its registry block
+both stopped at ``then `awk` ``, leaving the sentence's tail — `, which is no
+git command at all.` — referenced by no guard, no registry entry and no other
+test. **Verified before acting, not taken on report:** deleting that clause left
+all 736 skills tests GREEN. This is the M114 partial-pin class that this
+milestone's own T4 record claims to have avoided, and the lens noted the
+adjacent long sentence WAS split into two blocks to cover its full length — so
+the discipline was applied to one sentence and missed on the other.
+Fix: guard regex and registry block both extended through `at all.`;
+re-probed, the deletion is now RED. All 7 registrations still RED, each block
+still unique in its target.
+
+**Sweep for the same class across the whole diff, not just the reported
+instance.** Every added sentence was probed by deleting whatever tail falls
+beyond the last registered block covering it: two tails RED (pinned), three
+sentences FULLY PINNED. No second instance. Restores SHA-verified.
+
+**PR2 — no other prior-review regression.** The lens cleared the diff against
+five classes past reviews raised on these files: false coverage (each of the 7
+phrases occurs exactly once in its target), `index()`-bound blocks that crash
+rather than fail (none — all plain containment blocks over prose), anchors
+authored from draft rather than shipped bytes, a rule forking into two wordings
+across surfaces (the shared clause is byte-identical; the two guards differ only
+where the host grammar legitimately differs), and enumerations widened rather
+than replaced (this diff replaces list-widening with the domain-match property,
+which is its point).

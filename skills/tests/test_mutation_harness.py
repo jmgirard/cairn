@@ -2479,7 +2479,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestPlanGateCriteriaAudit.test_the_rule_carries_its_measured_failure",
         target="skills/milestone-plan/SKILL.md",
-        block="intraclass M102's\n     \"no command reads git history\", built as a set of refused command forms,\n     took three returns beaten by a ref spelling, an argument-order bug, and\n     then `awk`",
+        block="intraclass M102's\n     \"no command reads git history\", built as a set of refused command forms,\n     took three returns beaten by a ref spelling, an argument-order bug, and\n     then `awk`, which is no git command at all.",
     ),
     Mutation(
         guard="test_fresh_context_readers",

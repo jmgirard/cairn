@@ -241,7 +241,8 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
             plan(),
             r"intraclass M102's\s+\"no command reads git history\", built as a "
             r"set of refused command forms,\s+took three returns beaten by a "
-            r"ref spelling, an argument-order bug, and\s+then `awk`",
+            r"ref spelling, an argument-order bug, and\s+then `awk`, which is "
+            r"no git command at all\.",
         )
 
 
