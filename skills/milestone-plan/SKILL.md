@@ -138,6 +138,17 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      quantified-claim rule applied to promises). A hand-list of sites is
      not a procedure — the list becomes the sweep and every site it omits
      ships stale (the M118 lesson).
+     **The procedure must enumerate the domain the criterion's own universal
+     quantifies over, not a proxy for it.** Naming a procedure is not passing
+     this test: an enumeration whose membership is fixed by what the author
+     recalled, rather than decided by a procedure over the domain, is a proxy
+     however long its list — spellings, renderings, known cases and whole
+     families among others, never only those. A counterexample defeating such
+     an enumeration is therefore not answered by a wider one; the repair is to
+     narrow the promise until a stated procedure settles it. intraclass M102's
+     "no command reads git history", built as a set of refused command forms,
+     took three returns beaten by a ref spelling, an argument-order bug, and
+     then `awk`, which is no git command at all.
    - Acceptance criteria set the test scope for the milestone (see "What
      gets a test" in tracking-rules): name the behavior that must be tested.
    - `Out:` items name where the excluded work lives instead.

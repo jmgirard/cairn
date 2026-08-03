@@ -3,12 +3,12 @@
      Per-section owners are tagged below. -->
 # M132: A criterion's enumerating procedure covers the domain its promise quantifies over
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP3, GP4   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m132-promise-domain-match`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -88,7 +88,7 @@ them, AC5/AC6's domain covers those sentences by construction.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] **T1** — Amend `/milestone-plan` step 4's "Bounded promises only" rule
+- [x] **T1** — Amend `/milestone-plan` step 4's "Bounded promises only" rule
       (`skills/milestone-plan/SKILL.md:131-143`): the domain-match test, the
       recalled-membership property with non-exhaustive examples, and the two
       remedy halves. Draft against the existing sentence rather than appending
@@ -117,6 +117,8 @@ them, AC5/AC6's domain covers those sentences by construction.
 - 2026-08-02: plan gate chose a second criterion plus fresh-context classification over one self-graded case because a rule tailored to its one known example passes its own test while the next instance sails through (the audit's set-level verdict); falsified by the second case being classified correctly by the rule's own author, which would show the fresh reader bought nothing.
 - 2026-08-02: plan gate chose section-level inversion over per-sentence because the per-sentence form is the certification ceremony D-090/D-091 closed, re-entered as milestone evidence rather than as a shipped step, and the M121 lesson records that sentence-scoped sweeps miss the section's own governing claims; falsified by a section-level sweep passing while a sentence inside it inverts green.
 - 2026-08-02: plan gate chose a D-entry annotating D-090 over proceeding silently because D-090 prescribes fixing a doctrine-prose defect "within the milestone that surfaces it", and the surfacing milestone is intraclass M102, in a repo that cannot edit cairn's shipped prose — the prescribed host does not exist for a cross-repo surfacing; falsified by a cross-repo defect that the surfacing repo's own milestone can in fact fix.
+- 2026-08-02: start — branch `m132-promise-domain-match` cut from pushed main (`6397cad`), status planned->in-progress.
+- 2026-08-02: T1 — the bounded-promise rule gains the domain-match test as a paragraph extending the existing sentence, not a second rule beside it: the named procedure must enumerate the domain the criterion's own universal quantifies over, an enumeration whose membership is fixed by author recall is a proxy however long its list (examples marked non-exhaustive, `families` included so intraclass's pass-3 family-enumeration is named rather than escaping), a counterexample is not answered by a wider enumeration, and the repair is to narrow the promise until a stated procedure settles it. 11 lines added, no existing line reflowed; 729 skills tests green, so no adjacent guard's anchor was split (the M104 trap).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
