@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M132: A criterion's enumerating procedure covers the domain its promise quantifies over
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -106,7 +106,7 @@ them, AC5/AC6's domain covers those sentences by construction.
 - [x] **T4** — Enumerate the in-domain sentences by the AC5 diff command, add a
       registry entry per sentence, and run the mutation harness over exactly
       those entries; record the per-sentence mapping.
-- [ ] **T5** — Section-level inversion sweep over each amended section; then the
+- [x] **T5** — Section-level inversion sweep over each amended section; then the
       three suites and `cairn_validate`.
 
 ## Work log
@@ -123,9 +123,36 @@ them, AC5/AC6's domain covers those sentences by construction.
 - 2026-08-02: T2 — the domain-match clause lands at both audit surfaces by APPENDING to each existing question rather than rewording it, so every pinned byte sequence survives: the plan guard's `enumerates*\s+(the bounded-promise rule, step 4; M130)`, the brief guard's full three-question sequence, and both mutation-registry blocks including `It reads the wording\n   step 4 will write` (whose exact wrap the insertion preserves). The shared clause `asked of the / domain the claim quantifies over, never of a proxy the named procedure / happens to enumerate (M132)` is byte-identical at both surfaces, verified present exactly once in each file rather than assumed. 729 skills tests green.
 - 2026-08-02: T3 — two-reader AC4 pass complete; both verdicts and both rewrites recorded verbatim in this file's `## Decisions` section. Result DISCRIMINATES: intraclass M102 AC2 FAILS (its second universal names no procedure; the checker decides a proxy property), circumplex M68 AC11 PASSES. T3's wording amended (minor, task-owned): it said to record in the Review section, which the ownership table makes review-exclusive — AC4 names no location, so no criterion changed.
 - 2026-08-02: T4 — 7 guards + 7 mutation registrations over the 5 added rule sentences and both audit-clause surfaces; per-sentence mapping in `## Decisions`. Each registration blanked individually and confirmed RED rather than inferred from the suite being green. skills suite 729 -> 736 tests, all green.
+- 2026-08-02: T5 — all three amended sections inverted as units and RED, restored SHA-verified; gate clean: skills 736, scripts 337, hooks 103, `cairn_validate` all checks passed. Status in-progress -> review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
+
+- 2026-08-02 (T5, AC6): section-level inversion sweep, one result per
+  section. Each section inverted as a unit in place — governing claim negated
+  AND its subject transposed, per M131's finding that negation alone leaves a
+  swapped subject green — then the skills suite run, then restored.
+
+  | section | inverted suite |
+  |---|---|
+  | S1 `/milestone-plan` step-3 audit clause | RED |
+  | S2 `/milestone-plan` step-4 bounded-promise rule | RED |
+  | S3 `/milestone-brief` ingest audit clause | RED |
+
+  Controls the sweep carried: baseline suite GREEN before the first mutation
+  and GREEN after the last restore; each anchor asserted unique in its file
+  before mutating (a non-unique anchor binds to the first occurrence — the
+  M126 class); restoration written in a `finally:` and verified by SHA-256
+  against the pre-sweep bytes for both files, not by eye (the M124 class,
+  where a crash between mutate and restore silently contaminated every later
+  measurement). `git diff --stat` over both files is empty after the sweep.
+
+  S2's inversion was substantive rather than a relabel: "must enumerate the
+  domain … not a proxy" → "may enumerate a proxy", "is a proxy however long
+  its list" → "is a procedure over the domain, never a proxy", and the remedy
+  reversed to "answered by a wider one … widen the enumeration until no
+  counterexample remains" — i.e. the section was rewritten to say the thing
+  the milestone exists to forbid, and the suite caught it.
 
 - 2026-08-02 (T4, AC5): per-sentence mapping from the AC5 domain to the
   registry entry covering each. Domain enumerated by
