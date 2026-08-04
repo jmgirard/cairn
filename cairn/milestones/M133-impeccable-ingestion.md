@@ -1,11 +1,11 @@
 # M133: Ingest the impeccable skill as a skill-architecture comparandum
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m133-impeccable-ingestion
 
 ## Goal
 
@@ -89,7 +89,7 @@ instead. Comparing how impeccable *words* its rules (bans, absolutes, voice)
 
 ## Tasks
 
-- [ ] T1: Read the twelve declared files first-hand; record each path with its
+- [x] T1: Read the twelve declared files first-hand; record each path with its
       `wc -c` byte count and the install's `version:` string.
 - [ ] T2: Draft `cairn/references/impeccable.md` — provenance, citation, role,
       `## Read corpus`, and `## Findings` as a numbered list, each entry cited
@@ -114,6 +114,7 @@ instead. Comparing how impeccable *words* its rules (bans, absolutes, voice)
 - 2026-08-04: plan gate chose ingest-and-bank over also planning an adoption milestone now (the two offered were phase-gated rulebook loading and severity-graded drift reporting), because every prior shelf ingestion banked before adopting and the adoption's shape depends on findings not yet written; falsified by a banked row whose promotion condition is already satisfied the day the page lands.
 - 2026-08-04: plan chose comparing mechanisms alone over also comparing how impeccable words its rules, because style findings carry no promotion condition anyone could act on; falsified by a mechanism finding whose cairn-side defect turns out to be wording rather than structure.
 - 2026-08-04: plan chose carrying AC4's provenance in the candidate bullet's existing `— added … —` tail over giving candidate rows a source column, because D-035 fixes a candidate row at one line with no file and no ID; falsified by a superseding entry reopening candidate-row structure.
+- 2026-08-04: T1 — read all twelve declared files first-hand (84,208 bytes total); version 4.0.4 confirmed from SKILL.md frontmatter; byte counts recorded for the Read corpus. Status → in-progress, branch m133-impeccable-ingestion cut from pushed main.
 - 2026-08-04: criteria audit ([O], fresh context) returned four findings, all fixed before writing: AC1 quantified over "every file read first-hand", which nothing enumerates (a 3-of-147 list passed) → the declared list is now the corpus, checked by `wc -c`; AC2's command enumerated citations while the criterion quantified over entries, so a zero-citation entry passed → the command now enumerates entries; AC3 required the disposition value to be *exactly* one of four tokens and *also* to name a reference, which no line satisfied → "begins with"; AC4 required a file column on candidate rows, which D-035 forbids and the section (a flat bullet list) does not have → provenance tail, plus the sweep and falsifying-condition clauses the rulebook already demands. AC5 and AC6 returned clean.
 
 ## Decisions
