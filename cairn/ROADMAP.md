@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M133 | Ingest the impeccable skill as a skill-architecture comparandum | in-progress | — | normal | milestones/M133-impeccable-ingestion.md |
+| M133 | Ingest the impeccable skill as a skill-architecture comparandum | review | — | normal | milestones/M133-impeccable-ingestion.md |
 | M132 | A criterion's enumerating procedure covers the domain its promise quantifies over | done | — | high | milestones/archive/M132-promise-domain-match.md |
 | M131 | A scripted edit is verified to have landed before the record claiming it did | done | — | high | milestones/archive/M131-scripted-edit-landing.md |
 | M130 | Review returns are reserved for breaches of bounded promises | done | — | high | milestones/archive/M130-review-convergence.md |

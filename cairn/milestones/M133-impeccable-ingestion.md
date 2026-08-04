@@ -1,6 +1,6 @@
 # M133: Ingest the impeccable skill as a skill-architecture comparandum
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -119,6 +119,7 @@ instead. Comparing how impeccable *words* its rules (bans, absolutes, voice)
 
 - 2026-08-04: T2–T5 — page drafted with 14 findings (6 already-has, 4 covered-by-D: D-063/D-067/D-037/D-064, 3 candidate, 2 not-applicable — one entry cites two mechanisms under one not-applicable); 3 candidate rows appended to ROADMAP with sweeps and falsifying promotion conditions; all four AC commands run clean. AC1's command needed one fix before it ran: a loop variable named `path` shadows zsh's tied `$PATH` and made `wc`/`tr` unresolvable — renamed to `p` in the stated command.
 - 2026-08-04: T6 — INDEX.md line added; `TestShippedPageStateLedger` pinned `impeccable.md: ok` with its justification comment; skills/scripts/hooks suites all OK and `cairn_validate` exit 0.
+- 2026-08-04: all tasks done, suites and validate clean — status → review.
 
 ## Decisions
 
