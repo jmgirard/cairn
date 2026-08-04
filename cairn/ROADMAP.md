@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-02 (M132 merged — the bounded-promise rule gains the domain-match test after intraclass M102 thrashed three returns on an enumerated proxy domain; D-098 annotates D-090 for the cross-repo host. Review found a partial pin letting part of a rule sentence delete green, fixed; zero returns. M127 terminal row pruned; one lesson captured.)_
+_Last hygiene check: 2026-08-04 (M133 merged — the impeccable comparandum lands on the shelf with three candidate rows banked; review fixed a false Stop-hook claim in one new row and folded the version-stamp insight into the M24 row; zero returns. M128 terminal row pruned; one lesson captured, M101's retired by enforcement.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M133 | Ingest the impeccable skill as a skill-architecture comparandum | review | — | normal | milestones/M133-impeccable-ingestion.md |
+| M133 | Ingest the impeccable skill as a skill-architecture comparandum | done | — | normal | milestones/archive/M133-impeccable-ingestion.md |
 | M132 | A criterion's enumerating procedure covers the domain its promise quantifies over | done | — | high | milestones/archive/M132-promise-domain-match.md |
 | M131 | A scripted edit is verified to have landed before the record claiming it did | done | — | high | milestones/archive/M131-scripted-edit-landing.md |
 | M130 | Review returns are reserved for breaches of bounded promises | done | — | high | milestones/archive/M130-review-convergence.md |
 | M129 | Repair re-surfaces a declined shelf migration | done | — | normal | milestones/archive/M129-repair-resumability.md |
-| M128 | Gate questions lead in plain words | done | — | high | milestones/archive/M128-gate-question-clarity.md |
 
 ## Candidates
 
