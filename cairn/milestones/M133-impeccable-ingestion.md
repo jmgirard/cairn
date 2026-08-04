@@ -1,11 +1,11 @@
 # M133: Ingest the impeccable skill as a skill-architecture comparandum
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m133-impeccable-ingestion · https://github.com/jmgirard/cairn/pull/133
 
 ## Goal
 
@@ -37,18 +37,18 @@ instead. Comparing how impeccable *words* its rules (bans, absolutes, voice)
 
 ## Acceptance criteria
 
-- [ ] AC1: The page carries a `## Read corpus` section listing one path per
+- [x] AC1: The page carries a `## Read corpus` section listing one path per
       line, each with the byte count observed at read time, plus the install
       path, the `version:` string read from the install's `SKILL.md`
       frontmatter, and the read date. A command stated in the page runs
       `wc -c` over every path in that list and reports any path absent from
       the install or whose byte count differs; met when it reports none.
-- [ ] AC2: The page's findings sit in a `## Findings` section as a numbered
+- [x] AC2: The page's findings sit in a `## Findings` section as a numbered
       list, one finding per numbered entry. A command stated in the page
       enumerates those numbered entries and reports (a) any entry carrying no
       citation of the form `<path>` or `<path>:<line>`, and (b) any cited path
       that is not a member of AC1's read-corpus list; met when it reports none.
-- [ ] AC3: Each numbered finding entry carries a `Disposition:` line whose
+- [x] AC3: Each numbered finding entry carries a `Disposition:` line whose
       value begins with exactly one of `already-has`, `candidate`,
       `covered-by-D`, `not-applicable`, followed by its required reference —
       `already-has` by the cairn `file:line` already carrying the rule,
@@ -58,7 +58,7 @@ instead. Comparing how impeccable *words* its rules (bans, absolutes, voice)
       whose value does not begin with one of those four tokens, or whose value
       is one of the first three tokens with no reference after it; met when it
       reports none.
-- [ ] AC4: Every finding whose `Disposition:` begins `candidate` has a bullet
+- [x] AC4: Every finding whose `Disposition:` begins `candidate` has a bullet
       in `cairn/ROADMAP.md`'s `## Candidates` section ending with the
       provenance tail `— added 2026-08-04 — M133 (references/impeccable.md)`,
       and each such bullet carries an overlap sweep sentence (`Swept <date>:`,
@@ -68,13 +68,13 @@ instead. Comparing how impeccable *words* its rules (bans, absolutes, voice)
       bearing that tail, and reports any finding whose named bullet is absent,
       any tailed bullet lacking a `Swept` sentence, and any lacking a
       `Promote when` clause; met when it reports none.
-- [ ] AC5: `TestShippedPageStateLedger` (`scripts/tests/test_scripts.py:1381`)
+- [x] AC5: `TestShippedPageStateLedger` (`scripts/tests/test_scripts.py:1381`)
       is extended to pin `impeccable.md`'s extraction state, with its one-line
       justification as a comment above `EXPECTED` (shipped practice, M118/
       M121/M127), in the same commit that adds the page. At that commit the
       profile's `verify` slot — `python3 -m unittest` over `skills/tests`,
       `scripts/tests` and `hooks/tests` — and `cairn_validate` both exit 0.
-- [ ] AC6: `cairn/references/INDEX.md` gains exactly one line for
+- [x] AC6: `cairn/references/INDEX.md` gains exactly one line for
       `impeccable.md`, matching the file's existing grammar: `- <filename> — `
       followed by a single em-dashed gloss.
 
@@ -89,21 +89,21 @@ instead. Comparing how impeccable *words* its rules (bans, absolutes, voice)
 
 ## Tasks
 
-- [ ] T1: Read the twelve declared files first-hand; record each path with its
+- [x] T1: Read the twelve declared files first-hand; record each path with its
       `wc -c` byte count and the install's `version:` string.
-- [ ] T2: Draft `cairn/references/impeccable.md` — provenance, citation, role,
+- [x] T2: Draft `cairn/references/impeccable.md` — provenance, citation, role,
       `## Read corpus`, and `## Findings` as a numbered list, each entry cited
       to a corpus path.
-- [ ] T3: Disposition each finding against cairn's state — sweep `skills/`,
+- [x] T3: Disposition each finding against cairn's state — sweep `skills/`,
       `skills/shared/tracking-rules.md` and the `### D-` headings of
       `cairn/DECISIONS.md` (bounded read, D-054) for the counterpart
       mechanism; write the `Disposition:` line with its reference.
-- [ ] T4: Write a candidate bullet for each `candidate` disposition, each with
+- [x] T4: Write a candidate bullet for each `candidate` disposition, each with
       its own overlap sweep and falsifying promotion condition, appended to
       `cairn/ROADMAP.md`'s `## Candidates` section with the M133 tail.
-- [ ] T5: Write AC1–AC4's four checking commands into the page's
+- [x] T5: Write AC1–AC4's four checking commands into the page's
       `## Verification` section; run each and record its output.
-- [ ] T6: Add the `INDEX.md` line; extend `TestShippedPageStateLedger` with
+- [x] T6: Add the `INDEX.md` line; extend `TestShippedPageStateLedger` with
       the pin and its justification comment; run the three suites and
       `cairn_validate`, both to exit 0, in the page's commit.
 
@@ -114,8 +114,23 @@ instead. Comparing how impeccable *words* its rules (bans, absolutes, voice)
 - 2026-08-04: plan gate chose ingest-and-bank over also planning an adoption milestone now (the two offered were phase-gated rulebook loading and severity-graded drift reporting), because every prior shelf ingestion banked before adopting and the adoption's shape depends on findings not yet written; falsified by a banked row whose promotion condition is already satisfied the day the page lands.
 - 2026-08-04: plan chose comparing mechanisms alone over also comparing how impeccable words its rules, because style findings carry no promotion condition anyone could act on; falsified by a mechanism finding whose cairn-side defect turns out to be wording rather than structure.
 - 2026-08-04: plan chose carrying AC4's provenance in the candidate bullet's existing `— added … —` tail over giving candidate rows a source column, because D-035 fixes a candidate row at one line with no file and no ID; falsified by a superseding entry reopening candidate-row structure.
+- 2026-08-04: T1 — read all twelve declared files first-hand (84,208 bytes total); version 4.0.4 confirmed from SKILL.md frontmatter; byte counts recorded for the Read corpus. Status → in-progress, branch m133-impeccable-ingestion cut from pushed main.
 - 2026-08-04: criteria audit ([O], fresh context) returned four findings, all fixed before writing: AC1 quantified over "every file read first-hand", which nothing enumerates (a 3-of-147 list passed) → the declared list is now the corpus, checked by `wc -c`; AC2's command enumerated citations while the criterion quantified over entries, so a zero-citation entry passed → the command now enumerates entries; AC3 required the disposition value to be *exactly* one of four tokens and *also* to name a reference, which no line satisfied → "begins with"; AC4 required a file column on candidate rows, which D-035 forbids and the section (a flat bullet list) does not have → provenance tail, plus the sweep and falsifying-condition clauses the rulebook already demands. AC5 and AC6 returned clean.
+
+- 2026-08-04: T2–T5 — page drafted with 14 findings (6 already-has, 4 covered-by-D: D-063/D-067/D-037/D-064, 3 candidate, 2 not-applicable — one entry cites two mechanisms under one not-applicable); 3 candidate rows appended to ROADMAP with sweeps and falsifying promotion conditions; all four AC commands run clean. AC1's command needed one fix before it ran: a loop variable named `path` shadows zsh's tied `$PATH` and made `wc`/`tr` unresolvable — renamed to `p` in the stated command.
+- 2026-08-04: T6 — INDEX.md line added; `TestShippedPageStateLedger` pinned `impeccable.md: ok` with its justification comment; skills/scripts/hooks suites all OK and `cairn_validate` exit 0.
+- 2026-08-04: all tasks done, suites and validate clean — status → review.
 
 ## Decisions
 
 ## Review
+
+- 2026-08-04 AC1: page's AC1 command run fresh from repo root — silent (no ABSENT, no MISMATCH) over the 12-path corpus; install still at version 4.0.4.
+- 2026-08-04 AC2: page's AC2 command run fresh — silent; 14 numbered entries, every entry cites ≥1 corpus path, no cited install path outside the corpus.
+- 2026-08-04 AC3: page's AC3 command run fresh — silent; every entry carries a `Disposition:` line beginning with one of the four tokens, references present on all already-has/candidate/covered-by-D entries.
+- 2026-08-04 AC4: page's AC4 command run fresh — silent; 3 candidate phrases ↔ 3 M133-tailed ROADMAP bullets, each with a `Swept 2026-08-04:` sentence and a `Promote when … never on a count of …` condition.
+- 2026-08-04 AC5: `git show --stat 20c022a` confirms the page, `scripts/tests/test_scripts.py` (+3: the pin and its two-line justification comment), and INDEX.md all in the one commit that adds the page; fresh runs — `TestShippedPageStateLedger` OK, all three suites OK, `cairn_validate` exit 0.
+- 2026-08-04 AC6: `grep -c '^- impeccable\.md — '` on INDEX.md returns exactly 1; the line follows the `- <filename> — <gloss>` grammar with a single em-dashed gloss.
+- 2026-08-04 fan-out: [S] blame-history — no findings (candidate-row conventions, ledger-pin discipline, INDEX grammar all honored); [S] prior-PR-comments — no regression findings (swept 17 archived Review sections; PR-comment probe returned empty); [O] diff-bug — 10 findings, all scored by fresh [S] scorer.
+- 2026-08-04 triage of actioned (≥80): F1 (92, third candidate row falsely claimed no Stop-hook registration — stop_guard.py registers Stop) → fixed, row corrected in place with correction marked; F3 (85, finding 8's already-has cited the banked M24 row without folding its new insight in) → fixed, second job absorbed into the M24 row and the disposition prose now says the record is a banked row, not a shipped rule; F4 (82, AC2's cite regex blind to backticked non-.md install paths) → fixed, regex widened to reference/·scripts/·*.mjs forms; all AC commands, suites, validate re-run clean after fixes.
+- 2026-08-04 sub-threshold, logged not actioned (7): F2 75 (four line cites off by one — fixed anyway, verified against the install: doctor.md 26→27 and 6→7, hooks.md 56→57, routing.md quote cite added at :7); F6 78 (AC3 reference check is presence-only, latent); F5 70 (AC1 silently skips malformed corpus lines, currently none); F7 68 (unquoted candidate phrase would escape AC4, none exist); F10 40 (third bullet's Swept/Promote order inverted, cosmetic); F8 25 (mutable-install source, disclosed in Provenance by design); F9 5 (claimed uncommitted Review edits — verified false, already committed).
