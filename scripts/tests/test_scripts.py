@@ -1418,6 +1418,8 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # M127 adds the AC1 retirement-search ledger on that same footing: its
     # corpus is this repo's own prose at the ledger's own commit, re-derived by
     # the two grep commands the page carries, hence `exempt`.
+    # M133 adds the impeccable comparandum: all twelve corpus files read
+    # directly in full at ingestion, dated verification claim, hence `ok`.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "m118-cap-exemption-ledger.md": "exempt",
@@ -1431,6 +1433,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "design-interview-notes.md": "exempt",
         "desktop-toc-mechanism.md": "ok",
         "feature-dev.md": "ok",
+        "impeccable.md": "ok",
         "llm-wiki.md": "ok",
         "migration-pilot-notes.md": "exempt",
         "oracle-discipline-notes.md": "ok",

@@ -91,19 +91,19 @@ instead. Comparing how impeccable *words* its rules (bans, absolutes, voice)
 
 - [x] T1: Read the twelve declared files first-hand; record each path with its
       `wc -c` byte count and the install's `version:` string.
-- [ ] T2: Draft `cairn/references/impeccable.md` — provenance, citation, role,
+- [x] T2: Draft `cairn/references/impeccable.md` — provenance, citation, role,
       `## Read corpus`, and `## Findings` as a numbered list, each entry cited
       to a corpus path.
-- [ ] T3: Disposition each finding against cairn's state — sweep `skills/`,
+- [x] T3: Disposition each finding against cairn's state — sweep `skills/`,
       `skills/shared/tracking-rules.md` and the `### D-` headings of
       `cairn/DECISIONS.md` (bounded read, D-054) for the counterpart
       mechanism; write the `Disposition:` line with its reference.
-- [ ] T4: Write a candidate bullet for each `candidate` disposition, each with
+- [x] T4: Write a candidate bullet for each `candidate` disposition, each with
       its own overlap sweep and falsifying promotion condition, appended to
       `cairn/ROADMAP.md`'s `## Candidates` section with the M133 tail.
-- [ ] T5: Write AC1–AC4's four checking commands into the page's
+- [x] T5: Write AC1–AC4's four checking commands into the page's
       `## Verification` section; run each and record its output.
-- [ ] T6: Add the `INDEX.md` line; extend `TestShippedPageStateLedger` with
+- [x] T6: Add the `INDEX.md` line; extend `TestShippedPageStateLedger` with
       the pin and its justification comment; run the three suites and
       `cairn_validate`, both to exit 0, in the page's commit.
 
@@ -116,6 +116,9 @@ instead. Comparing how impeccable *words* its rules (bans, absolutes, voice)
 - 2026-08-04: plan chose carrying AC4's provenance in the candidate bullet's existing `— added … —` tail over giving candidate rows a source column, because D-035 fixes a candidate row at one line with no file and no ID; falsified by a superseding entry reopening candidate-row structure.
 - 2026-08-04: T1 — read all twelve declared files first-hand (84,208 bytes total); version 4.0.4 confirmed from SKILL.md frontmatter; byte counts recorded for the Read corpus. Status → in-progress, branch m133-impeccable-ingestion cut from pushed main.
 - 2026-08-04: criteria audit ([O], fresh context) returned four findings, all fixed before writing: AC1 quantified over "every file read first-hand", which nothing enumerates (a 3-of-147 list passed) → the declared list is now the corpus, checked by `wc -c`; AC2's command enumerated citations while the criterion quantified over entries, so a zero-citation entry passed → the command now enumerates entries; AC3 required the disposition value to be *exactly* one of four tokens and *also* to name a reference, which no line satisfied → "begins with"; AC4 required a file column on candidate rows, which D-035 forbids and the section (a flat bullet list) does not have → provenance tail, plus the sweep and falsifying-condition clauses the rulebook already demands. AC5 and AC6 returned clean.
+
+- 2026-08-04: T2–T5 — page drafted with 14 findings (6 already-has, 4 covered-by-D: D-063/D-067/D-037/D-064, 3 candidate, 2 not-applicable — one entry cites two mechanisms under one not-applicable); 3 candidate rows appended to ROADMAP with sweeps and falsifying promotion conditions; all four AC commands run clean. AC1's command needed one fix before it ran: a loop variable named `path` shadows zsh's tied `$PATH` and made `wc`/`tr` unresolvable — renamed to `p` in the stated command.
+- 2026-08-04: T6 — INDEX.md line added; `TestShippedPageStateLedger` pinned `impeccable.md: ok` with its justification comment; skills/scripts/hooks suites all OK and `cairn_validate` exit 0.
 
 ## Decisions
 
