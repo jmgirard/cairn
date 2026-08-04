@@ -52,7 +52,8 @@ spawn, each opening with a disclosure mandate.
 1. The no-argument menu is composed from measured, current signals —
    `reference/routing.md:5` runs a signals script plus the local detector and
    leads with 2–3 recommendations, each reason pulled from those signals
-   ("Reason over the signals; there is no score to obey"), never auto-running
+   ("Reason over the signals; there is no score to obey",
+   `reference/routing.md:7`), never auto-running
    one. cairn's counterpart is the contextual-chip rule: options composed
    from actual session state, and a chip is a user stop.
    Disposition: already-has — `skills/shared/tracking-rules.md:646`
@@ -84,9 +85,9 @@ spawn, each opening with a disclosure mandate.
    Disposition: candidate — "Phase-gated loading of implement-time doctrine".
 
 5. Drift findings are graded by the action they require, not their badness —
-   `reference/doctor.md:26`: "The severity says what should happen, not how
+   `reference/doctor.md:27`: "The severity says what should happen, not how
    bad it is" — `auto` applies without asking, `mention` informs, `route`
-   names the owning command; and `reference/doctor.md:6` keeps tool-version,
+   names the owning command; and `reference/doctor.md:7` keeps tool-version,
    schema, and truth drift apart so each gets its own remedy path. cairn's
    CHECK-FAIL / advisory-WARN vocabulary grades severity and leaves the
    required action to the reader.
@@ -113,10 +114,12 @@ spawn, each opening with a disclosure mandate.
    retired sections surface as deprecated and are deleted only on user
    agreement. cairn stamps no version into adopted scaffolds; the idea is
    already banked.
-   Disposition: already-has — `cairn/ROADMAP.md:46` (the M24 scaffold-spec
-   version-stamp candidate row, deferred until content drift bites; this
-   finding adds the stamp's second job that row does not name —
-   distinguishing "short by choice" from "predates the section").
+   Disposition: already-has — `cairn/ROADMAP.md:46` (what cairn already
+   carries is the banked M24 scaffold-spec version-stamp row — an idea on
+   file awaiting its promotion trigger, not a shipped rule; the stamp's
+   second job this finding surfaced — distinguishing "short by choice" from
+   "predates the section" — was absorbed into that row at M133's review,
+   per search-first).
 
 9. Hook findings run in two tiers — `reference/hooks.md:7`: the per-edit
    hook surfaces only "mechanical, unambiguous problems worth interrupting
@@ -129,7 +132,7 @@ spawn, each opening with a disclosure mandate.
 10. Suppressions descend a narrowest-exception ladder and the hook never
     writes its own — `reference/hooks.md:53`: persist an exception only
     after explicit user confirmation, then value-scoped before rule-in-file
-    before whole-rule before whole-file (`reference/hooks.md:56`). cairn has
+    before whole-rule before whole-file (`reference/hooks.md:57`). cairn has
     no machine-readable suppression store for a ladder to govern: advisories
     are judgments read by one operator, and overrides are logged work-log
     conduct.
@@ -204,7 +207,8 @@ corpus = re.findall(r'^- (\S+) — \d+ bytes$',
 findings = text.split("## Findings")[1].split("\n## ")[0]
 entries = [e for e in re.split(r'\n(?=\d+\.\s)', findings)
            if re.match(r'\d+\.\s', e)]
-cite = re.compile(r'`((?:SKILL\.md|reference/[\w./-]+\.md))(?::\d+)?`')
+cite = re.compile(
+    r'`((?:SKILL\.md|(?:reference|scripts)/[\w./-]+|[\w.-]+\.mjs))(?::\d+)?`')
 for e in entries:
     n = e.split('.')[0]
     hits = cite.findall(e)
