@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** m133-impeccable-ingestion
+- **Branch/PR:** m133-impeccable-ingestion · https://github.com/jmgirard/cairn/pull/133
 
 ## Goal
 
@@ -37,18 +37,18 @@ instead. Comparing how impeccable *words* its rules (bans, absolutes, voice)
 
 ## Acceptance criteria
 
-- [ ] AC1: The page carries a `## Read corpus` section listing one path per
+- [x] AC1: The page carries a `## Read corpus` section listing one path per
       line, each with the byte count observed at read time, plus the install
       path, the `version:` string read from the install's `SKILL.md`
       frontmatter, and the read date. A command stated in the page runs
       `wc -c` over every path in that list and reports any path absent from
       the install or whose byte count differs; met when it reports none.
-- [ ] AC2: The page's findings sit in a `## Findings` section as a numbered
+- [x] AC2: The page's findings sit in a `## Findings` section as a numbered
       list, one finding per numbered entry. A command stated in the page
       enumerates those numbered entries and reports (a) any entry carrying no
       citation of the form `<path>` or `<path>:<line>`, and (b) any cited path
       that is not a member of AC1's read-corpus list; met when it reports none.
-- [ ] AC3: Each numbered finding entry carries a `Disposition:` line whose
+- [x] AC3: Each numbered finding entry carries a `Disposition:` line whose
       value begins with exactly one of `already-has`, `candidate`,
       `covered-by-D`, `not-applicable`, followed by its required reference —
       `already-has` by the cairn `file:line` already carrying the rule,
@@ -58,7 +58,7 @@ instead. Comparing how impeccable *words* its rules (bans, absolutes, voice)
       whose value does not begin with one of those four tokens, or whose value
       is one of the first three tokens with no reference after it; met when it
       reports none.
-- [ ] AC4: Every finding whose `Disposition:` begins `candidate` has a bullet
+- [x] AC4: Every finding whose `Disposition:` begins `candidate` has a bullet
       in `cairn/ROADMAP.md`'s `## Candidates` section ending with the
       provenance tail `— added 2026-08-04 — M133 (references/impeccable.md)`,
       and each such bullet carries an overlap sweep sentence (`Swept <date>:`,
@@ -68,13 +68,13 @@ instead. Comparing how impeccable *words* its rules (bans, absolutes, voice)
       bearing that tail, and reports any finding whose named bullet is absent,
       any tailed bullet lacking a `Swept` sentence, and any lacking a
       `Promote when` clause; met when it reports none.
-- [ ] AC5: `TestShippedPageStateLedger` (`scripts/tests/test_scripts.py:1381`)
+- [x] AC5: `TestShippedPageStateLedger` (`scripts/tests/test_scripts.py:1381`)
       is extended to pin `impeccable.md`'s extraction state, with its one-line
       justification as a comment above `EXPECTED` (shipped practice, M118/
       M121/M127), in the same commit that adds the page. At that commit the
       profile's `verify` slot — `python3 -m unittest` over `skills/tests`,
       `scripts/tests` and `hooks/tests` — and `cairn_validate` both exit 0.
-- [ ] AC6: `cairn/references/INDEX.md` gains exactly one line for
+- [x] AC6: `cairn/references/INDEX.md` gains exactly one line for
       `impeccable.md`, matching the file's existing grammar: `- <filename> — `
       followed by a single em-dashed gloss.
 
@@ -124,3 +124,10 @@ instead. Comparing how impeccable *words* its rules (bans, absolutes, voice)
 ## Decisions
 
 ## Review
+
+- 2026-08-04 AC1: page's AC1 command run fresh from repo root — silent (no ABSENT, no MISMATCH) over the 12-path corpus; install still at version 4.0.4.
+- 2026-08-04 AC2: page's AC2 command run fresh — silent; 14 numbered entries, every entry cites ≥1 corpus path, no cited install path outside the corpus.
+- 2026-08-04 AC3: page's AC3 command run fresh — silent; every entry carries a `Disposition:` line beginning with one of the four tokens, references present on all already-has/candidate/covered-by-D entries.
+- 2026-08-04 AC4: page's AC4 command run fresh — silent; 3 candidate phrases ↔ 3 M133-tailed ROADMAP bullets, each with a `Swept 2026-08-04:` sentence and a `Promote when … never on a count of …` condition.
+- 2026-08-04 AC5: `git show --stat 20c022a` confirms the page, `scripts/tests/test_scripts.py` (+3: the pin and its two-line justification comment), and INDEX.md all in the one commit that adds the page; fresh runs — `TestShippedPageStateLedger` OK, all three suites OK, `cairn_validate` exit 0.
+- 2026-08-04 AC6: `grep -c '^- impeccable\.md — '` on INDEX.md returns exactly 1; the line follows the `- <filename> — <gloss>` grammar with a single em-dashed gloss.
