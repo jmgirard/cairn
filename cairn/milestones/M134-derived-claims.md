@@ -22,7 +22,7 @@
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP1, GP4   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** m134-derived-claims   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m134-derived-claims · https://github.com/jmgirard/cairn/pull/134   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -62,7 +62,7 @@ repos' own tracking.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `skills/shared/tracking-rules.md`'s "Universal tracking rules"
+- [x] AC1: `skills/shared/tracking-rules.md`'s "Universal tracking rules"
       section states the derived-claims rule in three operative clauses, each
       a sentence of its own: (a) a prose claim the branch adds about what an
       artifact does or contains — in tracking records, code comments,
@@ -78,7 +78,7 @@ repos' own tracking.
       whole-bullet blank as control, and deletion of each sentence's tail
       beyond its registered block — with the runs recorded in the Review
       section.
-- [ ] AC2: The four pre-existing overlapping sites the criteria audit named —
+- [x] AC2: The four pre-existing overlapping sites the criteria audit named —
       `tracking-rules.md`'s cap-remedy cross-reference line, its
       verify-edit-landed rule, `records-hygiene.md`'s restatement bullet, and
       guard-doctrine §6's evidence-counts-from-command-output line — are each
@@ -86,21 +86,21 @@ repos' own tracking.
       the central rule, or recorded as a distinct rule with the distinction
       stated; guard-doctrine §6's evidence-counts line is in the
       trimmed-to-cross-reference class.
-- [ ] AC3: `/milestone-implement` step 4's checkpoint-commit bullet carries a
+- [x] AC3: `/milestone-implement` step 4's checkpoint-commit bullet carries a
       one-line cross-reference to the derived-claims rule, pinned by a
       registered guard and verified by the same two probes.
-- [ ] AC4: The "What gets a test" floor gains one sentence: a changelog entry
+- [x] AC4: The "What gets a test" floor gains one sentence: a changelog entry
       asserting a behavior requires a test that fails without that behavior,
       or the entry narrows to what a named test enforces — pinned by a
       registered guard and verified by the same two probes.
-- [ ] AC5: The `LESSONS.md` lines for M114 (work-log entries state
+- [x] AC5: The `LESSONS.md` lines for M114 (work-log entries state
       decision-relevant facts, never characterizations) and M116 (re-read the
       guard as you write the claim, or write a pointer instead of an
       enumeration that can drift) are each tested for coverage against the
       shipped rule and dispositioned per D-051's ownership criterion —
       retired by moving content, trimmed to the uncovered remainder, or kept
       with the reason stated — one work-log line per disposition.
-- [ ] AC6: The generic profile's verify slot is clean: all three suites green
+- [x] AC6: The generic profile's verify slot is clean: all three suites green
       from the repo root with exit codes checked separately, and
       `python3 scripts/cairn_validate.py` exits 0.
 
@@ -159,3 +159,13 @@ repos' own tracking.
 
 ## Review
 <!-- owner: review · exclusive -->
+
+Review pass 1, 2026-08-04 (same-session; evidence by command, never recall).
+
+- AC1: `test_derived_claims` 6/6 ok (section-sliced, both bounds asserted; heading uniqueness checked). Six probe mutations over the three clauses each RED — subject transposed, predicate negated, whole-bullet blank control, tail-beyond-registered-block deleted per clause — targets restored byte-identical (probe runner re-run at review). Four harness registrations blank-verified by the suite's `TestRegisteredGuardsFailWhenBlanked`.
+- AC2 dispositions (the four audit-named sites): (1) guard-doctrine §6 evidence-counts line — TRIMMED to a cross-reference naming the central rule (was unpinned; verified by grep over `skills/tests/` before the trim). (2) tracking-rules cap-remedy line ("cross-reference a durable record rather than restate") — DISTINCT: a weight-cap remedy prescribing what to do when over cap, not a write-time authoring bar; guard-pinned, left verbatim. (3) tracking-rules verify-edit-landed rule — DISTINCT: verifies an edit landed before its record, not that a claim's content was derived; the new bullet sits directly after it as its authoring-side sibling. (4) records-hygiene compress bullet — DISTINCT: cap-time compression conduct (which section to cut, replacing already-restated content); guard-pinned, left verbatim.
+- AC3: `test_implement_step4_carries_the_pointer` ok; four probe mutations RED (subject, predicate, whole-line blank, tail), restore verified.
+- AC4: `test_changelog_claims_are_documented_claims` ok (What-gets-a-test section slice); four probe mutations RED, restore verified.
+- AC5: work log carries one disposition line per lesson (2 lines, grep-verified); `grep -c M116 cairn/LESSONS.md` = 0 (retired by ownership), M114 line present unchanged (kept, reason logged).
+- AC6: skills OK exit 0 · scripts exit 0 · hooks exit 0 · `cairn_validate` exit 0.
+- Consistency gate: `cairn_validate` all checks passed (16 PASS, 8 advisories OK); generic profile names no toolchain checks (clean no-op); no DESIGN.md principle changed (`Principles touched: GP1, GP4` are worked-under, not edited) — `cairn_impact` skip.
