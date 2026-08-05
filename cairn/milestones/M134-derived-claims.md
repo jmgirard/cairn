@@ -124,7 +124,7 @@ repos' own tracking.
 - [x] T2: Guards for the three clauses in `skills/tests/`, mutation-harness
       registrations, and the two-probe inversion runs (M131 lesson); read via
       `Path.read_text` (M100).
-- [ ] T3: Disposition the four overlapping sites (trim guard-doctrine §6's
+- [x] T3: Disposition the four overlapping sites (trim guard-doctrine §6's
       evidence-counts line to a cross-reference; trim or distinguish the
       other three), re-anchoring any guard the trims reflow.
 - [ ] T4: One-line pointer in `/milestone-implement` step 4's
@@ -148,6 +148,7 @@ repos' own tracking.
 - 2026-08-04: D-090 door surfaced and answered without supersession, per D-098's route: shipped-behavior defect stated in the Scope block; the deliverable adds no instrument.
 - 2026-08-04: T1 done — three-clause rule inserted after the verify-edit-landed bullet in Universal tracking rules (pure insertion, no adjacent reflow); all four anchor phrases grep-unique across skills/; suite green.
 - 2026-08-04: T2 done — test_derived_claims.py (4 tests, section-sliced with both bounds asserted) + 4 harness registrations; six probe mutations each RED (subject transposed, predicate negated, whole-bullet blank control, tail-beyond-block deleted for each clause), target restored byte-identical.
+- 2026-08-04: T3 done — guard-doctrine §6's evidence-counts clause (unpinned, verified by grep over skills/tests/) trimmed to a cross-reference to the central rule; the other three sites are guard-pinned distinct rules (cap remedy, edit-landing verification, cap-time compression) left in place, distinctions to be recorded in Review per AC2; suite green after the trim.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

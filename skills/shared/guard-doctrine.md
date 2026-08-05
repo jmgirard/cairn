@@ -228,7 +228,8 @@ early can be re-staled by a later fix in the same pass — settle numeric
 records last, after the content has stopped moving.
 
 Name a validate finding by its emitted label in backticks (`coverage
-complete`), and write evidence counts from command output, never memory.
+complete`); for the counts themselves, the tracking-rules derived-claims
+rule applies (branch-added behavior claims are derived, never composed).
 
 **A count recorded in a milestone record carries the procedure that produced
 it, at verbatim-reproducible grade.** A work-log line, a docstring, a comment,
