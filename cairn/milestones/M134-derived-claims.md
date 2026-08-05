@@ -17,7 +17,7 @@
      measured, never assumed (D-049). /milestone-plan step 4 names the counter. -->
 # M134: Branch-added behavior claims are derived from the artifact, not the author's model
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -133,7 +133,7 @@ repos' own tracking.
       registration + probes.
 - [x] T6: Coverage-test and disposition the M114 and M116 LESSONS lines per
       D-051 ownership; work-log line each.
-- [ ] T7: Full three-suite run with per-suite exit codes, `cairn_validate`,
+- [x] T7: Full three-suite run with per-suite exit codes, `cairn_validate`,
       `cairn_budget` on this file.
 
 ## Work log
@@ -152,6 +152,7 @@ repos' own tracking.
 - 2026-08-04: T4+T5 done — step-4 pointer sentence in /milestone-implement and changelog-claims sentence in the What-gets-a-test floor, each on one physical line, guarded, registered; eight probe mutations each RED (subject transposed, predicate negated, whole-line blank control, tail deleted, per sentence), targets restored byte-identical.
 - 2026-08-04: T6 disposition (M116 line): RETIRED by ownership — its remedy is clause (a) same-session read plus clause (c) pointer-over-enumeration, now owned by the derived-claims rule; line deleted, no covered remainder.
 - 2026-08-04: T6 disposition (M114 line): KEPT — it forbids characterizations even when derived from true measurements, a judgment the derived-claims rule does not make; no trimmable half leaves the teaching intact.
+- 2026-08-04: T7 done — skills/scripts/hooks suites green with per-suite exit 0, cairn_validate exit 0, budget 138/149; status to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
