@@ -229,7 +229,7 @@ records last, after the content has stopped moving.
 
 Name a validate finding by its emitted label in backticks (`coverage
 complete`); for the counts themselves, the tracking-rules derived-claims
-rule applies (branch-added behavior claims are derived, never composed).
+rule applies.
 
 **A count recorded in a milestone record carries the procedure that produced
 it, at verbatim-reproducible grade.** A work-log line, a docstring, a comment,
