@@ -121,7 +121,7 @@ repos' own tracking.
       tracking rules", anchors copied from the target's shipped bytes (M95);
       after editing, grep that every nearby guard's asserted substring is
       still contiguous on one line (M104).
-- [ ] T2: Guards for the three clauses in `skills/tests/`, mutation-harness
+- [x] T2: Guards for the three clauses in `skills/tests/`, mutation-harness
       registrations, and the two-probe inversion runs (M131 lesson); read via
       `Path.read_text` (M100).
 - [ ] T3: Disposition the four overlapping sites (trim guard-doctrine §6's
@@ -147,6 +147,7 @@ repos' own tracking.
 - 2026-08-04: plan gate chose trimming guard-doctrine §6's narrow evidence-counts copy over leaving both because two statements of one rule is the drift pattern in scope (step-0 one-home); falsified by the trim reddening guards in a way that costs more than the duplication.
 - 2026-08-04: D-090 door surfaced and answered without supersession, per D-098's route: shipped-behavior defect stated in the Scope block; the deliverable adds no instrument.
 - 2026-08-04: T1 done — three-clause rule inserted after the verify-edit-landed bullet in Universal tracking rules (pure insertion, no adjacent reflow); all four anchor phrases grep-unique across skills/; suite green.
+- 2026-08-04: T2 done — test_derived_claims.py (4 tests, section-sliced with both bounds asserted) + 4 harness registrations; six probe mutations each RED (subject transposed, predicate negated, whole-bullet blank control, tail-beyond-block deleted for each clause), target restored byte-identical.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

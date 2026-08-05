@@ -3776,6 +3776,38 @@ REGISTRY += [
     ),
 ]
 
+# M134: the derived-claims rule — three clauses, each separately deletable.
+# The intraclass M103 post-mortem is the failure mode: lose clause (a) and an
+# evidence line composed from the author's expectation reads as compliant;
+# lose (b) and narration restating the code returns; lose (c) and an
+# enumeration drifts the first time its artifact changes.
+REGISTRY += [
+    Mutation(
+        guard="test_derived_claims",
+        test="TestDerivedClaimsRule.test_clause_a_derive_dont_compose",
+        target=RULES,
+        block="**Branch-added behavior claims are derived, never composed.**",
+    ),
+    Mutation(
+        guard="test_derived_claims",
+        test="TestDerivedClaimsRule.test_clause_a_derive_dont_compose",
+        target=RULES,
+        block="never composed from recollection or expectation",
+    ),
+    Mutation(
+        guard="test_derived_claims",
+        test="TestDerivedClaimsRule.test_clause_b_restatement_is_not_written",
+        target=RULES,
+        block="Branch-added prose that restates what its cited artifact already shows is not written — a cross-reference replaces it.",
+    ),
+    Mutation(
+        guard="test_derived_claims",
+        test="TestDerivedClaimsRule.test_clause_c_pointer_over_enumeration",
+        target=RULES,
+        block="A claim that would enumerate an artifact's members is written as a pointer to the artifact, except where the enumeration is itself the deliverable.",
+    ),
+]
+
 
 class TestRegisteredGuardsFailWhenBlanked(unittest.TestCase):
     def test_each_registered_guard_fails_when_its_block_is_blanked(self):
