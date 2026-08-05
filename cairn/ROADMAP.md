@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-04 (M134 merged — the derived-claims rule lands in the always-read rulebook with step-4 pointer and changelog-claims floor sentence; 3 actioned findings fixed inline, zero returns. M129 terminal row pruned; M116 lesson graduated with its diagnostic remainder restored; two lessons captured.)_
+_Last hygiene check: 2026-08-04 (audit — two LESSONS entries were run together on one line, hiding the M117 lesson from the item parser and masking a cap breach; split, then the M100 `open()` blind-spot lesson consolidated into M117's same-class line to bring the file back under 50. Validate green, 743 guards green, nothing in flight, both GitHub inboxes empty.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
