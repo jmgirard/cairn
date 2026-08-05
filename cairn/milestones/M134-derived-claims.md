@@ -17,12 +17,12 @@
      measured, never assumed (D-049). /milestone-plan step 4 names the counter. -->
 # M134: Branch-added behavior claims are derived from the artifact, not the author's model
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP1, GP4   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m134-derived-claims   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -117,7 +117,7 @@ repos' own tracking.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Author the three-clause rule in `tracking-rules.md` "Universal
+- [x] T1: Author the three-clause rule in `tracking-rules.md` "Universal
       tracking rules", anchors copied from the target's shipped bytes (M95);
       after editing, grep that every nearby guard's asserted substring is
       still contiguous on one line (M104).
@@ -146,6 +146,7 @@ repos' own tracking.
 - 2026-08-04: plan gate chose all-branch-prose surface over tracking-records-only because the motivating defects sat in NEWS, comments, and @details; falsified by the wide wording proving unenforceable or over-triggering on legitimate doc prose.
 - 2026-08-04: plan gate chose trimming guard-doctrine §6's narrow evidence-counts copy over leaving both because two statements of one rule is the drift pattern in scope (step-0 one-home); falsified by the trim reddening guards in a way that costs more than the duplication.
 - 2026-08-04: D-090 door surfaced and answered without supersession, per D-098's route: shipped-behavior defect stated in the Scope block; the deliverable adds no instrument.
+- 2026-08-04: T1 done — three-clause rule inserted after the verify-edit-landed bullet in Universal tracking rules (pure insertion, no adjacent reflow); all four anchor phrases grep-unique across skills/; suite green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

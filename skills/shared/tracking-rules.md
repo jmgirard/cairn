@@ -225,6 +225,13 @@ covered — a judgment, reported and never auto-fixed.
   tick standing alone. This is the authoring counterpart of the "Correcting a
   record proven false" rule: that rule repairs a record found wrong, this one
   stops one being written.
+- **Branch-added behavior claims are derived, never composed.** A prose claim
+  the branch adds about what an artifact does or contains — in tracking
+  records, code comments, docstrings, changelog entries, or docs — is written
+  against an execution's observed output or a same-session read of the
+  artifact, never composed from recollection or expectation.
+  Branch-added prose that restates what its cited artifact already shows is not written — a cross-reference replaces it.
+  A claim that would enumerate an artifact's members is written as a pointer to the artifact, except where the enumeration is itself the deliverable.
 - **Correcting a record proven false.** The tracking files split by purpose,
   and the split sets the remedy: current knowledge is corrected in place,
   history is superseded and never edited.
