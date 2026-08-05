@@ -127,9 +127,9 @@ repos' own tracking.
 - [x] T3: Disposition the four overlapping sites (trim guard-doctrine §6's
       evidence-counts line to a cross-reference; trim or distinguish the
       other three), re-anchoring any guard the trims reflow.
-- [ ] T4: One-line pointer in `/milestone-implement` step 4's
+- [x] T4: One-line pointer in `/milestone-implement` step 4's
       checkpoint-commit bullet + guard + registration + probes.
-- [ ] T5: Changelog-claims sentence in "What gets a test" + guard +
+- [x] T5: Changelog-claims sentence in "What gets a test" + guard +
       registration + probes.
 - [ ] T6: Coverage-test and disposition the M114 and M116 LESSONS lines per
       D-051 ownership; work-log line each.
@@ -149,6 +149,7 @@ repos' own tracking.
 - 2026-08-04: T1 done — three-clause rule inserted after the verify-edit-landed bullet in Universal tracking rules (pure insertion, no adjacent reflow); all four anchor phrases grep-unique across skills/; suite green.
 - 2026-08-04: T2 done — test_derived_claims.py (4 tests, section-sliced with both bounds asserted) + 4 harness registrations; six probe mutations each RED (subject transposed, predicate negated, whole-bullet blank control, tail-beyond-block deleted for each clause), target restored byte-identical.
 - 2026-08-04: T3 done — guard-doctrine §6's evidence-counts clause (unpinned, verified by grep over skills/tests/) trimmed to a cross-reference to the central rule; the other three sites are guard-pinned distinct rules (cap remedy, edit-landing verification, cap-time compression) left in place, distinctions to be recorded in Review per AC2; suite green after the trim.
+- 2026-08-04: T4+T5 done — step-4 pointer sentence in /milestone-implement and changelog-claims sentence in the What-gets-a-test floor, each on one physical line, guarded, registered; eight probe mutations each RED (subject transposed, predicate negated, whole-line blank control, tail deleted, per sentence), targets restored byte-identical.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

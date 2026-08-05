@@ -3806,6 +3806,18 @@ REGISTRY += [
         target=RULES,
         block="A claim that would enumerate an artifact's members is written as a pointer to the artifact, except where the enumeration is itself the deliverable.",
     ),
+    Mutation(
+        guard="test_derived_claims",
+        test="TestDerivedClaimsRule.test_implement_step4_carries_the_pointer",
+        target=IMPLEMENT,
+        block="Prose the commit adds about an artifact's behavior follows the tracking-rules derived-claims rule: derived from the artifact, never composed.",
+    ),
+    Mutation(
+        guard="test_derived_claims",
+        test="TestDerivedClaimsRule.test_changelog_claims_are_documented_claims",
+        target=RULES,
+        block="A changelog entry asserting a behavior requires a test that fails without that behavior, or the entry narrows to what a named test enforces.",
+    ),
 ]
 
 

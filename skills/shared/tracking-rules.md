@@ -903,7 +903,9 @@ No coverage-percentage target — test scope is set per milestone via
 acceptance criteria. Always: every exported/public function (happy path,
 every error branch fired, the language's edge cases); every numeric result
 via an oracle; every bug fix via a regression test that fails before the fix;
-every documented claim. Indirect by default: internal helpers (direct tests
+every documented claim.
+A changelog entry asserting a behavior requires a test that fails without that behavior, or the entry narrows to what a named test enforces.
+Indirect by default: internal helpers (direct tests
 only for independent logic). Never: cosmetic output beyond meaningful
 snapshots, trivial pass-throughs, dependency behavior. Test the contract, not
 the implementation — a test that breaks under a behavior-preserving refactor
