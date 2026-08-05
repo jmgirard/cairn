@@ -225,6 +225,13 @@ covered — a judgment, reported and never auto-fixed.
   tick standing alone. This is the authoring counterpart of the "Correcting a
   record proven false" rule: that rule repairs a record found wrong, this one
   stops one being written.
+- **Branch-added behavior claims are derived, never composed.** A prose claim
+  the branch adds about what an artifact does or contains — in tracking
+  records, code comments, docstrings, changelog entries, or docs — is written
+  against an execution's observed output or a same-session read of the
+  artifact, never composed from recollection or expectation.
+  Branch-added prose that restates what its cited artifact already shows is not written — a cross-reference replaces it.
+  A claim that would enumerate an artifact's members is written as a pointer to the artifact, except where the enumeration is itself the deliverable.
 - **Correcting a record proven false.** The tracking files split by purpose,
   and the split sets the remedy: current knowledge is corrected in place,
   history is superseded and never edited.
@@ -896,7 +903,9 @@ No coverage-percentage target — test scope is set per milestone via
 acceptance criteria. Always: every exported/public function (happy path,
 every error branch fired, the language's edge cases); every numeric result
 via an oracle; every bug fix via a regression test that fails before the fix;
-every documented claim. Indirect by default: internal helpers (direct tests
+every documented claim.
+A changelog entry asserting a behavior requires a test that fails without that behavior, or the entry narrows to what a named test enforces.
+Indirect by default: internal helpers (direct tests
 only for independent logic). Never: cosmetic output beyond meaningful
 snapshots, trivial pass-throughs, dependency behavior. Test the contract, not
 the implementation — a test that breaks under a behavior-preserving refactor

@@ -17,12 +17,12 @@
      measured, never assumed (D-049). /milestone-plan step 4 names the counter. -->
 # M134: Branch-added behavior claims are derived from the artifact, not the author's model
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP1, GP4   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m134-derived-claims · https://github.com/jmgirard/cairn/pull/134   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -62,7 +62,7 @@ repos' own tracking.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `skills/shared/tracking-rules.md`'s "Universal tracking rules"
+- [x] AC1: `skills/shared/tracking-rules.md`'s "Universal tracking rules"
       section states the derived-claims rule in three operative clauses, each
       a sentence of its own: (a) a prose claim the branch adds about what an
       artifact does or contains — in tracking records, code comments,
@@ -78,7 +78,7 @@ repos' own tracking.
       whole-bullet blank as control, and deletion of each sentence's tail
       beyond its registered block — with the runs recorded in the Review
       section.
-- [ ] AC2: The four pre-existing overlapping sites the criteria audit named —
+- [x] AC2: The four pre-existing overlapping sites the criteria audit named —
       `tracking-rules.md`'s cap-remedy cross-reference line, its
       verify-edit-landed rule, `records-hygiene.md`'s restatement bullet, and
       guard-doctrine §6's evidence-counts-from-command-output line — are each
@@ -86,21 +86,21 @@ repos' own tracking.
       the central rule, or recorded as a distinct rule with the distinction
       stated; guard-doctrine §6's evidence-counts line is in the
       trimmed-to-cross-reference class.
-- [ ] AC3: `/milestone-implement` step 4's checkpoint-commit bullet carries a
+- [x] AC3: `/milestone-implement` step 4's checkpoint-commit bullet carries a
       one-line cross-reference to the derived-claims rule, pinned by a
       registered guard and verified by the same two probes.
-- [ ] AC4: The "What gets a test" floor gains one sentence: a changelog entry
+- [x] AC4: The "What gets a test" floor gains one sentence: a changelog entry
       asserting a behavior requires a test that fails without that behavior,
       or the entry narrows to what a named test enforces — pinned by a
       registered guard and verified by the same two probes.
-- [ ] AC5: The `LESSONS.md` lines for M114 (work-log entries state
+- [x] AC5: The `LESSONS.md` lines for M114 (work-log entries state
       decision-relevant facts, never characterizations) and M116 (re-read the
       guard as you write the claim, or write a pointer instead of an
       enumeration that can drift) are each tested for coverage against the
       shipped rule and dispositioned per D-051's ownership criterion —
       retired by moving content, trimmed to the uncovered remainder, or kept
       with the reason stated — one work-log line per disposition.
-- [ ] AC6: The generic profile's verify slot is clean: all three suites green
+- [x] AC6: The generic profile's verify slot is clean: all three suites green
       from the repo root with exit codes checked separately, and
       `python3 scripts/cairn_validate.py` exits 0.
 
@@ -117,23 +117,23 @@ repos' own tracking.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Author the three-clause rule in `tracking-rules.md` "Universal
+- [x] T1: Author the three-clause rule in `tracking-rules.md` "Universal
       tracking rules", anchors copied from the target's shipped bytes (M95);
       after editing, grep that every nearby guard's asserted substring is
       still contiguous on one line (M104).
-- [ ] T2: Guards for the three clauses in `skills/tests/`, mutation-harness
+- [x] T2: Guards for the three clauses in `skills/tests/`, mutation-harness
       registrations, and the two-probe inversion runs (M131 lesson); read via
       `Path.read_text` (M100).
-- [ ] T3: Disposition the four overlapping sites (trim guard-doctrine §6's
+- [x] T3: Disposition the four overlapping sites (trim guard-doctrine §6's
       evidence-counts line to a cross-reference; trim or distinguish the
       other three), re-anchoring any guard the trims reflow.
-- [ ] T4: One-line pointer in `/milestone-implement` step 4's
+- [x] T4: One-line pointer in `/milestone-implement` step 4's
       checkpoint-commit bullet + guard + registration + probes.
-- [ ] T5: Changelog-claims sentence in "What gets a test" + guard +
+- [x] T5: Changelog-claims sentence in "What gets a test" + guard +
       registration + probes.
-- [ ] T6: Coverage-test and disposition the M114 and M116 LESSONS lines per
+- [x] T6: Coverage-test and disposition the M114 and M116 LESSONS lines per
       D-051 ownership; work-log line each.
-- [ ] T7: Full three-suite run with per-suite exit codes, `cairn_validate`,
+- [x] T7: Full three-suite run with per-suite exit codes, `cairn_validate`,
       `cairn_budget` on this file.
 
 ## Work log
@@ -146,9 +146,28 @@ repos' own tracking.
 - 2026-08-04: plan gate chose all-branch-prose surface over tracking-records-only because the motivating defects sat in NEWS, comments, and @details; falsified by the wide wording proving unenforceable or over-triggering on legitimate doc prose.
 - 2026-08-04: plan gate chose trimming guard-doctrine §6's narrow evidence-counts copy over leaving both because two statements of one rule is the drift pattern in scope (step-0 one-home); falsified by the trim reddening guards in a way that costs more than the duplication.
 - 2026-08-04: D-090 door surfaced and answered without supersession, per D-098's route: shipped-behavior defect stated in the Scope block; the deliverable adds no instrument.
+- 2026-08-04: T1 done — three-clause rule inserted after the verify-edit-landed bullet in Universal tracking rules (pure insertion, no adjacent reflow); all four anchor phrases grep-unique across skills/; suite green.
+- 2026-08-04: T2 done — test_derived_claims.py (4 tests, section-sliced with both bounds asserted) + 4 harness registrations; six probe mutations each RED (subject transposed, predicate negated, whole-bullet blank control, tail-beyond-block deleted for each clause), target restored byte-identical.
+- 2026-08-04: T3 done — guard-doctrine §6's evidence-counts clause (unpinned, verified by grep over skills/tests/) trimmed to a cross-reference to the central rule; the other three sites are guard-pinned distinct rules (cap remedy, edit-landing verification, cap-time compression) left in place, distinctions to be recorded in Review per AC2; suite green after the trim.
+- 2026-08-04: T4+T5 done — step-4 pointer sentence in /milestone-implement and changelog-claims sentence in the What-gets-a-test floor, each on one physical line, guarded, registered; eight probe mutations each RED (subject transposed, predicate negated, whole-line blank control, tail deleted, per sentence), targets restored byte-identical.
+- 2026-08-04: T6 disposition (M116 line): RETIRED by ownership — its remedy is clause (a) same-session read plus clause (c) pointer-over-enumeration, now owned by the derived-claims rule; line deleted, no covered remainder.
+- 2026-08-04: T6 disposition (M114 line): KEPT — it forbids characterizations even when derived from true measurements, a judgment the derived-claims rule does not make; no trimmable half leaves the teaching intact.
+- 2026-08-04: T7 done — skills/scripts/hooks suites green with per-suite exit 0, cairn_validate exit 0, budget 138/149; status to review.
+- 2026-08-04: correction (review D14): the T2 line's "4 tests + 4 harness registrations" was true at T2's commit (0bdde74) and went stale when T4+T5 added two of each; the shipped file has 6 tests and 6 registrations (`python3 -m unittest skills.tests.test_derived_claims -v` / grep of the registry).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
 
 ## Review
 <!-- owner: review · exclusive -->
+
+Review pass 1, 2026-08-04 (same-session; evidence by command, never recall).
+
+- AC1: `test_derived_claims` — the three clause guards plus the bounds test ok (file runs 6/6; two of the six serve AC3/AC4 and are evidenced on their own lines below). Six probe mutations over the three clauses each RED — subject transposed, predicate negated, whole-bullet blank control, tail-beyond-registered-block deleted per clause — targets restored byte-identical (probe runner re-run at review). Four harness registrations blank-verified by the suite's `TestRegisteredGuardsFailWhenBlanked`.
+- AC2 dispositions (the four audit-named sites): (1) guard-doctrine §6 evidence-counts line — TRIMMED to a cross-reference naming the central rule (was unpinned; verified by grep over `skills/tests/` before the trim). (2) tracking-rules cap-remedy line ("cross-reference a durable record rather than restate") — DISTINCT: a weight-cap remedy prescribing what to do when over cap, not a write-time authoring bar; guard-pinned, left verbatim. (3) tracking-rules verify-edit-landed rule — DISTINCT: verifies an edit landed before its record, not that a claim's content was derived; the new bullet sits directly after it as its authoring-side sibling. (4) records-hygiene compress bullet — DISTINCT: cap-time compression conduct (which section to cut, replacing already-restated content); guard-pinned, left verbatim.
+- AC3: `test_implement_step4_carries_the_pointer` ok; four probe mutations RED (subject, predicate, whole-line blank, tail), restore verified.
+- AC4: `test_changelog_claims_are_documented_claims` ok (What-gets-a-test section slice); four probe mutations RED, restore verified.
+- AC5: work log carries one disposition line per lesson (2 lines, grep-verified); `grep -c M116 cairn/LESSONS.md` = 0 (retired by ownership), M114 line present unchanged (kept, reason logged).
+- AC6: skills OK exit 0 · scripts exit 0 · hooks exit 0 · `cairn_validate` exit 0.
+- Fan-out (3 lenses -> scorer): 25 candidates scored; 3 actioned (>=80), all fixed inline this pass, none a return under the M130 floor: D10/80 guard-doctrine cross-reference restated the rule in a parenthetical — parenthetical deleted, pure cross-reference remains; D14/88 stale T2 work-log count — superseded by a correcting work-log line (history, never edited); D15/80 Review AC1 line attributed all six tests to AC1 — evidence line corrected in place (current-pass prose). 22 logged below threshold, none silently dropped: B1/20 B2/20 B3/20 (confirming observations), P1/72+D2/74 What-gets-a-test slice upper bound optional with no dedicated bounds test, D1/62 AC3 guard file-scoped not step-scoped, D3/45 inert s[1:], D4/30 sentence duplicates floor (plan-mandated), D5/55 triad split placement, D6/68 "named test" reading vs hotfix no-jargon rule, D7/48 changelog-writing skills unwired (plan-scoped Out), D8/50 AC2 hand-list vs domain, D9/58 evidence-counts subject wider than clause (a), D11/76 M116 retirement labeled ownership though destination is the rulebook not a tracking-file slot, D12/74 diagnostic half of M116 line uncovered by the rule (D-051 trim-to-remainder), D13/60 archive-summary graduation obligation in no AC, D16/72 clause-(a) regex wrap-position-dependent vs docstring claim, D17/62 clauses (b)/(c) pinned to section not bullet, D18/40 "artifact" unbounded reading, D19/30 pointer line length/grammar, D20/35 registry comment predictions, D21/10 pre-existing malformed LESSONS line. Follow-up candidates deliberately not spawned: D11/D12 are dispositioned at step 9 (archive summary names the graduation and may carry the uncovered diagnostic remainder back to LESSONS), the guard-scoping cluster (P1/D2/D1/D17/D16) is logged here as the record.
+- Consistency gate: `cairn_validate` all checks passed (16 PASS, 8 advisories OK); generic profile names no toolchain checks (clean no-op); no DESIGN.md principle changed (`Principles touched: GP1, GP4` are worked-under, not edited) — `cairn_impact` skip.
