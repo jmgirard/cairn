@@ -1,5 +1,53 @@
 # Changelog
 
+## 1.4.0 (2026-08-05)
+
+Five milestones since 1.3.0, aimed at one failure shared by all of them: a
+record that says something the artifact does not. Plans now have to say how a
+promise will be checked, reviews reopen only for a real breach, and prose about
+what something does has to be read off the thing itself. Backward-compatible:
+existing tracked repos keep working unchanged.
+
+- **A criterion has to name what will check it.** An acceptance criterion that
+  quantifies over a whole domain — every skill, all guards — now names the
+  procedure that enumerates that domain, and a list the author typed from
+  memory is not one. The procedure also has to cover the domain the criterion
+  actually promises over rather than a proxy for it; the tell is membership
+  fixed by recall instead of decided by a procedure. When a criterion fails the
+  test, the repair is to narrow the promise until a stated procedure settles
+  it, never to widen the list. Asked as the third question of the planning-time
+  criteria audit, and again when a review report is ingested.
+- **Review returns need a real breach.** Reopening a finished milestone now
+  requires a criterion breach scored 80 or better, or a functional defect in
+  shipped behavior scored 90 or better; findings below the floor are triaged
+  and recorded without changing the milestone's status. A criterion that turns
+  out to promise the wrong thing is reworded on its own separate track, which
+  stops at the second attempt on the same criterion — so a review converges
+  instead of circling.
+- **A scripted edit is verified before the record that claims it landed.** A
+  batched or scripted edit can match the wrong place or fail while its siblings
+  succeed, and the record written next then asserts a change that is not there.
+  Such an edit is now re-read at its target before anything claims it landed,
+  an edit aimed at a document section anchors on text occurring exactly once in
+  that file, and ticking a box is sequenced strictly after the write of the
+  evidence it depends on.
+- **Claims about behavior are derived, never composed.** Prose a branch adds
+  about what an artifact does or contains — in tracking records, code comments,
+  docstrings, changelog entries, or docs — is written against the artifact or
+  an execution's output at the time of writing, not from recollection. Prose
+  that only restates what its cited artifact already shows is replaced by a
+  cross-reference, and a claim that would list an artifact's members points at
+  the artifact instead.
+
+Fixes:
+
+- The marketplace listing's version number, left at 1.2.0 through the 1.3.0
+  release, now tracks the plugin's own version.
+
+Also on file: a first-hand read of another Claude Code skill's architecture,
+under `cairn/references/`, with every finding dispositioned and three follow-up
+ideas parked as candidates.
+
 ## 1.3.0 (2026-07-31)
 
 Seventeen milestones since 1.2.0, dominated by one correction: a pre-review
