@@ -1744,8 +1744,8 @@ def check_dangling_ids(root, rows):
     the legacy ceiling are skipped (a migrated repo's live cites of entombed
     pre-migration ids — the M135 class). The ceiling is the highest M-token
     below the live max found in .md files under cairn/legacy/, recursively,
-    read tolerantly (errors="replace"); tokens at/above the live max are
-    example prose there as here, and never raise the ceiling. cairn/legacy/
+    read tolerantly (errors="replace"); a legacy token at or above the live
+    max never raises the ceiling. cairn/legacy/
     is never scanned for danglers itself (entombed verbatim, D-005) — it is
     read only to compute this ceiling, and with the directory absent or
     holding no counted M-token there is no ceiling and no skip. WARN tier:

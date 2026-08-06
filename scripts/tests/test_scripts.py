@@ -1664,6 +1664,24 @@ class TestDanglingIds(ScriptCase):
             proc.stdout,
         )
 
+    def test_legacy_token_at_live_max_does_not_raise_ceiling(self):
+        # Re-review F7: the ceiling counts only tokens strictly BELOW the
+        # live max — a legacy cite of M60 itself (== live max) leaves the
+        # ceiling at 47, so M55 still WARNs (a `<=` mutation tolerates it).
+        root_ = self._m135_tree(
+            legacy_body="# old\n\nShipped M47; planned M60.\n"
+        )
+        live = root_ / "cairn" / "milestones" / "M03-live.md"
+        live.write_text(live.read_text() + "\nSee M55 for the sequel.\n")
+        proc = run("cairn_validate.py", root_)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  dangling id tokens", proc.stdout)
+        self.assertIn(
+            "M55 resolves to no ROADMAP row, milestone file, or D-entry",
+            proc.stdout,
+        )
+        self.assertNotIn("M12 resolves", proc.stdout)
+
     def test_non_utf8_legacy_file_still_counts(self):
         # Review O-F2: an entombed file in a legacy encoding still feeds the
         # ceiling — the read must not be silently dropped.
