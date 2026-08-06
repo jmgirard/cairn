@@ -3,12 +3,12 @@
      Per-section owners are tagged below. -->
 # M135: Legacy-id tolerance for check_dangling_ids
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m135-legacy-id-tolerance   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -75,7 +75,7 @@ tolerances or other checks — untouched.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Tests first — add fixture cases for AC1–AC4 to the dangling-id test
+- [x] T1: Tests first — add fixture cases for AC1–AC4 to the dangling-id test
       class in `scripts/tests/test_scripts.py` (existing class at :1472),
       matching its fixture style; confirm each new WARN-expecting case is red
       against the unmodified check where the tolerance would wrongly fire.
@@ -104,6 +104,7 @@ tolerances or other checks — untouched.
 - 2026-08-06: created by /milestone-plan from the 2026-08-06 candidate row (intraclass audit); criteria audit ran — 9 findings: AC1 vacuity, AC2 deletion wording, AC3 universal heading, AC4 unverifiability+count word, empty-legacy gap, and the M115 lesson staleness fixed into the wording above; M-only asymmetry and intraclass evidence went to the gate (both resolved as recommended); legacy-max-above-live-max judged behaviorally identical, docstring states the skip as independent.
 - 2026-08-06: plan gate chose M-token-only tolerance over M+D symmetry because all 321 measured WARNs are M-tokens and pre-migration systems rarely use cairn's D-id format; falsified by a migrated repo flooding on entombed D-ids.
 - 2026-08-06: plan chose scanning `cairn/legacy/` for its max M-token over an explicit declared ceiling (config surface) because the scan needs no new file format and D-023's doctrine tolerates the overshoot; falsified by a legacy corpus whose stray high M-token masks a real dangler class in practice.
+- 2026-08-06: T1 — four fixture cases added to TestDanglingIds; red-first verified: AC1's case fails against the unmodified check (M12 WARNs), the other eight in the class pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

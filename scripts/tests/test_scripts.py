@@ -1545,6 +1545,94 @@ class TestDanglingIds(ScriptCase):
         self.assertEqual(proc.returncode, 0, proc.stdout)
         self.assertIn("OK    dangling id tokens", proc.stdout)
 
+    # M135: the legacy-max tolerance — a migrated repo's live files citing
+    # pre-migration ids entombed under cairn/legacy/ are not danglers.
+
+    def _m135_tree(self, legacy_body="# old board\n\nShipped M47 last year.\n"):
+        # Live max M60 (archived row), unassigned M12 cited in live prose,
+        # legacy shelf whose highest entombed token is M47.
+        self.tree.rows.append(
+            ("M60", "New thing", "done", "—", "normal",
+             "milestones/archive/M60-new.md")
+        )
+        self.tree.files["milestones/archive/M60-new.md"] = (
+            "# M60: New thing (done 2026-08-01)\n\n**Goal:** new.\n"
+        )
+        self.tree.files["milestones/M03-live.md"] += (
+            "\nThe old tracker called this M12 back then.\n"
+        )
+        root_ = self.tree.build()
+        legacy = root_ / "cairn" / "legacy"
+        legacy.mkdir()
+        (legacy / "OLD_BOARD.md").write_text(legacy_body)
+        return root_
+
+    def test_legacy_max_tolerates_entombed_id_cite(self):
+        # AC1: unresolved M12 <= legacy max M47 -> skipped.
+        proc = run("cairn_validate.py", self._m135_tree())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    dangling id tokens", proc.stdout)
+
+    def test_legacy_tolerance_gated_on_directory(self):
+        # AC2: identical fixture built without cairn/legacy/ -> M12 WARNs.
+        self.tree.rows.append(
+            ("M60", "New thing", "done", "—", "normal",
+             "milestones/archive/M60-new.md")
+        )
+        self.tree.files["milestones/archive/M60-new.md"] = (
+            "# M60: New thing (done 2026-08-01)\n\n**Goal:** new.\n"
+        )
+        self.tree.files["milestones/M03-live.md"] += (
+            "\nThe old tracker called this M12 back then.\n"
+        )
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  dangling id tokens", proc.stdout)
+        self.assertIn(
+            "M12 resolves to no ROADMAP row, milestone file, or D-entry",
+            proc.stdout,
+        )
+
+    def test_legacy_max_does_not_widen_other_skips(self):
+        # AC3: M55 (above legacy max 47, <= live max 60) still WARNs, and a
+        # dangling D-token still WARNs with legacy/ present.
+        root_ = self._m135_tree()
+        live = root_ / "cairn" / "milestones" / "M03-live.md"
+        live.write_text(
+            live.read_text() + "\nSee M55 for the sequel.\n"
+        )
+        (root_ / "cairn" / "DECISIONS.md").write_text(
+            "# Decisions\n\n### D-001 (2026-07-11): a\n\nx\n\n"
+            "### D-003 (2026-07-11): b\n\nx\n"
+        )
+        (root_ / "cairn" / "DESIGN.md").write_text(
+            "# Design\n\nPer D-002 we do X.\n"
+        )
+        proc = run("cairn_validate.py", root_)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  dangling id tokens", proc.stdout)
+        self.assertIn(
+            "M55 resolves to no ROADMAP row, milestone file, or D-entry",
+            proc.stdout,
+        )
+        self.assertIn(
+            "D-002 resolves to no ROADMAP row, milestone file, or D-entry",
+            proc.stdout,
+        )
+
+    def test_empty_legacy_directory_is_inert(self):
+        # AC4: legacy/ present but holding no M token -> behaves as absent.
+        proc = run(
+            "cairn_validate.py",
+            self._m135_tree(legacy_body="# old board\n\nNo ids in here.\n"),
+        )
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  dangling id tokens", proc.stdout)
+        self.assertIn(
+            "M12 resolves to no ROADMAP row, milestone file, or D-entry",
+            proc.stdout,
+        )
+
 
 VALID_PROFILE = (
     "# Toolchain profile: generic\n\n"
