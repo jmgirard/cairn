@@ -8,7 +8,7 @@
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** m135-legacy-id-tolerance   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m135-legacy-id-tolerance · https://github.com/jmgirard/cairn/pull/135   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -40,24 +40,24 @@ tolerances or other checks — untouched.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: With `cairn/legacy/` present, an unresolved `M<NN>` token in a live
+- [x] AC1: With `cairn/legacy/` present, an unresolved `M<NN>` token in a live
       `cairn/` markdown file at or below the highest `M<NN>` token in any
       `cairn/legacy/**/*.md` is skipped: a fixture with live max assigned id
       M60, legacy max M47, and a live file citing an unassigned M12 (no
       `owner/repo` slug on the line) reports `OK    dangling id tokens`.
-- [ ] AC2: The tolerance is gated on the directory: a second fixture identical
+- [x] AC2: The tolerance is gated on the directory: a second fixture identical
       to AC1's but built without `cairn/legacy/` reports
       `WARN  dangling id tokens` naming M12.
-- [ ] AC3: In the AC1 fixture, an unresolved M55 token (above legacy max M47,
+- [x] AC3: In the AC1 fixture, an unresolved M55 token (above legacy max M47,
       at or below live max M60, no slug on its line) still WARNs, and an
       unresolved `D-<NNN>` token at or below the live D max still WARNs.
-- [ ] AC4: A fixture with `cairn/legacy/` present but containing no `M<NN>`
+- [x] AC4: A fixture with `cairn/legacy/` present but containing no `M<NN>`
       token behaves as if the directory were absent: the unassigned M12 WARNs.
-- [ ] AC5: The docstring's tolerance enumeration corresponds one-to-one with
+- [x] AC5: The docstring's tolerance enumeration corresponds one-to-one with
       the tolerance branches in the shipped function body — each named
       tolerance has a live branch, no branch is unnamed, and any stated count
       agrees — checked by reading the function's shipped bytes at review.
-- [ ] AC6: All three suites pass from the repo root (`scripts/tests`,
+- [x] AC6: All three suites pass from the repo root (`scripts/tests`,
       `skills/tests`, `hooks/tests`), each exit code checked individually.
 
 ## Coverage
@@ -115,3 +115,12 @@ tolerances or other checks — untouched.
 
 ## Review
 <!-- owner: review · exclusive. -->
+
+Evidence gathered fresh 2026-08-06, on the branch at PR #135:
+
+- AC1: `test_legacy_max_tolerates_entombed_id_cite` ok (fixture: live max M60, legacy max M47, unassigned M12, slug-free line → `OK    dangling id tokens`), fresh run exit 0.
+- AC2: `test_legacy_tolerance_gated_on_directory` ok (same fixture minus legacy/ → WARN naming M12), fresh run exit 0.
+- AC3: `test_legacy_max_does_not_widen_other_skips` ok (M55 WARNs; D-002 WARNs with legacy/ present), fresh run exit 0.
+- AC4: `test_empty_legacy_directory_is_inert` ok (M-token-free legacy/ → M12 WARNs), fresh run exit 0.
+- AC5: shipped bytes read at review (`cairn_validate.py:1735-1804`): docstring names three tolerances (above-max, repo-slug, legacy-max), the body carries exactly those three mechanisms, count word "Three" agrees, no unnamed branch.
+- AC6: three suites from repo root, exit codes captured directly: scripts 341 exit 0, skills 743 exit 0, hooks 103 exit 0.
