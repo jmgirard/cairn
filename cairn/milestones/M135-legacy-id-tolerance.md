@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M135: Legacy-id tolerance for check_dangling_ids
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -109,6 +109,7 @@ tolerances or other checks — untouched.
 - 2026-08-06: T4 — M115 lesson line corrected in place, marked (corrected M135); `references/llm-wiki.md:187` says only "FP-tolerant", does not state the tolerance set, left untouched per the task's condition.
 - 2026-08-06: T5 — three suites green from repo root (scripts 341, skills 743, hooks 103), each exit code captured directly, no pipes (M56 lesson).
 - 2026-08-06: T6 — intraclass evidence: main's validator 322 dangling WARNs (baseline drifted +1 from the morning's 321), branch validator 0, exit 0 both runs; intraclass legacy max M47 and every WARNed id ≤ 47, so the tolerance removed exactly the flood. Tasks complete; status → review.
+- 2026-08-06: review return 1 (defect-return count: 1) — floor fired on O-F1 (92): unbounded legacy-max lets one stray high M-token silently disable the whole M-dangling check; O-F3 (87) M00 skipped with no legacy dir; O-F2 (85) non-UTF-8 legacy file silently drops the tolerance. Status → in-progress for the three fixes plus in-passing sub-threshold items (class docstring, boundary fixture, nested fixture).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
@@ -124,3 +125,14 @@ Evidence gathered fresh 2026-08-06, on the branch at PR #135:
 - AC4: `test_empty_legacy_directory_is_inert` ok (M-token-free legacy/ → M12 WARNs), fresh run exit 0.
 - AC5: shipped bytes read at review (`cairn_validate.py:1735-1804`): docstring names three tolerances (above-max, repo-slug, legacy-max), the body carries exactly those three mechanisms, count word "Three" agrees, no unnamed branch.
 - AC6: three suites from repo root, exit codes captured directly: scripts 341 exit 0, skills 743 exit 0, hooks 103 exit 0.
+
+Consistency gate 2026-08-06: `cairn_validate` exit 0, all checks pass; generic profile names no toolchain checks.
+
+Fan-out 2026-08-06: [O] diff-bug 16 findings, [S] blame-history 6, [S] prior-review 0 (no prior-review evidence on either surface — probe found zero inline PR comments). [S] scorer over all 22.
+
+Actioned (≥80), all triaged fix-now, return floor fired on O-F1 (92 ≥ 90, deliverable defect):
+- O-F1 (92): a single stray high M-token anywhere in `cairn/legacy/` (a date-shaped `M20260806`, a fenced example `M99`) sets `legacy_max ≥ m_max` and silently disables the entire M-dangling check — the exact inverse of the Goal, verified empirically. Fix: count only legacy tokens `< m_max` into the ceiling.
+- O-F3 (87): with no `cairn/legacy/` at all, the `> legacy_max` filter with floor 0 silently skips `M00` — a behavior change main does not have, contradicting the docstring's inert claim (outside AC2/AC4's fixture domains, so no AC breach). Fix: `None` sentinel when absent/token-free.
+- O-F2 (85): a non-UTF-8 legacy file raises under `encoding="utf-8"`, is swallowed by the bare except, and silently drops the tolerance — entombed pre-migration files are the likeliest non-UTF-8 corpus. Fix: `errors="replace"` on the legacy read.
+
+Logged below threshold (19; surfaced, not actioned — IP3): O-F6/B-F1 (78/78) stale two-tolerance class docstring in TestDanglingIds — will fix in passing with the return; O-F4 (68) `<=` boundary M47 unpinned by any fixture — will fix in passing; O-F5 (65) recursion unverified by fixtures — will fix in passing; B-F2 (62) generic bare-except shape, duplicative of O-F2; O-F7 (45) test name says empty-dir, fixture is token-free file (matches AC4 as written); O-F9 (45) nested `legacy/` dirs pruned from live walk but not in ceiling scan; O-F14 (35) AC3 lacks assertNotIn M12 (AC1 covers it); O-F12 (35) unconditional legacy read cost; O-F13 (30) AC2 fixture re-inlined; O-F8 (25) .md-only scan is the Scope as written; B-F3 (25) D-005 read-dependency tension is the Scope's intent; O-F16 (20) work-log named :187 only though :134 also examined and correctly left; O-F10/O-F15 (15/15) cosmetic wording; O-F11 (10) dead `sorted`; B-F4/B-F5/B-F6 (5/5/8) reported-compliant completeness notes.
