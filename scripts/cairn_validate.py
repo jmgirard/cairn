@@ -1735,17 +1735,41 @@ def _known_ids(root, rows):
 def check_dangling_ids(root, rows):
     """Advisory: M<NN>/D-<NNN> tokens in committed cairn/ markdown that
     resolve to no ROADMAP row, milestone file, or D-entry (M57 — the link
-    syntax is bare ID tokens, so a dangler is a broken wiki link). Two
+    syntax is bare ID tokens, so a dangler is a broken wiki link). Three
     tolerance rules, per D-023 (a missed weird format beats a false
     positive): tokens numerically above the max assigned ID are skipped
-    (example/forward prose — the M99 class), and unresolved tokens on a line
+    (example/forward prose — the M99 class); unresolved tokens on a line
     carrying an owner/repo slug are skipped (repo-qualified cross-repo
-    cites — the "ackwards M57" class). legacy/ is excluded (entombed
-    verbatim, D-005). WARN tier: feeds ADVISORIES, never fails the gate."""
+    cites — the "ackwards M57" class); and unresolved M-tokens at or below
+    the highest M-token found under cairn/legacy/ (any .md, recursively)
+    are skipped (a migrated
+    repo's live cites of entombed pre-migration ids — the M135 class; the
+    skip is independent of the above-max rule, and an absent or M-token-free
+    legacy/ leaves it inert). legacy/ is excluded from the live scan
+    (entombed verbatim, D-005). WARN tier: feeds ADVISORIES, never fails
+    the gate."""
     out = []
     m_ids, d_ids = _known_ids(root, rows)
     m_max = max((cs.id_num(i) for i in m_ids), default=0)
     d_max = max((int(i.split("-")[1]) for i in d_ids), default=0)
+    legacy_max = 0
+    legacy_dir = os.path.join(root, "cairn", "legacy")
+    if os.path.isdir(legacy_dir):
+        for dirpath, _dirs, names in os.walk(legacy_dir):
+            for name in sorted(names):
+                if not name.endswith(".md"):
+                    continue
+                try:
+                    with open(
+                        os.path.join(dirpath, name), encoding="utf-8"
+                    ) as f:
+                        text = f.read()
+                except Exception:
+                    continue
+                legacy_max = max(
+                    [legacy_max]
+                    + [int(m.group(1)) for m in _M_TOKEN.finditer(text)]
+                )
     for dirpath, dirs, names in os.walk(os.path.join(root, "cairn")):
         dirs[:] = [d for d in dirs if d != "legacy"]
         for name in sorted(names):
@@ -1764,6 +1788,7 @@ def check_dangling_ids(root, rows):
                     for m in _M_TOKEN.finditer(line)
                     if "M" + m.group(1) not in m_ids
                     and int(m.group(1)) <= m_max
+                    and int(m.group(1)) > legacy_max
                 ]
                 hits += [
                     m.group(0)

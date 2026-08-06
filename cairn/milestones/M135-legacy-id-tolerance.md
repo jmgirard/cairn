@@ -79,12 +79,12 @@ tolerances or other checks — untouched.
       class in `scripts/tests/test_scripts.py` (existing class at :1472),
       matching its fixture style; confirm each new WARN-expecting case is red
       against the unmodified check where the tolerance would wrongly fire.
-- [ ] T2: Implement the legacy scan + skip in `check_dangling_ids`
+- [x] T2: Implement the legacy scan + skip in `check_dangling_ids`
       (`scripts/cairn_validate.py:1735`): compute the legacy max with a
       `default=0` floor over `M<NN>` tokens in `cairn/legacy/**/*.md`; skip
       unresolved M-tokens `<=` that max; `legacy/` stays excluded from the
       live walk.
-- [ ] T3: Update the docstring to enumerate the three tolerances (above-max,
+- [x] T3: Update the docstring to enumerate the three tolerances (above-max,
       repo-slug, legacy-max) with the count word agreeing, wording derived
       from the shipped body (derived-claims rule).
 - [ ] T4: Correct the M115 lesson line in `cairn/LESSONS.md` in place, marked
@@ -105,6 +105,7 @@ tolerances or other checks — untouched.
 - 2026-08-06: plan gate chose M-token-only tolerance over M+D symmetry because all 321 measured WARNs are M-tokens and pre-migration systems rarely use cairn's D-id format; falsified by a migrated repo flooding on entombed D-ids.
 - 2026-08-06: plan chose scanning `cairn/legacy/` for its max M-token over an explicit declared ceiling (config surface) because the scan needs no new file format and D-023's doctrine tolerates the overshoot; falsified by a legacy corpus whose stray high M-token masks a real dangler class in practice.
 - 2026-08-06: T1 — four fixture cases added to TestDanglingIds; red-first verified: AC1's case fails against the unmodified check (M12 WARNs), the other eight in the class pass.
+- 2026-08-06: T2+T3 — legacy-max scan (`default`-0 floor via seeded `max`, recursive `.md` walk) and `> legacy_max` filter added; docstring re-derived from the body ("Three tolerance rules", recursive-scan wording corrected before commit); all three suites green (341/743/103), exit codes checked individually.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
