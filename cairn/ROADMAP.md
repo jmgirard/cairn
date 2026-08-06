@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-06 (audit — clean pass: validate all green, nothing in flight, both GitHub inboxes empty; since last check, 1.4.0 released 2026-08-05 and two candidate rows added — streamlining pass, legacy-id dangling tolerance.)_
+_Last hygiene check: 2026-08-06 (M135 post-merge — legacy-id tolerance shipped and archived, M130 terminal row pruned; validate green, 345/743/103 suites green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M135 | Legacy-id tolerance for check_dangling_ids | review | — | normal | milestones/M135-legacy-id-tolerance.md |
+| M135 | Legacy-id tolerance for check_dangling_ids | done | — | normal | milestones/archive/M135-legacy-id-tolerance.md |
 | M134 | Branch-added behavior claims are derived from the artifact, not the author's model | done | — | high | milestones/archive/M134-derived-claims.md |
 | M133 | Ingest the impeccable skill as a skill-architecture comparandum | done | — | normal | milestones/archive/M133-impeccable-ingestion.md |
 | M132 | A criterion's enumerating procedure covers the domain its promise quantifies over | done | — | high | milestones/archive/M132-promise-domain-match.md |
 | M131 | A scripted edit is verified to have landed before the record claiming it did | done | — | high | milestones/archive/M131-scripted-edit-landing.md |
-| M130 | Review returns are reserved for breaches of bounded promises | done | — | high | milestones/archive/M130-review-convergence.md |
 
 ## Candidates
 
