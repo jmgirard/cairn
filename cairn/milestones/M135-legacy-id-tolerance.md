@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M135: Legacy-id tolerance for check_dangling_ids
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -91,9 +91,9 @@ tolerances or other checks — untouched.
       `(corrected M135)`: a clean line also tolerates ids at/below the legacy
       max when `cairn/legacy/` exists. Check `cairn/references/llm-wiki.md`'s
       advisory description; correct only if it states the tolerance set.
-- [ ] T5: Run the three suites from the repo root, one command each, exit
+- [x] T5: Run the three suites from the repo root, one command each, exit
       codes checked individually.
-- [ ] T6: Run `cairn_validate` against the local intraclass checkout before
+- [x] T6: Run `cairn_validate` against the local intraclass checkout before
       and after the change; record both WARN counts in the work log as dated
       evidence (baseline 321, 2026-08-06). Skip with a logged line if the
       checkout is absent.
@@ -107,6 +107,8 @@ tolerances or other checks — untouched.
 - 2026-08-06: T1 — four fixture cases added to TestDanglingIds; red-first verified: AC1's case fails against the unmodified check (M12 WARNs), the other eight in the class pass.
 - 2026-08-06: T2+T3 — legacy-max scan (`default`-0 floor via seeded `max`, recursive `.md` walk) and `> legacy_max` filter added; docstring re-derived from the body ("Three tolerance rules", recursive-scan wording corrected before commit); all three suites green (341/743/103), exit codes checked individually.
 - 2026-08-06: T4 — M115 lesson line corrected in place, marked (corrected M135); `references/llm-wiki.md:187` says only "FP-tolerant", does not state the tolerance set, left untouched per the task's condition.
+- 2026-08-06: T5 — three suites green from repo root (scripts 341, skills 743, hooks 103), each exit code captured directly, no pipes (M56 lesson).
+- 2026-08-06: T6 — intraclass evidence: main's validator 322 dangling WARNs (baseline drifted +1 from the morning's 321), branch validator 0, exit 0 both runs; intraclass legacy max M47 and every WARNed id ≤ 47, so the tolerance removed exactly the flood. Tasks complete; status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
