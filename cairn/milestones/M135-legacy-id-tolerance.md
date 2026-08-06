@@ -87,7 +87,7 @@ tolerances or other checks — untouched.
 - [x] T3: Update the docstring to enumerate the three tolerances (above-max,
       repo-slug, legacy-max) with the count word agreeing, wording derived
       from the shipped body (derived-claims rule).
-- [ ] T4: Correct the M115 lesson line in `cairn/LESSONS.md` in place, marked
+- [x] T4: Correct the M115 lesson line in `cairn/LESSONS.md` in place, marked
       `(corrected M135)`: a clean line also tolerates ids at/below the legacy
       max when `cairn/legacy/` exists. Check `cairn/references/llm-wiki.md`'s
       advisory description; correct only if it states the tolerance set.
@@ -106,6 +106,7 @@ tolerances or other checks — untouched.
 - 2026-08-06: plan chose scanning `cairn/legacy/` for its max M-token over an explicit declared ceiling (config surface) because the scan needs no new file format and D-023's doctrine tolerates the overshoot; falsified by a legacy corpus whose stray high M-token masks a real dangler class in practice.
 - 2026-08-06: T1 — four fixture cases added to TestDanglingIds; red-first verified: AC1's case fails against the unmodified check (M12 WARNs), the other eight in the class pass.
 - 2026-08-06: T2+T3 — legacy-max scan (`default`-0 floor via seeded `max`, recursive `.md` walk) and `> legacy_max` filter added; docstring re-derived from the body ("Three tolerance rules", recursive-scan wording corrected before commit); all three suites green (341/743/103), exit codes checked individually.
+- 2026-08-06: T4 — M115 lesson line corrected in place, marked (corrected M135); `references/llm-wiki.md:187` says only "FP-tolerant", does not state the tolerance set, left untouched per the task's condition.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
