@@ -232,6 +232,14 @@ covered — a judgment, reported and never auto-fixed.
   artifact, never composed from recollection or expectation.
   Branch-added prose that restates what its cited artifact already shows is not written — a cross-reference replaces it.
   A claim that would enumerate an artifact's members is written as a pointer to the artifact, except where the enumeration is itself the deliverable.
+- **An observed failure backs a claim only as the failure it is verified to be.**
+  An error, a refusal, or a red test reads the same whether it is the behavior
+  under test or an artifact of malformed inputs, so the observation alone
+  attributes nothing.
+  A claim resting on an observed failure verifies the failure's identity — its condition class, message, or signaling site — against the failure the claim is about, before the claim is written.
+  The distinguishing step is explicit: confirm the inputs reach the behavior under test — the same inputs succeed when the condition under test is removed, or the input contract is checked against the artifact's own signature first.
+  A test asserting a failure asserts which failure, never that some failure occurred.
+  A discriminating test's passing control is shown to pass for the claim's reason, never merely to pass.
 - **Correcting a record proven false.** The tracking files split by purpose,
   and the split sets the remedy: current knowledge is corrected in place,
   history is superseded and never edited.
@@ -901,7 +909,7 @@ structural fact a gate can settle.
 
 No coverage-percentage target — test scope is set per milestone via
 acceptance criteria. Always: every exported/public function (happy path,
-every error branch fired, the language's edge cases); every numeric result
+every error branch fired with its condition asserted — the test names which failure, never bare failure — and the language's edge cases); every numeric result
 via an oracle; every bug fix via a regression test that fails before the fix;
 every documented claim.
 A changelog entry asserting a behavior requires a test that fails without that behavior, or the entry narrows to what a named test enforces.

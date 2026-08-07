@@ -37,6 +37,7 @@ IMPLEMENT = "skills/milestone-implement/SKILL.md"
 BRIEF = "skills/milestone-brief/SKILL.md"
 RELEASE = "skills/cairn-release/SKILL.md"
 GENERIC_PROFILE = "skills/shared/profiles/generic.md"
+R_PROFILE = "skills/shared/profiles/r-package.md"
 TEMPLATE = "skills/shared/templates/milestone.md"
 DOCTRINE = "skills/shared/validation-doctrine.md"
 GUARD_DOCTRINE = "skills/shared/guard-doctrine.md"
@@ -3817,6 +3818,69 @@ REGISTRY += [
         test="TestDerivedClaimsRule.test_changelog_claims_are_documented_claims",
         target=RULES,
         block="A changelog entry asserting a behavior requires a test that fails without that behavior, or the entry narrows to what a named test enforces.",
+    ),
+]
+
+# The tidymedia M54 post-mortem is the failure mode: lose the header or
+# premise and a schema error reads as the behavior under test; lose the
+# identity clause and a claim rests on a bare observation; lose the
+# distinguishing step and confounded inputs pass unexamined; lose either
+# test-form line and a vacuous control certifies an unrelated pass; lose a
+# rendering or the pointer and the rule never reaches the site that writes.
+REGISTRY += [
+    Mutation(
+        guard="test_failure_identity",
+        test="TestFailureIdentityRule.test_rule_header_and_premise",
+        target=RULES,
+        block="**An observed failure backs a claim only as the failure it is verified to be.**",
+    ),
+    Mutation(
+        guard="test_failure_identity",
+        test="TestFailureIdentityRule.test_rule_header_and_premise",
+        target=RULES,
+        block="under test or an artifact of malformed inputs, so the observation alone",
+    ),
+    Mutation(
+        guard="test_failure_identity",
+        test="TestFailureIdentityRule.test_identity_is_verified_before_the_claim",
+        target=RULES,
+        block="A claim resting on an observed failure verifies the failure's identity — its condition class, message, or signaling site — against the failure the claim is about, before the claim is written.",
+    ),
+    Mutation(
+        guard="test_failure_identity",
+        test="TestFailureIdentityRule.test_distinguishing_step_is_explicit",
+        target=RULES,
+        block="The distinguishing step is explicit: confirm the inputs reach the behavior under test — the same inputs succeed when the condition under test is removed, or the input contract is checked against the artifact's own signature first.",
+    ),
+    Mutation(
+        guard="test_failure_identity",
+        test="TestFailureIdentityRule.test_a_test_asserts_which_failure",
+        target=RULES,
+        block="A test asserting a failure asserts which failure, never that some failure occurred.",
+    ),
+    Mutation(
+        guard="test_failure_identity",
+        test="TestFailureIdentityRule.test_a_control_passes_for_the_claims_reason",
+        target=RULES,
+        block="A discriminating test's passing control is shown to pass for the claim's reason, never merely to pass.",
+    ),
+    Mutation(
+        guard="test_failure_identity",
+        test="TestFailureIdentityRule.test_error_branch_floor_requires_the_condition",
+        target=RULES,
+        block="every error branch fired with its condition asserted — the test names which failure, never bare failure — and the language's edge cases",
+    ),
+    Mutation(
+        guard="test_failure_identity",
+        test="TestFailureIdentityRule.test_r_profile_renders_identity_for_expect_error",
+        target=R_PROFILE,
+        block="every `cli_abort()` branch fired and identified — `expect_error(class =)` or a message matcher, never bare `expect_error()`",
+    ),
+    Mutation(
+        guard="test_failure_identity",
+        test="TestFailureIdentityRule.test_implement_step4_carries_the_pointer",
+        target=IMPLEMENT,
+        block="A claim resting on an observed failure follows the tracking-rules failure-identity rule: verified to be the failure the claim is about, never read off a bare error.",
     ),
 ]
 
