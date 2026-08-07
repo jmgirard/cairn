@@ -3,12 +3,12 @@
      Per-section owners are tagged below. -->
 # M136: An observed failure backs a claim only as the failure it is verified to be
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m136-failure-identity   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -99,7 +99,7 @@ repairs → tidymedia's milestone.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Author the failure-identity bullet in `tracking-rules.md` "Universal
+- [x] T1: Author the failure-identity bullet in `tracking-rules.md` "Universal
       tracking rules" (heading at :209), each clause on its own single
       physical line (M134 shape, :233-234); anchor guard text by copying the
       landed bytes, never the draft.
@@ -129,6 +129,7 @@ repairs → tidymedia's milestone.
 - 2026-08-06: plan gate chose the universal rulebook over the guard-doctrine module because the failure occurs at measurement time in any session and modules load only at guard-authoring (D-098's §6 observation); falsified by a confounded-measurement defect recurring in a repo with the rule live at session start.
 - 2026-08-06: plan gate chose full scope (rule + test floor + R rendering) over conduct-rule-only because tidymedia showed both halves — the misread error and the vacuous control; falsified by the test-floor half producing gate friction without catching a vacuous test.
 - 2026-08-06: plan gate chose conduct-only over a recorded per-claim verification line because the sibling rules are conduct-only and a per-claim record is standing bookkeeping in every repo; falsified by a review missing a confounded claim the record would have exposed.
+- 2026-08-06: T1 — failure-identity bullet landed in tracking-rules "Universal tracking rules" after the derived-claims rule, five physical lines, three suites green (743/345/103, exits 0/0/0).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
