@@ -909,7 +909,7 @@ structural fact a gate can settle.
 
 No coverage-percentage target — test scope is set per milestone via
 acceptance criteria. Always: every exported/public function (happy path,
-every error branch fired, the language's edge cases); every numeric result
+every error branch fired with its condition asserted — the test names which failure, never bare failure — and the language's edge cases); every numeric result
 via an oracle; every bug fix via a regression test that fails before the fix;
 every documented claim.
 A changelog entry asserting a behavior requires a test that fails without that behavior, or the entry narrows to what a named test enforces.

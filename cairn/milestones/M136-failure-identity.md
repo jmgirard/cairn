@@ -103,7 +103,7 @@ repairs → tidymedia's milestone.
       tracking rules" (heading at :209), each clause on its own single
       physical line (M134 shape, :233-234); anchor guard text by copying the
       landed bytes, never the draft.
-- [ ] T2: Amend the error-branch clause (`tracking-rules.md:903-904`) to
+- [x] T2: Amend the error-branch clause (`tracking-rules.md:903-904`) to
       require the fired condition asserted; keep it toolchain-neutral; after
       the edit, grep that every nearby guard's asserted substring is still
       contiguous on one physical line (M104 lesson) — including
@@ -130,6 +130,7 @@ repairs → tidymedia's milestone.
 - 2026-08-06: plan gate chose full scope (rule + test floor + R rendering) over conduct-rule-only because tidymedia showed both halves — the misread error and the vacuous control; falsified by the test-floor half producing gate friction without catching a vacuous test.
 - 2026-08-06: plan gate chose conduct-only over a recorded per-claim verification line because the sibling rules are conduct-only and a per-claim record is standing bookkeeping in every repo; falsified by a review missing a confounded claim the record would have exposed.
 - 2026-08-06: T1 — failure-identity bullet landed in tracking-rules "Universal tracking rules" after the derived-claims rule, five physical lines, three suites green (743/345/103, exits 0/0/0).
+- 2026-08-06: T2 — error-branch clause now "fired with its condition asserted — the test names which failure, never bare failure"; toolchain-neutral (R-token guard green); grep of skills/tests for "error branch"/"edge cases" returns no guard pinning the edited lines; skills suite green exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
