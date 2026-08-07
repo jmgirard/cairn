@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M136 | An observed failure backs a claim only as the failure it is verified to be | review | — | high | milestones/M136-failure-identity.md |
+| M136 | An observed failure backs a claim only as the failure it is verified to be | in-progress | — | high | milestones/M136-failure-identity.md |
 | M135 | Legacy-id tolerance for check_dangling_ids | done | — | normal | milestones/archive/M135-legacy-id-tolerance.md |
 | M134 | Branch-added behavior claims are derived from the artifact, not the author's model | done | — | high | milestones/archive/M134-derived-claims.md |
 | M133 | Ingest the impeccable skill as a skill-architecture comparandum | done | — | normal | milestones/archive/M133-impeccable-ingestion.md |

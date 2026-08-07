@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M136: An observed failure backs a claim only as the failure it is verified to be
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -135,6 +135,8 @@ repairs → tidymedia's milestone.
 - 2026-08-06: T4 — pointer sentence added at milestone-implement SKILL.md:65; diff hunk `@@ -64,0 +65` shows pure addition, :64 byte-identical; skills suite green exit 0.
 - 2026-08-06: T5 — test_failure_identity.py (9 tests) + 9 harness registrations incl. new R_PROFILE target constant; skills suite 752 green exit 0, blanking checks included.
 - 2026-08-06: T6 — inversion sweep 12/12 RED (11 sentence inversions incl. two subject transpositions + whole-bullet blank control), each reddening its own guard test, targets restored (git diff clean); probe script in session scratchpad, review re-derives fresh; suites 345/752/103 green, exits 0/0/0 individually; validate exit 0. Status → review.
+- 2026-08-06: defect return 1 (review round 1, floor): AC4 failed as written — the per-sentence probe record its text requires is absent from Review evidence (D12/82). Actioned >=80 alongside: AC4 assert count false, 20 claimed vs 13 real with wrong attribution (P1/D11, 88); What-gets-a-test slice unbounded — floor clause relocated to EOF left its guard GREEN (D1/85); docstring both-bounds claim false for three of four targets (D2/82); vacuous-control neutrality claims in T2's log line and AC2 evidence (D8/85, D9/82); AC1 evidence says 6 RULES registrations, there are 7 (D10/88).
+- 2026-08-06: correction (supersedes two lines above): T2's "toolchain-neutral (R-token guard green)" attributed neutrality to a guard that cannot fail on it; T4's quoted hunk header "@@ -64,0 +65" was composed — the emitted header is "@@ -62,6 +62,7 @@". Both conclusions stand (neutrality re-evidenced in round 2; :64 unchanged re-verified); the evidence citations were the defects.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
