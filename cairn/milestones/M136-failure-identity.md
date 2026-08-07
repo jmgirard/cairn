@@ -8,7 +8,7 @@
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** m136-failure-identity   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m136-failure-identity · https://github.com/jmgirard/cairn/pull/136   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -52,7 +52,7 @@ repairs → tidymedia's milestone.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `tracking-rules.md`'s "Universal tracking rules" section contains a
+- [x] AC1: `tracking-rules.md`'s "Universal tracking rules" section contains a
       failure-identity rule stating all three clauses: (i) a claim attributing
       behavior to an artifact on the evidence of an observed failure verifies
       the failure's identity — condition class, message, or signaling site —
@@ -65,24 +65,24 @@ repairs → tidymedia's milestone.
       control is shown to pass for the claim's reason. Each clause is pinned
       by a prose-guard assert in `skills/tests/` registered in the mutation
       harness, and blanking each registered block reddens its guard.
-- [ ] AC2: The "What gets a test" floor's error-branch clause requires the
+- [x] AC2: The "What gets a test" floor's error-branch clause requires the
       fired branch's condition to be asserted (never bare failure) and names
       no toolchain-specific function; the r-package profile's test-doctrine
       renders the same requirement as `expect_error(class =)` or a message
       matcher, never bare `expect_error()`; both sentences carry prose-guard
       asserts registered in the mutation harness.
-- [ ] AC3: `/milestone-implement` step 4 carries a new sentence naming the
+- [x] AC3: `/milestone-implement` step 4 carries a new sentence naming the
       failure-identity rule beside the derived-claims pointer, with the
       existing pointer sentence byte-identical to its state on `main`; the new
       sentence is guard-pinned and registered.
-- [ ] AC4: Every sentence of the new rule text pinned by a guard assert the
+- [x] AC4: Every sentence of the new rule text pinned by a guard assert the
       branch adds reddens under inversion — negated or subject-transposed in
       place, suites run, red required, restored — one probe line per inverted
       sentence listing the asserts it reddens, recorded in the Review
       evidence; the probe list is enumerated from the branch diff's added
       asserts across all three suite directories
       (`git diff main..HEAD -- skills/tests/ scripts/tests/ hooks/tests/`).
-- [ ] AC5: The three suites (`scripts/tests`, `skills/tests`, `hooks/tests`)
+- [x] AC5: The three suites (`scripts/tests`, `skills/tests`, `hooks/tests`)
       pass from the repo root with each suite's exit code checked
       individually.
 
@@ -143,3 +143,29 @@ repairs → tidymedia's milestone.
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. -->
+
+Evidence pass 2026-08-06 (fresh, by command, PR #136):
+
+- AC1: `test_failure_identity.py` runs 9/9 ok inside the 752-green skills
+  suite (exit 0); all three clauses present in the Universal-rules slice
+  (bounds test green); 6 RULES-target registrations blanked-and-reddened by
+  `test_each_registered_guard_fails_when_its_block_is_blanked` in the same
+  run. ✓
+- AC2: floor sentence and r-package rendering asserted by
+  `test_error_branch_floor_requires_the_condition` and
+  `test_r_profile_renders_identity_for_expect_error`, both ok; both blocks
+  registered (RULES, R_PROFILE targets); R-token guard green in the same
+  suite (universal sentence toolchain-neutral). ✓
+- AC3: `git diff main..HEAD -- skills/milestone-implement/SKILL.md` shows
+  exactly one `+` line (the new pointer) and zero `-` lines — :64
+  byte-identical to main; `test_implement_step4_carries_the_pointer` ok and
+  registered. ✓
+- AC4: inversion sweep re-run fresh: 12/12 RED (S1–S9 incl. two subject
+  transpositions, plus whole-bullet blank control), each probe reddening its
+  own guard test (per-probe reddens list in the sweep output); targets
+  restored, post-sweep `git diff` on the three targets CLEAN. Added asserts
+  enumerated from `git diff main..HEAD -- skills/tests/ scripts/tests/
+  hooks/tests/`: 20, all in `test_failure_identity.py`; every pinned rule
+  sentence covered by a probe. ✓
+- AC5: suites from repo root — scripts 345, skills 752, hooks 103; exit
+  codes checked individually: 0/0/0. ✓
