@@ -113,7 +113,7 @@ repairs → tidymedia's milestone.
       (`R_COMMAND_TOKENS` depends on it).
 - [x] T4: Add the pointer sentence in `skills/milestone-implement/SKILL.md`
       step 4, adjacent to line 64, leaving :64 byte-identical.
-- [ ] T5: Guards for T1–T4 text in `skills/tests/`; mutation-harness
+- [x] T5: Guards for T1–T4 text in `skills/tests/`; mutation-harness
       registrations (one block per assert, each occurring exactly once in its
       target; add the r-package.md target constant at
       `test_mutation_harness.py:32-45`).
@@ -133,6 +133,7 @@ repairs → tidymedia's milestone.
 - 2026-08-06: T2 — error-branch clause now "fired with its condition asserted — the test names which failure, never bare failure"; toolchain-neutral (R-token guard green); grep of skills/tests for "error branch"/"edge cases" returns no guard pinning the edited lines; skills suite green exit 0.
 - 2026-08-06: T3 — r-package test-doctrine renders identity as `expect_error(class = )` or a message matcher, never bare `expect_error()`; `cli::cli_abort()` verified surviving at :40 by grep; skills suite green exit 0.
 - 2026-08-06: T4 — pointer sentence added at milestone-implement SKILL.md:65; diff hunk `@@ -64,0 +65` shows pure addition, :64 byte-identical; skills suite green exit 0.
+- 2026-08-06: T5 — test_failure_identity.py (9 tests) + 9 harness registrations incl. new R_PROFILE target constant; skills suite 752 green exit 0, blanking checks included.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
