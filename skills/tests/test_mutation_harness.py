@@ -3874,7 +3874,7 @@ REGISTRY += [
         guard="test_failure_identity",
         test="TestFailureIdentityRule.test_r_profile_renders_identity_for_expect_error",
         target=R_PROFILE,
-        block="every `cli_abort()` branch fired and identified — `expect_error(class = )` or a message matcher, never bare `expect_error()`",
+        block="every `cli_abort()` branch fired and identified — `expect_error(class =)` or a message matcher, never bare `expect_error()`",
     ),
     Mutation(
         guard="test_failure_identity",
