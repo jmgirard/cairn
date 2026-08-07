@@ -62,6 +62,7 @@ run ingestion first (see `/milestone-brief`).
    - Checkpoint-commit per task on the branch, **including** the milestone
      file update (checkbox + one work-log line) in the same commit.
      Prose the commit adds about an artifact's behavior follows the tracking-rules derived-claims rule: derived from the artifact, never composed.
+     A claim resting on an observed failure follows the tracking-rules failure-identity rule: verified to be the failure the claim is about, never read off a bare error.
    - Stay within implement-owned sections per the tracking-rules
      section-ownership table; Goal, Scope, and Acceptance criteria change
      only via the amendment gate (step 6).
