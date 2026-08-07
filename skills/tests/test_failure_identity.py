@@ -12,9 +12,10 @@ independent of the behavior claimed.
 
 Scoping, stated per read (round-1 F D2: a blanket both-bounds claim here
 was false for three of four targets). The Universal-rules read is sliced
-heading-to-next-heading with both bounds asserted (M123), and the five
-clause reads are sliced to the rule's own bullet so dispersing the clauses
-across unrelated bullets reds (round-1 F D19). The floor read anchors the
+heading-to-next-heading with both bounds asserted (M123). The premise and
+the four operative-clause reads are sliced to the rule's own bullet so
+dispersing any of them across unrelated bullets reds (round-1 F D19; the
+header alone is section-read — it is the bullet locator, M117). The floor read anchors the
 clause inside its "Always:" sentence via a wrap-spanning regex, because the
 "What gets a test" section runs to EOF and a bare section-slice assertIn
 passed with the clause relocated to an appended line (round-1 F D1). The
@@ -57,8 +58,10 @@ def failure_identity_bullet():
     # Slice the rule's own bullet: from its `- **` line to the next
     # top-level `- **` bullet, so a clause asserted here must sit inside
     # this bullet, not merely somewhere in the section (round-1 F D19).
-    # A missing bullet returns "" so every clause assert FAILS rather than
-    # the locator crashing — a crash is weak red (M117).
+    # A missing bullet MARKER returns "" so every clause assert FAILS
+    # rather than the locator crashing — a crash is weak red (M117). (A
+    # mutated section heading still errors these tests; the bounds test
+    # fails properly there, the by-hand case.)
     s = universal_rules_section()
     marker = (
         "- **An observed failure backs a claim only as the failure it is "
@@ -98,17 +101,18 @@ class TestFailureIdentityRule(unittest.TestCase):
         # The header is asserted in the SECTION slice, not the bullet: the
         # header line is the bullet locator itself, so a bullet-scoped read
         # of it could only crash-red on header mutations (M117 weak red).
-        b = universal_rules_section()
         self.assertIn(
             "**An observed failure backs a claim only as the failure it is "
             "verified to be.**",
-            b,
+            universal_rules_section(),
         )
         # The premise — indistinguishability of a bare observation — spans
         # wraps; subject, predicate, and consequence pinned together so no
-        # half survives alone (M131).
+        # half survives alone (M131). Read from the BULLET so relocating it
+        # under another rule reds (round-2 delta finding: a section read
+        # here left premise dispersal green).
         self.assertRegex(
-            b,
+            failure_identity_bullet(),
             r"An error, a refusal, or a red test reads the same whether it "
             r"is the behavior\s+under test or an artifact of malformed "
             r"inputs, so the observation alone\s+attributes nothing\.",

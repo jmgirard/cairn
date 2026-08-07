@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M136: An observed failure backs a claim only as the failure it is verified to be
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -137,6 +137,7 @@ repairs → tidymedia's milestone.
 - 2026-08-06: T6 — inversion sweep 12/12 RED (11 sentence inversions incl. two subject transpositions + whole-bullet blank control), each reddening its own guard test, targets restored (git diff clean); probe script in session scratchpad, review re-derives fresh; suites 345/752/103 green, exits 0/0/0 individually; validate exit 0. Status → review.
 - 2026-08-06: defect return 1 (review round 1, floor): AC4 failed as written — the per-sentence probe record its text requires is absent from Review evidence (D12/82). Actioned >=80 alongside: AC4 assert count false, 20 claimed vs 13 real with wrong attribution (P1/D11, 88); What-gets-a-test slice unbounded — floor clause relocated to EOF left its guard GREEN (D1/85); docstring both-bounds claim false for three of four targets (D2/82); vacuous-control neutrality claims in T2's log line and AC2 evidence (D8/85, D9/82); AC1 evidence says 6 RULES registrations, there are 7 (D10/88).
 - 2026-08-06: correction (supersedes two lines above): T2's "toolchain-neutral (R-token guard green)" attributed neutrality to a guard that cannot fail on it; T4's quoted hunk header "@@ -64,0 +65" was composed — the emitted header is "@@ -62,6 +62,7 @@". Both conclusions stand (neutrality re-evidenced in round 2; :64 unchanged re-verified); the evidence citations were the defects.
+- 2026-08-06: review round 2 — pass-2 evidence re-derived (16 asserts, 7 RULES registrations, per-probe record recorded), delta review returned 3 findings (premise still section-scoped with executed dispersal defeat; docstring five-vs-four; fallback overclaim), all fixed same-round, S12 probe RED; suites 345/752/103 exits 0/0/0, validate 0. Status -> review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -171,3 +172,75 @@ Evidence pass 2026-08-06 (fresh, by command, PR #136):
   sentence covered by a probe. ✓
 - AC5: suites from repo root — scripts 345, skills 752, hooks 103; exit
   codes checked individually: 0/0/0. ✓
+
+Round 1 verdict: defect return 1 (floor) — AC4 failed as written (per-probe
+record absent, D12/82); six further actioned findings (see work log), 14
+logged sub-threshold (list below). All fixed on the branch.
+
+Evidence pass 2, 2026-08-06 (post-return, fresh, by command; supersedes
+pass-1 lines above where they conflict — pass 1's AC1 "6 RULES-target
+registrations" was 7, its AC4 "20 added asserts" was a naive substring grep,
+and its AC2 neutrality parenthetical leaned on a guard that cannot fail on
+neutrality; each now re-derived):
+
+- AC1: 9/9 guard tests ok in the 752-green skills suite (exit 0); RULES-target
+  registrations counted from the registry block by command: 7; blanking
+  reddens each (harness test green in same run). ✓
+- AC2: floor + rendering asserts ok; neutrality evidence stated honestly:
+  a token grep (`expect_error|cli_abort|devtools|testthat|pytest|rlang`,
+  case-insensitive) over the new universal bullet returns 0 — a bounded
+  check of listed tokens, not a proof over all toolchains; the R-token
+  guard is NOT evidence here (it cannot fail on this property). ✓
+- AC3: re-verified — diff on SKILL.md still one `+` line, zero `-` lines. ✓
+- AC4: added asserts enumerated from `git diff main..HEAD -- skills/tests/
+  scripts/tests/ hooks/tests/` counting `self.assert` call lines: 16, all in
+  `test_failure_identity.py` (the harness diff adds registry entries, no
+  asserts). Per-probe record, 14/14 RED, targets restored (post-sweep diff
+  clean vs the committed fixes):
+  S1 header negated → test_rule_header_and_premise (+5 bullet-read tests,
+  empty-slice fallback);
+  S1b header subject-transposed → same set;
+  S2 premise negated → test_rule_header_and_premise;
+  S3 identity before→after → test_identity_is_verified_before_the_claim;
+  S3b identity subject-transposed → same;
+  S4 confirm→assume → test_distinguishing_step_is_explicit;
+  S5 which-failure negated → test_a_test_asserts_which_failure;
+  S6 control negated → test_a_control_passes_for_the_claims_reason;
+  S7 floor negated → test_error_branch_floor_requires_the_condition;
+  S8 rendering negated → test_r_profile_renders_identity_for_expect_error;
+  S9 pointer negated → test_implement_step4_carries_the_pointer;
+  CONTROL whole-bullet blank → all five clause/header tests (failures, not
+  locator crashes — empty-slice fallback);
+  S10 floor clause relocated to EOF (round-1 D1's confirmed defeat) →
+  test_error_branch_floor_requires_the_condition;
+  S11 which-failure dispersed to another bullet (round-1 D19's scenario) →
+  test_a_test_asserts_which_failure. ✓
+- AC5: re-run post-fix at final checkpoint — scripts 345, skills 752,
+  hooks 103; exits 0/0/0 individually; validate exit 0. ✓
+
+Round 2 delta review ([O], fresh, over the return-fix commits; built its own
+mutation rig): confirmed D1/D14/D17/D19-main closed by executed mutations
+(M1–M8), and returned three findings, all fixed same-round — the premise
+clause was still section-scoped and its dispersal to another bullet ran the
+suite green (executed defeat; fixed by bullet-scoping the premise read, and
+probe S12 "premise dispersed" now REDs, reddening
+test_rule_header_and_premise, post-probe diff clean); the docstring counted
+"five" bullet-scoped clause reads where four were (fixed with the premise
+move, wording now states the header exception); the empty-slice fallback
+comment overclaimed crash-immunity beyond the marker case (narrowed).
+Suite after fixes: skills 752 green exit 0.
+
+Sub-threshold log (14, scored <80, logged not actioned): P2/78 dup of D1
+(fixed with it); D3/35 one-home vs :912 (dual placement deliberate — floor
+renders the rule); D4/55 premise is justification (kept: it is the
+distinguishing-step's why, one line); D5/20 premise self-contradiction
+(misread); D6/35 condition-class vocabulary (AC1's own wording); D7/50
+test-form clauses' home (plan-gate choice stands); D13/78 bounds asserts
+unregistered (M117: bounds take the by-hand check, documented in docstring);
+D14/62 ### demotion defeat (fixed: \n-anchored); D15/30, D16/45, D18/30
+prose/dash nits (D16 mooted by re-wrap check, others left); D17/65 AC-vs-
+artifact `class =` spacing (fixed: artifact aligned to AC); D19/65 clause
+dispersal (fixed: bullet-scoped reads + S11 probe); D20/40 no review-skill
+pointer (follows D-048 implement-side precedent; revisit only on a review-
+time recurrence); D21/78 composed hunk citation (work-log correction line
+appended).
