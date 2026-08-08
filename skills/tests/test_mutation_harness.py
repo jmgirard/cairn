@@ -3822,6 +3822,43 @@ REGISTRY += [
     ),
 ]
 
+# M137: the derived-figures rule — headline, domain tail, the two legal
+# forms, and the defect sentence, each separately deletable. D-099 is the
+# failure mode: lose any one and a free-standing hand-written count ships
+# compliant, stranded by the next edit to what it measures.
+REGISTRY += [
+    Mutation(
+        guard="test_derived_figures",
+        test="TestDerivedFiguresRule.test_domain_sentence",
+        target=RULES,
+        block="**A derived figure is pinned or procedural, never free-standing.**",
+    ),
+    Mutation(
+        guard="test_derived_figures",
+        test="TestDerivedFiguresRule.test_domain_sentence",
+        target=RULES,
+        block="code comments, docstrings, changelog entries, or docs — takes one of two\n  forms.",
+    ),
+    Mutation(
+        guard="test_derived_figures",
+        test="TestDerivedFiguresRule.test_pinned_form",
+        target=RULES,
+        block="Pinned: the figure stands beside the procedure that produced it and the commit or dated artifact it was measured at, a dated observation rather than a standing fact.",
+    ),
+    Mutation(
+        guard="test_derived_figures",
+        test="TestDerivedFiguresRule.test_procedural_form",
+        target=RULES,
+        block="Procedural: the figure is replaced by its derivation (\"the sites matched by `grep -n <pattern>`\"), and no figure is stated.",
+    ),
+    Mutation(
+        guard="test_derived_figures",
+        test="TestDerivedFiguresRule.test_free_standing_defect",
+        target=RULES,
+        block="The free-standing hand-written figure is the defect this rule deletes: the next edit to what it measures strands it, and it reads as current until a review reds on it.",
+    ),
+]
+
 # The tidymedia M54 post-mortem is the failure mode: lose the header or
 # premise and a schema error reads as the behavior under test; lose the
 # identity clause and a claim rests on a bare observation; lose the

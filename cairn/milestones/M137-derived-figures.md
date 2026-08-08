@@ -114,7 +114,7 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
       clause: rule relocated to tracking-rules, widened to derived figures
       over the derived-claims domain, strengthened by the pin requirement;
       D-091's decision otherwise stands.
-- [ ] T4: Guards + mutation-harness registrations for every added rule
+- [x] T4: Guards + mutation-harness registrations for every added rule
       clause; run blanking and the three inversion-probe kinds (negation,
       relocation, dispersal — the M136 lesson's vocabulary,
       marker-locator scoping) and record AC3's sweep with its per-line
@@ -134,6 +134,7 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
 - 2026-08-08: T1 — derived-figures rule authored in tracking-rules "Universal tracking rules" after the derived-claims bullet, pinnable sentences on single physical lines; restatement sweep (`grep -rn -i 'recorded-counts\|carries the procedure that produced' --include='*.md' skills/ README.md`, non-test hits) found only guard-doctrine §6's two paragraphs, T2's target; skills suite green after insertion.
 - 2026-08-08: T2 — §6's recorded-counts paragraph re-cut as a deference headline + verbatim-reproducible grade clause + M124 story now carrying its `git show a5a7007` citation; the `:231` counts pointer and the corollary headline re-pointed; guard test re-anchored (3 asserts, one added for the citation) and 4 harness blocks re-registered to the new bytes; skills suite green (752, harness blank-checks included).
 - 2026-08-08: T3 — D-099 appended (previewed in chat), narrowly superseding D-091 part 3's placement clause; validate green with no unmasked danglers at the raised id ceiling.
+- 2026-08-08: T4 — test_derived_figures.py (5 tests, bullet-scoped via a unique-marker locator returning '' when missing) + 5 harness registrations; §6's two guard tests re-scoped from section6() to paragraph slices so dispersal within §6 reds (the M136 trap); AC3 sweep: `git diff main...HEAD -- skills/shared/tracking-rules.md skills/shared/guard-doctrine.md` adds 12 lines, of which 11 carry or wrap the 9 rule clauses and 1 is the re-pointed `:231` cross-reference connective (not a clause); inversion probes = 9 clauses × (negation, relocation-to-EOF, dispersal-to-another-bullet/paragraph) + 2 subject transpositions on the headlines, all RED as failures with zero errors, targets restored hash-verified (scratchpad probe script; mutations restated per clause for review's re-run); skills suite green (757).
 
 ## Decisions
 
