@@ -1420,8 +1420,12 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # the two grep commands the page carries, hence `exempt`.
     # M133 adds the impeccable comparandum: all twelve corpus files read
     # directly in full at ingestion, dated verification claim, hence `ok`.
+    # 2026-08-08 adds the effort-experiment notes: a first-hand read of this
+    # machine's session stores and five repos' own archives, nothing external
+    # to re-verify against, hence `exempt`.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
+        "effort-experiment-notes.md": "exempt",
         "m118-cap-exemption-ledger.md": "exempt",
         "m127-ac1-ledger.md": "exempt",
         "backlog-meridian.md": "ok",

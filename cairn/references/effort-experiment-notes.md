@@ -8,6 +8,7 @@ tidymedia, circumplex, hitop. Archive review lines were read by two
 fresh-context readers; cost figures computed with the M94 attribution method
 (`scripts/cairn_cost.py` conventions). Observed 2026-08-08; the stores are
 live append logs, so every figure is a snapshot.
+Extraction: first-hand read of this machine's session stores and the five repos' own archives, nothing to re-verify against — the stores append live, so a re-run reproduces the method rather than the exact figures — observed 2026-08-08.
 
 **Scope.** Records the evidence gathered on Jeff's effort experiment —
 switching Opus 5 / Fable 5 from `high` to `medium` reasoning effort — and the
