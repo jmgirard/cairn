@@ -275,11 +275,21 @@ class TestModuleExists(unittest.TestCase):
         # alone (§8 round 2, finding 1); read from the rule's own paragraph
         # so dispersal to another §6 paragraph reds (M136).
         self.assertIn(
-            "The grade a pin owes here is verbatim-reproducible: the command "
-            "as run, or the committed artifact the count is read from, at "
-            "the granularity that discriminates it from a disagreeing "
-            "record.",
+            "The grade a pin's procedure half owes here is "
+            "verbatim-reproducible — the procedure is stated as the command "
+            "as run, or as the committed artifact the count is read from, "
+            "at the granularity that discriminates it from a disagreeing "
+            "record — beside the commit or dated artifact the rule's "
+            "pinned form already requires.",
             para,
+        )
+        # The re-pointed counts pointer (review F22): reverting it to the
+        # derived-claims rule must red. Spans a wrap, so \s+ (M95); read
+        # from §6, where the sentence lives outside the rule's paragraph.
+        self.assertRegex(
+            section6(),
+            r"for the counts themselves, the tracking-rules "
+            r"derived-figures\s+rule applies\.",
         )
         # The story's citation must travel with it (M137 criteria audit).
         self.assertIn(
@@ -291,7 +301,7 @@ class TestModuleExists(unittest.TestCase):
         # so the record that stated no procedure is not claimed to have
         # stated one.
         self.assertRegex(
-            section6(),
+            para,
             r"three records disagreed\s+on one suite count under a reflow, "
             r"and the one discriminator — whether bullet\s+paragraphs are "
             r"re\-wrapped — was stated in none of them; the two that named a"

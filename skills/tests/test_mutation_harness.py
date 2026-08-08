@@ -2545,7 +2545,13 @@ REGISTRY = [
         guard="test_lesson_graduation",
         test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
         target=GUARD_DOCTRINE,
-        block="The grade a pin owes here is verbatim-reproducible: the command as run, or the committed artifact the count is read from, at the granularity that discriminates it from a disagreeing record.",
+        block="The grade a pin's procedure half owes here is verbatim-reproducible — the procedure is stated as the command as run, or as the committed artifact the count is read from, at the granularity that discriminates it from a disagreeing record — beside the commit or dated artifact the rule's pinned form already requires.",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
+        target=GUARD_DOCTRINE,
+        block="for the counts themselves, the tracking-rules derived-figures\nrule applies.",
     ),
     Mutation(
         guard="test_lesson_graduation",

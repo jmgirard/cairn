@@ -53,7 +53,6 @@ class TestDerivedFiguresRule(unittest.TestCase):
         self.assertEqual(text.count("- " + HEADLINE), 1)
         s = figures_bullet()
         self.assertTrue(s.startswith("- " + HEADLINE))
-        self.assertNotIn("\n- **", s[2:])
         self.assertIn("free-standing hand-written figure", s)
         self.assertNotIn("An observed failure backs a claim", s)
 

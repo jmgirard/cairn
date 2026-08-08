@@ -3709,3 +3709,33 @@ was declined at the candidate row (delete-over-govern; a validator reaches
 machine-derivable figures only). If a case D-091's original §6 scope
 governed proves ungoverned by the widened rule, this is the entry to
 supersede.
+
+### D-100 (2026-08-08): Two claims in D-099 are corrected — the "otherwise stands" enumeration and the classification's attribution — supersedes those clauses; D-099's decision and its other content stand (M137 review)
+
+**Context:** M137's review fan-out (diff-bug lens, findings F1 and F3, scored
+85 each) returned two record defects in D-099, appended hours earlier on the
+same branch. IP4 forbids repairing them in place; this entry supersedes each
+narrowly — the D-092/D-096 batched shape.
+
+**Correction 1 — the "otherwise stands" enumeration.** D-099 closes
+"D-091's decision otherwise stands — the stop rule, the gloss supersession,
+and the logged deviation are untouched." Untouched by D-099, true; standing,
+false for two of the three: D-095 had already superseded D-091 parts 1–2
+(the shape-repeat stop and the clause-(i) gloss) when it retired §8 whole.
+Narrowed to: D-099 touches nothing in D-091 beyond part 3's placement
+clause; what else stands is what D-095 left standing — part 3 in full, and
+part 4's logged deviation.
+
+**Correction 2 — the classification's attribution.** D-099's Context
+attributes the finding classification to
+`cairn/references/effort-experiment-notes.md`. That page carries the effort
+experiment's cohorts, cost tables, and re-measurement procedure — not the
+per-finding classification, which was performed in the 2026-08-08
+effort-audit conversation and recorded in the candidate row this milestone
+absorbed (its text at commit `08bbb07`, `cairn/ROADMAP.md`), whose own
+wording is "roughly half are record defects". The page is the audit's
+context; the row is the classification's record.
+
+**Consequences:** D-099's decision — the relocation, the widening, the pin
+requirement, the narrow supersession of the placement clause — stands as
+decided. What changes is only the two claims named above.
