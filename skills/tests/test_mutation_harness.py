@@ -2531,26 +2531,33 @@ REGISTRY = [
         target=BRIEF,
         block="The ingest audit\n   records one work-log line either way, on `/milestone-plan` step 3's terms",
     ),
-    # M125: §6's recorded-counts rule — headline, operative clause, the
-    # record-kind enumeration (§8 round 2 finding 1), and the measured case
-    # it is required to name (AC3), each pinned separately.
+    # M125: §6's recorded-counts rule, re-cut by M137 as a deference to the
+    # tracking-rules derived-figures rule — headline, grade clause, the
+    # story's citation, and the measured case it is required to name (AC3),
+    # each pinned separately.
     Mutation(
         guard="test_lesson_graduation",
         test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
         target=GUARD_DOCTRINE,
-        block="**A count recorded in a milestone record carries the procedure that produced\nit, at verbatim-reproducible grade.**",
+        block="**A count in a milestone record — a work-log line, a docstring, a comment, or a D-entry — is governed by the tracking-rules derived-figures rule: pinned or procedural, never free-standing.**",
     ),
     Mutation(
         guard="test_lesson_graduation",
         test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
         target=GUARD_DOCTRINE,
-        block="A work-log line, a docstring, a comment,\nor a D-entry stating a count",
+        block="The grade a pin's procedure half owes here is verbatim-reproducible — the procedure is stated as the command as run, or as the committed artifact the count is read from, at the granularity that discriminates it from a disagreeing record — beside the commit or dated artifact the rule's pinned form already requires.",
     ),
     Mutation(
         guard="test_lesson_graduation",
         test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
         target=GUARD_DOCTRINE,
-        block="states the command as run, or the committed\nartifact the count is read from — at the granularity that discriminates it\nfrom a disagreeing record.",
+        block="for the counts themselves, the tracking-rules derived-figures\nrule applies.",
+    ),
+    Mutation(
+        guard="test_lesson_graduation",
+        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
+        target=GUARD_DOCTRINE,
+        block="(read at `git show a5a7007:cairn/milestones/M124-section-consistency-ledger.md`)",
     ),
     Mutation(
         guard="test_lesson_graduation",
@@ -2564,7 +2571,7 @@ REGISTRY = [
         guard="test_lesson_graduation",
         test="TestModuleExists.test_restatement_section_states_the_quantified_claim_rule",
         target=GUARD_DOCTRINE,
-        block="**A universal claim over a milestone's own artifacts is a count claiming zero exceptions, and carries the recorded-counts rule's procedure obligation.**",
+        block="**A universal claim over a milestone's own artifacts is a count claiming zero exceptions, and carries the count rule's pin obligation above.**",
     ),
     Mutation(
         guard="test_lesson_graduation",
@@ -3818,6 +3825,43 @@ REGISTRY += [
         test="TestDerivedClaimsRule.test_changelog_claims_are_documented_claims",
         target=RULES,
         block="A changelog entry asserting a behavior requires a test that fails without that behavior, or the entry narrows to what a named test enforces.",
+    ),
+]
+
+# M137: the derived-figures rule — headline, domain tail, the two legal
+# forms, and the defect sentence, each separately deletable. D-099 is the
+# failure mode: lose any one and a free-standing hand-written count ships
+# compliant, stranded by the next edit to what it measures.
+REGISTRY += [
+    Mutation(
+        guard="test_derived_figures",
+        test="TestDerivedFiguresRule.test_domain_sentence",
+        target=RULES,
+        block="**A derived figure is pinned or procedural, never free-standing.**",
+    ),
+    Mutation(
+        guard="test_derived_figures",
+        test="TestDerivedFiguresRule.test_domain_sentence",
+        target=RULES,
+        block="code comments, docstrings, changelog entries, or docs — takes one of two\n  forms.",
+    ),
+    Mutation(
+        guard="test_derived_figures",
+        test="TestDerivedFiguresRule.test_pinned_form",
+        target=RULES,
+        block="Pinned: the figure stands beside the procedure that produced it and the commit or dated artifact it was measured at, a dated observation rather than a standing fact.",
+    ),
+    Mutation(
+        guard="test_derived_figures",
+        test="TestDerivedFiguresRule.test_procedural_form",
+        target=RULES,
+        block="Procedural: the figure is replaced by its derivation (\"the sites matched by `grep -n <pattern>`\"), and no figure is stated.",
+    ),
+    Mutation(
+        guard="test_derived_figures",
+        test="TestDerivedFiguresRule.test_free_standing_defect",
+        target=RULES,
+        block="The free-standing hand-written figure is the defect this rule deletes: the next edit to what it measures strands it, and it reads as current until a review reds on it.",
     ),
 ]
 

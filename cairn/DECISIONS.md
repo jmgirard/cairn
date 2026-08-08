@@ -3674,3 +3674,68 @@ route rather than a choice between editing another repo's records and dropping
 the finding. If a cross-repo surfacing ever proves fixable inside the
 surfacing repo's own milestone — the falsifier — this is the entry to
 supersede.
+
+### D-099 (2026-08-08): The recorded-counts rule relocates to tracking-rules as the derived-figures rule — widened to derived figures across the derived-claims domain and strengthened by the pin requirement — narrowly supersedes D-091 part 3's placement clause; D-091's decision otherwise stands (M137)
+
+**Context:** The 2026-08-08 effort audit
+(`cairn/references/effort-experiment-notes.md`) classified the actioned ≥80
+findings across M113–M136's reviews and found the dominant class to be record
+defects — stale or false hand-written counts and evidence claims rather than
+code — including M134's D14/88 stale work-log count and M135's two record
+defects that forced a gated amendment. The mechanism: the rulebook demands
+quantified evidence, authors hand-write derived values, and the next edit
+strands them. D-091 part 3 already governed counts in milestone records, but
+a count carrying its procedure still goes stale when the corpus moves, and
+its home in §6 is read only at guard-authoring moments while records are
+written everywhere.
+
+**Decision:** The operative rule now lives in `tracking-rules.md`'s
+"Universal tracking rules" as the derived-figures rule: a derived count or
+figure — in tracking records, code comments, docstrings, changelog entries,
+or docs, the derived-claims rule's domain — is written pinned (beside the
+procedure that produced it and the commit or dated artifact it was measured
+at, a dated observation) or procedural (replaced by its derivation, no
+figure stated), never free-standing. This narrowly supersedes D-091 part 3's
+placement clause: §6 keeps a deference headline, the verbatim-reproducible
+grade a milestone-record pin owes, and the M124 story with its citation.
+D-091's decision otherwise stands — the stop rule, the gloss supersession,
+and the logged deviation are untouched. Rejected at the plan gate:
+annotation-with-overlap (two live statements of one rule is the drift class
+this rule targets) and no-D-entry (DECISIONS would point at prose the
+shipped bytes contradict).
+
+**Consequences:** No checker enforces the rule — the validator alternative
+was declined at the candidate row (delete-over-govern; a validator reaches
+machine-derivable figures only). If a case D-091's original §6 scope
+governed proves ungoverned by the widened rule, this is the entry to
+supersede.
+
+### D-100 (2026-08-08): Two claims in D-099 are corrected — the "otherwise stands" enumeration and the classification's attribution — supersedes those clauses; D-099's decision and its other content stand (M137 review)
+
+**Context:** M137's review fan-out (diff-bug lens, findings F1 and F3, scored
+85 each) returned two record defects in D-099, appended hours earlier on the
+same branch. IP4 forbids repairing them in place; this entry supersedes each
+narrowly — the D-092/D-096 batched shape.
+
+**Correction 1 — the "otherwise stands" enumeration.** D-099 closes
+"D-091's decision otherwise stands — the stop rule, the gloss supersession,
+and the logged deviation are untouched." Untouched by D-099, true; standing,
+false for two of the three: D-095 had already superseded D-091 parts 1–2
+(the shape-repeat stop and the clause-(i) gloss) when it retired §8 whole.
+Narrowed to: D-099 touches nothing in D-091 beyond part 3's placement
+clause; what else stands is what D-095 left standing — part 3 in full, and
+part 4's logged deviation.
+
+**Correction 2 — the classification's attribution.** D-099's Context
+attributes the finding classification to
+`cairn/references/effort-experiment-notes.md`. That page carries the effort
+experiment's cohorts, cost tables, and re-measurement procedure — not the
+per-finding classification, which was performed in the 2026-08-08
+effort-audit conversation and recorded in the candidate row this milestone
+absorbed (its text at commit `08bbb07`, `cairn/ROADMAP.md`), whose own
+wording is "roughly half are record defects". The page is the audit's
+context; the row is the classification's record.
+
+**Consequences:** D-099's decision — the relocation, the widening, the pin
+requirement, the narrow supersession of the placement clause — stands as
+decided. What changes is only the two claims named above.

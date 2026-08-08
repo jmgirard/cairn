@@ -42,6 +42,20 @@ def section6():
     return text[start:end]
 
 
+def section6_paragraph(marker):
+    # One paragraph of §6 — marker to the next blank line — or '' when the
+    # marker is missing, so downstream asserts FAIL rather than crash
+    # (M117/M136). Paragraph scoping is what makes a dispersal probe red:
+    # a clause moved to a DIFFERENT §6 paragraph still satisfies a
+    # section-wide read (the M136 dispersal trap).
+    s = section6()
+    start = s.find(marker)
+    if start == -1:
+        return ""
+    end = s.find("\n\n", start)
+    return s[start:end] if end != -1 else s[start:]
+
+
 class TestModuleExists(unittest.TestCase):
     """The graduated family has a home, and it covers what it claims to."""
 
@@ -239,30 +253,55 @@ class TestModuleExists(unittest.TestCase):
     def test_restatement_section_states_the_recorded_counts_rule(self):
         # M125 (D-091): a bare number in a record cost M124 whole
         # adjudication rounds — three records disagreed and none stated the
-        # procedure that discriminates them. Headline and operative clause
-        # pinned separately, so the remedy cannot delete green under an
-        # intact headline. Reads §6's slice, not the file: AC3 scopes the
-        # rule to §6, and a whole-file read let it relocate green (§8
-        # round 2, finding 2).
-        self.assertIn(
-            "**A count recorded in a milestone record carries the procedure "
-            "that produced\nit, at verbatim-reproducible grade.**",
-            section6(),
+        # procedure that discriminates them. M137 relocated the operative
+        # rule to tracking-rules (derived-figures); §6 keeps the deference
+        # headline, the verbatim-reproducible grade, and the M124 story with
+        # its citation. Headline and grade clause pinned separately, so the
+        # remedy cannot delete green under an intact headline. Reads §6's
+        # slice, not the file: AC3 scopes the rule to §6, and a whole-file
+        # read let it relocate green (§8 round 2, finding 2).
+        headline = (
+            "**A count in a milestone record — a work-log line, a docstring, "
+            "a comment, or a D-entry — is governed by the tracking-rules "
+            "derived-figures rule: pinned or procedural, never "
+            "free-standing.**"
         )
-        # The record kinds the rule reaches — deletable one at a time from a
-        # pin on the sentence's tail alone (§8 round 2, finding 1).
+        # The marker must be unique in §6, or find() binds a decoy first
+        # occurrence silently (M126).
+        self.assertEqual(section6().count(headline), 1)
+        para = section6_paragraph(headline)
+        self.assertTrue(para.startswith(headline))
+        # The grade clause — deletable on its own from a pin on the headline
+        # alone (§8 round 2, finding 1); read from the rule's own paragraph
+        # so dispersal to another §6 paragraph reds (M136).
+        self.assertIn(
+            "The grade a pin's procedure half owes here is "
+            "verbatim-reproducible — the procedure is stated as the command "
+            "as run, or as the committed artifact the count is read from, "
+            "at the granularity that discriminates it from a disagreeing "
+            "record — beside the commit or dated artifact the rule's "
+            "pinned form already requires.",
+            para,
+        )
+        # The re-pointed counts pointer (review F22): reverting it to the
+        # derived-claims rule must red. Spans a wrap, so \s+ (M95); read
+        # from §6, where the sentence lives outside the rule's paragraph.
         self.assertRegex(
             section6(),
-            r"A work-log line, a docstring, a comment,\s+or a D-entry "
-            r"stating a count states the command as run, or the committed\s+"
-            r"artifact the count is read from — at the granularity that "
-            r"discriminates it\s+from a disagreeing record\.",
+            r"for the counts themselves, the tracking-rules "
+            r"derived-figures\s+rule applies\.",
+        )
+        # The story's citation must travel with it (M137 criteria audit).
+        self.assertIn(
+            "(read at `git show a5a7007:cairn/milestones/"
+            "M124-section-consistency-ledger.md`)",
+            para,
         )
         # The measured case the rule is required to name (M125 AC3), phrased
         # so the record that stated no procedure is not claimed to have
         # stated one.
         self.assertRegex(
-            section6(),
+            para,
             r"three records disagreed\s+on one suite count under a reflow, "
             r"and the one discriminator — whether bullet\s+paragraphs are "
             r"re\-wrapped — was stated in none of them; the two that named a"
@@ -278,16 +317,18 @@ class TestModuleExists(unittest.TestCase):
         # §1: one pin on the pair would let either half delete green under
         # the other). Reads §6's slice for the same reason the counts-rule
         # test does.
-        self.assertIn(
+        headline = (
             "**A universal claim over a milestone's own artifacts is a count "
-            "claiming zero exceptions, and carries the recorded-counts "
-            "rule's procedure obligation.**",
-            section6(),
+            "claiming zero exceptions, and carries the count rule's pin "
+            "obligation above.**"
         )
+        self.assertEqual(section6().count(headline), 1)
+        para = section6_paragraph(headline)
+        self.assertTrue(para.startswith(headline))
         self.assertIn(
             "**Where no stated procedure can enumerate the domain, the "
             "universal is not written**",
-            section6(),
+            para,
         )
 
     def test_restatement_section_states_the_delete_first_remedy(self):

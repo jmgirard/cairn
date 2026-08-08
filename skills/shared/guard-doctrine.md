@@ -228,23 +228,21 @@ early can be re-staled by a later fix in the same pass — settle numeric
 records last, after the content has stopped moving.
 
 Name a validate finding by its emitted label in backticks (`coverage
-complete`); for the counts themselves, the tracking-rules derived-claims
+complete`); for the counts themselves, the tracking-rules derived-figures
 rule applies.
 
-**A count recorded in a milestone record carries the procedure that produced
-it, at verbatim-reproducible grade.** A work-log line, a docstring, a comment,
-or a D-entry stating a count states the command as run, or the committed
-artifact the count is read from — at the granularity that discriminates it
-from a disagreeing record. M124 measured the failure: three records disagreed
+**A count in a milestone record — a work-log line, a docstring, a comment, or a D-entry — is governed by the tracking-rules derived-figures rule: pinned or procedural, never free-standing.**
+The grade a pin's procedure half owes here is verbatim-reproducible — the procedure is stated as the command as run, or as the committed artifact the count is read from, at the granularity that discriminates it from a disagreeing record — beside the commit or dated artifact the rule's pinned form already requires.
+M124 measured the failure (read at `git show a5a7007:cairn/milestones/M124-section-consistency-ledger.md`): three records disagreed
 on one suite count under a reflow, and the one discriminator — whether bullet
 paragraphs are re-wrapped — was stated in none of them; the two that named a
 procedure left it out, and the third named no procedure at all.
 
-**A universal claim over a milestone's own artifacts is a count claiming zero exceptions, and carries the recorded-counts rule's procedure obligation.**
+**A universal claim over a milestone's own artifacts is a count claiming zero exceptions, and carries the count rule's pin obligation above.**
 "Every criterion has a task", "no guard reads via `open()`", "all five sites
 updated" each assert an exception count of zero, so the record stating one
 names the procedure that enumerated the domain, at the same
-verbatim-reproducible grade as any other count.
+grade as any other count.
 **Where no stated procedure can enumerate the domain, the universal is not written** —
 state what was actually swept and how, and claim that instead (RR11 BC5; the
 M118 lesson is the failure mode: a criterion listing its sites becomes the

@@ -232,6 +232,13 @@ covered — a judgment, reported and never auto-fixed.
   artifact, never composed from recollection or expectation.
   Branch-added prose that restates what its cited artifact already shows is not written — a cross-reference replaces it.
   A claim that would enumerate an artifact's members is written as a pointer to the artifact, except where the enumeration is itself the deliverable.
+- **A derived figure is pinned or procedural, never free-standing.** A
+  count or figure derived from the repo's artifacts — in tracking records,
+  code comments, docstrings, changelog entries, or docs — takes one of two
+  forms.
+  Pinned: the figure stands beside the procedure that produced it and the commit or dated artifact it was measured at, a dated observation rather than a standing fact.
+  Procedural: the figure is replaced by its derivation ("the sites matched by `grep -n <pattern>`"), and no figure is stated.
+  The free-standing hand-written figure is the defect this rule deletes: the next edit to what it measures strands it, and it reads as current until a review reds on it.
 - **An observed failure backs a claim only as the failure it is verified to be.**
   An error, a refusal, or a red test reads the same whether it is the behavior
   under test or an artifact of malformed inputs, so the observation alone
