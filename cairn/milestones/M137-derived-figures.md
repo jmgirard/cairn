@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP4
-- **Branch/PR:** —
+- **Branch/PR:** m137-derived-figures
 
 ## Goal
 
@@ -94,7 +94,7 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
 
 ## Tasks
 
-- [ ] T1: Author the derived-figures rule in
+- [x] T1: Author the derived-figures rule in
       `skills/shared/tracking-rules.md` "Universal tracking rules",
       directly after the derived-claims bullet (`tracking-rules.md:228`):
       distinct name, the derived-claims domain phrase, the two legal forms
@@ -130,6 +130,8 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
 - 2026-08-08: plan gate chose narrow supersession of D-091 part 3's placement clause over annotation-with-overlap because a relocation-plus-widening leaving two live statements is the drift class this milestone exists to kill, and D-091 part 2 is the precedent shape (gate Q2); falsified by a case §6's original scope governed that the widened rule does not.
 - 2026-08-08: plan gate chose the derived-claims domain phrase over tracking-plus-milestone-records-only because one shared domain keeps the sibling rules coherent and leaves no orphaned D-091 scope (gate Q3); falsified by sweep-judgment cost on docs/comments hits exceeding the pin's value there.
 - 2026-08-08: plan chose always-read placement (tracking-rules) over a records-hygiene module home because the rule binds every record write and a conditional read misses most of them (the M134 precedent); falsified by a measured cairn_cost regression attributable to the addition. The no-checker choice is the candidate row's own and was not re-weighed here.
+
+- 2026-08-08: T1 — derived-figures rule authored in tracking-rules "Universal tracking rules" after the derived-claims bullet, pinnable sentences on single physical lines; restatement sweep (`grep -rn -i 'recorded-counts\|carries the procedure that produced' --include='*.md' skills/ README.md`, non-test hits) found only guard-doctrine §6's two paragraphs, T2's target; skills suite green after insertion.
 
 ## Decisions
 
