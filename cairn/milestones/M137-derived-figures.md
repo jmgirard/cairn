@@ -1,6 +1,6 @@
 # M137: Derived figures are pinned or procedural, never free-standing
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -119,7 +119,7 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
       relocation, dispersal — the M136 lesson's vocabulary,
       marker-locator scoping) and record AC3's sweep with its per-line
       clause classification.
-- [ ] T5: Run AC4's full-diff compliance sweep, classify each added-figure
+- [x] T5: Run AC4's full-diff compliance sweep, classify each added-figure
       hit, fix or supersede per the rule; settle numeric records last
       (guard-doctrine §6); run the three suites singly and record AC5.
 
@@ -135,6 +135,7 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
 - 2026-08-08: T2 — §6's recorded-counts paragraph re-cut as a deference headline + verbatim-reproducible grade clause + M124 story now carrying its `git show a5a7007` citation; the `:231` counts pointer and the corollary headline re-pointed; guard test re-anchored (3 asserts, one added for the citation) and 4 harness blocks re-registered to the new bytes; skills suite green (752, harness blank-checks included).
 - 2026-08-08: T3 — D-099 appended (previewed in chat), narrowly superseding D-091 part 3's placement clause; validate green with no unmasked danglers at the raised id ceiling.
 - 2026-08-08: T4 — test_derived_figures.py (5 tests, bullet-scoped via a unique-marker locator returning '' when missing) + 5 harness registrations; §6's two guard tests re-scoped from section6() to paragraph slices so dispersal within §6 reds (the M136 trap); AC3 sweep: `git diff main...HEAD -- skills/shared/tracking-rules.md skills/shared/guard-doctrine.md` adds 12 lines, of which 11 carry or wrap the 9 rule clauses and 1 is the re-pointed `:231` cross-reference connective (not a clause); inversion probes = 9 clauses × (negation, relocation-to-EOF, dispersal-to-another-bullet/paragraph) + 2 subject transpositions on the headlines, all RED as failures with zero errors, targets restored hash-verified (scratchpad probe script; mutations restated per clause for review's re-run); skills suite green (757).
+- 2026-08-08: T5 — AC4 sweep: `git diff main...HEAD | grep '^+[^+]' | grep -nE '[0-9]'`, every hit read; hits are record ids, dates, and test code, plus derived figures that each stand beside their named procedure, committed artifact, or citation (suite counts beside the named suite runs, assert/registration counts beside the files the same commit ships, D-099's audit figures beside the cited effort-audit page, §6's three-records story beside its `git show a5a7007` citation); no free-standing figure, no supersession needed. Three suites green singly (757/345/103), validate all checks passed, budget 125/149. Status → review.
 
 ## Decisions
 
