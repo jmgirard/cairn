@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-06 (M136 post-merge — failure-identity rule shipped and archived, M131 terminal row pruned; validate green, 345/752/103 suites green.)_
+_Last hygiene check: 2026-08-08 (M137 post-merge — derived-figures rule shipped and archived, M132 terminal row pruned; validate green, 757/345/103 suites green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M137 | Derived figures are pinned or procedural, never free-standing | review | — | high | milestones/M137-derived-figures.md |
+| M137 | Derived figures are pinned or procedural, never free-standing | done | — | high | milestones/archive/M137-derived-figures.md |
 | M136 | An observed failure backs a claim only as the failure it is verified to be | done | — | high | milestones/archive/M136-failure-identity.md |
 | M135 | Legacy-id tolerance for check_dangling_ids | done | — | normal | milestones/archive/M135-legacy-id-tolerance.md |
 | M134 | Branch-added behavior claims are derived from the artifact, not the author's model | done | — | high | milestones/archive/M134-derived-claims.md |
 | M133 | Ingest the impeccable skill as a skill-architecture comparandum | done | — | normal | milestones/archive/M133-impeccable-ingestion.md |
-| M132 | A criterion's enumerating procedure covers the domain its promise quantifies over | done | — | high | milestones/archive/M132-promise-domain-match.md |
 
 ## Candidates
 
