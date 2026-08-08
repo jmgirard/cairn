@@ -1,6 +1,6 @@
 # M137: Derived figures are pinned or procedural, never free-standing
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
