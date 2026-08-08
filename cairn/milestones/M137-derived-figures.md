@@ -101,7 +101,7 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
       and the free-standing defect named. Grep the repo for surfaces
       restating the recorded-counts rule (M112 lesson) and confirm no
       nearby guard's anchored phrase reflows (M104/M113 lessons).
-- [ ] T2: Trim guard-doctrine §6: the recorded-counts paragraph
+- [x] T2: Trim guard-doctrine §6: the recorded-counts paragraph
       (`guard-doctrine.md:234`) defers by cross-reference with the M124
       story and citation retained; the universal-claim corollary
       (`guard-doctrine.md:243`) keeps its identification sentence and
@@ -132,6 +132,7 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
 - 2026-08-08: plan chose always-read placement (tracking-rules) over a records-hygiene module home because the rule binds every record write and a conditional read misses most of them (the M134 precedent); falsified by a measured cairn_cost regression attributable to the addition. The no-checker choice is the candidate row's own and was not re-weighed here.
 
 - 2026-08-08: T1 — derived-figures rule authored in tracking-rules "Universal tracking rules" after the derived-claims bullet, pinnable sentences on single physical lines; restatement sweep (`grep -rn -i 'recorded-counts\|carries the procedure that produced' --include='*.md' skills/ README.md`, non-test hits) found only guard-doctrine §6's two paragraphs, T2's target; skills suite green after insertion.
+- 2026-08-08: T2 — §6's recorded-counts paragraph re-cut as a deference headline + verbatim-reproducible grade clause + M124 story now carrying its `git show a5a7007` citation; the `:231` counts pointer and the corollary headline re-pointed; guard test re-anchored (3 asserts, one added for the citation) and 4 harness blocks re-registered to the new bytes; skills suite green (752, harness blank-checks included).
 
 ## Decisions
 

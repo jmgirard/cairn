@@ -239,24 +239,34 @@ class TestModuleExists(unittest.TestCase):
     def test_restatement_section_states_the_recorded_counts_rule(self):
         # M125 (D-091): a bare number in a record cost M124 whole
         # adjudication rounds — three records disagreed and none stated the
-        # procedure that discriminates them. Headline and operative clause
-        # pinned separately, so the remedy cannot delete green under an
-        # intact headline. Reads §6's slice, not the file: AC3 scopes the
-        # rule to §6, and a whole-file read let it relocate green (§8
-        # round 2, finding 2).
+        # procedure that discriminates them. M137 relocated the operative
+        # rule to tracking-rules (derived-figures); §6 keeps the deference
+        # headline, the verbatim-reproducible grade, and the M124 story with
+        # its citation. Headline and grade clause pinned separately, so the
+        # remedy cannot delete green under an intact headline. Reads §6's
+        # slice, not the file: AC3 scopes the rule to §6, and a whole-file
+        # read let it relocate green (§8 round 2, finding 2).
         self.assertIn(
-            "**A count recorded in a milestone record carries the procedure "
-            "that produced\nit, at verbatim-reproducible grade.**",
+            "**A count in a milestone record — a work-log line, a docstring, "
+            "a comment, or a D-entry — is governed by the tracking-rules "
+            "derived-figures rule: pinned or procedural, never "
+            "free-standing.**",
             section6(),
         )
-        # The record kinds the rule reaches — deletable one at a time from a
-        # pin on the sentence's tail alone (§8 round 2, finding 1).
-        self.assertRegex(
+        # The grade clause — deletable on its own from a pin on the headline
+        # alone (§8 round 2, finding 1).
+        self.assertIn(
+            "The grade a pin owes here is verbatim-reproducible: the command "
+            "as run, or the committed artifact the count is read from, at "
+            "the granularity that discriminates it from a disagreeing "
+            "record.",
             section6(),
-            r"A work-log line, a docstring, a comment,\s+or a D-entry "
-            r"stating a count states the command as run, or the committed\s+"
-            r"artifact the count is read from — at the granularity that "
-            r"discriminates it\s+from a disagreeing record\.",
+        )
+        # The story's citation must travel with it (M137 criteria audit).
+        self.assertIn(
+            "(read at `git show a5a7007:cairn/milestones/"
+            "M124-section-consistency-ledger.md`)",
+            section6(),
         )
         # The measured case the rule is required to name (M125 AC3), phrased
         # so the record that stated no procedure is not claimed to have
@@ -280,8 +290,8 @@ class TestModuleExists(unittest.TestCase):
         # test does.
         self.assertIn(
             "**A universal claim over a milestone's own artifacts is a count "
-            "claiming zero exceptions, and carries the recorded-counts "
-            "rule's procedure obligation.**",
+            "claiming zero exceptions, and carries the count rule's pin "
+            "obligation above.**",
             section6(),
         )
         self.assertIn(

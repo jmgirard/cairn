@@ -2531,26 +2531,27 @@ REGISTRY = [
         target=BRIEF,
         block="The ingest audit\n   records one work-log line either way, on `/milestone-plan` step 3's terms",
     ),
-    # M125: §6's recorded-counts rule — headline, operative clause, the
-    # record-kind enumeration (§8 round 2 finding 1), and the measured case
-    # it is required to name (AC3), each pinned separately.
+    # M125: §6's recorded-counts rule, re-cut by M137 as a deference to the
+    # tracking-rules derived-figures rule — headline, grade clause, the
+    # story's citation, and the measured case it is required to name (AC3),
+    # each pinned separately.
     Mutation(
         guard="test_lesson_graduation",
         test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
         target=GUARD_DOCTRINE,
-        block="**A count recorded in a milestone record carries the procedure that produced\nit, at verbatim-reproducible grade.**",
+        block="**A count in a milestone record — a work-log line, a docstring, a comment, or a D-entry — is governed by the tracking-rules derived-figures rule: pinned or procedural, never free-standing.**",
     ),
     Mutation(
         guard="test_lesson_graduation",
         test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
         target=GUARD_DOCTRINE,
-        block="A work-log line, a docstring, a comment,\nor a D-entry stating a count",
+        block="The grade a pin owes here is verbatim-reproducible: the command as run, or the committed artifact the count is read from, at the granularity that discriminates it from a disagreeing record.",
     ),
     Mutation(
         guard="test_lesson_graduation",
         test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
         target=GUARD_DOCTRINE,
-        block="states the command as run, or the committed\nartifact the count is read from — at the granularity that discriminates it\nfrom a disagreeing record.",
+        block="(read at `git show a5a7007:cairn/milestones/M124-section-consistency-ledger.md`)",
     ),
     Mutation(
         guard="test_lesson_graduation",
@@ -2564,7 +2565,7 @@ REGISTRY = [
         guard="test_lesson_graduation",
         test="TestModuleExists.test_restatement_section_states_the_quantified_claim_rule",
         target=GUARD_DOCTRINE,
-        block="**A universal claim over a milestone's own artifacts is a count claiming zero exceptions, and carries the recorded-counts rule's procedure obligation.**",
+        block="**A universal claim over a milestone's own artifacts is a count claiming zero exceptions, and carries the count rule's pin obligation above.**",
     ),
     Mutation(
         guard="test_lesson_graduation",
