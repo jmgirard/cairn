@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP4
-- **Branch/PR:** m137-derived-figures
+- **Branch/PR:** m137-derived-figures · https://github.com/jmgirard/cairn/pull/137
 
 ## Goal
 
@@ -38,7 +38,7 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
 
 ## Acceptance criteria
 
-- [ ] AC1: The "Universal tracking rules" section of
+- [x] AC1: The "Universal tracking rules" section of
       `skills/shared/tracking-rules.md` states the derived-figures rule,
       under a name distinct from the derived-claims rule's and governing
       that rule's domain (tracking records, code comments, docstrings,
@@ -48,7 +48,7 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
       measured at, or procedural, the figure replaced by its derivation
       with no figure stated — and the free-standing form is not written.
       Evidence: the shipped bytes, read out at review.
-- [ ] AC2: Guard-doctrine §6's recorded-counts paragraph defers to the
+- [x] AC2: Guard-doctrine §6's recorded-counts paragraph defers to the
       tracking-rules derived-figures rule by cross-reference rather than
       stating a parallel weaker form, the M124 evidence story retained with
       its citation
@@ -62,7 +62,7 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
       derived figures across the derived-claims domain and strengthened by
       the pin requirement — with D-091's decision otherwise standing.
       Evidence: the shipped bytes of both files and the appended D-entry.
-- [ ] AC3: Every rule clause this milestone adds to
+- [x] AC3: Every rule clause this milestone adds to
       `skills/shared/tracking-rules.md` or
       `skills/shared/guard-doctrine.md` — candidate sites enumerated by
       `git diff main...HEAD -- skills/shared/tracking-rules.md skills/shared/guard-doctrine.md`,
@@ -72,7 +72,7 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
       under three inversion-probe kinds (negation, relocation, dispersal),
       the probe commands and results recorded with the procedure that
       produced them.
-- [ ] AC4: Every derived figure the branch adds — candidate sites
+- [x] AC4: Every derived figure the branch adds — candidate sites
       enumerated by `git diff main...HEAD`, read added-line by
       added-line — either complies with the rule AC1 states (pinned or
       procedural) or is classified as a site the rule does not govern, the
@@ -80,7 +80,7 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
       append-only record is remedied by a superseding pinned restatement
       noted in the sweep, never by an edit. The sweep is recorded with its
       command.
-- [ ] AC5: The generic profile's verify clean — the three unittest suites
+- [x] AC5: The generic profile's verify clean — the three unittest suites
       (`skills/tests`, `scripts/tests`, `hooks/tests`) pass from the repo
       root, each exit code checked singly.
 
@@ -140,3 +140,13 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
 ## Decisions
 
 ## Review
+
+Fresh evidence, 2026-08-08, branch head 8da036a (PR #137):
+
+- AC1: `grep -n -A9 'A derived figure is pinned or procedural' skills/shared/tracking-rules.md` — the bullet sits at :235–241 in "Universal tracking rules": distinct name, the derived-claims domain phrase, the pinned and procedural forms, the free-standing defect named. VERIFIED.
+- AC2: `sed -n '228,244p' skills/shared/guard-doctrine.md` — the `:231` pointer now reads "the tracking-rules derived-figures rule applies" (wraps :231–232); the deference headline (:234), grade clause (:235), M124 story with its `git show a5a7007` citation (:236), and re-pointed corollary headline (:241) all present; `grep -c '### D-099' cairn/DECISIONS.md` = 1, the narrow supersession of D-091 part 3's placement clause. VERIFIED.
+- AC3: sweep re-run at review — the two-file diff's added lines classified in the T4 work-log line (11 of 12 carry/wrap the 9 clauses, 1 cross-reference connective); all 9 clauses guard-pinned and harness-registered (blanking exercised by the suite run below); fresh probe run: 29/29 RED as failures, 0 errors, restoration hash-verified (9 clauses × negation/relocation/dispersal + 2 subject transpositions). VERIFIED.
+- AC4: fresh sweep `git diff main...HEAD | grep '^+[^+]' | grep -nE '[0-9]'` re-read at review head; every derived figure stands beside its named procedure, committed artifact, or citation; no free-standing figure; no append-only supersession needed. The Review section's own figures name their procedures inline. VERIFIED.
+- AC5: three suites run singly at review, each exit checked: skills 757 OK (exit 0), scripts 345 OK (exit 0), hooks 103 OK (exit 0). VERIFIED.
+
+Consistency gate: `cairn_validate` exit 0, all checks passed (output read, not recalled); no DESIGN.md principle changed → `cairn_impact --changed` skipped; generic profile → no toolchain checks. Driving RR: — → projection-vs-outcome no-ops.
