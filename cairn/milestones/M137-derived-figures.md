@@ -110,7 +110,7 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
       rule. Re-anchor the two existing pins
       (`skills/tests/test_lesson_graduation.py:249`,
       `skills/tests/test_mutation_harness.py:2541`).
-- [ ] T3: Append the D-entry narrowly superseding D-091 part 3's placement
+- [x] T3: Append the D-entry narrowly superseding D-091 part 3's placement
       clause: rule relocated to tracking-rules, widened to derived figures
       over the derived-claims domain, strengthened by the pin requirement;
       D-091's decision otherwise stands.
@@ -133,6 +133,7 @@ shipped derived-claims rule (M134) and failure-identity rule (M136).
 
 - 2026-08-08: T1 — derived-figures rule authored in tracking-rules "Universal tracking rules" after the derived-claims bullet, pinnable sentences on single physical lines; restatement sweep (`grep -rn -i 'recorded-counts\|carries the procedure that produced' --include='*.md' skills/ README.md`, non-test hits) found only guard-doctrine §6's two paragraphs, T2's target; skills suite green after insertion.
 - 2026-08-08: T2 — §6's recorded-counts paragraph re-cut as a deference headline + verbatim-reproducible grade clause + M124 story now carrying its `git show a5a7007` citation; the `:231` counts pointer and the corollary headline re-pointed; guard test re-anchored (3 asserts, one added for the citation) and 4 harness blocks re-registered to the new bytes; skills suite green (752, harness blank-checks included).
+- 2026-08-08: T3 — D-099 appended (previewed in chat), narrowly superseding D-091 part 3's placement clause; validate green with no unmasked danglers at the raised id ceiling.
 
 ## Decisions
 

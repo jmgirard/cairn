@@ -3674,3 +3674,38 @@ route rather than a choice between editing another repo's records and dropping
 the finding. If a cross-repo surfacing ever proves fixable inside the
 surfacing repo's own milestone — the falsifier — this is the entry to
 supersede.
+
+### D-099 (2026-08-08): The recorded-counts rule relocates to tracking-rules as the derived-figures rule — widened to derived figures across the derived-claims domain and strengthened by the pin requirement — narrowly supersedes D-091 part 3's placement clause; D-091's decision otherwise stands (M137)
+
+**Context:** The 2026-08-08 effort audit
+(`cairn/references/effort-experiment-notes.md`) classified the actioned ≥80
+findings across M113–M136's reviews and found the dominant class to be record
+defects — stale or false hand-written counts and evidence claims rather than
+code — including M134's D14/88 stale work-log count and M135's two record
+defects that forced a gated amendment. The mechanism: the rulebook demands
+quantified evidence, authors hand-write derived values, and the next edit
+strands them. D-091 part 3 already governed counts in milestone records, but
+a count carrying its procedure still goes stale when the corpus moves, and
+its home in §6 is read only at guard-authoring moments while records are
+written everywhere.
+
+**Decision:** The operative rule now lives in `tracking-rules.md`'s
+"Universal tracking rules" as the derived-figures rule: a derived count or
+figure — in tracking records, code comments, docstrings, changelog entries,
+or docs, the derived-claims rule's domain — is written pinned (beside the
+procedure that produced it and the commit or dated artifact it was measured
+at, a dated observation) or procedural (replaced by its derivation, no
+figure stated), never free-standing. This narrowly supersedes D-091 part 3's
+placement clause: §6 keeps a deference headline, the verbatim-reproducible
+grade a milestone-record pin owes, and the M124 story with its citation.
+D-091's decision otherwise stands — the stop rule, the gloss supersession,
+and the logged deviation are untouched. Rejected at the plan gate:
+annotation-with-overlap (two live statements of one rule is the drift class
+this rule targets) and no-D-entry (DECISIONS would point at prose the
+shipped bytes contradict).
+
+**Consequences:** No checker enforces the rule — the validator alternative
+was declined at the candidate row (delete-over-govern; a validator reaches
+machine-derivable figures only). If a case D-091's original §6 scope
+governed proves ungoverned by the widened rule, this is the entry to
+supersede.
