@@ -97,7 +97,7 @@ none; the new sentence cites it, the module is untouched.
       `skills/milestone-plan/SKILL.md` (step 3 audit block, lines 86–109) and
       `skills/milestone-brief/SKILL.md` (ingest audit), each starting on its
       own line.
-- [ ] T3: Guards: a step-6 class plus extensions to
+- [x] T3: Guards: a step-6 class plus extensions to
       `skills/tests/test_fresh_context_readers.py` (both surfaces + a
       count-exactly-one identity guard for the new sentence); a mutation-
       registry entry per added sentence, anchors copied from shipped bytes
@@ -117,6 +117,7 @@ none; the new sentence cites it, the module is untouched.
 - 2026-08-09: step 2 chose extending the third question over adding a fourth because every surface counts "three questions" and the amendment path inherits by pointer; falsified by a verification-clause finding the extended third question cannot host.
 - 2026-08-09: T1 done — step 6's Minor arm narrowed to non-amendment-gated wording, Substantive-by-definition clause, re-audit sentence (pointer to plan step 3), ingest-clearance exemption, per-criterion one-re-entry bound; inserted as whole lines so no guarded phrase reflowed; skills suite green.
 - 2026-08-09: T2 done — form-coverage sentence inserted after the M132 sentence at both surfaces, each starting on its own line; byte-identity verified by count==1 of the exact wrapped literal in each file; skills suite green.
+- 2026-08-09: T3 done — 9 guard tests added (TestAmendmentReaudit ×6, form-coverage question at both surfaces, identity count guard) and 8 mutation-registry entries, anchors copied from shipped bytes; skills suite 766 OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
