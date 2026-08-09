@@ -2504,6 +2504,61 @@ REGISTRY = [
         target=BRIEF,
         block="The third question is asked of the\n   domain the claim quantifies over, never of a proxy the named procedure\n   happens to enumerate (M132).",
     ),
+    # M138: the form-coverage question and the step-6 re-audit. One entry per
+    # sentence the branch adds — the byte-identical question at each of its
+    # two surfaces, then the six step-6 clauses (Minor narrowing,
+    # Substantive-by-definition, the three-questions pointer, the reader, the
+    # ingest exemption, the per-criterion bound), each carrying the rule
+    # independently. Sentences enumerated by normalized-text absence from the
+    # merge base (the milestone's AC4 procedure), not by recall.
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestPlanGateCriteriaAudit.test_audit_asks_the_form_coverage_question",
+        target="skills/milestone-plan/SKILL.md",
+        block="Where a criterion cites a mutation, inversion, or planted-defect\n   verification, the audit asks whether the probes vary every axis the\n   verified domain is free in — form as well as location — or stand one\n   exemplar in for the family (guard-doctrine §1's inversion protocol and\n   §4's fixture rule applied to criteria).",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestRRIngestionCriteriaAudit.test_ingest_audit_carries_the_form_coverage_question",
+        target=BRIEF,
+        block="Where a criterion cites a mutation, inversion, or planted-defect\n   verification, the audit asks whether the probes vary every axis the\n   verified domain is free in — form as well as location — or stand one\n   exemplar in for the family (guard-doctrine §1's inversion protocol and\n   §4's fixture rule applied to criteria).",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestAmendmentReaudit.test_criterion_wording_change_is_substantive_by_definition",
+        target=IMPLEMENT,
+        block="a change to\n     acceptance-criterion wording is *Substantive* by definition",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestAmendmentReaudit.test_minor_arm_excludes_the_amendment_gated_sections",
+        target=IMPLEMENT,
+        block="refine wording outside the amendment-gated\n     sections — Goal, Scope, Acceptance criteria —",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestAmendmentReaudit.test_amended_wording_is_asked_the_three_questions_before_written",
+        target=IMPLEMENT,
+        block="Amended acceptance-criterion wording — an amendment return from\n     `/milestone-review` included — is asked the criteria audit's three\n     questions as `/milestone-plan` step 3 states them",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestAmendmentReaudit.test_reaudit_reader_is_fresh_context_and_not_the_author",
+        target=IMPLEMENT,
+        block="by a fresh-context\n     **[O]** reader that did not author the amended wording, before the\n     amended text is written to the milestone file",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestAmendmentReaudit.test_ingest_cleared_wording_is_exempt",
+        target=IMPLEMENT,
+        block="Wording whose clearance the `/milestone-brief` ingest audit's work-log\n     line already covers is exempt",
+    ),
+    Mutation(
+        guard="test_fresh_context_readers",
+        test="TestAmendmentReaudit.test_reentry_is_once_per_criterion_with_its_own_fresh_reader",
+        target=IMPLEMENT,
+        block="Per criterion, wording fixed at the mini gate re-enters the questions\n     once with its own fresh reader, and further churn on that criterion\n     goes to the user",
+    ),
     # M121 (narrows D-067, first instrument). Three entries across two files:
     # the record requirement, the sentence making a missing line evidence, and
     # the ingest surface's cross-reference to the one home that states it.

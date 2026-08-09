@@ -95,7 +95,13 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    (the bounded-promise rule, step 4; M130). It reads the wording
    step 4 will write, never a paraphrase of it. The third question is asked of the
    domain the claim quantifies over, never of a proxy the named procedure
-   happens to enumerate (M132). Dispose of what it returns at
+   happens to enumerate (M132).
+   Where a criterion cites a mutation, inversion, or planted-defect
+   verification, the audit asks whether the probes vary every axis the
+   verified domain is free in — form as well as location — or stand one
+   exemplar in for the family (guard-doctrine §1's inversion protocol and
+   §4's fixture rule applied to criteria).
+   Dispose of what it returns at
    this gate, never silently: a finding with one clear right answer is fixed
    and the fix reported in chat, and a finding you could reasonably decide
    either way becomes one of this round's questions, within the three-marker
