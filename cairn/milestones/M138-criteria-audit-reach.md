@@ -102,7 +102,7 @@ none; the new sentence cites it, the module is untouched.
       count-exactly-one identity guard for the new sentence); a mutation-
       registry entry per added sentence, anchors copied from shipped bytes
       (M95), wrap-spanning regexes (M105).
-- [ ] T4: Probe pass: negation and transposition probes over every added
+- [x] T4: Probe pass: negation and transposition probes over every added
       sentence (relocation/dispersal probes per the M136 lesson where a
       bullet hosts the sentence); one aggregate work-log line; run the three
       suites from the repo root, each exit code checked individually.
@@ -118,6 +118,7 @@ none; the new sentence cites it, the module is untouched.
 - 2026-08-09: T1 done — step 6's Minor arm narrowed to non-amendment-gated wording, Substantive-by-definition clause, re-audit sentence (pointer to plan step 3), ingest-clearance exemption, per-criterion one-re-entry bound; inserted as whole lines so no guarded phrase reflowed; skills suite green.
 - 2026-08-09: T2 done — form-coverage sentence inserted after the M132 sentence at both surfaces, each starting on its own line; byte-identity verified by count==1 of the exact wrapped literal in each file; skills suite green.
 - 2026-08-09: T3 done — 9 guard tests added (TestAmendmentReaudit ×6, form-coverage question at both surfaces, identity count guard) and 8 mutation-registry entries, anchors copied from shipped bytes; skills suite 766 OK.
+- 2026-08-09: T4 done — added-sentence domain enumerated by normalized-text absence from merge base 7268bd9 (plan 1, brief 1, implement 5); probes: 9 negation + 8 transposition, all RED as failures (not errors — M122 distinction checked), restores verified by clean tree; 1 relocation probe (M136 lesson) stayed GREEN — file-scope guards do not pin location, an accepted exposure matching this repo's guard convention; three suites exit 0/0/0 from repo root.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
