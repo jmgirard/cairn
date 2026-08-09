@@ -77,14 +77,27 @@ run ingestion first (see `/milestone-brief`).
 
 6. **Plan amendments** (implementation always learns things planning
    didn't know):
-   - *Minor* (reorder tasks, refine wording, add a discovered sub-task):
-     edit the milestone file; one work-log line.
-   - *Substantive* (a criterion or scope must change): mini question gate
-     with a recommendation, the proposed text shown verbatim above the
+   - *Minor* (reorder tasks, refine wording outside the amendment-gated
+     sections — Goal, Scope, Acceptance criteria — add a discovered
+     sub-task): edit the milestone file; one work-log line.
+   - *Substantive* (a criterion or scope must change; a change to
+     acceptance-criterion wording is *Substantive* by definition): mini
+     question gate with a recommendation, the proposed text shown verbatim
+     above the
      mini gate's chip (acceptance chips, tracking-rules); record the
      amendment as a dated work-log line
      (+ D-entry if cross-cutting); show the amended criterion/scope text
-     verbatim in chat before its commit (durable-record preview). An
+     verbatim in chat before its commit (durable-record preview).
+     Amended acceptance-criterion wording — an amendment return from
+     `/milestone-review` included — is asked the criteria audit's three
+     questions as `/milestone-plan` step 3 states them, by a fresh-context
+     **[O]** reader that did not author the amended wording, before the
+     amended text is written to the milestone file.
+     Wording whose clearance the `/milestone-brief` ingest audit's work-log
+     line already covers is exempt.
+     Per criterion, wording fixed at the mini gate re-enters the questions
+     once with its own fresh reader, and further churn on that criterion
+     goes to the user. An
      amendment executing an amendment return from `/milestone-review` writes
      its work-log line in that skill's fixed shape —
      `amendment return: AC<N> — "<amended clause, verbatim>"` — the line the

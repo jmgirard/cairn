@@ -5,7 +5,7 @@
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m138-criteria-audit-reach   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -88,7 +88,7 @@ none; the new sentence cites it, the module is untouched.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Author the step-6 clause cluster in
+- [x] T1: Author the step-6 clause cluster in
       `skills/milestone-implement/SKILL.md` (lines 78–98): Substantive-by-
       definition for criterion wording, Minor-arm narrowing, the re-audit
       sentence (pointer to `/milestone-plan` step 3's questions), the
@@ -115,6 +115,7 @@ none; the new sentence cites it, the module is untouched.
 - 2026-08-09: plan gate chose a fresh-reader amendment audit over session-inline (the candidate row's cheaper form) because self-reading just-authored wording is the measured failure the instrument exists to replace (D-067); falsified by a fresh-reader-audited amendment again failing review on a defect the three questions name.
 - 2026-08-09: plan gate chose one milestone over two because both rules amend the same instrument and each is about one clause plus guards; falsified by the branch outgrowing the sizing tripwires mid-implementation.
 - 2026-08-09: step 2 chose extending the third question over adding a fourth because every surface counts "three questions" and the amendment path inherits by pointer; falsified by a verification-clause finding the extended third question cannot host.
+- 2026-08-09: T1 done — step 6's Minor arm narrowed to non-amendment-gated wording, Substantive-by-definition clause, re-audit sentence (pointer to plan step 3), ingest-clearance exemption, per-criterion one-re-entry bound; inserted as whole lines so no guarded phrase reflowed; skills suite green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
