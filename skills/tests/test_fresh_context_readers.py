@@ -2,7 +2,7 @@
 reader instrument at the plan and ingest gates (D-067, as narrowed at M127).
 
 The instrument replaces an author checking its own criteria with a reader
-that authored none of them. Two surfaces, including the audit's record
+that authored none of them. Three surfaces, including the audit's record
 requirement, which M121 added (D-079 clause 2):
 
   * `/milestone-plan`, where the audit runs at the step-3 gate
@@ -13,6 +13,9 @@ requirement, which M121 added (D-079 clause 2):
   * `/milestone-brief`'s "Ingesting an RR", where the same reader asks the
     the audit's questions of a binding-criteria set before it is ingested
     (`TestRRIngestionCriteriaAudit`).
+  * `/milestone-implement` step 6, where amended criterion wording re-enters
+    the questions by pointer to `/milestone-plan` step 3 before it is
+    written (`TestAmendmentReaudit`, M138).
 
 Until M127 this file also locked D-067's other instrument — the
 description-layer certification, `guard-doctrine.md` §8, and the
