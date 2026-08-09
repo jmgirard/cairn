@@ -5,7 +5,7 @@
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** m138-criteria-audit-reach   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m138-criteria-audit-reach · https://github.com/jmgirard/cairn/pull/138   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -36,11 +36,11 @@ none; the new sentence cites it, the module is untouched.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `/milestone-implement` step 6 states that a change to
+- [x] AC1: `/milestone-implement` step 6 states that a change to
       acceptance-criterion wording is *Substantive* by definition, and its
       *Minor* arm's "refine wording" is narrowed to text outside the
       amendment-gated sections (Goal, Scope, Acceptance criteria).
-- [ ] AC2: `/milestone-implement` step 6's *Substantive* path states that
+- [x] AC2: `/milestone-implement` step 6's *Substantive* path states that
       amended acceptance-criterion wording — an amendment return from
       `/milestone-review` included — is asked the criteria audit's three
       questions as `/milestone-plan` step 3 states them, by a fresh-context
@@ -50,7 +50,7 @@ none; the new sentence cites it, the module is untouched.
       exempt; per criterion, wording fixed at the mini gate re-enters the
       questions once with its own fresh reader, and further churn on that
       criterion goes to the user.
-- [ ] AC3: `/milestone-plan` step 3's audit block and `/milestone-brief`'s
+- [x] AC3: `/milestone-plan` step 3's audit block and `/milestone-brief`'s
       ingest audit each carry, starting on its own line in both files, a
       byte-identical sentence extending the third question: where a criterion
       cites a mutation, inversion, or planted-defect verification, the audit
@@ -58,7 +58,7 @@ none; the new sentence cites it, the module is untouched.
       — form as well as location — or stand one exemplar in for the family
       (guard-doctrine §1's inversion protocol and §4's fixture rule applied
       to criteria).
-- [ ] AC4: Every sentence this branch adds to `/milestone-implement` step 6
+- [x] AC4: Every sentence this branch adds to `/milestone-implement` step 6
       and the audit blocks of `/milestone-plan` step 3 and `/milestone-brief`
       — membership decided by normalized-text absence from the merge-base
       version of the file, so reflow-only lines are excluded — is pinned by a
@@ -69,7 +69,7 @@ none; the new sentence cites it, the module is untouched.
       and counts, cross-checkable against the registry; AC3's byte-identity
       is asserted by a guard counting exactly one occurrence of the sentence
       in each of the two files.
-- [ ] AC5: The three suites of the profile's verify slot — `skills/tests`,
+- [x] AC5: The three suites of the profile's verify slot — `skills/tests`,
       `scripts/tests`, `hooks/tests` — pass from the repo root with each
       suite's exit code checked individually (M56 lesson) on the branch at
       review time.
@@ -123,3 +123,12 @@ none; the new sentence cites it, the module is untouched.
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
      cross-cutting ones to cairn/DECISIONS.md. -->
+
+## Review
+
+- 2026-08-09 AC1: `TestAmendmentReaudit.test_criterion_wording_change_is_substantive_by_definition` and `test_minor_arm_excludes_the_amendment_gated_sections` OK against branch bytes (targeted run, 6/6 class OK).
+- 2026-08-09 AC2: the four step-6 clause guards — three-questions pointer, fresh-context reader, ingest-clearance exemption, per-criterion one-re-entry bound — OK in the same `TestAmendmentReaudit` run.
+- 2026-08-09 AC3: `test_audit_asks_the_form_coverage_question` (plan), `test_ingest_audit_carries_the_form_coverage_question` (brief), and `test_the_form_coverage_sentence_is_identical_at_both_surfaces` (count==1 in each file) all OK.
+- 2026-08-09 AC4: mutation harness blank-RED for all 8 M138 registry entries (inside skills suite, 766 OK); probe pass re-run at review — 9 negation + 8 transposition probes RED as failures (not errors), restores verified by clean tree; domain enumerated by normalized-text absence from merge base 7268bd9 (plan 1, brief 1, implement 5 sentences). Relocation probe GREEN — accepted exposure, logged at T4.
+- 2026-08-09 AC5: from repo root — skills 766 tests exit 0, scripts 345 exit 0, hooks 103 exit 0.
+- 2026-08-09 consistency gate: `cairn_validate` all checks passed (exit 0); coverage completeness green within it; profile `generic` → no toolchain checks; no DESIGN principle changed → `cairn_impact` skipped.
