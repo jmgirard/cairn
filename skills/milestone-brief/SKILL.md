@@ -100,7 +100,13 @@ start (any skill) when a manual RR appears:
    frozen scope in one can forbid the work another mandates.
    The third question is asked of the
    domain the claim quantifies over, never of a proxy the named procedure
-   happens to enumerate (M132). A brief has
+   happens to enumerate (M132).
+   Where a criterion cites a mutation, inversion, or planted-defect
+   verification, the audit asks whether the probes vary every axis the
+   verified domain is free in — form as well as location — or stand one
+   exemplar in for the family (guard-doctrine §1's inversion protocol and
+   §4's fixture rule applied to criteria).
+   A brief has
    already been convened over exactly that, with the collision surfacing at a
    review gate instead of here. What the audit returns is raised with the
    user, never softened away: `binding criteria` string-compares the AC block,
