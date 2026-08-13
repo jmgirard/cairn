@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-09 (M138 post-merge — criteria-audit escape paths closed and archived, M133 terminal row pruned; validate green, 766/345/103 suites green.)_
+_Last hygiene check: 2026-08-13 (audit-only pass, nothing in flight since M138 — validate all-green, no advisories, both GitHub inboxes empty, tree clean.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
