@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M140 | Whole-slice equality guards for the M139 rules | planned | — | high | milestones/M140-equality-guards.md |
+| M140 | Whole-slice equality guards for the M139 rules | in-progress | — | high | milestones/M140-equality-guards.md |
 | M139 | The narrowing repair for a defeated promise is reachable at a review return | done | — | high | milestones/archive/M139-narrowing-at-the-return.md |
 | M138 | The criteria audit reaches amended wording and one-exemplar verification clauses | done | — | high | milestones/archive/M138-criteria-audit-reach.md |
 | M137 | Derived figures are pinned or procedural, never free-standing | done | — | high | milestones/archive/M137-derived-figures.md |

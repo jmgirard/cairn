@@ -125,6 +125,88 @@ def implement_substantive():
     )
 
 
+def normalize(text):
+    """Collapse all whitespace to single spaces. The equality guards' one
+    declared blind spot: a mutation expressible purely in collapsed
+    whitespace passes (RR12)."""
+    return " ".join(text.split())
+
+
+# M140: the M139 repair-direction sentence gets its own sub-slice because the
+# *Substantive* bullet holds six rules other milestones edit — a fixture over
+# the whole bullet would freeze all of them (RR12 rec 3, D-103).
+IMPLEMENT_M139_START = "an amendment executing a return reclassified"
+IMPLEMENT_M139_END = "that grows a plan-owned section"
+
+
+def implement_m139():
+    """The M139 repair-direction sentence alone — a sub-slice of the
+    *Substantive* bullet."""
+    return slice_between(implement(), IMPLEMENT_M139_START, IMPLEMENT_M139_END)
+
+
+# Fixtures: verbatim copies of each rule's text, taken from the target files'
+# actual bytes (M95/M118) and compared modulo the read pipeline (lowercase +
+# whitespace collapse). Editing a guarded rule reds the suite until the
+# fixture is updated in the same commit — the two-site act D-103 chooses.
+FLOOR_FIXTURE = normalize("""\
+**Return floor (M130).** Over the actioned (≥80) list, a finding moves the
+   milestone back to `in-progress` only when it demonstrates an acceptance
+   criterion failing — inside its named procedure's domain, where the
+   criterion names one, save where the widening test below carves that
+   failure out as an amendment return —
+   or when scored **≥90** on a defect in what the
+   repo's deliverables do for their users (for this plugin: what the skills,
+   hooks, and scripts do, not the doctrine prose about how work is verified),
+   save where that same test carves that finding out.
+   Every other actioned finding takes the triage above — fix now / follow-up
+   / reject — with no status change, and is logged. The amendment return
+   below is the one named exception to this "only when". A floor return
+   takes step 4's exit — a work-log line naming exactly what failed, stop.
+   The defect-return count the thrash rule reads is step-4 gate returns
+   plus returns under this floor; amendment returns stay off it.
+""".lower())
+
+AMENDMENT_FIXTURE = normalize("""\
+**Amendment return (M130).** A finding that shows the criterion itself
+   is wrong — falsifying it only outside the domain of the procedure it
+   names, or showing a criterion that names no procedure to be unbounded
+   (the never-reinterpret rule's case, step 3), or meeting the widening
+   test below, which carves that third case out of this clause's "only
+   outside" — is evidence about the
+   promise, not the work. It routes to the gated
+   criterion-amendment protocol (`/milestone-implement` step 6) and
+   re-review, the amendment the only work convened; status is set to
+   `in-progress` for that amendment alone, and review stops there. Its
+   work-log line carries a fixed
+   shape — `amendment return: AC<N> — "<amended clause, verbatim>"` — and
+   these lines are counted per milestone on their own track: never reset by
+   a re-cut, and never added to the defect-return count (D-097 narrows
+   D-064). A second amendment return naming the same AC<N> on one milestone
+   stops — no further round is convened; the disposition goes to the user.
+""".lower())
+
+WIDENING_FIXTURE = normalize("""\
+**Widening test (M139).** A finding demonstrating an acceptance criterion
+   failing *inside* the domain its promise quantifies over is an amendment
+   return rather than a defect return when the only repair available to it
+   widens an enumeration whose membership is fixed by author recall rather
+   than decided by a procedure over that domain. That discriminator is
+   `/milestone-plan` step 4's, and the repair such a return takes is the one
+   step 4 states; read it there rather than here. A return reclassified this
+   way carries the fixed work-log shape above, counts on the amendment-return
+   track under its second-occurrence stop, and never increments the
+   defect-return count the thrash rule reads.
+""".lower())
+
+IMPLEMENT_M139_FIXTURE = normalize("""\
+An amendment executing a return reclassified under `/milestone-review`'s
+     widening test takes the narrowing repair `/milestone-plan` step 4's
+     bounded-promise rule states; a wider enumeration is not an admissible
+     amendment. An amendment
+""".lower())
+
+
 class TestThrashCounting(unittest.TestCase):
     def test_returns_are_counted_per_milestone_not_per_cut(self):
         self.assertIn("count returns **per milestone, never per cut**", review())
@@ -486,134 +568,42 @@ class TestReturnFloor(unittest.TestCase):
 
 
 class TestWideningTest(unittest.TestCase):
-    """M139: the narrowing repair is reachable at the return, not only a re-cut.
+    """M139/M140: the step-5 return rules and the implement-side repair
+    direction, guarded by whole-slice equality (D-103, RR12).
 
     Trigger: intraclass M117's AC2 took four defect returns, the first three
     each answering a counterexample with a wider matcher. The narrowing repair
     existed at `/milestone-plan` step 4 the whole time; nothing at the return
-    surface reached it, so getting there cost a full re-cut.
+    surface reached it, so getting there cost a full re-cut. M139 shipped the
+    widening test and repair direction — and its fragment-regex guards then
+    failed three review passes by one shape, an anchor's reach differing from
+    the extent of the rule it pins: an unpinned subject and tail, a slice
+    spanning three rules, text inserted between two pinned fragments
+    inverting the rule with the suite green.
 
-    The geometry is what the two pre-existing clauses missed. The amendment
-    return keyed on a criterion falsified only OUTSIDE its named procedure's
-    domain; this case fails INSIDE the domain the promise quantifies over,
-    because the named procedure enumerates a proxy for it. So the case read as
-    an ordinary defect return, and its repair read as "widen the matcher".
+    RR12's diagnosis: a fragment-anchor family always leaves an unpinned
+    complement, and the complement carries the next inversion. The fixed
+    point is whole-slice equality — per rule, one method holding one
+    assertEqual(normalize(<slice>), <fixture>) against a verbatim in-test
+    copy. Totality: the pinned extent equals the slice. Granularity: the
+    slice equals one rule.
 
-    One assertion per test method (M139 AC5): the mutation harness blanks a
-    block and runs the whole method, so a second assertion in the same method
-    can red for the first and leave it unproven.
+    One assertion per test method: the mutation harness blanks a block and
+    runs the whole named method, so a second assertion in the same method can
+    red for the first and leave it unproven.
     """
 
-    def test_return_floor_carves_out_the_widening_case(self):
-        # Unamended, the floor's inside-the-domain limb claims this failure as
-        # a defect return, and the two classifications collide on one finding.
-        self.assertRegex(
-            review_floor(),
-            r"criterion names one, save where the widening test below carves "
-            r"that\s+failure out as an amendment return",
-        )
+    def test_review_floor_matches_its_fixture(self):
+        self.assertEqual(normalize(review_floor()), FLOOR_FIXTURE)
 
-    def test_return_floor_shipped_defect_limb_carves_out_the_widening_case(self):
-        # Review F1: the carve-out on limb 1 alone left limb 2 open, so the
-        # motivating case — a shipped matcher missing a real user case, which
-        # scores >=90 on a deliverables defect — satisfied the floor AND the
-        # widening test at once: two counters, two stops, no tiebreak.
-        self.assertRegex(
-            review_floor(),
-            r"about how work is verified\),\s+save where that same test carves "
-            r"that finding out",
-        )
+    def test_review_amendment_matches_its_fixture(self):
+        self.assertEqual(normalize(review_amendment()), AMENDMENT_FIXTURE)
 
-    def test_amendment_return_clause_carves_out_the_widening_case(self):
-        # The sibling collision: "only outside" excludes this case by its own
-        # wording, so the route it needs is closed until the clause names it.
-        self.assertRegex(
-            review_amendment(),
-            r"or meeting the widening\s+test below, which carves that third "
-            r"case out of this clause's \"only\s+outside\"",
-        )
+    def test_review_widening_matches_its_fixture(self):
+        self.assertEqual(normalize(review_widening()), WIDENING_FIXTURE)
 
-    def test_amendment_return_names_the_finding_as_its_subject(self):
-        # Review return 1: M139 amended this sentence but pinned only the
-        # clause it added, so the sentence's SUBJECT could be transposed —
-        # "A maintainer who shows the criterion itself is wrong" — with the
-        # whole suite green. Negating a clause is not inverting a rule; the
-        # subject has to be pinned too (M131).
-        self.assertRegex(
-            review_amendment(),
-            r"a finding that shows the criterion itself\s+is wrong",
-        )
-
-    def test_amendment_return_tail_is_evidence_about_the_promise(self):
-        # The other half of the same return: the sentence's TAIL carries the
-        # whole point — this class of finding is evidence about the promise,
-        # not about the work — and it inverted green because the M139 anchor
-        # stopped short of it (M131's prefix-without-tail).
-        self.assertRegex(
-            review_amendment(),
-            r"is evidence about the\s+promise, not the work",
-        )
-
-    def test_widening_test_classifies_an_inside_domain_failure(self):
-        self.assertRegex(
-            review_widening(),
-            r"\*\*widening test \(m139\)\.\*\* a finding demonstrating an "
-            r"acceptance criterion\s+failing \*inside\* the domain its promise "
-            r"quantifies over is an amendment\s+return rather than a defect "
-            r"return",
-        )
-
-    def test_widening_test_keys_on_the_only_repair_being_a_wider_recall(self):
-        # "only" is load-bearing: without it every defect return for which some
-        # widening repair exists lands on the amendment track and its tighter
-        # stop.
-        self.assertRegex(
-            review_widening(),
-            r"when the only repair available to it\s+widens an enumeration "
-            r"whose membership is fixed by author recall rather\s+than decided "
-            r"by a procedure over that domain",
-        )
-
-    def test_widening_test_cites_step_4_rather_than_restating_it(self):
-        # One home: the repair lives at /milestone-plan step 4, and a second
-        # copy here is the fork this rulebook's step-0 check exists to stop.
-        self.assertRegex(
-            review_widening(),
-            r"that discriminator is\s+`/milestone-plan` step 4's, and the "
-            r"repair such a return takes is the one\s+step 4 states; read it "
-            r"there rather than here",
-        )
-
-    def test_reclassified_return_counts_on_the_amendment_track(self):
-        self.assertRegex(
-            review_widening(),
-            r"a return reclassified this\s+way carries the fixed work-log "
-            r"shape above, counts on the amendment-return\s+track under its "
-            r"second-occurrence stop, and never increments the\s+defect-return "
-            r"count the thrash rule reads",
-        )
-
-    def test_implement_states_the_narrowing_repair_direction(self):
-        # The classification alone leaves the amendment undirected, and the
-        # undirected amendment is the wider enumeration that failed four times.
-        self.assertRegex(
-            implement_substantive(),
-            r"an amendment executing a return reclassified under "
-            r"`/milestone-review`'s\s+widening test takes the narrowing repair "
-            r"`/milestone-plan` step 4's\s+bounded-promise rule states",
-        )
-
-    def test_amendment_block_keeps_its_own_routing_sentence(self):
-        # Pins the routing sentence inside this slice, so hoisting the whole
-        # amendment rule out of its block reds. This does NOT fully bind the
-        # slice's tail: the routing sentence sits mid-paragraph, so sentences
-        # below it can still be stranded under another rule's heading with the
-        # suite green (pass-3 R3) — the recorded exposure D-103 carries until
-        # the whole-slice equality instrument lands.
-        self.assertRegex(
-            review_amendment(),
-            r"routes to the gated\s+criterion-amendment protocol",
-        )
+    def test_implement_m139_matches_its_fixture(self):
+        self.assertEqual(normalize(implement_m139()), IMPLEMENT_M139_FIXTURE)
 
     def test_review_floor_marker_is_unique(self):
         # A marker occurring twice binds its slice to the first occurrence, and
@@ -636,13 +626,11 @@ class TestWideningTest(unittest.TestCase):
     def test_implement_substantive_end_marker_is_unique(self):
         self.assertEqual(implement().count(IMPLEMENT_SUBSTANTIVE_END), 1)
 
-    def test_implement_rules_a_wider_enumeration_inadmissible(self):
-        # Stated positively above, refused explicitly here: naming the repair
-        # does not by itself close the move it replaces.
-        self.assertRegex(
-            implement_substantive(),
-            r"a wider enumeration is not an admissible\s+amendment",
-        )
+    def test_implement_m139_start_marker_is_unique(self):
+        self.assertEqual(implement().count(IMPLEMENT_M139_START), 1)
+
+    def test_implement_m139_end_marker_is_unique(self):
+        self.assertEqual(implement().count(IMPLEMENT_M139_END), 1)
 
 
 if __name__ == "__main__":

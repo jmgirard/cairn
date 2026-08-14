@@ -1,11 +1,11 @@
 # M140: Whole-slice equality guards for the M139 rules
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** RR12
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m140-equality-guards`
 
 ## Goal
 
@@ -126,14 +126,14 @@ guard-doctrine banking (AC-8).
 
 ## Tasks
 
-- [ ] T1. `normalize()`; four fixtures copied from the target files' actual
+- [x] T1. `normalize()`; four fixtures copied from the target files' actual
       bytes (M95/M118); four one-assertion equality methods replacing the
       twelve fragment-regex methods; keep every marker-uniqueness assert;
       grep adjacent anchors first (M104).
-- [ ] T2. Implement-side sub-slice: existing-prose boundary phrases, helper
+- [x] T2. Implement-side sub-slice: existing-prose boundary phrases, helper
       returning `""` on a missing marker, uniqueness asserts; the Substantive
       markers, asserts and entries stay even if superseded (AC-7).
-- [ ] T3. Harness: one registration per slice fixture; per-slice
+- [x] T3. Harness: one registration per slice fixture; per-slice
       marker-blanking entries naming that slice's equality method (AC-7); the
       twelve regex-method entries replaced in the same commit (a deleted
       method reds `load_case`).
@@ -148,6 +148,8 @@ guard-doctrine banking (AC-8).
       `skills/tests/`, guard-doctrine (BC6 deviation) and `cairn/` (AC-6).
 
 ## Work log
+
+- 2026-08-14: T1–T3 in one commit (T3's same-commit clause): four fixtures copied from the target files' bytes with `normalize()` comparison, four equality methods replacing the twelve fragment-regex methods, marker asserts kept plus two for the new sub-slice (`an amendment executing a return reclassified` → `that grows a plan-owned section`, each verified unique in the host); registry block rewritten — per slice an exemplar-block entry and a marker-blanking entry both naming the equality method, six uniqueness entries kept, two added. Harness Ran 9 OK; skills suite exit 0.
 
 - 2026-08-14: created by /milestone-plan from RR12's binding criteria (D-103's split; absorbs the "Child of M139" candidate row, lineage RR12/D-103/M139 R4-01).
 - 2026-08-14: criteria audit ran twice ([O], fresh context, authored none of the wording). Round 1 over BC1–7 + AC-8/9: three unstated procedures (splitter, gap and move counts), the BC6×AC-8 joint conflict, strict readings unsatisfiable in BC1/BC5, AC4's matrix lacking a live referent — disposed as two further Deviations rows, task obligations (T3's same-commit repointing, T5's quoted matrix and stated splitter), and the auditor's own rewordings of AC-8/AC-9. Round 2 audited the gate-added AC-10 alone: FIX adopted verbatim (deterministic normalization-surviving fixture edit, zero-pair slices recorded as 0, duplicate-sentence check, one-time-measurement clause); its flagged file-side word-edit axis is carried by AC-2's matrix, noted in T5.

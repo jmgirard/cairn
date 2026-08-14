@@ -3145,87 +3145,64 @@ REGISTRY += [
     ),
 ]
 
-# M139: the widening test at the return surface, and the narrowing repair it
-# routes to. One entry per separately deletable span, one span per test method
-# — AC5 holds each new method to a single assertion, so a blanked block and the
-# assert that reacts to it are one-to-one and nothing is proven by a sibling.
+# M139/M140: the step-5 return rules and the implement-side repair direction,
+# guarded by whole-slice equality (D-103, RR12). Per slice, two entries name
+# the equality method: an exemplar block inside the slice (blanking changes
+# the normalized slice, so equality reds) and the slice's start marker
+# (blanking collapses the slice to "", the vacuity case BC7 requires
+# demonstrated). The uniqueness methods keep their own marker entries below
+# (M126 decoy defense).
 REGISTRY += [
     Mutation(
         guard="test_thrash_rule",
-        test="TestWideningTest.test_return_floor_carves_out_the_widening_case",
+        test="TestWideningTest.test_review_floor_matches_its_fixture",
         target=REVIEW,
         block="criterion names one, save where the widening test below carves that\n   failure out as an amendment return",
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestWideningTest.test_return_floor_shipped_defect_limb_carves_out_the_widening_case",
+        test="TestWideningTest.test_review_floor_matches_its_fixture",
         target=REVIEW,
-        block="about how work is verified),\n   save where that same test carves that finding out",
+        block="**Return floor (M130).**",
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestWideningTest.test_amendment_return_clause_carves_out_the_widening_case",
+        test="TestWideningTest.test_review_amendment_matches_its_fixture",
         target=REVIEW,
         block="or meeting the widening\n   test below, which carves that third case out of this clause's \"only\n   outside\"",
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestWideningTest.test_amendment_return_names_the_finding_as_its_subject",
+        test="TestWideningTest.test_review_amendment_matches_its_fixture",
         target=REVIEW,
-        block="A finding that shows the criterion itself\n   is wrong",
+        block="**Amendment return (M130).**",
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestWideningTest.test_amendment_return_tail_is_evidence_about_the_promise",
-        target=REVIEW,
-        block="is evidence about the\n   promise, not the work",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestWideningTest.test_widening_test_classifies_an_inside_domain_failure",
-        target=REVIEW,
-        block="**Widening test (M139).** A finding demonstrating an acceptance criterion\n   failing *inside* the domain its promise quantifies over is an amendment\n   return rather than a defect return",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestWideningTest.test_widening_test_keys_on_the_only_repair_being_a_wider_recall",
+        test="TestWideningTest.test_review_widening_matches_its_fixture",
         target=REVIEW,
         block="when the only repair available to it\n   widens an enumeration whose membership is fixed by author recall rather\n   than decided by a procedure over that domain",
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestWideningTest.test_widening_test_cites_step_4_rather_than_restating_it",
+        test="TestWideningTest.test_review_widening_matches_its_fixture",
         target=REVIEW,
-        block="That discriminator is\n   `/milestone-plan` step 4's, and the repair such a return takes is the one\n   step 4 states; read it there rather than here",
+        block="**Widening test (M139).**",
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestWideningTest.test_reclassified_return_counts_on_the_amendment_track",
-        target=REVIEW,
-        block="A return reclassified this\n   way carries the fixed work-log shape above, counts on the amendment-return\n   track under its second-occurrence stop, and never increments the\n   defect-return count the thrash rule reads",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestWideningTest.test_implement_states_the_narrowing_repair_direction",
-        target=IMPLEMENT,
-        block="An amendment executing a return reclassified under `/milestone-review`'s\n     widening test takes the narrowing repair `/milestone-plan` step 4's\n     bounded-promise rule states",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestWideningTest.test_implement_rules_a_wider_enumeration_inadmissible",
+        test="TestWideningTest.test_implement_m139_matches_its_fixture",
         target=IMPLEMENT,
         block="a wider enumeration is not an admissible\n     amendment",
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestWideningTest.test_amendment_block_keeps_its_own_routing_sentence",
-        target=REVIEW,
-        block="routes to the gated\n   criterion-amendment protocol",
+        test="TestWideningTest.test_implement_m139_matches_its_fixture",
+        target=IMPLEMENT,
+        block="An amendment executing a return reclassified",
     ),
-    # The slice markers bounding the per-rule slices (M139 review return 2
-    # narrowed them from one step-wide slice). Blanking one drops its count to
-    # 0, so the uniqueness assert reds — and the slice it bounds collapses to
-    # "", the failure mode these asserts exist to surface early.
+    # The slice markers, each asserted unique in its host file. Blanking one
+    # drops its count to 0, so the uniqueness assert reds.
     Mutation(
         guard="test_thrash_rule",
         test="TestWideningTest.test_review_floor_marker_is_unique",
@@ -3261,6 +3238,18 @@ REGISTRY += [
         test="TestWideningTest.test_implement_substantive_end_marker_is_unique",
         target=IMPLEMENT,
         block="- *The goal itself is wrong*",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_implement_m139_start_marker_is_unique",
+        target=IMPLEMENT,
+        block="An amendment executing a return reclassified",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_implement_m139_end_marker_is_unique",
+        target=IMPLEMENT,
+        block="that grows a plan-owned section",
     ),
 ]
 
