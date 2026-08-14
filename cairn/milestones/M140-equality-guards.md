@@ -138,7 +138,7 @@ guard-doctrine banking (AC-8).
       twelve regex-method entries replaced in the same commit (a deleted
       method reds `load_case`).
 - [x] T4. Guard-doctrine banking per AC-8; register each added claim.
-- [ ] T5. Probes, each procedure stated verbatim in its Review line: the AC-2
+- [x] T5. Probes, each procedure stated verbatim in its Review line: the AC-2
       matrix (forms quoted in the BC2 deviation row) over the deviated
       command; AC-3's non-whitespace sentinel at the splitter's interior gaps;
       AC-4's moves; AC-10's two families. The splitter is a runnable command
@@ -149,6 +149,7 @@ guard-doctrine banking (AC-8).
 
 ## Work log
 
+- 2026-08-14: T5 — probe suite run at 6ec40f7 (scratchpad m140_probes.py, procedures in its docstring): domain 7 sentences from the deviated command (hunk-grouped, pre-image-excluded); AC-2 matrix 7x5=35 runs; AC-3 insertion 10 gaps (floor 4, amendment 3, widening 2, implement 1); AC-4 24 moves; AC-10a 10 pairs, no duplicate sentences; AC-10b 4 fixture edits. 83 runs, 83 RED, 0 GREEN, tree clean after every restore.
 - 2026-08-14: T4 — banking written: guard-doctrine §1 gains the two-invariant paragraph, §2's "What it cannot see" list gains the inserting and normalization bullets; four single-assert guards in `TestGuardDoctrineBanking`, each registered (harness Ran 9 OK, skills exit 0).
 - 2026-08-14: T1–T3 in one commit (T3's same-commit clause): four fixtures copied from the target files' bytes with `normalize()` comparison, four equality methods replacing the twelve fragment-regex methods, marker asserts kept plus two for the new sub-slice (`an amendment executing a return reclassified` → `that grows a plan-owned section`, each verified unique in the host); registry block rewritten — per slice an exemplar-block entry and a marker-blanking entry both naming the equality method, six uniqueness entries kept, two added. Harness Ran 9 OK; skills suite exit 0.
 
