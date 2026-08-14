@@ -1,11 +1,11 @@
 # M140: Whole-slice equality guards for the M139 rules
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** RR12
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m140-equality-guards` · https://github.com/jmgirard/cairn/pull/140
 
 ## Goal
 
@@ -31,7 +31,7 @@ guard-doctrine banking (AC-8).
 
 ## Acceptance criteria
 
-- [ ] AC-1 (BC1): Each of the four M139 rule slices (`review_floor`,
+- [x] AC-1 (BC1): Each of the four M139 rule slices (`review_floor`,
       `review_amendment`, `review_widening`, and the implement-side M139
       sub-slice) is guarded by exactly one test method holding exactly one
       assertion of the form `assertEqual(normalize(<slice>), <fixture>)`, where
@@ -39,36 +39,36 @@ guard-doctrine banking (AC-8).
       `skills/tests/`, and no per-fragment substring or regex assert remains as
       any of those slices' pin — checked by AST walk over `TestWideningTest`'s
       successor at the review commit.
-- [ ] AC-2 (BC2): AC4's original probe matrix, re-run at the review commit over
+- [x] AC-2 (BC2): AC4's original probe matrix, re-run at the review commit over
       the domain enumerated by `git diff -w main...HEAD -- skills/milestone-review/SKILL.md
       skills/milestone-implement/SKILL.md` split at sentence boundaries, reds on
       every probe run with zero green (tolerance: zero), each run restored with
       `git diff` shown clean.
-- [ ] AC-3 (BC3): An insertion probe placing one fixed sentinel sentence at every
+- [x] AC-3 (BC3): An insertion probe placing one fixed sentinel sentence at every
       inter-sentence gap inside each guarded slice reds the suite at every gap,
       zero green (tolerance: zero); the gap count is derived at the review
       commit from the slice text by a stated procedure, not free-standing; each
       run restored with `git diff` shown clean.
-- [ ] AC-4 (BC4): A relocation probe moving each M139-added sentence (a) into each
+- [x] AC-4 (BC4): A relocation probe moving each M139-added sentence (a) into each
       other rule block of `/milestone-review` step 5, (b) into the other skill
       file, and (c) for the implement-side sentences, to at least two other
       positions inside the Substantive bullet but outside their sub-slice, reds
       on every move, zero green (tolerance: zero), the move counts derived at
       the review commit by a stated procedure; each run restored clean.
-- [ ] AC-5 (BC5): Every slice fixture has a mutation-harness registration whose
+- [x] AC-5 (BC5): Every slice fixture has a mutation-harness registration whose
       blanked block reds that slice's own equality method one-to-one, and
       `python3 -m unittest discover -s skills/tests -k mutation_harness`
       reports `OK` at the review commit.
-- [ ] AC-6 (BC6): The child branch's `git diff main...HEAD` adds no committed
+- [x] AC-6 (BC6): The child branch's `git diff main...HEAD` adds no committed
       artifact outside `skills/tests/` and the tracking files: no ledger file,
       no hash constant, no per-probe record; probe outcomes appear only as
       Review-section evidence lines (D-095).
-- [ ] AC-7 (BC7): All six existing boundary markers, plus any new implement-side
+- [x] AC-7 (BC7): All six existing boundary markers, plus any new implement-side
       sub-slice markers, are each asserted unique in their host file, and a
       slice helper returning `""` on a missing marker fails the equality assert
       rather than passing vacuously — demonstrated once at the review commit by
       the marker-blanking entries of BC5's harness run.
-- [ ] AC-8. `skills/shared/guard-doctrine.md` §1 states the two-invariant
+- [x] AC-8. `skills/shared/guard-doctrine.md` §1 states the two-invariant
       statement — totality (the pinned extent equals the slice) and granularity
       (the slice equals one rule), with anchors short of totality leaving a
       free complement — and the "What it cannot see" list in §2 names
@@ -77,11 +77,11 @@ guard-doctrine banking (AC-8).
       expressible purely in collapsed whitespace pass). Evidence: the sentences
       read verbatim from the file at the review commit, plus one
       mutation-harness registration per added claim.
-- [ ] AC-9. `skills/tests`, `scripts/tests` and `hooks/tests` pass and
+- [x] AC-9. `skills/tests`, `scripts/tests` and `hooks/tests` pass and
       `python3 scripts/cairn_validate.py` is green at the review commit.
       Evidence: one `## Review` line per command naming the command, the
       commit measured at, and its reported counts.
-- [ ] AC-10. Two probes run at one named review commit over the four
+- [x] AC-10. Two probes run at one named review commit over the four
       equality-guarded slices and their four fixtures this milestone creates.
       (a) *Intra-slice permutation*: for each guarded slice, apply one at a
       time every adjacent-sentence transposition, the pairs enumerated by the
@@ -126,28 +126,34 @@ guard-doctrine banking (AC-8).
 
 ## Tasks
 
-- [ ] T1. `normalize()`; four fixtures copied from the target files' actual
+- [x] T1. `normalize()`; four fixtures copied from the target files' actual
       bytes (M95/M118); four one-assertion equality methods replacing the
       twelve fragment-regex methods; keep every marker-uniqueness assert;
       grep adjacent anchors first (M104).
-- [ ] T2. Implement-side sub-slice: existing-prose boundary phrases, helper
+- [x] T2. Implement-side sub-slice: existing-prose boundary phrases, helper
       returning `""` on a missing marker, uniqueness asserts; the Substantive
       markers, asserts and entries stay even if superseded (AC-7).
-- [ ] T3. Harness: one registration per slice fixture; per-slice
+- [x] T3. Harness: one registration per slice fixture; per-slice
       marker-blanking entries naming that slice's equality method (AC-7); the
       twelve regex-method entries replaced in the same commit (a deleted
       method reds `load_case`).
-- [ ] T4. Guard-doctrine banking per AC-8; register each added claim.
-- [ ] T5. Probes, each procedure stated verbatim in its Review line: the AC-2
+- [x] T4. Guard-doctrine banking per AC-8; register each added claim.
+- [x] T5. Probes, each procedure stated verbatim in its Review line: the AC-2
       matrix (forms quoted in the BC2 deviation row) over the deviated
       command; AC-3's non-whitespace sentinel at the splitter's interior gaps;
       AC-4's moves; AC-10's two families. The splitter is a runnable command
       over the normalized slice, unhandled forms enumerated; AC-2's file-side
       runs carry the flagged word-edit axis.
-- [ ] T6. Suites + `cairn_validate` (AC-9); branch diff adds nothing outside
+- [x] T6. Suites + `cairn_validate` (AC-9); branch diff adds nothing outside
       `skills/tests/`, guard-doctrine (BC6 deviation) and `cairn/` (AC-6).
 
 ## Work log
+
+- 2026-08-14: review fix pass (O-F1/O-F2) — sub-slice end marker moved to the M139 sentence's own boundary (`an amendment\n     that grows a plan-owned section`), fixture's stray next-rule fragment dropped, harness end-marker block updated; committed at b81ba07 BEFORE re-probing, because the probe script's `git checkout --` restore had silently wiped the first, uncommitted application of the same fix and invalidated a probe tally. Full evidence re-gathered at b81ba07.
+- 2026-08-14: T6 — suites skills/scripts/hooks and validate all exit 0 at 4fa9697; `git diff main...HEAD --name-only` shows no file outside skills/tests/, skills/shared/guard-doctrine.md and cairn/. All tasks complete; status -> review.
+- 2026-08-14: T5 — probe suite run at 6ec40f7 (scratchpad m140_probes.py, procedures in its docstring): domain 7 sentences from the deviated command (hunk-grouped, pre-image-excluded); AC-2 matrix 7x5=35 runs; AC-3 insertion 10 gaps (floor 4, amendment 3, widening 2, implement 1); AC-4 24 moves; AC-10a 10 pairs, no duplicate sentences; AC-10b 4 fixture edits. 83 runs, 83 RED, 0 GREEN, tree clean after every restore.
+- 2026-08-14: T4 — banking written: guard-doctrine §1 gains the two-invariant paragraph, §2's "What it cannot see" list gains the inserting and normalization bullets; four single-assert guards in `TestGuardDoctrineBanking`, each registered (harness Ran 9 OK, skills exit 0).
+- 2026-08-14: T1–T3 in one commit (T3's same-commit clause): four fixtures copied from the target files' bytes with `normalize()` comparison, four equality methods replacing the twelve fragment-regex methods, marker asserts kept plus two for the new sub-slice (`an amendment executing a return reclassified` → `that grows a plan-owned section`, each verified unique in the host); registry block rewritten — per slice an exemplar-block entry and a marker-blanking entry both naming the equality method, six uniqueness entries kept, two added. Harness Ran 9 OK; skills suite exit 0.
 
 - 2026-08-14: created by /milestone-plan from RR12's binding criteria (D-103's split; absorbs the "Child of M139" candidate row, lineage RR12/D-103/M139 R4-01).
 - 2026-08-14: criteria audit ran twice ([O], fresh context, authored none of the wording). Round 1 over BC1–7 + AC-8/9: three unstated procedures (splitter, gap and move counts), the BC6×AC-8 joint conflict, strict readings unsatisfiable in BC1/BC5, AC4's matrix lacking a live referent — disposed as two further Deviations rows, task obligations (T3's same-commit repointing, T5's quoted matrix and stated splitter), and the auditor's own rewordings of AC-8/AC-9. Round 2 audited the gate-added AC-10 alone: FIX adopted verbatim (deterministic normalization-surviving fixture edit, zero-pair slices recorded as 0, duplicate-sentence check, one-time-measurement clause); its flagged file-side word-edit axis is carried by AC-2's matrix, noted in T5.
@@ -161,3 +167,122 @@ guard-doctrine banking (AC-8).
 ## Decisions
 
 ## Review
+
+**Evidence, PR #140, branch `m140-equality-guards`, review commit `412def7`.**
+
+- AC-1 (BC1) — MET. AST walk over `TestWideningTest` in
+  `skills/tests/test_thrash_rule.py`: exactly four methods hold a sole
+  `assertEqual(normalize(<slice>), <fixture>)` — one per slice helper
+  (`review_floor`, `review_amendment`, `review_widening`, `implement_m139`) —
+  the fixtures are module-level verbatim copies (modulo the read pipeline,
+  per the BC1/BC5 deviation reading), and a whole-file sweep finds zero other
+  assert whose read surface is a slice helper.
+- AC-2 (BC2) — MET. Matrix re-run at 412def7 over the deviated command's
+  domain: 7 sentences (hunk-grouped, pre-image-excluded), 5 forms each =
+  **35 runs, 35 RED, 0 GREEN** — measured 0 green against BC2's projected
+  zero (tolerance: zero). Files restored, `git diff` clean after every run.
+- AC-3 (BC3) — MET. Sentinel (`Zzqq insertion probe zzqq.`, non-whitespace)
+  at every interior gap; gap counts derived by the stated splitter
+  (`re.split(r'(?<=[.!?]) (?=[^ ])', normalize(slice))`): floor 4,
+  amendment 3, widening 2, implement 1 — **10 runs, 10 RED, 0 GREEN**
+  against projected zero. Restored clean each run.
+- AC-4 (BC4) — MET. Moves derived procedurally: each of the 7 sentences into
+  each other rule block of step 5, cross-file, plus two Substantive-bullet
+  positions outside the sub-slice for the implement sentence — **24 moves,
+  24 RED, 0 GREEN** against projected zero. Restored clean each run.
+- AC-5 (BC5) — MET. Each of the four fixtures has registrations naming its
+  equality method (8 total: one exemplar block + one start marker per slice,
+  the targeting reading of one-to-one per the deviation row); harness
+  `python3 -m unittest discover -s skills/tests -k mutation_harness`:
+  Ran 9 tests, OK at 412def7 — every registered block blanked and its named
+  test required to fail.
+- AC-6 (BC6) — MET. `git diff main...HEAD --name-only`: five files —
+  `cairn/ROADMAP.md`, the milestone file, `skills/shared/guard-doctrine.md`
+  (inside the BC6 deviation's scope), and the two `skills/tests/` files. No
+  ledger file, no hash constant, no per-probe record; probe outcomes exist
+  only as the evidence lines here.
+- AC-7 (BC7) — MET. Eight marker-uniqueness methods (six existing + the two
+  sub-slice markers), each a sole assertion; the marker-blanking registry
+  entries name the equality methods, so the harness run above demonstrates a
+  missing marker collapses its slice to `""` and fails the equality assert
+  rather than passing vacuously.
+- AC-8 — MET. Sentences read verbatim at the review commit:
+  guard-doctrine §1 lines 46–47 (totality; granularity, anchors short of
+  totality leaving a free complement), §2 bullets at lines 83 and 87
+  (inserting; the normalization blind spot). Four registrations, one per
+  added claim, proven in the harness run above.
+- AC-9 — MET. At 412def7: `skills/tests` Ran 782 exit 0, `scripts/tests`
+  Ran 345 exit 0, `hooks/tests` Ran 103 exit 0,
+  `python3 scripts/cairn_validate.py` exit 0.
+- AC-10 — MET. (a) Intra-slice permutation: pairs per slice by the stated
+  splitter — floor 4, amendment 3, widening 2, implement 1 (none 0) —
+  **10 runs, 10 RED**; no duplicate sentence in any slice list. (b) Stale
+  fixture: 4 fixtures (the count of equality fixtures at 412def7), first
+  alphabetic word → `zzqq`, targets untouched — **4 runs, 4 RED**. Zero
+  green across both families; every run reverted with `git diff` clean.
+
+**Projection-vs-outcome (RR12).** Every numeric projection in BC2–BC4 and
+AC-10 is "zero green (tolerance: zero)": measured 0 green against projected 0
+in each — 35+10+24+14 runs, 83 RED, 0 GREEN.
+
+**Consistency gate.** `cairn_validate` exit 0 (the one WARN is the sizing
+advisory disposed at the plan gate). `Principles touched:` is `—`, so
+`cairn_impact` is skipped. Profile `generic` names no toolchain checks — a
+clean no-op.
+
+**Fix pass — evidence re-gathered at `b81ba07` after the O-F1/O-F2 repair.**
+
+- AC-1 — re-verified: AST sweep at b81ba07 finds exactly the four equality
+  methods as the only slice-reading asserts, none non-`assertEqual`.
+- AC-2 — matrix re-run: 7 sentences × 5 forms = **35 runs, 35 RED, 0 GREEN**
+  against projected zero; restored clean each run.
+- AC-3 — gap counts by the stated splitter: floor 4, amendment 3, widening 2,
+  **implement 0** (the clean one-rule slice has one sentence; recorded as 0)
+  — **9 runs, 9 RED, 0 GREEN**; restored clean.
+- AC-4 — **24 moves, 24 RED, 0 GREEN**; restored clean.
+- AC-5 — harness Ran 9 OK at b81ba07; 8 slice registrations naming the four
+  equality methods, end-marker block updated with the marker.
+- AC-6 — diff file list unchanged (five files).
+- AC-7 — eight uniqueness methods; the updated end marker verified unique;
+  marker-blanking entries red their equality methods in the harness run.
+- AC-8 — sentences unchanged, present; four registrations proven.
+- AC-9 — skills 782, scripts 345, hooks 103, validate: all exit 0 at b81ba07.
+- AC-10 — (a) pairs: floor 4, amendment 3, widening 2, **implement 0,
+  recorded as 0** per the criterion — 9 runs, 9 RED; no duplicate sentences.
+  (b) 4 fixture edits, 4 RED. **Total 81 runs, 81 RED, 0 GREEN** (down from
+  83: the two degenerate implement-slice runs O-F2 identified no longer
+  exist).
+
+**Fan-out and verdict.** Three lenses — diff-bug **[O]** 13 findings,
+blame-history **[S]** ten verified-clean checks (it live-fired the R1
+insertion shape and confirmed the equality guard reds) plus one cosmetic
+note, prior-review **[S]** zero findings (fixtures verified against live
+bytes; GitHub probe empty) — scored by a fresh **[S]** scorer holding the
+diff and the milestone file. Two findings ≥80, both FIXED on the branch, no
+return (neither fails a criterion inside its named procedure's domain, and
+neither is a ≥90 deliverables defect):
+
+- O-F1 (88) — FIXED. "`IMPLEMENT_M139_FIXTURE` bakes in two words of a
+  *different* rule": the end marker stopped mid-sentence inside the budget
+  rule's subject, violating the granularity invariant this milestone banks.
+  End marker moved to the sentence boundary; fixture and harness block
+  updated.
+- O-F2 (82) — FIXED by the same repair. The dangling fragment was the only
+  reason AC-10(a)'s implement pair count was 1 rather than 0; the slice now
+  yields 0 pairs, recorded as 0 per the criterion's own clause.
+- Sub-80, logged not actioned (IP3): O-F5/78 (`implement_substantive()` now
+  has no callers and the Substantive bullet no content pin — a coverage
+  reduction of a non-M139 surface), O-F9/75 (module docstring still says
+  "Three targets" with a fourth class added), O-F3/68 (four registry entries
+  hardcode the guard-doctrine path instead of the module constant), O-F7/68
+  (the insertion bullet's "Only … whole-slice equality" overclaims against
+  the next bullet and D-103's coverage-identical hash), O-F8/65 (case-folding
+  is a second undeclared read-pipeline blind spot), O-F13/65 (the pass-1
+  Review block attributed figures to 412def7 with no work-log line for that
+  re-run — cured for the final record by the fix-pass line above),
+  O-F4/58 and BH-F9/35 (registry comment glued to a closing paren),
+  O-F12/45 (three pre-existing whole-file asserts double-pin fixture text —
+  sanctioned by the deviation row, sync cost noted), O-F11/42 (wrap-fragile
+  sub-slice markers, fails safe), O-F6/40 (§1 paragraph read as corpus-wide
+  mandate — Scope Out and D-103 carry the refusal), O-F10/32 (step 5's outer
+  edges outside every slice — outside the exposure D-103 records).

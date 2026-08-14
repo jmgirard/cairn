@@ -40,6 +40,17 @@ the guard against the acceptance criteria after any amendment.
 the suite, require red, restore, and diff. Blanking proves only that the text
 is present; inversion is what proves the guard pins the *rule*.
 
+**An anchor family short of totality leaves a free complement.** Two
+invariants decide whether a slice-scoped guard family can be defeated by an
+edit it never reads:
+totality — the pinned extent equals the slice, leaving no unpinned complement between its boundaries —
+and granularity — the slice equals one rule, so no position inside it changes which rule owns a sentence.
+A fragment-anchor family short of totality accepts arbitrary text in its
+complement, and arbitrary text includes the rule's own inversion (M139's
+three review passes; RR12). The limit satisfying both invariants is one
+whole-slice equality check per rule against a verbatim in-test fixture — at
+which point it has stopped being an anchor family.
+
 **Fix the wrap, never the assert.** When an anchor breaks because prose
 reflowed, re-wrap the prose. Loosening the assert is how a label→rule guard
 stops pinning its rule. Author anchors on their own physical line and re-run
@@ -69,6 +80,14 @@ What it cannot see:
   `setUp`), never a class-level cache.
 - **Blanking is not swapping.** Deletion-resistance says nothing about
   transposition; see the inversion protocol above.
+- **Blanking is not inserting either.** A registered block proves deletion
+  reacts; text inserted *between* two pinned fragments inverts a rule with
+  every anchor still matching (M139 pass 3). Only a totality-holding guard —
+  whole-slice equality — reds on insertion.
+- **Whitespace normalization is a declared blind spot of equality guards.**
+  A whole-slice `assertEqual` over collapsed whitespace passes any mutation
+  expressible purely in whitespace; in prose that is benign, and it is
+  declared rather than discovered (RR12).
 
 The harness proves a guard reacts to its block; it never judges whether that
 block was worth pinning. That judgment is yours before you register it.
