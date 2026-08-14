@@ -137,7 +137,7 @@ guard-doctrine banking (AC-8).
       marker-blanking entries naming that slice's equality method (AC-7); the
       twelve regex-method entries replaced in the same commit (a deleted
       method reds `load_case`).
-- [ ] T4. Guard-doctrine banking per AC-8; register each added claim.
+- [x] T4. Guard-doctrine banking per AC-8; register each added claim.
 - [ ] T5. Probes, each procedure stated verbatim in its Review line: the AC-2
       matrix (forms quoted in the BC2 deviation row) over the deviated
       command; AC-3's non-whitespace sentinel at the splitter's interior gaps;
@@ -149,6 +149,7 @@ guard-doctrine banking (AC-8).
 
 ## Work log
 
+- 2026-08-14: T4 — banking written: guard-doctrine §1 gains the two-invariant paragraph, §2's "What it cannot see" list gains the inserting and normalization bullets; four single-assert guards in `TestGuardDoctrineBanking`, each registered (harness Ran 9 OK, skills exit 0).
 - 2026-08-14: T1–T3 in one commit (T3's same-commit clause): four fixtures copied from the target files' bytes with `normalize()` comparison, four equality methods replacing the twelve fragment-regex methods, marker asserts kept plus two for the new sub-slice (`an amendment executing a return reclassified` → `that grows a plan-owned section`, each verified unique in the host); registry block rewritten — per slice an exemplar-block entry and a marker-blanking entry both naming the equality method, six uniqueness entries kept, two added. Harness Ran 9 OK; skills suite exit 0.
 
 - 2026-08-14: created by /milestone-plan from RR12's binding criteria (D-103's split; absorbs the "Child of M139" candidate row, lineage RR12/D-103/M139 R4-01).

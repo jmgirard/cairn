@@ -633,5 +633,42 @@ class TestWideningTest(unittest.TestCase):
         self.assertEqual(implement().count(IMPLEMENT_M139_END), 1)
 
 
+class TestGuardDoctrineBanking(unittest.TestCase):
+    """M140: the transferable lesson RR12 Q5 banks in guard-doctrine —
+    the two-invariant statement (§1) and two blind-spot bullets (§2).
+    One assertion per method, as above."""
+
+    def doctrine(self):
+        return read("shared", "guard-doctrine.md")
+
+    def test_doctrine_states_totality(self):
+        self.assertIn(
+            "totality — the pinned extent equals the slice, leaving no "
+            "unpinned complement between its boundaries —",
+            self.doctrine(),
+        )
+
+    def test_doctrine_states_granularity(self):
+        self.assertIn(
+            "granularity — the slice equals one rule, so no position "
+            "inside it changes which rule owns a sentence.",
+            self.doctrine(),
+        )
+
+    def test_doctrine_names_the_insertion_blind_spot(self):
+        self.assertRegex(
+            self.doctrine(),
+            r"\*\*blanking is not inserting either\.\*\* a registered block "
+            r"proves deletion\s+reacts",
+        )
+
+    def test_doctrine_declares_the_normalization_blind_spot(self):
+        self.assertRegex(
+            self.doctrine(),
+            r"\*\*whitespace normalization is a declared blind spot of "
+            r"equality guards\.\*\*",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

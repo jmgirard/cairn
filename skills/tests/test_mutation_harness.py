@@ -3250,6 +3250,30 @@ REGISTRY += [
         test="TestWideningTest.test_implement_m139_end_marker_is_unique",
         target=IMPLEMENT,
         block="that grows a plan-owned section",
+    ),    # M140: the guard-doctrine banking (RR12 Q5) — one entry per added claim.
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestGuardDoctrineBanking.test_doctrine_states_totality",
+        target="skills/shared/guard-doctrine.md",
+        block="totality — the pinned extent equals the slice, leaving no unpinned complement between its boundaries —",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestGuardDoctrineBanking.test_doctrine_states_granularity",
+        target="skills/shared/guard-doctrine.md",
+        block="granularity — the slice equals one rule, so no position inside it changes which rule owns a sentence.",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestGuardDoctrineBanking.test_doctrine_names_the_insertion_blind_spot",
+        target="skills/shared/guard-doctrine.md",
+        block="**Blanking is not inserting either.** A registered block proves deletion\n  reacts",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestGuardDoctrineBanking.test_doctrine_declares_the_normalization_blind_spot",
+        target="skills/shared/guard-doctrine.md",
+        block="**Whitespace normalization is a declared blind spot of equality guards.**",
     ),
 ]
 
