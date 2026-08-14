@@ -3764,11 +3764,9 @@ quantifies over is an amendment return rather than a defect return when the
 **only** repair available to it widens an enumeration whose membership is fixed
 by author recall rather than decided by a procedure over that domain. "Only" is
 load-bearing: without it every defect return for which some widening repair
-exists lands on the amendment track and its tighter stop. Three limbs are amended to
-name it as their explicit carve-out: the return floor's inside-the-domain limb,
-that floor's >=90 deliverables limb, and the amendment return's "only outside".
-The second of the three was added at M139's own review, where a finding was
-shown to satisfy the floor and the widening test at once with no tiebreak. Such
+exists lands on the amendment track and its tighter stop. The two clauses it
+collides with are amended to name it as their explicit carve-out — the return
+floor's inside-the-domain limb, and the amendment return's "only outside". Such
 a return counts on D-097's existing amendment-return track under its
 second-occurrence stop and never increments the defect-return count D-064's
 triggers read; a third counter was weighed at the M139 plan gate and rejected as
@@ -3790,3 +3788,43 @@ amendment returns across different AC ids under this classification, that is the
 loop D-097 names as its own exit and D-097 is the entry to supersede. If a
 return is reclassified here whose repair genuinely was a widening that a stated
 procedure settles, this entry is the one to supersede.
+
+### D-102 (2026-08-13): D-101's "two clauses" is corrected to the three limbs the shipped file carves, and D-101's in-place edit is recorded as an IP4 violation, not repaired — supersedes that clause; D-101's decision and its other content stand (M139 review pass 3)
+
+**Context:** D-101 records that the widening test's colliding clauses "are
+amended to name it as their explicit carve-out — the return floor's
+inside-the-domain limb, and the amendment return's 'only outside'". Two limbs.
+The shipped file carves three: M139's own review pass 1 found the return floor's
+`≥90` deliverables limb uncarved, so a finding could satisfy the floor and the
+widening test at once with no tiebreak, and the repair added a third carve-out.
+D-101 was appended before that repair and was never true of what ships.
+
+**Decision, part 1 — the correction.** The clause is superseded here: **three**
+limbs name the widening test as their explicit carve-out — the return floor's
+inside-the-domain limb, that floor's `≥90` deliverables limb, and the amendment
+return's "only outside". D-101's decision, its counting disposition, its
+cross-entry claims about D-064, D-090, D-097 and D-098, and its two falsifiers
+all stand as appended.
+
+**Decision, part 2 — the violation, recorded under IP2 rather than hidden.**
+M139's review pass 2 scored this misdescription at 85 and the milestone repaired
+it by **editing D-101's sentence in place**, on the reasoning that an unmerged
+D-entry is branch-added prose rather than history. That reasoning is wrong and
+the edit was an IP4 violation. D-045 classifies `DECISIONS.md` as history,
+"never edited: supersede, never rewrite"; IP4 states the same; `DECISIONS.md`'s
+own header states it a third time. `guard-doctrine.md`'s delete-first remedy for
+a false claim in branch-added prose is scoped to the branch's own skill prose and
+is immediately followed by the unqualified reaffirmation that IP4 history is
+superseded, never edited. No clause anywhere carves out an unmerged or
+same-branch D-entry. The in-place edit was reverted at pass 3 — D-101 carries its
+originally appended bytes — and this entry is the supersession that should have
+been written instead. Two independent review lenses reached this reading before
+the scorer confirmed it at 92.
+
+**Consequences:** the precedent this closes is the dangerous one — that merge
+status decides whether a record is history. It does not: a D-entry is history
+from the moment it is appended, and an in-flight decision under active review is
+exactly where a false claim is most likely, so it is exactly where the
+append-only guarantee is worth most. If a case ever arises where superseding an
+unmerged entry is genuinely worse than editing it, this is the entry to
+supersede.
