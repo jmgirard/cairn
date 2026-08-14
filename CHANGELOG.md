@@ -1,5 +1,59 @@
 # Changelog
 
+## 1.5.0 (2026-08-14)
+
+Six milestones since 1.4.0, most of them one arc: a review return that
+defeats a recalled list is now repaired by narrowing the promise at the
+return itself, and the guards locking that doctrine were rebuilt around
+whole-text comparison after three review passes showed fragment matching
+could not hold it. Backward-compatible: existing tracked repos keep working
+unchanged.
+
+- **A defeated enumeration is repaired at the return, not by a re-plan.**
+  When a review finding defeats a criterion whose membership was fixed by
+  the author's recall rather than decided by a procedure, and the only
+  repair available widens the list, the return is now classified as a
+  criterion-wording matter: it routes to the amendment track with its
+  tighter two-attempt stop and never increments the defect count that
+  escalates to a re-plan. The amendment takes the narrowing repair the
+  planning rule states; a wider enumeration is not an admissible amendment.
+- **Doctrine guards compare whole rules, not fragments.** A test locking a
+  rule now holds a verbatim copy of the rule's entire text and compares the
+  whole marker-bounded block, so an edit anywhere in the rule — a changed
+  word, an inserted clause, a reordered or relocated sentence — fails the
+  suite until the copy is deliberately updated in the same commit. Fragment
+  anchors always left an unpinned remainder, and three consecutive review
+  passes each inverted a rule through one. The guard-craft doctrine now
+  states the two invariants this rests on (the pinned extent equals the
+  block; the block equals one rule) and the instrument's declared blind
+  spots (whitespace-only and insertion-related edge cases).
+- **An observed failure backs a claim only as the failure it is verified to
+  be.** An error, refusal, or red test reads the same whether it is the
+  behavior under test or an artifact of malformed inputs, so a claim
+  resting on one now verifies the failure's identity — its condition class,
+  message, or signaling site — before the claim is written, and a test
+  asserting a failure asserts which failure, with its passing control shown
+  to pass for the claim's reason.
+- **A derived figure is pinned or procedural, never free-standing.** A
+  count or figure derived from the repo's artifacts either stands beside
+  the procedure that produced it and the commit it was measured at, or is
+  replaced by its derivation. The free-standing hand-written number — 
+  stranded by the next edit and read as current until a review catches it —
+  is the defect the rule deletes.
+- **The criteria audit reaches everything a criterion promises.** Criterion
+  wording amended mid-implementation now goes back through the planning
+  audit's three questions with a fresh reader (once per criterion; further
+  churn goes to the user), and a criterion citing a mutation or
+  planted-defect check is asked whether its probes vary every axis the
+  verified domain is free in, or stand one exemplar in for the family.
+
+Fixes:
+
+- The dangling-id check no longer warns on a migrated repo's references to
+  its pre-migration milestone ids (322 spurious warnings measured in one
+  adopting repo, now zero), so a real dangler is visible again; behavior in
+  repos without a legacy directory is byte-identical to before.
+
 ## 1.4.0 (2026-08-05)
 
 Five milestones since 1.3.0, aimed at one failure shared by all of them: a
