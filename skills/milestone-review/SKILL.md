@@ -252,7 +252,10 @@ overrides — log the override).
    widens an enumeration whose membership is fixed by author recall rather
    than decided by a procedure over that domain. That discriminator is
    `/milestone-plan` step 4's, and the repair such a return takes is the one
-   step 4 states; read it there rather than here.
+   step 4 states; read it there rather than here. A return reclassified this
+   way carries the fixed work-log shape above, counts on the amendment-return
+   track under its second-occurrence stop, and never increments the
+   defect-return count the thrash rule reads.
 
 6. Final checkpoint commit on the branch.
 

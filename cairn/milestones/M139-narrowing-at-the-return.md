@@ -117,9 +117,9 @@ recording the classification change and its counting disposition.
       (M113).
 - [x] T2. Write the widening test into `/milestone-review` and amend the two
       colliding clauses to carry the carve-out.
-- [ ] T3. Write the counting disposition — fixed shape, amendment track,
+- [x] T3. Write the counting disposition — fixed shape, amendment track,
       second-occurrence stop, defect count untouched.
-- [ ] T4. Write the repair direction into `/milestone-implement` step 6.
+- [x] T4. Write the repair direction into `/milestone-implement` step 6.
 - [ ] T5. Add the guards to `skills/tests/test_thrash_rule.py`, pairing each
       absence assert with a positive framing assert, and register each
       positive block in `skills/tests/test_mutation_harness.py`.
@@ -138,6 +138,8 @@ recording the classification change and its counting disposition.
 - 2026-08-13: plan chose citing `/milestone-plan` step 4 from both new surfaces over restating its rule, because the rulebook's one-home step-0 check forbids the second copy; falsified by an operator at a return needing step 4's text and not reaching it.
 - 2026-08-13: T1 — mapped the guard anchors over the three colliding clauses; `test_thrash_rule.py` pins them with `\s+`-spanning regexes plus two bare one-line `assertIn`s, so edits were wrapped by hand to keep those two phrases contiguous (M104/M113). No collision: "widening test", "author recall", "narrowing repair" and "reclassified" occur in no existing guard anchor.
 - 2026-08-13: T2 — widening test written into `/milestone-review` step 5; the return floor's inside-the-domain clause and the amendment return's "only outside" clause each amended in place to name it as their carve-out. skills/tests green, 766 tests.
+- 2026-08-13: T3 — counting disposition written beside the widening test: fixed work-log shape, amendment-return track under its second-occurrence stop, defect-return count never incremented.
+- 2026-08-13: T4 — repair direction written into `/milestone-implement` step 6, citing `/milestone-plan` step 4 rather than restating it. skills/tests green, 766 tests.
 - 2026-08-13: criteria audit ran twice ([O], fresh context, authored none of the wording). Round 1 returned nine findings on the step-2 draft — seven fixed and reported (over-broad "the repair available", a classification collision with two standing clauses, a jointly unsatisfiable AC2/AC3 pair, an undecidable "restates", an unbound diff base, a probe set missing relabel and the cross-file axis, and a harness run read as evidence of per-file registration), two taken to the gate (the rule/non-rule proxy; the ledger against D-095/D-090). Round 2 on the gate-revised wording returned eleven — eight fixed (two self-contradicting no-restatement clauses, a universal over findings with sentence-level evidence, an AC satisfied by the pre-milestone state, a reflow-inflated domain, evidence recording no probe outcome, negative asserts unregisterable by blanking, a one-file proxy for the assert domain) and three judgment calls settled without a further round, the gate's three-marker budget being spent.
 
 ## Decisions

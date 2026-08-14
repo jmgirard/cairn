@@ -101,7 +101,11 @@ run ingestion first (see `/milestone-brief`).
      amendment executing an amendment return from `/milestone-review` writes
      its work-log line in that skill's fixed shape —
      `amendment return: AC<N> — "<amended clause, verbatim>"` — the line the
-     amendment-return count and its second-occurrence stop read (M130). An amendment
+     amendment-return count and its second-occurrence stop read (M130).
+     An amendment executing a return reclassified under `/milestone-review`'s
+     widening test takes the narrowing repair `/milestone-plan` step 4's
+     bounded-promise rule states; a wider enumeration is not an admissible
+     amendment. An amendment
      that grows a plan-owned section re-checks the body with `cairn_budget`;
      if it now exceeds the cap, compress the single heaviest plan-owned
      section in one pass (tracking-rules), never a nibble-and-recount loop.
