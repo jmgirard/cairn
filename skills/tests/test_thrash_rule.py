@@ -79,10 +79,20 @@ def implement():
 # leaves every such anchor matching (M123). The M139 asserts read a marker-
 # bounded slice instead. A missing marker returns "", so the asserts that use
 # it FAIL rather than crash; a crash is weak red (M117).
-REVIEW_RETURNS_START = "**return floor (m130).**"
-REVIEW_RETURNS_END = "6. final checkpoint commit on the branch."
-IMPLEMENT_AMENDMENTS_START = "6. **plan amendments**"
-IMPLEMENT_AMENDMENTS_END = "7. **blocked?**"
+#
+# The slice is per RULE, not per step (M139 review return 2). A first cut
+# bounded it to the whole of step 5, which holds three rules — the return
+# floor, the amendment return and the widening test — so a sentence moved from
+# one of them into another stayed inside the slice and every assert stayed
+# green. One such move left the section asserting both that returns under the
+# floor join the defect count and that they never do, with the suite green.
+# A slice coarser than the rule it localizes does not localize it.
+REVIEW_FLOOR_START = "**return floor (m130).**"
+REVIEW_AMENDMENT_START = "**amendment return (m130).**"
+REVIEW_WIDENING_START = "**widening test (m139).**"
+REVIEW_WIDENING_END = "6. final checkpoint commit on the branch."
+IMPLEMENT_SUBSTANTIVE_START = "- *substantive* (a criterion or scope must change"
+IMPLEMENT_SUBSTANTIVE_END = "- *the goal itself is wrong*"
 
 
 def slice_between(text, start, end):
@@ -93,15 +103,25 @@ def slice_between(text, start, end):
     return text[i:j]
 
 
-def review_returns():
-    """`/milestone-review`'s return-classification block, step 5."""
-    return slice_between(review(), REVIEW_RETURNS_START, REVIEW_RETURNS_END)
+def review_floor():
+    """The Return floor rule alone — step 5's first rule."""
+    return slice_between(review(), REVIEW_FLOOR_START, REVIEW_AMENDMENT_START)
 
 
-def implement_amendments():
-    """`/milestone-implement`'s plan-amendment block, step 6."""
+def review_amendment():
+    """The Amendment return rule alone — step 5's second."""
+    return slice_between(review(), REVIEW_AMENDMENT_START, REVIEW_WIDENING_START)
+
+
+def review_widening():
+    """The Widening test rule alone — step 5's third."""
+    return slice_between(review(), REVIEW_WIDENING_START, REVIEW_WIDENING_END)
+
+
+def implement_substantive():
+    """The *Substantive* amendment bullet alone — step 6's second bullet."""
     return slice_between(
-        implement(), IMPLEMENT_AMENDMENTS_START, IMPLEMENT_AMENDMENTS_END
+        implement(), IMPLEMENT_SUBSTANTIVE_START, IMPLEMENT_SUBSTANTIVE_END
     )
 
 
@@ -488,7 +508,7 @@ class TestWideningTest(unittest.TestCase):
         # Unamended, the floor's inside-the-domain limb claims this failure as
         # a defect return, and the two classifications collide on one finding.
         self.assertRegex(
-            review_returns(),
+            review_floor(),
             r"criterion names one, save where the widening test below carves "
             r"that\s+failure out as an amendment return",
         )
@@ -499,7 +519,7 @@ class TestWideningTest(unittest.TestCase):
         # scores >=90 on a deliverables defect — satisfied the floor AND the
         # widening test at once: two counters, two stops, no tiebreak.
         self.assertRegex(
-            review_returns(),
+            review_floor(),
             r"about how work is verified\),\s+save where that same test carves "
             r"that finding out",
         )
@@ -508,7 +528,7 @@ class TestWideningTest(unittest.TestCase):
         # The sibling collision: "only outside" excludes this case by its own
         # wording, so the route it needs is closed until the clause names it.
         self.assertRegex(
-            review_returns(),
+            review_amendment(),
             r"or meeting the widening\s+test below, which carves that third "
             r"case out of this clause's \"only\s+outside\"",
         )
@@ -520,7 +540,7 @@ class TestWideningTest(unittest.TestCase):
         # whole suite green. Negating a clause is not inverting a rule; the
         # subject has to be pinned too (M131).
         self.assertRegex(
-            review_returns(),
+            review_amendment(),
             r"a finding that shows the criterion itself\s+is wrong",
         )
 
@@ -530,13 +550,13 @@ class TestWideningTest(unittest.TestCase):
         # not about the work — and it inverted green because the M139 anchor
         # stopped short of it (M131's prefix-without-tail).
         self.assertRegex(
-            review_returns(),
+            review_amendment(),
             r"is evidence about the\s+promise, not the work",
         )
 
     def test_widening_test_classifies_an_inside_domain_failure(self):
         self.assertRegex(
-            review_returns(),
+            review_widening(),
             r"\*\*widening test \(m139\)\.\*\* a finding demonstrating an "
             r"acceptance criterion\s+failing \*inside\* the domain its promise "
             r"quantifies over is an amendment\s+return rather than a defect "
@@ -548,7 +568,7 @@ class TestWideningTest(unittest.TestCase):
         # widening repair exists lands on the amendment track and its tighter
         # stop.
         self.assertRegex(
-            review_returns(),
+            review_widening(),
             r"when the only repair available to it\s+widens an enumeration "
             r"whose membership is fixed by author recall rather\s+than decided "
             r"by a procedure over that domain",
@@ -558,7 +578,7 @@ class TestWideningTest(unittest.TestCase):
         # One home: the repair lives at /milestone-plan step 4, and a second
         # copy here is the fork this rulebook's step-0 check exists to stop.
         self.assertRegex(
-            review_returns(),
+            review_widening(),
             r"that discriminator is\s+`/milestone-plan` step 4's, and the "
             r"repair such a return takes is the one\s+step 4 states; read it "
             r"there rather than here",
@@ -566,7 +586,7 @@ class TestWideningTest(unittest.TestCase):
 
     def test_reclassified_return_counts_on_the_amendment_track(self):
         self.assertRegex(
-            review_returns(),
+            review_widening(),
             r"a return reclassified this\s+way carries the fixed work-log "
             r"shape above, counts on the amendment-return\s+track under its "
             r"second-occurrence stop, and never increments the\s+defect-return "
@@ -577,31 +597,49 @@ class TestWideningTest(unittest.TestCase):
         # The classification alone leaves the amendment undirected, and the
         # undirected amendment is the wider enumeration that failed four times.
         self.assertRegex(
-            implement_amendments(),
+            implement_substantive(),
             r"an amendment executing a return reclassified under "
             r"`/milestone-review`'s\s+widening test takes the narrowing repair "
             r"`/milestone-plan` step 4's\s+bounded-promise rule states",
         )
 
-    def test_review_slice_start_marker_is_unique(self):
-        # A marker occurring twice binds the slice to its first occurrence, and
-        # a decoy above the real block absorbs every check (M126).
-        self.assertEqual(review().count(REVIEW_RETURNS_START), 1)
+    def test_amendment_block_keeps_its_own_routing_sentence(self):
+        # Bounds this slice's TAIL. The widening marker is what ends it, and
+        # that marker travels with the widening rule's own heading — so hoisting
+        # the widening rule up into this paragraph would silently truncate the
+        # slice and every assert reading it would still match. Requiring the
+        # amendment rule's own routing sentence to remain inside reds instead.
+        self.assertRegex(
+            review_amendment(),
+            r"routes to the gated\s+criterion-amendment protocol",
+        )
 
-    def test_review_slice_end_marker_is_unique(self):
-        self.assertEqual(review().count(REVIEW_RETURNS_END), 1)
+    def test_review_floor_marker_is_unique(self):
+        # A marker occurring twice binds its slice to the first occurrence, and
+        # a decoy above the real block absorbs every check (M126). Six markers
+        # now bound four per-rule slices; each is asserted unique on its own.
+        self.assertEqual(review().count(REVIEW_FLOOR_START), 1)
 
-    def test_implement_slice_start_marker_is_unique(self):
-        self.assertEqual(implement().count(IMPLEMENT_AMENDMENTS_START), 1)
+    def test_review_amendment_marker_is_unique(self):
+        self.assertEqual(review().count(REVIEW_AMENDMENT_START), 1)
 
-    def test_implement_slice_end_marker_is_unique(self):
-        self.assertEqual(implement().count(IMPLEMENT_AMENDMENTS_END), 1)
+    def test_review_widening_marker_is_unique(self):
+        self.assertEqual(review().count(REVIEW_WIDENING_START), 1)
+
+    def test_review_widening_end_marker_is_unique(self):
+        self.assertEqual(review().count(REVIEW_WIDENING_END), 1)
+
+    def test_implement_substantive_start_marker_is_unique(self):
+        self.assertEqual(implement().count(IMPLEMENT_SUBSTANTIVE_START), 1)
+
+    def test_implement_substantive_end_marker_is_unique(self):
+        self.assertEqual(implement().count(IMPLEMENT_SUBSTANTIVE_END), 1)
 
     def test_implement_rules_a_wider_enumeration_inadmissible(self):
         # Stated positively above, refused explicitly here: naming the repair
         # does not by itself close the move it replaces.
         self.assertRegex(
-            implement_amendments(),
+            implement_substantive(),
             r"a wider enumeration is not an admissible\s+amendment",
         )
 

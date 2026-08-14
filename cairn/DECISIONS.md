@@ -3764,9 +3764,11 @@ quantifies over is an amendment return rather than a defect return when the
 **only** repair available to it widens an enumeration whose membership is fixed
 by author recall rather than decided by a procedure over that domain. "Only" is
 load-bearing: without it every defect return for which some widening repair
-exists lands on the amendment track and its tighter stop. The two clauses it
-collides with are amended to name it as their explicit carve-out — the return
-floor's inside-the-domain limb, and the amendment return's "only outside". Such
+exists lands on the amendment track and its tighter stop. Three limbs are amended to
+name it as their explicit carve-out: the return floor's inside-the-domain limb,
+that floor's >=90 deliverables limb, and the amendment return's "only outside".
+The second of the three was added at M139's own review, where a finding was
+shown to satisfy the floor and the widening test at once with no tiebreak. Such
 a return counts on D-097's existing amendment-return track under its
 second-occurrence stop and never increments the defect-return count D-064's
 triggers read; a third counter was weighed at the M139 plan gate and rejected as

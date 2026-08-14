@@ -3216,32 +3216,51 @@ REGISTRY += [
         target=IMPLEMENT,
         block="a wider enumeration is not an admissible\n     amendment",
     ),
-    # The four slice markers. Blanking one drops its count to 0, so the
-    # uniqueness assert reds — and the slice it bounds collapses to "", which
-    # is the failure mode the marker asserts exist to surface early.
+    # The six slice markers bounding the four per-rule slices (M139 review
+    # return 2 narrowed them from one step-wide slice). Blanking one drops its
+    # count to 0, so the uniqueness assert reds — and the slice it bounds
+    # collapses to "", the failure mode these asserts exist to surface early.
     Mutation(
         guard="test_thrash_rule",
-        test="TestWideningTest.test_review_slice_start_marker_is_unique",
+        test="TestWideningTest.test_amendment_block_keeps_its_own_routing_sentence",
+        target=REVIEW,
+        block="routes to the gated\n   criterion-amendment protocol",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_review_floor_marker_is_unique",
         target=REVIEW,
         block="**Return floor (M130).**",
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestWideningTest.test_review_slice_end_marker_is_unique",
+        test="TestWideningTest.test_review_amendment_marker_is_unique",
+        target=REVIEW,
+        block="**Amendment return (M130).**",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_review_widening_marker_is_unique",
+        target=REVIEW,
+        block="**Widening test (M139).**",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_review_widening_end_marker_is_unique",
         target=REVIEW,
         block="6. Final checkpoint commit on the branch.",
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestWideningTest.test_implement_slice_start_marker_is_unique",
+        test="TestWideningTest.test_implement_substantive_start_marker_is_unique",
         target=IMPLEMENT,
-        block="6. **Plan amendments**",
+        block="- *Substantive* (a criterion or scope must change",
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestWideningTest.test_implement_slice_end_marker_is_unique",
+        test="TestWideningTest.test_implement_substantive_end_marker_is_unique",
         target=IMPLEMENT,
-        block="7. **Blocked?**",
+        block="- *The goal itself is wrong*",
     ),
 ]
 
