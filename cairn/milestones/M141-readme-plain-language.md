@@ -113,6 +113,8 @@ gate ruled it outside D-095's retirement).
 
 - 2026-08-14: ledger correction (F2/95; the prior entry is history under D-074 — corrected by this appended entry, never edited). R3 ("Work lands as small stacked milestones… find the path from the files alone") was reported and is KEPT: it is the epigraph's echo and the project's identity image; the duplicate of that figure at the worked example's close was the instance rewritten (R14). R13 carries a dual disposition, stated explicitly rather than double-counted: its worked-example instance was rewritten ("Nothing lands on your default branch until you say yes") and its expects-section remainder kept (the approval rule belongs at that bullet). Corrected arithmetic: 48 reports over 47 distinct ids — 19 rewritten (R13's first instance among them) + 29 kept (R3 and R13's remainder among them). Also recorded here: F1's repair replaces R27's rewrite with a plain restatement of the original warning meaning, and F4's repair restores the three no-lock-in guarantees T2 dropped unrecorded ("stop any time", the drop worked example, deletability), in plain wording.
 
+- 2026-08-14: arithmetic in the previous entry corrected in turn: the 48 reports carry 48 distinct ids; it was the dispositioned union that stood at 47 before the correction (R3 absent). After it every id R1–R48 is dispositioned: 19 rewritten and 30 kept instances (R3 added; R13 dual, one instance in each list; no other id appears twice), union 48.
+
 ## Review
 
 **Evidence, PR #141, branch `m141-readme-plain-language`, review commit
