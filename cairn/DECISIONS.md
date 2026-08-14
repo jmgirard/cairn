@@ -3739,3 +3739,52 @@ context; the row is the classification's record.
 **Consequences:** D-099's decision — the relocation, the widening, the pin
 requirement, the narrow supersession of the placement clause — stands as
 decided. What changes is only the two claims named above.
+
+### D-101 (2026-08-13): A return whose only repair widens an author-recalled enumeration is an amendment return, counted on that track — annotates D-097's amendment-return track and leaves D-064's triggers intact; satisfies D-090's trigger under D-098's cross-repo host reading (M139)
+
+**Context:** intraclass M117's AC2 consumed four defect returns. Returns #1–#3
+each answered a counterexample with a wider matcher — a sentence filter keyed
+on one token, figure shapes outside the pinned two, a greedy table strip
+erasing 96% of a surface — and the narrowing to declared classes arrived only
+with the 2026-08-09 re-cut; return #4 then landed inside the declared domain,
+which is the narrowed promise working as intended. The repair already existed:
+`/milestone-plan` step 4's bounded-promise rule states that a counterexample
+defeating an author-recalled enumeration is not answered by a wider one (M132,
+D-098). Nothing at the return surface reached it, and the geometry is why.
+D-097's amendment return keys on a criterion falsified *only outside* the
+domain of the procedure it names, while this failure lands *inside* the domain
+the promise quantifies over — the named procedure enumerates a proxy for that
+domain — so the case read as an ordinary defect return under the return floor
+and its repair read as "widen the matcher". Reaching the narrowing repair
+therefore cost a routing through `/milestone-plan` and a full re-cut.
+
+**Decision:** `/milestone-review` gains the widening test — a finding
+demonstrating an acceptance criterion failing inside the domain its promise
+quantifies over is an amendment return rather than a defect return when the
+**only** repair available to it widens an enumeration whose membership is fixed
+by author recall rather than decided by a procedure over that domain. "Only" is
+load-bearing: without it every defect return for which some widening repair
+exists lands on the amendment track and its tighter stop. The two clauses it
+collides with are amended to name it as their explicit carve-out — the return
+floor's inside-the-domain limb, and the amendment return's "only outside". Such
+a return counts on D-097's existing amendment-return track under its
+second-occurrence stop and never increments the defect-return count D-064's
+triggers read; a third counter was weighed at the M139 plan gate and rejected as
+machinery a two-track surface does not yet need. `/milestone-implement` step 6
+states the repair direction: the amendment takes the narrowing repair step 4
+states, and a wider enumeration is not an admissible amendment. Both surfaces
+cite step 4 rather than restating it, so the rule keeps one home.
+
+**Consequences:** on the case that motivated this, the stop fires after two
+rounds rather than four. D-097 is annotated, not superseded — its track, its
+fixed work-log shape and its second-occurrence stop are reused unchanged, and
+what widens is only what routes onto them. D-064's triggers and its
+per-milestone counting are untouched; the defect-return count simply stops
+absorbing this class. D-090's door is cleared by its own trigger clause rather
+than superseded: the defect is in shipped skill behavior, measured in a user
+repo at a cost of four returns, and D-098 hosts a cross-repo surfacing in a
+cairn milestone. Two falsifiers, with different owners. If a milestone churns
+amendment returns across different AC ids under this classification, that is the
+loop D-097 names as its own exit and D-097 is the entry to supersede. If a
+return is reclassified here whose repair genuinely was a widening that a stated
+procedure settles, this entry is the one to supersede.
