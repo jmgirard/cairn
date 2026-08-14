@@ -1,6 +1,6 @@
 # M140: Whole-slice equality guards for the M139 rules
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** RR12
@@ -144,11 +144,12 @@ guard-doctrine banking (AC-8).
       AC-4's moves; AC-10's two families. The splitter is a runnable command
       over the normalized slice, unhandled forms enumerated; AC-2's file-side
       runs carry the flagged word-edit axis.
-- [ ] T6. Suites + `cairn_validate` (AC-9); branch diff adds nothing outside
+- [x] T6. Suites + `cairn_validate` (AC-9); branch diff adds nothing outside
       `skills/tests/`, guard-doctrine (BC6 deviation) and `cairn/` (AC-6).
 
 ## Work log
 
+- 2026-08-14: T6 — suites skills/scripts/hooks and validate all exit 0 at 4fa9697; `git diff main...HEAD --name-only` shows no file outside skills/tests/, skills/shared/guard-doctrine.md and cairn/. All tasks complete; status -> review.
 - 2026-08-14: T5 — probe suite run at 6ec40f7 (scratchpad m140_probes.py, procedures in its docstring): domain 7 sentences from the deviated command (hunk-grouped, pre-image-excluded); AC-2 matrix 7x5=35 runs; AC-3 insertion 10 gaps (floor 4, amendment 3, widening 2, implement 1); AC-4 24 moves; AC-10a 10 pairs, no duplicate sentences; AC-10b 4 fixture edits. 83 runs, 83 RED, 0 GREEN, tree clean after every restore.
 - 2026-08-14: T4 — banking written: guard-doctrine §1 gains the two-invariant paragraph, §2's "What it cannot see" list gains the inserting and normalization bullets; four single-assert guards in `TestGuardDoctrineBanking`, each registered (harness Ran 9 OK, skills exit 0).
 - 2026-08-14: T1–T3 in one commit (T3's same-commit clause): four fixtures copied from the target files' bytes with `normalize()` comparison, four equality methods replacing the twelve fragment-regex methods, marker asserts kept plus two for the new sub-slice (`an amendment executing a return reclassified` → `that grows a plan-owned section`, each verified unique in the host); registry block rewritten — per slice an exemplar-block entry and a marker-blanking entry both naming the equality method, six uniqueness entries kept, two added. Harness Ran 9 OK; skills suite exit 0.
