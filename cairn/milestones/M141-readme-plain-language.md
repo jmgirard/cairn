@@ -1,6 +1,6 @@
 # M141: README plain-language pass
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -49,7 +49,7 @@ gate ruled it outside D-095's retirement).
       the reworded README claim it tracks or — for a structural anchor such
       as a paragraph index — the claim whose location moved; a guard is
       retargeted, never deleted or weakened to bare presence.
-- [x] AC5. One fresh-context reader that authored none of the rewrite reads
+- [ ] AC5. One fresh-context reader that authored none of the rewrite reads
       README.md as of a named branch commit and reports each construction it
       judges machine-styled; the enumeration is the reader's. Each reported
       item is either rewritten or kept with a one-line reason. Exactly one
@@ -95,6 +95,7 @@ gate ruled it outside D-095's retirement).
 
 ## Work log
 
+- 2026-08-14: review return 1 (defect) — AC5 NOT MET: R3 undispositioned and R13 double-counted in the disposition ledger (F2/95); F1/82 (meaning inversion at the mid-implementation-questions line) and F4/87 (unrecorded deletions in the no-lock-in bullet) actioned and carried. Status -> in-progress.
 - 2026-08-14: T4 — at c05a536: em 1, companion 0, lines 264, blocks and headings element-wise equal to edb6942, `git diff -w main...HEAD -- skills/tests/` empty, three suites and validate exit 0. All tasks complete; status -> review.
 - 2026-08-14: T3 — one-pass style reader ([O], fresh context) read the README at ad7f827 and reported 48 constructions (8 on test-pinned phrases); disposition: 19 rewritten on the branch (including the buildup before the merge ask, the 'final outward step' vagueness, the 'live means live' tautology, four 'not X' reversal tails, the duplicated trail flourish), 29 kept with reasons to be recorded per item in the Review section. Exactly one pass, per AC5; no second round convened.
 - 2026-08-14: T1 — anchor map: 19 harness registrations (all single-line literals, verified present), the currency guard's one-physical-line phrases, the positioning guard's normalized ¶-index-2 anchor plus four profile labels, the collaboration guard's three lowercase phrases. T2 — full rewrite: em dashes 50 -> 1 (the frozen tree block's), companion count 0, 265 lines, blocks and headings element-wise equal to edb6942, every pinned phrase kept contiguous (two ¶1 wraps caught by the suite and re-wrapped); three suites and validate exit 0, `git diff -w main...HEAD -- skills/tests/` empty — no retarget needed.
@@ -148,3 +149,28 @@ gate ruled it outside D-095's retirement).
 **Consistency gate.** `cairn_validate` exit 0. `Principles touched:` is `—`,
 so `cairn_impact` is skipped. Profile `generic` names no toolchain checks —
 a clean no-op.
+
+**Fan-out and verdict (pass 1).** Three lenses — diff-bug **[O]** 11
+findings, blame-history **[S]** eight verified-clean checks, prior-review
+**[S]** zero findings (all past pins verbatim; GitHub probe empty) — scored
+by a fresh **[S]** scorer holding the diff and the milestone file. Three
+findings ≥80 (F1/82 was omitted from the scorer's own summary line but
+meets the threshold on its stated score). F2 is a return:
+
+- F2 (95) — **RETURN.** "Ledger arithmetic: one reported item (R3) has no
+  disposition" — R13 appears in both the rewritten and kept lists, R3 in
+  neither; 47 distinct ids against 48 reports. AC5 fails as written inside
+  the domain its procedure (the reader's report) enumerates.
+- F1 (82) — ACTIONED, carried into the repair. "Meaning inversion:
+  mid-implementation questions changed from a warning sign into normal
+  behavior."
+- F4 (87) — ACTIONED, carried into the repair. "Weakened no-lock-in claim:
+  three concrete guarantees deleted" — 'stop any time', the drop worked
+  example, and deletability, none in the ledger.
+- Sub-80, logged not actioned (IP3): F10/76 ("kept in bounds" mispredicates
+  the health check), F6/73 (unconditional collaborator claim made
+  conditional), F3/52, F11/48, F7/45 (ragged rewrap), F8/42, F9/42, F5/30.
+
+**Return 1 (defect).** AC5 is not falsified outside its procedure's domain
+and its repair is a disposition, not a wider enumeration — the widening test
+does not reach it. Defect returns for M141: 1.
