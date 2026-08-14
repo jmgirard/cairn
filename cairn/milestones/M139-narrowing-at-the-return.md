@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** `m139-narrowing-at-the-return`
+- **Branch/PR:** `m139-narrowing-at-the-return` · https://github.com/jmgirard/cairn/pull/139
 
 ## Goal
 
@@ -39,7 +39,7 @@ recording the classification change and its counting disposition.
 
 ## Acceptance criteria
 
-- [ ] AC1. `/milestone-review` states the widening test: a finding that
+- [x] AC1. `/milestone-review` states the widening test: a finding that
       demonstrates an acceptance criterion failing inside the domain its
       promise quantifies over is an amendment return rather than a defect
       return when the only repair available to it widens an enumeration whose
@@ -53,14 +53,14 @@ recording the classification change and its counting disposition.
       elaboration, its worked example, nor its narrowing repair. Evidence: the
       three sentences read verbatim from `skills/milestone-review/SKILL.md` at
       the review commit, beside `/milestone-plan` step 4's text.
-- [ ] AC2. A return reclassified under AC1 carries the amendment return's fixed
+- [x] AC2. A return reclassified under AC1 carries the amendment return's fixed
       work-log shape, counts on the amendment-return track under its
       second-occurrence stop, and does not increment the defect-return count
       the thrash rule reads. Evidence: the sentence(s) naming the
       AC1-reclassified case as carrying these three properties, read verbatim
       from the added lines of `git diff main...HEAD --
       skills/milestone-review/SKILL.md` at the review commit.
-- [ ] AC3. `/milestone-implement` step 6 states the repair direction an
+- [x] AC3. `/milestone-implement` step 6 states the repair direction an
       amendment executing such a return takes: the amendment takes the
       narrowing repair `/milestone-plan` step 4's bounded-promise rule states,
       and a wider enumeration is not an admissible amendment. The sentence
@@ -106,7 +106,7 @@ recording the classification change and its counting disposition.
       naming the enumeration command, the added-assert count it enumerated, the
       commit measured at, and the harness run's reported test count and result
       (`Ran N tests … OK`).
-- [ ] AC6. `skills/tests`, `scripts/tests` and `hooks/tests` pass and
+- [x] AC6. `skills/tests`, `scripts/tests` and `hooks/tests` pass and
       `python3 scripts/cairn_validate.py` is green at the review commit.
 
 ## Coverage
@@ -163,3 +163,30 @@ recording the classification change and its counting disposition.
 ## Decisions
 
 ## Review
+
+**Evidence, PR #139, branch `m139-narrowing-at-the-return`.**
+
+- AC1 — MET. The three sentences read verbatim from the shipped
+  `skills/milestone-review/SKILL.md`: the widening test states the
+  inside-the-domain classification keyed on the *only* available repair; the
+  return floor's limb now reads "criterion names one, save where the widening
+  test below carves that failure out as an amendment return"; the amendment
+  return's limb gains "or meeting the widening test below, which carves that
+  third case out of this clause's \"only outside\"". No-restatement checked
+  against step 4's text by substring: "however long its list", the M102 worked
+  example, and the narrowing-repair clause each absent from the added block;
+  `/milestone-plan` step 4 named as source, present.
+- AC2 — MET. Read from the added lines of `git diff main...HEAD --
+  skills/milestone-review/SKILL.md`: "A return reclassified this way carries
+  the fixed work-log shape above, counts on the amendment-return track under
+  its second-occurrence stop, and never increments the defect-return count the
+  thrash rule reads." All three properties in the added text, not inherited
+  from the pre-milestone state.
+- AC3 — MET. Read verbatim from `skills/milestone-implement/SKILL.md` step 6:
+  "An amendment executing a return reclassified under `/milestone-review`'s
+  widening test takes the narrowing repair `/milestone-plan` step 4's
+  bounded-promise rule states; a wider enumeration is not an admissible
+  amendment." Step 4 named; proxy test and worked example absent by substring
+  check.
+- AC6 — MET. Three suites at exit 0: skills 778, scripts 345, hooks 103.
+  `cairn_validate` exit 0, 16 PASS and 8 advisory OK, no FAIL or WARN.
