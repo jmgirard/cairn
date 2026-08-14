@@ -3828,3 +3828,50 @@ exactly where a false claim is most likely, so it is exactly where the
 append-only guarantee is worth most. If a case ever arises where superseding an
 unmerged entry is genuinely worse than editing it, this is the entry to
 supersede.
+
+### D-103 (2026-08-14): AC4's instrument is normalized whole-slice equality against verbatim in-test fixtures, and M139 splits — the doctrine ships on its verified criteria while a child milestone carries RR12's binding criteria — annotates D-101; corpus-wide remediation is refused at D-090's unsatisfied trigger (RR12, M139)
+
+**Context:** M139's AC4 failed three review passes, each by one shape — a guard
+anchor whose reach differs from the extent of the rule it pins. RR12's
+diagnosis: the failures are two conditions of a single invariant violated
+alternately — totality (the pinned extent equals the slice, leaving no unpinned
+complement) and granularity (the slice equals one rule) — and any
+fragment-anchor family short of whole-slice equality leaves a free complement
+whose text can invert the rule with the suite green; RR12 re-reproduced pass
+3's R1 independently, the full suite OK at 784. A regex family delivers AC4's
+property only in the degenerate limit where it collapses to one whole-slice
+equality check per rule, at which point it has stopped being an anchor family.
+
+**Decision:** the instrument for AC4-strength coverage is normalized
+whole-slice equality — per rule slice, one test method holding one
+`assertEqual(normalize(<slice>), <fixture>)` against a verbatim in-test copy of
+the rule's full text, replacing the per-fragment regexes, keeping the
+marker-uniqueness asserts, registered per slice in the mutation harness. And
+M139 splits, per the thrash rule's own remedy: AC4 is pruned through the gated
+amendment protocol, the two doctrine rules ship on AC1–AC3/AC5/AC6 (each
+verified across three passes), and a child milestone carries RR12's BC1–BC7
+verbatim as its acceptance floor with `Driving RR: RR12`. Rejected with RR12's
+reasons: a content hash (coverage-identical but opaque at discharge — the
+update diff shows one constant replacing another, making M124's measured
+failure mode the default), a markdown/AST parse (solves the already-solved
+boundary half, not the reference half, at a non-stdlib or hand-rolled-splitter
+cost), and a standing probe generator (negation is not mechanically
+generatable, and a standing generation stage is the certification shape D-095
+retired at D-090's door).
+
+**Consequences:** until the child lands, the two shipped rules carry a recorded
+exposure — an edit inserting between pinned fragments or stranding a slice tail
+would run green; bounded by stable user-approved doctrine text and PR review of
+any skill diff, and precedented as a recorded exposure by D-095's own §8-re-add
+clause. Thereafter every legitimate edit to an equality-guarded rule reds the
+suite and updates the fixture in the same commit — a deliberate two-site act,
+the correct default for the return-classification doctrine the thrash counter
+itself reads. Corpus-wide remediation is refused: every recorded instance of
+the anchor-reach class was produced by a probe or review lens examining the
+apparatus's own coverage, which D-090 fixes as ordinary work where it surfaces;
+the licensing trigger would be a shipped-behavior defect misrouting a skill in
+a user repo, and none is on record. If such a defect appears, D-090 names
+itself as the entry to supersede and RR12 §§1–2 is its evidence file. If a
+fixture is ever updated without its diff being read and a doctrine change ships
+unnoticed — the instrument's own stated residual — this entry is the one to
+supersede.
