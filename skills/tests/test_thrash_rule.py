@@ -513,6 +513,27 @@ class TestWideningTest(unittest.TestCase):
             r"case out of this clause's \"only\s+outside\"",
         )
 
+    def test_amendment_return_names_the_finding_as_its_subject(self):
+        # Review return 1: M139 amended this sentence but pinned only the
+        # clause it added, so the sentence's SUBJECT could be transposed —
+        # "A maintainer who shows the criterion itself is wrong" — with the
+        # whole suite green. Negating a clause is not inverting a rule; the
+        # subject has to be pinned too (M131).
+        self.assertRegex(
+            review_returns(),
+            r"a finding that shows the criterion itself\s+is wrong",
+        )
+
+    def test_amendment_return_tail_is_evidence_about_the_promise(self):
+        # The other half of the same return: the sentence's TAIL carries the
+        # whole point — this class of finding is evidence about the promise,
+        # not about the work — and it inverted green because the M139 anchor
+        # stopped short of it (M131's prefix-without-tail).
+        self.assertRegex(
+            review_returns(),
+            r"is evidence about the\s+promise, not the work",
+        )
+
     def test_widening_test_classifies_an_inside_domain_failure(self):
         self.assertRegex(
             review_returns(),

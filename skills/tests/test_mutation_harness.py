@@ -3170,6 +3170,18 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_thrash_rule",
+        test="TestWideningTest.test_amendment_return_names_the_finding_as_its_subject",
+        target=REVIEW,
+        block="A finding that shows the criterion itself\n   is wrong",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_amendment_return_tail_is_evidence_about_the_promise",
+        target=REVIEW,
+        block="is evidence about the\n   promise, not the work",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
         test="TestWideningTest.test_widening_test_classifies_an_inside_domain_failure",
         target=REVIEW,
         block="**Widening test (M139).** A finding demonstrating an acceptance criterion\n   failing *inside* the domain its promise quantifies over is an amendment\n   return rather than a defect return",
