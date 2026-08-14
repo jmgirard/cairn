@@ -3875,3 +3875,17 @@ itself as the entry to supersede and RR12 §§1–2 is its evidence file. If a
 fixture is ever updated without its diff being read and a doctrine change ships
 unnoticed — the instrument's own stated residual — this entry is the one to
 supersede.
+
+### D-104 (2026-08-14): The annotation D-103's heading asserts on D-101 is drawn here — D-103's instrument and split govern the guarding and completion of the rule D-101 shipped, touching nothing in D-101's classification — annotates D-103; D-103's decision and every other claim in it stand (M139 review pass 4)
+
+**Context:** D-103's heading reads "annotates D-101", but its body names D-101
+nowhere, so the asserted relationship has no substantiating clause (M139
+pass-4 finding R4-09, scored 82). Under IP4 the entry is history and is not
+edited; the relationship is drawn by this entry instead.
+
+**Decision:** the annotation is this: D-103 decides the *instrument* for
+AC4-strength coverage of the doctrine D-101 shipped — the widening test and
+its three carve-outs — and the split that completes that coverage in a child
+milestone; it changes nothing in D-101's classification rule, its counting
+disposition, or its falsifiers, which stand as appended (and as corrected by
+D-102). D-103's decision and every other claim in it stand.

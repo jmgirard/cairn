@@ -159,6 +159,7 @@ recording the classification change and its counting disposition.
 - 2026-08-13: T6 — probe matrix run by script (scratchpad `probe.py`), 8 units x 5 runs = 40 probe runs, 40 RED, each unit's own guard among the reacting tests in every run; suite size stable at 778 across all runs and `git diff` clean after each restore. The four marker asserts, whose pinned text lies outside AC4's domain, took the relabel probe instead: 4/4 red, each reacting its own test. Harness probed against a known-positive first — an absent block raises `ValueError: block locator must occur exactly once (found 0)`, so a green harness run is not silence.
 - 2026-08-13: T7 — D-101 appended (widening test, counting disposition, both falsifiers with their owners). Three suites green at exit 0: skills 778, scripts 345, hooks 103; `cairn_validate` all checks passed, no advisories.
 - 2026-08-13: return-1 repair — two guards pin the amendment-return sentence's subject ("A finding that shows the criterion itself is wrong") and its tail ("is evidence about the promise, not the work"), each one assertion in its own method and registered. Six-sentence probe matrix re-run: 30/30 RED, 0 GREEN, suite 781, files restored clean.
+- 2026-08-14: review pass 4 fan-out — 30 findings scored, 4 actioned (3 fixed on branch, 1 rejected with reason), none a return; D-104 appended; child-milestone candidate row added; checkpoint before the merge gate.
 - 2026-08-14: AC5 evidence re-gathered implement-side under the amended clause, at a29edcb: 18 added asserts (`git diff -w main...HEAD -- skills/tests/`), pairing decided procedurally — 10 paired to a domain sentence, 8 on the relabel branch (their pinned text unchanged from `main`, so outside the domain) — re-run tally 18 × relabel, 18 failed (RED), tree clean after every restore; harness `Ran 9 tests … OK` over 18 registrations, each blanked block redding its own named test. Suites at a29edcb: skills 784, scripts 345, hooks 103, validate exit 0. Status -> review.
 - 2026-08-14: amendment note — AC4 lands as a numbered tombstone rather than the full removal shown at the gate: `coverage complete` counts criteria positionally, so an id gap reds the gate; the tombstone carries no promise and points at D-103/BC1–BC7.
 - 2026-08-14: split amendment applied (D-103; mini gate + fresh [O] reader, findings applied pre-gate, user approved): AC4 pruned — with it no remaining criterion mandates the added sentences be guarded at all; the 18 shipped asserts stay and totality/granularity coverage moves to the child via BC1–BC7 — AC1 reworded to the three shipped limbs (R6/FE discharged), AC5's re-run clause made procedure-decided with a recorded tally, Scope In/Out updated, T6's pruned-criterion label dropped.
@@ -423,8 +424,13 @@ pin. The plan gate recorded no alternative on guard scoping, so
   `git diff main...HEAD -- skills/milestone-review/SKILL.md`: amendment-return
   track, second-occurrence stop, "never increments the defect-return count".
 - AC3 — MET. The repair-direction sentence read verbatim at
-  `skills/milestone-implement/SKILL.md:105-107`; step 4 named; "proxy test" 0
-  and "M102" 0 in that file.
+  `skills/milestone-implement/SKILL.md:105-108`; step 4 named; step 4's
+  operative phrases absent by substring — "not answered by a wider one" 0,
+  "narrow the promise until a stated procedure settles it" 0, "not a proxy
+  for it" 0, "M102" 0 in that file. (Citation range and substrings corrected
+  in this pass's own block per R4-14/R4-15; the first write cited :105-107
+  and a "proxy test" literal that occurs nowhere, a zero that discriminates
+  nothing.)
 - AC4 — PRUNED, recorded rather than evidenced: tombstone per the RR12 split
   amendment; the coverage promise lives verbatim as the child milestone's
   BC1–BC7 (D-103). The tick is the pruning record.
@@ -443,6 +449,45 @@ pin. The plan gate recorded no alternative on guard scoping, so
 **Consistency gate (pass 4).** `cairn_validate` exit 0, every check PASS.
 `Principles touched:` is `—`, so `cairn_impact` is skipped. Profile `generic`
 names no toolchain checks — a clean no-op.
+
+**Pass 4 — fan-out and verdict.** Three lenses — diff-bug **[O]** (20
+findings), blame-history **[S]** (10, mostly verified-clean checks),
+prior-PR-comments **[S]** (zero: every prior-pass repair intact, the surviving
+fragment-anchor exposure is D-103's disclosed residual; GitHub probe empty) —
+scored by a fresh **[S]** scorer holding the diff and the milestone file.
+Four findings ≥80; none demonstrates a criterion failing and none scores ≥90
+on a deliverables defect, so no return.
+
+- R4-03 (82) — FIXED. Two branch-added comments stated free-standing counts
+  ("Six markers now bound four per-rule slices"; "The six slice markers
+  bounding the four per-rule slices") against the host docstring's own
+  no-count rule and the derived-figures rule. Counts removed; the harness
+  comment also moved beside the marker entries it describes (subsuming
+  R4-17/72 and RR12 B4).
+- R4-04 (80) — FIXED. `test_amendment_block_keeps_its_own_routing_sentence`'s
+  comment claimed the tail-binding property pass-3 R3 demonstrated false;
+  rewritten to state what the guard actually pins and to name the D-103
+  exposure it does not close.
+- R4-09 (82) — FIXED by supersession: D-104 appended, drawing the annotation
+  D-103's heading asserts on D-101; the entry itself is not edited (IP4).
+- R4-16 (80) — REJECTED, reason logged: its premise is mistaken. The AC5
+  tally ran twice — implement-side at a29edcb (the work-log line) and freshly
+  at review at 5cf488d (this pass's AC5 line); each pin names its own real
+  run.
+- Review-owned corrections to this pass's own evidence: AC3's citation
+  extended to `:105-108` and its vacuous "proxy test" substring replaced by
+  step 4's operative phrases, each verified 0 (R4-14/60, R4-15/68).
+- Sub-80, logged not actioned (IP3): R4-01/75 (the child milestone exists
+  nowhere as tracked work — a candidate ROADMAP row added this pass as the
+  split's own follow-through, search-first swept), R4-12/72 (Coverage maps
+  the pruned AC4 to T6), R4-11/65 (T2 still reads "two colliding clauses"),
+  R4-02/55 (the split ran through the amendment gate rather than a
+  `/milestone-plan` re-cut; escalation was among the return-3 options and was
+  taken), R4-13/55 (no-restatement clauses unpinned by any guard, F7's
+  class), R4-08/45 (non-monotone work log, FM/58's class), R4-10/45, R4-06/40,
+  R4-18/35, R4-20/35, R4-19/30, R4-07/28, R4-05/20 (not reproduced by the
+  scorer), BH-F1/15 (mid-branch IP4 edit, already corrected by D-102),
+  BH-F2/20, BH-F8/20, BH-F9/10.
 
 **The criterion is not what is wrong.** Every repair that closed a demonstrated
 AC4 gap has been a narrowing, never a wider enumeration of probe forms or

@@ -604,11 +604,12 @@ class TestWideningTest(unittest.TestCase):
         )
 
     def test_amendment_block_keeps_its_own_routing_sentence(self):
-        # Bounds this slice's TAIL. The widening marker is what ends it, and
-        # that marker travels with the widening rule's own heading — so hoisting
-        # the widening rule up into this paragraph would silently truncate the
-        # slice and every assert reading it would still match. Requiring the
-        # amendment rule's own routing sentence to remain inside reds instead.
+        # Pins the routing sentence inside this slice, so hoisting the whole
+        # amendment rule out of its block reds. This does NOT fully bind the
+        # slice's tail: the routing sentence sits mid-paragraph, so sentences
+        # below it can still be stranded under another rule's heading with the
+        # suite green (pass-3 R3) — the recorded exposure D-103 carries until
+        # the whole-slice equality instrument lands.
         self.assertRegex(
             review_amendment(),
             r"routes to the gated\s+criterion-amendment protocol",
@@ -616,8 +617,8 @@ class TestWideningTest(unittest.TestCase):
 
     def test_review_floor_marker_is_unique(self):
         # A marker occurring twice binds its slice to the first occurrence, and
-        # a decoy above the real block absorbs every check (M126). Six markers
-        # now bound four per-rule slices; each is asserted unique on its own.
+        # a decoy above the real block absorbs every check (M126). The markers
+        # bounding the per-rule slices are each asserted unique on their own.
         self.assertEqual(review().count(REVIEW_FLOOR_START), 1)
 
     def test_review_amendment_marker_is_unique(self):

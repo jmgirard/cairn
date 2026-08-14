@@ -3216,16 +3216,16 @@ REGISTRY += [
         target=IMPLEMENT,
         block="a wider enumeration is not an admissible\n     amendment",
     ),
-    # The six slice markers bounding the four per-rule slices (M139 review
-    # return 2 narrowed them from one step-wide slice). Blanking one drops its
-    # count to 0, so the uniqueness assert reds — and the slice it bounds
-    # collapses to "", the failure mode these asserts exist to surface early.
     Mutation(
         guard="test_thrash_rule",
         test="TestWideningTest.test_amendment_block_keeps_its_own_routing_sentence",
         target=REVIEW,
         block="routes to the gated\n   criterion-amendment protocol",
     ),
+    # The slice markers bounding the per-rule slices (M139 review return 2
+    # narrowed them from one step-wide slice). Blanking one drops its count to
+    # 0, so the uniqueness assert reds — and the slice it bounds collapses to
+    # "", the failure mode these asserts exist to surface early.
     Mutation(
         guard="test_thrash_rule",
         test="TestWideningTest.test_review_floor_marker_is_unique",
