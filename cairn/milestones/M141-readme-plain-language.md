@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** `m141-readme-plain-language`
+- **Branch/PR:** `m141-readme-plain-language` · https://github.com/jmgirard/cairn/pull/141
 
 ## Goal
 
@@ -30,17 +30,17 @@ gate ruled it outside D-095's retirement).
 
 ## Acceptance criteria
 
-- [ ] AC1. `grep -o '—' README.md | wc -l` reports at most 10 at the review
+- [x] AC1. `grep -o '—' README.md | wc -l` reports at most 10 at the review
       commit, down from 50 measured at edb6942 (2026-08-14), and
       `grep -oE ' (--|–) ' README.md | wc -l` reports 0.
-- [ ] AC2. `grep -c '' README.md` reports at most 265 at the review commit
+- [x] AC2. `grep -c '' README.md` reports at most 265 at the review commit
       (the edb6942 baseline).
-- [ ] AC3. The fenced-block list of README.md at the review commit equals the
+- [x] AC3. The fenced-block list of README.md at the review commit equals the
       list at edb6942 element-wise — same length, same order, each element
       byte-identical — where a block is the fence's info string plus the
       lines strictly between it and its closing fence, blocks extracted top
       to bottom by the same procedure from both revisions.
-- [ ] AC4. The README-pinning guards hold: `test_readme_currency.py`,
+- [x] AC4. The README-pinning guards hold: `test_readme_currency.py`,
       `test_positioning_guard.py`, `test_collaboration_boundary.py` and
       `test_mutation_harness.py` pass at the review commit, and that file
       still carries at least 19 `target="README.md"` registrations.
@@ -49,7 +49,7 @@ gate ruled it outside D-095's retirement).
       the reworded README claim it tracks or — for a structural anchor such
       as a paragraph index — the claim whose location moved; a guard is
       retargeted, never deleted or weakened to bare presence.
-- [ ] AC5. One fresh-context reader that authored none of the rewrite reads
+- [x] AC5. One fresh-context reader that authored none of the rewrite reads
       README.md as of a named branch commit and reports each construction it
       judges machine-styled; the enumeration is the reader's. Each reported
       item is either rewritten or kept with a one-line reason. Exactly one
@@ -57,13 +57,13 @@ gate ruled it outside D-095's retirement).
       step, and no guard, rulebook rule or repeat round is added by it.
       Evidence in `## Review`: the commit read, the report count, the
       rewritten count, and each kept-with-reason line.
-- [ ] AC6. `python3 -m unittest discover -s skills/tests`,
+- [x] AC6. `python3 -m unittest discover -s skills/tests`,
       `python3 -m unittest discover -s scripts/tests`,
       `python3 -m unittest discover -s hooks/tests` and
       `python3 scripts/cairn_validate.py` are green at the review commit.
       Evidence: one Review line per command with the commit and reported
       counts.
-- [ ] AC7. `grep -n '^## ' README.md` at the review commit lists the same 10
+- [x] AC7. `grep -n '^## ' README.md` at the review commit lists the same 10
       section headings, in the same order, as at edb6942 (verified
       2026-08-14), and `grep -c ''` reports at least 230.
 
@@ -110,3 +110,41 @@ gate ruled it outside D-095's retirement).
 - 2026-08-14: AC5 disposition ledger (reader pass at ad7f827, 48 reports). **Rewritten (19):** R2 "kept honest"→"kept in bounds"; R4 participial opener→"cairn grew out of"; R6 "live means live"→"the symlink is live"; R12 "the one moment that matters" buildup cut; R13 duplicate "Nothing reaches" varied; R14 duplicated trail flourish→"resumes from the files alone"; R15 "final outward step"→"final submit or tag step yourself"; R16 "not a feature for statistical work only"→"the obvious case, but"; R19 "not left for a tidy-up" tail cut; R21 "the failure this exists to prevent"→plain causal sentence; R23 "true for an afternoon"→"can stop being true the same day"; R25 "not a rule a script can settle"→"no script can settle it"; R27 "something is off"→"the plan left a choice open"; R30 "Say no freely"→"Declining is fine"; R31 rhetorical question→plain imperative; R37 "mechanical net"→"mechanical enforcement"; R41 door metaphor→"comes in through /hotfix"; R44 "goes green"→"is finished"; R45 quoted-flourish anaphora→plain pair. **Kept (29):** test-pinned verbatim — R7, R8, R17, R22, R24, R35, R42, R46 (8); the doctrine's own slogans, where the phrase is the rule — R11 "no evidence, no tick", R26 "Chips are stops, not automation", R28 "Merges are yours", R29, R32 "if it isn't in cairn/ files or git, it didn't happen", R38, R39, R40, R43 (9); structural bold-leads paralleling pinned siblings or list-format leads — R20, R34, R48 (3); accurate plain descriptions the reader over-flagged — R5, R9, R10, R13-remainder, R18, R33, R36, R47 (8); the project's identity epigraph — R1 (1).
 
 ## Review
+
+**Evidence, PR #141, branch `m141-readme-plain-language`, review commit
+`86d94b8`.**
+
+- AC1 — MET. `grep -o '—' README.md | wc -l` = 1 (≤10; the survivor is
+  inside the frozen tree block), down from 50 at edb6942;
+  `grep -oE ' (--|–) ' README.md | wc -l` = 0.
+- AC2 — MET. `grep -c '' README.md` = 264 (≤265).
+- AC3 — MET. Fenced-block lists element-wise equal between edb6942 and the
+  review commit: 4 blocks, same order, info strings included, each
+  byte-identical (extraction procedure: fence info string plus lines
+  strictly between paired fences, top to bottom, run on both revisions).
+- AC4 — MET. The four named guard files pass individually at the review
+  commit; 19 `target="README.md"` registrations (≥19);
+  `git diff -w main...HEAD -- skills/tests/` is empty, so the per-change
+  Review-line clause is vacuously satisfied — no guard was touched.
+- AC5 — MET. One pass, run at ad7f827 by a fresh [O] reader that authored
+  none of the rewrite: 48 reports, 19 rewritten on the branch, 29 kept with
+  reasons — kept-with-reason lines: R7, R8, R17, R22, R24, R35, R42, R46
+  kept as test-pinned verbatim phrases; R11, R26, R28, R29, R32, R38, R39,
+  R40, R43 kept because the flagged phrase is the doctrine rule itself
+  ("no evidence, no tick"; "Chips are stops, not automation"; "Merges are
+  yours"; the evidence-first distinction; "if it isn't in cairn/ files or
+  git, it didn't happen"; "always a promise"; conduct-vs-hook; inbox-not-
+  tracking-system; tracked-candidate status); R20, R34, R48 kept as
+  structural bullet leads paralleling pinned siblings; R5, R9, R10,
+  R13-remainder, R18, R33, R36, R47 kept as accurate plain descriptions
+  over-flagged by the reader; R1 kept as the project's identity epigraph.
+  No second round convened; no guard or rule added.
+- AC6 — MET. At 86d94b8: `python3 -m unittest discover -s skills/tests`
+  Ran 782 exit 0; `-s scripts/tests` Ran 345 exit 0; `-s hooks/tests`
+  Ran 103 exit 0; `python3 scripts/cairn_validate.py` exit 0.
+- AC7 — MET. `grep -n '^## ' README.md` lists the same 10 headings in the
+  same order as edb6942; `grep -c ''` = 264 (≥230).
+
+**Consistency gate.** `cairn_validate` exit 0. `Principles touched:` is `—`,
+so `cairn_impact` is skipped. Profile `generic` names no toolchain checks —
+a clean no-op.
