@@ -74,6 +74,37 @@ def implement():
     return read("milestone-implement", "SKILL.md")
 
 
+# M139: a whole-file read proves a phrase exists SOMEWHERE, never that it is
+# still in the rule it belongs to — relocating a sentence to another section
+# leaves every such anchor matching (M123). The M139 asserts read a marker-
+# bounded slice instead. A missing marker returns "", so the asserts that use
+# it FAIL rather than crash; a crash is weak red (M117).
+REVIEW_RETURNS_START = "**return floor (m130).**"
+REVIEW_RETURNS_END = "6. final checkpoint commit on the branch."
+IMPLEMENT_AMENDMENTS_START = "6. **plan amendments**"
+IMPLEMENT_AMENDMENTS_END = "7. **blocked?**"
+
+
+def slice_between(text, start, end):
+    i = text.find(start)
+    j = text.find(end)
+    if i == -1 or j == -1 or j <= i:
+        return ""
+    return text[i:j]
+
+
+def review_returns():
+    """`/milestone-review`'s return-classification block, step 5."""
+    return slice_between(review(), REVIEW_RETURNS_START, REVIEW_RETURNS_END)
+
+
+def implement_amendments():
+    """`/milestone-implement`'s plan-amendment block, step 6."""
+    return slice_between(
+        implement(), IMPLEMENT_AMENDMENTS_START, IMPLEMENT_AMENDMENTS_END
+    )
+
+
 class TestThrashCounting(unittest.TestCase):
     def test_returns_are_counted_per_milestone_not_per_cut(self):
         self.assertIn("count returns **per milestone, never per cut**", review())
@@ -431,6 +462,115 @@ class TestReturnFloor(unittest.TestCase):
             review(),
             r"a second amendment return naming the same ac<n> on one "
             r"milestone\s+stops",
+        )
+
+
+class TestWideningTest(unittest.TestCase):
+    """M139: the narrowing repair is reachable at the return, not only a re-cut.
+
+    Trigger: intraclass M117's AC2 took four defect returns, the first three
+    each answering a counterexample with a wider matcher. The narrowing repair
+    existed at `/milestone-plan` step 4 the whole time; nothing at the return
+    surface reached it, so getting there cost a full re-cut.
+
+    The geometry is what the two pre-existing clauses missed. The amendment
+    return keyed on a criterion falsified only OUTSIDE its named procedure's
+    domain; this case fails INSIDE the domain the promise quantifies over,
+    because the named procedure enumerates a proxy for it. So the case read as
+    an ordinary defect return, and its repair read as "widen the matcher".
+
+    One assertion per test method (M139 AC5): the mutation harness blanks a
+    block and runs the whole method, so a second assertion in the same method
+    can red for the first and leave it unproven.
+    """
+
+    def test_return_floor_carves_out_the_widening_case(self):
+        # Unamended, the floor's inside-the-domain limb claims this failure as
+        # a defect return, and the two classifications collide on one finding.
+        self.assertRegex(
+            review_returns(),
+            r"criterion names one, save where the widening test below carves "
+            r"that\s+failure out as an amendment return",
+        )
+
+    def test_amendment_return_clause_carves_out_the_widening_case(self):
+        # The sibling collision: "only outside" excludes this case by its own
+        # wording, so the route it needs is closed until the clause names it.
+        self.assertRegex(
+            review_returns(),
+            r"or meeting the widening\s+test below, which carves that third "
+            r"case out of this clause's \"only\s+outside\"",
+        )
+
+    def test_widening_test_classifies_an_inside_domain_failure(self):
+        self.assertRegex(
+            review_returns(),
+            r"\*\*widening test \(m139\)\.\*\* a finding demonstrating an "
+            r"acceptance criterion\s+failing \*inside\* the domain its promise "
+            r"quantifies over is an amendment\s+return rather than a defect "
+            r"return",
+        )
+
+    def test_widening_test_keys_on_the_only_repair_being_a_wider_recall(self):
+        # "only" is load-bearing: without it every defect return for which some
+        # widening repair exists lands on the amendment track and its tighter
+        # stop.
+        self.assertRegex(
+            review_returns(),
+            r"when the only repair available to it\s+widens an enumeration "
+            r"whose membership is fixed by author recall rather\s+than decided "
+            r"by a procedure over that domain",
+        )
+
+    def test_widening_test_cites_step_4_rather_than_restating_it(self):
+        # One home: the repair lives at /milestone-plan step 4, and a second
+        # copy here is the fork this rulebook's step-0 check exists to stop.
+        self.assertRegex(
+            review_returns(),
+            r"that discriminator is\s+`/milestone-plan` step 4's, and the "
+            r"repair such a return takes is the one\s+step 4 states; read it "
+            r"there rather than here",
+        )
+
+    def test_reclassified_return_counts_on_the_amendment_track(self):
+        self.assertRegex(
+            review_returns(),
+            r"a return reclassified this\s+way carries the fixed work-log "
+            r"shape above, counts on the amendment-return\s+track under its "
+            r"second-occurrence stop, and never increments the\s+defect-return "
+            r"count the thrash rule reads",
+        )
+
+    def test_implement_states_the_narrowing_repair_direction(self):
+        # The classification alone leaves the amendment undirected, and the
+        # undirected amendment is the wider enumeration that failed four times.
+        self.assertRegex(
+            implement_amendments(),
+            r"an amendment executing a return reclassified under "
+            r"`/milestone-review`'s\s+widening test takes the narrowing repair "
+            r"`/milestone-plan` step 4's\s+bounded-promise rule states",
+        )
+
+    def test_review_slice_start_marker_is_unique(self):
+        # A marker occurring twice binds the slice to its first occurrence, and
+        # a decoy above the real block absorbs every check (M126).
+        self.assertEqual(review().count(REVIEW_RETURNS_START), 1)
+
+    def test_review_slice_end_marker_is_unique(self):
+        self.assertEqual(review().count(REVIEW_RETURNS_END), 1)
+
+    def test_implement_slice_start_marker_is_unique(self):
+        self.assertEqual(implement().count(IMPLEMENT_AMENDMENTS_START), 1)
+
+    def test_implement_slice_end_marker_is_unique(self):
+        self.assertEqual(implement().count(IMPLEMENT_AMENDMENTS_END), 1)
+
+    def test_implement_rules_a_wider_enumeration_inadmissible(self):
+        # Stated positively above, refused explicitly here: naming the repair
+        # does not by itself close the move it replaces.
+        self.assertRegex(
+            implement_amendments(),
+            r"a wider enumeration is not an admissible\s+amendment",
         )
 
 

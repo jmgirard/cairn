@@ -3145,6 +3145,88 @@ REGISTRY += [
     ),
 ]
 
+# M139: the widening test at the return surface, and the narrowing repair it
+# routes to. One entry per separately deletable span, one span per test method
+# — AC5 holds each new method to a single assertion, so a blanked block and the
+# assert that reacts to it are one-to-one and nothing is proven by a sibling.
+REGISTRY += [
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_return_floor_carves_out_the_widening_case",
+        target=REVIEW,
+        block="criterion names one, save where the widening test below carves that\n   failure out as an amendment return",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_amendment_return_clause_carves_out_the_widening_case",
+        target=REVIEW,
+        block="or meeting the widening\n   test below, which carves that third case out of this clause's \"only\n   outside\"",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_widening_test_classifies_an_inside_domain_failure",
+        target=REVIEW,
+        block="**Widening test (M139).** A finding demonstrating an acceptance criterion\n   failing *inside* the domain its promise quantifies over is an amendment\n   return rather than a defect return",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_widening_test_keys_on_the_only_repair_being_a_wider_recall",
+        target=REVIEW,
+        block="when the only repair available to it\n   widens an enumeration whose membership is fixed by author recall rather\n   than decided by a procedure over that domain",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_widening_test_cites_step_4_rather_than_restating_it",
+        target=REVIEW,
+        block="That discriminator is\n   `/milestone-plan` step 4's, and the repair such a return takes is the one\n   step 4 states; read it there rather than here",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_reclassified_return_counts_on_the_amendment_track",
+        target=REVIEW,
+        block="A return reclassified this\n   way carries the fixed work-log shape above, counts on the amendment-return\n   track under its second-occurrence stop, and never increments the\n   defect-return count the thrash rule reads",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_implement_states_the_narrowing_repair_direction",
+        target=IMPLEMENT,
+        block="An amendment executing a return reclassified under `/milestone-review`'s\n     widening test takes the narrowing repair `/milestone-plan` step 4's\n     bounded-promise rule states",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_implement_rules_a_wider_enumeration_inadmissible",
+        target=IMPLEMENT,
+        block="a wider enumeration is not an admissible\n     amendment",
+    ),
+    # The four slice markers. Blanking one drops its count to 0, so the
+    # uniqueness assert reds — and the slice it bounds collapses to "", which
+    # is the failure mode the marker asserts exist to surface early.
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_review_slice_start_marker_is_unique",
+        target=REVIEW,
+        block="**Return floor (M130).**",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_review_slice_end_marker_is_unique",
+        target=REVIEW,
+        block="6. Final checkpoint commit on the branch.",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_implement_slice_start_marker_is_unique",
+        target=IMPLEMENT,
+        block="6. **Plan amendments**",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_implement_slice_end_marker_is_unique",
+        target=IMPLEMENT,
+        block="7. **Blocked?**",
+    ),
+]
+
 # M117: the upstream half of trigger (b) — /milestone-plan creates the record
 # (b) reads. One entry per independently-deletable span across the obligation,
 # its placement, its cardinality, its absence case, and the template surface;

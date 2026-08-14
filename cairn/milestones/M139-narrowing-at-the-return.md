@@ -133,10 +133,10 @@ recording the classification change and its counting disposition.
 - [x] T3. Write the counting disposition — fixed shape, amendment track,
       second-occurrence stop, defect count untouched.
 - [x] T4. Write the repair direction into `/milestone-implement` step 6.
-- [ ] T5. Add the guards to `skills/tests/test_thrash_rule.py`, pairing each
+- [x] T5. Add the guards to `skills/tests/test_thrash_rule.py`, pairing each
       absence assert with a positive framing assert, and register each
       positive block in `skills/tests/test_mutation_harness.py`.
-- [ ] T6. Run the AC4 probe matrix over the enumerated sentences and the AC5
+- [x] T6. Run the AC4 probe matrix over the enumerated sentences and the AC5
       blanking run; restore and `git diff` clean after each probe.
 - [ ] T7. Append the D-entry (classification change + counting disposition,
       annotating D-097, citing D-098's host reading and D-090's satisfied
@@ -154,6 +154,8 @@ recording the classification change and its counting disposition.
 - 2026-08-13: T3 — counting disposition written beside the widening test: fixed work-log shape, amendment-return track under its second-occurrence stop, defect-return count never incremented.
 - 2026-08-13: T4 — repair direction written into `/milestone-implement` step 6, citing `/milestone-plan` step 4 rather than restating it. skills/tests green, 766 tests.
 - 2026-08-13: AC5 amended at the implement mini gate (Substantive). Its named command `python3 -m unittest skills.tests.test_mutation_harness` is unsatisfiable here — verified, not assumed: it exits `ModuleNotFoundError: No module named 'mutation_engine'` on the harness's bare import, the failure `PROFILE.md` documents, while the control `discover -s skills/tests -k mutation_harness` runs 9 tests OK. Fresh-context [O] reader audited the amended wording and returned six FIX findings, all applied: a polarity inversion ("survives" where red is required), a per-assert universal enumerated only per-sentence, per-method registration masking a second assertion, an enumeration command missing `-w` and the unchanged-text exclusion, no evidence line plus a vacuous `-k` pass, and "blanks RED" describing output that reads `OK`. Further churn went to the user per the one-re-entry bound; user accepted the six-fix version including the one-assertion-per-method rule.
+- 2026-08-13: T5 — eight rule guards plus four slice-marker guards in `TestWideningTest`, one assertion per method per the amended AC5, each registered in the mutation harness. Whole-file reads were replaced by a marker-bounded slice: relocating a sentence to another section leaves a whole-file anchor matching (M123), so the relocation probe AC4 requires could not have redded against the first design.
+- 2026-08-13: T6 — probe matrix run by script (scratchpad `probe.py`), 8 units x 5 runs = 40 probe runs, 40 RED, each unit's own guard among the reacting tests in every run; suite size stable at 778 across all runs and `git diff` clean after each restore. The four marker asserts, whose pinned text lies outside AC4's domain, took the relabel probe instead: 4/4 red, each reacting its own test. Harness probed against a known-positive first — an absent block raises `ValueError: block locator must occur exactly once (found 0)`, so a green harness run is not silence.
 - 2026-08-13: criteria audit ran twice ([O], fresh context, authored none of the wording). Round 1 returned nine findings on the step-2 draft — seven fixed and reported (over-broad "the repair available", a classification collision with two standing clauses, a jointly unsatisfiable AC2/AC3 pair, an undecidable "restates", an unbound diff base, a probe set missing relabel and the cross-file axis, and a harness run read as evidence of per-file registration), two taken to the gate (the rule/non-rule proxy; the ledger against D-095/D-090). Round 2 on the gate-revised wording returned eleven — eight fixed (two self-contradicting no-restatement clauses, a universal over findings with sentence-level evidence, an AC satisfied by the pre-milestone state, a reflow-inflated domain, evidence recording no probe outcome, negative asserts unregisterable by blanking, a one-file proxy for the assert domain) and three judgment calls settled without a further round, the gate's three-marker budget being spent.
 
 ## Decisions
