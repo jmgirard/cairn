@@ -217,7 +217,9 @@ overrides — log the override).
    **Return floor (M130).** Over the actioned (≥80) list, a finding moves the
    milestone back to `in-progress` only when it demonstrates an acceptance
    criterion failing — inside its named procedure's domain, where the
-   criterion names one — or when scored **≥90** on a defect in what the
+   criterion names one, save where the widening test below carves that
+   failure out as an amendment return —
+   or when scored **≥90** on a defect in what the
    repo's deliverables do for their users (for this plugin: what the skills,
    hooks, and scripts do, not the doctrine prose about how work is verified).
    Every other actioned finding takes the triage above — fix now / follow-up
@@ -230,7 +232,9 @@ overrides — log the override).
    **Amendment return (M130).** A finding that shows the criterion itself
    is wrong — falsifying it only outside the domain of the procedure it
    names, or showing a criterion that names no procedure to be unbounded
-   (the never-reinterpret rule's case, step 3) — is evidence about the
+   (the never-reinterpret rule's case, step 3), or meeting the widening
+   test below, which carves that third case out of this clause's "only
+   outside" — is evidence about the
    promise, not the work. It routes to the gated
    criterion-amendment protocol (`/milestone-implement` step 6) and
    re-review, the amendment the only work convened; status is set to
@@ -241,6 +245,14 @@ overrides — log the override).
    a re-cut, and never added to the defect-return count (D-097 narrows
    D-064). A second amendment return naming the same AC<N> on one milestone
    stops — no further round is convened; the disposition goes to the user.
+
+   **Widening test (M139).** A finding demonstrating an acceptance criterion
+   failing *inside* the domain its promise quantifies over is an amendment
+   return rather than a defect return when the only repair available to it
+   widens an enumeration whose membership is fixed by author recall rather
+   than decided by a procedure over that domain. That discriminator is
+   `/milestone-plan` step 4's, and the repair such a return takes is the one
+   step 4 states; read it there rather than here.
 
 6. Final checkpoint commit on the branch.
 

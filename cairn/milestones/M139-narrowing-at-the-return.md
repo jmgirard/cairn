@@ -1,11 +1,11 @@
 # M139: The narrowing repair for a defeated promise is reachable at a review return
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m139-narrowing-at-the-return`
 
 ## Goal
 
@@ -107,7 +107,7 @@ recording the classification change and its counting disposition.
 
 ## Tasks
 
-- [ ] T1. Read the three colliding clauses in place and draft the carve-out
+- [x] T1. Read the three colliding clauses in place and draft the carve-out
       wording against their actual bytes: `/milestone-review`'s amendment
       return and return floor (`skills/milestone-review/SKILL.md`, the step-5
       block around the return floor and amendment return) and step 6 of
@@ -115,7 +115,7 @@ recording the classification change and its counting disposition.
       guards anchor on before editing, so an edit does not reflow an adjacent
       anchor (M104) or repeat a short phrase an existing assert binds bare
       (M113).
-- [ ] T2. Write the widening test into `/milestone-review` and amend the two
+- [x] T2. Write the widening test into `/milestone-review` and amend the two
       colliding clauses to carry the carve-out.
 - [ ] T3. Write the counting disposition — fixed shape, amendment track,
       second-occurrence stop, defect count untouched.
@@ -136,6 +136,8 @@ recording the classification change and its counting disposition.
 - 2026-08-13: plan gate chose running the probes and recording the outcome over committing per-sentence and per-probe ledgers, because D-095 deleted that artifact class as an instrument testing only itself; falsified by a review finding a probe claim unreproducible from the recorded evidence line.
 - 2026-08-13: plan gate chose a diff-decided probe domain over an author-classified one, because a rule/non-rule column is the proxy this milestone exists to close; falsified by the exemption list growing to cover most added sentences, which would restore the classification under another name.
 - 2026-08-13: plan chose citing `/milestone-plan` step 4 from both new surfaces over restating its rule, because the rulebook's one-home step-0 check forbids the second copy; falsified by an operator at a return needing step 4's text and not reaching it.
+- 2026-08-13: T1 — mapped the guard anchors over the three colliding clauses; `test_thrash_rule.py` pins them with `\s+`-spanning regexes plus two bare one-line `assertIn`s, so edits were wrapped by hand to keep those two phrases contiguous (M104/M113). No collision: "widening test", "author recall", "narrowing repair" and "reclassified" occur in no existing guard anchor.
+- 2026-08-13: T2 — widening test written into `/milestone-review` step 5; the return floor's inside-the-domain clause and the amendment return's "only outside" clause each amended in place to name it as their carve-out. skills/tests green, 766 tests.
 - 2026-08-13: criteria audit ran twice ([O], fresh context, authored none of the wording). Round 1 returned nine findings on the step-2 draft — seven fixed and reported (over-broad "the repair available", a classification collision with two standing clauses, a jointly unsatisfiable AC2/AC3 pair, an undecidable "restates", an unbound diff base, a probe set missing relabel and the cross-file axis, and a harness run read as evidence of per-file registration), two taken to the gate (the rule/non-rule proxy; the ledger against D-095/D-090). Round 2 on the gate-revised wording returned eleven — eight fixed (two self-contradicting no-restatement clauses, a universal over findings with sentence-level evidence, an AC satisfied by the pre-milestone state, a reflow-inflated domain, evidence recording no probe outcome, negative asserts unregisterable by blanking, a one-file proxy for the assert domain) and three judgment calls settled without a further round, the gate's three-marker budget being spent.
 
 ## Decisions

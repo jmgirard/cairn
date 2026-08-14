@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M139 | The narrowing repair for a defeated promise is reachable at a review return | planned | — | high | milestones/M139-narrowing-at-the-return.md |
+| M139 | The narrowing repair for a defeated promise is reachable at a review return | in-progress | — | high | milestones/M139-narrowing-at-the-return.md |
 | M138 | The criteria audit reaches amended wording and one-exemplar verification clauses | done | — | high | milestones/archive/M138-criteria-audit-reach.md |
 | M137 | Derived figures are pinned or procedural, never free-standing | done | — | high | milestones/archive/M137-derived-figures.md |
 | M136 | An observed failure backs a claim only as the failure it is verified to be | done | — | high | milestones/archive/M136-failure-identity.md |
