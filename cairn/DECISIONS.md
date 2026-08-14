@@ -3739,3 +3739,153 @@ context; the row is the classification's record.
 **Consequences:** D-099's decision — the relocation, the widening, the pin
 requirement, the narrow supersession of the placement clause — stands as
 decided. What changes is only the two claims named above.
+
+### D-101 (2026-08-13): A return whose only repair widens an author-recalled enumeration is an amendment return, counted on that track — annotates D-097's amendment-return track and leaves D-064's triggers intact; satisfies D-090's trigger under D-098's cross-repo host reading (M139)
+
+**Context:** intraclass M117's AC2 consumed four defect returns. Returns #1–#3
+each answered a counterexample with a wider matcher — a sentence filter keyed
+on one token, figure shapes outside the pinned two, a greedy table strip
+erasing 96% of a surface — and the narrowing to declared classes arrived only
+with the 2026-08-09 re-cut; return #4 then landed inside the declared domain,
+which is the narrowed promise working as intended. The repair already existed:
+`/milestone-plan` step 4's bounded-promise rule states that a counterexample
+defeating an author-recalled enumeration is not answered by a wider one (M132,
+D-098). Nothing at the return surface reached it, and the geometry is why.
+D-097's amendment return keys on a criterion falsified *only outside* the
+domain of the procedure it names, while this failure lands *inside* the domain
+the promise quantifies over — the named procedure enumerates a proxy for that
+domain — so the case read as an ordinary defect return under the return floor
+and its repair read as "widen the matcher". Reaching the narrowing repair
+therefore cost a routing through `/milestone-plan` and a full re-cut.
+
+**Decision:** `/milestone-review` gains the widening test — a finding
+demonstrating an acceptance criterion failing inside the domain its promise
+quantifies over is an amendment return rather than a defect return when the
+**only** repair available to it widens an enumeration whose membership is fixed
+by author recall rather than decided by a procedure over that domain. "Only" is
+load-bearing: without it every defect return for which some widening repair
+exists lands on the amendment track and its tighter stop. The two clauses it
+collides with are amended to name it as their explicit carve-out — the return
+floor's inside-the-domain limb, and the amendment return's "only outside". Such
+a return counts on D-097's existing amendment-return track under its
+second-occurrence stop and never increments the defect-return count D-064's
+triggers read; a third counter was weighed at the M139 plan gate and rejected as
+machinery a two-track surface does not yet need. `/milestone-implement` step 6
+states the repair direction: the amendment takes the narrowing repair step 4
+states, and a wider enumeration is not an admissible amendment. Both surfaces
+cite step 4 rather than restating it, so the rule keeps one home.
+
+**Consequences:** on the case that motivated this, the stop fires after two
+rounds rather than four. D-097 is annotated, not superseded — its track, its
+fixed work-log shape and its second-occurrence stop are reused unchanged, and
+what widens is only what routes onto them. D-064's triggers and its
+per-milestone counting are untouched; the defect-return count simply stops
+absorbing this class. D-090's door is cleared by its own trigger clause rather
+than superseded: the defect is in shipped skill behavior, measured in a user
+repo at a cost of four returns, and D-098 hosts a cross-repo surfacing in a
+cairn milestone. Two falsifiers, with different owners. If a milestone churns
+amendment returns across different AC ids under this classification, that is the
+loop D-097 names as its own exit and D-097 is the entry to supersede. If a
+return is reclassified here whose repair genuinely was a widening that a stated
+procedure settles, this entry is the one to supersede.
+
+### D-102 (2026-08-13): D-101's "two clauses" is corrected to the three limbs the shipped file carves, and D-101's in-place edit is recorded as an IP4 violation, not repaired — supersedes that clause; D-101's decision and its other content stand (M139 review pass 3)
+
+**Context:** D-101 records that the widening test's colliding clauses "are
+amended to name it as their explicit carve-out — the return floor's
+inside-the-domain limb, and the amendment return's 'only outside'". Two limbs.
+The shipped file carves three: M139's own review pass 1 found the return floor's
+`≥90` deliverables limb uncarved, so a finding could satisfy the floor and the
+widening test at once with no tiebreak, and the repair added a third carve-out.
+D-101 was appended before that repair and was never true of what ships.
+
+**Decision, part 1 — the correction.** The clause is superseded here: **three**
+limbs name the widening test as their explicit carve-out — the return floor's
+inside-the-domain limb, that floor's `≥90` deliverables limb, and the amendment
+return's "only outside". D-101's decision, its counting disposition, its
+cross-entry claims about D-064, D-090, D-097 and D-098, and its two falsifiers
+all stand as appended.
+
+**Decision, part 2 — the violation, recorded under IP2 rather than hidden.**
+M139's review pass 2 scored this misdescription at 85 and the milestone repaired
+it by **editing D-101's sentence in place**, on the reasoning that an unmerged
+D-entry is branch-added prose rather than history. That reasoning is wrong and
+the edit was an IP4 violation. D-045 classifies `DECISIONS.md` as history,
+"never edited: supersede, never rewrite"; IP4 states the same; `DECISIONS.md`'s
+own header states it a third time. `guard-doctrine.md`'s delete-first remedy for
+a false claim in branch-added prose is scoped to the branch's own skill prose and
+is immediately followed by the unqualified reaffirmation that IP4 history is
+superseded, never edited. No clause anywhere carves out an unmerged or
+same-branch D-entry. The in-place edit was reverted at pass 3 — D-101 carries its
+originally appended bytes — and this entry is the supersession that should have
+been written instead. Two independent review lenses reached this reading before
+the scorer confirmed it at 92.
+
+**Consequences:** the precedent this closes is the dangerous one — that merge
+status decides whether a record is history. It does not: a D-entry is history
+from the moment it is appended, and an in-flight decision under active review is
+exactly where a false claim is most likely, so it is exactly where the
+append-only guarantee is worth most. If a case ever arises where superseding an
+unmerged entry is genuinely worse than editing it, this is the entry to
+supersede.
+
+### D-103 (2026-08-14): AC4's instrument is normalized whole-slice equality against verbatim in-test fixtures, and M139 splits — the doctrine ships on its verified criteria while a child milestone carries RR12's binding criteria — annotates D-101; corpus-wide remediation is refused at D-090's unsatisfied trigger (RR12, M139)
+
+**Context:** M139's AC4 failed three review passes, each by one shape — a guard
+anchor whose reach differs from the extent of the rule it pins. RR12's
+diagnosis: the failures are two conditions of a single invariant violated
+alternately — totality (the pinned extent equals the slice, leaving no unpinned
+complement) and granularity (the slice equals one rule) — and any
+fragment-anchor family short of whole-slice equality leaves a free complement
+whose text can invert the rule with the suite green; RR12 re-reproduced pass
+3's R1 independently, the full suite OK at 784. A regex family delivers AC4's
+property only in the degenerate limit where it collapses to one whole-slice
+equality check per rule, at which point it has stopped being an anchor family.
+
+**Decision:** the instrument for AC4-strength coverage is normalized
+whole-slice equality — per rule slice, one test method holding one
+`assertEqual(normalize(<slice>), <fixture>)` against a verbatim in-test copy of
+the rule's full text, replacing the per-fragment regexes, keeping the
+marker-uniqueness asserts, registered per slice in the mutation harness. And
+M139 splits, per the thrash rule's own remedy: AC4 is pruned through the gated
+amendment protocol, the two doctrine rules ship on AC1–AC3/AC5/AC6 (each
+verified across three passes), and a child milestone carries RR12's BC1–BC7
+verbatim as its acceptance floor with `Driving RR: RR12`. Rejected with RR12's
+reasons: a content hash (coverage-identical but opaque at discharge — the
+update diff shows one constant replacing another, making M124's measured
+failure mode the default), a markdown/AST parse (solves the already-solved
+boundary half, not the reference half, at a non-stdlib or hand-rolled-splitter
+cost), and a standing probe generator (negation is not mechanically
+generatable, and a standing generation stage is the certification shape D-095
+retired at D-090's door).
+
+**Consequences:** until the child lands, the two shipped rules carry a recorded
+exposure — an edit inserting between pinned fragments or stranding a slice tail
+would run green; bounded by stable user-approved doctrine text and PR review of
+any skill diff, and precedented as a recorded exposure by D-095's own §8-re-add
+clause. Thereafter every legitimate edit to an equality-guarded rule reds the
+suite and updates the fixture in the same commit — a deliberate two-site act,
+the correct default for the return-classification doctrine the thrash counter
+itself reads. Corpus-wide remediation is refused: every recorded instance of
+the anchor-reach class was produced by a probe or review lens examining the
+apparatus's own coverage, which D-090 fixes as ordinary work where it surfaces;
+the licensing trigger would be a shipped-behavior defect misrouting a skill in
+a user repo, and none is on record. If such a defect appears, D-090 names
+itself as the entry to supersede and RR12 §§1–2 is its evidence file. If a
+fixture is ever updated without its diff being read and a doctrine change ships
+unnoticed — the instrument's own stated residual — this entry is the one to
+supersede.
+
+### D-104 (2026-08-14): The annotation D-103's heading asserts on D-101 is drawn here — D-103's instrument and split govern the guarding and completion of the rule D-101 shipped, touching nothing in D-101's classification — annotates D-103; D-103's decision and every other claim in it stand (M139 review pass 4)
+
+**Context:** D-103's heading reads "annotates D-101", but its body names D-101
+nowhere, so the asserted relationship has no substantiating clause (M139
+pass-4 finding R4-09, scored 82). Under IP4 the entry is history and is not
+edited; the relationship is drawn by this entry instead.
+
+**Decision:** the annotation is this: D-103 decides the *instrument* for
+AC4-strength coverage of the doctrine D-101 shipped — the widening test and
+its three carve-outs — and the split that completes that coverage in a child
+milestone; it changes nothing in D-101's classification rule, its counting
+disposition, or its falsifiers, which stand as appended (and as corrected by
+D-102). D-103's decision and every other claim in it stand.
