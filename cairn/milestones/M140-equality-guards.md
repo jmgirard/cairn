@@ -149,6 +149,7 @@ guard-doctrine banking (AC-8).
 
 ## Work log
 
+- 2026-08-14: review fix pass (O-F1/O-F2) — sub-slice end marker moved to the M139 sentence's own boundary (`an amendment\n     that grows a plan-owned section`), fixture's stray next-rule fragment dropped, harness end-marker block updated; committed at b81ba07 BEFORE re-probing, because the probe script's `git checkout --` restore had silently wiped the first, uncommitted application of the same fix and invalidated a probe tally. Full evidence re-gathered at b81ba07.
 - 2026-08-14: T6 — suites skills/scripts/hooks and validate all exit 0 at 4fa9697; `git diff main...HEAD --name-only` shows no file outside skills/tests/, skills/shared/guard-doctrine.md and cairn/. All tasks complete; status -> review.
 - 2026-08-14: T5 — probe suite run at 6ec40f7 (scratchpad m140_probes.py, procedures in its docstring): domain 7 sentences from the deviated command (hunk-grouped, pre-image-excluded); AC-2 matrix 7x5=35 runs; AC-3 insertion 10 gaps (floor 4, amendment 3, widening 2, implement 1); AC-4 24 moves; AC-10a 10 pairs, no duplicate sentences; AC-10b 4 fixture edits. 83 runs, 83 RED, 0 GREEN, tree clean after every restore.
 - 2026-08-14: T4 — banking written: guard-doctrine §1 gains the two-invariant paragraph, §2's "What it cannot see" list gains the inserting and normalization bullets; four single-assert guards in `TestGuardDoctrineBanking`, each registered (harness Ran 9 OK, skills exit 0).
@@ -228,3 +229,60 @@ in each — 35+10+24+14 runs, 83 RED, 0 GREEN.
 advisory disposed at the plan gate). `Principles touched:` is `—`, so
 `cairn_impact` is skipped. Profile `generic` names no toolchain checks — a
 clean no-op.
+
+**Fix pass — evidence re-gathered at `b81ba07` after the O-F1/O-F2 repair.**
+
+- AC-1 — re-verified: AST sweep at b81ba07 finds exactly the four equality
+  methods as the only slice-reading asserts, none non-`assertEqual`.
+- AC-2 — matrix re-run: 7 sentences × 5 forms = **35 runs, 35 RED, 0 GREEN**
+  against projected zero; restored clean each run.
+- AC-3 — gap counts by the stated splitter: floor 4, amendment 3, widening 2,
+  **implement 0** (the clean one-rule slice has one sentence; recorded as 0)
+  — **9 runs, 9 RED, 0 GREEN**; restored clean.
+- AC-4 — **24 moves, 24 RED, 0 GREEN**; restored clean.
+- AC-5 — harness Ran 9 OK at b81ba07; 8 slice registrations naming the four
+  equality methods, end-marker block updated with the marker.
+- AC-6 — diff file list unchanged (five files).
+- AC-7 — eight uniqueness methods; the updated end marker verified unique;
+  marker-blanking entries red their equality methods in the harness run.
+- AC-8 — sentences unchanged, present; four registrations proven.
+- AC-9 — skills 782, scripts 345, hooks 103, validate: all exit 0 at b81ba07.
+- AC-10 — (a) pairs: floor 4, amendment 3, widening 2, **implement 0,
+  recorded as 0** per the criterion — 9 runs, 9 RED; no duplicate sentences.
+  (b) 4 fixture edits, 4 RED. **Total 81 runs, 81 RED, 0 GREEN** (down from
+  83: the two degenerate implement-slice runs O-F2 identified no longer
+  exist).
+
+**Fan-out and verdict.** Three lenses — diff-bug **[O]** 13 findings,
+blame-history **[S]** ten verified-clean checks (it live-fired the R1
+insertion shape and confirmed the equality guard reds) plus one cosmetic
+note, prior-review **[S]** zero findings (fixtures verified against live
+bytes; GitHub probe empty) — scored by a fresh **[S]** scorer holding the
+diff and the milestone file. Two findings ≥80, both FIXED on the branch, no
+return (neither fails a criterion inside its named procedure's domain, and
+neither is a ≥90 deliverables defect):
+
+- O-F1 (88) — FIXED. "`IMPLEMENT_M139_FIXTURE` bakes in two words of a
+  *different* rule": the end marker stopped mid-sentence inside the budget
+  rule's subject, violating the granularity invariant this milestone banks.
+  End marker moved to the sentence boundary; fixture and harness block
+  updated.
+- O-F2 (82) — FIXED by the same repair. The dangling fragment was the only
+  reason AC-10(a)'s implement pair count was 1 rather than 0; the slice now
+  yields 0 pairs, recorded as 0 per the criterion's own clause.
+- Sub-80, logged not actioned (IP3): O-F5/78 (`implement_substantive()` now
+  has no callers and the Substantive bullet no content pin — a coverage
+  reduction of a non-M139 surface), O-F9/75 (module docstring still says
+  "Three targets" with a fourth class added), O-F3/68 (four registry entries
+  hardcode the guard-doctrine path instead of the module constant), O-F7/68
+  (the insertion bullet's "Only … whole-slice equality" overclaims against
+  the next bullet and D-103's coverage-identical hash), O-F8/65 (case-folding
+  is a second undeclared read-pipeline blind spot), O-F13/65 (the pass-1
+  Review block attributed figures to 412def7 with no work-log line for that
+  re-run — cured for the final record by the fix-pass line above),
+  O-F4/58 and BH-F9/35 (registry comment glued to a closing paren),
+  O-F12/45 (three pre-existing whole-file asserts double-pin fixture text —
+  sanctioned by the deviation row, sync cost noted), O-F11/42 (wrap-fragile
+  sub-slice markers, fails safe), O-F6/40 (§1 paragraph read as corpus-wide
+  mandate — Scope Out and D-103 carry the refusal), O-F10/32 (step 5's outer
+  edges outside every slice — outside the exposure D-103 records).
