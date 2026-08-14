@@ -16,10 +16,10 @@ promise, without routing through `/milestone-plan` for a full re-cut.
 ## Scope
 
 **In:** `/milestone-review`'s return classification gains the widening test,
-routing that return onto the existing amendment-return track; the two clauses
+routing that return onto the existing amendment-return track; the three limbs
 it collides with — the amendment return's "only outside the domain of the
-procedure it names", and the return floor's inside-the-domain clause — are
-amended in the same edit to carve the case out. `/milestone-implement` step 6
+procedure it names", and the return floor's inside-the-domain and
+≥90-deliverables limbs — are amended to carve the case out. `/milestone-implement` step 6
 gains the repair direction such an amendment takes, citing
 `/milestone-plan` step 4 rather than repeating it. Guards for the added
 sentences in `skills/tests/`, registered in the mutation harness. A D-entry
@@ -36,6 +36,9 @@ recording the classification change and its counting disposition.
   verification ledger → refused at D-090's door and on D-095's ground.
 - The amendment-time audit record → the standing ROADMAP candidate (M138
   review F1/F8), not folded in here.
+- Probe-matrix coverage of the added sentences (the former AC4) → pruned at
+  the RR12 split (D-103); the child milestone carrying RR12's BC1–BC7
+  verbatim owns it.
 
 ## Acceptance criteria
 
@@ -45,13 +48,17 @@ recording the classification change and its counting disposition.
       return when the only repair available to it widens an enumeration whose
       membership is fixed by author recall rather than decided by a procedure
       over that domain. The existing "only outside the domain of the procedure
-      it names" clause and the return floor's inside-the-domain clause are
-      amended in the same edit so that each names this case as its explicit
-      carve-out. The added sentence names `/milestone-plan` step 4 as its
+      it names" clause and the return floor's inside-the-domain and
+      ≥90-deliverables limbs each carry an explicit carve-out naming this
+      case — by name or by back-reference to the widening test — all three
+      present in the shipped file at the review commit. The added sentence
+      names `/milestone-plan` step 4 as its
       source; it uses that rule's recall-vs-procedure discriminator as its
       classifier but restates neither the rule's "however long its list"
       elaboration, its worked example, nor its narrowing repair. Evidence: the
-      three sentences read verbatim from `skills/milestone-review/SKILL.md` at
+      widening-test sentence, the return-floor sentence carrying both limbs,
+      and the amendment-return sentence read verbatim from
+      `skills/milestone-review/SKILL.md` at
       the review commit, beside `/milestone-plan` step 4's text.
 - [x] AC2. A return reclassified under AC1 carries the amendment return's fixed
       work-log shape, counts on the amendment-return track under its
@@ -68,23 +75,10 @@ recording the classification change and its counting disposition.
       nor its worked example. Evidence: the sentence read verbatim from
       `skills/milestone-implement/SKILL.md` at the review commit, beside
       `/milestone-plan` step 4's text.
-- [ ] AC4. Every sentence this milestone adds to
-      `skills/milestone-review/SKILL.md` and `skills/milestone-implement/SKILL.md`
-      reds the `skills/tests` suite under five probe runs across four forms —
-      relabel, negation, subject transposition, and relocation run twice (once
-      into a different section of the host file, once into the other of the two
-      files) — and the file is restored with `git diff` shown clean after each
-      run. A sentence carrying no rule (a cross-reference, lead-in, or pointer)
-      is exempt from the negation form alone and is listed by number in the
-      evidence line. Domain enumerated by the added lines of
-      `git diff -w main...HEAD -- skills/milestone-review/SKILL.md
-      skills/milestone-implement/SKILL.md`, split at sentence boundaries — the
-      split is the step mapping added lines to added sentences, and a sentence
-      whose text is unchanged from `main` is excluded by that comparison.
-      Evidence: one `## Review` line per file naming that command, the sentence
-      count it enumerated, the commit measured at, and the probe matrix result
-      (sentences × forms attempted, the count that redded, exemptions by
-      number).
+- [ ] AC4. Pruned at the RR12 split amendment (D-103): the probe-matrix
+      coverage promise this criterion carried moves verbatim to the child
+      milestone as its BC1–BC7; no promise remains here, and review records
+      the pruning rather than gathering evidence.
 - [x] AC5. Every positive assert this milestone adds under `skills/tests/` has
       its own mutation-harness registration whose named test method contains
       that assert and no other assertion, so the blanked block and the
@@ -99,13 +93,20 @@ recording the classification change and its counting disposition.
       that the dotted module name dies on the harness's bare
       `import mutation_engine`): the harness blanks the block and requires its
       guard to fail, and the run reports `OK`. Each added assert is
-      individually re-run against the AC4 mutation of the sentence it pins and
-      required to fail; an assert whose pinned sentence lies outside AC4's
-      domain is re-run against a relabel of the phrase it anchors on instead,
-      since blanking verifies one axis only. Evidence: one `## Review` line
-      naming the enumeration command, the added-assert count it enumerated, the
-      commit measured at, and the harness run's reported test count and result
-      (`Ran N tests … OK`).
+      individually re-run against a mutation — one of relabel, negation, or
+      subject transposition — of the sentence it pins, and required to fail;
+      which sentence an assert pins is decided by running the assert's own
+      pattern against each sentence of the added-sentence domain in turn (the
+      added lines of `git diff -w main...HEAD -- skills/milestone-review/SKILL.md
+      skills/milestone-implement/SKILL.md`, split at sentence boundaries, a
+      sentence unchanged from `main` excluded), and an assert matching no
+      domain sentence is re-run against a relabel of the phrase it anchors on
+      instead, since blanking verifies one axis only. Evidence: one `## Review`
+      line naming the enumeration command, the added-assert count it
+      enumerated, the commit measured at, the harness run's reported test
+      count and result (`Ran N tests … OK`), the registered-block count
+      blanked and the count that redded its own named test, and the re-run
+      tally (asserts re-run × form used, the count that failed).
 - [x] AC6. `skills/tests`, `scripts/tests` and `hooks/tests` pass and
       `python3 scripts/cairn_validate.py` is green at the review commit.
 
@@ -136,7 +137,7 @@ recording the classification change and its counting disposition.
 - [x] T5. Add the guards to `skills/tests/test_thrash_rule.py`, pairing each
       absence assert with a positive framing assert, and register each
       positive block in `skills/tests/test_mutation_harness.py`.
-- [x] T6. Run the AC4 probe matrix over the enumerated sentences and the AC5
+- [x] T6. Run the probe matrix over the enumerated sentences and the AC5
       blanking run; restore and `git diff` clean after each probe.
 - [x] T7. Append the D-entry (classification change + counting disposition,
       annotating D-097, citing D-098's host reading and D-090's satisfied
@@ -158,6 +159,7 @@ recording the classification change and its counting disposition.
 - 2026-08-13: T6 — probe matrix run by script (scratchpad `probe.py`), 8 units x 5 runs = 40 probe runs, 40 RED, each unit's own guard among the reacting tests in every run; suite size stable at 778 across all runs and `git diff` clean after each restore. The four marker asserts, whose pinned text lies outside AC4's domain, took the relabel probe instead: 4/4 red, each reacting its own test. Harness probed against a known-positive first — an absent block raises `ValueError: block locator must occur exactly once (found 0)`, so a green harness run is not silence.
 - 2026-08-13: T7 — D-101 appended (widening test, counting disposition, both falsifiers with their owners). Three suites green at exit 0: skills 778, scripts 345, hooks 103; `cairn_validate` all checks passed, no advisories.
 - 2026-08-13: return-1 repair — two guards pin the amendment-return sentence's subject ("A finding that shows the criterion itself is wrong") and its tail ("is evidence about the promise, not the work"), each one assertion in its own method and registered. Six-sentence probe matrix re-run: 30/30 RED, 0 GREEN, suite 781, files restored clean.
+- 2026-08-14: split amendment applied (D-103; mini gate + fresh [O] reader, findings applied pre-gate, user approved): AC4 pruned — with it no remaining criterion mandates the added sentences be guarded at all; the 18 shipped asserts stay and totality/granularity coverage moves to the child via BC1–BC7 — AC1 reworded to the three shipped limbs (R6/FE discharged), AC5's re-run clause made procedure-decided with a recorded tally, Scope In/Out updated, T6's pruned-criterion label dropped.
 - 2026-08-14: RR12 ingested — split disposition recorded (D-103, milestone Decisions); RB12/RR12 archived; status -> in-progress for the gated split amendment.
 - 2026-08-14: RR12 delivered (`cairn/reviews/RR12-ac4-guard-instrument.md`) — diagnosis: totality+granularity under-determined by anchors; recommends whole-slice equality fixtures and route (iii) split, with BC1–BC7 for the child. Awaiting `/milestone-brief` ingest; still blocked.
 - 2026-08-14: blocked on RB12 — the maintainer chose escalation from the three return-3 routes; the AC4 guard-instrument question goes to Fable via `cairn/reviews/RB12-ac4-guard-instrument.md` (committed to main, merged into the branch).
