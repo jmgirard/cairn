@@ -221,7 +221,8 @@ overrides — log the override).
    failure out as an amendment return —
    or when scored **≥90** on a defect in what the
    repo's deliverables do for their users (for this plugin: what the skills,
-   hooks, and scripts do, not the doctrine prose about how work is verified).
+   hooks, and scripts do, not the doctrine prose about how work is verified),
+   save where that same test carves that finding out.
    Every other actioned finding takes the triage above — fix now / follow-up
    / reject — with no status change, and is logged. The amendment return
    below is the one named exception to this "only when". A floor return

@@ -3158,6 +3158,12 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_thrash_rule",
+        test="TestWideningTest.test_return_floor_shipped_defect_limb_carves_out_the_widening_case",
+        target=REVIEW,
+        block="about how work is verified),\n   save where that same test carves that finding out",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
         test="TestWideningTest.test_amendment_return_clause_carves_out_the_widening_case",
         target=REVIEW,
         block="or meeting the widening\n   test below, which carves that third case out of this clause's \"only\n   outside\"",

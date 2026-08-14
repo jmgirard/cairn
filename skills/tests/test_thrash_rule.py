@@ -493,6 +493,17 @@ class TestWideningTest(unittest.TestCase):
             r"that\s+failure out as an amendment return",
         )
 
+    def test_return_floor_shipped_defect_limb_carves_out_the_widening_case(self):
+        # Review F1: the carve-out on limb 1 alone left limb 2 open, so the
+        # motivating case — a shipped matcher missing a real user case, which
+        # scores >=90 on a deliverables defect — satisfied the floor AND the
+        # widening test at once: two counters, two stops, no tiebreak.
+        self.assertRegex(
+            review_returns(),
+            r"about how work is verified\),\s+save where that same test carves "
+            r"that finding out",
+        )
+
     def test_amendment_return_clause_carves_out_the_widening_case(self):
         # The sibling collision: "only outside" excludes this case by its own
         # wording, so the route it needs is closed until the clause names it.

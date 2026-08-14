@@ -1,6 +1,6 @@
 # M139: The narrowing repair for a defeated promise is reachable at a review return
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -157,6 +157,7 @@ recording the classification change and its counting disposition.
 - 2026-08-13: T5 — eight rule guards plus four slice-marker guards in `TestWideningTest`, one assertion per method per the amended AC5, each registered in the mutation harness. Whole-file reads were replaced by a marker-bounded slice: relocating a sentence to another section leaves a whole-file anchor matching (M123), so the relocation probe AC4 requires could not have redded against the first design.
 - 2026-08-13: T6 — probe matrix run by script (scratchpad `probe.py`), 8 units x 5 runs = 40 probe runs, 40 RED, each unit's own guard among the reacting tests in every run; suite size stable at 778 across all runs and `git diff` clean after each restore. The four marker asserts, whose pinned text lies outside AC4's domain, took the relabel probe instead: 4/4 red, each reacting its own test. Harness probed against a known-positive first — an absent block raises `ValueError: block locator must occur exactly once (found 0)`, so a green harness run is not silence.
 - 2026-08-13: T7 — D-101 appended (widening test, counting disposition, both falsifiers with their owners). Three suites green at exit 0: skills 778, scripts 345, hooks 103; `cairn_validate` all checks passed, no advisories.
+- 2026-08-13: review return 1 (defect) — AC4 NOT MET: 2 of 30 probe runs green, S2's subject and tail unpinned (M131 class). F1 (80) actioned and fixed on the branch; 22 findings logged below threshold. AC5 not evaluated. Status -> in-progress.
 - 2026-08-13: all tasks complete, three suites and validate green; status -> review.
 - 2026-08-13: criteria audit ran twice ([O], fresh context, authored none of the wording). Round 1 returned nine findings on the step-2 draft — seven fixed and reported (over-broad "the repair available", a classification collision with two standing clauses, a jointly unsatisfiable AC2/AC3 pair, an undecidable "restates", an unbound diff base, a probe set missing relabel and the cross-file axis, and a harness run read as evidence of per-file registration), two taken to the gate (the rule/non-rule proxy; the ledger against D-095/D-090). Round 2 on the gate-revised wording returned eleven — eight fixed (two self-contradicting no-restatement clauses, a universal over findings with sentence-level evidence, an AC satisfied by the pre-milestone state, a reflow-inflated domain, evidence recording no probe outcome, negative asserts unregisterable by blanking, a one-file proxy for the assert domain) and three judgment calls settled without a further round, the gate's three-marker budget being spent.
 
@@ -188,5 +189,49 @@ recording the classification change and its counting disposition.
   bounded-promise rule states; a wider enumeration is not an admissible
   amendment." Step 4 named; proxy test and worked example absent by substring
   check.
-- AC6 — MET. Three suites at exit 0: skills 778, scripts 345, hooks 103.
-  `cairn_validate` exit 0, 16 PASS and 8 advisory OK, no FAIL or WARN.
+- AC6 — MET. Three suites at exit 0: skills 779 (778 + the F1 fix guard),
+  scripts 345, hooks 103. `cairn_validate` exit 0, 16 PASS and 8 advisory OK,
+  no FAIL or WARN.
+
+- AC4 — **NOT MET.** Probe matrix re-run at the review commit over the domain
+  AC4 names — the added lines of `git diff -w main...HEAD` over the two skill
+  files, split at sentence boundaries, unchanged sentences excluded, which
+  yields six sentences S1-S6. 30 probe runs (6 sentences x 5 runs across four
+  forms), 28 RED and **2 GREEN**: S2, the amended amendment-return sentence,
+  survives the negation probe ("is evidence about the promise, not the work"
+  inverted to "about the work, not the promise") and the subject-transposition
+  probe ("A finding that shows" to "A maintainer who shows"). Cause: the M139
+  guards pin only the clause this milestone added to S2, while the sentence's
+  subject and tail are pinned by nothing — the M131 predicate-without-subject
+  and prefix-without-tail class. Suite size stable at 779 across all runs and
+  the two files restored clean after every probe (verified: the only pending
+  diff is the F1 fix below). No exemption was claimed or needed: S4, the
+  pointer sentence, redded under all four forms.
+- AC5 — NOT EVALUATED. AC4's failure returns the milestone before AC5's
+  evidence was gathered; recorded as unverified rather than assumed.
+
+**Independent fresh-context review — three lenses, then a scorer.**
+Diff-bug **[O]**, blame-history **[S]**, prior-PR-comments **[S]**; 23 findings
+scored by a fresh **[S]** scorer holding the diff and the milestone file.
+Prior-review lens found no regressed prior finding and its GitHub inline-comment
+probe returned empty. One finding scored >=80.
+
+- F1 (80) — ACTIONED, fixed on the branch. The return floor's `>=90`
+  deliverables limb was not carved out, so the motivating case could satisfy
+  both the floor and the widening test at once: two counters, two work-log
+  shapes, two stops, no tiebreak. Fixed by carving limb 2 as well, with its own
+  guard and mutation registration (13th).
+- 22 findings scored below 80, logged not actioned (IP3): F6/76 and F7/60
+  (guard gaps on clause adjacency and on the no-restatement claim), F15/65 and
+  F16/40 (D-101 counterfactual and attribution), F9/60 and F12/50 (ordering and
+  step-number marker fragility), F13/55 (the implement-time probe count was
+  8 guard-spans, not 6 sentences — superseded by the re-run recorded above),
+  F4/55, B3/50, F3/45, F10/45, F2/40, F8+F8b/35, F5/30, F11/30, B1/30, F14/30
+  (premise no longer in the file), B2/25, F18/20, C1/20, B4/15, F17/8 (stale —
+  the Review section and ticks landed together).
+
+**Return.** AC4 fails inside the domain of the procedure it names, so this is a
+defect return, not an amendment return: AC4 is not falsified only outside its
+procedure's domain, it names a procedure, and the repair is to pin S2's subject
+and tail rather than to widen any enumeration — the widening test this
+milestone ships does not reach it. Defect returns for M139: 1.
