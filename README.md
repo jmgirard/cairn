@@ -7,13 +7,13 @@ A Claude Code plugin for milestone-driven development. It keeps a
 governed LLM Wiki for project state: the agent maintains it, you gate it.
 One canonical workflow covers planning, implementation, review, hotfixes,
 releases, and expert escalation, with all project state in plain markdown
-under `cairn/`, kept honest by weight caps and a self-auditing health
+under `cairn/`, kept in bounds by weight caps and a self-auditing health
 check. The core is language-agnostic; each repo declares a
 toolchain profile (R, Python, Docker image, or generic) that supplies its
 language-specific commands. Work lands as small stacked milestones, and any
 session, today's or next month's, can find the path from the files alone.
 
-Born from maintaining many R packages with Claude Code and rebuilding
+cairn grew out of maintaining many R packages with Claude Code and rebuilding
 similar-but-diverging tracking systems in each. This plugin centralizes the
 logic (skills, rules, templates) so every repo works identically; each repo
 holds only its own state.
@@ -35,7 +35,7 @@ git clone https://github.com/jmgirard/cairn
 ln -s /path/to/cairn ~/.claude/skills/cairn
 ```
 
-One caution: *live* means live. Whatever branch the checkout has is what
+One caution: the symlink is live. Whatever branch the checkout has is what
 loads at your next session start, in every repo, enforcement hooks
 included. Keep the checkout on `main` unless you're developing cairn
 itself. For a one-off trial without installing anything, use
@@ -106,12 +106,12 @@ chip: **Proceed to review**.
 
 **3. Ship it.** `/milestone-review M07` re-runs every check fresh, gathers
 evidence for each acceptance criterion (no evidence, no tick), and hands
-the diff to independent reviewer agents that didn't write it. Then comes
-the one moment that matters: it opens a PR and asks *you* to merge, with
-the evidence in front of you. Nothing reaches your default branch until
-you say yes. After the merge, the milestone compresses to a short summary
-in the archive, the ROADMAP row flips to `done`, and the next session,
-tomorrow or next month, picks up the trail from the files alone.
+the diff to independent reviewer agents that didn't write it. Then it
+opens a PR and asks *you* to merge, with the evidence in front of you.
+Nothing lands on your default branch until you say yes. After the merge,
+the milestone compresses to a short summary in the archive, the ROADMAP
+row flips to `done`, and the next session, tomorrow or next month, resumes
+from the files alone.
 
 ## Which skill, when
 
@@ -126,7 +126,7 @@ tomorrow or next month, picks up the trail from the files alone.
 | Fix a reported bug quickly | `/hotfix`, or just describe the bug: regression test, fix, PR, your approval. Escalates to a milestone if it's bigger than it looked |
 | Take in an outside pull request | `/hotfix` again: it adopts the contributor's PR (`gh pr checkout`), holds it to the same bar, and merges on your approval |
 | Fix a typo or tweak docs | Just ask: trivial edits commit directly to main, no tracking |
-| Prepare a release | `/cairn-release`: follows your repo's profile (a CRAN walk, a registry walk, or a version bump and tag); you take the final outward step |
+| Prepare a release | `/cairn-release`: follows your repo's profile (a CRAN walk, a registry walk, or a version bump and tag); you run the final submit or tag step yourself |
 | Articulate a repo's design & principles | `/design-interview`: a two-phase interview (facts, then principles) that fills `DESIGN.md`; best run on Fable |
 | Adopt the system in another repo | `/cairn-init`: idempotent; safe to re-run |
 
@@ -153,30 +153,29 @@ Boundary rule:
 When something in your repo rests on knowledge from outside it (a formula
 from a paper, a cutoff from a standard, another tool's documented behavior),
 cairn asks you to write that source down as a page under `cairn/references/`.
-This is not a feature for statistical work only; any repo that takes a fact
-from somewhere else accumulates these.
+Statistical work is the obvious case, but any repo that takes a fact from
+somewhere else accumulates these.
 
 - **A page is owed when you start relying on the source.** Reading something
   in passing owes nothing. Once a value, convention, or decision in the repo
   traces back to it, the page gets written in the same piece of work that
-  takes the dependency, not left for a tidy-up later.
+  takes the dependency.
 - **A page says where it came from and whether anyone has checked it.** Each
   one records the source it came from, when it was read, and
   whether its extracted values have actually been re-read
-  against the original, or are still a first pass nobody has confirmed. An
-  unchecked extraction that reads like a confirmed one is the failure this
-  exists to prevent.
+  against the original, or are still a first pass nobody has confirmed. That
+  record exists because an unchecked extraction is easy to mistake for a
+  confirmed one.
 - **Facts about the source outlive notes about your repo.** "Table 3 gives
   0.75" stays true as long as the paper does. "We haven't pulled that one
-  yet" is true for an afternoon. The second kind gets stamped with the date
+  yet" can stop being true the same day. The second kind gets stamped with the date
   it was written, so a later reader doesn't inherit it as permanent.
 - **The health check tells you when a page has gone stale.** `/milestone`
   warns about pages never checked against their source, pages last checked
   over six months ago, and pages whose own status is too vague to tell,
   including ones only partly verified.
   These are warnings, never gate failures:
-  whether the evidence is good enough is your call, not a rule a script can
-  settle.
+  whether the evidence is good enough is your call; no script can settle it.
 
 Two templates ship for authoring these, one per page type; `/cairn-init` puts
 the directory in place and the shelf of original files stays out of git.
@@ -185,8 +184,8 @@ the directory in place and the shelf of original files stays out of git.
 
 - **Answer the gates.** Questions arrive in small batches at three points
   (planning scope, implementation choices, merge approval), each with a
-  recommendation. Between gates, expect autonomy: if you're being asked
-  questions mid-implementation, something is off.
+  recommendation. Between gates, expect autonomy;
+  mid-implementation questions mean the plan left a choice open.
 - **Chips are stops, not automation.** When clickable options appear,
   nothing proceeds until you pick one; walking away mid-chip is always
   safe, and the last checkpoint commit holds the state for next time.
@@ -201,14 +200,14 @@ the directory in place and the shelf of original files stays out of git.
   than work from memory. Feed it the PDF.
 - **Fable uses more tokens.** Fable is no longer pay-on-demand, but a Fable
   review typically uses more tokens than Opus, so each one asks your approval
-  with a scope estimate first. Say no freely; the brief file remains and can
-  be run any time.
+  with a scope estimate first. Declining is fine; the brief file remains
+  and can be run any time.
 - **Run `/milestone` when returning after time away.** It reconciles
   tracking against git, flags stale work, and hands you a resume chip.
 
 ## Habits that keep it healthy
 
-- One milestone in progress at a time. Tempted to start a second? Finish or
+- One milestone in progress at a time. Before starting a second, finish or
   explicitly pause the first.
 - Let milestones be small. The plan skill will propose splitting oversized
   ones; take the split. Three small merges beat one sprawling branch.
@@ -230,7 +229,7 @@ about where the guardrails actually reach.
   without the plugin, cairn sees none of it: the merge-approval requirement
   and the never-force-push rule become promises rather than blocks, and the
   post-merge bookkeeping happens late or not at all. Nothing breaks; you
-  just lose the mechanical net. Run `/milestone` afterwards to reconcile.
+  just lose the mechanical enforcement. Run `/milestone` afterwards to reconcile.
 - **Everything else was always a promise.** Evidence before ticking a
   criterion, tracking updates riding along with code, the review fan-out:
   those are conduct rules Claude follows, not things a hook enforces. They
@@ -240,7 +239,7 @@ about where the guardrails actually reach.
   hotfix, or a milestone, and your session's guards govern the merge. The
   contributor needs no plugin, no `cairn/` knowledge, and no special branch
   name. `/milestone`'s health audit enumerates both inboxes and proposes a
-  disposition per item; `/hotfix` is the door an adopted PR comes through.
+  disposition per item; an adopted PR comes in through `/hotfix`.
 - **Two people both running cairn is not supported yet.** The tracking files
   would race: milestone IDs and decision numbers are picked by reading the
   files, so two people planning at once can pick the same one. If you need
@@ -251,9 +250,9 @@ about where the guardrails actually reach.
 - Auto-merge, auto-release, or auto-submit to CRAN: every irreversible step
   is gated on you.
 - Propose, plan, or nominate a release. cairn will prepare one when you ask
-  and never brings it up on its own: no "you're ready to ship" suggestions,
+  and never brings it up on its own: no ready-to-ship suggestions, and
   no release work queued into the roadmap unprompted. A release is ready
-  when you say it is, not when a dependency list goes green, so
+  when you say it is, not when a dependency list is finished, so
   release timing is yours to declare
   and cairn stays quiet about it until you do.
 - Track status in CLAUDE.md, chat memory, or GitHub issues: `cairn/`

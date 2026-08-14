@@ -88,13 +88,14 @@ gate ruled it outside D-095's retirement).
       blocks frozen (AC3, AC7), pinned phrases kept contiguous or guards
       retargeted in the same commit; count AC1/AC2 while writing, never at
       the gate.
-- [ ] T3. The one-pass style reader ([O], fresh context) at a named branch
+- [x] T3. The one-pass style reader ([O], fresh context) at a named branch
       commit; disposition every report; record the tallies.
 - [ ] T4. Measurements per criterion command, three suites and validate;
       Review-line evidence.
 
 ## Work log
 
+- 2026-08-14: T3 — one-pass style reader ([O], fresh context) read the README at ad7f827 and reported 48 constructions (8 on test-pinned phrases); disposition: 19 rewritten on the branch (including the buildup before the merge ask, the 'final outward step' vagueness, the 'live means live' tautology, four 'not X' reversal tails, the duplicated trail flourish), 29 kept with reasons to be recorded per item in the Review section. Exactly one pass, per AC5; no second round convened.
 - 2026-08-14: T1 — anchor map: 19 harness registrations (all single-line literals, verified present), the currency guard's one-physical-line phrases, the positioning guard's normalized ¶-index-2 anchor plus four profile labels, the collaboration guard's three lowercase phrases. T2 — full rewrite: em dashes 50 -> 1 (the frozen tree block's), companion count 0, 265 lines, blocks and headings element-wise equal to edb6942, every pinned phrase kept contiguous (two ¶1 wraps caught by the suite and re-wrapped); three suites and validate exit 0, `git diff -w main...HEAD -- skills/tests/` empty — no retarget needed.
 - 2026-08-14: created by /milestone-plan; absorbs the README-cleanup candidate row (conversational, maintainer, 2026-08-14).
 - 2026-08-14: criteria audit ran ([O], fresh context, authored none of the wording): AC1/AC2/AC6 clear (AC1 gained the auditor's `--`/`–` companion check; AC6 names its runners verbatim); AC3 reworded to element-wise fenced-block list equality with info strings (duplicate/info-string/new-block holes); AC4 reworded to name its four guard files, floor the 19 registrations, and carry a lane for the positional ¶-anchor; AC5 bounded to exactly one pass; AC7 added on the auditor's own wording (heading freeze + 230-line floor) closing the gutted-README hole. Premise corrected: `test_toolchain_profiles.py` never reads README.
