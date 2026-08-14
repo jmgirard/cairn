@@ -1,11 +1,11 @@
 # M141: README plain-language pass
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m141-readme-plain-language`
 
 ## Goal
 
@@ -79,12 +79,12 @@ gate ruled it outside D-095's retirement).
 
 ## Tasks
 
-- [ ] T1. Map the guard anchors: extract every pinned README literal from
+- [x] T1. Map the guard anchors: extract every pinned README literal from
       the three reader guard files and the 19 harness registrations, with
       file:line, so the rewrite knows what survives byte-for-byte and what
       needs a same-commit retarget (M104). Note
       `test_positioning_guard.py`'s positional ¶-index anchor.
-- [ ] T2. The rewrite: section-by-section prose pass, structure and fenced
+- [x] T2. The rewrite: section-by-section prose pass, structure and fenced
       blocks frozen (AC3, AC7), pinned phrases kept contiguous or guards
       retargeted in the same commit; count AC1/AC2 while writing, never at
       the gate.
@@ -95,6 +95,7 @@ gate ruled it outside D-095's retirement).
 
 ## Work log
 
+- 2026-08-14: T1 — anchor map: 19 harness registrations (all single-line literals, verified present), the currency guard's one-physical-line phrases, the positioning guard's normalized ¶-index-2 anchor plus four profile labels, the collaboration guard's three lowercase phrases. T2 — full rewrite: em dashes 50 -> 1 (the frozen tree block's), companion count 0, 265 lines, blocks and headings element-wise equal to edb6942, every pinned phrase kept contiguous (two ¶1 wraps caught by the suite and re-wrapped); three suites and validate exit 0, `git diff -w main...HEAD -- skills/tests/` empty — no retarget needed.
 - 2026-08-14: created by /milestone-plan; absorbs the README-cleanup candidate row (conversational, maintainer, 2026-08-14).
 - 2026-08-14: criteria audit ran ([O], fresh context, authored none of the wording): AC1/AC2/AC6 clear (AC1 gained the auditor's `--`/`–` companion check; AC6 names its runners verbatim); AC3 reworded to element-wise fenced-block list equality with info strings (duplicate/info-string/new-block holes); AC4 reworded to name its four guard files, floor the 19 registrations, and carry a lane for the positional ¶-anchor; AC5 bounded to exactly one pass; AC7 added on the auditor's own wording (heading freeze + 230-line floor) closing the gutted-README hole. Premise corrected: `test_toolchain_profiles.py` never reads README.
 - 2026-08-14: plan gate (maintainer): the one-pass reader ruled outside D-095's retirement — that entry retired a standing, looping certification step; this is one bounded milestone-local read. Falsified by the pass convening a second round or surviving into another milestone, which re-opens D-095's question.
