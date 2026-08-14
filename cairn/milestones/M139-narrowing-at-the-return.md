@@ -75,7 +75,7 @@ recording the classification change and its counting disposition.
       nor its worked example. Evidence: the sentence read verbatim from
       `skills/milestone-implement/SKILL.md` at the review commit, beside
       `/milestone-plan` step 4's text.
-- [ ] AC4. Pruned at the RR12 split amendment (D-103): the probe-matrix
+- [x] AC4. Pruned at the RR12 split amendment (D-103): the probe-matrix
       coverage promise this criterion carried moves verbatim to the child
       milestone as its BC1–BC7; no promise remains here, and review records
       the pruning rather than gathering evidence.
@@ -407,6 +407,42 @@ carries into that routing**: AC4 has now failed three times, each by a new
 mechanism of one shape — the guard's anchor reach exceeds the rule it claims to
 pin. The plan gate recorded no alternative on guard scoping, so
 `/milestone-brief` escalation is offered, per instance.
+
+**Pass 4 — evidence re-gathered at `5cf488d` after the RR12 split amendment
+(D-103).**
+
+- AC1 — MET. The widening test read verbatim from the shipped review skill;
+  its three carve-outs present ("save where the widening test below carves",
+  "save where that same test carves", "or meeting the widening test below" at
+  `skills/milestone-review/SKILL.md:220,225,236`). No-restatement by
+  substring over the shipped block: "however long its list" 0, "intraclass
+  M102" 0, "narrow the promise until a stated procedure settles it" 0;
+  `/milestone-plan` step 4 named — with the control that step 4's own text is
+  present at its home file.
+- AC2 — MET. The counting sentence present in the added lines of
+  `git diff main...HEAD -- skills/milestone-review/SKILL.md`: amendment-return
+  track, second-occurrence stop, "never increments the defect-return count".
+- AC3 — MET. The repair-direction sentence read verbatim at
+  `skills/milestone-implement/SKILL.md:105-107`; step 4 named; "proxy test" 0
+  and "M102" 0 in that file.
+- AC4 — PRUNED, recorded rather than evidenced: tombstone per the RR12 split
+  amendment; the coverage promise lives verbatim as the child milestone's
+  BC1–BC7 (D-103). The tick is the pruning record.
+- AC5 — MET. Domain `git diff -w main...HEAD -- skills/tests/` at 5cf488d:
+  18 added asserts; 18 methods in `TestWideningTest` each holding exactly one
+  assertion (AST walk); 18 harness registrations; harness
+  `python3 -m unittest discover -s skills/tests -k mutation_harness` — `Ran 9
+  tests … OK` — 18/18 blanked blocks redding their own named test. Re-run
+  tally: 18 asserts × relabel form — 10 paired to a domain sentence by
+  running each assert's own pattern against the sentences in turn, 8 on the
+  relabel branch (pinned text unchanged from `main`, outside the domain) —
+  18 failed (RED), both files restored with `git diff` clean after every run.
+- AC6 — MET. skills 784, scripts 345, hooks 103, all OK;
+  `python3 scripts/cairn_validate.py` all checks passed at 5cf488d.
+
+**Consistency gate (pass 4).** `cairn_validate` exit 0, every check PASS.
+`Principles touched:` is `—`, so `cairn_impact` is skipped. Profile `generic`
+names no toolchain checks — a clean no-op.
 
 **The criterion is not what is wrong.** Every repair that closed a demonstrated
 AC4 gap has been a narrowing, never a wider enumeration of probe forms or
