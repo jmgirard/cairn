@@ -1,6 +1,6 @@
 # M139: The narrowing repair for a defeated promise is reachable at a review return
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -68,7 +68,7 @@ recording the classification change and its counting disposition.
       nor its worked example. Evidence: the sentence read verbatim from
       `skills/milestone-implement/SKILL.md` at the review commit, beside
       `/milestone-plan` step 4's text.
-- [x] AC4. Every sentence this milestone adds to
+- [ ] AC4. Every sentence this milestone adds to
       `skills/milestone-review/SKILL.md` and `skills/milestone-implement/SKILL.md`
       reds the `skills/tests` suite under five probe runs across four forms —
       relabel, negation, subject transposition, and relocation run twice (once
@@ -158,6 +158,7 @@ recording the classification change and its counting disposition.
 - 2026-08-13: T6 — probe matrix run by script (scratchpad `probe.py`), 8 units x 5 runs = 40 probe runs, 40 RED, each unit's own guard among the reacting tests in every run; suite size stable at 778 across all runs and `git diff` clean after each restore. The four marker asserts, whose pinned text lies outside AC4's domain, took the relabel probe instead: 4/4 red, each reacting its own test. Harness probed against a known-positive first — an absent block raises `ValueError: block locator must occur exactly once (found 0)`, so a green harness run is not silence.
 - 2026-08-13: T7 — D-101 appended (widening test, counting disposition, both falsifiers with their owners). Three suites green at exit 0: skills 778, scripts 345, hooks 103; `cairn_validate` all checks passed, no advisories.
 - 2026-08-13: return-1 repair — two guards pin the amendment-return sentence's subject ("A finding that shows the criterion itself is wrong") and its tail ("is evidence about the promise, not the work"), each one assertion in its own method and registered. Six-sentence probe matrix re-run: 30/30 RED, 0 GREEN, suite 781, files restored clean.
+- 2026-08-13: review return 2 (defect) — AC4 NOT MET again: FA (95, reproduced by the scorer) shows intra-slice relocation green, the marker slice spanning all three step-5 rules. FD (85) actioned. Thrash trigger (b) fired: AC4 failed twice by one shape (anchor scope wider than the rule). No alternative recorded at the plan gate on guard scoping, so /milestone-brief escalation is offered. Status -> in-progress.
 - 2026-08-13: return-1 repair verified implement-side before handback — 15 M139 asserts, each its own method with exactly one assertion (AST-checked), each registered, each failing when its own block is blanked, and each reacting to at least one AC4-domain mutation (the four marker asserts to a relabel, their pinned text sitting outside AC4's domain). 16/16 mutations red, tree clean after every restore. Three suites exit 0: skills 781, scripts 345, hooks 103; validate 16 PASS, 0 FAIL/WARN. Status -> review.
 - 2026-08-13: review return 1 (defect) — AC4 NOT MET: 2 of 30 probe runs green, S2's subject and tail unpinned (M131 class). F1 (80) actioned and fixed on the branch; 22 findings logged below threshold. AC5 not evaluated. Status -> in-progress.
 - 2026-08-13: all tasks complete, three suites and validate green; status -> review.
@@ -280,3 +281,49 @@ milestone ships does not reach it. Defect returns for M139: 1.
 OK. `Principles touched:` is `—`, so `cairn_impact` is skipped. Profile is
 `generic`, whose `consistency-gate` slot names no toolchain checks — that half
 is a clean no-op.
+
+**Pass 2 — fan-out and verdict.** Three lenses; 26 findings scored by a fresh
+**[S]** scorer holding the diff and the milestone file. Prior-review lens: zero
+findings, no regressed prior finding or lesson, GitHub inline-comment probe
+empty. Two findings actioned.
+
+- FA (95) — **RETURN.** ACTIONED. "Intra-slice relocation defeats the M139
+  guards. The marker slice runs `**Return floor (M130).**` to `6. Final
+  checkpoint commit`, i.e. all three rules of step 5. Every M139 sentence can be
+  moved into a *different rule's paragraph* inside that slice with the whole
+  suite green." Independently reproduced by the scorer: the AC2 counting
+  sentence moved into the Amendment-return paragraph, 49/49 OK, file restored
+  and `git diff` clean. One demonstrated green leaves the section
+  self-contradicting — "returns under this floor" joining the defect count
+  while "never increments the defect-return count" sits two paragraphs up.
+  AC4's relocation form ("once into a different section of the host file") is
+  not met under the bolded-block reading, which is the unit the guards were
+  designed around. Repair: per-rule end markers, narrowing the slice — not a
+  wording change.
+- FD (85) — ACTIONED, fix-now, carried into the repair. "D-101 misdescribes the
+  shipped surface: 'The two clauses it collides with are amended to name it as
+  their explicit carve-out' — the shipped file carves out **three** limbs."
+  D-101 is unmerged, so this is repaired in place rather than superseded.
+- 24 findings below 80, logged not actioned (IP3): FE/78 (Scope and AC1 still
+  say "two clauses" after F1 widened the edit to three, with no gated
+  amendment), FB/72 (AC4's "section" undefined — subsumed by FA), FK/68 (stale
+  "(13th)" ordinal), FC/58, FM/58 (work log not monotone at the tail), F-C/55
+  (no guard enforces the widening test's "only repair available" gate), FN/55,
+  FJ/45, FR/45, F-A/42, FL/40, FO/40, F-B/35, FG/35, FH/35, FP/35, FF/30,
+  FS/30, FI/20 (unmodified line), FQ/15, plus the blame lens's verified-clean
+  IP4 and D-101 cross-entry checks.
+- AC5 stands on its own procedure — 15 asserts, 15 one-assertion methods, 15
+  registrations, all one-to-one under blanking, all reacting to a mutation of
+  what they pin — but its cross-reference to AC4's probe is re-verified after
+  the repair.
+
+**Return 2 (defect).** Defect returns for M139: 2. Thrash trigger (a) needs a
+third and has not fired. **Trigger (b) HAS fired**: AC4 has now failed twice,
+each by a new mechanism of the same shape — an anchor whose scope is wider than
+the rule it claims to pin (pass 1: the amended sentence's subject and tail sat
+outside the pinned clause; pass 2: the slice spans three rules, so a sentence
+moves between them unseen). Its remedy is to reconsider the alternative the plan
+gate recorded against, and the gate recorded none on guard scoping — the four
+recorded alternatives concern evidence form, probe domain, counting track and
+citation. Where none was recorded, escalation via `/milestone-brief` is offered,
+per instance.
