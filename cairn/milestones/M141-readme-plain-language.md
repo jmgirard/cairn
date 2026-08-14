@@ -49,7 +49,7 @@ gate ruled it outside D-095's retirement).
       the reworded README claim it tracks or — for a structural anchor such
       as a paragraph index — the claim whose location moved; a guard is
       retargeted, never deleted or weakened to bare presence.
-- [ ] AC5. One fresh-context reader that authored none of the rewrite reads
+- [x] AC5. One fresh-context reader that authored none of the rewrite reads
       README.md as of a named branch commit and reports each construction it
       judges machine-styled; the enumeration is the reader's. Each reported
       item is either rewritten or kept with a one-line reason. Exactly one
@@ -179,3 +179,37 @@ meets the threshold on its stated score). F2 is a return:
 **Return 1 (defect).** AC5 is not falsified outside its procedure's domain
 and its repair is a disposition, not a wider enumeration — the widening test
 does not reach it. Defect returns for M141: 1.
+
+**Pass 2 — evidence re-gathered at `d5dd856` after the return-1 repair.**
+
+- AC1 — MET. `grep -o '—' README.md | wc -l` = 1 (the frozen tree block's);
+  companion count 0.
+- AC2 — MET. `grep -c '' README.md` = 265 (≤265; the F4 restoration added
+  one line over pass 1's 264).
+- AC3 — MET. Fenced-block lists element-wise equal to edb6942: 4 blocks,
+  info strings included, byte-identical.
+- AC4 — MET. `git diff -w main...HEAD -- skills/tests/` empty; 19
+  `target="README.md"` registrations; the four named guard files pass
+  inside the green skills run.
+- AC5 — MET. Exactly one reader pass ran (at ad7f827); the repair
+  dispositioned by appended correction entries, convening no second read.
+  48 reports, 48 distinct ids, all dispositioned: 19 rewritten + 30 kept
+  instances — R3 kept (the epigraph's echo; its duplicate was rewritten as
+  R14) and R13 dual (worked-example instance rewritten, expects-section
+  remainder kept), R13 the sole dual id — arithmetic machine-checked, union
+  R1–R48. The remaining kept reasons stand as recorded at pass 1.
+- AC6 — MET. At d5dd856: skills Ran 782 exit 0, scripts Ran 345 exit 0,
+  hooks Ran 103 exit 0, `cairn_validate` exit 0.
+- AC7 — MET. Same 10 headings, same order; 265 ≥ 230.
+
+**Repair verification (pass 2).** A fresh **[O]** verifier over
+`git diff 86d94b8..HEAD` confirmed F2 FIXED (id arithmetic independently
+reconciled from the entries' own lists; corrections appended, IP4 clean —
+zero deletion lines touch ledger text), F1 FIXED (warning meaning restored,
+consistent with the three-gates framing), F4 FIXED (all three guarantees
+present). Its two findings — the pass-1 block's stale AC5/AC2 figures —
+are cured by this block: the pass-1 text stands as that pass's record, and
+this block is the current evidence.
+
+**Consistency gate (pass 2).** `cairn_validate` exit 0. No principles
+touched; profile `generic` — toolchain half a clean no-op.
