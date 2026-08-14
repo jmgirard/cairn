@@ -86,13 +86,26 @@ recording the classification change and its counting disposition.
       (sentences × forms attempted, the count that redded, exemptions by
       number).
 - [ ] AC5. Every positive assert this milestone adds under `skills/tests/` has
-      its own mutation-harness registration, enumerated from the added asserts
-      in `git diff main...HEAD -- skills/tests/` rather than from the harness
-      run; each added negative assert is paired with a positive framing assert
-      and that phrase is the registered block. Each registered block blanks RED
-      under `python3 -m unittest skills.tests.test_mutation_harness -v`, and
-      each added assert also survives the AC4 probe of the sentence it pins,
-      since blanking verifies one axis only.
+      its own mutation-harness registration whose named test method contains
+      that assert and no other assertion, so the blanked block and the
+      reacting assert are one-to-one. Domain enumerated from
+      `git diff -w main...HEAD -- skills/tests/`, split at `self.assert*` call
+      boundaries — the split is the step mapping added lines to added asserts,
+      and an assert whose text is unchanged from `main` is excluded by that
+      comparison. Each added negative assert is paired with a positive framing
+      assert, and that phrase is the registered block. Each registered block is
+      proven by `python3 -m unittest discover -s skills/tests -k
+      mutation_harness` (the `discover` form is required: `PROFILE.md` records
+      that the dotted module name dies on the harness's bare
+      `import mutation_engine`): the harness blanks the block and requires its
+      guard to fail, and the run reports `OK`. Each added assert is
+      individually re-run against the AC4 mutation of the sentence it pins and
+      required to fail; an assert whose pinned sentence lies outside AC4's
+      domain is re-run against a relabel of the phrase it anchors on instead,
+      since blanking verifies one axis only. Evidence: one `## Review` line
+      naming the enumeration command, the added-assert count it enumerated, the
+      commit measured at, and the harness run's reported test count and result
+      (`Ran N tests … OK`).
 - [ ] AC6. `skills/tests`, `scripts/tests` and `hooks/tests` pass and
       `python3 scripts/cairn_validate.py` is green at the review commit.
 
@@ -140,6 +153,7 @@ recording the classification change and its counting disposition.
 - 2026-08-13: T2 — widening test written into `/milestone-review` step 5; the return floor's inside-the-domain clause and the amendment return's "only outside" clause each amended in place to name it as their carve-out. skills/tests green, 766 tests.
 - 2026-08-13: T3 — counting disposition written beside the widening test: fixed work-log shape, amendment-return track under its second-occurrence stop, defect-return count never incremented.
 - 2026-08-13: T4 — repair direction written into `/milestone-implement` step 6, citing `/milestone-plan` step 4 rather than restating it. skills/tests green, 766 tests.
+- 2026-08-13: AC5 amended at the implement mini gate (Substantive). Its named command `python3 -m unittest skills.tests.test_mutation_harness` is unsatisfiable here — verified, not assumed: it exits `ModuleNotFoundError: No module named 'mutation_engine'` on the harness's bare import, the failure `PROFILE.md` documents, while the control `discover -s skills/tests -k mutation_harness` runs 9 tests OK. Fresh-context [O] reader audited the amended wording and returned six FIX findings, all applied: a polarity inversion ("survives" where red is required), a per-assert universal enumerated only per-sentence, per-method registration masking a second assertion, an enumeration command missing `-w` and the unchanged-text exclusion, no evidence line plus a vacuous `-k` pass, and "blanks RED" describing output that reads `OK`. Further churn went to the user per the one-re-entry bound; user accepted the six-fix version including the one-assertion-per-method rule.
 - 2026-08-13: criteria audit ran twice ([O], fresh context, authored none of the wording). Round 1 returned nine findings on the step-2 draft — seven fixed and reported (over-broad "the repair available", a classification collision with two standing clauses, a jointly unsatisfiable AC2/AC3 pair, an undecidable "restates", an unbound diff base, a probe set missing relabel and the cross-file axis, and a harness run read as evidence of per-file registration), two taken to the gate (the rule/non-rule proxy; the ledger against D-095/D-090). Round 2 on the gate-revised wording returned eleven — eight fixed (two self-contradicting no-restatement clauses, a universal over findings with sentence-level evidence, an AC satisfied by the pre-milestone state, a reflow-inflated domain, evidence recording no probe outcome, negative asserts unregisterable by blanking, a one-file proxy for the assert domain) and three judgment calls settled without a further round, the gate's three-marker budget being spent.
 
 ## Decisions
