@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-14 (M139 post-merge — archive written, M134 terminal row pruned, child-of-M139 candidate row added, RB12/RR12 archived; validate all-green.)_
+_Last hygiene check: 2026-08-14 (M140 post-merge — archive written, M135 terminal row pruned, Substantive-re-pin candidate added, M56 lesson extended; validate all-green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,17 +12,17 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M140 | Whole-slice equality guards for the M139 rules | review | — | high | milestones/M140-equality-guards.md |
+| M140 | Whole-slice equality guards for the M139 rules | done | — | high | milestones/archive/M140-equality-guards.md |
 | M139 | The narrowing repair for a defeated promise is reachable at a review return | done | — | high | milestones/archive/M139-narrowing-at-the-return.md |
 | M138 | The criteria audit reaches amended wording and one-exemplar verification clauses | done | — | high | milestones/archive/M138-criteria-audit-reach.md |
 | M137 | Derived figures are pinned or procedural, never free-standing | done | — | high | milestones/archive/M137-derived-figures.md |
 | M136 | An observed failure backs a claim only as the failure it is verified to be | done | — | high | milestones/archive/M136-failure-identity.md |
-| M135 | Legacy-id tolerance for check_dangling_ids | done | — | normal | milestones/archive/M135-legacy-id-tolerance.md |
 
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
+- Re-pin the *Substantive* bullet: M140 deleted the two callers of `implement_substantive()` (test_thrash_rule.py), leaving the helper dead and step 6's Substantive bullet content-pinned by nothing beyond its two boundary markers — either give the bullet's other rules their own pins (the equality form is the precedent) or remove the dead helper and record the reduced coverage. Swept 2026-08-14: no row, archive entry or D-entry covers the bullet's pin coverage; M140's Out refuses corpus-wide remediation, which a one-bullet re-pin is not. Promote when a milestone next edits step 6, or on any silent-edit incident in that bullet — added 2026-08-14 — M140 review O-F5 (78, logged)
 - README cleanup: clarify and streamline `README.md`, currently riddled with em dashes and other AI writing tropes — a plain-language, docs-only style pass. Swept 2026-08-14: no row, archive entry or D-entry covers README prose quality; the contributor-facing scaffold row (M72 Out) references the README's existence, not its style. Promote at will as a small docs pass — added 2026-08-14 — conversational (maintainer)
 - The amendment-time audit surface records nothing: M138's step-6 re-audit mandates no work-log line — unlike plan step 3 and brief ingestion, whose record clause D-079 clause 2 owns — so whether the fresh reader ran is unrecoverable on resume and the per-criterion one-re-entry bound is uncountable (M138 review F1/74); the ingest-clearance exemption keys on a work-log line with no per-criterion shape, so "already covers" is decided by recollection (F8/68). Cheapest form: one step-6 sentence recording the re-audit on plan step 3's terms, plus a fixed clearance shape at the brief surface. Swept 2026-08-09: no row, archive entry or D-entry covers the third surface's record; D-079 clause 2 owns the two existing surfaces only. Promote when a resume cannot determine whether a re-audit ran, or an exemption is applied to wording no line names — the falsifier of "the session always knows its own history" — never on a count of amendments — added 2026-08-09 — M138 review F1/F8 (sub-threshold, logged)
 - Re-measure the record-defect share after the derived-claims/failure-identity/derived-figures family (M134/M136/M137): re-run the 2026-08-08 effort audit's classification — re-read the actioned ≥80 findings and defect/amendment returns in `milestones/archive/` `## Review` sections for post-M137 milestones, per the method in `references/effort-experiment-notes.md` — and compare against the M113–M136 baseline the absorbed derived-figures candidate row recorded at `08bbb07` (roughly half record defects; M135's two forced a gated amendment). Three outcomes it discriminates, with their exits already on record: helping (stale-figure share drops — the family stands), dead weight (baseline rate persists — D-099 is the entry to supersede, per its own Consequences), self-thrash (actioned findings shift to pin-compliance ceremony rather than real defects — M137's F19/F27 are the shape to watch; the declined validator stays behind D-090's trigger either way). Attribution is to the family jointly, never M137 alone — the three rules shipped within days. Swept 2026-08-08: no row, archive entry or D-entry covers post-rule re-measurement; the standing-instrument row governs how gating instruments are introduced, not measurement of conduct rules; the effort page owns the method, not the task. Promote at the next audit-style re-measurement, or earlier if a defect return or gated amendment is again caused by a record defect — the falsifier of "the family is working" — never on felt cost — added 2026-08-08 — M137 close-out (user request)
