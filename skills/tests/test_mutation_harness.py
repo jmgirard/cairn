@@ -3249,7 +3249,7 @@ REGISTRY += [
         guard="test_thrash_rule",
         test="TestWideningTest.test_implement_m139_end_marker_is_unique",
         target=IMPLEMENT,
-        block="that grows a plan-owned section",
+        block="An amendment\n     that grows a plan-owned section",
     ),    # M140: the guard-doctrine banking (RR12 Q5) — one entry per added claim.
     Mutation(
         guard="test_thrash_rule",

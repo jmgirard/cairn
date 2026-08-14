@@ -136,7 +136,11 @@ def normalize(text):
 # *Substantive* bullet holds six rules other milestones edit — a fixture over
 # the whole bullet would freeze all of them (RR12 rec 3, D-103).
 IMPLEMENT_M139_START = "an amendment executing a return reclassified"
-IMPLEMENT_M139_END = "that grows a plan-owned section"
+# The end marker spans the wrap so the slice ends at the M139 sentence's own
+# boundary — an end at "that grows..." alone left the next rule's two-word
+# subject inside the slice (M140 review O-F1). A reflow of the bullet breaks
+# the marker, which fails safe: the slice collapses to "" and equality reds.
+IMPLEMENT_M139_END = "an amendment\n     that grows a plan-owned section"
 
 
 def implement_m139():
@@ -203,7 +207,7 @@ IMPLEMENT_M139_FIXTURE = normalize("""\
 An amendment executing a return reclassified under `/milestone-review`'s
      widening test takes the narrowing repair `/milestone-plan` step 4's
      bounded-promise rule states; a wider enumeration is not an admissible
-     amendment. An amendment
+     amendment.
 """.lower())
 
 
