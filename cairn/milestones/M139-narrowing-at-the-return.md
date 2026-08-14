@@ -1,6 +1,6 @@
 # M139: The narrowing repair for a defeated promise is reachable at a review return
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -159,6 +159,8 @@ recording the classification change and its counting disposition.
 - 2026-08-13: T6 — probe matrix run by script (scratchpad `probe.py`), 8 units x 5 runs = 40 probe runs, 40 RED, each unit's own guard among the reacting tests in every run; suite size stable at 778 across all runs and `git diff` clean after each restore. The four marker asserts, whose pinned text lies outside AC4's domain, took the relabel probe instead: 4/4 red, each reacting its own test. Harness probed against a known-positive first — an absent block raises `ValueError: block locator must occur exactly once (found 0)`, so a green harness run is not silence.
 - 2026-08-13: T7 — D-101 appended (widening test, counting disposition, both falsifiers with their owners). Three suites green at exit 0: skills 778, scripts 345, hooks 103; `cairn_validate` all checks passed, no advisories.
 - 2026-08-13: return-1 repair — two guards pin the amendment-return sentence's subject ("A finding that shows the criterion itself is wrong") and its tail ("is evidence about the promise, not the work"), each one assertion in its own method and registered. Six-sentence probe matrix re-run: 30/30 RED, 0 GREEN, suite 781, files restored clean.
+- 2026-08-14: AC5 evidence re-gathered implement-side under the amended clause, at a29edcb: 18 added asserts (`git diff -w main...HEAD -- skills/tests/`), pairing decided procedurally — 10 paired to a domain sentence, 8 on the relabel branch (their pinned text unchanged from `main`, so outside the domain) — re-run tally 18 × relabel, 18 failed (RED), tree clean after every restore; harness `Ran 9 tests … OK` over 18 registrations, each blanked block redding its own named test. Suites at a29edcb: skills 784, scripts 345, hooks 103, validate exit 0. Status -> review.
+- 2026-08-14: amendment note — AC4 lands as a numbered tombstone rather than the full removal shown at the gate: `coverage complete` counts criteria positionally, so an id gap reds the gate; the tombstone carries no promise and points at D-103/BC1–BC7.
 - 2026-08-14: split amendment applied (D-103; mini gate + fresh [O] reader, findings applied pre-gate, user approved): AC4 pruned — with it no remaining criterion mandates the added sentences be guarded at all; the 18 shipped asserts stay and totality/granularity coverage moves to the child via BC1–BC7 — AC1 reworded to the three shipped limbs (R6/FE discharged), AC5's re-run clause made procedure-decided with a recorded tally, Scope In/Out updated, T6's pruned-criterion label dropped.
 - 2026-08-14: RR12 ingested — split disposition recorded (D-103, milestone Decisions); RB12/RR12 archived; status -> in-progress for the gated split amendment.
 - 2026-08-14: RR12 delivered (`cairn/reviews/RR12-ac4-guard-instrument.md`) — diagnosis: totality+granularity under-determined by anchors; recommends whole-slice equality fixtures and route (iii) split, with BC1–BC7 for the child. Awaiting `/milestone-brief` ingest; still blocked.
