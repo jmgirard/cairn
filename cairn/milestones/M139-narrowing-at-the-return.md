@@ -68,7 +68,7 @@ recording the classification change and its counting disposition.
       nor its worked example. Evidence: the sentence read verbatim from
       `skills/milestone-implement/SKILL.md` at the review commit, beside
       `/milestone-plan` step 4's text.
-- [ ] AC4. Every sentence this milestone adds to
+- [x] AC4. Every sentence this milestone adds to
       `skills/milestone-review/SKILL.md` and `skills/milestone-implement/SKILL.md`
       reds the `skills/tests` suite under five probe runs across four forms —
       relabel, negation, subject transposition, and relocation run twice (once
@@ -329,3 +329,28 @@ gate recorded against, and the gate recorded none on guard scoping — the four
 recorded alternatives concern evidence form, probe domain, counting track and
 citation. Where none was recorded, escalation via `/milestone-brief` is offered,
 per instance.
+
+**Pass 3 — evidence re-gathered at `39a2b2f` after the return-2 repair.**
+
+- AC1 — MET. Three sentences read verbatim from the shipped review skill; the
+  no-restatement clause re-checked by substring against step 4 (the "however
+  long its list" elaboration, the M102 example and the narrowing-repair clause
+  each absent; step 4 named).
+- AC2 — MET. The counting sentence read from the added lines of the diff.
+- AC3 — MET. The repair-direction sentence read verbatim from
+  `/milestone-implement` step 6; step 4 named, proxy test and example absent.
+- AC4 — MET. Six-sentence matrix: **30 probe runs, 30 RED, 0 GREEN**, suite
+  stable at 784, both files restored with `git diff` clean after each run.
+  Beyond AC4's own forms, a cross-rule relocation probe moved every added
+  sentence out of its rule block into each other rule block in the same step:
+  **11 moves, 11 RED**, including all three the pass-2 lens demonstrated green.
+- AC5 — MET. Domain from `git diff -w main...HEAD -- skills/tests/`: 18 added
+  asserts, all positive (zero negative asserts, pairing clause vacuous), 18
+  methods each holding exactly one assertion (AST-checked), 18 registrations,
+  and 18/18 one-to-one under blanking. Harness run: Ran 9 tests, OK.
+- AC6 — MET. skills 784, scripts 345, hooks 103, all exit 0; `cairn_validate`
+  exit 0, 16 PASS, no FAIL and no WARN.
+
+**Consistency gate.** `cairn_validate` exit 0, every check PASS, all advisories
+OK. `Principles touched:` is `—`, so `cairn_impact` is skipped. Profile
+`generic` names no toolchain checks — that half is a clean no-op.
