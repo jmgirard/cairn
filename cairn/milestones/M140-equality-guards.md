@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** RR12
 - **Principles touched:** —
-- **Branch/PR:** `m140-equality-guards`
+- **Branch/PR:** `m140-equality-guards` · https://github.com/jmgirard/cairn/pull/140
 
 ## Goal
 
@@ -31,7 +31,7 @@ guard-doctrine banking (AC-8).
 
 ## Acceptance criteria
 
-- [ ] AC-1 (BC1): Each of the four M139 rule slices (`review_floor`,
+- [x] AC-1 (BC1): Each of the four M139 rule slices (`review_floor`,
       `review_amendment`, `review_widening`, and the implement-side M139
       sub-slice) is guarded by exactly one test method holding exactly one
       assertion of the form `assertEqual(normalize(<slice>), <fixture>)`, where
@@ -39,36 +39,36 @@ guard-doctrine banking (AC-8).
       `skills/tests/`, and no per-fragment substring or regex assert remains as
       any of those slices' pin — checked by AST walk over `TestWideningTest`'s
       successor at the review commit.
-- [ ] AC-2 (BC2): AC4's original probe matrix, re-run at the review commit over
+- [x] AC-2 (BC2): AC4's original probe matrix, re-run at the review commit over
       the domain enumerated by `git diff -w main...HEAD -- skills/milestone-review/SKILL.md
       skills/milestone-implement/SKILL.md` split at sentence boundaries, reds on
       every probe run with zero green (tolerance: zero), each run restored with
       `git diff` shown clean.
-- [ ] AC-3 (BC3): An insertion probe placing one fixed sentinel sentence at every
+- [x] AC-3 (BC3): An insertion probe placing one fixed sentinel sentence at every
       inter-sentence gap inside each guarded slice reds the suite at every gap,
       zero green (tolerance: zero); the gap count is derived at the review
       commit from the slice text by a stated procedure, not free-standing; each
       run restored with `git diff` shown clean.
-- [ ] AC-4 (BC4): A relocation probe moving each M139-added sentence (a) into each
+- [x] AC-4 (BC4): A relocation probe moving each M139-added sentence (a) into each
       other rule block of `/milestone-review` step 5, (b) into the other skill
       file, and (c) for the implement-side sentences, to at least two other
       positions inside the Substantive bullet but outside their sub-slice, reds
       on every move, zero green (tolerance: zero), the move counts derived at
       the review commit by a stated procedure; each run restored clean.
-- [ ] AC-5 (BC5): Every slice fixture has a mutation-harness registration whose
+- [x] AC-5 (BC5): Every slice fixture has a mutation-harness registration whose
       blanked block reds that slice's own equality method one-to-one, and
       `python3 -m unittest discover -s skills/tests -k mutation_harness`
       reports `OK` at the review commit.
-- [ ] AC-6 (BC6): The child branch's `git diff main...HEAD` adds no committed
+- [x] AC-6 (BC6): The child branch's `git diff main...HEAD` adds no committed
       artifact outside `skills/tests/` and the tracking files: no ledger file,
       no hash constant, no per-probe record; probe outcomes appear only as
       Review-section evidence lines (D-095).
-- [ ] AC-7 (BC7): All six existing boundary markers, plus any new implement-side
+- [x] AC-7 (BC7): All six existing boundary markers, plus any new implement-side
       sub-slice markers, are each asserted unique in their host file, and a
       slice helper returning `""` on a missing marker fails the equality assert
       rather than passing vacuously — demonstrated once at the review commit by
       the marker-blanking entries of BC5's harness run.
-- [ ] AC-8. `skills/shared/guard-doctrine.md` §1 states the two-invariant
+- [x] AC-8. `skills/shared/guard-doctrine.md` §1 states the two-invariant
       statement — totality (the pinned extent equals the slice) and granularity
       (the slice equals one rule), with anchors short of totality leaving a
       free complement — and the "What it cannot see" list in §2 names
@@ -77,11 +77,11 @@ guard-doctrine banking (AC-8).
       expressible purely in collapsed whitespace pass). Evidence: the sentences
       read verbatim from the file at the review commit, plus one
       mutation-harness registration per added claim.
-- [ ] AC-9. `skills/tests`, `scripts/tests` and `hooks/tests` pass and
+- [x] AC-9. `skills/tests`, `scripts/tests` and `hooks/tests` pass and
       `python3 scripts/cairn_validate.py` is green at the review commit.
       Evidence: one `## Review` line per command naming the command, the
       commit measured at, and its reported counts.
-- [ ] AC-10. Two probes run at one named review commit over the four
+- [x] AC-10. Two probes run at one named review commit over the four
       equality-guarded slices and their four fixtures this milestone creates.
       (a) *Intra-slice permutation*: for each guarded slice, apply one at a
       time every adjacent-sentence transposition, the pairs enumerated by the
@@ -166,3 +166,65 @@ guard-doctrine banking (AC-8).
 ## Decisions
 
 ## Review
+
+**Evidence, PR #140, branch `m140-equality-guards`, review commit `412def7`.**
+
+- AC-1 (BC1) — MET. AST walk over `TestWideningTest` in
+  `skills/tests/test_thrash_rule.py`: exactly four methods hold a sole
+  `assertEqual(normalize(<slice>), <fixture>)` — one per slice helper
+  (`review_floor`, `review_amendment`, `review_widening`, `implement_m139`) —
+  the fixtures are module-level verbatim copies (modulo the read pipeline,
+  per the BC1/BC5 deviation reading), and a whole-file sweep finds zero other
+  assert whose read surface is a slice helper.
+- AC-2 (BC2) — MET. Matrix re-run at 412def7 over the deviated command's
+  domain: 7 sentences (hunk-grouped, pre-image-excluded), 5 forms each =
+  **35 runs, 35 RED, 0 GREEN** — measured 0 green against BC2's projected
+  zero (tolerance: zero). Files restored, `git diff` clean after every run.
+- AC-3 (BC3) — MET. Sentinel (`Zzqq insertion probe zzqq.`, non-whitespace)
+  at every interior gap; gap counts derived by the stated splitter
+  (`re.split(r'(?<=[.!?]) (?=[^ ])', normalize(slice))`): floor 4,
+  amendment 3, widening 2, implement 1 — **10 runs, 10 RED, 0 GREEN**
+  against projected zero. Restored clean each run.
+- AC-4 (BC4) — MET. Moves derived procedurally: each of the 7 sentences into
+  each other rule block of step 5, cross-file, plus two Substantive-bullet
+  positions outside the sub-slice for the implement sentence — **24 moves,
+  24 RED, 0 GREEN** against projected zero. Restored clean each run.
+- AC-5 (BC5) — MET. Each of the four fixtures has registrations naming its
+  equality method (8 total: one exemplar block + one start marker per slice,
+  the targeting reading of one-to-one per the deviation row); harness
+  `python3 -m unittest discover -s skills/tests -k mutation_harness`:
+  Ran 9 tests, OK at 412def7 — every registered block blanked and its named
+  test required to fail.
+- AC-6 (BC6) — MET. `git diff main...HEAD --name-only`: five files —
+  `cairn/ROADMAP.md`, the milestone file, `skills/shared/guard-doctrine.md`
+  (inside the BC6 deviation's scope), and the two `skills/tests/` files. No
+  ledger file, no hash constant, no per-probe record; probe outcomes exist
+  only as the evidence lines here.
+- AC-7 (BC7) — MET. Eight marker-uniqueness methods (six existing + the two
+  sub-slice markers), each a sole assertion; the marker-blanking registry
+  entries name the equality methods, so the harness run above demonstrates a
+  missing marker collapses its slice to `""` and fails the equality assert
+  rather than passing vacuously.
+- AC-8 — MET. Sentences read verbatim at the review commit:
+  guard-doctrine §1 lines 46–47 (totality; granularity, anchors short of
+  totality leaving a free complement), §2 bullets at lines 83 and 87
+  (inserting; the normalization blind spot). Four registrations, one per
+  added claim, proven in the harness run above.
+- AC-9 — MET. At 412def7: `skills/tests` Ran 782 exit 0, `scripts/tests`
+  Ran 345 exit 0, `hooks/tests` Ran 103 exit 0,
+  `python3 scripts/cairn_validate.py` exit 0.
+- AC-10 — MET. (a) Intra-slice permutation: pairs per slice by the stated
+  splitter — floor 4, amendment 3, widening 2, implement 1 (none 0) —
+  **10 runs, 10 RED**; no duplicate sentence in any slice list. (b) Stale
+  fixture: 4 fixtures (the count of equality fixtures at 412def7), first
+  alphabetic word → `zzqq`, targets untouched — **4 runs, 4 RED**. Zero
+  green across both families; every run reverted with `git diff` clean.
+
+**Projection-vs-outcome (RR12).** Every numeric projection in BC2–BC4 and
+AC-10 is "zero green (tolerance: zero)": measured 0 green against projected 0
+in each — 35+10+24+14 runs, 83 RED, 0 GREEN.
+
+**Consistency gate.** `cairn_validate` exit 0 (the one WARN is the sizing
+advisory disposed at the plan gate). `Principles touched:` is `—`, so
+`cairn_impact` is skipped. Profile `generic` names no toolchain checks — a
+clean no-op.
