@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-14 (M140 post-merge — archive written, M135 terminal row pruned, Substantive-re-pin candidate added, M56 lesson extended; validate all-green.)_
+_Last hygiene check: 2026-08-14 (M141 post-merge — archive written, M136 terminal row pruned, README-diagram candidate added; validate all-green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M141 | README plain-language pass | review | — | normal | milestones/M141-readme-plain-language.md |
+| M141 | README plain-language pass | done | — | normal | milestones/archive/M141-readme-plain-language.md |
 | M140 | Whole-slice equality guards for the M139 rules | done | — | high | milestones/archive/M140-equality-guards.md |
 | M139 | The narrowing repair for a defeated promise is reachable at a review return | done | — | high | milestones/archive/M139-narrowing-at-the-return.md |
 | M138 | The criteria audit reaches amended wording and one-exemplar verification clauses | done | — | high | milestones/archive/M138-criteria-audit-reach.md |
 | M137 | Derived figures are pinned or procedural, never free-standing | done | — | high | milestones/archive/M137-derived-figures.md |
-| M136 | An observed failure backs a claim only as the failure it is verified to be | done | — | high | milestones/archive/M136-failure-identity.md |
 
 ## Candidates
 
