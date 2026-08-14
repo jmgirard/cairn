@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-13 (audit-only pass, nothing in flight since M138 — validate all-green, no advisories, both GitHub inboxes empty, tree clean.)_
+_Last hygiene check: 2026-08-14 (M139 post-merge — archive written, M134 terminal row pruned, child-of-M139 candidate row added, RB12/RR12 archived; validate all-green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M139 | The narrowing repair for a defeated promise is reachable at a review return | review | — | high | milestones/M139-narrowing-at-the-return.md |
+| M139 | The narrowing repair for a defeated promise is reachable at a review return | done | — | high | milestones/archive/M139-narrowing-at-the-return.md |
 | M138 | The criteria audit reaches amended wording and one-exemplar verification clauses | done | — | high | milestones/archive/M138-criteria-audit-reach.md |
 | M137 | Derived figures are pinned or procedural, never free-standing | done | — | high | milestones/archive/M137-derived-figures.md |
 | M136 | An observed failure backs a claim only as the failure it is verified to be | done | — | high | milestones/archive/M136-failure-identity.md |
 | M135 | Legacy-id tolerance for check_dangling_ids | done | — | normal | milestones/archive/M135-legacy-id-tolerance.md |
-| M134 | Branch-added behavior claims are derived from the artifact, not the author's model | done | — | high | milestones/archive/M134-derived-claims.md |
 
 ## Candidates
 
