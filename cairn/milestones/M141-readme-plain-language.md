@@ -1,6 +1,6 @@
 # M141: README plain-language pass
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -95,6 +95,7 @@ gate ruled it outside D-095's retirement).
 
 ## Work log
 
+- 2026-08-14: return-1 repair — F1's sentence restored to its warning meaning, F4's three guarantees restored in plain wording, the correcting ledger entry appended (R3 kept; R13 dual-dispositioned; 48 reports over 47 distinct ids). Status -> review.
 - 2026-08-14: review return 1 (defect) — AC5 NOT MET: R3 undispositioned and R13 double-counted in the disposition ledger (F2/95); F1/82 (meaning inversion at the mid-implementation-questions line) and F4/87 (unrecorded deletions in the no-lock-in bullet) actioned and carried. Status -> in-progress.
 - 2026-08-14: T4 — at c05a536: em 1, companion 0, lines 264, blocks and headings element-wise equal to edb6942, `git diff -w main...HEAD -- skills/tests/` empty, three suites and validate exit 0. All tasks complete; status -> review.
 - 2026-08-14: T3 — one-pass style reader ([O], fresh context) read the README at ad7f827 and reported 48 constructions (8 on test-pinned phrases); disposition: 19 rewritten on the branch (including the buildup before the merge ask, the 'final outward step' vagueness, the 'live means live' tautology, four 'not X' reversal tails, the duplicated trail flourish), 29 kept with reasons to be recorded per item in the Review section. Exactly one pass, per AC5; no second round convened.
@@ -109,6 +110,8 @@ gate ruled it outside D-095's retirement).
 ## Decisions
 
 - 2026-08-14: AC5 disposition ledger (reader pass at ad7f827, 48 reports). **Rewritten (19):** R2 "kept honest"→"kept in bounds"; R4 participial opener→"cairn grew out of"; R6 "live means live"→"the symlink is live"; R12 "the one moment that matters" buildup cut; R13 duplicate "Nothing reaches" varied; R14 duplicated trail flourish→"resumes from the files alone"; R15 "final outward step"→"final submit or tag step yourself"; R16 "not a feature for statistical work only"→"the obvious case, but"; R19 "not left for a tidy-up" tail cut; R21 "the failure this exists to prevent"→plain causal sentence; R23 "true for an afternoon"→"can stop being true the same day"; R25 "not a rule a script can settle"→"no script can settle it"; R27 "something is off"→"the plan left a choice open"; R30 "Say no freely"→"Declining is fine"; R31 rhetorical question→plain imperative; R37 "mechanical net"→"mechanical enforcement"; R41 door metaphor→"comes in through /hotfix"; R44 "goes green"→"is finished"; R45 quoted-flourish anaphora→plain pair. **Kept (29):** test-pinned verbatim — R7, R8, R17, R22, R24, R35, R42, R46 (8); the doctrine's own slogans, where the phrase is the rule — R11 "no evidence, no tick", R26 "Chips are stops, not automation", R28 "Merges are yours", R29, R32 "if it isn't in cairn/ files or git, it didn't happen", R38, R39, R40, R43 (9); structural bold-leads paralleling pinned siblings or list-format leads — R20, R34, R48 (3); accurate plain descriptions the reader over-flagged — R5, R9, R10, R13-remainder, R18, R33, R36, R47 (8); the project's identity epigraph — R1 (1).
+
+- 2026-08-14: ledger correction (F2/95; the prior entry is history under D-074 — corrected by this appended entry, never edited). R3 ("Work lands as small stacked milestones… find the path from the files alone") was reported and is KEPT: it is the epigraph's echo and the project's identity image; the duplicate of that figure at the worked example's close was the instance rewritten (R14). R13 carries a dual disposition, stated explicitly rather than double-counted: its worked-example instance was rewritten ("Nothing lands on your default branch until you say yes") and its expects-section remainder kept (the approval rule belongs at that bullet). Corrected arithmetic: 48 reports over 47 distinct ids — 19 rewritten (R13's first instance among them) + 29 kept (R3 and R13's remainder among them). Also recorded here: F1's repair replaces R27's rewrite with a plain restatement of the original warning meaning, and F4's repair restores the three no-lock-in guarantees T2 dropped unrecorded ("stop any time", the drop worked example, deletability), in plain wording.
 
 ## Review
 

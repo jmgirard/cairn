@@ -184,8 +184,8 @@ the directory in place and the shelf of original files stays out of git.
 
 - **Answer the gates.** Questions arrive in small batches at three points
   (planning scope, implementation choices, merge approval), each with a
-  recommendation. Between gates, expect autonomy;
-  mid-implementation questions mean the plan left a choice open.
+  recommendation. Between gates, expect autonomy. Questions arriving
+  mid-implementation are a sign something has gone wrong.
 - **Chips are stops, not automation.** When clickable options appear,
   nothing proceeds until you pick one; walking away mid-chip is always
   safe, and the last checkpoint commit holds the state for next time.
@@ -258,7 +258,8 @@ about where the guardrails actually reach.
 - Track status in CLAUDE.md, chat memory, or GitHub issues: `cairn/`
   files are the single source of truth; issues are an inbox.
 - Run Fable, or any escalation, without a per-instance yes.
-- Lock you in. Pausing costs nothing (checkpoint commits keep the branch
-  resumable), dropping a milestone is one sentence with the reason
-  archived, and uninstalling is removing the plugin or symlink: your
-  `cairn/` files are plain markdown that stay readable without it.
+- Lock you in. Pausing costs nothing (stop any time; checkpoint commits
+  keep the branch resumable), dropping a milestone is one sentence, like
+  "drop M07", with the reason archived, and uninstalling is removing the
+  plugin or symlink: your `cairn/` files are plain markdown that stay
+  readable, and deletable, without it.
