@@ -68,7 +68,7 @@ recording the classification change and its counting disposition.
       nor its worked example. Evidence: the sentence read verbatim from
       `skills/milestone-implement/SKILL.md` at the review commit, beside
       `/milestone-plan` step 4's text.
-- [ ] AC4. Every sentence this milestone adds to
+- [x] AC4. Every sentence this milestone adds to
       `skills/milestone-review/SKILL.md` and `skills/milestone-implement/SKILL.md`
       reds the `skills/tests` suite under five probe runs across four forms —
       relabel, negation, subject transposition, and relocation run twice (once
@@ -85,7 +85,7 @@ recording the classification change and its counting disposition.
       count it enumerated, the commit measured at, and the probe matrix result
       (sentences × forms attempted, the count that redded, exemptions by
       number).
-- [ ] AC5. Every positive assert this milestone adds under `skills/tests/` has
+- [x] AC5. Every positive assert this milestone adds under `skills/tests/` has
       its own mutation-harness registration whose named test method contains
       that assert and no other assertion, so the blanked block and the
       reacting assert are one-to-one. Domain enumerated from
@@ -237,3 +237,46 @@ defect return, not an amendment return: AC4 is not falsified only outside its
 procedure's domain, it names a procedure, and the repair is to pin S2's subject
 and tail rather than to widen any enumeration — the widening test this
 milestone ships does not reach it. Defect returns for M139: 1.
+
+**Pass 2 — evidence re-gathered at `823981c` after the return-1 repair.**
+
+- AC1 — MET. Three sentences read verbatim from the shipped
+  `skills/milestone-review/SKILL.md`: the widening test; the return floor's
+  limb carrying "save where the widening test below carves that failure out as
+  an amendment return"; the amendment return's limb carrying "or meeting the
+  widening test below, which carves that third case out of this clause's
+  \"only outside\"". No-restatement re-checked by substring against step 4's
+  text: the "however long its list" elaboration, the M102 worked example and
+  the narrowing-repair clause are each absent from the added block, and step 4
+  is named as source.
+- AC2 — MET. Read from the added lines of the diff: "A return reclassified this
+  way carries the fixed work-log shape above, counts on the amendment-return
+  track under its second-occurrence stop, and never increments the
+  defect-return count the thrash rule reads."
+- AC3 — MET. Read verbatim from `skills/milestone-implement/SKILL.md` step 6;
+  step 4 named, proxy test and worked example absent by substring check.
+- AC4 — MET. Probe matrix over the domain AC4 names — added lines of
+  `git diff -w main...HEAD` over the two skill files, split at sentence
+  boundaries, unchanged sentences excluded, six sentences S1-S6. **30 probe
+  runs (6 x 5 across four forms), 30 RED, 0 GREEN**, suite stable at 781 across
+  every run, both files restored with `git diff` clean after each. No exemption
+  claimed or needed: S4, the pointer sentence, redded under all four forms.
+  The two greens that returned this milestone at pass 1 (S2 negation, S2 subject
+  transposition) are now red.
+- AC5 — MET. Domain from `git diff -w main...HEAD -- skills/tests/`: 15 added
+  asserts, all positive (zero negative asserts added, so the pairing clause is
+  vacuous). 15 registrations, and 15 methods in `TestWideningTest` each holding
+  exactly one assertion (checked by AST walk, not by eye). Blanking each
+  registered block reds that block's own named test in all 15 cases — one-to-one,
+  never via a sibling. Each added assert also reacted to an AC4-domain mutation
+  of the sentence it pins; the four marker asserts, whose pinned text sits
+  outside AC4's domain, took the relabel probe instead and each redded its own
+  test. Harness run `python3 -m unittest discover -s skills/tests -k
+  mutation_harness`: Ran 9 tests, OK.
+- AC6 — MET. skills 781, scripts 345, hooks 103, all exit 0; `cairn_validate`
+  exit 0 with no FAIL and no WARN.
+
+**Consistency gate.** `cairn_validate` exit 0, every check PASS, all advisories
+OK. `Principles touched:` is `—`, so `cairn_impact` is skipped. Profile is
+`generic`, whose `consistency-gate` slot names no toolchain checks — that half
+is a clean no-op.
