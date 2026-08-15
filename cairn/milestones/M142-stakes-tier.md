@@ -90,7 +90,7 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
       shipped bytes; adjacent-guard reflow check per the M104 lesson).
 - [x] T2 Add the proportionality question to the step-3 criteria-audit
       paragraph, beside the existing one-exemplar probe it must not oppose.
-- [ ] T3 Add the checker-regress clause, with its repair discriminator, to the
+- [x] T3 Add the checker-regress clause, with its repair discriminator, to the
       step-2 collision check.
 - [ ] T4 Write prose-guards for the four new rules; register per protected
       block in the mutation harness; run relabel, negation,
@@ -107,6 +107,7 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
 - 2026-08-15: plan gate chose a domain-bounded lite standard over a numeric probe-count cap because the cap contradicted the shipped one-exemplar probe (audit round-1 finding 1); falsified by an internal-tier criterion within the standard still consuming three defect returns.
 - 2026-08-15: T1 — surface-tier rule and internal-tier criteria standard authored into /milestone-plan step 2 (two paragraphs after the criteria-drafted rule); question gate skipped, nothing genuinely open — both approach choices were settled at the plan gate; three suites green (786/345/103, per-suite exit codes checked).
 - 2026-08-15: T2 — proportionality question added to the step-3 criteria audit, directly after the one-exemplar probe sentence, with an explicit never-relaxes boundary toward it; three suites green, per-suite exit codes checked.
+- 2026-08-15: T3 — checker-regress clause with its repair discriminator appended to the step-2 collision check, after the status-disposition bullets; three suites green, per-suite exit codes checked.
 
 ## Decisions
 

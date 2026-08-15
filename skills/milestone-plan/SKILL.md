@@ -85,6 +85,16 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      first. Never plan against a standing rejection without superseding it;
      never refuse merely because a rejection exists.
 
+   **Checker-regress shape.** The sweep also names this shape: a scope
+   extending or hardening a checker that the ROADMAP or archive records
+   an earlier milestone of the same repo shipping, where that checker
+   verifies repo-internal artifacts. On such a hit the gate poses
+   simplifying or deleting the checker as the recommended option and
+   hardening it as a present, non-recommended alternative. A repair that
+   leaves the checker's promise unchanged stays outside the shape
+   (D-090's Untouched clause); one that widens the checker's promise is
+   the regress shape however it is framed.
+
    **Harvest recent lessons (before the gate).** Review `cairn/LESSONS.md`
    (read at session start) and surface any lessons bearing on this scope —
    build quirks, testing tricks, gotchas that should shape the tasks,
