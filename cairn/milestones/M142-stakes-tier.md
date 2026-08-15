@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** m142-stakes-tier
+- **Branch/PR:** m142-stakes-tier · https://github.com/jmgirard/cairn/pull/143
 
 ## Goal
 
@@ -29,7 +29,7 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
 
 ## Acceptance criteria
 
-- [ ] AC1 `/milestone-plan` step 2 states the surface-tier rule: every plan
+- [x] AC1 `/milestone-plan` step 2 states the surface-tier rule: every plan
       classifies the milestone's deliverable as user-facing or internal, where
       internal means no external consumer of the repo relies on it — dev
       tooling, data-generation scripts, in-repo checkers over internal
@@ -38,7 +38,7 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
       tier and a one-clause reason are recorded in the milestone file's Goal
       or Scope prose. A registered prose-guard reds when the rule is deleted
       from the skill.
-- [ ] AC2 The same step states the internal-tier criteria standard: an
+- [x] AC2 The same step states the internal-tier criteria standard: an
       internal-tier acceptance criterion's promise quantifies over a domain
       its named procedure enumerates directly — never an exemption registry, a
       per-rendering enumeration, or a demonstration family spanning process or
@@ -48,13 +48,13 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
       criterion's promise, never a guard's construction — a detector's
       per-rendering positive controls stay mandated by their own doctrine. A
       registered prose-guard reds when the standard is deleted.
-- [ ] AC3 The step-3 criteria audit asks a proportionality question of each
+- [x] AC3 The step-3 criteria audit asks a proportionality question of each
       criterion — is the promise's domain proportionate to the declared
       tier — and an internal-tier criterion outside AC2's standard is a
       finding disposed at the gate like the audit's other findings. A
       registered prose-guard reds when the question is deleted from the
       audit's question list.
-- [ ] AC4 The step-2 collision check names the checker-regress shape — a scope
+- [x] AC4 The step-2 collision check names the checker-regress shape — a scope
       extending or hardening a checker that the ROADMAP or archive records an
       earlier milestone of the same repo shipping, where that checker verifies
       repo-internal artifacts — and directs that on such a hit the gate poses
@@ -64,7 +64,7 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
       Untouched clause); one that widens the checker's promise is the regress
       shape however it is framed. A registered prose-guard reds when the
       regress clause is deleted.
-- [ ] AC5 The three suites pass from the repo root with per-suite exit codes
+- [x] AC5 The three suites pass from the repo root with per-suite exit codes
       checked; every prose-guard this milestone adds or edits is registered in
       the mutation harness per protected block, and each new rule sentence
       survives relabel, negation, subject-transposition, and relocation probes
@@ -115,3 +115,9 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
 ## Decisions
 
 ## Review
+
+- 2026-08-15 AC1: shipped SKILL.md step 2 lines 42–48 carry the surface-tier rule — classification into user-facing/internal, internal defined by no-external-consumer with the example enumeration, unclear-or-spanning defaulting to user-facing, tier + one-clause reason recorded in Goal/Scope (grep, this session). Guard: 5 TestSurfaceTierRule tests in test_stakes_tier.py, 5 blocks registered in the mutation harness; TestRegisteredGuardsFailWhenBlanked green in the fresh suite run (blanking each block reds its guard), and the fresh probe run's relabel/surface probe reds the whole rule's deletion path (19 ran, 6 failures, 0 errors).
+- 2026-08-15 AC2: lines 50–58 carry the internal-tier criteria standard — domain-enumerated-directly bound, the three prohibited forms, narrow-or-descope repair with never-widen, and the promise-not-guard boundary with the positive-controls carve-out (grep, this session). Guard: 4 TestInternalTierStandard tests, 4 registered blocks, harness green; relabel/standard probe reds deletion (10 failures, 0 errors).
+- 2026-08-15 AC3: lines 132–137, inside the step-3 criteria-audit paragraph, ask the proportionality question of each criterion against the declared tier, and dispose an out-of-standard internal-tier criterion as a gate finding like the audit's others (grep, this session). Guard: 4 TestProportionalityQuestion tests, 4 registered blocks, harness green; relabel/proportionality probe reds deletion of the question from the audit list (5 failures, 0 errors).
+- 2026-08-15 AC4: lines 88–96, inside the step-2 collision check, name the checker-regress shape (extending/hardening a ROADMAP-or-archive-recorded checker over repo-internal artifacts), pose deletion as recommended with hardening present but non-recommended, and carry the repair discriminator both ways — promise-unchanged outside the shape (D-090's Untouched clause), promise-widening inside it however framed (grep, this session). Guard: 5 TestCheckerRegressClause tests, 5 registered blocks, harness green; relabel/regress probe reds deletion (6 failures, 0 errors).
+- 2026-08-15 AC5: three suites re-run fresh from the repo root this session — skills 805, scripts 103, hooks 345 tests, exit 0 each, per-suite exit codes checked without pipes. All 18 registered stakes-tier blocks pass the harness's blanking check inside that run; the full probe run re-executed fresh (17 probes across relabel/negation/subject-transposition/relocation, at least one per rule sentence, all RED with failures>0/errors=0/ran=19, restore byte-identical). D-107 present at its heading (grep) — records the adoption and the regress question beside D-090's door, annotates D-090 naming the Untouched clause intact, states the D-098 hosting, and names the trigger-clearing defect measured in the downstream repos.
