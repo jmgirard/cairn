@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** `m143-descope-first-thrash` / —
+- **Branch/PR:** `m143-descope-first-thrash` / https://github.com/jmgirard/cairn/pull/142
 
 ## Goal
 
@@ -28,7 +28,7 @@ row, unpromoted (its trigger is an implement step-6 edit, not this).
 
 ## Acceptance criteria
 
-- [ ] AC1 `/milestone-review` step 4's thrash block is recomposed whole: at
+- [x] AC1 `/milestone-review` step 4's thrash block is recomposed whole: at
       trigger (a)'s threshold the routing chip's recommended option is
       descoping — narrowing the milestone to its already-verified criteria via
       the gated amendment protocol, the unverified remainder exiting to
@@ -40,13 +40,13 @@ row, unpromoted (its trigger is an implement step-6 edit, not this).
       recomposed menu rather than routing through `/milestone-plan`
       unconditionally. Registered prose-guards red when the recomposed remedy
       is deleted.
-- [ ] AC2 The already-spent paragraph is recomposed consistently with AC1:
+- [x] AC2 The already-spent paragraph is recomposed consistently with AC1:
       when (a) holds and a re-plan or split was already spent, the
       same-objective re-cut leaves the menu entirely; descope-or-park stays
       recommended, escalation and drop stay present. Existing pins in
       `skills/tests/test_thrash_rule.py` and the mutation registry are
       re-anchored to the recomposed bytes.
-- [ ] AC3 A D-entry narrowly supersedes D-064's trigger-(a) remedy clause
+- [x] AC3 A D-entry narrowly supersedes D-064's trigger-(a) remedy clause
       ("recommend re-plan or split"), records the downstream lineage with its
       return counts derived from the source repos' work logs under both
       counting tracks (D-097, D-101) and pinned per the derived-figures
@@ -94,3 +94,7 @@ row, unpromoted (its trigger is an implement step-6 edit, not this).
 ## Decisions
 
 ## Review
+
+- 2026-08-15 AC1: all eight recomposed clauses verified PRESENT in the shipped bytes by exact-string probe (recommended descope-or-park with M143 tag; gated-amendment routing; remainder exit; re-review; park; re-cut demoted; composition menu; (b) carried into the composed chip) — one probe string initially misrendered a wrap and was corrected against the file's bytes, lines 141-142. Fresh deletion probe: removing the whole recomposed (a) remedy run reds the skills suite; restore byte-verified. Ticked on this evidence.
+- 2026-08-15 AC2: already-spent clauses verified in shipped bytes ("the same-objective re-cut leaves the menu entirely"; "Descope-or-park stays the recommended option"; escalation and drop present at lines 141-142); the five rewritten guard tests and eleven re-anchored/added registry blocks pass inside the skills suite (785 OK), whose mutation-harness completeness and blank-reddening tests exercise every registered block. Ticked on this evidence.
+- 2026-08-15 AC3: D-105 present (grep count 1), superseding exactly D-064's trigger-(a) remedy clause, both lineage counts derived and pinned (intraclass work log at `1e95baf` under the D-097/D-101 tracks: 4 defect + 1 amendment; circumplex `grep norms` over archive at `b343054f`: 14 files + M86), falsifier named in Consequences. Fresh at review: skills=0 scripts=0 hooks=0 (785/345/103 Ran), cairn_validate exit 0 zero warnings; relabel, negation, transposition and relocation probes each RED with restore byte-verified; THRASH_FIXTURE whole-slice equality test present and passing with both slice markers asserted unique. Ticked on this evidence.
