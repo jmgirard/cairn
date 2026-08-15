@@ -2951,21 +2951,35 @@ REGISTRY += [
     Mutation(
         guard="test_thrash_rule",
         test="TestThrashTriggers."
-             "test_third_return_is_a_trigger_and_recommends_replan_or_split",
+             "test_third_return_is_a_threshold_and_recommends_descope_or_park",
         target=REVIEW,
         block="**(a) The third return, and every return after it**",
     ),
     Mutation(
         guard="test_thrash_rule",
         test="TestThrashTriggers."
-             "test_third_return_is_a_trigger_and_recommends_replan_or_split",
+             "test_third_return_is_a_threshold_and_recommends_descope_or_park",
         target=REVIEW,
-        block="Do not queue another retry; recommend re-plan or split via\n     `/milestone-plan`.",
+        block="Do not queue another retry; the recommended option is descope-or-park\n     (M143)",
     ),
     Mutation(
         guard="test_thrash_rule",
         test="TestThrashTriggers."
-             "test_third_return_is_a_trigger_and_recommends_replan_or_split",
+             "test_third_return_is_a_threshold_and_recommends_descope_or_park",
+        target=REVIEW,
+        block="via the gated amendment protocol (`/milestone-implement` step 6)",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers."
+             "test_third_return_is_a_threshold_and_recommends_descope_or_park",
+        target=REVIEW,
+        block="re-cut is never the recommended one",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestThrashTriggers."
+             "test_third_return_is_a_threshold_and_recommends_descope_or_park",
         target=REVIEW,
         block="It is a threshold, not a single moment",
     ),
@@ -2983,22 +2997,22 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestTriggersCompose.test_composition_carries_b_into_the_routing",
+        test="TestTriggersCompose.test_composition_carries_b_into_the_composed_chip",
         target=REVIEW,
-        block="escalation offer carry INTO that routing rather than being discarded",
+        block="escalation offer carry INTO that composed chip rather than being discarded",
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestTriggersCompose.test_composition_names_the_routing_target",
+        test="TestTriggersCompose.test_composition_names_the_composed_menu",
         target=REVIEW,
-        block="and the milestone routes through\n   `/milestone-plan` —",
+        block="the chip composed from (a)'s descope-or-park\n   menu",
     ),
     Mutation(
         guard="test_thrash_rule",
         test="TestTriggersCompose.test_exhaustion_branch_states_its_composed_remedy",
         target=REVIEW,
-        block="Compose the routing chip from an offered\n   `/milestone-brief` escalation, "
-              "parking as `blocked` with the blocker named\n   in a work-log line, or "
+        block="Descope-or-park stays the recommended\n   option; beside it the chip "
+              "carries an offered `/milestone-brief` escalation\n   and "
               "dropping at the user's explicit decision —",
     ),
     Mutation(
@@ -3011,7 +3025,19 @@ REGISTRY += [
         guard="test_thrash_rule",
         test="TestTriggersCompose.test_exhaustion_branch_states_its_remedy",
         target=REVIEW,
-        block="the remedy is no longer re-plan-or-split",
+        block="the same-objective re-cut leaves the menu entirely",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_review_thrash_block_matches_its_fixture",
+        target=REVIEW,
+        block="descope — narrow the milestone to its already-verified criteria",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestWideningTest.test_review_thrash_block_matches_its_fixture",
+        target=REVIEW,
+        block="both downstream lineages on record\n     show a re-cut buying further returns",
     ),
     Mutation(
         guard="test_thrash_rule",

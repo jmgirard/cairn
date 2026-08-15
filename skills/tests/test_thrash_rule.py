@@ -30,8 +30,11 @@ are enumerated nowhere for the same reason:
     is how the escalation fallback fired instead of the remedy (M117);
   - where both fire they COMPOSE — (a) takes the disposition, (b)'s diagnosis
     and escalation offer carry into the routing;
-  - once a re-plan or split is spent, the exhaustion branch replaces the
-    remedy, with its diagnosis and its remedy pinned separately.
+  - once a re-plan or split is spent, the exhaustion branch drops the re-cut
+    from the menu, with its diagnosis and its remedy pinned separately;
+  - the whole block also carries a whole-slice equality fixture (M143,
+    D-103's instrument) — the per-property pins above localize a defect,
+    the fixture catches what they leave unpinned.
 
 This file once also carried a one-surface pin — an assert that the rule's
 phrase occurs in exactly one file, so a restatement would red rather than
@@ -87,6 +90,8 @@ def implement():
 # green. One such move left the section asserting both that returns under the
 # floor join the defect count and that they never do, with the suite green.
 # A slice coarser than the rule it localizes does not localize it.
+REVIEW_THRASH_START = "**thrash rule.**"
+REVIEW_THRASH_END = "5. **independent fresh-context review"
 REVIEW_FLOOR_START = "**return floor (m130).**"
 REVIEW_AMENDMENT_START = "**amendment return (m130).**"
 REVIEW_WIDENING_START = "**widening test (m139).**"
@@ -101,6 +106,14 @@ def slice_between(text, start, end):
     if i == -1 or j == -1 or j <= i:
         return ""
     return text[i:j]
+
+
+def review_thrash():
+    """The whole step-4 thrash block — counting, both triggers, the
+    composition paragraph and the already-spent paragraph. The one rule
+    family in step 4 that had no whole-slice fixture until M143; its
+    recomposition was the cheap moment to add one (D-103)."""
+    return slice_between(review(), REVIEW_THRASH_START, REVIEW_THRASH_END)
 
 
 def review_floor():
@@ -210,6 +223,55 @@ An amendment executing a return reclassified under `/milestone-review`'s
      amendment.
 """.lower())
 
+# M143: the whole thrash block, copied from the shipped bytes after the
+# descope-first recomposition. Deliberately coarser than the per-rule floor/
+# amendment/widening slices above: the block is one rule family with one
+# owner, so freezing it whole is the D-103 two-site act, not the M140
+# multi-rule freeze that forced the *Substantive* bullet's sub-slice.
+THRASH_FIXTURE = normalize("""\
+**Thrash rule.** Count returns **per milestone, never per cut** — a
+   `/milestone-plan` re-cut increments the count and never resets it, since a
+   re-cut is itself evidence of thrash. **Count them in the work log**, the one
+   record a re-cut leaves standing: it supersedes the tasks and unticks every
+   criterion, so current file state reads as a first pass however many returns
+   preceded it. The count here is of defect returns; amendment returns run
+   on their own track (the step-5 return floor, M130). Two triggers, with
+   different remedies:
+
+   - **(a) The third return, and every return after it** — a mis-planned
+     milestone. It is a threshold, not a single moment: once reached it holds.
+     Do not queue another retry; the recommended option is descope-or-park
+     (M143): descope — narrow the milestone to its already-verified criteria
+     via the gated amendment protocol (`/milestone-implement` step 6), the
+     unverified remainder exiting to candidate rows or a split milestone,
+     then re-review the narrowed set — or park as `blocked` with the blocker
+     named in a work-log line. A same-objective re-cut via `/milestone-plan`
+     and dropping at the user's explicit decision stay present options; the
+     re-cut is never the recommended one — both downstream lineages on record
+     show a re-cut buying further returns, not a fix (D-105 narrows D-064).
+   - **(b) The same acceptance criterion failing twice, each by a new mechanism
+     of the same shape** — a wrong approach rather than a mis-sized one.
+     Re-cutting around the same predicate buys the next mechanism, not a fix,
+     so the remedy is to reconsider the alternative the plan gate recorded
+     against — step 4 of `/milestone-plan` records it in the work log.
+     Where it recorded none, offer escalation via `/milestone-brief` —
+     per instance, never automatically (D-004).
+
+   **Where both fire they compose.** (a) governs the disposition — no further
+   retry under the current plan, the chip composed from (a)'s descope-or-park
+   menu — while (b)'s diagnosis and its `/milestone-brief`
+   escalation offer carry INTO that composed chip rather than being discarded.
+   They answer different questions, and only the retry question is a conflict.
+
+   **When (a) fires and the work log already records a re-plan or split spent
+   on this milestone**, the same-objective re-cut leaves the menu entirely:
+   that is the move which just failed. Descope-or-park stays the recommended
+   option; beside it the chip carries an offered `/milestone-brief` escalation
+   and dropping at the user's explicit decision — never a
+   bare retry as the recommended option. Every escalation here stays an offer,
+   gated per instance, never automatic and never a standing menu item.
+""".lower())
+
 
 class TestThrashCounting(unittest.TestCase):
     def test_returns_are_counted_per_milestone_not_per_cut(self):
@@ -232,7 +294,7 @@ class TestThrashCounting(unittest.TestCase):
 
 
 class TestThrashTriggers(unittest.TestCase):
-    def test_third_return_is_a_trigger_and_recommends_replan_or_split(self):
+    def test_third_return_is_a_threshold_and_recommends_descope_or_park(self):
         t = review()
         self.assertRegex(
             t, r"\*\*\(a\) the third return, and every return after it\*\*"
@@ -241,13 +303,23 @@ class TestThrashTriggers(unittest.TestCase):
         # "exactly the third", which reinstates the fire-once-then-go-silent
         # signature the rule exists to stop (RR05 Q1).
         self.assertIn("it is a threshold, not a single moment", t)
-        # Pins the remedy WITH its routing target. Narrowed to the pre-wrap
-        # half at pass 5, which let the target be changed to `/hotfix` green
-        # (L1) — the M105 rule this file states, broken in this file.
+        # Pins the remedy WITH its routing target (M105/L1): descope routes
+        # through the gated amendment protocol, not through `/milestone-plan`
+        # — the re-plan-of-the-same-objective remedy that M143 demoted after
+        # both downstream lineages showed a re-cut buying further returns.
         self.assertRegex(
             t,
-            r"do not queue another retry; recommend re-plan or split via\s+`/milestone-plan`\.",
+            r"do not queue another retry; the recommended option is "
+            r"descope-or-park\s+\(m143\)",
         )
+        self.assertRegex(
+            t,
+            r"via the gated amendment protocol \(`/milestone-implement` step 6\)",
+        )
+        # The demotion clause: the re-cut stays present and is never the
+        # recommendation. Without it the menu reads as unordered and the old
+        # default silently returns.
+        self.assertRegex(t, r"the\s+re-cut is never the recommended one")
 
     def test_second_trigger_is_same_criterion_new_mechanism_same_shape(self):
         # Anchored across the shipped line break: truncating this to the
@@ -393,19 +465,21 @@ class TestTriggersCompose(unittest.TestCase):
             review(), r"\(a\) governs the disposition — no further\s+retry"
         )
 
-    def test_composition_names_the_routing_target(self):
+    def test_composition_names_the_composed_menu(self):
         # The other half of the disposition sentence: without it the clause
-        # prohibits a retry and names no destination (L3).
+        # prohibits a retry and names no destination (L3). M143 replaced the
+        # unconditional `/milestone-plan` routing with (a)'s own menu.
         self.assertRegex(
-            review(), r"and the milestone routes through\s+`/milestone-plan` —"
+            review(), r"the chip composed from \(a\)'s descope-or-park\s+menu"
         )
 
-    def test_composition_carries_b_into_the_routing(self):
+    def test_composition_carries_b_into_the_composed_chip(self):
         # The half that was lost: (b)'s diagnosis and escalation offer must
-        # survive the routing, not be discarded by (a) winning.
-        self.assertRegex(
+        # survive the composition, not be discarded by (a) winning.
+        self.assertIn(
+            "escalation offer carry into that composed chip rather than "
+            "being discarded",
             review(),
-            r"escalation offer carry into that routing rather than being\s+discarded",
         )
 
     def test_exhaustion_branch_states_its_diagnosis(self):
@@ -420,17 +494,18 @@ class TestTriggersCompose(unittest.TestCase):
         # The positive half. Pass 5 pinned only the negation and the
         # prohibition, so the enumeration of what to actually DO could be
         # replaced by vague prose green (L2) — diagnosis with no remedy, the
-        # shape this branch exists to forbid.
+        # shape this branch exists to forbid. M143: descope-or-park stays the
+        # recommendation here too; only the spent re-cut leaves.
         self.assertRegex(
             review(),
-            r"compose the routing chip from an offered\s+`/milestone-brief` escalation, "
-            r"parking as `blocked` with the blocker named\s+in a work-log line, or "
+            r"descope-or-park stays the recommended\s+option; beside it the "
+            r"chip carries an offered `/milestone-brief` escalation\s+and "
             r"dropping at the user's explicit decision —",
         )
 
     def test_exhaustion_branch_states_its_remedy(self):
         t = review()
-        self.assertIn("the remedy is no longer re-plan-or-split", t)
+        self.assertIn("the same-objective re-cut leaves the menu entirely", t)
         self.assertRegex(t, r"never a\s+bare retry as the recommended option")
 
 
@@ -596,6 +671,15 @@ class TestWideningTest(unittest.TestCase):
     runs the whole named method, so a second assertion in the same method can
     red for the first and leave it unproven.
     """
+
+    def test_review_thrash_block_matches_its_fixture(self):
+        self.assertEqual(normalize(review_thrash()), THRASH_FIXTURE)
+
+    def test_review_thrash_marker_is_unique(self):
+        self.assertEqual(review().count(REVIEW_THRASH_START), 1)
+
+    def test_review_thrash_end_marker_is_unique(self):
+        self.assertEqual(review().count(REVIEW_THRASH_END), 1)
 
     def test_review_floor_matches_its_fixture(self):
         self.assertEqual(normalize(review_floor()), FLOOR_FIXTURE)

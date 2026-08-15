@@ -69,7 +69,7 @@ row, unpromoted (its trigger is an implement step-6 edit, not this).
 - [x] T1 Derive the intraclass M120 return classification from its work log
       under the D-097 and D-101 tracks; record the pinned derivation
       (procedure + commit) in this milestone's work log as input to T4.
-- [ ] T2 Recompose the step-4 thrash block in
+- [x] T2 Recompose the step-4 thrash block in
       `skills/milestone-review/SKILL.md` — threshold remedy, composition
       paragraph, already-spent paragraph — as one coherent menu across both
       states.
@@ -85,6 +85,7 @@ row, unpromoted (its trigger is an implement step-6 edit, not this).
 - 2026-08-15: created by /milestone-plan, beside M142, from the maintainer's churn/thrash report over intraclass and circumplex.
 - 2026-08-15: criteria audit ran (fresh [O] reader, two rounds) — round 1 returned findings 2/3/4/6 against this milestone (joint unsatisfiability, composition-paragraph under-scope, unverified lineage count, retired author-re-read instrument), all disposed at the gate; round 2 returned two residuals ("ships on" arm unreachable, missing whole-slice fixture), fixed in place.
 - 2026-08-15: plan gate chose descope-first at the first threshold over flipping only after a spent re-plan because both downstream lineages show a re-cut buying further returns; falsified by descoped remainders repeatedly re-entering as their own thrashing milestones.
+- 2026-08-15: T2 — step-4 thrash block recomposed in skills/milestone-review/SKILL.md (threshold remedy now descope-or-park with the re-cut demoted to present-never-recommended; composition paragraph composes the chip from (a)'s menu with (b)'s escalation carried in; already-spent paragraph drops the re-cut from the menu); trigger (b), the counting preamble and every step outside the block are byte-identical.
 - 2026-08-15: T1 — lineage derived from the return and thrash lines of intraclass `cairn/milestones/M120-checkpoint-staleness-guard.md`'s work log, read at intraclass commit `1e95baf` (branch `m120-checkpoint-staleness-guard`): four defect returns (returns 1–3 whole; return 4's F1 leg) and one amendment return (return 4's F4 leg, recorded there under the widening test), so trigger (a)'s threshold was genuinely reached at return 3 on the defect track alone, not inflated by amendment returns; the re-cut spent after return 3 was followed by a fourth defect return, and the milestone was parked `blocked` at the maintainer's decision on 2026-08-15 — the exit this milestone makes the recommended default.
 
 ## Decisions
