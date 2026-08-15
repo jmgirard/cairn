@@ -2654,6 +2654,179 @@ REGISTRY = [
         target="skills/shared/guard-doctrine.md",
         block="Merged\ncurrent knowledge stays corrected-in-place and marked (D-045); IP4 history\nis superseded, never edited.",
     ),
+    # M142: the four stakes-tier rules in /milestone-plan — the surface-tier
+    # rule, the internal-tier criteria standard, the audit's proportionality
+    # question, and the collision check's checker-regress clause. One entry
+    # per protected block; blocks are contained phrases, never slice bounds
+    # (M117: blanking a bound crashes the slice helper, a weak red).
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestSurfaceTierRule.test_rule_classifies_every_deliverable_into_the_two_tiers",
+        target="skills/milestone-plan/SKILL.md",
+        block="deliverable as user-facing or internal",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestSurfaceTierRule.test_internal_is_defined_by_absence_of_an_external_consumer",
+        target="skills/milestone-plan/SKILL.md",
+        block="no external consumer of the repo relies on the",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestSurfaceTierRule.test_internal_definition_carries_its_example_enumeration",
+        target="skills/milestone-plan/SKILL.md",
+        block="dev tooling, data-generation scripts, in-repo checkers",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestSurfaceTierRule.test_unclear_or_spanning_deliverables_default_to_user_facing",
+        target="skills/milestone-plan/SKILL.md",
+        block="whose tier is unclear or spans both",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestSurfaceTierRule.test_tier_is_recorded_in_the_milestone_file",
+        target="skills/milestone-plan/SKILL.md",
+        block="one-clause reason in the milestone file's Goal or Scope prose",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestInternalTierStandard.test_promise_is_bounded_to_a_directly_enumerated_domain",
+        target="skills/milestone-plan/SKILL.md",
+        block="quantifies over a domain its named procedure",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestInternalTierStandard.test_standard_names_the_three_prohibited_forms",
+        target="skills/milestone-plan/SKILL.md",
+        block="never an exemption registry, a per-rendering",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestInternalTierStandard.test_repair_narrows_or_descopes_and_never_widens",
+        target="skills/milestone-plan/SKILL.md",
+        block="never by widening the specification",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestInternalTierStandard.test_standard_stops_at_the_promise_guard_boundary",
+        target="skills/milestone-plan/SKILL.md",
+        block="a criterion's promise, never a guard's construction",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestProportionalityQuestion.test_question_is_asked_of_each_criterion",
+        target="skills/milestone-plan/SKILL.md",
+        block="asks a proportionality question of each criterion",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestProportionalityQuestion.test_question_measures_the_domain_against_the_declared_tier",
+        target="skills/milestone-plan/SKILL.md",
+        block="is the promise's domain proportionate to the declared surface tier",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestProportionalityQuestion.test_out_of_standard_internal_criterion_is_a_gate_finding",
+        target="skills/milestone-plan/SKILL.md",
+        block="is a finding, disposed at this gate",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestProportionalityQuestion.test_question_never_relaxes_the_one_exemplar_probe",
+        target="skills/milestone-plan/SKILL.md",
+        block="never relaxes the probe question above",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestCheckerRegressClause.test_clause_names_the_shape",
+        target="skills/milestone-plan/SKILL.md",
+        block="extending or hardening a checker that the ROADMAP or archive records",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestCheckerRegressClause.test_deletion_is_the_recommended_option",
+        target="skills/milestone-plan/SKILL.md",
+        block="simplifying or deleting the checker as the recommended option",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestCheckerRegressClause.test_hardening_stays_present_but_non_recommended",
+        target="skills/milestone-plan/SKILL.md",
+        block="hardening it as a present, non-recommended alternative",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestCheckerRegressClause.test_promise_unchanged_repairs_stay_outside_the_shape",
+        target="skills/milestone-plan/SKILL.md",
+        block="leaves the checker's promise unchanged stays outside the shape",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestCheckerRegressClause.test_promise_widening_is_the_shape_however_framed",
+        target="skills/milestone-plan/SKILL.md",
+        block="the regress shape however it is framed",
+    ),
+    # M142 defect return #1: five blocks the first cut left unpinned — the
+    # two obligations, the two subjects, and the repair sentence's tail.
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestSurfaceTierRule.test_classification_and_recording_are_obligations",
+        target="skills/milestone-plan/SKILL.md",
+        block="Every plan classifies the milestone's",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestInternalTierStandard.test_descoping_is_a_legal_repair_alternative",
+        target="skills/milestone-plan/SKILL.md",
+        block="or by\n   descoping, never by",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestProportionalityQuestion.test_out_of_standard_internal_criterion_is_a_gate_finding",
+        target="skills/milestone-plan/SKILL.md",
+        block="An internal-tier criterion outside the",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestCheckerRegressClause.test_clause_names_the_shape",
+        target="skills/milestone-plan/SKILL.md",
+        block="an earlier milestone of the same repo shipping",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestCheckerRegressClause.test_deletion_is_the_recommended_option",
+        target="skills/milestone-plan/SKILL.md",
+        block="On such a hit the gate poses",
+    ),
+    # M142 defect return #2: whole-slice equality fixtures (D-103's
+    # instrument) — one entry per fixture, each anchored on a phrase the
+    # pass-2 review proved unpinned by any per-property assert (R1-R3),
+    # so the registration proves the fixture catches what the pins miss.
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestWholeSliceFixtures.test_surface_rule_matches_its_fixture",
+        target="skills/milestone-plan/SKILL.md",
+        block="Internal means no external consumer",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestWholeSliceFixtures.test_standard_rule_matches_its_fixture",
+        target="skills/milestone-plan/SKILL.md",
+        block="A draft needing those is repaired at this",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestWholeSliceFixtures.test_proportionality_rule_matches_its_fixture",
+        target="skills/milestone-plan/SKILL.md",
+        block="the question governs promises and",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestWholeSliceFixtures.test_regress_rule_matches_its_fixture",
+        target="skills/milestone-plan/SKILL.md",
+        block="The sweep also names this shape",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

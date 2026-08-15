@@ -39,6 +39,24 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    step 4** — step 3's criteria audit reads the bytes step 4 will write, and an
    audit over a rougher draft certifies text that never ships.
 
+   **Surface tier (mandatory).** Every plan classifies the milestone's
+   deliverable as user-facing or internal, and records the tier and a
+   one-clause reason in the milestone file's Goal or Scope prose.
+   Internal means no external consumer of the repo relies on the
+   deliverable — dev tooling, data-generation scripts, in-repo checkers
+   over internal artifacts, tracking records; user-facing is everything
+   else, including any deliverable whose tier is unclear or spans both.
+
+   **Internal-tier criteria standard.** An internal-tier acceptance
+   criterion's promise quantifies over a domain its named procedure
+   enumerates directly — never an exemption registry, a per-rendering
+   enumeration, or a demonstration family spanning process or
+   environment boundaries. A draft needing those is repaired at this
+   gate by narrowing the promise (step 4's bounded-promise rule) or by
+   descoping, never by widening the specification. The standard governs
+   a criterion's promise, never a guard's construction — a detector's
+   per-rendering positive controls stay mandated by their own doctrine.
+
    **Exploring a source corpus.** A scope that points at a corpus of
    maybe-relevant sources on the `references/sources/` shelf is a supply-push
    case (tracking-rules "Exploring prospective sources"):
@@ -66,6 +84,16 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      proceed: **supersede, don't ignore** — append a superseding D-entry
      first. Never plan against a standing rejection without superseding it;
      never refuse merely because a rejection exists.
+
+   **Checker-regress shape.** The sweep also names this shape: a scope
+   extending or hardening a checker that the ROADMAP or archive records
+   an earlier milestone of the same repo shipping, where that checker
+   verifies repo-internal artifacts. On such a hit the gate poses
+   simplifying or deleting the checker as the recommended option and
+   hardening it as a present, non-recommended alternative. A repair that
+   leaves the checker's promise unchanged stays outside the shape
+   (D-090's Untouched clause); one that widens the checker's promise is
+   the regress shape however it is framed.
 
    **Harvest recent lessons (before the gate).** Review `cairn/LESSONS.md`
    (read at session start) and surface any lessons bearing on this scope —
@@ -101,6 +129,12 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    verified domain is free in — form as well as location — or stand one
    exemplar in for the family (guard-doctrine §1's inversion protocol and
    §4's fixture rule applied to criteria).
+   The audit also asks a proportionality question of each criterion:
+   is the promise's domain proportionate to the declared surface tier
+   (the step-2 rule)? An internal-tier criterion outside the
+   internal-tier criteria standard is a finding, disposed at this gate
+   like the audit's other findings; the question governs promises and
+   never relaxes the probe question above.
    Dispose of what it returns at
    this gate, never silently: a finding with one clear right answer is fixed
    and the fix reported in chat, and a finding you could reasonably decide
