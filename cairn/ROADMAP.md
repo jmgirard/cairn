@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M142 | The plan gate scales criteria rigor to the deliverable's stakes | planned | — | high | milestones/M142-stakes-tier.md |
+| M142 | The plan gate scales criteria rigor to the deliverable's stakes | in-progress | — | high | milestones/M142-stakes-tier.md |
 | M143 | The thrash threshold recommends descoping before re-planning | done | — | high | milestones/archive/M143-descope-first-thrash.md |
 | M141 | README plain-language pass | done | — | normal | milestones/archive/M141-readme-plain-language.md |
 | M140 | Whole-slice equality guards for the M139 rules | done | — | high | milestones/archive/M140-equality-guards.md |

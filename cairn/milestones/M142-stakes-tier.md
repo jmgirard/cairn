@@ -1,11 +1,11 @@
 # M142: The plan gate scales criteria rigor to the deliverable's stakes
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** —
+- **Branch/PR:** m142-stakes-tier
 
 ## Goal
 
@@ -85,7 +85,7 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
 
 ## Tasks
 
-- [ ] T1 Author the step-2 surface-tier rule and internal-tier criteria
+- [x] T1 Author the step-2 surface-tier rule and internal-tier criteria
       standard in `skills/milestone-plan/SKILL.md` (anchors copied from
       shipped bytes; adjacent-guard reflow check per the M104 lesson).
 - [ ] T2 Add the proportionality question to the step-3 criteria-audit
@@ -105,6 +105,7 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
 - 2026-08-15: criteria audit ran (fresh [O] reader, two rounds) — round 1 returned nine findings, all disposed at the gate; round 2 on the amended wording returned five residual scoping findings, fixed in place (AC4 repair discriminator, AC2 promise-scope clause, AC5 D-090-trigger naming, plus two on M143).
 - 2026-08-15: plan gate chose a regress gate-question with deletion recommended over a D-090-style hard door because a hard door narrows D-090's Untouched clause and adds supersede ceremony to legitimate hardenings; falsified by a tracked repo accepting the recommended deletion where the checker's absence then admits a user-facing defect it would have caught.
 - 2026-08-15: plan gate chose a domain-bounded lite standard over a numeric probe-count cap because the cap contradicted the shipped one-exemplar probe (audit round-1 finding 1); falsified by an internal-tier criterion within the standard still consuming three defect returns.
+- 2026-08-15: T1 — surface-tier rule and internal-tier criteria standard authored into /milestone-plan step 2 (two paragraphs after the criteria-drafted rule); question gate skipped, nothing genuinely open — both approach choices were settled at the plan gate; three suites green (786/345/103, per-suite exit codes checked).
 
 ## Decisions
 

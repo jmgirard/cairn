@@ -39,6 +39,24 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    step 4** — step 3's criteria audit reads the bytes step 4 will write, and an
    audit over a rougher draft certifies text that never ships.
 
+   **Surface tier (mandatory).** Every plan classifies the milestone's
+   deliverable as user-facing or internal, and records the tier and a
+   one-clause reason in the milestone file's Goal or Scope prose.
+   Internal means no external consumer of the repo relies on the
+   deliverable — dev tooling, data-generation scripts, in-repo checkers
+   over internal artifacts, tracking records; user-facing is everything
+   else, including any deliverable whose tier is unclear or spans both.
+
+   **Internal-tier criteria standard.** An internal-tier acceptance
+   criterion's promise quantifies over a domain its named procedure
+   enumerates directly — never an exemption registry, a per-rendering
+   enumeration, or a demonstration family spanning process or
+   environment boundaries. A draft needing those is repaired at this
+   gate by narrowing the promise (step 4's bounded-promise rule) or by
+   descoping, never by widening the specification. The standard governs
+   a criterion's promise, never a guard's construction — a detector's
+   per-rendering positive controls stay mandated by their own doctrine.
+
    **Exploring a source corpus.** A scope that points at a corpus of
    maybe-relevant sources on the `references/sources/` shelf is a supply-push
    case (tracking-rules "Exploring prospective sources"):
