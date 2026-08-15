@@ -143,6 +143,8 @@ The script deliberately does not judge these — do them yourself and report:
 **Replace** "Last hygiene check: YYYY-MM-DD" in ROADMAP.md — overwrite the previous text, never append to it and never demote it to a `Prior:` or `Earlier:` clause.
 Keep it to one short line naming what changed since the last check; git and
 `milestones/archive/` hold the older stamps and their detail (D-052).
+Re-run `cairn_validate` after writing the stamp and before the commit: the `record density` advisory catches an over-cap stamp only while it is still editable.
+Over cap, the remedy is the cap's own — replace the stamp with a shorter rewrite, never append to it or trim it into a second line.
 
 ## 3. Route
 

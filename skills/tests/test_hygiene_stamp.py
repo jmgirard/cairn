@@ -23,6 +23,16 @@ import unittest
 SKILLS = pathlib.Path(__file__).resolve().parent.parent
 ROOT = SKILLS.parent
 
+# Carried verbatim by every site that writes the stamp, so one anchor pins all
+# of them and a site that drops it reds. Kept on ONE physical line in each
+# target: a wrapped anchor is unregistrable in the mutation harness and is the
+# usual way a label->rule pin is lost (M74/M92/M95).
+VERIFY_CLAUSE = (
+    "Re-run `cairn_validate` after writing the stamp and before the commit: "
+    "the `record density` advisory catches an over-cap stamp only while it is "
+    "still editable."
+)
+
 
 def read(path):
     return path.read_text()
@@ -112,6 +122,23 @@ class TestStampWriteSites(unittest.TestCase):
             "pass — never appended to; D-052)_",
             text,
         )
+
+    def test_milestone_audit_says_verify_before_committing(self):
+        # 2026-08-15: saying REPLACE is not enough. Both overruns that day
+        # were replacements — correctly overwritten, and over the cap anyway —
+        # and the second reached `98368db` at 454 chars because nothing ran
+        # between writing the stamp and the commit. The rulebook already
+        # documents `record density` as the stamp's backstop; the write sites
+        # never engaged it while the stamp was still editable.
+        self.assertIn(VERIFY_CLAUSE, self.site("milestone", "SKILL.md"))
+
+    def test_post_merge_hygiene_says_verify_before_committing(self):
+        # The review site is the likelier one to hit it — post-merge hygiene
+        # writes the stamp every milestone. It said "verify weight caps",
+        # which names the ITEM-count CHECK, a different axis from the per-line
+        # advisory that catches an over-cap stamp; reading as covered is worse
+        # than saying nothing.
+        self.assertIn(VERIFY_CLAUSE, self.site("milestone-review", "SKILL.md"))
 
     def test_no_write_site_still_says_only_update(self):
         # The negative direction, paired with the three positive asserts

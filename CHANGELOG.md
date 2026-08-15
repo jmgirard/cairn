@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+- **The hygiene stamp is checked while it can still be fixed.** Both places
+  that rewrite the "Last hygiene check" line — the status audit and the
+  post-merge pass — now tell you to re-run the validator after writing the
+  stamp and before committing, and to fix an over-length stamp by rewriting
+  it shorter rather than appending or splitting it. The length advisory
+  already existed; nothing ran it while the stamp was still editable, so an
+  over-length stamp could reach a commit and only surface afterwards. The
+  post-merge pass previously said only to check weight caps, which measures
+  a different thing and read as covering this.
+
 ## 1.5.0 (2026-08-14)
 
 Six milestones since 1.4.0, most of them one arc: a review return that
