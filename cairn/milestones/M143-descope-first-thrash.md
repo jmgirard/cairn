@@ -1,6 +1,6 @@
 # M143: The thrash threshold recommends descoping before re-planning
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -77,7 +77,7 @@ row, unpromoted (its trigger is an implement step-6 edit, not this).
       mutation-registry blocks) to the recomposed bytes; add the whole-slice
       equality fixture and guards for the new remedy sentences; probes red
       (commit fixes before any probe that restores — M140 lesson).
-- [ ] T4 Append the D-entry (next free id) with the derived, pinned lineage;
+- [x] T4 Append the D-entry (next free id) with the derived, pinned lineage;
       run `cairn_validate` and the three suites from the repo root.
 
 ## Work log
@@ -88,6 +88,8 @@ row, unpromoted (its trigger is an implement step-6 edit, not this).
 - 2026-08-15: T2 — step-4 thrash block recomposed in skills/milestone-review/SKILL.md (threshold remedy now descope-or-park with the re-cut demoted to present-never-recommended; composition paragraph composes the chip from (a)'s menu with (b)'s escalation carried in; already-spent paragraph drops the re-cut from the menu); trigger (b), the counting preamble and every step outside the block are byte-identical.
 - 2026-08-15: T1 — lineage derived from the return and thrash lines of intraclass `cairn/milestones/M120-checkpoint-staleness-guard.md`'s work log, read at intraclass commit `1e95baf` (branch `m120-checkpoint-staleness-guard`): four defect returns (returns 1–3 whole; return 4's F1 leg) and one amendment return (return 4's F4 leg, recorded there under the widening test), so trigger (a)'s threshold was genuinely reached at return 3 on the defect track alone, not inflated by amendment returns; the re-cut spent after return 3 was followed by a fourth defect return, and the milestone was parked `blocked` at the maintainer's decision on 2026-08-15 — the exit this milestone makes the recommended default.
 - 2026-08-15: T3 — pins re-anchored (5 guard tests rewritten, 7 registry blocks re-anchored, 4 registry blocks added), whole-slice THRASH_FIXTURE added from shipped bytes; relabel/negation/transposition/relocation probes each RED with restore byte-verified and the suite green after (probe script committed nothing mid-run; work was committed first per the M140 lesson); skills suite 785 OK, scripts 345 OK, hooks 103 OK, per-suite exit codes checked.
+
+- 2026-08-15: T4 — D-105 appended (both lineages derived and pinned: intraclass at `1e95baf`, circumplex at `b343054f`); cairn_validate all checks passed with zero warnings; suites skills 785 / scripts 345 / hooks 103 all OK with per-suite exit codes checked; status -> review.
 
 ## Decisions
 

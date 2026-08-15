@@ -3889,3 +3889,43 @@ its three carve-outs — and the split that completes that coverage in a child
 milestone; it changes nothing in D-101's classification rule, its counting
 disposition, or its falsifiers, which stand as appended (and as corrected by
 D-102). D-103's decision and every other claim in it stand.
+
+### D-105 (2026-08-15): The thrash threshold's remedy is descope-or-park; a same-objective re-cut is present, never recommended — narrowly supersedes D-064's trigger-(a) remedy clause; hosted per D-098 (M143)
+
+**Context:** D-064's trigger (a) prescribed "recommend re-plan or split via
+`/milestone-plan`" at the third defect return. Measured downstream, that remedy
+bought returns rather than fixes. intraclass M120, derived from the return and
+thrash lines of its milestone work log read at intraclass commit `1e95baf`
+(branch `m120-checkpoint-staleness-guard`): four defect returns (returns 1–3
+whole, return 4's F1 leg) and one amendment return (return 4's F4 leg,
+recorded there under the widening test) — so the threshold was genuinely
+reached at return 3 on the defect track alone, not inflated by amendment
+returns; the prescribed re-cut was then spent, was followed by a fourth defect
+return, and the milestone was parked `blocked` at the maintainer's decision
+(2026-08-15) — the exit this entry promotes to the recommended default.
+circumplex carries the same shape at milestone granularity: fifteen
+consecutive norms milestones, M72–M86 — the fourteen files `grep norms`
+matches over `cairn/milestones/archive/` at circumplex commit `b343054f`, plus
+M86 in flight — each hardening or repairing the checker the previous one
+shipped. The defect is in shipped skill behavior — what `/milestone-review`
+recommends at its threshold — measured in user repos, and D-098 hosts the
+cross-repo surfacing here.
+
+**Decision:** At trigger (a)'s threshold the recommended option is
+descope-or-park: descope — narrow the milestone to its already-verified
+criteria via the gated amendment protocol (`/milestone-implement` step 6), the
+unverified remainder exiting to candidate rows or a split milestone, then
+re-review the narrowed set — or park as `blocked` with the blocker named. A
+same-objective re-cut via `/milestone-plan` and dropping at the user's
+explicit decision stay present options; the re-cut is never the recommended
+one. The both-triggers composition paragraph composes the chip from this menu
+with (b)'s diagnosis and escalation offer carried in; once a re-plan or split
+is spent, the re-cut leaves the menu entirely. Narrowly superseded: D-064's
+trigger-(a) remedy clause alone — its per-milestone counting, both triggers,
+trigger (b)'s remedy, and the amendment-return tracks (D-097, D-101) stand.
+
+**Consequences:** the thrash block gains a whole-slice equality fixture beside
+its per-property pins (D-103's instrument). If a descoped remainder repeatedly
+re-enters as its own thrashing milestone — the plan gate's recorded falsifier
+— this is the entry to supersede; a milestone genuinely mis-sized rather than
+mis-approached still reaches a re-cut, present on the menu at every firing.
