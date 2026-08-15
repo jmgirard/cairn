@@ -2048,6 +2048,22 @@ REGISTRY = [
         target="skills/milestone-review/SKILL.md",
         block="overwrite the previous text, never append to it and never demote it to a `Prior:` clause (D-052)",
     ),
+    # 2026-08-15: replacing the stamp was pinned; VERIFYING it was not, and
+    # both overruns that day were correct replacements that went over cap.
+    # One entry per site — the clause is carried verbatim by both, so a single
+    # registration would leave the other site's copy deletable green.
+    Mutation(
+        guard="test_hygiene_stamp",
+        test="TestStampWriteSites.test_milestone_audit_says_verify_before_committing",
+        target=MILESTONE,
+        block="Re-run `cairn_validate` after writing the stamp and before the commit: the `record density` advisory catches an over-cap stamp only while it is still editable.",
+    ),
+    Mutation(
+        guard="test_hygiene_stamp",
+        test="TestStampWriteSites.test_post_merge_hygiene_says_verify_before_committing",
+        target=REVIEW,
+        block="Re-run `cairn_validate` after writing the stamp and before the commit: the `record density` advisory catches an over-cap stamp only while it is still editable.",
+    ),
     Mutation(
         guard="test_hygiene_stamp",
         test="TestStampWriteSites.test_shipped_skeleton_teaches_the_shape",

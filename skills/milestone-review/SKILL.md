@@ -335,7 +335,10 @@ overrides — log the override).
 
    Then: ROADMAP row → `done` + archive path;
    archive any resolved RB/RR pairs; **replace** "Last hygiene check" — overwrite the previous text, never append to it and never demote it to a `Prior:` clause (D-052); verify
-   weight caps. **Capture durable lessons:** append any repo lessons this
+   weight caps.
+   Re-run `cairn_validate` after writing the stamp and before the commit: the `record density` advisory catches an over-cap stamp only while it is still editable.
+   Weight caps is the item-count CHECK and does not reach the stamp's own length — the per-line advisory is the axis that does.
+   **Capture durable lessons:** append any repo lessons this
    milestone taught — build quirks, testing tricks, gotchas worth
    remembering — to `cairn/LESSONS.md`, one per line
    (`- YYYY-MM-DD (M<NN>): <lesson>`, one line each); lessons, not status or a
