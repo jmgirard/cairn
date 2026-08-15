@@ -3929,3 +3929,29 @@ its per-property pins (D-103's instrument). If a descoped remainder repeatedly
 re-enters as its own thrashing milestone — the plan gate's recorded falsifier
 — this is the entry to supersede; a milestone genuinely mis-sized rather than
 mis-approached still reaches a re-cut, present on the menu at every firing.
+
+### D-106 (2026-08-15): Two D-105-adjacent gaps are fixed at the merge gate — the "at every firing" Consequences clause is narrowed, and the composition paragraph states where (b)'s remedy lives — supersedes that clause; D-105's decision and its other content stand (M143 review)
+
+**Context:** M143's review fan-out surfaced two sub-threshold findings the
+maintainer directed fixed at the merge gate rather than accepted as logged.
+F1 (scored 60): D-105's Consequences assert a genuinely mis-sized milestone
+"still reaches a re-cut, present on the menu at every firing," which D-105's
+own Decision falsifies for the already-spent state, where the re-cut has left
+the menu. F2 (scored 60): the composition paragraph carried (b)'s diagnosis
+and escalation offer into the composed chip but not (b)'s remedy —
+reconsidering the recorded alternative — leaving that remedy to live,
+unnamed, inside the never-recommended re-cut option.
+
+**Decision:** (1) D-105's Consequences claim is narrowed: a genuinely
+mis-sized milestone still reaches a re-cut at every firing *before a re-plan
+or split is spent*; after one is spent the exits are descope, park,
+escalation, and drop, exactly as the Decision states. (2) The composition
+paragraph now says it in so many words: "While the recorded alternative is
+unspent, (b)'s remedy — reconsidering it — rides the present,
+never-recommended re-cut option; after that, escalation is what remains of
+(b)." The whole-slice fixture, a new per-property pin, and a registry entry
+are re-anchored to the amended bytes in the same commit.
+
+**Consequences:** D-105's falsifier — a descoped remainder repeatedly
+re-entering as its own thrashing milestone — and every other claim in it
+stand.

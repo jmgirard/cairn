@@ -3003,6 +3003,12 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_thrash_rule",
+        test="TestTriggersCompose.test_composition_states_where_bs_remedy_lives",
+        target=REVIEW,
+        block="(b)'s remedy — reconsidering\n   it — rides the present, never-recommended re-cut option",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
         test="TestTriggersCompose.test_composition_names_the_composed_menu",
         target=REVIEW,
         block="the chip composed from (a)'s descope-or-park\n   menu",

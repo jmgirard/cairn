@@ -133,6 +133,9 @@ overrides — log the override).
    retry under the current plan, the chip composed from (a)'s descope-or-park
    menu — while (b)'s diagnosis and its `/milestone-brief`
    escalation offer carry INTO that composed chip rather than being discarded.
+   While the recorded alternative is unspent, (b)'s remedy — reconsidering
+   it — rides the present, never-recommended re-cut option; after that,
+   escalation is what remains of (b).
    They answer different questions, and only the retry question is a conflict.
 
    **When (a) fires and the work log already records a re-plan or split spent

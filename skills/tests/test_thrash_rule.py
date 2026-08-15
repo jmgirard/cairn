@@ -261,6 +261,9 @@ THRASH_FIXTURE = normalize("""\
    retry under the current plan, the chip composed from (a)'s descope-or-park
    menu — while (b)'s diagnosis and its `/milestone-brief`
    escalation offer carry INTO that composed chip rather than being discarded.
+   While the recorded alternative is unspent, (b)'s remedy — reconsidering
+   it — rides the present, never-recommended re-cut option; after that,
+   escalation is what remains of (b).
    They answer different questions, and only the retry question is a conflict.
 
    **When (a) fires and the work log already records a re-plan or split spent
@@ -480,6 +483,17 @@ class TestTriggersCompose(unittest.TestCase):
             "escalation offer carry into that composed chip rather than "
             "being discarded",
             review(),
+        )
+
+    def test_composition_states_where_bs_remedy_lives(self):
+        # M143 review F2 (fixed at the merge gate, D-106): carrying (b)'s
+        # diagnosis and escalation is not carrying its REMEDY — reconsidering
+        # the recorded alternative. Without this sentence the remedy silently
+        # demotes to an option nothing names it in.
+        self.assertRegex(
+            review(),
+            r"\(b\)'s remedy — reconsidering\s+it — rides the present, "
+            r"never-recommended re-cut option",
         )
 
     def test_exhaustion_branch_states_its_diagnosis(self):

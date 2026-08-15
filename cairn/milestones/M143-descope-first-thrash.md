@@ -100,6 +100,7 @@ row, unpromoted (its trigger is an implement step-6 edit, not this).
   - F6/45, F10/45: the whole-slice fixture spans trigger (b) and the counting preamble (a two-site edit obligation on out-of-scope rules; defended in the fixture comment) and makes the four probe reds non-localizing.
   - B3/30, F3/30, F8/35, F9/30, F12/30, F13/25, F14/30, B8/15, F11/15, F15/20: pin-granularity, handoff-underspecification, wording and hygiene notes — logged.
 
+- 2026-08-15 merge gate: maintainer directed F1/F2 fixed rather than accepted — D-106 appended (narrows D-105's at-every-firing clause; IP4 forbade an in-place edit), composition paragraph gains the (b)-remedy sentence with fixture/pin/registry re-anchored in the same commit; suites 786/345/103 OK, validate exit 0.
 ## Decisions
 
 ## Review
