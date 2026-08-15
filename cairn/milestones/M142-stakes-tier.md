@@ -92,7 +92,7 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
       paragraph, beside the existing one-exemplar probe it must not oppose.
 - [x] T3 Add the checker-regress clause, with its repair discriminator, to the
       step-2 collision check.
-- [ ] T4 Write prose-guards for the four new rules; register per protected
+- [x] T4 Write prose-guards for the four new rules; register per protected
       block in the mutation harness; run relabel, negation,
       subject-transposition, and relocation probes red (commit fixes before
       any probe that restores — M140 lesson).
@@ -108,6 +108,7 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
 - 2026-08-15: T1 — surface-tier rule and internal-tier criteria standard authored into /milestone-plan step 2 (two paragraphs after the criteria-drafted rule); question gate skipped, nothing genuinely open — both approach choices were settled at the plan gate; three suites green (786/345/103, per-suite exit codes checked).
 - 2026-08-15: T2 — proportionality question added to the step-3 criteria audit, directly after the one-exemplar probe sentence, with an explicit never-relaxes boundary toward it; three suites green, per-suite exit codes checked.
 - 2026-08-15: T3 — checker-regress clause with its repair discriminator appended to the step-2 collision check, after the status-disposition bullets; three suites green, per-suite exit codes checked.
+- 2026-08-15: T4 — test_stakes_tier.py authored (marker-bounded slice per rule, marker-uniqueness asserted), 18 blocks registered in the mutation harness (contained phrases, never slice bounds); probe run per probe_m142.py at commit 51882de: 17 probes (relabel/negation/subject-transposition/relocation, at least one per rule) all genuinely red (failures>0, errors=0, ran=19), restore verified byte-identical; a subject-pin gap the transposition probe design surfaced was fixed and committed before probing (M131, M140); three suites re-run green after restore, per-suite exit codes checked.
 
 ## Decisions
 
