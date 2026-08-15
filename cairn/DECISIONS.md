@@ -3955,3 +3955,48 @@ are re-anchored to the amended bytes in the same commit.
 **Consequences:** D-105's falsifier — a descoped remainder repeatedly
 re-entering as its own thrashing milestone — and every other claim in it
 stand.
+
+### D-107 (2026-08-15): The plan gate scales criteria rigor to the deliverable's surface tier, and a checker-regress hit poses deletion as the recommended option — annotates D-090, whose Untouched clause stands; hosted per D-098 (M142)
+
+**Context:** Two downstream repos measured the failure this entry closes.
+intraclass M120 consumed four review returns in one day hardening an in-repo
+checker; circumplex M72–M86 ran a fifteen-milestone arc extending checkers
+over internal artifacts. In both, verification effort grew without limit on
+internal tooling because `/milestone-plan` as shipped classifies no
+deliverable and holds every criterion to one rigor standard. D-090 closed
+cairn's own verification-apparatus program at the door; its trigger clause
+requires a shipped-behavior defect, and that trigger is satisfied here — the
+defect is in what `/milestone-plan` does for its users, measured in the
+downstream repos: the plan gate as shipped accepts internal-tier scopes whose
+criteria demand unbounded specification. The cross-repo host is a cairn
+milestone per D-098.
+
+**Decision:** M142 ships four rules in `/milestone-plan`. Step 2 classifies
+every milestone's deliverable as user-facing or internal — internal means no
+external consumer of the repo relies on it; unclear or spanning deliverables
+are user-facing — and records the tier in the milestone file. An
+internal-tier criterion's promise quantifies over a domain its named
+procedure enumerates directly — never an exemption registry, a per-rendering
+enumeration, or a demonstration family spanning process or environment
+boundaries — and a draft needing those is repaired by narrowing or
+descoping, never by widening; the standard governs promises, never a guard's
+construction. The step-3 criteria audit asks a proportionality question of
+each criterion against the declared tier. The step-2 collision check names
+the checker-regress shape — a scope extending or hardening a checker an
+earlier milestone of the same repo shipped, where the checker verifies
+repo-internal artifacts — and on a hit poses simplifying or deleting the
+checker as the recommended option, with hardening present but
+non-recommended; a repair leaving the checker's promise unchanged stays
+outside the shape (D-090's Untouched clause, intact), one widening the
+promise is the shape however framed. This annotates D-090 — the door and its
+Untouched clause stand unchanged; the regress question is a plan-gate
+counterpart on the demand side, a recommendation and never a hard door,
+because a hard door would narrow the Untouched clause and add supersede
+ceremony to legitimate hardenings.
+
+**Consequences:** Falsifiers, each recorded at the plan gate: the regress
+recommendation is falsified by a tracked repo accepting the recommended
+deletion where the checker's absence then admits a user-facing defect it
+would have caught; the domain-bounded standard is falsified by an
+internal-tier criterion within the standard still consuming three defect
+returns. Either firing supersedes the corresponding rule here.

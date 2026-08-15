@@ -96,7 +96,7 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
       block in the mutation harness; run relabel, negation,
       subject-transposition, and relocation probes red (commit fixes before
       any probe that restores — M140 lesson).
-- [ ] T5 Append the D-entry (next free id); run `cairn_validate` and the three
+- [x] T5 Append the D-entry (next free id); run `cairn_validate` and the three
       suites from the repo root with per-suite exit codes checked.
 
 ## Work log
@@ -109,6 +109,8 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
 - 2026-08-15: T2 — proportionality question added to the step-3 criteria audit, directly after the one-exemplar probe sentence, with an explicit never-relaxes boundary toward it; three suites green, per-suite exit codes checked.
 - 2026-08-15: T3 — checker-regress clause with its repair discriminator appended to the step-2 collision check, after the status-disposition bullets; three suites green, per-suite exit codes checked.
 - 2026-08-15: T4 — test_stakes_tier.py authored (marker-bounded slice per rule, marker-uniqueness asserted), 18 blocks registered in the mutation harness (contained phrases, never slice bounds); probe run per probe_m142.py at commit 51882de: 17 probes (relabel/negation/subject-transposition/relocation, at least one per rule) all genuinely red (failures>0, errors=0, ran=19), restore verified byte-identical; a subject-pin gap the transposition probe design surfaced was fixed and committed before probing (M131, M140); three suites re-run green after restore, per-suite exit codes checked.
+- 2026-08-15: T4 note — probe_m142.py is session scratch, not committed; the T4 line itself states the full procedure (probe families, red criteria failures>0/errors=0/ran>0, byte-identical restore check), so the record stands without the script.
+- 2026-08-15: T5 — D-107 appended (previewed verbatim in chat): stakes-tier adoption + regress question beside D-090's door, D-090 annotated with its Untouched clause intact, hosted per D-098, trigger-clearing defect named; cairn_validate all checks passed; three suites green from repo root, per-suite exit codes checked.
 
 ## Decisions
 
