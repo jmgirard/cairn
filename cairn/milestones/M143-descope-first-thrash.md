@@ -1,11 +1,11 @@
 # M143: The thrash threshold recommends descoping before re-planning
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** —
+- **Branch/PR:** `m143-descope-first-thrash` / —
 
 ## Goal
 
