@@ -2799,6 +2799,34 @@ REGISTRY = [
         target="skills/milestone-plan/SKILL.md",
         block="On such a hit the gate poses",
     ),
+    # M142 defect return #2: whole-slice equality fixtures (D-103's
+    # instrument) — one entry per fixture, each anchored on a phrase the
+    # pass-2 review proved unpinned by any per-property assert (R1-R3),
+    # so the registration proves the fixture catches what the pins miss.
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestWholeSliceFixtures.test_surface_rule_matches_its_fixture",
+        target="skills/milestone-plan/SKILL.md",
+        block="Internal means no external consumer",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestWholeSliceFixtures.test_standard_rule_matches_its_fixture",
+        target="skills/milestone-plan/SKILL.md",
+        block="A draft needing those is repaired at this",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestWholeSliceFixtures.test_proportionality_rule_matches_its_fixture",
+        target="skills/milestone-plan/SKILL.md",
+        block="the question governs promises and",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestWholeSliceFixtures.test_regress_rule_matches_its_fixture",
+        target="skills/milestone-plan/SKILL.md",
+        block="The sweep also names this shape",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

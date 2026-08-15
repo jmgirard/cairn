@@ -75,10 +75,13 @@ REGRESS_END = "**harvest recent lessons"
 # Step bounds: each rule slice is taken INSIDE its owning step's slice, not
 # the whole file — a bare find() from position 0 resolves a rule relocated
 # upward, entirely out of its step, and every whole-file anchor stays green
-# (M142 return, D4: verified against the first cut of this file).
-STEP2_START = "2. **investigate first.**"
-STEP2_END = "3. **question gate**"
-STEP3_END = "4. **solidify autonomously**"
+# (M142 return, D4: verified against the first cut of this file). The
+# bounds are the steps' bold labels alone, without their ordinals — a
+# renumbering of the workflow is unrelated to these rules and must not
+# false-red them (M142 pass-2 R4).
+STEP2_START = "**investigate first.**"
+STEP2_END = "**question gate**"
+STEP3_END = "**solidify autonomously**"
 COLLISION_START = "**collision check (mandatory).**"
 
 
@@ -265,9 +268,6 @@ class TestProportionalityQuestion(unittest.TestCase):
             r"internal-tier criteria standard is a finding,"
             r" disposed at this gate",
         )
-        self.assertIn(
-            "is a finding, disposed at this gate", proportionality_rule()
-        )
 
     def test_question_never_relaxes_the_one_exemplar_probe(self):
         self.assertIn(
@@ -315,6 +315,85 @@ class TestCheckerRegressClause(unittest.TestCase):
             r"one that widens the checker's promise is\s+"
             r"the regress shape however it is framed",
         )
+
+
+# Fixtures: verbatim copies of each rule's text, taken from the target
+# file's actual bytes (M95/M118) and compared modulo the read pipeline
+# (lowercase + whitespace collapse). Editing a guarded rule reds the suite
+# until the fixture is updated in the same commit — the two-site act D-103
+# chooses. Adopted at M142 defect return #2: two rounds of per-property
+# pins each left members of the mutation family unpinned (R1-R3 after
+# D4-D8/P1); equality over the slice settles the in-slice domain by
+# procedure. The pins above stay for defect LOCALIZATION; the fixtures
+# catch what they leave unpinned (M143 F10). Declared blind spot: a
+# mutation expressible purely in collapsed whitespace passes (RR12).
+
+
+def normalize(text):
+    """Collapse all whitespace to single spaces."""
+    return " ".join(text.split())
+
+
+SURFACE_FIXTURE = normalize("""\
+**Surface tier (mandatory).** Every plan classifies the milestone's
+   deliverable as user-facing or internal, and records the tier and a
+   one-clause reason in the milestone file's Goal or Scope prose.
+   Internal means no external consumer of the repo relies on the
+   deliverable — dev tooling, data-generation scripts, in-repo checkers
+   over internal artifacts, tracking records; user-facing is everything
+   else, including any deliverable whose tier is unclear or spans both.
+""".lower())
+
+STANDARD_FIXTURE = normalize("""\
+**Internal-tier criteria standard.** An internal-tier acceptance
+   criterion's promise quantifies over a domain its named procedure
+   enumerates directly — never an exemption registry, a per-rendering
+   enumeration, or a demonstration family spanning process or
+   environment boundaries. A draft needing those is repaired at this
+   gate by narrowing the promise (step 4's bounded-promise rule) or by
+   descoping, never by widening the specification. The standard governs
+   a criterion's promise, never a guard's construction — a detector's
+   per-rendering positive controls stay mandated by their own doctrine.
+""".lower())
+
+PROPORTION_FIXTURE = normalize("""\
+fixture rule applied to criteria).
+   The audit also asks a proportionality question of each criterion:
+   is the promise's domain proportionate to the declared surface tier
+   (the step-2 rule)? An internal-tier criterion outside the
+   internal-tier criteria standard is a finding, disposed at this gate
+   like the audit's other findings; the question governs promises and
+   never relaxes the probe question above.
+""".lower())
+
+REGRESS_FIXTURE = normalize("""\
+**Checker-regress shape.** The sweep also names this shape: a scope
+   extending or hardening a checker that the ROADMAP or archive records
+   an earlier milestone of the same repo shipping, where that checker
+   verifies repo-internal artifacts. On such a hit the gate poses
+   simplifying or deleting the checker as the recommended option and
+   hardening it as a present, non-recommended alternative. A repair that
+   leaves the checker's promise unchanged stays outside the shape
+   (D-090's Untouched clause); one that widens the checker's promise is
+   the regress shape however it is framed.
+""".lower())
+
+
+class TestWholeSliceFixtures(unittest.TestCase):
+    """Byte-equality (modulo the read pipeline) per rule slice — any
+    in-slice mutation reds, enumerated or not."""
+
+    def test_surface_rule_matches_its_fixture(self):
+        self.assertEqual(normalize(surface_rule()), SURFACE_FIXTURE)
+
+    def test_standard_rule_matches_its_fixture(self):
+        self.assertEqual(normalize(standard_rule()), STANDARD_FIXTURE)
+
+    def test_proportionality_rule_matches_its_fixture(self):
+        self.assertEqual(normalize(proportionality_rule()), PROPORTION_FIXTURE)
+
+    def test_regress_rule_matches_its_fixture(self):
+        self.assertEqual(normalize(regress_rule()), REGRESS_FIXTURE)
 
 
 if __name__ == "__main__":
