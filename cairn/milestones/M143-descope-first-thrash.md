@@ -91,6 +91,15 @@ row, unpromoted (its trigger is an implement step-6 edit, not this).
 
 - 2026-08-15: T4 — D-105 appended (both lineages derived and pinned: intraclass at `1e95baf`, circumplex at `b343054f`); cairn_validate all checks passed with zero warnings; suites skills 785 / scripts 345 / hooks 103 all OK with per-suite exit codes checked; status -> review.
 
+- 2026-08-15 fan-out: three lenses spawned ([O] diff-bug, [S] blame-history, [S] prior-PR-record); prior-record lens reports no regressions across every recorded trap (J2/L1/L2/L3, O-F1, M95/M104/M113/M123/M126/M131/M132/M136 lessons) and an empty PR-thread probe; blame lens confirms the RR05 composition fix preserved, registry coverage grown by 4 entries, D-097/D-101 byte-untouched. 17 candidate findings scored by fresh [S] scorer: 0 at/above 80 — actioned list empty. Sub-threshold, logged one line each:
+  - F5/78: AC3's "both counting tracks" read as covering the circumplex lineage too; its figure is a milestone count by directory grep, not a work-log return count — surfaced verbatim at the approval gate.
+  - F1/60: D-105's Consequences "re-cut present on the menu at every firing" reads against its own Decision's already-spent removal — repair, if wanted, is a later superseding entry (IP4).
+  - F2/60: the composition paragraph carries (b)'s diagnosis and escalation but not (b)'s reconsider-the-alternative remedy, which now lives only in the never-recommended re-cut option.
+  - F4/55: the circumplex grep procedure pins the count but not the consecutiveness/hardening characterization beside it.
+  - F7/55: two stale docstrings (module bullet still said "the routing"; class said step-5-only) — fixed on the branch this pass.
+  - F6/45, F10/45: the whole-slice fixture spans trigger (b) and the counting preamble (a two-site edit obligation on out-of-scope rules; defended in the fixture comment) and makes the four probe reds non-localizing.
+  - B3/30, F3/30, F8/35, F9/30, F12/30, F13/25, F14/30, B8/15, F11/15, F15/20: pin-granularity, handoff-underspecification, wording and hygiene notes — logged.
+
 ## Decisions
 
 ## Review

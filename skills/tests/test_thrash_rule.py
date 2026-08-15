@@ -29,7 +29,7 @@ are enumerated nowhere for the same reason:
     step 4 of `/milestone-plan` — since a remedy naming a record with no home
     is how the escalation fallback fired instead of the remedy (M117);
   - where both fire they COMPOSE — (a) takes the disposition, (b)'s diagnosis
-    and escalation offer carry into the routing;
+    and escalation offer carry into the composed chip;
   - once a re-plan or split is spent, the exhaustion branch drops the re-cut
     from the menu, with its diagnosis and its remedy pinned separately;
   - the whole block also carries a whole-slice equality fixture (M143,
@@ -648,7 +648,8 @@ class TestReturnFloor(unittest.TestCase):
 
 class TestWideningTest(unittest.TestCase):
     """M139/M140: the step-5 return rules and the implement-side repair
-    direction, guarded by whole-slice equality (D-103, RR12).
+    direction — joined at M143 by the step-4 thrash block — guarded by
+    whole-slice equality (D-103, RR12).
 
     Trigger: intraclass M117's AC2 took four defect returns, the first three
     each answering a counterexample with a wider matcher. The narrowing repair
