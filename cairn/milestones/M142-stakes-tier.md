@@ -1,6 +1,6 @@
 # M142: The plan gate scales criteria rigor to the deliverable's stakes
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
