@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-15 (candidate audit — 30 rows swept; 3 retired as overtaken (anchor-choice: ownership; rulebook offset norm: own drop condition + D-057; section-ledger rollout: D-095 deleted the mechanism, D-090 shuts the door); 2 ambiguous rows annotated in place; every live-file line ref made procedural per D-099 — 4 had drifted, 3 had not — leaving only the M56 archive pin, which IP4 makes undriftable; inboxes empty; validate green.)_
+_Last hygiene check: 2026-08-15 (candidate audit — 30 rows swept; 3 retired as overtaken (anchor-choice: ownership; offset norm: own drop condition + D-057; section-ledger rollout: D-095/D-090); 2 ambiguous rows annotated in place; every live-file line ref made procedural per D-099, 4 of 7 having drifted; inboxes empty; validate green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
