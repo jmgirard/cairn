@@ -88,7 +88,7 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
 - [x] T1 Author the step-2 surface-tier rule and internal-tier criteria
       standard in `skills/milestone-plan/SKILL.md` (anchors copied from
       shipped bytes; adjacent-guard reflow check per the M104 lesson).
-- [ ] T2 Add the proportionality question to the step-3 criteria-audit
+- [x] T2 Add the proportionality question to the step-3 criteria-audit
       paragraph, beside the existing one-exemplar probe it must not oppose.
 - [ ] T3 Add the checker-regress clause, with its repair discriminator, to the
       step-2 collision check.
@@ -106,6 +106,7 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
 - 2026-08-15: plan gate chose a regress gate-question with deletion recommended over a D-090-style hard door because a hard door narrows D-090's Untouched clause and adds supersede ceremony to legitimate hardenings; falsified by a tracked repo accepting the recommended deletion where the checker's absence then admits a user-facing defect it would have caught.
 - 2026-08-15: plan gate chose a domain-bounded lite standard over a numeric probe-count cap because the cap contradicted the shipped one-exemplar probe (audit round-1 finding 1); falsified by an internal-tier criterion within the standard still consuming three defect returns.
 - 2026-08-15: T1 — surface-tier rule and internal-tier criteria standard authored into /milestone-plan step 2 (two paragraphs after the criteria-drafted rule); question gate skipped, nothing genuinely open — both approach choices were settled at the plan gate; three suites green (786/345/103, per-suite exit codes checked).
+- 2026-08-15: T2 — proportionality question added to the step-3 criteria audit, directly after the one-exemplar probe sentence, with an explicit never-relaxes boundary toward it; three suites green, per-suite exit codes checked.
 
 ## Decisions
 

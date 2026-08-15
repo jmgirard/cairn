@@ -119,6 +119,12 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    verified domain is free in — form as well as location — or stand one
    exemplar in for the family (guard-doctrine §1's inversion protocol and
    §4's fixture rule applied to criteria).
+   The audit also asks a proportionality question of each criterion:
+   is the promise's domain proportionate to the declared surface tier
+   (the step-2 rule)? An internal-tier criterion outside the
+   internal-tier criteria standard is a finding, disposed at this gate
+   like the audit's other findings; the question governs promises and
+   never relaxes the probe question above.
    Dispose of what it returns at
    this gate, never silently: a finding with one clear right answer is fixed
    and the fix reported in chat, and a finding you could reasonably decide
