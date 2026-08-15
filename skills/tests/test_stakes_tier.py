@@ -155,8 +155,11 @@ class TestSurfaceTierRule(unittest.TestCase):
 
 class TestInternalTierStandard(unittest.TestCase):
     def test_promise_is_bounded_to_a_directly_enumerated_domain(self):
+        # The subject rides in the regex (M131: negating a phrase is not
+        # inverting a rule — transpose the SUBJECT too).
         self.assertRegex(
             standard_rule(),
+            r"an internal-tier acceptance\s+criterion's promise "
             r"quantifies over a domain its named procedure\s+"
             r"enumerates directly",
         )
