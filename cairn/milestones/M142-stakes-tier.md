@@ -1,6 +1,6 @@
 # M142: The plan gate scales criteria rigor to the deliverable's stakes
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -114,6 +114,7 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
 - 2026-08-15: defect return #1 (review floor): AC5's probe clause failed as written — new-rule sentences do not survive the four probe families red (upward relocation D4, subject transpositions D5/D6, obligation negations D7/D8, tail deletion P1); repair is guard hardening (positional slice binding, subject/obligation pins, tail coverage, D9's registry block), criteria unchanged; status review → in-progress.
 - 2026-08-15: return #1 repaired (T4 reworked): rule slices now resolve inside their owning step's slice so upward relocation reds (D4); subject pins added for the proportionality finding and the regress provenance (D5, D6); obligation pins for "Every plan classifies…records" and "the gate poses" (D7, D8); the "or by descoping" tail pinned (P1); the proportionality slice re-anchored so its registered block is contained, not a bound (D9); 5 new registry blocks; probe run re-executed with the six previously-green mutations plus three upward relocations added — 26 probes all genuinely red (failures>0, errors=0, ran=21), restore byte-identical; three suites green (807/345/103) and cairn_validate clean, per-suite exit codes checked.
 - 2026-08-15: defect return #2 (review floor, pass 2): AC5's probe clause failed again by new mechanisms of the same shape (R1-R3: definitional subject, repair verb, shape-intro obligation — each verified green by mutation); thrash trigger (b) fired — pin-enumeration reconsidered in favor of whole-slice equality fixtures per rule slice (D-103's instrument), which settle the in-slice mutation domain by procedure; status review → in-progress.
+- 2026-08-15: return #2 repaired: four whole-slice equality fixtures added (verbatim from shipped bytes, normalize = lowercase + whitespace collapse; declared blind spot per RR12: whitespace-only mutations), each registered in the harness anchored on a phrase R1-R3 proved unpinned; step-slice bounds moved to bold labels alone (pass-2 R4, renumbering no longer false-reds); dead assertIn removed (R6); probe run extended with R1-R3 — 29 probes all genuinely red (failures>0, errors=0, ran=25), R1-R3 each red on the fixture alone, restore byte-identical; three suites green (811/345/103) and cairn_validate clean, per-suite exit codes checked; status → review.
 
 ## Decisions
 
