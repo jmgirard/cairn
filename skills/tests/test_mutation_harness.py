@@ -2767,6 +2767,38 @@ REGISTRY = [
         target="skills/milestone-plan/SKILL.md",
         block="the regress shape however it is framed",
     ),
+    # M142 defect return #1: five blocks the first cut left unpinned — the
+    # two obligations, the two subjects, and the repair sentence's tail.
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestSurfaceTierRule.test_classification_and_recording_are_obligations",
+        target="skills/milestone-plan/SKILL.md",
+        block="Every plan classifies the milestone's",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestInternalTierStandard.test_descoping_is_a_legal_repair_alternative",
+        target="skills/milestone-plan/SKILL.md",
+        block="or by\n   descoping, never by",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestProportionalityQuestion.test_out_of_standard_internal_criterion_is_a_gate_finding",
+        target="skills/milestone-plan/SKILL.md",
+        block="An internal-tier criterion outside the",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestCheckerRegressClause.test_clause_names_the_shape",
+        target="skills/milestone-plan/SKILL.md",
+        block="an earlier milestone of the same repo shipping",
+    ),
+    Mutation(
+        guard="test_stakes_tier",
+        test="TestCheckerRegressClause.test_deletion_is_the_recommended_option",
+        target="skills/milestone-plan/SKILL.md",
+        block="On such a hit the gate poses",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

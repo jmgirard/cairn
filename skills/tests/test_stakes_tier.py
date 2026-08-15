@@ -64,10 +64,22 @@ def plan():
 SURFACE_START = "**surface tier (mandatory).**"
 STANDARD_START = "**internal-tier criteria standard.**"
 STANDARD_END = "**exploring a source corpus.**"
-PROPORTION_START = "the audit also asks a proportionality question"
+# The proportionality slice starts AFTER the one-exemplar probe sentence it
+# sits beside, so the question's own opening clause is contained in the
+# slice rather than serving as its bound — a registered block that doubles
+# as a slice bound proves nothing about its own assert (M142 return, D9).
+PROPORTION_START = "fixture rule applied to criteria)."
 PROPORTION_END = "dispose of what it returns"
 REGRESS_START = "**checker-regress shape.**"
 REGRESS_END = "**harvest recent lessons"
+# Step bounds: each rule slice is taken INSIDE its owning step's slice, not
+# the whole file — a bare find() from position 0 resolves a rule relocated
+# upward, entirely out of its step, and every whole-file anchor stays green
+# (M142 return, D4: verified against the first cut of this file).
+STEP2_START = "2. **investigate first.**"
+STEP2_END = "3. **question gate**"
+STEP3_END = "4. **solidify autonomously**"
+COLLISION_START = "**collision check (mandatory).**"
 
 
 def slice_between(text, start, end):
@@ -78,27 +90,44 @@ def slice_between(text, start, end):
     return text[i:j]
 
 
+def step2():
+    """Step 2's whole slice — the surface-tier rule, the standard, and the
+    collision check must all live inside it."""
+    return slice_between(plan(), STEP2_START, STEP2_END)
+
+
+def step3():
+    """Step 3's whole slice — the criteria audit lives inside it."""
+    return slice_between(plan(), STEP2_END, STEP3_END)
+
+
 def surface_rule():
-    """The surface-tier rule alone — its slice ends where the standard's
-    begins, so a sentence drifting between the two rules reds (M139: the
-    slice is per rule, not per step)."""
-    return slice_between(plan(), SURFACE_START, STANDARD_START)
+    """The surface-tier rule alone, scoped inside step 2 — its slice ends
+    where the standard's begins, so a sentence drifting between the two
+    rules reds (M139: the slice is per rule, not per step)."""
+    return slice_between(step2(), SURFACE_START, STANDARD_START)
 
 
 def standard_rule():
-    """The internal-tier criteria standard alone."""
-    return slice_between(plan(), STANDARD_START, STANDARD_END)
+    """The internal-tier criteria standard alone, scoped inside step 2."""
+    return slice_between(step2(), STANDARD_START, STANDARD_END)
 
 
 def proportionality_rule():
-    """The audit's proportionality question alone — bounded below by the
-    audit's own disposal sentence, which predates M142."""
-    return slice_between(plan(), PROPORTION_START, PROPORTION_END)
+    """The audit's proportionality question alone, scoped inside step 3 —
+    bounded above by the one-exemplar probe sentence and below by the
+    audit's own disposal sentence, both of which predate M142."""
+    return slice_between(step3(), PROPORTION_START, PROPORTION_END)
 
 
 def regress_rule():
-    """The collision check's checker-regress clause alone."""
-    return slice_between(plan(), REGRESS_START, REGRESS_END)
+    """The collision check's checker-regress clause alone, scoped inside
+    step 2's collision check: the tail of the collision slice from the
+    clause's own label (the collision slice already ends at the harvest
+    marker, so no second end-bound is needed)."""
+    collision = slice_between(step2(), COLLISION_START, REGRESS_END)
+    i = collision.find(REGRESS_START)
+    return "" if i == -1 else collision[i:]
 
 
 class TestMarkersUnique(unittest.TestCase):
@@ -115,6 +144,10 @@ class TestMarkersUnique(unittest.TestCase):
             PROPORTION_END,
             REGRESS_START,
             REGRESS_END,
+            STEP2_START,
+            STEP2_END,
+            STEP3_END,
+            COLLISION_START,
         ):
             self.assertEqual(
                 text.count(marker), 1, f"marker not unique: {marker!r}"
@@ -124,6 +157,17 @@ class TestMarkersUnique(unittest.TestCase):
 class TestSurfaceTierRule(unittest.TestCase):
     def test_rule_classifies_every_deliverable_into_the_two_tiers(self):
         self.assertIn("deliverable as user-facing or internal", surface_rule())
+
+    def test_classification_and_recording_are_obligations(self):
+        # "Every plan classifies … and records" — softening either verb to
+        # a "may"/"need not" form must red (M142 return, D7: the obligation
+        # survived its own negation under the first cut).
+        self.assertRegex(
+            surface_rule(),
+            r"every plan classifies the milestone's\s+"
+            r"deliverable as user-facing or internal, and records the tier"
+            r" and a\s+one-clause reason",
+        )
 
     def test_internal_is_defined_by_absence_of_an_external_consumer(self):
         self.assertIn(
@@ -180,6 +224,16 @@ class TestInternalTierStandard(unittest.TestCase):
         )
         self.assertIn("never by widening the specification", rule)
 
+    def test_descoping_is_a_legal_repair_alternative(self):
+        # The sentence's tail beyond the bounded-promise clause — deletable
+        # green under the first cut (M142 return, P1: the M131/M132
+        # prefix-without-tail class).
+        self.assertRegex(
+            standard_rule(),
+            r"narrowing the promise \(step 4's bounded-promise rule\)"
+            r" or by\s+descoping, never by",
+        )
+
     def test_standard_stops_at_the_promise_guard_boundary(self):
         rule = standard_rule()
         self.assertIn(
@@ -203,6 +257,14 @@ class TestProportionalityQuestion(unittest.TestCase):
         )
 
     def test_out_of_standard_internal_criterion_is_a_gate_finding(self):
+        # The subject rides in the regex — which tier the finding applies
+        # to inverted green under the first cut (M142 return, D6; M131).
+        self.assertRegex(
+            proportionality_rule(),
+            r"an internal-tier criterion outside the\s+"
+            r"internal-tier criteria standard is a finding,"
+            r" disposed at this gate",
+        )
         self.assertIn(
             "is a finding, disposed at this gate", proportionality_rule()
         )
@@ -221,9 +283,15 @@ class TestCheckerRegressClause(unittest.TestCase):
             " records",
             rule,
         )
+        # Same-repo provenance is part of the shape (AC4) — "any repo at
+        # any time" transposed green under the first cut (M142 return, D5).
+        self.assertIn("an earlier milestone of the same repo shipping", rule)
         self.assertIn("verifies repo-internal artifacts", rule)
 
     def test_deletion_is_the_recommended_option(self):
+        # "the gate poses" is an obligation — "may pose" softened green
+        # under the first cut (M142 return, D8).
+        self.assertIn("on such a hit the gate poses", regress_rule())
         self.assertIn(
             "simplifying or deleting the checker as the recommended option",
             regress_rule(),
