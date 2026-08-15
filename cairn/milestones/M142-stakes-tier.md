@@ -1,6 +1,6 @@
 # M142: The plan gate scales criteria rigor to the deliverable's stakes
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -112,6 +112,7 @@ existing standing-instrument candidate row (ROADMAP), cross-referenced.
 - 2026-08-15: T4 note — probe_m142.py is session scratch, not committed; the T4 line itself states the full procedure (probe families, red criteria failures>0/errors=0/ran>0, byte-identical restore check), so the record stands without the script.
 - 2026-08-15: T5 — D-107 appended (previewed verbatim in chat): stakes-tier adoption + regress question beside D-090's door, D-090 annotated with its Untouched clause intact, hosted per D-098, trigger-clearing defect named; cairn_validate all checks passed; three suites green from repo root, per-suite exit codes checked.
 - 2026-08-15: defect return #1 (review floor): AC5's probe clause failed as written — new-rule sentences do not survive the four probe families red (upward relocation D4, subject transpositions D5/D6, obligation negations D7/D8, tail deletion P1); repair is guard hardening (positional slice binding, subject/obligation pins, tail coverage, D9's registry block), criteria unchanged; status review → in-progress.
+- 2026-08-15: return #1 repaired (T4 reworked): rule slices now resolve inside their owning step's slice so upward relocation reds (D4); subject pins added for the proportionality finding and the regress provenance (D5, D6); obligation pins for "Every plan classifies…records" and "the gate poses" (D7, D8); the "or by descoping" tail pinned (P1); the proportionality slice re-anchored so its registered block is contained, not a bound (D9); 5 new registry blocks; probe run re-executed with the six previously-green mutations plus three upward relocations added — 26 probes all genuinely red (failures>0, errors=0, ran=21), restore byte-identical; three suites green (807/345/103) and cairn_validate clean, per-suite exit codes checked.
 
 ## Decisions
 
