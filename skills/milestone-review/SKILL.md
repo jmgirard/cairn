@@ -112,8 +112,15 @@ overrides — log the override).
 
    - **(a) The third return, and every return after it** — a mis-planned
      milestone. It is a threshold, not a single moment: once reached it holds.
-     Do not queue another retry; recommend re-plan or split via
-     `/milestone-plan`.
+     Do not queue another retry; the recommended option is descope-or-park
+     (M143): descope — narrow the milestone to its already-verified criteria
+     via the gated amendment protocol (`/milestone-implement` step 6), the
+     unverified remainder exiting to candidate rows or a split milestone,
+     then re-review the narrowed set — or park as `blocked` with the blocker
+     named in a work-log line. A same-objective re-cut via `/milestone-plan`
+     and dropping at the user's explicit decision stay present options; the
+     re-cut is never the recommended one — both downstream lineages on record
+     show a re-cut buying further returns, not a fix (D-105 narrows D-064).
    - **(b) The same acceptance criterion failing twice, each by a new mechanism
      of the same shape** — a wrong approach rather than a mis-sized one.
      Re-cutting around the same predicate buys the next mechanism, not a fix,
@@ -123,16 +130,19 @@ overrides — log the override).
      per instance, never automatically (D-004).
 
    **Where both fire they compose.** (a) governs the disposition — no further
-   retry under the current plan, and the milestone routes through
-   `/milestone-plan` — while (b)'s diagnosis and its `/milestone-brief`
-   escalation offer carry INTO that routing rather than being discarded. They
-   answer different questions, and only the retry question is a conflict.
+   retry under the current plan, the chip composed from (a)'s descope-or-park
+   menu — while (b)'s diagnosis and its `/milestone-brief`
+   escalation offer carry INTO that composed chip rather than being discarded.
+   While the recorded alternative is unspent, (b)'s remedy — reconsidering
+   it — rides the present, never-recommended re-cut option; after that,
+   escalation is what remains of (b).
+   They answer different questions, and only the retry question is a conflict.
 
    **When (a) fires and the work log already records a re-plan or split spent
-   on this milestone**, the remedy is no longer re-plan-or-split: that is the
-   move which just failed. Compose the routing chip from an offered
-   `/milestone-brief` escalation, parking as `blocked` with the blocker named
-   in a work-log line, or dropping at the user's explicit decision — never a
+   on this milestone**, the same-objective re-cut leaves the menu entirely:
+   that is the move which just failed. Descope-or-park stays the recommended
+   option; beside it the chip carries an offered `/milestone-brief` escalation
+   and dropping at the user's explicit decision — never a
    bare retry as the recommended option. Every escalation here stays an offer,
    gated per instance, never automatic and never a standing menu item.
 
