@@ -59,12 +59,56 @@ re-measurement stays with the existing re-measurement candidate row.
 
 ## Tasks
 
-- [ ] T1: Ledger and rewrite `cairn/LESSONS.md` (32 lesson entries at
+- [x] T1: Ledger and rewrite `cairn/LESSONS.md` (32 lesson entries at
       today's tree; grounds named per entry).
 - [ ] T2: Ledger and rewrite the ROADMAP candidate rows; execute the five
       gate-approved drops; re-run M146's greps over ROADMAP/LESSONS.
 - [ ] T3: Run `cairn_validate`; confirm exit 0; commit ledger + rewrites
       together.
+
+## Ledger
+
+Baseline: default-branch commit `f767109` (branch point). LESSONS.md lesson
+lines 18–49 keyed L01–L32 in file order; ROADMAP.md candidate rows keyed
+R01–R27 in file order. Grounds: D-051 (enforcement/ownership), D-055
+(maturation), RR13-reduction (rec 8: guard-craft families retire into the
+git-archived doctrine — guard-doctrine.md deleted at M146, the prose-guard
+suite gating nothing per D-109).
+
+**Lessons:**
+
+- L01 (M56+M65 verification width): trimmed — consolidated family line; the suite-command specifics owned by PROFILE `verify`; M111's `;`-chain half (L12) and M124's finally-restore (L27) folded in as members.
+- L02 (M71 hook matching/shipping): trimmed — dispatch detail cross-referenced to `references/claude-code-hooks.md`; the four shipping surfaces kept.
+- L03 (M72 merge-guard direction): kept.
+- L04 (M73 gh GraphQL/REST): kept.
+- L05 (M81/M91 derived-page aging): kept.
+- L06 (M90 replace_all indentation): trimmed — the prove-guard-reddens-per-input half retired, RR13-reduction (prose-guard craft).
+- L07 (M99 fixed-point figures): retired — ownership: the tracking-rules derived-figures rule owns the remedy (the line itself records the graduation); case history in archive + git.
+- L08 (M99 rewrite drops disposal): kept.
+- L09 (M95 anchor-authoring craft): retired — RR13-reduction/maturation (guard-craft family).
+- L10 (M95 inversion-sweep craft): retired — RR13-reduction/maturation (guard-craft family).
+- L11 (M100 fail loud, never open): trimmed — checker craft kept to one line.
+- L12 (M104 adjacent-guard reflow): retired — RR13-reduction: the hazard is the gating prose-guard suite, which gates nothing (D-109).
+- L13 (M104 scope-word broadening): kept.
+- L14 (M105 remote squash): kept.
+- L15 (M109 SkipTest/fixture spy): kept.
+- L16 (M111 retention prune): trimmed — its `;`-chain half folded into L01.
+- L17 (M112 doctrine-wording surfaces): kept.
+- L18 (M113 double floor): kept.
+- L19 (M113 prose gives false coverage): retired — RR13-reduction: mutation-harness craft, non-gating family.
+- L20 (M113/M122 layer agreement): kept (already its remainder).
+- L21 (M115 dangling-id skip window): kept.
+- L22 (M115 unmerged citation): kept.
+- L23 (M114 facts not characterizations): kept.
+- L24 (M118 definitional line elsewhere): retired — RR13-reduction: certification-sweep craft; its bounded-promise half already graduated (M130).
+- L25 (M117 mutation-registry family): retired — RR13-reduction/maturation: the flagship guard-craft family.
+- L26 (M119 near-miss controls): retired — RR13-reduction: detector-control craft for a retired instrument class.
+- L27 (M124 finally-restore): trimmed — absorbed into L01's family line (member named there).
+- L28 (M127 whole-file deletion): kept.
+- L29 (M131/M132 partial anchors): retired — RR13-reduction: prose-guard probe craft.
+- L30 (M133 zsh `path`): kept.
+- L31 (M134 test-coverage claims): retired — ownership: the derived-claims rule owns the docstring remedy (the line records the graduation); the work-log half is de-escalated (D-116).
+- L32 (M146 AST recount): kept.
 
 ## Work log
 
@@ -72,6 +116,8 @@ re-measurement stays with the existing re-measurement candidate row.
 - 2026-08-16: criteria audit ran ([O] fresh reader): AC1 gained the consolidated-family form and the RR13-reduction retirement ground (a strict one-lesson-per-line split would breach the 50-line cap); AC2 gained the search-first cross-reference allowance; the completeness-claiming drop criterion was demoted to ledger dispositions with the reasons in this file, not the capped archive summary; AC3 tightened to exit 0.
 - 2026-08-16: plan gate approved the five machinery-row drops via the ledger rather than a completeness-claiming criterion; falsified by a dropped row's subject resurfacing as needed work.
 - 2026-08-16: M146 review note — the In-scope row-drop list intersects D-115's Consequences: the write-time-stamp-check row is D-115's named remedy path, so dropping it requires a superseding clause in the same milestone or sparing (and correcting) the row; that row's premise and blocker analysis also name machinery M146 retired, and LESSONS.md line 18 cites the deleted test_cairn_budget — both are this milestone's cleanup ground (M146 review findings O2/O5/O8).
+- 2026-08-16: pre-implementation gate — user approved dropping the write-time-stamp-check row WITH a superseding D-entry redirecting D-115's fallback (over sparing the row).
+- 2026-08-16: T1 — LESSONS ledgered at f767109 (32 entries: 16 kept, 5 trimmed, 11 retired — 9 RR13-reduction/maturation, 2 ownership) and rewritten 49→38 lines; suites 308+103 green, validate exit 0.
 
 ## Decisions
 
