@@ -1,6 +1,6 @@
 # M145: Standing instruments scale to stakes
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -111,7 +111,7 @@ untouched.
 - [x] T4: Remove `records-hygiene.md` §5 and fix the tracking-rules.md:280
       mapping clause; draft, preview, and append the two superseding
       D-entries.
-- [ ] T5: Run both gating suites; hand-run `skills/tests` and disposition
+- [x] T5: Run both gating suites; hand-run `skills/tests` and disposition
       every red in the Review section (scorer-guard reds expected as
       intentional); run the AC2 residue sweep.
 
@@ -126,6 +126,7 @@ untouched.
 - 2026-08-16: T2 done — RRs advisory by default (BC section on explicit recorded request only), second-escalation briefs list removal; brief skill step 1 + template Output format edited.
 - 2026-08-16: T3 done — audit scaled to stakes (full vs reduced mode, mode named in the record line); the probe question's guard-doctrine citation dropped in passing, shrinking an M146 T2 site; both gating suites exit 0 (covers T2's template edit too).
 - 2026-08-16: T4 done — records-hygiene §5 deleted whole (retired-section comment left, numbering stable), mapping clause trimmed; D-110/D-111 previewed and appended; validate exit 0, no dangler batch unmasked.
+- 2026-08-16: T5 done — scripts/tests + hooks/tests exit 0; skills/tests hand-run: 813 tests, 22 failures + 12 errors, every red mapped to an M145 intentional edit (scorer/fan-out guards, return-floor slice fixtures, audit-block pins, brief template, §5, harness registrations on changed bytes; full log scratchpad kt.log); AC2 residue sweep: 2 hits, both the retirement's own record. Status → review.
 
 ## Decisions
 

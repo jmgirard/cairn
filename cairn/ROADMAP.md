@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M145 | Standing instruments scale to stakes | in-progress | — | high | milestones/M145-stakes-scaled-instruments.md |
+| M145 | Standing instruments scale to stakes | review | — | high | milestones/M145-stakes-scaled-instruments.md |
 | M146 | The rulebook states rules, git holds reasons | planned | M145 | high | milestones/M146-rulebook-states-rules.md |
 | M147 | The records shrink to their jobs | planned | M146 | normal | milestones/M147-record-diet.md |
 | M144 | The prose-guard suites leave the merge gate | done | — | high | milestones/archive/M144-guards-leave-the-gate.md |
