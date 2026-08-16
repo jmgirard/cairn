@@ -1,11 +1,11 @@
 # M147: The records shrink to their jobs
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M146
 - **Driving RR:** —
 - **Principles touched:** GP1, IP4
-- **Branch/PR:** —
+- **Branch/PR:** m147-record-diet
 
 ## Goal
 
