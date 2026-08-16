@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** m144-guards-leave-the-gate
+- **Branch/PR:** m144-guards-leave-the-gate · https://github.com/jmgirard/cairn/pull/145
 
 ## Goal
 
@@ -38,7 +38,7 @@ knowledge reading is recorded in the work log only.
 
 ## Acceptance criteria
 
-- [ ] AC1: The `## verify` slot of `cairn/PROFILE.md` names exactly two
+- [x] AC1: The `## verify` slot of `cairn/PROFILE.md` names exactly two
       commands as gating — `python3 -m unittest discover -s scripts/tests`
       and `python3 -m unittest discover -s hooks/tests` — and no third; a
       separate, explicitly non-gating paragraph names `skills/tests` as
@@ -47,12 +47,12 @@ knowledge reading is recorded in the work log only.
       longer owes a prose guard or mutation registration in this repo, while
       the shipped "What gets a test" doctrine continues to govern adopting
       repos.
-- [ ] AC2: The `cairn/LESSONS.md` M56+M65 lesson is corrected in place as a
+- [x] AC2: The `cairn/LESSONS.md` M56+M65 lesson is corrected in place as a
       whole sentence (no contradictory remainder), naming the two gating
       suites and `skills/tests` as hand-run only, marked in the line's
       leading attribution parens (`… corrected M144`), without adding a line
       (the file sits at 49/50).
-- [ ] AC3: `cairn/DECISIONS.md` gains two entries: (a) one superseding
+- [x] AC3: `cairn/DECISIONS.md` gains two entries: (a) one superseding
       D-090's Decision subject clause — "No new milestone is planned whose
       deliverable is verification apparatus" — by extending it to new conduct
       rules about verification or records, quoting D-090's trigger clause
@@ -70,7 +70,7 @@ knowledge reading is recorded in the work log only.
       branch HEAD as pushed for merge (re-run after the final pre-review
       push — M105): each `discover` run exits 0 with tests-ran > 0 (M138),
       each exit code captured directly, never through a pipe (M56).
-- [ ] AC5: The sweep `grep -rn -e "skills/tests" -e "three suites"
+- [x] AC5: The sweep `grep -rn -e "skills/tests" -e "three suites"
       --include="*.md" --exclude-dir=milestones --exclude-dir=reviews
       --exclude-dir=legacy --exclude=DECISIONS.md .` — exclusions on the grep
       itself, never a downstream `grep -v` (M137), probed against a
@@ -82,7 +82,7 @@ knowledge reading is recorded in the work log only.
       and `## consistency-gate`, the LESSONS.md M56+M65 line, `CLAUDE.md`'s
       verify sentence — read whole, names no suite as gating that no longer
       gates.
-- [ ] AC6: `cairn_validate` exits 0 at the branch HEAD as pushed for merge,
+- [x] AC6: `cairn_validate` exits 0 at the branch HEAD as pushed for merge,
       with any dangling-id tokens newly unmasked by the two D-entries (M115)
       dispositioned.
 
@@ -126,5 +126,15 @@ knowledge reading is recorded in the work log only.
 - 2026-08-16: T3 — LESSONS M56+M65 line corrected in place, whole sentence, marker in the attribution parens; file stays 49 lines, validate green (tick landed by amending T3's checkpoint, which had omitted it).
 - 2026-08-16: T4 — sweep probed against PROFILE's known-positive (3 hits) then run whole: 17 hits — LESSONS:18 + PROFILE ×3 edited by this milestone; LESSONS:49 + LESSONS:18's opening clause historical narration; ROADMAP ×2 + references ×9 guard-file citations that stay true; tracking-rules:962 deferred to step 2; one live directive found and edited (CLAUDE.md's verify sentence, now naming the two gating suites).
 - 2026-08-16: T5 — pre-review run at 444d30b+T4: skills 813 / scripts 345 / hooks 103 tests, each exit 0 captured directly, validate exit 0; AC4's as-pushed run is review's to re-execute after the final push. Status → review.
+- 2026-08-16: review recount — T4's line under-counted: the sweep at that tree returned 18 hits (references ×10, not ×9); the review-time sweep returns 19, the +1 being CLAUDE.md's own edited sentence. Same dispositions, no live directive either way.
 
 ## Decisions
+
+## Review
+
+- 2026-08-16 AC1 evidence: the verify slot's fenced block lists exactly the two gating `discover` commands (scripts, hooks); the only other `discover` occurrence sits inside the explicitly non-gating hand-run paragraph, which keeps the discover-only note; test-doctrine carries "owes no prose guard and no mutation registration" and "continues to govern adopting repos" (grep: 1 hit each). ✓
+- 2026-08-16 AC2 evidence: line 18's attribution reads `(M56+M65, consolidated M78/M83, corrected M144)`; the corrected sentence stands whole with no contradictory remainder (the surviving "all three suites" clause narrates the historical M56/M65 incident); file at 49 lines — no line added. ✓
+- 2026-08-16 AC3 evidence: every mandated element present, wrap-safe verified (`tr '\n' ' ' | grep`): D-108 quotes the subject clause, retains the trigger "unchanged and reads, verbatim", carries the removal carve-out and the M144 self-exception with "the door binds every plan gate after it"; D-109 carries "unintended prose regression reaches `main`", the review-fan-out-missed condition, the `discover -s skills/tests` decision procedure, the intentional-rewording-is-not-a-firing clause, and the supersede close. ✓
+- 2026-08-16 AC5 evidence: probe positive (3 PROFILE hits) before the full sweep; 19 hits, each dispositioned — edited by this milestone (CLAUDE.md:7, LESSONS:18, PROFILE:31/35/55), historical narration (LESSONS:49 and LESSONS:18's opening clause), guard-file citations that stay true (ROADMAP:39/42, references ×10), shipped doctrine deferred to step 2 (tracking-rules:962); no hit is a live gate directive. Four gate-directive sites read whole: verify (two gating commands), consistency-gate (no stale suite naming; "the `verify` suites are re-run at review" now denotes the two), LESSONS:18, CLAUDE.md's sentence (names the two gating suites, skills/tests hand-run only). ✓
+- 2026-08-16 AC6 evidence: `cairn_validate` exit 0 (direct, unpiped); the D-108/D-109 ceiling raise unmasked zero dangling-id tokens — none to disposition. ✓
+- 2026-08-16 consistency gate: `cairn_validate` exit 0; no IPn/GPn changed → `cairn_impact --changed` skipped; profile `consistency-gate` slot names no toolchain checks (generic) → clean no-op. Projection-vs-outcome: Driving RR is `—` → no-op.
