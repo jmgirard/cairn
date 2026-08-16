@@ -1,6 +1,6 @@
 # M147: The records shrink to their jobs
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M146
 - **Driving RR:** —
@@ -63,7 +63,7 @@ re-measurement stays with the existing re-measurement candidate row.
       today's tree; grounds named per entry).
 - [x] T2: Ledger and rewrite the ROADMAP candidate rows; execute the five
       gate-approved drops; re-run M146's greps over ROADMAP/LESSONS.
-- [ ] T3: Run `cairn_validate`; confirm exit 0; commit ledger + rewrites
+- [x] T3: Run `cairn_validate`; confirm exit 0; commit ledger + rewrites
       together.
 
 ## Ledger
@@ -149,6 +149,7 @@ suite gating nothing per D-109).
 - 2026-08-16: pre-implementation gate — user approved dropping the write-time-stamp-check row WITH a superseding D-entry redirecting D-115's fallback (over sparing the row).
 - 2026-08-16: T1 — LESSONS ledgered at f767109 (32 entries: 16 kept, 5 trimmed, 11 retired — 9 RR13-reduction/maturation, 2 ownership) and rewritten 49→38 lines; suites 308+103 green, validate exit 0.
 - 2026-08-16: T2 — 27 candidate rows ledgered (20 rewritten to the AC2 shape, 7 dropped: the 5 gate-approved plus R08/R09 moot, their subjects deleted at M146); D-117 appended redirecting D-115's fallback; M146's AC2/AC4 greps re-run without ROADMAP/LESSONS exclusions — zero hits, positive control 30 hits on DECISIONS.md; ROADMAP 54→45 lines; suites 308+103 green, validate exit 0.
+- 2026-08-16: T3 — final run at tip: validate exit 0, suites 308+103 green; status → review.
 
 ## Decisions
 

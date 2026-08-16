@@ -14,7 +14,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 |---|---|---|---|---|---|
 | M145 | Standing instruments scale to stakes | done | — | high | milestones/archive/M145-stakes-scaled-instruments.md |
 | M146 | The rulebook states rules, git holds reasons | done | M145 | high | milestones/archive/M146-rulebook-states-rules.md |
-| M147 | The records shrink to their jobs | in-progress | M146 | normal | milestones/M147-record-diet.md |
+| M147 | The records shrink to their jobs | review | M146 | normal | milestones/M147-record-diet.md |
 | M144 | The prose-guard suites leave the merge gate | done | — | high | milestones/archive/M144-guards-leave-the-gate.md |
 | M142 | The plan gate scales criteria rigor to the deliverable's stakes | done | — | high | milestones/archive/M142-stakes-tier.md |
 | M143 | The thrash threshold recommends descoping before re-planning | done | — | high | milestones/archive/M143-descope-first-thrash.md |
