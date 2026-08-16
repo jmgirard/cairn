@@ -106,7 +106,7 @@ untouched.
 - [x] T2: `/milestone-brief` BC opt-in and second-escalation removal option
       (skills/milestone-brief/SKILL.md:72–115);
       skills/shared/templates/brief.md:38–44.
-- [ ] T3: `/milestone-plan` step 3 audit scaling
+- [x] T3: `/milestone-plan` step 3 audit scaling
       (skills/milestone-plan/SKILL.md:114–149).
 - [ ] T4: Remove `records-hygiene.md` §5 and fix the tracking-rules.md:280
       mapping clause; draft, preview, and append the two superseding
@@ -124,6 +124,7 @@ untouched.
 - 2026-08-16: plan gate chose defaults-first ordering over the candidate row's reduction-first because M146/M147 then review under the lighter regime; falsified by the new routing misclassifying M146's mixed diff.
 - 2026-08-16: T1 done — step 5 rewritten (stakes routing, ranked findings, gate triage, re-based return floor); tracking-rules fan-out bullet + archive-summary template updated; both gating suites exit 0.
 - 2026-08-16: T2 done — RRs advisory by default (BC section on explicit recorded request only), second-escalation briefs list removal; brief skill step 1 + template Output format edited.
+- 2026-08-16: T3 done — audit scaled to stakes (full vs reduced mode, mode named in the record line); the probe question's guard-doctrine citation dropped in passing, shrinking an M146 T2 site; both gating suites exit 0 (covers T2's template edit too).
 
 ## Decisions
 
