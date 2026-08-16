@@ -4000,3 +4000,61 @@ deletion where the checker's absence then admits a user-facing defect it
 would have caught; the domain-bounded standard is falsified by an
 internal-tier criterion within the standard still consuming three defect
 returns. Either firing supersedes the corresponding rule here.
+
+### D-108 (2026-08-16): D-090's door widens to new conduct rules about verification or records — removal-shaped milestones are outside the door; supersedes D-090's Decision subject clause by extension, trigger clause retained; M144 excepted by name (RR13, M144)
+
+**Context:** RR13 (ingested 2026-08-16) measured the post-D-090 recurrence:
+with new apparatus barred, the generator survived as conduct rules —
+M130–M143 shipped a new rule about verification or records roughly weekly,
+each carrying guard surface and each reviewed by the machinery it modified,
+and the correction cascade D-090's Context predicted recurred at M139 (the
+ROADMAP batching row: "arguably fired at M139"). D-090's Context named the
+signature: "the anti-cost program maximizes the cost it exists to reduce."
+RR13 Q1 identifies one generator behind both forms — code-grade verification
+discipline applied to artifacts with no oracle — and rec 2 (apply) grounds
+this widening.
+
+**Decision:** D-090's Decision subject clause — "No new milestone is planned
+whose deliverable is verification apparatus" — is superseded by extension: no
+new milestone is planned whose deliverable is a new conduct rule about
+verification or records (how records are authored, measured, or audited; how
+verification is conducted), on the same terms as apparatus. D-090's trigger
+clause is retained unchanged and reads, verbatim: "unless its trigger is a
+defect in shipped behavior: what the plugin's skills, hooks, and scripts do
+for their users." Carve-out: a milestone whose deliverable removes or narrows
+a conduct rule about verification or records is outside this door, as
+D-090's Untouched clause already provided on the apparatus side ("firing
+removes apparatus rather than adds it"). M144 is excepted by name as the
+widening's own act; the door binds every plan gate after it.
+
+**Consequences:** The plan-time collision check surfaces this entry on any
+scope shaped as a rule about verification or records. RR13 steps 2–3 proceed
+under the carve-out with no further exceptions. If a shipped-behavior defect
+class appears that a barred conduct rule would have prevented, this is the
+entry to supersede.
+
+### D-109 (2026-08-16): The prose-guard suite leaves every gate — skills/tests retained and hand-run, gating nothing; the probe's exit falsifier (RR13, M144)
+
+**Context:** RR13 rec 1 (apply): the prose-guard stratum's measured yield
+was overwhelmingly defects in its own prose (RR10 §3: 11 of round 2's 13
+findings existed only because the rebuild existed; M127's retirement ledger:
+zero operative losses), while the hooks/scripts tests over executable
+behavior generated approximately zero thrash across the whole record. M144
+executes the smallest reversible step: `cairn/PROFILE.md`'s `verify` slot
+names `scripts/tests` and `hooks/tests` as the two gating suites;
+`skills/tests` stays in the repo, runnable by hand, gating no commit, merge,
+or check-off; a new rulebook or skill rule in this repo owes no prose guard
+or mutation registration (plan gate 2026-08-16). Nothing is deleted, which
+is what keeps the probe reversible and its falsifier decidable.
+
+**Decision:** The probe's exit falsifier, stated as the class of evidence
+that would falsify the ungating: the prose-guard gate re-arms if an
+unintended prose regression reaches `main` that the review fan-out missed
+and that a guard under `skills/tests` — retained, runnable, no longer
+gating — reds on; decided by running `python3 -m unittest discover -s
+skills/tests` against the shipping tree. An intentional re-wording that reds
+a guard is not a firing.
+
+**Consequences:** If the falsifier fires, this is the entry to supersede —
+the re-armed form and its scope are decided then, against the regression's
+evidence, not pre-committed here.
