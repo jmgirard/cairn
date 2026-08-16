@@ -125,7 +125,9 @@ within each type and are never reused.
   (every hook exits 0 and denies via JSON stdout), but no Windows run has
   verified it.
 - Conduct rules (question gates, routing chips, chapter markers, AC fencing)
-  are enforced as prose: guard tests lock the skill/rulebook wording, not the
-  runtime behavior, and live honoring is only spot-verified (hooks snapshot at
-  process start, so a rule's runtime effect needs a fresh session to observe).
-  A deliberate architectural bet, noted plainly rather than papered over.
+  are enforced as prose: since M144 the prose-guard tests are retained but
+  hand-run and gate nothing (D-109), so wording drift is caught by PR diff
+  review rather than by a suite, and live honoring is only spot-verified
+  (hooks snapshot at process start, so a rule's runtime effect needs a fresh
+  session to observe). A deliberate architectural bet, noted plainly rather
+  than papered over (corrected M144).

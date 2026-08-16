@@ -4022,9 +4022,15 @@ verification is conducted), on the same terms as apparatus. D-090's trigger
 clause is retained unchanged and reads, verbatim: "unless its trigger is a
 defect in shipped behavior: what the plugin's skills, hooks, and scripts do
 for their users." Carve-out: a milestone whose deliverable removes or narrows
-a conduct rule about verification or records is outside this door, as
-D-090's Untouched clause already provided on the apparatus side ("firing
-removes apparatus rather than adds it"). M144 is excepted by name as the
+a conduct rule about verification or records is outside this door. The
+apparatus-side precedent is D-095, which executed §8's retirement as a
+logged deviation from D-090's Untouched clause at user mandate — that clause
+itself reached only §8's own falsifier path, so this carve-out converts what
+D-095 did as a per-instance deviation into standing permission for
+removal-shaped work, on RR13 rec 2's grounds; it does not claim D-090
+already provided it. A firing of D-109's falsifier is a named exception to
+this door: the superseding entry it convenes is in-scope work, not a barred
+new conduct rule. M144 is excepted by name as the
 widening's own act; the door binds every plan gate after it.
 
 **Consequences:** The plan-time collision check surfaces this entry on any
@@ -4035,26 +4041,39 @@ entry to supersede.
 
 ### D-109 (2026-08-16): The prose-guard suite leaves every gate — skills/tests retained and hand-run, gating nothing; the probe's exit falsifier (RR13, M144)
 
-**Context:** RR13 rec 1 (apply): the prose-guard stratum's measured yield
-was overwhelmingly defects in its own prose (RR10 §3: 11 of round 2's 13
-findings existed only because the rebuild existed; M127's retirement ledger:
-zero operative losses), while the hooks/scripts tests over executable
-behavior generated approximately zero thrash across the whole record. M144
-executes the smallest reversible step: `cairn/PROFILE.md`'s `verify` slot
+**Context:** RR13 rec 1 (apply). Measured yield: RR10 §3's 11-of-13 and
+M127's zero-operative-losses ledger measured the §8 certification apparatus,
+retired at D-095 — cited as the prose-verification stratum's nearest
+measured yield, not as `skills/tests`'s own record; that suite's own cost
+record is the guard-craft mass RR13 Q3 inventories (the LESSONS
+guard-authoring lines; the M117–M140 guard-fix milestones). Against it, the
+hooks/scripts behavioral tests show no comparable thrash on the record
+(RR13 Q3: "the pathology is confined to tests over markdown"). Nothing is
+deleted, which is what keeps the probe reversible and its falsifier
+decidable.
+
+**Decision, part 1 — the ungating:** `cairn/PROFILE.md`'s `verify` slot
 names `scripts/tests` and `hooks/tests` as the two gating suites;
 `skills/tests` stays in the repo, runnable by hand, gating no commit, merge,
 or check-off; a new rulebook or skill rule in this repo owes no prose guard
-or mutation registration (plan gate 2026-08-16). Nothing is deleted, which
-is what keeps the probe reversible and its falsifier decidable.
+or mutation registration (plan gate 2026-08-16). M144's own AC4 evidence
+run is the named exception — a one-time transitional check, not a gate.
 
-**Decision:** The probe's exit falsifier, stated as the class of evidence
-that would falsify the ungating: the prose-guard gate re-arms if an
-unintended prose regression reaches `main` that the review fan-out missed
-and that a guard under `skills/tests` — retained, runnable, no longer
-gating — reds on; decided by running `python3 -m unittest discover -s
-skills/tests` against the shipping tree. An intentional re-wording that reds
-a guard is not a firing.
+**Decision, part 2 — the exit falsifier**, stated as the class of evidence
+that would falsify the ungating: the gate re-arms if an unintended prose
+regression reaches the default branch that the review fan-out missed and
+that a guard under `skills/tests` reds on; decided by running `python3 -m
+unittest discover -s skills/tests` against the merged default-branch tree.
+Cadence: the suite is run once at each `/milestone-review` post-merge
+hygiene pass and its red/green noted in the hygiene stamp; a red traced to
+an intentional re-wording is noted as intentional and is not a firing, so a
+falsifier-relevant red stays distinguishable. Firing does not re-arm the
+gate of itself: it obliges a superseding entry deciding the re-armed form —
+a named exception to D-108's door.
 
 **Consequences:** If the falsifier fires, this is the entry to supersede —
 the re-armed form and its scope are decided then, against the regression's
-evidence, not pre-committed here.
+evidence, not pre-committed here. D-095's Consequences clause — "A
+guard-authoring milestone now goes to review on the suites, the harness,
+the sweeps and the fan-out alone" — is narrowed: the prose suite and the
+mutation harness no longer gate; the sweeps and the fan-out stand.

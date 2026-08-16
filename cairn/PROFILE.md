@@ -40,8 +40,9 @@ unittest skills.tests.test_mutation_harness` dies `ModuleNotFoundError`.
 Toolchain checks `/milestone-review` runs *in addition to* the universal
 cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`).
 Generic default: **none** — the universal cairn-file checks are the whole
-consistency gate. (The `verify` suites are re-run at review via the
-acceptance-criteria evidence step, so no separate toolchain check is needed.)
+consistency gate. (The two gating `verify` suites are re-run at review via
+the acceptance-criteria evidence step, so no separate toolchain check is
+needed.)
 
 This repo has **no CI**: `gh pr checks --watch` returns "no checks reported"
 and exits 0. Treat a PR as mergeable on local green; never wait for a check
