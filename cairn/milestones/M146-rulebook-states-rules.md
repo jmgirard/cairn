@@ -119,7 +119,7 @@ candidate row.
 
 ## Tasks
 
-- [ ] T1: Rewrite `skills/shared/tracking-rules.md` to the reduced form
+- [x] T1: Rewrite `skills/shared/tracking-rules.md` to the reduced form
       (AC1's retained units + AC5's narrowed records rules), running the
       skill-citation grep first so every cited rule is placed.
 - [ ] T2: Delete `skills/shared/guard-doctrine.md`; fix referencing sites:
@@ -152,6 +152,8 @@ candidate row.
 - 2026-08-16: criteria audit ran ([O] fresh reader): AC1 lost its thrash-rule item (never a rulebook rule) and gained the skill-citation clause; AC4 gained DENSITY_FILES + the advisory label + grep-derived write sites; AC7 reworded to D-109's record-and-disposition cadence; re-audit of gate-amended AC6/AC7 returned two AC6 fixes (rule 1's prospective/IP4 caveat; the addition-not-narrowing basis for the batching rule), both applied — AC7 OK.
 - 2026-08-16: plan gate chose pruning skills/tests to surviving subjects over deleting the suite or leaving it red because D-109's day-old falsifier stays decidable only over a green baseline; falsified by the prune consuming more than a session or the retained suite reddening on unrelated edits.
 - 2026-08-16: plan gate chose shipping the batching rule as an explicit addition (D-109's named-exception shape) over leaving the row parked because RR13 rec 3 prescribes it and practice already conforms (D-096, D-106); falsified by a milestone legitimately needing a second correcting entry at authoring time.
+- 2026-08-16: pre-implementation question gate skipped — both open choices were settled at the plan gate; no tripwire tags.
+- 2026-08-16: T1 done — tracking-rules.md rewritten to 400 lines (`wc -l` at this commit), operative rules + AC5's narrowed records rules only; skill-citation grep run first (71 hits) and every cited rule placed; /milestone's always-read-frame audit bullet removed with the frame (its stamp step compressed in passing); gating suites green.
 
 ## Decisions
 
