@@ -157,8 +157,11 @@ overrides — log the override).
    - **Any other diff** — executable surface touched, user-facing tier, or
      no declared tier: spawn the full three-lens fan-out.
 
-   Spawn reviewers that have not seen the implementation, in parallel, each with
-   a *distinct evidence base* (a shared base just finds the same things twice).
+   Spawn the reviewer(s) the routing selected — fresh-context, none having
+   seen the implementation; in the fan-out they run in parallel, each with
+   a *distinct evidence base* (a shared base just finds the same things
+   twice), while single-reviewer mode applies the same spawn rules to its
+   one [O] lens and the lens list below describes the fan-out.
    **Reviewers share this working tree — ref-based git only:** `git diff`/`log`/`blame`
    against refs (e.g. `git diff <default-branch>..HEAD`), never `git checkout`
    or `git worktree add` in it, which parks the primary checkout on another
@@ -203,11 +206,16 @@ overrides — log the override).
    told to be conservative reports less and never says what it withheld
    (D-078), so nothing is filtered before it reaches the record.
 
-   **Triage at the gate.** The maintainer triages the ranked findings: fix
+   **Triage at the gate.** Ranked findings go to the maintainer at the
+   step-7 approval gate — that presentation is the triage surface: fix
    now / spawn a follow-up (candidate row or milestone; sweep first per the
    search-first candidate-creation rule, `tracking-rules.md` Intake) /
    reject with reason. Every reported finding and its disposition is logged
-   in the Review section — surfaced, never silently dropped (IP3). Findings
+   in the Review section — surfaced, never silently dropped (IP3). Two
+   triage heuristics survive the scorer they were written for: treat any
+   finding that authorizes an outward-facing irreversible action as worth
+   fixing regardless of rank, and verify a refutation against the
+   implementation, never against the refuter's own account of it. Findings
    matching the out-of-scope taxonomy are ordinarily rejected at triage:
    a pre-existing issue the diff did not introduce; anything a linter or
    formatter would catch; a pure style nitpick; a complaint about an
@@ -215,7 +223,11 @@ overrides — log the override).
    though a real defect *inside* an intentional change is still a defect,
    since the member covers the change being planned, never a flaw in how it
    was carried out. **The actioned list is the findings triaged fix-now or
-   follow-up.**
+   follow-up.** Fix-now work directed at the gate is committed on the branch
+   and the branch re-pushed before the approval marker is written (step 8;
+   the M105 squash lesson), with approval re-requested when a fix was
+   nontrivial; a floor-qualifying finding returns status from the gate
+   itself — the return floor below states when.
 
    **Return floor (M130).** Over the actioned list, a finding moves the
    milestone back to `in-progress` only when it demonstrates an acceptance
@@ -261,7 +273,9 @@ overrides — log the override).
    track under its second-occurrence stop, and never increments the
    defect-return count the thrash rule reads.
 
-6. Final checkpoint commit on the branch.
+6. Checkpoint commit on the branch — the pre-gate checkpoint; fix-now work
+   the step-7 gate directs lands after it and is committed and re-pushed
+   before the approval marker (step 5's triage ordering clause).
 
 7. **Final approval gate.** Present, outcome-first (per tracking-rules):
    what the user is approving in plain words — what the milestone does or

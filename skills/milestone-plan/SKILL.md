@@ -139,7 +139,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    (the step-2 rule)? An internal-tier criterion outside the
    internal-tier criteria standard is a finding, disposed at this gate
    like the audit's other findings; the question governs promises and
-   never relaxes the probe question above.
+   never relaxes the probe question above, in the mode that asks it.
    **The reduced audit asks only the bounded-promise and proportionality
    questions** of each criterion — it omits the satisfiability, reachability,
    and probe questions — and keeps the disposal rule below in full.
@@ -179,8 +179,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    - Acceptance criteria verifiable with evidence; never vibes. Criteria
      that cite a formula or reference value must name their source
      (`citekey (p. N)` — see the primary-sources rule). **Write the wording
-     step 3's audit read**; a criterion the gate changed goes back through the
-     audit's three questions before it is written, and the change is reported.
+     step 3's audit read**; a criterion the gate changed goes back through
+     the audit's questions — in the mode step 3 assigns the milestone's
+     tier — before it is written, and the change is reported.
    - **Bounded promises only (M130).** An acceptance criterion that makes a
      universal claim ("no X", "every Y", "nothing Z") names the procedure —
      a search, a sweep, or a test run — that enumerates its domain; where no

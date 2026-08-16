@@ -716,8 +716,9 @@ cairn skill is active.
   more than the work it saves. Where one subagent can do the task,
   spawn one rather than several — a second copy of the same job buys a
   second context and returns the first one's answer.
-  The `/milestone-review` fan-out below is not that case and is no exception
-  to this rule: its three reviewers carry distinct evidence bases — the diff,
+  The `/milestone-review` fan-out (the multi-lens mode of the review bullet
+  below) is not that case and is no exception
+  to this rule: its reviewers carry distinct evidence bases — the diff,
   git blame, prior review threads — so no one of them can do another's task,
   which is the independence this rule asks for. Nor is a spawn made for
   *freshness* — a reader that must not have authored what it reads — a volume

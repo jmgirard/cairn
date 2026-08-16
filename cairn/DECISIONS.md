@@ -4135,3 +4135,48 @@ zero findings across successive internal-tier milestones would show the
 reduced mode is ceremony — supersede toward rec 7's full skip; an
 internal-tier milestone shipping an unsatisfiable criterion the full audit
 would have caught fires the other way.
+
+### D-112 (2026-08-16): Review rigor routes by stakes — one [O] diff reviewer for internal-tier docs-only diffs, the three-lens fan-out otherwise — defines D-110's "both review modes"; supersedes the unconditional three-lens reading of the M17 fan-out (RR13 rec 5, M145 review)
+
+**Context:** M145 shipped the routing in `/milestone-review` step 5 and
+`tracking-rules.md`'s review bullet, but its plan carried the decision only
+in D-110's undefined phrase "both review modes" — the review fan-out caught
+the gap (M145 review, finding 5): the conditional narrowing of M17's
+three-lens doctrine is exactly the cross-cutting class DECISIONS.md owns.
+
+**Decision:** `/milestone-review` spawns one fresh-context [O] diff reviewer
+when the milestone's declared surface tier is internal and the branch diff
+touches only markdown/tracking files; every other diff — executable surface,
+user-facing tier, or no declared tier — gets the three-lens fan-out. The
+prior-PR lens's always-spawn clause (M40) now binds within the fan-out mode.
+On the single-reviewer path the milestone forgoes the blame-history and
+prior-PR lenses, so the saving there is three spawns per review (two lenses
+plus the scorer), not D-110's "one fewer spawn" — that count is correct only
+for the fan-out mode.
+
+**Consequences:** D-109's exit falsifier is unaffected in instrument — it is
+decided by the hygiene-pass suite run, not by which lenses spawned — though
+review-side detection narrows on internal docs-only diffs, which is the
+falsifier the M145 plan gate recorded. If an internal-tier docs-only
+regression ships that a skipped lens would demonstrably have caught, this is
+the entry to supersede.
+
+### D-113 (2026-08-16): Two claims in D-111 are corrected in one batched entry — the proportionality question's subject, and what the dropped questions bind — supersedes those clauses; D-111's decision and its other content stand (M145 review)
+
+**Context:** The M145 review fan-out found two characterizations in D-111
+false against the shipped text (findings 16–17), and RR13 rec 3's batched
+form applies: one superseding entry, not a chain.
+
+**Decision:** (1) D-111's Context clause "a proportionality question whose
+only subject is internal-tier criteria" is corrected: the shipped question
+is asked of every criterion (`/milestone-plan` step 3); only its finding
+condition — an internal-tier criterion outside the internal-tier standard —
+is tier-specific. (2) D-111's Consequences clause "no longer for the three
+that mostly bind user-facing promises" is corrected: satisfiability and
+reachability are tier-neutral — D-111's own Context names M114's
+unsatisfiable criteria as the audit's founding catch — so what the reduced
+mode drops is depth on the cheaply-audited tier, not questions that bind
+only user-facing work.
+
+**Consequences:** D-111's decision — the two modes and their selectors —
+stands unchanged, with its falsifiers.
