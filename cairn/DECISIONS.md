@@ -4287,3 +4287,25 @@ reachable-form clause required. The row graduates with this entry.
 **Consequences:** If a tracking-record defect class appears that the narrowed
 family would have caught and ordinary review does not, this is the entry to
 supersede — D-099's own consequence, carried to the narrowed domain.
+
+### D-117 (2026-08-16): D-115's named fallback row is dropped and the fallback redirected — a recurrence of the stamp-defect class takes a fresh plan-gate remedy — narrowly supersedes D-115's Consequences remedy-path clause (M147)
+
+**Context:** D-115 retired the per-line density axis and named the parked
+write-time-stamp-check candidate row as the recorded next step should the
+stamp-defect class return. M147's plan gate approved dropping that row in the
+record diet: its body analyzes machinery M146 deleted, and the defect it
+guards against has not recurred since the prose fix shipped. The 2026-08-16
+pre-implementation gate chose superseding the fallback over sparing and
+correcting the row.
+
+**Decision:** The write-time-stamp-check row is dropped (M147 ledger, R02).
+The falsifier stands as D-115 stated it — the first over-cap stamp reaching a
+commit after the prose step shipped falsifies "prose is enough here" — but on
+that firing the remedy is designed fresh at that day's plan gate
+(search-first applies; git holds the dropped row's analysis), not by reviving
+the row or the retired axis. This narrowly supersedes D-115's Consequences
+clause naming the row as the door; D-115's decision and its other content
+stand.
+
+**Consequences:** No standing row tracks the stamp defect. A recurrence is
+ordinary intake: classify it, plan the remedy, decide then.

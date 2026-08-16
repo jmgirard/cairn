@@ -61,7 +61,7 @@ re-measurement stays with the existing re-measurement candidate row.
 
 - [x] T1: Ledger and rewrite `cairn/LESSONS.md` (32 lesson entries at
       today's tree; grounds named per entry).
-- [ ] T2: Ledger and rewrite the ROADMAP candidate rows; execute the five
+- [x] T2: Ledger and rewrite the ROADMAP candidate rows; execute the five
       gate-approved drops; re-run M146's greps over ROADMAP/LESSONS.
 - [ ] T3: Run `cairn_validate`; confirm exit 0; commit ledger + rewrites
       together.
@@ -110,6 +110,36 @@ suite gating nothing per D-109).
 - L31 (M134 test-coverage claims): retired — ownership: the derived-claims rule owns the docstring remedy (the line records the graduation); the work-log half is de-escalated (D-116).
 - L32 (M146 AST recount): kept.
 
+**Candidate rows** (dispositions: rewritten to the AC2 shape / merged / dropped):
+
+- R01 (external adoption pass): rewritten.
+- R02 (write-time stamp check): dropped — gate-approved 2026-08-16; D-115's fallback redirected by D-117.
+- R03 (README flow diagram): rewritten.
+- R04 (re-pin Substantive bullet): dropped — gate-approved: step-6 pin coverage was the retired prose-guard program's concern (D-108/D-109); analysis in git.
+- R05 (amendment-time audit record): rewritten.
+- R06 (record-defect re-measurement): rewritten; RR13 rec 9 added as source per this milestone's Out clause.
+- R07 (standing-instrument adoption discipline): rewritten.
+- R08 (frame membership rule): dropped — moot: the always-read governance frame was deleted at M146 (`always-read` has zero hits in the reduced rulebook), so the membership question has no subject.
+- R09 (rulebook "is never one line" overclaim): dropped — moot: M146's rewrite removed the sentence (`is never one line` has zero hits).
+- R10 (reasoning-effort dial): rewritten.
+- R11 (numeric spawn cap): rewritten.
+- R12 (template drafting budgets): dropped — gate-approved; also moot: M146 deleted the budget preamble, so there is no block to redistribute.
+- R13 (partial-pin asserts): dropped — gate-approved: prose-guard pin quality gates nothing (D-109); analysis in git.
+- R14 (one-surface pin): dropped — gate-approved: doctrine-fork detection was the retired program's concern (D-108); analysis in git.
+- R15 (/explore-sources skill): rewritten.
+- R16 (citekey resolution): rewritten.
+- R17 (concurrent-operator hardening): rewritten.
+- R18 (BC-aware coverage message): rewritten.
+- R19 (content-gated memory guard): rewritten.
+- R20 (contributor-facing scaffold): rewritten.
+- R21 (branch-protection compatibility): rewritten.
+- R22 (scaffold-spec version stamp): rewritten.
+- R23 (phase-gated doctrine loading): rewritten.
+- R24 (action-graded finding vocabulary): rewritten.
+- R25 (streamlining pass): rewritten.
+- R26 (deferred hook-nudge tier): rewritten.
+- R27 (stakes-tier follow-through): rewritten.
+
 ## Work log
 
 - 2026-08-16: created by /milestone-plan (RR13 step 2, gate round 1).
@@ -118,6 +148,7 @@ suite gating nothing per D-109).
 - 2026-08-16: M146 review note — the In-scope row-drop list intersects D-115's Consequences: the write-time-stamp-check row is D-115's named remedy path, so dropping it requires a superseding clause in the same milestone or sparing (and correcting) the row; that row's premise and blocker analysis also name machinery M146 retired, and LESSONS.md line 18 cites the deleted test_cairn_budget — both are this milestone's cleanup ground (M146 review findings O2/O5/O8).
 - 2026-08-16: pre-implementation gate — user approved dropping the write-time-stamp-check row WITH a superseding D-entry redirecting D-115's fallback (over sparing the row).
 - 2026-08-16: T1 — LESSONS ledgered at f767109 (32 entries: 16 kept, 5 trimmed, 11 retired — 9 RR13-reduction/maturation, 2 ownership) and rewritten 49→38 lines; suites 308+103 green, validate exit 0.
+- 2026-08-16: T2 — 27 candidate rows ledgered (20 rewritten to the AC2 shape, 7 dropped: the 5 gate-approved plus R08/R09 moot, their subjects deleted at M146); D-117 appended redirecting D-115's fallback; M146's AC2/AC4 greps re-run without ROADMAP/LESSONS exclusions — zero hits, positive control 30 hits on DECISIONS.md; ROADMAP 54→45 lines; suites 308+103 green, validate exit 0.
 
 ## Decisions
 
