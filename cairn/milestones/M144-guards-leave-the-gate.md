@@ -1,6 +1,6 @@
 # M144: The prose-guard suites leave the merge gate
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -109,7 +109,7 @@ knowledge reading is recorded in the work log only.
       hit; edit the live directives it finds (`CLAUDE.md`'s verify sentence;
       PROFILE's "all three must be green" line lands with T2); record the
       disposition ledger for Review.
-- [ ] T5: Evidence pass: three suites + `cairn_validate` at the pushed
+- [x] T5: Evidence pass: three suites + `cairn_validate` at the pushed
       branch HEAD, exit codes captured directly; re-run after any later
       pre-review push.
 
@@ -125,5 +125,6 @@ knowledge reading is recorded in the work log only.
 - 2026-08-16: T2 — PROFILE.md `## verify` rewritten (two gating commands, non-gating skills/tests paragraph with the discover-only note) and `## test-doctrine` (no guard owed for new rules here; shipped doctrine governs adopters); both gating suites exit 0, validate green.
 - 2026-08-16: T3 — LESSONS M56+M65 line corrected in place, whole sentence, marker in the attribution parens; file stays 49 lines, validate green (tick landed by amending T3's checkpoint, which had omitted it).
 - 2026-08-16: T4 — sweep probed against PROFILE's known-positive (3 hits) then run whole: 17 hits — LESSONS:18 + PROFILE ×3 edited by this milestone; LESSONS:49 + LESSONS:18's opening clause historical narration; ROADMAP ×2 + references ×9 guard-file citations that stay true; tracking-rules:962 deferred to step 2; one live directive found and edited (CLAUDE.md's verify sentence, now naming the two gating suites).
+- 2026-08-16: T5 — pre-review run at 444d30b+T4: skills 813 / scripts 345 / hooks 103 tests, each exit 0 captured directly, validate exit 0; AC4's as-pushed run is review's to re-execute after the final push. Status → review.
 
 ## Decisions
