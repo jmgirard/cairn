@@ -107,8 +107,8 @@ run ingestion first (see `/milestone-brief`).
      widening test takes the narrowing repair `/milestone-plan` step 4's
      bounded-promise rule states; a wider enumeration is not an admissible
      amendment. An amendment
-     that grows a plan-owned section re-checks the body with `cairn_budget`;
-     if it now exceeds the cap, compress the single heaviest plan-owned
+     that grows a plan-owned section re-checks the body against the 150-line
+     cap; if it now exceeds it, compress the single heaviest plan-owned
      section in one pass (tracking-rules), never a nibble-and-recount loop.
    - *The goal itself is wrong*: stop; status back to `planned`; routing
      chip to `/milestone-plan` for a proper re-cut.

@@ -61,11 +61,6 @@ class TestChapterMarkerMandate(unittest.TestCase):
         self.assertIn("per-phase mandate", text)
         self.assertIn("mark a chapter at each phase transition", text)
 
-    def test_rulebook_declares_the_no_mechanism_fallback(self):
-        text = read("shared", "tracking-rules.md").lower()
-        self.assertIn("where the runtime provides no chapter mechanism", text)
-        self.assertIn("phase headers are the visual fallback", text)
-
 
 if __name__ == "__main__":
     unittest.main()

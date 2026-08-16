@@ -47,41 +47,10 @@ class TestReleaseTimingRule(unittest.TestCase):
             "release timing is user-declared, never agent-proposed", rules()
         )
 
-    def test_rule_forbids_all_three_agent_initiatives(self):
-        # The three verbs are the rule's teeth — proposing, planning, and
-        # nominating are separate acts and each had to be named.
-        self.assertIn(
-            "never proposes a release, never plans a release milestone "
-            "unprompted, and never nominates one as the next action",
-            rules(),
-        )
-
-    def test_rule_rejects_the_dependency_graph_as_a_readiness_signal(self):
-        # The load-bearing contrast, pinned whole on one line: asserting the
-        # first clause alone would survive the "never a dependency graph"
-        # predicate being dropped at the line break (LESSONS M74).
-        self.assertIn(
-            "a maintainer judgment about when to ship, never a dependency "
-            "graph going green",
-            rules(),
-        )
-
-    def test_rule_names_blocked_as_the_parking_state(self):
-        self.assertIn(
-            "is parked as `blocked`, where no routing surface nominates it",
-            rules(),
-        )
-
 
 class TestBlockedCoversTheReleaseWindow(unittest.TestCase):
     """The status-vocabulary widening and the transitions parking needs."""
 
-    def test_blocked_row_names_the_unopened_release_window(self):
-        # Pins the `blocked` label to the widened meaning on the table row
-        # itself — the row is one physical line by table syntax.
-        self.assertIn(
-            "a maintainer who has not opened the release window counts", rules()
-        )
 
     def test_parking_transitions_are_legal_from_both_routable_states(self):
         # Both arrows on one line with the word that legalizes them; pinning
@@ -161,7 +130,7 @@ class TestMilestoneAuditWiring(unittest.TestCase):
         # milestone reads active (M88 T3). Anchor 1 pins the measurement basis.
         # Anchor 2 binds the clock-neutral disposition to its three enumerated
         # members ON ONE LINE — a label-only anchor is false-coverage for the
-        # SET, since a member swap stays green (M74/M103, guard-doctrine §1;
+        # SET, since a member swap stays green (M74/M103;
         # M104 F-A). Anchor 3 pins the release-shaped exemption (M104 F-C).
         text = milestone()
         self.assertIn(

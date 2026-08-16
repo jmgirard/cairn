@@ -53,21 +53,6 @@ class TestReviewFanout(unittest.TestCase):
         self.assertIn("git blame", t)
         self.assertIn("git log", t)
 
-    def test_confidence_scorer_present_with_threshold(self):
-        t = review()
-        self.assertIn("scorer", t.lower())
-        self.assertIn("confidence", t.lower())
-        self.assertRegex(t, r"\b80\b")
-
-    def test_scorer_is_independent_of_generation(self):
-        # generate-then-verify: the scorer must not be the finding generator
-        self.assertRegex(review(), r"did \*?not\*? generate")
-
-    def test_subthreshold_findings_logged_not_dropped(self):
-        t = review()
-        self.assertRegex(t, r"below 80.*excluded")
-        self.assertIn("logged", t)
-        self.assertRegex(t, r"never\s+silently\s+dropped")
 
     def _scorer_rubric(self):
         """The scorer's rubric blockquote, located by its OWN first line.
@@ -94,53 +79,6 @@ class TestReviewFanout(unittest.TestCase):
         self.assertGreater(len(run), 1, "scorer rubric blockquote not parsed")
         return "\n".join(run)
 
-    def test_false_positive_taxonomy_lives_in_the_scorer_rubric(self):
-        # Each member is pinned WITH its predicate, never as a bare token:
-        # guard-doctrine §1's label->SET trap is that pinning `nitpick` alone
-        # leaves the set swappable — "a pre-existing issue the diff DID
-        # introduce" keeps every bare token and inverts the taxonomy.
-        rubric = self._scorer_rubric()
-        self.assertIn("Not a finding, and out of scope for this diff", rubric)
-        for member in (
-            "a pre-existing issue the diff did not introduce",
-            "anything a linter or formatter would catch",
-            "a pure style nitpick",
-            "a complaint about an unmodified line",
-            "an intentional change the milestone's plan called for",
-        ):
-            with self.subTest(member=member):
-                self.assertIn(member, rubric)
-
-    def test_taxonomy_carries_its_scoring_disposition(self):
-        # The members are inert without this sentence: it is what makes a
-        # taxonomy match score sub-60 and so land in the logged-but-not-
-        # actioned list rather than being dropped. Deleting it left every
-        # other assert in this file green (M120 review, P2).
-        self.assertIn(
-            "Score anything matching this list below 60", self._scorer_rubric()
-        )
-
-    def test_reviewers_report_everything_and_filter_nothing(self):
-        # Absence-assert paired with its positive framing (guard-doctrine §3):
-        # `assertNotIn` alone is satisfied by an empty read, so the instruction
-        # that REPLACED the pre-filter is asserted first, and it is that phrase
-        # the mutation harness registers.
-        t = review()
-        self.assertIn("report every candidate finding", t)
-        self.assertNotIn("drop anything matching it before reporting", t)
-
-    def test_model_strategy_describes_fanout_and_keeps_never_haiku(self):
-        r = rules()
-        self.assertIn("Never Haiku", r)
-        self.assertIn("fan-out", r)
-        self.assertRegex(r, r"scorer \(Sonnet\)")
-
-    def test_fanout_states_why_a_fresh_model_reviews(self):
-        # M35 AC4: the fan-out states *why* review uses a fresh/different model
-        # — an author shares their own diff-blindness (M23: one physical line).
-        r = rules()
-        self.assertIn("fresh-context subagents", r)
-        self.assertIn("diff-blindness", r)
 
     def test_model_strategy_names_three_reviewers(self):
         # M40: the fan-out grew a third distinct-evidence lens; the
@@ -217,13 +155,6 @@ class TestSharedCheckoutGuard(unittest.TestCase):
     Phrases are asserted case-insensitively and each lives on one physical
     line (M23 newline, M26 bold-split lessons)."""
 
-    def test_tracking_rules_states_general_shared_checkout_rule(self):
-        r = rules().lower()
-        self.assertIn("ref-based git only", r)
-        self.assertIn("primary checkout", r)
-        # names the prohibited HEAD-moving commands, not just "no checkout"
-        self.assertIn("git checkout", r)
-        self.assertIn("git worktree add", r)
 
     def test_review_fanout_reminds_reviewers_ref_based_only(self):
         t = review().lower()

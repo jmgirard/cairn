@@ -186,8 +186,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      universal claim ("no X", "every Y", "nothing Z") names the procedure —
      a search, a sweep, or a test run — that enumerates its domain; where no
      stated procedure can enumerate the domain, the criterion instead
-     claims what a procedure it names actually swept (guard-doctrine §6's
-     quantified-claim rule applied to promises). A hand-list of sites is
+     claims what a procedure it names actually swept. A hand-list of sites is
      not a procedure — the list becomes the sweep and every site it omits
      ships stale (the M118 lesson).
      **The procedure must enumerate the domain the criterion's own universal
@@ -242,18 +241,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      so implement inherits them.
    - Write only the plan-owned sections per the tracking-rules
      section-ownership table; leave the others to their owners.
-   - **Draft against the budget, not against the gate.** The template's
-     per-section budgets are the drafting target; count while writing rather
-     than discovering the overrun at `cairn_validate` time, when the only
-     remedy left is compression:
-
-     ```
-     python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_budget.py" cairn/milestones/M<NN>-<slug>.md
-     ```
-
-     It prints the plan-owned body against the cap plus the section
-     breakdown, and exits 1 if any axis is over. The budgets are guidance —
-     what fails a gate is still only the cap.
+   - **Draft against the cap, not against the gate.** The plan-owned body
+     must land under `cairn_validate`'s 150-line cap; count while writing
+     rather than discovering the overrun at gate time, when the only remedy
+     left is compression.
    Deferred chunks not yet plannable get `candidate` ROADMAP rows, not files.
 
 5. **Remainder ledger (conservation check).** Before committing, enumerate

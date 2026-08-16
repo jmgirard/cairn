@@ -1,20 +1,7 @@
 <!-- Section ownership + write-modes: see tracking-rules.md "Milestone-file
      section ownership". A phase skill never rewrites another phase's section.
-     Per-section owners are tagged below.
-
-     DRAFTING BUDGETS (M99) — guidance, not a gate; the only size check that
-     can fail is cairn_validate's <150 over the plan-owned body.
-     Goal 7 · Scope 26 · AC 28 · Coverage 11 · Tasks 25 — each the measured p75
-     over 99 milestone files, so three drafts in four already fit, and the
-     fourth is the one that thrashed.
-     ## Decisions reserves nothing: D-074 made it cap-exempt, so it costs the
-     budget nothing and plan still spends none of it.
-     (Redistributing the ≥21 lines it used to reserve is a ROADMAP candidate,
-     deliberately not done at M118.) Together with this preamble they fit
-     under the cap with room to spare — the counter prints the running total,
-     so no figure here describes this block's own length (it would change each
-     time the block was edited, and drifted twice when it did). Every figure is
-     measured, never assumed (D-049). /milestone-plan step 4 names the counter. -->
+     Per-section owners are tagged below. The one size check that can fail is
+     cairn_validate's <150 over the plan-owned body. -->
 # M<NN>: <Title>
 
 - **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->

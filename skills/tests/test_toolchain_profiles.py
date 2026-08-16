@@ -521,20 +521,6 @@ class TestRulebookNamesFourProfiles(unittest.TestCase):
         self.assertIn("docker-image", body,
                       "rulebook should name the docker-image profile")
 
-    def test_rulebook_inference_order(self):
-        body = self._body()
-        self.assertIn("pyproject.toml", body,
-                      "rulebook inference should name pyproject.toml")
-        self.assertIn("Dockerfile", body,
-                      "rulebook inference should name the Dockerfile marker")
-        # Order: DESCRIPTION precedes pyproject precedes Dockerfile (language
-        # markers rank first, so a hybrid keeps its language marker at inference).
-        desc_i = body.find("means `r-package`")
-        pyproj_i = body.find("means `python`")
-        docker_i = body.find("means `docker-image`")
-        self.assertTrue(0 <= desc_i < pyproj_i < docker_i,
-                        "inference should rank r-package before python before docker-image")
-
 
 class TestReleaseSkillReadsProfile(unittest.TestCase):
     """M47: cairn-release reads the active profile's release-walk slot instead
@@ -595,11 +581,6 @@ class TestChangelogSlot(unittest.TestCase):
             self.assertIn("The declared changelog (`## changelog` slot)", body,
                           f"{name} consistency-gate should read the declaration")
 
-    def test_rulebook_states_the_none_semantics(self):
-        rules = read("shared", "tracking-rules.md")
-        self.assertIn("Seven slots:", rules)
-        self.assertIn('"none" is legal — hotfix skips the changelog entry', rules)
-        self.assertIn("derives the version bump from git history", rules)
 
     def test_hotfix_reads_the_changelog_slot(self):
         skill = read("hotfix", "SKILL.md")

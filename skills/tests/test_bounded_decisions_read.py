@@ -35,68 +35,6 @@ def read(*parts):
     return SKILLS.joinpath(*parts).read_text()
 
 
-class TestRulebookStatesTheBoundedRead(unittest.TestCase):
-    @property
-    def rules(self):
-        return read("shared", "tracking-rules.md")
-
-    def test_rule_is_named_and_scoped_to_headings(self):
-        self.assertIn("**Bounded `DECISIONS.md` read.**", self.rules)
-        self.assertIn(
-            "it is read by scanning its `### D-` headings — never whole (D-054)",
-            self.rules,
-        )
-
-    def test_matched_entry_is_read_whole_before_surfacing(self):
-        self.assertIn(
-            "**A matched heading's entry is read whole before anything is surfaced.**",
-            self.rules,
-        )
-
-    def test_match_is_back_referenced_by_its_own_id(self):
-        # Label and mechanism on one line: pinning "back-referenced" alone
-        # would survive dropping the id search, which is the whole mechanism.
-        self.assertIn(
-            "**A match is back-referenced — its own `D-0NN` id searched across "
-            "the file**",
-            self.rules,
-        )
-
-    def test_back_reference_names_the_entries_it_covers(self):
-        # The three legacy gaps are why the step exists; without them the rule
-        # reads as belt-and-braces and is the first thing an editor trims.
-        self.assertIn("D-012, D-014, and D-019 each omit one", self.rules)
-
-    def test_collision_is_quoted_from_the_full_entry_not_the_heading(self):
-        self.assertIn(
-            "**A collision is quoted verbatim from the full entry, never from "
-            "the heading.**",
-            self.rules,
-        )
-
-    def test_ip2_obligation_is_stated_as_unchanged(self):
-        # The narrowing is recall-only. Transposing this to "IP2 is narrowed"
-        # would license surfacing less, which the D-entry explicitly refuses.
-        self.assertIn("what narrows is recall, not the obligation", self.rules)
-
-    def test_heading_quality_rule_pins_subject_and_relationships(self):
-        self.assertIn(
-            "**A `### D-` heading names its subject and any entry it "
-            "supersedes, annotates, or narrows.**",
-            self.rules,
-        )
-
-    def test_heading_rule_is_conduct_with_no_machine_check(self):
-        # M101 (D-059) retired the `decision heading quality` advisory as
-        # measured not to work (M97 F1-F4/F6); the authoring rule survives,
-        # and the rulebook must say enforcement is conduct + back-reference,
-        # not a retired matcher. Negative paired with the positive framing
-        # (guard-doctrine §3).
-        self.assertIn("retired as measured not to work", self.rules)
-        self.assertIn("the back-reference step covers a heading that", self.rules)
-        self.assertNotIn("`decision heading quality` advisory WARNs", self.rules)
-
-
 class TestPlanSkillWiresTheProtocol(unittest.TestCase):
     """Central rule plus per-skill wiring — the D-021/D-036 pattern, because
     conduct at specific steps drifted under central-only rules before."""
@@ -135,12 +73,6 @@ class TestPlanSkillWiresTheProtocol(unittest.TestCase):
             "Quote a collision verbatim from the full entry, never from the "
             "heading.",
             self.plan,
-        )
-
-    def test_search_first_rule_points_at_the_bounded_read(self):
-        rules = read("shared", "tracking-rules.md")
-        self.assertIn(
-            "Its `DECISIONS.md` sweep follows the bounded read below.", rules
         )
 
 

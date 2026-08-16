@@ -1,11 +1,11 @@
 # M146: The rulebook states rules, git holds reasons
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** M145
 - **Driving RR:** —
 - **Principles touched:** GP1, IP4
-- **Branch/PR:** m146-rulebook-states-rules
+- **Branch/PR:** m146-rulebook-states-rules · https://github.com/jmgirard/cairn/pull/147
 
 ## Goal
 
@@ -46,7 +46,7 @@ candidate row.
 
 ## Acceptance criteria
 
-- [ ] AC1: `wc -l skills/shared/tracking-rules.md` reports ≤ 400, and the
+- [x] AC1: `wc -l skills/shared/tracking-rules.md` reports ≤ 400, and the
       shipped file still states each of: the file map and boundary rule;
       section ownership and AC fencing; status vocabulary with gatekeepers;
       sizing and the work tiers; the git/approval model including
@@ -56,26 +56,26 @@ candidate row.
       escalation gate — and every tracking-rules rule a shipped
       `skills/*/SKILL.md` cites by name, enumerated by grepping the skills
       for tracking-rules citations, survives or has its citation updated.
-- [ ] AC2: `skills/shared/guard-doctrine.md` does not exist, and
+- [x] AC2: `skills/shared/guard-doctrine.md` does not exist, and
       `git grep -n 'guard-doctrine' -- ':!cairn/DECISIONS.md'
       ':!cairn/milestones/' ':!cairn/reviews/' ':!cairn/legacy/'
       ':!cairn/references/' ':!CHANGELOG.md' ':!cairn/ROADMAP.md'
       ':!cairn/LESSONS.md'` returns no hits (the two excluded tracking files
       are M147's ledger rows).
-- [ ] AC3: `skills/shared/records-hygiene.md` contains exactly its
+- [x] AC3: `skills/shared/records-hygiene.md` contains exactly its
       candidate-row-lifecycle and supersede-discipline sections plus
       preamble; every hit of `git grep -n 'records-hygiene'` (AC2's
       exclusions) describes the trimmed form; each dropped section's
       operative rule is relocated into its consumer or its loss recorded in
       the remainder ledger.
-- [ ] AC4: The density/budget machinery is retired:
+- [x] AC4: The density/budget machinery is retired:
       `git grep -n 'check_record_density\|NON_ITEM_LINE_CAP\|non_item_lines\|cairn_budget\|DENSITY_FILES\|record density'`
       (AC2's exclusions) returns no hits; a `cairn_validate` run on this
       repo lists no `record density` advisory; the milestone template's
       drafting-budget preamble is removed; and each stamp write site —
       enumerated by `git grep -n 'Last hygiene check' -- 'skills/'` — is a
       single sentence (replace the stamp with one short line, never append).
-- [ ] AC5: The reduced rulebook's derived-claims, derived-figures, and
+- [x] AC5: The reduced rulebook's derived-claims, derived-figures, and
       failure-identity rules bind code-adjacent artifacts (code comments,
       docstrings, changelog entries, user-facing docs) and state that
       tracking records are exempt; and the rulebook states the two
@@ -84,7 +84,7 @@ candidate row.
       milestone (prior entries stand under IP4); history-record corrections
       batch to at most one superseding entry per milestone, binding at
       authoring time — verified by reading the shipped sections.
-- [ ] AC6: Three superseding D-entries are appended, each naming its
+- [x] AC6: Three superseding D-entries are appended, each naming its
       superseded entry in its heading: one superseding D-057's trigger
       clause (the reduction's partial reopening, grounded in RR13 Q1–Q3);
       one superseding D-052's per-line-axis clause (the density advisory
@@ -95,7 +95,7 @@ candidate row.
       plan gate's explicit decision (D-109's named-exception shape), quotes
       the batching row's 2026-08-15 audit verbatim and disposes it, and
       graduates that row.
-- [ ] AC7: `python3 -m unittest discover -s skills/tests` is run by hand at
+- [x] AC7: `python3 -m unittest discover -s skills/tests` is run by hand at
       the branch tip and its result recorded in the Review section with
       every red dispositioned (intentional cut vs defect); the prune's
       target — zero reds, every retained guard's subject present in the
@@ -103,7 +103,7 @@ candidate row.
       enforced as a gate (D-109: the suite gates no commit, merge, or
       check-off); a defect-classified red is ordinary pre-merge triage, and
       step 9's hygiene stamp still records the run per D-109.
-- [ ] AC8: `python3 -m unittest discover -s scripts/tests` and
+- [x] AC8: `python3 -m unittest discover -s scripts/tests` and
       `python3 -m unittest discover -s hooks/tests` both pass.
 
 ## Coverage
@@ -119,18 +119,18 @@ candidate row.
 
 ## Tasks
 
-- [ ] T1: Rewrite `skills/shared/tracking-rules.md` to the reduced form
+- [x] T1: Rewrite `skills/shared/tracking-rules.md` to the reduced form
       (AC1's retained units + AC5's narrowed records rules), running the
       skill-citation grep first so every cited rule is placed.
-- [ ] T2: Delete `skills/shared/guard-doctrine.md`; fix referencing sites:
+- [x] T2: Delete `skills/shared/guard-doctrine.md`; fix referencing sites:
       tracking-rules (the module mapping and read instruction),
       skills/milestone-plan/SKILL.md:130–131 and :179,
       skills/milestone-brief/SKILL.md:107, cairn/DESIGN.md:37, and the code
       comments in scripts/cairn_validate.py:980,1004,
       scripts/tests/test_scripts.py, hooks/tests/test_hooks.py.
-- [ ] T3: Trim `records-hygiene.md` to §1+§2; relocate §3/§4/§6 operative
+- [x] T3: Trim `records-hygiene.md` to §1+§2; relocate §3/§4/§6 operative
       content or ledger it; fix the tracking-rules mapping line.
-- [ ] T4: Retire the density/budget machinery:
+- [x] T4: Retire the density/budget machinery:
       scripts/cairn_validate.py:111–150 + the :1844 registration,
       scripts/cairn_scripts.py:48–85 and :282–300, scripts/cairn_budget.py,
       scripts/tests/test_cairn_budget.py, TestNonItemLineAxis in
@@ -139,11 +139,11 @@ candidate row.
       milestone-implement:109); the stamp write sites (milestone:143–146,
       milestone-review:337–340, cairn-init:109); the milestone template's
       budget preamble; cairn/DESIGN.md:64. Gating suites green after.
-- [ ] T5: Prune `skills/tests`: enumerate each file's test classes and
+- [x] T5: Prune `skills/tests`: enumerate each file's test classes and
       disposition per class against its subject (M127 lesson) before any
       whole-file deletion; update mutation-harness registrations; hand-run
       and record per AC7.
-- [ ] T6: Draft, preview, and append the three superseding D-entries;
+- [x] T6: Draft, preview, and append the three superseding D-entries;
       graduate the batching candidate row.
 
 ## Work log
@@ -152,7 +152,32 @@ candidate row.
 - 2026-08-16: criteria audit ran ([O] fresh reader): AC1 lost its thrash-rule item (never a rulebook rule) and gained the skill-citation clause; AC4 gained DENSITY_FILES + the advisory label + grep-derived write sites; AC7 reworded to D-109's record-and-disposition cadence; re-audit of gate-amended AC6/AC7 returned two AC6 fixes (rule 1's prospective/IP4 caveat; the addition-not-narrowing basis for the batching rule), both applied — AC7 OK.
 - 2026-08-16: plan gate chose pruning skills/tests to surviving subjects over deleting the suite or leaving it red because D-109's day-old falsifier stays decidable only over a green baseline; falsified by the prune consuming more than a session or the retained suite reddening on unrelated edits.
 - 2026-08-16: plan gate chose shipping the batching rule as an explicit addition (D-109's named-exception shape) over leaving the row parked because RR13 rec 3 prescribes it and practice already conforms (D-096, D-106); falsified by a milestone legitimately needing a second correcting entry at authoring time.
+- 2026-08-16: pre-implementation question gate skipped — both open choices were settled at the plan gate; no tripwire tags.
+- 2026-08-16: T1 done — tracking-rules.md rewritten to 400 lines (`wc -l` at this commit), operative rules + AC5's narrowed records rules only; skill-citation grep run first (71 hits) and every cited rule placed; /milestone's always-read-frame audit bullet removed with the frame (its stamp step compressed in passing); gating suites green.
+- 2026-08-16: T2 done — guard-doctrine.md deleted; referencing sites fixed in milestone-plan, DESIGN.md, cairn_validate.py, test_scripts.py, test_hooks.py (plan's line numbers had drifted; sites re-derived by grep); AC2 grep clean outside skills/tests (T5's ground); gating suites green (345+103 OK).
+- 2026-08-16: T3 done — records-hygiene.md trimmed to §1+§2 + preamble with an HTML-comment remainder ledger (§4's rule already lives in implement step 6; §3/§6 dropped, losses recorded); every records-hygiene reference (DESIGN.md, tracking-rules mapping line) describes the trimmed form.
+- 2026-08-16: T4 done — cairn_budget.py + test_cairn_budget.py deleted; check_record_density, its registration, DENSITY_FILES, NON_ITEM_LINE_CAP, non_item_lines, TestNonItemLineAxis removed; budget-run steps in four skills replaced by cap-only drafting lines; both stamp write sites now one sentence; template budget preamble cut; DESIGN.md reporter list updated; AC4 grep clean outside skills/tests; suites 308+103 OK; validate lists no density advisory.
+- 2026-08-16: T5 done — skills/tests pruned per the Decisions ledger; hand-run 506 tests zero reds; AC2+AC4 greps clean repo-wide; gating suites 308+103 OK.
+- 2026-08-16: T6 done — D-114 (D-057 trigger reopened for reduction), D-115 (density axis retired, stamp rule stands), D-116 (family narrowed to code-adjacent + two de-escalation rules, batching-as-addition per the plan gate's named-exception decision) previewed verbatim in chat and appended; batching candidate row graduated.
 
 ## Decisions
 
+- 2026-08-16 (T5 prune ledger): `skills/tests` pruned to surviving subjects; hand-run at the pruned tip: 506 tests, zero reds. Every red was dispositioned **intentional cut** — a pin on wording M146 deliberately rewrote or on machinery M146/M145 retired (the 45 pre-existing M145-rewording reds the 2026-08-16 ROADMAP stamp recorded are the M145 subset) — none a defect. Files deleted whole, subject retired: test_always_read_frame, test_amendment_budget, test_derived_figures (rule survives in the rulebook; every pin was on retired wording), test_git_safety_hooks, test_guard_doctrine_sections, test_scripted_edit_landing, test_record_density (its one green test was a stray LESSONS-header pin). The other 36 files kept their green classes/methods; class-level cuts: TestRulebookStatesTheBoundedRead; TestMilestoneTemplateBudgets + TestCounterIsAdvertisedWhereItIsDocumented; TestSelfCheckingClassRule; TestDurableRecordPreviewRule; TestRbRrOnlyPath; TestBriefTemplate + TestRulebookSentences; TestAcceptanceChipsRule + TestAccessibleLanguageRule; TestClarificationMarkerCap; TestHygieneStampRule + TestStatedCapMatchesEnforcedCap; TestModuleExists + TestRulebookPointer (lesson-graduation); TestNarrationDisciplineRule; TestRulebookPointer (records-hygiene-graduation); TestPlacementTest + TestReddeningAsymmetry + TestPlacedWhereItsConsumersRead; TestSearchFirstCandidateRule + TestFalsifyingPromotionConditions; TestMarkersUnique + TestProportionalityQuestion; TestGuardDoctrineBanking — method-level cuts are enumerated by this commit's diff. Mutation harness: 274 registry entries dropped (39 missing target, 212 block gone, 23 guard gone, measured by the prune script at this commit), 325 kept and re-verified by the harness's own blanking run; six retained guard files whose registrations all died moved to EXEMPT with a dated reason (re-registration deferred to adopter evidence).
+- 2026-08-16 (T5 ledger correction, review finding O3): the kept count above is 326, not 325 — 600 entries on main, 274 dropped, 326 kept; the stray was one entry the prune script failed to parse and left in place, and the EXEMPT reasons carried a milestone tag, not the date this ledger claimed (dated at the review fix pass).
+
 ## Review
+
+- 2026-08-16 AC1: `wc -l skills/shared/tracking-rules.md` → 400 (≤400). Each retained unit verified present by name-sweep at the branch tip (file map + boundary rule; section ownership + AC fencing; status vocabulary table with gatekeepers; sizing/work tiers; git/approval model with detection recipe + enforcement boundary; question gates + routing chips; bounded DECISIONS.md read; toolchain profiles; validation-doctrine + references-page routing; RB tripwires/RB-RR gate). Skill-citation grep re-run: 71 tracking-rules citations across skills/*/SKILL.md; each cited rule present in the reduced file or its citation updated (the always-read-frame audit bullet in /milestone was removed with the frame; the budget-step citations were rewritten at T4).
+- 2026-08-16 AC2: `skills/shared/guard-doctrine.md` absent (`ls` errors); AC2's exact `git grep` with its exclusions returns no hits (exit 1) — skills/tests included.
+- 2026-08-16 AC3: records-hygiene.md headings are exactly the title, §1 (candidate-row lifecycle), §2 (supersede + archive sweep); the preamble and the M146 remainder ledger (HTML comment) record §3/§6 losses and §4's relocation-in-place (implement step 6 already owns it). Every `records-hygiene` hit outside the excluded ledgers (DESIGN.md, tracking-rules mapping line, harness registrations pinning §1/§2 blocks, test_records_hygiene_graduation's D-061 pins) describes or is consistent with the trimmed form.
+- 2026-08-16 AC4: AC4's exact `git grep` with its exclusions returns no hits (exit 1); a fresh `cairn_validate` run lists no density advisory (zero matches on "density"); the template's drafting-budget preamble is gone (zero matches); `git grep 'Last hygiene check' -- skills/` enumerates three write sites (milestone:134, milestone-review:336, cairn-init:109 template line), each a single replace-with-one-short-line sentence — the other hits are the rulebook's rule statement and the hand-run stamp guard.
+- 2026-08-16 AC5: read the shipped Universal tracking rules at the branch tip — the derived-claims rule (line 91), derived-figures rule (line 97), and failure-identity rule (line 100) each bind code comments, docstrings, changelog entries, and user-facing docs (the failure-identity rule's stated domain also includes tests; no test files were added — corrected same-day, review finding B2) and state the tracking-records exemption ("exempt from this rule and the two below", line 95); the D-entry rule (line 103) states no-derived-measurements with binding-after-M146/IP4; the batching rule (line 105) states at-most-one-per-milestone binding at authoring time with the IP4 further-entry case.
+- 2026-08-16 AC6: D-114 (heading names D-057's trigger clause; grounded in RR13 Q1–Q3), D-115 (heading names D-052's clause (1); replace-never-append rule standing), D-116 (heading names D-099's domain clause; states the D-108 carve-out basis, takes the batching rule as an addition under the 2026-08-16 plan gate's named-exception decision, quotes the batching row's 2026-08-15 audit verbatim with disposition, graduates the row) all present in DECISIONS.md; the batching row is absent from ROADMAP.md (zero matches).
+- 2026-08-16 AC7: `python3 -m unittest discover -s skills/tests` run by hand at the branch tip: 506 tests, OK — zero reds, so every retained guard's subject is present (a green pin is a present subject); the prune target is the observed outcome, not a gate (D-109). Every pre-prune red was dispositioned intentional cut, none a defect — the per-class ledger is the 2026-08-16 Decisions entry.
+- 2026-08-16 AC8: `scripts/tests` 308 tests OK; `hooks/tests` 103 tests OK — both fresh at the branch tip.
+- 2026-08-16 consistency gate: `cairn_validate` exit 0, all checks pass, one advisory (`sizing` — M146's 8 ACs, a plan-time property); no IP/GP line in the DESIGN.md diff so `cairn_impact --changed` skipped; generic profile's consistency-gate slot names no toolchain checks (no-op). No Driving RR → projection-vs-outcome no-ops.
+- 2026-08-16 fresh-context review (three-lens fan-out; prior-PR lens clean with zero findings, both other lenses reproduced the suites and greps independently; a supplemental prune-verification sweep corroborated). Findings and dispositions, maintainer-approved at the gate:
+  - FIXED O1: /milestone's rulebook-mass baseline re-seeded to 400 lines / 35,884 chars (M146); its guard + registry re-anchored. FIXED O3: kept-count corrected to 326 (Decisions correction line). FIXED O4: records-hygiene ledger's branch-only SHA replaced with a procedural pointer. FIXED O6+B4: /milestone-review step 9 now instructs the D-109 hand-run + stamp note. FIXED O7: self-verification-ledger V16/V22 marked corrected in place. FIXED O9: failure-identity passing-control clause restored. FIXED O11: retirement-is-not-correction discriminator restored. FIXED O13: tracking-records exemption now names its member rules. FIXED O15: D-052 id dropped from the cairn-init stamp template. FIXED O10/O12/B1 (+sweep SEVERE 1-4): eight empty registry blocks and their stale comments removed; EXEMPT reasons dated; stale docstrings rewritten; content-pin tests + registrations added for the derived-claims, derived-figures, and failure-identity rules and the two live stamp write sites (skills/tests now 513, all green). FIXED B2 (pre-gate): AC5 evidence-line overclaim corrected same-day.
+  - FOLLOW-UP O2/O5/O8: work-log note appended to M147 — its row-drop list intersects D-115's Consequences, and the stale ROADMAP row + LESSONS line are its cleanup ground per M146's Out.
+  - REJECTED O14 (harness completeness vs D-109: non-gating, EXEMPT is the documented seam), O16 (D-114/D-116 figures: prospective binding per the plan gate, figures carry citations), O17 (tier claim rests on a false premise — the three-lens fan-out ran), B3 (feature-branch clarification drop is within the reduction mandate; hook docstring keeps it).
+  - ACCEPTED RESIDUAL (sweep): the maturation-clause guard gap in EXEMPT'd test_lesson_graduation and the remaining dead helpers — accepted under D-109's hand-run regime, re-registration deferred to adopter evidence per the EXEMPT record; the mutation-engine error-as-failure note is pre-existing and recorded in LESSONS.

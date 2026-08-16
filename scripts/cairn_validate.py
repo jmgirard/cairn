@@ -108,48 +108,6 @@ def check_caps(root, rows):
     return bad
 
 
-def check_record_density(root):
-    """Advisory: a per-line ceiling on the NON-item lines of the item-parsed
-    tracking files (D-052). `cairn/ROADMAP.md` and `cairn/LESSONS.md` are
-    parsed one item per line, so their line count measures ITEMS and is
-    structurally blind to prose accumulating on a heading, preamble, stamp, or
-    comment line — cairn's hygiene stamp reached 3,152 chars in an adopting
-    repo while every gate read green (2026-07-19; a review pass later rewrote
-    that stamp to 2,568, still over).
-
-    ITEM lines are excluded by SHAPE, never by threshold (D-052 narrowed
-    M84's blanket rejection of any per-line warn, keeping its reason for item
-    lines): pressure on individual line length would reward splitting an item
-    across lines and corrode the one-item-per-line format both parsers depend
-    on.
-
-    A whole-file character axis ran here from M84 to M101; D-058 removed it —
-    measured to tax at ordinary density (D-049) or sit where the item cap
-    already binds, never to catch a live defect this per-line axis missed.
-
-    WARN, never FAIL — D-018 wanted a hard signal for the CLAUDE.md section
-    cap, where cairn owns the whole content, but density is a judgment about
-    prose quality, the same call the references-staleness advisory already
-    makes. The finding names the line, since a file-level number cannot point
-    at the one line responsible."""
-    out = []
-    # Same `>=` comparison as every neighbouring cap — so `<400` permits 399
-    # and the shed figure is derived through the operator rather than assumed
-    # from the cap (M87).
-    line_cap = cs.NON_ITEM_LINE_CAP
-    for rel in cs.DENSITY_FILES:
-        path = os.path.join(root, rel)
-        for lineno, length in cs.non_item_lines(path):
-            if length < line_cap:
-                continue
-            out.append(
-                f"{rel}:{lineno}: non-item line is {length:,} chars "
-                f"(cap <{line_cap:,}; shed ≥{length - line_cap + 1:,}) — "
-                f"replace it, don't append to it; git holds the older text"
-            )
-    return out
-
-
 def check_terminal_retention(rows):
     terminal = [r["id"] for r in rows if r["status"] in ("done", "dropped")]
     if len(terminal) > cs.TERMINAL_ROW_RETENTION:
@@ -977,9 +935,9 @@ _DECISIONS_PASTED = (
 )
 # Blockquote markers are stripped before a LINE is matched, so quoting a
 # transcript does not hide its lines. The pattern takes any depth and any
-# spacing rather than an enumerated set, which is guard-doctrine §3's point: a
-# detector whose author must list every rendering is a detector that misses the
-# rendering the author did not think of. The tests carry a spread of renderings
+# spacing rather than an enumerated set: a detector whose author must list
+# every rendering is a detector that misses the rendering the author did not
+# think of. The tests carry a spread of renderings
 # in as positive controls, and are the record of which — a count restated here
 # would drift.
 #
@@ -1001,8 +959,8 @@ _DECISIONS_QUOTE = re.compile(r"^(?:\s*>)+\s?")
 # its own delimiters, so a closed fenced block's extent is read rather than
 # inferred; loose output has no delimiter, and every rule for inferring one —
 # adjacency, a gap tolerance, a filler class, a prose closer — requires its
-# author to enumerate what transcript lines look like. That is guard-doctrine
-# §3's trap, and this detector walked into it three times, each fix fitted to
+# author to enumerate what transcript lines look like. That is the
+# author-enumeration trap, and this detector walked into it three times, each fix fitted to
 # the shape in hand: round 1 mis-split a PASSING unittest run on its progress
 # dots, round 2 an `assertEqual` failure on its banner, and round 3 both a
 # two-hunk diff on its changed lines and a `>`-quoted transcript on the space
@@ -1836,12 +1794,6 @@ CHECKS = [
 # never fail the gate (exit code neutral), so they render WARN/OK, separate
 # from the PASS/FAIL CHECKS above.
 ADVISORIES = [
-    # First among the advisories (M84). `run()` prints every CHECK before any
-    # advisory, so this is NOT adjacent to the `weight caps` CHECK it is the
-    # second axis of — the two measures cover the same files, one structural
-    # and failing, one a judgment call and not, and the rulebook's weight-caps
-    # section is what pairs them for a reader.
-    ("record density", lambda root, rows: check_record_density(root)),
     ("sizing (split tripwires)", lambda root, rows: check_sizing_advisory(root)),
     (
         "scaffold deprecations",

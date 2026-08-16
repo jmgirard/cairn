@@ -1,18 +1,9 @@
-# Records hygiene (candidates, decisions, compression, gate discipline)
+# Records hygiene (candidates and decisions)
 
 Read this whenever you are at a milestone hygiene or plan gate — pruning or
-graduating a ROADMAP candidate, superseding a decision, compressing a capped
-tracking file, placing a new records rule, or amending a plan
-mid-implementation. It is a module of `tracking-rules.md`
-(D-031: doctrine gets a module, not a rulebook section; D-055: a matured lesson
-family graduates whole into one), conditionally read at the moment the craft
-applies, so it costs nothing to a session not at such a gate.
-
-It exists because these are the records operations that fail quietly — a
-candidate row advertising shipped work as pending, a compression pass that
-saved no lines, an acceptance criterion that drifted from what shipped. Each
-line here was learned by shipping the mistake, and both review lenses usually
-caught it, not the author.
+graduating a ROADMAP candidate, or superseding a decision. It is a module of
+`tracking-rules.md`, conditionally read at the moment the craft applies, so it
+costs nothing to a session not at such a gate.
 
 ## 1. Candidate rows graduate at completion, never at plan
 
@@ -21,8 +12,7 @@ milestone is planned.** Candidates graduate at *completion* — the row stays
 through planning and implementation and is removed in the post-merge hygiene
 pass. Prune it at plan time and the ROADMAP advertises shipped work as still
 pending for the whole life of the branch; leave it and the graduation is a
-single deliberate step where the work actually lands. Both review lenses flag
-a row a milestone already fulfilled but left standing.
+single deliberate step where the work actually lands.
 
 ## 2. Superseding a decision, and sweeping the archive for one
 
@@ -38,48 +28,11 @@ inside a milestone file is overturned by a new milestone-local entry that names
 and supersedes it — not by editing the original, and not by a `DECISIONS.md`
 entry that silently outranks a record it never mentions.
 
-## 3. Placing a new records rule, and applying it to your own output
-
-**A new rule's home is decided by "would a repo with NO numeric work need
-this?"** A universal rule — one every adopting repo needs regardless of domain
-— belongs in the core rulebook, not in a conditionally-read domain module like
-`validation-doctrine.md`; filing it in the domain module makes it invisible to
-exactly the non-numeric sessions the rule governs. D-031's
-universal-vs-domain-conditional boundary is the test; apply it before choosing
-where the sentence lands.
-
-**A milestone that ships a records rule runs that rule over the artifacts the
-milestone ITSELF authors.** The new rule's first test case is the milestone's
-own output — the pages it backfills, the tracking lines it writes — and the
-classic failure is a compliance fix that commits the very category its own new
-rule forbids. Check the milestone's own diff against the rule before shipping
-it.
-
-## 4. Amending the plan without letting it drift from what shipped
-
-**When implementation improves on a planned output token or format, amend the
-acceptance criterion through the implement gate in that same task** — do not
-let the plan text drift from the string actually delivered. Review checks the
-criteria as written and correctly fails a milestone that shipped something
-better than, but different from, what the AC promised; "better" is still drift.
-The amendment gate (`/milestone-implement` step 6) exists for exactly this, and
-using it keeps plan and delivery in one voice.
-
-<!-- §5 (reading a review scorer) retired with its subject at M145; git
-     holds it. Section numbers are stable, so the gap stays. -->
-
-## 6. Compressing a capped tracking file
-
-**Only removing a whole *wrapped* physical line lowers a line count.** A shorter
-sentence that still wraps to the same number of physical lines saves nothing,
-so when a file is over its cap, cut content — drop a clause, a redundant
-example, a whole item — rather than rephrase. Rephrasing to "tighten" a capped
-file is the commonest wasted pass.
-
-**Compress what your phase OWNS, and cross-reference a durable record instead of
-restating it.** When a cap breakdown ranks a section your phase may not touch
-as the heaviest, the growth to cut is almost always your own — review evidence
-you added, not the plan-owned Scope the breakdown named. Cut there, and replace
-any restated durable content (a `DECISIONS.md` entry, an archived summary) with
-a one-line cross-reference to it; a milestone restating a record it could cite
-is the classic overrun.
+<!-- Remainder ledger (M146 trim; git holds the full pre-trim text —
+     `git log -- skills/shared/records-hygiene.md`):
+     §3 (placing a new records rule; running it over the milestone's own
+     output) dropped with the rule-placement doctrine — no surviving consumer.
+     §4 (amend the AC through the gate rather than drift) already lives in its
+     consumer, /milestone-implement step 6. §5 retired with its subject at
+     M145. §6 (compressing a capped file) dropped; the surviving remedy lives
+     in tracking-rules "Weight caps". Section numbers stay stable. -->

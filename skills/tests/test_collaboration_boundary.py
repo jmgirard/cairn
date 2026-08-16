@@ -37,35 +37,7 @@ def readme():
 
 
 class TestEnforcementBoundary(unittest.TestCase):
-    def test_rulebook_states_the_boundary(self):
-        self.assertIn(
-            "enforcement boundary — what survives a merge made outside a cairn session.",
-            rules(),
-        )
 
-    def test_boundary_names_the_paths_that_escape_the_guards(self):
-        # The load-bearing half: *which* paths are unguarded. A passage that
-        # only said "some things aren't enforced" would satisfy a vaguer
-        # assert while telling an adopter nothing actionable.
-        t = rules()
-        self.assertIn("performed in the github web ui, by a merge", t)
-        self.assertIn(
-            "or by a contributor without the plugin installed is invisible to", t
-        )
-
-    def test_boundary_names_both_mechanically_backed_guards(self):
-        # Named by filename, so a rename that misses the prose is caught by
-        # test_the_named_guards_actually_ship below.
-        t = rules()
-        self.assertIn("`merge_guard` and `force_push_guard`", t)
-        self.assertIn("degrade to honor-system", t)
-
-    def test_boundary_states_the_single_operator_assumption(self):
-        # The assumption D-043 exists to stop being invisible.
-        self.assertIn("cairn assumes **one operator running these", rules())
-        self.assertIn(
-            "governed by that operator's session, never the contributor's.", rules()
-        )
 
     def test_the_named_guards_actually_ship(self):
         # stated<->enforced: the rulebook names two hooks by filename.
@@ -75,16 +47,7 @@ class TestEnforcementBoundary(unittest.TestCase):
 
 
 class TestPRBinding(unittest.TestCase):
-    def test_rulebook_states_the_binding(self):
-        self.assertIn(
-            "the guard refuses a `gh pr merge` whose pr the marker does not name",
-            rules(),
-        )
 
-    def test_rulebook_covers_the_unnamed_merge(self):
-        # Without this clause the binding is toothless: cairn's own skills
-        # merged bare before M72, so an unnamed merge is the common case.
-        self.assertIn("with no pr argument included", rules())
 
     def test_both_approval_writing_skills_name_the_pr(self):
         # stated<->enforced: a marker written without the PR silently falls

@@ -329,22 +329,13 @@ overrides — log the override).
    template makes this an explicit step; when the summary was made by
    compressing the file in place, the move did it implicitly. Skip it and
    `cairn_validate`'s `roadmap<->disk orphans` fires later in this same step.)
-   **Budget it to 22 of the 25 permitted:**
-   Goal 2 · Outcome 7 · Decisions 3 · Review 3, over the 7 fixed lines
-   (title, status, blanks). Measured across 96 summaries, 55 sit at *exactly*
-   25 — a distribution censored at the cap, which is what compress-until-it-
-   fits looks like from outside — so draft to the allocation and count as you
-   go, never trim afterward:
-
-   ```
-   python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_budget.py" cairn/milestones/archive/M<NN>-<slug>.md
-   ```
+   Draft the summary to the ≤25-line cap, counting as you go, never trimming
+   afterward.
 
    Then: ROADMAP row → `done` + archive path;
-   archive any resolved RB/RR pairs; **replace** "Last hygiene check" — overwrite the previous text, never append to it and never demote it to a `Prior:` clause (D-052); verify
-   weight caps.
-   Re-run `cairn_validate` after writing the stamp and before the commit: the `record density` advisory catches an over-cap stamp only while it is still editable.
-   Weight caps is the item-count CHECK and does not reach the stamp's own length — the per-line advisory is the axis that does.
+   archive any resolved RB/RR pairs; **replace** "Last hygiene check" with one short line — overwrite the previous text, never append to it or demote it to a `Prior:` clause; verify
+   weight caps. Where the repo ships hand-run prose-guard suites (this plugin's
+   `skills/tests`), hand-run them here and note red/green in the stamp (D-109).
    **Capture durable lessons:** append any repo lessons this
    milestone taught — build quirks, testing tricks, gotchas worth
    remembering — to `cairn/LESSONS.md`, one per line

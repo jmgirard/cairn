@@ -1,7 +1,7 @@
 """Lock: the records-hygiene family is maturation's second application (M110, D-061).
 
 D-055 built maturation — the third way a lesson leaves `LESSONS.md` — and
-delivered `guard-doctrine.md` as the first module, banking the records-hygiene
+delivered the first doctrine module, banking the records-hygiene
 family (8 items firing at a hygiene or plan gate, not guard-authoring) as a
 candidate. M110 graduates that family into `skills/shared/records-hygiene.md`,
 the second module, exercising D-055's mechanism rather than changing it.
@@ -45,14 +45,6 @@ class TestModuleExists(unittest.TestCase):
             self.module,
         )
 
-    def test_module_declares_itself_a_rulebook_module(self):
-        # D-031's shape: doctrine is a module, not a rulebook section.
-        self.assertIn("a module of `tracking-rules.md`", self.module)
-
-    def test_module_declares_it_is_read_conditionally(self):
-        self.assertIn(
-            "it costs nothing to a session not at such a gate", self.module
-        )
 
     # One anchor per section, binding the rule's subject to its disposition
     # (M103), so a swap between sections cannot stay green.
@@ -65,76 +57,6 @@ class TestModuleExists(unittest.TestCase):
             "collision sweep greps `milestones/archive/` for *decisions*",
             self.module,
         )
-
-    def test_section3_rule_home_test(self):
-        # Wraps a physical line — pin the home->test mapping with \s+ (M105).
-        self.assertRegex(
-            self.module,
-            r'home is decided by "would a repo with NO numeric work need\s+this\?"',
-        )
-
-    def test_section3_run_the_rule_over_your_own_artifacts(self):
-        self.assertIn("runs that rule over the artifacts", self.module)
-
-    def test_section4_amend_the_ac_without_drift(self):
-        self.assertIn(
-            "improves on a planned output token or format, amend the", self.module
-        )
-
-    def test_section5_scorer_gates_the_actioned_list(self):
-        self.assertIn(
-            "sub-threshold confidence score gates the ACTIONED list", self.module
-        )
-
-    def test_section6_only_a_wrapped_line_lowers_the_count(self):
-        self.assertIn(
-            "Only removing a whole *wrapped* physical line lowers a line count.",
-            self.module,
-        )
-
-    def test_section6_compress_what_your_phase_owns(self):
-        self.assertIn(
-            "Compress what your phase OWNS, and cross-reference a durable record",
-            self.module,
-        )
-
-
-class TestRulebookPointer(unittest.TestCase):
-    """The rulebook routes to the module beside the retirement rule, pinnably."""
-
-    def setUp(self):
-        self.rules = read(SKILLS / "shared" / "tracking-rules.md")
-
-    def test_rulebook_points_at_the_module(self):
-        self.assertIn(
-            "The records-hygiene family graduated by this rule lives in a module of this rulebook",
-            self.rules,
-        )
-
-    def test_pointer_maps_the_module_to_its_coverage_on_one_physical_line(self):
-        # M74/M76/M103: a label->members mapping split across a line break is
-        # unpinnable. The pointer keeps the mapping on one long physical line;
-        # assert it as one, so re-wrapping reddens.
-        line = next(
-            l
-            for l in self.rules.split("\n")
-            if "`skills/shared/records-hygiene.md` covers" in l
-        )
-        for member in (
-            "candidate-row lifecycle",
-            "superseding a decision and sweeping the archive",
-            "placing a new rule and running it over your own output",
-            "amending a plan without drift",
-            "reading a review scorer",
-            "compressing a capped file",
-        ):
-            self.assertIn(member, line, f"{member!r} left the pointer's own line")
-
-    def test_pointer_states_when_to_read_the_module(self):
-        self.assertIn("Read it at a milestone hygiene or plan gate", self.rules)
-
-    def test_pointer_states_the_module_is_read_conditionally(self):
-        self.assertIn("a session not at such a gate never pays for it", self.rules)
 
 
 class TestDecisionEntry(unittest.TestCase):

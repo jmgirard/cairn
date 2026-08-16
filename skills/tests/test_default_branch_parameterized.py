@@ -43,10 +43,6 @@ def normalized(*parts):
 
 
 class TestDefaultBranchParameterized(unittest.TestCase):
-    def test_git_model_uses_default_branch(self):
-        text = read("shared", "tracking-rules.md")
-        self.assertIn("The default branch (`main`/`master`) is a distribution", text)
-        self.assertIn("the default branch", text)
 
     def test_git_model_drops_hardcoded_main(self):
         text = read("shared", "tracking-rules.md")
@@ -94,11 +90,6 @@ class TestDetectionRecipeInGitModel(unittest.TestCase):
     def test_recipe_command_present(self):
         norm = normalized("shared", "tracking-rules.md")
         self.assertIn("git symbolic-ref --short refs/remotes/origin/HEAD", norm)
-
-    def test_recipe_states_runtime_detection(self):
-        norm = normalized("shared", "tracking-rules.md")
-        # Operational skills re-detect at runtime; cairn stores no branch name.
-        self.assertIn("re-detects it at runtime", norm)
 
 
 class TestOperationalSkillsParameterized(unittest.TestCase):

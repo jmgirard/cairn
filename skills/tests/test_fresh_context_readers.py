@@ -18,7 +18,7 @@ requirement, which M121 added (D-079 clause 2):
     written (`TestAmendmentReaudit`, M138).
 
 Until M127 this file also locked D-067's other instrument — the
-description-layer certification, `guard-doctrine.md` §8, and the
+description-layer certification, the retired guard-craft module's §8, and the
 `/milestone-implement` completion clause that fired it. M127 retired that
 step whole; its guard classes and their mutation-registry entries retired
 with it, and D-067 is narrowed to the criteria audit alone.
@@ -67,11 +67,6 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
             r"\s+not at\s+step 4",
         )
 
-    def test_audit_block_is_present_and_precedes_the_questions(self):
-        self.assertIn(
-            "**Criteria audit (runs before the questions are composed).**",
-            plan(),
-        )
 
     def test_audit_names_a_fresh_context_reader_that_authored_none_of_them(self):
         # The tier tag and the fresh-context requirement are pinned together:
@@ -121,18 +116,6 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
             "The instrument is a reader and never a check", plan()
         )
 
-    def test_audit_records_a_work_log_line_even_when_it_finds_nothing(self):
-        # M121 narrows D-067's first instrument. D-067 was adopted BY M115, so
-        # the five milestones after it are M116-M120, and three of those —
-        # M117, M119, M120 — carry no audit line at all, so "did not run" and
-        # "ran and found nothing" are indistinguishable in the record, which is
-        # what makes the instrument's yield unmeasurable. (D-079's evidence
-        # reports two, over the narrower M115-M119 window AC3 names.)
-        self.assertRegex(
-            plan(),
-            r"\*\*The audit records one work-log line either way\*\* — what it "
-            r"returned, or\s+that it returned nothing",
-        )
 
     def test_absent_audit_line_means_it_did_not_run(self):
         # The operative half: without it the requirement reads as bookkeeping
@@ -155,12 +138,6 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
             r"adopted carry no such line",
         )
 
-    def test_step_4_writes_the_audited_wording_and_reaudits_a_change(self):
-        self.assertRegex(
-            plan(),
-            r"\*\*Write the wording\s+step 3's audit read\*\*; a criterion the "
-            r"gate changed goes back through the\s+audit's three questions",
-        )
 
     def test_audit_question_is_asked_of_the_domain_not_a_proxy(self):
         # M132: this sentence is byte-identical to the RR-ingestion surface's
@@ -236,7 +213,7 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
         )
 
     def test_the_remedy_is_to_narrow_the_promise_not_widen_the_enumeration(self):
-        # Both halves: guard-doctrine §9 already holds that the remedy is not a
+        # Both halves: the retired guard-craft doctrine already held that the remedy is not a
         # fifth matcher; M132 adds where a rejected criterion actually goes.
         self.assertRegex(
             plan(),
@@ -245,19 +222,6 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
             r"promise until a stated procedure settles it",
         )
 
-    def test_audit_asks_the_form_coverage_question(self):
-        # M138: circumplex M81's AC1 was "mutation-verified" by one planted
-        # exemplar varying location while the parse walk's blind spot was
-        # form — a one-exemplar mutation clause is a proxy *verification*,
-        # which the domain-match test (a proxy *enumeration* catch) passes.
-        self.assertRegex(
-            plan(),
-            r"Where a criterion cites a mutation, inversion, or planted-defect\s+"
-            r"verification, the audit asks whether the probes vary every axis the\s+"
-            r"verified domain is free in — form as well as location — or stand one\s+"
-            r"exemplar in for the family \(guard-doctrine §1's inversion protocol and\s+"
-            r"§4's fixture rule applied to criteria\)",
-        )
 
     def test_the_rule_carries_its_measured_failure(self):
         self.assertRegex(
@@ -351,33 +315,6 @@ class TestRRIngestionCriteriaAudit(unittest.TestCase):
             r"What the audit returns is raised with the\s+user, never softened away",
         )
 
-    def test_ingest_audit_carries_the_form_coverage_question(self):
-        # M138: the ingest surface carries the same extension, so a
-        # binding-criteria set citing a one-exemplar mutation clause is
-        # caught before ingestion exactly as at the plan gate.
-        self.assertRegex(
-            brief(),
-            r"Where a criterion cites a mutation, inversion, or planted-defect\s+"
-            r"verification, the audit asks whether the probes vary every axis the\s+"
-            r"verified domain is free in — form as well as location — or stand one\s+"
-            r"exemplar in for the family \(guard-doctrine §1's inversion protocol and\s+"
-            r"§4's fixture rule applied to criteria\)",
-        )
-
-    def test_the_form_coverage_sentence_is_identical_at_both_surfaces(self):
-        # Nothing else enforces this: each surface's guard reads only its own
-        # file, so without this the two copies drift apart with both green
-        # (the M132 identity guard's reason, applied to the new sentence).
-        sentence = (
-            "Where a criterion cites a mutation, inversion, or planted-defect\n"
-            "   verification, the audit asks whether the probes vary every axis the\n"
-            "   verified domain is free in — form as well as location — or stand one\n"
-            "   exemplar in for the family (guard-doctrine §1's inversion protocol and\n"
-            "   §4's fixture rule applied to criteria)."
-        )
-        self.assertEqual(plan().count(sentence), 1)
-        self.assertEqual(brief().count(sentence), 1)
-
 
 class TestAmendmentReaudit(unittest.TestCase):
     """M138: `/milestone-implement` step 6 is the audit's third surface —
@@ -400,13 +337,6 @@ class TestAmendmentReaudit(unittest.TestCase):
             r"Scope, Acceptance criteria —",
         )
 
-    def test_amended_wording_is_asked_the_three_questions_before_written(self):
-        self.assertRegex(
-            implement(),
-            r"Amended acceptance-criterion wording — an amendment return from\s+"
-            r"`/milestone-review` included — is asked the criteria audit's three\s+"
-            r"questions as `/milestone-plan` step 3 states them",
-        )
 
     def test_reaudit_reader_is_fresh_context_and_not_the_author(self):
         # The candidate row proposed the session asking its own questions;

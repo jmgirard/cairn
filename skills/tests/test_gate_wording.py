@@ -41,10 +41,6 @@ class TestMergeGateIsAChip(unittest.TestCase):
         text = read("hotfix", "SKILL.md")
         self.assertIn("AskUserQuestion", text)
 
-    def test_rulebook_declares_merge_gate_a_chip(self):
-        text = read("shared", "tracking-rules.md")
-        self.assertIn("merge-approval gate is itself an AskUserQuestion chip", text)
-
 
 # Phase skills whose end-of-phase routing chip must name AskUserQuestion.
 # `/milestone-review` is deliberately excluded — its end is chip-less (below).
@@ -90,14 +86,6 @@ class TestRoutingChipMandate(unittest.TestCase):
         self.assertIn("this is the third gate", text)
         self.assertIn("AskUserQuestion", text)
 
-    def test_rulebook_declares_prose_list_not_a_chip(self):
-        text = read("shared", "tracking-rules.md")
-        self.assertIn("a prose list of options is not a routing chip", text)
-
-    def test_rulebook_declares_review_the_chipless_exception(self):
-        text = read("shared", "tracking-rules.md")
-        self.assertIn("the sole phase whose end is deliberately chip-less", text)
-
 
 # The chip is a *user stop* (D-003), but selecting an option is a go: the
 # orchestrator, not the user, invokes the target skill (M29). This guard
@@ -113,26 +101,10 @@ class TestChipInvocationImperative(unittest.TestCase):
             text,
         )
 
-    def test_rulebook_says_never_hand_back_to_the_user(self):
-        text = read("shared", "tracking-rules.md").lower()
-        self.assertIn("does not stop to have the user type the command", text)
-
-    def test_rulebook_clarifies_arrow_notation_names_the_skill(self):
-        text = read("shared", "tracking-rules.md").lower()
-        self.assertIn(
-            "names the skill the orchestrator invokes on selection, "
-            "not a command for the user to run",
-            text,
-        )
-
 
 # M35 AC2: a question gate carries at most 3 prioritized clarification
 # markers, so a gate can't balloon past a focused round. Phrase asserted
 # case-insensitively on one physical line (M23).
-class TestClarificationMarkerCap(unittest.TestCase):
-    def test_rulebook_caps_prioritized_clarification_markers_at_three(self):
-        text = read("shared", "tracking-rules.md").lower()
-        self.assertIn("at most 3 prioritized clarification markers", text)
 
 
 if __name__ == "__main__":

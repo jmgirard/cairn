@@ -99,9 +99,6 @@ class TestModuleExtraction(unittest.TestCase):
         # harness's blank-one-block proof honest.
         self.assertIn("lives in `skills/shared/validation-doctrine.md`", rulebook())
 
-    def test_rulebook_states_the_module_norm(self):
-        # The placement norm the extraction establishes (D-entry in M58).
-        self.assertIn("gets a module, not a rulebook", rulebook())
 
     def test_rulebook_no_longer_carries_the_doctrine_body(self):
         # Negative regression guard (not mutation-registrable — M54 lesson);

@@ -4180,3 +4180,110 @@ only user-facing work.
 
 **Consequences:** D-111's decision — the two modes and their selectors —
 stands unchanged, with its falsifiers.
+
+### D-114 (2026-08-16): The rulebook-size door reopens for reduction — a removal-shaped pass needs no measured `cairn_cost` regression — narrowly supersedes D-057's trigger clause; the growth-side closure stands (RR13 Q1–Q3, M146)
+
+**Context:** D-057 closed the stock-side weight-governance program and named
+one reopening trigger: "no milestone targets the rulebook's size absent a
+**measured `cairn_cost` regression** as its trigger". That framing assumed the
+size problem, if it returned, would show up as read cost. RR13 found the cost
+elsewhere: Q1 locates the generator in code-grade verification applied to
+oracle-less prose, Q2 classifies roughly three quarters of M100–M143 as cairn
+governing cairn, and Q3 finds the prose-guard architecture not earning its
+cost against the diff-plus-review instrument that already exists. Rule mass
+was a defect in the *shipped product* — the rulebook every adopting repo
+reads — not in this repo's session economics, so the one permitted trigger
+could never fire on it. RR13 rec 4 prescribes the reduction pass "with an
+explicit superseding entry for D-057's trigger clause as argued there — this
+is a partial reopening of closed ground and is flagged as such rather than
+worked around."
+
+**Decision:** D-057's trigger clause is narrowly superseded: a milestone whose
+deliverable **reduces** the rulebook or its modules — removal-shaped work in
+D-108's sense — may be triggered by Fable-review or adopter-side evidence that
+the rule mass itself is the defect, with no `cairn_cost` showing required.
+Everything else in D-057 stands: no milestone *adds* size-governance machinery
+(caps, audits, ledgers) absent a measured regression, felt slowness stays
+retired as a trigger, and the flow-side door remains where growth is governed.
+M146 executes under this entry.
+
+**Consequences:** The plan-time collision sweep surfaces this entry, not
+D-057 alone, on any size-shaped scope. If a reduction pass is ever proposed on
+felt slowness with no review or adopter evidence behind it, D-057's retired
+trigger is the ground for declining it; if reduction itself starts thrashing,
+this is the entry to supersede.
+
+### D-115 (2026-08-16): The record-density advisory is retired with its per-line axis — supersedes D-052's clause (1); the replace-never-append stamp rule and clause (2)'s ROADMAP classification stand (RR13, M146)
+
+**Context:** D-052 clause (1) added the per-line axis over non-item lines —
+`NON_ITEM_LINE_CAP`, `DENSITY_FILES`, the `record density` advisory — to catch
+the hygiene-stamp defect the item caps were structurally blind to. The axis
+worked by machinery: a constant, a helper, a checker, a registration, tests,
+and rulebook prose explaining the two-axes split, all maintained to police a
+defect whose operative fix was one sentence at each write site. RR13 Q3
+measures this instrument class as not earning its cost, and M146's goal
+retires the density/budget machinery with the rest.
+
+**Decision:** D-052's clause (1) is superseded: the per-line axis is retired —
+no cap constant, no measured-files roster, no advisory; the machinery left
+code and tests at M146 T4. What clause (1) existed to protect survives as
+prose: the `Last hygiene check` stamp is one short line naming what changed,
+**replaced each pass, never appended to**, stated in the rulebook's Weight
+caps and at each write site. D-052's clause (2) — `ROADMAP.md` is current
+knowledge, so replacing the stamp is not an IP4 edit — stands untouched, as
+does M84's kept reasoning that item lines are never length-policed.
+
+**Consequences:** The stamp rule is now honor-system prose like the rest of
+cairn's conduct. The recorded next step if the defect class returns is the
+parked write-time-stamp-check candidate row, whose promotion condition — the
+first over-cap stamp reaching a commit after the prose step ships — is the
+falsifier of "prose is enough here"; on that firing, that row and not a
+revival of this axis is the door.
+
+### D-116 (2026-08-16): The derived-claims family narrows to code-adjacent artifacts, and two record de-escalation rules are added — narrowly supersedes D-099's domain clause; tracking records leave the family's scope; the batching row graduates (RR13 rec 3 on D-108's basis, M146)
+
+**Context:** D-099 relocated the derived-figures rule to the rulebook with a
+domain spanning "tracking records, code comments, docstrings, changelog
+entries, or docs" — the derived-claims rule's domain, shared by the
+failure-identity rule. RR13 Q1-G2 identifies that application to tracking
+prose as a limb of the generator: records written under code-grade evidence
+discipline fed the correction economy the family was meant to end. Rec 3
+prescribes the de-escalation. D-108 widened D-090's door to bar new conduct
+rules about records but carved out removal-shaped work; that carve-out is
+this entry's basis for the narrowing. The batching rule is not removal-shaped,
+so it takes the other door: the 2026-08-16 plan gate explicitly decided to
+ship it as a named exception (the shape D-108 gave D-109's falsifier), on
+RR13 rec 3's prescription and the observed practice of D-096 (five
+corrections batched) and D-106 (two).
+
+**Decision:** Three parts. **(1)** The derived-claims, derived-figures, and
+failure-identity rules bind code-adjacent artifacts — code comments,
+docstrings, changelog entries, user-facing docs, and (for failure-identity)
+tests — and no longer bind tracking records, which ordinary care, the review
+lenses, and the correction discipline govern instead. This narrowly
+supersedes D-099's domain clause; D-099's decision otherwise stands, D-100's
+corrections with it. **(2)** A D-entry carries the decision and its rationale
+and no derived measurements — a supporting count or figure lives in the
+artifact or milestone file the entry cites. Binding on entries authored after
+M146; prior entries stand under IP4. **(3)** History-record corrections batch
+to at most one superseding entry per milestone, binding at authoring time: a
+defect found in the batching entry after it lands takes a further superseding
+entry under IP4.
+
+**Batching row disposed and graduated.** The row's 2026-08-15 audit, verbatim:
+"**Audited 2026-08-15 (candidate sweep), evidence both ways, kept:** the
+promotion condition arguably fired at M139, which landed two correcting
+entries — D-102 corrects D-101's "two clauses", and D-104 draws an annotation
+D-103 asserted without substantiating — but the remedy this row proposes is
+already practiced unprompted, D-096 batching five corrections into one entry
+and D-106 two. So the generator's death is unfalsified and the rule may be
+moot rather than owed. Next reader starts here rather than re-deriving it."
+Disposition: RR13 rec 3 settled the moot-vs-owed question the audit left
+open — the rule is owed as standing governance precisely because practice
+alone left the generator's death unfalsified — and part (3) ships it; the
+authoring-time binding preserves the review-return case the row's
+reachable-form clause required. The row graduates with this entry.
+
+**Consequences:** If a tracking-record defect class appears that the narrowed
+family would have caught and ordinary review does not, this is the entry to
+supersede — D-099's own consequence, carried to the narrowed domain.

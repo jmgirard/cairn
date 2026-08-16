@@ -28,33 +28,6 @@ def rules():
     return (SKILLS / "shared" / "tracking-rules.md").read_text().lower()
 
 
-class TestNarrationDisciplineRule(unittest.TestCase):
-    def test_rule_present_with_deliberation_bar(self):
-        t = rules()
-        self.assertIn(
-            "narrate outcomes, not deliberation.** between tool calls, chat carries",
-            t,
-        )
-        self.assertIn("never a running readout of reasoning", t)
-        self.assertIn("no italicized play-by-play commentary", t)
-
-    def test_signpost_and_summary_allowances(self):
-        t = rules()
-        self.assertIn("a one-line signpost before a long step is fine;", t)
-        self.assertIn(
-            "a compact summary where a question needs context is fine (d-039).",
-            t,
-        )
-
-    def test_preview_carveout(self):
-        # D-036/D-037 previews are mandated substance, not chattiness —
-        # the rule must say it never licenses summarizing them away.
-        self.assertIn(
-            "this never licenses compressing mandated substance: the durable-record",
-            rules(),
-        )
-
-
 class TestCorrectionNarrationRule(unittest.TestCase):
     """M120: the correction-narration rule adopted from `prompting-opus-5`.
 
@@ -70,25 +43,6 @@ class TestCorrectionNarrationRule(unittest.TestCase):
     tracking record, which is the remedy D-045 rules out.
     """
 
-    def test_rule_states_the_materiality_bar(self):
-        self.assertIn(
-            "only when the error would change the user's code, conclusions, "
-            "or decisions.",
-            rules(),
-        )
-
-    def test_rule_requires_plain_correction_then_continue(self):
-        self.assertIn(
-            "state the correction plainly and briefly, then continue the task",
-            rules(),
-        )
-
-    def test_rule_leaves_an_immaterial_slip_unnarrated(self):
-        self.assertIn(
-            "a slip that changes nothing for the user is fixed without "
-            "narrating it,",
-            rules(),
-        )
 
     def test_rule_separates_chat_slips_from_durable_records(self):
         self.assertIn("a chat slip never reaches a durable record", rules())

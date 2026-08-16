@@ -63,11 +63,6 @@ class TestPhaseHeaderLevels(unittest.TestCase):
                 self.assertNotIn("`# ", phase)
                 self.assertNotIn("###", phase)
 
-    def test_rulebook_declares_h1_unit_h2_phase(self):
-        text = read("shared", "tracking-rules.md")
-        self.assertIn("A `#` names the unit of work", text)
-        self.assertIn("`# Milestone <NN>: <title>`", text)
-        self.assertIn("`## Plan`", text)
 
     def test_rulebook_drops_old_h2_h3_forms(self):
         text = read("shared", "tracking-rules.md")

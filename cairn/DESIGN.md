@@ -30,12 +30,13 @@ transitions, human-gated merges, and a domain verification doctrine.
   standalone two-phase (facts → principles) DESIGN.md elicitation interview
   (D-013), offered from `/cairn-init`'s routing chip; it recommends running
   the session on Fable (D-014).
-- `skills/shared/tracking-rules.md` — the single rulebook. Three conditional
+- `skills/shared/tracking-rules.md` — the single rulebook. Conditional
   modules beside it: `validation-doctrine.md` (domain doctrine for
   numeric/scoring work, referenced from the rulebook — M58),
   `migration-protocol.md` (cairn-init §2's body, read only on precursor
-  footprint detection — M59), and `guard-doctrine.md` (guard/fixture/matcher
-  authoring craft, referenced from "What gets a test" — M98).
+  footprint detection — M59), and `records-hygiene.md` (candidate-row
+  lifecycle and supersede discipline, read at hygiene/plan gates —
+  M113, trimmed M146).
 - `skills/shared/templates/` — milestone, brief, decision, CLAUDE.md section,
   source note, synthesis note.
 - `skills/shared/profiles/` — the shipped reference toolchain profiles
@@ -61,8 +62,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   `cairn_validate` (mechanical consistency gate), `cairn_impact` (principle
   → citing `cairn/` file:line, for the Sync Impact Report on IPn/GPn changes;
   M15), `cairn_cost` (per-phase token attribution over the session store;
-  M94), `cairn_budget` (one artifact against its cap, at drafting time rather
-  than gate time — the only one taking a FILE, not a repo root; M99).
+  M94).
   Read-only; reuse the hooks' `cairn_common` parser (no duplication);
   exit 2 outside a cairn repo. `/milestone` invokes them instead of
   re-deriving status by LLM; `/milestone-review` runs `cairn_impact --changed`

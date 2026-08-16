@@ -1,22 +1,9 @@
-"""Guards for M99's budget-first drafting wiring.
+"""Guards for the archive-summary template and its review wiring (M99;
+M146 pruned the retired drafting-budget pins).
 
-Three surfaces, three failure modes.
-
-1. THE MILESTONE TEMPLATE'S BUDGET BLOCK IS SELF-REFERENTIAL. It states the
-   preamble length of the very file it sits in, so editing the block changes
-   the number the block asserts. That is a fixed point, and it drifted twice
-   while being authored. The guard here re-derives every figure from the
-   template on disk rather than pinning the digits, so an edit that moves the
-   preamble reddens until the arithmetic is restored — a pinned-digit guard
-   would instead have to be hand-updated and would silently bless a wrong sum.
-2. THE ARCHIVE TEMPLATE MUST STAY COMMENT-FREE. Its whole reason for existing
-   in this shape (M99 gate) is that a house-style comment block would spend a
-   fifth of a 25-line budget, and a template whose scaffolding must be deleted
-   by hand is one forgotten deletion away from doing exactly that.
-3. THE TWO DRAFTING STEPS MUST HAND OVER A RUNNABLE COMMAND. D-048: a command
-   the user is expected to run gets its own fenced block, because a fence
-   renders a copy button and inline backticks do not. Asserted as a fence
-   containing the command, never as the command's mere presence.
+THE ARCHIVE TEMPLATE MUST STAY COMMENT-FREE: a house-style comment block
+would spend a fifth of a 25-line cap, and a template whose scaffolding must
+be deleted by hand is one forgotten deletion away from doing exactly that.
 
 Run: python3 -m unittest discover -s skills/tests -k budget_first
 """
@@ -36,7 +23,6 @@ TEMPLATE = REPO / "skills/shared/templates/milestone.md"
 ARCHIVE_TEMPLATE = REPO / "skills/shared/templates/archive-summary.md"
 PLAN = REPO / "skills/milestone-plan/SKILL.md"
 REVIEW = REPO / "skills/milestone-review/SKILL.md"
-COUNTER = "scripts/cairn_budget.py"
 
 
 def read(p):
@@ -45,110 +31,14 @@ def read(p):
 
 def flat(text):
     """Whitespace-normalized text, for presence checks over prose that
-    legitimately re-wraps (guard-doctrine "Fix the wrap, never the assert" —
-    which scopes the one-line demand to mutation blocks and label→rule
-    pairings, and permits normalizing here). Normalizing is what lets the
-    assertions below pin a rule together with the predicate that carries its
-    meaning, instead of stopping at the line break in front of it."""
+    legitimately re-wraps. Normalizing is what lets the assertions below pin
+    a rule together with the predicate that carries its meaning, instead of
+    stopping at the line break in front of it."""
     return re.sub(r"\s+", " ", text)
 
 
 def fenced_blocks(text):
     return re.findall(r"```(.*?)```", text, flags=re.DOTALL)
-
-
-class TestMilestoneTemplateBudgets(unittest.TestCase):
-    """The budget block, checked against the template it describes."""
-
-    def setUp(self):
-        self.text = read(TEMPLATE)
-
-    def test_the_block_states_a_budget_for_every_plan_owned_section(self):
-        for section in ("Goal", "Scope", "AC", "Coverage", "Tasks"):
-            self.assertRegex(
-                self.text,
-                rf"{section} \d+",
-                f"no drafting budget stated for {section}",
-            )
-
-    def preamble(self):
-        """The template's actual preamble, measured — never read from prose."""
-        body = cs.milestone_body_line_count(str(TEMPLATE))
-        sections = cs.milestone_section_line_counts(str(TEMPLATE))
-        return body - sum(n for _, n in sections)
-
-    def test_the_budgets_plus_the_real_preamble_fit_under_the_cap(self):
-        """The property the block claims, asserted directly.
-
-        An earlier version had the block STATE its own preamble length, which
-        made it a fixed point: editing the block changed the number the block
-        asserted, and it drifted twice while being authored. The claim worth
-        guarding was never the digits — it was that the budgets fit. So the
-        preamble is measured here and the template no longer describes itself.
-
-        M118/D-074 drops the `## Decisions` reserve from the sum rather than
-        keeping it as a phantom term: the section is cap-exempt, so it costs
-        the budget nothing and a total charging it 21 lines would assert a
-        cost that no longer exists. `preamble()` measures through the shipped
-        counters, which exempt the section too, so both halves moved together.
-        """
-        parts = [
-            int(re.search(rf"{s} (\d+)", self.text).group(1))
-            for s in ("Goal", "Scope", "AC", "Coverage", "Tasks")
-        ]
-        total = sum(parts) + self.preamble()
-        self.assertLess(
-            total,
-            cs.MILESTONE_CAP,
-            f"the stated budgets ({sum(parts)}) plus the measured preamble "
-            f"({self.preamble()}) = {total}, which "
-            f"does not fit the <{cs.MILESTONE_CAP} cap",
-        )
-        self.assertGreater(
-            cs.MILESTONE_CAP - 1 - total, 0, "the budget must leave the cap room"
-        )
-
-    def test_the_block_describes_no_length_of_its_own(self):
-        """The fixed point must not come back. Any figure in this block that
-        describes the template's own preamble reintroduces the maintenance
-        trap the guard above exists to have removed."""
-        self.assertNotRegex(
-            self.text,
-            r"this \d+-line preamble",
-            "the budget block again states its own preamble length",
-        )
-        self.assertNotRegex(
-            self.text,
-            r"\d+ of \d+ permitted",
-            "the budget block again restates a total the counter prints",
-        )
-        # Paired positive: the block is still present and still budgeting, so
-        # these absence assertions cannot pass by the block having vanished.
-        self.assertIn("DRAFTING BUDGETS", self.text)
-        self.assertRegex(self.text, r"Goal \d+ · Scope \d+")
-
-    def test_the_decisions_section_is_named_cap_exempt_and_not_plan_s_to_spend(self):
-        """`## Decisions` is implement/review-owned and grows after plan time,
-        so plan must be told to spend none of it. M99 carried that as a ≥21-line
-        RESERVE; D-074 made the section cap-exempt, so the reserve's ground is
-        gone while the spend-none instruction is not. Re-anchored on the new
-        sentence rather than appended to, or the superseded 'RESERVED' framing
-        would still satisfy the assert. A guard on the exemption alone would
-        pass if the block dropped the instruction and left plan free to draft
-        into a section it does not own."""
-        self.assertIn("## Decisions reserves nothing", flat(self.text))
-        self.assertIn("plan still spends none of it", flat(self.text))
-
-    def test_the_budgets_are_marked_guidance_rather_than_a_gate(self):
-        """M99 Scope forbids a second cap. If this block ever reads as
-        enforcement, the split-budget shape D-030 declined is back. Pinned with
-        the predicate attached — 'guidance, not a gate' alone would survive the
-        sentence naming a different, stricter thing as the check that fails."""
-        self.assertIn(
-            "guidance, not a gate; the only size check that can fail is "
-            "cairn_validate's <150 over the plan-owned body",
-            flat(self.text),
-        )
 
 
 class TestArchiveSummaryTemplate(unittest.TestCase):
@@ -180,24 +70,6 @@ class TestArchiveSummaryTemplate(unittest.TestCase):
 class TestDraftingStepsHandOverTheCounter(unittest.TestCase):
     """D-048: a command the user runs gets a fence, not inline backticks."""
 
-    def test_plan_step_4_fences_the_counter_command(self):
-        blocks = fenced_blocks(read(PLAN))
-        self.assertTrue(
-            any(COUNTER in b for b in blocks),
-            f"{COUNTER} is not handed over in a fenced block in /milestone-plan",
-        )
-
-    def test_review_step_9_fences_the_counter_command(self):
-        blocks = fenced_blocks(read(REVIEW))
-        self.assertTrue(
-            any(COUNTER in b for b in blocks),
-            f"{COUNTER} is not handed over in a fenced block in /milestone-review",
-        )
-
-    def test_plan_tells_the_author_to_count_while_drafting_not_at_the_gate(self):
-        text = read(PLAN)
-        self.assertIn("Draft against the budget, not against the gate", flat(text))
-        self.assertIn("count while writing", flat(text))
 
     def test_review_names_the_archive_template_as_the_source(self):
         text = read(REVIEW)
@@ -214,51 +86,6 @@ class TestDraftingStepsHandOverTheCounter(unittest.TestCase):
             "**deleting the live `cairn/milestones/M<NN>-<slug>.md`**", text
         )
         self.assertIn("summary REPLACES the milestone file", text)
-
-    def test_the_archive_allocation_matches_the_templates_actual_fixed_lines(self):
-        """M99 review F3. The stated allocation and the skeleton it budgets are
-        two records of one number, so they are compared rather than both
-        trusted — the work log's first pass said 5 fixed lines when the skeleton
-        has 7, and nothing caught it. Derived from the template on disk."""
-        skeleton = read(ARCHIVE_TEMPLATE).splitlines()
-        blanks = sum(1 for line in skeleton if not line.strip())
-        labelled = len(re.findall(r"^\*\*[A-Za-z ]+:\*\*", read(ARCHIVE_TEMPLATE), re.M))
-        title = 1
-        fixed = title + blanks + 1  # +1 for the Status line, itself a fixed line
-        stated = int(re.search(r"over the (\d+) fixed lines", read(REVIEW)).group(1))
-        self.assertEqual(
-            stated,
-            fixed,
-            "the stated fixed-line count disagrees with the archive template",
-        )
-        parts = [
-            int(n)
-            for n in re.findall(
-                r"(?:Goal|Outcome|Decisions|Review) (\d+)",
-                re.search(r"Goal \d+ · .*?Review \d+", read(REVIEW)).group(0),
-            )
-        ]
-        self.assertEqual(len(parts), labelled - 1, "one budget per non-Status label")
-        self.assertEqual(
-            sum(parts) + fixed, 22, "the allocation must sum to the stated 22"
-        )
-        self.assertLess(sum(parts) + fixed, cs.ARCHIVE_CAP)
-
-    def test_review_states_the_archive_allocation_and_its_censoring_evidence(self):
-        """The allocation is set BELOW the measured median on purpose: the
-        distribution is censored at the cap, so its percentiles measure the
-        ceiling. A guard on the numbers alone would survive deleting the
-        reasoning that makes them defensible."""
-        text = read(REVIEW)
-        self.assertIn("Goal 2 · Outcome 7 · Decisions 3 · Review 3", flat(text))
-        self.assertIn("55 sit at *exactly* 25", flat(text))
-        self.assertIn("a distribution censored at the cap", flat(text))
-
-
-class TestCounterIsAdvertisedWhereItIsDocumented(unittest.TestCase):
-    def test_the_design_inventory_names_the_counter(self):
-        text = read(REPO / "cairn/DESIGN.md")
-        self.assertIn("cairn_budget", text)
 
 
 if __name__ == "__main__":

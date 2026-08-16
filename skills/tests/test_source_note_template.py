@@ -75,50 +75,11 @@ def doctrine_lines():
 
 
 class TestClaimSplitDoctrine(unittest.TestCase):
-    def test_standing_fact_label_carries_its_members(self):
-        # Label AND enumeration together: a guard on the mechanism sentence
-        # alone survives the two definitions being swapped (M76 lesson).
-        self.assertIn(
-            "a **standing fact** is a claim about the *source*: an extracted "
-            "value, a printed formula, a verbatim wording, a page or table "
-            "anchor.",
-            doctrine_flat(),
-        )
 
-    def test_dated_observation_label_carries_its_members(self):
-        self.assertIn(
-            "a **dated observation** is a claim about the *repo's own state*: "
-            "what is on the shelf, what has or has not been read, what another "
-            "page does or does not yet say, what a later task must still check.",
-            doctrine_flat(),
-        )
-
-    def test_each_definition_sits_on_one_physical_line(self):
-        # The mutation harness blanks a block by physical line; a definition
-        # that reflows across lines can no longer be registered (M59/M64).
-        for label in ("**standing fact**", "**dated observation**"):
-            hits = [ln for ln in doctrine_lines() if label in ln]
-            self.assertEqual(
-                len(hits), 1, f"{label} must appear on exactly one line"
-            )
-            self.assertTrue(
-                hits[0].rstrip().endswith("."),
-                f"{label}'s definition must be complete on its own line",
-            )
 
     def test_observation_marker_is_the_inline_dated_form(self):
         self.assertIn("`— observed yyyy-mm-dd` inline on the claim", doctrine_flat())
 
-    def test_rule_binds_both_committed_page_types(self):
-        self.assertIn("source note and synthesis note alike", doctrine_flat())
-
-    def test_undated_absence_claim_is_named_as_the_failure(self):
-        self.assertIn(
-            'the undated absence claim — "not present", "not retrieved", '
-            '"not yet checked", "must be verified when x is written" — is the '
-            "specific failure this rule exists to stop",
-            doctrine_flat(),
-        )
 
     def test_ingestion_names_the_template_path(self):
         # Source ingestion stays in the domain module (D-031); the template
@@ -136,17 +97,6 @@ class TestClaimSplitDoctrine(unittest.TestCase):
             '"references pages" (d-031)',
             re.sub(r"\s+", " ", DOCTRINE.read_text().lower()),
         )
-
-    def test_extraction_status_must_carry_its_own_date(self):
-        # The status is a repo-state claim, so the rule that governs repo-state
-        # claims governs it too — stated explicitly, not left to inference.
-        self.assertIn(
-            "an extraction status carries its own `— observed yyyy-mm-dd`",
-            doctrine_flat(),
-        )
-
-    def test_provenance_block_is_prose_not_frontmatter(self):
-        self.assertIn("the block is prose in the page's own idiom, not frontmatter", doctrine_flat())
 
 
 class TestShippedTemplate(unittest.TestCase):

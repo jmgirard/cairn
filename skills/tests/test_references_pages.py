@@ -62,19 +62,6 @@ class TestReferencesPages(unittest.TestCase):
             "source notes (`<citekey>.md`), synthesis notes", rulebook()
         )
 
-    def test_ingestion_defines_synthesis_notes(self):
-        # The "References pages" section defines the second page type (M58
-        # moved it there from Source ingestion; the rule itself is unchanged).
-        self.assertIn(
-            "the second committed `references/` page type", rulebook()
-        )
-
-    def test_every_committed_page_carries_an_index_line(self):
-        # The rule the references check mechanizes: page on disk ⇒ INDEX line.
-        self.assertIn(
-            "every committed `references/` page carries its", rulebook()
-        )
-
 
 class TestAuthoringTrigger(unittest.TestCase):
     """M80: when a page is owed lives in CORE, not the numeric-gated module.
@@ -96,16 +83,6 @@ class TestAuthoringTrigger(unittest.TestCase):
             "an analysis that will outlive its milestone", rulebook()
         )
 
-    def test_core_names_both_shipped_templates(self):
-        self.assertIn(
-            "author from the shipped templates:", rulebook()
-        )
-        for path in (
-            "`skills/shared/templates/source-note.md`",
-            "`skills/shared/templates/synthesis-note.md`",
-        ):
-            with self.subTest(template=path):
-                self.assertIn(path, rulebook())
 
     def test_module_defers_the_trigger_instead_of_restating_it(self):
         # Positive framing assert, mutation-registered. Its negative twin
@@ -135,53 +112,6 @@ class TestExploratorySources(unittest.TestCase):
     physical line (the mutation harness blanks by line — LESSONS :37).
     """
 
-    def test_exploration_is_named_a_legitimate_activity(self):
-        # AC1: distinct from the demand-pull "owed" trigger — triaged, not
-        # dismissed for want of a citation.
-        self.assertIn(
-            "is supply-push exploration, a legitimate activity", rulebook()
-        )
-
-    def test_exploration_always_produces_candidate_rows(self):
-        # AC2 output 1: candidate rows always, search-first (the D-042 pattern).
-        self.assertIn(
-            "it always produces roadmap candidate rows for the promising "
-            "oracles or methods it finds",
-            rulebook(),
-        )
-
-    def test_survey_note_only_when_it_outlives_the_exploration(self):
-        # AC2 output 2: the committed survey synthesis note is conditional on
-        # the existing "owed applied to time" test — a one-shot triage stays
-        # in the milestone file and earns no page. The anchor binds the RECORD
-        # ("survey synthesis note") to its condition, not the bare clause: a
-        # bare-clause assert survives a swap of the conditional-vs-withheld
-        # language between this output and the per-source one (M74/M76).
-        self.assertIn(
-            "committed survey synthesis note only when the triage will "
-            "outlive its exploration",
-            rulebook(),
-        )
-
-    def test_per_source_pages_stay_demand_pull(self):
-        # AC2 output 3: exploration withholds the per-citekey page; those are
-        # still earned only on graduation plus a trace back to the source. The
-        # anchor binds the RECORD ("per-source `<citekey>.md` page") to its
-        # "stays demand-pull" disposition, for the same M74/M76 reason.
-        self.assertIn(
-            "withholds a per-source `<citekey>.md` page: those stay "
-            "demand-pull, earned only once a candidate graduates",
-            rulebook(),
-        )
-
-    def test_exploration_restates_the_m56_guardrail(self):
-        # AC3: reuse existing records, add no machinery — the shapes M56
-        # rejected, named so a later milestone cannot quietly rebuild one.
-        self.assertIn(
-            "no committed raw sources, no references log, no query op or "
-            "graph tooling",
-            rulebook(),
-        )
 
     def test_plan_skill_recognizes_exploratory_ingestion(self):
         # AC4: /milestone-plan step 2 recognizes a source corpus as a
@@ -193,26 +123,6 @@ class TestExploratorySources(unittest.TestCase):
             "dismissing them as uncited",
             plan,
         )
-
-    def test_each_anchor_sits_on_one_physical_line(self):
-        # The mutation harness blanks by physical line; an anchor spanning two
-        # would "found 0"-error rather than redden (LESSONS :37).
-        lines = [ln.lower() for ln in
-                 (SKILLS / "shared" / "tracking-rules.md").read_text().splitlines()]
-        for anchor in (
-            "is supply-push exploration, a legitimate activity",
-            "it always produces roadmap candidate rows for the promising "
-            "oracles or methods it finds",
-            "committed survey synthesis note only when the triage will "
-            "outlive its exploration",
-            "withholds a per-source `<citekey>.md` page: those stay "
-            "demand-pull, earned only once a candidate graduates",
-            "no committed raw sources, no references log, no query op or "
-            "graph tooling",
-        ):
-            hits = [ln for ln in lines if anchor in ln]
-            with self.subTest(anchor=anchor[:40]):
-                self.assertEqual(len(hits), 1, f"{anchor!r} must sit on one line")
 
 
 class TestShippedSynthesisTemplate(unittest.TestCase):
@@ -765,35 +675,6 @@ class TestReVerification(unittest.TestCase):
     the expectation alone survives the recording location being moved to the
     central ledger M56 rejected (M74/M76: pin the label with its members)."""
 
-    def test_core_states_the_re_verification_expectation(self):
-        self.assertIn(
-            "a page the repo still relies on is re-checked against its source "
-            "as it gets old, and a page never checked against its source at "
-            "all keeps saying so",
-            rulebook(),
-        )
-
-    def test_a_re_check_marks_inline_and_nowhere_else(self):
-        # The location half. Without "never in a new file, a new section, or a
-        # log", the rule reads as satisfied by a references/log.md.
-        self.assertIn(
-            "a re-check marks inline in the provenance block, on the "
-            "extraction status itself — never in a new file, a new section, "
-            "or a log",
-            rulebook(),
-        )
-
-    def test_each_anchor_sits_on_one_physical_line(self):
-        # The mutation harness blanks by physical line; a reflow would
-        # "found 0"-error both entries (LESSONS :27).
-        lines = [ln.lower() for ln in
-                 (SKILLS / "shared" / "tracking-rules.md").read_text().splitlines()]
-        for anchor in (
-            "a page the repo still relies on is re-checked",
-            "a re-check marks inline in the provenance block",
-        ):
-            hits = [ln for ln in lines if anchor in ln]
-            self.assertEqual(len(hits), 1, f"{anchor!r} must sit on one line")
 
     def test_advisory_is_named_by_its_emitted_label(self):
         # M28/LESSONS :27: prose naming a validate finding uses the emitted
@@ -803,19 +684,6 @@ class TestReVerification(unittest.TestCase):
             "references staleness",
             [name for name, _ in _load_validate().ADVISORIES],
         )
-
-    def test_severity_is_advisory_not_a_check(self):
-        # M81-D1 / D-029: the rulebook states WHY this is not a gate, so a
-        # later milestone cannot promote it by forgetting the reasoning.
-        self.assertIn(
-            "it stays an advisory and never a check", rulebook()
-        )
-
-    def test_the_threshold_prose_matches_the_shipped_constant(self):
-        # The pairing rule (M77) applied to a NUMBER: prose stating 180 days
-        # over code comparing something else is the drift this catches.
-        self.assertIn("more than 180 days ago", rulebook())
-        self.assertEqual(_load_validate()._STALE_DAYS, 180)
 
 
 if __name__ == "__main__":

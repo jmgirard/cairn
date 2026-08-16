@@ -1,49 +1,37 @@
 # Tracking rules (shared by all cairn skills)
 
-Read this before touching any tracking file. Every cairn skill obeys
-these rules; skills state their own workflow but never restate or override
-this rulebook. Repo-specific hard rules in the repo's CLAUDE.md and
-conventions in `cairn/DESIGN.md` bind in addition to (never instead of)
-these rules.
+Read this before touching any tracking file. Every cairn skill obeys these rules; skills state their own workflow but
+never restate or override this rulebook. Repo-specific rules in CLAUDE.md and `cairn/DESIGN.md` bind in addition, never
+instead. This file states operative rules only; the reasons behind a rule live in `cairn/DECISIONS.md` and git history.
 
 ## File map and ownership boundaries
 
-All project state lives in markdown under `cairn/`. Substance lives in the
-owner; any other file gets at most a one-line cross-reference.
+All project state lives in markdown under `cairn/`: substance in the owner, other files at most a cross-reference line.
 
 | File | Owns | Does NOT own |
 |---|---|---|
-| `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `cairn/` | Status, TODOs, architecture rationale, history — anything time-varying rots here |
+| `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `cairn/` | Status, TODOs, architecture rationale, history |
 | `cairn/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
-| `cairn/PROFILE.md` | The repo's toolchain profile — the seven language/toolchain slots the operational skills read (see "Toolchain profiles") | Domain doctrine (oracles are universal), status, tasks, decisions |
+| `cairn/PROFILE.md` | The repo's toolchain profile — the seven slots the operational skills read (see "Toolchain profiles") | Domain doctrine, status, tasks, decisions |
 | `cairn/ROADMAP.md` | The milestone index — **the only authority on status** | Task details, acceptance criteria, narrative |
-| `cairn/milestones/M<NN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately, before other work) |
+| `cairn/milestones/M<NN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
 | `cairn/DECISIONS.md` | Append-only cross-cutting decisions (D-001, …), never renumbered — superseded by new entries | Milestone-local decisions (those live in the milestone file); deferrals ("not now" is a ROADMAP fact, not a decision) |
-| `cairn/LESSONS.md` | Durable, capped repo lessons (build quirks, testing tricks) — captured at milestone end, surfaced at plan time; current knowledge, so a lesson proven false is corrected in place and marked (D-045), and retired once a test enforces it, another file owns it, or a matured family graduates whole into a doctrine module (D-051, D-055) | Status, decisions (a *choice* is a D-entry), per-milestone task notes |
+| `cairn/LESSONS.md` | Durable, capped repo lessons — captured at milestone end, surfaced at plan time; current knowledge, corrected in place when proven false, retired per "Retiring a lesson" | Status, decisions (a *choice* is a D-entry), per-milestone task notes |
 | `cairn/reviews/` | RB<NN> briefs and RR<NN> reports for Fable escalation (+ `archive/` for resolved pairs) | Anything else |
-| `cairn/references/` | Source notes (`<citekey>.md`), synthesis notes (cross-source analyses — fit assessments, surveys, pilot ledgers), `INDEX.md` (one line per committed page), the gitignored source shelf `sources/` (renamed from `pdf/` at M79 — the shelf holds any source, not only PDFs) | Anything else |
+| `cairn/references/` | Source notes (`<citekey>.md`), synthesis notes, `INDEX.md` (one line per committed page), the gitignored source shelf `sources/` | Anything else |
 | `cairn/legacy/` | Entombed pre-migration tracking files, verbatim | Anything live |
 
-Boundary rule: **Architecture → DESIGN · Status → ROADMAP · Tasks →
-milestone files · Decisions → DECISIONS · Lessons → LESSONS · History →
-archive + git log.**
-
-Repo-specific extra files in `cairn/` are allowed (spec docs, coverage
-matrices); they declare their own scope and must not claim another file's
-ownership.
+Boundary rule: **Architecture → DESIGN · Status → ROADMAP · Tasks → milestone files · Decisions → DECISIONS · Lessons →
+LESSONS · History → archive + git log.** Repo-specific extra files in `cairn/` are allowed; they declare their own scope
+and must not claim another file's ownership.
 
 ### Milestone-file section ownership
 
-Within a milestone file, each section has a writing skill — a phase skill
-never rewrites another phase's section. Write-modes: **create** (authored
-once by the named skill), **append-only** (lines added, never rewritten),
-**amend-via-gate** (changed only through the implement amendment protocol,
-`/milestone-implement` step 6, or a review send-back — always with a work-log
-line), **mirror-update** (the status field is synced to `ROADMAP.md` by
-whichever skill makes the transition; ROADMAP wins any conflict),
-**check-off** (implement ticks task checkboxes and makes minor task edits),
-**exclusive** (only the named skill ever writes it).
+Each section has a writing skill — a phase skill never rewrites another phase's section. Write-modes: **create**
+(authored once), **append-only**, **exclusive** (one writer ever), **mirror-update** (synced to `ROADMAP.md`; ROADMAP
+wins any conflict), **check-off** (implement ticks task checkboxes, minor task edits), **amend-via-gate** (changed only
+through the implement amendment protocol or a review send-back, always with a work-log line).
 
 | Section | Writing skill | Write-mode |
 |---|---|---|
@@ -52,282 +40,106 @@ whichever skill makes the transition; ROADMAP wins any conflict),
 | Branch/PR (header) | implement (branch), review (PR URL) | create |
 | Goal | plan | create; a wrong goal returns to plan, never edited in place |
 | Scope (In/Out) | plan | create; amend-via-gate |
-| Acceptance criteria | plan | create; amend-via-gate — review reads, never reinterprets; under AC fencing review check-offs a verified criterion box (a verification mark, not a text change) |
+| Acceptance criteria | plan | create; amend-via-gate — review reads, never reinterprets; under AC fencing review ticks a verified criterion box (a verification mark, not a text change) |
 | Coverage (criterion→task map) | plan | create; amend-via-gate — review reads to fence evidence, never reinterprets |
 | Tasks | plan (create), implement (check-off, minor edits) | create; check-off; amend-via-gate for substantive change |
 | Work log | any skill | append-only |
 | Decisions (milestone-local) | implement, review | append-only |
 | Review | review | exclusive |
 
-**AC fencing (review discipline).** At `/milestone-review`, an
-acceptance-criterion checkbox is ticked only against fresh evidence recorded
-in the Review section — no evidence line, no tick (review ticks the box as a
-verification mark; the criterion wording stays plan-owned, amended only via
-gate). The tick is incremental: each box is ticked as its own evidence line is
-recorded, criterion by criterion — mirroring `/milestone-implement`'s per-task
-tick at each checkpoint — never batched into one pass at phase end. Every
-criterion must
-map to ≥1 existing task via the Coverage section. An unmapped criterion (or
-one mapped to a task that isn't there) is a gate failure, returned to
-`/milestone-implement` for a gated Coverage amendment, never patched
-review-side. Fencing enforces what the Coverage map plans: evidence gates the
-checkbox, coverage gates the plan.
+**AC fencing (review discipline).** An acceptance-criterion checkbox is ticked only against fresh evidence recorded in
+the Review section — no evidence line, no tick; each box as its own evidence line lands, never batched at phase end.
+Every criterion must map to ≥1 existing task via the Coverage section; an unmapped criterion (or one mapped to a missing
+task) is a gate failure, returned to `/milestone-implement` for a gated Coverage amendment, never patched review-side.
 
-DESIGN.md principles come in two strengths: **GP<n> — Guiding Principle**, a
-default stance that may be traded off with stated justification; **IP<n> —
-Inviolable Principle**, a hard constraint never violated in implementation —
-changing one requires an explicit user decision recorded as a D-entry.
-Ordering: the IP block comes first, then GPs; numbers run within each type
-(IP1…, GP1…) and are never reused or renumbered — retiring a principle
-takes a D-entry, and its number stays retired.
+DESIGN.md principles: **GP<n> — Guiding Principle**, a default stance tradeable with stated justification; **IP<n> —
+Inviolable Principle**, a hard constraint never violated — changed only by explicit user decision recorded as a
+D-entry. IP block first, then GPs; numbers are never reused or renumbered — retiring one takes a D-entry.
 
 ## Weight caps
 
-- the cairn `## Project tracking` section of `CLAUDE.md` < 30 lines (the repo's
-  own dev doctrine outside that section is not cairn's to cap — D-018) ·
-  `ROADMAP.md` < 60 lines · `LESSONS.md` < 50 lines · `PROFILE.md` < 120 lines ·
-  archived summary ≤ 25 lines.
-- **Two axes, one file.** Those caps count **items**: `ROADMAP.md` and
-  `LESSONS.md` are parsed one item per line (rows read positionally; D-015
-  makes a lesson one line), so a line count measures rows and lessons and is
-  structurally blind to prose accumulating *inside* a line. The second axis is
-  **per-line**: over the same two files, non-item lines are
-  capped at `NON_ITEM_LINE_CAP` (< 400 characters), reported by
-  `cairn_validate`'s `record density` advisory.
-  The two axes take opposite remedies: an over-count file graduates or prunes items, an over-cap non-item line is replaced by a shorter rewrite, never appended to.
-  The two also differ in severity, and the labels say which is which: the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the per-line axis is the `record density` advisory and only ever WARNs.
-  Density warns because "too dense" is a judgment and an item count is not — the
-  same call the `references staleness` advisory makes.
-  **The per-line axis covers non-item lines only, and deliberately never item lines** (D-052, narrowing M84's blanket rejection).
-  Item lines stay exempt for M84's original reason, which survives the narrowing: pressure on individual line length would reward splitting an item across lines and corrode the one-item-per-line format both parsers depend on.
-  A non-item line — heading, preamble, stamp, HTML comment — carries no such
-  format to corrode, and prose accretes there unseen by the item axis, which
-  charges a stamp of any length exactly one line: a stamp ran to thousands of
-  characters with every gate green (D-052). A third, whole-file mass axis ran
-  from M84 to M101; D-058 retired it as measured to tax at ordinary density
-  but never bind ahead of the item cap.
-- a live milestone file's **plan-owned body < 150 lines** — everything before
-  the review-exclusive `## Review` section, less the `## Work log` and `## Decisions` sections.
-  The cap-exempt sections are exactly `## Review` (review-owned, M55), `## Work log` (history under D-045, D-046) and `## Decisions` (history under D-074); every other plan-owned section counts.
-  They are exempt on two grounds. `## Review` is exempt so that
-  review evidence never scrambles plan-owned content (M55): it accumulates at
-  review time and no longer competes with Scope, AC, or Coverage for the budget.
-  The `## Work log` is exempt because D-045 makes it history — never edited — so counting it could leave an over-cap file fixable only by an edit IP4 forbids (D-046).
-  The milestone-local `## Decisions` section is exempt on that same un-editability ground under its own classification: D-074 makes its dated dispositions history, superseding D-046's choice (3), so the cap may not aim there either.
-  A file with no `## Review` section counts up to EOF — still less its work log
-  and its decisions section, which are exempt wherever they sit.
-- Work-log entries are one line each — a hard-wrapped entry costs several lines
-  of a budget it no longer pays into, so `cairn_validate`'s `work-log format`
-  advisory WARNs on any work-log line that is not a one-line `- ` entry. It
-  warns and never fails (D-046). Never paste command output or subagent
-  transcripts into tracking files — summarize. In the milestone-local
-  `## Decisions` section that paste rule is what `cairn_validate`'s `decisions format`
-  advisory WARNs on — pasted output or a fenced transcript block, never entry
-  length, because a decision entry carries its rationale and is never one line
-  (D-075). It too warns and never fails.
-- Remedies when a cap is hit (never "let it grow"): over-count ROADMAP →
-  graduate or prune candidates and enforce terminal-row retention — and when
-  a large legacy or parking-lot backlog blows the cap one-row-per-item,
-  cluster related items into grouped candidate rows that point at the
-  entombed legacy `ROADMAP.md` instead of listing each (M21 G-C4); over-cap
-  milestone → the `cairn_validate` breakdown names the heaviest plan-owned
-  section and the lines to shed, so compress that one section in a single
-  rewrite, never a nibble-and-recount loop; the breakdown lists only trimmable
-  sections — all three cap-exempt sections are omitted, so the remedy can never aim
-  at history (D-046, D-074); cross-reference a durable record
-  rather than restate its substance in the milestone (a milestone restating a
-  DECISIONS entry is the classic overrun); split it or move reference material
-  to `references/` only when no single section can carry the cut; over-cap
-  cairn CLAUDE.md section → trim it back to the template (it is routing
-  boilerplate, not a content home); other CLAUDE.md content → its owner per
-  the table above.
-- Terminal-row retention: the ROADMAP table keeps only the 5 most recent
-  terminal (`done` or `dropped`) rows combined; prune older ones as they
-  accumulate — archive files and git history stay authoritative. Standing
-  hygiene, not just a cap remedy.
-- **The `Last hygiene check` stamp is replaced each pass, never appended to** — it records the CURRENT check only, and no `Prior:` or `Earlier:` chain accumulates behind it.
-  The stamp is current knowledge (D-045), not history, so overwriting it is not
-  an IP4 edit: `git log` holds every earlier stamp verbatim and
-  `milestones/archive/` holds the detail behind it. Keep it to one short line naming what
-  changed since the last check; the `NON_ITEM_LINE_CAP` axis of the
-  `record density` advisory backstops it at 400 characters (D-052, M93).
-
-## Always-read governance
-
-An **always-read file** is one this repo re-reads at the start of most
-sessions. Every always-read file names three governance elements, and a file
-missing one is the gap this frame exists to surface *before* it accretes
-unchecked — the rulebook's own ~30-milestone weight saga (M84–M98) was the cost
-of having none of the three:
-
-- **Inflow test** — what content belongs in the file.
-- **Outflow or read-bound** — how content leaves, or, where it may not leave,
-  how the read stays bounded as the file grows.
-- **Attention signal** — what reports growth so a human notices.
-
-D-045's split decides which outflows are legal: a **history** file
-(append-only, never edited) is bounded by reading less of it, never by shrinking
-it; a **current-knowledge** file may shed content in place. The frame is
-**completeness-only** — it asks whether each file *has* the three elements, and
-never measures or gates a file's mass (size governance is closed — D-057).
-
-The always-read surfaces, as the worked case:
-
-| File | Inflow test | Outflow / read-bound | Attention signal |
-|---|---|---|---|
-| `ROADMAP.md` | a milestone or candidate | terminal-row retention + candidate triage/graduation | 60-line item cap |
-| `LESSONS.md` | a durable "how this repo behaves" note | retire by enforcement / ownership / maturation (D-051, D-055) | 50-line item cap + `record density` |
-| `tracking-rules.md` | the placement steps under "What gets a test" (D-071) | editorial pass; growth governed at the door (D-057) | `/milestone` audit mass+growth line |
-| `DECISIONS.md` | a cross-cutting choice among alternatives | bounded heading read — history read less, never shrunk (D-054) | none needed once read-bounded |
-| the active `milestones/M<NN>-<slug>.md` | the milestone-file section ownership table | capped sections: the 150-line plan-owned cap; cap-exempt sections: newest-content injection — history read less, never shrunk (D-063); the file leaves the set at `done` | `weight caps` CHECK + `work-log format` + `decisions format`; none needed for the cap-exempt sections once read-bounded |
-| `CLAUDE.md`'s `## Project tracking` section | routing only — classify and invoke the skill, never conduct (D-009) | the weight-caps remedy: trim the section back to the template | 30-line section cap, `cairn_validate`'s `weight caps` CHECK |
-
-The fifth surface differs from the four above it in two ways worth naming.
-It is **the only always-read surface that leaves the set**: a milestone stops
-being read at `done`, compressed into a ≤25-line archive summary, so a
-lifecycle bounds it that the other four have no equivalent of. And it is **the
-only one split across two of GP1's mechanisms within one file** — its
-plan-owned sections bounded by a cap with an outflow, its cap-exempt sections
-(`## Work log`, `## Decisions`, `## Review`) by reading less of them, because the
-150-line cap deliberately exempts those three and IP4 forbids trimming them on disk. The
-read-bound is applied by the `session_context` SessionStart hook, which injects
-each cap-exempt section's newest content and states what it left out (D-063).
-
-The sixth surface differs again, in what the frame governs of it. Its three
-cells describe cairn's `## Project tracking` section and never the whole file:
-D-009 confines that section to routing, while the dev doctrine outside it is
-governed by nothing cairn owns (D-018), so no cell in that row reaches it.
-The milestone file's cap-exempt sections stay governed by a read-bound rather than by a cap (D-063),
-so the two differ in whether an ungoverned remainder exists at all, never in
-how strongly a governed part is held.
-No uniqueness is claimed for either: an always-read unit and a governed unit that differ is a shape both surfaces carry.
-
-The `/milestone` audit applies this frame: its §2 checks each always-read file
-still names all three elements, and that any newly-added always-read surface is
-covered — a judgment, reported and never auto-fixed.
+- The cairn `## Project tracking` section of `CLAUDE.md` < 30 lines (the repo's dev doctrine outside it is not cairn's
+  to cap) · `ROADMAP.md` < 60 lines · `LESSONS.md` < 50 lines · `PROFILE.md` < 120 lines · archived summary ≤ 25 lines.
+  `ROADMAP.md` and `LESSONS.md` are parsed one item per line; never split an item across lines.
+- A live milestone file's **plan-owned body < 150 lines** — everything before the review-exclusive `## Review` section,
+  less `## Work log` and `## Decisions`. Those three are cap-exempt (`## Review` so evidence never competes with plan
+  content; the other two as IP4 history); the `session_context` hook bounds their read, injecting each one's newest
+  content and stating what it left out. A file with no `## Review` counts to EOF, still less those two.
+- Work-log entries are one line each (`cairn_validate`'s `work-log format` advisory WARNs, never fails). Never paste
+  command output or subagent transcripts into tracking files — summarize; the `decisions format` advisory WARNs (never
+  fails) on pastes in the milestone-local `## Decisions` section, never on entry length.
+- Remedies when a cap is hit (never "let it grow"): over-count ROADMAP → graduate or prune candidates, clustering a
+  large backlog into grouped rows pointing at the entombed legacy file; over-cap milestone → compress the single
+  heaviest plan-owned section (named by the `cairn_validate` breakdown, which lists only trimmable sections, so the
+  remedy can never aim at history) in one rewrite — never a nibble-and-recount loop — cross-referencing durable records
+  rather than restating them, splitting or moving material to `references/` only when no one section can carry the cut;
+  over-cap cairn CLAUDE.md section → trim back to the template.
+- Terminal-row retention (standing hygiene): the ROADMAP table keeps only the 5 most recent terminal (`done`/`dropped`)
+  rows combined; prune older ones as they accumulate.
+- The `Last hygiene check` stamp is one short line naming what changed since the last check, **replaced each pass, never
+  appended to** — no `Prior:` chain; git holds every earlier stamp.
 
 ## Universal tracking rules
 
-- **Tracking travels with code.** Every commit that changes code also updates
-  the milestone checkboxes/work-log in the same commit.
-- **Absolute dates only** (YYYY-MM-DD). Never "yesterday" or "last week".
-- **Append, don't rewrite.** Work-logs and DECISIONS.md are append-only;
-  supersede, never edit history. Never fabricate history — if there is a
-  gap, add one catch-up entry summarizing `git log`.
-- **Verify a batched or scripted edit landed before writing the record that claims it did.**
-  Such an edit can match the wrong occurrence, or fail while its siblings
-  succeed, and the record written next then asserts a change that is not there.
-  Re-read the aimed site and confirm the change is present before any record claiming it is written.
-  An edit targeting a document section anchors on text that occurs exactly once in the target file,
-  because a bare heading binds to its first occurrence and a second occurrence takes the edit silently.
-  A check-off or tick write is sequenced strictly after the write of the evidence it depends on has succeeded,
-  never in the same unverified batch, so a failed evidence write cannot leave a
-  tick standing alone. This is the authoring counterpart of the "Correcting a
-  record proven false" rule: that rule repairs a record found wrong, this one
-  stops one being written.
-- **Branch-added behavior claims are derived, never composed.** A prose claim
-  the branch adds about what an artifact does or contains — in tracking
-  records, code comments, docstrings, changelog entries, or docs — is written
-  against an execution's observed output or a same-session read of the
-  artifact, never composed from recollection or expectation.
-  Branch-added prose that restates what its cited artifact already shows is not written — a cross-reference replaces it.
-  A claim that would enumerate an artifact's members is written as a pointer to the artifact, except where the enumeration is itself the deliverable.
-- **A derived figure is pinned or procedural, never free-standing.** A
-  count or figure derived from the repo's artifacts — in tracking records,
-  code comments, docstrings, changelog entries, or docs — takes one of two
-  forms.
-  Pinned: the figure stands beside the procedure that produced it and the commit or dated artifact it was measured at, a dated observation rather than a standing fact.
-  Procedural: the figure is replaced by its derivation ("the sites matched by `grep -n <pattern>`"), and no figure is stated.
-  The free-standing hand-written figure is the defect this rule deletes: the next edit to what it measures strands it, and it reads as current until a review reds on it.
-- **An observed failure backs a claim only as the failure it is verified to be.**
-  An error, a refusal, or a red test reads the same whether it is the behavior
-  under test or an artifact of malformed inputs, so the observation alone
-  attributes nothing.
-  A claim resting on an observed failure verifies the failure's identity — its condition class, message, or signaling site — against the failure the claim is about, before the claim is written.
-  The distinguishing step is explicit: confirm the inputs reach the behavior under test — the same inputs succeed when the condition under test is removed, or the input contract is checked against the artifact's own signature first.
-  A test asserting a failure asserts which failure, never that some failure occurred.
-  A discriminating test's passing control is shown to pass for the claim's reason, never merely to pass.
-- **Correcting a record proven false.** The tracking files split by purpose,
-  and the split sets the remedy: current knowledge is corrected in place,
-  history is superseded and never edited.
-  History — `DECISIONS.md`, work-logs, the milestone-local `## Decisions` section,
-  milestone IDs, `milestones/archive/`, `reviews/archive/`, entombed `legacy/`
-  files — records what was decided or done at a time, and is never edited (IP4).
-  Current knowledge — `LESSONS.md`, `references/` pages, `DESIGN.md`, `ROADMAP.md` — records what is true *now* and is read to act on,
-  so a line later proven
-  false is fixed where it sits, the correction marked (`(M71, corrected M75)`)
-  and git holding the original (`ROADMAP.md` joined that list at D-052). **Exception — `DESIGN.md`'s IP/GP block:** a
-  wrong *principle* is not a wrong fact, and still changes only by explicit
-  user decision recorded as a D-entry (see the IP/GP paragraph above).
-  Ruled out: appending a correction while leaving the wrong text readable —
-  a false lesson is harvested into every later plan (D-045).
-- **Retiring a lesson that no longer earns its line.** `LESSONS.md` is capped, so
-  it needs an outflow and not only a ceiling. Three criteria retire a lesson (D-051, D-055):
-  **enforcement — a test fails on the mistake the lesson warns about**, where the
-  discriminating word is *fails* and never *exists*, since a guard in the same area
-  is not enforcement when the lesson teaches the judgment that guard does not make;
-  and **ownership — another tracking file's slot owns the content**, where
-  **the retiring milestone may *move* the content there rather than only find it already duplicated**;
-  and **maturation — a stabilized family graduates whole into a doctrine module** (D-055), where the bar is conjunctive: it teaches transferable authoring or verifying craft rather than a fact about this repo's tools, it has been extended or consolidated at least twice, and neither enforcement nor ownership offers it an exit today.
-  Maturation moves content rather than removing it, which is why it is not the second record D-051 rejected: the source line is deleted in the same pass, so exactly one record exists at every moment.
-  **A lesson covered only in part is trimmed to its uncovered remainder**, never kept whole.
-  **A retired lesson leaves no line behind — the retiring milestone's archive summary names what it graduated**, and git holds the original.
-  **Retirement is not correction: a retired lesson is redundant, a corrected one was false** — conflating the two would license deleting a lesson merely disputed.
-  The check runs at `/milestone-review` post-merge hygiene beside capture,
-  **scoped to what the milestone shipped, never as a full re-sweep**; D-015's
-  prune-the-stalest stays the last resort when retirement cannot free the budget.
-  **The records-hygiene family graduated by this rule lives in a module of this rulebook**, on its own line so the mapping stays pinnable:
-  `skills/shared/records-hygiene.md` covers candidate-row lifecycle, superseding a decision and sweeping the archive, placing a new rule and running it over your own output, amending a plan without drift, and compressing a capped file.
-  Read it at a milestone hygiene or plan gate; the retirement rule above is how such a family leaves `LESSONS.md`, and the module is where it lands, read conditionally like `guard-doctrine.md` so a session not at such a gate never pays for it.
-- **Stop points are commit points.** Never end a session or turn with
-  uncommitted work — checkpoint-commit code and tracking together (even
-  half-done, marked as such) so any future session resumes statelessly.
-- **Git is ground truth for code.** Commits made outside the system are
-  reconciled with a catch-up work-log line, never retroactive rewriting.
-- **User overrides are logged, never resisted.** If the user says to skip a
-  gate or bend a rule, comply and record it in the work-log ("merged without
-  CI at user request, YYYY-MM-DD"). An honest record keeps the next session
-  from mistaking an exception for a precedent.
-- **Dependency changes are never unilateral.** Adding, removing, or re-pinning
-  a dependency — in any toolchain — goes through a question gate and is
-  recorded as a D-entry; the active profile's `test-doctrine` slot names the
-  mechanical dependency surface.
-- **Breaking changes to public behavior follow a deprecation cycle** unless
-  the project is pre-1.0 and the user explicitly waives it; the active
-  profile names the language's deprecation mechanics.
-- **Release timing is user-declared, never agent-proposed** (D-050). cairn never proposes a release, never plans a release milestone unprompted, and never nominates one as the next action.
-  A release's readiness condition is a maintainer judgment about when to ship, never a dependency graph going green — deps going green says only that the *bundle* is complete.
-  So a release milestone whose window the maintainer has not opened is parked as `blocked`, where no routing surface nominates it.
-  It stays parked until the maintainer opens the window. The release *act* is already
-  user-triggered — `/cairn-release` never self-submits.
-- **Prefer script-measurable acceptance criteria**; where judgment is
-  unavoidable, commit the classification ledger as evidence (RR04 rec 8).
-- **Tracking files outrank memory.** Claude's persistent memory never holds
-  project state (status, milestones, decisions, architecture). Memory is for
-  meta-context only; `cairn/` files win any conflict.
-- **Memory intake gate (GP4).** Before writing to per-user memory, apply the
-  GP4 test to decide where the content actually belongs: durable project
-  knowledge (decisions, conventions, architecture, status) → the `cairn/`
-  files; a generalizable conduct or plugin defect → the plugin (skills,
-  `tracking-rules.md`, guard tests); only genuinely per-user meta-context
-  stays in memory. When a memory write happens inside a cairn repo the
-  `memory_guard.py` PreToolUse hook injects this reminder as a non-blocking
-  nudge — it prompts the test, it does not make the call.
+- **Tracking travels with code.** A commit that changes code also updates the checkboxes/work-log in that same commit.
+- **Absolute dates only** (YYYY-MM-DD). **Append, don't rewrite:** work-logs and DECISIONS.md are append-only;
+  supersede, never edit history; never fabricate it — a gap gets one catch-up entry summarizing `git log`.
+- **Verify a batched or scripted edit landed before writing the record that claims it did** — re-read the aimed site
+  first; a section-targeting edit anchors on text occurring exactly once; a tick write follows its verified evidence
+  write, never the same unverified batch.
+- **Branch-added behavior claims in code-adjacent artifacts are derived, never composed** (the derived-claims rule). In
+  code comments, docstrings, changelog entries, and user-facing docs, a prose claim the branch adds about what an
+  artifact does is written against an execution's observed output or a same-session read, never from recollection; prose
+  restating what its cited artifact shows becomes a cross-reference, a member enumeration a pointer unless the
+  enumeration is itself the deliverable. Tracking records are exempt from this rule and from the derived-figures and
+  failure-identity rules below — ordinary care, the review lenses, and the correction discipline govern them instead.
+- **A derived figure in a code-adjacent artifact is pinned or procedural, never free-standing** (the derived-figures
+  rule): beside its producing procedure and the commit or date measured, or replaced by its derivation.
+- **An observed failure backs a claim only as the failure it is verified to be** (the failure-identity rule): in
+  code-adjacent artifacts and tests, verify the failure's identity — condition class, message, or signaling site —
+  confirming the inputs reach the behavior under test; a test asserting a failure asserts *which* failure, and a
+  discriminating test's passing control is shown to pass for the claim's reason, never merely to pass.
+- **A D-entry carries the decision and its rationale, and no derived measurements** — a supporting count or measurement
+  lives in the artifact or milestone file the entry cites (binding after M146; prior entries stand, IP4).
+- **History-record corrections batch to at most one superseding entry per milestone**, not a chain of per-claim entries
+  — binding at authoring time (a defect found in the batching entry after it lands takes a further superseding entry
+  under IP4).
+- **Correcting a record proven false.** History — `DECISIONS.md`, work-logs, the milestone-local `## Decisions` section,
+  milestone IDs, the archives, `legacy/` — is never edited (IP4); it is superseded. Current knowledge — `LESSONS.md`,
+  `references/` pages, `DESIGN.md`, `ROADMAP.md` — is fixed where it sits, the correction marked (`corrected M75`);
+  never append a correction leaving the wrong text readable. Exception: a wrong IP/GP *principle* still changes only by
+  explicit user decision recorded as a D-entry.
+- **Retiring a lesson that no longer earns its line.** Three exits: **enforcement** — a test *fails* on the mistake the
+  lesson warns about (a guard merely existing nearby is not enforcement); **ownership** — another tracking file's slot
+  owns the content (the retiring milestone may *move* it there); **maturation** — a stabilized family graduates whole
+  into a doctrine module, when it teaches transferable craft, has been extended or consolidated at least twice, and
+  neither other exit applies. A lesson covered in part is trimmed to its remainder; a retired lesson leaves no line
+  behind — the archive summary names what it graduated. Retirement removes the redundant, never the merely disputed (a
+  disputed lesson is corrected, not deleted). Checked at `/milestone-review` post-merge hygiene, scoped to what the
+  milestone shipped; prune-the-stalest is the last resort. The graduated records-hygiene family lives in
+  `skills/shared/records-hygiene.md` (candidate-row lifecycle; superseding a decision), read at hygiene or plan gates.
+- **Stop points are commit points.** Never end a session or turn with uncommitted work — checkpoint-commit code and
+  tracking together (even half-done, marked as such).
+- **Git is ground truth for code.** Outside commits are reconciled with a catch-up work-log line, never retroactive
+  rewriting. **User overrides are logged, never resisted** — comply and record the override in the work-log.
+- **Dependency changes are never unilateral** — any add/remove/re-pin goes through a question gate and is recorded as a
+  D-entry. **Breaking changes to public behavior follow a deprecation cycle** unless the project is pre-1.0 and the user
+  explicitly waives it; the active profile names the language's mechanics.
+- **Release timing is user-declared, never agent-proposed** (D-050): cairn never proposes, plans unprompted, or
+  nominates a release; an unopened window parks it as `blocked`. `/cairn-release` never self-submits.
+- **Prefer script-measurable acceptance criteria**; where judgment is unavoidable, commit the classification ledger.
+- **Tracking files outrank memory.** Persistent memory never holds project state; `cairn/` files win any conflict.
+  **Memory intake gate (GP4):** durable project knowledge → `cairn/`; a generalizable conduct or plugin defect → the
+  plugin; only genuinely per-user meta-context stays in memory (the `memory_guard.py` hook nudges this).
 
 ## Milestone IDs and status
 
-- IDs are `M<NN>` (zero-padded to two digits), assigned at planning time,
-  monotonically increasing, **never reused** — including dropped milestones.
-  Past M99, IDs simply grow (M100).
-- **No completion-order requirement.** Work order is governed only by
-  `Depends on:` (a milestone is workable only when its dependencies are
-  `done`) and `Priority:` (high / normal / low).
-- The ROADMAP index is grouped by status, not sorted by ID.
-- Bare `M<NN>` is repo-local. Whenever more than one cairn-tracked repo is
-  in scope (cross-repo conversation, briefs, commits touching two repos),
-  qualify the ID with the repo name — "tidymedia M07", never bare "M07".
-- User-facing materials (NEWS.md, README, vignettes, pkgdown) never
-  reference milestone numbers.
+- IDs are `M<NN>` (zero-padded to two digits), assigned at planning time, monotonically increasing, **never reused** —
+  dropped milestones included; past M99, IDs simply grow (M100). **No completion-order requirement**: work order is
+  governed only by `Depends on:` (workable only when dependencies are `done`) and `Priority:` (high / normal / low); the
+  ROADMAP index is grouped by status, not sorted by ID.
+- Bare `M<NN>` is repo-local: with more than one cairn-tracked repo in scope, qualify the ID with the repo name —
+  "tidymedia M07". User-facing materials (NEWS.md, README, vignettes, pkgdown) never reference milestone numbers.
 
 Status vocabulary — exactly these seven, lowercase:
 
@@ -336,656 +148,253 @@ Status vocabulary — exactly these seven, lowercase:
 | `candidate` | Idea captured as a ROADMAP row; usually no file, no ID yet | anyone, any time |
 | `planned` | File exists: goal, In/Out scope, verifiable criteria, ordered tasks, dependencies | `/milestone-plan` only |
 | `in-progress` | Being worked on a branch. **At most ONE at a time.** | `/milestone-implement` only |
-| `blocked` | Waiting on something external — a maintainer who has not opened the release window counts; work-log line names the blocker | any skill, reason logged |
+| `blocked` | Waiting on something external; work-log line names the blocker | any skill, reason logged |
 | `review` | Tasks done, local checks clean; awaiting verification + merge approval | `/milestone-implement` on completion |
 | `done` | Every criterion executed with fresh evidence; PR merged; file archived | `/milestone-review` only |
 | `dropped` | Deliberately abandoned; one-line reason archived | user decision, via any skill |
 
-Transitions: `candidate → planned → in-progress ⇄ blocked;
-in-progress → review → done` (review failures return to `in-progress`).
-Parking reaches every routable status: `planned → blocked` and `review → blocked` are both legal, because a milestone can wait on a human before work starts as well as after it finishes.
-Anything can go to `dropped`. No skipping except `candidate → dropped`.
+Transitions: `candidate → planned → in-progress ⇄ blocked; in-progress → review → done` (review failures return to
+`in-progress`); `planned → blocked` and `review → blocked` are both legal; anything can go to `dropped`; no other skips.
 
 ## Sizing and the work tiers
 
-One milestone = one reviewable PR ≈ 1–3 working sessions. Tasks are the only
-unit inside a milestone — no slices or sub-milestones; emerging internal
-structure means split, wiring the pieces with `Depends on:`. Split tripwires:
->~7 acceptance criteria, >~10 tasks, a goal sentence needing "and", tasks
-shippable independently, or no hope of the 150-line cap. Prefer vertical
-slices (thin end-to-end capability) over horizontal layers; every milestone
-leaves the default branch shippable. Splitting never discards the remainder.
+One milestone = one reviewable PR ≈ 1–3 working sessions. Tasks are the only unit inside a milestone — no slices or
+sub-milestones; internal structure means split, wired with `Depends on:`. Split tripwires: >~7 acceptance criteria, >~10
+tasks, a goal sentence needing "and", tasks shippable independently, or no hope of the 150-line cap. Prefer vertical
+slices; every milestone leaves the default branch shippable; splitting never discards the remainder.
 
-Work that isn't a milestone:
+Work that isn't a milestone: **Trivial** (no runtime surface — typos, tracking, comments) → direct commit to the default
+branch, no tracking beyond the commit. **Hotfix** (user-visible bug) → `/hotfix`: regression test first, gate-lite, PR,
+user approval; NEWS entry; no milestone file. **Milestone** → more than one sitting, changes exported behavior (beyond
+restoring documented behavior), or requires a design decision.
 
-- **Trivial** (no runtime surface — typos, tracking, comments): direct
-  commit to the default branch. No tracking beyond the commit.
-- **Hotfix** (user-visible bug): `/hotfix` — regression test first, gate-lite,
-  PR, user approval. NEWS entry; no milestone file.
-- **Milestone**: needs more than one sitting, changes exported behavior
-  (beyond restoring documented behavior), or requires a design decision.
+Intake: GitHub issues and external PRs are inboxes, never a second tracking system. Issues → `candidate` rows or the
+hotfix path; `leave` is legal only for noise, duplicates, or items already cross-referenced in cairn — never anything
+genuinely new. External PRs: **`/hotfix` is the door** for the small and correct — it adopts the PR (`gh pr checkout`),
+holds it to the hotfix bar, merges on user approval; larger → `/milestone-plan`. Candidates may be added
+conversationally by anyone at any time (one ROADMAP row).
 
-Intake: GitHub issues and external PRs are inboxes, never a second tracking
-system. Issues → `candidate` rows or the hotfix path; or, as the fourth
-disposition `/milestone` §3 offers,
-`leave` is legal only for noise, duplicates, or items already cross-referenced in cairn —
-no row, no action, reason stated, never anything genuinely new (D-044).
-External PRs → small
-and correct: **`/hotfix` is the door** — it adopts the PR (`gh pr checkout`
-rather than cutting its own branch), holds it to the hotfix bar, and merges
-on user approval; larger: becomes/joins a milestone via `/milestone-plan`.
-Candidates may be added conversationally by
-anyone at any time (one ROADMAP row).
+**Out-of-band idea capture.** A capture channel that is not a cairn tracking file — a chip, a scratch TODO, an ad-hoc
+note — is never the record of record: the idea also lands as a `candidate` ROADMAP row in the same turn (search-first
+applies), the out-of-band item at most a pointer to that row. The `idea_guard.py` hook nudges this.
 
-**Out-of-band idea capture.** A capture channel that is not a cairn tracking
-file — a background-task chip, a scratch TODO, an ad-hoc note — is never the
-record of record for an idea. The idea also lands as a `candidate` ROADMAP row
-in the same turn (search-first applies below), and the out-of-band item is at
-most a convenience pointer to that row. The channel stays usable; what it may
-not do is be the only place the idea exists, because nothing outside `cairn/`
-is authoritative tracking state — an inbox (issues, PRs) or a chip feeds the
-ROADMAP, it never substitutes for it. When a chip-creating tool fires in a
-cairn repo the `idea_guard.py` PreToolUse hook injects this reminder as a
-non-blocking nudge — it prompts the pairing, it does not make the call.
+**Search-first candidate creation.** Before adding a candidate row — by any skill or conversationally — sweep existing
+candidates + `milestones/archive/` + `DECISIONS.md` for overlap; on a hit, absorb into or cross-reference the existing
+row rather than duplicate it; a standing rejection is recorded once and superseded, never re-litigated. A candidate
+recording an alternative to a chosen approach states its promotion condition as **the class of evidence that would
+falsify the chosen approach**, never as a count of failures.
 
-**Search-first candidate creation.** Before adding a candidate row — by any
-skill or conversationally — sweep existing candidates + `milestones/archive/`
-+ `DECISIONS.md` for overlap; on a hit, absorb into or cross-reference the
-existing row rather than add a duplicate. A standing rejection ("considered,
-declined") is itself recorded once and follows the supersede discipline —
-not re-litigated each time the idea recurs. This generalizes the plan-time
-collision check to every candidate-creation point (any skill, conversational
-adds alike). Its `DECISIONS.md` sweep follows the bounded read below.
-
-**Falsifying promotion conditions.** A candidate recording an alternative to a
-chosen approach states its promotion condition as **the class of evidence that
-would falsify the chosen approach**, never as a count of failures — a count
-pre-commits to paying for every failure below it, and is then met exactly as
-written rather than early. "Promote on any failure of the predicate itself"
-fires at the first instance; "promote if a fifth mechanism appears" waits for
-four more.
-
-**Bounded `DECISIONS.md` read.** `DECISIONS.md` is append-only and can never
-shrink, so it is read by scanning its `### D-` headings — never whole (D-054).
-**A matched heading's entry is read whole before anything is surfaced.**
-**A match is back-referenced — its own `D-0NN` id searched across the file** — so
-an entry superseding or annotating it surfaces even when that entry's heading
-omits the relationship (D-012, D-014, and D-019 each omit one).
-**A collision is quoted verbatim from the full entry, never from the heading.**
-IP2 is unchanged — prior state is surfaced, never silently obeyed or silently
-overridden; what narrows is recall, not the obligation.
-**A `### D-` heading names its subject and any entry it supersedes, annotates, or narrows.**
-This is authoring conduct with no machine check behind it: the advisory that
-policed it was retired as measured not to work (M97's findings; D-059), and
-recall never rested on it — the back-reference step covers a heading that
-omits a relationship, the three legacy entries included, since IP4 forbids
-repairing them.
+**Bounded `DECISIONS.md` read.** Read `DECISIONS.md` by scanning its `### D-` headings — never whole. A matched
+heading's entry is read whole before anything is surfaced; a match is back-referenced (its own `D-0NN` id searched
+across the file) so a superseding or annotating entry surfaces even when its heading omits the relationship; a collision
+is quoted verbatim from the full entry, never the heading. Prior state is surfaced, never silently obeyed or overridden
+(IP2). A `### D-` heading names its subject and any entry it supersedes, annotates, or narrows.
 
 ## Git and approval model
 
-- **The default branch (`main`/`master`) is a distribution channel**
-  (`pak::pak()` installs it; pkgdown may deploy from it). It stays installable
-  at all times. cairn does not assume the name is `main`; everywhere below,
-  "the default branch" means the repo's actual default branch.
-- **Detecting the default branch (canonical recipe).** cairn never hardcodes
-  `main` in a git command and stores no branch name. `/cairn-init` detects it
-  at adoption; every operational skill re-detects it at runtime whenever it
-  issues a default-branch git command. Detect with
-  `git symbolic-ref --short refs/remotes/origin/HEAD` (strip the leading
-  `origin/`); if that fails because `origin/HEAD` is unset locally (a shallow
-  clone, a `git remote add` without `set-head`) but a remote exists, query the
-  remote directly with `git ls-remote --symref origin HEAD` and read the
-  `ref: refs/heads/<name>` line. Only with **no remote at all** ask the user —
-  never guess the local current branch (`git symbolic-ref --short HEAD`), which
-  on a feature branch is the wrong answer, and operational skills run on the
-  feature branch. Substitute the detected name wherever a skill step writes
-  `<default-branch>`.
-- The default branch accepts only: docs-only tracking commits and
-  squash-merges of milestone/hotfix branches. Never implement on it.
-- **The remote's default branch is authoritative.** When a remote exists, push
-  docs-only commits to the default branch immediately. A local-only default
-  branch means branches get cut from commits the PR base doesn't have — the
-  squash-merge then duplicates them and it diverges from origin ("ahead N,
-  behind 1").
-- Milestone work on `m<nn>-<slug>`; hotfixes on `hotfix-<slug>`; both cut
-  from the up-to-date default branch. Checkpoint commits are cheap — squash
-  erases them. **An adopted external PR is the exception:** `/hotfix` checks
-  the contributor's branch out (`gh pr checkout <N>`) and leaves its name
-  alone — the branch is theirs, renaming it breaks the PR, and the PR number
-  is the identifier that matters.
-- Before branching or committing, check `git status`: a dirty tree with
-  unrelated changes means ask the user — never sweep strangers into a
-  checkpoint commit.
-- If the default branch moves under an active branch (e.g., a hotfix merged),
-  merge it into the branch and re-run tests before continuing or reviewing.
-- **Nothing reaches the default branch without the user's explicit approval at
-  the review gate.** Never force-push — the plugin's
-  force_push_guard hook mechanically denies a force-push to the default branch
-  (feature branches are not blocked); never merge red or pending CI.
-- Approval is recorded on disk: the approving skill writes the single-use,
-  gitignored marker `cairn/.merge-approved` at the gate; the plugin's
-  merge-guard hook denies `gh pr merge`/`git merge` to the default branch
-  without it and consumes it per merge attempt. A failed attempt's consumed
-  marker is restored automatically (merge_guard_post), so one approval
-  survives failed retries but never a successful merge. Never write the
-  marker except at an explicit user approval.
-- The marker names the PR it approves (`… approved YYYY-MM-DD for PR #<N>`) and
-  the guard refuses a `gh pr merge` whose PR the marker does not name — a bare
-  `gh pr merge` with no PR argument included, because an approval that cannot be
-  checked is not an approval. Spell the number out: `gh pr merge <N> --squash`.
+- **The default branch is a distribution channel** — installable at all times; cairn never assumes the name is `main`.
+  It accepts only docs-only tracking commits and squash-merges of milestone/hotfix branches — never implement on it.
+  **The remote's default branch is authoritative**: push docs-only commits immediately, so branches are cut from commits
+  the PR base has.
+- **Detecting the default branch (canonical recipe).** Never hardcode `main`; store no branch name. Detect with `git
+  symbolic-ref --short refs/remotes/origin/HEAD` (strip `origin/`); if `origin/HEAD` is unset locally but a remote
+  exists, query `git ls-remote --symref origin HEAD` and read the `ref: refs/heads/<name>` line. Only with **no remote
+  at all** ask the user — never guess from the local current branch (wrong on a feature branch).
+- Milestone work on `m<nn>-<slug>`; hotfixes on `hotfix-<slug>`; both cut from the up-to-date default branch. Checkpoint
+  commits are cheap — squash erases them. Exception: an adopted external PR keeps the contributor's branch and its name.
+- Before branching or committing, check `git status`: a dirty tree with unrelated changes means ask the user — never
+  sweep strangers into a checkpoint commit. If the default branch moves under an active branch, merge it into the branch
+  and re-run tests before continuing or reviewing.
+- **Nothing reaches the default branch without the user's explicit approval at the review gate.** Never force-push (the
+  force_push_guard hook denies it on the default branch); never merge red or pending CI.
+- Approval is recorded on disk: the approving skill writes the single-use, gitignored marker `cairn/.merge-approved` at
+  the gate — never except at an explicit user approval; the merge-guard hook denies `gh pr merge`/`git merge` to the
+  default branch without it and consumes it per attempt (a failed attempt's marker is restored). The marker names the PR
+  it approves (`… approved YYYY-MM-DD for PR #<N>`); the guard refuses a merge whose PR it does not name — spell the
+  number out: `gh pr merge <N> --squash`.
 
-**Enforcement boundary — what survives a merge made outside a cairn session.**
-Every guard is a PreToolUse hook on *this* session's own Bash calls, so it sees
-only what an agent runs here. A merge performed in the GitHub web UI, by a merge
-queue, or by a contributor without the plugin installed is invisible to
-`merge_guard` and `force_push_guard`: on those paths IP1's approval requirement
-and the never-force-push line degrade to honor-system, and the post-merge
-hygiene pass runs late or not at all. The rest of the conduct — AC fencing,
-tracking-travels-with-code, question gates, the review fan-out — is prose with
-no mechanical backing on any path. cairn assumes **one operator running these
-skills**; outside contributions come in through the intake path above and are
-governed by that operator's session, never the contributor's.
+**Enforcement boundary.** Every guard is a PreToolUse hook on *this* session's own Bash calls; a merge made in the
+GitHub web UI, by a merge queue, or by a contributor without the plugin is invisible to them — there the approval
+requirement and never-force-push degrade to honor-system, and the rest of the conduct is prose on any path. cairn
+assumes **one operator running these skills**; outside contributions come in through intake.
 
-Waiting on CI / background work:
-
-- Prefer one **blocking** wait (`gh pr checks <pr> --watch` with a timeout)
-  over background polling. At most one wait at a time, resolved within the
-  current turn; on timeout, report the fresh actual state, log one line, and
-  stop with nothing left watching.
-- **Resume is stateless.** Never trust a remembered "CI was running" — the
-  PR URL lives in the milestone header; re-derive status from `gh pr checks`
-  on demand.
+Waiting on CI: prefer one **blocking** wait (`gh pr checks <pr> --watch` with a timeout) over background polling — one
+wait at a time, resolved within the turn; on timeout, report the fresh state, log one line, stop with nothing left
+watching. **Resume is stateless**: re-derive from `gh pr checks` (PR URL: the milestone header), never a remembered "CI
+was running".
 
 ## Context hygiene
 
-Stateless resume makes conversation context disposable; exploit that at
-the seams. Only the user can `/clear` — skills mark the seams in their
-recaps, never assume continuation.
-
-- **The milestone boundary is the canonical `/clear` point.** After the
-  post-merge hygiene commit, everything load-bearing is on the default branch;
-  carrying
-  the finished milestone's transcript into the next one imports stale
-  state (superseded plans, old CI status), not insight. Prefer `/clear`
-  over `/compact` there — compaction keeps a lossy summary of what the
-  tracking files already record losslessly.
-- **Stop points are commit points are safe-clear points.** Never tidy
-  mid-task. A long implementation session ends by finishing the current
-  task, checkpoint-committing with an honest work-log line, and stopping;
-  resume fresh. If compaction threatens to lose something important,
-  that's a smell: write it to the milestone file instead.
-- Same-session implement → review is fine: criteria evidence is gathered
-  by command (never recall) and code review runs in a fresh subagent. The
-  seam that matters is milestone → milestone.
-- A fresh session stumbling on resume is a tracking-file gap, not a
-  reason to avoid clearing — report and fix the file, don't lean on
-  remembered context.
+Stateless resume makes conversation context disposable. Only the user can `/clear` — skills mark the seams in their
+recaps, never assume continuation. **The milestone boundary is the canonical `/clear` point**: after the post-merge
+hygiene commit, everything load-bearing is on the default branch; prefer `/clear` over `/compact` there. **Stop points
+are commit points are safe-clear points**: never tidy mid-task — finish the current task, checkpoint-commit with an
+honest work-log line, stop, resume fresh; if compaction threatens to lose something important, write it to the milestone
+file instead. Same-session implement → review is fine (evidence by command, never recall; review in a fresh subagent) —
+the seam that matters is milestone → milestone. A resume stumble is a tracking-file gap — fix the file.
 
 ## Question gates and routing chips
 
-User interaction happens at exactly three gates — plan questions,
-pre-implementation questions, final merge approval — plus routing chips. At
-a gate, ask one batched round of 2–5 concrete decision questions via
-AskUserQuestion, each with a recommendation and brief pros/cons. Between
-gates, work autonomously; never drip questions one at a time. When more
-questions are genuinely open than one round holds, prioritize the blocking
-ones: flag at most 3 prioritized clarification markers at a single gate and
-defer the rest to a later gate — never more than three at once.
+User interaction happens at exactly three gates — plan questions, pre-implementation questions, final merge approval —
+plus routing chips. At a gate, ask one batched round of 2–5 concrete decision questions via AskUserQuestion, each with a
+recommendation and brief pros/cons; between gates, work autonomously, never dripping questions. When more are open than
+one round holds, flag at most 3 prioritized markers and defer the rest. The **final merge-approval gate is itself an
+AskUserQuestion chip** — one approve/decline question (a decline option always present), never a prose yes/no.
 
-The **final merge-approval gate is itself an AskUserQuestion chip** — a
-single approve/decline question (recommended option merges; a decline option
-is always present), never a prose "do you authorize?" yes/no — the chip makes
-consent explicit and auditable.
-
-Every phase ends with a **routing chip**: an AskUserQuestion offering the
-single most sensible next action first, composed per the chip rules in
-"Output & interaction discipline" below. Selecting an option is an
-imperative on the orchestrator, not a suggestion for the user: on selecting
-a routing-chip option **the orchestrator immediately invokes the target skill via the Skill tool**
-and does not stop to have the user type the command. This does not weaken the
-stop: a chip is an explicit user stop — never auto-proceed — but the stop is
-*before* selection; the selection itself is the go, and executing it is the
-orchestrator's job. In a chip option, the `→ /skill` notation
-names the skill the orchestrator invokes on selection, not a command for the user to run.
-A routing chip is always an AskUserQuestion call:
-a prose list of options is not a routing chip, and emitting a prose list
-where a chip is required is a drift bug (locked by `test_gate_wording.py`).
-
-`/milestone-review`'s end is the **sole exception** (D-019): after a successful
-merge it closes with a plain-prose `/clear` nudge instead of a routing chip —
-it is the sole phase whose end is deliberately chip-less; every other phase
-skill ends with an AskUserQuestion routing chip. (This does not touch
-review's merge-approval gate, which stays an AskUserQuestion chip.)
+Every phase ends with a **routing chip**: an AskUserQuestion offering the single most sensible next action first,
+composed per the chip rules below. A chip is an explicit user stop — never auto-proceed — but the selection itself is
+the go: on selection **the orchestrator immediately invokes the target skill via the Skill tool** (the `→ /skill`
+notation in an option names that skill); the user never types the command. A routing chip is always an AskUserQuestion
+call — emitting a prose list of options where a chip is required is a drift bug. `/milestone-review`'s end is the **sole
+exception** (D-019): after a successful merge it closes with a plain-prose `/clear` nudge — the sole phase whose end is
+deliberately chip-less. (Its merge-approval gate stays an AskUserQuestion chip.)
 
 ## Output & interaction discipline
 
-How skills talk to the user. These rules bind all chat output while any
-cairn skill is active.
+These rules bind all chat output while any cairn skill is active.
 
-- **Phase header.** Orient the user with Markdown headings, not an inline
-  banner. A `#` names the unit of work and its title; a `##` beneath it
-  names the phase. (These headers give in-transcript visual hierarchy only; the
-  navigable table of contents is built from chapter markers, not markdown
-  headers — D-020, and the "Chapter markers" rule below.)
-  Milestone skills: `# Milestone <NN>: <title>` →
-  `## Plan` / `## Implement` / `## Review`. Every other skill maps onto the
-  same two levels and states its own pair in its `Phase header:` directive,
-  which is authoritative for that skill. Emit the
-  `#` once per unit of work — at that unit's first phase — re-emitting when
-  the unit changes: a routing chip into the next skill, or a fresh
-  post-`/clear` session, both start a new `#` so the reply stands alone (a
-  plan run that creates several milestones stays under one `# Planning`).
-  Emit a `##` at each phase entry — usually coincident with a chapter marker
-  (the session's very first header carries none: session start is implicit).
-  Replies within the same phase run as plain deltas underneath — never a
-  heading per reply.
-- **Deltas, not dumps.** Between gates, report what changed since the
-  last report — findings, decisions, surprises, direction changes. Never
-  restate the plan or paste command output; the tracking files hold the
-  record. Two exceptions: (1) drafted durable-record text is the deliverable,
-  not a dump — see the Durable-record preview rule below. (2) conclusion
-  text above an acceptance chip — see the Acceptance chips rule.
-- **Narrate outcomes, not deliberation.** Between tool calls, chat carries
-  findings, decisions, and the mandated previews —
-  never a running readout of reasoning (no "now I'll check whether…",
-  no weighing of options aloud, no italicized play-by-play commentary).
-  A one-line signpost before a long step is fine;
-  a compact summary where a question needs context is fine (D-039).
-  This never licenses compressing mandated substance: the Durable-record
-  preview and Acceptance chips rules still show their text verbatim.
-- **Correct what matters, and only narrate that.** Correct an earlier chat
-  statement only when the error would change the user's code, conclusions, or decisions.
-  State the correction plainly and briefly, then continue the task — no
-  preamble, no apology, no tally of what went wrong.
-  A slip that changes nothing for the user is fixed without narrating it,
-  because narrating it spends the user's attention on the author's process
-  rather than on the work. A chat slip never reaches a durable record: a
-  tracking file proven false is repaired under "Correcting a record proven
-  false" above — current knowledge corrected in place and marked, history
-  superseded and never edited (D-045). The two are different acts, and
-  conflating them turns every noticed typo into a record.
-- **Durable-record preview.** Newly authored durable-record text — a
-  D-entry, a milestone file's plan-owned sections (new or via a gated
-  amendment), a LESSONS line, an archive summary, a ROADMAP
-  candidate/graduation row — is shown verbatim in chat immediately before
-  the docs-only commit that lands it: same turn, no added stop; objections
-  are handled by amend/supersede right after (D-036). Exempt as mechanical
-  noise: work-log one-liners, checkbox ticks, status-mirror updates, and
-  hotfix/code-branch content (NEWS entries, code) already reviewable at
-  the PR merge gate — not a milestone branch's tracking records (D-036).
-- **Outcome-first recaps.** Phase-completion recaps lead with what the
-  work did, changed, or accomplished, in plain words. Hygiene mechanics
-  (caps, hashes, archive paths, commit lists) follow compressed — one
-  line when they're clean. A recap the user must re-read to find out
-  what happened has failed.
-- **Chips carry choices, not evidence.** Supporting detail and technical
-  justification live in chat *above* the chip. Option labels are short;
-  each description says in plain language what is being chosen and why
-  it matters — the Accessible language rule below carries that plain-language
-  bar to the question text and the framing prose. At most 4 options per
-  question. When a chip asks acceptance
-  of a produced conclusion, the Acceptance chips rule below sets the bar —
-  a summary never substitutes for the accepted text.
-- **Accessible language on the decision surface.** The surface a user reads
-  to make a choice — an AskUserQuestion question's text, the prose framing a
-  chip, and every option label and description — passes the two-sentence test:
-  the question's first sentence says what is being decided in plain words,
-  its second sentence says what happens on each choice, and both come before
-  any term of art. A technical term is glossed at first use, never assumed;
-  the failure this prevents is jargon-led framing, where the user must already know the
-  vocabulary to tell the options apart. Cairn-internal record identifiers —
-  D-/RR-/BC-ids, IP/GP numbers, and doctrine section numbers — stay out of
-  question text and option labels (`M<NN>` is exempt: milestone ids are the
-  operator's own referent); the identifier and its technical justification
-  live in the chat above the chip. This does not banish the technical
-  justification the rule above keeps *above* the chip — that detail stays, but
-  leads with its plain-language meaning rather than standing in for it.
-  A gate prompt the user flags as unclear is captured verbatim in the same
-  session — a work-log line when a milestone is active, otherwise absorbed
-  into an existing candidate ROADMAP row or added as one (search-first).
-  The two-sentence test is a shape the author applies in judgment: like
-  record density and references staleness, "too technical" is a judgment the
-  author makes, never a gate. A worked pair — the bad case reconstructs the
-  observed failure shape (M128), it is not a capture:
-
-  > **Bad:** "§8's retirement is a logged deviation from D-090's Untouched
-  > clause. Should D-095 supersede D-083's operative clauses whole, or
-  > narrow only the falsifier pair while D-085's evidence derivations stand?"
-  >
-  > **Good:** "Should retiring the certification step also cancel every rule
-  > its earlier decisions added, or only the rule that made it stop? A full
-  > cancel is cleaner but touches ten records; a partial keep risks leaving
-  > rules whose reason is gone — details above the chip."
-- **Acceptance chips show what's accepted.** A chip option that accepts or
-  approves a produced conclusion — review findings, a subagent's verdict,
-  an audit result, amended text, or
-  a proposed disposition or action plan awaiting confirmation (D-038)
-  — requires that conclusion's substance
-  verbatim in chat above the chip (D-037): the verdict and each actioned
-  finding appear verbatim; a long artifact shows its conclusions section
-  verbatim plus the file path for the rest; a paraphrase never stands in
-  for the text being accepted.
-- **Contextual chip construction.** Compose options from the actual
-  session state — the specific issue found, the specific next action —
-  not from a fixed menu; chip menus listed in skills are examples, not
-  scripts. Invariants that never bend: recommended option first and
-  marked, ≤4 options, a stop/pause option present, and a chip is a user
-  stop — never auto-proceed.
-- **Chapter markers (per-phase mandate).** Mark a chapter at each phase transition
-  (session start is implicit) via the runtime's chapter mechanism — in Claude
-  Code, `mark_chapter`, which drives the navigable TOC, not the markdown headers
-  (M27/D-020). This is a hard per-phase requirement, not "only where supported."
-  Fallback: where the runtime provides no chapter mechanism, no marker is emitted
-  and the H1/H2 phase headers are the visual fallback — nothing breaks.
-- **Copy-run commands get their own fenced block.** Three adjacent cases, three
-  different treatments:
-  - **Handing the user a command to run → its own fenced code block**, never inline backticks (a fenced block renders a copy button; inline backticks do not).
-  - **Naming a command, path, or symbol in prose → inline backticks** — naming a thing is not handing it over.
-  - **A routing chip's `→ /skill` option → neither fence nor handoff** — that arrow is not the user's to type; selecting the option is what acts on it (D-022).
-
-  Slash commands (`/clear`, `/milestone-plan`) count as commands here exactly as shell commands do — most handoffs are one, not a shell line.
-
-  Handoff or mention, when the same step does both:
-  - **A step that ends the turn expecting the user to go run something → a handoff, and it gets the fence** — nothing else will run it.
-  - **A line noting that a moment is a safe `/clear` point, beside a chip already offering the route → a mention, and it stays inline** — the chip, not the user's typing, is what acts.
-
-  The prose framing a handoff stays prose; only the runnable lines get fenced.
-- **Subagent titles carry the model tier.** Prefix every Agent
-  description with `[S]`/`[O]`/`[F]` for Sonnet/Opus/Fable — task panes
-  show only the title, not the model.
+- **Phase header.** Orient with Markdown headings, not an inline banner: a `#` names the unit of work, a `##` the phase.
+  Milestone skills: `# Milestone <NN>: <title>` → `## Plan` / `## Implement` / `## Review`; every other skill states its
+  own pair in its `Phase header:` directive. One `#` per unit of work (re-emit when the unit changes), a `##` per phase
+  entry; replies within a phase are plain deltas underneath.
+- **Deltas, not dumps; narrate outcomes, not deliberation.** Between gates, report what changed since the last report —
+  never a restated plan, pasted command output, or a running readout of reasoning; a one-line signpost or a compact
+  summary where a question needs context is fine. Two exceptions: drafted durable-record text and conclusion text above
+  an acceptance chip.
+- **Correct what matters, and only narrate that.** Correct an earlier chat statement only when the error would change
+  the user's code, conclusions, or decisions — plainly, briefly, then continue; a slip that changes nothing is fixed
+  without narration. A chat slip never reaches a durable record.
+- **Durable-record preview.** Newly authored durable-record text — a D-entry, a milestone file's plan-owned sections
+  (new or amended), a LESSONS line, an archive summary, a ROADMAP candidate/graduation row — is shown verbatim in chat
+  immediately before the commit that lands it: same turn, no added stop; objections handled by amend/supersede. Exempt:
+  work-log one-liners, checkbox ticks, status-mirror updates, and hotfix/code-branch content already reviewable at the
+  PR merge gate — not a milestone branch's tracking records.
+- **Outcome-first recaps.** Phase-completion recaps lead with what the work did, changed, or accomplished, in plain
+  words; hygiene mechanics follow compressed — one line when clean.
+- **Chips carry choices, not evidence.** Supporting detail and justification live in chat *above* the chip; option
+  labels are short; descriptions say in plain language what is chosen and why it matters; ≤4 options per question.
+- **Accessible language on the decision surface.** A question's text, the prose framing a chip, and every option label
+  and description pass the two-sentence test: the first sentence says what is being decided in plain words, the second
+  what happens on each choice, both before any term of art; a technical term is glossed at first use. Cairn-internal
+  record identifiers — D-/RR-/BC-ids, IP/GP numbers, doctrine section numbers — stay out of question text and option
+  labels (`M<NN>` is exempt); the identifier and its justification live in the chat above the chip. A gate prompt the
+  user flags as unclear is captured verbatim same-session (a work-log line, or a candidate ROADMAP row when no milestone
+  is active). Applied in authorial judgment, never as a gate.
+- **Acceptance chips show what's accepted.** A chip option accepting or approving a produced conclusion — review
+  findings, a verdict, an audit result, amended text, a proposed disposition — requires that conclusion's substance
+  verbatim in chat above the chip (a long artifact: its conclusions verbatim plus the file path); a paraphrase never
+  stands in for the text being accepted.
+- **Contextual chip construction.** Compose options from the actual session state, not a fixed menu; chip menus in
+  skills are examples, not scripts. Invariants: recommended option first and marked, ≤4 options, a stop/pause option
+  present, and a chip is a user stop — never auto-proceed.
+- **Chapter markers (per-phase mandate).** Mark a chapter at each phase transition (session start implicit) via the
+  runtime's chapter mechanism (`mark_chapter` in Claude Code — it drives the navigable TOC); absent one, the H1/H2
+  headers are the fallback.
+- **Copy-run commands get their own fenced block.** Handing the user a command to run → its own fenced code block, never
+  inline backticks; naming a command, path, or symbol in prose → inline backticks; a routing chip's `→ /skill` option →
+  neither fence nor handoff (selecting the option is what acts). Slash commands count as commands. A step ending the
+  turn expecting the user to run something is a handoff (fence); noting a safe `/clear` point beside a chip already
+  offering the route is a mention (inline).
+- **Subagent titles carry the model tier.** Prefix every Agent description with `[S]`/`[O]`/`[F]` for Sonnet/Opus/Fable
+  — task panes show only the title, not the model.
 
 ## Model and agent strategy
 
-- Orchestrator: Opus, running these skills in the main session. Exception:
-  `/design-interview` recommends the user run the *main session* on Fable
-  (D-014) — a per-instance session-model choice, not a spawned subagent, so
-  it does not touch the Fable-subagent gate below.
-- Every spawned Agent's description starts with its tier tag —
-  `[S]`/`[O]`/`[F]` — per the output-discipline section.
-- **Subagents share the primary checkout.** Every subagent cairn spawns runs
-  in the same working tree as the main session, so it uses ref-based git only
-  (`git diff`/`show`/`log`/`blame` against refs like `main..HEAD`) and never a
-  HEAD-moving command — `git checkout`, `git switch`, `git worktree add`,
-  `git reset` — in that shared tree, which would park the primary checkout on
-  another branch mid-task (hit in the M36 review). Binds every spawned agent:
-  Explore/Sonnet/Opus workers and the `/milestone-review` reviewers alike.
-- **Delegate only what warrants it.** A subagent is warranted by a large,
-  genuinely independent track of work — a wide multi-file investigation, a
-  mechanical migration across many sites. Work the session can finish itself
-  in a handful of tool calls is done inline, never delegated: the spawn costs
-  more than the work it saves. Where one subagent can do the task,
-  spawn one rather than several — a second copy of the same job buys a
-  second context and returns the first one's answer.
-  The `/milestone-review` fan-out (the multi-lens mode of the review bullet
-  below) is not that case and is no exception
-  to this rule: its reviewers carry distinct evidence bases — the diff,
-  git blame, prior review threads — so no one of them can do another's task,
-  which is the independence this rule asks for. Nor is a spawn made for
-  *freshness* — a reader that must not have authored what it reads — a volume
-  judgment this rule reaches; it is warranted by who the reader is, not by how
-  much work there is. The tier bullets below decide *which* tier a warranted
-  spawn gets, with one exception: the Fable bullet gates *whether* a Fable
-  spawn happens at all.
-- **Which self-checking that rule governs.** The delegation warrant above
-  reaches one class of checking and not the other, and the two are easy to
-  conflate because both end in something being read twice.
-  It governs **an author re-checking work it just produced, in the context that produced it** —
-  spawned or inline, a check already happening unprompted, so instructing it
-  again buys tokens rather than quality (`references/prompting-opus-5.md`,
-  § Task scope and over-verification).
-  It does not govern **an independent fresh-context reading of that work by a reader that authored none of it** —
-  a different instrument against a different failure: an author checks a
-  description against its generative model of the artifact rather than against
-  the artifact (D-067).
-  The discriminator is *who reads*, never *how often the work is read* — which
-  is the same cut the freshness sentence above makes against the volume test.
-- **Sonnet subagents**: well-specified self-contained work — fan-out
-  searches (Explore), mechanical migrations, test writing against a spec,
-  boilerplate. Give complete specs — for an Explore fan-out that means a
-  reading list naming the files or areas each subagent should read, so it
-  searches the right ground instead of guessing; verify their diffs before
-  committing; summarize results into one work-log line — the log line
-  compresses, but an acceptance chip built on those results still shows
-  them verbatim (Acceptance chips rule).
-- **Opus subagents**: design-sensitive implementation; the diff-bug lens of
-  the fresh-context review at `/milestone-review`.
-- **The `/milestone-review` review** (M17; scaled to stakes at M145) runs in
-  fresh-context subagents, not the implementing session, because an author
-  shares their own diff-blindness — a reviewer that did not write the code
-  catches the contract and convention breaks the author reads straight past.
-  An internal-tier milestone whose diff touches only markdown/tracking files
-  gets one **[O]** diff reviewer; any other diff gets the three
-  distinct-evidence reviewers —
-  an **[O]** diff-bug reviewer (Opus, correctness/contract/convention),
-  an **[S]** blame-history reviewer (Sonnet, does the change undo deliberate
-  prior work), and an **[S]** prior-PR-comments reviewer (Sonnet, does the diff
-  regress a point a prior review raised on these files — primary evidence the
-  archived `## Review` sections, GitHub PR threads read only when a cheap
-  probe finds real ones; always spawned in the fan-out, no-ops when a repo has
-  no prior-review evidence — M40, repointed M101).
-  Reviewers rank their own findings; the maintainer triages the ranked list
-  at the gate, every finding logged (M145 retired the confidence scorer).
+- Orchestrator: Opus, running these skills in the main session. Exception: `/design-interview` recommends the user run
+  the *main session* on Fable — a session-model choice, not a subagent.
+- **Subagents share the primary checkout.** Every spawned subagent uses ref-based git only (`diff`/`show`/`log`/`blame`
+  against refs), never a HEAD-moving command (`checkout`/`switch`/`worktree add`/`reset`) in the shared tree.
+- **Delegate only what warrants it.** A subagent is warranted by a large, genuinely independent track of work (a wide
+  investigation, a mechanical migration across many sites). Work the session can finish in a handful of tool calls is
+  done inline; where one subagent can do the task, spawn one rather than several. A spawn made for *freshness* — a
+  reader that must not have authored what it reads — is warranted by who the reader is, not by volume (an author's
+  re-check of its own just-produced work is not).
+- **Sonnet subagents**: well-specified self-contained work — fan-out searches (Explore), mechanical migrations, test
+  writing against a spec, boilerplate. Give complete specs (for an Explore fan-out, a reading list naming the files or
+  areas to read); verify their diffs before committing; summarize results into one work-log line.
+- **Opus subagents**: design-sensitive implementation; the diff-bug lens of the review fan-out.
+- **The `/milestone-review` review** runs in fresh-context subagents, never the implementing session: an internal-tier
+  milestone whose diff touches only markdown/tracking files gets one **[O]** diff reviewer; any other diff gets the
+  three distinct-evidence reviewers the review skill defines ([O] diff-bug, [S] blame-history, [S] prior-PR-comments —
+  always spawned, no-op without prior-review evidence); reviewers rank their findings, the maintainer triages the ranked
+  list at the gate, every finding logged.
 - **Never Haiku.** For anything.
-- **Fable subagents**: only through the RB/RR brief protocol
-  (`/milestone-brief`) and only after a per-instance approval gate — Fable is
-  no longer pay-on-demand, but it typically uses more tokens than Opus, so
-  reaching for it stays a deliberate per-instance choice, never a standing
-  default. Ad-hoc Fable spawning is still prohibited: the brief artifact is
-  what makes escalation reproducible, auditable, and ingestible. RR ingestion
-  follows the protocol in `/milestone-brief` ("Ingesting an RR").
-  (D-062 updated this cost framing, superseding D-004's per-call billing
-  premise; the per-instance gate and the RB/RR-only path are retained.)
-  The implementing session never authors the durable verdict on the review
-  constraining it — that routes to a new RB or the maintainer at the gate (RR04).
-- **RB tripwires** — the three question categories that are the canonical
-  must-offer cases for Fable escalation, with their canonical tag tokens:
-  statistical/scoring correctness with no available oracle (`no-oracle`);
-  irreversible exported-API decisions (`irreversible-api`); anything touching
-  an IP (`ip-touching`). `/milestone-plan` tags tripwire-hitting open questions
-  inline on the affected task or criterion — `(RB tripwire: <token>)` —
-  and `/milestone-implement` inherits the tags; a tripwire can also fire
-  mid-implementation (same categories, no tag required). An escalation chip
-  option may be offered on a tripwire hit OR for a genuinely hard question the
-  session cannot confidently settle (D-062 lowered this bar); the three
-  tripwires remain the cases where it must be offered. It stays a gated,
-  per-instance choice through `/milestone-brief`, never a standing menu item
-  (D-004: Fable is gated per instance).
+- **Fable subagents**: only through the RB/RR brief protocol (`/milestone-brief`) after a per-instance approval gate —
+  costlier than Opus, so a deliberate per-instance choice, never a standing default; ad-hoc Fable spawning is
+  prohibited. The implementing session never authors the durable verdict on the review constraining it — that routes to
+  a new RB or the maintainer at the gate.
+- **RB tripwires** — the canonical must-offer cases for Fable escalation, with their tag tokens: statistical/scoring
+  correctness with no available oracle (`no-oracle`); irreversible exported-API decisions (`irreversible-api`); anything
+  touching an IP (`ip-touching`). `/milestone-plan` tags tripwire-hitting open questions inline — `(RB tripwire:
+  <token>)` — and `/milestone-implement` inherits the tags; a tripwire can also fire mid-implementation (no tag
+  required). An escalation chip option may be offered on a tripwire hit OR for a genuinely hard question the session
+  cannot confidently settle, and stays a gated, per-instance choice through `/milestone-brief`, never standing.
 
 ## Toolchain profiles
 
-Language/toolchain specifics live in a **profile**, not in the core rules. A
-repo declares its profile in `cairn/PROFILE.md` (instantiated by `cairn-init`
-from a shipped reference under `skills/shared/profiles/`); the operational
-skills read its slots instead of hardcoding one language's commands. Seven slots:
+Language/toolchain specifics live in a **profile**, not in the core rules. A repo declares its profile in
+`cairn/PROFILE.md` (instantiated by `cairn-init` from `skills/shared/profiles/`); the operational skills read its slots
+instead of hardcoding one language's commands. Seven slots: **verify** — the per-task test/check command(s)
+`/milestone-implement` and `/hotfix` run; **consistency-gate** — toolchain checks `/milestone-review` runs *in addition
+to* the universal cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`); **test-doctrine** —
+toolchain test expectations layered on "What gets a test"; **release-walk** — the procedure `/cairn-release` follows;
+**init-detection** — how `cairn-init` recognizes the toolchain; **greenfield-openers** — opener questions for a
+new/empty repo; **changelog** — the repo's changelog file (or "none" — legal), read by `/hotfix`, the release-walk, and
+the consistency-gate.
 
-- **verify** — the per-task test/check command(s) `/milestone-implement` and `/hotfix` run.
-- **consistency-gate** — toolchain checks `/milestone-review` runs *in addition to* the universal cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`).
-- **test-doctrine** — toolchain-specific test expectations layered on the universal "What gets a test" rules.
-- **release-walk** — the release procedure `/cairn-release` follows.
-- **init-detection** — how `cairn-init` recognizes the toolchain.
-- **greenfield-openers** — opener questions for a new/empty repo of this type.
-- **changelog** — the repo's changelog file (or "none"), read by `/hotfix`, `/cairn-release`'s release-walk, and the consistency-gate; "none" is legal — hotfix skips the changelog entry, and the release-walk skips consolidation and derives the version bump from git history.
-
-The **domain verification doctrine (oracles) is universal, not a profile slot**:
-it is orthogonal to the language profile (D-024/D-025), stated once in
-`skills/shared/validation-doctrine.md` (see "Validation doctrine" below). A
-profile carries *language mechanics*, never domain doctrine.
-
-Four profiles ship: `r-package` (devtools/roxygen/testthat/pkgdown, CRAN),
-`python` (pyproject/pytest/ruff/mypy/build+twine, PyPI), `docker-image`
-(hadolint/`docker build`/buildx, a container registry), and `generic` (no
-toolchain gates). **Absent `PROFILE.md` → infer** in order: a `DESCRIPTION` at
-the repo root means `r-package`, else a `pyproject.toml` (or legacy
-`setup.py`/`setup.cfg`) means `python`, else a `Dockerfile` as the sole
-toolchain marker means `docker-image`, else `generic` — so a repo that adopted
-cairn before profiles keeps working unchanged, and `cairn-init` repair backfills
-the explicit declaration. Inference has no user, so a hybrid repo carrying both
-a `Dockerfile` and a language marker keeps the language marker (the language
-branches rank first); `cairn-init`'s disambiguation gate, where a user is
-present, is the only place the image-vs-package choice is asked.
-`cairn_validate` no-ops when `PROFILE.md` is absent and, when present, FAILs on
-a missing, empty, or unrecognized slot.
+Four profiles ship: `r-package`, `python`, `docker-image`, and `generic` (no toolchain gates). **Absent `PROFILE.md` →
+infer** in order: `DESCRIPTION` at the repo root → `r-package`, else `pyproject.toml` (or legacy `setup.py`/`setup.cfg`)
+→ `python`, else a `Dockerfile` as the sole toolchain marker → `docker-image`, else `generic`; a hybrid repo keeps the
+language marker (`cairn-init`'s disambiguation gate is the only place the image-vs-package choice is asked).
+`cairn_validate` no-ops when `PROFILE.md` is absent and FAILs on a missing, empty, or unrecognized slot.
 
 ## Validation doctrine (statistical/numeric work)
 
-The domain-verification doctrine — oracle priority list, the five oracle
-types, the ≥2-independent-types bar, the oracle registry + its declared
-pointer, the reproducibility and primary-sources hard stops, and source
-ingestion — lives in `skills/shared/validation-doctrine.md`, a module of
-this rulebook (M58: new domain doctrine gets a module, not a rulebook
-section). It is universal domain doctrine, never a profile slot
-(D-024/D-025). Read the module whenever a milestone touches a numeric
-result or scoring/algorithmic content.
+The domain-verification doctrine (oracle types and priority, the ≥2-independent-types bar, the oracle registry, the hard
+stops, source ingestion) lives in `skills/shared/validation-doctrine.md`, a module of this rulebook and universal domain
+doctrine, never a profile slot. Read it whenever a milestone touches a numeric result or scoring/algorithmic content.
 
 ## References pages
 
-Committed `cairn/references/` pages come in two types. **Source notes**
-(`<citekey>.md`) each own one primary source — citation, extracted values
-with page/table anchors, what traces to it (the ingestion workflow is in
-`skills/shared/validation-doctrine.md`). **Synthesis notes** are
-the second committed `references/` page type —
-cross-source analyses (a fit assessment, a comparative survey, a pilot
-ledger) that no single `<citekey>.md` owns. Same rules for both: committed,
-cited (`citekey (p. N)` / page name), never restated into tracking files.
-Every committed `references/` page carries its
-`INDEX.md` line — mechanized by `cairn_validate`'s references check (M57).
+Committed `cairn/references/` pages come in two types. **Source notes** (`<citekey>.md`) each own one primary source —
+citation, extracted values with page/table anchors, what traces to it (ingestion workflow:
+`skills/shared/validation-doctrine.md`). **Synthesis notes** are cross-source analyses no single `<citekey>.md` owns.
+Both: committed, cited (`citekey (p. N)` / page name), never restated into tracking files; every page carries its
+`INDEX.md` line (mechanized by `cairn_validate`'s references check); author from the shipped templates under
+`skills/shared/templates/`.
 
-**When a page is owed.** A source consulted in passing owes nothing.
-A page is owed once the repo *relies* on the source — a claim, value, convention, or decision here traces back to it — and it is authored in the milestone that takes the dependency, never left for later.
-Repo-internal analysis earns the second page type by the same test applied to time:
-an analysis that will outlive its milestone — a fit assessment, a comparative survey, a pilot ledger — is a synthesis note, while analysis serving only the milestone in hand stays in the milestone file.
-The over-cap remedy above is a separate last-resort route into `references/`, not this one.
-Author from the shipped templates: `skills/shared/templates/source-note.md` for a source note, `skills/shared/templates/synthesis-note.md` for a synthesis note.
-This trigger is universal — it fires in a repo with no numeric work at all,
-which is why it lives here and not in the conditionally-read domain module;
-`skills/shared/validation-doctrine.md` carries only the numeric/scoring
-instance of the workflow, where the source is a paper backing a number.
+**When a page is owed.** A source consulted in passing owes nothing; a page is owed once the repo *relies* on the source
+— a claim, value, convention, or decision traces back to it — authored in the milestone that takes the dependency, never
+left for later. An analysis that will outlive its milestone is a synthesis note; analysis serving only the milestone in
+hand stays in the milestone file. The trigger is universal — it fires with no numeric work at all.
 
-**Exploring prospective sources.** The rule above is demand-pull: it says when
-a source the repo already *relies* on is owed a page, and never that an uncited
-source is irrelevant. A source merely consulted in passing owes nothing, but
-that is a glance, not the deliberate triage of a corpus.
-Reading a corpus of maybe-relevant sources to *discover* what the repo does not yet know it wants — a new oracle, a new method — is supply-push exploration, a legitimate activity: a source on the `sources/` shelf for that purpose is triaged, never dismissed for want of a citation.
-Exploration produces two records and withholds a third.
-It always produces ROADMAP candidate rows for the promising oracles or methods it finds, search-first, as any surfaced idea is paired with a row (D-042).
-It produces a committed survey synthesis note only when the triage will outlive its exploration — a comparative survey authored from `templates/synthesis-note.md`, by the same owed-applied-to-time test above; a one-shot triage stays in the milestone file.
-It withholds a per-source `<citekey>.md` page: those stay demand-pull, earned only once a candidate graduates and something traces back to the source.
-Exploration reuses these existing records and adds no machinery — no committed raw sources, no references log, no query op or graph tooling (all rejected at M56); it is a way of reading the shelf, not a new place to write.
+**Exploring prospective sources.** The owed rule is demand-pull; reading a corpus of maybe-relevant sources to
+*discover* what the repo does not yet know it wants is supply-push exploration, legitimate. It always produces ROADMAP
+candidate rows for the promising finds (search-first); a committed survey synthesis note only when the triage will
+outlive its exploration; no per-source `<citekey>.md` pages (demand-pull) and no machinery (no committed raw sources,
+references log, query op, or graph tooling).
 
-**Standing facts vs. dated observations.** A committed `references/` page —
-source note and synthesis note alike — makes two kinds of claim, and they age
-differently.
-A **standing fact** is a claim about the *source*: an extracted value, a printed formula, a verbatim wording, a page or table anchor.
-A **dated observation** is a claim about the *repo's own state*: what is on the shelf, what has or has not been read, what another page does or does not yet say, what a later task must still check.
-A standing fact holds as long as the source does. A dated observation is true
-at a moment and can go stale within the hour — `cairn/references/sources/` is a
-live directory the maintainer adds to mid-session, and a note written by a
-subagent is a snapshot of the repo at write time, not at merge time. So a
-dated observation carries `— observed YYYY-MM-DD` inline on the claim itself,
-where a reader meets it, and is never recorded as a standing fact. The
-undated absence claim — "not present", "not retrieved", "not yet checked",
-"must be verified when X is written" — is the specific failure this rule
-exists to stop; it reads as durable, is believed by every later plan-time
-harvest, and is routinely false by merge time.
+**Standing facts vs. dated observations.** A **standing fact** — a claim about the *source* (an extracted value, a
+formula, an anchor) — holds as long as the source does. A **dated observation** — a claim about the *repo's own state*
+(what is on the shelf, what has been read, what must still be checked) — carries `— observed YYYY-MM-DD` inline on the
+claim itself; the undated absence claim ("not present", "not yet checked") is the failure this rule stops.
 
-**Page provenance.** Every committed `references/` page carries a
-`**Provenance.**` block recording how the page came to exist: source pointer
-(the shelf PDF path, or the URL and retrieval record for a non-PDF source),
-ingested date, ingesting milestone, pagination basis (`—` where the source is
-unpaginated), and extraction-verified status — whether the extracted values
-have been re-read against the source, or are an unverified first pass. The
-page's citekey and full citation are carried by the page itself (its heading
-and citation), not restated inside the block.
-The block is prose in the page's own idiom, not frontmatter.
-Because "when this was last checked" is
-itself a claim about the repo's state, an extraction status carries its own
-`— observed YYYY-MM-DD`.
-
-**Re-verification.** An extraction status is written once and then ages, so a page the repo still relies on is re-checked against its source as it gets old, and a page never checked against its source at all keeps saying so.
-A re-check marks inline in the provenance block, on the extraction status itself — never in a new file, a new section, or a log.
-A second record of when a page was last read is a divergence vector (the
-reason M56 rejected a central ledger), and the block is where a reader
-already looks. `cairn_validate`'s `references staleness` advisory reads that
-status and WARNs on a page recording no verified re-check, and on one last
-verified more than 180 days ago; a status naming no date of its own ages from
-the block's ingested date, and a first-hand record with nothing to re-verify
-against is exempt by saying so. It stays an advisory and never a check
-because "this page is too old" is a judgment about evidence quality, not a
-structural fact a gate can settle.
+**Page provenance and re-verification.** Every committed `references/` page carries a `**Provenance.**` block — prose,
+not frontmatter — recording source pointer, ingested date, ingesting milestone, pagination basis, and
+extraction-verified status (a dated observation). A page the repo still relies on is re-checked against its source as it
+ages; a re-check marks inline on the extraction status — never in a new file, section, or log. `cairn_validate`'s
+`references staleness` advisory WARNs (never a check) on a page with no verified re-check or one older than 180 days; a
+status naming no date ages from the ingested date; a first-hand record with nothing to re-verify against is exempt by
+saying so.
 
 ## What gets a test
 
-No coverage-percentage target — test scope is set per milestone via
-acceptance criteria. Always: every exported/public function (happy path,
-every error branch fired with its condition asserted — the test names which failure, never bare failure — and the language's edge cases); every numeric result
-via an oracle; every bug fix via a regression test that fails before the fix;
-every documented claim.
-A changelog entry asserting a behavior requires a test that fails without that behavior, or the entry narrows to what a named test enforces.
-Indirect by default: internal helpers (direct tests
-only for independent logic). Never: cosmetic output beyond meaningful
-snapshots, trivial pass-throughs, dependency behavior. Test the contract, not
-the implementation — a test that breaks under a behavior-preserving refactor
-is a defect in the test.
-
-**Step 0 — one home.** Before asking whether a piece of prose belongs in this
-rulebook, ask whether the rulebook already says it somewhere else. One site
-keeps the statement; every other site carries at most a cross-reference. This
-is a drafting step, binding on text authored or edited from here on, and never
-a mandate to sweep the file for repeats it already contains.
-
-**A rule is what changes compliant behavior when it is deleted.** That test
-decides whether prose in this rulebook is operative — a rule, or the
-doctrine for applying one — or is justification the file does not owe and git
-already holds (D-071 repairs the test; D-056's classification of the rulebook
-as current knowledge stands). Deletion is the retention probe and the only
-one: inversion detects rule-shaped text, which a duplicate equally is, so it
-cannot decide what belongs here.
-
-Inversion keeps a job of its own. **Relabel, negate, or transpose the rule in
-place, run the suite, require red, restore and diff** — that is the
-guard-verification protocol, whose obligation and unguarded-case fallback the
-guard-must-fail rule below states in full. It never decides what belongs here.
-
-**Guard-reddening is a deletion screen, never a licence to keep** — sufficient
-to block a careless deletion, never necessary to justify one, and never
-sufficient to keep prose that fails the behavioral test above. The text owns
-the guard, not the reverse: anchors are exemplar blocks chosen partly for
-matchability, so a guard can pin scaffolding, and reading pinned as frozen is
-how a rulebook's editability dies one guard at a time. A pinned block that
-fails the test is shortened *with* re-anchoring, never skipped.
-
-**A guard must fail when the rule it locks is deleted.** A prose-guard — a
-test that locks wording by asserting substrings of a doc (skill, rulebook,
-template) — gives *false coverage* when a phrase it asserts also occurs
-elsewhere: deleting the rule leaves the assertion satisfied, so the guard
-passes over a rule that is gone (the recurring M39/M40 trap). Verify by
-mutation, not by eye: cairn's own prose-guards register in the mutation
-harness (`skills/tests/test_mutation_harness.py`), which blanks each
-registered block and asserts its guard fails; the completeness meta-test
-fails CI on any unregistered prose-guard *file*. Registration is per file
-(one or more exemplar blocks), **not** per assertion — a new `assertIn`
-added to an already-registered file still needs its own entry or the by-hand
-check ("would this pass against the pre-milestone content?").
-
-**The craft of making a guard falsifiable lives in a module of this rulebook**, on its own line so the mapping stays pinnable:
-`skills/shared/guard-doctrine.md` covers anchors and what an assert must pin, the mutation harness's own blind spots, absence assertions, fixture design, matchers over authored markdown, restatement and numbers, and sweep scoping.
-Read it when authoring or editing a prose-guard, a fixture, a matcher, or a
-`cairn_validate` check. The rule above states the obligation; the module is
-how to meet it, and like the Validation doctrine it is read conditionally, so
-sessions that write no guard never pay for it.
-
-The language-mechanical specifics — which edge cases, which error mechanism,
-coverage-tool status, plot/snapshot conventions — live in the active profile's
-`test-doctrine` slot (`cairn/PROFILE.md`; absent → infer per "Toolchain
-profiles"); the rules here are the universal floor. **Profiles supply language
-mechanics; the oracle / Validation doctrine module stays universal** (D-024/D-025),
-never a profile slot.
-
-The language/toolchain guardrails that were once stated here — package-build
-rules, generated-file conventions, error-condition idioms — now live in the
-active profile's `test-doctrine` and `consistency-gate` slots (for the R
-toolchain, `skills/shared/profiles/r-package.md`); they are advisory in the
-moment and mechanically enforced by the `consistency-gate` slot at
-`/milestone-review`. The dependency-change gate and the deprecation-cycle
-policy are universal governance (see "Universal tracking rules"); profiles
-carry only their mechanical renderings.
+No coverage-percentage target — test scope is set per milestone via acceptance criteria. Always: every exported/public
+function (happy path, every error branch fired with its condition asserted — the test names which failure, never bare
+failure — and the language's edge cases); every numeric result via an oracle; every bug fix via a regression test that
+fails before the fix; every documented claim. A changelog entry asserting a behavior requires a test that fails without
+that behavior, or the entry narrows to what a named test enforces. Indirect by default: internal helpers (direct tests
+only for independent logic). Never: cosmetic output beyond meaningful snapshots, trivial pass-throughs, dependency
+behavior. Test the contract, not the implementation — a test that breaks under a behavior-preserving refactor is a
+defect in the test. Language-mechanical specifics — edge cases, error mechanism, coverage-tool status, plot/snapshot
+conventions — live in the active profile's `test-doctrine` slot; the rules here are the universal floor.
