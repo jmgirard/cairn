@@ -104,7 +104,7 @@ knowledge reading is recorded in the work log only.
       non-gating hand-run paragraph keeping the discover-only note) and
       `## test-doctrine` (no prose guard owed for new rules in this repo;
       shipped doctrine untouched for adopters).
-- [ ] T3: Correct the LESSONS.md M56+M65 lesson in place per AC2.
+- [x] T3: Correct the LESSONS.md M56+M65 lesson in place per AC2.
 - [ ] T4: Run the AC5 sweep (known-positive probe first); disposition every
       hit; edit the live directives it finds (`CLAUDE.md`'s verify sentence;
       PROFILE's "all three must be green" line lands with T2); record the
@@ -123,5 +123,6 @@ knowledge reading is recorded in the work log only.
 - 2026-08-16: AC1's test-doctrine clause was gate-added using the auditor's own repair wording (finding 6), re-read against the audit's three questions before writing; PROFILE.md read as current knowledge (a live declaration, edited in place), no classifying rule shipped (finding 15).
 - 2026-08-16: T1 — D-108 (door widening, carve-out, self-exception) and D-109 (probe falsifier) appended; validate green, no dangling-id tokens unmasked (the M115 batch did not materialize — no forward D-108/D-109 tokens existed).
 - 2026-08-16: T2 — PROFILE.md `## verify` rewritten (two gating commands, non-gating skills/tests paragraph with the discover-only note) and `## test-doctrine` (no guard owed for new rules here; shipped doctrine governs adopters); both gating suites exit 0, validate green.
+- 2026-08-16: T3 — LESSONS M56+M65 line corrected in place, whole sentence, marker in the attribution parens; file stays 49 lines, validate green (tick landed by amending T3's checkpoint, which had omitted it).
 
 ## Decisions
