@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-15 (candidate audit — 30 rows swept; 3 retired as overtaken (anchor-choice: ownership; offset norm: own drop condition + D-057; section-ledger rollout: D-095/D-090); 2 ambiguous rows annotated in place; every live-file line ref made procedural per D-099, 4 of 7 having drifted; inboxes empty; validate green.)_
+_Last hygiene check: 2026-08-16 (M144 archived; oldest done-row M139 pruned to hold terminal-row retention at 5; D-109's skills/tests hygiene run: green at merge; validate green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M144 | The prose-guard suites leave the merge gate | review | — | high | milestones/M144-guards-leave-the-gate.md |
+| M144 | The prose-guard suites leave the merge gate | done | — | high | milestones/archive/M144-guards-leave-the-gate.md |
 | M142 | The plan gate scales criteria rigor to the deliverable's stakes | done | — | high | milestones/archive/M142-stakes-tier.md |
 | M143 | The thrash threshold recommends descoping before re-planning | done | — | high | milestones/archive/M143-descope-first-thrash.md |
 | M141 | README plain-language pass | done | — | normal | milestones/archive/M141-readme-plain-language.md |
 | M140 | Whole-slice equality guards for the M139 rules | done | — | high | milestones/archive/M140-equality-guards.md |
-| M139 | The narrowing repair for a defeated promise is reachable at a review return | done | — | high | milestones/archive/M139-narrowing-at-the-return.md |
 
 ## Candidates
 
