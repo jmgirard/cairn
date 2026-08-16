@@ -105,7 +105,7 @@ knowledge reading is recorded in the work log only.
       `## test-doctrine` (no prose guard owed for new rules in this repo;
       shipped doctrine untouched for adopters).
 - [x] T3: Correct the LESSONS.md M56+M65 lesson in place per AC2.
-- [ ] T4: Run the AC5 sweep (known-positive probe first); disposition every
+- [x] T4: Run the AC5 sweep (known-positive probe first); disposition every
       hit; edit the live directives it finds (`CLAUDE.md`'s verify sentence;
       PROFILE's "all three must be green" line lands with T2); record the
       disposition ledger for Review.
@@ -124,5 +124,6 @@ knowledge reading is recorded in the work log only.
 - 2026-08-16: T1 — D-108 (door widening, carve-out, self-exception) and D-109 (probe falsifier) appended; validate green, no dangling-id tokens unmasked (the M115 batch did not materialize — no forward D-108/D-109 tokens existed).
 - 2026-08-16: T2 — PROFILE.md `## verify` rewritten (two gating commands, non-gating skills/tests paragraph with the discover-only note) and `## test-doctrine` (no guard owed for new rules here; shipped doctrine governs adopters); both gating suites exit 0, validate green.
 - 2026-08-16: T3 — LESSONS M56+M65 line corrected in place, whole sentence, marker in the attribution parens; file stays 49 lines, validate green (tick landed by amending T3's checkpoint, which had omitted it).
+- 2026-08-16: T4 — sweep probed against PROFILE's known-positive (3 hits) then run whole: 17 hits — LESSONS:18 + PROFILE ×3 edited by this milestone; LESSONS:49 + LESSONS:18's opening clause historical narration; ROADMAP ×2 + references ×9 guard-file citations that stay true; tracking-rules:962 deferred to step 2; one live directive found and edited (CLAUDE.md's verify sentence, now naming the two gating suites).
 
 ## Decisions
