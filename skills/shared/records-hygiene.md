@@ -2,8 +2,8 @@
 
 Read this whenever you are at a milestone hygiene or plan gate — pruning or
 graduating a ROADMAP candidate, superseding a decision, compressing a capped
-tracking file, placing a new records rule, amending a plan mid-implementation,
-or reading a review scorer's output. It is a module of `tracking-rules.md`
+tracking file, placing a new records rule, or amending a plan
+mid-implementation. It is a module of `tracking-rules.md`
 (D-031: doctrine gets a module, not a rulebook section; D-055: a matured lesson
 family graduates whole into one), conditionally read at the moment the craft
 applies, so it costs nothing to a session not at such a gate.
@@ -65,20 +65,8 @@ better than, but different from, what the AC promised; "better" is still drift.
 The amendment gate (`/milestone-implement` step 6) exists for exactly this, and
 using it keeps plan and delivery in one voice.
 
-## 5. Reading a review scorer's output
-
-**A sub-threshold confidence score gates the ACTIONED list, not the operator's
-judgment.** Read every sub-80 finding's substance rather than trusting the cut,
-and treat any finding that authorizes an outward-facing irreversible action as
-worth fixing regardless of score — the scorer once dropped "the fallback closes
-a contributor's PR with no approval gate" at 48 on a false equivalence between
-opening your own PR (reversible) and closing someone else's (not).
-
-**The scorer's *reasoning* can be wrong while its number is defensible.** It
-refuted a real finding by crediting a token that did match, when the case
-actually failed on a different missing piece — so verify a refutation against
-the implementation before accepting it, never against the scorer's own account
-of the implementation.
+<!-- §5 (reading a review scorer) retired with its subject at M145; git
+     holds it. Section numbers are stable, so the gap stays. -->
 
 ## 6. Compressing a capped tracking file
 

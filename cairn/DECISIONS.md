@@ -4077,3 +4077,61 @@ evidence, not pre-committed here. D-095's Consequences clause — "A
 guard-authoring milestone now goes to review on the suites, the harness,
 the sweeps and the fan-out alone" — is narrowed: the prose suite and the
 mutation harness no longer gate; the sweeps and the fan-out stand.
+
+### D-110 (2026-08-16): The review confidence scorer is retired — reviewers rank, the maintainer triages — narrowly supersedes D-016's scorer clause (the Never-Haiku blanket stands) and supersedes D-078 (RR13 rec 5, M145)
+
+**Context:** RR13 §5 measured the scorer as insurance the maintainer pays to
+overrule: it down-scored the finding classes that matter in this repo (RR10's
+78/78/68/60 logged-not-fixed with the merge held by hand), scored a real
+irreversibility defect at 48, and at M143 the maintainer directed two
+60-scored findings fixed at the gate; records-hygiene §5 already instructed
+reading every sub-80 finding anyway, so the 80 threshold functioned as a
+formality read past.
+
+**Decision:** `/milestone-review` retires the scorer in both review modes.
+Reviewers report every candidate finding, filter nothing, and rank their own
+findings; the maintainer triages the ranked list at the approval gate — fix
+now / follow-up / reject with reason — with every finding and disposition
+logged in the Review section (IP3 unchanged: surfaced, never silently
+dropped). The false-positive taxonomy D-078 moved into the scorer's rubric
+moves again, to gate-triage guidance — reviewers are still never told to
+filter, which is the half of D-078 that survives as reasoning. The return
+floor re-bases from score tiers to the maintainer-actioned list; a
+load-bearing deliverable defect the maintainer judges as such replaces the
+≥90 arm. D-016's scorer clause (the scorer runs on Sonnet) is superseded by
+the scorer's retirement; **D-016's Never-Haiku blanket stands untouched.**
+
+**Consequences:** Review has one fewer spawn per milestone and no numeric
+threshold. Falsifier: if gate triage under the ranked list demonstrably
+misses a defect class the scored cut used to catch — a merged regression
+traced to a finding a reviewer ranked low and triage skipped — this is the
+entry to supersede.
+
+### D-111 (2026-08-16): The plan-gate criteria audit scales to stakes — full for user-facing or tripwire-tagged work, reduced two-question form for internal tier — narrows D-067's criteria-audit clause; D-079 clause 2's record rule survives in both modes (RR13 rec 7, M145)
+
+**Context:** RR13 §5: the audit's founding catch was real (M114's
+unsatisfiable criteria) but its record clause was half-honored and its reach
+kept growing; rec 7 proposed gating it to user-facing or irreversible work.
+D-107 (M142) had just given the audit a proportionality question whose only
+subject is internal-tier criteria — a full internal-tier skip would leave
+that standard with no execution path, which the M145 plan gate weighed and
+declined (2026-08-16).
+
+**Decision:** `/milestone-plan` step 3 runs the full audit — satisfiability,
+reachability, bounded-promise, probe, and proportionality questions — when
+the declared surface tier is user-facing or any drafted criterion or task
+carries an RB-tripwire tag; an internal-tier milestone gets a reduced audit:
+the same fresh-context [O] reader asking only the bounded-promise and
+proportionality questions. Both modes keep the disposal rule and the
+mandatory work-log line, which now names the mode (D-079 clause 2 survives
+in both). The `/milestone-brief` ingest audit is untouched: a
+binding-criteria set exists only on explicit maintainer request after M145,
+and stays full-audited.
+
+**Consequences:** Internal-tier plans pay for the two questions that govern
+their tier and no longer for the three that mostly bind user-facing
+promises. Falsifier (recorded at the plan gate): reduced audits returning
+zero findings across successive internal-tier milestones would show the
+reduced mode is ceremony — supersede toward rec 7's full skip; an
+internal-tier milestone shipping an unsatisfiable criterion the full audit
+would have caught fires the other way.
