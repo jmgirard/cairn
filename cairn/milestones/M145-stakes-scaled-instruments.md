@@ -1,11 +1,11 @@
 # M145: Standing instruments scale to stakes
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3, GP1
-- **Branch/PR:** —
+- **Branch/PR:** m145-stakes-scaled-instruments
 
 ## Goal
 
