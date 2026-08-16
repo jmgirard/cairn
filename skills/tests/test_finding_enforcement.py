@@ -65,14 +65,6 @@ class TestIngestRule(unittest.TestCase):
                       "gate", self.text)
 
 
-class TestBriefTemplate(unittest.TestCase):
-    def test_brief_requests_binding_criteria_as_measurable_assertions(self):
-        text = read("shared", "templates", "brief.md")
-        self.assertIn("`## Binding criteria` section: numbered `BC1…`, each "
-                      "a measurable assertion", text)
-        self.assertIn("These are ingested VERBATIM", text)
-
-
 class TestMilestoneTemplate(unittest.TestCase):
     def test_template_carries_the_driving_rr_slot(self):
         text = read("shared", "templates", "milestone.md")
@@ -113,20 +105,6 @@ class TestPlanBullet(unittest.TestCase):
         text = read("milestone-plan", "SKILL.md")
         self.assertIn("- **Driving RR** (header slot):", text)
         self.assertIn("copies the RR's numeric projections beside the", text)
-
-
-class TestRulebookSentences(unittest.TestCase):
-    def setUp(self):
-        self.text = read("shared", "tracking-rules.md")
-
-    def test_script_measurable_preference(self):
-        self.assertIn("**Prefer script-measurable acceptance criteria**; "
-                      "where judgment is\n  unavoidable, commit the "
-                      "classification ledger as evidence", self.text)
-
-    def test_adjudication_asymmetry(self):
-        self.assertIn("The implementing session never authors the durable "
-                      "verdict on the review\n  constraining it", self.text)
 
 
 if __name__ == "__main__":

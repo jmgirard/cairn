@@ -24,32 +24,7 @@ def rules():
 
 
 class TestOutOfBandIdeaCaptureRule(unittest.TestCase):
-    def test_rule_present_in_tracking_rules(self):
-        t = rules()
-        self.assertIn("out-of-band idea capture", t)
-        self.assertIn("is never the", t)
-        self.assertIn("record of record for an idea", t)
 
-    def test_rule_names_the_capture_channels_generically(self):
-        # Channel-agnostic by decision (D-042 choice 3): the rule enumerates
-        # exemplars, so a future channel inherits it without a rulebook edit.
-        # Anchored on the rule's own contiguous list, not a bare "chip" —
-        # that substring occurs throughout the output-discipline section.
-        self.assertIn(
-            "a background-task chip, a scratch todo, an ad-hoc note", rules()
-        )
-
-    def test_rule_requires_the_paired_candidate_row(self):
-        # The load-bearing half: pairing, not prohibition. A rule that only
-        # disapproved of the chip would satisfy the phrases above.
-        t = rules()
-        self.assertIn("the idea also lands as a `candidate` roadmap row", t)
-        self.assertIn("the channel stays usable", t)
-
-    def test_rule_names_its_runtime_enforcement_arm(self):
-        self.assertIn(
-            "`idea_guard.py` pretooluse hook injects this reminder", rules()
-        )
 
     def test_the_named_hook_actually_ships(self):
         # stated<->enforced: the rulebook names a hook by filename, so a

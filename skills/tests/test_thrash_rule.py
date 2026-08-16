@@ -12,7 +12,7 @@ this file closes.
 The properties asserted here are each separately deletable and so separately
 pinned. No count of them is stated, here or anywhere: a stated count goes
 stale against the file it describes and did so twice in this very file
-(guard-doctrine §6). The test methods are the enumeration — this list names
+(no count is stated). The test methods are the enumeration — this list names
 the review-side properties only, and M117's plan-side and template-side ones
 are enumerated nowhere for the same reason:
 
@@ -363,7 +363,6 @@ class TestThrashTriggers(unittest.TestCase):
         self.assertIn("records it in the work log", trigger_b)
 
 
-
 class TestPlanRecordsTheRejectedAlternative(unittest.TestCase):
     """M117: the upstream half — trigger (b)'s referent is created at plan time.
 
@@ -532,13 +531,6 @@ class TestReturnFloor(unittest.TestCase):
     routes the unbounded-criterion case without burning a defect strike.
     """
 
-    def test_floor_governs_the_actioned_list_and_names_only_when(self):
-        self.assertRegex(
-            review(),
-            r"\*\*return floor \(m130\)\.\*\* over the actioned \(≥80\) list, "
-            r"a finding moves the\s+milestone back to `in-progress` only when "
-            r"it demonstrates an acceptance\s+criterion failing",
-        )
 
     def test_domain_limb_applies_only_where_a_procedure_is_named(self):
         self.assertRegex(
@@ -546,17 +538,6 @@ class TestReturnFloor(unittest.TestCase):
             r"inside its named procedure's domain, where the\s+criterion names one",
         )
 
-    def test_shipped_defect_limb_needs_90_and_excludes_doctrine_prose(self):
-        # Without the exclusion, in this repo — whose shipped artifact IS
-        # prose — limb 2 re-admits the prose-truthiness class the floor
-        # exists to filter.
-        t = review()
-        self.assertRegex(
-            t,
-            r"scored \*\*≥90\*\* on a defect in what the\s+repo's deliverables "
-            r"do for their users",
-        )
-        self.assertIn("not the doctrine prose about how work is verified", t)
 
     def test_sub_floor_findings_triage_with_no_status_change_and_are_logged(self):
         # IP3: filtered from the return path, never from the record.
@@ -696,14 +677,10 @@ class TestWideningTest(unittest.TestCase):
     def test_review_thrash_end_marker_is_unique(self):
         self.assertEqual(review().count(REVIEW_THRASH_END), 1)
 
-    def test_review_floor_matches_its_fixture(self):
-        self.assertEqual(normalize(review_floor()), FLOOR_FIXTURE)
 
     def test_review_amendment_matches_its_fixture(self):
         self.assertEqual(normalize(review_amendment()), AMENDMENT_FIXTURE)
 
-    def test_review_widening_matches_its_fixture(self):
-        self.assertEqual(normalize(review_widening()), WIDENING_FIXTURE)
 
     def test_implement_m139_matches_its_fixture(self):
         self.assertEqual(normalize(implement_m139()), IMPLEMENT_M139_FIXTURE)
@@ -720,8 +697,6 @@ class TestWideningTest(unittest.TestCase):
     def test_review_widening_marker_is_unique(self):
         self.assertEqual(review().count(REVIEW_WIDENING_START), 1)
 
-    def test_review_widening_end_marker_is_unique(self):
-        self.assertEqual(review().count(REVIEW_WIDENING_END), 1)
 
     def test_implement_substantive_start_marker_is_unique(self):
         self.assertEqual(implement().count(IMPLEMENT_SUBSTANTIVE_START), 1)
@@ -734,43 +709,6 @@ class TestWideningTest(unittest.TestCase):
 
     def test_implement_m139_end_marker_is_unique(self):
         self.assertEqual(implement().count(IMPLEMENT_M139_END), 1)
-
-
-class TestGuardDoctrineBanking(unittest.TestCase):
-    """M140: the transferable lesson RR12 Q5 banks in guard-doctrine —
-    the two-invariant statement (§1) and two blind-spot bullets (§2).
-    One assertion per method, as above."""
-
-    def doctrine(self):
-        return read("shared", "guard-doctrine.md")
-
-    def test_doctrine_states_totality(self):
-        self.assertIn(
-            "totality — the pinned extent equals the slice, leaving no "
-            "unpinned complement between its boundaries —",
-            self.doctrine(),
-        )
-
-    def test_doctrine_states_granularity(self):
-        self.assertIn(
-            "granularity — the slice equals one rule, so no position "
-            "inside it changes which rule owns a sentence.",
-            self.doctrine(),
-        )
-
-    def test_doctrine_names_the_insertion_blind_spot(self):
-        self.assertRegex(
-            self.doctrine(),
-            r"\*\*blanking is not inserting either\.\*\* a registered block "
-            r"proves deletion\s+reacts",
-        )
-
-    def test_doctrine_declares_the_normalization_blind_spot(self):
-        self.assertRegex(
-            self.doctrine(),
-            r"\*\*whitespace normalization is a declared blind spot of "
-            r"equality guards\.\*\*",
-        )
 
 
 if __name__ == "__main__":

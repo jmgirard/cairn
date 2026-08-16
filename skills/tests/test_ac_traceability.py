@@ -108,13 +108,6 @@ class TestRulesDiscipline(unittest.TestCase):
         self.assertIn("AC fencing", r)
         self.assertRegex(r, r"no evidence.*no tick|evidence.*gates the")
 
-    def test_review_discipline_states_incremental_checkoff(self):
-        # M105: the rulebook AC-fencing block states the incremental tick.
-        r = rules()
-        self.assertIn("The tick is incremental", r)
-        # \s+ spans the line-wrap (M95/M104), as in the review-skill anchor.
-        self.assertRegex(r, r"never batched into one pass at phase\s+end")
-
 
 if __name__ == "__main__":
     unittest.main()

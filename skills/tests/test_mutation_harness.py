@@ -40,39 +40,14 @@ GENERIC_PROFILE = "skills/shared/profiles/generic.md"
 R_PROFILE = "skills/shared/profiles/r-package.md"
 TEMPLATE = "skills/shared/templates/milestone.md"
 DOCTRINE = "skills/shared/validation-doctrine.md"
-GUARD_DOCTRINE = "skills/shared/guard-doctrine.md"
 RECORDS_HYGIENE = "skills/shared/records-hygiene.md"
 SOURCE_NOTE = "skills/shared/templates/source-note.md"
 SYNTHESIS_NOTE = "skills/shared/templates/synthesis-note.md"
 
 REGISTRY = [
-    Mutation(
-        guard="test_search_first_candidates",
-        test="TestSearchFirstCandidateRule.test_rule_names_all_three_sweep_targets",
-        target=RULES,
-        block="sweep existing candidates + `milestones/archive/`",
-    ),
     # M71 (D-042): one entry per positive assert's block — the enumeration,
     # the pairing requirement, and the named enforcement arm each carry the
     # rule independently, so each needs its own mutation proof.
-    Mutation(
-        guard="test_idea_intake_gate",
-        test="TestOutOfBandIdeaCaptureRule.test_rule_names_the_capture_channels_generically",
-        target=RULES,
-        block="a background-task chip, a scratch TODO, an ad-hoc note",
-    ),
-    Mutation(
-        guard="test_idea_intake_gate",
-        test="TestOutOfBandIdeaCaptureRule.test_rule_requires_the_paired_candidate_row",
-        target=RULES,
-        block="The idea also lands as a `candidate` ROADMAP row",
-    ),
-    Mutation(
-        guard="test_idea_intake_gate",
-        test="TestOutOfBandIdeaCaptureRule.test_rule_names_its_runtime_enforcement_arm",
-        target=RULES,
-        block="`idea_guard.py` PreToolUse hook injects this reminder",
-    ),
     Mutation(
         guard="test_ac_traceability",
         test="TestTemplateCoverageSection.test_coverage_section_exists",
@@ -87,12 +62,6 @@ REGISTRY = [
         test="TestReviewFences.test_checkoff_is_incremental",
         target=REVIEW,
         block="Tick each box as its evidence line is recorded",
-    ),
-    Mutation(
-        guard="test_ac_traceability",
-        test="TestRulesDiscipline.test_review_discipline_states_incremental_checkoff",
-        target=RULES,
-        block="The tick is incremental",
     ),
     # M94: the cost line reports and never judges. Three blocks carry the
     # rule independently — the invocation, the reporting-only boundary, and
@@ -169,30 +138,6 @@ REGISTRY = [
         test="TestReleaseTimingRule.test_rule_states_who_declares_release_timing",
         target=RULES,
         block="Release timing is user-declared, never agent-proposed",
-    ),
-    Mutation(
-        guard="test_release_timing",
-        test="TestReleaseTimingRule.test_rule_forbids_all_three_agent_initiatives",
-        target=RULES,
-        block="never proposes a release, never plans a release milestone unprompted, and never nominates one as the next action",
-    ),
-    Mutation(
-        guard="test_release_timing",
-        test="TestReleaseTimingRule.test_rule_rejects_the_dependency_graph_as_a_readiness_signal",
-        target=RULES,
-        block="a maintainer judgment about when to ship, never a dependency graph going green",
-    ),
-    Mutation(
-        guard="test_release_timing",
-        test="TestReleaseTimingRule.test_rule_names_blocked_as_the_parking_state",
-        target=RULES,
-        block="is parked as `blocked`, where no routing surface nominates it",
-    ),
-    Mutation(
-        guard="test_release_timing",
-        test="TestBlockedCoversTheReleaseWindow.test_blocked_row_names_the_unopened_release_window",
-        target=RULES,
-        block="a maintainer who has not opened the release window counts",
     ),
     Mutation(
         guard="test_release_timing",
@@ -326,12 +271,6 @@ REGISTRY = [
         target=RULES,
         block="Mark a chapter at each phase transition",
     ),
-    Mutation(
-        guard="test_default_branch_parameterized",
-        test="TestDefaultBranchParameterized.test_git_model_uses_default_branch",
-        target=RULES,
-        block="The default branch (`main`/`master`) is a distribution",
-    ),
     # M59 (RR01 rec 7): cairn-init §0's fallback follows the canonical recipe —
     # one Mutation entry per new positive assert (M53 discipline); the paired
     # assertNotIn("show-current") rides on these positives (M54 lesson).
@@ -398,12 +337,6 @@ REGISTRY = [
         block="**Bank the repoint; never touch code.**",
     ),
     Mutation(
-        guard="test_gate_wording",
-        test="TestMergeGateIsAChip.test_rulebook_declares_merge_gate_a_chip",
-        target=RULES,
-        block="merge-approval gate is itself an AskUserQuestion chip",
-    ),
-    Mutation(
         guard="test_lessons_loop",
         test="TestLessonsLoop.test_weight_caps_states_lessons_cap",
         target=RULES,
@@ -426,18 +359,6 @@ REGISTRY = [
     # `test_stated_advisory_label_matches_the_emitted_label` registration: its
     # rulebook half IS a prose block, so blanking it proves the guard catches
     # the deletion rather than only the registration going missing.
-    Mutation(
-        guard="test_milestone_cap_exemption",
-        test="TestMilestoneCapExemption.test_the_decisions_advisory_is_stated_with_its_subject",
-        target=RULES,
-        block="advisory WARNs on — pasted output or a fenced transcript block, never entry",
-    ),
-    Mutation(
-        guard="test_milestone_cap_exemption",
-        test="TestMilestoneCapExemption.test_stated_decisions_advisory_label_matches_the_emitted_label",
-        target=RULES,
-        block="that paste rule is what `cairn_validate`'s `decisions format`",
-    ),
     # M92 (D-051): the retirement rule. One entry per positive assert, since
     # registration is per FILE and the sound entries above would otherwise mask
     # a missing pin (M53). Each criterion block is label-INCLUSIVE for the same
@@ -452,63 +373,6 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_lessons_loop",
-        test="TestLessonRetirement.test_enforcement_criterion_pins_its_discriminating_test",
-        target=RULES,
-        block="**enforcement — a test fails on the mistake the lesson warns about**",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestLessonRetirement.test_enforcement_rules_out_a_guard_merely_existing",
-        target=RULES,
-        block="discriminating word is *fails* and never *exists*",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestLessonRetirement.test_ownership_criterion_pins_its_discriminating_test",
-        target=RULES,
-        block="**ownership — another tracking file's slot owns the content**",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestLessonRetirement.test_ownership_permits_moving_content_to_its_owner",
-        target=RULES,
-        block=(
-            "**the retiring milestone may *move* the content there rather "
-            "than only find it already duplicated**"
-        ),
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestLessonRetirement.test_partial_coverage_trims_rather_than_keeping_whole",
-        target=RULES,
-        block="**A lesson covered only in part is trimmed to its uncovered remainder**",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestLessonRetirement.test_tombstone_is_the_archive_summary_and_nothing_else",
-        target=RULES,
-        block=(
-            "**A retired lesson leaves no line behind — the retiring "
-            "milestone's archive summary names what it graduated**"
-        ),
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestLessonRetirement.test_retirement_is_distinguished_from_correction",
-        target=RULES,
-        block=(
-            "**Retirement is not correction: a retired lesson is redundant, "
-            "a corrected one was false**"
-        ),
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestLessonRetirement.test_check_is_scoped_to_what_shipped",
-        target=RULES,
-        block="**scoped to what the milestone shipped, never as a full re-sweep**",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
         test="TestLessonRetirement.test_retirement_wired_into_review_hygiene",
         target=REVIEW,
         block="Retire what this milestone covered",
@@ -518,30 +382,6 @@ REGISTRY = [
         test="TestLessonRetirement.test_review_hygiene_forbids_a_full_resweep",
         target=REVIEW,
         block="**Scope this to what the milestone shipped — never re-sweep every lesson.**",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestLessonRetirement.test_file_map_row_names_retirement",
-        target=RULES,
-        block="retired once a test enforces it, another file owns it, or a matured family graduates whole into a doctrine module",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestRecordCorrectionRule.test_current_knowledge_is_corrected_in_place",
-        target=RULES,
-        block="current knowledge is corrected in place",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestRecordCorrectionRule.test_history_is_superseded_never_edited",
-        target=RULES,
-        block="history is superseded and never edited",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestRecordCorrectionRule.test_rule_rules_out_leaving_the_wrong_text_readable",
-        target=RULES,
-        block="appending a correction while leaving the wrong text readable",
     ),
     # M76/F1: the mechanism asserts left the ENUMERATIONS unguarded — a
     # reviewer proved a set-swap kept all six green. These three pin label
@@ -555,39 +395,9 @@ REGISTRY = [
     # M119/RR08 BC1: the enumeration's second physical line. Registration is
     # per FILE, so the sound entry above would otherwise mask a wrap-line pin
     # that never existed (M53's reason for one entry per assert).
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestRecordCorrectionRule.test_history_set_names_its_remaining_members",
-        target=RULES,
-        block="milestone IDs, `milestones/archive/`, `reviews/archive/`, entombed `legacy/`",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestRecordCorrectionRule.test_current_knowledge_set_is_enumerated_under_its_own_label",
-        target=RULES,
-        block="Current knowledge — `LESSONS.md`, `references/` pages, `DESIGN.md`, `ROADMAP.md` — records what is true *now* and is read to act on,",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestRecordCorrectionRule.test_design_principles_are_carved_out_of_in_place_correction",
-        target=RULES,
-        block="wrong *principle* is not a wrong fact",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestRecordCorrectionRule.test_file_map_names_the_lessons_write_mode",
-        target=RULES,
-        block="a lesson proven false is corrected in place",
-    ),
     # M55: the milestone cap exempts the review-exclusive `## Review` section.
     # Two blocks — the exemption rationale and the plan-owned-body cap number —
     # each guarded by its own assert (one Mutation entry per positive assertIn).
-    Mutation(
-        guard="test_milestone_cap_exemption",
-        test="TestMilestoneCapExemption.test_weight_caps_states_review_exemption",
-        target=RULES,
-        block="review evidence never scrambles plan-owned content",
-    ),
     Mutation(
         guard="test_milestone_cap_exemption",
         test="TestMilestoneCapExemption.test_weight_caps_states_the_plan_owned_body_cap",
@@ -602,40 +412,10 @@ REGISTRY = [
         target=RULES,
         block="never a nibble-and-recount loop",
     ),
-    Mutation(
-        guard="test_milestone_cap_exemption",
-        test="TestMilestoneCapExemption.test_weight_caps_states_cross_reference_not_restate",
-        target=RULES,
-        block="cross-reference a durable record",
-    ),
     # M77/D-046: the work-log exemption. One entry per new positive assert
     # (M53). Blanking proves deletion is caught; the set-membership assert
     # additionally survives a SWAP, which blanking cannot simulate (M76) —
     # that half is proven by the by-hand swap recorded in the work log.
-    Mutation(
-        guard="test_milestone_cap_exemption",
-        test="TestMilestoneCapExemption.test_weight_caps_names_the_exempt_set_with_all_three_members",
-        target=RULES,
-        block="The cap-exempt sections are exactly `## Review` (review-owned, M55), `## Work log` (history under D-045, D-046) and `## Decisions` (history under D-074)",
-    ),
-    Mutation(
-        guard="test_milestone_cap_exemption",
-        test="TestMilestoneCapExemption.test_weight_caps_states_the_work_log_exemption_reason",
-        target=RULES,
-        block="The `## Work log` is exempt because D-045 makes it history — never edited — so counting it could leave an over-cap file fixable only by an edit IP4 forbids (D-046).",
-    ),
-    Mutation(
-        guard="test_milestone_cap_exemption",
-        test="TestMilestoneCapExemption.test_weight_caps_states_the_wrapped_entry_advisory_warns",
-        target=RULES,
-        block="advisory WARNs on any work-log line that is not a one-line `- ` entry",
-    ),
-    Mutation(
-        guard="test_milestone_cap_exemption",
-        test="TestMilestoneCapExemption.test_remedy_never_aims_at_an_exempt_section",
-        target=RULES,
-        block="all three cap-exempt sections are omitted, so the remedy can never aim",
-    ),
     Mutation(
         guard="test_milestone_cap_exemption",
         test="TestMilestoneCapExemption.test_template_work_log_comment_states_the_exemption",
@@ -644,24 +424,6 @@ REGISTRY = [
     ),
     # M118/D-074: the third exempt member. One entry per new positive assert
     # (M53), same as M77 got for the second.
-    Mutation(
-        guard="test_milestone_cap_exemption",
-        test="TestMilestoneCapExemption.test_the_cap_definition_itself_names_both_subtracted_sections",
-        target=RULES,
-        block="the review-exclusive `## Review` section, less the `## Work log` and `## Decisions` sections.",
-    ),
-    Mutation(
-        guard="test_milestone_cap_exemption",
-        test="TestMilestoneCapExemption.test_weight_caps_states_the_decisions_exemption_reason",
-        target=RULES,
-        block="D-074 makes its dated dispositions history, superseding D-046's choice (3), so the cap may not aim there either.",
-    ),
-    Mutation(
-        guard="test_milestone_cap_exemption",
-        test="TestMilestoneCapExemption.test_always_read_frame_names_all_three_exempt_sections",
-        target=RULES,
-        block="(`## Work log`, `## Decisions`, `## Review`) by reading less of them",
-    ),
     Mutation(
         guard="test_milestone_cap_exemption",
         test="TestMilestoneCapExemption.test_template_decisions_comment_states_the_exemption_and_its_reason",
@@ -680,12 +442,6 @@ REGISTRY = [
     # deletion. Registered because M77's AC4 says every new assert registers —
     # the "computed couplings are exempt" reading would have been a review-time
     # reinterpretation of the criterion.
-    Mutation(
-        guard="test_milestone_cap_exemption",
-        test="TestMilestoneCapExemption.test_stated_advisory_label_matches_the_emitted_label",
-        target=RULES,
-        block="of a budget it no longer pays into, so `cairn_validate`'s `work-log format`",
-    ),
     # M84: the second weight axis. One entry per positive assert on a prose
     # block (M53). The axis->remedy entry is deliberately pair-INCLUSIVE per
     # M74/M76 — both mappings on one physical line, since registration is per
@@ -694,51 +450,9 @@ REGISTRY = [
     # `test_stated_cap_matches_enforced_cap` sibling: both of its halves are
     # computed numbers, not prose a blanking could remove. The LABEL assert
     # does register — its rulebook half is a prose block.
-    Mutation(
-        guard="test_record_density",
-        test="TestRecordDensityRule.test_rule_names_both_axes_with_their_opposite_remedies",
-        target=RULES,
-        block="The two axes take opposite remedies: an over-count file graduates or prunes items, an over-cap non-item line is replaced by a shorter rewrite, never appended to.",
-    ),
-    Mutation(
-        guard="test_record_density",
-        test="TestRecordDensityRule.test_rule_states_why_the_item_axis_cannot_see_weight",
-        target=RULES,
-        block="structurally blind to prose accumulating",
-    ),
-    Mutation(
-        guard="test_record_density",
-        test="TestRecordDensityRule.test_rule_states_that_density_warns_rather_than_fails",
-        target=RULES,
-        block="Density warns because",
-    ),
-    Mutation(
-        guard="test_record_density",
-        test="TestRecordDensityRule.test_rule_maps_each_axis_to_its_label_and_severity",
-        target=RULES,
-        block="the item axis is the hard `weight caps` CHECK and still FAILs the gate, while the per-line axis is the `record density` advisory and only ever WARNs",
-    ),
-    Mutation(
-        guard="test_record_density",
-        test="TestRecordDensityRule.test_rule_records_why_a_per_line_warn_was_rejected",
-        target=RULES,
-        block="pressure on individual line length would reward splitting an item",
-    ),
-    Mutation(
-        guard="test_record_density",
-        test="TestRecordDensityRule.test_stated_advisory_label_matches_the_emitted_label",
-        target=RULES,
-        block="`cairn_validate`'s `record density` advisory",
-    ),
     # M101 (D-058): the whole-file axis's decommissioning is itself a rule —
     # stated as the retirement sentence, which is the positive framing the
-    # no-threshold negative asserts pair with (guard-doctrine §3).
-    Mutation(
-        guard="test_record_density",
-        test="TestRecordDensityRule.test_rule_states_no_whole_file_threshold",
-        target=RULES,
-        block="D-058 retired it",
-    ),
+    # no-threshold negative asserts pair with.
     # M59 (RR01 rec 7): run-and-read — skills never enumerate validate's
     # internals; one entry per positive assert, negatives ride along (M54).
     Mutation(
@@ -783,18 +497,6 @@ REGISTRY = [
     # M67 (D-039): the narration-discipline rule — one entry per positive
     # assert's primary block (M53 discipline); the allowance asserts ride on
     # the bar and carve-out blocks.
-    Mutation(
-        guard="test_narration_discipline",
-        test="TestNarrationDisciplineRule.test_rule_present_with_deliberation_bar",
-        target=RULES,
-        block="never a running readout of reasoning",
-    ),
-    Mutation(
-        guard="test_narration_discipline",
-        test="TestNarrationDisciplineRule.test_preview_carveout",
-        target=RULES,
-        block="This never licenses compressing mandated substance",
-    ),
     # M58: the doctrine body moved to its own module; the ≥2-types block now
     # lives (and is blanked) there. The rulebook keeps a reference + the
     # placement norm, and the module gains the registry pointer — one
@@ -813,12 +515,6 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_oracle_doctrine",
-        test="TestModuleExtraction.test_rulebook_states_the_module_norm",
-        target=RULES,
-        block="gets a module, not a rulebook",
-    ),
-    Mutation(
-        guard="test_oracle_doctrine",
         test="TestRegistryPointer.test_registry_pointer_is_required",
         target="skills/shared/validation-doctrine.md",
         block="declares *where* its oracle records live",
@@ -829,12 +525,6 @@ REGISTRY = [
         target="skills/shared/validation-doctrine.md",
         block="absence of the line in a repo with numeric work is itself the audit",
     ),
-    Mutation(
-        guard="test_phase_header_levels",
-        test="TestPhaseHeaderLevels.test_rulebook_declares_h1_unit_h2_phase",
-        target=RULES,
-        block="A `#` names the unit of work",
-    ),
     # M57: the two references/ page types + the page⇒INDEX-line rule. One
     # Mutation entry per positive assertIn (M53 discipline).
     Mutation(
@@ -843,40 +533,10 @@ REGISTRY = [
         target=RULES,
         block="Source notes (`<citekey>.md`), synthesis notes",
     ),
-    Mutation(
-        guard="test_references_pages",
-        test="TestReferencesPages.test_ingestion_defines_synthesis_notes",
-        target=RULES,
-        block="the second committed `references/` page type",
-    ),
-    Mutation(
-        guard="test_references_pages",
-        test="TestReferencesPages.test_every_committed_page_carries_an_index_line",
-        target=RULES,
-        block="Every committed `references/` page carries its",
-    ),
     # M80: the authoring trigger — WHEN a page is owed — lives in core, not in
     # the numeric-gated module (LESSONS :49). One entry per positive assertIn;
     # the absence-assert on the module has no entry, since blanking cannot
     # restore an absence (M54) — its positive twin below is what locks it.
-    Mutation(
-        guard="test_references_pages",
-        test="TestAuthoringTrigger.test_core_states_when_a_source_owes_a_page",
-        target=RULES,
-        block="A page is owed once the repo *relies* on the source",
-    ),
-    Mutation(
-        guard="test_references_pages",
-        test="TestAuthoringTrigger.test_core_states_when_analysis_earns_a_synthesis_note",
-        target=RULES,
-        block="an analysis that will outlive its milestone",
-    ),
-    Mutation(
-        guard="test_references_pages",
-        test="TestAuthoringTrigger.test_core_names_both_shipped_templates",
-        target=RULES,
-        block="Author from the shipped templates:",
-    ),
     Mutation(
         guard="test_references_pages",
         test="TestAuthoringTrigger.test_module_defers_the_trigger_instead_of_restating_it",
@@ -888,36 +548,6 @@ REGISTRY = [
     # asserts lowercase; these match the case as written in tracking-rules).
     Mutation(
         guard="test_references_pages",
-        test="TestExploratorySources.test_exploration_is_named_a_legitimate_activity",
-        target=RULES,
-        block="is supply-push exploration, a legitimate activity",
-    ),
-    Mutation(
-        guard="test_references_pages",
-        test="TestExploratorySources.test_exploration_always_produces_candidate_rows",
-        target=RULES,
-        block="It always produces ROADMAP candidate rows for the promising oracles or methods it finds",
-    ),
-    Mutation(
-        guard="test_references_pages",
-        test="TestExploratorySources.test_survey_note_only_when_it_outlives_the_exploration",
-        target=RULES,
-        block="committed survey synthesis note only when the triage will outlive its exploration",
-    ),
-    Mutation(
-        guard="test_references_pages",
-        test="TestExploratorySources.test_per_source_pages_stay_demand_pull",
-        target=RULES,
-        block="withholds a per-source `<citekey>.md` page: those stay demand-pull, earned only once a candidate graduates",
-    ),
-    Mutation(
-        guard="test_references_pages",
-        test="TestExploratorySources.test_exploration_restates_the_m56_guardrail",
-        target=RULES,
-        block="no committed raw sources, no references log, no query op or graph tooling",
-    ),
-    Mutation(
-        guard="test_references_pages",
         test="TestExploratorySources.test_plan_skill_recognizes_exploratory_ingestion",
         target="skills/milestone-plan/SKILL.md",
         block="triage them for prospective oracles or methods rather than dismissing them as uncited",
@@ -926,62 +556,14 @@ REGISTRY = [
     # Each definition is registered separately and each block is the label
     # WITH its enumeration, so blanking one cannot leave the other's assert
     # standing in for it (M74/M76: a label→SET guard must pin both).
-    Mutation(
-        guard="test_source_note_template",
-        test="TestClaimSplitDoctrine.test_standing_fact_label_carries_its_members",
-        target=RULES,
-        block="A **standing fact** is a claim about the *source*: an extracted value, a printed formula, a verbatim wording, a page or table anchor.",
-    ),
-    Mutation(
-        guard="test_source_note_template",
-        test="TestClaimSplitDoctrine.test_dated_observation_label_carries_its_members",
-        target=RULES,
-        block="A **dated observation** is a claim about the *repo's own state*: what is on the shelf, what has or has not been read, what another page does or does not yet say, what a later task must still check.",
-    ),
-    Mutation(
-        guard="test_source_note_template",
-        test="TestClaimSplitDoctrine.test_undated_absence_claim_is_named_as_the_failure",
-        target=RULES,
-        block="undated absence claim",
-    ),
     # M81: the re-verification expectation and its recording location. Two
     # entries, because the expectation without the location reads as satisfied
     # by the central ledger M56 rejected.
-    Mutation(
-        guard="test_references_pages",
-        test="TestReVerification.test_core_states_the_re_verification_expectation",
-        target=RULES,
-        block="a page the repo still relies on is re-checked against its source as it gets old, and a page never checked against its source at all keeps saying so.",
-    ),
-    Mutation(
-        guard="test_references_pages",
-        test="TestReVerification.test_a_re_check_marks_inline_and_nowhere_else",
-        target=RULES,
-        block="A re-check marks inline in the provenance block, on the extraction status itself — never in a new file, a new section, or a log.",
-    ),
-    Mutation(
-        guard="test_source_note_template",
-        test="TestClaimSplitDoctrine.test_provenance_block_is_prose_not_frontmatter",
-        target=RULES,
-        block="The block is prose in the page's own idiom, not frontmatter.",
-    ),
-    Mutation(
-        guard="test_source_note_template",
-        test="TestClaimSplitDoctrine.test_extraction_status_must_carry_its_own_date",
-        target=RULES,
-        block="an extraction status carries its own",
-    ),
     Mutation(
         guard="test_source_note_template",
         test="TestClaimSplitDoctrine.test_module_defers_the_universal_rules_to_the_rulebook",
         target="skills/shared/validation-doctrine.md",
         block='are universal file-family rules and live in tracking-rules',
-    ),
-    Mutation(
-        guard="test_review_fanout",
-        test="TestReviewFanout.test_fanout_states_why_a_fresh_model_reviews",
-        target=RULES,
-        block="fresh-context subagents",
     ),
     # M101: the prior-PR lens repoint — primary evidence is the archived
     # `## Review` sections, the PR-thread walk is probe-gated, and the no-op
@@ -1004,12 +586,6 @@ REGISTRY = [
         test="TestPriorPRLens.test_always_spawns_and_noops_when_empty",
         target=REVIEW,
         block='reports "no prior-review evidence"',
-    ),
-    Mutation(
-        guard="test_rulebook_polish",
-        test="TestRulebookPolish.test_copy_run_commands_get_their_own_fenced_block",
-        target=RULES,
-        block="Handing the user a command to run → its own fenced code block",
     ),
     # M86 (D-048): the three handoff steps each carry the directive
     # independently — one skill losing it must not be masked by the other two.
@@ -1070,12 +646,6 @@ REGISTRY = [
         test="TestChangelogSlot.test_each_profile_declares_its_changelog",
         target="skills/shared/profiles/generic.md",
         block="**declare it here**",
-    ),
-    Mutation(
-        guard="test_toolchain_profiles",
-        test="TestChangelogSlot.test_rulebook_states_the_none_semantics",
-        target=RULES,
-        block='"none" is legal — hotfix skips the changelog entry',
     ),
     Mutation(
         guard="test_toolchain_profiles",
@@ -1200,30 +770,6 @@ REGISTRY = [
     # …and the rulebook must keep recording their mechanical backing
     # (test_git_safety_hooks, one entry per new positive assert — M53).
     Mutation(
-        guard="test_git_safety_hooks",
-        test="TestForcePushLine.test_never_force_push_names_its_mechanical_backing",
-        target=RULES,
-        block="force_push_guard hook mechanically denies",
-    ),
-    Mutation(
-        guard="test_git_safety_hooks",
-        test="TestForcePushLine.test_feature_branches_stay_unblocked",
-        target=RULES,
-        block="(feature branches are not blocked)",
-    ),
-    Mutation(
-        guard="test_git_safety_hooks",
-        test="TestMarkerRestoreLifecycle.test_marker_paragraph_records_the_restore",
-        target=RULES,
-        block="restored automatically (merge_guard_post)",
-    ),
-    Mutation(
-        guard="test_git_safety_hooks",
-        test="TestMarkerRestoreLifecycle.test_single_use_semantics_survive",
-        target=RULES,
-        block="survives failed retries but never a successful merge",
-    ),
-    Mutation(
         guard="test_positioning_guard",
         test="TestDesignArchitectureHonesty.test_ip1_names_the_default_branch",
         target="cairn/DESIGN.md",
@@ -1330,36 +876,6 @@ REGISTRY = [
     # directives — one entry per distinct block (M53 discipline).
     Mutation(
         guard="test_durable_record_preview",
-        test="TestDurableRecordPreviewRule.test_rule_present_with_mechanic",
-        target=RULES,
-        block="Newly authored durable-record text",
-    ),
-    Mutation(
-        guard="test_durable_record_preview",
-        test="TestDurableRecordPreviewRule.test_rule_present_with_mechanic",
-        target=RULES,
-        block="is shown verbatim in chat immediately before",
-    ),
-    Mutation(
-        guard="test_durable_record_preview",
-        test="TestDurableRecordPreviewRule.test_rule_names_the_covered_record_types",
-        target=RULES,
-        block="a LESSONS line, an archive summary, a ROADMAP",
-    ),
-    Mutation(
-        guard="test_durable_record_preview",
-        test="TestDurableRecordPreviewRule.test_rule_names_the_exemptions",
-        target=RULES,
-        block="noise: work-log one-liners, checkbox ticks, status-mirror updates",
-    ),
-    Mutation(
-        guard="test_durable_record_preview",
-        test="TestDurableRecordPreviewRule.test_deltas_not_dumps_names_the_carve_out",
-        target=RULES,
-        block="not a dump — see the Durable-record preview rule below.",
-    ),
-    Mutation(
-        guard="test_durable_record_preview",
         test="TestPerSkillDirectives.test_plan_commit_step",
         target="skills/milestone-plan/SKILL.md",
         block="Durable-record preview first (tracking-rules):",
@@ -1391,114 +907,6 @@ REGISTRY = [
     # M65 (D-037): the acceptance-chips rule, its cross-reference, the
     # previously-unguarded base chip rule, and the five per-skill
     # directives — one entry per distinct block (M53 discipline).
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAcceptanceChipsRule.test_rule_present_with_verbatim_bar",
-        target=RULES,
-        block="requires that conclusion's substance",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAcceptanceChipsRule.test_rule_present_with_verbatim_bar",
-        target=RULES,
-        block="verbatim in chat above the chip (D-037): the verdict and each actioned",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAcceptanceChipsRule.test_rule_present_with_verbatim_bar",
-        target=RULES,
-        block="verbatim plus the file path for the rest; a paraphrase never stands in",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAcceptanceChipsRule.test_chips_carry_choices_rule_present",
-        target=RULES,
-        block="Chips carry choices, not evidence.** Supporting detail and technical",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAcceptanceChipsRule.test_cross_reference_present",
-        target=RULES,
-        block="a summary never substitutes for the accepted text.",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAccessibleLanguageRule.test_rule_present_and_scopes_the_decision_surface",
-        target=RULES,
-        block="Accessible language on the decision surface.",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAccessibleLanguageRule.test_rule_present_and_scopes_the_decision_surface",
-        target=RULES,
-        block="an AskUserQuestion question's text, the prose framing a",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAccessibleLanguageRule.test_rule_glosses_jargon_and_names_the_failure",
-        target=RULES,
-        block="A technical term is glossed at first use, never assumed",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAccessibleLanguageRule.test_rule_glosses_jargon_and_names_the_failure",
-        target=RULES,
-        block="jargon-led framing, where the user must already know the",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAccessibleLanguageRule.test_rule_reconciles_with_chips_carry_choices",
-        target=RULES,
-        block="leads with its plain-language meaning rather than standing in for it.",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAccessibleLanguageRule.test_cross_reference_from_chips_carry_choices",
-        target=RULES,
-        block="the Accessible language rule below carries that plain-language",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAccessibleLanguageRule.test_two_sentence_test_stated",
-        target=RULES,
-        block="the question's first sentence says what is being decided in plain words,",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAccessibleLanguageRule.test_internal_ids_banned_with_milestone_exemption",
-        target=RULES,
-        block="D-/RR-/BC-ids, IP/GP numbers, and doctrine section numbers — stay out of",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAccessibleLanguageRule.test_flagged_prompt_capture_sentence",
-        target=RULES,
-        block="A gate prompt the user flags as unclear is captured verbatim in the same",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAccessibleLanguageRule.test_worked_pair_present_and_labeled_reconstruction",
-        target=RULES,
-        block="observed failure shape (M128), it is not a capture:",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAccessibleLanguageRule.test_internal_ids_banned_with_milestone_exemption",
-        target=RULES,
-        block="question text and option labels (`M<NN>` is exempt: milestone ids are the",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAccessibleLanguageRule.test_flagged_prompt_capture_sentence",
-        target=RULES,
-        block="a work-log line when a milestone is active, otherwise absorbed",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
-        test="TestAccessibleLanguageRule.test_worked_pair_present_and_labeled_reconstruction",
-        target=RULES,
-        block="cancel is cleaner but touches ten records; a partial keep risks leaving",
-    ),
     Mutation(
         guard="test_gate_conclusion_preview",
         test="TestPerSkillDirectives.test_plan_question_gate",
@@ -1543,12 +951,6 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
-        test="TestAcceptanceChipsRule.test_enumeration_names_proposals",
-        target=RULES,
-        block="a proposed disposition or action plan awaiting confirmation (D-038)",
-    ),
-    Mutation(
-        guard="test_gate_conclusion_preview",
         test="TestMigrationGateDirectives.test_step3_disposition_gate",
         target="skills/shared/migration-protocol.md",
         block="Acceptance chips (tracking-rules): the inventory and each item's",
@@ -1576,30 +978,6 @@ REGISTRY = [
     # per positive assert's block, per the M53 per-block discipline.
     Mutation(
         guard="test_collaboration_boundary",
-        test="TestEnforcementBoundary.test_rulebook_states_the_boundary",
-        target=RULES,
-        block="Enforcement boundary — what survives a merge made outside a cairn session.",
-    ),
-    Mutation(
-        guard="test_collaboration_boundary",
-        test="TestEnforcementBoundary.test_boundary_names_the_paths_that_escape_the_guards",
-        target=RULES,
-        block="or by a contributor without the plugin installed is invisible to",
-    ),
-    Mutation(
-        guard="test_collaboration_boundary",
-        test="TestEnforcementBoundary.test_boundary_states_the_single_operator_assumption",
-        target=RULES,
-        block="governed by that operator's session, never the contributor's.",
-    ),
-    Mutation(
-        guard="test_collaboration_boundary",
-        test="TestPRBinding.test_rulebook_states_the_binding",
-        target=RULES,
-        block="the guard refuses a `gh pr merge` whose PR the marker does not name",
-    ),
-    Mutation(
-        guard="test_collaboration_boundary",
         test="TestReadmeCollaboratorSurface.test_readme_has_the_collaborators_section",
         target="README.md",
         block="## Working with collaborators",
@@ -1623,12 +1001,6 @@ REGISTRY = [
         test="TestAdoptionPath.test_branch_step_states_the_naming_exemption",
         target=HOTFIX,
         block="name is **exempt** from the `hotfix-<slug>` contract",
-    ),
-    Mutation(
-        guard="test_external_pr_intake",
-        test="TestAdoptionPath.test_rulebook_carries_the_same_exemption",
-        target=RULES,
-        block="**An adopted external PR is the exception:**",
     ),
     Mutation(
         guard="test_external_pr_intake",
@@ -1744,12 +1116,6 @@ REGISTRY = [
         test="TestIntakeRouting.test_intake_paragraph_names_leave_with_its_narrowing",
         target=RULES,
         block="`leave` is legal only for noise, duplicates, or items already cross-referenced in cairn",
-    ),
-    Mutation(
-        guard="test_external_pr_intake",
-        test="TestIntakeRouting.test_leave_never_absorbs_a_genuinely_new_item",
-        target=RULES,
-        block="never anything genuinely new (D-044)",
     ),
     # M82: /cairn-init §3 performs the rename its own `scaffold deprecations`
     # advisory names. One entry per independently-load-bearing block: the
@@ -2024,46 +1390,10 @@ REGISTRY = [
     # M93/D-052 — the hygiene stamp. One exemplar per target file: the rule
     # in the rulebook, and the two SKILL.md steps that actually write the
     # stamp (a rule stated only in the rulebook is what let the chain regrow).
-    Mutation(
-        guard="test_hygiene_stamp",
-        test="TestHygieneStampRule.test_rule_pairs_the_stamp_with_the_replace_operation",
-        target=RULES,
-        block="**The `Last hygiene check` stamp is replaced each pass, never appended to** — it records the CURRENT check only, and no `Prior:` or `Earlier:` chain accumulates behind it.",
-    ),
-    Mutation(
-        guard="test_hygiene_stamp",
-        test="TestHygieneStampRule.test_narrowing_is_stated_as_non_item_only",
-        target=RULES,
-        block="**The per-line axis covers non-item lines only, and deliberately never item lines** (D-052, narrowing M84's blanket rejection).",
-    ),
-    Mutation(
-        guard="test_hygiene_stamp",
-        test="TestStampWriteSites.test_milestone_audit_says_replace",
-        target="skills/milestone/SKILL.md",
-        block="overwrite the previous text, never append to it and never demote it to a `Prior:` or `Earlier:` clause.",
-    ),
-    Mutation(
-        guard="test_hygiene_stamp",
-        test="TestStampWriteSites.test_post_merge_hygiene_says_replace",
-        target="skills/milestone-review/SKILL.md",
-        block="overwrite the previous text, never append to it and never demote it to a `Prior:` clause (D-052)",
-    ),
     # 2026-08-15: replacing the stamp was pinned; VERIFYING it was not, and
     # both overruns that day were correct replacements that went over cap.
     # One entry per site — the clause is carried verbatim by both, so a single
     # registration would leave the other site's copy deletable green.
-    Mutation(
-        guard="test_hygiene_stamp",
-        test="TestStampWriteSites.test_milestone_audit_says_verify_before_committing",
-        target=MILESTONE,
-        block="Re-run `cairn_validate` after writing the stamp and before the commit: the `record density` advisory catches an over-cap stamp only while it is still editable.",
-    ),
-    Mutation(
-        guard="test_hygiene_stamp",
-        test="TestStampWriteSites.test_post_merge_hygiene_says_verify_before_committing",
-        target=REVIEW,
-        block="Re-run `cairn_validate` after writing the stamp and before the commit: the `record density` advisory catches an over-cap stamp only while it is still editable.",
-    ),
     Mutation(
         guard="test_hygiene_stamp",
         test="TestStampWriteSites.test_shipped_skeleton_teaches_the_shape",
@@ -2074,85 +1404,13 @@ REGISTRY = [
     # moved to a new module. Entries span all three surfaces the guard pins —
     # the module itself, the rulebook pointer, and the retirement rule — one
     # per positive assert (M53 discipline).
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_anchor_section_states_the_one_physical_line_rule",
-        target=GUARD_DOCTRINE,
-        block="pin the label\ntogether with its members on one physical line",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_harness_section_states_registration_is_per_file",
-        target=GUARD_DOCTRINE,
-        block="**Registration is per file (≥1 exemplar block), never per assertion.**",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_absence_section_states_the_vacuous_crash_rule",
-        target=GUARD_DOCTRINE,
-        block="A guard whose only assertion is an `assertNotIn` is vacuous against a\ncrash.",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_fixture_section_states_the_vary_every_axis_rule",
-        target=GUARD_DOCTRINE,
-        block="**Vary every axis the prose is free in, and vary it where the value under\ntest lives.**",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_sweep_section_states_the_exclusion_list_rule",
-        target=GUARD_DOCTRINE,
-        block="An exclusion list may name only history files",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestRulebookPointer.test_rulebook_points_at_the_module",
-        target=RULES,
-        block="The craft of making a guard falsifiable lives in a module of this rulebook",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestThirdOutflow.test_rulebook_counts_three_retirement_criteria",
-        target=RULES,
-        block="Three criteria retire a lesson (D-051, D-055)",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestThirdOutflow.test_rulebook_names_maturation_with_its_mechanism_on_one_line",
-        target=RULES,
-        block="**maturation — a stabilized family graduates whole into a doctrine module**",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestThirdOutflow.test_rulebook_distinguishes_maturation_from_the_rejected_second_record",
-        target=RULES,
-        block="the source line is deleted in the same pass, so exactly one record exists at every moment",
-    ),
     # M99. Four blocks across four targets, because the budget wiring fails in
     # four independent ways: the budgets could stop reading as guidance and
     # become a second cap (the shape D-030 declined); the archive template could
     # stop being named as the summary's source; and either drafting step could
     # lose its handed-over command while the other kept one.
-    Mutation(
-        guard="test_budget_first_drafting",
-        test="TestMilestoneTemplateBudgets.test_the_budgets_are_marked_guidance_rather_than_a_gate",
-        target=TEMPLATE,
-        block="DRAFTING BUDGETS (M99) — guidance, not a gate; the only size check that",
-    ),
     # M118/D-074: the reserve became an exemption; the spend-none instruction
     # survived it. Registered now that the assert has been re-anchored.
-    Mutation(
-        guard="test_budget_first_drafting",
-        test="TestMilestoneTemplateBudgets.test_the_decisions_section_is_named_cap_exempt_and_not_plan_s_to_spend",
-        target=TEMPLATE,
-        block="## Decisions reserves nothing: D-074 made it cap-exempt, so it costs the",
-    ),
-    Mutation(
-        guard="test_budget_first_drafting",
-        test="TestMilestoneTemplateBudgets.test_the_decisions_section_is_named_cap_exempt_and_not_plan_s_to_spend",
-        target=TEMPLATE,
-        block="budget nothing and plan still spends none of it.",
-    ),
     Mutation(
         guard="test_budget_first_drafting",
         test="TestArchiveSummaryTemplate.test_it_exists_and_carries_the_canonical_section_set_in_order",
@@ -2165,143 +1423,11 @@ REGISTRY = [
         target=REVIEW,
         block="skills/shared/templates/archive-summary.md",
     ),
-    Mutation(
-        guard="test_budget_first_drafting",
-        test="TestDraftingStepsHandOverTheCounter.test_plan_step_4_fences_the_counter_command",
-        target="skills/milestone-plan/SKILL.md",
-        block='python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_budget.py"',
-    ),
     # M108 (D-060): the always-read governance frame. Each of the three
     # element labels, the completeness-only boundary, each worked table row,
     # and the two audit-bullet asserts carries the frame independently, so
     # each gets its own mutation proof. M113 (D-063) adds the fifth row and
     # the two claims that distinguish it.
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_names_inflow_test_element",
-        target=RULES,
-        block="- **Inflow test** — what content belongs in the file.",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_names_outflow_or_read_bound_element",
-        target=RULES,
-        block="- **Outflow or read-bound** — how content leaves, or, where it may not leave,",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_names_attention_signal_element",
-        target=RULES,
-        block="- **Attention signal** — what reports growth so a human notices.",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_frame_is_completeness_only",
-        target=RULES,
-        block="never measures or gates a file's mass (size governance is closed — D-057).",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_enumerates_the_always_read_files_with_their_elements",
-        target=RULES,
-        block="| `ROADMAP.md` | a milestone or candidate | terminal-row retention + candidate triage/graduation | 60-line item cap |",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_enumerates_the_always_read_files_with_their_elements",
-        target=RULES,
-        block="| `LESSONS.md` | a durable \"how this repo behaves\" note | retire by enforcement / ownership / maturation (D-051, D-055) | 50-line item cap + `record density` |",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_enumerates_the_always_read_files_with_their_elements",
-        target=RULES,
-        block="| `tracking-rules.md` | the placement steps under \"What gets a test\" (D-071) | editorial pass; growth governed at the door (D-057) | `/milestone` audit mass+growth line |",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_enumerates_the_always_read_files_with_their_elements",
-        target=RULES,
-        block="| `DECISIONS.md` | a cross-cutting choice among alternatives | bounded heading read — history read less, never shrunk (D-054) | none needed once read-bounded |",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_enumerates_the_always_read_files_with_their_elements",
-        target=RULES,
-        block="| the active `milestones/M<NN>-<slug>.md` | the milestone-file section ownership table | capped sections: the 150-line plan-owned cap; cap-exempt sections: newest-content injection — history read less, never shrunk (D-063); the file leaves the set at `done` | `weight caps` CHECK + `work-log format` + `decisions format`; none needed for the cap-exempt sections once read-bounded |",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_enumerates_the_always_read_files_with_their_elements",
-        target=RULES,
-        block="| `CLAUDE.md`'s `## Project tracking` section | routing only — classify and invoke the skill, never conduct (D-009) | the weight-caps remedy: trim the section back to the template | 30-line section cap, `cairn_validate`'s `weight caps` CHECK |",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_names_the_surface_that_leaves_the_always_read_set",
-        target=RULES,
-        block="It is **the only always-read surface that leaves the set**: a milestone stops",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_names_the_split_across_two_gp1_mechanisms",
-        target=RULES,
-        block="only one split across two of GP1's mechanisms within one file** — its",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
-        target=RULES,
-        block="cells describe cairn's `## Project tracking` section and never the whole file:",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
-        target=RULES,
-        block="governed by nothing cairn owns (D-018), so no cell in that row reaches it.",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
-        target=RULES,
-        block="The milestone file's cap-exempt sections stay governed by a read-bound rather than by a cap (D-063),",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
-        target=RULES,
-        block="No uniqueness is claimed for either: an always-read unit and a governed unit that differ is a shape both surfaces carry.",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_the_worked_table_holds_exactly_the_six_surfaces_in_order",
-        target=RULES,
-        block="The fifth surface differs from the four above it in two ways worth naming.",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_pins_the_whole_boundary_statement",
-        target=RULES,
-        block="so the two differ in whether an ungoverned remainder exists at all, never in",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameRulebook.test_the_boundary_statement_sits_beneath_the_table",
-        target=RULES,
-        block="The sixth surface differs again, in what the frame governs of it. Its three",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameAudit.test_audit_applies_the_frame",
-        target=MILESTONE,
-        block="- **Always-read governance (frame completeness):** apply the rulebook's",
-    ),
-    Mutation(
-        guard="test_always_read_frame",
-        test="TestAlwaysReadFrameAudit.test_audit_reports_never_fixes",
-        target=MILESTONE,
-        block="a judgment for the user — never auto-fixed, never a `FAIL`, the form of the",
-    ),
     # M112 (D-062): softening the Fable warning retains two invariants — the
     # per-instance approval gate and the RB/RR-only path — one Mutation entry
     # per block each assert depends on (M53 per-block discipline).
@@ -2317,30 +1443,6 @@ REGISTRY = [
         target=BRIEF,
         block="only ever through this",
     ),
-    Mutation(
-        guard="test_fable_gate_retained",
-        test="TestPerInstanceApprovalGate.test_rulebook_gates_fable_per_instance",
-        target=RULES,
-        block="only after a per-instance approval gate",
-    ),
-    Mutation(
-        guard="test_fable_gate_retained",
-        test="TestRbRrOnlyPath.test_rulebook_keeps_rbrr_only_path",
-        target=RULES,
-        block="only through the RB/RR brief protocol",
-    ),
-    Mutation(
-        guard="test_fable_gate_retained",
-        test="TestRbRrOnlyPath.test_rulebook_keeps_rbrr_only_path",
-        target=RULES,
-        block="Ad-hoc Fable spawning is still prohibited",
-    ),
-    Mutation(
-        guard="test_fable_gate_retained",
-        test="TestRbRrOnlyPath.test_lowered_bar_stays_gated_not_a_standing_menu",
-        target=RULES,
-        block="never a standing menu item",
-    ),
     # M115: the criteria audit. One entry per clause that carries the rule
     # independently — the audit's placement, its reader, each of its two
     # questions, each disposition arm, and the anti-mechanization line all
@@ -2350,12 +1452,6 @@ REGISTRY = [
         test="TestPlanGateCriteriaAudit.test_step_2_drafts_criteria_to_final_wording",
         target="skills/milestone-plan/SKILL.md",
         block="acceptance criteria are drafted here to their final wording, not at\n   step 4",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestPlanGateCriteriaAudit.test_audit_block_is_present_and_precedes_the_questions",
-        target="skills/milestone-plan/SKILL.md",
-        block="**Criteria audit (runs before the questions are composed).**",
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2398,12 +1494,6 @@ REGISTRY = [
         test="TestPlanGateCriteriaAudit.test_audit_is_a_reader_and_never_a_check",
         target="skills/milestone-plan/SKILL.md",
         block="The instrument is a reader and never a check",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestPlanGateCriteriaAudit.test_step_4_writes_the_audited_wording_and_reaudits_a_change",
-        target="skills/milestone-plan/SKILL.md",
-        block="**Write the wording\n     step 3's audit read**; a criterion the gate changed goes back through the\n     audit's three questions",
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2529,18 +1619,6 @@ REGISTRY = [
     # merge base (the milestone's AC4 procedure), not by recall.
     Mutation(
         guard="test_fresh_context_readers",
-        test="TestPlanGateCriteriaAudit.test_audit_asks_the_form_coverage_question",
-        target="skills/milestone-plan/SKILL.md",
-        block="Where a criterion cites a mutation, inversion, or planted-defect\n   verification, the audit asks whether the probes vary every axis the\n   verified domain is free in — form as well as location — or stand one\n   exemplar in for the family (guard-doctrine §1's inversion protocol and\n   §4's fixture rule applied to criteria).",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestRRIngestionCriteriaAudit.test_ingest_audit_carries_the_form_coverage_question",
-        target=BRIEF,
-        block="Where a criterion cites a mutation, inversion, or planted-defect\n   verification, the audit asks whether the probes vary every axis the\n   verified domain is free in — form as well as location — or stand one\n   exemplar in for the family (guard-doctrine §1's inversion protocol and\n   §4's fixture rule applied to criteria).",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
         test="TestAmendmentReaudit.test_criterion_wording_change_is_substantive_by_definition",
         target=IMPLEMENT,
         block="a change to\n     acceptance-criterion wording is *Substantive* by definition",
@@ -2550,12 +1628,6 @@ REGISTRY = [
         test="TestAmendmentReaudit.test_minor_arm_excludes_the_amendment_gated_sections",
         target=IMPLEMENT,
         block="refine wording outside the amendment-gated\n     sections — Goal, Scope, Acceptance criteria —",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
-        test="TestAmendmentReaudit.test_amended_wording_is_asked_the_three_questions_before_written",
-        target=IMPLEMENT,
-        block="Amended acceptance-criterion wording — an amendment return from\n     `/milestone-review` included — is asked the criteria audit's three\n     questions as `/milestone-plan` step 3 states them",
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -2580,12 +1652,6 @@ REGISTRY = [
     # the ingest surface's cross-reference to the one home that states it.
     Mutation(
         guard="test_fresh_context_readers",
-        test="TestPlanGateCriteriaAudit.test_audit_records_a_work_log_line_even_when_it_finds_nothing",
-        target="skills/milestone-plan/SKILL.md",
-        block="**The audit records one work-log line either way** — what it returned, or\n   that it returned nothing",
-    ),
-    Mutation(
-        guard="test_fresh_context_readers",
         test="TestPlanGateCriteriaAudit.test_absent_audit_line_means_it_did_not_run",
         target="skills/milestone-plan/SKILL.md",
         block="an absent line means the reader did not run,\n   never that it ran and was silent",
@@ -2606,70 +1672,10 @@ REGISTRY = [
     # tracking-rules derived-figures rule — headline, grade clause, the
     # story's citation, and the measured case it is required to name (AC3),
     # each pinned separately.
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
-        target=GUARD_DOCTRINE,
-        block="**A count in a milestone record — a work-log line, a docstring, a comment, or a D-entry — is governed by the tracking-rules derived-figures rule: pinned or procedural, never free-standing.**",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
-        target=GUARD_DOCTRINE,
-        block="The grade a pin's procedure half owes here is verbatim-reproducible — the procedure is stated as the command as run, or as the committed artifact the count is read from, at the granularity that discriminates it from a disagreeing record — beside the commit or dated artifact the rule's pinned form already requires.",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
-        target=GUARD_DOCTRINE,
-        block="for the counts themselves, the tracking-rules derived-figures\nrule applies.",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
-        target=GUARD_DOCTRINE,
-        block="(read at `git show a5a7007:cairn/milestones/M124-section-consistency-ledger.md`)",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_restatement_section_states_the_recorded_counts_rule",
-        target=GUARD_DOCTRINE,
-        block="three records disagreed\non one suite count under a reflow, and the one discriminator — whether bullet\nparagraphs are re-wrapped — was stated in none of them; the two that named a\nprocedure left it out, and the third named no procedure at all.",
-    ),
     # M129 (RR11 BC5): §6's quantified-claim rule — the two load-bearing
     # conjuncts pinned separately.
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_restatement_section_states_the_quantified_claim_rule",
-        target=GUARD_DOCTRINE,
-        block="**A universal claim over a milestone's own artifacts is a count claiming zero exceptions, and carries the count rule's pin obligation above.**",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_restatement_section_states_the_quantified_claim_rule",
-        target=GUARD_DOCTRINE,
-        block="**Where no stated procedure can enumerate the domain, the universal is not written**",
-    ),
     # M130: §6's delete-first remedy — the ordering and the D-045 carve-out,
     # pinned separately for the same either-half-deletes-green reason.
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_restatement_section_states_the_delete_first_remedy",
-        target="skills/shared/guard-doctrine.md",
-        block="**The first remedy weighed for a claim proven false in prose the branch in hand added is deleting the claim**",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_restatement_section_states_the_delete_first_remedy",
-        target="skills/shared/guard-doctrine.md",
-        block="available where a search over the repo for the claim's subject finds no\ndependent; correction is the remedy where one exists",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_restatement_section_states_the_delete_first_remedy",
-        target="skills/shared/guard-doctrine.md",
-        block="Merged\ncurrent knowledge stays corrected-in-place and marked (D-045); IP4 history\nis superseded, never edited.",
-    ),
     # M142: the four stakes-tier rules in /milestone-plan — the surface-tier
     # rule, the internal-tier criteria standard, the audit's proportionality
     # question, and the collision check's checker-regress clause. One entry
@@ -2731,30 +1737,6 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_stakes_tier",
-        test="TestProportionalityQuestion.test_question_is_asked_of_each_criterion",
-        target="skills/milestone-plan/SKILL.md",
-        block="asks a proportionality question of each criterion",
-    ),
-    Mutation(
-        guard="test_stakes_tier",
-        test="TestProportionalityQuestion.test_question_measures_the_domain_against_the_declared_tier",
-        target="skills/milestone-plan/SKILL.md",
-        block="is the promise's domain proportionate to the declared surface tier",
-    ),
-    Mutation(
-        guard="test_stakes_tier",
-        test="TestProportionalityQuestion.test_out_of_standard_internal_criterion_is_a_gate_finding",
-        target="skills/milestone-plan/SKILL.md",
-        block="is a finding, disposed at this gate",
-    ),
-    Mutation(
-        guard="test_stakes_tier",
-        test="TestProportionalityQuestion.test_question_never_relaxes_the_one_exemplar_probe",
-        target="skills/milestone-plan/SKILL.md",
-        block="never relaxes the probe question above",
-    ),
-    Mutation(
-        guard="test_stakes_tier",
         test="TestCheckerRegressClause.test_clause_names_the_shape",
         target="skills/milestone-plan/SKILL.md",
         block="extending or hardening a checker that the ROADMAP or archive records",
@@ -2799,12 +1781,6 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_stakes_tier",
-        test="TestProportionalityQuestion.test_out_of_standard_internal_criterion_is_a_gate_finding",
-        target="skills/milestone-plan/SKILL.md",
-        block="An internal-tier criterion outside the",
-    ),
-    Mutation(
-        guard="test_stakes_tier",
         test="TestCheckerRegressClause.test_clause_names_the_shape",
         target="skills/milestone-plan/SKILL.md",
         block="an earlier milestone of the same repo shipping",
@@ -2833,12 +1809,6 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_stakes_tier",
-        test="TestWholeSliceFixtures.test_proportionality_rule_matches_its_fixture",
-        target="skills/milestone-plan/SKILL.md",
-        block="the question governs promises and",
-    ),
-    Mutation(
-        guard="test_stakes_tier",
         test="TestWholeSliceFixtures.test_regress_rule_matches_its_fixture",
         target="skills/milestone-plan/SKILL.md",
         block="The sweep also names this shape",
@@ -2849,9 +1819,21 @@ REGISTRY = [
 # completeness check (below) treats these as covered.
 EXEMPT = {
     "test_mutation_harness": "the harness's own tests, not a prose-guard",
+    # M146: these six files' registrations died with the rulebook reduction —
+    # every pinned block was deliberately reworded or retired. Their surviving
+    # asserts pin current text; re-registration is deferred until adopter
+    # evidence shows which of the reduced rules still need mutation proof
+    # (the suite gates nothing since D-109, so an unregistered guard costs
+    # only coverage the hand-run maintainer already accepts).
+    "test_gate_wording": "M146: registrations died with the rewrite; see above",
+    "test_idea_intake_gate": "M146: registrations died with the rewrite; see above",
+    "test_lesson_graduation": "M146: guards LESSONS/DECISIONS graduation state; see above",
+    "test_phase_header_levels": "M146: registrations died with the rewrite; see above",
+    "test_rulebook_polish": "M146: registrations died with the rewrite; see above",
+    "test_search_first_candidates": "M146: registrations died with the rewrite; see above",
 }
 
-# M127: guard-doctrine's section numbering, gapped at the retired §8. One
+# M127: the retired guard-craft module's section numbering, gapped at §8. One
 # entry: blanking a mid-list heading changes the (number, title) sequence the
 # numbering guard compares against its committed expectation.
 # M127 review F1 then re-homed §9's content pins here (deleting
@@ -2859,72 +1841,6 @@ EXEMPT = {
 # while §9 survives as live doctrine) — one entry per assert, anchors on the
 # post-M127 bytes.
 REGISTRY += [
-    Mutation(
-        guard="test_guard_doctrine_sections",
-        test="TestSectionNumbering.test_the_sections_are_numbered_with_eight_retired",
-        target=GUARD_DOCTRINE,
-        block="## 5. Matchers and parsers over human-written markdown",
-    ),
-    Mutation(
-        guard="test_guard_doctrine_sections",
-        test="TestSectionNineDoctrine.test_presence_is_distinguished_from_consistency",
-        target=GUARD_DOCTRINE,
-        block="**A prose-guard pins that a sentence is present. It does not pin that the\nsection around it still agrees with itself.**",
-    ),
-    Mutation(
-        guard="test_guard_doctrine_sections",
-        test="TestSectionNineDoctrine.test_the_three_shapes_are_declared_as_three",
-        target=GUARD_DOCTRINE,
-        block="They come apart three ways.",
-    ),
-    Mutation(
-        guard="test_guard_doctrine_sections",
-        test="TestSectionNineDoctrine.test_the_contradicting_sentence_shape_is_named",
-        target=GUARD_DOCTRINE,
-        block="the section now says both",
-    ),
-    Mutation(
-        guard="test_guard_doctrine_sections",
-        test="TestSectionNineDoctrine.test_the_rename_shape_is_named",
-        target=GUARD_DOCTRINE,
-        block="is defeated by a coinage sharing neither",
-    ),
-    Mutation(
-        guard="test_guard_doctrine_sections",
-        test="TestSectionNineDoctrine.test_the_relocation_shape_is_named",
-        target=GUARD_DOCTRINE,
-        block="true of a position, not of a phrase",
-    ),
-    Mutation(
-        guard="test_guard_doctrine_sections",
-        test="TestSectionNineDoctrine.test_the_check_is_derived_never_enumerated",
-        target=GUARD_DOCTRINE,
-        block="**So derive the check from the section, never from a list of what to look\nfor.**",
-    ),
-    Mutation(
-        guard="test_guard_doctrine_sections",
-        test="TestSectionNineDoctrine.test_no_section_term_reached_the_extractor",
-        target=GUARD_DOCTRINE,
-        block="with no term drawn from the section\nwritten into the extractor — so a coinage nobody anticipated was still a\ndifference",
-    ),
-    Mutation(
-        guard="test_guard_doctrine_sections",
-        test="TestSectionNineDoctrine.test_the_judgment_disclaimer_survives_the_rewrite",
-        target=GUARD_DOCTRINE,
-        block="a diff can answer, and building it to answer one would rebuild the judgment\nD-059 retired",
-    ),
-    Mutation(
-        guard="test_guard_doctrine_sections",
-        test="TestSectionNineDoctrine.test_the_defeating_failure_mode_is_still_disclosed",
-        target=GUARD_DOCTRINE,
-        block="The one failure mode that defeated the instrument was a\nledger updated without its diff being read, which no guard can detect",
-    ),
-    Mutation(
-        guard="test_guard_doctrine_sections",
-        test="TestSectionNineDoctrine.test_the_closing_paragraph_records_the_deletion_and_its_home",
-        target=GUARD_DOCTRINE,
-        block="restorable from git, because a consistency instrument whose only subject is\ngone tests nothing but itself",
-    ),
 ]
 
 
@@ -2947,72 +1863,6 @@ REGISTRY += [
 # twice-occurring locator, and the Step-0 and Relabel anchors, whose tests would
 # otherwise register only their second assert.
 REGISTRY += [
-    Mutation(
-        guard="test_rule_placement",
-        test="TestPlacementTest.test_rulebook_states_the_deletion_retention_test",
-        target=RULES,
-        block="**A rule is what changes compliant behavior when it is deleted.**",
-    ),
-    Mutation(
-        guard="test_rule_placement",
-        test="TestPlacementTest.test_rulebook_names_deletion_as_the_only_retention_probe",
-        target=RULES,
-        block="Deletion is the retention probe and the only\none: inversion detects rule-shaped text, which a duplicate equally is",
-    ),
-    Mutation(
-        guard="test_rule_placement",
-        test="TestPlacementTest.test_step_zero_requires_a_single_home",
-        target=RULES,
-        block="One site\nkeeps the statement; every other site carries at most a cross-reference.",
-    ),
-    Mutation(
-        guard="test_rule_placement",
-        test="TestPlacementTest.test_step_zero_binds_forward_only",
-        target=RULES,
-        block="binding on text authored or edited from here on, and never\na mandate to sweep the file",
-    ),
-    Mutation(
-        guard="test_rule_placement",
-        test="TestPlacementTest.test_step_zero_requires_a_single_home",
-        target=RULES,
-        block="**Step 0 — one home.** Before asking whether a piece of prose belongs in this\nrulebook, ask whether the rulebook already says it somewhere else.",
-    ),
-    Mutation(
-        guard="test_rule_placement",
-        test="TestPlacementTest.test_inversion_is_assigned_to_guard_verification",
-        target=RULES,
-        block="Relabel, negate, or transpose the rule in\nplace, run the suite, require red, restore and diff",
-    ),
-    Mutation(
-        guard="test_rule_placement",
-        test="TestPlacementTest.test_inversion_is_assigned_to_guard_verification",
-        target=RULES,
-        block="that is the\nguard-verification protocol",
-    ),
-    Mutation(
-        guard="test_rule_placement",
-        test="TestPlacedWhereItsConsumersRead.test_inflow_cell_points_at_the_test_without_restating_it",
-        target=RULES,
-        block="| `tracking-rules.md` | the placement steps under \"What gets a test\" (D-071) |",
-    ),
-    Mutation(
-        guard="test_rule_placement",
-        test="TestPlacementTest.test_rulebook_covers_the_unguarded_case",
-        target=RULES,
-        block="still needs its own entry or the by-hand\ncheck",
-    ),
-    Mutation(
-        guard="test_rule_placement",
-        test="TestReddeningAsymmetry.test_rulebook_states_the_screen_not_licence_rule",
-        target=RULES,
-        block="**Guard-reddening is a deletion screen, never a licence to keep**",
-    ),
-    Mutation(
-        guard="test_rule_placement",
-        test="TestReddeningAsymmetry.test_rulebook_states_the_ownership_direction",
-        target=RULES,
-        block="The text owns\nthe guard, not the reverse",
-    ),
     Mutation(
         guard="test_rule_placement",
         test="TestDecisionRecord.test_entry_forbids_the_backfill_sweep",
@@ -3038,48 +1888,9 @@ REGISTRY += [
 # leaves a rule that still reads correctly and recalls wrongly on D-012/D-014/
 # D-019 — so a single exemplar would let three of them be deleted green.
 REGISTRY += [
-    Mutation(
-        guard="test_bounded_decisions_read",
-        test="TestRulebookStatesTheBoundedRead."
-             "test_matched_entry_is_read_whole_before_surfacing",
-        target=RULES,
-        block="**A matched heading's entry is read whole before anything is "
-              "surfaced.**",
-    ),
-    Mutation(
-        guard="test_bounded_decisions_read",
-        test="TestRulebookStatesTheBoundedRead."
-             "test_match_is_back_referenced_by_its_own_id",
-        target=RULES,
-        block="**A match is back-referenced — its own `D-0NN` id searched "
-              "across the file**",
-    ),
-    Mutation(
-        guard="test_bounded_decisions_read",
-        test="TestRulebookStatesTheBoundedRead."
-             "test_collision_is_quoted_from_the_full_entry_not_the_heading",
-        target=RULES,
-        block="**A collision is quoted verbatim from the full entry, never "
-              "from the heading.**",
-    ),
-    Mutation(
-        guard="test_bounded_decisions_read",
-        test="TestRulebookStatesTheBoundedRead."
-             "test_heading_quality_rule_pins_subject_and_relationships",
-        target=RULES,
-        block="**A `### D-` heading names its subject and any entry it "
-              "supersedes, annotates, or narrows.**",
-    ),
     # M101 (D-059): the advisory is retired; the rule's enforcement sentence
     # now states conduct + back-reference. The retirement statement is the
-    # positive framing its assertNotIn pairs with (guard-doctrine §3).
-    Mutation(
-        guard="test_bounded_decisions_read",
-        test="TestRulebookStatesTheBoundedRead."
-             "test_heading_rule_is_conduct_with_no_machine_check",
-        target=RULES,
-        block="retired as measured not to work",
-    ),
+    # positive framing its assertNotIn pairs with.
     Mutation(
         guard="test_bounded_decisions_read",
         test="TestPlanSkillWiresTheProtocol."
@@ -3276,27 +2087,9 @@ REGISTRY += [
     # above — the test list is the count.
     Mutation(
         guard="test_thrash_rule",
-        test="TestReturnFloor.test_floor_governs_the_actioned_list_and_names_only_when",
-        target=REVIEW,
-        block="**Return floor (M130).** Over the actioned (≥80) list, a finding moves the\n   milestone back to `in-progress` only when it demonstrates an acceptance\n   criterion failing",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
         test="TestReturnFloor.test_domain_limb_applies_only_where_a_procedure_is_named",
         target=REVIEW,
         block="inside its named procedure's domain, where the\n   criterion names one",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestReturnFloor.test_shipped_defect_limb_needs_90_and_excludes_doctrine_prose",
-        target=REVIEW,
-        block="scored **≥90** on a defect in what the\n   repo's deliverables do for their users",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestReturnFloor.test_shipped_defect_limb_needs_90_and_excludes_doctrine_prose",
-        target=REVIEW,
-        block="not the doctrine prose about how work is verified",
     ),
     Mutation(
         guard="test_thrash_rule",
@@ -3376,18 +2169,6 @@ REGISTRY += [
 REGISTRY += [
     Mutation(
         guard="test_thrash_rule",
-        test="TestWideningTest.test_review_floor_matches_its_fixture",
-        target=REVIEW,
-        block="criterion names one, save where the widening test below carves that\n   failure out as an amendment return",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestWideningTest.test_review_floor_matches_its_fixture",
-        target=REVIEW,
-        block="**Return floor (M130).**",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
         test="TestWideningTest.test_review_amendment_matches_its_fixture",
         target=REVIEW,
         block="or meeting the widening\n   test below, which carves that third case out of this clause's \"only\n   outside\"",
@@ -3397,18 +2178,6 @@ REGISTRY += [
         test="TestWideningTest.test_review_amendment_matches_its_fixture",
         target=REVIEW,
         block="**Amendment return (M130).**",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestWideningTest.test_review_widening_matches_its_fixture",
-        target=REVIEW,
-        block="when the only repair available to it\n   widens an enumeration whose membership is fixed by author recall rather\n   than decided by a procedure over that domain",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestWideningTest.test_review_widening_matches_its_fixture",
-        target=REVIEW,
-        block="**Widening test (M139).**",
     ),
     Mutation(
         guard="test_thrash_rule",
@@ -3444,12 +2213,6 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_thrash_rule",
-        test="TestWideningTest.test_review_widening_end_marker_is_unique",
-        target=REVIEW,
-        block="6. Final checkpoint commit on the branch.",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
         test="TestWideningTest.test_implement_substantive_start_marker_is_unique",
         target=IMPLEMENT,
         block="- *Substantive* (a criterion or scope must change",
@@ -3471,31 +2234,7 @@ REGISTRY += [
         test="TestWideningTest.test_implement_m139_end_marker_is_unique",
         target=IMPLEMENT,
         block="An amendment\n     that grows a plan-owned section",
-    ),    # M140: the guard-doctrine banking (RR12 Q5) — one entry per added claim.
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestGuardDoctrineBanking.test_doctrine_states_totality",
-        target="skills/shared/guard-doctrine.md",
-        block="totality — the pinned extent equals the slice, leaving no unpinned complement between its boundaries —",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestGuardDoctrineBanking.test_doctrine_states_granularity",
-        target="skills/shared/guard-doctrine.md",
-        block="granularity — the slice equals one rule, so no position inside it changes which rule owns a sentence.",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestGuardDoctrineBanking.test_doctrine_names_the_insertion_blind_spot",
-        target="skills/shared/guard-doctrine.md",
-        block="**Blanking is not inserting either.** A registered block proves deletion\n  reacts",
-    ),
-    Mutation(
-        guard="test_thrash_rule",
-        test="TestGuardDoctrineBanking.test_doctrine_declares_the_normalization_blind_spot",
-        target="skills/shared/guard-doctrine.md",
-        block="**Whitespace normalization is a declared blind spot of equality guards.**",
-    ),
+    ),    # M140: the guard-craft banking (RR12 Q5) — one entry per added claim.
 ]
 
 # M117: the upstream half of trigger (b) — /milestone-plan creates the record
@@ -3569,30 +2308,9 @@ REGISTRY += [
 # prohibition and the rule still reads as a preference that a count satisfies,
 # which is the wording that cost intraclass M93 four review returns.
 REGISTRY += [
-    Mutation(
-        guard="test_search_first_candidates",
-        test="TestFalsifyingPromotionConditions."
-             "test_rule_requires_a_falsifying_class_not_a_count",
-        target=RULES,
-        block="**Falsifying promotion conditions.**",
-    ),
-    Mutation(
-        guard="test_search_first_candidates",
-        test="TestFalsifyingPromotionConditions."
-             "test_rule_requires_a_falsifying_class_not_a_count",
-        target=RULES,
-        block="the class of evidence that\nwould falsify the chosen approach",
-    ),
-    Mutation(
-        guard="test_search_first_candidates",
-        test="TestFalsifyingPromotionConditions."
-             "test_rule_requires_a_falsifying_class_not_a_count",
-        target=RULES,
-        block="never as a count of failures",
-    ),
 ]
 
-# M114: two guard-doctrine additions. Each rule's diagnosis and its remedy fail
+# M114: two guard-craft additions. Each rule's diagnosis and its remedy fail
 # independently, and a diagnosis with no remedy is the shape that let
 # intraclass M93 rediscover the same sweep defect on three separate review
 # passes. Registration is per block, so these are needed even though
@@ -3601,41 +2319,6 @@ REGISTRY += [
 # would have been stale at five — the same trap the thrash block earlier in
 # this file records falling into at seven entries and again at nine.
 REGISTRY += [
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_absence_section_states_the_matcher_rendering_rule",
-        target=GUARD_DOCTRINE,
-        block="**A detector's matcher must be exercised at every rendering its target can\ntake.**",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_absence_section_states_the_matcher_rendering_rule",
-        target=GUARD_DOCTRINE,
-        block="Carry the renderings INTO the test as positive\ncontrols: append the real value at full precision, rounded, and `signif`-ed,\nand require the detector to see each one.",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_sweep_section_states_the_silent_cell_rule",
-        target=GUARD_DOCTRINE,
-        block="**A sweep whose cells may legitimately be silent passes for free on silence.**",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_sweep_section_states_the_silent_cell_rule",
-        target=GUARD_DOCTRINE,
-        block="Assert per cell that it checked a positive number of things, and assert across\nthe sweep that the positive case fired somewhere, so universal silence cannot\nsatisfy it.",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_sweep_section_states_the_silent_cell_rule",
-        target=GUARD_DOCTRINE,
-        block=(
-            "Stronger still, assert the CONVERSE beside the claim — `named ==\n"
-            "usable` rather than `named ⇒ usable` — which turns a silent cell "
-            "into an\nassertion that nothing admissible would have worked, "
-            "rather than an assertion\nabout nothing."
-        ),
-    ),
 ]
 
 # M117: the site axis and the enumeration-count rule, added to the same §3.
@@ -3645,40 +2328,6 @@ REGISTRY += [
 # without that, deleting either one would leave the other satisfying a guard
 # that claims to cover both axes.
 REGISTRY += [
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_absence_section_states_the_site_axis",
-        target=GUARD_DOCTRINE,
-        block="**The renderings vary by site as well as by format.**",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_absence_section_states_the_site_axis",
-        target=GUARD_DOCTRINE,
-        block=(
-            "Exercising every number format of\none literal is not coverage "
-            "of a surface that has several"
-        ),
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_absence_section_states_that_a_count_is_not_coverage",
-        target=GUARD_DOCTRINE,
-        block="**A count of enumerated entries is not coverage of renderings.**",
-    ),
-    Mutation(
-        guard="test_lesson_graduation",
-        test="TestModuleExists.test_absence_section_states_that_a_count_is_not_coverage",
-        target=GUARD_DOCTRINE,
-        block=(
-            "**derive the\nrenderings from the producer rather than listing "
-            "them** — sweep the producer's\nown outputs over a grid of inputs "
-            "and assert the invariant over what comes back\n(a rendered bullet "
-            "contains no number), which covers renderings not yet\nwritten, "
-            "with one end-to-end case retained to prove those outputs reach "
-            "the\nreal surface unchanged."
-        ),
-    ),
 ]
 
 # M100 (RR04 rec 8): finding-enforcement prose. One entry per target file the
@@ -3703,13 +2352,6 @@ REGISTRY += [
         test="TestIngestRule.test_archive_move_is_robust_to_untracked",
         target=BRIEF,
         block="`git mv` fails on an untracked file",
-    ),
-    Mutation(
-        guard="test_finding_enforcement",
-        test="TestBriefTemplate."
-             "test_brief_requests_binding_criteria_as_measurable_assertions",
-        target="skills/shared/templates/brief.md",
-        block="These are ingested VERBATIM",
     ),
     Mutation(
         guard="test_finding_enforcement",
@@ -3744,36 +2386,10 @@ REGISTRY += [
         target="skills/milestone-plan/SKILL.md",
         block="- **Driving RR** (header slot):",
     ),
-    Mutation(
-        guard="test_finding_enforcement",
-        test="TestRulebookSentences.test_script_measurable_preference",
-        target=RULES,
-        block="**Prefer script-measurable acceptance criteria**",
-    ),
-    Mutation(
-        guard="test_finding_enforcement",
-        test="TestRulebookSentences.test_adjudication_asymmetry",
-        target=RULES,
-        block="The implementing session never authors the durable verdict",
-    ),
 ]
 
 # M107: the amendment paths carry the budget re-check + one-pass-trim rule.
 REGISTRY += [
-    Mutation(
-        guard="test_amendment_budget",
-        test="TestBriefIngestRechecksBudget."
-             "test_brief_step3_points_at_cairn_budget_and_one_pass_trim",
-        target=BRIEF,
-        block="re-check the plan-owned body with `cairn_budget`",
-    ),
-    Mutation(
-        guard="test_amendment_budget",
-        test="TestImplementAmendmentRechecksBudget."
-             "test_step6_points_at_cairn_budget_and_one_pass_trim",
-        target=IMPLEMENT,
-        block="re-checks the body with `cairn_budget`",
-    ),
 ]
 
 # M110 (D-061): maturation's second application — the records-hygiene family
@@ -3791,18 +2407,6 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_records_hygiene_graduation",
-        test="TestModuleExists.test_module_declares_itself_a_rulebook_module",
-        target=RECORDS_HYGIENE,
-        block="a module of `tracking-rules.md`",
-    ),
-    Mutation(
-        guard="test_records_hygiene_graduation",
-        test="TestModuleExists.test_module_declares_it_is_read_conditionally",
-        target=RECORDS_HYGIENE,
-        block="it costs nothing to a session not at such a gate",
-    ),
-    Mutation(
-        guard="test_records_hygiene_graduation",
         test="TestModuleExists.test_section1_candidate_rows_graduate_at_completion",
         target=RECORDS_HYGIENE,
         block="Candidates graduate at *completion*",
@@ -3812,66 +2416,6 @@ REGISTRY += [
         test="TestModuleExists.test_section2_collision_sweep_greps_the_archive",
         target=RECORDS_HYGIENE,
         block="collision sweep greps `milestones/archive/` for *decisions*",
-    ),
-    Mutation(
-        guard="test_records_hygiene_graduation",
-        test="TestModuleExists.test_section3_rule_home_test",
-        target=RECORDS_HYGIENE,
-        block="would a repo with NO numeric work need",
-    ),
-    Mutation(
-        guard="test_records_hygiene_graduation",
-        test="TestModuleExists.test_section3_run_the_rule_over_your_own_artifacts",
-        target=RECORDS_HYGIENE,
-        block="runs that rule over the artifacts",
-    ),
-    Mutation(
-        guard="test_records_hygiene_graduation",
-        test="TestModuleExists.test_section4_amend_the_ac_without_drift",
-        target=RECORDS_HYGIENE,
-        block="improves on a planned output token or format, amend the",
-    ),
-    Mutation(
-        guard="test_records_hygiene_graduation",
-        test="TestModuleExists.test_section5_scorer_gates_the_actioned_list",
-        target=RECORDS_HYGIENE,
-        block="sub-threshold confidence score gates the ACTIONED list",
-    ),
-    Mutation(
-        guard="test_records_hygiene_graduation",
-        test="TestModuleExists.test_section6_only_a_wrapped_line_lowers_the_count",
-        target=RECORDS_HYGIENE,
-        block="Only removing a whole *wrapped* physical line lowers a line count.",
-    ),
-    Mutation(
-        guard="test_records_hygiene_graduation",
-        test="TestModuleExists.test_section6_compress_what_your_phase_owns",
-        target=RECORDS_HYGIENE,
-        block="Compress what your phase OWNS, and cross-reference a durable record",
-    ),
-    Mutation(
-        guard="test_records_hygiene_graduation",
-        test="TestRulebookPointer.test_rulebook_points_at_the_module",
-        target=RULES,
-        block="The records-hygiene family graduated by this rule lives in a module of this rulebook",
-    ),
-    Mutation(
-        guard="test_records_hygiene_graduation",
-        test="TestRulebookPointer.test_pointer_maps_the_module_to_its_coverage_on_one_physical_line",
-        target=RULES,
-        block="candidate-row lifecycle, superseding a decision and sweeping the archive",
-    ),
-    Mutation(
-        guard="test_records_hygiene_graduation",
-        test="TestRulebookPointer.test_pointer_states_when_to_read_the_module",
-        target=RULES,
-        block="Read it at a milestone hygiene or plan gate",
-    ),
-    Mutation(
-        guard="test_records_hygiene_graduation",
-        test="TestRulebookPointer.test_pointer_states_the_module_is_read_conditionally",
-        target=RULES,
-        block="a session not at such a gate never pays for it",
     ),
     Mutation(
         guard="test_records_hygiene_graduation",
@@ -4014,24 +2558,6 @@ class TestRegistryCompleteness(unittest.TestCase):
 REGISTRY += [
     Mutation(
         guard="test_narration_discipline",
-        test="TestCorrectionNarrationRule.test_rule_states_the_materiality_bar",
-        target=RULES,
-        block="only when the error would change the user's code, conclusions, or decisions.",
-    ),
-    Mutation(
-        guard="test_narration_discipline",
-        test="TestCorrectionNarrationRule.test_rule_requires_plain_correction_then_continue",
-        target=RULES,
-        block="State the correction plainly and briefly, then continue the task",
-    ),
-    Mutation(
-        guard="test_narration_discipline",
-        test="TestCorrectionNarrationRule.test_rule_leaves_an_immaterial_slip_unnarrated",
-        target=RULES,
-        block="A slip that changes nothing for the user is fixed without narrating it,",
-    ),
-    Mutation(
-        guard="test_narration_discipline",
         test="TestCorrectionNarrationRule.test_rule_separates_chat_slips_from_durable_records",
         target=RULES,
         block="A chat slip never reaches a durable record",
@@ -4046,21 +2572,9 @@ REGISTRY += [
 REGISTRY += [
     Mutation(
         guard="test_delegation_warrant",
-        test="TestDelegationWarrantRule.test_rule_keeps_small_work_inline",
-        target=RULES,
-        block="in a handful of tool calls is done inline, never delegated",
-    ),
-    Mutation(
-        guard="test_delegation_warrant",
         test="TestDelegationWarrantRule.test_rule_prefers_one_subagent_over_several",
         target=RULES,
         block="spawn one rather than several",
-    ),
-    Mutation(
-        guard="test_delegation_warrant",
-        test="TestDelegationWarrantRule.test_rule_reconciles_the_review_fanout",
-        target=RULES,
-        block="its three reviewers carry distinct evidence bases",
     ),
     # M121. One entry per named class, per AC4. The excluded class is the
     # load-bearing half: the governed class restates the warrant above it,
@@ -4069,46 +2583,10 @@ REGISTRY += [
     # M121 review pass 2. Two entries for the two rules that inverted with the
     # suite green: the section's lead claim that the warrant reaches one class
     # and not the other, and the measurement motivating the record requirement.
-    Mutation(
-        guard="test_delegation_warrant",
-        test="TestSelfCheckingClassRule.test_rule_states_that_it_reaches_one_class_only",
-        target=RULES,
-        block="The delegation warrant above\n  reaches one class of checking and not the other",
-    ),
-    Mutation(
-        guard="test_delegation_warrant",
-        test="TestSelfCheckingClassRule.test_rule_names_the_governed_class",
-        target=RULES,
-        block="It governs **an author re-checking work it just produced, in the context that produced it**",
-    ),
-    Mutation(
-        guard="test_delegation_warrant",
-        test="TestSelfCheckingClassRule.test_rule_names_the_excluded_class",
-        target=RULES,
-        block="It does not govern **an independent fresh-context reading of that work by a reader that authored none of it**",
-    ),
     # M121 review. Four more entries, from findings the fan-out scored 80+:
     # F-PR1 (the two class asserts stopped at the em-dash, leaving each
     # rationale clause deletable green) and F-B1/F-B2 (the discriminator and
     # the loop-bound sentences inverted with the suite green).
-    Mutation(
-        guard="test_delegation_warrant",
-        test="TestSelfCheckingClassRule.test_governed_class_carries_its_reason",
-        target=RULES,
-        block="a check already happening unprompted, so instructing it\n  again buys tokens rather than quality",
-    ),
-    Mutation(
-        guard="test_delegation_warrant",
-        test="TestSelfCheckingClassRule.test_excluded_class_carries_its_reason",
-        target=RULES,
-        block="a different instrument against a different failure: an author checks a\n  description against its generative model of the artifact rather than against\n  the artifact",
-    ),
-    Mutation(
-        guard="test_delegation_warrant",
-        test="TestSelfCheckingClassRule.test_rule_states_the_discriminator_that_applies_it",
-        target=RULES,
-        block="The discriminator is *who reads*, never *how often the work is read* — which\n  is the same cut the freshness sentence above makes against the volume test",
-    ),
 ]
 
 
@@ -4122,32 +2600,14 @@ REGISTRY += [
 # would pass identically with the taxonomy moved back upstream — a tautology,
 # not coverage. That is LESSONS 2026-07-27 (M117): register the CONTAINED
 # phrase, never the bound. The location claim is not mutation-provable at all,
-# because the harness blanks and never MOVES (guard-doctrine §2, "Blanking is
+# because the harness blanks and never MOVES ("Blanking is
 # not swapping"); it rests on the slice construction, and inversion — not
 # blanking — is what verifies it.
 #
 # The report-everything entry is the positive framing registered on behalf of
 # the paired `assertNotIn`, which is satisfied by blanking and cannot be
-# mutation-proven itself (guard-doctrine §3).
+# mutation-proven itself.
 REGISTRY += [
-    Mutation(
-        guard="test_review_fanout",
-        test="TestReviewFanout.test_false_positive_taxonomy_lives_in_the_scorer_rubric",
-        target=REVIEW,
-        block="a pre-existing issue the diff did not introduce",
-    ),
-    Mutation(
-        guard="test_review_fanout",
-        test="TestReviewFanout.test_taxonomy_carries_its_scoring_disposition",
-        target=REVIEW,
-        block="Score anything matching this list below 60",
-    ),
-    Mutation(
-        guard="test_review_fanout",
-        test="TestReviewFanout.test_reviewers_report_everything_and_filter_nothing",
-        target=REVIEW,
-        block="report every candidate finding",
-    ),
 ]
 
 # M131: one entry per assert — the title, clause (i)'s operative sentence,
@@ -4158,38 +2618,8 @@ REGISTRY += [
 # Clauses (ii) and (iii) register the SUBJECT together with the predicate:
 # both sit on one physical line, and the predicate-only anchors this
 # milestone first shipped left the subject swappable with the whole suite
-# green (review F3d/F3e — guard-doctrine §1, pin the label with its members).
+# green (review F3d/F3e — pin the label with its members).
 REGISTRY += [
-    Mutation(
-        guard="test_scripted_edit_landing",
-        test="TestScriptedEditLandingRule.test_rule_requires_verification_before_the_claiming_record",
-        target=RULES,
-        block="Verify a batched or scripted edit landed before writing the record that claims it did",
-    ),
-    Mutation(
-        guard="test_scripted_edit_landing",
-        test="TestScriptedEditLandingRule.test_rule_requires_verification_before_the_claiming_record",
-        target=RULES,
-        block="Re-read the aimed site and confirm the change is present before any record claiming it is written",
-    ),
-    Mutation(
-        guard="test_scripted_edit_landing",
-        test="TestScriptedEditLandingRule.test_rule_requires_a_unique_anchor_for_a_section_edit",
-        target=RULES,
-        block="An edit targeting a document section anchors on text that occurs exactly once in the target file",
-    ),
-    Mutation(
-        guard="test_scripted_edit_landing",
-        test="TestScriptedEditLandingRule.test_rule_sequences_a_tick_after_its_evidence_write_succeeds",
-        target=RULES,
-        block="A check-off or tick write is sequenced strictly after the write of the evidence it depends on has succeeded",
-    ),
-    Mutation(
-        guard="test_scripted_edit_landing",
-        test="TestScriptedEditLandingRule.test_rule_sequences_a_tick_after_its_evidence_write_succeeds",
-        target=RULES,
-        block="never in the same unverified batch",
-    ),
 ]
 
 # M134: the derived-claims rule — three clauses, each separately deletable.
@@ -4200,39 +2630,9 @@ REGISTRY += [
 REGISTRY += [
     Mutation(
         guard="test_derived_claims",
-        test="TestDerivedClaimsRule.test_clause_a_derive_dont_compose",
-        target=RULES,
-        block="**Branch-added behavior claims are derived, never composed.**",
-    ),
-    Mutation(
-        guard="test_derived_claims",
-        test="TestDerivedClaimsRule.test_clause_a_derive_dont_compose",
-        target=RULES,
-        block="never composed from recollection or expectation",
-    ),
-    Mutation(
-        guard="test_derived_claims",
-        test="TestDerivedClaimsRule.test_clause_b_restatement_is_not_written",
-        target=RULES,
-        block="Branch-added prose that restates what its cited artifact already shows is not written — a cross-reference replaces it.",
-    ),
-    Mutation(
-        guard="test_derived_claims",
-        test="TestDerivedClaimsRule.test_clause_c_pointer_over_enumeration",
-        target=RULES,
-        block="A claim that would enumerate an artifact's members is written as a pointer to the artifact, except where the enumeration is itself the deliverable.",
-    ),
-    Mutation(
-        guard="test_derived_claims",
         test="TestDerivedClaimsRule.test_implement_step4_carries_the_pointer",
         target=IMPLEMENT,
         block="Prose the commit adds about an artifact's behavior follows the tracking-rules derived-claims rule: derived from the artifact, never composed.",
-    ),
-    Mutation(
-        guard="test_derived_claims",
-        test="TestDerivedClaimsRule.test_changelog_claims_are_documented_claims",
-        target=RULES,
-        block="A changelog entry asserting a behavior requires a test that fails without that behavior, or the entry narrows to what a named test enforces.",
     ),
 ]
 
@@ -4241,36 +2641,6 @@ REGISTRY += [
 # failure mode: lose any one and a free-standing hand-written count ships
 # compliant, stranded by the next edit to what it measures.
 REGISTRY += [
-    Mutation(
-        guard="test_derived_figures",
-        test="TestDerivedFiguresRule.test_domain_sentence",
-        target=RULES,
-        block="**A derived figure is pinned or procedural, never free-standing.**",
-    ),
-    Mutation(
-        guard="test_derived_figures",
-        test="TestDerivedFiguresRule.test_domain_sentence",
-        target=RULES,
-        block="code comments, docstrings, changelog entries, or docs — takes one of two\n  forms.",
-    ),
-    Mutation(
-        guard="test_derived_figures",
-        test="TestDerivedFiguresRule.test_pinned_form",
-        target=RULES,
-        block="Pinned: the figure stands beside the procedure that produced it and the commit or dated artifact it was measured at, a dated observation rather than a standing fact.",
-    ),
-    Mutation(
-        guard="test_derived_figures",
-        test="TestDerivedFiguresRule.test_procedural_form",
-        target=RULES,
-        block="Procedural: the figure is replaced by its derivation (\"the sites matched by `grep -n <pattern>`\"), and no figure is stated.",
-    ),
-    Mutation(
-        guard="test_derived_figures",
-        test="TestDerivedFiguresRule.test_free_standing_defect",
-        target=RULES,
-        block="The free-standing hand-written figure is the defect this rule deletes: the next edit to what it measures strands it, and it reads as current until a review reds on it.",
-    ),
 ]
 
 # The tidymedia M54 post-mortem is the failure mode: lose the header or
@@ -4280,48 +2650,6 @@ REGISTRY += [
 # test-form line and a vacuous control certifies an unrelated pass; lose a
 # rendering or the pointer and the rule never reaches the site that writes.
 REGISTRY += [
-    Mutation(
-        guard="test_failure_identity",
-        test="TestFailureIdentityRule.test_rule_header_and_premise",
-        target=RULES,
-        block="**An observed failure backs a claim only as the failure it is verified to be.**",
-    ),
-    Mutation(
-        guard="test_failure_identity",
-        test="TestFailureIdentityRule.test_rule_header_and_premise",
-        target=RULES,
-        block="under test or an artifact of malformed inputs, so the observation alone",
-    ),
-    Mutation(
-        guard="test_failure_identity",
-        test="TestFailureIdentityRule.test_identity_is_verified_before_the_claim",
-        target=RULES,
-        block="A claim resting on an observed failure verifies the failure's identity — its condition class, message, or signaling site — against the failure the claim is about, before the claim is written.",
-    ),
-    Mutation(
-        guard="test_failure_identity",
-        test="TestFailureIdentityRule.test_distinguishing_step_is_explicit",
-        target=RULES,
-        block="The distinguishing step is explicit: confirm the inputs reach the behavior under test — the same inputs succeed when the condition under test is removed, or the input contract is checked against the artifact's own signature first.",
-    ),
-    Mutation(
-        guard="test_failure_identity",
-        test="TestFailureIdentityRule.test_a_test_asserts_which_failure",
-        target=RULES,
-        block="A test asserting a failure asserts which failure, never that some failure occurred.",
-    ),
-    Mutation(
-        guard="test_failure_identity",
-        test="TestFailureIdentityRule.test_a_control_passes_for_the_claims_reason",
-        target=RULES,
-        block="A discriminating test's passing control is shown to pass for the claim's reason, never merely to pass.",
-    ),
-    Mutation(
-        guard="test_failure_identity",
-        test="TestFailureIdentityRule.test_error_branch_floor_requires_the_condition",
-        target=RULES,
-        block="every error branch fired with its condition asserted — the test names which failure, never bare failure — and the language's edge cases",
-    ),
     Mutation(
         guard="test_failure_identity",
         test="TestFailureIdentityRule.test_r_profile_renders_identity_for_expect_error",

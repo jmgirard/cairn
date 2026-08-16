@@ -28,34 +28,6 @@ def rules():
     return read("shared", "tracking-rules.md")
 
 
-class TestDurableRecordPreviewRule(unittest.TestCase):
-    def test_rule_present_with_mechanic(self):
-        t = rules()
-        self.assertIn("newly authored durable-record text", t)
-        self.assertIn("is shown verbatim in chat immediately before", t)
-        self.assertIn("same turn, no added stop", t)
-
-    def test_rule_names_the_covered_record_types(self):
-        t = rules()
-        self.assertIn(
-            "d-entry, a milestone file's plan-owned sections (new or via a gated",
-            t,
-        )
-        self.assertIn("a lessons line, an archive summary, a roadmap", t)
-
-    def test_rule_names_the_exemptions(self):
-        self.assertIn(
-            "noise: work-log one-liners, checkbox ticks, status-mirror updates",
-            rules(),
-        )
-
-    def test_deltas_not_dumps_names_the_carve_out(self):
-        self.assertIn(
-            "not a dump — see the durable-record preview rule below.",
-            rules(),
-        )
-
-
 class TestPerSkillDirectives(unittest.TestCase):
     def test_plan_commit_step(self):
         self.assertIn(

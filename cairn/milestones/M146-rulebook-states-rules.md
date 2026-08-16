@@ -139,7 +139,7 @@ candidate row.
       milestone-implement:109); the stamp write sites (milestone:143–146,
       milestone-review:337–340, cairn-init:109); the milestone template's
       budget preamble; cairn/DESIGN.md:64. Gating suites green after.
-- [ ] T5: Prune `skills/tests`: enumerate each file's test classes and
+- [x] T5: Prune `skills/tests`: enumerate each file's test classes and
       disposition per class against its subject (M127 lesson) before any
       whole-file deletion; update mutation-harness registrations; hand-run
       and record per AC7.
@@ -157,7 +157,10 @@ candidate row.
 - 2026-08-16: T2 done — guard-doctrine.md deleted; referencing sites fixed in milestone-plan, DESIGN.md, cairn_validate.py, test_scripts.py, test_hooks.py (plan's line numbers had drifted; sites re-derived by grep); AC2 grep clean outside skills/tests (T5's ground); gating suites green (345+103 OK).
 - 2026-08-16: T3 done — records-hygiene.md trimmed to §1+§2 + preamble with an HTML-comment remainder ledger (§4's rule already lives in implement step 6; §3/§6 dropped, losses recorded); every records-hygiene reference (DESIGN.md, tracking-rules mapping line) describes the trimmed form.
 - 2026-08-16: T4 done — cairn_budget.py + test_cairn_budget.py deleted; check_record_density, its registration, DENSITY_FILES, NON_ITEM_LINE_CAP, non_item_lines, TestNonItemLineAxis removed; budget-run steps in four skills replaced by cap-only drafting lines; both stamp write sites now one sentence; template budget preamble cut; DESIGN.md reporter list updated; AC4 grep clean outside skills/tests; suites 308+103 OK; validate lists no density advisory.
+- 2026-08-16: T5 done — skills/tests pruned per the Decisions ledger; hand-run 506 tests zero reds; AC2+AC4 greps clean repo-wide; gating suites 308+103 OK.
 
 ## Decisions
+
+- 2026-08-16 (T5 prune ledger): `skills/tests` pruned to surviving subjects; hand-run at the pruned tip: 506 tests, zero reds. Every red was dispositioned **intentional cut** — a pin on wording M146 deliberately rewrote or on machinery M146/M145 retired (the 45 pre-existing M145-rewording reds the 2026-08-16 ROADMAP stamp recorded are the M145 subset) — none a defect. Files deleted whole, subject retired: test_always_read_frame, test_amendment_budget, test_derived_figures (rule survives in the rulebook; every pin was on retired wording), test_git_safety_hooks, test_guard_doctrine_sections, test_scripted_edit_landing, test_record_density (its one green test was a stray LESSONS-header pin). The other 36 files kept their green classes/methods; class-level cuts: TestRulebookStatesTheBoundedRead; TestMilestoneTemplateBudgets + TestCounterIsAdvertisedWhereItIsDocumented; TestSelfCheckingClassRule; TestDurableRecordPreviewRule; TestRbRrOnlyPath; TestBriefTemplate + TestRulebookSentences; TestAcceptanceChipsRule + TestAccessibleLanguageRule; TestClarificationMarkerCap; TestHygieneStampRule + TestStatedCapMatchesEnforcedCap; TestModuleExists + TestRulebookPointer (lesson-graduation); TestNarrationDisciplineRule; TestRulebookPointer (records-hygiene-graduation); TestPlacementTest + TestReddeningAsymmetry + TestPlacedWhereItsConsumersRead; TestSearchFirstCandidateRule + TestFalsifyingPromotionConditions; TestMarkersUnique + TestProportionalityQuestion; TestGuardDoctrineBanking — method-level cuts are enumerated by this commit's diff. Mutation harness: 274 registry entries dropped (39 missing target, 212 block gone, 23 guard gone, measured by the prune script at this commit), 325 kept and re-verified by the harness's own blanking run; six retained guard files whose registrations all died moved to EXEMPT with a dated reason (re-registration deferred to adopter evidence).
 
 ## Review

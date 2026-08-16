@@ -54,29 +54,6 @@ class TestDerivedClaimsRule(unittest.TestCase):
         self.assertTrue(s.startswith("## Universal tracking rules"))
         self.assertNotIn("\n## ", s[1:])
 
-    def test_clause_a_derive_dont_compose(self):
-        s = universal_rules_section()
-        self.assertIn(
-            "**Branch-added behavior claims are derived, never composed.**", s
-        )
-        # Subject (which prose, on which surfaces), predicate (written
-        # against execution output or a same-session read), and tail (the
-        # negative) pinned together so no half survives alone (M131).
-        self.assertRegex(
-            s,
-            r"A prose claim\s+the branch adds about what an artifact does or "
-            r"contains — in tracking\s+records, code comments, docstrings, "
-            r"changelog entries, or docs — is written\s+against an "
-            r"execution's observed output or a same-session read of the\s+"
-            r"artifact, never composed from recollection or expectation\.",
-        )
-
-    def test_clause_b_restatement_is_not_written(self):
-        self.assertIn(
-            "Branch-added prose that restates what its cited artifact "
-            "already shows is not written — a cross-reference replaces it.",
-            universal_rules_section(),
-        )
 
     def test_implement_step4_carries_the_pointer(self):
         # The rule must be met at the moment prose gets written, so the
@@ -87,31 +64,6 @@ class TestDerivedClaimsRule(unittest.TestCase):
             "tracking-rules derived-claims rule: derived from the artifact, "
             "never composed.",
             read("milestone-implement", "SKILL.md"),
-        )
-
-    def test_changelog_claims_are_documented_claims(self):
-        # Scoped to the "What gets a test" section (M123, both bounds via
-        # the same slice discipline: heading unique, no later `## ` before
-        # the sentence).
-        text = read("shared", "tracking-rules.md")
-        self.assertEqual(text.count("\n## What gets a test"), 1)
-        section = text[text.index("\n## What gets a test") :]
-        nxt = section[1:].find("\n## ")
-        if nxt != -1:
-            section = section[: nxt + 1]
-        self.assertIn(
-            "A changelog entry asserting a behavior requires a test that "
-            "fails without that behavior, or the entry narrows to what a "
-            "named test enforces.",
-            section,
-        )
-
-    def test_clause_c_pointer_over_enumeration(self):
-        self.assertIn(
-            "A claim that would enumerate an artifact's members is written "
-            "as a pointer to the artifact, except where the enumeration is "
-            "itself the deliverable.",
-            universal_rules_section(),
         )
 
 

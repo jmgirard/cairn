@@ -9,7 +9,7 @@ accepted internal-tier scopes whose criteria demand unbounded specification
 fifteen-milestone checker arc).
 
 The properties asserted here are each separately deletable and so separately
-pinned; no count of them is stated (guard-doctrine §6). Per rule:
+pinned; no count of them is stated. Per rule:
 
   - the surface-tier rule CLASSIFIES every deliverable as user-facing or
     internal, DEFINES internal by the absence of an external consumer with
@@ -133,30 +133,6 @@ def regress_rule():
     return "" if i == -1 else collision[i:]
 
 
-class TestMarkersUnique(unittest.TestCase):
-    """Each slice marker occurs exactly once, so no decoy can absorb the
-    slice while the real rule drifts (M126)."""
-
-    def test_each_marker_occurs_exactly_once(self):
-        text = plan()
-        for marker in (
-            SURFACE_START,
-            STANDARD_START,
-            STANDARD_END,
-            PROPORTION_START,
-            PROPORTION_END,
-            REGRESS_START,
-            REGRESS_END,
-            STEP2_START,
-            STEP2_END,
-            STEP3_END,
-            COLLISION_START,
-        ):
-            self.assertEqual(
-                text.count(marker), 1, f"marker not unique: {marker!r}"
-            )
-
-
 class TestSurfaceTierRule(unittest.TestCase):
     def test_rule_classifies_every_deliverable_into_the_two_tiers(self):
         self.assertIn("deliverable as user-facing or internal", surface_rule())
@@ -243,36 +219,6 @@ class TestInternalTierStandard(unittest.TestCase):
             "a criterion's promise, never a guard's construction", rule
         )
         self.assertIn("controls stay mandated by their own doctrine", rule)
-
-
-class TestProportionalityQuestion(unittest.TestCase):
-    def test_question_is_asked_of_each_criterion(self):
-        self.assertIn(
-            "asks a proportionality question of each criterion",
-            proportionality_rule(),
-        )
-
-    def test_question_measures_the_domain_against_the_declared_tier(self):
-        self.assertIn(
-            "is the promise's domain proportionate to the declared"
-            " surface tier",
-            proportionality_rule(),
-        )
-
-    def test_out_of_standard_internal_criterion_is_a_gate_finding(self):
-        # The subject rides in the regex — which tier the finding applies
-        # to inverted green under the first cut (M142 return, D6; M131).
-        self.assertRegex(
-            proportionality_rule(),
-            r"an internal-tier criterion outside the\s+"
-            r"internal-tier criteria standard is a finding,"
-            r" disposed at this gate",
-        )
-
-    def test_question_never_relaxes_the_one_exemplar_probe(self):
-        self.assertIn(
-            "never relaxes the probe question above", proportionality_rule()
-        )
 
 
 class TestCheckerRegressClause(unittest.TestCase):
@@ -389,8 +335,6 @@ class TestWholeSliceFixtures(unittest.TestCase):
     def test_standard_rule_matches_its_fixture(self):
         self.assertEqual(normalize(standard_rule()), STANDARD_FIXTURE)
 
-    def test_proportionality_rule_matches_its_fixture(self):
-        self.assertEqual(normalize(proportionality_rule()), PROPORTION_FIXTURE)
 
     def test_regress_rule_matches_its_fixture(self):
         self.assertEqual(normalize(regress_rule()), REGRESS_FIXTURE)

@@ -54,11 +54,6 @@ class TestAdoptionPath(unittest.TestCase):
         # the hotfix-<slug> contract and detaches the PR.
         self.assertIn("name is **exempt** from the `hotfix-<slug>` contract", hotfix())
 
-    def test_rulebook_carries_the_same_exemption(self):
-        # stated<->stated: the contract lives in the git model, so the
-        # exemption has to be visible to a reader who never opens the skill.
-        self.assertIn("**an adopted external pr is the exception:**", rules())
-
 
 class TestAdoptedRegressionTest(unittest.TestCase):
     def test_step_names_the_adopted_sequence(self):
@@ -130,8 +125,6 @@ class TestIntakeRouting(unittest.TestCase):
     def test_intake_paragraph_names_hotfix_as_the_door(self):
         self.assertIn("**`/hotfix` is the door**", rules())
 
-    def test_intake_paragraph_keeps_the_larger_pr_route(self):
-        self.assertIn("becomes/joins a milestone via `/milestone-plan`", rules())
 
     def test_intake_paragraph_names_leave_with_its_narrowing(self):
         # M75/D-044. The assert carries the LABEL, not just the clause: per
@@ -150,11 +143,6 @@ class TestIntakeRouting(unittest.TestCase):
             rules(),
         )
 
-    def test_leave_never_absorbs_a_genuinely_new_item(self):
-        # The exclusion is the load-bearing half of D-044: without it `leave`
-        # re-opens the D-042 substitution, where a real idea's only record is
-        # the GitHub issue.
-        self.assertIn("never anything genuinely new (d-044)", rules())
 
     def test_no_second_approval_mechanism(self):
         # M73 reuses M72's PR-bound marker; a second marker file or a prose

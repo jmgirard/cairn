@@ -37,7 +37,7 @@ class TestLessonsLoop(unittest.TestCase):
         # cap are two encodings of one number; drift between them is the defect.
         # Anchored to the LINE_CAPS block, not to the bare key: the key
         # `"cairn/LESSONS.md"` also appears elsewhere in cairn_scripts (the
-        # DENSITY_FILES roster; CHAR_CAPS before M101), so an unanchored
+        # retired density roster; CHAR_CAPS before M101), so an unanchored
         # search reads whichever declaration comes first and would compare
         # this LINE cap against an unrelated number if the blocks were ever
         # reordered (M84 review F3).
@@ -83,8 +83,6 @@ class TestRecordCorrectionRule(unittest.TestCase):
     def test_rule_is_named(self):
         self.assertIn("Correcting a record proven false", self.rules)
 
-    def test_current_knowledge_is_corrected_in_place(self):
-        self.assertIn("current knowledge is corrected in place", self.rules)
 
     def test_the_correction_must_be_marked(self):
         # "Corrected in place" without the marking requirement is the option
@@ -93,8 +91,6 @@ class TestRecordCorrectionRule(unittest.TestCase):
         # mechanism pinned and the marking clause unpinned.
         self.assertIn("the correction marked", self.rules)
 
-    def test_history_is_superseded_never_edited(self):
-        self.assertIn("history is superseded and never edited", self.rules)
 
     def test_history_set_is_enumerated_under_its_own_label(self):
         # AC1 requires the rule to name the SETS, not just the mechanism.
@@ -113,40 +109,6 @@ class TestRecordCorrectionRule(unittest.TestCase):
             self.rules,
         )
 
-    def test_history_set_names_its_remaining_members(self):
-        # The enumeration wraps across two physical lines, and the assert above
-        # can only pin the first. Without this the four members below the wrap
-        # delete green — `milestones/archive/` moved off line 1 at M119, so the
-        # pre-M119 anchor's incidental cover of it went with it.
-        self.assertIn(
-            "milestone IDs, `milestones/archive/`, `reviews/archive/`, "
-            "entombed `legacy/`",
-            self.rules,
-        )
-
-    def test_current_knowledge_set_is_enumerated_under_its_own_label(self):
-        # M93/D-052 added `ROADMAP.md` to the set. Label and every member stay
-        # pinned on ONE physical line: pinning the label alone would survive a
-        # member being dropped, which is the M74 failure this shape defends.
-        self.assertIn(
-            "Current knowledge — `LESSONS.md`, `references/` pages, "
-            "`DESIGN.md`, `ROADMAP.md` — records what is true *now* "
-            "and is read to act on,",
-            self.rules,
-        )
-
-    def test_design_principles_are_carved_out_of_in_place_correction(self):
-        # Without this, the rule would authorise editing an IP/GP line in
-        # place, bypassing the user-decision + D-entry gate (M76/F2).
-        self.assertIn("wrong *principle* is not a wrong fact", self.rules)
-
-    def test_rule_rules_out_leaving_the_wrong_text_readable(self):
-        # The whole point: appending a correction is not enough, because a
-        # false lesson is harvested into every later plan.
-        self.assertIn(
-            "appending a correction while leaving the wrong text readable",
-            self.rules,
-        )
 
     def test_file_map_no_longer_calls_lessons_append_only(self):
         # Paired with the positive assert below: the negative alone can't be
@@ -156,9 +118,6 @@ class TestRecordCorrectionRule(unittest.TestCase):
             if line.startswith("| `cairn/LESSONS.md`")
         )
         self.assertNotIn("append-only", row.lower())
-
-    def test_file_map_names_the_lessons_write_mode(self):
-        self.assertIn("a lesson proven false is corrected in place", self.rules)
 
 
 class TestLessonRetirement(unittest.TestCase):
@@ -187,70 +146,6 @@ class TestLessonRetirement(unittest.TestCase):
     def test_rule_is_named(self):
         self.assertIn("Retiring a lesson that no longer earns its line", self.rules)
 
-    def test_enforcement_criterion_pins_its_discriminating_test(self):
-        self.assertIn(
-            "**enforcement — a test fails on the mistake the lesson warns about**",
-            self.rules,
-        )
-
-    def test_enforcement_rules_out_a_guard_merely_existing(self):
-        # The entire weight of the criterion is on *fails* rather than *exists*:
-        # most guard-naming lessons here teach the judgment the guard does not
-        # make, so "a guard covers this area" would retire them wrongly.
-        self.assertIn(
-            "discriminating word is *fails* and never *exists*", self.rules
-        )
-
-    def test_ownership_criterion_pins_its_discriminating_test(self):
-        self.assertIn(
-            "**ownership — another tracking file's slot owns the content**",
-            self.rules,
-        )
-
-    def test_ownership_permits_moving_content_to_its_owner(self):
-        # M92 review F1/92: the label assert above stops at the label, so
-        # rewording this clause to "must already be duplicated in its owner"
-        # left every other assert green and silently reverted ownership to the
-        # duplication-only reading the plan gate rejected — a reading that
-        # would have blocked both of this milestone's own retirements.
-        self.assertIn(
-            "**the retiring milestone may *move* the content there rather "
-            "than only find it already duplicated**",
-            self.rules,
-        )
-
-    def test_partial_coverage_trims_rather_than_keeping_whole(self):
-        self.assertIn(
-            "**A lesson covered only in part is trimmed to its uncovered remainder**",
-            self.rules,
-        )
-
-    def test_tombstone_is_the_archive_summary_and_nothing_else(self):
-        self.assertIn(
-            "**A retired lesson leaves no line behind — the retiring milestone's "
-            "archive summary names what it graduated**",
-            self.rules,
-        )
-
-    def test_retirement_is_distinguished_from_correction(self):
-        # D-045 correction vs D-051 retirement. Both halves share one physical
-        # line, so transposing "redundant" and "was false" — which would license
-        # deleting a lesson merely disputed — fails this guard.
-        self.assertIn(
-            "**Retirement is not correction: a retired lesson is redundant, "
-            "a corrected one was false**",
-            self.rules,
-        )
-
-    def test_check_is_scoped_to_what_shipped(self):
-        # Label-inclusive: the scope and its prohibition share one physical
-        # line, so dropping "never as a full re-sweep" — the half that costs
-        # every milestone a judgment pass over records it never touched —
-        # breaks this anchor (M92 review F1, lower-priority relative).
-        self.assertIn(
-            "**scoped to what the milestone shipped, never as a full re-sweep**",
-            self.rules,
-        )
 
     def test_retirement_wired_into_review_hygiene(self):
         self.assertIn("Retire what this milestone covered", self.review)
@@ -260,20 +155,6 @@ class TestLessonRetirement(unittest.TestCase):
             "**Scope this to what the milestone shipped — never re-sweep "
             "every lesson.**",
             self.review,
-        )
-
-    def test_file_map_row_names_retirement(self):
-        row = next(
-            line
-            for line in self.rules.splitlines()
-            if line.startswith("| `cairn/LESSONS.md`")
-        )
-        self.assertIn(
-            # M98/D-055 added maturation as a third criterion; the row names
-            # all three, so this anchor tracks the rule rather than a stale
-            # two-criterion form.
-            "retired once a test enforces it, another file owns it, or a matured family graduates whole into a doctrine module",
-            row,
         )
 
 
