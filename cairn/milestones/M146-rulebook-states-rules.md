@@ -1,11 +1,11 @@
 # M146: The rulebook states rules, git holds reasons
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** M145
 - **Driving RR:** —
 - **Principles touched:** GP1, IP4
-- **Branch/PR:** —
+- **Branch/PR:** m146-rulebook-states-rules
 
 ## Goal
 
