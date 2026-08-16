@@ -114,7 +114,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="779 lines / 53,751 chars",
+        block="400 lines / 35,884 chars",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -1398,7 +1398,7 @@ REGISTRY = [
         guard="test_hygiene_stamp",
         test="TestStampWriteSites.test_shipped_skeleton_teaches_the_shape",
         target="skills/cairn-init/SKILL.md",
-        block="(one short line, replaced each pass — never appended to; D-052)",
+        block="(one short line, replaced each pass — never appended to)",
     ),
     # M98 (D-055): maturation is the third outflow, and the graduated family
     # moved to a new module. Entries span all three surfaces the guard pins —
@@ -1819,29 +1819,19 @@ REGISTRY = [
 # completeness check (below) treats these as covered.
 EXEMPT = {
     "test_mutation_harness": "the harness's own tests, not a prose-guard",
-    # M146: these six files' registrations died with the rulebook reduction —
+    # M146, 2026-08-16: these six files' registrations died with the rulebook reduction —
     # every pinned block was deliberately reworded or retired. Their surviving
     # asserts pin current text; re-registration is deferred until adopter
     # evidence shows which of the reduced rules still need mutation proof
     # (the suite gates nothing since D-109, so an unregistered guard costs
     # only coverage the hand-run maintainer already accepts).
-    "test_gate_wording": "M146: registrations died with the rewrite; see above",
-    "test_idea_intake_gate": "M146: registrations died with the rewrite; see above",
-    "test_lesson_graduation": "M146: guards LESSONS/DECISIONS graduation state; see above",
-    "test_phase_header_levels": "M146: registrations died with the rewrite; see above",
-    "test_rulebook_polish": "M146: registrations died with the rewrite; see above",
-    "test_search_first_candidates": "M146: registrations died with the rewrite; see above",
+    "test_gate_wording": "M146 (2026-08-16): registrations died with the rewrite; see above",
+    "test_idea_intake_gate": "M146 (2026-08-16): registrations died with the rewrite; see above",
+    "test_lesson_graduation": "M146 (2026-08-16): guards LESSONS/DECISIONS graduation state; see above",
+    "test_phase_header_levels": "M146 (2026-08-16): registrations died with the rewrite; see above",
+    "test_rulebook_polish": "M146 (2026-08-16): registrations died with the rewrite; see above",
+    "test_search_first_candidates": "M146 (2026-08-16): registrations died with the rewrite; see above",
 }
-
-# M127: the retired guard-craft module's section numbering, gapped at §8. One
-# entry: blanking a mid-list heading changes the (number, title) sequence the
-# numbering guard compares against its committed expectation.
-# M127 review F1 then re-homed §9's content pins here (deleting
-# test_section_ledger.py whole had swept them out with the ledger machinery,
-# while §9 survives as live doctrine) — one entry per assert, anchors on the
-# post-M127 bytes.
-REGISTRY += [
-]
 
 
 # M95 (D-056). Five entries, because the placement doctrine fails in five
@@ -2303,32 +2293,6 @@ REGISTRY += [
     ),
 ]
 
-# M114: falsifying promotion conditions. Three entries because the heading,
-# the positive form, and the prohibition fail independently — drop only the
-# prohibition and the rule still reads as a preference that a count satisfies,
-# which is the wording that cost intraclass M93 four review returns.
-REGISTRY += [
-]
-
-# M114: two guard-craft additions. Each rule's diagnosis and its remedy fail
-# independently, and a diagnosis with no remedy is the shape that let
-# intraclass M93 rediscover the same sweep defect on three separate review
-# passes. Registration is per block, so these are needed even though
-# `test_lesson_graduation` is already a registered FILE (M60/M85). The list is
-# the count (§6): the count this comment used to state was correct at four and
-# would have been stale at five — the same trap the thrash block earlier in
-# this file records falling into at seven entries and again at nine.
-REGISTRY += [
-]
-
-# M117: the site axis and the enumeration-count rule, added to the same §3.
-# Each paragraph's heading and its operative half fail independently (the site
-# paragraph's operative half is a consequence, the count paragraph's is a
-# remedy), and both fail independently of the M114 rendering rule above them —
-# without that, deleting either one would leave the other satisfying a guard
-# that claims to cover both axes.
-REGISTRY += [
-]
 
 # M100 (RR04 rec 8): finding-enforcement prose. One entry per target file the
 # guard reads, plus separate entries where blocks fail independently (the
@@ -2388,9 +2352,6 @@ REGISTRY += [
     ),
 ]
 
-# M107: the amendment paths carry the budget re-check + one-pass-trim rule.
-REGISTRY += [
-]
 
 # M110 (D-061): maturation's second application — the records-hygiene family
 # graduated into a second module. Entries span the three registered surfaces —
@@ -2428,6 +2389,55 @@ REGISTRY += [
         test="TestDecisionEntry.test_decision_entry_states_graduate_not_ownership",
         target="cairn/DECISIONS.md",
         block="graduate into the module rather than",
+    ),
+]
+
+# M146 review fix pass (2026-08-16): content pins for the three surviving
+# records rules in the reduced rulebook, and the two live stamp write sites —
+# restoring mutation proof for rules D-116 keeps binding (review findings
+# B1/O9/O13 and the prune-verification sweep's SEVERE 1-4).
+REGISTRY += [
+    Mutation(
+        guard="test_derived_claims",
+        test="TestDerivedClaimsRule.test_rule_states_derive_never_compose",
+        target=RULES,
+        block="derived, never composed** (the derived-claims rule)",
+    ),
+    Mutation(
+        guard="test_derived_claims",
+        test="TestDerivedClaimsRule.test_tracking_records_exemption_names_its_members",
+        target=RULES,
+        block="Tracking records are exempt from this rule and from the derived-figures and",
+    ),
+    Mutation(
+        guard="test_derived_claims",
+        test="TestDerivedClaimsRule.test_derived_figures_rule_states_its_headline",
+        target=RULES,
+        block="pinned or procedural, never free-standing",
+    ),
+    Mutation(
+        guard="test_failure_identity",
+        test="TestFailureIdentityRule.test_rule_bullet_present_with_identity_clause",
+        target=RULES,
+        block="condition class, message, or signaling site",
+    ),
+    Mutation(
+        guard="test_failure_identity",
+        test="TestFailureIdentityRule.test_passing_control_clause_present",
+        target=RULES,
+        block="discriminating test's passing control is shown to pass for the claim's reason",
+    ),
+    Mutation(
+        guard="test_hygiene_stamp",
+        test="TestStampWriteSites.test_milestone_audit_write_site_says_replace",
+        target=MILESTONE,
+        block="never append to the previous stamp or demote it",
+    ),
+    Mutation(
+        guard="test_hygiene_stamp",
+        test="TestStampWriteSites.test_review_write_site_says_replace",
+        target=REVIEW,
+        block="never append to it or demote it to a `Prior:` clause",
     ),
 ]
 
@@ -2590,38 +2600,6 @@ REGISTRY += [
 ]
 
 
-# M120: the false-positive taxonomy moves out of the reviewers' instruction and
-# into the scorer's rubric (D-078). One entry per CONTAINED phrase — a taxonomy
-# member, the disposition sentence, and the report-everything instruction.
-#
-# Deliberately NOT registered: `Score 0-100 your confidence`, the string
-# `_scorer_rubric()` uses to locate its slice. Blanking a locator reds the test
-# by StopIteration whether or not the taxonomy sits inside the rubric, so it
-# would pass identically with the taxonomy moved back upstream — a tautology,
-# not coverage. That is LESSONS 2026-07-27 (M117): register the CONTAINED
-# phrase, never the bound. The location claim is not mutation-provable at all,
-# because the harness blanks and never MOVES ("Blanking is
-# not swapping"); it rests on the slice construction, and inversion — not
-# blanking — is what verifies it.
-#
-# The report-everything entry is the positive framing registered on behalf of
-# the paired `assertNotIn`, which is satisfied by blanking and cannot be
-# mutation-proven itself.
-REGISTRY += [
-]
-
-# M131: one entry per assert — the title, clause (i)'s operative sentence,
-# each of clauses (ii) and (iii), and the tick prohibition carry the rule
-# independently, so blanking any one of them must redden its own guard. Same
-# per-assert shape as the M71 entries above.
-#
-# Clauses (ii) and (iii) register the SUBJECT together with the predicate:
-# both sit on one physical line, and the predicate-only anchors this
-# milestone first shipped left the subject swappable with the whole suite
-# green (review F3d/F3e — pin the label with its members).
-REGISTRY += [
-]
-
 # M134: the derived-claims rule — three clauses, each separately deletable.
 # The intraclass M103 post-mortem is the failure mode: lose clause (a) and an
 # evidence line composed from the author's expectation reads as compliant;
@@ -2636,12 +2614,6 @@ REGISTRY += [
     ),
 ]
 
-# M137: the derived-figures rule — headline, domain tail, the two legal
-# forms, and the defect sentence, each separately deletable. D-099 is the
-# failure mode: lose any one and a free-standing hand-written count ships
-# compliant, stranded by the next edit to what it measures.
-REGISTRY += [
-]
 
 # The tidymedia M54 post-mortem is the failure mode: lose the header or
 # premise and a schema error reads as the behavior under test; lose the

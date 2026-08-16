@@ -71,6 +71,7 @@ re-measurement stays with the existing re-measurement candidate row.
 - 2026-08-16: created by /milestone-plan (RR13 step 2, gate round 1).
 - 2026-08-16: criteria audit ran ([O] fresh reader): AC1 gained the consolidated-family form and the RR13-reduction retirement ground (a strict one-lesson-per-line split would breach the 50-line cap); AC2 gained the search-first cross-reference allowance; the completeness-claiming drop criterion was demoted to ledger dispositions with the reasons in this file, not the capped archive summary; AC3 tightened to exit 0.
 - 2026-08-16: plan gate approved the five machinery-row drops via the ledger rather than a completeness-claiming criterion; falsified by a dropped row's subject resurfacing as needed work.
+- 2026-08-16: M146 review note — the In-scope row-drop list intersects D-115's Consequences: the write-time-stamp-check row is D-115's named remedy path, so dropping it requires a superseding clause in the same milestone or sparing (and correcting) the row; that row's premise and blocker analysis also name machinery M146 retired, and LESSONS.md line 18 cites the deleted test_cairn_budget — both are this milestone's cleanup ground (M146 review findings O2/O5/O8).
 
 ## Decisions
 

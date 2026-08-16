@@ -128,13 +128,13 @@ observed 2026-07-28.
 | V13 | `hotfix/SKILL.md:52` | ``(`git worktree add /tmp/<repo>-verify <default-branch>`) with only the`` | `not-an-instruction` | `keep` | a throwaway worktree path, not an instruction |
 | V14 | `hotfix/SKILL.md:58` | `check — adopting a PR means verifying its evidence, not inheriting it.` | `command-evidence` | `keep` | re-runs a contributor's test both directions; the work checked is not the agent's |
 | V15 | `hotfix/SKILL.md:60` | ``4. **Gate-lite:** run the active profile's `verify` slot (`cairn/PROFILE.md`;`` | `command-evidence` | `keep` | runs the profile's `verify` slot |
-| V16 | `milestone-brief/SKILL.md:81` | ``re-check the plan-owned body with `cairn_budget`; if the added criteria`` | `command-evidence` | `keep` | runs `cairn_budget` and reads the count |
+| V16 | `milestone-brief/SKILL.md:81` | ``re-check the plan-owned body with `cairn_budget`; if the added criteria`` | `command-evidence` | `keep` | quoted line rewritten at M146 (cap check, no counter) — original in git; classification stood for the pre-M146 line |
 | V17 | `milestone-implement/SKILL.md:23` | `` 1. Verify status is `planned` (fresh start) or `in-progress` / `blocked` `` | `command-evidence` | `keep` | reads the status off the ROADMAP |
 | V18 | `milestone-implement/SKILL.md:24` | ``with a resolved blocker (resume). Verify all `Depends on:` milestones are`` | `command-evidence` | `keep` | reads each dependency's status off the ROADMAP |
 | V19 | `milestone-implement/SKILL.md:40` | ``profile's `verify` slot before continuing.`` | `command-evidence` | `keep` | re-runs the `verify` slot after a merge from the default branch |
 | V20 | `milestone-implement/SKILL.md:59` | ``- Run the active profile's `verify` slot (`cairn/PROFILE.md`; absent →`` | `command-evidence` | `keep` | runs the `verify` slot per task |
 | V21 | `milestone-implement/SKILL.md:73` | `` `/milestone-brief`); tier-tag the Agent description ([S]/[O]). Verify `` | `command-evidence` | `keep` | reads a subagent's diff; the work checked is the subagent's, not the session's |
-| V22 | `milestone-implement/SKILL.md:86` | ``that grows a plan-owned section re-checks the body with `cairn_budget`;`` | `command-evidence` | `keep` | runs `cairn_budget` after an amendment |
+| V22 | `milestone-implement/SKILL.md:86` | ``that grows a plan-owned section re-checks the body with `cairn_budget`;`` | `command-evidence` | `keep` | quoted line rewritten at M146 (cap check, no counter) — original in git; classification stood for the pre-M146 line |
 | V23 | `milestone-implement/SKILL.md:99` | `` `verify` slot passes clean (for a toolchain whose profile names a fuller `` | `command-evidence` | `keep` | runs the `verify` slot at completion |
 | V24 | `milestone-implement/SKILL.md:102` | ``— `skills/shared/guard-doctrine.md` §8, the author never certifies its own`` | `fresh-context-reader` | `keep` | the §8 routing bar; ships unchanged — D-079 (1)'s narrowing was withdrawn at D-080 |
 | V25 | `milestone-plan/SKILL.md:27` | ``1. Confirm nothing else is `in-progress` — run`` | `command-evidence` | `keep` | runs `cairn_next.py` rather than eyeballing the ROADMAP |

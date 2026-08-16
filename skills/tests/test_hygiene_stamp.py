@@ -42,19 +42,35 @@ class TestStampWriteSites(unittest.TestCase):
     def test_shipped_skeleton_teaches_the_shape(self):
         # An adopting repo learns the format from the scaffold it is given,
         # so the skeleton carries the rule inline rather than relying on the
-        # author having read the rulebook first.
+        # author having read the rulebook first. (The D-052 citation left
+        # the shipped line at the M146 review — a cairn-internal id in an
+        # adopter's ROADMAP, finding O15.)
         text = self.site("cairn-init", "SKILL.md")
         self.assertIn(
             "_Last hygiene check: YYYY-MM-DD (one short line, replaced each "
-            "pass — never appended to; D-052)_",
+            "pass — never appended to)_",
             text,
         )
 
+    def test_milestone_audit_write_site_says_replace(self):
+        # Restored at the M146 review fix pass: the audit's write site says
+        # replace, never append or demote (the D-052 lineage's live half).
+        self.assertIn(
+            "never append to the previous stamp or demote it to a "
+            "`Prior:` clause",
+            self.site("milestone", "SKILL.md"),
+        )
+
+    def test_review_write_site_says_replace(self):
+        self.assertIn(
+            "never append to it or demote it to a `Prior:` clause",
+            self.site("milestone-review", "SKILL.md"),
+        )
 
     def test_no_write_site_still_says_only_update(self):
-        # The negative direction, paired with the three positive asserts
-        # above so it is not vacuous (M54: blanking cannot restore an
-        # absence, so a lone assertNotIn cannot be mutation-proven).
+        # The negative direction, paired with the positive write-site
+        # asserts above so it is not vacuous (M54: blanking cannot restore
+        # an absence, so a lone assertNotIn cannot be mutation-proven).
         for parts in (
             ("milestone", "SKILL.md"),
             ("milestone-review", "SKILL.md"),

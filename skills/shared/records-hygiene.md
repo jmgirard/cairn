@@ -28,7 +28,8 @@ inside a milestone file is overturned by a new milestone-local entry that names
 and supersedes it — not by editing the original, and not by a `DECISIONS.md`
 entry that silently outranks a record it never mentions.
 
-<!-- Remainder ledger (M146 trim; git holds the full text at f50136e^):
+<!-- Remainder ledger (M146 trim; git holds the full pre-trim text —
+     `git log -- skills/shared/records-hygiene.md`):
      §3 (placing a new records rule; running it over the milestone's own
      output) dropped with the rule-placement doctrine — no surviving consumer.
      §4 (amend the AC through the gate rather than drift) already lives in its

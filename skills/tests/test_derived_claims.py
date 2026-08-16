@@ -1,22 +1,13 @@
-r"""Regression guard: the M134 derived-claims rule.
+r"""Regression guard: the M134 derived-claims rule, in its M146 reduced form.
 
-Target: the "Branch-added behavior claims are derived, never composed."
-bullet in tracking-rules.md's "Universal tracking rules" section — three
-operative clauses, each pinned separately because each is separately
-deletable: (a) derive-don't-compose (a branch-added claim about what an
-artifact does or contains is written against an execution's observed output
-or a same-session read of the artifact), (b) restatement-is-not-written, and
-(c) pointer-over-enumeration. The motivating failure is intraclass M103: two
-review returns whose actioned defects were all prose composed from the
-author's model — an evidence line claiming a seeded run that ran unseeded, a
-NEWS sentence false whenever the caller sets a seed, a stale comment, a
-wrong @details claim — while the code survived both passes.
-
-Reads are scoped to the section the acceptance criterion names, with both
-bounds asserted (M123: an anchor proves the phrase exists SOMEWHERE in what
-you handed it). Clause (a) spans line wraps and is matched with `\s+` across
-the breaks (M95); clauses (b) and (c) sit on one physical line each so their
-blocks stay registrable in the mutation harness (M118).
+Targets: the derived-claims and derived-figures bullets in the reduced
+tracking-rules.md "Universal tracking rules" section (headline, the named
+tracking-records exemption, and the figures rule's two legal forms — each a
+single-line fragment so its block stays registrable in the mutation
+harness), plus the /milestone-implement step-4 pointer. The motivating
+failure is intraclass M103: review returns whose actioned defects were all
+prose composed from the author's model while the code survived both passes.
+M146 rewrote the rule text; the pre-M146 per-clause pins are in git.
 
     python3 -m unittest discover -s skills/tests -v
 """
@@ -54,6 +45,29 @@ class TestDerivedClaimsRule(unittest.TestCase):
         self.assertTrue(s.startswith("## Universal tracking rules"))
         self.assertNotIn("\n## ", s[1:])
 
+
+    def test_rule_states_derive_never_compose(self):
+        # The headline and its rule name, inside the sliced section — the
+        # fragment sits on one physical line so the harness can blank it.
+        self.assertIn(
+            "derived, never composed** (the derived-claims rule)",
+            universal_rules_section(),
+        )
+
+    def test_tracking_records_exemption_names_its_members(self):
+        # D-116's narrowing: the exemption names the rules it covers rather
+        # than pointing positionally (M146 review finding O13).
+        self.assertIn(
+            "Tracking records are exempt from this rule and from the "
+            "derived-figures and",
+            universal_rules_section(),
+        )
+
+    def test_derived_figures_rule_states_its_headline(self):
+        self.assertIn(
+            "pinned or procedural, never free-standing",
+            universal_rules_section(),
+        )
 
     def test_implement_step4_carries_the_pointer(self):
         # The rule must be met at the moment prose gets written, so the

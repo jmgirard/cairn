@@ -53,9 +53,8 @@ Every criterion must map to ≥1 existing task via the Coverage section; an unma
 task) is a gate failure, returned to `/milestone-implement` for a gated Coverage amendment, never patched review-side.
 
 DESIGN.md principles: **GP<n> — Guiding Principle**, a default stance tradeable with stated justification; **IP<n> —
-Inviolable Principle**, a hard constraint never violated — changed only by explicit user decision recorded as a D-entry.
-IP block first, then GPs; numbers are never reused or renumbered — retiring one takes a D-entry, its number staying
-retired.
+Inviolable Principle**, a hard constraint never violated — changed only by explicit user decision recorded as a
+D-entry. IP block first, then GPs; numbers are never reused or renumbered — retiring one takes a D-entry.
 
 ## Weight caps
 
@@ -92,14 +91,14 @@ retired.
   code comments, docstrings, changelog entries, and user-facing docs, a prose claim the branch adds about what an
   artifact does is written against an execution's observed output or a same-session read, never from recollection; prose
   restating what its cited artifact shows becomes a cross-reference, a member enumeration a pointer unless the
-  enumeration is itself the deliverable. Tracking records are exempt from this rule and the two below — ordinary care,
-  the review lenses, and the correction discipline govern them instead.
+  enumeration is itself the deliverable. Tracking records are exempt from this rule and from the derived-figures and
+  failure-identity rules below — ordinary care, the review lenses, and the correction discipline govern them instead.
 - **A derived figure in a code-adjacent artifact is pinned or procedural, never free-standing** (the derived-figures
-  rule): beside its producing procedure and the commit or date measured, or replaced by its derivation, no figure
-  stated.
+  rule): beside its producing procedure and the commit or date measured, or replaced by its derivation.
 - **An observed failure backs a claim only as the failure it is verified to be** (the failure-identity rule): in
   code-adjacent artifacts and tests, verify the failure's identity — condition class, message, or signaling site —
-  confirming the inputs reach the behavior under test; a test asserting a failure asserts *which* failure.
+  confirming the inputs reach the behavior under test; a test asserting a failure asserts *which* failure, and a
+  discriminating test's passing control is shown to pass for the claim's reason, never merely to pass.
 - **A D-entry carries the decision and its rationale, and no derived measurements** — a supporting count or measurement
   lives in the artifact or milestone file the entry cites (binding after M146; prior entries stand, IP4).
 - **History-record corrections batch to at most one superseding entry per milestone**, not a chain of per-claim entries
@@ -115,8 +114,9 @@ retired.
   owns the content (the retiring milestone may *move* it there); **maturation** — a stabilized family graduates whole
   into a doctrine module, when it teaches transferable craft, has been extended or consolidated at least twice, and
   neither other exit applies. A lesson covered in part is trimmed to its remainder; a retired lesson leaves no line
-  behind — the archive summary names what it graduated. Checked at `/milestone-review` post-merge hygiene, scoped to
-  what the milestone shipped; prune-the-stalest is the last resort. The graduated records-hygiene family lives in
+  behind — the archive summary names what it graduated. Retirement removes the redundant, never the merely disputed (a
+  disputed lesson is corrected, not deleted). Checked at `/milestone-review` post-merge hygiene, scoped to what the
+  milestone shipped; prune-the-stalest is the last resort. The graduated records-hygiene family lives in
   `skills/shared/records-hygiene.md` (candidate-row lifecycle; superseding a decision), read at hygiene or plan gates.
 - **Stop points are commit points.** Never end a session or turn with uncommitted work — checkpoint-commit code and
   tracking together (even half-done, marked as such).

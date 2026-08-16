@@ -10,24 +10,13 @@ as blame-attribution behavior, and the false claim propagated into NEWS,
 that repo's ROADMAP, and a control test that passed on the schema error
 independent of the behavior claimed.
 
-Scoping, stated per read (round-1 F D2: a blanket both-bounds claim here
-was false for three of four targets). The Universal-rules read is sliced
-heading-to-next-heading with both bounds asserted (M123). The premise and
-the four operative-clause reads are sliced to the rule's own bullet so
-dispersing any of them across unrelated bullets reds (round-1 F D19; the
-header alone is section-read — it is the bullet locator, M117). The floor read anchors the
-clause inside its "Always:" sentence via a wrap-spanning regex, because the
-"What gets a test" section runs to EOF and a bare section-slice assertIn
-passed with the clause relocated to an appended line (round-1 F D1). The
-r-package and SKILL.md reads are whole-file assertIns, unscoped — each
-pinned sentence occurs once in a file that has no competing section of the
-same name. Heading locators are \n-anchored so a demoted `###` heading
-cannot satisfy them (round-1 F D14). The intro premise spans line wraps and
-is matched with `\s+` across the breaks (M95); every operative clause sits
-on one physical line so its block stays registrable (M118). The slice-bounds
-test's own asserts are heading-locator bounds, which take the by-hand
-check instead of registry entries — blanking a bound crashes
-`index()` rather than failing the assert (M117; round-1 F D13 disposition).
+M146 rewrote the rule to its reduced form; the pre-M146 per-clause pins are
+in git. The surviving reads: the rule's own bullet sliced from the reduced
+Universal-rules section (identity clause + passing-control clause, each a
+single-line fragment so its block stays registrable), the r-package
+profile's `expect_error` rendering, and the /milestone-implement step-4
+pointer — the last two whole-file assertIns, each pinned sentence occurring
+once in its file.
 
     python3 -m unittest discover -s skills/tests -v
 """
@@ -65,7 +54,7 @@ def failure_identity_bullet():
     s = universal_rules_section()
     marker = (
         "- **An observed failure backs a claim only as the failure it is "
-        "verified to be.**"
+        "verified to be** (the failure-identity rule)"
     )
     if marker not in s:
         return ""
@@ -77,6 +66,19 @@ def failure_identity_bullet():
 
 class TestFailureIdentityRule(unittest.TestCase):
 
+    def test_rule_bullet_present_with_identity_clause(self):
+        b = failure_identity_bullet()
+        self.assertTrue(b, "failure-identity bullet not found in the section")
+        self.assertIn("condition class, message, or signaling site", b)
+
+    def test_passing_control_clause_present(self):
+        # Restored at the M146 review (finding O9): a discriminating test's
+        # control passes for the claim's reason, never merely passes.
+        self.assertIn(
+            "discriminating test's passing control is shown to pass for the "
+            "claim's reason",
+            failure_identity_bullet(),
+        )
 
     def test_r_profile_renders_identity_for_expect_error(self):
         self.assertIn(
