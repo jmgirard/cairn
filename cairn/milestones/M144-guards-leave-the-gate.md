@@ -100,7 +100,7 @@ knowledge reading is recorded in the work log only.
 - [x] T1: Author the two DECISIONS.md entries per AC3 (decision template;
       next ids after D-107); run `cairn_validate` and disposition any newly
       unmasked dangling-id tokens.
-- [ ] T2: Rewrite `cairn/PROFILE.md` `## verify` (two gating commands + a
+- [x] T2: Rewrite `cairn/PROFILE.md` `## verify` (two gating commands + a
       non-gating hand-run paragraph keeping the discover-only note) and
       `## test-doctrine` (no prose guard owed for new rules in this repo;
       shipped doctrine untouched for adopters).
@@ -122,5 +122,6 @@ knowledge reading is recorded in the work log only.
 - 2026-08-16: plan gate chose the removal carve-out + self-exception door shape over enumerating RR13's steps as named exceptions because a principled carve-out covers future reductions without per-step supersessions; falsified by a removal-shaped milestone smuggling new verification rules in through the carve-out.
 - 2026-08-16: AC1's test-doctrine clause was gate-added using the auditor's own repair wording (finding 6), re-read against the audit's three questions before writing; PROFILE.md read as current knowledge (a live declaration, edited in place), no classifying rule shipped (finding 15).
 - 2026-08-16: T1 — D-108 (door widening, carve-out, self-exception) and D-109 (probe falsifier) appended; validate green, no dangling-id tokens unmasked (the M115 batch did not materialize — no forward D-108/D-109 tokens existed).
+- 2026-08-16: T2 — PROFILE.md `## verify` rewritten (two gating commands, non-gating skills/tests paragraph with the discover-only note) and `## test-doctrine` (no guard owed for new rules here; shipped doctrine governs adopters); both gating suites exit 0, validate green.
 
 ## Decisions
