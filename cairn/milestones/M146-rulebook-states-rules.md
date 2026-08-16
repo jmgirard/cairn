@@ -122,7 +122,7 @@ candidate row.
 - [x] T1: Rewrite `skills/shared/tracking-rules.md` to the reduced form
       (AC1's retained units + AC5's narrowed records rules), running the
       skill-citation grep first so every cited rule is placed.
-- [ ] T2: Delete `skills/shared/guard-doctrine.md`; fix referencing sites:
+- [x] T2: Delete `skills/shared/guard-doctrine.md`; fix referencing sites:
       tracking-rules (the module mapping and read instruction),
       skills/milestone-plan/SKILL.md:130–131 and :179,
       skills/milestone-brief/SKILL.md:107, cairn/DESIGN.md:37, and the code
@@ -154,6 +154,7 @@ candidate row.
 - 2026-08-16: plan gate chose shipping the batching rule as an explicit addition (D-109's named-exception shape) over leaving the row parked because RR13 rec 3 prescribes it and practice already conforms (D-096, D-106); falsified by a milestone legitimately needing a second correcting entry at authoring time.
 - 2026-08-16: pre-implementation question gate skipped — both open choices were settled at the plan gate; no tripwire tags.
 - 2026-08-16: T1 done — tracking-rules.md rewritten to 400 lines (`wc -l` at this commit), operative rules + AC5's narrowed records rules only; skill-citation grep run first (71 hits) and every cited rule placed; /milestone's always-read-frame audit bullet removed with the frame (its stamp step compressed in passing); gating suites green.
+- 2026-08-16: T2 done — guard-doctrine.md deleted; referencing sites fixed in milestone-plan, DESIGN.md, cairn_validate.py, test_scripts.py, test_hooks.py (plan's line numbers had drifted; sites re-derived by grep); AC2 grep clean outside skills/tests (T5's ground); gating suites green (345+103 OK).
 
 ## Decisions
 

@@ -186,8 +186,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      universal claim ("no X", "every Y", "nothing Z") names the procedure —
      a search, a sweep, or a test run — that enumerates its domain; where no
      stated procedure can enumerate the domain, the criterion instead
-     claims what a procedure it names actually swept (guard-doctrine §6's
-     quantified-claim rule applied to promises). A hand-list of sites is
+     claims what a procedure it names actually swept. A hand-list of sites is
      not a procedure — the list becomes the sweep and every site it omits
      ships stale (the M118 lesson).
      **The procedure must enumerate the domain the criterion's own universal

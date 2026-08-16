@@ -2356,8 +2356,8 @@ class TestDecisionsFormatAdvisory(ScriptCase):
     # and is kept for a different reason: under the shipped contract it is an
     # instance of the disclosed two-loose-pastes collapse, so it pins the
     # departure from the other side. Each is quoted at the raggedness an author
-    # actually pastes, never trimmed to what a rule could handle
-    # (guard-doctrine §4). The `>`-quoted shape round 3 also surfaced is pinned
+    # actually pastes, never trimmed to what a rule could handle.
+    # The `>`-quoted shape round 3 also surfaced is pinned
     # separately, by `test_quoted_transcripts_are_still_pasted_output`.
     PASTE_SHAPES = {
         "passing unittest run": (
@@ -2519,8 +2519,7 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         preview = finding.split(' — "')[1].rstrip('"')
         self.assertTrue(preview.endswith("…"), preview)
         # A FIXED bound, not `<= cv._DECISIONS_PREVIEW`: deriving the expected
-        # length from the constant under test makes raising the constant pass
-        # (guard-doctrine §6 — derive it through the gate's own comparison).
+        # length from the constant under test makes raising the constant pass.
         # The constant is pinned separately, so a retune is visible in a diff.
         self.assertLessEqual(len(preview), 61, preview)
         self.assertEqual(cv._DECISIONS_PREVIEW, 60)
@@ -2785,7 +2784,7 @@ class TestDecisionsFormatAdvisory(ScriptCase):
         # Blockquoting is a rendering, not a defence: the detector normalizes
         # `>` markers to any depth and spacing, so the renderings come INTO the
         # test as positive controls rather than being enumerated in a comment
-        # the code does not read (guard-doctrine §3).
+        # the code does not read.
         cv = _load_validate()
         for marker in ("> ", ">", ">> ", "  > ", "> > "):
             with self.subTest(marker=marker):

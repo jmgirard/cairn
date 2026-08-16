@@ -569,7 +569,7 @@ class TestHeadingNormalizationContract(unittest.TestCase):
     # Site: the counters normalize at TWO sites — `cairn_scripts.py:375-376`,
     # the `## Review` body boundary, and `:412`, the `EXEMPT_HEADINGS`
     # subtraction — and a work-log-only table never reaches the first
-    # (guard-doctrine §3's site axis, the shape M117 recorded). `## Review `
+    # (the per-site axis M117 recorded). `## Review `
     # carries the whitespace axis TO the boundary site: every other whitespace
     # rendering lands at the subtraction site, which re-strips independently, so
     # without this row `cairn_scripts.py:375`'s own `.strip()` is unreachable
@@ -654,7 +654,7 @@ class TestHeadingNormalizationContract(unittest.TestCase):
                 )
                 # Each verdict pairs with a positive signal that the path ran:
                 # an absence assert alone is satisfied by a helper that returned
-                # nothing at all (guard-doctrine, absence assertions).
+                # nothing at all.
                 if expected:
                     self.assertIn("entry-007", part)
                     self.assertNotIn("entry-000", part)

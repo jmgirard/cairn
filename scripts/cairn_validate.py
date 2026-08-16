@@ -977,9 +977,9 @@ _DECISIONS_PASTED = (
 )
 # Blockquote markers are stripped before a LINE is matched, so quoting a
 # transcript does not hide its lines. The pattern takes any depth and any
-# spacing rather than an enumerated set, which is guard-doctrine §3's point: a
-# detector whose author must list every rendering is a detector that misses the
-# rendering the author did not think of. The tests carry a spread of renderings
+# spacing rather than an enumerated set: a detector whose author must list
+# every rendering is a detector that misses the rendering the author did not
+# think of. The tests carry a spread of renderings
 # in as positive controls, and are the record of which — a count restated here
 # would drift.
 #
@@ -1001,8 +1001,8 @@ _DECISIONS_QUOTE = re.compile(r"^(?:\s*>)+\s?")
 # its own delimiters, so a closed fenced block's extent is read rather than
 # inferred; loose output has no delimiter, and every rule for inferring one —
 # adjacency, a gap tolerance, a filler class, a prose closer — requires its
-# author to enumerate what transcript lines look like. That is guard-doctrine
-# §3's trap, and this detector walked into it three times, each fix fitted to
+# author to enumerate what transcript lines look like. That is the
+# author-enumeration trap, and this detector walked into it three times, each fix fitted to
 # the shape in hand: round 1 mis-split a PASSING unittest run on its progress
 # dots, round 2 an `assertEqual` failure on its banner, and round 3 both a
 # two-hunk diff on its changed lines and a `>`-quoted transcript on the space
