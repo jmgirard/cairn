@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3, GP1
-- **Branch/PR:** m145-stakes-scaled-instruments
+- **Branch/PR:** m145-stakes-scaled-instruments · PR #146 https://github.com/jmgirard/cairn/pull/146
 
 ## Goal
 
@@ -44,31 +44,31 @@ untouched.
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/milestone-review/SKILL.md` step 5 routes review rigor by
+- [x] AC1: `skills/milestone-review/SKILL.md` step 5 routes review rigor by
       stakes: for a milestone whose declared surface tier is internal and
       whose `git diff <default-branch>...HEAD --name-only` shows only
       markdown/tracking files, it prescribes exactly one fresh-context [O]
       diff reviewer; for every other diff it prescribes the three-lens
       fan-out — verified by reading the shipped step.
-- [ ] AC2: The `Score before triage` step and its 0–100 rubric are absent
+- [x] AC2: The `Score before triage` step and its 0–100 rubric are absent
       from step 5, which instead states that reviewers rank their own
       findings and the maintainer triages the ranked list at the gate, every
       reported finding logged in `## Review` (IP3) — verified by reading the
       shipped step; residue sweep: every hit of `grep -rn "scorer" skills/
       README.md cairn/DESIGN.md` (skills/tests/ excepted) dispositioned in
       the Review section.
-- [ ] AC3: Step 5's return counting operates on maintainer-actioned
+- [x] AC3: Step 5's return counting operates on maintainer-actioned
       findings, and step 5 contains no numeric confidence score, threshold,
       or band — verified by reading the shipped step, every digit-bearing
       line of the step dispositioned in the Review section.
-- [ ] AC4: `skills/milestone-brief/SKILL.md` and
+- [x] AC4: `skills/milestone-brief/SKILL.md` and
       `skills/shared/templates/brief.md` make an RR advisory by default: a
       `## Binding criteria` section is requested only on an explicit
       maintainer choice recorded at RB-authoring time, and a brief whose
       subject mechanism is on its second-or-later escalation — counted by
       sweeping `cairn/reviews/` and `cairn/reviews/archive/` for briefs
       naming the same mechanism — lists removal among its options.
-- [ ] AC5: `skills/milestone-plan/SKILL.md` step 3 scales the criteria audit
+- [x] AC5: `skills/milestone-plan/SKILL.md` step 3 scales the criteria audit
       by stakes: user-facing tier, or any drafted criterion or task carrying
       an RB-tripwire tag, gets the full audit; internal tier gets a reduced
       audit — the same fresh-context [O] reader asking only the
@@ -76,12 +76,12 @@ untouched.
       shipped step states that the reduced mode keeps the disposal rule and
       omits the probe question; both modes record one work-log line naming
       the mode, and an absent line still means no audit ran.
-- [ ] AC6: Two superseding D-entries are appended, each naming what it
+- [x] AC6: Two superseding D-entries are appended, each naming what it
       supersedes in its heading: one narrowly superseding D-016's scorer
       clause — the Never-Haiku blanket stands — and superseding D-078; one
       narrowing D-067's criteria-audit clause to the stakes-scaled form,
       D-079 clause 2's record rule surviving in both modes.
-- [ ] AC7: `python3 -m unittest discover -s scripts/tests` and
+- [x] AC7: `python3 -m unittest discover -s scripts/tests` and
       `python3 -m unittest discover -s hooks/tests` both pass (the
       PROFILE.md verify slot).
 
@@ -131,3 +131,12 @@ untouched.
 ## Decisions
 
 ## Review
+
+- 2026-08-16 AC1: shipped step 5 read — both routing bullets present verbatim (internal-tier docs-only → "spawn **one** fresh-context reviewer"; "Any other diff" → "spawn the full three-lens fan-out"), predicate names the tier and `git diff <default-branch>...HEAD --name-only`. PASS.
+- 2026-08-16 AC2: "Score before triage" and "0–100" absent from step 5; "rank its own findings", "maintainer triages the ranked" list, and "surfaced, never silently dropped (IP3)" present. Residue sweep: 2 hits — tracking-rules.md:766 (the retirement's own record) and records-hygiene.md:68 (§5 tombstone comment) — both legitimate records of the change, not live scoring steps. PASS.
+- 2026-08-16 AC3: return floor and actioned-list definition operate on maintainer triage ("Over the actioned list"; "the findings triaged fix-now or follow-up"); ≥80/≥90/below-80/80–89 all absent. All 17 digit-bearing lines of the step enumerated and dispositioned: step numbers (3,4,6), milestone ids (M36/M91/M130/M139), decision ids (D-078/D-097/D-064), the `per_page=1` API parameter, "AC<N>" — none a confidence score, threshold, or band. PASS.
+- 2026-08-16 AC4: brief SKILL.md:29-36 states advisory-by-default, BC on the maintainer's explicit recorded choice, and the second-or-later-escalation removal option with its reviews-sweep counting procedure; template :39 emits BC "ONLY if this brief explicitly requests one", :47 lists removal on second-or-later escalation. PASS.
+- 2026-08-16 AC5: plan SKILL.md:114-155 — modes selected by tier/tripwire (:121-122), reduced audit = bounded-promise + proportionality only, "omits the satisfiability, reachability, and probe questions", "keeps the disposal rule below in full" (:143-145), record line "naming the mode" with the absent-line rule intact (:153-155). PASS.
+- 2026-08-16 AC6: D-110 heading narrowly supersedes D-016's scorer clause (Never-Haiku stands) and supersedes D-078; D-111 heading narrows D-067's criteria-audit clause with D-079 clause 2 surviving — both at DECISIONS.md:4081/:4110. PASS.
+- 2026-08-16 AC7: fresh runs — scripts/tests 345 tests exit 0; hooks/tests 103 tests exit 0. PASS.
+- 2026-08-16 skills/tests hand-run (D-109 cadence, non-gating): 813 tests, 22 failures + 12 errors; each red dispositioned as an intentional M145 re-wording — scorer/fan-out guards (test_review_fanout), return-floor and widening slice fixtures (test_thrash_rule; fixture reds prove slice coverage, M143 F10), audit-block pins (test_fresh_context_readers, test_stakes_tier), brief template (test_finding_enforcement), §5 pins (test_records_hygiene_graduation), and mutation-harness registrations over changed bytes. Zero defect-classified reds.
