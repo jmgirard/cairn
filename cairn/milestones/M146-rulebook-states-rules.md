@@ -143,7 +143,7 @@ candidate row.
       disposition per class against its subject (M127 lesson) before any
       whole-file deletion; update mutation-harness registrations; hand-run
       and record per AC7.
-- [ ] T6: Draft, preview, and append the three superseding D-entries;
+- [x] T6: Draft, preview, and append the three superseding D-entries;
       graduate the batching candidate row.
 
 ## Work log
@@ -158,6 +158,7 @@ candidate row.
 - 2026-08-16: T3 done — records-hygiene.md trimmed to §1+§2 + preamble with an HTML-comment remainder ledger (§4's rule already lives in implement step 6; §3/§6 dropped, losses recorded); every records-hygiene reference (DESIGN.md, tracking-rules mapping line) describes the trimmed form.
 - 2026-08-16: T4 done — cairn_budget.py + test_cairn_budget.py deleted; check_record_density, its registration, DENSITY_FILES, NON_ITEM_LINE_CAP, non_item_lines, TestNonItemLineAxis removed; budget-run steps in four skills replaced by cap-only drafting lines; both stamp write sites now one sentence; template budget preamble cut; DESIGN.md reporter list updated; AC4 grep clean outside skills/tests; suites 308+103 OK; validate lists no density advisory.
 - 2026-08-16: T5 done — skills/tests pruned per the Decisions ledger; hand-run 506 tests zero reds; AC2+AC4 greps clean repo-wide; gating suites 308+103 OK.
+- 2026-08-16: T6 done — D-114 (D-057 trigger reopened for reduction), D-115 (density axis retired, stamp rule stands), D-116 (family narrowed to code-adjacent + two de-escalation rules, batching-as-addition per the plan gate's named-exception decision) previewed verbatim in chat and appended; batching candidate row graduated.
 
 ## Decisions
 
