@@ -16,28 +16,33 @@ tested by Python stdlib `unittest`, so the R-package gates do not apply.
 
 ## verify
 The command(s) `/milestone-implement` (per task) and `/hotfix` (gate-lite) run
-to check work before it is checked off. This repo is tested by three stdlib
-`unittest` suites — all three must be green:
+to check work before it is checked off. Two stdlib `unittest` suites gate this
+repo — both must be green:
 
 ```
-python3 -m unittest discover -s skills/tests
 python3 -m unittest discover -s scripts/tests
 python3 -m unittest discover -s hooks/tests
 ```
 
-Run them from the repo root. `skills/tests` must go through `discover`, never a
-dotted module name: the mutation harness does a bare `import mutation_engine`,
-so `python3 -m unittest skills.tests.test_mutation_harness` dies
-`ModuleNotFoundError`. The `scripts` and `hooks` suites take a dotted path
-fine (`python3 -m unittest scripts.tests.test_scripts -k <sub>`). To narrow a
-`discover` run, add `-k <substring>`.
+Run them from the repo root and check each exit code explicitly. Both suites
+take a dotted path fine (`python3 -m unittest scripts.tests.test_scripts -k <sub>`);
+to narrow a `discover` run, add `-k <substring>`.
+
+Non-gating: `skills/tests` — the prose-guard suite over the skills/rulebook
+markdown — gates nothing: no commit, merge, or check-off waits on it (M144,
+D-109; the falsifier that would re-arm it lives in that entry). It stays in
+the repo and is run by hand when wanted: `python3 -m unittest discover -s
+skills/tests`. It must go through `discover`, never a dotted module name: the
+mutation harness does a bare `import mutation_engine`, so `python3 -m
+unittest skills.tests.test_mutation_harness` dies `ModuleNotFoundError`.
 
 ## consistency-gate
 Toolchain checks `/milestone-review` runs *in addition to* the universal
 cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`).
 Generic default: **none** — the universal cairn-file checks are the whole
-consistency gate. (The `verify` suites are re-run at review via the
-acceptance-criteria evidence step, so no separate toolchain check is needed.)
+consistency gate. (The two gating `verify` suites are re-run at review via
+the acceptance-criteria evidence step, so no separate toolchain check is
+needed.)
 
 This repo has **no CI**: `gh pr checks --watch` returns "no checks reported"
 and exits 0. Treat a PR as mergeable on local green; never wait for a check
@@ -45,12 +50,15 @@ run that will not arrive.
 
 ## test-doctrine
 Toolchain-specific test expectations layered on the universal "What gets a
-test" rules in tracking-rules. This repo: guard tests are Python stdlib
-`unittest` over the skills/rulebook prose (single-line asserted phrases; steer
-clear of `**bold**` splits) and the scripts/hooks behavior. No numeric/oracle
-doctrine applies here. There is no `pytest` in this repo — never write
-`pytest …` into an acceptance criterion; it fails "No module named pytest".
-Nothing beyond the universal rules otherwise.
+test" rules in tracking-rules. This repo: `scripts/` and `hooks/` behavior is
+tested by Python stdlib `unittest` (the two gating suites). A new rulebook or
+skill rule owes no prose guard and no mutation registration in this repo —
+the retained `skills/tests` prose-guards are a hand-run tripwire, not a
+coverage obligation (M144, D-108/D-109); the shipped "What gets a test"
+doctrine continues to govern adopting repos. No numeric/oracle doctrine
+applies here. There is no `pytest` in this repo — never write `pytest …` into
+an acceptance criterion; it fails "No module named pytest". Nothing beyond
+the universal rules otherwise.
 
 ## release-walk
 The release procedure `/cairn-release` follows. Generic default: a minimal

@@ -4000,3 +4000,80 @@ deletion where the checker's absence then admits a user-facing defect it
 would have caught; the domain-bounded standard is falsified by an
 internal-tier criterion within the standard still consuming three defect
 returns. Either firing supersedes the corresponding rule here.
+
+### D-108 (2026-08-16): D-090's door widens to new conduct rules about verification or records — removal-shaped milestones are outside the door; supersedes D-090's Decision subject clause by extension, trigger clause retained; M144 excepted by name (RR13, M144)
+
+**Context:** RR13 (ingested 2026-08-16) measured the post-D-090 recurrence:
+with new apparatus barred, the generator survived as conduct rules —
+M130–M143 shipped a new rule about verification or records roughly weekly,
+each carrying guard surface and each reviewed by the machinery it modified,
+and the correction cascade D-090's Context predicted recurred at M139 (the
+ROADMAP batching row: "arguably fired at M139"). D-090's Context named the
+signature: "the anti-cost program maximizes the cost it exists to reduce."
+RR13 Q1 identifies one generator behind both forms — code-grade verification
+discipline applied to artifacts with no oracle — and rec 2 (apply) grounds
+this widening.
+
+**Decision:** D-090's Decision subject clause — "No new milestone is planned
+whose deliverable is verification apparatus" — is superseded by extension: no
+new milestone is planned whose deliverable is a new conduct rule about
+verification or records (how records are authored, measured, or audited; how
+verification is conducted), on the same terms as apparatus. D-090's trigger
+clause is retained unchanged and reads, verbatim: "unless its trigger is a
+defect in shipped behavior: what the plugin's skills, hooks, and scripts do
+for their users." Carve-out: a milestone whose deliverable removes or narrows
+a conduct rule about verification or records is outside this door. The
+apparatus-side precedent is D-095, which executed §8's retirement as a
+logged deviation from D-090's Untouched clause at user mandate — that clause
+itself reached only §8's own falsifier path, so this carve-out converts what
+D-095 did as a per-instance deviation into standing permission for
+removal-shaped work, on RR13 rec 2's grounds; it does not claim D-090
+already provided it. A firing of D-109's falsifier is a named exception to
+this door: the superseding entry it convenes is in-scope work, not a barred
+new conduct rule. M144 is excepted by name as the
+widening's own act; the door binds every plan gate after it.
+
+**Consequences:** The plan-time collision check surfaces this entry on any
+scope shaped as a rule about verification or records. RR13 steps 2–3 proceed
+under the carve-out with no further exceptions. If a shipped-behavior defect
+class appears that a barred conduct rule would have prevented, this is the
+entry to supersede.
+
+### D-109 (2026-08-16): The prose-guard suite leaves every gate — skills/tests retained and hand-run, gating nothing; the probe's exit falsifier (RR13, M144)
+
+**Context:** RR13 rec 1 (apply). Measured yield: RR10 §3's 11-of-13 and
+M127's zero-operative-losses ledger measured the §8 certification apparatus,
+retired at D-095 — cited as the prose-verification stratum's nearest
+measured yield, not as `skills/tests`'s own record; that suite's own cost
+record is the guard-craft mass RR13 Q3 inventories (the LESSONS
+guard-authoring lines; the M117–M140 guard-fix milestones). Against it, the
+hooks/scripts behavioral tests show no comparable thrash on the record
+(RR13 Q3: "the pathology is confined to tests over markdown"). Nothing is
+deleted, which is what keeps the probe reversible and its falsifier
+decidable.
+
+**Decision, part 1 — the ungating:** `cairn/PROFILE.md`'s `verify` slot
+names `scripts/tests` and `hooks/tests` as the two gating suites;
+`skills/tests` stays in the repo, runnable by hand, gating no commit, merge,
+or check-off; a new rulebook or skill rule in this repo owes no prose guard
+or mutation registration (plan gate 2026-08-16). M144's own AC4 evidence
+run is the named exception — a one-time transitional check, not a gate.
+
+**Decision, part 2 — the exit falsifier**, stated as the class of evidence
+that would falsify the ungating: the gate re-arms if an unintended prose
+regression reaches the default branch that the review fan-out missed and
+that a guard under `skills/tests` reds on; decided by running `python3 -m
+unittest discover -s skills/tests` against the merged default-branch tree.
+Cadence: the suite is run once at each `/milestone-review` post-merge
+hygiene pass and its red/green noted in the hygiene stamp; a red traced to
+an intentional re-wording is noted as intentional and is not a firing, so a
+falsifier-relevant red stays distinguishable. Firing does not re-arm the
+gate of itself: it obliges a superseding entry deciding the re-armed form —
+a named exception to D-108's door.
+
+**Consequences:** If the falsifier fires, this is the entry to supersede —
+the re-armed form and its scope are decided then, against the regression's
+evidence, not pre-committed here. D-095's Consequences clause — "A
+guard-authoring milestone now goes to review on the suites, the harness,
+the sweeps and the fan-out alone" — is narrowed: the prose suite and the
+mutation harness no longer gate; the sweeps and the fan-out stand.
