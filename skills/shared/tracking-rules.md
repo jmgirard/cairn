@@ -748,22 +748,22 @@ cairn skill is active.
   them verbatim (Acceptance chips rule).
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of
   the fresh-context review at `/milestone-review`.
-- **The `/milestone-review` fan-out** (M17) runs in fresh-context subagents,
-  not the implementing session, because an author shares their own
-  diff-blindness — a reviewer that did not write the code catches the contract
-  and convention breaks the author reads straight past.
-  Three distinct-evidence reviewers —
+- **The `/milestone-review` review** (M17; scaled to stakes at M145) runs in
+  fresh-context subagents, not the implementing session, because an author
+  shares their own diff-blindness — a reviewer that did not write the code
+  catches the contract and convention breaks the author reads straight past.
+  An internal-tier milestone whose diff touches only markdown/tracking files
+  gets one **[O]** diff reviewer; any other diff gets the three
+  distinct-evidence reviewers —
   an **[O]** diff-bug reviewer (Opus, correctness/contract/convention),
   an **[S]** blame-history reviewer (Sonnet, does the change undo deliberate
   prior work), and an **[S]** prior-PR-comments reviewer (Sonnet, does the diff
   regress a point a prior review raised on these files — primary evidence the
   archived `## Review` sections, GitHub PR threads read only when a cheap
-  probe finds real ones; always spawned, no-ops when a repo has no
-  prior-review evidence — M40, repointed M101)
-  — then an **[S]** confidence scorer (Sonnet) that scores each finding
-  0–100 and drops sub-threshold ones from the actioned list (logged, not
-  discarded). The scorer gates what the user sees, so it stays on Sonnet, never
-  Haiku.
+  probe finds real ones; always spawned in the fan-out, no-ops when a repo has
+  no prior-review evidence — M40, repointed M101).
+  Reviewers rank their own findings; the maintainer triages the ranked list
+  at the gate, every finding logged (M145 retired the confidence scorer).
 - **Never Haiku.** For anything.
 - **Fable subagents**: only through the RB/RR brief protocol
   (`/milestone-brief`) and only after a per-instance approval gate — Fable is

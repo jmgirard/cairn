@@ -146,8 +146,18 @@ overrides — log the override).
    bare retry as the recommended option. Every escalation here stays an offer,
    gated per instance, never automatic and never a standing menu item.
 
-5. **Independent fresh-context review — three lenses, then a scorer.** Spawn
-   three reviewers that have not seen the implementation, in parallel, each with
+5. **Independent fresh-context review — scaled to stakes.** Review rigor
+   follows the milestone's declared surface tier (recorded in its Goal or
+   Scope prose at plan time) and the diff's content:
+   - **Internal tier, docs-only diff** — the declared tier is internal and
+     `git diff <default-branch>...HEAD --name-only` shows only
+     markdown/tracking files (no scripts, hooks, or other executable
+     surface): spawn **one** fresh-context reviewer — the [O] diff-bug lens
+     below — and skip the other two lenses.
+   - **Any other diff** — executable surface touched, user-facing tier, or
+     no declared tier: spawn the full three-lens fan-out.
+
+   Spawn reviewers that have not seen the implementation, in parallel, each with
    a *distinct evidence base* (a shared base just finds the same things twice).
    **Reviewers share this working tree — ref-based git only:** `git diff`/`log`/`blame`
    against refs (e.g. `git diff <default-branch>..HEAD`), never `git checkout`
@@ -187,49 +197,32 @@ overrides — log the override).
      reports "no prior-review evidence", contributes zero findings, and
      never errors or blocks the gate.
 
-   Tell **all three** reviewers to report every candidate finding, filtering
-   nothing before reporting. A reviewer told to be conservative reports less
-   and never says what it withheld, so the false-positive filter runs once,
-   downstream, inside the scorer's rubric below (D-078).
+   Tell every reviewer spawned to report each candidate finding, filtering
+   nothing before reporting, and to **rank its own findings** — most severe
+   first, one sentence of justification each, no numeric scores. A reviewer
+   told to be conservative reports less and never says what it withheld
+   (D-078), so nothing is filtered before it reaches the record.
 
-   **Score before triage.** Pass every reported finding to a **[S] scorer
-   (Sonnet)** — a fresh agent that did *not* generate the findings — with this
-   rubric verbatim. **Give the scorer the diff and the milestone file too**
-   (`git diff <default-branch>..HEAD`, and the milestone's Goal, Scope and
-   acceptance criteria): three of the taxonomy's five members below are
-   judgments about *this diff and this plan* — whether an issue pre-exists it,
-   whether a line is unmodified, whether a change is one the plan called for —
-   and a scorer holding only finding text cannot decide them. It is fresh with
-   respect to *generating* the findings, which is what its independence
-   requires; it is not meant to be blind to the diff.
-   > Score 0–100 your confidence that this is a real, in-scope defect the
-   > author would want to fix: 90–100 certain and load-bearing; 80–89 likely;
-   > 60–79 plausible but arguable; below 60 speculative or out of scope. Give
-   > the integer score and one sentence of justification per finding.
-   >
-   > Not a finding, and out of scope for this diff:
-   > a pre-existing issue the diff did not introduce;
-   > anything a linter or formatter would catch;
-   > a pure style nitpick;
-   > a complaint about an unmodified line;
-   > an intentional change the milestone's plan called for.
-   > Score anything matching this list below 60. A real defect *inside* an
-   > intentional change is still a defect — the member covers the change being
-   > planned, never a flaw in how it was carried out.
+   **Triage at the gate.** The maintainer triages the ranked findings: fix
+   now / spawn a follow-up (candidate row or milestone; sweep first per the
+   search-first candidate-creation rule, `tracking-rules.md` Intake) /
+   reject with reason. Every reported finding and its disposition is logged
+   in the Review section — surfaced, never silently dropped (IP3). Findings
+   matching the out-of-scope taxonomy are ordinarily rejected at triage:
+   a pre-existing issue the diff did not introduce; anything a linter or
+   formatter would catch; a pure style nitpick; a complaint about an
+   unmodified line; an intentional change the milestone's plan called for —
+   though a real defect *inside* an intentional change is still a defect,
+   since the member covers the change being planned, never a flaw in how it
+   was carried out. **The actioned list is the findings triaged fix-now or
+   follow-up.**
 
-   Findings scoring **below 80 are excluded from the actioned list but logged**
-   in the Review section (the count, plus one line each) — surfaced, never
-   silently dropped (IP3). Triage each finding scoring **80 or above**: fix now
-   / spawn a follow-up (candidate row or milestone) / reject with reason — all
-   logged in the Review section. Spawning a follow-up candidate sweeps first per
-   the search-first candidate-creation rule (`tracking-rules.md`, Intake).
-
-   **Return floor (M130).** Over the actioned (≥80) list, a finding moves the
+   **Return floor (M130).** Over the actioned list, a finding moves the
    milestone back to `in-progress` only when it demonstrates an acceptance
    criterion failing — inside its named procedure's domain, where the
    criterion names one, save where the widening test below carves that
    failure out as an amendment return —
-   or when scored **≥90** on a defect in what the
+   or when the maintainer judges it a load-bearing defect in what the
    repo's deliverables do for their users (for this plugin: what the skills,
    hooks, and scripts do, not the doctrine prose about how work is verified),
    save where that same test carves that finding out.

@@ -97,7 +97,7 @@ untouched.
 
 ## Tasks
 
-- [ ] T1: Rewrite `/milestone-review` step 5
+- [x] T1: Rewrite `/milestone-review` step 5
       (skills/milestone-review/SKILL.md:149–269): stakes routing, scorer
       removal, return counting on maintainer-actioned findings; update the
       fan-out bullet at skills/shared/tracking-rules.md:751–766 (and the
@@ -122,6 +122,7 @@ untouched.
 - 2026-08-16: plan gate chose stakes-routed single-reviewer over deleting the fan-out outright because the diff-bug and blame lenses have real code catches on the record (RR13 §5); falsified by an internal doc-only regression a retired lens would demonstrably have caught.
 - 2026-08-16: plan gate chose the reduced two-question internal-tier audit over RR13 rec 7's full skip because D-107's internal-tier standard would otherwise have no execution path; falsified by reduced audits returning zero findings across successive internal-tier milestones.
 - 2026-08-16: plan gate chose defaults-first ordering over the candidate row's reduction-first because M146/M147 then review under the lighter regime; falsified by the new routing misclassifying M146's mixed diff.
+- 2026-08-16: T1 done — step 5 rewritten (stakes routing, ranked findings, gate triage, re-based return floor); tracking-rules fan-out bullet + archive-summary template updated; both gating suites exit 0.
 
 ## Decisions
 
