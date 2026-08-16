@@ -103,7 +103,7 @@ untouched.
       fan-out bullet at skills/shared/tracking-rules.md:751–766 (and the
       :719–727 carve-out if its wording no longer holds) and
       skills/shared/templates/archive-summary.md:14.
-- [ ] T2: `/milestone-brief` BC opt-in and second-escalation removal option
+- [x] T2: `/milestone-brief` BC opt-in and second-escalation removal option
       (skills/milestone-brief/SKILL.md:72–115);
       skills/shared/templates/brief.md:38–44.
 - [ ] T3: `/milestone-plan` step 3 audit scaling
@@ -123,6 +123,7 @@ untouched.
 - 2026-08-16: plan gate chose the reduced two-question internal-tier audit over RR13 rec 7's full skip because D-107's internal-tier standard would otherwise have no execution path; falsified by reduced audits returning zero findings across successive internal-tier milestones.
 - 2026-08-16: plan gate chose defaults-first ordering over the candidate row's reduction-first because M146/M147 then review under the lighter regime; falsified by the new routing misclassifying M146's mixed diff.
 - 2026-08-16: T1 done — step 5 rewritten (stakes routing, ranked findings, gate triage, re-based return floor); tracking-rules fan-out bullet + archive-summary template updated; both gating suites exit 0.
+- 2026-08-16: T2 done — RRs advisory by default (BC section on explicit recorded request only), second-escalation briefs list removal; brief skill step 1 + template Output format edited.
 
 ## Decisions
 
