@@ -8,7 +8,9 @@ governed LLM Wiki for project state: the agent maintains it, you gate it.
 One canonical workflow covers planning, implementation, review, hotfixes,
 releases, and expert escalation, with all project state in plain markdown
 under `cairn/`, kept in bounds by weight caps and a self-auditing health
-check. The core is language-agnostic; each repo declares a
+check. Rigor scales to stakes: each milestone is classified user-facing or
+internal when it's planned, and the criteria audit and the review fan-out
+size themselves to that. The core is language-agnostic; each repo declares a
 toolchain profile (R, Python, Docker image, or generic) that supplies its
 language-specific commands. Work lands as small stacked milestones, and any
 session, today's or next month's, can find the path from the files alone.
@@ -106,7 +108,10 @@ chip: **Proceed to review**.
 
 **3. Ship it.** `/milestone-review M07` re-runs every check fresh, gathers
 evidence for each acceptance criterion (no evidence, no tick), and hands
-the diff to independent reviewer agents that didn't write it. Then it
+the diff to independent reviewer agents that didn't write it — a three-lens
+fan-out for anything touching executable or user-facing surface, a single
+reviewer for an internal docs-only diff. Findings come to you ranked, and
+you decide what gets fixed before merge. Then it
 opens a PR and asks *you* to merge, with the evidence in front of you.
 Nothing lands on your default branch until you say yes. After the merge,
 the milestone compresses to a short summary in the archive, the ROADMAP
@@ -121,8 +126,8 @@ from the files alone.
 | Capture an idea for later | Just say it: "add X to the candidates" (one ROADMAP row, no ceremony) |
 | Turn an idea into a real plan | `/milestone-plan <title>`: investigation, scoping questions, milestone file(s) with acceptance criteria |
 | Build a planned milestone | `/milestone-implement M<NN>`: branch, tests-first tasks, checkpoint commits; resumable across sessions |
-| Verify and ship a finished milestone | `/milestone-review M<NN>`: fresh evidence for every criterion, independent code review, merge on your approval |
-| Get a stronger model's judgment on a hard question | `/milestone-brief M<NN> <topic>`: writes a self-contained brief; you approve (or run) the Fable review |
+| Verify and ship a finished milestone | `/milestone-review M<NN>`: fresh evidence for every criterion, independent code review sized to what the diff touches, merge on your approval |
+| Get a stronger model's judgment on a hard question | `/milestone-brief M<NN> <topic>`: writes a self-contained brief; you approve (or run) the Fable review. Its report advises by default — it only binds the milestone if you asked it to |
 | Fix a reported bug quickly | `/hotfix`, or just describe the bug: regression test, fix, PR, your approval. Escalates to a milestone if it's bigger than it looked |
 | Take in an outside pull request | `/hotfix` again: it adopts the contributor's PR (`gh pr checkout`), holds it to the same bar, and merges on your approval |
 | Fix a typo or tweak docs | Just ask: trivial edits commit directly to main, no tracking |
