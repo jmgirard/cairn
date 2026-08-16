@@ -111,12 +111,18 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    A and B; C becomes M13 (planned now, depends on M12); D becomes a
    candidate row; E sounds unwanted — drop entirely?".
 
-   **Criteria audit (runs before the questions are composed).** A plan
-   author's own read of its own criteria is the check measured to fail — M114
+   **Criteria audit (runs before the questions are composed; scaled to
+   stakes).** A plan author's own read of its own criteria is the check
+   measured to fail — M114
    authored criteria that were unsatisfiable as written and one that mandated
    an IP4 violation, costing gated amendments and review returns, and each was
-   discoverable here. So the step-2 criteria go to a fresh-context **[O]**
-   reader that authored none of them, which asks three mechanical questions of
+   discoverable here. The audit's mode follows the step-2 surface tier:
+   a milestone whose declared tier is user-facing, or any of whose drafted
+   criteria or tasks carries an RB-tripwire tag, gets the **full audit**; an
+   internal-tier milestone gets the **reduced audit** (M145). Either way the
+   step-2 criteria go to a fresh-context **[O]**
+   reader that authored none of them. The full audit asks three mechanical
+   questions of
    each: *what state of the world satisfies this exactly as written*,
    *does any IP or D-entry make that state unreachable*, and
    *does it make a universal claim over a domain no procedure it names enumerates*
@@ -125,24 +131,27 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    domain the claim quantifies over, never of a proxy the named procedure
    happens to enumerate (M132).
    Where a criterion cites a mutation, inversion, or planted-defect
-   verification, the audit asks whether the probes vary every axis the
+   verification, the full audit asks whether the probes vary every axis the
    verified domain is free in — form as well as location — or stand one
-   exemplar in for the family (guard-doctrine §1's inversion protocol and
-   §4's fixture rule applied to criteria).
-   The audit also asks a proportionality question of each criterion:
+   exemplar in for the family.
+   Both modes ask a proportionality question of each criterion:
    is the promise's domain proportionate to the declared surface tier
    (the step-2 rule)? An internal-tier criterion outside the
    internal-tier criteria standard is a finding, disposed at this gate
    like the audit's other findings; the question governs promises and
-   never relaxes the probe question above.
-   Dispose of what it returns at
+   never relaxes the probe question above, in the mode that asks it.
+   **The reduced audit asks only the bounded-promise and proportionality
+   questions** of each criterion — it omits the satisfiability, reachability,
+   and probe questions — and keeps the disposal rule below in full.
+   Dispose of what either mode returns at
    this gate, never silently: a finding with one clear right answer is fixed
    and the fix reported in chat, and a finding you could reasonably decide
    either way becomes one of this round's questions, within the three-marker
    cap. The instrument is a reader and never a check — satisfiability and
    IP-conflict are judgments about prose meaning, which D-059's retirement
    precedent says to route to the mechanism that works rather than mechanize.
-   **The audit records one work-log line either way** — what it returned, or
+   **The audit records one work-log line either way, naming the mode it ran
+   in** — what it returned, or
    that it returned nothing — so an absent line means the reader did not run,
    never that it ran and was silent (M121). Three of the five milestones after
    this instrument was adopted carry no such line, and which of the two
@@ -170,8 +179,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    - Acceptance criteria verifiable with evidence; never vibes. Criteria
      that cite a formula or reference value must name their source
      (`citekey (p. N)` — see the primary-sources rule). **Write the wording
-     step 3's audit read**; a criterion the gate changed goes back through the
-     audit's three questions before it is written, and the change is reported.
+     step 3's audit read**; a criterion the gate changed goes back through
+     the audit's questions — in the mode step 3 assigns the milestone's
+     tier — before it is written, and the change is reported.
    - **Bounded promises only (M130).** An acceptance criterion that makes a
      universal claim ("no X", "every Y", "nothing Z") names the procedure —
      a search, a sweep, or a test run — that enumerates its domain; where no

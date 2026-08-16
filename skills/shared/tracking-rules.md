@@ -277,7 +277,7 @@ covered — a judgment, reported and never auto-fixed.
   **scoped to what the milestone shipped, never as a full re-sweep**; D-015's
   prune-the-stalest stays the last resort when retirement cannot free the budget.
   **The records-hygiene family graduated by this rule lives in a module of this rulebook**, on its own line so the mapping stays pinnable:
-  `skills/shared/records-hygiene.md` covers candidate-row lifecycle, superseding a decision and sweeping the archive, placing a new rule and running it over your own output, amending a plan without drift, reading a review scorer, and compressing a capped file.
+  `skills/shared/records-hygiene.md` covers candidate-row lifecycle, superseding a decision and sweeping the archive, placing a new rule and running it over your own output, amending a plan without drift, and compressing a capped file.
   Read it at a milestone hygiene or plan gate; the retirement rule above is how such a family leaves `LESSONS.md`, and the module is where it lands, read conditionally like `guard-doctrine.md` so a session not at such a gate never pays for it.
 - **Stop points are commit points.** Never end a session or turn with
   uncommitted work — checkpoint-commit code and tracking together (even
@@ -716,8 +716,9 @@ cairn skill is active.
   more than the work it saves. Where one subagent can do the task,
   spawn one rather than several — a second copy of the same job buys a
   second context and returns the first one's answer.
-  The `/milestone-review` fan-out below is not that case and is no exception
-  to this rule: its three reviewers carry distinct evidence bases — the diff,
+  The `/milestone-review` fan-out (the multi-lens mode of the review bullet
+  below) is not that case and is no exception
+  to this rule: its reviewers carry distinct evidence bases — the diff,
   git blame, prior review threads — so no one of them can do another's task,
   which is the independence this rule asks for. Nor is a spawn made for
   *freshness* — a reader that must not have authored what it reads — a volume
@@ -748,22 +749,22 @@ cairn skill is active.
   them verbatim (Acceptance chips rule).
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of
   the fresh-context review at `/milestone-review`.
-- **The `/milestone-review` fan-out** (M17) runs in fresh-context subagents,
-  not the implementing session, because an author shares their own
-  diff-blindness — a reviewer that did not write the code catches the contract
-  and convention breaks the author reads straight past.
-  Three distinct-evidence reviewers —
+- **The `/milestone-review` review** (M17; scaled to stakes at M145) runs in
+  fresh-context subagents, not the implementing session, because an author
+  shares their own diff-blindness — a reviewer that did not write the code
+  catches the contract and convention breaks the author reads straight past.
+  An internal-tier milestone whose diff touches only markdown/tracking files
+  gets one **[O]** diff reviewer; any other diff gets the three
+  distinct-evidence reviewers —
   an **[O]** diff-bug reviewer (Opus, correctness/contract/convention),
   an **[S]** blame-history reviewer (Sonnet, does the change undo deliberate
   prior work), and an **[S]** prior-PR-comments reviewer (Sonnet, does the diff
   regress a point a prior review raised on these files — primary evidence the
   archived `## Review` sections, GitHub PR threads read only when a cheap
-  probe finds real ones; always spawned, no-ops when a repo has no
-  prior-review evidence — M40, repointed M101)
-  — then an **[S]** confidence scorer (Sonnet) that scores each finding
-  0–100 and drops sub-threshold ones from the actioned list (logged, not
-  discarded). The scorer gates what the user sees, so it stays on Sonnet, never
-  Haiku.
+  probe finds real ones; always spawned in the fan-out, no-ops when a repo has
+  no prior-review evidence — M40, repointed M101).
+  Reviewers rank their own findings; the maintainer triages the ranked list
+  at the gate, every finding logged (M145 retired the confidence scorer).
 - **Never Haiku.** For anything.
 - **Fable subagents**: only through the RB/RR brief protocol
   (`/milestone-brief`) and only after a per-instance approval gate — Fable is

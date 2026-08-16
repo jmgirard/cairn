@@ -26,6 +26,17 @@ retaining D-004's per-instance gate on token-cost grounds.)
    exact files/lines to examine, numbered specific questions (never
    "thoughts?"), constraints with D-entry links, and the required output
    path `cairn/reviews/RR<NN>-<slug>.md`.
+   **An RR is advisory by default:** the brief requests a
+   `## Binding criteria` section only on the maintainer's explicit choice,
+   recorded in the RB itself at authoring time — absent that request the RR
+   emits recommendations only.
+   **A mechanism's second escalation lists removal:** when the brief's
+   subject mechanism is on its second or later escalation — counted by
+   sweeping `cairn/reviews/` and `cairn/reviews/archive/` for briefs naming
+   the same mechanism — the brief lists removal of that mechanism among the
+   options it puts to the reviewer (RR13 B1: advisory conclusions delivered
+   at Fable fluency acquire unearned momentum, and both RRs on §8's second
+   escalation recommended amended keeps that a blunt retirement outperformed).
 
 2. Set the milestone `blocked` (work-log line: "blocked on RB<NN>").
    Commit (docs-only, main): `brief RB<NN>: <topic>`.
@@ -104,15 +115,15 @@ start (any skill) when a manual RR appears:
    Where a criterion cites a mutation, inversion, or planted-defect
    verification, the audit asks whether the probes vary every axis the
    verified domain is free in — form as well as location — or stand one
-   exemplar in for the family (guard-doctrine §1's inversion protocol and
-   §4's fixture rule applied to criteria).
+   exemplar in for the family.
    A brief has
    already been convened over exactly that, with the collision surfacing at a
    review gate instead of here. What the audit returns is raised with the
    user, never softened away: `binding criteria` string-compares the AC block,
    so a quietly reworded criterion reds the check, and any departure agreed
    at the gate becomes a row in the Deviations table below. The ingest audit
-   records one work-log line either way, on `/milestone-plan` step 3's terms.
+   records one work-log line either way, on `/milestone-plan` step 3's terms
+   (its line names the full mode — the ingest audit has no reduced form).
 4. Relocate the RB/RR pair to `cairn/reviews/archive/` with plain `mv` then
    `git add`, never `git mv` — an in-session-generated or hand-dropped RR is
    untracked, and `git mv` fails on an untracked file; milestone status back

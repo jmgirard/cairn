@@ -2,6 +2,7 @@
 
 - **Date:** YYYY-MM-DD
 - **Output required:** write findings to `cairn/reviews/RR<NN>-<slug>.md`
+- **Binding criteria:** not requested   <!-- "requested" only on the maintainer's explicit choice at authoring (advisory-by-default, M145); this slot is what the Output format's ONLY-if clause reads -->
 
 You are performing an independent expert review. This brief is fully
 self-contained — do not assume any conversation context. Read only what this
@@ -35,10 +36,15 @@ around it.
 In `RR<NN>-<slug>.md`: answer each question by number with your reasoning
 and evidence; list any additional findings separately under "Beyond the
 brief"; end with concrete recommendations, each marked apply / consider /
-reject-with-reason. Where findings bind implementation, also emit a
-`## Binding criteria` section: numbered `BC1…`, each a measurable assertion
-checkable against evidence, with any numeric projection stating its
-tolerance. These are ingested VERBATIM into the constrained milestone's
-acceptance criteria and mechanically diffed against this file; departures
-are legal only through that milestone's shown "Deviations from RR<NN>"
-table.
+reject-with-reason. Your report is advisory: emit a `## Binding criteria`
+section ONLY if this brief's header slot says `requested`. Where requested:
+numbered `BC1…`, each a measurable assertion checkable against evidence,
+with any numeric projection stating its tolerance. These are ingested
+VERBATIM into the constrained milestone's acceptance criteria and
+mechanically diffed against this file; departures are legal only through
+that milestone's shown "Deviations from RR<NN>" table.
+<!-- Brief author: the Binding-criteria request lives in the header slot
+     above. The second-escalation removal option is a QUESTION, not output
+     shape: when the subject mechanism is on its second or later escalation,
+     add a numbered question under ## Questions putting removal of the
+     mechanism among the options for the reviewer to weigh. -->

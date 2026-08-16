@@ -4077,3 +4077,106 @@ evidence, not pre-committed here. D-095's Consequences clause — "A
 guard-authoring milestone now goes to review on the suites, the harness,
 the sweeps and the fan-out alone" — is narrowed: the prose suite and the
 mutation harness no longer gate; the sweeps and the fan-out stand.
+
+### D-110 (2026-08-16): The review confidence scorer is retired — reviewers rank, the maintainer triages — narrowly supersedes D-016's scorer clause (the Never-Haiku blanket stands) and supersedes D-078 (RR13 rec 5, M145)
+
+**Context:** RR13 §5 measured the scorer as insurance the maintainer pays to
+overrule: it down-scored the finding classes that matter in this repo (RR10's
+78/78/68/60 logged-not-fixed with the merge held by hand), scored a real
+irreversibility defect at 48, and at M143 the maintainer directed two
+60-scored findings fixed at the gate; records-hygiene §5 already instructed
+reading every sub-80 finding anyway, so the 80 threshold functioned as a
+formality read past.
+
+**Decision:** `/milestone-review` retires the scorer in both review modes.
+Reviewers report every candidate finding, filter nothing, and rank their own
+findings; the maintainer triages the ranked list at the approval gate — fix
+now / follow-up / reject with reason — with every finding and disposition
+logged in the Review section (IP3 unchanged: surfaced, never silently
+dropped). The false-positive taxonomy D-078 moved into the scorer's rubric
+moves again, to gate-triage guidance — reviewers are still never told to
+filter, which is the half of D-078 that survives as reasoning. The return
+floor re-bases from score tiers to the maintainer-actioned list; a
+load-bearing deliverable defect the maintainer judges as such replaces the
+≥90 arm. D-016's scorer clause (the scorer runs on Sonnet) is superseded by
+the scorer's retirement; **D-016's Never-Haiku blanket stands untouched.**
+
+**Consequences:** Review has one fewer spawn per milestone and no numeric
+threshold. Falsifier: if gate triage under the ranked list demonstrably
+misses a defect class the scored cut used to catch — a merged regression
+traced to a finding a reviewer ranked low and triage skipped — this is the
+entry to supersede.
+
+### D-111 (2026-08-16): The plan-gate criteria audit scales to stakes — full for user-facing or tripwire-tagged work, reduced two-question form for internal tier — narrows D-067's criteria-audit clause; D-079 clause 2's record rule survives in both modes (RR13 rec 7, M145)
+
+**Context:** RR13 §5: the audit's founding catch was real (M114's
+unsatisfiable criteria) but its record clause was half-honored and its reach
+kept growing; rec 7 proposed gating it to user-facing or irreversible work.
+D-107 (M142) had just given the audit a proportionality question whose only
+subject is internal-tier criteria — a full internal-tier skip would leave
+that standard with no execution path, which the M145 plan gate weighed and
+declined (2026-08-16).
+
+**Decision:** `/milestone-plan` step 3 runs the full audit — satisfiability,
+reachability, bounded-promise, probe, and proportionality questions — when
+the declared surface tier is user-facing or any drafted criterion or task
+carries an RB-tripwire tag; an internal-tier milestone gets a reduced audit:
+the same fresh-context [O] reader asking only the bounded-promise and
+proportionality questions. Both modes keep the disposal rule and the
+mandatory work-log line, which now names the mode (D-079 clause 2 survives
+in both). The `/milestone-brief` ingest audit is untouched: a
+binding-criteria set exists only on explicit maintainer request after M145,
+and stays full-audited.
+
+**Consequences:** Internal-tier plans pay for the two questions that govern
+their tier and no longer for the three that mostly bind user-facing
+promises. Falsifier (recorded at the plan gate): reduced audits returning
+zero findings across successive internal-tier milestones would show the
+reduced mode is ceremony — supersede toward rec 7's full skip; an
+internal-tier milestone shipping an unsatisfiable criterion the full audit
+would have caught fires the other way.
+
+### D-112 (2026-08-16): Review rigor routes by stakes — one [O] diff reviewer for internal-tier docs-only diffs, the three-lens fan-out otherwise — defines D-110's "both review modes"; supersedes the unconditional three-lens reading of the M17 fan-out (RR13 rec 5, M145 review)
+
+**Context:** M145 shipped the routing in `/milestone-review` step 5 and
+`tracking-rules.md`'s review bullet, but its plan carried the decision only
+in D-110's undefined phrase "both review modes" — the review fan-out caught
+the gap (M145 review, finding 5): the conditional narrowing of M17's
+three-lens doctrine is exactly the cross-cutting class DECISIONS.md owns.
+
+**Decision:** `/milestone-review` spawns one fresh-context [O] diff reviewer
+when the milestone's declared surface tier is internal and the branch diff
+touches only markdown/tracking files; every other diff — executable surface,
+user-facing tier, or no declared tier — gets the three-lens fan-out. The
+prior-PR lens's always-spawn clause (M40) now binds within the fan-out mode.
+On the single-reviewer path the milestone forgoes the blame-history and
+prior-PR lenses, so the saving there is three spawns per review (two lenses
+plus the scorer), not D-110's "one fewer spawn" — that count is correct only
+for the fan-out mode.
+
+**Consequences:** D-109's exit falsifier is unaffected in instrument — it is
+decided by the hygiene-pass suite run, not by which lenses spawned — though
+review-side detection narrows on internal docs-only diffs, which is the
+falsifier the M145 plan gate recorded. If an internal-tier docs-only
+regression ships that a skipped lens would demonstrably have caught, this is
+the entry to supersede.
+
+### D-113 (2026-08-16): Two claims in D-111 are corrected in one batched entry — the proportionality question's subject, and what the dropped questions bind — supersedes those clauses; D-111's decision and its other content stand (M145 review)
+
+**Context:** The M145 review fan-out found two characterizations in D-111
+false against the shipped text (findings 16–17), and RR13 rec 3's batched
+form applies: one superseding entry, not a chain.
+
+**Decision:** (1) D-111's Context clause "a proportionality question whose
+only subject is internal-tier criteria" is corrected: the shipped question
+is asked of every criterion (`/milestone-plan` step 3); only its finding
+condition — an internal-tier criterion outside the internal-tier standard —
+is tier-specific. (2) D-111's Consequences clause "no longer for the three
+that mostly bind user-facing promises" is corrected: satisfiability and
+reachability are tier-neutral — D-111's own Context names M114's
+unsatisfiable criteria as the audit's founding catch — so what the reduced
+mode drops is depth on the cheaply-audited tier, not questions that bind
+only user-facing work.
+
+**Consequences:** D-111's decision — the two modes and their selectors —
+stands unchanged, with its falsifiers.

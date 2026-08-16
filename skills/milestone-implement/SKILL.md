@@ -89,8 +89,9 @@ run ingestion first (see `/milestone-brief`).
      (+ D-entry if cross-cutting); show the amended criterion/scope text
      verbatim in chat before its commit (durable-record preview).
      Amended acceptance-criterion wording — an amendment return from
-     `/milestone-review` included — is asked the criteria audit's three
-     questions as `/milestone-plan` step 3 states them, by a fresh-context
+     `/milestone-review` included — is asked the criteria audit's
+     questions in the mode `/milestone-plan` step 3 assigns the
+     milestone's tier, by a fresh-context
      **[O]** reader that did not author the amended wording, before the
      amended text is written to the milestone file.
      Wording whose clearance the `/milestone-brief` ingest audit's work-log
