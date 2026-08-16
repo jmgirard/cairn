@@ -62,8 +62,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   `cairn_validate` (mechanical consistency gate), `cairn_impact` (principle
   → citing `cairn/` file:line, for the Sync Impact Report on IPn/GPn changes;
   M15), `cairn_cost` (per-phase token attribution over the session store;
-  M94), `cairn_budget` (one artifact against its cap, at drafting time rather
-  than gate time — the only one taking a FILE, not a repo root; M99).
+  M94).
   Read-only; reuse the hooks' `cairn_common` parser (no duplication);
   exit 2 outside a cairn repo. `/milestone` invokes them instead of
   re-deriving status by LLM; `/milestone-review` runs `cairn_impact --changed`

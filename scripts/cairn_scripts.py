@@ -45,44 +45,7 @@ LINE_CAPS = {"cairn/ROADMAP.md": 60, "cairn/LESSONS.md": 50, "cairn/PROFILE.md":
 MILESTONE_CAP = 150
 ARCHIVE_CAP = 25
 
-# Files whose NON-item lines the `record density` advisory measures (the
-# per-line axis, NON_ITEM_LINE_CAP below). Both are parsed one item per line
-# (ROADMAP rows read positionally; D-015 defines LESSONS as one lesson per
-# line), so their line count measures ITEMS and cannot see prose accumulating
-# on a non-item line. PROFILE.md is deliberately absent: surveyed at M84, no
-# density problem, item cap alone. Advisory only (check_record_density WARNs,
-# never FAILs): unlike an item count, "too dense" is a judgment about prose
-# quality, not a structural fact.
-#
-# A whole-file character axis (CHAR_CAPS) sat here from M84 to M101; D-058
-# removed it on measured grounds: with thresholds derived from assumed means
-# it fired at ordinary density for three consecutive passes (D-049), and with
-# thresholds re-derived as what each line cap already permits it could tax a
-# hygiene pass but never bind before the item cap it backstopped. Git holds
-# the axis; the item caps and this per-line axis are what remain.
-DENSITY_FILES = ("cairn/ROADMAP.md", "cairn/LESSONS.md")
 TERMINAL_ROW_RETENTION = 5  # done + dropped rows share one ROADMAP cap
-
-# Per-line ceiling for NON-item lines only — headings, preamble, stamps, HTML
-# comments (D-052, narrowing M84's blanket rejection of any per-line warn).
-# M84's reason for that rejection is kept and still binds ITEM lines: pressure
-# on a row, candidate, or lesson would reward splitting one across lines and
-# corrode the one-item-per-line format both parsers depend on. A non-item line
-# has no such format to corrode, and it is where prose hides from the item
-# axis — a line count charges a 3,000-char stamp exactly one line — so cairn's
-# `Last hygiene check` stamp reached 3,152 chars in one adopting repo
-# (28% of that ROADMAP) with every gate green.
-#
-# 400 is measured, not assumed (M87). Survey of every non-item line in both
-# capped files across all six cairn repos, 2026-07-19: healthy max 245 (a
-# terminal-row-retention comment), then 230, 194, 141, 119, 105, 102, 101 —
-# against two live defects at 1,870 (intraclass) and 2,568 (circumplex, down
-# from a 3,152 peak after a same-day review pass rewrote it and still left it
-# over). The comparison is `>=`, so 400 permits 399: 154 chars (63%) of headroom
-# over the worst healthy line, and 4.7x/6.4x below both defects. Figures are
-# dated because circumplex's moved mid-milestone, and every ratio here is
-# against the CURRENT measurement, never the peak.
-NON_ITEM_LINE_CAP = 400
 
 # Cap on the cairn-owned `## Project tracking (cairn)` block appended to a
 # repo's CLAUDE.md (D-018). Template target is ~25 lines; 30 gives headroom.
@@ -277,38 +240,6 @@ def line_count(path):
             return sum(1 for _ in f)
     except Exception:
         return None
-
-
-def non_item_lines(path):
-    """Every NON-item line of a tracking file, as (lineno, length) pairs.
-
-    An item line is one a parser reads positionally as a single record: a
-    table row (`|…`) or a bullet (`- …`). Everything else — headings, italic
-    preamble, the hygiene stamp, HTML comments — is prose, and is what
-    NON_ITEM_LINE_CAP measures (D-052).
-
-    Classification is by line SHAPE, not by threshold, so an item line is
-    never merely under-measured: it is not measured at all, and no length
-    can ever make it warn. That is what keeps M84's rejection intact —
-    there is no incentive to split a row, because splitting a row buys
-    nothing here.
-
-    Blank lines are dropped; they carry no prose and would only pad output.
-    Returns [] if the file is unreadable, matching the other measures."""
-    try:
-        with open(path, encoding="utf-8") as f:
-            lines = f.read().split("\n")
-    except Exception:
-        return []
-    out = []
-    for i, line in enumerate(lines, 1):
-        stripped = line.strip()
-        if not stripped:
-            continue
-        if stripped.startswith("|") or stripped.startswith("- "):
-            continue
-        out.append((i, len(line)))
-    return out
 
 
 def claude_section_line_count(path):

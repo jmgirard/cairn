@@ -130,7 +130,7 @@ candidate row.
       scripts/tests/test_scripts.py, hooks/tests/test_hooks.py.
 - [x] T3: Trim `records-hygiene.md` to §1+§2; relocate §3/§4/§6 operative
       content or ledger it; fix the tracking-rules mapping line.
-- [ ] T4: Retire the density/budget machinery:
+- [x] T4: Retire the density/budget machinery:
       scripts/cairn_validate.py:111–150 + the :1844 registration,
       scripts/cairn_scripts.py:48–85 and :282–300, scripts/cairn_budget.py,
       scripts/tests/test_cairn_budget.py, TestNonItemLineAxis in
@@ -156,6 +156,7 @@ candidate row.
 - 2026-08-16: T1 done — tracking-rules.md rewritten to 400 lines (`wc -l` at this commit), operative rules + AC5's narrowed records rules only; skill-citation grep run first (71 hits) and every cited rule placed; /milestone's always-read-frame audit bullet removed with the frame (its stamp step compressed in passing); gating suites green.
 - 2026-08-16: T2 done — guard-doctrine.md deleted; referencing sites fixed in milestone-plan, DESIGN.md, cairn_validate.py, test_scripts.py, test_hooks.py (plan's line numbers had drifted; sites re-derived by grep); AC2 grep clean outside skills/tests (T5's ground); gating suites green (345+103 OK).
 - 2026-08-16: T3 done — records-hygiene.md trimmed to §1+§2 + preamble with an HTML-comment remainder ledger (§4's rule already lives in implement step 6; §3/§6 dropped, losses recorded); every records-hygiene reference (DESIGN.md, tracking-rules mapping line) describes the trimmed form.
+- 2026-08-16: T4 done — cairn_budget.py + test_cairn_budget.py deleted; check_record_density, its registration, DENSITY_FILES, NON_ITEM_LINE_CAP, non_item_lines, TestNonItemLineAxis removed; budget-run steps in four skills replaced by cap-only drafting lines; both stamp write sites now one sentence; template budget preamble cut; DESIGN.md reporter list updated; AC4 grep clean outside skills/tests; suites 308+103 OK; validate lists no density advisory.
 
 ## Decisions
 
