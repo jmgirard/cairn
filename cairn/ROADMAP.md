@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-16 (M146 archived; M141 done-row pruned for terminal retention; LESSONS at cap — stalest line pruned, the M102 callable-seam lesson, its advice embodied in the shipped scripts; D-109 hand-run on merged main: 513 tests, zero reds; validate green.)_
+_Last hygiene check: 2026-08-16 (M147 archived; M143 done-row pruned for terminal retention; skills/tests hand-run on merged main: 513 tests, zero reds; validate green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -14,10 +14,9 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 |---|---|---|---|---|---|
 | M145 | Standing instruments scale to stakes | done | — | high | milestones/archive/M145-stakes-scaled-instruments.md |
 | M146 | The rulebook states rules, git holds reasons | done | M145 | high | milestones/archive/M146-rulebook-states-rules.md |
-| M147 | The records shrink to their jobs | review | M146 | normal | milestones/M147-record-diet.md |
+| M147 | The records shrink to their jobs | done | M146 | normal | milestones/archive/M147-record-diet.md |
 | M144 | The prose-guard suites leave the merge gate | done | — | high | milestones/archive/M144-guards-leave-the-gate.md |
 | M142 | The plan gate scales criteria rigor to the deliverable's stakes | done | — | high | milestones/archive/M142-stakes-tier.md |
-| M143 | The thrash threshold recommends descoping before re-planning | done | — | high | milestones/archive/M143-descope-first-thrash.md |
 
 ## Candidates
 
