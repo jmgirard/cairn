@@ -1,6 +1,6 @@
 # M144: The prose-guard suites leave the merge gate
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
