@@ -84,7 +84,7 @@ reasoning stands: item lines are never length-policed.
 
 ## Tasks
 
-- [ ] T1: Amend the Weight caps bullet (skills/shared/tracking-rules.md:62) and
+- [x] T1: Amend the Weight caps bullet (skills/shared/tracking-rules.md:62) and
       the remedies bullet (:71-76): byte budgets beside the line caps, marked
       judgment-checked; LESSONS remedy imported; pinned substrings intact.
 - [ ] T2: Run the AC2 sweep; add the byte budget beside every ROADMAP/LESSONS
@@ -106,6 +106,8 @@ reasoning stands: item lines are never length-policed.
 - 2026-08-17: plan gate chose prose budgets over a validator byte check because the checker-regress rule poses simplify-first and the user took it; falsified by an over-budget file surviving a hygiene pass untrimmed (the D-entry's recorded falsifier).
 - 2026-08-17: plan gate chose fixed budgets (line cap × 400) over mean-derived thresholds because derivation is the measured failure mode of M84/D-049 (misfire or inertness plus a per-pass re-measurement tax); falsified by the budgets proving wrong-sized in the field — a healthy file red, or bloat sitting comfortably under cap.
 - 2026-08-17: plan gate chose adopter-side trims at each repo's own next audit over trim passes planned now because the D-052 rollout shape lets the rule prove itself in the field; falsified by an adopter red persisting across consecutive audits untrimmed.
+
+- 2026-08-17: T1 done — Weight caps bullet gains the byte-budget sentence (pinned `` `LESSONS.md` < 50 lines `` substring untouched); remedies bullet gains the ROADMAP byte remedy and imports the LESSONS retire-or-prune remedy; both gating suites green, exit codes checked.
 
 ## Decisions
 
