@@ -14,8 +14,7 @@ cap-stating surfaces (cairn-init ×2, migration-protocol, milestone-review,
 LESSONS header, rulebook); `wc -c` check wired into the `/milestone` health
 audit and `/milestone-review` post-merge hygiene; D-119 records the fired
 D-058 falsifier, the D-108 and D-057/D-114 doors, and the prose form's own
-falsifier; instrument-adoption row annotated (weighed, not fired); rulebook
-mass baseline re-seeded (404/36,532) with its two hand-run pins.
+falsifier; instrument row annotated; mass baseline re-seeded with its pins.
 
 **Decisions:** D-119; AC4 amended (narrowed) at a mini gate — D-116 part 2
 conflict and a self-firing falsifier — two fresh readers plus user acceptance.
