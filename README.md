@@ -74,9 +74,13 @@ Development is a cycle of milestones: PR-sized units of work with explicit
 acceptance criteria. You steer at defined gates; Claude works autonomously
 between them:
 
-```
-idea → /milestone-plan → /milestone-implement → /milestone-review → merged
-        (scope gate)      (choices gate)         (approval gate)
+```mermaid
+flowchart LR
+    idea["idea"] --> plan["/milestone-plan"]
+    plan -->|scope gate| implement["/milestone-implement"]
+    implement -->|choices gate| review["/milestone-review"]
+    review -->|approval gate| merged["merged"]
+    review -->|findings to fix| implement
 ```
 
 You rarely type the next command: each phase ends with clickable options

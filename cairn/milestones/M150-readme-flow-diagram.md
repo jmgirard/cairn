@@ -1,11 +1,11 @@
 # M150: The core loop becomes a rendered diagram
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m150-readme-flow-diagram`
 
 ## Goal
 
@@ -69,11 +69,11 @@ machine, so GitHub's rendering is the sole oracle (AC2).
 
 ## Tasks
 
-- [ ] T1: draft the flowchart source in this file's work log — nodes, gate
-      labels, the return edge — and check it against `README.md:71-84`'s prose
-      so the drawing and the paragraph beneath it agree.
-- [ ] T2: replace `README.md:77-80` with the mermaid-fenced block; touch no other
-      fenced block (the tree block at `README.md:140-151` is guarded).
+- [x] T1: draft the flowchart source — nodes, gate labels, the return edge —
+      and check it against `README.md:71-84`'s prose so the drawing and the
+      paragraph beneath it agree.
+- [x] T2: replace `README.md:77-80` with the mermaid-fenced block; touch no other
+      fenced block (the tree block, now `README.md:144-155`, is guarded).
 - [ ] T3: push the branch, open its README page on GitHub in a browser, and
       confirm the block renders as a figure; record the URL and date.
 - [ ] T4: run both gating suites and the hand-run `skills/tests`; record counts
@@ -86,7 +86,10 @@ machine, so GitHub's rendering is the sole oracle (AC2).
 - 2026-08-17: created by /milestone-plan; absorbs the "README flow diagram" candidate row (added 2026-08-14).
 - 2026-08-17: plan-gate criteria audit ran in FULL mode (user-facing tier), fresh [O] reader; 7 findings returned, all fixed here — greppable terminal label, block-range co-location, back edge cited to the rulebook not recalled, AC2's record clause moved to the review procedure, AC3 re-pointed from the gating suites (which assert nothing about README) to the guards owning those properties, D-109's no-exit-0-bar reading restored, AC4 given a procedure.
 - 2026-08-17: plan gate chose replacing the ASCII block over keeping both because two blocks stating one flow drift apart; falsified by a reader report that the Mermaid source is unreadable where the file is read unrendered.
+- 2026-08-17: branch m150-readme-flow-diagram cut from main at 62ba630; status in-progress.
 - 2026-08-17: plan gate chose phases+gates+return over also drawing the trivial and hotfix side doors because the section is the core loop and those carry their own table rows; falsified by a reader taking the loop as the only entry point into cairn.
+- 2026-08-17: T1 refined — the draft is shown in chat and this line records it, rather than pasted into the work log where a multi-line block would trip the one-line entry rule.
+- 2026-08-17: T1+T2 done — README.md:77-84 is now a mermaid flowchart (idea → plan → implement → review → merged, gates on the edges, review→implement return); diff is 7 insertions / 3 deletions confined to that block, the other three fenced blocks untouched (tree block shifted 140-151 → 144-155, content identical).
 
 ## Decisions
 
