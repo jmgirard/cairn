@@ -4,12 +4,12 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M149: The line caps gain byte budgets
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** —
+- **Branch/PR:** m149-byte-budgets
 
 ## Goal
 

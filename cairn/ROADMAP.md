@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M149 | The line caps gain byte budgets | planned | — | normal | milestones/M149-byte-budgets.md |
+| M149 | The line caps gain byte budgets | in-progress | — | normal | milestones/M149-byte-budgets.md |
 | M148 | Review returns narrow the promises, never widen them | done | — | high | milestones/archive/M148-returns-narrow.md |
 | M145 | Standing instruments scale to stakes | done | — | high | milestones/archive/M145-stakes-scaled-instruments.md |
 | M146 | The rulebook states rules, git holds reasons | done | M145 | high | milestones/archive/M146-rulebook-states-rules.md |
