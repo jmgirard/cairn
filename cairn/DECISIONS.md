@@ -4361,3 +4361,35 @@ D-101-style inadmissibility; an internal-tier milestone shipping an
 instrument-binding criterion that costs a defect return says full-mode-only
 is too narrow — extend the question to the reduced audit, superseding the
 mode clause here.
+
+### D-119 (2026-08-17): `ROADMAP.md` and `LESSONS.md` gain prose byte budgets — the line caps' width blind spot closed as judgment-checked prose — annotates D-058 (M149)
+
+**Context:** D-058 removed the whole-file density axis, naming its falsifier:
+"an item file bloating at stable line count with no human catching it at
+harvest." That fired. Three adopter files stood over the budgets below at
+green line caps while their repos' 2026-08-15/17 hygiene passes stamped green
+over them; the measured bytes and lines live in M149's Goal (D-116 part 2
+keeps them out of this entry). Line-denominated caps reward line width: the
+record diet's bulk migrated into the uncapped mass of the long-lived item
+files.
+
+**Decision:** `ROADMAP.md` < 24,000 bytes and `LESSONS.md` < 20,000 bytes —
+fixed at line cap × 400, the healthy line width D-052 surveyed 2026-07-19 —
+stated in the rulebook's Weight caps and judgment-checked at hygiene passes
+(`wc -c`), with no validator check: the 2026-08-17 plan gate posed the
+checker-regress rule's simplify-first option and machinery was declined.
+Fixed budgets rather than mean-derived thresholds, derivation being the
+measured failure mode (D-049/D-058: misfire or inertness plus a per-pass
+re-measurement tax). D-058 is annotated, not superseded, though its
+Consequences pointed at supersession: supersession there meant rebuilding the
+removed axis, and no removed machinery is rebuilt — D-058's deletion stands
+untouched; only its remedy pointer is not followed (the D-117 shape).
+
+**Consequences:** A hygiene pass can no longer stamp "caps ok" from validator
+output alone — the `/milestone` health audit and `/milestone-review`
+post-merge hygiene each name the `wc -c` check. Over-budget adopters trim at
+their own next audits (the D-052 rollout shape). Falsifier of the prose form:
+a file found over its byte budget at two consecutive hygiene passes without a
+trim — excluding the three files M149's Goal names on their first hygiene
+pass after this rule ships — fires it, and the firing takes a fresh plan-gate
+remedy at that day's plan gate, never a revival of the retired axis (D-117).

@@ -57,15 +57,20 @@ reasoning stands: item lines are never length-policed.
       post-merge hygiene step (skills/milestone-review/SKILL.md:336-337) each
       name the two byte budgets as a `wc -c` check in their cap checks.
 - [ ] AC4: An appended D-entry records: the two budgets and their fixed basis;
-      that D-058's falsifier fired, pinning the adopter evidence (the three
-      over-budget files' bytes and lines, their green line caps, and the
-      2026-08-15/17 hygiene passes that stamped green over them); that the
-      prose form was chosen at the checker-regress gate with machinery
-      declined, D-058 annotated and not superseded; and the prose form's own
-      falsifier — a tracked file found over its byte budget at a hygiene pass
-      and not trimmed in that same pass, after this rule ships — whose firing
-      takes a fresh plan-gate remedy (the D-117 shape). No prior entry is
-      edited.
+      that D-058's falsifier fired, identifying the adopter evidence, which
+      this milestone's Goal holds; that the prose form was chosen at the
+      checker-regress gate with machinery declined — its heading reading
+      "annotates D-058", not claiming supersession, and the entry stating why
+      annotation is the correct disposition though D-058's Consequences
+      pointed at supersession (no removed machinery is rebuilt); and the prose
+      form's own falsifier — a file found over its byte budget at two
+      consecutive hygiene passes without a trim, excluding the three files
+      this milestone's Goal names on their first hygiene pass after this rule
+      ships — whose firing takes a fresh plan-gate remedy (the D-117 shape).
+      No prior entry is edited (`git diff main...HEAD -- cairn/DECISIONS.md`
+      shows additions only). A work-log line records the falsifier tightening
+      relative to the plan-gate line (two consecutive passes; first-pass-only
+      carve-out) and why.
 - [ ] AC5: The instrument-adoption-discipline candidate row carries a dated
       annotation that a standing instrument was weighed at this milestone's
       checker-regress gate and declined in favour of prose — condition not
@@ -91,9 +96,9 @@ reasoning stands: item lines are never length-policed.
       line-cap statement it finds (known sites: skills/cairn-init/SKILL.md:95
       and :103, skills/milestone-review/SKILL.md:355 "50-line",
       cairn/LESSONS.md:9); record each remaining hit's disposition.
-- [ ] T3: Add the `wc -c` byte-budget line to the `/milestone` health audit and
+- [x] T3: Add the `wc -c` byte-budget line to the `/milestone` health audit and
       the `/milestone-review` post-merge hygiene checklist.
-- [ ] T4: Append the D-entry (AC4's content); annotate the instrument-adoption
+- [x] T4: Append the D-entry (AC4's content); annotate the instrument-adoption
       candidate row (AC5's wording).
 - [ ] T5: Run both gating suites with explicit exit codes; hand-run
       skills/tests and disposition reds (intentional re-wording per D-109 is
@@ -109,6 +114,10 @@ reasoning stands: item lines are never length-policed.
 
 - 2026-08-17: T1 done — Weight caps bullet gains the byte-budget sentence (pinned `` `LESSONS.md` < 50 lines `` substring untouched); remedies bullet gains the ROADMAP byte remedy and imports the LESSONS retire-or-prune remedy; both gating suites green, exit codes checked.
 - 2026-08-17: T2 done — sweep found 6 hits: 5 gained budgets (cairn-init:95/:103, migration-protocol:87 — a site the plan's known list missed, the sweep caught it — milestone-review:355, LESSONS.md:9); tracking-rules:62's budgets sit on the same bullet's continuation lines (T1). Suites green.
+- 2026-08-17: T3 done — `wc -c` byte-budget check added to the `/milestone` health audit (after the validate read) and `/milestone-review` post-merge hygiene (beside "verify weight caps"). Suites green.
+- 2026-08-17: substantive amendment of AC4 at the mini gate — the original wording forced the D-entry to restate measured figures (D-116 part 2 conflict) and carried a falsifier that self-fired on the licensed rollout; narrowed, never widened; two fresh [O] readers (mini-gate draft, re-entry pass), final wording user-accepted.
+- 2026-08-17: falsifier tightening vs the plan-gate line above — one-pass-untrimmed became two consecutive passes with a first-pass carve-out for the three files the Goal names, so the rule survives the rollout the Scope licenses (adopters trim at their own next audits) while staying falsifiable on those files from their second pass on.
+- 2026-08-17: T4 done — D-119 appended at file end (an initial mis-placement above D-118 was corrected before commit; branch diff on DECISIONS.md is 32 insertions, 0 deletions); instrument-adoption row annotated (weighed, not fired).
 
 ## Decisions
 

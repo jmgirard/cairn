@@ -55,6 +55,10 @@ FAIL** means the repo's §1 scaffold has drifted behind the spec (a missing
 tracking file or ignore entry, typically because the repo adopted cairn
 before a later scaffold addition); fix it by running `/cairn-init` (repair
 mode), which is the sole scaffolder — never hand-create the pieces here.
+Then check the byte budgets by hand — `wc -c cairn/ROADMAP.md cairn/LESSONS.md`
+against the tracking-rules Weight caps budgets (< 24,000 / < 20,000 bytes) —
+since `cairn_validate` does not measure them; an overrun takes the same
+remedies as the line caps, in this pass.
 
 The script also emits non-failing **advisories** (`WARN` lines, exit-code
 neutral) — e.g. a milestone over the split tripwires (>7 criteria / >10
