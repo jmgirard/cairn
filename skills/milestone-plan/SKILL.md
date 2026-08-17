@@ -150,7 +150,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    never relaxes the probe question above, in the mode that asks it.
    **The reduced audit asks only the bounded-promise and proportionality
    questions** of each criterion — it omits the satisfiability, reachability,
-   and probe questions — and keeps the disposal rule below in full.
+   probe, and instrument questions — and keeps the disposal rule below in full.
    Dispose of what either mode returns at
    this gate, never silently: a finding with one clear right answer is fixed
    and the fix reported in chat, and a finding you could reasonably decide
