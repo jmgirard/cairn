@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-17 (M149 archived; M144 done-row pruned for terminal retention; skills/tests hand-run on merged main: 513 tests, zero reds; validate green; caps ok; byte budgets `wc -c` 11,771 / 11,349 — both under.)_
+_Last hygiene check: 2026-08-17 (audit pass, nothing changed: validate green — 16 PASS, 7 advisories OK; caps ok; byte budgets `wc -c` 11,824 / 11,349 — both under; no active milestone, no open RB, both GitHub inboxes empty.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
