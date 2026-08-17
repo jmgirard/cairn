@@ -103,7 +103,7 @@ guard over the new rules → none owed (D-109).
 - [x] T3: Run AC5's sweep, disposition every hit; trim the "Stakes-tier
       follow-through" candidate row to its tier-recording remainder,
       lineage noted.
-- [ ] T4: Draft the D-entry (AC4's relations), preview verbatim in chat,
+- [x] T4: Draft the D-entry (AC4's relations), preview verbatim in chat,
       append to `cairn/DECISIONS.md`.
 - [ ] T5: Run both gating suites + `cairn_validate`; hand-run `python3 -m
       unittest discover -s skills/tests`, dispositioning every red (fixture
@@ -123,6 +123,7 @@ guard over the new rules → none owed (D-109).
 - 2026-08-17: T1 done — step 6 gains the return-adjacent direction rule (D-101 carve-out by name) and the re-entry sentence now says every question in the assigned mode, proportionality and full-mode instrument included; both gating suites green (308 + hooks OK). Question gate skipped: plan gate settled every open choice, no tripwire tags.
 - 2026-08-17: T2 done — full audit gains the instrument-binding question with AC2's disposal shape (move to tasks/gate procedure, or narrow to the deliverable property); reduced-mode sentence untouched; both suites green.
 - 2026-08-17: T3 sweep — `grep -rniE 'criteria audit|satisfiability|amendment protocol|amendment gate|amend-via-gate|proportionality|instrument question' --include='*.md' .` — dispositions: hits in DECISIONS.md, milestones/archive/, reviews/archive/, legacy/, and CHANGELOG.md are correct-as-written (history, never edited); tracking-rules/template ownership-vocab hits and the brief/review step-6 pointers are correct-as-written (they cite the site, never restate it); references-page hits (self-verification-ledger, m127-ac1-ledger, INDEX) correct-as-written (dated first-hand records); README.md:12 correct-as-written (still true of the stakes-scaled audit); milestone-plan/implement hits are the edited sites themselves; updated: the reduced-audit drop-list enumeration now names the instrument question (the operative two-question clause untouched); updated: the stakes-tier ROADMAP row trimmed to its tier-recording remainder, lineage noted in the row.
+- 2026-08-17: T4 done — D-118 previewed verbatim in chat and appended; heading carries "annotates D-101" and "narrowly supersedes D-111's full-mode question enumeration"; both step-6 and step-3 site edits now cite it.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

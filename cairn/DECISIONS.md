@@ -4309,3 +4309,55 @@ stand.
 
 **Consequences:** No standing row tracks the stamp defect. A recurrence is
 ordinary intake: classify it, plan the remedy, decide then.
+
+### D-118 (2026-08-17): After a defect return the amendment surface recommends narrowing or holding, and the full criteria audit asks whether a promise binds the deliverable or its instrument — annotates D-101; narrowly supersedes D-111's full-mode question enumeration; hosted per D-098 (M148)
+
+**Context:** intraclass M123 took three defect returns on one milestone; the
+amendment following the second return widened the criteria set into clauses
+binding the verification instrument — a floor's construction, a plant
+matrix's axes — rather than the deliverable, and the widened promises
+produced the third return and a thrash firing (the measured account lives in
+M148's Scope). Two gaps let it happen: `/milestone-implement` step 6 stated
+an amendment direction only for the widening-test class D-101 reclassifies —
+a voluntary post-return widening met no surface at all — and no audit
+question distinguished a deliverable property from an instrument property,
+so instrument-binding criteria passed the full audit as written.
+
+**Decision, part 1 — the return-adjacent direction rule
+(`/milestone-implement` step 6).** On a milestone whose work log records one
+or more defect returns, a proposed amendment that widens the criteria set —
+adding an acceptance criterion, or extending an existing criterion's promise
+to a property or domain it did not previously bind — is presented with
+narrowing or holding the criteria set as the recommended option and the
+widening as an explicitly non-recommended alternative, the motivating
+finding offered a follow-up home (candidate row or split milestone) instead.
+A widening adopted at the user's selection records a work-log line naming
+each criterion widened or added — user overrides are logged, never resisted.
+Amendments executing a widening-test-reclassified return are carved out by
+name: D-101's inadmissibility governs them unchanged — this entry annotates
+D-101, adding the voluntary-widening surface beside its reclassified-return
+one.
+
+**Decision, part 2 — the instrument-binding question (`/milestone-plan`
+step 3, full mode).** The full criteria audit asks of each criterion whether
+its promise states a property of the milestone's deliverable or a property
+of an instrument that verifies it — a test harness, a floor, a plant matrix,
+a checker's own prose among others. A criterion binding an instrument
+property is a finding, disposed at the gate like the audit's other findings:
+the instrument property moves to tasks or gate procedure, or the criterion
+narrows to the deliverable property it certifies. This narrowly supersedes
+D-111's enumeration of the full audit's question set, which now includes
+this question; D-111's mode selectors, its reduced two-question form, and
+its falsifiers stand. The reduced audit does not gain the question: no
+internal-tier instance of the defect is on record.
+
+**Consequences:** on the motivating case the widening after return 2 would
+have arrived at the mini gate recommended against, and its
+instrument-binding clauses would have been findings at any full-mode
+re-entry. Falsifiers, one per rule (recorded at the M148 plan gate): a
+user-approved widening amendment producing a further return of the same
+shape says the never-recommended presentation is too weak — supersede toward
+D-101-style inadmissibility; an internal-tier milestone shipping an
+instrument-binding criterion that costs a defect return says full-mode-only
+is too narrow — extend the question to the reduced audit, superseding the
+mode clause here.
