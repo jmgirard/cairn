@@ -61,8 +61,7 @@ D-entry. IP block first, then GPs; numbers are never reused or renumbered — re
 - The cairn `## Project tracking` section of `CLAUDE.md` < 30 lines (the repo's dev doctrine outside it is not cairn's
   to cap) · `ROADMAP.md` < 60 lines · `LESSONS.md` < 50 lines · `PROFILE.md` < 120 lines · archived summary ≤ 25 lines.
   `ROADMAP.md` and `LESSONS.md` also keep byte budgets — `ROADMAP.md` < 24,000 bytes, `LESSONS.md` < 20,000 bytes
-  (line cap × 400) — judgment-checked at hygiene passes (`wc -c`), no validator check: a file must not defeat its line
-  cap by line width.
+  (line cap × 400) — judgment-checked at hygiene passes (`wc -c`), not covered by `cairn_validate`.
   `ROADMAP.md` and `LESSONS.md` are parsed one item per line; never split an item across lines.
 - A live milestone file's **plan-owned body < 150 lines** — everything before the review-exclusive `## Review` section,
   less `## Work log` and `## Decisions`. Those three are cap-exempt (`## Review` so evidence never competes with plan
@@ -76,7 +75,7 @@ D-entry. IP block first, then GPs; numbers are never reused or renumbered — re
   heaviest plan-owned section (named by the `cairn_validate` breakdown, which lists only trimmable sections, so the
   remedy can never aim at history) in one rewrite — never a nibble-and-recount loop — cross-referencing durable records
   rather than restating them, splitting or moving material to `references/` only when no one section can carry the cut;
-  over-budget `ROADMAP.md` (bytes) → the same graduate-or-prune remedy; over-cap or over-budget `LESSONS.md` → retire
+  over-budget `ROADMAP.md` (bytes) → compress the widest rows first, then the same graduate-or-prune remedy; over-cap or over-budget `LESSONS.md` → retire
   or prune entries (the remedy its own header states); over-cap cairn CLAUDE.md section → trim back to the template.
 - Terminal-row retention (standing hygiene): the ROADMAP table keeps only the 5 most recent terminal (`done`/`dropped`)
   rows combined; prune older ones as they accumulate.

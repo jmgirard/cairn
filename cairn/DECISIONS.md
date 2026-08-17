@@ -4374,16 +4374,26 @@ record diet's bulk migrated into the uncapped mass of the long-lived item
 files.
 
 **Decision:** `ROADMAP.md` < 24,000 bytes and `LESSONS.md` < 20,000 bytes —
-fixed at line cap × 400, the healthy line width D-052 surveyed 2026-07-19 —
-stated in the rulebook's Weight caps and judgment-checked at hygiene passes
-(`wc -c`), with no validator check: the 2026-08-17 plan gate posed the
-checker-regress rule's simplify-first option and machinery was declined.
+fixed at line cap × 400 bytes, a deliberate flat allowance, generous against
+the 245-character healthiest-line maximum D-052's 2026-07-19 survey measured
+(that survey's own per-line axis is retired, D-115); budgets are bytes as
+`wc -c` reports them — stated in the rulebook's Weight caps and
+judgment-checked at hygiene passes, with no validator check: the 2026-08-17
+plan gate posed the checker-regress rule's simplify-first option and
+machinery was declined.
 Fixed budgets rather than mean-derived thresholds, derivation being the
 measured failure mode (D-049/D-058: misfire or inertness plus a per-pass
-re-measurement tax). D-058 is annotated, not superseded, though its
-Consequences pointed at supersession: supersession there meant rebuilding the
-removed axis, and no removed machinery is rebuilt — D-058's deletion stands
-untouched; only its remedy pointer is not followed (the D-117 shape).
+re-measurement tax). The scope walked two standing doors at that gate:
+D-108's bar on new record-conduct rules, its trigger met by a defect in
+shipped behavior — `cairn_validate`'s weight-caps check printing green over
+files that defeat the caps' purpose — and D-057/D-114's bar on adding
+size-governance machinery absent a measured regression, met by the adopter
+measurements M149's Goal holds; no machinery is added, so the prose form
+stays on the lighter side of both. D-058 is annotated, not superseded, though
+its Consequences pointed at supersession: supersession there meant rebuilding
+the removed axis, and no removed machinery is rebuilt — D-058's deletion
+stands untouched; its remedy pointer is answered here rather than followed,
+D-054's back-reference discipline routing any reader of D-058 to this entry.
 
 **Consequences:** A hygiene pass can no longer stamp "caps ok" from validator
 output alone — the `/milestone` health audit and `/milestone-review`

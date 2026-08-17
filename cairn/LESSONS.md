@@ -5,7 +5,7 @@ remembering next time — captured at milestone end and surfaced at plan time.
 Not status, not decisions: a lesson is a reusable "how this repo actually
 behaves" note. Cross-cutting *choices* still go to `DECISIONS.md`.
 
-One line per lesson: `- YYYY-MM-DD (M<NN>): <lesson>`. One cap
+One line per lesson: `- YYYY-MM-DD (M<NN>): <lesson>`. Two caps
 (tracking-rules weight-caps): 50 lines and 20,000 bytes, met by retiring or pruning entries.
 Current knowledge: a lesson proven false is corrected in place (D-045).
 Lessons also *leave*: one retires when a test fails on the mistake it warns

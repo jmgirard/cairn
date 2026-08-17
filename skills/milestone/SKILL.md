@@ -56,9 +56,9 @@ tracking file or ignore entry, typically because the repo adopted cairn
 before a later scaffold addition); fix it by running `/cairn-init` (repair
 mode), which is the sole scaffolder — never hand-create the pieces here.
 Then check the byte budgets by hand — `wc -c cairn/ROADMAP.md cairn/LESSONS.md`
-against the tracking-rules Weight caps budgets (< 24,000 / < 20,000 bytes) —
-since `cairn_validate` does not measure them; an overrun takes the same
-remedies as the line caps, in this pass.
+against the tracking-rules Weight caps budgets — since `cairn_validate` does
+not measure them; an overrun takes the same remedies as the line caps,
+surfaced as a finding for the user, never an auto-trim.
 
 The script also emits non-failing **advisories** (`WARN` lines, exit-code
 neutral) — e.g. a milestone over the split tripwires (>7 criteria / >10
@@ -89,7 +89,7 @@ regression reopens that work.
 Beside it, report the rulebook's mass the same way: measure
 `skills/shared/tracking-rules.md` with `wc -l -m` and report current
 lines/chars and the growth since the recorded baseline —
-400 lines / 35,884 chars (M146, 2026-08-16; re-seed these figures only when
+404 lines / 36,532 chars (M149, 2026-08-17; re-seed these figures only when
 a later pass changes the file deliberately). Reporting only, same boundary
 as the cost line: no threshold, no verdict, no pass machinery — growth is
 governed at the door (D-057), and this line keeps it visible.
