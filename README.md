@@ -76,9 +76,9 @@ between them:
 
 ```mermaid
 flowchart LR
-    idea["idea"] --> plan["/milestone-plan<br>(scope gate)"]
-    plan --> implement["/milestone-implement<br>(choices gate)"]
-    implement --> review["/milestone-review<br>(approval gate)"]
+    idea["idea"] --> plan["/milestone-plan (scope gate)"]
+    plan --> implement["/milestone-implement (choices gate)"]
+    implement --> review["/milestone-review (approval gate)"]
     review --> merged["merged"]
     review -->|criteria unmet| implement
 ```

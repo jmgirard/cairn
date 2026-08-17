@@ -154,10 +154,21 @@ consistency-gate slot names no toolchain checks, so that half is a clean no-op.
   duplicate diagram elsewhere.
 
 **Fix-now repair and re-verification (2026-08-17)** — the gates moved back under
-their phases as `<br>(scope gate)` etc., the return edge relabelled
+their phases, the return edge relabelled
 `criteria unmet`, and the CHANGELOG entry rewritten to three phases and the
 gate-under-phase wording. Re-run after the repair: AC1 all seven labels present
 once each within the block at 77-84 and the return edge intact; AC3 skills/tests
 513 exit 0; AC5 scripts/tests and hooks/tests both exit 0; `cairn_validate`
 exit 0. AC2 re-observed on the branch page after the repair push.
+
+**Repair round 2 (2026-08-17)** — the first repair put the gate on a second
+line via `<br>`, whose line-break rendering was never observed (the browser
+pane stopped painting mid-review), so it was replaced by the plain in-label
+form `"/milestone-plan (scope gate)"` — the same quoted-label syntax the
+first observed render already exercised, carrying no unobserved behavior.
+Re-run after it: AC1 all seven labels present once each in the block at 77-84
+with the `criteria unmet` return edge intact; AC3 skills/tests 513 exit 0;
+AC5 scripts/tests and hooks/tests both exit 0; `cairn_validate` exit 0. AC2
+re-observed on the pushed branch page: the source `pre` sits under
+`render-plaintext-hidden` with GitHub's mermaid viewer mounted in its place.
 
