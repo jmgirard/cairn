@@ -334,7 +334,9 @@ overrides — log the override).
 
    Then: ROADMAP row → `done` + archive path;
    archive any resolved RB/RR pairs; **replace** "Last hygiene check" with one short line — overwrite the previous text, never append to it or demote it to a `Prior:` clause; verify
-   weight caps. Where the repo ships hand-run prose-guard suites (this plugin's
+   weight caps, the byte budgets by hand (`wc -c cairn/ROADMAP.md
+   cairn/LESSONS.md` — `cairn_validate` does not measure them).
+   Where the repo ships hand-run prose-guard suites (this plugin's
    `skills/tests`), hand-run them here and note red/green in the stamp (D-109).
    **Capture durable lessons:** append any repo lessons this
    milestone taught — build quirks, testing tricks, gotchas worth
@@ -352,7 +354,7 @@ overrides — log the override).
    Delete the retired line and name what was graduated in the archive summary;
    nothing else records it.
    Retirement runs before the cap bites, and only if it cannot free the budget
-   is the 50-line cap met by pruning the stalest lines in this same commit.
+   is the 50-line / 20,000-byte cap met by pruning the stalest lines in this same commit.
    Durable-record preview (tracking-rules): show the archive summary,
    each LESSONS line, any D-entry, and any candidate graduation verbatim
    in chat before the commit. Docs-only commit:

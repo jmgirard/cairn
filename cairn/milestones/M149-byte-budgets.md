@@ -4,12 +4,12 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M149: The line caps gain byte budgets
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** m149-byte-budgets
+- **Branch/PR:** m149-byte-budgets · https://github.com/jmgirard/cairn/pull/150
 
 ## Goal
 
@@ -39,7 +39,7 @@ reasoning stands: item lines are never length-policed.
 
 ## Acceptance criteria
 
-- [ ] AC1: The rulebook's Weight caps bullet states, beside the existing line
+- [x] AC1: The rulebook's Weight caps bullet states, beside the existing line
       caps, `ROADMAP.md` < 24,000 bytes and `LESSONS.md` < 20,000 bytes, marks
       them judgment-checked at hygiene passes (no validator check), and leaves
       the existing cap substrings intact (the mutation harness pins
@@ -47,30 +47,35 @@ reasoning stands: item lines are never length-policed.
       the remedies bullet covers a byte-budget overrun, adding a LESSONS remedy
       (retire or prune entries, imported from the cairn/LESSONS.md:9 header)
       covering both its line cap and its byte budget.
-- [ ] AC2: Every hit of the sweep
+- [x] AC2: Every hit of the sweep
       `grep -rnE "\b(60|50)[- ]lines?\b" --exclude-dir=tests skills/ cairn/ROADMAP.md cairn/LESSONS.md`
       on the merged tree that states a ROADMAP or LESSONS line cap also states
       that file's byte budget beside it; every other hit is named out-of-scope
       in the review evidence. Append-only history (DECISIONS.md, archives) is
       outside the domain and untouched.
-- [ ] AC3: The `/milestone` health-audit step and `/milestone-review`'s
+- [x] AC3: The `/milestone` health-audit step and `/milestone-review`'s
       post-merge hygiene step (skills/milestone-review/SKILL.md:336-337) each
       name the two byte budgets as a `wc -c` check in their cap checks.
-- [ ] AC4: An appended D-entry records: the two budgets and their fixed basis;
-      that D-058's falsifier fired, pinning the adopter evidence (the three
-      over-budget files' bytes and lines, their green line caps, and the
-      2026-08-15/17 hygiene passes that stamped green over them); that the
-      prose form was chosen at the checker-regress gate with machinery
-      declined, D-058 annotated and not superseded; and the prose form's own
-      falsifier — a tracked file found over its byte budget at a hygiene pass
-      and not trimmed in that same pass, after this rule ships — whose firing
-      takes a fresh plan-gate remedy (the D-117 shape). No prior entry is
-      edited.
-- [ ] AC5: The instrument-adoption-discipline candidate row carries a dated
+- [x] AC4: An appended D-entry records: the two budgets and their fixed basis;
+      that D-058's falsifier fired, identifying the adopter evidence, which
+      this milestone's Goal holds; that the prose form was chosen at the
+      checker-regress gate with machinery declined — its heading reading
+      "annotates D-058", not claiming supersession, and the entry stating why
+      annotation is the correct disposition though D-058's Consequences
+      pointed at supersession (no removed machinery is rebuilt); and the prose
+      form's own falsifier — a file found over its byte budget at two
+      consecutive hygiene passes without a trim, excluding the three files
+      this milestone's Goal names on their first hygiene pass after this rule
+      ships — whose firing takes a fresh plan-gate remedy (the D-117 shape).
+      No prior entry is edited (`git diff main...HEAD -- cairn/DECISIONS.md`
+      shows additions only). A work-log line records the falsifier tightening
+      relative to the plan-gate line (two consecutive passes; first-pass-only
+      carve-out) and why.
+- [x] AC5: The instrument-adoption-discipline candidate row carries a dated
       annotation that a standing instrument was weighed at this milestone's
       checker-regress gate and declined in favour of prose — condition not
       fired; the row remains a candidate.
-- [ ] AC6: cairn's own ROADMAP.md and LESSONS.md measure under their byte
+- [x] AC6: cairn's own ROADMAP.md and LESSONS.md measure under their byte
       budgets (`wc -c`) on the merged tree.
 
 ## Coverage
@@ -84,18 +89,18 @@ reasoning stands: item lines are never length-policed.
 
 ## Tasks
 
-- [ ] T1: Amend the Weight caps bullet (skills/shared/tracking-rules.md:62) and
+- [x] T1: Amend the Weight caps bullet (skills/shared/tracking-rules.md:62) and
       the remedies bullet (:71-76): byte budgets beside the line caps, marked
       judgment-checked; LESSONS remedy imported; pinned substrings intact.
-- [ ] T2: Run the AC2 sweep; add the byte budget beside every ROADMAP/LESSONS
+- [x] T2: Run the AC2 sweep; add the byte budget beside every ROADMAP/LESSONS
       line-cap statement it finds (known sites: skills/cairn-init/SKILL.md:95
       and :103, skills/milestone-review/SKILL.md:355 "50-line",
       cairn/LESSONS.md:9); record each remaining hit's disposition.
-- [ ] T3: Add the `wc -c` byte-budget line to the `/milestone` health audit and
+- [x] T3: Add the `wc -c` byte-budget line to the `/milestone` health audit and
       the `/milestone-review` post-merge hygiene checklist.
-- [ ] T4: Append the D-entry (AC4's content); annotate the instrument-adoption
+- [x] T4: Append the D-entry (AC4's content); annotate the instrument-adoption
       candidate row (AC5's wording).
-- [ ] T5: Run both gating suites with explicit exit codes; hand-run
+- [x] T5: Run both gating suites with explicit exit codes; hand-run
       skills/tests and disposition reds (intentional re-wording per D-109 is
       noted, not a firing); `wc -c` both tracking files.
 
@@ -107,6 +112,26 @@ reasoning stands: item lines are never length-policed.
 - 2026-08-17: plan gate chose fixed budgets (line cap × 400) over mean-derived thresholds because derivation is the measured failure mode of M84/D-049 (misfire or inertness plus a per-pass re-measurement tax); falsified by the budgets proving wrong-sized in the field — a healthy file red, or bloat sitting comfortably under cap.
 - 2026-08-17: plan gate chose adopter-side trims at each repo's own next audit over trim passes planned now because the D-052 rollout shape lets the rule prove itself in the field; falsified by an adopter red persisting across consecutive audits untrimmed.
 
+- 2026-08-17: T1 done — Weight caps bullet gains the byte-budget sentence (pinned `` `LESSONS.md` < 50 lines `` substring untouched); remedies bullet gains the ROADMAP byte remedy and imports the LESSONS retire-or-prune remedy; both gating suites green, exit codes checked.
+- 2026-08-17: T2 done — sweep found 6 hits: 5 gained budgets (cairn-init:95/:103, migration-protocol:87 — a site the plan's known list missed, the sweep caught it — milestone-review:355, LESSONS.md:9); tracking-rules:62's budgets sit on the same bullet's continuation lines (T1). Suites green.
+- 2026-08-17: T3 done — `wc -c` byte-budget check added to the `/milestone` health audit (after the validate read) and `/milestone-review` post-merge hygiene (beside "verify weight caps"). Suites green.
+- 2026-08-17: substantive amendment of AC4 at the mini gate — the original wording forced the D-entry to restate measured figures (D-116 part 2 conflict) and carried a falsifier that self-fired on the licensed rollout; narrowed, never widened; two fresh [O] readers (mini-gate draft, re-entry pass), final wording user-accepted.
+- 2026-08-17: falsifier tightening vs the plan-gate line above — one-pass-untrimmed became two consecutive passes with a first-pass carve-out for the three files the Goal names, so the rule survives the rollout the Scope licenses (adopters trim at their own next audits) while staying falsifiable on those files from their second pass on.
+- 2026-08-17: T4 done — D-119 appended at file end (an initial mis-placement above D-118 was corrected before commit; branch diff on DECISIONS.md is 32 insertions, 0 deletions); instrument-adoption row annotated (weighed, not fired).
+- 2026-08-17: T5 done — scripts/tests exit 0, hooks/tests exit 0, skills/tests hand-run 513 tests OK (no reds, pinned substrings untouched), validate exit 0, ROADMAP 11,896 B and LESSONS 11,058 B under budget. All tasks done; status → review.
+- 2026-08-17: review fan-out triage — 12 fix-now findings applied on the branch (see Review); D-119 edited in place as unmerged branch draft (never on main, so no IP4 event); skills/tests baseline pins re-seeded with the deliberate rulebook change, suite 513 OK after.
+
 ## Decisions
 
 ## Review
+
+Fresh evidence, 2026-08-17, all by command on the branch head:
+
+- AC1: tracking-rules:62-66 carries the byte-budget sentence (both budgets, ×400 basis, judgment-checked/`wc -c`/no-validator); pinned substrings `` `ROADMAP.md` < 60 lines `` and `` `LESSONS.md` < 50 lines `` intact at :62; remedies bullet :74-80 covers over-budget ROADMAP (graduate-or-prune) and over-cap/over-budget LESSONS (retire-or-prune, imported from its header). PASS.
+- AC2: sweep run on the branch head — 6 hits; cairn-init:95/:103, migration-protocol:87, milestone-review:357, LESSONS.md:9 each state the budget beside the cap; tracking-rules:62's budgets sit on the same bullet's continuation lines (:63-65) — disposition: beside, same bullet. No hit lacks its budget. PASS.
+- AC3: `wc -c` check present at skills/milestone/SKILL.md:58 (health audit, after the validate read) and skills/milestone-review/SKILL.md:337 (post-merge hygiene). PASS.
+- AC4: D-119 appended at DECISIONS.md:4365 (file end), heading reads "annotates D-058", no measured bytes/lines restated (evidence cited to this file's Goal); falsifier states two-consecutive-passes with the first-pass carve-out and the fresh-plan-gate remedy; `git diff main...HEAD -- cairn/DECISIONS.md` shows 32 insertions, 0 deletions; falsifier-tightening work-log line at :119. PASS.
+- AC5: instrument-adoption row carries "Weighed 2026-08-17 (M149) … condition not fired, row stays"; row remains a candidate. PASS.
+- AC6: `wc -c` — ROADMAP 11,891 B < 24,000; LESSONS 11,058 B < 20,000 (T5's 11,896 predates the status-flip edit). PASS.
+
+Fan-out (user-facing tier, three lenses): [O] diff-bug 14 findings, [S] blame-history 5, [S] prior-review 0 (probe empty, archives clean). Triage: 12 actioned fix-now on the branch — D-119 gains the two-doors paragraph (blame-1/2), its basis restated as a flat allowance vs the 245-char survey max with the D-115 retirement noted and bytes-as-measured stated (blame-5, diff-1/8/9), its disposition sentence re-grounded on D-054 back-reference instead of the wrong D-117 analogy (blame-4, diff-5); rulebook trailing rationale clause dropped (diff-12); ROADMAP byte remedy leads with compress-the-widest-rows (diff-3); /milestone budget check de-numbered to reference the rulebook (diff-4/6) and marked surfaced-never-auto-trim (diff-2); cairn-init cite corrected to D-015+D-119 (diff-7); LESSONS header "Two caps" (diff-10); AC6 figure delta noted (diff-13); rulebook-mass baseline re-seeded to 404/36,532 with its two hand-run-suite pins updated, an intentional re-wording per D-109 (diff-14). Rejected with reason: diff-11 (the row annotation itself records the weighing, adoption-time reading stated); blame-3's residual (deliberate, user-gated at plan; falsifier recorded). None met the return floor: no acceptance criterion demonstrated failing, no load-bearing defect in what the skills/hooks/scripts do.

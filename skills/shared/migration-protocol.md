@@ -84,7 +84,7 @@ presented ledger at the step-3 gate), adjust the proposal first, or stop.
      risking drift. Lineage: M41 intraclass (58 ADRs → pointer-only).
    - Unresolved open questions / known issues → `candidate` rows or DESIGN
      "Known issues", per the ownership table. A large legacy backlog that
-     would blow the <60-line ROADMAP cap one-row-per-item clusters into
+     would blow the <60-line / <24,000-byte ROADMAP caps one-row-per-item clusters into
      grouped candidate rows pointing at the entombed legacy `ROADMAP.md`
      (tracking-rules weight-caps remedies), never a per-item dump.
    - **Rich pre-existing `DESIGN.md`?** A large living DESIGN (hundreds of
