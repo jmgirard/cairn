@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- **The core loop is a diagram now.** The README's "The core loop" section
+  draws the four phases as a flowchart GitHub renders in place, with each
+  gate labelled on the step it opens and an arrow back from review to
+  implement for work a review sends back. The section showed a one-line
+  arrow chain before, which had no way to show that return.
+
 - **The hygiene stamp is checked while it can still be fixed.** Both places
   that rewrite the "Last hygiene check" line — the status audit and the
   post-merge pass — now tell you to re-run the validator after writing the

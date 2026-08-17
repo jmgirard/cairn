@@ -74,11 +74,11 @@ machine, so GitHub's rendering is the sole oracle (AC2).
       paragraph beneath it agree.
 - [x] T2: replace `README.md:77-80` with the mermaid-fenced block; touch no other
       fenced block (the tree block, now `README.md:144-155`, is guarded).
-- [ ] T3: push the branch, open its README page on GitHub in a browser, and
+- [x] T3: push the branch, open its README page on GitHub in a browser, and
       confirm the block renders as a figure; record the URL and date.
 - [x] T4: run both gating suites and the hand-run `skills/tests`; record counts
       and classify any red per D-109.
-- [ ] T5: add the `## Unreleased` CHANGELOG entry, claiming only what the
+- [x] T5: add the `## Unreleased` CHANGELOG entry, claiming only what the
       shipped block shows.
 
 ## Work log
@@ -91,6 +91,8 @@ machine, so GitHub's rendering is the sole oracle (AC2).
 - 2026-08-17: T1 refined — the draft is shown in chat and this line records it, rather than pasted into the work log where a multi-line block would trip the one-line entry rule.
 - 2026-08-17: T1+T2 done — README.md:77-84 is now a mermaid flowchart (idea → plan → implement → review → merged, gates on the edges, review→implement return); diff is 7 insertions / 3 deletions confined to that block, the other three fenced blocks untouched (tree block shifted 140-151 → 144-155, content identical).
 - 2026-08-17: T4 done — scripts/tests 308 tests exit 0, hooks/tests 103 exit 0, hand-run skills/tests 513 exit 0 (exit codes read directly, not through a pipe); no reds, so D-109's red-classification clause has nothing to classify.
+- 2026-08-17: T3 done — on https://github.com/jmgirard/cairn/blob/m150-readme-flow-diagram/README.md the mermaid source pre sits under `render-plaintext-hidden` and GitHub mounts a live `viewscreen.githubusercontent.com/markdown/mermaid` viewer (861x180) in its place; screenshot at 1280px shows the drawn nodes, edge labels, and GitHub's diagram zoom/pan controls — it renders as a figure, not source text.
+- 2026-08-17: T5 done — one CHANGELOG `## Unreleased` entry added; `git diff origin/main -- CHANGELOG.md` shows a single added entry and every claim in it (four phases, gates on the steps, review→implement return, GitHub renders in place) is visible in the shipped README block.
 
 ## Decisions
 
