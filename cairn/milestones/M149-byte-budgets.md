@@ -87,7 +87,7 @@ reasoning stands: item lines are never length-policed.
 - [x] T1: Amend the Weight caps bullet (skills/shared/tracking-rules.md:62) and
       the remedies bullet (:71-76): byte budgets beside the line caps, marked
       judgment-checked; LESSONS remedy imported; pinned substrings intact.
-- [ ] T2: Run the AC2 sweep; add the byte budget beside every ROADMAP/LESSONS
+- [x] T2: Run the AC2 sweep; add the byte budget beside every ROADMAP/LESSONS
       line-cap statement it finds (known sites: skills/cairn-init/SKILL.md:95
       and :103, skills/milestone-review/SKILL.md:355 "50-line",
       cairn/LESSONS.md:9); record each remaining hit's disposition.
@@ -108,6 +108,7 @@ reasoning stands: item lines are never length-policed.
 - 2026-08-17: plan gate chose adopter-side trims at each repo's own next audit over trim passes planned now because the D-052 rollout shape lets the rule prove itself in the field; falsified by an adopter red persisting across consecutive audits untrimmed.
 
 - 2026-08-17: T1 done — Weight caps bullet gains the byte-budget sentence (pinned `` `LESSONS.md` < 50 lines `` substring untouched); remedies bullet gains the ROADMAP byte remedy and imports the LESSONS retire-or-prune remedy; both gating suites green, exit codes checked.
+- 2026-08-17: T2 done — sweep found 6 hits: 5 gained budgets (cairn-init:95/:103, migration-protocol:87 — a site the plan's known list missed, the sweep caught it — milestone-review:355, LESSONS.md:9); tracking-rules:62's budgets sit on the same bullet's continuation lines (T1). Suites green.
 
 ## Decisions
 

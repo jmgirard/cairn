@@ -352,7 +352,7 @@ overrides — log the override).
    Delete the retired line and name what was graduated in the archive summary;
    nothing else records it.
    Retirement runs before the cap bites, and only if it cannot free the budget
-   is the 50-line cap met by pruning the stalest lines in this same commit.
+   is the 50-line / 20,000-byte cap met by pruning the stalest lines in this same commit.
    Durable-record preview (tracking-rules): show the archive summary,
    each LESSONS line, any D-entry, and any candidate graduation verbatim
    in chat before the commit. Docs-only commit:
