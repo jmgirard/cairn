@@ -129,3 +129,35 @@ consistency-gate slot names no toolchain checks, so that half is a clean no-op.
 
 **Defect returns this milestone: 0. Amendment returns: 0.**
 
+**Review fan-out (2026-08-17)** — user-facing tier, three lenses.
+
+- [S] blame-history: no findings. M141's "fenced blocks byte-identical" was a
+  scope guard internal to that milestone's own prose pass, not a standing rule;
+  no decision, lesson, or guard pins the core-loop block to ASCII, and the block
+  dates to the initial plugin build (2a82bb5) as an unremarked default.
+- [S] prior-review record: no prior-review evidence on the touched files. The
+  `gh api .../pulls/comments` probe returned nothing, so that surface was
+  skipped; no archived Review section mentions mermaid, rendering, or diagram
+  format.
+- [O] diff-bug: five findings, all triaged **fix now** at the gate and all
+  fixed on the branch before merge. F1 — the gates were drawn on the outgoing
+  edges rather than under their phases, misplacing scope and choices relative
+  to the shipped skills. F2 — the choices-gate edge contradicted the worked
+  example two paragraphs below, which puts that gate at implement's start.
+  F3 — the CHANGELOG's "each gate labelled on the step it opens" was false for
+  two of three gates. F4 — "the four phases" overcounted; the block draws three
+  phases plus two states. F5 — the return label "findings to fix" was broader
+  than the shipped return floor, which returns only on an unmet criterion.
+  None demonstrated an acceptance criterion failing, so no finding tripped the
+  return floor. Clean checks it recorded: mermaid syntax valid, return edge
+  real and correctly directed, no other fenced block moved, guards green, no
+  duplicate diagram elsewhere.
+
+**Fix-now repair and re-verification (2026-08-17)** — the gates moved back under
+their phases as `<br>(scope gate)` etc., the return edge relabelled
+`criteria unmet`, and the CHANGELOG entry rewritten to three phases and the
+gate-under-phase wording. Re-run after the repair: AC1 all seven labels present
+once each within the block at 77-84 and the return edge intact; AC3 skills/tests
+513 exit 0; AC5 scripts/tests and hooks/tests both exit 0; `cairn_validate`
+exit 0. AC2 re-observed on the branch page after the repair push.
+

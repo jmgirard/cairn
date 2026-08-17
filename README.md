@@ -76,11 +76,11 @@ between them:
 
 ```mermaid
 flowchart LR
-    idea["idea"] --> plan["/milestone-plan"]
-    plan -->|scope gate| implement["/milestone-implement"]
-    implement -->|choices gate| review["/milestone-review"]
-    review -->|approval gate| merged["merged"]
-    review -->|findings to fix| implement
+    idea["idea"] --> plan["/milestone-plan<br>(scope gate)"]
+    plan --> implement["/milestone-implement<br>(choices gate)"]
+    implement --> review["/milestone-review<br>(approval gate)"]
+    review --> merged["merged"]
+    review -->|criteria unmet| implement
 ```
 
 You rarely type the next command: each phase ends with clickable options
