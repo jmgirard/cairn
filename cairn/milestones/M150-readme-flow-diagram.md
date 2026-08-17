@@ -1,6 +1,6 @@
 # M150: The core loop becomes a rendered diagram
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -93,6 +93,7 @@ machine, so GitHub's rendering is the sole oracle (AC2).
 - 2026-08-17: T4 done — scripts/tests 308 tests exit 0, hooks/tests 103 exit 0, hand-run skills/tests 513 exit 0 (exit codes read directly, not through a pipe); no reds, so D-109's red-classification clause has nothing to classify.
 - 2026-08-17: T3 done — on https://github.com/jmgirard/cairn/blob/m150-readme-flow-diagram/README.md the mermaid source pre sits under `render-plaintext-hidden` and GitHub mounts a live `viewscreen.githubusercontent.com/markdown/mermaid` viewer (861x180) in its place; screenshot at 1280px shows the drawn nodes, edge labels, and GitHub's diagram zoom/pan controls — it renders as a figure, not source text.
 - 2026-08-17: T5 done — one CHANGELOG `## Unreleased` entry added; `git diff origin/main -- CHANGELOG.md` shows a single added entry and every claim in it (four phases, gates on the steps, review→implement return, GitHub renders in place) is visible in the shipped README block.
+- 2026-08-17: all five tasks done; verify slot clean on the finished branch (scripts/tests 308 exit 0, hooks/tests 103 exit 0), cairn_validate green; status review.
 
 ## Decisions
 
