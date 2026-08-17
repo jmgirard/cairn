@@ -93,7 +93,7 @@ run ingestion first (see `/milestone-brief`).
      that widens the criteria set — adding an acceptance criterion, or
      extending an existing criterion's promise to a property or domain
      it did not previously bind — is presented at the mini gate with
-     narrowing or holding the criteria set as the recommended option and
+     narrowing-or-holding the criteria set as the one recommended option and
      the widening as an explicitly non-recommended alternative, the
      motivating finding offered a follow-up home (a candidate ROADMAP
      row or a split milestone) instead. A widening adopted at the user's

@@ -141,7 +141,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    binding an instrument property is a finding, disposed at this gate
    like the audit's other findings: the instrument property moves to the
    tasks or the gate procedure, or the criterion narrows to the
-   deliverable property it certifies.
+   deliverable property it certifies. The question governs what a promise
+   binds, never how a deliverable-bound promise is verified — it never
+   relaxes the probe question above, in the mode that asks it.
    Both modes ask a proportionality question of each criterion:
    is the promise's domain proportionate to the declared surface tier
    (the step-2 rule)? An internal-tier criterion outside the
