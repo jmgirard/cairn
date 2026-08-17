@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M148 | Review returns narrow the promises, never widen them | planned | — | high | milestones/M148-returns-narrow.md |
+| M148 | Review returns narrow the promises, never widen them | in-progress | — | high | milestones/M148-returns-narrow.md |
 | M145 | Standing instruments scale to stakes | done | — | high | milestones/archive/M145-stakes-scaled-instruments.md |
 | M146 | The rulebook states rules, git holds reasons | done | M145 | high | milestones/archive/M146-rulebook-states-rules.md |
 | M147 | The records shrink to their jobs | done | M146 | normal | milestones/archive/M147-record-diet.md |
