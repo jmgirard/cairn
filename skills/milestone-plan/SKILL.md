@@ -134,6 +134,14 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    verification, the full audit asks whether the probes vary every axis the
    verified domain is free in — form as well as location — or stand one
    exemplar in for the family.
+   The full audit also asks of each criterion whether its promise states
+   a property of the milestone's deliverable or a property of an
+   instrument that verifies it — a test harness, a floor, a plant
+   matrix, a checker's own prose, among others (D-118). A criterion
+   binding an instrument property is a finding, disposed at this gate
+   like the audit's other findings: the instrument property moves to the
+   tasks or the gate procedure, or the criterion narrows to the
+   deliverable property it certifies.
    Both modes ask a proportionality question of each criterion:
    is the promise's domain proportionate to the declared surface tier
    (the step-2 rule)? An internal-tier criterion outside the
