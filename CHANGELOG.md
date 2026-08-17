@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- **The core loop is a diagram now.** The README's "The core loop" section
+  draws the milestone cycle as a flowchart GitHub renders in place: the three
+  phases with each gate named on the phase where you're asked, and an arrow
+  back from review to implement when a criterion is unmet. The section showed
+  a one-line arrow chain before, which had no way to show that return.
+
 - **The hygiene stamp is checked while it can still be fixed.** Both places
   that rewrite the "Last hygiene check" line — the status audit and the
   post-merge pass — now tell you to re-run the validator after writing the
