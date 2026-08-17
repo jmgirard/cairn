@@ -1,12 +1,76 @@
 # Changelog
 
-## Unreleased
+## 1.6.0 (2026-08-17)
 
+Ten milestones and a hotfix since 1.5.0, around one idea: how hard cairn
+checks something now depends on what is at stake. A plan classifies whether
+its deliverable is user-facing or internal, and the criteria audit, the review
+fan-out, and the escalated-review path each scale to that answer. The other
+half of the release is subtraction — the shipped rulebook, the lessons file,
+and the roadmap backlog were each cut down, and one reporting tool retired.
+Backward-compatible: existing tracked repos keep working unchanged.
+
+- **Removed: `cairn_budget`**, along with the record-density advisory it
+  reported and the budget-check step four skills ran before writing a record.
+  The size caps it measured are unchanged and still enforced by
+  `cairn_validate`; what went away is the separate while-you-write reporter
+  and the four skill steps that called it.
+- **Rigor scales to what's at stake.** Every plan now classifies its
+  deliverable as user-facing or internal — anything unclear, or spanning
+  both, counts as user-facing — and records the tier with its reason. Three
+  things follow from that answer: the planning-time criteria audit runs in
+  full for user-facing or escalation-flagged work and in a shorter
+  two-question form otherwise; a review whose milestone is internal and whose
+  diff is documentation only gets a single reviewer instead of the three-lens
+  fan-out; and an internal-tier criterion has to quantify over a domain its
+  named procedure enumerates directly.
+- **Reviewers rank, the maintainer decides.** The numeric confidence score
+  attached to each review finding is gone. Reviewers order their own findings
+  by severity and you triage the ranked list at the merge gate, with every
+  finding logged either way.
+- **An escalated review comes back as advice, not orders.** A returning
+  review report is advisory by default; its findings become binding criteria
+  only when the brief asked for that in its request slot. A second escalation
+  on the same question puts removal on the table as one of the options.
+- **A review return narrows the promise.** When a finding defeats a criterion
+  and the amendment surface opens, narrowing or holding the criteria set is
+  the one recommended option; widening it stays available as an explicitly
+  non-recommended alternative, taken at your selection and logged per
+  criterion. The full criteria audit also now asks whether a criterion
+  promises something about the deliverable or about the thing that verifies
+  it — a promise about the instrument moves to the tasks or the gate
+  procedure, or the criterion narrows.
+- **A milestone that keeps coming back gets smaller, not re-cut.** At the
+  thrash threshold the review now recommends descoping the milestone — narrow
+  it to its already-verified criteria, send the remainder to candidates or a
+  split, re-review what's left — or parking it as blocked. Re-cutting the same
+  objective is still available but is never the recommendation, since it is
+  the move that just failed.
+- **The rulebook says less.** The shared tracking rules were rewritten to
+  state operative rules only, leaving the reasoning behind each one to the
+  decisions file and git history; the guard-craft doctrine module was removed
+  whole and every site referencing it rewritten. Every rule the skills
+  actually cite survived the cut.
+- **The always-read records shrank.** The lessons file now carries one lesson
+  (or one named family) per line, and a roadmap candidate row states the idea,
+  why it is parked, what would promote it, and where it came from — nothing
+  else. Both files were passed entry by entry against a committed disposition
+  ledger rather than trimmed by feel.
+- **Byte budgets beside the line caps.** The roadmap and lessons files now
+  carry byte budgets as well as line caps — under 24,000 and 20,000 bytes
+  respectively — so a file cannot defeat its line cap by growing wider lines
+  instead of more of them. Judged by eye at hygiene passes with `wc -c`: no
+  validator check and no new machinery.
 - **The core loop is a diagram now.** The README's "The core loop" section
   draws the milestone cycle as a flowchart GitHub renders in place: the three
   phases with each gate named on the phase where you're asked, and an arrow
   back from review to implement when a criterion is unmet. The section showed
   a one-line arrow chain before, which had no way to show that return.
+- **A plainer README.** The rest of the README was rewritten to read as
+  ordinary prose, with its commands, its guarded claims, and its structure
+  intact.
+
+Fixes:
 
 - **The hygiene stamp is checked while it can still be fixed.** Both places
   that rewrite the "Last hygiene check" line — the status audit and the
