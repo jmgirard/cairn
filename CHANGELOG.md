@@ -4,7 +4,7 @@
 
 - **The core loop is a diagram now.** The README's "The core loop" section
   draws the milestone cycle as a flowchart GitHub renders in place: the three
-  phases with each gate named under the phase where you're asked, and an arrow
+  phases with each gate named on the phase where you're asked, and an arrow
   back from review to implement when a criterion is unmet. The section showed
   a one-line arrow chain before, which had no way to show that return.
 
