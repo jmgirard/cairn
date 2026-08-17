@@ -98,9 +98,9 @@ run ingestion first (see `/milestone-brief`).
      motivating finding offered a follow-up home (a candidate ROADMAP
      row or a split milestone) instead. A widening adopted at the user's
      selection records a work-log line naming each criterion widened or
-     added. An amendment executing a return reclassified under
-     `/milestone-review`'s widening test is carved out of this rule by
-     name — D-101's inadmissibility (below) governs it unchanged.
+     added. An amendment that executes a widening-test-reclassified
+     return is carved out of this rule by name — D-101's inadmissibility
+     (below) governs it unchanged.
      Amended acceptance-criterion wording — an amendment return from
      `/milestone-review` included — is asked every question the criteria
      audit asks in the mode `/milestone-plan` step 3 assigns the

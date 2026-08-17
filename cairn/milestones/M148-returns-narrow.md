@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M148: Review returns narrow the promises, never widen them
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -105,7 +105,7 @@ guard over the new rules → none owed (D-109).
       lineage noted.
 - [x] T4: Draft the D-entry (AC4's relations), preview verbatim in chat,
       append to `cairn/DECISIONS.md`.
-- [ ] T5: Run both gating suites + `cairn_validate`; hand-run `python3 -m
+- [x] T5: Run both gating suites + `cairn_validate`; hand-run `python3 -m
       unittest discover -s skills/tests`, dispositioning every red (fixture
       updated to the shipped bytes / intentional note / pre-existing note)
       per D-109.
@@ -124,6 +124,7 @@ guard over the new rules → none owed (D-109).
 - 2026-08-17: T2 done — full audit gains the instrument-binding question with AC2's disposal shape (move to tasks/gate procedure, or narrow to the deliverable property); reduced-mode sentence untouched; both suites green.
 - 2026-08-17: T3 sweep — `grep -rniE 'criteria audit|satisfiability|amendment protocol|amendment gate|amend-via-gate|proportionality|instrument question' --include='*.md' .` — dispositions: hits in DECISIONS.md, milestones/archive/, reviews/archive/, legacy/, and CHANGELOG.md are correct-as-written (history, never edited); tracking-rules/template ownership-vocab hits and the brief/review step-6 pointers are correct-as-written (they cite the site, never restate it); references-page hits (self-verification-ledger, m127-ac1-ledger, INDEX) correct-as-written (dated first-hand records); README.md:12 correct-as-written (still true of the stakes-scaled audit); milestone-plan/implement hits are the edited sites themselves; updated: the reduced-audit drop-list enumeration now names the instrument question (the operative two-question clause untouched); updated: the stakes-tier ROADMAP row trimmed to its tier-recording remainder, lineage noted in the row.
 - 2026-08-17: T4 done — D-118 previewed verbatim in chat and appended; heading carries "annotates D-101" and "narrowly supersedes D-111's full-mode question enumeration"; both step-6 and step-3 site edits now cite it.
+- 2026-08-17: T5 done — skills/tests hand-run: 4 reds, one cause (the new carve-out sentence duplicated the M139 guard's unique start-marker phrase); dispositioned by rewording the branch's own new sentence ("An amendment that executes a widening-test-reclassified return…"), the pinned D-101 sentence untouched; re-run: 513 OK; scripts/tests 308 OK; hooks/tests 103 OK; cairn_validate all checks passed. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
