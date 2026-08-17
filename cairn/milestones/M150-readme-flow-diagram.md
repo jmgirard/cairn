@@ -1,0 +1,93 @@
+# M150: The core loop becomes a rendered diagram
+
+- **Status:** planned
+- **Priority:** normal
+- **Depends on:** —
+- **Driving RR:** —
+- **Principles touched:** —
+- **Branch/PR:** —
+
+## Goal
+
+README.md's "The core loop" ASCII block becomes a Mermaid flowchart that GitHub
+renders, showing the three gates and the review→implement return the one-line
+chain cannot.
+
+## Scope
+
+Surface tier: **user-facing** — the README is what an adopter reads before
+installing, so the criteria audit ran in full mode.
+
+**In:** replacing the fenced block at `README.md:77-80` with a mermaid-fenced
+flowchart carrying the four phase nodes, the three gates, and the edge back
+from review to implement (the rulebook's `review → in-progress` transition on
+a review failure); one `## Unreleased` CHANGELOG entry.
+
+**Out:** the trivial-commit and `/hotfix` side doors → they keep their rows in
+the "Which skill, when" table, unillustrated. Diagrams anywhere else in the
+README (the directory tree, the skills table) → not proposed; a later docs
+pass if wanted. Any image file, CDN asset, or build step → refused outright;
+the fence is the whole mechanism. A local Mermaid parser → none exists on this
+machine, so GitHub's rendering is the sole oracle (AC2).
+
+## Acceptance criteria
+
+- [ ] AC1: README.md's `## The core loop` section contains a fenced block whose
+      opening fence line is three backticks followed by `mermaid`, and within
+      that block's line range the source carries the four node labels
+      `/milestone-plan`, `/milestone-implement`, `/milestone-review`, `merged`,
+      the three gate labels `scope gate`, `choices gate`, `approval gate`, and
+      an edge directed from the review node back to the implement node — the
+      return `tracking-rules.md` defines ("review failures return to
+      `in-progress`"). Verified by grepping README.md for lines beginning with
+      three backticks to fix the block's start and end lines, then reading
+      exactly that range.
+- [ ] AC2: the added block renders as a diagram, not as literal source text,
+      when GitHub displays README.md on the milestone branch — observed on the
+      branch's README page in a browser.
+- [ ] AC3: the README properties its guards own are unchanged — the
+      first-paragraph positioning framing, the sources/currency section, the
+      boundary-rule homes, and the tree block's lessons line — verified by the
+      hand-run `python3 -m unittest discover skills/tests` guards that own them
+      (`test_readme_currency.py`, `test_positioning_guard.py`,
+      `test_collaboration_boundary.py`), whose result is the D-109 hygiene-pass
+      observation with any red classified, never an exit-0 merge bar.
+- [ ] AC4: CHANGELOG.md's `## Unreleased` section gains exactly one entry
+      describing the diagram, verified by reading `git diff origin/main --
+      CHANGELOG.md`: one added entry, every claim in it visible in the shipped
+      README block.
+- [ ] AC5: the profile's `verify` slot is clean — `python3 -m unittest discover
+      scripts/tests` and `python3 -m unittest discover hooks/tests` each exit 0.
+
+## Coverage
+
+- AC1 → T2
+- AC2 → T3
+- AC3 → T4
+- AC4 → T5
+- AC5 → T4
+
+## Tasks
+
+- [ ] T1: draft the flowchart source in this file's work log — nodes, gate
+      labels, the return edge — and check it against `README.md:71-84`'s prose
+      so the drawing and the paragraph beneath it agree.
+- [ ] T2: replace `README.md:77-80` with the mermaid-fenced block; touch no other
+      fenced block (the tree block at `README.md:140-151` is guarded).
+- [ ] T3: push the branch, open its README page on GitHub in a browser, and
+      confirm the block renders as a figure; record the URL and date.
+- [ ] T4: run both gating suites and the hand-run `skills/tests`; record counts
+      and classify any red per D-109.
+- [ ] T5: add the `## Unreleased` CHANGELOG entry, claiming only what the
+      shipped block shows.
+
+## Work log
+
+- 2026-08-17: created by /milestone-plan; absorbs the "README flow diagram" candidate row (added 2026-08-14).
+- 2026-08-17: plan-gate criteria audit ran in FULL mode (user-facing tier), fresh [O] reader; 7 findings returned, all fixed here — greppable terminal label, block-range co-location, back edge cited to the rulebook not recalled, AC2's record clause moved to the review procedure, AC3 re-pointed from the gating suites (which assert nothing about README) to the guards owning those properties, D-109's no-exit-0-bar reading restored, AC4 given a procedure.
+- 2026-08-17: plan gate chose replacing the ASCII block over keeping both because two blocks stating one flow drift apart; falsified by a reader report that the Mermaid source is unreadable where the file is read unrendered.
+- 2026-08-17: plan gate chose phases+gates+return over also drawing the trivial and hotfix side doors because the section is the core loop and those carry their own table rows; falsified by a reader taking the loop as the only entry point into cairn.
+
+## Decisions
+
+## Review
