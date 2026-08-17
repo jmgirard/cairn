@@ -9,7 +9,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** m149-byte-budgets
+- **Branch/PR:** m149-byte-budgets · https://github.com/jmgirard/cairn/pull/150
 
 ## Goal
 
@@ -39,7 +39,7 @@ reasoning stands: item lines are never length-policed.
 
 ## Acceptance criteria
 
-- [ ] AC1: The rulebook's Weight caps bullet states, beside the existing line
+- [x] AC1: The rulebook's Weight caps bullet states, beside the existing line
       caps, `ROADMAP.md` < 24,000 bytes and `LESSONS.md` < 20,000 bytes, marks
       them judgment-checked at hygiene passes (no validator check), and leaves
       the existing cap substrings intact (the mutation harness pins
@@ -47,16 +47,16 @@ reasoning stands: item lines are never length-policed.
       the remedies bullet covers a byte-budget overrun, adding a LESSONS remedy
       (retire or prune entries, imported from the cairn/LESSONS.md:9 header)
       covering both its line cap and its byte budget.
-- [ ] AC2: Every hit of the sweep
+- [x] AC2: Every hit of the sweep
       `grep -rnE "\b(60|50)[- ]lines?\b" --exclude-dir=tests skills/ cairn/ROADMAP.md cairn/LESSONS.md`
       on the merged tree that states a ROADMAP or LESSONS line cap also states
       that file's byte budget beside it; every other hit is named out-of-scope
       in the review evidence. Append-only history (DECISIONS.md, archives) is
       outside the domain and untouched.
-- [ ] AC3: The `/milestone` health-audit step and `/milestone-review`'s
+- [x] AC3: The `/milestone` health-audit step and `/milestone-review`'s
       post-merge hygiene step (skills/milestone-review/SKILL.md:336-337) each
       name the two byte budgets as a `wc -c` check in their cap checks.
-- [ ] AC4: An appended D-entry records: the two budgets and their fixed basis;
+- [x] AC4: An appended D-entry records: the two budgets and their fixed basis;
       that D-058's falsifier fired, identifying the adopter evidence, which
       this milestone's Goal holds; that the prose form was chosen at the
       checker-regress gate with machinery declined — its heading reading
@@ -71,11 +71,11 @@ reasoning stands: item lines are never length-policed.
       shows additions only). A work-log line records the falsifier tightening
       relative to the plan-gate line (two consecutive passes; first-pass-only
       carve-out) and why.
-- [ ] AC5: The instrument-adoption-discipline candidate row carries a dated
+- [x] AC5: The instrument-adoption-discipline candidate row carries a dated
       annotation that a standing instrument was weighed at this milestone's
       checker-regress gate and declined in favour of prose — condition not
       fired; the row remains a candidate.
-- [ ] AC6: cairn's own ROADMAP.md and LESSONS.md measure under their byte
+- [x] AC6: cairn's own ROADMAP.md and LESSONS.md measure under their byte
       budgets (`wc -c`) on the merged tree.
 
 ## Coverage
@@ -123,3 +123,12 @@ reasoning stands: item lines are never length-policed.
 ## Decisions
 
 ## Review
+
+Fresh evidence, 2026-08-17, all by command on the branch head:
+
+- AC1: tracking-rules:62-66 carries the byte-budget sentence (both budgets, ×400 basis, judgment-checked/`wc -c`/no-validator); pinned substrings `` `ROADMAP.md` < 60 lines `` and `` `LESSONS.md` < 50 lines `` intact at :62; remedies bullet :74-80 covers over-budget ROADMAP (graduate-or-prune) and over-cap/over-budget LESSONS (retire-or-prune, imported from its header). PASS.
+- AC2: sweep run on the branch head — 6 hits; cairn-init:95/:103, migration-protocol:87, milestone-review:357, LESSONS.md:9 each state the budget beside the cap; tracking-rules:62's budgets sit on the same bullet's continuation lines (:63-65) — disposition: beside, same bullet. No hit lacks its budget. PASS.
+- AC3: `wc -c` check present at skills/milestone/SKILL.md:58 (health audit, after the validate read) and skills/milestone-review/SKILL.md:337 (post-merge hygiene). PASS.
+- AC4: D-119 appended at DECISIONS.md:4365 (file end), heading reads "annotates D-058", no measured bytes/lines restated (evidence cited to this file's Goal); falsifier states two-consecutive-passes with the first-pass carve-out and the fresh-plan-gate remedy; `git diff main...HEAD -- cairn/DECISIONS.md` shows 32 insertions, 0 deletions; falsifier-tightening work-log line at :119. PASS.
+- AC5: instrument-adoption row carries "Weighed 2026-08-17 (M149) … condition not fired, row stays"; row remains a candidate. PASS.
+- AC6: `wc -c` — ROADMAP 11,891 B < 24,000; LESSONS 11,058 B < 20,000. PASS.
