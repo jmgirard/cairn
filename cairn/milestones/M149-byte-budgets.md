@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M149: The line caps gain byte budgets
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -100,7 +100,7 @@ reasoning stands: item lines are never length-policed.
       the `/milestone-review` post-merge hygiene checklist.
 - [x] T4: Append the D-entry (AC4's content); annotate the instrument-adoption
       candidate row (AC5's wording).
-- [ ] T5: Run both gating suites with explicit exit codes; hand-run
+- [x] T5: Run both gating suites with explicit exit codes; hand-run
       skills/tests and disposition reds (intentional re-wording per D-109 is
       noted, not a firing); `wc -c` both tracking files.
 
@@ -118,6 +118,7 @@ reasoning stands: item lines are never length-policed.
 - 2026-08-17: substantive amendment of AC4 at the mini gate — the original wording forced the D-entry to restate measured figures (D-116 part 2 conflict) and carried a falsifier that self-fired on the licensed rollout; narrowed, never widened; two fresh [O] readers (mini-gate draft, re-entry pass), final wording user-accepted.
 - 2026-08-17: falsifier tightening vs the plan-gate line above — one-pass-untrimmed became two consecutive passes with a first-pass carve-out for the three files the Goal names, so the rule survives the rollout the Scope licenses (adopters trim at their own next audits) while staying falsifiable on those files from their second pass on.
 - 2026-08-17: T4 done — D-119 appended at file end (an initial mis-placement above D-118 was corrected before commit; branch diff on DECISIONS.md is 32 insertions, 0 deletions); instrument-adoption row annotated (weighed, not fired).
+- 2026-08-17: T5 done — scripts/tests exit 0, hooks/tests exit 0, skills/tests hand-run 513 tests OK (no reds, pinned substrings untouched), validate exit 0, ROADMAP 11,896 B and LESSONS 11,058 B under budget. All tasks done; status → review.
 
 ## Decisions
 
