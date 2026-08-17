@@ -4,12 +4,12 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M148: Review returns narrow the promises, never widen them
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m148-returns-narrow · https://github.com/jmgirard/cairn/pull/149   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 
@@ -40,7 +40,7 @@ guard over the new rules → none owed (D-109).
 
 ## Acceptance criteria
 
-- [ ] AC1: `/milestone-implement` step 6's substantive-amendment path states
+- [x] AC1: `/milestone-implement` step 6's substantive-amendment path states
       the return-adjacent direction rule: on a milestone whose work log
       records one or more defect returns, a proposed amendment that widens
       the criteria set — adding an acceptance criterion, or extending an
@@ -54,7 +54,7 @@ guard over the new rules → none owed (D-109).
       widening-test-reclassified return are carved out by name — D-101's
       inadmissibility governs them unchanged. Verified by reading the
       shipped step-6 text for each named element.
-- [ ] AC2: `/milestone-plan` step 3's criteria audit asks, in full mode (per
+- [x] AC2: `/milestone-plan` step 3's criteria audit asks, in full mode (per
       the D-entry AC4 appends; the reduced form stands at its two
       questions), of each criterion whether its promise states a property of
       the milestone's deliverable or a property of an instrument that
@@ -64,21 +64,21 @@ guard over the new rules → none owed (D-109).
       instrument property moved to tasks or gate procedure, or the criterion
       narrowed to the deliverable property it certifies. Verified by reading
       the shipped step-3 text.
-- [ ] AC3: step 6's re-entry sentence states that amended
+- [x] AC3: step 6's re-entry sentence states that amended
       acceptance-criterion wording is asked every question the assigned mode
       asks — the proportionality question and, in full mode, the instrument
       question included. Verified by reading the shipped step-6 text.
-- [ ] AC4: one appended `DECISIONS.md` entry records both rules with their
+- [x] AC4: one appended `DECISIONS.md` entry records both rules with their
       trigger (intraclass M123 as the Scope states), its heading naming
       "annotates D-101" and "narrowly supersedes D-111's full-mode question
       enumeration"; shown verbatim in chat before its commit. Verified: the
       entry is present and its heading carries those two relations.
-- [ ] AC5: a recorded grep sweep — command verbatim in the work log — over
+- [x] AC5: a recorded grep sweep — command verbatim in the work log — over
       the repo's markdown for restatements of the two edited doctrine sites
       (the step-6 amendment protocol; the criteria-audit question list)
       returns hits each dispositioned in the work log as updated or
       correct-as-written; the promise quantifies over the sweep's hits.
-- [ ] AC6: both gating suites (`python3 -m unittest discover -s
+- [x] AC6: both gating suites (`python3 -m unittest discover -s
       scripts/tests`; same for `hooks/tests`) and `cairn_validate` pass on
       the branch.
 
@@ -93,19 +93,19 @@ guard over the new rules → none owed (D-109).
 
 ## Tasks
 
-- [ ] T1: Edit `skills/milestone-implement/SKILL.md` step 6: add the
+- [x] T1: Edit `skills/milestone-implement/SKILL.md` step 6: add the
       return-adjacent direction rule (AC1's elements, D-101 carve-out
       included) and clarify the re-entry sentence (AC3); cite
       `/milestone-plan` step 3 rather than restating its question list.
-- [ ] T2: Edit `skills/milestone-plan/SKILL.md` step 3: add the
+- [x] T2: Edit `skills/milestone-plan/SKILL.md` step 3: add the
       instrument-binding question to the full audit's question list with
       AC2's disposal shape; leave the reduced-mode sentence untouched.
-- [ ] T3: Run AC5's sweep, disposition every hit; trim the "Stakes-tier
+- [x] T3: Run AC5's sweep, disposition every hit; trim the "Stakes-tier
       follow-through" candidate row to its tier-recording remainder,
       lineage noted.
-- [ ] T4: Draft the D-entry (AC4's relations), preview verbatim in chat,
+- [x] T4: Draft the D-entry (AC4's relations), preview verbatim in chat,
       append to `cairn/DECISIONS.md`.
-- [ ] T5: Run both gating suites + `cairn_validate`; hand-run `python3 -m
+- [x] T5: Run both gating suites + `cairn_validate`; hand-run `python3 -m
       unittest discover -s skills/tests`, dispositioning every red (fixture
       updated to the shipped bytes / intentional note / pre-existing note)
       per D-109.
@@ -120,6 +120,11 @@ guard over the new rules → none owed (D-109).
 - 2026-08-17: plan gate chose full-mode-only for the instrument question over both modes because D-111 had just descoped the reduced audit and no internal-tier instance of the defect is on record; falsified by an internal-tier milestone shipping an instrument-binding criterion that costs a defect return.
 - 2026-08-17: plan gate chose one milestone over a split despite the goal-sentence "and" tripwire because the combined diff is a few sentences in two skill files plus one D-entry; falsified by review returning on one rule's surface while the other ships clean.
 - 2026-08-17: plan gate chose absorbing the re-entry half of the stakes-tier candidate row over leaving it parked because T1 opens that exact sentence; falsified by the clarified re-entry itself costing an amendment return.
+- 2026-08-17: T1 done — step 6 gains the return-adjacent direction rule (D-101 carve-out by name) and the re-entry sentence now says every question in the assigned mode, proportionality and full-mode instrument included; both gating suites green (308 + hooks OK). Question gate skipped: plan gate settled every open choice, no tripwire tags.
+- 2026-08-17: T2 done — full audit gains the instrument-binding question with AC2's disposal shape (move to tasks/gate procedure, or narrow to the deliverable property); reduced-mode sentence untouched; both suites green.
+- 2026-08-17: T3 sweep — `grep -rniE 'criteria audit|satisfiability|amendment protocol|amendment gate|amend-via-gate|proportionality|instrument question' --include='*.md' .` — dispositions: hits in DECISIONS.md, milestones/archive/, reviews/archive/, legacy/, and CHANGELOG.md are correct-as-written (history, never edited); tracking-rules/template ownership-vocab hits and the brief/review step-6 pointers are correct-as-written (they cite the site, never restate it); references-page hits (self-verification-ledger, m127-ac1-ledger, INDEX) correct-as-written (dated first-hand records); README.md:12 correct-as-written (still true of the stakes-scaled audit); milestone-plan/implement hits are the edited sites themselves; updated: the reduced-audit drop-list enumeration now names the instrument question (the operative two-question clause untouched); updated: the stakes-tier ROADMAP row trimmed to its tier-recording remainder, lineage noted in the row.
+- 2026-08-17: T4 done — D-118 previewed verbatim in chat and appended; heading carries "annotates D-101" and "narrowly supersedes D-111's full-mode question enumeration"; both step-6 and step-3 site edits now cite it.
+- 2026-08-17: T5 done — skills/tests hand-run: 4 reds, one cause (the new carve-out sentence duplicated the M139 guard's unique start-marker phrase); dispositioned by rewording the branch's own new sentence ("An amendment that executes a widening-test-reclassified return…"), the pinned D-101 sentence untouched; re-run: 513 OK; scripts/tests 308 OK; hooks/tests 103 OK; cairn_validate all checks passed. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -128,3 +133,13 @@ guard over the new rules → none owed (D-109).
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55). -->
+
+- 2026-08-17 AC1: fresh read of `skills/milestone-implement/SKILL.md` step 6 on the branch — every named element present: the one-or-more-defect-returns trigger; widening defined as adding a criterion or extending a promise to a property/domain not previously bound; narrowing-or-holding presented as recommended; widening as explicitly non-recommended; motivating finding offered a candidate row or split milestone; user-selected widening logs a line naming each criterion widened or added; widening-test-reclassified amendments carved out by name, D-101's inadmissibility governing unchanged.
+- 2026-08-17 AC2: fresh read of `skills/milestone-plan/SKILL.md` step 3 on the branch — the full audit asks of each criterion whether its promise states a property of the deliverable or of a verifying instrument, with the example list (test harness, floor, plant matrix, checker's own prose, among others) and a D-118 citation; an instrument-binding criterion is a finding disposed at the gate like the audit's others — moved to tasks or gate procedure, or narrowed to the deliverable property it certifies; the reduced form stands at its two questions.
+- 2026-08-17 AC3: same fresh step-6 read — the re-entry sentence states amended wording "is asked every question the criteria audit asks in the mode `/milestone-plan` step 3 assigns the milestone's tier — the proportionality question and, in full mode, the instrument question included".
+- 2026-08-17 AC4: `grep -n '^### D-118' cairn/DECISIONS.md` → one entry at line 4313; its heading carries "annotates D-101" and "narrowly supersedes D-111's full-mode question enumeration"; the T4 work-log line records the verbatim chat preview before its commit.
+- 2026-08-17 AC5: the work log's T3 line carries the sweep command verbatim and dispositions every hit the sweep returned — history surfaces and pointer/vocab hits correct-as-written by class, references pages correct-as-written, two hits updated (the reduced-audit drop-list enumeration; the stakes-tier candidate row trim) — the promise quantifies over those hits.
+- 2026-08-17 AC6: re-run fresh at review on the branch — `scripts/tests` 308 tests OK; `hooks/tests` 103 tests OK; `cairn_validate` all checks passed.
+- 2026-08-17 consistency gate: `cairn_validate` exit 0 (all checks passed); no principles touched → `cairn_impact` skipped; generic profile's consistency-gate slot names no toolchain checks beyond the re-run verify suites. No defect or amendment returns on record.
+- 2026-08-17 review fan-out (user-facing tier → three lenses): [S] blame-history — zero findings; [S] prior-PR-comments — zero findings (archived-review sweep clean; PR-thread probe returned no threads); [O] diff-bug — independently reproduced all six AC verifications and all suite results, 10 ranked findings.
+- 2026-08-17 triage (gate-approved): F1 instrument-vs-probe-question tension FIXED (tiebreak sentence: the question governs what a promise binds, never how a deliverable-bound promise is verified, never relaxes the probe question); F9 ROADMAP row tense/date FIXED ("absorbed by", trimmed-date stamp); F10 chip ambiguity FIXED ("narrowing-or-holding … the one recommended option", D-105's precedent); F2 REJECTED (D-101 positively mandates the narrowing repair for an amendment executing a reclassified return; a bundled unrelated widening is not "executing the return" and stays under the direction rule); F3 REJECTED (colliding "instrument" senses sit on pre-existing unmodified lines; the new question defines its sense inline); F4 REJECTED (AC3 mandates naming the two questions — intentional per plan); F5 REJECTED ("three mechanical questions" never announced a total; unmodified line); F6 REJECTED (defect returns are already counted by prose read per the thrash rule; a fixed line shape is machinery beyond scope); F7 REJECTED (append-only log accurate chronologically; T3's line records the update and the deviation was disclosed); F8 REJECTED (the ingest audit citing the full audit is the one-home design; D-111 records it "stays full-audited"). Return floor: no finding demonstrates an AC failing or a load-bearing deliverable defect — no status return.
