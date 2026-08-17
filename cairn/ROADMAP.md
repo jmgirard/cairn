@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-17 (audit pass, nothing changed: validate green — 16 PASS, 7 advisories OK; caps ok; byte budgets `wc -c` 11,824 / 11,349 — both under; no active milestone, no open RB, both GitHub inboxes empty.)_
+_Last hygiene check: 2026-08-17 (M150 archived; README-flow-diagram candidate graduated; M145 done-row pruned for terminal retention; skills/tests hand-run on merged main: 513 tests, zero reds; validate green; caps ok; byte budgets `wc -c` 11,481 / 11,789 — both under.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,10 +12,9 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M150 | The core loop becomes a rendered diagram | review | — | normal | milestones/M150-readme-flow-diagram.md |
+| M150 | The core loop becomes a rendered diagram | done | — | normal | milestones/archive/M150-readme-flow-diagram.md |
 | M149 | The line caps gain byte budgets | done | — | normal | milestones/archive/M149-byte-budgets.md |
 | M148 | Review returns narrow the promises, never widen them | done | — | high | milestones/archive/M148-returns-narrow.md |
-| M145 | Standing instruments scale to stakes | done | — | high | milestones/archive/M145-stakes-scaled-instruments.md |
 | M146 | The rulebook states rules, git holds reasons | done | M145 | high | milestones/archive/M146-rulebook-states-rules.md |
 | M147 | The records shrink to their jobs | done | M146 | normal | milestones/archive/M147-record-diet.md |
 
@@ -24,7 +23,6 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
 - External adoption pass (RR13 step 3): run `/cairn-init` and one full milestone loop on a repo the author did not shape, ideally with a second person driving, and fix what breaks; fallback if no external repo or person is available: the README-flow-diagram and contributor-scaffold rows (cross-referenced, not merged). Parked until the RR13 reduction lands. Promote once M145–M147 land — added 2026-08-16 — RR13 Q10
-- README flow diagram: replace or augment the core-loop ASCII block with a Mermaid flowchart (GitHub renders mermaid fences natively; no image file), and consider a small gates diagram; parked as its own pass because Mermaid does not render in plain terminals and M141 froze the fenced blocks. Promote at will as a small docs pass — added 2026-08-14 — conversational (maintainer)
 - The amendment-time audit surface records nothing: `/milestone-implement` step 6's re-audit mandates no work-log line (unlike the plan and ingest surfaces D-079 clause 2 owns), so on resume whether the fresh reader ran is unrecoverable and the per-criterion one-re-entry bound is uncountable; cheapest form is one step-6 sentence plus a fixed clearance shape at the brief surface, parked until the gap is actually hit on a resume. Promote when a resume cannot determine whether a re-audit ran, or an exemption is applied to wording no line names — never on a count of amendments — added 2026-08-09 — M138 review F1/F8
 - Re-measure the record-defect share after the derived-claims family (M134/M136/M137) and the RR13 reduction (M144–M147): re-run the 2026-08-08 effort audit's classification per the method in `references/effort-experiment-notes.md` against the M113–M136 baseline the graduated batching row recorded at `08bbb07` (roughly half record defects); the three outcomes it discriminates — helping / dead weight (D-099/D-116's supersede exits) / self-thrash (M137's F19/F27 shape) — are in that row via git, attribution to the family jointly; parked until the next audit-style moment. Promote at the next audit-style re-measurement, or earlier if a defect return or gated amendment is again caused by a record defect — never on felt cost — added 2026-08-08 — M137 close-out (user request) + RR13 rec 9
 - Standing-instrument adoption discipline, two plan-gate conduct clauses: (a) a milestone proposing a standing instrument states a pre-registered yield classification, an advisory-only shadow period of 2–3 milestones, and an autopsy date before it may gate anything; (b) when an adopted instrument's own falsifier fires, at most one narrowing attempt precedes the prescribed exit (D-059: replacing the falsifier is presumptive tuning). Sits beside D-090's door, not behind it. Promote when the next milestone proposes a standing instrument — the rule binds at adoption time, never on a count of milestones — added 2026-07-31 — M127 post-mortem (user question). Weighed 2026-08-17 (M149): a standing instrument (a validator byte check) was posed at the checker-regress gate and declined in favour of prose — condition not fired, row stays
