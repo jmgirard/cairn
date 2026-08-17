@@ -76,7 +76,7 @@ machine, so GitHub's rendering is the sole oracle (AC2).
       fenced block (the tree block, now `README.md:144-155`, is guarded).
 - [ ] T3: push the branch, open its README page on GitHub in a browser, and
       confirm the block renders as a figure; record the URL and date.
-- [ ] T4: run both gating suites and the hand-run `skills/tests`; record counts
+- [x] T4: run both gating suites and the hand-run `skills/tests`; record counts
       and classify any red per D-109.
 - [ ] T5: add the `## Unreleased` CHANGELOG entry, claiming only what the
       shipped block shows.
@@ -90,6 +90,7 @@ machine, so GitHub's rendering is the sole oracle (AC2).
 - 2026-08-17: plan gate chose phases+gates+return over also drawing the trivial and hotfix side doors because the section is the core loop and those carry their own table rows; falsified by a reader taking the loop as the only entry point into cairn.
 - 2026-08-17: T1 refined — the draft is shown in chat and this line records it, rather than pasted into the work log where a multi-line block would trip the one-line entry rule.
 - 2026-08-17: T1+T2 done — README.md:77-84 is now a mermaid flowchart (idea → plan → implement → review → merged, gates on the edges, review→implement return); diff is 7 insertions / 3 deletions confined to that block, the other three fenced blocks untouched (tree block shifted 140-151 → 144-155, content identical).
+- 2026-08-17: T4 done — scripts/tests 308 tests exit 0, hooks/tests 103 exit 0, hand-run skills/tests 513 exit 0 (exit codes read directly, not through a pipe); no reds, so D-109's red-classification clause has nothing to classify.
 
 ## Decisions
 
