@@ -88,10 +88,24 @@ run ingestion first (see `/milestone-brief`).
      amendment as a dated work-log line
      (+ D-entry if cross-cutting); show the amended criterion/scope text
      verbatim in chat before its commit (durable-record preview).
+     **Return-adjacent direction rule (D-118).** On a milestone whose
+     work log records one or more defect returns, a proposed amendment
+     that widens the criteria set — adding an acceptance criterion, or
+     extending an existing criterion's promise to a property or domain
+     it did not previously bind — is presented at the mini gate with
+     narrowing or holding the criteria set as the recommended option and
+     the widening as an explicitly non-recommended alternative, the
+     motivating finding offered a follow-up home (a candidate ROADMAP
+     row or a split milestone) instead. A widening adopted at the user's
+     selection records a work-log line naming each criterion widened or
+     added. An amendment executing a return reclassified under
+     `/milestone-review`'s widening test is carved out of this rule by
+     name — D-101's inadmissibility (below) governs it unchanged.
      Amended acceptance-criterion wording — an amendment return from
-     `/milestone-review` included — is asked the criteria audit's
-     questions in the mode `/milestone-plan` step 3 assigns the
-     milestone's tier, by a fresh-context
+     `/milestone-review` included — is asked every question the criteria
+     audit asks in the mode `/milestone-plan` step 3 assigns the
+     milestone's tier — the proportionality question and, in full mode,
+     the instrument question included — by a fresh-context
      **[O]** reader that did not author the amended wording, before the
      amended text is written to the milestone file.
      Wording whose clearance the `/milestone-brief` ingest audit's work-log

@@ -93,7 +93,7 @@ guard over the new rules → none owed (D-109).
 
 ## Tasks
 
-- [ ] T1: Edit `skills/milestone-implement/SKILL.md` step 6: add the
+- [x] T1: Edit `skills/milestone-implement/SKILL.md` step 6: add the
       return-adjacent direction rule (AC1's elements, D-101 carve-out
       included) and clarify the re-entry sentence (AC3); cite
       `/milestone-plan` step 3 rather than restating its question list.
@@ -120,6 +120,7 @@ guard over the new rules → none owed (D-109).
 - 2026-08-17: plan gate chose full-mode-only for the instrument question over both modes because D-111 had just descoped the reduced audit and no internal-tier instance of the defect is on record; falsified by an internal-tier milestone shipping an instrument-binding criterion that costs a defect return.
 - 2026-08-17: plan gate chose one milestone over a split despite the goal-sentence "and" tripwire because the combined diff is a few sentences in two skill files plus one D-entry; falsified by review returning on one rule's surface while the other ships clean.
 - 2026-08-17: plan gate chose absorbing the re-entry half of the stakes-tier candidate row over leaving it parked because T1 opens that exact sentence; falsified by the clarified re-entry itself costing an amendment return.
+- 2026-08-17: T1 done — step 6 gains the return-adjacent direction rule (D-101 carve-out by name) and the re-entry sentence now says every question in the assigned mode, proportionality and full-mode instrument included; both gating suites green (308 + hooks OK). Question gate skipped: plan gate settled every open choice, no tripwire tags.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
