@@ -34,8 +34,8 @@ Give the rulebook a sentence-level plain-style rule for chat output and for dura
 - [x] T1: Re-read the `prompting-opus-5` source page (curl the `.md` sibling per the page's provenance); extract verbatim any response-verbosity/prose-style guidance with section anchors, or record a dated found-none observation; mark the re-read inline on the extraction status; replace the two stale Traces-to anchors (`tracking-rules.md:553`/`:650`) with stable bullet-title anchors.
 - [x] T2: Author the chat prose-style rule (AC1) in "Output & interaction discipline", beside the narration-discipline bullet; add its Traces-to entry.
 - [x] T3: Author the record-prose rule (AC2) in "Universal tracking rules"; amend the derived-claims exemption sentence to name it; widen the lesson-retirement ownership exit to "another tracking file's slot, or the shared rulebook" (doctrine-prose repair within the surfacing milestone, D-090); add its Traces-to entry.
-- [ ] T4: Sweep the skills' own prose (`grep -rniE 'recap|summar|restat|verbatim|report' skills/*/SKILL.md skills/shared/*.md`) for instructions inviting output longer than its purpose needs; trim hits on the branch, keeping D-039's named carve-outs (durable-record preview, acceptance chips); one work-log line records the dispositions.
-- [ ] T5: Add one hand-run prose-guard pin in `skills/tests` covering both new rules' spans (M148 lesson: reword new sentences near pinned slices, never the pinned ones); record the guard beside each Traces-to entry.
+- [x] T4: Sweep the skills' own prose (`grep -rniE 'recap|summar|restat|verbatim|report' skills/*/SKILL.md skills/shared/*.md`) for instructions inviting output longer than its purpose needs; trim hits on the branch, keeping D-039's named carve-outs (durable-record preview, acceptance chips); one work-log line records the dispositions.
+- [x] T5: Add one hand-run prose-guard pin in `skills/tests` covering both new rules' spans (M148 lesson: reword new sentences near pinned slices, never the pinned ones); record the guard beside each Traces-to entry.
 - [ ] T6: Re-seed the three rulebook-mass baselines (M149 lesson: `skills/milestone/SKILL.md` cost line, `test_cost_audit_line.py:67`, `test_mutation_harness.py:117`); run both gating suites and hand-run `skills/tests` from the repo root, exit codes checked (M56 lesson).
 
 ## Work log
@@ -50,6 +50,8 @@ Give the rulebook a sentence-level plain-style rule for chat output and for dura
 - 2026-08-22: T1 done — source page re-fetched (12,483 bytes), no drift in prior values; § Response length and verbosity + § User-facing progress updates extracted (4 new values, incl. the positive-examples-beat-prohibitions finding that shapes T2/T3 wording); stale Traces-to line anchors replaced with bullet-title anchors.
 - 2026-08-22: T2 done — "Plain style" bullet added to Output & interaction discipline; Traces-to entry added; skills/tests hand-run: 513 OK. (T1 line above re-seated at log end, restoring append order after a mis-placed insert.)
 - 2026-08-22: T3 done — record-prose rule added to Universal tracking rules; exemption sentence names it; ownership exit widened to the shared rulebook (doctrine-prose repair, D-090); Traces-to entry added; all three suites green (exit 0).
+- 2026-08-22: T4 done — sweep run (named grep + a detail/thorough/explain pass over the same files): 119 hits, zero trims — every hit is mandated substance under D-039's carve-outs or a functional report-the-result step; no padding-inviting instruction found.
+- 2026-08-22: T5 done — test_plain_style.py added (2 classes, 6 asserts) pinning both rules; Traces-to entries name the guard; 519 skills/tests green.
 
 ## Decisions
 
