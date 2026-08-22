@@ -114,7 +114,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="404 lines / 36,532 chars",
+        block="413 lines / 37,567 chars",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -1812,6 +1812,56 @@ REGISTRY = [
         test="TestWholeSliceFixtures.test_regress_rule_matches_its_fixture",
         target="skills/milestone-plan/SKILL.md",
         block="The sweep also names this shape",
+    ),
+    # M152: the two plain-style rules. One entry per positive assert's block
+    # (M53 per-block discipline) — each clause carries its rule independently.
+    Mutation(
+        guard="test_plain_style",
+        test="TestPlainStyleRule.test_length_matched_to_the_turn",
+        target=RULES,
+        block="Write for the reader: response length matched to what the turn needs",
+    ),
+    Mutation(
+        guard="test_plain_style",
+        test="TestPlainStyleRule.test_plain_words_over_jargon",
+        target=RULES,
+        block="plain words over jargon — a term of art appears only",
+    ),
+    Mutation(
+        guard="test_plain_style",
+        test="TestPlainStyleRule.test_no_filler_or_hype",
+        target=RULES,
+        block="with no stock filler phrasing, hype adjectives, or",
+    ),
+    Mutation(
+        guard="test_plain_style",
+        test="TestPlainStyleRule.test_terms_glossed_or_dropped",
+        target=RULES,
+        block="glossed at first use or dropped",
+    ),
+    Mutation(
+        guard="test_plain_style",
+        test="TestPlainStyleRule.test_padding_clause_and_carveout",
+        target=RULES,
+        block="padding. The decision surface keeps its stricter",
+    ),
+    Mutation(
+        guard="test_plain_style",
+        test="TestRecordProseRule.test_rule_present_under_its_name",
+        target=RULES,
+        block="**Records are written plain** (the record-prose rule)",
+    ),
+    Mutation(
+        guard="test_plain_style",
+        test="TestRecordProseRule.test_no_characterizations",
+        target=RULES,
+        block="omits characterizations the facts don't need (adjectives, superlatives, hype)",
+    ),
+    Mutation(
+        guard="test_plain_style",
+        test="TestRecordProseRule.test_length_standard_cross_referenced",
+        target=RULES,
+        block="the Plain style rule's length standard, applied to what is written down",
     ),
 ]
 

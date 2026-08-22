@@ -95,13 +95,18 @@ D-entry. IP block first, then GPs; numbers are never reused or renumbered — re
   artifact does is written against an execution's observed output or a same-session read, never from recollection; prose
   restating what its cited artifact shows becomes a cross-reference, a member enumeration a pointer unless the
   enumeration is itself the deliverable. Tracking records are exempt from this rule and from the derived-figures and
-  failure-identity rules below — ordinary care, the review lenses, and the correction discipline govern them instead.
+  failure-identity rules below — ordinary care, the record-prose rule, the review lenses, and the correction discipline
+  govern them instead.
 - **A derived figure in a code-adjacent artifact is pinned or procedural, never free-standing** (the derived-figures
   rule): beside its producing procedure and the commit or date measured, or replaced by its derivation.
 - **An observed failure backs a claim only as the failure it is verified to be** (the failure-identity rule): in
   code-adjacent artifacts and tests, verify the failure's identity — condition class, message, or signaling site —
   confirming the inputs reach the behavior under test; a test asserting a failure asserts *which* failure, and a
   discriminating test's passing control is shown to pass for the claim's reason, never merely to pass.
+- **Records are written plain** (the record-prose rule): a durable record under `cairn/` — work-log lines, D-entries,
+  milestone-file sections, LESSONS lines, ROADMAP rows, archive summaries — states decision-relevant facts in plain
+  words, omits characterizations the facts don't need (adjectives, superlatives, hype), and matches its length to the
+  record's job — the Plain style rule's length standard, applied to what is written down.
 - **A D-entry carries the decision and its rationale, and no derived measurements** — a supporting count or measurement
   lives in the artifact or milestone file the entry cites (binding after M146; prior entries stand, IP4).
 - **History-record corrections batch to at most one superseding entry per milestone**, not a chain of per-claim entries
@@ -274,6 +279,11 @@ These rules bind all chat output while any cairn skill is active.
   PR merge gate — not a milestone branch's tracking records.
 - **Outcome-first recaps.** Phase-completion recaps lead with what the work did, changed, or accomplished, in plain
   words; hygiene mechanics follow compressed — one line when clean.
+- **Plain style.** Write for the reader: response length matched to what the turn needs — the main answer carries the
+  response, caveats and asides stay short; plain words over jargon — a term of art appears only as the precise name for
+  a thing, glossed at first use or dropped; facts stated straight, with no stock filler phrasing, hype adjectives, or
+  padding. The decision surface keeps its stricter Accessible-language test below; like the narration rule above,
+  this never licenses compressing the Durable-record preview or Acceptance-chip substance.
 - **Chips carry choices, not evidence.** Supporting detail and justification live in chat *above* the chip; option
   labels are short; descriptions say in plain language what is chosen and why it matters; ≤4 options per question.
 - **Accessible language on the decision surface.** A question's text, the prose framing a chip, and every option label
