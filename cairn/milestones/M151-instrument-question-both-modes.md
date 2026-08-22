@@ -1,6 +1,6 @@
 # M151: The instrument question reaches the reduced audit
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -112,6 +112,7 @@ repos' own gates, under the existing amendment protocol.
 - 2026-08-21: T3 — M101 evidence re-verified against circumplex's milestone file (internal tier in Scope; reduced-audit work-log line dated 2026-08-21; return 1 the G7/G8 "unmet as written" repairs of AC2's named-command and AC3's per-case recording clauses; return 2 the F1 repair of AC5's quotation clause); D-120 appended; `cairn_validate` exit 0, all checks passed, dangling-ids OK with the SKILL.md forward reference now resolved.
 - 2026-08-21: T4 — candidate row added (search-first: no existing row, archive entry, or D-heading covers review-side reclassification; the Stakes-tier and Standing-instrument rows re-checked as adjacent only); restatement sweep over skills/, README.md, templates: five hits, three are this milestone's own new text, milestone-brief:126 names the ingest audit's full mode which D-111 keeps full-audited (correct as stands), milestone-plan:122 is the mode-selector sentence (unchanged by design).
 - 2026-08-21: T5 — explicit exit codes on the merged working tree: skills/tests 0 (513 tests), scripts/tests 0, hooks/tests 0, `cairn_validate` 0; all tasks checked; status → review.
+- 2026-08-21: REVIEW RETURN 1 (defect) — status → in-progress. What failed: AC2 as written — the record properties are named in the exemplar list but the shipped three-disjunct structure leaves the "A criterion binding an instrument property is a finding" and disposal sentences instrument-only, so their binding is not literally a finding ([O] F1/F2); also actioned on this return: F6's mode-ambiguous tiebreak clause, and F3/F8/F11 record corrections batched to D-121.
 
 ## Decisions
 
@@ -143,3 +144,5 @@ repos' own gates, under the existing amendment protocol.
 - F12: M101-AC2's defeated clause ("as reported by gh run list") was already instrument-genus, so only AC3/AC5's clauses require the record-property extension — weakening, not defeating, the falsifier warrant as stated.
 
 Verified clean by the same lens: falsifier/mode-clause/enumeration quotes verbatim; DECISIONS pure append (IP4); candidate row exactly one, correctly conditioned; M101 evidence confirmed (internal tier, reduced audit 2026-08-21, return 2 on AC5's clause); validate and all three suites exit 0; no stale full-mode attribution survives in skills/, README, templates.
+
+**Triage (2026-08-21, at the gate).** Actioned fix-now on return: F1+F2 (fold the record exemplars into the instrument genus, deleting the coordinate disjunct, so the "is a finding" and disposal sentences reach them — the reading D-120 already states), F6 ("in the full mode that asks it"), and F3/F8/F11 batched into one superseding entry D-121 (D-120 unedited — IP4, D-081/D-102 precedent). Rejected with reasons: F4 (supersession is by naming; an entry's "stands" enumeration is not exclusive), F5 (evidence identification, not derived measurement; D-118's own Context is precedent), F7 (bare repo-qualified milestone ID is the cross-repo citation form, D-098), F9 (resolved mid-review — evidence committed and pushed), F10 (a versioned changelog section describes its release; 1.7.0 consolidation covers this per the release-walk), F12 (mode extension supported by M101-AC2's clause, genus widening by AC3/AC5's — neither move unwarranted). Blame-history's soft spot is F2's subject, cured by the same repair.
