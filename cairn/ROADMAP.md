@@ -12,6 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M152 | Chat and record prose gain a plain-style rule | planned | — | high | milestones/M152-plain-style-rule.md |
 | M151 | The instrument question reaches the reduced audit | done | — | high | milestones/archive/M151-instrument-question-both-modes.md |
 | M150 | The core loop becomes a rendered diagram | done | — | normal | milestones/archive/M150-readme-flow-diagram.md |
 | M149 | The line caps gain byte budgets | done | — | normal | milestones/archive/M149-byte-budgets.md |
