@@ -92,7 +92,7 @@ repos' own gates, under the existing amendment protocol.
       `circumplex/cairn/milestones/M101-startup-failure-reachability-probe.md`
       (reduced-audit work-log line of 2026-08-21; returns 1 and 2 called on
       recording clauses), then append the AC4 D-entry; `cairn_validate`.
-- [ ] T4: Add the AC5 candidate ROADMAP row (search-first sweep first), then
+- [x] T4: Add the AC5 candidate ROADMAP row (search-first sweep first), then
       restatement sweep: `grep -rn "instrument question\|reduced audit\|full
       mode\|full-mode"` over `skills/`, `README.md`,
       `skills/shared/templates/`; disposition every hit.
@@ -110,6 +110,7 @@ repos' own gates, under the existing amendment protocol.
 
 - 2026-08-21: T1+T2 — step 3's instrument question now opens "The audit — in both modes —", its exemplar list gains "a work-log recording act, a mandated evidence quotation" and cites D-120; the reduced-audit sentence lists bounded-promise, proportionality, and instrument, omitting satisfiability/reachability/probe; step 6's re-entry sentence reads "the proportionality and instrument questions included in either mode". No pinned guard phrase touched; suites skills/scripts/hooks exit 0/0/0 (513 prose guards OK).
 - 2026-08-21: T3 — M101 evidence re-verified against circumplex's milestone file (internal tier in Scope; reduced-audit work-log line dated 2026-08-21; return 1 the G7/G8 "unmet as written" repairs of AC2's named-command and AC3's per-case recording clauses; return 2 the F1 repair of AC5's quotation clause); D-120 appended; `cairn_validate` exit 0, all checks passed, dangling-ids OK with the SKILL.md forward reference now resolved.
+- 2026-08-21: T4 — candidate row added (search-first: no existing row, archive entry, or D-heading covers review-side reclassification; the Stakes-tier and Standing-instrument rows re-checked as adjacent only); restatement sweep over skills/, README.md, templates: five hits, three are this milestone's own new text, milestone-brief:126 names the ingest audit's full mode which D-111 keeps full-audited (correct as stands), milestone-plan:122 is the mode-selector sentence (unchanged by design).
 
 ## Decisions
 
