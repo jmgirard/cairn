@@ -119,7 +119,7 @@ D-entry. IP block first, then GPs; numbers are never reused or renumbered — re
   explicit user decision recorded as a D-entry.
 - **Retiring a lesson that no longer earns its line.** Three exits: **enforcement** — a test *fails* on the mistake the
   lesson warns about (a guard merely existing nearby is not enforcement); **ownership** — another tracking file's slot
-  or the shared rulebook owns the content (the retiring milestone may *move* it there); **maturation** — a stabilized family graduates whole
+  owns the content (the retiring milestone may *move* it there); **maturation** — a stabilized family graduates whole
   into a doctrine module, when it teaches transferable craft, has been extended or consolidated at least twice, and
   neither other exit applies. A lesson covered in part is trimmed to its remainder; a retired lesson leaves no line
   behind — the archive summary names what it graduated. Retirement removes the redundant, never the merely disputed (a
@@ -282,7 +282,8 @@ These rules bind all chat output while any cairn skill is active.
 - **Plain style.** Write for the reader: response length matched to what the turn needs — the main answer carries the
   response, caveats and asides stay short; plain words over jargon — a term of art appears only as the precise name for
   a thing, glossed at first use or dropped; facts stated straight, with no stock filler phrasing, hype adjectives, or
-  padding. The decision surface keeps its stricter Accessible-language test below.
+  padding. The decision surface keeps its stricter Accessible-language test below; like the narration rule above,
+  this never licenses compressing the Durable-record preview or Acceptance-chip substance.
 - **Chips carry choices, not evidence.** Supporting detail and justification live in chat *above* the chip; option
   labels are short; descriptions say in plain language what is chosen and why it matters; ≤4 options per question.
 - **Accessible language on the decision surface.** A question's text, the prose framing a chip, and every option label

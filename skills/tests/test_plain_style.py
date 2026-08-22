@@ -23,9 +23,11 @@ def rules():
 
 
 class TestPlainStyleRule(unittest.TestCase):
-    """M152: the chat-output style rule. Three asserts, one per clause the
-    acceptance criterion names: the length standard, the jargon bar, and the
-    filler bar."""
+    """M152: the chat-output style rule. Five asserts: the length standard,
+    the jargon bar, the glossing clause, the filler bar, and the padding
+    clause with its carve-out opener — the review fan-out found the original
+    three left the glossing and padding clauses deletable with the suite
+    green."""
 
     def test_length_matched_to_the_turn(self):
         self.assertIn(
@@ -40,6 +42,12 @@ class TestPlainStyleRule(unittest.TestCase):
         self.assertIn(
             "with no stock filler phrasing, hype adjectives, or", rules()
         )
+
+    def test_terms_glossed_or_dropped(self):
+        self.assertIn("glossed at first use or dropped", rules())
+
+    def test_padding_clause_and_carveout(self):
+        self.assertIn("padding. the decision surface keeps its stricter", rules())
 
 
 class TestRecordProseRule(unittest.TestCase):

@@ -114,7 +114,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="412 lines / 37,468 chars",
+        block="413 lines / 37,567 chars",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -1832,6 +1832,18 @@ REGISTRY = [
         test="TestPlainStyleRule.test_no_filler_or_hype",
         target=RULES,
         block="with no stock filler phrasing, hype adjectives, or",
+    ),
+    Mutation(
+        guard="test_plain_style",
+        test="TestPlainStyleRule.test_terms_glossed_or_dropped",
+        target=RULES,
+        block="glossed at first use or dropped",
+    ),
+    Mutation(
+        guard="test_plain_style",
+        test="TestPlainStyleRule.test_padding_clause_and_carveout",
+        target=RULES,
+        block="padding. The decision surface keeps its stricter",
     ),
     Mutation(
         guard="test_plain_style",

@@ -55,10 +55,12 @@ Give the rulebook a sentence-level plain-style rule for chat output and for dura
 - 2026-08-22: registry-completeness red caught post-commit (checkpoint chained past the exit code — the M56 shape); fixed by registering 6 Mutation entries for test_plain_style, harness green.
 - 2026-08-22: T6 done — three mass baselines re-seeded to 412 lines / 37,468 chars (M152); skills 525 / scripts / hooks suites all exit 0; cairn_validate green. All tasks complete; status → review.
 - 2026-08-22: correction — the T6 line's suite count is 519, not 525 (`Ran 519 tests`, exit 0).
+- 2026-08-22: minor amendment — T3's ownership-exit widening REVERTED at review triage (fan-out found it collapses D-055's maturation bar into D-051's weaker exit with no D-entry); the M114 lesson now stays whole at hygiene, untrimmed, since no retirement exit reaches it.
+- 2026-08-22: review fix-now batch — Plain style gains the mandated-verbatim carve-out sentence; guards +2 asserts/+2 mutation entries (glossing, padding); references page: Role and Traces-to preamble updated, no-drift claim scoped to extracted values (page grew 11,225→12,483 bytes), overstated headline softened to "not reliably", source's inner double quotes restored, assert counts added; INDEX.md line updated; Review evidence :257 corrected to :262; baselines re-seeded to 413 / 37,567.
 
 ## Decisions
 
 ## Review
 
-- 2026-08-22 AC1 evidence: `tracking-rules.md:282-285` — "Plain style" bullet sits in Output & interaction discipline (binding sentence :257), with all three mandated clauses read verbatim from disk (length-to-turn :282, jargon/gloss :283-284, filler/hype/padding :284-285); TestPlainStyleRule 3/3 pass. → ticked.
+- 2026-08-22 AC1 evidence: `tracking-rules.md:282-285` — "Plain style" bullet sits in Output & interaction discipline (binding sentence :262), with all three mandated clauses read verbatim from disk (length-to-turn :282, jargon/gloss :283-284, filler/hype/padding :284-285); TestPlainStyleRule 3/3 pass. → ticked.
 - 2026-08-22 AC2 evidence: `tracking-rules.md:106-109` — "Records are written plain" bullet in Universal tracking rules with the enumerated domain, no-characterizations clause, and cross-referenced length standard read verbatim from disk; exemption sentence at :98 names the record-prose rule; TestRecordProseRule 3/3 pass. → ticked.

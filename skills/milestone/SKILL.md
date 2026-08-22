@@ -89,7 +89,7 @@ regression reopens that work.
 Beside it, report the rulebook's mass the same way: measure
 `skills/shared/tracking-rules.md` with `wc -l -m` and report current
 lines/chars and the growth since the recorded baseline —
-412 lines / 37,468 chars (M152, 2026-08-22; re-seed these figures only when
+413 lines / 37,567 chars (M152, 2026-08-22; re-seed these figures only when
 a later pass changes the file deliberately). Reporting only, same boundary
 as the cost line: no threshold, no verdict, no pass machinery — growth is
 governed at the door (D-057), and this line keeps it visible.

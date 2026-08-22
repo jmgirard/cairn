@@ -7,7 +7,7 @@ https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompti
 `docs.claude.com` path under the same slug 302-redirects to this host.
 Pagination: — (a single unpaginated web page; values below anchor on its `##`
 section headings).
-Extraction: verified 2026-07-27 — full page read directly from the source Markdown; every value quoted below re-read against it — observed 2026-07-27. Re-verified 2026-08-22 (M152): full page re-fetched (`curl` of the `.md` sibling, 12,483 bytes) and re-read whole; every previously extracted value found verbatim, no drift; the § Response length and verbosity and § User-facing progress updates values below extracted in this pass — observed 2026-08-22.
+Extraction: verified 2026-07-27 — full page read directly from the source Markdown; every value quoted below re-read against it — observed 2026-07-27. Re-verified 2026-08-22 (M152): full page re-fetched (`curl` of the `.md` sibling, 12,483 bytes against 11,225 at ingestion — the page has grown) and re-read whole; every previously extracted value found verbatim (the no-drift claim covers those values, not the whole page); the § Response length and verbosity and § User-facing progress updates values below extracted in this pass — observed 2026-08-22.
 
 **Citation.** Anthropic. *Prompting Claude Opus 5*. Claude Platform Docs,
 `build-with-claude/prompt-engineering/prompting-claude-opus-5`. Subtitle as
@@ -19,9 +19,10 @@ No author, date, or version is printed on the page.
 **Role.** cairn's skills and rulebook are prompts executed by Claude Opus 5
 (the orchestrator tier, `tracking-rules.md` "Model and agent strategy"), so
 this guide is first-party evidence about how that model reads them. It is here
-to settle three conduct questions cairn had no rule for — when a chat
-correction is worth narrating, when work warrants a subagent, and whether a
-reviewer should filter its own findings before reporting — and to back two
+to settle five conduct questions cairn had no rule for — when a chat
+correction is worth narrating, when work warrants a subagent, whether a
+reviewer should filter its own findings before reporting, and (M152) how
+long and how plainly chat output and records are written — and to back two
 ROADMAP candidate rows it cannot reach today. It is a guidance source, not a
 numeric one: nothing here is an oracle.
 
@@ -69,7 +70,7 @@ quoted verbatim, in quotation marks, rather than paraphrased:
   to legacy harness scaffolding that adds separate verification steps." —
   § Task scope and over-verification. The stated mechanism is the model's own:
   "Claude Opus 5 verifies its own work without being told to."
-- Responses run long by default, and effort does not shorten them — "Claude
+- Responses run long by default, and effort does not reliably shorten them — "Claude
   Opus 5's default user-facing responses run longer than prior Opus models'"
   and "lowering effort can reduce thinking volume without reliably shortening
   the visible response. To control response length, prompt for it explicitly."
@@ -83,7 +84,7 @@ quoted verbatim, in quotation marks, rather than paraphrased:
   prompt — "Before your first tool call, say in one sentence what you're about
   to do. While working, give a brief update only when you find something
   important or change direction. When you finish, lead with the outcome: your
-  first sentence should answer 'what happened' or 'what did you find,' with
+  first sentence should answer "what happened" or "what did you find," with
   supporting detail after it for readers who want it." — § User-facing
   progress updates.
 - Positive examples beat prohibitions for style steering — "Positive examples
@@ -99,7 +100,9 @@ quoted verbatim, in quotation marks, rather than paraphrased:
 
 What in the repo reads this page: tests, oracle-registry entries, vignette or
 documentation claims, other `references/` pages. This is the list a corrector
-walks when a value here changes, so name specific files and lines, not areas.
+walks when a value here changes, so name specific files and stable anchors —
+a bullet title or section heading; a line number only where it will be
+maintained (the M152 re-verification found both line anchors stale).
 
 - `skills/shared/tracking-rules.md` — the "Correct what matters, and only
   narrate that" bullet, in Output & interaction discipline. Takes the § Self-correction
@@ -119,13 +122,15 @@ walks when a value here changes, so name specific files and lines, not areas.
   finding: length is prompted for explicitly, the main answer carries the
   response, caveats stay short. The jargon and filler clauses are cairn's own,
   beyond what the guide states. Guarded by
-  `skills/tests/test_plain_style.py` (`TestPlainStyleRule`), hand-run.
+  `skills/tests/test_plain_style.py` (`TestPlainStyleRule`), five asserts,
+  five mutation entries, hand-run.
 - `skills/shared/tracking-rules.md` — the "Records are written plain" bullet,
   in Universal tracking rules (M152). Takes the § Written deliverable length
   remedy (length matched to what the task needs, no filler or boilerplate),
   applied to cairn's durable records; the no-characterizations clause is the
   M114 lesson's standard, not the guide's. Guarded by
-  `skills/tests/test_plain_style.py` (`TestRecordProseRule`), hand-run.
+  `skills/tests/test_plain_style.py` (`TestRecordProseRule`), three asserts,
+  three mutation entries, hand-run.
 - `skills/milestone-review/SKILL.md:178` — step 5's reviewer instruction, now
   report-everything-filter-nothing. Takes the § Capability improvements finding
   that a reviewer told to be conservative reports less. Recorded as
