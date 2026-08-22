@@ -119,6 +119,11 @@ walks when a value here changes, so name specific files and lines, not areas.
   finding: length is prompted for explicitly, the main answer carries the
   response, caveats stay short. The jargon and filler clauses are cairn's own,
   beyond what the guide states.
+- `skills/shared/tracking-rules.md` — the "Records are written plain" bullet,
+  in Universal tracking rules (M152). Takes the § Written deliverable length
+  remedy (length matched to what the task needs, no filler or boilerplate),
+  applied to cairn's durable records; the no-characterizations clause is the
+  M114 lesson's standard, not the guide's.
 - `skills/milestone-review/SKILL.md:178` — step 5's reviewer instruction, now
   report-everything-filter-nothing. Takes the § Capability improvements finding
   that a reviewer told to be conservative reports less. Recorded as
