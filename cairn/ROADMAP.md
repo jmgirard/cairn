@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M151 | The instrument question reaches the reduced audit | planned | — | high | milestones/M151-instrument-question-both-modes.md |
+| M151 | The instrument question reaches the reduced audit | in-progress | — | high | milestones/M151-instrument-question-both-modes.md |
 | M150 | The core loop becomes a rendered diagram | done | — | normal | milestones/archive/M150-readme-flow-diagram.md |
 | M149 | The line caps gain byte budgets | done | — | normal | milestones/archive/M149-byte-budgets.md |
 | M148 | Review returns narrow the promises, never widen them | done | — | high | milestones/archive/M148-returns-narrow.md |

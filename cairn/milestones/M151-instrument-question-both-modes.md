@@ -1,11 +1,11 @@
 # M151: The instrument question reaches the reduced audit
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m151-instrument-question-both-modes
 
 ## Goal
 
@@ -80,12 +80,12 @@ repos' own gates, under the existing amendment protocol.
 
 ## Tasks
 
-- [ ] T1: Edit `skills/milestone-plan/SKILL.md` step 3 — the reduced-audit
+- [x] T1: Edit `skills/milestone-plan/SKILL.md` step 3 — the reduced-audit
       sentence (~line 152–156) gains the instrument question; the exemplar
       list (~line 137–145) gains the record properties. Do not echo any
       pinned guard phrase ("The instrument is a reader and never a check";
       the M121 three-of-five sentence); hand-run `skills/tests` after.
-- [ ] T2: Edit `skills/milestone-implement/SKILL.md` step 6 (~line 104–110)
+- [x] T2: Edit `skills/milestone-implement/SKILL.md` step 6 (~line 104–110)
       — the re-entry sentence drops "and, in full mode," so the instrument
       question rides the assigned mode like the others.
 - [ ] T3: Re-verify the M101 evidence against
@@ -107,6 +107,8 @@ repos' own gates, under the existing amendment protocol.
 - 2026-08-21: plan gate chose dropping the minimal-diff repair doctrine over a candidate row because record-binding criteria are the dominant generator of repair rounds and the doctrine is hard to state without new judgment surface; falsified by a repair's own rewrites causing a further return on a milestone with no record-binding criteria.
 - 2026-08-21: checker-regress shape dispositioned not-fired: the criteria audit is a reader whose findings are disposed at a gate, never a check ("The instrument is a reader and never a check", D-059's retirement precedent); the simplify pole was still posed at the gate as the do-nothing option and declined.
 - 2026-08-21: collision sweep — D-118's mode clause and D-111's reduced-mode enumeration are superseded by design (D-118's own falsifier prescribes it); D-108's door trigger satisfied per D-098's cross-repo pattern (shipped reduced-audit behavior measured costing circumplex M101 two returns); the "Stakes-tier follow-through" and "Standing-instrument adoption discipline" candidate rows are adjacent, not overlapping — no instrument is adopted and no tier mechanics change.
+
+- 2026-08-21: T1+T2 — step 3's instrument question now opens "The audit — in both modes —", its exemplar list gains "a work-log recording act, a mandated evidence quotation" and cites D-120; the reduced-audit sentence lists bounded-promise, proportionality, and instrument, omitting satisfiability/reachability/probe; step 6's re-entry sentence reads "the proportionality and instrument questions included in either mode". No pinned guard phrase touched; suites skills/scripts/hooks exit 0/0/0 (513 prose guards OK).
 
 ## Decisions
 
