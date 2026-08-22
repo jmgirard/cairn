@@ -7,7 +7,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** m152-plain-style-rule
+- **Branch/PR:** m152-plain-style-rule · https://github.com/jmgirard/cairn/pull/153
 
 ## Goal
 
@@ -21,8 +21,8 @@ Give the rulebook a sentence-level plain-style rule for chat output and for dura
 
 ## Acceptance criteria
 
-- [ ] AC1: The "Output & interaction discipline" section of `skills/shared/tracking-rules.md` carries a prose-style rule for chat output, placed in that section (whose binding sentence it inherits), whose operative content states at least: response length matched to what the turn needs; plain words over jargon, with terms of art glossed or dropped; and no stock filler phrasing, hype adjectives, or padding.
-- [ ] AC2: The "Universal tracking rules" section of `skills/shared/tracking-rules.md` carries a record-prose rule whose operative content states at least: durable records under `cairn/` (work-log lines, D-entries, milestone-file sections, LESSONS lines, ROADMAP rows, archive summaries) state decision-relevant facts in plain words; characterizations the facts do not need (adjectives, superlatives, hype) are omitted; and record length is matched to the record's job (the length standard AC1's rule states, applied by cross-reference, not restated). The derived-claims exemption sentence names the new rule among the governors of tracking records.
+- [x] AC1: The "Output & interaction discipline" section of `skills/shared/tracking-rules.md` carries a prose-style rule for chat output, placed in that section (whose binding sentence it inherits), whose operative content states at least: response length matched to what the turn needs; plain words over jargon, with terms of art glossed or dropped; and no stock filler phrasing, hype adjectives, or padding.
+- [x] AC2: The "Universal tracking rules" section of `skills/shared/tracking-rules.md` carries a record-prose rule whose operative content states at least: durable records under `cairn/` (work-log lines, D-entries, milestone-file sections, LESSONS lines, ROADMAP rows, archive summaries) state decision-relevant facts in plain words; characterizations the facts do not need (adjectives, superlatives, hype) are omitted; and record length is matched to the record's job (the length standard AC1's rule states, applied by cross-reference, not restated). The derived-claims exemption sentence names the new rule among the governors of tracking records.
 
 ## Coverage
 
@@ -59,3 +59,6 @@ Give the rulebook a sentence-level plain-style rule for chat output and for dura
 ## Decisions
 
 ## Review
+
+- 2026-08-22 AC1 evidence: `tracking-rules.md:282-285` — "Plain style" bullet sits in Output & interaction discipline (binding sentence :257), with all three mandated clauses read verbatim from disk (length-to-turn :282, jargon/gloss :283-284, filler/hype/padding :284-285); TestPlainStyleRule 3/3 pass. → ticked.
+- 2026-08-22 AC2 evidence: `tracking-rules.md:106-109` — "Records are written plain" bullet in Universal tracking rules with the enumerated domain, no-characterizations clause, and cross-referenced length standard read verbatim from disk; exemption sentence at :98 names the record-prose rule; TestRecordProseRule 3/3 pass. → ticked.
