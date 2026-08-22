@@ -2,12 +2,12 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M152: Chat and record prose gain a plain-style rule
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** —
+- **Branch/PR:** m152-plain-style-rule
 
 ## Goal
 
@@ -31,7 +31,7 @@ Give the rulebook a sentence-level plain-style rule for chat output and for dura
 
 ## Tasks
 
-- [ ] T1: Re-read the `prompting-opus-5` source page (curl the `.md` sibling per the page's provenance); extract verbatim any response-verbosity/prose-style guidance with section anchors, or record a dated found-none observation; mark the re-read inline on the extraction status; replace the two stale Traces-to anchors (`tracking-rules.md:553`/`:650`) with stable bullet-title anchors.
+- [x] T1: Re-read the `prompting-opus-5` source page (curl the `.md` sibling per the page's provenance); extract verbatim any response-verbosity/prose-style guidance with section anchors, or record a dated found-none observation; mark the re-read inline on the extraction status; replace the two stale Traces-to anchors (`tracking-rules.md:553`/`:650`) with stable bullet-title anchors.
 - [ ] T2: Author the chat prose-style rule (AC1) in "Output & interaction discipline", beside the narration-discipline bullet; add its Traces-to entry.
 - [ ] T3: Author the record-prose rule (AC2) in "Universal tracking rules"; amend the derived-claims exemption sentence to name it; widen the lesson-retirement ownership exit to "another tracking file's slot, or the shared rulebook" (doctrine-prose repair within the surfacing milestone, D-090); add its Traces-to entry.
 - [ ] T4: Sweep the skills' own prose (`grep -rniE 'recap|summar|restat|verbatim|report' skills/*/SKILL.md skills/shared/*.md`) for instructions inviting output longer than its purpose needs; trim hits on the branch, keeping D-039's named carve-outs (durable-record preview, acceptance chips); one work-log line records the dispositions.
@@ -45,6 +45,7 @@ Give the rulebook a sentence-level plain-style rule for chat output and for dura
 - 2026-08-22: plan gate chose plugin rule + user-level snippet over user-level-only because the plugin ships the fix to every cairn adopter; falsified by the rule proving inert in adopting repos while the personal snippet alone suffices.
 - 2026-08-22: plan gate chose chat+record scope (D-108 trigger claimed) over chat-only because the reported defect names records too; falsified by record verbosity recurring only through genre rules a style rule cannot reach.
 - 2026-08-22: plan gate chose one hand-run pin over no guard because guide-sourced rules are pinned by convention; falsified by the pin costing locator churn (M148 shape) without ever catching a drift.
+- 2026-08-22: T1 done — source page re-fetched (12,483 bytes), no drift in prior values; § Response length and verbosity + § User-facing progress updates extracted (4 new values, incl. the positive-examples-beat-prohibitions finding that shapes T2/T3 wording); stale Traces-to line anchors replaced with bullet-title anchors.
 - 2026-08-22: step 2 chose central-rule placement over per-skill wiring per D-039's precedent for continuous conduct; falsified by style drift recurring despite the central rule (D-039 names per-skill wiring as the superseding entry).
 
 ## Decisions

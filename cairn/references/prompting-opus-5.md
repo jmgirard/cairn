@@ -7,7 +7,7 @@ https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompti
 `docs.claude.com` path under the same slug 302-redirects to this host.
 Pagination: — (a single unpaginated web page; values below anchor on its `##`
 section headings).
-Extraction: verified 2026-07-27 — full page read directly from the source Markdown; every value quoted below re-read against it — observed 2026-07-27.
+Extraction: verified 2026-07-27 — full page read directly from the source Markdown; every value quoted below re-read against it — observed 2026-07-27. Re-verified 2026-08-22 (M152): full page re-fetched (`curl` of the `.md` sibling, 12,483 bytes) and re-read whole; every previously extracted value found verbatim, no drift; the § Response length and verbosity and § User-facing progress updates values below extracted in this pass — observed 2026-08-22.
 
 **Citation.** Anthropic. *Prompting Claude Opus 5*. Claude Platform Docs,
 `build-with-claude/prompt-engineering/prompting-claude-opus-5`. Subtitle as
@@ -69,6 +69,26 @@ quoted verbatim, in quotation marks, rather than paraphrased:
   to legacy harness scaffolding that adds separate verification steps." —
   § Task scope and over-verification. The stated mechanism is the model's own:
   "Claude Opus 5 verifies its own work without being told to."
+- Responses run long by default, and effort does not shorten them — "Claude
+  Opus 5's default user-facing responses run longer than prior Opus models'"
+  and "lowering effort can reduce thinking volume without reliably shortening
+  the visible response. To control response length, prompt for it explicitly."
+  — § Response length and verbosity.
+- The conciseness instruction, quoted whole as the guide's own sample prompt —
+  "Keep responses focused, brief, and concise. Keep disclaimers and caveats
+  short, and spend most of the response on the main answer. When asked to
+  explain something, give a high-level summary unless an in-depth explanation
+  is specifically requested." — § Response length and verbosity.
+- The narration-cadence instruction, quoted whole as the guide's own sample
+  prompt — "Before your first tool call, say in one sentence what you're about
+  to do. While working, give a brief update only when you find something
+  important or change direction. When you finish, lead with the outcome: your
+  first sentence should answer 'what happened' or 'what did you find,' with
+  supporting detail after it for readers who want it." — § User-facing
+  progress updates.
+- Positive examples beat prohibitions for style steering — "Positive examples
+  of the communication style you want tend to be more effective than
+  instructions about what not to do." — § User-facing progress updates.
 - Written deliverables run long — "files that Claude Opus 5 writes to disk
   (reports, Markdown documents, summaries) are often longer than on prior
   models", with the remedy "Match the length of written documents to what the
@@ -81,13 +101,13 @@ What in the repo reads this page: tests, oracle-registry entries, vignette or
 documentation claims, other `references/` pages. This is the list a corrector
 walks when a value here changes, so name specific files and lines, not areas.
 
-- `skills/shared/tracking-rules.md:553` — "Correct what matters, and only
-  narrate that", in Output & interaction discipline. Takes the § Self-correction
+- `skills/shared/tracking-rules.md` — the "Correct what matters, and only
+  narrate that" bullet, in Output & interaction discipline. Takes the § Self-correction
   instruction: correct only what would change the user's code, conclusions, or
   decisions. Guarded by `skills/tests/test_narration_discipline.py:58`
   (`TestCorrectionNarrationRule`), four asserts, four mutation entries.
-- `skills/shared/tracking-rules.md:650` — "Delegate only what warrants it", in
-  Model and agent strategy. Takes the § Controlling subagent spawning
+- `skills/shared/tracking-rules.md` — the "Delegate only what warrants it"
+  bullet, in Model and agent strategy. Takes the § Controlling subagent spawning
   instruction: nothing finishable in a handful of tool calls is delegated, and
   one subagent rather than several. Guarded by
   `skills/tests/test_delegation_warrant.py:44` (`TestDelegationWarrantRule`),
