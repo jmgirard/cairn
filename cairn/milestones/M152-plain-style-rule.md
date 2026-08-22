@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M152: Chat and record prose gain a plain-style rule
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -36,7 +36,7 @@ Give the rulebook a sentence-level plain-style rule for chat output and for dura
 - [x] T3: Author the record-prose rule (AC2) in "Universal tracking rules"; amend the derived-claims exemption sentence to name it; widen the lesson-retirement ownership exit to "another tracking file's slot, or the shared rulebook" (doctrine-prose repair within the surfacing milestone, D-090); add its Traces-to entry.
 - [x] T4: Sweep the skills' own prose (`grep -rniE 'recap|summar|restat|verbatim|report' skills/*/SKILL.md skills/shared/*.md`) for instructions inviting output longer than its purpose needs; trim hits on the branch, keeping D-039's named carve-outs (durable-record preview, acceptance chips); one work-log line records the dispositions.
 - [x] T5: Add one hand-run prose-guard pin in `skills/tests` covering both new rules' spans (M148 lesson: reword new sentences near pinned slices, never the pinned ones); record the guard beside each Traces-to entry.
-- [ ] T6: Re-seed the three rulebook-mass baselines (M149 lesson: `skills/milestone/SKILL.md` cost line, `test_cost_audit_line.py:67`, `test_mutation_harness.py:117`); run both gating suites and hand-run `skills/tests` from the repo root, exit codes checked (M56 lesson).
+- [x] T6: Re-seed the three rulebook-mass baselines (M149 lesson: `skills/milestone/SKILL.md` cost line, `test_cost_audit_line.py:67`, `test_mutation_harness.py:117`); run both gating suites and hand-run `skills/tests` from the repo root, exit codes checked (M56 lesson).
 
 ## Work log
 
@@ -52,6 +52,8 @@ Give the rulebook a sentence-level plain-style rule for chat output and for dura
 - 2026-08-22: T3 done — record-prose rule added to Universal tracking rules; exemption sentence names it; ownership exit widened to the shared rulebook (doctrine-prose repair, D-090); Traces-to entry added; all three suites green (exit 0).
 - 2026-08-22: T4 done — sweep run (named grep + a detail/thorough/explain pass over the same files): 119 hits, zero trims — every hit is mandated substance under D-039's carve-outs or a functional report-the-result step; no padding-inviting instruction found.
 - 2026-08-22: T5 done — test_plain_style.py added (2 classes, 6 asserts) pinning both rules; Traces-to entries name the guard; 519 skills/tests green.
+- 2026-08-22: registry-completeness red caught post-commit (checkpoint chained past the exit code — the M56 shape); fixed by registering 6 Mutation entries for test_plain_style, harness green.
+- 2026-08-22: T6 done — three mass baselines re-seeded to 412 lines / 37,468 chars (M152); skills 525 / scripts / hooks suites all exit 0; cairn_validate green. All tasks complete; status → review.
 
 ## Decisions
 
