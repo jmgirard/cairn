@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** m151-instrument-question-both-modes
+- **Branch/PR:** m151-instrument-question-both-modes · https://github.com/jmgirard/cairn/pull/152
 
 ## Goal
 
@@ -41,19 +41,19 @@ repos' own gates, under the existing amendment protocol.
 
 ## Acceptance criteria
 
-- [ ] AC1: The shipped step-3 text of `/milestone-plan` assigns the
+- [x] AC1: The shipped step-3 text of `/milestone-plan` assigns the
       deliverable-vs-instrument question to both audit modes: the
       reduced-audit sentence lists it among the questions the reduced audit
       asks, and no step-3 sentence attributes the question to one mode.
-- [ ] AC2: The instrument question's exemplar list in `/milestone-plan`
+- [x] AC2: The instrument question's exemplar list in `/milestone-plan`
       step 3 names a property of the record the work leaves — at minimum a
       work-log recording act or a mandated evidence quotation — among the
       instrument properties whose binding by a criterion is a finding.
-- [ ] AC3: `/milestone-implement` step 6's re-entry sentence no longer
+- [x] AC3: `/milestone-implement` step 6's re-entry sentence no longer
       conditions the instrument question on full mode: the questions it
       names as asked of amended wording include the instrument question in
       whichever mode the tier assigns.
-- [ ] AC4: `cairn/DECISIONS.md` carries a new entry that (a) quotes D-118's
+- [x] AC4: `cairn/DECISIONS.md` carries a new entry that (a) quotes D-118's
       pre-registered falsifier verbatim, (b) states explicitly the reading
       it takes — record properties fall within the question's "among others"
       genus, and circumplex M101's recording-clause criteria are the
@@ -63,7 +63,7 @@ repos' own gates, under the existing amendment protocol.
       (c) stands on D-108's door trigger directly as well as the falsifier,
       and (d) names what it supersedes: D-118's mode clause and D-111's
       reduced-mode question enumeration.
-- [ ] AC5: The review-side reclassification of record-binding criterion
+- [x] AC5: The review-side reclassification of record-binding criterion
       failures is captured as exactly one candidate ROADMAP row whose
       promotion condition names the class of evidence that would falsify
       plan-gate-only prevention — a milestone whose criteria passed the
@@ -116,3 +116,13 @@ repos' own gates, under the existing amendment protocol.
 ## Decisions
 
 ## Review
+
+**AC evidence (fresh, 2026-08-21, read from the working tree at the review pass).**
+
+- AC1: step 3 re-read whole — the reduced-audit sentence reads "The reduced audit asks only the bounded-promise, proportionality, and instrument questions"; the question paragraph opens "The audit — in both modes — also asks"; the only step-3 sentences containing "instrument" besides these use it for the audit-as-reader ("The instrument is a reader and never a check", the M121 sentence), and the two "in the mode that asks it" clauses attach to the probe question, which stays full-mode. No sentence attributes the instrument question to one mode. Met.
+- AC2: the shipped exemplar list reads "— a test harness, a floor, a plant matrix, a checker's own prose, a work-log recording act, a mandated evidence quotation, among others (D-118, extended by D-120)", and the property clause reads "or of the record the work leaves". Both named record properties present. Met.
+- AC3: `skills/milestone-implement/SKILL.md` step 6 re-read fresh — the re-entry sentence reads "the proportionality and instrument questions included in either mode"; no full-mode qualifier remains on the instrument question in that file (`grep -n "full mode" skills/milestone-implement/SKILL.md` returns nothing — run at this pass, exit 1, zero hits). Met.
+- AC4: D-120 re-read whole and checked mechanically (whitespace-normalized string comparison, run at this pass): D-118's falsifier sentence appears in D-120 verbatim (True); the entry states the "among others" genus reading and the M101 instance explicitly; cites the evidence to the circumplex milestone file (internal tier; reduced audit 2026-08-21; two defect returns with the G7/G8 and F1 repairs named); stands on D-108's door trigger directly, hosted per D-098; names both supersessions (D-118's mode clause quoted, D-111's reduced-mode enumeration quoted). Met.
+- AC5: `grep -c "Review-side reclassification of record-binding" cairn/ROADMAP.md` = 1 (run at this pass) — exactly one row; its promotion condition reads "Promote when a milestone whose criteria passed the extended audit (D-120) still costs a defect return on a record-binding clause — never on a count of legacy-milestone returns", the falsifying evidence class. Scope-Out cross-check: `git diff main...HEAD --name-only` (run at this pass) lists five files, none of them `skills/milestone-review/SKILL.md` or `skills/shared/tracking-rules.md`. Met.
+
+**Consistency gate (2026-08-21).** `cairn_validate` exit 0, all checks passed. No DESIGN.md principle changed — `cairn_impact` skipped. Generic profile: consistency-gate slot names no toolchain checks; the two gating suites plus the hand-run prose guards re-run fresh at this pass, explicit exits scripts 0 / hooks 0 / skills 0. Caps: ROADMAP 45/60 lines, 12,434/24,000 bytes; LESSONS 42/50 lines, 11,789/20,000 bytes. No changelog entry owed (release-time consolidation per the changelog slot). No CI on this repo (PROFILE consistency-gate note) — mergeable on local green.
