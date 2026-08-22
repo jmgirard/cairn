@@ -114,6 +114,11 @@ walks when a value here changes, so name specific files and lines, not areas.
   three asserts, three mutation entries. cairn does **not** take that
   instruction's third clause ("do not use subagents to verify or double-check
   your own work") — M121 owns it.
+- `skills/shared/tracking-rules.md` — the "Plain style" bullet, in Output &
+  interaction discipline (M152). Takes the § Response length and verbosity
+  finding: length is prompted for explicitly, the main answer carries the
+  response, caveats stay short. The jargon and filler clauses are cairn's own,
+  beyond what the guide states.
 - `skills/milestone-review/SKILL.md:178` — step 5's reviewer instruction, now
   report-everything-filter-nothing. Takes the § Capability improvements finding
   that a reviewer told to be conservative reports less. Recorded as

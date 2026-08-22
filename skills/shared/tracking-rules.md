@@ -274,6 +274,10 @@ These rules bind all chat output while any cairn skill is active.
   PR merge gate — not a milestone branch's tracking records.
 - **Outcome-first recaps.** Phase-completion recaps lead with what the work did, changed, or accomplished, in plain
   words; hygiene mechanics follow compressed — one line when clean.
+- **Plain style.** Write for the reader: response length matched to what the turn needs — the main answer carries the
+  response, caveats and asides stay short; plain words over jargon — a term of art appears only as the precise name for
+  a thing, glossed at first use or dropped; facts stated straight, with no stock filler phrasing, hype adjectives, or
+  padding. The decision surface keeps its stricter Accessible-language test below.
 - **Chips carry choices, not evidence.** Supporting detail and justification live in chat *above* the chip; option
   labels are short; descriptions say in plain language what is chosen and why it matters; ≤4 options per question.
 - **Accessible language on the decision surface.** A question's text, the prose framing a chip, and every option label
