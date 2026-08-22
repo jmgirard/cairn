@@ -41,11 +41,11 @@ repos' own gates, under the existing amendment protocol.
 
 ## Acceptance criteria
 
-- [ ] AC1: The shipped step-3 text of `/milestone-plan` assigns the
+- [x] AC1: The shipped step-3 text of `/milestone-plan` assigns the
       deliverable-vs-instrument question to both audit modes: the
       reduced-audit sentence lists it among the questions the reduced audit
       asks, and no step-3 sentence attributes the question to one mode.
-- [ ] AC2: The instrument question's exemplar list in `/milestone-plan`
+- [x] AC2: The instrument question's exemplar list in `/milestone-plan`
       step 3 names a property of the record the work leaves — at minimum a
       work-log recording act or a mandated evidence quotation — among the
       instrument properties whose binding by a criterion is a finding.
@@ -147,3 +147,5 @@ repos' own gates, under the existing amendment protocol.
 Verified clean by the same lens: falsifier/mode-clause/enumeration quotes verbatim; DECISIONS pure append (IP4); candidate row exactly one, correctly conditioned; M101 evidence confirmed (internal tier, reduced audit 2026-08-21, return 2 on AC5's clause); validate and all three suites exit 0; no stale full-mode attribution survives in skills/, README, templates.
 
 **Triage (2026-08-21, at the gate).** Actioned fix-now on return: F1+F2 (fold the record exemplars into the instrument genus, deleting the coordinate disjunct, so the "is a finding" and disposal sentences reach them — the reading D-120 already states), F6 ("in the full mode that asks it"), and F3/F8/F11 batched into one superseding entry D-121 (D-120 unedited — IP4, D-081/D-102 precedent). Rejected with reasons: F4 (supersession is by naming; an entry's "stands" enumeration is not exclusive), F5 (evidence identification, not derived measurement; D-118's own Context is precedent), F7 (bare repo-qualified milestone ID is the cross-repo citation form, D-098), F9 (resolved mid-review — evidence committed and pushed), F10 (a versioned changelog section describes its release; 1.7.0 consolidation covers this per the release-walk), F12 (mode extension supported by M101-AC2's clause, genus widening by AC3/AC5's — neither move unwarranted). Blame-history's soft spot is F2's subject, cured by the same repair.
+
+**Re-review (2026-08-21, after return 1).** Repaired step-3 text re-read whole. AC1: the reduced-audit sentence still lists the instrument question; the question paragraph still opens "The audit — in both modes —"; the repaired tiebreak reads "in the full mode that asks it", attributing only the probe question to full mode; the one surviving "in the mode that asks it" sits in the proportionality paragraph and contains no instrument-question referent. No step-3 sentence attributes the instrument question to one mode — re-earned. AC2: the exemplar list is now the instrument genus's single list — "an instrument that verifies it — a test harness, a floor, a plant matrix, a checker's own prose, a work-log recording act, a mandated evidence quotation, among others (D-118; record properties joined the genus by D-120)" — and the immediately following "A criterion binding an instrument property is a finding" therefore reaches the record properties; named among the instrument properties whose binding is a finding — re-earned. AC3/AC5: their artifacts untouched by the repair (`git diff` of the repair commit lists only `skills/milestone-plan/SKILL.md`, `cairn/DECISIONS.md`, the milestone file, `cairn/ROADMAP.md` status cell); standing evidence holds. AC4: binds D-120's content, which the repair left unedited (D-121 is a separate appended entry); standing evidence holds. Consistency gate re-run post-repair: explicit exits skills 0, scripts 0, hooks 0, `cairn_validate` 0; DECISIONS.md pure append.
