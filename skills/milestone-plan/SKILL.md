@@ -134,25 +134,29 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    verification, the full audit asks whether the probes vary every axis the
    verified domain is free in — form as well as location — or stand one
    exemplar in for the family.
-   The full audit also asks of each criterion whether its promise states
-   a property of the milestone's deliverable or a property of an
-   instrument that verifies it — a test harness, a floor, a plant
-   matrix, a checker's own prose, among others (D-118). A criterion
+   The audit — in both modes — also asks of each criterion whether its
+   promise states a property of the milestone's deliverable or a
+   property of an instrument that verifies it or records its
+   verification — a test harness, a floor, a plant matrix, a checker's
+   own prose, a work-log recording act, a mandated evidence quotation,
+   among others (D-118; recording instruments joined the genus by
+   D-120). A criterion
    binding an instrument property is a finding, disposed at this gate
    like the audit's other findings: the instrument property moves to the
    tasks or the gate procedure, or the criterion narrows to the
    deliverable property it certifies. The question governs what a promise
    binds, never how a deliverable-bound promise is verified — it never
-   relaxes the probe question above, in the mode that asks it.
+   relaxes the probe question above, in the full mode that asks it.
    Both modes ask a proportionality question of each criterion:
    is the promise's domain proportionate to the declared surface tier
    (the step-2 rule)? An internal-tier criterion outside the
    internal-tier criteria standard is a finding, disposed at this gate
    like the audit's other findings; the question governs promises and
    never relaxes the probe question above, in the mode that asks it.
-   **The reduced audit asks only the bounded-promise and proportionality
-   questions** of each criterion — it omits the satisfiability, reachability,
-   probe, and instrument questions — and keeps the disposal rule below in full.
+   **The reduced audit asks only the bounded-promise, proportionality,
+   and instrument questions** of each criterion — it omits the
+   satisfiability, reachability, and probe questions — and keeps the
+   disposal rule below in full.
    Dispose of what either mode returns at
    this gate, never silently: a finding with one clear right answer is fixed
    and the fix reported in chat, and a finding you could reasonably decide
