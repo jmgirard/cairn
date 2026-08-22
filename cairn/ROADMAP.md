@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-17 (M150 archived; README-flow-diagram candidate graduated; M145 done-row pruned for terminal retention; skills/tests hand-run on merged main: 513 tests, zero reds; validate green; caps ok; byte budgets `wc -c` 11,481 / 11,789 — both under.)_
+_Last hygiene check: 2026-08-21 (M151 archived; review-side-reclassification candidate row added; M146 done-row pruned for terminal retention; no lesson owed or retired; skills/tests hand-run on merged main: 513 tests, zero reds; validate green; caps ok; byte budgets `wc -c` 12,312 / 11,789 — both under.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,11 +12,10 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M151 | The instrument question reaches the reduced audit | review | — | high | milestones/M151-instrument-question-both-modes.md |
+| M151 | The instrument question reaches the reduced audit | done | — | high | milestones/archive/M151-instrument-question-both-modes.md |
 | M150 | The core loop becomes a rendered diagram | done | — | normal | milestones/archive/M150-readme-flow-diagram.md |
 | M149 | The line caps gain byte budgets | done | — | normal | milestones/archive/M149-byte-budgets.md |
 | M148 | Review returns narrow the promises, never widen them | done | — | high | milestones/archive/M148-returns-narrow.md |
-| M146 | The rulebook states rules, git holds reasons | done | M145 | high | milestones/archive/M146-rulebook-states-rules.md |
 | M147 | The records shrink to their jobs | done | M146 | normal | milestones/archive/M147-record-diet.md |
 
 ## Candidates
