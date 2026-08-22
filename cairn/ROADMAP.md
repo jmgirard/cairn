@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-21 (M151 archived; review-side-reclassification candidate row added; M146 done-row pruned for terminal retention; no lesson owed or retired; skills/tests hand-run on merged main: 513 tests, zero reds; validate green; caps ok; byte budgets `wc -c` 12,312 / 11,789 — both under.)_
+_Last hygiene check: 2026-08-22 (M152 archived; M147 done-row pruned for terminal retention; one lesson added (doctrine-prose repair vs decision change), none retired — M114 stays whole; skills/tests hand-run on merged main: 519 tests, zero reds; validate green; caps ok; byte budgets `wc -c` 12,357 / 12,096 — both under.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M152 | Chat and record prose gain a plain-style rule | review | — | high | milestones/M152-plain-style-rule.md |
+| M152 | Chat and record prose gain a plain-style rule | done | — | high | milestones/archive/M152-plain-style-rule.md |
 | M151 | The instrument question reaches the reduced audit | done | — | high | milestones/archive/M151-instrument-question-both-modes.md |
 | M150 | The core loop becomes a rendered diagram | done | — | normal | milestones/archive/M150-readme-flow-diagram.md |
 | M149 | The line caps gain byte budgets | done | — | normal | milestones/archive/M149-byte-budgets.md |
 | M148 | Review returns narrow the promises, never widen them | done | — | high | milestones/archive/M148-returns-narrow.md |
-| M147 | The records shrink to their jobs | done | M146 | normal | milestones/archive/M147-record-diet.md |
 
 ## Candidates
 
