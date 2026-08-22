@@ -54,6 +54,7 @@ Give the rulebook a sentence-level plain-style rule for chat output and for dura
 - 2026-08-22: T5 done — test_plain_style.py added (2 classes, 6 asserts) pinning both rules; Traces-to entries name the guard; 519 skills/tests green.
 - 2026-08-22: registry-completeness red caught post-commit (checkpoint chained past the exit code — the M56 shape); fixed by registering 6 Mutation entries for test_plain_style, harness green.
 - 2026-08-22: T6 done — three mass baselines re-seeded to 412 lines / 37,468 chars (M152); skills 525 / scripts / hooks suites all exit 0; cairn_validate green. All tasks complete; status → review.
+- 2026-08-22: correction — the T6 line's suite count is 519, not 525 (`Ran 519 tests`, exit 0).
 
 ## Decisions
 
