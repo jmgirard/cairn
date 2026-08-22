@@ -4403,3 +4403,49 @@ a file found over its byte budget at two consecutive hygiene passes without a
 trim — excluding the three files M149's Goal names on their first hygiene
 pass after this rule ships — fires it, and the firing takes a fresh plan-gate
 remedy at that day's plan gate, never a revival of the retired axis (D-117).
+
+### D-120 (2026-08-21): The instrument question runs in both audit modes and its genus names record properties — executes D-118's falsifier; narrowly supersedes D-118's mode clause and D-111's reduced-mode question enumeration; hosted per D-098 (M151)
+
+**Context:** circumplex M101 (internal tier per its Scope; reduced criteria
+audit run 2026-08-21 per its work log) took two defect returns on recording
+clauses: return 1 on AC2's named-command provenance clause and AC3's
+per-case recording clause (the G7/G8 "unmet as written" repairs), return 2
+on AC5's "the row's text after the edit is quoted in the work log" (the F1
+repair). Each clause promises an act on the tracking record, not a property
+of the deliverable; each slip crossed the return floor as a full defect
+return; and the reduced audit asked neither the instrument question
+(full-mode-only, D-118) nor any other question that reaches a recording
+clause.
+
+**Decision:** two moves. (1) The deliverable-vs-instrument question runs in
+both audit modes — `/milestone-plan` step 3's reduced audit asks the
+bounded-promise, proportionality, and instrument questions, and
+`/milestone-implement` step 6's re-entry sentence follows. This executes
+D-118's pre-registered falsifier, verbatim: "an internal-tier milestone
+shipping an instrument-binding criterion that costs a defect return says
+full-mode-only is too narrow — extend the question to the reduced audit,
+superseding the mode clause here." (2) The question's exemplar genus gains
+properties of the record the work leaves — a work-log recording act, a
+mandated evidence quotation. The reading taken is stated rather than
+assumed: record properties fall within D-118's "among others" genus, the
+promise binding verification apparatus rather than the deliverable either
+way, and M101's recording clauses are read as the falsifier's
+instrument-binding instance under that widening. Where that reading is
+rejected, this entry stands on D-108's door trigger directly: the defect is
+in shipped skill behavior — what `/milestone-plan`'s reduced audit does for
+its users — measured in a downstream repo at the cost of two defect
+returns, hosted by a cairn milestone per D-098. Superseded: D-118's mode
+clause ("The reduced audit does not gain the question: no internal-tier
+instance of the defect is on record" — the instance is now on record) and
+D-111's reduced-mode enumeration ("asking only the bounded-promise and
+proportionality questions"). D-111's mode selectors and its ceremony
+falsifier stand; D-118's part 1 and its other falsifier stand.
+
+**Consequences:** a recording-clause criterion is a finding at every plan
+gate and gated amendment, disposed by moving the recording act to the tasks
+or gate procedure, or narrowing the criterion to the deliverable property
+it certifies. Review-side handling is deliberately unchanged — plan-time
+prevention proves itself first. The deferred review-side reclassification
+is a ROADMAP candidate row whose promotion condition is this entry's
+falsifier: a milestone whose criteria passed the extended audit still
+costing a defect return on a record-binding clause.

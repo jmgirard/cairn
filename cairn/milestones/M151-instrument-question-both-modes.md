@@ -88,7 +88,7 @@ repos' own gates, under the existing amendment protocol.
 - [x] T2: Edit `skills/milestone-implement/SKILL.md` step 6 (~line 104–110)
       — the re-entry sentence drops "and, in full mode," so the instrument
       question rides the assigned mode like the others.
-- [ ] T3: Re-verify the M101 evidence against
+- [x] T3: Re-verify the M101 evidence against
       `circumplex/cairn/milestones/M101-startup-failure-reachability-probe.md`
       (reduced-audit work-log line of 2026-08-21; returns 1 and 2 called on
       recording clauses), then append the AC4 D-entry; `cairn_validate`.
@@ -109,6 +109,7 @@ repos' own gates, under the existing amendment protocol.
 - 2026-08-21: collision sweep — D-118's mode clause and D-111's reduced-mode enumeration are superseded by design (D-118's own falsifier prescribes it); D-108's door trigger satisfied per D-098's cross-repo pattern (shipped reduced-audit behavior measured costing circumplex M101 two returns); the "Stakes-tier follow-through" and "Standing-instrument adoption discipline" candidate rows are adjacent, not overlapping — no instrument is adopted and no tier mechanics change.
 
 - 2026-08-21: T1+T2 — step 3's instrument question now opens "The audit — in both modes —", its exemplar list gains "a work-log recording act, a mandated evidence quotation" and cites D-120; the reduced-audit sentence lists bounded-promise, proportionality, and instrument, omitting satisfiability/reachability/probe; step 6's re-entry sentence reads "the proportionality and instrument questions included in either mode". No pinned guard phrase touched; suites skills/scripts/hooks exit 0/0/0 (513 prose guards OK).
+- 2026-08-21: T3 — M101 evidence re-verified against circumplex's milestone file (internal tier in Scope; reduced-audit work-log line dated 2026-08-21; return 1 the G7/G8 "unmet as written" repairs of AC2's named-command and AC3's per-case recording clauses; return 2 the F1 repair of AC5's quotation clause); D-120 appended; `cairn_validate` exit 0, all checks passed, dangling-ids OK with the SKILL.md forward reference now resolved.
 
 ## Decisions
 
