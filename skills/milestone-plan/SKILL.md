@@ -136,16 +136,16 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    exemplar in for the family.
    The audit — in both modes — also asks of each criterion whether its
    promise states a property of the milestone's deliverable or a
-   property of an instrument that verifies it or of the record the work
-   leaves — a test harness, a floor, a plant matrix, a checker's own
-   prose, a work-log recording act, a mandated evidence quotation,
-   among others (D-118, extended by D-120). A criterion
+   property of an instrument that verifies it — a test harness, a
+   floor, a plant matrix, a checker's own prose, a work-log recording
+   act, a mandated evidence quotation, among others (D-118; record
+   properties joined the genus by D-120). A criterion
    binding an instrument property is a finding, disposed at this gate
    like the audit's other findings: the instrument property moves to the
    tasks or the gate procedure, or the criterion narrows to the
    deliverable property it certifies. The question governs what a promise
    binds, never how a deliverable-bound promise is verified — it never
-   relaxes the probe question above, in the mode that asks it.
+   relaxes the probe question above, in the full mode that asks it.
    Both modes ask a proportionality question of each criterion:
    is the promise's domain proportionate to the declared surface tier
    (the step-2 rule)? An internal-tier criterion outside the

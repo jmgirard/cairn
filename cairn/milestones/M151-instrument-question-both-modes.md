@@ -1,6 +1,6 @@
 # M151: The instrument question reaches the reduced audit
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -41,11 +41,11 @@ repos' own gates, under the existing amendment protocol.
 
 ## Acceptance criteria
 
-- [x] AC1: The shipped step-3 text of `/milestone-plan` assigns the
+- [ ] AC1: The shipped step-3 text of `/milestone-plan` assigns the
       deliverable-vs-instrument question to both audit modes: the
       reduced-audit sentence lists it among the questions the reduced audit
       asks, and no step-3 sentence attributes the question to one mode.
-- [x] AC2: The instrument question's exemplar list in `/milestone-plan`
+- [ ] AC2: The instrument question's exemplar list in `/milestone-plan`
       step 3 names a property of the record the work leaves — at minimum a
       work-log recording act or a mandated evidence quotation — among the
       instrument properties whose binding by a criterion is a finding.
@@ -113,6 +113,7 @@ repos' own gates, under the existing amendment protocol.
 - 2026-08-21: T4 — candidate row added (search-first: no existing row, archive entry, or D-heading covers review-side reclassification; the Stakes-tier and Standing-instrument rows re-checked as adjacent only); restatement sweep over skills/, README.md, templates: five hits, three are this milestone's own new text, milestone-brief:126 names the ingest audit's full mode which D-111 keeps full-audited (correct as stands), milestone-plan:122 is the mode-selector sentence (unchanged by design).
 - 2026-08-21: T5 — explicit exit codes on the merged working tree: skills/tests 0 (513 tests), scripts/tests 0, hooks/tests 0, `cairn_validate` 0; all tasks checked; status → review.
 - 2026-08-21: REVIEW RETURN 1 (defect) — status → in-progress. What failed: AC2 as written — the record properties are named in the exemplar list but the shipped three-disjunct structure leaves the "A criterion binding an instrument property is a finding" and disposal sentences instrument-only, so their binding is not literally a finding ([O] F1/F2); also actioned on this return: F6's mode-ambiguous tiebreak clause, and F3/F8/F11 record corrections batched to D-121.
+- 2026-08-21: REPAIR (return 1) — step 3's record exemplars folded into the instrument genus's own list, the third disjunct deleted (the prose now states D-120's within-the-genus reading, so "A criterion binding an instrument property is a finding" reaches them; F1/F2); the tiebreak clause reads "in the full mode that asks it" (F6); D-121 appended batching the F3/F8/F11 corrections, D-120 unedited (IP4); AC1/AC2 unticked pending re-earned evidence; explicit exits skills 0, scripts 0, hooks 0, validate 0; status → review.
 
 ## Decisions
 

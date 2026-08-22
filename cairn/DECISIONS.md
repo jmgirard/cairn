@@ -4449,3 +4449,33 @@ prevention proves itself first. The deferred review-side reclassification
 is a ROADMAP candidate row whose promotion condition is this entry's
 falsifier: a milestone whose criteria passed the extended audit still
 costing a defect return on a record-binding clause.
+
+### D-121 (2026-08-21): Three claims in D-120 are corrected in one batched entry — the return-1 account, the G7/G8 quotation, and an unnamed D-118 clause the supersession reaches — supersedes those clauses; D-120's decision and its other content stand (M151 review)
+
+**Context:** M151's review return 1 actioned three accuracy findings against
+D-120 ([O] diff-bug F3, F8, F11), corrected here in one batched entry per
+the tracking-rules batching rule; D-120 itself is not edited (IP4; the
+D-081/D-102 precedent).
+
+**Corrections:** (1) D-120's Context describes circumplex M101's review
+return 1 as called on the two recording clauses alone; M101's return-1
+record names G7 and G8 *plus* G1, "the load-bearing prose defect the
+maintainer returned on alongside them" — G7/G8 were acceptance criteria
+failing inside their own named procedures and forced the return on their
+own, so D-120's warrant stands, but return 1 was not caused by recording
+clauses alone. (2) D-120's phrase 'the G7/G8 "unmet as written" repairs'
+misattributes its quotation: M101's G7/G8 record reads "as written is not
+literally met"; "unmet as written" is that milestone's re-review F1
+phrasing. The clauses' identity as recording clauses is unaffected. (3)
+D-120 names D-118's mode clause and D-111's reduced-mode enumeration as
+superseded but not D-118 part 2's affirmation that D-111's "reduced
+two-question form" stands; that affirmation is reached by the same
+supersession and is named superseded here. Also recorded: the step-3 prose
+as first shipped coordinated record properties as a third disjunct beside
+the instrument genus, contradicting D-120's stated within-the-genus
+reading; the return-1 repair folded the record exemplars into the
+instrument genus's own list, so the shipped prose now states the reading
+D-120 takes.
+
+**Consequences:** none operative beyond the corrections — D-120's decision,
+both its moves, and its falsifier stand unchanged.
