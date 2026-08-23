@@ -90,7 +90,7 @@ tracking-rules:127-128 and the LESSONS-header pointer convention.
       the budget clause), recording D-108's trigger as met (hygiene-step
       blindness to its own exit's output, measured in circumplex,
       hosted per D-098) — the D-119 door-walk shape.
-- [ ] T5: Re-seed the three rulebook-mass pins (M149 lesson: the
+- [x] T5: Re-seed the three rulebook-mass pins (M149 lesson: the
       `/milestone` skill line, `skills/tests/test_cost_audit_line.py:67`,
       `skills/tests/test_mutation_harness.py:117`); run both gating suites
       and hand-run `skills/tests` (M148/M56 lessons — edits land near
@@ -114,6 +114,7 @@ tracking-rules:127-128 and the LESSONS-header pointer convention.
 - 2026-08-22: reading records-hygiene.md for T3 surfaced that its §1 forbids the plan-time candidate-row prune the plan commit performed; the row was restored verbatim on main (f911896) with a promoted-to-M154 note, the branch rebased, and T5's wording amended (minor) — the row graduates at post-merge hygiene.
 - 2026-08-22: T3 — records-hygiene.md retrofitted with a budget header: under 55 lines / under 4,000 bytes from the retrofitted 44 / 2,575 (the stated byte figure was stabilized against the M99 fixed-point by same-width digits); measures under both; all three suites exit 0.
 - 2026-08-22: T4 — D-122 appended (annotates D-055; records D-108's trigger and the gate's rejected alternatives), previewed verbatim in chat; validate and all three suites exit 0.
+- 2026-08-22: T5 — rulebook-mass pins re-seeded 413/37,567 → 415/37,807 (wc -l -m) at milestone/SKILL.md:94, test_cost_audit_line.py:67, test_mutation_harness.py:117; validate and all three suites exit 0; the candidate row stands for post-merge graduation.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
