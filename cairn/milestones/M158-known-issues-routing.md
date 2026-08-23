@@ -1,6 +1,6 @@
 # M158: DESIGN.md Known issues gains a lifecycle — review hygiene routes accepted limitations there
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -61,7 +61,7 @@ at the plan gate; see work log.
       `skills/milestone-review/SKILL.md` (beside the lessons-capture block,
       ~line 345), keeping it short and echoing no pinned prose-guard marker
       phrase (the M148 lesson).
-- [ ] T2: Run both gating suites from the repo root, each exit code checked
+- [x] T2: Run both gating suites from the repo root, each exit code checked
       individually, and hand-run `skills/tests`; a red traced to the new
       sentence is fixed by rewording the new sentence only, never the pinned
       one.
@@ -73,6 +73,7 @@ at the plan gate; see work log.
 - 2026-08-23: plan gate chose review-hygiene-only placement over also adding a hotfix-close clause because milestones are where accepted limitations surface and a second shipped surface would rarely fire; falsified by a hotfix session surfacing an accepted durable limitation with nowhere to record it.
 
 - 2026-08-23: T1 — routing clause added to step 9 under its own header ("Route accepted limitations:"), between the lessons-capture and retirement blocks; echoes neither pinned marker phrase; both gating suites exit 0 (324 + 103 tests, OK).
+- 2026-08-23: T2 — gating suites re-run individually on the branch (scripts/tests 324, hooks/tests 103, each exit 0); skills/tests hand-run: 528 tests, exit 0, zero reds, nothing to classify. Status → review.
 
 ## Decisions
 
