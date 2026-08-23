@@ -83,7 +83,7 @@ class TestDraftingStepsHandOverTheCounter(unittest.TestCase):
         it, so following step 9 literally orphaned the milestone file."""
         text = flat(read(REVIEW))
         self.assertIn(
-            "**deleting the live `cairn/milestones/M<NN>-<slug>.md`**", text
+            "**deleting the live `cairn/milestones/M<NNN>-<slug>.md`**", text
         )
         self.assertIn("summary REPLACES the milestone file", text)
 

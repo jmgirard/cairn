@@ -98,20 +98,20 @@ then asks one short batch of scoping questions, each with a recommendation.
 Should `--dry-run` cover `sync` only or every mutating subcommand? Is
 printing the would-be actions enough, or must exit codes match a real run?
 You click answers (or type your own). Claude writes
-`cairn/milestones/M07-dry-run-flag.md` with the goal, in and out scope,
+`cairn/milestones/M007-dry-run-flag.md` with the goal, in and out scope,
 verifiable acceptance criteria, and ordered tasks, registers it in the
 ROADMAP as `planned`, commits, and offers a chip: **Start implementing
-M07**.
+M007**.
 
-**2. Build it.** `/milestone-implement M07` cuts a branch, asks any
+**2. Build it.** `/milestone-implement M007` cuts a branch, asks any
 implementation choices the plan left open (flag naming, output format),
 then works the tasks in order: tests first, one checkpoint commit per
 task, each commit updating the milestone file's checkboxes alongside the
 code. Between the gate and the finish you aren't asked anything. When all
 tasks pass, status flips to `review` and you get a diff summary with the
-next command ready to copy: `/milestone-review M07`.
+next command ready to copy: `/milestone-review M007`.
 
-**3. Ship it.** `/milestone-review M07` re-runs every check fresh, gathers
+**3. Ship it.** `/milestone-review M007` re-runs every check fresh, gathers
 evidence for each acceptance criterion (no evidence, no tick), and hands
 the diff to independent reviewer agents that didn't write it — a three-lens
 fan-out for anything touching executable or user-facing surface, a single
@@ -130,9 +130,9 @@ from the files alone.
 | See where the project stands / what to do next | `/milestone`: status snapshot, health audit, and a suggested next action |
 | Capture an idea for later | Just say it: "add X to the candidates" (one ROADMAP row, no ceremony) |
 | Turn an idea into a real plan | `/milestone-plan <title>`: investigation, scoping questions, milestone file(s) with acceptance criteria |
-| Build a planned milestone | `/milestone-implement M<NN>`: branch, tests-first tasks, checkpoint commits; resumable across sessions |
-| Verify and ship a finished milestone | `/milestone-review M<NN>`: fresh evidence for every criterion, independent code review sized to what the diff touches, merge on your approval |
-| Get a stronger model's judgment on a hard question | `/milestone-brief M<NN> <topic>`: writes a self-contained brief; you approve (or run) the Fable review. Its report advises by default — it only binds the milestone if you asked it to |
+| Build a planned milestone | `/milestone-implement M<NNN>`: branch, tests-first tasks, checkpoint commits; resumable across sessions |
+| Verify and ship a finished milestone | `/milestone-review M<NNN>`: fresh evidence for every criterion, independent code review sized to what the diff touches, merge on your approval |
+| Get a stronger model's judgment on a hard question | `/milestone-brief M<NNN> <topic>`: writes a self-contained brief; you approve (or run) the Fable review. Its report advises by default — it only binds the milestone if you asked it to |
 | Fix a reported bug quickly | `/hotfix`, or just describe the bug: regression test, fix, PR, your approval. Escalates to a milestone if it's bigger than it looked |
 | Take in an outside pull request | `/hotfix` again: it adopts the contributor's PR (`gh pr checkout`), holds it to the same bar, and merges on your approval |
 | Fix a typo or tweak docs | Just ask: trivial edits commit directly to main, no tracking |
@@ -271,6 +271,6 @@ about where the guardrails actually reach.
 - Run Fable, or any escalation, without a per-instance yes.
 - Lock you in. Pausing costs nothing (stop any time; checkpoint commits
   keep the branch resumable), dropping a milestone is one sentence, like
-  "drop M07", with the reason archived, and uninstalling is removing the
+  "drop M007", with the reason archived, and uninstalling is removing the
   plugin or symlink: your `cairn/` files are plain markdown that stay
   readable, and deletable, without it.

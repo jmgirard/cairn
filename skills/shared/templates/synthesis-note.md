@@ -29,9 +29,9 @@
      clause is searched across the WHOLE status, so leaving it beside another
      alternative exempts the page from staleness entirely.
      Every committed page also carries its one line in references/INDEX.md. -->
-# <what this analyses> (M<NN>)
+# <what this analyses> (M<NNN>)
 
-**Provenance.** Ingested YYYY-MM-DD by M<NN> from <the derivation, not a shelf
+**Provenance.** Ingested YYYY-MM-DD by M<NNN> from <the derivation, not a shelf
 path: the input `references/` pages by filename | the activity performed
 ("running `/cairn-init` §2", "live probing in Claude Desktop") | the external
 repo or artifact read read-only, with its path and commit>.

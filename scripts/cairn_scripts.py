@@ -185,8 +185,21 @@ def live_files(root):
 
 
 def id_num(mid):
-    """Numeric sort key for an ID; non-numeric IDs sort last, deterministically."""
-    return int(mid[1:]) if mid[1:].isdigit() else 10**9
+    """Numeric sort key for an ID; non-numeric IDs sort last, deterministically.
+    isdecimal, not isdigit — superscripts pass isdigit but crash int()
+    (D-023: tolerate, never raise)."""
+    return int(mid[1:]) if mid[1:].isdecimal() else 10**9
+
+
+def canon_id(mid):
+    """Canonical spelling of a milestone ID: the number zero-padded to three
+    digits (M57, M057, M0057 -> M057; M1000 passes through unpadded). ID
+    spellings at other zero-pad widths name the same milestone, so every
+    membership test or lookup compares canonical forms, never raw strings
+    (M157). Non-numeric input passes through unchanged; isdecimal, not
+    isdigit — superscripts pass isdigit but crash int() (D-023: tolerate,
+    never raise)."""
+    return "M%03d" % int(mid[1:]) if mid[1:].isdecimal() else mid
 
 
 def parse_depends(cell):
@@ -440,7 +453,7 @@ def milestone_section_line_counts(path):
 
 
 def sort_by_priority(row_list):
-    """Rows sorted high>normal>low, then by numeric ID (M9 before M10)."""
+    """Rows sorted high>normal>low, then by numeric ID (M009 before M010)."""
     return sorted(
         row_list, key=lambda r: (PRIORITY_ORDER.get(r["priority"], 1), id_num(r["id"]))
     )

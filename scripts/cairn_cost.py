@@ -71,7 +71,7 @@ PHASES = {
 }
 UNATTRIBUTED = "unattributed"
 
-# A milestone branch is `m<nn>-<slug>` (tracking-rules git model). The branch
+# A milestone branch is `m<nnn>-<slug>` (tracking-rules git model). The branch
 # name is the ONLY authoritative milestone key: it is written by
 # /milestone-implement and cannot drift. Plan-phase work runs on the default
 # branch and is therefore milestone-unattributable by construction — reported
@@ -414,7 +414,7 @@ def main(argv, home=None):
     except Usage as e:
         sys.stderr.write(
             "usage: cairn_cost.py [--attribution|--audit-line] "
-            f"[--milestone M<NN>] [ROOT]\n{e}\n"
+            f"[--milestone M<NNN>] [ROOT]\n{e}\n"
         )
         return 2
     try:

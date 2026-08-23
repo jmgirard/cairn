@@ -109,7 +109,7 @@ class TestShippedTemplate(unittest.TestCase):
         ("source pointer", "cairn/references/sources/<citekey>.pdf"),
         ("non-pdf source pointer", "the url plus how it was retrieved"),
         ("ingested date", "ingested yyyy-mm-dd"),
-        ("ingesting milestone", "by m<nn>"),
+        ("ingesting milestone", "by m<nnn>"),
         ("pagination basis", "pagination:"),
         ("extraction-verified status", "extraction:"),
     )

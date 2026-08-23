@@ -215,7 +215,7 @@ REGISTRY = [
         guard="test_release_timing",
         test="TestMilestoneAuditWiring.test_route_offers_the_park_option",
         target=MILESTONE,
-        block="Park M<NN> as `blocked` → the release window is not open",
+        block="Park M<NNN> as `blocked` → the release window is not open",
     ),
     Mutation(
         guard="test_release_timing",

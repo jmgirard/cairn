@@ -263,7 +263,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
 
 5. **Remainder ledger (conservation check).** Before committing, enumerate
    every distinct thing the user originally asked for and its disposition:
-   in this milestone / planned as M<NN> / candidate row / dropped at the
+   in this milestone / planned as M<NNN> / candidate row / dropped at the
    user's explicit request. Nothing may be silently absent. Deferral is
    NEVER recorded as a decision not to do something — D-entries are for
    genuine rejections with rationale; postponement lives in the ROADMAP.
@@ -274,13 +274,13 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    sections, any D-entry, new ROADMAP rows — verbatim in a guaranteed-rendered
    position (Mandated-substance rule). Then update ROADMAP rows (`planned` / `candidate`) and
    commit files + rows together, directly to main, no branch, no PR
-   (docs-only carve-out): `plan M<NN>[, M<NN>…]: <title>`; push. A session
+   (docs-only carve-out): `plan M<NNN>[, M<NNN>…]: <title>`; push. A session
    dying mid-plan must not leave a half-planned ghost.
 
 7. **Close block** (tracking-rules "Question gates and phase closes"),
    composed from what was just planned — recap (the plan summary and
    remainder ledger live here), status table (new milestone(s), status,
    priority), fenced next command(s) with plain labels — e.g.
-   `/milestone-implement M<NN>` to start the proximal one first,
+   `/milestone-implement M<NNN>` to start the proximal one first,
    `/milestone-plan` to plan another — and the adjust-or-`/clear` safety
    line; no chip.

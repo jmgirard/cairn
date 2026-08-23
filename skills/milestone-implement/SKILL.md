@@ -1,6 +1,6 @@
 ---
 name: milestone-implement
-description: Implement a planned milestone in a cairn repo on its own branch with tests-first tasks and checkpoint commits. Use when the user wants to start, resume, work on, or continue a milestone (e.g. "work on M07", "resume the milestone", "start implementing").
+description: Implement a planned milestone in a cairn repo on its own branch with tests-first tasks and checkpoint commits. Use when the user wants to start, resume, work on, or continue a milestone (e.g. "work on M107", "resume the milestone", "start implementing").
 argument-hint: "<id>"
 ---
 
@@ -33,7 +33,7 @@ run ingestion first (see `/milestone-brief`).
    `origin/`) and sync it with origin first — `git fetch`, pull (ff-only),
    and **push any unpushed local commits** — so the branch is cut from the
    pushed default branch and the PR diff will contain only milestone work;
-   then `git checkout -b m<nn>-<slug>`; record the branch in the milestone
+   then `git checkout -b m<nnn>-<slug>`; record the branch in the milestone
    header. Resume sessions: check out the
    existing branch; if the default branch has moved since the branch was cut
    (e.g., a hotfix merged), merge it into the branch and re-run the active

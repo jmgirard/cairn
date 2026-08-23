@@ -500,7 +500,7 @@ class TestLiveStoreShape(unittest.TestCase):
         branches = {r.get("gitBranch") for r in records}
         self.assertTrue(
             any(cost.milestone_of({"gitBranch": b}) for b in branches),
-            "no record carries a milestone branch (m<nn>-...)",
+            "no record carries a milestone branch (m<nnn>-...)",
         )
 
     def test_the_live_shape_check_skips_rather_than_fails_when_the_store_is_empty(self):

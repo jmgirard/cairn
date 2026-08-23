@@ -1703,6 +1703,243 @@ class TestDanglingIds(ScriptCase):
         self.assertIn("OK    dangling id tokens", proc.stdout)
 
 
+class TestNumericIdEquivalence(ScriptCase):
+    """M157: a milestone number spelled at different zero-pad widths (M05,
+    M005) resolves to the same milestone on each scripts ID surface — a prose
+    token against the known-id set (check_dangling_ids), a ROADMAP row id
+    against a milestone filename (the roadmap<->file checks), and a
+    `Depends on` cell against a ROADMAP row — in both directions, including
+    an id >= 100 whose two- and three-digit spellings coincide."""
+
+    # Surface 1: prose token vs the known-id set (check_dangling_ids).
+
+    def test_padded_prose_token_resolves_to_narrow_id(self):
+        # M01 exists as a two-digit row + archive file; prose cites M001.
+        self.tree.files["milestones/M03-live.md"] += "\nSee M001 for background.\n"
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    dangling id tokens", proc.stdout)
+
+    def test_narrow_prose_token_resolves_to_padded_id(self):
+        # The whole tree uses three-digit spellings; prose cites M01.
+        self.tree.rows = [
+            ("M003", "Live planned", "planned", "M001", "high",
+             "milestones/M003-live.md"),
+            ("M001", "Old done", "done", "—", "high",
+             "milestones/archive/M001-old.md"),
+        ]
+        self.tree.files = {
+            "milestones/M003-live.md": live("planned")
+            + "\nSee M01 for background.\n",
+            "milestones/archive/M001-old.md": archived("done"),
+        }
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    dangling id tokens", proc.stdout)
+
+    def test_prose_token_past_100_with_coincident_spelling_resolves(self):
+        # An id >= 100 has one spelling at widths two and three; it must
+        # resolve through the same numeric machinery.
+        self.tree.rows.append(
+            ("M100", "Hundred", "done", "—", "normal",
+             "milestones/archive/M100-hundred.md")
+        )
+        self.tree.files["milestones/archive/M100-hundred.md"] = archived("done")
+        self.tree.files["milestones/M03-live.md"] += "\nSee M100 for the fix.\n"
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    dangling id tokens", proc.stdout)
+
+    # Surface 2: a ROADMAP row id / milestone id vs a milestone filename
+    # (the roadmap<->file checks).
+
+    def test_narrow_live_file_conflicts_with_padded_archive_file(self):
+        # The same milestone on disk at both widths is one milestone, so
+        # the live-and-archived check must fire across spellings.
+        self.tree.rows.append(
+            ("M05", "Twice", "planned", "—", "normal",
+             "milestones/M05-twice.md")
+        )
+        self.tree.files["milestones/M05-twice.md"] = live("planned")
+        self.tree.files["milestones/archive/M005-twice.md"] = archived("done")
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertNotEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("exists as both a live and an archived file", proc.stdout)
+
+    def test_padded_live_file_conflicts_with_narrow_archive_file(self):
+        self.tree.rows.append(
+            ("M005", "Twice", "planned", "—", "normal",
+             "milestones/M005-twice.md")
+        )
+        self.tree.files["milestones/M005-twice.md"] = live("planned")
+        self.tree.files["milestones/archive/M05-twice.md"] = archived("done")
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertNotEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("exists as both a live and an archived file", proc.stdout)
+
+    def test_narrow_dep_resolves_to_padded_archive_filename(self):
+        # Row pruned under terminal retention: only the padded archive file
+        # names the done milestone; a narrow dep spelling must satisfy.
+        self.tree.rows = [
+            ("M20", "New", "planned", "M05", "high", "milestones/M20-new.md"),
+        ]
+        self.tree.files = {
+            "milestones/M20-new.md": live("planned"),
+            "milestones/archive/M005-old.md": archived("done"),
+        }
+        root = self.tree.build()
+        self.assertEqual(run("cairn_validate.py", root).returncode, 0)
+        out = run("cairn_next.py", root).stdout
+        self.assertIn("Recommended: implement M20 → /milestone-implement M20", out)
+
+    def test_padded_dep_resolves_to_narrow_archive_filename(self):
+        self.tree.rows = [
+            ("M20", "New", "planned", "M005", "high", "milestones/M20-new.md"),
+        ]
+        self.tree.files = {
+            "milestones/M20-new.md": live("planned"),
+            "milestones/archive/M05-old.md": archived("done"),
+        }
+        root = self.tree.build()
+        self.assertEqual(run("cairn_validate.py", root).returncode, 0)
+        out = run("cairn_next.py", root).stdout
+        self.assertIn("Recommended: implement M20 → /milestone-implement M20", out)
+
+    # Surface 3: a `Depends on` cell vs a ROADMAP row.
+
+    def test_padded_dep_resolves_to_narrow_row(self):
+        # M03 depends on M001; the row is spelled M01 (done).
+        self.tree.rows[0] = (
+            "M03", "Live planned", "planned", "M001", "high",
+            "milestones/M03-live.md",
+        )
+        root = self.tree.build()
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        out = run("cairn_next.py", root).stdout
+        self.assertIn("M03 (high) — Live planned", out)
+        self.assertNotIn("Blocked by dependencies", out)
+
+    def test_narrow_dep_resolves_to_padded_row(self):
+        self.tree.rows = [
+            ("M003", "Live planned", "planned", "M01", "high",
+             "milestones/M003-live.md"),
+            ("M001", "Old done", "done", "—", "high",
+             "milestones/archive/M001-old.md"),
+        ]
+        self.tree.files = {
+            "milestones/M003-live.md": live("planned"),
+            "milestones/archive/M001-old.md": archived("done"),
+        }
+        root = self.tree.build()
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        out = run("cairn_next.py", root).stdout
+        self.assertIn("M003 (high) — Live planned", out)
+        self.assertNotIn("Blocked by dependencies", out)
+
+    def test_dropped_row_detected_across_widths(self):
+        # Resolution, not tolerance: a dep spelled padded still sees the
+        # narrow row's dropped status.
+        self.tree.rows[0] = (
+            "M03", "Live planned", "planned", "M001", "high",
+            "milestones/M03-live.md",
+        )
+        self.tree.rows[2] = (
+            "M01", "Old dropped", "dropped", "—", "high",
+            "milestones/archive/M01-old.md",
+        )
+        self.tree.files["milestones/archive/M01-old.md"] = archived("dropped")
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertNotEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("depends on M001, which is dropped", proc.stdout)
+
+    def test_dep_past_100_with_coincident_spelling_resolves(self):
+        self.tree.rows = [
+            ("M101", "New", "planned", "M100", "high",
+             "milestones/M101-new.md"),
+            ("M100", "Hundred", "done", "—", "normal",
+             "milestones/archive/M100-hundred.md"),
+        ]
+        self.tree.files = {
+            "milestones/M101-new.md": live("planned"),
+            "milestones/archive/M100-hundred.md": archived("done"),
+        }
+        root = self.tree.build()
+        self.assertEqual(run("cairn_validate.py", root).returncode, 0)
+        out = run("cairn_next.py", root).stdout
+        self.assertIn("Recommended: implement M101 → /milestone-implement M101", out)
+
+    # Surface 2, as stated (M157 return 1): the one site that looks a ROADMAP
+    # row id up in the live-filename map is the release-window advisory; a
+    # width mismatch must resolve, not silently skip the check.
+
+    def test_narrow_row_id_resolves_to_padded_live_filename(self):
+        self.tree.rows.append(
+            ("M09", RELEASE_TITLES[1], "planned", "M01", "high",
+             "milestones/M009-rel.md")
+        )
+        self.tree.files["milestones/M009-rel.md"] = live_release("planned")
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  release window", proc.stdout)
+        self.assertIn("M09: release milestone is planned", proc.stdout)
+
+    def test_padded_row_id_resolves_to_narrow_live_filename(self):
+        self.tree.rows.append(
+            ("M009", RELEASE_TITLES[1], "planned", "M01", "high",
+             "milestones/M09-rel.md")
+        )
+        self.tree.files["milestones/M09-rel.md"] = live_release("planned")
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  release window", proc.stdout)
+        self.assertIn("M009: release milestone is planned", proc.stdout)
+
+    # M157 return 1, F4: a token whose tail passes isdigit but not int()
+    # (superscript ²) must FAIL clean, never crash the validator (D-023).
+
+    def test_unicode_digit_dep_fails_clean_not_crash(self):
+        self.tree.rows[0] = (
+            "M03", "Live planned", "planned", "M²", "high",
+            "milestones/M03-live.md",
+        )
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertNotEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("M03 depends on M², which does not exist", proc.stdout)
+
+    # M157 review round 2, G1: a ROADMAP row id with a non-decimal digit tail
+    # reaches id_num via the release-window sort key and the dangling-ids
+    # ceiling; it must FAIL/report clean, never crash (D-023).
+
+    def test_unicode_digit_row_id_does_not_crash_validator(self):
+        self.tree.rows[0] = (
+            "M²", "Superscript row", "planned", "—", "high",
+            "milestones/M03-live.md",
+        )
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertNotIn("Traceback", proc.stdout)
+        self.assertNotIn("Traceback", proc.stderr)
+
+    # M157 return 1, F2: FAIL messages print the dep spelling as written in
+    # the ROADMAP cell, never its canonical re-pad.
+
+    def test_dep_fail_message_keeps_as_written_spelling(self):
+        self.tree.rows[0] = (
+            "M03", "Live planned", "planned", "M05", "high",
+            "milestones/M03-live.md",
+        )
+        self.tree.rows.append(
+            ("M005", "Old dropped", "dropped", "—", "normal",
+             "milestones/archive/M005-old.md")
+        )
+        self.tree.files["milestones/archive/M005-old.md"] = archived("dropped")
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertNotEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("M03 depends on M05, which is dropped", proc.stdout)
+        self.assertNotIn("depends on M005", proc.stdout)
+
+
 VALID_PROFILE = (
     "# Toolchain profile: generic\n\n"
     "## verify\n- run tests\n\n"
@@ -1971,7 +2208,7 @@ class TestWorkLogFormatAdvisory(ScriptCase):
 
 # The corpus RR08 measured D-074 part 3's transplanted grammar against, and the
 # corpus D-075 binds the shipped advisory's 0-WARN arm to. Each entry is the
-# `review M<NN>: done` commit that archived the file, so the live file — and the
+# `review M<NNN>: done` commit that archived the file, so the live file — and the
 # whole `## Decisions` section it carried at `done` — is at `<sha>^:<path>`.
 # History is never edited (IP4), so these blobs are frozen; git is read here
 # rather than copied into a fixture so the test measures what actually shipped
@@ -2919,7 +3156,7 @@ class TestValidateFailures(ScriptCase):
         self.assertIn("cap <30", out)
 
     def test_non_iso_date_in_lessons(self):
-        # LESSONS.md entries carry dates (- YYYY-MM-DD (M<NN>): …); a
+        # LESSONS.md entries carry dates (- YYYY-MM-DD (M<NNN>): …); a
         # misformatted one must be flagged by the ISO-date scan.
         root = self.tree.build()
         (root / "cairn" / "LESSONS.md").write_text("# Lessons\n\n- 07/11/2026 (M16): x\n")

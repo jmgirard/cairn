@@ -122,7 +122,7 @@ The script deliberately does not judge these — do them yourself and report:
   `gh issue list --state open --json number,title,url` for issues,
   `gh pr list --state open --json number,title,url,author` for PRs — then
   drop this session's own work from the PR list, which is what the `author`
-  field is for: a PR you opened, or one whose head branch is `m<nn>-*` or
+  field is for: a PR you opened, or one whose head branch is `m<nnn>-*` or
   `hotfix-*`, is cairn's own in-flight work — already tracked by its
   milestone and already reported two bullets up. Only what survives that
   filter is inbox; without it the audit re-reports the milestone PR you are
@@ -151,14 +151,14 @@ Acceptance chips (tracking-rules): a triage option that accepts an audit
 conclusion carries that conclusion compactly in the chip with its full text verbatim in the chat above, best-effort (Mandated-substance rule). The commands below are state-conditional
 examples for the close block's fences — only the applicable subset is offered:
 
-- `/milestone-implement M<NN>` — resume (an `in-progress` milestone exists)
-- `/milestone-review M<NN>` — review (a milestone sits at `review`)
+- `/milestone-implement M<NNN>` — resume (an `in-progress` milestone exists)
+- `/milestone-review M<NNN>` — review (a milestone sits at `review`)
 - `/milestone-plan` — plan next (nothing in flight; planned or candidate
   items exist)
 - a triage chip — the audit found problems needing user decisions,
   including any untriaged inbox item §2 surfaced (a decision gate, not a
   route)
-- Park M<NN> as `blocked` → the release window is not open (a `release window` WARN fired in §2) — a decision put to the user, not a route
+- Park M<NNN> as `blocked` → the release window is not open (a `release window` WARN fired in §2) — a decision put to the user, not a route
 
 Parking sets the milestone to `blocked` and writes a work-log line naming the
 maintainer's unopened release window as the blocker. It is reachable from

@@ -301,7 +301,7 @@ overrides — log the override).
 
 8. **On approval — and only then:** record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
-   `M<NN> approved YYYY-MM-DD for PR #<N>` — the marker names the PR it
+   `M<NNN> approved YYYY-MM-DD for PR #<N>` — the marker names the PR it
    approves, and the guard refuses a merge that names a different PR or
    none). The plugin's PreToolUse hook denies
    merges to the default branch without this marker and consumes it per merge attempt;
@@ -325,8 +325,8 @@ overrides — log the override).
    `${CLAUDE_PLUGIN_ROOT}/skills/shared/templates/archive-summary.md` — a
    comment-free skeleton, so nothing scaffolding-shaped can leak into a
    25-line artifact — writing it to
-   `cairn/milestones/archive/M<NN>-<slug>.md` and **deleting the live
-   `cairn/milestones/M<NN>-<slug>.md`**: the summary REPLACES the milestone
+   `cairn/milestones/archive/M<NNN>-<slug>.md` and **deleting the live
+   `cairn/milestones/M<NNN>-<slug>.md`**: the summary REPLACES the milestone
    file rather than joining it, and git holds the full text. (Authoring from a
    template makes this an explicit step; when the summary was made by
    compressing the file in place, the move did it implicitly. Skip it and
@@ -345,7 +345,7 @@ overrides — log the override).
    **Capture durable lessons:** append any repo lessons this
    milestone taught — build quirks, testing tricks, gotchas worth
    remembering — to `cairn/LESSONS.md`, one per line
-   (`- YYYY-MM-DD (M<NN>): <lesson>`, one line each); lessons, not status or a
+   (`- YYYY-MM-DD (M<NNN>): <lesson>`, one line each); lessons, not status or a
    *choice* (a choice is a D-entry). None learned → skip.
    **Retire what this milestone covered:** if the milestone shipped a guard, or
    moved content into another file's slot, check whether that retires an
@@ -364,13 +364,13 @@ overrides — log the override).
    Durable-record preview (tracking-rules): show the archive summary,
    each LESSONS line, any D-entry, and any candidate graduation verbatim
    in a guaranteed-rendered position (Mandated-substance rule). Docs-only commit:
-   `review M<NN>: done`; push. The done
+   `review M<NNN>: done`; push. The done
    recap leads with what shipped, in plain words; hygiene mechanics
    compress to one line.
 
 10. **Close with the close block — no chip.** (tracking-rules "Question
     gates and phase closes" — the shape every phase now shares, generalized
-    from what was once review's sole exception.) M<NN> is archived and all
+    from what was once review's sole exception.) M<NNN> is archived and all
     state is on disk, so the natural next step is a fresh context: the
     recap leads with what shipped, the status line names the merge and
     archive state, and the fenced commands emit `/clear` and the obvious

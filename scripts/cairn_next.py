@@ -16,11 +16,13 @@ import cairn_scripts as cs
 
 def render(root):
     rows = cs.rows(cs.read_roadmap(root))
-    by_id = {r["id"]: r for r in rows}
+    by_id = {cs.canon_id(r["id"]): r for r in rows}
     # A dependency is satisfied if it is a done row OR a done milestone whose
     # ROADMAP row was pruned under terminal-row retention but whose archive file
     # remains (matches cairn_validate's dependency check).
-    done = {r["id"] for r in rows if r["status"] == "done"} | set(cs.archive_files(root))
+    done = {cs.canon_id(r["id"]) for r in rows if r["status"] == "done"} | {
+        cs.canon_id(mid) for mid in cs.archive_files(root)
+    }
     lines = [f"cairn next — {root}", ""]
 
     in_progress = [r for r in rows if r["status"] == "in-progress"]
@@ -66,7 +68,7 @@ def render(root):
 
 
 def _deps_done(row, done):
-    return all(dep in done for dep in row["depends"])
+    return all(cs.canon_id(dep) in done for dep in row["depends"])
 
 
 def _workable(rows, done):
@@ -78,9 +80,10 @@ def _workable(rows, done):
 def _unmet(row, done, by_id):
     parts = []
     for dep in row["depends"]:
-        if dep in done:
+        dep_c = cs.canon_id(dep)
+        if dep_c in done:
             continue
-        state = by_id[dep]["status"] if dep in by_id else "unknown"
+        state = by_id[dep_c]["status"] if dep_c in by_id else "unknown"
         parts.append(f"{dep} ({state})")
     return "waiting on " + ", ".join(parts)
 

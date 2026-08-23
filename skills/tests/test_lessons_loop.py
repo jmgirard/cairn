@@ -50,7 +50,7 @@ class TestLessonsLoop(unittest.TestCase):
     def test_lessons_home_exists_with_entry_format(self):
         lessons = read(ROOT / "cairn" / "LESSONS.md")
         self.assertIn("# Lessons", lessons)
-        self.assertIn("YYYY-MM-DD (M<NN>)", lessons)  # documented one-line format
+        self.assertIn("YYYY-MM-DD (M<NNN>)", lessons)  # documented one-line format
 
     def test_capture_wired_into_review(self):
         # Anchor on the step text, not a bare "LESSONS.md" mention — the file
