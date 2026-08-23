@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-22 (M154 archived; M149 done-row pruned for terminal retention; doctrine-module candidate row graduated; one lesson added (rows prune at hygiene, not plan), none retired; skills/tests hand-run on merged main: 521 tests, zero reds; validate green; caps ok; byte budgets `wc -c` 11,703 / 12,861 — both under; module budgets `wc -l -c` 44/2,575, 99/6,480, 185/11,924 — all under their headers.)_
+_Last hygiene check: 2026-08-22 (M155 archived; M150 done-row pruned for terminal retention; chip-supporting-text candidate row graduated; no lessons added, none retired; skills/tests hand-run on merged main: 525 tests, zero reds; validate green; caps ok; byte budgets `wc -c` 11,750 / 12,861 — both under; module budgets `wc -l -c` 44/2,575, 99/6,480, 187/12,057 — all under their headers.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,18 +12,16 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M155 | Mandated substance moves to guaranteed-rendered positions | review | — | high | milestones/M155-rendered-substance.md |
+| M155 | Mandated substance moves to guaranteed-rendered positions | done | — | high | milestones/archive/M155-rendered-substance.md |
 | M154 | The maturation exit's doctrine modules gain budgets | done | — | normal | milestones/archive/M154-doctrine-module-budgets.md |
 | M153 | The effort-audit baselines are re-measured | done | — | normal | milestones/archive/M153-baseline-remeasurement.md |
 | M152 | Chat and record prose gain a plain-style rule | done | — | high | milestones/archive/M152-plain-style-rule.md |
 | M151 | The instrument question reaches the reduced audit | done | — | high | milestones/archive/M151-instrument-question-both-modes.md |
-| M150 | The core loop becomes a rendered diagram | done | — | normal | milestones/archive/M150-readme-flow-diagram.md |
 
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
-- Chip-supporting text can go unrendered: the chip rules put a chip's evidence and handoff commands in chat above the chip, but text emitted before a tool call in the same turn is not reliably displayed — in the 1.7.0 release session both the version rationale and the tag/push handoff were invisible until re-sent after the chip; candidate fix is a conduct clause in the chip rules (substance the user must see ends the turn's rendered text, or is restated after the chip resolves), not harness work cairn cannot do. Promote when a gate session again loses pre-chip substance to rendering, or at the maintainer's call — added 2026-08-22 — conversational (maintainer, 1.7.0 release)
 - Review-side reclassification of record-binding criterion failures: a review finding that an acceptance criterion is unmet only in a recording act (a work-log quotation, a named recording command's provenance) crosses the return floor as a full defect return toward the thrash threshold; the deferred remedy is routing such findings to the amendment track (narrow the criterion to the deliverable property, fix the record at the gate), deliberately not shipped with D-120 so plan-time prevention proves itself first. Promote when a milestone whose criteria passed the extended audit (D-120) still costs a defect return on a record-binding clause — never on a count of legacy-milestone returns — added 2026-08-21 — M151 (circumplex M101)
 - External adoption pass (RR13 step 3): run `/cairn-init` and one full milestone loop on a repo the author did not shape, ideally with a second person driving, and fix what breaks; fallback if no external repo or person is available: the README-flow-diagram and contributor-scaffold rows (cross-referenced, not merged). Parked until the RR13 reduction lands. Promote once M145–M147 land — added 2026-08-16 — RR13 Q10
 - The amendment-time audit surface records nothing: `/milestone-implement` step 6's re-audit mandates no work-log line (unlike the plan and ingest surfaces D-079 clause 2 owns), so on resume whether the fresh reader ran is unrecoverable and the per-criterion one-re-entry bound is uncountable; cheapest form is one step-6 sentence plus a fixed clearance shape at the brief surface, parked until the gap is actually hit on a resume. Promote when a resume cannot determine whether a re-audit ran, or an exemption is applied to wording no line names — never on a count of amendments — added 2026-08-09 — M138 review F1/F8

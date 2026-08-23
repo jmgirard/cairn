@@ -1,0 +1,11 @@
+# M155: Mandated substance moves to guaranteed-rendered positions
+
+**Status:** done (2026-08-22, PR #156 https://github.com/jmgirard/cairn/pull/156)
+
+**Goal:** Chat substance the rules require the user to see — gate evidence, durable-record previews, handoff commands — moves to positions the harness is guaranteed to render, so no chip choice is made blind.
+
+**Outcome:** The Mandated-substance rule in tracking-rules.md (Output & interaction discipline): text before a tool call in the same turn is not reliably displayed; the two guaranteed positions are a chip's own question/option text and a turn's final rendered text; chip evidence rides in the chip where it fits the Accessible-language limits, else ends the preceding turn with the chip posed after the user responds; previews/handoffs end their turn's text or are restated after the last tool call resolves. Four rules amended to match (Durable-record preview, Chips carry choices, Accessible language, Acceptance chips); 15 directive lines reconciled across milestone/plan/implement/review/brief SKILL.md, migration-protocol.md, and cairn-release (the motivating 1.7.0 handoff loss); guards re-pinned, TestMandatedSubstanceRule (4 asserts) + 4 RULES mutation entries added (skills/tests now 525, hand-run); rulebook-mass baseline re-seeded to 433 lines / 39,744 chars in its three sites.
+
+**Decisions:** D-123 — acceptance-chip substance moves to guaranteed-rendered positions; narrowly supersedes the above-the-chip placement of D-037 and of D-038's extension; verbatim bar and wiring stand.
+
+**Review:** user-facing tier, three-lens fan-out: prior-PR and blame-history lenses zero findings; diff-bug lens 13 findings — 7 fixed at the gate (cairn-release handoff directive, preview-flow directives softened to the rule's defined term, gate-presentation turn-break clause, D-123 widened to D-038's placement wording and its misquote named as shipped rule text, grammar/wrap splices), 6 rejected with logged reasons (rule name, question-gates coexistence, "at the chip" phrasing, migration style, deliberate single-line pins, CHANGELOG is released history). No returns. At hygiene: the 2026-08-22 chip-supporting-text candidate row graduated; M150's done row pruned for terminal retention.
