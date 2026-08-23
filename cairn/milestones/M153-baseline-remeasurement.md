@@ -1,11 +1,11 @@
 # M153: The effort-audit baselines are re-measured
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m153-baseline-remeasurement
 
 ## Goal
 
@@ -84,16 +84,16 @@ effort-experiment subject; the new note cross-references it for method.
 
 ## Tasks
 
-- [ ] T1: Recover the 16 pre-archive `## Review` sections per AC1's git
+- [x] T1: Recover the 16 pre-archive `## Review` sections per AC1's git
       procedure; build the per-finding ledger (milestone, finding id, class
       record-defect / not, one-clause reason); record the score seam and the
       zero-entry milestones (the audit's re-run found M143 and M152 record
       no per-finding entries).
-- [ ] T2: Classify M144–M152 per the RR13 Q2 rule (quote the rule text into
+- [x] T2: Classify M144–M152 per the RR13 Q2 rule (quote the rule text into
       the note); compute the (b)+(c) share.
-- [ ] T3: Run `scripts/cairn_cost.py` for M137–M152; extract per-milestone
+- [x] T3: Run `scripts/cairn_cost.py` for M137–M152; extract per-milestone
       turns/output and window medians.
-- [ ] T4: Author the synthesis note from the synthesis-note template —
+- [x] T4: Author the synthesis note from the synthesis-note template —
       three comparisons beside their baselines, verdict, Provenance block,
       INDEX line — and run `python3 scripts/cairn_validate.py` clean (the
       references check reads the INDEX pairing).
@@ -125,6 +125,10 @@ effort-experiment subject; the new note cross-references it for method.
   the committed per-finding ledger is itself auditable and the tier is
   internal; falsified by review finding classification bias the ledger's
   reasons don't survive.
+
+- 2026-08-22: T1–T4 landed together in one artifact (`references/record-rule-remeasurement.md` + INDEX line) — one checkpoint commit rather than four, logged as the deviation; all 16 blobs recovered, 106-row ledger built, shares/medians computed by script over the table and reproduced exactly (41%/57%/51%/60%; medians 137/175,620 and 135/179,878).
+- 2026-08-22: T1 finding — M143 is a legitimate zero, not a gap (archive: "17 findings, 0 scored ≥80"; its two gate fixes scored 60); M152 is the sole coverage gap (10 gate-fixed findings unrecoverable per-finding); the cost store holds no M137/M138 sessions (axis 3 reported over the 14 it holds).
+- 2026-08-22: verdict recorded as helping — record-defect share unchanged (~half) but record-caused returns fell to zero post-reduction and correction cascades collapsed to single batched entries; neither D-099's nor D-116's exit condition met; dead-weight exit path named per AC4.
 
 ## Decisions
 
