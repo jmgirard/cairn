@@ -281,13 +281,13 @@ overrides — log the override).
    what the user is approving in plain words — what the milestone does or
    changes — then acceptance-criteria evidence, problems
    found and how each was handled, diffstat, anything the user should eyeball
-   directly. This presentation is mandated substance: it ends its turn's
-   rendered text, and the merge chip is posed after the user has it in view
-   (Mandated-substance rule).
+   directly. The presentation and the merge chip share one turn
+   (Mandated-substance rule): the chip's question text carries the compact
+   decision summary and cites the milestone file's Review section by path,
+   and the full presentation rides best-effort in the chat above it.
    Acceptance chips (tracking-rules): each actioned finding's text appears
    verbatim in this presentation, never only a summary. With a Driving RR:
-   repeat the measured-vs-projected pairs verbatim in a guaranteed-rendered
-   position at the merge chip (Mandated-substance rule), and a shortfall past the milestone's stated tolerance (an unstated
+   repeat the measured-vs-projected pairs in the merge chip's question text, compact, and verbatim in the chat above, and a shortfall past the milestone's stated tolerance (an unstated
    tolerance is strict — any shortfall counts) adds an explicit chip option
    **"accept shortfall, recorded as such"** — the maintainer decides seeing
    the gap, and selecting it logs the accepted shortfall in the Review

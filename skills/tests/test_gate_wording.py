@@ -71,10 +71,18 @@ class TestPhaseCloseBlock(unittest.TestCase):
         )
 
     def test_no_skill_reintroduces_the_routing_chip_token(self):
-        for path in sorted(SKILLS.glob("*/SKILL.md")):
+        # whitespace-normalized so a line-wrapped "routing\n  chip" cannot
+        # slip past (the M156 review's own diff-bug lens caught exactly
+        # that wrap in a raw-substring sweep); covers shared/*.md too.
+        import re
+
+        for path in sorted(SKILLS.rglob("*.md")):
+            if "tests" in path.parts:
+                continue
+            flat = re.sub(r"\s+", " ", path.read_text(encoding="utf-8").lower())
             self.assertNotIn(
                 "routing chip",
-                path.read_text(encoding="utf-8").lower(),
+                flat,
                 f"{path}: the routing-chip token returned after M156",
             )
 

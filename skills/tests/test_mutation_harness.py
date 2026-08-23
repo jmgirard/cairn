@@ -114,7 +114,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="441 lines / 40,716 chars",
+        block="443 lines / 40,949 chars",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -221,7 +221,7 @@ REGISTRY = [
         guard="test_release_timing",
         test="TestMilestoneAuditWiring.test_park_leads_the_chip_only_when_cairn_next_names_that_release",
         target=MILESTONE,
-        block="lead the chip with it only when `cairn_next`'s own recommendation names that same release milestone",
+        block="lead the close block with it only when `cairn_next`'s own recommendation names that same release milestone",
     ),
     # M111: the GitHub-release handoff — /cairn-release step 4 provides a
     # conditional `gh release create`, never runs it. Each protected block
@@ -917,7 +917,7 @@ REGISTRY = [
         guard="test_gate_conclusion_preview",
         test="TestPerSkillDirectives.test_implement_gate_and_mini_gate",
         target="skills/milestone-implement/SKILL.md",
-        block="conclusion shows its substance verbatim in a guaranteed-rendered position (Mandated-substance rule).",
+        block="conclusion shows its substance compactly in the chip and verbatim in the chat above, best-effort (Mandated-substance rule).",
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
@@ -971,7 +971,7 @@ REGISTRY = [
         guard="test_gate_conclusion_preview",
         test="TestMigrationGateDirectives.test_step7_merge_ledger",
         target="skills/shared/migration-protocol.md",
-        block="verbatim in a guaranteed-rendered position at the merge-approval chip",
+        block="verbatim in the chat above the merge-approval chip, best-effort, with",
     ),
     # M156: the phase-close rule's four operative clauses each carry the
     # doctrine independently — the close-block mandate, the fenced-command

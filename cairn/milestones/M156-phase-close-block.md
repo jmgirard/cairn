@@ -13,7 +13,7 @@ Every skill ends with one recognizable close — recap, status table, copyable n
 
 ## Scope
 
-**In:** The routing-chip mandate is replaced by a phase-close rule (the close block: outcome recap, status table or line, fenced next command(s) with plain one-line labels, a note that adjusting or `/clear` is safe); all ten skills' phase-end chips convert to it. The three chip-placement bullets shipped by M155 are rewritten to same-turn, self-sufficient decision chips (compact decision-relevant substance in question text and option descriptions; fuller evidence best-effort above and cited by file path where it exists on disk); the merge-approval gate follows the same form. The Accessible-language rule's identifier ban extends to option descriptions, chip text gains a no-record-identifier-filler standard, and its identifier-overflow clause reroutes to best-effort chat plus path citation. Guards retire/narrow/re-pin accordingly; rulebook-mass baseline re-seeds; one D-entry supersedes the founding routing-chip clause and one-click mechanism (D-003/D-022), absorbs the review-end exception (D-019) as the new norm, and narrows D-123's turn-break prong.
+**In:** The routing-chip mandate is replaced by a phase-close rule (the close block: outcome recap, status table or line, fenced next command(s) with plain one-line labels, a note that adjusting or `/clear` is safe); all nine skills' phase-end chips convert to it. The three chip-placement bullets shipped by M155 are rewritten to same-turn, self-sufficient decision chips (compact decision-relevant substance in question text and option descriptions; fuller evidence best-effort above and cited by file path where it exists on disk); the merge-approval gate follows the same form. The Accessible-language rule's identifier ban extends to option descriptions, chip text gains a no-record-identifier-filler standard, and its identifier-overflow clause reroutes to best-effort chat plus path citation. Guards retire/narrow/re-pin accordingly; rulebook-mass baseline re-seeds; one D-entry supersedes the founding routing-chip clause and one-click mechanism (D-003/D-022), absorbs the review-end exception (D-019) as the new norm, and narrows D-123's turn-break prong.
 
 Surface tier: **user-facing** — the rulebook and every skill ending ship to adopting repos. Rules door (D-108/D-090): passed via the shipped-behavior trigger — the maintainer reports the M155 two-exchange flow as an interaction defect in what the skills do (this plan's driving conversation, 2026-08-22).
 
@@ -55,6 +55,7 @@ Surface tier: **user-facing** — the rulebook and every skill ending ship to ad
 - 2026-08-22: T3 done — 8 guard reds fired on the edited lines (fired-guard proof); TestRoutingChipMandate retired with its subject, its merge-gate assert moved into new TestPhaseCloseBlock (6 asserts incl. a no-reintroduction sweep over skills/*/SKILL.md); 4 RULES-target mutation entries added; pins re-pointed in test_copy_run_handoffs, test_issue_triage, test_gate_conclusion_preview (+3 mutation blocks); implement's safe-`/clear`-point phrase restored inline per the D-048 guard's intent; skills/tests 528 exit 0; scripts/hooks/validate exit 0.
 - 2026-08-22: T4 done — D-124 appended with the why (randomly missing pre-chip text outweighs one-click routing) and the maintainer's re-open condition (a rendering guarantee reopens one-click); shown verbatim in the committing turn's final rendered text.
 - 2026-08-22: T5 done — scripts/tests, hooks/tests, skills/tests (528), cairn_validate all exit 0; status to review.
+- 2026-08-22: review triage — fan-out returned 2+1+20 findings (one shared), 17 fixed at the gate, 4 rejected with logged reasons; no return-floor hit; Scope count corrected ten->nine skills (factual slip); baseline re-seeded 40,716 -> 40,949 and tagged M156.
 - 2026-08-22: review — fresh AC evidence recorded, all four ACs pass; consistency gate green.
 
 ## Decisions
@@ -68,3 +69,25 @@ Surface tier: **user-facing** — the rulebook and every skill ending ship to ad
 - AC3 — PASS. Accessible-language rule 312-320: the ban now reads "stay out of question text, option labels, and option descriptions"; "chip text is plain language with no record-identifier filler"; overflow rerouted: "an identifier's justification goes best-effort to the chat above the chip, the cited path carrying the rest"; one file-path citation in question text permitted.
 - AC4 — PASS. Routing-chip sweep on the branch returns zero lines (exit 1). AskUserQuestion sweep returns 13 lines, each a decision gate or the rulebook's own gate definition: hotfix 84 (candidate-row chip), 96 (merge chip); cairn-init 52 (disambiguation), 63 (project type), 138 (migration question rounds), 236 (adopt-in-place move gate); tracking-rules 253, 256 (gate definitions); design-interview 50 (question rounds); milestone-brief 44 (RB approval gate); milestone-plan 104 (question gate); milestone-review 296 (merge gate), 381 (the do-not-end-with-a-chip clause). No hit poses a chip to route at a phase end.
 - Consistency gate: cairn_validate exit 0; generic-profile verify (scripts/tests, hooks/tests) exit 0; hand-run skills/tests 528 tests exit 0.
+- Fan-out (user-facing tier, three lenses): [S] prior-PR — 2 findings; [S] blame-history — 1 finding (all its intact-claims checks clean, suites re-run green); [O] diff-bug — 20 findings. Triage (numbering: P1-P2 prior lens, B1 blame lens, F1-F20 diff lens; P1=B1=F11):
+  - F1 wrapped "routing\nchip" in implement step 6 evaded the line-based sweep and the raw-substring guard — fixed (close block wording) and the guard hardened (F12: whitespace-normalized, rglob over all skills markdown).
+  - F2 review's merge gate still mandated the two-exchange flow — fixed: presentation and chip share one turn, compact summary + Review-section path in the chip; test_finding_enforcement re-pinned (F13's first item).
+  - F3 cairn-init orphaned chip menu after its close block — fixed (menu folded into the block's labels).
+  - F4 migration step 3 kept the retired end-the-turn prong — fixed (compact in chip, inventory verbatim above).
+  - F5 README documented chip routing as the flow (5 passages) — fixed to the close-block/typed-command flow.
+  - F6 DESIGN.md routing-chip mentions (2) — fixed.
+  - F7 /milestone dangling chip imperatives — fixed ("lead the close block"; triage-chip selection clause).
+  - F8 /milestone route bullets used chip notation — fixed to example commands for the fences; park bullet restored to its guard's single-line form with a decision-not-route clause.
+  - F9 chip-conclusion directives said "verbatim in a guaranteed-rendered position", unsatisfiable for long text same-turn — fixed at 7 sites (compact in chip + verbatim best-effort above); preview directives untouched (turn-final position exists for them).
+  - F10 Deltas exception pointed at the retired placement — fixed (cites the two owning rules).
+  - F11 (=P1=B1) baseline tag said M155 beside M156 figures — fixed.
+  - F12 guard narrowness — fixed with F1.
+  - F13 stale pins/comments — fixed (finding_enforcement pin, chapter-marker and rulebook-polish comments).
+  - F14 mid-skill decision chips lacked doctrine license — fixed: the phase-close rule now states a mid-skill continue/stop or acceptance decision is a gate, not a phase close.
+  - F15 RR verdict "no slot" in brief's close block — rejected: the close block bounds required elements, not the turn's whole text; the recap carries the verdict.
+  - F16 release checklist "produced two steps late" — rejected: steps 4-6 are one ending turn and the close block's substance is the step-4 checklist by its own text; the stop recommendation lives in the safety line.
+  - F17 hotfix had no close-block directive — fixed (step 7).
+  - F18 overlong lines — hotfix rewrapped (P2); pinned long lines stay deliberately (prose-guard single-source-line requirement, same rejection as M155's wrap finding).
+  - F19 "two positions" vs disk mention — rejected: disk is named as readable, deliberately not as a rendered position.
+  - F20 Scope said ten skills, repo has nine — fixed (factual count slip, no promise change; work log notes it).
+- Post-triage: rulebook 443 lines / 40,949 chars, baseline re-seeded in its three sites (now tagged M156); routing-chip sweep (both spellings) clean over skills/, README.md, DESIGN.md; all suites green (skills 528, scripts, hooks, validate exit 0).

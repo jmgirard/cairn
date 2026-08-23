@@ -44,7 +44,7 @@ run ingestion first (see `/milestone-brief`).
    gate + D-entry) with recommendations. Skip only if nothing is genuinely
    open.
    Acceptance chips (tracking-rules): a question resting on a produced
-   conclusion shows its substance verbatim in a guaranteed-rendered position (Mandated-substance rule). If the plan tags an item `(RB tripwire: <token>)` — or a new
+   conclusion shows its substance compactly in the chip and verbatim in the chat above, best-effort (Mandated-substance rule). If the plan tags an item `(RB tripwire: <token>)` — or a new
    tripwire emerges mid-work (same three categories; see tracking-rules) —
    include an **Escalate via `/milestone-brief`** option on that question; the
    three tripwires are the must-offer cases, but escalation may also be offered
@@ -125,8 +125,8 @@ run ingestion first (see `/milestone-brief`).
      that grows a plan-owned section re-checks the body against the 150-line
      cap; if it now exceeds it, compress the single heaviest plan-owned
      section in one pass (tracking-rules), never a nibble-and-recount loop.
-   - *The goal itself is wrong*: stop; status back to `planned`; routing
-     chip to `/milestone-plan` for a proper re-cut.
+   - *The goal itself is wrong*: stop; status back to `planned`; close
+     block pointing at `/milestone-plan` for a proper re-cut.
    Never silently deliver something other than what the plan promised —
    review checks criteria as written.
 

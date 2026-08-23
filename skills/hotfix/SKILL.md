@@ -24,7 +24,8 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    If it needs a design decision, changes exported behavior beyond
    restoring what was documented, or won't fit one sitting — stop: add a
    `candidate` row (or point the close block's next command at
-   `/milestone-plan` if it's urgent) and say why. An incoming PR over the hotfix bar takes that same
+   `/milestone-plan` if it's urgent) and say why.
+   An incoming PR over the hotfix bar takes that same
    route and becomes (or joins) a milestone — the disposition is unchanged,
    only the entry point is new. If an active milestone covers this code,
    flag the overlap instead of racing it.
@@ -115,4 +116,8 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    out — sweep first per the search-first candidate-creation rule
    (`tracking-rules.md`, Intake). If a milestone branch is currently active, remind the user that its
    next implement/review session will merge the default branch into it (the
-   branch-sync rule) — nothing to do now.
+   branch-sync rule) — nothing to do now. End with the close block
+   (tracking-rules "Question gates and phase closes"), composed from the
+   hotfix's end state — recap of what was fixed and merged, status line,
+   fenced next command(s) where any follow-up exists, and the safety line;
+   no chip.

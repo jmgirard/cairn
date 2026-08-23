@@ -168,12 +168,10 @@ Then:
   authoritative — see tracking-rules git model).
 - Close block (tracking-rules "Question gates and phase closes"), composed
   from what the scaffold found — recap, status line, fenced next command(s)
-  with plain labels (e.g. `/design-interview` to elicit the design), and the
-  adjust-or-`/clear` safety line; no chip.
-  (recommended for a fresh repo, to turn the seeded DESIGN.md into an
-  elicited one) / **Plan the first milestone** → `/milestone-plan` (for a
-  greenfield repo, the package skeleton is the obvious first milestone) /
-  Run `/milestone` / Stop.
+  with plain labels — e.g. `/design-interview` to turn the seeded DESIGN.md
+  into an elicited one (the natural first move in a fresh repo), or
+  `/milestone-plan` where the package skeleton is the obvious first
+  milestone — and the adjust-or-`/clear` safety line; no chip.
 
 ## 2. Migration protocol
 

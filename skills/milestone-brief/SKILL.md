@@ -44,8 +44,9 @@ retaining D-004's per-instance gate on token-cost grounds.)
 3. **Approval gate** (AskUserQuestion): present the brief's scope, a rough
    size estimate (files/lines Fable must read), and a reminder that Fable
    typically uses more tokens than Opus. Acceptance chips (tracking-rules): show the drafted RB's
-   question and scope text verbatim in a guaranteed-rendered position
-   (Mandated-substance rule), never only a description. Options:
+   question and scope text verbatim in the chat above, best-effort, with
+   the compact form in the chip (Mandated-substance rule), never only a
+   description. Options:
    - **Spawn Fable subagent** (recommended) — on approval, launch an Agent
      with `model: "fable"` ([F]-tagged description) whose entire prompt
      is: read

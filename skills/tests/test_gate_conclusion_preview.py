@@ -41,7 +41,7 @@ class TestPerSkillDirectives(unittest.TestCase):
     def test_implement_gate_and_mini_gate(self):
         t = read("milestone-implement", "SKILL.md")
         self.assertIn(
-            "conclusion shows its substance verbatim in a guaranteed-rendered position (mandated-substance rule).",
+            "conclusion shows its substance compactly in the chip and verbatim in the chat above, best-effort (mandated-substance rule).",
             t,
         )
         self.assertIn(
@@ -128,7 +128,7 @@ class TestMigrationGateDirectives(unittest.TestCase):
             t,
         )
         self.assertIn(
-            "verbatim in a guaranteed-rendered position at the merge-approval chip",
+            "verbatim in the chat above the merge-approval chip, best-effort, with",
             t,
         )
 

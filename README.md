@@ -83,9 +83,10 @@ flowchart LR
     review -->|criteria unmet| implement
 ```
 
-You rarely type the next command: each phase ends with clickable options
-(chips) that route to the natural next step. Typing the slash command
-directly always works too, e.g. to resume after a break.
+Each phase ends the same recognizable way: a short recap, a status table,
+and the next command in a copyable block — you run it when you're ready.
+Decisions along the way (plan questions, merge approval) arrive as
+clickable options.
 
 ## A worked example
 
@@ -107,8 +108,8 @@ implementation choices the plan left open (flag naming, output format),
 then works the tasks in order: tests first, one checkpoint commit per
 task, each commit updating the milestone file's checkboxes alongside the
 code. Between the gate and the finish you aren't asked anything. When all
-tasks pass, status flips to `review` and you get a diff summary and a
-chip: **Proceed to review**.
+tasks pass, status flips to `review` and you get a diff summary with the
+next command ready to copy: `/milestone-review M07`.
 
 **3. Ship it.** `/milestone-review M07` re-runs every check fresh, gathers
 evidence for each acceptance criterion (no evidence, no tick), and hands
@@ -195,13 +196,14 @@ the directory in place and the shelf of original files stays out of git.
   (planning scope, implementation choices, merge approval), each with a
   recommendation. Between gates, expect autonomy. Questions arriving
   mid-implementation are a sign something has gone wrong.
-- **Chips are stops, not automation.** When clickable options appear,
-  nothing proceeds until you pick one; walking away mid-chip is always
+- **Boundaries are stops, not automation.** A phase ends with a copyable
+  next command that nothing runs but you, and a decision's clickable
+  options wait until you pick one; walking away at either point is always
   safe, and the last checkpoint commit holds the state for next time.
 - **Merges are yours.** Nothing reaches your default branch without your
   explicit approval at review. A guard hook mechanically blocks merges
   that lack a recorded approval, and the approval names the one PR it
-  covers. "Proceed to review" is not "merge"; you get the evidence first.
+  covers. Starting a review is not merging; you get the evidence first.
   (The guard watches what Claude runs, not what you do; see *Working with
   collaborators*.)
 - **Supply primary sources.** If a formula, cutoff, or scoring key needs a
@@ -212,7 +214,7 @@ the directory in place and the shelf of original files stays out of git.
   with a scope estimate first. Declining is fine; the brief file remains
   and can be run any time.
 - **Run `/milestone` when returning after time away.** It reconciles
-  tracking against git, flags stale work, and hands you a resume chip.
+  tracking against git, flags stale work, and hands you the resume command.
 
 ## Habits that keep it healthy
 

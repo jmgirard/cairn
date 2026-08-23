@@ -263,7 +263,9 @@ where they exist; the next command or commands in fenced blocks, primary first, 
 label; and one line noting that adjusting course or `/clear` are both safe at this point. No chip is posed to route to
 the next skill — the user runs the fenced command — and its fixed shape is itself the signal that a boundary was
 reached. Decision-gate chips, the merge-approval gate among them, are unaffected: a gate is a choice, a phase end is a
-handoff. Review's close after a successful merge recommends `/clear` plus the next action — the shape every phase
+handoff. A decision arising mid-skill or at an internal phase boundary — a continue/stop choice, an acceptance over a
+produced proposal — is a gate and keeps its chip; the close block governs the end that hands the user a next command.
+Review's close after a successful merge recommends `/clear` plus the next action — the shape every phase
 close now shares, generalized from what was once review's sole exception.
 
 ## Output & interaction discipline
@@ -276,8 +278,8 @@ These rules bind all chat output while any cairn skill is active.
   entry; replies within a phase are plain deltas underneath.
 - **Deltas, not dumps; narrate outcomes, not deliberation.** Between gates, report what changed since the last report —
   never a restated plan, pasted command output, or a running readout of reasoning; a one-line signpost or a compact
-  summary where a question needs context is fine. Two exceptions: drafted durable-record text and acceptance-chip
-  conclusion text, each in its guaranteed-rendered position (Mandated-substance rule below).
+  summary where a question needs context is fine. Two exceptions: drafted durable-record text (per the Durable-record
+  preview rule) and acceptance-chip conclusion text (per the Acceptance-chips rule below).
 - **Correct what matters, and only narrate that.** Correct an earlier chat statement only when the error would change
   the user's code, conclusions, or decisions — plainly, briefly, then continue; a slip that changes nothing is fixed
   without narration. A chat slip never reaches a durable record.

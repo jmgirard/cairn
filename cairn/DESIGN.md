@@ -28,7 +28,7 @@ transitions, human-gated merges, and a domain verification doctrine.
 - `skills/<name>/SKILL.md` × 9 — workflow logic; each reads the shared
   rulebook first and never restates it. Includes `design-interview`, a
   standalone two-phase (facts → principles) DESIGN.md elicitation interview
-  (D-013), offered from `/cairn-init`'s routing chip; it recommends running
+  (D-013), offered from `/cairn-init`'s close block; it recommends running
   the session on Fable (D-014).
 - `skills/shared/tracking-rules.md` — the single rulebook. Conditional
   modules beside it: `validation-doctrine.md` (domain doctrine for
@@ -125,7 +125,7 @@ within each type and are never reused.
   fallback after each `python3` invocation (M61) — a no-op on macOS/Linux
   (every hook exits 0 and denies via JSON stdout), but no Windows run has
   verified it.
-- Conduct rules (question gates, routing chips, chapter markers, AC fencing)
+- Conduct rules (question gates, phase closes, chapter markers, AC fencing)
   are enforced as prose: since M144 the prose-guard tests are retained but
   hand-run and gate nothing (D-109), so wording drift is caught by PR diff
   review rather than by a suite, and live honoring is only spot-verified

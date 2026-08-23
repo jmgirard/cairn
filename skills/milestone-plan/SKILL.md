@@ -106,7 +106,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    any collision dispositions.
    Acceptance chips (tracking-rules): a question resting on a produced
    conclusion — subagent findings, a collision verdict — shows that
-   conclusion's substance verbatim in a guaranteed-rendered position (Mandated-substance rule). Every proposed scope cut must state **where
+   conclusion's substance compactly in the chip and verbatim in the chat above, best-effort (Mandated-substance rule). Every proposed scope cut must state **where
    the remainder goes** — never "M12 covers A and B" alone, but "M12 covers
    A and B; C becomes M13 (planned now, depends on M12); D becomes a
    candidate row; E sounds unwanted — drop entirely?".
