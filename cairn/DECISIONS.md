@@ -4479,3 +4479,38 @@ D-120 takes.
 
 **Consequences:** none operative beyond the corrections — D-120's decision,
 both its moves, and its falsifier stand unchanged.
+
+### D-122 (2026-08-22): The maturation exit gains a module-budget clause — graduated doctrine modules carry their own hand-read size budgets — annotates D-055; hosted per D-098 (M154)
+
+**Context:** D-055's maturation exit graduates a lesson family whole into a
+doctrine module and stops there: nothing states where a budget for the module
+comes from, and `cairn_validate`'s `LINE_CAPS` reach only ROADMAP, LESSONS,
+and PROFILE — an adopting repo cannot extend the validator. circumplex M104
+ran the exit as shipped and its module left the graduating milestone with an
+"Uncapped, by M104's choice" header; the gap was closed the same evening by a
+hand commit (circumplex aef79279) that invented the remedy locally and noted
+that mechanizing it was owed a cairn candidate row. The hygiene steps cairn
+ships stamp "caps ok" while structurally blind to the file the exit itself
+creates — the shipped-behavior defect D-108's retained trigger requires,
+surfaced downstream and hosted here per D-098, the same door-walk shape
+D-119 recorded for the ROADMAP/LESSONS byte budgets.
+
+**Decision:** The maturation exit's clause in tracking-rules now states: the
+graduating milestone writes the module's line and byte budget into the
+module's own header — set from the graduated size plus stated headroom —
+hand-read with `wc -l -c` at the repo's hygiene passes and covered by no
+validator. Both hygiene-pass sites D-119 names read module header budgets
+beside the ROADMAP/LESSONS byte budgets; `skills/shared/records-hygiene.md`
+is retrofitted with such a header. Prose, not machinery: a validator cap was
+declined at the plan gate on D-119's precedent. Rejected at the same gate: a
+mandated pointer-reachability check at graduation (no observed failure;
+unmandated until a pointer actually breaks) and leaving the candidate row
+parked on its wait-for-drift condition (the gap is structural — every future
+graduation in any repo reproduces it — and the user directed promotion).
+
+**Consequences:** D-055 is annotated, not superseded — its exit criteria and
+graduation mechanics stand; the budget clause extends what graduation ships.
+A hygiene pass stamping "caps ok" now covers module headers; a module found
+over its stated budget takes the compress-or-retire remedy its header names.
+Measurements live in M154's file and work log, per the D-entry measurement
+rule.

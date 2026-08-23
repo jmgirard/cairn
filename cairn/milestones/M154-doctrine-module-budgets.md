@@ -86,7 +86,7 @@ tracking-rules:127-128 and the LESSONS-header pointer convention.
       2026-08-22 plus roughly one entry of headroom; implement fixes the
       final figures against the file as merged — headroom must exceed the
       header sentence's own addition, per the audit's round-2 note).
-- [ ] T4: Append the D-entry annotating D-055 (the maturation exit gains
+- [x] T4: Append the D-entry annotating D-055 (the maturation exit gains
       the budget clause), recording D-108's trigger as met (hygiene-step
       blindness to its own exit's output, measured in circumplex,
       hosted per D-098) — the D-119 door-walk shape.
@@ -113,6 +113,7 @@ tracking-rules:127-128 and the LESSONS-header pointer convention.
 - 2026-08-22: T2 — module-budget reading added to the health audit (milestone/SKILL.md:58-63) and post-merge hygiene (milestone-review/SKILL.md:337-341); all three suites exit 0.
 - 2026-08-22: reading records-hygiene.md for T3 surfaced that its §1 forbids the plan-time candidate-row prune the plan commit performed; the row was restored verbatim on main (f911896) with a promoted-to-M154 note, the branch rebased, and T5's wording amended (minor) — the row graduates at post-merge hygiene.
 - 2026-08-22: T3 — records-hygiene.md retrofitted with a budget header: under 55 lines / under 4,000 bytes from the retrofitted 44 / 2,575 (the stated byte figure was stabilized against the M99 fixed-point by same-width digits); measures under both; all three suites exit 0.
+- 2026-08-22: T4 — D-122 appended (annotates D-055; records D-108's trigger and the gate's rejected alternatives), previewed verbatim in chat; validate and all three suites exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
