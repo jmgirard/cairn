@@ -4514,3 +4514,37 @@ A hygiene pass stamping "caps ok" now covers module headers; a module found
 over its stated budget takes the compress-or-retire remedy its header names.
 Measurements live in M154's file and work log, per the D-entry measurement
 rule.
+
+### D-123 (2026-08-22): Acceptance-chip substance moves to guaranteed-rendered positions — narrowly supersedes D-037's above-the-chip placement clause; the verbatim bar and five-skill wiring stand (M155)
+
+**Context:** The chip rules placed a chip's evidence in chat above the chip
+and durable-record previews in chat immediately before their commit, but
+text emitted before a tool call in the same turn is not reliably displayed —
+in the 1.7.0 release session both the version rationale and the tag/push
+handoff were invisible until re-sent after the chip. D-037's placement
+clause ("verbatim in chat above the chip") therefore mandated a position
+that can silently fail the informed choice it exists to guarantee. M155's
+plan gate weighed post-hoc restatement (cannot inform the choice it
+follows), an unconditional stop before every chip (an added exchange even
+for two-sentence evidence), and inside-chip-always (truncates long finding
+lists), and chose hybrid-by-length.
+
+**Decision:** Substance a rule requires the user to see takes one of the two
+guaranteed-rendered positions: the chip's own question text and option
+descriptions where it passes the Accessible-language limits, otherwise the
+preceding turn's final rendered text with the chip posed after the user
+responds; a durable-record preview or handoff command either ends its turn's
+rendered text or is restated verbatim in the first rendered text after the
+tool call resolves (tracking-rules, Mandated-substance rule). D-037's
+placement clause — conclusion substance "verbatim in chat above the chip" —
+is narrowly superseded by this placement doctrine. Everything else in D-037
+stands: the verbatim bar (a paraphrase never stands in for the text being
+accepted; a long artifact shows its conclusions verbatim plus the file path)
+and the five-skill wiring, which D-038 extended to the migration gates.
+
+**Consequences:** The four amended rules ("Chips carry choices, not
+evidence", "Acceptance chips show what's accepted", "Accessible language on
+the decision surface", "Durable-record preview") and every per-skill
+directive state guaranteed-rendered placements; the guards pin the new
+wording. If the harness comes to guarantee pre-tool-call rendering, this is
+the entry to supersede.
