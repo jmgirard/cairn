@@ -131,10 +131,11 @@ start (any skill) when a manual RR appears:
    Decisions entries, D-entries, and candidate rows the ingestion wrote
    verbatim in a guaranteed-rendered position (Mandated-substance rule);
    commit (docs-only): `ingest RR<NN>`.
-5. **Routing chip (AskUserQuestion)**, composed from where the RR left the
-   milestone — e.g. **Resume implementation** → `/milestone-implement <id>`
-   (recommended) / Stop here. Acceptance chips (tracking-rules):
-   the RR's conclusions/verdict section is shown verbatim, ending the turn before the chip (Mandated-substance rule).
+5. **Close block** (tracking-rules "Question gates and phase closes"),
+   composed from where the RR left the milestone — recap, status line,
+   fenced next command(s) with plain labels (e.g. `/milestone-implement <id>`
+   to resume), and the adjust-or-`/clear` safety line; no chip.
+   The RR's conclusions/verdict section is shown verbatim in the close block's turn (its final rendered text, Mandated-substance rule).
 
 Robustness:
 

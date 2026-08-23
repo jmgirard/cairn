@@ -368,17 +368,15 @@ overrides — log the override).
    recap leads with what shipped, in plain words; hygiene mechanics
    compress to one line.
 
-10. **Close with a `/clear` nudge — no routing chip.** Review is the one
-    phase whose end is deliberately chip-less (tracking-rules "Question gates
-    and routing chips"): M<NN> is archived and all state is on disk, so the
-    natural next step is a fresh context, not another in-session route.
-    Close in plain prose — tell the user this is a clean `/clear` point and
-    recommend starting the next milestone in a fresh session. This close is a
-    handoff, so
-    emit the commands in a fenced block, never inline backticks
-    (tracking-rules "Copy-run commands") — the user is being asked to go run
-    them. Emit `/clear` and the obvious next action (`/milestone-plan` when
-    planned or candidate work exists, else `/milestone` for a health audit)
-    as copyable lines. Do **not** end review
+10. **Close with the close block — no chip.** (tracking-rules "Question
+    gates and phase closes" — the shape every phase now shares, generalized
+    from what was once review's sole exception.) M<NN> is archived and all
+    state is on disk, so the natural next step is a fresh context: the
+    recap leads with what shipped, the status line names the merge and
+    archive state, and the fenced commands emit `/clear` and the obvious
+    next action (`/milestone-plan` when planned or candidate work exists,
+    else `/milestone` for a health audit) as copyable lines — this close is
+    a handoff, so commands go in fenced blocks, never inline backticks
+    (tracking-rules "Copy-run commands"). Do **not** end review
     with an AskUserQuestion — the step-7 merge-approval gate was the last
     chip this phase emits.

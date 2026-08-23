@@ -43,7 +43,7 @@ def fenced_regions(text):
 class TestReviewCloseIsAHandoff(unittest.TestCase):
     def test_close_directs_the_commands_into_a_fenced_block(self):
         self.assertIn(
-            "emit the commands in a fenced block, never inline backticks",
+            "commands go in fenced blocks, never inline backticks",
             skill("milestone-review"),
         )
 

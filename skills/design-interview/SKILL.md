@@ -78,7 +78,7 @@ banking it for the principles round"); never ask for the commitment now.
 At the phase boundary: summarize what was heard; write the DESIGN draft
 (Purpose & Scope, contract boundary, conventions) plus the banked-candidates
 ledger to disk; **checkpoint-commit** (stop points are commit points, so a
-later session resumes statelessly); then a routing chip —
+later session resumes statelessly); then a continue/stop decision chip —
 
 - **Continue into principles** → Phase 2 (recommended)
 - **Pause here** — stop; resume statelessly later
@@ -153,6 +153,8 @@ run these additions on top of the normal two phases:
 
 ## Routing
 
-Close with a routing chip (AskUserQuestion) composed from what was produced — e.g.
-**Plan the first milestone** → `/milestone-plan` (recommended) /
-Run `/milestone` / Stop. A chip is a user stop; never auto-proceed.
+Close with the close block (tracking-rules "Question gates and phase
+closes") composed from what was produced — recap, status line, fenced next
+command(s) with plain labels (e.g. `/milestone-plan` to plan the first
+milestone, `/milestone` for a health check), and the adjust-or-`/clear`
+safety line; no chip.

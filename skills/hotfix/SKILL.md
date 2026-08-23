@@ -23,8 +23,8 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    a hotfix only if it restores documented behavior and fits one sitting.
    If it needs a design decision, changes exported behavior beyond
    restoring what was documented, or won't fit one sitting — stop: add a
-   `candidate` row (or offer a routing chip to `/milestone-plan` if it's
-   urgent) and say why. An incoming PR over the hotfix bar takes that same
+   `candidate` row (or point the close block's next command at
+   `/milestone-plan` if it's urgent) and say why. An incoming PR over the hotfix bar takes that same
    route and becomes (or joins) a milestone — the disposition is unchanged,
    only the entry point is new. If an active milestone covers this code,
    flag the overlap instead of racing it.

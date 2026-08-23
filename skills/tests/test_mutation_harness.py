@@ -593,7 +593,7 @@ REGISTRY = [
         guard="test_copy_run_handoffs",
         test="TestReviewCloseIsAHandoff.test_close_directs_the_commands_into_a_fenced_block",
         target=REVIEW,
-        block="emit the commands in a fenced block, never inline backticks",
+        block="commands go in fenced blocks, never inline backticks",
     ),
     Mutation(
         guard="test_copy_run_handoffs",
@@ -941,7 +941,7 @@ REGISTRY = [
         guard="test_gate_conclusion_preview",
         test="TestPerSkillDirectives.test_brief_rb_gate_and_rr_routing",
         target="skills/milestone-brief/SKILL.md",
-        block="the RR's conclusions/verdict section is shown verbatim, ending the turn before the chip (Mandated-substance rule).",
+        block="The RR's conclusions/verdict section is shown verbatim in the close block's turn (its final rendered text, Mandated-substance rule).",
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
@@ -972,6 +972,33 @@ REGISTRY = [
         test="TestMigrationGateDirectives.test_step7_merge_ledger",
         target="skills/shared/migration-protocol.md",
         block="verbatim in a guaranteed-rendered position at the merge-approval chip",
+    ),
+    # M156: the phase-close rule's four operative clauses each carry the
+    # doctrine independently — the close-block mandate, the fenced-command
+    # handoff, the safety line, and the decision-gate carve-out.
+    Mutation(
+        guard="test_gate_wording",
+        test="TestPhaseCloseBlock.test_rule_states_close_block_never_a_chip",
+        target=RULES,
+        block="ends with a **close block**, never a chip",
+    ),
+    Mutation(
+        guard="test_gate_wording",
+        test="TestPhaseCloseBlock.test_rule_hands_the_user_the_fenced_command",
+        target=RULES,
+        block="the next skill — the user runs the fenced command",
+    ),
+    Mutation(
+        guard="test_gate_wording",
+        test="TestPhaseCloseBlock.test_rule_carries_the_safety_line",
+        target=RULES,
+        block="adjusting course or `/clear` are both safe at this point",
+    ),
+    Mutation(
+        guard="test_gate_wording",
+        test="TestPhaseCloseBlock.test_rule_spares_decision_gates",
+        target=RULES,
+        block="unaffected: a gate is a choice, a phase end is a",
     ),
     # M155: the Mandated-substance rule's four operative clauses each carry
     # the doctrine independently (per-block discipline, M53) — the rendering

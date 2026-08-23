@@ -131,24 +131,19 @@ run ingestion first (see `/milestone-brief`).
    review checks criteria as written.
 
 7. **Blocked?** External blocker → status `blocked` + work-log line naming
-   it, stop. Needs Fable-level judgment → routing chip to
+   it, stop. Needs Fable-level judgment → close block pointing at
    `/milestone-brief`, stop.
 
 8. **Completion.** When all tasks are checked and the active profile's
    `verify` slot passes clean (for a toolchain whose profile names a fuller
    pre-review check, that check), set status `review`, checkpoint-commit, then
-   stop with a recap —
-   outcome-first (per tracking-rules): what the milestone now does or
-   changes, in plain words, before the mechanics —
-   file-level summary of the branch diff, test/check results, deviations
-   from plan, open concerns — and a **routing chip (AskUserQuestion)**, one
-   question, composed per the tracking-rules chip rules; the natural menu, in
-   this order):
-   - **Proceed to review** → `/milestone-review <id>` (recommended)
-   - **Adjust first** — changes on the branch before review
-   - **Pause here** — stop; milestone stays at `review`
-   Honor "Other" free-text as adjustment instructions. The chip is a stop,
-   never an auto-proceed. Note in the recap that the checkpoint makes this
-   a safe `/clear` point — review resumes statelessly in a fresh session
-   (same-session review via the chip is also fine; see tracking-rules
-   context hygiene).
+   stop with the **close block** (tracking-rules "Question gates and phase
+   closes") — outcome-first recap: what the milestone now does or changes,
+   in plain words, before the mechanics — then a file-level summary of the
+   branch diff, test/check results, deviations from plan, and open concerns;
+   a status table (milestone, status, branch/PR, suite results); the fenced
+   next command, `/milestone-review <id>` labeled plainly; and the safety
+   line — adjustments on the branch first are fine, and the checkpoint makes
+   this a safe `/clear` point, since review resumes statelessly in a fresh
+   session (same-session review is also fine; see tracking-rules context
+   hygiene). No chip.

@@ -72,9 +72,9 @@ toolchain-specific work at step 3.
    checklist is a **handoff** — the whole step exists to hand the user work to
    run — so each goes in a fenced block, never inline backticks
    (tracking-rules "Copy-run commands"). The rationale and this checklist are
-   mandated substance: they end the turn's rendered text, and step 6's routing
-   chip is posed only after the user has them in view (Mandated-substance
-   rule) — the 1.7.0 release lost both to pre-chip rendering. Offer to prepare
+   mandated substance: they ride in the close block's final rendered text
+   (Mandated-substance rule) — the 1.7.0 release lost both to pre-chip
+   rendering. Offer to prepare
    the post-acceptance steps as a follow-up when the user returns.
 
    **GitHub release (conditional).** When the `origin` remote is a GitHub
@@ -97,7 +97,8 @@ toolchain-specific work at step 3.
    YYYY-MM-DD") is permitted as a Done-section annotation; nothing else in
    tracking changes.
 
-6. **Routing chip (AskUserQuestion)**, composed from the release's end state
-   (chip rules per tracking-rules) — e.g. **Stop here — run the submission /
-   tag checklist yourself** (recommended) / Plan the next milestone →
-   `/milestone-plan` / Run a health check → `/milestone`.
+6. **Close block** (tracking-rules "Question gates and phase closes"),
+   composed from the release's end state: the step-4 rationale and handoff
+   checklist are its substance, the status line names the version and tag
+   state, and the safety line notes that running the checklist yourself or
+   `/clear` are both the natural moves; no chip.

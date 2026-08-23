@@ -62,7 +62,7 @@ class TestPerSkillDirectives(unittest.TestCase):
             t,
         )
         self.assertIn(
-            "the rr's conclusions/verdict section is shown verbatim, ending the turn before the chip (mandated-substance rule).",
+            "the rr's conclusions/verdict section is shown verbatim in the close block's turn (its final rendered text, mandated-substance rule).",
             t,
         )
 
