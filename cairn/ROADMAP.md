@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-22 (M153 archived; M148 done-row pruned for terminal retention; one lesson added (write per-finding review records into the file), none retired; skills/tests hand-run on merged main: 521 tests, zero reds; validate green; caps ok; byte budgets `wc -c` 12,421 / 12,495 — both under.)_
+_Last hygiene check: 2026-08-22 (M154 archived; M149 done-row pruned for terminal retention; doctrine-module candidate row graduated; one lesson added (rows prune at hygiene, not plan), none retired; skills/tests hand-run on merged main: 521 tests, zero reds; validate green; caps ok; byte budgets `wc -c` 11,703 / 12,861 — both under; module budgets `wc -l -c` 44/2,575, 99/6,480, 185/11,924 — all under their headers.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M154 | The maturation exit's doctrine modules gain budgets | review | — | normal | milestones/M154-doctrine-module-budgets.md |
+| M154 | The maturation exit's doctrine modules gain budgets | done | — | normal | milestones/archive/M154-doctrine-module-budgets.md |
 | M153 | The effort-audit baselines are re-measured | done | — | normal | milestones/archive/M153-baseline-remeasurement.md |
 | M152 | Chat and record prose gain a plain-style rule | done | — | high | milestones/archive/M152-plain-style-rule.md |
 | M151 | The instrument question reaches the reduced audit | done | — | high | milestones/archive/M151-instrument-question-both-modes.md |
 | M150 | The core loop becomes a rendered diagram | done | — | normal | milestones/archive/M150-readme-flow-diagram.md |
-| M149 | The line caps gain byte budgets | done | — | normal | milestones/archive/M149-byte-budgets.md |
 
 ## Candidates
 
@@ -25,7 +24,6 @@ _Ordered higher-priority-first (advisory only — candidates carry no Priority f
 
 - Review-side reclassification of record-binding criterion failures: a review finding that an acceptance criterion is unmet only in a recording act (a work-log quotation, a named recording command's provenance) crosses the return floor as a full defect return toward the thrash threshold; the deferred remedy is routing such findings to the amendment track (narrow the criterion to the deliverable property, fix the record at the gate), deliberately not shipped with D-120 so plan-time prevention proves itself first. Promote when a milestone whose criteria passed the extended audit (D-120) still costs a defect return on a record-binding clause — never on a count of legacy-milestone returns — added 2026-08-21 — M151 (circumplex M101)
 - External adoption pass (RR13 step 3): run `/cairn-init` and one full milestone loop on a repo the author did not shape, ideally with a second person driving, and fix what breaks; fallback if no external repo or person is available: the README-flow-diagram and contributor-scaffold rows (cross-referenced, not merged). Parked until the RR13 reduction lands. Promote once M145–M147 land — added 2026-08-16 — RR13 Q10
-- Doctrine-module discipline for the maturation exit: the lesson-retirement maturation exit graduates a family "whole into a doctrine module" but says nothing about where the module lives, what keeps it reachable beyond the LESSONS pointer, or what watches its size — `LINE_CAPS` covers only ROADMAP/LESSONS/PROFILE and an adopting repo cannot extend the validator, so a graduated module (circumplex's `cairn/test-craft.md`, 5.7 KB) drifts unwatched; cheapest form is prose, not a validator cap (prose-over-instrument precedent at the M149 checker-regress gate): the graduating milestone states the module's byte budget and adds it to the repo's hygiene-stamp reading. Promoted to M154 (planned 2026-08-22); row graduates at M154's post-merge hygiene per records-hygiene §1 — added 2026-08-22 — circumplex M104 review (maintainer)
 - The amendment-time audit surface records nothing: `/milestone-implement` step 6's re-audit mandates no work-log line (unlike the plan and ingest surfaces D-079 clause 2 owns), so on resume whether the fresh reader ran is unrecoverable and the per-criterion one-re-entry bound is uncountable; cheapest form is one step-6 sentence plus a fixed clearance shape at the brief surface, parked until the gap is actually hit on a resume. Promote when a resume cannot determine whether a re-audit ran, or an exemption is applied to wording no line names — never on a count of amendments — added 2026-08-09 — M138 review F1/F8
 - Standing-instrument adoption discipline, two plan-gate conduct clauses: (a) a milestone proposing a standing instrument states a pre-registered yield classification, an advisory-only shadow period of 2–3 milestones, and an autopsy date before it may gate anything; (b) when an adopted instrument's own falsifier fires, at most one narrowing attempt precedes the prescribed exit (D-059: replacing the falsifier is presumptive tuning). Sits beside D-090's door, not behind it. Promote when the next milestone proposes a standing instrument — the rule binds at adoption time, never on a count of milestones — added 2026-07-31 — M127 post-mortem (user question). Weighed 2026-08-17 (M149): a standing instrument (a validator byte check) was posed at the checker-regress gate and declined in favour of prose — condition not fired, row stays
 - Reasoning-effort dial per spawned agent: the Opus 5 guide names effort as the primary cost control while cairn's spawn vocabulary is model tier alone; parked mechanically — the Agent tool exposes no effort parameter, effort lives in agent-definition frontmatter, and cairn ships no agent definitions (adjacent to D-026's tool-gating rejection, not covered by it). Promote when cairn ships an agent definition for any other reason, or when the Agent tool exposes effort per spawn — never on a count of expensive sessions — added 2026-07-27 — M120 Out
