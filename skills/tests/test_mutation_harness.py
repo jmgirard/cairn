@@ -114,7 +114,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="433 lines / 39,744 chars",
+        block="443 lines / 40,949 chars",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -221,7 +221,7 @@ REGISTRY = [
         guard="test_release_timing",
         test="TestMilestoneAuditWiring.test_park_leads_the_chip_only_when_cairn_next_names_that_release",
         target=MILESTONE,
-        block="lead the chip with it only when `cairn_next`'s own recommendation names that same release milestone",
+        block="lead the close block with it only when `cairn_next`'s own recommendation names that same release milestone",
     ),
     # M111: the GitHub-release handoff — /cairn-release step 4 provides a
     # conditional `gh release create`, never runs it. Each protected block
@@ -593,7 +593,7 @@ REGISTRY = [
         guard="test_copy_run_handoffs",
         test="TestReviewCloseIsAHandoff.test_close_directs_the_commands_into_a_fenced_block",
         target=REVIEW,
-        block="emit the commands in a fenced block, never inline backticks",
+        block="commands go in fenced blocks, never inline backticks",
     ),
     Mutation(
         guard="test_copy_run_handoffs",
@@ -917,7 +917,7 @@ REGISTRY = [
         guard="test_gate_conclusion_preview",
         test="TestPerSkillDirectives.test_implement_gate_and_mini_gate",
         target="skills/milestone-implement/SKILL.md",
-        block="conclusion shows its substance verbatim in a guaranteed-rendered position (Mandated-substance rule).",
+        block="conclusion shows its substance compactly in the chip and verbatim in the chat above, best-effort (Mandated-substance rule).",
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
@@ -941,7 +941,7 @@ REGISTRY = [
         guard="test_gate_conclusion_preview",
         test="TestPerSkillDirectives.test_brief_rb_gate_and_rr_routing",
         target="skills/milestone-brief/SKILL.md",
-        block="the RR's conclusions/verdict section is shown verbatim, ending the turn before the chip (Mandated-substance rule).",
+        block="The RR's conclusions/verdict section is shown verbatim in the close block's turn (its final rendered text, Mandated-substance rule).",
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
@@ -971,7 +971,34 @@ REGISTRY = [
         guard="test_gate_conclusion_preview",
         test="TestMigrationGateDirectives.test_step7_merge_ledger",
         target="skills/shared/migration-protocol.md",
-        block="verbatim in a guaranteed-rendered position at the merge-approval chip",
+        block="verbatim in the chat above the merge-approval chip, best-effort, with",
+    ),
+    # M156: the phase-close rule's four operative clauses each carry the
+    # doctrine independently — the close-block mandate, the fenced-command
+    # handoff, the safety line, and the decision-gate carve-out.
+    Mutation(
+        guard="test_gate_wording",
+        test="TestPhaseCloseBlock.test_rule_states_close_block_never_a_chip",
+        target=RULES,
+        block="ends with a **close block**, never a chip",
+    ),
+    Mutation(
+        guard="test_gate_wording",
+        test="TestPhaseCloseBlock.test_rule_hands_the_user_the_fenced_command",
+        target=RULES,
+        block="the next skill — the user runs the fenced command",
+    ),
+    Mutation(
+        guard="test_gate_wording",
+        test="TestPhaseCloseBlock.test_rule_carries_the_safety_line",
+        target=RULES,
+        block="adjusting course or `/clear` are both safe at this point",
+    ),
+    Mutation(
+        guard="test_gate_wording",
+        test="TestPhaseCloseBlock.test_rule_spares_decision_gates",
+        target=RULES,
+        block="unaffected: a gate is a choice, a phase end is a",
     ),
     # M155: the Mandated-substance rule's four operative clauses each carry
     # the doctrine independently (per-block discipline, M53) — the rendering
@@ -991,9 +1018,9 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
-        test="TestMandatedSubstanceRule.test_overflow_ends_the_preceding_turn",
+        test="TestMandatedSubstanceRule.test_decision_chip_is_same_turn_and_self_sufficient",
         target=RULES,
-        block="ends the preceding turn as that turn's final rendered text, the chip posed after the user responds",
+        block="A decision chip is posed in the same turn as its",
     ),
     Mutation(
         guard="test_gate_conclusion_preview",

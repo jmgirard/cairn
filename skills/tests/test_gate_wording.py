@@ -1,5 +1,5 @@
-"""Regression guard: the merge-approval gate and the end-of-phase routing
-chip must both be AskUserQuestion chips.
+"""Regression guard: the merge-approval gate stays an AskUserQuestion chip,
+and phase ends stay chip-less close blocks.
 
 Skills are prose, so this locks two invariants:
 
@@ -8,11 +8,10 @@ Skills are prose, so this locks two invariants:
    itself* as an AskUserQuestion chip, never a prose "ask plainly for
    authorization" yes/no.
 
-2. The routing-chip mandate (M26): every phase skill that ends with a
-   routing chip must name AskUserQuestion at that step, so a prose list of
-   options can't silently stand in for a chip. `/milestone-review` is the one
-   deliberate exception — it ends with a plain-prose `/clear` nudge and no
-   routing chip, while still keeping its merge-approval chip.
+2. The phase-close rule (M156, retiring M26's routing-chip mandate): every
+   phase or skill ends with the close block — recap, status, fenced next
+   command(s), safety line — and no skill reintroduces the routing-chip
+   token; decision-gate chips are unaffected.
 
 Guard tests read each SKILL as one string, so `assertIn` fails across a
 newline (M23 lesson) — asserted phrases live on single lines in the source.
@@ -42,46 +41,54 @@ class TestMergeGateIsAChip(unittest.TestCase):
         self.assertIn("AskUserQuestion", text)
 
 
-# Phase skills whose end-of-phase routing chip must name AskUserQuestion.
-# `/milestone-review` is deliberately excluded — its end is chip-less (below).
-# `hotfix` has no standalone terminal routing-chip step; `milestone-brief`
-# ends its RR-ingest phase on one (an M26 miss, brought under the guard in M28).
-NON_REVIEW_CHIP_SKILLS = [
-    "milestone-plan",
-    "milestone-implement",
-    "milestone",
-    "cairn-init",
-    "cairn-release",
-    "design-interview",
-    "milestone-brief",
-]
+# M156: routing chips are retired — every phase or skill ends with the
+# close block, and no skill may reintroduce the routing-chip token. The old
+# TestRoutingChipMandate (per-skill chip token, review's sole exception)
+# retired with its subject; its merge-gate-survives assert lives on below.
+class TestPhaseCloseBlock(unittest.TestCase):
+    def test_rule_states_close_block_never_a_chip(self):
+        self.assertIn(
+            "ends with a **close block**, never a chip",
+            read("shared", "tracking-rules.md").lower(),
+        )
 
-# The canonical single-line token a routing-chip step carries; matched
-# case-insensitively so a bolded "**Routing chip (AskUserQuestion)**" or a
-# mid-sentence "routing chip (AskUserQuestion)" both satisfy it.
-CHIP_TOKEN = "routing chip (askuserquestion)"
+    def test_rule_hands_the_user_the_fenced_command(self):
+        self.assertIn(
+            "the next skill — the user runs the fenced command",
+            read("shared", "tracking-rules.md").lower(),
+        )
 
+    def test_rule_carries_the_safety_line(self):
+        self.assertIn(
+            "adjusting course or `/clear` are both safe at this point",
+            read("shared", "tracking-rules.md").lower(),
+        )
 
-class TestRoutingChipMandate(unittest.TestCase):
-    def test_non_review_skills_name_askuserquestion_at_routing_chip(self):
-        for skill in NON_REVIEW_CHIP_SKILLS:
-            text = read(skill, "SKILL.md").lower()
-            self.assertIn(
-                CHIP_TOKEN,
-                text,
-                f"{skill}: routing-chip step must name AskUserQuestion "
-                f"via the token '{CHIP_TOKEN}' on one line",
+    def test_rule_spares_decision_gates(self):
+        self.assertIn(
+            "unaffected: a gate is a choice, a phase end is a",
+            read("shared", "tracking-rules.md").lower(),
+        )
+
+    def test_no_skill_reintroduces_the_routing_chip_token(self):
+        # whitespace-normalized so a line-wrapped "routing\n  chip" cannot
+        # slip past (the M156 review's own diff-bug lens caught exactly
+        # that wrap in a raw-substring sweep); covers shared/*.md too.
+        import re
+
+        for path in sorted(SKILLS.rglob("*.md")):
+            if "tests" in path.parts:
+                continue
+            flat = re.sub(r"\s+", " ", path.read_text(encoding="utf-8").lower())
+            self.assertNotIn(
+                "routing chip",
+                flat,
+                f"{path}: the routing-chip token returned after M156",
             )
 
-    def test_review_ends_chipless(self):
-        text = read("milestone-review", "SKILL.md")
-        # the deliberate exception is marked in prose ...
-        self.assertIn("no routing chip", text)
-        # ... and review must NOT carry the routing-chip token
-        self.assertNotIn(CHIP_TOKEN, text.lower())
-
     def test_review_keeps_its_merge_gate_chip(self):
-        # the exception removes only the *end* chip; the merge gate stays
+        # retiring routing chips removes only phase-end chips; the merge
+        # gate stays a chip (IP1's explicit approval surface)
         text = read("milestone-review", "SKILL.md")
         self.assertIn("this is the third gate", text)
         self.assertIn("AskUserQuestion", text)

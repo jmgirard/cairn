@@ -151,9 +151,9 @@ Then:
     (IP3 — nothing silently locked in).
   Stay **tracking-only**: record answers in `cairn/` files; never scaffold a
   package skeleton (`DESCRIPTION` / `pyproject.toml` / `R/` / `src/`) — that is
-  the repo's obvious first milestone, surfaced on the routing chip below. The
+  the repo's obvious first milestone, surfaced in the close block below. The
   openers are toolchain-config only; DESIGN *principle* elicitation stays
-  `/design-interview` (offered on the chip), never duplicated here.
+  `/design-interview` (offered in the close block), never duplicated here.
 - Fill DESIGN.md's Purpose & Scope from DESCRIPTION and a quick read of
   `R/` — 5–10 honest lines, marked for the user to refine; never invent
   principles. **In a greenfield repo** there is no DESCRIPTION or source to
@@ -161,18 +161,17 @@ Then:
   (distribution ambition) and Conventions (oracle-on) — extend those honestly,
   never overwrite them. The deep version — eliciting the contract boundary,
   conventions, and IP/GP principles the code can't show — is
-  `/design-interview`, offered on the routing chip below; this step only
+  `/design-interview`, offered in the close block below; this step only
   seeds the file.
 - Commit (docs-only, on the default branch): `cairn-init: scaffold tracking
   system`; push if a remote exists (the remote's default branch is
   authoritative — see tracking-rules git model).
-- Routing chip (AskUserQuestion), composed from what the scaffold found
-  (chip rules per tracking-rules) — e.g. **Run the design interview** →
-  `/design-interview`
-  (recommended for a fresh repo, to turn the seeded DESIGN.md into an
-  elicited one) / **Plan the first milestone** → `/milestone-plan` (for a
-  greenfield repo, the package skeleton is the obvious first milestone) /
-  Run `/milestone` / Stop.
+- Close block (tracking-rules "Question gates and phase closes"), composed
+  from what the scaffold found — recap, status line, fenced next command(s)
+  with plain labels — e.g. `/design-interview` to turn the seeded DESIGN.md
+  into an elicited one (the natural first move in a fresh repo), or
+  `/milestone-plan` where the package skeleton is the obvious first
+  milestone — and the adjust-or-`/clear` safety line; no chip.
 
 ## 2. Migration protocol
 
@@ -252,6 +251,6 @@ never rewrites content the repo authored.
   by design, and a blanket stage would commit the very files the entry above
   keeps ignored. Then `cairn-init: repair scaffold`; push if a remote exists.
   Nothing to fix → report that and skip the commit.
-- Routing chip (AskUserQuestion), composed from what repair found (chip rules
-  per tracking-rules) — e.g. **Run `/milestone`** (recommended, to re-audit a
-  repo that just changed) / **Plan a milestone** → `/milestone-plan` / Stop.
+- Close block (tracking-rules "Question gates and phase closes"), composed
+  from what repair found — e.g. `/milestone` fenced first (re-audit a repo
+  that just changed), `/milestone-plan` beside it, and the safety line.

@@ -41,7 +41,7 @@ class TestPerSkillDirectives(unittest.TestCase):
     def test_implement_gate_and_mini_gate(self):
         t = read("milestone-implement", "SKILL.md")
         self.assertIn(
-            "conclusion shows its substance verbatim in a guaranteed-rendered position (mandated-substance rule).",
+            "conclusion shows its substance compactly in the chip and verbatim in the chat above, best-effort (mandated-substance rule).",
             t,
         )
         self.assertIn(
@@ -62,7 +62,7 @@ class TestPerSkillDirectives(unittest.TestCase):
             t,
         )
         self.assertIn(
-            "the rr's conclusions/verdict section is shown verbatim, ending the turn before the chip (mandated-substance rule).",
+            "the rr's conclusions/verdict section is shown verbatim in the close block's turn (its final rendered text, mandated-substance rule).",
             t,
         )
 
@@ -92,9 +92,9 @@ class TestMandatedSubstanceRule(unittest.TestCase):
             rules(),
         )
 
-    def test_overflow_ends_the_preceding_turn(self):
+    def test_decision_chip_is_same_turn_and_self_sufficient(self):
         self.assertIn(
-            "ends the preceding turn as that turn's final rendered text, the chip posed after the user responds",
+            "a decision chip is posed in the same turn as its",
             rules(),
         )
 
@@ -128,7 +128,7 @@ class TestMigrationGateDirectives(unittest.TestCase):
             t,
         )
         self.assertIn(
-            "verbatim in a guaranteed-rendered position at the merge-approval chip",
+            "verbatim in the chat above the merge-approval chip, best-effort, with",
             t,
         )
 

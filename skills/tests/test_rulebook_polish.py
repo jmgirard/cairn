@@ -9,7 +9,7 @@ in `test_review_fanout.py`):
   * AC3 — the Explore-subagent reading-list instruction;
   * AC5 — copy-run commands go in their own fenced code block, not inline
     backticks. Widened by M86 into a three-case rule (handoff / naming /
-    routing-chip arrow) that also names slash commands and separates a
+    gate-chip arrow) that also names slash commands and separates a
     handoff from a mention.
 
 Skill-prose guards read the file as one string, so every asserted phrase

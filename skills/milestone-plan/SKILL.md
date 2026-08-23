@@ -106,7 +106,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    any collision dispositions.
    Acceptance chips (tracking-rules): a question resting on a produced
    conclusion — subagent findings, a collision verdict — shows that
-   conclusion's substance verbatim in a guaranteed-rendered position (Mandated-substance rule). Every proposed scope cut must state **where
+   conclusion's substance compactly in the chip and verbatim in the chat above, best-effort (Mandated-substance rule). Every proposed scope cut must state **where
    the remainder goes** — never "M12 covers A and B" alone, but "M12 covers
    A and B; C becomes M13 (planned now, depends on M12); D becomes a
    candidate row; E sounds unwanted — drop entirely?".
@@ -277,9 +277,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    (docs-only carve-out): `plan M<NN>[, M<NN>…]: <title>`; push. A session
    dying mid-plan must not leave a half-planned ghost.
 
-7. **Routing chip (AskUserQuestion)**, composed from what was just planned
-   (chip rules per tracking-rules) — e.g.:
-   - **Start implementing M<NN>** (the proximal one) → `/milestone-implement`
-     (recommended)
-   - Plan another milestone → `/milestone-plan`
-   - Stop here
+7. **Close block** (tracking-rules "Question gates and phase closes"),
+   composed from what was just planned — recap (the plan summary and
+   remainder ledger live here), status table (new milestone(s), status,
+   priority), fenced next command(s) with plain labels — e.g.
+   `/milestone-implement M<NN>` to start the proximal one first,
+   `/milestone-plan` to plan another — and the adjust-or-`/clear` safety
+   line; no chip.

@@ -20,7 +20,7 @@ import unittest
 SKILLS = pathlib.Path(__file__).resolve().parent.parent
 
 # Every phase skill carries the chapter-marker directive — review INCLUDED:
-# chapter markers are orthogonal to the routing-chip exception (review is
+# chapter markers are orthogonal to the phase-close rule (review is
 # chip-less but still has phases worth navigating). This list is therefore
 # the full nine, unlike NON_REVIEW_CHIP_SKILLS in test_gate_wording.py.
 SKILLS_WITH_CHAPTER_DIRECTIVE = [

@@ -151,7 +151,7 @@ class TestDispositions(unittest.TestCase):
 class TestVerbatimBar(unittest.TestCase):
     def test_dispositions_are_shown_verbatim_above_the_chip(self):
         self.assertIn(
-            "show every proposed disposition verbatim in a guaranteed-rendered position (mandated-substance rule — dispositions are long, so they end the turn before the chip), never a count or a",
+            "show every proposed disposition verbatim in the chat above and compactly in the disposition chip itself (mandated-substance rule), never a count or a",
             milestone(),
         )
 
@@ -160,16 +160,16 @@ class TestVerbatimBar(unittest.TestCase):
         # rule for a summary line.
         self.assertIn("paraphrase would have them approve text they never saw.", milestone())
 
-    def test_route_step_still_carries_exactly_one_routing_chip(self):
-        # M74 extended the existing triage option rather than adding a second
-        # chip. Scope of this guard, stated honestly (M74 review F4): it pins
-        # the singular framing and that the token appears once — it cannot
-        # detect an unrelated AskUserQuestion block added elsewhere, and does
-        # not claim to. A bare assertIn on the token would have been a
-        # presence check on pre-existing text, locking nothing M74 added.
+    def test_route_step_ends_with_the_close_block(self):
+        # M156 retired the route step's routing chip; the step now ends with
+        # the close block and must reference the central rule by its section
+        # name so the two stay coupled.
         t = milestone()
-        self.assertIn("end with\none routing chip (askuserquestion)", t)
-        self.assertEqual(t.count("routing chip (askuserquestion)"), 1)
+        self.assertIn(
+            'with the close block (tracking-rules "question gates and phase closes"):',
+            t,
+        )
+        self.assertNotIn("routing chip (askuserquestion)", t)
 
 
 if __name__ == "__main__":

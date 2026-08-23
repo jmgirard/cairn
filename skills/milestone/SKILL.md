@@ -91,7 +91,7 @@ regression reopens that work.
 Beside it, report the rulebook's mass the same way: measure
 `skills/shared/tracking-rules.md` with `wc -l -m` and report current
 lines/chars and the growth since the recorded baseline —
-433 lines / 39,744 chars (M155, 2026-08-22; re-seed these figures only when
+443 lines / 40,949 chars (M156, 2026-08-22; re-seed these figures only when
 a later pass changes the file deliberately). Reporting only, same boundary
 as the cost line: no threshold, no verdict, no pass machinery — growth is
 governed at the door (D-057), and this line keeps it visible.
@@ -142,28 +142,29 @@ The script deliberately does not judge these — do them yourself and report:
 ## 3. Route
 
 Run `cairn_next.py` for the mechanical recommendation (resume / review /
-implement a workable milestone / plan) and lead the chip with it. End with
-ONE routing chip (AskUserQuestion) offering the single most sensible next
-action first (recommended).
+implement a workable milestone / plan) and lead the close block with it. End
+with the close block (tracking-rules "Question gates and phase closes"):
+recap, status line, the fenced next command(s) — the single most sensible
+action's command first, each with a plain one-line label — and the
+adjust-or-`/clear` safety line; no chip.
 Acceptance chips (tracking-rules): a triage option that accepts an audit
-conclusion shows that conclusion's text verbatim in a guaranteed-rendered position (Mandated-substance rule). The bullets below are state-conditional
-examples — only the applicable subset (≤4) is offered:
+conclusion carries that conclusion compactly in the chip with its full text verbatim in the chat above, best-effort (Mandated-substance rule). The commands below are state-conditional
+examples for the close block's fences — only the applicable subset is offered:
 
-- Resume M<NN> → `/milestone-implement M<NN>` (an `in-progress` milestone
-  exists)
-- Review M<NN> → `/milestone-review M<NN>` (a milestone sits at `review`)
-- Plan the next milestone → `/milestone-plan` (nothing in flight; planned or
-  candidate items exist)
-- Triage the flagged items (audit found problems needing user decisions,
-  including any untriaged inbox item §2 surfaced)
-- Park M<NN> as `blocked` → the release window is not open (a `release window` WARN fired in §2)
-- Stop here
+- `/milestone-implement M<NN>` — resume (an `in-progress` milestone exists)
+- `/milestone-review M<NN>` — review (a milestone sits at `review`)
+- `/milestone-plan` — plan next (nothing in flight; planned or candidate
+  items exist)
+- a triage chip — the audit found problems needing user decisions,
+  including any untriaged inbox item §2 surfaced (a decision gate, not a
+  route)
+- Park M<NN> as `blocked` → the release window is not open (a `release window` WARN fired in §2) — a decision put to the user, not a route
 
 Parking sets the milestone to `blocked` and writes a work-log line naming the
 maintainer's unopened release window as the blocker. It is reachable from
 `planned` and from `review` (tracking-rules transitions), it closes no PR, and
 it is reversed by the user declaring the window — never by cairn deciding the
-release looks ready. Offer parking whenever the advisory fired, and lead the chip with it only when `cairn_next`'s own recommendation names that same release milestone.
+release looks ready. Offer parking whenever the advisory fired, and lead the close block with it only when `cairn_next`'s own recommendation names that same release milestone.
 `cairn_next` reads status and priority alone, so where it names the flagged
 release its recommendation *is* the nag D-050 exists to stop and parking
 displaces it. Where it names something else — an unrelated `in-progress`
@@ -181,8 +182,9 @@ Each item takes exactly one disposition — you propose, the user chooses:
 - **`/milestone-plan`** — anything larger than the hotfix bar.
 - **leave** — no row, no action, with the reason stated.
 
-Show every proposed disposition verbatim in a guaranteed-rendered position (Mandated-substance rule — dispositions are long, so they end the turn before the chip), never a count or a
+Show every proposed disposition verbatim in the chat above and compactly in the disposition chip itself (Mandated-substance rule), never a count or a
 summary of them: the dispositions are what the user is accepting, so a
 paraphrase would have them approve text they never saw.
 
-Selecting a chip invokes that skill in this session. Never auto-proceed.
+Selecting a triage-chip option acts in this session (a `→ /skill` option
+invokes that skill). Never auto-proceed.

@@ -35,7 +35,8 @@ unrecognized or outside the known precursor lineages: run step 3's inventory
 and proposed-disposition ledger only, present them in chat, and **write
 nothing** — no branch, no file moves, no commits, no CLAUDE.md edits. The
 dry run makes first contact safe by construction; it ends with its own
-routing chip — proceed to the real migration (steps 1–8, reusing the
+decision chip (an acceptance chip over the presented inventory) — proceed to
+the real migration (steps 1–8, reusing the
 presented ledger at the step-3 gate), adjust the proposal first, or stop.
 
 1. **Preconditions.** Clean working tree. Ideally nothing in flight — an
@@ -51,8 +52,8 @@ presented ledger at the step-3 gate), adjust the proposal first, or stop.
    open questions, decisions still governing active work). Present the
    proposed disposition of each at one question gate.
    Acceptance chips (tracking-rules): the inventory and each item's
-   proposed disposition appear verbatim in a guaranteed-rendered position
-   (Mandated-substance rule; a long inventory ends the turn before the chip) —
+   proposed disposition appear verbatim in the chat above the gate,
+   best-effort, with the compact form in the chip itself (Mandated-substance rule) —
    never only inside chip options, and a paraphrase never stands in for
    the proposal (D-038); the adopt-in-place variant choice is part of
    this gate and shows its proposal the same way. Fixed status mapping:
@@ -177,11 +178,11 @@ presented ledger at the step-3 gate), adjust the proposal first, or stop.
    "dropped at user request". Nothing silently vanishes. The user approves
    the merge like any milestone.
    Acceptance chips (tracking-rules): the ledger's substance appears
-   verbatim in a guaranteed-rendered position at the merge-approval chip
-   (Mandated-substance rule) — the PR description
+   verbatim in the chat above the merge-approval chip, best-effort, with
+   its compact form in the chip itself (Mandated-substance rule) — the PR description
    alone never carries it (D-038).
 
-8. Routing chip (AskUserQuestion), composed from the migration's actual end
-   state — e.g.
-   **Run a health audit** → `/milestone` (recommended) / Plan a milestone
-   → `/milestone-plan` / Stop.
+8. Close block (tracking-rules "Question gates and phase closes"), composed
+   from the migration's actual end state — recap, status line, fenced next
+   command(s) with plain labels (e.g. `/milestone` to run a health audit,
+   `/milestone-plan` to plan), and the adjust-or-`/clear` safety line; no chip.

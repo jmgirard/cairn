@@ -155,7 +155,7 @@ class TestMilestoneAuditWiring(unittest.TestCase):
         # "resume M<other>" recommendation, since an unrelated in-progress
         # milestone outranks a workable planned one (M88 review F1).
         self.assertIn(
-            "lead the chip with it only when `cairn_next`'s own recommendation "
+            "lead the close block with it only when `cairn_next`'s own recommendation "
             "names that same release milestone",
             milestone(),
         )
