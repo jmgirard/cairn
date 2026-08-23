@@ -1,5 +1,43 @@
 # Changelog
 
+## 1.7.0 (2026-08-22)
+
+Four milestones since 1.6.0, on one theme: what a session says and records.
+Chat and tracking prose now follow a stated plain-style rule, the lighter
+planning audit asks the same instrument question the full one does, and
+doctrine modules carry declared size budgets. Backward-compatible: existing
+tracked repos keep working unchanged.
+
+- **Sessions write plainer.** Two new rules govern prose. In chat, response
+  length matches what the turn needs, plain words win over jargon (a term of
+  art is glossed at first use or dropped), and stock filler, hype adjectives,
+  and padding are out. In the durable records under `cairn/`, the same
+  standard applies to what is written down: a work-log line, decision entry,
+  or roadmap row states decision-relevant facts without characterizations the
+  facts don't need. Text mandated to appear verbatim — a durable-record
+  preview, the substance above an acceptance chip — is never compressed under
+  either rule.
+- **The lighter planning audit still catches a promise about the checker.**
+  The audit question asking whether a criterion promises something about the
+  deliverable or about the thing that verifies it now runs in the shorter
+  internal-tier audit too, not just the full one, and its wording now reaches
+  recording acts — a criterion that binds a work-log quotation or a mandated
+  evidence line is flagged at planning time in every tier, and a
+  mid-implementation rewording re-enters the question in either mode.
+- **Doctrine modules carry their own size budgets.** When a family of lessons
+  graduates whole into a doctrine module, the graduating work now writes a
+  line and byte budget into the module's own header, sized from the graduated
+  content plus stated headroom. Hygiene passes read each module against its
+  stated budget by hand (`wc -l -c`, no validator), and going over means
+  compressing or retiring content, never letting the module grow. The three
+  shipped modules each carry a budget now.
+- **The record rules were re-measured and kept.** The baselines behind last
+  release's record-discipline rules were re-measured over the sixteen
+  milestones since: record-caused review returns have fallen to zero,
+  corrections batch to one superseding entry per milestone, and neither
+  rule's retirement condition has fired. The full classification ledger is
+  on file under `cairn/references/`.
+
 ## 1.6.0 (2026-08-17)
 
 Ten milestones and a hotfix since 1.5.0, around one idea: how hard cairn
