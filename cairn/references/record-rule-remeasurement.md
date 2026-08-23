@@ -38,7 +38,7 @@ architecture in `DESIGN.md`.
 **Population and seam.** For each milestone M137–M152, every finding its
 recovered `## Review` section records as actioned (fixed at the gate):
 restricted to findings scored ≥80 where the review carries numeric scores
-(M137–M144; scoring was retired at M145, `skills/milestone-review/SKILL.md`),
+(M137–M144; scoring was retired at M145 by D-110),
 and all gate-fixed findings from M145 on. The two populations differ — the
 baseline's was "actioned ≥80" — so the eras are also reported separately.
 Grouped fixes are rowed as the review's own actioned enumeration groups them.
@@ -52,13 +52,16 @@ not code"). It is `other` when the defective thing is deliverable content or
 behavior: skill/doctrine prose design, README or diagram content, guard or
 test coverage and machinery.
 
-**Coverage.** M143 contributes zero rows legitimately: its archive records
+**Coverage.** M143 contributes zero rows by the population definition: its archive records
 "17 findings, 0 scored ≥80" (its two gate fixes scored 60, below the scored
 era's population). M152 is the coverage gap: its recovered section carries AC
-evidence only; the archive reports 18 findings with 10 fixed at the gate,
-per-finding identities unrecoverable (the M105 push-timing shape), so its 10
-are excluded from every share below and named here. M137–M138 additionally
-have no sessions left in the cost store (axis 3 only) — observed 2026-08-22.
+evidence only, and the surviving branch `origin/m152-plain-style-rule`
+carries the same two-line Review section — the per-finding record was never
+written into the milestone file at all, not lost at the squash. The archive
+reports 18 findings with 10 fixed at the gate and 6 rejected (its own
+arithmetic leaves 2 unaccounted); the 10 are excluded from every share below
+and named here. M137–M138 additionally have no sessions left in the cost
+store (axis 3 only) — observed 2026-08-22.
 
 ## Ledger — every actioned finding, classified
 
@@ -172,30 +175,35 @@ have no sessions left in the cost store (axis 3 only) — observed 2026-08-22.
 | L106 | M151 | R3 | record | first-pass evidence lines unmarked stale |
 
 M145's review headline says "14" while its enumeration names the 15 ids
-rowed above (F18 folded into one grouped sentence); the ledger follows the
-ids.
+rowed above (F18 folded into one grouped sentence); M149's says "12 actioned
+fix-now" while its enumeration groups into the 11 rows above (L83–L93). In
+both cases the ledger follows the enumerated ids/groups, not the headline.
 
 ## Axis 1 — record-defect share
 
-Computed from the ledger table above (`python3` count of `record` vs total
-rows, by era; rerun it on this file to reproduce):
+Computed from the ledger table above — match each row with
+`re.match(r'\| L(\d+) \| (M\d+) \| (.+?) \| (record|other) \|', line)`,
+count `record` vs total by era, and take the era boundary from Method:
 
 - Scored era M137–M144 (actioned ≥80): **17 of 41 record (41%)**.
 - Unscored era M145–M151 (all gate-fixed; M152's 10 excluded, gap above):
   **37 of 65 record (57%)**.
 - Whole window: **54 of 106 (51%)**, against the `08bbb07` baseline's
   "roughly half" for M113–M136 — unchanged.
-- Sub-window M144–M152 (post-reduction): **42 of 70 (60%)**. M147 is a
+- Sub-window M144–M151 with rows (post-reduction; M152 contributes none):
+  **42 of 70 (60%)** — this pools the two populations across the seam, so
+  the per-era split above is the clean comparison. M147 is a
   special case — its deliverable *was* the record diet, so all 12 of its
   findings are record-class by construction; without M147 the sub-window is
   30 of 58 (52%) and the whole window 42 of 94 (45%).
 
 Within the family's post-D-116 domain (code-adjacent surfaces —
-comments, docstrings, changelog, user-facing docs), the window holds about
-6 of the 106 rows (L10, L19, L20, L90, L96, L97; L57 and L93, stale pinned
-baseline figures in skill prose, are the borderline); the rest of the
-record class sits in tracking records, where D-116 deliberately withdrew
-the family and left ordinary care and the review lenses to govern.
+comments, docstrings, changelog, user-facing docs), the window holds 7 of
+the 106 rows whose reasons name such a surface (L10, L19, L20, L65, L90,
+L96, L97; L57 and L93, stale pinned baseline figures in skill prose, are
+the borderline); the rest of the record class sits in tracking records,
+where D-116 deliberately withdrew the family and left ordinary care and
+the review lenses to govern.
 
 ## Axis 2 — governance share, M144–M152
 
@@ -204,16 +212,21 @@ what an operator of an adopting repo gets from the skills, hooks, or scripts
 in ordinary work on their own code; **(b)** if it changes how cairn's
 tracking records are authored or governed; **(c)** if it changes how cairn
 verifies its own prose, guards, criteria, or review loops (verification of
-verification); **(d)** other". Classified from archive title and summary:
+verification); **(d)** other (ingestion of external references,
+decommissioning passes)" — and "where a rule ships in a skill all repos run
+but its subject and trigger are cairn's own records or verification conduct,
+it is classed by subject, not by shipping vehicle" (the clause deciding
+M146, M151, and M152's split below). Classified from archive title and
+summary:
 
 M144 (c) · M145 (c) · M146 (b) · M147 (b) · M148 (c) · M149 (b) · M150 (a)
 · M151 (c) · M152 (a)-or-(b) (its plain-style rule spans operator-facing
 chat conduct — the M106 precedent for (a) — and record prose).
 
-**(b)+(c) = 7–8 of 9 (78–89%)**, against RR13 Q2's 73–77% for M100–M143.
-Flat-to-adverse — with the stated caveat that four of the nine (M144–M147)
-are RR13's own prescribed surgery, and a fifth (M148) and sixth (M151)
-execute falsifiers that surgery pre-registered.
+**(b)+(c) = 7–8 of 9 (78–89%)**, against RR13 Q2's 73–77% for M100–M143 —
+with the caveat that four of the nine (M144–M147) are RR13's own prescribed
+surgery, and a fifth (M148) and sixth (M151) execute falsifiers that
+surgery pre-registered.
 
 ## Axis 3 — per-milestone cost
 
@@ -239,33 +252,40 @@ filtered — observed 2026-08-22); figures are the 14 milestones it holds.
 | M152 | 116 | 116,922 |
 
 Medians (n=14): **137 turns / 175,620 output**, against the medium-cohort
-baseline's 165 / 169k (`effort-experiment-notes.md`). Post-reduction
-sub-window M144–M152 (n=9): 135 turns / 179,878 output. Per-milestone cost
-is flat; the two outliers are M139 (the guard-thrash milestone, 3 defect
-returns) and M146 (the rulebook reduction itself).
+baseline's 165 / 169k (`effort-experiment-notes.md`) — turns down 17%,
+output up 4% — observed 2026-08-22. Post-reduction sub-window M144–M152
+(n=9): 135 turns / 179,878 output. The two high rows are M139 (the
+guard-thrash milestone, 3 defect returns) and M146 (the rulebook reduction
+itself).
 
 ## Verdict
 
-**Helping — neither supersede exit fires; not self-thrash** — dated
-observation, 2026-08-22, resting on the ledger and shares above:
+**Helping — neither supersede exit fires; not self-thrash** — resting on
+the ledger and shares above — observed 2026-08-22:
 
 - The headline share did not drop: record defects are still roughly half of
   gate findings (51% whole-window vs the `08bbb07` baseline's "roughly
-  half"). The generator — hand-written claims in records — is alive.
+  half"). Hand-written claims in records still produce about half of what
+  the gate catches.
 - What the rules targeted was the generator's *cost*, and that fell. Defect
   returns caused by a record defect: one in the window (M141 F2, L24,
   2026-08-15, pre-reduction) and zero in M144–M152, versus the baseline
   era's record-caused returns and gated amendments (M135's two, M130's top
-  finding). Correction-entry cascades collapsed: post-M146 the window shows
-  at most one batched superseding entry per milestone (D-117 at M147; D-121
-  at M151), the D-116 part-3 shape, versus the D-083–D-093 chain.
+  finding). History-record correction entries now batch to at most one per
+  milestone — post-M146 the window's only one is D-121 (M151, batching three
+  D-120 corrections), the D-116 part-3 shape — versus the per-claim
+  D-083–D-093 chain (five correction entries across three targets).
 - Not self-thrash: the M137 F19/F27 shape (a rule milestone red on its own
   record) recurs only as single batched corrections, the designed path.
 - Neither exit's condition is met. D-116's falsifier — a tracking-record
   defect class the narrowed family would have caught and ordinary review
   does not — has not fired: every record defect above was caught at the
-  gate in one pass. D-099's — a case the widened rule leaves ungoverned
-  where old §6 governed it — likewise not observed.
+  review gate, all but one (L106, surfaced at M151's re-review pass) in the
+  first review pass, and none escaped to main or forced a gated amendment.
+  D-099's — a case the widened rule leaves ungoverned where old §6 governed
+  it — likewise not observed. A non-firing exit is equally consistent with
+  dead weight; the helping call rests on the return and cascade evidence
+  above, not on the exits' silence.
 - A **dead-weight** verdict, had the cost evidence gone the other way, would
   put **D-116** in question first (its bet that ordinary care suffices for
   tracking records — the share shows records still generate half the
@@ -282,6 +302,7 @@ observation, 2026-08-22, resting on the ledger and shares above:
 - Whether M147-style record-diet milestones should be excluded from future
   share measurements by rule (their findings are record-class by
   construction) — left to the next re-measurement — observed 2026-08-22.
-- M152's 10 gate-fixed findings remain unclassifiable unless its review
-  bookkeeping is recovered from a source this note did not reach — observed
+- M152's 10 gate-fixed findings are unclassifiable: the surviving branch was
+  checked and carries no per-finding record either, so the gap closes as
+  unrecoverable unless a source outside the repo appears — observed
   2026-08-22.

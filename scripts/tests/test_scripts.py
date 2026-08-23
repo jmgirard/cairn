@@ -1425,9 +1425,10 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # to re-verify against, hence `exempt`.
     # M153 adds the record-rule re-measurement: its status claims a dated
     # direct read of git-pinned blobs ("read directly ... 2026-08-22"), a
-    # verification claim with a date, hence `ok`.
+    # verification claim with a date, hence `ok` — unlike its sibling
+    # effort-experiment-notes (`exempt`), it makes no nothing-to-re-verify
+    # claim, and its live-store cost snapshot does age.
     EXPECTED = {
-        "record-rule-remeasurement.md": "ok",
         "anthropic-code-review.md": "ok",
         "effort-experiment-notes.md": "exempt",
         "m118-cap-exemption-ledger.md": "exempt",
@@ -1447,6 +1448,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "oracle-discipline-notes.md": "ok",
         "oracle-doctrine-intraclass-notes.md": "ok",
         "prompting-opus-5.md": "ok",
+        "record-rule-remeasurement.md": "ok",
         "rulebook-classification-ledger.md": "exempt",
         "self-verification-ledger.md": "exempt",
         "session-cost-notes.md": "ok",
