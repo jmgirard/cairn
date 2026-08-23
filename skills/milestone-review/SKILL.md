@@ -366,7 +366,8 @@ overrides — log the override).
    Retirement runs before the cap bites, and only if it cannot free the budget
    is the 50-line / 20,000-byte cap met by pruning the stalest lines in this same commit.
    Durable-record preview (tracking-rules): show the archive summary,
-   each LESSONS line, any D-entry, and any candidate graduation verbatim
+   each LESSONS line, any D-entry, any Known issues entry, and any
+   candidate graduation verbatim
    in a guaranteed-rendered position (Mandated-substance rule). Docs-only commit:
    `review M<NNN>: done`; push. The done
    recap leads with what shipped, in plain words; hygiene mechanics
