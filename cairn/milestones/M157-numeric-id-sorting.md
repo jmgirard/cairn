@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M157: Milestone IDs sort numerically — three-digit padding, numeric resolution
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -50,7 +50,7 @@ acceptance-criterion claim over them.
       sweep extended to `hooks/` and `scripts/` finds no `M<NN>` placeholder
       (not followed by a third N) and no `m<nn>`; the hand-run `skills/tests`
       suite shows zero reds.
-- [x] AC2: A milestone number spelled at two-digit and three-digit widths
+- [ ] AC2: A milestone number spelled at two-digit and three-digit widths
       resolves to the same milestone on each of the scripts' ID surfaces — a
       prose token against the known-id set (`check_dangling_ids`), a ROADMAP
       row id against a milestone filename, and a `Depends on` cell against a
@@ -117,6 +117,7 @@ acceptance-criterion claim over them.
 - 2026-08-23: T2 done — `canon_id` added to cairn_scripts (M%03d re-pad, non-numeric pass-through); comparison sites canonicalized in cairn_next (by_id/done/deps) and cairn_validate (check_dependencies, check_id_uniqueness, _known_ids, check_dangling_ids membership, release-nomination lookup); display spellings untouched; scripts 319 + hooks 103 both green.
 - 2026-08-23: T3 done — ID rule rewritten (three-digit padding, cross-width resolution, padded filename prefixes, M999 one-commit re-pad); `M<NN>`/`m<nn>` swept to three-N forms across skills/, README.md, hooks/, scripts/ (23 files); teaching examples modernized (README M007 walkthrough, milestone template M013, migration-protocol M053/M054, tidymedia M007); cairn/LESSONS.md header format line corrected in place; AC1 whitespace-normalized sweep clean; skills/tests 528 zero reds; D-125 appended.
 - 2026-08-23: T4 done — 99 archive files `git mv`'d M01–M99 → M001–M099; ROADMAP citekey row's archive/M56 cite updated to M056; AC3 comparison True, AC4 extract-and-stat True; history-side dangling path cites after rename: exactly one, D-051's `archive/M53-prose-guard-mutation-harness.md:17` (DECISIONS.md:1318, logged per plan, never edited); validate green, scripts 319 + hooks 103 green.
+- 2026-08-23: defect return #1 (review fan-out, [O] diff-bug F5): AC2's row-id→filename surface not test-covered as stated (check_release_window lookup untested) — AC2 tick withdrawn; riding the return: F4 canon_id ValueError on unicode digits, F2 dep FAIL-message spelling, F6/F7 teaching-example modernization; F1 → candidate row; F8 rejected (pre-existing). Supersedes T2's "display spellings untouched" (wrong for FAIL messages) and T4's "exactly one" dangling cite (three: D-051's M53, RB02's M84 + M87 — reviews/archive was not swept; files stay unedited per IP4).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -145,3 +146,45 @@ Fresh evidence, 2026-08-23, this session (PR #158):
   all exist under milestones/ or archive/: True. Migration commit a3b8ba4
   `git diff --name-status`: 99 archive paths, all R100 (only non-R lines are
   the same-commit tracking-file updates).
+
+Fan-out (2026-08-23, three lenses, ranked findings and dispositions — IP3):
+
+- [O] diff-bug F5 (→ defect return #1): AC2's second surface ("a ROADMAP row
+  id against a milestone filename") is not test-covered as stated — the
+  surface-2 tests compare filename↔filename (check_id_uniqueness) and
+  dep-cell↔filename; the one genuine row-id→filename lookup,
+  check_release_window's `live.get(canon_id(row id))`, got the fix but no
+  test, and a regression there silently skips the check. Demonstrates AC2
+  failing as written → floor return; fix: add both-direction tests through
+  the release-window advisory.
+- [O] F4 (fix on return): `canon_id("M²")` raises ValueError (isdigit True,
+  int() rejects) and parse_depends' isdigit gate passes such a token, so a
+  malformed dep cell crashes the validator instead of FAILing — reproduced
+  this session; fix with isdecimal() + regression test (D-023 tolerance).
+- [O] F2 (fix on return, part): check_dependencies interpolates the
+  canonicalized dep into its FAIL message ("depends on M005" from a cell
+  reading M05) — fix to print the as-written spelling; check_id_uniqueness
+  keeps canonical ids in its messages (it aggregates across spellings) —
+  accepted, logged. T2's work-log claim "display spellings untouched" is
+  wrong for these FAIL paths; superseded by today's work-log line.
+- [O] F3 = [S] blame-history B1 (record correction, on return): T4's
+  "exactly one" dangling history cite is wrong — cairn/reviews/archive/ was
+  not swept; RB02:129-130 cites archive/M84-record-density-advisory.md and
+  M87-density-threshold-recalibration.md, both renamed. Three cites total
+  (D-051's M53 + RB02's two), all left unedited (IP4, RB/RR out of scope);
+  count corrected by work-log supersession, no file edits.
+- [O] F1 (follow-up, candidate row): cairn_cost's `--milestone` filter
+  compares milestone_of() (branch-derived) by raw string equality — a
+  fourth ID surface outside this plan's three-surface In-scope; captured as
+  a ROADMAP candidate row (search-first: no existing row covers it).
+- [O] F6 (fix on return): skills/milestone-implement/SKILL.md description
+  still teaches "work on M07" — modernized under T3's best-effort mandate.
+- [O] F7 (fix on return): test_references_pages.py fills the swept
+  placeholder with two-digit ids (M80/M85) — modernized to M080/M085.
+- [O] F8 (rejected): dead `row_ids` set in check_orphans — pre-existing,
+  on an unmodified line the diff did not introduce (out-of-scope taxonomy);
+  removable any time as trivial cleanup.
+- [S] blame-history: no other findings — tolerance rules, pinned fixtures,
+  history prose, D-entries all verified consistent.
+- [S] prior-PR-comments: no prior-review evidence of regression (archived
+  Review sections checked; PR-comments probe returned empty), zero findings.
