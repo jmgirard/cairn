@@ -67,8 +67,8 @@ run ingestion first (see `/milestone-brief`).
      section-ownership table; Goal, Scope, and Acceptance criteria change
      only via the amendment gate (step 6).
    - Durable-record preview (tracking-rules): a milestone-local Decisions
-     entry or promoted D-entry is shown verbatim in the checkpoint commit's
-     turn, guaranteed-rendered position (Mandated-substance rule; work-log
+     entry or promoted D-entry is shown verbatim in a guaranteed-rendered
+     position (Mandated-substance rule; work-log
      one-liners and checkbox ticks are exempt).
 
 5. **Delegate** per tracking-rules (Sonnet for well-specified mechanical
@@ -88,7 +88,7 @@ run ingestion first (see `/milestone-brief`).
      mini gate's chip (acceptance chips, tracking-rules); record the
      amendment as a dated work-log line
      (+ D-entry if cross-cutting); show the amended criterion/scope text
-     verbatim in its commit's turn, guaranteed-rendered (durable-record preview).
+     verbatim in a guaranteed-rendered position (durable-record preview).
      **Return-adjacent direction rule (D-118).** On a milestone whose
      work log records one or more defect returns, a proposed amendment
      that widens the criteria set — adding an acceptance criterion, or

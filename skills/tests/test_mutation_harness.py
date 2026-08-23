@@ -114,7 +114,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="433 lines / 39,689 chars",
+        block="433 lines / 39,744 chars",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -896,7 +896,7 @@ REGISTRY = [
         guard="test_durable_record_preview",
         test="TestPerSkillDirectives.test_implement_decisions_and_amendments",
         target="skills/milestone-implement/SKILL.md",
-        block="verbatim in its commit's turn, guaranteed-rendered (durable-record preview).",
+        block="verbatim in a guaranteed-rendered position (durable-record preview).",
     ),
     Mutation(
         guard="test_durable_record_preview",

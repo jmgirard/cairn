@@ -279,9 +279,9 @@ These rules bind all chat output while any cairn skill is active.
   without narration. A chat slip never reaches a durable record.
 - **Durable-record preview.** Newly authored durable-record text — a D-entry, a milestone file's plan-owned sections
   (new or amended), a LESSONS line, an archive summary, a ROADMAP candidate/graduation row — is shown verbatim in chat
-  in the turn that lands its commit, in a guaranteed-rendered position (Mandated-substance rule below): as that turn's
-  final rendered text after the commit's tool call, or shown before the commit and restated there. Same turn, no added
-  stop; objections handled by amend/supersede. Exempt:
+  in the turn that lands its commit — no added stop — and reaches a guaranteed-rendered position (Mandated-substance
+  rule below): the turn's final rendered text where nothing follows the commit, otherwise restated verbatim in the
+  first rendered text after that turn's last tool call resolves. Objections handled by amend/supersede. Exempt:
   work-log one-liners, checkbox ticks, status-mirror updates, and hotfix/code-branch content already reviewable at the
   PR merge gate — not a milestone branch's tracking records.
 - **Outcome-first recaps.** Phase-completion recaps lead with what the work did, changed, or accomplished, in plain

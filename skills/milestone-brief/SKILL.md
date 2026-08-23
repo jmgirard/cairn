@@ -44,9 +44,8 @@ retaining D-004's per-instance gate on token-cost grounds.)
 3. **Approval gate** (AskUserQuestion): present the brief's scope, a rough
    size estimate (files/lines Fable must read), and a reminder that Fable
    typically uses more tokens than Opus. Acceptance chips (tracking-rules): show the drafted RB's
-   question and scope text verbatim in a guaranteed-rendered position at
-   the gate, never only a
-   description. Options:
+   question and scope text verbatim in a guaranteed-rendered position
+   (Mandated-substance rule), never only a description. Options:
    - **Spawn Fable subagent** (recommended) — on approval, launch an Agent
      with `model: "fable"` ([F]-tagged description) whose entire prompt
      is: read
@@ -130,8 +129,8 @@ start (any skill) when a manual RR appears:
    untracked, and `git mv` fails on an untracked file; milestone status back
    to `in-progress`; durable-record preview (tracking-rules): show the
    Decisions entries, D-entries, and candidate rows the ingestion wrote
-   verbatim in the committing turn's guaranteed-rendered position; commit
-   (docs-only): `ingest RR<NN>`.
+   verbatim in a guaranteed-rendered position (Mandated-substance rule);
+   commit (docs-only): `ingest RR<NN>`.
 5. **Routing chip (AskUserQuestion)**, composed from where the RR left the
    milestone — e.g. **Resume implementation** → `/milestone-implement <id>`
    (recommended) / Stop here. Acceptance chips (tracking-rules):

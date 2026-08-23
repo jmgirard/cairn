@@ -4515,7 +4515,7 @@ over its stated budget takes the compress-or-retire remedy its header names.
 Measurements live in M154's file and work log, per the D-entry measurement
 rule.
 
-### D-123 (2026-08-22): Acceptance-chip substance moves to guaranteed-rendered positions — narrowly supersedes D-037's above-the-chip placement clause; the verbatim bar and five-skill wiring stand (M155)
+### D-123 (2026-08-22): Acceptance-chip substance moves to guaranteed-rendered positions — narrowly supersedes the above-the-chip placement of D-037 and of D-038's extension; the verbatim bar and wiring stand (M155)
 
 **Context:** The chip rules placed a chip's evidence in chat above the chip
 and durable-record previews in chat immediately before their commit, but
@@ -4523,7 +4523,9 @@ text emitted before a tool call in the same turn is not reliably displayed —
 in the 1.7.0 release session both the version rationale and the tag/push
 handoff were invisible until re-sent after the chip. D-037's placement
 clause ("verbatim in chat above the chip") therefore mandated a position
-that can silently fail the informed choice it exists to guarantee. M155's
+that can silently fail the informed choice it exists to guarantee. (That
+quoted phrase is the rule text D-037 shipped, not wording inside D-037's own
+entry.) M155's
 plan gate weighed post-hoc restatement (cannot inform the choice it
 follows), an unconditional stop before every chip (an added exchange even
 for two-sentence evidence), and inside-chip-always (truncates long finding
@@ -4536,11 +4538,14 @@ preceding turn's final rendered text with the chip posed after the user
 responds; a durable-record preview or handoff command either ends its turn's
 rendered text or is restated verbatim in the first rendered text after the
 tool call resolves (tracking-rules, Mandated-substance rule). D-037's
-placement clause — conclusion substance "verbatim in chat above the chip" —
-is narrowly superseded by this placement doctrine. Everything else in D-037
-stands: the verbatim bar (a paraphrase never stands in for the text being
-accepted; a long artifact shows its conclusions verbatim plus the file path)
-and the five-skill wiring, which D-038 extended to the migration gates.
+placement clause — the rule text it shipped, requiring conclusion substance
+"verbatim in chat above the chip" — is narrowly superseded by this placement
+doctrine, and D-038's extension of that same placement wording to the
+migration gates is superseded in the same narrow scope. Everything else in
+both entries stands: the verbatim bar (a paraphrase never stands in for the
+text being accepted; a long artifact shows its conclusions verbatim plus the
+file path), the five-skill wiring, and D-038's classification of the
+migration gates as acceptance chips.
 
 **Consequences:** The four amended rules ("Chips carry choices, not
 evidence", "Acceptance chips show what's accepted", "Accessible language on

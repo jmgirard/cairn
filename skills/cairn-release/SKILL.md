@@ -71,8 +71,11 @@ toolchain-specific work at step 3.
    tag/push commands), never performed on their behalf. Every command in that
    checklist is a **handoff** — the whole step exists to hand the user work to
    run — so each goes in a fenced block, never inline backticks
-   (tracking-rules "Copy-run commands"). Offer to prepare the
-   post-acceptance steps as a follow-up when the user returns.
+   (tracking-rules "Copy-run commands"). The rationale and this checklist are
+   mandated substance: they end the turn's rendered text, and step 6's routing
+   chip is posed only after the user has them in view (Mandated-substance
+   rule) — the 1.7.0 release lost both to pre-chip rendering. Offer to prepare
+   the post-acceptance steps as a follow-up when the user returns.
 
    **GitHub release (conditional).** When the `origin` remote is a GitHub
    remote (`git remote get-url origin` names `github.com`) and `gh` is

@@ -48,7 +48,7 @@ class TestPerSkillDirectives(unittest.TestCase):
             t,
         )
         self.assertIn(
-            "verbatim in its commit's turn, guaranteed-rendered (durable-record preview).",
+            "verbatim in a guaranteed-rendered position (durable-record preview).",
             t,
         )
 

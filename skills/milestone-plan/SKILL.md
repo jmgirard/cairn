@@ -271,8 +271,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
 
 6. **Commit atomically.** Durable-record preview first (tracking-rules):
    show each drafted durable text — the milestone files' plan-owned
-   sections, any D-entry, new ROADMAP rows — verbatim in the committing
-   turn's guaranteed-rendered position (Mandated-substance rule). Then update ROADMAP rows (`planned` / `candidate`) and
+   sections, any D-entry, new ROADMAP rows — verbatim in a guaranteed-rendered
+   position (Mandated-substance rule). Then update ROADMAP rows (`planned` / `candidate`) and
    commit files + rows together, directly to main, no branch, no PR
    (docs-only carve-out): `plan M<NN>[, M<NN>…]: <title>`; push. A session
    dying mid-plan must not leave a half-planned ghost.
