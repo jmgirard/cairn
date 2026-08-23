@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.8.0 (2026-08-22)
+
+Two milestones since 1.7.0, both about what the user actually sees at
+decision points and phase ends. Backward-compatible: existing tracked repos
+keep working unchanged.
+
+- **What a decision needs to see now always renders.** Text a session emits
+  before a tool call in the same turn is not reliably displayed, so substance
+  the rules require the user to see — the evidence behind a decision chip, a
+  drafted durable record, a handoff command — no longer relies on it. Such
+  text now rides in one of the two positions guaranteed to render: the chip's
+  own question and option text, or the turn's final rendered text; where the
+  full text lives in a file on disk, the chip cites its path. (The 1.7.0
+  release session itself lost its handoff checklist to this gap.)
+- **Every phase ends with the same close block.** A skill or phase that hands
+  the user a next step now ends with a fixed shape: a short recap of the
+  outcome, a status line or table, the next command in a copyable fenced
+  block with a plain-language label, and a note that adjusting course or
+  `/clear` are both safe there. Routing chips at phase ends are retired —
+  chips remain only where a real choice is made (approvals, acceptances,
+  continue/stop), each posed in the same turn as its presentation and
+  readable on its own, in plain language with no internal record identifiers.
+
 ## 1.7.0 (2026-08-22)
 
 Four milestones since 1.6.0, on one theme: what a session says and records.
