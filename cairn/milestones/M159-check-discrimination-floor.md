@@ -1,11 +1,11 @@
 # M159: The test floor states check discrimination: five distilled principles
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP4
-- **Branch/PR:** —
+- **Branch/PR:** m159-check-discrimination-floor
 
 ## Goal
 
@@ -63,7 +63,7 @@ floor is language-agnostic.
 
 ## Tasks
 
-- [ ] T1: Draft the five-principle passage into "What gets a test"
+- [x] T1: Draft the five-principle passage into "What gets a test"
       (`skills/shared/tracking-rules.md:436`), ≤14 added lines, craft
       register; grep the repo for restating surfaces (README and profiles
       verified clean at plan time — re-verify after drafting).
@@ -80,6 +80,7 @@ floor is language-agnostic.
 - 2026-08-23: plan gate chose proceeding through D-108's door on the satisfied-trigger reading over parking as a candidate or staying repo-local because the floor ships nothing on check discrimination (guard-doctrine.md, which carried the discrimination test, was deleted whole in M146) and quarto-index's rediscovery cost is measured; falsified by evidence that the addition itself starts a hardening spiral (returns thrashing on the new floor lines).
 - 2026-08-23: plan gate chose the universal floor over a new shared module because check-writing is universal (D-031's own boundary test), nearly every milestone writes checks, and M146 deliberately deleted the module home for this content family; falsified by adopter-side evidence that the floor lines burden sessions that never write checks.
 - 2026-08-23: plan gate chose craft register over a mandatory per-check discrimination-proof rule because the mandate would re-grow the certification burden RR13/M144-M146 dismantled; falsified by a vacuous check reaching a default branch past review in an adopting repo.
+- 2026-08-23: T1 — "Check discrimination" paragraph appended to "What gets a test" (7 added lines, numstat); restating-surface grep found only pre-existing planted-defect criteria wording in milestone-plan/milestone-brief SKILL.md; suites green (scripts 324, hooks 103).
 
 ## Decisions
 

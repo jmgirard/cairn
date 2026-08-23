@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M159 | The test floor states check discrimination: five distilled principles | planned | — | normal | milestones/M159-check-discrimination-floor.md |
+| M159 | The test floor states check discrimination: five distilled principles | in-progress | — | normal | milestones/M159-check-discrimination-floor.md |
 | M158 | DESIGN.md Known issues gains a lifecycle: review hygiene routes accepted limitations there | done | — | normal | milestones/archive/M158-known-issues-routing.md |
 | M157 | Milestone IDs sort numerically: three-digit padding, numeric resolution | done | — | normal | milestones/archive/M157-numeric-id-sorting.md |
 | M156 | Phase ends close with a standard block; gate chips stand alone | done | — | high | milestones/archive/M156-phase-close-block.md |
