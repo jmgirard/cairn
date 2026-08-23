@@ -4623,3 +4623,31 @@ whenever they choose. Fixed width 3 was chosen over expand-at-each-magnitude
 (which renames the corpus at each boundary for the same end state) and over
 width 4 (headroom the repo may never need); the falsifiers are recorded in
 M157's work log.
+
+### D-126 (2026-08-23): The universal test floor gains a check-discrimination paragraph — a walk through D-108's door on its retained trigger, hosted per D-098; supersedes nothing in D-090 or D-108 (M159)
+
+**Context:** The rulebook's "What gets a test" section shipped nothing on
+check discrimination: `guard-doctrine.md`, which carried the discrimination
+test, was deleted whole in M146, and no floor line replaced it. The cost
+landed downstream: quarto-index paid review returns re-learning the same
+craft — its M01, M08, and M23 each returned on checks that passed while
+proving nothing — and ended by authoring its own doctrine module,
+`cairn/check-design.md` (read at 3fbf848, 2026-08-23), to hold what the
+shipped floor did not say. That module's transferable core is five
+principles; its repo-specific instances (Quarto, makeindex, shell-runner
+pitfalls) stay in that repo.
+
+**Decision:** M159 adds the five principles to "What gets a test" in craft
+register — imperative prose, no recorded per-check evidence mandate. This is
+a new conduct rule about verification, inside D-108's door; it proceeds on
+that door's retained trigger — a defect in shipped behavior, what the
+rulebook teaches every adopting repo — measured in a user repo, and it is
+hosted by a cairn milestone per D-098, the surfacing repo being unable to
+edit cairn's shipped prose. Nothing in D-090 or D-108 is superseded; the
+door binds unchanged.
+
+**Consequences:** Adopting repos read the discrimination floor with the rest
+of the section instead of rediscovering it in review returns. The declined
+stronger form — a mandatory per-check discrimination proof — is revisited
+only on its falsifier: a vacuous check reaching a default branch past review
+in an adopting repo (M159 plan gate).

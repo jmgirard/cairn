@@ -444,3 +444,10 @@ only for independent logic). Never: cosmetic output beyond meaningful snapshots,
 behavior. Test the contract, not the implementation — a test that breaks under a behavior-preserving refactor is a
 defect in the test. Language-mechanical specifics — edge cases, error mechanism, coverage-tool status, plot/snapshot
 conventions — live in the active profile's `test-doctrine` slot; the rules here are the universal floor.
+
+**Check discrimination.** A check earns trust by what it can distinguish, not by passing. Prove a new check able to
+fail: plant the defect class it claims to catch and see it red before trusting its green. A check whose domain,
+pattern, or input artifact can silently empty — a glob, a grep, a generated fixture — is shown to run over a non-empty
+domain. An expectation derived from the artifact under test is blind in the dimension it derives; keep one fact stated
+independently of that artifact. Fixtures include shapes the change leaves untouched, and at least one case where a new
+report must stay silent. Assert identity or kind — which element, which failure — never counts or printed text alone.
