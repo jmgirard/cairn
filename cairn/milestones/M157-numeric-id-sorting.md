@@ -81,7 +81,7 @@ acceptance-criterion claim over them.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Tests first (`scripts/tests`): numeric-equivalence cases for the
+- [x] T1: Tests first (`scripts/tests`): numeric-equivalence cases for the
       three ID surfaces, both directions, widths two/three plus an id ≥ 100
       whose spellings coincide; red against current string matching.
 - [ ] T2: Implement numeric id canonicalization in `scripts/cairn_scripts.py`
@@ -113,6 +113,7 @@ acceptance-criterion claim over them.
 - 2026-08-23: plan gate chose width 3 over width 4 because width 4 would also rename the 57 three-digit files for headroom the repo may never need; falsified by the repo approaching M999.
 - 2026-08-23: plan gate chose numeric resolution plus filename-only rename over rewriting history's two-digit tokens because DECISIONS.md and archive bodies are never edited (IP4); falsified by nothing — the principle is inviolable.
 - 2026-08-23: plan gate chose milestone-files-only scope over folding in RB/RR because 13 review files at ~1 per 3 weeks are years from RR100 and RR cites in shipped prose add their own sweep (user's choice); falsified by reviews/archive approaching RR99.
+- 2026-08-23: T1 done — 11 equivalence tests added (TestNumericIdEquivalence): 3 per surface-and-direction pairs plus dropped-status and two >=100 coincident pins; 9 red against current string matching, the 2 coincident pins green by construction.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
