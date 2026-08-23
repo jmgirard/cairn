@@ -281,11 +281,13 @@ overrides — log the override).
    what the user is approving in plain words — what the milestone does or
    changes — then acceptance-criteria evidence, problems
    found and how each was handled, diffstat, anything the user should eyeball
-   directly.
+   directly. This presentation is mandated substance: it ends its turn's
+   rendered text, and the merge chip is posed after the user has it in view
+   (Mandated-substance rule).
    Acceptance chips (tracking-rules): each actioned finding's text appears
    verbatim in this presentation, never only a summary. With a Driving RR:
-   repeat the measured-vs-projected pairs verbatim in chat above the merge
-   chip, and a shortfall past the milestone's stated tolerance (an unstated
+   repeat the measured-vs-projected pairs verbatim in a guaranteed-rendered
+   position at the merge chip (Mandated-substance rule), and a shortfall past the milestone's stated tolerance (an unstated
    tolerance is strict — any shortfall counts) adds an explicit chip option
    **"accept shortfall, recorded as such"** — the maintainer decides seeing
    the gap, and selecting it logs the accepted shortfall in the Review
@@ -361,7 +363,7 @@ overrides — log the override).
    is the 50-line / 20,000-byte cap met by pruning the stalest lines in this same commit.
    Durable-record preview (tracking-rules): show the archive summary,
    each LESSONS line, any D-entry, and any candidate graduation verbatim
-   in chat before the commit. Docs-only commit:
+   in a guaranteed-rendered position (Mandated-substance rule). Docs-only commit:
    `review M<NN>: done`; push. The done
    recap leads with what shipped, in plain words; hygiene mechanics
    compress to one line.

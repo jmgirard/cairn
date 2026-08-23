@@ -114,7 +114,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="418 lines / 38,127 chars",
+        block="433 lines / 39,744 chars",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -896,7 +896,7 @@ REGISTRY = [
         guard="test_durable_record_preview",
         test="TestPerSkillDirectives.test_implement_decisions_and_amendments",
         target="skills/milestone-implement/SKILL.md",
-        block="verbatim in chat before its commit (durable-record preview).",
+        block="verbatim in a guaranteed-rendered position (durable-record preview).",
     ),
     Mutation(
         guard="test_durable_record_preview",
@@ -917,7 +917,7 @@ REGISTRY = [
         guard="test_gate_conclusion_preview",
         test="TestPerSkillDirectives.test_implement_gate_and_mini_gate",
         target="skills/milestone-implement/SKILL.md",
-        block="conclusion shows its substance verbatim above the chip.",
+        block="conclusion shows its substance verbatim in a guaranteed-rendered position (Mandated-substance rule).",
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
@@ -941,7 +941,7 @@ REGISTRY = [
         guard="test_gate_conclusion_preview",
         test="TestPerSkillDirectives.test_brief_rb_gate_and_rr_routing",
         target="skills/milestone-brief/SKILL.md",
-        block="the RR's conclusions/verdict section is shown verbatim above the chip.",
+        block="the RR's conclusions/verdict section is shown verbatim, ending the turn before the chip (Mandated-substance rule).",
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
@@ -971,7 +971,35 @@ REGISTRY = [
         guard="test_gate_conclusion_preview",
         test="TestMigrationGateDirectives.test_step7_merge_ledger",
         target="skills/shared/migration-protocol.md",
-        block="verbatim in chat above the merge-approval chip — the PR description",
+        block="verbatim in a guaranteed-rendered position at the merge-approval chip",
+    ),
+    # M155: the Mandated-substance rule's four operative clauses each carry
+    # the doctrine independently (per-block discipline, M53) — the rendering
+    # hazard, the two guaranteed positions, the overflow prong, and the
+    # restatement prong for previews/handoffs.
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestMandatedSubstanceRule.test_names_the_rendering_hazard",
+        target=RULES,
+        block="Text emitted before a tool call in the same turn is not reliably displayed",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestMandatedSubstanceRule.test_names_the_two_guaranteed_positions",
+        target=RULES,
+        block="a chip's own question text and option descriptions, and a turn's final rendered text",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestMandatedSubstanceRule.test_overflow_ends_the_preceding_turn",
+        target=RULES,
+        block="ends the preceding turn as that turn's final rendered text, the chip posed after the user responds",
+    ),
+    Mutation(
+        guard="test_gate_conclusion_preview",
+        test="TestMandatedSubstanceRule.test_previews_and_handoffs_restate_after_the_tool_resolves",
+        target=RULES,
+        block="first rendered text after the tool call resolves",
     ),
     # M72 (D-043): the boundary passage and the PR binding each carry a
     # distinct rule, and the README half is a separate target — one entry

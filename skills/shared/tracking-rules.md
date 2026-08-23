@@ -272,14 +272,16 @@ These rules bind all chat output while any cairn skill is active.
   entry; replies within a phase are plain deltas underneath.
 - **Deltas, not dumps; narrate outcomes, not deliberation.** Between gates, report what changed since the last report —
   never a restated plan, pasted command output, or a running readout of reasoning; a one-line signpost or a compact
-  summary where a question needs context is fine. Two exceptions: drafted durable-record text and conclusion text above
-  an acceptance chip.
+  summary where a question needs context is fine. Two exceptions: drafted durable-record text and acceptance-chip
+  conclusion text, each in its guaranteed-rendered position (Mandated-substance rule below).
 - **Correct what matters, and only narrate that.** Correct an earlier chat statement only when the error would change
   the user's code, conclusions, or decisions — plainly, briefly, then continue; a slip that changes nothing is fixed
   without narration. A chat slip never reaches a durable record.
 - **Durable-record preview.** Newly authored durable-record text — a D-entry, a milestone file's plan-owned sections
   (new or amended), a LESSONS line, an archive summary, a ROADMAP candidate/graduation row — is shown verbatim in chat
-  immediately before the commit that lands it: same turn, no added stop; objections handled by amend/supersede. Exempt:
+  in the turn that lands its commit — no added stop — and reaches a guaranteed-rendered position (Mandated-substance
+  rule below): the turn's final rendered text where nothing follows the commit, otherwise restated verbatim in the
+  first rendered text after that turn's last tool call resolves. Objections handled by amend/supersede. Exempt:
   work-log one-liners, checkbox ticks, status-mirror updates, and hotfix/code-branch content already reviewable at the
   PR merge gate — not a milestone branch's tracking records.
 - **Outcome-first recaps.** Phase-completion recaps lead with what the work did, changed, or accomplished, in plain
@@ -289,19 +291,32 @@ These rules bind all chat output while any cairn skill is active.
   a thing, glossed at first use or dropped; facts stated straight, with no stock filler phrasing, hype adjectives, or
   padding. The decision surface keeps its stricter Accessible-language test below; like the narration rule above,
   this never licenses compressing the Durable-record preview or Acceptance-chip substance.
-- **Chips carry choices, not evidence.** Supporting detail and justification live in chat *above* the chip; option
+- **Mandated substance renders.** Text emitted before a tool call in the same turn is not reliably displayed, so
+  substance a rule requires the user to see never relies on pre-tool-call rendering alone. Two positions are
+  guaranteed: a chip's own question text and option descriptions, and a turn's final rendered text (nothing emitted
+  after it). Chip-decision substance rides in the chip itself where it passes the Accessible-language limits below,
+  and otherwise ends the preceding turn as that turn's final rendered text, the chip posed after the user responds.
+  A durable-record preview or a handoff command either ends its turn's rendered text or is restated verbatim in the
+  first rendered text after the tool call resolves.
+- **Chips carry choices, not evidence.** A chip is a decision surface, never the dump for long material: option
   labels are short; descriptions say in plain language what is chosen and why it matters; ≤4 options per question.
+  Supporting detail and justification take a guaranteed-rendered position (Mandated-substance rule above) — inside
+  the chip's question text where they fit, else ending the preceding turn — never mid-turn chat before the chip's
+  tool call.
 - **Accessible language on the decision surface.** A question's text, the prose framing a chip, and every option label
   and description pass the two-sentence test: the first sentence says what is being decided in plain words, the second
   what happens on each choice, both before any term of art; a technical term is glossed at first use. Cairn-internal
   record identifiers — D-/RR-/BC-ids, IP/GP numbers, doctrine section numbers — stay out of question text and option
-  labels (`M<NN>` is exempt); the identifier and its justification live in the chat above the chip. A gate prompt the
+  labels (`M<NN>` is exempt); the identifier and its justification live outside the chip, in a guaranteed-rendered
+  position when the user needs them to decide (Mandated-substance rule above). A gate prompt the
   user flags as unclear is captured verbatim same-session (a work-log line, or a candidate ROADMAP row when no milestone
   is active). Applied in authorial judgment, never as a gate.
 - **Acceptance chips show what's accepted.** A chip option accepting or approving a produced conclusion — review
   findings, a verdict, an audit result, amended text, a proposed disposition — requires that conclusion's substance
-  verbatim in chat above the chip (a long artifact: its conclusions verbatim plus the file path); a paraphrase never
-  stands in for the text being accepted.
+  verbatim in a guaranteed-rendered position before the choice (Mandated-substance rule above): in the chip's question
+  text where it passes the Accessible-language limits, otherwise ending the preceding turn as its final rendered text
+  with the chip posed after the user responds (a long artifact: its conclusions verbatim plus the file path); a
+  paraphrase never stands in for the text being accepted.
 - **Contextual chip construction.** Compose options from the actual session state, not a fixed menu; chip menus in
   skills are examples, not scripts. Invariants: recommended option first and marked, ≤4 options, a stop/pause option
   present, and a chip is a user stop — never auto-proceed.
