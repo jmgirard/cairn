@@ -286,7 +286,8 @@ These rules bind all chat output while any cairn skill is active.
   the user's code, conclusions, or decisions — plainly, briefly, then continue; a slip that changes nothing is fixed
   without narration. A chat slip never reaches a durable record.
 - **Durable-record preview.** Newly authored durable-record text — a D-entry, a milestone file's plan-owned sections
-  (new or amended), a LESSONS line, an archive summary, a ROADMAP candidate/graduation row — is shown verbatim in chat
+  (new or amended), a LESSONS line, an archive summary, a `DESIGN.md` Known issues entry, a ROADMAP
+  candidate/graduation row — is shown verbatim in chat
   in the turn that lands its commit — no added stop — and reaches a guaranteed-rendered position (Mandated-substance
   rule below): the turn's final rendered text where nothing follows the commit, otherwise restated verbatim in the
   first rendered text after that turn's last tool call resolves. Objections handled by amend/supersede. Exempt:

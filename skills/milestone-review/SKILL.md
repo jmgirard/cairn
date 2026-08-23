@@ -347,6 +347,10 @@ overrides — log the override).
    remembering — to `cairn/LESSONS.md`, one per line
    (`- YYYY-MM-DD (M<NNN>): <lesson>`, one line each); lessons, not status or a
    *choice* (a choice is a D-entry). None learned → skip.
+   **Route accepted limitations:** a durable limitation this milestone
+   surfaced that the user chose to live with — no candidate row, no fix
+   planned — gets an entry in `cairn/DESIGN.md`'s Known issues section,
+   written in this same hygiene commit. None accepted → skip.
    **Retire what this milestone covered:** if the milestone shipped a guard, or
    moved content into another file's slot, check whether that retires an
    existing lesson (tracking-rules "Retiring a lesson that no longer earns its
@@ -362,7 +366,8 @@ overrides — log the override).
    Retirement runs before the cap bites, and only if it cannot free the budget
    is the 50-line / 20,000-byte cap met by pruning the stalest lines in this same commit.
    Durable-record preview (tracking-rules): show the archive summary,
-   each LESSONS line, any D-entry, and any candidate graduation verbatim
+   each LESSONS line, any D-entry, any Known issues entry, and any
+   candidate graduation verbatim
    in a guaranteed-rendered position (Mandated-substance rule). Docs-only commit:
    `review M<NNN>: done`; push. The done
    recap leads with what shipped, in plain words; hygiene mechanics
