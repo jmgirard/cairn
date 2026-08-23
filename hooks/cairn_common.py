@@ -225,7 +225,7 @@ def parse_roadmap_rows_full(roadmap_text):
     """Yield (id, title, status, depends, priority, relpath) per milestone row.
 
     Rows look like:
-    | M07 | Title | in-progress | — | high | milestones/M07-....md |
+    | M007 | Title | in-progress | — | high | milestones/M007-....md |
     relpath is relative to the cairn/ directory. This is the single
     row-splitter; parse_roadmap_rows is the (id, status, relpath) subset
     the hooks use.

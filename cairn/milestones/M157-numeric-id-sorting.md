@@ -124,6 +124,8 @@ acceptance-criterion claim over them.
 - 2026-08-23: defect return #1 (review fan-out, [O] diff-bug F5): AC2's row-id→filename surface not test-covered as stated (check_release_window lookup untested) — AC2 tick withdrawn; riding the return: F4 canon_id ValueError on unicode digits, F2 dep FAIL-message spelling, F6/F7 teaching-example modernization; F1 → candidate row; F8 rejected (pre-existing). Supersedes T2's "display spellings untouched" (wrong for FAIL messages) and T4's "exactly one" dangling cite (three: D-051's M53, RB02's M84 + M87 — reviews/archive was not swept; files stay unedited per IP4).
 - 2026-08-23: T5 done (return 1) — 4 tests added (release-window lookup both directions — the T2 fix was already in place, the gap was coverage; unicode-digit dep FAILs clean; dep message keeps as-written spelling); canon_id switched to isdecimal; check_dependencies messages print the cell's spelling; "work on M107" in the implement SKILL description; fixture fills M080/M085; scripts 323 + hooks 103 + skills 528 (hand-run) all green.
 - 2026-08-23: re-review after return 1 — fresh evidence all four ACs (AC2 ticked: 15 equivalence tests incl. release-window lookup both directions; scripts 323 / hooks 103 / skills 528 green; validate exit 0); three-lens fan-out spawned.
+- 2026-08-23: fan-out round 2 — [S] lenses zero findings; [O] 8 findings: G8 examples fixed, G5 count superseded (next line), G6 one-digit-dep divergence accepted, G1 (`id_num` isdigit crash, pre-existing) to the gate recommended fix-now, G2/G3/G4/G7 rejected with reasons in Review.
+- 2026-08-23: supersedes return-1's "three" dangling-cite count: ten total — D-051's M53, RB02's M84+M87, plus RB03 M95×2, RB04 M96, RR03 M95/M96/M97, RR04 M96 (reviews/archive not swept by either earlier count); all history-side, none edited (IP4).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -213,3 +215,45 @@ Re-review after return 1 (2026-08-23, fresh evidence, this session):
 - Consistency gate: cairn_validate exit 0, all checks pass; no DESIGN.md
   principle change (cairn_impact skipped); generic profile — no toolchain
   checks.
+
+Fan-out round 2 (2026-08-23, three lenses, ranked findings and dispositions — IP3):
+
+- [S] blame-history: zero findings — return-1 fixes verified against history
+  (canon_id isdecimal replaces the crashing isdigit gate; dep FAIL messages
+  print the as-written spelling; release-window lookup pinned both
+  directions); all 99 renames pure R100; D-125 conflicts with no prior entry.
+- [S] prior-PR-comments: no prior-review evidence on the ID surface (six
+  archived Review sections touch these files, none concern ID handling;
+  PR-comments probe returned empty); zero findings.
+- [O] G1 (to the gate, recommended fix-now): `id_num` keeps the isdigit/int()
+  gate `canon_id` was fixed for — a ROADMAP row id `M²` crashes the validator
+  (reproduced: ValueError via check_release_window's sort key and
+  check_dangling_ids' m_max) instead of FAILing clean (D-023). Pre-existing
+  lines the diff did not modify, but the same defect class return-1's F4
+  fixed in the sibling function.
+- [O] G2 (rejected): check_id_uniqueness's row-side canonicalization is
+  untested (reverting it leaves all suites green) — row-vs-row is outside
+  AC2's three surfaces, and a real cross-width duplicate is caught via the
+  tested filename side or the orphans check; coverage hardening beyond the
+  criteria.
+- [O] G3 (rejected): _known_ids' row-derived membership half untested for the
+  same structural reason (fixture rows all carry files; a row-only id FAILs
+  orphans first); same taxonomy as G2.
+- [O] G4 (rejected; revisit on observed drift): no validator check enforces
+  the `M\d{3,}-` filename prefix, so the corpus could drift back out of sort
+  order — a standing-instrument proposal outside this milestone's scope; the
+  standing-instrument adoption-discipline candidate row governs adding one.
+- [O] G5 (record corrected by supersession): the return-1 "three cites total"
+  dangling-cite count was still low — reviews/archive holds 7 more
+  renamed-basename path cites (RB03:46,110 M95; RB04:176 M96; RR03:6,14,15
+  M95/M96/M97; RR04:11 M96); ten total, all history-side, none edited (IP4).
+- [O] G6 (accepted divergence, logged): parse_depends + canon_id now resolve
+  a one-digit dep spelling (M7→M007) though the plan's Out leaves one-digit
+  outside the resolved domain; the prose-token surface (`\d{2,}`) still
+  excludes it — tolerance in D-023's direction, no code change.
+- [O] G7 (rejected): parse_depends gates on isdigit while canon_id gates on
+  isdecimal, so a non-ASCII decimal dep digit (M٣) silently canonicalizes to
+  M003 — no crash, D-023-consistent tolerance, contrived input.
+- [O] G8 (fixed at gate): two teaching examples the T3 best-effort sweep
+  missed, modernized — hooks/cairn_common.py row-shape docstring (M07→M007)
+  and cairn_scripts.py sort comment (M9/M10→M009/M010).

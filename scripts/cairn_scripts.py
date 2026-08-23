@@ -451,7 +451,7 @@ def milestone_section_line_counts(path):
 
 
 def sort_by_priority(row_list):
-    """Rows sorted high>normal>low, then by numeric ID (M9 before M10)."""
+    """Rows sorted high>normal>low, then by numeric ID (M009 before M010)."""
     return sorted(
         row_list, key=lambda r: (PRIORITY_ORDER.get(r["priority"], 1), id_num(r["id"]))
     )
