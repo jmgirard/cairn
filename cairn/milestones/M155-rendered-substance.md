@@ -1,6 +1,6 @@
 # M155: Mandated substance moves to guaranteed-rendered positions
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -35,7 +35,7 @@ Surface tier: **user-facing** — the rulebook and skill directives ship to ever
 - [x] T2: Run the AC2 sweep and whole-section read; reconcile every hit — the per-skill directives (`milestone-plan` step 3, `milestone-implement` gates, `milestone-review` gates, `milestone-brief` gates, `milestone` route triage, `skills/shared/migration-protocol.md`) restate the hybrid placement; log per-hit dispositions in the work log.
 - [x] T3: Update the hand-run prose guards whose pinned phrases the amendments change (`skills/tests/test_gate_conclusion_preview.py:44,65`, `test_issue_triage.py:154`, `test_mutation_harness.py:920,944`, plus any red the suite surfaces); extend guard asserts and mutation entries to pin the new doctrine (M152 convention); hand-run `skills/tests` to zero reds.
 - [x] T4: Draft the D-entry narrowly superseding D-037's above-the-chip placement clause (verbatim bar and five-skill wiring stand); preview verbatim in chat before its commit.
-- [ ] T5: Run both gating suites (`python3 -m unittest discover -s scripts/tests`, `... -s hooks/tests`) and `cairn_validate`; all green.
+- [x] T5: Run both gating suites (`python3 -m unittest discover -s scripts/tests`, `... -s hooks/tests`) and `cairn_validate`; all green.
 
 ## Work log
 
@@ -48,6 +48,7 @@ Surface tier: **user-facing** — the rulebook and skill directives ship to ever
 - 2026-08-22: T2 done — AC2 sweep returned 18 hits: 15 edited to guaranteed-rendered placements (milestone/SKILL.md 149,184; migration-protocol 54,179; milestone-plan 109,274; milestone-implement 47,70,86,90; milestone-review 287,364; milestone-brief 47,132,136), 2 are the amended tracking-rules preview rule itself (281,283 — consistent), 1 unrelated kept (synthesis-note 61, 'above the table'); whole-section read of the two tracking-rules sections found no other pre-tool-call placement mandate.
 - 2026-08-22: T3 done — 6 guard reds fired exactly on the edited lines (fired-guard proof), pins updated in test_durable_record_preview, test_gate_conclusion_preview, test_issue_triage, test_finding_enforcement; 4 mutation blocks re-pointed; new TestMandatedSubstanceRule (4 asserts) + 4 RULES-target mutation entries added; skills/tests 525 tests exit 0; scripts/hooks suites and cairn_validate exit 0.
 - 2026-08-22: T4 done — D-123 appended (narrowly supersedes D-037's placement clause; verbatim bar and wiring stand); previewed verbatim in the committing turn's final rendered text per the new rule.
+- 2026-08-22: T5 done — scripts/tests, hooks/tests, skills/tests (525), cairn_validate all exit 0; status to review.
 
 ## Decisions
 
