@@ -208,7 +208,7 @@ class TestTemplateProducesAValidPage(unittest.TestCase):
         would. Read from disk every call — never a fixture copy."""
         text = template.read_text()
         text = re.sub(r"YYYY-MM-DD", "2026-07-18", text)
-        text = text.replace("M<NNN>", "M80")
+        text = text.replace("M<NNN>", "M080")
         return text
 
     def _tree(self, tmp, template, page):
@@ -440,7 +440,7 @@ class StatusClassificationMixin:
         """The shipped template with its placeholders filled, read from disk
         every call — never a fixture copy (M77/M80)."""
         text = re.sub(r"YYYY-MM-DD", "2026-07-18", template.read_text())
-        return text.replace("M<NNN>", "M85")
+        return text.replace("M<NNN>", "M085")
 
     def alternatives(self, text):
         """The choices offered inside the `Extraction:` field's `<a | b | c>`."""

@@ -103,6 +103,10 @@ acceptance-criterion claim over them.
       history-side path cites left dangling (D-051's `archive/M53-…:17`, plus
       any a DECISIONS/archive grep finds — logged, never edited);
       `cairn_validate` green.
+- [x] T5 (return 1): coverage tests for the release-window row-id→filename
+      lookup, both directions; `canon_id` isdecimal fix + crash regression
+      test; dep FAIL-message as-written spelling + test; modernize the
+      SKILL.md description example and fixture fill ids.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -118,6 +122,7 @@ acceptance-criterion claim over them.
 - 2026-08-23: T3 done — ID rule rewritten (three-digit padding, cross-width resolution, padded filename prefixes, M999 one-commit re-pad); `M<NN>`/`m<nn>` swept to three-N forms across skills/, README.md, hooks/, scripts/ (23 files); teaching examples modernized (README M007 walkthrough, milestone template M013, migration-protocol M053/M054, tidymedia M007); cairn/LESSONS.md header format line corrected in place; AC1 whitespace-normalized sweep clean; skills/tests 528 zero reds; D-125 appended.
 - 2026-08-23: T4 done — 99 archive files `git mv`'d M01–M99 → M001–M099; ROADMAP citekey row's archive/M56 cite updated to M056; AC3 comparison True, AC4 extract-and-stat True; history-side dangling path cites after rename: exactly one, D-051's `archive/M53-prose-guard-mutation-harness.md:17` (DECISIONS.md:1318, logged per plan, never edited); validate green, scripts 319 + hooks 103 green.
 - 2026-08-23: defect return #1 (review fan-out, [O] diff-bug F5): AC2's row-id→filename surface not test-covered as stated (check_release_window lookup untested) — AC2 tick withdrawn; riding the return: F4 canon_id ValueError on unicode digits, F2 dep FAIL-message spelling, F6/F7 teaching-example modernization; F1 → candidate row; F8 rejected (pre-existing). Supersedes T2's "display spellings untouched" (wrong for FAIL messages) and T4's "exactly one" dangling cite (three: D-051's M53, RB02's M84 + M87 — reviews/archive was not swept; files stay unedited per IP4).
+- 2026-08-23: T5 done (return 1) — 4 tests added (release-window lookup both directions — the T2 fix was already in place, the gap was coverage; unicode-digit dep FAILs clean; dep message keeps as-written spelling); canon_id switched to isdecimal; check_dependencies messages print the cell's spelling; "work on M107" in the implement SKILL description; fixture fills M080/M085; scripts 323 + hooks 103 + skills 528 (hand-run) all green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

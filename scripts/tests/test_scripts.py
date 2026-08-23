@@ -1870,6 +1870,62 @@ class TestNumericIdEquivalence(ScriptCase):
         out = run("cairn_next.py", root).stdout
         self.assertIn("Recommended: implement M101 → /milestone-implement M101", out)
 
+    # Surface 2, as stated (M157 return 1): the one site that looks a ROADMAP
+    # row id up in the live-filename map is the release-window advisory; a
+    # width mismatch must resolve, not silently skip the check.
+
+    def test_narrow_row_id_resolves_to_padded_live_filename(self):
+        self.tree.rows.append(
+            ("M09", RELEASE_TITLES[1], "planned", "M01", "high",
+             "milestones/M009-rel.md")
+        )
+        self.tree.files["milestones/M009-rel.md"] = live_release("planned")
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  release window", proc.stdout)
+        self.assertIn("M09: release milestone is planned", proc.stdout)
+
+    def test_padded_row_id_resolves_to_narrow_live_filename(self):
+        self.tree.rows.append(
+            ("M009", RELEASE_TITLES[1], "planned", "M01", "high",
+             "milestones/M09-rel.md")
+        )
+        self.tree.files["milestones/M09-rel.md"] = live_release("planned")
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("WARN  release window", proc.stdout)
+        self.assertIn("M009: release milestone is planned", proc.stdout)
+
+    # M157 return 1, F4: a token whose tail passes isdigit but not int()
+    # (superscript ²) must FAIL clean, never crash the validator (D-023).
+
+    def test_unicode_digit_dep_fails_clean_not_crash(self):
+        self.tree.rows[0] = (
+            "M03", "Live planned", "planned", "M²", "high",
+            "milestones/M03-live.md",
+        )
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertNotEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("M03 depends on M², which does not exist", proc.stdout)
+
+    # M157 return 1, F2: FAIL messages print the dep spelling as written in
+    # the ROADMAP cell, never its canonical re-pad.
+
+    def test_dep_fail_message_keeps_as_written_spelling(self):
+        self.tree.rows[0] = (
+            "M03", "Live planned", "planned", "M05", "high",
+            "milestones/M03-live.md",
+        )
+        self.tree.rows.append(
+            ("M005", "Old dropped", "dropped", "—", "normal",
+             "milestones/archive/M005-old.md")
+        )
+        self.tree.files["milestones/archive/M005-old.md"] = archived("dropped")
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertNotEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("M03 depends on M05, which is dropped", proc.stdout)
+        self.assertNotIn("depends on M005", proc.stdout)
+
 
 VALID_PROFILE = (
     "# Toolchain profile: generic\n\n"

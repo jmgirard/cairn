@@ -147,10 +147,13 @@ def check_dependencies(root, rows):
     dropped = {cs.canon_id(r["id"]) for r in rows if r["status"] == "dropped"}
     bad = []
     for r in rows:
-        for dep in map(cs.canon_id, r["depends"]):
-            if dep not in known:
+        # Messages print the dep as written in the ROADMAP cell — the
+        # canonical form is for membership only (M157 return 1).
+        for dep in r["depends"]:
+            dep_c = cs.canon_id(dep)
+            if dep_c not in known:
                 bad.append(f"{r['id']} depends on {dep}, which does not exist")
-            elif dep in dropped:
+            elif dep_c in dropped:
                 bad.append(f"{r['id']} depends on {dep}, which is dropped (re-wire)")
     return bad
 

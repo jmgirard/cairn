@@ -194,8 +194,10 @@ def canon_id(mid):
     digits (M57, M057, M0057 -> M057; M1000 passes through unpadded). ID
     spellings at other zero-pad widths name the same milestone, so every
     membership test or lookup compares canonical forms, never raw strings
-    (M157). Non-numeric input passes through unchanged."""
-    return "M%03d" % int(mid[1:]) if mid[1:].isdigit() else mid
+    (M157). Non-numeric input passes through unchanged; isdecimal, not
+    isdigit — superscripts pass isdigit but crash int() (D-023: tolerate,
+    never raise)."""
+    return "M%03d" % int(mid[1:]) if mid[1:].isdecimal() else mid
 
 
 def parse_depends(cell):
