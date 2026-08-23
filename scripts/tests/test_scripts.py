@@ -2139,7 +2139,7 @@ class TestWorkLogFormatAdvisory(ScriptCase):
 
 # The corpus RR08 measured D-074 part 3's transplanted grammar against, and the
 # corpus D-075 binds the shipped advisory's 0-WARN arm to. Each entry is the
-# `review M<NN>: done` commit that archived the file, so the live file — and the
+# `review M<NNN>: done` commit that archived the file, so the live file — and the
 # whole `## Decisions` section it carried at `done` — is at `<sha>^:<path>`.
 # History is never edited (IP4), so these blobs are frozen; git is read here
 # rather than copied into a fixture so the test measures what actually shipped
@@ -3087,7 +3087,7 @@ class TestValidateFailures(ScriptCase):
         self.assertIn("cap <30", out)
 
     def test_non_iso_date_in_lessons(self):
-        # LESSONS.md entries carry dates (- YYYY-MM-DD (M<NN>): …); a
+        # LESSONS.md entries carry dates (- YYYY-MM-DD (M<NNN>): …); a
         # misformatted one must be flagged by the ISO-date scan.
         root = self.tree.build()
         (root / "cairn" / "LESSONS.md").write_text("# Lessons\n\n- 07/11/2026 (M16): x\n")

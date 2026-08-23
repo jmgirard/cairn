@@ -145,7 +145,7 @@ class TestMilestoneAuditWiring(unittest.TestCase):
 
     def test_route_offers_the_park_option(self):
         self.assertIn(
-            "park m<nn> as `blocked` → the release window is not open",
+            "park m<nnn> as `blocked` → the release window is not open",
             milestone(),
         )
 

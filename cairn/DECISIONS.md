@@ -4594,3 +4594,32 @@ maintainer's direction: if the harness ever guarantees that pre-tool-call
 text renders — so explanation text is never randomly missing — re-enabling
 one-click routing between phases is worth reconsidering, and this is the
 entry to supersede.
+
+### D-125 (2026-08-23): Milestone IDs zero-pad to three digits and spellings resolve numerically across widths — supersedes the Milestone IDs rule's two-digit padding clause (M157)
+
+**Context:** IDs were zero-padded to two digits, with "past M99, IDs simply
+grow" as the overflow story. Once this repo passed M100, lexicographic
+filename order diverged from id order (`M100-*` sorts between `M09-*` and
+`M11-*`), so directory listings of `cairn/milestones/archive/` no longer
+read in milestone order, and any width mismatch between a spelling and a
+filename broke the scripts' exact-string id matching.
+
+**Decision:** Milestone IDs are zero-padded to three digits (`M001`).
+Spellings of the same number at other zero-pad widths name the same
+milestone, and the scripts resolve them numerically on every ID surface —
+prose tokens against the known-id set, roadmap↔file checks, and `Depends
+on` cells — rather than by string equality. Milestone filename prefixes
+carry the padded form, so filenames sort in id order; a repo passing M999
+re-pads its milestone filenames in one hygiene commit. This repo's
+two-digit archive filenames are renamed once to their padded forms (M157);
+history prose keeps its two-digit spellings unedited (IP4) — numeric
+resolution is what keeps those spellings resolvable. RB/RR review-file ids
+stay two-digit (user's choice, M157 scope).
+
+**Consequences:** The rulebook, templates, README, hooks, and scripts state
+`M<NNN>`/`m<nnn>` placeholder shapes; adopting repos with two-digit
+filenames keep working (spellings resolve across widths) and may re-pad
+whenever they choose. Fixed width 3 was chosen over expand-at-each-magnitude
+(which renames the corpus at each boundary for the same end state) and over
+width 4 (headroom the repo may never need); the falsifiers are recorded in
+M157's work log.

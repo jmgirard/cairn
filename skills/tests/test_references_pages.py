@@ -130,10 +130,10 @@ class TestShippedSynthesisTemplate(unittest.TestCase):
 
     # (field name, phrase that must appear in the shipped template)
     FIELDS = (
-        ("owning milestone in the heading", "# <what this analyses> (m<nn>)"),
+        ("owning milestone in the heading", "# <what this analyses> (m<nnn>)"),
         ("provenance block", "**provenance.**"),
         ("ingested date", "ingested yyyy-mm-dd"),
-        ("ingesting milestone", "by m<nn>"),
+        ("ingesting milestone", "by m<nnn>"),
         ("pagination basis", "pagination:"),
         ("evidence snapshot", "**evidence snapshot.**"),
         ("tracking disclaimer", "status lives in `roadmap.md`, decisions in `decisions.md`,"),
@@ -208,7 +208,7 @@ class TestTemplateProducesAValidPage(unittest.TestCase):
         would. Read from disk every call — never a fixture copy."""
         text = template.read_text()
         text = re.sub(r"YYYY-MM-DD", "2026-07-18", text)
-        text = text.replace("M<NN>", "M80")
+        text = text.replace("M<NNN>", "M80")
         return text
 
     def _tree(self, tmp, template, page):
@@ -440,7 +440,7 @@ class StatusClassificationMixin:
         """The shipped template with its placeholders filled, read from disk
         every call — never a fixture copy (M77/M80)."""
         text = re.sub(r"YYYY-MM-DD", "2026-07-18", template.read_text())
-        return text.replace("M<NN>", "M85")
+        return text.replace("M<NNN>", "M85")
 
     def alternatives(self, text):
         """The choices offered inside the `Extraction:` field's `<a | b | c>`."""
@@ -480,7 +480,7 @@ class TestEachSanctionedStatusClassifies(
 ):
     """M85 AC2/AC3 — instantiating the dates is not instantiating the CHOICE.
 
-    M80's pairing test filled `YYYY-MM-DD` and `M<NN>` and then ran only
+    M80's pairing test filled `YYYY-MM-DD` and `M<NNN>` and then ran only
     `check_references` and the dated-extraction regex, both of which ask
     existence questions. It never asked the one reader that interprets the
     status — `_last_verified`, the classifier M83 built — so nothing proved a

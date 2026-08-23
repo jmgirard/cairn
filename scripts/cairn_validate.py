@@ -1703,7 +1703,7 @@ def _known_ids(root, rows):
 
 
 def check_dangling_ids(root, rows):
-    """Advisory: M<NN>/D-<NNN> tokens in committed cairn/ markdown that
+    """Advisory: M<NNN>/D-<NNN> tokens in committed cairn/ markdown that
     resolve to no ROADMAP row, milestone file, or D-entry (M57 — the link
     syntax is bare ID tokens, so a dangler is a broken wiki link). Three
     tolerance rules, per D-023 (a missed weird format beats a false

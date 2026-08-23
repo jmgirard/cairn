@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section.
      Per-section owners are tagged below. The one size check that can fail is
      cairn_validate's <150 over the plan-owned body. -->
-# M<NN>: <Title>
+# M<NNN>: <Title>
 
 - **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
@@ -22,7 +22,7 @@ One sentence.
 **In:** what this milestone does.
 
 **Out:** what it refuses to do — and where that work lives instead
-(e.g., `Out: batch scoring → M13`). "Out" means not in *this* milestone,
+(e.g., `Out: batch scoring → M013`). "Out" means not in *this* milestone,
 never "never".
 
 ## Acceptance criteria

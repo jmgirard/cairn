@@ -1,4 +1,4 @@
-# M<NN>: <title, carried verbatim from the milestone file>
+# M<NNN>: <title, carried verbatim from the milestone file>
 
 **Status:** <done|dropped> (<YYYY-MM-DD>, PR #<N> <url>)
 

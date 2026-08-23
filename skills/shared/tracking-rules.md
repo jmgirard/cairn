@@ -14,7 +14,7 @@ All project state lives in markdown under `cairn/`: substance in the owner, othe
 | `cairn/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
 | `cairn/PROFILE.md` | The repo's toolchain profile — the seven slots the operational skills read (see "Toolchain profiles") | Domain doctrine, status, tasks, decisions |
 | `cairn/ROADMAP.md` | The milestone index — **the only authority on status** | Task details, acceptance criteria, narrative |
-| `cairn/milestones/M<NN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately) |
+| `cairn/milestones/M<NNN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
 | `cairn/DECISIONS.md` | Append-only cross-cutting decisions (D-001, …), never renumbered — superseded by new entries | Milestone-local decisions (those live in the milestone file); deferrals ("not now" is a ROADMAP fact, not a decision) |
 | `cairn/LESSONS.md` | Durable, capped repo lessons — captured at milestone end, surfaced at plan time; current knowledge, corrected in place when proven false, retired per "Retiring a lesson" | Status, decisions (a *choice* is a D-entry), per-milestone task notes |
@@ -147,12 +147,14 @@ D-entry. IP block first, then GPs; numbers are never reused or renumbered — re
 
 ## Milestone IDs and status
 
-- IDs are `M<NN>` (zero-padded to two digits), assigned at planning time, monotonically increasing, **never reused** —
-  dropped milestones included; past M99, IDs simply grow (M100). **No completion-order requirement**: work order is
+- IDs are `M<NNN>` (zero-padded to three digits: `M001`), assigned at planning time, monotonically increasing, **never
+  reused** — dropped milestones included. Spellings of the same number at other zero-pad widths (`M57`, `M057`) resolve
+  to the same milestone; milestone filename prefixes carry the padded form, so filenames sort in id order. A repo
+  passing M999 re-pads its milestone filenames in one hygiene commit. **No completion-order requirement**: work order is
   governed only by `Depends on:` (workable only when dependencies are `done`) and `Priority:` (high / normal / low); the
   ROADMAP index is grouped by status, not sorted by ID.
-- Bare `M<NN>` is repo-local: with more than one cairn-tracked repo in scope, qualify the ID with the repo name —
-  "tidymedia M07". User-facing materials (NEWS.md, README, vignettes, pkgdown) never reference milestone numbers.
+- Bare `M<NNN>` is repo-local: with more than one cairn-tracked repo in scope, qualify the ID with the repo name —
+  "tidymedia M007". User-facing materials (NEWS.md, README, vignettes, pkgdown) never reference milestone numbers.
 
 Status vocabulary — exactly these seven, lowercase:
 
@@ -213,7 +215,7 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   symbolic-ref --short refs/remotes/origin/HEAD` (strip `origin/`); if `origin/HEAD` is unset locally but a remote
   exists, query `git ls-remote --symref origin HEAD` and read the `ref: refs/heads/<name>` line. Only with **no remote
   at all** ask the user — never guess from the local current branch (wrong on a feature branch).
-- Milestone work on `m<nn>-<slug>`; hotfixes on `hotfix-<slug>`; both cut from the up-to-date default branch. Checkpoint
+- Milestone work on `m<nnn>-<slug>`; hotfixes on `hotfix-<slug>`; both cut from the up-to-date default branch. Checkpoint
   commits are cheap — squash erases them. Exception: an adopted external PR keeps the contributor's branch and its name.
 - Before branching or committing, check `git status`: a dirty tree with unrelated changes means ask the user — never
   sweep strangers into a checkpoint commit. If the default branch moves under an active branch, merge it into the branch
@@ -315,7 +317,7 @@ These rules bind all chat output while any cairn skill is active.
   and description pass the two-sentence test: the first sentence says what is being decided in plain words, the second
   what happens on each choice, both before any term of art; a technical term is glossed at first use. Cairn-internal
   record identifiers — D-/RR-/BC-ids, IP/GP numbers, doctrine section numbers — stay out of question text, option
-  labels, and option descriptions (`M<NN>` is exempt, and one file-path citation in question text is permitted);
+  labels, and option descriptions (`M<NNN>` is exempt, and one file-path citation in question text is permitted);
   chip text is plain language with no record-identifier filler, and an identifier's justification goes best-effort
   to the chat above the chip, the cited path carrying the rest. A gate prompt the
   user flags as unclear is captured verbatim same-session (a work-log line, or a candidate ROADMAP row when no milestone

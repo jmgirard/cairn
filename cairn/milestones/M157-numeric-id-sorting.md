@@ -88,7 +88,7 @@ acceptance-criterion claim over them.
       (`_ID_RE`, `id_num`, `parse_depends` consumers) and
       `scripts/cairn_validate.py` (`_known_ids`, `check_dangling_ids` max and
       legacy ceilings, roadmap↔file checks); both gating suites green.
-- [ ] T3: Doctrine + surface sweep: rewrite the ID rule at
+- [x] T3: Doctrine + surface sweep: rewrite the ID rule at
       `skills/shared/tracking-rules.md:150-151`; replace `M<NN>`→`M<NNN>` and
       `m<nn>`→`m<nnn>` across skills/, README.md, hooks/
       (`hooks/commit_guard.py:67`), scripts/ (`scripts/cairn_cost.py:74,417`,
@@ -115,6 +115,7 @@ acceptance-criterion claim over them.
 - 2026-08-23: plan gate chose milestone-files-only scope over folding in RB/RR because 13 review files at ~1 per 3 weeks are years from RR100 and RR cites in shipped prose add their own sweep (user's choice); falsified by reviews/archive approaching RR99.
 - 2026-08-23: T1 done — 11 equivalence tests added (TestNumericIdEquivalence): 3 per surface-and-direction pairs plus dropped-status and two >=100 coincident pins; 9 red against current string matching, the 2 coincident pins green by construction.
 - 2026-08-23: T2 done — `canon_id` added to cairn_scripts (M%03d re-pad, non-numeric pass-through); comparison sites canonicalized in cairn_next (by_id/done/deps) and cairn_validate (check_dependencies, check_id_uniqueness, _known_ids, check_dangling_ids membership, release-nomination lookup); display spellings untouched; scripts 319 + hooks 103 both green.
+- 2026-08-23: T3 done — ID rule rewritten (three-digit padding, cross-width resolution, padded filename prefixes, M999 one-commit re-pad); `M<NN>`/`m<nn>` swept to three-N forms across skills/, README.md, hooks/, scripts/ (23 files); teaching examples modernized (README M007 walkthrough, milestone template M013, migration-protocol M053/M054, tidymedia M007); cairn/LESSONS.md header format line corrected in place; AC1 whitespace-normalized sweep clean; skills/tests 528 zero reds; D-125 appended.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

@@ -1,4 +1,4 @@
-# RB<NN>: <Topic> (M<NN>)
+# RB<NN>: <Topic> (M<NNN>)
 
 - **Date:** YYYY-MM-DD
 - **Output required:** write findings to `cairn/reviews/RR<NN>-<slug>.md`

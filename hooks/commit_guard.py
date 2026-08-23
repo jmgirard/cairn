@@ -64,7 +64,7 @@ REMINDER = (
     "implement code on it outside a milestone/hotfix branch (tracking-rules: "
     "'Git and approval model'; CLAUDE.md router). A trivial edit (typo, "
     "comment) or a docs-only change is fine here; but if this is real work, "
-    "stop, cut a branch (m<nn>-<slug> via /milestone-plan, or hotfix-<slug> "
+    "stop, cut a branch (m<nnn>-<slug> via /milestone-plan, or hotfix-<slug> "
     "via /hotfix), and commit there instead."
 )
 

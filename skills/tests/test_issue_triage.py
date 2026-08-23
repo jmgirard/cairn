@@ -79,7 +79,7 @@ class TestInboxEnumeration(unittest.TestCase):
     def test_own_pr_filter_names_the_branch_shapes(self):
         # Author alone is not enough: an operator's own milestone PR is
         # authored by them, so the branch shape is the reliable signal.
-        self.assertIn("one whose head branch is `m<nn>-*` or", milestone())
+        self.assertIn("one whose head branch is `m<nnn>-*` or", milestone())
 
     def test_sweep_is_read_only_against_github(self):
         # Scope guard: cairn reads the inbox, it never manages it.

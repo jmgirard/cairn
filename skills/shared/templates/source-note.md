@@ -28,7 +28,7 @@
      Every committed page also carries its one line in references/INDEX.md. -->
 # <citekey> — <what this source is for, in a few words>
 
-**Provenance.** Ingested YYYY-MM-DD by M<NN> from
+**Provenance.** Ingested YYYY-MM-DD by M<NNN> from
 `cairn/references/sources/<citekey>.pdf` (gitignored) — or, for a non-PDF source,
 the URL plus how it was retrieved and by whom.
 Pagination: <journal pages | preprint pages | PDF pages | —>.

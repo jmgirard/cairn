@@ -81,7 +81,7 @@ presented ledger at the step-3 gate), adjust the proposal first, or stop.
      a `candidate` row instead (inventing criteria violates no-invention) —
      replan it later.
    - **IDs are never renumbered.** New numbering continues from the legacy
-     maximum (a repo at M53 starts at M54). Legacy decision IDs (ADR-0nn,
+     maximum (a repo at M053 starts at M054). Legacy decision IDs (ADR-0nn,
      D-00n, DESIGN §refs) stay valid as citations into `cairn/legacy/`;
      DECISIONS.md starts fresh at D-001 with a header note pointing at the
      legacy log; only still-governing decisions are re-recorded (citing
