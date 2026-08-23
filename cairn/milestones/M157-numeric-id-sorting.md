@@ -9,7 +9,7 @@
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** IP4   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** m157-numeric-id-sorting   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m157-numeric-id-sorting · https://github.com/jmgirard/cairn/pull/158   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -40,7 +40,7 @@ acceptance-criterion claim over them.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: The Milestone IDs rule in `skills/shared/tracking-rules.md` states
+- [x] AC1: The Milestone IDs rule in `skills/shared/tracking-rules.md` states
       that IDs are zero-padded to three digits (`M001`), that spellings of the
       same number at other zero-pad widths resolve to the same milestone, that
       milestone filename prefixes carry the padded form, and that a repo
@@ -50,7 +50,7 @@ acceptance-criterion claim over them.
       sweep extended to `hooks/` and `scripts/` finds no `M<NN>` placeholder
       (not followed by a third N) and no `m<nn>`; the hand-run `skills/tests`
       suite shows zero reds.
-- [ ] AC2: A milestone number spelled at two-digit and three-digit widths
+- [x] AC2: A milestone number spelled at two-digit and three-digit widths
       resolves to the same milestone on each of the scripts' ID surfaces — a
       prose token against the known-id set (`check_dangling_ids`), a ROADMAP
       row id against a milestone filename, and a `Depends on` cell against a
@@ -58,11 +58,11 @@ acceptance-criterion claim over them.
       on disk, and the reverse), including an id ≥ 100 whose spellings
       coincide; this behavior is test-covered per surface and direction, and
       both gating suites pass.
-- [ ] AC3: The lexicographic listing of `cairn/milestones/archive/` filenames
+- [x] AC3: The lexicographic listing of `cairn/milestones/archive/` filenames
       equals the same listing sorted by numeric milestone id (procedure: one
       python comparison of `sorted(names)` against `sorted(names, key=numeric
       id)`).
-- [ ] AC4: Every path-shaped milestone token (`M[0-9]+-<slug>.md`) in
+- [x] AC4: Every path-shaped milestone token (`M[0-9]+-<slug>.md`) in
       `cairn/ROADMAP.md`, `cairn/LESSONS.md`, and `cairn/DESIGN.md` names a
       file that exists under `cairn/milestones/` or
       `cairn/milestones/archive/` (procedure: extract each such token and stat
@@ -123,3 +123,25 @@ acceptance-criterion claim over them.
 
 ## Review
 <!-- owner: review · exclusive -->
+
+Fresh evidence, 2026-08-23, this session (PR #158):
+
+- AC1: tracking-rules.md:150-155 read — states three-digit padding (`M001`),
+  cross-width resolution, padded filename prefixes, and the M999 one-commit
+  re-pad. Whitespace-normalized sweep (python, git ls-files over skills/,
+  README.md, hooks/, scripts/): no "zero-padded to two digits", no
+  "past M99" in skills/+README, no `M<NN>` (not followed by a third N), no
+  `m<nn>` anywhere in the four surfaces. skills/tests hand-run: 528 tests,
+  zero reds.
+- AC2: TestNumericIdEquivalence run -v: 11/11 pass — prose-token surface
+  both directions (padded→narrow, narrow→padded), roadmap↔file surface both
+  directions (live/archive width conflict detected both ways, dep→archive
+  filename both ways), Depends-on surface both directions plus dropped-status
+  across widths, and two ≥100 coincident-spelling cases. Gating suites fresh:
+  scripts 319 OK, hooks 103 OK.
+- AC3: python comparison — sorted(names) == sorted(names, key=numeric id)
+  over cairn/milestones/archive/: True (156 files).
+- AC4: extract-and-stat over ROADMAP/LESSONS/DESIGN — 7 path-shaped tokens,
+  all exist under milestones/ or archive/: True. Migration commit a3b8ba4
+  `git diff --name-status`: 99 archive paths, all R100 (only non-R lines are
+  the same-commit tracking-file updates).
