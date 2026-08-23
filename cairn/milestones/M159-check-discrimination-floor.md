@@ -67,7 +67,7 @@ floor is language-agnostic.
       (`skills/shared/tracking-rules.md:436`), ≤14 added lines, craft
       register; grep the repo for restating surfaces (README and profiles
       verified clean at plan time — re-verify after drafting).
-- [ ] T2: Append the door-walk D-entry to `cairn/DECISIONS.md` per AC3.
+- [x] T2: Append the door-walk D-entry to `cairn/DECISIONS.md` per AC3.
 - [ ] T3: Run both gating suites (`python3 -m unittest discover -s
       scripts/tests`, `… -s hooks/tests`) and hand-run `skills/tests`
       (M148 lesson: edits near guarded rulebook regions); repair any red
@@ -81,6 +81,7 @@ floor is language-agnostic.
 - 2026-08-23: plan gate chose the universal floor over a new shared module because check-writing is universal (D-031's own boundary test), nearly every milestone writes checks, and M146 deliberately deleted the module home for this content family; falsified by adopter-side evidence that the floor lines burden sessions that never write checks.
 - 2026-08-23: plan gate chose craft register over a mandatory per-check discrimination-proof rule because the mandate would re-grow the certification burden RR13/M144-M146 dismantled; falsified by a vacuous check reaching a default branch past review in an adopting repo.
 - 2026-08-23: T1 — "Check discrimination" paragraph appended to "What gets a test" (7 added lines, numstat); restating-surface grep found only pre-existing planted-defect criteria wording in milestone-plan/milestone-brief SKILL.md; suites green (scripts 324, hooks 103).
+- 2026-08-23: T2 — D-126 appended (door walk: D-108 retained trigger, hosted per D-098, supersedes nothing); append verified by re-read; suites green.
 
 ## Decisions
 
