@@ -1,6 +1,6 @@
 # M159: The test floor states check discrimination: five distilled principles
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -68,7 +68,7 @@ floor is language-agnostic.
       register; grep the repo for restating surfaces (README and profiles
       verified clean at plan time — re-verify after drafting).
 - [x] T2: Append the door-walk D-entry to `cairn/DECISIONS.md` per AC3.
-- [ ] T3: Run both gating suites (`python3 -m unittest discover -s
+- [x] T3: Run both gating suites (`python3 -m unittest discover -s
       scripts/tests`, `… -s hooks/tests`) and hand-run `skills/tests`
       (M148 lesson: edits near guarded rulebook regions); repair any red
       traced to the edit.
@@ -82,6 +82,7 @@ floor is language-agnostic.
 - 2026-08-23: plan gate chose craft register over a mandatory per-check discrimination-proof rule because the mandate would re-grow the certification burden RR13/M144-M146 dismantled; falsified by a vacuous check reaching a default branch past review in an adopting repo.
 - 2026-08-23: T1 — "Check discrimination" paragraph appended to "What gets a test" (7 added lines, numstat); restating-surface grep found only pre-existing planted-defect criteria wording in milestone-plan/milestone-brief SKILL.md; suites green (scripts 324, hooks 103).
 - 2026-08-23: T2 — D-126 appended (door walk: D-108 retained trigger, hosted per D-098, supersedes nothing); append verified by re-read; suites green.
+- 2026-08-23: T3 — gating suites green (scripts 324, hooks 103); skills/tests hand-run: 528 tests, zero reds; branch numstat on tracking-rules.md: 7 added / 0 removed. All tasks done; status to review.
 
 ## Decisions
 
