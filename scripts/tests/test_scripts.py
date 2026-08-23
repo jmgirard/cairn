@@ -1423,7 +1423,11 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # 2026-08-08 adds the effort-experiment notes: a first-hand read of this
     # machine's session stores and five repos' own archives, nothing external
     # to re-verify against, hence `exempt`.
+    # M153 adds the record-rule re-measurement: its status claims a dated
+    # direct read of git-pinned blobs ("read directly ... 2026-08-22"), a
+    # verification claim with a date, hence `ok`.
     EXPECTED = {
+        "record-rule-remeasurement.md": "ok",
         "anthropic-code-review.md": "ok",
         "effort-experiment-notes.md": "exempt",
         "m118-cap-exemption-ledger.md": "exempt",

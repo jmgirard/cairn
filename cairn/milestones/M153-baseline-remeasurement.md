@@ -1,6 +1,6 @@
 # M153: The effort-audit baselines are re-measured
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -129,6 +129,7 @@ effort-experiment subject; the new note cross-references it for method.
 - 2026-08-22: T1–T4 landed together in one artifact (`references/record-rule-remeasurement.md` + INDEX line) — one checkpoint commit rather than four, logged as the deviation; all 16 blobs recovered, 106-row ledger built, shares/medians computed by script over the table and reproduced exactly (41%/57%/51%/60%; medians 137/175,620 and 135/179,878).
 - 2026-08-22: T1 finding — M143 is a legitimate zero, not a gap (archive: "17 findings, 0 scored ≥80"; its two gate fixes scored 60); M152 is the sole coverage gap (10 gate-fixed findings unrecoverable per-finding); the cost store holds no M137/M138 sessions (axis 3 reported over the 14 it holds).
 - 2026-08-22: verdict recorded as helping — record-defect share unchanged (~half) but record-caused returns fell to zero post-reduction and correction cascades collapsed to single batched entries; neither D-099's nor D-116's exit condition met; dead-weight exit path named per AC4.
+- 2026-08-22: the shipped-page state ledger (`scripts/tests/test_scripts.py` `TestShippedPageStateLedger`) redded on the new page — registered `record-rule-remeasurement.md: ok` (classifier-confirmed); the first suite run had been piped (`| tail`) and hid the red, caught by the unpiped re-run the M56+M65 lesson mandates; both suites then green with explicit exits (scripts 308 / hooks 103, exit 0 each).
 
 ## Decisions
 
