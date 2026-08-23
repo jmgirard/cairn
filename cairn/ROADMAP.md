@@ -12,6 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M157 | Milestone IDs sort numerically: three-digit padding, numeric resolution | planned | — | normal | milestones/M157-numeric-id-sorting.md |
 | M156 | Phase ends close with a standard block; gate chips stand alone | done | — | high | milestones/archive/M156-phase-close-block.md |
 | M155 | Mandated substance moves to guaranteed-rendered positions | done | — | high | milestones/archive/M155-rendered-substance.md |
 | M154 | The maturation exit's doctrine modules gain budgets | done | — | normal | milestones/archive/M154-doctrine-module-budgets.md |
