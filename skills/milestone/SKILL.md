@@ -56,8 +56,10 @@ tracking file or ignore entry, typically because the repo adopted cairn
 before a later scaffold addition); fix it by running `/cairn-init` (repair
 mode), which is the sole scaffolder — never hand-create the pieces here.
 Then check the byte budgets by hand — `wc -c cairn/ROADMAP.md cairn/LESSONS.md`
-against the tracking-rules Weight caps budgets — since `cairn_validate` does
-not measure them; an overrun takes the same remedies as the line caps,
+against the tracking-rules Weight caps budgets, and `wc -l -c` on each
+doctrine module against the budget its own header states (the maturation
+exit's rule) — since `cairn_validate` does not measure them; an overrun takes
+the same remedies as the line caps,
 surfaced as a finding for the user, never an auto-trim.
 
 The script also emits non-failing **advisories** (`WARN` lines, exit-code

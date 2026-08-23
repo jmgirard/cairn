@@ -77,7 +77,7 @@ tracking-rules:127-128 and the LESSONS-header pointer convention.
       states the module's line and byte budget in the module header (set
       from the graduated size plus stated headroom), hand-read with
       `wc -l -c` at hygiene passes, covered by no validator.
-- [ ] T2: Wire both hygiene sites: the post-merge hygiene hand-check
+- [x] T2: Wire both hygiene sites: the post-merge hygiene hand-check
       sentence at `skills/milestone-review/SKILL.md:336-338` and the health
       audit's byte-budget line at `skills/milestone/SKILL.md:58` each name
       doctrine-module header budgets, read `wc -l -c`.
@@ -109,6 +109,7 @@ tracking-rules:127-128 and the LESSONS-header pointer convention.
 - 2026-08-22: criteria audit ran in full mode ([O] fresh reader, two rounds): round 1 returned 9 findings — 3 wording fixes applied (validator-clause scoping, `wc -l -c` in the check AC2 names, both D-119 hygiene sites in scope), 2 became gate questions (D-108 door, retrofit), rest informational; round 2 re-read the final wording above and returned two notes — the door-walk must be on the record (it is: Scope, T4, this log) and AC3's headroom must exceed the header's own addition (T3 carries it) — no criterion defects.
 
 - 2026-08-22: T1 — budget clause added to the maturation exit (tracking-rules.md:124-126); scripts/hooks/skills suites all exit 0.
+- 2026-08-22: T2 — module-budget reading added to the health audit (milestone/SKILL.md:58-63) and post-merge hygiene (milestone-review/SKILL.md:337-341); all three suites exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
