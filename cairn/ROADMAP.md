@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M154 | The maturation exit's doctrine modules gain budgets | planned | — | normal | milestones/M154-doctrine-module-budgets.md |
+| M154 | The maturation exit's doctrine modules gain budgets | in-progress | — | normal | milestones/M154-doctrine-module-budgets.md |
 | M153 | The effort-audit baselines are re-measured | done | — | normal | milestones/archive/M153-baseline-remeasurement.md |
 | M152 | Chat and record prose gain a plain-style rule | done | — | high | milestones/archive/M152-plain-style-rule.md |
 | M151 | The instrument question reaches the reduced audit | done | — | high | milestones/archive/M151-instrument-question-both-modes.md |

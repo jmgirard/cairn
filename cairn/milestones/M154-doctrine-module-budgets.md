@@ -4,12 +4,12 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M154: The maturation exit's doctrine modules gain budgets
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP1, GP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m154-doctrine-module-budgets   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -72,7 +72,7 @@ tracking-rules:127-128 and the LESSONS-header pointer convention.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: Add the budget clause to the maturation exit at
+- [x] T1: Add the budget clause to the maturation exit at
       `skills/shared/tracking-rules.md:120-128`: the graduating milestone
       states the module's line and byte budget in the module header (set
       from the graduated size plus stated headroom), hand-read with
@@ -107,6 +107,8 @@ tracking-rules:127-128 and the LESSONS-header pointer convention.
 - 2026-08-22: plan gate chose retrofitting records-hygiene.md over forward-binding-only because otherwise neither hygiene site reads any budget until the next graduation; falsified by the retrofitted header drifting unread across consecutive hygiene passes.
 - 2026-08-22: plan gate chose the budget-only clause over budget-plus-pointer-check because pointer breakage is unobserved and each rulebook sentence is carried in the three mass pins; falsified by a graduated module going unreachable through a broken LESSONS pointer.
 - 2026-08-22: criteria audit ran in full mode ([O] fresh reader, two rounds): round 1 returned 9 findings — 3 wording fixes applied (validator-clause scoping, `wc -l -c` in the check AC2 names, both D-119 hygiene sites in scope), 2 became gate questions (D-108 door, retrofit), rest informational; round 2 re-read the final wording above and returned two notes — the door-walk must be on the record (it is: Scope, T4, this log) and AC3's headroom must exceed the header's own addition (T3 carries it) — no criterion defects.
+
+- 2026-08-22: T1 — budget clause added to the maturation exit (tracking-rules.md:124-126); scripts/hooks/skills suites all exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
