@@ -146,7 +146,7 @@ implement a workable milestone / plan) and lead the chip with it. End with
 ONE routing chip (AskUserQuestion) offering the single most sensible next
 action first (recommended).
 Acceptance chips (tracking-rules): a triage option that accepts an audit
-conclusion shows that conclusion's text verbatim above the chip. The bullets below are state-conditional
+conclusion shows that conclusion's text verbatim in a guaranteed-rendered position (Mandated-substance rule). The bullets below are state-conditional
 examples — only the applicable subset (≤4) is offered:
 
 - Resume M<NN> → `/milestone-implement M<NN>` (an `in-progress` milestone
@@ -181,7 +181,7 @@ Each item takes exactly one disposition — you propose, the user chooses:
 - **`/milestone-plan`** — anything larger than the hotfix bar.
 - **leave** — no row, no action, with the reason stated.
 
-Show every proposed disposition verbatim above the chip, never a count or a
+Show every proposed disposition verbatim in a guaranteed-rendered position (Mandated-substance rule — dispositions are long, so they end the turn before the chip), never a count or a
 summary of them: the dispositions are what the user is accepting, so a
 paraphrase would have them approve text they never saw.
 

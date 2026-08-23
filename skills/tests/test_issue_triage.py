@@ -151,7 +151,7 @@ class TestDispositions(unittest.TestCase):
 class TestVerbatimBar(unittest.TestCase):
     def test_dispositions_are_shown_verbatim_above_the_chip(self):
         self.assertIn(
-            "show every proposed disposition verbatim above the chip, never a count or a",
+            "show every proposed disposition verbatim in a guaranteed-rendered position (mandated-substance rule — dispositions are long, so they end the turn before the chip), never a count or a",
             milestone(),
         )
 

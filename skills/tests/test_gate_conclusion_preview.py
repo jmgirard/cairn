@@ -41,7 +41,7 @@ class TestPerSkillDirectives(unittest.TestCase):
     def test_implement_gate_and_mini_gate(self):
         t = read("milestone-implement", "SKILL.md")
         self.assertIn(
-            "conclusion shows its substance verbatim above the chip.",
+            "conclusion shows its substance verbatim in a guaranteed-rendered position (mandated-substance rule).",
             t,
         )
         self.assertIn(
@@ -62,7 +62,7 @@ class TestPerSkillDirectives(unittest.TestCase):
             t,
         )
         self.assertIn(
-            "the rr's conclusions/verdict section is shown verbatim above the chip.",
+            "the rr's conclusions/verdict section is shown verbatim, ending the turn before the chip (mandated-substance rule).",
             t,
         )
 
@@ -70,6 +70,38 @@ class TestPerSkillDirectives(unittest.TestCase):
         self.assertIn(
             "acceptance chips (tracking-rules): a triage option that accepts an audit",
             read("milestone", "SKILL.md"),
+        )
+
+
+class TestMandatedSubstanceRule(unittest.TestCase):
+    """M155: the Mandated-substance rule — text before a tool call in the
+    same turn may never display, so mandated substance takes one of the two
+    guaranteed-rendered positions. Four asserts, one per operative clause
+    (the hazard, the two positions, the overflow prong, the restatement
+    prong), each on its own source line."""
+
+    def test_names_the_rendering_hazard(self):
+        self.assertIn(
+            "text emitted before a tool call in the same turn is not reliably displayed",
+            rules(),
+        )
+
+    def test_names_the_two_guaranteed_positions(self):
+        self.assertIn(
+            "a chip's own question text and option descriptions, and a turn's final rendered text",
+            rules(),
+        )
+
+    def test_overflow_ends_the_preceding_turn(self):
+        self.assertIn(
+            "ends the preceding turn as that turn's final rendered text, the chip posed after the user responds",
+            rules(),
+        )
+
+    def test_previews_and_handoffs_restate_after_the_tool_resolves(self):
+        self.assertIn(
+            "first rendered text after the tool call resolves",
+            rules(),
         )
 
 
@@ -96,7 +128,7 @@ class TestMigrationGateDirectives(unittest.TestCase):
             t,
         )
         self.assertIn(
-            "verbatim in chat above the merge-approval chip — the pr description",
+            "verbatim in a guaranteed-rendered position at the merge-approval chip",
             t,
         )
 

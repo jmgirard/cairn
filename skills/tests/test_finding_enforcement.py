@@ -95,7 +95,8 @@ class TestReviewSurfaces(unittest.TestCase):
 
     def test_merge_chip_repeats_the_pairs_and_offers_accept_shortfall(self):
         self.assertIn("repeat the measured-vs-projected pairs verbatim in "
-                      "chat above the merge\n   chip", self.text)
+                      "a guaranteed-rendered\n   position at the merge chip "
+                      "(Mandated-substance rule)", self.text)
         self.assertIn('**"accept shortfall, recorded as such"**', self.text)
         self.assertIn("the maintainer decides seeing\n   the gap", self.text)
 
