@@ -123,6 +123,16 @@ the milestone compresses to a short summary in the archive, the ROADMAP
 row flips to `done`, and the next session, tomorrow or next month, resumes
 from the files alone.
 
+**Start each phase in a fresh session.** That's the intended mode, not just
+a supported one: the milestone file is the handoff, so plan, implement, and
+review each start cold from the files. Clearing between phases costs
+little — the plan already distilled the investigation — and avoids dragging
+a long session into context compaction. Review benefits most: a session
+that didn't watch the code get written verifies from evidence instead of
+inheriting the implementer's assumptions. The exception is a small
+milestone with a short planning phase, where continuing straight into
+implementation is fine.
+
 ## Which skill, when
 
 | You want to… | Do this |
