@@ -114,7 +114,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="433 lines / 39,744 chars",
+        block="441 lines / 40,716 chars",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -991,9 +991,9 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
-        test="TestMandatedSubstanceRule.test_overflow_ends_the_preceding_turn",
+        test="TestMandatedSubstanceRule.test_decision_chip_is_same_turn_and_self_sufficient",
         target=RULES,
-        block="ends the preceding turn as that turn's final rendered text, the chip posed after the user responds",
+        block="A decision chip is posed in the same turn as its",
     ),
     Mutation(
         guard="test_gate_conclusion_preview",

@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M156 | Phase ends close with a standard block; gate chips stand alone | planned | — | high | milestones/M156-phase-close-block.md |
+| M156 | Phase ends close with a standard block; gate chips stand alone | in-progress | — | high | milestones/M156-phase-close-block.md |
 | M155 | Mandated substance moves to guaranteed-rendered positions | done | — | high | milestones/archive/M155-rendered-substance.md |
 | M154 | The maturation exit's doctrine modules gain budgets | done | — | normal | milestones/archive/M154-doctrine-module-budgets.md |
 | M153 | The effort-audit baselines are re-measured | done | — | normal | milestones/archive/M153-baseline-remeasurement.md |

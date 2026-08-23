@@ -1,11 +1,11 @@
 # M156: Phase ends close with a standard block; gate chips stand alone
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1
-- **Branch/PR:** —
+- **Branch/PR:** m156-phase-close-block
 
 ## Goal
 
@@ -35,7 +35,7 @@ Surface tier: **user-facing** — the rulebook and every skill ending ship to ad
 
 ## Tasks
 
-- [ ] T1: Rewrite `skills/shared/tracking-rules.md`: the "Question gates and routing chips" section becomes the phase-close rule (AC1); the three chip-placement bullets become same-turn self-sufficient form (AC2); the Accessible-language rule gains the description-ban, no-filler standard, and rerouted overflow clause (AC3); re-seed the rulebook-mass baseline in its three sites (M149 lesson).
+- [x] T1: Rewrite `skills/shared/tracking-rules.md`: the "Question gates and routing chips" section becomes the phase-close rule (AC1); the three chip-placement bullets become same-turn self-sufficient form (AC2); the Accessible-language rule gains the description-ban, no-filler standard, and rerouted overflow clause (AC3); re-seed the rulebook-mass baseline in its three sites (M149 lesson).
 - [ ] T2: Run both AC4 sweeps; convert every phase-end chip in the ten skill files and `migration-protocol.md` to a close-block directive referencing the central rule, and update the decision-gate directives (plan gate, implement mini-gates, brief RB gate, review merge gate, milestone route triage, hotfix chips, init gates) to the same-turn self-sufficient form; per-hit dispositions in the work log.
 - [ ] T3: Guards: retire `TestRoutingChipMandate`, narrow `TestChipInvocationImperative` to gate-chip options naming a skill, re-pin every phrase the rewrites change, add guards + mutation entries pinning the phase-close rule and same-turn chip prong (M152 convention); hand-run `skills/tests` to zero reds.
 - [ ] T4: Draft the batched D-entry (supersedes D-003's routing-chip clause and D-022's one-click mechanism; absorbs D-019; narrows D-123's turn-break prong). It states the why — explanation text before a chip going randomly missing is too costly for one-click routing to be worth it — and the re-open condition: a harness guarantee that pre-tool-call text always renders makes re-enabling one-click routing worth reconsidering. Preview verbatim per the durable-record rule.
@@ -50,6 +50,7 @@ Surface tier: **user-facing** — the rulebook and every skill ending ship to ad
 - 2026-08-22: plan gate chose a uniform same-turn merge gate over a merge-only two-step because the on-disk Review section is the guaranteed evidence position and the extra exchange was the reported defect; falsified by a merge decided on a chip summary that the full findings would have changed.
 - 2026-08-22: plan gate chose superseding the one-click decision over keeping a single implement-to-review chip because the typed command replaces the click uniformly at every hop; falsified by measured friction complaints after adoption.
 - 2026-08-22: maintainer directive at the routing chip — the D-entry must record the supersession's why (randomly missing pre-chip text is too costly) and the re-open condition (a rendering guarantee reopens one-click routing); T4 refined (minor amendment).
+- 2026-08-22: T1 done — section retitled 'Question gates and phase closes' with the close-block rule; the three chip-placement bullets rewritten to same-turn self-sufficient form; Accessible-language ban extended to descriptions with the no-filler standard and rerouted overflow; copy-run bullet re-anchored; invocation imperative retained for gate-chip skill options; rulebook 433/39,744 -> 441/40,716 (`wc -l -m`), baseline re-seeded in its three sites; one guard re-pointed to the same-turn sentence; all suites exit 0 (525 skills tests).
 
 ## Decisions
 

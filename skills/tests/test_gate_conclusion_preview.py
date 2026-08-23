@@ -92,9 +92,9 @@ class TestMandatedSubstanceRule(unittest.TestCase):
             rules(),
         )
 
-    def test_overflow_ends_the_preceding_turn(self):
+    def test_decision_chip_is_same_turn_and_self_sufficient(self):
         self.assertIn(
-            "ends the preceding turn as that turn's final rendered text, the chip posed after the user responds",
+            "a decision chip is posed in the same turn as its",
             rules(),
         )
 

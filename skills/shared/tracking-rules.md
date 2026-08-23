@@ -246,21 +246,25 @@ honest work-log line, stop, resume fresh; if compaction threatens to lose someth
 file instead. Same-session implement → review is fine (evidence by command, never recall; review in a fresh subagent) —
 the seam that matters is milestone → milestone. A resume stumble is a tracking-file gap — fix the file.
 
-## Question gates and routing chips
+## Question gates and phase closes
 
 User interaction happens at exactly three gates — plan questions, pre-implementation questions, final merge approval —
-plus routing chips. At a gate, ask one batched round of 2–5 concrete decision questions via AskUserQuestion, each with a
+each a single exchange: the chip is posed in the same turn as its presentation, per the Mandated-substance rule below.
+At a gate, ask one batched round of 2–5 concrete decision questions via AskUserQuestion, each with a
 recommendation and brief pros/cons; between gates, work autonomously, never dripping questions. When more are open than
 one round holds, flag at most 3 prioritized markers and defer the rest. The **final merge-approval gate is itself an
-AskUserQuestion chip** — one approve/decline question (a decline option always present), never a prose yes/no.
+AskUserQuestion chip** — one approve/decline question (a decline option always present), never a prose yes/no. When a
+gate-chip option names a skill (`→ /skill` notation — an escalation offer, a repair route), selecting it is the go:
+**the orchestrator immediately invokes the target skill via the Skill tool**; the user never types that command.
 
-Every phase ends with a **routing chip**: an AskUserQuestion offering the single most sensible next action first,
-composed per the chip rules below. A chip is an explicit user stop — never auto-proceed — but the selection itself is
-the go: on selection **the orchestrator immediately invokes the target skill via the Skill tool** (the `→ /skill`
-notation in an option names that skill); the user never types the command. A routing chip is always an AskUserQuestion
-call — emitting a prose list of options where a chip is required is a drift bug. `/milestone-review`'s end is the **sole
-exception** (D-019): after a successful merge it closes with a plain-prose `/clear` nudge — the sole phase whose end is
-deliberately chip-less. (Its merge-approval gate stays an AskUserQuestion chip.)
+Every phase or skill ends with a **close block**, never a chip. The turn's final rendered text carries: an outcome
+recap (one or two sentences, plain words); a status table or line — unit of work, status, branch/PR and check results,
+where they exist; the next command or commands in fenced blocks, primary first, each with a one-line plain-language
+label; and one line noting that adjusting course or `/clear` are both safe at this point. No chip is posed to route to
+the next skill — the user runs the fenced command — and its fixed shape is itself the signal that a boundary was
+reached. Decision-gate chips, the merge-approval gate among them, are unaffected: a gate is a choice, a phase end is a
+handoff. Review's close after a successful merge recommends `/clear` plus the next action — the shape every phase
+close now shares, generalized from what was once review's sole exception.
 
 ## Output & interaction discipline
 
@@ -294,29 +298,33 @@ These rules bind all chat output while any cairn skill is active.
 - **Mandated substance renders.** Text emitted before a tool call in the same turn is not reliably displayed, so
   substance a rule requires the user to see never relies on pre-tool-call rendering alone. Two positions are
   guaranteed: a chip's own question text and option descriptions, and a turn's final rendered text (nothing emitted
-  after it). Chip-decision substance rides in the chip itself where it passes the Accessible-language limits below,
-  and otherwise ends the preceding turn as that turn's final rendered text, the chip posed after the user responds.
+  after it); a file on disk is likewise always readable. A decision chip is posed in the same turn as its
+  presentation, and its question text and option descriptions alone carry what the choice needs, in plain language;
+  fuller evidence appears best-effort in the chat above, and where it exists as a file on disk — a milestone file's
+  Review section, a drafted record — the question text cites its path.
   A durable-record preview or a handoff command either ends its turn's rendered text or is restated verbatim in the
   first rendered text after the tool call resolves.
 - **Chips carry choices, not evidence.** A chip is a decision surface, never the dump for long material: option
   labels are short; descriptions say in plain language what is chosen and why it matters; ≤4 options per question.
-  Supporting detail and justification take a guaranteed-rendered position (Mandated-substance rule above) — inside
-  the chip's question text where they fit, else ending the preceding turn — never mid-turn chat before the chip's
-  tool call.
+  The decision-relevant substance rides in the chip's question text and option descriptions (Mandated-substance rule
+  above); anything longer stays best-effort in the chat above and on disk, cited by path — never a reason to defer
+  the chip to another turn, and never trusted to mid-turn chat alone.
 - **Accessible language on the decision surface.** A question's text, the prose framing a chip, and every option label
   and description pass the two-sentence test: the first sentence says what is being decided in plain words, the second
   what happens on each choice, both before any term of art; a technical term is glossed at first use. Cairn-internal
-  record identifiers — D-/RR-/BC-ids, IP/GP numbers, doctrine section numbers — stay out of question text and option
-  labels (`M<NN>` is exempt); the identifier and its justification live outside the chip, in a guaranteed-rendered
-  position when the user needs them to decide (Mandated-substance rule above). A gate prompt the
+  record identifiers — D-/RR-/BC-ids, IP/GP numbers, doctrine section numbers — stay out of question text, option
+  labels, and option descriptions (`M<NN>` is exempt, and one file-path citation in question text is permitted);
+  chip text is plain language with no record-identifier filler, and an identifier's justification goes best-effort
+  to the chat above the chip, the cited path carrying the rest. A gate prompt the
   user flags as unclear is captured verbatim same-session (a work-log line, or a candidate ROADMAP row when no milestone
   is active). Applied in authorial judgment, never as a gate.
 - **Acceptance chips show what's accepted.** A chip option accepting or approving a produced conclusion — review
-  findings, a verdict, an audit result, amended text, a proposed disposition — requires that conclusion's substance
-  verbatim in a guaranteed-rendered position before the choice (Mandated-substance rule above): in the chip's question
-  text where it passes the Accessible-language limits, otherwise ending the preceding turn as its final rendered text
-  with the chip posed after the user responds (a long artifact: its conclusions verbatim plus the file path); a
-  paraphrase never stands in for the text being accepted.
+  findings, a verdict, an audit result, amended text, a proposed disposition — carries that conclusion's
+  decision-relevant substance in the chip's own question text and option descriptions, in plain language, and the
+  chip is posed in the same turn as its presentation (Mandated-substance rule above). The full conclusion appears
+  verbatim best-effort in the chat above, and where it lives in a file — a milestone file's Review section, a
+  drafted record — the question text cites its path; the chip's compact form never replaces that verbatim text,
+  which is always on the chat-above or cited surface, and a paraphrase never stands in for the text being accepted.
 - **Contextual chip construction.** Compose options from the actual session state, not a fixed menu; chip menus in
   skills are examples, not scripts. Invariants: recommended option first and marked, ≤4 options, a stop/pause option
   present, and a chip is a user stop — never auto-proceed.
@@ -324,10 +332,10 @@ These rules bind all chat output while any cairn skill is active.
   runtime's chapter mechanism (`mark_chapter` in Claude Code — it drives the navigable TOC); absent one, the H1/H2
   headers are the fallback.
 - **Copy-run commands get their own fenced block.** Handing the user a command to run → its own fenced code block, never
-  inline backticks; naming a command, path, or symbol in prose → inline backticks; a routing chip's `→ /skill` option →
+  inline backticks; naming a command, path, or symbol in prose → inline backticks; a gate chip's `→ /skill` option →
   neither fence nor handoff (selecting the option is what acts). Slash commands count as commands. A step ending the
-  turn expecting the user to run something is a handoff (fence); noting a safe `/clear` point beside a chip already
-  offering the route is a mention (inline).
+  turn expecting the user to run something is a handoff (fence) — the close block's next-command fences are exactly
+  this; naming a safe `/clear` point in the close block's safety line is a mention (inline).
 - **Subagent titles carry the model tier.** Prefix every Agent description with `[S]`/`[O]`/`[F]` for Sonnet/Opus/Fable
   — task panes show only the title, not the model.
 
