@@ -97,7 +97,7 @@ acceptance-criterion claim over them.
       `skills/shared/migration-protocol.md:84`, tracking-rules "tidymedia
       M07"); update pinned `skills/tests` fixtures; hand-run skills/tests,
       zero reds; append the D-entry recording the format change.
-- [ ] T4: Migration: `git mv` the 99 two-digit archive files to M001–M099
+- [x] T4: Migration: `git mv` the 99 two-digit archive files to M001–M099
       names; update the `archive/M56-…` cite in ROADMAP's citekey candidate
       row; run AC3's comparison and AC4's extract-and-stat; log the known
       history-side path cites left dangling (D-051's `archive/M53-…:17`, plus
@@ -116,6 +116,7 @@ acceptance-criterion claim over them.
 - 2026-08-23: T1 done — 11 equivalence tests added (TestNumericIdEquivalence): 3 per surface-and-direction pairs plus dropped-status and two >=100 coincident pins; 9 red against current string matching, the 2 coincident pins green by construction.
 - 2026-08-23: T2 done — `canon_id` added to cairn_scripts (M%03d re-pad, non-numeric pass-through); comparison sites canonicalized in cairn_next (by_id/done/deps) and cairn_validate (check_dependencies, check_id_uniqueness, _known_ids, check_dangling_ids membership, release-nomination lookup); display spellings untouched; scripts 319 + hooks 103 both green.
 - 2026-08-23: T3 done — ID rule rewritten (three-digit padding, cross-width resolution, padded filename prefixes, M999 one-commit re-pad); `M<NN>`/`m<nn>` swept to three-N forms across skills/, README.md, hooks/, scripts/ (23 files); teaching examples modernized (README M007 walkthrough, milestone template M013, migration-protocol M053/M054, tidymedia M007); cairn/LESSONS.md header format line corrected in place; AC1 whitespace-normalized sweep clean; skills/tests 528 zero reds; D-125 appended.
+- 2026-08-23: T4 done — 99 archive files `git mv`'d M01–M99 → M001–M099; ROADMAP citekey row's archive/M56 cite updated to M056; AC3 comparison True, AC4 extract-and-stat True; history-side dangling path cites after rename: exactly one, D-051's `archive/M53-prose-guard-mutation-harness.md:17` (DECISIONS.md:1318, logged per plan, never edited); validate green, scripts 319 + hooks 103 green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
