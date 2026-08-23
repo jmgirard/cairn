@@ -185,8 +185,10 @@ def live_files(root):
 
 
 def id_num(mid):
-    """Numeric sort key for an ID; non-numeric IDs sort last, deterministically."""
-    return int(mid[1:]) if mid[1:].isdigit() else 10**9
+    """Numeric sort key for an ID; non-numeric IDs sort last, deterministically.
+    isdecimal, not isdigit — superscripts pass isdigit but crash int()
+    (D-023: tolerate, never raise)."""
+    return int(mid[1:]) if mid[1:].isdecimal() else 10**9
 
 
 def canon_id(mid):

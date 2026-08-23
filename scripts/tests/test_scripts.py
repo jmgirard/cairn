@@ -1908,6 +1908,19 @@ class TestNumericIdEquivalence(ScriptCase):
         self.assertNotEqual(proc.returncode, 0, proc.stdout)
         self.assertIn("M03 depends on M², which does not exist", proc.stdout)
 
+    # M157 review round 2, G1: a ROADMAP row id with a non-decimal digit tail
+    # reaches id_num via the release-window sort key and the dangling-ids
+    # ceiling; it must FAIL/report clean, never crash (D-023).
+
+    def test_unicode_digit_row_id_does_not_crash_validator(self):
+        self.tree.rows[0] = (
+            "M²", "Superscript row", "planned", "—", "high",
+            "milestones/M03-live.md",
+        )
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertNotIn("Traceback", proc.stdout)
+        self.assertNotIn("Traceback", proc.stderr)
+
     # M157 return 1, F2: FAIL messages print the dep spelling as written in
     # the ROADMAP cell, never its canonical re-pad.
 

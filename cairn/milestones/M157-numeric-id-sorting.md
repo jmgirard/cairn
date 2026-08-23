@@ -126,6 +126,7 @@ acceptance-criterion claim over them.
 - 2026-08-23: re-review after return 1 — fresh evidence all four ACs (AC2 ticked: 15 equivalence tests incl. release-window lookup both directions; scripts 323 / hooks 103 / skills 528 green; validate exit 0); three-lens fan-out spawned.
 - 2026-08-23: fan-out round 2 — [S] lenses zero findings; [O] 8 findings: G8 examples fixed, G5 count superseded (next line), G6 one-digit-dep divergence accepted, G1 (`id_num` isdigit crash, pre-existing) to the gate recommended fix-now, G2/G3/G4/G7 rejected with reasons in Review.
 - 2026-08-23: supersedes return-1's "three" dangling-cite count: ten total — D-051's M53, RB02's M84+M87, plus RB03 M95×2, RB04 M96, RR03 M95/M96/M97, RR04 M96 (reviews/archive not swept by either earlier count); all history-side, none edited (IP4).
+- 2026-08-23: gate: user triaged G1 fix-now and authorized merge — id_num switched to isdecimal + row-id crash regression test (red before fix, green after); scripts 324 green; proceeding to merge PR #158.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
