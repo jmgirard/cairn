@@ -50,7 +50,7 @@ acceptance-criterion claim over them.
       sweep extended to `hooks/` and `scripts/` finds no `M<NN>` placeholder
       (not followed by a third N) and no `m<nn>`; the hand-run `skills/tests`
       suite shows zero reds.
-- [ ] AC2: A milestone number spelled at two-digit and three-digit widths
+- [x] AC2: A milestone number spelled at two-digit and three-digit widths
       resolves to the same milestone on each of the scripts' ID surfaces — a
       prose token against the known-id set (`check_dangling_ids`), a ROADMAP
       row id against a milestone filename, and a `Depends on` cell against a
@@ -123,6 +123,7 @@ acceptance-criterion claim over them.
 - 2026-08-23: T4 done — 99 archive files `git mv`'d M01–M99 → M001–M099; ROADMAP citekey row's archive/M56 cite updated to M056; AC3 comparison True, AC4 extract-and-stat True; history-side dangling path cites after rename: exactly one, D-051's `archive/M53-prose-guard-mutation-harness.md:17` (DECISIONS.md:1318, logged per plan, never edited); validate green, scripts 319 + hooks 103 green.
 - 2026-08-23: defect return #1 (review fan-out, [O] diff-bug F5): AC2's row-id→filename surface not test-covered as stated (check_release_window lookup untested) — AC2 tick withdrawn; riding the return: F4 canon_id ValueError on unicode digits, F2 dep FAIL-message spelling, F6/F7 teaching-example modernization; F1 → candidate row; F8 rejected (pre-existing). Supersedes T2's "display spellings untouched" (wrong for FAIL messages) and T4's "exactly one" dangling cite (three: D-051's M53, RB02's M84 + M87 — reviews/archive was not swept; files stay unedited per IP4).
 - 2026-08-23: T5 done (return 1) — 4 tests added (release-window lookup both directions — the T2 fix was already in place, the gap was coverage; unicode-digit dep FAILs clean; dep message keeps as-written spelling); canon_id switched to isdecimal; check_dependencies messages print the cell's spelling; "work on M107" in the implement SKILL description; fixture fills M080/M085; scripts 323 + hooks 103 + skills 528 (hand-run) all green.
+- 2026-08-23: re-review after return 1 — fresh evidence all four ACs (AC2 ticked: 15 equivalence tests incl. release-window lookup both directions; scripts 323 / hooks 103 / skills 528 green; validate exit 0); three-lens fan-out spawned.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -193,3 +194,22 @@ Fan-out (2026-08-23, three lenses, ranked findings and dispositions — IP3):
   history prose, D-entries all verified consistent.
 - [S] prior-PR-comments: no prior-review evidence of regression (archived
   Review sections checked; PR-comments probe returned empty), zero findings.
+
+Re-review after return 1 (2026-08-23, fresh evidence, this session):
+
+- AC1: whitespace-normalized sweep over skills/, README.md, hooks/, scripts/
+  — zero hits on all four probes; skills/tests hand-run 528, zero reds.
+- AC2: TestNumericIdEquivalence 15/15 pass, now including the
+  release-window row-id→filename lookup both directions
+  (test_narrow_row_id_resolves_to_padded_live_filename and the padded→narrow
+  reverse), unicode-digit dep FAILs clean (no crash), dep FAIL message keeps
+  the as-written spelling; gating suites fresh: scripts 323 OK, hooks 103 OK
+  — AC2 ticked against this evidence.
+- AC3: sorted(names) == sorted(names, key=numeric id) over archive/: True
+  (156 files).
+- AC4: 7 path-shaped tokens in ROADMAP/LESSONS/DESIGN all stat: True;
+  migration commit a3b8ba4 shows 99 R100 lines, non-R lines are the
+  same-commit tracking updates only.
+- Consistency gate: cairn_validate exit 0, all checks pass; no DESIGN.md
+  principle change (cairn_impact skipped); generic profile — no toolchain
+  checks.
