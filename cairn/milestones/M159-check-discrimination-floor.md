@@ -83,6 +83,7 @@ floor is language-agnostic.
 - 2026-08-23: T1 — "Check discrimination" paragraph appended to "What gets a test" (7 added lines, numstat); restating-surface grep found only pre-existing planted-defect criteria wording in milestone-plan/milestone-brief SKILL.md; suites green (scripts 324, hooks 103).
 - 2026-08-23: T2 — D-126 appended (door walk: D-108 retained trigger, hosted per D-098, supersedes nothing); append verified by re-read; suites green.
 - 2026-08-23: T3 — gating suites green (scripts 324, hooks 103); skills/tests hand-run: 528 tests, zero reds; branch numstat on tracking-rules.md: 7 added / 0 removed. All tasks done; status to review.
+- 2026-08-23: review — AC1-AC3 pass on fresh evidence; gate green; three-lens fan-out: one fix-now (rulebook-mass baseline re-seeded in three sites, M149 lesson), rest rejected at triage with reasons in Review; suites re-run green.
 
 ## Decisions
 
@@ -104,3 +105,52 @@ floor is language-agnostic.
   (scripts 324, hooks 103); no DESIGN.md principle changed → impact skip;
   generic profile → toolchain half no-op. No Driving RR → projection
   juxtaposition no-ops.
+- 2026-08-23 fan-out (user-facing tier, three lenses). Findings and triage:
+  - [S-prior] F1 (top-ranked): deliberate tracking-rules.md change without
+    re-seeding the rulebook-mass baseline pinned in three places
+    (`skills/milestone/SKILL.md:94`, `skills/tests/test_cost_audit_line.py:67`,
+    `skills/tests/test_mutation_harness.py:117`, all still "443 lines /
+    40,949 chars") — regresses the M149 LESSONS line. Verified: file now
+    453 / 41,941. **Fixed at the gate**: all three sites re-seeded to
+    "453 lines / 41,941 chars (M159, 2026-08-23)"; suites re-run green
+    (skills 528, scripts 324, hooks 103).
+  - [S-blame]: no findings; observation that the D-108 trigger is a softer
+    instance than D-098's precedent, judged a reasoned application (plan-gate
+    work-log line with falsifier). Logged, no action.
+  - [O] 1 (restates shipped rules; principles 1/5 overlap the
+    failure-identity rule and fails-before-fix): **rejected** — overlap is
+    partial (planting defects to prove a new check ≠ regression test for a
+    bug fix; identity-or-kind generalizes failure identity to checks), and
+    the five-principle list is AC1's plan-owned normative content.
+  - [O] 2 (D-126 "shipped nothing" overstated): **rejected** — the claim
+    names the "What gets a test" section; the failure-identity rule lives in
+    Universal tracking rules, and no passage addressed check discrimination
+    as such. D-entry stands (IP4; a nuance, not a proven-false claim).
+  - [O] 3 ("never printed text alone" vs the meaningful-snapshots
+    allowance): **rejected** — the snapshot line governs what gets a test,
+    the new line how a check asserts; a pinned meaningful snapshot is an
+    identity assertion, not "printed text alone".
+  - [O] 4 (door walk: doctrine-prose omission is D-090's ordinary-work case,
+    not the retained trigger): **rejected** — the plan gate weighed exactly
+    this and recorded the satisfied-trigger reading with a falsifier
+    (work log 2026-08-23); an intentional, gated decision. Blame lens
+    concurred it is a reasoned application.
+  - [O] 5 (paragraph lands after the section's boundary sentence):
+    **rejected** — style; the boundary sentence scopes profile specifics vs
+    the floor, and the appended paragraph is floor content it covers.
+  - [O] 6 ("report" term imported): **rejected** — the wording matches AC1's
+    normative principle (4) verbatim; recognizable in context as a check's
+    report.
+  - [O] 7 (imperative line could be read as the declined per-check mandate):
+    **rejected** — the craft register was the plan-gate choice; the declined
+    form's falsifier (a vacuous check surviving review in an adopting repo)
+    is recorded in Out and D-126.
+  - [O] 8 (quarto-index citations ambiguous/unpinned, ids unpadded):
+    **rejected** — AC3's required citation form followed; "its own" scopes
+    the path and ids to quarto-index, whose ids are not cairn's to re-pad
+    (D-125 is repo-local); module read pinned at 3fbf848.
+  - [O] 9 (milestone-file edits uncommitted): **resolved** before the gate —
+    committed as ea4f8fc.
+- Return floor: no finding demonstrates an acceptance criterion failing and
+  none is judged a load-bearing deliverable defect surviving the fix; F1
+  fixed at the gate, no status return.
