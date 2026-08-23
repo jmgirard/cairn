@@ -4553,3 +4553,44 @@ the decision surface", "Durable-record preview") and every per-skill
 directive state guaranteed-rendered placements; the guards pin the new
 wording. If the harness comes to guarantee pre-tool-call rendering, this is
 the entry to supersede.
+
+### D-124 (2026-08-22): Routing chips retire into the phase-close block and gate chips stand alone — supersedes D-003's routing-chip clause and D-022's one-click mechanism, absorbs D-019 as the new norm, and narrows D-123's turn-break prong (M156)
+
+**Context:** D-003 glued the phase skills with routing chips for one-click
+transitions; D-123 (M155) reacted to pre-chip text going unrendered by
+ending the turn before an evidence-bearing chip and posing it after the
+user responds. The maintainer reports the shipped result as an interaction
+defect: at a phase boundary it is not clear at a glance what to do, and the
+two-exchange dance ("reply so I can show the chip", then click an option
+one could have typed) is worse than typing the next command. The root
+tradeoff: explanation text before a chip goes randomly missing, and that
+cost exceeds the value of one-click routing.
+
+**Decision:** Every phase or skill ends with a close block, never a chip —
+the turn's final rendered text carries the outcome recap, a status table or
+line, the next command(s) in fenced blocks with plain labels, and a line
+noting that adjusting or `/clear` is safe; the user runs the command.
+Decision gates keep their chips, posed in the same turn as their
+presentation, self-sufficient: question text and option descriptions carry
+the decision-relevant substance in plain language, the full text best-effort
+in chat above and cited by file path where it lives on disk. Chip text
+gains a readability standard: the identifier ban extends to option
+descriptions, and no chip text carries record-identifier filler.
+Superseded: D-003's "every phase ends with an AskUserQuestion chip routing
+to the next" and its one-click consequence; D-022's invoke-on-selection
+mechanism for routing chips (the imperative survives for gate-chip options
+that name a skill, such as an escalation offer). Absorbed: D-019's
+review-end exception — the chip-less close it carved out is now every
+phase's shape. Narrowed: D-123's "otherwise ends the preceding turn as that
+turn's final rendered text, the chip posed after the user responds" — the
+placement doctrine and verbatim bar stand, the turn-break prong is
+replaced by same-turn self-sufficient chips. D-037's verbatim bar is
+unbroken: the chip's compact form never replaces the verbatim text, which
+is always in the chat above (best-effort) or on the cited surface.
+
+**Consequences:** The fixed close-block shape is the boundary signal; no
+skill poses a chip to route. Re-open condition, recorded at the
+maintainer's direction: if the harness ever guarantees that pre-tool-call
+text renders — so explanation text is never randomly missing — re-enabling
+one-click routing between phases is worth reconsidering, and this is the
+entry to supersede.
