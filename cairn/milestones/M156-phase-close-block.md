@@ -1,6 +1,6 @@
 # M156: Phase ends close with a standard block; gate chips stand alone
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -39,7 +39,7 @@ Surface tier: **user-facing** — the rulebook and every skill ending ship to ad
 - [x] T2: Run both AC4 sweeps; convert every phase-end chip in the ten skill files and `migration-protocol.md` to a close-block directive referencing the central rule, and update the decision-gate directives (plan gate, implement mini-gates, brief RB gate, review merge gate, milestone route triage, hotfix chips, init gates) to the same-turn self-sufficient form; per-hit dispositions in the work log.
 - [x] T3: Guards: retire `TestRoutingChipMandate`, narrow `TestChipInvocationImperative` to gate-chip options naming a skill, re-pin every phrase the rewrites change, add guards + mutation entries pinning the phase-close rule and same-turn chip prong (M152 convention); hand-run `skills/tests` to zero reds.
 - [x] T4: Draft the batched D-entry (supersedes D-003's routing-chip clause and D-022's one-click mechanism; absorbs D-019; narrows D-123's turn-break prong). It states the why — explanation text before a chip going randomly missing is too costly for one-click routing to be worth it — and the re-open condition: a harness guarantee that pre-tool-call text always renders makes re-enabling one-click routing worth reconsidering. Preview verbatim per the durable-record rule.
-- [ ] T5: Run both gating suites and `cairn_validate`; all green.
+- [x] T5: Run both gating suites and `cairn_validate`; all green.
 
 ## Work log
 
@@ -54,7 +54,10 @@ Surface tier: **user-facing** — the rulebook and every skill ending ship to ad
 - 2026-08-22: T2 done — routing-chip sweep: 17 hits, 14 converted to close-block directives (hotfix 26; milestone 146; init 154,156,164,169,255; migration 184; design-interview 156; release 100 + its step-4 reference; brief 134; plan 280; implement 134,144; review 371-383 reworded to the generalized close), 2 reclassified as decision chips with relabels (migration 38 dry-run acceptance; design-interview 81 continue/stop), post-sweep `grep -rn -i 'routing chip' --include='*.md' skills/` returns nothing; AskUserQuestion sweep: 22 pre-edit hits, 12 decision-gate lines kept (hotfix 84,96; init 52,63,138,235; tracking-rules 253,256; design-interview 50; brief 44; plan 104; review 296,383), rest were the converted lines.
 - 2026-08-22: T3 done — 8 guard reds fired on the edited lines (fired-guard proof); TestRoutingChipMandate retired with its subject, its merge-gate assert moved into new TestPhaseCloseBlock (6 asserts incl. a no-reintroduction sweep over skills/*/SKILL.md); 4 RULES-target mutation entries added; pins re-pointed in test_copy_run_handoffs, test_issue_triage, test_gate_conclusion_preview (+3 mutation blocks); implement's safe-`/clear`-point phrase restored inline per the D-048 guard's intent; skills/tests 528 exit 0; scripts/hooks/validate exit 0.
 - 2026-08-22: T4 done — D-124 appended with the why (randomly missing pre-chip text outweighs one-click routing) and the maintainer's re-open condition (a rendering guarantee reopens one-click); shown verbatim in the committing turn's final rendered text.
+- 2026-08-22: T5 done — scripts/tests, hooks/tests, skills/tests (528), cairn_validate all exit 0; status to review.
 
 ## Decisions
+
+- 2026-08-22: D-124 (cross-cutting, promoted to `cairn/DECISIONS.md`): routing chips retire into the phase-close block; gate chips same-turn self-sufficient; re-open condition on a harness rendering guarantee.
 
 ## Review
