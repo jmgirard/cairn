@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-22 (M156 archived; M151 done-row pruned for terminal retention; one lesson added (wrapped-token sweeps), none retired; skills/tests hand-run on merged main: 528 tests, zero reds; validate green; caps ok; byte budgets `wc -c` 11,721 / 13,220 — both under; module budgets `wc -l -c` 44/2,575, 99/6,480, 188/12,248 — all under their headers.)_
+_Last hygiene check: 2026-08-23 (M157 archived; M152 done-row pruned for terminal retention; one lesson added (sweep every cite-bearing tree before stating a count), none retired; skills/tests hand-run on merged main: 528 tests, zero reds; validate green; caps ok; byte budgets `wc -c` 12,377 / 13,619 — both under; module budgets `wc -l -c` 44/2,575, 99/6,480, 188/12,250 — all under their headers.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,13 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M157 | Milestone IDs sort numerically: three-digit padding, numeric resolution | review | — | normal | milestones/M157-numeric-id-sorting.md |
+| M157 | Milestone IDs sort numerically: three-digit padding, numeric resolution | done | — | normal | milestones/archive/M157-numeric-id-sorting.md |
 | M156 | Phase ends close with a standard block; gate chips stand alone | done | — | high | milestones/archive/M156-phase-close-block.md |
 | M155 | Mandated substance moves to guaranteed-rendered positions | done | — | high | milestones/archive/M155-rendered-substance.md |
 | M154 | The maturation exit's doctrine modules gain budgets | done | — | normal | milestones/archive/M154-doctrine-module-budgets.md |
 | M153 | The effort-audit baselines are re-measured | done | — | normal | milestones/archive/M153-baseline-remeasurement.md |
-| M152 | Chat and record prose gain a plain-style rule | done | — | high | milestones/archive/M152-plain-style-rule.md |
-
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
