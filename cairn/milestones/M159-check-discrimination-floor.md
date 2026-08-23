@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP4
-- **Branch/PR:** m159-check-discrimination-floor
+- **Branch/PR:** m159-check-discrimination-floor · https://github.com/jmgirard/cairn/pull/160
 
 ## Goal
 
@@ -33,7 +33,7 @@ floor is language-agnostic.
 
 ## Acceptance criteria
 
-- [ ] AC1: The "What gets a test" section of `skills/shared/tracking-rules.md`
+- [x] AC1: The "What gets a test" section of `skills/shared/tracking-rules.md`
       states, in shipped prose, all five check-discrimination principles as
       restated here (this list is normative): (1) a new check is proven able
       to fail by planting the defect class it claims to catch; (2) a check
@@ -44,10 +44,10 @@ floor is language-agnostic.
       at least one case where a new report must stay silent; (5) checks
       assert identity or kind, never counts or printed text alone — each
       recognizable by its concept on a read of the section.
-- [ ] AC2: Rulebook growth is bounded: `git diff --numstat $(git merge-base
+- [x] AC2: Rulebook growth is bounded: `git diff --numstat $(git merge-base
       main HEAD)..HEAD -- skills/shared/tracking-rules.md` reports ≤ 14 in
       its added-lines column.
-- [ ] AC3: `cairn/DECISIONS.md` carries a new D-entry that (a) states the
+- [x] AC3: `cairn/DECISIONS.md` carries a new D-entry that (a) states the
       shipped-behavior defect and its measured downstream cost — the floor's
       silence on check discrimination, paid in quarto-index review returns
       (M01, M08, M23) and in that repo authoring its own doctrine module —
@@ -87,3 +87,20 @@ floor is language-agnostic.
 ## Decisions
 
 ## Review
+
+- 2026-08-23 AC1: fresh read of `skills/shared/tracking-rules.md` "What gets
+  a test" — the shipped "Check discrimination" paragraph states all five
+  principles recognizably: planted-defect proof, non-empty domain, one
+  independent fact, untouched-shape/silent-case fixtures, identity-or-kind
+  assertions. PASS.
+- 2026-08-23 AC2: `git diff --numstat $(git merge-base main HEAD)..HEAD --
+  skills/shared/tracking-rules.md` → 7 added / 0 removed; 7 ≤ 14. PASS.
+- 2026-08-23 AC3: D-126 read fresh — states the shipped-behavior defect
+  (floor silent on check discrimination after M146 deleted guard-doctrine.md)
+  and its measured cost (quarto-index returns M01/M08/M23; own module
+  `cairn/check-design.md` @ 3fbf848), and records the door walk (D-108
+  retained trigger, hosted per D-098, supersedes nothing). PASS.
+- 2026-08-23 gate: cairn_validate exit 0, all checks pass; suites green
+  (scripts 324, hooks 103); no DESIGN.md principle changed → impact skip;
+  generic profile → toolchain half no-op. No Driving RR → projection
+  juxtaposition no-ops.
