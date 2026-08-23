@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** m158-known-issues-routing
+- **Branch/PR:** m158-known-issues-routing · https://github.com/jmgirard/cairn/pull/159
 
 ## Goal
 
@@ -38,13 +38,13 @@ at the plan gate; see work log.
 
 ## Acceptance criteria
 
-- [ ] AC1: Step 9 of `skills/milestone-review/SKILL.md` (the post-merge
+- [x] AC1: Step 9 of `skills/milestone-review/SKILL.md` (the post-merge
       hygiene pass) contains a clause that routes an accepted durable
       limitation — one the milestone surfaced, the user chose to live with,
       and no candidate row or fix covers — to an entry in `cairn/DESIGN.md`'s
       Known issues section, and states that the entry is written in the same
       hygiene commit.
-- [ ] AC2: A fresh run of each of the two gating suites (`python3 -m
+- [x] AC2: A fresh run of each of the two gating suites (`python3 -m
       unittest` over `scripts/tests` and `hooks/tests`) exits 0, and
       `skills/tests` is hand-run on the branch, any red classified per
       D-109 — traced to an intentional re-wording and noted as intentional,
@@ -74,7 +74,11 @@ at the plan gate; see work log.
 
 - 2026-08-23: T1 — routing clause added to step 9 under its own header ("Route accepted limitations:"), between the lessons-capture and retirement blocks; echoes neither pinned marker phrase; both gating suites exit 0 (324 + 103 tests, OK).
 - 2026-08-23: T2 — gating suites re-run individually on the branch (scripts/tests 324, hooks/tests 103, each exit 0); skills/tests hand-run: 528 tests, exit 0, zero reds, nothing to classify. Status → review.
+- 2026-08-23: review — PR #159 (draft); AC1–AC2 verified with fresh evidence (Review section); cairn_validate all checks pass; generic profile → toolchain gate no-op; three-lens fan-out spawned (user-facing tier).
 
 ## Decisions
 
 ## Review
+
+- 2026-08-23 AC1: verified by reading `git diff main...HEAD -- skills/milestone-review/SKILL.md` — step 9 gains a "Route accepted limitations:" block between the lessons-capture and retirement blocks, routing a durable limitation the milestone surfaced, the user chose to live with, and no candidate row or fix covers, to an entry in `cairn/DESIGN.md`'s Known issues section, "written in this same hygiene commit"; "None accepted → skip." Pass.
+- 2026-08-23 AC2: fresh runs at review — `python3 -m unittest discover` per suite, exit codes checked individually: scripts/tests 324 tests exit 0; hooks/tests 103 tests exit 0; skills/tests hand-run, 528 tests exit 0, zero reds, nothing to classify under D-109. Pass.
