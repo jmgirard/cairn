@@ -1,11 +1,11 @@
 # M155: Mandated substance moves to guaranteed-rendered positions
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1
-- **Branch/PR:** —
+- **Branch/PR:** m155-rendered-substance
 
 ## Goal
 
@@ -31,7 +31,7 @@ Surface tier: **user-facing** — the rulebook and skill directives ship to ever
 
 ## Tasks
 
-- [ ] T1: Amend `skills/shared/tracking-rules.md`: add the rendering-reliability sentence and the hybrid placement rule; amend the four rules AC1(d) names; re-seed the rulebook-mass baseline in its three sites (`skills/milestone/SKILL.md` cost line, `skills/tests/test_cost_audit_line.py` seeded-baseline test, `skills/tests/test_mutation_harness.py` baseline entry — the M149 lesson).
+- [x] T1: Amend `skills/shared/tracking-rules.md`: add the rendering-reliability sentence and the hybrid placement rule; amend the four rules AC1(d) names; re-seed the rulebook-mass baseline in its three sites (`skills/milestone/SKILL.md` cost line, `skills/tests/test_cost_audit_line.py` seeded-baseline test, `skills/tests/test_mutation_harness.py` baseline entry — the M149 lesson).
 - [ ] T2: Run the AC2 sweep and whole-section read; reconcile every hit — the per-skill directives (`milestone-plan` step 3, `milestone-implement` gates, `milestone-review` gates, `milestone-brief` gates, `milestone` route triage, `skills/shared/migration-protocol.md`) restate the hybrid placement; log per-hit dispositions in the work log.
 - [ ] T3: Update the hand-run prose guards whose pinned phrases the amendments change (`skills/tests/test_gate_conclusion_preview.py:44,65`, `test_issue_triage.py:154`, `test_mutation_harness.py:920,944`, plus any red the suite surfaces); extend guard asserts and mutation entries to pin the new doctrine (M152 convention); hand-run `skills/tests` to zero reds.
 - [ ] T4: Draft the D-entry narrowly superseding D-037's above-the-chip placement clause (verbatim bar and five-skill wiring stand); preview verbatim in chat before its commit.
@@ -44,6 +44,7 @@ Surface tier: **user-facing** — the rulebook and skill directives ship to ever
 - 2026-08-22: plan gate chose hybrid-by-length placement over post-hoc restatement because restatement cannot inform the choice it follows (user rejection + audit round 1); falsified by a harness guarantee that pre-tool-call text renders.
 - 2026-08-22: plan gate chose hybrid-by-length over always-stop-before and always-inside-chip because a uniform stop adds an exchange for two-sentence evidence and inside-only truncates long finding lists; falsified by gate sessions showing the length judgment misapplied in either direction.
 - 2026-08-22: plan chose amending the four existing rules over an additive qualifying clause because two rules pointing opposite ways was audit round 1's finding 2; falsified by a shipped amendment that still reads contradictory at review.
+- 2026-08-22: T1 done — Mandated-substance rule added; Durable-record preview, Chips-carry-choices, Accessible-language, and Acceptance-chips rules amended to guaranteed-rendered positions; rulebook 418/38,127 -> 433/39,624 (`wc -l -m`), baseline re-seeded in its three sites; scripts/hooks/skills suites all exit 0 (521 skills tests OK).
 
 ## Decisions
 

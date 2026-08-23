@@ -62,9 +62,9 @@ class TestCostAuditLine(unittest.TestCase):
 
     def test_the_rulebook_line_carries_its_seeded_baseline(self):
         # Growth is reported against a recorded figure, not a remembered one;
-        # the seed is the M154 module-budget measurement (re-seeded per the
-        # instruction's own re-seed clause).
-        self.assertIn("418 lines / 38,127 chars", self.text)
+        # the seed is the M155 rendered-substance measurement (re-seeded per
+        # the instruction's own re-seed clause).
+        self.assertIn("433 lines / 39,624 chars", self.text)
 
     def test_the_rulebook_line_is_reporting_only_with_no_machinery(self):
         # The fold's whole point (D-057): visibility without pass machinery.
