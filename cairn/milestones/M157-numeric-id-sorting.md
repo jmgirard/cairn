@@ -84,7 +84,7 @@ acceptance-criterion claim over them.
 - [x] T1: Tests first (`scripts/tests`): numeric-equivalence cases for the
       three ID surfaces, both directions, widths two/three plus an id ≥ 100
       whose spellings coincide; red against current string matching.
-- [ ] T2: Implement numeric id canonicalization in `scripts/cairn_scripts.py`
+- [x] T2: Implement numeric id canonicalization in `scripts/cairn_scripts.py`
       (`_ID_RE`, `id_num`, `parse_depends` consumers) and
       `scripts/cairn_validate.py` (`_known_ids`, `check_dangling_ids` max and
       legacy ceilings, roadmap↔file checks); both gating suites green.
@@ -114,6 +114,7 @@ acceptance-criterion claim over them.
 - 2026-08-23: plan gate chose numeric resolution plus filename-only rename over rewriting history's two-digit tokens because DECISIONS.md and archive bodies are never edited (IP4); falsified by nothing — the principle is inviolable.
 - 2026-08-23: plan gate chose milestone-files-only scope over folding in RB/RR because 13 review files at ~1 per 3 weeks are years from RR100 and RR cites in shipped prose add their own sweep (user's choice); falsified by reviews/archive approaching RR99.
 - 2026-08-23: T1 done — 11 equivalence tests added (TestNumericIdEquivalence): 3 per surface-and-direction pairs plus dropped-status and two >=100 coincident pins; 9 red against current string matching, the 2 coincident pins green by construction.
+- 2026-08-23: T2 done — `canon_id` added to cairn_scripts (M%03d re-pad, non-numeric pass-through); comparison sites canonicalized in cairn_next (by_id/done/deps) and cairn_validate (check_dependencies, check_id_uniqueness, _known_ids, check_dangling_ids membership, release-nomination lookup); display spellings untouched; scripts 319 + hooks 103 both green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

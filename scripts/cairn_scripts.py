@@ -189,6 +189,15 @@ def id_num(mid):
     return int(mid[1:]) if mid[1:].isdigit() else 10**9
 
 
+def canon_id(mid):
+    """Canonical spelling of a milestone ID: the number zero-padded to three
+    digits (M57, M057, M0057 -> M057; M1000 passes through unpadded). ID
+    spellings at other zero-pad widths name the same milestone, so every
+    membership test or lookup compares canonical forms, never raw strings
+    (M157). Non-numeric input passes through unchanged."""
+    return "M%03d" % int(mid[1:]) if mid[1:].isdigit() else mid
+
+
 def parse_depends(cell):
     """Parse a 'Depends on' cell into a list of milestone IDs (— -> [])."""
     ids = []

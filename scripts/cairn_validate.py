@@ -139,13 +139,15 @@ def check_priority_vocab(rows):
 
 
 def check_dependencies(root, rows):
-    known = {r["id"] for r in rows}
-    known |= set(cs.archive_files(root))
-    known |= set(cs.live_files(root))
-    dropped = {r["id"] for r in rows if r["status"] == "dropped"}
+    # Membership is by canonical ID spelling (cs.canon_id, M157): a dep cell
+    # and its target row/file may zero-pad the same number differently.
+    known = {cs.canon_id(r["id"]) for r in rows}
+    known |= {cs.canon_id(mid) for mid in cs.archive_files(root)}
+    known |= {cs.canon_id(mid) for mid in cs.live_files(root)}
+    dropped = {cs.canon_id(r["id"]) for r in rows if r["status"] == "dropped"}
     bad = []
     for r in rows:
-        for dep in r["depends"]:
+        for dep in map(cs.canon_id, r["depends"]):
             if dep not in known:
                 bad.append(f"{r['id']} depends on {dep}, which does not exist")
             elif dep in dropped:
@@ -408,16 +410,20 @@ def check_references(root):
 
 def check_id_uniqueness(root, rows):
     bad = []
+    # Uniqueness is by canonical ID spelling (cs.canon_id, M157): M05 and
+    # M005 name the same milestone.
     seen = {}
     for r in rows:
-        seen.setdefault(r["id"], 0)
-        seen[r["id"]] += 1
+        mid = cs.canon_id(r["id"])
+        seen.setdefault(mid, 0)
+        seen[mid] += 1
     for mid, n in seen.items():
         if n > 1:
             bad.append(f"{mid} appears in {n} ROADMAP rows")
     # A milestone cannot be both live and archived.
-    live, arch = cs.live_files(root), cs.archive_files(root)
-    for mid in set(live) & set(arch):
+    live = {cs.canon_id(mid) for mid in cs.live_files(root)}
+    arch = {cs.canon_id(mid) for mid in cs.archive_files(root)}
+    for mid in live & arch:
         bad.append(f"{mid} exists as both a live and an archived file")
     return bad
 
@@ -1616,15 +1622,17 @@ def check_release_window(root, rows, today=None):
     D-029 keeps judgment out of the validate gate."""
     out = []
     today = today or datetime.date.today()
-    live = cs.live_files(root)
+    live = {cs.canon_id(mid): p for mid, p in cs.live_files(root).items()}
     # Dependency satisfaction mirrors cairn_next: a done row, or a done
     # milestone whose row was pruned under terminal-row retention but whose
-    # archive file remains.
-    done = {r["id"] for r in rows if r["status"] == "done"} | set(cs.archive_files(root))
+    # archive file remains. IDs compare by canonical spelling (M157).
+    done = {cs.canon_id(r["id"]) for r in rows if r["status"] == "done"} | {
+        cs.canon_id(mid) for mid in cs.archive_files(root)
+    }
     for row in sorted(rows, key=lambda r: cs.id_num(r["id"])):
         if row["status"] not in _ROUTABLE:
             continue
-        path = live.get(row["id"])
+        path = live.get(cs.canon_id(row["id"]))
         if path is None:
             continue  # roadmap<->disk orphans are a CHECK's business
         try:
@@ -1639,7 +1647,7 @@ def check_release_window(root, rows, today=None):
             "park it as `blocked` (D-050) or declare the release window"
         )
         if row["status"] == "planned":
-            if all(dep in done for dep in row["depends"]):
+            if all(cs.canon_id(dep) in done for dep in row["depends"]):
                 out.append(
                     f"{row['id']}: release milestone is planned with every "
                     f"dependency satisfied, so it is being nominated as the "
@@ -1676,12 +1684,16 @@ _D_HEADER = re.compile(r"^### (D-\d{3,})", re.MULTILINE)
 
 def _known_ids(root, rows):
     """The resolvable ID universe: ROADMAP rows ∪ live/archive milestone
-    files (M), and DECISIONS.md entry headers (D)."""
-    m_ids = (
-        {r["id"] for r in rows}
-        | set(cs.live_files(root))
-        | set(cs.archive_files(root))
-    )
+    files (M, as canonical spellings — cs.canon_id, M157), and DECISIONS.md
+    entry headers (D)."""
+    m_ids = {
+        cs.canon_id(mid)
+        for mid in (
+            {r["id"] for r in rows}
+            | set(cs.live_files(root))
+            | set(cs.archive_files(root))
+        )
+    }
     d_ids = set()
     dpath = os.path.join(root, "cairn", "DECISIONS.md")
     if os.path.isfile(dpath):
@@ -1752,7 +1764,7 @@ def check_dangling_ids(root, rows):
                 hits = [
                     "M" + m.group(1)
                     for m in _M_TOKEN.finditer(line)
-                    if "M" + m.group(1) not in m_ids
+                    if cs.canon_id("M" + m.group(1)) not in m_ids
                     and int(m.group(1)) <= m_max
                     and (legacy_max is None or int(m.group(1)) > legacy_max)
                 ]
