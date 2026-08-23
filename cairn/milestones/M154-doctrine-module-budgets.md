@@ -9,7 +9,7 @@
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP1, GP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** m154-doctrine-module-budgets   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m154-doctrine-module-budgets · https://github.com/jmgirard/cairn/pull/155   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -40,20 +40,20 @@ tracking-rules:127-128 and the LESSONS-header pointer convention.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: The maturation exit in `skills/shared/tracking-rules.md`
+- [x] AC1: The maturation exit in `skills/shared/tracking-rules.md`
       ("Retiring a lesson that no longer earns its line") states that the
       graduating milestone writes the module's line and byte budget into its
       own header, set from the graduated size plus stated headroom; the
       shipped clause itself states the budget is hand-read with `wc -l -c`
       at the repo's hygiene passes and covered by no validator. Evidence:
       the shipped sentence(s) quoted verbatim from the merged file.
-- [ ] AC2: Both hygiene-pass sites D-119 names — `/milestone-review`'s
+- [x] AC2: Both hygiene-pass sites D-119 names — `/milestone-review`'s
       post-merge hygiene step and `/milestone`'s health audit — name
       doctrine-module header budgets in their hand-run size checks, read
       with `wc -l -c`, beside the `ROADMAP.md`/`LESSONS.md` byte budgets
       they already carry. Evidence: the shipped sentences quoted verbatim
       from both merged files.
-- [ ] AC3: `skills/shared/records-hygiene.md`'s header states its own line
+- [x] AC3: `skills/shared/records-hygiene.md`'s header states its own line
       and byte budget, set from its measured size (38 lines / 2,193 bytes
       on 2026-08-22) plus headroom, and the file measures under both stated
       figures at the merge commit. Evidence: the header sentence quoted
@@ -124,3 +124,7 @@ tracking-rules:127-128 and the LESSONS-header pointer convention.
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55). -->
+
+- 2026-08-22 AC1: PASS — tracking-rules.md:124-126 ships, verbatim: "The graduating milestone writes the module's line and byte budget into the module's own header — set from the graduated size plus stated headroom — hand-read with `wc -l -c` at the repo's hygiene passes and covered by no validator." The clause states the hand-read and the no-validator coverage itself, inside the maturation exit.
+- 2026-08-22 AC2: PASS — milestone/SKILL.md:59-61 ships "and `wc -l -c` on each doctrine module against the budget its own header states (the maturation exit's rule)" inside the health audit's byte-budget hand check; milestone-review/SKILL.md:338-340 ships "and each doctrine module by hand against the budget its own header states (`wc -l -c`; the maturation exit's rule)" inside the post-merge hygiene verify sentence — both D-119 sites, beside the ROADMAP/LESSONS budgets.
+- 2026-08-22 AC3: PASS — records-hygiene.md:8-12 header states "**under 55 lines and under 4,000 bytes**, set from the retrofitted size (44 lines / 2,575 bytes) plus roughly one section of headroom, hand-read with `wc -l -c` … covered by no validator"; fresh `wc -l -c` reads 44 / 2,575 — under both stated figures, and matching the stated size exactly (M99 fixed-point held by same-width digits).
