@@ -272,8 +272,8 @@ These rules bind all chat output while any cairn skill is active.
   entry; replies within a phase are plain deltas underneath.
 - **Deltas, not dumps; narrate outcomes, not deliberation.** Between gates, report what changed since the last report —
   never a restated plan, pasted command output, or a running readout of reasoning; a one-line signpost or a compact
-  summary where a question needs context is fine. Two exceptions: drafted durable-record text and conclusion text above
-  an acceptance chip.
+  summary where a question needs context is fine. Two exceptions: drafted durable-record text and acceptance-chip
+  conclusion text, each in its guaranteed-rendered position (Mandated-substance rule below).
 - **Correct what matters, and only narrate that.** Correct an earlier chat statement only when the error would change
   the user's code, conclusions, or decisions — plainly, briefly, then continue; a slip that changes nothing is fixed
   without narration. A chat slip never reaches a durable record.
