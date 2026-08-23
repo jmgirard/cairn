@@ -347,6 +347,10 @@ overrides — log the override).
    remembering — to `cairn/LESSONS.md`, one per line
    (`- YYYY-MM-DD (M<NNN>): <lesson>`, one line each); lessons, not status or a
    *choice* (a choice is a D-entry). None learned → skip.
+   **Route accepted limitations:** a durable limitation this milestone
+   surfaced that the user chose to live with — no candidate row, no fix
+   planned — gets an entry in `cairn/DESIGN.md`'s Known issues section,
+   written in this same hygiene commit. None accepted → skip.
    **Retire what this milestone covered:** if the milestone shipped a guard, or
    moved content into another file's slot, check whether that retires an
    existing lesson (tracking-rules "Retiring a lesson that no longer earns its

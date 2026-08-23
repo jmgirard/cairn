@@ -1,11 +1,11 @@
 # M158: DESIGN.md Known issues gains a lifecycle — review hygiene routes accepted limitations there
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m158-known-issues-routing
 
 ## Goal
 
@@ -57,7 +57,7 @@ at the plan gate; see work log.
 
 ## Tasks
 
-- [ ] T1: Author the routing clause in step 9 of
+- [x] T1: Author the routing clause in step 9 of
       `skills/milestone-review/SKILL.md` (beside the lessons-capture block,
       ~line 345), keeping it short and echoing no pinned prose-guard marker
       phrase (the M148 lesson).
@@ -71,6 +71,8 @@ at the plan gate; see work log.
 - 2026-08-23: created by /milestone-plan; criteria passed the full-mode audit (fresh [O] reader, two rounds: round 1 five findings — an instrument-bound evidence-quotation tail, an ambiguous commit clause, a skills/tests-green demand that would re-arm the gate D-109 removed, harness-bound AC2 wording, a missing door citation — all repaired; round 2 passed AC1 and repaired AC2's undecidable no-regression form to per-suite exit-0 with a two-sided red classification).
 - 2026-08-23: plan gate chose the routing clause over deleting the Known issues section from the scaffold and ownership table because the section earns its keep in cairn's own DESIGN.md and the fix costs one sentence; falsified by adopting repos' Known issues sections staying empty with the routing clause live.
 - 2026-08-23: plan gate chose review-hygiene-only placement over also adding a hotfix-close clause because milestones are where accepted limitations surface and a second shipped surface would rarely fire; falsified by a hotfix session surfacing an accepted durable limitation with nowhere to record it.
+
+- 2026-08-23: T1 — routing clause added to step 9 under its own header ("Route accepted limitations:"), between the lessons-capture and retirement blocks; echoes neither pinned marker phrase; both gating suites exit 0 (324 + 103 tests, OK).
 
 ## Decisions
 
