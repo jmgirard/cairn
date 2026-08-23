@@ -63,6 +63,9 @@ D-entry. IP block first, then GPs; numbers are never reused or renumbered — re
   `ROADMAP.md` and `LESSONS.md` also keep byte budgets — `ROADMAP.md` < 24,000 bytes, `LESSONS.md` < 20,000 bytes
   (line cap × 400) — judgment-checked at hygiene passes (`wc -c`), not covered by `cairn_validate`.
   `ROADMAP.md` and `LESSONS.md` are parsed one item per line; never split an item across lines.
+- Doctrine modules keep the line and byte budgets their own headers state (the maturation exit's rule, "Retiring a
+  lesson" below), judgment-checked at hygiene passes (`wc -l -c`, not covered by `cairn_validate`); over either figure
+  the remedy is compressing or retiring the module's content — never "let it grow".
 - A live milestone file's **plan-owned body < 150 lines** — everything before the review-exclusive `## Review` section,
   less `## Work log` and `## Decisions`. Those three are cap-exempt (`## Review` so evidence never competes with plan
   content; the other two as IP4 history); the `session_context` hook bounds their read, injecting each one's newest
@@ -121,7 +124,9 @@ D-entry. IP block first, then GPs; numbers are never reused or renumbered — re
   lesson warns about (a guard merely existing nearby is not enforcement); **ownership** — another tracking file's slot
   owns the content (the retiring milestone may *move* it there); **maturation** — a stabilized family graduates whole
   into a doctrine module, when it teaches transferable craft, has been extended or consolidated at least twice, and
-  neither other exit applies. A lesson covered in part is trimmed to its remainder; a retired lesson leaves no line
+  neither other exit applies. The graduating milestone writes the module's line and byte budget into the module's own
+  header — set from the graduated size plus stated headroom — hand-read with `wc -l -c` at the repo's hygiene passes
+  and covered by no validator. A lesson covered in part is trimmed to its remainder; a retired lesson leaves no line
   behind — the archive summary names what it graduated. Retirement removes the redundant, never the merely disputed (a
   disputed lesson is corrected, not deleted). Checked at `/milestone-review` post-merge hygiene, scoped to what the
   milestone shipped; prune-the-stalest is the last resort. The graduated records-hygiene family lives in

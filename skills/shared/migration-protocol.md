@@ -6,6 +6,13 @@ scaffold or repair run never loads this file. These are the steps of
 cairn-init's §2; the `## Migration §n` phase-header convention and the
 skill's chapter-marker directive apply to them unchanged.
 
+Budget, per the maturation exit's module-budget rule (retrofitted 2026-08-22,
+M154): **under 200 lines and under 14,000 bytes**, set from the retrofitted
+size (185 lines / 11,924 bytes) plus roughly one section of headroom,
+hand-read with `wc -l -c` at the repo's hygiene passes and covered by no
+validator. Over either figure, compress or retire content — never "let it
+grow".
+
 Governing principle: **migrate the living, entomb the dead.** Completed
 history is never converted — conversion of dozens of done milestones is
 where hallucination and loss happen, and git already preserves everything.

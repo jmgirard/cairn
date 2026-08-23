@@ -5,6 +5,12 @@ graduating a ROADMAP candidate, or superseding a decision. It is a module of
 `tracking-rules.md`, conditionally read at the moment the craft applies, so it
 costs nothing to a session not at such a gate.
 
+Budget, per the maturation exit's module-budget rule (retrofitted 2026-08-22,
+M154): **under 55 lines and under 4,000 bytes**, set from the retrofitted
+size (44 lines / 2,575 bytes) plus roughly one section of headroom, hand-read
+with `wc -l -c` at the repo's hygiene passes and covered by no validator.
+Over either figure, compress or retire content here — never "let it grow".
+
 ## 1. Candidate rows graduate at completion, never at plan
 
 **A ROADMAP candidate whose scope a milestone absorbs is NOT pruned when that
