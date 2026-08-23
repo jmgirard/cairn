@@ -36,7 +36,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   `migration-protocol.md` (cairn-init §2's body, read only on precursor
   footprint detection — M59), and `records-hygiene.md` (candidate-row
   lifecycle and supersede discipline, read at hygiene/plan gates —
-  M113, trimmed M146).
+  M113, trimmed M146); each module carries a header-stated size
+  budget (M154).
 - `skills/shared/templates/` — milestone, brief, decision, CLAUDE.md section,
   source note, synthesis note.
 - `skills/shared/profiles/` — the shipped reference toolchain profiles

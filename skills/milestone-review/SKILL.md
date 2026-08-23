@@ -335,9 +335,9 @@ overrides — log the override).
    Then: ROADMAP row → `done` + archive path;
    archive any resolved RB/RR pairs; **replace** "Last hygiene check" with one short line — overwrite the previous text, never append to it or demote it to a `Prior:` clause; verify
    weight caps, the byte budgets by hand (`wc -c cairn/ROADMAP.md
-   cairn/LESSONS.md` — `cairn_validate` does not measure them), and each
-   doctrine module by hand against the budget its own header states
-   (`wc -l -c`; the maturation exit's rule).
+   cairn/LESSONS.md` — `cairn_validate` does not measure them), and each of
+   the repo's doctrine modules by hand against the budget its own header
+   states (`wc -l -c`; the maturation exit's rule).
    Where the repo ships hand-run prose-guard suites (this plugin's
    `skills/tests`), hand-run them here and note red/green in the stamp (D-109).
    **Capture durable lessons:** append any repo lessons this
@@ -351,7 +351,9 @@ overrides — log the override).
    line"): a test that now **fails on the mistake a lesson warns about** retires
    it, as does content another file's slot now owns, as does **maturation — a
    stabilized family graduating whole into a doctrine module** (D-055); a
-   partly-covered lesson is trimmed to its uncovered remainder.
+   partly-covered lesson is trimmed to its uncovered remainder. A graduation
+   writes the new module's budget header (the maturation exit's rule), and
+   the module read above covers the module this pass just minted.
    **Scope this to what the milestone shipped — never re-sweep every lesson.**
    Delete the retired line and name what was graduated in the archive summary;
    nothing else records it.

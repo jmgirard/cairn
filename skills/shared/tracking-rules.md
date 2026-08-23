@@ -63,6 +63,9 @@ D-entry. IP block first, then GPs; numbers are never reused or renumbered — re
   `ROADMAP.md` and `LESSONS.md` also keep byte budgets — `ROADMAP.md` < 24,000 bytes, `LESSONS.md` < 20,000 bytes
   (line cap × 400) — judgment-checked at hygiene passes (`wc -c`), not covered by `cairn_validate`.
   `ROADMAP.md` and `LESSONS.md` are parsed one item per line; never split an item across lines.
+- Doctrine modules keep the line and byte budgets their own headers state (the maturation exit's rule, "Retiring a
+  lesson" below), judgment-checked at hygiene passes (`wc -l -c`, not covered by `cairn_validate`); over either figure
+  the remedy is compressing or retiring the module's content — never "let it grow".
 - A live milestone file's **plan-owned body < 150 lines** — everything before the review-exclusive `## Review` section,
   less `## Work log` and `## Decisions`. Those three are cap-exempt (`## Review` so evidence never competes with plan
   content; the other two as IP4 history); the `session_context` hook bounds their read, injecting each one's newest

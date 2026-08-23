@@ -8,6 +8,12 @@
      crate. Read it whenever a milestone touches a numeric result or
      scoring/algorithmic content; a repo with no numeric work never needs it. -->
 
+Budget, per the maturation exit's module-budget rule (retrofitted 2026-08-22,
+M154): **under 115 lines and under 8,000 bytes**, set from the retrofitted
+size (99 lines / 6,480 bytes) plus roughly one section of headroom, hand-read
+with `wc -l -c` at the repo's hygiene passes and covered by no validator.
+Over either figure, compress or retire content here — never "let it grow".
+
 Tests verify against ground truth, not against the code. Every
 numeric-results suite includes, in priority order: (1) hand-computed
 fixtures from published formulas, arithmetic in comments; (2) published
