@@ -387,11 +387,14 @@ overrides — log the override).
     next action from its recommendation. The recap leads with what shipped,
     the status line names the merge and archive state, and the fenced
     commands emit `/clear` and the recommendation's command
-    as copyable lines. One displacement (D-050): when step 9's `cairn_validate.py` run
-    fired the `release window` advisory and the recommendation names that
-    same release milestone, the parking offer displaces it exactly as
-    `/milestone` §3 prescribes. This close is
+    as copyable lines. One displacement (D-050): when step 9's
+    `cairn_validate.py` run fired the `release window` advisory, offer
+    parking exactly as `/milestone` §3 prescribes — a decision put to the
+    user, so it keeps its chip (tracking-rules: a gate is a choice, a
+    phase end is a handoff) — and it displaces the recommendation's lead
+    only when that recommendation names the flagged release milestone.
+    This close is
     a handoff, so commands go in fenced blocks, never inline backticks
-    (tracking-rules "Copy-run commands"). Do **not** end review
-    with an AskUserQuestion — the step-7 merge-approval gate was the last
-    chip this phase emits.
+    (tracking-rules "Copy-run commands"). Apart from that parking
+    decision, do **not** end review with an AskUserQuestion — the step-7
+    merge-approval gate was the last chip this phase emits.

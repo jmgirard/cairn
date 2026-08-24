@@ -156,7 +156,7 @@ examples for the close block's fences — only the applicable subset is offered:
 - `/milestone-implement M<NNN>` — implement (a workable planned milestone
   exists — its dependencies `done`, nothing `in-progress`)
 - `/milestone-plan` — plan next (nothing in flight and no workable planned
-  milestone; candidate items exist)
+  milestone)
 - a triage chip — the audit found problems needing user decisions,
   including any untriaged inbox item §2 surfaced (a decision gate, not a
   route)

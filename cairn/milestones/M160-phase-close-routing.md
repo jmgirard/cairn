@@ -101,6 +101,7 @@ deferred anywhere.
 - 2026-08-24: T2 done — step 10 now runs cairn_next.py after the hygiene commit, leads the fenced next command with its recommendation, defers the D-050 release-parking displacement to /milestone §3, and no longer names /milestone-plan for existing planned work; both gating suites green (324 + 103, OK).
 - 2026-08-24: T3 done — /milestone §3's example list gains an implement entry (workable planned milestone: deps done, nothing in-progress) distinct from resume, and /milestone-plan's condition narrows to exclude planned items; both gating suites green (324 + 103, OK).
 - 2026-08-24: T4 done — `grep -rn "planned or candidate" skills/` zero hits (exit 1); hand-run skills/tests caught the T2 rewrap splitting the guarded phrase "as copyable lines" across a line break (test_copy_run_handoffs red), fixed by rewrapping; all suites green after fix: scripts 324 OK exit 0, hooks 103 OK exit 0, skills 528 OK. Status → review.
+- 2026-08-24: review — AC1–AC4 verified fresh, gate clean; three-lens fan-out returned 11 findings (one lens), three fixed at the gate (F1/F2: step-10 displacement clause carries both halves of §3's prescription and names the parking chip carve-out; F4: §3 plan entry's candidate condition dropped), eight rejected with reasons; all suites re-run green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -118,3 +119,19 @@ PR: https://github.com/jmgirard/cairn/pull/161 (draft; branch current with origi
 - AC4: verified 2026-08-24 — fresh runs at review: `python3 -m unittest discover -s scripts/tests` 324 tests OK exit 0; `hooks/tests` 103 tests OK exit 0; hand-run `skills/tests` 528 tests OK exit 0.
 
 Consistency gate 2026-08-24: `cairn_validate.py` all checks passed (exit 0; `release window` advisory quiet). No DESIGN.md principle changed → `cairn_impact --changed` skipped. Toolchain half: `generic` profile's `consistency-gate` slot names no checks — clean no-op. Sweep: `grep -rn "planned or candidate" skills/` zero hits (exit 1).
+
+Independent review (user-facing tier → three-lens fan-out, 2026-08-24). [S] blame-history: no findings — both deleted passages traced (step 10 to M156/D-124, step 9's allusion to M99), neither deletion reverses a recorded decision; §3's displacement prescription predates M160. [S] prior-PR-comments: no prior-review evidence — archived reviews touching these files (M37, M40, M158) concern untouched regions; GitHub probe found zero inline PR comments. [O] diff-bug: 11 ranked findings, triaged:
+
+- F1 (step 10 defers to §3's parking offer without naming its mechanism, colliding with the no-chip close): fixed at gate — clause now states the offer is a decision put to the user that keeps its chip (tracking-rules decision-gate carve-out), and the no-chip sentence carries the carve-out.
+- F2 (step 10 adopted only the "lead" half of §3's prescription, dropping "offer whenever the advisory fired"): fixed at gate — clause now offers parking whenever the advisory fired and displaces the lead only when the recommendation names the flagged release milestone, matching §3.
+- F3 (empty-backlog close now hands `/milestone-plan` where old prose handed `/milestone`): rejected — intentional; the plan gate chose cairn_next as the single routing authority and its empty-backlog recommendation is test-pinned (`test_scripts.py`).
+- F4 (§3 plan entry's "candidate items exist" condition disagrees with cairn_next's empty-backlog behavior): fixed at gate — condition dropped; entry now reads "nothing in flight and no workable planned milestone", matching the script.
+- F5 (cairn_next emits a label→command line, not a bare command): rejected — the line names its command explicitly; the recorded plan-gate falsifier (misroutes / cannot be run) has not fired.
+- F6 (no degradation path for a missing python3): rejected — pre-existing repo-wide convention (step 4's validate run has none either; degradation documented once in /cairn-init), not introduced by this diff.
+- F7 (review skill never rosters cairn_next.py in its header): rejected — style; the call site carries the full path and purpose inline.
+- F8 (§3 implement entry's condition omits the review-outranks precedent): rejected — the list is declared state-conditional examples, not a precedence statement; cairn_next's pinned ladder governs the lead.
+- F9 (duplicate command text resume/implement; list order ≠ script ladder): rejected — same basis as F8; parentheticals distinguish the entries.
+- F10 (step 10's displacement paraphrase unguarded while §3's is pinned): rejected — the deliberate, logged plan-gate choice (no new prose-guard test), falsifier recorded in the work log.
+- F11 (one 85-char line; `/clear` fenced vs tracking-rules' inline-mention classing): fixed in passing (the F1/F2 rewrap rewrapped the long line) / rejected (the `/clear` fence tension is pre-existing and unmodified).
+
+Return floor: no finding demonstrates an acceptance criterion failing; no status change. Post-fix re-verification 2026-08-24: scripts 324 OK, hooks 103 OK, skills 528 OK (all exit 0); `cairn_validate.py` all checks passed; sweep still zero hits.
