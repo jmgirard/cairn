@@ -330,7 +330,8 @@ overrides — log the override).
    file rather than joining it, and git holds the full text. (Authoring from a
    template makes this an explicit step; when the summary was made by
    compressing the file in place, the move did it implicitly. Skip it and
-   `cairn_validate`'s `roadmap<->disk orphans` fires later in this same step.)
+   the explicit `cairn_validate.py` run below fails on `roadmap<->disk
+   orphans`.)
    Draft the summary to the ≤25-line cap, counting as you go, never trimming
    afterward.
 
@@ -368,7 +369,11 @@ overrides — log the override).
    Durable-record preview (tracking-rules): show the archive summary,
    each LESSONS line, any D-entry, any Known issues entry, and any
    candidate graduation verbatim
-   in a guaranteed-rendered position (Mandated-substance rule). Docs-only commit:
+   in a guaranteed-rendered position (Mandated-substance rule).
+   Then run `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` over
+   the completed hygiene edits, before the docs-only commit — it must pass,
+   and whether its `release window` advisory fired is the signal step 10's
+   displacement clause reads. Docs-only commit:
    `review M<NNN>: done`; push. The done
    recap leads with what shipped, in plain words; hygiene mechanics
    compress to one line.

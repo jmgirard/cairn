@@ -1,11 +1,11 @@
 # M160: Phase-close routing recommends implement for already-planned work
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m160-phase-close-routing   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -69,7 +69,7 @@ deferred anywhere.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: In `skills/milestone-review/SKILL.md` step 9 (~line 333), replace
+- [x] T1: In `skills/milestone-review/SKILL.md` step 9 (~line 333), replace
       the "fires later in this same step" allusion with an explicit
       instruction to run `cairn_validate.py` over the completed hygiene
       edits before the docs-only commit, naming the `release window`
@@ -96,6 +96,8 @@ deferred anywhere.
 - 2026-08-24: plan gate chose a cairn_next.py-led step 10 over a corrected prose enumeration because the script is the single test-pinned routing authority and prose enumerations re-drift; falsified by a review close where the script's recommendation misroutes or cannot be run.
 - 2026-08-24: plan gate chose an explicit step-9 cairn_validate run as the D-050 displacement signal over prose judgment of release-shape because the condition needs the mechanical instrument §3 already uses; falsified by the run proving too heavy or firing spurious advisories at review close.
 - 2026-08-24: plan gate chose no new prose-guard test over pinning the new wording because a two-span prose fix does not warrant guard upkeep (pinned slices are brittle near future edits — LESSONS M148); falsified by a later edit reintroducing plan-for-planned routing unnoticed.
+- 2026-08-24: implement started; branch m160-phase-close-routing; question gate skipped (plan gate settled all three open choices, no tripwires).
+- 2026-08-24: T1 done — step 9 now instructs an explicit cairn_validate.py run over the hygiene edits before the docs-only commit, naming the release-window advisory as step 10's signal; both gating suites green (324 + 103, OK).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
