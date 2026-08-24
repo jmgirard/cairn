@@ -79,7 +79,7 @@ deferred anywhere.
       command with its recommendation, add the D-050 displacement clause
       deferring to `/milestone` §3's prescription, and delete the
       "`/milestone-plan` when planned or candidate work exists" wording.
-- [ ] T3: In `skills/milestone/SKILL.md` §3's example list (~line 156), add
+- [x] T3: In `skills/milestone/SKILL.md` §3's example list (~line 156), add
       `/milestone-implement M<NNN>` — implement (a workable planned
       milestone exists) — as its own entry and narrow the `/milestone-plan`
       entry's condition to exclude planned items.
@@ -99,6 +99,7 @@ deferred anywhere.
 - 2026-08-24: implement started; branch m160-phase-close-routing; question gate skipped (plan gate settled all three open choices, no tripwires).
 - 2026-08-24: T1 done — step 9 now instructs an explicit cairn_validate.py run over the hygiene edits before the docs-only commit, naming the release-window advisory as step 10's signal; both gating suites green (324 + 103, OK).
 - 2026-08-24: T2 done — step 10 now runs cairn_next.py after the hygiene commit, leads the fenced next command with its recommendation, defers the D-050 release-parking displacement to /milestone §3, and no longer names /milestone-plan for existing planned work; both gating suites green (324 + 103, OK).
+- 2026-08-24: T3 done — /milestone §3's example list gains an implement entry (workable planned milestone: deps done, nothing in-progress) distinct from resume, and /milestone-plan's condition narrows to exclude planned items; both gating suites green (324 + 103, OK).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
