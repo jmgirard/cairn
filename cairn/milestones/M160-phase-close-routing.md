@@ -5,7 +5,7 @@
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** m160-phase-close-routing   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m160-phase-close-routing · https://github.com/jmgirard/cairn/pull/161   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -35,12 +35,12 @@ deferred anywhere.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `/milestone-review` step 9 explicitly instructs running
+- [x] AC1: `/milestone-review` step 9 explicitly instructs running
       `cairn_validate.py` over the completed hygiene edits before the
       docs-only commit, in place of the current allusion ("fires later in
       this same step"), and its `release window` advisory is named as the
       signal step 10 reads.
-- [ ] AC2: `/milestone-review` step 10 instructs running `cairn_next.py`
+- [x] AC2: `/milestone-review` step 10 instructs running `cairn_next.py`
       after the step-9 hygiene commit lands and leading the close block's
       fenced next command with its recommendation — displaced by the
       release-parking offer exactly as `/milestone` §3 prescribes when
@@ -48,11 +48,11 @@ deferred anywhere.
       and the recommendation names that same release milestone (D-050) —
       and step 10's text no longer names `/milestone-plan` as the route for
       existing planned work.
-- [ ] AC3: `/milestone` §3's state-conditional example list offers
+- [x] AC3: `/milestone` §3's state-conditional example list offers
       `/milestone-implement M<NNN>` for a workable planned milestone as an
       entry distinct from the resume entry, and the `/milestone-plan`
       entry's stated condition no longer includes planned items.
-- [ ] AC4: The active profile's `verify` slot clean — both gating unittest
+- [x] AC4: The active profile's `verify` slot clean — both gating unittest
       suites green — and `skills/tests` hand-run green (skill-file edits;
       LESSONS M56/M148).
 
@@ -109,3 +109,12 @@ deferred anywhere.
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. -->
+
+PR: https://github.com/jmgirard/cairn/pull/161 (draft; branch current with origin/main at review start).
+
+- AC1: verified 2026-08-24 — `git diff origin/main..HEAD -- skills/milestone-review/SKILL.md` shows step 9's "fires later in this same step" allusion replaced with an explicit instruction to run `cairn_validate.py` over the completed hygiene edits before the docs-only commit ("it must pass"), and names the `release window` advisory as the signal step 10's displacement clause reads.
+- AC2: verified 2026-08-24 — same diff shows step 10 now instructs running `cairn_next.py` after the step-9 hygiene commit lands, leads the close block's fenced next command with its recommendation, carries the D-050 displacement clause deferring to `/milestone` §3's prescription (conditioned on step 9's `cairn_validate.py` run firing the `release window` advisory and the recommendation naming that release milestone), and `grep -n "milestone-plan" skills/milestone-review/SKILL.md` confirms step 10 no longer names `/milestone-plan` as the route for existing planned work (the "planned or candidate" clause is deleted).
+- AC3: verified 2026-08-24 — `git diff origin/main..HEAD -- skills/milestone/SKILL.md` shows §3's example list gains `/milestone-implement M<NNN>` — implement (a workable planned milestone exists — its dependencies `done`, nothing `in-progress`) — as an entry distinct from the resume entry above it, and the `/milestone-plan` entry's condition reads "nothing in flight and no workable planned milestone; candidate items exist", excluding planned items.
+- AC4: verified 2026-08-24 — fresh runs at review: `python3 -m unittest discover -s scripts/tests` 324 tests OK exit 0; `hooks/tests` 103 tests OK exit 0; hand-run `skills/tests` 528 tests OK exit 0.
+
+Consistency gate 2026-08-24: `cairn_validate.py` all checks passed (exit 0; `release window` advisory quiet). No DESIGN.md principle changed → `cairn_impact --changed` skipped. Toolchain half: `generic` profile's `consistency-gate` slot names no checks — clean no-op. Sweep: `grep -rn "planned or candidate" skills/` zero hits (exit 1).
