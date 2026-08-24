@@ -330,7 +330,8 @@ overrides — log the override).
    file rather than joining it, and git holds the full text. (Authoring from a
    template makes this an explicit step; when the summary was made by
    compressing the file in place, the move did it implicitly. Skip it and
-   `cairn_validate`'s `roadmap<->disk orphans` fires later in this same step.)
+   the explicit `cairn_validate.py` run below fails on `roadmap<->disk
+   orphans`.)
    Draft the summary to the ≤25-line cap, counting as you go, never trimming
    afterward.
 
@@ -368,7 +369,11 @@ overrides — log the override).
    Durable-record preview (tracking-rules): show the archive summary,
    each LESSONS line, any D-entry, any Known issues entry, and any
    candidate graduation verbatim
-   in a guaranteed-rendered position (Mandated-substance rule). Docs-only commit:
+   in a guaranteed-rendered position (Mandated-substance rule).
+   Then run `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` over
+   the completed hygiene edits, before the docs-only commit — it must pass,
+   and whether its `release window` advisory fired is the signal step 10's
+   displacement clause reads. Docs-only commit:
    `review M<NNN>: done`; push. The done
    recap leads with what shipped, in plain words; hygiene mechanics
    compress to one line.
@@ -376,12 +381,20 @@ overrides — log the override).
 10. **Close with the close block — no chip.** (tracking-rules "Question
     gates and phase closes" — the shape every phase now shares, generalized
     from what was once review's sole exception.) M<NNN> is archived and all
-    state is on disk, so the natural next step is a fresh context: the
-    recap leads with what shipped, the status line names the merge and
-    archive state, and the fenced commands emit `/clear` and the obvious
-    next action (`/milestone-plan` when planned or candidate work exists,
-    else `/milestone` for a health audit) as copyable lines — this close is
+    state is on disk, so the natural next step is a fresh context: after the
+    step-9 hygiene commit lands, run
+    `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_next.py"` and take the
+    next action from its recommendation. The recap leads with what shipped,
+    the status line names the merge and archive state, and the fenced
+    commands emit `/clear` and the recommendation's command
+    as copyable lines. One displacement (D-050): when step 9's
+    `cairn_validate.py` run fired the `release window` advisory, offer
+    parking exactly as `/milestone` §3 prescribes — a decision put to the
+    user, so it keeps its chip (tracking-rules: a gate is a choice, a
+    phase end is a handoff) — and it displaces the recommendation's lead
+    only when that recommendation names the flagged release milestone.
+    This close is
     a handoff, so commands go in fenced blocks, never inline backticks
-    (tracking-rules "Copy-run commands"). Do **not** end review
-    with an AskUserQuestion — the step-7 merge-approval gate was the last
-    chip this phase emits.
+    (tracking-rules "Copy-run commands"). Apart from that parking
+    decision, do **not** end review with an AskUserQuestion — the step-7
+    merge-approval gate was the last chip this phase emits.
