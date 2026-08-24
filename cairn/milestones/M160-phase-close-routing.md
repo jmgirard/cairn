@@ -74,7 +74,7 @@ deferred anywhere.
       instruction to run `cairn_validate.py` over the completed hygiene
       edits before the docs-only commit, naming the `release window`
       advisory as step 10's signal.
-- [ ] T2: Rewrite step 10's next-action clause (~line 382): run
+- [x] T2: Rewrite step 10's next-action clause (~line 382): run
       `cairn_next.py` after the hygiene commit lands, lead the fenced next
       command with its recommendation, add the D-050 displacement clause
       deferring to `/milestone` §3's prescription, and delete the
@@ -98,6 +98,7 @@ deferred anywhere.
 - 2026-08-24: plan gate chose no new prose-guard test over pinning the new wording because a two-span prose fix does not warrant guard upkeep (pinned slices are brittle near future edits — LESSONS M148); falsified by a later edit reintroducing plan-for-planned routing unnoticed.
 - 2026-08-24: implement started; branch m160-phase-close-routing; question gate skipped (plan gate settled all three open choices, no tripwires).
 - 2026-08-24: T1 done — step 9 now instructs an explicit cairn_validate.py run over the hygiene edits before the docs-only commit, naming the release-window advisory as step 10's signal; both gating suites green (324 + 103, OK).
+- 2026-08-24: T2 done — step 10 now runs cairn_next.py after the hygiene commit, leads the fenced next command with its recommendation, defers the D-050 release-parking displacement to /milestone §3, and no longer names /milestone-plan for existing planned work; both gating suites green (324 + 103, OK).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
