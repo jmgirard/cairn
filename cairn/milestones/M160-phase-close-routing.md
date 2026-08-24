@@ -1,6 +1,6 @@
 # M160: Phase-close routing recommends implement for already-planned work
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -83,7 +83,7 @@ deferred anywhere.
       `/milestone-implement M<NNN>` — implement (a workable planned
       milestone exists) — as its own entry and narrow the `/milestone-plan`
       entry's condition to exclude planned items.
-- [ ] T4: Sweep `grep -rn "planned or candidate" skills/` (expect zero
+- [x] T4: Sweep `grep -rn "planned or candidate" skills/` (expect zero
       hits), run both gating suites checking each exit code explicitly, and
       hand-run `skills/tests` (edits sit near guarded regions — LESSONS
       M148).
@@ -100,6 +100,7 @@ deferred anywhere.
 - 2026-08-24: T1 done — step 9 now instructs an explicit cairn_validate.py run over the hygiene edits before the docs-only commit, naming the release-window advisory as step 10's signal; both gating suites green (324 + 103, OK).
 - 2026-08-24: T2 done — step 10 now runs cairn_next.py after the hygiene commit, leads the fenced next command with its recommendation, defers the D-050 release-parking displacement to /milestone §3, and no longer names /milestone-plan for existing planned work; both gating suites green (324 + 103, OK).
 - 2026-08-24: T3 done — /milestone §3's example list gains an implement entry (workable planned milestone: deps done, nothing in-progress) distinct from resume, and /milestone-plan's condition narrows to exclude planned items; both gating suites green (324 + 103, OK).
+- 2026-08-24: T4 done — `grep -rn "planned or candidate" skills/` zero hits (exit 1); hand-run skills/tests caught the T2 rewrap splitting the guarded phrase "as copyable lines" across a line break (test_copy_run_handoffs red), fixed by rewrapping; all suites green after fix: scripts 324 OK exit 0, hooks 103 OK exit 0, skills 528 OK. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

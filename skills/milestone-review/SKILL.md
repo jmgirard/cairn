@@ -386,8 +386,8 @@ overrides — log the override).
     `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_next.py"` and take the
     next action from its recommendation. The recap leads with what shipped,
     the status line names the merge and archive state, and the fenced
-    commands emit `/clear` and the recommendation's command as copyable
-    lines. One displacement (D-050): when step 9's `cairn_validate.py` run
+    commands emit `/clear` and the recommendation's command
+    as copyable lines. One displacement (D-050): when step 9's `cairn_validate.py` run
     fired the `release window` advisory and the recommendation names that
     same release milestone, the parking offer displaces it exactly as
     `/milestone` §3 prescribes. This close is

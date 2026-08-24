@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M160 | Phase-close routing recommends implement for already-planned work | in-progress | — | normal | milestones/M160-phase-close-routing.md |
+| M160 | Phase-close routing recommends implement for already-planned work | review | — | normal | milestones/M160-phase-close-routing.md |
 | M159 | The test floor states check discrimination: five distilled principles | done | — | normal | milestones/archive/M159-check-discrimination-floor.md |
 | M158 | DESIGN.md Known issues gains a lifecycle: review hygiene routes accepted limitations there | done | — | normal | milestones/archive/M158-known-issues-routing.md |
 | M157 | Milestone IDs sort numerically: three-digit padding, numeric resolution | done | — | normal | milestones/archive/M157-numeric-id-sorting.md |
