@@ -9,7 +9,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** m161-finding-row-disposition
+- **Branch/PR:** m161-finding-row-disposition · https://github.com/jmgirard/cairn/pull/162
 
 ## Goal
 
@@ -40,7 +40,7 @@ planning session, not this milestone.
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/shared/records-hygiene.md` carries a new `## 7.` section,
+- [x] AC1: `skills/shared/records-hygiene.md` carries a new `## 7.` section,
       at most 12 lines, stating the disposition rule: a candidate row already
       carrying deferred review findings filed from two or more distinct
       milestones (named in its provenance or weighed notes) is not silently
@@ -56,7 +56,7 @@ planning session, not this milestone.
       disposition. Verified by reading the shipped section; the module stays
       under its header budget (`wc -l -c` reports under 55 lines and under
       4,000 bytes).
-- [ ] AC2: both hygiene surfaces pose the chip at the moment of extension:
+- [x] AC2: both hygiene surfaces pose the chip at the moment of extension:
       `skills/milestone/SKILL.md`'s health-audit candidate-triage clause
       covers the finding-absorbing row (triaged even though not "untouched")
       and `skills/milestone-review/SKILL.md`'s step 9 poses the disposition
@@ -105,3 +105,7 @@ planning session, not this milestone.
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. -->
+
+- 2026-08-26 AC1: read the shipped `## 7.` section in place — states the two-or-more-distinct-milestones trigger (keyed to provenance/weighed notes), names both hygiene surfaces, covers all four chip dispositions (promote bounded milestone / route to Known issues via the accepted-limitations block / prune / extend once as explicit choice), defines "extended", and states compression never substitutes. Section is 12 lines by `sed | wc -l` (heading through last body line); module `wc -l -c` = 54 lines / 3,187 bytes, under the 55 / 4,000 header budget.
+- 2026-08-26 AC2: read both clauses in place. Audit clause at `skills/milestone/SKILL.md:111-115` (`grep -n finding-absorbing` → 111), inside the staleness/candidate-triage bullet spanning 101-116 (next bullet 117): finding-absorbing row triaged even though not untouched, options deferred to records-hygiene §7. Review clause at `skills/milestone-review/SKILL.md:355-362` (`grep -n` → 355), inside step 9 (320-387; step 10 at 388): chip posed before the pass writes the extension, options deferred to §7. Neither clause restates the option list.
+- 2026-08-26 consistency gate: `cairn_validate` all checks passed; generic profile — no toolchain checks. Fresh suite runs: scripts/tests exit 0, hooks/tests exit 0, skills/tests hand-run 528 tests OK. No Driving RR — projection-vs-outcome no-op.
