@@ -4,12 +4,12 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M161: Finding-absorbing candidate rows get a disposition trigger at hygiene
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1
-- **Branch/PR:** —
+- **Branch/PR:** m161-finding-row-disposition
 
 ## Goal
 
@@ -73,7 +73,7 @@ planning session, not this milestone.
 
 ## Tasks
 
-- [ ] T1: Author the records-hygiene `## 7.` section (≤12 lines), counting
+- [x] T1: Author the records-hygiene `## 7.` section (≤12 lines), counting
       lines and bytes while writing against the 55/4,000 header budget.
 - [ ] T2: Extend the `/milestone` health-audit triage clause
       (`skills/milestone/SKILL.md:110`) to fire on finding-absorbing rows and
@@ -94,6 +94,7 @@ planning session, not this milestone.
 - 2026-08-26: plan gate chose the two-milestone recurrence trigger over a per-row byte allowance because size invites width-gaming and adds a number to maintain; falsified by a row absorbing findings from many milestones compactly enough to warrant disposition before any second-milestone note lands, or by recurrence firing so often the chip becomes noise.
 - 2026-08-26: plan gate chose posing the chip at both hygiene surfaces over audit-only-with-review-flagging because the decision belongs at the moment of extension; falsified by step-9 disposition chips measurably delaying merges or being deferred routinely.
 - 2026-08-26: plan gate chose proceeding through the records-conduct door (trigger argued met: the shipped audit's untouched-~6-months triage is blind to constantly-extended rows, measured in two adopter repos) over parking as a candidate row; falsified by evidence the accumulation self-corrects (rows drawn down without the rule) or that the rule fires only on healthy batching.
+- 2026-08-26: T1 — records-hygiene §7 authored (12 lines incl. heading); trailing remainder-ledger comment compressed 8→5 lines to hold the module at 54 lines / 3,187 bytes (`wc -l -c`), under its 55/4,000 header budget; both gating suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

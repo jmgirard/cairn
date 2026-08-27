@@ -34,11 +34,21 @@ inside a milestone file is overturned by a new milestone-local entry that names
 and supersedes it — not by editing the original, and not by a `DECISIONS.md`
 entry that silently outranks a record it never mentions.
 
+## 7. A finding-absorbing candidate row is dispositioned, not silently extended
+
+**A candidate row already carrying deferred review findings filed from two or
+more distinct milestones (named in its provenance or weighed notes) is not
+silently extended again.** The hygiene pass about to extend it — the
+`/milestone` health audit or `/milestone-review`'s post-merge pass — poses a
+disposition chip: promote a bounded milestone for the items that guard shipped
+behavior; route items the user accepts to `cairn/DESIGN.md` Known issues (the
+review skill's accepted-limitations block); prune the rest; extend once more
+as an explicit choice, never the default. "Extended" means gaining a new
+provenance or weighed note without a disposition; compressing the row to meet
+a byte budget never substitutes for the disposition.
+
 <!-- Remainder ledger (M146 trim; git holds the full pre-trim text —
-     `git log -- skills/shared/records-hygiene.md`):
-     §3 (placing a new records rule; running it over the milestone's own
-     output) dropped with the rule-placement doctrine — no surviving consumer.
-     §4 (amend the AC through the gate rather than drift) already lives in its
-     consumer, /milestone-implement step 6. §5 retired with its subject at
-     M145. §6 (compressing a capped file) dropped; the surviving remedy lives
-     in tracking-rules "Weight caps". Section numbers stay stable. -->
+     `git log -- skills/shared/records-hygiene.md`): §3 dropped with the
+     rule-placement doctrine; §4 lives in its consumer, /milestone-implement
+     step 6; §5 retired with its subject at M145; §6's surviving remedy
+     lives in tracking-rules "Weight caps". Section numbers stay stable. -->
