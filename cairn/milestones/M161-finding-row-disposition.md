@@ -78,7 +78,7 @@ planning session, not this milestone.
 - [x] T2: Extend the `/milestone` health-audit triage clause
       (`skills/milestone/SKILL.md:110`) to fire on finding-absorbing rows and
       pose the disposition chip, deferring options to the module.
-- [ ] T3: Add the disposition-chip clause to `/milestone-review` step 9
+- [x] T3: Add the disposition-chip clause to `/milestone-review` step 9
       (`skills/milestone-review/SKILL.md:320-379`), at the point the hygiene
       pass extends candidate rows.
 - [ ] T4: Run both gating suites (`python3 -m unittest` over `scripts/tests`
@@ -96,6 +96,7 @@ planning session, not this milestone.
 - 2026-08-26: plan gate chose proceeding through the records-conduct door (trigger argued met: the shipped audit's untouched-~6-months triage is blind to constantly-extended rows, measured in two adopter repos) over parking as a candidate row; falsified by evidence the accumulation self-corrects (rows drawn down without the rule) or that the rule fires only on healthy batching.
 - 2026-08-26: T1 — records-hygiene §7 authored (12 lines incl. heading); trailing remainder-ledger comment compressed 8→5 lines to hold the module at 54 lines / 3,187 bytes (`wc -l -c`), under its 55/4,000 header budget; both gating suites green.
 - 2026-08-26: T2 — health-audit triage clause extended (`skills/milestone/SKILL.md:111`, inside the staleness/candidate-triage bullet): finding-absorbing rows triaged even though not untouched, chip options deferred to records-hygiene §7; suites green.
+- 2026-08-26: T3 — step-9 disposition clause added (`skills/milestone-review/SKILL.md:355`, between accepted-limitations routing and lesson retirement; step 9 spans 320–387), firing before the pass writes the extension, options deferred to records-hygiene §7; suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
