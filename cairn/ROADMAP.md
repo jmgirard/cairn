@@ -12,6 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M161 | Finding-absorbing candidate rows get a disposition trigger at hygiene | planned | — | normal | milestones/M161-finding-row-disposition.md |
 | M160 | Phase-close routing recommends implement for already-planned work | done | — | normal | milestones/archive/M160-phase-close-routing.md |
 | M159 | The test floor states check discrimination: five distilled principles | done | — | normal | milestones/archive/M159-check-discrimination-floor.md |
 | M158 | DESIGN.md Known issues gains a lifecycle: review hygiene routes accepted limitations there | done | — | normal | milestones/archive/M158-known-issues-routing.md |
