@@ -108,7 +108,12 @@ The script deliberately does not judge these — do them yourself and report:
   `release window` advisory above whether or not it fired, so the bullet never
   judges one. Open RB with no RR after 7+ days (remind the user to run it);
   `candidate` rows untouched ~6 months → offer a triage chip (promote / keep /
-  drop — never auto-delete).
+  drop — never auto-delete). A finding-absorbing candidate row — one already
+  carrying deferred review findings filed from two or more distinct
+  milestones — is triaged even though not untouched: pose the disposition
+  chip whose options `skills/shared/records-hygiene.md` §7 states, rather
+  than restating them here; a row meeting both triggers takes the
+  disposition chip.
 - **Semantic orphans:** `done` milestones not archived; RRs not ingested;
   uncommitted changes under `cairn/`.
 - **Reconciliation with git:** commits since the last work-log entry that

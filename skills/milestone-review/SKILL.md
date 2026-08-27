@@ -348,6 +348,14 @@ overrides — log the override).
    remembering — to `cairn/LESSONS.md`, one per line
    (`- YYYY-MM-DD (M<NNN>): <lesson>`, one line each); lessons, not status or a
    *choice* (a choice is a D-entry). None learned → skip.
+   **Disposition finding-absorbing candidate rows:** when this pass is about
+   to extend a candidate row already carrying deferred review findings filed
+   from two or more distinct milestones — including by absorbing this
+   milestone's deferred findings into it — pose, before writing the
+   extension, the disposition chip whose options
+   `skills/shared/records-hygiene.md` §7 states, rather than restating them
+   here (a routed item then lands via the accepted-limitations block below).
+   No such row touched → skip.
    **Route accepted limitations:** a durable limitation this milestone
    surfaced that the user chose to live with — no candidate row, no fix
    planned — gets an entry in `cairn/DESIGN.md`'s Known issues section,
