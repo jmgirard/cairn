@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M161: Finding-absorbing candidate rows get a disposition trigger at hygiene
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -81,7 +81,7 @@ planning session, not this milestone.
 - [x] T3: Add the disposition-chip clause to `/milestone-review` step 9
       (`skills/milestone-review/SKILL.md:320-379`), at the point the hygiene
       pass extends candidate rows.
-- [ ] T4: Run both gating suites (`python3 -m unittest` over `scripts/tests`
+- [x] T4: Run both gating suites (`python3 -m unittest` over `scripts/tests`
       and `hooks/tests`, exit codes checked) and hand-run `skills/tests`;
       repair any prose-guard locator breakage by rewording new sentences,
       never pinned ones (M148 lesson).
@@ -97,6 +97,7 @@ planning session, not this milestone.
 - 2026-08-26: T1 — records-hygiene §7 authored (12 lines incl. heading); trailing remainder-ledger comment compressed 8→5 lines to hold the module at 54 lines / 3,187 bytes (`wc -l -c`), under its 55/4,000 header budget; both gating suites green.
 - 2026-08-26: T2 — health-audit triage clause extended (`skills/milestone/SKILL.md:111`, inside the staleness/candidate-triage bullet): finding-absorbing rows triaged even though not untouched, chip options deferred to records-hygiene §7; suites green.
 - 2026-08-26: T3 — step-9 disposition clause added (`skills/milestone-review/SKILL.md:355`, between accepted-limitations routing and lesson retirement; step 9 spans 320–387), firing before the pass writes the extension, options deferred to records-hygiene §7; suites green.
+- 2026-08-26: T4 — final sweep: scripts/tests and hooks/tests exit 0, skills/tests hand-run 528 tests OK (no locator breakage to repair), cairn_validate all checks passed; status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
