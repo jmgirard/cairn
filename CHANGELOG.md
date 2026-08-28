@@ -1,5 +1,42 @@
 # Changelog
 
+## 1.9.0 (2026-08-28)
+
+Five milestones since 1.8.0, on two themes: what a phase end routes you to,
+and when a deferred item has to be decided rather than carried. Milestone IDs
+also sort correctly now. Backward-compatible: existing tracked repos keep
+working unchanged.
+
+- **Phase closes route you to the right next command.** A close block's next
+  command now comes from `cairn_next`, so a milestone that is already planned
+  and workable sends you to `/milestone-implement` instead of back to
+  planning. Review's hygiene step validates its own edits before committing
+  them, and when that check flags a release window, the release offer takes
+  the lead — it keeps its chip, the one place a close block still asks
+  something. The status skill gained a matching entry so both surfaces give
+  the same answer.
+- **A candidate that keeps absorbing findings gets decided.** A backlog row
+  that has collected deferred review findings from two or more milestones is
+  no longer silently extended. The pass that would extend it stops and asks
+  what to do instead: promote a bounded milestone, route what you have
+  accepted to Known issues, prune the row, or extend it once on purpose.
+  Rewriting the row shorter does not count as deciding it.
+- **An accepted limitation lands somewhere durable.** When a milestone
+  surfaces a limitation you choose to live with and no backlog row or fix
+  covers it, review hygiene now writes it into `DESIGN.md`'s Known issues in
+  the same commit, rather than leaving it in a closed milestone file.
+- **Milestone IDs sort numerically.** IDs are written padded to three digits
+  (`M007`, not `M7`), archive filenames carry the padded prefix, and the
+  scripts resolve either spelling to the same milestone — so a directory
+  listing is in id order and an unpadded reference still resolves. This
+  repo's 99 legacy archive files were renamed once; adopting repos need
+  change nothing.
+- **The test floor says what makes a check discriminating.** The universal
+  "what gets a test" rules gained a short passage distilling five principles:
+  prove the check fails on a planted defect, give it a non-empty domain, have
+  it state one fact independently, keep fixtures it must stay silent on, and
+  assert identity or kind rather than mere presence.
+
 ## 1.8.0 (2026-08-22)
 
 Two milestones since 1.7.0, both about what the user actually sees at
