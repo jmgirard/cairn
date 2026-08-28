@@ -4,8 +4,9 @@
 
 Five milestones since 1.8.0, on two themes: what a phase end routes you to,
 and when a deferred item has to be decided rather than carried. Milestone IDs
-also sort correctly now. Backward-compatible: existing tracked repos keep
-working unchanged.
+also sort correctly now, and the README documents for the first time how
+cairn checks a numeric result. Backward-compatible: existing tracked repos
+keep working unchanged.
 
 - **Phase closes route you to the right next command.** A close block's next
   command now comes from `cairn_next`, so a milestone that is already planned
@@ -36,6 +37,12 @@ working unchanged.
   prove the check fails on a planted defect, give it a non-empty domain, have
   it state one fact independently, keep fixtures it must stay silent on, and
   assert identity or kind rather than mere presence.
+- **The README says how numeric results are checked.** A new section states
+  the rule for a repo that computes results — a statistic, a score, a fitted
+  value: each one is backed by at least two independent kinds of check, a
+  confidence interval's check is coverage, and what backs each number is
+  recorded. Previously the doctrine shipped in the rulebook with no mention in
+  the README, so it was invisible to anyone deciding whether to adopt cairn.
 
 ## 1.8.0 (2026-08-22)
 

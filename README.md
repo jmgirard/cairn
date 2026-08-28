@@ -200,6 +200,30 @@ somewhere else accumulates these.
 Two templates ship for authoring these, one per page type; `/cairn-init` puts
 the directory in place and the shelf of original files stays out of git.
 
+## When your repo produces numbers
+
+If nothing in your repo computes a result — a statistic, a score, a fitted
+value — skip this; the rules below never load. Where it does, cairn checks the
+number against ground truth rather than against the code that produced it. A
+test that pins today's output is a regression guard, not evidence the number
+is right.
+
+- **Two independent kinds of check, not two copies of one.** Every result is
+  backed by at least two of: a published formula recomputed with deliberately
+  plain code, an independent implementation run at test time, two internal
+  routes that must agree, a reference value committed with the generator that
+  made it, or data simulated from known parameters the estimator has to
+  recover. Two of the same kind doesn't count.
+- **An interval's check is coverage.** For a confidence interval, the test is
+  that it covers the known value at its nominal rate across simulated samples,
+  not that its endpoints match a saved pair of numbers.
+- **What backs each number is written down.** Each check is recorded with its
+  kind, the test asserting it, and where it came from, so the two-kinds bar can
+  be audited later. The shape of that record is yours to pick.
+
+These rules are the same in every language; they are not part of a toolchain
+profile.
+
 ## What the system expects from you
 
 - **Answer the gates.** Questions arrive in small batches at three points
