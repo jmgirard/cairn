@@ -154,3 +154,17 @@ milestone's sessions → routed as candidate rows at T3.
 - 2026-08-29 AC4: verified — at review ref 4ef366b: `python3 -m unittest` over `scripts/tests` ran 327 tests OK (exit 0) and over `hooks/tests` ran 119 tests OK (exit 0). PASS.
 - Projection-vs-outcome: no Driving RR (header —) — no-op.
 - 2026-08-29 consistency gate: `cairn_validate` all checks passed, exit 0; no DESIGN principle changed on the branch (diff empty on IP/GP lines) — `cairn_impact` skipped; profile `generic` consistency-gate slot names no toolchain checks — clean no-op.
+- 2026-08-29 independent review (three lenses, user-facing tier): [O] diff-bug 11 findings; [S] blame-history 2 (1 overlapping [O]2, 1 informational); [S] prior-PR-comments: prior evidence found (M162 archive), zero findings, GitHub-threads probe empty. Triage at the gate (user chose fix-now):
+  - O1 same-repo `cd` false positive (verified: `CD_CMD` parses no target) — fixed at gate: denial message gains the drop-the-`cd` respell escape; false positive documented in `cd_precedes_gh_merge` docstring; regression test added.
+  - O2/S1 stale merge_guard docstring (cd-compound still listed as unseen) + O10 pushd/`cd;` near-misses undocumented — fixed at gate: limitations paragraph rewritten (denied now; pushd and bare `cd;` named as still unseen).
+  - O3 cd between two merges escapes the denial (verified: first-occurrence-only compare; discrimination shown — old logic False, new True on the two-merge spelling) — fixed at gate: check runs against every merge occurrence; regression test added.
+  - O4 DESIGN claim broader than code (`git merge` compound unseen) — fixed at gate: Known-issues bullet narrowed to the `gh pr merge` compound, docstring cross-referenced.
+  - O5 DESIGN templates inventory missing lessons/decisions/archive-summary — fixed at gate: inventory completed.
+  - O6 Known-issues "only on repos the author shaped no longer holds" overstates (bsync is the same author's repo) — fixed at gate: reworded to "shaped around cairn's assumptions"; single-author claim reinstated as standing.
+  - O7 template-reference sweep narrower than its docstring — fixed at gate: sweep widened to all `.md` under `skills/` (source-note→synthesis-note reference now in-domain).
+  - O8 denial guidance unusable autonomously (directory-change tool needs a user turn boundary) — fixed at gate: message adds the ask-the-user path.
+  - O9 missing test cases + message-identity assertion — fixed at gate: same-repo-cd and cd-between-merges tests added; `drop the `cd`` asserted to distinguish the cd message from the M162 --repo message.
+  - O11 empty milestone-local Decisions section — rejected: reviewer's own text calls it "a judgment call, not a clear violation"; M162 set no precedent D-entry; work-log + DESIGN carry the record.
+  - S2 fix narrows M162's documented gap in the guard's favor — rejected as a finding: informational, "not a defect" per the reviewer.
+  - Suites after fixes: scripts 327 OK, hooks 121 OK (2 new tests), both exit 0.
+  - Live confirmation during review: the guard denied this session's own `python3 -c` whose quoted script text carried merge commands — the documented heredoc/quoted-text false positive (F4); Write-tool workaround used as documented.

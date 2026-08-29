@@ -943,7 +943,11 @@ class TestMergeGuard(RepoFixture):
         self.assertEqual(out["permissionDecision"], "deny")
         reason = out["permissionDecisionReason"]
         self.assertIn("session cwd", reason)
-        self.assertIn("cd", reason)
+        self.assertIn(
+            "drop the `cd`", reason,
+            "must be the cd-specific message, not the M162 --repo one "
+            "(both carry 'session cwd')",
+        )
         self.assertEqual(
             self.marker().read_text(), self.APPROVAL_PR7,
             "a cd-compound denial must not consume the approval",
@@ -986,6 +990,31 @@ class TestMergeGuard(RepoFixture):
             self.merge_payload("gh pr merge 7 --squash && cd subdir"),
         )
         self.assertEqual(proc.stdout.strip(), "")
+
+    def test_denies_cd_between_two_merges(self):
+        # M163 review O3: a cd between two merges retargets the later one;
+        # the check runs against every merge occurrence, not just the first.
+        self.marker().write_text(self.APPROVAL_PR7)
+        out = hook_json(run_hook(
+            "merge_guard.py",
+            self.merge_payload(
+                "gh pr merge 7 --squash && cd ../other && gh pr merge 9 --squash"
+            ),
+        ))
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn("drop the `cd`", out["permissionDecisionReason"])
+
+    def test_denies_same_repo_cd_compound_with_respell_guidance(self):
+        # M163 review O1: the cd target is not parsed, so a cd staying
+        # inside the session's own repo is denied too — a documented false
+        # positive whose message says how to respell.
+        self.marker().write_text(self.APPROVAL_PR7)
+        out = hook_json(run_hook(
+            "merge_guard.py",
+            self.merge_payload("cd docs && gh pr merge 7 --squash"),
+        ))
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn("drop the `cd`", out["permissionDecisionReason"])
 
     def test_denies_bare_merge_that_names_no_pr(self):
         self.marker().write_text(self.APPROVAL_PR7)

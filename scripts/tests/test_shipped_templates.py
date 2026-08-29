@@ -15,8 +15,10 @@ TEMPLATES = REPO / "skills" / "shared" / "templates"
 class TestShippedTemplates(unittest.TestCase):
     def referenced_template_names(self):
         pattern = re.compile(r"templates/([A-Za-z0-9_-]+\.md)")
-        sources = list((REPO / "skills").rglob("SKILL.md"))
-        sources += list((REPO / "skills" / "shared").glob("*.md"))
+        # Every .md under skills/ — SKILL.md files, shared modules, the
+        # templates themselves (source-note references synthesis-note),
+        # profiles, and per-skill references (M163 review O7).
+        sources = list((REPO / "skills").rglob("*.md"))
         names = set()
         for path in sources:
             names.update(pattern.findall(path.read_text(encoding="utf-8")))
