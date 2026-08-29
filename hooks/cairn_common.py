@@ -41,6 +41,24 @@ GIT_MERGE = re.compile(CMD_POS + r"git(?:\s+-\S+)*\s+merge(?!\S)")
 MERGE_HOUSEKEEPING = re.compile(r"--(?:abort|continue|quit)\b")
 
 
+CD_CMD = re.compile(CMD_POS + r"cd(?!\S)")
+
+
+def cd_precedes_gh_merge(command):
+    """True when a command-position `cd` token appears before the first
+    guarded `gh pr merge` occurrence — the compound spelling that tries to
+    retarget the merge at a repo the session cwd is not inside (M163 F3).
+    The hook payload's cwd is what the guard resolves the repo from, so a
+    `cd` prefix never changes which repo is checked; deny it with cwd
+    guidance rather than letting the cwd repo's marker answer for another
+    repo (or emitting the misleading missing-marker message)."""
+    merge = GH_PR_MERGE.search(command)
+    if not merge:
+        return False
+    cd = CD_CMD.search(command)
+    return bool(cd) and cd.start() < merge.start()
+
+
 def is_guarded_merge(command, cwd):
     """True when the command would merge into main/master.
 

@@ -29,6 +29,11 @@ the in-cwd branch check doesn't inspect. The covered, enforced path is the
 The merge-detection regexes and is_guarded_merge live in cairn_common so
 merge_guard_post keys on the identical detection.
 
+False-positive side (M163): CMD_POS treats a newline as a command
+separator, so a Bash heredoc or quoted script body whose text carries a
+guarded merge command at line start is seen as that merge and denied.
+Author such content (tests, docs) via the Write tool, not a heredoc.
+
 Cross-repo limitations (M162; non-exhaustive): an approval binds the repo
 whose cairn/.merge-approved records it, and the guard denies the cross-repo
 `gh pr merge` forms its tokenization can see — repo-targeting flags
@@ -64,6 +69,22 @@ def main():
     if not root:
         return
     if not cc.is_guarded_merge(command, cwd):
+        return
+    # cd-compound denial (M163) — before every other check: a leading or
+    # mid-chain `cd` cannot retarget the guard, which resolves the repo from
+    # the session cwd, so this spelling is denied with cwd guidance and the
+    # cwd repo's marker is never consulted for it.
+    if cc.cd_precedes_gh_merge(command):
+        deny(
+            "This merge is spelled with a `cd` before it, but the guard "
+            "resolves the repo from the session cwd — a `cd` inside the "
+            "command cannot retarget it, and the current repo's approval "
+            "marker must not answer for another repo. Move the session "
+            "cwd inside the target repo (the directory-change tool, not a "
+            "shell `cd`), then run the merge plainly through that repo's "
+            "own approval gate and marker (tracking-rules, Git and "
+            "approval model)."
+        )
         return
     # Cross-repo denial (M162) — before the marker-existence check, so a
     # repo-targeting merge never reads as "just missing an approval" and
