@@ -9,7 +9,7 @@
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** IP1, IP2   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** m162-multi-repo-merge-guard   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m162-multi-repo-merge-guard · https://github.com/jmgirard/cairn/pull/163   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -44,7 +44,7 @@ candidate row.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `merge_guard.py` denies — before the marker-existence check, and
+- [x] AC1: `merge_guard.py` denies — before the marker-existence check, and
       with `cairn/.merge-approved` byte-identical after the denial — every
       `gh pr merge` occurrence whose segment tokens contain a
       repo-targeting flag token. A shared `cairn_common` helper yields each
@@ -62,7 +62,7 @@ candidate row.
       and `-r` clusters allowed, a repo flag in a preceding or following
       non-merge segment not denying, a value token like
       `--subject "-Recovered null deref"` not denying (value-flag skip).
-- [ ] AC2: every `gh pr merge` occurrence whose PR positional is not a
+- [x] AC2: every `gh pr merge` occurrence whose PR positional is not a
       bare digit string is denied without consuming the marker via the
       existing does-not-name-a-PR denial, whose message prescribes the
       bare-number spelling — the `/pull/<N>`-tail URL acceptance is
@@ -71,7 +71,7 @@ candidate row.
       test: a `/pull/7` URL (previously allowed), a `/pull/7/files` URL
       (previously denied via the no-PR path), a branch-name positional,
       marker untouched, and the three surviving allows.
-- [ ] AC3: `cairn_common`'s shared command-position pattern sees through
+- [x] AC3: `cairn_common`'s shared command-position pattern sees through
       leading environment-assignment prefixes (`VAR=value` words before
       the command word) — so `merge_guard_post.py` keys identically — and
       a `gh pr merge` occurrence whose prefix assigns `GH_REPO` is denied
@@ -83,7 +83,7 @@ candidate row.
       (marker consumed), and a `PostToolUseFailure` on it restores
       `cairn/.merge-approved` byte-identical; an assignment spelling in
       argument position (`echo GH_REPO=x gh pr merge 5`) still ignored.
-- [ ] AC4: the multi-repo contract is stated in two places:
+- [x] AC4: the multi-repo contract is stated in two places:
       `merge_guard.py`'s known-limitations docstring paragraph —
       explicitly non-exhaustive — names compound `cd … && gh pr merge`,
       subshells, alias/wrapper invocations, `GH_HOST`, and
@@ -96,7 +96,7 @@ candidate row.
       marker there does nothing — such merges are gated by chat approval
       alone, or the repo adopts cairn). Verified by reading the two named
       files.
-- [ ] AC5: both gating suites pass (`scripts/tests`, `hooks/tests`).
+- [x] AC5: both gating suites pass (`scripts/tests`, `hooks/tests`).
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate -->
@@ -156,3 +156,10 @@ candidate row.
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion. -->
+
+- 2026-08-29 evidence, branch a9c712c, PR #163 (draft):
+- AC1: hooks suite fresh-run green (112 tests, exit 0). Predicate limbs and positions: `test_repo_flag_is_denied_marker_present` (`--repo`, `--repo=`, `-R`, bundled `-sdR`, flag after the positional), `test_repo_flag_is_denied_before_the_marker_existence_check` (marker absent → still the cross-repo denial), `test_chained_second_occurrence_repo_flag_is_denied`; negative controls in `test_repo_predicate_negative_controls_still_allowed` (`-sd`, `-r`, repo flag in preceding/following non-merge segment, `--subject "-Recovered…"` value-flag skip). Marker byte-identity asserted in `assert_repo_denied` for every denial. Code read: shared `gh_merge_occurrence_tokens` (shlex fallback kept, cairn_common.py) feeds both `gh_merge_pr_numbers` and `names_repo_target`; denial hoisted above the marker-existence check (merge_guard.py) with the binds-the-repo / run-from-target-repo message.
+- AC2: `test_pr_url_positional_is_denied` — `/pull/7` (previously allowed) and `/pull/7/files` both fall to the does-not-name-a-PR denial with the marker untouched; `test_branch_name_argument_is_treated_as_naming_no_pr` (branch positional denied, marker intact); the three M72 allows survive in `test_value_flag_allows_survive` (`-m 7`, `--subject "fix issue 9" 7`, `-t 'bump to 9' 7`, each consuming the marker). `grep -rn _PR_URL_TAIL hooks/` → no occurrences; the no-PR denial message prescribes the bare-number spelling (merge_guard.py, read).
+- AC3: `CMD_POS` carries the env-assignment prefix run in `cairn_common.py` (one shared pattern; `merge_guard_post.py` keys through the same `GH_PR_MERGE` regex). Tests: `test_gh_repo_env_prefix_is_denied` (marker present — PR-5 command vs PR-7 marker proves ordering — and absent), `test_multi_assignment_and_post_separator_prefixes_are_denied` (`A=1 GH_REPO=…`, `echo hi; GH_REPO=…`), `test_benign_env_prefix_is_guarded_like_the_unprefixed_spelling` (`FOO=1` consumes by rename), `test_env_prefixed_failure_restores_consumed_marker` (PostToolUseFailure restores byte-identical, pending removed), `test_assignment_spelling_in_argument_position_is_ignored` (`echo GH_REPO=x gh pr merge 5` untouched). The GH_REPO denial reuses AC1's message (`assert_repo_denied` checks both limbs).
+- AC4: both files read this session. `merge_guard.py` docstring's "Cross-repo limitations (M162; non-exhaustive)" paragraph names compound `cd … && gh pr merge`, subshells, alias/wrapper invocations, GH_HOST, and whitespace/quoted assignment values ("among others"). `skills/shared/tracking-rules.md` "Git and approval model" states an approval binds one repo (marker in the merged repo's own `cairn/`), a secondary repo's merge runs from a session cwd inside that repo, and a repo without cairn tracking is outside the guard (improvised marker inert; chat approval alone, or adopt cairn).
+- AC5: fresh runs at review, both exit 0 — `python3 -m unittest discover -s scripts/tests` (324 tests, OK), `python3 -m unittest discover -s hooks/tests` (112 tests, OK).
