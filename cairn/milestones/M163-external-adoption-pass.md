@@ -92,7 +92,7 @@ milestone's sessions → routed as candidate rows at T3.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] T1: In bsync, run `/cairn-init` (migration path expected for
+- [x] T1: In bsync, run `/cairn-init` (migration path expected for
       `MILESTONES.md`/`DESIGN.md`; r-package profile), land the result on
       bsync's default branch through its approval gate; log each friction
       observation as an `F<n>` work-log entry here as it occurs.
@@ -122,6 +122,7 @@ milestone's sessions → routed as candidate rows at T3.
 - 2026-08-29: T1 in progress: /cairn-init on bsync detected the migration path (root MILESTONES.md/DESIGN.md, status-in-CLAUDE, 3 tracking-coupled skills); disposition gate accepted run-as-proposed; migration committed on bsync branch cairn-init-migration, PR jmgirard/bsync#2 open with ledger, cairn_validate green in bsync; awaiting CI then merge gate.
 - 2026-08-29: F1: multi-repo driving — the harness resets shell cwd to the primary repo after every Bash call, so every bsync command needs a cd prefix and the tracking-rules multi-repo clause ("a secondary repo's merge runs from a session cwd inside that repo") is easy to get wrong; whether merge_guard accepts the compound `cd <repo> && gh pr merge` spelling needs verification at the bsync merge.
 - 2026-08-29: F3: cross-repo merge denial confirmed live (F1's concern): with session cwd in cairn, `cd bsync && gh pr merge 2` was denied twice — merge_guard resolves the repo from the hook payload's session cwd, so it checked cairn's marker, not bsync's (the documented M162 `cd ../other` limitation, hit on the contract's own recommended path in a harness that resets cwd); the denial's remediation text ("recreate it and rerun") invites recreating the marker in the wrong repo, which would let the primary repo's marker authorize the secondary repo's merge; correct path taken: move the session cwd into bsync (change_directory) and merge plain.
+- 2026-08-29: T1 done: bsync PR #2 squash-merged at user approval (bsync main 5112c2f); all 8 CI checks green pre-merge; cairn_validate exits 0 on bsync main; marker consumed by the guard. F3 addendum: the correct path (session cwd inside bsync) required change_directory, which applies only at a user turn boundary — the merge stalled until the user nudged, so an autonomous multi-repo session cannot complete a secondary repo's merge unaided.
 - 2026-08-29: F2: cairn-init §1 mandates LESSONS.md ("header + correct-in-place note") and the DECISIONS.md file header, but no template ships for either (decision.md shows only the entry shape; templates/ has no lessons or decisions-header file), so the session reconstructed both from cairn's own dogfood files — a surface an external adopter's session does not have; header shapes would be invented per adoption.
 
 ## Decisions
