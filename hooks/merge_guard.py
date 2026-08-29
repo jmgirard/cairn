@@ -29,21 +29,30 @@ the in-cwd branch check doesn't inspect. The covered, enforced path is the
 The merge-detection regexes and is_guarded_merge live in cairn_common so
 merge_guard_post keys on the identical detection.
 
+False-positive side (M163): CMD_POS treats a newline as a command
+separator, so a Bash heredoc or quoted script body whose text carries a
+guarded merge command at line start is seen as that merge and denied.
+Author such content (tests, docs) via the Write tool, not a heredoc.
+
 Cross-repo limitations (M162; non-exhaustive): an approval binds the repo
 whose cairn/.merge-approved records it, and the guard denies the cross-repo
 `gh pr merge` forms its tokenization can see — repo-targeting flags
-(--repo/-R, bundled clusters, --repo=) and leading GH_REPO= assignment
-prefixes. Redirections the detection does NOT see, among others: a compound
-`cd ../other && gh pr merge`, command-substitution subshells
-(`$(…)`/backticks; parenthesized subshells ARE seen — `(` is a command
-separator), alias or wrapper invocations of gh (`env GH_REPO=o/r gh …`
-included), a prior `export GH_REPO=…` in the same command, GH_HOST, and
-assignment values containing whitespace, quoting, or substitution — those
-last spellings hide the merge from the guard ENTIRELY (no denial, no
-marker check), since the prefix run reads space-delimited `VAR=value`
-words only. A merge into a repo the session cwd is not inside is gated by
-that repo's own guard and marker — or, for a repo without cairn tracking,
-by chat approval alone.
+(--repo/-R, bundled clusters, --repo=), leading GH_REPO= assignment
+prefixes, and (M163) compounds where a command-position `cd` precedes any
+`gh pr merge` (denied with session-cwd guidance before the marker check; a
+`cd` staying inside the session's own repo is denied too — the target is
+not parsed — so drop the `cd` and respell plainly). Redirections the
+detection does NOT see, among others: `pushd ../other && gh pr merge`, a
+bare `cd;` (the token check requires whitespace after `cd`),
+command-substitution subshells (`$(…)`/backticks; parenthesized subshells
+ARE seen — `(` is a command separator), alias or wrapper invocations of gh
+(`env GH_REPO=o/r gh …` included), a prior `export GH_REPO=…` in the same
+command, GH_HOST, and assignment values containing whitespace, quoting, or
+substitution — those last spellings hide the merge from the guard ENTIRELY
+(no denial, no marker check), since the prefix run reads space-delimited
+`VAR=value` words only. A merge into a repo the session cwd is not inside
+is gated by that repo's own guard and marker — or, for a repo without
+cairn tracking, by chat approval alone.
 """
 
 import os
@@ -64,6 +73,25 @@ def main():
     if not root:
         return
     if not cc.is_guarded_merge(command, cwd):
+        return
+    # cd-compound denial (M163) — before every other check: a leading or
+    # mid-chain `cd` cannot retarget the guard, which resolves the repo from
+    # the session cwd, so this spelling is denied with cwd guidance and the
+    # cwd repo's marker is never consulted for it.
+    if cc.cd_precedes_gh_merge(command):
+        deny(
+            "This merge is spelled with a `cd` before it, but the guard "
+            "resolves the repo from the session cwd — a `cd` inside the "
+            "command cannot retarget it, and the current repo's approval "
+            "marker must not answer for another repo. If the session cwd "
+            "is already inside the target repo, drop the `cd` and run the "
+            "merge plainly. Otherwise move the session cwd inside the "
+            "target repo (the directory-change tool, not a shell `cd` — "
+            "and since that tool applies only at a user turn boundary, "
+            "ask the user to continue if the move does not take effect), "
+            "then run the merge plainly through that repo's own approval "
+            "gate and marker (tracking-rules, Git and approval model)."
+        )
         return
     # Cross-repo denial (M162) — before the marker-existence check, so a
     # repo-targeting merge never reads as "just missing an approval" and

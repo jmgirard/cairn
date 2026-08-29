@@ -39,7 +39,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   M113, trimmed M146); each module carries a header-stated size
   budget (M154).
 - `skills/shared/templates/` — milestone, brief, decision, CLAUDE.md section,
-  source note, synthesis note.
+  source note, synthesis note, archive summary, and the LESSONS.md /
+  DECISIONS.md file headers (M163).
 - `skills/shared/profiles/` — the shipped reference toolchain profiles
   (`r-package`, `python`, `docker-image`, `generic`); `cairn-init` instantiates one into a repo's
   `cairn/PROFILE.md`, and the operational skills read its slots.
@@ -115,20 +116,30 @@ within each type and are never reused.
 
 - The merge guard's cross-repo detection is token-level only (M162): a
   spelling that restructures the command — `env GH_REPO=… gh pr merge`, a
-  prior `export GH_REPO=…`, a `cd ../other &&` compound, `GH_HOST`, an
-  assignment value carrying whitespace, quoting, or substitution — hides the
-  merge from the guard entirely (no denial, no marker check). Accepted at the
-  M162 gate: documented in the merge guard's limitations docstring and the
-  rulebook's approval model rather than chased mechanically (D-043's
+  prior `export GH_REPO=…`, `GH_HOST`, an assignment value carrying
+  whitespace, quoting, or substitution — hides the merge from the guard
+  entirely (no denial, no marker check). Accepted at the M162 gate:
+  documented in the merge guard's limitations docstring and the rulebook's
+  approval model rather than chased mechanically (D-043's
   boundary-over-machinery stance); the enforced path stays the plain
-  `gh pr merge <N>` convention the skills emit.
-- Single-author, single-environment: every workflow has been exercised only by
-  the author, on macOS + Claude Code with the full model roster, and only on
-  repos the author shaped. No external adopter, and no external-repo migration,
-  has run yet. The supported collaboration model — one operator, contributions
-  from people who do not run cairn — and the enforcement boundary it implies
-  are stated in the rulebook's "Git and approval model" (D-043, M72); two
-  concurrent cairn operators remain unsupported (ROADMAP candidate).
+  `gh pr merge <N>` convention the skills emit. (The `cd ../other &&`
+  compound before a `gh pr merge` left this list at M163: the guard now
+  denies that spelling with session-cwd guidance; the `git merge` compound
+  and near-neighbours like `pushd` remain unseen per the docstring —
+  corrected M163.)
+- Single-author, single-environment: every workflow has been exercised only
+  by the author, on macOS + Claude Code with the full model roster. The first
+  external-repo pass ran at M163 (corrected M163) — `/cairn-init`'s migration
+  path plus a full milestone loop on bsync, an r-package repo with a
+  precursor tracking system, solo-driven with a 4-entry friction ledger — so
+  "only on repos shaped around cairn's assumptions" no longer holds (bsync
+  is the same author's repo, so the single-author claim itself stands); what
+  remains unrun is a second person driving an adoption (author-blind
+  friction; ROADMAP candidate) and any non-macOS environment. The supported collaboration
+  model — one operator, contributions from people who do not run cairn — and
+  the enforcement boundary it implies are stated in the rulebook's "Git and
+  approval model" (D-043, M72); two concurrent cairn operators remain
+  unsupported (ROADMAP candidate).
 - Hooks are unverified on Windows: stock Windows lacks `python3` on PATH (it
   is `py`/`python`), so `hooks.json` chains a best-effort `py -3` launcher
   fallback after each `python3` invocation (M61) — a no-op on macOS/Linux

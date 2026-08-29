@@ -928,6 +928,94 @@ class TestMergeGuard(RepoFixture):
             "a denied merge must not consume the approval",
         )
 
+    # --- cd-compound cross-repo spelling (M163 F3): the guard resolves the
+    # repo from the session cwd, so a leading `cd <path> &&` cannot retarget
+    # it; that spelling is denied with cwd guidance — never the misleading
+    # missing-marker message, and never a merge the cwd repo's marker would
+    # wrongly authorize for another repo.
+
+    def test_denies_cd_compound_merge_even_with_marker(self):
+        self.marker().write_text(self.APPROVAL_PR7)
+        out = hook_json(run_hook(
+            "merge_guard.py",
+            self.merge_payload("cd /some/other/repo && gh pr merge 7 --squash"),
+        ))
+        self.assertEqual(out["permissionDecision"], "deny")
+        reason = out["permissionDecisionReason"]
+        self.assertIn("session cwd", reason)
+        self.assertIn(
+            "drop the `cd`", reason,
+            "must be the cd-specific message, not the M162 --repo one "
+            "(both carry 'session cwd')",
+        )
+        self.assertEqual(
+            self.marker().read_text(), self.APPROVAL_PR7,
+            "a cd-compound denial must not consume the approval",
+        )
+
+    def test_denies_cd_compound_with_semicolon_and_no_marker(self):
+        out = hook_json(run_hook(
+            "merge_guard.py",
+            self.merge_payload("cd ../elsewhere; gh pr merge 2 --squash"),
+        ))
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn(
+            "session cwd", out["permissionDecisionReason"],
+            "the cd-specific guidance must win over the bare approval message",
+        )
+
+    def test_denies_mid_chain_cd_before_merge(self):
+        self.marker().write_text(self.APPROVAL_PR7)
+        out = hook_json(run_hook(
+            "merge_guard.py",
+            self.merge_payload("git fetch && cd ../other && gh pr merge 7 --squash"),
+        ))
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn("session cwd", out["permissionDecisionReason"])
+
+    def test_cd_inside_a_flag_value_is_not_a_cd_prefix(self):
+        # "cd" as quoted flag-value text is not a command-position cd; the
+        # ordinary marker path must still allow the merge.
+        self.marker().write_text(self.APPROVAL_PR7)
+        proc = run_hook(
+            "merge_guard.py",
+            self.merge_payload('gh pr merge 7 --squash --subject "cd later"'),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+
+    def test_cd_after_the_merge_is_not_a_cd_prefix(self):
+        self.marker().write_text(self.APPROVAL_PR7)
+        proc = run_hook(
+            "merge_guard.py",
+            self.merge_payload("gh pr merge 7 --squash && cd subdir"),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+
+    def test_denies_cd_between_two_merges(self):
+        # M163 review O3: a cd between two merges retargets the later one;
+        # the check runs against every merge occurrence, not just the first.
+        self.marker().write_text(self.APPROVAL_PR7)
+        out = hook_json(run_hook(
+            "merge_guard.py",
+            self.merge_payload(
+                "gh pr merge 7 --squash && cd ../other && gh pr merge 9 --squash"
+            ),
+        ))
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn("drop the `cd`", out["permissionDecisionReason"])
+
+    def test_denies_same_repo_cd_compound_with_respell_guidance(self):
+        # M163 review O1: the cd target is not parsed, so a cd staying
+        # inside the session's own repo is denied too — a documented false
+        # positive whose message says how to respell.
+        self.marker().write_text(self.APPROVAL_PR7)
+        out = hook_json(run_hook(
+            "merge_guard.py",
+            self.merge_payload("cd docs && gh pr merge 7 --squash"),
+        ))
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn("drop the `cd`", out["permissionDecisionReason"])
+
     def test_denies_bare_merge_that_names_no_pr(self):
         self.marker().write_text(self.APPROVAL_PR7)
         out = hook_json(
