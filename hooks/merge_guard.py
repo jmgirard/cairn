@@ -53,9 +53,12 @@ def main():
     # repo-targeting merge never reads as "just missing an approval" and
     # never touches the marker.
     occurrences = cc.gh_merge_occurrence_tokens(command)
-    if any(cc.names_repo_target(tokens) for tokens in occurrences):
+    if any(
+        cc.names_repo_target(tokens) for tokens in occurrences
+    ) or cc.gh_merge_gh_repo_prefixed(command):
         deny(
-            "This merge targets a repo through --repo/-R. An approval "
+            "This merge targets a repo through --repo/-R or a GH_REPO "
+            "environment assignment. An approval "
             "binds the repo whose cairn/.merge-approved records it "
             "(tracking-rules, Git and approval model), so it cannot "
             "authorize a merge in another repo. Run the merge from a "

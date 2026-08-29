@@ -124,7 +124,7 @@ candidate row.
 - [x] T3: remove `_PR_URL_TAIL` and its branch in `_first_pr_token`
       (`cairn_common.py:65,121-123`); confirm URL/branch positionals fall
       to the existing no-PR denial.
-- [ ] T4: extend `CMD_POS` in `cairn_common.py` with the env-assignment
+- [x] T4: extend `CMD_POS` in `cairn_common.py` with the env-assignment
       prefix run; add the `GH_REPO=` prefix denial; leave
       `commit_guard.py`/`force_push_guard.py` copies untouched.
 - [ ] T5: docs — the guard docstring's non-exhaustive limitations
@@ -147,6 +147,7 @@ candidate row.
 - 2026-08-29: T1 done — AC1/AC2/AC3 test matrices added, two M72-era subTest loops reworked keeping their allow cases; 13 reds confirmed pre-change, each failing as the pre-change behavior the plan names (repo flags allowed, GH_REPO unseen, /pull/7 URL allowed, -sdR mis-denied via no-PR path, post hook blind to prefixes).
 - 2026-08-29: T2 done — `gh_merge_occurrence_tokens` extracted (shlex fallback kept), `names_repo_target` predicate added, denial hoisted above the marker check in `merge_guard.py`; AC1 tests green, remaining reds are the T3/T4 targets only (URL positional, env prefixes).
 - 2026-08-29: T3 done — `_PR_URL_TAIL` and its `_first_pr_token` branch removed; URL positionals fall to the existing no-PR denial (both URL tests green), remaining reds are T4's env-prefix targets only.
+- 2026-08-29: T4 done — `CMD_POS` gains the env-assignment prefix run (guard copies in commit/force-push guards untouched, candidate row stands), `gh_merge_gh_repo_prefixed` added, denial message names the GH_REPO limb; both suites green (hooks 112 OK, scripts 324 OK).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
