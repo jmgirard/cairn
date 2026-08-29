@@ -227,6 +227,11 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   default branch without it and consumes it per attempt (a failed attempt's marker is restored). The marker names the PR
   it approves (`… approved YYYY-MM-DD for PR #<N>`); the guard refuses a merge whose PR it does not name — spell the
   number out: `gh pr merge <N> --squash`.
+- **An approval binds one repo**: the marker lives in the merged repo's own `cairn/`, and the guard denies a `gh pr
+  merge` that targets another repo (`--repo`/`-R`, a `GH_REPO=` prefix, or a URL/branch positional). In a
+  multi-repo session, a secondary repo's merge runs from a session cwd inside that repo, through that repo's own gate
+  and marker. A repo without cairn tracking is outside the guard entirely — an improvised marker there does nothing;
+  such merges are gated by chat approval alone, or the repo adopts cairn.
 
 **Enforcement boundary.** Every guard is a PreToolUse hook on *this* session's own Bash calls; a merge made in the
 GitHub web UI, by a merge queue, or by a contributor without the plugin is invisible to them — there the approval

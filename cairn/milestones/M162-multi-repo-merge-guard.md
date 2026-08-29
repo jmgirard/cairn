@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M162: Multi-repo sessions: the merge guard's cross-repo contract
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -127,10 +127,10 @@ candidate row.
 - [x] T4: extend `CMD_POS` in `cairn_common.py` with the env-assignment
       prefix run; add the `GH_REPO=` prefix denial; leave
       `commit_guard.py`/`force_push_guard.py` copies untouched.
-- [ ] T5: docs — the guard docstring's non-exhaustive limitations
+- [x] T5: docs — the guard docstring's non-exhaustive limitations
       paragraph; tracking-rules "Git and approval model" per-repo contract
       sentences.
-- [ ] T6: run both gating suites from the repo root, each exit code
+- [x] T6: run both gating suites from the repo root, each exit code
       checked explicitly; hand-run `skills/tests` (tracking-rules edit
       touches guarded prose).
 
@@ -148,6 +148,8 @@ candidate row.
 - 2026-08-29: T2 done — `gh_merge_occurrence_tokens` extracted (shlex fallback kept), `names_repo_target` predicate added, denial hoisted above the marker check in `merge_guard.py`; AC1 tests green, remaining reds are the T3/T4 targets only (URL positional, env prefixes).
 - 2026-08-29: T3 done — `_PR_URL_TAIL` and its `_first_pr_token` branch removed; URL positionals fall to the existing no-PR denial (both URL tests green), remaining reds are T4's env-prefix targets only.
 - 2026-08-29: T4 done — `CMD_POS` gains the env-assignment prefix run (guard copies in commit/force-push guards untouched, candidate row stands), `gh_merge_gh_repo_prefixed` added, denial message names the GH_REPO limb; both suites green (hooks 112 OK, scripts 324 OK).
+- 2026-08-29: T5 done — guard docstring gains the non-exhaustive cross-repo limitations paragraph (cd-compound, subshells, alias/wrapper, GH_HOST, whitespace/quoted assignment values); tracking-rules "Git and approval model" gains the approval-binds-one-repo bullet (secondary repo merges from its own cwd; non-cairn repos outside the guard, chat-approval-gated).
+- 2026-08-29: T6 done — all three suites exit 0 (scripts 324, hooks 112, skills 528 hand-run); status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

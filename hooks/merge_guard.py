@@ -28,6 +28,17 @@ the in-cwd branch check doesn't inspect. The covered, enforced path is the
 `gh pr merge` squash-merge convention, which the guard always catches.
 The merge-detection regexes and is_guarded_merge live in cairn_common so
 merge_guard_post keys on the identical detection.
+
+Cross-repo limitations (M162; non-exhaustive): an approval binds the repo
+whose cairn/.merge-approved records it, and the guard denies the cross-repo
+`gh pr merge` forms its tokenization can see — repo-targeting flags
+(--repo/-R, bundled clusters, --repo=) and leading GH_REPO= assignment
+prefixes. Redirections the detection does NOT see, among others: a compound
+`cd ../other && gh pr merge`, subshells, alias or wrapper invocations of
+gh, GH_HOST, and assignment values containing whitespace or quoting (the
+prefix run reads space-delimited `VAR=value` words only). A merge into a
+repo the session cwd is not inside is gated by that repo's own guard and
+marker — or, for a repo without cairn tracking, by chat approval alone.
 """
 
 import os
