@@ -99,7 +99,7 @@ milestone's sessions → routed as candidate rows at T3.
 - [x] T2: In bsync, take one genuine backlog item through the full loop —
       `/milestone-plan` → `/milestone-implement` → `/milestone-review` →
       merge + archive — logging friction as F-entries here as it occurs.
-- [ ] T3: Disposition every F-entry (fixed / routed / declined); land
+- [x] T3: Disposition every F-entry (fixed / routed / declined); land
       in-scope fixes in cairn tests-first per the universal test floor
       (test scope: each fixed friction's changed behavior), both gating
       suites green; route larger findings as candidate rows.
@@ -129,6 +129,13 @@ milestone's sessions → routed as candidate rows at T3.
 - 2026-08-29: T2 progress: bsync M008 implemented through status review (branch m008-phase-synchrony, 8 commits): wphase estimator + surrogate wrapper, 3-oracle-type suite (closed-form Dirichlet, frozen MNE pin, simulation calibration; live pure-R as depth), check() 0/0/0; no new F-entries — the cairn implement loop ran clean cross-repo (gates, checkpoints, verify slot all as documented).
 
 - 2026-08-29: T2 done: bsync M008 merged (PR bsync#3 squashed as a8f269a, CI 8/8, all 8 ACs fresh-evidenced, 3-lens review with 18 findings triaged) and archived with post-merge hygiene (done row, 25-line archive summary, 3 LESSONS lines, validate green) — the full loop plan→implement→review→merge→archive ran cross-repo; the merge-approval marker + `gh pr merge 3 --squash` worked first try from the bsync session cwd.
+
+- 2026-08-29: F4: authoring test files whose text contains guarded merge commands via a Bash heredoc trips merge_guard — CMD_POS treats the heredoc's newlines as command separators, so the quoted strings read as a merge from the session cwd (denied mid-T3); the guard cannot distinguish code-authoring from execution.
+- 2026-08-29: F1 disposition: declined — the per-call cwd reset and the directory move applying only at a user turn boundary are harness-owned behavior cairn cannot change; the cairn-side actionable slice (guard messaging and cwd guidance) landed as F3's fix, and the enforcement-boundary prose already frames guards as this-session Bash defense-in-depth.
+- 2026-08-29: F2 disposition: fixed — cairn commit b0d06e5 (templates/lessons.md + templates/decisions.md ship; cairn-init §1 references them; scripts/tests/test_shipped_templates.py guards the reference sweep and the two headers independently).
+- 2026-08-29: F3 disposition: fixed — cairn commit b0d06e5 (merge_guard denies cd-compound gh-pr-merge spellings with session-cwd guidance before any marker check, so the misleading recreate-and-rerun message and the wrong-repo-marker hole are both closed; cd_precedes_gh_merge + 5 tests with discriminating controls).
+- 2026-08-29: F4 disposition: fixed — cairn commit b0d06e5 (merge_guard docstring documents the heredoc false-positive and the Write-tool workaround).
+- 2026-08-29: T3 done: 4 F-entries, each with one current disposition (3 fixed in b0d06e5, 1 declined with reason); both gating suites green after fixes — scripts 327, hooks 119 (verify slot, AC4's command).
 
 
 ## Decisions
