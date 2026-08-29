@@ -75,22 +75,20 @@ _MARKER_PR = re.compile(r"for\s+PR\s*#(\d+)", re.IGNORECASE)
 _SEGMENT_END = re.compile(r"[;&|\n]")
 
 
-def gh_merge_pr_numbers(command):
-    """The PR number named by EVERY `gh pr merge` in the command.
+def gh_merge_occurrence_tokens(command):
+    """The argument-token list of EVERY `gh pr merge` in the command.
 
-    Returns one entry per occurrence, in order; an entry is None when that
-    occurrence named no PR (a bare `gh pr merge`, which lets gh infer it
-    from the current branch, or a branch-name argument the guard cannot
-    resolve offline). An empty list means the command contains no
-    `gh pr merge` at all.
+    Returns one token list per occurrence, in order — the tokens between
+    that occurrence's `merge` word and the next command separator. An
+    empty list means the command contains no `gh pr merge` at all.
 
     Every occurrence is parsed, not just the first: a chained
     `gh pr merge 7 && gh pr merge 9` must not smuggle the second merge
-    through on the strength of the first (M72 review F4). Never raises — an
-    unparseable occurrence yields None, and the caller decides what that
-    means.
+    through on the strength of the first (M72 review F4). Never raises —
+    an occurrence shlex cannot parse falls back to a whitespace split,
+    and the caller decides what its tokens mean.
     """
-    found = []
+    occurrences = []
     for match in GH_PR_MERGE.finditer(command or ""):
         segment = command[match.end():]
         end = _SEGMENT_END.search(segment)
@@ -100,8 +98,49 @@ def gh_merge_pr_numbers(command):
             tokens = shlex.split(segment)
         except Exception:
             tokens = segment.split()
-        found.append(_first_pr_token(tokens))
-    return found
+        occurrences.append(tokens)
+    return occurrences
+
+
+def gh_merge_pr_numbers(command):
+    """The PR number named by EVERY `gh pr merge` in the command.
+
+    Returns one entry per occurrence, in order; an entry is None when that
+    occurrence named no PR (a bare `gh pr merge`, which lets gh infer it
+    from the current branch, or a branch-name argument the guard cannot
+    resolve offline). An empty list means the command contains no
+    `gh pr merge` at all.
+    """
+    return [
+        _first_pr_token(tokens)
+        for tokens in gh_merge_occurrence_tokens(command)
+    ]
+
+
+# Short-option cluster carrying gh's global -R repo flag (e.g. -R, -sdR).
+_REPO_FLAG_CLUSTER = re.compile(r"^-[A-Za-z]*R")
+
+
+def names_repo_target(tokens):
+    """True when one `gh pr merge`'s tokens carry a repo-targeting flag.
+
+    Fires on a token equal to `--repo`, beginning with `--repo=`, or
+    matching a `-R` short-option cluster. Walks with _first_pr_token's
+    value-flag skip so a flag *value* that happens to begin with "-R"
+    (`--subject "-Recovered null deref"`) never fires the predicate.
+    """
+    skip_next = False
+    for token in tokens:
+        if skip_next:
+            skip_next = False
+            continue
+        if token == "--repo" or token.startswith("--repo="):
+            return True
+        if _REPO_FLAG_CLUSTER.match(token):
+            return True
+        if token in _GH_MERGE_VALUE_FLAGS:
+            skip_next = True
+    return False
 
 
 def _first_pr_token(tokens):

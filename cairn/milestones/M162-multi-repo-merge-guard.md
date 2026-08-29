@@ -115,7 +115,7 @@ candidate row.
       three surviving allows (rework the two M72-era subTest loops at
       `test_hooks.py:957` and `:1040`, keeping their allow cases); AC3's
       env-prefix matrix including the post-hook restore case.
-- [ ] T2: extract the shared occurrence-tokens helper in
+- [x] T2: extract the shared occurrence-tokens helper in
       `hooks/cairn_common.py` (from `gh_merge_pr_numbers`'s inline
       segmentation, `cairn_common.py:94-103`); add the repo-flag predicate
       with the value-flag skip; hoist the denial branch above the
@@ -145,6 +145,7 @@ candidate row.
 - 2026-08-29: plan gate chose out-of-contract docs for non-cairn secondary repos over a portable marker mode because a repo that never adopted cairn has no enforcement surface to key on (D-043 boundary-over-machinery); falsified by the hitop-builder pattern recurring with a real unapproved merge.
 - 2026-08-29: implement started on m162-multi-repo-merge-guard; question gate skipped (plan gate settled all open choices, no tripwire tags).
 - 2026-08-29: T1 done — AC1/AC2/AC3 test matrices added, two M72-era subTest loops reworked keeping their allow cases; 13 reds confirmed pre-change, each failing as the pre-change behavior the plan names (repo flags allowed, GH_REPO unseen, /pull/7 URL allowed, -sdR mis-denied via no-PR path, post hook blind to prefixes).
+- 2026-08-29: T2 done — `gh_merge_occurrence_tokens` extracted (shlex fallback kept), `names_repo_target` predicate added, denial hoisted above the marker check in `merge_guard.py`; AC1 tests green, remaining reds are the T3/T4 targets only (URL positional, env prefixes).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

@@ -49,6 +49,21 @@ def main():
         return
     if not cc.is_guarded_merge(command, cwd):
         return
+    # Cross-repo denial (M162) — before the marker-existence check, so a
+    # repo-targeting merge never reads as "just missing an approval" and
+    # never touches the marker.
+    occurrences = cc.gh_merge_occurrence_tokens(command)
+    if any(cc.names_repo_target(tokens) for tokens in occurrences):
+        deny(
+            "This merge targets a repo through --repo/-R. An approval "
+            "binds the repo whose cairn/.merge-approved records it "
+            "(tracking-rules, Git and approval model), so it cannot "
+            "authorize a merge in another repo. Run the merge from a "
+            "session cwd inside the target repo, with no repo flag and "
+            "no GH_REPO in the environment, after that repo's own "
+            "approval gate."
+        )
+        return
     marker = os.path.join(root, cc.MARKER_RELPATH)
     if not os.path.isfile(marker):
         deny(
