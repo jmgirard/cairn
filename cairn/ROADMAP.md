@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M162 | Multi-repo sessions: the merge guard's cross-repo contract | planned | — | normal | milestones/M162-multi-repo-merge-guard.md |
+| M162 | Multi-repo sessions: the merge guard's cross-repo contract | in-progress | — | normal | milestones/M162-multi-repo-merge-guard.md |
 | M161 | Finding-absorbing candidate rows get a disposition trigger at hygiene | done | — | normal | milestones/archive/M161-finding-row-disposition.md |
 | M160 | Phase-close routing recommends implement for already-planned work | done | — | normal | milestones/archive/M160-phase-close-routing.md |
 | M159 | The test floor states check discrimination: five distilled principles | done | — | normal | milestones/archive/M159-check-discrimination-floor.md |

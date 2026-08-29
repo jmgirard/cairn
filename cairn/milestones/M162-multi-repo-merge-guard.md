@@ -4,12 +4,12 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M162: Multi-repo sessions: the merge guard's cross-repo contract
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** IP1, IP2   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m162-multi-repo-merge-guard   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -110,7 +110,7 @@ candidate row.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: red tests in `hooks/tests/test_hooks.py`: AC1's predicate limbs,
+- [x] T1: red tests in `hooks/tests/test_hooks.py`: AC1's predicate limbs,
       positions, chain, negative controls; AC2's positional cases and the
       three surviving allows (rework the two M72-era subTest loops at
       `test_hooks.py:957` and `:1040`, keeping their allow cases); AC3's
@@ -143,6 +143,8 @@ candidate row.
 - 2026-08-29: plan gate chose fixing CMD_POS env-prefix detection over documenting it as accepted because `GH_REPO=` today makes the guard not fire at all (IP1 hole in single-repo sessions too); falsified by the extended pattern denying a legitimate spelling in practice.
 - 2026-08-29: plan gate chose narrowing the M72-era allows (repo-flag values, URL positionals become denials; value-flag allows survive) over keeping URLs allowed because the URL form is a cross-repo vector the number check cannot see; falsified by a legitimate same-repo workflow that must merge by URL.
 - 2026-08-29: plan gate chose out-of-contract docs for non-cairn secondary repos over a portable marker mode because a repo that never adopted cairn has no enforcement surface to key on (D-043 boundary-over-machinery); falsified by the hitop-builder pattern recurring with a real unapproved merge.
+- 2026-08-29: implement started on m162-multi-repo-merge-guard; question gate skipped (plan gate settled all open choices, no tripwire tags).
+- 2026-08-29: T1 done — AC1/AC2/AC3 test matrices added, two M72-era subTest loops reworked keeping their allow cases; 13 reds confirmed pre-change, each failing as the pre-change behavior the plan names (repo flags allowed, GH_REPO unseen, /pull/7 URL allowed, -sdR mis-denied via no-PR path, post hook blind to prefixes).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
