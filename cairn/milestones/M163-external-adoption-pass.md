@@ -118,6 +118,10 @@ milestone's sessions → routed as candidate rows at T3.
 - 2026-08-29: plan gate chose loop-through-merge over stop-at-review because merge/archive/hygiene held past defects (M105, M111 lessons); falsified by the merge leg yielding no findings at material session cost.
 - 2026-08-29: plan gate chose small-fixes-here over observation-only because same-session fixes keep the demand signal actionable; falsified by T3 fix work crowding out the pass (thrash on T3).
 - 2026-08-29: plan gate chose acknowledge-no-floor over a minimum-findings quota because no procedure enumerates friction events (M130); falsified by a demonstrably frictionful pass logging zero F-entries.
+- 2026-08-29: implement gate: T2 item = bsync M8 (phase synchrony, roadmap's next); driving mode = this session, cwd in bsync (M162 cross-repo contract), F-entries logged here as they occur.
+- 2026-08-29: T1 in progress: /cairn-init on bsync detected the migration path (root MILESTONES.md/DESIGN.md, status-in-CLAUDE, 3 tracking-coupled skills); disposition gate accepted run-as-proposed; migration committed on bsync branch cairn-init-migration, PR jmgirard/bsync#2 open with ledger, cairn_validate green in bsync; awaiting CI then merge gate.
+- 2026-08-29: F1: multi-repo driving — the harness resets shell cwd to the primary repo after every Bash call, so every bsync command needs a cd prefix and the tracking-rules multi-repo clause ("a secondary repo's merge runs from a session cwd inside that repo") is easy to get wrong; whether merge_guard accepts the compound `cd <repo> && gh pr merge` spelling needs verification at the bsync merge.
+- 2026-08-29: F2: cairn-init §1 mandates LESSONS.md ("header + correct-in-place note") and the DECISIONS.md file header, but no template ships for either (decision.md shows only the entry shape; templates/ has no lessons or decisions-header file), so the session reconstructed both from cairn's own dogfood files — a surface an external adopter's session does not have; header shapes would be invented per adoption.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
