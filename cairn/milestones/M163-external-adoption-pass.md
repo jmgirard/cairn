@@ -125,6 +125,8 @@ milestone's sessions → routed as candidate rows at T3.
 - 2026-08-29: T1 done: bsync PR #2 squash-merged at user approval (bsync main 5112c2f); all 8 CI checks green pre-merge; cairn_validate exits 0 on bsync main; marker consumed by the guard. F3 addendum: the correct path (session cwd inside bsync) required change_directory, which applies only at a user turn boundary — the merge stalled until the user nudged, so an autonomous multi-repo session cannot complete a secondary repo's merge unaided.
 - 2026-08-29: F2: cairn-init §1 mandates LESSONS.md ("header + correct-in-place note") and the DECISIONS.md file header, but no template ships for either (decision.md shows only the entry shape; templates/ has no lessons or decisions-header file), so the session reconstructed both from cairn's own dogfood files — a surface an external adopter's session does not have; header shapes would be invented per adoption.
 
+- 2026-08-29: T2 in progress: bsync M008 (phase synchrony) planned via /milestone-plan cross-repo (bsync main 52b7b2e); full-mode criteria audit ran twice with fresh [O] readers (both passes returned substantive findings, all disposed); two user gates (4+2 questions), all recommendations accepted; sizing advisory (8 ACs) accepted as one vertical slice.
+
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
      cross-cutting ones to cairn/DECISIONS.md. -->
