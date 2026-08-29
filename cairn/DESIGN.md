@@ -113,6 +113,15 @@ within each type and are never reused.
 
 ## Known issues
 
+- The merge guard's cross-repo detection is token-level only (M162): a
+  spelling that restructures the command — `env GH_REPO=… gh pr merge`, a
+  prior `export GH_REPO=…`, a `cd ../other &&` compound, `GH_HOST`, an
+  assignment value carrying whitespace, quoting, or substitution — hides the
+  merge from the guard entirely (no denial, no marker check). Accepted at the
+  M162 gate: documented in the merge guard's limitations docstring and the
+  rulebook's approval model rather than chased mechanically (D-043's
+  boundary-over-machinery stance); the enforced path stays the plain
+  `gh pr merge <N>` convention the skills emit.
 - Single-author, single-environment: every workflow has been exercised only by
   the author, on macOS + Claude Code with the full model roster, and only on
   repos the author shaped. No external adopter, and no external-repo migration,
