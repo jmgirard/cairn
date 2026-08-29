@@ -121,7 +121,7 @@ candidate row.
       with the value-flag skip; hoist the denial branch above the
       marker-existence check in `hooks/merge_guard.py` with the two-limb
       message.
-- [ ] T3: remove `_PR_URL_TAIL` and its branch in `_first_pr_token`
+- [x] T3: remove `_PR_URL_TAIL` and its branch in `_first_pr_token`
       (`cairn_common.py:65,121-123`); confirm URL/branch positionals fall
       to the existing no-PR denial.
 - [ ] T4: extend `CMD_POS` in `cairn_common.py` with the env-assignment
@@ -146,6 +146,7 @@ candidate row.
 - 2026-08-29: implement started on m162-multi-repo-merge-guard; question gate skipped (plan gate settled all open choices, no tripwire tags).
 - 2026-08-29: T1 done — AC1/AC2/AC3 test matrices added, two M72-era subTest loops reworked keeping their allow cases; 13 reds confirmed pre-change, each failing as the pre-change behavior the plan names (repo flags allowed, GH_REPO unseen, /pull/7 URL allowed, -sdR mis-denied via no-PR path, post hook blind to prefixes).
 - 2026-08-29: T2 done — `gh_merge_occurrence_tokens` extracted (shlex fallback kept), `names_repo_target` predicate added, denial hoisted above the marker check in `merge_guard.py`; AC1 tests green, remaining reds are the T3/T4 targets only (URL positional, env prefixes).
+- 2026-08-29: T3 done — `_PR_URL_TAIL` and its `_first_pr_token` branch removed; URL positionals fall to the existing no-PR denial (both URL tests green), remaining reds are T4's env-prefix targets only.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

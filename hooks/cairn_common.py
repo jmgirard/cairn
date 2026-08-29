@@ -61,8 +61,6 @@ _GH_MERGE_VALUE_FLAGS = {
     "-b", "--body", "-t", "--subject", "-F", "--body-file",
     "--match-head-commit", "--author-email", "-R", "--repo",
 }
-# Trailing number of a PR URL, e.g. https://github.com/o/r/pull/57
-_PR_URL_TAIL = re.compile(r"/pull/(\d+)/?$")
 # The PR the approval marker names. Anchored on the convention's own
 # "for PR #<N>" tail rather than any `#<N>` in the body: a marker label may
 # carry an unrelated reference (`hotfix #43-null-deref approved … for PR #70`)
@@ -157,10 +155,9 @@ def _first_pr_token(tokens):
             continue
         if token.isdigit():
             return token
-        url = _PR_URL_TAIL.search(token)
-        if url:
-            return url.group(1)
-        # A positional that is neither — a branch name. Not resolvable here.
+        # A non-digit positional — a branch name, or a PR URL (M162: URLs
+        # can target another repo, which the bare number cannot; the
+        # bare-number spelling is the only accepted form). Not resolvable.
         return None
     return None
 
