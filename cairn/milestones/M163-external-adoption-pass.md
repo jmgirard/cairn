@@ -9,7 +9,7 @@
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR13 is advisory (no Binding criteria); lineage in Goal -->
 - **Principles touched:** IP3, GP3   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** m163-external-adoption-pass   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m163-external-adoption-pass · https://github.com/jmgirard/cairn/pull/164   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -54,7 +54,7 @@ milestone's sessions → routed as candidate rows at T3.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: bsync's default branch, at the commit completing the
+- [x] AC1: bsync's default branch, at the commit completing the
       `/cairn-init` run, holds the cairn scaffold — the `cairn/` tracking
       files, the CLAUDE.md cairn section, and an instantiated
       `cairn/PROFILE.md` (r-package profile); every milestone entry
@@ -63,18 +63,18 @@ milestone's sessions → routed as candidate rows at T3.
       migrated tracking records or in the init run's migration ledger with
       a disposition; and `cairn_validate` run in bsync at the
       init-completing commit exits 0.
-- [ ] AC2: bsync's default branch holds one completed cairn milestone: a
+- [x] AC2: bsync's default branch holds one completed cairn milestone: a
       milestone file carrying cairn's template sections, its archive
       summary under bsync's `cairn/milestones/archive/`, a `done` row in
       bsync's ROADMAP, and a merge commit landing that milestone's branch
       on the default branch.
-- [ ] AC3: Every friction finding numbered `F<n>` in this milestone file's
+- [x] AC3: Every friction finding numbered `F<n>` in this milestone file's
       work log — the domain a sweep of the work log for `F<n>` markers
       enumerates — carries exactly one current disposition: fixed (naming
       the cairn commit that landed the fix), routed (naming the ROADMAP
       candidate row added), or declined (with a stated reason); a later
       appended entry supersedes an earlier one.
-- [ ] AC4: The generic profile's verify slot clean — `python3 -m unittest`
+- [x] AC4: The generic profile's verify slot clean — `python3 -m unittest`
       over `scripts/tests` and `hooks/tests` both exit 0 at the review ref
       (template-mandated for code milestones; fixes may touch
       `scripts/`/`hooks/`).
@@ -147,3 +147,10 @@ milestone's sessions → routed as candidate rows at T3.
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. -->
+
+- 2026-08-29 AC1: verified in bsync — init-completing commit 5112c2f ("cairn-init: migrate tracking system to cairn (#2)") on bsync main holds `cairn/{DESIGN,ROADMAP,DECISIONS,LESSONS,PROFILE}.md` + `legacy/` + `references/` and a CLAUDE.md cairn section; PROFILE.md instantiates the r-package profile (header line read). Pre-init `MILESTONES.md` read at parent 408366f enumerates M1–M7 (all done) + Baseline; `cairn/legacy/MILESTONES.md` at 5112c2f is byte-identical (`diff` empty), so every entry appears in the migrated records verbatim. `cairn_validate` run in a throwaway bsync worktree at 5112c2f: all checks pass, exit 0. PASS.
+- 2026-08-29 AC2: verified in bsync — milestone file `cairn/milestones/M008-phase-synchrony.md` at main commit a8f269a carries all cairn template sections (Goal/Scope/Acceptance criteria/Coverage/Tasks/Work log/Decisions/Review, headings read); archive summary `cairn/milestones/archive/M008-phase-synchrony.md` present at main tip; ROADMAP done row for M008 at tip; a8f269a is the squash-merge commit landing branch m008-phase-synchrony via PR bsync#3 on main (cairn's mandated merge form). PASS.
+- 2026-08-29 AC3: verified — mechanical sweep (`grep -oE 'F[0-9]+'` over this file) enumerates F1–F4; disposition lines at work-log entries dated 2026-08-29: F1 declined (reason stated), F2/F3/F4 fixed naming cairn commit b0d06e5 (commit exists on branch; diffstat shows the named templates, cairn-init reference, merge_guard change, and both test files). One current disposition each, none superseded. PASS.
+- 2026-08-29 AC4: verified — at review ref 4ef366b: `python3 -m unittest` over `scripts/tests` ran 327 tests OK (exit 0) and over `hooks/tests` ran 119 tests OK (exit 0). PASS.
+- Projection-vs-outcome: no Driving RR (header —) — no-op.
+- 2026-08-29 consistency gate: `cairn_validate` all checks passed, exit 0; no DESIGN principle changed on the branch (diff empty on IP/GP lines) — `cairn_impact` skipped; profile `generic` consistency-gate slot names no toolchain checks — clean no-op.
