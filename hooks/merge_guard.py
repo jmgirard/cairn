@@ -34,11 +34,16 @@ whose cairn/.merge-approved records it, and the guard denies the cross-repo
 `gh pr merge` forms its tokenization can see — repo-targeting flags
 (--repo/-R, bundled clusters, --repo=) and leading GH_REPO= assignment
 prefixes. Redirections the detection does NOT see, among others: a compound
-`cd ../other && gh pr merge`, subshells, alias or wrapper invocations of
-gh, GH_HOST, and assignment values containing whitespace or quoting (the
-prefix run reads space-delimited `VAR=value` words only). A merge into a
-repo the session cwd is not inside is gated by that repo's own guard and
-marker — or, for a repo without cairn tracking, by chat approval alone.
+`cd ../other && gh pr merge`, command-substitution subshells
+(`$(…)`/backticks; parenthesized subshells ARE seen — `(` is a command
+separator), alias or wrapper invocations of gh (`env GH_REPO=o/r gh …`
+included), a prior `export GH_REPO=…` in the same command, GH_HOST, and
+assignment values containing whitespace, quoting, or substitution — those
+last spellings hide the merge from the guard ENTIRELY (no denial, no
+marker check), since the prefix run reads space-delimited `VAR=value`
+words only. A merge into a repo the session cwd is not inside is gated by
+that repo's own guard and marker — or, for a repo without cairn tracking,
+by chat approval alone.
 """
 
 import os

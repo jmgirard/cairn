@@ -28,11 +28,14 @@ PENDING_RELPATH = os.path.join("cairn", ".merge-approved.pending")
 # argument to something else (e.g. `echo git merge`), not a command.
 # Leading environment-assignment words (`VAR=value gh pr merge …`) are part
 # of command position (M162): without them a `GH_REPO=o/r` prefix hid the
-# merge from the guard entirely. Assignment values containing whitespace or
-# quoting are a documented limitation (merge_guard.py docstring).
+# merge from the guard entirely. The value run stops at separators, so
+# `GH_REPO=o/r; gh …` — a plain shell assignment the `;` terminates — is
+# not read as a prefix (M162 review F3). Assignment values containing
+# whitespace or quoting are a documented limitation (merge_guard.py
+# docstring).
 # commit_guard.py and force_push_guard.py carry their own older copies of
 # this pattern (candidate row in ROADMAP).
-CMD_POS = r"(?:^|[;&|(\n])\s*(?:[A-Za-z_][A-Za-z0-9_]*=\S*\s+)*"
+CMD_POS = r"(?:^|[;&|(\n])\s*(?:[A-Za-z_][A-Za-z0-9_]*=[^\s;&|()]*\s+)*"
 GH_PR_MERGE = re.compile(CMD_POS + r"gh\s+pr\s+merge(?!\S)")
 GIT_MERGE = re.compile(CMD_POS + r"git(?:\s+-\S+)*\s+merge(?!\S)")
 MERGE_HOUSEKEEPING = re.compile(r"--(?:abort|continue|quit)\b")
@@ -124,7 +127,10 @@ def gh_merge_pr_numbers(command):
 # Short-option cluster carrying gh's global -R repo flag (e.g. -R, -sdR).
 _REPO_FLAG_CLUSTER = re.compile(r"^-[A-Za-z]*R")
 # A GH_REPO assignment at a word start inside a matched command prefix.
-_GH_REPO_ASSIGN = re.compile(r"(?:^|[\s;&|(])GH_REPO=")
+# Requires a value character: `GH_REPO= gh pr merge` CLEARS the variable
+# (the defensive spelling the denial message invites) and stays a normally
+# guarded merge (M162 review F4).
+_GH_REPO_ASSIGN = re.compile(r"(?:^|[\s;&|(])GH_REPO=[^\s;&|()]")
 
 
 def gh_merge_gh_repo_prefixed(command):

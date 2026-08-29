@@ -986,6 +986,10 @@ class TestMergeGuard(RepoFixture):
                 self.marker().read_text(), marker_text,
                 "a denied merge must not touch the approval",
             )
+        self.assertFalse(
+            (self.root / "cairn" / ".merge-approved.pending").exists(),
+            "a denied merge must not consume the marker",
+        )
 
     def test_repo_flag_is_denied_marker_present(self):
         # AC1 predicate limbs, flag before and after the PR positional.
@@ -1072,6 +1076,34 @@ class TestMergeGuard(RepoFixture):
         self.marker().write_text(self.APPROVAL_PR7)
         proc = run_hook(
             "merge_guard.py", self.merge_payload("FOO=1 gh pr merge 7 --squash")
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.marker().exists())
+        pending = self.root / "cairn" / ".merge-approved.pending"
+        self.assertEqual(pending.read_text(), self.APPROVAL_PR7)
+
+    def test_separator_terminated_assignment_is_not_a_prefix(self):
+        # M162 review F3: `GH_REPO=o/r; gh pr merge 7` assigns a plain shell
+        # variable the `;` terminates — gh never sees it. The value run must
+        # stop at separators, leaving this a normally guarded merge.
+        self.marker().write_text(self.APPROVAL_PR7)
+        proc = run_hook(
+            "merge_guard.py",
+            self.merge_payload("GH_REPO=o/r; gh pr merge 7 --squash"),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.marker().exists())
+        pending = self.root / "cairn" / ".merge-approved.pending"
+        self.assertEqual(pending.read_text(), self.APPROVAL_PR7)
+
+    def test_cleared_gh_repo_prefix_is_guarded_normally(self):
+        # M162 review F4: `GH_REPO= gh pr merge 7` clears the variable — the
+        # defensive spelling the denial message invites. Guarded like the
+        # unprefixed command, never denied as cross-repo.
+        self.marker().write_text(self.APPROVAL_PR7)
+        proc = run_hook(
+            "merge_guard.py",
+            self.merge_payload("GH_REPO= gh pr merge 7 --squash"),
         )
         self.assertEqual(proc.stdout.strip(), "")
         self.assertFalse(self.marker().exists())
