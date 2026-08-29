@@ -126,6 +126,8 @@ milestone's sessions → routed as candidate rows at T3.
 - 2026-08-29: F2: cairn-init §1 mandates LESSONS.md ("header + correct-in-place note") and the DECISIONS.md file header, but no template ships for either (decision.md shows only the entry shape; templates/ has no lessons or decisions-header file), so the session reconstructed both from cairn's own dogfood files — a surface an external adopter's session does not have; header shapes would be invented per adoption.
 
 - 2026-08-29: T2 in progress: bsync M008 (phase synchrony) planned via /milestone-plan cross-repo (bsync main 52b7b2e); full-mode criteria audit ran twice with fresh [O] readers (both passes returned substantive findings, all disposed); two user gates (4+2 questions), all recommendations accepted; sizing advisory (8 ACs) accepted as one vertical slice.
+- 2026-08-29: T2 progress: bsync M008 implemented through status review (branch m008-phase-synchrony, 8 commits): wphase estimator + surrogate wrapper, 3-oracle-type suite (closed-form Dirichlet, frozen MNE pin, simulation calibration; live pure-R as depth), check() 0/0/0; no new F-entries — the cairn implement loop ran clean cross-repo (gates, checkpoints, verify slot all as documented).
+
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
