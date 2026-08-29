@@ -26,7 +26,16 @@ PENDING_RELPATH = os.path.join("cairn", ".merge-approved.pending")
 # Command position only: start of string or right after a shell separator
 # (;, &, |, ( , newline) — a plain space before "git"/"gh" means it's an
 # argument to something else (e.g. `echo git merge`), not a command.
-CMD_POS = r"(?:^|[;&|(\n])\s*"
+# Leading environment-assignment words (`VAR=value gh pr merge …`) are part
+# of command position (M162): without them a `GH_REPO=o/r` prefix hid the
+# merge from the guard entirely. The value run stops at separators, so
+# `GH_REPO=o/r; gh …` — a plain shell assignment the `;` terminates — is
+# not read as a prefix (M162 review F3). Assignment values containing
+# whitespace or quoting are a documented limitation (merge_guard.py
+# docstring).
+# commit_guard.py and force_push_guard.py carry their own older copies of
+# this pattern (candidate row in ROADMAP).
+CMD_POS = r"(?:^|[;&|(\n])\s*(?:[A-Za-z_][A-Za-z0-9_]*=[^\s;&|()]*\s+)*"
 GH_PR_MERGE = re.compile(CMD_POS + r"gh\s+pr\s+merge(?!\S)")
 GIT_MERGE = re.compile(CMD_POS + r"git(?:\s+-\S+)*\s+merge(?!\S)")
 MERGE_HOUSEKEEPING = re.compile(r"--(?:abort|continue|quit)\b")
@@ -61,8 +70,6 @@ _GH_MERGE_VALUE_FLAGS = {
     "-b", "--body", "-t", "--subject", "-F", "--body-file",
     "--match-head-commit", "--author-email", "-R", "--repo",
 }
-# Trailing number of a PR URL, e.g. https://github.com/o/r/pull/57
-_PR_URL_TAIL = re.compile(r"/pull/(\d+)/?$")
 # The PR the approval marker names. Anchored on the convention's own
 # "for PR #<N>" tail rather than any `#<N>` in the body: a marker label may
 # carry an unrelated reference (`hotfix #43-null-deref approved … for PR #70`)
@@ -75,22 +82,20 @@ _MARKER_PR = re.compile(r"for\s+PR\s*#(\d+)", re.IGNORECASE)
 _SEGMENT_END = re.compile(r"[;&|\n]")
 
 
-def gh_merge_pr_numbers(command):
-    """The PR number named by EVERY `gh pr merge` in the command.
+def gh_merge_occurrence_tokens(command):
+    """The argument-token list of EVERY `gh pr merge` in the command.
 
-    Returns one entry per occurrence, in order; an entry is None when that
-    occurrence named no PR (a bare `gh pr merge`, which lets gh infer it
-    from the current branch, or a branch-name argument the guard cannot
-    resolve offline). An empty list means the command contains no
-    `gh pr merge` at all.
+    Returns one token list per occurrence, in order — the tokens between
+    that occurrence's `merge` word and the next command separator. An
+    empty list means the command contains no `gh pr merge` at all.
 
     Every occurrence is parsed, not just the first: a chained
     `gh pr merge 7 && gh pr merge 9` must not smuggle the second merge
-    through on the strength of the first (M72 review F4). Never raises — an
-    unparseable occurrence yields None, and the caller decides what that
-    means.
+    through on the strength of the first (M72 review F4). Never raises —
+    an occurrence shlex cannot parse falls back to a whitespace split,
+    and the caller decides what its tokens mean.
     """
-    found = []
+    occurrences = []
     for match in GH_PR_MERGE.finditer(command or ""):
         segment = command[match.end():]
         end = _SEGMENT_END.search(segment)
@@ -100,8 +105,65 @@ def gh_merge_pr_numbers(command):
             tokens = shlex.split(segment)
         except Exception:
             tokens = segment.split()
-        found.append(_first_pr_token(tokens))
-    return found
+        occurrences.append(tokens)
+    return occurrences
+
+
+def gh_merge_pr_numbers(command):
+    """The PR number named by EVERY `gh pr merge` in the command.
+
+    Returns one entry per occurrence, in order; an entry is None when that
+    occurrence named no PR (a bare `gh pr merge`, which lets gh infer it
+    from the current branch, or a branch-name argument the guard cannot
+    resolve offline). An empty list means the command contains no
+    `gh pr merge` at all.
+    """
+    return [
+        _first_pr_token(tokens)
+        for tokens in gh_merge_occurrence_tokens(command)
+    ]
+
+
+# Short-option cluster carrying gh's global -R repo flag (e.g. -R, -sdR).
+_REPO_FLAG_CLUSTER = re.compile(r"^-[A-Za-z]*R")
+# A GH_REPO assignment at a word start inside a matched command prefix.
+# Requires a value character: `GH_REPO= gh pr merge` CLEARS the variable
+# (the defensive spelling the denial message invites) and stays a normally
+# guarded merge (M162 review F4).
+_GH_REPO_ASSIGN = re.compile(r"(?:^|[\s;&|(])GH_REPO=[^\s;&|()]")
+
+
+def gh_merge_gh_repo_prefixed(command):
+    """True when any `gh pr merge` occurrence's leading env-assignment
+    prefix assigns GH_REPO — a repo redirection the flag predicate cannot
+    see (M162). The prefix run is part of GH_PR_MERGE's own match, so this
+    keys on exactly the occurrences the guard guards."""
+    for match in GH_PR_MERGE.finditer(command or ""):
+        if _GH_REPO_ASSIGN.search(match.group(0)):
+            return True
+    return False
+
+
+def names_repo_target(tokens):
+    """True when one `gh pr merge`'s tokens carry a repo-targeting flag.
+
+    Fires on a token equal to `--repo`, beginning with `--repo=`, or
+    matching a `-R` short-option cluster. Walks with _first_pr_token's
+    value-flag skip so a flag *value* that happens to begin with "-R"
+    (`--subject "-Recovered null deref"`) never fires the predicate.
+    """
+    skip_next = False
+    for token in tokens:
+        if skip_next:
+            skip_next = False
+            continue
+        if token == "--repo" or token.startswith("--repo="):
+            return True
+        if _REPO_FLAG_CLUSTER.match(token):
+            return True
+        if token in _GH_MERGE_VALUE_FLAGS:
+            skip_next = True
+    return False
 
 
 def _first_pr_token(tokens):
@@ -118,10 +180,9 @@ def _first_pr_token(tokens):
             continue
         if token.isdigit():
             return token
-        url = _PR_URL_TAIL.search(token)
-        if url:
-            return url.group(1)
-        # A positional that is neither — a branch name. Not resolvable here.
+        # A non-digit positional — a branch name, or a PR URL (M162: URLs
+        # can target another repo, which the bare number cannot; the
+        # bare-number spelling is the only accepted form). Not resolvable.
         return None
     return None
 

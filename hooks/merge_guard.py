@@ -28,6 +28,22 @@ the in-cwd branch check doesn't inspect. The covered, enforced path is the
 `gh pr merge` squash-merge convention, which the guard always catches.
 The merge-detection regexes and is_guarded_merge live in cairn_common so
 merge_guard_post keys on the identical detection.
+
+Cross-repo limitations (M162; non-exhaustive): an approval binds the repo
+whose cairn/.merge-approved records it, and the guard denies the cross-repo
+`gh pr merge` forms its tokenization can see — repo-targeting flags
+(--repo/-R, bundled clusters, --repo=) and leading GH_REPO= assignment
+prefixes. Redirections the detection does NOT see, among others: a compound
+`cd ../other && gh pr merge`, command-substitution subshells
+(`$(…)`/backticks; parenthesized subshells ARE seen — `(` is a command
+separator), alias or wrapper invocations of gh (`env GH_REPO=o/r gh …`
+included), a prior `export GH_REPO=…` in the same command, GH_HOST, and
+assignment values containing whitespace, quoting, or substitution — those
+last spellings hide the merge from the guard ENTIRELY (no denial, no
+marker check), since the prefix run reads space-delimited `VAR=value`
+words only. A merge into a repo the session cwd is not inside is gated by
+that repo's own guard and marker — or, for a repo without cairn tracking,
+by chat approval alone.
 """
 
 import os
@@ -48,6 +64,24 @@ def main():
     if not root:
         return
     if not cc.is_guarded_merge(command, cwd):
+        return
+    # Cross-repo denial (M162) — before the marker-existence check, so a
+    # repo-targeting merge never reads as "just missing an approval" and
+    # never touches the marker.
+    occurrences = cc.gh_merge_occurrence_tokens(command)
+    if any(
+        cc.names_repo_target(tokens) for tokens in occurrences
+    ) or cc.gh_merge_gh_repo_prefixed(command):
+        deny(
+            "This merge targets a repo through --repo/-R or a GH_REPO "
+            "environment assignment. An approval "
+            "binds the repo whose cairn/.merge-approved records it "
+            "(tracking-rules, Git and approval model), so it cannot "
+            "authorize a merge in another repo. Run the merge from a "
+            "session cwd inside the target repo, with no repo flag and "
+            "no GH_REPO in the environment, after that repo's own "
+            "approval gate."
+        )
         return
     marker = os.path.join(root, cc.MARKER_RELPATH)
     if not os.path.isfile(marker):

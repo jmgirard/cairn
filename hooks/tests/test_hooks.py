@@ -954,10 +954,13 @@ class TestMergeGuard(RepoFixture):
         pending = self.root / "cairn" / ".merge-approved.pending"
         self.assertEqual(pending.read_text(), self.APPROVAL_PR7)
 
-    def test_pr_number_survives_url_and_value_flags(self):
+    def test_value_flag_allows_survive(self):
+        # The M72-era value-flag allows survive the M162 narrowing: a number
+        # after a value-taking flag is that flag's value, and the PR
+        # positional is still found past it.
         for command in (
-            "gh pr merge https://github.com/o/r/pull/7 --squash",
-            'gh pr merge --subject "fix issue 9" 7 --squash',
+            "gh pr merge -m 7",
+            'gh pr merge --subject "fix issue 9" 7',
             "gh pr merge -t 'bump to 9' 7",
         ):
             with self.subTest(command=command):
@@ -965,6 +968,157 @@ class TestMergeGuard(RepoFixture):
                 proc = run_hook("merge_guard.py", self.merge_payload(command))
                 self.assertEqual(proc.stdout.strip(), "", command)
                 (self.root / "cairn" / ".merge-approved.pending").unlink()
+
+    # --- Cross-repo denials (M162): a repo-targeting merge is denied ---
+
+    def assert_repo_denied(self, command, marker_text=None):
+        """The command is denied with the cross-repo message; the marker
+        (when present) is byte-identical after the denial."""
+        if marker_text is not None:
+            self.marker().write_text(marker_text)
+        out = hook_json(run_hook("merge_guard.py", self.merge_payload(command)))
+        self.assertEqual(out["permissionDecision"], "deny", command)
+        reason = out["permissionDecisionReason"]
+        self.assertIn("binds the repo", reason, command)
+        self.assertIn("GH_REPO", reason, command)
+        if marker_text is not None:
+            self.assertEqual(
+                self.marker().read_text(), marker_text,
+                "a denied merge must not touch the approval",
+            )
+        self.assertFalse(
+            (self.root / "cairn" / ".merge-approved.pending").exists(),
+            "a denied merge must not consume the marker",
+        )
+
+    def test_repo_flag_is_denied_marker_present(self):
+        # AC1 predicate limbs, flag before and after the PR positional.
+        for command in (
+            "gh pr merge --repo jmgirard/cairn 7 --squash",
+            "gh pr merge --repo=jmgirard/cairn 7 --squash",
+            "gh pr merge -R jmgirard/cairn 7 --squash",
+            "gh pr merge -sdR jmgirard/cairn 7",
+            "gh pr merge 7 --squash --repo jmgirard/cairn",
+        ):
+            with self.subTest(command=command):
+                self.assert_repo_denied(command, marker_text=self.APPROVAL_PR7)
+
+    def test_repo_flag_is_denied_before_the_marker_existence_check(self):
+        # No marker at all: still the cross-repo denial, not the
+        # no-approval one — the repo check runs first.
+        self.assertFalse(self.marker().exists())
+        self.assert_repo_denied("gh pr merge -R o/r 7 --squash")
+
+    def test_chained_second_occurrence_repo_flag_is_denied(self):
+        self.assert_repo_denied(
+            "gh pr merge 7 --squash && gh pr merge 7 -R o/r",
+            marker_text=self.APPROVAL_PR7,
+        )
+
+    def test_repo_predicate_negative_controls_still_allowed(self):
+        # -sd and -r clusters carry no R repo flag; a repo flag in a
+        # neighboring non-merge segment is not this merge's; a value token
+        # starting "-R…" is a flag value, not a flag (value-flag skip).
+        for command in (
+            "gh pr merge -sd 7",
+            "gh pr merge -r 7",
+            "gh pr view -R o/r && gh pr merge 7 --squash",
+            "gh pr merge 7 --squash && gh pr view -R o/r",
+            'gh pr merge --subject "-Recovered null deref" 7 --squash',
+        ):
+            with self.subTest(command=command):
+                self.marker().write_text(self.APPROVAL_PR7)
+                proc = run_hook("merge_guard.py", self.merge_payload(command))
+                self.assertEqual(proc.stdout.strip(), "", command)
+                (self.root / "cairn" / ".merge-approved.pending").unlink()
+
+    def test_pr_url_positional_is_denied(self):
+        # M162 narrowing: the URL form is a cross-repo vector the number
+        # check cannot see — it falls to the does-not-name-a-PR denial.
+        for command in (
+            "gh pr merge https://github.com/o/r/pull/7 --squash",
+            "gh pr merge https://github.com/o/r/pull/7/files --squash",
+        ):
+            with self.subTest(command=command):
+                self.marker().write_text(self.APPROVAL_PR7)
+                out = hook_json(
+                    run_hook("merge_guard.py", self.merge_payload(command))
+                )
+                self.assertEqual(out["permissionDecision"], "deny", command)
+                self.assertIn("does not name a PR", out["permissionDecisionReason"])
+                self.assertEqual(
+                    self.marker().read_text(), self.APPROVAL_PR7,
+                    "a denied merge must not consume the approval",
+                )
+
+    # --- Env-assignment prefixes (M162 AC3): GH_REPO= denied, others seen ---
+
+    def test_gh_repo_env_prefix_is_denied(self):
+        # With the marker present (a PR-5 command against a PR-7 marker
+        # proves the repo check fires before the PR-match check) and absent.
+        self.assert_repo_denied(
+            "GH_REPO=o/r gh pr merge 5 --squash", marker_text=self.APPROVAL_PR7
+        )
+        self.marker().unlink()
+        self.assert_repo_denied("GH_REPO=o/r gh pr merge 5 --squash")
+
+    def test_multi_assignment_and_post_separator_prefixes_are_denied(self):
+        for command in (
+            "A=1 GH_REPO=o/r gh pr merge 5 --squash",
+            "echo hi; GH_REPO=o/r gh pr merge 5 --squash",
+        ):
+            with self.subTest(command=command):
+                self.assert_repo_denied(command, marker_text=self.APPROVAL_PR7)
+
+    def test_benign_env_prefix_is_guarded_like_the_unprefixed_spelling(self):
+        # FOO=1 must not hide the merge from the guard: same consume-by-
+        # rename as the plain spelling.
+        self.marker().write_text(self.APPROVAL_PR7)
+        proc = run_hook(
+            "merge_guard.py", self.merge_payload("FOO=1 gh pr merge 7 --squash")
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.marker().exists())
+        pending = self.root / "cairn" / ".merge-approved.pending"
+        self.assertEqual(pending.read_text(), self.APPROVAL_PR7)
+
+    def test_separator_terminated_assignment_is_not_a_prefix(self):
+        # M162 review F3: `GH_REPO=o/r; gh pr merge 7` assigns a plain shell
+        # variable the `;` terminates — gh never sees it. The value run must
+        # stop at separators, leaving this a normally guarded merge.
+        self.marker().write_text(self.APPROVAL_PR7)
+        proc = run_hook(
+            "merge_guard.py",
+            self.merge_payload("GH_REPO=o/r; gh pr merge 7 --squash"),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.marker().exists())
+        pending = self.root / "cairn" / ".merge-approved.pending"
+        self.assertEqual(pending.read_text(), self.APPROVAL_PR7)
+
+    def test_cleared_gh_repo_prefix_is_guarded_normally(self):
+        # M162 review F4: `GH_REPO= gh pr merge 7` clears the variable — the
+        # defensive spelling the denial message invites. Guarded like the
+        # unprefixed command, never denied as cross-repo.
+        self.marker().write_text(self.APPROVAL_PR7)
+        proc = run_hook(
+            "merge_guard.py",
+            self.merge_payload("GH_REPO= gh pr merge 7 --squash"),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.marker().exists())
+        pending = self.root / "cairn" / ".merge-approved.pending"
+        self.assertEqual(pending.read_text(), self.APPROVAL_PR7)
+
+    def test_assignment_spelling_in_argument_position_is_ignored(self):
+        # `echo GH_REPO=x gh pr merge 5` is not a merge command at all.
+        self.marker().write_text(self.APPROVAL_PR7)
+        proc = run_hook(
+            "merge_guard.py",
+            self.merge_payload("echo GH_REPO=x gh pr merge 5"),
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertEqual(self.marker().read_text(), self.APPROVAL_PR7)
 
     def test_branch_name_argument_is_treated_as_naming_no_pr(self):
         # `gh pr merge <branch>` is legal but the guard cannot resolve a
@@ -1037,19 +1191,6 @@ class TestMergeGuard(RepoFixture):
         self.assertEqual(out["permissionDecision"], "deny")
         self.assertIn("#71", out["permissionDecisionReason"])
 
-    def test_repo_flag_value_is_not_mistaken_for_the_pr(self):
-        # M72 review F2 (--repo/-R take a value) and F5 (-m is boolean).
-        for command in (
-            "gh pr merge --repo jmgirard/cairn 7 --squash",
-            "gh pr merge -R jmgirard/cairn 7 --squash",
-            "gh pr merge -m 7",
-        ):
-            with self.subTest(command=command):
-                self.marker().write_text(self.APPROVAL_PR7)
-                proc = run_hook("merge_guard.py", self.merge_payload(command))
-                self.assertEqual(proc.stdout.strip(), "", command)
-                (self.root / "cairn" / ".merge-approved.pending").unlink()
-
     def test_git_merge_is_exempt_from_the_pr_check(self):
         # A `git merge` has no PR to name; the marker's existence governs it.
         self.marker().write_text(self.APPROVAL_PR7)
@@ -1117,6 +1258,18 @@ class TestMergeGuardPost(RepoFixture):
         self.assertEqual(proc.returncode, 0)
         self.assertEqual(self.marker().read_text(), self.APPROVAL,
                          "failed attempt must restore the marker intact")
+
+    def test_env_prefixed_failure_restores_consumed_marker(self):
+        # M162 AC3: the post hook keys on the same env-prefix-aware
+        # detection, so a failed `FOO=1 gh pr merge …` still restores.
+        self.pending().write_text(self.APPROVAL)
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.post_payload("FOO=1 gh pr merge 7 --squash"),
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(self.marker().read_text(), self.APPROVAL,
+                         "prefixed failed attempt must restore the marker")
         self.assertFalse(self.pending().exists())
         out = hook_json(proc)
         self.assertEqual(out["hookEventName"], "PostToolUseFailure")
