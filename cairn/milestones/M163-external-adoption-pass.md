@@ -96,7 +96,7 @@ milestone's sessions → routed as candidate rows at T3.
       `MILESTONES.md`/`DESIGN.md`; r-package profile), land the result on
       bsync's default branch through its approval gate; log each friction
       observation as an `F<n>` work-log entry here as it occurs.
-- [ ] T2: In bsync, take one genuine backlog item through the full loop —
+- [x] T2: In bsync, take one genuine backlog item through the full loop —
       `/milestone-plan` → `/milestone-implement` → `/milestone-review` →
       merge + archive — logging friction as F-entries here as it occurs.
 - [ ] T3: Disposition every F-entry (fixed / routed / declined); land
@@ -127,6 +127,8 @@ milestone's sessions → routed as candidate rows at T3.
 
 - 2026-08-29: T2 in progress: bsync M008 (phase synchrony) planned via /milestone-plan cross-repo (bsync main 52b7b2e); full-mode criteria audit ran twice with fresh [O] readers (both passes returned substantive findings, all disposed); two user gates (4+2 questions), all recommendations accepted; sizing advisory (8 ACs) accepted as one vertical slice.
 - 2026-08-29: T2 progress: bsync M008 implemented through status review (branch m008-phase-synchrony, 8 commits): wphase estimator + surrogate wrapper, 3-oracle-type suite (closed-form Dirichlet, frozen MNE pin, simulation calibration; live pure-R as depth), check() 0/0/0; no new F-entries — the cairn implement loop ran clean cross-repo (gates, checkpoints, verify slot all as documented).
+
+- 2026-08-29: T2 done: bsync M008 merged (PR bsync#3 squashed as a8f269a, CI 8/8, all 8 ACs fresh-evidenced, 3-lens review with 18 findings triaged) and archived with post-merge hygiene (done row, 25-line archive summary, 3 LESSONS lines, validate green) — the full loop plan→implement→review→merge→archive ran cross-repo; the merge-approval marker + `gh pr merge 3 --squash` worked first try from the bsync session cwd.
 
 
 ## Decisions
