@@ -103,7 +103,7 @@ milestone's sessions → routed as candidate rows at T3.
       in-scope fixes in cairn tests-first per the universal test floor
       (test scope: each fixed friction's changed behavior), both gating
       suites green; route larger findings as candidate rows.
-- [ ] T4: Update the DESIGN.md Known-issues single-author/no-external-
+- [x] T4: Update the DESIGN.md Known-issues single-author/no-external-
       adopter bullet to reflect the pass; check the contributor-scaffold
       and branch-protection candidate rows against the F-ledger — promote
       any whose stated condition fired, else record checked-and-standing.
@@ -136,6 +136,8 @@ milestone's sessions → routed as candidate rows at T3.
 - 2026-08-29: F3 disposition: fixed — cairn commit b0d06e5 (merge_guard denies cd-compound gh-pr-merge spellings with session-cwd guidance before any marker check, so the misleading recreate-and-rerun message and the wrong-repo-marker hole are both closed; cd_precedes_gh_merge + 5 tests with discriminating controls).
 - 2026-08-29: F4 disposition: fixed — cairn commit b0d06e5 (merge_guard docstring documents the heredoc false-positive and the Write-tool workaround).
 - 2026-08-29: T3 done: 4 F-entries, each with one current disposition (3 fixed in b0d06e5, 1 declined with reason); both gating suites green after fixes — scripts 327, hooks 119 (verify slot, AC4's command).
+
+- 2026-08-29: T4 done: DESIGN Known-issues single-author bullet rewritten for the completed pass (second-driver + non-macOS remain open) and the M162 bullet corrected in place — the cd-compound left its hidden-spellings list (F3 fix). Candidate-row check against the F-ledger: contributor-scaffold (condition: README subsection proves insufficient) — not fired, no outside contributor was involved, checked-and-standing; branch-protection (condition: an adopting repo turns protection on) — not fired, bsync pushes to main ran unprotected throughout, checked-and-standing.
 
 
 ## Decisions
