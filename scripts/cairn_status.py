@@ -18,7 +18,7 @@ def render(root):
     rows = cs.rows(roadmap)
     lines = [f"cairn status — {root}", ""]
 
-    counts = {s: [] for s in cs.STATUSES}
+    counts = {}
     for r in rows:
         counts.setdefault(r["status"], []).append(r["id"])
     lines.append("Milestones by status:")

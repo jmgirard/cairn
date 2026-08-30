@@ -662,11 +662,10 @@ def check_binding_criteria(root):
                 f"(the check cannot bind what it cannot parse)"
             )
             continue
-        token = slot
-        rr_path = _rr_file(root, token)
+        rr_path = _rr_file(root, slot)
         if rr_path is None:
             bad.append(
-                f"{mid}: Driving RR {token} has no file under cairn/reviews/"
+                f"{mid}: Driving RR {slot} has no file under cairn/reviews/"
             )
             continue
         with open(rr_path, encoding="utf-8") as f:
@@ -674,7 +673,7 @@ def check_binding_criteria(root):
         crits = _binding_criteria(rr_text)
         if not crits and _has_section(rr_text, "Binding criteria"):
             bad.append(
-                f"{mid}: {token} has a Binding criteria section but no "
+                f"{mid}: {slot} has a Binding criteria section but no "
                 f"parseable '- BC<n>:' item — enforcement would silently "
                 f"bind nothing"
             )
@@ -685,7 +684,7 @@ def check_binding_criteria(root):
             "", "\n".join(_section_body(text, "Acceptance criteria"))
         )
         ac_norm = _norm_ws(ac_text)
-        dev_marker = re.compile(r"Deviations from %s\b" % re.escape(token))
+        dev_marker = re.compile(r"Deviations from %s\b" % re.escape(slot))
         deviated, marker_seen = set(), False
         for line in ac_text.splitlines():
             if dev_marker.search(line):
@@ -698,8 +697,8 @@ def check_binding_criteria(root):
             if n in deviated:
                 continue
             bad.append(
-                f"{mid}: {token} BC{n} appears neither verbatim in the AC "
-                f"section nor in its 'Deviations from {token}' table"
+                f"{mid}: {slot} BC{n} appears neither verbatim in the AC "
+                f"section nor in its 'Deviations from {slot}' table"
             )
     return bad
 

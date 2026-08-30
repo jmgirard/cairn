@@ -31,6 +31,16 @@ import unittest
 
 HOOKS_DIR = pathlib.Path(__file__).resolve().parent.parent
 
+# Direct-import seam for the non-subprocess classes below (the METHODOLOGY
+# NOTE pins hook CONTRACTS to subprocesses; those classes document themselves
+# as exceptions). Module-level is safe: the subprocess-driven tests spawn
+# their own interpreters and never see this process's path state.
+for _d in (str(HOOKS_DIR), str(HOOKS_DIR.parent / "scripts")):
+    if _d not in sys.path:
+        sys.path.insert(0, _d)
+import cairn_scripts  # noqa: E402  (after sys.path shim)
+import session_context  # noqa: E402  (after sys.path shim)
+
 ROADMAP = """\
 # Roadmap
 
@@ -476,13 +486,6 @@ class TestExemptSetMirror(unittest.TestCase):
     """
 
     def setUp(self):
-        scripts = HOOKS_DIR.parent / "scripts"
-        for d in (HOOKS_DIR, scripts):
-            sys.path.insert(0, str(d))
-            self.addCleanup(sys.path.remove, str(d))
-        import cairn_scripts
-        import session_context
-
         self.cs = cairn_scripts
         self.sc = session_context
 
@@ -604,13 +607,6 @@ class TestHeadingNormalizationContract(unittest.TestCase):
     )
 
     def setUp(self):
-        scripts = HOOKS_DIR.parent / "scripts"
-        for d in (HOOKS_DIR, scripts):
-            sys.path.insert(0, str(d))
-            self.addCleanup(sys.path.remove, str(d))
-        import cairn_scripts
-        import session_context
-
         self.cs = cairn_scripts
         self.sc = session_context
 
@@ -785,11 +781,7 @@ class TestBoundedTail(unittest.TestCase):
     """
 
     def setUp(self):
-        sys.path.insert(0, str(HOOKS_DIR))
-        import session_context
-
         self.sc = session_context
-        self.addCleanup(sys.path.remove, str(HOOKS_DIR))
 
     def section(self, n=40, width=280):
         return [""] + [
@@ -1811,6 +1803,7 @@ class TestHooksRegistration(unittest.TestCase):
         self.config = json.loads((HOOKS_DIR / "hooks.json").read_text())["hooks"]
 
     def commands(self, event, matcher):
+        # SessionStart entries carry no matcher, so every entry matches there.
         return [
             h["command"]
             for entry in self.config.get(event, ())

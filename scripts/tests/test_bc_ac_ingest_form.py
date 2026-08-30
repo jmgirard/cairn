@@ -126,13 +126,31 @@ class TestBareIngestRedsCoverageOnly(unittest.TestCase):
         self.assertIn("AC3", joined)
         self.assertTrue(all("AC1 " not in line for line in out),
                         "the mapped AC1 must not be reported")
-
-    def test_numbering_and_mapping_together_clear_the_red(self):
-        # Positive twin: the same milestone under the prescribed form is quiet,
+        # Positive twin: TestPrescribedFormIsQuietOnBoth runs the same
+        # milestone under the prescribed form and shows both checks quiet,
         # proving the form (numbering + Coverage line) is what resolves it.
-        root = build(tempfile.mkdtemp(), AC_PRESCRIBED, COV_PRESCRIBED)
-        self.assertEqual(cv.check_coverage_complete(root), [])
-        self.assertEqual(cv.check_binding_criteria(root), [])
+
+
+class TestMissingRRFileFailsLoud(unittest.TestCase):
+    """A named Driving RR whose file is absent from cairn/reviews/ is a loud
+    failure naming the milestone and the RR. Passing control:
+    TestPrescribedFormIsQuietOnBoth runs the identical fixture with the RR
+    file present and shows the check quiet, so the report below fires for
+    the missing file and nothing else."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = build(self.tmp.name, AC_PRESCRIBED, COV_PRESCRIBED)
+        os.remove(os.path.join(self.root, "cairn", "reviews", "RR05-fixture.md"))
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_missing_rr_file_is_reported(self):
+        out = cv.check_binding_criteria(self.root)
+        self.assertEqual(len(out), 1, out)
+        self.assertIn("M50", out[0])
+        self.assertIn("Driving RR RR05 has no file under cairn/reviews/", out[0])
 
 
 if __name__ == "__main__":

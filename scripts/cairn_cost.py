@@ -364,9 +364,10 @@ def audit_line(root, records, milestone=None):
     mid = milestone or latest_milestone(records)
     if mid is None:
         return "cost: no milestone-keyed sessions in the store"
-    if not any(milestone_of(r) == mid for r in records):
+    sub = [r for r in records if milestone_of(r) == mid]
+    if not sub:
         return f"cost: {mid} — no milestone-keyed sessions in the store"
-    bucket = aggregate([r for r in records if milestone_of(r) == mid], lambda r: mid)[mid]
+    bucket = aggregate(sub, lambda r: mid)[mid]
     agents = bucket["agents"]
     return (
         "cost: {mid} — {t:,} turns · {cr:,} cache-read · {fi:,} fresh-in · "
@@ -418,7 +419,7 @@ def main(argv, home=None):
         )
         return 2
     try:
-        root = cs.resolve_root(["cairn_cost"] + ([root_arg] if root_arg else []))
+        root = cs.resolve_start(root_arg or os.getcwd())
     except cs.NotCairn as e:
         cs.die_not_cairn(str(e))
         return 2

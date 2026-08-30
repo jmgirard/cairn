@@ -99,7 +99,9 @@ class TestGitignoreDeprecation(ScriptCase):
 
     ADVISORY = "scaffold deprecations"
 
-    def test_legacy_entry_satisfies_scaffold_check(self):
+    def test_legacy_entry_satisfies_scaffold_check_and_warns_with_the_new_name(self):
+        # One fixture, one run, both halves of the deprecation contract: the
+        # hard check passes AND the advisory names the successor entry.
         root = self.tree.build()
         set_gitignore(
             root,
@@ -112,18 +114,6 @@ class TestGitignoreDeprecation(ScriptCase):
         proc = run("cairn_validate.py", root)
         self.assertEqual(proc.returncode, 0, proc.stdout)
         self.assertIn(f"PASS  {LABEL}", proc.stdout)
-
-    def test_legacy_entry_warns_with_the_new_name(self):
-        root = self.tree.build()
-        set_gitignore(
-            root,
-            [
-                "cairn/references/pdf/",
-                "cairn/.merge-approved",
-                "cairn/.merge-approved.pending",
-            ],
-        )
-        proc = run("cairn_validate.py", root)
         self.assertIn(f"WARN  {self.ADVISORY}", proc.stdout)
         self.assertIn(
             "'cairn/references/pdf/' is superseded by "
