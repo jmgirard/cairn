@@ -4651,3 +4651,33 @@ of the section instead of rediscovering it in review returns. The declined
 stronger form — a mandatory per-check discrimination proof — is revisited
 only on its falsifier: a vacuous check reaching a default branch past review
 in an adopting repo (M159 plan gate).
+
+### D-127 (2026-08-30): Freshness spawns survive a spawn-restricting harness instruction — skill invocation is the user's request, a blocked session asks at the pending gate, an author-inline run is a user-accepted logged deviation — narrows the review fan-out's and D-067's fresh-context absolutes; hosted per D-098 (M165)
+
+**Context:** Some Claude Code surfaces append a harness line restricting
+subagent spawns to ones the user requested. Sessions in adopter repos read
+that line as forbidding cairn's freshness-mandated readers and reviewers and
+silently degraded to author-inline criteria audits and reviews (observed
+since 2026-08-23; the affected milestones are recorded in M165's Scope) —
+the shipped-behavior defect D-090/D-108's door requires as trigger, recorded
+at M165's plan gate.
+
+**Decision:** tracking-rules "Model and agent strategy" gains the
+freshness-spawns clause: (a) the user's invocation of a cairn skill is the
+user's request for the subagent spawns that skill's steps mandate,
+satisfying such a harness instruction; (b) a session that still cannot or
+will not spawn surfaces the conflict at its phase's pending user gate — for
+review, the merge-approval chip, with the review declared degraded
+(author-inline) — asking the user to request the spawns in so many words;
+(c) an inline author-run is permitted only as a user-accepted, logged
+deviation naming the instruction (its home the work log, per the
+user-overrides rule), never silent. Clause (c) narrows two absolutes that
+never named an exception: the review rule's "runs in fresh-context
+subagents, never the implementing session", and the fresh-context
+criteria-audit reader D-067 established — each now admits the user-accepted
+logged deviation and nothing else.
+
+**Consequences:** Sessions under the harness line spawn on the skill
+invocation itself; a degraded run reaches a default branch only through an
+explicit user acceptance recorded in the work log. Falsified by sessions
+still degrading silently after the clause ships (M165 plan gate).

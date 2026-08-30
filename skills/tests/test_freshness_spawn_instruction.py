@@ -35,6 +35,13 @@ class TestFreshnessSpawnInstructionClause(unittest.TestCase):
     def test_skill_invocation_is_the_users_spawn_request(self):
         # (a) — without this, the harness line reads as forbidding every
         # freshness spawn and the degradation this milestone fixes returns.
+        # The trigger subject is pinned too: lose it and the clause no
+        # longer says which instruction it satisfies (M165 review F4).
+        self.assertRegex(
+            rules(),
+            r"A harness instruction restricting subagent spawns\s+to ones "
+            r"the user requested is satisfied",
+        )
         self.assertRegex(
             rules(),
             r"is satisfied by the user's invocation of a cairn skill: that "
@@ -44,7 +51,14 @@ class TestFreshnessSpawnInstructionClause(unittest.TestCase):
 
     def test_a_blocked_session_surfaces_the_conflict_at_the_pending_gate(self):
         # (b) — the gate, not silence; for review that gate is the
-        # merge-approval chip with the review declared degraded.
+        # merge-approval chip with the review declared degraded. The
+        # condition subject is pinned too: lose it and (b) no longer says
+        # which sessions the gate route binds (M165 review F4).
+        self.assertRegex(
+            rules(),
+            r"A session that still cannot or will not spawn a"
+            r"\s+freshness-mandated reader or reviewer surfaces the conflict",
+        )
         self.assertRegex(
             rules(),
             r"surfaces the conflict at its phase's pending user gate — for "

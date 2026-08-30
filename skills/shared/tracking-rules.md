@@ -368,7 +368,7 @@ These rules bind all chat output while any cairn skill is active.
   merge-approval chip, with the review declared degraded (author-inline) — asking the user to request the spawns in so
   many words; the chip says in plain words what an author-inline run means (the work was checked only by the session
   that produced it). An inline author-run is permitted only as a user-accepted, logged deviation naming the
-  instruction, never silent.
+  instruction, never silent. (Skill-site pointers cite this bullet as tracking-rules' freshness-spawns clause.)
 - **Sonnet subagents**: well-specified self-contained work — fan-out searches (Explore), mechanical migrations, test
   writing against a spec, boilerplate. Give complete specs (for an Explore fan-out, a reading list naming the files or
   areas to read); verify their diffs before committing; summarize results into one work-log line.

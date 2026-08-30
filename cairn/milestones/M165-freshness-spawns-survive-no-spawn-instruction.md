@@ -113,6 +113,8 @@ mandating a spawn" filter.
 - 2026-08-30: T3 done — `skills/tests/test_freshness_spawn_instruction.py` pins AC1's (a)–(c) plus the chip plain-words sentence, four mutation-registry entries on unique locators; the implement:109 pointer had split `test_fresh_context_readers`' pinned slice (2 reds), relocated past the slice per the M148 lesson (new sentence moved, pinned prose untouched); all suites green (scripts 326, hooks 121, skills 532 hand-run).
 - 2026-08-30: T4 done — AC3's grep returned 6 README lines (12, 116–118, 126, 279); each read against the clause: rigor-scaling (12), independent reviewer agents at review (116–118), fresh-session-per-phase advice (126), and fan-out-as-conduct-rule (279) — none contradicts AC1's clause, no README edit needed; suites green.
 
+- 2026-08-30: review — all three ACs passed fresh; fan-out 13/0/0 findings; user triaged fix F2/F4/F5 (D-127; trigger-subject pins; greppable clause name), reject 10; merge approved at the chip.
+
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
 
@@ -138,3 +140,4 @@ mandating a spawn" filter.
 - F11 (implement:111–113 parenthetical reads as modifying the wrong clause): rejected — placement is forced by the M148 pinned-slice constraint; meaning stays recoverable via the pointer's fixed wording.
 - F12 (chip ≤4-option cap could be reached when accept-shortfall and degraded review coincide): rejected — speculative composition; the contextual-chip rule already governs option construction per session.
 - F13 (line-wrap widths and wrapped fragments): rejected — style-only, per the out-of-scope taxonomy.
+- Gate triage (user, 2026-08-30): fix F2/F4/F5, reject the other 10 as proposed. Applied on the branch: D-127 appended (records the clause and the two fresh-context absolutes clause (c) narrows); both trigger subjects pinned in the prose guard with two new mutation-registry entries; the bullet's closing sentence names it tracking-rules' freshness-spawns clause, so the pointer token greps. Suites re-run green (scripts 326, hooks 121, skills 532 hand-run); validate green.
