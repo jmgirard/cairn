@@ -1,6 +1,6 @@
 # M164: Streamlining pass over shipped code (RB14)
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -60,9 +60,9 @@ source candidate row), stays declined.
       second-escalation sweep of `cairn/reviews/` + archive; output path
       `cairn/reviews/RR14-streamlining-pass.md`. Set status blocked;
       commit `brief RB14: streamlining pass`.
-- [ ] T2: RB approval gate per `/milestone-brief` (spawn Fable / manual /
+- [x] T2: RB approval gate per `/milestone-brief` (spawn Fable / manual /
       cancel); never spawn without the gate.
-- [ ] T3: Ingest RR14: disposition every numbered recommendation
+- [x] T3: Ingest RR14: disposition every numbered recommendation
       apply / consider / reject-with-reason in Decisions; milestone-sized
       items → candidate rows; if any `apply` touches
       `hooks/commit_guard.py` or `hooks/force_push_guard.py`, fold the
@@ -94,11 +94,16 @@ source candidate row), stays declined.
 - 2026-08-29: plan gate chose the conditional env-prefix fold-in over leaving the row because the row's own wording names "the next milestone touching either guard"; falsified by a fold-in that pushes T4 past one session.
 - 2026-08-29: implement started; branch m164-streamlining-pass; step-3 question gate skipped — the plan gate settled corpus, advisory form, and fold-in condition, and T2 is itself the user gate.
 - 2026-08-29: T1 done — RB14 authored (advisory, no Binding-criteria request; 22-file corpus list with `git ls-files` line counts embedded; 5 numbered questions: length, directness, simplification, test-suite streamlining, not-worth-it; second-escalation sweep of reviews/ + archive found no prior brief on this subject, so no removal question owed); blocked on RB14.
+- 2026-08-29: T2 done — gate approved Spawn Fable; [F] subagent read RB14 and wrote RR14 (19 numbered recommendations; both suites confirmed green at baseline: scripts 327, hooks 121).
+- 2026-08-29: T3 done — RR14 ingested; triage in Decisions (15 apply, 4 reject, none milestone-sized needing new candidate rows; fold-in condition not fired); RB14/RR14 archived; status back to in-progress.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
      cross-cutting ones to cairn/DECISIONS.md. EXEMPT from the 150-line cap
      (D-074). -->
+
+- 2026-08-29: RR14 triage (domain: its numbered list R1–R19). Apply: R1–R11 (the report's own apply tier, all suite-attested) plus, at the triage gate, R12 (path-based root resolver; behavior identical), R13 (merge-base probes via `cairn_common.git`; accepted with the report's caveat that the helper adds a 10s timeout no test witnesses), R15 (merge the two legacy-gitignore scaffold tests), R16 (hoist function-local imports in test_cairn_cost). Reject: R14 (bare function refs in the check registry — uniform lambda column preferred, the report's own hesitation), R17 (CMD_POS consolidation — guard-behavior change, already a tracked candidate row), R18 (splitting `_provenance_block` — load-bearing flag, M81 F1), R19 (argparse — pinned usage/stderr contract). Beyond-the-brief: the mkdtemp leak is folded into R6's removal; the SessionStart-matcher comment lands with R7's test_hooks touch; the `cwd`→`root` rename is skipped (commit_guard stays untouched under R17's reject).
+- 2026-08-29: the env-prefix CMD_POS fold-in condition does not fire — no applied recommendation touches `hooks/commit_guard.py` or `hooks/force_push_guard.py` (R17 rejected); the candidate row stands unchanged.
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
