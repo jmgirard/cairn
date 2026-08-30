@@ -121,7 +121,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    criteria or tasks carries an RB-tripwire tag, gets the **full audit**; an
    internal-tier milestone gets the **reduced audit** (M145). Either way the
    step-2 criteria go to a fresh-context **[O]**
-   reader that authored none of them. The full audit asks three mechanical
+   reader that authored none of them (under a spawn-restricting harness
+   instruction, tracking-rules' freshness-spawns clause governs). The full audit asks three mechanical
    questions of
    each: *what state of the world satisfies this exactly as written*,
    *does any IP or D-entry make that state unreachable*, and

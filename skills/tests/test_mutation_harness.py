@@ -2742,6 +2742,55 @@ REGISTRY += [
 ]
 
 
+# M165: the freshness-spawns clause under a spawn-restricting harness
+# instruction — four blocks, each separately deletable. Lose (a) and the
+# harness line reads as forbidding every freshness spawn; lose (b) and a
+# blocked session degrades with no gate; lose the chip sentence and the gate
+# stops saying what a degraded run means; lose (c) and a permitted inline run
+# need not be logged — the silent degradation itself.
+REGISTRY += [
+    Mutation(
+        guard="test_freshness_spawn_instruction",
+        test="TestFreshnessSpawnInstructionClause.test_skill_invocation_is_the_users_spawn_request",
+        target=RULES,
+        block="request for the subagent spawns the skill's steps mandate",
+    ),
+    Mutation(
+        # the trigger subject of (a) — its own entry per the one-entry-per-
+        # assertion rule (M165 review F4).
+        guard="test_freshness_spawn_instruction",
+        test="TestFreshnessSpawnInstructionClause.test_skill_invocation_is_the_users_spawn_request",
+        target=RULES,
+        block="A harness instruction restricting subagent spawns",
+    ),
+    Mutation(
+        guard="test_freshness_spawn_instruction",
+        test="TestFreshnessSpawnInstructionClause.test_a_blocked_session_surfaces_the_conflict_at_the_pending_gate",
+        target=RULES,
+        block="asking the user to request the spawns in so",
+    ),
+    Mutation(
+        # the condition subject of (b) — its own entry (M165 review F4).
+        guard="test_freshness_spawn_instruction",
+        test="TestFreshnessSpawnInstructionClause.test_a_blocked_session_surfaces_the_conflict_at_the_pending_gate",
+        target=RULES,
+        block="A session that still cannot or will not spawn a",
+    ),
+    Mutation(
+        guard="test_freshness_spawn_instruction",
+        test="TestFreshnessSpawnInstructionClause.test_the_chip_explains_author_inline_in_plain_words",
+        target=RULES,
+        block="the chip says in plain words what an author-inline run means",
+    ),
+    Mutation(
+        guard="test_freshness_spawn_instruction",
+        test="TestFreshnessSpawnInstructionClause.test_an_inline_author_run_is_a_logged_deviation_never_silent",
+        target=RULES,
+        block="user-accepted, logged deviation naming the",
+    ),
+]
+
+
 class TestRegisteredGuardsFailWhenBlanked(unittest.TestCase):
     def test_each_registered_guard_fails_when_its_block_is_blanked(self):
         self.assertTrue(REGISTRY, "registry is empty")

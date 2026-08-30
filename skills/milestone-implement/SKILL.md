@@ -108,7 +108,9 @@ run ingestion first (see `/milestone-brief`).
      milestone's tier — the proportionality and instrument questions
      included in either mode — by a fresh-context
      **[O]** reader that did not author the amended wording, before the
-     amended text is written to the milestone file.
+     amended text is written to the milestone file (under a
+     spawn-restricting harness instruction, tracking-rules' freshness-spawns
+     clause governs).
      Wording whose clearance the `/milestone-brief` ingest audit's work-log
      line already covers is exempt.
      Per criterion, wording fixed at the mini gate re-enters the questions
