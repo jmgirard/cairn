@@ -114,6 +114,11 @@ within each type and are never reused.
 
 ## Known issues
 
+- `cairn_impact --changed`'s merge-base probes run through `cc.git`, whose
+  10-second timeout returns failure silently — a pathologically slow
+  `git merge-base` falls through to `HEAD` (a working-tree-only diff) with
+  no stderr warning. Accepted at the M164 gate: documented in
+  `_base_commit`'s code comment; no test witnesses the timeout path.
 - The merge guard's cross-repo detection is token-level only (M162): a
   spelling that restructures the command — `env GH_REPO=… gh pr merge`, a
   prior `export GH_REPO=…`, `GH_HOST`, an assignment value carrying
