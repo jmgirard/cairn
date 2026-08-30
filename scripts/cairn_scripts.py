@@ -125,13 +125,17 @@ class NotCairn(Exception):
     """Raised when ROOT is not inside a cairn-tracked repo."""
 
 
-def resolve_root(argv):
-    """Return the cairn repo root from argv[1] or cwd, or raise NotCairn."""
-    start = argv[1] if len(argv) > 1 else os.getcwd()
+def resolve_start(start):
+    """Return the cairn repo root enclosing `start`, or raise NotCairn."""
     root = cc.find_cairn_root(start)
     if not root:
         raise NotCairn(start)
     return root
+
+
+def resolve_root(argv):
+    """Return the cairn repo root from argv[1] or cwd, or raise NotCairn."""
+    return resolve_start(argv[1] if len(argv) > 1 else os.getcwd())
 
 
 def read_roadmap(root):

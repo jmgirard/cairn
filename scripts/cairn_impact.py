@@ -27,6 +27,7 @@ import subprocess
 import sys
 
 import cairn_scripts as cs
+import cairn_common as cc  # importable via cairn_scripts' sys.path shim
 
 _PRINCIPLE = re.compile(r"\b[IG]P\d+\b")
 # A milestone's `Principles touched:` header slot — the authoritative
@@ -84,12 +85,9 @@ def _base_commit(root):
     then master); HEAD if none resolves — e.g. on the default branch itself
     or a fresh repo — so --changed still sees the working tree."""
     for ref in ("origin/HEAD", "main", "master"):
-        r = subprocess.run(
-            ["git", "-C", root, "merge-base", "HEAD", ref],
-            capture_output=True, text=True,
-        )
-        if r.returncode == 0 and r.stdout.strip():
-            return r.stdout.strip()
+        rc, out = cc.git(["merge-base", "HEAD", ref], cwd=root)
+        if rc == 0 and out.strip():
+            return out.strip()
     return "HEAD"
 
 
@@ -157,7 +155,7 @@ def main(argv):
         sys.stderr.write(f"usage: cairn_impact.py [--changed] [IPn|GPn ...]\n{e}\n")
         return 2
     try:
-        root = cs.resolve_root(["cairn_impact"] + ([root_arg] if root_arg else []))
+        root = cs.resolve_start(root_arg or os.getcwd())
     except cs.NotCairn as e:
         cs.die_not_cairn(str(e))
         return 2

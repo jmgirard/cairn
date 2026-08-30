@@ -96,6 +96,7 @@ source candidate row), stays declined.
 - 2026-08-29: T1 done — RB14 authored (advisory, no Binding-criteria request; 22-file corpus list with `git ls-files` line counts embedded; 5 numbered questions: length, directness, simplification, test-suite streamlining, not-worth-it; second-escalation sweep of reviews/ + archive found no prior brief on this subject, so no removal question owed); blocked on RB14.
 - 2026-08-29: T2 done — gate approved Spawn Fable; [F] subagent read RB14 and wrote RR14 (19 numbered recommendations; both suites confirmed green at baseline: scripts 327, hooks 121).
 - 2026-08-29: T3 done — RR14 ingested; triage in Decisions (15 apply, 4 reject, none milestone-sized needing new candidate rows; fold-in condition not fired); RB14/RR14 archived; status back to in-progress.
+- 2026-08-29: T4 batch A (runtime: R8–R13) applied — status counts init, next's single `_workable` call, cost's single record filter, validate's `token = slot` drop, `resolve_start` + both fake-argv call sites, `_base_commit` on `cc.git`; suites after batch: scripts 327 OK exit 0, hooks 121 OK exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -29,6 +29,8 @@ def render(root):
     review = [r for r in rows if r["status"] == "review"]
     blocked = [r for r in rows if r["status"] == "blocked"]
 
+    workable = _workable(rows, done)
+
     # Single recommended action, in precedence order.
     if review:
         r = review[0]
@@ -36,17 +38,14 @@ def render(root):
     elif in_progress:
         r = in_progress[0]
         rec = f"resume {r['id']} → /milestone-implement {r['id']}"
+    elif workable:
+        r = workable[0]
+        rec = f"implement {r['id']} → /milestone-implement {r['id']}"
     else:
-        workable_now = _workable(rows, done)
-        if workable_now:
-            r = workable_now[0]
-            rec = f"implement {r['id']} → /milestone-implement {r['id']}"
-        else:
-            rec = "plan the next milestone → /milestone-plan"
+        rec = "plan the next milestone → /milestone-plan"
     lines.append(f"Recommended: {rec}")
     lines.append("")
 
-    workable = _workable(rows, done)
     lines.append("Workable planned (dependencies satisfied):")
     if workable:
         for r in workable:
