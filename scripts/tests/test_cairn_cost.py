@@ -24,7 +24,6 @@ Run from the repo root:
 
 import os
 import pathlib
-import re
 import sys
 import tempfile
 import unittest
@@ -496,7 +495,6 @@ class TestLiveStoreShape(unittest.TestCase):
         # Deterministic on every machine: an empty store dir yields a SkipTest,
         # not an AssertionError — proving the guarantee never reddens off this
         # machine. Uses a temp dir, so it performs no real-store read.
-
         with tempfile.TemporaryDirectory() as empty:
             with self.assertRaises(unittest.SkipTest):
                 _live_records_or_skip(empty)

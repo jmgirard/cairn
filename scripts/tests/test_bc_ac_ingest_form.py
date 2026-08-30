@@ -131,5 +131,27 @@ class TestBareIngestRedsCoverageOnly(unittest.TestCase):
         # proving the form (numbering + Coverage line) is what resolves it.
 
 
+class TestMissingRRFileFailsLoud(unittest.TestCase):
+    """A named Driving RR whose file is absent from cairn/reviews/ is a loud
+    failure naming the milestone and the RR. Passing control:
+    TestPrescribedFormIsQuietOnBoth runs the identical fixture with the RR
+    file present and shows the check quiet, so the report below fires for
+    the missing file and nothing else."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = build(self.tmp.name, AC_PRESCRIBED, COV_PRESCRIBED)
+        os.remove(os.path.join(self.root, "cairn", "reviews", "RR05-fixture.md"))
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_missing_rr_file_is_reported(self):
+        out = cv.check_binding_criteria(self.root)
+        self.assertEqual(len(out), 1, out)
+        self.assertIn("M50", out[0])
+        self.assertIn("Driving RR RR05 has no file under cairn/reviews/", out[0])
+
+
 if __name__ == "__main__":
     unittest.main()

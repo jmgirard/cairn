@@ -84,6 +84,11 @@ def _base_commit(root):
     """Merge-base of HEAD with the default branch (origin/HEAD, then main,
     then master); HEAD if none resolves — e.g. on the default branch itself
     or a fresh repo — so --changed still sees the working tree."""
+    # cc.git imposes a 10s timeout and returns (1, "") on ANY failure,
+    # timeout included — so a pathologically slow merge-base silently falls
+    # through to the next ref (ultimately HEAD, i.e. a working-tree-only
+    # diff) instead of hanging. Accepted trade-off; no test witnesses the
+    # timeout path.
     for ref in ("origin/HEAD", "main", "master"):
         rc, out = cc.git(["merge-base", "HEAD", ref], cwd=root)
         if rc == 0 and out.strip():

@@ -234,6 +234,27 @@ class TestNext(ScriptCase):
         # M03 depends on M01 (done) → workable.
         self.assertIn("M03 (high) — Live planned", out)
 
+    def test_recommends_review_before_resume(self):
+        # `review` heads the precedence chain: with both a review row and the
+        # base tree's in-progress M02 present, the review row is recommended.
+        self.tree.rows.insert(
+            0, ("M04", "Awaiting review", "review", "—", "normal", "milestones/M04-review.md")
+        )
+        self.tree.files["milestones/M04-review.md"] = live("review")
+        root = self.tree.build()
+        out = run("cairn_next.py", root).stdout
+        self.assertIn("Recommended: review M04 → /milestone-review M04", out)
+
+    def test_recommends_plan_when_nothing_is_workable(self):
+        # No review, in-progress, or workable planned row → the plan fallback.
+        self.tree.rows = [
+            ("M01", "Old done", "done", "—", "high", "milestones/archive/M01-old.md"),
+        ]
+        self.tree.files = {"milestones/archive/M01-old.md": archived("done")}
+        root = self.tree.build()
+        out = run("cairn_next.py", root).stdout
+        self.assertIn("Recommended: plan the next milestone → /milestone-plan", out)
+
     def test_archived_done_dependency_is_satisfied(self):
         # Regression: a dep on a done milestone whose ROADMAP row was pruned
         # under terminal-row retention (archive file only) must count as satisfied.
