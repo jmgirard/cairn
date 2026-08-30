@@ -22,16 +22,20 @@ Run from the repo root:
     python3 -m unittest discover -s scripts/tests -k cost
 """
 
+import os
 import pathlib
 import re
 import sys
+import tempfile
 import unittest
+from unittest import mock
 
 SCRIPTS_DIR = pathlib.Path(__file__).resolve().parent.parent
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 
 import cairn_cost as cost  # noqa: E402  (after sys.path shim)
+import cairn_scripts as cs  # noqa: E402  (resolves the store root)
 
 
 def rec(skill=None, branch=None, usage=None, content=None):
@@ -54,8 +58,6 @@ def _live_records_or_skip(store):
     real store at most once, and its skip path can be proven deterministically
     on a machine that has no store — the guarantee must SKIP off this machine,
     never fail."""
-    import os
-
     if not os.path.isdir(store):
         raise unittest.SkipTest(f"no session store at {store}")
     records = list(cost.read_records(store))
@@ -141,8 +143,6 @@ class TestSessionAttribution(unittest.TestCase):
     the report carry it alongside the per-phase view."""
 
     def test_session_id_comes_from_the_transcript_filename(self):
-        import tempfile
-
         with tempfile.TemporaryDirectory() as tmp:
             (pathlib.Path(tmp) / "aaaa1111.jsonl").write_text(
                 '{"type":"assistant","message":{"usage":{"output_tokens":3}}}\n',
@@ -320,11 +320,6 @@ class TestMilestoneFlagIsHonouredOrRefused(unittest.TestCase):
         # neither the refusal nor the success path scans the real ~26k-record
         # store. A spy over `read_records` proves the real store was never
         # touched — the fixture under `home` is the only store read.
-        import tempfile
-        from unittest import mock
-
-        import cairn_scripts as cs  # same-dir import; resolves the store root
-
         root = cs.resolve_root(["cairn_cost"])
         real_store = cost.store_dir(root)
         with tempfile.TemporaryDirectory() as home:
@@ -367,8 +362,6 @@ class TestMilestoneFlagIsHonouredOrRefused(unittest.TestCase):
         # AC2: the --attribution --milestone refusal precedes both the isdir
         # check and read_records — with `home` pointed at an empty dir (no
         # store at all) it still returns 2, not the no-store branch's 0.
-        import tempfile
-
         with tempfile.TemporaryDirectory() as home:
             self.assertEqual(
                 cost.main(
@@ -452,8 +445,6 @@ class TestStoreLocation(unittest.TestCase):
         self.assertEqual(cost.store_slug("/a/b_c.d"), "-a-b-c-d")
 
     def test_read_records_skips_malformed_lines_without_dying(self):
-        import tempfile
-
         with tempfile.TemporaryDirectory() as tmp:
             path = pathlib.Path(tmp) / "s.jsonl"
             path.write_text(
@@ -479,8 +470,6 @@ class TestLiveStoreShape(unittest.TestCase):
     other checkouts do not depend on this machine's session history."""
 
     def test_the_real_store_still_carries_the_fields_cost_reads(self):
-        import cairn_scripts as cs
-
         store = cost.store_dir(cs.resolve_root(["cairn_cost"]))
         records = _live_records_or_skip(store)
         # message.usage is where the four token classes live; a record without
@@ -507,7 +496,6 @@ class TestLiveStoreShape(unittest.TestCase):
         # Deterministic on every machine: an empty store dir yields a SkipTest,
         # not an AssertionError — proving the guarantee never reddens off this
         # machine. Uses a temp dir, so it performs no real-store read.
-        import tempfile
 
         with tempfile.TemporaryDirectory() as empty:
             with self.assertRaises(unittest.SkipTest):

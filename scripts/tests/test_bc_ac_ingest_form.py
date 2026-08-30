@@ -126,13 +126,9 @@ class TestBareIngestRedsCoverageOnly(unittest.TestCase):
         self.assertIn("AC3", joined)
         self.assertTrue(all("AC1 " not in line for line in out),
                         "the mapped AC1 must not be reported")
-
-    def test_numbering_and_mapping_together_clear_the_red(self):
-        # Positive twin: the same milestone under the prescribed form is quiet,
+        # Positive twin: TestPrescribedFormIsQuietOnBoth runs the same
+        # milestone under the prescribed form and shows both checks quiet,
         # proving the form (numbering + Coverage line) is what resolves it.
-        root = build(tempfile.mkdtemp(), AC_PRESCRIBED, COV_PRESCRIBED)
-        self.assertEqual(cv.check_coverage_complete(root), [])
-        self.assertEqual(cv.check_binding_criteria(root), [])
 
 
 if __name__ == "__main__":

@@ -80,19 +80,14 @@ BASE_FILES = {
 
 
 def _load_validate():
-    """Import cairn_validate for the rare direct-function test (most tests use
-    the subprocess `run` below). Needs SCRIPTS_DIR on the path for its
-    `import cairn_scripts`."""
-    import importlib.util
-
+    """Import cairn_validate (a plain cached module import, as _load_scripts
+    does) for direct-function tests and the in-process runner. Needs
+    SCRIPTS_DIR on the path for its `import cairn_scripts`."""
     if str(SCRIPTS_DIR) not in sys.path:
         sys.path.insert(0, str(SCRIPTS_DIR))
-    spec = importlib.util.spec_from_file_location(
-        "cairn_validate", SCRIPTS_DIR / "cairn_validate.py"
-    )
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
+    import cairn_validate
+
+    return cairn_validate
 
 
 def _load_scripts():
@@ -126,16 +121,6 @@ class _Result:
         self.stderr = stderr
 
 
-_VALIDATE_MOD = None
-
-
-def _validate_module():
-    global _VALIDATE_MOD
-    if _VALIDATE_MOD is None:
-        _VALIDATE_MOD = _load_validate()
-    return _VALIDATE_MOD
-
-
 def _run_validate_inproc(root):
     """Call cairn_validate.main() in-process, capturing its printed report and
     exit code — no interpreter spawn. main() re-reads every file each call, so
@@ -147,7 +132,7 @@ def _run_validate_inproc(root):
     out, err = io.StringIO(), io.StringIO()
     argv = [str(SCRIPTS_DIR / "cairn_validate.py"), str(root)]
     with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
-        code = _validate_module().main(argv)
+        code = _load_validate().main(argv)
     return _Result(code, out.getvalue(), err.getvalue())
 
 
@@ -1154,6 +1139,8 @@ class TestReferencesStaleness(ScriptCase):
     def test_future_verification_date_is_flagged_not_silently_exempt(self):
         # F5: a future date makes the age negative, and no threshold is ever
         # exceeded by a negative number — the page was exempt forever, silently.
+        # Also the other side of F4 (the forward-looking-date fix below must
+        # not silence F5): a status whose dates are ALL future stays flagged.
         ahead = days_ago(-30)
         proc = self.install(
             self.tree.build(),
@@ -1249,15 +1236,6 @@ class TestReferencesStaleness(ScriptCase):
             f"due {days_ago(-140)} — observed {days_ago(0)}.",
         )
         self.assertClean(proc)
-
-    def test_a_status_dated_only_in_the_future_is_still_flagged(self):
-        # The other side of F4: fixing it must not silence F5 itself.
-        ahead = days_ago(-30)
-        proc = self.install(
-            self.tree.build(),
-            status=f"verified {ahead} against the source — observed {days_ago(0)}.",
-        )
-        self.assertFlagged(proc, f"dated {ahead}, in the future")
 
     # --- AC2: the three axes, varied independently ---------------------------
 
@@ -2027,34 +2005,23 @@ class TestValidateProfile(ScriptCase):
 
     def test_shipped_reference_profiles_are_valid(self):
         # The plugin's own r-package + generic references must satisfy the check.
-        import importlib.util
-
+        cv = _load_validate()
+        cap = _load_scripts().LINE_CAPS["cairn/PROFILE.md"]
         plugin_root = pathlib.Path(__file__).resolve().parents[2]
-        spec = importlib.util.spec_from_file_location(
-            "cairn_validate", plugin_root / "scripts" / "cairn_validate.py"
-        )
-        cv = importlib.util.module_from_spec(spec)
-        sys.path.insert(0, str(plugin_root / "scripts"))
-        try:
-            spec.loader.exec_module(cv)
-            for name in ("r-package", "python", "generic", "docker-image"):
-                text = (plugin_root / "skills" / "shared" / "profiles" / f"{name}.md").read_text()
-                slots = cv._profile_slots(text)
-                for slot in cv._REQUIRED_SLOTS:
-                    self.assertIn(slot, slots, f"{name} missing {slot}")
-                    self.assertTrue(any(l.strip() for l in slots[slot]), f"{name} {slot} empty")
-                for slot in slots:
-                    self.assertIn(slot, cv._REQUIRED_SLOTS, f"{name} unrecognized {slot}")
-                # M61: cairn-init copies the reference verbatim into
-                # cairn/PROFILE.md, so every shipped profile must fit the
-                # instantiation cap or a fresh adopter fails validate on
-                # first contact (the pre-M61 latent bug: 97 lines vs <90).
-                import cairn_scripts as cs_mod
-                cap = cs_mod.LINE_CAPS["cairn/PROFILE.md"]
-                n = len(text.splitlines())
-                self.assertLess(n, cap, f"{name}.md is {n} lines (cap <{cap})")
-        finally:
-            sys.path.pop(0)
+        for name in ("r-package", "python", "generic", "docker-image"):
+            text = (plugin_root / "skills" / "shared" / "profiles" / f"{name}.md").read_text()
+            slots = cv._profile_slots(text)
+            for slot in cv._REQUIRED_SLOTS:
+                self.assertIn(slot, slots, f"{name} missing {slot}")
+                self.assertTrue(any(l.strip() for l in slots[slot]), f"{name} {slot} empty")
+            for slot in slots:
+                self.assertIn(slot, cv._REQUIRED_SLOTS, f"{name} unrecognized {slot}")
+            # M61: cairn-init copies the reference verbatim into
+            # cairn/PROFILE.md, so every shipped profile must fit the
+            # instantiation cap or a fresh adopter fails validate on
+            # first contact (the pre-M61 latent bug: 97 lines vs <90).
+            n = len(text.splitlines())
+            self.assertLess(n, cap, f"{name}.md is {n} lines (cap <{cap})")
 
 
 class TestSizingAdvisory(ScriptCase):
@@ -3237,17 +3204,12 @@ class TestValidateFailures(ScriptCase):
         self.tree.rows.append(("M03", "Dup", "planned", "M01", "high", "milestones/M03-live.md"))
         self.assert_fails("id uniqueness", self.tree.build())
 
-    def test_non_iso_date(self):
-        # A misformatted work-log date must be flagged; the clean tree's ISO
-        # date (archived M01, "approved 2026-07-11") already proves ISO passes.
-        self.tree.files["milestones/M03-live.md"] = live("planned") + "\n- 07/11/2026: did a thing\n"
-        out = self.assert_fails("iso date format", self.tree.build())
-        self.assertIn("non-ISO date '07/11/2026'", out)
-
     def test_non_iso_date_formats(self):
         # Each non-ISO branch is flagged: year-last dashed, both month-name
         # orders, the malformed-ISO (missing zero-pad) case, and both slash
-        # orders that carry a 4-digit year (year-last and year-first).
+        # orders that carry a 4-digit year (year-last and year-first). The
+        # clean tree's ISO date (archived M01, "approved 2026-07-11") already
+        # proves ISO passes.
         for bad in ("11-07-2026", "Jul 11, 2026", "11 July 2026", "2026-7-11",
                     "07/11/2026", "2026/07/11"):
             with self.subTest(bad=bad):
@@ -3792,10 +3754,6 @@ def live_release(status, goal="Ship it.", worklog=()):
     )
 
 
-def _days_ago(n):
-    return (datetime.date.today() - datetime.timedelta(days=n)).isoformat()
-
-
 class TestReleaseWindowAdvisory(ScriptCase):
     """The advisory is exit-code neutral in every case below — a release the
     maintainer has not queued is a judgment call, never a gate failure."""
@@ -3830,7 +3788,7 @@ class TestReleaseWindowAdvisory(ScriptCase):
     def test_blocked_release_is_silent(self):
         """The parked state the advisory recommends — warning here would nag
         about the very remedy it just prescribed."""
-        root = self._tree(RELEASE_TITLES[1], "blocked", worklog=[(_days_ago(300), "parked")])
+        root = self._tree(RELEASE_TITLES[1], "blocked", worklog=[(days_ago(300), "parked")])
         proc = run("cairn_validate.py", root)
         self.assertEqual(proc.returncode, 0, proc.stderr)
         self.assertIn("OK    release window", proc.stdout)
@@ -3838,7 +3796,7 @@ class TestReleaseWindowAdvisory(ScriptCase):
     def test_review_release_worked_recently_is_silent(self):
         """The circumplex M7 case: the maintainer is actively shipping it."""
         root = self._tree(
-            RELEASE_TITLES[1], "review", worklog=[(_days_ago(1), "T4 done")]
+            RELEASE_TITLES[1], "review", worklog=[(days_ago(1), "T4 done")]
         )
         proc = run("cairn_validate.py", root)
         self.assertEqual(proc.returncode, 0, proc.stderr)
@@ -3846,7 +3804,7 @@ class TestReleaseWindowAdvisory(ScriptCase):
 
     def test_review_release_gone_idle_warns(self):
         root = self._tree(
-            RELEASE_TITLES[1], "review", worklog=[(_days_ago(40), "T4 done")]
+            RELEASE_TITLES[1], "review", worklog=[(days_ago(40), "T4 done")]
         )
         proc = run("cairn_validate.py", root)
         self.assertEqual(proc.returncode, 0, proc.stderr)
