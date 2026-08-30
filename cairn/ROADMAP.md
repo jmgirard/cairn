@@ -12,6 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M165 | Freshness spawns survive a no-unrequested-subagents harness instruction | planned | — | high | milestones/M165-freshness-spawns-survive-no-spawn-instruction.md |
 | M164 | Streamlining pass over shipped code (RB14, advisory) | done | — | normal | milestones/archive/M164-streamlining-pass.md |
 | M163 | External adoption pass (RR13 step 3): init + full loop on bsync | done | — | normal | milestones/archive/M163-external-adoption-pass.md |
 | M162 | Multi-repo sessions: the merge guard's cross-repo contract | done | — | normal | milestones/archive/M162-multi-repo-merge-guard.md |
