@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** m164-streamlining-pass
+- **Branch/PR:** m164-streamlining-pass · https://github.com/jmgirard/cairn/pull/165
 
 ## Goal
 
@@ -32,11 +32,11 @@ source candidate row), stays declined.
 
 ## Acceptance criteria
 
-- [ ] AC1: Each recommendation numbered in RR14 that the ingestion triage
+- [x] AC1: Each recommendation numbered in RR14 that the ingestion triage
       dispositions `apply` is implemented in the milestone branch's diff
       against main; the triage's domain is RR14's numbered recommendation
       list, re-read from RR14 at review.
-- [ ] AC2: With all applied changes on the branch,
+- [x] AC2: With all applied changes on the branch,
       `python3 -m unittest discover -s scripts/tests` and
       `python3 -m unittest discover -s hooks/tests` both exit 0, and each
       suite's test count is at or above its count at the branch's
@@ -113,3 +113,7 @@ source candidate row), stays declined.
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55). -->
+
+- 2026-08-29 AC1: RR14 re-read whole from `cairn/reviews/archive/RR14-streamlining-pass.md` — numbered domain R1–R19; triage (milestone Decisions) dispositions 15 apply (R1–R13, R15, R16) and 4 reject (R14, R17, R18, R19), every item covered. Each apply item confirmed in `git diff origin/main..HEAD`: R1 `_days_ago` deleted; R2 one cached `_load_validate` (importlib exec + `_VALIDATE_MOD`/`_validate_module` cache removed); R3 profile test on the shared loaders (inline spec-loader gone); R4/R5/R6 the three duplicate tests removed; R7 test_hooks sys.path shims + imports hoisted to module level, three setUps shrunk; R8 `counts = {}`; R9 single `_workable` call; R10 single filtered `sub` in `audit_line`; R11 `token = slot` dropped; R12 `resolve_start` added with both fake-argv call sites converted; R13 `_base_commit` on `cc.git`; R15 the two legacy-gitignore tests merged; R16 test_cairn_cost imports hoisted. PASS.
+- 2026-08-29 AC2: fresh runs on the branch — scripts/tests Ran 323 OK exit 0, hooks/tests Ran 121 OK exit 0 (exit codes checked individually). Merge-base counts measured fresh by `git archive`-exporting the merge-base (10b8bf9) to the scratchpad and discovering both suites there: scripts 327, hooks 121 (the export's single scripts failure is environmental — the M83-provenance test shells out to git and the export has no `.git`; count unaffected). Hooks 121 ≥ 121; scripts 323 vs 327 — the −4 are exactly the applied test removals R4, R5, R6, and R15's two-into-one merge, each an applied RR14 recommendation, so the exception clause covers the full shortfall. PASS.
+- 2026-08-29 consistency gate: `cairn_validate.py` exit 0, all checks passed (release-window advisory silent); no `cairn/DESIGN.md` principle changed on the branch → `cairn_impact --changed` skipped; toolchain half — `generic` profile's consistency-gate slot names none → clean no-op. PASS.
