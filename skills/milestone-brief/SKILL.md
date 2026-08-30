@@ -102,7 +102,9 @@ start (any skill) when a manual RR appears:
    their stated tolerances; an unstated tolerance is strict — any shortfall
    forces the accept-shortfall option at the merge gate.
    **A binding-criteria set is audited before it is ingested**, by the same
-   fresh-context **[O]** reader `/milestone-plan` step 3 spawns and the same
+   fresh-context **[O]** reader `/milestone-plan` step 3 spawns (under a
+   spawn-restricting harness instruction, tracking-rules' freshness-spawns
+   clause governs) and the same
    three questions — *what state of the world satisfies this exactly as
    written*, *does any IP or D-entry make that state unreachable*, and
    *does it make a universal claim over a domain no procedure it names enumerates*

@@ -158,7 +158,8 @@ overrides — log the override).
      no declared tier: spawn the full three-lens fan-out.
 
    Spawn the reviewer(s) the routing selected — fresh-context, none having
-   seen the implementation; in the fan-out they run in parallel, each with
+   seen the implementation (under a spawn-restricting harness instruction,
+   tracking-rules' freshness-spawns clause governs); in the fan-out they run in parallel, each with
    a *distinct evidence base* (a shared base just finds the same things
    twice), while single-reviewer mode applies the same spawn rules to its
    one [O] lens and the lens list below describes the fan-out.

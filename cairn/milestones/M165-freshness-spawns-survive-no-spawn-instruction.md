@@ -88,7 +88,7 @@ mandating a spawn" filter.
   "Model and agent strategy", beside the freshness-warrant bullet (~line
   361). Note: chip text carries what "degraded (author-inline)" means in
   plain words, no record identifiers (Accessible-language rule).
-- [ ] T2: Run AC2's grep; add the pointer at every spawn-mandating hit
+- [x] T2: Run AC2's grep; add the pointer at every spawn-mandating hit
   outside the host section (`milestone-plan` step 3, `milestone-brief` ingest
   audit ~line 105, `milestone-implement` step 6 ~line 109, `milestone-review`
   step 5 ~lines 149–160); disposition every hit in the work log, the Scope
@@ -109,6 +109,7 @@ mandating a spawn" filter.
 - 2026-08-30: plan gate chose surfacing the review-phase conflict at the merge-approval chip (review declared degraded) over a fourth user gate at review step 5 because the three-gate rule already provides that chip; falsified by a degraded review accepted at the merge chip shipping a defect a pre-review gate would have blocked.
 - 2026-08-30: plan chose covering only the AgentTool instruction line over widening to the workflows/deep-research line because cairn mandates neither workflows nor deep-research, so that line gates nothing of ours; falsified by a cairn skill acquiring a workflow or deep-research mandate, or defect evidence under that line.
 - 2026-08-30: T1 done — "Freshness spawns under a spawn-restricting harness instruction" bullet added to tracking-rules "Model and agent strategy" beside the freshness-warrant bullet, stating AC1's (a)–(c) plus the plain-words chip sentence; suites green (scripts 326, hooks 121).
+- 2026-08-30: T2 done — AC2 grep returned 8 hits; pointers added at the four spawn-mandating sites (brief:105 ingest audit; implement:109 amendment re-audit; plan:123 criteria audit; review step 5, one pointer for its 149/155/160 block, per the plan's site enumeration); review:393 is the Scope-pre-committed non-mandating hit (close-block prose); tracking-rules:376 lies inside the clause's host section; suites green (scripts 326, hooks 121).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
