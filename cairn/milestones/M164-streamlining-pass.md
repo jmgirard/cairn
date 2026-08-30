@@ -69,7 +69,7 @@ source candidate row), stays declined.
       env-prefix `CMD_POS` alignment in via the implement step-6 amendment
       gate; archive the RB/RR pair (plain `mv` + `git add`); status back
       to in-progress.
-- [ ] T4: Apply the `apply` recommendations; run both gating suites after
+- [x] T4: Apply the `apply` recommendations; run both gating suites after
       each batch from the repo root with exit codes checked individually
       (M56); a whole-file deletion dispositions every class the file
       carries (M127); ripple coupled surfaces (`hooks/hooks.json`, both
@@ -98,6 +98,7 @@ source candidate row), stays declined.
 - 2026-08-29: T3 done — RR14 ingested; triage in Decisions (15 apply, 4 reject, none milestone-sized needing new candidate rows; fold-in condition not fired); RB14/RR14 archived; status back to in-progress.
 - 2026-08-29: T4 batch A (runtime: R8–R13) applied — status counts init, next's single `_workable` call, cost's single record filter, validate's `token = slot` drop, `resolve_start` + both fake-argv call sites, `_base_commit` on `cc.git`; suites after batch: scripts 327 OK exit 0, hooks 121 OK exit 0.
 - 2026-08-29: T4 batch B (scripts tests: R1–R6, R15, R16) applied — `_days_ago` dup deleted, one cached `_load_validate` loader replacing the per-call exec + `_validate_module` cache + the profile test's inline loader, duplicate future-date and non-ISO-date tests removed (survivors carry the moved comments), the ingest-form positive twin removed (mkdtemp leak gone with it), the two legacy-gitignore scaffold tests merged, test_cairn_cost imports hoisted; suites after batch: scripts 323 OK exit 0 (−4 = the four accepted removals/merges), hooks 121 OK exit 0.
+- 2026-08-29: T4 batch C (hooks tests: R7) applied — the three duplicated sys.path shims + direct imports hoisted to module level, the three setUps shrunk to assignments; SessionStart-matcher comment added to `commands()` (RR14 Beyond-the-brief); ripple check: hooks.json and TestNonCairnNoOp untouched (no hook added/removed), no skills/DESIGN prose names a touched internal; T4 done; suites after batch: scripts 323 OK exit 0, hooks 121 OK exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
