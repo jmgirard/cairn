@@ -1,6 +1,37 @@
 # Changelog
 
-## 1.9.0 (2026-08-28)
+## 1.10.0 (2026-08-30)
+
+Four milestones since 1.9.0: the merge guard learns about multi-repo
+sessions, cairn survives its first adoption by an outside repo, the shipped
+scripts get a simplification pass, and mandated reviewers keep spawning under
+a new Claude Code restriction. Backward-compatible: existing tracked repos
+keep working unchanged.
+
+- **Independent review survives the "no unrequested subagents" instruction.**
+  Some Claude Code surfaces now tell sessions not to spawn subagents unless
+  the user requested them, and sessions were reading that as forbidding
+  cairn's fresh-context reviewers and criteria audits — silently checking
+  work only with the session that produced it. The rules now state that
+  invoking a cairn skill *is* the request for the spawns that skill requires;
+  a session that still can't spawn must say so at the next decision gate,
+  with the review declared degraded, and an author-only run is allowed only
+  as a deviation you explicitly accept — never silently.
+- **The merge guard understands multi-repo sessions.** An approval marker
+  binds the repo it lives in: merges that target another repo (`--repo`,
+  `-R`, a `GH_REPO=` prefix, or a `cd`-into-another-directory compound) are
+  denied with guidance, instead of being waved through against the wrong
+  repo's approval. A secondary repo's merge runs from a session working
+  directory inside that repo, through that repo's own gate.
+- **First outside adoption, and the fixes it forced.** A second repository
+  was migrated onto cairn and ran a full milestone loop end to end. The
+  friction found is fixed: `/cairn-init` now ships LESSONS and DECISIONS
+  file templates instead of describing them, and the merge guard's messages
+  cover the spellings that confused the pass.
+- **Simpler internals, same behavior.** An advisory audit of the shipped
+  scripts and hooks was applied: one shared test-module loader replaces
+  three ad-hoc mechanisms, duplicate tests were merged, and several scripts
+  lost needless indirection. No commands, checks, or outputs changed.
 
 Five milestones since 1.8.0, on two themes: what a phase end routes you to,
 and when a deferred item has to be decided rather than carried. Milestone IDs
