@@ -96,7 +96,7 @@ mandating a spawn" filter.
 - [x] T3: Add a hand-run prose guard in `skills/tests` pinning AC1's
   operative sentences (mind the M148 locator-uniqueness lesson); run both
   gating suites and hand-run `skills/tests`.
-- [ ] T4: Run AC3's grep; read each hit against the clause; align any
+- [x] T4: Run AC3's grep; read each hit against the clause; align any
   contradicting README text (M112 lesson: doctrine wording has more surfaces
   than the skills it edits).
 
@@ -111,6 +111,7 @@ mandating a spawn" filter.
 - 2026-08-30: T1 done — "Freshness spawns under a spawn-restricting harness instruction" bullet added to tracking-rules "Model and agent strategy" beside the freshness-warrant bullet, stating AC1's (a)–(c) plus the plain-words chip sentence; suites green (scripts 326, hooks 121).
 - 2026-08-30: T2 done — AC2 grep returned 8 hits; pointers added at the four spawn-mandating sites (brief:105 ingest audit; implement:109 amendment re-audit; plan:123 criteria audit; review step 5, one pointer for its 149/155/160 block, per the plan's site enumeration); review:393 is the Scope-pre-committed non-mandating hit (close-block prose); tracking-rules:376 lies inside the clause's host section; suites green (scripts 326, hooks 121).
 - 2026-08-30: T3 done — `skills/tests/test_freshness_spawn_instruction.py` pins AC1's (a)–(c) plus the chip plain-words sentence, four mutation-registry entries on unique locators; the implement:109 pointer had split `test_fresh_context_readers`' pinned slice (2 reds), relocated past the slice per the M148 lesson (new sentence moved, pinned prose untouched); all suites green (scripts 326, hooks 121, skills 532 hand-run).
+- 2026-08-30: T4 done — AC3's grep returned 6 README lines (12, 116–118, 126, 279); each read against the clause: rigor-scaling (12), independent reviewer agents at review (116–118), fresh-session-per-phase advice (126), and fan-out-as-conduct-rule (279) — none contradicts AC1's clause, no README edit needed; suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
