@@ -9,7 +9,7 @@
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** IP2, GP4   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m165-freshness-spawns-survive-no-spawn-instruction   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -84,7 +84,7 @@ mandating a spawn" filter.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Author AC1's clause (a)–(c) in `skills/shared/tracking-rules.md`
+- [x] T1: Author AC1's clause (a)–(c) in `skills/shared/tracking-rules.md`
   "Model and agent strategy", beside the freshness-warrant bullet (~line
   361). Note: chip text carries what "degraded (author-inline)" means in
   plain words, no record identifiers (Accessible-language rule).
@@ -108,6 +108,7 @@ mandating a spawn" filter.
 - 2026-08-30: plan gate chose the plugin doctrine clause (plus handing the user a personal CLAUDE.md line) over a user-side-only CLAUDE.md workaround because other adopters would stay degraded (GP4); falsified by sessions still degrading silently after the clause ships.
 - 2026-08-30: plan gate chose surfacing the review-phase conflict at the merge-approval chip (review declared degraded) over a fourth user gate at review step 5 because the three-gate rule already provides that chip; falsified by a degraded review accepted at the merge chip shipping a defect a pre-review gate would have blocked.
 - 2026-08-30: plan chose covering only the AgentTool instruction line over widening to the workflows/deep-research line because cairn mandates neither workflows nor deep-research, so that line gates nothing of ours; falsified by a cairn skill acquiring a workflow or deep-research mandate, or defect evidence under that line.
+- 2026-08-30: T1 done — "Freshness spawns under a spawn-restricting harness instruction" bullet added to tracking-rules "Model and agent strategy" beside the freshness-warrant bullet, stating AC1's (a)–(c) plus the plain-words chip sentence; suites green (scripts 326, hooks 121).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

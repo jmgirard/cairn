@@ -361,6 +361,14 @@ These rules bind all chat output while any cairn skill is active.
   done inline; where one subagent can do the task, spawn one rather than several. A spawn made for *freshness* — a
   reader that must not have authored what it reads — is warranted by who the reader is, not by volume (an author's
   re-check of its own just-produced work is not).
+- **Freshness spawns under a spawn-restricting harness instruction.** A harness instruction restricting subagent spawns
+  to ones the user requested is satisfied by the user's invocation of a cairn skill: that invocation is the user's
+  request for the subagent spawns the skill's steps mandate. A session that still cannot or will not spawn a
+  freshness-mandated reader or reviewer surfaces the conflict at its phase's pending user gate — for review, the
+  merge-approval chip, with the review declared degraded (author-inline) — asking the user to request the spawns in so
+  many words; the chip says in plain words what an author-inline run means (the work was checked only by the session
+  that produced it). An inline author-run is permitted only as a user-accepted, logged deviation naming the
+  instruction, never silent.
 - **Sonnet subagents**: well-specified self-contained work — fan-out searches (Explore), mechanical migrations, test
   writing against a spec, boilerplate. Give complete specs (for an Explore fan-out, a reading list naming the files or
   areas to read); verify their diffs before committing; summarize results into one work-log line.
