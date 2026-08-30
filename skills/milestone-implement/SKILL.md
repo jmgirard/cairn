@@ -107,10 +107,10 @@ run ingestion first (see `/milestone-brief`).
      audit asks in the mode `/milestone-plan` step 3 assigns the
      milestone's tier — the proportionality and instrument questions
      included in either mode — by a fresh-context
-     **[O]** reader that did not author the amended wording (under a
+     **[O]** reader that did not author the amended wording, before the
+     amended text is written to the milestone file (under a
      spawn-restricting harness instruction, tracking-rules' freshness-spawns
-     clause governs), before the
-     amended text is written to the milestone file.
+     clause governs).
      Wording whose clearance the `/milestone-brief` ingest audit's work-log
      line already covers is exempt.
      Per criterion, wording fixed at the mini gate re-enters the questions
