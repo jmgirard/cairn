@@ -1,6 +1,6 @@
 # M164: Streamlining pass over shipped code (RB14)
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -75,7 +75,7 @@ source candidate row), stays declined.
       carries (M127); ripple coupled surfaces (`hooks/hooks.json`, both
       `TestNonCairnNoOp` payload collections, skills/DESIGN prose
       restating touched behavior).
-- [ ] T5: Verify: re-read RR14's numbered list against the triage (AC1);
+- [x] T5: Verify: re-read RR14's numbered list against the triage (AC1);
       run both suites; compare per-suite test counts to the merge-base
       counts (AC2); record in Decisions the source row's hypothesis
       evaluation — whether the pass returned accepted changes neither the
@@ -99,6 +99,7 @@ source candidate row), stays declined.
 - 2026-08-29: T4 batch A (runtime: R8–R13) applied — status counts init, next's single `_workable` call, cost's single record filter, validate's `token = slot` drop, `resolve_start` + both fake-argv call sites, `_base_commit` on `cc.git`; suites after batch: scripts 327 OK exit 0, hooks 121 OK exit 0.
 - 2026-08-29: T4 batch B (scripts tests: R1–R6, R15, R16) applied — `_days_ago` dup deleted, one cached `_load_validate` loader replacing the per-call exec + `_validate_module` cache + the profile test's inline loader, duplicate future-date and non-ISO-date tests removed (survivors carry the moved comments), the ingest-form positive twin removed (mkdtemp leak gone with it), the two legacy-gitignore scaffold tests merged, test_cairn_cost imports hoisted; suites after batch: scripts 323 OK exit 0 (−4 = the four accepted removals/merges), hooks 121 OK exit 0.
 - 2026-08-29: T4 batch C (hooks tests: R7) applied — the three duplicated sys.path shims + direct imports hoisted to module level, the three setUps shrunk to assignments; SessionStart-matcher comment added to `commands()` (RR14 Beyond-the-brief); ripple check: hooks.json and TestNonCairnNoOp untouched (no hook added/removed), no skills/DESIGN prose names a touched internal; T4 done; suites after batch: scripts 323 OK exit 0, hooks 121 OK exit 0.
+- 2026-08-29: T5 done — RR14's numbered list (R1–R19, re-read from the archived RR) checked against the triage: every item dispositioned, all 15 apply items present in the branch diff (11 files, +80/−154); suites: scripts 323 OK exit 0 (merge-base 327; −4 all from applied removals R4/R5/R6/R15), hooks 121 OK exit 0 (merge-base 121); validate green; hypothesis evaluation recorded in Decisions; status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -107,6 +108,7 @@ source candidate row), stays declined.
 
 - 2026-08-29: RR14 triage (domain: its numbered list R1–R19). Apply: R1–R11 (the report's own apply tier, all suite-attested) plus, at the triage gate, R12 (path-based root resolver; behavior identical), R13 (merge-base probes via `cairn_common.git`; accepted with the report's caveat that the helper adds a 10s timeout no test witnesses), R15 (merge the two legacy-gitignore scaffold tests), R16 (hoist function-local imports in test_cairn_cost). Reject: R14 (bare function refs in the check registry — uniform lambda column preferred, the report's own hesitation), R17 (CMD_POS consolidation — guard-behavior change, already a tracked candidate row), R18 (splitting `_provenance_block` — load-bearing flag, M81 F1), R19 (argparse — pinned usage/stderr contract). Beyond-the-brief: the mkdtemp leak is folded into R6's removal; the SessionStart-matcher comment lands with R7's test_hooks touch; the `cwd`→`root` rename is skipped (commit_guard stays untouched under R17's reject).
 - 2026-08-29: the env-prefix CMD_POS fold-in condition does not fire — no applied recommendation touches `hooks/commit_guard.py` or `hooks/force_push_guard.py` (R17 rejected); the candidate row stands unchanged.
+- 2026-08-29: source-row hypothesis evaluation (for the row's graduation note at hygiene): the pass DID return accepted changes neither the review lenses nor `/simplify` would have surfaced — both instruments are diff-scoped, and all 15 applied changes sit in code no recent branch touched (the triplicated test-module loaders and duplicate tests date to M102-era suites; the runtime redundancies predate the current review machinery); the RR's Q5 list additionally documents ten deliberate non-changes a future diff-scoped pass could not have known were load-bearing.
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
