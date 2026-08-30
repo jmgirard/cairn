@@ -9,7 +9,7 @@
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** IP2, GP4   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** m165-freshness-spawns-survive-no-spawn-instruction   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m165-freshness-spawns-survive-no-spawn-instruction · https://github.com/jmgirard/cairn/pull/166   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -52,7 +52,7 @@ mandating a spawn" filter.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: The "Model and agent strategy" section of
+- [x] AC1: The "Model and agent strategy" section of
   `skills/shared/tracking-rules.md` states all three: (a) a user's invocation
   of a cairn skill is the user's request for the subagent spawns that skill's
   steps mandate, satisfying a harness instruction restricting subagent spawns
@@ -63,13 +63,13 @@ mandating a spawn" filter.
   spawns in so many words; (c) an inline author-run is permitted only as a
   user-accepted, logged deviation naming the instruction, never silent.
   Evidence: the section's shipped text.
-- [ ] AC2: Every line returned by `grep -rni 'fresh[- ]context'
+- [x] AC2: Every line returned by `grep -rni 'fresh[- ]context'
   skills/*/SKILL.md skills/shared/*.md` that sits inside prose mandating a
   spawn either carries, at that site, a pointer to the "Model and agent
   strategy" clause AC1 names, or lies inside that clause's own host section
   (Scope pre-commits the one non-mandating hit). Evidence: the grep output
   read against the shipped files.
-- [ ] AC3: Every line returned by `grep -rniE 'reviewer|fan-out|fresh
+- [x] AC3: Every line returned by `grep -rniE 'reviewer|fan-out|fresh
   session|criteria audit' README.md` (non-empty today; state the hit count at
   the gate) states conduct consistent with AC1's clause. Evidence: the grep
   output read against the clause.
@@ -118,3 +118,9 @@ mandating a spawn" filter.
 
 ## Review
 <!-- owner: review · exclusive -->
+
+- AC1: PASS — `skills/shared/tracking-rules.md:364-371` ("Freshness spawns under a spawn-restricting harness instruction") states (a) skill invocation is the user's request for the mandated spawns, (b) a still-blocked session surfaces the conflict at its phase's pending user gate (review: merge-approval chip, declared degraded author-inline) asking the user to request the spawns, (c) inline author-runs only as a user-accepted, logged deviation naming the instruction. Read fresh 2026-08-30.
+- AC2: PASS — the grep returned 8 hits. Spawn-mandating hits with the pointer at-site: brief:105 (ingest audit), implement:109 (amendment re-audit), plan:123 (criteria audit), review:160-162 (one pointer for the step-5 149/155/160 block). review:393 is the Scope-pre-committed non-mandating hit (close-block prose about clearing context); tracking-rules:376 lies inside the clause's host section. All 8 dispositioned.
+- AC3: PASS — the grep returned 6 README lines (12, 116-118, 126, 279); each read against the clause: rigor-scaling (12), independent reviewers at review with stakes routing (116-118), fresh-session-per-phase advice (126), fan-out as conduct rule (279). None contradicts the clause; no edit needed.
+- Consistency gate: `cairn_validate` all checks passed (exit 0); no DESIGN.md principle changed → `cairn_impact` skipped; profile `generic` → toolchain half a clean no-op. Suites: scripts 326, hooks 121, skills 532 hand-run — all green.
+- Driving RR: none → projection-vs-outcome no-ops.
