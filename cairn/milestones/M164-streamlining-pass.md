@@ -1,11 +1,11 @@
 # M164: Streamlining pass over shipped code (RB14)
 
-- **Status:** planned
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m164-streamlining-pass
 
 ## Goal
 
@@ -50,7 +50,7 @@ source candidate row), stays declined.
 
 ## Tasks
 
-- [ ] T1: Author `cairn/reviews/RB14-streamlining-pass.md` from the brief
+- [x] T1: Author `cairn/reviews/RB14-streamlining-pass.md` from the brief
       template via the Write tool (M163: quoted guarded commands at line
       start trip merge_guard inside heredocs): self-contained; advisory —
       records that no `## Binding criteria` section is requested; embeds
@@ -92,6 +92,8 @@ source candidate row), stays declined.
 - 2026-08-29: plan gate chose an advisory RR over binding criteria because streamlining recommendations are judgment-weighted and triage keeps the maintainer's call per item; falsified by triage disputes a string-compared criterion would have settled.
 - 2026-08-29: plan gate chose dropping the RR-existence criterion over keeping it narrowed because two fresh readers called it record-binding (D-120) and the brief procedure already enforces the RB/RR lifecycle; falsified by a review gate unable to certify the pass ran from tasks and procedure alone.
 - 2026-08-29: plan gate chose the conditional env-prefix fold-in over leaving the row because the row's own wording names "the next milestone touching either guard"; falsified by a fold-in that pushes T4 past one session.
+- 2026-08-29: implement started; branch m164-streamlining-pass; step-3 question gate skipped — the plan gate settled corpus, advisory form, and fold-in condition, and T2 is itself the user gate.
+- 2026-08-29: T1 done — RB14 authored (advisory, no Binding-criteria request; 22-file corpus list with `git ls-files` line counts embedded; 5 numbered questions: length, directness, simplification, test-suite streamlining, not-worth-it; second-escalation sweep of reviews/ + archive found no prior brief on this subject, so no removal question owed); blocked on RB14.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
