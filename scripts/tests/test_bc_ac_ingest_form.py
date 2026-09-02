@@ -10,7 +10,7 @@ reds `coverage-complete` — the intraclass failure, where six ingested BCs
 counted as AC8..AC13 with no Coverage line.
 
 M107's resolution is a FORM, not a code change: ingest each BC as a numbered
-acceptance criterion carrying its trace tag — `- [ ] AC-N (BCn): <verbatim>` —
+acceptance criterion carrying its trace tag — `- [ ] ACn (BCm): <verbatim>` —
 and add its Coverage line. These tests pin both verdicts: the prescribed form
 is quiet on BOTH checks; the bare-ingest shape reds `coverage-complete` while
 `binding criteria` stays quiet (so the binding check alone cannot catch it).

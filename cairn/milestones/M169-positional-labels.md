@@ -72,7 +72,7 @@ history is never rewritten; a change to `cairn_validate`'s positional counting
       both branches; register one mutation entry per pinned block in
       `skills/tests/test_mutation_harness.py`'s `REGISTRY` (a new sentence near
       a pinned slice must not echo its start marker — LESSONS M148).
-- [ ] T2: Edit `skills/shared/templates/milestone.md`: label the example
+- [x] T2: Edit `skills/shared/templates/milestone.md`: label the example
       items in the Acceptance criteria and Tasks sections, add the position
       rule to each section's comment, and change the ingest form to
       `ACn (BCm):`; make the same form change in `skills/milestone-brief/SKILL.md`
@@ -95,6 +95,7 @@ history is never rewritten; a change to `cairn_validate`'s positional counting
 - 2026-09-02: plan gate chose renumbering on both implement step-6 branches over the gated branch alone because a minor reorder is the likeliest desync path; falsified by the both-branch rule being logged as a user override or deviation in a work log.
 - 2026-09-02: plan gate chose the colon form `ACn:` / `Tn:` over any-separator labels because it is the form this repo's files have used since M130 and the binding tag fits as `ACn (BCm):`; falsified by an adopting repo's tooling requiring a different separator.
 - 2026-09-02: started by /milestone-implement on branch m169-positional-labels; question gate skipped (the plan gate settled the label form, the both-branch renumbering, and the no-validator choice). T1: `skills/tests/test_positional_labels.py` authored red-first (12 tests, 12 failures against the unedited files); 13 mutation entries registered, one per pinned block.
+- 2026-09-02: T2: template example items labeled `AC1:`/`AC2:`/`T1:`, position rule added to both section comments, ingest form changed to `ACn (BCm):` at all five sites; `git grep -n "AC-N" -- skills scripts` returns nothing (exit 1).
 
 ## Decisions
 
