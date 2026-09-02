@@ -55,7 +55,7 @@ def milestone(ac_body, coverage_body):
 
 
 # Prescribed form: a normal AC1 plus the two BCs ingested as numbered criteria
-# carrying their (BCn) trace tag, each given a Coverage line.
+# carrying their (BCm) trace tag, each given a Coverage line.
 AC_PRESCRIBED = (
     "- [ ] AC1: the normal criterion the milestone already had.\n"
     f"- [ ] AC2 (BC1): {BC1}\n"

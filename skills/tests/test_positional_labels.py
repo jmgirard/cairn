@@ -7,8 +7,9 @@ carried no label — or labels whose number drifted from the position. M169
 makes the label part of the shipped form: the template's example items open
 with `ACn:` / `Tn:`, each section's comment states the position rule, the
 binding-criterion ingest form reads `ACn (BCm):`, and the plan and implement
-skills state the labeling and renumbering obligation. Each block is pinned
-here.
+skills state the labeling and renumbering obligation. Each positive block is
+pinned here and registered in the mutation harness; the negative check that
+the old spelling is gone has no block to mutate and is unregistered.
 
 Anchors are copied from the shipped bytes; phrases crossing a hard wrap are
 matched with `\\s+` so a reflow does not red a rule still present (M105).

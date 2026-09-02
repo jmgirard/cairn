@@ -266,7 +266,7 @@ Prose the check must ignore.
 RR09_SLOT = "- **Driving RR:** RR09\n"
 
 # Both assertions carried verbatim (checkbox- and BC-labelled, re-wrapped):
-# quiet under whitespace normalization. The `(BCn)` AC label and the RR head's
+# quiet under whitespace normalization. The `(BCm)` AC label and the RR head's
 # `(Layer …)` label are both outside the asserted text.
 AC_LABELED_VERBATIM = (
     "- [ ] AC1 (BC1): The axes achieve Spearman-Brown reliability at or\n"
