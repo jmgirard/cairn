@@ -41,6 +41,9 @@ R_PROFILE = "skills/shared/profiles/r-package.md"
 TEMPLATE = "skills/shared/templates/milestone.md"
 DOCTRINE = "skills/shared/validation-doctrine.md"
 RECORDS_HYGIENE = "skills/shared/records-hygiene.md"
+PLAN = "skills/milestone-plan/SKILL.md"
+ARCHIVE_TEMPLATE = "skills/shared/templates/archive-summary.md"
+README = "README.md"
 SOURCE_NOTE = "skills/shared/templates/source-note.md"
 SYNTHESIS_NOTE = "skills/shared/templates/synthesis-note.md"
 
@@ -2815,3 +2818,62 @@ class TestRegisteredGuardsFailWhenBlanked(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+REGISTRY += [
+    # M166: issue linkage — one entry per positive assert's block.
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestTemplateSlot.test_milestone_template_carries_the_slot_with_both_entry_forms",
+        target=TEMPLATE,
+        block="- **Resolves:** —",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestTemplateSlot.test_archive_status_line_carries_a_resolves_clause",
+        target=ARCHIVE_TEMPLATE,
+        block="; resolves <the",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanFillsTheSlot.test_slot_is_filled_from_the_issues_the_scope_absorbs",
+        target=PLAN,
+        block="the slot is filled from the issues the scope",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanFillsTheSlot.test_both_entry_forms_are_defined",
+        target=PLAN,
+        block="`#N closes` when this milestone's PR closes",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanFillsTheSlot.test_partial_remainder_is_rowed_in_the_same_plan_commit",
+        target=PLAN,
+        block="remainder is recorded as a `candidate` row in the same plan commit",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanFillsTheSlot.test_step_5_ledger_lists_the_partial_remainder",
+        target=PLAN,
+        block="entry in the `Resolves:` slot lists its remainder here with the candidate",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanGateAcknowledgement.test_gate_poses_one_option_for_all_slotted_issues",
+        target=PLAN,
+        block="the gate poses one option offering an",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanGateAcknowledgement.test_comment_body_is_fixed_and_shown_before_selection",
+        target=PLAN,
+        block="`Queued as M<NNN>: <title>`",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanGateAcknowledgement.test_posted_only_on_selection_never_by_default",
+        target=PLAN,
+        block="only on selection, never by",
+    ),
+]

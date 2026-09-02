@@ -36,7 +36,7 @@ through the implement amendment protocol or a review send-back, always with a wo
 | Section | Writing skill | Write-mode |
 |---|---|---|
 | Status (header) | the transitioning skill (plan → implement → review) | mirror-update |
-| Priority, Depends on, Driving RR, Principles touched (header) | plan | create; amend-via-gate |
+| Priority, Depends on, Driving RR, Principles touched, Resolves (header) | plan | create; amend-via-gate |
 | Branch/PR (header) | implement (branch), review (PR URL) | create |
 | Goal | plan | create; a wrong goal returns to plan, never edited in place |
 | Scope (In/Out) | plan | create; amend-via-gate |

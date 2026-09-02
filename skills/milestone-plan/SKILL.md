@@ -111,6 +111,14 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    A and B; C becomes M13 (planned now, depends on M12); D becomes a
    candidate row; E sounds unwanted — drop entirely?".
 
+   **Issue acknowledgement (one option).** When the `Resolves:` slot step 4
+   will fill is not `—`, the gate poses one option offering an
+   acknowledgement comment on all slotted issues. The comment body is
+   `Queued as M<NNN>: <title>` — plus, for a `partial` entry, the remainder's
+   candidate-row text — shown verbatim in the chat before selection; it is
+   posted with `gh issue comment <N> --body` only on selection, never by
+   default, and a declined option writes nothing to GitHub.
+
    **Criteria audit (runs before the questions are composed; scaled to
    stakes).** A plan author's own read of its own criteria is the check
    measured to fail — M114
@@ -232,6 +240,15 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      if none. It is the authoritative source `cairn_impact` and
      `cairn_validate` read for principle impact; an accurate slot beats an
      incidental `(IPn)` in prose (M17).
+   - **Resolves** (header slot): the slot is filled from the issues the scope
+     absorbs — a promoted candidate row citing one, or an issue the user
+     names — one entry per issue: `#N closes` when this milestone's PR closes
+     it, `#N partial` when only part of it ships. A `partial` entry's
+     remainder is recorded as a `candidate` row in the same plan commit
+     (search-first applies) and listed in step 5's remainder ledger, so the
+     GitHub issue is never the remainder's only record. No issue → `—`.
+     `/milestone-review` reads the slot for the PR body's closing lines and
+     the post-merge check; the archive summary's status line carries it.
    - **Driving RR** (header slot): a milestone planned from an RR that
      carries Binding criteria sets the slot to `RR<NN>`, ingests each
      criterion verbatim into the AC block (the `binding criteria` check
@@ -265,7 +282,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
 5. **Remainder ledger (conservation check).** Before committing, enumerate
    every distinct thing the user originally asked for and its disposition:
    in this milestone / planned as M<NNN> / candidate row / dropped at the
-   user's explicit request. Nothing may be silently absent. Deferral is
+   user's explicit request. Nothing may be silently absent. A `partial`
+   entry in the `Resolves:` slot lists its remainder here with the candidate
+   row that holds it. Deferral is
    NEVER recorded as a decision not to do something — D-entries are for
    genuine rejections with rationale; postponement lives in the ROADMAP.
    Include the ledger in the plan summary presented to the user.
