@@ -255,9 +255,9 @@ prints "no checks reported" and exits 1 at once, `--watch` included): the PR is 
 profile's consistency-gate says so; never wait for a check that will not arrive.
 **Stop points**: no watcher is left armed at a commit, a turn end, or a `/clear` point — a background task ends only at
 completion or `TaskStop`, a Monitor at those or its own `timeout_ms`, and no doc states that `/clear` stops either (a
-closed issue reports survival), so the session stops it with `TaskStop` first. A `/loop` or scheduled task is not a CI wait. **Resume is stateless**:
-re-derive the check state from `gh pr checks` and the PR's merge state from `gh pr view <N> --json state` (PR URL: the
-milestone header), never a remembered "CI was running" or "not yet merged".
+closed issue reports survival), so the session stops it with `TaskStop` first. A `/loop` or scheduled task is not a
+CI wait. **Resume is stateless**: re-derive the check state from `gh pr checks` and the PR's merge state from
+`gh pr view <N> --json state` (PR URL: the milestone header), never a remembered "CI was running" or "not yet merged".
 
 ## Context hygiene
 
