@@ -79,7 +79,7 @@ answers; any change to chip or close-block shape (D-124).
       and add the session-start re-emit clause to the "Phase header" bullet
       (AC3). Keep the phrase "mark a chapter at each phase transition" so
       the mutation-harness block still matches or update that entry in T3.
-- [ ] T2: Rewrite the nine `Chapter markers:` directives (`skills/*/SKILL.md`,
+- [x] T2: Rewrite the nine `Chapter markers:` directives (`skills/*/SKILL.md`,
       the line after `Phase header:`) to name each skill's stretches per
       AC2's list. Sweep README, templates, and DESIGN.md for the old
       per-phase-only phrasing (`grep -rn "each phase transition"`) and
@@ -105,6 +105,7 @@ answers; any change to chip or close-block shape (D-124).
 - 2026-09-02: plan gate chose keeping the session-start-implicit carve-out over marking the opening phase because the runtime supplies a "Session Start" node and its docs discourage first-message marking (M31, D-027); falsified by a live probe showing no implicit node.
 - 2026-09-02: plan gate chose retargeting the hand-run guard per skill over deleting it because the guard stays ungated (D-109) and per-skill tokens are what AC2 promises; falsified by the guard needing re-seeding on every wording edit.
 - 2026-09-02: implement started on m171-per-stretch-chapters (cut from origin/main at 0e8adba); question gate skipped — the plan gate settled every open choice. T1 done: rulebook "Chapter markers" bullet now the per-stretch mandate (phase transitions plus directive-named stretches, session start implicit, `Tn:`/`ACn:` title shape); "Phase header" bullet gained the session-start re-emit clause; both gating suites exit 0.
+- 2026-09-02: T2 done: nine `Chapter markers:` directives rewritten to name each skill's stretches per AC2; sweep (`grep -rn "each phase transition"` over README, templates, DESIGN.md, shared modules) found no restatement outside the rulebook and the skills; both gating suites exit 0.
 
 ## Decisions
 

@@ -9,7 +9,8 @@ argument-hint: "<id> <topic>"
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it.
 Phase header: `# Review brief RB<NN>` → `## Draft` / `## Gate` / `## Ingest`.
-Chapter markers: mark a chapter at each phase transition (session start implicit).
+Chapter markers: mark a chapter at each phase transition — each phase its
+`Phase header:` directive names (session start implicit).
 Fable is no longer pay-on-demand, but it typically uses more tokens than Opus:
 spawning it requires **explicit user approval, every time** — a deliberate
 per-instance choice, never a standing default — and only ever through this

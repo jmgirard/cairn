@@ -9,7 +9,10 @@ argument-hint: "<id>"
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it (especially: approval model, CI waiting rules, archive protocol).
 Phase header: `# Milestone <NN>: <title>` → `## Review`.
-Chapter markers: mark a chapter at each phase transition (session start implicit).
+Chapter markers: mark a chapter at each phase transition and at each stretch —
+each acceptance criterion in step 3 (title opens with its `ACn:` label), then
+the consistency gate, the independent review, the approval gate, post-merge
+hygiene (session start implicit).
 
 ## Session start
 
