@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- **CRAN comments stay short.** For R packages, the release walk now writes
+  `cran-comments.md` in its conventional few-line form (check results, one
+  line per NOTE, test environments, revdep summary) instead of restating
+  NEWS, which produced a long file reviewers had to wade through.
+
 ## 1.10.0 (2026-08-30)
 
 Four milestones since 1.9.0: the merge guard learns about multi-repo
