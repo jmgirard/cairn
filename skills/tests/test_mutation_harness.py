@@ -268,8 +268,9 @@ REGISTRY = [
         target=GENERIC_PROFILE,
         block="provides a `gh release create` command whose body is the new changelog",
     ),
-    # M171: the per-stretch cadence — one entry per rulebook assert (M53
-    # discipline): the mandate, the carve-out, the title shape, the re-emit.
+    # M171: the per-stretch cadence — one entry per rulebook test method, each
+    # pinning its first positive assert (M53 discipline, by-hand check for the
+    # rest): the mandate, the carve-out, the title shape, the re-emit.
     Mutation(
         guard="test_chapter_marker_mandate",
         test="TestChapterMarkerMandate.test_rulebook_declares_the_per_stretch_mandate",
