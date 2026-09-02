@@ -1,12 +1,12 @@
 # M166: GitHub issues are linked at plan time and closed at merge
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3
 - **Resolves:** #168 closes
-- **Branch/PR:** —
+- **Branch/PR:** m166-issue-linkage
 
 ## Goal
 
