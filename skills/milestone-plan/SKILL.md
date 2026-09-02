@@ -115,7 +115,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    will fill is not `—`, the gate poses one option offering an
    acknowledgement comment on all slotted issues. The comment body is
    `Queued as M<NNN>: <title>` — plus, for a `partial` entry, the remainder's
-   candidate-row text — shown verbatim in the chat before selection; it is
+   candidate-row text — shown verbatim in the chat before selection and
+   composed against the plan as the gate's other answers settle it; it is
    posted with `gh issue comment <N> --body` only on selection, never by
    default, and a declined option writes nothing to GitHub.
 

@@ -73,6 +73,7 @@ A milestone that resolves a GitHub issue names the issue at plan time, carries a
 - 2026-09-02: T6 done — README collaborators bullet states the three behaviors, each sentence written against the shipped skill lines of T2/T3/T5; 3 guard asserts + 5 mutation entries.
 - 2026-09-02: T7 implement half done — on the branch: scripts 329, hooks 121, skills 566 hand-run, all green; the `Closes #168` PR-body check and the post-merge #168 state read are review's live proof. Status → review.
 - 2026-09-02: review started; branch even with origin/main (no merge needed); draft PR #169 opened; suites, validate, and AC evidence recorded below; three-lens fan-out spawned.
+- 2026-09-02: fan-out reported 14 findings (O 12, blame 0, prior-review 2); 9 applied at the gate as fix-now (README derived-claims tightening, hotfix chip names its post-merge close, AC1 source read widened, §3 scope sentence, ack-comment timing, review-path scoping, rulebook-mass baseline re-seeded), 5 rejected with reason — recorded in Review; suites re-run green.
 
 ## Decisions
 
@@ -90,3 +91,20 @@ A milestone that resolves a GitHub issue names the issue at plan time, carries a
 - AC7 PASS: at a192843 — scripts 329 tests OK (exit 0), hooks 121 OK (exit 0), skills 566 OK hand-run (exit 0).
 - Consistency gate: `cairn_validate` all checks passed, exit 0 (`release window` advisory OK); `cairn/DESIGN.md` untouched → `cairn_impact` skipped; `generic` profile's consistency-gate slot names no toolchain checks.
 - Review routing: declared tier user-facing and the diff touches `scripts/tests` + `skills/tests` → full three-lens fan-out ([O] diff-bug, [S] blame-history, [S] prior-review-record), fresh-context, ref-based git.
+- Findings (ranked as reported; disposition applied on the branch before the gate, the merge chip carrying each for the maintainer's acceptance or reversal):
+  - [O] F1 fix-now: `/hotfix` step 7 closes an issue behind no gate text — step 6's chip now names the post-merge close-if-open a `Fixes #N` PR authorizes.
+  - [O] F2 fix-now: README "Without `gh`, each of these names the gap" over-claimed — narrowed to the post-merge check and the audit, the two shipped clauses.
+  - [O] F3 fix-now: README dropped the orphan bullet's bound — now "(among the roadmap's retained done rows)".
+  - [O] F4 fix-now: README "reads each issue's state" over-claimed — now "each issue slotted `closes`"; guard regex and mutation block updated with it.
+  - [O] F5 fix-now: AC1's no-parser source read covered `cairn_validate.py` only — `cairn_scripts.py` added to the read (neither spells the slot).
+  - [O] F6 reject: the tracking-rules Intake sentence enumerates dispositions for inbox items; an orphan is a done milestone's issue, not intake, so `close` widens no intake enumeration.
+  - [O] F7 fix-now: §3's "inbox sweep resolves here" sentence now names the orphan bullet too.
+  - [O] F8 fix-now: the acknowledgement comment is "composed against the plan as the gate's other answers settle it".
+  - [O] F9 fix-now: "no other issue write is made" scoped "on the review path".
+  - [O] F10 reject: "never fails the hygiene pass" states the step's outcome (the pass completes without `gh`); its position after the commit changes nothing.
+  - [O] F11 reject: step 9 authors the archive from the template, whose status line carries the `resolves` placeholder — the template is the instruction by design.
+  - [O] F12 reject: style nit (owner-comment length).
+  - [S-prior] F1 fix-now: rulebook-mass baseline stale at its three sites after a deliberate rulebook edit (M149/M159 lesson) — re-seeded to 467 lines / 43,454 chars (M166); drift predates the branch (M162, M165 edited without re-seeding).
+  - [S-prior] F2 reject: GitHub comments are not durable records under `cairn/`; the plan gate already shows the comment body verbatim before selection.
+  - [S-blame]: no findings.
+- Post-fix evidence: scripts 329 OK, hooks 121 OK, skills 566 OK hand-run, validate all checks passed.

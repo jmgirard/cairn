@@ -117,7 +117,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="453 lines / 41,941 chars",
+        block="467 lines / 43,454 chars",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -3039,7 +3039,7 @@ REGISTRY += [
         guard="test_issue_linkage",
         test="TestReadmeStatesTheThreeBehaviors.test_post_merge_check_and_audit_orphan",
         target=README,
-        block="review reads each issue's state and closes one still open with",
+        block="reads the state of each issue slotted `closes` and closes",
     ),
     Mutation(
         guard="test_issue_linkage",

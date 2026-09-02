@@ -311,13 +311,14 @@ class TestReadmeStatesTheThreeBehaviors(unittest.TestCase):
     def test_post_merge_check_and_audit_orphan(self):
         self.assertRegex(
             self.readme(),
-            r"review reads each issue's state and closes one still open with"
-            r"\s+a comment naming the merged PR",
+            r"review reads the state of each issue slotted `closes` and closes"
+            r"\s+one still open with a comment naming the merged PR",
         )
         self.assertRegex(
             self.readme(),
-            r"audit reports an issue\s+still open after its milestone is done "
-            r"and offers to close it at the\s+triage chip",
+            r"audit\s+reports an issue still open after its milestone is done "
+            r"\(among the\s+roadmap's retained done rows\) and offers to close it "
+            r"at the triage chip",
         )
 
 

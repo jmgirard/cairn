@@ -96,7 +96,9 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    merge authorization to the user as an
    `AskUserQuestion` chip (recommended = merge, e.g. `Merge PR #N to
    <default-branch>`, with a decline option) — never a prose yes/no, the same gate discipline
-   as `/milestone-review`. Merge (`gh pr merge <N> --squash --delete-branch`
+   as `/milestone-review`. A PR body carrying a `Fixes #N` line adds to the
+   chip's question text the post-merge close-if-open of that issue it
+   authorizes (step 7). Merge (`gh pr merge <N> --squash --delete-branch`
    — name the PR number explicitly; a bare `gh pr merge` is denied because the
    approval cannot be checked against it; **drop `--delete-branch` on a
    fork PR** — that branch lives in the contributor's repo and is not ours

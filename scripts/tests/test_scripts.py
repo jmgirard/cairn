@@ -3071,7 +3071,10 @@ class TestResolvesSlot(ScriptCase):
 
     def test_no_check_parses_the_slot(self):
         # The slot is read by skills, never by a validator (M166 Out).
-        source = (SCRIPTS_DIR / "cairn_validate.py").read_text(encoding="utf-8")
+        source = "".join(
+            (SCRIPTS_DIR / f).read_text(encoding="utf-8")
+            for f in ("cairn_validate.py", "cairn_scripts.py")
+        )
         self.assertNotRegex(source, r"(?i)resolves:")
         self.assertNotIn("#N closes", source)
 

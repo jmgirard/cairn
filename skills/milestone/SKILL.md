@@ -91,7 +91,7 @@ regression reopens that work.
 Beside it, report the rulebook's mass the same way: measure
 `skills/shared/tracking-rules.md` with `wc -l -m` and report current
 lines/chars and the growth since the recorded baseline —
-453 lines / 41,941 chars (M159, 2026-08-23; re-seed these figures only when
+467 lines / 43,454 chars (M166, 2026-09-02; re-seed these figures only when
 a later pass changes the file deliberately). Reporting only, same boundary
 as the cost line: no threshold, no verdict, no pass machinery — growth is
 governed at the door (D-057), and this line keeps it visible.
@@ -192,7 +192,8 @@ displaces it. Where it names something else — an unrelated `in-progress`
 milestone outranks a workable planned one in its precedence order —
 that recommendation is legitimate and keeps the lead, with parking offered alongside it.
 
-The §2 inbox sweep resolves here, and nowhere else.
+The §2 inbox sweep resolves here, and nowhere else. §2's orphan bullet
+resolves here too.
 Each item takes exactly one disposition — you propose, the user chooses:
 
 - **candidate row** — the default for anything real but not urgent; one

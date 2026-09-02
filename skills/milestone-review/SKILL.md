@@ -293,7 +293,7 @@ overrides — log the override).
    the post-merge issue writes it authorizes — close-if-open per `closes`
    entry; a comment naming what shipped and the remainder's candidate row
    per `partial` entry — so approving the merge is also the approval step
-   9's issue writes rest on; no other issue write is made.
+   9's issue writes rest on; no other issue write is made on the review path.
    Acceptance chips (tracking-rules): each actioned finding's text appears
    verbatim in this presentation, never only a summary. With a Driving RR:
    repeat the measured-vs-projected pairs in the merge chip's question text, compact, and verbatim in the chat above, and a shortfall past the milestone's stated tolerance (an unstated
