@@ -6,7 +6,7 @@
 - **Driving RR:** —
 - **Principles touched:** GP2
 - **Resolves:** —
-- **Branch/PR:** m167-outside-merges-audit
+- **Branch/PR:** m167-outside-merges-audit · https://github.com/jmgirard/cairn/pull/170
 
 ## Goal
 
@@ -24,11 +24,11 @@ The `/milestone` health audit lists pull requests merged since the last hygiene 
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/milestone/SKILL.md` §2 carries an **Outside merges** bullet that enumerates pull requests with `gh pr list --state merged --limit 100 --json number,title,url,author,mergedBy,mergedAt` and keeps those whose `mergedAt` date is on or after the date on `cairn/ROADMAP.md`'s `Last hygiene check` line and whose `mergedBy` login differs from the login `gh api user --jq .login` returns (raising `--limit` when the oldest returned merge is newer than that date); when `gh` is missing, unauthenticated, the repo has no remote, or the read otherwise fails, the bullet names what failed and skips the read, never an audit `FAIL`.
-- [ ] AC2: For each pull request AC1 keeps, the bullet reads its file list with `gh pr diff <N> --name-only` and lists the `cairn/milestones/archive/` summaries whose text contains any listed path as a literal string, reported as a possible-overlap hint and not as a claim the milestone touched the file, stating "none" when no summary matches; the bullet writes nothing to GitHub.
-- [ ] AC3: §3 resolves each kept pull request with exactly one of the dispositions §3 already lists, drawn from candidate row, `/hotfix`, `/milestone-plan`, and leave (`close` stays issue-only), adding no disposition to that list; the proposed disposition shown for the item names the pull request number and the archive summaries AC2 matched.
-- [ ] AC4: `README.md`'s contributions bullet states that the audit lists pull requests merged by others since the last hygiene stamp, that it only reads, and that each becomes a triage item.
-- [ ] AC5: AC1's commands, run verbatim from the nestedtune checkout, keep PR #30 (`mergedBy` `topepo`) and no pull request whose `mergedBy` is `jmgirard` with the date set to `2026-08-01`, and keep nothing with the date set to `2026-09-01`; AC2's read on PR #30 lists nestedtune's M17 summary among its matches.
+- [x] AC1: `skills/milestone/SKILL.md` §2 carries an **Outside merges** bullet that enumerates pull requests with `gh pr list --state merged --limit 100 --json number,title,url,author,mergedBy,mergedAt` and keeps those whose `mergedAt` date is on or after the date on `cairn/ROADMAP.md`'s `Last hygiene check` line and whose `mergedBy` login differs from the login `gh api user --jq .login` returns (raising `--limit` when the oldest returned merge is newer than that date); when `gh` is missing, unauthenticated, the repo has no remote, or the read otherwise fails, the bullet names what failed and skips the read, never an audit `FAIL`.
+- [x] AC2: For each pull request AC1 keeps, the bullet reads its file list with `gh pr diff <N> --name-only` and lists the `cairn/milestones/archive/` summaries whose text contains any listed path as a literal string, reported as a possible-overlap hint and not as a claim the milestone touched the file, stating "none" when no summary matches; the bullet writes nothing to GitHub.
+- [x] AC3: §3 resolves each kept pull request with exactly one of the dispositions §3 already lists, drawn from candidate row, `/hotfix`, `/milestone-plan`, and leave (`close` stays issue-only), adding no disposition to that list; the proposed disposition shown for the item names the pull request number and the archive summaries AC2 matched.
+- [x] AC4: `README.md`'s contributions bullet states that the audit lists pull requests merged by others since the last hygiene stamp, that it only reads, and that each becomes a triage item.
+- [x] AC5: AC1's commands, run verbatim from the nestedtune checkout, keep PR #30 (`mergedBy` `topepo`) and no pull request whose `mergedBy` is `jmgirard` with the date set to `2026-08-01`, and keep nothing with the date set to `2026-09-01`; AC2's read on PR #30 lists nestedtune's M17 summary among its matches.
 
 ## Coverage
 
@@ -61,3 +61,12 @@ The `/milestone` health audit lists pull requests merged since the last hygiene 
 ## Decisions
 
 ## Review
+
+_2026-09-02, PR #170. Default branch merged into the branch before evidence (d4e7c2f); suites re-run on the merged tree._
+
+- Gate: `python3 -m unittest discover -s scripts/tests` 329 OK; `hooks/tests` 121 OK; `skills/tests` 566 OK (hand-run). `cairn_validate.py` all checks passed, exit 0; `release window` advisory did not fire. Consistency-gate slot: none (generic). No `DESIGN.md` principle changed → `cairn_impact` skipped. Driving RR: none → no projection pairs.
+- AC1 — verified: §2 bullet (`skills/milestone/SKILL.md` after the orphan bullet) names the `gh pr list --state merged --limit 100 --json number,title,url,author,mergedBy,mergedAt` enumeration, the `mergedAt` date on-or-after the ROADMAP stamp date, the `mergedBy` login differing from `gh api user --jq .login`, the `--limit` raise when the oldest returned merge is newer than the stamp, and the missing/unauthenticated/no-remote/otherwise-fails clause ending "a reported gap, never an audit `FAIL`".
+- AC2 — verified: the bullet reads `gh pr diff <N> --name-only`, greps `cairn/milestones/archive/*.md` for each path as a literal string (`grep -lF`), calls the result "a possible-overlap hint … not a claim that the milestone touched the file", states "none" when nothing matches, and says "This read writes nothing to GitHub".
+- AC3 — verified: §3 lists five dispositions (candidate row, `/hotfix`, `/milestone-plan`, leave, close); the added sentence resolves outside-merge items with one of the four other than close ("which stays issue-only"), adds none, and requires the shown disposition to name the PR number and matched summaries (or "none").
+- AC4 — verified: README contributions bullet's new sentence states the audit lists PRs merged by others since the last hygiene stamp, only reads (writes nothing to GitHub), and each becomes a triage item.
+- AC5 — verified by a fresh run from `/Users/jmgirard/github/nestedtune` (login `jmgirard`; 47 merged PRs returned, oldest `mergedAt` 2026-07-26): date 2026-08-01 keeps PR #30 (`mergedBy` `topepo`) and nothing merged by `jmgirard` (20 such filtered out); date 2026-09-01 keeps nothing (8 by `jmgirard` filtered out). `gh pr diff 30 --name-only` returns 13 paths; the archive literal-substring read matches M06, M17, M30, M32, M33, M35, M44 — M17 among them.
