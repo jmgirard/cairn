@@ -44,7 +44,7 @@
 
 - [x] T1: Add an **Inbox sweep** paragraph to step 2's collision check in `skills/milestone-plan/SKILL.md` (after the collision-shape list, before **Checker-regress shape**), mirroring the audit's form at `skills/milestone/SKILL.md:125-147`: both commands verbatim, the own-work filter, the per-hit rule, the non-hit count reported in the gate's chat with `/milestone` §3 named as their triage, the no-writes sentence, and the unreachable-`gh` rule (name which of the three, skip, continue).
 - [x] T2: Append the third source to step 4's `Resolves:` bullet after "or an issue the user names" — appended, never rewritten, so `skills/tests/test_issue_linkage.py:76-83` keeps matching.
-- [ ] T3: Add one sentence to README's "Contributions come in through you" bullet (`README.md:282-290`), written against the shipped T1 text (derived-claims rule).
+- [x] T3: Add one sentence to README's "Contributions come in through you" bullet (`README.md:282-290`), written against the shipped T1 text (derived-claims rule).
 - [ ] T4: Run both gating suites from the repo root with explicit exit codes; hand-run `skills/tests` and confirm `test_issue_linkage.py` stays green; work-log line; status → review.
 
 ## Work log
@@ -56,6 +56,7 @@
 - 2026-09-02: plan gate chose reporting the non-hit count over silence or plan-time triage because a seen item then leaves a trace without duplicating the audit's triage surface; falsified by an adopter's non-hit staying unrowed across repeated plans with no audit run between them.
 - 2026-09-02: /milestone-implement started; branch m168-plan-gate-inbox-sweep cut from pushed main. Question gate skipped — the plan fixed placement, both commands, the filter, and both rules. T1: Inbox sweep paragraph inserted between the collision-shape list and Checker-regress shape in skills/milestone-plan/SKILL.md; scripts 329 / hooks 121, both exit 0.
 - 2026-09-02: T2: step 4's Resolves bullet gains "or a step-2 inbox hit the gate accepted" after the two existing sources; test_issue_linkage hand-run green; scripts 329 / hooks 121, both exit 0.
+- 2026-09-02: T3: README's "Contributions come in through you" bullet gains one sentence naming the plan-time read, written against the T1 paragraph as committed; scripts 329 / hooks 121, both exit 0.
 
 ## Decisions
 

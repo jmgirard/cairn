@@ -285,6 +285,8 @@ about where the guardrails actually reach.
   contributor needs no plugin, no `cairn/` knowledge, and no special branch
   name. `/milestone`'s health audit enumerates both inboxes and proposes a
   disposition per item; an adopted PR comes in through `/hotfix`.
+  `/milestone-plan`'s collision check also reads both open inboxes and
+  offers a disposition only for an item overlapping the scope being planned.
   The audit also lists pull requests merged by others since the last
   hygiene stamp — it only reads, writing nothing to GitHub — and each one
   becomes a triage item.
