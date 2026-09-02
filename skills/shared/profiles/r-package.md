@@ -71,7 +71,11 @@ Followed by `/cairn-release` — a CRAN release walk (never self-submits):
   and `devtools::check()` clean, `devtools::build_readme()`, `pkgdown::check_pkgdown()`,
   `urlchecker::url_check()`.
 - Wide checks as applicable: `devtools::check_win_devel()` and/or R-hub; `revdepcheck` if dependents exist.
-- Update `cran-comments.md` (test environments, check results, NOTE justifications, revdep summary).
+- Update `cran-comments.md` in its conventional short form (the shape
+  `usethis::use_cran_comments()` produces): R CMD check results with the
+  error/warning/NOTE counts, one line of justification per NOTE, the test
+  environments, and the revdep summary — a few lines in all. Do not restate NEWS
+  or describe the release's changes; reviewers read NEWS for that.
 - Bump `Version:` in DESCRIPTION.
 - Handoff checklist (user runs): `devtools::submit_cran()`, confirm the CRAN
   email, then `usethis::use_github_release()` + `usethis::use_dev_version()`.

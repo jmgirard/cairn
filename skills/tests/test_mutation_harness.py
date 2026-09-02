@@ -1918,6 +1918,14 @@ REGISTRY = [
         target=RULES,
         block="the Plain style rule's length standard, applied to what is written down",
     ),
+    # Hotfix 2026-09-01: the r-package release-walk keeps cran-comments.md in
+    # its conventional short form and never restates NEWS.
+    Mutation(
+        guard="test_cran_comments_short_form",
+        test="TestCranCommentsShortForm.test_walk_forbids_restating_news",
+        target="skills/shared/profiles/r-package.md",
+        block="Do not restate NEWS",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
