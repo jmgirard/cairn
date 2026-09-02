@@ -60,9 +60,9 @@ toolchain-specific work at step 3.
    For any slow checks the slot names (wide/registry checks, reverse-dependency
    runs), follow the tracking-rules wait rule — one watcher per check, a
    foreground call with a timeout below the harness ceiling or a
-   `run_in_background` task acted on at its completion notification, stopped
-   with `TaskStop` before any commit, turn end, or `/clear` point; report
-   results when they arrive. Any outward action (submitting, pushing a
+   `run_in_background` task acted on at its completion notification; a task
+   still running at a commit, turn end, or `/clear` point is stopped with
+   `TaskStop` first; report results when they arrive. Any outward action (submitting, pushing a
    tag) is the user's to take at the approval gate; this skill prepares, it does
    not push.
 

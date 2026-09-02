@@ -56,7 +56,7 @@ Tags: `observed` (seen in this experiment, run or PR URL in the row) ·
 |---|---|---|---|---|
 | W1 | Foreground Bash, timeout 600 000 ms | green | Run 1: the 720 s job outlasts the ceiling. At 600 s the harness replied "Command did not complete within its 600s timeout and was moved to the background (ID: b6igjkr8f)"; the `--watch` kept running, printed the all-pass table and exited 0 at 13:40:25, and a completion notification arrived — the green result reached the session through the auto-backgrounded continuation, not the foreground call. Run 5 (7 min left when the wait began, so it fits the ceiling): a foreground `gh pr checks 1 --watch --fail-fast` started 14:13:25, printed the all-pass table and exited 0 at 14:20:41 — a green result seen inside the foreground call, nothing backgrounded. | observed |
 | W2 | Foreground Bash | red | Run 4: `gh pr checks 1 --watch --fail-fast` started 14:06:21, exited 1 at 14:06:22 — 17 s after the push (`gate` failed in 6 s) while three sleep jobs were still pending, versus ≈12 min for the full matrix. | observed |
-| W3 | Foreground Bash | own timeout | Run 1: at the 600 000 ms ceiling the command was **moved to the background, not killed** (W1's quoted reply); the docs state the three exceptions that are stopped instead — a command starting with `sleep`, one containing `git` anywhere, or a compound command the harness cannot parse (tools-reference, cited below). | observed |
+| W3 | Foreground Bash | own timeout | Run 1: at the 600 000 ms ceiling the command was **moved to the background, not killed** (W1's quoted reply); the docs state the three exceptions that are stopped instead — a command starting with `sleep`, one containing `git` anywhere, or a compound command the harness cannot parse (tools-reference, cited below). | observed; exceptions documented |
 | W4 | Foreground Bash | outlives the turn | Yes, once auto-backgrounded: the process ran on after the tool call returned and delivered its result later (run 1). A call that finishes inside its timeout leaves nothing behind. | observed |
 | W5 | Bash `run_in_background`, timeout 600 000 ms | green | Run 2: the call returned "Command running in background with ID: b6o6e1wkp" immediately; the `--watch` printed the pass table, the task exited 0 at 13:52:58, a `<task-notification>` (completed, exit 0) arrived, and `TaskOutput(block=true)` returned the same output. | observed |
 | W6 | Bash `run_in_background` | red | Run 4: `--watch --fail-fast` on the red run exited 1 within 1 s; the task's notification arrived. | observed |
@@ -115,8 +115,10 @@ cites this page):
   work"), the three skill sites restating it, and D-128 (M170).
 - W19 → `cairn/PROFILE.md` consistency-gate slot corrected in M170 (it said
   exit 0).
-- W20–W23 → cited by the rule's stop-point clause as documented behaviour;
-  re-open if a doc page states `/clear` teardown.
+- W20 → the rule's stop-point clause (`/clear` not documented to stop a
+  watcher); W23 → its background-subagent clause; W21–W22 (`-p` teardown,
+  `--resume`) → recorded here only, cited by no clause. Re-open if a doc
+  page states `/clear` teardown.
 - Pin: `skills/tests/test_wait_rule.py` (hand-run) holds the rule's trigger
   and stop-point clauses.
 

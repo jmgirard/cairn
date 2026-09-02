@@ -68,3 +68,19 @@ Surface tier: user-facing — the rule is rulebook prose every adopting repo's s
 - Consistency gate: `cairn_validate` all checks passed (exit 0; coverage complete PASS, release window advisory not fired); `DESIGN.md` untouched, so `cairn_impact --changed` skipped; generic profile's consistency-gate slot names no toolchain checks — no-op.
 - Driving RR: — (no projection-vs-outcome pairs).
 - Fresh-context review: three-lens fan-out (user-facing tier; diff touches `scripts/tests` and `skills/tests`).
+- Reviewer findings and triage (three lenses; [S] blame-history: none, [S] prior-review: none — PR-comments probe found no threads; [O] diff-bug: 14, ranked as reported):
+  - F1 (tracking-rules stop-point premise "ends only at completion or `TaskStop`" contradicts W11 and the paragraph's own Monitor clause): confirmed; **demonstrates AC2 failing** (a clause stating behaviour the note contradicts) — floor-qualifying; fixed at the gate (clause now names the Monitor's own `timeout_ms`), disposition put to the user at the merge chip.
+  - F2 ("documented to survive `/clear`" overstates W20): confirmed; fix-now — now "no doc states that `/clear` stops either (a closed issue reports survival)".
+  - F3 (hotfix and milestone-review sites omit that the session stops after a timed-out wait): partly refuted — both sites already require green CI before the merge; fix-now anyway, both now say "the session stops there … never merged past".
+  - F4 (`TaskStop` prescribed for a timed-out Monitor, W18 says it is already gone): confirmed; fix-now — Monitor clause says "is then gone (`TaskStop` finds nothing)", on-timeout says "`TaskStop` a moved task".
+  - F5 (Disposition mis-lands W21–W23): confirmed; fix-now — Disposition split per row.
+  - F6 (four asserts, two registrations): rejected — T7 planned one entry per clause and PROFILE's test-doctrine owes no registration.
+  - F7 (PROFILE correction keeps the wrong figure readable, contra the correcting-a-record convention): confirmed; fix-now — marker is now `(corrected M170)`, rewrapped.
+  - F8 (run URLs indirect; W17/W18 name no run): rejected — AC1's enumerated observations all resolve to a URL via the Evidence snapshot; W17/W18 are outside its enumeration.
+  - F9 (W3 mixes observed and documented under one tag): confirmed; fix-now — tag reads "observed; exceptions documented".
+  - F10 (auto-background stated unconditionally; W3 records killed exceptions): confirmed; fix-now — exceptions named in the CI-checks clause.
+  - F11 (cairn-release applies `TaskStop` to a foreground call): confirmed; fix-now — "a task still running at a … point is stopped with `TaskStop` first".
+  - F12 (sweep no longer reaches cairn-release): rejected — the plan's DECIDE bounded AC3 to the sweep's returns; site read and consistent.
+  - F13 (header lacked the PR URL at HEAD): no change needed — recorded in 76b4683.
+  - F14 (PROFILE's no-checks claim generalized from the scratch repo): refuted by fresh evidence — `gh pr checks 173` on this repo printed "no checks reported on the 'm170-wait-doctrine' branch" and exited 1.
+  - Fix-now batch re-verified: skills/tests 583 OK (trigger pin made wrap-tolerant, harness blocks re-anchored to the reflowed bytes), scripts 329 OK, hooks 121 OK, `cairn_validate` all checks passed, AC3 sweep unchanged (four sites, no retired wording).

@@ -45,8 +45,8 @@ the acceptance-criteria evidence step, so no separate toolchain check is
 needed.)
 
 This repo has **no CI**: `gh pr checks --watch` returns "no checks reported"
-and exits 1 at once (corrected M170; it said 0). Treat a PR as mergeable on local green; never wait for a check
-run that will not arrive.
+and exits 1 at once (corrected M170). Treat a PR as mergeable on local green;
+never wait for a check run that will not arrive.
 
 ## test-doctrine
 Toolchain-specific test expectations layered on the universal "What gets a

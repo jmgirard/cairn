@@ -49,10 +49,11 @@ class TestWaitRuleTrigger(unittest.TestCase):
                             "## Context hygiene")
 
     def test_one_watcher_per_wait(self):
-        self.assertIn(
-            "One watcher per wait: a run, command, or subagent is watched by "
-            "one mechanism at a time, never two on the same thing.",
+        self.assertRegex(
             self.para,
+            r"One\s+watcher\s+per\s+wait:\s+a\s+run,\s+command,\s+or\s+subagent\s+is"
+            r"\s+watched\s+by\s+one\s+mechanism\s+at\s+a\s+time,\s+never\s+two\s+on"
+            r"\s+the\s+same\s+thing\.",
         )
 
     def test_rule_cites_the_observation_page(self):
@@ -70,8 +71,8 @@ class TestWaitRuleStopPoint(unittest.TestCase):
     def test_no_watcher_left_armed_at_a_stop_point(self):
         self.assertRegex(
             self.para,
-            r"no watcher is left armed at a commit, a turn end, or a "
-            r"`/clear`\s+point",
+            r"no\s+watcher\s+is\s+left\s+armed\s+at\s+a\s+commit,\s+a\s+turn\s+end,"
+            r"\s+or\s+a\s+`/clear`\s+point",
         )
 
     def test_session_stops_it_with_taskstop_first(self):

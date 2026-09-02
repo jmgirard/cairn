@@ -322,8 +322,9 @@ overrides — log the override).
    (a foreground `gh pr checks <pr> --watch --fail-fast` with a timeout
    below the harness ceiling — one watcher, the tracking-rules wait rule; a
    call moved to the background at the ceiling is reported from fresh
-   `gh pr checks` state, stopped with `TaskStop`, and never left armed at
-   the merge, a commit, or a `/clear` point; a PR that reports no checks
+   `gh pr checks` state, stopped with `TaskStop`, and the session stops
+   there — never left armed at the merge, a commit, or a `/clear` point,
+   never merged past; a PR that reports no checks
    exits 1 at once and is mergeable on local green where the profile's
    consistency-gate says so). Red CI → fix on the branch,
    re-verify, re-request approval if the fix was nontrivial. When green:

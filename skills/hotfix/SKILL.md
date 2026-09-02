@@ -106,8 +106,9 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    only on explicit approval at that chip, with green CI (one foreground
    `gh pr checks <pr> --watch --fail-fast` wait with a timeout below the
    harness ceiling — the tracking-rules wait rule; a call moved to the
-   background at the ceiling is stopped with `TaskStop` before the merge
-   step, never left armed). On approval, write the merge-guard
+   background at the ceiling is reported from fresh `gh pr checks` state,
+   stopped with `TaskStop`, and the session stops there — never left armed,
+   never merged past). On approval, write the merge-guard
    marker first: `cairn/.merge-approved` (gitignored; one line:
    `hotfix <slug> approved YYYY-MM-DD for PR #<N>` — the marker names the PR
    it approves, and the guard refuses a merge that names a different PR or

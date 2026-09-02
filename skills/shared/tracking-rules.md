@@ -239,21 +239,23 @@ GitHub web UI, by a merge queue, or by a contributor without the plugin is invis
 requirement and never-force-push degrade to honor-system, and the rest of the conduct is prose on any path. cairn
 assumes **one operator running these skills**; outside contributions come in through intake.
 
-**Waiting on CI and background work** (the observations behind every clause: `cairn/references/wait-mechanisms.md`).
-One watcher per wait: a run, command, or subagent is watched by one mechanism at a time, never two on the same thing.
-**CI checks**: a foreground Bash `gh pr checks <pr> --watch --fail-fast` with a `timeout` below the harness ceiling — a
-red run ends it in seconds; at the ceiling a foreground command is moved to the background, not killed, which is the
-stale watcher this rule exists to prevent. **A long-running local command** (a suite, a build): foreground with a
-timeout when it fits; otherwise Bash `run_in_background`, acted on at its completion notification — its `timeout` does
-not end it. A Monitor is for a stream of events (each check as it lands), always with `timeout_ms` set — it is killed
-at that time and says so. **A background subagent**: its own completion notification; nothing polls it. **On timeout**
-(a foreground call moved to the background; a Monitor's timeout event): report the fresh state from `gh pr checks`,
-log one line, `TaskStop` the moved task, stop. **No checks** (`gh pr checks` prints "no checks reported" and exits 1 at
-once, `--watch` included): the PR is mergeable on local green where the profile's consistency-gate says so; never wait
-for a check that will not arrive. **Stop points**: no watcher is left armed at a commit, a turn end, or a `/clear`
-point — a background task or Monitor ends only at completion or `TaskStop` and is documented to survive `/clear`, so
-the session stops it with `TaskStop` first. A `/loop` or scheduled task is not a CI wait. **Resume is stateless**:
-re-derive from `gh pr checks` (PR URL: the milestone header), never a remembered "CI was running".
+**Waiting on CI and background work** (the observations behind every clause: `cairn/references/wait-mechanisms.md`). One
+watcher per wait: a run, command, or subagent is watched by one mechanism at a time, never two on the same thing. **CI
+checks**: a foreground Bash `gh pr checks <pr> --watch --fail-fast` with a `timeout` below the harness ceiling — a red
+run ends it in seconds; at the ceiling a foreground command is moved to the background, not killed (one starting with
+`sleep`, containing `git`, or unparseable as a compound is stopped instead) — the stale watcher this rule exists to
+prevent. **A long-running local command** (a suite, a build): foreground with a timeout when it fits; otherwise Bash
+`run_in_background`, acted on at its completion notification — its `timeout` does not end it. A Monitor is for a stream
+of events (each check as it lands), always with `timeout_ms` set — it is killed at that time, says so, and is then gone
+(`TaskStop` finds nothing). **A background subagent**: its own completion notification; nothing polls it. **On timeout**
+(a foreground call moved to the background; a Monitor's timeout event): report the fresh state from `gh pr checks`, log
+one line, `TaskStop` a moved task, stop. **No checks** (`gh pr checks` prints "no checks reported" and exits 1 at once,
+`--watch` included): the PR is mergeable on local green where the profile's consistency-gate says so; never wait for a
+check that will not arrive. **Stop points**: no watcher is left armed at a commit, a turn end, or a `/clear` point — a
+background task ends only at completion or `TaskStop`, a Monitor at those or its own `timeout_ms`, and no doc states
+that `/clear` stops either (a closed issue reports survival), so the session stops it with `TaskStop` first. A `/loop`
+or scheduled task is not a CI wait. **Resume is stateless**: re-derive from `gh pr checks` (PR URL: the milestone
+header), never a remembered "CI was running".
 
 ## Context hygiene
 
