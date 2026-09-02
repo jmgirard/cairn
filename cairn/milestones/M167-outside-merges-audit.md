@@ -1,12 +1,12 @@
 # M167: Outside merges reach the health audit
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2
 - **Resolves:** —
-- **Branch/PR:** —
+- **Branch/PR:** m167-outside-merges-audit
 
 ## Goal
 
