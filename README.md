@@ -287,7 +287,9 @@ about where the guardrails actually reach.
   disposition per item; an adopted PR comes in through `/hotfix`.
   The audit also lists pull requests merged by others since the last
   hygiene stamp — it only reads, writing nothing to GitHub — and each one
-  becomes a triage item.
+  becomes a triage item. `/milestone-plan`'s collision check also reads
+  both open inboxes and offers a disposition only for an item overlapping
+  the scope being planned.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
   plan gate offers one option to post `Queued as M<NNN>: <title>` on each
