@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-02 (M167 archived; M162 done-row pruned for terminal retention; no issue writes; no lesson added or retired; no finding-absorbing row extended; no accepted limitations; suites on merged main: scripts 329, hooks 121, skills 566 hand-run — zero reds; validate green; caps ok; byte budgets `wc -c` 13,339 / 15,276 — both under; module budgets `wc -l -c` 54/3,187, 99/6,480, 188/12,250 — all under their headers.)_
+_Last hygiene check: 2026-09-02 (M168 archived; M163 done-row pruned for terminal retention; "Inbox read at plan time" candidate row pruned, absorbed by M168; no issue writes; no lesson added or retired; no finding-absorbing row extended; no accepted limitations; suites on merged main: scripts 329, hooks 121, skills 566 hand-run — zero reds; validate green; caps ok; byte budgets `wc -c` 12,669 / 15,276 — both under; module budgets `wc -l -c` 54/3,187, 99/6,480, 188/12,250 — all under their headers.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,17 +12,15 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M168 | Open GitHub inboxes are swept at the plan gate | review | — | normal | milestones/M168-plan-gate-inbox-sweep.md |
+| M168 | Open GitHub inboxes are swept at the plan gate | done | — | normal | milestones/archive/M168-plan-gate-inbox-sweep.md |
 | M167 | Outside merges reach the health audit | done | — | normal | milestones/archive/M167-outside-merges-audit.md |
 | M166 | GitHub issues are linked at plan time and closed at merge | done | — | normal | milestones/archive/M166-issue-linkage.md |
 | M165 | Freshness spawns survive a no-unrequested-subagents harness instruction | done | — | high | milestones/archive/M165-freshness-spawns-survive-no-spawn-instruction.md |
 | M164 | Streamlining pass over shipped code (RB14, advisory) | done | — | normal | milestones/archive/M164-streamlining-pass.md |
-| M163 | External adoption pass (RR13 step 3): init + full loop on bsync | done | — | normal | milestones/archive/M163-external-adoption-pass.md |
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
-- Inbox read at plan time: `/milestone-plan` reads no GitHub inbox — the `Resolves:` slot fills only from issues the user names (M166), and the open-issue/PR sweep runs only in `/milestone` §2 (M74), so an issue that could become scope is absorbed only when the audit happened to run first. Cheapest form: plan step 1 enumerates open issues and PRs and offers a `Resolves:` entry or a candidate row only for a hit overlapping the goal being planned; full triage with dispositions stays in `/milestone`. Promote when a planned milestone is found to have duplicated or missed an open issue the audit would have surfaced — never on a count of open issues — added 2026-09-02 — user question during M167 implement
 - Env-prefix blindness in the other two command guards: M162 extends the shared `CMD_POS` so `merge_guard` sees through leading `VAR=value` assignment prefixes, but `commit_guard.py:39` and `force_push_guard.py:45` carry their own duplicated `CMD_POS` literals, so `GIT_AUTHOR_NAME=x git commit …` and `GH_TOKEN=x git push --force …` stay unseen by those guards; the fix is aligning their copies (or sharing the pattern), deliberately left out of M162's minimal scope. Promote when an env-prefixed spelling of a guarded commit or force-push is observed in a live session, or fold into the next milestone touching either guard — added 2026-08-29 — M162 plan (audit F8)
 - Numeric id resolution for cairn_cost's milestone filter: `milestone_of` derives the id from the branch name and `--milestone` compares by raw string equality (`scripts/cairn_cost.py`), so a width-mismatched spelling (`--milestone M057` against a two-digit-era branch `m57-…`) reports no records and mixed-width branches split attribution buckets; M157 canonicalized the three tracking ID surfaces and deliberately left this fourth (outside its In-scope). Promote when a width-mismatched cost query misleads in practice, or fold into the next cairn_cost-touching milestone — added 2026-08-23 — M157 review F1
 - Review-side reclassification of record-binding criterion failures: a review finding that an acceptance criterion is unmet only in a recording act (a work-log quotation, a named recording command's provenance) crosses the return floor as a full defect return toward the thrash threshold; the deferred remedy is routing such findings to the amendment track (narrow the criterion to the deliverable property, fix the record at the gate), deliberately not shipped with D-120 so plan-time prevention proves itself first. Promote when a milestone whose criteria passed the extended audit (D-120) still costs a defect return on a record-binding clause — never on a count of legacy-milestone returns — added 2026-08-21 — M151 (circumplex M101)
