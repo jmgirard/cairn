@@ -1,0 +1,132 @@
+# M172: A merged or stopped review milestone resumes at the right step
+
+- **Status:** planned
+- **Priority:** normal
+- **Depends on:** —
+- **Driving RR:** —
+- **Principles touched:** —
+- **Resolves:** —
+- **Branch/PR:** —
+
+## Goal
+
+A review or hotfix session that stopped at the CI wait, or whose PR was
+merged outside the session, re-enters at the step the record shows is
+next, so post-merge hygiene is never skipped by accident.
+
+## Scope
+
+Surface tier: user-facing — skill conduct rules are what an adopting
+repo's operator runs under.
+
+**In:** `/milestone-review` session start reads the header PR's state and
+the Review section and routes to step 9 (merged, review complete), to a
+post-hoc verification of the merged head (merged, review incomplete), to
+the re-posed approval and the CI watch (open, review complete), or to step
+1; step 7 records its approval in the work log so the route can read it;
+the tracking-rules wait rule's timeout stop hands off with the invoking
+skill's own command and its resume clause re-derives merge state; the
+three restating sites carry the next-command sentence; `/milestone`'s
+audit reports a merged-but-`review` milestone as hygiene owed; `/hotfix`
+re-enters at step 7 for a merged hotfix or adopted PR; a hand-run prose
+guard pins the new routes; a D-entry annotates D-128.
+
+**Out:** keeping a watcher alive across a stop point (D-128's rule
+stands); a `gh` call inside `cairn_next.py` (it stays offline — its
+`review → /milestone-review` recommendation is already the right door);
+a validator or hook for the merged-but-`review` state (prose plus the pin,
+D-128's proportionality stance); detecting merges of the milestone PR by
+others (M167's outside-merges audit owns that).
+
+## Acceptance criteria
+
+- [ ] AC1: `/milestone-review`'s "Session start" section states that when
+      the target milestone's `Branch/PR` header carries a PR URL, the
+      session reads that PR's state with `gh pr view <N> --json
+      state,mergedAt` (N from the URL) before step 1 and routes on the
+      state and the Review section: (a) `MERGED`, every criterion box
+      ticked, and a work-log line recording step-7 approval → one work-log
+      line naming the PR, its `mergedAt` value, and the re-entry, then step
+      9 with steps 1–8 skipped, the recorded approval standing as step 9's
+      issue-write authorization; (b) `MERGED` otherwise → the same work-log
+      line plus a chat statement that verification never ran, then steps
+      3–7 executed against the merged default-branch head, step 7's chip
+      posed with question text naming acceptance of the post-hoc
+      verification and the issue writes it authorizes (a decline logs the
+      requested changes as tasks and sets status `in-progress`, step 7's
+      decline exit), then step 9 with step 8 skipped; (c) `OPEN`, every box
+      ticked, and a recorded approval → step 1 re-run, the step-7 chip
+      re-posed, and on approval step 8 from the marker write onward; (d)
+      any other state, or a state above whose conditions are not met →
+      step 1; a `gh` that is missing, unauthenticated, or has no remote →
+      step 1 with the recap naming which. Step 7 states that approval
+      appends one work-log line naming the PR number it approved.
+- [ ] AC2: The tracking-rules "Waiting on CI and background work"
+      paragraph's "On timeout" clause states that the stop emits a close
+      block whose fenced next command is the invoking skill's own command,
+      and its "Resume is stateless" clause names the PR's merge state
+      (`gh pr view <N> --json state`) beside its check state as what a
+      resume re-derives; and the three restating sites — `/milestone-review`
+      step 8, `/hotfix` step 6, `/cairn-release` step 3 — each state that
+      the stop's close block names that skill's own command as the next
+      command.
+- [ ] AC3: `/milestone`'s §2 audit list carries a bullet, adjacent to the
+      existing bullet for a `review` milestone with an open unmerged PR,
+      stating that a `review` milestone whose header PR reports `MERGED` is
+      reported as post-merge hygiene owed and routed to
+      `/milestone-review M<NNN>`.
+- [ ] AC4: `/hotfix` step 1 states that a PR-reference argument whose
+      `gh pr view <N> --json state,headRefName` reports `MERGED` and a head
+      branch not matching `m<nnn>-*` runs step 7 only, steps 2–6 skipped:
+      the candidate-row check, then — when the PR body carries a `Fixes #N`
+      line — one chip authorizing the issue close before any issue write,
+      then the close block with one recap line naming the merged PR.
+- [ ] AC5: The active profile's `verify` slot — `python3 -m unittest
+      discover -s scripts/tests` and `python3 -m unittest discover -s
+      hooks/tests` from the repo root — passes at the branch head.
+
+## Coverage
+
+- AC1 → T2
+- AC2 → T1, T2, T3
+- AC3 → T3
+- AC4 → T3
+- AC5 → T4
+- (T5's D-entry binds no criterion — D-120's disposition; review checks
+  it under the consistency gate, not AC fencing.)
+
+## Tasks
+
+- [ ] T1: `skills/shared/tracking-rules.md` "Waiting on CI and background
+      work" (~lines 250–258): the "On timeout" clause ends in a close block
+      with the invoking skill's command; "Resume is stateless" adds merge
+      state. Keep `skills/tests/test_wait_rule.py` anchors intact.
+- [ ] T2: `skills/milestone-review/SKILL.md`: Session start (~line 17)
+      gains the four-way route of AC1; step 7 (~line 287) appends the
+      approval work-log line; step 8's timeout clause (~line 325) names
+      `/milestone-review M<NNN>` as the close block's next command.
+- [ ] T3: `skills/milestone/SKILL.md` §2 (~line 124) merged-PR bullet;
+      `skills/hotfix/SKILL.md` step 1 (~line 19) merged-PR re-entry and
+      step 6 (~line 108) next-command sentence; `skills/cairn-release/SKILL.md`
+      step 3 (~line 62) next-command sentence.
+- [ ] T4: Hand-run guard `skills/tests/test_resume_routing.py` pinning
+      AC1's whole route list (M171 lesson: the list, never its head), AC3's
+      bullet, and AC4's re-entry clause, each pin registered in
+      `skills/tests/test_mutation_harness.py`; run both gating suites and
+      the hand-run suite from the repo root.
+- [ ] T5: D-entry annotating D-128: the timeout stop gains a resume route
+      and the merged-but-`review` state a door; alternatives rejected at
+      the gate with the evidence class that reopens each.
+
+## Work log
+
+- 2026-09-02: created by /milestone-plan from the user's report that the CI watch stop never resumes to post-merge hygiene.
+- 2026-09-02: collision sweep — no candidate, archive, or D-entry covers a resume route; D-128's "On timeout" clause stops with no next command named; D-090/D-108 door passed on the trigger clause (shipped skill behaviour misroutes after an outside merge: step 2 pushes a deleted branch); inbox sweep: 0 open issues, 0 open PRs.
+- 2026-09-02: criteria audit ran in full mode ([O] fresh reader, tier user-facing), two passes: pass 1 returned 11 findings (IP1 conflict for an unreviewed merged PR — became gate Q1; unauthorized step-9 issue writes; three instrument-bound criteria dropped to tasks; site enumeration widened to D-128's three sites; a bundled criterion split; wording fixes); pass 2 on the gate-revised text returned 8 findings, all fixed autonomously: approval recorded in the work log so routes (a)/(c) are reachable; branch (d) covers unmet conditions; branch (b)'s decline takes step 7's exit; the post-hoc chip names what it authorizes; branch (c) re-runs step 1; D-128 names no sites (enumerated explicitly); hotfix re-entry poses its own close authorization; head-branch test excludes only `m<nnn>-*` so adopted PRs qualify.
+- 2026-09-02: plan gate chose post-hoc verification of an unreviewed merged PR over hygiene-with-override because an archived `done` row should rest on verified criteria (IP1); falsified by a post-hoc verification that cannot be run against a merged head in practice.
+- 2026-09-02: plan gate chose in-scope hotfix and open-PR re-entry over candidate rows at the user's election; falsified by the milestone tripping the split tripwires at implement.
+- 2026-09-02: plan chose prose routes plus a hand-run pin over a `gh` call in `cairn_next.py` or a validator because the routing surface is the skill's session start and `cairn_next` stays offline; falsified by a merged-but-`review` milestone reaching a hygiene stamp unarchived under the new prose.
+
+## Decisions
+
+## Review
