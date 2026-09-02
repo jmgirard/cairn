@@ -84,7 +84,7 @@ answers; any change to chip or close-block shape (D-124).
       AC2's list. Sweep README, templates, and DESIGN.md for the old
       per-phase-only phrasing (`grep -rn "each phase transition"`) and
       update any restatement (lesson M112).
-- [ ] T3: Retarget `skills/tests/test_chapter_marker_mandate.py`: pin the
+- [x] T3: Retarget `skills/tests/test_chapter_marker_mandate.py`: pin the
       rulebook's three AC1 clauses and, per skill, a stretch token from its
       directive (nine entries replace the shared `DIRECTIVE_TOKEN`); update
       the `test_mutation_harness.py` entry near line 272 to the new block.
@@ -106,6 +106,7 @@ answers; any change to chip or close-block shape (D-124).
 - 2026-09-02: plan gate chose retargeting the hand-run guard per skill over deleting it because the guard stays ungated (D-109) and per-skill tokens are what AC2 promises; falsified by the guard needing re-seeding on every wording edit.
 - 2026-09-02: implement started on m171-per-stretch-chapters (cut from origin/main at 0e8adba); question gate skipped — the plan gate settled every open choice. T1 done: rulebook "Chapter markers" bullet now the per-stretch mandate (phase transitions plus directive-named stretches, session start implicit, `Tn:`/`ACn:` title shape); "Phase header" bullet gained the session-start re-emit clause; both gating suites exit 0.
 - 2026-09-02: T2 done: nine `Chapter markers:` directives rewritten to name each skill's stretches per AC2; sweep (`grep -rn "each phase transition"` over README, templates, DESIGN.md, shared modules) found no restatement outside the rulebook and the skills; both gating suites exit 0.
+- 2026-09-02: T3 done: `test_chapter_marker_mandate.py` retargeted — nine per-skill stretch tokens replace the shared `DIRECTIVE_TOKEN`, four rulebook asserts pin AC1 (a)(b)(c) and AC3, each registered in the mutation harness; hand-run `skills/tests` 587 tests OK (exit 0), discrimination checked by blanking a skill token and a rulebook clause (guard red both times); both gating suites exit 0.
 
 ## Decisions
 
