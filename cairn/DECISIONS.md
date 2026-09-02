@@ -4681,3 +4681,45 @@ logged deviation and nothing else.
 invocation itself; a degraded run reaches a default branch only through an
 explicit user acceptance recorded in the work log. Falsified by sessions
 still degrading silently after the clause ships (M165 plan gate).
+
+### D-128 (2026-09-02): Waiting on CI and background work follows the observed behaviour of the harness's wait mechanisms — supersedes the "one blocking wait" rule (M170)
+
+**Context:** The rulebook's "Waiting on CI" paragraph prescribed one
+blocking `gh pr checks --watch` wait with a timeout, resolved within the
+turn, on the untested assumption that a foreground call with a timeout is
+bounded by that timeout. M170 ran the four wait mechanisms — foreground Bash
+with a timeout, Bash `run_in_background`, Monitor, and `gh pr checks
+--watch` — against a synthetic CI matrix in a scratch repo, on green, red,
+timeout, and no-checks cases. The record is
+`cairn/references/wait-mechanisms.md`; the findings that overturn the old
+rule: a foreground command reaching the harness ceiling is moved to the
+background rather than killed, so the "blocking" wait itself produces the
+stale watcher the rule tried to avoid; a `run_in_background` task's
+`timeout` does not end it; a Monitor's timeout kills it and says so; a
+no-checks PR exits 1 at once; `TaskStop` ends a live watcher and finds a
+finished one gone.
+
+**Decision:** The paragraph is replaced by the wait rule in tracking-rules
+("Waiting on CI and background work"), one rule spanning CI checks, a
+long-running local command, and a background subagent: one watcher per
+wait; CI waits are a foreground `gh pr checks <pr> --watch --fail-fast` with
+a timeout below the ceiling; a local command that will not fit runs
+`run_in_background` and is acted on at its notification; a subagent is
+awaited by its own notification; a Monitor is for event streams and always
+carries `timeout_ms`; on timeout the session reports fresh state, logs one
+line, stops the moved task, and stops; a no-checks PR is mergeable on local
+green where the profile says so; and no watcher is left armed at a commit,
+turn end, or `/clear` point — the session runs `TaskStop` first. The rule
+cites the observation page and states no harness behaviour that page does
+not record. Three skill sites restate the mechanism and stop-point clauses;
+a hand-run prose pin holds the trigger and stop-point clauses. Rejected at
+the plan gate: a CI-only rewrite (the stale-watcher failure is the same for
+local commands and subagents); a validator or hook (prose plus the pin,
+per the meta-work proportionality stance).
+
+**Consequences:** Sessions choose the mechanism by what they wait on, and
+every stop point is watcher-free. The observation class that overturns this
+entry: a watcher outliving a stop point under the new rule — a background
+task or Monitor found armed after a commit, turn end, or `/clear` when the
+session followed the rule — in which case the remedy is the validator or
+hook declined here, promoted as a candidate row.

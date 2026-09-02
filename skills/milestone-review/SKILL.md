@@ -319,8 +319,13 @@ overrides — log the override).
    command — the hook checks it before the command runs, so writing it in
    the same shell line as the merge is denied. Then mark the PR ready;
    require green CI
-   (`gh pr checks <pr> --watch` with a timeout — one blocking wait; on
-   timeout report fresh state and stop). Red CI → fix on the branch,
+   (a foreground `gh pr checks <pr> --watch --fail-fast` with a timeout
+   below the harness ceiling — one watcher, the tracking-rules wait rule; a
+   call moved to the background at the ceiling is reported from fresh
+   `gh pr checks` state, stopped with `TaskStop`, and never left armed at
+   the merge, a commit, or a `/clear` point; a PR that reports no checks
+   exits 1 at once and is mergeable on local green where the profile's
+   consistency-gate says so). Red CI → fix on the branch,
    re-verify, re-request approval if the fix was nontrivial. When green:
    `gh pr merge <N> --squash --delete-branch` with a clean summary message —
    name the PR number explicitly; a bare `gh pr merge` is denied by the guard
