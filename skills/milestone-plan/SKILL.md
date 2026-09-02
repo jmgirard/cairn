@@ -262,7 +262,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      incidental `(IPn)` in prose (M17).
    - **Resolves** (header slot): the slot is filled from the issues the scope
      absorbs — a promoted candidate row citing one, or an issue the user
-     names — one entry per issue: `#N closes` when this milestone's PR closes
+     names, or a step-2 inbox hit the gate accepted — one entry per issue:
+     `#N closes` when this milestone's PR closes
      it, `#N partial` when only part of it ships. A `partial` entry's
      remainder is recorded as a `candidate` row in the same plan commit
      (search-first applies) and listed in step 5's remainder ledger, so the
