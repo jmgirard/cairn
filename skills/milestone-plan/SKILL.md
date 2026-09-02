@@ -85,6 +85,25 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      first. Never plan against a standing rejection without superseding it;
      never refuse merely because a rejection exists.
 
+   **Inbox sweep.** The sweep also reads the repo's open GitHub inboxes,
+   in the health audit's form (`/milestone` §2): enumerate both —
+   `gh issue list --state open --json number,title,url` for issues,
+   `gh pr list --state open --json number,title,url,author,headRefName`
+   for PRs — then drop cairn's own in-flight work from the PR list: a PR
+   the operator authored, or whose head branch is `m<nnn>-*` or
+   `hotfix-*`, is dropped (the `author` and `headRefName` fields are what
+   the filter reads). What survives is judged for overlap with the goal
+   being planned, and only a hit takes a disposition here: an open issue
+   overlapping the goal is posed at the step-3 gate as a `Resolves:` entry
+   (`closes` or `partial`) or as a candidate row; an open PR overlapping it
+   is posed as a candidate row naming `/hotfix` as its door (search-first
+   applies to both). Items with no overlap take no disposition at the plan
+   gate — report their count in the gate's chat; `/milestone` §3 is where
+   they are triaged. The sweep writes nothing to GitHub — no labels,
+   comments, or closes. **When `gh` is missing, unauthenticated, or the
+   repo has no remote:** name which of the three it was, skip the sweep,
+   and continue planning.
+
    **Checker-regress shape.** The sweep also names this shape: a scope
    extending or hardening a checker that the ROADMAP or archive records
    an earlier milestone of the same repo shipping, where that checker
