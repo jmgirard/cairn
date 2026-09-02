@@ -79,7 +79,7 @@ history is never rewritten; a change to `cairn_validate`'s positional counting
       (line 88), the docstring of `scripts/tests/test_bc_ac_ingest_form.py`,
       and `skills/tests/test_finding_enforcement.py` (lines 41, 78); confirm
       with `git grep -n "AC-N" -- skills scripts`.
-- [ ] T3: Edit `skills/milestone-plan/SKILL.md` step 4 (the Coverage-map
+- [x] T3: Edit `skills/milestone-plan/SKILL.md` step 4 (the Coverage-map
       bullet, lines 251–258) to add the labeling and renumbering rule, and
       `skills/milestone-implement/SKILL.md` step 6 (lines 79–92) to state the
       renumbering obligation on the minor and the substantive branch.
@@ -96,6 +96,7 @@ history is never rewritten; a change to `cairn_validate`'s positional counting
 - 2026-09-02: plan gate chose the colon form `ACn:` / `Tn:` over any-separator labels because it is the form this repo's files have used since M130 and the binding tag fits as `ACn (BCm):`; falsified by an adopting repo's tooling requiring a different separator.
 - 2026-09-02: started by /milestone-implement on branch m169-positional-labels; question gate skipped (the plan gate settled the label form, the both-branch renumbering, and the no-validator choice). T1: `skills/tests/test_positional_labels.py` authored red-first (12 tests, 12 failures against the unedited files); 13 mutation entries registered, one per pinned block.
 - 2026-09-02: T2: template example items labeled `AC1:`/`AC2:`/`T1:`, position rule added to both section comments, ingest form changed to `ACn (BCm):` at all five sites; `git grep -n "AC-N" -- skills scripts` returns nothing (exit 1).
+- 2026-09-02: T3: plan step 4 gains a **Positional labels** bullet ahead of the Coverage-map bullet; implement step 6 states the renumbering sentence on the minor and the substantive branch (wrapped differently so each mutation block is unique).
 
 ## Decisions
 
