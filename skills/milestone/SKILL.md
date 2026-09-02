@@ -156,6 +156,28 @@ The script deliberately does not judge these — do them yourself and report:
   orphan to §3; the orphan read writes nothing. The inbox bullet's
   unreachable-`gh` rule applies unchanged: name which of the three it was,
   skip the reads, finish the audit.
+- **Outside merges:** pull requests merged since the last hygiene stamp by
+  anyone but the operator — a merge no cairn skill ran, so nothing re-read
+  what its diff changed. Enumerate with
+  `gh pr list --state merged --limit 100 --json number,title,url,author,mergedBy,mergedAt`
+  and keep the entries whose `mergedAt` date (its first ten characters) is
+  on or after the date on `cairn/ROADMAP.md`'s `Last hygiene check` line
+  and whose `mergedBy` login differs from the login `gh api user --jq
+  .login` returns. The list comes back in PR-number order, not merge
+  order, so when the oldest `mergedAt` among the returned entries is newer
+  than the stamp date, raise `--limit` and re-read until it is not. For
+  each kept PR, read its file list with `gh pr diff <N> --name-only` and
+  report which `cairn/milestones/archive/` summaries contain any listed
+  path as a literal string (`grep -lF -- "<path>"
+  cairn/milestones/archive/*.md`, once per path) — a possible-overlap hint
+  at what the merge may have undone, not a claim that the milestone
+  touched the file: a short path such as `README.md` matches any summary
+  that mentions it. State "none" when no summary matches. Carry one
+  proposed disposition per kept PR to §3, naming the PR number and the
+  matched summaries. This read writes nothing to GitHub. When `gh` is
+  missing, unauthenticated, the repo has no remote, or the read otherwise
+  fails, name what failed, skip the read, and finish the audit — a
+  reported gap, never an audit `FAIL`.
 **Replace** "Last hygiene check: YYYY-MM-DD" in ROADMAP.md with one short line naming what changed since the last check — never append to the previous stamp or demote it to a `Prior:` clause; git and `milestones/archive/` hold the older stamps.
 
 ## 3. Route

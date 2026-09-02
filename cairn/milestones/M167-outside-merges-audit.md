@@ -40,7 +40,7 @@ The `/milestone` health audit lists pull requests merged since the last hygiene 
 
 ## Tasks
 
-- [ ] T1: Write the §2 **Outside merges** bullet in `skills/milestone/SKILL.md` beside the "Untriaged inboxes" (line ~125) and "Orphaned issues" (line ~148) bullets: the enumeration and filters, the `--limit` clause, the per-PR `gh pr diff --name-only` read and archive literal-substring hint, the writes-nothing clause, and the failure clause. Then hand-run `python3 -m unittest discover -s skills/tests` and confirm no pinned-phrase locator broke (lesson M148: reword the new sentence, never a pinned one).
+- [x] T1: Write the §2 **Outside merges** bullet in `skills/milestone/SKILL.md` beside the "Untriaged inboxes" (line ~125) and "Orphaned issues" (line ~148) bullets: the enumeration and filters, the `--limit` clause, the per-PR `gh pr diff --name-only` read and archive literal-substring hint, the writes-nothing clause, and the failure clause. Then hand-run `python3 -m unittest discover -s skills/tests` and confirm no pinned-phrase locator broke (lesson M148: reword the new sentence, never a pinned one).
 - [ ] T2: Extend §3 (line ~195, "The §2 inbox sweep resolves here") so outside-merge items resolve there with the existing four dispositions and the shown disposition names the PR number and matched archive summaries.
 - [ ] T3: Add one sentence to README's "Contributions come in through you" bullet (line ~282) stating the three AC4 claims, written against the shipped bullet text (derived-claims rule).
 - [ ] T4: Run AC1's commands and AC2's read from `/Users/jmgirard/github/nestedtune` with the dates `2026-08-01` and `2026-09-01`; summarize the kept list and the archive matches in one work-log line.
@@ -53,6 +53,7 @@ The `/milestone` health audit lists pull requests merged since the last hygiene 
 - 2026-09-02: plan gate chose client-side date and merger filtering over `gh pr list --search "merged:>=<date>"` because the search form returned an empty list when run with `--repo` and the plain list did not; falsified by a repo whose merges since the stamp exceed the `--limit` the bullet names without the raise clause catching it.
 - 2026-09-02: plan gate chose reusing §3's existing dispositions over a new revert disposition because an undone shipped behavior is a user-visible regression and `/hotfix` already fits it; falsified by an outside merge none of the four dispositions can carry.
 - 2026-09-02: plan gate chose the archive literal-substring hint over listing PRs alone because the row's stated gap was that the audit never re-reads what a merged diff undid; falsified by the hint's over-matching (paths that read as prose) misleading a triage in practice.
+- 2026-09-02: T1 — §2 **Outside merges** bullet written after the orphan bullet (enumeration, date+merger filters, `--limit` raise, per-PR `gh pr diff --name-only`, archive literal-substring hint, writes-nothing and failure clauses); wording derived from the nestedtune run (list returns in PR-number order; `README.md` over-matches). skills/tests 566 OK by hand; scripts + hooks suites green.
 
 ## Decisions
 
