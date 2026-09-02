@@ -10,7 +10,8 @@ Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it (especially: sizing tripwires, status gatekeeping, question gates).
 Phase header: `# Milestone <NN>: <title>` → `## Plan` (before an ID is
 assigned, `# Planning`); see the tracking-rules Phase header rule.
-Chapter markers: mark a chapter at each phase transition (session start implicit).
+Chapter markers: mark a chapter at each phase transition and at each stretch —
+investigation, the question gate, solidify-and-commit (session start implicit).
 
 ## Session start
 

@@ -268,11 +268,32 @@ REGISTRY = [
         target=GENERIC_PROFILE,
         block="provides a `gh release create` command whose body is the new changelog",
     ),
+    # M171: the per-stretch cadence — one entry per rulebook test method, each
+    # pinning its first positive assert (M53 discipline, by-hand check for the
+    # rest): the mandate, the carve-out, the title shape, the re-emit.
     Mutation(
         guard="test_chapter_marker_mandate",
-        test="TestChapterMarkerMandate.test_rulebook_declares_the_per_phase_mandate",
+        test="TestChapterMarkerMandate.test_rulebook_declares_the_per_stretch_mandate",
         target=RULES,
         block="Mark a chapter at each phase transition",
+    ),
+    Mutation(
+        guard="test_chapter_marker_mandate",
+        test="TestChapterMarkerMandate.test_rulebook_keeps_the_session_start_carve_out",
+        target=RULES,
+        block="(session start implicit)",
+    ),
+    Mutation(
+        guard="test_chapter_marker_mandate",
+        test="TestChapterMarkerMandate.test_rulebook_states_the_title_shape",
+        target=RULES,
+        block="A chapter's title opens with the item's positional label",
+    ),
+    Mutation(
+        guard="test_chapter_marker_mandate",
+        test="TestChapterMarkerMandate.test_rulebook_phase_header_re_emits_at_session_start",
+        target=RULES,
+        block="pair is emitted at each session start",
     ),
     # M59 (RR01 rec 7): cairn-init §0's fallback follows the canonical recipe —
     # one Mutation entry per new positive assert (M53 discipline); the paired

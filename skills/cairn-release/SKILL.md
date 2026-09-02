@@ -12,7 +12,8 @@ self-submits** (no registry submission, no tag push without approval). The
 toolchain-specific steps come from the active profile's `release-walk` slot;
 this skill is the universal spine around it.
 Phase header: `# Release <version>` → `## <step>`.
-Chapter markers: mark a chapter at each phase transition (session start implicit).
+Chapter markers: mark a chapter at each phase transition and at each numbered step
+(session start implicit).
 
 ## Preconditions
 

@@ -4723,3 +4723,43 @@ entry: a watcher outliving a stop point under the new rule — a background
 task or Monitor found armed after a commit, turn end, or `/clear` when the
 session followed the rule — in which case the remedy is the validator or
 hook declined here, promoted as a candidate row.
+
+### D-129 (2026-09-02): Chapter markers follow stretches, not phases, and the phase header re-emits at each session start — supersedes D-021's per-phase cadence, annotates D-020 and D-027 item (1) (M171)
+
+**Context:** D-021 made the chapter-marker rule a hard per-phase mandate: one
+chapter at each phase transition. A session almost always holds one phase —
+an implement session is `## Implement` end to end, a review session
+`## Review` — so the navigable TOC such a session builds carries no chapter
+beyond the runtime's implicit "Session Start" node; the maintainer reported a
+single-phase session showing no chapters. D-020's observation that chapter
+markers, not headers, drive the TOC stands; the cadence chosen on it was too
+coarse for the unit the runtime actually shows.
+
+**Decision:** The cadence is per stretch. A chapter is marked at each phase
+transition and at each stretch boundary the active skill's `Chapter markers:`
+directive names — plan: investigation, the question gate,
+solidify-and-commit; implement: the question gate, each task, each plan
+amendment; review: each acceptance criterion in the evidence step, then the
+consistency gate, the independent review, the approval gate, post-merge
+hygiene; hotfix and cairn-release: each numbered step; milestone-brief,
+cairn-init, milestone, design-interview: each phase their `Phase header:`
+directive names. A chapter's title opens with the item's positional label
+(`Tn:` / `ACn:`) where the stretch is a task or criterion, and is a short
+noun phrase otherwise. The session-start-implicit carve-out stays — D-027
+item (1)'s rejection of marking the opening message is annotated, not
+reopened: the runtime supplies the "Session Start" node. The "Phase header"
+rule now has the `#`/`##` pair emitted at each session start before the first
+delta, a post-`/clear` session included, so a resumed session orients itself
+with no transition to trigger it. D-021's sub-choices stand where not named
+here — the per-skill directive as the enforcement site, the H1/H2 fallback,
+the nine-skill scope; the hand-run guard pins one stretch token per skill
+instead of one shared token. Rejected at the plan gate: one chapter per
+numbered review step (criteria are where a reader navigates); free
+noun-phrase titles (labels let the TOC read against the milestone file);
+marking the opening phase.
+
+**Consequences:** A single-phase session's TOC lists its tasks or criteria.
+Falsifier: a review or implement session whose TOC the runtime renders
+unusably — observed clutter, or titles truncated past the label, never a
+count — reopens the grain; a live probe showing no implicit "Session Start"
+node reopens the carve-out.
