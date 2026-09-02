@@ -156,6 +156,34 @@ The script deliberately does not judge these — do them yourself and report:
   orphan to §3; the orphan read writes nothing. The inbox bullet's
   unreachable-`gh` rule applies unchanged: name which of the three it was,
   skip the reads, finish the audit.
+- **Outside merges:** pull requests merged since the last hygiene stamp by
+  anyone but the operator — a merge no cairn skill ran, so nothing re-read
+  what its diff changed. Enumerate with
+  `gh pr list --state merged --limit 100 --json number,title,url,author,mergedBy,mergedAt`
+  and keep the entries whose `mergedAt` date (its first ten characters) is
+  on or after the date on `cairn/ROADMAP.md`'s `Last hygiene check` line
+  and whose `mergedBy` login differs from the login `gh api user --jq
+  .login` returns; a stamp still carrying no date (a fresh scaffold) keeps
+  every entry the login filter keeps. The list comes back in PR-number
+  order, not merge order, so when the oldest `mergedAt` among the returned
+  entries is newer than the stamp date, or the returned count equals the
+  limit (a truncated list may hide a long-open, low-numbered PR merged
+  after the stamp), raise `--limit` and re-read until neither holds. For
+  each kept PR, read its file list with `gh pr diff <N> --name-only` and
+  report which `cairn/milestones/archive/` summaries contain any listed
+  path as a literal string (`grep -lF -- "<path>"
+  cairn/milestones/archive/*.md`, once per path) — a possible-overlap hint
+  at what the merge may have undone, not a claim that the milestone
+  touched the file: a short path such as `README.md` matches any summary
+  that mentions it, and a summary naming a file by basename alone never
+  matches its path. State "none" when no summary matches — no literal
+  match, not evidence that no milestone is affected. Carry one
+  proposed disposition per kept PR to §3, naming the PR number and the
+  matched summaries. This read writes nothing to GitHub. When `gh` is
+  missing, unauthenticated, the repo has no remote, or the read otherwise
+  fails, name what failed, skip the read, and finish the audit — a
+  reported gap, never an audit `FAIL`; a `gh pr diff` that fails for one
+  kept PR names that PR, whose item still reaches §3, and keeps the rest.
 **Replace** "Last hygiene check: YYYY-MM-DD" in ROADMAP.md with one short line naming what changed since the last check — never append to the previous stamp or demote it to a `Prior:` clause; git and `milestones/archive/` hold the older stamps.
 
 ## 3. Route
@@ -177,7 +205,8 @@ examples for the close block's fences — only the applicable subset is offered:
 - `/milestone-plan` — plan next (nothing in flight and no workable planned
   milestone)
 - a triage chip — the audit found problems needing user decisions,
-  including any untriaged inbox item or orphaned issue §2 surfaced (a
+  including any untriaged inbox item, orphaned issue, or outside merge §2
+  surfaced (a
   decision gate, not a route)
 - Park M<NNN> as `blocked` → the release window is not open (a `release window` WARN fired in §2) — a decision put to the user, not a route
 
@@ -194,13 +223,18 @@ that recommendation is legitimate and keeps the lead, with parking offered along
 
 The §2 inbox sweep resolves here, and nowhere else. §2's orphan bullet
 resolves here too.
+§2's outside-merge items resolve here too, each with exactly one of the
+dispositions below other than **close**, which stays issue-only; the
+proposed disposition shown for such an item names the pull request number
+and the archive summaries the outside-merges bullet matched (or "none").
 Each item takes exactly one disposition — you propose, the user chooses:
 
 - **candidate row** — the default for anything real but not urgent; one
   ROADMAP row, search-first already applied at §2.
 - **`/hotfix`** — a user-visible bug, or an external PR that meets the
   hotfix bar. This is the door M73 opened; route to it rather than inventing
-  a second intake mechanism.
+  a second intake mechanism. A bug an outside merge introduced or undid
+  takes this disposition too.
 - **`/milestone-plan`** — anything larger than the hotfix bar.
 - **leave** — no row, no action, with the reason stated.
 - **close** — an orphaned issue from §2's orphan bullet: only on the

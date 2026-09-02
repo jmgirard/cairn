@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M167 | Outside merges reach the health audit | in-progress | — | normal | milestones/M167-outside-merges-audit.md |
+| M167 | Outside merges reach the health audit | review | — | normal | milestones/M167-outside-merges-audit.md |
 | M166 | GitHub issues are linked at plan time and closed at merge | done | — | normal | milestones/archive/M166-issue-linkage.md |
 | M165 | Freshness spawns survive a no-unrequested-subagents harness instruction | done | — | high | milestones/archive/M165-freshness-spawns-survive-no-spawn-instruction.md |
 | M164 | Streamlining pass over shipped code (RB14, advisory) | done | — | normal | milestones/archive/M164-streamlining-pass.md |
