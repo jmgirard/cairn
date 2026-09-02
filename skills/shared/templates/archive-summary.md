@@ -1,6 +1,9 @@
 # M<NNN>: <title, carried verbatim from the milestone file>
 
-**Status:** <done|dropped> (<YYYY-MM-DD>, PR #<N> <url>)
+**Status:** <done|dropped> (<YYYY-MM-DD>, PR #<N> <url>; resolves <the
+`Resolves:` slot's entries verbatim, e.g. `#12 closes, #13 partial` — the
+`/milestone` audit reads `closes` entries here; drop the clause when the
+slot was —>)
 
 **Goal:** <the milestone's one-sentence goal>
 

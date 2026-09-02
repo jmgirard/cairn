@@ -49,7 +49,7 @@ A milestone that resolves a GitHub issue names the issue at plan time, carries a
 
 ## Tasks
 
-- [ ] T1: Add the `Resolves:` slot to `skills/shared/templates/milestone.md` (after `Principles touched:`) and the `resolves` clause to `skills/shared/templates/archive-summary.md`'s status line; add a `scripts/tests` fixture test (filled and `—` forms run `cairn_validate` clean; `check_principles_slot`'s validate-if-present shape at `scripts/cairn_validate.py:726` is the precedent for leaving the slot unparsed).
+- [x] T1: Add the `Resolves:` slot to `skills/shared/templates/milestone.md` (after `Principles touched:`) and the `resolves` clause to `skills/shared/templates/archive-summary.md`'s status line; add a `scripts/tests` fixture test (filled and `—` forms run `cairn_validate` clean; `check_principles_slot`'s validate-if-present shape at `scripts/cairn_validate.py:726` is the precedent for leaving the slot unparsed).
 - [ ] T2: `/milestone-plan` steps 3–5 (`skills/milestone-plan/SKILL.md` step 3 gate, step 4 header slots near the `Principles touched` bullet, step 5 ledger); prose guard `skills/tests/test_issue_linkage.py` with mutation entries pinning the trigger (slot filled from absorbed issues) and the gate condition (posted only on selection).
 - [ ] T3: `/milestone-review` steps 2, 7, 9 (`skills/milestone-review/SKILL.md:29`, `:280-297`, `:321-390`); guard entries pinning the PR-body lines, the chip's authorization enumeration, the step-9 read-and-close, and the unreachable-`gh` clause.
 - [ ] T4: `/hotfix` step 7 (`skills/hotfix/SKILL.md`, after the candidate-row sentence); guard entry.
@@ -64,5 +64,7 @@ A milestone that resolves a GitHub issue names the issue at plan time, carries a
 - 2026-09-02: plan gate chose the full loop (plan-time acknowledgement + PR keyword + post-merge check) over PR-keyword-and-check only because the nestedtune record's visible gap was 51 hours of silence on five issues while work was under way; falsified by an adopter declining the acknowledgement option at every plan gate.
 - 2026-09-02: plan gate chose including the audit orphan check now over a candidate row because the `Answers #36` case shows the failure mode is a missed keyword, which only a later read can catch; falsified by the bullet never reporting an orphan across adopting repos.
 - 2026-09-02: plan gate chose filing issue #168 in this repo as the live proof over skill-text verification alone; falsified by the dogfood run passing while an adopter's first run fails on a path the fixture never exercised.
+- 2026-09-02: implement started on `m166-issue-linkage`; question gate skipped — the plan pins every open shape (slot name, entry forms, comment body, commands).
+- 2026-09-02: T1 done — `Resolves:` slot on the milestone template, `resolves` clause on the archive-summary status line, `TestResolvesSlot` (filled + `—` validate clean; validate source parses neither form); suites scripts 329 / hooks 121 green.
 
 ## Decisions
