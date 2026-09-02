@@ -1,12 +1,12 @@
 # M172: A merged or stopped review milestone resumes at the right step
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
-- **Branch/PR:** —
+- **Branch/PR:** m172-resume-routing
 
 ## Goal
 
@@ -126,6 +126,8 @@ others (M167's outside-merges audit owns that).
 - 2026-09-02: plan gate chose post-hoc verification of an unreviewed merged PR over hygiene-with-override because an archived `done` row should rest on verified criteria (IP1); falsified by a post-hoc verification that cannot be run against a merged head in practice.
 - 2026-09-02: plan gate chose in-scope hotfix and open-PR re-entry over candidate rows at the user's election; falsified by the milestone tripping the split tripwires at implement.
 - 2026-09-02: plan chose prose routes plus a hand-run pin over a `gh` call in `cairn_next.py` or a validator because the routing surface is the skill's session start and `cairn_next` stays offline; falsified by a merged-but-`review` milestone reaching a hygiene stamp unarchived under the new prose.
+
+- 2026-09-02: /milestone-implement started; branch m172-resume-routing cut from main at 83b10de; question gate skipped — the plan left no genuinely open choice (work-log line shapes for the approval and re-entry lines fixed in T2).
 
 ## Decisions
 
