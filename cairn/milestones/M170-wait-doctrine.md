@@ -84,3 +84,4 @@ Surface tier: user-facing — the rule is rulebook prose every adopting repo's s
   - F13 (header lacked the PR URL at HEAD): no change needed — recorded in 76b4683.
   - F14 (PROFILE's no-checks claim generalized from the scratch repo): refuted by fresh evidence — `gh pr checks 173` on this repo printed "no checks reported on the 'm170-wait-doctrine' branch" and exited 1.
   - Fix-now batch re-verified: skills/tests 583 OK (trigger pin made wrap-tolerant, harness blocks re-anchored to the reflowed bytes), scripts 329 OK, hooks 121 OK, `cairn_validate` all checks passed, AC3 sweep unchanged (four sites, no retired wording).
+- 2026-09-02: merge approved at the gate; user accepted the gate-side F1 fix as a logged deviation from the return floor (no defect return counted; the fix is on the branch at f552ff6 and re-verified).
