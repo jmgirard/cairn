@@ -1,6 +1,6 @@
 # M167: Outside merges reach the health audit
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -43,7 +43,7 @@ The `/milestone` health audit lists pull requests merged since the last hygiene 
 - [x] T1: Write the §2 **Outside merges** bullet in `skills/milestone/SKILL.md` beside the "Untriaged inboxes" (line ~125) and "Orphaned issues" (line ~148) bullets: the enumeration and filters, the `--limit` clause, the per-PR `gh pr diff --name-only` read and archive literal-substring hint, the writes-nothing clause, and the failure clause. Then hand-run `python3 -m unittest discover -s skills/tests` and confirm no pinned-phrase locator broke (lesson M148: reword the new sentence, never a pinned one).
 - [x] T2: Extend §3 (line ~195, "The §2 inbox sweep resolves here") so outside-merge items resolve there with the existing four dispositions and the shown disposition names the PR number and matched archive summaries.
 - [x] T3: Add one sentence to README's "Contributions come in through you" bullet (line ~282) stating the three AC4 claims, written against the shipped bullet text (derived-claims rule).
-- [ ] T4: Run AC1's commands and AC2's read from `/Users/jmgirard/github/nestedtune` with the dates `2026-08-01` and `2026-09-01`; summarize the kept list and the archive matches in one work-log line.
+- [x] T4: Run AC1's commands and AC2's read from `/Users/jmgirard/github/nestedtune` with the dates `2026-08-01` and `2026-09-01`; summarize the kept list and the archive matches in one work-log line.
 
 ## Work log
 
@@ -56,6 +56,7 @@ The `/milestone` health audit lists pull requests merged since the last hygiene 
 - 2026-09-02: T1 — §2 **Outside merges** bullet written after the orphan bullet (enumeration, date+merger filters, `--limit` raise, per-PR `gh pr diff --name-only`, archive literal-substring hint, writes-nothing and failure clauses); wording derived from the nestedtune run (list returns in PR-number order; `README.md` over-matches). skills/tests 566 OK by hand; scripts + hooks suites green.
 - 2026-09-02: T2 — §3 gains one sentence after the orphan-bullet sentence: outside-merge items resolve with one of the four non-`close` dispositions, the shown disposition naming the PR number and matched archive summaries (or "none"); no disposition added. Suites green (skills 566 by hand).
 - 2026-09-02: T3 — README contributions bullet gains one sentence: the audit lists PRs merged by others since the last hygiene stamp, only reads (writes nothing to GitHub), and each becomes a triage item; written against the shipped §2 bullet text. Suites green.
+- 2026-09-02: T4 — AC1 commands run verbatim from the nestedtune checkout (login `jmgirard`; 47 merged PRs returned, oldest `mergedAt` 2026-07-26): date 2026-08-01 keeps PR #30 only (`mergedBy` `topepo`; the 20 PRs merged by `jmgirard` in that window all filtered out); date 2026-09-01 keeps nothing. AC2 read on #30 (13 paths) matches seven archive summaries: M06, M17, M30, M32, M33, M35, M44 — M17 among them. All tasks done; status → review.
 
 ## Decisions
 
