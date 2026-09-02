@@ -216,6 +216,10 @@ that recommendation is legitimate and keeps the lead, with parking offered along
 
 The §2 inbox sweep resolves here, and nowhere else. §2's orphan bullet
 resolves here too.
+§2's outside-merge items resolve here too, each with exactly one of the
+four dispositions below other than **close**, which stays issue-only; the
+proposed disposition shown for such an item names the pull request number
+and the archive summaries the outside-merges bullet matched (or "none").
 Each item takes exactly one disposition — you propose, the user chooses:
 
 - **candidate row** — the default for anything real but not urgent; one
