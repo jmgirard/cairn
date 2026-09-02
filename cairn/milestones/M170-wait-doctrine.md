@@ -1,12 +1,12 @@
 # M170: Waiting on CI and background work follows a tested rule
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP4
 - **Resolves:** —
-- **Branch/PR:** —
+- **Branch/PR:** m170-wait-doctrine
 
 ## Goal
 
