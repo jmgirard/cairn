@@ -34,7 +34,7 @@ Surface tier: user-facing — the rule is rulebook prose every adopting repo's s
 
 ## Tasks
 
-- [ ] T1: Create the scratch private repo (`gh repo create <login>/cairn-wait-lab --private`) with one workflow: a matrix of jobs sleeping 60, 360, and 720 s (the last crosses the harness's 10-minute foreground cap) plus a job that fails when a `FAIL` file exists at the repo root; push, open a draft PR, record the repo and PR URLs in the work log.
+- [x] T1: Create the scratch private repo (`gh repo create <login>/cairn-wait-lab --private`) with one workflow: a matrix of jobs sleeping 60, 360, and 720 s (the last crosses the harness's 10-minute foreground cap) plus a job that fails when a `FAIL` file exists at the repo root; push, open a draft PR, record the repo and PR URLs in the work log.
 - [ ] T2: Green grid — on a green run, take one wait per mechanism (foreground Bash `timeout` at the 600 000 ms cap; `run_in_background`; Monitor at its default 300 000 ms timeout and once at 900 000 ms; `gh pr checks <pr> --watch --fail-fast` under each); record completion signal, exit code, whether the foreground call was auto-backgrounded at the cap, whether the wait outlived the turn, and what `/tasks`-style listing and TaskStop showed afterwards. One watcher at a time; stop each before starting the next.
 - [ ] T3: Red grid — commit the `FAIL` file, rerun T2's mechanisms on the red run; record `--fail-fast` exit codes and timing versus the full matrix.
 - [ ] T4: No-checks case — a PR in this repo (which has no workflows) or a scratch branch with the workflow removed; record `gh pr checks` output and exit code. Record documented-not-observed behaviours (`/clear` survival, `--resume` non-restoration, `-p` mode teardown) with doc URLs.
@@ -49,6 +49,7 @@ Surface tier: user-facing — the rule is rulebook prose every adopting repo's s
 - 2026-09-02: plan gate chose one rule spanning CI, local commands, and subagents over a CI-only rewrite because the stale-watcher failure is the same across the three; falsified by a subagent or local-command wait that the CI-derived clauses misdescribe.
 - 2026-09-02: plan gate chose a superseding D-entry over a prose-only repair because the replaced rule is operative and its reason is no longer in the rulebook; falsified by nothing — a record choice.
 - 2026-09-02: plan gate kept the hand-run prose pin (repo convention) over no pin; falsified by the pin costing a return without catching a clause deletion.
+- 2026-09-02: T1 done — scratch repo https://github.com/jmgirard/cairn-wait-lab (private), workflow `lab` (sleep-60/360/720 matrix + FAIL-file gate), draft PR https://github.com/jmgirard/cairn-wait-lab/pull/1; run 1 https://github.com/jmgirard/cairn-wait-lab/actions/runs/33635906501 started 13:28Z.
 
 ## Decisions
 
