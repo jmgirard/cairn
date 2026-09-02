@@ -6,7 +6,7 @@
 - **Driving RR:** —
 - **Principles touched:** GP2, GP4
 - **Resolves:** —
-- **Branch/PR:** m170-wait-doctrine
+- **Branch/PR:** m170-wait-doctrine · https://github.com/jmgirard/cairn/pull/173
 
 ## Goal
 
@@ -22,9 +22,9 @@ Surface tier: user-facing — the rule is rulebook prose every adopting repo's s
 
 ## Acceptance criteria
 
-- [ ] AC1: `cairn/references/wait-mechanisms.md` exists as a synthesis note (Provenance block, using the first-hand-record re-verification exemption) recording, for each of the four mechanisms it names — foreground Bash with a timeout, Bash `run_in_background`, Monitor, and `gh pr checks --watch` — one dated observation each of: behaviour when CI finishes green, behaviour when CI finishes red, behaviour at the mechanism's own timeout, and whether the wait outlives the turn that started it; plus one dated observation of `gh pr checks` on a PR that reports no checks; each observation names the run or PR URL it was taken from, and a behaviour the harness documents but the experiment could not exercise (survival across `/clear`, which only the user can trigger) is recorded as documented-not-observed with the doc URL.
-- [ ] AC2: tracking-rules' "Waiting on CI" paragraph is replaced by a wait rule that states, for CI checks, for a long-running local command, and for a background subagent, which mechanism a session uses, the one-watcher-per-wait rule, what a session does when the wait times out, what it does on a PR that reports no checks, and the stop-point rule (no watcher left armed at a commit, turn-end, or `/clear` point — the session stops it with TaskStop first); no clause states harness behaviour the AC1 note does not record, and the paragraph cites the note by path.
-- [ ] AC3: every site the sweep `git grep -n -e '--watch' -e 'blocking wait' -e 'background poll' -- skills ':!skills/tests' README.md` returns states the AC2 rule's mechanism and stop-point clauses consistently with tracking-rules, and no site the sweep returns keeps the superseded "one blocking wait" wording — a spelling-level sweep by design; a site restating the rule in other words is outside this promise.
+- [x] AC1: `cairn/references/wait-mechanisms.md` exists as a synthesis note (Provenance block, using the first-hand-record re-verification exemption) recording, for each of the four mechanisms it names — foreground Bash with a timeout, Bash `run_in_background`, Monitor, and `gh pr checks --watch` — one dated observation each of: behaviour when CI finishes green, behaviour when CI finishes red, behaviour at the mechanism's own timeout, and whether the wait outlives the turn that started it; plus one dated observation of `gh pr checks` on a PR that reports no checks; each observation names the run or PR URL it was taken from, and a behaviour the harness documents but the experiment could not exercise (survival across `/clear`, which only the user can trigger) is recorded as documented-not-observed with the doc URL.
+- [x] AC2: tracking-rules' "Waiting on CI" paragraph is replaced by a wait rule that states, for CI checks, for a long-running local command, and for a background subagent, which mechanism a session uses, the one-watcher-per-wait rule, what a session does when the wait times out, what it does on a PR that reports no checks, and the stop-point rule (no watcher left armed at a commit, turn-end, or `/clear` point — the session stops it with TaskStop first); no clause states harness behaviour the AC1 note does not record, and the paragraph cites the note by path.
+- [x] AC3: every site the sweep `git grep -n -e '--watch' -e 'blocking wait' -e 'background poll' -- skills ':!skills/tests' README.md` returns states the AC2 rule's mechanism and stop-point clauses consistently with tracking-rules, and no site the sweep returns keeps the superseded "one blocking wait" wording — a spelling-level sweep by design; a site restating the rule in other words is outside this promise.
 
 ## Coverage
 
@@ -60,3 +60,11 @@ Surface tier: user-facing — the rule is rulebook prose every adopting repo's s
 ## Decisions
 
 ## Review
+
+- 2026-09-02: draft PR https://github.com/jmgirard/cairn/pull/173; main at 9f7f2e2 unchanged since the branch was cut (no merge needed). Suites re-run at review: `scripts/tests` 329 OK, `hooks/tests` 121 OK (both exit 0); hand-run `skills/tests` 583 OK.
+- AC1 evidence: `cairn/references/wait-mechanisms.md` present with a Provenance block naming the first-hand-record exemption; ledger rows W1–W4 (foreground Bash), W5–W8 (`run_in_background`), W9–W12 (Monitor), W13–W15 (`--watch`; W15 carries own-timeout and outlives-turn together) cover green / red / own timeout / outlives the turn for each mechanism; W19 is the no-checks observation (PR #2, exit 1); W20 records `/clear` survival as `documented` with the interactive-mode doc URL and issue #44357; every observed row names its run number, resolved to a run or PR URL in the Evidence snapshot; all dated 2026-09-02. Verified.
+- AC2 evidence: tracking-rules "Waiting on CI and background work" (lines 242–255) replaces the old paragraph; `git grep -i 'one blocking wait'` over skills (tests excluded) and README returns nothing. The paragraph states the mechanism for CI checks, a long-running local command, and a background subagent; one watcher per wait; the on-timeout action; the no-checks case; and the stop-point clause with `TaskStop`. Each behaviour claim traces to the note: ceiling→background W3, background `timeout` not ending the task W7, Monitor killed and reported W11, subagent notification W23, no-checks exit 1 W19, `/clear` survival W20, `TaskStop` W16–W17; the note is cited by path in the paragraph's first line. Verified.
+- AC3 evidence: the sweep returns four sites — `skills/hotfix/SKILL.md:107`, `skills/milestone-review/SKILL.md:322`, `skills/shared/tracking-rules.md:244` and `:252`; each names the foreground `--watch --fail-fast` call with a timeout below the ceiling and the `TaskStop`-before-stop-point clause; none carries the superseded wording. (`skills/cairn-release/SKILL.md:61` restates the rule without the sweep tokens and is outside the promise; read anyway, consistent.) Verified.
+- Consistency gate: `cairn_validate` all checks passed (exit 0; coverage complete PASS, release window advisory not fired); `DESIGN.md` untouched, so `cairn_impact --changed` skipped; generic profile's consistency-gate slot names no toolchain checks — no-op.
+- Driving RR: — (no projection-vs-outcome pairs).
+- Fresh-context review: three-lens fan-out (user-facing tier; diff touches `scripts/tests` and `skills/tests`).
