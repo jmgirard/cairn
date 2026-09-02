@@ -8,7 +8,9 @@ wording produced the stale watcher it meant to prevent. The replacement rule
 has two load-bearing clauses pinned here: the trigger (what a wait is and
 that each thing waited on has one watcher) and the stop point (no watcher
 left armed at a commit, turn end, or `/clear` point — stopped with TaskStop
-first). Each is registered in the mutation harness. The negative check that
+first). Each is registered in the mutation harness. The timeout stop's
+fenced next command (M172) is a third load-bearing clause, unpinned — a new
+rule owes no prose guard here (test-doctrine slot). The negative check that
 the superseded spelling is gone from the shipped prose spells the retired
 token by concatenation (M169 lesson) and is unregistered — there is no block
 to mutate.

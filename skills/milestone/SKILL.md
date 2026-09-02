@@ -125,8 +125,9 @@ The script deliberately does not judge these — do them yourself and report:
   (`gh pr checks`), report the fresh state (this is normal, not an error).
 - A milestone at `review` whose header PR reports `MERGED` (`gh pr view <N>
   --json state`) → post-merge hygiene owed: report it as such and route to
-  `/milestone-review M<NNN>`, whose session start re-enters at the hygiene
-  step (M172).
+  `/milestone-review M<NNN>`, whose session start re-enters at the step the
+  record shows is next — hygiene when the review completed before the
+  merge, post-hoc verification otherwise (M172).
 - **Untriaged inboxes:** open GitHub issues and external PRs carrying no
   candidate row or hotfix disposition yet. Enumerate both inboxes —
   `gh issue list --state open --json number,title,url` for issues,

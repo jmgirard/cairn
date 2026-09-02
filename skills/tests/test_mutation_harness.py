@@ -3214,8 +3214,8 @@ REGISTRY += [
         test="TestReviewResumeRoute."
              "test_route_a_merged_and_reviewed_goes_to_step_nine",
         target=REVIEW,
-        block="then step 9\n  with steps 1–8 skipped — the recorded approval "
-              "stands as step 9's\n  issue-write authorization.",
+        block="then steps 9–10\n  with steps 1–8 skipped — the recorded "
+              "approval stands as step 9's\n  issue-write authorization.",
     ),
     Mutation(
         guard="test_resume_routing",
@@ -3224,16 +3224,20 @@ REGISTRY += [
         target=REVIEW,
         block="a decline logs\n  the requested changes as tasks and sets "
               "status `in-progress` (step 7's\n  decline exit); on "
-              "acceptance, step 9 with step 8 skipped.",
+              "acceptance, steps 9–10 with step 8 skipped.",
     ),
     Mutation(
         guard="test_resume_routing",
         test="TestReviewResumeRoute."
              "test_route_c_open_and_approved_reposes_the_gate",
         target=REVIEW,
-        block="(c) `OPEN`, every box ticked, and a recorded approval → step "
-              "1 re-run,\n  the step-7 chip re-posed, and on approval step 8 "
-              "from the marker write\n  onward.",
+        block="(c) `OPEN`, every box ticked against a recorded evidence "
+              "line, and a\n  recorded approval → step 1 re-run and the "
+              "branch pushed (step 2's push,\n  its draft PR already open; "
+              "when the default branch had moved, step 3\n  re-run so the "
+              "evidence matches the merged tree), the step-7 chip\n  "
+              "re-posed, and on approval step 8 from the marker write "
+              "onward.",
     ),
     Mutation(
         guard="test_resume_routing",
@@ -3269,6 +3273,7 @@ REGISTRY += [
         test="TestHotfixMergedPrReentry.test_reentry_names_its_three_moves",
         target=HOTFIX,
         block="one chip authorizing the issue close before any issue\n"
-              "   write (step 6's chip never ran for it)",
+              "   write (a hotfix keeps no work log to show whether step 6's "
+              "chip\n   authorized it, so it is asked once here)",
     ),
 ]

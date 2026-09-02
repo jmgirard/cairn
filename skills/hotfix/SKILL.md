@@ -36,7 +36,8 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
    outside the session or after a stopped CI wait) runs step 7 only, steps
    2–6 skipped: the candidate-row check, then — when the PR body carries a
    `Fixes #N` line — one chip authorizing the issue close before any issue
-   write (step 6's chip never ran for it), then the close block with one
+   write (a hotfix keeps no work log to show whether step 6's chip
+   authorized it, so it is asked once here), then the close block with one
    recap line naming the merged PR.
 
 2. **Branch — cut one, or adopt the PR's.** Check `git status` (dirty tree
