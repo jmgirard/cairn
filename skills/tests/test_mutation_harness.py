@@ -3194,3 +3194,81 @@ REGISTRY += [
               "`/clear` point",
     ),
 ]
+
+
+REGISTRY += [
+    # M172: the resume route's trigger and its four branches in the review
+    # skill's Session start (the list pinned whole, M171 lesson), step 7's
+    # approval line, the audit's merged-but-review bullet, and the hotfix
+    # merged-PR re-entry. Blocks embed the physical wrap; the guard reads
+    # with whitespace collapsed.
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewResumeRoute.test_reads_pr_state_before_step_one",
+        target=REVIEW,
+        block="read that PR's state before step 1 — `gh pr view <N>\n"
+              "--json state,mergedAt` (N from the URL)",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewResumeRoute."
+             "test_route_a_merged_and_reviewed_goes_to_step_nine",
+        target=REVIEW,
+        block="then step 9\n  with steps 1–8 skipped — the recorded approval "
+              "stands as step 9's\n  issue-write authorization.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewResumeRoute."
+             "test_route_b_merged_unreviewed_verifies_post_hoc",
+        target=REVIEW,
+        block="a decline logs\n  the requested changes as tasks and sets "
+              "status `in-progress` (step 7's\n  decline exit); on "
+              "acceptance, step 9 with step 8 skipped.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewResumeRoute."
+             "test_route_c_open_and_approved_reposes_the_gate",
+        target=REVIEW,
+        block="(c) `OPEN`, every box ticked, and a recorded approval → step "
+              "1 re-run,\n  the step-7 chip re-posed, and on approval step 8 "
+              "from the marker write\n  onward.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewResumeRoute."
+             "test_route_d_everything_else_goes_to_step_one",
+        target=REVIEW,
+        block="A `gh` that is missing, unauthenticated, or has no remote → "
+              "step\n  1, the recap naming which of the three it was.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewResumeRoute.test_step_seven_records_the_approval_line",
+        target=REVIEW,
+        block="Approval appends one work-log line naming the PR\n   number "
+              "it approved (`step-7 approval: PR #<N> approved for merge`)",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestMilestoneAuditMergedReview."
+             "test_merged_review_milestone_is_hygiene_owed",
+        target=MILESTONE,
+        block="post-merge hygiene owed: report it as such and route to\n"
+              "  `/milestone-review M<NNN>`",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixMergedPrReentry.test_merged_pr_runs_step_seven_only",
+        target=HOTFIX,
+        block="runs step 7 only, steps\n   2–6 skipped",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixMergedPrReentry.test_reentry_names_its_three_moves",
+        target=HOTFIX,
+        block="one chip authorizing the issue close before any issue\n"
+              "   write (step 6's chip never ran for it)",
+    ),
+]

@@ -109,7 +109,7 @@ others (M167's outside-merges audit owns that).
       `skills/hotfix/SKILL.md` step 1 (~line 19) merged-PR re-entry and
       step 6 (~line 108) next-command sentence; `skills/cairn-release/SKILL.md`
       step 3 (~line 62) next-command sentence.
-- [ ] T4: Hand-run guard `skills/tests/test_resume_routing.py` pinning
+- [x] T4: Hand-run guard `skills/tests/test_resume_routing.py` pinning
       AC1's whole route list (M171 lesson: the list, never its head), AC3's
       bullet, and AC4's re-entry clause, each pin registered in
       `skills/tests/test_mutation_harness.py`; run both gating suites and
@@ -131,6 +131,7 @@ others (M167's outside-merges audit owns that).
 - 2026-09-02: T1 done — tracking-rules "On timeout" clause now ends in a close block naming the invoking skill's command; "Resume is stateless" re-derives merge state via `gh pr view <N> --json state` beside check state; M170 anchors intact; verify green (scripts 121, hooks 588), hand-run skills/tests green.
 - 2026-09-02: T2 done — `/milestone-review` Session start carries the four-way resume route (a)–(d) on `gh pr view <N> --json state,mergedAt` plus the Review section; step 7 appends `step-7 approval: PR #<N> approved for merge`; step 8's timeout stop closes with `/milestone-review M<NNN>` as next command; verify green, hand-run skills/tests green.
 - 2026-09-02: T3 done — `/milestone` §2 gains the merged-but-`review` hygiene-owed bullet beside the open-PR bullet; `/hotfix` step 1 gains the merged-PR re-entry (step 7 only, head branch not `m<nnn>-*`, own close-authorization chip) and step 6 names `/hotfix` as the timeout stop's next command; `/cairn-release` step 3 names `/cairn-release`; verify green, hand-run skills/tests green.
+- 2026-09-02: T4 done — `skills/tests/test_resume_routing.py` pins the trigger, all four routes (a)–(d) whitespace-collapsed, step 7's approval line, the audit bullet and its adjacency, and the hotfix re-entry; nine blocks registered in `test_mutation_harness.py`, each proven to red its guard when blanked; scripts/tests, hooks/tests, and the hand-run suite green.
 
 ## Decisions
 
