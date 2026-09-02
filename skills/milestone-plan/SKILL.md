@@ -91,8 +91,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    `gh pr list --state open --json number,title,url,author,headRefName`
    for PRs — then drop cairn's own in-flight work from the PR list: a PR
    the operator authored, or whose head branch is `m<nnn>-*` or
-   `hotfix-*`, is dropped (the `author` and `headRefName` fields are what
-   the filter reads). What survives is judged for overlap with the goal
+   `hotfix-*`, is dropped (the `author.login` and `headRefName` fields are
+   what the filter reads; the operator's login is what `gh api user --jq
+   .login` returns). What survives is judged for overlap with the goal
    being planned, and only a hit takes a disposition here: an open issue
    overlapping the goal is posed at the step-3 gate as a `Resolves:` entry
    (`closes` or `partial`) or as a candidate row; an open PR overlapping it
