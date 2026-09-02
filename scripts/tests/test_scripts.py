@@ -42,6 +42,14 @@ def live_slot(status, slot):
     )
 
 
+def live_resolves(status, slot):
+    """A live milestone header carrying a `Resolves:` slot (M166)."""
+    return (
+        f"# M: Test milestone\n\n- **Status:** {status}   <!-- mirror -->\n"
+        f"- **Resolves:** {slot}\n\n## Goal\nx\n"
+    )
+
+
 def live_cov(status, n_criteria, coverage_refs):
     """A live milestone body with `n_criteria` acceptance criteria and a
     Coverage section citing each AC number in `coverage_refs`."""
@@ -3041,6 +3049,34 @@ class TestPrinciplesSlot(ScriptCase):
         self.assertEqual(proc.returncode, 1, proc.stdout)
         self.assertIn("FAIL  principles slot valid", proc.stdout)
         self.assertIn("GP9", proc.stdout)
+
+
+class TestResolvesSlot(ScriptCase):
+    """The `Resolves:` header slot (M166) is skill conduct: validate runs
+    clean whatever it holds, and no check parses it."""
+
+    def _validate(self, slot):
+        self.tree.files["milestones/M03-live.md"] = live_resolves("planned", slot)
+        return run("cairn_validate.py", self.tree.build())
+
+    def test_filled_slot_validates_clean(self):
+        proc = self._validate("#12 closes, #13 partial")
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertNotIn("FAIL", proc.stdout)
+
+    def test_dash_slot_validates_clean(self):
+        proc = self._validate("—")
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertNotIn("FAIL", proc.stdout)
+
+    def test_no_check_parses_the_slot(self):
+        # The slot is read by skills, never by a validator (M166 Out).
+        source = "".join(
+            (SCRIPTS_DIR / f).read_text(encoding="utf-8")
+            for f in ("cairn_validate.py", "cairn_scripts.py")
+        )
+        self.assertNotRegex(source, r"(?i)resolves:")
+        self.assertNotIn("#N closes", source)
 
 
 class TestValidateFailures(ScriptCase):

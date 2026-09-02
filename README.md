@@ -285,6 +285,17 @@ about where the guardrails actually reach.
   contributor needs no plugin, no `cairn/` knowledge, and no special branch
   name. `/milestone`'s health audit enumerates both inboxes and proposes a
   disposition per item; an adopted PR comes in through `/hotfix`.
+- **Issues a milestone resolves get linked and closed.** When a plan absorbs
+  a GitHub issue, the milestone file's `Resolves:` slot names it and the
+  plan gate offers one option to post `Queued as M<NNN>: <title>` on each
+  slotted issue — posted only if you select it, never by default. The
+  review's draft PR body ends with `Closes #N` (or `Refs #N` for an issue
+  only partly resolved), so GitHub closes the issue at merge. After the
+  merge the review reads the state of each issue slotted `closes` and closes
+  one still open with a comment naming the merged PR; `/milestone`'s audit
+  reports an issue still open after its milestone is done (among the
+  roadmap's retained done rows) and offers to close it at the triage chip.
+  Without `gh`, the post-merge check and the audit name the gap and carry on.
 - **Two people both running cairn is not supported yet.** The tracking files
   would race: milestone IDs and decision numbers are picked by reading the
   files, so two people planning at once can pick the same one. If you need

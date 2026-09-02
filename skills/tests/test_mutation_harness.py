@@ -41,6 +41,9 @@ R_PROFILE = "skills/shared/profiles/r-package.md"
 TEMPLATE = "skills/shared/templates/milestone.md"
 DOCTRINE = "skills/shared/validation-doctrine.md"
 RECORDS_HYGIENE = "skills/shared/records-hygiene.md"
+PLAN = "skills/milestone-plan/SKILL.md"
+ARCHIVE_TEMPLATE = "skills/shared/templates/archive-summary.md"
+README = "README.md"
 SOURCE_NOTE = "skills/shared/templates/source-note.md"
 SYNTHESIS_NOTE = "skills/shared/templates/synthesis-note.md"
 
@@ -114,7 +117,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="453 lines / 41,941 chars",
+        block="467 lines / 43,454 chars",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -2815,3 +2818,233 @@ class TestRegisteredGuardsFailWhenBlanked(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+REGISTRY += [
+    # M166: issue linkage — one entry per positive assert's block.
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestTemplateSlot.test_milestone_template_carries_the_slot_with_both_entry_forms",
+        target=TEMPLATE,
+        block="- **Resolves:** —",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestTemplateSlot.test_archive_status_line_carries_a_resolves_clause",
+        target=ARCHIVE_TEMPLATE,
+        block="; resolves <the",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanFillsTheSlot.test_slot_is_filled_from_the_issues_the_scope_absorbs",
+        target=PLAN,
+        block="the slot is filled from the issues the scope",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanFillsTheSlot.test_both_entry_forms_are_defined",
+        target=PLAN,
+        block="`#N closes` when this milestone's PR closes",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanFillsTheSlot.test_partial_remainder_is_rowed_in_the_same_plan_commit",
+        target=PLAN,
+        block="remainder is recorded as a `candidate` row in the same plan commit",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanFillsTheSlot.test_step_5_ledger_lists_the_partial_remainder",
+        target=PLAN,
+        block="entry in the `Resolves:` slot lists its remainder here with the candidate",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanGateAcknowledgement.test_gate_poses_one_option_for_all_slotted_issues",
+        target=PLAN,
+        block="the gate poses one option offering an",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanGateAcknowledgement.test_comment_body_is_fixed_and_shown_before_selection",
+        target=PLAN,
+        block="`Queued as M<NNN>: <title>`",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanGateAcknowledgement.test_posted_only_on_selection_never_by_default",
+        target=PLAN,
+        block="only on selection, never by",
+    ),
+]
+
+REGISTRY += [
+    # M166 T3–T5: review, hotfix, and audit blocks.
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewPRBody.test_pr_body_ends_with_closes_and_refs_lines_from_the_slot",
+        target=REVIEW,
+        block="`Closes #N` line per `closes` entry and one `Refs #N` line per `partial`",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewPRBody.test_dash_slot_adds_no_lines",
+        target=REVIEW,
+        block="a slot of `—` adds no lines",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewMergeChipAuthorizes.test_chip_text_enumerates_the_issue_writes_it_authorizes",
+        target=REVIEW,
+        block="writes it authorizes — close-if-open per `closes`",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewMergeChipAuthorizes.test_no_other_issue_write_is_made",
+        target=REVIEW,
+        block="no other issue write is made",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewPostMergeRead.test_each_closes_entry_is_read_after_the_merge",
+        target=REVIEW,
+        block="after the merge, for each `closes` entry of",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewPostMergeRead.test_a_still_open_issue_is_closed_naming_the_merged_pr",
+        target=REVIEW,
+        block="`gh issue close <N> --comment` carrying a one-line comment naming the\n   merged PR",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewPostMergeRead.test_partial_comments_are_posted",
+        target=REVIEW,
+        block="entry post the comment naming what shipped and the remainder's candidate",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewPostMergeRead.test_unreachable_gh_is_reported_and_never_fails_hygiene",
+        target=REVIEW,
+        block="an unreachable `gh` never fails the hygiene pass",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewPostMergeRead.test_done_recap_reports_the_state_reads",
+        target=REVIEW,
+        block="The done recap reports each entry's state read",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestHotfixPostMergeRead.test_fixes_line_triggers_the_read_and_close_if_open",
+        target=HOTFIX,
+        block="When the PR body carries a `Fixes #N`",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestHotfixPostMergeRead.test_no_fixes_line_is_a_noop",
+        target=HOTFIX,
+        block="a PR with no such line is a no-op here",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestHotfixPostMergeRead.test_unreachable_gh_is_reported_never_a_failure",
+        target=HOTFIX,
+        block="was in the recap — never a failure",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_reads_are_bounded_to_the_retained_terminal_rows",
+        target=MILESTONE,
+        block="terminal rows bound the reads",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_a_closes_entry_is_read_with_state_and_url",
+        target=MILESTONE,
+        block="`gh issue view <N> --json state,url`",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_a_still_open_issue_is_an_orphan",
+        target=MILESTONE,
+        block="one still open is reported as",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_no_entry_and_partial_only_read_nothing_multi_entry_reads_each",
+        target=MILESTONE,
+        block="`resolves` clause, or with `partial` entries only, reads nothing",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_orphan_read_writes_nothing",
+        target=MILESTONE,
+        block="the orphan read writes nothing",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_unreachable_gh_rule_applies_unchanged",
+        target=MILESTONE,
+        block="unreachable-`gh` rule applies unchanged",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_never_write_sentence_is_narrowed_to_the_reads",
+        target=MILESTONE,
+        block="the sweep and the orphan",
+    ),
+    Mutation(
+        # the pointer at the one gated write — its own entry.
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_never_write_sentence_is_narrowed_to_the_reads",
+        target=MILESTONE,
+        block="the one audit-path write is §3's close disposition",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_close_disposition_fires_only_on_selection_naming_the_pr",
+        target=MILESTONE,
+        block="**close** — an orphaned issue from §2's orphan bullet",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_close_disposition_fires_only_on_selection_naming_the_pr",
+        target=MILESTONE,
+        block="Not selected → the issue stays open and nothing is written",
+    ),
+]
+
+REGISTRY += [
+    # M166 T6: README states the three behaviors.
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReadmeStatesTheThreeBehaviors.test_plan_time_acknowledgement_offer",
+        target=README,
+        block="plan gate offers one option to post `Queued as M<NNN>: <title>`",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReadmeStatesTheThreeBehaviors.test_plan_time_acknowledgement_offer",
+        target=README,
+        block="posted only if you select it, never by default",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReadmeStatesTheThreeBehaviors.test_pr_closing_keyword",
+        target=README,
+        block="draft PR body ends with `Closes #N`",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReadmeStatesTheThreeBehaviors.test_post_merge_check_and_audit_orphan",
+        target=README,
+        block="reads the state of each issue slotted `closes` and closes",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReadmeStatesTheThreeBehaviors.test_post_merge_check_and_audit_orphan",
+        target=README,
+        block="and offers to close it at the",
+    ),
+]

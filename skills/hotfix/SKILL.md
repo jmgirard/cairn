@@ -96,7 +96,9 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
    merge authorization to the user as an
    `AskUserQuestion` chip (recommended = merge, e.g. `Merge PR #N to
    <default-branch>`, with a decline option) — never a prose yes/no, the same gate discipline
-   as `/milestone-review`. Merge (`gh pr merge <N> --squash --delete-branch`
+   as `/milestone-review`. A PR body carrying a `Fixes #N` line adds to the
+   chip's question text the post-merge close-if-open of that issue it
+   authorizes (step 7). Merge (`gh pr merge <N> --squash --delete-branch`
    — name the PR number explicitly; a bare `gh pr merge` is denied because the
    approval cannot be checked against it; **drop `--delete-branch` on a
    fork PR** — that branch lives in the contributor's repo and is not ours
@@ -114,7 +116,13 @@ Chapter markers: mark a chapter at each phase transition (session start implicit
 
 7. If the fix revealed deeper work, add a `candidate` row before closing
    out — sweep first per the search-first candidate-creation rule
-   (`tracking-rules.md`, Intake). If a milestone branch is currently active, remind the user that its
+   (`tracking-rules.md`, Intake). When the PR body carries a `Fixes #N`
+   line, read that issue's state after the merge with
+   `gh issue view <N> --json state`; one still open is closed with
+   `gh issue close <N> --comment` carrying a one-line comment naming the
+   merged PR; a PR with no such line is a no-op here. When `gh` is missing,
+   unauthenticated, or the repo has no remote, name which of the three it
+   was in the recap — never a failure. If a milestone branch is currently active, remind the user that its
    next implement/review session will merge the default branch into it (the
    branch-sync rule) — nothing to do now. End with the close block
    (tracking-rules "Question gates and phase closes"), composed from the

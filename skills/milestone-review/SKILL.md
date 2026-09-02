@@ -27,8 +27,11 @@ overrides — log the override).
    worthless and the squash-merge would conflict anyway.
 
 2. Push the branch; open a **draft PR** (`gh pr create --draft`) so CI runs
-   in the background while the review proceeds. Record the PR URL in the
-   milestone header.
+   in the background while the review proceeds. The PR body ends with one
+   `Closes #N` line per `closes` entry and one `Refs #N` line per `partial`
+   entry of the milestone's `Resolves:` slot — the closing keyword is what
+   makes GitHub close the issue at merge; a slot of `—` adds no lines.
+   Record the PR URL in the milestone header.
 
 3. **Execute every acceptance criterion with fresh evidence** — actually run
    the tests and the active profile's checks (its `verify` / `consistency-gate`
@@ -286,6 +289,11 @@ overrides — log the override).
    (Mandated-substance rule): the chip's question text carries the compact
    decision summary and cites the milestone file's Review section by path,
    and the full presentation rides best-effort in the chat above it.
+   When the `Resolves:` slot is not `—`, the chip's question text enumerates
+   the post-merge issue writes it authorizes — close-if-open per `closes`
+   entry; a comment naming what shipped and the remainder's candidate row
+   per `partial` entry — so approving the merge is also the approval step
+   9's issue writes rest on; no other issue write is made on the review path.
    Acceptance chips (tracking-rules): each actioned finding's text appears
    verbatim in this presentation, never only a summary. With a Driving RR:
    repeat the measured-vs-projected pairs in the merge chip's question text, compact, and verbatim in the chat above, and a shortfall past the milestone's stated tolerance (an unstated
@@ -383,7 +391,17 @@ overrides — log the override).
    the completed hygiene edits, before the docs-only commit — it must pass,
    and whether its `release window` advisory fired is the signal step 10's
    displacement clause reads. Docs-only commit:
-   `review M<NNN>: done`; push. The done
+   `review M<NNN>: done`; push.
+   **Confirm the issue closes:** after the merge, for each `closes` entry of
+   the `Resolves:` slot read the issue's state with
+   `gh issue view <N> --json state`; one still open is closed with
+   `gh issue close <N> --comment` carrying a one-line comment naming the
+   merged PR — the write the step-7 chip authorized. For each `partial`
+   entry post the comment naming what shipped and the remainder's candidate
+   row (`gh issue comment <N> --body`). When `gh` is missing,
+   unauthenticated, or the repo has no remote, name which of the three it
+   was in the done recap; an unreachable `gh` never fails the hygiene pass.
+   The done recap reports each entry's state read. The done
    recap leads with what shipped, in plain words; hygiene mechanics
    compress to one line.
 
