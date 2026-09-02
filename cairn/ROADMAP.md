@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-30 (M165 archived; M160 done-row pruned for terminal retention; 1 lesson added (M165 guard-craft, merged pair), 1 retired (M99 rewrite-disposal, enforcement exit: validate's roadmap<->disk orphans check); no finding-absorbing row extended; no accepted limitations; suites on merged main: scripts 326, hooks 121, skills 532 hand-run — zero reds; validate green; caps ok; byte budgets `wc -c` 12,842 / 15,276 — both under; module budgets `wc -l -c` 54/3,187, 99/6,480, 188/12,250 — all under their headers.)_
+_Last hygiene check: 2026-09-02 (M166 archived; M161 done-row pruned for terminal retention; #168 confirmed CLOSED at merge, no write; no lesson added or retired; no finding-absorbing row extended; no accepted limitations; suites on merged main: scripts 329, hooks 121, skills 566 hand-run — zero reds; validate green; caps ok; byte budgets `wc -c` 13,385 / 15,276 — both under; module budgets `wc -l -c` 54/3,187, 99/6,480, 188/12,250 — all under their headers.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M166 | GitHub issues are linked at plan time and closed at merge | review | — | normal | milestones/M166-issue-linkage.md |
+| M166 | GitHub issues are linked at plan time and closed at merge | done | — | normal | milestones/archive/M166-issue-linkage.md |
 | M165 | Freshness spawns survive a no-unrequested-subagents harness instruction | done | — | high | milestones/archive/M165-freshness-spawns-survive-no-spawn-instruction.md |
 | M164 | Streamlining pass over shipped code (RB14, advisory) | done | — | normal | milestones/archive/M164-streamlining-pass.md |
 | M163 | External adoption pass (RR13 step 3): init + full loop on bsync | done | — | normal | milestones/archive/M163-external-adoption-pass.md |
 | M162 | Multi-repo sessions: the merge guard's cross-repo contract | done | — | normal | milestones/archive/M162-multi-repo-merge-guard.md |
-| M161 | Finding-absorbing candidate rows get a disposition trigger at hygiene | done | — | normal | milestones/archive/M161-finding-row-disposition.md |
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
