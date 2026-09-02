@@ -1,12 +1,12 @@
 # M169: Criteria and tasks carry positional labels
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
-- **Branch/PR:** m169-positional-labels
+- **Branch/PR:** m169-positional-labels · https://github.com/jmgirard/cairn/pull/172
 
 ## Goal
 
@@ -46,7 +46,7 @@ history is never rewritten; a change to `cairn_validate`'s positional counting
       `scripts/tests/test_bc_ac_ingest_form.py`, and the two assertions in
       `skills/tests/test_finding_enforcement.py` — so
       `git grep -n "AC-N" -- skills scripts` returns no match.
-- [ ] AC2: `skills/milestone-plan/SKILL.md` step 4 states that every criterion
+- [x] AC2: `skills/milestone-plan/SKILL.md` step 4 states that every criterion
       and task bullet opens with its positional label (`ACn:` / `Tn:`), that
       the label equals the item's position counted top-to-bottom, and that any
       insertion, removal, or reorder renumbers the labels and the Coverage
@@ -54,7 +54,7 @@ history is never rewritten; a change to `cairn_validate`'s positional counting
       same renumbering obligation on both of its branches — a minor edit and a
       gated amendment — for a change that adds, removes, or reorders a
       criterion or task.
-- [ ] AC3: The active profile's `verify` slot is clean from the repo root
+- [x] AC3: The active profile's `verify` slot is clean from the repo root
       (`cairn/PROFILE.md`: the two gating `python3 -m unittest` suites over
       `scripts/tests` and `hooks/tests`).
 
@@ -98,7 +98,15 @@ history is never rewritten; a change to `cairn_validate`'s positional counting
 - 2026-09-02: T2: template example items labeled `AC1:`/`AC2:`/`T1:`, position rule added to both section comments, ingest form changed to `ACn (BCm):` at all five sites; `git grep -n "AC-N" -- skills scripts` returns nothing (exit 1).
 - 2026-09-02: T3: plan step 4 gains a **Positional labels** bullet ahead of the Coverage-map bullet; implement step 6 states the renumbering sentence on the minor and the substantive branch (wrapped differently so each mutation block is unique).
 - 2026-09-02: T4: at ec680c6, scripts/tests 329 OK (exit 0), hooks/tests 121 OK (exit 0), hand-run skills/tests 578 OK (exit 0, mutation harness included), cairn_validate all checks passed. All tasks done; status → review.
+- 2026-09-02: review pass 1 (PR #172, a564980): defect return 1 — AC1's grep clause fails inside its named domain: `git grep -n "AC-N" -- skills scripts` matches `skills/tests/test_positional_labels.py` lines 102 and 113 (docstring and the `assertNotIn` literal), present since T1 (0036596), so the T2 line's "returns nothing (exit 1)" claim did not hold at any branch commit; AC2 and AC3 verified; status → in-progress. Repair: word the guard so the file carries no literal `AC-N`, re-run the grep, re-review.
 
 ## Decisions
 
 ## Review
+
+- Pass 1, 2026-09-02, PR #172 at a564980; main unmoved since the branch was cut (553ba8e), so no merge-in was needed.
+- AC1 — FAIL. Template Acceptance criteria and Tasks sections show `- [ ] AC1:`, `- [ ] AC2:`, `- [ ] T1:` and both section comments state the position rule; the ingest form reads `- [ ] ACn (BCm): <verbatim>` at all five sites. The grep clause fails: `git grep -n "AC-N" -- skills scripts` exits 0 with two matches, both in `skills/tests/test_positional_labels.py` (docstring line 102, `assertNotIn("AC-N", …)` line 113); the matches exist at every branch commit from T1 on. Not ticked.
+- AC2 — PASS. `skills/milestone-plan/SKILL.md` lines 251–255 (Positional labels bullet) state that every criterion and task bullet opens with `ACn:`/`Tn:`, that the label equals the position counted top-to-bottom, and that insertion, removal, or reorder renumbers labels and Coverage lines together. `skills/milestone-implement/SKILL.md` step 6 carries the renumbering sentence on the Minor branch (lines 82–84) and the Substantive branch (lines 93–94).
+- AC3 — PASS. From the repo root: `scripts/tests` 329 tests OK, exit 0; `hooks/tests` 121 tests OK, exit 0. Hand-run `skills/tests` 578 tests OK, exit 0.
+- Consistency gate: `cairn_validate.py` all checks passed, exit 0; no principle touched, `cairn_impact` skipped; generic profile names no toolchain checks.
+- Disposition: defect return 1 (AC1 fails inside the grep's named domain); the fresh-context review fan-out was not spawned this pass.
