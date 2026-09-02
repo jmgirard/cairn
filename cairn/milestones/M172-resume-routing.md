@@ -97,7 +97,7 @@ others (M167's outside-merges audit owns that).
 
 ## Tasks
 
-- [ ] T1: `skills/shared/tracking-rules.md` "Waiting on CI and background
+- [x] T1: `skills/shared/tracking-rules.md` "Waiting on CI and background
       work" (~lines 250–258): the "On timeout" clause ends in a close block
       with the invoking skill's command; "Resume is stateless" adds merge
       state. Keep `skills/tests/test_wait_rule.py` anchors intact.
@@ -128,6 +128,7 @@ others (M167's outside-merges audit owns that).
 - 2026-09-02: plan chose prose routes plus a hand-run pin over a `gh` call in `cairn_next.py` or a validator because the routing surface is the skill's session start and `cairn_next` stays offline; falsified by a merged-but-`review` milestone reaching a hygiene stamp unarchived under the new prose.
 
 - 2026-09-02: /milestone-implement started; branch m172-resume-routing cut from main at 83b10de; question gate skipped — the plan left no genuinely open choice (work-log line shapes for the approval and re-entry lines fixed in T2).
+- 2026-09-02: T1 done — tracking-rules "On timeout" clause now ends in a close block naming the invoking skill's command; "Resume is stateless" re-derives merge state via `gh pr view <N> --json state` beside check state; M170 anchors intact; verify green (scripts 121, hooks 588), hand-run skills/tests green.
 
 ## Decisions
 
