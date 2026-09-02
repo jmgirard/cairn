@@ -2877,3 +2877,140 @@ REGISTRY += [
         block="only on selection, never by",
     ),
 ]
+
+REGISTRY += [
+    # M166 T3–T5: review, hotfix, and audit blocks.
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewPRBody.test_pr_body_ends_with_closes_and_refs_lines_from_the_slot",
+        target=REVIEW,
+        block="`Closes #N` line per `closes` entry and one `Refs #N` line per `partial`",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewPRBody.test_dash_slot_adds_no_lines",
+        target=REVIEW,
+        block="a slot of `—` adds no lines",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewMergeChipAuthorizes.test_chip_text_enumerates_the_issue_writes_it_authorizes",
+        target=REVIEW,
+        block="writes it authorizes — close-if-open per `closes`",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewMergeChipAuthorizes.test_no_other_issue_write_is_made",
+        target=REVIEW,
+        block="no other issue write is made",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewPostMergeRead.test_each_closes_entry_is_read_after_the_merge",
+        target=REVIEW,
+        block="after the merge, for each `closes` entry of",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewPostMergeRead.test_a_still_open_issue_is_closed_naming_the_merged_pr",
+        target=REVIEW,
+        block="`gh issue close <N> --comment` carrying a one-line comment naming the\n   merged PR",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewPostMergeRead.test_partial_comments_are_posted",
+        target=REVIEW,
+        block="entry post the comment naming what shipped and the remainder's candidate",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewPostMergeRead.test_unreachable_gh_is_reported_and_never_fails_hygiene",
+        target=REVIEW,
+        block="an unreachable `gh` never fails the hygiene pass",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReviewPostMergeRead.test_done_recap_reports_the_state_reads",
+        target=REVIEW,
+        block="The done recap reports each entry's state read",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestHotfixPostMergeRead.test_fixes_line_triggers_the_read_and_close_if_open",
+        target=HOTFIX,
+        block="When the PR body carries a `Fixes #N`",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestHotfixPostMergeRead.test_no_fixes_line_is_a_noop",
+        target=HOTFIX,
+        block="a PR with no such line is a no-op here",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestHotfixPostMergeRead.test_unreachable_gh_is_reported_never_a_failure",
+        target=HOTFIX,
+        block="was in the recap — never a failure",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_reads_are_bounded_to_the_retained_terminal_rows",
+        target=MILESTONE,
+        block="terminal rows bound the reads",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_a_closes_entry_is_read_with_state_and_url",
+        target=MILESTONE,
+        block="`gh issue view <N> --json state,url`",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_a_still_open_issue_is_an_orphan",
+        target=MILESTONE,
+        block="one still open is reported as",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_no_entry_and_partial_only_read_nothing_multi_entry_reads_each",
+        target=MILESTONE,
+        block="`resolves` clause, or with `partial` entries only, reads nothing",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_orphan_read_writes_nothing",
+        target=MILESTONE,
+        block="the orphan read writes nothing",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_unreachable_gh_rule_applies_unchanged",
+        target=MILESTONE,
+        block="unreachable-`gh` rule applies unchanged",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_never_write_sentence_is_narrowed_to_the_reads",
+        target=MILESTONE,
+        block="the sweep and the orphan",
+    ),
+    Mutation(
+        # the pointer at the one gated write — its own entry.
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_never_write_sentence_is_narrowed_to_the_reads",
+        target=MILESTONE,
+        block="the one audit-path write is §3's close disposition",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_close_disposition_fires_only_on_selection_naming_the_pr",
+        target=MILESTONE,
+        block="**close** — an orphaned issue from §2's orphan bullet",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestAuditOrphanBullet.test_close_disposition_fires_only_on_selection_naming_the_pr",
+        target=MILESTONE,
+        block="Not selected → the issue stays open and nothing is written",
+    ),
+]

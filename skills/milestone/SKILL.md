@@ -137,11 +137,25 @@ The script deliberately does not judge these — do them yourself and report:
   the existing `candidate` rows, `milestones/archive/`, and `DECISIONS.md`,
   so an item already covered is cross-referenced, never duplicated as a
   second row. Carry one proposed disposition per item to §3, where the user
-  decides; reading the inbox is the whole mandate here — never write to
-  GitHub (no labels, comments, or closes) and never add a row unprompted.
+  decides; reading is the whole mandate here — the sweep and the orphan
+  read below never write to
+  GitHub (no labels, comments, or closes) and never add a row unprompted;
+  the one audit-path write is §3's close disposition, at the user's
+  selection.
   **When `gh` is missing, unauthenticated, or the repo has no remote:**
   name which of the three it was, skip the sweep, and finish the audit.
   An unreachable inbox is a reported gap, never an audit `FAIL`.
+- **Orphaned issues:** for each `done` row still in the ROADMAP table — the
+  retained terminal rows bound the reads — whose archive summary's status
+  line carries a `resolves` entry marked `closes`, read that issue's state
+  with `gh issue view <N> --json state,url`; one still open is reported as
+  an orphan: the milestone slotted as closing it is done, but the close
+  never happened (a missed keyword, a merge outside cairn). A row with no
+  `resolves` clause, or with `partial` entries only, reads nothing; a row
+  with several `closes` entries reads each. Carry one close disposition per
+  orphan to §3; the orphan read writes nothing. The inbox bullet's
+  unreachable-`gh` rule applies unchanged: name which of the three it was,
+  skip the reads, finish the audit.
 **Replace** "Last hygiene check: YYYY-MM-DD" in ROADMAP.md with one short line naming what changed since the last check — never append to the previous stamp or demote it to a `Prior:` clause; git and `milestones/archive/` hold the older stamps.
 
 ## 3. Route
@@ -163,8 +177,8 @@ examples for the close block's fences — only the applicable subset is offered:
 - `/milestone-plan` — plan next (nothing in flight and no workable planned
   milestone)
 - a triage chip — the audit found problems needing user decisions,
-  including any untriaged inbox item §2 surfaced (a decision gate, not a
-  route)
+  including any untriaged inbox item or orphaned issue §2 surfaced (a
+  decision gate, not a route)
 - Park M<NNN> as `blocked` → the release window is not open (a `release window` WARN fired in §2) — a decision put to the user, not a route
 
 Parking sets the milestone to `blocked` and writes a work-log line naming the
@@ -188,6 +202,11 @@ Each item takes exactly one disposition — you propose, the user chooses:
   a second intake mechanism.
 - **`/milestone-plan`** — anything larger than the hotfix bar.
 - **leave** — no row, no action, with the reason stated.
+- **close** — an orphaned issue from §2's orphan bullet: only on the
+  user's selection in the triage chip, close it with
+  `gh issue close <N> --comment` carrying a one-line comment naming the
+  archived milestone's PR; the option text names the issue and that PR.
+  Not selected → the issue stays open and nothing is written.
 
 Show every proposed disposition verbatim in the chat above and compactly in the disposition chip itself (Mandated-substance rule), never a count or a
 summary of them: the dispositions are what the user is accepting, so a

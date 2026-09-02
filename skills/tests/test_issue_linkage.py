@@ -132,5 +132,161 @@ class TestPlanGateAcknowledgement(unittest.TestCase):
         )
 
 
+class TestReviewPRBody(unittest.TestCase):
+    """AC3: step 2's closing lines come from the slot."""
+
+    def test_pr_body_ends_with_closes_and_refs_lines_from_the_slot(self):
+        self.assertRegex(
+            review(),
+            r"The PR body ends with one\s+`Closes #N` line per `closes` entry "
+            r"and one `Refs #N` line per `partial`\s+entry of the milestone's "
+            r"`Resolves:` slot",
+        )
+
+    def test_dash_slot_adds_no_lines(self):
+        self.assertIn("a slot of `—` adds no lines", review())
+
+
+class TestReviewMergeChipAuthorizes(unittest.TestCase):
+    """AC3: step 7's chip enumerates the post-merge issue writes."""
+
+    def test_chip_text_enumerates_the_issue_writes_it_authorizes(self):
+        self.assertRegex(
+            review(),
+            r"the chip's question text enumerates\s+the post-merge issue "
+            r"writes it authorizes — close-if-open per `closes`\s+entry; a "
+            r"comment naming what shipped and the remainder's candidate row"
+            r"\s+per `partial` entry",
+        )
+
+    def test_no_other_issue_write_is_made(self):
+        self.assertIn("no other issue write is made", review())
+
+
+class TestReviewPostMergeRead(unittest.TestCase):
+    """AC3: step 9 reads each `closes` issue and closes what the keyword
+    missed; an unreachable `gh` is reported, never a hygiene failure."""
+
+    def test_each_closes_entry_is_read_after_the_merge(self):
+        self.assertRegex(
+            review(),
+            r"after the merge, for each `closes` entry of\s+the `Resolves:` "
+            r"slot read the issue's state with\s+`gh issue view <N> --json state`",
+        )
+
+    def test_a_still_open_issue_is_closed_naming_the_merged_pr(self):
+        self.assertRegex(
+            review(),
+            r"one still open is closed with\s+`gh issue close <N> --comment` "
+            r"carrying a one-line comment naming the\s+merged PR",
+        )
+
+    def test_partial_comments_are_posted(self):
+        self.assertRegex(
+            review(),
+            r"For each `partial`\s+entry post the comment naming what shipped "
+            r"and the remainder's candidate\s+row",
+        )
+
+    def test_unreachable_gh_is_reported_and_never_fails_hygiene(self):
+        self.assertRegex(
+            review(),
+            r"When `gh` is missing,\s+unauthenticated, or the repo has no "
+            r"remote, name which of the three it\s+was in the done recap; an "
+            r"unreachable `gh` never fails the hygiene pass",
+        )
+
+    def test_done_recap_reports_the_state_reads(self):
+        self.assertIn("The done recap reports each entry's state read", review())
+
+
+class TestHotfixPostMergeRead(unittest.TestCase):
+    """AC3: `/hotfix` step 7 runs the same read for a `Fixes #N` PR."""
+
+    def test_fixes_line_triggers_the_read_and_close_if_open(self):
+        self.assertRegex(
+            hotfix(),
+            r"When the PR body carries a `Fixes #N`\s+line, read that issue's "
+            r"state after the merge with\s+`gh issue view <N> --json state`; "
+            r"one still open is closed with\s+`gh issue close <N> --comment`",
+        )
+
+    def test_no_fixes_line_is_a_noop(self):
+        self.assertIn("a PR with no such line is a no-op here", hotfix())
+
+    def test_unreachable_gh_is_reported_never_a_failure(self):
+        self.assertRegex(
+            hotfix(),
+            r"When `gh` is missing,\s+unauthenticated, or the repo has no "
+            r"remote, name which of the three it\s+was in the recap — never a "
+            r"failure",
+        )
+
+
+class TestAuditOrphanBullet(unittest.TestCase):
+    """AC5: the §2 orphan read, bounded and read-only, and the §3 close."""
+
+    def test_reads_are_bounded_to_the_retained_terminal_rows(self):
+        self.assertRegex(
+            milestone(),
+            r"for each `done` row still in the ROADMAP table — the\s+retained "
+            r"terminal rows bound the reads",
+        )
+
+    def test_a_closes_entry_is_read_with_state_and_url(self):
+        self.assertRegex(
+            milestone(),
+            r"carries a `resolves` entry marked `closes`, read that issue's "
+            r"state\s+with `gh issue view <N> --json state,url`",
+        )
+
+    def test_a_still_open_issue_is_an_orphan(self):
+        self.assertRegex(
+            milestone(), r"one still open is reported as\s+an orphan"
+        )
+
+    def test_no_entry_and_partial_only_read_nothing_multi_entry_reads_each(self):
+        # The archive-fixture variants: no clause, partial only, several.
+        self.assertRegex(
+            milestone(),
+            r"A row with no\s+`resolves` clause, or with `partial` entries "
+            r"only, reads nothing; a row\s+with several `closes` entries "
+            r"reads each",
+        )
+
+    def test_orphan_read_writes_nothing(self):
+        self.assertIn("the orphan read writes nothing", milestone())
+
+    def test_unreachable_gh_rule_applies_unchanged(self):
+        self.assertRegex(
+            milestone(),
+            r"The inbox bullet's\s+unreachable-`gh` rule applies unchanged: "
+            r"name which of the three it was,\s+skip the reads, finish the audit",
+        )
+
+    def test_never_write_sentence_is_narrowed_to_the_reads(self):
+        # M74's rule now names its subjects — the sweep and the orphan read —
+        # and points at the one gated write.
+        self.assertRegex(
+            milestone(),
+            r"the sweep and the orphan\s+read below never write to\s+GitHub",
+        )
+        self.assertRegex(
+            milestone(),
+            r"the one audit-path write is §3's close disposition, at the user's"
+            r"\s+selection",
+        )
+
+    def test_close_disposition_fires_only_on_selection_naming_the_pr(self):
+        self.assertRegex(
+            milestone(),
+            r"\*\*close\*\* — an orphaned issue from §2's orphan bullet: only "
+            r"on the\s+user's selection in the triage chip, close it with"
+            r"\s+`gh issue close <N> --comment` carrying a one-line comment "
+            r"naming the\s+archived milestone's PR",
+        )
+        self.assertIn("Not selected → the issue stays open and nothing is written", milestone())
+
+
 if __name__ == "__main__":
     unittest.main()
