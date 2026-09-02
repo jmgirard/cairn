@@ -105,7 +105,7 @@ others (M167's outside-merges audit owns that).
       gains the four-way route of AC1; step 7 (~line 287) appends the
       approval work-log line; step 8's timeout clause (~line 325) names
       `/milestone-review M<NNN>` as the close block's next command.
-- [ ] T3: `skills/milestone/SKILL.md` §2 (~line 124) merged-PR bullet;
+- [x] T3: `skills/milestone/SKILL.md` §2 (~line 124) merged-PR bullet;
       `skills/hotfix/SKILL.md` step 1 (~line 19) merged-PR re-entry and
       step 6 (~line 108) next-command sentence; `skills/cairn-release/SKILL.md`
       step 3 (~line 62) next-command sentence.
@@ -130,6 +130,7 @@ others (M167's outside-merges audit owns that).
 - 2026-09-02: /milestone-implement started; branch m172-resume-routing cut from main at 83b10de; question gate skipped — the plan left no genuinely open choice (work-log line shapes for the approval and re-entry lines fixed in T2).
 - 2026-09-02: T1 done — tracking-rules "On timeout" clause now ends in a close block naming the invoking skill's command; "Resume is stateless" re-derives merge state via `gh pr view <N> --json state` beside check state; M170 anchors intact; verify green (scripts 121, hooks 588), hand-run skills/tests green.
 - 2026-09-02: T2 done — `/milestone-review` Session start carries the four-way resume route (a)–(d) on `gh pr view <N> --json state,mergedAt` plus the Review section; step 7 appends `step-7 approval: PR #<N> approved for merge`; step 8's timeout stop closes with `/milestone-review M<NNN>` as next command; verify green, hand-run skills/tests green.
+- 2026-09-02: T3 done — `/milestone` §2 gains the merged-but-`review` hygiene-owed bullet beside the open-PR bullet; `/hotfix` step 1 gains the merged-PR re-entry (step 7 only, head branch not `m<nnn>-*`, own close-authorization chip) and step 6 names `/hotfix` as the timeout stop's next command; `/cairn-release` step 3 names `/cairn-release`; verify green, hand-run skills/tests green.
 
 ## Decisions
 

@@ -30,6 +30,14 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
    route and becomes (or joins) a milestone — the disposition is unchanged,
    only the entry point is new. If an active milestone covers this code,
    flag the overlap instead of racing it.
+   **Merged-PR re-entry (M172).** A PR-reference argument whose
+   `gh pr view <N> --json state,headRefName` reports `MERGED` and a head
+   branch not matching `m<nnn>-*` (a hotfix branch or an adopted PR, merged
+   outside the session or after a stopped CI wait) runs step 7 only, steps
+   2–6 skipped: the candidate-row check, then — when the PR body carries a
+   `Fixes #N` line — one chip authorizing the issue close before any issue
+   write (step 6's chip never ran for it), then the close block with one
+   recap line naming the merged PR.
 
 2. **Branch — cut one, or adopt the PR's.** Check `git status` (dirty tree
    with unrelated changes → ask).
@@ -108,7 +116,9 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
    `gh pr checks <pr> --watch --fail-fast` wait with a timeout below the
    harness ceiling — the tracking-rules wait rule; a call moved to the
    background at the ceiling is reported from fresh `gh pr checks` state,
-   stopped with `TaskStop`, and the session stops there — never left armed,
+   stopped with `TaskStop`, and the session stops there with a close block
+   whose fenced next command is `/hotfix` with the PR reference — step 1's
+   merged-PR re-entry re-derives the merge state — never left armed,
    never merged past). On approval, write the merge-guard
    marker first: `cairn/.merge-approved` (gitignored; one line:
    `hotfix <slug> approved YYYY-MM-DD for PR #<N>` — the marker names the PR

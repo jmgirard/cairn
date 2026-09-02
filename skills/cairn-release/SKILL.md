@@ -63,7 +63,8 @@ toolchain-specific work at step 3.
    foreground call with a timeout below the harness ceiling or a
    `run_in_background` task acted on at its completion notification; a task
    still running at a commit, turn end, or `/clear` point is stopped with
-   `TaskStop` first; report results when they arrive. Any outward action (submitting, pushing a
+   `TaskStop` first, and that stop's close block names `/cairn-release` as
+   its fenced next command; report results when they arrive. Any outward action (submitting, pushing a
    tag) is the user's to take at the approval gate; this skill prepares, it does
    not push.
 
