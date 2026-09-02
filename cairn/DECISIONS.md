@@ -4763,3 +4763,47 @@ Falsifier: a review or implement session whose TOC the runtime renders
 unusably — observed clutter, or titles truncated past the label, never a
 count — reopens the grain; a live probe showing no implicit "Session Start"
 node reopens the carve-out.
+
+### D-130 (2026-09-02): The CI-wait timeout stop gains a resume route and the merged-but-`review` state a door — annotates D-128 (M172)
+
+**Context:** D-128's "On timeout" clause stops the session after reporting
+fresh check state and logging one line, but names no next command, and
+its "Resume is stateless" clause re-derives only check state. A review
+session that stopped there, or whose PR was merged outside the session,
+re-entered `/milestone-review` at step 1: the sync step pushed a branch the
+squash-merge had deleted, and post-merge hygiene — archive, ROADMAP `done`,
+the stamp — was skipped by accident. `cairn_next` already routes a `review`
+milestone to `/milestone-review`; the skill's session start had no route
+for a PR already merged.
+
+**Decision:** The timeout stop ends in a close block whose fenced next
+command is the invoking skill's own command, and a stateless resume
+re-derives the PR's merge state (`gh pr view <N> --json state`) beside its
+check state; the three restating sites (`/milestone-review` step 8,
+`/hotfix` step 6, `/cairn-release` step 3) name their own command.
+`/milestone-review`'s session start reads the header PR's state and routes
+four ways: merged and reviewed → post-merge hygiene, the recorded step-7
+approval standing as the issue-write authorization; merged but unreviewed
+→ post-hoc verification of the merged head with its own acceptance chip;
+open and approved → the gate re-posed and the merge from the marker write
+onward; anything else → step 1. Step 7 records its approval as a work-log
+line so the route can read it. `/milestone`'s audit reports a `review`
+milestone with a merged PR as hygiene owed; `/hotfix` re-enters at its
+close-out step for a merged hotfix or adopted PR. A hand-run prose guard
+pins the routes. D-128's stop-point rule stands unchanged: no watcher
+survives a stop point; the stop now says where to resume.
+
+Rejected at the plan gate, each with the evidence class that reopens it:
+hygiene-with-override for an unreviewed merged PR (an archived `done` row
+should rest on verified criteria, IP1) — reopened by a post-hoc
+verification that cannot be run against a merged head in practice;
+candidate rows in place of the in-scope hotfix and open-PR re-entries —
+reopened by the milestone tripping the split tripwires; a `gh` call inside
+`cairn_next.py` or a validator for the merged-but-`review` state (it stays
+offline, and D-128's proportionality stance holds) — reopened by a
+merged-but-`review` milestone reaching a hygiene stamp unarchived under the
+new prose.
+
+**Consequences:** A stopped or outside-merged review milestone resumes at
+the step the record shows is next, and post-merge hygiene is reached by
+route rather than by memory.
