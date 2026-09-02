@@ -1,6 +1,6 @@
 # M171: Chapter markers follow stretches, not phases
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -92,7 +92,7 @@ answers; any change to chip or close-block shape (D-124).
       M148 — guard pins near edited prose) and record the result in the work
       log; run both gating suites (lesson: any `skills/*/SKILL.md` edit runs
       them).
-- [ ] T4: Append the D-entry (AC4) with a durable-record preview; run
+- [x] T4: Append the D-entry (AC4) with a durable-record preview; run
       `python3 scripts/cairn_validate.py` and both gating suites, each exit
       code checked explicitly.
 
@@ -107,6 +107,7 @@ answers; any change to chip or close-block shape (D-124).
 - 2026-09-02: implement started on m171-per-stretch-chapters (cut from origin/main at 0e8adba); question gate skipped — the plan gate settled every open choice. T1 done: rulebook "Chapter markers" bullet now the per-stretch mandate (phase transitions plus directive-named stretches, session start implicit, `Tn:`/`ACn:` title shape); "Phase header" bullet gained the session-start re-emit clause; both gating suites exit 0.
 - 2026-09-02: T2 done: nine `Chapter markers:` directives rewritten to name each skill's stretches per AC2; sweep (`grep -rn "each phase transition"` over README, templates, DESIGN.md, shared modules) found no restatement outside the rulebook and the skills; both gating suites exit 0.
 - 2026-09-02: T3 done: `test_chapter_marker_mandate.py` retargeted — nine per-skill stretch tokens replace the shared `DIRECTIVE_TOKEN`, four rulebook asserts pin AC1 (a)(b)(c) and AC3, each registered in the mutation harness; hand-run `skills/tests` 587 tests OK (exit 0), discrimination checked by blanking a skill token and a rulebook clause (guard red both times); both gating suites exit 0.
+- 2026-09-02: T4 done: D-129 appended (supersedes D-021's cadence, annotates D-020 and D-027 item (1), names the falsifier); `cairn_validate` all checks passed (exit 0); both gating suites exit 0; hand-run `skills/tests` exit 0. All tasks checked — status → review.
 
 ## Decisions
 
