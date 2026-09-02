@@ -3014,3 +3014,37 @@ REGISTRY += [
         block="Not selected → the issue stays open and nothing is written",
     ),
 ]
+
+REGISTRY += [
+    # M166 T6: README states the three behaviors.
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReadmeStatesTheThreeBehaviors.test_plan_time_acknowledgement_offer",
+        target=README,
+        block="plan gate offers one option to post `Queued as M<NNN>: <title>`",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReadmeStatesTheThreeBehaviors.test_plan_time_acknowledgement_offer",
+        target=README,
+        block="posted only if you select it, never by default",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReadmeStatesTheThreeBehaviors.test_pr_closing_keyword",
+        target=README,
+        block="draft PR body ends with `Closes #N`",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReadmeStatesTheThreeBehaviors.test_post_merge_check_and_audit_orphan",
+        target=README,
+        block="review reads each issue's state and closes one still open with",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReadmeStatesTheThreeBehaviors.test_post_merge_check_and_audit_orphan",
+        target=README,
+        block="and offers to close it at the",
+    ),
+]

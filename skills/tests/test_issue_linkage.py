@@ -288,5 +288,38 @@ class TestAuditOrphanBullet(unittest.TestCase):
         self.assertIn("Not selected → the issue stays open and nothing is written", milestone())
 
 
+class TestReadmeStatesTheThreeBehaviors(unittest.TestCase):
+    """AC6: the collaborators section states each behavior the skills ship."""
+
+    def readme(self):
+        return SKILLS.parent.joinpath("README.md").read_text()
+
+    def test_plan_time_acknowledgement_offer(self):
+        self.assertRegex(
+            self.readme(),
+            r"plan gate offers one option to post `Queued as M<NNN>: <title>`",
+        )
+        self.assertRegex(self.readme(), r"posted only if you select it, never by default")
+
+    def test_pr_closing_keyword(self):
+        self.assertRegex(
+            self.readme(),
+            r"draft PR body ends with `Closes #N` \(or `Refs #N` for an issue"
+            r"\s+only partly resolved\)",
+        )
+
+    def test_post_merge_check_and_audit_orphan(self):
+        self.assertRegex(
+            self.readme(),
+            r"review reads each issue's state and closes one still open with"
+            r"\s+a comment naming the merged PR",
+        )
+        self.assertRegex(
+            self.readme(),
+            r"audit reports an issue\s+still open after its milestone is done "
+            r"and offers to close it at the\s+triage chip",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
