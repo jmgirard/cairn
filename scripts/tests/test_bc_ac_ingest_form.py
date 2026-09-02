@@ -10,7 +10,7 @@ reds `coverage-complete` — the intraclass failure, where six ingested BCs
 counted as AC8..AC13 with no Coverage line.
 
 M107's resolution is a FORM, not a code change: ingest each BC as a numbered
-acceptance criterion carrying its trace tag — `- [ ] AC-N (BCn): <verbatim>` —
+acceptance criterion carrying its trace tag — `- [ ] ACn (BCm): <verbatim>` —
 and add its Coverage line. These tests pin both verdicts: the prescribed form
 is quiet on BOTH checks; the bare-ingest shape reds `coverage-complete` while
 `binding criteria` stays quiet (so the binding check alone cannot catch it).
@@ -55,7 +55,7 @@ def milestone(ac_body, coverage_body):
 
 
 # Prescribed form: a normal AC1 plus the two BCs ingested as numbered criteria
-# carrying their (BCn) trace tag, each given a Coverage line.
+# carrying their (BCm) trace tag, each given a Coverage line.
 AC_PRESCRIBED = (
     "- [ ] AC1: the normal criterion the milestone already had.\n"
     f"- [ ] AC2 (BC1): {BC1}\n"

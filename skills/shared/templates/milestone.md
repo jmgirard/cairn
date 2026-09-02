@@ -28,16 +28,20 @@ never "never".
 
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets.
+     Every item opens with its positional label — `ACn:` — the item's
+     position counted top-to-bottom, the number Coverage cites; an
+     insertion, removal, or reorder renumbers the labels and the Coverage
+     lines together.
      Driving RR set → its Binding criteria appear VERBATIM here (binding-
      criteria check), each ingested as a numbered criterion carrying its tag
-     — `- [ ] AC-N (BCn): <verbatim>` — with its own Coverage line, since
+     — `- [ ] ACn (BCm): <verbatim>` — with its own Coverage line, since
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] Each objectively checkable with evidence — a test that passes, a file
-      that exists, the active profile's verify/check output. Never vibes.
-- [ ] Code milestones always include: the active profile's `verify` slot clean
-      (`cairn/PROFILE.md`; for a toolchain whose profile names a fuller
+- [ ] AC1: Each objectively checkable with evidence — a test that passes, a
+      file that exists, the active profile's verify/check output. Never vibes.
+- [ ] AC2: Code milestones always include: the active profile's `verify` slot
+      clean (`cairn/PROFILE.md`; for a toolchain whose profile names a fuller
       pre-review check, that check too).
 
 ## Coverage
@@ -50,9 +54,12 @@ never "never".
 
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
-     change is amend-via-gate -->
+     change is amend-via-gate. Every item opens with its positional label —
+     `Tn:` — the item's position counted top-to-bottom, the number Coverage
+     cites; an insertion, removal, or reorder renumbers the labels and the
+     Coverage lines together. -->
 
-- [ ] Ordered concrete steps, each ≤ one working session, with file:line
+- [ ] T1: Ordered concrete steps, each ≤ one working session, with file:line
       references where known.
 
 ## Work log

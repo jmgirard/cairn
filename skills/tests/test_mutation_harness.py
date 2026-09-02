@@ -3048,3 +3048,108 @@ REGISTRY += [
         block="and offers to close it at the",
     ),
 ]
+
+REGISTRY += [
+    # M169: criteria and tasks carry positional labels. One entry per pinned
+    # block — the template's labeled examples, each section comment's
+    # position rule, the unified ingest form at both prose sites, plan step
+    # 4's labeling rule, and implement step 6's obligation on each branch.
+    Mutation(
+        guard="test_positional_labels",
+        test="TestTemplateLabelsItsExamples."
+             "test_acceptance_criteria_examples_are_labeled",
+        target=TEMPLATE,
+        block="AC1: Each objectively checkable",
+    ),
+    Mutation(
+        guard="test_positional_labels",
+        test="TestTemplateLabelsItsExamples.test_task_examples_are_labeled",
+        target=TEMPLATE,
+        block="T1: Ordered concrete steps",
+    ),
+    Mutation(
+        guard="test_positional_labels",
+        test="TestTemplateCommentsStateThePositionRule."
+             "test_acceptance_criteria_comment_states_the_rule",
+        target=TEMPLATE,
+        block="Every item opens with its positional label — `ACn:` — the "
+              "item's\n     position counted top-to-bottom, the number "
+              "Coverage cites",
+    ),
+    Mutation(
+        guard="test_positional_labels",
+        test="TestTemplateCommentsStateThePositionRule."
+             "test_acceptance_criteria_comment_states_the_rule",
+        target=TEMPLATE,
+        block="insertion, removal, or reorder renumbers the labels and the "
+              "Coverage\n     lines together",
+    ),
+    Mutation(
+        guard="test_positional_labels",
+        test="TestTemplateCommentsStateThePositionRule."
+             "test_tasks_comment_states_the_rule",
+        target=TEMPLATE,
+        block="Every item opens with its positional label —\n     `Tn:` — "
+              "the item's position counted top-to-bottom",
+    ),
+    Mutation(
+        guard="test_positional_labels",
+        test="TestTemplateCommentsStateThePositionRule."
+             "test_tasks_comment_states_the_rule",
+        target=TEMPLATE,
+        block="reorder renumbers the labels and the\n     Coverage lines "
+              "together",
+    ),
+    Mutation(
+        guard="test_positional_labels",
+        test="TestIngestFormIsUnified.test_template_comment_shows_the_unified_form",
+        target=TEMPLATE,
+        block="`- [ ] ACn (BCm): <verbatim>`",
+    ),
+    Mutation(
+        guard="test_positional_labels",
+        test="TestIngestFormIsUnified.test_brief_ingest_rule_shows_the_unified_form",
+        target=BRIEF,
+        block="`- [ ] ACn (BCm): <verbatim>`",
+    ),
+    Mutation(
+        guard="test_positional_labels",
+        test="TestPlanStepFourStatesTheLabelingRule."
+             "test_every_bullet_opens_with_its_label",
+        target=PLAN,
+        block="every criterion and task bullet\n     opens with its "
+              "positional label (`ACn:` / `Tn:`)",
+    ),
+    Mutation(
+        guard="test_positional_labels",
+        test="TestPlanStepFourStatesTheLabelingRule."
+             "test_label_equals_position_counted_top_to_bottom",
+        target=PLAN,
+        block="the label equal to\n     the item's position counted "
+              "top-to-bottom",
+    ),
+    Mutation(
+        guard="test_positional_labels",
+        test="TestPlanStepFourStatesTheLabelingRule."
+             "test_edits_renumber_labels_and_coverage_together",
+        target=PLAN,
+        block="any insertion, removal, or reorder renumbers the labels\n"
+              "     and the Coverage lines together",
+    ),
+    Mutation(
+        guard="test_positional_labels",
+        test="TestImplementStepSixRenumbersOnBothBranches."
+             "test_minor_branch_renumbers",
+        target=IMPLEMENT,
+        block="renumbers the `ACn:` /\n     `Tn:` labels and the Coverage "
+              "lines together",
+    ),
+    Mutation(
+        guard="test_positional_labels",
+        test="TestImplementStepSixRenumbersOnBothBranches."
+             "test_substantive_branch_renumbers",
+        target=IMPLEMENT,
+        block="renumbers\n     the `ACn:` / `Tn:` labels and the Coverage "
+              "lines together",
+    ),
+]

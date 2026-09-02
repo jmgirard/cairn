@@ -80,7 +80,9 @@ run ingestion first (see `/milestone-brief`).
    didn't know):
    - *Minor* (reorder tasks, refine wording outside the amendment-gated
      sections — Goal, Scope, Acceptance criteria — add a discovered
-     sub-task): edit the milestone file; one work-log line.
+     sub-task): edit the milestone file; one work-log line. A change that
+     adds, removes, or reorders a criterion or task renumbers the `ACn:` /
+     `Tn:` labels and the Coverage lines together.
    - *Substantive* (a criterion or scope must change; a change to
      acceptance-criterion wording is *Substantive* by definition): mini
      question gate with a recommendation, the proposed text shown verbatim
@@ -89,6 +91,8 @@ run ingestion first (see `/milestone-brief`).
      amendment as a dated work-log line
      (+ D-entry if cross-cutting); show the amended criterion/scope text
      verbatim in a guaranteed-rendered position (durable-record preview).
+     A change that adds, removes, or reorders a criterion or task renumbers
+     the `ACn:` / `Tn:` labels and the Coverage lines together.
      **Return-adjacent direction rule (D-118).** On a milestone whose
      work log records one or more defect returns, a proposed amendment
      that widens the criteria set — adding an acceptance criterion, or

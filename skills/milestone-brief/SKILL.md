@@ -85,7 +85,7 @@ start (any skill) when a manual RR appears:
    `## Binding criteria` section, the milestone it constrains sets its
    header's `Driving RR:` slot to `RR<NN>` and ingests each criterion
    verbatim into its `## Acceptance criteria` as a numbered acceptance
-   criterion carrying its trace tag — `- [ ] AC-N (BCn): <verbatim>` — and
+   criterion carrying its trace tag — `- [ ] ACn (BCm): <verbatim>` — and
    gives that criterion its own `## Coverage` line: `coverage-complete`
    counts every AC checkbox positionally, so a bare, unnumbered BC checkbox
    reds that check (M107). This runs through the `/milestone-implement`

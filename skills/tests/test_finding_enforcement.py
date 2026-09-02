@@ -38,7 +38,7 @@ class TestIngestRule(unittest.TestCase):
     def test_ingest_rule_prescribes_the_numbered_form(self):
         # M107: each BC ingests as a numbered, coverage-mappable criterion, not
         # a bare checkbox — else coverage-complete reds on the unmapped items.
-        self.assertIn("`- [ ] AC-N (BCn): <verbatim>`", self.text)
+        self.assertIn("`- [ ] ACn (BCm): <verbatim>`", self.text)
         self.assertIn("counts every AC checkbox positionally", self.text)
 
     def test_archive_move_is_robust_to_untracked(self):
@@ -75,7 +75,7 @@ class TestMilestoneTemplate(unittest.TestCase):
     def test_template_prescribes_the_ingest_form(self):
         # M107: the template teaches the same numbered, coverage-mapped form.
         text = read("shared", "templates", "milestone.md")
-        self.assertIn("`- [ ] AC-N (BCn): <verbatim>`", text)
+        self.assertIn("`- [ ] ACn (BCm): <verbatim>`", text)
         self.assertIn("coverage-complete counts AC checkboxes positionally",
                       text)
 

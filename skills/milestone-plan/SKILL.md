@@ -248,6 +248,11 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      gets a test" in tracking-rules): name the behavior that must be tested.
    - `Out:` items name where the excluded work lives instead.
    - Tasks ≤ one working session each, ordered by dependency.
+   - **Positional labels** (owner: plan): every criterion and task bullet
+     opens with its positional label (`ACn:` / `Tn:`), the label equal to
+     the item's position counted top-to-bottom in its section — the number
+     Coverage cites; any insertion, removal, or reorder renumbers the labels
+     and the Coverage lines together, never one without the other.
    - **Coverage map** (owner: plan): after the criteria and tasks are
      written, author the Coverage section — one line per acceptance
      criterion mapping it to the task(s) that satisfy it, by positional
