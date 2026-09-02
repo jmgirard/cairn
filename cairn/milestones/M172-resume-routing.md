@@ -101,7 +101,7 @@ others (M167's outside-merges audit owns that).
       work" (~lines 250–258): the "On timeout" clause ends in a close block
       with the invoking skill's command; "Resume is stateless" adds merge
       state. Keep `skills/tests/test_wait_rule.py` anchors intact.
-- [ ] T2: `skills/milestone-review/SKILL.md`: Session start (~line 17)
+- [x] T2: `skills/milestone-review/SKILL.md`: Session start (~line 17)
       gains the four-way route of AC1; step 7 (~line 287) appends the
       approval work-log line; step 8's timeout clause (~line 325) names
       `/milestone-review M<NNN>` as the close block's next command.
@@ -129,6 +129,7 @@ others (M167's outside-merges audit owns that).
 
 - 2026-09-02: /milestone-implement started; branch m172-resume-routing cut from main at 83b10de; question gate skipped — the plan left no genuinely open choice (work-log line shapes for the approval and re-entry lines fixed in T2).
 - 2026-09-02: T1 done — tracking-rules "On timeout" clause now ends in a close block naming the invoking skill's command; "Resume is stateless" re-derives merge state via `gh pr view <N> --json state` beside check state; M170 anchors intact; verify green (scripts 121, hooks 588), hand-run skills/tests green.
+- 2026-09-02: T2 done — `/milestone-review` Session start carries the four-way resume route (a)–(d) on `gh pr view <N> --json state,mergedAt` plus the Review section; step 7 appends `step-7 approval: PR #<N> approved for merge`; step 8's timeout stop closes with `/milestone-review M<NNN>` as next command; verify green, hand-run skills/tests green.
 
 ## Decisions
 

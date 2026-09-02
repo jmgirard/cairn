@@ -20,6 +20,33 @@ Read, in order: `cairn/ROADMAP.md`, the target milestone file,
 `cairn/DECISIONS.md`. Status must be `review` (or the user explicitly
 overrides — log the override).
 
+**Resume routing (M172).** When the target milestone's `Branch/PR` header
+carries a PR URL, read that PR's state before step 1 — `gh pr view <N>
+--json state,mergedAt` (N from the URL) — and route on the state and the
+Review section; a stopped CI wait or a merge made outside the session
+re-enters here, at the step the record shows is next:
+
+- (a) `MERGED`, every acceptance-criterion box ticked, and a work-log line
+  recording step-7 approval (`step-7 approval: PR #<N> …`) → append one
+  work-log line naming the PR, its `mergedAt` value, and the re-entry
+  (`resume: PR #<N> merged <mergedAt>; re-entering at step 9`), then step 9
+  with steps 1–8 skipped — the recorded approval stands as step 9's
+  issue-write authorization.
+- (b) `MERGED` otherwise (a box unticked, or no approval line) → the same
+  work-log line, plus a chat statement that verification never ran before
+  the merge; then steps 3–7 executed against the merged default-branch head
+  (check it out and pull; Review-section evidence lands by docs-only
+  commit), step 7's chip posed with question text naming acceptance of the
+  post-hoc verification and the issue writes it authorizes — a decline logs
+  the requested changes as tasks and sets status `in-progress` (step 7's
+  decline exit); on acceptance, step 9 with step 8 skipped.
+- (c) `OPEN`, every box ticked, and a recorded approval → step 1 re-run,
+  the step-7 chip re-posed, and on approval step 8 from the marker write
+  onward.
+- (d) any other state, or a state above whose conditions are not met →
+  step 1. A `gh` that is missing, unauthenticated, or has no remote → step
+  1, the recap naming which of the three it was.
+
 ## Workflow
 
 1. **Sync with the default branch first** — detect it (tracking-rules git
@@ -309,7 +336,9 @@ overrides — log the override).
    never a prose yes/no: the recommended option merges (e.g. `Merge PR #N to
    <default-branch>`) and a decline option is present. Approval withheld (or declined at
    the chip) → log the requested changes as tasks, status back to
-   `in-progress`, stop.
+   `in-progress`, stop. Approval appends one work-log line naming the PR
+   number it approved (`step-7 approval: PR #<N> approved for merge`) — the
+   line the Session-start resume route reads — before step 8's marker write.
 
 8. **On approval — and only then:** record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
@@ -326,8 +355,10 @@ overrides — log the override).
    below the harness ceiling — one watcher, the tracking-rules wait rule; a
    call moved to the background at the ceiling is reported from fresh
    `gh pr checks` state, stopped with `TaskStop`, and the session stops
-   there — never left armed at the merge, a commit, or a `/clear` point,
-   never merged past; a PR that reports no checks
+   there with a close block whose fenced next command is
+   `/milestone-review M<NNN>` — the Session-start resume route re-derives
+   the merge state — never left armed at the merge, a commit, or a `/clear`
+   point, never merged past; a PR that reports no checks
    exits 1 at once and is mergeable on local green where the profile's
    consistency-gate says so). Red CI → fix on the branch,
    re-verify, re-request approval if the fix was nontrivial. When green:
