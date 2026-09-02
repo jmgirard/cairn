@@ -6,7 +6,7 @@
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
-- **Branch/PR:** m172-resume-routing
+- **Branch/PR:** m172-resume-routing · https://github.com/jmgirard/cairn/pull/175
 
 ## Goal
 
@@ -40,7 +40,7 @@ others (M167's outside-merges audit owns that).
 
 ## Acceptance criteria
 
-- [ ] AC1: `/milestone-review`'s "Session start" section states that when
+- [x] AC1: `/milestone-review`'s "Session start" section states that when
       the target milestone's `Branch/PR` header carries a PR URL, the
       session reads that PR's state with `gh pr view <N> --json
       state,mergedAt` (N from the URL) before step 1 and routes on the
@@ -61,7 +61,7 @@ others (M167's outside-merges audit owns that).
       step 1; a `gh` that is missing, unauthenticated, or has no remote →
       step 1 with the recap naming which. Step 7 states that approval
       appends one work-log line naming the PR number it approved.
-- [ ] AC2: The tracking-rules "Waiting on CI and background work"
+- [x] AC2: The tracking-rules "Waiting on CI and background work"
       paragraph's "On timeout" clause states that the stop emits a close
       block whose fenced next command is the invoking skill's own command,
       and its "Resume is stateless" clause names the PR's merge state
@@ -70,18 +70,18 @@ others (M167's outside-merges audit owns that).
       step 8, `/hotfix` step 6, `/cairn-release` step 3 — each state that
       the stop's close block names that skill's own command as the next
       command.
-- [ ] AC3: `/milestone`'s §2 audit list carries a bullet, adjacent to the
+- [x] AC3: `/milestone`'s §2 audit list carries a bullet, adjacent to the
       existing bullet for a `review` milestone with an open unmerged PR,
       stating that a `review` milestone whose header PR reports `MERGED` is
       reported as post-merge hygiene owed and routed to
       `/milestone-review M<NNN>`.
-- [ ] AC4: `/hotfix` step 1 states that a PR-reference argument whose
+- [x] AC4: `/hotfix` step 1 states that a PR-reference argument whose
       `gh pr view <N> --json state,headRefName` reports `MERGED` and a head
       branch not matching `m<nnn>-*` runs step 7 only, steps 2–6 skipped:
       the candidate-row check, then — when the PR body carries a `Fixes #N`
       line — one chip authorizing the issue close before any issue write,
       then the close block with one recap line naming the merged PR.
-- [ ] AC5: The active profile's `verify` slot — `python3 -m unittest
+- [x] AC5: The active profile's `verify` slot — `python3 -m unittest
       discover -s scripts/tests` and `python3 -m unittest discover -s
       hooks/tests` from the repo root — passes at the branch head.
 
@@ -138,3 +138,10 @@ others (M167's outside-merges audit owns that).
 ## Decisions
 
 ## Review
+
+- 2026-09-02 AC1: read `skills/milestone-review/SKILL.md` Session start at 257f506 — the M172 resume-routing paragraph triggers on a `Branch/PR` PR URL, reads `gh pr view <N> --json state,mergedAt` before step 1, and routes (a) merged+ticked+approval → resume line then step 9 with 1–8 skipped and the approval as issue-write authorization; (b) merged otherwise → resume line, chat statement, steps 3–7 on the merged head, post-hoc acceptance chip naming the issue writes, decline → tasks + `in-progress`, acceptance → step 9 skipping 8; (c) open+ticked+approval → step 1 re-run, chip re-posed, step 8 from the marker write; (d) anything else → step 1, a missing/unauthenticated/no-remote `gh` → step 1 with the recap naming which. Step 7 (line 340) appends `step-7 approval: PR #<N> approved for merge`. Pass.
+- 2026-09-02 AC2: read `skills/shared/tracking-rules.md` lines 250–260 at 257f506 — "On timeout" ends with a close block whose fenced next command is the invoking skill's own command (`/milestone-review M<NNN>`, `/hotfix`, `/cairn-release`); "Resume is stateless" re-derives check state from `gh pr checks` and merge state from `gh pr view <N> --json state`. The three restating sites: `/milestone-review` step 8 (line 359) names `/milestone-review M<NNN>`, `/hotfix` step 6 (line 120) names `/hotfix` with the PR reference, `/cairn-release` step 3 (line 66) names `/cairn-release`. Pass.
+- 2026-09-02 AC3: read `skills/milestone/SKILL.md` §2 lines 124–129 at 257f506 — the bullet for a `review` milestone whose header PR reports `MERGED` (`gh pr view <N> --json state`) reports post-merge hygiene owed and routes to `/milestone-review M<NNN>`, immediately below the open-unmerged-PR bullet. Pass.
+- 2026-09-02 AC4: read `skills/hotfix/SKILL.md` step 1 lines 33–40 at 257f506 — a PR-reference argument whose `gh pr view <N> --json state,headRefName` reports `MERGED` with a head branch not matching `m<nnn>-*` runs step 7 only, steps 2–6 skipped: candidate-row check, then one chip authorizing the issue close when the body carries `Fixes #N` before any issue write, then the close block with one recap line naming the merged PR. Pass.
+- 2026-09-02 AC5: ran the `verify` slot from the repo root at 257f506 — `python3 -m unittest discover -s scripts/tests` 329 tests OK (exit 0); `python3 -m unittest discover -s hooks/tests` 121 tests OK (exit 0). Hand-run `skills/tests` 598 tests OK (exit 0), noted for the D-109 stamp. No Driving RR — projection-vs-outcome no-ops. Pass.
+- 2026-09-02 consistency gate: `cairn_validate.py` exit 0 at 257f506 (16 PASS, 7 OK, `release window` advisory silent); Principles touched — so `cairn_impact --changed` skipped; `generic` profile names no toolchain checks; D-130 present once, annotating D-128 (T5). Defect-return count for this milestone: 0. Pass.
