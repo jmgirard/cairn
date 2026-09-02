@@ -12,6 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M169 | Criteria and tasks carry positional labels | planned | — | normal | milestones/M169-positional-labels.md |
 | M168 | Open GitHub inboxes are swept at the plan gate | done | — | normal | milestones/archive/M168-plan-gate-inbox-sweep.md |
 | M167 | Outside merges reach the health audit | done | — | normal | milestones/archive/M167-outside-merges-audit.md |
 | M166 | GitHub issues are linked at plan time and closed at merge | done | — | normal | milestones/archive/M166-issue-linkage.md |
