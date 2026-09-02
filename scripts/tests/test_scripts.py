@@ -1435,6 +1435,9 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # verification claim with a date, hence `ok` — unlike its sibling
     # effort-experiment-notes (`exempt`), it makes no nothing-to-re-verify
     # claim, and its live-store cost snapshot does age.
+    # M170 adds the wait-mechanisms ledger: a first-hand record of a
+    # scratch-repo experiment, its status claiming nothing to re-verify
+    # against, hence `exempt`.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "effort-experiment-notes.md": "exempt",
@@ -1461,6 +1464,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "session-cost-notes.md": "ok",
         "spec-kit.md": "ok",
         "task-master.md": "ok",
+        "wait-mechanisms.md": "exempt",
     }
 
     def test_every_shipped_page_keeps_its_pinned_state(self):
