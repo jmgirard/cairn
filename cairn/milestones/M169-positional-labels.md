@@ -1,6 +1,6 @@
 # M169: Criteria and tasks carry positional labels
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -83,7 +83,7 @@ history is never rewritten; a change to `cairn_validate`'s positional counting
       bullet, lines 251–258) to add the labeling and renumbering rule, and
       `skills/milestone-implement/SKILL.md` step 6 (lines 79–92) to state the
       renumbering obligation on the minor and the substantive branch.
-- [ ] T4: Run both gating suites and the hand-run `skills/tests` suite from
+- [x] T4: Run both gating suites and the hand-run `skills/tests` suite from
       the repo root, each exit code checked explicitly (LESSONS M56+M65);
       fix any red.
 
@@ -97,6 +97,7 @@ history is never rewritten; a change to `cairn_validate`'s positional counting
 - 2026-09-02: started by /milestone-implement on branch m169-positional-labels; question gate skipped (the plan gate settled the label form, the both-branch renumbering, and the no-validator choice). T1: `skills/tests/test_positional_labels.py` authored red-first (12 tests, 12 failures against the unedited files); 13 mutation entries registered, one per pinned block.
 - 2026-09-02: T2: template example items labeled `AC1:`/`AC2:`/`T1:`, position rule added to both section comments, ingest form changed to `ACn (BCm):` at all five sites; `git grep -n "AC-N" -- skills scripts` returns nothing (exit 1).
 - 2026-09-02: T3: plan step 4 gains a **Positional labels** bullet ahead of the Coverage-map bullet; implement step 6 states the renumbering sentence on the minor and the substantive branch (wrapped differently so each mutation block is unique).
+- 2026-09-02: T4: at ec680c6, scripts/tests 329 OK (exit 0), hooks/tests 121 OK (exit 0), hand-run skills/tests 578 OK (exit 0, mutation harness included), cairn_validate all checks passed. All tasks done; status → review.
 
 ## Decisions
 
