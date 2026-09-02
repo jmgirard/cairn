@@ -1,6 +1,6 @@
 # M166: GitHub issues are linked at plan time and closed at merge
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -55,7 +55,7 @@ A milestone that resolves a GitHub issue names the issue at plan time, carries a
 - [x] T4: `/hotfix` step 7 (`skills/hotfix/SKILL.md`, after the candidate-row sentence); guard entry.
 - [x] T5: `/milestone` §2 orphan bullet beside the untriaged-inboxes bullet (`skills/milestone/SKILL.md:125`), bounded to the ROADMAP's retained terminal rows, and the §3 close disposition (`:182-190`); narrow the §2 never-write sentence to the reads and record that narrowing of M74's shipped rule as a milestone-local decision; guard entries vary the archive fixture (no entry, `partial` only, multi-entry, unreachable `gh`).
 - [x] T6: README "Working with collaborators" bullet(s) (`README.md:282-287`), each sentence written against the shipped skill lines (derived-claims rule).
-- [ ] T7: Run both gating suites and hand-run `skills/tests`; at review, the PR body carries `Closes #168` (the slot dictates it) and the post-merge read is the live proof.
+- [x] T7: Run both gating suites and hand-run `skills/tests`; at review, the PR body carries `Closes #168` (the slot dictates it) and the post-merge read is the live proof.
 
 ## Work log
 
@@ -71,6 +71,7 @@ A milestone that resolves a GitHub issue names the issue at plan time, carries a
 - 2026-09-02: T4 done — hotfix step 7 post-merge read and close-if-open for a `Fixes #N` line, no-op without one, same unreachable-`gh` reporting; 3 asserts + 3 entries.
 - 2026-09-02: T5 done — audit §2 orphan bullet (bounded to retained terminal rows; no-clause/partial-only rows read nothing, multi-entry rows read each; writes nothing; unreachable-`gh` rule unchanged), §2 never-write sentence narrowed to the reads, §3 `close` disposition at the triage chip; milestone-local decision below; 8 asserts + 10 entries; skills 563 hand-run green.
 - 2026-09-02: T6 done — README collaborators bullet states the three behaviors, each sentence written against the shipped skill lines of T2/T3/T5; 3 guard asserts + 5 mutation entries.
+- 2026-09-02: T7 implement half done — on the branch: scripts 329, hooks 121, skills 566 hand-run, all green; the `Closes #168` PR-body check and the post-merge #168 state read are review's live proof. Status → review.
 
 ## Decisions
 
