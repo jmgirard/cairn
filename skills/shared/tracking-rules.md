@@ -296,7 +296,8 @@ These rules bind all chat output while any cairn skill is active.
 - **Phase header.** Orient with Markdown headings, not an inline banner: a `#` names the unit of work, a `##` the phase.
   Milestone skills: `# Milestone <NN>: <title>` → `## Plan` / `## Implement` / `## Review`; every other skill states its
   own pair in its `Phase header:` directive. One `#` per unit of work (re-emit when the unit changes), a `##` per phase
-  entry; replies within a phase are plain deltas underneath.
+  entry; replies within a phase are plain deltas underneath. The `#`/`##` pair is emitted at each session start,
+  before the first delta — a post-`/clear` session included.
 - **Deltas, not dumps; narrate outcomes, not deliberation.** Between gates, report what changed since the last report —
   never a restated plan, pasted command output, or a running readout of reasoning; a one-line signpost or a compact
   summary where a question needs context is fine. Two exceptions: drafted durable-record text (per the Durable-record
@@ -352,9 +353,11 @@ These rules bind all chat output while any cairn skill is active.
 - **Contextual chip construction.** Compose options from the actual session state, not a fixed menu; chip menus in
   skills are examples, not scripts. Invariants: recommended option first and marked, ≤4 options, a stop/pause option
   present, and a chip is a user stop — never auto-proceed.
-- **Chapter markers (per-phase mandate).** Mark a chapter at each phase transition (session start implicit) via the
-  runtime's chapter mechanism (`mark_chapter` in Claude Code — it drives the navigable TOC); absent one, the H1/H2
-  headers are the fallback.
+- **Chapter markers (per-stretch mandate).** Mark a chapter at each phase transition and at each stretch boundary the
+  active skill's `Chapter markers:` directive names — a task, a criterion, a gate step (session start implicit) — via
+  the runtime's chapter mechanism (`mark_chapter` in Claude Code — it drives the navigable TOC); absent one, the H1/H2
+  headers are the fallback. A chapter's title opens with the item's positional label (`Tn:` / `ACn:`) where the
+  stretch is a task or criterion, and is a short noun phrase otherwise.
 - **Copy-run commands get their own fenced block.** Handing the user a command to run → its own fenced code block, never
   inline backticks; naming a command, path, or symbol in prose → inline backticks; a gate chip's `→ /skill` option →
   neither fence nor handoff (selecting the option is what acts). Slash commands count as commands. A step ending the

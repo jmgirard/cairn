@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M171 | Chapter markers follow stretches, not phases | planned | — | normal | milestones/M171-per-stretch-chapters.md |
+| M171 | Chapter markers follow stretches, not phases | in-progress | — | normal | milestones/M171-per-stretch-chapters.md |
 | M170 | Waiting on CI and background work follows a tested rule | done | — | normal | milestones/archive/M170-wait-doctrine.md |
 | M169 | Criteria and tasks carry positional labels | done | — | normal | milestones/archive/M169-positional-labels.md |
 | M168 | Open GitHub inboxes are swept at the plan gate | done | — | normal | milestones/archive/M168-plan-gate-inbox-sweep.md |
