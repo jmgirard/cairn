@@ -36,7 +36,7 @@ history is never rewritten; a change to `cairn_validate`'s positional counting
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/shared/templates/milestone.md`'s Acceptance criteria and
+- [x] AC1: `skills/shared/templates/milestone.md`'s Acceptance criteria and
       Tasks sections each show every example checkbox item opening with its
       positional label — `- [ ] AC1:`, `- [ ] AC2:` and `- [ ] T1:` — and each
       section's comment states the rule: the label is the item's position
@@ -111,3 +111,8 @@ history is never rewritten; a change to `cairn_validate`'s positional counting
 - AC3 — PASS. From the repo root: `scripts/tests` 329 tests OK, exit 0; `hooks/tests` 121 tests OK, exit 0. Hand-run `skills/tests` 578 tests OK, exit 0.
 - Consistency gate: `cairn_validate.py` all checks passed, exit 0; no principle touched, `cairn_impact` skipped; generic profile names no toolchain checks.
 - Disposition: defect return 1 (AC1 fails inside the grep's named domain); the fresh-context review fan-out was not spawned this pass.
+- Pass 2, 2026-09-02, PR #172 at abacdab; main still at 553ba8e (the branch's merge base), so no merge-in was needed.
+- AC1 — PASS. Template Acceptance criteria section shows `- [ ] AC1:`, `- [ ] AC2:` (lines 41, 43) and Tasks shows `- [ ] T1:` (line 62); both section comments state the position rule (lines 31–34, 57–60). Ingest form `- [ ] ACn (BCm): <verbatim>` present at all five sites (template line 37; brief SKILL.md line 88; test_bc_ac_ingest_form.py line 13; test_finding_enforcement.py lines 41, 78). `git grep -n "AC-N" -- skills scripts` returns no match, exit 1. Ticked.
+- AC2 — PASS. Plan step 4 Positional labels bullet (skills/milestone-plan/SKILL.md lines 251–255) states the label rule, top-to-bottom position, and joint renumbering of labels and Coverage lines; implement step 6 carries the renumbering sentence on the Minor branch (lines 82–84) and the Substantive branch (lines 93–94).
+- AC3 — PASS. From the repo root: `scripts/tests` 329 OK, exit 0; `hooks/tests` 121 OK, exit 0. Hand-run `skills/tests` 578 OK, exit 0.
+- Consistency gate: `cairn_validate.py` all checks passed, exit 0; no principle touched, `cairn_impact` skipped; generic profile names no toolchain checks. No Driving RR.
