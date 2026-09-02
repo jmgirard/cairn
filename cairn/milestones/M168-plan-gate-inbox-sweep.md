@@ -6,7 +6,7 @@
 - **Driving RR:** —
 - **Principles touched:** IP2, IP3
 - **Resolves:** —
-- **Branch/PR:** m168-plan-gate-inbox-sweep
+- **Branch/PR:** m168-plan-gate-inbox-sweep · https://github.com/jmgirard/cairn/pull/171
 
 ## Goal
 
@@ -26,11 +26,11 @@
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/milestone-plan/SKILL.md` step 2's collision check names the open GitHub inboxes as a sweep target: it carries verbatim the two read commands `gh issue list --state open --json number,title,url` and `gh pr list --state open --json number,title,url,author,headRefName`, the own-work filter (a PR the operator authored, or whose head branch is `m<nnn>-*` or `hotfix-*`, is dropped), and the sentence that the sweep writes nothing to GitHub — verified by reading the shipped text.
-- [ ] AC2: The same text states the per-hit rule: an open issue overlapping the goal being planned is posed at the step-3 gate as a `Resolves:` entry (`closes` or `partial`) or as a candidate row; an open PR overlapping it is posed as a candidate row naming `/hotfix` as its door; items with no overlap take no disposition at the plan gate — the text reports their count in the gate's chat and names `/milestone` §3 as where they are triaged — verified by reading the shipped text.
-- [ ] AC3: The same text states the unreachable-inbox rule: when `gh` is missing, unauthenticated, or the repo has no remote, the plan names which of the three it was, skips the sweep, and continues planning — verified by reading the shipped text.
-- [ ] AC4: Step 4's `Resolves:` bullet lists a gate-accepted step-2 inbox hit among the sources that fill the slot, appended after the existing sources; README's "Contributions come in through you" bullet states in one sentence that the plan gate reads the open inboxes for items overlapping the scope being planned — both verified by reading the shipped text.
-- [ ] AC5: The `verify` slot's two suites (`python3 -m unittest discover -s scripts/tests`, `python3 -m unittest discover -s hooks/tests`) exit 0 on the branch.
+- [x] AC1: `skills/milestone-plan/SKILL.md` step 2's collision check names the open GitHub inboxes as a sweep target: it carries verbatim the two read commands `gh issue list --state open --json number,title,url` and `gh pr list --state open --json number,title,url,author,headRefName`, the own-work filter (a PR the operator authored, or whose head branch is `m<nnn>-*` or `hotfix-*`, is dropped), and the sentence that the sweep writes nothing to GitHub — verified by reading the shipped text.
+- [x] AC2: The same text states the per-hit rule: an open issue overlapping the goal being planned is posed at the step-3 gate as a `Resolves:` entry (`closes` or `partial`) or as a candidate row; an open PR overlapping it is posed as a candidate row naming `/hotfix` as its door; items with no overlap take no disposition at the plan gate — the text reports their count in the gate's chat and names `/milestone` §3 as where they are triaged — verified by reading the shipped text.
+- [x] AC3: The same text states the unreachable-inbox rule: when `gh` is missing, unauthenticated, or the repo has no remote, the plan names which of the three it was, skips the sweep, and continues planning — verified by reading the shipped text.
+- [x] AC4: Step 4's `Resolves:` bullet lists a gate-accepted step-2 inbox hit among the sources that fill the slot, appended after the existing sources; README's "Contributions come in through you" bullet states in one sentence that the plan gate reads the open inboxes for items overlapping the scope being planned — both verified by reading the shipped text.
+- [x] AC5: The `verify` slot's two suites (`python3 -m unittest discover -s scripts/tests`, `python3 -m unittest discover -s hooks/tests`) exit 0 on the branch.
 
 ## Coverage
 
@@ -62,3 +62,17 @@
 ## Decisions
 
 ## Review
+
+- 2026-09-02: /milestone-review started. main unmoved since the branch was cut; branch pushed; draft PR #171 opened.
+
+## Review
+
+- 2026-09-02 evidence, on the branch head (`git diff main..HEAD` read this session):
+  - AC1: `skills/milestone-plan/SKILL.md` step 2's new **Inbox sweep** paragraph carries both commands verbatim (`gh issue list --state open --json number,title,url`; `gh pr list --state open --json number,title,url,author,headRefName`), the own-work filter (operator-authored PR, or head branch `m<nnn>-*` / `hotfix-*`, dropped), and "The sweep writes nothing to GitHub — no labels, comments, or closes." Pass.
+  - AC2: same paragraph: issue hit → `Resolves:` entry (`closes` or `partial`) or candidate row at the step-3 gate; PR hit → candidate row naming `/hotfix` as its door; non-hits take no disposition, "report their count in the gate's chat; `/milestone` §3 is where they are triaged". Pass.
+  - AC3: same paragraph: "When `gh` is missing, unauthenticated, or the repo has no remote: name which of the three it was, skip the sweep, and continue planning." Pass.
+  - AC4: step 4's Resolves bullet reads "...or an issue the user names, or a step-2 inbox hit the gate accepted — one entry per issue" (appended after the two existing sources); README's "Contributions come in through you" bullet gains one sentence: the plan's collision check reads both open inboxes and offers a disposition only for an item overlapping the scope being planned. Pass.
+  - AC5: from the repo root, `python3 -m unittest discover -s scripts/tests` exit 0 (329 tests), `-s hooks/tests` exit 0 (121). Pass. Hand-run `skills/tests` also 566 OK, exit 0 (non-gating, D-109).
+- Consistency gate: `cairn_validate.py` all checks passed (exit 0); no DESIGN.md principle changed (diff touches no `cairn/DESIGN.md`), so `cairn_impact` is skipped; `generic` profile's consistency-gate slot names no toolchain checks. Pass.
+- Driving RR: none — projection-vs-outcome no-ops.
+
