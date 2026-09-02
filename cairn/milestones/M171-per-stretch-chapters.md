@@ -6,7 +6,7 @@
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
-- **Branch/PR:** m171-per-stretch-chapters
+- **Branch/PR:** m171-per-stretch-chapters · https://github.com/jmgirard/cairn/pull/174
 
 ## Goal
 
@@ -38,13 +38,13 @@ answers; any change to chip or close-block shape (D-124).
 
 ## Acceptance criteria
 
-- [ ] AC1: The tracking-rules "Chapter markers" rule states (a) a chapter
+- [x] AC1: The tracking-rules "Chapter markers" rule states (a) a chapter
       is marked at each phase transition and at each stretch boundary a
       skill's `Chapter markers:` directive names, (b) the session-start-
       implicit carve-out stays, and (c) a chapter's title opens with the
       item's positional label (`Tn:` / `ACn:`) where the stretch is a task
       or criterion, and is a short noun phrase otherwise.
-- [ ] AC2: Each of the nine phase skills' `Chapter markers:` directive
+- [x] AC2: Each of the nine phase skills' `Chapter markers:` directive
       names that skill's stretches, this set and no other: plan —
       investigation, question gate, solidify-and-commit; implement — the
       question gate, each task, each plan amendment; review — each
@@ -53,13 +53,13 @@ answers; any change to chip or close-block shape (D-124).
       and cairn-release — each numbered step; milestone-brief, cairn-init,
       milestone, design-interview — each phase its `Phase header:`
       directive names.
-- [ ] AC3: The tracking-rules "Phase header" rule's bullet states that the
+- [x] AC3: The tracking-rules "Phase header" rule's bullet states that the
       `#`/`##` pair is emitted at each session start before the first
       delta, a post-`/clear` session included.
-- [ ] AC4: A D-entry supersedes D-021's per-phase cadence, annotates D-020
+- [x] AC4: A D-entry supersedes D-021's per-phase cadence, annotates D-020
       and D-027 item (1), states the per-stretch cadence and the
       session-start re-emit, and names a falsifier.
-- [ ] AC5: Both gating suites (`python3 -m unittest discover -s
+- [x] AC5: Both gating suites (`python3 -m unittest discover -s
       scripts/tests`; `python3 -m unittest discover -s hooks/tests`) exit 0
       from the repo root.
 
@@ -112,3 +112,10 @@ answers; any change to chip or close-block shape (D-124).
 ## Decisions
 
 ## Review
+
+- 2026-09-02 AC1: read `skills/shared/tracking-rules.md` "Chapter markers (per-stretch mandate)" bullet (lines 356–360 at 43c06c4): (a) marks at each phase transition and at each stretch boundary the skill's `Chapter markers:` directive names; (b) "(session start implicit)" carve-out present; (c) title opens with `Tn:`/`ACn:` for a task or criterion, short noun phrase otherwise. PASS.
+- 2026-09-02 AC2: grepped `Chapter markers:` in all nine `skills/*/SKILL.md`: plan names investigation, the question gate, solidify-and-commit; implement names the question gate, each task, each plan amendment; review names each acceptance criterion in step 3, then the consistency gate, the independent review, the approval gate, post-merge hygiene; hotfix and cairn-release name each numbered step; milestone-brief, cairn-init, milestone, design-interview name each phase their `Phase header:` directive names. No directive names any other stretch. PASS.
+- 2026-09-02 AC3: read the "Phase header" bullet (`skills/shared/tracking-rules.md` lines 296–300): "The `#`/`##` pair is emitted at each session start, before the first delta — a post-`/clear` session included." PASS.
+- 2026-09-02 AC4: `cairn/DECISIONS.md` D-129 (line 4727) heading names "supersedes D-021's per-phase cadence, annotates D-020 and D-027 item (1)"; the Decision paragraph states the per-stretch cadence (the nine skills' stretches) and the session-start re-emit; Consequences names the falsifier (a TOC the runtime renders unusably, or a live probe showing no implicit "Session Start" node). PASS.
+- 2026-09-02 AC5: from the repo root, `python3 -m unittest discover -s scripts/tests` — 329 tests OK, exit 0; `python3 -m unittest discover -s hooks/tests` — 121 tests OK, exit 0. Hand-run `skills/tests` (non-gating, D-109) — 587 tests OK, exit 0. PASS.
+- 2026-09-02 consistency gate: `cairn_validate.py` all checks passed (exit 0; `release window` advisory OK). Principles touched `—` → `cairn_impact --changed` skipped. Profile `generic` consistency-gate slot names no toolchain checks → no-op. Driving RR `—` → projection-vs-outcome no-op. Diff touches `skills/tests/*.py` (executable surface) and the tier is user-facing → full three-lens review.
