@@ -1,12 +1,12 @@
 # M169: Criteria and tasks carry positional labels
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
-- **Branch/PR:** —
+- **Branch/PR:** m169-positional-labels
 
 ## Goal
 
@@ -66,7 +66,7 @@ history is never rewritten; a change to `cairn_validate`'s positional counting
 
 ## Tasks
 
-- [ ] T1: Author the prose guard `skills/tests/test_positional_labels.py`
+- [x] T1: Author the prose guard `skills/tests/test_positional_labels.py`
       red-first: it pins the template's labeled example items and both section
       comments, the plan step-4 rule, and the implement step-6 obligation on
       both branches; register one mutation entry per pinned block in
@@ -94,6 +94,7 @@ history is never rewritten; a change to `cairn_validate`'s positional counting
 - 2026-09-02: plan gate chose a template-and-prose fix over a `criteria labels` validator advisory because the checker-regress shape recommends against extending a checker over tracking files (D-107) and no mislabel has yet reached a review; falsified by a milestone file whose label number differs from its position reaching `/milestone-review` in a tracked repo.
 - 2026-09-02: plan gate chose renumbering on both implement step-6 branches over the gated branch alone because a minor reorder is the likeliest desync path; falsified by the both-branch rule being logged as a user override or deviation in a work log.
 - 2026-09-02: plan gate chose the colon form `ACn:` / `Tn:` over any-separator labels because it is the form this repo's files have used since M130 and the binding tag fits as `ACn (BCm):`; falsified by an adopting repo's tooling requiring a different separator.
+- 2026-09-02: started by /milestone-implement on branch m169-positional-labels; question gate skipped (the plan gate settled the label form, the both-branch renumbering, and the no-validator choice). T1: `skills/tests/test_positional_labels.py` authored red-first (12 tests, 12 failures against the unedited files); 13 mutation entries registered, one per pinned block.
 
 ## Decisions
 
