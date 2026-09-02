@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-02 (M168 archived; M163 done-row pruned for terminal retention; "Inbox read at plan time" candidate row pruned, absorbed by M168; no issue writes; no lesson added or retired; no finding-absorbing row extended; no accepted limitations; suites on merged main: scripts 329, hooks 121, skills 566 hand-run — zero reds; validate green; caps ok; byte budgets `wc -c` 12,669 / 15,276 — both under; module budgets `wc -l -c` 54/3,187, 99/6,480, 188/12,250 — all under their headers.)_
+_Last hygiene check: 2026-09-02 (status audit after M168; nothing in flight; no issue or PR inbox items; no outside merges; issue #168 (M166 closes) confirmed closed; no tracking changes beyond this stamp; validate green; caps ok; byte budgets `wc -c` 12,669 / 15,276 — both under; module budgets `wc -l -c` 54/3,187, 99/6,480, 188/12,250 — all under their headers, records-hygiene one line short of its 55-line cap.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
