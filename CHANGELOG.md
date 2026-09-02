@@ -1,5 +1,52 @@
 # Changelog
 
+## 1.11.0 (2026-09-02)
+
+Six milestones since 1.10.1, on two themes: cairn now reads the repo's
+GitHub issues and pull requests at the moments where they matter, and the
+session-conduct rules that were untested (waiting on background work,
+where chapters go) are now grounded in evidence. Backward-compatible:
+existing tracked repos keep working unchanged.
+
+- **A milestone can name the issue it resolves, and GitHub closes it at
+  merge.** The milestone template gains a plan-owned `Resolves:` slot
+  (`#N closes` or `#N partial`). Planning fills it, review ends the PR body
+  with the matching `Closes` or `Refs` line and reads the issue back after
+  the merge to confirm it closed, and a hotfix does the same for a
+  `Fixes #N` issue. A partial fix rows the remainder as a candidate and can
+  leave a "queued as" comment on the issue at the gate.
+- **Open issues and pull requests are swept when you plan.** The planning
+  collision check now lists the repo's open issues and open PRs from other
+  authors. One that overlaps the goal being planned is posed at the question
+  gate as a `Resolves:` entry or a candidate row; the rest are counted and
+  left to the status audit. Nothing is written to GitHub, and an unreachable
+  `gh` skips the sweep with a note rather than blocking planning.
+- **Pull requests merged by someone else reach the health audit.** The
+  `/milestone` audit lists PRs merged since the last hygiene stamp by anyone
+  but the operator, shows which archived milestone summaries mention the
+  files each one touched, and carries each to the triage chip: a candidate
+  row, a hotfix, a planned milestone, or leave it.
+- **Waiting on CI or background work follows one tested rule.** The old
+  "one blocking wait" rule was replaced after an experiment over the
+  harness's actual wait mechanisms (foreground timeout ceiling, background
+  tasks, monitors, subagent notifications). Sessions now arm one watcher per
+  wait, use a foreground `gh pr checks --watch --fail-fast` with a timeout
+  under the ceiling for CI, report fresh state and stop the watcher on a
+  timeout, and never leave a watcher armed at a commit, turn end, or
+  `/clear` point. The experiment's findings ship as a reference note.
+- **Chapter markers follow the stretches inside a phase.** A session that
+  holds one phase now gets a chapter per task, per criterion, or per gate
+  step rather than one chapter per phase, so the navigable table of contents
+  is useful mid-milestone. Titles open with the item's label (`T3:`,
+  `AC2:`), and the phase header is re-emitted at every session start,
+  including after `/clear`.
+- **Criteria and tasks carry their positional labels.** The milestone
+  template's example items read `AC1:` and `T1:`, and the plan and implement
+  skills state the rule: the label is the item's position from the top, the
+  number Coverage cites, and inserting, removing, or reordering renumbers
+  labels and Coverage lines together. The binding-criterion ingest form is
+  unified to `ACn (BCm):` everywhere.
+
 ## 1.10.1 (2026-09-01)
 
 - **CRAN comments stay short.** For R packages, the release walk now writes
