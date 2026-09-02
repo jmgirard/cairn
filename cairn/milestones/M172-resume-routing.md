@@ -134,6 +134,7 @@ others (M167's outside-merges audit owns that).
 - 2026-09-02: T4 done — `skills/tests/test_resume_routing.py` pins the trigger, all four routes (a)–(d) whitespace-collapsed, step 7's approval line, the audit bullet and its adjacency, and the hotfix re-entry; nine blocks registered in `test_mutation_harness.py`, each proven to red its guard when blanked; scripts/tests, hooks/tests, and the hand-run suite green.
 - 2026-09-02: T5 done — D-130 appended, annotating D-128 with the resume route and the merged-but-`review` door, the three gate rejections each carrying its reopening evidence class; validate green.
 - 2026-09-02: all tasks checked; verify green (scripts/tests, hooks/tests), hand-run skills/tests green; status → review.
+- 2026-09-02: step-7 approval: PR #175 approved for merge.
 
 ## Decisions
 
