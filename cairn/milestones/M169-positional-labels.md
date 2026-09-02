@@ -1,6 +1,6 @@
 # M169: Criteria and tasks carry positional labels
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -99,6 +99,7 @@ history is never rewritten; a change to `cairn_validate`'s positional counting
 - 2026-09-02: T3: plan step 4 gains a **Positional labels** bullet ahead of the Coverage-map bullet; implement step 6 states the renumbering sentence on the minor and the substantive branch (wrapped differently so each mutation block is unique).
 - 2026-09-02: T4: at ec680c6, scripts/tests 329 OK (exit 0), hooks/tests 121 OK (exit 0), hand-run skills/tests 578 OK (exit 0, mutation harness included), cairn_validate all checks passed. All tasks done; status → review.
 - 2026-09-02: review pass 1 (PR #172, a564980): defect return 1 — AC1's grep clause fails inside its named domain: `git grep -n "AC-N" -- skills scripts` matches `skills/tests/test_positional_labels.py` lines 102 and 113 (docstring and the `assertNotIn` literal), present since T1 (0036596), so the T2 line's "returns nothing (exit 1)" claim did not hold at any branch commit; AC2 and AC3 verified; status → in-progress. Repair: word the guard so the file carries no literal `AC-N`, re-run the grep, re-review.
+- 2026-09-02: defect return 1 repaired: `skills/tests/test_positional_labels.py` docstring reworded and the `assertNotIn` literal built by concatenation, so the file carries no literal `AC-N`; `git grep -n "AC-N" -- skills scripts` returns nothing (exit 1) at this commit; scripts/tests 329 OK, hooks/tests 121 OK, hand-run skills/tests 578 OK (all exit 0), cairn_validate all checks passed; status → review.
 
 ## Decisions
 

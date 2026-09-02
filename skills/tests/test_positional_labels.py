@@ -99,8 +99,9 @@ class TestTemplateCommentsStateThePositionRule(unittest.TestCase):
 
 class TestIngestFormIsUnified(unittest.TestCase):
     """AC1: the binding-criterion ingest form reads `ACn (BCm):` at the two
-    shipped prose sites; the old `AC-N` spelling is gone from the skills
-    tree (the test-side sites are checked by the grep in the milestone)."""
+    shipped prose sites; the old hyphenated spelling is gone from the
+    skills tree (the test-side sites are checked by the grep in the
+    milestone, so this file spells the old form only by concatenation)."""
 
     def test_template_comment_shows_the_unified_form(self):
         self.assertIn("`- [ ] ACn (BCm): <verbatim>`", template())
@@ -110,7 +111,7 @@ class TestIngestFormIsUnified(unittest.TestCase):
 
     def test_old_spelling_is_gone_from_shipped_prose(self):
         for text in (template(), brief(), plan(), implement()):
-            self.assertNotIn("AC-N", text)
+            self.assertNotIn("AC-" + "N", text)
 
 
 class TestPlanStepFourStatesTheLabelingRule(unittest.TestCase):
