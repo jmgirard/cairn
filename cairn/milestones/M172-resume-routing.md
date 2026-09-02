@@ -1,6 +1,6 @@
 # M172: A merged or stopped review milestone resumes at the right step
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -114,7 +114,7 @@ others (M167's outside-merges audit owns that).
       bullet, and AC4's re-entry clause, each pin registered in
       `skills/tests/test_mutation_harness.py`; run both gating suites and
       the hand-run suite from the repo root.
-- [ ] T5: D-entry annotating D-128: the timeout stop gains a resume route
+- [x] T5: D-entry annotating D-128: the timeout stop gains a resume route
       and the merged-but-`review` state a door; alternatives rejected at
       the gate with the evidence class that reopens each.
 
@@ -132,6 +132,8 @@ others (M167's outside-merges audit owns that).
 - 2026-09-02: T2 done — `/milestone-review` Session start carries the four-way resume route (a)–(d) on `gh pr view <N> --json state,mergedAt` plus the Review section; step 7 appends `step-7 approval: PR #<N> approved for merge`; step 8's timeout stop closes with `/milestone-review M<NNN>` as next command; verify green, hand-run skills/tests green.
 - 2026-09-02: T3 done — `/milestone` §2 gains the merged-but-`review` hygiene-owed bullet beside the open-PR bullet; `/hotfix` step 1 gains the merged-PR re-entry (step 7 only, head branch not `m<nnn>-*`, own close-authorization chip) and step 6 names `/hotfix` as the timeout stop's next command; `/cairn-release` step 3 names `/cairn-release`; verify green, hand-run skills/tests green.
 - 2026-09-02: T4 done — `skills/tests/test_resume_routing.py` pins the trigger, all four routes (a)–(d) whitespace-collapsed, step 7's approval line, the audit bullet and its adjacency, and the hotfix re-entry; nine blocks registered in `test_mutation_harness.py`, each proven to red its guard when blanked; scripts/tests, hooks/tests, and the hand-run suite green.
+- 2026-09-02: T5 done — D-130 appended, annotating D-128 with the resume route and the merged-but-`review` door, the three gate rejections each carrying its reopening evidence class; validate green.
+- 2026-09-02: all tasks checked; verify green (scripts/tests, hooks/tests), hand-run skills/tests green; status → review.
 
 ## Decisions
 
