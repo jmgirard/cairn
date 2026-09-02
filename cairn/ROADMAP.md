@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-02 (M170 done and archived; PR #173 merged after two server-side failures; no issue writes (Resolves —); one LESSONS line added, the stalest (M104) pruned; nothing graduated or retired; hand-run skills/tests green; validate green; M165 row dropped to the 5-row terminal retention; caps ok — LESSONS 49 lines; byte budgets `wc -c` 12,596 / 15,233 — both under; module budgets `wc -l -c` 54/3,187, 99/6,480, 188/12,250 — unchanged, all under their headers.)_
+_Last hygiene check: 2026-09-02 (M171 done and archived; PR #174 merged on local green (no CI); no issue writes (Resolves —); one LESSONS line added, the stalest unpinned (M90) pruned; nothing graduated or retired; hand-run skills/tests green; validate green; M166 row dropped to the 5-row terminal retention; caps ok — LESSONS 49 lines; byte budgets `wc -c` 12,588 / 15,382 — both under; module budgets `wc -l -c` 54/3,187, 99/6,480, 188/12,250 — unchanged, all under their headers.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M171 | Chapter markers follow stretches, not phases | review | — | normal | milestones/M171-per-stretch-chapters.md |
+| M171 | Chapter markers follow stretches, not phases | done | — | normal | milestones/archive/M171-per-stretch-chapters.md |
 | M170 | Waiting on CI and background work follows a tested rule | done | — | normal | milestones/archive/M170-wait-doctrine.md |
 | M169 | Criteria and tasks carry positional labels | done | — | normal | milestones/archive/M169-positional-labels.md |
 | M168 | Open GitHub inboxes are swept at the plan gate | done | — | normal | milestones/archive/M168-plan-gate-inbox-sweep.md |
 | M167 | Outside merges reach the health audit | done | — | normal | milestones/archive/M167-outside-merges-audit.md |
-| M166 | GitHub issues are linked at plan time and closed at merge | done | — | normal | milestones/archive/M166-issue-linkage.md |
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
