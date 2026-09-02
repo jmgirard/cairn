@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.10.1 (2026-09-01)
 
 - **CRAN comments stay short.** For R packages, the release walk now writes
   `cran-comments.md` in its conventional few-line form (check results, one
