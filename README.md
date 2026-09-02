@@ -285,6 +285,9 @@ about where the guardrails actually reach.
   contributor needs no plugin, no `cairn/` knowledge, and no special branch
   name. `/milestone`'s health audit enumerates both inboxes and proposes a
   disposition per item; an adopted PR comes in through `/hotfix`.
+  The audit also lists pull requests merged by others since the last
+  hygiene stamp — it only reads, writing nothing to GitHub — and each one
+  becomes a triage item.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
   plan gate offers one option to post `Queued as M<NNN>: <title>` on each
