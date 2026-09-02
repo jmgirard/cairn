@@ -1,6 +1,6 @@
 # M168: Open GitHub inboxes are swept at the plan gate
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
