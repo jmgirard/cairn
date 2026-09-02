@@ -3153,3 +3153,23 @@ REGISTRY += [
               "lines together",
     ),
 ]
+
+
+REGISTRY += [
+    # M170: the wait rule's trigger clause and stop-point clause in
+    # tracking-rules; the retired-spelling check has no block to mutate.
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleTrigger.test_one_watcher_per_wait",
+        target=RULES,
+        block="One watcher per wait: a run, command, or subagent is watched "
+              "by one mechanism at a time, never two on the same thing.",
+    ),
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleStopPoint.test_no_watcher_left_armed_at_a_stop_point",
+        target=RULES,
+        block="no watcher is left armed at a commit, a turn end, or a "
+              "`/clear`\npoint",
+    ),
+]
