@@ -141,6 +141,7 @@ pins the wording change would red.
 - 2026-09-03: T3 done — sweep `git grep -n -i -e 'step 7 only' -e 'close-out step' -e 'steps 2–6 skipped' -- skills README.md cairn/DESIGN.md ':!skills/tests'` returns nothing (the only pre-T1 hit was the rewritten paragraph itself); both gating suites exit 0; `cairn_validate` run. Status → review.
 - 2026-09-03: review checkpoint — PR #178 draft opened; AC1–AC7 evidenced and ticked; gate green; three review lenses spawned (blame-history: no findings), two lenses pending.
 - 2026-09-03: review — three lenses reported (0 + 0 + 8 findings); six fixed at the gate (F1 F2 F3 F5 F6 F7), two rejected (F4 F8); pins re-seeded; suites green; approval gate next.
+- 2026-09-03: step-7 approval: PR #178 approved for merge.
 
 ## Decisions
 
