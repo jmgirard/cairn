@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-03 (hotfix PRs #179 and #180 squash-merged — cairn_cost numeric ids; commit/force-push guards share CMD_POS; both candidate rows graduated; validate green; budgets ok — ROADMAP `wc -l -c` 40/10809 under 60/24000, LESSONS 49 lines / 15885 bytes under 50/20000; gating suites 334+126 green.)_
+_Last hygiene check: 2026-09-03 (M175 done, PR #181 squash-merged — Surface tier header slot; "Stakes-tier follow-through" candidate graduated; M170 row pruned to retention; validate green; budgets ok — ROADMAP `wc -l -c` 39/10423 under 60/24000, LESSONS 49 lines / 15885 bytes under 50/20000; records-hygiene 54/3187; gating suites 334+126 green, hand-run skills/tests 604 green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M175 | The surface tier is a milestone header slot | review | — | normal | milestones/M175-surface-tier-slot.md |
+| M175 | The surface tier is a milestone header slot | done | — | normal | milestones/archive/M175-surface-tier-slot.md |
 | M174 | A merged hotfix or adopted PR is verified to the hotfix bar post-hoc | done | — | normal | milestones/archive/M174-post-hoc-hotfix-bar.md |
 | M173 | A whole-list triage pass over candidates and Known issues | done | — | normal | milestones/archive/M173-candidate-triage.md |
 | M172 | A merged or stopped review milestone resumes at the right step | done | — | normal | milestones/archive/M172-resume-routing.md |
 | M171 | Chapter markers follow stretches, not phases | done | — | normal | milestones/archive/M171-per-stretch-chapters.md |
-| M170 | Waiting on CI and background work follows a tested rule | done | — | normal | milestones/archive/M170-wait-doctrine.md |
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
@@ -38,4 +37,3 @@ _Ordered higher-priority-first (advisory only — candidates carry no Priority f
 - Phase-gated loading of implement-time doctrine: the conditional modules already load at their moments (D-031); the delta is whether any always-loaded rulebook section is genuinely single-phase and could move behind a phase moment — measured 2026-08-04 as immaterial and the rulebook has since shrunk (M146). Promote when a measured `cairn_cost` reading attributes a material share of session tokens to rulebook sections the session's phase never uses — never on a count of lines — added 2026-08-04 — M133 (references/impeccable.md)
 - Action-graded finding vocabulary: impeccable grades each finding by the action it requires (auto / mention / route) where cairn's CHECK-FAIL / advisory-WARN grades severity and leaves the action to the reader; parked until a tier actually misleads an operator; adjacent to the standing-instrument row, not covered by it. Promote when an operator acts wrongly on a validate or audit finding because its tier did not say what to do — never on a count of advisories — added 2026-08-04 — M133 (references/impeccable.md)
 - Deferred second tier for hook nudges: defer taste-tier findings to one deduplicated Stop-event pass that stays silent when clean (memory_guard/idea_guard fire unconditionally per event today; the Stop slot is held by stop_guard.py, so this shares or extends it); the memory guard's half is content-gating — inspect the write and fire only on durable-state signals, silent on pure per-user prefs (M19's hook). Promote when the unconditional nudge is observed drowning a session — never on a count of firings — added 2026-08-04 — M133 (references/impeccable.md); absorbs Content-gated memory guard, added 2026-07-11 — M19 Out
-- Stakes-tier follow-through: step 4 and the milestone template carry no tier-recording support (the obligation lives in step-2 prose alone); parked until the gap bites in a live session; the row's other half — gate-amended criteria re-entering only three audit questions — absorbed by M148's re-entry clarification (trimmed 2026-08-17). Promote on the first plan session where the tier goes unrecorded — added 2026-08-15 — M142 review

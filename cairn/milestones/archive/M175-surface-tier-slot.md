@@ -1,0 +1,11 @@
+# M175: The surface tier is a milestone header slot
+
+**Status:** done (2026-09-03, PR #181 https://github.com/jmgirard/cairn/pull/181)
+
+**Goal:** A milestone's surface tier and its one-clause reason are recorded in a `Surface tier:` header slot of the milestone file, which `/milestone-plan` fills and `/milestone-review` reads by name.
+
+**Outcome:** `skills/shared/templates/milestone.md` gains `- **Surface tier:** —` between `Resolves:` and `Branch/PR:` (owner plan, `create/amend-via-gate`, value `user-facing | internal — <one-clause reason>`, no validate check parses it). `/milestone-plan` step 2's surface-tier rule records the tier and reason in that slot; step 4 gains a `**Surface tier** (header slot)` bullet beside the other header-slot bullets, never left `—`. `/milestone-review` step 5 reads the declared tier from the slot; the `no declared tier` arm is kept, glossed as a file without the slot or one left `—`, so a slot-less file takes the full three-lens fan-out. tracking-rules' section-ownership table lists `Surface tier` in the plan-owned header row. `skills/tests/test_stakes_tier.py` (pin and `SURFACE_FIXTURE`) and the `test_mutation_harness.py` block re-seeded to the new step-2 wording. Rejected at plan: a `cairn_validate` check on the slot (widens the checker's promise for a value no script consumes); a prose fallback at review (the legacy case fades within a milestone); a template-slot pin (the slot is skill conduct like `Resolves:`).
+
+**Decisions:** none (milestone-local choices and their falsifiers in the work log; D-108's door read as not reached, confirmed at the plan gate).
+
+**Review:** one pass. AC1–AC4 verified at bed7b55; three-lens fan-out (blame-history and prior-review lenses clean, GitHub probe empty). Diff-bug lens: 5 findings — F3 fixed at the gate (an evidence line cited the wrong sibling-slot range); F1 (`no declared tier` arm gained a gloss), F2 (this file recorded the tier in slot and Scope prose), F4 (plan's "never left `—`" beside review's `—` arm), F5 (step 2 names a slot step 4 creates) rejected with reasons. AC1's write-mode spelling (`create/amend-via-gate`) accepted at the gate as the criterion's write-mode. No return. Hygiene: the "Stakes-tier follow-through" candidate row graduated; nothing retired.
