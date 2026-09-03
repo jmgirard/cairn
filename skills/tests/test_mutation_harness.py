@@ -631,6 +631,21 @@ REGISTRY = [
         target=RELEASE,
         block="so each goes in a fenced block, never inline backticks",
     ),
+    # Hotfix 2026-09-03: fenced slash commands are bare (`/clear`, never
+    # `claude /clear`), and review fences the recommended slash command, not
+    # the cairn_next.py script that produced it.
+    Mutation(
+        guard="test_copy_run_handoffs",
+        test="TestCloseBlockCommandsAreBareSlashCommands.test_rule_names_the_bare_slash_form",
+        target=RULES,
+        block="never prefixed with `claude `",
+    ),
+    Mutation(
+        guard="test_copy_run_handoffs",
+        test="TestCloseBlockCommandsAreBareSlashCommands.test_review_fences_the_recommended_slash_command_not_the_script",
+        target=REVIEW,
+        block="never the `cairn_next.py` invocation",
+    ),
     Mutation(
         guard="test_section_allow_lists",
         test="TestSectionAllowLists.test_write_mode_legend_defines_core_verbs",

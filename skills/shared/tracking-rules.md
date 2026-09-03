@@ -364,7 +364,9 @@ These rules bind all chat output while any cairn skill is active.
   inline backticks; naming a command, path, or symbol in prose → inline backticks; a gate chip's `→ /skill` option →
   neither fence nor handoff (selecting the option is what acts). Slash commands count as commands. A step ending the
   turn expecting the user to run something is a handoff (fence) — the close block's next-command fences are exactly
-  this; naming a safe `/clear` point in the close block's safety line is a mention (inline).
+  this; naming a safe `/clear` point in the close block's safety line is a mention (inline). A fenced slash command
+  is written exactly as the user types it into the chat box — `/clear`, `/milestone-plan` — never prefixed with `claude `
+  (a shell form; Claude Desktop has no shell in front of it).
 - **Subagent titles carry the model tier.** Prefix every Agent description with `[S]`/`[O]`/`[F]` for Sonnet/Opus/Fable
   — task panes show only the title, not the model.
 

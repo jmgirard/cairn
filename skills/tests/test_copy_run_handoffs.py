@@ -25,6 +25,10 @@ def skill(name):
     return SKILLS.joinpath(name, "SKILL.md").read_text().lower()
 
 
+def rules():
+    return SKILLS.joinpath("shared", "tracking-rules.md").read_text().lower()
+
+
 def fenced_regions(text):
     """Yield the body of each ``` / ~~~ fenced block, ignoring indentation."""
     body, fence = [], None
@@ -110,6 +114,26 @@ class TestImplementClearLineStaysAMention(unittest.TestCase):
         over_fired = "note this is a safe `/clear` point:\n```\n/clear\n```\n"
         self.assertEqual(list(fenced_regions(over_fired)), ["/clear"])
         self.assertEqual(list(fenced_regions("no fences here")), [])
+
+
+class TestCloseBlockCommandsAreBareSlashCommands(unittest.TestCase):
+    """Hotfix (2026-09-03): the close block hands over slash commands as typed.
+
+    Two observed drifts: review's step 10 said "the recommendation's command",
+    which was read as the `cairn_next.py` invocation rather than the slash
+    command it prints; and fenced slash commands sometimes arrived as
+    `claude /clear` — a shell form that is wrong in Claude Desktop, where the
+    user pastes into the chat box. The rule lives centrally (every close
+    block) and review's step 10 names the slash command explicitly.
+    """
+
+    def test_rule_names_the_bare_slash_form(self):
+        self.assertIn("never prefixed with `claude `", rules())
+
+    def test_review_fences_the_recommended_slash_command_not_the_script(self):
+        text = skill("milestone-review")
+        self.assertIn("the slash command the recommendation names", text)
+        self.assertIn("never the `cairn_next.py` invocation", text)
 
 
 if __name__ == "__main__":
