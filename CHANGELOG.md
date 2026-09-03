@@ -11,7 +11,7 @@
   audit line now names the criteria it cleared
   (`ingest audit RR<NN> (full): cleared AC<list> — …`), and the re-audit
   exemption applies only to a criterion that list names whose amended
-  text still equals the ingested text.
+  text still equals the ingested text whitespace-normalized.
 - **The commit and force-push guards see through environment prefixes.**
   A `git commit` or `git push` spelled with leading `VAR=value` words
   (`GH_TOKEN=x git push -f origin main`, `GIT_AUTHOR_NAME=x git commit`)

@@ -66,3 +66,20 @@ Reviewed 2026-09-03 at 9be5731 (PR #182), main at 050c45f, branch up to date wit
 - AC4 — at 9be5731: `python3 -m unittest discover -s scripts/tests` 334 tests OK exit 0; `python3 -m unittest discover -s hooks/tests` 126 tests OK exit 0. PASS.
 
 Consistency gate: `cairn_validate` all checks passed (exit 0); no principle changed, `cairn_impact` skipped; profile `consistency-gate` slot names no toolchain checks (generic), no CI in this repo.
+
+Independent review (user-facing tier → three lenses, fresh context):
+
+- [O] diff-bug: 9 findings.
+  - O1 (stop stated one re-entry late — a second line never written if re-entry is once): rejected. The first line records the reader's audit of the amended wording; the once re-entry after a mini-gate fix writes the second, which is the stop — AC2's reading. Fix-now clarifying sentence added at step 6 naming which line is which.
+  - O2 (ingested text not on the work log, so equality is not decidable from the log alone): fix-now — step 6 now names the ingested text as the criterion the milestone file carried at the ingest commit.
+  - O3 (`binding criteria` check compares BC-to-AC substrings, not amended-to-ingested equality): fix-now — the citation now names the normalization only (`" ".join(s.split())`).
+  - O4 (`AC<list>` spelling undefined, defeating a by-name read): fix-now — brief step 3 requires each criterion spelled with its own `AC<N>` token, never a range or shared prefix.
+  - O5 (no form for an empty cleared list): fix-now — `cleared none`.
+  - O6 (an exempt criterion writes no line, so absence is overloaded): fix-now — step 6 states an exempt criterion writes no re-audit line and spends no re-entry; absence beside a naming ingest line with equal text reads as exempt.
+  - O7 ("cleared" ambiguous for wording fixed at the gate): fix-now — the conservative reading: passed unchanged; a criterion reworded at the gate is not cleared.
+  - O8 (CHANGELOG drops "whitespace-normalized"): fix-now.
+  - O9 (three audit surfaces record in three spellings; informational): rejected — the plan line's shape is out of scope by the plan, no count reads across surfaces.
+- [S] blame-history: 1 candidate, self-assessed compliant — per-surface shape strings alongside kept cross-references vs D-071 single-home; rejected: D-132 authorizes the third surface, and the wiring matches the M130/M132 precedent.
+- [S] prior-PR-comments: no regressions; `gh api …/pulls/comments?per_page=1` returned `[]`, archive `## Review` findings on these files (M121, M130, M132, M134, M138, M148, M151) checked; pinned sentences verified verbatim.
+
+Fix-now set applied on the branch after the pre-gate checkpoint; suites re-run: scripts 334 OK, hooks 126 OK, skills/tests 604 OK (hand-run), `cairn_validate` exit 0.

@@ -121,14 +121,17 @@ run ingestion first (see `/milestone-brief`).
      criterion re-entered, in the fixed shape
      `re-audit: AC<N> (<full|reduced>) — <what it returned, or "nothing">`;
      an absent line means the reader did not run, never that it ran and
-     was silent.
+     was silent. A criterion's first line is the reader's audit of its
+     amended wording; the once re-entry below writes its second.
      Wording whose clearance the `/milestone-brief` ingest audit's work-log
      line already covers is exempt, read from that line by name (its shape
      `ingest audit RR<NN> (full): cleared AC<list> — …`, `/milestone-brief`
      step 3): the ingest line's cleared list names the criterion, and the
-     amended text equals the ingested text whitespace-normalized — the
-     `binding criteria` check's comparison; an ingest line that does not
-     name the criterion exempts nothing.
+     amended text equals the ingested text — the criterion as the milestone
+     file carried it at the ingest commit — whitespace-normalized as the
+     `binding criteria` check normalizes (`" ".join(s.split())`); an ingest
+     line that does not name the criterion exempts nothing, and an exempt
+     criterion writes no re-audit line and spends no re-entry.
      Per criterion, wording fixed at the mini gate re-enters the questions
      once with its own fresh reader, and further churn on that criterion
      goes to the user — the bound and the stop both read from the
