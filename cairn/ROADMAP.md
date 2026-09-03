@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M176 | The amendment-time re-audit records a work-log line | in-progress | — | normal | milestones/M176-reaudit-record.md |
+| M176 | The amendment-time re-audit records a work-log line | review | — | normal | milestones/M176-reaudit-record.md |
 | M175 | The surface tier is a milestone header slot | done | — | normal | milestones/archive/M175-surface-tier-slot.md |
 | M174 | A merged hotfix or adopted PR is verified to the hotfix bar post-hoc | done | — | normal | milestones/archive/M174-post-hoc-hotfix-bar.md |
 | M173 | A whole-list triage pass over candidates and Known issues | done | — | normal | milestones/archive/M173-candidate-triage.md |
