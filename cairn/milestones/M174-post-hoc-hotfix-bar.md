@@ -6,7 +6,7 @@
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2
 - **Resolves:** —
-- **Branch/PR:** m174-post-hoc-hotfix-bar
+- **Branch/PR:** m174-post-hoc-hotfix-bar · https://github.com/jmgirard/cairn/pull/178
 
 ## Goal
 
@@ -43,17 +43,17 @@ pins the wording change would red.
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/hotfix/SKILL.md` step 1's merged-PR re-entry — a PR whose
+- [x] AC1: `skills/hotfix/SKILL.md` step 1's merged-PR re-entry — a PR whose
       `gh pr view <N> --json state,headRefName` reports `MERGED` with a head
       branch not matching `m<nnn>-*` — runs a post-hoc verification of the
       merged diff before step 7, and `git grep -n -e 'runs step 7 only' -e
       'steps 2–6 skipped' -- skills ':!skills/tests'` returns nothing.
-- [ ] AC2: The re-entry names the pre-fix baseline for the two-way
+- [x] AC2: The re-entry names the pre-fix baseline for the two-way
       regression-test check as the oid `gh pr view <N> --json baseRefOid`
       reports, with the merge commit's first parent (`<mergeCommit>^`) as a
       cross-check, and states that the current default branch is never the
       baseline because it already carries the fix.
-- [ ] AC3: The re-entry's regression-test move follows step 3's adopting
+- [x] AC3: The re-entry's regression-test move follows step 3's adopting
       sequence: a test the merged diff carries is run on the up-to-date
       default branch and in a throwaway `--detach` worktree of the baseline
       created outside the repo with only the test file copied in, and must
@@ -61,14 +61,14 @@ pins the wording change would red.
       diff carries no test, or its test passes on both, a test is authored on
       a `hotfix-<slug>` branch cut from the up-to-date default branch and
       proved the same two ways; the worktree is removed either way.
-- [ ] AC4: The re-entry states that the two owed items — the regression
+- [x] AC4: The re-entry states that the two owed items — the regression
       test, and a changelog entry when the profile's `changelog` slot declares
       a file the merged diff did not update — land on a `hotfix-<slug>` branch
       cut from the up-to-date default branch (cut here when AC3's authoring
       case did not) and reach the default branch only through step 5's
       authoring variant (a new PR) and step 6's approval chip, never by a
       commit to the default branch.
-- [ ] AC5: When the post-hoc check finds nothing owed — test present and
+- [x] AC5: When the post-hoc check finds nothing owed — test present and
       two-way proven, the profile's `verify` slot green on the default branch,
       changelog entry present or the slot `none` — the re-entry poses one
       `AskUserQuestion` chip whose question text names acceptance of the
@@ -78,12 +78,12 @@ pins the wording change would red.
       present; step 7 runs only on acceptance, and a decline stops with a
       close block naming the decline and the reason where the user gave one,
       plus a candidate row (search-first).
-- [ ] AC6: A merged diff the tier check finds over the hotfix bar takes step
+- [x] AC6: A merged diff the tier check finds over the hotfix bar takes step
       1's existing over-the-bar disposition with no regression test demanded
       and still runs step 7's close-out — the candidate row or
       `/milestone-plan` next command rides in that close block — and the
       re-entry says so.
-- [ ] AC7: The active profile's `verify` slot is clean: `python3 -m unittest
+- [x] AC7: The active profile's `verify` slot is clean: `python3 -m unittest
       discover -s scripts/tests` and `python3 -m unittest discover -s
       hooks/tests` each exit 0.
 
@@ -139,7 +139,21 @@ pins the wording change would red.
 - 2026-09-03: T1 done — re-entry rewritten as a seven-move post-hoc verification (tier check with over-the-bar close-out; `baseRefOid` baseline with parent cross-check; two-way test on the default branch and a detached outside-the-repo worktree; `verify`; changelog; owed items via a follow-up `hotfix-<slug>` PR and step 6's chip; one acceptance chip folding the issue close, then step 7); step 6's cross-reference updated; CHANGELOG Unreleased entry added. Question gate skipped: nothing left open after the plan's criteria audit. Rehearsal on merged hotfix PR #176: `baseRefOid` 13be808f, merge commit 0a1b5b5c, `0a1b5b5c^` = 13be808f (equal); detached worktree of 13be808f added outside the repo, PR's test copied in fails there (2 failures) and passes on the default branch; worktree removed, `git worktree list` shows only the checkout.
 - 2026-09-03: T2 done — `TestHotfixMergedPrReentry` re-seeded to six tests pinning trigger (plus the absence of the two retired phrases), baseline, two-way check, follow-up path, acceptance chip, and over-the-bar close-out as whole passages whitespace-collapsed; the two REGISTRY entries replaced by six, each block occurring once in `skills/hotfix/SKILL.md`; hand-run `skills/tests` (harness included) 604 OK.
 - 2026-09-03: T3 done — sweep `git grep -n -i -e 'step 7 only' -e 'close-out step' -e 'steps 2–6 skipped' -- skills README.md cairn/DESIGN.md ':!skills/tests'` returns nothing (the only pre-T1 hit was the rewritten paragraph itself); both gating suites exit 0; `cairn_validate` run. Status → review.
+- 2026-09-03: review checkpoint — PR #178 draft opened; AC1–AC7 evidenced and ticked; gate green; three review lenses spawned (blame-history: no findings), two lenses pending.
 
 ## Decisions
 
 ## Review
+
+_Reviewed 2026-09-03 on branch tip 0b9d1ab against origin/main c76146e (unmoved since the cut); PR #178 draft._
+
+- AC1 — pass: `skills/hotfix/SKILL.md:33-36` opens the re-entry on `gh pr view <N> --json state,headRefName` reporting `MERGED` with a head not matching `m<nnn>-*` and says it "runs a post-hoc verification of the merged diff before step 7"; `git grep -n -e 'runs step 7 only' -e 'steps 2–6 skipped' -- skills ':!skills/tests'` returns nothing (exit 1).
+- AC2 — pass: the *Baseline* move (`:44-50`) names `gh pr view <N> --json baseRefOid` as the baseline, `git rev-parse <mergeCommit>^` as the cross-check with `baseRefOid` governing a disagreement, and states "The current default branch is never the baseline: it already carries the fix". Fresh run on merged hotfix PR #176: `baseRefOid` 13be808f, merge commit 0a1b5b5c, `0a1b5b5c^` = 13be808f (equal).
+- AC3 — pass: the *Regression test* move (`:51-60`) follows step 3's adopting sequence — test run on the up-to-date default branch (fetch, pull ff-only) and in `git worktree add --detach /tmp/<repo>-verify <baseRefOid>` outside the repo with only the test file copied in, pass on the default branch and fail on the baseline required; no test or passes-on-both → author on a `hotfix-<slug>` branch cut from the up-to-date default branch and prove the same two ways; `git worktree remove` either way, a failed check included.
+- AC4 — pass: the *Owed items* move (`:65-74`) names the regression test and the changelog entry, lands them on the `hotfix-<slug>` branch ("cut here when the regression-test move did not"; the branch's cut point — the up-to-date default branch — is stated where the regression-test move defines it), and reaches the default branch "only through step 5's authoring variant — push, open a new PR … — and step 6's approval chip, never by a commit to the default branch".
+- AC5 — pass: the *Nothing owed* move (`:75-87`) states the three clean conditions verbatim, poses one `AskUserQuestion` chip whose question text names acceptance of the post-hoc verification and the `Fixes #N` issue close (issue-close chip not posed separately), recommended option accepting, decline present; "Step 7 runs only on acceptance"; a decline "stops with a close block naming the decline and the reason where the user gave one, plus a `candidate` row (search-first)".
+- AC6 — pass: the *Tier check* move (`:39-43`) sends an over-the-bar diff to "the over-the-bar disposition above with no regression test demanded, and step 7's close-out still runs — the candidate row or the `/milestone-plan` next command rides in that close block".
+- AC7 — pass: from the repo root, `python3 -m unittest discover -s scripts/tests` 329 tests OK exit 0; `python3 -m unittest discover -s hooks/tests` 121 tests OK exit 0. Hand-run (non-gating, D-109) `skills/tests` 604 OK.
+- Driving RR: none — projection-vs-outcome no-ops.
+- Consistency gate: `cairn_validate.py` all checks passed, exit 0 (advisories OK; `release window` silent); no DESIGN principle changed → `cairn_impact` skipped; profile `generic` names no toolchain checks. T3's sweep re-run returns nothing.
+
