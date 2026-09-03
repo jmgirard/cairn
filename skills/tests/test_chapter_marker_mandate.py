@@ -54,12 +54,14 @@ STRETCH_TOKENS = {
     "cairn-release": "at each numbered step",
     "milestone": PHASE_LIST,
     "design-interview": PHASE_LIST,
+    "cairn-triage": "at each numbered step",
 }
 
-# D-021 sub-choice (3), retained by D-129: the nine phase skills, review
-# included — pinned by count so a dropped dict entry cannot shrink the domain
-# of the two per-skill tests silently.
-PHASE_SKILL_COUNT = 9
+# D-021 sub-choice (3), retained by D-129: the phase skills, review
+# included (ten since M173 added cairn-triage) — pinned by count so a
+# dropped dict entry cannot shrink the domain of the two per-skill tests
+# silently.
+PHASE_SKILL_COUNT = 10
 
 
 def read(*parts):
@@ -68,7 +70,7 @@ def read(*parts):
 
 
 class TestChapterMarkerMandate(unittest.TestCase):
-    def test_all_nine_phase_skills_are_pinned(self):
+    def test_all_phase_skills_are_pinned(self):
         self.assertEqual(len(STRETCH_TOKENS), PHASE_SKILL_COUNT)
 
     def test_each_skill_carries_the_chapter_marker_directive(self):
