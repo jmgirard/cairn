@@ -54,3 +54,51 @@ milestone branch and never sweeps unrelated changes into its commit.
    The enumeration is the pass's domain: every proposal in step 3 maps to
    exactly one enumerated item, and every enumerated item gets exactly one
    proposal.
+
+2. **Assess.** For each item, gather the evidence below and choose exactly
+   one disposition. The vocabulary is fixed — seven words, no sub-statuses
+   (D-035 stands) and no scores:
+
+   | Disposition | Meaning |
+   |---|---|
+   | `keep` | Unchanged. The default when no evidence class below fires. |
+   | `compress` | Rewritten toward the soft aim of **~300 bytes** in the shape *what it is / promote when / provenance* — the trigger and the `added YYYY-MM-DD — <origin>` provenance always survive; only restated context goes. Advisory only, stated here and nowhere else. |
+   | `merge` | Absorbed into a **named surviving row**, which gains one lineage clause (`absorbs <subject>, added <date> — <origin>`) and the absorbed row's trigger where it still applies. |
+   | `split` | Replaced by **named rows**, each with one subject, one trigger, and the original provenance. |
+   | `drop` | Removed. Its reason is one of three classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), or *rejected on principle* (the idea cuts against a stated stance). |
+   | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). |
+   | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
+
+   Evidence classes, checked in this order (the first that fires decides,
+   later ones refine the wording):
+   - **Staleness → `drop` or `compress`.** Grep `cairn/milestones/archive/`
+     and the `### D-` headings for the item's subject: a premise an archived
+     milestone refuted, a trigger that has already fired (the named
+     condition is now in the repo) or can no longer fire (its subject is
+     retired), or a cited path that no longer exists (`ls` it). A dead
+     citation with a live trigger is `compress`, not `drop`.
+   - **Overlap → `merge`.** Two items on one subject, or one whose trigger
+     is a special case of another's. The survivor is the one with the
+     stronger provenance; state whether the absorbed row's promotion
+     trigger survives verbatim in the survivor (step 5 hangs on it).
+   - **Overgrowth → `split` or `compress`.** Two promotion triggers or an
+     "and" in the subject → `split`; over the ~300-byte aim with one
+     trigger → `compress`.
+   - **Misfiling → `route`.** A candidate with no promotion condition that
+     describes a limitation the repo lives with; a Known issues entry with a
+     fix condition that names future work.
+   - **Readiness → `promote`.** The trigger has fired and the work is
+     wanted now; the close block hands it on.
+   A finding-absorbing row — one carrying deferred findings from two or
+   more milestones — takes records-hygiene §7's options expressed in this
+   vocabulary: `promote` (a bounded milestone for what guards shipped
+   behaviour), `route` (accepted limitations to Known issues), `drop` (the
+   rest), or `keep` as the explicit choice to extend no further; the
+   proposal table names §7 as the reason.
+   A row a `planned`/`in-progress`/`blocked`/`review` milestone absorbs is
+   `keep` (records-hygiene §1), with that milestone named in the reason.
+   Delegation: the session assesses inline. One `[S]` Explore fan-out is
+   warranted only when several items cite code paths or symbols whose
+   existence must be checked; give it the list of citations and take back
+   one line per citation (exists / moved / gone). Never spawn to assess
+   prose — that is the session's judgment, not a search.
