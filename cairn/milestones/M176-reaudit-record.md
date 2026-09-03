@@ -37,7 +37,7 @@ The criteria audit's third surface — the amendment-time re-audit in `/mileston
 
 - [x] T1: Rewrite the re-audit clause of `/milestone-implement` step 6 (`skills/milestone-implement/SKILL.md:111-124`): add the record sentence and fixed shape (AC1); restate the once-per-criterion bound and further-churn stop as a reading of `re-audit: AC<N>` lines (AC2); restate the exemption as reading the ingest line by name with the whitespace-normalized equality condition (AC3, implement side). Keep every sentence the existing `TestAmendmentReaudit` pins match, or reword the new sentence rather than a pinned one (LESSONS M148).
 - [x] T2: Give `/milestone-brief` step 3's ingest-audit record sentence (`skills/milestone-brief/SKILL.md:128-130`) the fixed shape naming the cleared criteria (AC3, brief side), keeping the sentence `TestRRIngestionCriteriaAudit.test_ingest_audit_records_its_own_line_on_the_plan_gate_terms` pins.
-- [ ] T3: Hand-run `python3 -m unittest discover -s skills/tests` after T1 and T2 to confirm the existing `TestAmendmentReaudit` and `TestRRIngestionCriteriaAudit` locators still match (a new sentence echoing a pinned phrase breaks uniqueness — LESSONS M148); no new pins or mutation entries — the profile's test-doctrine says a new skill rule owes none (M144, D-109).
+- [x] T3: Hand-run `python3 -m unittest discover -s skills/tests` after T1 and T2 to confirm the existing `TestAmendmentReaudit` and `TestRRIngestionCriteriaAudit` locators still match (a new sentence echoing a pinned phrase breaks uniqueness — LESSONS M148); no new pins or mutation entries — the profile's test-doctrine says a new skill rule owes none (M144, D-109).
 - [ ] T4: CHANGELOG Unreleased entry; run both gating suites from the repo root with exit codes checked; `cairn_validate` green; checkpoint commit.
 
 ## Work log
@@ -51,6 +51,7 @@ The criteria audit's third surface — the amendment-time re-audit in `/mileston
 - 2026-09-03: plan gate chose prose-only record lines over a `cairn_validate` count of them because the row parked exactly the mechanized form and D-108's door bars new apparatus; falsified by a resume that miscounts re-entries with the shape present.
 - 2026-09-03: T1 — step 6 re-audit clause rewritten: record sentence with the `re-audit: AC<N> (<full|reduced>) — …` shape and the absent-line reading (AC1); bound and stop restated as readings of `re-audit: AC<N>` lines (AC2); exemption restated as reading the ingest line by name with whitespace-normalized equality (AC3). The three `TestAmendmentReaudit` pinned sentences kept verbatim; verify slot 334+126 green, hand-run skills/tests 604 green.
 - 2026-09-03: T2 — `/milestone-brief` step 3's ingest-audit sentence gains the `ingest audit RR<NN> (full): cleared AC<list> — …` shape and states that step 6's exemption reads the cleared list by name; the `test_ingest_audit_records_its_own_line_on_the_plan_gate_terms` sentence and its line wrap kept verbatim. Verify slot 334+126 green.
+- 2026-09-03: T3 — hand-run `python3 -m unittest discover -s skills/tests` after T1+T2: 604 tests OK, exit 0; `-k TestAmendmentReaudit -k TestRRIngestionCriteriaAudit` 13 tests OK. No pins or mutation entries added (D-109).
 
 ## Decisions
 
