@@ -136,3 +136,4 @@ freeform; the amendment-time audit record line — stays its own candidate row.
   - F3 (AC1 evidence line): cited "lines 4–12" for the sibling slots; the plan-owned siblings are lines 8–12. Fixed now in the evidence line.
   - F4 (plan step 4 "Never left `—`" vs template default `—` and review's `—` arm): rejected — deliberate belt-and-braces, chosen at the plan gate with its falsifier logged (work log 2026-09-03, slot-only reading); no candidate row, since the falsifier already names the reopening evidence.
   - F5 (plan step 2 names a slot in a file step 4 creates): rejected — pre-existing wrinkle inherited from the old prose wording, and the new step-4 bullet resolves it.
+- 2026-09-03: step-7 approval: PR #181 approved for merge; AC1 write-mode spelling (`create/amend-via-gate`) accepted as the criterion's write-mode.
