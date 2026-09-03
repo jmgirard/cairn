@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-03 (M175 done, PR #181 squash-merged — Surface tier header slot; "Stakes-tier follow-through" candidate graduated; M170 row pruned to retention; validate green; budgets ok — ROADMAP `wc -l -c` 39/10423 under 60/24000, LESSONS 49 lines / 15885 bytes under 50/20000; records-hygiene 54/3187; gating suites 334+126 green, hand-run skills/tests 604 green.)_
+_Last hygiene check: 2026-09-03 (M176 done, PR #182 squash-merged — re-audit record line; "The amendment-time audit surface records nothing" candidate graduated; M171 row pruned to retention; validate green; budgets ok — ROADMAP `wc -l -c` 38/9903 under 60/24000, LESSONS 49/15885 under 50/20000; records-hygiene 54/3187 under 55/4000, migration-protocol 188/12250 under 200/14000, validation-doctrine 99/6480 under 115/8000; gating suites 334+126 green, hand-run skills/tests 604 green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,19 +12,17 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M176 | The amendment-time re-audit records a work-log line | review | — | normal | milestones/M176-reaudit-record.md |
+| M176 | The amendment-time re-audit records a work-log line | done | — | normal | milestones/archive/M176-reaudit-record.md |
 | M175 | The surface tier is a milestone header slot | done | — | normal | milestones/archive/M175-surface-tier-slot.md |
 | M174 | A merged hotfix or adopted PR is verified to the hotfix bar post-hoc | done | — | normal | milestones/archive/M174-post-hoc-hotfix-bar.md |
 | M173 | A whole-list triage pass over candidates and Known issues | done | — | normal | milestones/archive/M173-candidate-triage.md |
 | M172 | A merged or stopped review milestone resumes at the right step | done | — | normal | milestones/archive/M172-resume-routing.md |
-| M171 | Chapter markers follow stretches, not phases | done | — | normal | milestones/archive/M171-per-stretch-chapters.md |
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
 - Review-side reclassification of record-binding criterion failures: a review finding that an acceptance criterion is unmet only in a recording act (a work-log quotation, a named recording command's provenance) crosses the return floor as a full defect return toward the thrash threshold; the deferred remedy is routing such findings to the amendment track (narrow the criterion to the deliverable property, fix the record at the gate), deliberately not shipped with D-120 so plan-time prevention proves itself first. Promote when a milestone whose criteria passed the extended audit (D-120) still costs a defect return on a record-binding clause — never on a count of legacy-milestone returns — added 2026-08-21 — M151 (circumplex M101)
 - Second-driver adoption pass: M163 runs the external pass solo; the stronger form of RR13 step 3's signal — a second person driving `/cairn-init` and a milestone loop with the author hands-off — remains unrun, and a solo pass cannot surface author-blind friction (knowledge the docs never state because the author never needs them stated). Promote when a second person is available to drive an adoption — never on a count of solo passes — added 2026-08-29 — M163 plan
-- The amendment-time audit surface records nothing: `/milestone-implement` step 6's re-audit mandates no work-log line (unlike the plan and ingest surfaces D-079 clause 2 owns), so on resume whether the fresh reader ran is unrecoverable and the per-criterion one-re-entry bound is uncountable; cheapest form is one step-6 sentence plus a fixed clearance shape at the brief surface, parked until the gap is actually hit on a resume. Promote when a resume cannot determine whether a re-audit ran, or an exemption is applied to wording no line names — never on a count of amendments — added 2026-08-09 — M138 review F1/F8
 - Standing-instrument adoption discipline, two plan-gate conduct clauses: (a) a milestone proposing a standing instrument states a pre-registered yield classification, an advisory-only shadow period of 2–3 milestones, and an autopsy date before it may gate anything; (b) when an adopted instrument's own falsifier fires, at most one narrowing attempt precedes the prescribed exit (D-059: replacing the falsifier is presumptive tuning). Sits beside D-090's door, not behind it. Promote when the next milestone proposes a standing instrument — the rule binds at adoption time, never on a count of milestones — added 2026-07-31 — M127 post-mortem (user question); weighed M149 (validator byte check declined for prose), not fired
 - Reasoning-effort dial per spawned agent: the Opus 5 guide names effort as the primary cost control while cairn's spawn vocabulary is model tier alone; parked mechanically — the Agent tool exposes no effort parameter, effort lives in agent-definition frontmatter, and cairn ships no agent definitions (adjacent to D-026's tool-gating rejection, not covered by it). Promote when cairn ships an agent definition for any other reason, or when the Agent tool exposes effort per spawn — never on a count of expensive sessions — added 2026-07-27 — M120 Out
 - Numeric cap on subagent spawning: the corpus has no cap or budget on spawning; parked behind a standing rejection that must be superseded first — the cost-line paragraph of `skills/milestone/SKILL.md` forbids proposing a cap from the reported count (D-057 closed the stock-side size-governance program), held in `skills/tests/test_cost_audit_line.py` (hand-run since D-109). Promote when `cairn_cost` shows a measured regression attributable to spawn volume (D-057's re-open trigger), never a felt-cost one — added 2026-07-27 — M120 Out

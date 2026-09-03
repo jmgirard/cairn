@@ -1,0 +1,11 @@
+# M176: The amendment-time re-audit records a work-log line
+
+**Status:** done (2026-09-03, PR #182 https://github.com/jmgirard/cairn/pull/182)
+
+**Goal:** The criteria audit's third surface — the amendment-time re-audit in `/milestone-implement` step 6 — records a work-log line in a fixed shape, and the ingest audit's line names the criteria it cleared, so a resumed session reads the once-per-criterion re-entry bound and the ingest-clearance exemption from the work log alone.
+
+**Outcome:** `/milestone-implement` step 6's re-audit records one work-log line per criterion in the shape `re-audit: AC<N> (<full|reduced>) — <what it returned, or "nothing">`; an absent line means the reader did not run; a criterion's first line is the reader's audit of the amended wording, the once re-entry writes the second, and a second line for one criterion is the stop, read from the lines, never session memory; an exempt criterion writes no line and spends no re-entry. `/milestone-brief` step 3's ingest-audit line takes the shape `ingest audit RR<NN> (full): cleared AC<list> — …` — each criterion its own `AC<N>` token, `cleared none` when empty, a criterion reworded at the gate not cleared — and step 6's exemption reads that list by name, applying only when the amended text equals the criterion as the file carried it at the ingest commit, whitespace-normalized (`" ".join(s.split())`). CHANGELOG Unreleased entry; no new prose guards (D-109). The D-108 door exception is D-132.
+
+**Decisions:** none milestone-local; D-132 (by-name exception to D-108's door) was written in the plan commit.
+
+**Review:** three-lens fan-out (user-facing tier). [O] 9 findings: O2–O8 fixed on the branch (ingested-text referent named; `binding criteria` citation narrowed to the normalization; `AC<list>` token spelling; `cleared none`; an exempt criterion writes no line; "cleared" means passed unchanged; CHANGELOG qualifier), O1 rejected with a clarifying sentence added (the first line is the initial audit, the second the once re-entry and the stop), O9 informational rejected. [S] blame-history: one D-071 single-home candidate rejected (D-132; the M130/M132 wiring precedent). [S] prior-review: no regressions, no PR threads. Hygiene: candidate row "The amendment-time audit surface records nothing" graduated; M171 row pruned to retention; no lesson added.
