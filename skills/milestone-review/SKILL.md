@@ -189,15 +189,17 @@ re-enters here, at the step the record shows is next:
    gated per instance, never automatic and never a standing menu item.
 
 5. **Independent fresh-context review — scaled to stakes.** Review rigor
-   follows the milestone's declared surface tier (recorded in its Goal or
-   Scope prose at plan time) and the diff's content:
+   follows the milestone's declared surface tier (read from its
+   `Surface tier:` header slot, which `/milestone-plan` fills) and the
+   diff's content:
    - **Internal tier, docs-only diff** — the declared tier is internal and
      `git diff <default-branch>...HEAD --name-only` shows only
      markdown/tracking files (no scripts, hooks, or other executable
      surface): spawn **one** fresh-context reviewer — the [O] diff-bug lens
      below — and skip the other two lenses.
    - **Any other diff** — executable surface touched, user-facing tier, or
-     no declared tier: spawn the full three-lens fan-out.
+     no declared tier (a file without the slot, or the slot left `—`):
+     spawn the full three-lens fan-out.
 
    Spawn the reviewer(s) the routing selected — fresh-context, none having
    seen the implementation (under a spawn-restricting harness instruction,
