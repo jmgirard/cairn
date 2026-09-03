@@ -117,11 +117,25 @@ run ingestion first (see `/milestone-brief`).
      amended text is written to the milestone file (under a
      spawn-restricting harness instruction, tracking-rules' freshness-spawns
      clause governs).
+     The re-audit records one work-log line either way, one line per
+     criterion re-entered, in the fixed shape
+     `re-audit: AC<N> (<full|reduced>) — <what it returned, or "nothing">`;
+     an absent line means the reader did not run, never that it ran and
+     was silent.
      Wording whose clearance the `/milestone-brief` ingest audit's work-log
-     line already covers is exempt.
+     line already covers is exempt, read from that line by name (its shape
+     `ingest audit RR<NN> (full): cleared AC<list> — …`, `/milestone-brief`
+     step 3): the ingest line's cleared list names the criterion, and the
+     amended text equals the ingested text whitespace-normalized — the
+     `binding criteria` check's comparison; an ingest line that does not
+     name the criterion exempts nothing.
      Per criterion, wording fixed at the mini gate re-enters the questions
      once with its own fresh reader, and further churn on that criterion
-     goes to the user. An
+     goes to the user — the bound and the stop both read from the
+     `re-audit: AC<N>` lines, never from session memory: a second
+     `re-audit: AC<N>` line naming the same criterion on one milestone is
+     the stop, and with it present no further reader is spawned for that
+     criterion. An
      amendment executing an amendment return from `/milestone-review` writes
      its work-log line in that skill's fixed shape —
      `amendment return: AC<N> — "<amended clause, verbatim>"` — the line the
