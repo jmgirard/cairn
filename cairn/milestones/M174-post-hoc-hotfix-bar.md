@@ -1,6 +1,6 @@
 # M174: A merged hotfix or adopted PR is verified to the hotfix bar post-hoc
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -121,7 +121,7 @@ pins the wording change would red.
       spelling no retired token (M169 lesson); hand-run `python3 -m unittest
       discover -s skills/tests` and the mutation harness (D-109: gating
       nothing).
-- [ ] T3: Sweep the live restating surfaces — `git grep -n -i -e 'step 7
+- [x] T3: Sweep the live restating surfaces — `git grep -n -i -e 'step 7
       only' -e 'close-out step' -e 'steps 2–6 skipped' -- skills README.md
       cairn/DESIGN.md ':!skills/tests'` — and reconcile any hit (archives and
       DECISIONS are history, untouched); run both gating suites from the repo
@@ -138,6 +138,7 @@ pins the wording change would red.
 - 2026-09-03: D-108's door read as satisfied at the gate (user choice) — the route ships a hotfix without the regression test the skill's own description promises — recorded as D-131.
 - 2026-09-03: T1 done — re-entry rewritten as a seven-move post-hoc verification (tier check with over-the-bar close-out; `baseRefOid` baseline with parent cross-check; two-way test on the default branch and a detached outside-the-repo worktree; `verify`; changelog; owed items via a follow-up `hotfix-<slug>` PR and step 6's chip; one acceptance chip folding the issue close, then step 7); step 6's cross-reference updated; CHANGELOG Unreleased entry added. Question gate skipped: nothing left open after the plan's criteria audit. Rehearsal on merged hotfix PR #176: `baseRefOid` 13be808f, merge commit 0a1b5b5c, `0a1b5b5c^` = 13be808f (equal); detached worktree of 13be808f added outside the repo, PR's test copied in fails there (2 failures) and passes on the default branch; worktree removed, `git worktree list` shows only the checkout.
 - 2026-09-03: T2 done — `TestHotfixMergedPrReentry` re-seeded to six tests pinning trigger (plus the absence of the two retired phrases), baseline, two-way check, follow-up path, acceptance chip, and over-the-bar close-out as whole passages whitespace-collapsed; the two REGISTRY entries replaced by six, each block occurring once in `skills/hotfix/SKILL.md`; hand-run `skills/tests` (harness included) 604 OK.
+- 2026-09-03: T3 done — sweep `git grep -n -i -e 'step 7 only' -e 'close-out step' -e 'steps 2–6 skipped' -- skills README.md cairn/DESIGN.md ':!skills/tests'` returns nothing (the only pre-T1 hit was the rewritten paragraph itself); both gating suites exit 0; `cairn_validate` run. Status → review.
 
 ## Decisions
 
