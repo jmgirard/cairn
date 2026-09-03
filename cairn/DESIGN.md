@@ -25,8 +25,10 @@ transitions, human-gated merges, and a domain verification doctrine.
 ## Architecture
 
 - `.claude-plugin/plugin.json` — manifest.
-- `skills/<name>/SKILL.md` × 9 — workflow logic; each reads the shared
-  rulebook first and never restates it. Includes `design-interview`, a
+- `skills/<name>/SKILL.md` × 10 — workflow logic; each reads the shared
+  rulebook first and never restates it. Includes `cairn-triage`, the
+  on-demand whole-list pass over candidates and Known issues (M173), and
+  `design-interview`, a
   standalone two-phase (facts → principles) DESIGN.md elicitation interview
   (D-013), offered from `/cairn-init`'s close block; it recommends running
   the session on Fable (D-014).

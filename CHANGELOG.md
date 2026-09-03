@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **A whole-list triage pass, on demand.** `/cairn-triage` reads every
+  ROADMAP candidate row and every DESIGN.md known issue, proposes one
+  disposition per item (keep, compress, merge, split, drop, promote, or
+  route) at a single gate, applies what you accept in one docs-only
+  commit, and records drops made on principle as a decision so they are
+  found by search rather than re-added. Nothing triggers it and nothing
+  is written before you answer.
 - **The review close block hands you the slash command, as typed.** After a
   merge the copyable next-step lines are now `/clear` and the recommended
   skill command (for example `/milestone-plan`), never the path of the

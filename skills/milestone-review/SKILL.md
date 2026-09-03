@@ -414,7 +414,8 @@ re-enters here, at the step the record shows is next:
    extension, the disposition chip whose options
    `skills/shared/records-hygiene.md` §7 states, rather than restating them
    here (a routed item then lands via the accepted-limitations block below).
-   No such row touched → skip.
+   No such row touched → skip. A whole-list sweep is `/cairn-triage`, run
+   by the user on demand, never from this pass.
    **Route accepted limitations:** a durable limitation this milestone
    surfaced that the user chose to live with — no candidate row, no fix
    planned — gets an entry in `cairn/DESIGN.md`'s Known issues section,

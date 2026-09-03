@@ -10,7 +10,7 @@ session-start-implicit carve-out kept, chapter titles opening with the
 has the "Phase header" rule re-emit the `#`/`##` pair at each session start.
 
 Per skill, the guard pins that skill's full stretch list from its own
-directive (nine entries replace M28's single shared token), so a skill whose
+directive (per-skill entries replace M28's single shared token), so a skill whose
 directive drops a stretch or drifts back to the bare per-phase form fails
 here by name.
 
@@ -54,12 +54,14 @@ STRETCH_TOKENS = {
     "cairn-release": "at each numbered step",
     "milestone": PHASE_LIST,
     "design-interview": PHASE_LIST,
+    "cairn-triage": "at each numbered step",
 }
 
-# D-021 sub-choice (3), retained by D-129: the nine phase skills, review
-# included — pinned by count so a dropped dict entry cannot shrink the domain
-# of the two per-skill tests silently.
-PHASE_SKILL_COUNT = 9
+# D-021 sub-choice (3), retained by D-129: the phase skills, review
+# included (ten since M173 added cairn-triage) — pinned by count so a
+# dropped dict entry cannot shrink the domain of the two per-skill tests
+# silently.
+PHASE_SKILL_COUNT = 10
 
 
 def read(*parts):
@@ -68,7 +70,7 @@ def read(*parts):
 
 
 class TestChapterMarkerMandate(unittest.TestCase):
-    def test_all_nine_phase_skills_are_pinned(self):
+    def test_all_phase_skills_are_pinned(self):
         self.assertEqual(len(STRETCH_TOKENS), PHASE_SKILL_COUNT)
 
     def test_each_skill_carries_the_chapter_marker_directive(self):

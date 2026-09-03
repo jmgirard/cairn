@@ -26,6 +26,7 @@ SKILLS_WITH_PHASE_HEADER = [
     "cairn-release",
     "milestone",
     "design-interview",
+    "cairn-triage",
 ]
 
 # Old-form phase levels that must never reappear as a directive.
