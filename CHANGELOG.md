@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **A hotfix merged outside the session is still held to the hotfix bar.**
+  Running `/hotfix` on an already-merged hotfix or adopted PR now verifies
+  the merged diff after the fact: its regression test is proved to fail on
+  the commit the PR was based on and pass on the default branch, the
+  profile's checks run, and the changelog entry is checked. A missing test
+  or entry lands through a follow-up PR with the usual approval chip; a
+  clean result pauses at one acceptance chip before close-out, instead of
+  jumping straight to it.
 - **A whole-list triage pass, on demand.** `/cairn-triage` reads every
   ROADMAP candidate row and every DESIGN.md known issue, proposes one
   disposition per item (keep, compress, merge, split, drop, promote, or

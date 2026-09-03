@@ -99,7 +99,7 @@ pins the wording change would red.
 
 ## Tasks
 
-- [ ] T1: Rewrite the merged-PR re-entry paragraph at
+- [x] T1: Rewrite the merged-PR re-entry paragraph at
       `skills/hotfix/SKILL.md:33-41` — trigger; `baseRefOid` baseline with
       the parent cross-check; tier check with the over-the-bar close-out;
       two-way test per step 3 on the default branch and a detached
@@ -136,6 +136,7 @@ pins the wording change would red.
 - 2026-09-03: plan gate chose `baseRefOid` as the pre-fix baseline over the current default branch (already carries the fix, so a test passes on both and proves nothing) and over a merge-method case split (no `gh` field reports the method); falsified by a merged PR whose `baseRefOid` differs from its merge commit's first parent — equal on #170–#177 at plan time.
 - 2026-09-03: plan gate chose one acceptance chip folding the issue close over none; falsified by a session where the chip carries nothing the user could decide on.
 - 2026-09-03: D-108's door read as satisfied at the gate (user choice) — the route ships a hotfix without the regression test the skill's own description promises — recorded as D-131.
+- 2026-09-03: T1 done — re-entry rewritten as a seven-move post-hoc verification (tier check with over-the-bar close-out; `baseRefOid` baseline with parent cross-check; two-way test on the default branch and a detached outside-the-repo worktree; `verify`; changelog; owed items via a follow-up `hotfix-<slug>` PR and step 6's chip; one acceptance chip folding the issue close, then step 7); step 6's cross-reference updated; CHANGELOG Unreleased entry added. Question gate skipped: nothing left open after the plan's criteria audit. Rehearsal on merged hotfix PR #176: `baseRefOid` 13be808f, merge commit 0a1b5b5c, `0a1b5b5c^` = 13be808f (equal); detached worktree of 13be808f added outside the repo, PR's test copied in fails there (2 failures) and passes on the default branch; worktree removed, `git worktree list` shows only the checkout.
 
 ## Decisions
 
