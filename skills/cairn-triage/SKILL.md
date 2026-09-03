@@ -28,11 +28,14 @@ every milestone that is `planned`, `in-progress`, `blocked`, or `review`:
 a row one of them absorbs is never dropped or merged away in this pass
 (records-hygiene §1 — it graduates at that milestone's post-merge hygiene).
 
-Preconditions: clean `git status`, on the default branch (detect it per the
-tracking-rules git model — never assume `main`), synced with origin
-(`git fetch`, ff-only pull). A dirty tree or a non-default branch stops the
-pass with a close block naming what to fix; the pass never commits on a
-milestone branch and never sweeps unrelated changes into its commit.
+Preconditions, checked before the reads above: clean `git status`, on the
+default branch (detect it per the tracking-rules git model — never assume
+`main`), synced with origin (`git fetch`, ff-only pull — the pass's only
+ref motion, done before the lists are read, so the no-write promise in
+step 3 holds over everything after it). A dirty tree or a non-default
+branch stops the pass with a close block naming what to fix (its status
+line reads `stopped before enumeration: <reason>`); the pass never commits
+on a milestone branch and never sweeps unrelated changes into its commit.
 
 ## Workflow
 
@@ -50,7 +53,8 @@ milestone branch and never sweeps unrelated changes into its commit.
    - Read the counts from the files, never from memory or a prior stamp. An
      empty `## Candidates` section, or a missing `## Known issues` section,
      yields zero items from that source with no failure; both empty → the
-     pass reaches the gate with an empty table and the close block says so.
+     pass still reaches the gate with an empty table (the chip is posed,
+     every option a no-op) and the close block says nothing was enumerated.
    The enumeration is the pass's domain: every proposal in step 3 maps to
    exactly one enumerated item, and every enumerated item gets exactly one
    proposal.
@@ -63,7 +67,7 @@ milestone branch and never sweeps unrelated changes into its commit.
    |---|---|
    | `keep` | Unchanged. The default when no evidence class below fires. |
    | `compress` | Rewritten toward the soft aim of **~300 bytes** in the shape *what it is / promote when / provenance* — the trigger and the `added YYYY-MM-DD — <origin>` provenance always survive; only restated context goes. Advisory only, stated here and nowhere else. |
-   | `merge` | Absorbed into a **named surviving row**, which gains one lineage clause (`absorbs <subject>, added <date> — <origin>`) and the absorbed row's trigger where it still applies. |
+   | `merge` | The absorbed row's proposal: folded into a **named surviving row**, which gains one lineage clause (`absorbs <subject>, added <date> — <origin>`) and the absorbed row's trigger where it still applies. The survivor's own proposal is `keep`; the lineage clause is the merge's edit, not a re-wording of the survivor. |
    | `split` | Replaced by **named rows**, each with one subject, one trigger, and the original provenance. |
    | `drop` | Removed. Its reason is one of three classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), or *rejected on principle* (the idea cuts against a stated stance). |
    | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). |
@@ -75,22 +79,30 @@ milestone branch and never sweeps unrelated changes into its commit.
      and the `### D-` headings for the item's subject: a premise an archived
      milestone refuted, a trigger that has already fired (the named
      condition is now in the repo) or can no longer fire (its subject is
-     retired), or a cited path that no longer exists (`ls` it). A dead
-     citation with a live trigger is `compress`, not `drop`.
+     retired), or a cited path that no longer exists (`ls` it from the
+     repo root, then under `cairn/` — provenance shorthand omits that
+     prefix — before calling it dead). A dead citation with a live trigger
+     is `compress`, not `drop`.
    - **Overlap → `merge`.** Two items on one subject, or one whose trigger
-     is a special case of another's. The survivor is the one with the
-     stronger provenance; state whether the absorbed row's promotion
-     trigger survives verbatim in the survivor (step 5 hangs on it).
+     is a special case of another's. The survivor is the row whose trigger
+     is the more observation-bound (the one the other's is a case of); on
+     a tie, the newer row, the older row's date surviving in the lineage
+     clause. State whether the absorbed row's promotion trigger survives
+     in substance in the survivor — the same condition, not the same words
+     (step 5 hangs on it).
    - **Overgrowth → `split` or `compress`.** Two promotion triggers or an
-     "and" in the subject → `split`; over the ~300-byte aim with one
-     trigger → `compress`.
+     "and" in the subject → `split`; over the ~300-byte aim **and**
+     carrying restated context a reader can lose without losing the
+     trigger or provenance → `compress`. The aim alone never fires — a row
+     over it whose every clause earns its place is `keep`.
    - **Misfiling → `route`.** A candidate with no promotion condition that
      describes a limitation the repo lives with; a Known issues entry with a
      fix condition that names future work.
    - **Readiness → `promote`.** The trigger has fired and the work is
      wanted now; the close block hands it on.
-   A finding-absorbing row — one carrying deferred findings from two or
-   more milestones — takes records-hygiene §7's options expressed in this
+   A finding-absorbing row — one carrying deferred findings filed from two
+   or more milestones; a weighed note recording that a trigger did not fire
+   is not a filed finding — takes records-hygiene §7's options in this
    vocabulary: `promote` (a bounded milestone for what guards shipped
    behaviour), `route` (accepted limitations to Known issues), `drop` (the
    rest), or `keep` as the explicit choice to extend no further; the
@@ -140,7 +152,8 @@ milestone branch and never sweeps unrelated changes into its commit.
      without a third table — the user has now spoken twice — and the pass
      proceeds; *Apply nothing* at any point ends the pass unchanged.
    - Whatever the answer, **every item not accepted for a change is left
-     byte-for-byte untouched** — `keep` is a no-op, never a re-wording, and
+     byte-for-byte untouched** — `keep` is a no-op, never a re-wording
+     (a merge survivor's lineage clause is the accepted merge's edit), and
      an item the user pulled out of a `merge` or `drop` stays as it was.
 
 4. **Apply.** Edit `cairn/ROADMAP.md` and `cairn/DESIGN.md` per the accepted

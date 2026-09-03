@@ -1,6 +1,6 @@
 # M173: A whole-list triage pass over candidates and Known issues
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -60,7 +60,7 @@ row is pruned only at its milestone's post-merge hygiene, records-hygiene
 - [x] T3: Write the propose-and-gate step: the table above the chip, the three-option chip (accept / amend via named items / apply-nothing, stop option present), the no-write-before-answer ordering, and the amend loop (one re-presentation, then the chip again).
 - [x] T4: Write the apply, record, and close steps: edits to both files, the D-027-shaped D-entry for principled drops and trigger-losing merges only, the replaced hygiene stamp, one `triage:` docs-only commit and push, and the close block with fenced `/milestone-plan` lines per promoted item.
 - [x] T5: Pointer edits: `/milestone` §2 staleness bullet, `/milestone-review` step 9 §7 clause, README "You want to…" row, DESIGN.md skill count, CHANGELOG Unreleased entry; run both gating suites and the hand-run `skills/tests` suite.
-- [ ] T6: Dry-run evidence for AC5: the fresh-session run over this repo (apply-nothing) and the empty-lists scratch-copy run; summarize both in one work-log line each.
+- [x] T6: Dry-run evidence for AC5: the fresh-session run over this repo (apply-nothing) and the empty-lists scratch-copy run; summarize both in one work-log line each.
 
 ## Work log
 
@@ -76,6 +76,10 @@ row is pruned only at its milestone's post-merge hygiene, records-hygiene
 - 2026-09-03: T3 done — proposal table shape (changes first, evidence class on every drop/merge), the three-option chip with its substance rule, the fixed no-write-before-answer ordering, one amend re-presentation then the chip again, and the untouched-unless-accepted clause. Suites green.
 - 2026-09-03: T4 done — apply rules per disposition, the record split (decision entry only for principled drops and trigger-losing merges, shaped on D-027 minus counts; refuted/shipped drops named in commit and stamp), the replaced stamp, validate-then-one-`triage:`-commit-and-push, and the close block with a fenced `/milestone-plan` per promote. Skill body 213 lines. Gating suites green; hand-run skills/tests green (600).
 - 2026-09-03: T5 done — one-line pointers in `/milestone` §2, `/milestone-review` step 9, README table, DESIGN skill count (× 10), CHANGELOG Unreleased; records-hygiene untouched. Minor amendment: the hand-run enumerations that pin the shipped skill set (`test_phase_header_levels`, `test_chapter_marker_mandate` count 9→10, `test_design_interview`'s × 9 pin) extended to the new skill — existing guards kept true, no new test. All three suites green (329 / 121 / 600).
+- 2026-09-03: T6 dry run 1 — fresh [O] reader followed the skill over this repo's live ROADMAP/DESIGN to the gate: 21 candidate rows + 5 Known issues entries enumerated (awk counts shown), 26 proposal rows (5 compress, 1 merge, 1 refuted-premise drop, 19 keep, no promote), chip text drafted in plain words; `git status --porcelain cairn/` empty before and after; branch precondition waived for the dry run since the tree sits on the milestone branch.
+- 2026-09-03: T6 dry run 2 — [S] reader over a scratch clone with an empty `## Candidates` section and no `## Known issues` heading: zero items from each source, empty table, chip still posed, no failure, `git status --porcelain cairn/` empty before and after.
+- 2026-09-03: minor amendment from the dry-run findings (skill body only, no criterion changed): the byte aim alone never fires compress; a merge is the absorbed row's proposal and the survivor is `keep`; survivor choice and trigger-survival stated in substance not verbatim; fetch/pull placed before the reads and the precondition-stop status line named; path checks try `cairn/` before calling a citation dead; a weighed non-event note is not a filed finding for §7; the empty-lists gate poses the chip with no-op options.
+- 2026-09-03: all tasks done; gating suites 329/121 green, hand-run skills/tests 600 green, cairn_validate green; status → review.
 
 ## Decisions
 
