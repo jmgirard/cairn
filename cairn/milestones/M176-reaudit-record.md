@@ -7,7 +7,7 @@
 - **Principles touched:** GP2
 - **Resolves:** —
 - **Surface tier:** user-facing — skill conduct prose the plugin ships to every adopting repo (`/milestone-implement` step 6, `/milestone-brief` step 3)
-- **Branch/PR:** m176-reaudit-record
+- **Branch/PR:** m176-reaudit-record · https://github.com/jmgirard/cairn/pull/182
 
 ## Goal
 
@@ -21,10 +21,10 @@ The criteria audit's third surface — the amendment-time re-audit in `/mileston
 
 ## Acceptance criteria
 
-- [ ] AC1: `/milestone-implement` step 6 states that the amendment-time re-audit records one work-log line either way, one line per criterion re-entered, in the fixed shape `re-audit: AC<N> (<full|reduced>) — <what it returned, or "nothing">`, and that an absent line means the reader did not run, never that it ran and was silent.
-- [ ] AC2: `/milestone-implement` step 6 states the once-per-criterion re-entry bound and its stop as read from those lines — a second `re-audit: AC<N>` line naming the same criterion on one milestone is the stop, and further churn on that criterion goes to the user — with no appeal to session memory.
-- [ ] AC3: `/milestone-brief` step 3 states that the ingest audit's work-log line takes the fixed shape `ingest audit RR<NN> (full): cleared AC<list> — <what it returned, or "nothing">`, and `/milestone-implement` step 6's exemption reads that line by name: amended wording is exempt from the re-audit only when the ingest line names the criterion and the amended text equals the ingested text whitespace-normalized (the `binding criteria` check's comparison).
-- [ ] AC4: The profile's `verify` slot (`python3 -m unittest discover -s scripts/tests` and `python3 -m unittest discover -s hooks/tests`, each exit code checked) exits 0 at the reviewed commit.
+- [x] AC1: `/milestone-implement` step 6 states that the amendment-time re-audit records one work-log line either way, one line per criterion re-entered, in the fixed shape `re-audit: AC<N> (<full|reduced>) — <what it returned, or "nothing">`, and that an absent line means the reader did not run, never that it ran and was silent.
+- [x] AC2: `/milestone-implement` step 6 states the once-per-criterion re-entry bound and its stop as read from those lines — a second `re-audit: AC<N>` line naming the same criterion on one milestone is the stop, and further churn on that criterion goes to the user — with no appeal to session memory.
+- [x] AC3: `/milestone-brief` step 3 states that the ingest audit's work-log line takes the fixed shape `ingest audit RR<NN> (full): cleared AC<list> — <what it returned, or "nothing">`, and `/milestone-implement` step 6's exemption reads that line by name: amended wording is exempt from the re-audit only when the ingest line names the criterion and the amended text equals the ingested text whitespace-normalized (the `binding criteria` check's comparison).
+- [x] AC4: The profile's `verify` slot (`python3 -m unittest discover -s scripts/tests` and `python3 -m unittest discover -s hooks/tests`, each exit code checked) exits 0 at the reviewed commit.
 
 ## Coverage
 
@@ -57,3 +57,12 @@ The criteria audit's third surface — the amendment-time re-audit in `/mileston
 ## Decisions
 
 ## Review
+
+Reviewed 2026-09-03 at 9be5731 (PR #182), main at 050c45f, branch up to date with origin/main.
+
+- AC1 — `skills/milestone-implement/SKILL.md:120-124` states the re-audit "records one work-log line either way, one line per criterion re-entered, in the fixed shape `re-audit: AC<N> (<full|reduced>) — <what it returned, or "nothing">`" and that "an absent line means the reader did not run, never that it ran and was silent" (grep, same-session read). PASS.
+- AC2 — `skills/milestone-implement/SKILL.md:133-138` states the bound and stop "both read from the `re-audit: AC<N>` lines, never from session memory: a second `re-audit: AC<N>` line naming the same criterion on one milestone is the stop", with further churn going to the user (the kept pinned sentence). PASS.
+- AC3 — `skills/milestone-brief/SKILL.md:130-135` states the shape `ingest audit RR<NN> (full): cleared AC<list> — <what it returned, or "nothing">` and that step 6's exemption reads the cleared list by name; `skills/milestone-implement/SKILL.md:125-131` reads the ingest line by name and requires the amended text to equal the ingested text whitespace-normalized, citing the `binding criteria` check (its `_norm` at `scripts/cairn_validate.py:584-587` is `" ".join(s.split())`). PASS.
+- AC4 — at 9be5731: `python3 -m unittest discover -s scripts/tests` 334 tests OK exit 0; `python3 -m unittest discover -s hooks/tests` 126 tests OK exit 0. PASS.
+
+Consistency gate: `cairn_validate` all checks passed (exit 0); no principle changed, `cairn_impact` skipped; profile `consistency-gate` slot names no toolchain checks (generic), no CI in this repo.
