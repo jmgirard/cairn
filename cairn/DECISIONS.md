@@ -4847,3 +4847,33 @@ it. The "Post-hoc hotfix bar" candidate row graduates at M174's post-merge
 hygiene. If a post-hoc verification cannot be run against a merged head in
 practice — D-130's own reopening evidence for hygiene-with-override — this
 is the entry to supersede.
+
+### D-132 (2026-09-03): M176 is excepted by name from D-108's door at user mandate — the amendment-time record line is planned without its shipped-behavior trigger; annotates D-108 and D-090, door unchanged (M176 plan gate)
+
+**Context:** D-108 bars planning a milestone whose deliverable is a new
+conduct rule about verification or records unless its trigger is a defect in
+shipped behavior (D-090's trigger clause, retained verbatim there). The
+ROADMAP candidate row "The amendment-time audit surface records nothing"
+(added 2026-08-09 from M138 review F1/F8) parked itself on exactly that
+trigger: promote when a resume cannot determine whether a re-audit ran. At
+the 2026-09-03 plan gate the user chose to promote the row with the trigger
+unfired, and chose a by-name exception over restating the trigger or leaving
+the row parked.
+
+**Decision:** M176 — the `/milestone-implement` step 6 re-audit's mandatory
+work-log line in a fixed shape, and the `/milestone-brief` ingest line naming
+the criteria it cleared — is planned as a user-mandated exception to D-108's
+door, by name, on the precedent of D-108's own M144 exception and D-095's
+logged deviation. The door is unchanged: D-108's subject clause, D-090's
+trigger clause, and the removal-shaped carve-out bind every plan gate after
+this one. D-079 clause 2's record rule, which D-095 re-scoped to the criteria
+audit and D-111 restated at the plan and ingest surfaces, reaches the audit's
+third surface through M176; this entry claims no reading under which it
+already did.
+
+**Consequences:** A user override is logged, never resisted (tracking-rules).
+Falsifier: a resume that never needs the line across the milestones that next
+amend a criterion says the record was ceremony and the row's parking was
+right — the falsifier is such a resume, never a count of milestones. A second
+door exception requested without a trigger revisits the door's terms by
+supersession, never by a further by-name exception.
