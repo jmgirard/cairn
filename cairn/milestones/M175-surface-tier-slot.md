@@ -1,6 +1,6 @@
 # M175: The surface tier is a milestone header slot
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -100,7 +100,7 @@ freeform; the amendment-time audit record line — stays its own candidate row.
       `SURFACE_FIXTURE`) and `skills/tests/test_mutation_harness.py` (the block
       near line 1806) to the new step-2 wording, in the same commit as T2; run
       the AC3 sweep and record its empty output.
-- [ ] T6: Run both gating suites and the hand-run `skills/tests` suite from the
+- [x] T6: Run both gating suites and the hand-run `skills/tests` suite from the
       repo root; record each exit code in the work log.
 
 ## Work log
@@ -117,6 +117,7 @@ freeform; the amendment-time audit record line — stays its own candidate row.
 - 2026-09-03: T3 — review step 5 reads the tier from the `Surface tier:` slot; `no declared tier` arm kept, glossed as a missing or `—` slot; verify green; hand-run skills/tests 602/604 — the two reds are the template/table parity guard T4 settles.
 - 2026-09-03: T4 — `Surface tier` added to the plan-owned header row of the section-ownership table; verify green; hand-run skills/tests 604/604 (the parity guard now passes).
 - 2026-09-03: T5 — pins re-seeded with T2 (commit 6b55e50); AC3 sweep over `git ls-files -- skills README.md` (whitespace collapsed, case-insensitive `goal or scope`) returned no match.
+- 2026-09-03: T6 — from the repo root: scripts/tests exit 0, hooks/tests exit 0, hand-run skills/tests exit 0; all tasks checked, status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
