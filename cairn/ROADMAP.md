@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-03 (`/milestone` audit after M173: nothing in flight, no planned milestones; validate green; inboxes empty; no orphaned issues or outside merges; budgets ok — ROADMAP `wc -l -c` 43/12784 under 60/24000, LESSONS 15700 under 20000, doctrine modules under their headers; tracking-rules 487 lines / 45,908 chars.)_
+_Last hygiene check: 2026-09-03 (M174 archived; PR #178 squash-merged; "Post-hoc hotfix bar" candidate row graduated; M169 done row pruned; M172 lesson extended; validate green; budgets ok — ROADMAP `wc -l -c` 42/12119 under 60/24000, LESSONS 49 lines / 15885 bytes under 50/20000, doctrine modules under their headers; skills/tests hand-run 604 green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,17 +12,15 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M174 | A merged hotfix or adopted PR is verified to the hotfix bar post-hoc | review | — | normal | milestones/M174-post-hoc-hotfix-bar.md |
+| M174 | A merged hotfix or adopted PR is verified to the hotfix bar post-hoc | done | — | normal | milestones/archive/M174-post-hoc-hotfix-bar.md |
 | M173 | A whole-list triage pass over candidates and Known issues | done | — | normal | milestones/archive/M173-candidate-triage.md |
 | M172 | A merged or stopped review milestone resumes at the right step | done | — | normal | milestones/archive/M172-resume-routing.md |
 | M171 | Chapter markers follow stretches, not phases | done | — | normal | milestones/archive/M171-per-stretch-chapters.md |
 | M170 | Waiting on CI and background work follows a tested rule | done | — | normal | milestones/archive/M170-wait-doctrine.md |
-| M169 | Criteria and tasks carry positional labels | done | — | normal | milestones/archive/M169-positional-labels.md |
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
 
-- Post-hoc hotfix bar for a PR merged outside the session: `/hotfix` step 1's merged-PR re-entry (M172) runs step 7 only, so a hotfix or adopted PR merged on GitHub reaches close-out with no regression test or gate-lite check ever applied to its diff; the fix is a post-hoc verification of the merged diff paralleling `/milestone-review`'s merged-unreviewed route, deliberately not designed at M172's review gate. Promote when a PR merged outside the session is found to lack the regression test the hotfix bar requires — never on a count of re-entries — added 2026-09-02 — M172 review F1
 - Env-prefix blindness in the other two command guards: M162 extends the shared `CMD_POS` so `merge_guard` sees through leading `VAR=value` assignment prefixes, but `commit_guard.py:39` and `force_push_guard.py:45` carry their own duplicated `CMD_POS` literals, so `GIT_AUTHOR_NAME=x git commit …` and `GH_TOKEN=x git push --force …` stay unseen by those guards; the fix is aligning their copies (or sharing the pattern), deliberately left out of M162's minimal scope. Promote when an env-prefixed spelling of a guarded commit or force-push is observed in a live session, or fold into the next milestone touching either guard — added 2026-08-29 — M162 plan (audit F8)
 - Numeric id resolution for cairn_cost's milestone filter: `milestone_of` derives the id from the branch name and `--milestone` compares by raw string equality (`scripts/cairn_cost.py`), so a width-mismatched spelling (`--milestone M057` against a two-digit-era branch `m57-…`) reports no records and mixed-width branches split attribution buckets; M157 canonicalized the three tracking ID surfaces and deliberately left this fourth (outside its In-scope). Promote when a width-mismatched cost query misleads in practice, or fold into the next cairn_cost-touching milestone — added 2026-08-23 — M157 review F1
 - Review-side reclassification of record-binding criterion failures: a review finding that an acceptance criterion is unmet only in a recording act (a work-log quotation, a named recording command's provenance) crosses the return floor as a full defect return toward the thrash threshold; the deferred remedy is routing such findings to the amendment track (narrow the criterion to the deliverable property, fix the record at the gate), deliberately not shipped with D-120 so plan-time prevention proves itself first. Promote when a milestone whose criteria passed the extended audit (D-120) still costs a defect return on a record-binding clause — never on a count of legacy-milestone returns — added 2026-08-21 — M151 (circumplex M101)
