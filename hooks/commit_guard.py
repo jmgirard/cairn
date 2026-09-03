@@ -22,7 +22,8 @@ residual over-nudge (e.g. a trivial README fix) harmless — the message says so
 Known, accepted limitations (warn-only, so all low-stakes; conservative like
 merge_guard.py): `git -C <path> commit` and `git -c k=v commit` (multi-token
 global options) aren't matched; a `-a`-looking token inside an `-m` message
-may over-count modified files; `git commit --amend` with nothing staged sees
+or in a leading assignment value (`MSG=--all git commit …`) may over-count
+modified files; `git commit --amend` with nothing staged sees
 an empty set (the original commit was the catchable event). No-op outside
 cairn repos; fail-permissive.
 """
@@ -33,11 +34,11 @@ import sys
 
 import cairn_common as cc
 
-# Command position only: start of string or right after a shell separator —
-# same discipline as merge_guard.py (a plain space before "git" means it's an
-# argument, e.g. `echo git commit`, not a command).
-CMD_POS = r"(?:^|[;&|(\n])\s*"
-GIT_COMMIT = re.compile(CMD_POS + r"git(?:\s+-\S+)*\s+commit(?!\S)")
+# Command position — the shared `cc.CMD_POS`: start of string or right after
+# a shell separator, then any leading `VAR=value` assignment words, so
+# `GIT_AUTHOR_NAME=x git commit …` is seen like the plain spelling. A plain
+# space before "git" means it's an argument (`echo git commit`), not a command.
+GIT_COMMIT = re.compile(cc.CMD_POS + r"git(?:\s+-\S+)*\s+commit(?!\S)")
 
 # `-a` / `--all` / a short-flag cluster containing 'a' (`-am`, `-va`). The
 # lookbehind keeps the second dash of `--amend` and mid-word letters from

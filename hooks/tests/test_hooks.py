@@ -1531,6 +1531,28 @@ class TestForcePushGuard(RepoFixture):
         # M60 review F4a: `)` must end the span, not glue onto the refspec
         self.assert_denied("(git push -f origin main)")
 
+    # --- Env-assignment prefixes: seen the way merge_guard sees them (M162) ---
+
+    def test_env_prefixed_force_push_to_default_is_denied(self):
+        for cmd in (
+            "GH_TOKEN=x git push --force origin main",
+            "A=1 B=2 git push -f origin main",
+            "echo hi; GH_TOKEN=x git push -f origin main",
+            "GH_TOKEN=x git push --force",       # no refspec: sitting on main
+            "GH_TOKEN=x git push origin +main",  # flagless force form
+            "FOO=1; git push -f origin main",    # `;`-terminated: plain push
+        ):
+            with self.subTest(cmd=cmd):
+                self.assert_denied(cmd)
+
+    def test_env_prefixed_benign_pushes_still_pass(self):
+        for cmd in (
+            "GH_TOKEN=x git push origin main",
+            "GH_TOKEN=x git push -f origin feature",
+        ):
+            with self.subTest(cmd=cmd):
+                self.assert_passes(cmd)
+
     def test_separate_value_flag_never_invents_a_deny(self):
         # M60 review F4b: -o's value token is not a refspec — this is a
         # feature-branch force-push and must pass
@@ -1688,6 +1710,32 @@ class TestCommitGuard(RepoFixture):
         # index — nothing non-cairn is staged, so stay silent.
         (self.root / "code.txt").write_text("changed\n")
         proc = run_hook("commit_guard.py", self.commit_payload("git commit -m wip"))
+        self.assertEqual(proc.stdout.strip(), "")
+
+    # --- Env-assignment prefixes: seen the way merge_guard sees them (M162) ---
+
+    def test_env_prefixed_noncairn_commit_nudges(self):
+        (self.root / "code.txt").write_text("changed\n")
+        self.git("add", "code.txt")
+        for cmd in ("GIT_AUTHOR_NAME=x git commit -m msg", "FOO=1; git commit -m msg"):
+            with self.subTest(cmd=cmd):
+                out = hook_json(run_hook("commit_guard.py", self.commit_payload(cmd)))
+                self.assertIn("default branch", out["additionalContext"])
+                self.assertNotIn("permissionDecision", out)
+
+    def test_env_prefixed_stage_all_counts_modified_tracked(self):
+        (self.root / "code.txt").write_text("changed\n")
+        out = hook_json(
+            run_hook("commit_guard.py", self.commit_payload("A=1 B=2 git commit -am wip"))
+        )
+        self.assertIn("default branch", out["additionalContext"])
+
+    def test_env_prefixed_cairn_only_commit_stays_silent(self):
+        (self.root / "cairn" / "ROADMAP.md").write_text(ROADMAP + "edit\n")
+        self.git("add", "cairn/ROADMAP.md")
+        proc = run_hook(
+            "commit_guard.py", self.commit_payload("GIT_AUTHOR_NAME=x git commit -m msg")
+        )
         self.assertEqual(proc.stdout.strip(), "")
 
     def test_command_position_and_non_commit_ignored(self):

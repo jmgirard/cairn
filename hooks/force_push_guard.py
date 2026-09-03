@@ -39,11 +39,13 @@ import sys
 
 import cairn_common as cc
 
-# Command position only: start of string or right after a shell separator —
-# same discipline as merge_guard.py (a plain space before "git" means it's
-# an argument, e.g. `echo git push`, not a command).
-CMD_POS = r"(?:^|[;&|(\n])\s*"
-GIT_PUSH = re.compile(CMD_POS + r"git(?:\s+-\S+)*\s+push(?!\S)")
+# Command position — the shared `cc.CMD_POS`: start of string or right after
+# a shell separator, then any leading `VAR=value` assignment words, so
+# `GH_TOKEN=x git push -f origin main` is seen like the plain spelling. A
+# plain space before "git" means it's an argument (`echo git push`), not a
+# command. The force-flag scan runs over the span AFTER `push`, so an
+# assignment value never reads as a force flag.
+GIT_PUSH = re.compile(cc.CMD_POS + r"git(?:\s+-\S+)*\s+push(?!\S)")
 
 # --force / --force-with-lease[=v] / --force-if-includes, or a short-flag
 # cluster containing 'f'. The lookbehind keeps the second dash of a long

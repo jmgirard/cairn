@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **The commit and force-push guards see through environment prefixes.**
+  A `git commit` or `git push` spelled with leading `VAR=value` words
+  (`GH_TOKEN=x git push -f origin main`, `GIT_AUTHOR_NAME=x git commit`)
+  is now guarded exactly like the plain spelling, as the merge guard
+  already was; the three guards share one command-position pattern.
 - **`cairn_cost` finds a milestone however its id is spelled.** The
   `--milestone` filter and the audit line now resolve ids by number, so
   `--milestone M057` and `--milestone M57` report the same milestone, a
