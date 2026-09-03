@@ -118,6 +118,7 @@ freeform; the amendment-time audit record line — stays its own candidate row.
 - 2026-09-03: T4 — `Surface tier` added to the plan-owned header row of the section-ownership table; verify green; hand-run skills/tests 604/604 (the parity guard now passes).
 - 2026-09-03: T5 — pins re-seeded with T2 (commit 6b55e50); AC3 sweep over `git ls-files -- skills README.md` (whitespace collapsed, case-insensitive `goal or scope`) returned no match.
 - 2026-09-03: T6 — from the repo root: scripts/tests exit 0, hooks/tests exit 0, hand-run skills/tests exit 0; all tasks checked, status → review.
+- 2026-09-03: step-7 approval: PR #181 approved for merge; AC1 write-mode spelling (`create/amend-via-gate`) accepted as the criterion's write-mode.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
@@ -136,4 +137,3 @@ freeform; the amendment-time audit record line — stays its own candidate row.
   - F3 (AC1 evidence line): cited "lines 4–12" for the sibling slots; the plan-owned siblings are lines 8–12. Fixed now in the evidence line.
   - F4 (plan step 4 "Never left `—`" vs template default `—` and review's `—` arm): rejected — deliberate belt-and-braces, chosen at the plan gate with its falsifier logged (work log 2026-09-03, slot-only reading); no candidate row, since the falsifier already names the reopening evidence.
   - F5 (plan step 2 names a slot in a file step 4 creates): rejected — pre-existing wrinkle inherited from the old prose wording, and the new step-4 bullet resolves it.
-- 2026-09-03: step-7 approval: PR #181 approved for merge; AC1 write-mode spelling (`create/amend-via-gate`) accepted as the criterion's write-mode.
