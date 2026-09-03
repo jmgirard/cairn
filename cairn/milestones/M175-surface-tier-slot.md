@@ -94,7 +94,7 @@ freeform; the amendment-time audit record line — stays its own candidate row.
 - [x] T3: `skills/milestone-review/SKILL.md` step 5 (lines 191–200): the declared
       tier is read from the `Surface tier:` header slot; keep the `no declared
       tier` arm verbatim.
-- [ ] T4: `skills/shared/tracking-rules.md:39`: add `Surface tier` to the
+- [x] T4: `skills/shared/tracking-rules.md:39`: add `Surface tier` to the
       plan-owned header row of the section-ownership table.
 - [ ] T5: Re-seed `skills/tests/test_stakes_tier.py` (the pin at line 174 and
       `SURFACE_FIXTURE`) and `skills/tests/test_mutation_harness.py` (the block
@@ -115,6 +115,7 @@ freeform; the amendment-time audit record line — stays its own candidate row.
 - 2026-09-03: T1 — template gains the `Surface tier:` slot between `Resolves:` and `Branch/PR:`; verify green (scripts 0, hooks 0).
 - 2026-09-03: T2 — plan step 2 records the tier in the `Surface tier:` header slot; step 4 gains the header-slot bullet; T5's pin, fixture, and mutation block re-seeded in this commit; stakes-tier guard 19/19, mutation harness 9/9, verify green.
 - 2026-09-03: T3 — review step 5 reads the tier from the `Surface tier:` slot; `no declared tier` arm kept, glossed as a missing or `—` slot; verify green; hand-run skills/tests 602/604 — the two reds are the template/table parity guard T4 settles.
+- 2026-09-03: T4 — `Surface tier` added to the plan-owned header row of the section-ownership table; verify green; hand-run skills/tests 604/604 (the parity guard now passes).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
