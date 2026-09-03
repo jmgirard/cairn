@@ -1803,7 +1803,7 @@ REGISTRY = [
         guard="test_stakes_tier",
         test="TestSurfaceTierRule.test_tier_is_recorded_in_the_milestone_file",
         target="skills/milestone-plan/SKILL.md",
-        block="one-clause reason in the milestone file's Goal or Scope prose",
+        block="one-clause reason in the milestone file's `Surface tier:` header slot",
     ),
     Mutation(
         guard="test_stakes_tier",

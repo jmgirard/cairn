@@ -86,7 +86,7 @@ freeform; the amendment-time audit record line — stays its own candidate row.
       `skills/shared/templates/milestone.md` between `Resolves:` (line 12) and
       `Branch/PR:` (line 13), with the owner/write-mode/value-form comment and
       the "no validate check parses it" clause.
-- [ ] T2: `skills/milestone-plan/SKILL.md`: reword the step-2 surface-tier rule
+- [x] T2: `skills/milestone-plan/SKILL.md`: reword the step-2 surface-tier rule
       (lines 43–49) so the tier and reason are recorded in the `Surface tier:`
       header slot; add a `**Surface tier** (header slot)` bullet to step 4
       beside the Principles touched / Resolves / Driving RR bullets (lines
@@ -113,6 +113,7 @@ freeform; the amendment-time audit record line — stays its own candidate row.
 - 2026-09-03: plan gate chose slot-only reading in review over a prose fallback because the legacy case fades within a milestone and the existing `no declared tier` arm defaults to full rigor; falsified by an adopting repo's internal-tier milestone paying for a three-lens fan-out it did not need.
 - 2026-09-03: plan gate chose re-seeding the existing pins over adding a template-slot pin because the slot is skill conduct like `Resolves:`; falsified by the slot line leaving the template unnoticed.
 - 2026-09-03: T1 — template gains the `Surface tier:` slot between `Resolves:` and `Branch/PR:`; verify green (scripts 0, hooks 0).
+- 2026-09-03: T2 — plan step 2 records the tier in the `Surface tier:` header slot; step 4 gains the header-slot bullet; T5's pin, fixture, and mutation block re-seeded in this commit; stakes-tier guard 19/19, mutation harness 9/9, verify green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
