@@ -42,7 +42,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
 
    **Surface tier (mandatory).** Every plan classifies the milestone's
    deliverable as user-facing or internal, and records the tier and a
-   one-clause reason in the milestone file's Goal or Scope prose.
+   one-clause reason in the milestone file's `Surface tier:` header slot.
    Internal means no external consumer of the repo relies on the
    deliverable — dev tooling, data-generation scripts, in-repo checkers
    over internal artifacts, tracking records; user-facing is everything
@@ -277,6 +277,12 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      GitHub issue is never the remainder's only record. No issue → `—`.
      `/milestone-review` reads the slot for the PR body's closing lines and
      the post-merge check; the archive summary's status line carries it.
+   - **Surface tier** (header slot): filled from step 2's classification —
+     `user-facing` or `internal`, an em dash, and the one-clause reason
+     (`internal — a checker over in-repo tracking files`). Never left `—`:
+     step 2 makes the classification mandatory. `/milestone-review` step 5
+     reads the slot to scale its review fan-out; skill conduct only — no
+     validate check parses it.
    - **Driving RR** (header slot): a milestone planned from an RR that
      carries Binding criteria sets the slot to `RR<NN>`, ingests each
      criterion verbatim into the AC block (the `binding criteria` check

@@ -171,7 +171,7 @@ class TestSurfaceTierRule(unittest.TestCase):
 
     def test_tier_is_recorded_in_the_milestone_file(self):
         self.assertIn(
-            "one-clause reason in the milestone file's goal or scope prose",
+            "one-clause reason in the milestone file's `surface tier:` header slot",
             surface_rule(),
         )
 
@@ -283,7 +283,7 @@ def normalize(text):
 SURFACE_FIXTURE = normalize("""\
 **Surface tier (mandatory).** Every plan classifies the milestone's
    deliverable as user-facing or internal, and records the tier and a
-   one-clause reason in the milestone file's Goal or Scope prose.
+   one-clause reason in the milestone file's `Surface tier:` header slot.
    Internal means no external consumer of the repo relies on the
    deliverable — dev tooling, data-generation scripts, in-repo checkers
    over internal artifacts, tracking records; user-facing is everything
