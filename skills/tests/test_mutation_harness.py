@@ -3279,16 +3279,44 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_resume_routing",
-        test="TestHotfixMergedPrReentry.test_merged_pr_runs_step_seven_only",
+        test="TestHotfixMergedPrReentry."
+             "test_merged_pr_runs_posthoc_verification",
         target=HOTFIX,
-        block="runs step 7 only, steps\n   2–6 skipped",
+        block="runs a post-hoc\n   verification of the merged diff before step 7",
     ),
     Mutation(
         guard="test_resume_routing",
-        test="TestHotfixMergedPrReentry.test_reentry_names_its_three_moves",
+        test="TestHotfixMergedPrReentry."
+             "test_baseline_is_base_ref_oid_never_the_default_branch",
         target=HOTFIX,
-        block="one chip authorizing the issue close before any issue\n"
-              "   write (a hotfix keeps no work log to show whether step 6's "
-              "chip\n   authorized it, so it is asked once here)",
+        block="The current default branch is never the\n     baseline",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixMergedPrReentry."
+             "test_two_way_check_runs_against_the_baseline",
+        target=HOTFIX,
+        block="it must pass on the default branch\n     and fail on the baseline",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixMergedPrReentry."
+             "test_owed_items_land_through_the_pr_path",
+        target=HOTFIX,
+        block="never by a commit to the default branch",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixMergedPrReentry."
+             "test_clean_check_poses_one_acceptance_chip",
+        target=HOTFIX,
+        block="the recommended option\n     accepting and a decline option present",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixMergedPrReentry."
+             "test_over_the_bar_diff_still_reaches_step_seven",
+        target=HOTFIX,
+        block="and step 7's close-out still runs",
     ),
 ]

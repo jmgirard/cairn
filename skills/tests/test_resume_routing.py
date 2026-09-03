@@ -147,30 +147,92 @@ class TestMilestoneAuditMergedReview(unittest.TestCase):
 
 
 class TestHotfixMergedPrReentry(unittest.TestCase):
-    """AC4: `/hotfix` step 1 runs step 7 only for a merged PR whose head
-    branch is not a milestone branch."""
+    """M172 AC4, rewritten at M174: `/hotfix` step 1's merged-PR re-entry
+    runs a post-hoc verification of the merged diff before step 7 — never
+    step 7 alone. Each move is pinned as a whole passage, whitespace
+    collapsed (M171 lesson)."""
 
     def setUp(self):
         self.step1 = flat(section(read("hotfix", "SKILL.md"),
                                   "1. **Tier check first.**",
                                   "2. **Branch"))
 
-    def test_merged_pr_runs_step_seven_only(self):
+    def test_merged_pr_runs_posthoc_verification(self):
         self.assertIn(
             "A PR-reference argument whose `gh pr view <N> --json "
             "state,headRefName` reports `MERGED` and a head branch not "
-            "matching `m<nnn>-*`",
+            "matching `m<nnn>-*` (a hotfix branch or an adopted PR, merged "
+            "outside the session or after a stopped CI wait) runs a post-hoc "
+            "verification of the merged diff before step 7",
             self.step1,
         )
-        self.assertIn("runs step 7 only, steps 2–6 skipped", self.step1)
+        self.assertNotIn("runs step 7 only", self.step1)
+        self.assertNotIn("steps 2–6 skipped", self.step1)
 
-    def test_reentry_names_its_three_moves(self):
+    def test_baseline_is_base_ref_oid_never_the_default_branch(self):
         self.assertIn(
-            "the candidate-row check, then — when the PR body carries a "
-            "`Fixes #N` line — one chip authorizing the issue close before "
-            "any issue write (a hotfix keeps no work log to show whether "
-            "step 6's chip authorized it, so it is asked once here), then "
-            "the close block with one recap line naming the merged PR.",
+            "The pre-fix baseline is the oid `gh pr view <N> --json "
+            "baseRefOid` reports, cross-checked against the merge commit's "
+            "first parent (`gh pr view <N> --json mergeCommit`, then "
+            "`git rev-parse <mergeCommit>^`); a disagreement is stated in "
+            "chat, `baseRefOid` governing. The current default branch is "
+            "never the baseline: it already carries the fix, so a test "
+            "passes on both and proves nothing.",
+            self.step1,
+        )
+
+    def test_two_way_check_runs_against_the_baseline(self):
+        self.assertIn(
+            "a test the merged diff carries is run on the up-to-date default "
+            "branch (fetch, pull ff-only) and in a throwaway worktree of the "
+            "baseline created outside the repo (`git worktree add --detach "
+            "/tmp/<repo>-verify <baseRefOid>`) with only the test file "
+            "copied in; it must pass on the default branch and fail on the "
+            "baseline. When the merged diff carries no test, or its test "
+            "passes on both, author one on a `hotfix-<slug>` branch cut from "
+            "the up-to-date default branch and prove it the same two ways. "
+            "`git worktree remove` the worktree either way",
+            self.step1,
+        )
+
+    def test_owed_items_land_through_the_pr_path(self):
+        self.assertIn(
+            "The regression test and the changelog entry land on the "
+            "`hotfix-<slug>` branch (cut here when the regression-test move "
+            "did not) and reach the default branch only through step 5's "
+            "authoring variant — push, open a new PR",
+            self.step1,
+        )
+        self.assertIn(
+            "and step 6's approval chip, never by a commit to the default "
+            "branch.",
+            self.step1,
+        )
+
+    def test_clean_check_poses_one_acceptance_chip(self):
+        self.assertIn(
+            "pose one `AskUserQuestion` chip whose question text names "
+            "acceptance of the post-hoc verification and, when the PR body "
+            "carries a `Fixes #N` line, the issue close it authorizes (a "
+            "hotfix keeps no work log to show whether step 6's chip "
+            "authorized it, so it is asked once here, and the issue-close "
+            "chip is not posed separately), the recommended option accepting "
+            "and a decline option present. Step 7 runs only on acceptance",
+            self.step1,
+        )
+        self.assertIn(
+            "A decline stops with a close block naming the decline and the "
+            "reason where the user gave one, plus a `candidate` row "
+            "(search-first).",
+            self.step1,
+        )
+
+    def test_over_the_bar_diff_still_reaches_step_seven(self):
+        self.assertIn(
+            "A diff over the hotfix bar takes the over-the-bar disposition "
+            "above with no regression test demanded, and step 7's close-out "
+            "still runs — the candidate row or the `/milestone-plan` next "
+            "command rides in that close block.",
             self.step1,
         )
 
