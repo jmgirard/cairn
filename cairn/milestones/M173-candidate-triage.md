@@ -81,6 +81,7 @@ row is pruned only at its milestone's post-merge hygiene, records-hygiene
 - 2026-09-03: minor amendment from the dry-run findings (skill body only, no criterion changed): the byte aim alone never fires compress; a merge is the absorbed row's proposal and the survivor is `keep`; survivor choice and trigger-survival stated in substance not verbatim; fetch/pull placed before the reads and the precondition-stop status line named; path checks try `cairn/` before calling a citation dead; a weighed non-event note is not a filed finding for §7; the empty-lists gate poses the chip with no-op options.
 - 2026-09-03: all tasks done; gating suites 329/121 green, hand-run skills/tests 600 green, cairn_validate green; status → review.
 - 2026-09-03: review started; draft PR #177 opened; AC1–AC4 and AC6 evidence recorded and ticked, consistency gate green; AC5 dry runs and the three-lens review running — checkpoint, review in progress.
+- 2026-09-03: step-7 approval: PR #177 approved for merge.
 
 ## Decisions
 
