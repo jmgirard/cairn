@@ -7,7 +7,7 @@
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the milestone template and the plan and review skills ship to every adopting repo   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it (this milestone's own deliverable, written by hand ahead of the template) -->
-- **Branch/PR:** m175-surface-tier-slot   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m175-surface-tier-slot · https://github.com/jmgirard/cairn/pull/181   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -43,14 +43,14 @@ freeform; the amendment-time audit record line — stays its own candidate row.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `skills/shared/templates/milestone.md` carries a `- **Surface tier:**`
+- [x] AC1: `skills/shared/templates/milestone.md` carries a `- **Surface tier:**`
       header line between its `Resolves:` and `Branch/PR:` lines, whose trailing
       comment names `plan` as owner with write-mode `create; amend-via-gate`, the
       value form `user-facing | internal — <one-clause reason>`, and states that
       no validate check parses it. Evidence: `grep -n 'Resolves:\|Surface
       tier:\|Branch/PR:' skills/shared/templates/milestone.md` shows the three
       lines in that order.
-- [ ] AC2: The surface-tier rule in `skills/milestone-plan/SKILL.md` step 2 names
+- [x] AC2: The surface-tier rule in `skills/milestone-plan/SKILL.md` step 2 names
       the `Surface tier:` header slot as where the tier and its one-clause reason
       are recorded, and step 4 carries a `**Surface tier** (header slot)` bullet
       among the header-slot bullets; step 5 of `skills/milestone-review/SKILL.md`
@@ -61,12 +61,12 @@ freeform; the amendment-time audit record line — stays its own candidate row.
       tier\|^[0-9]\. \*\*' skills/milestone-plan/SKILL.md
       skills/milestone-review/SKILL.md skills/shared/tracking-rules.md`, read in
       line order so each hit falls under its step header.
-- [ ] AC3: Over every file `git ls-files -- skills README.md` lists, a
+- [x] AC3: Over every file `git ls-files -- skills README.md` lists, a
       case-insensitive search for the retired spelling `goal or scope` after
       collapsing each file's whitespace to single spaces returns no match (sites
       naming the new location are settled by AC2). Evidence: the search command
       and its empty output.
-- [ ] AC4: The active profile's `verify` slot is clean — `python3 -m unittest
+- [x] AC4: The active profile's `verify` slot is clean — `python3 -m unittest
       discover -s scripts/tests` and `python3 -m unittest discover -s hooks/tests`
       each exit 0 — and the hand-run `python3 -m unittest discover -s
       skills/tests` exits 0. Evidence: each command's exit code.
@@ -124,3 +124,9 @@ freeform; the amendment-time audit record line — stays its own candidate row.
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion. -->
+
+- AC1 — verified 2026-09-03: `grep -n 'Resolves:\|Surface tier:\|Branch/PR:' skills/shared/templates/milestone.md` shows lines 12, 13, 14 in that order; line 13's comment names owner `plan`, write-mode `create/amend-via-gate` (the template's spelling of `create; amend-via-gate`, matching every sibling slot on lines 4–12), value form `user-facing | internal — <one-clause reason>`, and "no validate check parses it".
+- AC2 — verified 2026-09-03: the AC2 grep read in line order — plan SKILL.md: `Surface tier:` header-slot sentence at line 45 under step 2 (line 34); `**Surface tier** (header slot)` bullet at line 280 under step 4 (line 219). Review SKILL.md: slot named at line 193 under step 5 (line 191); `no declared tier` arm at line 201. tracking-rules.md line 39 lists `Surface tier` in the plan-owned header row.
+- AC3 — verified 2026-09-03: for each of `git ls-files -- skills README.md`, `tr -s '[:space:]' ' ' | grep -qi 'goal or scope'` reported no match; output empty.
+- AC4 — verified 2026-09-03: from the repo root, `python3 -m unittest discover -s scripts/tests` exit 0 (334 tests), `-s hooks/tests` exit 0 (126), hand-run `-s skills/tests` exit 0 (604).
+- Consistency gate 2026-09-03: `cairn_validate.py` exit 0, all checks passed; no DESIGN.md principle changed (impact report skipped); profile `generic` names no toolchain checks.
