@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-02 (M172 done and archived; PR #175 merged on local green (no CI); no issue writes (Resolves —); one LESSONS line added, the stalest unpinned (M71) pruned; F1 landed as a candidate row; nothing graduated or retired; hand-run skills/tests green; validate green; M167 row dropped to the 5-row terminal retention; caps ok — LESSONS 49 lines; byte budgets `wc -c` 13,267 / 15,320 — both under; module budgets `wc -l -c` 54/3,187, 99/6,480, 188/12,250 — unchanged, all under their headers.)_
+_Last hygiene check: 2026-09-03 (M173 done and archived; PR #177 merged on local green (no CI); no issue writes (Resolves —); one LESSONS line extended (M133's shell gotchas), nothing added, pruned, graduated, or retired; no candidate row or Known issues entry touched; hand-run skills/tests green; validate green; M168 row dropped to the 5-row terminal retention; caps ok — LESSONS 49 lines; byte budgets `wc -c` 13273 / 15700 — both under; module budgets `wc -l -c` 54/3187, 99/6480, 188/12250 — unchanged, all under their headers.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M173 | A whole-list triage pass over candidates and Known issues | review | — | normal | milestones/M173-candidate-triage.md |
+| M173 | A whole-list triage pass over candidates and Known issues | done | — | normal | milestones/archive/M173-candidate-triage.md |
 | M172 | A merged or stopped review milestone resumes at the right step | done | — | normal | milestones/archive/M172-resume-routing.md |
 | M171 | Chapter markers follow stretches, not phases | done | — | normal | milestones/archive/M171-per-stretch-chapters.md |
 | M170 | Waiting on CI and background work follows a tested rule | done | — | normal | milestones/archive/M170-wait-doctrine.md |
 | M169 | Criteria and tasks carry positional labels | done | — | normal | milestones/archive/M169-positional-labels.md |
-| M168 | Open GitHub inboxes are swept at the plan gate | done | — | normal | milestones/archive/M168-plan-gate-inbox-sweep.md |
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
