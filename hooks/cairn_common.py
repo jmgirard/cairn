@@ -33,8 +33,8 @@ PENDING_RELPATH = os.path.join("cairn", ".merge-approved.pending")
 # not read as a prefix (M162 review F3). Assignment values containing
 # whitespace or quoting are a documented limitation (merge_guard.py
 # docstring).
-# commit_guard.py and force_push_guard.py carry their own older copies of
-# this pattern (candidate row in ROADMAP).
+# commit_guard.py and force_push_guard.py compile their command regexes from
+# this same constant, so the three guards agree on what a command position is.
 CMD_POS = r"(?:^|[;&|(\n])\s*(?:[A-Za-z_][A-Za-z0-9_]*=[^\s;&|()]*\s+)*"
 GH_PR_MERGE = re.compile(CMD_POS + r"gh\s+pr\s+merge(?!\S)")
 GIT_MERGE = re.compile(CMD_POS + r"git(?:\s+-\S+)*\s+merge(?!\S)")
