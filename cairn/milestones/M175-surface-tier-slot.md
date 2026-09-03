@@ -82,7 +82,7 @@ freeform; the amendment-time audit record line — stays its own candidate row.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits). -->
 
-- [ ] T1: Add the `- **Surface tier:**` header line to
+- [x] T1: Add the `- **Surface tier:**` header line to
       `skills/shared/templates/milestone.md` between `Resolves:` (line 12) and
       `Branch/PR:` (line 13), with the owner/write-mode/value-form comment and
       the "no validate check parses it" clause.
@@ -112,6 +112,7 @@ freeform; the amendment-time audit record line — stays its own candidate row.
 - 2026-09-03: plan gate chose a slot holding tier and reason over tier-only with the reason in prose because one line then carries what D-107 requires; falsified by reason clauses that will not fit one line in practice.
 - 2026-09-03: plan gate chose slot-only reading in review over a prose fallback because the legacy case fades within a milestone and the existing `no declared tier` arm defaults to full rigor; falsified by an adopting repo's internal-tier milestone paying for a three-lens fan-out it did not need.
 - 2026-09-03: plan gate chose re-seeding the existing pins over adding a template-slot pin because the slot is skill conduct like `Resolves:`; falsified by the slot line leaving the template unnoticed.
+- 2026-09-03: T1 — template gains the `Surface tier:` slot between `Resolves:` and `Branch/PR:`; verify green (scripts 0, hooks 0).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
