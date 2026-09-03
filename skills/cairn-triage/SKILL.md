@@ -142,3 +142,72 @@ milestone branch and never sweeps unrelated changes into its commit.
    - Whatever the answer, **every item not accepted for a change is left
      byte-for-byte untouched** — `keep` is a no-op, never a re-wording, and
      an item the user pulled out of a `merge` or `drop` stays as it was.
+
+4. **Apply.** Edit `cairn/ROADMAP.md` and `cairn/DESIGN.md` per the accepted
+   dispositions, nothing else. Each edit anchors on the item's own text
+   (occurring once) and is re-read before the next step claims it landed
+   (tracking-rules "verify a batched edit landed"). Per disposition:
+   `compress` rewrites in place; `merge` rewrites the survivor and removes
+   the absorbed line; `split` replaces one line with its named rows, each
+   `added <original date> — <original origin>, split <today>`; `drop`
+   removes the line; `route` writes the item in its destination's shape — a
+   Known issues entry states the limitation as it **is** and how it was
+   accepted (`routed from candidates <today>`), a candidate row states what
+   it is, its promotion trigger as the class of evidence that would change
+   the stance, and `added <today> — routed from Known issues`; `promote`
+   and `keep` change nothing. Candidates stay one item per line, ordered
+   higher-priority-first (advisory). After the edits, `wc -l -c
+   cairn/ROADMAP.md` stays under the ROADMAP line cap and byte budget
+   (tracking-rules "Weight caps"); a pass that would push it over is
+   re-cut before it commits, never committed over.
+
+5. **Record.** Two kinds of removal leave two kinds of record:
+   - **A decision entry** — one per pass, appended to `cairn/DECISIONS.md`,
+     only when at least one accepted `drop` is *rejected on principle* or at
+     least one accepted `merge` loses the absorbed row's promotion trigger.
+     Its shape is the triage-pass precedent's (`### D-027` in this repo's
+     `DECISIONS.md` is the model — read it) minus its counts:
+     **Context** (that a triage pass ran and what it weighed), **Decision**
+     (each removed item by subject, its reason, and for a trigger-losing
+     merge the trigger that no longer stands), **Consequences** (any prior
+     decision entry the removal supersedes, named by id in the heading and
+     the body; each removal re-openable by superseding this entry). No
+     derived counts anywhere in it (the D-entry rule) — the stamp carries
+     what the pass changed. Show the drafted entry verbatim in chat in the
+     turn that commits it (durable-record preview: it rides in the close
+     block's final rendered text).
+   - **The commit message and the stamp** — a `drop` whose reason is a
+     refuted premise or work already shipped is named there and nowhere
+     else: deferrals and refuted premises are ROADMAP facts, not decisions.
+   `keep`, `compress`, `split`, `route`, and a trigger-preserving `merge`
+   write no decision entry; the stamp is their record.
+
+6. **Stamp and commit.** Replace the ROADMAP `_Last hygiene check:` line —
+   replace, never append (tracking-rules) — with one line dated today naming
+   what the pass changed: each dropped, merged, split, routed, and
+   compressed item by subject, the drops' reason classes, whether a decision
+   entry was written, and `validate green`. Then run
+   `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` — it must
+   pass — and make **one docs-only commit on the default branch**, subject
+   prefixed `triage:`, body naming the refuted-premise and already-shipped
+   drops with their evidence, and push it (the git model: docs-only
+   tracking commits go straight to the pushed default branch; nothing here
+   needs the merge gate because no code moves). Every `cairn/` change the
+   gate accepted lands in that one commit, and nothing else does.
+
+7. **Close block** (tracking-rules "Question gates and phase closes"), no
+   chip. Lead with the outcome in plain words: what left the lists, what
+   merged or moved, what stayed. Then a status line — items enumerated,
+   dispositions applied by kind, the commit hash, or "nothing applied". The
+   decision entry, if written, verbatim (step 5). Then, for **every**
+   accepted `promote`, its own fenced block:
+
+   ```
+   /milestone-plan <the promoted item's title>
+   ```
+
+   labeled as the next command for that item (several promotes → several
+   blocks, higher-priority-first). The safety line: the pass is committed
+   and pushed (or wrote nothing), so `/clear` is safe here, and any item
+   can be re-examined by running `/cairn-triage` again; an item dropped on
+   principle returns only by superseding the pass's decision entry.
