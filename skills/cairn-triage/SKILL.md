@@ -102,3 +102,43 @@ milestone branch and never sweeps unrelated changes into its commit.
    existence must be checked; give it the list of citations and take back
    one line per citation (exists / moved / gone). Never spawn to assess
    prose — that is the session's judgment, not a search.
+
+3. **Propose and gate.** Present every proposal, then pose one chip. The
+   order is fixed: **no file under `cairn/` is written before the chip's
+   answer arrives** — steps 4–6 exist only for dispositions that answer
+   accepts; the enumerate and assess steps read only.
+   - **The table**, in the chat above the chip, one row per enumerated
+     item: item (source + subject) → disposition → one-line reason. Every
+     `drop` and `merge` reason names its evidence class (refuted premise /
+     already shipped / rejected on principle for a drop; trigger survives /
+     trigger lost for a merge) and the record or path the evidence sits in.
+     A `merge` names its survivor; a `split` names its rows; a `route` names
+     its destination; a `promote` names the milestone title it hands on.
+     Items proposed `keep` sit last so the changes read first.
+   - **The chip** (AskUserQuestion, one question) carries the substance the
+     decision needs in its own text (tracking-rules Mandated-substance and
+     Acceptance-chips rules): the question text says how many items were
+     enumerated and names each item proposed for a disposition other than
+     `keep` with its disposition in plain words; the table above is the
+     verbatim evidence. Three options, in this order:
+     1. **Accept as proposed** (recommended, first) — every disposition in
+        the table is applied.
+     2. **Amend** — the user names the items to change and what they become
+        (the option description says so); everything unnamed keeps its
+        proposed disposition; a named item with no replacement given
+        becomes `keep`.
+     3. **Apply nothing** — the stop option: no file changes, no commit, no
+        D-entry; the pass ends at the close block with the table as its
+        record in chat only.
+     The chip is posed in the same turn as the table. Chip text is plain
+     language: no decision-record ids, no principle numbers (the table
+     above carries those).
+   - **The amend loop.** On *Amend*, re-present the table once with the
+     named items changed (only those rows change; a changed `drop` or
+     `merge` re-states its evidence class or becomes `keep`), then pose the
+     same three-option chip again. A second *Amend* is applied as named
+     without a third table — the user has now spoken twice — and the pass
+     proceeds; *Apply nothing* at any point ends the pass unchanged.
+   - Whatever the answer, **every item not accepted for a change is left
+     byte-for-byte untouched** — `keep` is a no-op, never a re-wording, and
+     an item the user pulled out of a `merge` or `drop` stays as it was.
