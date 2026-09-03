@@ -53,6 +53,7 @@ The criteria audit's third surface — the amendment-time re-audit in `/mileston
 - 2026-09-03: T2 — `/milestone-brief` step 3's ingest-audit sentence gains the `ingest audit RR<NN> (full): cleared AC<list> — …` shape and states that step 6's exemption reads the cleared list by name; the `test_ingest_audit_records_its_own_line_on_the_plan_gate_terms` sentence and its line wrap kept verbatim. Verify slot 334+126 green.
 - 2026-09-03: T3 — hand-run `python3 -m unittest discover -s skills/tests` after T1+T2: 604 tests OK, exit 0; `-k TestAmendmentReaudit -k TestRRIngestionCriteriaAudit` 13 tests OK. No pins or mutation entries added (D-109).
 - 2026-09-03: T4 — CHANGELOG Unreleased entry added; gating suites 334+126 OK with exit 0 each; `cairn_validate` all checks passed. Status → review.
+- 2026-09-03: step-7 approval: PR #182 approved for merge (fix-now set O2–O8 included).
 
 ## Decisions
 
