@@ -12,6 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M173 | A whole-list triage pass over candidates and Known issues | planned | — | normal | milestones/M173-candidate-triage.md |
 | M172 | A merged or stopped review milestone resumes at the right step | done | — | normal | milestones/archive/M172-resume-routing.md |
 | M171 | Chapter markers follow stretches, not phases | done | — | normal | milestones/archive/M171-per-stretch-chapters.md |
 | M170 | Waiting on CI and background work follows a tested rule | done | — | normal | milestones/archive/M170-wait-doctrine.md |
