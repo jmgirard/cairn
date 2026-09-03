@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **`cairn_cost` finds a milestone however its id is spelled.** The
+  `--milestone` filter and the audit line now resolve ids by number, so
+  `--milestone M057` and `--milestone M57` report the same milestone, a
+  branch named `m57-…` is reported as `M057`, and branches of different
+  zero-pad widths for one milestone land in one row instead of two.
 - **A hotfix merged outside the session is still held to the hotfix bar.**
   Running `/hotfix` on an already-merged hotfix or adopted PR now verifies
   the merged diff after the fact: its regression test is proved to fail on

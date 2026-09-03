@@ -22,6 +22,8 @@ Run from the repo root:
     python3 -m unittest discover -s scripts/tests -k cost
 """
 
+import contextlib
+import io
 import os
 import pathlib
 import sys
@@ -113,8 +115,8 @@ class TestMilestoneAttribution(unittest.TestCase):
     key; everything else is refused rather than guessed (M94 ledger A3)."""
 
     def test_a_milestone_branch_yields_its_id(self):
-        self.assertEqual(cost.milestone_of(rec(branch="m94-cost-instrumentation")), "M94")
-        self.assertEqual(cost.milestone_of(rec(branch="m07-guardrail-hooks")), "M07")
+        self.assertEqual(cost.milestone_of(rec(branch="m94-cost-instrumentation")), "M094")
+        self.assertEqual(cost.milestone_of(rec(branch="m07-guardrail-hooks")), "M007")
         self.assertEqual(cost.milestone_of(rec(branch="m100-past-ninety-nine")), "M100")
 
     def test_default_branch_and_hotfix_work_is_not_keyed_to_a_milestone(self):
@@ -124,7 +126,7 @@ class TestMilestoneAttribution(unittest.TestCase):
         self.assertIsNone(cost.milestone_of(rec(branch="master")))
         self.assertIsNone(cost.milestone_of(rec(branch="hotfix-bad-parse")))
         self.assertIsNone(cost.milestone_of(rec(branch=None)))
-        self.assertEqual(cost.milestone_of(rec(branch="m94-x")), "M94")
+        self.assertEqual(cost.milestone_of(rec(branch="m94-x")), "M094")
 
     def test_a_milestone_id_is_never_imputed_from_prose(self):
         # A plan session legitimately names four milestones; keying off text
@@ -135,6 +137,96 @@ class TestMilestoneAttribution(unittest.TestCase):
         ]
         self.assertIsNone(cost.milestone_of(record))
         self.assertEqual(cost.phase_of(record), "plan")
+
+
+class TestMilestoneIdsResolveNumerically(unittest.TestCase):
+    """Ids compare by number, never by raw string (D-125; M157 review F1).
+    Before the fix `milestone_of` returned "M" + the branch digits as typed
+    and the `--milestone` filter compared with `==`, so `--milestone M057`
+    over a `m57-…` branch reported no records and mixed-width branches for
+    one milestone split into two buckets."""
+
+    def test_milestone_of_canonicalizes_the_branch_number(self):
+        cases = [
+            ("m57-x", "M057"),
+            ("m0057-x", "M057"),
+            ("m094-x", "M094"),
+            ("m100-x", "M100"),
+            ("m1000-x", "M1000"),  # canon_id passes >= 1000 through unpadded
+        ]
+        for branch, mid in cases:
+            with self.subTest(branch=branch):
+                self.assertEqual(cost.milestone_of(rec(branch=branch)), mid)
+
+    def test_mixed_width_branches_aggregate_into_one_bucket(self):
+        records = [
+            rec(branch="m57-x", usage={"output_tokens": 1}),
+            rec(branch="m057-x", usage={"output_tokens": 2}),
+        ]
+        by_ms = cost.aggregate(records, cost.milestone_of)
+        self.assertEqual(list(by_ms), ["M057"])
+        self.assertEqual(by_ms["M057"]["turns"], 2)
+        self.assertEqual(by_ms["M057"]["output_tokens"], 3)
+
+    def test_report_and_audit_line_resolve_the_filter_across_widths(self):
+        records = [
+            rec(skill="cairn:milestone-implement", branch="m057-x",
+                usage={"output_tokens": 4}),
+            rec(skill="cairn:milestone-plan", branch="main",
+                usage={"output_tokens": 1}),
+        ]
+        root = str(SCRIPTS_DIR.parent)
+        short = cost.report(root, records, milestone="M57")
+        padded = cost.report(root, records, milestone="M057")
+        self.assertEqual(short, padded)
+        self.assertIn("filtered to M057", short)
+        self.assertIn("M057", short.split("BY MILESTONE")[1])
+        self.assertEqual(
+            cost.audit_line(root, records, "M57"),
+            cost.audit_line(root, records, "M057"),
+        )
+        self.assertIn("cost: M057 — 1 turns", cost.audit_line(root, records, "M57"))
+
+    def test_a_padded_filter_finds_records_on_a_two_digit_branch(self):
+        # The user-facing failure: the spelling typed is wider than the
+        # branch's own, the case the raw-string comparison missed outright.
+        records = [rec(skill="cairn:milestone-review", branch="m57-x",
+                       usage={"output_tokens": 7})]
+        root = str(SCRIPTS_DIR.parent)
+        line = cost.audit_line(root, records, "M057")
+        self.assertNotIn("no milestone-keyed sessions", line)
+        self.assertIn("cost: M057 — 1 turns", line)
+        text = cost.report(root, records, milestone="M057")
+        self.assertIn("M057", text.split("BY MILESTONE")[1])
+
+    def test_main_resolves_the_flag_in_both_modes(self):
+        # Through the `home=` fixture seam (M109): the real store is never read.
+        root = cs.resolve_root(["cairn_cost"])
+        with tempfile.TemporaryDirectory() as home:
+            store = pathlib.Path(cost.store_dir(root, home))
+            store.mkdir(parents=True)
+            (store / "sess.jsonl").write_text(
+                '{"type":"assistant","attributionSkill":"cairn:milestone-implement",'
+                '"gitBranch":"m57-x","message":{"usage":{"output_tokens":2}}}\n',
+                encoding="utf-8",
+            )
+            outs = {}
+            for mode in ((), ("--audit-line",)):
+                for spelling in ("M57", "M057"):
+                    buf = io.StringIO()
+                    with contextlib.redirect_stdout(buf):
+                        rc = cost.main(
+                            ["cairn_cost.py", *mode, "--milestone", spelling, str(root)],
+                            home=home,
+                        )
+                    self.assertEqual(rc, 0, (mode, spelling))
+                    outs[(mode, spelling)] = buf.getvalue()
+            self.assertEqual(outs[((), "M57")], outs[((), "M057")])
+            self.assertEqual(
+                outs[(("--audit-line",), "M57")], outs[(("--audit-line",), "M057")]
+            )
+            self.assertIn("cost: M057 — 1 turns", outs[(("--audit-line",), "M057")])
+            self.assertIn("filtered to M057", outs[((), "M057")])
 
 
 class TestSessionAttribution(unittest.TestCase):
@@ -176,7 +268,7 @@ class TestSessionAttribution(unittest.TestCase):
         row = next(
             ln for ln in text.splitlines() if ln.startswith("deadbeef")
         )
-        self.assertIn("M94", row)
+        self.assertIn("M094", row)
         self.assertIn("implement", row)
         self.assertIn("12,345", row)
 
@@ -280,7 +372,7 @@ class TestSubagentBlindSpot(unittest.TestCase):
         root = str(SCRIPTS_DIR.parent)
         self.assertIn("agents", cost.report(root, records))
         line = cost.audit_line(root, records)
-        self.assertIn("M94", line)
+        self.assertIn("M094", line)
         self.assertIn("1 subagent spawned", line)
         self.assertIn("unrecorded", line)
 
@@ -298,17 +390,17 @@ class TestMilestoneFlagIsHonouredOrRefused(unittest.TestCase):
         ]
         root = str(SCRIPTS_DIR.parent)
         # Default: the most recent milestone.
-        self.assertIn("cost: M94", cost.audit_line(root, records))
+        self.assertIn("cost: M094", cost.audit_line(root, records))
         # Explicit: the one asked for, not the most recent.
         line = cost.audit_line(root, records, milestone="M85")
-        self.assertIn("cost: M85", line)
+        self.assertIn("cost: M085", line)
         self.assertNotIn("M94", line)
 
     def test_audit_line_says_so_when_the_named_milestone_has_no_records(self):
         records = [rec(skill="cairn:milestone-review", branch="m94-x",
                        usage={"output_tokens": 1})]
         line = cost.audit_line(str(SCRIPTS_DIR.parent), records, milestone="M42")
-        self.assertIn("M42", line)
+        self.assertIn("M042", line)
         self.assertIn("no milestone-keyed sessions", line)
 
     def test_attribution_mode_refuses_the_milestone_filter(self):
@@ -404,7 +496,7 @@ class TestUnattributableShareIsReported(unittest.TestCase):
                 usage={"cache_read_input_tokens": 300}),
         ]
         text = cost.report(str(SCRIPTS_DIR.parent), records, milestone="M94")
-        self.assertIn("filtered to M94", text)
+        self.assertIn("filtered to M094", text)
         self.assertIn("50.0% not keyed to a milestone", text)
         self.assertIn("whole store", text)
         # Digit-anchored: a bare "0.0%" substring also matches the "50.0%"

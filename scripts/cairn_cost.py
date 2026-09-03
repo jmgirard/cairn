@@ -77,7 +77,10 @@ UNATTRIBUTED = "unattributed"
 # /milestone-implement and cannot drift. Plan-phase work runs on the default
 # branch and is therefore milestone-unattributable by construction — reported
 # at phase level, with its share stated, never guessed at from prose (a plan
-# session that planned four milestones at once names all four).
+# session that planned four milestones at once names all four). The digits
+# are canonicalized through `cs.canon_id` (three-digit zero-pad below 1000,
+# D-125), so `m57-` and `m057-` key one milestone and a `--milestone` spelling
+# at any width finds it.
 _BRANCH_MILESTONE = re.compile(r"^m(\d{2,})-")
 
 # Tool names that spawn a subagent, across Claude Code versions.
@@ -112,6 +115,8 @@ def phase_of(record):
 def milestone_of(record):
     """The milestone id a record belongs to, from its `gitBranch`, or None.
 
+    The id is the canonical spelling (`m57-x` and `m057-x` -> `M057`), never
+    the branch's own width, so buckets and filters compare by number.
     None is a real answer and never a failure: default-branch work has no
     milestone in the record. Callers report the None share rather than
     imputing one.
@@ -120,7 +125,7 @@ def milestone_of(record):
     m = _BRANCH_MILESTONE.match(branch)
     if not m:
         return None
-    return "M" + m.group(1)
+    return cs.canon_id("M" + m.group(1))
 
 
 def session_of(record):
@@ -269,9 +274,11 @@ def report(root, records, milestone=None):
     the share over the filtered set would make it 0.0% by construction — a
     method that reported its own blind spot as zero would be exactly the
     hiding T1 forbids, so the share is always the store-wide truth and says
-    so when the tables below it are narrower.
+    so when the tables below it are narrower. A `milestone` spelling at any
+    zero-pad width names the milestone `milestone_of` keys canonically.
     """
     all_records = list(records)
+    milestone = cs.canon_id(milestone) if milestone else None
     records = (
         [r for r in all_records if milestone_of(r) == milestone]
         if milestone
@@ -359,10 +366,10 @@ def latest_milestone(records):
 
 def audit_line(root, records, milestone=None):
     """One always-read cost line for `/milestone`'s audit — the most recent
-    milestone's mass, or a named one. A reporting surface only: no threshold,
-    no verdict."""
+    milestone's mass, or a named one (any zero-pad width). A reporting
+    surface only: no threshold, no verdict."""
     records = list(records)
-    mid = milestone or latest_milestone(records)
+    mid = cs.canon_id(milestone) if milestone else latest_milestone(records)
     if mid is None:
         return "cost: no milestone-keyed sessions in the store"
     sub = [r for r in records if milestone_of(r) == mid]
