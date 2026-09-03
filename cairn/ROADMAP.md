@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-03 (`/cairn-triage` pass over 21 candidates and 5 Known issues: merged Content-gated memory guard into Deferred second tier for hook nudges (trigger survives, lineage clause added); compressed Standing-instrument adoption discipline; nothing dropped, split, routed, or promoted; no decision entry written; no Known issues entry touched; validate green; caps ok — ROADMAP `wc -l -c` 43/12888 under 60/24000.)_
+_Last hygiene check: 2026-09-03 (`/milestone` audit after M173: nothing in flight, no planned milestones; validate green; inboxes empty; no orphaned issues or outside merges; budgets ok — ROADMAP `wc -l -c` 43/12784 under 60/24000, LESSONS 15700 under 20000, doctrine modules under their headers; tracking-rules 487 lines / 45,908 chars.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
