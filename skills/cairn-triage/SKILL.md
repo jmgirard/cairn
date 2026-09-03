@@ -19,29 +19,32 @@ step (session start implicit).
 
 ## Session start
 
-Read, in order: `cairn/ROADMAP.md` (whole — the `## Candidates` section is
-the subject), `cairn/DESIGN.md`'s `## Known issues` section (absent → note
-that and continue), the `### D-` headings of `cairn/DECISIONS.md` per the
-bounded read (open an entry whole only when an item cites it or its subject
-matches one), and the file listing of `cairn/milestones/archive/`. Note
-every milestone that is `planned`, `in-progress`, `blocked`, or `review`:
-a row one of them absorbs is never dropped or merged away in this pass
-(records-hygiene §1 — it graduates at that milestone's post-merge hygiene).
+Preconditions first: clean `git status`, on the default branch (detect it
+per the tracking-rules git model — never assume `main`), synced with origin
+(`git fetch`, ff-only pull — the pass's only ref motion, done before the
+lists are read so the enumeration reads the tree the commit will land on).
+A dirty tree or a non-default branch stops the pass with a close block
+naming what to fix (its status line reads `stopped before enumeration:
+<reason>`); the pass never commits on a milestone branch and never sweeps
+unrelated changes into its commit.
 
-Preconditions, checked before the reads above: clean `git status`, on the
-default branch (detect it per the tracking-rules git model — never assume
-`main`), synced with origin (`git fetch`, ff-only pull — the pass's only
-ref motion, done before the lists are read, so the no-write promise in
-step 3 holds over everything after it). A dirty tree or a non-default
-branch stops the pass with a close block naming what to fix (its status
-line reads `stopped before enumeration: <reason>`); the pass never commits
-on a milestone branch and never sweeps unrelated changes into its commit.
+Then read, in order: `cairn/ROADMAP.md` (whole — the `## Candidates`
+section is the subject), `cairn/DESIGN.md`'s `## Known issues` section
+(absent → note that and continue), the `### D-` headings of
+`cairn/DECISIONS.md` per the bounded read (open an entry whole only when an
+item cites it or its subject matches one, plus `### D-027` whole — step 5's
+model), and the file listing of `cairn/milestones/archive/`. Note every
+milestone that is `planned`, `in-progress`, `blocked`, or `review`: a row
+one of them absorbs is never dropped or merged away in this pass
+(records-hygiene §1 — it graduates at that milestone's post-merge hygiene).
 
 ## Workflow
 
 1. **Enumerate.** List every item in both sections, in file order, one line
    each: its source (`candidate` / `known issue`), its subject (the text up
-   to the first colon, trimmed), its byte length, and its added date.
+   to the first colon, trimmed; when no colon falls within the first ~80
+   characters, the first clause — up to the first comma — trimmed to
+   that length), its byte length, and its added date.
    - A candidate item is one `- ` line under `## Candidates` in
      `cairn/ROADMAP.md` (ROADMAP is one item per line, never split); its
      date is the `added YYYY-MM-DD` token, or `undated` when absent.
@@ -53,28 +56,33 @@ on a milestone branch and never sweeps unrelated changes into its commit.
    - Read the counts from the files, never from memory or a prior stamp. An
      empty `## Candidates` section, or a missing `## Known issues` section,
      yields zero items from that source with no failure; both empty → the
-     pass still reaches the gate with an empty table (the chip is posed,
-     every option a no-op) and the close block says nothing was enumerated.
+     pass still reaches the gate with an empty table (the chip is posed
+     with *Accept as proposed* and *Apply nothing* only — there is nothing
+     to amend — every option a no-op) and the close block says nothing was
+     enumerated.
    The enumeration is the pass's domain: every proposal in step 3 maps to
    exactly one enumerated item, and every enumerated item gets exactly one
    proposal.
 
 2. **Assess.** For each item, gather the evidence below and choose exactly
    one disposition. The vocabulary is fixed — seven words, no sub-statuses
-   (D-035 stands) and no scores:
+   or scores (D-027) and no grouping (D-035):
 
    | Disposition | Meaning |
    |---|---|
    | `keep` | Unchanged. The default when no evidence class below fires. |
-   | `compress` | Rewritten toward the soft aim of **~300 bytes** in the shape *what it is / promote when / provenance* — the trigger and the `added YYYY-MM-DD — <origin>` provenance always survive; only restated context goes. Advisory only, stated here and nowhere else. |
-   | `merge` | The absorbed row's proposal: folded into a **named surviving row**, which gains one lineage clause (`absorbs <subject>, added <date> — <origin>`) and the absorbed row's trigger where it still applies. The survivor's own proposal is `keep`; the lineage clause is the merge's edit, not a re-wording of the survivor. |
+   | `compress` | Rewritten toward the soft aim of **~300 bytes** in the shape *what it is / promote when / provenance* — the trigger and the `added YYYY-MM-DD — <origin>` provenance always survive; only restated context goes. A Known issues entry compresses to *the limitation as it is / how it was accepted* (`Accepted at the M<NNN> gate` and any `corrected M<NNN>` mark survive). Advisory only, stated here and nowhere else. |
+   | `merge` | The absorbed row's proposal: folded into a **named surviving row**, which gains one lineage clause (`absorbs <subject>, added <date> — <origin>`) and the absorbed row's trigger where it still applies. The survivor's own proposal is `keep` (its table reason reads `survivor of <absorbed subject>`); the lineage clause is the merge's edit, not a re-wording of the survivor. |
    | `split` | Replaced by **named rows**, each with one subject, one trigger, and the original provenance. |
    | `drop` | Removed. Its reason is one of three classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), or *rejected on principle* (the idea cuts against a stated stance). |
    | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). |
    | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
 
    Evidence classes, checked in this order (the first that fires decides,
-   later ones refine the wording):
+   later ones refine the wording) — except that a finding-absorbing row
+   (defined below) takes §7's options before any class is checked, since
+   compressing such a row never substitutes for its disposition
+   (records-hygiene §7):
    - **Staleness → `drop` or `compress`.** Grep `cairn/milestones/archive/`
      and the `### D-` headings for the item's subject: a premise an archived
      milestone refuted, a trigger that has already fired (the named
@@ -90,8 +98,9 @@ on a milestone branch and never sweeps unrelated changes into its commit.
      clause. State whether the absorbed row's promotion trigger survives
      in substance in the survivor — the same condition, not the same words
      (step 5 hangs on it).
-   - **Overgrowth → `split` or `compress`.** Two promotion triggers or an
-     "and" in the subject → `split`; over the ~300-byte aim **and**
+   - **Overgrowth → `split` or `compress`.** Two promotion triggers, or a
+     subject that is two subjects joined by "and" (a plain conjunction
+     inside one subject is not) → `split`; over the ~300-byte aim **and**
      carrying restated context a reader can lose without losing the
      trigger or provenance → `compress`. The aim alone never fires — a row
      over it whose every clause earns its place is `keep`.
@@ -119,8 +128,10 @@ on a milestone branch and never sweeps unrelated changes into its commit.
    order is fixed: **no file under `cairn/` is written before the chip's
    answer arrives** — steps 4–6 exist only for dispositions that answer
    accepts; the enumerate and assess steps read only.
-   - **The table**, in the chat above the chip, one row per enumerated
-     item: item (source + subject) → disposition → one-line reason. Every
+   - **The table**, in the chat above the chip (best-effort rendering —
+     the chip's own text carries what the decision needs), one row per
+     enumerated item: item (source + subject) → disposition → one-line
+     reason. Every
      `drop` and `merge` reason names its evidence class (refuted premise /
      already shipped / rejected on principle for a drop; trigger survives /
      trigger lost for a merge) and the record or path the evidence sits in.
@@ -131,8 +142,8 @@ on a milestone branch and never sweeps unrelated changes into its commit.
      decision needs in its own text (tracking-rules Mandated-substance and
      Acceptance-chips rules): the question text says how many items were
      enumerated and names each item proposed for a disposition other than
-     `keep` with its disposition in plain words; the table above is the
-     verbatim evidence. Three options, in this order:
+     `keep` with its disposition and its reason in a few plain words; the
+     table above is the verbatim evidence. Three options, in this order:
      1. **Accept as proposed** (recommended, first) — every disposition in
         the table is applied.
      2. **Amend** — the user names the items to change and what they become
@@ -148,41 +159,54 @@ on a milestone branch and never sweeps unrelated changes into its commit.
    - **The amend loop.** On *Amend*, re-present the table once with the
      named items changed (only those rows change; a changed `drop` or
      `merge` re-states its evidence class or becomes `keep`), then pose the
-     same three-option chip again. A second *Amend* is applied as named
-     without a third table — the user has now spoken twice — and the pass
-     proceeds; *Apply nothing* at any point ends the pass unchanged.
+     same three-option chip again. A second or later *Amend* is applied
+     to the proposals as named without another table, and the chip is
+     posed again: only *Accept as proposed* applies anything, and *Apply
+     nothing* at any point ends the pass unchanged — the chip never
+     auto-proceeds.
    - Whatever the answer, **every item not accepted for a change is left
      byte-for-byte untouched** — `keep` is a no-op, never a re-wording
      (a merge survivor's lineage clause is the accepted merge's edit), and
      an item the user pulled out of a `merge` or `drop` stays as it was.
 
-4. **Apply.** Edit `cairn/ROADMAP.md` and `cairn/DESIGN.md` per the accepted
-   dispositions, nothing else. Each edit anchors on the item's own text
+4. **Apply.** When no accepted disposition changes a file — every item
+   `keep` or `promote`, or nothing enumerated — steps 4–6 are skipped
+   entirely: no edit, no stamp, no commit, and the close block's status
+   line reads `nothing applied`. Otherwise edit `cairn/ROADMAP.md` and
+   `cairn/DESIGN.md` per the accepted dispositions, nothing else. Each edit anchors on the item's own text
    (occurring once) and is re-read before the next step claims it landed
    (tracking-rules "verify a batched edit landed"). Per disposition:
    `compress` rewrites in place; `merge` rewrites the survivor and removes
    the absorbed line; `split` replaces one line with its named rows, each
    `added <original date> — <original origin>, split <today>`; `drop`
-   removes the line; `route` writes the item in its destination's shape — a
-   Known issues entry states the limitation as it **is** and how it was
-   accepted (`routed from candidates <today>`), a candidate row states what
-   it is, its promotion trigger as the class of evidence that would change
-   the stance, and `added <today> — routed from Known issues`; `promote`
+   removes the line; `route` writes the item in its destination's shape, carrying the
+   original provenance — a Known issues entry states the limitation as it
+   **is** and how it was accepted (`routed from candidates <today>; added
+   <original date> — <original origin>`), a candidate row states what it
+   is, its promotion trigger as the class of evidence that would change the
+   stance, and `added <original date> — <original origin>, routed from
+   Known issues <today>` (the accepting `M<NNN>` as the origin); `promote`
    and `keep` change nothing. Candidates stay one item per line, ordered
    higher-priority-first (advisory). After the edits, `wc -l -c
    cairn/ROADMAP.md` stays under the ROADMAP line cap and byte budget
-   (tracking-rules "Weight caps"); a pass that would push it over is
-   re-cut before it commits, never committed over.
+   (tracking-rules "Weight caps"); a pass that would push it over returns
+   to the step-3 chip with the overflow named — the user re-decides, the
+   pass never re-cuts an accepted disposition on its own and never commits
+   over the cap. Every row or entry this step writes or rewrites is shown
+   verbatim in the close block (durable-record preview, tracking-rules).
 
 5. **Record.** Two kinds of removal leave two kinds of record:
-   - **A decision entry** — one per pass, appended to `cairn/DECISIONS.md`,
-     only when at least one accepted `drop` is *rejected on principle* or at
+   - **A decision entry** — one per pass, appended to `cairn/DECISIONS.md`
+     in the shape of `${CLAUDE_PLUGIN_ROOT}/skills/shared/templates/decision.md`
+     (id: the highest existing `D-` number plus one; heading names any
+     entry it supersedes), only when at least one accepted `drop` is *rejected on principle* or at
      least one accepted `merge` loses the absorbed row's promotion trigger.
      Its shape is the triage-pass precedent's (`### D-027` in this repo's
      `DECISIONS.md` is the model — read it) minus its counts:
      **Context** (that a triage pass ran and what it weighed), **Decision**
-     (each removed item by subject, its reason, and for a trigger-losing
-     merge the trigger that no longer stands), **Consequences** (any prior
+     (each item dropped on principle by subject and its reason; each
+     trigger-losing merge by subject and the trigger that no longer
+     stands — never a refuted-premise or already-shipped drop), **Consequences** (any prior
      decision entry the removal supersedes, named by id in the heading and
      the body; each removal re-openable by superseding this entry). No
      derived counts anywhere in it (the D-entry rule) — the stamp carries
@@ -195,13 +219,16 @@ on a milestone branch and never sweeps unrelated changes into its commit.
    `keep`, `compress`, `split`, `route`, and a trigger-preserving `merge`
    write no decision entry; the stamp is their record.
 
-6. **Stamp and commit.** Replace the ROADMAP `_Last hygiene check:` line —
-   replace, never append (tracking-rules) — with one line dated today naming
-   what the pass changed: each dropped, merged, split, routed, and
-   compressed item by subject, the drops' reason classes, whether a decision
-   entry was written, and `validate green`. Then run
-   `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` — it must
-   pass — and make **one docs-only commit on the default branch**, subject
+6. **Validate, stamp, and commit.** Run
+   `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` over the
+   edits — it must pass; a red run is fixed within the accepted edits and
+   re-run, never committed over. Then replace the ROADMAP `_Last hygiene
+   check:` line — replace, never append (tracking-rules); a ROADMAP that
+   has none gets one — with one line dated today naming what the pass
+   changed: each dropped, merged, split, routed, and compressed item by
+   subject, the drops' reason classes, whether a decision entry was
+   written, and `validate green` (the run just observed). Make **one
+   docs-only commit on the default branch**, subject
    prefixed `triage:`, body naming the refuted-premise and already-shipped
    drops with their evidence, and push it (the git model: docs-only
    tracking commits go straight to the pushed default branch; nothing here
@@ -211,16 +238,19 @@ on a milestone branch and never sweeps unrelated changes into its commit.
 7. **Close block** (tracking-rules "Question gates and phase closes"), no
    chip. Lead with the outcome in plain words: what left the lists, what
    merged or moved, what stayed. Then a status line — items enumerated,
-   dispositions applied by kind, the commit hash, or "nothing applied". The
-   decision entry, if written, verbatim (step 5). Then, for **every**
-   accepted `promote`, its own fenced block:
+   dispositions applied by kind and the commit hash, or `nothing applied`
+   (an apply-nothing answer and an all-`keep` accept alike). The decision
+   entry, if written, and each row or entry written in step 4, verbatim.
+   Then, for **every** accepted `promote`, its own fenced block:
 
    ```
    /milestone-plan <the promoted item's title>
    ```
 
    labeled as the next command for that item (several promotes → several
-   blocks, higher-priority-first). The safety line: the pass is committed
+   blocks, higher-priority-first); with no promote, one fenced
+   `/milestone` line labeled as the route to the next action. The safety
+   line: the pass is committed
    and pushed (or wrote nothing), so `/clear` is safe here, and any item
    can be re-examined by running `/cairn-triage` again; an item dropped on
    principle returns only by superseding the pass's decision entry.

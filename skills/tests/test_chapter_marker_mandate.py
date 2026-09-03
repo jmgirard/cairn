@@ -10,7 +10,7 @@ session-start-implicit carve-out kept, chapter titles opening with the
 has the "Phase header" rule re-emit the `#`/`##` pair at each session start.
 
 Per skill, the guard pins that skill's full stretch list from its own
-directive (nine entries replace M28's single shared token), so a skill whose
+directive (per-skill entries replace M28's single shared token), so a skill whose
 directive drops a stretch or drifts back to the bare per-phase form fails
 here by name.
 
