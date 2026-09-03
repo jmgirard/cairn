@@ -33,25 +33,28 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
    **Merged-PR re-entry (M172, M174).** A PR-reference argument whose
    `gh pr view <N> --json state,headRefName` reports `MERGED` and a head
    branch not matching `m<nnn>-*` (a hotfix branch or an adopted PR, merged
-   outside the session or after a stopped CI wait) runs a post-hoc
+   outside the session or after a stopped CI wait) states in chat that the
+   hotfix bar never ran before this merge, then runs a post-hoc
    verification of the merged diff before step 7 — the hotfix bar holds on
    every path to the default branch, not only the one the session drove:
    - *Tier check* the merged diff (`gh pr diff <N>`) as above. A diff over
      the hotfix bar takes the over-the-bar disposition above with no
      regression test demanded, and step 7's close-out still runs — the
      candidate row or the `/milestone-plan` next command rides in that
-     close block.
+     close block; when the PR body carries a `Fixes #N` line, the issue
+     close is put to the user as a chip before step 7 runs, never written
+     unasked.
    - *Baseline.* The pre-fix baseline is the oid `gh pr view <N> --json
      baseRefOid` reports, cross-checked against the merge commit's first
-     parent (`gh pr view <N> --json mergeCommit`, then
-     `git rev-parse <mergeCommit>^`); a disagreement is stated in chat,
+     parent (`gh pr view <N> --json mergeCommit --jq .mergeCommit.oid`,
+     then `git rev-parse <oid>^`); a disagreement is stated in chat,
      `baseRefOid` governing. The current default branch is never the
      baseline: it already carries the fix, so a test passes on both and
      proves nothing.
    - *Regression test*, per step 3's adopting sequence: a test the merged
-     diff carries is run on the up-to-date default branch (fetch, pull
-     ff-only) and in a throwaway worktree of the baseline created outside
-     the repo (`git worktree add --detach /tmp/<repo>-verify <baseRefOid>`)
+     diff carries is run on the default branch, checked out and brought up
+     to date (fetch, pull ff-only), and in a throwaway worktree of the
+     baseline created outside the repo (`git worktree add --detach /tmp/<repo>-verify <baseRefOid>`)
      with only the test file copied in; it must pass on the default branch
      and fail on the baseline. When the merged diff carries no test, or its
      test passes on both, author one on a `hotfix-<slug>` branch cut from
@@ -59,7 +62,9 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
      `git worktree remove` the worktree either way, a failed check included
      (step 3's leftover-worktree hazard).
    - *Gate-lite:* the active profile's `verify` slot on the default branch
-     (step 4).
+     (step 4). A red run the merged diff introduced is a third owed item,
+     fixed on the follow-up branch below; one it did not introduce is
+     stated in chat and is not this route's to fix.
    - *Changelog:* when the profile's `changelog` slot declares a file and
      the merged diff did not update it, an entry is owed (step 5's
      user-facing-text rule).
@@ -71,8 +76,8 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
      never-a-second-PR clause is about that merged PR, not this follow-up)
      — and step 6's approval chip, never by a commit to the default branch.
      Step 6's chip for the follow-up PR also carries the merged PR's
-     `Fixes #N` close, so step 7 poses no separate chip; step 7 then runs
-     for the merged PR.
+     `Fixes #N` close, so the re-entry poses no separate issue-close chip;
+     step 7 then runs for the merged PR.
    - *Nothing owed* — test present and two-way proven, `verify` green on the
      default branch, changelog entry present or the slot `none` — pose one
      `AskUserQuestion` chip whose question text names acceptance of the

@@ -162,7 +162,8 @@ class TestHotfixMergedPrReentry(unittest.TestCase):
             "A PR-reference argument whose `gh pr view <N> --json "
             "state,headRefName` reports `MERGED` and a head branch not "
             "matching `m<nnn>-*` (a hotfix branch or an adopted PR, merged "
-            "outside the session or after a stopped CI wait) runs a post-hoc "
+            "outside the session or after a stopped CI wait) states in chat that "
+            "the hotfix bar never ran before this merge, then runs a post-hoc "
             "verification of the merged diff before step 7",
             self.step1,
         )
@@ -173,8 +174,9 @@ class TestHotfixMergedPrReentry(unittest.TestCase):
         self.assertIn(
             "The pre-fix baseline is the oid `gh pr view <N> --json "
             "baseRefOid` reports, cross-checked against the merge commit's "
-            "first parent (`gh pr view <N> --json mergeCommit`, then "
-            "`git rev-parse <mergeCommit>^`); a disagreement is stated in "
+            "first parent (`gh pr view <N> --json mergeCommit --jq "
+            ".mergeCommit.oid`, then `git rev-parse <oid>^`); a disagreement "
+            "is stated in "
             "chat, `baseRefOid` governing. The current default branch is "
             "never the baseline: it already carries the fix, so a test "
             "passes on both and proves nothing.",
@@ -183,8 +185,9 @@ class TestHotfixMergedPrReentry(unittest.TestCase):
 
     def test_two_way_check_runs_against_the_baseline(self):
         self.assertIn(
-            "a test the merged diff carries is run on the up-to-date default "
-            "branch (fetch, pull ff-only) and in a throwaway worktree of the "
+            "a test the merged diff carries is run on the default branch, checked "
+            "out and brought up to date (fetch, pull ff-only), and in a "
+            "throwaway worktree of the "
             "baseline created outside the repo (`git worktree add --detach "
             "/tmp/<repo>-verify <baseRefOid>`) with only the test file "
             "copied in; it must pass on the default branch and fail on the "
@@ -232,7 +235,9 @@ class TestHotfixMergedPrReentry(unittest.TestCase):
             "A diff over the hotfix bar takes the over-the-bar disposition "
             "above with no regression test demanded, and step 7's close-out "
             "still runs — the candidate row or the `/milestone-plan` next "
-            "command rides in that close block.",
+            "command rides in that close block; when the PR body carries a "
+            "`Fixes #N` line, the issue close is put to the user as a chip "
+            "before step 7 runs, never written unasked.",
             self.step1,
         )
 
