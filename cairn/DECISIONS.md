@@ -4807,3 +4807,43 @@ new prose.
 **Consequences:** A stopped or outside-merged review milestone resumes at
 the step the record shows is next, and post-merge hygiene is reached by
 route rather than by memory.
+
+### D-131 (2026-09-03): A merged hotfix or adopted PR is verified to the hotfix bar post-hoc — the merged-PR re-entry gains the bar against the PR's `baseRefOid` — annotates D-130; D-108's trigger read as satisfied (M174)
+
+**Context:** D-130 gave `/hotfix` a merged-PR re-entry that "re-enters at
+its close-out step for a merged hotfix or adopted PR": step 7 only, steps
+2–6 skipped. M172's review (F1) recorded that this applies no regression
+test, gate-lite, or changelog check to a diff merged outside the session,
+and parked the remedy as a candidate row. The skill's own description
+promises "regression test first, gate-lite checks" for every hotfix; the
+route ships a hotfix without them. D-108's door bars a new conduct rule
+about verification unless "its trigger is a defect in shipped behavior:
+what the plugin's skills, hooks, and scripts do for their users."
+
+**Decision:** The trigger is read as satisfied, not superseded — the defect
+is in what `/hotfix` does for its user on a route it already owns, found by
+reading the shipped skill against its description; the candidate row's
+observed-in-practice promotion condition had not fired, and the user chose
+to promote at the plan gate. M174 rewrites the re-entry: the pre-fix
+baseline is the merged PR's `baseRefOid` (the merge commit's first parent as
+cross-check), never the current default branch, which already carries the
+fix; a test the merged diff carries is proved two ways against that
+baseline, a missing one is authored on a follow-up `hotfix-<slug>` branch;
+the `verify` slot and the changelog entry are checked; anything owed reaches
+the default branch only through step 5's PR and step 6's chip (IP1); a
+clean check pauses at one acceptance chip that also carries the issue
+close (IP2); then step 7. Rejected at the gate, each with the evidence
+class that reopens it: routing a merged hotfix through `/milestone-review`
+route (b) — reopened by a hotfix carrying acceptance criteria;
+revert-and-redo — reopened by a merged diff whose test cannot be written
+without changing the fix; accept-with-candidate-row — the same evidence
+class, the bar being what the route exists to hold; a merge-method case
+split for the baseline — reopened by a merged PR whose `baseRefOid`
+differs from its merge commit's first parent.
+
+**Consequences:** D-130's hotfix clause is annotated, not superseded: the
+re-entry still lands at step 7, after verification rather than instead of
+it. The "Post-hoc hotfix bar" candidate row graduates at M174's post-merge
+hygiene. If a post-hoc verification cannot be run against a merged head in
+practice — D-130's own reopening evidence for hygiene-with-override — this
+is the entry to supersede.
