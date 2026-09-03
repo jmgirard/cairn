@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- **The amendment-time re-audit leaves a line a resumed session can read.**
+  When `/milestone-implement` re-audits amended acceptance-criterion
+  wording, it now writes one work-log line per criterion in a fixed shape
+  (`re-audit: AC<N> (<full|reduced>) — …`); an absent line means the
+  reader did not run. The once-per-criterion re-entry bound and its stop
+  are read from those lines, not remembered. `/milestone-brief`'s ingest
+  audit line now names the criteria it cleared
+  (`ingest audit RR<NN> (full): cleared AC<list> — …`), and the re-audit
+  exemption applies only to a criterion that list names whose amended
+  text still equals the ingested text whitespace-normalized.
 - **The commit and force-push guards see through environment prefixes.**
   A `git commit` or `git push` spelled with leading `VAR=value` words
   (`GH_TOKEN=x git push -f origin main`, `GIT_AUTHOR_NAME=x git commit`)

@@ -127,7 +127,14 @@ start (any skill) when a manual RR appears:
    so a quietly reworded criterion reds the check, and any departure agreed
    at the gate becomes a row in the Deviations table below. The ingest audit
    records one work-log line either way, on `/milestone-plan` step 3's terms
-   (its line names the full mode — the ingest audit has no reduced form).
+   (its line names the full mode — the ingest audit has no reduced form), in
+   the fixed shape `ingest audit RR<NN> (full): cleared AC<list> — <what it
+   returned, or "nothing">`: the cleared list names every criterion whose
+   ingested wording the audit passed unchanged — a criterion reworded at the
+   gate is not cleared — each spelled with its own `AC<N>` token (`cleared
+   AC1, AC2, AC4`, never a range or a shared prefix), `cleared none` when
+   the list is empty; `/milestone-implement` step 6's re-audit exemption
+   reads that list by name — a criterion the list omits is not exempt.
 4. Relocate the RB/RR pair to `cairn/reviews/archive/` with plain `mv` then
    `git add`, never `git mv` — an in-session-generated or hand-dropped RR is
    untracked, and `git mv` fails on an untracked file; milestone status back
