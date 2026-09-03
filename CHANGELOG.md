@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- **The review close block hands you the slash command, as typed.** After a
+  merge the copyable next-step lines are now `/clear` and the recommended
+  skill command (for example `/milestone-plan`), never the path of the
+  helper script that produced the recommendation and never a `claude `
+  shell prefix, which is wrong when pasting into Claude Desktop.
+
 ## 1.11.0 (2026-09-02)
 
 Six milestones since 1.10.1, on two themes: cairn now reads the repo's
