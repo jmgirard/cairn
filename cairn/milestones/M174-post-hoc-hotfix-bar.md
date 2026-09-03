@@ -1,12 +1,12 @@
 # M174: A merged hotfix or adopted PR is verified to the hotfix bar post-hoc
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2
 - **Resolves:** —
-- **Branch/PR:** —
+- **Branch/PR:** m174-post-hoc-hotfix-bar
 
 ## Goal
 
