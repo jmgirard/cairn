@@ -1,13 +1,13 @@
 # M178: cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore`
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — shipped skill prose and a `scripts/` tool adopting repos run
-- **Branch/PR:** —
+- **Branch/PR:** m178-ci-paths-ignore
 
 ## Goal
 
@@ -39,7 +39,7 @@ An adopter learns at `/cairn-init` that cairn's tracking-only commits start the 
 
 ## Tasks
 
-- [ ] T1: Write `scripts/cairn_ci_paths.py` — `sys.argv` handling (`[ROOT] --report|--apply`), a line-based reader for the three `on:` shapes that yields per-file verdicts and the refusal reasons AC2 names (refusal is the default for anything not exactly matched), a writer that preserves line endings and rewrites scalar/flow-list `on:` into block-map form; register it in `cairn_scripts` conventions (exit 0 on success, 2 outside a repo root) like `scripts/cairn_next.py:1-11`.
+- [x] T1: Write `scripts/cairn_ci_paths.py` — `sys.argv` handling (`[ROOT] --report|--apply`), a line-based reader for the three `on:` shapes that yields per-file verdicts and the refusal reasons AC2 names (refusal is the default for anything not exactly matched), a writer that preserves line endings and rewrites scalar/flow-list `on:` into block-map form; register it in `cairn_scripts` conventions (exit 0 on success, 2 outside a repo root) like `scripts/cairn_next.py:1-11`.
 - [ ] T2: Write `scripts/tests/test_ci_paths.py` with a fixture directory: input/expected pairs for the scalar, flow-list, and block-map shapes (block map also bare `push:`, with `branches:`, with existing `paths-ignore`, with a filtered `pull_request:`, and CRLF), one input per named refusal, the diff assertions per shape, and the PyYAML semantic assertion with its stated skip.
 - [ ] T3: Add the §0 environment-check bullet to `skills/cairn-init/SKILL.md` after the existing environment-check gaps (`skills/cairn-init/SKILL.md:25-42`): the probe command, the silent branch, clauses (a)–(d), and the chip wording per the question-gate rules — the apply option lists the `applicable` files it will edit and its decline writes nothing.
 - [ ] T4: Add the git-model bullet to `skills/shared/tracking-rules.md` beside "never merge red or pending CI" (`skills/shared/tracking-rules.md:224-225`) and the five-word pointer to the no-checks clause (`:253-255`), deferring mergeability to the wait clause.
@@ -53,6 +53,7 @@ An adopter learns at `/cairn-init` that cairn's tracking-only commits start the 
 - 2026-09-03: plan gate chose a §0 environment-check bullet over a close-block-only mention because a repair run or a repo adding CI after adoption would never see the close block; falsified by an adopter reporting the §0 bullet fired on a repo with no push/pull_request workflow, or missed one that had.
 - 2026-09-03: plan gate chose a chip-applied edit over suggest-only (user choice: "2 would be good if we can make it work") because the edit is mechanical for the three common `on:` shapes and the operator approves it per file; falsified by an applied edit changing a workflow's semantics beyond the added ignore (the AC3 PyYAML assertion is the probe).
 - 2026-09-03: plan gate chose the full fact in the rulebook's git model over the merge-gate interaction alone because a repo that adds CI after adoption meets the fact only there; falsified by a `cairn_cost` reading attributing a material share of session tokens to the always-read bullet.
+- 2026-09-03: T1 done — `scripts/cairn_ci_paths.py` (stdlib `os`/`re`/`sys`; `[ROOT] --report|--apply`; three shapes, refusal by default). Minor amendment: "outside a repo root" reads as outside a git repository (walk up to `.git`), since §0 runs before `cairn/` exists; exit 2 there. Smoke-run on 14 scratch shapes; PyYAML parse of each applied file shows `cairn/**` under push → paths-ignore. Suites 334 + 126 green.
 
 ## Decisions
 
