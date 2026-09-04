@@ -3468,6 +3468,6 @@ REGISTRY += [
         guard="test_pr_conversation_gate",
         test="TestReadme.test_readme_names_both_gates_reading_the_conversation",
         target=README,
-        block="Both approval gates read the PR's own conversation",
+        block="Both approval gates read the PR's own conversation — review threads\n  and comments, human or bot — before the merge chip",
     ),
 ]

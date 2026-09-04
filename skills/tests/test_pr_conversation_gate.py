@@ -44,7 +44,7 @@ class TestReviewStepSevenRead(unittest.TestCase):
 
     def setUp(self):
         self.step = flat(section(read("milestone-review", "SKILL.md"),
-                                 "**PR-conversation read (M177).**",
+                                 "7. **Final approval gate.**",
                                  "Ask any remaining clarifying"))
 
     def test_read_runs_once_before_the_chip_with_no_wait(self):
@@ -219,7 +219,8 @@ class TestReadme(unittest.TestCase):
     def test_readme_names_both_gates_reading_the_conversation(self):
         text = flat((REPO / "README.md").read_text())
         self.assertIn(
-            "Both approval gates read the PR's own conversation",
+            "Both approval gates read the PR's own conversation — review "
+            "threads and comments, human or bot — before the merge chip",
             text,
         )
 

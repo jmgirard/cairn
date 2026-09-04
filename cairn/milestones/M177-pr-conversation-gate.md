@@ -80,13 +80,13 @@ read; Copilot auto-review enablement on any repo — a repo setting, not cairn's
 - 2026-09-03: plan gate chose any-author reading over humans-only because the triggering case was bot-authored; falsified by gates where every bot item is triaged noted or rejected and no fix follows, repeatedly.
 - 2026-09-03: plan gate chose block-with-stated-override over advisory-only because a person's objection should not be merged past by default; falsified by override lines becoming routine on consecutive milestones.
 - 2026-09-03: criteria audit ran in full mode ([O] fresh reader): 11 findings — pagination added to AC1's three reads; the empty-read line, disposition-logging, override log line, and chat-logging clauses moved from AC1/AC2/AC3 to T2/T3 as instrument properties (D-120); fix-now re-run ambiguity closed in AC1; bot authorship pinned to the `type` field in AC2; AC5 recut from a diff-hunk check to whitespace-collapsed paragraph equality across refs; AC1 states the gate read is unconditional beside the lens's probe gate; the guard-with-planted-removal became AC7's first clause; the "amend tracking-rules" finding was declined — the "recommended option merges" wording lives only in review step 7 (T2), the rulebook's gate clause fixes approve/decline shape only; the missing-trigger finding was already met by Scope (the reader saw the criteria alone).
-
 - 2026-09-03: T1 — `skills/tests/test_pr_conversation_gate.py` (20 asserts over AC1–AC4 and AC6, whitespace-collapsed reads) and 20 M177 mutation entries; run red before T2: guard 6 failures + 14 errors, harness 20 locators found 0 times.
 - 2026-09-03: T2 — review step 7 gains the PR-conversation read paragraph, the blocking rule with its override line, the chip sentence deferring to it; resume route (c) re-runs the read; lens paragraph untouched; 14 review-side guard asserts and locators green, gating suites green.
 - 2026-09-03: T3 — hotfix step 6 cross-references the step-7 read, triage, and blocking rule for authored and adopted PRs, dispositions stated in chat; 3 hotfix guard asserts and locators green.
 - 2026-09-03: T4 — audit's review-with-open-PR bullet reports the unresolved-thread count and pending review states beside CI, no-write clause kept; 2 audit guard asserts and locators green.
 - 2026-09-03: T5 — README contributions bullet gains one sentence naming both gates' conversation read; README guard assert and locator green.
 - 2026-09-03: T6 — gating suites scripts/tests 334 OK exit 0, hooks/tests 126 OK exit 0; hand-run skills/tests 624 OK exit 0 (mutation harness: each of the 20 M177 locators blanked alone fails its guard); AC5 prior-PR-comments lens paragraph whitespace-collapsed identical on origin/main and branch head (1603 chars); cairn_validate all checks passed. Status → review.
+- 2026-09-03: step-7 approval: PR #183 approved for merge (nine fix-now findings applied first; conversation read empty).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -125,3 +125,7 @@ read; Copilot auto-review enablement on any repo — a repo setting, not cairn's
 
 ### PR-conversation read (2026-09-03, PR #183)
 - conversation: PR #183 — empty read: 0 reviews, 0 conversation comments, 0 unresolved threads (`hasNextPage` false). Bot-typed authors: none. Blocking rule not fired.
+
+### Triage at the gate (2026-09-03) — maintainer accepted the proposed dispositions
+- Fix now, landed on the branch after the pre-gate checkpoint: F1 (hotfix chip sentence gains "address-first instead, when the blocking rule above fires"), F2 (gloss: `isResolved` is a per-node field, filter applied to returned nodes), F3 (query selects each thread's `path`, `line`, comments' author login and body), F6 (override never to a Review section or a work log — a hotfix keeps neither), F7 (README assert and harness block extended through "before the merge chip"), F8 (AC1 section sliced from `7. **Final approval gate.**`), F10 ("(hotfix step 7)"), F12 (README sentence moved to the bullet's end), F15 (work-log blank line removed). Suites after fixes: scripts/tests 334 OK, hooks/tests 126 OK, skills/tests 624 OK; validate green; AC5 paragraph re-checked identical.
+- Rejected with reason, as recorded per finding above: F4, F5, F9, F11, F13. Noted, no action: F14. No return floor crossed; no candidate row added.

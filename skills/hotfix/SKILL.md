@@ -161,13 +161,15 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
    PR's contributor comments in scope; the hotfix difference is that a
    hotfix keeps no milestone file, so each disposition, and a selected
    override, is stated in the chat presentation beside the item it
-   answers, never logged to a Review section. Then put the
+   answers, never logged to a Review section or a work log — a hotfix
+   keeps neither. Then put the
    merge authorization to the user as an
    `AskUserQuestion` chip (recommended = merge, e.g. `Merge PR #N to
-   <default-branch>`, with a decline option) — never a prose yes/no, the same gate discipline
+   <default-branch>` — address-first instead, when the blocking rule
+   above fires — with a decline option) — never a prose yes/no, the same gate discipline
    as `/milestone-review`. A PR body carrying a `Fixes #N` line adds to the
    chip's question text the post-merge close-if-open of that issue it
-   authorizes (step 7). Merge (`gh pr merge <N> --squash --delete-branch`
+   authorizes (hotfix step 7). Merge (`gh pr merge <N> --squash --delete-branch`
    — name the PR number explicitly; a bare `gh pr merge` is denied because the
    approval cannot be checked against it; **drop `--delete-branch` on a
    fork PR** — that branch lives in the contributor's repo and is not ours

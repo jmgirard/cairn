@@ -351,7 +351,10 @@ re-enters here, at the step the record shows is next:
    own conversation: `gh api --paginate repos/{owner}/{repo}/pulls/<N>/reviews`,
    `gh api --paginate repos/{owner}/{repo}/issues/<N>/comments`, and a
    GraphQL `reviewThreads` query filtered to `isResolved: false` and paged
-   until `hasNextPage` is false. Every unresolved thread, every review in
+   until `hasNextPage` is false (`isResolved` is a field on each thread
+   node, so the filter is applied to the returned nodes; the query selects
+   each thread's `path` and `line` and its comments' author login and
+   body). Every unresolved thread, every review in
    state `COMMENTED` or `CHANGES_REQUESTED`, and every conversation comment
    — whatever its author, human or bot — is presented at the gate with
    author, path and line where inline, and body, each with its triage
