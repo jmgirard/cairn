@@ -71,9 +71,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   `paths-ignore` on `push` triggers for three `on:` shapes; M178).
   Read-only apart from that `--apply`; reuse the hooks' `cairn_common`
   parser (no duplication); exit 2 outside a cairn repo (`cairn_ci_paths`:
-  outside a git repo, since `/cairn-init` §0 runs before `cairn/` exists). `/milestone` invokes them instead of
-  re-deriving status by LLM; `/milestone-review` runs `cairn_impact --changed`
-  when a milestone touches a principle; semantic checks stay LLM-owned.
+  outside a git repo, since `/cairn-init` §0 runs before `cairn/` exists).
+  `/milestone` invokes them instead of re-deriving status by LLM;
+  `/milestone-review` runs `cairn_impact --changed` when a milestone touches
+  a principle; semantic checks stay LLM-owned.
 
 ## Conventions
 

@@ -4906,7 +4906,9 @@ list, an unquoted block map whose `push:` holds a block mapping or nothing)
 and refuses everything else by name, leaving the file byte-identical.
 Rejected at the plan gate: a close-block-only mention (a repair run or a
 repo adding CI after adoption never sees it); suggest-only (the edit is
-mechanical for the three shapes and the operator approves it per file);
+mechanical for the three shapes and the operator approves the set of
+files the chip names — AC1(d)'s one approve/decline, not a per-file
+selector);
 the merge-gate interaction alone in the rulebook (a repo adding CI after
 adoption meets the fact only there); a `/milestone` audit line on CI-run
 waste (the note fires where CI is set up, not at every audit).

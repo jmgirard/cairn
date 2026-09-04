@@ -1,6 +1,6 @@
 # M178: cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore`
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -48,7 +48,7 @@ An adopter learns at `/cairn-init` that cairn's tracking-only commits start the 
 - [x] T7: Run both gating suites and the hand-run `skills/tests` from the repo root checking each exit code and reported count (AC6); run the AC5 grep and disposition every hit; sweep README and `skills/shared/templates/` for any restatement of the recommendation (M112).
 
 - [x] T8: Report verdicts survive an apply-time refusal — `scripts/cairn_ci_paths.py` places a block-map file whose `on:` block or `on:` line carries a comment (comment text stripped for placement; the refusal kept for `--apply`), reads filter presence from a `push:`/`pull_request:` flow-mapping value, and names a block-map `push: [..]` value as a flow sequence rather than a scalar; `scripts/tests/test_ci_paths.py` gains a report fixture per case asserting the trigger verdict beside the refusal, and the two comment refusal fixtures assert their trigger verdict (review findings 1, 2, 3, 9).
-- [ ] T9: D-133's "the operator approves it per file" reads as approval of the listed set the chip names, matching AC1(d) and the shipped chip; DESIGN.md's `cairn_ci_paths` line wrapped to the file's column width (review findings 5, 8).
+- [x] T9: D-133's "the operator approves it per file" reads as approval of the listed set the chip names, matching AC1(d) and the shipped chip; DESIGN.md's `cairn_ci_paths` line wrapped to the file's column width (review findings 5, 8).
 
 ## Work log
 
@@ -67,6 +67,7 @@ An adopter learns at `/cairn-init` that cairn's tracking-only commits start the 
 
 - 2026-09-03: review — PR #185 opened as draft; AC1–AC6 evidence recorded, gate green; three-lens review: [S] blame-history and [S] prior-review-record zero findings, [O] diff-bug eleven. Defect return 1 of M178 (return floor): finding 1 demonstrates AC2's verdict arm failing — a block-map file with a comment inside its `on:` block reports `unrecognized` instead of its triggers, so the AC1 bullet stays silent for it (reproduced on `push:` + `branches: [main]  # comment`). Status → in-progress; T8, T9 added.
 - 2026-09-03: T8 done — `scripts/cairn_ci_paths.py` strips comment text for placement and keeps the comment refusal for `--apply` (`deferred`, returned by the shape check ahead of the trigger checks), reads filter presence and a `cairn/**` entry from a `push:`/`pull_request:` flow-mapping value, and names `push: [..]` as "holds a flow sequence"; `refuse/push_flow_sequence.yml` and three `report/` fixtures added with `test_verdict_survives_an_apply_time_refusal`, the two comment refusals assert their trigger verdict and never `unrecognized`; finding 1's repro now reports `push (branches) — would refuse: a comment inside the `on:` block`. Suites 358 + 126, hand-run 642, all green.
+- 2026-09-03: T9 done — D-133's suggest-only rejection now reads "the operator approves the set of files the chip names — AC1(d)'s one approve/decline, not a per-file selector" (edited in place: the entry is unmerged branch work of this milestone, not a landed record); DESIGN.md `scripts/` layer sentence rewrapped, no line over 100 columns. Suites 358 + 126, hand-run 642, validate all checks passed. Status → review (return 1 repaired).
 
 ## Decisions
 
