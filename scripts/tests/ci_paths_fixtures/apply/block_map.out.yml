@@ -1,0 +1,15 @@
+name: ci
+on:
+  push:
+    branches-ignore:
+      - gh-pages
+    paths-ignore:
+      - 'cairn/**'
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
