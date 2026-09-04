@@ -4877,3 +4877,46 @@ amend a criterion says the record was ceremony and the row's parking was
 right — the falsifier is such a resume, never a count of milestones. A second
 door exception requested without a trigger revisits the door's terms by
 supersession, never by a further by-name exception.
+
+### D-133 (2026-09-03): The wait rule's no-checks case gains a named source — a tracking-only head under a `cairn/**` `paths-ignore`; `/cairn-init` reports the CI runs tracking-only pushes start and applies the ignore under a chip; annotates D-128 (M178)
+
+**Context:** A milestone loop pushes tracking-only commits — implement's
+checkpoints, review's records — on every branch push, and each push starts
+the repo's push-triggered workflows. A session question read a review as
+ending before CI was green; the transcripts showed the merge gate had
+waited correctly and the runs in flight were implement's checkpoint pushes.
+Neither the rulebook nor `/cairn-init` stated that tracking-only pushes
+start CI, and D-128's no-checks case named no source for a PR that reports
+no checks.
+
+**Decision:** The git model carries one bullet: a branch push starts the
+push-triggered workflows whose `branches` filter admits it, tracking-only
+commits included; a `paths-ignore` of `cairn/**` skips such a push for
+`push` triggers and not for `pull_request` triggers, whose filter reads the
+whole PR diff; where the workflows are push-triggered and ignore `cairn/**`,
+a tracking-only head commit carries no check run and is the wait rule's
+no-checks case, unless branch protection requires that check, where the
+path-skipped run leaves it pending and the merge blocked. Mergeability
+stays the wait clause's to state; that clause names the bullet as one
+source. `/cairn-init` §0 runs `scripts/cairn_ci_paths.py --report` when
+`.github/workflows/` exists, states the fact, and offers `--apply` under a
+chip — never silently — for the files the report marks applicable; the
+script recognizes three `on:` shapes (an unquoted scalar, an unquoted flow
+list, an unquoted block map whose `push:` holds a block mapping or nothing)
+and refuses everything else by name, leaving the file byte-identical.
+Rejected at the plan gate: a close-block-only mention (a repair run or a
+repo adding CI after adoption never sees it); suggest-only (the edit is
+mechanical for the three shapes and the operator approves it per file);
+the merge-gate interaction alone in the rulebook (a repo adding CI after
+adoption meets the fact only there); a `/milestone` audit line on CI-run
+waste (the note fires where CI is set up, not at every audit).
+
+**Consequences:** D-128 is annotated, not superseded: the no-checks case is
+unchanged in what it permits and gains one named way of arising. The
+required-check remainder under branch protection stays with the
+Branch-protection compatibility candidate row. The observation class that
+overturns this entry: an applied edit changing a workflow's semantics
+beyond the added ignore (the semantic assertion in
+`scripts/tests/test_ci_paths.py` is the probe), or an adopter reporting the
+§0 bullet fired on a repo with no push or pull_request workflow, or missed
+one that had — in which case the shape set narrows or the bullet moves.
