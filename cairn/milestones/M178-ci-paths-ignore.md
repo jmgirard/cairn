@@ -60,6 +60,7 @@ An adopter learns at `/cairn-init` that cairn's tracking-only commits start the 
 - 2026-09-03: T5 done — `skills/tests/test_ci_paths_note.py` (16 pins, one per AC1 clause / AC4 claim, each on one physical line) registered in `test_mutation_harness.py`, tokens spelled by concatenation in both; hand-run skills/tests 642 green.
 - 2026-09-03: T6 done — D-133 appended (annotates D-128; three shapes, chip-applied, remainder to the Branch-protection candidate row); CHANGELOG Unreleased entry added.
 - 2026-09-03: T7 done — from the repo root: scripts/tests exit 0 Ran 355, hooks/tests exit 0 Ran 126, hand-run skills/tests exit 0 Ran 642; AC5 grep hits only the §0 bullet, the git-model bullet and no-checks clause, the script, its tests and fixtures, and the CHANGELOG entry; README and templates sweep found no restatement; cairn_validate all checks passed. Status → review.
+- 2026-09-03: minor amendment (discovered sub-task) — DESIGN.md's `scripts/` enumeration gains `cairn_ci_paths`, the layer's one writer and its git-root exit rule.
 
 ## Decisions
 
