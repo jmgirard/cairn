@@ -98,3 +98,13 @@ An adopter learns at `/cairn-init` that cairn's tracking-only commits start the 
 9. "mixed line endings" is a reason outside AC2's named list, and `push: [main]` is reported as "holds a scalar value". **T8** renames the flow-sequence reason; the mixed-endings reason stays as an `unrecognized` sub-reason (the file cannot be placed line-wise).
 10. Fixture gaps (push after other triggers with a deeper block, CRLF without trailing newline, partially readable report). **Rejected** beyond T8's report fixtures: the reviewer found no fixture-covered path wrong across ~30 adversarial shapes.
 11. The scalar/flow rewrite writes a `pull_request:` key line, against "never edits a `pull_request` trigger". **Rejected:** wording — AC2 sanctions the rewrite and the trigger's semantics are unchanged.
+
+### Review findings, round 2 (2026-09-03, PR #185 re-review)
+
+[S] blame-history: no conflicts with history (D-128, D-130, D-133 read whole; every modified pre-existing region additive). [S] prior-review-record: no regressions — the T8/T9 repairs match the round-1 triage; the inline-comment probe (run by the session) returned 0. conversation: PR #185 — empty read (no reviews, no comments, no unresolved threads). [O] diff-bug, ranked:
+
+1. A `paths-ignore` whose sequence items sit at the key's own indent (`paths-ignore:\n    - docs/**\n    - cairn/**`, a legal and common style) is never scanned for `cairn/**`: the report prints `push (paths-ignore)` with no `cairn/**` flag and refuses with `unrecognized: \`push:\` child is not a mapping key` instead of AC2's named "already ignoring" reason — `scripts/cairn_ci_paths.py:307`. Reproduced by the session. **AC2 verdict arm and refusal arm both fail inside their domain — disposition at the gate.**
+2. Tab-led lines inside the `on:` block end the block before the tab guard at `:241` sees them, so a tab-indented file is edited rather than refused. **Rejected:** a tab-indented workflow is invalid YAML GitHub will not run, outside the workflow files AC2 quantifies over.
+3. A comment refusal preempts "no `push` trigger" (`on:\n  workflow_dispatch:  # manual` → `no push or pull_request trigger — would refuse: a comment inside the \`on:\` block`). **Rejected:** the verdict is correct and either reason refuses; AC2 fixes no precedence among reasons.
+4. D-133 cites `AC1(d)`, a milestone-file label that dangles after archive, with a ragged wrap from the T9 edit. **Fixed now:** reworded to "in one approve/decline, not through a per-file selector" and rewrapped (branch-local unmerged entry, edited in place as T9 did).
+5. A `push:` gated only by `tags:` reports `no filters` (`FILTER_KEYS` omits `tags`). **Rejected:** AC2 enumerates four filter keys; report-side residue of round-1 finding 7, same disposition.

@@ -4907,11 +4907,10 @@ and refuses everything else by name, leaving the file byte-identical.
 Rejected at the plan gate: a close-block-only mention (a repair run or a
 repo adding CI after adoption never sees it); suggest-only (the edit is
 mechanical for the three shapes and the operator approves the set of
-files the chip names — AC1(d)'s one approve/decline, not a per-file
-selector);
-the merge-gate interaction alone in the rulebook (a repo adding CI after
-adoption meets the fact only there); a `/milestone` audit line on CI-run
-waste (the note fires where CI is set up, not at every audit).
+files the chip names in one approve/decline, not through a per-file
+selector); the merge-gate interaction alone in the rulebook (a repo adding
+CI after adoption meets the fact only there); a `/milestone` audit line on
+CI-run waste (the note fires where CI is set up, not at every audit).
 
 **Consequences:** D-128 is annotated, not superseded: the no-checks case is
 unchanged in what it permits and gains one named way of arising. The
