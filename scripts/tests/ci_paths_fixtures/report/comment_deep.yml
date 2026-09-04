@@ -1,0 +1,13 @@
+name: ci
+on:
+  push:
+    branches: [main]  # default branch
+    paths-ignore:
+      - 'docs/**'
+  pull_request:
+    paths-ignore: ['cairn/**'] # already
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok

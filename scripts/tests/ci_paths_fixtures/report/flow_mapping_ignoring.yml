@@ -1,0 +1,9 @@
+name: ci
+on:
+  push: {branches-ignore: [wip], paths-ignore: ["cairn/**", 'docs/**']}
+  pull_request: {paths: [src/**]}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok

@@ -21,7 +21,10 @@ each applicable file and names each refusal, leaving refused files
 byte-identical. Three `on:` shapes are recognized — an unquoted scalar
 (`on: push`), an unquoted flow list (`on: [push, pull_request]`), and an
 unquoted block map whose `push:` key holds a block mapping or nothing;
-everything else is refused with the reason.
+everything else is refused with the reason. A comment on the `on:` line or
+inside its block is a refusal, but the file is still placed for the report
+(comment text stripped), as is a `push:`/`pull_request:` flow-mapping value,
+whose filter keys the report reads.
 """
 
 import os
@@ -37,6 +40,7 @@ _ON_KEY = re.compile(r"""^(?P<key>on|"on"|'on')\s*:(?P<rest>.*)$""")
 _WORD = re.compile(r"^[A-Za-z_][A-Za-z0-9_-]*$")
 _MAP_KEY = re.compile(r"^(?P<indent>\s*)(?P<key>[A-Za-z_][A-Za-z0-9_-]*)\s*:(?P<rest>.*)$")
 _SEQ_ITEM = re.compile(r"^(?P<indent>\s*)-\s+(?P<value>.*)$")
+_COMMENT = re.compile(r"(^|\s)#.*$")
 
 
 class Refuse(Exception):
@@ -98,6 +102,35 @@ def _is_blank(line):
     return line.strip() == ""
 
 
+def _strip_comment(line):
+    """(line without its YAML comment, whether one was there)."""
+    m = _COMMENT.search(line)
+    if not m:
+        return line, False
+    return line[: m.start()].rstrip(), True
+
+
+def _flow_map_keys(rest):
+    """Top-level `key: value` pairs of a flow mapping `{...}` as (key, value text)."""
+    inner = rest.strip()
+    if not (inner.startswith("{") and inner.endswith("}")):
+        return []
+    pairs, depth, buf = [], 0, ""
+    for ch in inner[1:-1] + ",":
+        if ch in "[{":
+            depth += 1
+        elif ch in "]}":
+            depth -= 1
+        if ch == "," and depth == 0:
+            if ":" in buf:
+                key, value = buf.split(":", 1)
+                pairs.append((key.strip(), value.strip()))
+            buf = ""
+        else:
+            buf += ch
+    return pairs
+
+
 def _strip_quotes(value):
     v = value.strip()
     if len(v) >= 2 and v[0] == v[-1] and v[0] in "'\"":
@@ -129,6 +162,7 @@ class Workflow:
         self.on_end = None
         self.quoted_key = False
         self.block = None  # per-trigger line ranges for the block shape
+        self.deferred = None  # a refusal `--apply` keeps while the file is still placed
         try:
             with open(path, "rb") as fh:
                 self.lines, self.eol, self.trailing = split_lines(fh.read())
@@ -151,9 +185,9 @@ class Workflow:
         self.on_index = i
         m = _ON_KEY.match(self.lines[i])
         self.quoted_key = m.group("key") != "on"
-        rest = m.group("rest")
-        if "#" in rest:
-            raise Refuse("a comment on the `on:` line")
+        rest, commented = _strip_comment(m.group("rest"))
+        if commented:
+            self.deferred = "a comment on the `on:` line"
         rest = rest.strip()
         # the block extends to the next non-blank column-0 line
         j = i + 1
@@ -194,12 +228,16 @@ class Workflow:
         self.filters = {t: self._no_filters() for t in items if t in TRIGGERS}
 
     def _parse_block(self, start, end):
-        body = [(k, self.lines[k]) for k in range(start, end) if not _is_blank(self.lines[k])]
+        body = []
+        for k in range(start, end):
+            l, commented = _strip_comment(self.lines[k])
+            if commented:
+                self.deferred = self.deferred or "a comment inside the `on:` block"
+            if not _is_blank(l):
+                body.append((k, l))
         if not body:
             raise Refuse("unrecognized: `on:` holds nothing")
         for _, l in body:
-            if "#" in l:
-                raise Refuse("a comment inside the `on:` block")
             if "\t" in l[: _indent(l) + 1]:
                 raise Refuse("unrecognized: tab indentation in the `on:` block")
         key_indent = _indent(body[0][1])
@@ -237,8 +275,17 @@ class Workflow:
 
     def _block_filters(self, entry):
         present = self._no_filters()
+        if entry["rest"].startswith("{"):
+            for key, value in _flow_map_keys(entry["rest"]):
+                if key in FILTER_KEYS:
+                    present[key] = True
+                    if key == "paths-ignore" and ENTRY in [
+                        _strip_quotes(x) for x in value.strip("[]").split(",")
+                    ]:
+                        present["cairn"] = True
+            return present
         if entry["rest"] != "" or not entry["value"]:
-            return present  # flow/scalar value or bare key: nothing readable here
+            return present  # scalar or flow-sequence value, or a bare key: nothing readable here
         child_indent = _indent(entry["value"][0][1])
         for k, l in entry["value"]:
             if _indent(l) != child_indent:
@@ -273,6 +320,8 @@ class Workflow:
     def _shape_check(self):
         if self.quoted_key:
             return "a quoted `on:` key"
+        if self.deferred is not None:
+            return self.deferred
         if "push" not in self.triggers:
             return "no `push` trigger"
         if self.shape != "block":
@@ -281,6 +330,8 @@ class Workflow:
         if entry["rest"] != "":
             if entry["rest"].startswith("{"):
                 return "`push:` holds a flow mapping"
+            if entry["rest"].startswith("["):
+                return "`push:` holds a flow sequence"
             return "`push:` holds a scalar value"
         if not entry["value"]:
             return None

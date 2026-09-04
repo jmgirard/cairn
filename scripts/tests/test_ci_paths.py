@@ -28,6 +28,7 @@ SCRIPT = HERE.parent / "cairn_ci_paths.py"
 FIXTURES = HERE / "ci_paths_fixtures"
 APPLY = FIXTURES / "apply"
 REFUSE = FIXTURES / "refuse"
+REPORT = FIXTURES / "report"
 
 BLOCK_SHAPES = [
     "block_map", "block_bare_push", "block_branches",
@@ -41,12 +42,31 @@ REFUSALS = {
     "flow_paths_ignore": "`paths-ignore` is a flow list",
     "push_flow_mapping": "holds a flow mapping",
     "push_flow_mapping_filled": "holds a flow mapping",
+    "push_flow_sequence": "holds a flow sequence",
     "quoted_on_double": "a quoted `on:` key",
     "quoted_on_single": "a quoted `on:` key",
     "comment_on_line": "a comment on the `on:` line",
     "comment_in_block": "a comment inside the `on:` block",
     "unrecognized": "unrecognized",
     "no_push": "no `push` trigger",
+}
+
+# report-only fixtures: the trigger verdict `--report` prints beside the
+# refusal (M178 review findings 1-3, 9) — the file is placed even where
+# `--apply` refuses it
+REPORT_VERDICTS = {
+    "comment_deep": (
+        "push (branches, paths-ignore), pull_request (paths-ignore, cairn/**)",
+        "a comment inside the `on:` block",
+    ),
+    "comment_on_flow_line": (
+        "push (no filters), pull_request (no filters)",
+        "a comment on the `on:` line",
+    ),
+    "flow_mapping_ignoring": (
+        "push (branches-ignore, paths-ignore, cairn/**), pull_request (paths)",
+        "`push:` holds a flow mapping",
+    ),
 }
 
 try:
@@ -111,6 +131,7 @@ class TestFixturesExist(unittest.TestCase):
         pairs = {p.name.split(".")[0] for p in APPLY.iterdir()}
         self.assertEqual(pairs, set(BLOCK_SHAPES + REWRITE_SHAPES))
         self.assertEqual({p.stem for p in REFUSE.iterdir()}, set(REFUSALS))
+        self.assertEqual({p.stem for p in REPORT.iterdir()}, set(REPORT_VERDICTS))
 
     def test_crlf_fixture_is_crlf(self):
         data = (APPLY / "block_crlf.in.yml").read_bytes()
@@ -251,6 +272,28 @@ class TestReport(unittest.TestCase):
         self.assertIn("push (paths-ignore, cairn/**)", line)
         line = self._report(APPLY / "flow_list.in.yml")
         self.assertIn("push (no filters), pull_request (no filters)", line)
+
+    def test_verdict_survives_an_apply_time_refusal(self):
+        for name, (verdict, reason) in REPORT_VERDICTS.items():
+            with self.subTest(name=name):
+                line = self._report(REPORT / f"{name}.yml")
+                self.assertEqual(line, f"ci.yml: {verdict} — would refuse: {reason}")
+
+    def test_comment_refusals_still_name_their_triggers(self):
+        line = self._report(REFUSE / "comment_on_line.yml")
+        self.assertIn(": push (no filters) — would refuse: a comment on the `on:` line", line)
+        line = self._report(REFUSE / "comment_in_block.yml")
+        self.assertIn(": push (branches) — would refuse: a comment inside the `on:` block", line)
+        for name in ("comment_on_line", "comment_in_block"):
+            self.assertNotIn("unrecognized", self._report(REFUSE / f"{name}.yml"), name)
+
+    def test_flow_mapping_and_flow_sequence_push_values_are_placed(self):
+        line = self._report(REFUSE / "push_flow_mapping_filled.yml")
+        self.assertIn(": push (branches) — would refuse:", line)
+        line = self._report(REFUSE / "push_flow_mapping.yml")
+        self.assertIn(": push (no filters), pull_request (no filters) — would refuse:", line)
+        line = self._report(REFUSE / "push_flow_sequence.yml")
+        self.assertIn(": push (no filters) — would refuse: `push:` holds a flow sequence", line)
 
     def test_verdict_for_a_file_with_neither_trigger(self):
         with tempfile.TemporaryDirectory() as d:
