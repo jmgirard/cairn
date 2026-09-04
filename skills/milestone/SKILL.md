@@ -123,7 +123,10 @@ The script deliberately does not judge these — do them yourself and report:
 - **CLAUDE.md section present and intact**; if damaged, offer repair via
   `/cairn-init`.
 - A milestone at `review` with an open unmerged PR → re-check CI now
-  (`gh pr checks`), report the fresh state (this is normal, not an error).
+  (`gh pr checks`), report the fresh state (this is normal, not an error),
+  and beside it report the PR's unresolved-thread count and its pending
+  review states (`COMMENTED`, `CHANGES_REQUESTED`) from the reads
+  `/milestone-review` step 7 names; the audit writes nothing to GitHub.
 - A milestone at `review` whose header PR reports `MERGED` (`gh pr view <N>
   --json state`) → post-merge hygiene owed: report it as such and route to
   `/milestone-review M<NNN>`, whose session start re-enters at the step the
