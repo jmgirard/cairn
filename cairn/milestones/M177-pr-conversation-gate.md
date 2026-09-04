@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M177: An approval gate reads the PR's own conversation
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -69,7 +69,7 @@ read; Copilot auto-review enablement on any repo — a repo setting, not cairn's
 - [x] T3: Edit `skills/hotfix/SKILL.md` step 6 (~line 155): cross-reference the step-7 rule, state the chat-triage difference and that an adopted PR's contributor comments are in scope.
 - [x] T4: Edit `skills/milestone/SKILL.md`'s `review`-with-open-PR bullet (~line 124): add the count and states read; keep the no-write clause.
 - [x] T5: README.md contributions bullet (~line 283): one sentence.
-- [ ] T6: Run both gating suites and the hand-run `skills/tests`; confirm AC5 by extracting the paragraph from both refs (`git show <default>:skills/milestone-review/SKILL.md`), collapsing whitespace, and comparing; record results in the work log.
+- [x] T6: Run both gating suites and the hand-run `skills/tests`; confirm AC5 by extracting the paragraph from both refs (`git show <default>:skills/milestone-review/SKILL.md`), collapsing whitespace, and comparing; record results in the work log.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -86,6 +86,7 @@ read; Copilot auto-review enablement on any repo — a repo setting, not cairn's
 - 2026-09-03: T3 — hotfix step 6 cross-references the step-7 read, triage, and blocking rule for authored and adopted PRs, dispositions stated in chat; 3 hotfix guard asserts and locators green.
 - 2026-09-03: T4 — audit's review-with-open-PR bullet reports the unresolved-thread count and pending review states beside CI, no-write clause kept; 2 audit guard asserts and locators green.
 - 2026-09-03: T5 — README contributions bullet gains one sentence naming both gates' conversation read; README guard assert and locator green.
+- 2026-09-03: T6 — gating suites scripts/tests 334 OK exit 0, hooks/tests 126 OK exit 0; hand-run skills/tests 624 OK exit 0 (mutation harness: each of the 20 M177 locators blanked alone fails its guard); AC5 prior-PR-comments lens paragraph whitespace-collapsed identical on origin/main and branch head (1603 chars); cairn_validate all checks passed. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
