@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M178 | cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore` | review | — | normal | milestones/M178-ci-paths-ignore.md |
+| M178 | cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore` | blocked | — | normal | milestones/M178-ci-paths-ignore.md |
 | M177 | An approval gate reads the PR's own conversation | done | — | normal | milestones/archive/M177-pr-conversation-gate.md |
 | M176 | The amendment-time re-audit records a work-log line | done | — | normal | milestones/archive/M176-reaudit-record.md |
 | M175 | The surface tier is a milestone header slot | done | — | normal | milestones/archive/M175-surface-tier-slot.md |

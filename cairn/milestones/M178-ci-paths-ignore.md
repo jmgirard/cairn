@@ -1,6 +1,6 @@
 # M178: cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore`
 
-- **Status:** review
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -74,6 +74,7 @@ An adopter learns at `/cairn-init` that cairn's tracking-only commits start the 
 - 2026-09-03: T10 done — `_has_entry` ends the sequence at the first line that is not a block-sequence item at or deeper than the `paths-ignore` key's indent, and `_shape_check` passes a flush-left item that follows a `push:` child key; `apply/block_flush_ignore` pair and `refuse/already_ignored_flush.yml` added (6 tests red before the fix, `test_flush_left_ignore_items_are_scanned` asserts the `cairn/**` flag beside the named reason); round-2 finding 1's repro now reports `push (paths-ignore, cairn/**) — would refuse: `push:` already ignores `cairn/**`` and the not-yet-ignoring form is appended at the file's own item indent. Suites 359 + 126, hand-run 642, validate all checks passed. Status → review (return 2 repaired).
 - 2026-09-03: re-review round 3 — AC1–AC6 re-evidenced (AC2 ticked after the return-2 repair), gate green; three-lens review spawned, findings pending triage.
 - 2026-09-03: review round 3 — defect return 3 of M178 (return floor): finding 1 demonstrates AC2's refusal arm and `--apply` contract failing — a column-0 comment inside the `on:` block truncates the block, so `--apply` writes a duplicate `paths-ignore` key and drops the added ignore (reproduced). Third return, same criterion, same shape as returns 1 and 2 (the line reader missing a legal YAML form): thrash rule (a) reached and (b) fires; disposition put to the user at the gate, recommended descope-or-park. Round-3 finding 3 fixed on branch.
+- 2026-09-03: gate disposition — user chose park over descope, fix-now override, and `/milestone-brief` escalation. Status → blocked. Blocker: the line-based reader in `scripts/cairn_ci_paths.py` has missed a legal YAML form on three consecutive reviews (comment in block, flush-left sequence items, column-0 comment truncating the block); resuming needs a different approach — a real YAML parse, or the plan gate's recorded suggest-only alternative dropping `--apply` — decided before more work. PR #185 stays open as draft on the branch.
 
 ## Decisions
 
