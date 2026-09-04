@@ -153,7 +153,15 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
    is still missing — that is the one gate this path exists to enforce.
 
 6. **Approval gate:** present the diff, the regression-test evidence, and
-   the changelog line (when the `changelog` slot declares a file); put the
+   the changelog line (when the `changelog` slot declares a file); then
+   run the PR-conversation read `/milestone-review` step 7 states — the
+   same three paginated reads, the any-author presentation with its four
+   triage options, and the changes-requested blocking rule with its
+   override option — for an authored and an adopted PR alike, an adopted
+   PR's contributor comments in scope; the hotfix difference is that a
+   hotfix keeps no milestone file, so each disposition, and a selected
+   override, is stated in the chat presentation beside the item it
+   answers, never logged to a Review section. Then put the
    merge authorization to the user as an
    `AskUserQuestion` chip (recommended = merge, e.g. `Merge PR #N to
    <default-branch>`, with a decline option) — never a prose yes/no, the same gate discipline

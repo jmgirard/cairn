@@ -66,7 +66,7 @@ read; Copilot auto-review enablement on any repo — a repo setting, not cairn's
 
 - [x] T1: Prose guards first — new `skills/tests/test_pr_conversation_gate.py` pinning AC1–AC4's clauses (the three paginated read commands, the any-author clause, the four dispositions, the changes-requested blocking rule and its override option, the hotfix cross-reference, the audit count) with whitespace collapsed on read (M171 lesson) and one mutation entry per pinned clause in `skills/tests/test_mutation_harness.py`, each of the three files planted alone; run red before T2 (D-109: hand-run, gating nothing).
 - [x] T2: Edit `skills/milestone-review/SKILL.md` step 7 (~line 325): the read, its presentation, the triage with each disposition logged in the Review section, the blocking rule (replacing "the recommended option merges" at ~line 347) and the override option, whose selection appends the work-log line `override: merged past changes-requested review by <login> on PR #<N>`; resume route (c) (~line 47) re-runs the read when it re-poses the chip. Leave the step-5 lens paragraph (~lines 222–247) untouched.
-- [ ] T3: Edit `skills/hotfix/SKILL.md` step 6 (~line 155): cross-reference the step-7 rule, state the chat-triage difference and that an adopted PR's contributor comments are in scope.
+- [x] T3: Edit `skills/hotfix/SKILL.md` step 6 (~line 155): cross-reference the step-7 rule, state the chat-triage difference and that an adopted PR's contributor comments are in scope.
 - [ ] T4: Edit `skills/milestone/SKILL.md`'s `review`-with-open-PR bullet (~line 124): add the count and states read; keep the no-write clause.
 - [ ] T5: README.md contributions bullet (~line 283): one sentence.
 - [ ] T6: Run both gating suites and the hand-run `skills/tests`; confirm AC5 by extracting the paragraph from both refs (`git show <default>:skills/milestone-review/SKILL.md`), collapsing whitespace, and comparing; record results in the work log.
@@ -83,6 +83,7 @@ read; Copilot auto-review enablement on any repo — a repo setting, not cairn's
 
 - 2026-09-03: T1 — `skills/tests/test_pr_conversation_gate.py` (20 asserts over AC1–AC4 and AC6, whitespace-collapsed reads) and 20 M177 mutation entries; run red before T2: guard 6 failures + 14 errors, harness 20 locators found 0 times.
 - 2026-09-03: T2 — review step 7 gains the PR-conversation read paragraph, the blocking rule with its override line, the chip sentence deferring to it; resume route (c) re-runs the read; lens paragraph untouched; 14 review-side guard asserts and locators green, gating suites green.
+- 2026-09-03: T3 — hotfix step 6 cross-references the step-7 read, triage, and blocking rule for authored and adopted PRs, dispositions stated in chat; 3 hotfix guard asserts and locators green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
