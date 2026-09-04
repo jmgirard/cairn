@@ -1,0 +1,59 @@
+# M178: cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore`
+
+- **Status:** planned
+- **Priority:** normal
+- **Depends on:** —
+- **Driving RR:** —
+- **Principles touched:** —
+- **Resolves:** —
+- **Surface tier:** user-facing — shipped skill prose and a `scripts/` tool adopting repos run
+- **Branch/PR:** —
+
+## Goal
+
+An adopter learns at `/cairn-init` that cairn's tracking-only commits start the repo's push-triggered workflows, can have `cairn/**` added to the `push` trigger's `paths-ignore` under a chip, and finds the fact and its merge-gate interaction stated in the rulebook's git model.
+
+## Scope
+
+**In:** a §0 environment-check bullet in `skills/cairn-init/SKILL.md` driven by a new stdlib script `scripts/cairn_ci_paths.py` (`--report` / `--apply`), the script's tests and fixtures, one git-model bullet plus a five-word pointer in the wait rule's no-checks clause in `skills/shared/tracking-rules.md`, hand-run prose guards for the two prose sites, a D-entry annotating D-128, and a CHANGELOG entry.
+
+**Out:** editing `pull_request` triggers (their filter reads the whole PR diff, so the ignore cannot help there — stated, never applied); any YAML shape outside the three recognized ones (refused with a reason; the operator edits by hand); required-check handling under branch protection (the bullet warns; the existing Branch-protection compatibility candidate row keeps the remainder); reporting CI-run waste at `/milestone`'s health audit (dropped at the plan gate — the note fires where CI is set up, not at every audit).
+
+## Acceptance criteria
+
+- [ ] AC1: `skills/cairn-init/SKILL.md` §0 carries an environment-check bullet that runs `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_ci_paths.py" --report` when `.github/workflows/` exists and is silent otherwise; when the report names a workflow file with a `push` or `pull_request` trigger, the bullet (a) reports that cairn's tracking-only commits — phase-boundary checkpoints and review-side records — reach the remote on every branch push and start the push-triggered workflows whose `branches` filter admits the branch, (b) states that a `pull_request` trigger's filter reads the whole PR diff, so ignoring `cairn/**` skips a tracking-only push only for `push` triggers, (c) states that under branch protection requiring a check, a path-skipped run leaves that check pending and blocks the merge, and (d) offers the `--apply` run — only for files the report marks `applicable` — as an option in §0's confirmation round where one is posed, else as its own single approve/decline chip, the decline writing nothing; the bullet sits in §0, which the scaffold and repair paths both enter.
+- [ ] AC2: `scripts/cairn_ci_paths.py [ROOT] --report` (ROOT defaults to the working directory; arguments read from `sys.argv`, imports within `scripts/tests/test_scripts.py`'s stdlib whitelist) prints, for each `*.yml` and `*.yaml` file directly under `.github/workflows/`, one of three verdicts — the triggers among `push` and `pull_request` its `on:` names, with per-trigger presence of `branches`/`branches-ignore`, `paths`, `paths-ignore`, and a `cairn/**` entry; `no push or pull_request trigger`; or `unrecognized`, for a file its parser cannot place — followed by `applicable` or `would refuse: <reason>` drawn from the same shape check `--apply` uses. `--apply` adds a `- 'cairn/**'` item under the `push` trigger's `paths-ignore` — creating the key as a block sequence, appending to an existing block-sequence one, rewriting an unquoted scalar `on: push` or unquoted flow list `on: [push, …]` into block-map form, and preserving the file's line endings — for exactly three recognized `on:` shapes (unquoted scalar, unquoted flow list, unquoted block map whose `push:` key holds a block mapping or nothing); it never edits a `pull_request` trigger; and it refuses everything else, naming the file and the reason and leaving the file byte-identical — named refusals: a `push` trigger carrying `paths`, one already ignoring `cairn/**`, a flow-list `paths-ignore`, a `push: {}` or other flow-mapping trigger value, a quoted `"on":` or `'on':` key, a comment on the `on:` line or inside the `on:` block, and an `unrecognized` file.
+- [ ] AC3: `scripts/tests/test_ci_paths.py` runs `--apply` against one fixture per recognized shape — the block-map shape additionally with a bare `push:`, with `branches:` present, with an existing block-sequence `paths-ignore`, with a `pull_request:` trigger carrying its own `paths-ignore`, and with CRLF endings — and one per named refusal, asserting each applied output byte-equal to its expected fixture and each refused input byte-identical; for block-map fixtures a unified diff of input against output contains added lines only, and for the scalar and flow-list fixtures only the `on:` region differs; and when PyYAML is importable each expected fixture parses (the `on` key read as `True` or `"on"`) to `cairn/**` present under `push` → `paths-ignore`, the trigger set unchanged, and for block-map fixtures the `pull_request` value equal to the input's (the assertion is skipped, and says so, when PyYAML is absent).
+- [ ] AC4: tracking-rules' "Git and approval model" carries one bullet stating that a push of a milestone or hotfix branch starts the push-triggered workflows whose `branches` filter admits it, tracking-only commits included; that a `paths-ignore` of `cairn/**` skips such a push for `push` triggers and not for `pull_request` triggers, whose filter reads the whole PR diff; and that where the workflows are push-triggered and ignore `cairn/**`, a tracking-only head commit carries no check run and is the wait rule's no-checks case — the last CI-covered commit then being the last code-bearing one — unless branch protection requires that check, where the path-skipped run leaves it pending and the merge blocked; the bullet defers mergeability to the wait clause, and the wait rule's no-checks clause gains the words "(one source: the git model's `cairn/**` bullet)".
+- [ ] AC5: `git grep -n -e "paths-ignore" -e 'cairn/\*\*' -- skills scripts hooks README.md CHANGELOG.md` returns lines only in the AC1 bullet, the AC4 bullet and clause, `scripts/cairn_ci_paths.py`, `scripts/tests/test_ci_paths.py` and its fixture directory, and `CHANGELOG.md`'s entry for this milestone; the `skills/tests` prose guard pinning AC1 and AC4 and its `test_mutation_harness.py` registration spell either token by concatenation.
+- [ ] AC6: from the repo root, `python3 -m unittest discover -s scripts/tests` exits 0 with a reported "Ran N tests" count above 334, `python3 -m unittest discover -s hooks/tests` exits 0 reporting 126, and the hand-run `python3 -m unittest discover -s skills/tests` exits 0 with a count above 626.
+
+## Coverage
+
+- AC1 → T3, T5
+- AC2 → T1
+- AC3 → T2
+- AC4 → T4, T5
+- AC5 → T5, T7
+- AC6 → T7
+
+## Tasks
+
+- [ ] T1: Write `scripts/cairn_ci_paths.py` — `sys.argv` handling (`[ROOT] --report|--apply`), a line-based reader for the three `on:` shapes that yields per-file verdicts and the refusal reasons AC2 names (refusal is the default for anything not exactly matched), a writer that preserves line endings and rewrites scalar/flow-list `on:` into block-map form; register it in `cairn_scripts` conventions (exit 0 on success, 2 outside a repo root) like `scripts/cairn_next.py:1-11`.
+- [ ] T2: Write `scripts/tests/test_ci_paths.py` with a fixture directory: input/expected pairs for the scalar, flow-list, and block-map shapes (block map also bare `push:`, with `branches:`, with existing `paths-ignore`, with a filtered `pull_request:`, and CRLF), one input per named refusal, the diff assertions per shape, and the PyYAML semantic assertion with its stated skip.
+- [ ] T3: Add the §0 environment-check bullet to `skills/cairn-init/SKILL.md` after the existing environment-check gaps (`skills/cairn-init/SKILL.md:25-42`): the probe command, the silent branch, clauses (a)–(d), and the chip wording per the question-gate rules — the apply option lists the `applicable` files it will edit and its decline writes nothing.
+- [ ] T4: Add the git-model bullet to `skills/shared/tracking-rules.md` beside "never merge red or pending CI" (`skills/shared/tracking-rules.md:224-225`) and the five-word pointer to the no-checks clause (`:253-255`), deferring mergeability to the wait clause.
+- [ ] T5: Write `skills/tests/test_ci_paths_note.py` pinning one phrase per AC1 clause and per AC4 claim on one physical line each (M148: reword new prose, never a pinned neighbour), register each in `test_mutation_harness.py`, and spell `paths-ignore` and `cairn/**` by concatenation in both files (M169).
+- [ ] T6: Append the D-entry annotating D-128 (the no-checks case gains a named source; `cairn-init` suggests and applies under a chip, never silently; three shapes recognized, all else refused), cross-referencing the Branch-protection compatibility candidate row for the required-check remainder; add the CHANGELOG Unreleased entry.
+- [ ] T7: Run both gating suites and the hand-run `skills/tests` from the repo root checking each exit code and reported count (AC6); run the AC5 grep and disposition every hit; sweep README and `skills/shared/templates/` for any restatement of the recommendation (M112).
+
+## Work log
+
+- 2026-09-03: created by /milestone-plan from a session question (quarto-index reviews appeared to end before CI was green; the transcripts showed the merge gate waited correctly and the runs in flight were implement's checkpoint pushes). Criteria audit ran in full mode, three rounds ([O] readers): round 1 eight findings (an unconditional rulebook claim false for `pull_request` triggers, a dead `templates` pathspec, a pointer with no referent, an unnamed probe, a fresh/repair wording conflict, guards presupposed by no criterion, an instrument-only AC), round 2 ten (the diff assertion contradicted the scalar/flow-list rewrite, a false universal ignoring `branches:` filters, the branch-protection carve-out missing from the rulebook bullet, an under-enumerated refusal arm, an unspecified ROOT/append interface, two wrong count ratchets, a whitelist gap, a dripped chip, a proxy for the start-on-push claim), round 3 seven (PyYAML's `on`→`True` key, an ill-typed `pull_request` comparison, no bare-`push:` fixture, no positive `pull_request` probe, `argparse` outside the scripts import whitelist, a report that could not predict a refusal, mergeability stated twice under a single-source label) — every finding fixed in the criteria; the guard round 2 asked AC1 to mandate went to T5 instead (an instrument property).
+- 2026-09-03: plan gate chose a §0 environment-check bullet over a close-block-only mention because a repair run or a repo adding CI after adoption would never see the close block; falsified by an adopter reporting the §0 bullet fired on a repo with no push/pull_request workflow, or missed one that had.
+- 2026-09-03: plan gate chose a chip-applied edit over suggest-only (user choice: "2 would be good if we can make it work") because the edit is mechanical for the three common `on:` shapes and the operator approves it per file; falsified by an applied edit changing a workflow's semantics beyond the added ignore (the AC3 PyYAML assertion is the probe).
+- 2026-09-03: plan gate chose the full fact in the rulebook's git model over the merge-gate interaction alone because a repo that adds CI after adoption meets the fact only there; falsified by a `cairn_cost` reading attributing a material share of session tokens to the always-read bullet.
+
+## Decisions
+
+## Review
