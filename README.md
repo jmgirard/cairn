@@ -291,6 +291,9 @@ about where the guardrails actually reach.
   becomes a triage item. `/milestone-plan`'s collision check also reads
   both open inboxes and offers a disposition only for an item overlapping
   the scope being planned.
+  Both approval gates read the PR's own conversation — review threads
+  and comments, human or bot — before the merge chip, so nothing is
+  merged past unread.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
   plan gate offers one option to post `Queued as M<NNN>: <title>` on each
