@@ -1,6 +1,6 @@
 # M178: cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore`
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -45,7 +45,7 @@ An adopter learns at `/cairn-init` that cairn's tracking-only commits start the 
 - [x] T4: Add the git-model bullet to `skills/shared/tracking-rules.md` beside "never merge red or pending CI" (`skills/shared/tracking-rules.md:224-225`) and the five-word pointer to the no-checks clause (`:253-255`), deferring mergeability to the wait clause.
 - [x] T5: Write `skills/tests/test_ci_paths_note.py` pinning one phrase per AC1 clause and per AC4 claim on one physical line each (M148: reword new prose, never a pinned neighbour), register each in `test_mutation_harness.py`, and spell `paths-ignore` and `cairn/**` by concatenation in both files (M169).
 - [x] T6: Append the D-entry annotating D-128 (the no-checks case gains a named source; `cairn-init` suggests and applies under a chip, never silently; three shapes recognized, all else refused), cross-referencing the Branch-protection compatibility candidate row for the required-check remainder; add the CHANGELOG Unreleased entry.
-- [ ] T7: Run both gating suites and the hand-run `skills/tests` from the repo root checking each exit code and reported count (AC6); run the AC5 grep and disposition every hit; sweep README and `skills/shared/templates/` for any restatement of the recommendation (M112).
+- [x] T7: Run both gating suites and the hand-run `skills/tests` from the repo root checking each exit code and reported count (AC6); run the AC5 grep and disposition every hit; sweep README and `skills/shared/templates/` for any restatement of the recommendation (M112).
 
 ## Work log
 
@@ -59,6 +59,7 @@ An adopter learns at `/cairn-init` that cairn's tracking-only commits start the 
 - 2026-09-03: T4 done — git-model bullet "A branch push starts CI, tracking-only commits included" beside the never-merge-red line; no-checks clause gains "(one source: the git model's `cairn/**` bullet)".
 - 2026-09-03: T5 done — `skills/tests/test_ci_paths_note.py` (16 pins, one per AC1 clause / AC4 claim, each on one physical line) registered in `test_mutation_harness.py`, tokens spelled by concatenation in both; hand-run skills/tests 642 green.
 - 2026-09-03: T6 done — D-133 appended (annotates D-128; three shapes, chip-applied, remainder to the Branch-protection candidate row); CHANGELOG Unreleased entry added.
+- 2026-09-03: T7 done — from the repo root: scripts/tests exit 0 Ran 355, hooks/tests exit 0 Ran 126, hand-run skills/tests exit 0 Ran 642; AC5 grep hits only the §0 bullet, the git-model bullet and no-checks clause, the script, its tests and fixtures, and the CHANGELOG entry; README and templates sweep found no restatement; cairn_validate all checks passed. Status → review.
 
 ## Decisions
 
