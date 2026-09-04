@@ -301,13 +301,15 @@ class Workflow:
         rest = m.group("rest").strip()
         if rest.startswith("["):
             return ENTRY in [_strip_quotes(x) for x in rest.strip("[]").split(",")]
+        # items may sit deeper than the key or at its own indent (a legal,
+        # common style); the sequence ends at the first line that is neither
         for k, l in entry["value"]:
             if k <= key_line:
                 continue
-            if _indent(l) <= _indent(self.lines[key_line]):
-                break
             s = _SEQ_ITEM.match(l)
-            if s and _strip_quotes(s.group("value")) == ENTRY:
+            if not s or _indent(l) < _indent(self.lines[key_line]):
+                break
+            if _strip_quotes(s.group("value")) == ENTRY:
                 return True
         return False
 
@@ -336,12 +338,16 @@ class Workflow:
         if not entry["value"]:
             return None
         child_indent = _indent(entry["value"][0][1])
+        seen_key = False
         for k, l in entry["value"]:
             if _indent(l) != child_indent:
                 continue
             m = _MAP_KEY.match(l)
             if not m:
+                if seen_key and _SEQ_ITEM.match(l):
+                    continue  # an item of the preceding key, at the key's own indent
                 return "unrecognized: `push:` child is not a mapping key"
+            seen_key = True
             key, rest = m.group("key"), m.group("rest").strip()
             if key == "paths":
                 return "`push:` already carries `paths`"

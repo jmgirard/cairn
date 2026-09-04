@@ -33,12 +33,14 @@ REPORT = FIXTURES / "report"
 BLOCK_SHAPES = [
     "block_map", "block_bare_push", "block_branches",
     "block_existing_ignore", "block_pr_filtered", "block_crlf",
+    "block_flush_ignore",
 ]
 REWRITE_SHAPES = ["scalar", "flow_list"]
 
 REFUSALS = {
     "push_paths": "already carries `paths`",
     "already_ignored": "already ignores `cairn/**`",
+    "already_ignored_flush": "already ignores `cairn/**`",
     "flow_paths_ignore": "`paths-ignore` is a flow list",
     "push_flow_mapping": "holds a flow mapping",
     "push_flow_mapping_filled": "holds a flow mapping",
@@ -294,6 +296,16 @@ class TestReport(unittest.TestCase):
         self.assertIn(": push (no filters), pull_request (no filters) — would refuse:", line)
         line = self._report(REFUSE / "push_flow_sequence.yml")
         self.assertIn(": push (no filters) — would refuse: `push:` holds a flow sequence", line)
+
+    def test_flush_left_ignore_items_are_scanned(self):
+        # M178 round-2 finding 1: items at the `paths-ignore` key's own indent
+        line = self._report(REFUSE / "already_ignored_flush.yml")
+        self.assertIn("push (paths-ignore, cairn/**)", line)
+        self.assertIn("would refuse: `push:` already ignores `cairn/**`", line)
+        self.assertNotIn("unrecognized", line)
+        line = self._report(APPLY / "block_flush_ignore.in.yml")
+        self.assertIn("push (branches, paths-ignore), pull_request (no filters)", line)
+        self.assertIn("applicable", line)
 
     def test_verdict_for_a_file_with_neither_trigger(self):
         with tempfile.TemporaryDirectory() as d:

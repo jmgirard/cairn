@@ -1,6 +1,6 @@
 # M178: cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore`
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -49,7 +49,7 @@ An adopter learns at `/cairn-init` that cairn's tracking-only commits start the 
 
 - [x] T8: Report verdicts survive an apply-time refusal — `scripts/cairn_ci_paths.py` places a block-map file whose `on:` block or `on:` line carries a comment (comment text stripped for placement; the refusal kept for `--apply`), reads filter presence from a `push:`/`pull_request:` flow-mapping value, and names a block-map `push: [..]` value as a flow sequence rather than a scalar; `scripts/tests/test_ci_paths.py` gains a report fixture per case asserting the trigger verdict beside the refusal, and the two comment refusal fixtures assert their trigger verdict (review findings 1, 2, 3, 9).
 - [x] T9: D-133's "the operator approves it per file" reads as approval of the listed set the chip names, matching AC1(d) and the shipped chip; DESIGN.md's `cairn_ci_paths` line wrapped to the file's column width (review findings 5, 8).
-- [ ] T10: `_has_entry` in `scripts/cairn_ci_paths.py` scans block-sequence items at the `paths-ignore` key's own indent as well as deeper ones, so a file ignoring `cairn/**` in that style reports the `cairn/**` flag and refuses as "already ignoring", and one not yet ignoring it in that style is `applicable` and appended in the file's own item indent; `scripts/tests/test_ci_paths.py` gains an apply pair and a refusal fixture in the flush-left style, the refusal asserting the `cairn/**` flag and the named reason (round-2 finding 1).
+- [x] T10: `_has_entry` in `scripts/cairn_ci_paths.py` scans block-sequence items at the `paths-ignore` key's own indent as well as deeper ones, so a file ignoring `cairn/**` in that style reports the `cairn/**` flag and refuses as "already ignoring", and one not yet ignoring it in that style is `applicable` and appended in the file's own item indent; `scripts/tests/test_ci_paths.py` gains an apply pair and a refusal fixture in the flush-left style, the refusal asserting the `cairn/**` flag and the named reason (round-2 finding 1).
 
 ## Work log
 
@@ -71,6 +71,7 @@ An adopter learns at `/cairn-init` that cairn's tracking-only commits start the 
 - 2026-09-03: T9 done — D-133's suggest-only rejection now reads "the operator approves the set of files the chip names — AC1(d)'s one approve/decline, not a per-file selector" (edited in place: the entry is unmerged branch work of this milestone, not a landed record); DESIGN.md `scripts/` layer sentence rewrapped, no line over 100 columns. Suites 358 + 126, hand-run 642, validate all checks passed. Status → review (return 1 repaired).
 - 2026-09-03: re-review — AC1–AC6 re-evidenced (AC2 ticked after the return-1 repair), gate green; three-lens review spawned, findings pending triage.
 - 2026-09-03: review round 2 — defect return 2 of M178 (return floor): finding 1 demonstrates AC2's verdict arm failing — block-sequence items at the `paths-ignore` key's own indent are never scanned, so a file ignoring `cairn/**` in that style reports no `cairn/**` flag and an `unrecognized` reason (reproduced on `paths-ignore:` + `- cairn/**` at the same column). Same criterion, same shape as return 1 (the line reader missing a legal YAML form); `/milestone-brief` escalation offered at the gate, user chose the fix. Round-2 findings 2, 3, 5 rejected, 4 fixed on branch. Status → in-progress; T10 added, AC2 unticked.
+- 2026-09-03: T10 done — `_has_entry` ends the sequence at the first line that is not a block-sequence item at or deeper than the `paths-ignore` key's indent, and `_shape_check` passes a flush-left item that follows a `push:` child key; `apply/block_flush_ignore` pair and `refuse/already_ignored_flush.yml` added (6 tests red before the fix, `test_flush_left_ignore_items_are_scanned` asserts the `cairn/**` flag beside the named reason); round-2 finding 1's repro now reports `push (paths-ignore, cairn/**) — would refuse: `push:` already ignores `cairn/**`` and the not-yet-ignoring form is appended at the file's own item indent. Suites 359 + 126, hand-run 642, validate all checks passed. Status → review (return 2 repaired).
 
 ## Decisions
 
