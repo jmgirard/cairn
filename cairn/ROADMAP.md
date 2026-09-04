@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-03 (M176 done, PR #182 squash-merged — re-audit record line; "The amendment-time audit surface records nothing" candidate graduated; M171 row pruned to retention; validate green; budgets ok — ROADMAP `wc -l -c` 38/9903 under 60/24000, LESSONS 49/15885 under 50/20000; records-hygiene 54/3187 under 55/4000, migration-protocol 188/12250 under 200/14000, validation-doctrine 99/6480 under 115/8000; gating suites 334+126 green, hand-run skills/tests 604 green.)_
+_Last hygiene check: 2026-09-03 (M177 done, PR #183 squash-merged — both approval gates read the PR conversation; M172 row pruned to retention; validate green; budgets ok — ROADMAP `wc -l -c` 38/9847 under 60/24000, LESSONS 49/15885 under 50/20000; records-hygiene 54/3187 under 55/4000, migration-protocol 188/12250 under 200/14000, validation-doctrine 99/6480 under 115/8000; gating suites 334+126 green, hand-run skills/tests 624 green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M177 | An approval gate reads the PR's own conversation | review | — | normal | milestones/M177-pr-conversation-gate.md |
+| M177 | An approval gate reads the PR's own conversation | done | — | normal | milestones/archive/M177-pr-conversation-gate.md |
 | M176 | The amendment-time re-audit records a work-log line | done | — | normal | milestones/archive/M176-reaudit-record.md |
 | M175 | The surface tier is a milestone header slot | done | — | normal | milestones/archive/M175-surface-tier-slot.md |
 | M174 | A merged hotfix or adopted PR is verified to the hotfix bar post-hoc | done | — | normal | milestones/archive/M174-post-hoc-hotfix-bar.md |
 | M173 | A whole-list triage pass over candidates and Known issues | done | — | normal | milestones/archive/M173-candidate-triage.md |
-| M172 | A merged or stopped review milestone resumes at the right step | done | — | normal | milestones/archive/M172-resume-routing.md |
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
