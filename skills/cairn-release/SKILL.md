@@ -6,6 +6,13 @@ argument-hint: "[patch | minor | major]"
 
 # /cairn-release — release walk (profile-driven)
 
+Plugin root: every `${CLAUDE_PLUGIN_ROOT}` path below is under the plugin
+install directory. When the shell has that variable unset or empty — the
+symlink install in `~/.claude/skills` leaves it so — substitute the
+grandparent of this skill's directory (the `Base directory for this skill:`
+line the harness prints above) in every read and command below; never run a
+command with the variable empty.
+
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first. This skill
 prepares a release and hands any outward action to the user — **it never
 self-submits** (no registry submission, no tag push without approval). The
