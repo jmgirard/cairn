@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M177: An approval gate reads the PR's own conversation
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP1, IP2, IP3   <!-- owner: plan · create/amend-via-gate; worked under, none changed -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — skill conduct shipped to every adopting repo's approval gates   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m177-pr-conversation-gate   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -64,7 +64,7 @@ read; Copilot auto-review enablement on any repo — a repo setting, not cairn's
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Prose guards first — new `skills/tests/test_pr_conversation_gate.py` pinning AC1–AC4's clauses (the three paginated read commands, the any-author clause, the four dispositions, the changes-requested blocking rule and its override option, the hotfix cross-reference, the audit count) with whitespace collapsed on read (M171 lesson) and one mutation entry per pinned clause in `skills/tests/test_mutation_harness.py`, each of the three files planted alone; run red before T2 (D-109: hand-run, gating nothing).
+- [x] T1: Prose guards first — new `skills/tests/test_pr_conversation_gate.py` pinning AC1–AC4's clauses (the three paginated read commands, the any-author clause, the four dispositions, the changes-requested blocking rule and its override option, the hotfix cross-reference, the audit count) with whitespace collapsed on read (M171 lesson) and one mutation entry per pinned clause in `skills/tests/test_mutation_harness.py`, each of the three files planted alone; run red before T2 (D-109: hand-run, gating nothing).
 - [ ] T2: Edit `skills/milestone-review/SKILL.md` step 7 (~line 325): the read, its presentation, the triage with each disposition logged in the Review section, the blocking rule (replacing "the recommended option merges" at ~line 347) and the override option, whose selection appends the work-log line `override: merged past changes-requested review by <login> on PR #<N>`; resume route (c) (~line 47) re-runs the read when it re-poses the chip. Leave the step-5 lens paragraph (~lines 222–247) untouched.
 - [ ] T3: Edit `skills/hotfix/SKILL.md` step 6 (~line 155): cross-reference the step-7 rule, state the chat-triage difference and that an adopted PR's contributor comments are in scope.
 - [ ] T4: Edit `skills/milestone/SKILL.md`'s `review`-with-open-PR bullet (~line 124): add the count and states read; keep the no-write clause.
@@ -80,6 +80,8 @@ read; Copilot auto-review enablement on any repo — a repo setting, not cairn's
 - 2026-09-03: plan gate chose any-author reading over humans-only because the triggering case was bot-authored; falsified by gates where every bot item is triaged noted or rejected and no fix follows, repeatedly.
 - 2026-09-03: plan gate chose block-with-stated-override over advisory-only because a person's objection should not be merged past by default; falsified by override lines becoming routine on consecutive milestones.
 - 2026-09-03: criteria audit ran in full mode ([O] fresh reader): 11 findings — pagination added to AC1's three reads; the empty-read line, disposition-logging, override log line, and chat-logging clauses moved from AC1/AC2/AC3 to T2/T3 as instrument properties (D-120); fix-now re-run ambiguity closed in AC1; bot authorship pinned to the `type` field in AC2; AC5 recut from a diff-hunk check to whitespace-collapsed paragraph equality across refs; AC1 states the gate read is unconditional beside the lens's probe gate; the guard-with-planted-removal became AC7's first clause; the "amend tracking-rules" finding was declined — the "recommended option merges" wording lives only in review step 7 (T2), the rulebook's gate clause fixes approve/decline shape only; the missing-trigger finding was already met by Scope (the reader saw the criteria alone).
+
+- 2026-09-03: T1 — `skills/tests/test_pr_conversation_gate.py` (20 asserts over AC1–AC4 and AC6, whitespace-collapsed reads) and 20 M177 mutation entries; run red before T2: guard 6 failures + 14 errors, harness 20 locators found 0 times.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
