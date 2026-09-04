@@ -1971,6 +1971,7 @@ REGISTRY = [
 # completeness check (below) treats these as covered.
 EXEMPT = {
     "test_mutation_harness": "the harness's own tests, not a prose-guard",
+    "test_plugin_root_fallback": "hotfix 2026-09-03: a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109)",
     # M146, 2026-08-16: these six files' registrations died with the rulebook reduction —
     # every pinned block was deliberately reworded or retired. Their surviving
     # asserts pin current text; re-registration is deferred until adopter

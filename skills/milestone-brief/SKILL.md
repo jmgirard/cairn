@@ -6,6 +6,13 @@ argument-hint: "<id> <topic>"
 
 # /milestone-brief <id> <topic> — Fable escalation (RB → RR)
 
+Plugin root: every `${CLAUDE_PLUGIN_ROOT}` path below is under the plugin
+install directory. When the shell has that variable unset or empty — the
+symlink install in `~/.claude/skills` leaves it so — substitute the
+grandparent of this skill's directory (the `Base directory for this skill:`
+line the harness prints above) in every read and command below; never run a
+command with the variable empty.
+
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it.
 Phase header: `# Review brief RB<NN>` → `## Draft` / `## Gate` / `## Ingest`.

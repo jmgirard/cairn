@@ -6,6 +6,13 @@ argument-hint: ""
 
 # /cairn-init — scaffold, repair, or migrate
 
+Plugin root: every `${CLAUDE_PLUGIN_ROOT}` path below is under the plugin
+install directory. When the shell has that variable unset or empty — the
+symlink install in `~/.claude/skills` leaves it so — substitute the
+grandparent of this skill's directory (the `Base directory for this skill:`
+line the harness prints above) in every read and command below; never run a
+command with the variable empty.
+
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first.
 Idempotent: safe to re-run any time; re-runs report and repair missing or
 damaged pieces and **never overwrite user content without asking**.

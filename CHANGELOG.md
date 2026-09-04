@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **Skills work under the symlink install.** Each skill now says how to
+  find the plugin directory when the shell leaves `CLAUDE_PLUGIN_ROOT`
+  unset (the symlink install in `~/.claude/skills` does): it falls back to
+  the skill's own base directory, so the rulebook reads and the
+  `scripts/` commands no longer resolve against `/scripts/…`.
 - **The amendment-time re-audit leaves a line a resumed session can read.**
   When `/milestone-implement` re-audits amended acceptance-criterion
   wording, it now writes one work-log line per criterion in a fixed shape
