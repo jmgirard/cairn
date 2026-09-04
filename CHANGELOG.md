@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- **`/cairn-init` says that tracking-only pushes start CI, and offers the
+  ignore.** When a repo has `.github/workflows/`, §0 runs
+  `scripts/cairn_ci_paths.py --report` and reports that cairn's
+  tracking-only commits (checkpoints, review records) reach the remote on
+  every branch push and start the push-triggered workflows whose
+  `branches` filter admits the branch; that a `pull_request` trigger reads
+  the whole PR diff, so ignoring `cairn/**` helps `push` triggers only; and
+  that a required check under branch protection stays pending on a
+  path-skipped run. Under a chip it offers `--apply`, which adds
+  `- 'cairn/**'` to the `push` trigger's `paths-ignore` for three
+  recognized `on:` shapes (unquoted scalar, unquoted flow list, unquoted
+  block map whose `push:` holds a block mapping or nothing) and refuses
+  every other shape by name, leaving the file untouched. The rulebook's git model states the same fact, and the wait
+  rule's no-checks clause names it as one source.
 - **Skills work under the symlink install.** Each skill now says how to
   find the plugin directory when the shell leaves `CLAUDE_PLUGIN_ROOT`
   unset (the symlink install in `~/.claude/skills` does): it falls back to

@@ -222,6 +222,14 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   and re-run tests before continuing or reviewing.
 - **Nothing reaches the default branch without the user's explicit approval at the review gate.** Never force-push (the
   force_push_guard hook denies it on the default branch); never merge red or pending CI.
+- **A branch push starts CI, tracking-only commits included.** A push of a milestone or hotfix branch starts the
+  push-triggered workflows whose `branches` filter admits it, phase-boundary checkpoints and review-side records
+  included. A `paths-ignore` of `cairn/**` skips such a push for `push` triggers and not for `pull_request` triggers,
+  whose filter reads the whole PR diff. Where the workflows are push-triggered and ignore `cairn/**`, a tracking-only
+  head commit carries no check run — the wait rule's no-checks case, the last CI-covered commit then being the last
+  code-bearing one — unless branch protection requires that check, where the path-skipped run leaves it pending and
+  the merge blocked; mergeability is the wait clause's to state. `/cairn-init` §0 reports the fact and offers the
+  ignore under a chip (`scripts/cairn_ci_paths.py`).
 - Approval is recorded on disk: the approving skill writes the single-use, gitignored marker `cairn/.merge-approved` at
   the gate — never except at an explicit user approval; the merge-guard hook denies `gh pr merge`/`git merge` to the
   default branch without it and consumes it per attempt (a failed attempt's marker is restored). The marker names the PR
@@ -252,7 +260,8 @@ of events (each check as it lands), always with `timeout_ms` set — it is kille
 one line, `TaskStop` a moved task, and stop with a close block whose fenced next command is the invoking skill's own
 command (`/milestone-review M<NNN>`, `/hotfix`, `/cairn-release`) — the resume door. **No checks** (`gh pr checks`
 prints "no checks reported" and exits 1 at once, `--watch` included): the PR is mergeable on local green where the
-profile's consistency-gate says so; never wait for a check that will not arrive.
+profile's consistency-gate says so (one source: the git model's `cairn/**` bullet); never wait for a check that will
+not arrive.
 **Stop points**: no watcher is left armed at a commit, a turn end, or a `/clear` point — a background task ends only at
 completion or `TaskStop`, a Monitor at those or its own `timeout_ms`, and no doc states that `/clear` stops either (a
 closed issue reports survival), so the session stops it with `TaskStop` first. A `/loop` or scheduled task is not a

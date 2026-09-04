@@ -40,6 +40,28 @@ Chapter markers: mark a chapter at each phase transition — each phase its
   - no git remote → local-only mode: PR flows degrade to local branch
     merges and push steps no-op; recommend adding a remote before the
     first milestone.
+- **CI runs on tracking-only pushes (M178).** When `.github/workflows/`
+  exists, run
+  `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_ci_paths.py" --report`;
+  when it does not, this bullet is silent. When the report names a workflow
+  file with a `push` or `pull_request` trigger, say in plain words:
+  (a) cairn's tracking-only commits — phase-boundary checkpoints and
+  review-side records — reach the remote on every branch push and start the
+  push-triggered workflows whose `branches` filter admits the branch;
+  (b) a `pull_request` trigger's filter reads the whole PR diff, so ignoring
+  `cairn/**` skips a tracking-only push only for `push` triggers;
+  (c) under branch protection requiring a check, a path-skipped run leaves
+  that check pending and blocks the merge (the Branch-protection
+  compatibility candidate keeps that remainder). Then offer the edit:
+  `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_ci_paths.py" --apply`, which
+  adds `- 'cairn/**'` under each `push` trigger's `paths-ignore` — offered
+  only for the files the report marks `applicable`, the option naming each
+  file it will edit; a `would refuse:` file is left to the operator with the
+  report's reason. Pose it as an option in §0's confirmation round where one
+  is posed (the profile confirmation, the disambiguation or project-type
+  chip), else as its own single approve/decline chip; the decline writes
+  nothing. This bullet sits in §0, so the scaffold and repair paths both
+  enter it.
 - **Default branch.** Detect the repo's default branch per the canonical
   recipe in the tracking-rules git model: `git symbolic-ref --short
   refs/remotes/origin/HEAD` (strip the `origin/` prefix); if that fails but a

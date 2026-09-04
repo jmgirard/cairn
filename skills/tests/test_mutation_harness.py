@@ -1965,6 +1965,107 @@ REGISTRY = [
         target="skills/shared/profiles/r-package.md",
         block="Do not restate NEWS",
     ),
+    # M178: cairn-init's §0 CI bullet (AC1) and the rulebook's git-model
+    # bullet plus the no-checks pointer (AC4) — one entry per pinned phrase,
+    # each on one physical line of its target (M148). The ignore's two tokens
+    # are spelled by concatenation so the AC5 grep finds them only where they
+    # are shipped (M169).
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestInitBulletRunsTheProbe.test_the_bullet_sits_in_section_zero",
+        target="skills/cairn-init/SKILL.md",
+        block="CI runs on tracking-only pushes",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestInitBulletRunsTheProbe.test_the_bullet_runs_the_report_probe",
+        target="skills/cairn-init/SKILL.md",
+        block='python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_ci_paths.py" --report',
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestInitBulletRunsTheProbe.test_the_bullet_is_silent_without_workflows",
+        target="skills/cairn-init/SKILL.md",
+        block="when it does not, this bullet is silent",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestInitBulletStatesTheFact.test_clause_a_tracking_only_pushes_start_ci",
+        target="skills/cairn-init/SKILL.md",
+        block="reach the remote on every branch push",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestInitBulletStatesTheFact.test_clause_b_pull_request_triggers_are_not_helped",
+        target="skills/cairn-init/SKILL.md",
+        block="skips a tracking-only push only for `push` triggers",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestInitBulletStatesTheFact.test_clause_c_branch_protection_blocks",
+        target="skills/cairn-init/SKILL.md",
+        block="that check pending and blocks the merge",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestInitBulletOffersTheApply.test_the_apply_is_offered_for_applicable_files_only",
+        target="skills/cairn-init/SKILL.md",
+        block="only for the files the report marks `applicable`",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestInitBulletOffersTheApply.test_the_apply_rides_the_confirmation_round_or_its_own_chip",
+        target="skills/cairn-init/SKILL.md",
+        block="else as its own single approve/decline chip",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestInitBulletOffersTheApply.test_the_apply_names_the_ignore_it_adds",
+        target="skills/cairn-init/SKILL.md",
+        block="adds `- '" + "cairn/" + "**" + "'` under each `push` trigger's `" + "paths-" + "ignore" + "`",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestRulebookGitModelBullet.test_a_branch_push_starts_admitted_workflows",
+        target=RULES,
+        block="push-triggered workflows whose `branches` filter admits it",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestRulebookGitModelBullet.test_the_ignore_helps_push_triggers_only",
+        target=RULES,
+        block="skips such a push for `push` triggers and not for `pull_request` triggers",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestRulebookGitModelBullet.test_a_pull_request_filter_reads_the_whole_diff",
+        target=RULES,
+        block="whose filter reads the whole PR diff",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestRulebookGitModelBullet.test_a_tracking_only_head_is_the_no_checks_case",
+        target=RULES,
+        block="head commit carries no check run — the wait rule's no-checks case",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestRulebookGitModelBullet.test_branch_protection_is_the_carve_out",
+        target=RULES,
+        block="unless branch protection requires that check",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestRulebookGitModelBullet.test_mergeability_is_deferred_to_the_wait_clause",
+        target=RULES,
+        block="mergeability is the wait clause's to state",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestRulebookGitModelBullet.test_the_no_checks_clause_points_at_the_bullet",
+        target=RULES,
+        block="(one source: the git model's `" + "cairn/" + "**" + "` bullet)",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
