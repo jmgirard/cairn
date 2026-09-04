@@ -68,7 +68,7 @@ read; Copilot auto-review enablement on any repo — a repo setting, not cairn's
 - [x] T2: Edit `skills/milestone-review/SKILL.md` step 7 (~line 325): the read, its presentation, the triage with each disposition logged in the Review section, the blocking rule (replacing "the recommended option merges" at ~line 347) and the override option, whose selection appends the work-log line `override: merged past changes-requested review by <login> on PR #<N>`; resume route (c) (~line 47) re-runs the read when it re-poses the chip. Leave the step-5 lens paragraph (~lines 222–247) untouched.
 - [x] T3: Edit `skills/hotfix/SKILL.md` step 6 (~line 155): cross-reference the step-7 rule, state the chat-triage difference and that an adopted PR's contributor comments are in scope.
 - [x] T4: Edit `skills/milestone/SKILL.md`'s `review`-with-open-PR bullet (~line 124): add the count and states read; keep the no-write clause.
-- [ ] T5: README.md contributions bullet (~line 283): one sentence.
+- [x] T5: README.md contributions bullet (~line 283): one sentence.
 - [ ] T6: Run both gating suites and the hand-run `skills/tests`; confirm AC5 by extracting the paragraph from both refs (`git show <default>:skills/milestone-review/SKILL.md`), collapsing whitespace, and comparing; record results in the work log.
 
 ## Work log
@@ -85,6 +85,7 @@ read; Copilot auto-review enablement on any repo — a repo setting, not cairn's
 - 2026-09-03: T2 — review step 7 gains the PR-conversation read paragraph, the blocking rule with its override line, the chip sentence deferring to it; resume route (c) re-runs the read; lens paragraph untouched; 14 review-side guard asserts and locators green, gating suites green.
 - 2026-09-03: T3 — hotfix step 6 cross-references the step-7 read, triage, and blocking rule for authored and adopted PRs, dispositions stated in chat; 3 hotfix guard asserts and locators green.
 - 2026-09-03: T4 — audit's review-with-open-PR bullet reports the unresolved-thread count and pending review states beside CI, no-write clause kept; 2 audit guard asserts and locators green.
+- 2026-09-03: T5 — README contributions bullet gains one sentence naming both gates' conversation read; README guard assert and locator green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

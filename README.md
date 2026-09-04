@@ -286,6 +286,9 @@ about where the guardrails actually reach.
   contributor needs no plugin, no `cairn/` knowledge, and no special branch
   name. `/milestone`'s health audit enumerates both inboxes and proposes a
   disposition per item; an adopted PR comes in through `/hotfix`.
+  Both approval gates read the PR's own conversation — review threads
+  and comments, human or bot — before the merge chip, so nothing is
+  merged past unread.
   The audit also lists pull requests merged by others since the last
   hygiene stamp — it only reads, writing nothing to GitHub — and each one
   becomes a triage item. `/milestone-plan`'s collision check also reads
