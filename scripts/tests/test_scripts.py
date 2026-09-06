@@ -3299,6 +3299,33 @@ class TestValidateFailures(ScriptCase):
         self.assertEqual(proc.returncode, 0, proc.stdout)
 
 
+class TestCandidateCountPriorityToken(unittest.TestCase):
+    """M179/D-134: a candidate row may open with `[high]` or `[low]`; the
+    token is prose the count must see through — a tagged section counts the
+    same as the untagged one. The row count (3) is stated here, never derived
+    from the fixture (tracking-rules "Check discrimination")."""
+
+    ROWS = 3
+    TAGGED = (
+        "# Roadmap\n\n## Milestones\n\n- not a candidate\n\n"
+        "## Candidates\n\n"
+        "_Ordered high → normal → low._\n\n"
+        "- [high] Chip-applied ignore edit — added 2026-09-06 — M178\n"
+        "- Second-driver adoption pass — added 2026-08-29 — M163 plan\n"
+        "- [low] Reasoning-effort dial — added 2026-07-27 — M120 Out\n\n"
+        "## Later\n\n- not a candidate either\n"
+    )
+
+    def setUp(self):
+        self.cs = _load_scripts()
+
+    def test_tagged_and_untagged_sections_count_the_same(self):
+        untagged = self.TAGGED.replace("- [high] ", "- ").replace("- [low] ", "- ")
+        self.assertNotEqual(untagged, self.TAGGED)
+        self.assertEqual(self.cs.candidate_count(self.TAGGED), self.ROWS)
+        self.assertEqual(self.cs.candidate_count(untagged), self.ROWS)
+
+
 class TestMilestoneBodyLineCount(unittest.TestCase):
     """M55: the milestone weight cap measures the plan-owned body only — every
     line before the `## Review` heading — so review evidence never counts
