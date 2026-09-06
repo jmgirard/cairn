@@ -75,3 +75,12 @@ _Evidence gathered 2026-09-06 at branch head ab59b66 (PR #186), origin/main unmo
 - AC6 verified: at ab59b66 `python3 -m unittest discover -s scripts/tests` ran 349, OK, exit 0; `python3 -m unittest discover -s hooks/tests` ran 126, OK, exit 0. Hand-run `skills/tests` (non-gating, D-109): 654 ran, 1 failure — `test_lesson_graduation.test_partial_coverage_was_trimmed_not_deleted`, pre-existing on main since M178 hygiene pruned the `trimmed M98` lesson (noted at T1).
 - Driving RR: none — projection-vs-outcome no-ops.
 - Consistency gate: `cairn_validate.py` all checks passed, exit 0; DESIGN.md untouched (no principle changed, `cairn_impact` skipped); profile `generic` names no toolchain checks.
+- Independent review (user-facing tier, three lenses): [S] prior-review lens — no findings; archived `## Review` sections on the touched files (M173's byte-for-byte rule, D-027/D-035) are superseded by D-134 and the step-3 carve-out is disclosed, not silent; PR-comment probe empty, walk skipped. [S] blame-history lens — no conflicts; D-134's three gate rejections absent from the diff, ROADMAP rows byte-identical to main once tokens are stripped, guard asserts match the prose line-for-line. [O] diff-bug lens — all six criteria re-verified independently (suites 349/126 OK, validate green, `candidate_count` test seen red against a planted token-sensitive counter, 12 harness entries each matching once); eight findings, ranked, triaged at the gate below.
+- F1 (O, most severe): the ordering invariant has no writer outside `/cairn-triage` — no row-creating path says where a new row lands, so the next untagged row appended after the `[low]` rows breaks the order until a triage pass.
+- F2 (O): step 3's carve-out says a priority change "touches the row's opening token alone" while step 4 also "moves the row to its level".
+- F3 (O): `skills/cairn-triage/SKILL.md:275` still orders promoted blocks "higher-priority-first" without reference to the token.
+- F4 (O): the step-3 proposal table gained a priority field but no stated cell for it.
+- F5 (O): step 3 permits a priority change on `keep` or `compress`; the carve-out sentence names only `keep`.
+- F6 (O): the misspelled-token degradation is stated in the rulebook but not in triage step 1, where `[med]` would fold into the subject.
+- F7 (O): the AC4 test asserts a count alone; the reviewer reads it as an accepted tension for an integer-valued function.
+- F8 (O, nit, pre-existing): the `[high]` row carries no `added YYYY-MM-DD` token; byte-identical to main.
