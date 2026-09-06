@@ -1,13 +1,13 @@
 # M181: cairn-init applies the `cairn/**` `paths-ignore` edit under a chip, parsed by PyYAML
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — an adopting repo's workflow files are edited, and shipped skill prose changes
-- **Branch/PR:** —
+- **Branch/PR:** m181-apply-paths-ignore
 
 ## Goal
 
@@ -51,6 +51,8 @@ An adopter whose Python has PyYAML gets the `cairn/**` `paths-ignore` item added
 - 2026-09-06: plan gate chose PyYAML as an optional dependency (apply needs it, report does not) over a hard requirement or a vendored parser because the report and by-hand path keep working without it and the plugin stays stdlib elsewhere; falsified by an adopter population where PyYAML is routinely absent so the chip never appears, or by `--report` and `--apply` disagreeing on a file's applicability in practice.
 - 2026-09-06: plan gate chose refusing scalar and flow-list `on:` forms over rewriting them into block form (M178's approach) because every applied edit is then a pure insertion and the added-lines-only guarantee holds for all of them; falsified by adopters' workflows using those two forms often enough that the chip rarely applies.
 - 2026-09-06: plan gate chose leaving the edited workflow file uncommitted, named in the close block, over including it in the cairn-init commit because a CI-config change is not a docs-only tracking commit; falsified by adopters reporting the uncommitted file forgotten or lost after `/cairn-init`.
+
+- 2026-09-06: T1 written — `--apply [--dry-run]` on PyYAML node marks; probed 17 applying and 12 refusing scratch shapes (CRLF, folded item, trailing comment, push last in `on:`, no trailing newline) and PyYAML-loaded each result. Choices left to implement: a created `paths-ignore:` puts its item one indent step deeper (step read from the file: `push` children minus `push` column, or `push` minus `on` column for a null `push`); a `push` value that is neither a block mapping nor null is refused as `no `push` trigger` (a scalar or block sequence is no trigger GitHub accepts), a flow sequence as `push` holds a flow mapping`. Three suite reds at this checkpoint are the tests T2 retires or widens (`["--apply"]` usage error, `test_apply_writes_nothing`, `TestStdlibOnly`).
 
 ## Decisions
 
