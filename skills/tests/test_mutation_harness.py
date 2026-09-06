@@ -2066,6 +2066,38 @@ REGISTRY = [
         target=RULES,
         block="(one source: the git model's `" + "cairn/" + "**" + "` bullet)",
     ),
+    # M179/D-134: the optional candidate priority token. One entry per assert,
+    # each on one physical line of its target.
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestRulebookParagraph.test_paragraph_sits_in_sizing_section",
+        target=RULES,
+        block="**Candidate priority token.**",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestRulebookParagraph.test_token_vocabulary",
+        target=RULES,
+        block="may open with `[high]` or `[low]`",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestRulebookParagraph.test_untagged_reads_normal",
+        target=RULES,
+        block="a row with neither reads as `normal`",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestRulebookParagraph.test_section_order",
+        target=RULES,
+        block="orders its rows high → normal → low",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestRulebookParagraph.test_token_is_the_fact",
+        target=RULES,
+        block="the token is the fact the order derives from",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

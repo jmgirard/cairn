@@ -199,6 +199,11 @@ row rather than duplicate it; a standing rejection is recorded once and supersed
 recording an alternative to a chosen approach states its promotion condition as **the class of evidence that would
 falsify the chosen approach**, never as a count of failures.
 
+**Candidate priority token.** A candidate row may open with `[high]` or `[low]` (`- [high] idea — added YYYY-MM-DD —
+links`); a row with neither reads as `normal`. The Candidates section orders its rows high → normal → low, advisory
+order within a level; the token is the fact the order derives from, never a second encoding of it. The token is not a
+status, a file, or an ID — `/cairn-triage` reads and re-rates it; a misspelled token reads as `normal` (D-134).
+
 **Bounded `DECISIONS.md` read.** Read `DECISIONS.md` by scanning its `### D-` headings — never whole. A matched
 heading's entry is read whole before anything is surfaced; a match is back-referenced (its own `D-0NN` id searched
 across the file) so a superseding or annotating entry surfaces even when its heading omits the relationship; a collision
