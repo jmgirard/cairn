@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-06 (M179 done, PR #186 squash-merged — candidate rows may open with `[high]`/`[low]`, the Candidates section orders by token, `/cairn-triage` reads and re-rates it, this repo's rows rated; M174 row pruned to retention; no lesson added; validate green; budgets ok — ROADMAP `wc -l -c` 39/10639 under 60/24000, LESSONS 49/16117 under 50/20000; records-hygiene 54/3187 under 55/4000, migration-protocol 188/12250 under 200/14000, validation-doctrine 99/6480 under 115/8000; gating suites 349+126 green, hand-run skills/tests 654 with the one pre-existing lesson-graduation failure.)_
+_Last hygiene check: 2026-09-06 (M180 in-progress on branch m180-retention-three: terminal-row retention drops to 3 — M175 and M176 rows pruned to the new cap, both in `archive/` + git; validate green; ROADMAP `wc -l -c` under 60/24000.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -16,8 +16,6 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | M179 | ROADMAP candidate rows carry an optional priority token | done | — | normal | milestones/archive/M179-candidate-priority-token.md |
 | M178 | cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore` | done | — | normal | milestones/archive/M178-ci-paths-ignore.md |
 | M177 | An approval gate reads the PR's own conversation | done | — | normal | milestones/archive/M177-pr-conversation-gate.md |
-| M176 | The amendment-time re-audit records a work-log line | done | — | normal | milestones/archive/M176-reaudit-record.md |
-| M175 | The surface tier is a milestone header slot | done | — | normal | milestones/archive/M175-surface-tier-slot.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
