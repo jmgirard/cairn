@@ -1,16 +1,18 @@
-"""Prose guard: cairn-init names the CI runs tracking-only pushes start (M178).
+"""Prose guard: cairn-init names the CI runs tracking-only pushes start (M178)
+and applies the ignore under a chip (M181).
 
 A milestone loop's checkpoint pushes start every push-triggered workflow,
 and a review appeared to end before CI was green when it was only implement's
 tracking-only pushes running. M178 adds a `/cairn-init` §0 environment-check
-bullet that reports the fact from `scripts/cairn_ci_paths.py --report` and
-shows the item to add by hand (AC1), and one git-model bullet in the
-rulebook plus a pointer in the wait rule's no-checks clause (AC4). One phrase
-per AC1 clause and per AC4 claim is pinned here, each on one physical line of
-its target (M148: reword new prose, never a pinned neighbour), and each pin
-is registered in the mutation harness. The ignore's two tokens are spelled
-by concatenation so the AC5 grep finds them only where they are shipped
-(M169).
+bullet that reports the fact from `scripts/cairn_ci_paths.py --report` (AC1),
+and one git-model bullet in the rulebook plus a pointer in the wait rule's
+no-checks clause (AC4). M181 rewrites the bullet's clause (d): a dry run of
+`--apply`, one approve/decline chip, a decline writing nothing, the applied
+edit left uncommitted, and the by-hand suggestion for refused files. One
+phrase per clause is pinned here, each on one physical line of its target
+(M148: reword new prose, never a pinned neighbour), and each pin is
+registered in the mutation harness. The ignore's two tokens are spelled by
+concatenation so the AC5 grep finds them only where they are shipped (M169).
 
 Targets are read with `Path.read_text` because the mutation engine patches
 only that call (M100). Hand-run only (M144, D-109):
@@ -75,7 +77,7 @@ class TestInitBulletStatesTheFact(unittest.TestCase):
 
 
 class TestInitBulletSuggestsTheEdit(unittest.TestCase):
-    """AC1 (d): the edit is suggested by hand, no chip, no write."""
+    """AC1 (d), M178 remainder: a refused file keeps the by-hand suggestion."""
 
     def test_the_suggestion_targets_push_triggers_lacking_the_ignore(self):
         self.assertIn(f"whose `push` verdict lacks both `{GLOB}` and `paths`", init())
@@ -83,8 +85,38 @@ class TestInitBulletSuggestsTheEdit(unittest.TestCase):
     def test_the_suggestion_names_the_item_to_add(self):
         self.assertIn(f"show the item to add — `- '{GLOB}'` under that trigger's `{IGNORE}`", init())
 
-    def test_the_bullet_poses_no_chip(self):
-        self.assertIn("and it poses no chip; the operator edits the workflow file", init())
+
+class TestInitBulletAppliesUnderAChip(unittest.TestCase):
+    """AC1 (d), M181: dry run, chip, decline, apply, uncommitted edit."""
+
+    def test_the_bullet_runs_the_dry_run(self):
+        self.assertIn(
+            'python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_ci_paths.py" --apply --dry-run',
+            init(),
+        )
+
+    def test_the_bullet_poses_one_chip(self):
+        self.assertIn("pose one approve/decline chip naming those files", init())
+
+    def test_a_decline_writes_nothing(self):
+        self.assertIn("a decline writes nothing to the workflow files", init())
+
+    def test_the_edit_is_left_uncommitted(self):
+        self.assertIn("the edited workflow files are left uncommitted for the operator to commit", init())
+
+    def test_missing_pyyaml_keeps_the_by_hand_path(self):
+        self.assertIn("installing PyYAML enables the applied edit", init())
+
+    def test_both_commit_bullets_exclude_the_edited_file(self):
+        scaffold = section(init(), "## 1. Fresh scaffold", "## 2. Migration protocol")
+        repair = init().split("## 3. Repair", 1)[1]
+        self.assertIn("never a workflow file §0's chip\n  edited", scaffold)
+        self.assertIn("a workflow file §0's chip edited", repair)
+        self.assertIn("is never staged", repair)
+
+    def test_both_close_blocks_name_the_edited_file(self):
+        self.assertEqual(init().count("§0's chip edited and left\n  uncommitted"), 1)
+        self.assertEqual(init().count("§0's chip edited and left uncommitted"), 1)
 
 
 class TestRulebookGitModelBullet(unittest.TestCase):

@@ -40,7 +40,7 @@ Chapter markers: mark a chapter at each phase transition — each phase its
   - no git remote → local-only mode: PR flows degrade to local branch
     merges and push steps no-op; recommend adding a remote before the
     first milestone.
-- **CI runs on tracking-only pushes (M178).** When `.github/workflows/`
+- **CI runs on tracking-only pushes (M178, M181).** When `.github/workflows/`
   exists, run
   `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_ci_paths.py" --report`;
   when it does not, this bullet is silent, as it is when every report line
@@ -54,14 +54,27 @@ Chapter markers: mark a chapter at each phase transition — each phase its
   `cairn/**` skips a tracking-only push only for `push` triggers;
   (c) under branch protection requiring a check, a path-skipped run leaves
   that check pending and blocks the merge (the Branch-protection
-  compatibility candidate keeps that remainder). Then suggest the edit, by
-  hand: for each file whose `push` verdict lacks both `cairn/**` and `paths`,
+  compatibility candidate keeps that remainder). Then (d) run
+  `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_ci_paths.py" --apply --dry-run`
+  (needs PyYAML; writes nothing; one line per file: `would apply` or
+  `refused: <reason>`). When at least one dry-run line reads `would apply`,
+  pose one approve/decline chip naming those files, in the same confirmation
+  round as §0's other options (the disambiguation gate, the project-type
+  chip) when one is posed, else as its own chip; the chip says the edit adds
+  `- 'cairn/**'` under each named file's `push` → `paths-ignore` and nothing
+  else, and a decline writes nothing to the workflow files. On approval run
+  the same command without `--dry-run`, re-run `--report`, and state that
+  the edited workflow files are left uncommitted for the operator to commit
+  (a CI-config change is not a tracking commit; the §1 and §3 commit bullets
+  exclude them, and both close blocks name them). A file the dry run refuses
+  keeps the by-hand suggestion: for each such file whose `push` verdict lacks both `cairn/**` and `paths`,
   show the item to add — `- 'cairn/**'` under that trigger's `paths-ignore`,
   the key created as a block sequence where the trigger has none; for a
   `push` verdict showing `paths` and not `paths-ignore`, say that trigger
   cannot take `paths-ignore` (GitHub accepts one of the two per trigger) and
-  leave it to the operator. The report is the only command this bullet runs
-  and it poses no chip; the operator edits the workflow file. This bullet
+  leave it to the operator. When the dry run exits 3 (PyYAML absent), the
+  by-hand suggestion stands for every such file and the bullet says that
+  installing PyYAML enables the applied edit. This bullet
   sits in §0, so the scaffold and repair paths both enter it.
 - **Default branch.** Detect the repo's default branch per the canonical
   recipe in the tracking-rules git model: `git symbolic-ref --short
@@ -198,14 +211,18 @@ Then:
   `/design-interview`, offered in the close block below; this step only
   seeds the file.
 - Commit (docs-only, on the default branch): `cairn-init: scaffold tracking
-  system`; push if a remote exists (the remote's default branch is
-  authoritative — see tracking-rules git model).
+  system`, staging the scaffold by path and never a workflow file §0's chip
+  edited (`.github/workflows/*.yml`, `*.yaml`) — that file stays in the
+  working tree for the operator; push if a remote exists (the remote's
+  default branch is authoritative — see tracking-rules git model).
 - Close block (tracking-rules "Question gates and phase closes"), composed
   from what the scaffold found — recap, status line, fenced next command(s)
   with plain labels — e.g. `/design-interview` to turn the seeded DESIGN.md
   into an elicited one (the natural first move in a fresh repo), or
   `/milestone-plan` where the package skeleton is the obvious first
-  milestone — and the adjust-or-`/clear` safety line; no chip.
+  milestone — the name of each workflow file §0's chip edited and left
+  uncommitted, when it edited one — and the adjust-or-`/clear` safety line;
+  no chip.
 
 ## 2. Migration protocol
 
@@ -283,8 +300,12 @@ never rewrites content the repo authored.
 
 - Commit (docs-only, on the default branch): **stage the files repair touched by path, never `git add -A` or `.`** — a mid-migration shelf is untracked
   by design, and a blanket stage would commit the very files the entry above
-  keeps ignored. Then `cairn-init: repair scaffold`; push if a remote exists.
+  keeps ignored, and a workflow file §0's chip edited (`.github/workflows/*.yml`,
+  `*.yaml`) is never staged — it stays in the working tree for the operator.
+  Then `cairn-init: repair scaffold`; push if a remote exists.
   Nothing to fix → report that and skip the commit.
 - Close block (tracking-rules "Question gates and phase closes"), composed
   from what repair found — e.g. `/milestone` fenced first (re-audit a repo
-  that just changed), `/milestone-plan` beside it, and the safety line.
+  that just changed), `/milestone-plan` beside it, the name of each workflow
+  file §0's chip edited and left uncommitted, when it edited one, and the
+  safety line.

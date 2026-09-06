@@ -2018,11 +2018,37 @@ REGISTRY = [
         target="skills/cairn-init/SKILL.md",
         block="show the item to add — `- '" + "cairn/" + "**" + "'` under that trigger's `" + "paths-" + "ignore" + "`",
     ),
+    # M181: clause (d) applies the edit under a chip — one entry per pinned
+    # phrase, each on one physical line of its target (M148).
     Mutation(
         guard="test_ci_paths_note",
-        test="TestInitBulletSuggestsTheEdit.test_the_bullet_poses_no_chip",
+        test="TestInitBulletAppliesUnderAChip.test_the_bullet_runs_the_dry_run",
         target="skills/cairn-init/SKILL.md",
-        block="and it poses no chip; the operator edits the workflow file",
+        block='python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_ci_paths.py" --apply --dry-run',
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestInitBulletAppliesUnderAChip.test_the_bullet_poses_one_chip",
+        target="skills/cairn-init/SKILL.md",
+        block="pose one approve/decline chip naming those files",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestInitBulletAppliesUnderAChip.test_a_decline_writes_nothing",
+        target="skills/cairn-init/SKILL.md",
+        block="a decline writes nothing to the workflow files",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestInitBulletAppliesUnderAChip.test_the_edit_is_left_uncommitted",
+        target="skills/cairn-init/SKILL.md",
+        block="the edited workflow files are left uncommitted for the operator to commit",
+    ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestInitBulletAppliesUnderAChip.test_missing_pyyaml_keeps_the_by_hand_path",
+        target="skills/cairn-init/SKILL.md",
+        block="installing PyYAML enables the applied edit",
     ),
     Mutation(
         guard="test_ci_paths_note",
