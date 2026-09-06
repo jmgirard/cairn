@@ -80,7 +80,7 @@ D-entry. IP block first, then GPs; numbers are never reused or renumbered — re
   rather than restating them, splitting or moving material to `references/` only when no one section can carry the cut;
   over-budget `ROADMAP.md` (bytes) → compress the widest rows first, then the same graduate-or-prune remedy; over-cap or over-budget `LESSONS.md` → retire
   or prune entries (the remedy its own header states); over-cap cairn CLAUDE.md section → trim back to the template.
-- Terminal-row retention (standing hygiene): the ROADMAP table keeps only the 5 most recent terminal (`done`/`dropped`)
+- Terminal-row retention (standing hygiene): the ROADMAP table keeps only the 3 most recent terminal (`done`/`dropped`)
   rows combined; prune older ones as they accumulate.
 - The `Last hygiene check` stamp is one short line naming what changed since the last check, **replaced each pass, never
   appended to** — no `Prior:` chain; git holds every earlier stamp.
