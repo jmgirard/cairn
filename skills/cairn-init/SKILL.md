@@ -143,7 +143,7 @@ _Last hygiene check: YYYY-MM-DD (one short line, replaced each pass — never ap
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-<!-- rows grouped by status, not sorted by ID; keep only the 5 most recent
+<!-- rows grouped by status, not sorted by ID; keep only the 3 most recent
      terminal (done or dropped) rows — older ones live in milestones/archive/ + git -->
 
 ## Candidates

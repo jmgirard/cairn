@@ -64,7 +64,7 @@ DECISIONS.md text that mention 5 → history, never edited (IP4).
 - [x] T2: Set `TERMINAL_ROW_RETENTION = 3` (`scripts/cairn_scripts.py:48`);
       re-run T1's tests green; temporarily set 2 to show the pass case red,
       restore, record both reds in the work log.
-- [ ] T3: Edit the three prose sites (`tracking-rules.md:83`,
+- [x] T3: Edit the three prose sites (`tracking-rules.md:83`,
       `cairn-init/SKILL.md:146`, `LESSONS.md:24`) to 3; run AC2's grep and
       disposition every hit; hand-run `skills/tests` (prose guards).
 - [ ] T4: Prune M175 and M176 rows from `cairn/ROADMAP.md`; replace the
@@ -79,6 +79,7 @@ DECISIONS.md text that mention 5 → history, never edited (IP4).
 - 2026-09-06: plan gate chose no D-entry over appending one because the 5 was an M005 gate choice recorded only in its archive and the rulebook bullet is the operative record; falsified by a later dispute over why 3 that the CHANGELOG line cannot settle.
 - 2026-09-06: T1 — `test_dropped_rows_count_toward_retention` rewritten as the fail-at-4 case (M01 + M04/M05 done + M06 dropped, asserts `4 terminal rows (retention 3)`), `test_three_terminal_rows_pass_retention` added (M01 + 2 done, asserts `PASS  terminal-row retention`); against the constant at 5 the fail case reds (validate exits 0, 4 rows under cap 5) and the pass case is green; suite 350 with that one red, hooks 126 green.
 - 2026-09-06: T2 — `TERMINAL_ROW_RETENTION = 3`; T1's tests green; with the constant at 2 the pass case reds `3 terminal rows (retention 2)` (verified after clearing `__pycache__`: a same-size, same-second edit had served a stale `.pyc` and shown a false green first); restored to 3; scripts 350 + hooks 126 green.
+- 2026-09-06: T3 — the three sites say 3 (`tracking-rules.md:83`, `cairn-init/SKILL.md:146`, `LESSONS.md:24`); AC2's grep returns nothing (before the edits it caught two of the three — the cairn-init comment splits "3 most recent" / "terminal" across lines, so the sites are the domain, the grep the sweep); a second sweep for `5 most recent`/`5-row` also empty; hand-run skills/tests 654 with the one pre-existing lesson-graduation failure, shown to fail identically with the edits stashed.
 
 ## Decisions
 
