@@ -2110,6 +2110,36 @@ REGISTRY = [
         target="skills/cairn-init/SKILL.md",
         block="`[high]`/`[low]` or absent (`normal`)",
     ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestTriageReadsTheToken.test_enumeration_lists_each_rows_priority",
+        target="skills/cairn-triage/SKILL.md",
+        block="its priority (`high` / `normal` / `low`",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestTriageReadsTheToken.test_enumeration_reads_untagged_as_normal",
+        target="skills/cairn-triage/SKILL.md",
+        block="an untagged row is `normal`",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestTriageReadsTheToken.test_proposal_table_may_carry_a_priority_change",
+        target="skills/cairn-triage/SKILL.md",
+        block="A `keep` or `compress` row may also carry a priority change",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestTriageReadsTheToken.test_priority_change_is_the_carve_out",
+        target="skills/cairn-triage/SKILL.md",
+        block="an accepted priority change on a `keep` row is the one edit this rule carves out",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestTriageReadsTheToken.test_apply_orders_by_token_then_advisory",
+        target="skills/cairn-triage/SKILL.md",
+        block="ordered by token — high → normal → low — then advisory within a level",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

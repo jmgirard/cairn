@@ -60,5 +60,42 @@ class TestInitSkeleton(unittest.TestCase):
         self.assertIn("`[high]`/`[low]` or absent (`normal`)", self.skeleton())
 
 
+class TestTriageReadsTheToken(unittest.TestCase):
+    def triage(self):
+        return read("cairn-triage", "SKILL.md")
+
+    def step(self, n):
+        text = self.triage()
+        start = text.index(f"\n{n}. **")
+        try:
+            end = text.index(f"\n{n + 1}. **", start)
+        except ValueError:
+            end = len(text)
+        return text[start:end]
+
+    def test_enumeration_lists_each_rows_priority(self):
+        self.assertIn("its priority (`high` / `normal` / `low`", self.step(1))
+
+    def test_enumeration_reads_untagged_as_normal(self):
+        self.assertIn("an untagged row is `normal`", self.step(1))
+
+    def test_proposal_table_may_carry_a_priority_change(self):
+        self.assertIn(
+            "a `keep` or `compress` row may also carry a priority change", self.step(3)
+        )
+
+    def test_priority_change_is_the_carve_out(self):
+        self.assertIn(
+            "an accepted priority change on a `keep` row is the one edit this rule carves out",
+            self.step(3),
+        )
+
+    def test_apply_orders_by_token_then_advisory(self):
+        self.assertIn(
+            "ordered by token — high → normal → low — then advisory within a level",
+            self.step(4),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
