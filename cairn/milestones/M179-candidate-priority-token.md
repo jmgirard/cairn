@@ -61,6 +61,7 @@ A ROADMAP candidate row can open with one priority token, so a reader tells at a
 - 2026-09-06: T5 done — Candidates section rated per Scope (1 high, 3 untagged, 12 low), re-ordered high → normal → low with each level's prior relative order kept, rows otherwise byte-for-byte; italic line names the token rule and M179; `wc -l -c` 40/10817 under 60/24000; `cairn_validate` green; `cairn_status` still counts 16 candidates.
 - 2026-09-06: T6 done at branch head b5c457c — exit codes: scripts/tests 0 (349), hooks/tests 0 (126), hand-run skills/tests 1 (654 ran; the single failure is the pre-existing `test_lesson_graduation` one noted at T1, present on main). `cairn_validate` green. Status → review.
 - 2026-09-06: review evidence recorded at ab59b66 — AC1–AC6 ticked against Review-section lines, validate green, PR #186 opened draft; three-lens fan-out spawned, findings pending.
+- 2026-09-06: step-7 approval: PR #186 approved for merge with six fix-now prose edits applied (F1–F6), F7–F8 rejected.
 ## Decisions
 
 ## Review
@@ -84,3 +85,5 @@ _Evidence gathered 2026-09-06 at branch head ab59b66 (PR #186), origin/main unmo
 - F6 (O): the misspelled-token degradation is stated in the rulebook but not in triage step 1, where `[med]` would fold into the subject.
 - F7 (O): the AC4 test asserts a count alone; the reviewer reads it as an accepted tension for an integer-valued function.
 - F8 (O, nit, pre-existing): the `[high]` row carries no `added YYYY-MM-DD` token; byte-identical to main.
+- Triage at the 2026-09-06 gate (user accepted the recommended dispositions): F1 fix now — rulebook paragraph gains "A new row is inserted at its level by whoever adds it, never appended below the `[low]` rows"; F2 fix now — step 3's carve-out touches "the row's opening token and the row's place in the order alone"; F3 fix now — the promote-block ordering at triage step 6 reads "ordered by token — high → normal → low"; F4 fix now — the priority change is "stated in the reason cell"; F5 fix now — the carve-out names a `keep` or `compress` row (guard and harness entry re-pinned to the new phrase); F6 fix now — triage step 1 reads any other bracketed token as `normal`, a misspelling; F7 rejected — `candidate_count` returns an integer, the count is stated not derived and the fixture carries section-boundary bullets; F8 rejected — a pre-existing unmodified row, datable at the next triage pass. After the fixes: scripts/tests 349 OK, hooks/tests 126 OK, hand-run skills/tests 654 with only the pre-existing `test_lesson_graduation` failure, validate green.
+- conversation: PR #186 — empty read (no reviews, no comments, no unresolved threads).

@@ -2132,7 +2132,7 @@ REGISTRY = [
         guard="test_candidate_priority_token",
         test="TestTriageReadsTheToken.test_priority_change_is_the_carve_out",
         target="skills/cairn-triage/SKILL.md",
-        block="an accepted priority change on a `keep` row is the one edit this rule carves out",
+        block="an accepted priority change on a `keep` or `compress` row is the one edit this rule carves out",
     ),
     Mutation(
         guard="test_candidate_priority_token",

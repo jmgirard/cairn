@@ -86,7 +86,7 @@ class TestTriageReadsTheToken(unittest.TestCase):
 
     def test_priority_change_is_the_carve_out(self):
         self.assertIn(
-            "an accepted priority change on a `keep` row is the one edit this rule carves out",
+            "an accepted priority change on a `keep` or `compress` row is the one edit this rule carves out",
             self.step(3),
         )
 

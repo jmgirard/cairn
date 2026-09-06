@@ -55,7 +55,8 @@ one of them absorbs is never dropped or merged away in this pass
    issues entry), its byte length, and its added date.
    - A candidate item is one `- ` line under `## Candidates` in
      `cairn/ROADMAP.md` (ROADMAP is one item per line, never split); its
-     priority is the row's opening `[high]` or `[low]` token, and an untagged row is `normal`
+     priority is the row's opening `[high]` or `[low]` token, and an untagged row is `normal`,
+     as is one opening with any other bracketed token — a misspelling
      (tracking-rules "Candidate priority token"); the subject is read after
      the token; its date is the `added YYYY-MM-DD` token, or `undated` when
      absent.
@@ -150,7 +151,7 @@ one of them absorbs is never dropped or merged away in this pass
      A `merge` names its survivor; a `split` names its rows; a `route` names
      its destination; a `promote` names the milestone title it hands on.
      A `keep` or `compress` row may also carry a priority change
-     (`priority: normal → high`, with its own reason) — re-rating from
+     (`priority: normal → high`, stated in the reason cell with its own reason) — re-rating from
      the evidence gathered in step 2: a trigger the repo is near, or one
      that cannot fire soon, is the usual ground; the token is never
      rewritten to encode order. A `keep` with no priority change sits
@@ -186,8 +187,8 @@ one of them absorbs is never dropped or merged away in this pass
      byte-for-byte untouched** — `keep` is a no-op, never a re-wording
      (a merge survivor's lineage clause is the accepted merge's edit), and
      an item the user pulled out of a `merge` or `drop` stays as it was;
-     an accepted priority change on a `keep` row is the one edit this rule carves out,
-     and it touches the row's opening token alone.
+     an accepted priority change on a `keep` or `compress` row is the one edit this rule carves out,
+     and it touches the row's opening token and the row's place in the order alone.
 
 4. **Apply.** When no accepted disposition changes a file — every item
    `keep` (with no priority change) or `promote`, or nothing enumerated —
@@ -272,7 +273,7 @@ one of them absorbs is never dropped or merged away in this pass
    ```
 
    labeled as the next command for that item (several promotes → several
-   blocks, higher-priority-first); with no promote, one fenced
+   blocks, ordered by token — high → normal → low); with no promote, one fenced
    `/milestone` line labeled as the route to the next action. The safety
    line: the pass is committed
    and pushed (or wrote nothing), so `/clear` is safe here, and any item
