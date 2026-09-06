@@ -1,6 +1,6 @@
 # M181: cairn-init applies the `cairn/**` `paths-ignore` edit under a chip, parsed by PyYAML
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -42,8 +42,8 @@ An adopter whose Python has PyYAML gets the `cairn/**` `paths-ignore` item added
 - [x] T1: Extend `scripts/cairn_ci_paths.py` — argv handling for `--apply [--dry-run]` (`--report --apply` a usage error), a guarded `import yaml` inside the apply path (exit 3 with a PyYAML-naming message when it fails), placement by `yaml.compose` node marks (`start_mark`/`end_mark` of the `on`, `push`, `paths-ignore`, and item nodes; flow-style nodes refused), the insertion writer preserving line endings, the `safe_load` post-edit check (key `True` or `'on'`), the ten refusal reasons, and the module docstring rewritten for two modes; hand-probe each scratch shape and PyYAML-load the result before T2 (M178's parser-oracle lesson; clear `__pycache__` or run under `PYTHONDONTWRITEBYTECODE=1` between edits — M180).
 - [x] T2: Write the `apply/` fixture set (12 in/expected pairs per AC3, 9 refusal inputs) and tests in `scripts/tests/test_ci_paths.py` — byte-equality, byte-identity, dry-run agreement, added-lines-only diff, the `safe_load` oracle, the stated skips, the shadowing-`yaml` exit-3 test — retiring `test_apply_writes_nothing` and the `["--apply"]` usage-error case while keeping `--report --apply`; widen `TestStdlibOnly` in `scripts/tests/test_scripts.py:3812-3829` to admit `yaml` for `cairn_ci_paths.py` alone; plant one unquoted `cairn/**` item and one wrong-column insertion to see the suite red before trusting green (M164: control green first).
 - [x] T3: Rewrite clause (d) of the §0 bullet at `skills/cairn-init/SKILL.md:44-66` (dry run, chip, decline, apply + re-report, uncommitted edit, exit-3 branch), add the workflow-file exclusion to the §1 commit bullet (`:200`) and the §3 repair commit bullet (`:284`), name the edited files in both close blocks; update `skills/tests/test_ci_paths_note.py` pins and their `test_mutation_harness.py` registrations (`:1970-1995`) — new sentences reworded away from pinned phrases (M148), tokens by concatenation (M169).
-- [ ] T4: Append the D-entry annotating D-133 (per AC4, with the falsifier); amend the M178 CHANGELOG entry; rewrite the DESIGN.md `scripts/` layer lines (`cairn/DESIGN.md:64-76`); amend the tracking-rules git-model bullet's last sentence (`skills/shared/tracking-rules.md:237-238`).
-- [ ] T5: Run both gating suites and the hand-run `skills/tests` from the repo root, checking each exit code and count (AC6); run the AC5 file enumeration and read every listed file, dispositioning each report-only phrase; `cairn_validate` green; status → review.
+- [x] T4: Append the D-entry annotating D-133 (per AC4, with the falsifier); amend the M178 CHANGELOG entry; rewrite the DESIGN.md `scripts/` layer lines (`cairn/DESIGN.md:64-76`); amend the tracking-rules git-model bullet's last sentence (`skills/shared/tracking-rules.md:237-238`).
+- [x] T5: Run both gating suites and the hand-run `skills/tests` from the repo root, checking each exit code and count (AC6); run the AC5 file enumeration and read every listed file, dispositioning each report-only phrase; `cairn_validate` green; status → review.
 
 ## Work log
 
@@ -57,6 +57,9 @@ An adopter whose Python has PyYAML gets the `cairn/**` `paths-ignore` item added
 - 2026-09-06: T2 — `apply/pairs/` 12 in/expected pairs and `apply/refused/` 9 inputs; 15 apply tests plus the shadowed-`yaml` exit-3 test and a `--report`-without-PyYAML test; `TestStdlibOnly` admits `yaml` for `cairn_ci_paths.py` alone and asserts every other script neither imports nor is allowed it; retired `test_apply_writes_nothing` and the `["--apply"]` usage case, `--report --apply` still asserted. Control (M164): an unquoted item reddened all 12 pair tests, a one-column-off insertion reddened 6 (the post-edit check refused it); both restored. Suites: scripts 366 green, hooks 126 green; T1 checked off here.
 
 - 2026-09-06: T3 — §0 clause (d) rewritten (dry run, one chip in §0's confirmation round or its own, decline writes nothing, apply + re-report, uncommitted edit, refused files keep the by-hand suggestion, exit 3 names PyYAML as the enabler); §1 and §3 commit bullets never stage a chip-edited workflow file; both close blocks name it. `test_ci_paths_note.py`: the `poses no chip` pin retired, 7 new pins (5 harness-registered phrases, 2 structural checks); harness 9 green, note guard 22 green.
+
+- 2026-09-06: T4 — D-135 appended (annotates D-133: `writes nothing` now binds `--report`; PyYAML optional for `--apply` alone; four plan-gate rejections with their reopeners; falsifier: a PyYAML-loads-as-expected edit GitHub reads differently, or PyYAML routinely absent); CHANGELOG's unreleased M178 entry amended to the shipped behaviour; DESIGN `scripts/` layer names `cairn_ci_paths --apply` as the one writing mode and the guarded `import yaml` as the one admitted non-stdlib import; tracking-rules git-model bullet's last sentence amended.
+- 2026-09-06: T5 — scripts 366 (exit 0), hooks 126 (exit 0), skills/tests 660 with the one pre-existing lesson-graduation red; `cairn_validate` all checks passed. AC5: the 11 files `git grep -ln cairn_ci_paths` lists read; outside DECISIONS, the archive, and this file every `writes nothing`/`by hand` phrase is scoped to `--report`, `--dry-run`, a decline, or the exit-3 branch (CHANGELOG:39, script docstring, SKILL.md:59/65, tracking-rules:239, the two test files); README names the script nowhere. Status → review.
 
 ## Decisions
 

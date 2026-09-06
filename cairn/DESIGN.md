@@ -61,15 +61,22 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `scripts/` + python3 (stdlib) reporters (M10) — the deterministic read
-  layer: `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),
+- `scripts/` + python3 reporters (M10) — the deterministic read layer:
+  `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),
   `cairn_validate` (mechanical consistency gate), `cairn_impact` (principle
   → citing `cairn/` file:line, for the Sync Impact Report on IPn/GPn changes;
   M15), `cairn_cost` (per-phase token attribution over the session store;
-  M94), `cairn_ci_paths` (per-workflow report of push/pull_request triggers
-  and their path filters, read at `/cairn-init` §0; report-only — the
-  operator edits the workflow by hand; M178).
-  Read-only; the tracking-file readers reuse the hooks' `cairn_common`
+  M94), `cairn_ci_paths` (`--report`: per-workflow report of
+  push/pull_request triggers and their path filters, read at `/cairn-init`
+  §0, M178; `--apply [--dry-run]`: the `cairn/**` `paths-ignore` insertion
+  under §0's chip, M181).
+  Every script reads only, except `cairn_ci_paths --apply`, the layer's one
+  writing mode (lines inserted into a workflow file after a PyYAML
+  post-edit check; D-135). Every import is stdlib or the shared
+  `cairn_common`/`cairn_scripts`, except `cairn_ci_paths`'s guarded
+  `import yaml` inside its apply path — the one non-stdlib import
+  `TestStdlibOnly` admits (exit 3 when it fails; `--report` stays stdlib).
+  The tracking-file readers reuse the hooks' `cairn_common`
   parser (no duplication; `cairn_ci_paths` reads workflow files only and
   walks up to `.git` itself); exit 2 outside a cairn repo (`cairn_ci_paths`:
   outside a git repo, since `/cairn-init` §0 runs before `cairn/` exists).
