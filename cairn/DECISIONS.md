@@ -4901,7 +4901,9 @@ stays the wait clause's to state; that clause names the bullet as one
 source. `/cairn-init` §0 runs `scripts/cairn_ci_paths.py --report` when
 `.github/workflows/` exists, states the fact, and shows the `paths-ignore`
 item to add by hand for each `push` trigger the report finds not yet
-ignoring `cairn/**`; the script only reports — its stdlib line reader
+ignoring `cairn/**` and carrying no `paths` key (a trigger with `paths`
+cannot take `paths-ignore`, so that one is left to the operator); the
+script only reports — its stdlib line reader
 places the `on:` forms its fixture set enumerates, held to PyYAML's reading
 of each, and says `unrecognized` otherwise — and writes nothing.
 Rejected at the plan gate: a close-block-only mention (a repair run or a

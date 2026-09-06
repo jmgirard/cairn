@@ -10,8 +10,9 @@
   `branches` filter admits the branch; that a `pull_request` trigger reads
   the whole PR diff, so ignoring `cairn/**` helps `push` triggers only; and
   that a required check under branch protection stays pending on a
-  path-skipped run. For each `push` trigger not yet ignoring `cairn/**` it
-  shows the `paths-ignore` item to add by hand; the script only reports
+  path-skipped run. For each `push` trigger not yet ignoring `cairn/**` and
+  carrying no `paths` key it shows the `paths-ignore` item to add by hand
+  (a trigger with `paths` cannot take `paths-ignore`); the script only reports
   (one line per workflow: its `push`/`pull_request` triggers and their
   filter keys, `no push or pull_request trigger`, or `unrecognized`) and
   writes nothing. The rulebook's git model states the same fact, and the
