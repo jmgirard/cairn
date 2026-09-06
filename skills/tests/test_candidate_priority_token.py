@@ -47,5 +47,18 @@ class TestRulebookParagraph(unittest.TestCase):
         self.assertIn("the token is the fact the order derives from", rules())
 
 
+class TestInitSkeleton(unittest.TestCase):
+    def skeleton(self):
+        text = read("cairn-init", "SKILL.md")
+        start = text.index("## candidates\n<!--")
+        return text[start : text.index("-->", start)]
+
+    def test_skeleton_shows_the_tagged_shape(self):
+        self.assertIn("- [high] idea — added yyyy-mm-dd — links", self.skeleton())
+
+    def test_skeleton_names_the_token_as_optional(self):
+        self.assertIn("`[high]`/`[low]` or absent (`normal`)", self.skeleton())
+
+
 if __name__ == "__main__":
     unittest.main()

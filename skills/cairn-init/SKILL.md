@@ -147,7 +147,10 @@ _Last hygiene check: YYYY-MM-DD (one short line, replaced each pass — never ap
      terminal (done or dropped) rows — older ones live in milestones/archive/ + git -->
 
 ## Candidates
-<!-- unnumbered ideas; one line each: idea — added YYYY-MM-DD — links -->
+<!-- unnumbered ideas; one line each, ordered high → normal → low:
+     - [high] idea — added YYYY-MM-DD — links
+     - idea — added YYYY-MM-DD — links
+     the opening token is `[high]`/`[low]` or absent (`normal`) — tracking-rules "Candidate priority token" -->
 ```
 
 Then:

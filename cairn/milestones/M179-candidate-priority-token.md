@@ -40,7 +40,7 @@ A ROADMAP candidate row can open with one priority token, so a reader tells at a
 ## Tasks
 
 - [x] T1: Add the rulebook paragraph (AC1). Add a hand-run prose guard in `skills/tests/` asserting its phrases, written first and seen red before the paragraph lands (D-109: hand-run, gating nothing).
-- [ ] T2: Rewrite the cairn-init ROADMAP skeleton's `## Candidates` comment to show `- [high] idea — added YYYY-MM-DD — links` beside the untagged form (AC2).
+- [x] T2: Rewrite the cairn-init ROADMAP skeleton's `## Candidates` comment to show `- [high] idea — added YYYY-MM-DD — links` beside the untagged form (AC2).
 - [ ] T3: Edit `skills/cairn-triage/SKILL.md` step 1 (priority column in the enumeration), step 3 (a priority change proposed on a `keep`/`compress` row, named as an accepted edit the byte-for-byte rule carves out), and step 4's ordering sentence (AC3). Extend the existing triage prose guard in `skills/tests/` for the new phrases.
 - [ ] T4: Add a `scripts/tests/test_scripts.py` test over an in-test fixture with at least one `[high]`, one `[low]`, and one untagged row, asserting `candidate_count` equals the fixture's row count with and without tokens (AC4).
 - [ ] T5: Tag and re-order this repo's Candidates section per Scope; rewrite the italic ordering line to name the token rule and this milestone; check `wc -l -c cairn/ROADMAP.md` stays under 60 lines and 24,000 bytes (AC5).
@@ -55,6 +55,7 @@ A ROADMAP candidate row can open with one priority token, so a reader tells at a
 - 2026-09-06: plan gate chose a prose convention over a `cairn_validate` token check because triage reads the token anyway and a misspelling degrades to normal; falsified by a misspelled token misleading an operator's promotion choice.
 - 2026-09-06: plan gate passed D-108's door by reading the trigger as met (shipped rows carry no importance signal) over parking the idea or rewriting the door's terms; falsified by evidence the illegibility was this repo's alone — an adopting repo whose untagged rows an operator ranks without difficulty.
 - 2026-09-06: M179 branch `m179-candidate-priority-token` cut from main; question gate skipped (no open choice); T1 done — guard `skills/tests/test_candidate_priority_token.py` seen red (5/5) before the paragraph landed after the Search-first paragraph, five asserts registered in the mutation harness; gating suites 0/0. Observed pre-existing on main: hand-run `test_lesson_graduation.test_partial_coverage_was_trimmed_not_deleted` fails since M178 hygiene pruned the `trimmed M98` lesson — out of scope here.
+- 2026-09-06: T2 done — cairn-init `## Candidates` skeleton comment shows the `[high]` and untagged row shapes and names the token optional; two guard asserts seen red then green, registered in the harness; gating suites 0/0.
 
 ## Decisions
 

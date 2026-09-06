@@ -2098,6 +2098,18 @@ REGISTRY = [
         target=RULES,
         block="the token is the fact the order derives from",
     ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestInitSkeleton.test_skeleton_shows_the_tagged_shape",
+        target="skills/cairn-init/SKILL.md",
+        block="- [high] idea — added YYYY-MM-DD — links",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestInitSkeleton.test_skeleton_names_the_token_as_optional",
+        target="skills/cairn-init/SKILL.md",
+        block="`[high]`/`[low]` or absent (`normal`)",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
