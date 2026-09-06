@@ -1,6 +1,6 @@
 # M179: ROADMAP candidate rows carry an optional priority token
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -44,7 +44,7 @@ A ROADMAP candidate row can open with one priority token, so a reader tells at a
 - [x] T3: Edit `skills/cairn-triage/SKILL.md` step 1 (priority column in the enumeration), step 3 (a priority change proposed on a `keep`/`compress` row, named as an accepted edit the byte-for-byte rule carves out), and step 4's ordering sentence (AC3). Extend the existing triage prose guard in `skills/tests/` for the new phrases.
 - [x] T4: Add a `scripts/tests/test_scripts.py` test over an in-test fixture with at least one `[high]`, one `[low]`, and one untagged row, asserting `candidate_count` equals the fixture's row count with and without tokens (AC4).
 - [x] T5: Tag and re-order this repo's Candidates section per Scope; rewrite the italic ordering line to name the token rule and this milestone; check `wc -l -c cairn/ROADMAP.md` stays under 60 lines and 24,000 bytes (AC5).
-- [ ] T6: Run both gating suites from the repo root, checking each exit code separately, and hand-run `skills/tests`; record the three exit codes in the work log (AC6).
+- [x] T6: Run both gating suites from the repo root, checking each exit code separately, and hand-run `skills/tests`; record the three exit codes in the work log (AC6).
 
 ## Work log
 
@@ -59,6 +59,7 @@ A ROADMAP candidate row can open with one priority token, so a reader tells at a
 - 2026-09-06: T3 done — `/cairn-triage` step 1 lists each row's priority (untagged = normal), step 2 names the token a row fact beside the disposition, step 3's table and chip carry a priority change on a `keep`/`compress` row as the byte-for-byte carve-out, step 4 skips only on `keep` with no change and orders by token then advisory, step 6's stamp names re-rated items. Minor amendment: no prose guard over `/cairn-triage` existed to extend, so the five asserts live in the new M179 guard file, registered in the harness; gating suites 0/0.
 - 2026-09-06: T4 done — `TestCandidateCountPriorityToken` over a three-row fixture (one `[high]`, one untagged, one `[low]`, non-candidate bullets outside the section) asserts the count equals the stated 3 with and without tokens; seen red against a planted token-blind counter, then restored; gating suites 0/0 (349+126).
 - 2026-09-06: T5 done — Candidates section rated per Scope (1 high, 3 untagged, 12 low), re-ordered high → normal → low with each level's prior relative order kept, rows otherwise byte-for-byte; italic line names the token rule and M179; `wc -l -c` 40/10817 under 60/24000; `cairn_validate` green; `cairn_status` still counts 16 candidates.
+- 2026-09-06: T6 done at branch head b5c457c — exit codes: scripts/tests 0 (349), hooks/tests 0 (126), hand-run skills/tests 1 (654 ran; the single failure is the pre-existing `test_lesson_graduation` one noted at T1, present on main). `cairn_validate` green. Status → review.
 
 ## Decisions
 
