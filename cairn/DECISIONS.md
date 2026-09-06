@@ -4927,3 +4927,39 @@ of a fixture (the agreement comparison in `scripts/tests/test_ci_paths.py`
 is the probe), or an adopter reporting the
 §0 bullet fired on a repo with no push or pull_request workflow, or missed
 one that had — in which case the shape set narrows or the bullet moves.
+
+### D-134 (2026-09-06): Candidate rows may carry an optional priority token — supersedes D-027's "candidates carry no Priority" clause and D-035's sub-status consequence; the flat list and the no-grouping rejection stand; passes D-108's door on its retained trigger (M179 plan gate)
+
+**Context:** The user reported that across cairn repos the importance of a
+candidate row cannot be read from the ROADMAP. Investigation confirmed the
+only signal cairn has — D-027's advisory higher-priority-first ordering —
+is stated in this repo's ROADMAP line and nowhere the plugin ships: the
+cairn-init skeleton comment reads `idea — added YYYY-MM-DD — links`, and an
+adopting repo (bsync, 11 rows) carries its rows in import order with no
+ranking. D-027 held "candidates carry no Priority"; D-035 rejected category
+labels as "de facto sub-statuses" and named the drift surface "section
+placement vs. trigger prose". D-035's own exit clause: "If the candidate
+list ever sustainably outgrows triage-by-ordering … this is the entry to
+supersede." D-108 bars a new record-authoring rule unless its trigger is a
+defect in shipped behavior; D-132 forbids a second by-name exception.
+**Decision:** A candidate row may open with `[high]` or `[low]`; a row with
+neither reads as `normal`; the Candidates section orders high → normal →
+low, the token being the fact the order derives from. This supersedes
+D-027's no-Priority clause and D-035's consequence that candidates carry
+"no sub-status"; D-035's flat-list decision and its rejection of category
+grouping stand — the token is per row, never a section, and the drift
+surface D-035 named is closed by deriving order from the token rather than
+encoding rank twice. The gate rejected a type/kind token (it does not
+answer importance, and fix-shaped work already routes to `/hotfix`), a
+mandatory token on every row (adopting repos' rows stay valid unedited),
+and a `cairn_validate` check on the token (triage reads it; a misspelling
+degrades to `normal`). D-108's door is passed on its retained trigger, not
+by exception: the candidate-row shape cairn-init scaffolds and every skill
+writes carries no importance signal for its users, a defect in shipped
+behavior under D-090's clause; the door's terms are unchanged.
+**Consequences:** M179 ships the rule, the skeleton comment, `/cairn-triage`
+reading and re-rating the token, and this repo's own rows rated. Falsifier:
+an operator who, reading tagged rows, still cannot choose which to promote —
+then the token is ceremony and this entry is the one to supersede. A
+`cairn_validate` token check is re-openable on a misspelled token misleading
+an operator's promotion choice, never on a count of misspellings.

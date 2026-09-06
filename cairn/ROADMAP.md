@@ -12,6 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M179 | ROADMAP candidate rows carry an optional priority token | planned | — | normal | milestones/M179-candidate-priority-token.md |
 | M178 | cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore` | done | — | normal | milestones/archive/M178-ci-paths-ignore.md |
 | M177 | An approval gate reads the PR's own conversation | done | — | normal | milestones/archive/M177-pr-conversation-gate.md |
 | M176 | The amendment-time re-audit records a work-log line | done | — | normal | milestones/archive/M176-reaudit-record.md |
