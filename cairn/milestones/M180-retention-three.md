@@ -56,12 +56,12 @@ DECISIONS.md text that mention 5 → history, never edited (IP4).
 
 ## Tasks
 
-- [ ] T1: Rewrite `test_dropped_rows_count_toward_retention`
+- [x] T1: Rewrite `test_dropped_rows_count_toward_retention`
       (`scripts/tests/test_scripts.py:3203`) as the fail-at-4 case (M01 + 2
       done + 1 dropped) with a truthful comment, and add a pass-at-3 case
       (M01 + 2 done, asserting no `terminal-row retention` finding); run them
       red first against the constant at 5.
-- [ ] T2: Set `TERMINAL_ROW_RETENTION = 3` (`scripts/cairn_scripts.py:48`);
+- [x] T2: Set `TERMINAL_ROW_RETENTION = 3` (`scripts/cairn_scripts.py:48`);
       re-run T1's tests green; temporarily set 2 to show the pass case red,
       restore, record both reds in the work log.
 - [ ] T3: Edit the three prose sites (`tracking-rules.md:83`,
@@ -78,6 +78,7 @@ DECISIONS.md text that mention 5 → history, never edited (IP4).
 - 2026-09-06: plan gate chose a fixed constant over a per-repo PROFILE slot because no repo has asked to vary it and a slot adds validate/init surface; falsified by an adopting repo needing a different count.
 - 2026-09-06: plan gate chose no D-entry over appending one because the 5 was an M005 gate choice recorded only in its archive and the rulebook bullet is the operative record; falsified by a later dispute over why 3 that the CHANGELOG line cannot settle.
 - 2026-09-06: T1 — `test_dropped_rows_count_toward_retention` rewritten as the fail-at-4 case (M01 + M04/M05 done + M06 dropped, asserts `4 terminal rows (retention 3)`), `test_three_terminal_rows_pass_retention` added (M01 + 2 done, asserts `PASS  terminal-row retention`); against the constant at 5 the fail case reds (validate exits 0, 4 rows under cap 5) and the pass case is green; suite 350 with that one red, hooks 126 green.
+- 2026-09-06: T2 — `TERMINAL_ROW_RETENTION = 3`; T1's tests green; with the constant at 2 the pass case reds `3 terminal rows (retention 2)` (verified after clearing `__pycache__`: a same-size, same-second edit had served a stale `.pyc` and shown a false green first); restored to 3; scripts 350 + hooks 126 green.
 
 ## Decisions
 
