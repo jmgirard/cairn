@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-06 (M180 in-progress on branch m180-retention-three: terminal-row retention drops to 3 — M175 and M176 rows pruned to the new cap, both in `archive/` + git; validate green; ROADMAP `wc -l -c` under 60/24000.)_
+_Last hygiene check: 2026-09-06 (M180 done: terminal-row retention cap is 3; M177 row pruned in this archive commit (archive + git); validate green; scripts 350 + hooks 126 green, skills/tests 654 with the one pre-existing lesson-graduation red; ROADMAP/LESSONS bytes and the three doctrine-module budgets hand-read under cap.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,10 +12,9 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M180 | ROADMAP terminal-row retention drops from 5 to 3 | review | — | normal | milestones/M180-retention-three.md |
+| M180 | ROADMAP terminal-row retention drops from 5 to 3 | done | — | normal | milestones/archive/M180-retention-three.md |
 | M179 | ROADMAP candidate rows carry an optional priority token | done | — | normal | milestones/archive/M179-candidate-priority-token.md |
 | M178 | cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore` | done | — | normal | milestones/archive/M178-ci-paths-ignore.md |
-| M177 | An approval gate reads the PR's own conversation | done | — | normal | milestones/archive/M177-pr-conversation-gate.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
