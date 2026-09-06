@@ -1,13 +1,13 @@
 # M180: ROADMAP terminal-row retention drops from 5 to 3
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — `cairn_validate` gates adopting repos on the constant
-- **Branch/PR:** —
+- **Branch/PR:** m180-retention-three
 
 ## Goal
 
@@ -77,6 +77,7 @@ DECISIONS.md text that mention 5 → history, never edited (IP4).
 - 2026-09-06: criteria audit ran in full mode ([O] reader): 5 findings, all fixed before the gate — pass-at-3 cannot red under 5 (reworded to red under 2); counts include BASE_ROWS' M01; the existing dropped-row test loses discrimination at cap 3 (becomes the fail case); AC2's grep was a proxy (three sites named as the domain, pattern widened); AC4's CHANGELOG entry names the check and remedy.
 - 2026-09-06: plan gate chose a fixed constant over a per-repo PROFILE slot because no repo has asked to vary it and a slot adds validate/init surface; falsified by an adopting repo needing a different count.
 - 2026-09-06: plan gate chose no D-entry over appending one because the 5 was an M005 gate choice recorded only in its archive and the rulebook bullet is the operative record; falsified by a later dispute over why 3 that the CHANGELOG line cannot settle.
+- 2026-09-06: T1 — `test_dropped_rows_count_toward_retention` rewritten as the fail-at-4 case (M01 + M04/M05 done + M06 dropped, asserts `4 terminal rows (retention 3)`), `test_three_terminal_rows_pass_retention` added (M01 + 2 done, asserts `PASS  terminal-row retention`); against the constant at 5 the fail case reds (validate exits 0, 4 rows under cap 5) and the pass case is green; suite 350 with that one red, hooks 126 green.
 
 ## Decisions
 

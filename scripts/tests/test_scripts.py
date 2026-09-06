@@ -3200,21 +3200,33 @@ class TestValidateFailures(ScriptCase):
             self.tree.files[rel] = archived("done")
         self.assert_fails("terminal-row retention", self.tree.build())
 
+    def _add_terminal(self, mid, status):
+        rel = f"milestones/archive/{mid}-x.md"
+        title = "Done x" if status == "done" else "Dropped x"
+        self.tree.rows.append((mid, title, status, "—", "normal", rel))
+        self.tree.files[rel] = archived(status)
+
     def test_dropped_rows_count_toward_retention(self):
-        # A dropped row counts like a done row: 5 done (at the cap) plus any
-        # dropped rows overflows the terminal cap. The old done-only rule would
-        # have passed this (done == 5) — this case fences the generalization.
-        for n in range(4, 8):  # M04..M07 done → 5 done total with M01 (== cap)
-            mid = f"M0{n}"
-            rel = f"milestones/archive/{mid}-x.md"
-            self.tree.rows.append((mid, "Done x", "done", "—", "normal", rel))
-            self.tree.files[rel] = archived("done")
-        for n in range(8, 10):  # M08, M09 dropped → 7 terminal total
-            mid = f"M0{n}"
-            rel = f"milestones/archive/{mid}-x.md"
-            self.tree.rows.append((mid, "Dropped x", "dropped", "—", "normal", rel))
-            self.tree.files[rel] = archived("dropped")
-        self.assert_fails("terminal-row retention", self.tree.build())
+        # A dropped row counts like a done row: with the cap at 3 (M180),
+        # BASE_ROWS' M01 plus two more done rows sits at the cap, and one
+        # dropped row tips it to 4 terminal rows — over. A done-only rule
+        # would pass this (done == 3); this case fences the generalization
+        # from the fail side, one row over the cap.
+        self._add_terminal("M04", "done")
+        self._add_terminal("M05", "done")
+        self._add_terminal("M06", "dropped")
+        out = self.assert_fails("terminal-row retention", self.tree.build())
+        self.assertIn("4 terminal rows (retention 3)", out)
+
+    def test_three_terminal_rows_pass_retention(self):
+        # Exactly 3 terminal rows (M01 + 2 done) is at the cap, not over it:
+        # the check passes. Pins the constant from the pass side — a cap of
+        # 2 reds this case, a cap of 3 does not.
+        self._add_terminal("M04", "done")
+        self._add_terminal("M05", "done")
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertIn("PASS  terminal-row retention", proc.stdout)
+        self.assertNotIn("FAIL  terminal-row retention", proc.stdout)
 
     def test_unknown_status(self):
         self.tree.rows[0] = ("M03", "Live planned", "planed", "M01", "high", "milestones/M03-live.md")
