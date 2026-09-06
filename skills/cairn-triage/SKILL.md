@@ -51,10 +51,15 @@ one of them absorbs is never dropped or merged away in this pass
    each: its source (`candidate` / `known issue`), its subject (the text up
    to the first colon, trimmed; when no colon falls within the first ~80
    characters, the first clause — up to the first comma — trimmed to
-   that length), its byte length, and its added date.
+   that length), its priority (`high` / `normal` / `low`; `—` for a Known
+   issues entry), its byte length, and its added date.
    - A candidate item is one `- ` line under `## Candidates` in
      `cairn/ROADMAP.md` (ROADMAP is one item per line, never split); its
-     date is the `added YYYY-MM-DD` token, or `undated` when absent.
+     priority is the row's opening `[high]` or `[low]` token, and an untagged row is `normal`,
+     as is one opening with any other bracketed token — a misspelling
+     (tracking-rules "Candidate priority token"); the subject is read after
+     the token; its date is the `added YYYY-MM-DD` token, or `undated` when
+     absent.
    - A Known issues item is one `- ` entry under `## Known issues` in
      `cairn/DESIGN.md` — the `- ` line and every indented continuation line
      up to the next `- ` line or the next heading; its date is `undated`
@@ -73,7 +78,8 @@ one of them absorbs is never dropped or merged away in this pass
 
 2. **Assess.** For each item, gather the evidence below and choose exactly
    one disposition. The vocabulary is fixed — seven words, no sub-statuses
-   or scores (D-027) and no grouping (D-035):
+   or scores (D-027) and no grouping (D-035); the priority token is a row
+   fact re-rated beside the disposition (D-134), never a disposition:
 
    | Disposition | Meaning |
    |---|---|
@@ -144,12 +150,18 @@ one of them absorbs is never dropped or merged away in this pass
      trigger lost for a merge) and the record or path the evidence sits in.
      A `merge` names its survivor; a `split` names its rows; a `route` names
      its destination; a `promote` names the milestone title it hands on.
-     Items proposed `keep` sit last so the changes read first.
+     A `keep` or `compress` row may also carry a priority change
+     (`priority: normal → high`, stated in the reason cell with its own reason) — re-rating from
+     the evidence gathered in step 2: a trigger the repo is near, or one
+     that cannot fire soon, is the usual ground; the token is never
+     rewritten to encode order. A `keep` with no priority change sits
+     last so the changes read first.
    - **The chip** (AskUserQuestion, one question) carries the substance the
      decision needs in its own text (tracking-rules Mandated-substance and
      Acceptance-chips rules): the question text says how many items were
      enumerated and names each item proposed for a disposition other than
-     `keep` with its disposition and its reason in a few plain words; the
+     `keep` with its disposition and its reason in a few plain words, and
+     each row proposed for a priority change with its new level; the
      table above is the verbatim evidence. Three options, in this order:
      1. **Accept as proposed** (recommended, first) — every disposition in
         the table is applied.
@@ -174,10 +186,13 @@ one of them absorbs is never dropped or merged away in this pass
    - Whatever the answer, **every item not accepted for a change is left
      byte-for-byte untouched** — `keep` is a no-op, never a re-wording
      (a merge survivor's lineage clause is the accepted merge's edit), and
-     an item the user pulled out of a `merge` or `drop` stays as it was.
+     an item the user pulled out of a `merge` or `drop` stays as it was;
+     an accepted priority change on a `keep` or `compress` row is the one edit this rule carves out,
+     and it touches the row's opening token and the row's place in the order alone.
 
 4. **Apply.** When no accepted disposition changes a file — every item
-   `keep` or `promote`, or nothing enumerated — steps 4–6 are skipped
+   `keep` (with no priority change) or `promote`, or nothing enumerated —
+   steps 4–6 are skipped
    entirely: no edit, no stamp, no commit, and the close block's status
    line reads `nothing applied`. Otherwise edit `cairn/ROADMAP.md` and
    `cairn/DESIGN.md` per the accepted dispositions, nothing else. Each edit anchors on the item's own text
@@ -193,8 +208,11 @@ one of them absorbs is never dropped or merged away in this pass
    is, its promotion trigger as the class of evidence that would change the
    stance, and `added <original date> — <original origin>, routed from
    Known issues <today>` (the accepting `M<NNN>` as the origin); `promote`
-   and `keep` change nothing. Candidates stay one item per line, ordered
-   higher-priority-first (advisory). After the edits, `wc -l -c
+   and `keep` change nothing; an accepted priority change adds, replaces,
+   or removes the row's opening token (`[high]`/`[low]`; `normal` is no
+   token) and moves the row to its level. Candidates stay one item per line,
+   ordered by token — high → normal → low — then advisory within a level.
+   After the edits, `wc -l -c
    cairn/ROADMAP.md` stays under the ROADMAP line cap and byte budget
    (tracking-rules "Weight caps"); a pass that would push it over returns
    to the step-3 chip with the overflow named — the user re-decides, the
@@ -232,8 +250,8 @@ one of them absorbs is never dropped or merged away in this pass
    re-run, never committed over. Then replace the ROADMAP `_Last hygiene
    check:` line — replace, never append (tracking-rules); a ROADMAP that
    has none gets one — with one line dated today naming what the pass
-   changed: each dropped, merged, split, routed, and compressed item by
-   subject, the drops' reason classes, whether a decision entry was
+   changed: each dropped, merged, split, routed, compressed, and re-rated
+   item by subject, the drops' reason classes, whether a decision entry was
    written, and `validate green` (the run just observed). Make **one
    docs-only commit on the default branch**, subject
    prefixed `triage:`, body naming the refuted-premise and already-shipped
@@ -255,7 +273,7 @@ one of them absorbs is never dropped or merged away in this pass
    ```
 
    labeled as the next command for that item (several promotes → several
-   blocks, higher-priority-first); with no promote, one fenced
+   blocks, ordered by token — high → normal → low); with no promote, one fenced
    `/milestone` line labeled as the route to the next action. The safety
    line: the pass is committed
    and pushed (or wrote nothing), so `/clear` is safe here, and any item

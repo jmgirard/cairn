@@ -2066,6 +2066,80 @@ REGISTRY = [
         target=RULES,
         block="(one source: the git model's `" + "cairn/" + "**" + "` bullet)",
     ),
+    # M179/D-134: the optional candidate priority token. One entry per assert,
+    # each on one physical line of its target.
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestRulebookParagraph.test_paragraph_sits_in_sizing_section",
+        target=RULES,
+        block="**Candidate priority token.**",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestRulebookParagraph.test_token_vocabulary",
+        target=RULES,
+        block="may open with `[high]` or `[low]`",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestRulebookParagraph.test_untagged_reads_normal",
+        target=RULES,
+        block="a row with neither reads as `normal`",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestRulebookParagraph.test_section_order",
+        target=RULES,
+        block="orders its rows high → normal → low",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestRulebookParagraph.test_token_is_the_fact",
+        target=RULES,
+        block="the token is the fact the order derives from",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestInitSkeleton.test_skeleton_shows_the_tagged_shape",
+        target="skills/cairn-init/SKILL.md",
+        block="- [high] idea — added YYYY-MM-DD — links",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestInitSkeleton.test_skeleton_names_the_token_as_optional",
+        target="skills/cairn-init/SKILL.md",
+        block="`[high]`/`[low]` or absent (`normal`)",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestTriageReadsTheToken.test_enumeration_lists_each_rows_priority",
+        target="skills/cairn-triage/SKILL.md",
+        block="its priority (`high` / `normal` / `low`",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestTriageReadsTheToken.test_enumeration_reads_untagged_as_normal",
+        target="skills/cairn-triage/SKILL.md",
+        block="an untagged row is `normal`",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestTriageReadsTheToken.test_proposal_table_may_carry_a_priority_change",
+        target="skills/cairn-triage/SKILL.md",
+        block="A `keep` or `compress` row may also carry a priority change",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestTriageReadsTheToken.test_priority_change_is_the_carve_out",
+        target="skills/cairn-triage/SKILL.md",
+        block="an accepted priority change on a `keep` or `compress` row is the one edit this rule carves out",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestTriageReadsTheToken.test_apply_orders_by_token_then_advisory",
+        target="skills/cairn-triage/SKILL.md",
+        block="ordered by token — high → normal → low — then advisory within a level",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The
