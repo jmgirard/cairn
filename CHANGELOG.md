@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- **The ROADMAP keeps 3 terminal rows, down from 5.** `cairn_validate`'s
+  `terminal-row retention` check now fails a ROADMAP table holding more
+  than 3 `done`/`dropped` rows combined (`TERMINAL_ROW_RETENTION = 3` in
+  `scripts/cairn_scripts.py`); the rulebook's terminal-row retention
+  bullet and the `/cairn-init` ROADMAP skeleton comment say 3. An adopting
+  repo whose ROADMAP carries 4 or 5 terminal rows reds on upgrade with
+  `N terminal rows (retention 3): …`; the remedy is to prune the oldest
+  done/dropped rows from the table — they survive in `milestones/archive/`
+  and git.
 - **`/cairn-init` says that tracking-only pushes start CI, and shows the
   ignore to add.** When a repo has `.github/workflows/`, §0 runs
   `scripts/cairn_ci_paths.py --report` and reports that cairn's
