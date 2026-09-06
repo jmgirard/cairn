@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — `cairn_validate` gates adopting repos on the constant
-- **Branch/PR:** m180-retention-three
+- **Branch/PR:** m180-retention-three · https://github.com/jmgirard/cairn/pull/187
 
 ## Goal
 
@@ -26,23 +26,23 @@ DECISIONS.md text that mention 5 → history, never edited (IP4).
 
 ## Acceptance criteria
 
-- [ ] AC1: `TERMINAL_ROW_RETENTION` in `scripts/cairn_scripts.py` is 3, and two
+- [x] AC1: `TERMINAL_ROW_RETENTION` in `scripts/cairn_scripts.py` is 3, and two
       tests in `scripts/tests/test_scripts.py` pin it from both sides: a
       fixture of 4 terminal rows (BASE_ROWS' M01 + 2 done + 1 dropped) fails
       the `terminal-row retention` check, and a fixture of exactly 3 done rows
       (M01 + 2 done) passes it; the fail case reds with the constant at 5 and
       the pass case reds with it at 2.
-- [ ] AC2: The three live statements of the count each say 3 —
+- [x] AC2: The three live statements of the count each say 3 —
       `skills/shared/tracking-rules.md` terminal-row retention bullet, the
       `skills/cairn-init/SKILL.md` ROADMAP skeleton comment, and the
       `cairn/LESSONS.md` line dated 2026-07-23 (M111, trimmed M147) — and
       `grep -rnEi "(\b5\b|\bfive\b).*(terminal|retention|done|dropped)|(terminal|retention|done|dropped).*(\b5\b|\bfive\b)" skills scripts hooks README.md cairn/LESSONS.md cairn/DESIGN.md`
       returns no line stating the old count (a match on an unrelated 5 is
       dispositioned in the work log).
-- [ ] AC3: This repo's `cairn/ROADMAP.md` holds exactly 3 terminal rows on the
+- [x] AC3: This repo's `cairn/ROADMAP.md` holds exactly 3 terminal rows on the
       branch (M175 and M176 pruned; they survive in `archive/` + git) and
       `python3 scripts/cairn_validate.py` reports green.
-- [ ] AC4: `CHANGELOG.md` Unreleased carries one entry naming the
+- [x] AC4: `CHANGELOG.md` Unreleased carries one entry naming the
       `terminal-row retention` check, the new cap of 3, and the remedy for an
       adopting repo that reds on upgrade (prune the oldest done/dropped rows;
       they survive in `milestones/archive/` + git); both gating suites green.
@@ -86,3 +86,9 @@ DECISIONS.md text that mention 5 → history, never edited (IP4).
 ## Decisions
 
 ## Review
+
+- 2026-09-06 AC1: `scripts/cairn_scripts.py:48` reads `TERMINAL_ROW_RETENTION = 3`; `test_dropped_rows_count_toward_retention` (fail-at-4: M01 + 2 done + 1 dropped) and `test_three_terminal_rows_pass_retention` (pass-at-3: M01 + 2 done) both present; with the constant at 5 the fail case reds (validate passes 4 rows under cap 5) and the pass case is green; with the constant at 2 (bytecode disabled — a first run at 2 served a stale `.pyc` and showed the pass case falsely green, the T2 trap again) the pass case reds `3 terminal rows (retention 2)`; restored to 3, retention tests 3/3 green, scripts 350 green, hooks 126 green. PASS.
+- 2026-09-06 AC2: `tracking-rules.md:83`, `cairn-init/SKILL.md:146`, `LESSONS.md:24` each say 3; AC2's grep over skills scripts hooks README.md LESSONS.md DESIGN.md returns nothing (exit 1, no hits to disposition). PASS.
+- 2026-09-06 AC3: ROADMAP table holds 3 terminal rows (M177–M179); M175 and M176 rows absent, `archive/M175-surface-tier-slot.md` and `archive/M176-reaudit-record.md` on disk; `cairn_validate` all checks passed, exit 0. PASS.
+- 2026-09-06 AC4: CHANGELOG Unreleased first entry names the `terminal-row retention` check, the cap of 3, the red text `N terminal rows (retention 3): …`, and the prune remedy with archive + git survival; both gating suites green (AC1's runs). PASS.
+- 2026-09-06 consistency gate: `cairn_validate` exit 0 (all checks passed); Principles touched `—` → `cairn_impact` skipped; generic profile names no toolchain checks. Driving RR `—` → projection-vs-outcome no-op.
