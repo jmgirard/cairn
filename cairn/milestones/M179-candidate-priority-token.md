@@ -7,7 +7,7 @@
 - **Principles touched:** GP1, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the candidate-row shape ships to every adopting repo through cairn-init's ROADMAP skeleton and the shared rulebook.
-- **Branch/PR:** m179-candidate-priority-token
+- **Branch/PR:** m179-candidate-priority-token · https://github.com/jmgirard/cairn/pull/186
 
 ## Goal
 
@@ -21,12 +21,12 @@ A ROADMAP candidate row can open with one priority token, so a reader tells at a
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/shared/tracking-rules.md` states, in one paragraph after the `Search-first candidate creation` paragraph in `## Sizing and the work tiers`, that a candidate row may open with `[high]` or `[low]`, that a row with neither reads as `normal`, that the Candidates section orders rows high → normal → low, and that the token is the fact the order derives from.
-- [ ] AC2: The ROADMAP skeleton `/cairn-init` scaffolds (`skills/cairn-init/SKILL.md`, the fenced `## Candidates` block) shows the row shape with the optional token — `[high]`/`[low]` or absent.
-- [ ] AC3: `/cairn-triage` (`skills/cairn-triage/SKILL.md`) reads the token: step 1's enumeration lists each row's priority (`high`/`normal`/`low`, untagged = `normal`); step 3's proposal table may carry a priority change on a `keep` or `compress` row, applied with that row's edit as the accepted change step 3's byte-for-byte rule carves out; the re-ordering sentence in step 4's Apply orders by token, then advisory within a level.
-- [ ] AC4: `candidate_count()` returns the same count for a `## Candidates` section whose rows carry `[high]`/`[low]` tokens as for the same section with the tokens removed.
-- [ ] AC5: This repo's own `cairn/ROADMAP.md` Candidates section carries a token on every row this milestone's Scope names `high` or `low`, is ordered high → normal → low, and its italic ordering line names the token rule instead of "candidates carry no Priority field".
-- [ ] AC6: Both gating suites (`python3 -m unittest discover -s scripts/tests`, `python3 -m unittest discover -s hooks/tests`) exit 0 at the branch head.
+- [x] AC1: `skills/shared/tracking-rules.md` states, in one paragraph after the `Search-first candidate creation` paragraph in `## Sizing and the work tiers`, that a candidate row may open with `[high]` or `[low]`, that a row with neither reads as `normal`, that the Candidates section orders rows high → normal → low, and that the token is the fact the order derives from.
+- [x] AC2: The ROADMAP skeleton `/cairn-init` scaffolds (`skills/cairn-init/SKILL.md`, the fenced `## Candidates` block) shows the row shape with the optional token — `[high]`/`[low]` or absent.
+- [x] AC3: `/cairn-triage` (`skills/cairn-triage/SKILL.md`) reads the token: step 1's enumeration lists each row's priority (`high`/`normal`/`low`, untagged = `normal`); step 3's proposal table may carry a priority change on a `keep` or `compress` row, applied with that row's edit as the accepted change step 3's byte-for-byte rule carves out; the re-ordering sentence in step 4's Apply orders by token, then advisory within a level.
+- [x] AC4: `candidate_count()` returns the same count for a `## Candidates` section whose rows carry `[high]`/`[low]` tokens as for the same section with the tokens removed.
+- [x] AC5: This repo's own `cairn/ROADMAP.md` Candidates section carries a token on every row this milestone's Scope names `high` or `low`, is ordered high → normal → low, and its italic ordering line names the token rule instead of "candidates carry no Priority field".
+- [x] AC6: Both gating suites (`python3 -m unittest discover -s scripts/tests`, `python3 -m unittest discover -s hooks/tests`) exit 0 at the branch head.
 
 ## Coverage
 
@@ -60,7 +60,18 @@ A ROADMAP candidate row can open with one priority token, so a reader tells at a
 - 2026-09-06: T4 done — `TestCandidateCountPriorityToken` over a three-row fixture (one `[high]`, one untagged, one `[low]`, non-candidate bullets outside the section) asserts the count equals the stated 3 with and without tokens; seen red against a planted token-blind counter, then restored; gating suites 0/0 (349+126).
 - 2026-09-06: T5 done — Candidates section rated per Scope (1 high, 3 untagged, 12 low), re-ordered high → normal → low with each level's prior relative order kept, rows otherwise byte-for-byte; italic line names the token rule and M179; `wc -l -c` 40/10817 under 60/24000; `cairn_validate` green; `cairn_status` still counts 16 candidates.
 - 2026-09-06: T6 done at branch head b5c457c — exit codes: scripts/tests 0 (349), hooks/tests 0 (126), hand-run skills/tests 1 (654 ran; the single failure is the pre-existing `test_lesson_graduation` one noted at T1, present on main). `cairn_validate` green. Status → review.
-
+- 2026-09-06: review evidence recorded at ab59b66 — AC1–AC6 ticked against Review-section lines, validate green, PR #186 opened draft; three-lens fan-out spawned, findings pending.
 ## Decisions
 
 ## Review
+
+_Evidence gathered 2026-09-06 at branch head ab59b66 (PR #186), origin/main unmoved since the branch was cut._
+
+- AC1 verified: `skills/shared/tracking-rules.md:202-205` holds the `**Candidate priority token.**` paragraph directly after the Search-first paragraph (line 196) inside `## Sizing and the work tiers` (line 174); it states `[high]`/`[low]`, neither = `normal`, high → normal → low ordering, and the token as the fact the order derives from.
+- AC2 verified: `skills/cairn-init/SKILL.md:149-153` — the fenced `## Candidates` skeleton comment shows `- [high] idea — added YYYY-MM-DD — links` beside the untagged form and names the token `[high]`/`[low]` or absent.
+- AC3 verified: `skills/cairn-triage/SKILL.md` step 1 (lines 54-59) lists each row's priority with untagged = `normal`; step 3 (lines 152-156, 163, 189-190) lets a `keep`/`compress` row carry a priority change, named as the one edit the byte-for-byte rule carves out; step 4 (lines 210-213) orders by token high → normal → low, then advisory within a level.
+- AC4 verified: `scripts/tests/test_scripts.py:3302` `TestCandidateCountPriorityToken` — three-row fixture (one `[high]`, one untagged, one `[low]`, non-candidate bullets outside the section); `python3 -m unittest scripts.tests.test_scripts -k TestCandidateCountPriorityToken` ran 1 test, OK: both the tagged and token-stripped sections count 3.
+- AC5 verified: `cairn/ROADMAP.md` Candidates lines 25-40 — 1 `[high]` row, 3 untagged, 12 `[low]`, each matching the Scope list, ordered high → normal → low; the italic line (23) names the token rule, D-134 and M179; `wc -l -c` 40/10812 under 60/24000.
+- AC6 verified: at ab59b66 `python3 -m unittest discover -s scripts/tests` ran 349, OK, exit 0; `python3 -m unittest discover -s hooks/tests` ran 126, OK, exit 0. Hand-run `skills/tests` (non-gating, D-109): 654 ran, 1 failure — `test_lesson_graduation.test_partial_coverage_was_trimmed_not_deleted`, pre-existing on main since M178 hygiene pruned the `trimmed M98` lesson (noted at T1).
+- Driving RR: none — projection-vs-outcome no-ops.
+- Consistency gate: `cairn_validate.py` all checks passed, exit 0; DESIGN.md untouched (no principle changed, `cairn_impact` skipped); profile `generic` names no toolchain checks.
