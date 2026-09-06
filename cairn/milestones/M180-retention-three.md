@@ -82,6 +82,7 @@ DECISIONS.md text that mention 5 → history, never edited (IP4).
 - 2026-09-06: T3 — the three sites say 3 (`tracking-rules.md:83`, `cairn-init/SKILL.md:146`, `LESSONS.md:24`); AC2's grep returns nothing (before the edits it caught two of the three — the cairn-init comment splits "3 most recent" / "terminal" across lines, so the sites are the domain, the grep the sweep); a second sweep for `5 most recent`/`5-row` also empty; hand-run skills/tests 654 with the one pre-existing lesson-graduation failure, shown to fail identically with the edits stashed.
 - 2026-09-06: T4 — M175 and M176 rows pruned (3 terminal rows remain: M177–M179; both survive in `archive/` + git); hygiene stamp replaced; `cairn_validate` all checks passed; ROADMAP 38 lines / 10139 bytes.
 - 2026-09-06: T5 — CHANGELOG Unreleased entry names the `terminal-row retention` check, the cap of 3, the red an adopter sees (`N terminal rows (retention 3): …`, from T2's observed output) and the prune remedy; scripts 350 + hooks 126 green, validate all checks passed. All tasks checked; status → review.
+- 2026-09-06: step-7 approval: PR #187 approved for merge.
 
 ## Decisions
 
