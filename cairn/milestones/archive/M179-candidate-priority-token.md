@@ -1,0 +1,11 @@
+# M179: ROADMAP candidate rows carry an optional priority token
+
+**Status:** done (2026-09-06, PR #186 https://github.com/jmgirard/cairn/pull/186)
+
+**Goal:** A ROADMAP candidate row can open with one priority token, so a reader tells at a glance which rows matter, without candidates gaining a status, a file, or an ID.
+
+**Outcome:** `skills/shared/tracking-rules.md` gains the "Candidate priority token" paragraph (Sizing and the work tiers): a row may open with `[high]` or `[low]`, neither reads as `normal`, the Candidates section orders high → normal → low with advisory order within a level, the token is the fact the order derives from, a new row is inserted at its level by whoever adds it, a misspelled token reads as `normal`. The cairn-init ROADMAP skeleton's `## Candidates` comment shows the tagged and untagged row shapes. `/cairn-triage` step 1 lists each row's priority (untagged or misspelled = `normal`), step 3 proposes a priority change on a `keep`/`compress` row in the reason cell as the one carve-out from the byte-for-byte rule (token and place in the order), step 4 orders by token then advisory, step 6 orders promote blocks by token. `scripts/tests/test_scripts.py` `TestCandidateCountPriorityToken` pins `candidate_count` as token-blind. A hand-run guard `skills/tests/test_candidate_priority_token.py` pins the phrases, registered in the mutation harness. This repo's 16 rows rated: 1 `[high]`, 3 untagged, 12 `[low]`, re-ordered with each level's prior order kept.
+
+**Decisions:** D-134 (the token; supersedes D-027's no-Priority clause and D-035's sub-status consequence; flat list stands; rejected a type token, a mandatory token, and a validator check).
+
+**Review:** user-facing tier, three-lens fan-out. Prior-review and blame-history lenses: no findings (rows byte-identical to main once tokens stripped). Diff-bug lens: eight findings; six fixed at the gate as one-clause prose edits (no writer for the ordering invariant outside triage; step 3 vs step 4 wording; a stale "higher-priority-first"; the table cell for a priority change; `compress` in the carve-out; misspelled-token degradation in step 1), two rejected (a count-only test on an integer function; a pre-existing undated row). Nothing graduated or retired at hygiene.
