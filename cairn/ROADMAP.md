@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-03 (M177 done, PR #183 squash-merged — both approval gates read the PR conversation; M172 row pruned to retention; validate green; budgets ok — ROADMAP `wc -l -c` 38/9847 under 60/24000, LESSONS 49/15885 under 50/20000; records-hygiene 54/3187 under 55/4000, migration-protocol 188/12250 under 200/14000, validation-doctrine 99/6480 under 115/8000; gating suites 334+126 green, hand-run skills/tests 624 green.)_
+_Last hygiene check: 2026-09-05 (M178 done, PR #185 squash-merged — cairn-init §0 reports the CI runs tracking-only pushes start and shows the `cairn/**` ignore to add by hand, script report-only after the chip-applied edit was descoped; M173 row pruned to retention; one lesson added, the references re-dating lesson pruned for the cap; validate green; budgets ok — ROADMAP `wc -l -c` 39/10299 under 60/24000, LESSONS 49/16117 under 50/20000; records-hygiene 54/3187 under 55/4000, migration-protocol 188/12250 under 200/14000, validation-doctrine 99/6480 under 115/8000; gating suites 348+126 green, hand-run skills/tests 642 green.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M178 | cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore` | review | — | normal | milestones/M178-ci-paths-ignore.md |
+| M178 | cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore` | done | — | normal | milestones/archive/M178-ci-paths-ignore.md |
 | M177 | An approval gate reads the PR's own conversation | done | — | normal | milestones/archive/M177-pr-conversation-gate.md |
 | M176 | The amendment-time re-audit records a work-log line | done | — | normal | milestones/archive/M176-reaudit-record.md |
 | M175 | The surface tier is a milestone header slot | done | — | normal | milestones/archive/M175-surface-tier-slot.md |
 | M174 | A merged hotfix or adopted PR is verified to the hotfix bar post-hoc | done | — | normal | milestones/archive/M174-post-hoc-hotfix-bar.md |
-| M173 | A whole-list triage pass over candidates and Known issues | done | — | normal | milestones/archive/M173-candidate-triage.md |
 ## Candidates
 
 _Ordered higher-priority-first (advisory only — candidates carry no Priority field). Triage: D-027._
