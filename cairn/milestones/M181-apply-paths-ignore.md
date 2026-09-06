@@ -1,6 +1,6 @@
 # M181: cairn-init applies the `cairn/**` `paths-ignore` edit under a chip, parsed by PyYAML
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -36,6 +36,8 @@ An adopter whose Python has PyYAML gets the `cairn/**` `paths-ignore` item added
 - AC4 → T4
 - AC5 → T3, T4, T5
 - AC6 → T5
+- AC2 → T6, T7 (return fixes)
+- AC4 → T8 (return fix)
 
 ## Tasks
 
@@ -44,6 +46,9 @@ An adopter whose Python has PyYAML gets the `cairn/**` `paths-ignore` item added
 - [x] T3: Rewrite clause (d) of the §0 bullet at `skills/cairn-init/SKILL.md:44-66` (dry run, chip, decline, apply + re-report, uncommitted edit, exit-3 branch), add the workflow-file exclusion to the §1 commit bullet (`:200`) and the §3 repair commit bullet (`:284`), name the edited files in both close blocks; update `skills/tests/test_ci_paths_note.py` pins and their `test_mutation_harness.py` registrations (`:1970-1995`) — new sentences reworded away from pinned phrases (M148), tokens by concatenation (M169).
 - [x] T4: Append the D-entry annotating D-133 (per AC4, with the falsifier); amend the M178 CHANGELOG entry; rewrite the DESIGN.md `scripts/` layer lines (`cairn/DESIGN.md:64-76`); amend the tracking-rules git-model bullet's last sentence (`skills/shared/tracking-rules.md:237-238`).
 - [x] T5: Run both gating suites and the hand-run `skills/tests` from the repo root, checking each exit code and count (AC6); run the AC5 file enumeration and read every listed file, dispositioning each report-only phrase; `cairn_validate` green; status → review.
+- [ ] T6: Fix F1 — `expected_after` uses the `on` key `plan_edit` resolved (plain → `True`, quoted → `'on'`); wrap the post-edit check so any exception refuses with `post-edit check failed`; regression fixture with `"on":` plus a `true:` key, asserting exit 0 and `applied`.
+- [ ] T7: Fix F2–F5 — refuse a file whose composed `on` → `push` subtree, or `paths-ignore` sequence, is or contains an anchor target, alias, or `<<` merge key (one new closed-list reason, via the step-6 criterion amendment to AC2 and AC3's per-reason fixture); fix `_end_index` for a flow-collection last item (F4) and end-of-file mappings (F6); recognize a block-scalar `cairn/**` item as already ignoring (F7); fixtures for each, control-red first (M164).
+- [ ] T8: Fix F10 — DESIGN.md `scripts/` layer heading no longer says "reporters — the deterministic read layer"; fix F11 — §0's by-hand suggestion says a scalar or flow-list `on:` is first rewritten in block form before the item can be added; re-run both suites and the hand-run guards; status → review.
 
 ## Work log
 
@@ -60,6 +65,7 @@ An adopter whose Python has PyYAML gets the `cairn/**` `paths-ignore` item added
 
 - 2026-09-06: T4 — D-135 appended (annotates D-133: `writes nothing` now binds `--report`; PyYAML optional for `--apply` alone; four plan-gate rejections with their reopeners; falsifier: a PyYAML-loads-as-expected edit GitHub reads differently, or PyYAML routinely absent); CHANGELOG's unreleased M178 entry amended to the shipped behaviour; DESIGN `scripts/` layer names `cairn_ci_paths --apply` as the one writing mode and the guarded `import yaml` as the one admitted non-stdlib import; tracking-rules git-model bullet's last sentence amended.
 - 2026-09-06: T5 — scripts 366 (exit 0), hooks 126 (exit 0), skills/tests 660 with the one pre-existing lesson-graduation red; `cairn_validate` all checks passed. AC5: the 11 files `git grep -ln cairn_ci_paths` lists read; outside DECISIONS, the archive, and this file every `writes nothing`/`by hand` phrase is scoped to `--report`, `--dry-run`, a decline, or the exit-3 branch (CHANGELOG:39, script docstring, SKILL.md:59/65, tracking-rules:239, the two test files); README names the script nowhere. Status → review.
+- 2026-09-06: review return 1 (defect, return floor): AC2 fails — a quoted `"on":` file with a truthy top-level key crashes `--apply` (exit 1) via `expected_after`'s key choice (F1); anchors/aliases/merge keys under `on` let the edit reach `pull_request` or a `paths`-carrying `push` (F2, F3). Tasks T6–T8 added; the new refusal reason takes a gated AC2/AC3 amendment at implement step 6. Status → in-progress. PR #188 stays open as draft.
 
 ## Decisions
 
@@ -78,3 +84,21 @@ An adopter whose Python has PyYAML gets the `cairn/**` `paths-ignore` item added
 - `cairn_impact.py --changed`: skipped — Principles touched `—`, no IP/GP changed.
 - Toolchain checks: profile `generic`, `consistency-gate` slot names none — clean no-op; the two `verify` suites are AC6's evidence.
 - Driving RR `—`: projection-vs-outcome no-ops.
+
+### Independent review (2026-09-06, three lenses, fresh context)
+- [S] prior-review-record: no prior-review evidence of a regression; M178's three missed forms (comment in block, flush-left items, column-0 comment) each covered by a named `apply/pairs/` fixture; `gh api pulls/comments` probe empty repo-wide, walk skipped; zero findings.
+- [S] blame-history: no conflicts with M178, D-133/D-135, the stdlib rule, or the M148/M169 pin lessons. One observation: the in-place amendment of the unreleased M178 CHANGELOG entry has no precedent in this repo's history — noted; AC4 called for it and IP4's append-only scope names work-logs and DECISIONS, not the changelog.
+- [O] diff-bug: 12 findings, ranked; F1–F3 reproduced by the session before triage.
+  - F1 (defect return, fails AC2 "exits 0 whenever PyYAML imported"): `expected_after` picks the `True` key whenever any top-level key loads truthy (`true:`, `yes:`, `1:`) even when `on` is quoted — `"on":\n  push: …\ntrue: x` → AttributeError, exit 1, no further file processed. Fix: use the key `plan_edit` resolved; any exception in the check → `post-edit check failed`.
+  - F2 (fix with the return, load-bearing): `push: &p` aliased by `pull_request: *p` — the inserted item lands inside the anchor and reaches `pull_request`; the post-edit check passes because safe_load shares the object. Violates Scope Out (pull_request untouched) and the chip's "nothing else".
+  - F3 (fix with the return, load-bearing): `paths` reaching `push` through a merge key `<<: *b` is not seen by `_mapping_get`; the file is edited to carry both `paths` and `paths-ignore`.
+  - F4 (fix with the return): a flow-collection last `paths-ignore` item (`- {a: b}`, `- [x, y]`) is placed before the last item — `_end_index` returns `end_mark.line` for non-scalars; caught only by the post-edit check, so `post-edit check failed` is reachable from an editable input.
+  - F5 (fix with the return): `paths-ignore: *pi` aliasing a top-level sequence — marks point at the anchor, insertion aimed at the wrong site, refused `post-edit check failed` with a misleading reason.
+  - F6 (fix with the return, same `_end_index` site): a file with no trailing newline gets the created `paths-ignore:` before `branches:` — semantically equal, check passes; no pair fixture omits the final newline.
+  - F7 (fix with the return, trivial): a block-scalar item `>-\n  cairn/**` is not recognized as already ignoring, so a duplicate is appended.
+  - F8 (reject): `--apply` exits 0 with "no workflow files" when the directory is empty and PyYAML is absent — no file could be edited, so no chip and no exit-3 note are owed.
+  - F9 (reject): `TestStdlibOnly` admits `yaml` file-wide rather than apply-path-only; the placement is enforced by `test_report_still_runs_without_pyyaml` and verified by read (AC2 evidence).
+  - F10 (fix with the return, docs): DESIGN.md:64 still heads the layer "reporters — the deterministic read layer" two lines above the writing mode.
+  - F11 (fix with the return, docs): the by-hand suggestion for a refused scalar/flow-list `on:` never says the trigger must first be written in block form — pre-existing M178 wording made load-bearing now that those forms are exactly the refusals.
+  - F12 (reject): unreadable or non-UTF-8 file refused as `PyYAML cannot parse the file` — inside the closed reason list, pinned deliberately by `test_an_unreadable_file_is_refused`.
+- Defect-return count for M181: 1 (this return). Amendment-return count: 0. F2–F5's refusal of anchors, aliases, and merge keys under `on` adds a reason to AC2's closed list, so it goes through the gated criterion amendment at `/milestone-implement` step 6 (AC2's list and AC3's one-refusal-per-reason fixture set), not a review-side patch.

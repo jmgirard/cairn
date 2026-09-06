@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M181 | cairn-init applies the `cairn/**` `paths-ignore` edit under a chip, parsed by PyYAML | review | — | high | milestones/M181-apply-paths-ignore.md |
+| M181 | cairn-init applies the `cairn/**` `paths-ignore` edit under a chip, parsed by PyYAML | in-progress | — | high | milestones/M181-apply-paths-ignore.md |
 | M180 | ROADMAP terminal-row retention drops from 5 to 3 | done | — | normal | milestones/archive/M180-retention-three.md |
 | M179 | ROADMAP candidate rows carry an optional priority token | done | — | normal | milestones/archive/M179-candidate-priority-token.md |
 | M178 | cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore` | done | — | normal | milestones/archive/M178-ci-paths-ignore.md |
