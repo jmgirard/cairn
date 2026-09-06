@@ -2008,21 +2008,21 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_ci_paths_note",
-        test="TestInitBulletOffersTheApply.test_the_apply_is_offered_for_applicable_files_only",
+        test="TestInitBulletSuggestsTheEdit.test_the_suggestion_targets_push_triggers_lacking_the_ignore",
         target="skills/cairn-init/SKILL.md",
-        block="only for the files the report marks `applicable`",
+        block="whose `push` verdict lacks both `" + "cairn/" + "**" + "` and `paths`",
     ),
     Mutation(
         guard="test_ci_paths_note",
-        test="TestInitBulletOffersTheApply.test_the_apply_rides_the_confirmation_round_or_its_own_chip",
+        test="TestInitBulletSuggestsTheEdit.test_the_suggestion_names_the_item_to_add",
         target="skills/cairn-init/SKILL.md",
-        block="else as its own single approve/decline chip",
+        block="show the item to add — `- '" + "cairn/" + "**" + "'` under that trigger's `" + "paths-" + "ignore" + "`",
     ),
     Mutation(
         guard="test_ci_paths_note",
-        test="TestInitBulletOffersTheApply.test_the_apply_names_the_ignore_it_adds",
+        test="TestInitBulletSuggestsTheEdit.test_the_bullet_poses_no_chip",
         target="skills/cairn-init/SKILL.md",
-        block="adds `- '" + "cairn/" + "**" + "'` under each `push` trigger's `" + "paths-" + "ignore" + "`",
+        block="and it poses no chip; the operator edits the workflow file",
     ),
     Mutation(
         guard="test_ci_paths_note",

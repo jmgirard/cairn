@@ -1,8 +1,10 @@
 name: ci
 on:
   push:
+    branches: [main]
+# tracking-only pushes are skipped below
     paths-ignore:
-      - 'cairn/**'
+      - 'docs/**'
   pull_request:
 jobs:
   test:

@@ -43,8 +43,10 @@ Chapter markers: mark a chapter at each phase transition — each phase its
 - **CI runs on tracking-only pushes (M178).** When `.github/workflows/`
   exists, run
   `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_ci_paths.py" --report`;
-  when it does not, this bullet is silent. When the report names a workflow
-  file with a `push` or `pull_request` trigger, say in plain words:
+  when it does not, this bullet is silent, as it is when every report line
+  reads `no push or pull_request trigger`. When the report names a workflow
+  file with a `push` or `pull_request` trigger, or reports one
+  `unrecognized`, say in plain words:
   (a) cairn's tracking-only commits — phase-boundary checkpoints and
   review-side records — reach the remote on every branch push and start the
   push-triggered workflows whose `branches` filter admits the branch;
@@ -52,16 +54,15 @@ Chapter markers: mark a chapter at each phase transition — each phase its
   `cairn/**` skips a tracking-only push only for `push` triggers;
   (c) under branch protection requiring a check, a path-skipped run leaves
   that check pending and blocks the merge (the Branch-protection
-  compatibility candidate keeps that remainder). Then offer the edit:
-  `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_ci_paths.py" --apply`, which
-  adds `- 'cairn/**'` under each `push` trigger's `paths-ignore` — offered
-  only for the files the report marks `applicable`, the option naming each
-  file it will edit; a `would refuse:` file is left to the operator with the
-  report's reason. Pose it as an option in §0's confirmation round where one
-  is posed (the profile confirmation, the disambiguation or project-type
-  chip), else as its own single approve/decline chip; the decline writes
-  nothing. This bullet sits in §0, so the scaffold and repair paths both
-  enter it.
+  compatibility candidate keeps that remainder). Then suggest the edit, by
+  hand: for each file whose `push` verdict lacks both `cairn/**` and `paths`,
+  show the item to add — `- 'cairn/**'` under that trigger's `paths-ignore`,
+  the key created as a block sequence where the trigger has none; for a
+  `push` verdict showing `paths` and not `paths-ignore`, say that trigger
+  cannot take `paths-ignore` (GitHub accepts one of the two per trigger) and
+  leave it to the operator. The report is the only command this bullet runs
+  and it poses no chip; the operator edits the workflow file. This bullet
+  sits in §0, so the scaffold and repair paths both enter it.
 - **Default branch.** Detect the repo's default branch per the canonical
   recipe in the tracking-rules git model: `git symbolic-ref --short
   refs/remotes/origin/HEAD` (strip the `origin/` prefix); if that fails but a

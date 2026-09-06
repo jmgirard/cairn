@@ -2,7 +2,9 @@ name: ci
 on:
   push:
     paths-ignore:
-      - 'cairn/**'
+      - "docs/**"
+      - "cairn/**"
+  pull_request:
 jobs:
   test:
     runs-on: ubuntu-latest

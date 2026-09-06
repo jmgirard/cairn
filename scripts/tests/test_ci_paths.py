@@ -1,23 +1,20 @@
 """Tests for scripts/cairn_ci_paths.py (M178).
 
 Drives the script as a subprocess against a temporary git root whose
-`.github/workflows/` holds one fixture at a time, from
-`ci_paths_fixtures/`: `apply/<shape>.in.yml` → `<shape>.out.yml` pairs for
-each recognized `on:` shape, and `refuse/<reason>.yml` inputs, one per named
-refusal. Applied outputs are byte-equal to their expected fixture; refused
-inputs are byte-identical after `--apply`. Block-map applies add lines only;
-the scalar and flow-list rewrites change the `on:` region alone. When PyYAML
-is importable each expected fixture is parsed semantically (the `on` key
-reads as `True` under YAML 1.1, or as `"on"`); otherwise that assertion is
-skipped and says so.
+`.github/workflows/` holds one fixture at a time from
+`ci_paths_fixtures/report/`. Each fixture has a recorded verdict (the change
+detector); every run leaves the file byte-identical; and when PyYAML is
+importable each verdict is compared with PyYAML's own reading of the file
+(the `on` key reads as `True` under YAML 1.1, or as `"on"`) — the oracle the
+line reader is held to. Without PyYAML that comparison is skipped and says so.
 
 Run: python3 -m unittest discover -s scripts/tests
 """
 
-import difflib
 import os
 import pathlib
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -25,54 +22,48 @@ import unittest
 
 HERE = pathlib.Path(__file__).resolve().parent
 SCRIPT = HERE.parent / "cairn_ci_paths.py"
-FIXTURES = HERE / "ci_paths_fixtures"
-APPLY = FIXTURES / "apply"
-REFUSE = FIXTURES / "refuse"
-REPORT = FIXTURES / "report"
+REPORT = HERE / "ci_paths_fixtures" / "report"
 
-BLOCK_SHAPES = [
-    "block_map", "block_bare_push", "block_branches",
-    "block_existing_ignore", "block_pr_filtered", "block_crlf",
-    "block_flush_ignore",
-]
-REWRITE_SHAPES = ["scalar", "flow_list"]
+FILTER_KEYS = ("branches", "branches-ignore", "paths", "paths-ignore")
+ENTRY = "cairn/**"
+NO_TRIGGER = "no push or pull_request trigger"
+UNRECOGNIZED = "unrecognized"
 
-REFUSALS = {
-    "push_paths": "already carries `paths`",
-    "already_ignored": "already ignores `cairn/**`",
-    "already_ignored_flush": "already ignores `cairn/**`",
-    "flow_paths_ignore": "`paths-ignore` is a flow list",
-    "push_flow_mapping": "holds a flow mapping",
-    "push_flow_mapping_filled": "holds a flow mapping",
-    "push_flow_sequence": "holds a flow sequence",
-    "quoted_on_double": "a quoted `on:` key",
-    "quoted_on_single": "a quoted `on:` key",
-    "comment_on_line": "a comment on the `on:` line",
-    "comment_in_block": "a comment inside the `on:` block",
-    "unrecognized": "unrecognized",
-    "no_push": "no `push` trigger",
-}
-
-# report-only fixtures: the trigger verdict `--report` prints beside the
-# refusal (M178 review findings 1-3, 9) — the file is placed even where
-# `--apply` refuses it
-REPORT_VERDICTS = {
-    "comment_deep": (
-        "push (branches, paths-ignore), pull_request (paths-ignore, cairn/**)",
-        "a comment inside the `on:` block",
-    ),
-    "comment_on_flow_line": (
-        "push (no filters), pull_request (no filters)",
-        "a comment on the `on:` line",
-    ),
-    "flow_mapping_ignoring": (
-        "push (branches-ignore, paths-ignore, cairn/**), pull_request (paths)",
-        "`push:` holds a flow mapping",
-    ),
+# fixture stem -> the verdict `--report` prints for it (recorded from a run
+# and cross-checked against PyYAML by TestAgreesWithPyYAML)
+VERDICTS = {
+    "scalar": "push (no filters)",
+    "flow_list": "push (no filters), pull_request (no filters)",
+    "block_bare_push": "push (no filters), pull_request (no filters)",
+    "block_branches": "push (branches)",
+    "block_branches_ignore": "push (branches-ignore), pull_request (branches)",
+    "block_paths": "push (paths)",
+    "block_ignore_deeper": "push (paths-ignore), pull_request (no filters)",
+    "block_ignore_deeper_cairn": "push (paths-ignore, cairn/**)",
+    "block_ignore_flush": "push (branches, paths-ignore), pull_request (no filters)",
+    "block_ignore_flush_cairn": "push (paths-ignore, cairn/**)",
+    "block_double_quoted_item": "push (paths-ignore, cairn/**), pull_request (no filters)",
+    "flow_paths_ignore": "push (paths-ignore)",
+    "push_flow_mapping_empty": "push (no filters), pull_request (no filters)",
+    "push_flow_mapping": "push (branches)",
+    "push_flow_mapping_cairn": "push (branches-ignore, paths-ignore, cairn/**), pull_request (paths)",
+    "push_flow_sequence": "push (no filters)",
+    "block_pr_filtered": "push (branches), pull_request (paths-ignore)",
+    "block_third_key_between": "push (branches), pull_request (paths-ignore)",
+    "comment_on_line": "push (no filters)",
+    "comment_on_flow_line": "push (no filters), pull_request (no filters)",
+    "comment_in_block": "push (branches)",
+    "comment_deep": "push (branches, paths-ignore), pull_request (paths-ignore, cairn/**)",
+    "comment_column0": "push (branches, paths-ignore), pull_request (no filters)",
+    "block_crlf": "push (branches), pull_request (no filters)",
+    "quoted_on_double": "push (no filters)",
+    "quoted_on_single": "push (no filters)",
+    "neither_trigger": NO_TRIGGER,
+    "no_on_key": UNRECOGNIZED,
 }
 
 try:
-    import yaml  # noqa: F401
+    import yaml
     HAVE_YAML = True
 except ImportError:  # pragma: no cover - environment-dependent
     HAVE_YAML = False
@@ -104,238 +95,124 @@ class Repo:
         shutil.rmtree(self.dir, ignore_errors=True)
 
 
-def on_value(doc):
-    """The `on:` mapping of a PyYAML-loaded document, under either key."""
-    return doc[True] if True in doc else doc["on"]
+def report(case, src):
+    repo = Repo(src)
+    case.addCleanup(repo.cleanup)
+    before = repo.read()
+    proc = run(repo.dir, "--report")
+    case.assertEqual(proc.returncode, 0, proc.stderr)
+    case.assertEqual(repo.read(), before, "the report wrote to the file")
+    line = proc.stdout.strip()
+    case.assertTrue(line.startswith("ci.yml: "), line)
+    return line[len("ci.yml: "):]
 
 
-def trigger_set(value):
-    if isinstance(value, str):
-        return {value}
-    if isinstance(value, list):
-        return set(value)
-    return set(value.keys())
+def verdict_from_yaml(doc):
+    """The verdict AC3 expects from PyYAML's reading of a loaded document."""
+    if not isinstance(doc, dict) or not (True in doc or "on" in doc):
+        return UNRECOGNIZED
+    on = doc[True] if True in doc else doc["on"]
+    if isinstance(on, str):
+        triggers = {on: None}
+    elif isinstance(on, list):
+        triggers = {t: None for t in on}
+    elif isinstance(on, dict):
+        triggers = on
+    else:
+        return UNRECOGNIZED
+    named = [t for t in triggers if t in ("push", "pull_request")]
+    if not named:
+        return NO_TRIGGER
+    parts = []
+    for t in named:
+        value = triggers[t]
+        present = []
+        if isinstance(value, dict):
+            present = [k for k in FILTER_KEYS if k in value]
+            ignore = value.get("paths-ignore")
+            if isinstance(ignore, list) and ENTRY in ignore:
+                present.append(ENTRY)
+        parts.append(f"{t} ({', '.join(present) if present else 'no filters'})")
+    return ", ".join(parts)
 
 
-class TestFixturesExist(unittest.TestCase):
-    """The fixture domain is non-empty and complete (check discrimination)."""
+class TestFixtureSet(unittest.TestCase):
+    """The fixture set is exactly the recorded one (check discrimination)."""
 
-    def test_every_expected_shape_has_a_pair(self):
-        for shape in BLOCK_SHAPES + REWRITE_SHAPES:
-            self.assertTrue((APPLY / f"{shape}.in.yml").is_file(), shape)
-            self.assertTrue((APPLY / f"{shape}.out.yml").is_file(), shape)
-
-    def test_every_named_refusal_has_an_input(self):
-        for name in REFUSALS:
-            self.assertTrue((REFUSE / f"{name}.yml").is_file(), name)
-
-    def test_no_stray_fixture(self):
-        pairs = {p.name.split(".")[0] for p in APPLY.iterdir()}
-        self.assertEqual(pairs, set(BLOCK_SHAPES + REWRITE_SHAPES))
-        self.assertEqual({p.stem for p in REFUSE.iterdir()}, set(REFUSALS))
-        self.assertEqual({p.stem for p in REPORT.iterdir()}, set(REPORT_VERDICTS))
+    def test_every_recorded_fixture_exists_and_no_stray(self):
+        self.assertEqual({p.stem for p in REPORT.iterdir()}, set(VERDICTS))
 
     def test_crlf_fixture_is_crlf(self):
-        data = (APPLY / "block_crlf.in.yml").read_bytes()
-        self.assertIn(b"\r\n", data)
-        self.assertNotIn(b"\r\n", (APPLY / "block_map.in.yml").read_bytes())
+        self.assertIn(b"\r\n", (REPORT / "block_crlf.yml").read_bytes())
+        self.assertNotIn(b"\r\n", (REPORT / "block_branches.yml").read_bytes())
 
-
-class TestApply(unittest.TestCase):
-    def _apply(self, shape):
-        repo = Repo(APPLY / f"{shape}.in.yml")
-        self.addCleanup(repo.cleanup)
-        before = repo.read()
-        proc = run(repo.dir, "--apply")
-        self.assertEqual(proc.returncode, 0, proc.stderr)
-        self.assertIn("applied: ci.yml", proc.stdout)
-        return before, repo.read()
-
-    def test_each_recognized_shape_matches_its_expected_fixture(self):
-        for shape in BLOCK_SHAPES + REWRITE_SHAPES:
-            with self.subTest(shape=shape):
-                _, after = self._apply(shape)
-                self.assertEqual(after, (APPLY / f"{shape}.out.yml").read_bytes())
-
-    def test_block_map_applies_add_lines_only(self):
-        for shape in BLOCK_SHAPES:
-            with self.subTest(shape=shape):
-                before, after = self._apply(shape)
-                diff = list(difflib.unified_diff(
-                    before.decode().splitlines(True),
-                    after.decode().splitlines(True), n=0,
-                ))
-                body = [l for l in diff[2:] if not l.startswith("@@")]
-                self.assertTrue(body, "diff is empty")
-                self.assertTrue(all(l.startswith("+") for l in body), diff)
-                self.assertIn("- 'cairn/**'", "".join(body))
-
-    def test_scalar_and_flow_rewrites_touch_only_the_on_region(self):
-        for shape in REWRITE_SHAPES:
-            with self.subTest(shape=shape):
-                before, after = self._apply(shape)
-                b = before.decode().split("\n")
-                a = after.decode().split("\n")
-                (i,) = [k for k, l in enumerate(b) if l.startswith("on:")]
-                self.assertEqual(a[:i], b[:i])
-                self.assertEqual(a[-(len(b) - i - 1):], b[i + 1:])
-                block = a[i: len(a) - (len(b) - i - 1)]
-                self.assertEqual(block[0], "on:")
-                self.assertIn("    paths-ignore:", block)
-                self.assertIn("      - 'cairn/**'", block)
-
-    def test_crlf_endings_are_preserved(self):
-        _, after = self._apply("block_crlf")
-        self.assertNotIn(b"\n", after.replace(b"\r\n", b""))
-
-    def test_apply_is_idempotent_by_refusal(self):
-        repo = Repo(APPLY / "block_map.in.yml")
-        self.addCleanup(repo.cleanup)
-        run(repo.dir, "--apply")
-        once = repo.read()
-        proc = run(repo.dir, "--apply")
-        self.assertIn("already ignores `cairn/**`", proc.stdout)
-        self.assertEqual(repo.read(), once)
-
-
-class TestApplySemantics(unittest.TestCase):
-    """Each expected fixture, parsed by PyYAML, ignores cairn/** under push
-    with the trigger set unchanged and pull_request untouched."""
-
-    def setUp(self):
-        if not HAVE_YAML:
-            self.skipTest("PyYAML not importable: semantic assertion skipped")
-
-    def test_expected_fixtures_parse_to_the_added_ignore(self):
-        import yaml
-        for shape in BLOCK_SHAPES + REWRITE_SHAPES:
-            with self.subTest(shape=shape):
-                src = yaml.safe_load((APPLY / f"{shape}.in.yml").read_bytes())
-                out = yaml.safe_load((APPLY / f"{shape}.out.yml").read_bytes())
-                before, after = on_value(src), on_value(out)
-                self.assertIsInstance(after, dict)
-                self.assertIn("cairn/**", after["push"]["paths-ignore"])
-                self.assertEqual(trigger_set(after), trigger_set(before))
-                if shape in BLOCK_SHAPES and "pull_request" in before:
-                    self.assertEqual(after["pull_request"], before["pull_request"])
-                # the only change under push is the appended ignore
-                push_before = before.get("push") if isinstance(before, dict) else None
-                expected = dict(push_before or {})
-                expected["paths-ignore"] = list(expected.get("paths-ignore", [])) + ["cairn/**"]
-                self.assertEqual(after["push"], expected)
-
-
-class TestRefuse(unittest.TestCase):
-    def test_each_named_refusal_leaves_the_file_byte_identical(self):
-        for name, reason in REFUSALS.items():
-            with self.subTest(name=name):
-                repo = Repo(REFUSE / f"{name}.yml")
-                self.addCleanup(repo.cleanup)
-                before = repo.read()
-                proc = run(repo.dir, "--apply")
-                self.assertEqual(proc.returncode, 0, proc.stderr)
-                self.assertIn("refused: ci.yml", proc.stdout)
-                self.assertIn(reason, proc.stdout)
-                self.assertNotIn("applied:", proc.stdout)
-                self.assertEqual(repo.read(), before)
-
-    def test_report_predicts_each_refusal(self):
-        for name, reason in REFUSALS.items():
-            with self.subTest(name=name):
-                repo = Repo(REFUSE / f"{name}.yml")
-                self.addCleanup(repo.cleanup)
-                proc = run(repo.dir, "--report")
-                self.assertEqual(proc.returncode, 0, proc.stderr)
-                self.assertIn(f"would refuse: ", proc.stdout)
-                self.assertIn(reason, proc.stdout)
-                self.assertNotIn("applicable", proc.stdout)
+    def test_column0_comment_fixture_has_one(self):
+        # M178 round-3 finding 1: a column-0 comment inside the `on:` block
+        lines = (REPORT / "comment_column0.yml").read_text().split("\n")
+        on = lines.index("on:")
+        jobs = lines.index("jobs:")
+        self.assertTrue(any(l.startswith("#") for l in lines[on:jobs]), lines)
 
 
 class TestReport(unittest.TestCase):
-    def _report(self, src):
-        repo = Repo(src)
-        self.addCleanup(repo.cleanup)
-        proc = run(repo.dir, "--report")
-        self.assertEqual(proc.returncode, 0, proc.stderr)
-        return proc.stdout.strip()
+    def test_each_fixture_reports_its_recorded_verdict(self):
+        for stem, verdict in VERDICTS.items():
+            with self.subTest(fixture=stem):
+                self.assertEqual(report(self, REPORT / f"{stem}.yml"), verdict)
 
-    def test_each_recognized_shape_reports_applicable(self):
-        for shape in BLOCK_SHAPES + REWRITE_SHAPES:
-            with self.subTest(shape=shape):
-                line = self._report(APPLY / f"{shape}.in.yml")
-                self.assertTrue(line.startswith("ci.yml: "), line)
-                self.assertTrue(line.endswith(" — applicable"), line)
-
-    def test_verdict_names_triggers_and_filter_presence(self):
-        line = self._report(APPLY / "block_pr_filtered.in.yml")
-        self.assertIn("push (branches)", line)
-        self.assertIn("pull_request (paths-ignore)", line)
-        line = self._report(REFUSE / "already_ignored.yml")
-        self.assertIn("push (paths-ignore, cairn/**)", line)
-        line = self._report(APPLY / "flow_list.in.yml")
-        self.assertIn("push (no filters), pull_request (no filters)", line)
-
-    def test_verdict_survives_an_apply_time_refusal(self):
-        for name, (verdict, reason) in REPORT_VERDICTS.items():
-            with self.subTest(name=name):
-                line = self._report(REPORT / f"{name}.yml")
-                self.assertEqual(line, f"ci.yml: {verdict} — would refuse: {reason}")
-
-    def test_comment_refusals_still_name_their_triggers(self):
-        line = self._report(REFUSE / "comment_on_line.yml")
-        self.assertIn(": push (no filters) — would refuse: a comment on the `on:` line", line)
-        line = self._report(REFUSE / "comment_in_block.yml")
-        self.assertIn(": push (branches) — would refuse: a comment inside the `on:` block", line)
-        for name in ("comment_on_line", "comment_in_block"):
-            self.assertNotIn("unrecognized", self._report(REFUSE / f"{name}.yml"), name)
-
-    def test_flow_mapping_and_flow_sequence_push_values_are_placed(self):
-        line = self._report(REFUSE / "push_flow_mapping_filled.yml")
-        self.assertIn(": push (branches) — would refuse:", line)
-        line = self._report(REFUSE / "push_flow_mapping.yml")
-        self.assertIn(": push (no filters), pull_request (no filters) — would refuse:", line)
-        line = self._report(REFUSE / "push_flow_sequence.yml")
-        self.assertIn(": push (no filters) — would refuse: `push:` holds a flow sequence", line)
-
-    def test_flush_left_ignore_items_are_scanned(self):
-        # M178 round-2 finding 1: items at the `paths-ignore` key's own indent
-        line = self._report(REFUSE / "already_ignored_flush.yml")
-        self.assertIn("push (paths-ignore, cairn/**)", line)
-        self.assertIn("would refuse: `push:` already ignores `cairn/**`", line)
-        self.assertNotIn("unrecognized", line)
-        line = self._report(APPLY / "block_flush_ignore.in.yml")
-        self.assertIn("push (branches, paths-ignore), pull_request (no filters)", line)
-        self.assertIn("applicable", line)
-
-    def test_verdict_for_a_file_with_neither_trigger(self):
-        with tempfile.TemporaryDirectory() as d:
-            src = pathlib.Path(d) / "wd.yml"
-            src.write_text("name: manual\non:\n  workflow_dispatch:\njobs: {}\n")
-            line = self._report(src)
-        self.assertIn(": no push or pull_request trigger — would refuse:", line)
-
-    def test_verdict_for_an_unrecognized_file(self):
-        line = self._report(REFUSE / "unrecognized.yml")
-        self.assertIn(": unrecognized — would refuse:", line)
+    def test_all_three_verdict_kinds_are_recorded(self):
+        kinds = set(VERDICTS.values())
+        self.assertIn(NO_TRIGGER, kinds)
+        self.assertIn(UNRECOGNIZED, kinds)
+        self.assertTrue(any(v.startswith("push (") for v in kinds))
 
     def test_one_line_per_yml_and_yaml_file_only(self):
-        repo = Repo(APPLY / "scalar.in.yml", name="a.yml")
+        repo = Repo(REPORT / "scalar.yml", name="a.yml")
         self.addCleanup(repo.cleanup)
         wf = os.path.dirname(repo.path)
-        shutil.copyfile(APPLY / "flow_list.in.yml", os.path.join(wf, "b.yaml"))
+        shutil.copyfile(REPORT / "flow_list.yml", os.path.join(wf, "b.yaml"))
         pathlib.Path(wf, "notes.txt").write_text("on: push\n")
         os.mkdir(os.path.join(wf, "sub"))
-        shutil.copyfile(APPLY / "scalar.in.yml", os.path.join(wf, "sub", "c.yml"))
+        shutil.copyfile(REPORT / "scalar.yml", os.path.join(wf, "sub", "c.yml"))
         proc = run(repo.dir, "--report")
         lines = proc.stdout.strip().split("\n")
         self.assertEqual([l.split(":")[0] for l in lines], ["a.yml", "b.yaml"])
 
-    def test_report_does_not_write(self):
-        repo = Repo(APPLY / "scalar.in.yml")
+    @unittest.skipIf(os.geteuid() == 0, "root reads unreadable files")
+    def test_an_unreadable_file_reports_unrecognized(self):
+        repo = Repo(REPORT / "scalar.yml")
         self.addCleanup(repo.cleanup)
-        before = repo.read()
-        run(repo.dir, "--report")
-        self.assertEqual(repo.read(), before)
+        os.chmod(repo.path, 0)
+        self.addCleanup(os.chmod, repo.path, stat.S_IRUSR | stat.S_IWUSR)
+        proc = run(repo.dir, "--report")
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(proc.stdout.strip(), f"ci.yml: {UNRECOGNIZED}")
+
+    def test_not_utf8_reports_unrecognized(self):
+        with tempfile.TemporaryDirectory() as d:
+            src = pathlib.Path(d) / "bin.yml"
+            src.write_bytes(b"on: push\n\xff\xfe\n")
+            self.assertEqual(report(self, src), UNRECOGNIZED)
+
+
+class TestAgreesWithPyYAML(unittest.TestCase):
+    """AC3: the line reader's verdict equals what PyYAML reads, per fixture."""
+
+    @unittest.skipUnless(HAVE_YAML, "PyYAML not importable: agreement comparison skipped")
+    def test_each_fixture_verdict_agrees_with_pyyaml(self):
+        for stem in VERDICTS:
+            with self.subTest(fixture=stem):
+                path = REPORT / f"{stem}.yml"
+                doc = yaml.safe_load(path.read_bytes())
+                self.assertEqual(report(self, path), verdict_from_yaml(doc))
+
+    @unittest.skipUnless(HAVE_YAML, "PyYAML not importable: agreement comparison skipped")
+    def test_the_oracle_discriminates(self):
+        # the comparison would catch a truncated block: PyYAML reads the
+        # column-0 comment fixture's `paths-ignore`, so the oracle names it
+        doc = yaml.safe_load((REPORT / "comment_column0.yml").read_bytes())
+        self.assertIn("paths-ignore", verdict_from_yaml(doc))
+        self.assertNotEqual(verdict_from_yaml(doc), "push (branches), pull_request (no filters)")
 
 
 class TestCli(unittest.TestCase):
@@ -344,31 +221,35 @@ class TestCli(unittest.TestCase):
             os.mkdir(os.path.join(d, ".git"))
             proc = run(d, d, "--report")
             self.assertEqual(proc.returncode, 0, proc.stderr)
-            self.assertIn("no workflow files", proc.stdout)
-            # a nested start walks up to the git root
-            nested = os.path.join(d, "a", "b")
-            os.makedirs(nested)
-            proc = run(nested, "--report")
+            self.assertIn("no workflow files under", proc.stdout)
+            sub = os.path.join(d, "a", "b")
+            os.makedirs(sub)
+            proc = run(sub, "--report")  # walks up to the .git root
             self.assertEqual(proc.returncode, 0, proc.stderr)
+            self.assertIn("no workflow files under", proc.stdout)
 
     def test_outside_a_git_repository_exits_2(self):
         with tempfile.TemporaryDirectory() as d:
-            # a temp dir is never inside a repo unless the tmp root is one
-            if any(os.path.exists(os.path.join(p, ".git"))
-                   for p in pathlib.Path(d).resolve().parents):
-                self.skipTest("temp dir sits inside a git repository")
-            proc = run(d, "--report")
+            proc = run(d, d, "--report")
             self.assertEqual(proc.returncode, 2)
             self.assertIn("not a git repository", proc.stderr)
 
     def test_usage_errors_exit_2(self):
         with tempfile.TemporaryDirectory() as d:
             os.mkdir(os.path.join(d, ".git"))
-            for args in ([], ["--report", "--apply"], ["--bogus"], [d, d, "--report"]):
+            for args in ([], ["--apply"], ["--report", "--apply"], ["--report", "a", "b"], ["--x"]):
                 with self.subTest(args=args):
                     proc = run(d, *args)
-                    self.assertEqual(proc.returncode, 2)
+                    self.assertEqual(proc.returncode, 2, args)
                     self.assertIn("usage:", proc.stderr)
+
+    def test_apply_writes_nothing(self):
+        repo = Repo(REPORT / "block_branches.yml")
+        self.addCleanup(repo.cleanup)
+        before = repo.read()
+        proc = run(repo.dir, "--apply")
+        self.assertEqual(proc.returncode, 2)
+        self.assertEqual(repo.read(), before)
 
 
 if __name__ == "__main__":

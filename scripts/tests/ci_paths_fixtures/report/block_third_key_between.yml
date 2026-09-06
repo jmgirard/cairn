@@ -1,11 +1,11 @@
 name: ci
 on:
   push:
+    branches: [main]
+  workflow_dispatch:
+  pull_request:
     paths-ignore:
       - 'docs/**'
-      - README.md
-      - 'cairn/**'
-  pull_request:
 jobs:
   test:
     runs-on: ubuntu-latest

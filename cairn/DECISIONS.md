@@ -4878,7 +4878,7 @@ right — the falsifier is such a resume, never a count of milestones. A second
 door exception requested without a trigger revisits the door's terms by
 supersession, never by a further by-name exception.
 
-### D-133 (2026-09-03): The wait rule's no-checks case gains a named source — a tracking-only head under a `cairn/**` `paths-ignore`; `/cairn-init` reports the CI runs tracking-only pushes start and applies the ignore under a chip; annotates D-128 (M178)
+### D-133 (2026-09-03): The wait rule's no-checks case gains a named source — a tracking-only head under a `cairn/**` `paths-ignore`; `/cairn-init` reports the CI runs tracking-only pushes start and shows the ignore to add by hand; annotates D-128 (M178)
 
 **Context:** A milestone loop pushes tracking-only commits — implement's
 checkpoints, review's records — on every branch push, and each push starts
@@ -4899,25 +4899,29 @@ no-checks case, unless branch protection requires that check, where the
 path-skipped run leaves it pending and the merge blocked. Mergeability
 stays the wait clause's to state; that clause names the bullet as one
 source. `/cairn-init` §0 runs `scripts/cairn_ci_paths.py --report` when
-`.github/workflows/` exists, states the fact, and offers `--apply` under a
-chip — never silently — for the files the report marks applicable; the
-script recognizes three `on:` shapes (an unquoted scalar, an unquoted flow
-list, an unquoted block map whose `push:` holds a block mapping or nothing)
-and refuses everything else by name, leaving the file byte-identical.
+`.github/workflows/` exists, states the fact, and shows the `paths-ignore`
+item to add by hand for each `push` trigger the report finds not yet
+ignoring `cairn/**`; the script only reports — its stdlib line reader
+places the `on:` forms its fixture set enumerates, held to PyYAML's reading
+of each, and says `unrecognized` otherwise — and writes nothing.
 Rejected at the plan gate: a close-block-only mention (a repair run or a
-repo adding CI after adoption never sees it); suggest-only (the edit is
-mechanical for the three shapes and the operator approves the set of
-files the chip names in one approve/decline, not through a per-file
-selector); the merge-gate interaction alone in the rulebook (a repo adding
-CI after adoption meets the fact only there); a `/milestone` audit line on
+repo adding CI after adoption never sees it); the merge-gate interaction
+alone in the rulebook (a repo adding CI after adoption meets the fact only
+there); a `/milestone` audit line on
 CI-run waste (the note fires where CI is set up, not at every audit).
+Chosen at the plan gate and dropped 2026-09-05: a chip-applied `--apply`
+edit over the same line reader, which missed a legal YAML form on each of
+three consecutive reviews (a comment inside the `on:` block, flush-left
+sequence items, a column-0 comment truncating the block); the capability
+stays wanted as the ROADMAP candidate row "Chip-applied `cairn/**`
+`paths-ignore` edit", which needs a real YAML parse first.
 
 **Consequences:** D-128 is annotated, not superseded: the no-checks case is
 unchanged in what it permits and gains one named way of arising. The
 required-check remainder under branch protection stays with the
 Branch-protection compatibility candidate row. The observation class that
-overturns this entry: an applied edit changing a workflow's semantics
-beyond the added ignore (the semantic assertion in
-`scripts/tests/test_ci_paths.py` is the probe), or an adopter reporting the
+overturns this entry: a report verdict disagreeing with PyYAML's reading
+of a fixture (the agreement comparison in `scripts/tests/test_ci_paths.py`
+is the probe), or an adopter reporting the
 §0 bullet fired on a repo with no push or pull_request workflow, or missed
 one that had — in which case the shape set narrows or the bullet moves.

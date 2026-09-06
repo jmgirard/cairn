@@ -228,8 +228,8 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   whose filter reads the whole PR diff. Where the workflows are push-triggered and ignore `cairn/**`, a tracking-only
   head commit carries no check run — the wait rule's no-checks case, the last CI-covered commit then being the last
   code-bearing one — unless branch protection requires that check, where the path-skipped run leaves it pending and
-  the merge blocked; mergeability is the wait clause's to state. `/cairn-init` §0 reports the fact and offers the
-  ignore under a chip (`scripts/cairn_ci_paths.py`).
+  the merge blocked; mergeability is the wait clause's to state. `/cairn-init` §0 reports the fact and shows the
+  item to add by hand (`scripts/cairn_ci_paths.py --report`).
 - Approval is recorded on disk: the approving skill writes the single-use, gitignored marker `cairn/.merge-approved` at
   the gate — never except at an explicit user approval; the merge-guard hook denies `gh pr merge`/`git merge` to the
   default branch without it and consumes it per attempt (a failed attempt's marker is restored). The marker names the PR

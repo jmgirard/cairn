@@ -1,9 +1,8 @@
-name: ci
+name: manual
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - 'cairn/**'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'
 jobs:
   test:
     runs-on: ubuntu-latest

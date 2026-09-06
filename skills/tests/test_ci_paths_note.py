@@ -4,7 +4,7 @@ A milestone loop's checkpoint pushes start every push-triggered workflow,
 and a review appeared to end before CI was green when it was only implement's
 tracking-only pushes running. M178 adds a `/cairn-init` §0 environment-check
 bullet that reports the fact from `scripts/cairn_ci_paths.py --report` and
-offers its `--apply` under a chip (AC1), and one git-model bullet in the
+shows the item to add by hand (AC1), and one git-model bullet in the
 rulebook plus a pointer in the wait rule's no-checks clause (AC4). One phrase
 per AC1 clause and per AC4 claim is pinned here, each on one physical line of
 its target (M148: reword new prose, never a pinned neighbour), and each pin
@@ -74,17 +74,17 @@ class TestInitBulletStatesTheFact(unittest.TestCase):
         self.assertIn("that check pending and blocks the merge", init())
 
 
-class TestInitBulletOffersTheApply(unittest.TestCase):
-    """AC1 (d): the apply is offered under a chip, applicable files only."""
+class TestInitBulletSuggestsTheEdit(unittest.TestCase):
+    """AC1 (d): the edit is suggested by hand, no chip, no write."""
 
-    def test_the_apply_is_offered_for_applicable_files_only(self):
-        self.assertIn("only for the files the report marks `applicable`", init())
+    def test_the_suggestion_targets_push_triggers_lacking_the_ignore(self):
+        self.assertIn(f"whose `push` verdict lacks both `{GLOB}` and `paths`", init())
 
-    def test_the_apply_rides_the_confirmation_round_or_its_own_chip(self):
-        self.assertIn("else as its own single approve/decline chip", init())
+    def test_the_suggestion_names_the_item_to_add(self):
+        self.assertIn(f"show the item to add — `- '{GLOB}'` under that trigger's `{IGNORE}`", init())
 
-    def test_the_apply_names_the_ignore_it_adds(self):
-        self.assertIn(f"adds `- '{GLOB}'` under each `push` trigger's `{IGNORE}`", init())
+    def test_the_bullet_poses_no_chip(self):
+        self.assertIn("and it poses no chip; the operator edits the workflow file", init())
 
 
 class TestRulebookGitModelBullet(unittest.TestCase):
