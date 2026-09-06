@@ -66,11 +66,16 @@ transitions, human-gated merges, and a domain verification doctrine.
   `cairn_validate` (mechanical consistency gate), `cairn_impact` (principle
   → citing `cairn/` file:line, for the Sync Impact Report on IPn/GPn changes;
   M15), `cairn_cost` (per-phase token attribution over the session store;
-  M94).
-  Read-only; reuse the hooks' `cairn_common` parser (no duplication);
-  exit 2 outside a cairn repo. `/milestone` invokes them instead of
-  re-deriving status by LLM; `/milestone-review` runs `cairn_impact --changed`
-  when a milestone touches a principle; semantic checks stay LLM-owned.
+  M94), `cairn_ci_paths` (per-workflow report of push/pull_request triggers
+  and their path filters, read at `/cairn-init` §0; report-only — the
+  operator edits the workflow by hand; M178).
+  Read-only; the tracking-file readers reuse the hooks' `cairn_common`
+  parser (no duplication; `cairn_ci_paths` reads workflow files only and
+  walks up to `.git` itself); exit 2 outside a cairn repo (`cairn_ci_paths`:
+  outside a git repo, since `/cairn-init` §0 runs before `cairn/` exists).
+  `/milestone` invokes them instead of re-deriving status by LLM;
+  `/milestone-review` runs `cairn_impact --changed` when a milestone touches
+  a principle; semantic checks stay LLM-owned.
 
 ## Conventions
 
