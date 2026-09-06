@@ -1,12 +1,18 @@
-"""Tests for scripts/cairn_ci_paths.py (M178).
+"""Tests for scripts/cairn_ci_paths.py (M178 report, M181 apply).
 
 Drives the script as a subprocess against a temporary git root whose
-`.github/workflows/` holds one fixture at a time from
-`ci_paths_fixtures/report/`. Each fixture has a recorded verdict (the change
+`.github/workflows/` holds one fixture at a time. `--report` runs over
+`ci_paths_fixtures/report/`: each fixture has a recorded verdict (the change
 detector); every run leaves the file byte-identical; and when PyYAML is
 importable each verdict is compared with PyYAML's own reading of the file
 (the `on` key reads as `True` under YAML 1.1, or as `"on"`) — the oracle the
-line reader is held to. Without PyYAML that comparison is skipped and says so.
+line reader is held to. `--apply` runs over `ci_paths_fixtures/apply/`:
+`pairs/<stem>.yml` is edited to `pairs/<stem>.expected.yml` byte-for-byte,
+each `refused/<stem>.yml` is left byte-identical with its recorded reason,
+`--dry-run` writes nothing, each pair's diff adds lines only, and each
+expected fixture `safe_load`s to the input with `cairn/**` appended under
+`push` → `paths-ignore`. Without PyYAML the apply and agreement tests are
+skipped and say so; one test shadows `yaml` to see `--apply` exit 3.
 
 Run: python3 -m unittest discover -s scripts/tests
 """
@@ -23,6 +29,8 @@ import unittest
 HERE = pathlib.Path(__file__).resolve().parent
 SCRIPT = HERE.parent / "cairn_ci_paths.py"
 REPORT = HERE / "ci_paths_fixtures" / "report"
+PAIRS = HERE / "ci_paths_fixtures" / "apply" / "pairs"
+REFUSED = HERE / "ci_paths_fixtures" / "apply" / "refused"
 
 FILTER_KEYS = ("branches", "branches-ignore", "paths", "paths-ignore")
 ENTRY = "cairn/**"
@@ -61,6 +69,28 @@ VERDICTS = {
     "neither_trigger": NO_TRIGGER,
     "no_on_key": UNRECOGNIZED,
 }
+
+# apply pair stems (AC3's twelve forms): `<stem>.yml` edits to `<stem>.expected.yml`
+PAIR_STEMS = (
+    "bare_push", "push_branches", "ignore_deeper", "ignore_flush",
+    "comment_in_block", "comment_column0", "quoted_on_double", "quoted_on_single",
+    "indent4_bare_push", "crlf", "pr_own_ignore", "third_key_between",
+)
+
+# refused fixture stem -> the reason `--apply` prints, one per AC2 reason
+# other than `post-edit check failed`
+REFUSALS = {
+    "cannot_parse": "PyYAML cannot parse the file",
+    "two_documents": "more than one document",
+    "no_on_key": "no `on` key",
+    "on_scalar": "`on` is not a block mapping",
+    "no_push": "no `push` trigger",
+    "push_flow_mapping": "`push` holds a flow mapping",
+    "push_paths": "`push` carries `paths`",
+    "ignore_flow_sequence": "`paths-ignore` is not a block sequence",
+    "already_ignores": "already ignores `cairn/**`",
+}
+POST_EDIT = "post-edit check failed"
 
 try:
     import yaml
@@ -237,19 +267,203 @@ class TestCli(unittest.TestCase):
     def test_usage_errors_exit_2(self):
         with tempfile.TemporaryDirectory() as d:
             os.mkdir(os.path.join(d, ".git"))
-            for args in ([], ["--apply"], ["--report", "--apply"], ["--report", "a", "b"], ["--x"]):
+            cases = (
+                [], ["--report", "--apply"], ["--report", "a", "b"], ["--x"],
+                ["--dry-run"], ["--report", "--dry-run"], ["--apply", "--apply"],
+            )
+            for args in cases:
                 with self.subTest(args=args):
                     proc = run(d, *args)
                     self.assertEqual(proc.returncode, 2, args)
                     self.assertIn("usage:", proc.stderr)
 
-    def test_apply_writes_nothing(self):
-        repo = Repo(REPORT / "block_branches.yml")
+    def test_apply_with_no_workflows_dir_exits_0(self):
+        with tempfile.TemporaryDirectory() as d:
+            os.mkdir(os.path.join(d, ".git"))
+            for args in (["--apply"], ["--apply", "--dry-run"]):
+                proc = run(d, *args)
+                self.assertEqual(proc.returncode, 0, proc.stderr)
+                self.assertIn("no workflow files under", proc.stdout)
+
+
+# --- --apply (M181) ---------------------------------------------------------
+
+def apply(case, src, *flags):
+    """Run `--apply` (plus `flags`) on one fixture; returns (repo, stdout line)."""
+    repo = Repo(src)
+    case.addCleanup(repo.cleanup)
+    proc = run(repo.dir, "--apply", *flags)
+    case.assertEqual(proc.returncode, 0, proc.stderr)
+    line = proc.stdout.strip()
+    case.assertTrue(line.startswith("ci.yml: "), line)
+    return repo, line[len("ci.yml: "):]
+
+
+def expected_after(doc):
+    """The input document with `cairn/**` appended under on → push → paths-ignore."""
+    key = True if True in doc else "on"
+    push = doc[key].get("push")
+    if push is None:
+        push = doc[key]["push"] = {}
+    push.setdefault("paths-ignore", []).append(ENTRY)
+    return doc
+
+
+class TestApplyFixtureSet(unittest.TestCase):
+    """The apply fixture set is exactly the recorded one."""
+
+    def test_pairs_are_exactly_the_recorded_stems_each_with_an_expected(self):
+        names = {p.name for p in PAIRS.iterdir()}
+        want = {f"{s}.yml" for s in PAIR_STEMS} | {f"{s}.expected.yml" for s in PAIR_STEMS}
+        self.assertEqual(names, want)
+        self.assertEqual(len(PAIR_STEMS), 12)
+
+    def test_refused_are_exactly_the_recorded_stems(self):
+        self.assertEqual({p.stem for p in REFUSED.iterdir()}, set(REFUSALS))
+
+    def test_refusals_cover_every_reason_but_post_edit(self):
+        self.assertEqual(len(set(REFUSALS.values())), 9)
+        self.assertNotIn(POST_EDIT, REFUSALS.values())
+
+    def test_fixture_axes_are_present(self):
+        self.assertIn(b"\r\n", (PAIRS / "crlf.yml").read_bytes())
+        self.assertIn(b"\r\n", (PAIRS / "crlf.expected.yml").read_bytes())
+        self.assertNotIn(b"\r\n", (PAIRS / "push_branches.yml").read_bytes())
+        self.assertIn("\n    push:\n", (PAIRS / "indent4_bare_push.yml").read_text())
+        self.assertIn('\n"on":\n', (PAIRS / "quoted_on_double.yml").read_text())
+        self.assertIn("\n'on':\n", (PAIRS / "quoted_on_single.yml").read_text())
+        lines = (PAIRS / "comment_column0.yml").read_text().split("\n")
+        self.assertTrue(any(l.startswith("#") for l in lines[lines.index("on:"):lines.index("jobs:")]))
+        self.assertIn("    - README.md\n", (PAIRS / "ignore_flush.yml").read_text())
+        self.assertIn("      - README.md\n", (PAIRS / "ignore_deeper.yml").read_text())
+        self.assertIn("  workflow_dispatch:\n  pull_request:", (PAIRS / "third_key_between.yml").read_text())
+        self.assertIn("  pull_request:\n    paths-ignore:", (PAIRS / "pr_own_ignore.yml").read_text())
+        self.assertIn("- cairn/**\n", (REFUSED / "already_ignores.yml").read_text())
+
+
+@unittest.skipUnless(HAVE_YAML, "PyYAML not importable: --apply tests skipped")
+class TestApply(unittest.TestCase):
+    def test_each_pair_applies_to_its_expected_bytes(self):
+        for stem in PAIR_STEMS:
+            with self.subTest(fixture=stem):
+                repo, verdict = apply(self, PAIRS / f"{stem}.yml")
+                self.assertEqual(verdict, "applied")
+                self.assertEqual(repo.read(), (PAIRS / f"{stem}.expected.yml").read_bytes())
+
+    def test_each_refused_input_is_byte_identical_with_its_reason(self):
+        for stem, reason in REFUSALS.items():
+            with self.subTest(fixture=stem):
+                src = REFUSED / f"{stem}.yml"
+                repo, verdict = apply(self, src)
+                self.assertEqual(verdict, f"refused: {reason}")
+                self.assertEqual(repo.read(), src.read_bytes())
+
+    def test_dry_run_writes_nothing_and_names_exactly_the_editable_files(self):
+        for stem in PAIR_STEMS:
+            with self.subTest(fixture=stem):
+                src = PAIRS / f"{stem}.yml"
+                repo, verdict = apply(self, src, "--dry-run")
+                self.assertEqual(verdict, "would apply")
+                self.assertEqual(repo.read(), src.read_bytes())
+        for stem, reason in REFUSALS.items():
+            with self.subTest(fixture=stem):
+                src = REFUSED / f"{stem}.yml"
+                repo, verdict = apply(self, src, "--dry-run")
+                self.assertEqual(verdict, f"refused: {reason}")
+                self.assertEqual(repo.read(), src.read_bytes())
+
+    def test_each_pair_diff_adds_lines_only(self):
+        import difflib
+        for stem in PAIR_STEMS:
+            with self.subTest(fixture=stem):
+                a = (PAIRS / f"{stem}.yml").read_bytes().decode().splitlines(keepends=True)
+                b = (PAIRS / f"{stem}.expected.yml").read_bytes().decode().splitlines(keepends=True)
+                body = list(difflib.unified_diff(a, b, "in", "out", n=0))[2:]
+                self.assertTrue(body, "the pair differs")
+                self.assertFalse([l for l in body if l.startswith("-")], body)
+                self.assertTrue(all(l.startswith(("+", "@@")) for l in body), body)
+                self.assertTrue(any(l.startswith("+") and ENTRY in l for l in body), body)
+
+    def test_each_expected_loads_as_the_input_plus_the_entry(self):
+        for stem in PAIR_STEMS:
+            with self.subTest(fixture=stem):
+                before = yaml.safe_load((PAIRS / f"{stem}.yml").read_bytes())
+                after = yaml.safe_load((PAIRS / f"{stem}.expected.yml").read_bytes())
+                self.assertEqual(after, expected_after(before))
+
+    def test_the_oracle_discriminates(self):
+        # an item placed under `pull_request` instead would fail the oracle
+        wrong = yaml.safe_load((PAIRS / "pr_own_ignore.yml").read_bytes())
+        wrong[True]["pull_request"]["paths-ignore"].append(ENTRY)
+        before = yaml.safe_load((PAIRS / "pr_own_ignore.yml").read_bytes())
+        self.assertNotEqual(wrong, expected_after(before))
+
+    def test_a_second_apply_refuses_as_already_ignoring(self):
+        repo, verdict = apply(self, PAIRS / "bare_push.yml")
+        self.assertEqual(verdict, "applied")
+        after = repo.read()
+        proc = run(repo.dir, "--apply")
+        self.assertEqual(proc.stdout.strip(), f"ci.yml: refused: {REFUSALS['already_ignores']}")
+        self.assertEqual(repo.read(), after)
+
+    def test_one_line_per_file_and_exit_0_whatever_the_verdicts(self):
+        repo = Repo(PAIRS / "bare_push.yml", name="a.yml")
+        self.addCleanup(repo.cleanup)
+        wf = os.path.dirname(repo.path)
+        shutil.copyfile(REFUSED / "no_push.yml", os.path.join(wf, "b.yaml"))
+        shutil.copyfile(REFUSED / "cannot_parse.yml", os.path.join(wf, "c.yml"))
+        proc = run(repo.dir, "--apply")
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(proc.stdout.strip().split("\n"), [
+            "a.yml: applied",
+            f"b.yaml: refused: {REFUSALS['no_push']}",
+            f"c.yml: refused: {REFUSALS['cannot_parse']}",
+        ])
+
+    @unittest.skipIf(os.geteuid() == 0, "root reads unreadable files")
+    def test_an_unreadable_file_is_refused(self):
+        repo = Repo(PAIRS / "bare_push.yml")
+        self.addCleanup(repo.cleanup)
+        os.chmod(repo.path, 0)
+        self.addCleanup(os.chmod, repo.path, stat.S_IRUSR | stat.S_IWUSR)
+        proc = run(repo.dir, "--apply")
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(proc.stdout.strip(), f"ci.yml: refused: {REFUSALS['cannot_parse']}")
+
+
+class TestApplyWithoutPyYAML(unittest.TestCase):
+    """AC2: a failing `import yaml` exits 3, names PyYAML, writes nothing."""
+
+    def test_shadowed_yaml_module_exits_3(self):
+        repo = Repo(PAIRS / "bare_push.yml")
         self.addCleanup(repo.cleanup)
         before = repo.read()
-        proc = run(repo.dir, "--apply")
-        self.assertEqual(proc.returncode, 2)
-        self.assertEqual(repo.read(), before)
+        with tempfile.TemporaryDirectory() as shadow:
+            pathlib.Path(shadow, "yaml.py").write_text('raise ImportError("shadowed")\n')
+            env = dict(os.environ, PYTHONPATH=shadow, PYTHONDONTWRITEBYTECODE="1")
+            for flags in (["--apply"], ["--apply", "--dry-run"]):
+                with self.subTest(flags=flags):
+                    proc = subprocess.run(
+                        [sys.executable, str(SCRIPT), *flags],
+                        cwd=repo.dir, capture_output=True, text=True, timeout=30, env=env,
+                    )
+                    self.assertEqual(proc.returncode, 3, proc.stderr)
+                    self.assertIn("PyYAML", proc.stderr)
+                    self.assertEqual(proc.stdout, "")
+                    self.assertEqual(repo.read(), before)
+
+    def test_report_still_runs_without_pyyaml(self):
+        repo = Repo(PAIRS / "bare_push.yml")
+        self.addCleanup(repo.cleanup)
+        with tempfile.TemporaryDirectory() as shadow:
+            pathlib.Path(shadow, "yaml.py").write_text('raise ImportError("shadowed")\n')
+            env = dict(os.environ, PYTHONPATH=shadow, PYTHONDONTWRITEBYTECODE="1")
+            proc = subprocess.run(
+                [sys.executable, str(SCRIPT), "--report"],
+                cwd=repo.dir, capture_output=True, text=True, timeout=30, env=env,
+            )
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            self.assertEqual(proc.stdout.strip(), "ci.yml: push (no filters), pull_request (no filters)")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,14 @@
+name: ci
+on:
+  push:
+    branches: [main]
+# tracking-only pushes are skipped below
+    paths-ignore:
+      - 'docs/**'
+      - 'cairn/**'
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
