@@ -69,7 +69,8 @@ Chapter markers: mark a chapter at each phase transition — each phase its
   exclude them, and both close blocks name them). A file the dry run refuses
   keeps the by-hand suggestion: for each such file whose `push` verdict lacks both `cairn/**` and `paths`,
   show the item to add — `- 'cairn/**'` under that trigger's `paths-ignore`,
-  the key created as a block sequence where the trigger has none; for a
+  the key created as a block sequence where the trigger has none, and a
+  scalar `on: push` or flow-list `on: [push, …]` first rewritten in block form (`on:` holding a `push:` key) before the item can go under it; for a
   `push` verdict showing `paths` and not `paths-ignore`, say that trigger
   cannot take `paths-ignore` (GitHub accepts one of the two per trigger) and
   leave it to the operator. When the dry run exits 3 (PyYAML absent), the

@@ -2018,6 +2018,12 @@ REGISTRY = [
         target="skills/cairn-init/SKILL.md",
         block="show the item to add — `- '" + "cairn/" + "**" + "'` under that trigger's `" + "paths-" + "ignore" + "`",
     ),
+    Mutation(
+        guard="test_ci_paths_note",
+        test="TestInitBulletSuggestsTheEdit.test_the_suggestion_says_a_refused_on_form_is_first_rewritten_in_block_form",
+        target="skills/cairn-init/SKILL.md",
+        block="first rewritten in block form (`on:` holding a `push:` key) before the item can go under it",
+    ),
     # M181: clause (d) applies the edit under a chip — one entry per pinned
     # phrase, each on one physical line of its target (M148).
     Mutation(

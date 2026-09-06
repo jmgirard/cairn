@@ -61,7 +61,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `scripts/` + python3 reporters (M10) — the deterministic read layer:
+- `scripts/` + python3 tools (M10) — the deterministic scripts layer, one
+  writing mode among its readers (below):
   `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),
   `cairn_validate` (mechanical consistency gate), `cairn_impact` (principle
   → citing `cairn/` file:line, for the Sync Impact Report on IPn/GPn changes;

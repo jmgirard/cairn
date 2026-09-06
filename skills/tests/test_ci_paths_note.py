@@ -85,6 +85,10 @@ class TestInitBulletSuggestsTheEdit(unittest.TestCase):
     def test_the_suggestion_names_the_item_to_add(self):
         self.assertIn(f"show the item to add — `- '{GLOB}'` under that trigger's `{IGNORE}`", init())
 
+    def test_the_suggestion_says_a_refused_on_form_is_first_rewritten_in_block_form(self):
+        # M181 return 1 (F11): the refused scalar/flow-list forms need the block form first
+        self.assertIn("first rewritten in block form (`on:` holding a `push:` key) before the item can go under it", init())
+
 
 class TestInitBulletAppliesUnderAChip(unittest.TestCase):
     """AC1 (d), M181: dry run, chip, decline, apply, uncommitted edit."""

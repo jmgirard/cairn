@@ -1,0 +1,12 @@
+name: ci
+filters: &filters
+  paths:
+    - 'src/**'
+on:
+  push:
+    <<: *filters
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok

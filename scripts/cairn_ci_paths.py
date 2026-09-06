@@ -34,16 +34,23 @@ prints one line per workflow file — `<file>: applied` (`would apply` under
 `--dry-run`) or `<file>: refused: <reason>` — and exits 0 whatever the
 per-file verdicts. A file is edited exactly when PyYAML composes it as one
 document whose top-level mapping has a plain or quoted `on` key holding a
-block mapping with a `push` key whose value is a block mapping or null,
-carrying no `paths` key, and whose `paths-ignore` is absent or a block
-sequence not holding `cairn/**`. The edit inserts lines only, placed by the
-composed nodes' marks: `- 'cairn/**'` at the existing items' column after
+block mapping — no anchor, alias, or merge key (a plain `<<` key) among
+the parse events from the `on` key to the end of its value — with a `push`
+key whose value is a block mapping or null, carrying no `paths` key, and
+whose `paths-ignore` is absent or a block sequence not holding `cairn/**`
+(in any scalar style), and when the post-edit check below passes. The edit
+inserts lines only, placed by the composed nodes' marks: `- 'cairn/**'` at the existing items' column after
 the last item, or a `paths-ignore:` key at the `push` children's column
 (for a null `push`, one indent step under the `on` children) followed by
 the item; line endings are preserved. Before writing, `yaml.safe_load` of
 the edited text must equal that of the original with `cairn/**` appended
-under `on` → `push` → `paths-ignore`; otherwise the file is refused with
-`post-edit check failed`. Every refusal leaves the file byte-identical.
+under `on` → `push` → `paths-ignore` (the key `True` for a plain `on`,
+`'on'` when quoted); otherwise — or when a load, the expected value's
+construction, or the comparison raises — the file is refused with
+`post-edit check failed`; a write raising `OSError` refuses with `the file
+cannot be written`. Every refusal leaves the file byte-identical and names
+the first reason that applies, in the order the `R_*` constants below are
+listed.
 `--dry-run` writes nothing and prints `would apply` for exactly the files
 `--apply` would edit.
 """
@@ -65,12 +72,14 @@ R_PARSE = "PyYAML cannot parse the file"
 R_DOCS = "more than one document"
 R_NO_ON = "no `on` key"
 R_ON_NOT_BLOCK = "`on` is not a block mapping"
+R_ON_ANCHOR = "`on` holds an anchor, alias, or merge key"
 R_NO_PUSH = "no `push` trigger"
 R_PUSH_FLOW = "`push` holds a flow mapping"
 R_PUSH_PATHS = "`push` carries `paths`"
 R_IGNORE_NOT_SEQ = "`paths-ignore` is not a block sequence"
 R_ALREADY = "already ignores `cairn/**`"
 R_POST_EDIT = "post-edit check failed"
+R_UNWRITABLE = "the file cannot be written"
 
 _ON_KEY = re.compile(r"""^(?P<key>on|"on"|'on')\s*:(?P<rest>.*)$""")
 _WORD = re.compile(r"^[A-Za-z_][A-Za-z0-9_-]*$")
@@ -363,6 +372,29 @@ def _mapping_get(mapping, name):
     return found
 
 
+def _is_entry(node):
+    """True when `node` is the scalar `cairn/**`, whatever its style."""
+    return node.__class__.__name__ == "ScalarNode" and node.value == ENTRY
+
+
+def _anchor_reach(yaml, text, on_key, on_value):
+    """True when an anchor, alias, or merge key sits between the `on` key's
+    start and its value's end in the parse events, or the `on` value was
+    composed before its key (an alias to an earlier node)."""
+    lo = on_key.start_mark.index
+    if on_value.start_mark.index < lo:
+        return True
+    hi = max(on_value.end_mark.index, lo)
+    for event in yaml.parse(text):
+        if not (lo <= event.start_mark.index < hi):
+            continue
+        if getattr(event, "anchor", None) is not None:  # an anchor, or an alias event
+            return True
+        if isinstance(event, yaml.ScalarEvent) and event.value == "<<" and event.style is None:
+            return True
+    return False
+
+
 def _is_null(node):
     return node.__class__.__name__ == "ScalarNode" and node.tag.endswith(":null")
 
@@ -378,18 +410,23 @@ def _end_index(lines, node):
     """The line index just past `node`, by its end mark.
 
     A block collection's end mark sits on the next token after it (the
-    following key, or the stream end); a scalar's sits just past its text.
+    following key, or the stream end); a scalar's or flow collection's sits
+    just past its text. Either way the mark ends the node's last line when
+    text precedes it on that line, and starts the following line otherwise.
     """
     m = node.end_mark
-    if node.__class__.__name__ != "ScalarNode" or m.column == 0:
-        return m.line
-    return m.line + 1
+    if m.line >= len(lines):
+        return len(lines)
+    before = lines[m.line][: m.column]
+    return m.line if before.strip() == "" else m.line + 1
 
 
 def plan_edit(yaml, text):
-    """Where the insertion goes: (insert_index, [line bodies without endings]).
+    """Where the insertion goes: (loaded_key, insert_index, [line bodies]).
 
-    Raises Refused with the reason when the file is not editable.
+    `loaded_key` is what `safe_load` keys the file's `on` as (`True` when
+    plain, `"on"` when quoted); the bodies carry no line endings. Raises
+    Refused with the first applicable reason when the file is not editable.
     """
     try:
         docs = list(yaml.compose_all(text))
@@ -406,6 +443,9 @@ def plan_edit(yaml, text):
     on_key, on_value = on
     if on_value.__class__.__name__ != "MappingNode" or on_value.flow_style:
         raise Refused(R_ON_NOT_BLOCK)
+    if _anchor_reach(yaml, text, on_key, on_value):
+        raise Refused(R_ON_ANCHOR)
+    loaded_key = True if on_key.style is None else "on"  # what safe_load keys `on` as
     push = _mapping_get(on_value, "push")
     if push is None:
         raise Refused(R_NO_PUSH)
@@ -424,13 +464,13 @@ def plan_edit(yaml, text):
             ignore_key, seq = ignore
             if seq.__class__.__name__ != "SequenceNode" or seq.flow_style:
                 raise Refused(R_IGNORE_NOT_SEQ)
-            if any(_scalar_key(item, ENTRY) for item in seq.value):
+            if any(_is_entry(item) for item in seq.value):
                 raise Refused(R_ALREADY)
             if not seq.value:  # composed as a block sequence only when it has items
                 raise Refused(R_IGNORE_NOT_SEQ)
             column = seq.start_mark.column
             index = _end_index(lines, seq.value[-1])
-            return index, [" " * column + ITEM_TEXT]
+            return loaded_key, index, [" " * column + ITEM_TEXT]
         child_col = push_value.value[0][0].start_mark.column
         step = child_col - push_key.start_mark.column
         index = _first_content_line_before(lines, _end_index(lines, push_value))
@@ -440,7 +480,7 @@ def plan_edit(yaml, text):
         index = push_key.start_mark.line + 1
     if step <= 0:
         raise Refused(R_POST_EDIT)
-    return index, [" " * child_col + "paths-ignore:", " " * (child_col + step) + ITEM_TEXT]
+    return loaded_key, index, [" " * child_col + "paths-ignore:", " " * (child_col + step) + ITEM_TEXT]
 
 
 def apply_edit(text, index, bodies):
@@ -458,10 +498,9 @@ def apply_edit(text, index, bodies):
     return "".join(lines[:index] + [b + ending for b in bodies] + lines[index:])
 
 
-def expected_after(yaml, text):
+def expected_after(yaml, text, key):
     """`safe_load` of the original with `cairn/**` appended under on → push → paths-ignore."""
     doc = yaml.safe_load(text)
-    key = True if True in doc else "on"
     push = doc[key].get("push")
     if push is None:
         push = doc[key]["push"] = {}
@@ -479,19 +518,23 @@ def apply_file(yaml, path, dry_run):
     except (OSError, UnicodeDecodeError):
         return f"{name}: refused: {R_PARSE}"
     try:
-        index, bodies = plan_edit(yaml, text)
+        key, index, bodies = plan_edit(yaml, text)
         edited = apply_edit(text, index, bodies)
         try:
-            if yaml.safe_load(edited) != expected_after(yaml, text):
-                raise Refused(R_POST_EDIT)
-        except yaml.YAMLError:
+            same = yaml.safe_load(edited) == expected_after(yaml, text, key)
+        except Exception:  # a load, the expected value's construction, or the comparison
+            same = False
+        if not same:
             raise Refused(R_POST_EDIT)
     except Refused as exc:
         return f"{name}: refused: {exc.args[0]}"
     if dry_run:
         return f"{name}: would apply"
-    with open(path, "wb") as fh:
-        fh.write(edited.encode("utf-8"))
+    try:
+        with open(path, "wb") as fh:
+            fh.write(edited.encode("utf-8"))
+    except OSError:
+        return f"{name}: refused: {R_UNWRITABLE}"
     return f"{name}: applied"
 
 
