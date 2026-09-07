@@ -645,6 +645,27 @@ class TestApplyWithoutPyYAML(unittest.TestCase):
                     self.assertEqual(proc.stdout, "")
                     self.assertEqual(repo.read(), before)
 
+    def test_a_yaml_module_raising_anything_else_exits_3(self):
+        # M181 re-review 3, H1: a broken install whose import raises past
+        # ImportError is the same failing import — exit 3, never a traceback
+        repo = Repo(PAIRS / "bare_push.yml")
+        self.addCleanup(repo.cleanup)
+        before = repo.read()
+        with tempfile.TemporaryDirectory() as shadow:
+            pathlib.Path(shadow, "yaml.py").write_text('raise ValueError("broken install")\n')
+            env = dict(os.environ, PYTHONPATH=shadow, PYTHONDONTWRITEBYTECODE="1")
+            for flags in (["--apply"], ["--apply", "--dry-run"]):
+                with self.subTest(flags=flags):
+                    proc = subprocess.run(
+                        [sys.executable, str(SCRIPT), *flags],
+                        cwd=repo.dir, capture_output=True, text=True, timeout=30, env=env,
+                    )
+                    self.assertEqual(proc.returncode, 3, proc.stderr)
+                    self.assertIn("PyYAML", proc.stderr)
+                    self.assertNotIn("Traceback", proc.stderr)
+                    self.assertEqual(proc.stdout, "")
+                    self.assertEqual(repo.read(), before)
+
     def test_report_still_runs_without_pyyaml(self):
         repo = Repo(PAIRS / "bare_push.yml")
         self.addCleanup(repo.cleanup)

@@ -28,8 +28,9 @@ unquoted or quoted `on:` key holding a plain scalar, a flow list, or a block
 map whose trigger values are block mappings, flow mappings, flow sequences,
 scalars, or nothing; comments are ignored. `--report` writes nothing.
 
-`--apply` needs PyYAML, imported only on this path: when the import fails
-the script exits 3 with a message naming PyYAML and writes nothing. It
+`--apply` needs PyYAML, imported only on this path: when the import raises
+anything (absent, or an install whose import fails) the script exits 3 with
+a message naming PyYAML and writes nothing. It
 prints one line per workflow file — `<file>: applied` (`would apply` under
 `--dry-run`) or `<file>: refused: <reason>` — and exits 0 whatever the
 per-file verdicts. A file is edited exactly when PyYAML composes it as one
@@ -546,7 +547,7 @@ def apply_file(yaml, path, dry_run):
 def apply_files(files, dry_run):
     try:
         import yaml
-    except ImportError:
+    except Exception:  # absent (ImportError), or an install whose import raises anything else
         sys.stderr.write(
             "--apply needs PyYAML (`import yaml` failed); install PyYAML, "
             "or add the item by hand as --report shows\n"

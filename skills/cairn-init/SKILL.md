@@ -62,7 +62,8 @@ Chapter markers: mark a chapter at each phase transition — each phase its
   round as §0's other options (the disambiguation gate, the project-type
   chip) when one is posed, else as its own chip; the chip says the edit adds
   `- 'cairn/**'` under each named file's `push` → `paths-ignore` and nothing
-  else, and a decline writes nothing to the workflow files. On approval run
+  else (a last line lacking its line ending gains one), and a decline writes nothing to the workflow files, the by-hand
+  suggestion below then standing for the declined files too. On approval run
   the same command without `--dry-run`, re-run `--report`, and state that
   the edited workflow files are left uncommitted for the operator to commit
   (a CI-config change is not a tracking commit; the §1 and §3 commit bullets

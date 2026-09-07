@@ -24,7 +24,8 @@
   --dry-run` and, for the files that would apply, poses one approve/decline
   chip: on approval `--apply` inserts `- 'cairn/**'` under each such
   file's `push` → `paths-ignore` (the key created when absent), lines added
-  only, the file's line endings kept, and the edit checked against
+  only (a final line lacking its ending gains one), the file's line endings
+  kept, and the edit checked against
   PyYAML's own reading before it is written; the edited workflow file is
   left uncommitted for the operator (cairn-init's commits never stage it).
   `--apply` needs PyYAML (an optional dependency of that mode alone; exit 3
