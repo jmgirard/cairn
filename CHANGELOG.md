@@ -1,57 +1,60 @@
 # Changelog
 
-## Unreleased
+## 1.12.0 (2026-09-07)
+
+### Changes that affect existing repos
 
 - **The ROADMAP keeps 3 terminal rows, down from 5.** `cairn_validate`'s
   `terminal-row retention` check now fails a ROADMAP table holding more
-  than 3 `done`/`dropped` rows combined (`TERMINAL_ROW_RETENTION = 3` in
-  `scripts/cairn_scripts.py`); the rulebook's terminal-row retention
-  bullet and the `/cairn-init` ROADMAP skeleton comment say 3. An adopting
-  repo whose ROADMAP carries 4 or 5 terminal rows reds on upgrade with
+  than 3 `done`/`dropped` rows combined; the rulebook's terminal-row
+  retention bullet and the `/cairn-init` ROADMAP skeleton comment say 3.
+  A repo whose ROADMAP carries 4 or 5 terminal rows reds on upgrade with
   `N terminal rows (retention 3): …`; the remedy is to prune the oldest
   done/dropped rows from the table — they survive in `milestones/archive/`
   and git.
-- **`/cairn-init` says that tracking-only pushes start CI, and adds the
-  ignore under a chip where PyYAML is present, else shows it to add by
-  hand.** When a repo has `.github/workflows/`, §0 runs
-  `scripts/cairn_ci_paths.py --report` and reports that cairn's
-  tracking-only commits (checkpoints, review records) reach the remote on
-  every branch push and start the push-triggered workflows whose
-  `branches` filter admits the branch; that a `pull_request` trigger reads
-  the whole PR diff, so ignoring `cairn/**` helps `push` triggers only; and
-  that a required check under branch protection stays pending on a
-  path-skipped run. It then runs `scripts/cairn_ci_paths.py --apply
-  --dry-run` and, for the files that would apply, poses one approve/decline
-  chip: on approval `--apply` inserts `- 'cairn/**'` under each such
-  file's `push` → `paths-ignore` (the key created when absent), lines added
-  only (a final line lacking its ending gains one), the file's line endings
-  kept, and the edit checked against
-  PyYAML's own reading before it is written; the edited workflow file is
-  left uncommitted for the operator (cairn-init's commits never stage it).
-  `--apply` needs PyYAML (an optional dependency of that mode alone; exit 3
-  naming it when absent, nothing written) and refuses, byte-identically
-  with a reason, a file it cannot edit as a pure insertion, naming the
-  first of twelve reasons that applies: PyYAML cannot parse the file (any
-  raise while composing it included), more than one document, no `on`
-  key, `on` not a block mapping (a scalar or flow-list `on:`), an anchor,
-  alias, or merge key under `on`, no `push` trigger, `push` holding a
-  flow mapping, `push` carrying `paths`, `paths-ignore` not a block
-  sequence (flow, null, or scalar), one already ignoring `cairn/**`, the
-  post-edit check failing (any raise after composing included), or the
-  file not writable. A refused file, and every
-  file when PyYAML is absent, keeps the by-hand suggestion for each `push`
-  trigger not yet ignoring `cairn/**` and carrying no `paths` key (a
-  trigger with `paths` cannot take `paths-ignore`). `--report` stays
-  stdlib and writes nothing (one line per workflow: its
-  `push`/`pull_request` triggers and their filter keys, `no push or
-  pull_request trigger`, or `unrecognized`). The rulebook's git model
+
+### New
+
+- **A whole-list triage pass, on demand.** `/cairn-triage` reads every
+  ROADMAP candidate row and every DESIGN.md known issue, proposes one
+  disposition per item (keep, compress, merge, split, drop, promote, or
+  route) at a single gate, applies what you accept in one docs-only
+  commit, and records drops made on principle as a decision so they are
+  found by search rather than re-added. Nothing triggers it and nothing
+  is written before you answer.
+- **`/cairn-init` says that tracking-only pushes start CI, and offers to
+  add the `cairn/**` ignore for you.** When a repo has
+  `.github/workflows/`, init runs `scripts/cairn_ci_paths.py --report`
+  and explains that cairn's tracking-only commits (checkpoints, review
+  records) reach the remote on every branch push and start the
+  push-triggered workflows whose `branches` filter admits the branch;
+  that a `pull_request` trigger reads the whole PR diff, so ignoring
+  `cairn/**` helps `push` triggers only; and that a required check under
+  branch protection stays pending on a path-skipped run. It then poses
+  one approve/decline chip for the workflow files it can edit: on
+  approval `--apply` inserts `- 'cairn/**'` under each file's `push` →
+  `paths-ignore` (created when absent), adding lines only, keeping the
+  file's line endings, and checking the edit against PyYAML's own reading
+  before writing. The edited file is left uncommitted for you. `--apply`
+  needs PyYAML (optional, used by that mode alone; exit 3 naming it when
+  absent, nothing written) and refuses, byte-identically with a reason,
+  any file it cannot edit as a pure insertion — an unparseable or
+  multi-document file, no block-mapping `on`, anchors or merge keys under
+  `on`, no `push` trigger, a `push` carrying `paths` or a flow-style
+  `paths-ignore`, one already ignoring `cairn/**`, or a failed post-edit
+  check. A refused file, and every file when PyYAML is absent, gets the
+  by-hand suggestion for each `push` trigger that could take it.
+  `--report` stays stdlib and writes nothing. The rulebook's git model
   states the same fact, and the wait rule's no-checks clause names it as
   one source.
-- **Skills work under the symlink install.** Each skill now says how to
-  find the plugin directory when the shell leaves `CLAUDE_PLUGIN_ROOT`
-  unset (the symlink install in `~/.claude/skills` does): it falls back to
-  the skill's own base directory, so the rulebook reads and the
-  `scripts/` commands no longer resolve against `/scripts/…`.
+- **A hotfix merged outside the session is still held to the hotfix bar.**
+  Running `/hotfix` on an already-merged hotfix or adopted PR now verifies
+  the merged diff after the fact: its regression test is proved to fail on
+  the commit the PR was based on and pass on the default branch, the
+  profile's checks run, and the changelog entry is checked. A missing test
+  or entry lands through a follow-up PR with the usual approval chip; a
+  clean result pauses at one acceptance chip before close-out, instead of
+  jumping straight to it.
 - **The amendment-time re-audit leaves a line a resumed session can read.**
   When `/milestone-implement` re-audits amended acceptance-criterion
   wording, it now writes one work-log line per criterion in a fixed shape
@@ -62,6 +65,14 @@
   (`ingest audit RR<NN> (full): cleared AC<list> — …`), and the re-audit
   exemption applies only to a criterion that list names whose amended
   text still equals the ingested text whitespace-normalized.
+
+### Fixes
+
+- **Skills work under the symlink install.** Each skill now says how to
+  find the plugin directory when the shell leaves `CLAUDE_PLUGIN_ROOT`
+  unset (the symlink install in `~/.claude/skills` does): it falls back to
+  the skill's own base directory, so the rulebook reads and the
+  `scripts/` commands no longer resolve against `/scripts/…`.
 - **The commit and force-push guards see through environment prefixes.**
   A `git commit` or `git push` spelled with leading `VAR=value` words
   (`GH_TOKEN=x git push -f origin main`, `GIT_AUTHOR_NAME=x git commit`)
@@ -72,21 +83,6 @@
   `--milestone M057` and `--milestone M57` report the same milestone, a
   branch named `m57-…` is reported as `M057`, and branches of different
   zero-pad widths for one milestone land in one row instead of two.
-- **A hotfix merged outside the session is still held to the hotfix bar.**
-  Running `/hotfix` on an already-merged hotfix or adopted PR now verifies
-  the merged diff after the fact: its regression test is proved to fail on
-  the commit the PR was based on and pass on the default branch, the
-  profile's checks run, and the changelog entry is checked. A missing test
-  or entry lands through a follow-up PR with the usual approval chip; a
-  clean result pauses at one acceptance chip before close-out, instead of
-  jumping straight to it.
-- **A whole-list triage pass, on demand.** `/cairn-triage` reads every
-  ROADMAP candidate row and every DESIGN.md known issue, proposes one
-  disposition per item (keep, compress, merge, split, drop, promote, or
-  route) at a single gate, applies what you accept in one docs-only
-  commit, and records drops made on principle as a decision so they are
-  found by search rather than re-added. Nothing triggers it and nothing
-  is written before you answer.
 - **The review close block hands you the slash command, as typed.** After a
   merge the copyable next-step lines are now `/clear` and the recommended
   skill command (for example `/milestone-plan`), never the path of the
