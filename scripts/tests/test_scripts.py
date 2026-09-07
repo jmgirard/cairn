@@ -3815,18 +3815,34 @@ class TestStdlibOnly(unittest.TestCase):
         "subprocess", "sys", "tempfile", "unittest",
         "cairn_common", "cairn_scripts",
     }
+    # the one non-stdlib import, admitted for one script: `cairn_ci_paths.py`
+    # imports PyYAML inside its `--apply` path, guarded (M181)
+    PER_SCRIPT = {"cairn_ci_paths.py": {"yaml"}}
+
+    @staticmethod
+    def imported_names(source):
+        names = []
+        for node in ast.walk(ast.parse(source)):
+            if isinstance(node, ast.Import):
+                names += [a.name.split(".")[0] for a in node.names]
+            elif isinstance(node, ast.ImportFrom):
+                names.append((node.module or "").split(".")[0])
+        return names
+
+    def allowed_for(self, script_name):
+        return self.ALLOWED | self.PER_SCRIPT.get(script_name, set())
 
     def test_script_imports_are_stdlib_plus_shared(self):
         for script in SCRIPTS_DIR.glob("*.py"):
-            tree = ast.parse(script.read_text())
-            for node in ast.walk(tree):
-                names = []
-                if isinstance(node, ast.Import):
-                    names = [a.name.split(".")[0] for a in node.names]
-                elif isinstance(node, ast.ImportFrom):
-                    names = [(node.module or "").split(".")[0]]
-                for name in names:
-                    self.assertIn(name, self.ALLOWED, f"{script.name} imports {name}")
+            for name in self.imported_names(script.read_text()):
+                self.assertIn(name, self.allowed_for(script.name), f"{script.name} imports {name}")
+
+    def test_yaml_is_admitted_for_ci_paths_alone(self):
+        self.assertIn("yaml", self.imported_names((SCRIPTS_DIR / "cairn_ci_paths.py").read_text()))
+        for script in SCRIPTS_DIR.glob("*.py"):
+            if script.name != "cairn_ci_paths.py":
+                self.assertNotIn("yaml", self.allowed_for(script.name), script.name)
+                self.assertNotIn("yaml", self.imported_names(script.read_text()), script.name)
 
 
 # --- release window advisory (M88) ------------------------------------------

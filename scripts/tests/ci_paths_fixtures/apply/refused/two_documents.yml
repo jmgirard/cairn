@@ -1,0 +1,7 @@
+name: ci
+on:
+  push:
+---
+name: other
+on:
+  push:

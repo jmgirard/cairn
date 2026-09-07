@@ -4963,3 +4963,46 @@ an operator who, reading tagged rows, still cannot choose which to promote —
 then the token is ceremony and this entry is the one to supersede. A
 `cairn_validate` token check is re-openable on a misspelled token misleading
 an operator's promotion choice, never on a count of misspellings.
+
+### D-135 (2026-09-06): `cairn_ci_paths --apply` edits the `paths-ignore` under a chip, with PyYAML as an optional dependency of that mode alone — narrows D-133's "writes nothing" to `--report`; annotates D-133 (M181)
+
+**Context:** D-133 shipped `/cairn-init` §0 as suggest-only: the script
+"only reports … and writes nothing", the chip-applied edit dropped after
+three consecutive reviews each caught the stdlib line reader missing a legal
+YAML form, and parked as the candidate row "Chip-applied `cairn/**`
+`paths-ignore` edit", "which needs a real YAML parse first". The plugin's
+`scripts/` layer had been stdlib-only throughout (`TestStdlibOnly` rejects
+any other import), and the tracking rules make a dependency change a gated
+decision with a D-entry.
+
+**Decision:** The script gains `--apply [--dry-run]`, placed by PyYAML's
+composed node marks and inserting lines only; before any write,
+`yaml.safe_load` of the edited text must equal that of the original with
+`cairn/**` appended under `push` → `paths-ignore`, else the file is refused.
+PyYAML is an optional dependency of `--apply` alone: the import lives inside
+the apply path, a failing import exits 3 naming PyYAML and writes nothing,
+and `--report` stays stdlib. §0 runs the dry run and poses one
+approve/decline chip naming the files it would edit; the applied file is
+left uncommitted for the operator, never staged by cairn-init's commits.
+Rejected at the plan gate, each with the observation that reopens it:
+PyYAML as a hard requirement of the script (reopened by `--report` and
+`--apply` disagreeing on a file's applicability in practice); a vendored
+YAML parser (reopened by the same, or by PyYAML being routinely absent in
+adopters' Pythons so the chip never appears); rewriting a scalar or
+flow-list `on:` into block form (reopened by those forms being common enough
+in adopters' workflows that the chip rarely applies — every applied edit is
+now a pure insertion); committing the edited workflow file in the cairn-init
+commit (reopened by adopters reporting the uncommitted file forgotten or
+lost after `/cairn-init`).
+
+**Consequences:** D-133 is annotated, not superseded: its "writes nothing"
+clause now binds `--report`, and its no-checks source, `pull_request`
+reach, and branch-protection remainder stand. The `scripts/` layer's
+stdlib rule gains one admitted exception, named in `TestStdlibOnly` and
+DESIGN. The candidate row graduates at M181's post-merge hygiene. The
+observation class that overturns this entry: an applied edit whose file
+PyYAML loads as expected but GitHub reads differently (the post-edit check
+is the probe, so such a case is a difference between PyYAML's YAML 1.1 and
+GitHub's reading), or the adopter population where PyYAML is absent so the
+chip never fires — then `--apply` moves to a vendored or stdlib parser, or
+back to suggest-only.

@@ -11,21 +11,42 @@
   `N terminal rows (retention 3): …`; the remedy is to prune the oldest
   done/dropped rows from the table — they survive in `milestones/archive/`
   and git.
-- **`/cairn-init` says that tracking-only pushes start CI, and shows the
-  ignore to add.** When a repo has `.github/workflows/`, §0 runs
+- **`/cairn-init` says that tracking-only pushes start CI, and adds the
+  ignore under a chip where PyYAML is present, else shows it to add by
+  hand.** When a repo has `.github/workflows/`, §0 runs
   `scripts/cairn_ci_paths.py --report` and reports that cairn's
   tracking-only commits (checkpoints, review records) reach the remote on
   every branch push and start the push-triggered workflows whose
   `branches` filter admits the branch; that a `pull_request` trigger reads
   the whole PR diff, so ignoring `cairn/**` helps `push` triggers only; and
   that a required check under branch protection stays pending on a
-  path-skipped run. For each `push` trigger not yet ignoring `cairn/**` and
-  carrying no `paths` key it shows the `paths-ignore` item to add by hand
-  (a trigger with `paths` cannot take `paths-ignore`); the script only reports
-  (one line per workflow: its `push`/`pull_request` triggers and their
-  filter keys, `no push or pull_request trigger`, or `unrecognized`) and
-  writes nothing. The rulebook's git model states the same fact, and the
-  wait rule's no-checks clause names it as one source.
+  path-skipped run. It then runs `scripts/cairn_ci_paths.py --apply
+  --dry-run` and, for the files that would apply, poses one approve/decline
+  chip: on approval `--apply` inserts `- 'cairn/**'` under each such
+  file's `push` → `paths-ignore` (the key created when absent), lines added
+  only (a final line lacking its ending gains one), the file's line endings
+  kept, and the edit checked against
+  PyYAML's own reading before it is written; the edited workflow file is
+  left uncommitted for the operator (cairn-init's commits never stage it).
+  `--apply` needs PyYAML (an optional dependency of that mode alone; exit 3
+  naming it when absent, nothing written) and refuses, byte-identically
+  with a reason, a file it cannot edit as a pure insertion, naming the
+  first of twelve reasons that applies: PyYAML cannot parse the file (any
+  raise while composing it included), more than one document, no `on`
+  key, `on` not a block mapping (a scalar or flow-list `on:`), an anchor,
+  alias, or merge key under `on`, no `push` trigger, `push` holding a
+  flow mapping, `push` carrying `paths`, `paths-ignore` not a block
+  sequence (flow, null, or scalar), one already ignoring `cairn/**`, the
+  post-edit check failing (any raise after composing included), or the
+  file not writable. A refused file, and every
+  file when PyYAML is absent, keeps the by-hand suggestion for each `push`
+  trigger not yet ignoring `cairn/**` and carrying no `paths` key (a
+  trigger with `paths` cannot take `paths-ignore`). `--report` stays
+  stdlib and writes nothing (one line per workflow: its
+  `push`/`pull_request` triggers and their filter keys, `no push or
+  pull_request trigger`, or `unrecognized`). The rulebook's git model
+  states the same fact, and the wait rule's no-checks clause names it as
+  one source.
 - **Skills work under the symlink install.** Each skill now says how to
   find the plugin directory when the shell leaves `CLAUDE_PLUGIN_ROOT`
   unset (the symlink install in `~/.claude/skills` does): it falls back to

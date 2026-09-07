@@ -1,0 +1,12 @@
+name: ci
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'cairn/**'

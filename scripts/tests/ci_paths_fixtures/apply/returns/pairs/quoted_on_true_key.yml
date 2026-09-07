@@ -1,0 +1,9 @@
+name: ci
+"on":
+  push:
+true: enabled
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok

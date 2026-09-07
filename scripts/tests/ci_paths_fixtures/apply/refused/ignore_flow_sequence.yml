@@ -1,0 +1,9 @@
+name: ci
+on:
+  push:
+    paths-ignore: ['docs/**']
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
