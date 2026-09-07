@@ -579,6 +579,51 @@ class TestApplyReturns(unittest.TestCase):
         self.assertEqual(repo.read(), src.read_bytes())
 
 
+@unittest.skipUnless(HAVE_YAML, "PyYAML not importable: --apply return-2 tests skipped")
+class TestApplyReturn2(unittest.TestCase):
+    """M181 review return 2: no raise past composing reaches the exit code (G1);
+    a complex-key `on` is judged by the post-edit check, not pre-empted (G6)."""
+
+    def test_deep_nesting_refuses_as_unparseable_and_later_files_still_run(self):
+        # G1: a 500-deep flow value makes PyYAML raise RecursionError while
+        # composing; the file refuses as unparseable, exit 0, next file processed
+        deep = "on:\n  push:\n    branches: [main]\n    x: " + "[" * 500 + "1" + "]" * 500 + "\n"
+        repo = Repo(PAIRS / "bare_push.yml", name="b.yml")
+        self.addCleanup(repo.cleanup)
+        wf = os.path.dirname(repo.path)
+        pathlib.Path(wf, "a.yml").write_text(deep)
+        for flags in (["--apply", "--dry-run"], ["--apply"]):
+            with self.subTest(flags=flags):
+                proc = run(repo.dir, *flags)
+                self.assertEqual(proc.returncode, 0, proc.stderr[-500:])
+                self.assertNotIn("RecursionError", proc.stderr)
+                lines = proc.stdout.strip().split("\n")
+                self.assertEqual(lines[0], f"a.yml: refused: {REFUSALS['cannot_parse']}")
+                self.assertEqual(lines[1], "b.yml: " + ("would apply" if "--dry-run" in flags else "applied"))
+                self.assertEqual(pathlib.Path(wf, "a.yml").read_text(), deep)
+        with self.assertRaises(RecursionError):  # the failure's identity, not a bare error
+            yaml.compose(deep)
+
+    def test_complex_key_on_is_judged_by_the_check(self):
+        # G6: `? on` with a null `push` puts the created key at `push`'s own
+        # column, a sibling not a child — the check refuses it; with a mapping
+        # `push` the same key form applies and loads as expected
+        null_push = "? on\n: push:\n"
+        with tempfile.TemporaryDirectory() as d:
+            src = pathlib.Path(d, "null.yml"); src.write_text(null_push)
+            repo, verdict = apply(self, src)
+            self.assertEqual(verdict, f"refused: {POST_EDIT}")
+            self.assertEqual(repo.read().decode(), null_push)
+        mapping_push = "? on\n: push:\n    branches: [main]\n"
+        with tempfile.TemporaryDirectory() as d:
+            src = pathlib.Path(d, "map.yml"); src.write_text(mapping_push)
+            repo, verdict = apply(self, src)
+            self.assertEqual(verdict, "applied")
+            after = repo.read().decode()
+            self.assertEqual(after, mapping_push + "    paths-ignore:\n      - 'cairn/**'\n")
+            self.assertEqual(yaml.safe_load(after), expected_after(yaml.safe_load(mapping_push), True))
+
+
 class TestApplyWithoutPyYAML(unittest.TestCase):
     """AC2: a failing `import yaml` exits 3, names PyYAML, writes nothing."""
 

@@ -29,12 +29,15 @@
   left uncommitted for the operator (cairn-init's commits never stage it).
   `--apply` needs PyYAML (an optional dependency of that mode alone; exit 3
   naming it when absent, nothing written) and refuses, byte-identically
-  with a reason, a file it cannot edit as a pure insertion — a scalar or
-  flow-list `on:`, an anchor, alias, or merge key under `on`, a
-  flow-mapping `push`, a `push` with `paths`, a flow-sequence
-  `paths-ignore`, one already ignoring `cairn/**`, more than one document,
-  a file PyYAML cannot parse, or one the edit checks out on but cannot be
-  written. A refused file, and every
+  with a reason, a file it cannot edit as a pure insertion, naming the
+  first of twelve reasons that applies: PyYAML cannot parse the file (any
+  raise while composing it included), more than one document, no `on`
+  key, `on` not a block mapping (a scalar or flow-list `on:`), an anchor,
+  alias, or merge key under `on`, no `push` trigger, `push` holding a
+  flow mapping, `push` carrying `paths`, `paths-ignore` not a block
+  sequence (flow, null, or scalar), one already ignoring `cairn/**`, the
+  post-edit check failing (any raise after composing included), or the
+  file not writable. A refused file, and every
   file when PyYAML is absent, keeps the by-hand suggestion for each `push`
   trigger not yet ignoring `cairn/**` and carrying no `paths` key (a
   trigger with `paths` cannot take `paths-ignore`). `--report` stays

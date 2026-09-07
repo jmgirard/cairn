@@ -47,8 +47,10 @@ the edited text must equal that of the original with `cairn/**` appended
 under `on` → `push` → `paths-ignore` (the key `True` for a plain `on`,
 `'on'` when quoted); otherwise — or when a load, the expected value's
 construction, or the comparison raises — the file is refused with
-`post-edit check failed`; a write raising `OSError` refuses with `the file
-cannot be written`. Every refusal leaves the file byte-identical and names
+`post-edit check failed`; so is a file whose plan or edit raises anything
+after PyYAML composed it, and one whose composing raises anything is refused
+as `PyYAML cannot parse the file` (no raise reaches the exit code); a write
+raising `OSError` refuses with `the file cannot be written`. Every refusal leaves the file byte-identical and names
 the first reason that applies, in the order the `R_*` constants below are
 listed.
 `--dry-run` writes nothing and prints `would apply` for exactly the files
@@ -430,7 +432,7 @@ def plan_edit(yaml, text):
     """
     try:
         docs = list(yaml.compose_all(text))
-    except yaml.YAMLError:
+    except Exception:  # a YAMLError, or anything else composing raises (a RecursionError on deep nesting)
         raise Refused(R_PARSE)
     if len(docs) > 1:
         raise Refused(R_DOCS)
@@ -478,8 +480,6 @@ def plan_edit(yaml, text):
         step = push_key.start_mark.column - on_key.start_mark.column
         child_col = push_key.start_mark.column + step
         index = push_key.start_mark.line + 1
-    if step <= 0:
-        raise Refused(R_POST_EDIT)
     return loaded_key, index, [" " * child_col + "paths-ignore:", " " * (child_col + step) + ITEM_TEXT]
 
 
@@ -528,6 +528,8 @@ def apply_file(yaml, path, dry_run):
             raise Refused(R_POST_EDIT)
     except Refused as exc:
         return f"{name}: refused: {exc.args[0]}"
+    except Exception:  # anything the plan or the edit raises past composing: no sound edit was shown
+        return f"{name}: refused: {R_POST_EDIT}"
     if dry_run:
         return f"{name}: would apply"
     try:
