@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-06 (M180 done: terminal-row retention cap is 3; M177 row pruned in this archive commit (archive + git); validate green; scripts 350 + hooks 126 green, skills/tests 654 with the one pre-existing lesson-graduation red; ROADMAP/LESSONS bytes and the three doctrine-module budgets hand-read under cap.)_
+_Last hygiene check: 2026-09-06 (M181 done: `--apply` under a chip; the `[high]` chip-applied candidate graduated and M178's row pruned (archive + git); validate green; scripts 379 + hooks 126 green, skills/tests 661 with the one pre-existing lesson-graduation red; ROADMAP/LESSONS bytes and the three doctrine-module budgets hand-read under cap.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,15 +12,13 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M181 | cairn-init applies the `cairn/**` `paths-ignore` edit under a chip, parsed by PyYAML | review | — | high | milestones/M181-apply-paths-ignore.md |
+| M181 | cairn-init applies the `cairn/**` `paths-ignore` edit under a chip, parsed by PyYAML | done | — | high | milestones/archive/M181-apply-paths-ignore.md |
 | M180 | ROADMAP terminal-row retention drops from 5 to 3 | done | — | normal | milestones/archive/M180-retention-three.md |
 | M179 | ROADMAP candidate rows carry an optional priority token | done | — | normal | milestones/archive/M179-candidate-priority-token.md |
-| M178 | cairn-init names the CI runs tracking-only commits start and offers the `paths-ignore` | done | — | normal | milestones/archive/M178-ci-paths-ignore.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
 
-- [high] Chip-applied `cairn/**` `paths-ignore` edit: M178 shipped the CI fact and a by-hand suggestion after its stdlib line reader missed a legal YAML form on three consecutive reviews (comment in block, flush-left items, column-0 comment); the plan-gate choice of a chip-applied edit stands as wanted and needs a real YAML parse (a PyYAML dependency gated by D-entry, or a vendored round-trip parser) before it is re-attempted.
 - `--report` and `--apply` disagree on a workflow file: the stdlib line reader behind `--report` and the PyYAML parse behind `--apply` read some legal forms differently — a quoted `"push":` key reports `unrecognized` yet would apply; a block-scalar `cairn/**` item reports `push (paths-ignore)` yet refuses as already ignoring, so §0's by-hand suggestion shows an item already present (M181 re-review G7/G8). `--report` staying stdlib is M181 Scope Out and D-135's named reopener. Promote when an adopter's real workflow file draws the two verdicts apart — never on a synthetic shape — added 2026-09-06 — M181 review
 - `--apply` refuses two shapes AC2 names editable, both safely: an explicit null `push` (`push: null`, `push: ~`) has its created `paths-ignore:` placed after a line already carrying a value, and a block scalar whose last line opens with `#` is walked over as a comment — each refused as `post-edit check failed`, byte-identical, a reason naming nothing actionable (M181 re-review 3, H2/H3). Promote when an adopter's real workflow file is refused for either shape — never on a synthetic one — added 2026-09-06 — M181 review
 - Second-driver adoption pass: M163 runs the external pass solo; the stronger form of RR13 step 3's signal — a second person driving `/cairn-init` and a milestone loop with the author hands-off — remains unrun, and a solo pass cannot surface author-blind friction (knowledge the docs never state because the author never needs them stated). Promote when a second person is available to drive an adoption — never on a count of solo passes — added 2026-08-29 — M163 plan
