@@ -34,15 +34,17 @@ prints one line per workflow file — `<file>: applied` (`would apply` under
 `--dry-run`) or `<file>: refused: <reason>` — and exits 0 whatever the
 per-file verdicts. A file is edited exactly when PyYAML composes it as one
 document whose top-level mapping has a plain or quoted `on` key holding a
-block mapping — no anchor, alias, or merge key (a plain `<<` key) among
-the parse events from the `on` key to the end of its value — with a `push`
+block mapping — no anchor, alias, or plain `<<` scalar (a merge key,
+wherever it sits) among the parse events from the `on` key to the end of
+its value — with a `push`
 key whose value is a block mapping or null, carrying no `paths` key, and
 whose `paths-ignore` is absent or a block sequence not holding `cairn/**`
 (in any scalar style), and when the post-edit check below passes. The edit
 inserts lines only, placed by the composed nodes' marks: `- 'cairn/**'` at the existing items' column after
 the last item, or a `paths-ignore:` key at the `push` children's column
 (for a null `push`, one indent step under the `on` children) followed by
-the item; line endings are preserved. Before writing, `yaml.safe_load` of
+the item; line endings are preserved (a final line lacking its ending
+gains one so the inserted lines follow it). Before writing, `yaml.safe_load` of
 the edited text must equal that of the original with `cairn/**` appended
 under `on` → `push` → `paths-ignore` (the key `True` for a plain `on`,
 `'on'` when quoted); otherwise — or when a load, the expected value's
@@ -54,7 +56,8 @@ raising `OSError` refuses with `the file cannot be written`. Every refusal leave
 the first reason that applies, in the order the `R_*` constants below are
 listed.
 `--dry-run` writes nothing and prints `would apply` for exactly the files
-`--apply` would edit.
+`--apply` would edit or refuse as unwritable (the write is the only
+writability probe).
 """
 
 import os
