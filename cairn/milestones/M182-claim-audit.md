@@ -38,7 +38,7 @@ A user-facing milestone whose branch adds behavior claims to prose has those cla
 - [x] T1: Append the D-entry (AC3) to `cairn/DECISIONS.md` and add the part-(b) candidate row to `cairn/ROADMAP.md` if the plan commit did not; the entry lands first so T2 and T3 are inside the door.
 - [x] T2: Insert the claim-audit step in `skills/milestone-implement/SKILL.md` after step 6 (plan amendments) and before completion (currently step 8, `skills/milestone-implement/SKILL.md:169`), renumbering the steps that follow; keep step 4's derived-claims pointer sentence byte-identical (pinned by `skills/tests/test_derived_claims.py:72`).
 - [x] T3: Add the claim-read clause to `skills/cairn-release/SKILL.md` step 2 (`skills/cairn-release/SKILL.md:54`).
-- [ ] T4: Run both gating suites; hand-run `skills/tests` and compare its reds to the ROADMAP hygiene line; `git grep -n "three-lens\|derived-claims" README.md docs` to confirm no restated doctrine went stale (M112 lesson).
+- [x] T4: Run both gating suites; hand-run `skills/tests` and compare its reds to the ROADMAP hygiene line; `git grep -n "three-lens\|derived-claims" README.md docs` to confirm no restated doctrine went stale (M112 lesson).
 
 ## Work log
 
@@ -50,6 +50,7 @@ A user-facing milestone whose branch adds behavior claims to prose has those cla
 - 2026-09-10: T1 — D-136 appended (door passed on the retained trigger, two rules named, part (b) left on its candidate row, a falsifier per rule); the part-(b) candidate row already landed with the plan commit, so ROADMAP was not touched.
 - 2026-09-10: T2 — claim-audit step inserted as `/milestone-implement` step 7, Blocked and Completion renumbered 8 and 9; no other skill or test cites those two numbers; step 4's derived-claims sentence untouched; scripts + hooks suites exit 0.
 - 2026-09-10: T3 — claim-read clause added to `/cairn-release` step 2, keyed to the release-prep commit, skipped with the step on a "none" declaration; scripts + hooks suites exit 0.
+- 2026-09-10: T4 — scripts and hooks suites exit 0; skills/tests hand-run: 661 tests, one red, `test_lesson_graduation.TestFamilyActuallyLeft.test_partial_coverage_was_trimmed_not_deleted`, the pre-existing lesson-graduation red the ROADMAP hygiene line records; README.md's one `three-lens` mention (line 116) still matches the review skill and no `docs/` directory exists.
 
 ## Decisions
 
