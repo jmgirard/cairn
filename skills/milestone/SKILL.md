@@ -158,7 +158,10 @@ The script deliberately does not judge these — do them yourself and report:
   milestone `blocked` — waiting on the maintainers is what the status says.
   The audit writes nothing to GitHub.
 - **Untriaged inboxes:** open GitHub issues and external PRs carrying no
-  candidate row or hotfix disposition yet. Enumerate both inboxes —
+  candidate row or hotfix disposition yet. Guest mode (tracking-rules
+  "Collaboration mode") skips this bullet: the inboxes are the maintainers'
+  intake, not the guest's, and the fork's own are not the repo's. Otherwise
+  enumerate both inboxes —
   `gh issue list --state open --json number,title,url` for issues,
   `gh pr list --state open --json number,title,url,author` for PRs — then
   drop this session's own work from the PR list, which is what the `author`

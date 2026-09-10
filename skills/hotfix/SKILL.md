@@ -21,6 +21,10 @@ handle ingestion first (see `/milestone-brief`).
 Phase header: `# Hotfix: <slug>` → `## <step>`.
 Chapter markers: mark a chapter at each phase transition and at each numbered step
 (session start implicit).
+Guest arm (tracking-rules "Collaboration mode"): every `gh pr` read in this
+skill — step 1's tier-check and re-entry reads included — carries
+`--repo <base-repo>` (the rulebook's slug recipe), since in a fork checkout
+a bare PR number resolves against the fork.
 
 ## Workflow
 
@@ -60,7 +64,9 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
      proves nothing.
    - *Regression test*, per step 3's adopting sequence: a test the merged
      diff carries is run on the default branch, checked out and brought up
-     to date (fetch, pull ff-only), and in a throwaway worktree of the
+     to date (fetch, pull ff-only; guest arm: `git fetch <base>` then
+     `git merge --ff-only <base>/<default-branch>` — the merged fix is on
+     the base repo, not the fork), and in a throwaway worktree of the
      baseline created outside the repo (`git worktree add --detach /tmp/<repo>-verify <baseRefOid>`)
      with only the test file copied in; it must pass on the default branch
      and fail on the baseline. When the merged diff carries no test, or its
@@ -142,9 +148,11 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
    *Authoring a fix:* push; open the PR — `Fixes #N` in the description if a
    GitHub issue exists. Guest arm (tracking-rules "Collaboration mode"): the
    push goes to the fork (`git push -u origin hotfix-<slug>`) and the PR is
-   opened against the base repo — `gh pr create --repo <base-repo> --head
-   <fork-owner>:hotfix-<slug>` — with no cairn vocabulary in its title or
-   body; the changelog entry is the branch's only prose.
+   opened against the base repo as a draft — `gh pr create --repo
+   <base-repo> --head <fork-owner>:hotfix-<slug> --draft`, so the step-6
+   handoff's `gh pr ready` is a real GitHub action — with no cairn
+   vocabulary in its title or body; the changelog entry is the branch's
+   only prose.
    *Adopting a PR:* the PR already exists — never open a second one, except
    through the user-gated fallback below. If the
    contributor added an entry, check it against the declared file and the
@@ -213,8 +221,8 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
    never merges in guest mode, so the chip is the same gate with the merge
    taken out — recommended `Hand PR #N to the maintainers of <base-repo>`,
    a decline option, no merge option — and on selection the sequence is
-   `gh pr ready <N> --repo <base-repo>` (the PR was opened as a draft when it
-   was; a non-draft PR skips this), no marker, no CI wait, no merge. Then
+   `gh pr ready <N> --repo <base-repo>` (step 5 opened the PR as a draft),
+   no marker, no CI wait, no merge. Then
    stop with the close block: the recap says the fix is in the maintainers'
    hands; the CI line says their CI on the PR is the check that counts and
    nothing waits on it here; the fenced next command is `/hotfix` with the

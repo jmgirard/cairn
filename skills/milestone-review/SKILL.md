@@ -541,7 +541,9 @@ re-enters here, at the step the record shows is next:
    `review M<NNN>: done`; push (owner mode; the guest arm above leaves the
    pass on disk — status `done` is the `blocked → done` transition the
    rulebook admits for a handed-off PR the maintainers merged).
-   **Confirm the issue closes:** after the merge, for each `closes` entry of
+   **Confirm the issue closes** (owner mode; the guest arm above skips the
+   close-if-open and posts only the `partial` comments, `--repo
+   <base-repo>` on each): after the merge, for each `closes` entry of
    the `Resolves:` slot read the issue's state with
    `gh issue view <N> --json state`; one still open is closed with
    `gh issue close <N> --comment` carrying a one-line comment naming the

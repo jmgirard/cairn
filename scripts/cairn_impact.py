@@ -81,15 +81,16 @@ def references(root, pid):
 
 
 def _base_commit(root):
-    """Merge-base of HEAD with the default branch (origin/HEAD, then main,
-    then master); HEAD if none resolves — e.g. on the default branch itself
+    """Merge-base of HEAD with the default branch (`<base>/HEAD` per
+    cairn_common.base_remote — upstream in guest mode when present — then
+    origin/HEAD, main, master); HEAD if none resolves — e.g. on the default branch itself
     or a fresh repo — so --changed still sees the working tree."""
     # cc.git imposes a 10s timeout and returns (1, "") on ANY failure,
     # timeout included — so a pathologically slow merge-base silently falls
     # through to the next ref (ultimately HEAD, i.e. a working-tree-only
     # diff) instead of hanging. Accepted trade-off; no test witnesses the
     # timeout path.
-    for ref in ("origin/HEAD", "main", "master"):
+    for ref in (f"{cc.base_remote(root)}/HEAD", "origin/HEAD", "main", "master"):
         rc, out = cc.git(["merge-base", "HEAD", ref], cwd=root)
         if rc == 0 and out.strip():
             return out.strip()

@@ -32,9 +32,9 @@
   (`cairn_common.base_remote`; the hooks' default-branch detection reads
   the base remote's HEAD, so a guest's default branch is the upstream
   repo's, not the fork's). A milestone or hotfix branch is cut from
-  `<base>/<default-branch>`, synced by rebase, pushed to the fork, and its
-  PR opened against the base repo (`gh pr create --repo <base-repo> --head
-  <fork-owner>:<branch>`; review's PR is a draft, the hotfix's is not).
+  `<base>/<default-branch>` (a milestone branch synced by rebase), pushed
+  to the fork, and its PR opened against the base repo as a draft
+  (`gh pr create --repo <base-repo> --head <fork-owner>:<branch> --draft`).
   cairn never merges in guest mode: `/milestone-review` and `/hotfix` end
   with a handoff gate — hand the PR to the maintainers or decline, no merge
   option — that marks the PR ready and sets the milestone `blocked` (a
