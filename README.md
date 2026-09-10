@@ -265,9 +265,11 @@ profile.
 
 ## Working with collaborators
 
-cairn is built for **one person running these skills**, with contributions
-arriving from people who don't. That works fine, as long as you are clear
-about where the guardrails actually reach.
+cairn is built for **one person running these skills** in a repo, whether
+you own that repo (owner mode, the default) or are contributing to someone
+else's (guest mode, below), with contributions arriving from people who
+don't. That works fine, as long as you are clear about where the guardrails
+actually reach.
 
 - **The guards only watch this session.** Every protection is a hook on the
   commands Claude runs for you. If you merge a PR in the GitHub web UI, or a
@@ -309,6 +311,37 @@ about where the guardrails actually reach.
   would race: milestone IDs and decision numbers are picked by reading the
   files, so two people planning at once can pick the same one. If you need
   this, say so; it's a tracked candidate, not a solved problem.
+
+### Contributing to a repo you don't own (guest mode)
+
+When the repo belongs to someone else, you can still run the whole
+plan/implement/review loop, with `cairn/` kept to yourself. `/cairn-init`
+asks which mode you are in (it reads your permission level on the remote to
+recommend one) and writes `# Collaboration mode: guest` into
+`cairn/PROFILE.md`. In guest mode:
+
+- **`cairn/` never leaves your clone.** Init lists it in `.git/info/exclude`
+  (git's untracked ignore file that is itself never committed), and the
+  commit guard refuses any commit that would carry a `cairn/` path. Nothing
+  is written outside `cairn/`: no CLAUDE.md section (the session hook
+  injects the same routing text from the plugin's template instead), no
+  `.gitignore` or `.Rbuildignore` entries, no CI edits.
+- **Hygiene is written to disk, not committed.** Plan files, checkbox
+  ticks, work-log lines, decisions, lessons: all land in `cairn/` in the
+  same turn as the code change, and stay there. There are no docs-only
+  commits and no pushes to the default branch.
+- **The repo sees none of cairn's vocabulary.** Branches are named by their
+  slug alone, and commit messages and PR text carry no milestone numbers.
+- **No merge by cairn.** Review ends by handing the PR to the maintainers;
+  you never merge, and the approval marker is never written.
+- **No release walk, no triage pass.** Both stop at session start and say
+  why: releasing and roadmap triage commit to a default branch that isn't
+  yours.
+
+Because `cairn/` exists only in that clone, a fresh clone starts from
+nothing and `git clean -fdx` removes it; back it up if that matters.
+Adopting a third party's PR through `/hotfix` is not supported in guest
+mode.
 
 ## What this system deliberately does NOT do
 
