@@ -308,6 +308,31 @@ def on_default_branch(cwd):
     return cur in ("main", "master")  # no remote: canonical fallback
 
 
+# The collaboration-mode header line of cairn/PROFILE.md (M184, D-137) —
+# `# Collaboration mode: guest` — shaped like session_context's
+# `_PROFILE_HEADER` (`# Toolchain profile: <name>`). The only line outside
+# the seven `##` slots the validator reads; scripts/cairn_validate.py parses
+# it by hand (hooks and scripts share no code) — keep the two in step.
+_COLLAB_MODE = re.compile(r"#\s*Collaboration mode:\s*(\S+)")
+
+
+def collaboration_mode(root):
+    """`guest` or `owner` (or whatever the line says, lowercased) from the
+    `# Collaboration mode:` header of cairn/PROFILE.md; `owner` when the
+    line or the file is absent, since owner mode is every rule as it
+    stood before the axis existed. Never raises."""
+    path = os.path.join(root, "cairn", "PROFILE.md")
+    try:
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                m = _COLLAB_MODE.match(line)
+                if m:
+                    return m.group(1).lower()
+    except Exception:
+        return "owner"
+    return "owner"
+
+
 def parse_roadmap_rows_full(roadmap_text):
     """Yield (id, title, status, depends, priority, relpath) per milestone row.
 

@@ -1,13 +1,13 @@
 # M184: Guest collaboration mode — local-only tracking
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP2, GP3   <!-- owner: plan · create/amend-via-gate -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Surface tier:** user-facing — adopters declare the mode and run the skills under it   <!-- owner: plan -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m184-guest-mode   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create -->
@@ -46,7 +46,7 @@ A repo the operator does not own can run cairn's plan/implement/review loop with
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: `hooks/cairn_common.py`: `collaboration_mode(root)` reading `cairn/PROFILE.md` for a `# Collaboration mode: <value>` line (regex beside the shape of `session_context._PROFILE_HEADER`, hooks/session_context.py:33), `owner` when absent; tests in `hooks/tests/test_hooks.py`.
+- [x] T1: `hooks/cairn_common.py`: `collaboration_mode(root)` reading `cairn/PROFILE.md` for a `# Collaboration mode: <value>` line (regex beside the shape of `session_context._PROFILE_HEADER`, hooks/session_context.py:33), `owner` when absent; tests in `hooks/tests/test_hooks.py`.
 - [ ] T2: `scripts/cairn_validate.py`: parse the same line by hand (hooks and scripts share no code — M113 lesson; a comment names the hook twin); `check_profile` FAILs a value outside `owner|guest` (`:787-813`); `check_scaffold` guest arm requires `cairn/` or `cairn` in `.git/info/exclude` and skips `REQUIRED_GITIGNORE`/`REQUIRED_RBUILDIGNORE` (`:487-514`); tests in `scripts/tests/test_scaffold_check.py` and `test_scripts.py::TestValidateProfile`.
 - [ ] T3: `hooks/session_context.py`: guest part after the profile part (`:244-251`), body read from the template relative to the hook file, charged against `MAX_CHARS`; tests beside `TestSessionContext`.
 - [ ] T4: `hooks/commit_guard.py`: guest deny arm ahead of the default-branch early return (`:86-90`), envelope as `merge_guard.py:180-190`; tests in `TestCommitGuard`.
@@ -62,6 +62,8 @@ A repo the operator does not own can run cairn's plan/implement/review loop with
 - 2026-09-10: created by /milestone-plan; criteria audit ran in full mode via a fresh [O] reader: 24 findings across M184/M185, 20 fixed in the drafts, 4 posed at the gate (all took the recommended option); a second fresh [O] read of the post-gate wording returned 14 findings, all fixed before the commit.
 - 2026-09-10: plan gate chose a `# Collaboration mode:` header line in PROFILE.md over a separate `cairn/MODE.md` because both existing readers already parse that header and no scaffold list changes; falsified by an adopter whose PROFILE.md hits the 120-line cap on that one line, or a third reader that cannot share the header regex.
 - 2026-09-10: plan chose `.git/info/exclude` over an out-of-tree state directory because every `cairn/` path in the rulebook, skills, scripts, and hook root discovery stays valid; falsified by a workflow that routinely runs `git clean -fdx` in guest repos (the exclude file does not protect against it).
+- 2026-09-10: /milestone-implement started; branch m184-guest-mode; question gate skipped — the plan gate settled the mode line, exclude file, and deny-arm shape, and the changelog dev heading follows the `## Unreleased` convention from git history.
+- 2026-09-10: T1 done — `cairn_common.collaboration_mode(root)` with five tests in `TestCollaborationMode` (guest, no line, absent file, explicit owner, unknown value returned lowercased for the validator to judge).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

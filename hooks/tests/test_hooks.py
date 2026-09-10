@@ -139,6 +139,38 @@ class RepoFixture(unittest.TestCase):
         return base
 
 
+class TestCollaborationMode(RepoFixture):
+    """M184: `cairn_common.collaboration_mode` reads the `# Collaboration
+    mode: <value>` header line of cairn/PROFILE.md; `owner` is the default
+    when the line or the file is absent. Direct import (the module is
+    stdlib-only helpers, not a hook contract)."""
+
+    def _profile(self, text):
+        (self.root / "cairn" / "PROFILE.md").write_text(text)
+
+    def test_guest_line_reads_guest(self):
+        self._profile("# Toolchain profile: generic\n# Collaboration mode: guest\n\n## verify\nx\n")
+        self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "guest")
+
+    def test_no_mode_line_reads_owner(self):
+        self._profile("# Toolchain profile: generic\n\n## verify\nx\n")
+        self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "owner")
+
+    def test_absent_profile_reads_owner(self):
+        self.assertFalse((self.root / "cairn" / "PROFILE.md").exists())
+        self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "owner")
+
+    def test_explicit_owner_line_reads_owner(self):
+        self._profile("# Toolchain profile: generic\n# Collaboration mode: owner\n")
+        self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "owner")
+
+    def test_unknown_value_is_returned_verbatim_for_the_validator_to_reject(self):
+        # The hook helper reads, it does not judge: cairn_validate's
+        # `profile valid` check is where an unknown value FAILs.
+        self._profile("# Toolchain profile: generic\n# Collaboration mode: Other\n")
+        self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "other")
+
+
 class TestSessionContext(RepoFixture):
     def test_injects_roadmap_and_active_milestone(self):
         proc = run_hook(
