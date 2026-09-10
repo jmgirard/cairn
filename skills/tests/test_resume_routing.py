@@ -52,7 +52,7 @@ class TestReviewResumeRoute(unittest.TestCase):
     def test_reads_pr_state_before_step_one(self):
         self.assertIn(
             "read that PR's state before step 1 — `gh pr view <N> --json "
-            "state,mergedAt` (N from the URL)",
+            "state,mergedAt` (N from the URL or the list)",
             self.route,
         )
 
@@ -134,8 +134,11 @@ class TestMilestoneAuditMergedReview(unittest.TestCase):
     def test_merged_review_milestone_is_hygiene_owed(self):
         self.assertIn(
             "- A milestone at `review` whose header PR reports `MERGED` "
-            "(`gh pr view <N> --json state`) → post-merge hygiene owed: "
-            "report it as such and route to `/milestone-review M<NNN>`",
+            "(`gh pr view <N> --json state`; a header naming only the branch "
+            "is resolved with `gh pr list --head <branch> --state all`, the "
+            "PR having been opened after approval and its record left "
+            "unpushed — `/milestone-review` step 8) → post-merge hygiene "
+            "owed: report it as such and route to `/milestone-review M<NNN>`",
             self.audit,
         )
 

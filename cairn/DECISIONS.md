@@ -5132,7 +5132,12 @@ every adopting repo's workflows and needs the non-default
 `ready_for_review` trigger type).
 
 **Consequences:** The CI wait at the gate is serial with the approval —
-the cost this entry accepts; the tracking-rules bullet "A branch push
+the cost this entry accepts. The header's PR-URL record, written after
+the create, is committed on the branch and never pushed — a push would
+move the PR head past the one CI ran on — so the branch name is the
+durable key: the resume routes, `/milestone` §2, and the archive
+summary fall back to `gh pr list --head <branch>` once `--delete-branch`
+has removed the local branch; the tracking-rules bullet "A branch push
 starts CI" states the rule and cites this entry. Falsifiers, each named
 in M186's work log: an adopting repo reporting the serial CI wait after
 approval as the bottleneck of its milestone loop reopens the early open;

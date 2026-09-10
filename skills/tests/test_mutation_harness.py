@@ -3429,8 +3429,8 @@ REGISTRY += [
         guard="test_resume_routing",
         test="TestReviewResumeRoute.test_reads_pr_state_before_step_one",
         target=REVIEW,
-        block="read that PR's state before step 1 — `gh pr view <N>\n"
-              "--json state,mergedAt` (N from the URL)",
+        block="read\nthat PR's state before step 1 — `gh pr view <N>\n"
+              "--json state,mergedAt` (N from the URL or the list)",
     ),
     Mutation(
         guard="test_resume_routing",

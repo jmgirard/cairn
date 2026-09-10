@@ -212,7 +212,8 @@ run ingestion first (see `/milestone-brief`).
    sentence saying there is nothing to wait for now: no PR exists yet, and
    `/milestone-review` pushes the branch, opens the PR, and waits on CI
    itself at its merge step, after the user's approval (on a return from
-   review, where the header already names an open PR, the line instead
+   a review that stopped between its post-approval open and the merge,
+   where the header already names an open PR, the line instead
    says there is still nothing to wait for now: review re-pushes and
    re-waits on that PR's checks at its merge step, and any check state the
    PR shows was run against the pre-return head);

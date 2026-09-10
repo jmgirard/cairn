@@ -197,8 +197,11 @@ a bare PR number resolves against the fork.
    chip's question text the post-merge close-if-open of that issue it
    authorizes (hotfix step 7). On approval of an authored fix, push and
    open the PR before the marker write below — `git push -u origin
-   hotfix-<slug>`, then `gh pr create` opening it ready for review, never
-   as a draft, `Fixes #N` in the body when a GitHub issue exists. Merge (`gh pr merge <N> --squash --delete-branch`
+   hotfix-<slug>`, then `gh pr create --title <title> --body <body>`
+   opening it ready for review, never as a draft, `Fixes #N` in the body
+   when a GitHub issue exists (the create is skipped when the fix already
+   has an open PR — the PR-reference re-entry — where the branch is pushed
+   and the existing PR stands). Merge (`gh pr merge <N> --squash --delete-branch`
    — name the PR number explicitly; a bare `gh pr merge` is denied because the
    approval cannot be checked against it; **drop `--delete-branch` on a
    fork PR** — that branch lives in the contributor's repo and is not ours
@@ -215,7 +218,10 @@ a bare PR number resolves against the fork.
    then that rerunning `/hotfix` with the PR reference re-derives that state
    and waits again, so waiting for green first is optional and never
    required; never left armed,
-   never merged past). On approval, write the merge-guard
+   never merged past; a PR created moments ago can report no checks before
+   GitHub registers them, so where the profile does not declare the repo
+   CI-less, re-read `gh pr checks` after a short wait, up to about a
+   minute, before taking the no-checks case). On approval, write the merge-guard
    marker first: `cairn/.merge-approved` (gitignored; one line:
    `hotfix <slug> approved YYYY-MM-DD for PR #<N>` — the marker names the PR
    it approves, and the guard refuses a merge that names a different PR or

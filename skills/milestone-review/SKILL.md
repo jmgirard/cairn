@@ -34,8 +34,12 @@ recipe), and every docs-only commit named below is an on-disk write
 instead, nothing under `cairn/` ever committed.
 
 **Resume routing (M172).** When the target milestone's `Branch/PR` header
-carries a PR URL, read that PR's state before step 1 — `gh pr view <N>
---json state,mergedAt` (N from the URL) — and route on the state and the
+carries a PR URL — or names only the branch and `gh pr list --head
+<branch> --state all --json number,url` finds a PR for it (step 8's
+header record is an unpushed commit, gone with the local branch after a
+`--delete-branch` merge, so the branch name is the durable key) — read
+that PR's state before step 1 — `gh pr view <N>
+--json state,mergedAt` (N from the URL or the list) — and route on the state and the
 Review section; a stopped CI wait or a merge made outside the session
 re-enters here, at the step the record shows is next:
 
@@ -364,7 +368,8 @@ re-enters here, at the step the record shows is next:
    **PR-conversation read (M177).** Only when the milestone header already
    names an open PR (a return from a prior review, a resume route re-posing
    the chip) — a fresh PR is opened at step 8 after this chip and is merged
-   with no read, so the read runs at most once per review, here. When it
+   with no read, so the read runs at most once per pass through this gate,
+   here (a resume that re-poses the chip is a new pass). When it
    runs: once, immediately before the merge chip
    is posed — no added wait, not re-run after fix-now commits — and
    unconditional, independent of the step-5 lens's probe gate (one PR's
@@ -424,16 +429,17 @@ re-enters here, at the step the record shows is next:
    written to disk, never committed.
 
 8. **On approval — and only then:** push the branch and open the PR —
-   `git push -u origin <branch>`, then `gh pr create` opening it ready
-   for review, never as a draft (skipped when the header already names an open PR: the branch is pushed
+   `git push -u origin <branch>`, then `gh pr create --title <title>
+   --body <body>` (both spelled out — a bare create prompts and fails
+   without a terminal) opening it ready for review, never as a draft (skipped when the header already names an open PR: the branch is pushed
    and the existing PR stands). The PR body ends with one `Closes #N` line
    per `closes` entry and one `Refs #N` line per `partial` entry of the
    milestone's `Resolves:` slot — the closing keyword is what makes GitHub
    close the issue at merge; a slot of `—` adds no lines. Record the PR
    URL in the milestone header — a docs-only commit on the branch, left
-   unpushed: the record serves the resume routes locally, the squash never
-   needs it, and pushing it would move the PR head past the one CI just
-   ran on (the archive summary reads it from the local file at step 9).
+   unpushed: the squash never needs it, and pushing it would move the PR
+   head past the one CI just ran on; the resume routes and step 9 fall
+   back to `gh pr list --head <branch>` once the local branch is gone.
    Then record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
    `M<NNN> approved YYYY-MM-DD for PR #<N>` — the marker names the PR it
@@ -458,7 +464,10 @@ re-enters here, at the step the record shows is next:
    never left armed at the merge, a commit, or a `/clear`
    point, never merged past; a PR that reports no checks
    exits 1 at once and is mergeable on local green where the profile's
-   consistency-gate says so). Red CI → fix on the branch,
+   consistency-gate says so — but a PR created moments ago can report no
+   checks before GitHub registers them, so where the profile does not
+   declare the repo CI-less, re-read `gh pr checks` after a short wait,
+   up to about a minute, before taking the no-checks case). Red CI → fix on the branch,
    re-verify, re-request approval if the fix was nontrivial. When green:
    `gh pr merge <N> --squash --delete-branch` with a clean summary message —
    name the PR number explicitly; a bare `gh pr merge` is denied by the guard
@@ -497,7 +506,11 @@ re-enters here, at the step the record shows is next:
    `cairn/`, the docs-only commit and push at the end of this step do not
    exist, and the issue writes are the maintainers' — the `Closes` keyword
    closes the issue at their merge, so the close-if-open is skipped and only
-   the `partial` comments are posted (`--repo <base-repo>`). Then write the
+   the `partial` comments are posted (`--repo <base-repo>`). The PR number
+   and URL the summary's status line needs come from the local header
+   record where the branch survived, else from `gh pr list --head <branch>
+   --state merged --json number,url` (the record never reached the
+   default branch; step 8). Then write the
    milestone's archive summary **from**
    `${CLAUDE_PLUGIN_ROOT}/skills/shared/templates/archive-summary.md` — a
    comment-free skeleton, so nothing scaffolding-shaped can leak into a

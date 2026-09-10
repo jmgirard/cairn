@@ -140,7 +140,10 @@ The script deliberately does not judge these — do them yourself and report:
   review states (`COMMENTED`, `CHANGES_REQUESTED`) from the reads
   `/milestone-review` step 7 names; the audit writes nothing to GitHub.
 - A milestone at `review` whose header PR reports `MERGED` (`gh pr view <N>
-  --json state`) → post-merge hygiene owed: report it as such and route to
+  --json state`; a header naming only the branch is resolved with `gh pr
+  list --head <branch> --state all`, the PR having been opened after
+  approval and its record left unpushed — `/milestone-review` step 8) →
+  post-merge hygiene owed: report it as such and route to
   `/milestone-review M<NNN>`, whose session start re-enters at the step the
   record shows is next — hygiene when the review completed before the
   merge, post-hoc verification otherwise (M172).
