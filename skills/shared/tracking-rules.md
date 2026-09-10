@@ -217,10 +217,14 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   It accepts only docs-only tracking commits and squash-merges of milestone/hotfix branches — never implement on it.
   **The remote's default branch is authoritative**: push docs-only commits immediately, so branches are cut from commits
   the PR base has.
-- **Detecting the default branch (canonical recipe).** Never hardcode `main`; store no branch name. Detect with `git
-  symbolic-ref --short refs/remotes/origin/HEAD` (strip `origin/`); if `origin/HEAD` is unset locally but a remote
-  exists, query `git ls-remote --symref origin HEAD` and read the `ref: refs/heads/<name>` line. Only with **no remote
-  at all** ask the user — never guess from the local current branch (wrong on a feature branch).
+- **Detecting the default branch (canonical recipe).** Never hardcode `main`; store no branch name. The **base
+  remote** `<base>` is `origin` in owner mode; in guest mode it is `upstream` when `git remote` lists it, else `origin`
+  (`cairn_common.base_remote`; "Collaboration mode" below). Detect with `git symbolic-ref --short
+  refs/remotes/<base>/HEAD` (strip `<base>/`); if `<base>/HEAD` is unset locally but the remote exists, query `git
+  ls-remote --symref <base> HEAD` and read the `ref: refs/heads/<name>` line. Only with **no remote at all** ask the
+  user — never guess from the local current branch (wrong on a feature branch). A `gh` command that must name the base
+  repo takes its `OWNER/REPO` slug as `<base-repo>`: `gh repo view "$(git remote get-url <base>)" --json
+  nameWithOwner -q .nameWithOwner`; `<fork-owner>` reads `origin` the same way with `--json owner -q .owner.login`.
 - Milestone work on `m<nnn>-<slug>` (owner mode; guest mode names the branch `<slug>` alone — "Collaboration mode"
   below); hotfixes on `hotfix-<slug>`; both cut from the up-to-date default branch. Checkpoint
   commits are cheap — squash erases them. Exception: an adopted external PR keeps the contributor's branch and its name.

@@ -79,11 +79,14 @@ Chapter markers: mark a chapter at each phase transition — each phase its
   installing PyYAML enables the applied edit. This bullet
   sits in §0, so the scaffold and repair paths both enter it.
 - **Default branch.** Detect the repo's default branch per the canonical
-  recipe in the tracking-rules git model: `git symbolic-ref --short
-  refs/remotes/origin/HEAD` (strip the `origin/` prefix); if that fails but a
-  remote exists — `origin/HEAD` unset locally (a shallow clone, a fresh
+  recipe in the tracking-rules git model, against the base remote `<base>`
+  (`origin`; in guest mode `upstream` when that remote exists — the mode
+  is decided in the next bullet, so re-read the branch after it when the
+  answer is guest and `upstream` is listed): `git symbolic-ref --short
+  refs/remotes/<base>/HEAD` (strip the `<base>/` prefix); if that fails but
+  the remote exists — `<base>/HEAD` unset locally (a shallow clone, a fresh
   `git remote add`, a CI checkout that never ran `set-head`) — query the
-  remote with `git ls-remote --symref origin HEAD` and read the
+  remote with `git ls-remote --symref <base> HEAD` and read the
   `ref: refs/heads/<name>` line. Only with no remote at all ask the user —
   never guess the local current branch. cairn does not assume `main`; use the
   detected name wherever the steps below (and the tracking-rules git model)

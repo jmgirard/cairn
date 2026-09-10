@@ -38,15 +38,25 @@ run ingestion first (see `/milestone-brief`).
 2. **Branch.** Check `git status` first — a dirty tree with unrelated
    changes means ask the user; never sweep strangers into a checkpoint
    commit. First session: detect the default branch (tracking-rules git
-   model: `git symbolic-ref --short refs/remotes/origin/HEAD`, strip
-   `origin/`) and sync it with origin first — `git fetch`, pull (ff-only),
-   and **push any unpushed local commits** — so the branch is cut from the
-   pushed default branch and the PR diff will contain only milestone work;
-   then `git checkout -b m<nnn>-<slug>`; record the branch in the milestone
-   header. Resume sessions: check out the
+   model: `git symbolic-ref --short refs/remotes/<base>/HEAD`, strip
+   `<base>/`, where `<base>` is the base remote — `origin` in owner mode,
+   `upstream` when present in guest mode) and sync it with `<base>` first —
+   `git fetch <base>`, pull (ff-only), and **push any unpushed local
+   commits** — so the branch is cut from the pushed default branch and the
+   PR diff will contain only milestone work; then `git checkout -b
+   m<nnn>-<slug>`; record the branch in the milestone header. **Guest arm**
+   (tracking-rules "Collaboration mode"): the fetch is the whole sync — the
+   default branch is never pushed, and the local copy needs no pull — and
+   the branch is cut directly from the base: `git checkout -b <slug>
+   <base>/<default-branch>`. Resume sessions: check out the
    existing branch; if the default branch has moved since the branch was cut
    (e.g., a hotfix merged), merge it into the branch and re-run the active
-   profile's `verify` slot before continuing.
+   profile's `verify` slot before continuing. Guest arm: `git fetch <base>`
+   then `git rebase <base>/<default-branch>` in place of the merge — the
+   branch is the operator's own on the fork, so the rebased branch goes up
+   with `git push --force-with-lease origin <slug>` once a PR exists (the
+   force-push guard covers the default branch alone); the maintainers'
+   review comments stay attached to the PR.
 
 3. **Question gate:** surface the implementation choices the plan left open
    (API shape, naming, dependency picks — dependency changes always need a
