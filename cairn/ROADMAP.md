@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M185 | Guest collaboration mode — fork-aware remotes and review handoff | planned | M184 | high | milestones/M185-guest-handoff.md |
+| M185 | Guest collaboration mode — fork-aware remotes and review handoff | in-progress | M184 | high | milestones/M185-guest-handoff.md |
 | M184 | Guest collaboration mode — local-only tracking | done | — | high | milestones/archive/M184-guest-mode.md |
 | M183 | Close blocks say whether the next command waits on CI | done | — | high | milestones/archive/M183-ci-line.md |
 | M182 | Claim audit at implement time for user-facing prose; release-walk changelog claim-read | done | — | high | milestones/archive/M182-claim-audit.md |

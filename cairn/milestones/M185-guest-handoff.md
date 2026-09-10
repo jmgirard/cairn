@@ -1,13 +1,13 @@
 # M185: Guest collaboration mode — fork-aware remotes and review handoff
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M184   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** IP1, GP2   <!-- owner: plan · create/amend-via-gate; IP1 worked under, unchanged -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Surface tier:** user-facing — the PR flow adopters run from a fork   <!-- owner: plan -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m185-guest-handoff   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create -->
@@ -44,7 +44,7 @@ In guest mode the branch is cut from and the PR targets the upstream repo, and r
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: `hooks/cairn_common.py`: `base_remote(cwd)` — `upstream` when `collaboration_mode(root) == "guest"` and `git remote` lists it, else `origin`; `default_branch` (`:277-292`) resolves `refs/remotes/<base>/HEAD`, falling back to `git ls-remote --symref <base> HEAD`; tests beside `test_default_branch_resolved_via_remote_head` (hooks/tests/test_hooks.py:1749, :1510).
+- [x] T1: `hooks/cairn_common.py`: `base_remote(cwd)` — `upstream` when `collaboration_mode(root) == "guest"` and `git remote` lists it, else `origin`; `default_branch` (`:277-292`) resolves `refs/remotes/<base>/HEAD`, falling back to `git ls-remote --symref <base> HEAD`; tests beside `test_default_branch_resolved_via_remote_head` (hooks/tests/test_hooks.py:1749, :1510).
 - [ ] T2: rulebook recipe (`tracking-rules.md:220-223`) and the sites `cairn-init:83-86`, `milestone-implement:41-44`, `milestone-review:70,426`, `cairn-release:32,103-104`, `cairn-triage:30`, `profiles/generic.md:46` → base remote, or a work-log owner-mode-only disposition (release and triage stop in guest mode); then AC2's repo-wide grep for hits outside the list.
 - [ ] T3: `/milestone-review` guest arm, steps 1–2 (fetch-only sync; fork push + cross-repo `gh pr create`), steps 7–8: the handoff gate chip (`:384-388`) and the handoff sequence in place of the marker + merge (`:395-423`). (RB tripwire: ip-touching — IP1 is worked under unchanged: the handoff merges nothing, and the chip is an approval gate in the merge gate's shape.)
 - [ ] T4: `/milestone-review` guest arm, steps 9–10: on-disk hygiene (`:425-503`) and the close block (`:505-526`); `--repo <base>` on the `gh pr checks`/`view` reads; the transition line's `blocked → done` guest clause (`tracking-rules.md:171-172`).
@@ -59,6 +59,8 @@ In guest mode the branch is cut from and the PR targets the upstream repo, and r
 - 2026-09-10: plan gate chose reusing `blocked` for the handed-off state over a new `awaiting-upstream` status because the definition already fits and the vocabulary is pinned in five places; falsified by a ROADMAP where blocked-on-maintainers and blocked-on-something-else rows cannot be told apart from their work-log lines.
 - 2026-09-10: plan gate chose never merging via cairn in guest mode (skills spell `--repo <base>`) over a guard extension because `gh repo set-default` would route a bare `gh pr merge` past the one-repo approval binding; falsified by an operator with write rights who needs cairn's post-merge hygiene to run in the same session as the merge.
 - 2026-09-10: plan gate chose justifying the `check()` NOTE for the `cairn` directory over a throwaway-worktree check because the maintainers' CI on the PR branch is the check that counts; falsified by an upstream whose contribution checklist requires a zero-NOTE local check.
+- 2026-09-10: /milestone-implement started on branch `m185-guest-handoff`; question gate: T3's handoff chip built as planned (escalation offered on the ip-touching tag, declined); `<base>` resolves to an `OWNER/REPO` slug via `gh repo view "$(git remote get-url <base>)" --json nameWithOwner -q .nameWithOwner` (fork owner from `origin` the same way, `--json owner -q .owner.login`), the recipe stated once in the rulebook; the CHANGELOG's guest-mode entry is extended rather than a second entry added.
+- 2026-09-10: T1 done — `base_remote(cwd)` added and `default_branch` reads `refs/remotes/<base>/HEAD` with the `ls-remote` fallback on `<base>`; five tests in `TestBaseRemote` (both-remotes guest, ls-remote fallback, origin-alone guest, owner-with-upstream, no remote), shown red before the change (1 failure, 4 errors) and green after; hooks 146 green, scripts green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

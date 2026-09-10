@@ -194,6 +194,78 @@ class TestCollaborationMode(RepoFixture):
         self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "other")
 
 
+class TestBaseRemote(RepoFixture):
+    """M185 AC1: `cairn_common.base_remote` is `upstream` only in guest mode
+    and only when that remote exists, else `origin`; `default_branch`
+    resolves the base remote's HEAD, so a guest's default branch is the
+    upstream repo's, not the fork's. Direct import, as TestCollaborationMode."""
+
+    GUEST = "# Toolchain profile: generic\n# Collaboration mode: guest\n\n## verify\n- x\n"
+    OWNER = "# Toolchain profile: generic\n\n## verify\n- x\n"
+
+    def _remote(self, name, head):
+        # A bare repo advertising `head` as its default branch, attached as
+        # remote `name`; the two remotes in a test advertise different names
+        # so the assertion can tell which one was consulted.
+        bare = tempfile.TemporaryDirectory()
+        self.addCleanup(bare.cleanup)
+        subprocess.run(
+            ["git", "init", "-q", "--bare", bare.name],
+            check=True, capture_output=True,
+        )
+        # The bare repo's own HEAD is what `ls-remote --symref` reports;
+        # `set-head` only writes the local refs/remotes/<name>/HEAD.
+        subprocess.run(
+            ["git", "-C", bare.name, "symbolic-ref", "HEAD", f"refs/heads/{head}"],
+            check=True, capture_output=True,
+        )
+        self.git("remote", "add", name, bare.name)
+        self.git("push", "-q", name, f"HEAD:refs/heads/{head}")
+        self.git("remote", "set-head", name, head)
+
+    def _profile(self, text):
+        (self.root / "cairn" / "PROFILE.md").write_text(text)
+
+    def test_guest_with_upstream_reads_upstream_head(self):
+        self._profile(self.GUEST)
+        self._remote("origin", "forkmain")
+        self._remote("upstream", "trunk")
+        cc = session_context.cc
+        self.assertEqual(cc.base_remote(str(self.root)), "upstream")
+        self.assertEqual(cc.default_branch(str(self.root)), "trunk")
+
+    def test_guest_with_upstream_falls_back_to_ls_remote(self):
+        # refs/remotes/upstream/HEAD unset (a fresh `git remote add` never
+        # runs set-head): the network fallback must query upstream, not
+        # origin — origin's advertised `forkmain` is the wrong answer.
+        self._profile(self.GUEST)
+        self._remote("origin", "forkmain")
+        self._remote("upstream", "trunk")
+        self.git("remote", "set-head", "upstream", "--delete")
+        self.assertEqual(session_context.cc.default_branch(str(self.root)), "trunk")
+
+    def test_guest_with_origin_alone_reads_origin(self):
+        self._profile(self.GUEST)
+        self._remote("origin", "forkmain")
+        cc = session_context.cc
+        self.assertEqual(cc.base_remote(str(self.root)), "origin")
+        self.assertEqual(cc.default_branch(str(self.root)), "forkmain")
+
+    def test_owner_with_upstream_still_reads_origin(self):
+        self._profile(self.OWNER)
+        self._remote("origin", "forkmain")
+        self._remote("upstream", "trunk")
+        cc = session_context.cc
+        self.assertEqual(cc.base_remote(str(self.root)), "origin")
+        self.assertEqual(cc.default_branch(str(self.root)), "forkmain")
+
+    def test_no_remote_is_origin_and_none(self):
+        self._profile(self.GUEST)
+        cc = session_context.cc
+        self.assertEqual(cc.base_remote(str(self.root)), "origin")
+        self.assertIsNone(cc.default_branch(str(self.root)))
+
+
 class TestSessionContext(RepoFixture):
     def test_injects_roadmap_and_active_milestone(self):
         proc = run_hook(

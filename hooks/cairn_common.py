@@ -274,18 +274,33 @@ def git(args, cwd):
         return 1, ""
 
 
-def default_branch(cwd):
-    """The repo's default branch name, resolved via the remote HEAD.
+def base_remote(cwd):
+    """The remote whose default branch is the PR base: `upstream` in guest
+    collaboration mode when `git remote` lists it, else `origin` (owner mode
+    always `origin`; tracking-rules "Collaboration mode"). `cwd` may be any
+    path inside the repo — the mode is read from the cairn root above it.
+    Never raises."""
+    root = find_cairn_root(cwd) or cwd
+    if collaboration_mode(root) == "guest":
+        rc, out = git(["remote"], cwd)
+        if rc == 0 and "upstream" in out.split():
+            return "upstream"
+    return "origin"
 
-    Prefers the local `refs/remotes/origin/HEAD` symbolic-ref (instant);
-    falls back to `git ls-remote --symref origin HEAD` (network) when it is
+
+def default_branch(cwd):
+    """The repo's default branch name, resolved via the base remote's HEAD.
+
+    Prefers the local `refs/remotes/<base>/HEAD` symbolic-ref (instant);
+    falls back to `git ls-remote --symref <base> HEAD` (network) when it is
     unset. Returns None when no remote resolves — the caller then treats
     main/master as the default (tracking-rules canonical recipe).
     """
-    rc, out = git(["symbolic-ref", "--short", "refs/remotes/origin/HEAD"], cwd)
+    base = base_remote(cwd)
+    rc, out = git(["symbolic-ref", "--short", f"refs/remotes/{base}/HEAD"], cwd)
     if rc == 0 and out.strip():
-        return out.strip().split("/", 1)[-1]  # strip leading "origin/"
-    rc, out = git(["ls-remote", "--symref", "origin", "HEAD"], cwd)
+        return out.strip().split("/", 1)[-1]  # strip leading "<base>/"
+    rc, out = git(["ls-remote", "--symref", base, "HEAD"], cwd)
     if rc == 0:
         for line in out.splitlines():
             m = re.match(r"ref:\s+refs/heads/(\S+)\s+HEAD", line.strip())
