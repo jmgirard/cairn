@@ -1,6 +1,6 @@
 # M184: Guest collaboration mode — local-only tracking
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -72,6 +72,9 @@ A repo the operator does not own can run cairn's plan/implement/review loop with
 - 2026-09-10: T7 done — guest arms in `/milestone-plan` step 6 (no plan commit or push; files written same turn), `/milestone-implement` step 4 (code-only checkpoint; tracking on disk; `<slug>` branch, no cairn vocabulary in messages), `/milestone` §2 (orphan check skipped and reported; CLAUDE.md check reads the exclude line instead); session-start stop clauses in `/cairn-release` and `/cairn-triage` with fixed status-line text.
 - 2026-09-10: T8 done — README "Contributing to a repo you don't own (guest mode)" subsection under "Working with collaborators" (exclude file, no merge by cairn, hygiene on disk, no release walk or triage); AC6 grep re-run: 3 hits (DESIGN.md:162, README.md:268, tracking-rules.md:256), each names guest mode in the same sentence; no exemptions.
 - 2026-09-10: T9 done — CHANGELOG `## Unreleased` → New entry for guest mode; both suites from the repo root: scripts 387 tests OK exit 0, hooks 138 tests OK exit 0, no skips; `cairn_validate` all checks passed.
+- 2026-09-10: claim audit: 41 claims read, 5 corrected — README.md, CHANGELOG.md, skills/shared/tracking-rules.md, hooks/cairn_common.py, hooks/commit_guard.py, hooks/session_context.py ("any commit" narrowed to the commit the guard sees with its documented misses; the "parses by hand / share no code" comment replaced by the one-parser fact; stale commit_guard docstring gained the guest deny paragraph; abspath comment made exact). The same-reader re-read went to a second fresh [O] reader (this harness has no SendMessage; M182 precedent, the standing candidate row) and returned no corrections. Audit also raised a fence edge: a mode look-alike inside a slot body tripped `profile valid`; both readers now stop at the first `## ` heading, one test each side.
+- 2026-09-10: open concern from the claim audit, not acted on (plan scope names the `.Rbuildignore` skip): in a guest-mode R-package repo `R CMD build` includes untracked files, so a local build would carry `cairn/` into the tarball without `^cairn$`; left for the review gate — a candidate row or an M185 note.
+- 2026-09-10: all tasks done; both suites green; status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

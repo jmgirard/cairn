@@ -826,7 +826,12 @@ def check_profile(root):
     # outside the seven `##` slots this script reads. Parsed by the hooks'
     # `cairn_common.collaboration_mode` (reachable through cairn_scripts'
     # shim), so the hooks and this check read one regex; absent → owner.
+    # Header region only, as that reader scans it: the scan stops at the
+    # first `## ` slot heading, so a look-alike line in a slot body (a fenced
+    # command block) is body text here too.
     for line in text.splitlines():
+        if line.startswith("## "):
+            break
         m = _COLLAB_MODE_LINE.match(line)
         if m and m.group(1).lower() not in _COLLAB_MODES:
             bad.append(

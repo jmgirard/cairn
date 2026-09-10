@@ -14,6 +14,13 @@ through the normal permission flow and Claude simply reads the reminder next
 turn. All-cairn/ commits (the plan/review/hygiene commits the git model
 expects on the default branch) stay silent.
 
+The one hard lever (M184, D-137): in guest collaboration mode
+(`# Collaboration mode: guest` in cairn/PROFILE.md) a commit carrying any
+cairn/ path is DENIED (`permissionDecision: deny`) on every branch — cairn/
+is local-only there and must never reach the repo the operator does not own.
+The nudge above is unchanged in guest mode except that its branch shape reads
+`<slug>` (guest branches carry no cairn vocabulary).
+
 Silent allowlist is cairn/ ONLY — deliberately narrow. Top-level markdown is
 NOT treated as docs: in a plugin repo the product itself is markdown, so a
 markdown carve-out would stay silent on a real skill edit. Warn-only makes the

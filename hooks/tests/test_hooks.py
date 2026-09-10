@@ -164,6 +164,15 @@ class TestCollaborationMode(RepoFixture):
         self._profile("# Toolchain profile: generic\n# Collaboration mode: owner\n")
         self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "owner")
 
+    def test_a_mode_line_inside_a_slot_body_is_body_text(self):
+        # Header region only: a look-alike line after the first `## ` slot
+        # heading (e.g. inside a fenced command block) is not the mode.
+        self._profile(
+            "# Toolchain profile: generic\n\n## verify\n```\n"
+            "# Collaboration mode: guest\n```\n"
+        )
+        self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "owner")
+
     def test_unknown_value_is_returned_verbatim_for_the_validator_to_reject(self):
         # The hook helper reads, it does not judge: cairn_validate's
         # `profile valid` check is where an unknown value FAILs.

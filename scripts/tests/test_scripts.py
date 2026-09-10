@@ -2039,6 +2039,17 @@ class TestValidateProfile(ScriptCase):
         self.assertEqual(proc.returncode, 0, proc.stdout)
         self.assertIn("PASS  profile valid", proc.stdout)
 
+    def test_mode_lookalike_in_a_slot_body_is_ignored(self):
+        # Header region only (as `cairn_common.collaboration_mode` reads it):
+        # an unknown-mode line inside a fenced slot body does not FAIL.
+        text = VALID_PROFILE.replace(
+            "## verify\n- run tests\n",
+            "## verify\n```\n# Collaboration mode: other\n```\n",
+        )
+        proc = run("cairn_validate.py", self._profile(text))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  profile valid", proc.stdout)
+
     def test_mode_other_fails_naming_the_line(self):
         proc = run("cairn_validate.py", self._profile(self._with_mode("other")))
         self.assertEqual(proc.returncode, 1, proc.stdout)

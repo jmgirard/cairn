@@ -286,7 +286,8 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
 
 - **`cairn/` is never committed.** It is listed in `.git/info/exclude` (written by `/cairn-init`, required by
   `cairn_validate`'s `scaffold present` check in place of the `.gitignore`/`.Rbuildignore` entries); the commit guard
-  denies any commit carrying a `cairn/` path, on every branch. Nothing is written outside `cairn/` and that exclude
+  denies a `git commit` it sees carrying a `cairn/` path, on every branch (its docstring's accepted misses — `git -C`,
+  `git -c`, an empty `--amend` — stand, so the deny is a lever, not a proof). Nothing is written outside `cairn/` and that exclude
   file — no CLAUDE.md section (the session hook injects the plugin's routing template instead), no ignore entries, no
   CI edit.
 - **No docs-only commit and no push to the default branch.** The plan commit, the post-merge hygiene commit, and the

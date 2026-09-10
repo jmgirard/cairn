@@ -311,8 +311,9 @@ def on_default_branch(cwd):
 # The collaboration-mode header line of cairn/PROFILE.md (M184, D-137) —
 # `# Collaboration mode: guest` — shaped like session_context's
 # `_PROFILE_HEADER` (`# Toolchain profile: <name>`). The only line outside
-# the seven `##` slots the validator reads; scripts/cairn_validate.py parses
-# it by hand (hooks and scripts share no code) — keep the two in step.
+# the seven `##` slots the validator reads; scripts/cairn_validate.py reaches
+# this same regex and reader through cairn_scripts' import of cairn_common,
+# so there is one parser, not two.
 COLLAB_MODE_LINE = re.compile(r"#\s*Collaboration mode:\s*(\S+)")
 
 
@@ -320,11 +321,16 @@ def collaboration_mode(root):
     """`guest` or `owner` (or whatever the line says, lowercased) from the
     `# Collaboration mode:` header of cairn/PROFILE.md; `owner` when the
     line or the file is absent, since owner mode is every rule as it
-    stood before the axis existed. Never raises."""
+    stood before the axis existed. Only the header region is read — the
+    scan stops at the first `## ` slot heading, so a look-alike line inside
+    a slot body (a fenced command block, say) is body text, not the mode.
+    Never raises."""
     path = os.path.join(root, "cairn", "PROFILE.md")
     try:
         with open(path, encoding="utf-8") as f:
             for line in f:
+                if line.startswith("## "):
+                    break
                 m = COLLAB_MODE_LINE.match(line)
                 if m:
                     return m.group(1).lower()

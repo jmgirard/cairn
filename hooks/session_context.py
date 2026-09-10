@@ -238,8 +238,9 @@ def elided_part(mid, status, relpath):
     )
 
 
-# The plugin's own CLAUDE.md routing section, read relative to this file so
-# a symlink install resolves the same as a plugin-root one.
+# The plugin's own CLAUDE.md routing section, read relative to this file
+# (abspath, as cairn_scripts locates its siblings — a whole-directory
+# symlink install resolves the same as a plugin-root one).
 _CLAUDE_MD_TEMPLATE = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), os.pardir,
     "skills", "shared", "templates", "claude-md-section.md",

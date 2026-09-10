@@ -16,9 +16,10 @@
   `owner|guest`, and its `scaffold present` check in guest mode requires
   the exclude line and drops the ignore-entry requirements. The session
   hook injects the CLAUDE.md routing section from the plugin's own
-  template in guest mode, and the commit guard denies any commit carrying a
-  `cairn/` path on every branch, its nudge naming the `<slug>` branch
-  shape. The rulebook's new "Collaboration mode" section states the guest
+  template in guest mode, and the commit guard denies a `git commit` it
+  sees carrying a `cairn/` path on every branch (the guard's documented
+  misses, `git -C`/`git -c` and an empty `--amend`, are unchanged), its
+  nudge naming the `<slug>` branch shape. The rulebook's new "Collaboration mode" section states the guest
   rules (tracking written to disk in the turn that changes the code, never
   committed; no cairn vocabulary in branches, commits, or PRs;
   `/cairn-release` and `/cairn-triage` stop; adopting a third party's PR
