@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M186 | The PR opens after approval, so CI first runs on the head that merges | planned | — | high | milestones/M186-pr-after-approval.md |
+| M186 | The PR opens after approval, so CI first runs on the head that merges | in-progress | — | high | milestones/M186-pr-after-approval.md |
 | M185 | Guest collaboration mode — fork-aware remotes and review handoff | done | M184 | high | milestones/archive/M185-guest-handoff.md |
 | M184 | Guest collaboration mode — local-only tracking | done | — | high | milestones/archive/M184-guest-mode.md |
 | M183 | Close blocks say whether the next command waits on CI | done | — | high | milestones/archive/M183-ci-line.md |

@@ -1,13 +1,13 @@
 # M186: The PR opens after approval, so CI first runs on the head that merges
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, GP1
 - **Resolves:** —
 - **Surface tier:** user-facing — skill conduct every adopting repo's review and hotfix run under
-- **Branch/PR:** —
+- **Branch/PR:** m186-pr-after-approval
 
 ## Goal
 
@@ -39,7 +39,7 @@ Review and hotfix push the branch and open the pull request only after the user 
 
 ## Tasks
 
-- [ ] T1: Rewrite `skills/milestone-review/SKILL.md` step 2 (one sentence: nothing pushed or opened here, the reason, pointer to step 8), step 7 (chip and approval-line wording naming the branch; conversation read conditioned on a pre-existing PR), step 8 (push, create, body rules, header record, then marker, CI wait, merge; guest handoff = push + create), and the resume routes (a)/(c)/(d) at `SKILL.md:36-72`.
+- [x] T1: Rewrite `skills/milestone-review/SKILL.md` step 2 (one sentence: nothing pushed or opened here, the reason, pointer to step 8), step 7 (chip and approval-line wording naming the branch; conversation read conditioned on a pre-existing PR), step 8 (push, create, body rules, header record, then marker, CI wait, merge; guest handoff = push + create), and the resume routes (a)/(c)/(d) at `SKILL.md:36-72`.
 - [ ] T2: Rewrite `skills/hotfix/SKILL.md` step 5 (`SKILL.md:148-153`: no push, no PR, guest note removed), step 6 (push + create after approval; conversation read conditioned on an existing PR; guest handoff = push + create, `SKILL.md:220-229`), and step 1's open-PR re-entry sentence.
 - [ ] T3: Update tracking-rules `Git and approval model` bullet (`tracking-rules.md:238-246`) and `Collaboration mode` (`:311-320`), `skills/milestone-implement/SKILL.md:211-217`, README `:303`; add a changelog entry under the development version; run AC5's grep.
 - [ ] T4: Append the D-entry (post-approval open; the serial CI wait at the gate as its cost; the ready-for-review workflow alternative rejected); re-seed the hand-run pins quoting the old wording (`skills/tests/test_resume_routing.py:95`, `test_mutation_harness.py:3459`, `test_issue_linkage.py:307`) and hand-run `python3 -m unittest discover skills/tests`, expecting no red beyond the 4 reds + 1 error recorded at M185's hygiene; run the two gating suites.
@@ -50,6 +50,8 @@ Review and hotfix push the branch and open the pull request only after the user 
 - 2026-09-10: plan gate chose opening the PR after approval over opening it just before the gate because the approval commit's push re-runs a `pull_request` suite regardless, so the early open buys one wasted run; falsified by a repo where the serial CI wait after approval is reported as the bottleneck of its milestone loop.
 - 2026-09-10: plan gate chose reading the PR conversation only where a PR pre-exists over a second read after CI green because the second read re-poses the chip after the marker is written and adds a gate path; falsified by a bot reviewer's comment on a fresh PR being found, post-merge, to have named a defect the fan-out missed.
 - 2026-09-10: plan gate chose the skill-side move over per-repo workflow config (checks gated on ready-for-review via `/cairn-init`) because it touches every adopting repo's workflows and needs the non-default `ready_for_review` trigger type; falsified by an adopting repo that cannot accept a serial CI wait at the gate.
+- 2026-09-10: /milestone-implement started on `m186-pr-after-approval`; question gate skipped (the plan gate settled the three design choices; AC1–AC6 fix the wording).
+- 2026-09-10: T1 done — review step 2 pushes nothing; step 7 chip and approval line name the branch (guest: `<slug>` and base repo), conversation read conditioned on a header-named open PR; step 8 opens the push + `gh pr create` (no `--draft`) before the marker, guest handoff = push + create, no `gh pr ready`; routes (a)/(c)/(d) reworded; the two fix-now "re-pushed" clauses now point at step 8's push. Scripts 391 / hooks 146 green.
 
 ## Decisions
 

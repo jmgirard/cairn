@@ -40,8 +40,8 @@ Review section; a stopped CI wait or a merge made outside the session
 re-enters here, at the step the record shows is next:
 
 - (a) `MERGED`, every acceptance-criterion box ticked against a recorded
-  evidence line, and a work-log line recording step-7 approval (`step-7
-  approval: PR #<N> …`) → append one work-log line naming the PR, its
+  evidence line, and a work-log line recording step-7 approval (read by
+  its prefix, `step-7 approval: …`) → append one work-log line naming the PR, its
   `mergedAt` value, and the re-entry (`resume: PR #<N> merged <mergedAt>;
   re-entering at step 9`), then steps 9–10
   with steps 1–8 skipped — the recorded approval stands as step 9's
@@ -60,15 +60,17 @@ re-enters here, at the step the record shows is next:
   the requested changes as tasks and sets status `in-progress` (step 7's
   decline exit); on acceptance, steps 9–10 with step 8 skipped.
 - (c) `OPEN`, every box ticked against a recorded evidence line, and a
-  recorded approval → step 1 re-run and the branch pushed (step 2's push,
-  its draft PR already open; when the default branch had moved, step 3
-  re-run so the evidence matches the merged tree), the step-7 chip
-  re-posed, and on approval step 8 from the marker write onward.
-  The step-7 PR-conversation read re-runs before that chip is re-posed.
+  recorded approval → step 1 re-run and the branch pushed (when the default
+  branch had moved, step 3 re-run so the evidence matches the merged
+  tree), the step-7 chip re-posed, and on approval step 8 skipping `gh pr
+  create` — the header already names the open PR — from the push and the
+  marker write onward. The step-7 PR-conversation read runs before that
+  chip is re-posed, the PR pre-existing.
 - (d) any other state, or a state above whose conditions are not met →
-  step 1, step 2 skipping `gh pr create` when the header already names an
-  open PR. A `gh` that is missing, unauthenticated, or has no remote → step
-  1, the recap naming which of the three it was.
+  step 1, then the review with the post-approval open at step 8 skipping
+  `gh pr create` when the header already names an open PR. A `gh` that is
+  missing, unauthenticated, or has no remote → step 1, the recap naming
+  which of the three it was.
 
 ## Workflow
 
@@ -82,17 +84,11 @@ re-enters here, at the step the record shows is next:
    and a moved default branch is taken by `git rebase
    <base>/<default-branch>`, as `/milestone-implement` step 2 states.
 
-2. Push the branch; open a **draft PR** (`gh pr create --draft`) so CI runs
-   in the background while the review proceeds. Guest arm: the push goes to
-   the fork (`git push -u origin <slug>`, `--force-with-lease` after a
-   rebase) and the PR is opened against the base repo from the fork's
-   branch — `gh pr create --repo <base-repo> --head <fork-owner>:<slug>
-   --draft` — its title and body carrying no cairn vocabulary (the
-   `Closes`/`Refs` lines below are GitHub's, not cairn's, and stay). The PR body ends with one
-   `Closes #N` line per `closes` entry and one `Refs #N` line per `partial`
-   entry of the milestone's `Resolves:` slot — the closing keyword is what
-   makes GitHub close the issue at merge; a slot of `—` adds no lines.
-   Record the PR URL in the milestone header.
+2. Nothing is pushed and no PR is opened here: the push and the `gh pr
+   create` sit in step 8, after the step-7 approval, so a
+   `pull_request`-triggered suite first runs on the head that merges rather
+   than on every pre-approval push (D-138). The review below proceeds on the
+   local branch.
 
 3. **Execute every acceptance criterion with fresh evidence** — actually run
    the tests and the active profile's checks (its `verify` / `consistency-gate`
@@ -291,8 +287,8 @@ re-enters here, at the step the record shows is next:
    since the member covers the change being planned, never a flaw in how it
    was carried out. **The actioned list is the findings triaged fix-now or
    follow-up.** Fix-now work directed at the gate is committed on the branch
-   and the branch re-pushed before the approval marker is written (step 8;
-   the M105 squash lesson), with approval re-requested when a fix was
+   before step 8's push and approval marker (the M105 squash lesson: the
+   push carries it), with approval re-requested when a fix was
    nontrivial; a floor-qualifying finding returns status from the gate
    itself — the return floor below states when.
 
@@ -341,8 +337,8 @@ re-enters here, at the step the record shows is next:
    defect-return count the thrash rule reads.
 
 6. Checkpoint commit on the branch — the pre-gate checkpoint; fix-now work
-   the step-7 gate directs lands after it and is committed and re-pushed
-   before the approval marker (step 5's triage ordering clause).
+   the step-7 gate directs lands after it and is committed before step 8's
+   push and approval marker (step 5's triage ordering clause).
 
 7. **Final approval gate.** Present, outcome-first (per tracking-rules):
    what the user is approving in plain words — what the milestone does or
@@ -365,7 +361,11 @@ re-enters here, at the step the record shows is next:
    the gap, and selecting it logs the accepted shortfall in the Review
    section.
 
-   **PR-conversation read (M177).** Once, immediately before the merge chip
+   **PR-conversation read (M177).** Only when the milestone header already
+   names an open PR (a return from a prior review, a resume route re-posing
+   the chip) — a fresh PR is opened at step 8 after this chip and is merged
+   with no read, so the read runs at most once per review, here. When it
+   runs: once, immediately before the merge chip
    is posed — no added wait, not re-run after fix-now commits — and
    unconditional, independent of the step-5 lens's probe gate (one PR's
    calls are cheap; the probe guards a walk over history), read the PR's
@@ -397,29 +397,41 @@ re-enters here, at the step the record shows is next:
    Ask any remaining clarifying questions first (batched, with
    recommendations). Then put the merge authorization **itself** to the user
    as an `AskUserQuestion` chip — this is the third gate (per tracking-rules),
-   never a prose yes/no: the recommended option merges (e.g. `Merge PR #N to
-   <default-branch>`) — address-first instead, when the blocking rule
-   above fires — and a decline option is present. Approval withheld (or declined at
-   the chip) → log the requested changes as tasks, status back to
-   `in-progress`, stop. Approval appends one work-log line naming the PR
-   number it approved (`step-7 approval: PR #<N> approved for merge`) — the
-   line the Session-start resume route reads — committed and pushed on the
-   branch before step 8's marker write, so the squash carries it.
+   never a prose yes/no: the recommended option merges, naming the branch
+   and the default branch, not a PR number — no PR exists yet on a first
+   pass (`Merge <branch> into <default-branch>`) — address-first instead,
+   when the blocking rule above fires — and a decline option is present.
+   Approval withheld (or declined at the chip) → log the requested changes
+   as tasks, status back to `in-progress`, stop. Approval appends one
+   work-log line naming the branch it approved (`step-7 approval: <branch>
+   approved for merge`) — the line the Session-start resume route reads by
+   its prefix — committed on the branch before step 8's push, so the
+   squash carries it.
 
    **Guest arm — the handoff gate.** cairn never merges in guest mode
    (tracking-rules "Collaboration mode"), so the chip keeps the merge
    gate's shape with the merge taken out: the same outcome-first
-   presentation and PR-conversation read (`--repo <base-repo>` on its
-   reads), then one `AskUserQuestion` chip whose recommended option hands
-   the PR to the maintainers (e.g. `Hand PR #N to the maintainers of
-   <base-repo>` — marks it ready for their review; the milestone waits on
-   them), a decline option present, and **no merge option** — the blocking
-   rule above moves the recommendation to address-first as in owner mode.
-   Decline → the owner-mode decline exit. Selecting the handoff appends the
-   work-log line `step-7 approval: PR #<N> approved for handoff` (the same
-   prefix the resume route reads), written to disk, never committed.
+   presentation and, where the header already names an open PR, the same
+   PR-conversation read (`--repo <base-repo>` on its reads), then one
+   `AskUserQuestion` chip whose recommended option hands the branch to the
+   maintainers, naming the branch and the base repo (e.g. `Hand <slug> to
+   the maintainers of <base-repo>` — pushes it and opens the PR for their
+   review; the milestone waits on them), a decline option present, and
+   **no merge option** — the blocking rule above moves the recommendation
+   to address-first as in owner mode. Decline → the owner-mode decline
+   exit. Selecting the handoff appends the work-log line `step-7 approval:
+   <slug> approved for handoff` (the same prefix the resume route reads),
+   written to disk, never committed.
 
-8. **On approval — and only then:** record the approval for the merge
+8. **On approval — and only then:** push the branch and open the PR —
+   `git push -u origin <branch>`, then `gh pr create` with no `--draft`
+   (skipped when the header already names an open PR: the branch is pushed
+   and the existing PR stands). The PR body ends with one `Closes #N` line
+   per `closes` entry and one `Refs #N` line per `partial` entry of the
+   milestone's `Resolves:` slot — the closing keyword is what makes GitHub
+   close the issue at merge; a slot of `—` adds no lines. Record the PR
+   URL in the milestone header (a docs-only commit on the branch, pushed).
+   Then record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
    `M<NNN> approved YYYY-MM-DD for PR #<N>` — the marker names the PR it
    approves, and the guard refuses a merge that names a different PR or
@@ -428,7 +440,7 @@ re-enters here, at the step the record shows is next:
    if a merge fails and is retried under the same approval, rewrite the
    marker. Write the marker in a **separate** step before the `gh pr merge`
    command — the hook checks it before the command runs, so writing it in
-   the same shell line as the merge is denied. Then mark the PR ready;
+   the same shell line as the merge is denied. Then
    require green CI
    (a foreground `gh pr checks <pr> --watch --fail-fast` with a timeout
    below the harness ceiling — one watcher, the tracking-rules wait rule; a
@@ -450,8 +462,14 @@ re-enters here, at the step the record shows is next:
    because the approval cannot be checked against it.
 
    **Guest arm — the handoff sequence**, in place of the marker, the CI
-   wait, and the merge: only on the handoff selection, run `gh pr ready <N>
-   --repo <base-repo>`; set status `blocked` in ROADMAP and the header
+   wait, and the merge: only on the handoff selection, push the branch to
+   the fork (`git push -u origin <slug>`, `--force-with-lease` after a
+   rebase) and open the PR against the base repo from the fork's branch —
+   `gh pr create --repo <base-repo> --head <fork-owner>:<slug>`, no
+   `--draft`, no `gh pr ready` — its title and body carrying no cairn
+   vocabulary (the `Closes`/`Refs` lines above are GitHub's, not cairn's,
+   and stay); record the PR URL in the header on disk, never committed.
+   Then set status `blocked` in ROADMAP and the header
    mirror; append the work-log line `blocked: PR #<N> awaits the
    maintainers of <base-repo>` — the blocker the status vocabulary requires
    named; nothing is committed. Then stop with the close block
