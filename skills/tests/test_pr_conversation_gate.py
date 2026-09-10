@@ -49,7 +49,7 @@ class TestReviewStepSevenRead(unittest.TestCase):
 
     def test_read_runs_once_before_the_chip_with_no_wait(self):
         self.assertIn(
-            "Once, immediately before the merge chip is posed — no added "
+            "once, immediately before the merge chip is posed — no added "
             "wait, not re-run after fix-now commits",
             self.step,
         )
@@ -152,8 +152,8 @@ class TestReviewBlockingRule(unittest.TestCase):
         route = flat(section(read("milestone-review", "SKILL.md"),
                              "**Resume routing (M172).**", "## Workflow"))
         self.assertIn(
-            "The step-7 PR-conversation read re-runs before that chip is "
-            "re-posed.",
+            "The step-7 PR-conversation read runs before that chip is "
+            "re-posed, the PR pre-existing.",
             route,
         )
 
@@ -177,9 +177,20 @@ class TestHotfixStepSix(unittest.TestCase):
         )
 
     def test_authored_and_adopted_alike_with_contributor_comments(self):
+        # M186: the read is conditioned on a pre-existing PR — an adopted
+        # PR, or an authored fix re-entered by PR reference; a PR opened
+        # fresh after the chip is merged with no read.
         self.assertIn(
-            "for an authored and an adopted PR alike, an adopted PR's "
-            "contributor comments in scope",
+            "only when a PR already exists — an adopted PR, or the "
+            "PR-reference re-entry of an authored fix — run the "
+            "PR-conversation read",
+            self.step,
+        )
+        self.assertIn("an adopted PR's contributor comments in scope", self.step)
+        self.assertIn(
+            "An authored fix's PR is opened below, after the chip, and is "
+            "merged with no read — the read runs at most once per hotfix, "
+            "here.",
             self.step,
         )
 
@@ -219,8 +230,10 @@ class TestReadme(unittest.TestCase):
     def test_readme_names_both_gates_reading_the_conversation(self):
         text = flat((REPO / "README.md").read_text())
         self.assertIn(
-            "Both approval gates read the PR's own conversation — review "
-            "threads and comments, human or bot — before the merge chip",
+            "Where a PR already exists — a return from an earlier review, an "
+            "adopted hotfix PR — both approval gates read its conversation "
+            "— review threads and comments, human or bot — before the merge "
+            "chip",
             text,
         )
 

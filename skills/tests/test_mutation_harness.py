@@ -3128,7 +3128,7 @@ REGISTRY += [
         guard="test_issue_linkage",
         test="TestReviewPRBody.test_pr_body_ends_with_closes_and_refs_lines_from_the_slot",
         target=REVIEW,
-        block="`Closes #N` line per `closes` entry and one `Refs #N` line per `partial`",
+        block="`Closes #N` line\n   per `closes` entry and one `Refs #N` line per `partial`",
     ),
     Mutation(
         guard="test_issue_linkage",
@@ -3277,7 +3277,7 @@ REGISTRY += [
         guard="test_issue_linkage",
         test="TestReadmeStatesTheThreeBehaviors.test_pr_closing_keyword",
         target=README,
-        block="draft PR body ends with `Closes #N`",
+        block="PR the review opens after your approval has a body ending with\n  `Closes #N`",
     ),
     Mutation(
         guard="test_issue_linkage",
@@ -3456,26 +3456,26 @@ REGISTRY += [
         target=REVIEW,
         block="(c) `OPEN`, every box ticked against a recorded evidence "
               "line, and a\n  recorded approval → step 1 re-run and the "
-              "branch pushed (step 2's push,\n  its draft PR already open; "
-              "when the default branch had moved, step 3\n  re-run so the "
-              "evidence matches the merged tree), the step-7 chip\n  "
-              "re-posed, and on approval step 8 from the marker write "
-              "onward.",
+              "branch pushed (when the default\n  branch had moved, step 3 "
+              "re-run so the evidence matches the merged\n  tree), the "
+              "step-7 chip re-posed, and on approval step 8 skipping `gh pr"
+              "\n  create` — the header already names the open PR — from "
+              "the push and the\n  marker write onward.",
     ),
     Mutation(
         guard="test_resume_routing",
         test="TestReviewResumeRoute."
              "test_route_d_everything_else_goes_to_step_one",
         target=REVIEW,
-        block="A `gh` that is missing, unauthenticated, or has no remote → "
-              "step\n  1, the recap naming which of the three it was.",
+        block="A `gh` that is\n  missing, unauthenticated, or has no remote → "
+              "step 1, the recap naming\n  which of the three it was.",
     ),
     Mutation(
         guard="test_resume_routing",
         test="TestReviewResumeRoute.test_step_seven_records_the_approval_line",
         target=REVIEW,
-        block="Approval appends one work-log line naming the PR\n   number "
-              "it approved (`step-7 approval: PR #<N> approved for merge`)",
+        block="Approval appends one\n   work-log line naming the branch it "
+              "approved (`step-7 approval: <branch>\n   approved for merge`)",
     ),
     Mutation(
         guard="test_resume_routing",
@@ -3511,7 +3511,7 @@ REGISTRY += [
         test="TestHotfixMergedPrReentry."
              "test_owed_items_land_through_the_pr_path",
         target=HOTFIX,
-        block="never by a commit to the default branch",
+        block="never by a commit to\n     the default branch",
     ),
     Mutation(
         guard="test_resume_routing",
@@ -3541,7 +3541,7 @@ REGISTRY += [
         test="TestReviewStepSevenRead."
              "test_read_runs_once_before_the_chip_with_no_wait",
         target=REVIEW,
-        block="Once, immediately before the merge chip\n   is posed — no "
+        block="once, immediately before the merge chip\n   is posed — no "
               "added wait, not re-run after fix-now commits",
     ),
     Mutation(
@@ -3628,28 +3628,28 @@ REGISTRY += [
         test="TestReviewBlockingRule."
              "test_chip_sentence_defers_to_the_blocking_rule",
         target=REVIEW,
-        block="address-first instead, when the blocking rule\n   above fires",
+        block="address-first instead,\n   when the blocking rule above fires",
     ),
     Mutation(
         guard="test_pr_conversation_gate",
         test="TestReviewBlockingRule.test_resume_route_c_reruns_the_read",
         target=REVIEW,
-        block="The step-7 PR-conversation read re-runs before that chip is "
-              "re-posed.",
+        block="The step-7 PR-conversation read runs before that\n  chip is "
+              "re-posed, the PR pre-existing.",
     ),
     Mutation(
         guard="test_pr_conversation_gate",
         test="TestHotfixStepSix.test_cross_references_the_review_step_seven_rule",
         target=HOTFIX,
-        block="run the PR-conversation read `/milestone-review` step 7 states",
+        block="run the PR-conversation read\n   `/milestone-review` step 7 states",
     ),
     Mutation(
         guard="test_pr_conversation_gate",
         test="TestHotfixStepSix."
              "test_authored_and_adopted_alike_with_contributor_comments",
         target=HOTFIX,
-        block="for an authored and an adopted PR alike, an adopted\n   PR's "
-              "contributor comments in scope",
+        block="only when a PR already exists — an adopted PR, or the "
+              "PR-reference\n   re-entry of an authored fix",
     ),
     Mutation(
         guard="test_pr_conversation_gate",
@@ -3676,6 +3676,6 @@ REGISTRY += [
         guard="test_pr_conversation_gate",
         test="TestReadme.test_readme_names_both_gates_reading_the_conversation",
         target=README,
-        block="Both approval gates read the PR's own conversation — review threads\n  and comments, human or bot — before the merge chip",
+        block="both approval gates read its conversation — review\n  threads and comments, human or bot — before the merge chip",
     ),
 ]

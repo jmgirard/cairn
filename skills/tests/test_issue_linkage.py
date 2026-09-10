@@ -10,7 +10,7 @@ pinned here:
   1. `/milestone-plan` fills the `Resolves:` slot from the issues the scope
      absorbs, rows a `partial` entry's remainder, and offers — never
      defaults to — an acknowledgement comment at the gate.
-  2. `/milestone-review` ends the draft PR body with `Closes`/`Refs` lines,
+  2. `/milestone-review` ends the post-approval PR body with `Closes`/`Refs` lines,
      enumerates the post-merge issue writes in the merge chip, and reads
      each `closes` issue's state after the merge, closing what the keyword
      missed; an unreachable `gh` is reported, never a hygiene failure.
@@ -133,13 +133,13 @@ class TestPlanGateAcknowledgement(unittest.TestCase):
 
 
 class TestReviewPRBody(unittest.TestCase):
-    """AC3: step 2's closing lines come from the slot."""
+    """AC3: step 8's closing lines come from the slot (moved from step 2 at M186)."""
 
     def test_pr_body_ends_with_closes_and_refs_lines_from_the_slot(self):
         self.assertRegex(
             review(),
-            r"The PR body ends with one\s+`Closes #N` line per `closes` entry "
-            r"and one `Refs #N` line per `partial`\s+entry of the milestone's "
+            r"The PR body ends with one `Closes #N` line\s+per `closes` entry "
+            r"and one `Refs #N` line per `partial` entry of the\s+milestone's "
             r"`Resolves:` slot",
         )
 
@@ -304,8 +304,8 @@ class TestReadmeStatesTheThreeBehaviors(unittest.TestCase):
     def test_pr_closing_keyword(self):
         self.assertRegex(
             self.readme(),
-            r"draft PR body ends with `Closes #N` \(or `Refs #N` for an issue"
-            r"\s+only partly resolved\)",
+            r"PR the review opens after your approval has a body ending with"
+            r"\s+`Closes #N` \(or `Refs #N` for an issue only partly resolved\)",
         )
 
     def test_post_merge_check_and_audit_orphan(self):
