@@ -409,7 +409,11 @@ re-enters here, at the step the record shows is next:
    `gh pr checks` state, stopped with `TaskStop`, and the session stops
    there with a close block whose fenced next command is
    `/milestone-review M<NNN>` — the Session-start resume route re-derives
-   the merge state — never left armed at the merge, a commit, or a `/clear`
+   the merge state — and whose CI line (tracking-rules close-block shape)
+   states the current check state as read from fresh `gh pr checks`, then
+   that rerunning `/milestone-review M<NNN>` re-derives that state and
+   waits again, so waiting for green first is optional and never required;
+   never left armed at the merge, a commit, or a `/clear`
    point, never merged past; a PR that reports no checks
    exits 1 at once and is mergeable on local green where the profile's
    consistency-gate says so). Red CI → fix on the branch,

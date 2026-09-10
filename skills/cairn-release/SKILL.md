@@ -78,7 +78,11 @@ toolchain-specific work at step 3.
    `TaskStop` first; a foreground call moved to the background at the
    ceiling is reported from its fresh state, stopped with `TaskStop`, and
    the session stops there with a close block naming `/cairn-release` as
-   its fenced next command; report results when they arrive. Any outward action (submitting, pushing a
+   its fenced next command, whose CI line (tracking-rules close-block shape)
+   states the check's current state as read from the moved task's fresh
+   output, then that rerunning `/cairn-release` re-runs the check and waits
+   again, so waiting for it to finish first is optional and never required;
+   report results when they arrive. Any outward action (submitting, pushing a
    tag) is the user's to take at the approval gate; this skill prepares, it does
    not push.
 

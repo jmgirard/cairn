@@ -192,7 +192,15 @@ run ingestion first (see `/milestone-brief`).
    closes") — outcome-first recap: what the milestone now does or changes,
    in plain words, before the mechanics — then a file-level summary of the
    branch diff, test/check results, deviations from plan, and open concerns;
-   a status table (milestone, status, branch/PR, suite results); the fenced
+   a status table (milestone, status, branch/PR, suite results); the
+   implement-end **CI line** (tracking-rules close-block shape) — one plain
+   sentence saying there is nothing to wait for now: no PR exists yet, and
+   `/milestone-review` pushes the branch, opens the PR, and waits on CI
+   itself at the merge step (on a return from review, where the header
+   already names a draft PR, the line instead says there is still nothing
+   to wait for now: review re-waits on that PR's checks at its merge step,
+   and any check state the PR shows was run against the pre-return head);
+   the fenced
    next command, `/milestone-review <id>` labeled plainly; and the safety
    line — adjustments on the branch first are fine, and the checkpoint makes
    this a safe `/clear` point, since review resumes statelessly in a fresh
