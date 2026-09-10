@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-10 (M184 done: guest collaboration mode; two candidate rows from its review; M181's row pruned (archive + git); validate green; scripts 391 + hooks 141 green, skills/tests 661 with the one pre-existing lesson-graduation red; no new lesson; ROADMAP/LESSONS bytes and the three doctrine-module budgets hand-read under cap.)_
+_Last hygiene check: 2026-09-10 (M185 done: fork-aware base remote and the guest review handoff; the `/hotfix` guest arm candidate row retired as shipped; M182's row pruned (archive + git); the M109 skip-helper lesson pruned at the line cap; validate green; scripts + hooks 146 green; skills/tests 661 with 4 reds + 1 error — the pre-existing lesson-graduation red plus three guards pinning the old `origin`-literal recipe and the hotfix re-entry sentence the gate extended, non-gating (D-109); one new lesson; ROADMAP/LESSONS bytes and the three doctrine-module budgets hand-read under cap.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,15 +12,13 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M185 | Guest collaboration mode — fork-aware remotes and review handoff | review | M184 | high | milestones/M185-guest-handoff.md |
+| M185 | Guest collaboration mode — fork-aware remotes and review handoff | done | M184 | high | milestones/archive/M185-guest-handoff.md |
 | M184 | Guest collaboration mode — local-only tracking | done | — | high | milestones/archive/M184-guest-mode.md |
 | M183 | Close blocks say whether the next command waits on CI | done | — | high | milestones/archive/M183-ci-line.md |
-| M182 | Claim audit at implement time for user-facing prose; release-walk changelog claim-read | done | — | high | milestones/archive/M182-claim-audit.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
 
-- `/hotfix` guest arm: in guest mode `/hotfix`'s tracking commit (NEWS entry aside, its work-log line and any `cairn/` write) hits the commit guard's deny with no arm telling the skill to leave tracking on disk, and its merge step has no handoff; M185 owns the review handoff, `/hotfix` is unaddressed. Promote when a guest repo first needs a hotfix, or fold into M185 at its plan gate — added 2026-09-10 — M184 review (finding 1)
 - Guest-mode R package builds carry `cairn/`: the guest scaffold drops the `^cairn$` `.Rbuildignore` entry (a write outside `cairn/`), and `R CMD build` packages directory contents, git-tracked or not, so a local build in a guest R repo puts `cairn/` in the tarball; the maintainers' CI builds from a clone and never sees it. Options are a `--no-build-vignettes`-style local habit, or letting the guest add the one line by choice. Promote when a guest-mode adopter ships or checks a tarball built locally — added 2026-09-10 — M184 review (finding 6; implement-time open concern)
 - `--report` and `--apply` disagree on a workflow file: the stdlib line reader behind `--report` and the PyYAML parse behind `--apply` read some legal forms differently — a quoted `"push":` key reports `unrecognized` yet would apply; a block-scalar `cairn/**` item reports `push (paths-ignore)` yet refuses as already ignoring, so §0's by-hand suggestion shows an item already present (M181 re-review G7/G8). `--report` staying stdlib is M181 Scope Out and D-135's named reopener. Promote when an adopter's real workflow file draws the two verdicts apart — never on a synthetic shape — added 2026-09-06 — M181 review
 - `--apply` refuses two shapes AC2 names editable, both safely: an explicit null `push` (`push: null`, `push: ~`) has its created `paths-ignore:` placed after a line already carrying a value, and a block scalar whose last line opens with `#` is walked over as a comment — each refused as `post-edit check failed`, byte-identical, a reason naming nothing actionable (M181 re-review 3, H2/H3). Promote when an adopter's real workflow file is refused for either shape — never on a synthetic one — added 2026-09-06 — M181 review
