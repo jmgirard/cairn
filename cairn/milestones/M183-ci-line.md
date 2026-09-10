@@ -121,3 +121,4 @@ Any change to the wait mechanism itself — D-128 stands.
   10. `/cairn-release` "report results when they arrive" tension — **reject**: pre-existing, not introduced.
 - conversation: PR #190 — reviews 0, comments 0, unresolved threads 0 (empty read).
 
+- 2026-09-10: step-7 approval: PR #190 approved for merge.
