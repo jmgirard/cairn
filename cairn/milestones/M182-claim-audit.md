@@ -56,6 +56,8 @@ A user-facing milestone whose branch adds behavior claims to prose has those cla
 
 - 2026-09-10: review found `skills/tests/test_positional_labels.py:153` still anchoring on the old `7. **Blocked?**` heading (the `section()` helper ran to EOF silently, so the suite stayed green); anchor moved to `8.` at the gate. This supersedes T2's line saying no test cites those numbers.
 
+- 2026-09-10: step-7 approval: PR #189 approved for merge.
+
 ## Decisions
 
 ## Review
@@ -78,3 +80,4 @@ A user-facing milestone whose branch adds behavior claims to prose has those cla
 - O10 "none" skip restated inside the clause — reject: AC2 requires the clause to state it.
 - S1/S2 D-136's measurement cites tidymedia files a reader of this repo cannot check; door passed on an argument about review's control flow — reject: AC3 mandates citing those files; D-136 discloses the repo and date; the door's terms are unchanged.
 - 2026-09-10 PR conversation read (PR #189): 0 reviews, 0 comments, 0 unresolved threads.
+- 2026-09-10 O4 disposition: maintainer kept "twice" — the recurrence fact, not a measurement figure; rejected.
