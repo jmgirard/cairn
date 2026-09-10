@@ -188,7 +188,11 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
    stopped with `TaskStop`, and the session stops there with a close block
    whose fenced next command is `/hotfix` with the PR reference — step 1's
    merged-PR re-entry re-derives the merge state and verifies the
-   merged diff post-hoc — never left armed,
+   merged diff post-hoc — and whose CI line (tracking-rules close-block
+   shape) states the current check state as read from fresh `gh pr checks`,
+   then that rerunning `/hotfix` with the PR reference re-derives that state
+   and waits again, so waiting for green first is optional and never
+   required; never left armed,
    never merged past). On approval, write the merge-guard
    marker first: `cairn/.merge-approved` (gitignored; one line:
    `hotfix <slug> approved YYYY-MM-DD for PR #<N>` — the marker names the PR
