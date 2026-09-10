@@ -169,7 +169,9 @@ Status vocabulary — exactly these seven, lowercase:
 | `dropped` | Deliberately abandoned; one-line reason archived | user decision, via any skill |
 
 Transitions: `candidate → planned → in-progress ⇄ blocked; in-progress → review → done` (review failures return to
-`in-progress`); `planned → blocked` and `review → blocked` are both legal; anything can go to `dropped`; no other skips.
+`in-progress`); `planned → blocked` and `review → blocked` are both legal; `blocked → done` is legal for a guest-mode
+handoff whose PR the maintainers merged ("Collaboration mode" below; `/milestone-review`'s hygiene sets it); anything
+can go to `dropped`; no other skips.
 
 ## Sizing and the work tiers
 
@@ -306,8 +308,16 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   as the reason: a release is the maintainers' act, and triage commits to the default branch.
 - **Adopting a third party's PR via `/hotfix` is unsupported** in guest mode — the guest has no merge authority to hold
   it to; route such a PR to the maintainers.
-- **Merge, remotes, and reconciliation** — cairn never merges in guest mode; the PR is handed to the maintainers at
-  review's end, and the fork-aware base remote and the maintainer-merge reconciliation are M185's.
+- **The base remote is `upstream` when it exists, else `origin`** (the git model's recipe above): the milestone branch
+  is cut from `<base>/<default-branch>` and synced by rebase, pushed to `origin` (the fork), and the PR targets the base
+  repo — `gh pr create --repo <base-repo> --head <fork-owner>:<slug> --draft`; every other `gh pr` command carries
+  `--repo <base-repo>` too. `gh repo set-default` is never run (it would route a bare `gh pr merge` past the one-repo
+  approval binding).
+- **cairn never merges in guest mode.** `/milestone-review` ends with a handoff gate in the merge gate's shape — hand
+  the PR to the maintainers (`gh pr ready`), or decline; no merge option — and sets the milestone `blocked`, its
+  work-log line naming the maintainers; `/milestone` §2 re-reads the PR's state and routes a merged one to
+  `/milestone-review`'s hygiene (`blocked → done`), a closed one to a chip, a `CHANGES_REQUESTED` one to
+  `/milestone-implement`. `/hotfix`'s merge step takes the same handoff. Post-merge hygiene runs on disk, no commit.
 
 ## Context hygiene
 

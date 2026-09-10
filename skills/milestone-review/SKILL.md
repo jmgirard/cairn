@@ -467,9 +467,15 @@ re-enters here, at the step the record shows is next:
    below run then, on disk.
 
 9. **Post-merge hygiene pass on the default branch:** check it out and pull
-   first — after a squash-merge, the local default branch is behind origin and
-   any leftover local
-   commits mean divergence to resolve before committing. Then write the
+   first — after a squash-merge, the local default branch is behind `<base>`
+   and any leftover local
+   commits mean divergence to resolve before committing. Guest arm: `git
+   fetch <base>`, check the default branch out, and `git merge --ff-only
+   <base>/<default-branch>`; every write below lands on disk under
+   `cairn/`, the docs-only commit and push at the end of this step do not
+   exist, and the issue writes are the maintainers' — the `Closes` keyword
+   closes the issue at their merge, so the close-if-open is skipped and only
+   the `partial` comments are posted (`--repo <base-repo>`). Then write the
    milestone's archive summary **from**
    `${CLAUDE_PLUGIN_ROOT}/skills/shared/templates/archive-summary.md` — a
    comment-free skeleton, so nothing scaffolding-shaped can leak into a
@@ -532,7 +538,9 @@ re-enters here, at the step the record shows is next:
    the completed hygiene edits, before the docs-only commit — it must pass,
    and whether its `release window` advisory fired is the signal step 10's
    displacement clause reads. Docs-only commit:
-   `review M<NNN>: done`; push.
+   `review M<NNN>: done`; push (owner mode; the guest arm above leaves the
+   pass on disk — status `done` is the `blocked → done` transition the
+   rulebook admits for a handed-off PR the maintainers merged).
    **Confirm the issue closes:** after the merge, for each `closes` entry of
    the `Resolves:` slot read the issue's state with
    `gh issue view <N> --json state`; one still open is closed with
@@ -550,7 +558,7 @@ re-enters here, at the step the record shows is next:
     gates and phase closes" — the shape every phase now shares, generalized
     from what was once review's sole exception.) M<NNN> is archived and all
     state is on disk, so the natural next step is a fresh context: after the
-    step-9 hygiene commit lands, run
+    step-9 hygiene commit lands (guest arm: after its on-disk pass), run
     `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_next.py"` and take the
     next action from its recommendation. The recap leads with what shipped,
     the status line names the merge and archive state, and the fenced
