@@ -1,6 +1,6 @@
 # M183: Close blocks say whether the next command waits on CI
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -92,6 +92,9 @@ Any change to the wait mechanism itself — D-128 stands.
 - 2026-09-10: T2: implement-end CI line added to step 9's close-block spec (nothing to wait for; review pushes, opens the PR, waits at merge); verify green.
 - 2026-09-10: T3: timeout CI line added at `/milestone-review` step 8, `/hotfix` step 6, `/cairn-release` step 3 — each names its own resume command and its wait's own state source (`gh pr checks` twice, the moved task's output for the release check); verify green.
 - 2026-09-10: T4: scripts 379 / hooks 126 green (exit 0 each); skills/tests 661 hand-run — the T1 rewrap first split two pinned close-block sentences across lines (`test_gate_wording.TestPhaseCloseBlock`), rewrapped so each pin sits on one line; only remaining red is the pre-existing `test_lesson_graduation` failure (D-109).
+- 2026-09-10: minor amendment (T2): step 9's CI line gains a parenthetical for the return-from-review case, where the header already names a draft PR — the line then says review re-waits on that PR's checks at merge; AC2 text unchanged and still met.
+- 2026-09-10: claim audit: 12 claims read, 1 corrected — skills/shared/tracking-rules.md, skills/milestone-implement/SKILL.md, skills/milestone-review/SKILL.md, skills/hotfix/SKILL.md, skills/cairn-release/SKILL.md (the correction's re-read ran in a second fresh [O] reader: SendMessage is disabled in this session, so the same reader could not be continued).
+- 2026-09-10: all tasks checked; status → review.
 - 2026-09-10: plan gate chose no prose pin over a `skills/tests` guard because D-128 leaves the sibling next-command clause unpinned and the checker is internal; falsified by the CI line drifting out of a site in a later milestone's diff.
 
 ## Decisions

@@ -196,7 +196,9 @@ run ingestion first (see `/milestone-brief`).
    implement-end **CI line** (tracking-rules close-block shape) — one plain
    sentence saying there is nothing to wait for now: no PR exists yet, and
    `/milestone-review` pushes the branch, opens the PR, and waits on CI
-   itself at the merge step; the fenced
+   itself at the merge step (on a return from review, where the header
+   already names a draft PR, the line says review re-waits on that PR's
+   checks at its merge step instead); the fenced
    next command, `/milestone-review <id>` labeled plainly; and the safety
    line — adjustments on the branch first are fine, and the checkpoint makes
    this a safe `/clear` point, since review resumes statelessly in a fresh
