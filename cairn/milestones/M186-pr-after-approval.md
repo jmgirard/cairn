@@ -58,6 +58,7 @@ Review and hotfix push the branch and open the pull request only after the user 
 - 2026-09-10: T4 done — D-138 appended (post-approval open; serial CI wait as the cost; the ready-for-review workflow, the pre-gate open, and the post-CI read rejected with their reopening observations); hand-run `skills/tests`: 661 tests, 4 reds + 1 error, the same set M185's hygiene recorded (lesson-graduation, two default-branch recipe pins, hotfix two-way-check sentence, and the harness error for the recipe pin). Scripts 391 / hooks 146 green; `cairn_validate` all checks passed.
 - 2026-09-10: claim audit: 47 claims read, 3 corrected — skills/milestone-review/SKILL.md (step 8's header PR-URL record now a docs-only commit left unpushed, so the first `pull_request` run is on the head that merges), skills/hotfix/SKILL.md (step 6's "push and open the PR first" → "before the marker write below"), CHANGELOG.md (the work-log line names the branch only, not the default branch). Deviation: the one re-read ran in a second fresh [O] reader, not the first — this harness exposes no tool to continue a finished subagent; all three corrections hold. Suites unchanged after the corrections; AC5's grep still empty.
 - 2026-09-10: all tasks checked; status → review.
+- 2026-09-10: step-7 approval: m186-pr-after-approval approved for merge
 
 ## Decisions
 
