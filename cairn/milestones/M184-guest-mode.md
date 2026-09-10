@@ -75,6 +75,7 @@ A repo the operator does not own can run cairn's plan/implement/review loop with
 - 2026-09-10: claim audit: 41 claims read, 5 corrected — README.md, CHANGELOG.md, skills/shared/tracking-rules.md, hooks/cairn_common.py, hooks/commit_guard.py, hooks/session_context.py ("any commit" narrowed to the commit the guard sees with its documented misses; the "parses by hand / share no code" comment replaced by the one-parser fact; stale commit_guard docstring gained the guest deny paragraph; abspath comment made exact). The same-reader re-read went to a second fresh [O] reader (this harness has no SendMessage; M182 precedent, the standing candidate row) and returned no corrections. Audit also raised a fence edge: a mode look-alike inside a slot body tripped `profile valid`; both readers now stop at the first `## ` heading, one test each side.
 - 2026-09-10: open concern from the claim audit, not acted on (plan scope names the `.Rbuildignore` skip): in a guest-mode R-package repo `R CMD build` includes untracked files, so a local build would carry `cairn/` into the tarball without `^cairn$`; left for the review gate — a candidate row or an M185 note.
 - 2026-09-10: all tasks done; both suites green; status → review.
+- 2026-09-10: step-7 approval: PR #191 approved for merge.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
