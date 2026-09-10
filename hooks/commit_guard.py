@@ -14,6 +14,13 @@ through the normal permission flow and Claude simply reads the reminder next
 turn. All-cairn/ commits (the plan/review/hygiene commits the git model
 expects on the default branch) stay silent.
 
+The one hard lever (M184, D-137): in guest collaboration mode
+(`# Collaboration mode: guest` in cairn/PROFILE.md) a commit carrying any
+cairn/ path is DENIED (`permissionDecision: deny`) on every branch — cairn/
+is local-only there and must never reach the repo the operator does not own.
+The nudge above is unchanged in guest mode except that its branch shape reads
+`<slug>` (guest branches carry no cairn vocabulary).
+
 Silent allowlist is cairn/ ONLY — deliberately narrow. Top-level markdown is
 NOT treated as docs: in a plugin repo the product itself is markdown, so a
 markdown carve-out would stay silent on a real skill edit. Warn-only makes the
@@ -24,8 +31,11 @@ merge_guard.py): `git -C <path> commit` and `git -c k=v commit` (multi-token
 global options) aren't matched; a `-a`-looking token inside an `-m` message
 or in a leading assignment value (`MSG=--all git commit …`) may over-count
 modified files; `git commit --amend` with nothing staged sees
-an empty set (the original commit was the catchable event). No-op outside
-cairn repos; fail-permissive.
+an empty set (the original commit was the catchable event); a pathspec
+commit (`git commit -m x <path>`) is not read, so a tracked cairn/ file
+committed by path passes the guest deny — reachable only while cairn/ is
+tracked, which `cairn_validate`'s guest `scaffold present` arm FAILs.
+No-op outside cairn repos; fail-permissive.
 """
 
 import os
@@ -65,9 +75,25 @@ REMINDER = (
     "implement code on it outside a milestone/hotfix branch (tracking-rules: "
     "'Git and approval model'; CLAUDE.md router). A trivial edit (typo, "
     "comment) or a docs-only change is fine here; but if this is real work, "
-    "stop, cut a branch (m<nnn>-<slug> via /milestone-plan, or hotfix-<slug> "
+    "stop, cut a branch ({branch} via /milestone-plan, or hotfix-<slug> "
     "via /hotfix), and commit there instead."
 )
+# Guest mode names its milestone branches `<slug>` alone — no `M<NNN>` or
+# cairn vocabulary reaches the repo the operator does not own (M184, D-137).
+BRANCH_SHAPE = {"owner": "m<nnn>-<slug>", "guest": "<slug>"}
+
+
+def guest_deny_reason(paths):
+    listed = ", ".join(sorted(paths))
+    return (
+        "cairn guest-mode guard: this commit would carry cairn/ into the "
+        f"repository ({listed}). In guest collaboration mode cairn/ is "
+        "local-only — listed in .git/info/exclude, never committed "
+        "(tracking-rules 'Collaboration mode'). Unstage the cairn/ path(s) "
+        "(or drop `-a`, which sweeps in modified tracked files) and commit "
+        "without them; a tracked cairn/ file wants `git rm -r --cached "
+        "cairn`. Tracking stays on disk."
+    )
 
 
 def main():
@@ -83,17 +109,40 @@ def main():
         return
     # Run git from the repo root so --name-only paths are repo-root-relative
     # (cwd-relative output in a subdir would break the cairn/ prefix test).
+    mode = cc.collaboration_mode(root)
+    paths = None
+    if mode == "guest":
+        # Guest deny arm, ahead of the default-branch early return: on ANY
+        # branch a commit carrying a cairn/ path is the one hard stop this
+        # guard has — the only lever that keeps a guest's tracking out of
+        # someone else's repo (envelope as merge_guard.deny).
+        paths = committed_paths(command, root)
+        cairn_paths = [p for p in paths if p.startswith("cairn/")]
+        if cairn_paths:
+            cc.emit(
+                {
+                    "hookSpecificOutput": {
+                        "hookEventName": "PreToolUse",
+                        "permissionDecision": "deny",
+                        "permissionDecisionReason": guest_deny_reason(cairn_paths),
+                    }
+                }
+            )
+            return
     if not cc.on_default_branch(root):
         return
-    non_cairn = [p for p in committed_paths(command, root)
-                 if not p.startswith("cairn/")]
+    if paths is None:
+        paths = committed_paths(command, root)
+    non_cairn = [p for p in paths if not p.startswith("cairn/")]
     if not non_cairn:
         return
     cc.emit(
         {
             "hookSpecificOutput": {
                 "hookEventName": "PreToolUse",
-                "additionalContext": REMINDER,
+                "additionalContext": REMINDER.format(
+                    branch=BRANCH_SHAPE.get(mode, BRANCH_SHAPE["owner"])
+                ),
             }
         }
     )

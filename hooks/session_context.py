@@ -238,6 +238,37 @@ def elided_part(mid, status, relpath):
     )
 
 
+# The plugin's own CLAUDE.md routing section, read relative to this file
+# (abspath, as cairn_scripts locates its siblings — a whole-directory
+# symlink install resolves the same as a plugin-root one).
+_CLAUDE_MD_TEMPLATE = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), os.pardir,
+    "skills", "shared", "templates", "claude-md-section.md",
+)
+
+
+def routing_section():
+    """Body of the template section whose heading starts `## Project
+    tracking`, read from disk at injection time (M184, D-137): in guest mode
+    nothing is appended to the repo's CLAUDE.md, so the session hook carries
+    the routing text the section would have. Empty string when unreadable."""
+    try:
+        with open(_CLAUDE_MD_TEMPLATE, encoding="utf-8") as f:
+            text = f.read()
+    except Exception:
+        return ""
+    lines, keep = [], False
+    for line in text.splitlines():
+        if line.startswith("## "):
+            if keep:
+                break
+            keep = line.startswith("## Project tracking")
+            continue
+        if keep:
+            lines.append(line)
+    return "\n".join(lines).strip()
+
+
 def build_context(root):
     cairn_dir = os.path.join(root, "cairn")
     parts = [PREAMBLE]
@@ -248,6 +279,24 @@ def build_context(root):
             f"`{name}` (from cairn/PROFILE.md) — the operational skills read its "
             "slots for language-specific commands (tracking-rules "
             '"Toolchain profiles").'
+        )
+    mode = cc.collaboration_mode(root)
+    if mode == "guest":
+        # Charged against MAX_CHARS like every other part: it sits in
+        # `parts` before the spare-budget computation below.
+        routing = routing_section() or (
+            "(routing section unreadable: the plugin template "
+            f"{os.path.normpath(_CLAUDE_MD_TEMPLATE)} is missing or has no "
+            "`## Project tracking` section — read skills/shared/"
+            "tracking-rules.md before acting on any request)"
+        )
+        parts.append(
+            "## Collaboration mode\n\n"
+            + routing
+            + "\n\nCollaboration mode: `guest` (from cairn/PROFILE.md) — cairn/ is "
+            "local-only and never committed; the routing section above is "
+            "injected here because nothing is appended to this repo's "
+            "CLAUDE.md (tracking-rules \"Collaboration mode\")."
         )
     try:
         with open(os.path.join(cairn_dir, "ROADMAP.md"), encoding="utf-8") as f:

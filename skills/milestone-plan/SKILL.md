@@ -337,6 +337,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    commit files + rows together, directly to main, no branch, no PR
    (docs-only carve-out): `plan M<NNN>[, M<NNN>…]: <title>`; push. A session
    dying mid-plan must not leave a half-planned ghost.
+   **Guest arm** (tracking-rules "Collaboration mode"): in guest mode there
+   is no plan commit and no push — the milestone files and ROADMAP rows are
+   written to disk in this same turn and stay uncommitted (`cairn/` is in
+   `.git/info/exclude`); the preview and the close block are unchanged.
 
 7. **Close block** (tracking-rules "Question gates and phase closes"),
    composed from what was just planned — recap (the plan summary and

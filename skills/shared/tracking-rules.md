@@ -12,7 +12,7 @@ All project state lives in markdown under `cairn/`: substance in the owner, othe
 |---|---|---|
 | `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `cairn/` | Status, TODOs, architecture rationale, history |
 | `cairn/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
-| `cairn/PROFILE.md` | The repo's toolchain profile — the seven slots the operational skills read (see "Toolchain profiles") | Domain doctrine, status, tasks, decisions |
+| `cairn/PROFILE.md` | The repo's toolchain profile — the seven slots the operational skills read (see "Toolchain profiles") — and the `# Collaboration mode:` header line, the only line outside the seven `##` slots that `scripts/cairn_validate.py` reads (see "Collaboration mode") | Domain doctrine, status, tasks, decisions |
 | `cairn/ROADMAP.md` | The milestone index — **the only authority on status** | Task details, acceptance criteria, narrative |
 | `cairn/milestones/M<NNN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
@@ -221,7 +221,8 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   symbolic-ref --short refs/remotes/origin/HEAD` (strip `origin/`); if `origin/HEAD` is unset locally but a remote
   exists, query `git ls-remote --symref origin HEAD` and read the `ref: refs/heads/<name>` line. Only with **no remote
   at all** ask the user — never guess from the local current branch (wrong on a feature branch).
-- Milestone work on `m<nnn>-<slug>`; hotfixes on `hotfix-<slug>`; both cut from the up-to-date default branch. Checkpoint
+- Milestone work on `m<nnn>-<slug>` (owner mode; guest mode names the branch `<slug>` alone — "Collaboration mode"
+  below); hotfixes on `hotfix-<slug>`; both cut from the up-to-date default branch. Checkpoint
   commits are cheap — squash erases them. Exception: an adopted external PR keeps the contributor's branch and its name.
 - Before branching or committing, check `git status`: a dirty tree with unrelated changes means ask the user — never
   sweep strangers into a checkpoint commit. If the default branch moves under an active branch, merge it into the branch
@@ -252,7 +253,8 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
 **Enforcement boundary.** Every guard is a PreToolUse hook on *this* session's own Bash calls; a merge made in the
 GitHub web UI, by a merge queue, or by a contributor without the plugin is invisible to them — there the approval
 requirement and never-force-push degrade to honor-system, and the rest of the conduct is prose on any path. cairn
-assumes **one operator running these skills**; outside contributions come in through intake.
+assumes **one operator running these skills** per repo, in owner mode or in guest mode ("Collaboration mode" below);
+outside contributions come in through intake.
 
 **Waiting on CI and background work** (the observations behind every clause: `cairn/references/wait-mechanisms.md`). One
 watcher per wait: a run, command, or subagent is watched by one mechanism at a time, never two on the same thing. **CI
@@ -274,6 +276,34 @@ completion or `TaskStop`, a Monitor at those or its own `timeout_ms`, and no doc
 closed issue reports survival), so the session stops it with `TaskStop` first. A `/loop` or scheduled task is not a
 CI wait. **Resume is stateless**: re-derive the check state from `gh pr checks` and the PR's merge state from
 `gh pr view <N> --json state` (PR URL: the milestone header), never a remembered "CI was running" or "not yet merged".
+
+## Collaboration mode
+
+A second axis beside the toolchain profile (D-137), declared as a header line of `cairn/PROFILE.md` —
+`# Collaboration mode: guest` — absent meaning **owner**. Owner mode is every rule in this file as written. **Guest
+mode** is the operator contributing to a repo they do not own: cairn's plan/implement/review loop runs as local
+reasoning over local files, and nothing cairn writes reaches the repo's maintainers. In guest mode:
+
+- **`cairn/` is never committed.** It is listed in git's exclude file — `git rev-parse --git-path info/exclude`,
+  `.git/info/exclude` in a plain checkout, the main repo's in a worktree (written by `/cairn-init`, required by
+  `cairn_validate`'s `scaffold present` check in place of the `.gitignore`/`.Rbuildignore` entries, which also FAILs
+  while any `cairn/` file is tracked); the commit guard
+  denies a `git commit` it sees carrying a `cairn/` path, on every branch (the misses its docstring lists — `git -C`,
+  `git -c`, an empty `--amend`, a pathspec commit of a tracked file — stand, so the deny is a lever, not a proof). Nothing is written outside `cairn/` and that exclude
+  file — no CLAUDE.md section (the session hook injects the plugin's routing template instead), no ignore entries, no
+  CI edit.
+- **No docs-only commit and no push to the default branch.** The plan commit, the post-merge hygiene commit, and the
+  `cairn-init` scaffold commit do not exist; tracking is **written to disk in the turn that changes the code** — the
+  same turn a checkpoint commit would have carried it — and stays there. "Tracking travels with code" (GP2) is an
+  owner-mode rule; guest mode's invariant is that the tracking on disk is never behind the code in the working tree.
+- **No cairn vocabulary reaches the repo.** The milestone branch is `<slug>` alone (not `m<nnn>-<slug>`); commit
+  messages and PR titles and bodies carry no `M<NNN>`, no `AC<n>`/`T<n>`, no D-entry ids, and no cairn terms.
+- **`/cairn-release` and `/cairn-triage` stop** at session start with a close block whose status line names the mode
+  as the reason: a release is the maintainers' act, and triage commits to the default branch.
+- **Adopting a third party's PR via `/hotfix` is unsupported** in guest mode — the guest has no merge authority to hold
+  it to; route such a PR to the maintainers.
+- **Merge, remotes, and reconciliation** — cairn never merges in guest mode; the PR is handed to the maintainers at
+  review's end, and the fork-aware base remote and the maintainer-merge reconciliation are M185's.
 
 ## Context hygiene
 
@@ -451,7 +481,9 @@ Four profiles ship: `r-package`, `python`, `docker-image`, and `generic` (no too
 infer** in order: `DESCRIPTION` at the repo root → `r-package`, else `pyproject.toml` (or legacy `setup.py`/`setup.cfg`)
 → `python`, else a `Dockerfile` as the sole toolchain marker → `docker-image`, else `generic`; a hybrid repo keeps the
 language marker (`cairn-init`'s disambiguation gate is the only place the image-vs-package choice is asked).
-`cairn_validate` no-ops when `PROFILE.md` is absent and FAILs on a missing, empty, or unrecognized slot.
+`cairn_validate` no-ops when `PROFILE.md` is absent and FAILs on a missing, empty, or unrecognized slot. The one line
+outside the seven `##` slots that `scripts/cairn_validate.py` reads is the `# Collaboration mode:` header line
+("Collaboration mode" above); it FAILs a value outside `owner|guest`.
 
 ## Validation doctrine (statistical/numeric work)
 

@@ -139,6 +139,61 @@ class RepoFixture(unittest.TestCase):
         return base
 
 
+class TestCollaborationMode(RepoFixture):
+    """M184: `cairn_common.collaboration_mode` reads the `# Collaboration
+    mode: <value>` header line of cairn/PROFILE.md; `owner` is the default
+    when the line or the file is absent. Direct import (the module is
+    stdlib-only helpers, not a hook contract)."""
+
+    def _profile(self, text):
+        (self.root / "cairn" / "PROFILE.md").write_text(text)
+
+    def test_guest_line_reads_guest(self):
+        self._profile("# Toolchain profile: generic\n# Collaboration mode: guest\n\n## verify\nx\n")
+        self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "guest")
+
+    def test_no_mode_line_reads_owner(self):
+        self._profile("# Toolchain profile: generic\n\n## verify\nx\n")
+        self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "owner")
+
+    def test_absent_profile_reads_owner(self):
+        self.assertFalse((self.root / "cairn" / "PROFILE.md").exists())
+        self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "owner")
+
+    def test_explicit_owner_line_reads_owner(self):
+        self._profile("# Toolchain profile: generic\n# Collaboration mode: owner\n")
+        self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "owner")
+
+    def test_key_is_case_insensitive_and_bom_tolerant(self):
+        # A hand-edited line must not silently read as owner (the unsafe
+        # direction for a guest): lowercase key, no space after `#`, BOM.
+        for text in (
+            "# Toolchain profile: generic\n# collaboration mode: guest\n",
+            "# Toolchain profile: generic\n#Collaboration Mode: guest\n",
+            "﻿# Collaboration mode: guest\n# Toolchain profile: generic\n",
+        ):
+            with self.subTest(text=text):
+                self._profile(text)
+                self.assertEqual(
+                    session_context.cc.collaboration_mode(str(self.root)), "guest"
+                )
+
+    def test_a_mode_line_inside_a_slot_body_is_body_text(self):
+        # Header region only: a look-alike line after the first `## ` slot
+        # heading (e.g. inside a fenced command block) is not the mode.
+        self._profile(
+            "# Toolchain profile: generic\n\n## verify\n```\n"
+            "# Collaboration mode: guest\n```\n"
+        )
+        self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "owner")
+
+    def test_unknown_value_is_returned_verbatim_for_the_validator_to_reject(self):
+        # The hook helper reads, it does not judge: cairn_validate's
+        # `profile valid` check is where an unknown value FAILs.
+        self._profile("# Toolchain profile: generic\n# Collaboration mode: Other\n")
+        self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "other")
+
+
 class TestSessionContext(RepoFixture):
     def test_injects_roadmap_and_active_milestone(self):
         proc = run_hook(
@@ -164,6 +219,69 @@ class TestSessionContext(RepoFixture):
         out = hook_json(proc)
         self.assertIn("Active toolchain profile", out["additionalContext"])
         self.assertIn("`r-package`", out["additionalContext"])
+
+    # --- M184 AC2: guest mode injects the CLAUDE.md routing section itself ---
+
+    def _session(self):
+        return hook_json(run_hook(
+            "session_context.py",
+            self.payload(hook_event_name="SessionStart", source="startup"),
+        ))["additionalContext"]
+
+    @staticmethod
+    def _template_section():
+        path = HOOKS_DIR.parent / "skills" / "shared" / "templates" / "claude-md-section.md"
+        text = path.read_text(encoding="utf-8")
+        lines, keep = [], False
+        for line in text.splitlines():
+            if line.startswith("## "):
+                if keep:
+                    break
+                keep = line.startswith("## Project tracking")
+                continue
+            if keep:
+                lines.append(line)
+        return "\n".join(lines).strip()
+
+    def test_guest_mode_injects_the_template_routing_section(self):
+        (self.root / "cairn" / "PROFILE.md").write_text(
+            "# Toolchain profile: generic\n# Collaboration mode: guest\n\n## verify\n- x\n"
+        )
+        ctx = self._session()
+        self.assertIn("## Collaboration mode", ctx)
+        part = ctx.split("## Collaboration mode", 1)[1].split("\n## ", 1)[0]
+        expected = self._template_section()
+        self.assertTrue(expected, "template section read empty")
+        self.assertIn(expected, part)
+        # One fact stated independently of the extractor above (which mirrors
+        # the hook's loop): a sentence the routing section is known to carry.
+        self.assertIn("Never implement code on the default branch", part)
+        # the one line naming the mode follows the body
+        tail = part.split(expected, 1)[1].strip()
+        self.assertEqual(len(tail.splitlines()), 1, tail)
+        self.assertIn("guest", tail)
+
+    def test_guest_mode_names_an_unreadable_template_instead_of_an_empty_body(self):
+        # In guest mode this part is the session's only copy of the routing
+        # text, so a missing template must be said, never a blank body.
+        (self.root / "cairn" / "PROFILE.md").write_text(
+            "# Toolchain profile: generic\n# Collaboration mode: guest\n\n## verify\n- x\n"
+        )
+        real = session_context._CLAUDE_MD_TEMPLATE
+        session_context._CLAUDE_MD_TEMPLATE = str(self.root / "no-such-template.md")
+        try:
+            ctx = session_context.build_context(str(self.root))
+        finally:
+            session_context._CLAUDE_MD_TEMPLATE = real
+        part = ctx.split("## Collaboration mode", 1)[1].split("\n## ", 1)[0]
+        self.assertIn("routing section unreadable", part)
+        self.assertIn("no-such-template.md", part)
+
+    def test_owner_mode_has_no_collaboration_part(self):
+        (self.root / "cairn" / "PROFILE.md").write_text(
+            "# Toolchain profile: generic\n\n## verify\n- x\n"
+        )
+        self.assertNotIn("## Collaboration mode", self._session())
 
     def test_no_profile_section_when_absent(self):
         # RepoFixture writes no PROFILE.md — a pre-profile repo; the hook
@@ -1772,6 +1890,98 @@ class TestCommitGuard(RepoFixture):
             self.payload(tool_name="Edit", tool_input={"file_path": "x"}),
         )
         self.assertEqual(proc.stdout.strip(), "")
+
+
+class TestCommitGuardGuestMode(RepoFixture):
+    """M184 AC3: in guest collaboration mode the guard DENIES any commit
+    carrying a cairn/ path, on every branch (the one hard lever keeping a
+    guest's tracking out of a repo they do not own); non-cairn commits keep
+    the owner-mode behavior, with the nudge naming the guest branch shape."""
+
+    OWNER = "# Toolchain profile: generic\n\n## verify\n- x\n"
+    GUEST = "# Toolchain profile: generic\n# Collaboration mode: guest\n\n## verify\n- x\n"
+
+    def setUp(self):
+        super().setUp()
+        # PROFILE.md is committed so a later `-am` probe's modified-tracked
+        # set is exactly the file each probe modifies.
+        (self.root / "cairn" / "PROFILE.md").write_text(self.GUEST)
+        self.git("add", "cairn/PROFILE.md")
+        self.git("commit", "-q", "-m", "profile")
+
+    def commit_payload(self, command):
+        return self.payload(
+            hook_event_name="PreToolUse", tool_name="Bash",
+            tool_input={"command": command},
+        )
+
+    def hook(self, command):
+        proc = run_hook("commit_guard.py", self.commit_payload(command))
+        self.assertEqual(proc.returncode, 0)
+        return proc
+
+    def set_mode(self, text):
+        (self.root / "cairn" / "PROFILE.md").write_text(text)
+        self.git("add", "cairn/PROFILE.md")
+        self.git("commit", "-q", "-m", "mode")
+
+    # The four deny probes: staged / -am, feature branch / default branch.
+    def probes(self):
+        def staged():
+            (self.root / "cairn" / "ROADMAP.md").write_text(ROADMAP + "edit\n")
+            self.git("add", "cairn/ROADMAP.md")
+            return "git commit -m track"
+
+        def stage_all():
+            (self.root / "cairn" / "ROADMAP.md").write_text(ROADMAP + "edit\n")
+            return "git commit -am track"
+
+        for branch in ("main", "feature"):
+            for name, setup in (("staged", staged), ("-am", stage_all)):
+                self.git("checkout", "-q", "--", ".")
+                self.git("reset", "-q", "--hard")
+                if branch == "feature":
+                    self.git("checkout", "-q", "-B", "feature")
+                else:
+                    self.git("checkout", "-q", "main")
+                yield f"{branch}/{name}", setup()
+
+    def test_denies_cairn_paths_on_every_branch_naming_the_path(self):
+        for label, command in self.probes():
+            with self.subTest(probe=label):
+                out = hook_json(self.hook(command))
+                self.assertEqual(out["permissionDecision"], "deny")
+                self.assertIn("cairn/ROADMAP.md", out["permissionDecisionReason"])
+
+    def test_owner_mode_never_denies_the_same_probes(self):
+        self.set_mode(self.OWNER)
+        for label, command in self.probes():
+            with self.subTest(probe=label):
+                proc = self.hook(command)
+                if proc.stdout.strip():
+                    self.assertNotIn("permissionDecision", hook_json(proc))
+
+    def test_non_cairn_commit_on_feature_branch_is_silent(self):
+        self.git("checkout", "-q", "-b", "feature")
+        (self.root / "code.txt").write_text("changed\n")
+        self.git("add", "code.txt")
+        self.assertEqual(self.hook("git commit -m wip").stdout.strip(), "")
+
+    def test_non_cairn_commit_on_default_nudges_with_the_guest_branch_shape(self):
+        (self.root / "code.txt").write_text("changed\n")
+        self.git("add", "code.txt")
+        out = hook_json(self.hook("git commit -m wip"))
+        self.assertNotIn("permissionDecision", out)
+        self.assertIn("default branch", out["additionalContext"])
+        self.assertIn("(<slug> via /milestone-plan", out["additionalContext"])
+        self.assertNotIn("m<nnn>-<slug>", out["additionalContext"])
+
+    def test_owner_nudge_keeps_the_owner_branch_shape(self):
+        self.set_mode(self.OWNER)
+        (self.root / "code.txt").write_text("changed\n")
+        self.git("add", "code.txt")
+        out = hook_json(self.hook("git commit -m wip"))
+        self.assertIn("m<nnn>-<slug>", out["additionalContext"])
 
 
 class TestNonCairnNoOp(RepoFixture):

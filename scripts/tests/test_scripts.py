@@ -2025,6 +2025,38 @@ class TestValidateProfile(ScriptCase):
         self.assertEqual(proc.returncode, 1, proc.stdout)
         self.assertIn("unrecognized slot '## verfiy'", proc.stdout)
 
+    # --- M184: the `# Collaboration mode:` header line, the one line outside
+    # the seven slots the validator reads ---
+
+    def _with_mode(self, value):
+        return VALID_PROFILE.replace(
+            "# Toolchain profile: generic\n",
+            f"# Toolchain profile: generic\n# Collaboration mode: {value}\n",
+        )
+
+    def test_mode_owner_passes(self):
+        proc = run("cairn_validate.py", self._profile(self._with_mode("owner")))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  profile valid", proc.stdout)
+
+    def test_mode_lookalike_in_a_slot_body_is_ignored(self):
+        # Header region only (as `cairn_common.collaboration_mode` reads it):
+        # an unknown-mode line inside a fenced slot body does not FAIL.
+        text = VALID_PROFILE.replace(
+            "## verify\n- run tests\n",
+            "## verify\n```\n# Collaboration mode: other\n```\n",
+        )
+        proc = run("cairn_validate.py", self._profile(text))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("PASS  profile valid", proc.stdout)
+
+    def test_mode_other_fails_naming_the_line(self):
+        proc = run("cairn_validate.py", self._profile(self._with_mode("other")))
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("FAIL  profile valid", proc.stdout)
+        self.assertIn("# Collaboration mode: other", proc.stdout)
+        self.assertIn("owner|guest", proc.stdout)
+
     def test_fenced_command_block_body_not_a_slot(self):
         # Review finding (scored 91): a `## ` comment inside a fenced command
         # block in a slot body must be body content, not a new slot.

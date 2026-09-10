@@ -1,5 +1,35 @@
 # Changelog
 
+## Unreleased
+
+### New
+
+- **Guest collaboration mode: run cairn in a repo you don't own, with
+  `cairn/` kept local.** A second header line in `cairn/PROFILE.md`,
+  `# Collaboration mode: guest` (absent means owner, today's rules),
+  switches the mode. `/cairn-init` asks which mode applies, recommending
+  from `gh repo view --json viewerPermission`, and in guest mode writes
+  `cairn/` to `.git/info/exclude` instead of appending the CLAUDE.md
+  section, adding the `.gitignore`/`.Rbuildignore` entries, offering the
+  CI `paths-ignore` edit, or committing and pushing the scaffold.
+  `cairn_validate`'s `profile valid` check fails a mode outside
+  `owner|guest`, and its `scaffold present` check in guest mode requires
+  the exclude line (resolved through `git rev-parse --git-path`, so a
+  worktree reads its main repo's file), drops the ignore-entry
+  requirements, and fails while any `cairn/` file is still tracked (an
+  exclude line covers untracked files only). The session
+  hook injects the CLAUDE.md routing section from the plugin's own
+  template in guest mode, and the commit guard denies a `git commit` it
+  sees carrying a `cairn/` path on every branch (the misses its docstring
+  lists stand, a pathspec commit of a tracked `cairn/` file among them),
+  its nudge naming the `<slug>` branch shape. The rulebook's new "Collaboration mode" section states the guest
+  rules (tracking written to disk in the turn that changes the code, never
+  committed; no cairn vocabulary in branches, commits, or PRs;
+  `/cairn-release` and `/cairn-triage` stop; adopting a third party's PR
+  via `/hotfix` unsupported), and the plan, implement, and `/milestone`
+  skills carry their guest arms. Fork-aware remotes and the review handoff
+  to the maintainers follow in the next milestone.
+
 ## 1.12.0 (2026-09-07)
 
 ### Changes that affect existing repos

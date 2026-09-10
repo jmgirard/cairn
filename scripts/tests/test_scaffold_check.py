@@ -10,6 +10,8 @@ gaps that bit the tidymedia repair: a missing ``LESSONS.md`` and a missing
     python3 -m unittest discover -s scripts/tests -v
 """
 
+import shutil
+import subprocess
 import unittest
 
 from test_scripts import ScriptCase, run
@@ -232,6 +234,134 @@ class TestGitignoreDeprecationDirectory(ScriptCase):
             shelf.chmod(0o755)
         self.assertEqual(proc.returncode, 0, proc.stdout)
         self.assertNotIn("Traceback", proc.stdout)
+
+
+GUEST_PROFILE = (
+    "# Toolchain profile: r-package\n# Collaboration mode: guest\n\n"
+    "## verify\n- run tests\n\n"
+    "## consistency-gate\nnone\n\n"
+    "## test-doctrine\nnone\n\n"
+    "## release-walk\nnone\n\n"
+    "## init-detection\nDESCRIPTION\n\n"
+    "## greenfield-openers\nnone\n\n"
+    "## changelog\nNEWS.md\n"
+)
+
+
+class TestScaffoldGuestMode(ScriptCase):
+    """M184 AC1: in guest mode (`# Collaboration mode: guest` in PROFILE.md)
+    the scaffold check requires `cairn/` in `.git/info/exclude` and drops the
+    `.gitignore` / `.Rbuildignore` requirements — the guest writes nothing
+    outside cairn/. Owner mode keeps every requirement, exclude file or not."""
+
+    def guest_repo(self, exclude="cairn/\n"):
+        # A package repo (DESCRIPTION) with NO cairn .gitignore entries and NO
+        # .Rbuildignore — every owner-mode requirement absent on purpose.
+        root = self.tree.build()
+        (root / "DESCRIPTION").write_text("Package: fixture\nVersion: 0.0.1\n")
+        (root / ".gitignore").write_text("*.o\n")
+        self.assertFalse((root / ".Rbuildignore").exists())
+        (root / "cairn" / "PROFILE.md").write_text(GUEST_PROFILE)
+        info = root / ".git" / "info"
+        info.mkdir(parents=True)
+        if exclude is not None:
+            (info / "exclude").write_text("# comment\n" + exclude)
+        return root
+
+    def test_guest_with_exclude_passes_scaffold_and_profile(self):
+        proc = run("cairn_validate.py", self.guest_repo())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn(f"PASS  {LABEL}", proc.stdout)
+        self.assertIn("PASS  profile valid", proc.stdout)
+
+    def test_guest_accepts_the_bare_directory_spelling(self):
+        proc = run("cairn_validate.py", self.guest_repo(exclude="cairn\n"))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn(f"PASS  {LABEL}", proc.stdout)
+
+    def test_guest_without_exclude_line_fails_naming_the_file(self):
+        proc = run("cairn_validate.py", self.guest_repo(exclude=""))
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(f"FAIL  {LABEL}", proc.stdout)
+        self.assertIn(".git/info/exclude", proc.stdout)
+
+    def test_guest_without_exclude_file_fails_naming_the_file(self):
+        proc = run("cairn_validate.py", self.guest_repo(exclude=None))
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(".git/info/exclude", proc.stdout)
+
+    def test_guest_never_asks_for_gitignore_or_rbuildignore(self):
+        proc = run("cairn_validate.py", self.guest_repo())
+        self.assertNotIn(".gitignore missing", proc.stdout)
+        self.assertNotIn(".Rbuildignore missing", proc.stdout)
+
+    def _git(self, root, *args):
+        return subprocess.run(
+            ["git", *args], cwd=root, check=True, capture_output=True, text=True
+        ).stdout
+
+    def _init_repo(self, root):
+        self._git(root, "init", "-q", "-b", "main")
+        self._git(root, "config", "user.email", "t@t")
+        self._git(root, "config", "user.name", "t")
+
+    def test_guest_fails_while_cairn_is_still_tracked(self):
+        # The exclude line covers untracked files only: a repo switched
+        # owner → guest with cairn/ committed must not pass on the line.
+        root = self.guest_repo()
+        self._init_repo(root)
+        self._git(root, "add", "-f", "cairn/ROADMAP.md")
+        self._git(root, "commit", "-q", "-m", "tracked")
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(f"FAIL  {LABEL}", proc.stdout)
+        self.assertIn("tracked file", proc.stdout)
+        self.assertIn("git rm -r --cached cairn", proc.stdout)
+
+    def test_guest_untracked_cairn_in_a_real_repo_passes(self):
+        # Positive control for the tracked check: same repo, cairn/ never
+        # added, exclude line present → PASS.
+        root = self.guest_repo()
+        self._init_repo(root)
+        (root / "DESCRIPTION").write_text("Package: fixture\n")
+        self._git(root, "add", "DESCRIPTION")
+        self._git(root, "commit", "-q", "-m", "init")
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn(f"PASS  {LABEL}", proc.stdout)
+
+    def test_guest_worktree_reads_the_common_dir_exclude(self):
+        # In a worktree `.git` is a file; the exclude file lives in the main
+        # repo's common dir, which `git rev-parse --git-path` resolves.
+        main = self.guest_repo()
+        self._init_repo(main)
+        (main / "DESCRIPTION").write_text("Package: fixture\n")
+        self._git(main, "add", "DESCRIPTION")
+        self._git(main, "commit", "-q", "-m", "init")
+        wt = main.parent / (main.name + "-wt")
+        self._git(main, "worktree", "add", "-q", str(wt), "-b", "feature")
+        self.assertTrue((wt / ".git").is_file())
+        shutil.copytree(main / "cairn", wt / "cairn")
+        proc = run("cairn_validate.py", wt)
+        self.assertIn(f"PASS  {LABEL}", proc.stdout)
+        # And the same worktree with the common-dir line removed FAILs.
+        (main / ".git" / "info" / "exclude").write_text("# none\n")
+        proc = run("cairn_validate.py", wt)
+        self.assertIn(f"FAIL  {LABEL}", proc.stdout)
+        self.assertIn(".git/info/exclude", proc.stdout)
+
+    def test_owner_exclude_line_does_not_stand_in_for_gitignore(self):
+        # Same repo, mode line removed → owner mode: the exclude line is
+        # irrelevant and the missing .gitignore entries still FAIL.
+        root = self.guest_repo()
+        (root / "cairn" / "PROFILE.md").write_text(
+            GUEST_PROFILE.replace("# Collaboration mode: guest\n", "")
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(f"FAIL  {LABEL}", proc.stdout)
+        self.assertIn(".gitignore missing entry", proc.stdout)
+        self.assertIn(".Rbuildignore missing entry", proc.stdout)
 
 
 class TestScaffoldRbuildignore(ScriptCase):

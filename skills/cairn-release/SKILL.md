@@ -24,6 +24,11 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
 
 ## Preconditions
 
+- **Guest mode stops here** (tracking-rules "Collaboration mode"): when
+  `cairn/PROFILE.md` carries `# Collaboration mode: guest`, a release is the
+  maintainers' act, not the guest's — stop with a close block whose status
+  line reads `stopped: guest collaboration mode — releases belong to the
+  repo's maintainers`, no fenced next command, before anything below.
 - Session start: read `cairn/ROADMAP.md` and `cairn/DECISIONS.md` (standing
   constraints bind the release too); if an un-ingested RR sits in
   `cairn/reviews/`, handle ingestion first (see `/milestone-brief`).

@@ -117,8 +117,11 @@ within each type and are never reused.
   always-read surface keeps a bounded read cost: caps with outflows bound the
   item-listed files, recorded editorial passes bound the rulebook, and history
   is bounded by reading less of it, never by shrinking it (D-053).
-- GP2: Reliable — one status authority; tracking travels with code;
-  self-auditing; stateless resume.
+- GP2: Reliable — one status authority; tracking travels with code (owner
+  mode; in guest collaboration mode — a repo the operator does not own —
+  tracking is local-only, written to disk in the turn that changes the code
+  and never committed, because every write outside `cairn/` would touch the
+  maintainers' files or authority, D-137); self-auditing; stateless resume.
 - GP3: Portable — identical across repos; one-command adoption; repo
   specifics layer on top without forking the core.
 - GP4: Generalizable fixes live in the shared artifact, not per-user memory.
@@ -156,10 +159,11 @@ within each type and are never reused.
   is the same author's repo, so the single-author claim itself stands); what
   remains unrun is a second person driving an adoption (author-blind
   friction; ROADMAP candidate) and any non-macOS environment. The supported collaboration
-  model — one operator, contributions from people who do not run cairn — and
-  the enforcement boundary it implies are stated in the rulebook's "Git and
-  approval model" (D-043, M72); two concurrent cairn operators remain
-  unsupported (ROADMAP candidate).
+  model — one operator per repo, in owner mode or in guest mode (D-137),
+  contributions from people who do not run cairn — and the enforcement
+  boundary it implies are stated in the rulebook's "Git and approval model"
+  and "Collaboration mode" (D-043, M72, M184); two concurrent cairn
+  operators remain unsupported (ROADMAP candidate).
 - Hooks are unverified on Windows: stock Windows lacks `python3` on PATH (it
   is `py`/`python`), so `hooks.json` chains a best-effort `py -3` launcher
   fallback after each `python3` invocation (M61) — a no-op on macOS/Linux

@@ -495,6 +495,37 @@ def check_scaffold(root):
     for rel in cs.REQUIRED_SCAFFOLD_FILES:
         if not os.path.isfile(os.path.join(root, rel)):
             bad.append(f"missing scaffold file {rel}")
+    if cs.cc.collaboration_mode(root) == "guest":
+        # Guest mode (M184, D-137): cairn/ is kept out of the repo through
+        # `.git/info/exclude` and the guest writes nothing outside cairn/, so
+        # the .gitignore and .Rbuildignore entries are not required — the
+        # exclude line is. `check_profile` owns rejecting an unknown mode.
+        # The exclude file is git's, not `<root>/.git/`'s: in a worktree or
+        # submodule `.git` is a file and the exclude lives in the common dir,
+        # so ask git where it is; the literal path is the no-git fallback.
+        rc, out = cs.cc.git(["rev-parse", "--git-path", "info/exclude"], root)
+        exclude_path = (
+            os.path.join(root, out.strip()) if rc == 0 and out.strip()
+            else os.path.join(root, ".git", "info", "exclude")
+        )
+        exclude = _ignore_entries(exclude_path)
+        if not exclude & {"cairn/", "cairn", "/cairn/", "/cairn"}:
+            bad.append(
+                ".git/info/exclude missing entry 'cairn/' (guest collaboration "
+                "mode keeps cairn/ local and uncommitted)"
+            )
+        # An exclude line does nothing for files already tracked: a repo
+        # switched owner → guest, or one where cairn/ was force-added, would
+        # pass on the line alone while every cairn file stays committed.
+        rc, tracked = cs.cc.git(["ls-files", "--", "cairn"], root)
+        if rc == 0 and tracked.strip():
+            n = len(tracked.splitlines())
+            bad.append(
+                f"cairn/ has {n} tracked file(s) (guest collaboration mode: "
+                "`git rm -r --cached cairn` and commit the removal — the "
+                ".git/info/exclude line covers untracked files only)"
+            )
+        return bad
     gitignore = _ignore_entries(os.path.join(root, ".gitignore"))
     superseded = {new: old for old, new in cs.DEPRECATED_GITIGNORE.items()}
     for entry in cs.REQUIRED_GITIGNORE:
@@ -810,7 +841,28 @@ def check_profile(root):
     for slot in slots:
         if slot not in _REQUIRED_SLOTS:
             bad.append(f"PROFILE.md has unrecognized slot '## {slot}'")
+    # The `# Collaboration mode:` header line (M184, D-137) — the one line
+    # outside the seven `##` slots this script reads. Parsed by the hooks'
+    # `cairn_common.collaboration_mode` (reachable through cairn_scripts'
+    # shim), so the hooks and this check read one regex; absent → owner.
+    # Header region only, as that reader scans it: the scan stops at the
+    # first `## ` slot heading, so a look-alike line in a slot body (a fenced
+    # command block) is body text here too.
+    for line in text.splitlines():
+        if line.startswith("## "):
+            break
+        m = _COLLAB_MODE_LINE.match(line)
+        if m and m.group(1).lower() not in _COLLAB_MODES:
+            bad.append(
+                f"PROFILE.md line '{line.strip()}' names an unknown "
+                f"collaboration mode (expected owner|guest)"
+            )
     return bad
+
+
+# The hooks' own regex, matched here to quote the offending line verbatim.
+_COLLAB_MODE_LINE = cs.cc.COLLAB_MODE_LINE
+_COLLAB_MODES = ("owner", "guest")
 
 
 # Split tripwires (tracking-rules "Sizing"): a milestone probably wants
