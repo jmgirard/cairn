@@ -197,8 +197,10 @@ run ingestion first (see `/milestone-brief`).
    sentence saying there is nothing to wait for now: no PR exists yet, and
    `/milestone-review` pushes the branch, opens the PR, and waits on CI
    itself at the merge step (on a return from review, where the header
-   already names a draft PR, the line says review re-waits on that PR's
-   checks at its merge step instead); the fenced
+   already names a draft PR, the line instead says there is still nothing
+   to wait for now: review re-waits on that PR's checks at its merge step,
+   and any check state the PR shows was run against the pre-return head);
+   the fenced
    next command, `/milestone-review <id>` labeled plainly; and the safety
    line — adjustments on the branch first are fine, and the checkpoint makes
    this a safe `/clear` point, since review resumes statelessly in a fresh

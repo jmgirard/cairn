@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — skill prose every plugin user reads at each phase end
-- **Branch/PR:** m183-ci-line
+- **Branch/PR:** m183-ci-line · https://github.com/jmgirard/cairn/pull/190
 
 ## Goal
 
@@ -35,24 +35,24 @@ Any change to the wait mechanism itself — D-128 stands.
 
 ## Acceptance criteria
 
-- [ ] AC1: The tracking-rules close-block paragraph ("Question gates and
+- [x] AC1: The tracking-rules close-block paragraph ("Question gates and
       phase closes") lists a **CI line** as a required element of a close
       block whose unit of work has a branch or an open PR: one plain-language
       sentence stating whether the fenced next command waits on CI itself and
       what the user does meanwhile — a bare check state ("CI: running") never
       satisfies it. The sites restating their own line are AC2–AC3's four;
       every other such close inherits the rule by citation.
-- [ ] AC2: `/milestone-implement` step 9's close-block spec states the
+- [x] AC2: `/milestone-implement` step 9's close-block spec states the
       implement-end CI line: nothing to wait for now — no PR exists yet;
       `/milestone-review` pushes the branch, opens the PR, and waits on CI
       itself at the merge step.
-- [ ] AC3: Each of the three timeout-stop sites — `/milestone-review` step 8,
+- [x] AC3: Each of the three timeout-stop sites — `/milestone-review` step 8,
       `/hotfix` step 6, `/cairn-release` step 3 — states the timeout CI line:
       the current check state as read from the wait's own source (`gh pr
       checks` for a PR wait; the moved task's fresh output for a local check),
       then that rerunning the named command re-derives that state and waits
       again, so waiting for green first is optional and never required.
-- [ ] AC4: The `verify` slot is clean (`python3 -m unittest` over
+- [x] AC4: The `verify` slot is clean (`python3 -m unittest` over
       `scripts/tests` and `hooks/tests`), and the hand-run `skills/tests`
       suite shows no red beyond the pre-existing `test_lesson_graduation`
       failure (`'trimmed M98'`).
@@ -100,3 +100,24 @@ Any change to the wait mechanism itself — D-128 stands.
 ## Decisions
 
 ## Review
+
+- 2026-09-10: main unmoved since the cut (main = origin/main = merge-base); branch pushed; draft PR #190 opened (`Resolves: —`, no closing lines).
+- AC1 ✓ — `skills/shared/tracking-rules.md:299-306` read at HEAD: the close-block paragraph lists the **CI line** for a unit of work with a branch or open PR, as one plain-language sentence on whether the fenced next command waits on CI and what the user does meanwhile; the bare-state exclusion (`"CI: running"`) is present; the four restating sites are named and every other close inherits by citation.
+- AC2 ✓ — `skills/milestone-implement/SKILL.md:195-201` read at HEAD: step 9's close-block spec states the implement-end line (nothing to wait for now, no PR yet; `/milestone-review` pushes, opens the PR, waits on CI at the merge step), plus the return-from-review parenthetical logged as a minor amendment.
+- AC3 ✓ — grep at HEAD: `/milestone-review` step 8 (`SKILL.md:412-415`) and `/hotfix` step 6 (`SKILL.md:191-195`) each state the current check state as read from fresh `gh pr checks`, then that rerunning their own named command re-derives it and waits again, green-first optional and never required; `/cairn-release` step 3 (`SKILL.md:81-85`) states the same from the moved task's fresh output, naming `/cairn-release`.
+- AC4 ✓ — from the repo root: `scripts/tests` 379 tests OK (exit 0); `hooks/tests` 126 tests OK (exit 0); `skills/tests` hand-run 661 tests, the sole red `test_lesson_graduation.TestFamilyActuallyLeft.test_partial_coverage_was_trimmed_not_deleted` (the pre-existing D-109 failure).
+- Driving RR: — (projection-vs-outcome no-ops).
+- Consistency gate: `cairn_validate.py` all checks passed (exit 0); no principle change (`Principles touched: —`), impact report skipped; profile `generic` names no toolchain checks.
+- Independent review (user-facing tier → three lenses): [S] blame-history — no conflicts (D-128/D-130/D-133 read, `test_gate_wording` pins intact); [S] prior-review — no prior-review evidence (archives M170/M172 read; PR-comment probe empty); [O] diff-bug — 10 findings, triaged:
+  1. `/hotfix` step 6 line promises the rerun "re-derives that state and waits again", but step 1 routes an *open* PR reference into the adopt-a-PR walk (only `MERGED` has a re-entry) — **follow-up**: pre-existing M172 gap in hotfix's resume route, not introduced here (the wording is AC3's); candidate row at hygiene.
+  2. `/cairn-release` line applies the element outside the rulebook's branch-or-open-PR domain and to a local check — **reject**: the rulebook names `/cairn-release` step 3 as a restating site and AC3 names the local source; plan-intentional.
+  3. `/cairn-release` has no resume route, so the rerun redoes the walk — **reject**: the line states what happens to the wait; the walk's re-entry cost is the skill's own concern and the prep steps are docs-only.
+  4. step 9 parenthetical contradicts its own "no PR exists yet" premise — **fixed now**: parenthetical reworded to replace the whole line ("instead says there is still nothing to wait for now…").
+  5. return-from-review status table may show pre-fix check state undisposed — **fixed now**, folded into 4 (the line now names the pre-return head).
+  6. rulebook inventories its restating sites — **reject**: AC1 requires naming them; drift falsifier logged at the plan gate.
+  7. "disposes of the status line's check results" reads as rationale — **reject**: T1 kept it deliberately; it binds the CI line to the status line's check results.
+  8. `/milestone-review` line omits that route (c) re-poses the merge chip before the wait — **reject**: the rerun does wait again; the chip is the route's detail, not the line's.
+  9. insertion position pushes "never left armed" from its subject — **reject**: style; the pins read fine.
+  10. `/cairn-release` "report results when they arrive" tension — **reject**: pre-existing, not introduced.
+- conversation: PR #190 — reviews 0, comments 0, unresolved threads 0 (empty read).
+
