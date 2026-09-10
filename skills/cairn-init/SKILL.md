@@ -88,6 +88,20 @@ Chapter markers: mark a chapter at each phase transition — each phase its
   never guess the local current branch. cairn does not assume `main`; use the
   detected name wherever the steps below (and the tracking-rules git model)
   say "the default branch".
+- **Collaboration mode (M184, D-137).** Decide whether the operator owns
+  this repo or contributes to someone else's. Read
+  `gh repo view --json viewerPermission -q .viewerPermission` (with `gh`
+  absent or no remote, the read is skipped and the recommendation is
+  `owner`): `ADMIN`/`MAINTAIN`/`WRITE` recommend **owner** — today's rules;
+  `READ`/`TRIAGE`, or a remote that resolves to a fork of another
+  account's repo, recommend **guest** — `cairn/` kept local and never
+  committed, nothing written outside it (tracking-rules "Collaboration
+  mode"). Pose a **mode chip** (AskUserQuestion: owner / guest, the read's
+  recommendation first) in §0's confirmation round; the chosen mode is
+  written as the second header line of `cairn/PROFILE.md`,
+  `# Collaboration mode: guest` (owner may be written or left absent —
+  absent reads as owner). Guest selected → §1 follows its **Guest mode**
+  passage; §3 repair reads the line from the existing file, never re-asks.
 - **Toolchain profile.** Select the repo's profile in this order:
   `DESCRIPTION` present → **r-package**; else `pyproject.toml` (primary) /
   `setup.py` / `setup.cfg` present → **python**; else a `Dockerfile` as the
@@ -226,6 +240,38 @@ Then:
   uncommitted, when it edited one — and the adjust-or-`/clear` safety line;
   no chip.
 
+### Guest mode
+
+When §0's mode chip chose **guest**, §1 changes in exactly these ways;
+everything not named here (the `cairn/` tree, the ROADMAP skeleton, the
+PROFILE instantiation, the DESIGN seed, the greenfield openers) runs as
+above:
+
+1. **The mode line.** After instantiating `cairn/PROFILE.md`, insert
+   `# Collaboration mode: guest` as its second line, directly under
+   `# Toolchain profile: <name>` (the profile templates carry no mode line;
+   init writes it).
+2. **The `.git/info/exclude` write.** Append `cairn/` to `.git/info/exclude`
+   (create the file if absent). This is the only write outside `cairn/`,
+   and it is to a file git never tracks; it is what `cairn_validate`'s
+   `scaffold present` check requires in guest mode in place of the ignore
+   entries below.
+3. **Five writes skipped.** (a) the **CLAUDE.md append** — the session hook
+   injects the routing section from the plugin's template instead; (b) the
+   **`.gitignore` entries** — nothing under `cairn/` is ever committed, so
+   there is nothing to keep out of it; (c) the **`.Rbuildignore` entry**;
+   (d) the **CI `paths-ignore` chip** of §0 — the report bullet still runs
+   and says what it found, but no edit is offered, because workflow files
+   are the maintainers'; (e) the **scaffold commit + push** — `cairn/` is
+   excluded, so there is nothing to commit and the default branch is never
+   pushed to.
+4. **Close block.** Its status line names the mode; the safety line adds
+   that `cairn/` exists only in this clone (a fresh clone starts from
+   nothing, and `git clean -fdx` removes it).
+
+The mode chip and the `viewerPermission` read behind its recommendation
+are §0's; this passage is entered only on a guest selection.
+
 ## 2. Migration protocol
 
 The protocol lives in
@@ -242,7 +288,12 @@ that are missing and migrates scaffold names **cairn itself** renamed; it
 never rewrites content the repo authored.
 
 - **Missing §1 pieces.** Verify every §1 piece exists and is intact; create
-  what is missing; report each fix. A **missing `cairn/PROFILE.md`**
+  what is missing; report each fix. Read `cairn/PROFILE.md`'s
+  `# Collaboration mode:` line first: in **guest** mode the scaffold is §1's
+  Guest mode passage — `cairn/` in `.git/info/exclude` is the piece to
+  verify and restore, and the CLAUDE.md section, the `.gitignore` and
+  `.Rbuildignore` entries, and the commit + push below are not pieces at all
+  (repair writes nothing outside `cairn/` and `.git/info/exclude`). A **missing `cairn/PROFILE.md`**
   (a repo that adopted cairn before profiles) is backfilled by inference —
   `DESCRIPTION` present → r-package, else `pyproject.toml`/`setup.py`/
   `setup.cfg` → python, else a `Dockerfile` (sole marker) → docker-image, else
