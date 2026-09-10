@@ -52,7 +52,7 @@ class TestReviewResumeRoute(unittest.TestCase):
     def test_reads_pr_state_before_step_one(self):
         self.assertIn(
             "read that PR's state before step 1 — `gh pr view <N> --json "
-            "state,mergedAt` (N from the URL)",
+            "state,mergedAt` (N from the URL or the list)",
             self.route,
         )
 
@@ -60,7 +60,8 @@ class TestReviewResumeRoute(unittest.TestCase):
         self.assertIn(
             "(a) `MERGED`, every acceptance-criterion box ticked against a "
             "recorded evidence line, and a work-log line recording step-7 "
-            "approval (`step-7 approval: PR #<N> …`) → append one work-log "
+            "approval (read by its prefix, `step-7 approval: …`) → append "
+            "one work-log "
             "line naming the PR, its `mergedAt` value, and the re-entry "
             "(`resume: PR #<N> merged <mergedAt>; re-entering at step 9`), "
             "then steps 9–10 with steps 1–8 skipped — the recorded approval "
@@ -92,18 +93,20 @@ class TestReviewResumeRoute(unittest.TestCase):
         self.assertIn(
             "(c) `OPEN`, every box ticked against a recorded evidence line, "
             "and a recorded approval → step 1 re-run and the branch pushed "
-            "(step 2's push, its draft PR already open; when the default "
-            "branch had moved, step 3 re-run so the evidence matches the "
-            "merged tree), the step-7 chip re-posed, and on approval step 8 "
-            "from the marker write onward.",
+            "(when the default branch had moved, step 3 re-run so the "
+            "evidence matches the merged tree), the step-7 chip re-posed, "
+            "and on approval step 8 skipping `gh pr create` — the header "
+            "already names the open PR — from the push and the marker "
+            "write onward.",
             self.route,
         )
 
     def test_route_d_everything_else_goes_to_step_one(self):
         self.assertIn(
             "(d) any other state, or a state above whose conditions are not "
-            "met → step 1, step 2 skipping `gh pr create` when the header "
-            "already names an open PR. A `gh` that is missing, "
+            "met → step 1, then the review with the post-approval open at "
+            "step 8 skipping `gh pr create` when the header already names "
+            "an open PR. A `gh` that is missing, "
             "unauthenticated, or has no remote → step 1, the recap naming "
             "which of the three it was.",
             self.route,
@@ -114,8 +117,8 @@ class TestReviewResumeRoute(unittest.TestCase):
                              "7. **Final approval gate.**",
                              "8. **On approval"))
         self.assertIn(
-            "Approval appends one work-log line naming the PR number it "
-            "approved (`step-7 approval: PR #<N> approved for merge`)",
+            "Approval appends one work-log line naming the branch it "
+            "approved (`step-7 approval: <branch> approved for merge`)",
             step7,
         )
 
@@ -131,8 +134,11 @@ class TestMilestoneAuditMergedReview(unittest.TestCase):
     def test_merged_review_milestone_is_hygiene_owed(self):
         self.assertIn(
             "- A milestone at `review` whose header PR reports `MERGED` "
-            "(`gh pr view <N> --json state`) → post-merge hygiene owed: "
-            "report it as such and route to `/milestone-review M<NNN>`",
+            "(`gh pr view <N> --json state`; a header naming only the branch "
+            "is resolved with `gh pr list --head <branch> --state all`, the "
+            "PR having been opened after approval and its record left "
+            "unpushed — `/milestone-review` step 8) → post-merge hygiene "
+            "owed: report it as such and route to `/milestone-review M<NNN>`",
             self.audit,
         )
 
@@ -202,13 +208,13 @@ class TestHotfixMergedPrReentry(unittest.TestCase):
         self.assertIn(
             "The regression test and the changelog entry land on the "
             "`hotfix-<slug>` branch (cut here when the regression-test move "
-            "did not) and reach the default branch only through step 5's "
-            "authoring variant — push, open a new PR",
+            "did not) and reach the default branch only through step 6's "
+            "authoring variant — the approval chip, then the push and a new "
+            "PR opened after that approval",
             self.step1,
         )
         self.assertIn(
-            "and step 6's approval chip, never by a commit to the default "
-            "branch.",
+            "— never by a commit to the default branch.",
             self.step1,
         )
 

@@ -5099,3 +5099,49 @@ two-value axis; its marker binding, intake door, and enforcement boundary
 stand unchanged. Delivered by M184 (mode, validator, init, hook, guard,
 rulebook) and M185 (base remote, handoff, reconciliation). Supersede here if
 guest mode ever needs cairn to merge, or if a third mode appears.
+
+### D-138 (2026-09-10): The milestone or hotfix PR opens after the user's approval at the merge gate, so a `pull_request`-triggered suite first runs on the head that merges — narrows the review and hotfix git model; the ready-for-review workflow alternative rejected (M186)
+
+**Context:** `/milestone-review` step 2 pushed the branch and opened a
+draft PR before verification so CI would run in the background; `/hotfix`
+step 5 did the same for an authored fix. Every push before approval —
+review-side evidence checkpoints, fix-now commits at the gate, the
+approval line itself — re-ran a `pull_request`-triggered suite, and the
+only run that matters is the one on the head that merges. The M185
+hygiene stamp records the plan-gate reading: the approval commit's push
+re-runs the suite regardless, so an early open buys one wasted run per
+pre-approval push and nothing else.
+
+**Decision:** The branch is pushed and the PR opened only after the
+user's approval — `/milestone-review` step 8 (owner: after the step-7
+approval line is committed, before the marker write and the CI wait;
+guest: the push plus `gh pr create` against the base repo is the handoff,
+opened ready, with no ready-marking step) and `/hotfix` step 6 (the same
+move for an authored fix; an adopted PR already exists and is unchanged).
+The merge chip and the `step-7 approval:` work-log line name the branch,
+not a PR number; the resume routes read the line by its prefix and a
+pre-existing PR skips only the create. The PR-conversation read (M177)
+runs only where a PR pre-exists — a return from an earlier review, an
+adopted hotfix PR — and a PR opened fresh at the gate is merged with no
+read. Rejected at the plan gate: opening the PR just before the gate (the
+approval commit's push re-runs the suite regardless); a second
+conversation read after CI green on a fresh PR (it re-poses the chip
+after the marker is written and adds a gate path); per-repo workflow
+config gating checks on ready-for-review via `/cairn-init` (it touches
+every adopting repo's workflows and needs the non-default
+`ready_for_review` trigger type).
+
+**Consequences:** The CI wait at the gate is serial with the approval —
+the cost this entry accepts. The header's PR-URL record, written after
+the create, is committed on the branch and never pushed — a push would
+move the PR head past the one CI ran on — so the branch name is the
+durable key: the resume routes, `/milestone` §2, and the archive
+summary fall back to `gh pr list --head <branch>` once `--delete-branch`
+has removed the local branch; the tracking-rules bullet "A branch push
+starts CI" states the rule and cites this entry. Falsifiers, each named
+in M186's work log: an adopting repo reporting the serial CI wait after
+approval as the bottleneck of its milestone loop reopens the early open;
+a bot reviewer's comment on a fresh PR found post-merge to have named a
+defect the review fan-out missed reopens the post-CI read; an adopting
+repo that cannot accept a serial wait at the gate reopens the workflow
+config alternative.

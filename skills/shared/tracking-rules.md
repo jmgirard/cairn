@@ -238,7 +238,10 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
 - **A branch push starts CI, tracking-only commits included.** A push of a milestone or hotfix branch starts the
   push-triggered workflows whose `branches` filter admits it, phase-boundary checkpoints and review-side records
   included. A `paths-ignore` of `cairn/**` skips such a push for `push` triggers and not for `pull_request` triggers,
-  whose filter reads the whole PR diff. Where the workflows are push-triggered and ignore `cairn/**`, a tracking-only
+  whose filter reads the whole PR diff. The milestone or hotfix PR is opened after the user's approval at the merge
+  gate — the branch is pushed and `gh pr create` run at `/milestone-review` step 8 and `/hotfix` step 6, never before
+  — so a `pull_request`-triggered suite first runs on the head that merges rather than on every pre-approval push
+  (D-138); the CI wait at the gate is serial with the approval, the cost that entry records. Where the workflows are push-triggered and ignore `cairn/**`, a tracking-only
   head commit carries no check run — the wait rule's no-checks case, the last CI-covered commit then being the last
   code-bearing one — unless branch protection requires that check, where the path-skipped run leaves it pending and
   the merge blocked; mergeability is the wait clause's to state. `/cairn-init` §0 reports the fact
@@ -309,12 +312,14 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
 - **Adopting a third party's PR via `/hotfix` is unsupported** in guest mode — the guest has no merge authority to hold
   it to; route such a PR to the maintainers.
 - **The base remote is `upstream` when it exists, else `origin`** (the git model's recipe above): the milestone branch
-  is cut from `<base>/<default-branch>` and synced by rebase, pushed to `origin` (the fork), and the PR targets the base
-  repo — `gh pr create --repo <base-repo> --head <fork-owner>:<slug> --draft`; every other `gh pr` command carries
-  `--repo <base-repo>` too. `gh repo set-default` is never run (it would route a bare `gh pr merge` past the one-repo
+  is cut from `<base>/<default-branch>` and synced by rebase, pushed to `origin` (the fork) at the handoff, and the PR
+  targets the base repo — `gh pr create --repo <base-repo> --head <fork-owner>:<slug>`, opened ready for the
+  maintainers' review at the handoff selection, never earlier and never as a draft; every other `gh pr` command
+  carries `--repo <base-repo>` too. `gh repo set-default` is never run (it would route a bare `gh pr merge` past the one-repo
   approval binding).
 - **cairn never merges in guest mode.** `/milestone-review` ends with a handoff gate in the merge gate's shape — hand
-  the PR to the maintainers (`gh pr ready`), or decline; no merge option — and sets the milestone `blocked`, its
+  the branch to the maintainers (the push plus the `gh pr create` above), or decline; no merge option — and sets the
+  milestone `blocked`, its
   work-log line naming the maintainers; `/milestone` §2 re-reads the PR's state and routes a merged one to
   `/milestone-review`'s hygiene (`blocked → done`), a closed one to a chip, a `CHANGES_REQUESTED` one to
   `/milestone-implement`. `/hotfix`'s merge step takes the same handoff. Post-merge hygiene runs on disk, no commit.
