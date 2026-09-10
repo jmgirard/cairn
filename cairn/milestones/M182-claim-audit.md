@@ -54,6 +54,8 @@ A user-facing milestone whose branch adds behavior claims to prose has those cla
 - 2026-09-10: claim audit: 12 claims read, 1 corrected — skills/milestone-implement/SKILL.md, skills/cairn-release/SKILL.md (step 7 run on this branch as it now reads: user-facing tier, two skill files added outside `cairn/`; the corrected claim was step 7's closing sentence, which said review confirms the recorded audit while the branch changes nothing in the review skill).
 - 2026-09-10: the corrected claim's one re-read went to a second fresh [O] reader, not the same one — SendMessage is unavailable in this session, so the original reader could not be continued; deviation logged, not silent. The re-read held on placement and returned on the word "first" (step 4's derived-claims rule already has the author read the artifact at writing time); reworded to "the first read … by a reader other than their author"; no further reader spawned, per the stopping rule.
 
+- 2026-09-10: review found `skills/tests/test_positional_labels.py:153` still anchoring on the old `7. **Blocked?**` heading (the `section()` helper ran to EOF silently, so the suite stayed green); anchor moved to `8.` at the gate. This supersedes T2's line saying no test cites those numbers.
+
 ## Decisions
 
 ## Review
@@ -64,3 +66,15 @@ A user-facing milestone whose branch adds behavior claims to prose has those cla
 - 2026-09-10 AC4: scripts suite 379 tests exit 0; hooks suite 126 tests exit 0; skills/tests hand-run 661 tests, one red (`test_lesson_graduation.TestFamilyActuallyLeft.test_partial_coverage_was_trimmed_not_deleted`), the pre-existing red the ROADMAP hygiene line records. Verified.
 - 2026-09-10 Driving RR: none; projection-vs-outcome no-ops.
 - 2026-09-10 consistency gate: `cairn_validate.py` exit 0, all checks pass; no DESIGN principle changed, `cairn_impact` skipped; profile `generic` names no toolchain checks.
+- 2026-09-10 correction: the AC1 evidence line's "no other file citing the old step numbers" was wrong — `skills/tests/test_positional_labels.py:153` anchored on the old heading; fixed at the gate (below), the AC1 verdict stands since AC1 names no cross-reference condition.
+- 2026-09-10 independent review (three lenses, user-facing tier): [O] diff-bug 10 findings; [S] blame-history 2 findings (3 no-conflict notes); [S] prior-review-record: no regression, PR-comment probe empty. Triage:
+- O1 stale test anchor `test_positional_labels.py:153` — fix now (anchor → `8. **Blocked?**`; skills/tests hand-run: same single pre-existing red; scripts + hooks exit 0).
+- O2 same-reader re-read unexecutable without agent continuation; O3 "release-prep commit" anchored only by the generic release-walk; O5 unfilled `Surface tier:` slot fits neither not-owed reason — follow-up: one candidate row "Claim-audit and claim-read edge cases" (search-first: none existed).
+- O4 "M120 twice over the same prose" in D-136 as a count against AC3 — put to the maintainer at the gate.
+- O6 audit work-log line carries a parenthetical past `<files>` — reject: the line is history (append-only); the promotion condition reads the `claim audit:` prefix and N, both intact.
+- O7 audit numbered before Blocked — reject: AC1 places it between plan amendments and completion, the plan's placement.
+- O8 D-entries 2107/2642 cite the old step 8 — reject: history, append-only, and the cited module is retired.
+- O9 "first read by a reader other than their author" arguable under step 5 — reject: step 5 verifies subagent diffs, not claims against code.
+- O10 "none" skip restated inside the clause — reject: AC2 requires the clause to state it.
+- S1/S2 D-136's measurement cites tidymedia files a reader of this repo cannot check; door passed on an argument about review's control flow — reject: AC3 mandates citing those files; D-136 discloses the repo and date; the door's terms are unchanged.
+- 2026-09-10 PR conversation read (PR #189): 0 reviews, 0 comments, 0 unresolved threads.

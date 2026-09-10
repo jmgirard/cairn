@@ -150,7 +150,7 @@ class TestImplementStepSixRenumbersOnBothBranches(unittest.TestCase):
 
     def setUp(self):
         step6 = section(implement(), "6. **Plan amendments**",
-                        "7. **Blocked?**")
+                        "8. **Blocked?**")
         self.minor = section(step6, "- *Minor*", "- *Substantive*")
         self.substantive = section(step6, "- *Substantive*",
                                    "**Return-adjacent direction rule")
