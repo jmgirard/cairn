@@ -92,3 +92,20 @@ A repo the operator does not own can run cairn's plan/implement/review loop with
 - AC7: `CHANGELOG.md` `## Unreleased` → New entry names the guest mode. Suites from the repo root: scripts 388 tests exit 0, hooks 139 tests exit 0, no skips. PASS.
 - Driving RR `—`: no projection-vs-outcome pairs.
 - Consistency gate: `cairn_validate` all checks passed (exit 0); `cairn_impact --changed` on GP2 lists 10 references — DESIGN.md:120 (the principle), D-137, M184/M185 (this work), two archives (history) — nothing to reconcile; profile `generic` names no toolchain checks (no-op).
+- Independent review (three lenses, fresh context): [S] blame-history — no regressions, no undone intent, no weakened owner-mode guard; [S] prior-review record — 29 archives read, no contradicted finding (M36's warn-only doctrine deliberately narrowed by D-137's one hard lever; M45's fence-aware slot parser not reached by the header-only scan). [O] diff-bug — 14 ranked findings, triaged:
+  - F1 `/milestone-review` and `/hotfix` have no guest arm though prose describes guest review/hotfix behavior → follow-up: review handoff is M185 (planned, in scope); `/hotfix` guest arm → new candidate row. The README/rulebook sentences are the ones AC5/AC6 mandate.
+  - F2 pathspec commit (`git commit -m x cairn/f`) passes the guest deny while the docs enumerate misses as exhaustive → fix now: docstring lists the pathspec miss (reachable only while cairn/ is tracked, which F5's check now FAILs); CHANGELOG and rulebook enumerate by pointer + the new miss.
+  - F3 mode reader degrades to owner on a lowercase key, `#Collaboration`, or a BOM → fix now: key matched case-insensitively, file opened `utf-8-sig`; 3 subtests. Invalid UTF-8 still reads owner (rejected: no observed instance; the validator's `profile valid` reads the same file and would surface the file itself).
+  - F4 worktree/submodule: `.git` is a file, exclude lives in the common dir → fix now: validator resolves `git rev-parse --git-path info/exclude` (literal path as no-git fallback); cairn-init §1/§3 name the resolution; worktree test (PASS with the common-dir line, FAIL without).
+  - F5 exclude line does nothing for tracked files (owner→guest switch) → fix now: guest scaffold arm FAILs while `git ls-files -- cairn` lists anything, naming `git rm -r --cached cairn`; tracked and untracked tests.
+  - F6 guest R-package tarball carries `cairn/` (implement-time open concern) → follow-up: candidate row.
+  - F7 AC2 test mirrors the hook's loop → fix now: independent sentinel assertion ("Never implement code on the default branch").
+  - F8 unreadable template → empty routing body claimed present → fix now: the part names the unreadable template path and points at the rulebook; test.
+  - F9 deny remedy says "unstage" for the `-am` case → fix now: wording names dropping `-a` and `git rm --cached`.
+  - F10 header-region fence asymmetry → reject: a PROFILE.md header region carries no fence in any shipped template or adopter; no observed instance.
+  - F11 owner test asserts absence only → reject: `test_owner_nudge_keeps_the_owner_branch_shape` is the positive control on the same fixture.
+  - F12 `abspath` vs `realpath` for the template path → reject: follows `cairn_scripts.py`'s precedent; per-file symlink installs are not a supported layout.
+  - F13 two extra git subprocesses per guest commit → reject: the deny must read paths on every branch; sub-second.
+  - F14 exclude spellings limited to four → reject: init writes the canonical form; the FAIL message names it.
+  - Return floor: no finding demonstrates an acceptance criterion failing; no status change. After fixes: scripts 391 / hooks 141 tests, both exit 0; `cairn_validate` passes; AC1–AC3 fixture script re-run green.
+- conversation: PR #191 — empty read (0 reviews, 0 comments, 0 unresolved threads).

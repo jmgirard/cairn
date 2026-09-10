@@ -14,12 +14,15 @@
   CI `paths-ignore` edit, or committing and pushing the scaffold.
   `cairn_validate`'s `profile valid` check fails a mode outside
   `owner|guest`, and its `scaffold present` check in guest mode requires
-  the exclude line and drops the ignore-entry requirements. The session
+  the exclude line (resolved through `git rev-parse --git-path`, so a
+  worktree reads its main repo's file), drops the ignore-entry
+  requirements, and fails while any `cairn/` file is still tracked (an
+  exclude line covers untracked files only). The session
   hook injects the CLAUDE.md routing section from the plugin's own
   template in guest mode, and the commit guard denies a `git commit` it
-  sees carrying a `cairn/` path on every branch (the guard's documented
-  misses, `git -C`/`git -c` and an empty `--amend`, are unchanged), its
-  nudge naming the `<slug>` branch shape. The rulebook's new "Collaboration mode" section states the guest
+  sees carrying a `cairn/` path on every branch (the misses its docstring
+  lists stand, a pathspec commit of a tracked `cairn/` file among them),
+  its nudge naming the `<slug>` branch shape. The rulebook's new "Collaboration mode" section states the guest
   rules (tracking written to disk in the turn that changes the code, never
   committed; no cairn vocabulary in branches, commits, or PRs;
   `/cairn-release` and `/cairn-triage` stop; adopting a third party's PR

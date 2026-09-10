@@ -164,6 +164,20 @@ class TestCollaborationMode(RepoFixture):
         self._profile("# Toolchain profile: generic\n# Collaboration mode: owner\n")
         self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "owner")
 
+    def test_key_is_case_insensitive_and_bom_tolerant(self):
+        # A hand-edited line must not silently read as owner (the unsafe
+        # direction for a guest): lowercase key, no space after `#`, BOM.
+        for text in (
+            "# Toolchain profile: generic\n# collaboration mode: guest\n",
+            "# Toolchain profile: generic\n#Collaboration Mode: guest\n",
+            "﻿# Collaboration mode: guest\n# Toolchain profile: generic\n",
+        ):
+            with self.subTest(text=text):
+                self._profile(text)
+                self.assertEqual(
+                    session_context.cc.collaboration_mode(str(self.root)), "guest"
+                )
+
     def test_a_mode_line_inside_a_slot_body_is_body_text(self):
         # Header region only: a look-alike line after the first `## ` slot
         # heading (e.g. inside a fenced command block) is not the mode.
@@ -239,10 +253,29 @@ class TestSessionContext(RepoFixture):
         expected = self._template_section()
         self.assertTrue(expected, "template section read empty")
         self.assertIn(expected, part)
+        # One fact stated independently of the extractor above (which mirrors
+        # the hook's loop): a sentence the routing section is known to carry.
+        self.assertIn("Never implement code on the default branch", part)
         # the one line naming the mode follows the body
         tail = part.split(expected, 1)[1].strip()
         self.assertEqual(len(tail.splitlines()), 1, tail)
         self.assertIn("guest", tail)
+
+    def test_guest_mode_names_an_unreadable_template_instead_of_an_empty_body(self):
+        # In guest mode this part is the session's only copy of the routing
+        # text, so a missing template must be said, never a blank body.
+        (self.root / "cairn" / "PROFILE.md").write_text(
+            "# Toolchain profile: generic\n# Collaboration mode: guest\n\n## verify\n- x\n"
+        )
+        real = session_context._CLAUDE_MD_TEMPLATE
+        session_context._CLAUDE_MD_TEMPLATE = str(self.root / "no-such-template.md")
+        try:
+            ctx = session_context.build_context(str(self.root))
+        finally:
+            session_context._CLAUDE_MD_TEMPLATE = real
+        part = ctx.split("## Collaboration mode", 1)[1].split("\n## ", 1)[0]
+        self.assertIn("routing section unreadable", part)
+        self.assertIn("no-such-template.md", part)
 
     def test_owner_mode_has_no_collaboration_part(self):
         (self.root / "cairn" / "PROFILE.md").write_text(

@@ -251,11 +251,15 @@ above:
    `# Collaboration mode: guest` as its second line, directly under
    `# Toolchain profile: <name>` (the profile templates carry no mode line;
    init writes it).
-2. **The `.git/info/exclude` write.** Append `cairn/` to `.git/info/exclude`
-   (create the file if absent). This is the only write outside `cairn/`,
+2. **The `.git/info/exclude` write.** Append `cairn/` to the file
+   `git rev-parse --git-path info/exclude` names — `.git/info/exclude` in a
+   plain checkout, the main repo's file in a worktree, where `.git` is a
+   file (create it if absent). This is the only write outside `cairn/`,
    and it is to a file git never tracks; it is what `cairn_validate`'s
    `scaffold present` check requires in guest mode in place of the ignore
-   entries below.
+   entries below. That check also FAILs while `git ls-files -- cairn` lists
+   anything: an exclude line covers untracked files only, so a repo that
+   ever committed `cairn/` first takes `git rm -r --cached cairn`.
 3. **Five writes skipped.** (a) the **CLAUDE.md append** — the session hook
    injects the routing section from the plugin's template instead; (b) the
    **`.gitignore` entries** — nothing under `cairn/` is ever committed, so
@@ -290,8 +294,9 @@ never rewrites content the repo authored.
 - **Missing §1 pieces.** Verify every §1 piece exists and is intact; create
   what is missing; report each fix. Read `cairn/PROFILE.md`'s
   `# Collaboration mode:` line first: in **guest** mode the scaffold is §1's
-  Guest mode passage — `cairn/` in `.git/info/exclude` is the piece to
-  verify and restore, and the CLAUDE.md section, the `.gitignore` and
+  Guest mode passage — `cairn/` in the exclude file (`git rev-parse
+  --git-path info/exclude`) is the piece to
+  verify and restore, `git ls-files -- cairn` must list nothing, and the CLAUDE.md section, the `.gitignore` and
   `.Rbuildignore` entries, and the commit + push below are not pieces at all
   (repair writes nothing outside `cairn/` and `.git/info/exclude`). A **missing `cairn/PROFILE.md`**
   (a repo that adopted cairn before profiles) is backfilled by inference —

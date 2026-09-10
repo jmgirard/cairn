@@ -314,7 +314,7 @@ def on_default_branch(cwd):
 # the seven `##` slots the validator reads; scripts/cairn_validate.py reaches
 # this same regex and reader through cairn_scripts' import of cairn_common,
 # so there is one parser, not two.
-COLLAB_MODE_LINE = re.compile(r"#\s*Collaboration mode:\s*(\S+)")
+COLLAB_MODE_LINE = re.compile(r"#\s*Collaboration mode:\s*(\S+)", re.IGNORECASE)
 
 
 def collaboration_mode(root):
@@ -324,10 +324,12 @@ def collaboration_mode(root):
     stood before the axis existed. Only the header region is read — the
     scan stops at the first `## ` slot heading, so a look-alike line inside
     a slot body (a fenced command block, say) is body text, not the mode.
+    The key is matched case-insensitively and a UTF-8 BOM is tolerated
+    (`utf-8-sig`), so a hand-edited line is not silently read as owner.
     Never raises."""
     path = os.path.join(root, "cairn", "PROFILE.md")
     try:
-        with open(path, encoding="utf-8") as f:
+        with open(path, encoding="utf-8-sig") as f:
             for line in f:
                 if line.startswith("## "):
                     break

@@ -10,6 +10,8 @@ gaps that bit the tidymedia repair: a missing ``LESSONS.md`` and a missing
     python3 -m unittest discover -s scripts/tests -v
 """
 
+import shutil
+import subprocess
 import unittest
 
 from test_scripts import ScriptCase, run
@@ -292,6 +294,61 @@ class TestScaffoldGuestMode(ScriptCase):
         proc = run("cairn_validate.py", self.guest_repo())
         self.assertNotIn(".gitignore missing", proc.stdout)
         self.assertNotIn(".Rbuildignore missing", proc.stdout)
+
+    def _git(self, root, *args):
+        return subprocess.run(
+            ["git", *args], cwd=root, check=True, capture_output=True, text=True
+        ).stdout
+
+    def _init_repo(self, root):
+        self._git(root, "init", "-q", "-b", "main")
+        self._git(root, "config", "user.email", "t@t")
+        self._git(root, "config", "user.name", "t")
+
+    def test_guest_fails_while_cairn_is_still_tracked(self):
+        # The exclude line covers untracked files only: a repo switched
+        # owner → guest with cairn/ committed must not pass on the line.
+        root = self.guest_repo()
+        self._init_repo(root)
+        self._git(root, "add", "-f", "cairn/ROADMAP.md")
+        self._git(root, "commit", "-q", "-m", "tracked")
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(f"FAIL  {LABEL}", proc.stdout)
+        self.assertIn("tracked file", proc.stdout)
+        self.assertIn("git rm -r --cached cairn", proc.stdout)
+
+    def test_guest_untracked_cairn_in_a_real_repo_passes(self):
+        # Positive control for the tracked check: same repo, cairn/ never
+        # added, exclude line present → PASS.
+        root = self.guest_repo()
+        self._init_repo(root)
+        (root / "DESCRIPTION").write_text("Package: fixture\n")
+        self._git(root, "add", "DESCRIPTION")
+        self._git(root, "commit", "-q", "-m", "init")
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn(f"PASS  {LABEL}", proc.stdout)
+
+    def test_guest_worktree_reads_the_common_dir_exclude(self):
+        # In a worktree `.git` is a file; the exclude file lives in the main
+        # repo's common dir, which `git rev-parse --git-path` resolves.
+        main = self.guest_repo()
+        self._init_repo(main)
+        (main / "DESCRIPTION").write_text("Package: fixture\n")
+        self._git(main, "add", "DESCRIPTION")
+        self._git(main, "commit", "-q", "-m", "init")
+        wt = main.parent / (main.name + "-wt")
+        self._git(main, "worktree", "add", "-q", str(wt), "-b", "feature")
+        self.assertTrue((wt / ".git").is_file())
+        shutil.copytree(main / "cairn", wt / "cairn")
+        proc = run("cairn_validate.py", wt)
+        self.assertIn(f"PASS  {LABEL}", proc.stdout)
+        # And the same worktree with the common-dir line removed FAILs.
+        (main / ".git" / "info" / "exclude").write_text("# none\n")
+        proc = run("cairn_validate.py", wt)
+        self.assertIn(f"FAIL  {LABEL}", proc.stdout)
+        self.assertIn(".git/info/exclude", proc.stdout)
 
     def test_owner_exclude_line_does_not_stand_in_for_gitignore(self):
         # Same repo, mode line removed → owner mode: the exclude line is

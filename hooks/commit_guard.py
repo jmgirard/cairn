@@ -31,8 +31,11 @@ merge_guard.py): `git -C <path> commit` and `git -c k=v commit` (multi-token
 global options) aren't matched; a `-a`-looking token inside an `-m` message
 or in a leading assignment value (`MSG=--all git commit …`) may over-count
 modified files; `git commit --amend` with nothing staged sees
-an empty set (the original commit was the catchable event). No-op outside
-cairn repos; fail-permissive.
+an empty set (the original commit was the catchable event); a pathspec
+commit (`git commit -m x <path>`) is not read, so a tracked cairn/ file
+committed by path passes the guest deny — reachable only while cairn/ is
+tracked, which `cairn_validate`'s guest `scaffold present` arm FAILs.
+No-op outside cairn repos; fail-permissive.
 """
 
 import os
@@ -87,7 +90,9 @@ def guest_deny_reason(paths):
         f"repository ({listed}). In guest collaboration mode cairn/ is "
         "local-only — listed in .git/info/exclude, never committed "
         "(tracking-rules 'Collaboration mode'). Unstage the cairn/ path(s) "
-        "and commit without them; tracking stays on disk."
+        "(or drop `-a`, which sweeps in modified tracked files) and commit "
+        "without them; a tracked cairn/ file wants `git rm -r --cached "
+        "cairn`. Tracking stays on disk."
     )
 
 

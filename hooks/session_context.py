@@ -284,9 +284,15 @@ def build_context(root):
     if mode == "guest":
         # Charged against MAX_CHARS like every other part: it sits in
         # `parts` before the spare-budget computation below.
+        routing = routing_section() or (
+            "(routing section unreadable: the plugin template "
+            f"{os.path.normpath(_CLAUDE_MD_TEMPLATE)} is missing or has no "
+            "`## Project tracking` section — read skills/shared/"
+            "tracking-rules.md before acting on any request)"
+        )
         parts.append(
             "## Collaboration mode\n\n"
-            + routing_section()
+            + routing
             + "\n\nCollaboration mode: `guest` (from cairn/PROFILE.md) — cairn/ is "
             "local-only and never committed; the routing section above is "
             "injected here because nothing is appended to this repo's "

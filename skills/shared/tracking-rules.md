@@ -284,10 +284,12 @@ A second axis beside the toolchain profile (D-137), declared as a header line of
 mode** is the operator contributing to a repo they do not own: cairn's plan/implement/review loop runs as local
 reasoning over local files, and nothing cairn writes reaches the repo's maintainers. In guest mode:
 
-- **`cairn/` is never committed.** It is listed in `.git/info/exclude` (written by `/cairn-init`, required by
-  `cairn_validate`'s `scaffold present` check in place of the `.gitignore`/`.Rbuildignore` entries); the commit guard
-  denies a `git commit` it sees carrying a `cairn/` path, on every branch (its docstring's accepted misses — `git -C`,
-  `git -c`, an empty `--amend` — stand, so the deny is a lever, not a proof). Nothing is written outside `cairn/` and that exclude
+- **`cairn/` is never committed.** It is listed in git's exclude file — `git rev-parse --git-path info/exclude`,
+  `.git/info/exclude` in a plain checkout, the main repo's in a worktree (written by `/cairn-init`, required by
+  `cairn_validate`'s `scaffold present` check in place of the `.gitignore`/`.Rbuildignore` entries, which also FAILs
+  while any `cairn/` file is tracked); the commit guard
+  denies a `git commit` it sees carrying a `cairn/` path, on every branch (the misses its docstring lists — `git -C`,
+  `git -c`, an empty `--amend`, a pathspec commit of a tracked file — stand, so the deny is a lever, not a proof). Nothing is written outside `cairn/` and that exclude
   file — no CLAUDE.md section (the session hook injects the plugin's routing template instead), no ignore entries, no
   CI edit.
 - **No docs-only commit and no push to the default branch.** The plan commit, the post-merge hygiene commit, and the
