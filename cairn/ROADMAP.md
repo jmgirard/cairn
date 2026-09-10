@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-06 (M181 done: `--apply` under a chip; the `[high]` chip-applied candidate graduated and M178's row pruned (archive + git); validate green; scripts 379 + hooks 126 green, skills/tests 661 with the one pre-existing lesson-graduation red; ROADMAP/LESSONS bytes and the three doctrine-module budgets hand-read under cap.)_
+_Last hygiene check: 2026-09-10 (M182 done: claim-audit step in `/milestone-implement`, claim-read clause in `/cairn-release`, D-136; M179's row pruned (archive + git); validate green; scripts 379 + hooks 126 green, skills/tests 661 with the one pre-existing lesson-graduation red; ROADMAP/LESSONS bytes and the three doctrine-module budgets hand-read under cap.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,10 +12,9 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M182 | Claim audit at implement time for user-facing prose; release-walk changelog claim-read | review | — | high | milestones/M182-claim-audit.md |
+| M182 | Claim audit at implement time for user-facing prose; release-walk changelog claim-read | done | — | high | milestones/archive/M182-claim-audit.md |
 | M181 | cairn-init applies the `cairn/**` `paths-ignore` edit under a chip, parsed by PyYAML | done | — | high | milestones/archive/M181-apply-paths-ignore.md |
 | M180 | ROADMAP terminal-row retention drops from 5 to 3 | done | — | normal | milestones/archive/M180-retention-three.md |
-| M179 | ROADMAP candidate rows carry an optional priority token | done | — | normal | milestones/archive/M179-candidate-priority-token.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
