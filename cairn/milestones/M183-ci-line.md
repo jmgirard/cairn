@@ -71,7 +71,7 @@ Any change to the wait mechanism itself — D-128 stands.
       element with its domain clause and the bare-state exclusion; keep the
       status line's "check results, where they exist" — the CI line is what
       disposes of them.
-- [ ] T2: `/milestone-implement` step 9 (`SKILL.md:187-199`): add the
+- [x] T2: `/milestone-implement` step 9 (`SKILL.md:187-199`): add the
       implement-end CI line wording to the close-block spec.
 - [ ] T3: the three timeout stops — `/milestone-review` step 8
       (`SKILL.md:405-416`), `/hotfix` step 6 (`SKILL.md:184-191`),
@@ -89,6 +89,7 @@ Any change to the wait mechanism itself — D-128 stands.
 - 2026-09-10: plan gate chose a fact-stating timeout line ("rerun whenever; it re-checks and waits again; green-first optional") over "wait for green, then rerun" because the latter costs a manual GitHub check even when CI lands a minute later; falsified by repeated timeout stops on the same PR in the record after the line ships.
 - 2026-09-10: plan gate chose branch-or-open-PR closes only over every close block (merged ones too) because a merged close has nothing in flight; falsified by a user report of wait-uncertainty at a merged close.
 - 2026-09-10: question gate skipped — the plan fixes each site's wording, nothing open. T1: CI line element added to the rulebook close-block paragraph (domain clause, bare-state exclusion, four restating sites named); verify green 379/126.
+- 2026-09-10: T2: implement-end CI line added to step 9's close-block spec (nothing to wait for; review pushes, opens the PR, waits at merge); verify green.
 - 2026-09-10: plan gate chose no prose pin over a `skills/tests` guard because D-128 leaves the sibling next-command clause unpinned and the checker is internal; falsified by the CI line drifting out of a site in a later milestone's diff.
 
 ## Decisions
