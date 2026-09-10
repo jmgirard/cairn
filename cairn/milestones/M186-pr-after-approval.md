@@ -1,6 +1,6 @@
 # M186: The PR opens after approval, so CI first runs on the head that merges
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -56,6 +56,8 @@ Review and hotfix push the branch and open the pull request only after the user 
 - 2026-09-10: T3 done — tracking-rules "A branch push starts CI" bullet states the post-approval open and names D-138, the Collaboration-mode create and handoff bullets follow; implement step 9's CI line names the post-approval open; README's conversation-read and issue-linkage sentences reworded; changelog entry under Unreleased "Changes that affect existing repos". AC5's grep returns no match (exit 1). Scripts 391 / hooks 146 green.
 - 2026-09-10: minor amendment — T4's pin list grew from the three the plan named to nine: the hand-run suite also pinned the old wording in `test_pr_conversation_gate.py` (four tests: read-once, route (c) re-run, hotfix authored-and-adopted, README both-gates), `test_resume_routing.py`'s route (a) and hotfix owed-items strings, `test_issue_linkage.py`'s PR-body regex, and the matching mutation-harness blocks; all re-seeded to the shipped wording.
 - 2026-09-10: T4 done — D-138 appended (post-approval open; serial CI wait as the cost; the ready-for-review workflow, the pre-gate open, and the post-CI read rejected with their reopening observations); hand-run `skills/tests`: 661 tests, 4 reds + 1 error, the same set M185's hygiene recorded (lesson-graduation, two default-branch recipe pins, hotfix two-way-check sentence, and the harness error for the recipe pin). Scripts 391 / hooks 146 green; `cairn_validate` all checks passed.
+- 2026-09-10: claim audit: 47 claims read, 3 corrected — skills/milestone-review/SKILL.md (step 8's header PR-URL record now a docs-only commit left unpushed, so the first `pull_request` run is on the head that merges), skills/hotfix/SKILL.md (step 6's "push and open the PR first" → "before the marker write below"), CHANGELOG.md (the work-log line names the branch only, not the default branch). Deviation: the one re-read ran in a second fresh [O] reader, not the first — this harness exposes no tool to continue a finished subagent; all three corrections hold. Suites unchanged after the corrections; AC5's grep still empty.
+- 2026-09-10: all tasks checked; status → review.
 
 ## Decisions
 

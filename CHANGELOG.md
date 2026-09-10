@@ -10,9 +10,10 @@
   draft, the `Closes`/`Refs` lines in its body) after the step-7 approval
   and before the merge marker and CI wait, so a `pull_request`-triggered
   suite first runs on the head that merges rather than on every
-  pre-approval push. The step-7 chip and its `step-7 approval:` work-log
-  line name the branch and default branch (`Merge <branch> into
-  <default-branch>`), and the resume routes read the line by its prefix.
+  pre-approval push. The step-7 chip names the branch and the default
+  branch (`Merge <branch> into <default-branch>`), its work-log line
+  names the branch (`step-7 approval: <branch> approved for merge`), and
+  the resume routes read the line by its prefix.
   `/hotfix` makes the same move for an authored fix: step 5 pushes
   nothing, step 6 pushes and opens the PR (`Fixes #N` when an issue
   exists) on approval; an adopted PR's path is unchanged. In guest mode

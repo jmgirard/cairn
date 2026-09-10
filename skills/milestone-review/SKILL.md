@@ -430,7 +430,10 @@ re-enters here, at the step the record shows is next:
    per `closes` entry and one `Refs #N` line per `partial` entry of the
    milestone's `Resolves:` slot — the closing keyword is what makes GitHub
    close the issue at merge; a slot of `—` adds no lines. Record the PR
-   URL in the milestone header (a docs-only commit on the branch, pushed).
+   URL in the milestone header — a docs-only commit on the branch, left
+   unpushed: the record serves the resume routes locally, the squash never
+   needs it, and pushing it would move the PR head past the one CI just
+   ran on (the archive summary reads it from the local file at step 9).
    Then record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
    `M<NNN> approved YYYY-MM-DD for PR #<N>` — the marker names the PR it

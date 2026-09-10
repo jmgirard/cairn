@@ -196,9 +196,9 @@ a bare PR number resolves against the fork.
    one about to be opened, adds to the
    chip's question text the post-merge close-if-open of that issue it
    authorizes (hotfix step 7). On approval of an authored fix, push and
-   open the PR first — `git push -u origin hotfix-<slug>`, then `gh pr
-   create` opening it ready for review, never as a draft, `Fixes #N` in
-   the body when a GitHub issue exists. Merge (`gh pr merge <N> --squash --delete-branch`
+   open the PR before the marker write below — `git push -u origin
+   hotfix-<slug>`, then `gh pr create` opening it ready for review, never
+   as a draft, `Fixes #N` in the body when a GitHub issue exists. Merge (`gh pr merge <N> --squash --delete-branch`
    — name the PR number explicitly; a bare `gh pr merge` is denied because the
    approval cannot be checked against it; **drop `--delete-branch` on a
    fork PR** — that branch lives in the contributor's repo and is not ours
