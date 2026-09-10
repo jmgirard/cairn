@@ -48,7 +48,7 @@ A repo the operator does not own can run cairn's plan/implement/review loop with
 
 - [x] T1: `hooks/cairn_common.py`: `collaboration_mode(root)` reading `cairn/PROFILE.md` for a `# Collaboration mode: <value>` line (regex beside the shape of `session_context._PROFILE_HEADER`, hooks/session_context.py:33), `owner` when absent; tests in `hooks/tests/test_hooks.py`.
 - [x] T2: `scripts/cairn_validate.py`: parse the same line by hand (hooks and scripts share no code — M113 lesson; a comment names the hook twin); `check_profile` FAILs a value outside `owner|guest` (`:787-813`); `check_scaffold` guest arm requires `cairn/` or `cairn` in `.git/info/exclude` and skips `REQUIRED_GITIGNORE`/`REQUIRED_RBUILDIGNORE` (`:487-514`); tests in `scripts/tests/test_scaffold_check.py` and `test_scripts.py::TestValidateProfile`.
-- [ ] T3: `hooks/session_context.py`: guest part after the profile part (`:244-251`), body read from the template relative to the hook file, charged against `MAX_CHARS`; tests beside `TestSessionContext`.
+- [x] T3: `hooks/session_context.py`: guest part after the profile part (`:244-251`), body read from the template relative to the hook file, charged against `MAX_CHARS`; tests beside `TestSessionContext`.
 - [ ] T4: `hooks/commit_guard.py`: guest deny arm ahead of the default-branch early return (`:86-90`), envelope as `merge_guard.py:180-190`; tests in `TestCommitGuard`.
 - [ ] T5: `skills/cairn-init/SKILL.md`: §0 mode detection + chip; §1 guest branch (exclude write; the five skips); §3 repair recognizes the guest scaffold; profile templates untouched (init writes the line).
 - [ ] T6: `skills/shared/tracking-rules.md`: `## Collaboration mode` section, owner qualifier on the branch bullet (`:225`), file-map PROFILE row and "Toolchain profiles" mention; `cairn/DESIGN.md` GP2 clause.
@@ -65,6 +65,7 @@ A repo the operator does not own can run cairn's plan/implement/review loop with
 - 2026-09-10: /milestone-implement started; branch m184-guest-mode; question gate skipped — the plan gate settled the mode line, exclude file, and deny-arm shape, and the changelog dev heading follows the `## Unreleased` convention from git history.
 - 2026-09-10: T1 done — `cairn_common.collaboration_mode(root)` with five tests in `TestCollaborationMode` (guest, no line, absent file, explicit owner, unknown value returned lowercased for the validator to judge).
 - 2026-09-10: T2 done — minor amendment: the validator reuses `cairn_common.collaboration_mode` through cairn_scripts' existing shim instead of a hand-parsed twin (T2's "share no code" premise was off: `cairn_scripts` already imports `cairn_common`; one regex, no drift); `check_scaffold` guest arm requires `cairn/` (or `cairn`, `/cairn/`, `/cairn`) in `.git/info/exclude` and skips the .gitignore/.Rbuildignore entries; `check_profile` FAILs a mode outside owner|guest quoting the line; 6 tests in `TestScaffoldGuestMode`, 2 in `TestValidateProfile`.
+- 2026-09-10: T3 done — `session_context.routing_section()` reads the template's `## Project tracking` body relative to the hook file; the `## Collaboration mode` part (body + one mode line) is appended after the profile part in guest mode only, inside the MAX_CHARS accounting; 2 tests in `TestSessionContext`.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

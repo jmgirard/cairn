@@ -197,6 +197,50 @@ class TestSessionContext(RepoFixture):
         self.assertIn("Active toolchain profile", out["additionalContext"])
         self.assertIn("`r-package`", out["additionalContext"])
 
+    # --- M184 AC2: guest mode injects the CLAUDE.md routing section itself ---
+
+    def _session(self):
+        return hook_json(run_hook(
+            "session_context.py",
+            self.payload(hook_event_name="SessionStart", source="startup"),
+        ))["additionalContext"]
+
+    @staticmethod
+    def _template_section():
+        path = HOOKS_DIR.parent / "skills" / "shared" / "templates" / "claude-md-section.md"
+        text = path.read_text(encoding="utf-8")
+        lines, keep = [], False
+        for line in text.splitlines():
+            if line.startswith("## "):
+                if keep:
+                    break
+                keep = line.startswith("## Project tracking")
+                continue
+            if keep:
+                lines.append(line)
+        return "\n".join(lines).strip()
+
+    def test_guest_mode_injects_the_template_routing_section(self):
+        (self.root / "cairn" / "PROFILE.md").write_text(
+            "# Toolchain profile: generic\n# Collaboration mode: guest\n\n## verify\n- x\n"
+        )
+        ctx = self._session()
+        self.assertIn("## Collaboration mode", ctx)
+        part = ctx.split("## Collaboration mode", 1)[1].split("\n## ", 1)[0]
+        expected = self._template_section()
+        self.assertTrue(expected, "template section read empty")
+        self.assertIn(expected, part)
+        # the one line naming the mode follows the body
+        tail = part.split(expected, 1)[1].strip()
+        self.assertEqual(len(tail.splitlines()), 1, tail)
+        self.assertIn("guest", tail)
+
+    def test_owner_mode_has_no_collaboration_part(self):
+        (self.root / "cairn" / "PROFILE.md").write_text(
+            "# Toolchain profile: generic\n\n## verify\n- x\n"
+        )
+        self.assertNotIn("## Collaboration mode", self._session())
+
     def test_no_profile_section_when_absent(self):
         # RepoFixture writes no PROFILE.md — a pre-profile repo; the hook
         # no-ops the profile section (AC4) and still injects the ROADMAP.
