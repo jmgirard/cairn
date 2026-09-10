@@ -217,9 +217,11 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
    was; a non-draft PR skips this), no marker, no CI wait, no merge. Then
    stop with the close block: the recap says the fix is in the maintainers'
    hands; the CI line says their CI on the PR is the check that counts and
-   nothing waits on it here; the fenced next command is `/milestone`, whose
-   §2 reports the PR's fresh state when asked (a hotfix has no milestone
-   row to set `blocked`, so the PR itself is the record). Step 7's issue
+   nothing waits on it here; the fenced next command is `/hotfix` with the
+   PR reference, whose step 1 re-derives the PR's state (a hotfix has no
+   milestone row to set `blocked`, so the PR itself is the record;
+   `/milestone` §2 filters `hotfix-*` PRs out of its inbox and reports
+   nothing for it). Step 7's issue
    close is theirs — the `Fixes` keyword closes it at their merge.
 
 7. If the fix revealed deeper work, add a `candidate` row before closing
