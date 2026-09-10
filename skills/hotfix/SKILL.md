@@ -101,8 +101,11 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
 2. **Branch — cut one, or adopt the PR's.** Check `git status` (dirty tree
    with unrelated changes → ask).
    *Authoring a fix:* branch `hotfix-<slug>` from the up-to-date default
-   branch (detect it per the tracking-rules git model; fetch, pull ff-only,
-   push any unpushed local commits).
+   branch (detect it per the tracking-rules git model; fetch from `<base>`,
+   pull ff-only, push any unpushed local commits — in guest mode the fetch
+   is the whole sync, the default branch is never pushed, and the branch is
+   cut from `<base>/<default-branch>`, as `/milestone-implement` step 2
+   states).
    *Adopting a PR:* run `gh pr checkout <N>` — never cut a fresh branch,
    which would orphan work that already exists. The contributor's branch
    name is **exempt** from the `hotfix-<slug>` contract (tracking-rules, git
@@ -137,7 +140,11 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
    under the current development version (no milestone/issue jargon in the
    user-facing text).
    *Authoring a fix:* push; open the PR — `Fixes #N` in the description if a
-   GitHub issue exists.
+   GitHub issue exists. Guest arm (tracking-rules "Collaboration mode"): the
+   push goes to the fork (`git push -u origin hotfix-<slug>`) and the PR is
+   opened against the base repo — `gh pr create --repo <base-repo> --head
+   <fork-owner>:hotfix-<slug>` — with no cairn vocabulary in its title or
+   body; the changelog entry is the branch's only prose.
    *Adopting a PR:* the PR already exists — never open a second one, except
    through the user-gated fallback below. If the
    contributor added an entry, check it against the declared file and the
@@ -202,6 +209,18 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
    in a **separate** step before the `gh pr merge` command — the hook checks
    it before the command runs, so writing it in the same shell line is
    denied.
+   **Guest arm — the handoff** (tracking-rules "Collaboration mode"): cairn
+   never merges in guest mode, so the chip is the same gate with the merge
+   taken out — recommended `Hand PR #N to the maintainers of <base-repo>`,
+   a decline option, no merge option — and on selection the sequence is
+   `gh pr ready <N> --repo <base-repo>` (the PR was opened as a draft when it
+   was; a non-draft PR skips this), no marker, no CI wait, no merge. Then
+   stop with the close block: the recap says the fix is in the maintainers'
+   hands; the CI line says their CI on the PR is the check that counts and
+   nothing waits on it here; the fenced next command is `/milestone`, whose
+   §2 reports the PR's fresh state when asked (a hotfix has no milestone
+   row to set `blocked`, so the PR itself is the record). Step 7's issue
+   close is theirs — the `Fixes` keyword closes it at their merge.
 
 7. If the fix revealed deeper work, add a `candidate` row before closing
    out — sweep first per the search-first candidate-creation rule

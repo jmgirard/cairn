@@ -29,7 +29,10 @@ cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`):
 - pkgdown site present → `pkgdown::check_pkgdown()` passes (catches exports missing from `_pkgdown.yml`).
 - The declared changelog (`## changelog` slot) has an entry for this milestone's user-visible changes (no milestone numbers in user-facing text).
 - New top-level files have `.Rbuildignore` entries (check `check()` NOTEs).
-- Full check at review: `Rscript -e 'devtools::check()'` clean (0 errors, 0 warnings; justify NOTEs).
+- Full check at review: `Rscript -e 'devtools::check()'` clean (0 errors, 0 warnings; justify NOTEs). In guest
+  collaboration mode (tracking-rules "Collaboration mode") the NOTE for the non-standard top-level `cairn` directory
+  is justified by the mode itself — the guest writes no `.Rbuildignore` entry, and the maintainers' CI builds from a
+  clone that never holds `cairn/`; no other NOTE inherits this justification.
 
 ## test-doctrine
 R-mechanical test expectations layered on the universal "What gets a test"
