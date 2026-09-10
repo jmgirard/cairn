@@ -177,9 +177,9 @@ run ingestion first (see `/milestone-brief`).
    `claim audit: <N> claims read, <K> corrected — <files>`, N the claims
    the reader reported, or `claim audit: not owed — <reason>`, the reason
    the first that applies of `internal tier`, `no added lines outside
-   cairn/`; an absent line means the reader did not run. Review confirms
-   this recorded audit rather than being the first claim-versus-code pass
-   (D-136).
+   cairn/`; an absent line means the reader did not run. This is the
+   first read of the branch's added claims against the code by a reader
+   other than their author, before review (D-136).
 
 8. **Blocked?** External blocker → status `blocked` + work-log line naming
    it, stop. Needs Fable-level judgment → close block pointing at

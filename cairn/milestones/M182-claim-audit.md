@@ -1,6 +1,6 @@
 # M182: Claim audit at implement time for user-facing prose; release-walk changelog claim-read
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -51,6 +51,8 @@ A user-facing milestone whose branch adds behavior claims to prose has those cla
 - 2026-09-10: T2 — claim-audit step inserted as `/milestone-implement` step 7, Blocked and Completion renumbered 8 and 9; no other skill or test cites those two numbers; step 4's derived-claims sentence untouched; scripts + hooks suites exit 0.
 - 2026-09-10: T3 — claim-read clause added to `/cairn-release` step 2, keyed to the release-prep commit, skipped with the step on a "none" declaration; scripts + hooks suites exit 0.
 - 2026-09-10: T4 — scripts and hooks suites exit 0; skills/tests hand-run: 661 tests, one red, `test_lesson_graduation.TestFamilyActuallyLeft.test_partial_coverage_was_trimmed_not_deleted`, the pre-existing lesson-graduation red the ROADMAP hygiene line records; README.md's one `three-lens` mention (line 116) still matches the review skill and no `docs/` directory exists.
+- 2026-09-10: claim audit: 12 claims read, 1 corrected — skills/milestone-implement/SKILL.md, skills/cairn-release/SKILL.md (step 7 run on this branch as it now reads: user-facing tier, two skill files added outside `cairn/`; the corrected claim was step 7's closing sentence, which said review confirms the recorded audit while the branch changes nothing in the review skill).
+- 2026-09-10: the corrected claim's one re-read went to a second fresh [O] reader, not the same one — SendMessage is unavailable in this session, so the original reader could not be continued; deviation logged, not silent. The re-read held on placement and returned on the word "first" (step 4's derived-claims rule already has the author read the artifact at writing time); reworded to "the first read … by a reader other than their author"; no further reader spawned, per the stopping rule.
 
 ## Decisions
 
