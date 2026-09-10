@@ -424,8 +424,8 @@ re-enters here, at the step the record shows is next:
    written to disk, never committed.
 
 8. **On approval — and only then:** push the branch and open the PR —
-   `git push -u origin <branch>`, then `gh pr create` with no `--draft`
-   (skipped when the header already names an open PR: the branch is pushed
+   `git push -u origin <branch>`, then `gh pr create` opening it ready
+   for review, never as a draft (skipped when the header already names an open PR: the branch is pushed
    and the existing PR stands). The PR body ends with one `Closes #N` line
    per `closes` entry and one `Refs #N` line per `partial` entry of the
    milestone's `Resolves:` slot — the closing keyword is what makes GitHub
@@ -465,8 +465,9 @@ re-enters here, at the step the record shows is next:
    wait, and the merge: only on the handoff selection, push the branch to
    the fork (`git push -u origin <slug>`, `--force-with-lease` after a
    rebase) and open the PR against the base repo from the fork's branch —
-   `gh pr create --repo <base-repo> --head <fork-owner>:<slug>`, no
-   `--draft`, no `gh pr ready` — its title and body carrying no cairn
+   `gh pr create --repo <base-repo> --head <fork-owner>:<slug>`, opened
+   ready for their review (never a draft, so no later ready-marking step)
+   — its title and body carrying no cairn
    vocabulary (the `Closes`/`Refs` lines above are GitHub's, not cairn's,
    and stay); record the PR URL in the header on disk, never committed.
    Then set status `blocked` in ROADMAP and the header

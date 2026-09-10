@@ -84,10 +84,11 @@ a bare PR number resolves against the fork.
    - *Owed items land through the PR path only.* The regression test and
      the changelog entry land on the `hotfix-<slug>` branch (cut here when
      the regression-test move did not) and reach the default branch only
-     through step 5's authoring variant — push, open a new PR (the merged
-     PR's head branch is gone after `--delete-branch`, and step 5's
-     never-a-second-PR clause is about that merged PR, not this follow-up)
-     — and step 6's approval chip, never by a commit to the default branch.
+     through step 6's authoring variant — the approval chip, then the push
+     and a new PR opened after that approval (the merged PR's head branch
+     is gone after `--delete-branch`, and step 5's never-a-second-PR clause
+     is about that merged PR, not this follow-up) — never by a commit to
+     the default branch.
      Step 6's chip for the follow-up PR also carries the merged PR's
      `Fixes #N` close, so the re-entry poses no separate issue-close chip;
      step 7 then runs for the merged PR.
@@ -145,14 +146,10 @@ a bare PR number resolves against the fork.
    `NEWS.md` for r-package, else the repo's `CHANGELOG.md` / convention)
    under the current development version (no milestone/issue jargon in the
    user-facing text).
-   *Authoring a fix:* push; open the PR — `Fixes #N` in the description if a
-   GitHub issue exists. Guest arm (tracking-rules "Collaboration mode"): the
-   push goes to the fork (`git push -u origin hotfix-<slug>`) and the PR is
-   opened against the base repo as a draft — `gh pr create --repo
-   <base-repo> --head <fork-owner>:hotfix-<slug> --draft`, so the step-6
-   handoff's `gh pr ready` is a real GitHub action — with no cairn
-   vocabulary in its title or body; the changelog entry is the branch's
-   only prose.
+   *Authoring a fix:* nothing is pushed and no PR is opened here — step 6
+   pushes and opens the PR after the approval chip, so a
+   `pull_request`-triggered suite first runs on the head that merges
+   (D-138).
    *Adopting a PR:* the PR already exists — never open a second one, except
    through the user-gated fallback below. If the
    contributor added an entry, check it against the declared file and the
@@ -175,23 +172,33 @@ a bare PR number resolves against the fork.
    is still missing — that is the one gate this path exists to enforce.
 
 6. **Approval gate:** present the diff, the regression-test evidence, and
-   the changelog line (when the `changelog` slot declares a file); then
-   run the PR-conversation read `/milestone-review` step 7 states — the
+   the changelog line (when the `changelog` slot declares a file); then,
+   only when a PR already exists — an adopted PR, or the PR-reference
+   re-entry of an authored fix — run the PR-conversation read
+   `/milestone-review` step 7 states — the
    same three paginated reads, the any-author presentation with its four
    triage options, and the changes-requested blocking rule with its
-   override option — for an authored and an adopted PR alike, an adopted
+   override option — an adopted
    PR's contributor comments in scope; the hotfix difference is that a
    hotfix keeps no milestone file, so each disposition, and a selected
    override, is stated in the chat presentation beside the item it
    answers, never logged to a Review section or a work log — a hotfix
-   keeps neither. Then put the
+   keeps neither. An authored fix's PR is opened below, after the chip,
+   and is merged with no read — the read runs at most once per hotfix,
+   here. Then put the
    merge authorization to the user as an
    `AskUserQuestion` chip (recommended = merge, e.g. `Merge PR #N to
-   <default-branch>` — address-first instead, when the blocking rule
+   <default-branch>` for an existing PR, `Merge hotfix-<slug> into
+   <default-branch>` for an authored fix not yet opened — address-first
+   instead, when the blocking rule
    above fires — with a decline option) — never a prose yes/no, the same gate discipline
-   as `/milestone-review`. A PR body carrying a `Fixes #N` line adds to the
+   as `/milestone-review`. A `Fixes #N` line, in the PR body or owed to the
+   one about to be opened, adds to the
    chip's question text the post-merge close-if-open of that issue it
-   authorizes (hotfix step 7). Merge (`gh pr merge <N> --squash --delete-branch`
+   authorizes (hotfix step 7). On approval of an authored fix, push and
+   open the PR first — `git push -u origin hotfix-<slug>`, then `gh pr
+   create` opening it ready for review, never as a draft, `Fixes #N` in
+   the body when a GitHub issue exists. Merge (`gh pr merge <N> --squash --delete-branch`
    — name the PR number explicitly; a bare `gh pr merge` is denied because the
    approval cannot be checked against it; **drop `--delete-branch` on a
    fork PR** — that branch lives in the contributor's repo and is not ours
@@ -219,10 +226,14 @@ a bare PR number resolves against the fork.
    denied.
    **Guest arm — the handoff** (tracking-rules "Collaboration mode"): cairn
    never merges in guest mode, so the chip is the same gate with the merge
-   taken out — recommended `Hand PR #N to the maintainers of <base-repo>`,
-   a decline option, no merge option — and on selection the sequence is
-   `gh pr ready <N> --repo <base-repo>` (step 5 opened the PR as a draft),
-   no marker, no CI wait, no merge. Then
+   taken out — recommended `Hand hotfix-<slug> to the maintainers of
+   <base-repo>`, a decline option, no merge option — and on selection the
+   sequence is the push to the fork (`git push -u origin hotfix-<slug>`)
+   and the PR opened against the base repo — `gh pr create --repo
+   <base-repo> --head <fork-owner>:hotfix-<slug>`, opened ready for their
+   review (never a draft, so no later ready-marking step), no cairn
+   vocabulary in its title or body (the changelog entry is the branch's
+   only prose) — then no marker, no CI wait, no merge. Then
    stop with the close block: the recap says the fix is in the maintainers'
    hands; the CI line says their CI on the PR is the check that counts and
    nothing waits on it here; the fenced next command is `/hotfix` with the
