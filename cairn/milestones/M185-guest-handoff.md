@@ -50,7 +50,7 @@ In guest mode the branch is cut from and the PR targets the upstream repo, and r
 - [x] T4: `/milestone-review` guest arm, steps 9–10: on-disk hygiene (`:425-503`) and the close block (`:505-526`); `--repo <base>` on the `gh pr checks`/`view` reads; the transition line's `blocked → done` guest clause (`tracking-rules.md:171-172`).
 - [x] T5: `/milestone` §2 blocked-with-PR routes (`skills/milestone/SKILL.md:133-141`).
 - [x] T6: `/milestone-implement` step 2 base-remote cut and rebase sync (`:38-49`); `/hotfix` merge step handoff (`:179-204`); `r-package.md` consistency-gate NOTE clause (`:31-32`).
-- [ ] T7: CHANGELOG entry; run both suites from the repo root, exit codes checked.
+- [x] T7: CHANGELOG entry; run both suites from the repo root, exit codes checked.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
@@ -66,6 +66,7 @@ In guest mode the branch is cut from and the PR targets the upstream repo, and r
 - 2026-09-10: T4 done — step 9 guest arm: fetch `<base>`, ff-only merge of `<base>/<default-branch>`, every write on disk, no docs-only commit or push, close-if-open skipped (the `Closes` keyword closes at the maintainers' merge), `partial` comments posted with `--repo`; step 10 reads "after its on-disk pass"; `--repo <base-repo>` on every `gh pr` read is stated once at session start (step 8's owner-mode `gh pr checks` wait is replaced whole by the guest sequence); rulebook transition line gains `blocked → done` for a merged guest handoff; the "Collaboration mode" bullet that pointed at M185 is replaced by two bullets stating the base remote and the never-merge handoff.
 - 2026-09-10: T5 done — `/milestone` §2 gains the blocked-with-PR bullet: `gh pr view <N> --repo <base-repo> --json state,reviewDecision`; MERGED → `/milestone-review` hygiene; CLOSED unmerged → chip (dropped, or back to `in-progress`); OPEN + `CHANGES_REQUESTED` → `/milestone-implement`; OPEN otherwise → fresh state reported, stays `blocked`; the audit writes nothing to GitHub.
 - 2026-09-10: T6 done — `/milestone-implement` step 2's part landed in T2; `/hotfix` step 2 cuts from `<base>/<default-branch>` (guest: fetch-only sync), step 5 pushes to the fork and opens the PR with `--repo <base-repo> --head <fork-owner>:hotfix-<slug>`, step 6's guest handoff chip hands off or declines with no merge option, runs `gh pr ready` on selection, and closes with the CI line and `/milestone` (a hotfix has no row to set `blocked`; the PR is the record); `r-package.md` consistency-gate justifies the `cairn` directory NOTE by the mode and no other NOTE.
+- 2026-09-10: T7 done — CHANGELOG's guest-mode entry extended with the base remote, the fork push and cross-repo PR, the handoff gate, the `/milestone` routes, and the r-package NOTE clause (its closing pointer sentence replaced); from the repo root `hooks/tests` 146 green exit 0, `scripts/tests` 391 green exit 0; no skip added.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
