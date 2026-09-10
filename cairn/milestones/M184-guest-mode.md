@@ -54,7 +54,7 @@ A repo the operator does not own can run cairn's plan/implement/review loop with
 - [x] T6: `skills/shared/tracking-rules.md`: `## Collaboration mode` section, owner qualifier on the branch bullet (`:225`), file-map PROFILE row and "Toolchain profiles" mention; `cairn/DESIGN.md` GP2 clause.
 - [x] T7: guest arms in `milestone-plan` step 6, `milestone-implement` step 4 (`:70-72`), `milestone` §2 (`:127`, `:130-131`); session-start stop clauses in `cairn-release` and `cairn-triage`.
 - [x] T8: README guest subsection; run AC6's grep and disposition each hit (amend or work-log exemption).
-- [ ] T9: CHANGELOG entry; run both suites from the repo root, exit codes checked.
+- [x] T9: CHANGELOG entry; run both suites from the repo root, exit codes checked.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
@@ -71,6 +71,7 @@ A repo the operator does not own can run cairn's plan/implement/review loop with
 - 2026-09-10: T6 done — rulebook `## Collaboration mode` section (six bullets: never-committed cairn/, no default-branch commit or push with tracking written to disk same turn, no cairn vocabulary and the `<slug>` branch, release/triage stop, third-party PR unsupported, merge/remotes deferred to M185); owner qualifier on the branch bullet; PROFILE file-map row and "Toolchain profiles" name the mode line; enforcement-boundary sentence names guest mode; DESIGN GP2 clause and the Known-issues collaboration-model sentence name guest mode with D-137.
 - 2026-09-10: T7 done — guest arms in `/milestone-plan` step 6 (no plan commit or push; files written same turn), `/milestone-implement` step 4 (code-only checkpoint; tracking on disk; `<slug>` branch, no cairn vocabulary in messages), `/milestone` §2 (orphan check skipped and reported; CLAUDE.md check reads the exclude line instead); session-start stop clauses in `/cairn-release` and `/cairn-triage` with fixed status-line text.
 - 2026-09-10: T8 done — README "Contributing to a repo you don't own (guest mode)" subsection under "Working with collaborators" (exclude file, no merge by cairn, hygiene on disk, no release walk or triage); AC6 grep re-run: 3 hits (DESIGN.md:162, README.md:268, tracking-rules.md:256), each names guest mode in the same sentence; no exemptions.
+- 2026-09-10: T9 done — CHANGELOG `## Unreleased` → New entry for guest mode; both suites from the repo root: scripts 387 tests OK exit 0, hooks 138 tests OK exit 0, no skips; `cairn_validate` all checks passed.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
