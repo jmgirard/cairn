@@ -36,7 +36,7 @@ A user-facing milestone whose branch adds behavior claims to prose has those cla
 ## Tasks
 
 - [x] T1: Append the D-entry (AC3) to `cairn/DECISIONS.md` and add the part-(b) candidate row to `cairn/ROADMAP.md` if the plan commit did not; the entry lands first so T2 and T3 are inside the door.
-- [ ] T2: Insert the claim-audit step in `skills/milestone-implement/SKILL.md` after step 6 (plan amendments) and before completion (currently step 8, `skills/milestone-implement/SKILL.md:169`), renumbering the steps that follow; keep step 4's derived-claims pointer sentence byte-identical (pinned by `skills/tests/test_derived_claims.py:72`).
+- [x] T2: Insert the claim-audit step in `skills/milestone-implement/SKILL.md` after step 6 (plan amendments) and before completion (currently step 8, `skills/milestone-implement/SKILL.md:169`), renumbering the steps that follow; keep step 4's derived-claims pointer sentence byte-identical (pinned by `skills/tests/test_derived_claims.py:72`).
 - [ ] T3: Add the claim-read clause to `skills/cairn-release/SKILL.md` step 2 (`skills/cairn-release/SKILL.md:54`).
 - [ ] T4: Run both gating suites; hand-run `skills/tests` and compare its reds to the ROADMAP hygiene line; `git grep -n "three-lens\|derived-claims" README.md docs` to confirm no restated doctrine went stale (M112 lesson).
 
@@ -48,6 +48,7 @@ A user-facing milestone whose branch adds behavior claims to prose has those cla
 - 2026-09-10: plan gate chose a fresh-context [O] reader for the claim audit over the author's own re-read because the author's read is the instrument measured to fail (M114; tidymedia M120 passed its criteria twice under it); falsified by a claim-audit pass whose reader clears a claim review then returns on.
 - 2026-09-10: plan gate chose a candidate row for the diff-scoped second review over shipping it now because (a) removes most of its need and its safety is unmeasured; falsified by a milestone with a recorded claim-audit pass still taking a return on branch-added prose claims.
 - 2026-09-10: T1 — D-136 appended (door passed on the retained trigger, two rules named, part (b) left on its candidate row, a falsifier per rule); the part-(b) candidate row already landed with the plan commit, so ROADMAP was not touched.
+- 2026-09-10: T2 — claim-audit step inserted as `/milestone-implement` step 7, Blocked and Completion renumbered 8 and 9; no other skill or test cites those two numbers; step 4's derived-claims sentence untouched; scripts + hooks suites exit 0.
 
 ## Decisions
 

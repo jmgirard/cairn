@@ -162,11 +162,30 @@ run ingestion first (see `/milestone-brief`).
    Never silently deliver something other than what the plan promised —
    review checks criteria as written.
 
-7. **Blocked?** External blocker → status `blocked` + work-log line naming
+7. **Claim audit** (user-facing prose read against the code before
+   review). Owed when the milestone file's `Surface tier:` slot reads
+   `user-facing` and `git diff <default-branch>...HEAD -- . ':!cairn/'`
+   adds lines; otherwise not owed. Spawn a fresh-context **[O]** reader that
+   authored none of those lines; it reads every added line of that diff,
+   reports each claim it finds there about what an artifact does, and
+   reads each against that artifact in the same session — a spawn refused
+   under a spawn-restricting harness instruction stops the step with a
+   close block posing it (tracking-rules' freshness-spawns clause), never
+   an unlogged author-inline run. Stopping rule: one pass; a claim the
+   pass corrects is re-read once by the same reader; no second pass. The
+   step's work-log line takes the fixed shape
+   `claim audit: <N> claims read, <K> corrected — <files>`, N the claims
+   the reader reported, or `claim audit: not owed — <reason>`, the reason
+   the first that applies of `internal tier`, `no added lines outside
+   cairn/`; an absent line means the reader did not run. Review confirms
+   this recorded audit rather than being the first claim-versus-code pass
+   (D-136).
+
+8. **Blocked?** External blocker → status `blocked` + work-log line naming
    it, stop. Needs Fable-level judgment → close block pointing at
    `/milestone-brief`, stop.
 
-8. **Completion.** When all tasks are checked and the active profile's
+9. **Completion.** When all tasks are checked and the active profile's
    `verify` slot passes clean (for a toolchain whose profile names a fuller
    pre-review check, that check), set status `review`, checkpoint-commit, then
    stop with the **close block** (tracking-rules "Question gates and phase
