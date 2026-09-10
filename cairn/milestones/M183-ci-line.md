@@ -1,0 +1,95 @@
+# M183: Close blocks say whether the next command waits on CI
+
+- **Status:** planned
+- **Priority:** high
+- **Depends on:** —
+- **Driving RR:** —
+- **Principles touched:** —
+- **Resolves:** —
+- **Surface tier:** user-facing — skill prose every plugin user reads at each phase end
+- **Branch/PR:** —
+
+## Goal
+
+Every phase close on a live branch or open PR tells the user, in one plain
+sentence, whether the fenced next command waits on CI itself and what they
+do meanwhile, so "wait for green or go straight to review?" never needs
+guessing.
+
+## Scope
+
+**In:** a mandated **CI line** in the tracking-rules close-block shape for
+closes whose unit of work has a branch or an open PR; its implement-end
+wording in `/milestone-implement` step 9 (nothing to wait for — no PR yet;
+review pushes, opens the PR, and waits on CI itself at the merge step); its
+timeout-stop wording at the three sites D-130 names (`/milestone-review`
+step 8, `/hotfix` step 6, `/cairn-release` step 3): the current state as read
+from the wait's own source, rerunning the named command re-checks and waits
+again, waiting for green first is optional.
+
+**Out:** a CI line on merged closes (`/milestone-review` step 10, `/hotfix`
+step 7) — the PR is merged, nothing is in flight; declined at the plan gate.
+A prose pin for the line in `skills/tests` — declined at the plan gate
+(D-128's precedent: the timeout stop's next-command clause is unpinned).
+Any change to the wait mechanism itself — D-128 stands.
+
+## Acceptance criteria
+
+- [ ] AC1: The tracking-rules close-block paragraph ("Question gates and
+      phase closes") lists a **CI line** as a required element of a close
+      block whose unit of work has a branch or an open PR: one plain-language
+      sentence stating whether the fenced next command waits on CI itself and
+      what the user does meanwhile — a bare check state ("CI: running") never
+      satisfies it. The sites restating their own line are AC2–AC3's four;
+      every other such close inherits the rule by citation.
+- [ ] AC2: `/milestone-implement` step 9's close-block spec states the
+      implement-end CI line: nothing to wait for now — no PR exists yet;
+      `/milestone-review` pushes the branch, opens the PR, and waits on CI
+      itself at the merge step.
+- [ ] AC3: Each of the three timeout-stop sites — `/milestone-review` step 8,
+      `/hotfix` step 6, `/cairn-release` step 3 — states the timeout CI line:
+      the current check state as read from the wait's own source (`gh pr
+      checks` for a PR wait; the moved task's fresh output for a local check),
+      then that rerunning the named command re-derives that state and waits
+      again, so waiting for green first is optional and never required.
+- [ ] AC4: The `verify` slot is clean (`python3 -m unittest` over
+      `scripts/tests` and `hooks/tests`), and the hand-run `skills/tests`
+      suite shows no red beyond the pre-existing `test_lesson_graduation`
+      failure (`'trimmed M98'`).
+
+## Coverage
+
+- AC1 → T1
+- AC2 → T2
+- AC3 → T3
+- AC4 → T4
+
+## Tasks
+
+- [ ] T1: tracking-rules "Question gates and phase closes", close-block
+      paragraph (`skills/shared/tracking-rules.md:299-303`): add the CI line
+      element with its domain clause and the bare-state exclusion; keep the
+      status line's "check results, where they exist" — the CI line is what
+      disposes of them.
+- [ ] T2: `/milestone-implement` step 9 (`SKILL.md:187-199`): add the
+      implement-end CI line wording to the close-block spec.
+- [ ] T3: the three timeout stops — `/milestone-review` step 8
+      (`SKILL.md:405-416`), `/hotfix` step 6 (`SKILL.md:184-191`),
+      `/cairn-release` step 3 (`SKILL.md:74-81`): add the timeout CI line
+      wording, each naming its own resume command and its wait's own state
+      source.
+- [ ] T4: run both gating suites from the repo root with explicit exit codes;
+      hand-run `skills/tests`; confirm the only red is the pre-existing
+      lesson-graduation failure (D-109).
+
+## Work log
+
+- 2026-09-10: created by /milestone-plan.
+- 2026-09-10: criteria audit (full mode, fresh [O] reader): AC1 bounded-promise finding repaired (domain scoped to the rulebook paragraph plus four restating sites); AC3 source finding repaired (`/cairn-release` waits on local checks, not `gh pr checks`); AC4 pre-existing red named concretely; no existing pin quotes the changed sentences.
+- 2026-09-10: plan gate chose a fact-stating timeout line ("rerun whenever; it re-checks and waits again; green-first optional") over "wait for green, then rerun" because the latter costs a manual GitHub check even when CI lands a minute later; falsified by repeated timeout stops on the same PR in the record after the line ships.
+- 2026-09-10: plan gate chose branch-or-open-PR closes only over every close block (merged ones too) because a merged close has nothing in flight; falsified by a user report of wait-uncertainty at a merged close.
+- 2026-09-10: plan gate chose no prose pin over a `skills/tests` guard because D-128 leaves the sibling next-command clause unpinned and the checker is internal; falsified by the CI line drifting out of a site in a later milestone's diff.
+
+## Decisions
+
+## Review
