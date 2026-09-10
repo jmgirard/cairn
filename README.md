@@ -293,15 +293,19 @@ actually reach.
   becomes a triage item. `/milestone-plan`'s collision check also reads
   both open inboxes and offers a disposition only for an item overlapping
   the scope being planned.
-  Both approval gates read the PR's own conversation — review threads
-  and comments, human or bot — before the merge chip, so nothing is
-  merged past unread.
+  The pull request itself is opened only after you approve at the merge
+  chip, so a `pull_request`-triggered suite first runs on the head that
+  merges. Where a PR already exists — a return from an earlier review, an
+  adopted hotfix PR — both approval gates read its conversation — review
+  threads and comments, human or bot — before the merge chip, so nothing
+  is merged past unread.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
   plan gate offers one option to post `Queued as M<NNN>: <title>` on each
   slotted issue — posted only if you select it, never by default. The
-  review's draft PR body ends with `Closes #N` (or `Refs #N` for an issue
-  only partly resolved), so GitHub closes the issue at merge. After the
+  PR the review opens after your approval has a body ending with
+  `Closes #N` (or `Refs #N` for an issue only partly resolved), so GitHub
+  closes the issue at merge. After the
   merge the review reads the state of each issue slotted `closes` and closes
   one still open with a comment naming the merged PR; `/milestone`'s audit
   reports an issue still open after its milestone is done (among the

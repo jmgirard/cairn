@@ -2,6 +2,27 @@
 
 ## Unreleased
 
+### Changes that affect existing repos
+
+- **The pull request opens after you approve the merge, not before the
+  review.** `/milestone-review` step 2 no longer pushes the branch or
+  opens a draft PR; step 8 pushes and runs `gh pr create` (ready, never a
+  draft, the `Closes`/`Refs` lines in its body) after the step-7 approval
+  and before the merge marker and CI wait, so a `pull_request`-triggered
+  suite first runs on the head that merges rather than on every
+  pre-approval push. The step-7 chip and its `step-7 approval:` work-log
+  line name the branch and default branch (`Merge <branch> into
+  <default-branch>`), and the resume routes read the line by its prefix.
+  `/hotfix` makes the same move for an authored fix: step 5 pushes
+  nothing, step 6 pushes and opens the PR (`Fixes #N` when an issue
+  exists) on approval; an adopted PR's path is unchanged. In guest mode
+  the handoff is now the push plus the `gh pr create` against the base
+  repo, with no ready-marking step. The PR-conversation read runs only
+  where a PR already exists (a return from an earlier review, an adopted
+  hotfix PR); a PR opened fresh at the gate is merged with no read. The
+  cost is a serial CI wait at the gate; the rulebook's "A branch push
+  starts CI" bullet states the rule and names D-138.
+
 ### New
 
 - **Guest collaboration mode: run cairn in a repo you don't own, with
