@@ -1,6 +1,6 @@
 # M185: Guest collaboration mode — fork-aware remotes and review handoff
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** high   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M184   <!-- owner: plan · create/amend-via-gate -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
@@ -67,6 +67,8 @@ In guest mode the branch is cut from and the PR targets the upstream repo, and r
 - 2026-09-10: T5 done — `/milestone` §2 gains the blocked-with-PR bullet: `gh pr view <N> --repo <base-repo> --json state,reviewDecision`; MERGED → `/milestone-review` hygiene; CLOSED unmerged → chip (dropped, or back to `in-progress`); OPEN + `CHANGES_REQUESTED` → `/milestone-implement`; OPEN otherwise → fresh state reported, stays `blocked`; the audit writes nothing to GitHub.
 - 2026-09-10: T6 done — `/milestone-implement` step 2's part landed in T2; `/hotfix` step 2 cuts from `<base>/<default-branch>` (guest: fetch-only sync), step 5 pushes to the fork and opens the PR with `--repo <base-repo> --head <fork-owner>:hotfix-<slug>`, step 6's guest handoff chip hands off or declines with no merge option, runs `gh pr ready` on selection, and closes with the CI line and `/milestone` (a hotfix has no row to set `blocked`; the PR is the record); `r-package.md` consistency-gate justifies the `cairn` directory NOTE by the mode and no other NOTE.
 - 2026-09-10: T7 done — CHANGELOG's guest-mode entry extended with the base remote, the fork push and cross-repo PR, the handoff gate, the `/milestone` routes, and the r-package NOTE clause (its closing pointer sentence replaced); from the repo root `hooks/tests` 146 green exit 0, `scripts/tests` 391 green exit 0; no skip added.
+- 2026-09-10: claim audit: 31 claims read, 3 corrected — CHANGELOG.md (draft applies to review's PR only; a hotfix has no row to set `blocked`), skills/hotfix/SKILL.md (handoff close resumes via `/hotfix <PR>`, not `/milestone`, whose inbox filters `hotfix-*` PRs). Deviation: the session's harness exposes no tool to continue the first reader, so the once re-read of the three corrected claims ran in a second fresh [O] reader scoped to those claims; it returned nothing.
+- 2026-09-10: all tasks checked; status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
