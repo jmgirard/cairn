@@ -25,7 +25,13 @@ hygiene (session start implicit).
 
 Read, in order: `cairn/ROADMAP.md`, the target milestone file,
 `cairn/DECISIONS.md`. Status must be `review` (or the user explicitly
-overrides — log the override).
+overrides — log the override). **Guest arm** (tracking-rules
+"Collaboration mode"): `blocked` is also accepted when the header names a
+PR — the milestone was handed to the maintainers at step 8, and
+`/milestone` §2 routes a merged one back here for hygiene; every `gh pr`
+read in this skill then carries `--repo <base-repo>` (the rulebook's slug
+recipe), and every docs-only commit named below is an on-disk write
+instead, nothing under `cairn/` ever committed.
 
 **Resume routing (M172).** When the target milestone's `Branch/PR` header
 carries a PR URL, read that PR's state before step 1 — `gh pr view <N>
@@ -67,14 +73,22 @@ re-enters here, at the step the record shows is next:
 ## Workflow
 
 1. **Sync with the default branch first** — detect it (tracking-rules git
-   model) and read it as its origin ref: `git fetch` before comparing, and
-   push the default branch if it has unpushed local commits. If it has
-   moved since the branch was cut, merge it into the branch and re-run
-   tests before gathering any evidence — evidence from a stale branch is
-   worthless and the squash-merge would conflict anyway.
+   model) and read it as its `<base>` ref: `git fetch <base>` before
+   comparing, and push the default branch if it has unpushed local commits.
+   If it has moved since the branch was cut, merge it into the branch and
+   re-run tests before gathering any evidence — evidence from a stale
+   branch is worthless and the squash-merge would conflict anyway. Guest
+   arm: the fetch is the whole sync — the default branch is never pushed —
+   and a moved default branch is taken by `git rebase
+   <base>/<default-branch>`, as `/milestone-implement` step 2 states.
 
 2. Push the branch; open a **draft PR** (`gh pr create --draft`) so CI runs
-   in the background while the review proceeds. The PR body ends with one
+   in the background while the review proceeds. Guest arm: the push goes to
+   the fork (`git push -u origin <slug>`, `--force-with-lease` after a
+   rebase) and the PR is opened against the base repo from the fork's
+   branch — `gh pr create --repo <base-repo> --head <fork-owner>:<slug>
+   --draft` — its title and body carrying no cairn vocabulary (the
+   `Closes`/`Refs` lines below are GitHub's, not cairn's, and stay). The PR body ends with one
    `Closes #N` line per `closes` entry and one `Refs #N` line per `partial`
    entry of the milestone's `Resolves:` slot — the closing keyword is what
    makes GitHub close the issue at merge; a slot of `—` adds no lines.
@@ -392,6 +406,19 @@ re-enters here, at the step the record shows is next:
    line the Session-start resume route reads — committed and pushed on the
    branch before step 8's marker write, so the squash carries it.
 
+   **Guest arm — the handoff gate.** cairn never merges in guest mode
+   (tracking-rules "Collaboration mode"), so the chip keeps the merge
+   gate's shape with the merge taken out: the same outcome-first
+   presentation and PR-conversation read (`--repo <base-repo>` on its
+   reads), then one `AskUserQuestion` chip whose recommended option hands
+   the PR to the maintainers (e.g. `Hand PR #N to the maintainers of
+   <base-repo>` — marks it ready for their review; the milestone waits on
+   them), a decline option present, and **no merge option** — the blocking
+   rule above moves the recommendation to address-first as in owner mode.
+   Decline → the owner-mode decline exit. Selecting the handoff appends the
+   work-log line `step-7 approval: PR #<N> approved for handoff` (the same
+   prefix the resume route reads), written to disk, never committed.
+
 8. **On approval — and only then:** record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
    `M<NNN> approved YYYY-MM-DD for PR #<N>` — the marker names the PR it
@@ -422,10 +449,33 @@ re-enters here, at the step the record shows is next:
    name the PR number explicitly; a bare `gh pr merge` is denied by the guard
    because the approval cannot be checked against it.
 
+   **Guest arm — the handoff sequence**, in place of the marker, the CI
+   wait, and the merge: only on the handoff selection, run `gh pr ready <N>
+   --repo <base-repo>`; set status `blocked` in ROADMAP and the header
+   mirror; append the work-log line `blocked: PR #<N> awaits the
+   maintainers of <base-repo>` — the blocker the status vocabulary requires
+   named; nothing is committed. Then stop with the close block
+   (tracking-rules "Question gates and phase closes"): the recap says the
+   PR is in the maintainers' hands; the status table names `blocked`, the
+   PR, and the last local suite results; the CI line says the maintainers'
+   CI on the PR is the check that counts and nothing waits on it here — the
+   session never waits on a guest PR's checks; the fenced next command is
+   `/milestone`, labeled as the command that re-reads the PR's state (its
+   §2 routes MERGED to this skill's hygiene, CLOSED to a chip,
+   `CHANGES_REQUESTED` to `/milestone-implement`); and the safety line. A
+   merge the maintainers make is reconciled by that route — steps 9–10
+   below run then, on disk.
+
 9. **Post-merge hygiene pass on the default branch:** check it out and pull
-   first — after a squash-merge, the local default branch is behind origin and
-   any leftover local
-   commits mean divergence to resolve before committing. Then write the
+   first — after a squash-merge, the local default branch is behind `<base>`
+   and any leftover local
+   commits mean divergence to resolve before committing. Guest arm: `git
+   fetch <base>`, check the default branch out, and `git merge --ff-only
+   <base>/<default-branch>`; every write below lands on disk under
+   `cairn/`, the docs-only commit and push at the end of this step do not
+   exist, and the issue writes are the maintainers' — the `Closes` keyword
+   closes the issue at their merge, so the close-if-open is skipped and only
+   the `partial` comments are posted (`--repo <base-repo>`). Then write the
    milestone's archive summary **from**
    `${CLAUDE_PLUGIN_ROOT}/skills/shared/templates/archive-summary.md` — a
    comment-free skeleton, so nothing scaffolding-shaped can leak into a
@@ -488,8 +538,12 @@ re-enters here, at the step the record shows is next:
    the completed hygiene edits, before the docs-only commit — it must pass,
    and whether its `release window` advisory fired is the signal step 10's
    displacement clause reads. Docs-only commit:
-   `review M<NNN>: done`; push.
-   **Confirm the issue closes:** after the merge, for each `closes` entry of
+   `review M<NNN>: done`; push (owner mode; the guest arm above leaves the
+   pass on disk — status `done` is the `blocked → done` transition the
+   rulebook admits for a handed-off PR the maintainers merged).
+   **Confirm the issue closes** (owner mode; the guest arm above skips the
+   close-if-open and posts only the `partial` comments, `--repo
+   <base-repo>` on each): after the merge, for each `closes` entry of
    the `Resolves:` slot read the issue's state with
    `gh issue view <N> --json state`; one still open is closed with
    `gh issue close <N> --comment` carrying a one-line comment naming the
@@ -506,7 +560,7 @@ re-enters here, at the step the record shows is next:
     gates and phase closes" — the shape every phase now shares, generalized
     from what was once review's sole exception.) M<NNN> is archived and all
     state is on disk, so the natural next step is a fresh context: after the
-    step-9 hygiene commit lands, run
+    step-9 hygiene commit lands (guest arm: after its on-disk pass), run
     `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_next.py"` and take the
     next action from its recommendation. The recap leads with what shipped,
     the status line names the merge and archive state, and the fenced

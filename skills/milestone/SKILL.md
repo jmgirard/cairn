@@ -144,8 +144,24 @@ The script deliberately does not judge these — do them yourself and report:
   `/milestone-review M<NNN>`, whose session start re-enters at the step the
   record shows is next — hygiene when the review completed before the
   merge, post-hoc verification otherwise (M172).
+- A milestone at `blocked` whose header names a PR — a guest-mode handoff
+  (tracking-rules "Collaboration mode") — is routed by the PR's fresh state,
+  read with `gh pr view <N> --repo <base-repo> --json state,reviewDecision`
+  (the rulebook's slug recipe): `MERGED` → post-merge hygiene owed, route to
+  `/milestone-review M<NNN>` (its on-disk pass sets `done`); `CLOSED`
+  unmerged → a chip: mark the milestone `dropped` with the closure as its
+  reason, or set it back to `in-progress` to rework and re-open; `OPEN` with
+  `reviewDecision` `CHANGES_REQUESTED` → route to `/milestone-implement
+  M<NNN>` (the maintainers' requests become tasks; the branch is rebased on
+  `<base>` and re-pushed to the fork); `OPEN` otherwise → report the fresh
+  state, the review decision, and the unresolved-thread count, and leave the
+  milestone `blocked` — waiting on the maintainers is what the status says.
+  The audit writes nothing to GitHub.
 - **Untriaged inboxes:** open GitHub issues and external PRs carrying no
-  candidate row or hotfix disposition yet. Enumerate both inboxes —
+  candidate row or hotfix disposition yet. Guest mode (tracking-rules
+  "Collaboration mode") skips this bullet: the inboxes are the maintainers'
+  intake, not the guest's, and the fork's own are not the repo's. Otherwise
+  enumerate both inboxes —
   `gh issue list --state open --json number,title,url` for issues,
   `gh pr list --state open --json number,title,url,author` for PRs — then
   drop this session's own work from the PR list, which is what the `author`
