@@ -1850,6 +1850,98 @@ class TestCommitGuard(RepoFixture):
         self.assertEqual(proc.stdout.strip(), "")
 
 
+class TestCommitGuardGuestMode(RepoFixture):
+    """M184 AC3: in guest collaboration mode the guard DENIES any commit
+    carrying a cairn/ path, on every branch (the one hard lever keeping a
+    guest's tracking out of a repo they do not own); non-cairn commits keep
+    the owner-mode behavior, with the nudge naming the guest branch shape."""
+
+    OWNER = "# Toolchain profile: generic\n\n## verify\n- x\n"
+    GUEST = "# Toolchain profile: generic\n# Collaboration mode: guest\n\n## verify\n- x\n"
+
+    def setUp(self):
+        super().setUp()
+        # PROFILE.md is committed so a later `-am` probe's modified-tracked
+        # set is exactly the file each probe modifies.
+        (self.root / "cairn" / "PROFILE.md").write_text(self.GUEST)
+        self.git("add", "cairn/PROFILE.md")
+        self.git("commit", "-q", "-m", "profile")
+
+    def commit_payload(self, command):
+        return self.payload(
+            hook_event_name="PreToolUse", tool_name="Bash",
+            tool_input={"command": command},
+        )
+
+    def hook(self, command):
+        proc = run_hook("commit_guard.py", self.commit_payload(command))
+        self.assertEqual(proc.returncode, 0)
+        return proc
+
+    def set_mode(self, text):
+        (self.root / "cairn" / "PROFILE.md").write_text(text)
+        self.git("add", "cairn/PROFILE.md")
+        self.git("commit", "-q", "-m", "mode")
+
+    # The four deny probes: staged / -am, feature branch / default branch.
+    def probes(self):
+        def staged():
+            (self.root / "cairn" / "ROADMAP.md").write_text(ROADMAP + "edit\n")
+            self.git("add", "cairn/ROADMAP.md")
+            return "git commit -m track"
+
+        def stage_all():
+            (self.root / "cairn" / "ROADMAP.md").write_text(ROADMAP + "edit\n")
+            return "git commit -am track"
+
+        for branch in ("main", "feature"):
+            for name, setup in (("staged", staged), ("-am", stage_all)):
+                self.git("checkout", "-q", "--", ".")
+                self.git("reset", "-q", "--hard")
+                if branch == "feature":
+                    self.git("checkout", "-q", "-B", "feature")
+                else:
+                    self.git("checkout", "-q", "main")
+                yield f"{branch}/{name}", setup()
+
+    def test_denies_cairn_paths_on_every_branch_naming_the_path(self):
+        for label, command in self.probes():
+            with self.subTest(probe=label):
+                out = hook_json(self.hook(command))
+                self.assertEqual(out["permissionDecision"], "deny")
+                self.assertIn("cairn/ROADMAP.md", out["permissionDecisionReason"])
+
+    def test_owner_mode_never_denies_the_same_probes(self):
+        self.set_mode(self.OWNER)
+        for label, command in self.probes():
+            with self.subTest(probe=label):
+                proc = self.hook(command)
+                if proc.stdout.strip():
+                    self.assertNotIn("permissionDecision", hook_json(proc))
+
+    def test_non_cairn_commit_on_feature_branch_is_silent(self):
+        self.git("checkout", "-q", "-b", "feature")
+        (self.root / "code.txt").write_text("changed\n")
+        self.git("add", "code.txt")
+        self.assertEqual(self.hook("git commit -m wip").stdout.strip(), "")
+
+    def test_non_cairn_commit_on_default_nudges_with_the_guest_branch_shape(self):
+        (self.root / "code.txt").write_text("changed\n")
+        self.git("add", "code.txt")
+        out = hook_json(self.hook("git commit -m wip"))
+        self.assertNotIn("permissionDecision", out)
+        self.assertIn("default branch", out["additionalContext"])
+        self.assertIn("(<slug> via /milestone-plan", out["additionalContext"])
+        self.assertNotIn("m<nnn>-<slug>", out["additionalContext"])
+
+    def test_owner_nudge_keeps_the_owner_branch_shape(self):
+        self.set_mode(self.OWNER)
+        (self.root / "code.txt").write_text("changed\n")
+        self.git("add", "code.txt")
+        out = hook_json(self.hook("git commit -m wip"))
+        self.assertIn("m<nnn>-<slug>", out["additionalContext"])
+
+
 class TestNonCairnNoOp(RepoFixture):
     cairn = False
 
