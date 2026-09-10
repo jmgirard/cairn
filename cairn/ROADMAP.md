@@ -12,6 +12,8 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M185 | Guest collaboration mode — fork-aware remotes and review handoff | planned | M184 | high | milestones/M185-guest-handoff.md |
+| M184 | Guest collaboration mode — local-only tracking | planned | — | high | milestones/M184-guest-mode.md |
 | M183 | Close blocks say whether the next command waits on CI | done | — | high | milestones/archive/M183-ci-line.md |
 | M182 | Claim audit at implement time for user-facing prose; release-walk changelog claim-read | done | — | high | milestones/archive/M182-claim-audit.md |
 | M181 | cairn-init applies the `cairn/**` `paths-ignore` edit under a chip, parsed by PyYAML | done | — | high | milestones/archive/M181-apply-paths-ignore.md |

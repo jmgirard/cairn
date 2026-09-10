@@ -5064,3 +5064,38 @@ behavior claim — then the read at consolidation time is the wrong moment,
 and the clause moves or goes. Either firing is the observation that
 supersedes this entry; the candidate row's own promotion condition is
 separate and stands as written.
+
+### D-137 (2026-09-10): cairn gains a collaboration-mode axis — `owner` (D-043's model, unchanged) and `guest` (the operator as contributor, tracking local-only) — annotates D-043; the guest routing surface is governed by the template's own budget (M184/M185 plan gate)
+
+**Context:** D-043 fixed the supported collaboration model as one cairn
+operator with contributions arriving from people who do not run cairn, and
+named itself as the entry to supersede if that changed. The operator now
+contributes to repos they do not own (easystats, tidymodels), where every
+write outside `cairn/` — the CLAUDE.md section, `.gitignore`/`.Rbuildignore`
+entries, CI `paths-ignore`, docs-only pushes to the default branch, the merge
+itself — touches someone else's files or authority, while the
+plan/implement/review loop, decisions, lessons, and briefs are local
+reasoning over local files.
+
+**Decision:** (1) A second axis beside the toolchain profile: `owner` is
+D-043's model, every rule as it stands; `guest` keeps `cairn/` in
+`.git/info/exclude`, never committed, writes nothing outside `cairn/`, never
+pushes to or merges into the default branch, and ends review by handing the
+PR to the maintainers. Declared as a `# Collaboration mode:` header line in
+`cairn/PROFILE.md`, absent meaning owner. (2) In guest mode the CLAUDE.md
+routing section is injected by the session hook from the plugin's own
+template; that surface is governed by the template's stated ~25-line budget,
+not by D-094's section cap (which has no file to measure) — D-094 part 4's
+"plugin source has no inflow" holds, and no frame row is added. (3) Rejected:
+an out-of-tree state directory (every `cairn/` path in the rulebook, skills,
+scripts, and hook root discovery would fork); a new status for the
+handed-off milestone (`blocked` already means waiting on something external);
+`gh repo set-default` toward upstream (a bare `gh pr merge` would pass the
+one-repo approval binding of D-043's marker); cairn merging at all in guest
+mode.
+
+**Consequences:** Annotates D-043 — its model is now the owner half of a
+two-value axis; its marker binding, intake door, and enforcement boundary
+stand unchanged. Delivered by M184 (mode, validator, init, hook, guard,
+rulebook) and M185 (base remote, handoff, reconciliation). Supersede here if
+guest mode ever needs cairn to merge, or if a third mode appears.
