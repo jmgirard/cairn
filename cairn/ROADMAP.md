@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M182 | Claim audit at implement time for user-facing prose; release-walk changelog claim-read | planned | — | high | milestones/M182-claim-audit.md |
+| M182 | Claim audit at implement time for user-facing prose; release-walk changelog claim-read | in-progress | — | high | milestones/M182-claim-audit.md |
 | M181 | cairn-init applies the `cairn/**` `paths-ignore` edit under a chip, parsed by PyYAML | done | — | high | milestones/archive/M181-apply-paths-ignore.md |
 | M180 | ROADMAP terminal-row retention drops from 5 to 3 | done | — | normal | milestones/archive/M180-retention-three.md |
 | M179 | ROADMAP candidate rows carry an optional priority token | done | — | normal | milestones/archive/M179-candidate-priority-token.md |

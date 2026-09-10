@@ -5006,3 +5006,61 @@ is the probe, so such a case is a difference between PyYAML's YAML 1.1 and
 GitHub's reading), or the adopter population where PyYAML is absent so the
 chip never fires — then `--apply` moves to a vendored or stdlib parser, or
 back to suggest-only.
+
+### D-136 (2026-09-10): A user-facing milestone's branch-added prose claims are read against the code at implement time, and the release walk reads the changelog's claims before the release-prep commit — passes D-090/D-108's door on the retained trigger; the diff-scoped second review stays a candidate row (M182)
+
+**Context:** D-090's trigger clause, retained verbatim by D-108, admits a new
+conduct rule about verification only when its trigger is "a defect in
+shipped behavior: what the plugin's skills, hooks, and scripts do for their
+users." The shipped `/milestone-review` has that defect on a user-facing
+milestone whose branch adds prose: the return floor returns the milestone
+on a load-bearing defect in what the deliverables do for their users, and a
+false behavior claim the branch added to a vignette, help page, or release
+note is such a defect; the only check that reads those claims against the
+code is the review's own [O] diff lens, so on such a milestone the floor
+has no exit — the criteria can pass and the milestone is returned anyway,
+each return convening the same full-diff read. The tidymedia milestone
+files `cairn/milestones/archive/M119-shipped-docs-defects.md` and
+`cairn/milestones/M120-news-reads-as-release-notes.md` (that repo, as of
+2026-09-09) hold the measurement: in both, the criteria passed and the
+diff lens returned findings that were claims the branch itself had added,
+M120 twice over the same prose. The derived-claims rule (D-116) binds the
+author at writing time; the author's own read is the instrument measured
+to fail (M114), and no step read the claims against the code between
+writing and review.
+
+**Decision:** Two rules ship. (1) `/milestone-implement` gains a claim-audit
+step between plan amendments and completion: on a milestone whose `Surface
+tier:` slot reads `user-facing` and whose branch diff adds lines outside
+`cairn/`, a fresh-context [O] reader that authored none of those lines
+reads every added line, reports each claim it finds about what an artifact
+does, and reads each against that artifact in the same session — one pass,
+a corrected claim re-read once by the same reader, no second pass — and the
+step writes a fixed-shape work-log line, `claim audit: <N> claims read, <K>
+corrected — <files>` or `claim audit: not owed — <reason>`; an absent line
+means the reader did not run. (2) `/cairn-release` step 2 reads each
+behavior claim in the consolidated release section against the artifact it
+describes before the release-prep commit and corrects a false one in that
+commit; a "none" changelog declaration skips the clause with the step. The
+tidymedia proposal's part (b) — a diff-scoped second [O] review after a
+prose-claim return, narrowing D-112's full-diff read for that case — is
+not shipped; it holds as the ROADMAP candidate row "Diff-scoped second
+review after a prose-claim return", promoted only when a milestone with a
+recorded claim-audit pass still takes a return on branch-added prose
+claims. Rejected at the plan gate: the author's own re-read in place of a
+fresh reader (the instrument measured to fail); a recall-defined file
+family in place of the whole added-line diff (the reader sweeps every added
+line and reports what it finds, so the step is owed at N=0 for a
+user-facing diff adding only code — one cheap spawn); any change to the
+thrash rule, return floor, or lens routing (D-064, D-097, D-112 stand).
+
+**Consequences:** D-090 and D-108 are passed on their retained trigger, not
+by exception; the door's terms are unchanged. Falsifier for rule (1): a
+claim-audit pass whose reader clears a claim that review then returns on —
+then the fresh read is no better an instrument than the author's, and the
+step is ceremony. Falsifier for rule (2): a release whose consolidated
+section passed the claim-read and whose tagged changelog carries a false
+behavior claim — then the read at consolidation time is the wrong moment,
+and the clause moves or goes. Either firing is the observation that
+supersedes this entry; the candidate row's own promotion condition is
+separate and stands as written.
