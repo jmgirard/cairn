@@ -1,13 +1,13 @@
 # M183: Close blocks say whether the next command waits on CI
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — skill prose every plugin user reads at each phase end
-- **Branch/PR:** —
+- **Branch/PR:** m183-ci-line
 
 ## Goal
 
@@ -66,7 +66,7 @@ Any change to the wait mechanism itself — D-128 stands.
 
 ## Tasks
 
-- [ ] T1: tracking-rules "Question gates and phase closes", close-block
+- [x] T1: tracking-rules "Question gates and phase closes", close-block
       paragraph (`skills/shared/tracking-rules.md:299-303`): add the CI line
       element with its domain clause and the bare-state exclusion; keep the
       status line's "check results, where they exist" — the CI line is what
@@ -88,6 +88,7 @@ Any change to the wait mechanism itself — D-128 stands.
 - 2026-09-10: criteria audit (full mode, fresh [O] reader): AC1 bounded-promise finding repaired (domain scoped to the rulebook paragraph plus four restating sites); AC3 source finding repaired (`/cairn-release` waits on local checks, not `gh pr checks`); AC4 pre-existing red named concretely; no existing pin quotes the changed sentences.
 - 2026-09-10: plan gate chose a fact-stating timeout line ("rerun whenever; it re-checks and waits again; green-first optional") over "wait for green, then rerun" because the latter costs a manual GitHub check even when CI lands a minute later; falsified by repeated timeout stops on the same PR in the record after the line ships.
 - 2026-09-10: plan gate chose branch-or-open-PR closes only over every close block (merged ones too) because a merged close has nothing in flight; falsified by a user report of wait-uncertainty at a merged close.
+- 2026-09-10: question gate skipped — the plan fixes each site's wording, nothing open. T1: CI line element added to the rulebook close-block paragraph (domain clause, bare-state exclusion, four restating sites named); verify green 379/126.
 - 2026-09-10: plan gate chose no prose pin over a `skills/tests` guard because D-128 leaves the sibling next-command clause unpinned and the checker is internal; falsified by the CI line drifting out of a site in a later milestone's diff.
 
 ## Decisions
