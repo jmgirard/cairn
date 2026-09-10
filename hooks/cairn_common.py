@@ -313,7 +313,7 @@ def on_default_branch(cwd):
 # `_PROFILE_HEADER` (`# Toolchain profile: <name>`). The only line outside
 # the seven `##` slots the validator reads; scripts/cairn_validate.py parses
 # it by hand (hooks and scripts share no code) — keep the two in step.
-_COLLAB_MODE = re.compile(r"#\s*Collaboration mode:\s*(\S+)")
+COLLAB_MODE_LINE = re.compile(r"#\s*Collaboration mode:\s*(\S+)")
 
 
 def collaboration_mode(root):
@@ -325,7 +325,7 @@ def collaboration_mode(root):
     try:
         with open(path, encoding="utf-8") as f:
             for line in f:
-                m = _COLLAB_MODE.match(line)
+                m = COLLAB_MODE_LINE.match(line)
                 if m:
                     return m.group(1).lower()
     except Exception:

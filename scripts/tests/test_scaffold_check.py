@@ -234,6 +234,79 @@ class TestGitignoreDeprecationDirectory(ScriptCase):
         self.assertNotIn("Traceback", proc.stdout)
 
 
+GUEST_PROFILE = (
+    "# Toolchain profile: r-package\n# Collaboration mode: guest\n\n"
+    "## verify\n- run tests\n\n"
+    "## consistency-gate\nnone\n\n"
+    "## test-doctrine\nnone\n\n"
+    "## release-walk\nnone\n\n"
+    "## init-detection\nDESCRIPTION\n\n"
+    "## greenfield-openers\nnone\n\n"
+    "## changelog\nNEWS.md\n"
+)
+
+
+class TestScaffoldGuestMode(ScriptCase):
+    """M184 AC1: in guest mode (`# Collaboration mode: guest` in PROFILE.md)
+    the scaffold check requires `cairn/` in `.git/info/exclude` and drops the
+    `.gitignore` / `.Rbuildignore` requirements — the guest writes nothing
+    outside cairn/. Owner mode keeps every requirement, exclude file or not."""
+
+    def guest_repo(self, exclude="cairn/\n"):
+        # A package repo (DESCRIPTION) with NO cairn .gitignore entries and NO
+        # .Rbuildignore — every owner-mode requirement absent on purpose.
+        root = self.tree.build()
+        (root / "DESCRIPTION").write_text("Package: fixture\nVersion: 0.0.1\n")
+        (root / ".gitignore").write_text("*.o\n")
+        self.assertFalse((root / ".Rbuildignore").exists())
+        (root / "cairn" / "PROFILE.md").write_text(GUEST_PROFILE)
+        info = root / ".git" / "info"
+        info.mkdir(parents=True)
+        if exclude is not None:
+            (info / "exclude").write_text("# comment\n" + exclude)
+        return root
+
+    def test_guest_with_exclude_passes_scaffold_and_profile(self):
+        proc = run("cairn_validate.py", self.guest_repo())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn(f"PASS  {LABEL}", proc.stdout)
+        self.assertIn("PASS  profile valid", proc.stdout)
+
+    def test_guest_accepts_the_bare_directory_spelling(self):
+        proc = run("cairn_validate.py", self.guest_repo(exclude="cairn\n"))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn(f"PASS  {LABEL}", proc.stdout)
+
+    def test_guest_without_exclude_line_fails_naming_the_file(self):
+        proc = run("cairn_validate.py", self.guest_repo(exclude=""))
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(f"FAIL  {LABEL}", proc.stdout)
+        self.assertIn(".git/info/exclude", proc.stdout)
+
+    def test_guest_without_exclude_file_fails_naming_the_file(self):
+        proc = run("cairn_validate.py", self.guest_repo(exclude=None))
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(".git/info/exclude", proc.stdout)
+
+    def test_guest_never_asks_for_gitignore_or_rbuildignore(self):
+        proc = run("cairn_validate.py", self.guest_repo())
+        self.assertNotIn(".gitignore missing", proc.stdout)
+        self.assertNotIn(".Rbuildignore missing", proc.stdout)
+
+    def test_owner_exclude_line_does_not_stand_in_for_gitignore(self):
+        # Same repo, mode line removed → owner mode: the exclude line is
+        # irrelevant and the missing .gitignore entries still FAIL.
+        root = self.guest_repo()
+        (root / "cairn" / "PROFILE.md").write_text(
+            GUEST_PROFILE.replace("# Collaboration mode: guest\n", "")
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn(f"FAIL  {LABEL}", proc.stdout)
+        self.assertIn(".gitignore missing entry", proc.stdout)
+        self.assertIn(".Rbuildignore missing entry", proc.stdout)
+
+
 class TestScaffoldRbuildignore(ScriptCase):
     """The `^cairn$` .Rbuildignore entry is required only on package repos."""
 
