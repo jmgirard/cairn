@@ -303,8 +303,8 @@ stating whether the fenced next command waits on CI itself and what the user doe
 ("CI: running") never satisfies it, and it is what disposes of the status line's check results — restated at four
 sites (`/milestone-implement` step 9, and the three timeout stops: `/milestone-review` step 8, `/hotfix` step 6,
 `/cairn-release` step 3), every other such close inheriting it by citation; the next command or commands in fenced
-blocks, primary first, each with a one-line plain-language label; and one line noting that adjusting course or
-`/clear` are both safe at this point. No chip is posed to route to
+blocks, primary first, each with a one-line plain-language label; and one line noting that
+adjusting course or `/clear` are both safe at this point. No chip is posed to route to
 the next skill — the user runs the fenced command — and its fixed shape is itself the signal that a boundary was
 reached. Decision-gate chips, the merge-approval gate among them, are unaffected: a gate is a choice, a phase end is a
 handoff. A decision arising mid-skill or at an internal phase boundary — a continue/stop choice, an acceptance over a

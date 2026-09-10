@@ -78,7 +78,7 @@ Any change to the wait mechanism itself — D-128 stands.
       `/cairn-release` step 3 (`SKILL.md:74-81`): add the timeout CI line
       wording, each naming its own resume command and its wait's own state
       source.
-- [ ] T4: run both gating suites from the repo root with explicit exit codes;
+- [x] T4: run both gating suites from the repo root with explicit exit codes;
       hand-run `skills/tests`; confirm the only red is the pre-existing
       lesson-graduation failure (D-109).
 
@@ -91,6 +91,7 @@ Any change to the wait mechanism itself — D-128 stands.
 - 2026-09-10: question gate skipped — the plan fixes each site's wording, nothing open. T1: CI line element added to the rulebook close-block paragraph (domain clause, bare-state exclusion, four restating sites named); verify green 379/126.
 - 2026-09-10: T2: implement-end CI line added to step 9's close-block spec (nothing to wait for; review pushes, opens the PR, waits at merge); verify green.
 - 2026-09-10: T3: timeout CI line added at `/milestone-review` step 8, `/hotfix` step 6, `/cairn-release` step 3 — each names its own resume command and its wait's own state source (`gh pr checks` twice, the moved task's output for the release check); verify green.
+- 2026-09-10: T4: scripts 379 / hooks 126 green (exit 0 each); skills/tests 661 hand-run — the T1 rewrap first split two pinned close-block sentences across lines (`test_gate_wording.TestPhaseCloseBlock`), rewrapped so each pin sits on one line; only remaining red is the pre-existing `test_lesson_graduation` failure (D-109).
 - 2026-09-10: plan gate chose no prose pin over a `skills/tests` guard because D-128 leaves the sibling next-command clause unpinned and the checker is internal; falsified by the CI line drifting out of a site in a later milestone's diff.
 
 ## Decisions
