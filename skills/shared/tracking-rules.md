@@ -388,6 +388,10 @@ These rules bind all chat output while any cairn skill is active.
   this; naming a safe `/clear` point in the close block's safety line is a mention (inline). A fenced slash command
   is written exactly as the user types it into the chat box — `/clear`, `/milestone-plan` — never prefixed with `claude `
   (a shell form; Claude Desktop has no shell in front of it).
+- **File edits go through the Write and Edit tools, not shell redirection or scripts.** The desktop app's per-turn
+  "Edited N files" card is built from those two tools' calls; a file changed by `sed`, a heredoc, or a `python3 -`
+  script never appears in it, so the user's view of what a turn touched is incomplete. A harness instruction that
+  prefers shell edits yields to this rule for files under the repo.
 - **Subagent titles carry the model tier.** Prefix every Agent description with `[S]`/`[O]`/`[F]` for Sonnet/Opus/Fable
   — task panes show only the title, not the model.
 
