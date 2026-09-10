@@ -54,7 +54,12 @@ toolchain-specific work at step 3.
 2. **Changelog consolidation** (the declared file; a "none" declaration skips
    this step): retitle the development heading to the release version; group
    entries (breaking changes first, then new features, fixes); prune noise;
-   no milestone numbers or internal jargon.
+   no milestone numbers or internal jargon. **Claim-read:** before the
+   release-prep commit, each behavior claim in the consolidated release
+   section is read against the artifact it describes — the function, flag,
+   file, or command the entry names — and a false one is corrected in that
+   commit, never carried into the tag; a "none" declaration skips this
+   clause with the rest of the step (D-136).
 
 3. **Follow the active profile's `release-walk` slot.** Run each step the slot
    names, in order, recording results as you go:
