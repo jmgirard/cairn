@@ -52,7 +52,7 @@ A repo the operator does not own can run cairn's plan/implement/review loop with
 - [x] T4: `hooks/commit_guard.py`: guest deny arm ahead of the default-branch early return (`:86-90`), envelope as `merge_guard.py:180-190`; tests in `TestCommitGuard`.
 - [x] T5: `skills/cairn-init/SKILL.md`: §0 mode detection + chip; §1 guest branch (exclude write; the five skips); §3 repair recognizes the guest scaffold; profile templates untouched (init writes the line).
 - [x] T6: `skills/shared/tracking-rules.md`: `## Collaboration mode` section, owner qualifier on the branch bullet (`:225`), file-map PROFILE row and "Toolchain profiles" mention; `cairn/DESIGN.md` GP2 clause.
-- [ ] T7: guest arms in `milestone-plan` step 6, `milestone-implement` step 4 (`:70-72`), `milestone` §2 (`:127`, `:130-131`); session-start stop clauses in `cairn-release` and `cairn-triage`.
+- [x] T7: guest arms in `milestone-plan` step 6, `milestone-implement` step 4 (`:70-72`), `milestone` §2 (`:127`, `:130-131`); session-start stop clauses in `cairn-release` and `cairn-triage`.
 - [ ] T8: README guest subsection; run AC6's grep and disposition each hit (amend or work-log exemption).
 - [ ] T9: CHANGELOG entry; run both suites from the repo root, exit codes checked.
 
@@ -69,6 +69,7 @@ A repo the operator does not own can run cairn's plan/implement/review loop with
 - 2026-09-10: T4 done — guest deny arm in `commit_guard.main` ahead of the default-branch return (deny envelope as merge_guard, reason lists the cairn/ paths); the nudge's branch shape comes from `BRANCH_SHAPE[mode]` (`<slug>` in guest); 5 tests in `TestCommitGuardGuestMode`, the four deny probes (staged/-am × main/feature) replayed against an owner profile; existing `TestCommitGuard` unmodified and green.
 - 2026-09-10: T5 done — cairn-init §0 gains a "Collaboration mode" bullet (the `viewerPermission` read and the mode chip), §1 a `### Guest mode` passage naming the mode line, the exclude write, and the five skipped writes, §3 a guest arm reading the line from the existing file.
 - 2026-09-10: T6 done — rulebook `## Collaboration mode` section (six bullets: never-committed cairn/, no default-branch commit or push with tracking written to disk same turn, no cairn vocabulary and the `<slug>` branch, release/triage stop, third-party PR unsupported, merge/remotes deferred to M185); owner qualifier on the branch bullet; PROFILE file-map row and "Toolchain profiles" name the mode line; enforcement-boundary sentence names guest mode; DESIGN GP2 clause and the Known-issues collaboration-model sentence name guest mode with D-137.
+- 2026-09-10: T7 done — guest arms in `/milestone-plan` step 6 (no plan commit or push; files written same turn), `/milestone-implement` step 4 (code-only checkpoint; tracking on disk; `<slug>` branch, no cairn vocabulary in messages), `/milestone` §2 (orphan check skipped and reported; CLAUDE.md check reads the exclude line instead); session-start stop clauses in `/cairn-release` and `/cairn-triage` with fixed status-line text.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

@@ -70,6 +70,11 @@ run ingestion first (see `/milestone-brief`).
      before the task is checked off.
    - Checkpoint-commit per task on the branch, **including** the milestone
      file update (checkbox + one work-log line) in the same commit.
+     **Guest arm** (tracking-rules "Collaboration mode"): the checkpoint
+     commit carries the code only — the milestone file update is written to
+     disk in the same turn and never staged (the commit guard denies a
+     `cairn/` path); the branch is `<slug>` alone and the commit message
+     carries no `M<NNN>` or cairn vocabulary.
      Prose the commit adds about an artifact's behavior follows the tracking-rules derived-claims rule: derived from the artifact, never composed.
      A claim resting on an observed failure follows the tracking-rules failure-identity rule: verified to be the failure the claim is about, never read off a bare error.
    - Stay within implement-owned sections per the tracking-rules

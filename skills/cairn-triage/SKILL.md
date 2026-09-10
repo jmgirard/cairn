@@ -26,6 +26,12 @@ step (session start implicit).
 
 ## Session start
 
+**Guest mode stops here** (tracking-rules "Collaboration mode"): when
+`cairn/PROFILE.md` carries `# Collaboration mode: guest`, the pass's commit
+to the default branch does not exist — stop with a close block whose status
+line reads `stopped before enumeration: guest collaboration mode — triage
+commits to the default branch`, before any precondition below.
+
 Preconditions first: clean `git status`, on the default branch (detect it
 per the tracking-rules git model — never assume `main`), synced with origin
 (`git fetch`, ff-only pull — the pass's only ref motion, done before the

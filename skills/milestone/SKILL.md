@@ -124,11 +124,16 @@ The script deliberately does not judge these — do them yourself and report:
   than restating them here; a row meeting both triggers takes the
   disposition chip.
 - **Semantic orphans:** `done` milestones not archived; RRs not ingested;
-  uncommitted changes under `cairn/`.
+  uncommitted changes under `cairn/` — in guest mode (tracking-rules
+  "Collaboration mode") `cairn/` is excluded and never committed, so this
+  arm is skipped and reported as such rather than as an orphan.
 - **Reconciliation with git:** commits since the last work-log entry that
   aren't reflected in tracking → add a one-line catch-up entry.
 - **CLAUDE.md section present and intact**; if damaged, offer repair via
-  `/cairn-init`.
+  `/cairn-init`. In guest mode the section is never written to CLAUDE.md
+  (the session hook injects the plugin's routing template instead), so the
+  check instead reads `cairn/` from `.git/info/exclude` and reports a
+  missing line as the repair item.
 - A milestone at `review` with an open unmerged PR → re-check CI now
   (`gh pr checks`), report the fresh state (this is normal, not an error),
   and beside it report the PR's unresolved-thread count and its pending
