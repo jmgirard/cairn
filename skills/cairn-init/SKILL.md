@@ -277,14 +277,16 @@ PROFILE instantiation, the greenfield openers) runs as above:
    lists (run under `bash -c` so an unmatched glob passes through silently
    where the session shell is zsh, which would otherwise abort the command
    with an error the redirect does not hide), and any relative in-repo path
-   a listed file names (a style guide,
-   a code-of-conduct, a review checklist). Each Conventions line the seed
-   writes from them cites its source file (`— CONTRIBUTING.md`); an empty
-   listing is stated in the Conventions section as one line (`No
-   contributor docs found at init — observed YYYY-MM-DD`). In guest mode
-   Conventions and principles are the operator's provisional model of the
-   maintainers' constraints (tracking-rules "Collaboration mode"), so the
-   seed writes what the upstream's own documents say and nothing it infers.
+   a listed file names (a style guide, a code-of-conduct, a review
+   checklist). Each Conventions line the seed writes from them cites its
+   source file (`— CONTRIBUTING.md`); an empty listing is stated in the
+   Conventions section as one line (`No contributor docs found at init —
+   observed YYYY-MM-DD`). In guest mode Conventions and principles are the
+   operator's provisional model of the maintainers' constraints
+   (tracking-rules "Collaboration mode"), so a Conventions line the seed
+   writes from those documents stays close to what they say, and the
+   inference the seed step above already allows for Purpose & Scope is not
+   extended to Conventions.
 5. **Close block.** Its status line names the mode; the safety line adds
    that `cairn/` exists only in this clone (a fresh clone starts from
    nothing, and `git clean -fdx` removes it).
