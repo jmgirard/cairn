@@ -273,8 +273,11 @@ PROFILE instantiation, the greenfield openers) runs as above:
    pushed to.
 4. **The DESIGN seed reads the contributor docs.** Beyond DESCRIPTION and
    the source read above, the seed also reads the files
-   `ls CONTRIBUTING.md CONTRIBUTING CONTRIBUTING.Rmd .github/*.md 2>/dev/null`
-   lists, and any relative in-repo path a listed file names (a style guide,
+   `bash -c 'ls CONTRIBUTING.md CONTRIBUTING CONTRIBUTING.Rmd .github/*.md 2>/dev/null'`
+   lists (run under `bash -c` so an unmatched glob passes through silently
+   where the session shell is zsh, which would otherwise abort the command
+   with an error the redirect does not hide), and any relative in-repo path
+   a listed file names (a style guide,
    a code-of-conduct, a review checklist). Each Conventions line the seed
    writes from them cites its source file (`— CONTRIBUTING.md`); an empty
    listing is stated in the Conventions section as one line (`No

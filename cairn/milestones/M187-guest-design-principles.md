@@ -1,6 +1,6 @@
 # M187: Guest-mode DESIGN.md — principles are the operator's provisional model of the maintainers' constraints
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -55,6 +55,8 @@ In guest mode, DESIGN.md's Conventions and IP/GP principles are stated to be the
 - 2026-09-10: T3 done — design-interview Session start gains the guest-mode paragraph (entered on the PROFILE mode line, names the tracking-rules bullet as its rule; no pinned-marker phrase echoed — the skill has no guarded slice there) and the Phase 2 write-out gains the `(provisional — guest mode)` sentence; suites green.
 - 2026-09-10: T4 done — D-139 appended, annotating D-137 (in-place `corrected <PR ref>` correction, no D-entry; rejected: owner-mode D-entry rule, no-IP guest interview); validate green.
 - 2026-09-10: T5 done — scripts 391 green, hooks 146 green; skills/tests 661: first run 4 reds + 2 errors, one over the ROADMAP baseline — the T1 bullet's back-reference echoed the guard marker "Correcting a record proven false", so the mutation harness's blanking no longer removed the only occurrence (LESSONS 2026-08-17); reworded to "the record-correction rule's principle exception"; re-run 4 reds + 1 error, the pre-existing set as on main.
+- 2026-09-10: claim audit: 17 claims read, 1 corrected — skills/cairn-init/SKILL.md, skills/design-interview/SKILL.md, skills/shared/tracking-rules.md (the contributor-docs `ls` listing aborted under zsh on an unmatched glob with an error the redirect cannot hide; wrapped in `bash -c`, the criterion's command kept literal inside it; the re-read ran in a fresh [O] reader rather than the same one — this session has no send-message tool to continue an agent — and returned HOLDS, noting the wrapped command exits 1 on success because the absent `CONTRIBUTING`/`CONTRIBUTING.Rmd` operands always fail `ls`; nothing reads the exit code).
+- 2026-09-10: all tasks checked; status → review.
 
 ## Decisions
 
