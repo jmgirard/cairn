@@ -40,8 +40,8 @@ In guest mode, DESIGN.md's Conventions and IP/GP principles are stated to be the
 - [x] T1: Write the guest-mode bullet in tracking-rules "Collaboration mode" (`skills/shared/tracking-rules.md:288`); add the guest-mode clause to the "DESIGN.md principles" paragraph (`:55`) and the "History integrity" exception (`:121`).
 - [x] T2: Add the contributor-docs item to cairn-init's "Guest mode" passage (`skills/cairn-init/SKILL.md:246`) and trim the opener's unchanged-list.
 - [x] T3: Add the guest-mode paragraph to design-interview's Session start (`skills/design-interview/SKILL.md:31`, wording that echoes no pinned marker — LESSONS 2026-08-17) and the Phase 2 mark sentence.
-- [ ] T4: Append the D-entry annotating D-137.
-- [ ] T5: Run the two gating suites and the hand-run prose guards; record the counts in the work log.
+- [x] T4: Append the D-entry annotating D-137.
+- [x] T5: Run the two gating suites and the hand-run prose guards; record the counts in the work log.
 
 ## Work log
 
@@ -53,6 +53,8 @@ In guest mode, DESIGN.md's Conventions and IP/GP principles are stated to be the
 - 2026-09-10: T1 done — guest bullet under "Collaboration mode" (tracking-rules), plus the pointer clauses in the IP/GP definition and the "Correcting a record proven false" exception; scripts + hooks suites green.
 - 2026-09-10: T2 done — cairn-init "Guest mode" gains item 4 (the DESIGN seed reads the contributor docs, cites sources, states an empty listing); the close block item renumbers to 5; the opener's runs-as-above list no longer names the DESIGN seed; suites green.
 - 2026-09-10: T3 done — design-interview Session start gains the guest-mode paragraph (entered on the PROFILE mode line, names the tracking-rules bullet as its rule; no pinned-marker phrase echoed — the skill has no guarded slice there) and the Phase 2 write-out gains the `(provisional — guest mode)` sentence; suites green.
+- 2026-09-10: T4 done — D-139 appended, annotating D-137 (in-place `corrected <PR ref>` correction, no D-entry; rejected: owner-mode D-entry rule, no-IP guest interview); validate green.
+- 2026-09-10: T5 done — scripts 391 green, hooks 146 green; skills/tests 661: first run 4 reds + 2 errors, one over the ROADMAP baseline — the T1 bullet's back-reference echoed the guard marker "Correcting a record proven false", so the mutation harness's blanking no longer removed the only occurrence (LESSONS 2026-08-17); reworded to "the record-correction rule's principle exception"; re-run 4 reds + 1 error, the pre-existing set as on main.
 
 ## Decisions
 

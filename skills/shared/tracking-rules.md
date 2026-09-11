@@ -333,7 +333,7 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   maintainers', not the operator's. The guest DESIGN seed reads the contributor docs (`/cairn-init` "Guest mode"),
   and `/design-interview` elicits the operator's understanding of the maintainers' design, every principle it writes
   marked `(provisional — guest mode)`. This bullet is the guest-mode reading of the "DESIGN.md principles" definition
-  and of the "Correcting a record proven false" exception.
+  and of the record-correction rule's principle exception.
 
 ## Context hygiene
 
