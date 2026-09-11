@@ -38,7 +38,7 @@ In guest mode, DESIGN.md's Conventions and IP/GP principles are stated to be the
 ## Tasks
 
 - [x] T1: Write the guest-mode bullet in tracking-rules "Collaboration mode" (`skills/shared/tracking-rules.md:288`); add the guest-mode clause to the "DESIGN.md principles" paragraph (`:55`) and the "History integrity" exception (`:121`).
-- [ ] T2: Add the contributor-docs item to cairn-init's "Guest mode" passage (`skills/cairn-init/SKILL.md:246`) and trim the opener's unchanged-list.
+- [x] T2: Add the contributor-docs item to cairn-init's "Guest mode" passage (`skills/cairn-init/SKILL.md:246`) and trim the opener's unchanged-list.
 - [ ] T3: Add the guest-mode paragraph to design-interview's Session start (`skills/design-interview/SKILL.md:31`, wording that echoes no pinned marker — LESSONS 2026-08-17) and the Phase 2 mark sentence.
 - [ ] T4: Append the D-entry annotating D-137.
 - [ ] T5: Run the two gating suites and the hand-run prose guards; record the counts in the work log.
@@ -51,6 +51,7 @@ In guest mode, DESIGN.md's Conventions and IP/GP principles are stated to be the
 - 2026-09-10: plan gate chose IPs allowed, marked provisional, over a GP-and-Conventions-only guest mode because the Principles touched slot and Phase 2 keep one code path; falsified by a guest-mode adopter treating a provisional IP as binding on the maintainers.
 - 2026-09-10: /milestone-implement started; branch m187-guest-design-principles cut from pushed main; question gate skipped (the plan gate settled the correction mark and the IP question).
 - 2026-09-10: T1 done — guest bullet under "Collaboration mode" (tracking-rules), plus the pointer clauses in the IP/GP definition and the "Correcting a record proven false" exception; scripts + hooks suites green.
+- 2026-09-10: T2 done — cairn-init "Guest mode" gains item 4 (the DESIGN seed reads the contributor docs, cites sources, states an empty listing); the close block item renumbers to 5; the opener's runs-as-above list no longer names the DESIGN seed; suites green.
 
 ## Decisions
 

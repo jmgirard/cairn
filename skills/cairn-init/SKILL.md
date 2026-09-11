@@ -247,8 +247,7 @@ Then:
 
 When §0's mode chip chose **guest**, §1 changes in exactly these ways;
 everything not named here (the `cairn/` tree, the ROADMAP skeleton, the
-PROFILE instantiation, the DESIGN seed, the greenfield openers) runs as
-above:
+PROFILE instantiation, the greenfield openers) runs as above:
 
 1. **The mode line.** After instantiating `cairn/PROFILE.md`, insert
    `# Collaboration mode: guest` as its second line, directly under
@@ -272,7 +271,18 @@ above:
    are the maintainers'; (e) the **scaffold commit + push** — `cairn/` is
    excluded, so there is nothing to commit and the default branch is never
    pushed to.
-4. **Close block.** Its status line names the mode; the safety line adds
+4. **The DESIGN seed reads the contributor docs.** Beyond DESCRIPTION and
+   the source read above, the seed also reads the files
+   `ls CONTRIBUTING.md CONTRIBUTING CONTRIBUTING.Rmd .github/*.md 2>/dev/null`
+   lists, and any relative in-repo path a listed file names (a style guide,
+   a code-of-conduct, a review checklist). Each Conventions line the seed
+   writes from them cites its source file (`— CONTRIBUTING.md`); an empty
+   listing is stated in the Conventions section as one line (`No
+   contributor docs found at init — observed YYYY-MM-DD`). In guest mode
+   Conventions and principles are the operator's provisional model of the
+   maintainers' constraints (tracking-rules "Collaboration mode"), so the
+   seed writes what the upstream's own documents say and nothing it infers.
+5. **Close block.** Its status line names the mode; the safety line adds
    that `cairn/` exists only in this clone (a fresh clone starts from
    nothing, and `git clean -fdx` removes it).
 
