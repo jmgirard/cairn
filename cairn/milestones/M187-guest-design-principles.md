@@ -1,13 +1,13 @@
 # M187: Guest-mode DESIGN.md — principles are the operator's provisional model of the maintainers' constraints
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, IP3
 - **Resolves:** —
 - **Surface tier:** user-facing — skill prose every guest-mode adopter reads
-- **Branch/PR:** —
+- **Branch/PR:** m187-guest-design-principles
 
 ## Goal
 
@@ -37,7 +37,7 @@ In guest mode, DESIGN.md's Conventions and IP/GP principles are stated to be the
 
 ## Tasks
 
-- [ ] T1: Write the guest-mode bullet in tracking-rules "Collaboration mode" (`skills/shared/tracking-rules.md:288`); add the guest-mode clause to the "DESIGN.md principles" paragraph (`:55`) and the "History integrity" exception (`:121`).
+- [x] T1: Write the guest-mode bullet in tracking-rules "Collaboration mode" (`skills/shared/tracking-rules.md:288`); add the guest-mode clause to the "DESIGN.md principles" paragraph (`:55`) and the "History integrity" exception (`:121`).
 - [ ] T2: Add the contributor-docs item to cairn-init's "Guest mode" passage (`skills/cairn-init/SKILL.md:246`) and trim the opener's unchanged-list.
 - [ ] T3: Add the guest-mode paragraph to design-interview's Session start (`skills/design-interview/SKILL.md:31`, wording that echoes no pinned marker — LESSONS 2026-08-17) and the Phase 2 mark sentence.
 - [ ] T4: Append the D-entry annotating D-137.
@@ -49,6 +49,8 @@ In guest mode, DESIGN.md's Conventions and IP/GP principles are stated to be the
 - 2026-09-10: criteria audit ran in full mode ([O] reader): four findings — AC1 contradicted the IP/GP definition and History-integrity text unless both were amended (fixed: both gain a clause; D-entry added as AC4); AC2's "style document" was unenumerable (fixed: narrowed to a relative in-repo path) and the guest passage's unchanged-list named the DESIGN seed (fixed); AC3 left Phase 2 ambiguous (fixed: one sentence there); AC4's "same set" was not enumerable from the ROADMAP (fixed: count comparison).
 - 2026-09-10: plan gate chose in-place `corrected <PR ref>` with no D-entry over keeping the owner-mode D-entry rule because the correcting decision is the maintainers', not the operator's; falsified by a guest repo where the operator needs the correction's rationale later and the PR thread no longer holds it.
 - 2026-09-10: plan gate chose IPs allowed, marked provisional, over a GP-and-Conventions-only guest mode because the Principles touched slot and Phase 2 keep one code path; falsified by a guest-mode adopter treating a provisional IP as binding on the maintainers.
+- 2026-09-10: /milestone-implement started; branch m187-guest-design-principles cut from pushed main; question gate skipped (the plan gate settled the correction mark and the IP question).
+- 2026-09-10: T1 done — guest bullet under "Collaboration mode" (tracking-rules), plus the pointer clauses in the IP/GP definition and the "Correcting a record proven false" exception; scripts + hooks suites green.
 
 ## Decisions
 
