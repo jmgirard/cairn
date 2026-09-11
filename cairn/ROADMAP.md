@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-10 (M186 done: the PR opens after approval, resume routes keyed on the branch name; M183's row pruned (archive + git); validate green; scripts 391 + hooks 146 green; skills/tests 661 with 4 reds + 1 error, the same pre-existing set as at M185, non-gating (D-109); no new lesson; ROADMAP/LESSONS bytes and the three doctrine-module budgets hand-read under cap.)_
+_Last hygiene check: 2026-09-10 (M187 done: guest-mode DESIGN.md principles are the operator's provisional model of the maintainers' constraints; M184's row pruned (archive + git); validate green; scripts 391 + hooks 146 green; skills/tests 661 with 4 reds + 1 error, the same pre-existing set as at M186, non-gating (D-109); no new lesson; ROADMAP/LESSONS bytes and the three doctrine-module budgets hand-read under cap.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,10 +12,9 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M187 | Guest-mode DESIGN.md — principles are the operator's provisional model of the maintainers' constraints | review | — | high | milestones/M187-guest-design-principles.md |
+| M187 | Guest-mode DESIGN.md — principles are the operator's provisional model of the maintainers' constraints | done | — | high | milestones/archive/M187-guest-design-principles.md |
 | M186 | The PR opens after approval, so CI first runs on the head that merges | done | — | high | milestones/archive/M186-pr-after-approval.md |
 | M185 | Guest collaboration mode — fork-aware remotes and review handoff | done | M184 | high | milestones/archive/M185-guest-handoff.md |
-| M184 | Guest collaboration mode — local-only tracking | done | — | high | milestones/archive/M184-guest-mode.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
