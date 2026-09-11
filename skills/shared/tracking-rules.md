@@ -54,7 +54,9 @@ task) is a gate failure, returned to `/milestone-implement` for a gated Coverage
 
 DESIGN.md principles: **GP<n> — Guiding Principle**, a default stance tradeable with stated justification; **IP<n> —
 Inviolable Principle**, a hard constraint never violated — changed only by explicit user decision recorded as a
-D-entry. IP block first, then GPs; numbers are never reused or renumbered — retiring one takes a D-entry.
+D-entry. IP block first, then GPs; numbers are never reused or renumbered — retiring one takes a D-entry. In guest
+mode both are the operator's provisional model of the maintainers' constraints, corrected in place on maintainer
+feedback — the "Collaboration mode" bullet on DESIGN.md governs.
 
 ## Weight caps
 
@@ -119,7 +121,8 @@ D-entry. IP block first, then GPs; numbers are never reused or renumbered — re
   milestone IDs, the archives, `legacy/` — is never edited (IP4); it is superseded. Current knowledge — `LESSONS.md`,
   `references/` pages, `DESIGN.md`, `ROADMAP.md` — is fixed where it sits, the correction marked (`corrected M75`);
   never append a correction leaving the wrong text readable. Exception: a wrong IP/GP *principle* still changes only by
-  explicit user decision recorded as a D-entry.
+  explicit user decision recorded as a D-entry — in owner mode; in guest mode a principle maintainer feedback
+  contradicts is corrected in place with no D-entry, per the "Collaboration mode" bullet on DESIGN.md.
 - **Retiring a lesson that no longer earns its line.** Three exits: **enforcement** — a test *fails* on the mistake the
   lesson warns about (a guard merely existing nearby is not enforcement); **ownership** — another tracking file's slot
   owns the content (the retiring milestone may *move* it there); **maturation** — a stabilized family graduates whole
@@ -323,6 +326,14 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   work-log line naming the maintainers; `/milestone` §2 re-reads the PR's state and routes a merged one to
   `/milestone-review`'s hygiene (`blocked → done`), a closed one to a chip, a `CHANGES_REQUESTED` one to
   `/milestone-implement`. `/hotfix`'s merge step takes the same handoff. Post-merge hygiene runs on disk, no commit.
+- **DESIGN.md's Conventions and IP/GP principles are the operator's provisional model of the maintainers'
+  constraints.** They are sourced from the upstream's public norms — CONTRIBUTING, style docs, review feedback — never
+  from the operator's authority over the repo, which is none. A principle or convention that maintainer feedback
+  contradicts is corrected in place, marked `corrected <PR ref>`, with no D-entry: the correcting decision is the
+  maintainers', not the operator's. The guest DESIGN seed reads the contributor docs (`/cairn-init` "Guest mode"),
+  and `/design-interview` elicits the operator's understanding of the maintainers' design, every principle it writes
+  marked `(provisional — guest mode)`. This bullet is the guest-mode reading of the "DESIGN.md principles" definition
+  and of the record-correction rule's principle exception.
 
 ## Context hygiene
 

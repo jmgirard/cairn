@@ -21,7 +21,9 @@ Chapter markers: mark a chapter at each phase transition — each phase its
 `Phase header:` directive names (session start implicit).
 
 This skill does what code-reading cannot: it interviews the human for the
-intent behind the repo and writes it into `cairn/DESIGN.md`. It runs in two
+intent behind the repo (in guest mode, for their understanding of the
+maintainers' intent — Session start below) and writes it into
+`cairn/DESIGN.md`. It runs in two
 phases with an explicit seam. **Facts before principles is a one-way
 dependency** — commitments made before the fact base exists get reworked
 once it does — so Phase 1 never asks the user to commit a principle; it only
@@ -44,6 +46,15 @@ Imports/dependencies, installer/platform coverage, and recent `git log`.
 For a repo spanning many files, fan out `[S]`-tagged Explore subagents with
 specific focuses and require file:line citations. Draft your grounded
 option sets internally before asking anything.
+
+When `cairn/PROFILE.md` carries `# Collaboration mode: guest`, the repo is
+someone else's: the interview elicits the operator's understanding of the
+maintainers' design, not the operator's own intent, and everything it
+writes is that understanding — provisional, sourced from the upstream's
+public norms and review feedback, corrected in place when the maintainers
+say otherwise. The rule is the "Collaboration mode" bullet on DESIGN.md in
+tracking-rules; say so to the user at the start, and read the contributor
+docs the guest DESIGN seed cites before drafting option sets.
 
 Also check for a migration-preserved **numbered-principles file** — a
 note-and-leave doc at a `cairn/` path (e.g. `cairn/PRINCIPLES.md`) kept with
@@ -124,7 +135,8 @@ Then propose and test:
 **Write-out.** Record the settled principles in `cairn/DESIGN.md` under
 Design Principles: the **IP block first, then GPs**; numbers run within each
 type and are **never reused or renumbered** (retiring one takes a D-entry).
-A genuine cross-cutting choice with rationale (not a deferral) becomes a
+In guest mode every principle written carries
+`(provisional — guest mode)` after its text. A genuine cross-cutting choice with rationale (not a deferral) becomes a
 `cairn/DECISIONS.md` D-entry. Deferred candidates become ROADMAP
 `candidate` rows — nothing the user surfaced is silently dropped.
 

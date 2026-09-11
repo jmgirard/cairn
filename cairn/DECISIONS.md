@@ -5145,3 +5145,40 @@ a bot reviewer's comment on a fresh PR found post-merge to have named a
 defect the review fan-out missed reopens the post-CI read; an adopting
 repo that cannot accept a serial wait at the gate reopens the workflow
 config alternative.
+
+### D-139 (2026-09-10): In guest mode DESIGN.md's Conventions and IP/GP principles are the operator's provisional model of the maintainers' constraints, corrected in place on maintainer feedback with no D-entry — annotates D-137; the owner-mode D-entry rule and a no-IP guest interview rejected (M187)
+
+**Context:** D-137 made guest mode local reasoning over local files but
+left DESIGN.md's Conventions and principles with their owner-mode reading:
+an IP is "a hard constraint never violated — changed only by explicit user
+decision recorded as a D-entry", and the correction rule's exception says a
+wrong principle changes only that way. In a repo the operator does not own,
+neither the constraints nor the authority to change them are the
+operator's. The principles a guest writes are inferred from the upstream's
+public norms — CONTRIBUTING, style docs, review feedback — and the event
+that proves one wrong is a maintainer saying so on a PR, a decision the
+operator did not make and cannot record as their own.
+
+**Decision:** In guest mode, DESIGN.md's Conventions and IP/GP principles
+are the operator's provisional model of the maintainers' constraints. A
+principle or convention that maintainer feedback contradicts is corrected
+in place, marked `corrected <PR ref>`, with no D-entry: the correcting
+decision is the maintainers', and the PR thread holds its rationale. The
+guest DESIGN seed reads the contributor docs and cites each Conventions
+line's source; `/design-interview` states at session start that it elicits
+the operator's understanding of the maintainers' design, and every
+principle it writes carries `(provisional — guest mode)`. Rejected at the
+plan gate: keeping the owner-mode D-entry rule for guest corrections (it
+would record as the operator's decision a choice the maintainers made);
+forbidding IPs in guest mode, a GP-and-Conventions-only interview (the
+`Principles touched` slot and Phase 2 keep one code path either way, and a
+provisional IP is still the strongest constraint the operator knows of).
+
+**Consequences:** Annotates D-137 — the guest half of the axis gains a
+reading for DESIGN.md; the owner half is unchanged. The IP/GP definition
+and the correction exception in tracking-rules each carry a clause naming
+the "Collaboration mode" bullet as the guest-mode reading. Falsifiers: a
+guest repo where the operator later needs a correction's rationale and the
+PR thread no longer holds it reopens the D-entry rule; a guest-mode
+adopter treating a provisional IP as binding on the maintainers reopens
+the no-IP alternative.
