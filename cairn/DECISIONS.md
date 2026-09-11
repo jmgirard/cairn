@@ -5182,3 +5182,33 @@ guest repo where the operator later needs a correction's rationale and the
 PR thread no longer holds it reopens the D-entry rule; a guest-mode
 adopter treating a provisional IP as binding on the maintainers reopens
 the no-IP alternative.
+
+### D-140 (2026-09-11): Ten separate skills stand; the reason is per-skill auto-invocation, not typing — annotates D-003
+
+**Context:** The maintainer asked whether ten skills is poor form against
+one `/cairn <verb>` skill, revisiting D-003. D-003's stated reason — "a
+single multiplexed skill meant more typing" — no longer holds: D-124
+retired the routing chips it weighed against, and `/cairn plan` is shorter
+than `/milestone-plan`. The harness (Claude Code skills and plugins docs)
+has no subcommand or nested-skill mechanism: one SKILL.md is one command,
+a verb would be parsed by hand from the arguments, and one `description`
+serves both the menu and model auto-invocation. Plugin skills are already
+namespaced (`/cairn:milestone-plan`), so collisions are not a cost of the
+count. The collapse would also rename the commands the rulebook, hooks,
+scripts, tests, templates, README, and every adopting repo's router
+section carry, a breaking change for adopters.
+
+**Decision:** The skill layout stays at one skill per workflow. The
+standing reason is that each skill carries its own trigger text, so a
+described bug reaches `/hotfix` and an idea reaches `/milestone-plan`
+without the user naming a command; one umbrella description would carry
+every intent at once. Rejected: the collapse to `/cairn <verb>` (loses
+per-intent auto-invocation and per-command argument hints, breaks
+adopters for a menu that is already namespaced); an eleventh `/cairn`
+router skill over the ten (adds a menu entry to test a preference the
+maintainer settled here).
+
+**Consequences:** Annotates D-003 — its decision stands on this rationale;
+its typing clause is retired. Falsifiers: the harness gaining native
+subcommands or per-verb trigger text under one skill reopens the collapse;
+a second adopter reporting the menu length as friction reopens the router.
