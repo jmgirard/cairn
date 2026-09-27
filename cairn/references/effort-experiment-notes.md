@@ -112,3 +112,13 @@ that escaped to main under medium.
 - Whether high effort on circumplex-class ingestion actually prevents the
   escaped defects, or whether (per the CAIS analysis) they are
   process-invisible at any effort.
+- The effort scale moved under the recommendation above: Anthropic's
+  *Prompting Claude Opus 5.5* guide (`prompting-opus-5-5.md`, § Calibrate
+  effort, ingested by M189) states that Opus 5.5 defaults to `medium` where
+  Opus 5 defaulted to `high`, that "Effort level names don't correspond to the
+  same amount of thinking across models", and that "Claude Opus 5.5 at
+  `medium` matches or exceeds Claude Opus 5 at `high` on coding and
+  knowledge-work evaluations". The cohorts above were measured on Opus 5 /
+  Fable 5, so "keep medium" is read against that scale; a re-measurement on
+  Opus 5.5 tallies `effort` beside the model field, since the same level name
+  is a different amount of thinking — observed 2026-09-27.
