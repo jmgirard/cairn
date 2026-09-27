@@ -44,7 +44,9 @@ that PR's state before step 1 — `gh pr view <N>
 && gh pr view <N> --json state,mergedAt`, or `cd <abs-path> && gh pr list
 --head <branch> --state all --json number,url` when the entry has no URL
 yet) — a companion still open re-enters step 8's companion arm before the
-primary is pushed — and route on the state and the
+primary is pushed, and that arm runs first whichever route below the
+primary's state selects (a route that skips step 8 skips it for the
+primary alone) — and route on the state and the
 Review section; a stopped CI wait or a merge made outside the session
 re-enters here, at the step the record shows is next:
 

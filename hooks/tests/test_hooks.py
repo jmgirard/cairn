@@ -1693,6 +1693,31 @@ class TestMergeGuardCdTarget(RepoFixture):
     def test_refuses_missing_directory(self):
         self.assert_refused("cd %s/missing && gh pr merge 5" % self.plain)
 
+    def test_refuses_cd_after_or_list(self):
+        # M188 review O1: `true ||` short-circuits the cd, so the merge runs
+        # in the session repo — refused, marker untouched, never ungated.
+        self.assert_refused("true || cd %s && gh pr merge 5" % self.plain)
+
+    def test_refuses_cd_after_pipe(self):
+        # M188 review O1: a piped cd runs in a pipeline subshell.
+        self.assert_refused("echo hi | cd %s && gh pr merge 5" % self.plain)
+
+    def test_partly_quoted_tilde_is_not_expanded(self):
+        # M188 review O2: bash leaves `~"/x"` literal, so the guard must not
+        # expand it to $HOME/x even when that directory exists.
+        home = pathlib.Path(self._plain_tmp.name)
+        rel = os.path.relpath(self.plain, home)
+        env = dict(os.environ, HOME=str(home))
+        proc = subprocess.run(
+            [sys.executable, str(HOOKS_DIR / "merge_guard.py")],
+            input=json.dumps(self.merge_payload(
+                'cd ~"/%s" && gh pr merge 5' % rel
+            )),
+            capture_output=True, text=True, timeout=30, env=env,
+        )
+        self.assertEqual(hook_json(proc)["permissionDecision"], "deny")
+        self.assert_session_marker_untouched()
+
     def test_quoted_tilde_is_a_literal_directory_not_home(self):
         # M188 claim audit: the shell expands `~` only unquoted, so a quoted
         # `~` names `./~` — absent here, so refused, never $HOME.

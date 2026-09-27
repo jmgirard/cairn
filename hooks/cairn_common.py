@@ -89,7 +89,11 @@ def cd_target(command, cwd):
     is None, which merge_guard denies with the accepted forms named: a
     `cd` whose effect on the merge the guard cannot read must never let
     the session repo's marker answer for another repo, nor run ungated
-    (a `cd /missing; gh pr merge` merges in the session repo).
+    (a `cd /missing; gh pr merge` merges in the session repo). A `cd`
+    before a `git merge` never reaches this function: only `gh pr merge`
+    occurrences are read here, and a `cd … && git merge` compound takes
+    the cwd-rooted path as before (merge_guard.py docstring, known `git
+    merge` bypasses).
     """
     cds = list(CD_CMD.finditer(command or ""))
     merges = list(GH_PR_MERGE.finditer(command or ""))
@@ -99,8 +103,11 @@ def cd_target(command, cwd):
     if cd.start() >= merge.start():
         return None
     # The separator that put the cd in command position: `(` opens a
-    # subshell whose cd never reaches the merge.
-    if command[cd.start()] == "(":
+    # subshell whose cd never reaches the merge; `|` (a pipe, or the
+    # second char of `||`) runs the cd in a pipeline subshell or skips it
+    # on short-circuit — either way the merge runs where the shell already
+    # was, so the target is not the directory this reads (M188 review O1).
+    if command[cd.start()] in "(|":
         return None
     rest = command[cd.end():]
     end = _CD_SEGMENT_END.search(rest)
@@ -123,9 +130,10 @@ def cd_target(command, cwd):
     if len(tokens) != 1 or tokens[0] == "-":
         return None
     target = tokens[0]
-    # The shell expands `~` only when it is unquoted; a quoted `~` is the
-    # literal directory `./~`. Expand exactly when the shell would.
-    if target.startswith("~") and segment.strip().startswith("~"):
+    # The shell expands `~` only when the whole word is unquoted (`~"/x"`
+    # stays literal too); a quoted `~` is the literal directory `./~`.
+    # Expand exactly when the shell would: the token equals its raw segment.
+    if target.startswith("~") and segment.strip() == target:
         target = os.path.expanduser(target)
     if not os.path.isabs(target):
         if not cwd:

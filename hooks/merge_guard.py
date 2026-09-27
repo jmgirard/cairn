@@ -55,7 +55,10 @@ session marker; and a session cwd outside every cairn repo returns before
 the target is read, so a `cd` INTO a cairn repo from there goes unchecked.
 Redirections the detection does NOT see, among others: `pushd ../other &&
 gh pr merge`, a bare `cd;` (the token check requires whitespace after
-`cd`), command-substitution subshells (`$(…)`/backticks; parenthesized
+`cd`), a `cd` opening a brace group or an `if … then` body (`{ cd ../other
+&& gh pr merge 5; }`, `if true; then cd ../other && gh pr merge 5; fi` —
+`{` and `then` are not command separators, so the session cwd's marker
+answers), command-substitution subshells (`$(…)`/backticks; parenthesized
 subshells ARE seen — `(` is a command separator), alias or wrapper
 invocations of gh (`env GH_REPO=o/r gh …` included), a prior `export
 GH_REPO=…` in the same command, GH_HOST, and assignment values containing

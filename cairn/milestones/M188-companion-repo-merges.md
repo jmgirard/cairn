@@ -64,6 +64,8 @@ A session sitting in one cairn repo merges a PR in a companion checkout by spell
 - 2026-09-27: amendment return: AC6 — "`/milestone-implement` step 2 records each companion checkout the milestone works in as a `companion: <abs-path> <branch>` entry of the `Branch/PR:` slot" (the rest of AC6 unchanged; T5's "step 3" follows the same correction).
 - 2026-09-27: re-audit: AC6 (full) — "step 2" confirmed as the locator (implement step 2 is Branch, its Companion-checkouts paragraph records the entry; step 3 is the question gate); three minor notes: T5 carries the same correction (done), the closing "three skill sites" sentence undercounts the sites the promise spans (left as is at the gate), the "each companion checkout" claim is bounded by implement step 2's own trigger (recorded, no objection); reachability, instrument, proportionality clear.
 - 2026-09-27: amendment gate: user chose the one-word fix (step 3 → step 2 in AC6 and T5) over also renaming the verification sites; AC6 amended, status → review for re-review.
+- 2026-09-27: review pass 2 gate — 8 findings triaged (5 fix-now: O1 `|`/`||` separator hole, O2 partly quoted `~`, O3/S2 docstring, S1 resume-route sentence; 3 rejected: O4, O5, O6), dispositions in Review.
+- 2026-09-27: step-7 approval: m188-companion-repo-merges approved for merge (with the fix-now items landing before the push).
 
 ## Decisions
 
@@ -81,3 +83,12 @@ A session sitting in one cairn repo merges a PR in a companion checkout by spell
 - Consistency gate: `cairn_validate.py` exit 0, all checks passed, `release window` advisory silent. No DESIGN.md principle changed (DESIGN.md not in the diff), `cairn_impact` skipped. Profile `generic`: no toolchain checks.
 - 2026-09-27 review pass 2 (branch at `8f0de16` plus this commit; origin/main unmoved at `6000e0e`, branch contains it; no PR). Fresh runs: scripts 391 OK exit 0, hooks 171 OK exit 0, validate all checks passed, release-window advisory silent. AC1–AC5, AC7 evidence above re-verified by the same test names and the same suite runs; ticks stand.
 - AC6 evidence (amended wording): `skills/milestone-implement/SKILL.md:38` is step 2 (Branch); its Companion-checkouts paragraph (`:47-55`) records the `companion: <abs-path> <branch>` entry; the template, ownership row, review step 7 chip, step 8 companion arm, guest exclusion, and resume route read as recorded in pass 1. Ticked.
+- Fan-out (three lenses, fresh context). [S] prior-review lens: no findings — M162/M163/M172 archive findings honored; `gh api pulls/comments?per_page=1` returned `[]`, walk skipped. Findings and dispositions (gate 2026-09-27):
+- O1 (diff-bug, top): `cd_target` refused only a `(` separator, so `true || cd <untracked> && gh pr merge 5` and `echo hi | cd <untracked> && …` were allowed with the merge running in the session repo ungated; reproduced by probe. Fix now: `|` separator refused; tests `test_refuses_cd_after_or_list`, `test_refuses_cd_after_pipe`. Not a floor return — AC4 names the joiner after the `cd`, not the separator before it; the user chose fix-now at the gate.
+- O2 (diff-bug): `cd ~"/x"` was expanded though bash leaves it literal. Fix now: expansion only when the token equals its raw segment; test `test_partly_quoted_tilde_is_not_expanded`.
+- O3 (diff-bug): `{ cd …; }` and `if …; then cd …` bodies unseen (pre-existing). Fix now, prose: named in the `merge_guard.py` unseen-spellings list.
+- O4 (diff-bug): a symlinked path to the session repo takes the cross-repo branch (abspath, not realpath). Rejected: same marker file either way, no ungated path, no symlinked checkout observed.
+- O5 (diff-bug): the post hook would misresolve a relative target if the harness reported a post-`cd` cwd. Rejected: the harness resets cwd after every call (M163 observation).
+- O6 (diff-bug): the LESSONS M170 line omits the `$`/backtick/glob ban and the one-merge rule. Rejected: the docstring holds the full rule; a lesson line summarizes.
+- S1 (blame-history): the resume route's companion clause did not say whether it or route (a)'s "steps 1–8 skipped" wins. Fix now, prose: the arm runs first on any route; a route skipping step 8 skips it for the primary alone.
+- S2 (blame-history): `cd … && git merge` never reaches `cd_target`. Fix now, prose: one sentence in the `cd_target` docstring.
