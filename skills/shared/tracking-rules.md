@@ -37,7 +37,7 @@ through the implement amendment protocol or a review send-back, always with a wo
 |---|---|---|
 | Status (header) | the transitioning skill (plan → implement → review) | mirror-update |
 | Priority, Depends on, Driving RR, Principles touched, Resolves, Surface tier (header) | plan | create; amend-via-gate |
-| Branch/PR (header) | implement (branch), review (PR URL) | create |
+| Branch/PR (header) | implement (branch, plus one `companion: <abs-path> <branch>` entry per companion checkout the milestone also works in), review (PR URLs) | create |
 | Goal | plan | create; a wrong goal returns to plan, never edited in place |
 | Scope (In/Out) | plan | create; amend-via-gate |
 | Acceptance criteria | plan | create; amend-via-gate — review reads, never reinterprets; under AC fencing review ticks a verified criterion box (a verification mark, not a text change) |
@@ -257,10 +257,12 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   number out: `gh pr merge <N> --squash`.
 - **An approval binds one repo**: the marker lives in the merged repo's own `cairn/`, and the guard denies a `gh pr
   merge` that targets another repo (`--repo`/`-R`, a `GH_REPO=` prefix; a URL or branch positional is denied
-  separately, as not naming a checkable PR). In a
-  multi-repo session, a secondary repo's merge runs from a session cwd inside that repo, through that repo's own gate
-  and marker. A repo without cairn tracking is outside the guard entirely — an improvised marker there does nothing;
-  such merges are gated by chat approval alone, or the repo adopts cairn.
+  separately, as not naming a checkable PR). In a multi-repo session, a companion repo's merge is spelled `cd
+  <abs-path> && gh pr merge <N> --squash --delete-branch` — one `cd`, a literal existing directory, `&&` alone — and
+  the guard resolves the repo from that path: a tracked companion is gated through its own marker (written at
+  `<abs-path>/cairn/.merge-approved`, naming the PR), and a repo without cairn tracking is outside the guard entirely
+  — an improvised marker there does nothing; such merges are gated by chat approval alone (the review chip names the
+  companion PR), or the repo adopts cairn. Any other `cd` spelling is denied.
 
 **Enforcement boundary.** Every guard is a PreToolUse hook on *this* session's own Bash calls; a merge made in the
 GitHub web UI, by a merge queue, or by a contributor without the plugin is invisible to them — there the approval

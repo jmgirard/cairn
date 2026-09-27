@@ -37,22 +37,31 @@ Author such content (tests, docs) via the Write tool, not a heredoc.
 Cross-repo limitations (M162; non-exhaustive): an approval binds the repo
 whose cairn/.merge-approved records it, and the guard denies the cross-repo
 `gh pr merge` forms its tokenization can see — repo-targeting flags
-(--repo/-R, bundled clusters, --repo=), leading GH_REPO= assignment
-prefixes, and (M163) compounds where a command-position `cd` precedes any
-`gh pr merge` (denied with session-cwd guidance before the marker check; a
-`cd` staying inside the session's own repo is denied too — the target is
-not parsed — so drop the `cd` and respell plainly). Redirections the
-detection does NOT see, among others: `pushd ../other && gh pr merge`, a
-bare `cd;` (the token check requires whitespace after `cd`),
-command-substitution subshells (`$(…)`/backticks; parenthesized subshells
-ARE seen — `(` is a command separator), alias or wrapper invocations of gh
-(`env GH_REPO=o/r gh …` included), a prior `export GH_REPO=…` in the same
-command, GH_HOST, and assignment values containing whitespace, quoting, or
-substitution — those last spellings hide the merge from the guard ENTIRELY
-(no denial, no marker check), since the prefix run reads space-delimited
-`VAR=value` words only. A merge into a repo the session cwd is not inside
-is gated by that repo's own guard and marker — or, for a repo without
-cairn tracking, by chat approval alone.
+(--repo/-R, bundled clusters, --repo=) and leading GH_REPO= assignment
+prefixes. The cd-compound spelling (M163, reread M188): the one form
+`cairn_common.cd_target` accepts — a single command-position `cd` whose
+one literal token names an existing directory, joined by `&&` to the
+command's only `gh pr merge` — retargets the guard at that directory: a
+target with no cairn tracking is let through after the M162 checks (the
+rulebook gates such merges by chat approval alone), a tracked target is
+gated on ITS marker, which must name the PR (no legacy no-PR fallback
+across repos), and its consumption is resolved there by merge_guard_post.
+Every other `cd` spelling before a merge is denied with the accepted forms
+named. Limitations of the target read: a directory whose git toplevel is a
+nested or stale clone of the session repo (a submodule, an old checkout)
+resolves as the guard sees it — an untracked one merges the session repo's
+PR ungated, a nested one under the session's cairn root consumes the
+session marker; and a session cwd outside every cairn repo returns before
+the target is read, so a `cd` INTO a cairn repo from there goes unchecked.
+Redirections the detection does NOT see, among others: `pushd ../other &&
+gh pr merge`, a bare `cd;` (the token check requires whitespace after
+`cd`), command-substitution subshells (`$(…)`/backticks; parenthesized
+subshells ARE seen — `(` is a command separator), alias or wrapper
+invocations of gh (`env GH_REPO=o/r gh …` included), a prior `export
+GH_REPO=…` in the same command, GH_HOST, and assignment values containing
+whitespace, quoting, or substitution — those last spellings hide the merge
+from the guard ENTIRELY (no denial, no marker check), since the prefix run
+reads space-delimited `VAR=value` words only.
 """
 
 import os

@@ -44,9 +44,9 @@ A session sitting in one cairn repo merges a PR in a companion checkout by spell
 - [x] T1: Tests first for AC4's fifteen forms, then `cairn_common.cd_target(command, cwd)`: returns the resolved absolute target for an accepted spelling, `None` otherwise (`hooks/cairn_common.py:47` is the predicate it replaces).
 - [x] T2: `merge_guard.py`: on a `cd` before a merge, `cd_target` → `None` → the rewritten refusal; a target with no cairn root → return after the M162 checks; a target with one → the marker checks and consumption against that root (refactor the marker block to take a root; deny a marker naming no PR when the root is not the cwd's). Tests for AC1, AC2, AC5's allow test.
 - [x] T3: `merge_guard_post.py` resolves pending in the target root via the same helper; AC3 tests.
-- [ ] T4: Docstring, tracking-rules approval bullet, LESSONS lines (M163 at `cairn/LESSONS.md:84`, M170 at `:87`) corrected in place.
-- [ ] T5: `templates/milestone.md` `Branch/PR:` comment and tracking-rules ownership row gain the `companion:` grammar; `/milestone-implement` step 3 records it; `/milestone-review` step 7 chip and step 8 companion arm (companions first; guest arm excluded; resume route reads companions).
-- [ ] T6: Run both gating suites from the repo root; hand-run `skills/tests` and report the pre-existing red set unchanged (D-109).
+- [x] T4: Docstring, tracking-rules approval bullet, LESSONS lines (M163 at `cairn/LESSONS.md:84`, M170 at `:87`) corrected in place.
+- [x] T5: `templates/milestone.md` `Branch/PR:` comment and tracking-rules ownership row gain the `companion:` grammar; `/milestone-implement` step 3 records it; `/milestone-review` step 7 chip and step 8 companion arm (companions first; guest arm excluded; resume route reads companions).
+- [x] T6: Run both gating suites from the repo root; hand-run `skills/tests` and report the pre-existing red set unchanged (D-109).
 
 ## Work log
 
@@ -56,6 +56,7 @@ A session sitting in one cairn repo merges a PR in a companion checkout by spell
 - 2026-09-27: plan chose resolving the `cd` target in the guard over asking the harness for a mid-turn cwd move because the move is harness-owned (M163 F1 declined); falsified by the directory-change tool applying mid-turn, which would make the target read unnecessary.
 - 2026-09-27: implement started on `m188-companion-repo-merges`; question gate skipped — the plan fixes the helper name, the `companion:` grammar, and the merge order, nothing open.
 - 2026-09-27: T1–T3 done in one checkpoint — `cairn_common.cd_target` (one `cd`, one merge, `&&` joiner, existing dir, no `$`/backtick/glob, no subshell), merge_guard resolves the root from it (untracked → step aside after the M162 checks; tracked → that root's marker, a no-PR marker denied cross-repo), merge_guard_post resolves pending in the target root; the same-repo denial test inverted; hooks 170 green, scripts 391 green. Deviation: four old test assertions were swapped by a `python3 -` script rather than the Edit tool (tracking-rules file-edit rule); verified by grep afterwards.
+- 2026-09-27: T4–T6 done — guard docstring's cd paragraph and target-read limitations rewritten; tracking-rules approval bullet and ownership row, LESSONS M163/M170 lines corrected in place (`corrected M188`); template `Branch/PR:` comment carries the `companion:` grammar; implement step 2 records companions; review step 7 chip names them, step 8 companion arm (companions first, untracked → chip alone, tracked → own marker, stop before the primary on failure), resume route re-reads companion PRs. skills/tests hand-run: first pass added one red (`test_owner_parity`, the ownership cell's `;` cut the owner list) — cell respelled with a comma; now the same 4 reds + 1 error as M187. scripts 391, hooks 170 green; tracking-rules 576 lines / 55,110 bytes.
 - 2026-09-27: plan chose the `cd <path>` spelling over a slug-to-checkout map for `--repo` because every skill-produced merge has a local checkout; falsified by a session needing to merge a repo it holds no checkout of.
 
 ## Decisions

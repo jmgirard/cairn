@@ -44,7 +44,16 @@ run ingestion first (see `/milestone-brief`).
    `git fetch <base>`, pull (ff-only), and **push any unpushed local
    commits** — so the branch is cut from the pushed default branch and the
    PR diff will contain only milestone work; then `git checkout -b
-   m<nnn>-<slug>`; record the branch in the milestone header. **Guest arm**
+   m<nnn>-<slug>`; record the branch in the milestone header. **Companion
+   checkouts:** a milestone whose tasks also change a second repo the user
+   holds a checkout of (a deployed page beside a package) cuts the same
+   branch there — `cd <abs-path> && git checkout -b m<nnn>-<slug>` in one
+   Bash call, since the shell cwd resets to the session repo after every
+   call — and records it as a further `Branch/PR:` entry, `companion:
+   <abs-path> <branch>`, one per checkout; every later command in that
+   checkout is spelled `cd <abs-path> && …` the same way, and
+   `/milestone-review` merges each companion before the primary (its step
+   8). **Guest arm**
    (tracking-rules "Collaboration mode"): the fetch is the whole sync — the
    default branch is never pushed, and the local copy needs no pull — and
    the branch is cut directly from the base: `git checkout -b <slug>
