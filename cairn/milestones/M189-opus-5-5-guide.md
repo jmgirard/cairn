@@ -1,13 +1,13 @@
 # M189: Ingest the Opus 5.5 prompting guide — an early-stop clause for the between-gate stretches, and the effort notes re-scaled
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — a rulebook conduct bullet changes how every downstream repo's sessions end their turns
-- **Branch/PR:** —
+- **Branch/PR:** m189-opus-5-5-guide
 
 ## Goal
 
@@ -37,7 +37,7 @@ Ingest Anthropic's "Prompting Claude Opus 5.5" guide as a cited source note and 
 
 ## Tasks
 
-- [ ] T1: Retrieve the guide (`curl` of the `.md` sibling) to `cairn/references/sources/prompting-opus-5-5.md`; author `cairn/references/prompting-opus-5-5.md` from the template with provenance, citation, role, verbatim extracted values (the four numbered turn endings, the wanted-stop sentence, the human-in-the-loop caution, the "remain a reasonable starting point" and effort-scale statements, the time-signal claim and its verification caveat), the per-section disposition list, and its INDEX line; run the whitespace-collapsed match over every quotation.
+- [x] T1: Retrieve the guide (`curl` of the `.md` sibling) to `cairn/references/sources/prompting-opus-5-5.md`; author `cairn/references/prompting-opus-5-5.md` from the template with provenance, citation, role, verbatim extracted values (the four numbered turn endings, the wanted-stop sentence, the human-in-the-loop caution, the "remain a reasonable starting point" and effort-scale statements, the time-signal claim and its verification caveat), the per-section disposition list, and its INDEX line; run the whitespace-collapsed match over every quotation.
 - [ ] T2: Add the early-stop bullet to `skills/shared/tracking-rules.md` "Question gates and phase closes", after the paragraph carrying "between gates, work autonomously, never dripping questions"; add the source note's Traces-to line for it.
 - [ ] T3: Append the dated observations to `prompting-opus-5.md` and `effort-experiment-notes.md`; re-check the ROADMAP's "Reasoning-effort dial per spawned agent" row against the Agent tool's current schema and append a dated re-check note to the row.
 - [ ] T4: Before T2, run the hand-run `skills/tests` suite and record its failing and erroring test ids in the work log; after T1–T3, run both gating suites, `cairn_validate`, and `skills/tests` again, and record the results.
@@ -50,6 +50,9 @@ Ingest Anthropic's "Prompting Claude Opus 5.5" guide as a cited source note and 
 - 2026-09-27: plan gate chose not adopting the time-signal sentence over a candidate row or Explore-only adoption because the guide's own caveat is less verification and cairn's fan-outs are small; falsified by a fan-out measured as a session's wall-clock bottleneck.
 - 2026-09-27: plan gate chose a dated observation in the effort notes over a planned low-effort trial because effort is a user session setting, not a plugin surface; falsified by a downstream repo asking cairn to recommend an effort level.
 - 2026-09-27: plan gate chose no prose guard for the new bullet over an M152-pattern hand-run guard because `skills/tests` gates nothing (D-109) and a guard adds upkeep without protection; falsified by the bullet drifting or being deleted unnoticed in a later rulebook edit.
+- 2026-09-27: implement started on `m189-opus-5-5-guide`; the question gate was skipped — the plan gate settled every open choice and the criteria name the citekey and sites.
+- 2026-09-27: T4 baseline, `skills/tests` before T2 at 3af2b45 (661 tests, 4 failures, 1 error): FAIL test_default_branch_parameterized.TestDefaultBranchParameterized.test_cairn_init_fallback_matches_canonical_recipe; FAIL test_default_branch_parameterized.TestDetectionRecipeInGitModel.test_recipe_command_present; FAIL test_lesson_graduation.TestFamilyActuallyLeft.test_partial_coverage_was_trimmed_not_deleted; FAIL test_resume_routing.TestHotfixMergedPrReentry.test_two_way_check_runs_against_the_baseline; ERROR test_mutation_harness.TestRegisteredGuardsFailWhenBlanked.test_each_registered_guard_fails_when_its_block_is_blanked (guard test_default_branch_parameterized).
+- 2026-09-27: T1 done — guide fetched (`curl -L` of the `.md` sibling, HTTP 200, 28,306 bytes) to the shelf; `prompting-opus-5-5.md` authored with 14 quotations, all found in the shelf copy by the whitespace-collapsed match (the intro quotation split around a link label); twelve-section disposition in Role; INDEX line added; `cairn_validate` green. The simple-english lint hook reports em-dashes and long sentences in the page; they sit in verbatim quotations and the repo's record convention, left as written.
 
 ## Decisions
 
