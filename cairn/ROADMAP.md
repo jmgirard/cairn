@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-09-27 (M188 done: the merge guard reads the `cd` target and review merges companions first; M185's row pruned (archive + git); validate green; scripts 391 + hooks 174 green; skills/tests 661 with 4 reds + 1 error, the same pre-existing set as at M187, non-gating (D-109); no new lesson; ROADMAP/LESSONS bytes and the three doctrine-module budgets hand-read under cap.)_
+_Last hygiene check: 2026-09-27 (M189 done: the between-gate early-stop bullet and the Opus 5.5 source note; M186's row pruned (archive + git); validate green; scripts 391 + hooks 174 green; skills/tests 661 with 4 reds + 1 error, the same pre-existing set as at M188, non-gating (D-109); no new lesson; ROADMAP/LESSONS bytes and the three doctrine-module budgets hand-read under cap.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,10 +12,9 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M189 | Ingest the Opus 5.5 prompting guide — an early-stop clause for the between-gate stretches, and the effort notes re-scaled | review | — | normal | milestones/M189-opus-5-5-guide.md |
+| M189 | Ingest the Opus 5.5 prompting guide — an early-stop clause for the between-gate stretches, and the effort notes re-scaled | done | — | normal | milestones/archive/M189-opus-5-5-guide.md |
 | M188 | Companion-repo merges from one session — the guard reads the `cd` target, and review merges the companions | done | — | high | milestones/archive/M188-companion-repo-merges.md |
 | M187 | Guest-mode DESIGN.md — principles are the operator's provisional model of the maintainers' constraints | done | — | high | milestones/archive/M187-guest-design-principles.md |
-| M186 | The PR opens after approval, so CI first runs on the head that merges | done | — | high | milestones/archive/M186-pr-after-approval.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
