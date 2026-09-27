@@ -32,38 +32,52 @@ Disposition of the shelf copy's twelve `##` sections (M189 plan gate,
 2026-09-27; the domain is `grep '^## '` over the shelf copy):
 
 1. § Capabilities relevant to prompting — not adopted: capability claims with
-   no cairn rule surface; its `medium`-versus-`high` comparison is the
-   § Calibrate effort claim quoted below.
+   no cairn rule surface — observed 2026-09-27; its own `medium`-versus-`high`
+   comparison is narrower (agentic coding, "in fewer steps and with fewer
+   tokens") than the § Calibrate effort claim quoted below.
 2. § Calibrate effort — adopted as a dated observation in
    `cairn/references/effort-experiment-notes.md` (Open questions), no rule:
    effort is a user session setting, not a plugin surface.
 3. § Prompts written for thinking disabled — not adopted: cairn's sessions run
-   under the Claude Code harness with thinking on; no cairn surface.
+   under the Claude Code harness with thinking on; no cairn surface — observed
+   2026-09-27.
 4. § Unattended agentic runs — adopted as the early-stop bullet in
    `skills/shared/tracking-rules.md` "Question gates and phase closes"; the
    sample paragraph's same-message status-note clause is not imported (it
    conflicts with the Mandated-substance rule), and its harness-side
-   continuation loop is the harness's, not the plugin's.
+   continuation loop is the harness's, not the plugin's. Adopted against the
+   section's human-in-the-loop caution (quoted below) on the plan gate's
+   reading that a between-gate stretch poses no question for the user to
+   answer; the third Open question carries the falsifier.
 5. § Safeguard refusals — not adopted: API-level classifier behavior with no
-   cairn surface.
+   cairn surface — observed 2026-09-27.
 6. § User-facing progress updates — already covered: lever three (a statement
-   of intent before the first tool call, a recap at the end) is the
-   narration-cadence guidance `prompting-opus-5.md` traces to the "Deltas, not
-   dumps" and "Plain style" bullets (M152); levers one, two, and four are
-   harness-side, and the Claude Code harness applies the progress reminder
-   itself.
+   of intent before the first tool call, a recap at the end) is carried by the
+   Claude Code harness's own system prompt ("say in a line what you're about
+   to do … close with a short recap", read in the ingesting session) and, for
+   the recap, by the "Outcome-first recaps" bullet of `tracking-rules.md`;
+   levers one, two, and four are harness-side, and the harness sends its own
+   progress reminder (seen in the ingesting session) — observed 2026-09-27.
+   `prompting-opus-5.md` extracts the same instruction and traces it to no
+   cairn bullet.
 7. § Explore context in multi-app workflows — not adopted: every cairn skill
-   states its own session-start reading list; there is no multi-app surface.
+   states its own session-start reading list; there is no multi-app surface —
+   observed 2026-09-27.
 8. § Time signals for multiagent harnesses — not adopted (plan gate): cairn's
-   fan-outs are small and its reviewers exist to verify, which the guide's own
-   caveat says the sentence trades away.
+   fan-outs are at most three reviewers and its reviewers exist to verify,
+   which the guide's own caveat says the sentence trades away.
 9. § Thinking instructions in chat system prompts — not adopted: cairn carries
-   no thinking instruction, and the guide itself excludes the "treat earlier
-   answers as settled" instruction from agentic tasks.
+   no thinking instruction — observed 2026-09-27 — and the guide itself
+   excludes the "treat earlier answers as settled" instruction from agentic
+   tasks "where a later step can reveal a mistake in an earlier one", which
+   cairn's are.
 10. § Mark pasted text in user messages — already covered by the Claude Code
-    harness, whose system prompt carries the guide's `<pasted_content>` note.
-11. § Tools for complex visual inputs — not adopted: no cairn surface.
-12. § Frontend design defaults — not adopted: no cairn surface.
+    harness, whose system prompt carries a `<pasted_content>` note matching
+    the guide's (read in the ingesting session) — observed 2026-09-27.
+11. § Tools for complex visual inputs — not adopted: no cairn surface —
+    observed 2026-09-27.
+12. § Frontend design defaults — not adopted: no cairn surface — observed
+    2026-09-27.
 
 ## Extracted values
 
@@ -156,7 +170,8 @@ line anchors stale).
 
 Claims about the *repo's own state* — what is on the shelf, what has not been
 read, what a later task must still check — are dated observations, not
-standing facts. Each carries `— observed YYYY-MM-DD` inline.
+standing facts. Each carries `— observed YYYY-MM-DD` inline, and is re-checked
+before the milestone merges.
 
 - The page prints no version or last-updated date, so a later re-verification
   can detect drift only by re-reading the whole page — observed 2026-09-27.

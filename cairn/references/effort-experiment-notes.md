@@ -119,6 +119,7 @@ that escaped to main under medium.
   same amount of thinking across models", and that "Claude Opus 5.5 at
   `medium` matches or exceeds Claude Opus 5 at `high` on coding and
   knowledge-work evaluations". The cohorts above were measured on Opus 5 /
-  Fable 5, so "keep medium" is read against that scale; a re-measurement on
+  Fable 5, the high cohort's first days on Opus 4.8 (the model boundary the
+  header states), so "keep medium" is read against that scale; a re-measurement on
   Opus 5.5 tallies `effort` beside the model field, since the same level name
   is a different amount of thinking — observed 2026-09-27.

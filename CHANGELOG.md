@@ -4,6 +4,21 @@
 
 ### Changes that affect existing repos
 
+- **Between gates, a session no longer ends its turn while work is still
+  owed.** The rulebook's "Question gates and phase closes" section gains an
+  early-stop bullet, taken from Anthropic's *Prompting Claude Opus 5.5*
+  guide (`cairn/references/prompting-opus-5-5.md`): four turn endings are
+  named as unwanted while a task, check, or record is unfinished (a recap
+  that names the next step instead of taking it, an offer to carry on, a
+  list of non-blocking decisions, and stopping to report because the turn
+  was long), and the wanted stops are the ones where nothing can move
+  without the user or a guard blocks the session (gate chips, escalation
+  offers, confirmations before risky actions, hygiene checkpoints, the
+  phase close block, timeout stops, named external blockers, hook
+  denials). The effort notes and the Opus 5 guide page carry dated
+  observations that Opus 5.5's `medium` is a different amount of thinking
+  from Opus 5's.
+
 - **The pull request opens after you approve the merge, not before the
   review.** `/milestone-review` step 2 no longer pushes the branch or
   opens a draft PR; step 8 pushes and runs `gh pr create` (ready, never a

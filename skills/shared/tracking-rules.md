@@ -365,13 +365,16 @@ gate-chip option names a skill (`→ /skill` notation — an escalation offer, a
   of taking it; an offer to carry on unless the user prefers otherwise, which waits for an answer the user was not
   going to give; a list of decisions for the user when, by the session's own account, none of them blocks the rest of
   the work; and stopping to report because the turn has been long or a task landed, at a point where the skill's steps
-  name no stop — the phase close block and a task-boundary checkpoint stop are stops the steps name, never this
-  ending. A session that notices itself inviting the user to redirect it or offering to wait deletes that and does
-  the next thing; a recommendation on an open decision is stated, and the work that does not depend on the answer
-  carries on. The wanted stops are the ones where nothing can move without the user: a gate or decision chip a skill
-  step mandates, an escalation offer, confirmation before an irreversible or destructive action, a checkpoint stop at
-  a task boundary when context hygiene demands one, the phase close block, a timeout stop, and a stop at an external
-  blocker a skill step names. Nothing here overrides confirmation before a risky or destructive action.
+  name no stop. None of the four is a stop the steps name: the phase close block and a checkpoint stop that context
+  hygiene demands at a task boundary are named stops, never these endings. A session that notices itself inviting the
+  user to redirect it or offering to wait deletes that and does the next thing; a recommendation on an open decision
+  is stated — as a gate chip where the decision is the user's and a skill step mandates one, otherwise in a position
+  the Mandated-substance rule guarantees — and the work that does not depend on the answer carries on. The wanted
+  stops are the ones where nothing can move without the user, or where what blocks the session is deliberately
+  protected from it — among them a gate or decision chip a skill step mandates, an escalation offer, confirmation
+  before a risky, irreversible, or destructive action, a checkpoint stop at a task boundary when context hygiene
+  demands one, the phase close block, a timeout stop, a stop at an external blocker a skill step names, and a guard
+  hook's denial. Nothing here overrides confirmation before a risky or destructive action.
 
 Every phase or skill ends with a **close block**, never a chip. The turn's final rendered text carries: an outcome
 recap (one or two sentences, plain words); a status table or line — unit of work, status, branch/PR and check results,
