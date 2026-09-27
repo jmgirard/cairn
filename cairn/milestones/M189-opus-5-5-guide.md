@@ -58,6 +58,8 @@ Ingest Anthropic's "Prompting Claude Opus 5.5" guide as a cited source note and 
 - 2026-09-27: T4 done — the first scripts run failed one test, the pinned shipped-page ledger in `scripts/tests/test_scripts.py` (`TestShippedPageStateLedger`), which requires every committed references page registered with its state; `prompting-opus-5-5.md` registered as `ok` (a minor discovered sub-task). After that: `scripts/tests` 391 OK exit 0, `hooks/tests` 174 OK exit 0, `cairn_validate` exit 0, `skills/tests` 661 with the same 4 failures and 1 error by id as the pre-T2 baseline line above.
 - 2026-09-27: claim audit: 20 claims read, 1 corrected — skills/shared/tracking-rules.md, scripts/tests/test_scripts.py. The correction: the wanted-stop list omitted the external-blocker stop `/milestone-implement` step 8 mandates; added as "a stop at an external blocker a skill step names". Ending Two also re-worded to the guide's own "the user was not going to give". Both re-read once by the same [O] reader: hold. Verify slot re-run clean after the change.
 - 2026-09-27: all tasks checked; status → review.
+- 2026-09-27: review — five criteria verified with fresh evidence; three-lens review: 21 findings, 15 fixed on the branch, 6 rejected with reasons (Review section); no defect return.
+- 2026-09-27: step-7 approval: m189-opus-5-5-guide approved for merge.
 
 ## Decisions
 
