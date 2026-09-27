@@ -1438,6 +1438,8 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # M170 adds the wait-mechanisms ledger: a first-hand record of a
     # scratch-repo experiment, its status claiming nothing to re-verify
     # against, hence `exempt`.
+    # M189 adds the Opus 5.5 prompting guide: full page read directly from
+    # the shelf copy, dated verification claim, hence `ok`.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "effort-experiment-notes.md": "exempt",
@@ -1458,6 +1460,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "oracle-discipline-notes.md": "ok",
         "oracle-doctrine-intraclass-notes.md": "ok",
         "prompting-opus-5.md": "ok",
+        "prompting-opus-5-5.md": "ok",
         "record-rule-remeasurement.md": "ok",
         "rulebook-classification-ledger.md": "exempt",
         "self-verification-ledger.md": "exempt",
