@@ -1124,11 +1124,9 @@ class TestMergeGuard(RepoFixture):
         ))
         self.assertEqual(out["permissionDecision"], "deny")
         reason = out["permissionDecisionReason"]
-        self.assertIn("session cwd", reason)
         self.assertIn(
-            "drop the `cd`", reason,
-            "must be the cd-specific message, not the M162 --repo one "
-            "(both carry 'session cwd')",
+            "Accepted forms", reason,
+            "must be the cd-specific message, not the M162 --repo one",
         )
         self.assertEqual(
             self.marker().read_text(), self.APPROVAL_PR7,
@@ -1142,7 +1140,7 @@ class TestMergeGuard(RepoFixture):
         ))
         self.assertEqual(out["permissionDecision"], "deny")
         self.assertIn(
-            "session cwd", out["permissionDecisionReason"],
+            "Accepted forms", out["permissionDecisionReason"],
             "the cd-specific guidance must win over the bare approval message",
         )
 
@@ -1153,7 +1151,7 @@ class TestMergeGuard(RepoFixture):
             self.merge_payload("git fetch && cd ../other && gh pr merge 7 --squash"),
         ))
         self.assertEqual(out["permissionDecision"], "deny")
-        self.assertIn("session cwd", out["permissionDecisionReason"])
+        self.assertIn("Accepted forms", out["permissionDecisionReason"])
 
     def test_cd_inside_a_flag_value_is_not_a_cd_prefix(self):
         # "cd" as quoted flag-value text is not a command-position cd; the
@@ -1184,19 +1182,24 @@ class TestMergeGuard(RepoFixture):
             ),
         ))
         self.assertEqual(out["permissionDecision"], "deny")
-        self.assertIn("drop the `cd`", out["permissionDecisionReason"])
+        self.assertIn("Accepted forms", out["permissionDecisionReason"])
 
-    def test_denies_same_repo_cd_compound_with_respell_guidance(self):
-        # M163 review O1: the cd target is not parsed, so a cd staying
-        # inside the session's own repo is denied too — a documented false
-        # positive whose message says how to respell.
+    def test_allows_same_repo_cd_compound_on_own_marker(self):
+        # M188 (AC5): the cd target is read, so a cd staying inside the
+        # session's own repo takes the plain-spelling path — the M163
+        # same-repo false positive is gone.
+        (self.root / "docs").mkdir()
         self.marker().write_text(self.APPROVAL_PR7)
-        out = hook_json(run_hook(
+        proc = run_hook(
             "merge_guard.py",
             self.merge_payload("cd docs && gh pr merge 7 --squash"),
-        ))
-        self.assertEqual(out["permissionDecision"], "deny")
-        self.assertIn("drop the `cd`", out["permissionDecisionReason"])
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.marker().exists(), "marker consumed at own root")
+        self.assertEqual(
+            (self.root / "cairn" / ".merge-approved.pending").read_text(),
+            self.APPROVAL_PR7,
+        )
 
     def test_denies_bare_merge_that_names_no_pr(self):
         self.marker().write_text(self.APPROVAL_PR7)
@@ -1497,6 +1500,200 @@ class TestMergeGuard(RepoFixture):
         self.assertEqual(proc.stdout.strip(), "")
 
 
+class TestMergeGuardCdTarget(RepoFixture):
+    """M188: the guard reads the one accepted `cd <dir> && gh pr merge`
+    spelling and resolves the repo from the target — stepping aside for an
+    untracked target (AC1), gating on the target's own marker (AC2), and
+    refusing every other cd spelling with the accepted forms named (AC4)."""
+
+    APPROVAL_PR7 = "M07 approved 2026-07-11 for PR #7\n"
+    SESSION_MARKER = "M99 approved 2026-07-11 for PR #99\n"
+
+    def setUp(self):
+        super().setUp()
+        # A companion checkout with no cairn tracking (hitop-form's shape).
+        self._plain_tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._plain_tmp.cleanup)
+        self.plain = pathlib.Path(self._plain_tmp.name) / "form"
+        shutil.copytree(_template(False), self.plain)
+        # A companion checkout with cairn tracking of its own.
+        self._other_tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._other_tmp.cleanup)
+        self.other = pathlib.Path(self._other_tmp.name) / "other"
+        shutil.copytree(_template(True), self.other)
+        # The session repo carries a marker for a different PR: it must
+        # stay byte-identical whatever the cd form does.
+        self.session_marker = self.root / "cairn" / ".merge-approved"
+        self.session_marker.write_text(self.SESSION_MARKER)
+
+    def merge_payload(self, command):
+        return self.payload(
+            hook_event_name="PreToolUse",
+            tool_name="Bash",
+            tool_input={"command": command},
+        )
+
+    def run_guard(self, command):
+        return run_hook("merge_guard.py", self.merge_payload(command))
+
+    def assert_session_marker_untouched(self):
+        self.assertEqual(self.session_marker.read_text(), self.SESSION_MARKER)
+        self.assertFalse(
+            (self.root / "cairn" / ".merge-approved.pending").exists()
+        )
+
+    def assert_refused(self, command):
+        out = hook_json(self.run_guard(command))
+        self.assertEqual(out["permissionDecision"], "deny", command)
+        self.assertIn("Accepted forms", out["permissionDecisionReason"], command)
+        self.assert_session_marker_untouched()
+
+    def other_marker(self):
+        return self.other / "cairn" / ".merge-approved"
+
+    # --- AC1: untracked target ---
+
+    def test_untracked_target_is_allowed_without_the_session_marker(self):
+        proc = self.run_guard(
+            "cd %s && gh pr merge 5 --squash --delete-branch" % self.plain
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assert_session_marker_untouched()
+
+    def test_untracked_target_with_repo_flag_is_still_denied(self):
+        out = hook_json(self.run_guard(
+            "cd %s && gh pr merge 5 --repo o/r" % self.plain
+        ))
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn("--repo/-R", out["permissionDecisionReason"])
+        self.assert_session_marker_untouched()
+
+    def test_untracked_target_with_gh_repo_prefix_is_still_denied(self):
+        out = hook_json(self.run_guard(
+            "cd %s && GH_REPO=o/r gh pr merge 5" % self.plain
+        ))
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn("GH_REPO", out["permissionDecisionReason"])
+        self.assert_session_marker_untouched()
+
+    # --- AC2: tracked target, its own marker ---
+
+    def test_tracked_target_marker_naming_the_pr_is_consumed_there(self):
+        self.other_marker().write_text(self.APPROVAL_PR7)
+        proc = self.run_guard("cd %s && gh pr merge 7 --squash" % self.other)
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.other_marker().exists())
+        self.assertEqual(
+            (self.other / "cairn" / ".merge-approved.pending").read_text(),
+            self.APPROVAL_PR7,
+        )
+        self.assert_session_marker_untouched()
+
+    def test_tracked_target_without_marker_is_denied_naming_the_target(self):
+        out = hook_json(self.run_guard(
+            "cd %s && gh pr merge 7 --squash" % self.other
+        ))
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn(str(self.other), out["permissionDecisionReason"])
+        self.assert_session_marker_untouched()
+
+    def test_tracked_target_marker_for_another_pr_is_denied(self):
+        self.other_marker().write_text(self.APPROVAL_PR7)
+        out = hook_json(self.run_guard(
+            "cd %s && gh pr merge 9 --squash" % self.other
+        ))
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn("#7", out["permissionDecisionReason"])
+        self.assertIn("#9", out["permissionDecisionReason"])
+        self.assertEqual(self.other_marker().read_text(), self.APPROVAL_PR7)
+        self.assert_session_marker_untouched()
+
+    def test_tracked_target_marker_naming_no_pr_is_denied(self):
+        self.other_marker().write_text("M07 approved 2026-07-11\n")
+        out = hook_json(self.run_guard(
+            "cd %s && gh pr merge 7 --squash" % self.other
+        ))
+        self.assertEqual(out["permissionDecision"], "deny")
+        self.assertIn("names no PR", out["permissionDecisionReason"])
+        self.assertTrue(self.other_marker().exists())
+        self.assert_session_marker_untouched()
+
+    # --- AC4: accepted forms (five) ---
+
+    def test_accepts_absolute_path(self):
+        proc = self.run_guard("cd %s && gh pr merge 5 --squash" % self.plain)
+        self.assertEqual(proc.stdout.strip(), "")
+
+    def test_accepts_tilde_path(self):
+        home = pathlib.Path(self._plain_tmp.name)
+        rel = os.path.relpath(self.plain, home)
+        env = dict(os.environ, HOME=str(home))
+        proc = subprocess.run(
+            [sys.executable, str(HOOKS_DIR / "merge_guard.py")],
+            input=json.dumps(self.merge_payload(
+                "cd ~/%s && gh pr merge 5 --squash" % rel
+            )),
+            capture_output=True, text=True, timeout=30, env=env,
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+
+    def test_accepts_relative_path(self):
+        (self.root / "sub").mkdir()
+        shutil.copytree(_template(False), self.root / "sub" / "form")
+        # The session repo's own cairn root is an ancestor, so this target
+        # is tracked by the session repo: the session marker (PR #99)
+        # answers, and is consumed.
+        proc = self.run_guard("cd sub/form && gh pr merge 99 --squash")
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.session_marker.exists())
+
+    def test_accepts_single_quoted_path(self):
+        proc = self.run_guard("cd '%s' && gh pr merge 5 --squash" % self.plain)
+        self.assertEqual(proc.stdout.strip(), "")
+
+    def test_accepts_double_quoted_path(self):
+        proc = self.run_guard('cd "%s" && gh pr merge 5 --squash' % self.plain)
+        self.assertEqual(proc.stdout.strip(), "")
+
+    # --- AC4: refused forms (ten) ---
+
+    def test_refuses_target_with_dollar(self):
+        self.assert_refused("cd $HOME/form && gh pr merge 5")
+
+    def test_refuses_target_with_backtick(self):
+        self.assert_refused("cd `pwd`/form && gh pr merge 5")
+
+    def test_refuses_target_with_glob(self):
+        self.assert_refused("cd %s/* && gh pr merge 5" % self.plain.parent)
+        self.assert_refused("cd %s/for? && gh pr merge 5" % self.plain.parent)
+
+    def test_refuses_bare_cd(self):
+        self.assert_refused("cd && gh pr merge 5")
+
+    def test_refuses_cd_dash(self):
+        self.assert_refused("cd - && gh pr merge 5")
+
+    def test_refuses_second_token(self):
+        self.assert_refused("cd %s extra && gh pr merge 5" % self.plain)
+
+    def test_refuses_other_joiners(self):
+        self.assert_refused("cd %s; gh pr merge 5" % self.plain)
+        self.assert_refused("cd %s || gh pr merge 5" % self.plain)
+        self.assert_refused("cd %s | gh pr merge 5" % self.plain)
+
+    def test_refuses_subshell_cd(self):
+        self.assert_refused("(cd %s) && gh pr merge 5" % self.plain)
+
+    def test_refuses_two_cds(self):
+        self.assert_refused(
+            "cd %s && cd %s && gh pr merge 5" % (self.plain, self.plain)
+        )
+
+    def test_refuses_missing_directory(self):
+        self.assert_refused("cd %s/missing && gh pr merge 5" % self.plain)
+
+
 class TestMergeGuardPost(RepoFixture):
     """The PostToolUse/PostToolUseFailure companion (M60). For Bash, a
     nonzero exit fires PostToolUseFailure and PostToolUse fires only on
@@ -1556,6 +1753,45 @@ class TestMergeGuardPost(RepoFixture):
         self.assertFalse(self.marker().exists(),
                          "a successful merge's approval stays consumed")
         self.assertFalse(self.pending().exists())
+
+    # --- M188 AC3: the cd-target repo's pending file, never the session's ---
+
+    def _cd_target_repo(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        other = pathlib.Path(tmp.name) / "other"
+        shutil.copytree(_template(True), other)
+        (other / "cairn" / ".merge-approved.pending").write_text(self.APPROVAL)
+        # A stale pending file in the session repo must survive both events.
+        self.pending().write_text("stale\n")
+        return other
+
+    def test_failure_restores_marker_in_cd_target_repo(self):
+        other = self._cd_target_repo()
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.post_payload("cd %s && gh pr merge 7 --squash" % other),
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(
+            (other / "cairn" / ".merge-approved").read_text(), self.APPROVAL
+        )
+        self.assertFalse((other / "cairn" / ".merge-approved.pending").exists())
+        self.assertEqual(self.pending().read_text(), "stale\n")
+        self.assertFalse(self.marker().exists())
+
+    def test_success_deletes_pending_in_cd_target_repo(self):
+        other = self._cd_target_repo()
+        proc = run_hook(
+            "merge_guard_post.py",
+            self.post_payload(
+                "cd %s && gh pr merge 7 --squash" % other, event="PostToolUse"
+            ),
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertFalse((other / "cairn" / ".merge-approved").exists())
+        self.assertFalse((other / "cairn" / ".merge-approved.pending").exists())
+        self.assertEqual(self.pending().read_text(), "stale\n")
 
     def test_never_mints_without_pending(self):
         # No pending file (no real approval was consumed): a failed guarded
