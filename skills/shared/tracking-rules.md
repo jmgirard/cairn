@@ -362,16 +362,16 @@ gate-chip option names a skill (`→ /skill` notation — an escalation offer, a
 - **Between gates, the turn does not end while work is still owed** (the early-stop clause). A message with no tool
   call ends the turn, and the work stops there until the user speaks again. Four endings are unwanted while a task, a
   check, or a record the skill's steps still owe is unfinished: a recap that closes by naming the next step instead
-  of taking it; an offer to carry on unless the user prefers otherwise, which waits for an answer no one is there to
-  give; a list of decisions for the user when, by the session's own account, none of them blocks the rest of the
-  work; and stopping to report because the turn has been long or a task landed, at a point where the skill's steps
+  of taking it; an offer to carry on unless the user prefers otherwise, which waits for an answer the user was not
+  going to give; a list of decisions for the user when, by the session's own account, none of them blocks the rest of
+  the work; and stopping to report because the turn has been long or a task landed, at a point where the skill's steps
   name no stop — the phase close block and a task-boundary checkpoint stop are stops the steps name, never this
   ending. A session that notices itself inviting the user to redirect it or offering to wait deletes that and does
   the next thing; a recommendation on an open decision is stated, and the work that does not depend on the answer
   carries on. The wanted stops are the ones where nothing can move without the user: a gate or decision chip a skill
   step mandates, an escalation offer, confirmation before an irreversible or destructive action, a checkpoint stop at
-  a task boundary when context hygiene demands one, the phase close block, and a timeout stop. Nothing here overrides
-  confirmation before a risky or destructive action.
+  a task boundary when context hygiene demands one, the phase close block, a timeout stop, and a stop at an external
+  blocker a skill step names. Nothing here overrides confirmation before a risky or destructive action.
 
 Every phase or skill ends with a **close block**, never a chip. The turn's final rendered text carries: an outcome
 recap (one or two sentences, plain words); a status table or line — unit of work, status, branch/PR and check results,

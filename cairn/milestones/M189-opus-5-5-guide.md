@@ -1,6 +1,6 @@
 # M189: Ingest the Opus 5.5 prompting guide — an early-stop clause for the between-gate stretches, and the effort notes re-scaled
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -56,6 +56,8 @@ Ingest Anthropic's "Prompting Claude Opus 5.5" guide as a cited source note and 
 - 2026-09-27: T2 done — the early-stop bullet added to "Question gates and phase closes" after the "between gates, work autonomously" paragraph: the four unwanted endings in cairn's words (the fourth excluding the phase close block and a task-boundary checkpoint), the push, and the wanted-stop test with cairn's six stops as examples; the same-message status-note clause not imported. The source note's Traces-to line names the bullet by its title.
 - 2026-09-27: T3 done — dated observations appended to `prompting-opus-5.md` (the "remain a reasonable starting point" statement) and `effort-experiment-notes.md` (the `medium` default and the `medium`-matches-`high` claim, attributed to § Calibrate effort); the ROADMAP effort-dial row re-checked against the Agent tool's schema (`model` parameter, no effort parameter) and its re-check note appended on the same line.
 - 2026-09-27: T4 done — the first scripts run failed one test, the pinned shipped-page ledger in `scripts/tests/test_scripts.py` (`TestShippedPageStateLedger`), which requires every committed references page registered with its state; `prompting-opus-5-5.md` registered as `ok` (a minor discovered sub-task). After that: `scripts/tests` 391 OK exit 0, `hooks/tests` 174 OK exit 0, `cairn_validate` exit 0, `skills/tests` 661 with the same 4 failures and 1 error by id as the pre-T2 baseline line above.
+- 2026-09-27: claim audit: 20 claims read, 1 corrected — skills/shared/tracking-rules.md, scripts/tests/test_scripts.py. The correction: the wanted-stop list omitted the external-blocker stop `/milestone-implement` step 8 mandates; added as "a stop at an external blocker a skill step names". Ending Two also re-worded to the guide's own "the user was not going to give". Both re-read once by the same [O] reader: hold. Verify slot re-run clean after the change.
+- 2026-09-27: all tasks checked; status → review.
 
 ## Decisions
 
