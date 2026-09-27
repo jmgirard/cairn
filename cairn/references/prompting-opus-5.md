@@ -160,3 +160,12 @@ before the milestone merges.
   observed 2026-07-27.
 - The over-verification finding is extracted here but not acted on by M120;
   M121 owns its triage — observed 2026-07-27.
+- The successor guide, *Prompting Claude Opus 5.5* (`prompting-opus-5-5.md`,
+  ingested by M189), says of this page that "Existing Claude Opus 5 prompts
+  should perform well without changes" and that its patterns "remain a
+  reasonable starting point", so the patterns above are the starting point for
+  the successor model; the effort values above do not carry over (the
+  successor guide says to test levels "rather than carrying over the setting
+  you used on Claude Opus 5" — its § Calibrate effort, read in
+  `effort-experiment-notes.md`'s observation); this page was not re-read
+  against its source in that pass — observed 2026-09-27.
