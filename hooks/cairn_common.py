@@ -46,18 +46,14 @@ CD_CMD = re.compile(CMD_POS + r"cd(?!\S)")
 
 def cd_precedes_gh_merge(command):
     """True when a command-position `cd` token appears before ANY guarded
-    `gh pr merge` occurrence — the compound spelling that tries to
-    retarget the merge at a repo the session cwd is not inside (M163 F3).
-    Checked against every occurrence, not just the first: a `cd` between
-    two merges (`gh pr merge 7 && cd ../other && gh pr merge 9`) still
-    retargets the later one (M163 review O3). The hook payload's cwd is
-    what the guard resolves the repo from, so a `cd` prefix never changes
-    which repo is checked; deny it with cwd guidance rather than letting
-    the cwd repo's marker answer for another repo (or emitting the
-    misleading missing-marker message). The target is deliberately not
-    parsed (quotes, variables, substitutions), so a `cd` staying inside
-    the session's own repo is also denied — a documented false positive;
-    the denial says how to respell."""
+    `gh pr merge` occurrence — the compound spelling that may retarget the
+    merge at a repo the session cwd is not inside (M163 F3), or may stay
+    inside it (`cd docs && …`). Checked
+    against every occurrence, not just the first: a `cd` between two
+    merges (`gh pr merge 7 && cd ../other && gh pr merge 9`) still
+    retargets the later one (M163 review O3). Since M188 the target of the
+    one accepted spelling is read by `cd_target`; this predicate only says
+    a `cd` is in play."""
     cd = CD_CMD.search(command)
     if not cd:
         return False
@@ -65,6 +61,88 @@ def cd_precedes_gh_merge(command):
         cd.start() < merge.start()
         for merge in GH_PR_MERGE.finditer(command)
     )
+
+
+# The characters a cd target may not carry: shell expansion or globbing
+# would make the path the guard resolves differ from the one the shell
+# enters. A literal path with none of these is the same string to both.
+_CD_TARGET_UNSAFE = re.compile(r"[$`*?]")
+_CD_SEGMENT_END = re.compile(r"[;&|\n]")
+
+
+def cd_target(command, cwd):
+    """The directory the ONE accepted cd-compound merge spelling enters,
+    or None when the command's `cd` is any other spelling (M188).
+
+    Accepted: exactly one command-position `cd`, not inside a
+    parenthesized subshell, whose single following token — bare or in
+    single or double quotes, carrying no `$`, backtick, `*`, or `?` — is an
+    absolute path, an unquoted `~`-prefixed path (the shell expands `~`
+    only unquoted; a quoted one is the literal `./~`), or a path relative
+    to `cwd` that
+    names an existing directory, and whose segment is joined by `&&` to a
+    segment beginning with the command's only `gh pr merge`. The guard
+    then resolves the repo from the returned path instead of `cwd`,
+    stepping aside when it has no cairn tracking and gating on its own
+    marker when it does. Everything else — `;`/`||`/`|` joiners, `(cd …)`,
+    `cd -`, a bare `cd`, a second token, two `cd`s, a missing directory —
+    is None, which merge_guard denies with the accepted forms named: a
+    `cd` whose effect on the merge the guard cannot read must never let
+    the session repo's marker answer for another repo, nor run ungated
+    (a `cd /missing; gh pr merge` merges in the session repo). A `cd`
+    before a `git merge` never reaches this function: only `gh pr merge`
+    occurrences are read here, and a `cd … && git merge` compound takes
+    the cwd-rooted path as before (merge_guard.py docstring, known `git
+    merge` bypasses).
+    """
+    cds = list(CD_CMD.finditer(command or ""))
+    merges = list(GH_PR_MERGE.finditer(command or ""))
+    if len(cds) != 1 or len(merges) != 1:
+        return None
+    cd, merge = cds[0], merges[0]
+    if cd.start() >= merge.start():
+        return None
+    # The separator that put the cd in command position: `(` opens a
+    # subshell whose cd never reaches the merge; `|` (a pipe, or the
+    # second char of `||`) runs the cd in a pipeline subshell or skips it
+    # on short-circuit — either way the merge runs where the shell already
+    # was, so the target is not the directory this reads (M188 review O1).
+    if command[cd.start()] in "(|":
+        return None
+    rest = command[cd.end():]
+    end = _CD_SEGMENT_END.search(rest)
+    if not end:
+        return None
+    segment = rest[:end.start()]
+    joiner = rest[end.start():end.start() + 2]
+    if joiner != "&&" or rest[end.start() + 2:end.start() + 3] == "&":
+        return None
+    # The merge must be the segment the `&&` joins to: its command-position
+    # separator is that joiner's second `&`.
+    if merge.start() != cd.end() + end.start() + 1:
+        return None
+    if _CD_TARGET_UNSAFE.search(segment):
+        return None
+    try:
+        tokens = shlex.split(segment)
+    except Exception:
+        return None
+    if len(tokens) != 1 or tokens[0] == "-":
+        return None
+    target = tokens[0]
+    # The shell expands `~` only when the whole word is unquoted (`~"/x"`
+    # stays literal too); a quoted `~` is the literal directory `./~`.
+    # Expand exactly when the shell would: the token equals its raw segment.
+    if target.startswith("~") and segment.strip() == target:
+        target = os.path.expanduser(target)
+    if not os.path.isabs(target):
+        if not cwd:
+            return None
+        target = os.path.join(cwd, target)
+    target = os.path.abspath(target)
+    if not os.path.isdir(target):
+        return None
+    return target
 
 
 def is_guarded_merge(command, cwd):

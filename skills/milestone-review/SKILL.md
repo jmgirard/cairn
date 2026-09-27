@@ -39,7 +39,14 @@ carries a PR URL — or names only the branch and `gh pr list --head
 header record is an unpushed commit, gone with the local branch after a
 `--delete-branch` merge, so the branch name is the durable key) — read
 that PR's state before step 1 — `gh pr view <N>
---json state,mergedAt` (N from the URL or the list) — and route on the state and the
+--json state,mergedAt` (N from the URL or the list) — and, for each
+`companion:` entry, that companion PR's state the same way (`cd <abs-path>
+&& gh pr view <N> --json state,mergedAt`, or `cd <abs-path> && gh pr list
+--head <branch> --state all --json number,url` when the entry has no URL
+yet) — a companion still open re-enters step 8's companion arm before the
+primary is pushed, and that arm runs first whichever route below the
+primary's state selects (a route that skips step 8 skips it for the
+primary alone) — and route on the state and the
 Review section; a stopped CI wait or a merge made outside the session
 re-enters here, at the step the record shows is next:
 
@@ -406,6 +413,12 @@ re-enters here, at the step the record shows is next:
    and the default branch, not a PR number — no PR exists yet on a first
    pass (`Merge <branch> into <default-branch>`) — address-first instead,
    when the blocking rule above fires — and a decline option is present.
+   Where the header carries `companion:` entries, the recommended option
+   names every companion branch beside the primary (`Merge <branch> and
+   the companions <abs-path> <branch>, … — companions first`): one
+   approval covers them all, and for a companion without cairn tracking
+   this chip is the only gate its merge has (tracking-rules, Git and
+   approval model).
    Approval withheld (or declined at the chip) → log the requested changes
    as tasks, status back to `in-progress`, stop. Approval appends one
    work-log line naming the branch it approved (`step-7 approval: <branch>
@@ -472,6 +485,29 @@ re-enters here, at the step the record shows is next:
    `gh pr merge <N> --squash --delete-branch` with a clean summary message —
    name the PR number explicitly; a bare `gh pr merge` is denied by the guard
    because the approval cannot be checked against it.
+
+   **Companion arm — before the primary.** Where the header carries
+   `companion:` entries, each companion goes through this step first, in
+   listed order, and the primary's push above waits until every companion
+   has merged: every command in a companion checkout is one Bash call
+   spelled `cd <abs-path> && …` (the shell cwd resets to the session repo
+   after each call) — push the companion branch (`cd <abs-path> && git
+   push -u origin <branch>`), open its PR (`cd <abs-path> && gh pr create
+   --title … --body …`, ready for review, no cairn vocabulary when that
+   repo is untracked), append its URL to the companion's header entry,
+   wait on its checks under the same wait rule as the primary (`cd
+   <abs-path> && gh pr checks <N> --watch --fail-fast`, with the same
+   timeout and no-checks handling), then — only when `<abs-path>` has a
+   cairn root — write `<abs-path>/cairn/.merge-approved` (`M<NNN> approved
+   YYYY-MM-DD for PR #<N>`, the companion's own milestone id or the
+   primary's) in a separate step, and merge with `cd <abs-path> && gh pr
+   merge <N> --squash --delete-branch`: the guard resolves the repo from
+   the `cd` target — an untracked companion is let through on the step-7
+   chip alone, a tracked one through that marker; any other `cd` spelling
+   is denied. A companion's red CI, failed merge, or CI-ceiling stop ends
+   the step before the primary is pushed, with the timeout close block
+   above naming the companion PR; the Session-start resume route re-reads
+   each companion's state. The arm is absent in guest mode.
 
    **Guest arm — the handoff sequence**, in place of the marker, the CI
    wait, and the merge: only on the handoff selection, push the branch to

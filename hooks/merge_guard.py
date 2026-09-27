@@ -37,22 +37,34 @@ Author such content (tests, docs) via the Write tool, not a heredoc.
 Cross-repo limitations (M162; non-exhaustive): an approval binds the repo
 whose cairn/.merge-approved records it, and the guard denies the cross-repo
 `gh pr merge` forms its tokenization can see — repo-targeting flags
-(--repo/-R, bundled clusters, --repo=), leading GH_REPO= assignment
-prefixes, and (M163) compounds where a command-position `cd` precedes any
-`gh pr merge` (denied with session-cwd guidance before the marker check; a
-`cd` staying inside the session's own repo is denied too — the target is
-not parsed — so drop the `cd` and respell plainly). Redirections the
-detection does NOT see, among others: `pushd ../other && gh pr merge`, a
-bare `cd;` (the token check requires whitespace after `cd`),
-command-substitution subshells (`$(…)`/backticks; parenthesized subshells
-ARE seen — `(` is a command separator), alias or wrapper invocations of gh
-(`env GH_REPO=o/r gh …` included), a prior `export GH_REPO=…` in the same
-command, GH_HOST, and assignment values containing whitespace, quoting, or
-substitution — those last spellings hide the merge from the guard ENTIRELY
-(no denial, no marker check), since the prefix run reads space-delimited
-`VAR=value` words only. A merge into a repo the session cwd is not inside
-is gated by that repo's own guard and marker — or, for a repo without
-cairn tracking, by chat approval alone.
+(--repo/-R, bundled clusters, --repo=) and leading GH_REPO= assignment
+prefixes. The cd-compound spelling (M163, reread M188): the one form
+`cairn_common.cd_target` accepts — a single command-position `cd` whose
+one literal token names an existing directory, joined by `&&` to the
+command's only `gh pr merge` — retargets the guard at that directory: a
+target with no cairn tracking is let through after the M162 checks (the
+rulebook gates such merges by chat approval alone), a tracked target is
+gated on ITS marker, which must name the PR (no legacy no-PR fallback
+across repos), and its consumption is resolved there by merge_guard_post.
+Every other `cd` spelling before a merge is denied with the accepted forms
+named. Limitations of the target read: a directory whose git toplevel is a
+nested or stale clone of the session repo (a submodule, an old checkout)
+resolves as the guard sees it — an untracked one merges the session repo's
+PR ungated, a nested one under the session's cairn root consumes the
+session marker; and a session cwd outside every cairn repo returns before
+the target is read, so a `cd` INTO a cairn repo from there goes unchecked.
+Redirections the detection does NOT see, among others: `pushd ../other &&
+gh pr merge`, a bare `cd;` (the token check requires whitespace after
+`cd`), a `cd` opening a brace group or an `if … then` body (`{ cd ../other
+&& gh pr merge 5; }`, `if true; then cd ../other && gh pr merge 5; fi` —
+`{` and `then` are not command separators, so the session cwd's marker
+answers), command-substitution subshells (`$(…)`/backticks; parenthesized
+subshells ARE seen — `(` is a command separator), alias or wrapper
+invocations of gh (`env GH_REPO=o/r gh …` included), a prior `export
+GH_REPO=…` in the same command, GH_HOST, and assignment values containing
+whitespace, quoting, or substitution — those last spellings hide the merge
+from the guard ENTIRELY (no denial, no marker check), since the prefix run
+reads space-delimited `VAR=value` words only.
 """
 
 import os
@@ -74,25 +86,29 @@ def main():
         return
     if not cc.is_guarded_merge(command, cwd):
         return
-    # cd-compound denial (M163) — before every other check: a leading or
-    # mid-chain `cd` cannot retarget the guard, which resolves the repo from
-    # the session cwd, so this spelling is denied with cwd guidance and the
-    # cwd repo's marker is never consulted for it.
+    # cd-compound spelling (M163, reread M188) — before every other check:
+    # the guard resolves the repo from the `cd` target when the spelling is
+    # the one it can read, and denies every other `cd` spelling with the
+    # accepted forms named, the cwd repo's marker never consulted for it.
     if cc.cd_precedes_gh_merge(command):
-        deny(
-            "This merge is spelled with a `cd` before it, but the guard "
-            "resolves the repo from the session cwd — a `cd` inside the "
-            "command cannot retarget it, and the current repo's approval "
-            "marker must not answer for another repo. If the session cwd "
-            "is already inside the target repo, drop the `cd` and run the "
-            "merge plainly. Otherwise move the session cwd inside the "
-            "target repo (the directory-change tool, not a shell `cd` — "
-            "and since that tool applies only at a user turn boundary, "
-            "ask the user to continue if the move does not take effect), "
-            "then run the merge plainly through that repo's own approval "
-            "gate and marker (tracking-rules, Git and approval model)."
-        )
-        return
+        target = cc.cd_target(command, cwd)
+        if target is None:
+            deny(
+                "This merge is spelled with a `cd` before it in a form the "
+                "guard cannot read, so it cannot tell which repo the merge "
+                "lands in and the current repo's approval marker must not "
+                "answer for it. Accepted forms: exactly one `cd <dir> && gh "
+                "pr merge <N> …`, the command's only merge, the directory "
+                "an existing one named as an absolute path, an unquoted "
+                "`~` path, or a path relative to the session cwd, bare or "
+                "quoted, with no `$`, backtick, `*`, or `?`, joined by "
+                "`&&` alone, outside any `( … )`. The "
+                "guard then gates on that directory's own cairn approval "
+                "marker, or steps aside when it has no cairn tracking "
+                "(tracking-rules, Git and approval model)."
+            )
+            return
+        root = cc.find_cairn_root(target)
     # Cross-repo denial (M162) — before the marker-existence check, so a
     # repo-targeting merge never reads as "just missing an approval" and
     # never touches the marker.
@@ -106,10 +122,17 @@ def main():
             "binds the repo whose cairn/.merge-approved records it "
             "(tracking-rules, Git and approval model), so it cannot "
             "authorize a merge in another repo. Run the merge from a "
-            "session cwd inside the target repo, with no repo flag and "
-            "no GH_REPO in the environment, after that repo's own "
+            "session cwd inside the target repo, or spell it "
+            "`cd <target-checkout> && gh pr merge <N> …`, with no repo flag "
+            "and no GH_REPO in the environment, after that repo's own "
             "approval gate."
         )
+        return
+    if not root:
+        # The cd target has no cairn tracking: the guard has no marker to
+        # check there and no say (tracking-rules: such merges are gated by
+        # chat approval alone). Never reached without a cd — the session
+        # root was checked above.
         return
     marker = os.path.join(root, cc.MARKER_RELPATH)
     if not os.path.isfile(marker):
@@ -122,6 +145,9 @@ def main():
             "is restored automatically by merge_guard_post). If the "
             "user has just approved in chat and the marker is "
             "missing anyway, recreate it and rerun."
+            + ("" if root == cc.find_cairn_root(cwd) else
+               " The repo checked is the `cd` target, %s — the marker "
+               "belongs at %s." % (root, marker))
         )
         return
 
@@ -132,6 +158,17 @@ def main():
     command_prs = cc.gh_merge_pr_numbers(command)
     if command_prs:
         marker_pr = cc.marker_pr_number(marker)
+        if marker_pr is None and root != cc.find_cairn_root(cwd):
+            # A marker in a cd-target repo naming no PR: cross-repo
+            # approvals began with M188, so no legacy marker exists there
+            # to fall back for (M188 plan).
+            deny(
+                "The approval marker at %s names no PR, so it cannot be "
+                "checked against this merge into another repo. Rewrite it "
+                "as `M<NNN> approved YYYY-MM-DD for PR #<N>` at that "
+                "repo's own approval gate and rerun." % marker
+            )
+            return
         # Every occurrence must clear the check — a chained
         # `gh pr merge 7 && gh pr merge 9` must not ride through on the
         # first one's approval (M72 review F4).
