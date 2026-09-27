@@ -260,9 +260,10 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   separately, as not naming a checkable PR). In a multi-repo session, a companion repo's merge is spelled `cd
   <abs-path> && gh pr merge <N> --squash --delete-branch` — one `cd`, a literal existing directory, `&&` alone — and
   the guard resolves the repo from that path: a tracked companion is gated through its own marker (written at
-  `<abs-path>/cairn/.merge-approved`, naming the PR), and a repo without cairn tracking is outside the guard entirely
-  — an improvised marker there does nothing; such merges are gated by chat approval alone (the review chip names the
-  companion PR), or the repo adopts cairn. Any other `cd` spelling is denied.
+  `<abs-path>/cairn/.merge-approved`, naming the PR), and a repo without cairn tracking is outside the marker gate —
+  the `cd`-form and `--repo`/`GH_REPO=` denials still apply, an improvised marker there does nothing; such merges are
+  gated by chat approval alone (the review chip names the companion PR), or the repo adopts cairn. Any other `cd`
+  spelling is denied.
 
 **Enforcement boundary.** Every guard is a PreToolUse hook on *this* session's own Bash calls; a merge made in the
 GitHub web UI, by a merge queue, or by a contributor without the plugin is invisible to them — there the approval

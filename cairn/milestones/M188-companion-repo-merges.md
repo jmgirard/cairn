@@ -1,6 +1,6 @@
 # M188: Companion-repo merges from one session — the guard reads the `cd` target, and review merges the companions
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -57,6 +57,8 @@ A session sitting in one cairn repo merges a PR in a companion checkout by spell
 - 2026-09-27: implement started on `m188-companion-repo-merges`; question gate skipped — the plan fixes the helper name, the `companion:` grammar, and the merge order, nothing open.
 - 2026-09-27: T1–T3 done in one checkpoint — `cairn_common.cd_target` (one `cd`, one merge, `&&` joiner, existing dir, no `$`/backtick/glob, no subshell), merge_guard resolves the root from it (untracked → step aside after the M162 checks; tracked → that root's marker, a no-PR marker denied cross-repo), merge_guard_post resolves pending in the target root; the same-repo denial test inverted; hooks 170 green, scripts 391 green. Deviation: four old test assertions were swapped by a `python3 -` script rather than the Edit tool (tracking-rules file-edit rule); verified by grep afterwards.
 - 2026-09-27: T4–T6 done — guard docstring's cd paragraph and target-read limitations rewritten; tracking-rules approval bullet and ownership row, LESSONS M163/M170 lines corrected in place (`corrected M188`); template `Branch/PR:` comment carries the `companion:` grammar; implement step 2 records companions; review step 7 chip names them, step 8 companion arm (companions first, untracked → chip alone, tracked → own marker, stop before the primary on failure), resume route re-reads companion PRs. skills/tests hand-run: first pass added one red (`test_owner_parity`, the ownership cell's `;` cut the owner list) — cell respelled with a comma; now the same 4 reds + 1 error as M187. scripts 391, hooks 170 green; tracking-rules 576 lines / 55,110 bytes.
+- 2026-09-27: claim audit: 27 claims read, 5 corrected — hooks/cairn_common.py (a quoted `~` was expanded by the guard but not by the shell: expansion now only unquoted, test `test_quoted_tilde_is_a_literal_directory_not_home` added, hooks 171), hooks/merge_guard.py (denial text), hooks/merge_guard_post.py (comment), skills/shared/tracking-rules.md (untracked target is outside the marker gate, not the guard); same-reader re-read: 6 re-read, 0 incorrect.
+- 2026-09-27: all tasks done; status → review. scripts 391, hooks 171 green; skills/tests 4 reds + 1 error, the M187 set (D-109).
 - 2026-09-27: plan chose the `cd <path>` spelling over a slug-to-checkout map for `--repo` because every skill-produced merge has a local checkout; falsified by a session needing to merge a repo it holds no checkout of.
 
 ## Decisions

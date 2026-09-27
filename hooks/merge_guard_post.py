@@ -49,9 +49,10 @@ def main():
         return
     if cc.cd_precedes_gh_merge(command):
         # The cd-compound spelling (M188): the marker merge_guard consumed
-        # lives in the cd target's repo, never the session's — a target
-        # the guard could not read was denied and consumed nothing, and
-        # an untracked target had no marker to consume.
+        # lives in the repo the cd target resolves to — the session's own
+        # when the target sits inside it, another repo's otherwise; a
+        # target the guard could not read was denied and consumed nothing,
+        # and an untracked target had no marker to consume.
         target = cc.cd_target(command, cwd)
         root = cc.find_cairn_root(target) if target else None
         if not root:

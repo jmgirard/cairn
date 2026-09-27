@@ -1693,6 +1693,19 @@ class TestMergeGuardCdTarget(RepoFixture):
     def test_refuses_missing_directory(self):
         self.assert_refused("cd %s/missing && gh pr merge 5" % self.plain)
 
+    def test_quoted_tilde_is_a_literal_directory_not_home(self):
+        # M188 claim audit: the shell expands `~` only unquoted, so a quoted
+        # `~` names `./~` — absent here, so refused, never $HOME.
+        home = pathlib.Path(self._plain_tmp.name)
+        env = dict(os.environ, HOME=str(home))
+        proc = subprocess.run(
+            [sys.executable, str(HOOKS_DIR / "merge_guard.py")],
+            input=json.dumps(self.merge_payload('cd "~" && gh pr merge 5')),
+            capture_output=True, text=True, timeout=30, env=env,
+        )
+        self.assertEqual(hook_json(proc)["permissionDecision"], "deny")
+        self.assert_session_marker_untouched()
+
 
 class TestMergeGuardPost(RepoFixture):
     """The PostToolUse/PostToolUseFailure companion (M60). For Bash, a

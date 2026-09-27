@@ -46,8 +46,9 @@ CD_CMD = re.compile(CMD_POS + r"cd(?!\S)")
 
 def cd_precedes_gh_merge(command):
     """True when a command-position `cd` token appears before ANY guarded
-    `gh pr merge` occurrence — the compound spelling that retargets the
-    merge at a repo the session cwd is not inside (M163 F3). Checked
+    `gh pr merge` occurrence — the compound spelling that may retarget the
+    merge at a repo the session cwd is not inside (M163 F3), or may stay
+    inside it (`cd docs && …`). Checked
     against every occurrence, not just the first: a `cd` between two
     merges (`gh pr merge 7 && cd ../other && gh pr merge 9`) still
     retargets the later one (M163 review O3). Since M188 the target of the
@@ -76,7 +77,9 @@ def cd_target(command, cwd):
     Accepted: exactly one command-position `cd`, not inside a
     parenthesized subshell, whose single following token — bare or in
     single or double quotes, carrying no `$`, backtick, `*`, or `?` — is an
-    absolute path, a `~`-prefixed path, or a path relative to `cwd` that
+    absolute path, an unquoted `~`-prefixed path (the shell expands `~`
+    only unquoted; a quoted one is the literal `./~`), or a path relative
+    to `cwd` that
     names an existing directory, and whose segment is joined by `&&` to a
     segment beginning with the command's only `gh pr merge`. The guard
     then resolves the repo from the returned path instead of `cwd`,
@@ -119,7 +122,11 @@ def cd_target(command, cwd):
         return None
     if len(tokens) != 1 or tokens[0] == "-":
         return None
-    target = os.path.expanduser(tokens[0])
+    target = tokens[0]
+    # The shell expands `~` only when it is unquoted; a quoted `~` is the
+    # literal directory `./~`. Expand exactly when the shell would.
+    if target.startswith("~") and segment.strip().startswith("~"):
+        target = os.path.expanduser(target)
     if not os.path.isabs(target):
         if not cwd:
             return None
