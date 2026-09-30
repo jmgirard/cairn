@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M190: Retire the subagent model-tier title tags
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the skill prose is what an adopting repo's session follows   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m190-retire-subagent-tier-tags   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -73,7 +73,7 @@ existing `[low]` candidate row.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: `skills/shared/tracking-rules.md`: delete the "Subagent titles
+- [x] T1: `skills/shared/tracking-rules.md`: delete the "Subagent titles
       carry the model tier" bullet (line 475). In "Model and agent
       strategy", add the set-the-model line, worded so it covers Explore
       fan-outs too, and write the model names in the review bullet (lines
@@ -111,6 +111,8 @@ existing `[low]` candidate row.
 - 2026-09-29: plan gate chose model names in words plus a set-the-model line over names alone because the app now shows the model a spawn actually runs, which is the inherited default unless the spawn sets one; falsified by a harness where the Agent tool has no model setting.
 - 2026-09-29: plan gate chose to leave the rulebook-mass baseline at M166 over re-seeding its three sites because it stood through the later rulebook edits; falsified by a `/milestone` audit reader misreading the growth figure.
 - 2026-09-29: re-audit of the revised criteria (same Opus reader, full mode) returned 1 finding and 1 suggestion, both handled in the tasks with no criterion change: AC1 could fail on M190's own ROADMAP row, hygiene stamp, or changelog entry if they quote the tokens (T2 now says they name the change in words), and the set-the-model line should read naturally over Explore fan-outs (T1). AC2 to AC4: no finding.
+- 2026-09-29: implement started on m190-retire-subagent-tier-tags. Implement question gate skipped because nothing was open. Guard baselines at 23e13ec: test_fresh_context_readers OK, test_review_fanout OK, test_mutation_harness 1 error.
+- 2026-09-29: T1 done. Deleted the title-tag bullet, added the "Set the model on every spawn" bullet under "Model and agent strategy", and wrote the review bullet's models in words. Gating suites: scripts exit 0, hooks exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
