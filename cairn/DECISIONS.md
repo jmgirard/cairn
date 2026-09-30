@@ -5212,3 +5212,26 @@ maintainer settled here).
 its typing clause is retired. Falsifiers: the harness gaining native
 subcommands or per-verb trigger text under one skill reopens the collapse;
 a second adopter reporting the menu length as friction reopens the router.
+
+### D-141 (2026-09-29): Subagent titles no longer carry a model-tier tag; the skills name each role's model in words and the session sets the model on each spawn (M190)
+
+**Context:** Since M004 the rulebook told the session to open every Agent
+description with a one-letter tag for Sonnet, Opus, or Fable, because the
+task panes showed only the title. The skills also used the tags inline as
+shorthand for a role's model. The Claude desktop app now shows each
+subagent's model, so the tag repeats what the pane already shows. A tag
+is also only a label: the pane shows the model the spawn actually runs,
+which is the inherited session model unless the spawn sets one.
+
+**Decision:** The tag rule is retired. Each skill site that used a tag
+names the model in words, and the rulebook's model section tells the
+session to set the model on each spawn through the Agent tool's `model`
+setting. History records keep their tags (IP4). Rejected: names alone
+with no set-the-model line (the displayed model would then often be the
+inherited one, not the one the role calls for); deleting the tags with
+no model named at the sites (the per-role model would then live only in
+the rulebook section, one read away from the step that spawns).
+
+**Consequences:** Falsifiers: a supported client that hides the subagent
+model reopens a title marker; a harness whose Agent tool has no model
+setting drops the set-the-model line.
