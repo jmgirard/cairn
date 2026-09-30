@@ -55,8 +55,8 @@ retaining D-004's per-instance gate on token-cost grounds.)
    question and scope text verbatim in the chat above, best-effort, with
    the compact form in the chip (Mandated-substance rule), never only a
    description. Options:
-   - **Spawn Fable subagent** (recommended) — on approval, launch an Agent
-     with `model: "fable"` ([F]-tagged description) whose entire prompt
+   - **Spawn Fable subagent** (recommended) — on approval, launch a Fable
+     Agent with `model: "fable"` whose entire prompt
      is: read
      `cairn/reviews/RB<NN>-<slug>.md` and follow its instructions exactly,
      writing findings to the RR path it specifies. When it returns, run
@@ -110,7 +110,7 @@ start (any skill) when a manual RR appears:
    their stated tolerances; an unstated tolerance is strict — any shortfall
    forces the accept-shortfall option at the merge gate.
    **A binding-criteria set is audited before it is ingested**, by the same
-   fresh-context **[O]** reader `/milestone-plan` step 3 spawns (under a
+   fresh-context **Opus** reader `/milestone-plan` step 3 spawns (under a
    spawn-restricting harness instruction, tracking-rules' freshness-spawns
    clause governs) and the same
    three questions — *what state of the world satisfies this exactly as

@@ -224,7 +224,7 @@ re-enters here, at the step the record shows is next:
    - **Internal tier, docs-only diff** — the declared tier is internal and
      `git diff <default-branch>...HEAD --name-only` shows only
      markdown/tracking files (no scripts, hooks, or other executable
-     surface): spawn **one** fresh-context reviewer — the [O] diff-bug lens
+     surface): spawn **one** fresh-context reviewer — the Opus diff-bug lens
      below — and skip the other two lenses.
    - **Any other diff** — executable surface touched, user-facing tier, or
      no declared tier (a file without the slot, or the slot left `—`):
@@ -235,20 +235,20 @@ re-enters here, at the step the record shows is next:
    tracking-rules' freshness-spawns clause governs); in the fan-out they run in parallel, each with
    a *distinct evidence base* (a shared base just finds the same things
    twice), while single-reviewer mode applies the same spawn rules to its
-   one [O] lens and the lens list below describes the fan-out.
+   one Opus lens and the lens list below describes the fan-out.
    **Reviewers share this working tree — ref-based git only:** `git diff`/`log`/`blame`
    against refs (e.g. `git diff <default-branch>..HEAD`), never `git checkout`
    or `git worktree add` in it, which parks the primary checkout on another
    branch mid-review (tracking-rules subagent conduct; hit in M36). The three lenses:
-   - **[O] diff-bug reviewer (Opus).** Reviews the full diff
+   - **Diff-bug reviewer (Opus).** Reviews the full diff
      (`git diff <default-branch>..HEAD`) against the acceptance criteria, DESIGN.md
      conventions, and DECISIONS.md — correctness, contract, convention.
-   - **[S] blame-history reviewer (Sonnet).** Runs `git log` / `git blame` on
+   - **Blame-history reviewer (Sonnet).** Runs `git log` / `git blame` on
      the modified lines and judges the change *against the intent of the code
      it touches*: does it silently undo something a past milestone added
      deliberately, resurrect a fixed bug, or contradict a recorded D-entry? It
      reads history, not just the diff.
-   - **[S] prior-PR-comments reviewer (Sonnet).** Reads the repo's prior
+   - **Prior-PR-comments reviewer (Sonnet).** Reads the repo's prior
      review record on the modified files and flags only where the current
      diff *reintroduces or contradicts* a point a past review raised on
      those files — a regression of a lesson review already taught, not every

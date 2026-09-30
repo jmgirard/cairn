@@ -137,7 +137,7 @@ one of them absorbs is never dropped or merged away in this pass
    proposal table names §7 as the reason.
    A row a `planned`/`in-progress`/`blocked`/`review` milestone absorbs is
    `keep` (records-hygiene §1), with that milestone named in the reason.
-   Delegation: the session assesses inline. One `[S]` Explore fan-out is
+   Delegation: the session assesses inline. One Sonnet Explore fan-out is
    warranted only when several items cite code paths or symbols whose
    existence must be checked; give it the list of citations and take back
    one line per citation (exists / moved / gone). Never spawn to assess

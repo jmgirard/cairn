@@ -78,7 +78,7 @@ existing `[low]` candidate row.
       strategy", add the set-the-model line, worded so it covers Explore
       fan-outs too, and write the model names in the review bullet (lines
       501-504).
-- [ ] T2: Write the model name in words at each tagged skill site:
+- [x] T2: Write the model name in words at each tagged skill site:
       milestone-plan steps 2 and 3, milestone-brief step 3 and the RR
       ingestion audit, milestone-implement step 5 (drop "tier-tag the Agent
       description"), the amendment audit, and the claim audit,
@@ -113,6 +113,7 @@ existing `[low]` candidate row.
 - 2026-09-29: re-audit of the revised criteria (same Opus reader, full mode) returned 1 finding and 1 suggestion, both handled in the tasks with no criterion change: AC1 could fail on M190's own ROADMAP row, hygiene stamp, or changelog entry if they quote the tokens (T2 now says they name the change in words), and the set-the-model line should read naturally over Explore fan-outs (T1). AC2 to AC4: no finding.
 - 2026-09-29: implement started on m190-retire-subagent-tier-tags. Implement question gate skipped because nothing was open. Guard baselines at 23e13ec: test_fresh_context_readers OK, test_review_fanout OK, test_mutation_harness 1 error.
 - 2026-09-29: T1 done. Deleted the title-tag bullet, added the "Set the model on every spawn" bullet under "Model and agent strategy", and wrote the review bullet's models in words. Gating suites: scripts exit 0, hooks exit 0.
+- 2026-09-29: T2 done. Model names in words at the 14 skill sites across plan, brief, implement, review, triage, and design-interview, and in the ROADMAP candidate row. Minor amendment: renamed the file from M190-retire-subagent-tier-tags.md to M190-retire-subagent-title-tags.md because AC1's `tier[- ]tag` pattern matched the old path in M190's own ROADMAP row (T2's own-records clause).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

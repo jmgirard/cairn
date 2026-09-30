@@ -106,7 +106,7 @@ run ingestion first (see `/milestone-brief`).
 
 5. **Delegate** per tracking-rules (Sonnet for well-specified mechanical
    work; Opus for design-sensitive work; never Haiku; Fable only via
-   `/milestone-brief`); tier-tag the Agent description ([S]/[O]). Verify
+   `/milestone-brief`), setting that model on each spawn. Verify
    subagent diffs yourself; one work-log line per delegation.
 
 6. **Plan amendments** (implementation always learns things planning
@@ -144,7 +144,7 @@ run ingestion first (see `/milestone-brief`).
      audit asks in the mode `/milestone-plan` step 3 assigns the
      milestone's tier — the proportionality and instrument questions
      included in either mode — by a fresh-context
-     **[O]** reader that did not author the amended wording, before the
+     **Opus** reader that did not author the amended wording, before the
      amended text is written to the milestone file (under a
      spawn-restricting harness instruction, tracking-rules' freshness-spawns
      clause governs).
@@ -189,7 +189,7 @@ run ingestion first (see `/milestone-brief`).
 7. **Claim audit** (user-facing prose read against the code before
    review). Owed when the milestone file's `Surface tier:` slot reads
    `user-facing` and `git diff <default-branch>...HEAD -- . ':!cairn/'`
-   adds lines; otherwise not owed. Spawn a fresh-context **[O]** reader that
+   adds lines; otherwise not owed. Spawn a fresh-context **Opus** reader that
    authored none of those lines; it reads every added line of that diff,
    reports each claim it finds there about what an artifact does, and
    reads each against that artifact in the same session — a spawn refused
