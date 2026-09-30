@@ -140,3 +140,20 @@ Review run 2026-09-29 on 67a67f1; branch current with origin/main (b49e63a), no 
 - AC4: from the repo root, `scripts/tests` ran 391 tests, exit 0. `hooks/tests` ran 174 tests, exit 0.
 
 Consistency gate: `cairn_validate` exit 0, every check PASS or OK, coverage complete. The diff changes no DESIGN.md principle, so `cairn_impact` does not run. The generic profile names no toolchain checks.
+
+Independent review: three lenses (full fan-out, because the tier is user-facing and the diff touches test code). Opus diff-bug: 10 findings. Sonnet blame-history: 6 findings, and no past intent undone. Sonnet prior-review: 3 findings. The PR-comment probe returned none. After merging duplicates, 14 findings remain. None shows a criterion failing, so the return floor does not apply. Proposed dispositions, pending the gate:
+
+- F1 (diff-bug 1): no CHANGELOG entry. The tier is user-facing, and recent user-facing milestones added one. Fix now.
+- F2 (diff-bug 2 and 10, blame 3, prior 3): `test_review_fanout.py` docstring lines 9-15 and the test name still describe a Sonnet confidence scorer, beside lines the diff edited. Fix now: docstring and test name.
+- F3 (diff-bug 3): the new bullet says the model is "named in words at each skill's spawn site", but the amendment re-audit's "its own fresh reader" leans on an Opus named 20 lines earlier. Fix now: "named in words in each skill".
+- F4 (diff-bug 5): "setting that model on each spawn" in milestone-implement step 5 follows a list of four models. Fix now: "the model the work calls for".
+- F5 (diff-bug 7): milestone-brief lines 58-60 keep a leftover short line from the rewrap. Fix now: rewrap only.
+- F6 (diff-bug 6, blame 5): tracking-rules lines 481 and 504 run 124 and 127 characters, past the section's width. Fix now: rewrap and keep "three distinct-evidence reviewers" on one line for its pin.
+- F7 (diff-bug 8, blame 1, prior 2): no guard pins the new set-the-model bullet. Reject: no criterion asks for one, the retired rule had none, and the suite is hand-run.
+- F8 (diff-bug 4): the Agent tool ignores `model` for a fork. Reject: cairn spawns no forks.
+- F9 (diff-bug 9): D-142's heading says "corrected" where its body says "superseded". Reject: history is never edited, and the heading names D-141.
+- F10 (blame 2): the lens regexes now need the capitalized bullet opening. Reject: they still guard three lenses each naming a model.
+- F11 (blame 6): the Sonnet and Opus roles are restated in three rulebook bullets and the review skill. Reject: the repetition is older than this milestone.
+- F12 (prior 1): the rulebook-mass baseline in `/milestone` is not re-seeded. Reject: the plan gate chose this and logged it.
+- F13 (blame 4): the blame reviewer did not run the harness on the three mutation blocks. Noted: the Opus reviewer ran it and found they match the prose.
+- F14 (prior, declared): two `cairn/references` ledgers still quote the retired sentence. Reject: out of scope, because they are snapshots at a named commit.
