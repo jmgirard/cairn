@@ -51,10 +51,10 @@ existing `[low]` candidate row.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `git grep -nE '\[(S|O|F)\\?\]|tier[- ]tag' -- . ':!cairn/DECISIONS.md' ':!cairn/milestones' ':!cairn/reviews' ':!cairn/references' ':!scripts/tests'` returns no match.
-- [ ] AC2: For each line that `git grep -nE '\[(S|O|F)\]' 23e13ec -- skills ':!skills/tests'` lists, other than the retired "Subagent titles carry the model tier" bullet, the sentence that carried the tag names the model the tag stood for (Sonnet, Opus, or Fable) in words after the change.
-- [ ] AC3: The "Model and agent strategy" section of `skills/shared/tracking-rules.md` tells the session to set the model on each spawn through the Agent tool's `model` setting.
-- [ ] AC4: The profile's verify slot is clean: `python3 -m unittest discover -s scripts/tests` and `python3 -m unittest discover -s hooks/tests`, run from the repo root, each exit 0.
+- [x] AC1: `git grep -nE '\[(S|O|F)\\?\]|tier[- ]tag' -- . ':!cairn/DECISIONS.md' ':!cairn/milestones' ':!cairn/reviews' ':!cairn/references' ':!scripts/tests'` returns no match.
+- [x] AC2: For each line that `git grep -nE '\[(S|O|F)\]' 23e13ec -- skills ':!skills/tests'` lists, other than the retired "Subagent titles carry the model tier" bullet, the sentence that carried the tag names the model the tag stood for (Sonnet, Opus, or Fable) in words after the change.
+- [x] AC3: The "Model and agent strategy" section of `skills/shared/tracking-rules.md` tells the session to set the model on each spawn through the Agent tool's `model` setting.
+- [x] AC4: The profile's verify slot is clean: `python3 -m unittest discover -s scripts/tests` and `python3 -m unittest discover -s hooks/tests`, run from the repo root, each exit 0.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -131,3 +131,12 @@ existing `[low]` candidate row.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+Review run 2026-09-29 on 67a67f1; branch current with origin/main (b49e63a), no merge needed. No Driving RR, so no projection pairs.
+
+- AC1: the grep as written returns no match (exit 1). The same grep at 23e13ec returns 27 lines, so it can fail.
+- AC2: the base grep lists 16 lines. Line 475 of tracking-rules is the retired bullet. At the other 15, the sentence now names the model in words: Sonnet at cairn-triage 140, design-interview 46, milestone-plan 43, and the two Sonnet lenses in milestone-review. Opus at milestone-brief 113, milestone-implement 147 and 192, milestone-plan 160, milestone-review 227, 238, and 243, and tracking-rules 502. Sonnet and Opus together at milestone-implement 109 and tracking-rules 503. Fable at milestone-brief 59.
+- AC3: tracking-rules lines 480-482 in "Model and agent strategy" open "Set the model on every spawn". They tell the session to pass the role's model as the Agent tool's `model` setting, Explore fan-outs included.
+- AC4: from the repo root, `scripts/tests` ran 391 tests, exit 0. `hooks/tests` ran 174 tests, exit 0.
+
+Consistency gate: `cairn_validate` exit 0, every check PASS or OK, coverage complete. The diff changes no DESIGN.md principle, so `cairn_impact` does not run. The generic profile names no toolchain checks.
