@@ -1,20 +1,15 @@
-"""Regression guard: the /milestone-review fan-out + confidence scorer.
+"""Regression guard: the /milestone-review fan-out.
 
 The review gate's independent review is a three-lens fan-out (distinct evidence
-bases) followed by a generate-then-verify confidence scorer. These are
+bases) whose ranked findings the maintainer triages at the gate. These are
 skill-text mechanics — nothing at runtime enforces them — so this test locks
 the load-bearing pieces against silent regression:
   * three reviewers with *distinct* evidence bases, each naming its model
     (Opus diff-bug, Sonnet blame-history, Sonnet prior-PR-comments — M40);
-  * a Sonnet confidence scorer, independent of finding generation, with a
-    numeric threshold;
-  * sub-threshold findings excluded from the actioned list but *logged*, never
-    silently dropped (IP3);
-  * the reviewers told to report everything and filter nothing, with the
-    false-positive taxonomy carried in the scorer's rubric instead (M120,
-    D-078);
-  * the model-strategy section describing the fan-out while keeping the blanket
-    "Never Haiku" rule (D-016).
+  * the prior-PR lens reading archived Review sections first, walking PR
+    threads only behind a probe, always spawned, and scoring nothing itself;
+  * the reviewers reminded to use ref-based git only in the shared tree;
+  * the model-strategy section counting three distinct-evidence reviewers.
 
     python3 -m unittest discover -s skills/tests -v
 """
@@ -134,7 +129,7 @@ class TestPriorPRLens(unittest.TestCase):
         self.assertIn('"no prior-review evidence"', t)
         self.assertIn("either surface", t)
 
-    def test_new_lens_defers_scoring_to_shared_scorer(self):
+    def test_new_lens_defers_to_gate_triage(self):
         # AC4: the prior-PR lens funnels into the maintainer's gate triage and
         # introduces NO scoring of its own. This isolates the lens block and
         # asserts it carries no "score" token — lens-specific and M40-dependent

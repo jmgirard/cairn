@@ -477,9 +477,9 @@ These rules bind all chat output while any cairn skill is active.
 
 - Orchestrator: Opus, running these skills in the main session. Exception: `/design-interview` recommends the user run
   the *main session* on Fable — a session-model choice, not a subagent.
-- **Set the model on every spawn.** Pass the model a role calls for (Sonnet, Opus, or Fable, named in words at each
-  skill's spawn site) as the Agent tool's `model` setting, Explore fan-outs included. A spawn that sets none takes the agent
-  type's or the harness's default, which need not be the model the role calls for.
+- **Set the model on every spawn.** Pass the model a role calls for (Sonnet, Opus, or Fable, named in words in each
+  skill) as the Agent tool's `model` setting, Explore fan-outs included. A spawn that sets none takes the agent type's
+  or the harness's default, which need not be the model the role calls for.
 - **Subagents share the primary checkout.** Every spawned subagent uses ref-based git only (`diff`/`show`/`log`/`blame`
   against refs), never a HEAD-moving command (`checkout`/`switch`/`worktree add`/`reset`) in the shared tree.
 - **Delegate only what warrants it.** A subagent is warranted by a large, genuinely independent track of work (a wide
@@ -501,9 +501,9 @@ These rules bind all chat output while any cairn skill is active.
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of the review fan-out.
 - **The `/milestone-review` review** runs in fresh-context subagents, never the implementing session: an internal-tier
   milestone whose diff touches only markdown/tracking files gets one Opus diff reviewer; any other diff gets the
-  three distinct-evidence reviewers the review skill defines (Opus diff-bug, Sonnet blame-history, Sonnet prior-PR-comments —
-  always spawned, no-op without prior-review evidence); reviewers rank their findings, the maintainer triages the ranked
-  list at the gate, every finding logged.
+  three distinct-evidence reviewers the review skill defines (Opus diff-bug, Sonnet blame-history, Sonnet
+  prior-PR-comments — always spawned, no-op without prior-review evidence); reviewers rank their findings, the
+  maintainer triages the ranked list at the gate, every finding logged.
 - **Never Haiku.** For anything.
 - **Fable subagents**: only through the RB/RR brief protocol (`/milestone-brief`) after a per-instance approval gate —
   costlier than Opus, so a deliberate per-instance choice, never a standing default; ad-hoc Fable spawning is

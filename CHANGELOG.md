@@ -4,6 +4,16 @@
 
 ### Changes that affect existing repos
 
+- **Subagent titles no longer open with a model tag, and the session sets
+  the model on every spawn.** The rulebook drops the rule that every Agent
+  description starts with a one-letter tag (S, O, or F in brackets) for
+  Sonnet, Opus, or Fable. Each skill now names the model a role calls for
+  in words, for example "a fresh-context Opus reader". A new "Set the model
+  on every spawn" bullet in the rulebook's "Model and agent strategy"
+  section tells the session to pass that model as the Agent tool's `model`
+  setting, Explore fan-outs included. A spawn that sets no model takes the
+  agent type's or the harness's default instead.
+
 - **Between gates, a session no longer ends its turn while work is still
   owed.** The rulebook's "Question gates and phase closes" section gains an
   early-stop bullet, taken from Anthropic's *Prompting Claude Opus 5.5*

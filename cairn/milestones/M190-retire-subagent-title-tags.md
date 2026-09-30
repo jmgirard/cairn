@@ -118,6 +118,8 @@ existing `[low]` candidate row.
 - 2026-09-29: claim audit: 12 claims read, 3 corrected — skills/shared/tracking-rules.md, skills/tests/test_review_fanout.py
 - 2026-09-29: claim-audit corrections. An unset spawn takes the agent type's or harness default, not always the session model. The unsourced app-display clause was dropped from the rulebook. The test comment's stale "Sonnet scorer" became gate triage. The same reader re-read all three: they hold. D-141 carried the unset-spawn error and an unattributed app claim, so D-142 supersedes those two clauses (one correction entry for the milestone). Suites after the fixes: scripts 0, hooks 0, both guard modules OK.
 - 2026-09-29: implement complete; status review.
+- 2026-09-29: review: 4 of 4 criteria verified, validate green, three-lens review returned 14 findings after merging duplicates. 6 were fixed at the gate and 8 rejected with reasons. No return.
+- 2026-09-29: step-7 approval: m190-retire-subagent-tier-tags approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -157,3 +159,5 @@ Independent review: three lenses (full fan-out, because the tier is user-facing 
 - F12 (prior 1): the rulebook-mass baseline in `/milestone` is not re-seeded. Reject: the plan gate chose this and logged it.
 - F13 (blame 4): the blame reviewer did not run the harness on the three mutation blocks. Noted: the Opus reviewer ran it and found they match the prose.
 - F14 (prior, declared): two `cairn/references` ledgers still quote the retired sentence. Reject: out of scope, because they are snapshots at a named commit.
+
+Gate 2026-09-29: the user chose "fix six, then merge", so the dispositions above stand as proposed. F1 to F6 were fixed on the branch. F1 added a CHANGELOG entry that names the tags in words. F2 rewrote the docstring from the test's own asserts and renamed the test `test_new_lens_defers_to_gate_triage`. F3 changed "at each skill's spawn site" to "in each skill". F4 changed "that model" to "the model the work calls for". F5 and F6 rewrapped lines, which brings tracking-rules back to 65 lines over 120 characters, the count at main. After the fixes, scripts and hooks exit 0, and the fan-out and fresh-reader guards pass. The mutation harness shows only the base error, the AC1 grep returns no match, and validate exits 0. Noted, not actioned: `_scorer_rubric` in `test_review_fanout.py` is a helper no test calls since the scorer was retired. It is older than this milestone.

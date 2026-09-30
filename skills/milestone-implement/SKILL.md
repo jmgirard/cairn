@@ -106,7 +106,8 @@ run ingestion first (see `/milestone-brief`).
 
 5. **Delegate** per tracking-rules (Sonnet for well-specified mechanical
    work; Opus for design-sensitive work; never Haiku; Fable only via
-   `/milestone-brief`), setting that model on each spawn. Verify
+   `/milestone-brief`), setting the model the work calls for on each
+   spawn. Verify
    subagent diffs yourself; one work-log line per delegation.
 
 6. **Plan amendments** (implementation always learns things planning

@@ -56,8 +56,7 @@ retaining D-004's per-instance gate on token-cost grounds.)
    the compact form in the chip (Mandated-substance rule), never only a
    description. Options:
    - **Spawn Fable subagent** (recommended) — on approval, launch a Fable
-     Agent with `model: "fable"` whose entire prompt
-     is: read
+     Agent with `model: "fable"` whose entire prompt is: read
      `cairn/reviews/RB<NN>-<slug>.md` and follow its instructions exactly,
      writing findings to the RR path it specifies. When it returns, run
      ingestion (below) immediately in this session.
