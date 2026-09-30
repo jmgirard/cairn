@@ -75,8 +75,9 @@ existing `[low]` candidate row.
 
 - [ ] T1: `skills/shared/tracking-rules.md`: delete the "Subagent titles
       carry the model tier" bullet (line 475). In "Model and agent
-      strategy", add the set-the-model line and write the model names in
-      the review bullet (lines 501-504).
+      strategy", add the set-the-model line, worded so it covers Explore
+      fan-outs too, and write the model names in the review bullet (lines
+      501-504).
 - [ ] T2: Write the model name in words at each tagged skill site:
       milestone-plan steps 2 and 3, milestone-brief step 3 and the RR
       ingestion audit, milestone-implement step 5 (drop "tier-tag the Agent
@@ -84,6 +85,9 @@ existing `[low]` candidate row.
       milestone-review step 5's routing text and lens list, the
       cairn-triage delegation note, and the design-interview
       investigation. Reword the ROADMAP candidate row that says "[O] lens".
+      M190's own ROADMAP row, hygiene stamp, and any changelog entry name
+      the change in words, never by the bracket tokens, since AC1's grep
+      reads those files.
 - [ ] T3: Re-pin the `skills/tests` guards that pin a tag
       (`test_fresh_context_readers.py`, the three blocks in
       `test_mutation_harness.py`, the docstring and comment in
@@ -106,6 +110,7 @@ existing `[low]` candidate row.
 - 2026-09-29: criteria audit (full mode, fresh Opus reader) returned 4 findings, all fixed at the gate: AC1 missed the escaped `\[O\]` pin form and the live ROADMAP row; AC2 was unsatisfiable for the deleted rule bullet and loose at step level (now per sentence); AC3 bound a hand-run module that already errors at base (moved to T3). Re-audit of the revised wording: PENDING.
 - 2026-09-29: plan gate chose model names in words plus a set-the-model line over names alone because the app now shows the model a spawn actually runs, which is the inherited default unless the spawn sets one; falsified by a harness where the Agent tool has no model setting.
 - 2026-09-29: plan gate chose to leave the rulebook-mass baseline at M166 over re-seeding its three sites because it stood through the later rulebook edits; falsified by a `/milestone` audit reader misreading the growth figure.
+- 2026-09-29: re-audit of the revised criteria (same Opus reader, full mode) returned 1 finding and 1 suggestion, both handled in the tasks with no criterion change: AC1 could fail on M190's own ROADMAP row, hygiene stamp, or changelog entry if they quote the tokens (T2 now says they name the change in words), and the set-the-model line should read naturally over Explore fan-outs (T1). AC2 to AC4: no finding.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
