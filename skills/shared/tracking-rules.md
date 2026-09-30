@@ -478,8 +478,8 @@ These rules bind all chat output while any cairn skill is active.
 - Orchestrator: Opus, running these skills in the main session. Exception: `/design-interview` recommends the user run
   the *main session* on Fable — a session-model choice, not a subagent.
 - **Set the model on every spawn.** Pass the model a role calls for (Sonnet, Opus, or Fable, named in words at each
-  skill's spawn site) as the Agent tool's `model` setting, Explore fan-outs included. A spawn that sets none runs on the
-  session's own model, and the app shows each subagent's model as it actually runs.
+  skill's spawn site) as the Agent tool's `model` setting, Explore fan-outs included. A spawn that sets none takes the agent
+  type's or the harness's default, which need not be the model the role calls for.
 - **Subagents share the primary checkout.** Every spawned subagent uses ref-based git only (`diff`/`show`/`log`/`blame`
   against refs), never a HEAD-moving command (`checkout`/`switch`/`worktree add`/`reset`) in the shared tree.
 - **Delegate only what warrants it.** A subagent is warranted by a large, genuinely independent track of work (a wide

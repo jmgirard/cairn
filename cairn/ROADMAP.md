@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M190 | Retire the subagent model-tier title tags | in-progress | — | normal | milestones/M190-retire-subagent-title-tags.md |
+| M190 | Retire the subagent model-tier title tags | review | — | normal | milestones/M190-retire-subagent-title-tags.md |
 | M189 | Ingest the Opus 5.5 prompting guide — an early-stop clause for the between-gate stretches, and the effort notes re-scaled | done | — | normal | milestones/archive/M189-opus-5-5-guide.md |
 | M188 | Companion-repo merges from one session — the guard reads the `cd` target, and review merges the companions | done | — | high | milestones/archive/M188-companion-repo-merges.md |
 | M187 | Guest-mode DESIGN.md — principles are the operator's provisional model of the maintainers' constraints | done | — | high | milestones/archive/M187-guest-design-principles.md |

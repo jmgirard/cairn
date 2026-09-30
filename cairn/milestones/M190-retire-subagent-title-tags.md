@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M190: Retire the subagent model-tier title tags
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -115,6 +115,9 @@ existing `[low]` candidate row.
 - 2026-09-29: T1 done. Deleted the title-tag bullet, added the "Set the model on every spawn" bullet under "Model and agent strategy", and wrote the review bullet's models in words. Gating suites: scripts exit 0, hooks exit 0.
 - 2026-09-29: T2 done. Model names in words at the 14 skill sites across plan, brief, implement, review, triage, and design-interview, and in the ROADMAP candidate row. Minor amendment: renamed the file from M190-retire-subagent-tier-tags.md to M190-retire-subagent-title-tags.md because AC1's `tier[- ]tag` pattern matched the old path in M190's own ROADMAP row (T2's own-records clause).
 - 2026-09-29: T3 done. Re-pinned the three guard modules to the Opus wording. test_review_fanout also needed its three lens pins and its split string capitalized, because T2 opens each lens bullet with the role name. Restored T1's original line break in the review bullet because the rewrap split the pinned "three distinct-evidence reviewers". Results: test_fresh_context_readers OK, test_review_fanout OK, test_mutation_harness 1 error (the base error, the unrelated test_default_branch_parameterized locator). Full skills/tests: 4 failures and 1 error, the same pre-existing set. Gating suites: scripts exit 0, hooks exit 0. AC1 grep: no match. validate green.
+- 2026-09-29: claim audit: 12 claims read, 3 corrected — skills/shared/tracking-rules.md, skills/tests/test_review_fanout.py
+- 2026-09-29: claim-audit corrections. An unset spawn takes the agent type's or harness default, not always the session model. The unsourced app-display clause was dropped from the rulebook. The test comment's stale "Sonnet scorer" became gate triage. The same reader re-read all three: they hold. D-141 carried the unset-spawn error and an unattributed app claim, so D-142 supersedes those two clauses (one correction entry for the milestone). Suites after the fixes: scripts 0, hooks 0, both guard modules OK.
+- 2026-09-29: implement complete; status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

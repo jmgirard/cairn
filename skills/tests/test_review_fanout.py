@@ -135,7 +135,7 @@ class TestPriorPRLens(unittest.TestCase):
         self.assertIn("either surface", t)
 
     def test_new_lens_defers_scoring_to_shared_scorer(self):
-        # AC4: the prior-PR lens funnels into the single shared Sonnet scorer and
+        # AC4: the prior-PR lens funnels into the maintainer's gate triage and
         # introduces NO scoring of its own. This isolates the lens block and
         # asserts it carries no "score" token — lens-specific and M40-dependent
         # (deleting the lens makes the split raise, failing the test), unlike a
