@@ -4,8 +4,8 @@ The review gate's independent review is a three-lens fan-out (distinct evidence
 bases) followed by a generate-then-verify confidence scorer. These are
 skill-text mechanics — nothing at runtime enforces them — so this test locks
 the load-bearing pieces against silent regression:
-  * three reviewers with *distinct* evidence bases, tier-tagged (Opus diff-bug,
-    Sonnet blame-history, Sonnet prior-PR-comments — M40);
+  * three reviewers with *distinct* evidence bases, each naming its model
+    (Opus diff-bug, Sonnet blame-history, Sonnet prior-PR-comments — M40);
   * a Sonnet confidence scorer, independent of finding generation, with a
     numeric threshold;
   * sub-threshold findings excluded from the actioned list but *logged*, never
@@ -40,9 +40,9 @@ def rules():
 class TestReviewFanout(unittest.TestCase):
     def test_three_distinct_evidence_lenses(self):
         t = review()
-        self.assertRegex(t, r"diff-bug reviewer \(Opus\)")
-        self.assertRegex(t, r"blame-history reviewer \(Sonnet\)")
-        self.assertRegex(t, r"prior-PR-comments reviewer \(Sonnet\)")
+        self.assertRegex(t, r"Diff-bug reviewer \(Opus\)")
+        self.assertRegex(t, r"Blame-history reviewer \(Sonnet\)")
+        self.assertRegex(t, r"Prior-PR-comments reviewer \(Sonnet\)")
 
     def test_evidence_bases_are_distinct_by_design(self):
         # the whole point of the fan-out — a shared base finds things twice
@@ -135,14 +135,14 @@ class TestPriorPRLens(unittest.TestCase):
         self.assertIn("either surface", t)
 
     def test_new_lens_defers_scoring_to_shared_scorer(self):
-        # AC4: the prior-PR lens funnels into the single shared [S] scorer and
+        # AC4: the prior-PR lens funnels into the single shared Sonnet scorer and
         # introduces NO scoring of its own. This isolates the lens block and
         # asserts it carries no "score" token — lens-specific and M40-dependent
         # (deleting the lens makes the split raise, failing the test), unlike a
         # bare "scorer"/"80" assertion that pre-exists and passes even with the
         # lens removed (the M39 false-coverage trap; caught by M40's own review).
         t = review()
-        lens = t.split("prior-PR-comments reviewer (Sonnet)")[1].split("\n\n")[0]
+        lens = t.split("Prior-PR-comments reviewer (Sonnet)")[1].split("\n\n")[0]
         self.assertNotIn("score", lens.lower())
 
 

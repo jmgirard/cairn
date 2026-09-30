@@ -1551,7 +1551,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestPlanGateCriteriaAudit.test_audit_names_a_fresh_context_reader_that_authored_none_of_them",
         target="skills/milestone-plan/SKILL.md",
-        block="fresh-context **[O]**\n   reader that authored none of them",
+        block="fresh-context **Opus**\n   reader that authored none of them",
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -1599,7 +1599,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestRRIngestionCriteriaAudit.test_ingest_audit_reuses_the_plan_gate_reader",
         target="skills/milestone-brief/SKILL.md",
-        block="by the same\n   fresh-context **[O]** reader `/milestone-plan` step 3 spawns",
+        block="by the same\n   fresh-context **Opus** reader `/milestone-plan` step 3 spawns",
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -1727,7 +1727,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestAmendmentReaudit.test_reaudit_reader_is_fresh_context_and_not_the_author",
         target=IMPLEMENT,
-        block="by a fresh-context\n     **[O]** reader that did not author the amended wording, before the\n     amended text is written to the milestone file",
+        block="by a fresh-context\n     **Opus** reader that did not author the amended wording, before the\n     amended text is written to the milestone file",
     ),
     Mutation(
         guard="test_fresh_context_readers",

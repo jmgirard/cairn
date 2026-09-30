@@ -88,7 +88,7 @@ existing `[low]` candidate row.
       M190's own ROADMAP row, hygiene stamp, and any changelog entry name
       the change in words, never by the bracket tokens, since AC1's grep
       reads those files.
-- [ ] T3: Re-pin the `skills/tests` guards that pin a tag
+- [x] T3: Re-pin the `skills/tests` guards that pin a tag
       (`test_fresh_context_readers.py`, the three blocks in
       `test_mutation_harness.py`, the docstring and comment in
       `test_review_fanout.py`). Hand-run those three modules: no failure
@@ -114,6 +114,7 @@ existing `[low]` candidate row.
 - 2026-09-29: implement started on m190-retire-subagent-tier-tags. Implement question gate skipped because nothing was open. Guard baselines at 23e13ec: test_fresh_context_readers OK, test_review_fanout OK, test_mutation_harness 1 error.
 - 2026-09-29: T1 done. Deleted the title-tag bullet, added the "Set the model on every spawn" bullet under "Model and agent strategy", and wrote the review bullet's models in words. Gating suites: scripts exit 0, hooks exit 0.
 - 2026-09-29: T2 done. Model names in words at the 14 skill sites across plan, brief, implement, review, triage, and design-interview, and in the ROADMAP candidate row. Minor amendment: renamed the file from M190-retire-subagent-tier-tags.md to M190-retire-subagent-title-tags.md because AC1's `tier[- ]tag` pattern matched the old path in M190's own ROADMAP row (T2's own-records clause).
+- 2026-09-29: T3 done. Re-pinned the three guard modules to the Opus wording. test_review_fanout also needed its three lens pins and its split string capitalized, because T2 opens each lens bullet with the role name. Restored T1's original line break in the review bullet because the rewrap split the pinned "three distinct-evidence reviewers". Results: test_fresh_context_readers OK, test_review_fanout OK, test_mutation_harness 1 error (the base error, the unrelated test_default_branch_parameterized locator). Full skills/tests: 4 failures and 1 error, the same pre-existing set. Gating suites: scripts exit 0, hooks exit 0. AC1 grep: no match. validate green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

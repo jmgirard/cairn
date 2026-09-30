@@ -500,8 +500,8 @@ These rules bind all chat output while any cairn skill is active.
   areas to read); verify their diffs before committing; summarize results into one work-log line.
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of the review fan-out.
 - **The `/milestone-review` review** runs in fresh-context subagents, never the implementing session: an internal-tier
-  milestone whose diff touches only markdown/tracking files gets one Opus diff reviewer; any other diff gets the three
-  distinct-evidence reviewers the review skill defines (Opus diff-bug, Sonnet blame-history, Sonnet prior-PR-comments —
+  milestone whose diff touches only markdown/tracking files gets one Opus diff reviewer; any other diff gets the
+  three distinct-evidence reviewers the review skill defines (Opus diff-bug, Sonnet blame-history, Sonnet prior-PR-comments —
   always spawned, no-op without prior-review evidence); reviewers rank their findings, the maintainer triages the ranked
   list at the gate, every finding logged.
 - **Never Haiku.** For anything.
