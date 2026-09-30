@@ -39,8 +39,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    (planning ahead is fine; it just needs saying).
 
 2. **Investigate first.** Read the relevant code and DECISIONS.md. For
-   scopes touching more than a couple of files, fan out Explore subagents
-   ([S]-tagged descriptions) with specific focuses; require file:line
+   scopes touching more than a couple of files, fan out Sonnet Explore
+   subagents with specific focuses; require file:line
    citations. Draft scope, tasks,
    and the list of genuinely open decisions internally.
    **The acceptance criteria are drafted here to their final wording, not at
@@ -157,7 +157,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    a milestone whose declared tier is user-facing, or any of whose drafted
    criteria or tasks carries an RB-tripwire tag, gets the **full audit**; an
    internal-tier milestone gets the **reduced audit** (M145). Either way the
-   step-2 criteria go to a fresh-context **[O]**
+   step-2 criteria go to a fresh-context **Opus**
    reader that authored none of them (under a spawn-restricting harness
    instruction, tracking-rules' freshness-spawns clause governs). The full audit asks three mechanical
    questions of

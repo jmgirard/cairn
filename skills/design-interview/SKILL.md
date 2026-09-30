@@ -43,7 +43,7 @@ to `/cairn-init` (scaffold first, interview second). Read the current
 DESIGN.md, `cairn/DECISIONS.md`, and — so every option can be grounded in
 evidence — the repo itself: DESCRIPTION/manifest, the exported surface,
 Imports/dependencies, installer/platform coverage, and recent `git log`.
-For a repo spanning many files, fan out `[S]`-tagged Explore subagents with
+For a repo spanning many files, fan out Sonnet Explore subagents with
 specific focuses and require file:line citations. Draft your grounded
 option sets internally before asking anything.
 

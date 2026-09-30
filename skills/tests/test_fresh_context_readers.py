@@ -69,12 +69,12 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
 
 
     def test_audit_names_a_fresh_context_reader_that_authored_none_of_them(self):
-        # The tier tag and the fresh-context requirement are pinned together:
-        # an audit by the plan author is the check already measured to fail,
-        # so "reader that authored none of them" is the operative half.
+        # The reader's model and the fresh-context requirement are pinned
+        # together: an audit by the plan author is the check already measured
+        # to fail, so "reader that authored none of them" is the operative half.
         self.assertRegex(
             plan(),
-            r"fresh-context \*\*\[O\]\*\*\s+reader that authored none of them",
+            r"fresh-context \*\*Opus\*\*\s+reader that authored none of them",
         )
 
     def test_audit_states_the_satisfiability_question(self):
@@ -245,7 +245,7 @@ class TestRRIngestionCriteriaAudit(unittest.TestCase):
     def test_ingest_audit_reuses_the_plan_gate_reader(self):
         self.assertRegex(
             brief(),
-            r"by the same\s+fresh-context \*\*\[O\]\*\* reader "
+            r"by the same\s+fresh-context \*\*Opus\*\* reader "
             r"`/milestone-plan` step 3 spawns",
         )
 
@@ -344,7 +344,7 @@ class TestAmendmentReaudit(unittest.TestCase):
         # just-authored wording is the measured failure (D-067).
         self.assertRegex(
             implement(),
-            r"by a fresh-context\s+\*\*\[O\]\*\* reader that did not author "
+            r"by a fresh-context\s+\*\*Opus\*\* reader that did not author "
             r"the amended wording, before the\s+amended text is written to "
             r"the milestone file",
         )

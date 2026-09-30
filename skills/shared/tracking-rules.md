@@ -472,13 +472,14 @@ These rules bind all chat output while any cairn skill is active.
   "Edited N files" card is built from those two tools' calls; a file changed by `sed`, a heredoc, or a `python3 -`
   script never appears in it, so the user's view of what a turn touched is incomplete. A harness instruction that
   prefers shell edits yields to this rule for files under the repo.
-- **Subagent titles carry the model tier.** Prefix every Agent description with `[S]`/`[O]`/`[F]` for Sonnet/Opus/Fable
-  — task panes show only the title, not the model.
 
 ## Model and agent strategy
 
 - Orchestrator: Opus, running these skills in the main session. Exception: `/design-interview` recommends the user run
   the *main session* on Fable — a session-model choice, not a subagent.
+- **Set the model on every spawn.** Pass the model a role calls for (Sonnet, Opus, or Fable, named in words in each
+  skill) as the Agent tool's `model` setting, Explore fan-outs included. A spawn that sets none takes the agent type's
+  or the harness's default, which need not be the model the role calls for.
 - **Subagents share the primary checkout.** Every spawned subagent uses ref-based git only (`diff`/`show`/`log`/`blame`
   against refs), never a HEAD-moving command (`checkout`/`switch`/`worktree add`/`reset`) in the shared tree.
 - **Delegate only what warrants it.** A subagent is warranted by a large, genuinely independent track of work (a wide
@@ -499,10 +500,10 @@ These rules bind all chat output while any cairn skill is active.
   areas to read); verify their diffs before committing; summarize results into one work-log line.
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of the review fan-out.
 - **The `/milestone-review` review** runs in fresh-context subagents, never the implementing session: an internal-tier
-  milestone whose diff touches only markdown/tracking files gets one **[O]** diff reviewer; any other diff gets the
-  three distinct-evidence reviewers the review skill defines ([O] diff-bug, [S] blame-history, [S] prior-PR-comments —
-  always spawned, no-op without prior-review evidence); reviewers rank their findings, the maintainer triages the ranked
-  list at the gate, every finding logged.
+  milestone whose diff touches only markdown/tracking files gets one Opus diff reviewer; any other diff gets the
+  three distinct-evidence reviewers the review skill defines (Opus diff-bug, Sonnet blame-history, Sonnet
+  prior-PR-comments — always spawned, no-op without prior-review evidence); reviewers rank their findings, the
+  maintainer triages the ranked list at the gate, every finding logged.
 - **Never Haiku.** For anything.
 - **Fable subagents**: only through the RB/RR brief protocol (`/milestone-brief`) after a per-instance approval gate —
   costlier than Opus, so a deliberate per-instance choice, never a standing default; ad-hoc Fable spawning is

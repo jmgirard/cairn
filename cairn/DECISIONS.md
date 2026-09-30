@@ -5235,3 +5235,19 @@ the rulebook section, one read away from the step that spawns).
 **Consequences:** Falsifiers: a supported client that hides the subagent
 model reopens a title marker; a harness whose Agent tool has no model
 setting drops the set-the-model line.
+
+### D-142 (2026-09-29): Two context clauses in D-141 are corrected; D-141's decision stands (M190 claim audit)
+
+**Context:** M190's claim audit read the Agent tool's own description of
+its `model` setting against D-141's Context.
+
+**Decision:** Two clauses in D-141's Context are superseded. First, a
+spawn that sets no model does not always run on the session's model: it
+takes the agent type's model, else a configured subagent default, else
+the session's model. Second, the fact that the Claude desktop app shows
+each subagent's model is the user's report at the M190 plan gate
+(2026-09-29), not something cairn observed. D-141's decision and its
+rejected alternatives stand, and the first correction strengthens its
+set-the-model line.
+
+**Consequences:** None beyond the corrected reading of D-141.
