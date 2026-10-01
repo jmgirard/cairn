@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M191 | Milestone status band, a Claude Code mod inside the cairn plugin | in-progress | — | normal | milestones/M191-status-band-mod.md |
+| M191 | Milestone status band, a Claude Code mod inside the cairn plugin | review | — | normal | milestones/M191-status-band-mod.md |
 | M192 | A claude-plugin toolchain profile for repos that build plugins and mods | planned | M191 | normal | milestones/M192-claude-plugin-profile.md |
 | M190 | Retire the subagent model-tier title tags | done | — | normal | milestones/archive/M190-retire-subagent-title-tags.md |
 | M189 | Ingest the Opus 5.5 prompting guide — an early-stop clause for the between-gate stretches, and the effort notes re-scaled | done | — | normal | milestones/archive/M189-opus-5-5-guide.md |

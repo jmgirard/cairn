@@ -1,6 +1,6 @@
 # M191: Milestone status band, a Claude Code mod inside the cairn plugin
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -61,7 +61,7 @@ Ship a Claude Code mod inside the cairn plugin that draws the active milestone, 
 - [x] T2: Write fixtures under `hooks/status/fixtures/<case>/`, each with a `cairn/ROADMAP.md`, milestone files, and an `expected.json`. Cover every axis that AC1 and AC2 name, plus a checkbox under the H2 after `## Tasks`, and start the subdirectory case two levels below the root. Add a copy of this repo's `cairn/ROADMAP.md` at branch cut. A `*.test.ts` cannot read files. So generate `hooks/status/fixtures.gen.ts` from the directories, and add a `scripts/tests` case that fails when the module differs from a fresh generation. Write the `scripts/tests` agreement case over every fixture directory (AC4). Show it red first against one wrong `expected.json`.
 - [x] T3: Write the TypeScript reader: the ROADMAP row parse, the `## Tasks` section bounds, the checkbox count, and the upward root walk. Add `*.test.ts` cases over every fixture (AC4).
 - [x] T4: Build the band: `ui.render` on `AbovePrompt`, its `$.state` contract in `types/index.d.ts` (named by `plugin.json`), and the refresh at the end of each turn. The tests answer the shipped mod's `$.session.cwd`, `$.fs.stat` and `$.fs.read` calls from a copy of each fixture, each answer wrapped as `{ value }`. Add the surface cases for AC1–AC3, looped over `['terminal', 'desktop']`, with one AC3 case per named edit.
-- [ ] T5: Wire it in. Add the `modules` key to `hooks/hooks.json` and the `types` field to `.claude-plugin/plugin.json`. Run the AC5 parsed-JSON comparison of the `hooks` key and `claude plugin validate .claude-plugin/plugin.json --json`. Add `claude plugin validate .claude-plugin/plugin.json` and `claude plugin test .` to the `cairn/PROFILE.md` verify slot as gating checks, with the note on where the binary lives (D-143). Run the AC5 live desktop session.
+- [x] T5: Wire it in. Add the `modules` key to `hooks/hooks.json` and the `types` field to `.claude-plugin/plugin.json`. Run the AC5 parsed-JSON comparison of the `hooks` key and `claude plugin validate .claude-plugin/plugin.json --json`. Add `claude plugin validate .claude-plugin/plugin.json` and `claude plugin test .` to the `cairn/PROFILE.md` verify slot as gating checks, with the note on where the binary lives (D-143). Run the AC5 live desktop session.
 - [x] T6: Write the README section from T1's observations (AC6) and a CHANGELOG `Unreleased` entry. Take one live desktop look at the band in this repo during this milestone's own implement phase. Then check a task, end the turn, and see the count change.
 
 ## Work log
@@ -101,5 +101,7 @@ Ship a Claude Code mod inside the cairn plugin that draws the active milestone, 
 - 2026-10-01: checkpoint. Four claims were corrected after the claim audit's first pass, and its re-read is pending. The verify slot now runs `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .`. The audit reader's process was refused "hooks modules are turned off in this process" because the rollout switch served off, and it passed 32 of 32 with the variable set. T5 waits for a fresh desktop session's start.
 - claim audit: 60 claims read, 4 corrected — README.md, CHANGELOG.md, hooks/status/reader.ts, hooks/status/register.tsx, hooks/status/reader.test.ts
 - 2026-10-01: the claim audit's re-read found all corrections hold. It flagged one README sentence that still read as a hard 2.1.287 requirement, and that sentence now says 2.1.287 is where mods are on by default.
+- 2026-10-01: T5 done. A fresh desktop session in this repo, opened by the operator, quoted its session-start first line as "# cairn tracking context (auto-injected by the cairn plugin)". Its screenshot showed the band line "M191 … · implement · 5/6 tasks".
+- 2026-10-01: implement complete, status set to review. Verify slot: scripts 394 OK, hooks 174 OK, `claude plugin validate` exit 0, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` 32 pass. `cairn_validate` passes with 1 advisory.
 
 ## Decisions
