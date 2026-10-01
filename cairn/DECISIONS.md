@@ -5251,3 +5251,28 @@ rejected alternatives stand, and the first correction strengthens its
 set-the-model line.
 
 **Consequences:** None beyond the corrected reading of D-141.
+
+### D-143 (2026-10-01): cairn ships a Claude Code mod inside the plugin, and the mod's checks gate this repo — annotates D-001 (M191)
+
+**Context:** Claude Code mods are TypeScript hooks modules that a plugin
+names under a `modules` key in `hooks/hooks.json`. They can draw UI in a
+session, for example a band above the prompt. The operator is cairn's
+primary user and wants a milestone band in every cairn session.
+
+**Decision:** The status mod ships inside the cairn plugin, beside the
+classic command hooks in the same `hooks/hooks.json`. It does not ship as
+a second plugin or in its own repo. This repo's toolchain gains
+TypeScript and the `claude` command-line tool: `claude plugin validate`
+and `claude plugin test` join the two Python suites as gating checks in
+the verify slot of `cairn/PROFILE.md`. Rejected: a separate opt-in plugin
+in cairn's marketplace (it keeps the guards' hooks file free of the
+module, but the operator wants the band without a second install);
+hand-run mod checks (a broken mod then ships unseen in every session).
+
+**Consequences:** Every adopter loads the mod with the plugin. The
+merge, commit, and force-push guards share a file with the module, so
+M191 must show that the guards still run with the module present and on
+an older Claude Code. A separate opt-in plugin is the fallback if an
+older or mod-disabled Claude Code refuses the mixed hooks file or drops
+the guards. Verification now needs the `claude` binary, which desktop
+shells do not have on the PATH, so the verify slot says where to find it.
