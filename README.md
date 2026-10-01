@@ -88,7 +88,11 @@ the terminal and in the desktop app.
 
 The band needs Claude Code 2.1.287 or later, the version that
 [Getting started with Claude Code mods](https://claude.dev/blog/getting-started-with-claude-code-mods/)
-names for mods.
+names for mods. On an older Claude Code the rest of the plugin still works.
+In a headless (`claude -p`) run of 2.1.284, the merge guard denied a merge
+and the session-start tracking context arrived. The band did not load, and
+the run printed one line that said hooks modules were not turned on in that
+process.
 
 Then, in your package repo, run `/cairn-init`. Fresh repos get scaffolding;
 repos with an older tracking system get an interactive, PR-based migration.

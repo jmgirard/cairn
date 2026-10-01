@@ -49,7 +49,7 @@ Ship a Claude Code mod inside the cairn plugin that draws the active milestone, 
 
 ## Tasks
 
-- [ ] T1: Run a spike before any shipped code. Load a minimal module beside the classic hooks, with `--plugin-dir` or the dev-mods hot reload. Record these facts in the work log:
+- [x] T1: Run a spike before any shipped code. Load a minimal module beside the classic hooks, with `--plugin-dir` or the dev-mods hot reload. Record these facts in the work log:
   - That the band draws on desktop.
   - The base that `$.fs` resolves paths against.
   - The event that marks the end of a turn, in a session and in `claude plugin test`.
@@ -96,5 +96,6 @@ Ship a Claude Code mod inside the cairn plugin that draws the active milestone, 
 - 2026-10-01: the operator's 2.1.284 control run stopped at "Not logged in · Please run /login", before any hook ran.
 - 2026-10-01: AC5 live, in this desktop session after the turn end that reloaded the plugin from the working tree: `gh pr merge 99999 --squash` was denied with the merge guard's own reason ("Merging to main requires explicit user approval at the review gate …").
 - 2026-10-01: AC1 live: the operator saw the band above the prompt in this desktop session, with the line "M191 Milestone status band, a Claude Code mod inside the cairn plugin · implement · 3/6 tasks". The milestone file then had T2, T3 and T4 checked. The operator will log the 2.1.284 binary in and rerun the guard check.
+- 2026-10-01: T1 old binary, run by the operator after logging the 2.1.284 binary in. The control run had cairn disabled and no `--plugin-dir`: `gh pr merge 99999 --squash` ran and failed "no git remotes found", no hook denied it, and no cairn context arrived. The run with `--plugin-dir` on a copy of this branch printed "cairn-mixed: hooks module not loaded: hooks modules are not turned on for installed plugins in this process (early access: set CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 …)". The merge guard denied the merge with its own reason, and the session start carried "# cairn tracking context (auto-injected by the cairn plugin)". T1 done. README states this result.
 
 ## Decisions
