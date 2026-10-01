@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### New
+
+- **A milestone band above the prompt.** The plugin now ships a Claude Code
+  mod (`hooks/status/register.tsx`, named under a new `modules` key in
+  `hooks/hooks.json`). In a cairn-tracked repo it draws one line per
+  `in-progress` or `review` milestone: id, title, phase, and the checked
+  and total tasks of the milestone file's `## Tasks` section. It refreshes
+  when the session starts and at the end of each turn, and draws nothing
+  outside a cairn repo or with no active milestone. It needs Claude Code
+  2.1.287 or later. See "The milestone band" in the README.
+
 ### Changes that affect existing repos
 
 - **Subagent titles no longer open with a model tag, and the session sets

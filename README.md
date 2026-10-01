@@ -64,6 +64,32 @@ files, and when a commit on your default branch reaches outside `cairn/`.
 The hooks activate at the next session start and are no-ops in repos that
 aren't cairn-tracked.
 
+### The milestone band
+
+The plugin also ships a Claude Code mod: a band above the prompt that shows
+the milestones in flight. Each `in-progress` or `review` row of
+`cairn/ROADMAP.md` gets one line, in ROADMAP order. A line gives the id, the
+title, and the phase (`implement` or `review`). It ends with the checked and
+total checkboxes in the milestone file's `## Tasks` section:
+
+```text
+M012 Add the export command · implement · 2/5 tasks
+M013 Fix the date parser · review · no milestone file
+```
+
+`no milestone file` means the row's `File/Archive` path names no file. The
+band finds the ROADMAP in the session's working directory or the nearest
+directory above it. It reads the files when the session starts and again at
+the end of each turn. A task you check or a status you change shows after
+the next turn ends. If no `cairn/ROADMAP.md` is at or above the working
+directory, or no row is `in-progress` or `review`, the band draws nothing.
+It also gives way while Claude Code shows a survey there. The band draws on
+the terminal and in the desktop app.
+
+The band needs Claude Code 2.1.287 or later, the version that
+[Getting started with Claude Code mods](https://claude.dev/blog/getting-started-with-claude-code-mods/)
+names for mods.
+
 Then, in your package repo, run `/cairn-init`. Fresh repos get scaffolding;
 repos with an older tracking system get an interactive, PR-based migration.
 Run `/milestone` any time you're unsure where things stand.
