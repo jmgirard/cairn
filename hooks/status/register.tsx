@@ -47,7 +47,7 @@ async function refresh($) {
   try {
     rows = await loadBand(fsSource($))
   } catch {
-    // No readable working directory or ROADMAP: the band stays empty.
+    // No readable working directory or ROADMAP: the band is cleared.
     rows = []
   }
   await update($, band, () => rows)

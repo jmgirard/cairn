@@ -47,6 +47,8 @@ describe('reader details', () => {
       '- [ ] T3',
       '## Work log',
       '- [x] not a task',
+      '## Tasks',
+      '- [x] a second Tasks section, not read',
     ].join('\n')
     expect(taskCounts(text)).toEqual({ checked: 2, total: 4 })
   })

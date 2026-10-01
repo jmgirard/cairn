@@ -11,7 +11,8 @@
   and total tasks of the milestone file's `## Tasks` section. It refreshes
   when the session starts and at the end of each turn, and draws nothing
   outside a cairn repo or with no active milestone. It needs Claude Code
-  2.1.287 or later. See "The milestone band" in the README.
+  2.1.287 or later, where mods are on by default, or an earlier version
+  with hooks modules turned on. See "The milestone band" in the README.
 
 ### Changes that affect existing repos
 

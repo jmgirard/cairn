@@ -1,8 +1,10 @@
 // The status band's reader: which milestones are active and how many of
 // their tasks are checked. It mirrors the Python helpers the validator uses
 // (`parse_roadmap_rows_full` in hooks/cairn_common.py, `_section_body` and
-// `_AC_ITEM` in scripts/cairn_validate.py, `find_cairn_root` for the walk);
-// scripts/tests/test_status_fixtures.py holds both to the same fixtures.
+// `_AC_ITEM` in scripts/cairn_validate.py, `find_cairn_root` for the walk).
+// hooks/status/reader.test.ts holds this reader, and
+// scripts/tests/test_status_fixtures.py the Python helpers, to the same
+// fixtures.
 
 // Where the reader gets files. The shipped mod reads through `$.fs` and
 // `$.session`; the tests read an in-memory copy of a fixture.

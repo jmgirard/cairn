@@ -24,14 +24,16 @@ four must be green:
 python3 -m unittest discover -s scripts/tests
 python3 -m unittest discover -s hooks/tests
 claude plugin validate .claude-plugin/plugin.json
-claude plugin test .
+CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .
 ```
 
 Run them from the repo root and check each exit code explicitly. Both suites
 take a dotted path fine (`python3 -m unittest scripts.tests.test_scripts -k <sub>`);
 to narrow a `discover` run, add `-k <substring>`. The validate check passes
 with warnings and fails on any error. `claude plugin test .` runs the status
-mod's `hooks/status/*.test.ts(x)` files.
+mod's `hooks/status/*.test.ts(x)` files. Without the variable, a process
+that the rollout switch serves "off" refuses to run them with "hooks modules
+are turned off in this process" (M191, observed on 2.1.286).
 
 A desktop app shell has no `claude` on its PATH. The app keeps one binary
 per version under `~/Library/Application Support/Claude/claude-code/<version>/<hash>/claude.app/Contents/MacOS/claude`.
