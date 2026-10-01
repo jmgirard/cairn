@@ -1,0 +1,6 @@
+{
+  "cwd": "pkg/src",
+  "rows": [
+    {"id": "M007", "title": "Started from a subdirectory", "status": "in-progress", "checked": 2, "total": 2}
+  ]
+}

@@ -1,0 +1,1 @@
+The session starts in this directory, two levels below the root.
