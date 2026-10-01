@@ -86,9 +86,10 @@ directory, or no row is `in-progress` or `review`, the band draws nothing.
 It also gives way while Claude Code shows a survey there. The band draws on
 the terminal and in the desktop app.
 
-The band needs Claude Code 2.1.287 or later, where mods are on by default
-([Getting started with Claude Code mods](https://claude.dev/blog/getting-started-with-claude-code-mods/)).
-An earlier version loads the band only where hooks modules are turned on.
+Mods are on by default from Claude Code 2.1.287
+([Getting started with Claude Code mods](https://claude.dev/blog/getting-started-with-claude-code-mods/)),
+so that is the version the band needs with no setup. An earlier version
+loads the band only where hooks modules are turned on.
 On an older Claude Code the rest of the plugin still works. In a headless
 (`claude -p`) run of 2.1.284, the merge guard denied a merge and the
 session-start tracking context arrived. The band did not load, and the run
