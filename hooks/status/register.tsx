@@ -58,9 +58,8 @@ export const register: Register = on => {
   })
 
   // A main-loop turn that ends in an answer ends the running cairn skill's
-  // step (M199): a cairn skill runs until its close block ends the turn,
-  // and a question chip waits inside the turn. An interrupted, refused, or
-  // failed turn keeps the step.
+  // step (M199): a cairn skill runs until its close block ends the turn. An
+  // interrupted, refused, or failed turn keeps the step.
   on('turn.complete', async ($, e, next) => {
     const result = await next(e)
     // A subagent's turn ending is not the session's turn ending.

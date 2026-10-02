@@ -726,8 +726,9 @@ describe('each row is a left and a right group (M194 AC1)', () => {
   })
 })
 
-// A press hides the band until the active list changes, and that state
-// lasts the session, so each surface gets a session of its own.
+// A press hides the band until the active list, the running skill, or the
+// idle row's id changes, and that state lasts the session, so each surface
+// gets a session of its own.
 describe('the close button (M194 AC2)', () => {
   for (const name of ['mixed', 'single-in-progress']) {
     for (const surface of SURFACES) {

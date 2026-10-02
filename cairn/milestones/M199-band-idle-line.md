@@ -59,7 +59,7 @@ A skill that a plain reply resumes in a new turn shows no skill label. This limi
 - [x] T2: In `reader.ts`, parse the depends and priority cells and canonicalize ids. Add a `list` call to `FileSource` and to `memorySource`, and list `cairn/milestones/archive/`. Compute the workable list. Bump the `band` shape tag. Add `reader.test.ts` cases first and see them fail.
 - [x] T3: In `band.ts`, add the idle row, its two forms, and its place in the row choice after the skill row. Add `band.test.tsx` cases first, on both surfaces at both widths.
 - [x] T4: In `register.tsx`, end the step at a main-loop `turn.complete` with reason `answer`. Add the drawn idle id to the close mark under a new `dismissed` shape tag. Update `types/index.d.ts`. Add the AC3 and AC4 cases first.
-- [ ] T5: Update README.md, CHANGELOG.md, and `cairn/DESIGN.md`. Run the AC5 sweep and read each line it returns.
+- [x] T5: Update README.md, CHANGELOG.md, and `cairn/DESIGN.md`. Run the AC5 sweep and read each line it returns.
 - [ ] T6: Do the AC6 live look in a new desktop Code session, because a running session keeps the mod it loaded at its start. If a question chip ends the turn, stop and amend through the gate.
 - [ ] T7: Run the verify slot from the repo root and check each exit code.
 
@@ -74,6 +74,9 @@ A skill that a plain reply resumes in a new turn shows no skill label. This limi
 - 2026-10-02: T1 done. `cairn_next.py` gains `done_ids` and `workable`, and `render()` calls `done_ids`. Two new fixtures, `idle-order` and `idle-deps`, have hand-written workable lists, and `cairn_next.workable` matches both. All 17 `expected.json` files carry `workable`. `idle-*` joins the band test's no-row list until T3. Verify: scripts, hooks, validate, and 536 plugin tests green.
 - 2026-10-02: T2 done. `loadBand` returns `{ rows, workable }`, and `FileSource` gains `list`. A `band-3` atom holds the new shape, and `types/index.d.ts` gains `CairnBandState`. The band test answers `fs.list`. The new reader tests failed to load before the code existed. Verify: 561 plugin tests and the other three checks green.
 - 2026-10-02: plants in `reader.ts`, each restored after its run. Ignoring dependencies reddened 6 tests, skipping the archive id's padding 2, and a text sort of ids 1. Keeping the priority's case reddened nothing, because the `High` row had the lowest id. That row moved from M020 to M500, and the plant then reddened `idle-order`.
+- 2026-10-02: T3 done. `idleLines` and the idle branch of `stepLines` landed before their tests, a deviation from tests-first. Plants each reddened tests: a command never dropped 5, an orange label 4, and the last workable row named 6. Tests that expected an empty band on a fixture with a workable row now expect the idle row. 575 plugin tests green.
+- 2026-10-02: T4 done. A main-loop `turn.complete` with reason `answer` clears the step. The close mark gains `idle` under `dismissed-3`. One M195 test ended a turn mid-skill to reread a file, and now rereads at a chapter. Plants each reddened tests: any reason ends the step 3, no reason ends it 5, a subagent ends it 1, and the idle id left out of the comparison 3. 595 plugin tests green.
+- 2026-10-02: T5 done. README gains the idle row paragraph, its example, the step's end, and three close-button conditions. The CHANGELOG band entry and the DESIGN.md `hooks/status/` paragraph say the same. The AC5 sweep returned 21 lines. One test comment named only the active list and now names all three marks. The claim that a question chip keeps the step waits for T6, so the `register.tsx` comment no longer states it. Verify green, validate green.
 
 ## Decisions
 
