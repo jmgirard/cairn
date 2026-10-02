@@ -19,12 +19,24 @@ export type CairnBandRow = {
 // One active milestone's id and status, as the close button stores them.
 export type CairnBandMark = { id: string; status: string }
 
+// What the close button stores at a press: the active ids and statuses in
+// ROADMAP order, and the running cairn skill's bare name, or null.
+export type CairnBandHidden = { marks: CairnBandMark[]; skill: string | null }
+
+// The running cairn skill's bare name (`milestone-plan`), and the title of
+// the last chapter the main loop marked since its prompt was expanded.
+export type CairnStep = { skill: string; chapter: string | null }
+
 declare module 'claude-code' {
   interface PluginState {
-    // `band` is kept under a shape tag (register.tsx), so rows an older
-    // layout wrote read as absent after a reload. `dismissed` holds the
-    // active ids and statuses, in ROADMAP order, at the last press of the
-    // close button, and is null while the band shows.
-    cairn: { band: Shaped<CairnBandRow[]>; dismissed: CairnBandMark[] | null }
+    // Each value is kept under a shape tag (register.tsx), so a value an
+    // older layout wrote reads as absent after a reload. `dismissed` is
+    // null while the band shows, and `step` is null while no cairn skill
+    // runs.
+    cairn: {
+      band: Shaped<CairnBandRow[]>
+      dismissed: Shaped<CairnBandHidden | null>
+      step: Shaped<CairnStep | null>
+    }
   }
 }
