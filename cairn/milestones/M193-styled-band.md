@@ -1,13 +1,13 @@
 # M193: A styled milestone band that follows the phase
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2
 - **Resolves:** —
 - **Surface tier:** user-facing — every adopter's session draws the band
-- **Branch/PR:** —
+- **Branch/PR:** m193-styled-band
 
 ## Goal
 
