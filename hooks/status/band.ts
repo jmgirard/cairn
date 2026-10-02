@@ -95,8 +95,8 @@ export function bandLines(row: BandRow, columns: number): BandLine[] {
   return lines
 }
 
-// A line's text as drawn, the gap between the groups written as spaces, for
-// the tests.
+// A line's text with the two groups GAP spaces apart (the least gap a row
+// draws; a wide row spreads them further), for the tests.
 export function lineText(line: BandLine): string {
   if (line.kind === 'item') return `${line.arrow}${line.label ?? ''}${line.rest}`
   const text = (spans: Span[]) => spans.map(s => s.text).join('')

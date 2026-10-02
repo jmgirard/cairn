@@ -78,8 +78,8 @@ type Ui = {
   unmount: () => Promise<void>
 }
 
-// The text an element shows, its nested Text children included. A Button's
-// label is not text the row shows.
+// The text an element shows, its nested Text children included. The close
+// Button's label is left out, so a row reads the same on every surface.
 function textOf(node: unknown): string {
   if (typeof node === 'string') return node
   if (node === null || typeof node !== 'object') return ''
@@ -106,8 +106,9 @@ function below(node: unknown, type: string): Element[] {
 
 const ROW_KEY = /^M\d+-(header|item)$/
 
-// A row's text as drawn: a header row's two groups joined by the columns of
-// the right group's left margin, the spaces before the close button cut.
+// A row's text with a header row's two groups joined by the right group's
+// left margin, the least gap a row draws (a wide row spreads them further),
+// with the close button's label and the spaces before it left out.
 function rowText(row: Element): string {
   const groups = kids(row)
   if (row.props.justifyContent !== 'space-between' || groups.length !== 2) return textOf(row)
@@ -356,15 +357,15 @@ describe('each header row is a left and a right group (AC1)', () => {
     })
   }
 
-  test('the wide-character title keeps its emoji whole', () => {
+  test("the wide-title fixture's title holds wide characters and an emoji", () => {
     const [row] = FIXTURES['wide-title'].rows
     expect(row.title).toContain('🚀')
     expect(row.title).toContain('宽字符')
   })
 })
 
-// A press hides the band for the rest of the session, so each surface gets
-// a session of its own.
+// A press hides the band until the active list changes, and that state
+// lasts the session, so each surface gets a session of its own.
 describe('the close button (AC2)', () => {
   for (const name of ['mixed', 'single-in-progress']) {
     for (const surface of SURFACES) {
@@ -544,8 +545,9 @@ describe('the band follows edits at the next turn end (M193 AC4)', () => {
   }
 })
 
-// Each close case presses the close button, edits the copy, ends a turn,
-// and asserts whether the band shows, by the header rows it draws.
+// Each close case presses the close button, ends a turn with nothing
+// changed, edits the copy, ends another turn, and asserts whether the band
+// shows, by the keys of the rows it draws.
 type Close = { name: string; fixture: string; edit: (files: Record<string, string>) => void; shown: string[] | null }
 
 const ADDED = (status: string) => `| M005 | Added later | ${status} | — | normal | milestones/M005-added.md |\n`
@@ -612,7 +614,7 @@ const CLOSES: Close[] = [
   },
 ]
 
-describe('a press hides the band until the active ids and statuses change (AC3)', () => {
+describe('a press hides the band until the active ids, statuses, or order change (AC3)', () => {
   for (const { name, fixture, edit, shown } of CLOSES) {
     for (const surface of SURFACES) {
       test(`${name} (${surface})`, async ($, on) => {

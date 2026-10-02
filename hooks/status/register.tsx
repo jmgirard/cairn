@@ -12,7 +12,7 @@ import { loadBand } from './reader'
 // phase section has an open box, refreshed when the session starts and at
 // the end of each turn. The rows sit above whatever the hooks beneath draw
 // in the same slot. The first header row ends in a close button, which
-// hides the band until the active rows' ids or statuses change.
+// hides the band until the active rows' ids, statuses, or order change.
 
 // The shape tag names the row layout; a reload whose rows were written
 // under another tag reads them as absent. Bump it when BandRow changes.
@@ -151,8 +151,8 @@ async function refresh($) {
     rows = []
   }
   await update($, band, () => rows)
-  // A change to the active ids or statuses brings the band back, and it
-  // stays until the next press.
+  // A change to the active ids, statuses, or order brings the band back,
+  // and it stays until the next press.
   const hidden = await read($, dismissed)
   if (hidden !== null && !same(hidden, marks(rows))) await update($, dismissed, () => null)
 }

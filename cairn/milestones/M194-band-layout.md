@@ -70,5 +70,6 @@ Lay out the milestone band with its bar and counts at the right edge, and give i
 - 2026-10-01: T1-T5 done. The new tests ran red first on the old band code (28 fail, the AC3 cases for want of a close button). Two planted defects went red: a refresh that never clears `dismissed`, and a mark that also compares titles. Verify: scripts 394 OK, hooks 174 OK, validate clean, mod tests 82/82.
 - 2026-10-01: a press hides the band for the rest of a test's session, so each AC2 case runs on one surface. A first draft mounted both surfaces in one session and failed on the second mount.
 - 2026-10-01: T6 done. README "The milestone band" gains the two groups, the bold label, and a close-button paragraph. The `…` claim is gone, since the engine now cuts the title. DESIGN.md and the CHANGELOG entry follow. Verify green.
+- 2026-10-01: claim audit: 43 claims read, 6 corrected — hooks/status/band.ts, hooks/status/band.test.tsx (the README, CHANGELOG, and types claims held). The same reader re-read the 6 fixes and 3 optional "or order" fixes in register.tsx and the AC3 describe name: all held. Mod tests 82/82, validate clean.
 
 ## Decisions
