@@ -88,8 +88,8 @@ review M010 → AC3: Third criterion.  ██████████  2/3 crite
 ```
 
 The bar draws every cell with `█`, so it keeps one width in any font. The
-filled cells take the phase's theme color. The empty cells take a gray
-near the background. This page shows all ten cells as `█`, because a text
+filled cells take the phase's theme color, and the empty cells take the
+theme's subtle gray. This page shows all ten cells as `█`, because a text
 block cannot show color.
 
 Three labels replace the bar and the counts. With no chapter on the row,
@@ -103,10 +103,13 @@ The phase label is drawn in a muted orange or green: `rgb(194,122,92)` for
 `implement` and `rgb(106,165,122)` for `review`. These two colors are fixed
 and do not follow your theme. The bar's filled cells draw in your theme's
 full Claude orange or success green, by the phase. This holds also when a
-skill's label of another color stands in for the phase label. The empty
-cells draw in the theme's subtle gray, near the background. The rest of the
-row draws in the theme's gray, with the id and a `T2:` or `AC3:` label in
-bold. `no milestone file` takes the theme's warning color. In a narrow
+skill's label of another color stands in for the phase label. Some themes
+change these two colors: the colorblind themes draw success in blue, and
+the ANSI themes draw Claude orange as bright red. The empty cells draw in
+the theme's subtle gray. In the ANSI themes that gray is the same as the
+rest of the row. The rest of the row draws in the theme's gray, with the
+id and a `T2:` or `AC3:` label in bold. `no milestone file` takes the
+theme's warning color. In a narrow
 window the right part takes the first shorter form that leaves the text 10
 columns. A text shorter than 10 columns needs only its full width. If no
 form leaves that room, the right part takes its shortest form. The band

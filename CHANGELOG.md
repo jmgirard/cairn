@@ -40,10 +40,12 @@
   not say which agent loaded it. The phase or skill label draws in a fixed
   muted orange or green. The bar's filled cells draw in your Claude Code
   theme's full orange or green, and the empty cells in its subtle gray. The
-  rest of the row draws in the theme's gray, with `no milestone file` in the
+  colorblind themes draw the green in blue, and the ANSI themes draw the
+  orange as bright red and the subtle gray as the row's gray. The rest of
+  the row draws in the theme's gray, with `no milestone file` in the
   warning color. One space follows the phase label. The bar draws all ten
-  cells with `█`. In a narrow window the right part
-  takes a shorter form, so that the text keeps room: `2/3 tasks`, then
+  cells with `█`. In a narrow window the right part takes a shorter form,
+  so that the text keeps room: `2/3 tasks`, then
   `2/3`, and `2/2 checked` or `no file` for the labels. A skill row drops
   its slash command. Another plugin's band in the same place shows under
   cairn's row. At session start and at the end of
