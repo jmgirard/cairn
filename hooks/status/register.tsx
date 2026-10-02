@@ -214,12 +214,12 @@ async function dismiss($) {
 
 // A change to the active ids, statuses, or order, to the running skill, or
 // to the idle row's id brings the band back, and it stays until the next
-// press. The end of a skill's step is a change to the running skill.
+// press. The end of a skill's step is a change to the running skill. The
+// decision reads the close state inside the update, so a press made while
+// the rows and the step are read is kept, not cleared (M200).
 async function reconcile($) {
-  const hidden = await read($, dismissed)
-  if (hidden === null) return
   const now = mark(await read($, band), await read($, step))
-  if (!same(hidden, now)) await update($, dismissed, () => null)
+  await update($, dismissed, hidden => (hidden !== null && !same(hidden, now) ? null : hidden))
 }
 
 // A span's style props, leaving out the ones it does not set.

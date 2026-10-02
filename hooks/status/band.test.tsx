@@ -8,9 +8,8 @@ import { listNames } from './reader'
 // Each case answers the shipped mod's `$.session.cwd`, `$.fs.stat`,
 // `$.fs.read` and `$.fs.list` calls from an in-memory copy of a fixture,
 // keyed by absolute path. A plain answer goes back as `{ value }`; a path
-// the copy lacks goes
-// on to the bottom of the chain, which rejects, as a missing file does in a
-// session. The copy is mutable: an edit case edits a file between two turn
+// the copy lacks, and the read of a path it marks unreadable, go on to the
+// bottom of the chain, which rejects, as a missing file does in a session. The copy is mutable: an edit case edits a file between two turn
 // ends, and the second turn end reads the edit.
 
 const SURFACES = ['terminal', 'desktop'] as const
@@ -33,7 +32,16 @@ function at(bodyColumns: number) {
   return { ...BAND, props: { ...BAND.props, bodyColumns } }
 }
 
-type Copy = { cwd: string; files: Record<string, string> }
+type Copy = {
+  cwd: string
+  files: Record<string, string>
+  // Paths that stat as files but whose read rejects, as a file the session
+  // cannot open does.
+  unreadable?: string[]
+  // While set, each ROADMAP read sets `held` and waits for this promise.
+  hold?: Promise<void>
+  held?: boolean
+}
 
 function copyOf(name: string): Copy {
   const fixture = FIXTURES[name]
@@ -53,7 +61,13 @@ function seat(on: On, copy: Copy, chapter: ChapterAnswer = 'mark') {
   on('fs.stat', async ($, e, next) =>
     has(e.path) ? { value: { kind: 'file', size: copy.files[e.path].length, mtimeMs: 0, isLink: false } } : next(e),
   )
-  on('fs.read', async ($, e, next) => (has(e.path) ? { value: copy.files[e.path] } : next(e)))
+  on('fs.read', async ($, e, next) => {
+    if (copy.hold !== undefined && e.path.endsWith('cairn/ROADMAP.md')) {
+      copy.held = true
+      await copy.hold
+    }
+    return has(e.path) && !(copy.unreadable ?? []).includes(e.path) ? { value: copy.files[e.path] } : next(e)
+  })
   on('fs.list', async ($, e, next) => {
     const names = listNames(Object.keys(copy.files), e.path)
     if (names === null) return next(e)
@@ -1037,6 +1051,55 @@ describe('a press hides the band until the active ids, statuses, or order change
       // The band stays shown until the next press.
       await ui.press({ key: 'cairn-close' })
       expect(await lines(ui)).toEqual([ENGINE])
+      await ui.unmount()
+    })
+  }
+})
+
+// Waits on a timer until a ROADMAP read is held. A microtask loop does not
+// reach the read (M200 plan probe).
+async function untilHeld(copy: Copy) {
+  for (let i = 0; i < 200 && copy.held !== true; i++) await new Promise(resolve => setTimeout(resolve, 5))
+  expect(copy.held).toBe(true)
+}
+
+// Guards, which also pass before M200: the window M200 closes lies between
+// awaits inside the mod, after the read returns, where a test cannot press.
+describe('a press while a turn end reads the ROADMAP (M200 AC1)', () => {
+  const HELD: { name: string; edit: (files: Record<string, string>) => void; shown: string[] | null }[] = [
+    { name: 'with the file unchanged, the band stays hidden', edit: () => {}, shown: null },
+    {
+      name: 'with M002 moved to review, the band shows again',
+      edit: files => {
+        files[ROADMAP] = files[ROADMAP].replace('| Add the export command | in-progress |', '| Add the export command | review |')
+      },
+      shown: ['M002-row'],
+    },
+  ]
+  for (const { name, edit, shown } of HELD) {
+    test(name, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+      expect(await rowKeys(ui)).toEqual(['M002-row'])
+      edit(copy.files)
+      let release = () => {}
+      copy.hold = new Promise<void>(resolve => {
+        release = resolve
+      })
+      const ending = $.turn.complete(turn())
+      await untilHeld(copy)
+      await ui.press({ key: 'cairn-close' })
+      expect(await lines(ui)).toEqual([ENGINE])
+      copy.hold = undefined
+      release()
+      await ending
+      if (shown === null) {
+        expect(await lines(ui)).toEqual([ENGINE])
+      } else {
+        expect(await rowKeys(ui)).toEqual(shown)
+      }
       await ui.unmount()
     })
   }

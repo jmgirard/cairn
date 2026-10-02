@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M200: A close button that holds through refreshes and session ends
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the band and its close button ship to every plugin user
-- **Branch/PR:** —
+- **Branch/PR:** m200-band-close-state
 
 ## Goal
 
@@ -52,7 +52,7 @@ Make the band's close button follow one rule through the four edge cases in the 
 
 ## Tasks
 
-- [ ] T1: Lost press. In `reconcile` (`register.tsx:218-223`), compute the current mark. Then decide inside `update($, dismissed, hidden => …)`. The callback returns null only for a set `hidden` that differs from the current mark. Add the two held-read guard cases. The `fs.read` handler awaits a promise the test holds, and the test waits on a timer until the read is held. A microtask loop does not reach the read, as the plan probe showed.
+- [x] T1: Lost press. In `reconcile` (`register.tsx:218-223`), compute the current mark. Then decide inside `update($, dismissed, hidden => …)`. The callback returns null only for a set `hidden` that differs from the current mark. Add the two held-read guard cases. The `fs.read` handler awaits a promise the test holds, and the test waits on a timer until the read is held. A microtask loop does not reach the read, as the plan probe showed.
 - [ ] T2: Failed read. For a found ROADMAP that it cannot read, `loadBand` in `reader.ts` returns null. On null or on a throw, `refresh` keeps both atoms. With no root found, it still empties the band. Update the `refresh` comment ("No readable working directory or ROADMAP"). Add the AC2 cases, and show each red on main first. Check that `reader.test.ts` still passes over every fixture.
 - [ ] T3: Session end. After the step is cleared, the `session.end` hook sets `dismissed` to null, with no branch on the reason. Add the no-skill cases for `clear` and `resume` on both surfaces, red on main first. Keep the running-skill case at `band.test.tsx:1420` and add its `resume` twin.
 - [ ] T4: Unknown stored skill. Move `mark` and `same` from `register.tsx:192-205` to `band.ts`, exported. The mark reads the step through `knownStep`. `ui.render`, `dismiss`, and `reconcile` call it. Add the direct test and show it red against a planted copy that skips the label check.
@@ -67,6 +67,8 @@ Make the band's close button follow one rule through the four edge cases in the 
 - 2026-10-02: plan gate chose to clear the close state at every session end over keeping the band hidden across session ends. The reason: one rule then holds whether or not the app keeps state across `/clear`. Falsified by a user who expects a hidden band to stay hidden in a new session.
 - 2026-10-02: plan gate chose to keep the last state only for a found but unreadable ROADMAP over also keeping it for a missing one. The reason: a missing ROADMAP also means a move out of a cairn repo. Falsified by a real session whose band flickers back during a git checkout.
 - 2026-10-02: plan gate chose the decide-inside-`update` fix over storing the drawn state at the press. The reason: it closes the window in one function and keeps M194's press behavior. Falsified by a press observed lost in a real session after the fix.
+- 2026-10-02: implement started on branch m200-band-close-state; no question gate, as the plan left nothing open.
+- 2026-10-02: T1 done: `reconcile` decides inside its `update` callback; two held-read guard cases added, green on the branch and on main's `register.tsx`; verify 4/4 green (plugin test 605 pass).
 
 ## Decisions
 
