@@ -1,6 +1,6 @@
 # M196: A one-line milestone band
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -41,7 +41,7 @@ Draw each active milestone and each skill row on one line that shows the current
 - [x] T2: In `hooks/status/band.ts`, replace `HeaderLine` and `ItemLine` with one line type. Its left group is the head and one text: an arrow, a bold positional label, and the rest, or the title alone. `bandLines` picks the text (chapter, next item, title) and the right group (bar and counts, counts alone, or the state label). `skillLines` builds one line, and `lineText` follows.
 - [x] T3: In `hooks/status/register.tsx`, draw the one line with the close button on the first row. Keep the M194 flex rules: `minWidth: 0` on each shrinking Box, and `flexShrink: 0` on the head, the arrow and label, and the right group. Run the four verify checks of `cairn/PROFILE.md`.
 - [x] T4: Rewrite the band text in README.md, CHANGELOG.md, and `cairn/DESIGN.md`, and the comments in `band.ts` and `register.tsx`, for one row. Take the README examples from `lineText` output over a fixture and a test's chapter. Run the AC4 grep.
-- [ ] T5: Do a live look in a new desktop Code session from the branch, because a session keeps the mod it loaded at start (M195 lesson). Mark a long `T<n>:` chapter during implement, a long unlabeled chapter, and a chapter on a skill row. Take a screenshot of each at the default window width.
+- [x] T5: Do a live look in a new desktop Code session from the branch, because a session keeps the mod it loaded at start (M195 lesson). Mark a long `T<n>:` chapter during implement, a long unlabeled chapter, and a chapter on a skill row. Take a screenshot of each at the default window width.
 
 ## Work log
 
@@ -53,6 +53,7 @@ Draw each active milestone and each skill row on one line that shows the current
 - 2026-10-01: T4 done. README, CHANGELOG, and DESIGN.md describe one row per milestone. The README examples are the mixed fixture's rows, the M010 post-merge chapter row, and the plan skill row, each asserted in `band.test.tsx`. The AC4 grep prints nothing (exit 1). The M062 fixture's criterion text still reads "The item row stays dim." It is fixture data the band never draws, outside the AC4 files. All four verify checks are green.
 - 2026-10-01: claim audit: 70 claims read, 5 corrected — README.md, CHANGELOG.md, hooks/status/band.test.tsx. The same reader re-read the five corrected claims once and found all accurate. Mod tests 188 green, AC4 grep empty.
 - 2026-10-01: T5 needs a new desktop Code session that loads the mod from this branch, because a session keeps the mod it loaded at start (M195 lesson). The plugin path `~/.claude/skills/cairn` links to this checkout, so a new session on the branch loads the M196 mod.
+- 2026-10-01: T5 done in a new desktop Code session on the branch, at the default window width, from operator screenshots. A long `T5:` chapter drew on one line with the bar, `4/5 tasks`, and `×` whole and the chapter cut by `…`. A long unlabeled chapter drew the counts alone, no bar, cut by `…`. With `/milestone` loaded and a long chapter, a `status /milestone →` skill row drew above the M196 row, cut by `…` before `×`. The operator asked why that case draws two rows, and chose to keep the separate skill row and file the candidate row "Band one row with a skill".
 
 ## Decisions
 
