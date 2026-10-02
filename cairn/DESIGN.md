@@ -62,21 +62,28 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one row per milestone in M196).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
-  `plugin.json`. It draws one row per `in-progress` or `review` milestone.
-  The phase's section is `## Tasks` in implement and
-  `## Acceptance criteria` in review. The rows sit above what the hooks
-  beneath draw, and the band blocks nothing. A row has a left group (phase,
-  id, and one text) and a right group (bar and counts, counts alone, or a
-  state label). The text is the chapter on the row that carries the
-  running skill, else the section's first open box, else the title. A
+  `plugin.json`. It draws one row. If `/milestone-review` runs and a
+  `review` milestone exists, the row is the first one. Else it is the
+  first `in-progress` milestone, else the first `review` one. The row
+  gives no sign of the others. The phase's section is `## Tasks` in implement and
+  `## Acceptance criteria` in review. The row sits above what the hooks
+  beneath draw, and the band blocks nothing. A row has a left group (phase
+  or skill label, one space, id, and one text) and a right group (bar and
+  counts, counts alone, or a state label). The text is the running skill's
+  chapter, else the section's first open box, else the title. A
   chapter or an open box follows a `→`. The bar shows with no chapter or with a chapter that opens with a
-  positional label (`T2:`, `AC3:`), and not at any other chapter. The
-  engine cuts the text. The first row ends in a `role: 'dismiss'` close
-  button. A press stores the active ids and statuses and
+  positional label (`T2:`, `AC3:`), and not at any other chapter. It
+  draws ten `█` cells, the empty ones dim. `band.ts` measures the parts
+  that never shrink at one column per code point. The right group takes
+  the first of its forms that leaves the text its room, else its last
+  form. The room is 10 columns, or less for a shorter text. A skill row drops its
+  slash command by the same measure. The engine cuts the text. The row
+  ends in a plain `role: 'dismiss'` close button: `×` in the terminal, and
+  a `✕` dim at rest on other surfaces. A press stores the active ids and statuses and
   the running skill in the `dismissed` state value. The band then passes to
   `next(e)` until that list or the skill changes. A `skill.prompt` hook
   stores a cairn skill, by its bare or `cairn:` name, in the `step` state
@@ -87,15 +94,15 @@ transitions, human-gated merges, and a domain verification doctrine.
   skill's label, held to the `skills/*/SKILL.md` list that
   `gen_fixtures.py` writes: `plan`, `implement`, `review`, `hotfix`,
   `triage`, `release`, `status` (for `milestone`), `brief`, `design`, and
-  `init`. The first row of the skill's status carries the skill
-  (`in-progress` for implement, `review` for review), and otherwise a skill
-  row comes first. A skill row shows the label, the slash command, and the
-  chapter after a `→`. A session without the desktop app's chapter tool,
-  such as one in the terminal, sets no chapter: milestone rows show their
+  `init`. The skill's label takes the place of the phase label on the
+  row, in the review green for `/milestone-review` and the Claude orange
+  otherwise. With no active milestone, a skill row shows the label, the
+  slash command, and the chapter after a `→`. A session without the desktop app's chapter tool,
+  such as one in the terminal, sets no chapter: a milestone row shows its
   next open item, and a skill row shows the label and the command only.
   The skill event carries no agent id, so a subagent that loads a cairn
-  skill sets it too. `band.ts` builds the rows and `register.tsx`
-  draws them. `reader.ts` mirrors the Python ROADMAP and section helpers,
+  skill sets it too. `band.ts` builds the row and `register.tsx`
+  draws it. `reader.ts` mirrors the Python ROADMAP and section helpers,
   held to them by shared fixtures under
   `hooks/status/fixtures/` (`gen_fixtures.py` writes `fixtures.gen.ts` for the
   `claude plugin test` cases).
