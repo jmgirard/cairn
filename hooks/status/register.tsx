@@ -2,20 +2,20 @@ import { atom, read, update } from 'claude-code'
 import type { Register } from 'claude-code'
 
 import type { CairnBandHidden, CairnBandMark, CairnStep } from '../../types'
-import type { HeaderLine, ItemLine, Span } from './band'
-import { cairnSkill, GAP, knownStep, stepLines } from './band'
+import type { BandLine, Span } from './band'
+import { ARROW, cairnSkill, GAP, knownStep, stepLines } from './band'
 import type { BandRow, FileSource } from './reader'
 import { loadBand } from './reader'
 
-// The milestone band above the prompt (M191, M193, M194, M195): a header
-// row per `in-progress` or `review` ROADMAP row, and an item row under it,
-// refreshed when the session starts, at the end of each turn, when a cairn
-// skill's prompt is expanded, and at each chapter the session marks. A
-// running cairn skill shows its label and the last chapter, on the
-// milestone row of its phase or on a skill row of its own. The rows sit
-// above whatever the hooks beneath draw in the same slot. The first header
-// row ends in a close button, which hides the band until the active rows'
-// ids, statuses, or order, or the running skill, change.
+// The milestone band above the prompt (M191, M193, M194, M195, M196): one
+// row per `in-progress` or `review` ROADMAP row, refreshed when the session
+// starts, at the end of each turn, when a cairn skill's prompt is expanded,
+// and at each chapter the session marks. A running cairn skill shows its
+// label and the last chapter, on the milestone row of its phase or on a
+// skill row of its own. The rows sit above whatever the hooks beneath draw
+// in the same slot. The first row ends in a close button, which hides the
+// band until the active rows' ids, statuses, or order, or the running
+// skill, change.
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
@@ -104,22 +104,35 @@ export const register: Register = on => {
         </Text>
       ))
 
-    // Two groups: the phase, id and title on the left, which give way first,
+    // Two groups: the phase, id, and text on the left, which give way first,
     // and the bar and counts or the state label on the right, which keep
-    // their width. The engine cuts the title to the room that is left.
+    // their width. The engine cuts the text to the room that is left.
     // A shrinking Box also takes `minWidth: 0`, and the short parts sit in a
-    // Box that never shrinks. Without both, the desktop app drew an item
-    // row's long text at full width past the edge with no `…`, and its
-    // arrow and label shrank to nothing.
-    const header = (line: HeaderLine, isFirst: boolean) => (
+    // Box that never shrinks. Without both, the desktop app drew a long text
+    // at full width past the edge with no `…`, and the arrow and label
+    // beside it shrank to nothing. A step's arrow is dim and its positional
+    // label bold, with no dimColor.
+    const row = (line: BandLine, isFirst: boolean) => (
       <Box key={line.key} justifyContent="space-between">
         <Box key={`${line.key}-left`} flexShrink={1} minWidth={0}>
           <Box key={`${line.key}-head`} flexShrink={0}>
             {spans(line.head)}
+            {line.body?.kind === 'step' ? (
+              <Text wrap="truncate-end" dimColor>
+                {ARROW}
+              </Text>
+            ) : null}
+            {line.body?.kind === 'step' && line.body.label !== null ? (
+              <Text wrap="truncate-end" bold>
+                {line.body.label}
+              </Text>
+            ) : null}
           </Box>
-          <Box key={`${line.key}-title`} flexShrink={1} minWidth={0}>
-            <Text wrap="truncate-end">{line.title}</Text>
-          </Box>
+          {line.body === null ? null : (
+            <Box key={`${line.key}-text`} flexShrink={1} minWidth={0}>
+              <Text wrap="truncate-end">{line.body.kind === 'title' ? line.body.title : line.body.rest}</Text>
+            </Box>
+          )}
         </Box>
         <Box key={`${line.key}-right`} flexShrink={0} marginLeft={GAP}>
           {spans(line.tail)}
@@ -139,36 +152,11 @@ export const register: Register = on => {
       </Box>
     )
 
-    // The positional label draws bold and at full strength, with no
-    // dimColor; the rest of the row is dim. The arrow and label keep their
-    // width, and the rest gives way, as the title does. With the arrow,
-    // label, and rest nested in one Text, the desktop drew the rest as a
-    // bare `…`.
-    const item = (line: ItemLine) => (
-      <Box key={line.key}>
-        <Box key={`${line.key}-label`} flexShrink={0}>
-          <Text wrap="truncate-end" dimColor>
-            {line.arrow}
-          </Text>
-          {line.label === null ? null : (
-            <Text wrap="truncate-end" bold>
-              {line.label}
-            </Text>
-          )}
-        </Box>
-        <Box key={`${line.key}-rest`} flexShrink={1} minWidth={0}>
-          <Text wrap="truncate-end" dimColor>
-            {line.rest}
-          </Text>
-        </Box>
-      </Box>
-    )
-
     return (
       <Box key="cairn-stack" flexDirection="column">
         <Box key="cairn-band" flexDirection="column">
           {/* A Text drops its `key`, so each row's key sits on a Box. */}
-          {lines.map((line, i) => (line.kind === 'header' ? header(line, i === 0) : item(line)))}
+          {lines.map((line, i) => row(line, i === 0))}
         </Box>
         {beneath ?? null}
       </Box>

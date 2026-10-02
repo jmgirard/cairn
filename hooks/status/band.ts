@@ -1,11 +1,11 @@
 import type { CairnStep } from '../../types'
 import type { BandRow } from './reader'
 
-// The band's rows, as plain descriptions that register.tsx draws. A
-// milestone's header row names the phase, id, and title on the left, and
-// either a bar and the counts or a state label on the right. An item row
-// under it names the session's last chapter while the running skill is on
-// that row, and otherwise the phase's next open task or criterion. A
+// The band's rows, as plain descriptions that register.tsx draws. Each
+// milestone gets one row. Its left side names the phase, the id, and one
+// text: the session's last chapter while the running skill is on that row,
+// else the phase's next open task or criterion, else the title. Its right
+// side holds the bar and the counts, the counts alone, or a state label. A
 // running cairn skill with no milestone row of its phase gets a skill row
 // of its own, above the milestone rows.
 
@@ -13,15 +13,16 @@ import type { BandRow } from './reader'
 // person's light or dark theme.
 export type Span = { text: string; color?: string; bold?: boolean; dimColor?: boolean }
 
-// The engine cuts the title to the room the right group leaves, so the
-// title is whole here.
-export type HeaderLine = { kind: 'header'; key: string; head: Span[]; title: string; tail: Span[] }
+// A step: a chapter or an open item. `label` is its positional label
+// (`T2:`, `AC3:`), or null when it has none; `rest` is the text after it.
+export type Step = { kind: 'step'; label: string | null; rest: string }
 
-// `label` is the item's positional label (`T2:`, `AC3:`), or null when the
-// item has none; `rest` is the text after it.
-export type ItemLine = { kind: 'item'; key: string; arrow: string; label: string | null; rest: string }
+// The title, or a step. The engine cuts the text to the room the right
+// group leaves, so the text is whole here. A skill row with no chapter has
+// none.
+export type Body = Step | { kind: 'title'; title: string } | null
 
-export type BandLine = HeaderLine | ItemLine
+export type BandLine = { key: string; head: Span[]; body: Body; tail: Span[] }
 
 type Phase = { label: string; color: string; noun: string }
 
@@ -38,7 +39,7 @@ export const GAP = 2
 const LABEL_WIDTH = 9
 const FILLED = '█'
 const EMPTY = '░'
-const ARROW = '→'
+export const ARROW = '→ '
 const POSITIONAL = /^(T|AC)\d+[a-z]*:/
 
 // The band's label for each cairn skill, by its directory under `skills/`.
@@ -91,20 +92,23 @@ export function bar(checked: number, total: number, color: string): Span[] {
   ]
 }
 
-// An item row: the arrow, then the text, its positional label split off.
-function itemLine(key: string, text: string): ItemLine {
+// A chapter or an open item, its positional label split off.
+function stepOf(text: string): Step {
   const label = POSITIONAL.exec(text)?.[0] ?? null
-  return { kind: 'item', key, arrow: `  ${ARROW} `, label, rest: label === null ? text : text.slice(label.length) }
+  return { kind: 'step', label, rest: label === null ? text : text.slice(label.length) }
 }
 
-// A skill row: the skill's label, its slash command, nothing on the right,
-// and the chapter under it when one is set.
+// A skill row: the skill's label, its slash command, the chapter when one
+// is set, and nothing on the right.
 export function skillLines(step: CairnStep): BandLine[] {
   const color = step.skill === 'milestone-review' ? PHASES.review.color : PHASES['in-progress'].color
-  const head: Span[] = [{ text: SKILL_LABELS[step.skill].padEnd(LABEL_WIDTH), color }, { text: ' ' }]
-  const lines: BandLine[] = [{ kind: 'header', key: 'skill-header', head, title: `/${step.skill}`, tail: [] }]
-  if (step.chapter !== null) lines.push(itemLine('skill-item', step.chapter))
-  return lines
+  const head: Span[] = [
+    { text: SKILL_LABELS[step.skill].padEnd(LABEL_WIDTH), color },
+    { text: ' ' },
+    { text: `/${step.skill}` },
+    { text: ' ' },
+  ]
+  return [{ key: 'skill-row', head, body: step.chapter === null ? null : stepOf(step.chapter), tail: [] }]
 }
 
 // Every row of the band. With a running skill, the first milestone row of
@@ -118,18 +122,21 @@ export function stepLines(rows: BandRow[], step: CairnStep | null, columns: numb
   return step !== null && carrier < 0 ? [...skillLines(step), ...milestones] : milestones
 }
 
-// One milestone's rows. A chapter, when given, takes the item row.
+// One milestone's row. A chapter, when given, takes the place of the next
+// open item.
 export function bandLines(row: BandRow, columns: number, chapter: string | null = null): BandLine[] {
   const phase = phaseOf(row)
   const isTasks = phase.noun === 'tasks'
   const checked = isTasks ? row.tasksChecked : row.criteriaChecked
   const total = isTasks ? row.tasksTotal : row.criteriaTotal
   const next = isTasks ? row.nextTask : row.nextCriterion
+  const text = chapter ?? next
+  const body: Body = text === null ? { kind: 'title', title: row.title } : stepOf(text)
 
-  // The right group: the counts with a bar, or a state label that stands
-  // alone, with no bar and no item row of its own.
+  // The right group: a state label that stands alone, or the counts. The
+  // bar comes before the counts while the row is in its task or criterion
+  // loop: no chapter, or a chapter with a positional label.
   let tail: Span[]
-  let item: string | null = null
   if (checked === null || total === null) {
     tail = [{ text: 'no milestone file', color: 'warning' }]
   } else if (total === 0) {
@@ -137,9 +144,9 @@ export function bandLines(row: BandRow, columns: number, chapter: string | null 
   } else if (next === null) {
     tail = [{ text: `all ${total} ${phase.noun} checked`, dimColor: true }]
   } else {
-    const cells = columns >= BAR_MIN_COLUMNS ? [...bar(checked, total, phase.color), { text: '  ' }] : []
+    const inLoop = chapter === null || POSITIONAL.test(chapter)
+    const cells = inLoop && columns >= BAR_MIN_COLUMNS ? [...bar(checked, total, phase.color), { text: '  ' }] : []
     tail = [...cells, { text: `${checked}/${total} ${phase.noun}` }]
-    item = next
   }
 
   const head: Span[] = [
@@ -148,17 +155,15 @@ export function bandLines(row: BandRow, columns: number, chapter: string | null 
     { text: row.id, bold: true },
     { text: ' ' },
   ]
-  const lines: BandLine[] = [{ kind: 'header', key: `${row.id}-header`, head, title: row.title, tail }]
-  const text = chapter ?? item
-  if (text !== null) lines.push(itemLine(`${row.id}-item`, text))
-  return lines
+  return [{ key: `${row.id}-row`, head, body, tail }]
 }
 
 // A line's text with the two groups GAP spaces apart (the least gap a row
 // draws; a wide row spreads them further), for the tests. A skill row has
-// no right group, so its text ends at the title.
+// no right group, so its text ends at its body.
 export function lineText(line: BandLine): string {
-  if (line.kind === 'item') return `${line.arrow}${line.label ?? ''}${line.rest}`
   const text = (spans: Span[]) => spans.map(s => s.text).join('')
-  return `${text(line.head)}${line.title}${' '.repeat(GAP)}${text(line.tail)}`.trimEnd()
+  const body =
+    line.body === null ? '' : line.body.kind === 'title' ? line.body.title : `${ARROW}${line.body.label ?? ''}${line.body.rest}`
+  return `${text(line.head)}${body}${' '.repeat(GAP)}${text(line.tail)}`.trimEnd()
 }
