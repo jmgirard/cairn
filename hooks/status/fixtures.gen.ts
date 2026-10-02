@@ -3,6 +3,16 @@
 import type { Fixture } from './reader'
 
 export const FIXTURES: Record<string, Fixture> = {
+  "long-title": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M060 | A milestone title written long enough to run past the right edge of any band, so that the engine has to cut it before the bar and the counts | in-progress | — | normal | milestones/M060-long.md |\n",
+      "/cairn/milestones/M060-long.md": "# M060: A long title\n\n- **Status:** in-progress\n\n## Acceptance criteria\n\n- [ ] AC1: The band cuts the title.\n\n## Tasks\n\n- [x] T1: Write the title.\n- [ ] T2: Draw the band.\n",
+    },
+    rows: [
+      {"id": "M060", "title": "A milestone title written long enough to run past the right edge of any band, so that the engine has to cut it before the bar and the counts", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Draw the band.", "nextCriterion": "AC1: The band cuts the title."},
+    ],
+  },
   "missing-file": {
     cwd: "/",
     files: {
@@ -112,6 +122,26 @@ export const FIXTURES: Record<string, Fixture> = {
     },
     rows: [
       {"id": "M007", "title": "Started from a subdirectory", "status": "in-progress", "tasksChecked": 2, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
+    ],
+  },
+  "unlabeled-item": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M062 | The next task has no label | in-progress | — | normal | milestones/M062-unlabeled.md |\n",
+      "/cairn/milestones/M062-unlabeled.md": "# M062: The next task has no label\n\n- **Status:** in-progress\n\n## Acceptance criteria\n\n- [ ] AC1: The item row stays dim.\n\n## Tasks\n\n- [x] T1: A labeled task, done.\n- [ ] Write the docs, with no label.\n- [ ] T3: A labeled task after it.\n",
+    },
+    rows: [
+      {"id": "M062", "title": "The next task has no label", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "Write the docs, with no label.", "nextCriterion": "AC1: The item row stays dim."},
+    ],
+  },
+  "wide-title": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M061 | 宽字符的标题 and an emoji 🚀 outside the BMP | review | — | normal | milestones/M061-wide.md |\n",
+      "/cairn/milestones/M061-wide.md": "# M061: A wide title\n\n- **Status:** review\n\n## Acceptance criteria\n\n- [x] AC1: The title reads.\n- [ ] AC2: The emoji stays whole.\n\n## Tasks\n\n- [x] T1: Write the title.\n",
+    },
+    rows: [
+      {"id": "M061", "title": "宽字符的标题 and an emoji 🚀 outside the BMP", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 2, "nextTask": null, "nextCriterion": "AC2: The emoji stays whole."},
     ],
   },
 }

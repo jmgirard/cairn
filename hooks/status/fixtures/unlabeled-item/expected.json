@@ -1,0 +1,6 @@
+{
+  "cwd": "",
+  "rows": [
+    {"id": "M062", "title": "The next task has no label", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "Write the docs, with no label.", "nextCriterion": "AC1: The item row stays dim."}
+  ]
+}
