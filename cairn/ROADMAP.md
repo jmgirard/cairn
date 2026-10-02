@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M195 | A milestone band that names every cairn step | planned | — | normal | milestones/M195-band-steps.md |
+| M195 | A milestone band that names every cairn step | in-progress | — | normal | milestones/M195-band-steps.md |
 | M194 | A right-aligned milestone band with a close button | done | — | normal | milestones/archive/M194-band-layout.md |
 | M193 | A styled milestone band that follows the phase | done | — | normal | milestones/archive/M193-styled-band.md |
 | M192 | A claude-plugin toolchain profile for repos that build plugins and mods | done | M191 | normal | milestones/archive/M192-claude-plugin-profile.md |

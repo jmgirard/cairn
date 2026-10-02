@@ -1,13 +1,13 @@
 # M195: A milestone band that names every cairn step
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2
 - **Resolves:** —
 - **Surface tier:** user-facing — every adopter's session draws the band
-- **Branch/PR:** —
+- **Branch/PR:** m195-band-steps
 
 ## Goal
 
@@ -69,6 +69,7 @@ Make the milestone band name the cairn skill that is running and its current ste
 - 2026-10-01: plan gate chose to infer nothing from git or the criteria alone. Planning has no row before its id exists, and hygiene runs inside one turn. Falsified by a mod event that names the git branch and a band that redraws only at turn end.
 - 2026-10-01: plan gate chose rows for all ten skills over the milestone loop and hotfix alone, and over all but `/milestone`. Falsified by a status check whose leftover row gets in the way in real sessions.
 - 2026-10-01: plan gate kept the `review` label with the chapter on the item row over labels mapped from chapter titles, because chapter titles are free text. Falsified by a reader who cannot tell the final checks from hygiene in the band.
+- 2026-10-01: implement started on branch `m195-band-steps`. No question gate, because the plan left no choice open.
 
 ## Decisions
 
