@@ -103,8 +103,8 @@ the bar is left out. A title too long for the width is cut at its end, and
 the bar and the counts keep their place. If another plugin draws a band in
 the same place, its rows show under cairn's.
 
-The first header row ends in a close button: `×` in the terminal, and the
-app's own close control in the desktop app. Pressing it hides the band. The
+The first header row ends in a close button, `×`, in the terminal and in
+the desktop app. Pressing it hides the band. The
 band stays hidden while the list of active milestones stays the same: their
 ids, their statuses, and their ROADMAP order. At the end of the first turn
 where that list is different, the band shows again. For example, a

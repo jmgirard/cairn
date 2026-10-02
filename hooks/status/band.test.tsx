@@ -290,7 +290,7 @@ function layout(header: Element) {
   return { groups, left, right, title: titleBox ? kids(titleBox)[0] : undefined }
 }
 
-const CLOSE = { terminal: '×', desktop: 'Close milestone band' } as const
+const CLOSE = { terminal: '×', desktop: '×' } as const
 
 describe('each header row is a left and a right group (AC1)', () => {
   for (const columns of [59, 60, 120]) {

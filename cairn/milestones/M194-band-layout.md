@@ -54,7 +54,7 @@ Lay out the milestone band with its bar and counts at the right edge, and give i
 - [x] T4: Tests. Restate M193's cases where the tree changed. Add the AC1, AC2, and AC4 cases on both surfaces, red first.
 - [x] T5: Edit cases for AC3 on both surfaces.
 - [x] T6: Docs. Update README "The milestone band", the DESIGN.md `hooks/status/` line, and the CHANGELOG `Unreleased` entry.
-- [ ] T7: Label the close button `×` on the terminal and the desktop. Remove `CLOSE_LABEL` and its comment in `register.tsx`, set the test's `CLOSE` to `×` on both surfaces, and correct README's close-button paragraph. Read the CHANGELOG and DESIGN.md wording against it.
+- [x] T7: Label the close button `×` on the terminal and the desktop. Remove `CLOSE_LABEL` and its comment in `register.tsx`, set the test's `CLOSE` to `×` on both surfaces, and correct README's close-button paragraph. Read the CHANGELOG and DESIGN.md wording against it.
 - [ ] T8: Look at the band live in the desktop app at a normal and a narrow width, in both phases, with a wide-character title, and press the close button. Record what it showed in the work log.
 
 ## Work log
@@ -78,5 +78,6 @@ Lay out the milestone band with its bar and counts at the right edge, and give i
 - re-audit: AC2 (full) — four findings. "Both surfaces" had no antecedent, reworded to "the terminal and the desktop". No task carried the change, so T7 was added. README, register.tsx, and the test's `CLOSE` carry the old label. The reversal needs a work-log line. "Exactly one Button" covers more row sets than its cases, kept as in the plan.
 - re-audit: AC2 (full) — README's close-button paragraph and the reversal line, both covered by T7 and the line above. Nothing else.
 - 2026-10-01: minor amendment: a new T7 carries the label change. The live look moves to T8 and runs after it. Coverage adds T7 to AC2 and AC6.
+- 2026-10-01: T7 done. The test's desktop label went to `×` first and failed red on the two desktop AC2 cases. Then `CLOSE_LABEL` was removed and README's paragraph corrected. The CHANGELOG and DESIGN.md wording names no label and holds. Verify: scripts 394 OK, hooks 174 OK, validate clean, mod tests 82/82.
 
 ## Decisions

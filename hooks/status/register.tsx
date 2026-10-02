@@ -22,9 +22,9 @@ const band = atom({ plugin: 'cairn', key: 'band' } as const, [] as BandRow[], { 
 // close button; null while the band shows.
 const dismissed = atom({ plugin: 'cairn', key: 'dismissed' } as const, null as CairnBandMark[] | null)
 
-// The close button's label: a desktop draws its own close control, the
-// label its accessible name; the terminal draws the label.
-const CLOSE_LABEL: Record<string, string> = { desktop: 'Close milestone band' }
+// The close button's label on every surface. The desktop app draws a
+// dismiss Button in the band as its label text, so a long label reads as
+// text there.
 const CLOSE_GLYPH = '×'
 
 export const register: Register = on => {
@@ -78,7 +78,7 @@ export const register: Register = on => {
               key="cairn-close"
               role="dismiss"
               plain
-              label={CLOSE_LABEL[e.surface] ?? CLOSE_GLYPH}
+              label={CLOSE_GLYPH}
               onPress={() => dismiss($)}
             />
           ) : null}
