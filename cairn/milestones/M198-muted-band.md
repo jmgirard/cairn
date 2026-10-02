@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M198: A muted band that matches the app's own bar
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -93,6 +93,8 @@ The row layout, the forms, and the fit stay as M197 left them.
 - 2026-10-02: T8 done. The 2.1.286 binary sets `success` blue in both colorblind themes, `claude` to `ansi:redBright` in both ANSI themes, and `subtle` equal to `inactive` there. README and CHANGELOG now say so and drop "near the background". The AC3 sweep's band hits each read true. The `band.ts:25` comment still says "near the background" and goes with T10. Verify clean: scripts 394, hooks 174, plugin validate exit 0, mod tests 506/506.
 - 2026-10-02: T9 done. The band paragraphs M198 edited are reflowed: CHANGELOG lines 38-56, README 102-122, and DESIGN 77-115, with no inline code span split across lines. A word diff shows only the new `no file` words in README and CHANGELOG. Verify clean: scripts 394, hooks 174, plugin validate exit 0, mod tests 506/506.
 - 2026-10-02: T10 done. `Span` has no `dimColor` field, and `style()` has no `dimColor` branch. The only `dimColor` left in the band is the close Button's, which Scope keeps. The `EMPTY` comment now says the light and dark themes set `subtle` fainter than `inactive` and the ANSI themes set it equal. Verify clean: scripts 394, hooks 174, plugin validate exit 0, mod tests 506/506.
+- claim audit: 17 claims read, 0 corrected — README.md, CHANGELOG.md, hooks/status/band.ts, hooks/status/register.tsx (the return's added lines, 950ad5e..HEAD)
+- 2026-10-02: the claim reader noted the colorblind themes also draw Claude orange brighter, `rgb(255,153,51)`. The docs list only the changes that alter a hue, so they stay as written. Status set to review.
 
 ## Decisions
 
