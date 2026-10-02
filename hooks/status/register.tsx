@@ -35,10 +35,12 @@ const step = atom({ plugin: 'cairn', key: 'step' } as const, null as CairnStep |
 // the terminal, the chapter stays null.
 const CHAPTER_TOOL = 'mcp__ccd_session__mark_chapter'
 
-// The close button's label on every surface. The desktop app draws a
-// dismiss Button in the band as its label text, so a long label reads as
-// text there.
+// The close button's label. The desktop app draws a dismiss Button in the
+// band as its label text, so a long label reads as text there. On the
+// desktop the label is `✕`, dim at rest, which the operator picked at a
+// live look as closest to the app's own close icon (M197).
 const CLOSE_GLYPH = '×'
+const DESKTOP_CLOSE_GLYPH = '✕'
 // The columns the first row's close gap and plain label take in the
 // terminal, which the rows leave free when they pick their forms.
 const CLOSE_COLUMNS = GAP + width(CLOSE_GLYPH)
@@ -147,7 +149,8 @@ export const register: Register = on => {
               key="cairn-close"
               role="dismiss"
               plain
-              label={e.surface === 'terminal' ? CLOSE_GLYPH : '✕'}
+              {...(e.surface === 'terminal' ? {} : { dimColor: true })}
+              label={e.surface === 'terminal' ? CLOSE_GLYPH : DESKTOP_CLOSE_GLYPH}
               onPress={() => dismiss($)}
             />
           ) : null}
