@@ -42,8 +42,8 @@ Add a fifth toolchain profile, `claude-plugin`, so that cairn can track a repo t
 
 ## Tasks
 
-- [ ] T1: Write `skills/shared/profiles/claude-plugin.md` from the `generic` profile's shape and M191's work-log facts (AC2).
-- [ ] T2: Add `claude-plugin` to the per-profile loop at `scripts/tests/test_scripts.py` (about line 2079), red first with a slot removed.
+- [x] T1: Write `skills/shared/profiles/claude-plugin.md` from the `generic` profile's shape and M191's work-log facts (AC2).
+- [x] T2: Add `claude-plugin` to the per-profile loop at `scripts/tests/test_scripts.py` (about line 2079), red first with a slot removed.
 - [ ] T3: Update the inference order in tracking-rules "Toolchain profiles" and at the three `/cairn-init` sites (about lines 109–126 and 321). Add the plugin markers to the no-marker list, and add the new profile to the project-type chip and the image-vs-package gate.
 - [ ] T4: Sweep the profile lists that AC4's grep returns: README, `skills/cairn-init/SKILL.md` (about lines 159 and 200), tracking-rules, and the two plugin descriptions. Fix the "four profiles" lines in `skills/tests/test_toolchain_profiles.py` and `skills/tests/test_mutation_harness.py`, and hand-run `skills/tests`.
 - [ ] T5: Add a CHANGELOG `Unreleased` entry.
@@ -56,5 +56,7 @@ Add a fifth toolchain profile, `claude-plugin`, so that cairn can track a repo t
 - 2026-10-01: plan gate chose M192 after M191 over two independent milestones, because the profile's verify and release steps are best written after cairn builds one real mod. Falsified by M191 stalling while an adopter needs the profile.
 - 2026-10-01: plan chose to rank a language marker above the plugin markers, so a plugin repo with `pyproject.toml` stays `python`. This matches the existing hybrid rule that a repo keeps its language marker. Falsified by an adopter's plugin repo whose language profile misses the `claude plugin` checks it needs.
 - 2026-10-01: implement started on branch m192-claude-plugin-profile. Question gate: `/cairn-init` asks the main-deliverable question for a plugin+language repo too, with the language profile recommended. Repair with no user keeps the language marker. The profile asks two greenfield openers, where the plugin is listed and whether it ships a mod.
+- 2026-10-01: T1 done. `skills/shared/profiles/claude-plugin.md`, 112 lines, written from observed `claude` 2.1.287 output: marketplace validate warns on an entry `version` that differs from `plugin.json`, and `--strict` fails on the root CLAUDE.md warning.
+- 2026-10-01: T2 done. `claude-plugin` added to the shipped-profile loop. With the consistency-gate slot cut it failed "claude-plugin missing consistency-gate", restored it passed. scripts 394 OK, hooks 174 OK, plugin validate passed with warnings, plugin test 47/47.
 
 ## Decisions
