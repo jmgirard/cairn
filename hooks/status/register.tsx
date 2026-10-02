@@ -3,17 +3,17 @@ import type { Register } from 'claude-code'
 
 import type { CairnBandHidden, CairnBandMark, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
-import { ARROW, cairnSkill, GAP, knownStep, stepLines } from './band'
+import { ARROW, cairnSkill, GAP, knownStep, stepLines, width } from './band'
 import type { BandRow, FileSource } from './reader'
 import { loadBand } from './reader'
 
-// The milestone band above the prompt (M191, M193, M194, M195, M196): one
-// row per `in-progress` or `review` ROADMAP row, refreshed when the session
-// starts, at the end of each turn, when a cairn skill's prompt is expanded,
-// and at each chapter the session marks. A running cairn skill shows its
-// label and the last chapter, on the milestone row of its phase or on a
-// skill row of its own. The rows sit above whatever the hooks beneath draw
-// in the same slot. The first row ends in a close button, which hides the
+// The milestone band above the prompt (M191, M193 to M197): one row for one
+// `in-progress` or `review` ROADMAP row, refreshed when the session starts,
+// at the end of each turn, when a cairn skill's prompt is expanded, and at
+// each chapter the session marks. A running cairn skill shows its label and
+// the last chapter on that row, or on a skill row when no milestone is
+// active (band.ts picks the row). The row sits above whatever the hooks
+// beneath draw in the same slot. It ends in a close button, which hides the
 // band until the active rows' ids, statuses, or order, or the running
 // skill, change.
 
@@ -35,10 +35,15 @@ const step = atom({ plugin: 'cairn', key: 'step' } as const, null as CairnStep |
 // the terminal, the chapter stays null.
 const CHAPTER_TOOL = 'mcp__ccd_session__mark_chapter'
 
-// The close button's label on every surface. The desktop app draws a
-// dismiss Button in the band as its label text, so a long label reads as
-// text there.
+// The close button's label. The desktop app draws a dismiss Button in the
+// band as its label text, so a long label reads as text there. On the
+// desktop the label is `✕`, dim at rest, which the operator picked at a
+// live look as closest to the app's own close icon (M197).
 const CLOSE_GLYPH = '×'
+const DESKTOP_CLOSE_GLYPH = '✕'
+// The columns the row's close gap and one-glyph label take on either
+// surface, which the row leaves free when it picks its form.
+const CLOSE_COLUMNS = GAP + width(CLOSE_GLYPH)
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
@@ -96,7 +101,7 @@ export const register: Register = on => {
     if (hidden !== null && same(hidden, mark(rows, current))) return next(e)
     const beneath = await next(e)
     const { Box, Button, Text } = $.ui.resolve(e)
-    const lines = stepLines(rows, current, e.props.bodyColumns)
+    const lines = stepLines(rows, current, e.props.bodyColumns, CLOSE_COLUMNS)
     const spans = (list: Span[]) =>
       list.map(span => (
         <Text wrap="truncate-end" {...style(span)}>
@@ -144,7 +149,8 @@ export const register: Register = on => {
               key="cairn-close"
               role="dismiss"
               plain
-              label={CLOSE_GLYPH}
+              {...(e.surface === 'terminal' ? {} : { dimColor: true })}
+              label={e.surface === 'terminal' ? CLOSE_GLYPH : DESKTOP_CLOSE_GLYPH}
               onPress={() => dismiss($)}
             />
           ) : null}

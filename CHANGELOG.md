@@ -6,8 +6,9 @@
 
 - **A milestone band above the prompt.** The plugin now ships a Claude Code
   mod (`hooks/status/register.tsx`, named under a new `modules` key in
-  `hooks/hooks.json`). In a cairn-tracked repo it draws one row per
-  `in-progress` or `review` milestone: the phase, the id, one text, a
+  `hooks/hooks.json`). In a cairn-tracked repo it draws one row for one
+  active milestone, the first `in-progress` one, else the first `review`
+  one. The row shows the phase, the id, one text, a
   progress bar, and the checked and total boxes of the phase's section.
   That section is `## Tasks` during implement and `## Acceptance criteria`
   during review. The text is the section's first unchecked box after a
@@ -16,30 +17,36 @@
   of the bar and the counts. With no chapter on the row, the text is then
   the milestone's title. The phase, id, and text sit at the left of a row,
   and the bar and counts or the label at its right edge. A long text is cut at its end, so the
-  counts stay at the right edge. A close button on the first row hides
-  the band. If the active milestones' ids, statuses, or ROADMAP order
+  counts stay at the right edge. A close button at the end of the row
+  hides the band: `×` in the terminal, and a `✕` that is dim at rest in
+  the desktop app. If the active milestones' ids, statuses, or ROADMAP order
   change, it shows again. If another cairn skill starts, or the session ends
   while one runs, it also shows again. The band also names the running
   cairn skill: `plan`, `implement`, `review`, `hotfix`, `triage`, `release`,
-  `status`, `brief`, `design`, or `init`. Implement and review run on the
-  first milestone row of their status. Any other skill, or one of those two
-  with no such row, gets a skill row with its label and slash command. In
+  `status`, `brief`, `design`, or `init`. The skill's label takes the place
+  of the phase label on the row. If a `review` milestone exists, the row is
+  the first one during `/milestone-review`. With no active milestone, a
+  skill gets a skill row with its label and slash command. In
   the desktop app, each chapter the session marks, such as `Post-merge
-  hygiene`, becomes the text of the row that carries the skill, and the
+  hygiene`, becomes the row's text, and the
   band reads the files again. The bar shows while that chapter opens with
   a `T4:` or `AC2:` label. At any other chapter a row with counts shows the
   counts alone, and a state label stays as it is. A skill row shows the
   chapter after its slash command. In a session without the desktop app's
   chapter tool, such as one in the terminal, a skill row shows its label
-  and slash command only. Milestone rows there show their next open item.
+  and slash command only. The milestone row there shows its next open item.
   The skill stays until a cairn skill starts again or the session ends. A subagent
   that loads a cairn skill also sets the label, because the skill event does
   not say which agent loaded it. The colors come from your Claude Code
-  theme. Below 60 columns, the bar is left out. Another plugin's band in the
-  same place shows under cairn's rows. At session start and at the end of
+  theme. One space follows the phase label. The bar draws all ten cells
+  with `█`, and the empty cells are dim. In a narrow window the right part
+  takes a shorter form, so that the text keeps room: `2/3 tasks`, then
+  `2/3`, and `2/2 checked` or `no file` for the labels. A skill row drops
+  its slash command. Another plugin's band in the same place shows under
+  cairn's row. At session start and at the end of
   each turn, the band reads the files again. With no active milestone and no
   cairn skill running, it draws nothing. Outside a cairn repo, it draws only
-  a running cairn skill's rows. It needs Claude Code 2.1.287 or later, where
+  a running cairn skill's skill row. It needs Claude Code 2.1.287 or later, where
   mods are on by default, or an earlier version with hooks modules turned
   on. See "The milestone band" in the README.
 - **A `claude-plugin` toolchain profile.** A repo that builds a Claude Code

@@ -1,0 +1,9 @@
+{
+  "cwd": "",
+  "rows": [
+    {"id": "M1000", "title": "An open task at the widest counts", "status": "in-progress", "tasksChecked": 99, "tasksTotal": 100, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T10a: Open at the widest counts.", "nextCriterion": "AC1: Open."},
+    {"id": "M1001", "title": "Its file was never written", "status": "in-progress", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
+    {"id": "M1002", "title": "An open criterion at the widest counts", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 99, "criteriaTotal": 100, "nextTask": null, "nextCriterion": "AC10a: Open at the widest counts."},
+    {"id": "M1003", "title": "Every criterion checked at the widest counts", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 100, "criteriaTotal": 100, "nextTask": "T1: Open.", "nextCriterion": null}
+  ]
+}

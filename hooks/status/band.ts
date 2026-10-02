@@ -1,13 +1,15 @@
 import type { CairnStep } from '../../types'
 import type { BandRow } from './reader'
 
-// The band's rows, as plain descriptions that register.tsx draws. Each
-// milestone gets one row. Its left side names the phase, the id, and one
-// text: the session's last chapter while the running skill is on that row,
-// else the phase's next open task or criterion, else the title. Its right
-// side holds the bar and the counts, the counts alone, or a state label. A
-// running cairn skill with no milestone row of its phase gets a skill row
-// of its own, above the milestone rows.
+// The band's one row, as a plain description that register.tsx draws. It
+// shows one active milestone: the first `review` row while
+// /milestone-review runs and one exists, else the first `in-progress` row,
+// else the first `review` row. Its left side names the phase, or the
+// running cairn skill in its place, then the id and one text: the skill's
+// last chapter, else the phase's next open task or criterion, else the
+// title. Its right side holds the bar and the counts, the counts alone, or
+// a state label, in the first of its forms that leaves the text enough
+// room. A running cairn skill with no active milestone gets a skill row.
 
 // One run of text and its style. Colors are theme keys, so they follow the
 // person's light or dark theme.
@@ -32,13 +34,14 @@ const PHASES: Record<string, Phase> = {
 }
 
 export const BAR_CELLS = 10
-// Below this many band columns a row drops the bar.
-export const BAR_MIN_COLUMNS = 60
 // The columns between the left and the right group.
 export const GAP = 2
-const LABEL_WIDTH = 9
-const FILLED = '█'
-const EMPTY = '░'
+// The most columns a row keeps for its text when it picks a form: a shorter
+// text needs only its own width.
+export const TEXT_ROOM = 10
+// One glyph for every cell, so the bar keeps one width in any font; the
+// empty cells are dim.
+const CELL = '█'
 export const ARROW = '→ '
 const POSITIONAL = /^(T|AC)\d+[a-z]*:/
 
@@ -58,11 +61,10 @@ export const SKILL_LABELS: Record<string, string> = {
   'cairn-init': 'init',
 }
 
-// The ROADMAP status of the milestone row a skill runs on, for the two
-// skills that run on one.
-const CARRIES: Record<string, string> = {
-  'milestone-implement': 'in-progress',
-  'milestone-review': 'review',
+// A skill's label color: the review phase's for /milestone-review, the
+// implement phase's for every other skill.
+function skillColor(skill: string): string {
+  return skill === 'milestone-review' ? PHASES.review.color : PHASES['in-progress'].color
 }
 
 // A skill's bare name when it is a cairn skill, from its bare name or its
@@ -87,8 +89,8 @@ export function phaseOf(row: BandRow): Phase {
 export function bar(checked: number, total: number, color: string): Span[] {
   const filled = Math.floor((BAR_CELLS * checked) / total)
   return [
-    { text: FILLED.repeat(filled), color },
-    { text: EMPTY.repeat(BAR_CELLS - filled), dimColor: true },
+    { text: CELL.repeat(filled), color },
+    { text: CELL.repeat(BAR_CELLS - filled), dimColor: true },
   ]
 }
 
@@ -98,33 +100,70 @@ function stepOf(text: string): Step {
   return { kind: 'step', label, rest: label === null ? text : text.slice(label.length) }
 }
 
-// A skill row: the skill's label, its slash command, the chapter when one
-// is set, and nothing on the right.
-export function skillLines(step: CairnStep): BandLine[] {
-  const color = step.skill === 'milestone-review' ? PHASES.review.color : PHASES['in-progress'].color
-  const head: Span[] = [
-    { text: SKILL_LABELS[step.skill].padEnd(LABEL_WIDTH), color },
-    { text: ' ' },
-    { text: `/${step.skill}` },
-    { text: ' ' },
-  ]
-  return [{ key: 'skill-row', head, body: step.chapter === null ? null : stepOf(step.chapter), tail: [] }]
+// Columns at one per code point: true for the band's own glyphs (`█`, `→`,
+// `×`) and ASCII. A wide character in a text, such as a CJK character or
+// an emoji, is undercounted.
+export function width(text: string): number {
+  return [...text].length
 }
 
-// Every row of the band. With a running skill, the first milestone row of
-// its phase carries it and shows the chapter, or a skill row comes first
-// when no row does.
-export function stepLines(rows: BandRow[], step: CairnStep | null, columns: number): BandLine[] {
-  const status = step === null ? undefined : CARRIES[step.skill]
-  const carrier = status === undefined ? -1 : rows.findIndex(row => row.status === status)
-  const chapter = step === null ? null : step.chapter
-  const milestones = rows.flatMap((row, i) => bandLines(row, columns, i === carrier ? chapter : null))
-  return step !== null && carrier < 0 ? [...skillLines(step), ...milestones] : milestones
+const spansWidth = (spans: Span[]) => spans.reduce((n, span) => n + width(span.text), 0)
+
+// The columns of a row's parts that do not shrink, less the right group:
+// the head, and a step's arrow and label after it.
+function headWidth(head: Span[], body: Body): number {
+  const step = body?.kind === 'step' ? width(ARROW) + width(body.label ?? '') : 0
+  return spansWidth(head) + step
+}
+
+// The columns the text needs to pick a form: its full width, or TEXT_ROOM
+// when that is less.
+function textNeed(body: Body): number {
+  const text = body === null ? '' : body.kind === 'title' ? body.title : body.rest
+  return Math.min(width(text), TEXT_ROOM)
+}
+
+// The first form that leaves the text the room it needs, else the last.
+// `close` is the columns the row's close gap and label take.
+function fit(columns: number, close: number, head: number, need: number, forms: Span[][]): Span[] {
+  const room = (form: Span[]) => columns - head - GAP - spansWidth(form) - close
+  return forms.find(form => room(form) >= need) ?? forms[forms.length - 1]
+}
+
+// A skill row: the skill's label, its slash command, the chapter when one
+// is set, and nothing on the right. When the head leaves the chapter less
+// than the room it needs, the slash command goes.
+export function skillLines(step: CairnStep, columns: number, close = 0): BandLine[] {
+  const label: Span[] = [{ text: SKILL_LABELS[step.skill], color: skillColor(step.skill) }, { text: ' ' }]
+  const full: Span[] = [...label, { text: `/${step.skill}` }, { text: ' ' }]
+  const body: Body = step.chapter === null ? null : stepOf(step.chapter)
+  const fits = columns - headWidth(full, body) - GAP - close >= textNeed(body)
+  return [{ key: 'skill-row', head: fits ? full : label, body, tail: [] }]
+}
+
+// The band's one row, or none: the first `review` row under
+// /milestone-review, else the first `in-progress` row, else the first
+// `review` row; with no active row, a skill row while a cairn skill runs,
+// else nothing. `rows` are the active rows in ROADMAP order. `close` is the
+// columns the close gap and label take.
+export function stepLines(rows: BandRow[], step: CairnStep | null, columns: number, close = 0): BandLine[] {
+  const first = (status: string) => rows.find(row => row.status === status)
+  const reviewed = step?.skill === 'milestone-review' ? first('review') : undefined
+  const row = reviewed ?? first('in-progress') ?? first('review')
+  if (row === undefined) return step === null ? [] : skillLines(step, columns, close)
+  return bandLines(row, columns, step === null ? null : step.chapter, close, step === null ? null : step.skill)
 }
 
 // One milestone's row. A chapter, when given, takes the place of the next
-// open item.
-export function bandLines(row: BandRow, columns: number, chapter: string | null = null): BandLine[] {
+// open item, and a skill, when given, puts its label in place of the
+// phase's. `close` is the columns the close gap and label take.
+export function bandLines(
+  row: BandRow,
+  columns: number,
+  chapter: string | null = null,
+  close = 0,
+  skill: string | null = null,
+): BandLine[] {
   const phase = phaseOf(row)
   const isTasks = phase.noun === 'tasks'
   const checked = isTasks ? row.tasksChecked : row.criteriaChecked
@@ -133,28 +172,31 @@ export function bandLines(row: BandRow, columns: number, chapter: string | null 
   const text = chapter ?? next
   const body: Body = text === null ? { kind: 'title', title: row.title } : stepOf(text)
 
-  // The right group: a state label that stands alone, or the counts. The
-  // bar comes before the counts while the row is in its task or criterion
-  // loop: no chapter, or a chapter with a positional label.
-  let tail: Span[]
+  // The right group's forms, longest first: a state label that stands
+  // alone, or the counts. The bar comes before the counts while the row is
+  // in its task or criterion loop: no chapter, or a chapter with a
+  // positional label.
+  let forms: Span[][]
   if (checked === null || total === null) {
-    tail = [{ text: 'no milestone file', color: 'warning' }]
+    forms = [[{ text: 'no milestone file', color: 'warning' }], [{ text: 'no file', color: 'warning' }]]
   } else if (total === 0) {
-    tail = [{ text: `no ${phase.noun}`, dimColor: true }]
+    forms = [[{ text: `no ${phase.noun}`, dimColor: true }]]
   } else if (next === null) {
-    tail = [{ text: `all ${total} ${phase.noun} checked`, dimColor: true }]
+    forms = [[{ text: `all ${total} ${phase.noun} checked`, dimColor: true }], [{ text: `${total}/${total} checked`, dimColor: true }]]
   } else {
+    const counts: Span[] = [{ text: `${checked}/${total} ${phase.noun}` }]
+    const bare: Span[] = [{ text: `${checked}/${total}` }]
     const inLoop = chapter === null || POSITIONAL.test(chapter)
-    const cells = inLoop && columns >= BAR_MIN_COLUMNS ? [...bar(checked, total, phase.color), { text: '  ' }] : []
-    tail = [...cells, { text: `${checked}/${total} ${phase.noun}` }]
+    forms = inLoop ? [[...bar(checked, total, phase.color), { text: '  ' }, ...counts], counts, bare] : [counts, bare]
   }
 
   const head: Span[] = [
-    { text: phase.label.padEnd(LABEL_WIDTH), color: phase.color },
+    skill === null ? { text: phase.label, color: phase.color } : { text: SKILL_LABELS[skill], color: skillColor(skill) },
     { text: ' ' },
     { text: row.id, bold: true },
     { text: ' ' },
   ]
+  const tail = fit(columns, close, headWidth(head, body), textNeed(body), forms)
   return [{ key: `${row.id}-row`, head, body, tail }]
 }
 
