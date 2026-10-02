@@ -12,6 +12,14 @@ import {
   sectionFields,
   workableRows,
 } from './reader'
+import type { BandState, FileSource } from './reader'
+
+// loadBand gives null for a found ROADMAP it cannot read. These tests read good files.
+async function loaded(source: FileSource): Promise<BandState> {
+  const band = await loadBand(source)
+  if (band === null) throw new Error('loadBand gave null for a readable ROADMAP')
+  return band
+}
 
 describe('reader over every fixture (M193 AC5, M199 AC2)', () => {
   test('the fixture domain is not empty', () => {
@@ -20,12 +28,12 @@ describe('reader over every fixture (M193 AC5, M199 AC2)', () => {
 
   for (const [name, fixture] of Object.entries(FIXTURES)) {
     test(`${name}: rows, counts and next items match expected.json`, async () => {
-      const { rows } = await loadBand(memorySource(fixture.files, fixture.cwd))
+      const { rows } = await loaded(memorySource(fixture.files, fixture.cwd))
       expect(rows).toEqual(fixture.rows)
     })
 
     test(`${name}: the workable list matches expected.json`, async () => {
-      const { workable } = await loadBand(memorySource(fixture.files, fixture.cwd))
+      const { workable } = await loaded(memorySource(fixture.files, fixture.cwd))
       expect(workable.map(row => row.id)).toEqual(fixture.workable)
     })
   }
@@ -38,20 +46,20 @@ describe('reader over every fixture (M193 AC5, M199 AC2)', () => {
 
   test('missing-file expects no counts and no next items', async () => {
     const fixture = FIXTURES['missing-file']
-    const [row] = (await loadBand(memorySource(fixture.files, fixture.cwd))).rows
+    const [row] = (await loaded(memorySource(fixture.files, fixture.cwd))).rows
     expect([row.tasksChecked, row.tasksTotal, row.criteriaChecked, row.criteriaTotal]).toEqual([null, null, null, null])
     expect([row.nextTask, row.nextCriterion]).toEqual([null, null])
   })
 
   test('nested-first names the nested task, less its box and spaces', async () => {
     const fixture = FIXTURES['nested-first']
-    const [row] = (await loadBand(memorySource(fixture.files, fixture.cwd))).rows
+    const [row] = (await loaded(memorySource(fixture.files, fixture.cwd))).rows
     expect(row.nextTask).toBe('T1a: Nested task, open, with extra spaces after the box.')
   })
 
   test('the workable list is computed while a row is active', async () => {
     const fixture = FIXTURES['six-active']
-    const band = await loadBand(memorySource(fixture.files, fixture.cwd))
+    const band = await loaded(memorySource(fixture.files, fixture.cwd))
     expect(band.rows.length).toBe(6)
     expect(band.workable).toEqual([{ id: 'M073', title: 'A planned row between them' }])
   })
@@ -59,7 +67,7 @@ describe('reader over every fixture (M193 AC5, M199 AC2)', () => {
   test('idle-deps: an archive file marks its id done only directly under the archive directory', async () => {
     const fixture = FIXTURES['idle-deps']
     expect(Object.keys(fixture.files)).toContain('/cairn/milestones/archive/sub/M077-nested.md')
-    const ids = (await loadBand(memorySource(fixture.files, fixture.cwd))).workable.map(row => row.id)
+    const ids = (await loaded(memorySource(fixture.files, fixture.cwd))).workable.map(row => row.id)
     // M040 needs M57, which only the archive file M0057-pruned.md marks done.
     expect(ids).toContain('M040')
     // M051 needs M077, whose only file sits one directory deeper.
@@ -104,7 +112,7 @@ describe('the workable list (M199 AC1)', () => {
       '/cairn/milestones/archive/M090-notes.txt': '',
       '/cairn/milestones/archive/M092-shipped.md': '',
     }
-    expect((await loadBand(memorySource(files, '/'))).workable.map(r => r.id)).toEqual(['M093'])
+    expect((await loaded(memorySource(files, '/'))).workable.map(r => r.id)).toEqual(['M093'])
   })
 
   test('a priority word that names an object property reads as normal', () => {
@@ -182,15 +190,23 @@ describe('reader details', () => {
       },
       list: async () => null,
     }
-    const { rows } = await loadBand(source)
+    const { rows } = await loaded(source)
     expect(rows.map(r => [r.id, r.tasksChecked, r.tasksTotal, r.nextTask])).toEqual([['M002', null, null, null]])
     expect(reads).toEqual(['/cairn/ROADMAP.md'])
+  })
+
+  test('a found ROADMAP that cannot be read gives null, and no ROADMAP found gives an empty band (M200)', async () => {
+    const fixture = FIXTURES['single-in-progress']
+    const source = { ...memorySource(fixture.files, fixture.cwd), read: async () => null }
+    expect(await loadBand(source)).toBeNull()
+    const none = FIXTURES['no-roadmap']
+    expect(await loadBand({ ...memorySource(none.files, none.cwd), read: async () => null })).toEqual({ rows: [], workable: [] })
   })
 
   test('an archive directory that cannot be listed marks nothing done', async () => {
     const fixture = FIXTURES['idle-deps']
     const source = { ...memorySource(fixture.files, fixture.cwd), list: async () => null }
-    const ids = (await loadBand(source)).workable.map(row => row.id)
+    const ids = (await loaded(source)).workable.map(row => row.id)
     expect(ids).not.toContain('M040')
     expect(ids).toContain('M041')
   })

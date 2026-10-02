@@ -236,12 +236,14 @@ export async function findRoot(source: FileSource, cwd: string): Promise<string 
 }
 
 // One row per `in-progress` or `review` milestone, in ROADMAP order, and
-// the workable list.
-export async function loadBand(source: FileSource): Promise<BandState> {
+// the workable list. Empty when no ROADMAP is found, and null when one is
+// found but cannot be read (M200). `read_roadmap` in
+// scripts/cairn_scripts.py reads an unreadable ROADMAP as empty instead.
+export async function loadBand(source: FileSource): Promise<BandState | null> {
   const root = await findRoot(source, await source.cwd())
   if (root === null) return { rows: [], workable: [] }
   const roadmap = await source.read(join(root, 'cairn/ROADMAP.md'))
-  if (roadmap === null) return { rows: [], workable: [] }
+  if (roadmap === null) return null
   const parsed = parseRoadmapRows(roadmap)
   const out: BandRow[] = []
   for (const row of parsed) {

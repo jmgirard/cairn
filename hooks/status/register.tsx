@@ -1,9 +1,9 @@
 import { atom, read, update } from 'claude-code'
 import type { Register } from 'claude-code'
 
-import type { CairnBandHidden, CairnBandMark, CairnStep } from '../../types'
+import type { CairnBandHidden, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
-import { ARROW, cairnSkill, GAP, GRAY, knownStep, stepLines, width } from './band'
+import { ARROW, cairnSkill, GAP, GRAY, knownStep, mark, same, stepLines, width } from './band'
 import type { BandState, FileSource } from './reader'
 import { loadBand } from './reader'
 
@@ -16,7 +16,9 @@ import { loadBand } from './reader'
 // milestone (band.ts picks the row). The row sits above whatever the hooks
 // beneath draw in the same slot. It ends in a close button, which hides the
 // band until the active rows' ids, statuses, or order, the running skill,
-// or the idle row's id change.
+// or the idle row's id change, or the session ends (M200). A found
+// ROADMAP that cannot be read keeps the rows, and the close state is
+// compared against them and the current step.
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
@@ -95,11 +97,12 @@ export const register: Register = on => {
     return result
   })
 
-  // Every session end, a `/clear` or a resume among them, ends the step.
+  // Every session end, a `/clear` or a resume among them, ends the step and
+  // shows a band that a press hid, whatever its reason (M200).
   on('session.end', async ($, e, next) => {
     const result = await next(e)
     await update($, step, () => null)
-    await reconcile($)
+    await update($, dismissed, () => null)
     return result
   })
 
@@ -184,26 +187,6 @@ export const register: Register = on => {
   })
 }
 
-// The ids and statuses of the active rows, in ROADMAP order, the running
-// skill, and the idle row's id when the band draws one (no active row and
-// no running skill), else null. The chapter is left out, so a new chapter
-// alone keeps the band hidden, and so is the workable list while a row is
-// active or a skill runs, so a planned row added then keeps it hidden too.
-function mark(state: BandState, current: CairnStep | null): CairnBandHidden {
-  const marks: CairnBandMark[] = state.rows.map(row => ({ id: row.id, status: row.status }))
-  const idle = state.rows.length === 0 && current === null ? (state.workable[0]?.id ?? null) : null
-  return { marks, skill: current === null ? null : current.skill, idle }
-}
-
-function same(a: CairnBandHidden, b: CairnBandHidden): boolean {
-  return (
-    a.skill === b.skill &&
-    a.idle === b.idle &&
-    a.marks.length === b.marks.length &&
-    a.marks.every((m, i) => m.id === b.marks[i].id && m.status === b.marks[i].status)
-  )
-}
-
 // The press reads the rows and the step as they are now, not as they were
 // drawn.
 async function dismiss($) {
@@ -214,12 +197,15 @@ async function dismiss($) {
 
 // A change to the active ids, statuses, or order, to the running skill, or
 // to the idle row's id brings the band back, and it stays until the next
-// press. The end of a skill's step is a change to the running skill.
+// press. The end of a skill's step is a change to the running skill. The
+// decision reads the close state inside the update, so a press made while
+// `reconcile` reads the `band` and `step` values is compared, not lost, and
+// it is kept when those reads match it (M200). A hook that changes the rows
+// or the step before the update can still clear a press made against the
+// new state, because the comparison uses the old reads.
 async function reconcile($) {
-  const hidden = await read($, dismissed)
-  if (hidden === null) return
   const now = mark(await read($, band), await read($, step))
-  if (!same(hidden, now)) await update($, dismissed, () => null)
+  await update($, dismissed, hidden => (hidden !== null && !same(hidden, now) ? null : hidden))
 }
 
 // A span's style props, leaving out the ones it does not set.
@@ -230,15 +216,22 @@ function style(span: Span) {
   return props
 }
 
+// No ROADMAP found empties the band. A found ROADMAP that cannot be read
+// keeps the rows as they were (M200). Any throw from `loadBand`, its
+// parsing included, keeps them too. Of the calls `fsSource` makes, only
+// `$.session.cwd()` is not caught. The close state is then compared
+// against the kept rows and the current step.
 async function refresh($) {
-  let state: BandState = { rows: [], workable: [] }
+  let state: BandState | null = null
   try {
     state = await loadBand(fsSource($))
   } catch {
-    // No readable working directory or ROADMAP: the band is cleared.
-    state = { rows: [], workable: [] }
+    state = null
   }
-  await update($, band, () => state)
+  if (state !== null) {
+    const next = state
+    await update($, band, () => next)
+  }
   await reconcile($)
 }
 

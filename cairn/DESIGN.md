@@ -62,7 +62,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -92,12 +92,23 @@ transitions, human-gated merges, and a domain verification doctrine.
   terminal, and a `✕` dim at rest on other surfaces. A press stores the
   active ids and statuses, the running skill, and the idle row's id or null
   in the `dismissed` state value. The band then passes to `next(e)` until
-  that list, the skill, or the idle id changes. A `skill.prompt` hook
-  stores a cairn skill, by its bare or `cairn:` name, in the `step` state
-  value. While a cairn skill runs, a `tool.call` hook on the desktop app's
-  chapter tool stores the title of each main-loop chapter that went
-  through. Every main-loop chapter that went through reads the files
-  again. A main-loop `turn.complete` with reason `answer` clears `step`,
+  that list, the skill, or the idle id changes. `mark` and `same` in
+  `band.ts` build and compare that value, and `mark` reads the step through
+  `knownStep`, as the drawing does. A refresh decides whether to clear
+  `dismissed` inside its `update` callback, so a press made while
+  `reconcile` reads the `band` and `step` values is kept when those reads
+  match it. A hook that changes the rows or the step before that `update`
+  can still clear a press made against the new state. Every `session.end`
+  sets `dismissed` to null, with no branch on the reason. In the desktop app
+  a `/clear` stops the session's process, and the band draws again at the
+  next message (M200 live look). When the ROADMAP is found but its read
+  fails, `loadBand` returns null and the refresh keeps the band's rows. When
+  no ROADMAP is found, the band empties. A `skill.prompt` hook stores a
+  cairn skill, by its bare or `cairn:` name, in the `step` state value.
+  While a cairn skill runs, a `tool.call` hook on
+  the desktop app's chapter tool stores the title of each main-loop chapter
+  that went through. Every main-loop chapter that went through reads the
+  files again. A main-loop `turn.complete` with reason `answer` clears `step`,
   and so does every `session.end`. A turn that ends `aborted`, `refusal`,
   or `error`, and a subagent's turn end, keep it. `SKILL_LABELS` in
   `band.ts` gives each skill's label, held to the `skills/*/SKILL.md` list

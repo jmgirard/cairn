@@ -1,5 +1,5 @@
-import type { CairnStep } from '../../types'
-import type { BandRow, WorkableRow } from './reader'
+import type { CairnBandHidden, CairnBandMark, CairnStep } from '../../types'
+import type { BandRow, BandState, WorkableRow } from './reader'
 
 // The band's one row, as a plain description that register.tsx draws. It
 // shows one active milestone: the first `review` row while
@@ -95,6 +95,30 @@ export function cairnSkill(name: string): string | null {
 // reload can name a skill the label map has since dropped.
 export function knownStep(step: CairnStep | null): CairnStep | null {
   return step !== null && Object.prototype.hasOwnProperty.call(SKILL_LABELS, step.skill) ? step : null
+}
+
+// What the close button stores at a press, and what a refresh and the
+// drawing compare it with: the ids and statuses of the active rows, in
+// ROADMAP order, the running skill, and the idle row's id when the band
+// draws one (no active row and no running skill), else null. The step is
+// read through knownStep, as the drawing reads it (M200). The chapter is
+// left out, so a new chapter alone keeps the band hidden, and so is the
+// workable list while a row is active or a skill runs, so a planned row
+// added then keeps it hidden too.
+export function mark(state: BandState, step: CairnStep | null): CairnBandHidden {
+  const current = knownStep(step)
+  const marks: CairnBandMark[] = state.rows.map(row => ({ id: row.id, status: row.status }))
+  const idle = state.rows.length === 0 && current === null ? (state.workable[0]?.id ?? null) : null
+  return { marks, skill: current === null ? null : current.skill, idle }
+}
+
+export function same(a: CairnBandHidden, b: CairnBandHidden): boolean {
+  return (
+    a.skill === b.skill &&
+    a.idle === b.idle &&
+    a.marks.length === b.marks.length &&
+    a.marks.every((m, i) => m.id === b.marks[i].id && m.status === b.marks[i].status)
+  )
 }
 
 export function phaseOf(row: BandRow): Phase {

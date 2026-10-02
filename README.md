@@ -194,16 +194,20 @@ keeps room. With no workable planned milestone, the band draws nothing.
 
 The row ends in a close button: `×` in the terminal, and in the desktop
 app a `✕` that is dim at rest. The row can be a milestone row, a skill
-row, or the idle row. Pressing the button hides the band. The band stays
-hidden while three things stay the same. The first is the list of active
-milestones: their ids, their statuses, and their ROADMAP order. The second
-is the running cairn skill. The third is the milestone the idle row names.
-When any of them changes, the band shows again. For example, a milestone
-moves from `implement` to `review`, or a milestone becomes active or leaves
-both statuses. Another cairn skill can start, or a skill's turn can end. A
-new planned milestone can take the idle row's place. A checked box, an
-edited title, or a new chapter does not bring the band back, and the same
-skill run again does not either.
+row, or the idle row. Pressing the button hides the band. Until the
+session ends, the band stays hidden while three things stay the same. The
+first is the list of active milestones: their ids, their statuses, and
+their ROADMAP order. The second is the running cairn skill. The third is
+the milestone the idle row names. When any of them changes, the band shows
+again. For example, a milestone moves from `implement` to `review`, or a
+milestone becomes active or leaves both statuses. Another cairn skill can
+start, or a skill's turn can end. A new planned milestone can take the
+idle row's place. A checked box, an edited title, or a new chapter does
+not bring the band back, and the same skill run again does not either. A
+session end shows a hidden band again, whatever its reason. In the desktop
+app, a `/clear` stops the session, and the band draws again at your next
+message. If the band finds the ROADMAP but cannot read it, the band keeps
+its row. The failed read alone does not hide or show it.
 
 The band finds the ROADMAP in the session's working directory or the nearest
 directory above it. It reads the files when the session starts and at the
