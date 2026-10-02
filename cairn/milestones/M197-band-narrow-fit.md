@@ -113,17 +113,17 @@ Round 2, 2026-10-02, at bde2625. `origin/main` has not moved.
 - AC7: `scripts/tests` 394 OK, `hooks/tests` 174 OK, `claude plugin validate` exit 0 with warnings, and `claude plugin test .` 459 pass, 0 fail. Each exit code is 0.
 - Consistency gate: `cairn_validate` exit 0. No principle changed, so `cairn_impact` is skipped. The `generic` profile names no toolchain checks.
 - Review: three fresh reviewers ran (Opus diff, Sonnet history, Sonnet prior reviews). The PR-comment probe returned nothing. None found a criterion failing. The 14 findings below merge their reports, most severe first, each with the disposition recommended at the gate.
-- F1 (all three): AC4's T5 look came before the desktop `✕` became dim at rest. Reject: AC4 is about size, dim changes only brightness, and the operator confirmed AC4 at the chip.
-- F2 (diff): README says that the text keeps 10 columns, but at the narrowest widths the last form leaves less, for example 2 for `M1000` at 36. Fix now in README.
+- F1 (all three): AC4's T5 look came before the desktop `✕` became dim at rest. Reject: AC4 is about size, dim changes only brightness, and the operator answered yes on AC4 at the chip.
+- F2 (diff): README says that the text keeps 10 columns. At the narrowest widths the last form leaves less, for example 2 for `M1000` at 36. Fix now in README.
 - F3 (diff): README says the bar's filled cells take the label's color. Under a skill label of another color, such as `review` on an in-progress row, the label is green and the bar orange. Fix now in README.
 - F4 (history): README line 154 says "milestone rows" for the one row. Fix now. Line 112's "its rows" means another plugin's rows: reject. The `isFirst` generality in `register.tsx`: reject as style.
-- F5 (all three): a press keys on every active milestone, so a change to a milestone the band does not show brings the band back. Reject: README states this rule from M194. The "Band close-state edge cases" row's trigger covers a band that returns unasked.
-- F6 (all three): a skill's label and chapter go on the shown row, even when the skill is about another milestone. Reject: AC5 chose this at the operator's call. The "Status mod follow-ons" row already names the chapter item.
+- F5 (all three): a press keys on every active milestone. A change to a milestone the band does not show brings the band back. Reject: README states this rule from M194. The "Band close-state edge cases" row's trigger covers a band that returns unasked.
+- F6 (all three): a skill's label and chapter go on the shown row, even for a skill about another milestone. Reject: AC5 chose this at the operator's call. The "Status mod follow-ons" row already names the chapter item.
 - F7 (all three): `Resolves:` names a candidate row, not an issue. "Band layout edge cases" and "Band one row with a skill" stay in ROADMAP. Fix at hygiene: remove both rows, because M197 fixed their items or names them in Out.
 - F8 (diff): the fit uses the terminal's one-column close width on every surface. Reject: AC1 is terminal-only, and T6 showed the desktop row inside a narrow pane.
 - F9 (diff): VS Code and mobile now draw the dim `✕`, with no look. Reject: the "Status mod follow-ons" row already holds tests on those surfaces.
 - F10 (history): where a terminal ignores dim, the bar looks full. Reject: the plan gate recorded this as the falsifier of the one-glyph choice.
 - F11 (history, prior reviews): widths count code points, so wide characters get less room. Reject: Out names it, and the docs say it.
-- F12 (diff): the AC3 test at 120 columns returns early when a row has no bar. Reject: the `DRAWN` text tests pin each bar.
+- F12 (diff): for a row with no bar, the AC3 test at 120 columns returns early. Reject: the `DRAWN` text tests pin each bar.
 - F13 (diff): the AC3 skill-row test does not assert the filled cells' color. Reject: AC3 asks for the glyph and the dim cells only.
 - F14 (diff): the `maxRows` test's title claims more than its body asserts. Reject: the body asserts what AC5 asks.
