@@ -145,7 +145,7 @@ const DRAWN: Record<string, string[]> = {
   subdirectory: ['implement M007 Started from a subdirectory  all 2 tasks checked'],
 }
 
-describe('a header row and an item row per active milestone (AC1)', () => {
+describe('a header row per active milestone, and an item row under each with an open box (AC1)', () => {
   for (const name of ['single-in-progress', 'mixed', 'nested-first']) {
     test(`${name}: the rows in ROADMAP order, above the engine's drawing`, async ($, on) => {
       seat(on, copyOf(name))

@@ -98,8 +98,8 @@ section is missing or holds no checkboxes. `all 3 tasks checked` or
 The phase label is drawn in your theme's Claude orange for `implement` and
 its success green for `review`. The bar's filled cells take the same color,
 and `no milestone file` takes the theme's warning color. Below 60 columns
-the bar is left out. A title too long for the width is cut with `…`, so
-the counts stay on screen. If another plugin draws a band in the same place,
+the bar is left out. A title too long for the width is cut with `…` before
+the counts are. If another plugin draws a band in the same place,
 its rows show under cairn's.
 
 The band finds the ROADMAP in the session's working directory or the nearest

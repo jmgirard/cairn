@@ -6,10 +6,11 @@ import { bandLines } from './band'
 import type { BandRow, FileSource } from './reader'
 import { loadBand } from './reader'
 
-// The milestone band above the prompt (M191, M193): a header row and an
-// item row per `in-progress` or `review` ROADMAP row, refreshed when the
-// session starts and at the end of each turn. The rows sit above whatever
-// the hooks beneath draw in the same slot.
+// The milestone band above the prompt (M191, M193): a header row per
+// `in-progress` or `review` ROADMAP row, and an item row under it when its
+// phase section has an open box, refreshed when the session starts and at
+// the end of each turn. The rows sit above whatever the hooks beneath draw
+// in the same slot.
 
 const band = atom({ plugin: 'cairn', key: 'band' } as const, [] as BandRow[])
 

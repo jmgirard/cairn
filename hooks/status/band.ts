@@ -2,8 +2,9 @@ import type { BandRow } from './reader'
 
 // The band's rows for one milestone, as plain descriptions that
 // register.tsx draws as Text elements. A header row names the phase, id,
-// title, a bar, and the counts; an item row under it names the phase's next
-// open task or criterion.
+// title, and either a bar and the counts or a state label; when the section
+// has an open box, an item row under it names the phase's next open task or
+// criterion.
 
 // One run of text and its style. Colors are theme keys, so they follow the
 // person's light or dark theme.
@@ -30,7 +31,8 @@ export function phaseOf(row: BandRow): Phase {
   return PHASES[row.status]
 }
 
-// Filled cells round down, so the bar is full only when every box is checked.
+// Filled cells round down, so the bar is never full while a box is open; an
+// all-checked section shows a label instead.
 export function bar(checked: number, total: number, color: string): Span[] {
   const filled = Math.floor((BAR_CELLS * checked) / total)
   return [
@@ -79,8 +81,8 @@ export function bandLines(row: BandRow, columns: number): BandLine[] {
     { text: row.id, bold: true },
     { text: ' ' },
   ]
-  // The title takes what is left, so a narrow band cuts the title and keeps
-  // the counts.
+  // The title takes what is left, so a narrow band cuts the title before the
+  // counts.
   const title = fit(row.title, Math.max(columns - width(head) - width(tail), 0))
   const lines: BandLine[] = [{ key: `${row.id}-header`, spans: [...head, { text: title }, ...tail] }]
   if (item !== null) {
@@ -89,7 +91,7 @@ export function bandLines(row: BandRow, columns: number): BandLine[] {
   return lines
 }
 
-// A line's text as drawn, for the tests and the README.
+// A line's text as drawn, for the tests.
 export function lineText(line: BandLine): string {
   return line.spans.map(s => s.text).join('')
 }

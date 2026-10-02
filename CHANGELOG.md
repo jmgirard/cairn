@@ -11,7 +11,8 @@
   progress bar, and the checked and total boxes of the phase's section.
   That section is `## Tasks` during implement and `## Acceptance criteria`
   during review. A dim item row under the header names the section's
-  first unchecked box. The colors come from your Claude Code theme. Below
+  first unchecked box. A missing milestone file, a section with no boxes,
+  or a fully checked section shows a label in their place instead. The colors come from your Claude Code theme. Below
   60 columns, the bar is left out. Another plugin's band in the same place
   shows under cairn's rows. At session start and at the end of each
   turn, the band reads the files again. Outside a cairn repo, or with no
