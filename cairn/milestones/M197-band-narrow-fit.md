@@ -75,6 +75,7 @@ Keep each band row inside the window from 36 columns up, with a steady label gap
 - re-audit: AC6 (full) — nothing.
 - 2026-10-01: the second reader also corrected Out's width for the unsampled case to 43 columns, added T4 to AC2's Coverage for the `states-review` switch test, and asked for the renumbering note above. All three were applied.
 - 2026-10-01: T4 done. `stepLines` returns one row by the AC5 rule, and `bandLines` takes the running skill's label and color. The tests that asserted several rows now draw each row alone through an `alone` copy, or assert the one row. A planted "always the first active row" failed 31 tests, and a planted "phase label always" failed 127. Verify clean: scripts 394, hooks 174, validate 0, mod tests 459/459.
+- 2026-10-01: T5 look build B. The desktop draws a plain close Button labeled `✕`, and the terminal keeps the plain `×`. Verify clean: mod tests 459/459.
 
 ## Decisions
 

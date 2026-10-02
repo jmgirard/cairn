@@ -588,10 +588,9 @@ function shrinks(row: Element) {
   expect(textBox.props.minWidth).toBe(0)
 }
 
-const CLOSE = { terminal: '×', desktop: '×' } as const
-// The terminal draws the close button plain, its label alone. The desktop
-// draws its own close control.
-const PLAIN = { terminal: true, desktop: undefined } as const
+const CLOSE = { terminal: '×', desktop: '✕' } as const
+// The close button is plain, its label alone, on both surfaces.
+const PLAIN = { terminal: true, desktop: true } as const
 
 // The left group of each mixed row, written out by hand.
 const MIXED_LEFT: Record<string, string> = {
