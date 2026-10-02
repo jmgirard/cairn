@@ -86,23 +86,25 @@ export const register: Register = on => {
       </Box>
     )
 
-    // The positional label draws bold and at full strength, so its Text and
-    // the one around it carry no dimColor; the rest of the row is dim.
+    // The positional label draws bold and at full strength, with no
+    // dimColor; the rest of the row is dim. The rest sits in a Box of its
+    // own that gives way, as the title does. With the arrow, label, and rest
+    // nested in one Text, the desktop drew the rest as a bare `…`.
     const item = (line: ItemLine) => (
       <Box key={line.key}>
-        <Text wrap="truncate-end" {...(line.label === null ? { dimColor: true } : {})}>
-          <Text wrap="truncate-end" dimColor>
-            {line.arrow}
+        <Text wrap="truncate-end" dimColor>
+          {line.arrow}
+        </Text>
+        {line.label === null ? null : (
+          <Text wrap="truncate-end" bold>
+            {line.label}
           </Text>
-          {line.label === null ? null : (
-            <Text wrap="truncate-end" bold>
-              {line.label}
-            </Text>
-          )}
+        )}
+        <Box key={`${line.key}-rest`} flexShrink={1}>
           <Text wrap="truncate-end" dimColor>
             {line.rest}
           </Text>
-        </Text>
+        </Box>
       </Box>
     )
 
