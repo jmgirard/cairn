@@ -165,7 +165,8 @@ Chapters come from the desktop app's chapter tool,
 one in the terminal, a milestone row shows its next open box, and a skill
 row shows its label and slash command only. The skill and its chapter
 stay until the turn that runs the skill ends with Claude's answer, such as
-the skill's closing summary. A cairn skill that starts again, the same one
+the skill's closing summary. A question the skill asks you waits inside
+that turn, so the skill stays while you answer. A cairn skill that starts again, the same one
 included, or a session end, a `/clear` included, also ends them. A turn
 that you interrupt, or one that ends in an error, keeps them. A chapter
 marked after the skill ended does not show. A subagent that loads a cairn
