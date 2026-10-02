@@ -16,17 +16,29 @@ tested by Python stdlib `unittest`, so the R-package gates do not apply.
 
 ## verify
 The command(s) `/milestone-implement` (per task) and `/hotfix` (gate-lite) run
-to check work before it is checked off. Two stdlib `unittest` suites gate this
-repo — both must be green:
+to check work before it is checked off. Two stdlib `unittest` suites and two
+`claude plugin` checks gate this repo (the last two since M191, D-143). All
+four must be green:
 
 ```
 python3 -m unittest discover -s scripts/tests
 python3 -m unittest discover -s hooks/tests
+claude plugin validate .claude-plugin/plugin.json
+CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .
 ```
 
 Run them from the repo root and check each exit code explicitly. Both suites
 take a dotted path fine (`python3 -m unittest scripts.tests.test_scripts -k <sub>`);
-to narrow a `discover` run, add `-k <substring>`.
+to narrow a `discover` run, add `-k <substring>`. The validate check passes
+with warnings and fails on any error. `claude plugin test .` runs the status
+mod's `hooks/status/*.test.ts(x)` files. Without the variable, a process
+that the rollout switch serves "off" refuses to run them with "hooks modules
+are turned off in this process" (M191, observed on 2.1.286).
+
+A desktop app shell has no `claude` on its PATH. The app keeps one binary
+per version under `~/Library/Application Support/Claude/claude-code/<version>/<hash>/claude.app/Contents/MacOS/claude`.
+Use the newest version's binary. The `claude-code-vm/<version>/claude` file beside
+it is a Linux binary for the app's VM and does not run on the Mac.
 
 Non-gating: `skills/tests` — the prose-guard suite over the skills/rulebook
 markdown — gates nothing: no commit, merge, or check-off waits on it (M144,
@@ -51,7 +63,10 @@ never wait for a check run that will not arrive.
 ## test-doctrine
 Toolchain-specific test expectations layered on the universal "What gets a
 test" rules in tracking-rules. This repo: `scripts/` and `hooks/` behavior is
-tested by Python stdlib `unittest` (the two gating suites). A new rulebook or
+tested by Python stdlib `unittest` (the two gating suites). The status mod
+under `hooks/status/` is tested by its `*.test.ts(x)` files under `claude
+plugin test`, and its reader is held to the Python helpers by the shared
+fixtures (`scripts/tests/test_status_fixtures.py`). A new rulebook or
 skill rule owes no prose guard and no mutation registration in this repo —
 the retained `skills/tests` prose-guards are a hand-run tripwire, not a
 coverage obligation (M144, D-108/D-109); the shipped "What gets a test"

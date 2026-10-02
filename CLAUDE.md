@@ -4,8 +4,9 @@ This repo IS the cairn plugin (skills/, templates, rulebook) and dogfoods
 its own tracking format by hand under `cairn/`. Its toolchain profile is
 `generic` (declared in `cairn/PROFILE.md`): the language-agnostic core with no
 R gates; `verify` is this repo's two gating `python3 -m unittest` suites
-(`scripts/tests`, `hooks/tests`; the `skills/tests` prose-guards are hand-run
-only — M144, D-109).
+(`scripts/tests`, `hooks/tests`) plus `claude plugin validate` and
+`claude plugin test` for the status mod (D-143). The `skills/tests`
+prose-guards are hand-run only (M144, D-109).
 
 ## Project tracking (cairn)
 

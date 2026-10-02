@@ -1,0 +1,9 @@
+{
+  "cwd": "",
+  "rows": [
+    {"id": "M010", "title": "Nested tasks and a capital X", "status": "review", "checked": 3, "total": 5},
+    {"id": "M012", "title": "A Tasks section with no boxes", "status": "in-progress", "checked": 0, "total": 0},
+    {"id": "M013", "title": "Capitalized status, file gone", "status": "review", "checked": null, "total": null},
+    {"id": "M014", "title": "No Tasks section at all", "status": "in-progress", "checked": 0, "total": 0}
+  ]
+}
