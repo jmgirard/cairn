@@ -53,7 +53,7 @@ Lay out the milestone band with its bar and counts at the right edge, and give i
 - [x] T3: Render in `register.tsx`. Draw the two groups, the close button with its per-surface label, and the bold label. Pass to `next(e)` while `dismissed` equals the current list.
 - [x] T4: Tests. Restate M193's cases where the tree changed. Add the AC1, AC2, and AC4 cases on both surfaces, red first.
 - [x] T5: Edit cases for AC3 on both surfaces.
-- [ ] T6: Docs. Update README "The milestone band", the DESIGN.md `hooks/status/` line, and the CHANGELOG `Unreleased` entry.
+- [x] T6: Docs. Update README "The milestone band", the DESIGN.md `hooks/status/` line, and the CHANGELOG `Unreleased` entry.
 - [ ] T7: Look at the band live in the desktop app at a normal and a narrow width, in both phases, with a wide-character title, and press the close button. Record what it showed in the work log.
 
 ## Work log
@@ -69,5 +69,6 @@ Lay out the milestone band with its bar and counts at the right edge, and give i
 - 2026-10-01: minor amendment: T1 to T5 land in one checkpoint commit. The new line shape, the drawing, and the restated tests must change together, or the verify slot fails.
 - 2026-10-01: T1-T5 done. The new tests ran red first on the old band code (28 fail, the AC3 cases for want of a close button). Two planted defects went red: a refresh that never clears `dismissed`, and a mark that also compares titles. Verify: scripts 394 OK, hooks 174 OK, validate clean, mod tests 82/82.
 - 2026-10-01: a press hides the band for the rest of a test's session, so each AC2 case runs on one surface. A first draft mounted both surfaces in one session and failed on the second mount.
+- 2026-10-01: T6 done. README "The milestone band" gains the two groups, the bold label, and a close-button paragraph. The `…` claim is gone, since the engine now cuts the title. DESIGN.md and the CHANGELOG entry follow. Verify green.
 
 ## Decisions

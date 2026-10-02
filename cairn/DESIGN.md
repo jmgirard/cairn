@@ -62,7 +62,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -70,8 +70,13 @@ transitions, human-gated merges, and a domain verification doctrine.
   milestone. When the phase's section has an open box, an item row under it
   names the first one; the section is `## Tasks` in implement and
   `## Acceptance criteria` in review. The rows sit above what the hooks
-  beneath draw, and the band blocks nothing. `band.ts` builds the rows and
-  `register.tsx` draws them. `reader.ts` mirrors the Python ROADMAP
+  beneath draw, and the band blocks nothing. A header row has a left group
+  (phase, id, title) and a right group (bar and counts, or a state label).
+  The engine cuts the title. The first header row ends in a `role:
+  'dismiss'` close button. A press stores the active ids and statuses in the
+  `dismissed` state value. The band then passes to `next(e)` until a refresh
+  finds that list changed. `band.ts` builds the rows and `register.tsx`
+  draws them. `reader.ts` mirrors the Python ROADMAP
   and section helpers, held to them by shared fixtures under
   `hooks/status/fixtures/` (`gen_fixtures.py` writes `fixtures.gen.ts` for the
   `claude plugin test` cases).
