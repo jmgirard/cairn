@@ -11,11 +11,12 @@ import type { BandRow } from './reader'
 // a state label, in the first of its forms that leaves the text enough
 // room. A running cairn skill with no active milestone gets a skill row.
 
-// One run of text and its style. The label and the filled cells draw in a
-// fixed muted orange or green. The desktop app draws a theme key's
-// `dimColor` toward the background, which turned the orange brown at a
-// live look (M198). The rest of the row draws in `inactive`, the theme's
-// gray, a theme key that follows the person's light or dark theme.
+// One run of text and its style. The label draws in a fixed muted orange
+// or green. The desktop app draws a theme key's `dimColor` toward the
+// background, which turned the orange brown at a live look (M198). The
+// filled cells take the phase's theme key at full strength. The rest of
+// the row draws in `inactive`, the theme's gray. Theme keys follow the
+// person's light or dark theme.
 export type Span = { text: string; color?: string; bold?: boolean; dimColor?: boolean }
 
 export const GRAY = 'inactive'
@@ -37,11 +38,13 @@ export type Body = Step | { kind: 'title'; title: string } | null
 
 export type BandLine = { key: string; head: Span[]; body: Body; tail: Span[] }
 
-type Phase = { label: string; color: string; noun: string }
+// `color` is the label's hue and `fill` the filled cells' theme key, at full
+// strength so the cells stand apart from the empty ones.
+type Phase = { label: string; color: string; fill: string; noun: string }
 
 const PHASES: Record<string, Phase> = {
-  'in-progress': { label: 'implement', color: ORANGE, noun: 'tasks' },
-  review: { label: 'review', color: GREEN, noun: 'criteria' },
+  'in-progress': { label: 'implement', color: ORANGE, fill: 'claude', noun: 'tasks' },
+  review: { label: 'review', color: GREEN, fill: 'success', noun: 'criteria' },
 }
 
 export const BAR_CELLS = 10
@@ -198,7 +201,7 @@ export function bandLines(
     const counts: Span[] = [{ text: `${checked}/${total} ${phase.noun}`, color: GRAY }]
     const bare: Span[] = [{ text: `${checked}/${total}`, color: GRAY }]
     const inLoop = chapter === null || POSITIONAL.test(chapter)
-    forms = inLoop ? [[...bar(checked, total, phase.color), { text: '  ' }, ...counts], counts, bare] : [counts, bare]
+    forms = inLoop ? [[...bar(checked, total, phase.fill), { text: '  ' }, ...counts], counts, bare] : [counts, bare]
   }
 
   const head: Span[] = [

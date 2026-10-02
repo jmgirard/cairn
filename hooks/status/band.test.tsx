@@ -356,15 +356,16 @@ describe('one row while the band shows (M197 AC5)', () => {
   }
 
   // Rows, label colors, and the filled cells' color written out by hand. A
-  // row with no bar has null for the cells. The label and the filled cells
-  // draw in a fixed muted hue with no dimColor (M198 AC1).
+  // row with no bar has null for the cells. The label draws in a fixed muted
+  // hue and the filled cells in a theme key, both with no dimColor (M198
+  // AC1).
   for (const [name, skill, key, label, color, cells] of [
     ['mixed', null, 'M012-row', 'implement', ORANGE, null],
-    ['mixed', 'milestone-review', 'M010-row', 'review', GREEN, GREEN],
+    ['mixed', 'milestone-review', 'M010-row', 'review', GREEN, 'success'],
     ['states-review', 'milestone-implement', 'M050-row', 'implement', ORANGE, null],
     ['states-review', 'milestone', 'M050-row', 'status', ORANGE, null],
-    ['single-in-progress', 'milestone-review', 'M002-row', 'review', GREEN, ORANGE],
-    ['single-in-progress', null, 'M002-row', 'implement', ORANGE, ORANGE],
+    ['single-in-progress', 'milestone-review', 'M002-row', 'review', GREEN, 'claude'],
+    ['single-in-progress', null, 'M002-row', 'implement', ORANGE, 'claude'],
   ] as const) {
     test(`${name} with ${skill ?? 'no skill'}: ${key} under ${label} in ${color}`, async ($, on) => {
       seat(on, copyOf(name))
@@ -573,7 +574,7 @@ describe('the row carries style props (M193 AC3)', () => {
             expect(filled).toBeUndefined()
             expect(rowText(row)).toBe('review M010 → AC3: Third criterion.  2/3 criteria')
           } else {
-            expect(filled?.props.color).toBe(GREEN)
+            expect(filled?.props.color).toBe('success')
             expect(filled?.props.dimColor).toBeUndefined()
             expect(leaf('████')?.props.color).toBe(EMPTY)
             expect(leaf('████')?.props.dimColor).toBeUndefined()
@@ -1691,7 +1692,7 @@ describe('one space after the label, and one bar glyph with gray empty cells (M1
             expect(empty.props.color).toBe(EMPTY)
             for (const filled of bar.slice(0, -1)) {
               expect(filled.props.dimColor).toBeUndefined()
-              expect(filled.props.color).toBe(fixtureRow.status === 'review' ? GREEN : ORANGE)
+              expect(filled.props.color).toBe(fixtureRow.status === 'review' ? 'success' : 'claude')
             }
           },
           $,
@@ -1710,7 +1711,7 @@ describe('one space after the label, and one bar glyph with gray empty cells (M1
         const [row] = await ui.findAll({ key: 'M002-row' })
         const bar = barTexts(row)
         expect(bar.map(t => [textOf(t), t.props.color ?? null, t.props.dimColor === true])).toEqual([
-          ['███', ORANGE, false],
+          ['███', 'claude', false],
           ['███████', EMPTY, false],
         ])
       },
@@ -1785,6 +1786,8 @@ const NO_ROW = ['no-active', 'no-roadmap', 'repo-at-cut']
 // Each phase's hue and each skill's label hue, written out by hand.
 const PHASE_HUE: Record<string, string> = { 'in-progress': ORANGE, review: GREEN }
 const skillHue = (skill: string) => (skill === 'milestone-review' ? GREEN : ORANGE)
+// Each phase's filled-cell theme key, written out by hand.
+const FILL: Record<string, string> = { 'in-progress': 'claude', review: 'success' }
 const WARNINGS = ['no milestone file', 'no file']
 const POSITIONAL_LABEL = /^(T|AC)\d+[a-z]*:$/
 
@@ -1827,8 +1830,8 @@ describe('the band draws in gray, with a muted hue on the label and the filled c
               const leaves = leavesOf(boxes[0])
               expect(leaves.length).toBeGreaterThan(0)
 
-              // AC1: the label and the filled cells take a fixed muted hue
-              // with no dimColor.
+              // AC1: the label takes a fixed muted hue and the filled cells
+              // the phase's theme key, both with no dimColor.
               const head = kids(layout(row).head)
               const label = head[0]
               expect(label.props.color).toBe(skill === null ? PHASE_HUE[status as string] : skillHue(skill))
@@ -1836,7 +1839,7 @@ describe('the band draws in gray, with a muted hue on the label and the filled c
               const cells = leaves.filter(t => /^█+$/.test(textOf(t)))
               const empty = cells[cells.length - 1]
               for (const filled of cells.slice(0, -1)) {
-                expect(filled.props.color).toBe(PHASE_HUE[status as string])
+                expect(filled.props.color).toBe(FILL[status as string])
                 expect(filled.props.dimColor).toBeUndefined()
               }
               if (empty !== undefined) {
