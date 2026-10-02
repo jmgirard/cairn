@@ -12,6 +12,11 @@ import { FIXTURES, SKILLS } from './fixtures.gen'
 // ends, and the second turn end reads the edit.
 
 const SURFACES = ['terminal', 'desktop'] as const
+// The implement and review hues, written out by hand (M198).
+const ORANGE = 'rgb(194,122,92)'
+const GREEN = 'rgb(106,165,122)'
+// The empty cells' theme key, written out by hand (M198).
+const EMPTY = 'subtle'
 const BAND = {
   component: 'AbovePrompt',
   props: { hasSurvey: false, isWorking: false, maxRows: 10, bodyColumns: 120 },
@@ -186,7 +191,7 @@ async function mountEach(name: string, view: typeof BAND, check: (ui: Ui, surfac
 // Each active row at 120 columns, drawn as the only active row, written out
 // by hand, never derived from band.ts. The two spaces before a bar, a
 // count, or a state label are the right group's left margin. A row's text
-// shows every bar cell as `█`; the dim empty cells are asserted on the
+// shows every bar cell as `█`; the empty cells' color is asserted on the
 // drawn Texts.
 const DRAWN: Record<string, string[]> = {
   'single-in-progress': ['implement M002 → T2: Write the command.  ██████████  1/3 tasks'],
@@ -350,13 +355,17 @@ describe('one row while the band shows (M197 AC5)', () => {
     }
   }
 
-  // Rows and label colors written out by hand.
-  for (const [name, skill, key, label, color] of [
-    ['mixed', null, 'M012-row', 'implement', 'claude'],
-    ['mixed', 'milestone-review', 'M010-row', 'review', 'success'],
-    ['states-review', 'milestone-implement', 'M050-row', 'implement', 'claude'],
-    ['states-review', 'milestone', 'M050-row', 'status', 'claude'],
-    ['single-in-progress', 'milestone-review', 'M002-row', 'review', 'success'],
+  // Rows, label colors, and the filled cells' color written out by hand. A
+  // row with no bar has null for the cells. The label draws in a fixed muted
+  // hue and the filled cells in a theme key, both with no dimColor (M198
+  // AC1).
+  for (const [name, skill, key, label, color, cells] of [
+    ['mixed', null, 'M012-row', 'implement', ORANGE, null],
+    ['mixed', 'milestone-review', 'M010-row', 'review', GREEN, 'success'],
+    ['states-review', 'milestone-implement', 'M050-row', 'implement', ORANGE, null],
+    ['states-review', 'milestone', 'M050-row', 'status', ORANGE, null],
+    ['single-in-progress', 'milestone-review', 'M002-row', 'review', GREEN, 'claude'],
+    ['single-in-progress', null, 'M002-row', 'implement', ORANGE, 'claude'],
   ] as const) {
     test(`${name} with ${skill ?? 'no skill'}: ${key} under ${label} in ${color}`, async ($, on) => {
       seat(on, copyOf(name))
@@ -370,6 +379,18 @@ describe('one row while the band shows (M197 AC5)', () => {
           const [row] = await ui.findAll({ key })
           expect(labelOf(row)).toBe(label)
           expect(kids(layout(row).head)[0].props.color).toBe(color)
+          expect(kids(layout(row).head)[0].props.dimColor).toBeUndefined()
+          const bar = barTexts(row)
+          if (cells === null) {
+            expect(bar).toEqual([])
+            return
+          }
+          // The filled run, then the empty run.
+          expect(bar.length).toBe(2)
+          expect(bar[0].props.color).toBe(cells)
+          expect(bar[0].props.dimColor).toBeUndefined()
+          expect(bar[1].props.color).toBe(EMPTY)
+          expect(bar[1].props.dimColor).toBeUndefined()
         },
         $,
       )
@@ -508,7 +529,7 @@ function leafIn(texts: Element[], text: string): Element | undefined {
 
 describe('the row carries style props (M193 AC3)', () => {
   for (const [id, label, color] of [
-    ['M012', 'implement', 'claude'],
+    ['M012', 'implement', ORANGE],
     ['M013', 'no milestone file', 'warning'],
   ] as const) {
     test(`mixed: ${id} alone draws ${label} in ${color}`, async ($, on) => {
@@ -540,7 +561,8 @@ describe('the row carries style props (M193 AC3)', () => {
         async ui => {
           const inBand = await bandTexts(ui)
           const leaf = (text: string) => leafIn(inBand, text)
-          expect(leaf('review')?.props.color).toBe('success')
+          expect(leaf('review')?.props.color).toBe(GREEN)
+          expect(leaf('review')?.props.dimColor).toBeUndefined()
           expect(leaf('M010')?.props.bold).toBe(true)
           expect(inBand.length).toBeGreaterThan(5)
           expect(inBand.filter(t => t.props.wrap !== 'truncate-end')).toEqual([])
@@ -554,7 +576,8 @@ describe('the row carries style props (M193 AC3)', () => {
           } else {
             expect(filled?.props.color).toBe('success')
             expect(filled?.props.dimColor).toBeUndefined()
-            expect(leaf('████')?.props.dimColor).toBe(true)
+            expect(leaf('████')?.props.color).toBe(EMPTY)
+            expect(leaf('████')?.props.dimColor).toBeUndefined()
             expect(rowText(row)).toBe(DRAWN.mixed[0])
           }
         },
@@ -739,9 +762,9 @@ const LABELED: [string, string, string][] = [
   ['nested-first', 'M030-row', 'T1a:'],
 ]
 
-describe("the step's label draws bold, and its arrow dim (M196 AC2)", () => {
+describe("the step's label draws bold, and its arrow gray (M196 AC2, M198 AC2)", () => {
   for (const [name, key, label] of LABELED) {
-    test(`${name}: ${label} is bold and undimmed, and the rest is plain`, async ($, on) => {
+    test(`${name}: ${label} is bold and undimmed, and the arrow and text are gray`, async ($, on) => {
       seat(on, alone(name, key.replace(/-row$/, '')))
       await $.turn.complete(turn())
       await mountEach(
@@ -758,8 +781,10 @@ describe("the step's label draws bold, and its arrow dim (M196 AC2)", () => {
           expect([labelText, ...outer].filter(t => t.props.dimColor)).toEqual([])
           const arrows = texts.filter(t => textOf(t.text) === '→ ')
           expect(arrows.length).toBe(1)
-          expect(arrows[0].text.props.dimColor).toBe(true)
+          expect(arrows[0].text.props.color).toBe('inactive')
+          expect(arrows[0].text.props.dimColor).toBeUndefined()
           expect(textOf(head).endsWith(`→ ${label}`)).toBe(true)
+          expect(text?.props.color).toBe('inactive')
           expect(text?.props.dimColor).toBeUndefined()
           expect(text?.props.bold).toBeUndefined()
           shrinks(row)
@@ -1645,7 +1670,7 @@ function barTexts(row: Element): Element[] {
   return below(layout(row).right, 'Text').filter(t => /[█░▒▓]/.test(textOf(t)))
 }
 
-describe('one space after the label, and one bar glyph with dim empty cells (M197 AC3)', () => {
+describe('one space after the label, and one bar glyph with gray empty cells (M197 AC3, M198 AC1)', () => {
   for (const name of Object.keys(FIXTURES)) {
     for (const fixtureRow of FIXTURES[name].rows) {
       test(`${name}: ${fixtureRow.id} alone at 120 columns`, async ($, on) => {
@@ -1660,9 +1685,11 @@ describe('one space after the label, and one bar glyph with dim empty cells (M19
             const bar = barTexts(row)
             if (bar.length === 0) return
             expect(bar.map(t => textOf(t)).join('')).toBe('█'.repeat(10))
-            // The filled run, when there is one, then the dim empty run.
+            // The filled run, when there is one, in the phase's theme key,
+            // then the empty run in EMPTY (M198 AC1).
             const empty = bar[bar.length - 1]
-            expect(empty.props.dimColor).toBe(true)
+            expect(empty.props.dimColor).toBeUndefined()
+            expect(empty.props.color).toBe(EMPTY)
             for (const filled of bar.slice(0, -1)) {
               expect(filled.props.dimColor).toBeUndefined()
               expect(filled.props.color).toBe(fixtureRow.status === 'review' ? 'success' : 'claude')
@@ -1674,7 +1701,7 @@ describe('one space after the label, and one bar glyph with dim empty cells (M19
     }
   }
 
-  test('single-in-progress at 1/3 tasks draws 3 filled cells and 7 dim ones', async ($, on) => {
+  test('single-in-progress at 1/3 tasks draws 3 filled cells and 7 empty ones', async ($, on) => {
     seat(on, copyOf('single-in-progress'))
     await $.turn.complete(turn())
     await mountEach(
@@ -1683,9 +1710,9 @@ describe('one space after the label, and one bar glyph with dim empty cells (M19
       async ui => {
         const [row] = await ui.findAll({ key: 'M002-row' })
         const bar = barTexts(row)
-        expect(bar.map(t => [textOf(t), t.props.dimColor === true])).toEqual([
-          ['███', false],
-          ['███████', true],
+        expect(bar.map(t => [textOf(t), t.props.color ?? null, t.props.dimColor === true])).toEqual([
+          ['███', 'claude', false],
+          ['███████', EMPTY, false],
         ])
       },
       $,
@@ -1708,14 +1735,14 @@ describe('one space after the label, and one bar glyph with dim empty cells (M19
             const third = kids(layout(row).head)[2]
             expect(third === undefined ? '' : textOf(third)).toBe(id === null ? `/${skill}` : id)
             // A skill row has no bar. A milestone row under the skill's
-            // label keeps its ten cells, the empty run dim.
+            // label keeps its ten cells, the empty run in EMPTY.
             const bar = barTexts(row)
             if (id === null) {
               expect(bar).toEqual([])
               return
             }
             expect(bar.map(t => textOf(t)).join('')).toBe('█'.repeat(10))
-            expect(bar[bar.length - 1].props.dimColor).toBe(true)
+            expect(bar[bar.length - 1].props.color).toBe(EMPTY)
             for (const filled of bar.slice(0, -1)) expect(filled.props.dimColor).toBeUndefined()
           },
           $,
@@ -1750,5 +1777,98 @@ describe('one row whatever maxRows is (M197 AC5)', () => {
         $,
       )
     })
+  }
+})
+
+// The fixtures that draw no row with no skill running, written out by
+// hand. Under a running skill each of them draws a skill row.
+const NO_ROW = ['no-active', 'no-roadmap', 'repo-at-cut']
+// Each phase's hue and each skill's label hue, written out by hand.
+const PHASE_HUE: Record<string, string> = { 'in-progress': ORANGE, review: GREEN }
+const skillHue = (skill: string) => (skill === 'milestone-review' ? GREEN : ORANGE)
+// Each phase's filled-cell theme key, written out by hand.
+const FILL: Record<string, string> = { 'in-progress': 'claude', review: 'success' }
+const WARNINGS = ['no milestone file', 'no file']
+const POSITIONAL_LABEL = /^(T|AC)\d+[a-z]*:$/
+
+// The Texts below a node that hold only strings: the leaves a row draws.
+function leavesOf(node: Element): Element[] {
+  return below(node, 'Text').filter(t => t.children.every(c => typeof c === 'string'))
+}
+
+describe('the band draws in gray, with a muted hue on the label and the theme hue on the filled cells (M198 AC1, AC2)', () => {
+  test('the fixtures that draw no row with no skill', () => {
+    for (const name of NO_ROW) expect(Object.keys(FIXTURES)).toContain(name)
+    for (const name of Object.keys(FIXTURES)) expect(shownId(name) === null).toBe(NO_ROW.includes(name))
+  })
+
+  // A skill row is seen under each of the two skills, since every fixture
+  // runs under both, and the NO_ROW fixtures draw a skill row under each.
+  for (const name of Object.keys(FIXTURES)) {
+    for (const skill of [null, 'milestone-review', 'milestone-plan'] as const) {
+      test(`${name} with ${skill ?? 'no skill'}: every leaf's color`, async ($, on) => {
+        seat(on, copyOf(name))
+        await $.turn.complete(turn())
+        if (skill !== null) await prompt($, skill)
+        const id = NO_ROW.includes(name) ? null : shownId(name, skill)
+        const status = FIXTURES[name].rows.find(row => row.id === id)?.status ?? null
+        for (const columns of [120, 36]) {
+          await mountEach(
+            name,
+            at(columns),
+            async (ui, surface) => {
+              const boxes = await ui.findAll({ key: 'cairn-band' })
+              if (skill === null && id === null) {
+                expect(boxes).toEqual([])
+                return
+              }
+              const keys = await rowKeys(ui)
+              expect(keys).toEqual([id === null ? 'skill-row' : `${id}-row`])
+              // The row and the leaves come from one tree, so the label and
+              // the cells are found among the leaves by identity.
+              const row = below(boxes[0], 'Box').find(box => keyOf(box) === keys[0]) as Element
+              const leaves = leavesOf(boxes[0])
+              expect(leaves.length).toBeGreaterThan(0)
+
+              // AC1: the label takes a fixed muted hue and the filled cells
+              // the phase's theme key, both with no dimColor.
+              const head = kids(layout(row).head)
+              const label = head[0]
+              expect(label.props.color).toBe(skill === null ? PHASE_HUE[status as string] : skillHue(skill))
+              expect(label.props.dimColor).toBeUndefined()
+              const cells = leaves.filter(t => /^█+$/.test(textOf(t)))
+              const empty = cells[cells.length - 1]
+              for (const filled of cells.slice(0, -1)) {
+                expect(filled.props.color).toBe(FILL[status as string])
+                expect(filled.props.dimColor).toBeUndefined()
+              }
+              if (empty !== undefined) {
+                expect(empty.props.color).toBe(EMPTY)
+                expect(empty.props.dimColor).toBeUndefined()
+              }
+
+              // AC2: every other leaf is gray and not dim, but for the
+              // spaces and the warnings. The id and a positional label are
+              // bold.
+              for (const leaf of leaves) {
+                const text = textOf(leaf)
+                if (leaf === label || cells.includes(leaf) || /^ *$/.test(text)) continue
+                expect([text, leaf.props.dimColor]).toEqual([text, undefined])
+                expect([text, leaf.props.color]).toEqual([text, WARNINGS.includes(text) ? 'warning' : 'inactive'])
+                if (text === id || POSITIONAL_LABEL.test(text)) expect(leaf.props.bold).toBe(true)
+              }
+              if (id !== null) expect(textOf(head[2])).toBe(id)
+
+              // The close Button keeps its M197 props.
+              const [button] = await ui.findAll({ type: 'Button' })
+              expect(button.props.plain).toBe(PLAIN[surface])
+              expect(button.props.dimColor).toBe(DIM[surface])
+              expect(button.props.label).toBe(CLOSE[surface])
+            },
+            $,
+          )
+        }
+      })
+    }
   }
 })

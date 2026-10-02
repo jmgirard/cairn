@@ -3,7 +3,7 @@ import type { Register } from 'claude-code'
 
 import type { CairnBandHidden, CairnBandMark, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
-import { ARROW, cairnSkill, GAP, knownStep, stepLines, width } from './band'
+import { ARROW, cairnSkill, GAP, GRAY, knownStep, stepLines, width } from './band'
 import type { BandRow, FileSource } from './reader'
 import { loadBand } from './reader'
 
@@ -115,27 +115,29 @@ export const register: Register = on => {
     // A shrinking Box also takes `minWidth: 0`, and the short parts sit in a
     // Box that never shrinks. Without both, the desktop app drew a long text
     // at full width past the edge with no `…`, and the arrow and label
-    // beside it shrank to nothing. A step's arrow is dim and its positional
-    // label bold, with no dimColor.
+    // beside it shrank to nothing. A step's arrow, its positional label, and
+    // the text draw in the theme's gray with no dimColor, the label bold.
     const row = (line: BandLine, isFirst: boolean) => (
       <Box key={line.key} justifyContent="space-between">
         <Box key={`${line.key}-left`} flexShrink={1} minWidth={0}>
           <Box key={`${line.key}-head`} flexShrink={0}>
             {spans(line.head)}
             {line.body?.kind === 'step' ? (
-              <Text wrap="truncate-end" dimColor>
+              <Text wrap="truncate-end" color={GRAY}>
                 {ARROW}
               </Text>
             ) : null}
             {line.body?.kind === 'step' && line.body.label !== null ? (
-              <Text wrap="truncate-end" bold>
+              <Text wrap="truncate-end" color={GRAY} bold>
                 {line.body.label}
               </Text>
             ) : null}
           </Box>
           {line.body === null ? null : (
             <Box key={`${line.key}-text`} flexShrink={1} minWidth={0}>
-              <Text wrap="truncate-end">{line.body.kind === 'title' ? line.body.title : line.body.rest}</Text>
+              <Text wrap="truncate-end" color={GRAY}>
+                {line.body.kind === 'title' ? line.body.title : line.body.rest}
+              </Text>
             </Box>
           )}
         </Box>
@@ -205,10 +207,9 @@ async function reconcile($) {
 
 // A span's style props, leaving out the ones it does not set.
 function style(span: Span) {
-  const props: { color?: string; bold?: boolean; dimColor?: boolean } = {}
+  const props: { color?: string; bold?: boolean } = {}
   if (span.color !== undefined) props.color = span.color
   if (span.bold) props.bold = true
-  if (span.dimColor) props.dimColor = true
   return props
 }
 

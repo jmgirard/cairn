@@ -11,9 +11,23 @@ import type { BandRow } from './reader'
 // a state label, in the first of its forms that leaves the text enough
 // room. A running cairn skill with no active milestone gets a skill row.
 
-// One run of text and its style. Colors are theme keys, so they follow the
-// person's light or dark theme.
-export type Span = { text: string; color?: string; bold?: boolean; dimColor?: boolean }
+// One run of text and its style. The label draws in a fixed muted orange
+// or green. In the desktop app's dark theme, a theme key's `dimColor`
+// turned the orange brown at a live look (M198). The filled cells take the
+// phase's theme key at full strength. The rest of the row draws in
+// `inactive`, the theme's gray, but for the empty cells (EMPTY) and the
+// warning labels. Theme keys follow the person's theme, a custom one included.
+export type Span = { text: string; color?: string; bold?: boolean }
+
+export const GRAY = 'inactive'
+const ORANGE = 'rgb(194,122,92)'
+const GREEN = 'rgb(106,165,122)'
+// The empty cells: the theme key `subtle`. The 2.1.286 light, dark, and
+// colorblind themes set it fainter than `inactive`, and the ANSI themes set
+// it equal.
+// A dim cell with no color drew close to the orange's brightness at a live
+// look (M198).
+const EMPTY = 'subtle'
 
 // A step: a chapter or an open item. `label` is its positional label
 // (`T2:`, `AC3:`), or null when it has none; `rest` is the text after it.
@@ -26,11 +40,13 @@ export type Body = Step | { kind: 'title'; title: string } | null
 
 export type BandLine = { key: string; head: Span[]; body: Body; tail: Span[] }
 
-type Phase = { label: string; color: string; noun: string }
+// `color` is the label's hue and `fill` the filled cells' theme key, at full
+// strength so the cells stand apart from the empty ones.
+type Phase = { label: string; color: string; fill: string; noun: string }
 
 const PHASES: Record<string, Phase> = {
-  'in-progress': { label: 'implement', color: 'claude', noun: 'tasks' },
-  review: { label: 'review', color: 'success', noun: 'criteria' },
+  'in-progress': { label: 'implement', color: ORANGE, fill: 'claude', noun: 'tasks' },
+  review: { label: 'review', color: GREEN, fill: 'success', noun: 'criteria' },
 }
 
 export const BAR_CELLS = 10
@@ -40,7 +56,7 @@ export const GAP = 2
 // text needs only its own width.
 export const TEXT_ROOM = 10
 // One glyph for every cell, so the bar keeps one width in any font; the
-// empty cells are dim.
+// empty cells take EMPTY.
 const CELL = '█'
 export const ARROW = '→ '
 const POSITIONAL = /^(T|AC)\d+[a-z]*:/
@@ -90,7 +106,7 @@ export function bar(checked: number, total: number, color: string): Span[] {
   const filled = Math.floor((BAR_CELLS * checked) / total)
   return [
     { text: CELL.repeat(filled), color },
-    { text: CELL.repeat(BAR_CELLS - filled), dimColor: true },
+    { text: CELL.repeat(BAR_CELLS - filled), color: EMPTY },
   ]
 }
 
@@ -135,7 +151,7 @@ function fit(columns: number, close: number, head: number, need: number, forms: 
 // than the room it needs, the slash command goes.
 export function skillLines(step: CairnStep, columns: number, close = 0): BandLine[] {
   const label: Span[] = [{ text: SKILL_LABELS[step.skill], color: skillColor(step.skill) }, { text: ' ' }]
-  const full: Span[] = [...label, { text: `/${step.skill}` }, { text: ' ' }]
+  const full: Span[] = [...label, { text: `/${step.skill}`, color: GRAY }, { text: ' ' }]
   const body: Body = step.chapter === null ? null : stepOf(step.chapter)
   const fits = columns - headWidth(full, body) - GAP - close >= textNeed(body)
   return [{ key: 'skill-row', head: fits ? full : label, body, tail: [] }]
@@ -180,20 +196,20 @@ export function bandLines(
   if (checked === null || total === null) {
     forms = [[{ text: 'no milestone file', color: 'warning' }], [{ text: 'no file', color: 'warning' }]]
   } else if (total === 0) {
-    forms = [[{ text: `no ${phase.noun}`, dimColor: true }]]
+    forms = [[{ text: `no ${phase.noun}`, color: GRAY }]]
   } else if (next === null) {
-    forms = [[{ text: `all ${total} ${phase.noun} checked`, dimColor: true }], [{ text: `${total}/${total} checked`, dimColor: true }]]
+    forms = [[{ text: `all ${total} ${phase.noun} checked`, color: GRAY }], [{ text: `${total}/${total} checked`, color: GRAY }]]
   } else {
-    const counts: Span[] = [{ text: `${checked}/${total} ${phase.noun}` }]
-    const bare: Span[] = [{ text: `${checked}/${total}` }]
+    const counts: Span[] = [{ text: `${checked}/${total} ${phase.noun}`, color: GRAY }]
+    const bare: Span[] = [{ text: `${checked}/${total}`, color: GRAY }]
     const inLoop = chapter === null || POSITIONAL.test(chapter)
-    forms = inLoop ? [[...bar(checked, total, phase.color), { text: '  ' }, ...counts], counts, bare] : [counts, bare]
+    forms = inLoop ? [[...bar(checked, total, phase.fill), { text: '  ' }, ...counts], counts, bare] : [counts, bare]
   }
 
   const head: Span[] = [
     skill === null ? { text: phase.label, color: phase.color } : { text: SKILL_LABELS[skill], color: skillColor(skill) },
     { text: ' ' },
-    { text: row.id, bold: true },
+    { text: row.id, color: GRAY, bold: true },
     { text: ' ' },
   ]
   const tail = fit(columns, close, headWidth(head, body), textNeed(body), forms)
