@@ -71,7 +71,7 @@ Lay out the milestone band with its bar and counts at the right edge, and give i
 - 2026-10-01: a press hides the band for the rest of a test's session, so each AC2 case runs on one surface. A first draft mounted both surfaces in one session and failed on the second mount.
 - 2026-10-01: T6 done. README "The milestone band" gains the two groups, the bold label, and a close-button paragraph. The `…` claim is gone, since the engine now cuts the title. DESIGN.md and the CHANGELOG entry follow. Verify green.
 - 2026-10-01: claim audit: 43 claims read, 6 corrected — hooks/status/band.ts, hooks/status/band.test.tsx (the README, CHANGELOG, and types claims held). The same reader re-read the 6 fixes and 3 optional "or order" fixes in register.tsx and the AC3 describe name: all held. Mod tests 82/82, validate clean.
-- 2026-10-01: T7 first live look (desktop, implement phase, operator's screenshot): the bar and counts sat at the right edge. Two defects: the item row read `→ T7:…`, the text after the label cut to a bare ellipsis, and the close button drew its label `Close milestone band` as text, not a native close control.
-- 2026-10-01: item row fix: the arrow, label, and rest are now sibling Texts in the row Box, the rest inside a `flexShrink: 1` Box as the title is, in place of one Text that nested all three. AC4's wording already allowed this. Mod tests 82/82, validate clean.
+- 2026-10-01: T7 first live look (desktop, implement phase, operator's screenshot): the bar and counts sat at the right edge. Two defects. The item row read `→ T7:…`, the text after the label cut to a bare ellipsis. The close button drew its label `Close milestone band` as text, not a native close control.
+- 2026-10-01: item row fix: the arrow, label, and rest are now sibling Texts in the row Box. The rest sits inside a `flexShrink: 1` Box, as the title does. Before, one Text nested all three. AC4's wording already allowed this. Mod tests 82/82, validate clean.
 
 ## Decisions
