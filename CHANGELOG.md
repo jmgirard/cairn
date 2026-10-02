@@ -27,8 +27,10 @@
   `Post-merge hygiene`, takes the item row under the row that carries the
   skill, and the band reads the files again. In a session without the
   desktop app's chapter tool, such as one in the terminal, a skill row has
-  no item row. The skill stays until a cairn
-  skill starts again or the session ends. The colors come from your Claude
+  no item row. Milestone rows there show their next open item. The skill
+  stays until a cairn skill starts again or the session ends. A subagent
+  that loads a cairn skill also sets the label, because the skill event
+  does not say which agent loaded it. The colors come from your Claude
   Code theme. Below 60 columns, the bar is left out. Another plugin's band in the same
   place shows under cairn's rows. At session start and at the end of each
   turn, the band reads the files again. With no active milestone and no

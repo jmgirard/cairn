@@ -81,10 +81,15 @@ transitions, human-gated merges, and a domain verification doctrine.
   title of each main-loop chapter that went through, and reads the files
   again. Every `session.end` clears `step`. `SKILL_LABELS` in `band.ts`
   gives each skill's label, held to the `skills/*/SKILL.md` list that
-  `gen_fixtures.py` writes. The first row of the skill's status carries the
+  `gen_fixtures.py` writes: `plan`, `implement`, `review`, `hotfix`,
+  `triage`, `release`, `status` (for `milestone`), `brief`, `design`, and
+  `init`. The first row of the skill's status carries the
   skill (`in-progress` for implement, `review` for review), and otherwise a
-  skill row comes first. The carrying row's item row shows the chapter.
-  The skill event carries no agent id, so a subagent that loads a cairn
+  skill row comes first. A skill row shows the label and the slash command.
+  The carrying row's item row shows the chapter.
+  A session without the desktop app's chapter tool, such as one in the
+  terminal, sets no chapter: milestone rows show their next open item, and
+  a skill row has no item row. The skill event carries no agent id, so a subagent that loads a cairn
   skill sets it too. `band.ts` builds the rows and `register.tsx` draws
   them. `reader.ts` mirrors the Python ROADMAP and section helpers,
   held to them by shared fixtures under

@@ -1,6 +1,6 @@
 # M195: A milestone band that names every cairn step
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -47,7 +47,7 @@ Make the milestone band name the cairn skill that is running and its current ste
 - AC3 → T1, T2, T3, T5, T6
 - AC4 → T2, T6
 - AC5 → T2, T5, T6
-- AC6 → T7, T8
+- AC6 → T7, T8, T9
 - AC7 → T4, T6
 
 ## Tasks
@@ -60,6 +60,7 @@ Make the milestone band name the cairn skill that is running and its current ste
 - [x] T6: Tests. Add the AC1–AC5 cases on both surfaces, red first, and restate any M194 case whose tree changed.
 - [x] T7: Docs. Update README "The milestone band", the DESIGN.md `hooks/status/` line, and the CHANGELOG `Unreleased` entry.
 - [x] T8: Look at the band live in the desktop app after the mod reloads: a `/cairn:milestone-implement M195` run, then chapters marked during one turn. Record what it showed in the work log. The plan look and a review chapter after all criteria are checked are recorded at M195's review.
+- [x] T9: Docs gaps from review return 1. Add the subagent clause to the CHANGELOG entry. Add the ten labels and the terminal clause to the DESIGN.md `hooks/status/` line.
 
 ## Work log
 
@@ -83,6 +84,9 @@ Make the milestone band name the cairn skill that is running and its current ste
 - 2026-10-01: T8 attempt in the planning session after a `/cairn:milestone-implement M195` rerun. Three chapters were marked 15 seconds apart, and the operator saw no change on the M195 item row. The desktop session still ran the mod it loaded at session start, so the edits made during the session never loaded. T8 moves to a new Code session on this branch.
 - 2026-10-01: T8 done in a new Code session that loaded the mod from this branch. After `/cairn:milestone-implement M195`, three chapters were marked in one turn, with the verify runs between them. With the turn still open at a question, the operator saw the M195 item row read `T8 probe: third chapter`. So the `cairn:` spelling sets the step, and the band redraws in the middle of a turn. Verify slot green: scripts 394, hooks 174, validate exit 0, mod tests 131.
 - 2026-10-01: review return 1 (defect): AC6 fails as written. The CHANGELOG entry lacks the subagent clause. The DESIGN.md `hooks/status/` line lacks the ten labels and the terminal clause. AC1–AC5 and AC7 passed with fresh evidence. Status back to `in-progress`.
+- 2026-10-01: T9 added, a minor amendment for the review return. AC6 now maps to T7, T8, and T9.
+- 2026-10-01: T9 done. The CHANGELOG entry gained the subagent clause and the terminal's milestone-row clause. The DESIGN.md `hooks/status/` line gained the ten labels, the skill row's contents, and the terminal clause. Verify slot green: scripts 394, hooks 174, validate exit 0, mod tests 131.
+- claim audit: 18 claims read, 0 corrected — CHANGELOG.md, cairn/DESIGN.md (the T9 lines only, one fresh Opus reader).
 
 ## Decisions
 
