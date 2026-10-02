@@ -21,6 +21,10 @@ export type Span = { text: string; color?: string; bold?: boolean; dimColor?: bo
 export const GRAY = 'inactive'
 const ORANGE = 'rgb(194,122,92)'
 const GREEN = 'rgb(106,165,122)'
+// The empty cells: the theme key `subtle`, a gray near the background in
+// the light and dark themes. A dim cell with no color drew close to the
+// orange's brightness at a live look (M198).
+const EMPTY = 'subtle'
 
 // A step: a chapter or an open item. `label` is its positional label
 // (`T2:`, `AC3:`), or null when it has none; `rest` is the text after it.
@@ -47,7 +51,7 @@ export const GAP = 2
 // text needs only its own width.
 export const TEXT_ROOM = 10
 // One glyph for every cell, so the bar keeps one width in any font; the
-// empty cells are dim.
+// empty cells take EMPTY.
 const CELL = '█'
 export const ARROW = '→ '
 const POSITIONAL = /^(T|AC)\d+[a-z]*:/
@@ -97,7 +101,7 @@ export function bar(checked: number, total: number, color: string): Span[] {
   const filled = Math.floor((BAR_CELLS * checked) / total)
   return [
     { text: CELL.repeat(filled), color },
-    { text: CELL.repeat(BAR_CELLS - filled), dimColor: true },
+    { text: CELL.repeat(BAR_CELLS - filled), color: EMPTY },
   ]
 }
 

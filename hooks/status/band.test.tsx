@@ -15,6 +15,8 @@ const SURFACES = ['terminal', 'desktop'] as const
 // The implement and review hues, written out by hand (M198).
 const ORANGE = 'rgb(194,122,92)'
 const GREEN = 'rgb(106,165,122)'
+// The empty cells' theme key, written out by hand (M198).
+const EMPTY = 'subtle'
 const BAND = {
   component: 'AbovePrompt',
   props: { hasSurvey: false, isWorking: false, maxRows: 10, bodyColumns: 120 },
@@ -189,7 +191,7 @@ async function mountEach(name: string, view: typeof BAND, check: (ui: Ui, surfac
 // Each active row at 120 columns, drawn as the only active row, written out
 // by hand, never derived from band.ts. The two spaces before a bar, a
 // count, or a state label are the right group's left margin. A row's text
-// shows every bar cell as `█`; the dim empty cells are asserted on the
+// shows every bar cell as `█`; the empty cells' color is asserted on the
 // drawn Texts.
 const DRAWN: Record<string, string[]> = {
   'single-in-progress': ['implement M002 → T2: Write the command.  ██████████  1/3 tasks'],
@@ -386,8 +388,8 @@ describe('one row while the band shows (M197 AC5)', () => {
           expect(bar.length).toBe(2)
           expect(bar[0].props.color).toBe(cells)
           expect(bar[0].props.dimColor).toBeUndefined()
-          expect(bar[1].props.color).toBeUndefined()
-          expect(bar[1].props.dimColor).toBe(true)
+          expect(bar[1].props.color).toBe(EMPTY)
+          expect(bar[1].props.dimColor).toBeUndefined()
         },
         $,
       )
@@ -573,8 +575,8 @@ describe('the row carries style props (M193 AC3)', () => {
           } else {
             expect(filled?.props.color).toBe(GREEN)
             expect(filled?.props.dimColor).toBeUndefined()
-            expect(leaf('████')?.props.color).toBeUndefined()
-            expect(leaf('████')?.props.dimColor).toBe(true)
+            expect(leaf('████')?.props.color).toBe(EMPTY)
+            expect(leaf('████')?.props.dimColor).toBeUndefined()
             expect(rowText(row)).toBe(DRAWN.mixed[0])
           }
         },
@@ -1667,7 +1669,7 @@ function barTexts(row: Element): Element[] {
   return below(layout(row).right, 'Text').filter(t => /[█░▒▓]/.test(textOf(t)))
 }
 
-describe('one space after the label, and one bar glyph with dim empty cells (M197 AC3)', () => {
+describe('one space after the label, and one bar glyph with gray empty cells (M197 AC3, M198 AC1)', () => {
   for (const name of Object.keys(FIXTURES)) {
     for (const fixtureRow of FIXTURES[name].rows) {
       test(`${name}: ${fixtureRow.id} alone at 120 columns`, async ($, on) => {
@@ -1683,10 +1685,10 @@ describe('one space after the label, and one bar glyph with dim empty cells (M19
             if (bar.length === 0) return
             expect(bar.map(t => textOf(t)).join('')).toBe('█'.repeat(10))
             // The filled run, when there is one, in the phase's hue, then
-            // the dim empty run with no color (M198 AC1).
+            // the empty run in EMPTY (M198 AC1).
             const empty = bar[bar.length - 1]
-            expect(empty.props.dimColor).toBe(true)
-            expect(empty.props.color).toBeUndefined()
+            expect(empty.props.dimColor).toBeUndefined()
+            expect(empty.props.color).toBe(EMPTY)
             for (const filled of bar.slice(0, -1)) {
               expect(filled.props.dimColor).toBeUndefined()
               expect(filled.props.color).toBe(fixtureRow.status === 'review' ? GREEN : ORANGE)
@@ -1709,7 +1711,7 @@ describe('one space after the label, and one bar glyph with dim empty cells (M19
         const bar = barTexts(row)
         expect(bar.map(t => [textOf(t), t.props.color ?? null, t.props.dimColor === true])).toEqual([
           ['███', ORANGE, false],
-          ['███████', null, true],
+          ['███████', EMPTY, false],
         ])
       },
       $,
@@ -1732,14 +1734,14 @@ describe('one space after the label, and one bar glyph with dim empty cells (M19
             const third = kids(layout(row).head)[2]
             expect(third === undefined ? '' : textOf(third)).toBe(id === null ? `/${skill}` : id)
             // A skill row has no bar. A milestone row under the skill's
-            // label keeps its ten cells, the empty run dim.
+            // label keeps its ten cells, the empty run in EMPTY.
             const bar = barTexts(row)
             if (id === null) {
               expect(bar).toEqual([])
               return
             }
             expect(bar.map(t => textOf(t)).join('')).toBe('█'.repeat(10))
-            expect(bar[bar.length - 1].props.dimColor).toBe(true)
+            expect(bar[bar.length - 1].props.color).toBe(EMPTY)
             for (const filled of bar.slice(0, -1)) expect(filled.props.dimColor).toBeUndefined()
           },
           $,
@@ -1838,8 +1840,8 @@ describe('the band draws in gray, with a muted hue on the label and the filled c
                 expect(filled.props.dimColor).toBeUndefined()
               }
               if (empty !== undefined) {
-                expect(empty.props.color).toBeUndefined()
-                expect(empty.props.dimColor).toBe(true)
+                expect(empty.props.color).toBe(EMPTY)
+                expect(empty.props.dimColor).toBeUndefined()
               }
 
               // AC2: every other leaf is gray and not dim, but for the

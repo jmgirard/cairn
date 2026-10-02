@@ -68,6 +68,7 @@ The row layout, the forms, and the fit stay as M197 left them.
 - 2026-10-02: T4 done. The sweep found 16 hits before the edit. README, CHANGELOG, and DESIGN now state the dim label and filled cells and the gray rest of the row. The second sweep's hits each state the new colors, or name the close button's dim `✕`, which the Scope leaves as it is.
 - 2026-10-02: T5 first live look (desktop, dark theme): the gray text read closer to the app's bar, but the dim `claude` orange drew brown. This fires the plan's falsifier for dim theme keys. The operator chose fixed mid-tone colors at a chip.
 - 2026-10-02: T5 look build B. The label and filled cells take `rgb(194,122,92)` for implement and `rgb(106,165,122)` for review, with no `dimColor`. The tests follow. AC1 is not yet amended, and the amendment waits for the look. Mod tests 506/506.
+- 2026-10-02: T5 look B: the operator found the implement label right, but the filled orange cells too close to the gray empty cells. Look build C gives the empty cells the theme key `subtle` (`rgb(80,80,80)` in the CLI dark theme) with no `dimColor`. Mod tests 506/506.
 
 ## Decisions
 
