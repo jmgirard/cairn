@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-02 (M198 at review with findings R1-R12 logged and the gate pending, no PR yet. Validate green. No open issues, external PRs, or outside merges. Byte and module budgets hand-read under cap.)_
+_Last hygiene check: 2026-10-02 (M198 done via PR #205 and archived, M195 row pruned. Validate green. Byte and module budgets hand-read under cap. skills/tests 661 with the same 4 reds and 1 error as at M197, non-gating (D-109). No lessons.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,10 +12,9 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M198 | A muted band that matches the app's own bar | review | — | normal | milestones/M198-muted-band.md |
+| M198 | A muted band that matches the app's own bar | done | — | normal | milestones/archive/M198-muted-band.md |
 | M197 | A band that fits narrow windows and the desktop font | done | — | high | milestones/archive/M197-band-narrow-fit.md |
 | M196 | A one-line milestone band | done | — | normal | milestones/archive/M196-one-line-band.md |
-| M195 | A milestone band that names every cairn step | done | — | normal | milestones/archive/M195-band-steps.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._

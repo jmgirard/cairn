@@ -1,0 +1,11 @@
+# M198: A muted band that matches the app's own bar
+
+**Status:** done (2026-10-02, PR #205 https://github.com/jmgirard/cairn/pull/205)
+
+**Goal:** Draw the band's text in the theme's gray, with only the phase label and the bar's filled cells in a dim orange or green.
+
+**Outcome:** The band's Text leaves take the theme key `inactive`, but for the space leaves and the `warning` texts `no milestone file` and `no file`. The phase or skill label draws in a fixed `rgb(194,122,92)` for implement and `rgb(106,165,122)` for review. `/milestone-review` takes the review color, and every other skill takes the implement color. The filled cells take the phase's theme key, `claude` or `success`, at full strength. The empty cells take `subtle`. `Span` lost its `dimColor` field. Only the close Button carries `dimColor`, and it keeps its M197 props. A new walk in `band.test.tsx` draws every fixture on both surfaces at 120 and 36 columns. It runs under no skill, `/milestone-review`, and `/milestone-plan`, and asserts every leaf's color. Mod tests went from 459 to 506. README, CHANGELOG, and DESIGN.md describe the colors per theme. The colorblind themes draw `success` blue. The ANSI themes draw `claude` bright red and `subtle` equal to `inactive`.
+
+**Decisions:** The plan chose dim theme keys. At the live looks the operator found that the dim `claude` orange drew brown in the desktop dark theme. The label moved to fixed mid-tone colors, the empty cells to `subtle`, and the filled cells to full strength. AC1-AC4 and Scope were amended at a mini gate. The Goal kept "dim" by the operator's choice, logged. The font stays out: `Text` has no font prop.
+
+**Review:** Round 1 returned once at the gate: two doc color claims were false in the ANSI and colorblind themes (R1, R2). T8-T10 fixed them, reflowed the paragraphs, named `no file`, and removed the dead `dimColor` code. Round 2 passed all five criteria, AC4 on the operator's answer at the chip. The three-lens fan-out found no code bug. The gate fixed four wording points (S1, S3-S5). S6-S8 joined R3 and R4 in the candidate row "Band label colors in other themes". They are the empty cells' color-only cue, the dim `✕` beside gray text, and the unlooked terminal surface. Five findings were rejected with reasons.
