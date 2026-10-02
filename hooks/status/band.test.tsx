@@ -1105,6 +1105,24 @@ describe('a press while a turn end reads the ROADMAP (M200 AC1)', () => {
   }
 })
 
+describe('a session end shows a band that a press hid, with no skill running (M200 AC3)', () => {
+  for (const surface of SURFACES) {
+    for (const reason of ['clear', 'resume'] as const) {
+      test(`reason ${reason} (${surface})`, async ($, on) => {
+        seat(on, copyOf('single-in-progress'))
+        await $.turn.complete(turn())
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+        await ui.press({ key: 'cairn-close' })
+        expect(await lines(ui)).toEqual([ENGINE])
+        await $.session.end({ reason, sessionId: 's1' })
+        expect(await rowKeys(ui)).toEqual(['M002-row'])
+        expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+        await ui.unmount()
+      })
+    }
+  }
+})
+
 // The ROADMAP stats as a file, and its read rejects.
 describe('a failed read of a found ROADMAP leaves the band as it was (M200 AC2)', () => {
   test('after a press, the band stays hidden through a failed read and the good read after it', async ($, on) => {
@@ -1512,17 +1530,19 @@ describe('the close button works with skill rows (M195 AC5)', () => {
       await ui.unmount()
     })
 
-    test(`a session end after a press shows the band again (${surface})`, async ($, on) => {
-      seat(on, copyOf('single-in-progress'))
-      await $.turn.complete(turn())
-      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
-      await prompt($, 'milestone-plan')
-      await ui.press({ key: 'cairn-close' })
-      expect(await lines(ui)).toEqual([ENGINE])
-      await $.session.end({ reason: 'clear', sessionId: 's1' })
-      expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
-      await ui.unmount()
-    })
+    for (const reason of ['clear', 'resume'] as const) {
+      test(`a session end with reason ${reason} after a press shows the band again (${surface})`, async ($, on) => {
+        seat(on, copyOf('single-in-progress'))
+        await $.turn.complete(turn())
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+        await prompt($, 'milestone-plan')
+        await ui.press({ key: 'cairn-close' })
+        expect(await lines(ui)).toEqual([ENGINE])
+        await $.session.end({ reason, sessionId: 's1' })
+        expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+        await ui.unmount()
+      })
+    }
   }
 
   test('a press on a lone skill row hides it', async ($, on) => {

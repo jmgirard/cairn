@@ -95,11 +95,12 @@ export const register: Register = on => {
     return result
   })
 
-  // Every session end, a `/clear` or a resume among them, ends the step.
+  // Every session end, a `/clear` or a resume among them, ends the step and
+  // shows a band that a press hid, whatever its reason (M200).
   on('session.end', async ($, e, next) => {
     const result = await next(e)
     await update($, step, () => null)
-    await reconcile($)
+    await update($, dismissed, () => null)
     return result
   })
 
