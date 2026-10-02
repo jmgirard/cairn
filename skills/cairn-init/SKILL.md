@@ -163,7 +163,7 @@ cairn/
 ├── ROADMAP.md         # empty index (below)
 ├── DECISIONS.md       # header from templates/decisions.md (entry shape: decision.md)
 ├── LESSONS.md         # header from templates/lessons.md; repo lessons, capped 50 lines / 20,000 bytes (D-015; byte budget D-119)
-├── PROFILE.md         # toolchain profile (r-package | python | docker-image | generic), instantiated
+├── PROFILE.md         # toolchain profile (r-package | python | claude-plugin | docker-image | generic), instantiated
 │                      # from skills/shared/profiles/<name>.md; capped 120 lines
 ├── milestones/archive/
 ├── reviews/archive/
@@ -204,7 +204,7 @@ Then:
   plugin's merge-guard hooks manage both; never committed).
 - Instantiate `cairn/PROFILE.md` from the selected reference profile
   (`${CLAUDE_PLUGIN_ROOT}/skills/shared/profiles/<name>.md` — `r-package.md`,
-  `python.md`, `docker-image.md`, or `generic.md` per the selection order above) — copy it
+  `python.md`, `claude-plugin.md`, `docker-image.md`, or `generic.md` per the selection order above) — copy it
   verbatim; the repo edits its slots (notably `verify`) afterward as needed.
 - **Greenfield openers (new/empty repos only).** When §0 flagged the repo
   greenfield, after instantiating `PROFILE.md` ask the opener set in batched

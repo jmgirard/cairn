@@ -1,7 +1,7 @@
 {
   "name": "cairn",
   "version": "1.12.0",
-  "description": "Milestone-driven development workflow and tracking system for Claude Code projects: a language-agnostic core with per-repo toolchain profiles (R, Python, Docker image, or generic), plan/implement/review skills, hotfix and release paths, Fable review briefs, and a self-auditing cairn/ file system.",
+  "description": "Milestone-driven development workflow and tracking system for Claude Code projects: a language-agnostic core with per-repo toolchain profiles (R, Python, Claude Code plugin, Docker image, or generic), plan/implement/review skills, hotfix and release paths, Fable review briefs, and a self-auditing cairn/ file system.",
   "types": "./types/index.d.ts",
   "author": {
     "name": "Jeffrey Girard",

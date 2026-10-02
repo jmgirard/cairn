@@ -118,6 +118,7 @@ class TestShippedProfilesAreAdvertised(unittest.TestCase):
     LABELS = {
         "r-package": "R",
         "python": "Python",
+        "claude-plugin": "Claude Code plugin",
         "docker-image": "Docker image",
         "generic": "generic",
     }

@@ -720,9 +720,9 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_toolchain_profiles",
-        test="TestRulebookNamesFourProfiles.test_rulebook_names_four_profiles",
+        test="TestRulebookNamesFiveProfiles.test_rulebook_names_five_profiles",
         target=RULES,
-        block="Four profiles ship",
+        block="Five profiles ship",
     ),
     # M58 (RR01 rec 4): universal change-governance stated once in core; one
     # Mutation entry per positive core assert (M53 discipline).

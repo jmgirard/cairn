@@ -121,7 +121,7 @@ DOCKER_TOKENS_ABSENT_FROM_GENERIC = ("hadolint", "docker build", "buildx", "dock
 
 class TestShippedProfiles(unittest.TestCase):
     def test_all_profiles_define_all_seven_slots(self):
-        for name in ("r-package", "python", "generic", "docker-image"):
+        for name in ("r-package", "python", "generic", "docker-image", "claude-plugin"):
             text = read("shared", "profiles", f"{name}.md").lower()
             for slot in SLOTS:
                 self.assertIn(f"## {slot}", text, f"{name} missing slot {slot}")
@@ -502,10 +502,11 @@ class TestTemplateProfileAware(unittest.TestCase):
         self.assertIn("verify", text)
 
 
-class TestRulebookNamesFourProfiles(unittest.TestCase):
-    """AC4/AC6: tracking-rules "Toolchain profiles" states four profiles ship
-    (r-package, python, docker-image, generic) and its absent-PROFILE inference
-    names the order DESCRIPTION → r-package, pyproject.toml → python, a
+class TestRulebookNamesFiveProfiles(unittest.TestCase):
+    """AC4/AC6: tracking-rules "Toolchain profiles" states five profiles ship
+    (r-package, python, claude-plugin, docker-image, generic) and its
+    absent-PROFILE inference names the order DESCRIPTION → r-package,
+    pyproject.toml → python, a plugin marker → claude-plugin (M192), a
     Dockerfile-sole-marker → docker-image, else generic — with the language
     markers ranking first so a hybrid keeps its language marker at inference."""
 
@@ -514,12 +515,14 @@ class TestRulebookNamesFourProfiles(unittest.TestCase):
         self.assertTrue(body, "could not locate the 'Toolchain profiles' section")
         return body
 
-    def test_rulebook_names_four_profiles(self):
+    def test_rulebook_names_five_profiles(self):
         body = self._body()
-        self.assertIn("Four profiles ship", body,
-                      "rulebook should state four profiles ship")
+        self.assertIn("Five profiles ship", body,
+                      "rulebook should state five profiles ship")
         self.assertIn("docker-image", body,
                       "rulebook should name the docker-image profile")
+        self.assertIn("claude-plugin", body,
+                      "rulebook should name the claude-plugin profile")
 
 
 class TestReleaseSkillReadsProfile(unittest.TestCase):
