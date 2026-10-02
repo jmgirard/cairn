@@ -150,7 +150,15 @@ describe('a header row per active milestone, and an item row under each with an 
     test(`${name}: the rows in ROADMAP order, above the engine's drawing`, async ($, on) => {
       seat(on, copyOf(name))
       await $.turn.complete(turn())
-      await mountEach(name, BAND, async ui => expect(await lines(ui)).toEqual([...DRAWN[name], ENGINE]), $)
+      await mountEach(
+        name,
+        BAND,
+        async ui => {
+          expect(await lines(ui)).toEqual([...DRAWN[name], ENGINE])
+          expect((await bandTexts(ui)).filter(t => t.props.wrap !== 'truncate-end')).toEqual([])
+        },
+        $,
+      )
     })
   }
 
@@ -182,6 +190,7 @@ describe('three states draw the header row alone (AC2)', () => {
           const keys = await rowKeys(ui)
           expect(keys).toEqual(FIXTURES[name].rows.map(row => `${row.id}-header`))
           expect((await bandTexts(ui)).filter(t => /[█░]/.test(textOf(t)))).toEqual([])
+          expect((await bandTexts(ui)).filter(t => t.props.wrap !== 'truncate-end')).toEqual([])
         },
         $,
       )
