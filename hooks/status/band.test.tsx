@@ -1977,6 +1977,13 @@ describe('the idle row names the next workable milestone (M199 AC1)', () => {
     await mountEach('six-active', BAND, async ui => expect(await rowKeys(ui)).toEqual(['M070-row']), $)
   })
 
+  test('the session start draws the idle row before any turn ends', async ($, on) => {
+    seat(on, copyOf('no-active'))
+    on('session.start', async ($, e) => ({ cwd: e.cwd }))
+    await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
+    await mountEach('no-active', BAND, async ui => expect(await lines(ui)).toEqual([IDLE_DRAWN['no-active'], ENGINE]), $)
+  })
+
   test('a running cairn skill with no active row draws its skill row, not the idle row', async ($, on) => {
     seat(on, copyOf('no-active'))
     await $.turn.complete(turn())
