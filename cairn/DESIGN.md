@@ -62,7 +62,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -81,8 +81,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   (`claude` or `success`), the empty ones in the theme key `subtle`. The
   phase or skill label takes a fixed raw color, `rgb(194,122,92)` or
   `rgb(106,165,122)`. In the desktop app's dark theme, `dimColor` turned the
-  theme's orange brown at a live look (M198). No Text in the row carries
-  `dimColor`. The other Text leaves take the theme key `inactive`, the
+  theme's orange brown at a live look (M198). Only the close button
+  carries `dimColor`. The other Text leaves take the theme key `inactive`, the
   theme's gray, but for the space leaves and the `warning` labels. `band.ts`
   measures the parts that never shrink at one column per code point. The
   right group takes the first of its forms that leaves the text its room,

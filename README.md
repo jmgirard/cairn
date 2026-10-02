@@ -104,22 +104,23 @@ The phase label is drawn in a muted orange or green: `rgb(194,122,92)` for
 and do not follow your theme. The bar's filled cells draw in your theme's
 full Claude orange or success green, by the phase. This holds also when a
 skill's label of another color stands in for the phase label. Some themes
-change these two colors: the colorblind themes draw success in blue, and
-the ANSI themes draw Claude orange as bright red. The empty cells draw in
-the theme's subtle gray. In the ANSI themes that gray is the same as the
-rest of the row. The rest of the row draws in the theme's gray, with the id
-and a `T2:` or `AC3:` label in bold. `no milestone file` and its short form
-`no file` take the theme's warning color. In a narrow window the right part
-takes the first shorter form that leaves the text 10 columns. A text
-shorter than 10 columns needs only its full width. If no form leaves that
-room, the right part takes its shortest form. The band counts one column
-per character, so a short text of wide characters, such as CJK characters
-or emoji, can get less room than it draws. The bar and counts give way to
-the counts with their noun (`2/3 criteria`), and then to the bare counts
-(`2/3`). `all 2 criteria checked` gives way to `2/2 checked`, and
-`no milestone file` to `no file`. A text too long for the width is cut at
-its end, and the right part stays at the right edge. If another plugin
-draws a band in the same place, its rows show under cairn's.
+change the filled cells' colors, but not the label's: the colorblind themes
+draw success in blue, and the ANSI themes draw Claude orange as bright red.
+The empty cells draw in the theme's subtle gray. In the ANSI themes that
+gray is the same as the rest of the row. The rest of the row draws in the
+theme's gray, with the id and a `T2:` or `AC3:` label in bold.
+`no milestone file` and its short form `no file` take the theme's warning
+color. In a narrow window the right part takes the first shorter form that
+leaves the text 10 columns. A text shorter than 10 columns needs only its
+full width. If no form leaves that room, the right part takes its shortest
+form. The band counts one column per character, so a short text of wide
+characters, such as CJK characters or emoji, can get less room than it
+draws. The bar and counts give way to the counts with their noun
+(`2/3 criteria`), and then to the bare counts (`2/3`).
+`all 2 criteria checked` gives way to `2/2 checked`, and `no milestone file`
+to `no file`. A text too long for the width is cut at its end, and the right
+part stays at the right edge. If another plugin draws a band in the same
+place, its rows show under cairn's.
 
 The band also names the cairn skill that is running. When a cairn skill
 starts, by its plain name or its `cairn:` name, its label takes the place
