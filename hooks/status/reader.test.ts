@@ -1,15 +1,15 @@
 import { describe, expect, test } from 'claude-code/testing'
 
 import { FIXTURES } from './fixtures.gen'
-import { dirname, findRoot, loadBand, memorySource, taskCounts } from './reader'
+import { dirname, findRoot, loadBand, memorySource, sectionFields } from './reader'
 
-describe('reader over every fixture (AC4)', () => {
+describe('reader over every fixture (M193 AC5)', () => {
   test('the fixture domain is not empty', () => {
-    expect(Object.keys(FIXTURES).length).toBeGreaterThan(5)
+    expect(Object.keys(FIXTURES).length).toBeGreaterThan(8)
   })
 
   for (const [name, fixture] of Object.entries(FIXTURES)) {
-    test(`${name}: rows, statuses and task counts match expected.json`, async () => {
+    test(`${name}: rows, counts and next items match expected.json`, async () => {
       const rows = await loadBand(memorySource(fixture.files, fixture.cwd))
       expect(rows).toEqual(fixture.rows)
     })
@@ -21,10 +21,17 @@ describe('reader over every fixture (AC4)', () => {
     expect(await loadBand(memorySource(fixture.files, fixture.cwd))).toEqual([])
   })
 
-  test('missing-file expects no counts', async () => {
+  test('missing-file expects no counts and no next items', async () => {
     const fixture = FIXTURES['missing-file']
-    const rows = await loadBand(memorySource(fixture.files, fixture.cwd))
-    expect(rows.map(r => [r.checked, r.total])).toEqual([[null, null]])
+    const [row] = await loadBand(memorySource(fixture.files, fixture.cwd))
+    expect([row.tasksChecked, row.tasksTotal, row.criteriaChecked, row.criteriaTotal]).toEqual([null, null, null, null])
+    expect([row.nextTask, row.nextCriterion]).toEqual([null, null])
+  })
+
+  test('nested-first names the nested task, less its box and spaces', async () => {
+    const fixture = FIXTURES['nested-first']
+    const [row] = await loadBand(memorySource(fixture.files, fixture.cwd))
+    expect(row.nextTask).toBe('T1a: Nested task, open, with extra spaces after the box.')
   })
 })
 
@@ -50,7 +57,8 @@ describe('reader details', () => {
       '## Tasks',
       '- [x] a second Tasks section, not read',
     ].join('\n')
-    expect(taskCounts(text)).toEqual({ checked: 2, total: 4 })
+    expect(sectionFields(text, 'Tasks')).toEqual({ checked: 2, total: 4, next: 'T2' })
+    expect(sectionFields(text, 'Acceptance criteria')).toEqual({ checked: 1, total: 1, next: null })
   })
 
   test('a milestone path that is not a regular file is never read', async () => {
@@ -67,7 +75,7 @@ describe('reader details', () => {
       },
     }
     const rows = await loadBand(source)
-    expect(rows.map(r => [r.id, r.checked, r.total])).toEqual([['M002', null, null]])
+    expect(rows.map(r => [r.id, r.tasksChecked, r.tasksTotal, r.nextTask])).toEqual([['M002', null, null, null]])
     expect(reads).toEqual(['/cairn/ROADMAP.md'])
   })
 

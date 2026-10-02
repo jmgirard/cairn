@@ -61,13 +61,17 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
-  `plugin.json`. It draws one line per `in-progress` or `review` milestone
-  above the prompt and blocks nothing. `reader.ts` mirrors the Python ROADMAP
-  and `## Tasks` helpers, held to them by shared fixtures under
+  `plugin.json`. It draws a header row per `in-progress` or `review`
+  milestone. When the phase's section has an open box, an item row under it
+  names the first one; the section is `## Tasks` in implement and
+  `## Acceptance criteria` in review. The rows sit above what the hooks
+  beneath draw, and the band blocks nothing. `band.ts` builds the rows and
+  `register.tsx` draws them. `reader.ts` mirrors the Python ROADMAP
+  and section helpers, held to them by shared fixtures under
   `hooks/status/fixtures/` (`gen_fixtures.py` writes `fixtures.gen.ts` for the
   `claude plugin test` cases).
 - `scripts/` + python3 tools (M10) — the deterministic scripts layer, one

@@ -1,0 +1,9 @@
+{
+  "cwd": "",
+  "rows": [
+    {"id": "M050", "title": "Its file was never written", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
+    {"id": "M051", "title": "No criteria section", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": "T1: An open task, which the review phase does not show.", "nextCriterion": null},
+    {"id": "M052", "title": "A criteria section with no boxes", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
+    {"id": "M053", "title": "Every criterion checked", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 2, "criteriaTotal": 2, "nextTask": "T1: Open.", "nextCriterion": null}
+  ]
+}
