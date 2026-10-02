@@ -129,11 +129,11 @@ function below(node: unknown, type: string): Element[] {
   return el.type === type ? [el, ...rest] : rest
 }
 
-const ROW_KEY = /^(M\d+|skill)-(header|item)$/
+const ROW_KEY = /^(M\d+|skill)-row$/
 
-// A row's text with a header row's two groups joined by the right group's
-// left margin, the least gap a row draws (a wide row spreads them further),
-// with the close button's label and the spaces before it left out.
+// A row's text with its two groups joined by the right group's left margin,
+// the least gap a row draws (a wide row spreads them further), with the
+// close button's label and the spaces before it left out.
 function rowText(row: Element): string {
   const groups = kids(row)
   if (row.props.justifyContent !== 'space-between' || groups.length !== 2) return textOf(row)
@@ -141,8 +141,8 @@ function rowText(row: Element): string {
   return `${textOf(left)}${' '.repeat(Number(right.props.marginLeft ?? 0))}${textOf(right)}`.trimEnd()
 }
 
-// The rows as drawn, top to bottom: each of cairn's header and item rows (a
-// keyed Box), then the rows the hooks beneath drew (ENGINE, BENEATH_ROW).
+// The rows as drawn, top to bottom: each of cairn's rows (a keyed Box), then
+// the rows the hooks beneath drew (ENGINE, BENEATH_ROW).
 async function lines(ui: Ui): Promise<string[]> {
   const all = await ui.findAll({})
   return all
@@ -184,21 +184,17 @@ async function mountEach(name: string, view: typeof BAND, check: (ui: Ui, surfac
 }
 
 // The rows at 120 columns, written out by hand, never derived from band.ts.
-// A header row's two spaces before its bar or label are the right group's
-// left margin.
+// The two spaces before a bar, a count, or a state label are the right
+// group's left margin.
 const DRAWN: Record<string, string[]> = {
-  'single-in-progress': ['implement M002 Add the export command  ███░░░░░░░  1/3 tasks', '  → T2: Write the command.'],
+  'single-in-progress': ['implement M002 → T2: Write the command.  ███░░░░░░░  1/3 tasks'],
   mixed: [
-    'review    M010 Nested tasks and a capital X  ██████░░░░  2/3 criteria',
-    '  → AC3: Third criterion.',
+    'review    M010 → AC3: Third criterion.  ██████░░░░  2/3 criteria',
     'implement M012 A Tasks section with no boxes  no tasks',
     'review    M013 Capitalized status, file gone  no milestone file',
     'implement M014 No Tasks section at all  no tasks',
   ],
-  'nested-first': [
-    'implement M030 The next task is nested  ███░░░░░░░  1/3 tasks',
-    '  → T1a: Nested task, open, with extra spaces after the box.',
-  ],
+  'nested-first': ['implement M030 → T1a: Nested task, open, with extra spaces after the box.  ███░░░░░░░  1/3 tasks'],
   'states-implement': [
     'implement M040 Its file was never written  no milestone file',
     'implement M041 No Tasks section  no tasks',
@@ -213,10 +209,93 @@ const DRAWN: Record<string, string[]> = {
   ],
   'missing-file': ['review    M004 Its file was never written  no milestone file'],
   subdirectory: ['implement M007 Started from a subdirectory  all 2 tasks checked'],
-  'unlabeled-item': ['implement M062 The next task has no label  ███░░░░░░░  1/3 tasks', '  → Write the docs, with no label.'],
+  'unlabeled-item': ['implement M062 → Write the docs, with no label.  ███░░░░░░░  1/3 tasks'],
 }
 
-describe('a header row per active milestone, and an item row under each with an open box (M193 AC1)', () => {
+// Each skill's label, written out by hand, never read from band.ts.
+const LABELS: Record<string, string> = {
+  'cairn-init': 'init',
+  'cairn-release': 'release',
+  'cairn-triage': 'triage',
+  'design-interview': 'design',
+  hotfix: 'hotfix',
+  milestone: 'status',
+  'milestone-brief': 'brief',
+  'milestone-implement': 'implement',
+  'milestone-plan': 'plan',
+  'milestone-review': 'review',
+}
+
+// A skill row's text: the label, padded as the phase label is, then the
+// slash command, then the chapter when one is set.
+const skillRow = (skill: string, title?: string) => `${LABELS[skill].padEnd(9)} /${skill}${title === undefined ? '' : ` → ${title}`}`
+
+// The ROADMAP status of the row each phase skill runs on.
+const CARRIED: Record<string, string> = { 'milestone-implement': 'in-progress', 'milestone-review': 'review' }
+
+// The first row's right group ends in the close button.
+async function closesFirst(ui: Ui) {
+  const [first] = await ui.findAll({ key: (await rowKeys(ui))[0] })
+  const right = kids(first)[1]
+  const last = kids(right)[kids(right).length - 1]
+  expect(last.type).toBe('Button')
+  expect(keyOf(last)).toBe('cairn-close')
+  expect((await ui.findAll({ type: 'Button' })).length).toBe(1)
+}
+
+describe('one row per active milestone, and one per skill row (M196 AC1)', () => {
+  const names = Object.keys(FIXTURES)
+  test('the fixture list holds the fixtures the row tests need', () => {
+    expect(names.length).toBeGreaterThan(10)
+    for (const name of ['mixed', 'no-active', 'no-roadmap', 'single-in-progress', 'states-review']) expect(names).toContain(name)
+  })
+
+  for (const name of names) {
+    test(`${name}: with no skill running, one row per active row`, async ($, on) => {
+      seat(on, copyOf(name))
+      await $.turn.complete(turn())
+      const rows = FIXTURES[name].rows
+      await mountEach(
+        name,
+        BAND,
+        async ui => {
+          if (rows.length === 0) {
+            expect(await hasCairn(ui)).toBe(false)
+            return
+          }
+          expect(await rowKeys(ui)).toEqual(rows.map(row => `${row.id}-row`))
+          await closesFirst(ui)
+        },
+        $,
+      )
+    })
+
+    for (const [skill, title] of [
+      ['milestone-implement', 'T1: Write it.'],
+      ['milestone-review', 'Consistency gate'],
+    ]) {
+      test(`${name}: with ${skill} running and a chapter, one row per active row, plus a skill row when none carries it`, async ($, on) => {
+        seat(on, copyOf(name))
+        await $.turn.complete(turn())
+        await prompt($, skill)
+        await chapter($, title)
+        const rows = FIXTURES[name].rows
+        const carried = rows.some(row => row.status === CARRIED[skill])
+        await mountEach(
+          name,
+          BAND,
+          async ui => {
+            const keys = await rowKeys(ui)
+            expect(keys.length).toBe(rows.length + (carried ? 0 : 1))
+            expect(keys).toEqual([...(carried ? [] : ['skill-row']), ...rows.map(row => `${row.id}-row`)])
+            await closesFirst(ui)
+          },
+          $,
+        )
+      })
+    }
+  }
+
   for (const name of ['single-in-progress', 'mixed', 'nested-first']) {
     test(`${name}: the rows in ROADMAP order, above the engine's drawing`, async ($, on) => {
       seat(on, copyOf(name))
@@ -248,9 +327,85 @@ describe('a header row per active milestone, and an item row under each with an 
   })
 })
 
-describe('three states draw the header row alone (M193 AC2)', () => {
+const ROW = (name: string, id: string) => FIXTURES[name].rows.find(row => row.id === id)!
+
+describe("a row's one text: the chapter, else the next open item, else the title (M196 AC2)", () => {
+  test('implement: the chapter on the carrying row', () => {
+    expect(bandLines(ROW('single-in-progress', 'M002'), 120, 'T3: Write the docs.').map(lineText)).toEqual([
+      'implement M002 → T3: Write the docs.  ███░░░░░░░  1/3 tasks',
+    ])
+  })
+
+  test('review: the chapter on the carrying row', () => {
+    expect(bandLines(ROW('mixed', 'M010'), 120, 'AC1: First criterion.').map(lineText)).toEqual([
+      'review    M010 → AC1: First criterion.  ██████░░░░  2/3 criteria',
+    ])
+  })
+
+  test('implement: the next open task with no chapter', () => {
+    expect(bandLines(ROW('single-in-progress', 'M002'), 120).map(lineText)).toEqual([DRAWN['single-in-progress'][0]])
+  })
+
+  test('review: the next open criterion with no chapter', () => {
+    expect(bandLines(ROW('mixed', 'M010'), 120).map(lineText)).toEqual([DRAWN.mixed[0]])
+  })
+
+  test('implement: the title with no chapter and no open task', () => {
+    expect(bandLines(ROW('states-implement', 'M043'), 120).map(lineText)).toEqual(['implement M043 Every task checked  all 3 tasks checked'])
+  })
+
+  test('review: the title with no chapter and no open criterion', () => {
+    expect(bandLines(ROW('states-review', 'M053'), 120).map(lineText)).toEqual(['review    M053 Every criterion checked  all 2 criteria checked'])
+  })
+
+  for (const surface of SURFACES) {
+    test(`a skill row with no chapter, then with one (${surface})`, async ($, on) => {
+      seat(on, copyOf('no-active'))
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await prompt($, 'milestone-plan')
+      expect(await lines(ui)).toEqual(['plan      /milestone-plan', ENGINE])
+      await chapter($, 'Question gate')
+      expect(await lines(ui)).toEqual(['plan      /milestone-plan → Question gate', ENGINE])
+      await ui.unmount()
+    })
+  }
+})
+
+describe('the right group shows the bar only in the task or criterion loop (M196 AC3)', () => {
+  const m002 = ROW('single-in-progress', 'M002')
+  test('a labeled chapter keeps the bar and the counts', () => {
+    expect(bandLines(m002, 120, 'T3: Write the docs.').map(lineText)).toEqual(['implement M002 → T3: Write the docs.  ███░░░░░░░  1/3 tasks'])
+  })
+
+  test('a nested labeled chapter keeps the bar and the counts', () => {
+    expect(bandLines(m002, 120, 'T2a: A sub-task.').map(lineText)).toEqual(['implement M002 → T2a: A sub-task.  ███░░░░░░░  1/3 tasks'])
+  })
+
+  test('an unlabeled chapter shows the counts alone', () => {
+    expect(bandLines(m002, 120, 'Question gate').map(lineText)).toEqual(['implement M002 → Question gate  1/3 tasks'])
+  })
+
+  test('no chapter keeps the bar and the counts', () => {
+    expect(bandLines(m002, 120, null).map(lineText)).toEqual([DRAWN['single-in-progress'][0]])
+  })
+
+  test('below 60 columns a labeled chapter shows the counts alone', () => {
+    expect(bandLines(m002, 59, 'T2: Write the command.').map(lineText)).toEqual(['implement M002 → T2: Write the command.  1/3 tasks'])
+  })
+
+  test('a chapter on a state-label row keeps the label', () => {
+    expect(bandLines(ROW('mixed', 'M013'), 120, 'AC1: A criterion.').map(lineText)).toEqual(['review    M013 → AC1: A criterion.  no milestone file'])
+    expect(bandLines(ROW('mixed', 'M012'), 120, 'Question gate').map(lineText)).toEqual(['implement M012 → Question gate  no tasks'])
+    expect(bandLines(ROW('states-review', 'M053'), 120, 'Consistency gate').map(lineText)).toEqual([
+      'review    M053 → Consistency gate  all 2 criteria checked',
+    ])
+  })
+})
+
+describe('three states draw the title and the label (M193 AC2)', () => {
   for (const name of ['states-implement', 'states-review', 'missing-file', 'subdirectory']) {
-    test(`${name}: header rows only, with no bar and no item row`, async ($, on) => {
+    test(`${name}: one row each, with no bar`, async ($, on) => {
       seat(on, copyOf(name))
       await $.turn.complete(turn())
       await mountEach(
@@ -258,8 +413,7 @@ describe('three states draw the header row alone (M193 AC2)', () => {
         BAND,
         async ui => {
           expect(await lines(ui)).toEqual([...DRAWN[name], ENGINE])
-          const keys = await rowKeys(ui)
-          expect(keys).toEqual(FIXTURES[name].rows.map(row => `${row.id}-header`))
+          expect(await rowKeys(ui)).toEqual(FIXTURES[name].rows.map(row => `${row.id}-row`))
           expect((await bandTexts(ui)).filter(t => /[█░]/.test(textOf(t)))).toEqual([])
           expect((await bandTexts(ui)).filter(t => t.props.wrap !== 'truncate-end')).toEqual([])
         },
@@ -288,16 +442,16 @@ describe('the rows carry style props (M193 AC3)', () => {
           expect(inBand.length).toBeGreaterThan(10)
           expect(inBand.filter(t => t.props.wrap !== 'truncate-end')).toEqual([])
 
-          const [header] = await ui.findAll({ key: 'M010-header' })
-          expect(rowText(header).endsWith('  2/3 criteria')).toBe(true)
+          const [row] = await ui.findAll({ key: 'M010-row' })
+          expect(rowText(row).endsWith('  2/3 criteria')).toBe(true)
           const filled = leaf('██████')
           if (columns < 60) {
             expect(filled).toBeUndefined()
-            expect(rowText(header)).toBe('review    M010 Nested tasks and a capital X  2/3 criteria')
+            expect(rowText(row)).toBe('review    M010 → AC3: Third criterion.  2/3 criteria')
           } else {
             expect(filled?.props.color).toBe('success')
             expect(leaf('░░░░')?.props.dimColor).toBe(true)
-            expect(rowText(header)).toBe('review    M010 Nested tasks and a capital X  ██████░░░░  2/3 criteria')
+            expect(rowText(row)).toBe(DRAWN.mixed[0])
           }
         },
         $,
@@ -306,42 +460,41 @@ describe('the rows carry style props (M193 AC3)', () => {
   }
 })
 
-// One header row's layout: the row, its two groups, and the title's Text
-// and the Box around it.
-function layout(header: Element) {
-  const groups = kids(header)
+// One row's layout: the row, its two groups, the head Box that keeps its
+// width, and the text Box that gives way, with its Text.
+function layout(row: Element) {
+  const groups = kids(row)
   const [left, right] = groups
-  const titleBox = below(left, 'Box').find(b => b.props.flexShrink === 1 && kids(b).length === 1 && kids(b)[0].type === 'Text')
-  return { groups, left, right, titleBox, title: titleBox ? kids(titleBox)[0] : undefined }
+  const [head, textBox] = kids(left)
+  return { groups, left, right, head, textBox, text: textBox ? kids(textBox)[0] : undefined }
 }
 
-// What gives way in a row: the left group and the title's Box shrink to any
-// width, and the phase and id keep theirs. The desktop app drew a long text
-// whose Box lacked `minWidth: 0` past the edge, and shrank the short Texts
-// beside it to nothing.
-function shrinks(header: Element) {
-  const { left, titleBox } = layout(header)
+// What gives way in a row: the left group and the text's Box shrink to any
+// width, and the head (phase, id, arrow, and label) keeps its width. The
+// desktop app drew a long text whose Box lacked `minWidth: 0` past the edge,
+// and shrank the short Texts beside it to nothing.
+function shrinks(row: Element) {
+  const { left, head, textBox } = layout(row)
+  expect(left.props.flexShrink).toBe(1)
   expect(left.props.minWidth).toBe(0)
-  expect(titleBox?.props.minWidth).toBe(0)
-  const [head] = kids(left)
   expect(head.type).toBe('Box')
   expect(head.props.flexShrink).toBe(0)
-}
-
-// The same for an item row: the arrow and label keep their width, and the
-// rest's Box shrinks to any width.
-function itemShrinks(item: Element) {
-  const [label, rest] = kids(item)
-  expect(kids(item).map(k => k.type)).toEqual(['Box', 'Box'])
-  expect(label.props.flexShrink).toBe(0)
-  expect(textOf(label).startsWith('  → ')).toBe(true)
-  expect(rest.props.flexShrink).toBe(1)
-  expect(rest.props.minWidth).toBe(0)
+  expect(textBox.type).toBe('Box')
+  expect(textBox.props.flexShrink).toBe(1)
+  expect(textBox.props.minWidth).toBe(0)
 }
 
 const CLOSE = { terminal: '×', desktop: '×' } as const
 
-describe('each header row is a left and a right group (AC1)', () => {
+// The left group of each mixed row, written out by hand.
+const MIXED_LEFT: Record<string, string> = {
+  M010: 'review    M010 → AC3: Third criterion.',
+  M012: 'implement M012 A Tasks section with no boxes',
+  M013: 'review    M013 Capitalized status, file gone',
+  M014: 'implement M014 No Tasks section at all',
+}
+
+describe('each row is a left and a right group (M194 AC1)', () => {
   for (const columns of [59, 60, 120]) {
     test(`mixed at ${columns} columns`, async ($, on) => {
       seat(on, copyOf('mixed'))
@@ -352,19 +505,15 @@ describe('each header row is a left and a right group (AC1)', () => {
         async ui => {
           const rows = FIXTURES.mixed.rows
           for (const [i, row] of rows.entries()) {
-            const [header] = await ui.findAll({ key: `${row.id}-header` })
-            expect(header.props.justifyContent).toBe('space-between')
-            const { groups, left, right, title } = layout(header)
+            const [drawn] = await ui.findAll({ key: `${row.id}-row` })
+            expect(drawn.props.justifyContent).toBe('space-between')
+            const { groups, left, right } = layout(drawn)
             expect(groups.map(g => g.type)).toEqual(['Box', 'Box'])
-            expect(header.children.length).toBe(2)
-            expect(left.props.flexShrink).toBe(1)
+            expect(drawn.children.length).toBe(2)
             expect(right.props.flexShrink).toBe(0)
             expect(right.props.marginLeft).toBe(2)
-            // The left group: the phase label, the id, and the whole title.
-            expect(textOf(left)).toBe(`${row.status === 'review' ? 'review   ' : 'implement'} ${row.id} ${row.title}`)
-            expect(textOf(title)).toBe(row.title)
-            expect(title?.props.wrap).toBe('truncate-end')
-            shrinks(header)
+            expect(textOf(left)).toBe(MIXED_LEFT[row.id])
+            shrinks(drawn)
             // The right group: the bar at 60 columns or more, and the counts
             // or the state label; the close button last on the first row.
             const hasBar = below(right, 'Text').some(t => /[█░]/.test(textOf(t)))
@@ -373,7 +522,7 @@ describe('each header row is a left and a right group (AC1)', () => {
             expect(last.type === 'Button').toBe(i === 0)
             if (i === 0) expect(keyOf(last)).toBe('cairn-close')
           }
-          const [m013] = await ui.findAll({ key: 'M013-header' })
+          const [m013] = await ui.findAll({ key: 'M013-row' })
           expect(textOf(layout(m013).right).trim()).toBe('no milestone file')
         },
         $,
@@ -381,26 +530,34 @@ describe('each header row is a left and a right group (AC1)', () => {
     })
   }
 
-  for (const name of ['long-title', 'wide-title']) {
-    test(`${name} at 40 columns: the title Text holds the whole title`, async ($, on) => {
+  // A long chapter, labeled on long-title and unlabeled on wide-title,
+  // reaches the text's Text whole after its label; the engine cuts it.
+  const LONG: [string, string, string, string, string][] = [
+    ['long-title', 'milestone-implement', 'T2: ', '1/2 tasks', 'T2:'],
+    ['wide-title', 'milestone-review', '', '1/2 criteria', ''],
+  ]
+  for (const [name, skill, prefix, counts, label] of LONG) {
+    test(`${name} at 40 columns: the text's Text holds the long chapter's whole text after its label`, async ($, on) => {
       seat(on, copyOf(name))
       await $.turn.complete(turn())
       const [row] = FIXTURES[name].rows
+      await prompt($, skill)
+      await chapter($, `${prefix}${row.title}`)
       await mountEach(
         name,
         at(40),
         async ui => {
-          const [header] = await ui.findAll({ key: `${row.id}-header` })
-          expect(header.props.justifyContent).toBe('space-between')
-          const { left, right, title } = layout(header)
-          expect(left.props.flexShrink).toBe(1)
+          const [drawn] = await ui.findAll({ key: `${row.id}-row` })
+          expect(drawn.props.justifyContent).toBe('space-between')
+          const { right, head, text } = layout(drawn)
           expect(right.props.flexShrink).toBe(0)
           expect(right.props.marginLeft).toBe(2)
-          expect(title?.children).toEqual([row.title])
-          expect(title?.props.wrap).toBe('truncate-end')
-          shrinks(header)
+          expect(textOf(head).endsWith(`→ ${label}`)).toBe(true)
+          expect(text?.children).toEqual([label === '' ? row.title : ` ${row.title}`])
+          expect(text?.props.wrap).toBe('truncate-end')
+          shrinks(drawn)
           expect(below(right, 'Text').some(t => /[█░]/.test(textOf(t)))).toBe(false)
-          expect(textOf(right).trim()).toBe(name === 'long-title' ? '1/2 tasks' : '1/2 criteria')
+          expect(textOf(right).trim()).toBe(counts)
           expect(keyOf(kids(right)[kids(right).length - 1])).toBe('cairn-close')
         },
         $,
@@ -417,7 +574,7 @@ describe('each header row is a left and a right group (AC1)', () => {
 
 // A press hides the band until the active list changes, and that state
 // lasts the session, so each surface gets a session of its own.
-describe('the close button (AC2)', () => {
+describe('the close button (M194 AC2)', () => {
   for (const name of ['mixed', 'single-in-progress']) {
     for (const surface of SURFACES) {
       test(`${name}: one dismiss Button, and a press passes to the engine (${surface})`, async ($, on) => {
@@ -431,8 +588,8 @@ describe('the close button (AC2)', () => {
         expect(button.props.role).toBe('dismiss')
         expect(button.props.plain).toBe(true)
         expect(button.props.label).toBe(CLOSE[surface])
-        // The Button is the last child of the first header row's right group.
-        const [first] = await ui.findAll({ key: `${FIXTURES[name].rows[0].id}-header` })
+        // The Button is the last child of the first row's right group.
+        const [first] = await ui.findAll({ key: `${FIXTURES[name].rows[0].id}-row` })
         const { right } = layout(first)
         expect(keyOf(kids(right)[kids(right).length - 1])).toBe('cairn-close')
         expect(kids(right)[kids(right).length - 1].type).toBe('Button')
@@ -459,7 +616,7 @@ describe('the close button (AC2)', () => {
   }
 })
 
-// The item row's Texts, each with the Texts that enclose it.
+// A row's Texts, each with the Texts that enclose it.
 function textsIn(node: unknown, outer: Element[] = []): { text: Element; outer: Element[] }[] {
   if (node === null || typeof node !== 'object') return []
   const el = node as Element
@@ -469,39 +626,42 @@ function textsIn(node: unknown, outer: Element[] = []): { text: Element; outer: 
 }
 
 const LABELED: [string, string, string][] = [
-  ['mixed', 'M010-item', 'AC3:'],
-  ['single-in-progress', 'M002-item', 'T2:'],
-  ['nested-first', 'M030-item', 'T1a:'],
+  ['mixed', 'M010-row', 'AC3:'],
+  ['single-in-progress', 'M002-row', 'T2:'],
+  ['nested-first', 'M030-row', 'T1a:'],
 ]
 
-describe("the item row's label draws bold (AC4)", () => {
+describe("the step's label draws bold, and its arrow dim (M196 AC2)", () => {
   for (const [name, key, label] of LABELED) {
-    test(`${name}: ${label} is bold and undimmed, the rest dim`, async ($, on) => {
+    test(`${name}: ${label} is bold and undimmed, and the rest is plain`, async ($, on) => {
       seat(on, copyOf(name))
       await $.turn.complete(turn())
       await mountEach(
         name,
         BAND,
         async ui => {
-          const [item] = await ui.findAll({ key })
-          const texts = textsIn(item)
+          const [row] = await ui.findAll({ key })
+          const { head, text } = layout(row)
+          const texts = textsIn(head)
           const found = texts.filter(t => t.text.children.length === 1 && t.text.children[0] === label)
           expect(found.length).toBe(1)
-          const [{ text, outer }] = found
-          expect(text.props.bold).toBe(true)
-          expect([text, ...outer].filter(t => t.props.dimColor)).toEqual([])
-          const others = texts.filter(t => t.text !== text && !outer.includes(t.text))
-          expect(others.length).toBeGreaterThan(0)
-          expect(others.filter(t => t.text.props.dimColor !== true)).toEqual([])
-          itemShrinks(item)
-          expect(textOf(kids(item)[0])).toBe(`  → ${label}`)
+          const [{ text: labelText, outer }] = found
+          expect(labelText.props.bold).toBe(true)
+          expect([labelText, ...outer].filter(t => t.props.dimColor)).toEqual([])
+          const arrows = texts.filter(t => textOf(t.text) === '→ ')
+          expect(arrows.length).toBe(1)
+          expect(arrows[0].text.props.dimColor).toBe(true)
+          expect(textOf(head).endsWith(`→ ${label}`)).toBe(true)
+          expect(text?.props.dimColor).toBeUndefined()
+          expect(text?.props.bold).toBeUndefined()
+          shrinks(row)
         },
         $,
       )
     })
   }
 
-  test('unlabeled-item: every Text of the item row is dim', async ($, on) => {
+  test('unlabeled-item: no bold Text after the id', async ($, on) => {
     seat(on, copyOf('unlabeled-item'))
     await $.turn.complete(turn())
     await mountEach(
@@ -509,12 +669,13 @@ describe("the item row's label draws bold (AC4)", () => {
       BAND,
       async ui => {
         expect(await lines(ui)).toEqual([...DRAWN['unlabeled-item'], ENGINE])
-        const [item] = await ui.findAll({ key: 'M062-item' })
-        const texts = textsIn(item)
-        expect(texts.length).toBeGreaterThan(0)
-        expect(texts.filter(t => t.text.props.dimColor !== true)).toEqual([])
-        expect(texts.filter(t => t.text.props.bold)).toEqual([])
-        itemShrinks(item)
+        const [row] = await ui.findAll({ key: 'M062-row' })
+        const { head, text } = layout(row)
+        expect(textsIn(head).filter(t => t.text.props.bold).map(t => textOf(t.text))).toEqual(['M062'])
+        expect(textOf(head).endsWith('→ ')).toBe(true)
+        expect(text?.children).toEqual(['Write the docs, with no label.'])
+        expect(text?.props.bold).toBeUndefined()
+        shrinks(row)
       },
       $,
     )
@@ -528,7 +689,6 @@ type Edit = { name: string; fixture: string; edit: (files: Record<string, string
 const ROADMAP = '/cairn/ROADMAP.md'
 const M002 = '/cairn/milestones/M002-export.md'
 const M030 = '/cairn/milestones/M030-nested.md'
-const EXPORT = 'M002 Add the export command'
 const EDITS: Edit[] = [
   {
     name: 'a task gets checked',
@@ -536,8 +696,8 @@ const EDITS: Edit[] = [
     edit: files => {
       files[M002] = files[M002].replace('- [ ] T2:', '- [x] T2:')
     },
-    before: [`implement ${EXPORT}  ███░░░░░░░  1/3 tasks`, '  → T2: Write the command.', ENGINE],
-    after: [`implement ${EXPORT}  ██████░░░░  2/3 tasks`, '  → T3: Write the docs.', ENGINE],
+    before: [DRAWN['single-in-progress'][0], ENGINE],
+    after: ['implement M002 → T3: Write the docs.  ██████░░░░  2/3 tasks', ENGINE],
   },
   {
     name: 'a row moves from planned to in-progress',
@@ -546,16 +706,16 @@ const EDITS: Edit[] = [
       files[ROADMAP] = files[ROADMAP].replace('| Waiting to start | planned |', '| Waiting to start | in-progress |')
     },
     before: [ENGINE],
-    after: ['implement M021 Waiting to start  ░░░░░░░░░░  0/1 tasks', '  → T1: Not started.', ENGINE],
+    after: ['implement M021 → T1: Not started.  ░░░░░░░░░░  0/1 tasks', ENGINE],
   },
   {
-    name: 'a row moves from in-progress to review, and both rows switch to criteria',
+    name: 'a row moves from in-progress to review, and switches to criteria',
     fixture: 'single-in-progress',
     edit: files => {
       files[ROADMAP] = files[ROADMAP].replace('| Add the export command | in-progress |', '| Add the export command | review |')
     },
-    before: [`implement ${EXPORT}  ███░░░░░░░  1/3 tasks`, '  → T2: Write the command.', ENGINE],
-    after: [`review    ${EXPORT}  ░░░░░░░░░░  0/1 criteria`, '  → AC1: The export command writes one file per table.', ENGINE],
+    before: [DRAWN['single-in-progress'][0], ENGINE],
+    after: ['review    M002 → AC1: The export command writes one file per table.  ░░░░░░░░░░  0/1 criteria', ENGINE],
   },
   {
     name: 'a row leaves both statuses from review',
@@ -572,17 +732,17 @@ const EDITS: Edit[] = [
     edit: files => {
       files[ROADMAP] = files[ROADMAP].replace('| Add the export command | in-progress |', '| Add the export command | done |')
     },
-    before: [`implement ${EXPORT}  ███░░░░░░░  1/3 tasks`, '  → T2: Write the command.', ENGINE],
+    before: [DRAWN['single-in-progress'][0], ENGINE],
     after: [ENGINE],
   },
   {
-    name: "a check on the item row's nested task grows the bar and names the next task",
+    name: 'a check on the nested task grows the bar and names the next task',
     fixture: 'nested-first',
     edit: files => {
       files[M030] = files[M030].replace('- [ ]   T1a:', '- [x]   T1a:')
     },
-    before: ['implement M030 The next task is nested  ███░░░░░░░  1/3 tasks', '  → T1a: Nested task, open, with extra spaces after the box.', ENGINE],
-    after: ['implement M030 The next task is nested  ██████░░░░  2/3 tasks', '  → T2: Second top-level task.', ENGINE],
+    before: [DRAWN['nested-first'][0], ENGINE],
+    after: ['implement M030 → T2: Second top-level task.  ██████░░░░  2/3 tasks', ENGINE],
   },
 ]
 
@@ -641,7 +801,7 @@ const CLOSES: Close[] = [
     edit: files => {
       files[ROADMAP] = files[ROADMAP].replace('| Add the export command | in-progress |', '| Add the export command | review |')
     },
-    shown: ['M002-header', 'M002-item'],
+    shown: ['M002-row'],
   },
   {
     name: 'an added active row shows it',
@@ -649,7 +809,7 @@ const CLOSES: Close[] = [
     edit: files => {
       files[ROADMAP] = files[ROADMAP].replace('| M001 | First release |', `${ADDED('in-progress')}| M001 | First release |`)
     },
-    shown: ['M002-header', 'M002-item', 'M005-header'],
+    shown: ['M002-row', 'M005-row'],
   },
   {
     name: 'a removed active row shows it',
@@ -657,7 +817,7 @@ const CLOSES: Close[] = [
     edit: files => {
       files[ROADMAP] = files[ROADMAP].replace('| A Tasks section with no boxes | in-progress |', '| A Tasks section with no boxes | done |')
     },
-    shown: ['M010-header', 'M010-item', 'M013-header', 'M014-header'],
+    shown: ['M010-row', 'M013-row', 'M014-row'],
   },
   {
     name: 'two active rows that swap ROADMAP order show it',
@@ -669,11 +829,11 @@ const CLOSES: Close[] = [
       ;[lines[a], lines[b]] = [lines[b], lines[a]]
       files[ROADMAP] = lines.join('\n')
     },
-    shown: ['M012-header', 'M010-header', 'M010-item', 'M013-header', 'M014-header'],
+    shown: ['M012-row', 'M010-row', 'M013-row', 'M014-row'],
   },
 ]
 
-describe('a press hides the band until the active ids, statuses, or order change (AC3)', () => {
+describe('a press hides the band until the active ids, statuses, or order change (M194 AC3)', () => {
   for (const { name, fixture, edit, shown } of CLOSES) {
     for (const surface of SURFACES) {
       test(`${name} (${surface})`, async ($, on) => {
@@ -712,7 +872,7 @@ describe('a press hides the band until the active ids, statuses, or order change
       const original = copy.files[ROADMAP]
       copy.files[ROADMAP] = original.replace('| Add the export command | in-progress |', '| Add the export command | review |')
       await $.turn.complete(turn())
-      expect(await rowKeys(ui)).toEqual(['M002-header', 'M002-item'])
+      expect(await rowKeys(ui)).toEqual(['M002-row'])
       copy.files[ROADMAP] = original
       await $.turn.complete(turn())
       expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
@@ -797,26 +957,8 @@ describe("cairn's rows sit above the band beneath (M193 AC6)", () => {
 
 // M195: the running cairn skill and the session's chapters.
 
-// Each skill's label, written out by hand, never read from band.ts.
-const LABELS: Record<string, string> = {
-  'cairn-init': 'init',
-  'cairn-release': 'release',
-  'cairn-triage': 'triage',
-  'design-interview': 'design',
-  hotfix: 'hotfix',
-  milestone: 'status',
-  'milestone-brief': 'brief',
-  'milestone-implement': 'implement',
-  'milestone-plan': 'plan',
-  'milestone-review': 'review',
-}
-
-// A skill row's text: the label, padded as the phase label is, then the
-// slash command.
-const skillRow = (skill: string) => `${LABELS[skill].padEnd(9)} /${skill}`
-
 const M010 = '/cairn/milestones/M010-nested.md'
-const MIXED_REST = DRAWN.mixed.slice(2)
+const MIXED_REST = DRAWN.mixed.slice(1)
 
 // Mounts the band on each surface, runs `act` against it, and checks it.
 async function eachSurface(name: string, chapterAnswer: ChapterAnswer, act: (ui: Ui, $, copy: Copy) => Promise<void>, $, on) {
@@ -889,14 +1031,14 @@ describe('a running skill with no active row of its phase gets a skill row (M195
         BAND,
         async ui => {
           expect(await lines(ui)).toEqual([...drawn, ENGINE])
-          const [header] = await ui.findAll({ key: 'skill-header' })
+          const [row] = await ui.findAll({ key: 'skill-row' })
           if (drawn[0] === skillRow(skill)) {
             // Nothing on the right side but the close button.
-            const [, right] = kids(header)
+            const [, right] = kids(row)
             expect(textOf(right).trim()).toBe('')
             expect(below(right, 'Button').length).toBe(1)
           } else {
-            expect(header).toBeUndefined()
+            expect(row).toBeUndefined()
           }
         },
         $,
@@ -905,29 +1047,29 @@ describe('a running skill with no active row of its phase gets a skill row (M195
   }
 })
 
-describe('the item row follows the session chapters (M195 AC3)', () => {
-  test('a review prompt and a chapter put the title under M010', async ($, on) => {
+describe('the carrying row follows the session chapters (M195 AC3)', () => {
+  test('a review prompt and an unlabeled chapter put the chapter on M010, with the counts alone', async ($, on) => {
     await eachSurface(
       'mixed',
       'mark',
       async (ui, $) => {
         await prompt($, 'milestone-review')
         await chapter($, 'Post-merge hygiene')
-        expect(await lines(ui)).toEqual([DRAWN.mixed[0], '  → Post-merge hygiene', ...MIXED_REST, ENGINE])
+        expect(await lines(ui)).toEqual(['review    M010 → Post-merge hygiene  2/3 criteria', ...MIXED_REST, ENGINE])
       },
       $,
       on,
     )
   })
 
-  test('an implement prompt and a chapter put the title alone under M012', async ($, on) => {
+  test('an implement prompt and a chapter put the chapter on M012, beside its label', async ($, on) => {
     await eachSurface(
       'mixed',
       'mark',
       async (ui, $) => {
         await prompt($, 'milestone-implement')
         await chapter($, 'T1: Write it.')
-        const drawn = [...DRAWN.mixed.slice(0, 3), '  → T1: Write it.', ...DRAWN.mixed.slice(3)]
+        const drawn = [DRAWN.mixed[0], 'implement M012 → T1: Write it.  no tasks', ...DRAWN.mixed.slice(2)]
         expect(await lines(ui)).toEqual([...drawn, ENGINE])
       },
       $,
@@ -946,12 +1088,7 @@ describe('the item row follows the session chapters (M195 AC3)', () => {
       expect(await lines(ui)).toEqual([...DRAWN.mixed, ENGINE])
       copy.files[M010] = copy.files[M010].replace('- [ ] AC3:', '- [x] AC3:')
       await chapter($, 'Consistency gate')
-      expect(await lines(ui)).toEqual([
-        'review    M010 Nested tasks and a capital X  all 3 criteria checked',
-        '  → Consistency gate',
-        ...MIXED_REST,
-        ENGINE,
-      ])
+      expect(await lines(ui)).toEqual(['review    M010 → Consistency gate  all 3 criteria checked', ...MIXED_REST, ENGINE])
       await ui.unmount()
     })
 
@@ -965,16 +1102,14 @@ describe('the item row follows the session chapters (M195 AC3)', () => {
       await chapter($, 'Approval gate')
       expect(await lines(ui)).toEqual([
         'implement M012 A Tasks section with no boxes  no tasks',
-        'review    M013 Capitalized status, file gone  no milestone file',
-        '  → Approval gate',
+        'review    M013 → Approval gate  no milestone file',
         'implement M014 No Tasks section at all  no tasks',
         ENGINE,
       ])
       copy.files[ROADMAP] = copy.files[ROADMAP].replace('| Capitalized status, file gone | Review |', '| Capitalized status, file gone | done |')
       await chapter($, 'Post-merge hygiene')
       expect(await lines(ui)).toEqual([
-        skillRow('milestone-review'),
-        '  → Post-merge hygiene',
+        skillRow('milestone-review', 'Post-merge hygiene'),
         'implement M012 A Tasks section with no boxes  no tasks',
         'implement M014 No Tasks section at all  no tasks',
         ENGINE,
@@ -984,7 +1119,7 @@ describe('the item row follows the session chapters (M195 AC3)', () => {
   }
 
   for (const answer of ['deny', 'error'] as const) {
-    test(`a chapter call that ends in a ${answer} beneath leaves the item row as it was`, async ($, on) => {
+    test(`a chapter call that ends in a ${answer} beneath leaves the row as it was`, async ($, on) => {
       await eachSurface(
         'mixed',
         answer,
@@ -1003,7 +1138,7 @@ describe('the item row follows the session chapters (M195 AC3)', () => {
     })
   }
 
-  test("a subagent's chapter call leaves the item row as it was", async ($, on) => {
+  test("a subagent's chapter call leaves the row as it was", async ($, on) => {
     await eachSurface(
       'mixed',
       'mark',
@@ -1017,7 +1152,7 @@ describe('the item row follows the session chapters (M195 AC3)', () => {
     )
   })
 
-  test('an empty chapter title leaves the item row as it was', async ($, on) => {
+  test('an empty chapter title leaves the row as it was', async ($, on) => {
     await eachSurface(
       'mixed',
       'mark',
@@ -1025,7 +1160,7 @@ describe('the item row follows the session chapters (M195 AC3)', () => {
         await prompt($, 'milestone-review')
         await chapter($, 'Consistency gate')
         await chapter($, '')
-        expect(await lines(ui)).toEqual([DRAWN.mixed[0], '  → Consistency gate', ...MIXED_REST, ENGINE])
+        expect(await lines(ui)).toEqual(['review    M010 → Consistency gate  2/3 criteria', ...MIXED_REST, ENGINE])
       },
       $,
       on,
@@ -1051,21 +1186,6 @@ describe('the item row follows the session chapters (M195 AC3)', () => {
     expect(knownStep({ skill: 'hotfix', chapter: null })).toEqual({ skill: 'hotfix', chapter: null })
     expect(knownStep(null)).toBeNull()
   })
-
-  test('a skill row with no chapter has no item row, and gains one at a chapter', async ($, on) => {
-    await eachSurface(
-      'no-active',
-      'mark',
-      async (ui, $) => {
-        await prompt($, 'milestone-plan')
-        expect(await lines(ui)).toEqual([skillRow('milestone-plan'), ENGINE])
-        await chapter($, 'Question gate')
-        expect(await lines(ui)).toEqual([skillRow('milestone-plan'), '  → Question gate', ENGINE])
-      },
-      $,
-      on,
-    )
-  })
 })
 
 describe('every session end clears the step (M195 AC4)', () => {
@@ -1077,7 +1197,7 @@ describe('every session end clears the step (M195 AC4)', () => {
         async (ui, $) => {
           await prompt($, 'milestone-plan')
           await chapter($, 'Investigation')
-          expect(await lines(ui)).toEqual([skillRow('milestone-plan'), '  → Investigation', ...DRAWN['single-in-progress'], ENGINE])
+          expect(await lines(ui)).toEqual([skillRow('milestone-plan', 'Investigation'), ...DRAWN['single-in-progress'], ENGINE])
           await $.session.end({ reason, sessionId: 's1' })
           expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
         },
@@ -1110,8 +1230,8 @@ describe('the close button works with skill rows (M195 AC5)', () => {
       'mark',
       async (ui, $) => {
         await prompt($, 'milestone-plan')
-        const [header] = await ui.findAll({ key: 'skill-header' })
-        expect(below(header, 'Button').map(keyOf)).toEqual(['cairn-close'])
+        const [row] = await ui.findAll({ key: 'skill-row' })
+        expect(below(row, 'Button').map(keyOf)).toEqual(['cairn-close'])
         expect((await ui.findAll({ type: 'Button' })).length).toBe(1)
       },
       $,
@@ -1136,7 +1256,7 @@ describe('the close button works with skill rows (M195 AC5)', () => {
       await prompt($, 'cairn:milestone-plan')
       expect(await lines(ui)).toEqual([ENGINE])
       await prompt($, 'hotfix')
-      expect(await rowKeys(ui)).toEqual(['skill-header', 'M002-header', 'M002-item'])
+      expect(await rowKeys(ui)).toEqual(['skill-row', 'M002-row'])
       await ui.unmount()
     })
 
