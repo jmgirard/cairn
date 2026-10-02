@@ -38,8 +38,11 @@
   The skill stays until a cairn skill starts again or the session ends. A subagent
   that loads a cairn skill also sets the label, because the skill event does
   not say which agent loaded it. The colors come from your Claude Code
-  theme. One space follows the phase label. The bar draws all ten cells
-  with `█`, and the empty cells are dim. In a narrow window the right part
+  theme. The phase or skill label and the bar's filled cells draw in a dim
+  orange or green. The rest of the row draws in the theme's gray, with
+  `no milestone file` in the warning color. One space follows the phase
+  label. The bar draws all ten cells with `█`, and the empty cells are dim
+  with no color. In a narrow window the right part
   takes a shorter form, so that the text keeps room: `2/3 tasks`, then
   `2/3`, and `2/2 checked` or `no file` for the labels. A skill row drops
   its slash command. Another plugin's band in the same place shows under

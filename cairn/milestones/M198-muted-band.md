@@ -51,7 +51,7 @@ The row layout, the forms, and the fit stay as M197 left them.
 - [x] T1: Write the tests first in `band.test.tsx`. Change the label-color table (about line 354) and the bar asserts (about lines 543-557 and 1665-1668) to the dim hues. Add the two bar rows that AC1 names. Add the AC2 leaf walk over every fixture, both surfaces, both widths, and the three skill states. Change the arrow assert (about line 761) to `inactive` with no dim. See the new tests fail.
 - [x] T2: In `band.ts`, give the phase and skill label spans and the filled bar cells `dimColor`. Give the id, the counts, the state labels, and the slash command the color `inactive`. Drop `dimColor` from the state labels.
 - [x] T3: In `register.tsx`, draw the arrow, the positional label, and the row's text in `inactive`, with no `dimColor` on the arrow. Leave the close Button as it is. Run `claude plugin test` until it is green.
-- [ ] T4: Run the AC3 sweep. Update each hit about the band that the new colors make false, then run the sweep again and read each hit.
+- [x] T4: Run the AC3 sweep. Update each hit about the band that the new colors make false, then run the sweep again and read each hit.
 - [ ] T5: Do a live look in a new desktop Code session, because a running session keeps the mod it loaded at its start. If the dim hues do not read as muted, amend through the gate to two fixed mid-tone colors.
 - [ ] T6: Run the verify slot.
 
@@ -65,6 +65,7 @@ The row layout, the forms, and the fit stay as M197 left them.
 - 2026-10-02: plan gate chose to leave the font over trying the `Code` element, because `Code` draws in the engine's colors, not the plugin's. Falsified by a mod API release that gives `Text` a font prop.
 - 2026-10-02: implement started on m198-muted-band. No question gate: `inactive` is a theme key in the 2.1.286 binary, and the plan left nothing else open.
 - 2026-10-02: T1–T3 done. Tests first: 76 red on the color asserts alone. `band.ts` exports `GRAY = 'inactive'`, and the labels and filled cells carry `dimColor`. `register.tsx` draws the arrow, positional label, and text in gray. The M197 AC3 skill-row bar assert (about line 1720) also changed to dim filled cells, a sub-task the plan did not name. Two planted defects turned the AC2 walk red: the slash command with no color failed only the 6 skill-row drawings, and dim counts failed 22. Verify clean: scripts 394, hooks 174, validate passed with warnings, mod tests 506/506.
+- 2026-10-02: T4 done. The sweep found 16 hits before the edit. README, CHANGELOG, and DESIGN now state the dim label and filled cells and the gray rest of the row. The second sweep's hits each state the new colors, or name the close button's dim `✕`, which the Scope leaves as it is.
 
 ## Decisions
 
