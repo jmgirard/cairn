@@ -100,17 +100,16 @@ The phase label is drawn in your theme's Claude orange for `implement` and
 its success green for `review`. The bar's filled cells take the same color,
 and `no milestone file` takes the theme's warning color. Below 60 columns
 the bar is left out. A title too long for the width is cut at its end, and
-the bar and the counts keep their place. If another plugin draws a band in
-the same place, its rows show under cairn's.
+the bar and the counts stay at the right edge. If another plugin draws a
+band in the same place, its rows show under cairn's.
 
 The first header row ends in a close button, `×`, in the terminal and in
-the desktop app. Pressing it hides the band. The
-band stays hidden while the list of active milestones stays the same: their
-ids, their statuses, and their ROADMAP order. At the end of the first turn
-where that list is different, the band shows again. For example, a
-milestone moves from `implement` to `review`, a milestone becomes active, or
-one leaves both statuses. A checked box or an edited title does not bring
-the band back. A new session starts with the band shown.
+the desktop app. Pressing it hides the band. The band stays hidden while
+the list of active milestones stays the same: their ids, their statuses,
+and their ROADMAP order. At the end of the first turn where that list is
+different, the band shows again. For example, a milestone moves from
+`implement` to `review`, a milestone becomes active, or one leaves both
+statuses. A checked box or an edited title does not bring the band back.
 
 The band finds the ROADMAP in the session's working directory or the nearest
 directory above it. It reads the files when the session starts and again at

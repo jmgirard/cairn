@@ -406,6 +406,11 @@ describe('the close button (AC2)', () => {
         expect(button.props.role).toBe('dismiss')
         expect(button.props.plain).toBe(true)
         expect(button.props.label).toBe(CLOSE[surface])
+        // The Button is the last child of the first header row's right group.
+        const [first] = await ui.findAll({ key: `${FIXTURES[name].rows[0].id}-header` })
+        const { right } = layout(first)
+        expect(keyOf(kids(right)[kids(right).length - 1])).toBe('cairn-close')
+        expect(kids(right)[kids(right).length - 1].type).toBe('Button')
         await ui.press({ key: 'cairn-close' })
         expect(await lines(ui)).toEqual([ENGINE])
         expect(await hasCairn(ui)).toBe(false)

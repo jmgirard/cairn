@@ -76,8 +76,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   'dismiss'` close button. A press stores the active ids and statuses in the
   `dismissed` state value. The band then passes to `next(e)` until a refresh
   finds that list changed. `band.ts` builds the rows and `register.tsx`
-  draws them. `reader.ts` mirrors the Python ROADMAP
-  and section helpers, held to them by shared fixtures under
+  draws them. `reader.ts` mirrors the Python ROADMAP and section helpers,
+  held to them by shared fixtures under
   `hooks/status/fixtures/` (`gen_fixtures.py` writes `fixtures.gen.ts` for the
   `claude plugin test` cases).
 - `scripts/` + python3 tools (M10) — the deterministic scripts layer, one
