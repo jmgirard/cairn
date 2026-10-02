@@ -77,6 +77,7 @@ A skill that a plain reply resumes in a new turn shows no skill label. This limi
 - 2026-10-02: T3 done. `idleLines` and the idle branch of `stepLines` landed before their tests, a deviation from tests-first. Plants each reddened tests: a command never dropped 5, an orange label 4, and the last workable row named 6. Tests that expected an empty band on a fixture with a workable row now expect the idle row. 575 plugin tests green.
 - 2026-10-02: T4 done. A main-loop `turn.complete` with reason `answer` clears the step. The close mark gains `idle` under `dismissed-3`. One M195 test ended a turn mid-skill to reread a file, and now rereads at a chapter. Plants each reddened tests: any reason ends the step 3, no reason ends it 5, a subagent ends it 1, and the idle id left out of the comparison 3. 595 plugin tests green.
 - 2026-10-02: T5 done. README gains the idle row paragraph, its example, the step's end, and three close-button conditions. The CHANGELOG band entry and the DESIGN.md `hooks/status/` paragraph say the same. The AC5 sweep returned 21 lines. One test comment named only the active list and now names all three marks. The claim that a question chip keeps the step waits for T6, so the `register.tsx` comment no longer states it. Verify green, validate green.
+- 2026-10-02: T6 paused at the operator's choice before the live look. The scratch repo is at `scratchpad/idle-look` in this session's scratch directory, with M002 workable and M003 waiting on M002. On resume, recreate it if it is gone, then do the look.
 
 ## Decisions
 
