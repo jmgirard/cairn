@@ -17,7 +17,8 @@ import { loadBand } from './reader'
 // beneath draw in the same slot. It ends in a close button, which hides the
 // band until the active rows' ids, statuses, or order, the running skill,
 // or the idle row's id change, or the session ends (M200). A found
-// ROADMAP that cannot be read keeps the rows and the close state.
+// ROADMAP that cannot be read keeps the rows, and the close state is
+// compared against them and the current step.
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.

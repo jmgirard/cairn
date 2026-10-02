@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M200 | A close button that holds through refreshes and session ends | in-progress | — | normal | milestones/M200-band-close-state.md |
+| M200 | A close button that holds through refreshes and session ends | review | — | normal | milestones/M200-band-close-state.md |
 | M199 | A band that names the next milestone | done | — | normal | milestones/archive/M199-band-idle-line.md |
 | M198 | A muted band that matches the app's own bar | done | — | normal | milestones/archive/M198-muted-band.md |
 | M197 | A band that fits narrow windows and the desktop font | done | — | high | milestones/archive/M197-band-narrow-fit.md |

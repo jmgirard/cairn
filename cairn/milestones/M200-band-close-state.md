@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M200: A close button that holds through refreshes and session ends
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -74,6 +74,9 @@ Make the band's close button follow one rule through the four edge cases in the 
 - 2026-10-02: T4 done. `mark` and `same` moved to `band.ts`, exported, and `mark` reads the step through `knownStep`. `ui.render`, `dismiss`, and `reconcile` call them. The direct test went red against a planted copy that skipped the label check, with the skill kept and no idle id. Verify 4/4 green (615 pass).
 - 2026-10-02: T5 done. The operator did the live look in a new desktop Code session in this repo, on the branch. After a press, a `/clear` left no band. The app log shows why: the desktop `/clear` stops the session's process (`Stopping session`, then `CLI process group 7734: nothing left`), and a new one starts at the next message. At the first message after the `/clear`, the M200 row showed again. So no amendment is needed. The look cannot tell whether the `session.end` hook or a fresh process cleared the close state.
 - 2026-10-02: T6 done. The README close-button paragraph, the CHANGELOG Unreleased entry, the DESIGN `hooks/status/` bullet, and the `register.tsx` header now state both rules. The `/clear` sentences say the band draws again at the next message, as T5 showed. Every AC5 sweep hit in those places and the five code files was read in context and states current behavior. Verify 4/4 green (615 pass). `cairn_validate` green.
+- claim audit: 25 claims read, 3 corrected — CHANGELOG.md, README.md, hooks/status/register.tsx
+- 2026-10-02: the three corrected claims said a failed read keeps the close state as it was. A step that ends at the same turn end can still clear it, so they now say the failed read alone does not hide or show the band. The same reader re-read all three as true.
+- 2026-10-02: implement complete. Verify 4/4 green (615 pass), `cairn_validate` green. Status set to review.
 
 ## Decisions
 

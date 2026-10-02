@@ -25,7 +25,8 @@
   takes the idle row's place, it shows again too. Every session end also
   shows it again. In the desktop app, a `/clear` stops the session, and the
   band draws again at your next message. If the ROADMAP is found but cannot
-  be read, the band keeps its row and stays hidden or shown as it was. The
+  be read, the band keeps its row, and the failed read alone does not hide
+  or show it. The
   band also names the
   running cairn skill: `plan`, `implement`, `review`, `hotfix`, `triage`,
   `release`, `status`, `brief`, `design`, or `init`. The skill's label

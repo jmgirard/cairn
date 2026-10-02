@@ -207,8 +207,8 @@ edited title, or a new chapter does not bring the band back, and the same
 skill run again does not either. A session end shows a hidden band again,
 whatever its reason. In the desktop app, a `/clear` stops the session, and
 the band draws again at your next message. If the band finds the ROADMAP
-but cannot read it, the band keeps its row and stays hidden or shown as it
-was.
+but cannot read it, the band keeps its row. The failed read alone does not
+hide or show it.
 
 The band finds the ROADMAP in the session's working directory or the nearest
 directory above it. It reads the files when the session starts and at the
