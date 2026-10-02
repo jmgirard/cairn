@@ -127,3 +127,12 @@ Review lenses: Opus diff-bug (15 findings, D1â€“D15), Sonnet blame-history (B1â€
 - Fix now. D5: README's closing "Then, in your package repo, run `/cairn-init`" paragraph now sits under `### The milestone band`.
 - Follow-up, on the "Status mod follow-ons" row. D1: the band draws without calling `next(e)`, so it hides another plugin's `AbovePrompt` band. D10: a Windows UNC walk goes past the share root.
 - Reject. D7: a fixture directory is its own cairn root, and the merge guard still denies there. D8: the U+2028 sits in an append-only history line and is advisory only. D9: AC5 evidence is now recorded. D11: a hot reload re-reads at the next turn end. D12: a type contract must be self-contained with no import, so the copy is required. D13: AC4 binds the total to `_AC_ITEM` only. D14: the shipped files are small. D15: the cost is trivial. B2: `claude plugin validate` and `test` now gate the module. B3 and B8: deliberate per D-143. B5: the private-helper coupling is AC4's intent. B6: the new Python files are stdlib-only in fact. B7 and B9: no finding. P2: the band is a display, not a check. P3: fixture agreement is enough. P4: the claim audit read those figures.
+
+Gate, 2026-10-01: the operator accepted these dispositions and chose "fix, then ask me to merge". Fixes on the branch:
+- D2 and D6: `loadBand` reads a milestone path only when `isFile` holds. A new reader case fails on the old reader and passes on the fix. README now says "names no regular file the band can read".
+- D3: a DESIGN.md architecture entry for `hooks/status/`.
+- D4: `CLAUDE.md` and PROFILE's test-doctrine name the `claude plugin` checks and the mod tests.
+- D5: the `/cairn-init` paragraph moved back above `### The milestone band`.
+- D1 and D10: added to the "Status mod follow-ons" candidate row.
+
+Rerun after the fixes: scripts 394 OK, hooks 174 OK, validate exit 0, mod tests 33/33, `cairn_validate` green with the same advisory.

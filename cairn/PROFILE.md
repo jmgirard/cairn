@@ -63,7 +63,10 @@ never wait for a check run that will not arrive.
 ## test-doctrine
 Toolchain-specific test expectations layered on the universal "What gets a
 test" rules in tracking-rules. This repo: `scripts/` and `hooks/` behavior is
-tested by Python stdlib `unittest` (the two gating suites). A new rulebook or
+tested by Python stdlib `unittest` (the two gating suites). The status mod
+under `hooks/status/` is tested by its `*.test.ts(x)` files under `claude
+plugin test`, and its reader is held to the Python helpers by the shared
+fixtures (`scripts/tests/test_status_fixtures.py`). A new rulebook or
 skill rule owes no prose guard and no mutation registration in this repo —
 the retained `skills/tests` prose-guards are a hand-run tripwire, not a
 coverage obligation (M144, D-108/D-109); the shipped "What gets a test"

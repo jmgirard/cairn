@@ -53,6 +53,24 @@ describe('reader details', () => {
     expect(taskCounts(text)).toEqual({ checked: 2, total: 4 })
   })
 
+  test('a milestone path that is not a regular file is never read', async () => {
+    const fixture = FIXTURES['single-in-progress']
+    const files = fixture.files
+    const reads: string[] = []
+    const source = {
+      cwd: async () => '/',
+      // The ROADMAP is a file; the milestone path exists but is a pipe.
+      isFile: async (path: string) => path === '/cairn/ROADMAP.md',
+      read: async (path: string) => {
+        reads.push(path)
+        return files[path] ?? null
+      },
+    }
+    const rows = await loadBand(source)
+    expect(rows.map(r => [r.id, r.checked, r.total])).toEqual([['M002', null, null]])
+    expect(reads).toEqual(['/cairn/ROADMAP.md'])
+  })
+
   test('dirname stops at the root', () => {
     expect(dirname('/a/b')).toBe('/a')
     expect(dirname('/a')).toBe('/')

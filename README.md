@@ -64,6 +64,10 @@ files, and when a commit on your default branch reaches outside `cairn/`.
 The hooks activate at the next session start and are no-ops in repos that
 aren't cairn-tracked.
 
+Then, in your package repo, run `/cairn-init`. Fresh repos get scaffolding;
+repos with an older tracking system get an interactive, PR-based migration.
+Run `/milestone` any time you're unsure where things stand.
+
 ### The milestone band
 
 The plugin also ships a Claude Code mod: a band above the prompt that shows
@@ -77,7 +81,8 @@ M012 Add the export command · implement · 2/5 tasks
 M013 Fix the date parser · review · no milestone file
 ```
 
-`no milestone file` means the row's `File/Archive` path names no file. The
+`no milestone file` means the row's `File/Archive` path names no regular
+file the band can read. The
 band finds the ROADMAP in the session's working directory or the nearest
 directory above it. It reads the files when the session starts and again at
 the end of each turn. A task you check or a status you change shows after
@@ -96,10 +101,6 @@ session-start tracking context arrived. The band did not load, and the run
 printed one line that said hooks modules were not turned on in that process.
 That line names the early-access switch, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1`
 in the environment.
-
-Then, in your package repo, run `/cairn-init`. Fresh repos get scaffolding;
-repos with an older tracking system get an interactive, PR-based migration.
-Run `/milestone` any time you're unsure where things stand.
 
 ## The core loop
 

@@ -110,7 +110,10 @@ export async function loadBand(source: FileSource): Promise<BandRow[]> {
   const out: BandRow[] = []
   for (const row of parseRoadmapRows(roadmap)) {
     if (!ACTIVE.includes(row.status)) continue
-    const text = await source.read(join(root, `cairn/${row.relpath}`))
+    // A regular file only, as Python's os.path.isfile: a path to a pipe or
+    // a device would otherwise stall the read at every turn end.
+    const path = join(root, `cairn/${row.relpath}`)
+    const text = (await source.isFile(path)) ? await source.read(path) : null
     const counts = text === null ? { checked: null, total: null } : taskCounts(text)
     out.push({ id: row.id, title: row.title, status: row.status, ...counts })
   }
