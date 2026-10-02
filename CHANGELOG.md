@@ -39,10 +39,14 @@
   slash command. In a session without the desktop app's chapter tool, such
   as one in the terminal, a skill row shows its label and slash command
   only. The milestone row there shows its next open item. The skill stays
-  until the turn that runs it ends with Claude's answer, a cairn skill
-  starts again, or the session ends. A turn that Claude ends to wait for
-  background work also ends it. A turn that you interrupt, or
-  one that ends in an error, keeps it. A chapter marked after the skill
+  until Claude stops with no background work in flight, you type a prompt
+  while Claude is idle, a cairn skill starts again, or the session ends. A
+  turn that Claude ends to wait for background work keeps it, and so do the
+  turns that the work's notices start. Three limits remain. A skill that
+  waits through `ScheduleWakeup` or a scheduled task loses its label when
+  Claude stops. Background work that the skill did not start keeps a
+  finished skill's label until your next prompt. A prompt that a hook
+  blocks or drops still ends the label. A chapter marked after the skill
   ended does not show. A subagent that loads a cairn skill also sets the
   label, because the skill event does not say which agent loaded it. The
   phase or skill label draws in a fixed muted orange or green. The bar's

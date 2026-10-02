@@ -62,7 +62,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -108,9 +108,16 @@ transitions, human-gated merges, and a domain verification doctrine.
   While a cairn skill runs, a `tool.call` hook on
   the desktop app's chapter tool stores the title of each main-loop chapter
   that went through. Every main-loop chapter that went through reads the
-  files again. A main-loop `turn.complete` with reason `answer` clears `step`,
-  and so does every `session.end`. A turn that ends `aborted`, `refusal`,
-  or `error`, and a subagent's turn end, keep it. `SKILL_LABELS` in
+  files again. A `classic.Stop` with no `agent_id`, whose answer from
+  beneath carries no `block`, clears `step` when its `background_tasks` is
+  empty or absent (M201). So does a `prompt.submit` with origin kind
+  `composer` or `bridge` and no `turnId`. That hook clears `step` before
+  it calls `next`, so a typed cairn slash command's own `skill.prompt` sets
+  the new step. Every `session.end` clears it too. A Stop that lists work
+  in flight, a blocked Stop, and a subagent's Stop keep it, and so do a
+  `task-notification` prompt and every `turn.complete`, which only reads
+  the files again. The hooks do not read `session_crons`, so a skill that
+  waits through `ScheduleWakeup` or a cron loses its step at that Stop. `SKILL_LABELS` in
   `band.ts` gives each skill's label, held to the `skills/*/SKILL.md` list
   that `gen_fixtures.py` writes: `plan`, `implement`, `review`, `hotfix`,
   `triage`, `release`, `status` (for `milestone`), `brief`, `design`, and

@@ -134,7 +134,7 @@ skill's own tasks from other in-flight work.
       `prompt.submit` hook that carry the rule. Each hook calls `refresh`.
       Reduce the `turn.complete` hook (`register.tsx:63-74`) to a refresh.
       Update the comments that AC5 names.
-- [ ] T3: Update the README band paragraph (`README.md:164-178`), the
+- [x] T3: Update the README band paragraph (`README.md:164-178`), the
       CHANGELOG Unreleased band bullet (`CHANGELOG.md:40-46`), and the
       DESIGN `hooks/status` paragraph (`cairn/DESIGN.md:106-113`).
 - [ ] T4: Do a live look in the desktop app with the branch's mod
@@ -166,6 +166,7 @@ skill's own tasks from other in-flight work.
 - 2026-10-02: implement started on branch m201-band-label-background-waits. No question gate: the plan left no choice open.
 - 2026-10-02: T1 done. The AC1 to AC3 cases and the rewritten M199 cases ran 18 red, 610 green on the old `register.tsx`. Every end case was red, and each keep case was red at its closing empty-list Stop. A clear-after-`next` variant of the `prompt.submit` hook failed the slash-command case alone ("brief" expected, "implement" drawn). Each prompt case asserts that the test's origin kind and turn id reached the hook beneath.
 - 2026-10-02: T2 done. `register.tsx` gains `classic.Stop` and `prompt.submit` hooks, and `turn.complete` only refreshes. The header, `step` atom, and hook comments state the rule, and so does the `CairnStep` comment in `types/index.d.ts`. Verify: scripts 395 OK, hooks 174 OK, validate passed with its one CLAUDE.md warning, plugin test 628 pass.
+- 2026-10-02: T3 done. The README band paragraph, the CHANGELOG band bullet, and the DESIGN `hooks/status` paragraph state the Stop and typed-prompt rule and the three Scope Out limits. The DESIGN history line names M201. The old "interrupt or error keeps it" sentences are gone; T4's Esc result supplies the interrupt sentence. Verify 4/4 green, `cairn_validate` green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
