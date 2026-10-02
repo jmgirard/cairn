@@ -375,7 +375,7 @@ describe("a row's one text: the chapter, else the next open item, else the title
 describe('the right group shows the bar only in the task or criterion loop (M196 AC3)', () => {
   const m002 = ROW('single-in-progress', 'M002')
   test('a labeled chapter keeps the bar and the counts', () => {
-    expect(bandLines(m002, 120, 'T2: Write the command.').map(lineText)).toEqual([DRAWN['single-in-progress'][0]])
+    expect(bandLines(m002, 120, 'T3: Write the docs.').map(lineText)).toEqual(['implement M002 → T3: Write the docs.  ███░░░░░░░  1/3 tasks'])
   })
 
   test('a nested labeled chapter keeps the bar and the counts', () => {
@@ -1048,7 +1048,7 @@ describe('a running skill with no active row of its phase gets a skill row (M195
 })
 
 describe('the carrying row follows the session chapters (M195 AC3)', () => {
-  test('a review prompt and an unlabeled chapter put the title on M010, with the counts alone', async ($, on) => {
+  test('a review prompt and an unlabeled chapter put the chapter on M010, with the counts alone', async ($, on) => {
     await eachSurface(
       'mixed',
       'mark',
@@ -1062,7 +1062,7 @@ describe('the carrying row follows the session chapters (M195 AC3)', () => {
     )
   })
 
-  test('an implement prompt and a chapter put the title on M012, beside its label', async ($, on) => {
+  test('an implement prompt and a chapter put the chapter on M012, beside its label', async ($, on) => {
     await eachSurface(
       'mixed',
       'mark',

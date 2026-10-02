@@ -54,6 +54,7 @@ Draw each active milestone and each skill row on one line that shows the current
 - 2026-10-01: claim audit: 70 claims read, 5 corrected — README.md, CHANGELOG.md, hooks/status/band.test.tsx. The same reader re-read the five corrected claims once and found all accurate. Mod tests 188 green, AC4 grep empty.
 - 2026-10-01: T5 needs a new desktop Code session that loads the mod from this branch, because a session keeps the mod it loaded at start (M195 lesson). The plugin path `~/.claude/skills/cairn` links to this checkout, so a new session on the branch loads the M196 mod.
 - 2026-10-01: T5 done in a new desktop Code session on the branch, at the default window width, from operator screenshots. A long `T5:` chapter drew on one line with the bar, `4/5 tasks`, and `×` whole and the chapter cut by `…`. A long unlabeled chapter drew the counts alone, no bar, cut by `…`. With `/milestone` loaded and a long chapter, a `status /milestone →` skill row drew above the M196 row, cut by `…` before `×`. The operator asked why that case draws two rows, and chose to keep the separate skill row and file the candidate row "Band one row with a skill".
+- 2026-10-01: step-7 approval: m196-one-line-band approved for merge, with the four small review fixes applied first.
 
 ## Decisions
 
@@ -84,3 +85,5 @@ Independent review: three fresh reviewers (Opus diff-bug, Sonnet blame-history, 
 - F11 (blame 1, prior-review 2): a row with an open item no longer shows the title, which reverses the M195 layout. Proposed: reject. The plan gate chose this, and the work log records the choice and the evidence that falsifies it.
 - F12 (blame 4): older guards were rewritten, not carried over. The 40-column title test now runs through a chapter. Proposed: reject. Rows with no open item and state-label rows still draw the title at narrow width.
 - F13 (prior-review 3): no stale test counts found. Noted.
+
+Gate triage (operator, 2026-10-01): proposed dispositions accepted. F3 to F6 were fixed on the branch. The CHANGELOG, README, and DESIGN lines were reflowed, the DESIGN sentence now says that a chapter or an open box follows a `→`, two test names now say "put the chapter on", and the weak test now uses `T3: Write the docs.`. After the fixes, the mod tests gave 188 pass and the AC4 grep printed nothing. F1 and F2 go to the candidate row "Band layout edge cases" at hygiene. F7 to F12 were rejected for the reasons above.

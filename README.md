@@ -136,14 +136,15 @@ plan      /milestone-plan → Question gate
 Chapters come from the desktop app's chapter tool,
 `mcp__ccd_session__mark_chapter`. In a session without that tool, such as
 one in the terminal, milestone rows show their next open box, and a skill
-row shows its label and slash command only. The skill and its chapter stay until a cairn skill
-starts again, the same one included, or the session ends, a `/clear`
-included. A subagent that loads a cairn skill also sets the label, because
-the skill event does not say which agent loaded it.
+row shows its label and slash command only. The skill and its chapter
+stay until a cairn skill starts again, the same one included, or the
+session ends, a `/clear` included. A subagent that loads a cairn skill
+also sets the label, because the skill event does not say which agent
+loaded it.
 
 The first row ends in a close button, `×`, in the terminal and in the
-desktop app. That row can be a milestone row or a skill row. Pressing the button
-hides the band. The band stays hidden while two things stay the same. The
+desktop app. That row can be a milestone row or a skill row. Pressing the
+button hides the band. The band stays hidden while two things stay the same. The
 first is the list of active milestones: their ids, their statuses, and
 their ROADMAP order. The second is the running cairn skill. When either
 changes, the band shows again. For example, a milestone moves from

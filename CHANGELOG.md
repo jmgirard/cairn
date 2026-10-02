@@ -14,9 +14,8 @@
   `→`, with its `T2:` or `AC3:` label in bold. A missing milestone file, a
   section with no boxes, or a fully checked section shows a label in place
   of the bar and the counts. With no chapter on the row, the text is then
-  the milestone's title. The
-  phase, id, and text sit at the left of a row, and the bar and counts or
-  the label at its right edge. A long text is cut at its end, so the
+  the milestone's title. The phase, id, and text sit at the left of a row,
+  and the bar and counts or the label at its right edge. A long text is cut at its end, so the
   counts stay at the right edge. A close button on the first row hides
   the band. If the active milestones' ids, statuses, or ROADMAP order
   change, it shows again. If another cairn skill starts, or the session ends
@@ -25,16 +24,15 @@
   `status`, `brief`, `design`, or `init`. Implement and review run on the
   first milestone row of their status. Any other skill, or one of those two
   with no such row, gets a skill row with its label and slash command. In
-  the desktop app, each chapter the session marks, such as
-  `Post-merge hygiene`, becomes the text of the row that carries the
-  skill, and the band reads the files again. The bar shows while that
-  chapter opens with a `T4:` or `AC2:` label. At any other chapter a row
-  with counts shows the counts alone, and a state label stays as it is. A
-  skill row shows the chapter after its slash
-  command. In a session without the desktop app's chapter tool, such as one
-  in the terminal, a skill row shows its label and slash command only.
-  Milestone rows there show their next open item. The skill
-  stays until a cairn skill starts again or the session ends. A subagent
+  the desktop app, each chapter the session marks, such as `Post-merge
+  hygiene`, becomes the text of the row that carries the skill, and the
+  band reads the files again. The bar shows while that chapter opens with
+  a `T4:` or `AC2:` label. At any other chapter a row with counts shows the
+  counts alone, and a state label stays as it is. A skill row shows the
+  chapter after its slash command. In a session without the desktop app's
+  chapter tool, such as one in the terminal, a skill row shows its label
+  and slash command only. Milestone rows there show their next open item.
+  The skill stays until a cairn skill starts again or the session ends. A subagent
   that loads a cairn skill also sets the label, because the skill event does
   not say which agent loaded it. The colors come from your Claude Code
   theme. Below 60 columns, the bar is left out. Another plugin's band in the

@@ -72,8 +72,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   beneath draw, and the band blocks nothing. A row has a left group (phase,
   id, and one text) and a right group (bar and counts, counts alone, or a
   state label). The text is the chapter on the row that carries the
-  running skill, else the section's first open box after a `→`, else the
-  title. The bar shows with no chapter or with a chapter that opens with a
+  running skill, else the section's first open box, else the title. A
+  chapter or an open box follows a `→`. The bar shows with no chapter or with a chapter that opens with a
   positional label (`T2:`, `AC3:`), and not at any other chapter. The
   engine cuts the text. The first row ends in a `role: 'dismiss'` close
   button. A press stores the active ids and statuses and
@@ -92,8 +92,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   row comes first. A skill row shows the label, the slash command, and the
   chapter after a `→`. A session without the desktop app's chapter tool,
   such as one in the terminal, sets no chapter: milestone rows show their
-  next open item, and a skill row shows the label and the command only. The skill event carries no agent id, so a subagent that loads a
-  cairn skill sets it too. `band.ts` builds the rows and `register.tsx`
+  next open item, and a skill row shows the label and the command only.
+  The skill event carries no agent id, so a subagent that loads a cairn
+  skill sets it too. `band.ts` builds the rows and `register.tsx`
   draws them. `reader.ts` mirrors the Python ROADMAP and section helpers,
   held to them by shared fixtures under
   `hooks/status/fixtures/` (`gen_fixtures.py` writes `fixtures.gen.ts` for the
