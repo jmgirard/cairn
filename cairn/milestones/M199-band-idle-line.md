@@ -82,6 +82,7 @@ A skill that a plain reply resumes in a new turn shows no skill label. This limi
 - 2026-10-02: correction to the line above. The operator's screenshot shows the app's "New" page with no session running: the session starts at the first message. So no band can draw before it, and the note was taken back out of the "Status mod follow-ons" row. The cairn-repo look that drew the M199 row at once was not re-checked.
 - 2026-10-02: T7 done. Verify green: scripts 395, hooks 174, plugin validate, and 596 plugin tests. Validate green, and ROADMAP is 18,953 bytes.
 - claim audit: 58 claims read, 2 corrected — hooks/status/reader.ts (the header named `parse_depends` as a helper that `workable` calls, and the mirror comments left out that it reads ASCII digits only, where Python also takes other Unicode digits). The same reader re-read the three corrected comments and found them correct.
+- step-7 approval: m199-band-idle-line approved for merge
 
 ## Decisions
 
