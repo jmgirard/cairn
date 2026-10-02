@@ -75,8 +75,7 @@ the milestones in flight. Each `in-progress` or `review` row of
 `cairn/ROADMAP.md` gets a header row, in ROADMAP order. The header row gives
 the phase, the id, the title, and a 10-cell progress bar. It ends with the
 checked and total checkboxes of the phase's section in the milestone file.
-During
-`implement` that section is `## Tasks`. During `review` it is
+During `implement` that section is `## Tasks`. During `review` it is
 `## Acceptance criteria`. A dim item row under the header names the
 section's first unchecked task or criterion. The band's test fixtures draw
 these rows at 120 columns:

@@ -66,11 +66,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
   `plugin.json`. It draws a header row per `in-progress` or `review`
-  milestone. An item row under it names the first open box of the phase's
-  section, `## Tasks` in implement and `## Acceptance criteria` in review.
-  The rows sit above what the hooks beneath draw, and the band blocks
-  nothing. `band.ts` builds the
-  rows and `register.tsx` draws them. `reader.ts` mirrors the Python ROADMAP
+  milestone. When the phase's section has an open box, an item row under it
+  names the first one; the section is `## Tasks` in implement and
+  `## Acceptance criteria` in review. The rows sit above what the hooks
+  beneath draw, and the band blocks nothing. `band.ts` builds the rows and
+  `register.tsx` draws them. `reader.ts` mirrors the Python ROADMAP
   and section helpers, held to them by shared fixtures under
   `hooks/status/fixtures/` (`gen_fixtures.py` writes `fixtures.gen.ts` for the
   `claude plugin test` cases).

@@ -12,13 +12,14 @@
   That section is `## Tasks` during implement and `## Acceptance criteria`
   during review. A dim item row under the header names the section's
   first unchecked box. A missing milestone file, a section with no boxes,
-  or a fully checked section shows a label in their place instead. The colors come from your Claude Code theme. Below
-  60 columns, the bar is left out. Another plugin's band in the same place
-  shows under cairn's rows. At session start and at the end of each
+  or a fully checked section shows a label in place of the bar, the
+  counts, and the item row. The colors come from your Claude Code theme.
+  Below 60 columns, the bar is left out. Another plugin's band in the same
+  place shows under cairn's rows. At session start and at the end of each
   turn, the band reads the files again. Outside a cairn repo, or with no
-  active milestone, it draws nothing. It needs Claude Code
-  2.1.287 or later, where mods are on by default, or an earlier version
-  with hooks modules turned on. See "The milestone band" in the README.
+  active milestone, it draws nothing. It needs Claude Code 2.1.287 or
+  later, where mods are on by default, or an earlier version with hooks
+  modules turned on. See "The milestone band" in the README.
 
 ### Changes that affect existing repos
 

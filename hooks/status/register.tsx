@@ -12,7 +12,9 @@ import { loadBand } from './reader'
 // the end of each turn. The rows sit above whatever the hooks beneath draw
 // in the same slot.
 
-const band = atom({ plugin: 'cairn', key: 'band' } as const, [] as BandRow[])
+// The shape tag names the row layout; a reload whose rows were written
+// under another tag reads them as absent. Bump it when BandRow changes.
+const band = atom({ plugin: 'cairn', key: 'band' } as const, [] as BandRow[], { shape: 'band-2' })
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {

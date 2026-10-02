@@ -18,6 +18,8 @@ export type CairnBandRow = {
 
 declare module 'claude-code' {
   interface PluginState {
-    cairn: { band: CairnBandRow[] }
+    // Kept under a shape tag (register.tsx), so rows an older layout wrote
+    // read as absent after a reload.
+    cairn: { band: Shaped<CairnBandRow[]> }
   }
 }
