@@ -1,9 +1,9 @@
 import { atom, read, update } from 'claude-code'
 import type { Register } from 'claude-code'
 
-import type { CairnBandHidden, CairnBandMark, CairnStep } from '../../types'
+import type { CairnBandHidden, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
-import { ARROW, cairnSkill, GAP, GRAY, knownStep, stepLines, width } from './band'
+import { ARROW, cairnSkill, GAP, GRAY, knownStep, mark, same, stepLines, width } from './band'
 import type { BandState, FileSource } from './reader'
 import { loadBand } from './reader'
 
@@ -183,26 +183,6 @@ export const register: Register = on => {
       </Box>
     )
   })
-}
-
-// The ids and statuses of the active rows, in ROADMAP order, the running
-// skill, and the idle row's id when the band draws one (no active row and
-// no running skill), else null. The chapter is left out, so a new chapter
-// alone keeps the band hidden, and so is the workable list while a row is
-// active or a skill runs, so a planned row added then keeps it hidden too.
-function mark(state: BandState, current: CairnStep | null): CairnBandHidden {
-  const marks: CairnBandMark[] = state.rows.map(row => ({ id: row.id, status: row.status }))
-  const idle = state.rows.length === 0 && current === null ? (state.workable[0]?.id ?? null) : null
-  return { marks, skill: current === null ? null : current.skill, idle }
-}
-
-function same(a: CairnBandHidden, b: CairnBandHidden): boolean {
-  return (
-    a.skill === b.skill &&
-    a.idle === b.idle &&
-    a.marks.length === b.marks.length &&
-    a.marks.every((m, i) => m.id === b.marks[i].id && m.status === b.marks[i].status)
-  )
 }
 
 // The press reads the rows and the step as they are now, not as they were

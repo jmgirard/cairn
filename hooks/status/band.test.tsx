@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 
-import { bandLines, idleLines, knownStep, lineText, SKILL_LABELS } from './band'
+import { bandLines, idleLines, knownStep, lineText, mark, same, SKILL_LABELS } from './band'
 import { FIXTURES, SKILLS } from './fixtures.gen'
-import { listNames } from './reader'
+import { listNames, loadBand, memorySource } from './reader'
 
 // Each case answers the shipped mod's `$.session.cwd`, `$.fs.stat`,
 // `$.fs.read` and `$.fs.list` calls from an in-memory copy of a fixture,
@@ -1121,6 +1121,19 @@ describe('a session end shows a band that a press hid, with no skill running (M2
       })
     }
   }
+})
+
+describe("a stored skill with no label counts as no step in the close button's mark (M200 AC4)", () => {
+  test('over no-active, the mark for milestone-gone equals the mark for no step, and both name M021', async () => {
+    const fixture = FIXTURES['no-active']
+    const state = await loadBand(memorySource(fixture.files, fixture.cwd))
+    expect(state).not.toBeNull()
+    const gone = mark(state!, { skill: 'milestone-gone', chapter: 'Old chapter' })
+    const none = mark(state!, null)
+    expect(none).toEqual({ marks: [], skill: null, idle: 'M021' })
+    expect(gone).toEqual(none)
+    expect(same(gone, none)).toBe(true)
+  })
 })
 
 // The ROADMAP stats as a file, and its read rejects.
