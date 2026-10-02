@@ -66,6 +66,8 @@ The row layout, the forms, and the fit stay as M197 left them.
 - 2026-10-02: implement started on m198-muted-band. No question gate: `inactive` is a theme key in the 2.1.286 binary, and the plan left nothing else open.
 - 2026-10-02: T1–T3 done. Tests first: 76 red on the color asserts alone. `band.ts` exports `GRAY = 'inactive'`, and the labels and filled cells carry `dimColor`. `register.tsx` draws the arrow, positional label, and text in gray. The M197 AC3 skill-row bar assert (about line 1720) also changed to dim filled cells, a sub-task the plan did not name. Two planted defects turned the AC2 walk red: the slash command with no color failed only the 6 skill-row drawings, and dim counts failed 22. Verify clean: scripts 394, hooks 174, validate passed with warnings, mod tests 506/506.
 - 2026-10-02: T4 done. The sweep found 16 hits before the edit. README, CHANGELOG, and DESIGN now state the dim label and filled cells and the gray rest of the row. The second sweep's hits each state the new colors, or name the close button's dim `✕`, which the Scope leaves as it is.
+- 2026-10-02: T5 first live look (desktop, dark theme): the gray text read closer to the app's bar, but the dim `claude` orange drew brown. This fires the plan's falsifier for dim theme keys. The operator chose fixed mid-tone colors at a chip.
+- 2026-10-02: T5 look build B. The label and filled cells take `rgb(194,122,92)` for implement and `rgb(106,165,122)` for review, with no `dimColor`. The tests follow. AC1 is not yet amended, and the amendment waits for the look. Mod tests 506/506.
 
 ## Decisions
 

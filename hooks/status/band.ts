@@ -11,13 +11,16 @@ import type { BandRow } from './reader'
 // a state label, in the first of its forms that leaves the text enough
 // room. A running cairn skill with no active milestone gets a skill row.
 
-// One run of text and its style. Colors are theme keys, so they follow the
-// person's light or dark theme. The label and the filled cells draw in the
-// phase's or skill's hue, dim; the rest of the row draws in `inactive`, the
-// theme's gray.
+// One run of text and its style. The label and the filled cells draw in a
+// fixed muted orange or green. The desktop app draws a theme key's
+// `dimColor` toward the background, which turned the orange brown at a
+// live look (M198). The rest of the row draws in `inactive`, the theme's
+// gray, a theme key that follows the person's light or dark theme.
 export type Span = { text: string; color?: string; bold?: boolean; dimColor?: boolean }
 
 export const GRAY = 'inactive'
+const ORANGE = 'rgb(194,122,92)'
+const GREEN = 'rgb(106,165,122)'
 
 // A step: a chapter or an open item. `label` is its positional label
 // (`T2:`, `AC3:`), or null when it has none; `rest` is the text after it.
@@ -33,8 +36,8 @@ export type BandLine = { key: string; head: Span[]; body: Body; tail: Span[] }
 type Phase = { label: string; color: string; noun: string }
 
 const PHASES: Record<string, Phase> = {
-  'in-progress': { label: 'implement', color: 'claude', noun: 'tasks' },
-  review: { label: 'review', color: 'success', noun: 'criteria' },
+  'in-progress': { label: 'implement', color: ORANGE, noun: 'tasks' },
+  review: { label: 'review', color: GREEN, noun: 'criteria' },
 }
 
 export const BAR_CELLS = 10
@@ -93,7 +96,7 @@ export function phaseOf(row: BandRow): Phase {
 export function bar(checked: number, total: number, color: string): Span[] {
   const filled = Math.floor((BAR_CELLS * checked) / total)
   return [
-    { text: CELL.repeat(filled), color, dimColor: true },
+    { text: CELL.repeat(filled), color },
     { text: CELL.repeat(BAR_CELLS - filled), dimColor: true },
   ]
 }
@@ -138,7 +141,7 @@ function fit(columns: number, close: number, head: number, need: number, forms: 
 // is set, and nothing on the right. When the head leaves the chapter less
 // than the room it needs, the slash command goes.
 export function skillLines(step: CairnStep, columns: number, close = 0): BandLine[] {
-  const label: Span[] = [{ text: SKILL_LABELS[step.skill], color: skillColor(step.skill), dimColor: true }, { text: ' ' }]
+  const label: Span[] = [{ text: SKILL_LABELS[step.skill], color: skillColor(step.skill) }, { text: ' ' }]
   const full: Span[] = [...label, { text: `/${step.skill}`, color: GRAY }, { text: ' ' }]
   const body: Body = step.chapter === null ? null : stepOf(step.chapter)
   const fits = columns - headWidth(full, body) - GAP - close >= textNeed(body)
@@ -195,9 +198,7 @@ export function bandLines(
   }
 
   const head: Span[] = [
-    skill === null
-      ? { text: phase.label, color: phase.color, dimColor: true }
-      : { text: SKILL_LABELS[skill], color: skillColor(skill), dimColor: true },
+    skill === null ? { text: phase.label, color: phase.color } : { text: SKILL_LABELS[skill], color: skillColor(skill) },
     { text: ' ' },
     { text: row.id, color: GRAY, bold: true },
     { text: ' ' },
