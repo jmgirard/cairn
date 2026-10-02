@@ -3,7 +3,7 @@ import type { Register } from 'claude-code'
 
 import type { CairnBandHidden, CairnBandMark, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
-import { ARROW, cairnSkill, GAP, knownStep, stepLines } from './band'
+import { ARROW, cairnSkill, GAP, knownStep, stepLines, width } from './band'
 import type { BandRow, FileSource } from './reader'
 import { loadBand } from './reader'
 
@@ -39,6 +39,9 @@ const CHAPTER_TOOL = 'mcp__ccd_session__mark_chapter'
 // dismiss Button in the band as its label text, so a long label reads as
 // text there.
 const CLOSE_GLYPH = '×'
+// The columns the first row's close gap and plain label take in the
+// terminal, which the rows leave free when they pick their forms.
+const CLOSE_COLUMNS = GAP + width(CLOSE_GLYPH)
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
@@ -96,7 +99,7 @@ export const register: Register = on => {
     if (hidden !== null && same(hidden, mark(rows, current))) return next(e)
     const beneath = await next(e)
     const { Box, Button, Text } = $.ui.resolve(e)
-    const lines = stepLines(rows, current, e.props.bodyColumns)
+    const lines = stepLines(rows, current, e.props.bodyColumns, CLOSE_COLUMNS)
     const spans = (list: Span[]) =>
       list.map(span => (
         <Text wrap="truncate-end" {...style(span)}>

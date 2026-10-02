@@ -185,16 +185,17 @@ async function mountEach(name: string, view: typeof BAND, check: (ui: Ui, surfac
 
 // The rows at 120 columns, written out by hand, never derived from band.ts.
 // The two spaces before a bar, a count, or a state label are the right
-// group's left margin.
+// group's left margin. A row's text shows every bar cell as `█`; the dim
+// empty cells are asserted on the drawn Texts.
 const DRAWN: Record<string, string[]> = {
-  'single-in-progress': ['implement M002 → T2: Write the command.  ███░░░░░░░  1/3 tasks'],
+  'single-in-progress': ['implement M002 → T2: Write the command.  ██████████  1/3 tasks'],
   mixed: [
-    'review    M010 → AC3: Third criterion.  ██████░░░░  2/3 criteria',
+    'review M010 → AC3: Third criterion.  ██████████  2/3 criteria',
     'implement M012 A Tasks section with no boxes  no tasks',
-    'review    M013 Capitalized status, file gone  no milestone file',
+    'review M013 Capitalized status, file gone  no milestone file',
     'implement M014 No Tasks section at all  no tasks',
   ],
-  'nested-first': ['implement M030 → T1a: Nested task, open, with extra spaces after the box.  ███░░░░░░░  1/3 tasks'],
+  'nested-first': ['implement M030 → T1a: Nested task, open, with extra spaces after the box.  ██████████  1/3 tasks'],
   'states-implement': [
     'implement M040 Its file was never written  no milestone file',
     'implement M041 No Tasks section  no tasks',
@@ -202,14 +203,14 @@ const DRAWN: Record<string, string[]> = {
     'implement M043 Every task checked  all 3 tasks checked',
   ],
   'states-review': [
-    'review    M050 Its file was never written  no milestone file',
-    'review    M051 No criteria section  no criteria',
-    'review    M052 A criteria section with no boxes  no criteria',
-    'review    M053 Every criterion checked  all 2 criteria checked',
+    'review M050 Its file was never written  no milestone file',
+    'review M051 No criteria section  no criteria',
+    'review M052 A criteria section with no boxes  no criteria',
+    'review M053 Every criterion checked  all 2 criteria checked',
   ],
-  'missing-file': ['review    M004 Its file was never written  no milestone file'],
+  'missing-file': ['review M004 Its file was never written  no milestone file'],
   subdirectory: ['implement M007 Started from a subdirectory  all 2 tasks checked'],
-  'unlabeled-item': ['implement M062 → Write the docs, with no label.  ███░░░░░░░  1/3 tasks'],
+  'unlabeled-item': ['implement M062 → Write the docs, with no label.  ██████████  1/3 tasks'],
 }
 
 // Each skill's label, written out by hand, never read from band.ts.
@@ -226,9 +227,9 @@ const LABELS: Record<string, string> = {
   'milestone-review': 'review',
 }
 
-// A skill row's text: the label, padded as the phase label is, then the
+// A skill row's text at 120 columns: the label and one space, then the
 // slash command, then the chapter when one is set.
-const skillRow = (skill: string, title?: string) => `${LABELS[skill].padEnd(9)} /${skill}${title === undefined ? '' : ` → ${title}`}`
+const skillRow = (skill: string, title?: string) => `${LABELS[skill]} /${skill}${title === undefined ? '' : ` → ${title}`}`
 
 // The ROADMAP status of the row each phase skill runs on.
 const CARRIED: Record<string, string> = { 'milestone-implement': 'in-progress', 'milestone-review': 'review' }
@@ -332,13 +333,13 @@ const ROW = (name: string, id: string) => FIXTURES[name].rows.find(row => row.id
 describe("a row's one text: the chapter, else the next open item, else the title (M196 AC2)", () => {
   test('implement: the chapter on the carrying row', () => {
     expect(bandLines(ROW('single-in-progress', 'M002'), 120, 'T3: Write the docs.').map(lineText)).toEqual([
-      'implement M002 → T3: Write the docs.  ███░░░░░░░  1/3 tasks',
+      'implement M002 → T3: Write the docs.  ██████████  1/3 tasks',
     ])
   })
 
   test('review: the chapter on the carrying row', () => {
     expect(bandLines(ROW('mixed', 'M010'), 120, 'AC1: First criterion.').map(lineText)).toEqual([
-      'review    M010 → AC1: First criterion.  ██████░░░░  2/3 criteria',
+      'review M010 → AC1: First criterion.  ██████████  2/3 criteria',
     ])
   })
 
@@ -355,7 +356,7 @@ describe("a row's one text: the chapter, else the next open item, else the title
   })
 
   test('review: the title with no chapter and no open criterion', () => {
-    expect(bandLines(ROW('states-review', 'M053'), 120).map(lineText)).toEqual(['review    M053 Every criterion checked  all 2 criteria checked'])
+    expect(bandLines(ROW('states-review', 'M053'), 120).map(lineText)).toEqual(['review M053 Every criterion checked  all 2 criteria checked'])
   })
 
   for (const surface of SURFACES) {
@@ -364,9 +365,9 @@ describe("a row's one text: the chapter, else the next open item, else the title
       await $.turn.complete(turn())
       const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
       await prompt($, 'milestone-plan')
-      expect(await lines(ui)).toEqual(['plan      /milestone-plan', ENGINE])
+      expect(await lines(ui)).toEqual(['plan /milestone-plan', ENGINE])
       await chapter($, 'Question gate')
-      expect(await lines(ui)).toEqual(['plan      /milestone-plan → Question gate', ENGINE])
+      expect(await lines(ui)).toEqual(['plan /milestone-plan → Question gate', ENGINE])
       await ui.unmount()
     })
   }
@@ -375,11 +376,11 @@ describe("a row's one text: the chapter, else the next open item, else the title
 describe('the right group shows the bar only in the task or criterion loop (M196 AC3)', () => {
   const m002 = ROW('single-in-progress', 'M002')
   test('a labeled chapter keeps the bar and the counts', () => {
-    expect(bandLines(m002, 120, 'T3: Write the docs.').map(lineText)).toEqual(['implement M002 → T3: Write the docs.  ███░░░░░░░  1/3 tasks'])
+    expect(bandLines(m002, 120, 'T3: Write the docs.').map(lineText)).toEqual(['implement M002 → T3: Write the docs.  ██████████  1/3 tasks'])
   })
 
   test('a nested labeled chapter keeps the bar and the counts', () => {
-    expect(bandLines(m002, 120, 'T2a: A sub-task.').map(lineText)).toEqual(['implement M002 → T2a: A sub-task.  ███░░░░░░░  1/3 tasks'])
+    expect(bandLines(m002, 120, 'T2a: A sub-task.').map(lineText)).toEqual(['implement M002 → T2a: A sub-task.  ██████████  1/3 tasks'])
   })
 
   test('an unlabeled chapter shows the counts alone', () => {
@@ -390,15 +391,11 @@ describe('the right group shows the bar only in the task or criterion loop (M196
     expect(bandLines(m002, 120, null).map(lineText)).toEqual([DRAWN['single-in-progress'][0]])
   })
 
-  test('below 60 columns a labeled chapter shows the counts alone', () => {
-    expect(bandLines(m002, 59, 'T2: Write the command.').map(lineText)).toEqual(['implement M002 → T2: Write the command.  1/3 tasks'])
-  })
-
   test('a chapter on a state-label row keeps the label', () => {
-    expect(bandLines(ROW('mixed', 'M013'), 120, 'AC1: A criterion.').map(lineText)).toEqual(['review    M013 → AC1: A criterion.  no milestone file'])
+    expect(bandLines(ROW('mixed', 'M013'), 120, 'AC1: A criterion.').map(lineText)).toEqual(['review M013 → AC1: A criterion.  no milestone file'])
     expect(bandLines(ROW('mixed', 'M012'), 120, 'Question gate').map(lineText)).toEqual(['implement M012 → Question gate  no tasks'])
     expect(bandLines(ROW('states-review', 'M053'), 120, 'Consistency gate').map(lineText)).toEqual([
-      'review    M053 → Consistency gate  all 2 criteria checked',
+      'review M053 → Consistency gate  all 2 criteria checked',
     ])
   })
 })
@@ -414,7 +411,7 @@ describe('three states draw the title and the label (M193 AC2)', () => {
         async ui => {
           expect(await lines(ui)).toEqual([...DRAWN[name], ENGINE])
           expect(await rowKeys(ui)).toEqual(FIXTURES[name].rows.map(row => `${row.id}-row`))
-          expect((await bandTexts(ui)).filter(t => /[█░]/.test(textOf(t)))).toEqual([])
+          expect((await bandTexts(ui)).filter(t => /█/.test(textOf(t)))).toEqual([])
           expect((await bandTexts(ui)).filter(t => t.props.wrap !== 'truncate-end')).toEqual([])
         },
         $,
@@ -423,8 +420,11 @@ describe('three states draw the title and the label (M193 AC2)', () => {
   }
 })
 
+// M010 is mixed's first row. Its head `review M010 → AC3:` is 18 columns,
+// its text gets 10, the margin 2, the bar form 24, and the close gap and
+// label 3: 57 columns keep its bar, and 56 drop it.
 describe('the rows carry style props (M193 AC3)', () => {
-  for (const columns of [59, 60, 120]) {
+  for (const columns of [56, 57, 120]) {
     test(`mixed at ${columns} columns`, async ($, on) => {
       seat(on, copyOf('mixed'))
       await $.turn.complete(turn())
@@ -435,7 +435,7 @@ describe('the rows carry style props (M193 AC3)', () => {
           const inBand = await bandTexts(ui)
           // A Text that holds only strings: one span of a row.
           const leaf = (text: string) => inBand.find(t => t.children.every(c => typeof c === 'string') && textOf(t) === text)
-          expect(leaf('review   ')?.props.color).toBe('success')
+          expect(leaf('review')?.props.color).toBe('success')
           expect(leaf('implement')?.props.color).toBe('claude')
           expect(leaf('M010')?.props.bold).toBe(true)
           expect(leaf('no milestone file')?.props.color).toBe('warning')
@@ -445,12 +445,13 @@ describe('the rows carry style props (M193 AC3)', () => {
           const [row] = await ui.findAll({ key: 'M010-row' })
           expect(rowText(row).endsWith('  2/3 criteria')).toBe(true)
           const filled = leaf('██████')
-          if (columns < 60) {
+          if (columns < 57) {
             expect(filled).toBeUndefined()
-            expect(rowText(row)).toBe('review    M010 → AC3: Third criterion.  2/3 criteria')
+            expect(rowText(row)).toBe('review M010 → AC3: Third criterion.  2/3 criteria')
           } else {
             expect(filled?.props.color).toBe('success')
-            expect(leaf('░░░░')?.props.dimColor).toBe(true)
+            expect(filled?.props.dimColor).toBeUndefined()
+            expect(leaf('████')?.props.dimColor).toBe(true)
             expect(rowText(row)).toBe(DRAWN.mixed[0])
           }
         },
@@ -488,14 +489,14 @@ const CLOSE = { terminal: '×', desktop: '×' } as const
 
 // The left group of each mixed row, written out by hand.
 const MIXED_LEFT: Record<string, string> = {
-  M010: 'review    M010 → AC3: Third criterion.',
+  M010: 'review M010 → AC3: Third criterion.',
   M012: 'implement M012 A Tasks section with no boxes',
-  M013: 'review    M013 Capitalized status, file gone',
+  M013: 'review M013 Capitalized status, file gone',
   M014: 'implement M014 No Tasks section at all',
 }
 
 describe('each row is a left and a right group (M194 AC1)', () => {
-  for (const columns of [59, 60, 120]) {
+  for (const columns of [56, 57, 120]) {
     test(`mixed at ${columns} columns`, async ($, on) => {
       seat(on, copyOf('mixed'))
       await $.turn.complete(turn())
@@ -514,10 +515,10 @@ describe('each row is a left and a right group (M194 AC1)', () => {
             expect(right.props.marginLeft).toBe(2)
             expect(textOf(left)).toBe(MIXED_LEFT[row.id])
             shrinks(drawn)
-            // The right group: the bar at 60 columns or more, and the counts
+            // The right group: the bar at 57 columns or more, and the counts
             // or the state label; the close button last on the first row.
-            const hasBar = below(right, 'Text').some(t => /[█░]/.test(textOf(t)))
-            expect(hasBar).toBe(row.id === 'M010' && columns >= 60)
+            const hasBar = below(right, 'Text').some(t => /█/.test(textOf(t)))
+            expect(hasBar).toBe(row.id === 'M010' && columns >= 57)
             const last = kids(right)[kids(right).length - 1]
             expect(last.type === 'Button').toBe(i === 0)
             if (i === 0) expect(keyOf(last)).toBe('cairn-close')
@@ -531,10 +532,11 @@ describe('each row is a left and a right group (M194 AC1)', () => {
   }
 
   // A long chapter, labeled on long-title and unlabeled on wide-title,
-  // reaches the text's Text whole after its label; the engine cuts it.
+  // reaches the text's Text whole after its label; the engine cuts it. At
+  // 40 columns neither row has room for the counts' noun.
   const LONG: [string, string, string, string, string][] = [
-    ['long-title', 'milestone-implement', 'T2: ', '1/2 tasks', 'T2:'],
-    ['wide-title', 'milestone-review', '', '1/2 criteria', ''],
+    ['long-title', 'milestone-implement', 'T2: ', '1/2', 'T2:'],
+    ['wide-title', 'milestone-review', '', '1/2', ''],
   ]
   for (const [name, skill, prefix, counts, label] of LONG) {
     test(`${name} at 40 columns: the text's Text holds the long chapter's whole text after its label`, async ($, on) => {
@@ -556,7 +558,7 @@ describe('each row is a left and a right group (M194 AC1)', () => {
           expect(text?.children).toEqual([label === '' ? row.title : ` ${row.title}`])
           expect(text?.props.wrap).toBe('truncate-end')
           shrinks(drawn)
-          expect(below(right, 'Text').some(t => /[█░]/.test(textOf(t)))).toBe(false)
+          expect(below(right, 'Text').some(t => /█/.test(textOf(t)))).toBe(false)
           expect(textOf(right).trim()).toBe(counts)
           expect(keyOf(kids(right)[kids(right).length - 1])).toBe('cairn-close')
         },
@@ -697,7 +699,7 @@ const EDITS: Edit[] = [
       files[M002] = files[M002].replace('- [ ] T2:', '- [x] T2:')
     },
     before: [DRAWN['single-in-progress'][0], ENGINE],
-    after: ['implement M002 → T3: Write the docs.  ██████░░░░  2/3 tasks', ENGINE],
+    after: ['implement M002 → T3: Write the docs.  ██████████  2/3 tasks', ENGINE],
   },
   {
     name: 'a row moves from planned to in-progress',
@@ -706,7 +708,7 @@ const EDITS: Edit[] = [
       files[ROADMAP] = files[ROADMAP].replace('| Waiting to start | planned |', '| Waiting to start | in-progress |')
     },
     before: [ENGINE],
-    after: ['implement M021 → T1: Not started.  ░░░░░░░░░░  0/1 tasks', ENGINE],
+    after: ['implement M021 → T1: Not started.  ██████████  0/1 tasks', ENGINE],
   },
   {
     name: 'a row moves from in-progress to review, and switches to criteria',
@@ -715,7 +717,7 @@ const EDITS: Edit[] = [
       files[ROADMAP] = files[ROADMAP].replace('| Add the export command | in-progress |', '| Add the export command | review |')
     },
     before: [DRAWN['single-in-progress'][0], ENGINE],
-    after: ['review    M002 → AC1: The export command writes one file per table.  ░░░░░░░░░░  0/1 criteria', ENGINE],
+    after: ['review M002 → AC1: The export command writes one file per table.  ██████████  0/1 criteria', ENGINE],
   },
   {
     name: 'a row leaves both statuses from review',
@@ -723,7 +725,7 @@ const EDITS: Edit[] = [
     edit: files => {
       files[ROADMAP] = files[ROADMAP].replace('| Its file was never written | review |', '| Its file was never written | done |')
     },
-    before: ['review    M004 Its file was never written  no milestone file', ENGINE],
+    before: ['review M004 Its file was never written  no milestone file', ENGINE],
     after: [ENGINE],
   },
   {
@@ -742,7 +744,7 @@ const EDITS: Edit[] = [
       files[M030] = files[M030].replace('- [ ]   T1a:', '- [x]   T1a:')
     },
     before: [DRAWN['nested-first'][0], ENGINE],
-    after: ['implement M030 → T2: Second top-level task.  ██████░░░░  2/3 tasks', ENGINE],
+    after: ['implement M030 → T2: Second top-level task.  ██████████  2/3 tasks', ENGINE],
   },
 ]
 
@@ -1055,7 +1057,7 @@ describe('the carrying row follows the session chapters (M195 AC3)', () => {
       async (ui, $) => {
         await prompt($, 'milestone-review')
         await chapter($, 'Post-merge hygiene')
-        expect(await lines(ui)).toEqual(['review    M010 → Post-merge hygiene  2/3 criteria', ...MIXED_REST, ENGINE])
+        expect(await lines(ui)).toEqual(['review M010 → Post-merge hygiene  2/3 criteria', ...MIXED_REST, ENGINE])
       },
       $,
       on,
@@ -1088,7 +1090,7 @@ describe('the carrying row follows the session chapters (M195 AC3)', () => {
       expect(await lines(ui)).toEqual([...DRAWN.mixed, ENGINE])
       copy.files[M010] = copy.files[M010].replace('- [ ] AC3:', '- [x] AC3:')
       await chapter($, 'Consistency gate')
-      expect(await lines(ui)).toEqual(['review    M010 → Consistency gate  all 3 criteria checked', ...MIXED_REST, ENGINE])
+      expect(await lines(ui)).toEqual(['review M010 → Consistency gate  all 3 criteria checked', ...MIXED_REST, ENGINE])
       await ui.unmount()
     })
 
@@ -1102,7 +1104,7 @@ describe('the carrying row follows the session chapters (M195 AC3)', () => {
       await chapter($, 'Approval gate')
       expect(await lines(ui)).toEqual([
         'implement M012 A Tasks section with no boxes  no tasks',
-        'review    M013 → Approval gate  no milestone file',
+        'review M013 → Approval gate  no milestone file',
         'implement M014 No Tasks section at all  no tasks',
         ENGINE,
       ])
@@ -1160,7 +1162,7 @@ describe('the carrying row follows the session chapters (M195 AC3)', () => {
         await prompt($, 'milestone-review')
         await chapter($, 'Consistency gate')
         await chapter($, '')
-        expect(await lines(ui)).toEqual(['review    M010 → Consistency gate  2/3 criteria', ...MIXED_REST, ENGINE])
+        expect(await lines(ui)).toEqual(['review M010 → Consistency gate  2/3 criteria', ...MIXED_REST, ENGINE])
       },
       $,
       on,
@@ -1288,6 +1290,338 @@ describe('the close button works with skill rows (M195 AC5)', () => {
       },
       $,
       on,
+    )
+  })
+})
+
+// M197: a band that fits narrow windows and the desktop font.
+
+// Columns at one per code point.
+const cols = (s: string) => [...s].length
+
+// The columns of a drawn row's parts that never shrink: the head Box's
+// Texts, the right group's left margin and Texts, and the close button's
+// label. The terminal draws a Button that is not `plain` as `[ label ]`.
+function fixedWidth(row: Element): number {
+  const { head, right } = layout(row)
+  const close = below(right, 'Button').reduce((n, b) => n + cols(String(b.props.label)) + (b.props.plain ? 0 : 4), 0)
+  return cols(textOf(head)) + Number(right.props.marginLeft ?? 0) + cols(textOf(right)) + close
+}
+
+// Every band width from 36 to 120 columns.
+const WIDTHS = Array.from({ length: 85 }, (_, i) => 36 + i)
+
+// Mounts the terminal band at each width and collects each named row whose
+// parts that never shrink are wider than the width. Returns the overruns
+// and how many rows it measured.
+async function sweep($, keys: string[]): Promise<{ overruns: string[]; measured: number }> {
+  const overruns: string[] = []
+  let measured = 0
+  for (const columns of WIDTHS) {
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'terminal', ...at(columns) })) as Ui
+    for (const key of keys) {
+      const [row] = await ui.findAll({ key })
+      expect(row?.type).toBe('Box')
+      measured += 1
+      const width = fixedWidth(row)
+      if (width > columns) overruns.push(`${key} at ${columns}: ${width}`)
+    }
+    await ui.unmount()
+  }
+  return { overruns, measured }
+}
+
+// The two skills that a milestone row carries, the status of that row, the
+// field that holds its open item, and a long chapter.
+const LONG_STEPS = [
+  { skill: 'milestone-implement', status: 'in-progress', next: 'nextTask', chapter: 'T10a: Long step' },
+  { skill: 'milestone-review', status: 'review', next: 'nextCriterion', chapter: 'AC10a: Long step' },
+] as const
+
+// The row that carries the skill on a fixture when it shows counts: the
+// first row of the skill's status, with an open item.
+function countsCarrier(name: string, status: string, next: 'nextTask' | 'nextCriterion') {
+  const carrier = FIXTURES[name].rows.find(row => row.status === status)
+  return carrier !== undefined && carrier[next] !== null ? carrier : undefined
+}
+
+describe('each sampled row fits the band from 36 to 120 columns in the terminal (M197 AC1)', () => {
+  test('the sweep covers 36 to 120 columns, and the widest fixture reaches the bounds', () => {
+    expect(WIDTHS.length).toBe(85)
+    expect(WIDTHS[0]).toBe(36)
+    expect(WIDTHS[84]).toBe(120)
+    const rows = FIXTURES.widest.rows
+    expect(rows.map(row => row.id)).toEqual(['M1000', 'M1001', 'M1002', 'M1003'])
+    expect(rows.map(row => row.status)).toEqual(['in-progress', 'in-progress', 'review', 'review'])
+    expect(rows[0].nextTask?.startsWith('T10a:')).toBe(true)
+    expect(rows[2].nextCriterion?.startsWith('AC10a:')).toBe(true)
+    expect([rows[3].criteriaChecked, rows[3].criteriaTotal]).toEqual([100, 100])
+    expect(rows[1].tasksTotal).toBeNull()
+    // Both long chapters have a carrier showing counts on the widest fixture.
+    for (const { status, next } of LONG_STEPS) expect(countsCarrier('widest', status, next)).toBeDefined()
+  })
+
+  test('the widest fixture draws the full label at 120 columns', () => {
+    expect(bandLines(FIXTURES.widest.rows[3], 120).map(lineText)).toEqual([
+      'review M1003 Every criterion checked at the widest counts  all 100 criteria checked',
+    ])
+  })
+
+  for (const name of Object.keys(FIXTURES)) {
+    const rows = FIXTURES[name].rows
+    if (rows.length === 0) continue
+    test(`${name}: each row, with no skill running`, async ($, on) => {
+      seat(on, copyOf(name))
+      await $.turn.complete(turn())
+      const { overruns, measured } = await sweep($, rows.map(row => `${row.id}-row`))
+      expect(measured).toBe(rows.length * WIDTHS.length)
+      expect(overruns).toEqual([])
+    })
+
+    for (const { skill, status, next, chapter: title } of LONG_STEPS) {
+      const carrier = countsCarrier(name, status, next)
+      if (carrier === undefined) continue
+      test(`${name}: the row that carries ${skill} at a long chapter`, async ($, on) => {
+        seat(on, copyOf(name))
+        await $.turn.complete(turn())
+        await prompt($, skill)
+        await chapter($, title)
+        const { overruns, measured } = await sweep($, [`${carrier.id}-row`])
+        expect(measured).toBe(WIDTHS.length)
+        expect(overruns).toEqual([])
+      })
+    }
+  }
+
+  for (const skill of SKILLS) {
+    test(`no-active: the ${skill} skill row at the chapter Question gate`, async ($, on) => {
+      seat(on, copyOf('no-active'))
+      await $.turn.complete(turn())
+      await prompt($, skill)
+      await chapter($, 'Question gate')
+      const { overruns, measured } = await sweep($, ['skill-row'])
+      expect(measured).toBe(WIDTHS.length)
+      expect(overruns).toEqual([])
+    })
+  }
+})
+
+// Each change of form, at the narrowest width that keeps the earlier form,
+// worked out by hand at one column per code point. `left` reads the row's
+// left group, and `right` its right group without the close button.
+type Switch = {
+  name: string
+  fixture: string
+  step?: [string, string]
+  key: string
+  at: number
+  part: 'left' | 'right'
+  before: string
+  after: string
+}
+
+const SWITCHES: Switch[] = [
+  // Head `implement M002 → T2:` 20, text 10, margin 2, bar form 21, close 3.
+  {
+    name: 'the bar and counts give way to the counts with their noun',
+    fixture: 'single-in-progress',
+    key: 'M002-row',
+    at: 56,
+    part: 'right',
+    before: '██████████  1/3 tasks',
+    after: '1/3 tasks',
+  },
+  // Head 20, text 10, margin 2, `1/3 tasks` 9, close 3.
+  {
+    name: 'in the loop, the counts with their noun give way to the bare counts',
+    fixture: 'single-in-progress',
+    key: 'M002-row',
+    at: 44,
+    part: 'right',
+    before: '1/3 tasks',
+    after: '1/3',
+  },
+  // Head `implement M002 → ` 17, text 10 of 13, margin 2, `1/3 tasks` 9, close 3.
+  {
+    name: 'out of the loop, the counts with their noun give way to the bare counts',
+    fixture: 'single-in-progress',
+    step: ['milestone-implement', 'Question gate'],
+    key: 'M002-row',
+    at: 41,
+    part: 'right',
+    before: '1/3 tasks',
+    after: '1/3',
+  },
+  // A text shorter than 10 needs only its own width: head 20, text ` Go.` 4,
+  // margin 2, bar form 21, close 3.
+  {
+    name: 'a short text keeps the bar down to its own width',
+    fixture: 'single-in-progress',
+    step: ['milestone-implement', 'T3: Go.'],
+    key: 'M002-row',
+    at: 50,
+    part: 'right',
+    before: '██████████  1/3 tasks',
+    after: '1/3 tasks',
+  },
+  // The fourth row, with no close button: head `review M053 ` 12, text 10,
+  // margin 2, label 22.
+  {
+    name: 'all N criteria checked gives way to N/N checked',
+    fixture: 'states-review',
+    key: 'M053-row',
+    at: 46,
+    part: 'right',
+    before: 'all 2 criteria checked',
+    after: '2/2 checked',
+  },
+  // Head `review M004 ` 12, text 10, margin 2, label 17, close 3.
+  {
+    name: 'no milestone file gives way to no file',
+    fixture: 'missing-file',
+    key: 'M004-row',
+    at: 44,
+    part: 'right',
+    before: 'no milestone file',
+    after: 'no file',
+  },
+  // Head `plan /milestone-plan → ` 23, text 10 of 13, margin 2, close 3.
+  {
+    name: 'a skill row drops its slash command',
+    fixture: 'no-active',
+    step: ['milestone-plan', 'Question gate'],
+    key: 'skill-row',
+    at: 38,
+    part: 'left',
+    before: 'plan /milestone-plan → Question gate',
+    after: 'plan → Question gate',
+  },
+]
+
+describe('the right group and the skill row take shorter forms (M197 AC2)', () => {
+  for (const { name, fixture, step, key, at: columns, part, before, after } of SWITCHES) {
+    test(`${fixture}: ${name} below ${columns} columns`, async ($, on) => {
+      seat(on, copyOf(fixture))
+      await $.turn.complete(turn())
+      if (step !== undefined) {
+        await prompt($, step[0])
+        await chapter($, step[1])
+      }
+      for (const [width, form] of [
+        [columns, before],
+        [columns - 1, after],
+      ] as const) {
+        await mountEach(
+          fixture,
+          at(width),
+          async ui => {
+            const [row] = await ui.findAll({ key })
+            const { left, right } = layout(row)
+            expect((part === 'left' ? textOf(left) : textOf(right)).trim()).toBe(form)
+          },
+          $,
+        )
+      }
+    })
+  }
+})
+
+// The phase label of each status, written out by hand.
+const PHASE_LABEL: Record<string, string> = { 'in-progress': 'implement', review: 'review' }
+
+// The head's first two Texts: the label and the space after it.
+function labelGap(row: Element): string[] {
+  return kids(layout(row).head)
+    .slice(0, 2)
+    .map(t => textOf(t))
+}
+
+// The bar's Texts in a row's right group, empty runs left out.
+function barTexts(row: Element): Element[] {
+  return below(layout(row).right, 'Text').filter(t => /[█░▒▓]/.test(textOf(t)))
+}
+
+describe('one space after the label, and one bar glyph with dim empty cells (M197 AC3)', () => {
+  for (const name of Object.keys(FIXTURES)) {
+    const rows = FIXTURES[name].rows
+    if (rows.length === 0) continue
+    test(`${name} at 120 columns`, async ($, on) => {
+      seat(on, copyOf(name))
+      await $.turn.complete(turn())
+      await mountEach(
+        name,
+        BAND,
+        async ui => {
+          for (const fixtureRow of rows) {
+            const [row] = await ui.findAll({ key: `${fixtureRow.id}-row` })
+            expect(labelGap(row)).toEqual([PHASE_LABEL[fixtureRow.status], ' '])
+            const bar = barTexts(row)
+            if (bar.length === 0) continue
+            expect(bar.map(t => textOf(t)).join('')).toBe('█'.repeat(10))
+            // The filled run, when there is one, then the dim empty run.
+            const empty = bar[bar.length - 1]
+            expect(empty.props.dimColor).toBe(true)
+            for (const filled of bar.slice(0, -1)) {
+              expect(filled.props.dimColor).toBeUndefined()
+              expect(filled.props.color).toBe(fixtureRow.status === 'review' ? 'success' : 'claude')
+            }
+          }
+        },
+        $,
+      )
+    })
+  }
+
+  test('single-in-progress at 1/3 tasks draws 3 filled cells and 7 dim ones', async ($, on) => {
+    seat(on, copyOf('single-in-progress'))
+    await $.turn.complete(turn())
+    await mountEach(
+      'single-in-progress',
+      BAND,
+      async ui => {
+        const [row] = await ui.findAll({ key: 'M002-row' })
+        const bar = barTexts(row)
+        expect(bar.map(t => [textOf(t), t.props.dimColor === true])).toEqual([
+          ['███', false],
+          ['███████', true],
+        ])
+      },
+      $,
+    )
+  })
+
+  for (const skill of SKILLS) {
+    test(`the ${skill} skill row at 120 columns`, async ($, on) => {
+      seat(on, copyOf('no-active'))
+      await $.turn.complete(turn())
+      await prompt($, skill)
+      await mountEach(
+        'no-active',
+        BAND,
+        async ui => {
+          const [row] = await ui.findAll({ key: 'skill-row' })
+          expect(labelGap(row)).toEqual([LABELS[skill], ' '])
+          expect(kids(layout(row).head)[2] === undefined ? '' : textOf(kids(layout(row).head)[2])).toBe(`/${skill}`)
+        },
+        $,
+      )
+    })
+  }
+})
+
+describe('one row per active milestone whatever maxRows is (M197 AC5)', () => {
+  test('six-active at a maxRows of 3', async ($, on) => {
+    seat(on, copyOf('six-active'))
+    await $.turn.complete(turn())
+    const view = { ...BAND, props: { ...BAND.props, maxRows: 3 } }
+    await mountEach(
+      'six-active',
+      view,
+      async ui => {
+        expect(await rowKeys(ui)).toEqual(['M070-row', 'M071-row', 'M072-row', 'M074-row', 'M075-row', 'M076-row'])
+        await closesFirst(ui)
+      },
+      $,
     )
   })
 })
