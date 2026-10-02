@@ -123,8 +123,8 @@ Three fresh reviewers ran: diff-bug (Opus, D), blame-history (Sonnet, B), and pr
 Triage at the gate, 2026-10-02. The operator accepted every proposed disposition.
 
 - D1: follow-up. README.md and CHANGELOG.md now state that a turn Claude ends to wait for background work ends the skill. README.md also states that a question asked in plain text ends it. A candidate row is added at post-merge hygiene.
-- D2: fixed. The reader test "a done row meets a dependency spelled at another padding" failed with the `canonId` plant and got `[]`, then passed with the reader restored.
-- D3: fixed. The reader test "only an archive file ending in .md marks its id done" failed with the suffix check planted out and got `["M091", "M093"]`, then passed.
+- D2: fixed. The reader test "a done row meets a dependency spelled at another padding" failed with the `canonId` plant and got `[]`. It passed with the reader restored.
+- D3: fixed. The reader test "only an archive file ending in .md marks its id done" failed with the suffix check planted out and got `["M091", "M093"]`. It then passed.
 - D7: fixed. `render()` now calls `workable(root, rows)` into a local named `ready`. `cairn_next.py` still recommends review M199 on this repo.
 - D8: fixed in README.md lines 74 and 168 and the `reader.ts` header. The describe title is noted.
 - B5: fixed. Four sweep tests walk the idle row from 36 to 120 columns, plus a test that the sweep has its four fixtures. A plant that never drops the command reddened all four, with overruns such as `idle-row at 36: 40`.
