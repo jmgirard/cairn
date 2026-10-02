@@ -12,11 +12,11 @@ import type { BandRow } from './reader'
 // room. A running cairn skill with no active milestone gets a skill row.
 
 // One run of text and its style. The label draws in a fixed muted orange
-// or green. The desktop app draws a theme key's `dimColor` toward the
-// background, which turned the orange brown at a live look (M198). The
-// filled cells take the phase's theme key at full strength. The rest of
-// the row draws in `inactive`, the theme's gray. Theme keys follow the
-// person's light or dark theme.
+// or green. In the desktop app's dark theme, a theme key's `dimColor`
+// turned the orange brown at a live look (M198). The filled cells take the
+// phase's theme key at full strength. The rest of the row draws in
+// `inactive`, the theme's gray, but for the empty cells (EMPTY) and the
+// warning labels. Theme keys follow the person's light or dark theme.
 export type Span = { text: string; color?: string; bold?: boolean; dimColor?: boolean }
 
 export const GRAY = 'inactive'

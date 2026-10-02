@@ -88,9 +88,9 @@ review M010 → AC3: Third criterion.  ██████████  2/3 crite
 ```
 
 The bar draws every cell with `█`, so it keeps one width in any font. The
-filled cells take the phase's color. The empty cells take a gray near the
-background. This page shows all ten cells as `█`, because a text block
-cannot show color.
+filled cells take the phase's theme color. The empty cells take a gray
+near the background. This page shows all ten cells as `█`, because a text
+block cannot show color.
 
 Three labels replace the bar and the counts. With no chapter on the row,
 the row then shows the milestone's title as its text.

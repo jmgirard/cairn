@@ -80,8 +80,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   draws ten `█` cells: the filled ones in the phase's theme key (`claude`
   or `success`), the empty ones in the theme key `subtle`. The phase or
   skill label takes a fixed raw color, `rgb(194,122,92)` or
-  `rgb(106,165,122)`. The desktop app draws `dimColor` toward the
-  background, which turned the theme's orange brown (M198). No Text in the
+  `rgb(106,165,122)`. In the desktop app's dark theme, `dimColor` turned
+  the theme's orange brown at a live look (M198). No Text in the
   row carries `dimColor`. The other Text leaves take the theme key
   `inactive`, the theme's gray, but for the space leaves and the `warning`
   labels. `band.ts` measures the parts

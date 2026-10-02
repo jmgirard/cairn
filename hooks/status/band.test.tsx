@@ -1685,8 +1685,8 @@ describe('one space after the label, and one bar glyph with gray empty cells (M1
             const bar = barTexts(row)
             if (bar.length === 0) return
             expect(bar.map(t => textOf(t)).join('')).toBe('█'.repeat(10))
-            // The filled run, when there is one, in the phase's hue, then
-            // the empty run in EMPTY (M198 AC1).
+            // The filled run, when there is one, in the phase's theme key,
+            // then the empty run in EMPTY (M198 AC1).
             const empty = bar[bar.length - 1]
             expect(empty.props.dimColor).toBeUndefined()
             expect(empty.props.color).toBe(EMPTY)
@@ -1796,7 +1796,7 @@ function leavesOf(node: Element): Element[] {
   return below(node, 'Text').filter(t => t.children.every(c => typeof c === 'string'))
 }
 
-describe('the band draws in gray, with a muted hue on the label and the filled cells (M198 AC1, AC2)', () => {
+describe('the band draws in gray, with a muted hue on the label and the theme hue on the filled cells (M198 AC1, AC2)', () => {
   test('the fixtures that draw no row with no skill', () => {
     for (const name of NO_ROW) expect(Object.keys(FIXTURES)).toContain(name)
     for (const name of Object.keys(FIXTURES)) expect(shownId(name) === null).toBe(NO_ROW.includes(name))

@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M198: A muted band that matches the app's own bar
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -81,6 +81,8 @@ The row layout, the forms, and the fit stay as M197 left them.
 - re-audit: AC4 (full) — nothing
 - 2026-10-02: T6 done. README, CHANGELOG, and DESIGN now name the fixed label colors, the full-strength filled cells, and the `subtle` empty cells. README's "The phase label is drawn" paragraph says the four things AC3 names. The other sweep hits are the close button's dim `✕` and two "greenfield" lines.
 - 2026-10-02: T7 done. Verify clean: scripts 394, hooks 174, plugin validate exit 0, mod tests 506/506.
+- claim audit: 51 claims read, 5 corrected — hooks/status/band.ts, hooks/status/band.test.tsx, README.md
+- 2026-10-02: the same reader re-read the 5 corrections, and one DESIGN.md line fixed in the same spirit. All hold. Mod tests 506/506. Status set to review.
 
 ## Decisions
 
