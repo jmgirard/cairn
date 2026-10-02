@@ -71,6 +71,12 @@ export function cairnSkill(name: string): string | null {
   return Object.prototype.hasOwnProperty.call(SKILL_LABELS, bare) ? bare : null
 }
 
+// The step, or null when its skill has no label, as a step stored before a
+// reload can name a skill the label map has since dropped.
+export function knownStep(step: CairnStep | null): CairnStep | null {
+  return step !== null && Object.prototype.hasOwnProperty.call(SKILL_LABELS, step.skill) ? step : null
+}
+
 export function phaseOf(row: BandRow): Phase {
   return PHASES[row.status]
 }

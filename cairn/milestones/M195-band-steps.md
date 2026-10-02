@@ -87,6 +87,8 @@ Make the milestone band name the cairn skill that is running and its current ste
 - 2026-10-01: T9 added, a minor amendment for the review return. AC6 now maps to T7, T8, and T9.
 - 2026-10-01: T9 done. The CHANGELOG entry gained the subagent clause and the terminal's milestone-row clause. The DESIGN.md `hooks/status/` line gained the ten labels, the skill row's contents, and the terminal clause. Verify slot green: scripts 394, hooks 174, validate exit 0, mod tests 131.
 - claim audit: 18 claims read, 0 corrected — CHANGELOG.md, cairn/DESIGN.md (the T9 lines only, one fresh Opus reader).
+- 2026-10-01: review round 2 passed every criterion. The gate directed fixes F1 to F6, which landed on the branch with verify green.
+- step-7 approval: m195-band-steps approved for merge
 
 ## Decisions
 
@@ -128,3 +130,7 @@ Round 2, 2026-10-01, on `9950165`. `origin/main` is an ancestor of the branch, s
   - F11 (diff-bug 5): the chapter goes to the first row of the status, not the milestone the skill names. Follow-up: the same row.
   - F12 (prior 5): skill rows add more space-padded labels in the desktop font. Noted: the "Band layout edge cases" row holds it.
   - Rejected: a chapter under a state-label row is what AC3 asks for (blame 3). Scope accepts that a subagent's skill prompt sets the label (prior 6). The `trimEnd` in `lineText` changes no assertion (blame 5). A chapter call with no skill only reads the files again (blame 5). A skill prompt at compaction is unconfirmed (diff-bug 10).
+- Gate: the operator chose to fix F1–F6 and then merge. F7–F11 go to candidate rows at hygiene, and F12 stays noted. The operator saw `review M195` with all 7 criteria checked and `→ Approval gate` under it. That is T8's review-chapter look.
+- Fix-now outcomes, all on the branch before the push. F1: the chapter hook writes from the value `update` passes in. F2: new cases for a subagent's chapter call and for a chapter with no running skill. F3: an empty title sets no chapter, with a new case. F4: `knownStep` in `band.ts` reads a step with no label as no step, with a direct test. F5: the CHANGELOG close-button clause names a session end while a skill runs. The DESIGN.md line says a chapter is stored only while a skill runs. F6: the new lines are rewrapped.
+- Planted defects: removing the `agentId` guard turned the subagent case red, and removing the empty-title check turned the empty-title case red. The `knownStep` call in `register.tsx` has no drawing case, and the mod tests cannot stage the F1 timing gap.
+- Re-verify after the fixes: scripts 394 OK (21 skipped), hooks 174 OK, validate exit 0, mod tests 135 pass and 0 fail, `cairn_validate` all checks passed.

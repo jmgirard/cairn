@@ -3,7 +3,7 @@ import type { Register } from 'claude-code'
 
 import type { CairnBandHidden, CairnBandMark, CairnStep } from '../../types'
 import type { HeaderLine, ItemLine, Span } from './band'
-import { cairnSkill, GAP, stepLines } from './band'
+import { cairnSkill, GAP, knownStep, stepLines } from './band'
 import type { BandRow, FileSource } from './reader'
 import { loadBand } from './reader'
 
@@ -68,13 +68,13 @@ export const register: Register = on => {
   })
 
   // A chapter the main loop marks becomes the step's chapter once the call
-  // went through, and the tracking files are read again.
+  // went through, while a cairn skill runs, and the tracking files are read
+  // again. An empty title sets no chapter.
   on('tool.call', { tool: CHAPTER_TOOL }, async ($, e, next) => {
     const result = await next(e)
     if (e.agentId !== undefined || result?.deny !== undefined || result?.isError === true) return result
-    const title = typeof e.title === 'string' ? e.title : null
-    const current = await read($, step)
-    if (current !== null && title !== null) await update($, step, () => ({ ...current, chapter: title }))
+    const title = typeof e.title === 'string' && e.title !== '' ? e.title : null
+    if (title !== null) await update($, step, current => (current === null ? null : { ...current, chapter: title }))
     await refresh($)
     return result
   })
@@ -90,7 +90,7 @@ export const register: Register = on => {
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     if (e.props.hasSurvey) return next(e)
     const rows = await read($, band)
-    const current = await read($, step)
+    const current = knownStep(await read($, step))
     if (rows.length === 0 && current === null) return next(e)
     const hidden = await read($, dismissed)
     if (hidden !== null && same(hidden, mark(rows, current))) return next(e)

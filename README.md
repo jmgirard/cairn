@@ -127,10 +127,10 @@ plan      /milestone-plan
 Chapters come from the desktop app's chapter tool,
 `mcp__ccd_session__mark_chapter`. In a session without that tool, such as
 one in the terminal, milestone rows show their next open box, and a skill
-row has no item row. The skill and its chapter stay
-until a cairn skill starts again, the same one included, or the session
-ends, a `/clear` included. A subagent that loads a cairn skill also sets
-the label, because the skill event does not say which agent loaded it.
+row has no item row. The skill and its chapter stay until a cairn skill
+starts again, the same one included, or the session ends, a `/clear`
+included. A subagent that loads a cairn skill also sets the label, because
+the skill event does not say which agent loaded it.
 
 The first header row ends in a close button, `×`, in the terminal and in
 the desktop app. A skill row counts as a header row. Pressing the button

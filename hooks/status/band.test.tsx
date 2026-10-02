@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 
-import { bandLines, lineText, SKILL_LABELS } from './band'
+import { bandLines, knownStep, lineText, SKILL_LABELS } from './band'
 import { FIXTURES, SKILLS } from './fixtures.gen'
 
 // Each case answers the shipped mod's `$.session.cwd`, `$.fs.stat` and
@@ -1002,6 +1002,55 @@ describe('the item row follows the session chapters (M195 AC3)', () => {
       )
     })
   }
+
+  test("a subagent's chapter call leaves the item row as it was", async ($, on) => {
+    await eachSurface(
+      'mixed',
+      'mark',
+      async (ui, $) => {
+        await prompt($, 'milestone-review')
+        await $.tool.call({ tool: CHAPTER_TOOL, title: 'Subagent chapter', agentId: 'a1' })
+        expect(await lines(ui)).toEqual([...DRAWN.mixed, ENGINE])
+      },
+      $,
+      on,
+    )
+  })
+
+  test('an empty chapter title leaves the item row as it was', async ($, on) => {
+    await eachSurface(
+      'mixed',
+      'mark',
+      async (ui, $) => {
+        await prompt($, 'milestone-review')
+        await chapter($, 'Consistency gate')
+        await chapter($, '')
+        expect(await lines(ui)).toEqual([DRAWN.mixed[0], '  → Consistency gate', ...MIXED_REST, ENGINE])
+      },
+      $,
+      on,
+    )
+  })
+
+  test('a chapter with no cairn skill running starts no step', async ($, on) => {
+    await eachSurface(
+      'no-active',
+      'mark',
+      async (ui, $) => {
+        await chapter($, 'Auth bug fix')
+        expect(await lines(ui)).toEqual([ENGINE])
+        expect(await hasCairn(ui)).toBe(false)
+      },
+      $,
+      on,
+    )
+  })
+
+  test('a stored skill with no label reads as no step', () => {
+    expect(knownStep({ skill: 'milestone-gone', chapter: 'Old chapter' })).toBeNull()
+    expect(knownStep({ skill: 'hotfix', chapter: null })).toEqual({ skill: 'hotfix', chapter: null })
+    expect(knownStep(null)).toBeNull()
+  })
 
   test('a skill row with no chapter has no item row, and gains one at a chapter', async ($, on) => {
     await eachSurface(
