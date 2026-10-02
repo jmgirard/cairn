@@ -82,6 +82,10 @@ export const register: Register = on => {
   // so its step ends at that Stop.
   on('classic.Stop', async ($, e, next) => {
     const result = await next(e)
+    // TEMPORARY (M201 T4 live look): removed before review.
+    $.ui.log(
+      `cairn band debug: Stop agent=${e.agent_id ?? 'main'} tasks=${e.background_tasks === undefined ? 'absent' : e.background_tasks.map(t => `${t.type}:${t.status}`).join(',') || 'empty'} block=${result.block === undefined ? 'no' : 'yes'}`,
+    )
     if (e.agent_id !== undefined || result.block !== undefined) return result
     if ((e.background_tasks ?? []).length === 0) {
       await update($, step, () => null)
@@ -99,6 +103,8 @@ export const register: Register = on => {
   // hook beneath blocks or drops has already ended the step.
   on('prompt.submit', async ($, e, next) => {
     const typed = e.origin.kind === 'composer' || e.origin.kind === 'bridge'
+    // TEMPORARY (M201 T4 live look): removed before review.
+    $.ui.log(`cairn band debug: prompt origin=${e.origin.kind} turnId=${e.turnId ?? 'none'}`)
     if (typed && e.turnId === undefined) {
       await update($, step, () => null)
       await refresh($)
