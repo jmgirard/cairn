@@ -16,7 +16,8 @@ import { loadBand } from './reader'
 // milestone (band.ts picks the row). The row sits above whatever the hooks
 // beneath draw in the same slot. It ends in a close button, which hides the
 // band until the active rows' ids, statuses, or order, the running skill,
-// or the idle row's id change.
+// or the idle row's id change, or the session ends (M200). A found
+// ROADMAP that cannot be read keeps the rows and the close state.
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.

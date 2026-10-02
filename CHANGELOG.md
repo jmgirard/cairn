@@ -22,7 +22,11 @@
   is dim at rest in the desktop app. If the active milestones' ids,
   statuses, or ROADMAP order change, it shows again. If another cairn skill
   starts, or a running one ends, it also shows again. If a new milestone
-  takes the idle row's place, it shows again too. The band also names the
+  takes the idle row's place, it shows again too. Every session end also
+  shows it again. In the desktop app, a `/clear` stops the session, and the
+  band draws again at your next message. If the ROADMAP is found but cannot
+  be read, the band keeps its row and stays hidden or shown as it was. The
+  band also names the
   running cairn skill: `plan`, `implement`, `review`, `hotfix`, `triage`,
   `release`, `status`, `brief`, `design`, or `init`. The skill's label
   takes the place of the phase label on the row. If a `review` milestone
