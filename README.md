@@ -89,8 +89,8 @@ review    M013 Capitalized status, file gone  no milestone file
 implement M014 No Tasks section at all  no tasks
 ```
 
-Three labels replace the bar and the counts, and the row then shows the
-milestone's title as its text.
+Three labels replace the bar and the counts. With no chapter on the row,
+the row then shows the milestone's title as its text.
 `no milestone file` means that the row's `File/Archive` path names no
 regular file the band can read. `no tasks` or `no criteria` means that the
 section is missing or holds no checkboxes. `all 3 tasks checked` or
@@ -118,9 +118,10 @@ In the desktop app, each chapter the session marks, for example
 that carries the skill, after a `→`. A skill row shows the chapter after
 its slash command. The bar shows while the chapter is a task or criterion,
 one that opens with a label such as `T4:` or `AC2:`. At any other chapter
-the row shows the counts alone. The band reads the files again at each
-chapter, so the counts match the files at that chapter. During review, at
-the post-merge step, the first test fixture's row shows:
+a row with counts shows the counts alone, and a state label stays as it
+is. The band reads the files again at each chapter, so the counts match the
+files at that chapter. During review, at the post-merge step, the first row
+of that fixture shows:
 
 ```text
 review    M010 → Post-merge hygiene  2/3 criteria

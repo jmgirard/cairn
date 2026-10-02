@@ -51,6 +51,8 @@ Draw each active milestone and each skill row on one line that shows the current
 - 2026-10-01: started on branch m196-one-line-band. No question gate: the plan left no implementation choice open.
 - 2026-10-01: T1–T3 done. The rewritten `band.test.tsx` ran 146 red of 188 on the two-row code, each sampled red showing two rows or the old `-header`/`-item` keys, then 188 green on the one-line code. A step's arrow is dim, its label bold, and its rest at full strength, since the step is now the row's main text. Scripts and hooks suites, plugin validate, and plugin test are green.
 - 2026-10-01: T4 done. README, CHANGELOG, and DESIGN.md describe one row per milestone. The README examples are the mixed fixture's rows, the M010 post-merge chapter row, and the plan skill row, each asserted in `band.test.tsx`. The AC4 grep prints nothing (exit 1). The M062 fixture's criterion text still reads "The item row stays dim." It is fixture data the band never draws, outside the AC4 files. All four verify checks are green.
+- 2026-10-01: claim audit: 70 claims read, 5 corrected — README.md, CHANGELOG.md, hooks/status/band.test.tsx. The same reader re-read the five corrected claims once and found all accurate. Mod tests 188 green, AC4 grep empty.
+- 2026-10-01: T5 needs a new desktop Code session that loads the mod from this branch, because a session keeps the mod it loaded at start (M195 lesson). The plugin path `~/.claude/skills/cairn` links to this checkout, so a new session on the branch loads the M196 mod.
 
 ## Decisions
 

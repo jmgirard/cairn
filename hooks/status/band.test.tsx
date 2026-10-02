@@ -531,13 +531,13 @@ describe('each row is a left and a right group (M194 AC1)', () => {
   }
 
   // A long chapter, labeled on long-title and unlabeled on wide-title,
-  // reaches the text's Text whole; the engine cuts it.
+  // reaches the text's Text whole after its label; the engine cuts it.
   const LONG: [string, string, string, string, string][] = [
     ['long-title', 'milestone-implement', 'T2: ', '1/2 tasks', 'T2:'],
     ['wide-title', 'milestone-review', '', '1/2 criteria', ''],
   ]
   for (const [name, skill, prefix, counts, label] of LONG) {
-    test(`${name} at 40 columns: the text's Text holds the whole long chapter`, async ($, on) => {
+    test(`${name} at 40 columns: the text's Text holds the long chapter's whole text after its label`, async ($, on) => {
       seat(on, copyOf(name))
       await $.turn.complete(turn())
       const [row] = FIXTURES[name].rows
@@ -633,7 +633,7 @@ const LABELED: [string, string, string][] = [
 
 describe("the step's label draws bold, and its arrow dim (M196 AC2)", () => {
   for (const [name, key, label] of LABELED) {
-    test(`${name}: ${label} is bold and undimmed, and so is the rest`, async ($, on) => {
+    test(`${name}: ${label} is bold and undimmed, and the rest is plain`, async ($, on) => {
       seat(on, copyOf(name))
       await $.turn.complete(turn())
       await mountEach(

@@ -13,7 +13,8 @@
   during review. The text is the section's first unchecked box after a
   `→`, with its `T2:` or `AC3:` label in bold. A missing milestone file, a
   section with no boxes, or a fully checked section shows a label in place
-  of the bar and the counts, and the milestone's title as the text. The
+  of the bar and the counts. With no chapter on the row, the text is then
+  the milestone's title. The
   phase, id, and text sit at the left of a row, and the bar and counts or
   the label at its right edge. A long text is cut at its end, so the
   counts stay at the right edge. A close button on the first row hides
@@ -27,8 +28,9 @@
   the desktop app, each chapter the session marks, such as
   `Post-merge hygiene`, becomes the text of the row that carries the
   skill, and the band reads the files again. The bar shows while that
-  chapter opens with a `T4:` or `AC2:` label, and at any other chapter the
-  row shows the counts alone. A skill row shows the chapter after its slash
+  chapter opens with a `T4:` or `AC2:` label. At any other chapter a row
+  with counts shows the counts alone, and a state label stays as it is. A
+  skill row shows the chapter after its slash
   command. In a session without the desktop app's chapter tool, such as one
   in the terminal, a skill row shows its label and slash command only.
   Milestone rows there show their next open item. The skill
