@@ -77,11 +77,14 @@ transitions, human-gated merges, and a domain verification doctrine.
   chapter, else the section's first open box, else the title. A
   chapter or an open box follows a `→`. The bar shows with no chapter or with a chapter that opens with a
   positional label (`T2:`, `AC3:`), and not at any other chapter. It
-  draws ten `█` cells: the filled ones in the phase's color with
-  `dimColor`, the empty ones with `dimColor` alone. The phase label also
-  takes its color with `dimColor`. The other Text leaves take the theme
-  key `inactive`, the theme's gray, but for the space leaves and the
-  `warning` labels. `band.ts` measures the parts
+  draws ten `█` cells: the filled ones in the phase's theme key (`claude`
+  or `success`), the empty ones in the theme key `subtle`. The phase or
+  skill label takes a fixed raw color, `rgb(194,122,92)` or
+  `rgb(106,165,122)`. The desktop app draws `dimColor` toward the
+  background, which turned the theme's orange brown (M198). No Text in the
+  row carries `dimColor`. The other Text leaves take the theme key
+  `inactive`, the theme's gray, but for the space leaves and the `warning`
+  labels. `band.ts` measures the parts
   that never shrink at one column per code point. The right group takes
   the first of its forms that leaves the text its room, else its last
   form. The room is 10 columns, or less for a shorter text. A skill row drops its
@@ -99,8 +102,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   `gen_fixtures.py` writes: `plan`, `implement`, `review`, `hotfix`,
   `triage`, `release`, `status` (for `milestone`), `brief`, `design`, and
   `init`. The skill's label takes the place of the phase label on the
-  row. It draws in a dim review green for `/milestone-review` and a dim
-  Claude orange otherwise. With no active milestone, a skill row shows the label, the
+  row. It draws in the muted green for `/milestone-review` and the muted
+  orange otherwise. With no active milestone, a skill row shows the label, the
   slash command, and the chapter after a `→`. A session without the desktop app's chapter tool,
   such as one in the terminal, sets no chapter: a milestone row shows its
   next open item, and a skill row shows the label and the command only.

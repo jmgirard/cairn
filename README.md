@@ -88,9 +88,9 @@ review M010 → AC3: Third criterion.  ██████████  2/3 crite
 ```
 
 The bar draws every cell with `█`, so it keeps one width in any font. The
-filled cells take a dim tint of the phase's color. The empty cells are dim
-with no color. This page shows all ten cells as `█`, because a text block
-cannot show dim.
+filled cells take the phase's color. The empty cells take a gray near the
+background. This page shows all ten cells as `█`, because a text block
+cannot show color.
 
 Three labels replace the bar and the counts. With no chapter on the row,
 the row then shows the milestone's title as its text.
@@ -99,12 +99,14 @@ regular file the band can read. `no tasks` or `no criteria` means that the
 section is missing or holds no checkboxes. `all 3 tasks checked` or
 `all 2 criteria checked` means that every box in the section is checked.
 
-The phase label is drawn in a dim orange or green: your theme's Claude
-orange for `implement` and its success green for `review`. The bar's filled
-cells take the phase's dim color, also when a skill's label of another
-color stands in for the phase label. The rest of the row draws in
-the theme's gray, with the id and a `T2:` or `AC3:` label in bold.
-`no milestone file` takes the theme's warning color. In a narrow
+The phase label is drawn in a muted orange or green: `rgb(194,122,92)` for
+`implement` and `rgb(106,165,122)` for `review`. These two colors are fixed
+and do not follow your theme. The bar's filled cells draw in your theme's
+full Claude orange or success green, by the phase. This holds also when a
+skill's label of another color stands in for the phase label. The empty
+cells draw in the theme's subtle gray, near the background. The rest of the
+row draws in the theme's gray, with the id and a `T2:` or `AC3:` label in
+bold. `no milestone file` takes the theme's warning color. In a narrow
 window the right part takes the first shorter form that leaves the text 10
 columns. A text shorter than 10 columns needs only its full width. If no
 form leaves that room, the right part takes its shortest form. The band
@@ -120,8 +122,8 @@ The band also names the cairn skill that is running. When a cairn skill
 starts, by its plain name or its `cairn:` name, its label takes the place
 of the phase label on the row: `plan`, `implement`, `review`, `hotfix`,
 `triage`, `release`, `status` (for `/milestone`), `brief`, `design`, or
-`init`. The label takes a dim review green for `/milestone-review` and a
-dim Claude orange for every other skill. If a `review` row exists, the row is
+`init`. The label takes the muted green for `/milestone-review` and the
+muted orange for every other skill. If a `review` row exists, the row is
 the first one during `/milestone-review`. Every other skill stays on
 the row the band shows with no skill. With no active milestone, a cairn
 skill gets a skill row: its label, its slash command, and nothing at its

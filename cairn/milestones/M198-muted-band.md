@@ -53,8 +53,8 @@ The row layout, the forms, and the fit stay as M197 left them.
 - [x] T3: In `register.tsx`, draw the arrow, the positional label, and the row's text in `inactive`, with no `dimColor` on the arrow. Leave the close Button as it is. Run `claude plugin test` until it is green.
 - [x] T4: Run the AC3 sweep. Update each hit about the band that the new colors make false, then run the sweep again and read each hit.
 - [x] T5: Do a live look in a new desktop Code session, because a running session keeps the mod it loaded at its start. If the dim hues do not read as muted, amend through the gate to two fixed mid-tone colors.
-- [ ] T6: Rerun the AC3 sweep against the look D colors and fix each hit, the labels' fixed colors included.
-- [ ] T7: Run the verify slot.
+- [x] T6: Rerun the AC3 sweep against the look D colors and fix each hit, the labels' fixed colors included.
+- [x] T7: Run the verify slot.
 
 ## Work log
 
@@ -79,6 +79,8 @@ The row layout, the forms, and the fit stay as M197 left them.
 - 2026-10-02: substantive amendment at the mini gate, operator's choice. Scope In, AC1, AC2, AC3, and AC4 now name the look D design: labels in fixed `rgb(194,122,92)` or `rgb(106,165,122)`, filled cells in `claude` or `success` at full strength, empty cells in `subtle`, no `dimColor`. A new T6 reruns the AC3 sweep, and the verify task is now T7. The Goal still says "dim". The operator chose to log this departure over a re-plan: the label is a fixed muted color, and the filled cells draw at full strength.
 - re-audit: AC3 (full) — "three things" named four, and the sweep's words can miss T6's new wording. Fixed by the reader's own replacement text. This is AC3's second line, so no further reader runs for it.
 - re-audit: AC4 (full) — nothing
+- 2026-10-02: T6 done. README, CHANGELOG, and DESIGN now name the fixed label colors, the full-strength filled cells, and the `subtle` empty cells. README's "The phase label is drawn" paragraph says the four things AC3 names. The other sweep hits are the close button's dim `✕` and two "greenfield" lines.
+- 2026-10-02: T7 done. Verify clean: scripts 394, hooks 174, plugin validate exit 0, mod tests 506/506.
 
 ## Decisions
 
