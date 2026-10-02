@@ -1,0 +1,178 @@
+<!-- Section ownership + write-modes: see tracking-rules.md "Milestone-file
+     section ownership". A phase skill never rewrites another phase's section.
+     Per-section owners are tagged below. The one size check that can fail is
+     cairn_validate's <150 over the plan-owned body. -->
+# M201: A band label that holds through background waits
+
+- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
+- **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
+- **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
+- **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
+- **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
+- **Surface tier:** user-facing — the band ships in the plugin to every adopter   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
+- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+
+## Goal
+<!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
+
+Keep a cairn skill's label on the band while the skill waits on background work and through the turns that the work's notices start.
+
+## Scope
+<!-- owner: plan · create/amend-via-gate -->
+
+**In:** `hooks/status/register.tsx` ends the skill's step at a main-loop
+`classic.Stop` with no background work in flight. It also ends the step at
+a prompt the user types while the session is idle. These replace M199's
+end at every `turn.complete` with reason `answer`. Mod tests in
+`hooks/status/band.test.tsx`. The step-end rule in README, CHANGELOG,
+DESIGN, and the `register.tsx` comments. A live desktop look.
+
+**Out:** A skill that waits through ScheduleWakeup or a cron
+(`session_crons`, not `background_tasks`) still loses its label.
+Long-lived background work that the skill did not start keeps a finished
+skill's label until the next typed prompt. A typed prompt that a hook
+blocks or drops still ends the label, because the hook clears the step
+before the prompt enters. README states all three, and they go to the
+"Status mod follow-ons" candidate row with the work of telling the
+skill's own tasks from other in-flight work.
+
+## Acceptance criteria
+<!-- owner: plan · create/amend-via-gate; review reads, never reinterprets.
+     Every item opens with its positional label — `ACn:` — the item's
+     position counted top-to-bottom, the number Coverage cites; an
+     insertion, removal, or reorder renumbers the labels and the Coverage
+     lines together.
+     Driving RR set → its Binding criteria appear VERBATIM here (binding-
+     criteria check), each ingested as a numbered criterion carrying its tag
+     — `- [ ] ACn (BCm): <verbatim>` — with its own Coverage line, since
+     coverage-complete counts AC checkboxes positionally (M107); departures:
+     a "Deviations from RR<NN>" table ends this section. -->
+
+- [ ] AC1: A `classic.Stop` with no `agent_id`, whose answer from beneath
+      the mod carries no `block`, ends the running cairn skill's step when
+      its `background_tasks` is empty or absent, and keeps the step when
+      that list holds one or more tasks. A `classic.Stop` whose answer from
+      beneath carries `block` keeps the step, and so does one with an
+      `agent_id`. A `turn.complete` no longer ends the step, whatever its
+      reason. `claude plugin test` cases show this. They raise
+      `classic.Stop` five times: with an empty list, with no field, with a
+      one-task list, with an empty list and a `block` from a hook beneath,
+      and with an empty list and an `agent_id`. They also raise a
+      `turn.complete` with reason `answer`. Each case then checks the
+      band's skill label.
+- [ ] AC2: The only hooks in `register.tsx` that write `step` are
+      `skill.prompt`, `session.end`, `classic.Stop`, and `prompt.submit`.
+      Besides a cairn skill's prompt and a session end, a step, running or
+      kept, ends at two events. One is the first later `classic.Stop` that
+      AC1 says ends a step. The other is a `prompt.submit` with origin kind
+      `composer` or `bridge` and no `turnId`. A turn that a
+      `task-notification` prompt starts keeps the step. The `prompt.submit`
+      hook in `register.tsx` names those two kinds and no other as ending a
+      step. It clears the step before it
+      calls `next`, so a typed cairn slash command's own `skill.prompt`
+      sets the new label. `claude plugin test` cases show this. Over a
+      kept step they raise six prompts: `task-notification`, `composer`,
+      `bridge`, `peer`, `composer` with a `turnId`, and `composer` with a
+      beneath hook that raises `skill.prompt` before it resolves. Each
+      case then checks the label.
+- [ ] AC3: With one `in-progress` row and one `review` row and
+      `/milestone-review` running, a `classic.Stop` that lists one
+      background task keeps the `review` row under the `review` label, and
+      so does the turn that a `task-notification` prompt then starts. A
+      `claude plugin test` case shows this. It checks the drawn row after
+      each event.
+- [ ] AC4: In a live desktop session in this repo, one `/milestone-review`
+      or `/milestone-plan` run starts a background subagent and ends its
+      turn to wait. The band shows the skill's label during the wait and
+      through the turn that the subagent's notice starts. After the
+      skill's closing turn ends with no background work in flight, the
+      band shows no skill label. In a second background wait, in a later
+      wait or another run, a prompt the operator types ends the label.
+- [ ] AC5: Each of four passages states the step-end rule of AC1 and AC2.
+      The README and CHANGELOG passages also state the interrupt behavior
+      that T4 records and the three limits in Scope Out. The passages are:
+      1. the band paragraph of `README.md` that names
+         `mcp__ccd_session__mark_chapter`
+      2. the band bullet of the Unreleased section of `CHANGELOG.md`
+      3. the `hooks/status` paragraph of `cairn/DESIGN.md` that names the
+         `step` state value
+      4. the comments in `hooks/status/register.tsx` on the file header,
+         the `step` atom, and the `classic.Stop`, `prompt.submit`, and
+         `turn.complete` hooks.
+- [ ] AC6: The `verify` slot of `cairn/PROFILE.md` runs clean: both gating
+      `python3 -m unittest` suites, `claude plugin validate`, and
+      `claude plugin test`.
+
+## Coverage
+<!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
+     task(s) satisfying it, by positional number (AC/Task counted
+     top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
+
+- AC1 → T1, T2
+- AC2 → T1, T2
+- AC3 → T1, T2
+- AC4 → T4
+- AC5 → T2, T3
+- AC6 → T5
+
+## Tasks
+<!-- owner: plan (create) / implement (check-off, minor edits); substantive
+     change is amend-via-gate. Every item opens with its positional label —
+     `Tn:` — the item's position counted top-to-bottom, the number Coverage
+     cites; an insertion, removal, or reorder renumbers the labels and the
+     Coverage lines together. -->
+
+- [ ] T1: Tests first in `hooks/status/band.test.tsx`: beneath-hooks for
+      `classic.Stop` and `prompt.submit` in the setup (`band.test.tsx:60-90`).
+      Add the AC1 to AC3 cases. Rewrite the existing cases that end a step
+      with `turn.complete` (`band.test.tsx:356` and on). Show the end cases
+      red on the current `register.tsx`. Show the clear-before-`next` case
+      red against a clear-after-`next` variant. Show that a test-given
+      `origin` reaches the mod's hook.
+- [ ] T2: In `hooks/status/register.tsx`, add a `classic.Stop` hook and a
+      `prompt.submit` hook that carry the rule. Each hook calls `refresh`.
+      Reduce the `turn.complete` hook (`register.tsx:63-74`) to a refresh.
+      Update the comments that AC5 names.
+- [ ] T3: Update the README band paragraph (`README.md:164-178`), the
+      CHANGELOG Unreleased band bullet (`CHANGELOG.md:40-46`), and the
+      DESIGN `hooks/status` paragraph (`cairn/DESIGN.md:106-113`).
+- [ ] T4: Do a live look in the desktop app with the branch's mod
+      loaded. It covers one skill run with a background subagent, a prompt
+      typed during a second wait, and an Esc interrupt of a skill's turn.
+      Record in the work log what the band showed, whether the interrupt
+      kept or ended the label, and the typed prompt's origin kind, read
+      from the session transcript or a temporary debug line. Then bring
+      T3's wording in line with it.
+- [ ] T5: Run the `verify` slot of `cairn/PROFILE.md`, each exit code
+      checked on its own.
+
+## Work log
+<!-- owner: any skill · append-only; one line per entry; absolute dates.
+     EXEMPT from the 150-line cap (D-046): history under D-045, never edited,
+     so the cap must never demand a trim here. Wrapped entries get a WARN.
+     The rejected-alternative record (/milestone-plan step 4) takes this form:
+     `- YYYY-MM-DD: plan gate chose <approach> over <alternative> because
+     <reason>; falsified by <evidence class>.` — one per approach choice the
+     gate actually weighed, none where it weighed none, and it is the record
+     `/milestone-review`'s thrash trigger (b) reads. It lives here rather than
+     below so an instantiated file inherits no placeholder to delete. -->
+
+- 2026-10-02: created by /milestone-plan from the candidate row "Band skill label across background waits" (M199 review D1, B1). It extends M199.
+- 2026-10-02: criteria audit (full mode, fresh Opus reader) returned 13 findings on the draft. AC1 had four: the blocked-stop case's task list, an untested `agent_id` axis, "result" for the answer from beneath, and evidence wording bound to the test file. AC2 had four: a typed prompt over a running turn, the clear-before-`next` order, an incomplete end list, and the desktop origin kind as a live-only fact. AC4 had an unnamed run and two unobserved facts. AC5 had a grep in place of the passages. The gate fixed all 13. AC3 and AC6 were clean.
+- 2026-10-02: the same reader re-read the revised criteria. It found the earlier 13 resolved and returned five more: T1's red claim for keep cases, AC2's unbounded "only", the label cleared by a dropped prompt, one AC4 run that could not show both the notice turn and a typed-prompt end, and AC4 and AC5 clauses that bound a recording act. All five were fixed: AC2 names the four hooks that write `step`, AC4 uses a second wait, the dropped prompt became a third Scope Out limit, and the origin kind and Esc result moved to T4.
+- 2026-10-02: plan gate chose ending the step at an unblocked main-loop `classic.Stop` with empty `background_tasks`. It rejected an end at the next typed prompt alone, and a restore of the last step at a `task-notification` prompt. The chosen rule keeps the label through the wait itself, and it does not linger after every closing summary. A live session falsifies it if `classic.Stop` does not reach the mod, or if `background_tasks` does not list a running background subagent.
+- 2026-10-02: plan gate chose to let an idle `composer` or `bridge` prompt end a kept step. It rejected an end only at a Stop with nothing in flight. The chosen rule bounds the label when unrelated long-lived work stays in flight. A desktop-typed prompt that arrives with an origin kind other than `composer` falsifies it.
+
+## Decisions
+<!-- owner: implement / review · append-only; milestone-local; promote
+     cross-cutting ones to cairn/DECISIONS.md.
+     EXEMPT from the 150-line cap (D-074) because D-045 makes it history like the work log — dated dispositions, never edited — so the cap must never demand a trim here either.
+     Entries carry their rationale; the counterweight `decisions format`
+     advisory watches for pasted output, not for entry length (D-075). -->
+
+## Review
+<!-- owner: review · exclusive; evidence per criterion, consistency-gate
+     results, review findings + triage. EXEMPT from the 150-line cap (M55),
+     as are the work log (D-046) and the decisions section (D-074); evidence
+     never scrambles plan-owned content. -->
