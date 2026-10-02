@@ -1,13 +1,13 @@
 # M192: A claude-plugin toolchain profile for repos that build plugins and mods
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M191
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — adopters' `/cairn-init` and operational skills read the profile
-- **Branch/PR:** —
+- **Branch/PR:** m192-claude-plugin-profile
 
 ## Goal
 
@@ -55,5 +55,6 @@ Add a fifth toolchain profile, `claude-plugin`, so that cairn can track a repo t
 - 2026-10-01: criteria audit, full mode, two fresh Opus readers. The draft drew 6 findings and the revised text drew 6. Each had one clear fix and was fixed at the gate. None was posed as a question.
 - 2026-10-01: plan gate chose M192 after M191 over two independent milestones, because the profile's verify and release steps are best written after cairn builds one real mod. Falsified by M191 stalling while an adopter needs the profile.
 - 2026-10-01: plan chose to rank a language marker above the plugin markers, so a plugin repo with `pyproject.toml` stays `python`. This matches the existing hybrid rule that a repo keeps its language marker. Falsified by an adopter's plugin repo whose language profile misses the `claude plugin` checks it needs.
+- 2026-10-01: implement started on branch m192-claude-plugin-profile. Question gate: `/cairn-init` asks the main-deliverable question for a plugin+language repo too, with the language profile recommended. Repair with no user keeps the language marker. The profile asks two greenfield openers, where the plugin is listed and whether it ships a mod.
 
 ## Decisions
