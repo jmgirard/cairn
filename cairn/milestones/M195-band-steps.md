@@ -114,3 +114,17 @@ Round 2, 2026-10-01, on `9950165`. `origin/main` is an ancestor of the branch, s
 - AC6: Passes. README "The milestone band" names the skill row, the ten labels, and the chapter on the item row. It also names the chapter tool `mcp__ccd_session__mark_chapter`, the terminal behavior, and the subagent clause. The DESIGN.md `hooks/status/` line now lists the ten labels, the terminal clause, and the subagent clause. The CHANGELOG `Unreleased` entry now has the terminal clause and the subagent clause.
 - T8's plan look was not taken. It needs a `/milestone-plan` run, and that run replaces the review skill on the band. The AC2 and AC3 `milestone-plan` cases cover that drawing on both surfaces.
 - Consistency gate: `cairn_validate` passed every check, exit 0, coverage complete included. M195 touches GP2 but changes no principle text, so `cairn_impact` was skipped. The `generic` profile names no toolchain checks.
+- Independent review: three fresh reviewers (Opus diff-bug, Sonnet blame-history, Sonnet prior-review). The PR-comment probe returned none. No finding shows a criterion failing, so no return. Findings, ranked, with the disposition put to the gate:
+  - F1 (diff-bug 1): the chapter hook builds its write from a `step` value read before the call, not from the value `update` passes in. A skill prompt or session end in that gap is undone. Fix now: write from the passed value.
+  - F2 (diff-bug 2): no test sends a chapter call with an `agentId`, so the subagent guard can be removed with all cases green. Fix now: add that case, and a chapter call with no running skill.
+  - F3 (prior 4, diff-bug 6): an empty chapter title draws a bare `  → ` row. Fix now: treat an empty title as no title.
+  - F4 (diff-bug 7): a stored skill missing from the label map makes the drawing throw. Fix now: read such a step as no step.
+  - F5 (diff-bug 8, 9): the CHANGELOG close-button clause leaves out a session end while a skill runs. The DESIGN.md line says every chapter is stored, but the hook stores one only while a skill runs. Fix now.
+  - F6 (prior 3): the new CHANGELOG, README, and DESIGN.md lines are wrapped unevenly, as M193 and M194 fixed before. Fix now: rewrap.
+  - F7 (prior 1, 2, blame 2): the read-then-clear of `dismissed`, a known item, now also runs at each skill prompt, chapter, and session end. Follow-up: widen the "Band close-state edge cases" row.
+  - F8 (blame 1, prior 7): a press with no skill running stays hidden across a `/clear` or resume, and a press with a skill running does not. Follow-up: the same row.
+  - F9 (diff-bug 4, blame 4): the step stays after its skill ends, so later chapters attach to it. Follow-up: the "Band idle line" row, whose "draws nothing" text is now stale.
+  - F10 (diff-bug 3, blame 5): a project skill with a bare cairn name, such as `hotfix`, sets the step. Follow-up: the "Status mod follow-ons" row.
+  - F11 (diff-bug 5): the chapter goes to the first row of the status, not the milestone the skill names. Follow-up: the same row.
+  - F12 (prior 5): skill rows add more space-padded labels in the desktop font. Noted: the "Band layout edge cases" row holds it.
+  - Rejected: a chapter under a state-label row is what AC3 asks for (blame 3). Scope accepts that a subagent's skill prompt sets the label (prior 6). The `trimEnd` in `lineText` changes no assertion (blame 5). A chapter call with no skill only reads the files again (blame 5). A skill prompt at compaction is unconfirmed (diff-bug 10).
