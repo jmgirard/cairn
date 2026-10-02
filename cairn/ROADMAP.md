@@ -12,6 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M197 | A band that fits narrow windows and the desktop font | planned | — | high | milestones/M197-band-narrow-fit.md |
 | M196 | A one-line milestone band | done | — | normal | milestones/archive/M196-one-line-band.md |
 | M195 | A milestone band that names every cairn step | done | — | normal | milestones/archive/M195-band-steps.md |
 | M194 | A right-aligned milestone band with a close button | done | — | normal | milestones/archive/M194-band-layout.md |
