@@ -5,7 +5,7 @@ A `claude plugin test` file cannot read files, so the status mod's tests
 read the fixture directories through this generated module. Each fixture
 directory becomes one entry: its files keyed by absolute in-memory path
 (the fixture directory is `/`), the session's working directory, and the
-rows its `expected.json` states. The module also lists the plugin's skill
+rows and the ordered workable ids its `expected.json` states. The module also lists the plugin's skill
 names, one per `skills/*/SKILL.md`, which the band's label map is held to
 (M195).
 
@@ -35,7 +35,7 @@ HEADER = (
 
 
 def load(case_dir):
-    """(cwd, files, rows) for one fixture directory."""
+    """(cwd, files, rows, workable) for one fixture directory."""
     expected = json.loads((case_dir / "expected.json").read_text(encoding="utf-8"))
     files = {}
     for path in sorted(case_dir.rglob("*")):
@@ -44,7 +44,7 @@ def load(case_dir):
         rel = path.relative_to(case_dir).as_posix()
         files["/" + rel] = path.read_text(encoding="utf-8")
     cwd = "/" + expected["cwd"] if expected["cwd"] else "/"
-    return cwd, files, expected["rows"]
+    return cwd, files, expected["rows"], expected["workable"]
 
 
 def cases():
@@ -63,7 +63,7 @@ def render():
     out.append("]\n\n")
     out.append("export const FIXTURES: Record<string, Fixture> = {\n")
     for case_dir in cases():
-        cwd, files, rows = load(case_dir)
+        cwd, files, rows, workable = load(case_dir)
         out.append(f"  {json.dumps(case_dir.name)}: {{\n")
         out.append(f"    cwd: {json.dumps(cwd)},\n")
         out.append("    files: {\n")
@@ -74,6 +74,7 @@ def render():
         for row in rows:
             out.append(f"      {json.dumps(row, ensure_ascii=False)},\n")
         out.append("    ],\n")
+        out.append(f"    workable: {json.dumps(workable)},\n")
         out.append("  },\n")
     out.append("}\n")
     return "".join(out)

@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M199: A band that names the next milestone
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — every adopter's session draws the band
-- **Branch/PR:** —
+- **Branch/PR:** m199-band-idle-line
 
 ## Goal
 
@@ -55,7 +55,7 @@ A skill that a plain reply resumes in a new turn shows no skill label. This limi
 
 ## Tasks
 
-- [ ] T1: Move the done-set and workable logic of `cairn_next.py` into one helper that `render()` and the test both call. Add the AC2 fixtures, in a few trees that each carry several cases. Add the ordered workable list to every `expected.json`. Carry it through `gen_fixtures.py` and the `Fixture` type. Hold it to the helper in `test_status_fixtures.py`.
+- [x] T1: Move the done-set and workable logic of `cairn_next.py` into one helper that `render()` and the test both call. Add the AC2 fixtures, in a few trees that each carry several cases. Add the ordered workable list to every `expected.json`. Carry it through `gen_fixtures.py` and the `Fixture` type. Hold it to the helper in `test_status_fixtures.py`.
 - [ ] T2: In `reader.ts`, parse the depends and priority cells and canonicalize ids. Add a `list` call to `FileSource` and to `memorySource`, and list `cairn/milestones/archive/`. Compute the workable list. Bump the `band` shape tag. Add `reader.test.ts` cases first and see them fail.
 - [ ] T3: In `band.ts`, add the idle row, its two forms, and its place in the row choice after the skill row. Add `band.test.tsx` cases first, on both surfaces at both widths.
 - [ ] T4: In `register.tsx`, end the step at a main-loop `turn.complete` with reason `answer`. Add the drawn idle id to the close mark under a new `dismissed` shape tag. Update `types/index.d.ts`. Add the AC3 and AC4 cases first.
@@ -70,6 +70,8 @@ A skill that a plain reply resumes in a new turn shows no skill label. This limi
 - 2026-10-02: plan gate chose to end a skill's step at its turn's end over a finished-skill look kept until the next skill. A finished look keeps the idle row from showing after any skill in the session. Falsified by a live session where a cairn skill's work runs on across turns and the band drops its label mid-skill.
 - 2026-10-02: plan gate chose an empty band when no milestone is workable over a line that suggests `/milestone-plan`. With the suggestion, the band draws in nearly every session. Falsified by a session between milestones that misses the plan step because the band was empty.
 - 2026-10-02: plan chose a TypeScript reader with shared fixtures over running `cairn_next.py` through `$.process.run`. M191 rejected python3 at every turn end, and a test cannot fake the process call. Falsified by a parity failure that the fixtures did not catch in a real repo.
+- 2026-10-02: implement started on branch `m199-band-idle-line`. No question gate: the plan left no choice open for the operator.
+- 2026-10-02: T1 done. `cairn_next.py` gains `done_ids` and `workable`, and `render()` calls `done_ids`. Two new fixtures, `idle-order` and `idle-deps`, have hand-written workable lists, and `cairn_next.workable` matches both. All 17 `expected.json` files carry `workable`. `idle-*` joins the band test's no-row list until T3. Verify: scripts, hooks, validate, and 536 plugin tests green.
 
 ## Decisions
 

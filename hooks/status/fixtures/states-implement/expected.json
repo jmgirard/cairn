@@ -1,5 +1,6 @@
 {
   "cwd": "",
+  "workable": [],
   "rows": [
     {"id": "M040", "title": "Its file was never written", "status": "in-progress", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
     {"id": "M041", "title": "No Tasks section", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": null, "nextCriterion": "AC1: An open criterion, which the implement phase does not show."},

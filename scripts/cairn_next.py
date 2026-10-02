@@ -14,15 +14,27 @@ import sys
 import cairn_scripts as cs
 
 
+def done_ids(root, rows):
+    """Canonical ids of done milestones. A dependency is satisfied if it is a
+    done row OR a done milestone whose ROADMAP row was pruned under
+    terminal-row retention but whose archive file remains (matches
+    cairn_validate's dependency check)."""
+    return {cs.canon_id(r["id"]) for r in rows if r["status"] == "done"} | {
+        cs.canon_id(mid) for mid in cs.archive_files(root)
+    }
+
+
+def workable(root, rows):
+    """Planned rows whose dependencies are all done, by priority then id.
+    The status band's reader (hooks/status/reader.ts) mirrors this, held to
+    it by scripts/tests/test_status_fixtures.py (M199)."""
+    return _workable(rows, done_ids(root, rows))
+
+
 def render(root):
     rows = cs.rows(cs.read_roadmap(root))
     by_id = {cs.canon_id(r["id"]): r for r in rows}
-    # A dependency is satisfied if it is a done row OR a done milestone whose
-    # ROADMAP row was pruned under terminal-row retention but whose archive file
-    # remains (matches cairn_validate's dependency check).
-    done = {cs.canon_id(r["id"]) for r in rows if r["status"] == "done"} | {
-        cs.canon_id(mid) for mid in cs.archive_files(root)
-    }
+    done = done_ids(root, rows)
     lines = [f"cairn next — {root}", ""]
 
     in_progress = [r for r in rows if r["status"] == "in-progress"]

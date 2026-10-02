@@ -17,6 +17,27 @@ export const SKILLS: string[] = [
 ]
 
 export const FIXTURES: Record<string, Fixture> = {
+  "idle-deps": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M050 | Waits on a planned milestone | planned | M002 | high | milestones/M050-planned-dep.md |\n| M051 | Waits on an id with no row and no archive file | planned | M077 | high | milestones/M051-unknown-dep.md |\n| M052 | One dependency met, one not | planned | M001, M002 | high | milestones/M052-half.md |\n| M043 | No dependencies | planned | — | normal | milestones/M043-none.md |\n| M042 | A malformed dependency token | planned | m077 | normal | milestones/M042-malformed.md |\n| M041 | Met by a done row | planned | M001 | normal | milestones/M041-done-row.md |\n| M040 | Met by a done row and an archive file at another padding | planned | M001 M57 | normal | milestones/M040-archive.md |\n| M002 | Planned base | planned | — | low | milestones/M002-base.md |\n| M001 | Shipped | done | — | normal | milestones/archive/M001-shipped.md |\n",
+      "/cairn/milestones/archive/M0057-pruned.md": "# M057: Its ROADMAP row was pruned\n\n**Status:** done\n",
+      "/cairn/milestones/archive/notes.md": "A file whose name names no milestone.\n",
+      "/cairn/milestones/archive/sub/M077-nested.md": "# M077: Not directly under the archive directory, so it marks nothing done\n",
+    },
+    rows: [
+    ],
+    workable: ["M040", "M041", "M042", "M043", "M002"],
+  },
+  "idle-order": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M010 | Low priority, lowest id | planned | — | low | milestones/M010-low.md |\n| M1000 | Four-digit id | planned | — | normal | milestones/M1000-big.md |\n| Mfoo | Not a numeric id | planned | — | normal | milestones/Mfoo.md |\n| M999 | Three-digit id | planned | — | normal | milestones/M999-small.md |\n| M020 | Priority in mixed case | planned | — | High | milestones/M020-high.md |\n| M030 | Unknown priority | planned | — | someday | milestones/M030-unknown.md |\n| M005 | Done long ago | done | — | high | milestones/archive/M005-done.md |\n",
+    },
+    rows: [
+    ],
+    workable: ["M020", "M030", "M999", "M1000", "Mfoo", "M010"],
+  },
   "long-title": {
     cwd: "/",
     files: {
@@ -26,6 +47,7 @@ export const FIXTURES: Record<string, Fixture> = {
     rows: [
       {"id": "M060", "title": "A milestone title written long enough to run past the right edge of any band, so that the engine has to cut it before the bar and the counts", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Draw the band.", "nextCriterion": "AC1: The band cuts the title."},
     ],
+    workable: [],
   },
   "missing-file": {
     cwd: "/",
@@ -35,6 +57,7 @@ export const FIXTURES: Record<string, Fixture> = {
     rows: [
       {"id": "M004", "title": "Its file was never written", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
     ],
+    workable: [],
   },
   "mixed": {
     cwd: "/",
@@ -51,6 +74,7 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M013", "title": "Capitalized status, file gone", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
       {"id": "M014", "title": "No Tasks section at all", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
     ],
+    workable: [],
   },
   "nested-first": {
     cwd: "/",
@@ -61,6 +85,7 @@ export const FIXTURES: Record<string, Fixture> = {
     rows: [
       {"id": "M030", "title": "The next task is nested", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T1a: Nested task, open, with extra spaces after the box.", "nextCriterion": "AC1: The band names the nested task."},
     ],
+    workable: [],
   },
   "no-active": {
     cwd: "/",
@@ -70,6 +95,7 @@ export const FIXTURES: Record<string, Fixture> = {
     },
     rows: [
     ],
+    workable: ["M021"],
   },
   "no-roadmap": {
     cwd: "/",
@@ -78,6 +104,7 @@ export const FIXTURES: Record<string, Fixture> = {
     },
     rows: [
     ],
+    workable: [],
   },
   "repo-at-cut": {
     cwd: "/",
@@ -86,6 +113,7 @@ export const FIXTURES: Record<string, Fixture> = {
     },
     rows: [
     ],
+    workable: ["M191"],
   },
   "single-in-progress": {
     cwd: "/",
@@ -96,6 +124,7 @@ export const FIXTURES: Record<string, Fixture> = {
     rows: [
       {"id": "M002", "title": "Add the export command", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Write the command.", "nextCriterion": "AC1: The export command writes one file per table."},
     ],
+    workable: [],
   },
   "six-active": {
     cwd: "/",
@@ -116,6 +145,7 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M075", "title": "Fifth active row", "status": "in-progress", "tasksChecked": 2, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T3: Open.", "nextCriterion": "AC1: Open."},
       {"id": "M076", "title": "Sixth active row", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 2, "nextTask": null, "nextCriterion": "AC1: Open."},
     ],
+    workable: ["M073"],
   },
   "states-implement": {
     cwd: "/",
@@ -131,6 +161,7 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M042", "title": "A Tasks section with no boxes", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
       {"id": "M043", "title": "Every task checked", "status": "in-progress", "tasksChecked": 3, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": null, "nextCriterion": "AC1: Open."},
     ],
+    workable: [],
   },
   "states-review": {
     cwd: "/",
@@ -146,6 +177,7 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M052", "title": "A criteria section with no boxes", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
       {"id": "M053", "title": "Every criterion checked", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 2, "criteriaTotal": 2, "nextTask": "T1: Open.", "nextCriterion": null},
     ],
+    workable: [],
   },
   "subdirectory": {
     cwd: "/pkg/src",
@@ -157,6 +189,7 @@ export const FIXTURES: Record<string, Fixture> = {
     rows: [
       {"id": "M007", "title": "Started from a subdirectory", "status": "in-progress", "tasksChecked": 2, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
     ],
+    workable: [],
   },
   "unlabeled-item": {
     cwd: "/",
@@ -167,6 +200,7 @@ export const FIXTURES: Record<string, Fixture> = {
     rows: [
       {"id": "M062", "title": "The next task has no label", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "Write the docs, with no label.", "nextCriterion": "AC1: The item row stays dim."},
     ],
+    workable: [],
   },
   "wide-title": {
     cwd: "/",
@@ -177,6 +211,7 @@ export const FIXTURES: Record<string, Fixture> = {
     rows: [
       {"id": "M061", "title": "宽字符的标题 and an emoji 🚀 outside the BMP", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 2, "nextTask": null, "nextCriterion": "AC2: The emoji stays whole."},
     ],
+    workable: [],
   },
   "widest": {
     cwd: "/",
@@ -192,5 +227,6 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M1002", "title": "An open criterion at the widest counts", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 99, "criteriaTotal": 100, "nextTask": null, "nextCriterion": "AC10a: Open at the widest counts."},
       {"id": "M1003", "title": "Every criterion checked at the widest counts", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 100, "criteriaTotal": 100, "nextTask": "T1: Open.", "nextCriterion": null},
     ],
+    workable: [],
   },
 }

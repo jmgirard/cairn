@@ -35,6 +35,8 @@ export type Fixture = {
   cwd: string
   files: Record<string, string>
   rows: BandRow[]
+  // The ordered ids of the workable planned rows, as cairn_next.py lists them.
+  workable: string[]
 }
 
 export const ACTIVE: readonly string[] = ['in-progress', 'review']

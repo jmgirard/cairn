@@ -6,7 +6,8 @@ Each directory under hooks/status/fixtures/ is a small project tree with an
 This file holds the same `expected.json` to the Python helpers the
 validator uses: `cairn_scripts.rows` for the ROADMAP rows, and `_AC_ITEM`
 over `_section_body` of `Tasks` and of `Acceptance criteria` for the counts
-(M193 AC5). A section's first unchecked line is its first `_AC_ITEM` line
+(M193 AC5), and its ordered workable ids to `cairn_next.workable` (M199
+AC2). A section's first unchecked line is its first `_AC_ITEM` line
 with an open box, less the box prefix. It also fails when the generated
 module is stale.
 """
@@ -29,6 +30,7 @@ for _path in (SCRIPTS_DIR, STATUS_DIR):
     if str(_path) not in sys.path:
         sys.path.insert(0, str(_path))
 
+import cairn_next as cn  # noqa: E402
 import cairn_scripts as cs  # noqa: E402
 import cairn_validate as cv  # noqa: E402
 import gen_fixtures  # noqa: E402
@@ -85,6 +87,15 @@ def python_rows(start):
     return out
 
 
+def python_workable(start):
+    """The ordered workable ids for a session started in `start`, by
+    `cairn_next.workable` itself (M199 AC2)."""
+    root = cs.cc.find_cairn_root(str(start))
+    if root is None:
+        return []
+    return [row["id"] for row in cn.workable(root, cs.rows(cs.read_roadmap(root)))]
+
+
 class StatusFixtureAgreement(unittest.TestCase):
     def test_fixture_domain_is_not_empty(self):
         names = [p.name for p in gen_fixtures.cases()]
@@ -111,6 +122,18 @@ class StatusFixtureAgreement(unittest.TestCase):
                     shutil.copytree(case_dir, copy)
                     start = copy / expected["cwd"] if expected["cwd"] else copy
                     self.assertEqual(python_rows(start), expected["rows"])
+                    self.assertEqual(python_workable(start), expected["workable"])
+
+    def test_workable_fixtures_are_present_and_discriminating(self):
+        # The two idle fixtures exist, and each holds a planned row that a
+        # reader ignoring dependencies or priority would put first.
+        names = [p.name for p in gen_fixtures.cases()]
+        self.assertIn("idle-order", names)
+        self.assertIn("idle-deps", names)
+        deps = json.loads((FIXTURES / "idle-deps" / "expected.json").read_text(encoding="utf-8"))
+        self.assertNotIn("M050", deps["workable"])
+        order = json.loads((FIXTURES / "idle-order" / "expected.json").read_text(encoding="utf-8"))
+        self.assertEqual(order["workable"][0], "M020")
 
     def test_generated_module_is_current(self):
         module = STATUS_DIR / "fixtures.gen.ts"

@@ -1,5 +1,6 @@
 {
   "cwd": "",
+  "workable": [],
   "rows": [
     {"id": "M050", "title": "Its file was never written", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
     {"id": "M051", "title": "No criteria section", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": "T1: An open task, which the review phase does not show.", "nextCriterion": null},

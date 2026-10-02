@@ -1,5 +1,6 @@
 {
   "cwd": "",
+  "workable": ["M073"],
   "rows": [
     {"id": "M070", "title": "First active row", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Open.", "nextCriterion": "AC1: Open."},
     {"id": "M071", "title": "Second active row", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 2, "nextTask": null, "nextCriterion": "AC2: Open."},

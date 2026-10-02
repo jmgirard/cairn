@@ -1,5 +1,6 @@
 {
   "cwd": "",
+  "workable": [],
   "rows": [
     {"id": "M1000", "title": "An open task at the widest counts", "status": "in-progress", "tasksChecked": 99, "tasksTotal": 100, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T10a: Open at the widest counts.", "nextCriterion": "AC1: Open."},
     {"id": "M1001", "title": "Its file was never written", "status": "in-progress", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},

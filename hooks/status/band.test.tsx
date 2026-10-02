@@ -1782,7 +1782,7 @@ describe('one row whatever maxRows is (M197 AC5)', () => {
 
 // The fixtures that draw no row with no skill running, written out by
 // hand. Under a running skill each of them draws a skill row.
-const NO_ROW = ['no-active', 'no-roadmap', 'repo-at-cut']
+const NO_ROW = ['idle-deps', 'idle-order', 'no-active', 'no-roadmap', 'repo-at-cut']
 // Each phase's hue and each skill's label hue, written out by hand.
 const PHASE_HUE: Record<string, string> = { 'in-progress': ORANGE, review: GREEN }
 const skillHue = (skill: string) => (skill === 'milestone-review' ? GREEN : ORANGE)

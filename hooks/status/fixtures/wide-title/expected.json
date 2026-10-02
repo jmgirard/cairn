@@ -1,5 +1,6 @@
 {
   "cwd": "",
+  "workable": [],
   "rows": [
     {"id": "M061", "title": "宽字符的标题 and an emoji 🚀 outside the BMP", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 2, "nextTask": null, "nextCriterion": "AC2: The emoji stays whole."}
   ]
