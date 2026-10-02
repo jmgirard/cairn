@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-02 (M197 done: a one-row band that fits from 36 columns. M194's row pruned. The "Band layout edge cases" and "Band one row with a skill" rows removed as resolved. Validate green, scripts 394, hooks 174, plugin validate clean, mod tests 459/459, skills/tests 661 with the same 4 reds and 1 error, non-gating (D-109). No lessons. Byte and module budgets hand-read under cap.)_
+_Last hygiene check: 2026-10-02 (M198 in progress at T5, look build C, on its branch. Validate green. No open issues, external PRs, or outside merges. Byte and module budgets hand-read under cap.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
