@@ -65,6 +65,7 @@ Add a fifth toolchain profile, `claude-plugin`, so that cairn can track a repo t
 - 2026-10-01: delegated the claim audit to one fresh-context Opus reader, read-only. It reported 22 claims, 1 wrong (CHANGELOG said a plugin repo used to infer `generic`, but with a `Dockerfile` it inferred `docker-image`) and 1 holding with a limit (validate's markdown check is shallow). Both were reworded and the same reader re-read them: 2 hold. DESIGN.md's "Four profiles ship" line, outside AC4's grep, was updated to five.
 - 2026-10-01: claim audit: 22 claims read, 2 corrected — CHANGELOG.md, skills/shared/profiles/claude-plugin.md
 - 2026-10-01: implement complete. scripts 394 OK, hooks 174 OK, plugin validate passed with warnings, plugin test 47/47, cairn_validate all checks passed. `skills/tests` (hand-run, non-gating) 661 with main's 4 reds and 1 error. Status → review.
+- 2026-10-01: step-7 approval: m192-claude-plugin-profile approved for merge
 
 ## Decisions
 
