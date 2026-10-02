@@ -1,13 +1,15 @@
 import { atom, read, update } from 'claude-code'
 import type { Register } from 'claude-code'
 
-import { bandLine } from './band'
+import type { Span } from './band'
+import { bandLines } from './band'
 import type { BandRow, FileSource } from './reader'
 import { loadBand } from './reader'
 
-// The milestone band above the prompt (M191): one line per `in-progress` or
-// `review` ROADMAP row, refreshed when the session starts and at the end of
-// each turn.
+// The milestone band above the prompt (M191, M193): a header row and an
+// item row per `in-progress` or `review` ROADMAP row, refreshed when the
+// session starts and at the end of each turn. The rows sit above whatever
+// the hooks beneath draw in the same slot.
 
 const band = atom({ plugin: 'cairn', key: 'band' } as const, [] as BandRow[])
 
@@ -29,17 +31,38 @@ export const register: Register = on => {
     if (e.props.hasSurvey) return next(e)
     const rows = await read($, band)
     if (rows.length === 0) return next(e)
+    const beneath = await next(e)
     const { Box, Text } = $.ui.resolve(e)
+    const lines = rows.flatMap(row => bandLines(row, e.props.bodyColumns))
     return (
-      <Box key="cairn-band" flexDirection="column">
-        {rows.map(row => (
-          <Text key={row.id} dimColor wrap="truncate-end">
-            {bandLine(row)}
-          </Text>
-        ))}
+      <Box key="cairn-stack" flexDirection="column">
+        <Box key="cairn-band" flexDirection="column">
+          {/* A Text drops its `key`, so each row's key sits on a Box. */}
+          {lines.map(line => (
+            <Box key={line.key}>
+              <Text wrap="truncate-end" {...(line.dimColor ? { dimColor: true } : {})}>
+                {line.spans.map(span => (
+                  <Text wrap="truncate-end" {...style(span)}>
+                    {span.text}
+                  </Text>
+                ))}
+              </Text>
+            </Box>
+          ))}
+        </Box>
+        {beneath ?? null}
       </Box>
     )
   })
+}
+
+// A span's style props, leaving out the ones it does not set.
+function style(span: Span) {
+  const props: { color?: string; bold?: boolean; dimColor?: boolean } = {}
+  if (span.color !== undefined) props.color = span.color
+  if (span.bold) props.bold = true
+  if (span.dimColor) props.dimColor = true
+  return props
 }
 
 async function refresh($) {
