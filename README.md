@@ -99,10 +99,12 @@ section is missing or holds no checkboxes. `all 3 tasks checked` or
 `all 2 criteria checked` means that every box in the section is checked.
 
 The phase label is drawn in your theme's Claude orange for `implement` and
-its success green for `review`. The bar's filled cells take the same color,
-and `no milestone file` takes the theme's warning color. In a narrow
-window the right part takes a shorter form, so that the text keeps 10
-columns. A text shorter than 10 columns keeps its full width. The band
+its success green for `review`. The bar's filled cells take the phase's
+color, also when a skill's label of another color stands in for the phase
+label. `no milestone file` takes the theme's warning color. In a narrow
+window the right part takes the first shorter form that leaves the text 10
+columns. A text shorter than 10 columns needs only its full width. If no
+form leaves that room, the right part takes its shortest form. The band
 counts one column per character, so a short text of wide characters,
 such as CJK characters or emoji, can get less room than it draws. The bar and counts give way
 to the counts with their noun (`2/3 criteria`), and then to the bare counts
@@ -151,7 +153,7 @@ plan /milestone-plan → Question gate
 
 Chapters come from the desktop app's chapter tool,
 `mcp__ccd_session__mark_chapter`. In a session without that tool, such as
-one in the terminal, milestone rows show their next open box, and a skill
+one in the terminal, a milestone row shows its next open box, and a skill
 row shows its label and slash command only. The skill and its chapter
 stay until a cairn skill starts again, the same one included, or the
 session ends, a `/clear` included. A subagent that loads a cairn skill

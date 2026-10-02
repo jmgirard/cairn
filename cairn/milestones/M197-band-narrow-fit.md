@@ -86,6 +86,8 @@ Keep each band row inside the window from 36 columns up, with a steady label gap
 - 2026-10-01: review return 1 (defect, step 3): AC3 fails as written. The skill-row test at `band.test.tsx:1695` asserts the label and space but not the bar on the `widest` skill rows `M1000` and `M1002`. AC4 waits for the operator to name the zoom and say the `✕` is no smaller. Status set to `in-progress`.
 - 2026-10-01: minor amendment: T9 added for the AC3 return, and AC3's Coverage line now names T9.
 - 2026-10-01: T9 done. The AC3 skill-row test now asserts the bar on the 10 `widest` skill-carried rows and no bar on the `no-active` skill rows. A planted `░` empty run failed exactly those 10 tests, each on the bar text. The new test comment is read against this run, and the claim audit above is not re-run. Verify clean: scripts 394, hooks 174, validate 0, mod tests 459/459. Status set to `review`.
+- 2026-10-02: README fixes from review findings F2 to F4: the text's 10-column room and the shortest-form fallback, the bar's phase color under a skill label, and "a milestone row".
+- step-7 approval: m197-band-narrow-fit approved for merge
 
 ## Decisions
 
@@ -127,3 +129,4 @@ Round 2, 2026-10-02, at bde2625. `origin/main` has not moved.
 - F12 (diff): for a row with no bar, the AC3 test at 120 columns returns early. Reject: the `DRAWN` text tests pin each bar.
 - F13 (diff): the AC3 skill-row test does not assert the filled cells' color. Reject: AC3 asks for the glyph and the dim cells only.
 - F14 (diff): the `maxRows` test's title claims more than its body asserts. Reject: the body asserts what AC5 asks.
+- Gate: the operator took every recommended disposition. F2 to F4 are fixed in README before the push. F7 is left for the hygiene pass.
