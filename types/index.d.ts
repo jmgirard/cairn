@@ -16,6 +16,13 @@ export type CairnBandRow = {
   nextCriterion: string | null
 }
 
+// A planned milestone whose dependencies are all done.
+export type CairnWorkableRow = { id: string; title: string }
+
+// The active milestones in ROADMAP order, and the workable planned
+// milestones by priority and then id.
+export type CairnBandState = { rows: CairnBandRow[]; workable: CairnWorkableRow[] }
+
 // One active milestone's id and status, as the close button stores them.
 export type CairnBandMark = { id: string; status: string }
 
@@ -34,7 +41,7 @@ declare module 'claude-code' {
     // null while the band shows, and `step` is null while no cairn skill
     // runs.
     cairn: {
-      band: Shaped<CairnBandRow[]>
+      band: Shaped<CairnBandState>
       dismissed: Shaped<CairnBandHidden | null>
       step: Shaped<CairnStep | null>
     }

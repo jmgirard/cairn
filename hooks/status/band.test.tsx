@@ -3,10 +3,12 @@ import type { On } from 'claude-code'
 
 import { bandLines, knownStep, lineText, SKILL_LABELS } from './band'
 import { FIXTURES, SKILLS } from './fixtures.gen'
+import { listNames } from './reader'
 
-// Each case answers the shipped mod's `$.session.cwd`, `$.fs.stat` and
-// `$.fs.read` calls from an in-memory copy of a fixture, keyed by absolute
-// path. A plain answer goes back as `{ value }`; a path the copy lacks goes
+// Each case answers the shipped mod's `$.session.cwd`, `$.fs.stat`,
+// `$.fs.read` and `$.fs.list` calls from an in-memory copy of a fixture,
+// keyed by absolute path. A plain answer goes back as `{ value }`; a path
+// the copy lacks goes
 // on to the bottom of the chain, which rejects, as a missing file does in a
 // session. The copy is mutable: an edit case edits a file between two turn
 // ends, and the second turn end reads the edit.
@@ -52,6 +54,11 @@ function seat(on: On, copy: Copy, chapter: ChapterAnswer = 'mark') {
     has(e.path) ? { value: { kind: 'file', size: copy.files[e.path].length, mtimeMs: 0, isLink: false } } : next(e),
   )
   on('fs.read', async ($, e, next) => (has(e.path) ? { value: copy.files[e.path] } : next(e)))
+  on('fs.list', async ($, e, next) => {
+    const names = listNames(Object.keys(copy.files), e.path)
+    if (names === null) return next(e)
+    return { value: names.map(name => ({ name, kind: 'other', size: 0, mtimeMs: 0, isLink: false })) }
+  })
   on('turn.complete', async () => ({ text: '' }))
   on('skill.prompt', async ($, e) => ({ text: e.text }))
   on('tool.call', { tool: CHAPTER_TOOL }, async () =>

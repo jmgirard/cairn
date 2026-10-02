@@ -4,7 +4,7 @@ import type { Register } from 'claude-code'
 import type { CairnBandHidden, CairnBandMark, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
 import { ARROW, cairnSkill, GAP, GRAY, knownStep, stepLines, width } from './band'
-import type { BandRow, FileSource } from './reader'
+import type { BandRow, BandState, FileSource } from './reader'
 import { loadBand } from './reader'
 
 // The milestone band above the prompt (M191, M193 to M197): one row for one
@@ -19,7 +19,9 @@ import { loadBand } from './reader'
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
-const band = atom({ plugin: 'cairn', key: 'band' } as const, [] as BandRow[], { shape: 'band-2' })
+const band = atom({ plugin: 'cairn', key: 'band' } as const, { rows: [], workable: [] } as BandState, {
+  shape: 'band-3',
+})
 
 // The active ids and statuses, in ROADMAP order, and the running skill, at
 // the last press of the close button; null while the band shows.
@@ -94,7 +96,7 @@ export const register: Register = on => {
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     if (e.props.hasSurvey) return next(e)
-    const rows = await read($, band)
+    const { rows } = await read($, band)
     const current = knownStep(await read($, step))
     if (rows.length === 0 && current === null) return next(e)
     const hidden = await read($, dismissed)
@@ -191,7 +193,7 @@ function same(a: CairnBandHidden, b: CairnBandHidden): boolean {
 // The press reads the rows and the step as they are now, not as they were
 // drawn.
 async function dismiss($) {
-  const rows = await read($, band)
+  const { rows } = await read($, band)
   const current = await read($, step)
   await update($, dismissed, () => mark(rows, current))
 }
@@ -201,7 +203,7 @@ async function dismiss($) {
 async function reconcile($) {
   const hidden = await read($, dismissed)
   if (hidden === null) return
-  const now = mark(await read($, band), await read($, step))
+  const now = mark((await read($, band)).rows, await read($, step))
   if (!same(hidden, now)) await update($, dismissed, () => null)
 }
 
@@ -214,14 +216,14 @@ function style(span: Span) {
 }
 
 async function refresh($) {
-  let rows: BandRow[] = []
+  let state: BandState = { rows: [], workable: [] }
   try {
-    rows = await loadBand(fsSource($))
+    state = await loadBand(fsSource($))
   } catch {
     // No readable working directory or ROADMAP: the band is cleared.
-    rows = []
+    state = { rows: [], workable: [] }
   }
-  await update($, band, () => rows)
+  await update($, band, () => state)
   await reconcile($)
 }
 
@@ -230,6 +232,15 @@ function fsSource($): FileSource {
     cwd: () => $.session.cwd(),
     isFile: path => isFile($, path),
     read: path => readText($, path),
+    list: path => listNames($, path),
+  }
+}
+
+async function listNames($, path: string): Promise<string[] | null> {
+  try {
+    return (await $.fs.list(path)).map(entry => entry.name)
+  } catch {
+    return null
   }
 }
 
