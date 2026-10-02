@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M198: A muted band that matches the app's own bar
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -55,6 +55,9 @@ The row layout, the forms, and the fit stay as M197 left them.
 - [x] T5: Do a live look in a new desktop Code session, because a running session keeps the mod it loaded at its start. If the dim hues do not read as muted, amend through the gate to two fixed mid-tone colors.
 - [x] T6: Rerun the AC3 sweep against the look D colors and fix each hit, the labels' fixed colors included.
 - [x] T7: Run the verify slot.
+- [ ] T8: Review return (R1, R2). Make the band color claims in README.md and CHANGELOG.md true in every theme. Drop "near the background" for the empty cells. The ANSI themes give `subtle` the value of `inactive`. The desktop dark theme drew the empty cells mid gray at the review look. Say that the colorblind themes draw `success` in blue. Then rerun the AC3 sweep and read each hit.
+- [ ] T9: Review return (R5, R6). Reflow the edited CHANGELOG and DESIGN band paragraphs to even wraps. Name `no file` beside `no milestone file` as a warning text in README and CHANGELOG.
+- [ ] T10: Review return (R7). Remove the unused `dimColor` field from `Span` in `band.ts` and its branch in `style()` in `register.tsx`. Run the verify slot.
 
 ## Work log
 
@@ -83,6 +86,8 @@ The row layout, the forms, and the fit stay as M197 left them.
 - 2026-10-02: T7 done. Verify clean: scripts 394, hooks 174, plugin validate exit 0, mod tests 506/506.
 - claim audit: 51 claims read, 5 corrected — hooks/status/band.ts, hooks/status/band.test.tsx, README.md
 - 2026-10-02: the same reader re-read the 5 corrections, and one DESIGN.md line fixed in the same spirit. All hold. Mod tests 506/506. Status set to review.
+- 2026-10-02: review return 1 (defect track): AC3 failed. Two band claims in README and CHANGELOG are false in the ANSI and colorblind themes (R1, R2). Operator chose send-back at the gate, with R5, R6, and R7 fixed in the same return as T8-T10. R3 and R4 went to a candidate row. Status set to in-progress.
+- 2026-10-02: AC4 not yet confirmed. The operator's desktop screenshot of look D showed the label muted orange and the green filled cells apart from visible empty cells. The empty cells drew mid gray, not near the background, and the row text read lighter than the app's own bar text. AC4 is put to the operator again at the re-review.
 
 ## Decisions
 
@@ -111,3 +116,5 @@ Findings, from three fresh reviewers (Opus diff, Sonnet history, Sonnet prior re
 - R10 (Opus): the M197 skill-row bar test checks only the empty run's color. The AC2 walk covers the rest. Proposed: reject.
 - R11 (all three): the Goal still says "dim", and the title says the band matches the app's bar. The work log records the operator's choice to keep the Goal. Proposed: reject, already logged.
 - R12 (history): the M196 and M197 archive summaries still say "dim". Archives are history and are not edited. Proposed: reject.
+
+Gate dispositions, 2026-10-02: R1 and R2 fix now, as a return to in-progress (T8). R5 and R6 fix now (T9). R7 fix now (T10). R3 and R4 follow-up, as the candidate row "Band label colors in other themes". R8-R12 rejected for the reasons given above. AC4 is open, and the operator was not sure of the look.
