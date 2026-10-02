@@ -1,0 +1,11 @@
+# M192: A claude-plugin toolchain profile for repos that build plugins and mods
+
+**Status:** done (2026-10-01, PR #200 https://github.com/jmgirard/cairn/pull/200)
+
+**Goal:** Add a fifth toolchain profile, `claude-plugin`, so that cairn can track a repo that builds a Claude Code plugin or mod.
+
+**Outcome:** `skills/shared/profiles/claude-plugin.md` (115 lines) defines the seven slots. verify runs `claude plugin validate` on each plugin's `.claude-plugin/plugin.json` and on `.claude-plugin/marketplace.json`, and `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test <plugin-dir>` where `*.test.ts(x)` files exist. `<plugin-dir>` is the folder whose `hooks/hooks.json` names the mod. verify also names the native and desktop locations of `claude` and says not to use `--strict`. consistency-gate reads the marketplace version-mismatch warning. release-walk bumps `version` in each manifest and marketplace entry. There are two greenfield openers, listing and mod. Tracking-rules and `/cairn-init` (selection, greenfield list, repair) place the plugin markers after the Python markers and before a sole `Dockerfile`. The disambiguation gate covers any two of language, plugin, and image, and the project-type chip keeps four options, with "Claude Code plugin or Docker image" followed by a second question. README, both plugin descriptions, DESIGN, the docker-image detection slot, CHANGELOG, `scripts/tests` and the hand-run `skills/tests` name the new profile.
+
+**Decisions:** Question gate: the main-deliverable question also fires for plugin+language repos, with the language profile recommended. Repair with no user keeps the first marker in the order.
+
+**Review:** Three lenses, 15 findings. Fixed at the gate: the five-option chip (the tool takes four), `claude plugin test` named the module folder, the test sweep catches other runners' `*.test.ts`, the CHANGELOG inference note moved to existing-repo changes, DESIGN.md:48's four-profile list, the validate-checks-markdown wording, the guest-mode `--strict` claim, the distribution-opener rendering list, and a README wrap. R10 went to the candidate row "claude-plugin profile edge cases". Five were rejected with reasons. The implement-time claim audit corrected 2 of 22 claims. The M157 lesson was extended with the DESIGN.md profile-list sweep.

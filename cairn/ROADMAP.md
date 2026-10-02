@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-01 (M193 done: the band draws a styled header row and the next open task or criterion, above the band beneath. M189's row pruned (archive + git). Validate green, scripts 394 and hooks 174 green, plugin validate clean, mod tests 47/47, skills/tests 661 with the same 4 reds and 1 error, non-gating (D-109). One lesson added, M105's pruned for the cap. One candidate row added, the follow-ons row narrowed. ROADMAP and LESSONS bytes and the three doctrine-module budgets hand-read under cap.)_
+_Last hygiene check: 2026-10-01 (M192 done: a fifth toolchain profile, `claude-plugin`, selected by a `.claude-plugin/` manifest. M190's row pruned (archive + git). Validate green, scripts 394 and hooks 174 green, plugin validate clean, mod tests 47/47, skills/tests 661 with the same 4 reds and 1 error, non-gating (D-109). The M157 lesson was extended rather than a line added. One candidate row was added at review. ROADMAP and LESSONS bytes and the three doctrine-module budgets hand-read under cap.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -13,9 +13,8 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M193 | A styled milestone band that follows the phase | done | — | normal | milestones/archive/M193-styled-band.md |
-| M192 | A claude-plugin toolchain profile for repos that build plugins and mods | review | M191 | normal | milestones/M192-claude-plugin-profile.md |
+| M192 | A claude-plugin toolchain profile for repos that build plugins and mods | done | M191 | normal | milestones/archive/M192-claude-plugin-profile.md |
 | M191 | Milestone status band, a Claude Code mod inside the cairn plugin | done | — | normal | milestones/archive/M191-status-band-mod.md |
-| M190 | Retire the subagent model-tier title tags | done | — | normal | milestones/archive/M190-retire-subagent-title-tags.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
