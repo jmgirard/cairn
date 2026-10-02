@@ -20,8 +20,26 @@
   active milestone, it draws nothing. It needs Claude Code 2.1.287 or
   later, where mods are on by default, or an earlier version with hooks
   modules turned on. See "The milestone band" in the README.
+- **A `claude-plugin` toolchain profile.** A repo that builds a Claude Code
+  plugin, a marketplace, or a mod can now declare it. Its verify step runs
+  `claude plugin validate` on each plugin's `.claude-plugin/plugin.json` and
+  on the marketplace file. Where the repo has `*.test.ts` or `*.test.tsx`
+  files, it also runs `claude plugin test`. It says where to find the
+  `claude` binary when a desktop app shell has none on its PATH. The release
+  walk bumps `version` in each plugin manifest and each marketplace entry
+  that carries one. `/cairn-init` selects it when `.claude-plugin/plugin.json`
+  or `.claude-plugin/marketplace.json` is at the repo root, after the R and
+  Python markers and before a `Dockerfile`. A repo with markers for two
+  kinds of deliverable gets a question about which one is primary, and the
+  project-type question for an empty repo lists the new profile.
 
 ### Changes that affect existing repos
+
+- **A plugin repo with no `cairn/PROFILE.md` now infers `claude-plugin`.**
+  This applies when the repo has no R or Python marker. Before, it inferred
+  `generic`, or `docker-image` when a `Dockerfile` was present, so its verify
+  step now runs the `claude plugin` checks. `/cairn-init` repair writes the
+  same profile when it backfills the file.
 
 - **Subagent titles no longer open with a model tag, and the session sets
   the model on every spawn.** The rulebook drops the rule that every Agent

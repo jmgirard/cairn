@@ -107,23 +107,31 @@ Chapter markers: mark a chapter at each phase transition — each phase its
   passage; §3 repair reads the line from the existing file, never re-asks.
 - **Toolchain profile.** Select the repo's profile in this order:
   `DESCRIPTION` present → **r-package**; else `pyproject.toml` (primary) /
-  `setup.py` / `setup.cfg` present → **python**; else a `Dockerfile` as the
-  **only** toolchain marker → **docker-image**; otherwise → **generic**.
+  `setup.py` / `setup.cfg` present → **python**; else a plugin marker
+  (`.claude-plugin/plugin.json` or `.claude-plugin/marketplace.json`) →
+  **claude-plugin**; else a `Dockerfile` as the **only** toolchain marker →
+  **docker-image**; otherwise → **generic**.
   `DESCRIPTION` outranks a `pyproject.toml` in a hybrid repo. A repo carrying
-  **both** a `Dockerfile` and a language marker (`DESCRIPTION` /
-  `pyproject.toml` / `setup.py` / `setup.cfg`) is a hybrid image+package repo.
+  markers from two or more of these deliverables is a hybrid: a language
+  package (`DESCRIPTION` / `pyproject.toml` / `setup.py` / `setup.cfg`), a
+  Claude Code plugin (a plugin marker), a container image (a `Dockerfile`).
   Run a **disambiguation gate** (AskUserQuestion)
-  asking which is the primary deliverable — the language package or the
-  container image — and select the chosen profile rather than guessing (the
-  language markers keep their order above on the language side). cairn-init instantiates the chosen reference
+  asking which is the primary deliverable, offering one profile per
+  deliverable present, the profile the order above picks recommended first,
+  and select the chosen profile rather than guessing (the language markers
+  keep their order above on the language side). A plugin marker beside a
+  `Dockerfile` thus recommends **claude-plugin** and offers **docker-image**. cairn-init instantiates the chosen reference
   (`${CLAUDE_PLUGIN_ROOT}/skills/shared/profiles/<name>.md`) into
   `cairn/PROFILE.md` at §1; the operational skills read its slots for
   language-specific commands (tracking-rules "Toolchain profiles"). Confirm the
   recommended profile with the user before writing.
 - **Greenfield?** A new/empty repo — no source to read and no toolchain marker
-  (`DESCRIPTION` / `pyproject.toml` / `setup.py` / `setup.cfg` / `Dockerfile`) —
-  has no profile to infer. When this fires, present a **project-type chip**
-  (AskUserQuestion: R package / Python package / Docker image / generic;
+  (`DESCRIPTION` / `pyproject.toml` / `setup.py` / `setup.cfg` /
+  `.claude-plugin/plugin.json` / `.claude-plugin/marketplace.json` /
+  `Dockerfile`) — has no profile to infer. When this fires, present a
+  **project-type chip** (AskUserQuestion: R package / Python package / Claude
+  Code plugin or Docker image / generic — four options, the tool's limit, the
+  third followed by a second question picking claude-plugin or docker-image;
   recommend per any weak signal, else generic) to select the profile
   *explicitly* rather than silently defaulting to
   generic, then run the greenfield opener flow (§1). A repo that has a marker or
@@ -156,7 +164,7 @@ cairn/
 ├── ROADMAP.md         # empty index (below)
 ├── DECISIONS.md       # header from templates/decisions.md (entry shape: decision.md)
 ├── LESSONS.md         # header from templates/lessons.md; repo lessons, capped 50 lines / 20,000 bytes (D-015; byte budget D-119)
-├── PROFILE.md         # toolchain profile (r-package | python | docker-image | generic), instantiated
+├── PROFILE.md         # toolchain profile (r-package | python | claude-plugin | docker-image | generic), instantiated
 │                      # from skills/shared/profiles/<name>.md; capped 120 lines
 ├── milestones/archive/
 ├── reviews/archive/
@@ -197,7 +205,7 @@ Then:
   plugin's merge-guard hooks manage both; never committed).
 - Instantiate `cairn/PROFILE.md` from the selected reference profile
   (`${CLAUDE_PLUGIN_ROOT}/skills/shared/profiles/<name>.md` — `r-package.md`,
-  `python.md`, `docker-image.md`, or `generic.md` per the selection order above) — copy it
+  `python.md`, `claude-plugin.md`, `docker-image.md`, or `generic.md` per the selection order above) — copy it
   verbatim; the repo edits its slots (notably `verify`) afterward as needed.
 - **Greenfield openers (new/empty repos only).** When §0 flagged the repo
   greenfield, after instantiating `PROFILE.md` ask the opener set in batched
@@ -205,7 +213,9 @@ Then:
   consequence and a recommended **reversible default**:
   - **Universal layer** (every profile): distribution ambition — rendered per
     the selected profile (r-package → CRAN vs GitHub-only; python → PyPI vs
-    private; generic → tagged public release vs internal-only), landing in
+    private; generic → tagged public release vs internal-only; docker-image
+    and claude-plugin ask it as their own registry and listing openers, so it
+    is not asked twice there), landing in
     DESIGN Purpose & Scope; and **numeric-work-needs-oracle-verification**
     (universal — D-024/D-025), landing in DESIGN Conventions (a line committing
     numeric results to the oracle doctrine's ≥2-types bar).
@@ -319,11 +329,13 @@ never rewrites content the repo authored.
   (repair writes nothing outside `cairn/` and `.git/info/exclude`). A **missing `cairn/PROFILE.md`**
   (a repo that adopted cairn before profiles) is backfilled by inference —
   `DESCRIPTION` present → r-package, else `pyproject.toml`/`setup.py`/
-  `setup.cfg` → python, else a `Dockerfile` (sole marker) → docker-image, else
-  generic — restoring the explicit declaration without changing behavior (the
-  inference is exactly what the skills fall back to when the file is absent;
-  with no user present, a hybrid `Dockerfile`+language-marker repo keeps the
-  language marker — the disambiguation gate is a cairn-init-time step only).
+  `setup.cfg` → python, else `.claude-plugin/plugin.json` or
+  `.claude-plugin/marketplace.json` → claude-plugin, else a `Dockerfile` (sole
+  marker) → docker-image, else generic — restoring the explicit declaration
+  without changing behavior (the inference is exactly what the skills fall
+  back to when the file is absent; with no user present, a hybrid repo keeps
+  the marker that comes first in that order — the disambiguation gate is a
+  cairn-init-time step only).
 
 - **Scaffold deprecations.** cairn is post-1.0, so a scaffold name cairn
   renames follows the deprecation cycle rather than breaking adopters

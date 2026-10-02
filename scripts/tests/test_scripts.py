@@ -2076,7 +2076,7 @@ class TestValidateProfile(ScriptCase):
         cv = _load_validate()
         cap = _load_scripts().LINE_CAPS["cairn/PROFILE.md"]
         plugin_root = pathlib.Path(__file__).resolve().parents[2]
-        for name in ("r-package", "python", "generic", "docker-image"):
+        for name in ("r-package", "python", "generic", "docker-image", "claude-plugin"):
             text = (plugin_root / "skills" / "shared" / "profiles" / f"{name}.md").read_text()
             slots = cv._profile_slots(text)
             for slot in cv._REQUIRED_SLOTS:

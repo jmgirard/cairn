@@ -83,11 +83,12 @@ Followed by `/cairn-release` — a container-registry release (never self-pushes
 
 ## init-detection
 Recognized by `cairn-init` when a **`Dockerfile`** is present at the repo root
-and it is the **only** toolchain marker — no `DESCRIPTION` and no
-`pyproject.toml`/`setup.py`/`setup.cfg`. A repo carrying both a `Dockerfile` and
-a language marker is a hybrid: cairn-init runs the disambiguation gate (asks
-which is the primary deliverable) rather than guessing, and the `PROFILE.md`-
-absent inference keeps the language marker (tracking-rules "Toolchain
+and it is the **only** toolchain marker — no `DESCRIPTION`, no
+`pyproject.toml`/`setup.py`/`setup.cfg`, and no `.claude-plugin/plugin.json`/
+`.claude-plugin/marketplace.json`. A repo carrying both a `Dockerfile` and a
+language or plugin marker is a hybrid: cairn-init runs the disambiguation gate
+(asks which is the primary deliverable) rather than guessing, and the
+`PROFILE.md`-absent inference keeps the other marker (tracking-rules "Toolchain
 profiles"). `cairn/` is not part of the build context, so add a `.dockerignore`
 `cairn/` entry to keep the tracking dir out of the image.
 

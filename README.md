@@ -11,9 +11,10 @@ under `cairn/`, kept in bounds by weight caps and a self-auditing health
 check. Rigor scales to stakes: each milestone is classified user-facing or
 internal when it's planned, and the criteria audit and the review fan-out
 size themselves to that. The core is language-agnostic; each repo declares a
-toolchain profile (R, Python, Docker image, or generic) that supplies its
-language-specific commands. Work lands as small stacked milestones, and any
-session, today's or next month's, can find the path from the files alone.
+toolchain profile (R, Python, Claude Code plugin, Docker image, or generic)
+that supplies its language-specific commands. Work lands as small stacked
+milestones, and any session, today's or next month's, can find the path from
+the files alone.
 
 cairn grew out of maintaining many R packages with Claude Code and rebuilding
 similar-but-diverging tracking systems in each. This plugin centralizes the
