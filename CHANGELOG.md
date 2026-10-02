@@ -18,10 +18,20 @@
   title is cut at its end, so the counts stay at the right edge. The item
   row's `T2:` or `AC3:` label is bold. A close button on the first row hides
   the band until the active milestones' ids, statuses, or ROADMAP order
-  change. The colors come from your Claude Code theme. Below 60 columns, the bar is left out. Another plugin's band in the same
+  change, or until another cairn skill starts. The band also names the
+  running cairn skill: `plan`, `implement`, `review`, `hotfix`, `triage`,
+  `release`, `status`, `brief`, `design`, or `init`. Implement and review
+  run on the first milestone row of their status. Any other skill, or one
+  of those two with no such row, gets a skill row with its label and slash
+  command. In the desktop app, each chapter the session marks, such as
+  `Post-merge hygiene`, takes the item row under the row that carries the
+  skill, and the band reads the files again. The terminal has no chapter
+  tool, so there a skill row has no item row. The skill stays until a cairn
+  skill starts again or the session ends. The colors come from your Claude
+  Code theme. Below 60 columns, the bar is left out. Another plugin's band in the same
   place shows under cairn's rows. At session start and at the end of each
   turn, the band reads the files again. Outside a cairn repo, or with no
-  active milestone, it draws nothing. It needs Claude Code 2.1.287 or
+  active milestone and no cairn skill running, it draws nothing. It needs Claude Code 2.1.287 or
   later, where mods are on by default, or an earlier version with hooks
   modules turned on. See "The milestone band" in the README.
 - **A `claude-plugin` toolchain profile.** A repo that builds a Claude Code

@@ -58,7 +58,7 @@ Make the milestone band name the cairn skill that is running and its current ste
 - [x] T4: Skill list. Have `gen_fixtures.py` write the skill names from `skills/*/SKILL.md` into `fixtures.gen.ts`, less `shared` and `tests`. Have a mod test fail when the label map and that list differ. The existing stale-module check in `test_status_fixtures.py` then covers the list.
 - [x] T5: Draw in `register.tsx`. Draw the skill row and the chapter item row, and keep the close button on the first header row.
 - [x] T6: Tests. Add the AC1–AC5 cases on both surfaces, red first, and restate any M194 case whose tree changed.
-- [ ] T7: Docs. Update README "The milestone band", the DESIGN.md `hooks/status/` line, and the CHANGELOG `Unreleased` entry.
+- [x] T7: Docs. Update README "The milestone band", the DESIGN.md `hooks/status/` line, and the CHANGELOG `Unreleased` entry.
 - [ ] T8: Look at the band live in the desktop app during a real plan, implement, and review, including a review chapter after all criteria are checked. Record what it showed in the work log.
 
 ## Work log
@@ -76,6 +76,7 @@ Make the milestone band name the cairn skill that is running and its current ste
 - re-audit: AC3 (full) — the two-step wording was satisfiable. Fixed: the edits name the ROADMAP status, because M013 has no file. Noted: no chapter case on an `in-progress` row, so the tests add one for M012 without a criterion change.
 - 2026-10-01: T2–T6 done in `972c6a5`. A `step` atom (`step-1`) and a `dismissed` atom (`dismissed-2`, now marks plus skill), the `skill.prompt`, chapter `tool.call`, and `session.end` hooks, `SKILL_LABELS`, `cairnSkill`, `skillLines`, and `stepLines` in `band.ts`, and `SKILLS` in `fixtures.gen.ts`. 48 new mod cases, 130 in all, green on the first run.
 - 2026-10-01: discrimination. Ten planted defects each turned at least one new case red (any prefix accepted, deny or error not checked, no session-end reset, skill left out of or chapter put in the close mark, no refresh at a chapter, a re-run that keeps the chapter, the carrier rule removed, the skill name as label). The restored tree was green again. A probe `skills/zz-probe/SKILL.md` made `gen_fixtures.py --check` exit 1. Verify slot green: scripts 394, hooks 174, plugin validate (the same one CLAUDE.md warning as main), mod tests 130.
+- 2026-10-01: T7 done. README "The milestone band" gained the skill row, chapter, and terminal paragraphs, and its close-button and refresh paragraphs name the skill. The DESIGN.md `hooks/status/` line and the CHANGELOG entry say the same. A sweep for "draws nothing" found one stale CHANGELOG clause, now "no active milestone and no cairn skill running". Verify slot green: scripts 394, hooks 174, validate exit 0, mod tests 130.
 
 ## Decisions
 

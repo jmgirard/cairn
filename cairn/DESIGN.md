@@ -62,7 +62,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -73,10 +73,20 @@ transitions, human-gated merges, and a domain verification doctrine.
   beneath draw, and the band blocks nothing. A header row has a left group
   (phase, id, title) and a right group (bar and counts, or a state label).
   The engine cuts the title. The first header row ends in a `role:
-  'dismiss'` close button. A press stores the active ids and statuses in the
-  `dismissed` state value. The band then passes to `next(e)` until a refresh
-  finds that list changed. `band.ts` builds the rows and `register.tsx`
-  draws them. `reader.ts` mirrors the Python ROADMAP and section helpers,
+  'dismiss'` close button. A press stores the active ids and statuses and
+  the running skill in the `dismissed` state value. The band then passes to
+  `next(e)` until that list or the skill changes. A `skill.prompt` hook
+  stores a cairn skill, by its bare or `cairn:` name, in the `step` state
+  value. A `tool.call` hook on the desktop app's chapter tool stores the
+  title of each main-loop chapter that went through, and reads the files
+  again. Every `session.end` clears `step`. `SKILL_LABELS` in `band.ts`
+  gives each skill's label, held to the `skills/*/SKILL.md` list that
+  `gen_fixtures.py` writes. The first row of the skill's status carries the
+  skill (`in-progress` for implement, `review` for review), and otherwise a
+  skill row comes first. The carrying row's item row shows the chapter.
+  The skill event carries no agent id, so a subagent that loads a cairn
+  skill sets it too. `band.ts` builds the rows and `register.tsx` draws
+  them. `reader.ts` mirrors the Python ROADMAP and section helpers,
   held to them by shared fixtures under
   `hooks/status/fixtures/` (`gen_fixtures.py` writes `fixtures.gen.ts` for the
   `claude plugin test` cases).

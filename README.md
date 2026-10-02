@@ -103,19 +103,50 @@ the bar is left out. A title too long for the width is cut at its end, and
 the bar and the counts stay at the right edge. If another plugin draws a
 band in the same place, its rows show under cairn's.
 
+The band also names the cairn skill that is running. When a cairn skill
+starts, by its plain name or its `cairn:` name, the band takes its label:
+`plan`, `implement`, `review`, `hotfix`, `triage`, `release`, `status` (for
+`/milestone`), `brief`, `design`, or `init`. During `/milestone-implement`
+the first `in-progress` row carries the skill, and during
+`/milestone-review` the first `review` row does. Any other cairn skill, or
+one of those two with no row of its status, gets a skill row above the
+milestone rows. A skill row shows the label and the slash command, and
+nothing at its right edge but the close button.
+
+In the desktop app, each chapter the session marks, for example
+`Consistency gate` or `Post-merge hygiene`, takes the item row under the
+row that carries the skill. A skill row shows the chapter under it. The
+band reads the files again at each chapter, so the counts match the files
+at that chapter. During planning, with no milestone active, the band shows:
+
+```text
+plan      /milestone-plan
+  → Question gate
+```
+
+The terminal has no chapter tool. There, milestone rows show their next
+open box, and a skill row has no item row. The skill and its chapter stay
+until a cairn skill starts again, the same one included, or the session
+ends, a `/clear` included. A subagent that loads a cairn skill also sets
+the label, because the skill event does not say which agent loaded it.
+
 The first header row ends in a close button, `×`, in the terminal and in
-the desktop app. Pressing it hides the band. The band stays hidden while
-the list of active milestones stays the same: their ids, their statuses,
-and their ROADMAP order. At the end of the first turn where that list is
-different, the band shows again. For example, a milestone moves from
-`implement` to `review`, a milestone becomes active, or one leaves both
-statuses. A checked box or an edited title does not bring the band back.
+the desktop app. A skill row counts as a header row. Pressing the button
+hides the band. The band stays hidden while two things stay the same. The
+first is the list of active milestones: their ids, their statuses, and
+their ROADMAP order. The second is the running cairn skill. When either
+changes, the band shows again. For example, a milestone moves from
+`implement` to `review`, or a milestone becomes active or leaves both
+statuses. Another cairn skill can start, or the session can end while a
+skill runs. A checked box, an edited title, or a new chapter does not bring
+the band back, and the same skill run again does not either.
 
 The band finds the ROADMAP in the session's working directory or the nearest
-directory above it. It reads the files when the session starts and again at
-the end of each turn. A box you check or a status you change shows after
-the next turn ends. If no `cairn/ROADMAP.md` is at or above the working
-directory, or no row is `in-progress` or `review`, the band draws nothing.
+directory above it. It reads the files when the session starts and at the
+end of each turn. It also reads them when a cairn skill starts and at each
+chapter. A box you check or a status you change shows after the next of
+these. The band draws nothing outside a cairn repo. It also draws nothing
+when no row is `in-progress` or `review` and no cairn skill runs.
 It also gives way while Claude Code shows a survey there. The band draws on
 the terminal and in the desktop app.
 
