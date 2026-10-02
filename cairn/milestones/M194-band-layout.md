@@ -1,6 +1,6 @@
 # M194: A right-aligned milestone band with a close button
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -55,7 +55,7 @@ Lay out the milestone band with its bar and counts at the right edge, and give i
 - [x] T5: Edit cases for AC3 on both surfaces.
 - [x] T6: Docs. Update README "The milestone band", the DESIGN.md `hooks/status/` line, and the CHANGELOG `Unreleased` entry.
 - [x] T7: Label the close button `×` on the terminal and the desktop. Remove `CLOSE_LABEL` and its comment in `register.tsx`, set the test's `CLOSE` to `×` on both surfaces, and correct README's close-button paragraph. Read the CHANGELOG and DESIGN.md wording against it.
-- [ ] T8: Look at the band live in the desktop app at a normal and a narrow width, in both phases, with a wide-character title, and press the close button. Record what it showed in the work log.
+- [x] T8: Look at the band live in the desktop app at a normal and a narrow width, in both phases, with a wide-character title, and press the close button. Record what it showed in the work log.
 
 ## Work log
 
@@ -81,5 +81,6 @@ Lay out the milestone band with its bar and counts at the right edge, and give i
 - 2026-10-01: T7 done. The test's desktop label went to `×` first and failed red on the two desktop AC2 cases. Then `CLOSE_LABEL` was removed and README's paragraph corrected. The CHANGELOG and DESIGN.md wording names no label and holds. Verify: scripts 394 OK, hooks 174 OK, validate clean, mod tests 82/82.
 - 2026-10-01: T8 second live look (desktop, implement phase, operator's screenshot): the button drew `×` and the bar and counts sat at the right edge. The item row's arrow and `T8:` label shrank to nothing, and its text ran past the edge with no ellipsis.
 - 2026-10-01: shrink fix: the shrinking Boxes (left group, title, item rest) take `minWidth: 0`. The phase and id, and the item's arrow and label, sit in a Box with `flexShrink: 0`. New shrink assertions in the AC1 and AC4 cases failed 9 cases on the old code. Mod tests 82/82, scripts 394 OK, hooks 174 OK, validate clean.
+- 2026-10-01: T8 done, third live look in the desktop app: the operator reported it looks right. The item row's arrow and bold label show, and its long text ends in `…`. The wide-character title cuts cleanly when narrow, and `×` hides the band, which stays hidden after a turn that changes nothing. Status set to review.
 
 ## Decisions
