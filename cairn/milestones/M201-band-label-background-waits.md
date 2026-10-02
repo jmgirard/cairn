@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M201: A band label that holds through background waits
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the band ships in the plugin to every adopter   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m201-band-label-background-waits   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -123,14 +123,14 @@ skill's own tasks from other in-flight work.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Tests first in `hooks/status/band.test.tsx`: beneath-hooks for
+- [x] T1: Tests first in `hooks/status/band.test.tsx`: beneath-hooks for
       `classic.Stop` and `prompt.submit` in the setup (`band.test.tsx:60-90`).
       Add the AC1 to AC3 cases. Rewrite the existing cases that end a step
       with `turn.complete` (`band.test.tsx:356` and on). Show the end cases
       red on the current `register.tsx`. Show the clear-before-`next` case
       red against a clear-after-`next` variant. Show that a test-given
       `origin` reaches the mod's hook.
-- [ ] T2: In `hooks/status/register.tsx`, add a `classic.Stop` hook and a
+- [x] T2: In `hooks/status/register.tsx`, add a `classic.Stop` hook and a
       `prompt.submit` hook that carry the rule. Each hook calls `refresh`.
       Reduce the `turn.complete` hook (`register.tsx:63-74`) to a refresh.
       Update the comments that AC5 names.
@@ -163,6 +163,9 @@ skill's own tasks from other in-flight work.
 - 2026-10-02: the same reader re-read the revised criteria. It found the earlier 13 resolved and returned five more: T1's red claim for keep cases, AC2's unbounded "only", the label cleared by a dropped prompt, one AC4 run that could not show both the notice turn and a typed-prompt end, and AC4 and AC5 clauses that bound a recording act. All five were fixed: AC2 names the four hooks that write `step`, AC4 uses a second wait, the dropped prompt became a third Scope Out limit, and the origin kind and Esc result moved to T4.
 - 2026-10-02: plan gate chose ending the step at an unblocked main-loop `classic.Stop` with empty `background_tasks`. It rejected an end at the next typed prompt alone, and a restore of the last step at a `task-notification` prompt. The chosen rule keeps the label through the wait itself, and it does not linger after every closing summary. A live session falsifies it if `classic.Stop` does not reach the mod, or if `background_tasks` does not list a running background subagent.
 - 2026-10-02: plan gate chose to let an idle `composer` or `bridge` prompt end a kept step. It rejected an end only at a Stop with nothing in flight. The chosen rule bounds the label when unrelated long-lived work stays in flight. A desktop-typed prompt that arrives with an origin kind other than `composer` falsifies it.
+- 2026-10-02: implement started on branch m201-band-label-background-waits. No question gate: the plan left no choice open.
+- 2026-10-02: T1 done. The AC1 to AC3 cases and the rewritten M199 cases ran 18 red, 610 green on the old `register.tsx`. Every end case was red, and each keep case was red at its closing empty-list Stop. A clear-after-`next` variant of the `prompt.submit` hook failed the slash-command case alone ("brief" expected, "implement" drawn). Each prompt case asserts that the test's origin kind and turn id reached the hook beneath.
+- 2026-10-02: T2 done. `register.tsx` gains `classic.Stop` and `prompt.submit` hooks, and `turn.complete` only refreshes. The header, `step` atom, and hook comments state the rule, and so does the `CairnStep` comment in `types/index.d.ts`. Verify: scripts 395 OK, hooks 174 OK, validate passed with its one CLAUDE.md warning, plugin test 628 pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

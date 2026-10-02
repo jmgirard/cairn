@@ -42,6 +42,12 @@ type Copy = {
   // While set, each ROADMAP read sets `held` and waits for this promise.
   hold?: Promise<void>
   held?: boolean
+  // While set, a Stop beneath the mod answers with this block.
+  stopBlock?: string
+  // While set, a prompt beneath the mod runs this before it resolves.
+  beforeSubmit?: () => Promise<void>
+  // The origin kind and turn id of each prompt that reached beneath the mod.
+  submitted?: { kind: string; turnId: string | undefined }[]
 }
 
 function copyOf(name: string): Copy {
@@ -54,8 +60,9 @@ function copyOf(name: string): Copy {
 type ChapterAnswer = 'mark' | 'deny' | 'error'
 
 // The world beneath the mod: the fixture copy as the session's directory and
-// files, a turn end that answers nothing, a skill prompt passed through, the
-// chapter tool, and a session end.
+// files, a turn end that answers nothing, a Stop that answers nothing or the
+// copy's block, a prompt that enters as given, a skill prompt passed
+// through, the chapter tool, and a session end.
 function seat(on: On, copy: Copy, chapter: ChapterAnswer = 'mark') {
   const has = (path: string) => Object.prototype.hasOwnProperty.call(copy.files, path)
   on('session.cwd', async () => ({ value: copy.cwd }))
@@ -75,6 +82,12 @@ function seat(on: On, copy: Copy, chapter: ChapterAnswer = 'mark') {
     return { value: names.map(name => ({ name, kind: 'other', size: 0, mtimeMs: 0, isLink: false })) }
   })
   on('turn.complete', async () => ({ text: '' }))
+  on('classic.Stop', async () => (copy.stopBlock === undefined ? {} : { block: copy.stopBlock }))
+  on('prompt.submit', async ($, e) => {
+    copy.submitted = [...(copy.submitted ?? []), { kind: e.origin.kind, turnId: e.turnId }]
+    if (copy.beforeSubmit !== undefined) await copy.beforeSubmit()
+    return { text: e.text, origin: e.origin }
+  })
   on('skill.prompt', async ($, e) => ({ text: e.text }))
   on('tool.call', { tool: CHAPTER_TOOL }, async () =>
     chapter === 'deny'
@@ -2145,24 +2158,45 @@ function turnWith(reason: 'answer' | 'aborted' | 'refusal' | 'error', agentId?: 
 
 const PLAN_GATE = 'plan M002 → Question gate  1/3 tasks'
 
-describe("a cairn skill's step ends at its main-loop turn end (M199 AC3)", () => {
-  test('a milestone row goes back to its phase label, and a later chapter sets nothing', async ($, on) => {
-    await eachSurface(
-      'single-in-progress',
-      'mark',
-      async (ui, $) => {
-        await prompt($, 'milestone-plan')
-        await chapter($, 'Question gate')
-        expect(await lines(ui)).toEqual([PLAN_GATE, ENGINE])
-        await $.turn.complete(turnWith('answer'))
-        expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
-        await chapter($, 'A chapter in plain conversation')
-        expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
-      },
-      $,
-      on,
-    )
-  })
+// One background subagent in flight, as a Stop lists it.
+const TASK = { id: 'b1', type: 'subagent', status: 'running', description: 'a background reviewer', agent_type: 'general-purpose' }
+
+// A Stop as the engine raises it: its in-flight list empty, left out, or
+// holding TASK, and an agent id when it fires inside a subagent.
+function stopWith(tasks: 'empty' | 'absent' | 'one', agentId?: string) {
+  return {
+    stop_hook_active: false,
+    ...(tasks === 'absent' ? {} : { background_tasks: tasks === 'one' ? [TASK] : [] }),
+    ...(agentId === undefined ? {} : { agent_id: agentId }),
+  }
+}
+
+// A prompt as the engine submits one: where it came from, and the running
+// turn's id when it was typed over or delivered into that turn.
+function submitWith(kind: 'composer' | 'bridge' | 'peer' | 'task-notification', turnId?: string) {
+  return { text: `a ${kind} prompt`, wait: false, origin: { kind }, ...(turnId === undefined ? {} : { turnId }) }
+}
+
+describe("a cairn skill's step ends at a main-loop Stop with nothing in flight (M201 AC1)", () => {
+  for (const tasks of ['empty', 'absent'] as const) {
+    test(`a milestone row goes back to its phase label at a Stop whose list is ${tasks}, and a later chapter sets nothing`, async ($, on) => {
+      await eachSurface(
+        'single-in-progress',
+        'mark',
+        async (ui, $) => {
+          await prompt($, 'milestone-plan')
+          await chapter($, 'Question gate')
+          expect(await lines(ui)).toEqual([PLAN_GATE, ENGINE])
+          await $.classic.Stop(stopWith(tasks))
+          expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+          await chapter($, 'A chapter in plain conversation')
+          expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+        },
+        $,
+        on,
+      )
+    })
+  }
 
   test('a skill row gives way to the idle row', async ($, on) => {
     await eachSurface(
@@ -2171,9 +2205,7 @@ describe("a cairn skill's step ends at its main-loop turn end (M199 AC3)", () =>
       async (ui, $) => {
         await prompt($, 'milestone')
         expect(await lines(ui)).toEqual([skillRow('milestone'), ENGINE])
-        await $.turn.complete(turnWith('answer'))
-        expect(await lines(ui)).toEqual([IDLE_DRAWN['no-active'], ENGINE])
-        await chapter($, 'A chapter in plain conversation')
+        await $.classic.Stop(stopWith('empty'))
         expect(await lines(ui)).toEqual([IDLE_DRAWN['no-active'], ENGINE])
       },
       $,
@@ -2190,23 +2222,84 @@ describe("a cairn skill's step ends at its main-loop turn end (M199 AC3)", () =>
       async ui => {
         await prompt($, 'milestone')
         expect(await rowKeys(ui)).toEqual(['skill-row'])
-        await $.turn.complete(turnWith('answer'))
+        await $.classic.Stop(stopWith('empty'))
         expect(await hasCairn(ui)).toBe(false)
       },
       $,
     )
   })
 
-  for (const reason of ['aborted', 'refusal', 'error'] as const) {
-    test(`a main-loop turn that ends ${reason} keeps the step`, async ($, on) => {
+  // Each keep case ends with an empty-list Stop that does end the step, so a
+  // kept label is the rule at work and not a step the mod never ends.
+  const KEEPS: { name: string; act: ($, copy: Copy) => Promise<void> }[] = [
+    { name: 'a Stop that lists one background task', act: $ => $.classic.Stop(stopWith('one')) },
+    {
+      name: 'a Stop with an empty list whose answer from beneath blocks',
+      act: async ($, copy) => {
+        copy.stopBlock = 'stop guard: work is still owed'
+        expect((await $.classic.Stop(stopWith('empty'))).block).toBe('stop guard: work is still owed')
+        copy.stopBlock = undefined
+      },
+    },
+    { name: 'a Stop with an empty list and an agent id', act: $ => $.classic.Stop(stopWith('empty', 'a1')) },
+    ...(['answer', 'aborted', 'refusal', 'error'] as const).map(reason => ({
+      name: `a main-loop turn end with reason ${reason}`,
+      act: async $ => {
+        await $.turn.complete(turnWith(reason))
+      },
+    })),
+    {
+      name: "a subagent's turn end with reason answer",
+      act: async $ => {
+        await $.turn.complete(turnWith('answer', 'a1'))
+      },
+    },
+  ]
+  for (const { name, act } of KEEPS) {
+    test(`${name} keeps the step`, async ($, on) => {
       await eachSurface(
         'single-in-progress',
         'mark',
-        async (ui, $) => {
+        async (ui, $, copy) => {
           await prompt($, 'milestone-plan')
           await chapter($, 'Question gate')
-          await $.turn.complete(turnWith(reason))
+          await act($, copy)
           expect(await lines(ui)).toEqual([PLAN_GATE, ENGINE])
+          await $.classic.Stop(stopWith('empty'))
+          expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+        },
+        $,
+        on,
+      )
+    })
+  }
+})
+
+describe('an idle typed prompt ends a kept step, and a notice turn keeps it (M201 AC2)', () => {
+  // Each case keeps the step through a Stop with one task in flight, then
+  // raises one prompt and reads the label. `ends` is whether the step ends.
+  const PROMPTS: { kind: 'composer' | 'bridge' | 'peer' | 'task-notification'; turnId?: string; ends: boolean }[] = [
+    { kind: 'task-notification', ends: false },
+    { kind: 'composer', ends: true },
+    { kind: 'bridge', ends: true },
+    { kind: 'peer', ends: false },
+    { kind: 'composer', turnId: 't-running', ends: false },
+  ]
+  for (const { kind, turnId, ends } of PROMPTS) {
+    test(`a ${kind} prompt${turnId === undefined ? '' : ' over a running turn'} ${ends ? 'ends' : 'keeps'} the kept step`, async ($, on) => {
+      await eachSurface(
+        'single-in-progress',
+        'mark',
+        async (ui, $, copy) => {
+          await prompt($, 'milestone-plan')
+          await chapter($, 'Question gate')
+          await $.classic.Stop(stopWith('one'))
+          expect(await lines(ui)).toEqual([PLAN_GATE, ENGINE])
+          await $.prompt.submit(submitWith(kind, turnId))
+          // The origin and turn id the test gave reached the hooks beneath.
+          expect(copy.submitted?.at(-1)).toEqual({ kind, turnId })
+          expect(await lines(ui)).toEqual(ends ? [...DRAWN['single-in-progress'], ENGINE] : [PLAN_GATE, ENGINE])
+          await $.classic.Stop(stopWith('empty'))
         },
         $,
         on,
@@ -2214,20 +2307,68 @@ describe("a cairn skill's step ends at its main-loop turn end (M199 AC3)", () =>
     })
   }
 
-  test("a subagent's turn end keeps the step", async ($, on) => {
+  test("a typed cairn slash command's own skill prompt sets the new label", async ($, on) => {
     await eachSurface(
       'single-in-progress',
       'mark',
-      async (ui, $) => {
+      async (ui, $, copy) => {
         await prompt($, 'milestone-plan')
         await chapter($, 'Question gate')
-        await $.turn.complete(turnWith('answer', 'a1'))
-        expect(await lines(ui)).toEqual([PLAN_GATE, ENGINE])
+        await $.classic.Stop(stopWith('one'))
+        // The slash command expands while its prompt goes down the chain.
+        copy.beforeSubmit = () => prompt($, 'milestone-brief')
+        await $.prompt.submit(submitWith('composer'))
+        copy.beforeSubmit = undefined
+        const [key] = await rowKeys(ui)
+        expect(key).toBe('M002-row')
+        const [row] = await ui.findAll({ key })
+        expect(labelOf(row)).toBe(LABELS['milestone-brief'])
+        expect(await lines(ui)).not.toContain(PLAN_GATE)
+        await $.classic.Stop(stopWith('empty'))
       },
       $,
       on,
     )
   })
+})
+
+// The mixed fixture cut to one review row (M010) and one in-progress row
+// (M012).
+function reviewAndImplement(): Copy {
+  const copy = copyOf('mixed')
+  for (const path of Object.keys(copy.files)) {
+    if (path.endsWith('cairn/ROADMAP.md')) {
+      copy.files[path] = copy.files[path]
+        .split('\n')
+        .filter(line => !line.startsWith('| M013 ') && !line.startsWith('| M014 '))
+        .join('\n')
+    }
+  }
+  return copy
+}
+
+describe('a review row keeps its review label through a background wait (M201 AC3)', () => {
+  for (const surface of SURFACES) {
+    test(`the review row stays under review through the wait and the notice turn (${surface})`, async ($, on) => {
+      seat(on, reviewAndImplement())
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      expect(await lines(ui)).toEqual([SHOWN.mixed, ENGINE])
+      await prompt($, 'milestone-review')
+      expect(await lines(ui)).toEqual([MIXED_REVIEW, ENGINE])
+      await $.classic.Stop(stopWith('one'))
+      expect(await lines(ui)).toEqual([MIXED_REVIEW, ENGINE])
+      await $.prompt.submit(submitWith('task-notification'))
+      expect(await lines(ui)).toEqual([MIXED_REVIEW, ENGINE])
+      await $.turn.complete(turnWith('answer'))
+      expect(await lines(ui)).toEqual([MIXED_REVIEW, ENGINE])
+      // The closing Stop with nothing in flight hands the band back to the
+      // in-progress row.
+      await $.classic.Stop(stopWith('empty'))
+      expect(await lines(ui)).toEqual([SHOWN.mixed, ENGINE])
+      await ui.unmount()
+    })
+  }
 })
 
 const M021 = '/cairn/milestones/M021-wait.md'
@@ -2310,7 +2451,7 @@ describe("a press stores the idle row's id (M199 AC4)", () => {
       await prompt($, 'milestone-plan')
       await ui.press({ key: 'cairn-close' })
       expect(await lines(ui)).toEqual([ENGINE])
-      await $.turn.complete(turnWith('answer'))
+      await $.classic.Stop(stopWith('empty'))
       expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
       await ui.unmount()
     })

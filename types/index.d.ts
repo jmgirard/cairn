@@ -35,7 +35,8 @@ export type CairnBandHidden = { marks: CairnBandMark[]; skill: string | null; id
 
 // The running cairn skill's bare name (`milestone-plan`), and the title of
 // the last chapter the main loop marked since its prompt was expanded. A
-// main-loop turn that ends in an answer ends it.
+// main-loop Stop with no background work in flight, or a prompt the operator
+// types while the session is idle, ends it (M201).
 export type CairnStep = { skill: string; chapter: string | null }
 
 declare module 'claude-code' {
