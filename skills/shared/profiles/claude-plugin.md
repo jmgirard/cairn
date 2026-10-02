@@ -94,7 +94,8 @@ recommends the profile that the inference order picks.
 
 ## greenfield-openers
 Plugin-specific openers `cairn-init` asks in a new/empty plugin repo. The
-universal openers come from cairn-init's universal layer.
+universal openers come from cairn-init's universal layer. Distribution
+ambition is rendered here as the **Listing?** question below.
 
 - **Listing?** Where do users install the plugin from?
   - Options: **a marketplace file in this repo** (reversible default) ·
